@@ -24,7 +24,7 @@ The tutor speaks English, Tagalog, and Cebuano Bisaya. It uses fine-tuned LoRA a
 
 | Decision | Choice | Rationale |
 |---|---|---|
-| Base model | **Qwen3.5-2B** (primary), 0.8B (low-end fallback), 4B (high-end option) | Gated DeltaNet hybrid architecture: faster inference, lower memory, 262K context. 2B hits the quality/speed sweet spot on budget Android phones. |
+| Base model | **Qwen3-1.7B** (Q4_K_M quantization) | Fully supported for LoRA fine-tuning in QVAC. Qwen3.5-2B lacks LoRA support due to Gated DeltaNet architecture limitations. |
 | Language | English, Tagalog, **Cebuano Bisaya** | Cebuano is the most widely spoken Bisaya variant (~20M speakers across Visayas and Mindanao) |
 | LoRA strategy | **Two separate adapters** (Tagalog + Cebuano) | Cleaner training signal, independent iteration, easy load/unload. English uses base model (no adapter). |
 | Visual generation | **Dynamic** (Stable Diffusion), **async**, **optional Visual Pack download** | Pre-generated diagrams are too rigid — student creativity should drive visuals (e.g., "explain gravity using anime characters") |
@@ -123,14 +123,14 @@ hiraia/
 
 | Concern | Detail |
 |---|---|
-| **Primary model** | Qwen3.5-2B Q4 (~1.5GB quantized) |
-| **Low-end fallback** | Qwen3.5-0.8B Q4 (~1GB quantized) |
-| **High-end option** | Qwen3.5-4B Q4 (~3GB quantized) |
-| **Architecture** | Gated DeltaNet hybrid (3:1 linear/full attention) — O(n) memory scaling |
-| **Context window** | 262K native; use ~2-4K on mobile to conserve RAM |
+| **Primary model** | Qwen3-1.7B Q4_K_M (~1.5GB quantized) |
+| **Architecture** | Standard Transformer with RoPE |
+| **Context window** | 32K native; use ~2-4K on mobile to conserve RAM |
 | **License** | Apache 2.0 |
 | **Format** | GGUF (llama.cpp-compatible) |
-| **QVAC support** | SDK v0.11.0+ — auto-detected Qwen3.5 tool-call dialect, reasoning_budget knob |
+| **QVAC support** | Full LoRA fine-tuning support via qvac-fabric-llm.cpp |
+
+**Why not Qwen3.5-2B?** Qwen3.5 uses Gated DeltaNet hybrid attention (3:1 linear/full ratio), which requires custom backward passes for LoRA training. QVAC's fine-tuning framework currently supports Qwen3 but not Qwen3.5. Using Qwen3-1.7B ensures we can fine-tune Tagalog/Cebuano adapters immediately.
 
 ### LoRA Adapters
 
@@ -204,7 +204,38 @@ Total with Visual Pack: **~4.3GB**. Students on 4GB RAM phones get the text tuto
 
 ---
 
-## 6. Curriculum Data
+## 6. Target Devices
+
+### Primary Target Phones (2020-2021 Midrange)
+
+These devices represent the typical hardware students in the Philippines would have access to:
+
+| Phone | Release | RAM | Storage | Processor | GPU | Android | Price (2020-21) |
+|---|---|---|---|---|---|---|---|
+| **Samsung Galaxy A31** | June 2020 | 6GB | 128GB | MediaTek Helio P65 (12nm) | Mali-G52 MC2 | 10 → 13 | ₱14,990 |
+| **Samsung Galaxy A51** | Feb 2020 | 6-8GB | 128GB | Exynos 9611 (10nm) | Mali-G72 MP3 | 10 → 13 | ₱17,990 |
+| **Samsung Galaxy A32 (4G)** | Feb 2021 | 6-8GB | 128GB | MediaTek Helio G80 (12nm) | Mali-G52 MC2 | 11 → 13 | ₱13,990 |
+| **Vivo V20** | Oct 2020 | 8GB | 128GB | Snapdragon 720G (8nm) | Adreno 618 | 10 → 11 | ₱19,990 |
+| **Xiaomi Redmi Note 9 Pro** | May 2020 | 6-8GB | 128GB | Snapdragon 720G (8nm) | Adreno 618 | 10 → 12 | ₱12,990 |
+
+### Minimum Requirements (Hiraia Base)
+
+- **RAM:** 4GB minimum (6GB+ recommended)
+- **Storage:** 8GB free space for app + models
+- **Android:** 12+ (API 29+)
+- **Architecture:** arm64-v8a
+
+### Performance Expectations
+
+| Configuration | Model | RAM Usage | Expected Speed |
+|---|---|---|---|
+| **Low-end (4GB)** | Qwen3-1.7B Q4 | ~1.5GB | 8-12 tok/sec |
+| **Mid-range (6-8GB)** | Qwen3-1.7B Q4 + Visual Pack | ~3.5GB | 12-18 tok/sec |
+| **High-end (8GB+)** | Qwen3-1.7B Q4 + Visual Pack + larger context | ~4GB | 15-22 tok/sec |
+
+---
+
+## 7. Curriculum Data
 
 ### Sources (all publicly available, free for educational use)
 
@@ -334,8 +365,8 @@ QVAC does **not** run on Android emulators — physical device required for all 
 
 These items are deferred until they become relevant during implementation:
 
-- [ ] **Qwen3.5 LoRA compatibility testing** — Verify that QVAC's fine-tuning works with Gated DeltaNet layers. If not, fall back to Qwen3-1.7B.
-- [ ] **Physical device procurement** — Need a budget Android phone (4GB RAM) for testing. Ideally test on multiple devices.
+- [x] **Qwen3.5 LoRA compatibility** — CONFIRMED: Not supported by QVAC fine-tuning framework. Gated DeltaNet architecture requires custom backward passes not yet implemented. Using Qwen3-1.7B instead.
+- [ ] **Physical device procurement** — Need a budget Android phone (4GB RAM) for testing. Ideally test on multiple devices listed in Section 6.
 - [ ] **LoRA dataset quality** — Synthetic dialogue generation + native speaker review pipeline needs to be set up.
 - [ ] **Model download UX** — First-run experience for downloading ~2.5GB of models needs careful design (progress, resumption, storage warnings).
 - [ ] **Stable Diffusion quality on mobile** — SD v2.1 at small quantization may produce low-quality images. Evaluate and potentially adjust.
@@ -343,10 +374,50 @@ These items are deferred until they become relevant during implementation:
 
 ---
 
-## 12. Change Log
+## 12. Lobbying for Qwen3.5 LoRA Support
+
+### Current Status
+
+QVAC's `qvac-fabric-llm.cpp` supports LoRA fine-tuning for Qwen3 (standard Transformer) but **not** Qwen3.5 (Gated DeltaNet hybrid). The fine-tuning framework explicitly lists Qwen3 (0.6B, 1.7B, 4B) as supported, while Qwen3.5's hybrid attention architecture requires custom backward pass implementations for the linear attention layers that haven't been built yet.
+
+### Who to Contact
+
+| Channel | Link | Best For |
+|---|---|---|
+| **Discord** | [discord.com/invite/tetherdev](https://discord.com/invite/tetherdev) | Real-time discussion with QVAC team |
+| **Feature Requests** | [Discord #feature-requests](https://discord.com/channels/1425125849346216029/1488513739492954313) | Official feature request channel |
+| **Feedback Portal** | [qvacbytether.featurebase.app](https://qvacbytether.featurebase.app/) | Upvoteable feature requests |
+| **GitHub Issues** | [github.com/tetherto/qvac/issues](https://github.com/tetherto/qvac/issues) | Technical discussion with maintainers |
+| **Twitter/X** | [@QVAC](https://x.com/QVAC) | Public visibility |
+| **Partnership form** | [qvac.tether.io](https://qvac.tether.io/) → Contact Us | Formal partnership/inquiry |
+
+### Key People to Reach
+
+Based on the repository contributor list, the most relevant contacts:
+- **Proletter** — Top contributor, likely tech lead
+- **simon-iribarren** — Active contributor
+- **jpgaribotti** — Active contributor (infrastructure)
+- **yuranich** — Active contributor
+- **tamer-hassan-tether** — Tether team member
+
+### Pitch Angle
+
+Frame the request around the hackathon and the Global South education use case:
+1. We're building an offline AI tutor for Filipino students using QVAC
+2. Qwen3.5-2B would be ideal for its memory efficiency on budget phones
+3. We need LoRA fine-tuning to make Tagalog and Cebuano sound natural
+4. This is a compelling showcase of QVAC's education impact
+5. We're happy to test and provide feedback on any beta implementation
+
+---
+
+## 13. Change Log
 
 Track all directional changes to this plan here.
 
 | Date | Change | Reason |
 |---|---|---|
 | 2026-05-27 | Initial plan created | Project kickoff |
+| 2026-05-27 | Base model changed from Qwen3.5-2B to **Qwen3-1.7B** | Qwen3.5 LoRA fine-tuning not supported by QVAC (Gated DeltaNet architecture). Qwen3-1.7B has full LoRA support. |
+| 2026-05-27 | Added Section 6: Target Devices | Defined target phones (2020-2021 midrange) with specs and performance expectations |
+| 2026-05-27 | Added Section 12: Lobbying for Qwen3.5 LoRA Support | Documented contact channels and pitch strategy for requesting Qwen3.5 support from QVAC team |
