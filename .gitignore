@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+.next/
+
+# Expo
+.expo/
+android/
+ios/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# QVAC model files (downloaded at runtime, never committed)
+*.gguf
+model-cache/
+
+# LoRA training output
+finetuning/lora-output/
+
+# References (raw curriculum materials — large, not for repo)
+references/curriculum/
+references/modules/
+
+# Logs
+*.log
+
+# Turbo
+.turbo/
