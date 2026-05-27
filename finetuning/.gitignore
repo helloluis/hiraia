@@ -1,0 +1,12 @@
+# Ignore generated LoRA adapters (large binary files)
+output/
+
+# Ignore checkpoints
+checkpoints/
+
+# Ignore temporary files
+*.tmp
+*.log
+
+# Keep dataset examples but ignore any generated data
+# (actual training data should be curated and committed)

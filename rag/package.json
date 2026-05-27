@@ -1,0 +1,35 @@
+{
+  "name": "@hiraia/rag",
+  "version": "0.1.0",
+  "description": "RAG pipeline for Hiraia AI tutor - DepEd curriculum ingestion and retrieval",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "download": "node scripts/download.js",
+    "extract": "node scripts/extract.js",
+    "chunk": "node scripts/chunk.js",
+    "embed": "node scripts/embed.js",
+    "build-index": "node scripts/build-index.js",
+    "query": "node scripts/query.js",
+    "pipeline": "node scripts/pipeline.js"
+  },
+  "dependencies": {
+    "@qvac/sdk": "^0.11.0",
+    "hnswlib-node": "^3.0.0",
+    "pdf-parse": "^1.1.1",
+    "glob": "^10.3.10"
+  },
+  "devDependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "keywords": [
+    "hiraia",
+    "rag",
+    "curriculum",
+    "deped",
+    "embeddings",
+    "retrieval"
+  ],
+  "author": "Hiraia Team",
+  "license": "Apache-2.0"
+}
