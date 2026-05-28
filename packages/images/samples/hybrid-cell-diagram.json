@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "width": 500,
+  "height": 400,
+  "title": "Animal Cell Structure",
+  "caption": "Basic organelles found in animal cells",
+  "elements": [
+    {
+      "type": "asset",
+      "assetId": "cell-animal",
+      "x": 150,
+      "y": 80,
+      "scale": 1.5
+    },
+    {
+      "type": "text",
+      "x": 40,
+      "y": 140,
+      "content": "Nucleus",
+      "style": { "fontSize": 14, "fontWeight": "bold" }
+    },
+    {
+      "type": "arrow",
+      "from": [95, 133],
+      "to": [200, 175],
+      "style": { "strokeWidth": 2 }
+    },
+    {
+      "type": "text",
+      "x": 380,
+      "y": 100,
+      "content": "Mitochondria",
+      "style": { "fontSize": 14, "fontWeight": "bold" }
+    },
+    {
+      "type": "arrow",
+      "from": [380, 93],
+      "to": [300, 150],
+      "style": { "strokeWidth": 2 }
+    },
+    {
+      "type": "text",
+      "x": 370,
+      "y": 260,
+      "content": "Vacuole",
+      "style": { "fontSize": 14, "fontWeight": "bold" }
+    },
+    {
+      "type": "arrow",
+      "from": [370, 253],
+      "to": [310, 230],
+      "style": { "strokeWidth": 2 }
+    }
+  ]
+}

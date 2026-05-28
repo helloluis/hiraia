@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "width": 600,
+  "height": 450,
+  "title": "Simple Electrical Circuit",
+  "caption": "Basic circuit with battery, switch, and light bulb",
+  "elements": [
+    {
+      "type": "compose",
+      "x": 0,
+      "y": 0,
+      "assets": [
+        {
+          "assetId": "battery",
+          "x": 50,
+          "y": 200,
+          "scale": 1.2
+        },
+        {
+          "assetId": "switch",
+          "x": 250,
+          "y": 80,
+          "scale": 1.5
+        },
+        {
+          "assetId": "lightbulb",
+          "x": 430,
+          "y": 200,
+          "scale": 1.0
+        }
+      ],
+      "overlays": [
+        {
+          "type": "line",
+          "from": [170, 220],
+          "to": [250, 120],
+          "style": {
+            "stroke": "#333",
+            "strokeWidth": 3
+          }
+        },
+        {
+          "type": "line",
+          "from": [370, 120],
+          "to": [430, 220],
+          "style": {
+            "stroke": "#333",
+            "strokeWidth": 3
+          }
+        },
+        {
+          "type": "line",
+          "from": [430, 340],
+          "to": [170, 340],
+          "style": {
+            "stroke": "#333",
+            "strokeWidth": 3
+          }
+        },
+        {
+          "type": "line",
+          "from": [170, 340],
+          "to": [170, 220],
+          "style": {
+            "stroke": "#333",
+            "strokeWidth": 3
+          }
+        },
+        {
+          "type": "text",
+          "x": 110,
+          "y": 280,
+          "content": "Battery\n(Power Source)",
+          "style": {
+            "fontSize": 12,
+            "fontWeight": "bold",
+            "textAlign": "center"
+          }
+        },
+        {
+          "type": "text",
+          "x": 310,
+          "y": 60,
+          "content": "Switch\n(Control)",
+          "style": {
+            "fontSize": 12,
+            "fontWeight": "bold",
+            "textAlign": "center"
+          }
+        },
+        {
+          "type": "text",
+          "x": 480,
+          "y": 260,
+          "content": "Light\nBulb\n(Load)",
+          "style": {
+            "fontSize": 12,
+            "fontWeight": "bold",
+            "textAlign": "center"
+          }
+        },
+        {
+          "type": "arrow",
+          "from": [200, 350],
+          "to": [240, 350],
+          "style": {
+            "stroke": "#d32f2f",
+            "strokeWidth": 2
+          }
+        },
+        {
+          "type": "text",
+          "x": 300,
+          "y": 380,
+          "content": "Current Flow",
+          "style": {
+            "fontSize": 11,
+            "fill": "#d32f2f"
+          }
+        }
+      ]
+    }
+  ]
+}

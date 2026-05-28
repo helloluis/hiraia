@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "width": 600,
+  "height": 400,
+  "title": "Gravity: Earth vs Moon",
+  "caption": "Objects fall faster on Earth because it has stronger gravity",
+  "elements": [
+    {
+      "type": "figure:stick",
+      "x": 150,
+      "y": 310,
+      "scale": 0.9,
+      "id": "student-earth"
+    },
+    {
+      "type": "figure:stick",
+      "x": 450,
+      "y": 310,
+      "scale": 0.9,
+      "id": "student-moon"
+    },
+    {
+      "type": "circle",
+      "cx": 150,
+      "cy": 100,
+      "r": 25,
+      "style": {
+        "fill": "#e8f4f8",
+        "stroke": "#4a90e2"
+      },
+      "id": "ball-earth"
+    },
+    {
+      "type": "circle",
+      "cx": 450,
+      "cy": 100,
+      "r": 25,
+      "style": {
+        "fill": "#e8f4f8",
+        "stroke": "#4a90e2"
+      },
+      "id": "ball-moon"
+    },
+    {
+      "type": "arrow",
+      "from": [150, 125],
+      "to": [150, 200],
+      "style": {
+        "stroke": "#d0021b",
+        "strokeWidth": 3
+      }
+    },
+    {
+      "type": "arrow",
+      "from": [450, 125],
+      "to": [450, 160],
+      "style": {
+        "stroke": "#d0021b",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "type": "text",
+      "x": 150,
+      "y": 30,
+      "anchor": "middle",
+      "baseline": "middle",
+      "content": "EARTH",
+      "style": {
+        "fontSize": 18,
+        "fontWeight": "bold"
+      }
+    },
+    {
+      "type": "text",
+      "x": 450,
+      "y": 30,
+      "anchor": "middle",
+      "baseline": "middle",
+      "content": "MOON",
+      "style": {
+        "fontSize": 18,
+        "fontWeight": "bold"
+      }
+    },
+    {
+      "type": "text",
+      "x": 180,
+      "y": 165,
+      "content": "Strong gravity",
+      "style": {
+        "fontSize": 12
+      }
+    },
+    {
+      "type": "text",
+      "x": 480,
+      "y": 145,
+      "content": "Weak gravity",
+      "style": {
+        "fontSize": 12
+      }
+    },
+    {
+      "type": "text",
+      "x": 180,
+      "y": 185,
+      "content": "(9.8 m/s²)",
+      "style": {
+        "fontSize": 11,
+        "fill": "#666"
+      }
+    },
+    {
+      "type": "text",
+      "x": 480,
+      "y": 165,
+      "content": "(1.6 m/s²)",
+      "style": {
+        "fontSize": 11,
+        "fill": "#666"
+      }
+    },
+    {
+      "type": "line",
+      "from": [0, 360],
+      "to": [300, 360],
+      "style": {
+        "stroke": "#4a4a4a",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "type": "line",
+      "from": [300, 360],
+      "to": [600, 360],
+      "style": {
+        "stroke": "#888",
+        "strokeWidth": 2,
+        "strokeStyle": "dashed"
+      }
+    }
+  ],
+  "style": {
+    "fontFamily": "Comic Sans MS, cursive",
+    "strokeWidth": 2,
+    "roughness": 1.5
+  }
+}
