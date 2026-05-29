@@ -71,23 +71,45 @@ node scripts/train-tagalog.js
 node scripts/train-cebuano.js
 ```
 
-### Training Configuration
+### Training (current trainer)
 
-Both scripts use these optimized parameters:
+Training runs from `packages/server` (it inherits the proven QVAC native setup —
+win32 Bare runtime, co-located OpenSSL DLLs, and the LLM-only worker):
+
+```bash
+cd ../packages/server
+node src/train.mjs --lang tagalog \
+  --dataset ../../finetuning/datasets/tagalog/science-chat-v2.jsonl \
+  --ctx 1024 --epochs 3 --device gpu
+# adapter is written to finetuning/output/tagalog/
+```
+
+`--quick --device cpu` runs a fast 1-epoch smoke test.
+
+### Training Configuration
 
 ```javascript
 {
   numberOfEpochs: 3,
   learningRate: 1e-4,
-  contextLength: 2048,
-  batchSize: 4,
-  microBatchSize: 1,
+  lrScheduler: "cosine",
+  lrMin: 1e-8,          // MUST be > 0; with 0 the cosine schedule drives AdamW
+                        // alpha to 0 on the final step -> GGML_ASSERT crash
+  warmupRatio: 0.1,
+  contextLength: 1024,  // MUST be >= the longest conversation, or examples are
+                        // silently skipped ("too long") -> empty dataset -> crash
+  batchSize: 512,       // TOKEN counts (llama.cpp -b / -ub), NOT sequence counts.
+  microBatchSize: 128,  // Tiny values (e.g. 1) make training crawl + crash.
   assistantLossOnly: true,
-  loraRank: 32,
-  loraAlpha: 64,
+  loraRank: 16,
+  loraAlpha: 32,
   loraModules: "attn_q,attn_k,attn_v,attn_o,ffn_gate,ffn_up,ffn_down"
 }
 ```
+
+> **Gotchas learned the hard way** (all handled by the trainer's defaults):
+> `batchSize`/`microBatchSize` are token counts, not example counts; `lrMin` must be
+> `> 0`; and `contextLength` must exceed your longest conversation.
 
 ## Monitoring
 
@@ -107,11 +129,11 @@ node scripts/monitor.js tagalog
 
 ## Output
 
-After training completes, you'll find:
-- `ggml-adapter-model.bin` — The LoRA adapter weights (~20MB)
-- `adapter_config.json` — Adapter configuration
+QVAC's `finetune()` writes a **GGUF LoRA adapter** directly into `outputParametersDir`
+(no safetensors → GGUF conversion needed). The trainer prints the resulting `.gguf`
+path and size when it finishes.
 
-These files are loaded in the mobile app via:
+The adapter is loaded via `modelConfig.lora` — identically on web and mobile:
 
 ```typescript
 loadModel({
@@ -121,6 +143,9 @@ loadModel({
   }
 });
 ```
+
+For the web sidecar, set `HIRAIA_LORA_ADAPTER=/path/to/adapter.gguf` before starting
+`packages/server`; it will apply the adapter at load and report it in `/health`.
 
 ## Dataset Generation Pipeline
 

@@ -7,6 +7,7 @@
     "pnpm": ">=9.0.0"
   },
   "scripts": {
+    "postinstall": "node scripts/fix-qvac-win32.mjs",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
@@ -27,5 +28,11 @@
     "prettier": "^3.4.0",
     "turbo": "^2.3.0",
     "typescript": "^5.7.0"
+  },
+  "pnpm": {
+    "supportedArchitectures": {
+      "os": ["current", "win32", "darwin"],
+      "cpu": ["current", "x64", "arm64"]
+    }
   }
 }
