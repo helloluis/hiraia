@@ -28,6 +28,13 @@ import { healthDialogues } from './health-dialogues.mjs';
 import { earthScienceDialogues } from './earth-science-dialogues.mjs';
 import { authenticStoriesDialogues } from './authentic-stories.mjs';
 import { grade36ScienceDialogues } from './grade3-6-science.mjs';
+import { bloomGroundedV1Dialogues } from './bloom-grounded-v1.mjs';
+import { bloomGroundedV2Dialogues } from './bloom-grounded-v2.mjs';
+import { bloomGroundedV3Dialogues } from './bloom-grounded-v3.mjs';
+import { workflowPilotDialogues } from './workflow-pilot.mjs';
+import { workflowWave2Dialogues } from './workflow-wave2.mjs';
+import { workflowFinalDialogues } from './workflow-final.mjs';
+import { workflowMakeupDialogues } from './workflow-makeup.mjs';
 
 // Combine all dialogues
 const allDialogues = [
@@ -54,6 +61,13 @@ const allDialogues = [
   ...earthScienceDialogues,
   ...authenticStoriesDialogues,
   ...grade36ScienceDialogues,
+  ...bloomGroundedV1Dialogues,
+  ...bloomGroundedV2Dialogues,
+  ...bloomGroundedV3Dialogues,
+  ...workflowPilotDialogues,
+  ...workflowWave2Dialogues,
+  ...workflowFinalDialogues,
+  ...workflowMakeupDialogues,
 ];
 
 console.log(`📚 Generating Bisaya science dataset...\n`);
