@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <!-- Earth - educational diagram with continents -->
+  <!-- Ocean base -->
+  <circle cx="60" cy="60" r="48" fill="#4fc3f7" stroke="#0277bd" stroke-width="2"/>
+  <!-- North America -->
+  <path d="M28,35 C30,30 38,28 42,32 C48,30 52,35 50,42 C48,48 42,52 38,50 C32,52 28,48 28,42 C26,38 26,35 28,35 Z"
+        fill="#66bb6a" stroke="#2e7d32" stroke-width="1"/>
+  <!-- South America -->
+  <path d="M38,58 C42,55 48,58 50,62 C52,68 50,78 46,85 C42,90 38,88 36,82 C34,76 36,68 38,62 C36,60 36,58 38,58 Z"
+        fill="#66bb6a" stroke="#2e7d32" stroke-width="1"/>
+  <!-- Europe -->
+  <path d="M55,28 C60,26 65,28 68,32 C70,36 68,40 64,42 C60,44 56,42 54,38 C52,34 52,30 55,28 Z"
+        fill="#81c784" stroke="#2e7d32" stroke-width="1"/>
+  <!-- Africa -->
+  <path d="M58,48 C64,46 72,48 76,55 C80,62 78,72 74,80 C70,86 66,84 62,78 C58,72 56,62 58,55 C56,50 56,48 58,48 Z"
+        fill="#81c784" stroke="#2e7d32" stroke-width="1"/>
+  <!-- Asia -->
+  <path d="M72,30 C78,28 86,30 90,36 C94,42 92,50 88,56 C84,60 78,58 74,52 C70,46 70,38 72,32 C70,30 70,30 72,30 Z"
+        fill="#81c784" stroke="#2e7d32" stroke-width="1"/>
+  <!-- Australia -->
+  <path d="M80,68 C86,66 92,70 94,76 C96,82 92,88 86,90 C80,92 76,88 76,82 C76,76 78,70 80,68 Z"
+        fill="#a5d6a7" stroke="#2e7d32" stroke-width="1"/>
+  <!-- Equator line -->
+  <path d="M12,60 L108,60" stroke="#01579b" stroke-width="0.5" stroke-dasharray="3,2" opacity="0.5"/>
+  <!-- Label -->
+  <text x="60" y="115" text-anchor="middle" font-size="11" font-weight="bold" font-family="Arial">Earth</text>
+</svg>

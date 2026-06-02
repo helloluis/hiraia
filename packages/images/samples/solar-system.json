@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "width": 650,
+  "height": 650,
+  "title": "Our Solar System",
+  "caption": "The Sun and planets in our solar system",
+  "elements": [
+    {
+      "type": "figure:solar",
+      "x": 325,
+      "y": 325,
+      "scale": 1.5,
+      "id": "solar-system"
+    },
+    {
+      "type": "text",
+      "x": 325,
+      "y": 325,
+      "anchor": "middle",
+      "baseline": "middle",
+      "content": "SUN",
+      "style": {
+        "fontSize": 14,
+        "fontWeight": "bold"
+      }
+    }
+  ],
+  "style": {
+    "fontFamily": "Comic Sans MS, cursive",
+    "strokeWidth": 1.5,
+    "roughness": 1.0
+  }
+}
