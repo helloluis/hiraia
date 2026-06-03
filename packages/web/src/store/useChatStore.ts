@@ -11,8 +11,11 @@ export interface UiMessage {
   message_feedback?: number | null; // 1 useful | -1 not useful | null
 }
 
-const DEFAULT_SERVER =
-  (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_QVAC_URL) || 'http://localhost:8080';
+// NOTE: `process.env.NEXT_PUBLIC_QVAC_URL` is replaced at build time by Next with
+// a string literal (no runtime `process` access), so do NOT guard it behind
+// `typeof process` — the client build aliases `process` away (bare-runtime fix),
+// which would make such a guard always fail and fall back to localhost.
+const DEFAULT_SERVER = process.env.NEXT_PUBLIC_QVAC_URL || 'http://localhost:8080';
 
 interface ChatState {
   // auth
