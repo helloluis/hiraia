@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 110" width="160" height="110">
+  <!-- Ground shadow line -->
+  <line x1="10" y1="98" x2="150" y2="98" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Ramp wedge: right-triangle with vertical left side, flat bottom, sloped top -->
+  <polygon points="20,20 20,95 145,95" fill="#fbbf24" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- Ball resting near high end of slope (upper-left area of hypotenuse) -->
+  <!-- The slope goes from (20,20) to (145,95). A point ~18% along is roughly (43, 33). Ball sits just above that. -->
+  <!-- Ball center offset perpendicular to slope so it sits ON the slope surface -->
+  <!-- Slope angle: atan((95-20)/(145-20)) = atan(75/125) ~ 31 deg -->
+  <!-- Perpendicular offset (radius=10) upward-left: dx=-sin(31)*10~-5.1, dy=-cos(31)*10~-8.6 -->
+  <!-- Point on slope at t=0.18: x=20+0.18*125=42.5, y=20+0.18*75=33.5 -->
+  <!-- Ball center: 42.5-5.1=37.4, 33.5-8.6=24.9 → round to (37,25) -->
+  <circle cx="37" cy="25" r="10" fill="#e53935" stroke="#1f2937" stroke-width="2.5"/>
+  <!-- Highlight on ball -->
+  <circle cx="33" cy="21" r="3" fill="#ef9a9a" stroke="none"/>
+  <!-- Right-angle marker at bottom-left corner -->
+  <polyline points="20,80 30,80 30,95" fill="none" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

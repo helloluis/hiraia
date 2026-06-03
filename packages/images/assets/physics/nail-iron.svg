@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 150" width="60" height="150">
+
+  <!-- Flat circular head of the nail -->
+  <ellipse cx="30" cy="18" rx="22" ry="7"
+    fill="#9e9ea6"
+    stroke="#1f2937"
+    stroke-width="2.5"
+    stroke-linejoin="round"
+    stroke-linecap="round"/>
+
+  <!-- Top face of head (slightly lighter to show thickness) -->
+  <ellipse cx="30" cy="12" rx="22" ry="7"
+    fill="#bdbdc7"
+    stroke="#1f2937"
+    stroke-width="2.5"
+    stroke-linejoin="round"
+    stroke-linecap="round"/>
+
+  <!-- Side rim of head connecting top and bottom ellipses -->
+  <path d="M 8 12 L 8 18 M 52 12 L 52 18"
+    fill="none"
+    stroke="#1f2937"
+    stroke-width="2.5"
+    stroke-linecap="round"/>
+
+  <!-- Shank (body) of the nail — tapered rectangle -->
+  <path d="M 25 18 L 25 118 L 35 118 L 35 18 Z"
+    fill="#9e9ea6"
+    stroke="#1f2937"
+    stroke-width="2.5"
+    stroke-linejoin="round"
+    stroke-linecap="round"/>
+
+  <!-- Pointed tip of the nail -->
+  <path d="M 25 118 L 30 142 L 35 118 Z"
+    fill="#7d8389"
+    stroke="#1f2937"
+    stroke-width="2.5"
+    stroke-linejoin="round"
+    stroke-linecap="round"/>
+
+</svg>

@@ -1,0 +1,300 @@
+{
+  "version": 1,
+  "width": 700,
+  "height": 450,
+  "title": "States of Water",
+  "caption": "Water changes state at different temperatures",
+  "elements": [
+    {
+      "type": "rect",
+      "x": 50,
+      "y": 80,
+      "w": 180,
+      "h": 280,
+      "rx": 10,
+      "style": {
+        "fill": "#d4edff",
+        "stroke": "#2196f3"
+      },
+      "id": "ice-container"
+    },
+    {
+      "type": "rect",
+      "x": 260,
+      "y": 80,
+      "w": 180,
+      "h": 280,
+      "rx": 10,
+      "style": {
+        "fill": "#e3f2fd",
+        "stroke": "#1976d2"
+      },
+      "id": "water-container"
+    },
+    {
+      "type": "rect",
+      "x": 470,
+      "y": 80,
+      "w": 180,
+      "h": 280,
+      "rx": 10,
+      "style": {
+        "fill": "#fff3e0",
+        "stroke": "#ff9800"
+      },
+      "id": "steam-container"
+    },
+    {
+      "type": "text",
+      "x": 140,
+      "y": 50,
+      "anchor": "middle",
+      "baseline": "middle",
+      "content": "ICE",
+      "style": {
+        "fontSize": 20,
+        "fontWeight": "bold",
+        "fill": "#1565c0"
+      }
+    },
+    {
+      "type": "text",
+      "x": 350,
+      "y": 50,
+      "anchor": "middle",
+      "baseline": "middle",
+      "content": "WATER",
+      "style": {
+        "fontSize": 20,
+        "fontWeight": "bold",
+        "fill": "#0d47a1"
+      }
+    },
+    {
+      "type": "text",
+      "x": 560,
+      "y": 50,
+      "anchor": "middle",
+      "baseline": "middle",
+      "content": "STEAM",
+      "style": {
+        "fontSize": 20,
+        "fontWeight": "bold",
+        "fill": "#e65100"
+      }
+    },
+    {
+      "type": "text",
+      "x": 140,
+      "y": 390,
+      "anchor": "middle",
+      "baseline": "middle",
+      "content": "0°C or below",
+      "style": {
+        "fontSize": 14
+      }
+    },
+    {
+      "type": "text",
+      "x": 350,
+      "y": 390,
+      "anchor": "middle",
+      "baseline": "middle",
+      "content": "1°C to 99°C",
+      "style": {
+        "fontSize": 14
+      }
+    },
+    {
+      "type": "text",
+      "x": 560,
+      "y": 390,
+      "anchor": "middle",
+      "baseline": "middle",
+      "content": "100°C or above",
+      "style": {
+        "fontSize": 14
+      }
+    },
+    {
+      "type": "text",
+      "x": 140,
+      "y": 220,
+      "anchor": "middle",
+      "baseline": "middle",
+      "content": "SOLID",
+      "style": {
+        "fontSize": 16,
+        "fontWeight": "bold"
+      }
+    },
+    {
+      "type": "text",
+      "x": 350,
+      "y": 220,
+      "anchor": "middle",
+      "baseline": "middle",
+      "content": "LIQUID",
+      "style": {
+        "fontSize": 16,
+        "fontWeight": "bold"
+      }
+    },
+    {
+      "type": "text",
+      "x": 560,
+      "y": 220,
+      "anchor": "middle",
+      "baseline": "middle",
+      "content": "GAS",
+      "style": {
+        "fontSize": 16,
+        "fontWeight": "bold"
+      }
+    },
+    {
+      "type": "rect",
+      "x": 90,
+      "y": 250,
+      "w": 30,
+      "h": 30,
+      "style": {
+        "fill": "#bbdefb",
+        "stroke": "#1976d2"
+      }
+    },
+    {
+      "type": "rect",
+      "x": 125,
+      "y": 250,
+      "w": 30,
+      "h": 30,
+      "style": {
+        "fill": "#bbdefb",
+        "stroke": "#1976d2"
+      }
+    },
+    {
+      "type": "rect",
+      "x": 160,
+      "y": 250,
+      "w": 30,
+      "h": 30,
+      "style": {
+        "fill": "#bbdefb",
+        "stroke": "#1976d2"
+      }
+    },
+    {
+      "type": "circle",
+      "cx": 300,
+      "cy": 280,
+      "r": 8,
+      "style": {
+        "fill": "#64b5f6",
+        "stroke": "#1565c0"
+      }
+    },
+    {
+      "type": "circle",
+      "cx": 330,
+      "cy": 300,
+      "r": 8,
+      "style": {
+        "fill": "#64b5f6",
+        "stroke": "#1565c0"
+      }
+    },
+    {
+      "type": "circle",
+      "cx": 360,
+      "cy": 270,
+      "r": 8,
+      "style": {
+        "fill": "#64b5f6",
+        "stroke": "#1565c0"
+      }
+    },
+    {
+      "type": "circle",
+      "cx": 390,
+      "cy": 310,
+      "r": 8,
+      "style": {
+        "fill": "#64b5f6",
+        "stroke": "#1565c0"
+      }
+    },
+    {
+      "type": "circle",
+      "cx": 510,
+      "cy": 180,
+      "r": 6,
+      "style": {
+        "fill": "#ffcc80",
+        "stroke": "#f57c00",
+        "opacity": 0.6
+      }
+    },
+    {
+      "type": "circle",
+      "cx": 540,
+      "cy": 150,
+      "r": 6,
+      "style": {
+        "fill": "#ffcc80",
+        "stroke": "#f57c00",
+        "opacity": 0.6
+      }
+    },
+    {
+      "type": "circle",
+      "cx": 570,
+      "cy": 200,
+      "r": 6,
+      "style": {
+        "fill": "#ffcc80",
+        "stroke": "#f57c00",
+        "opacity": 0.6
+      }
+    },
+    {
+      "type": "circle",
+      "cx": 600,
+      "cy": 170,
+      "r": 6,
+      "style": {
+        "fill": "#ffcc80",
+        "stroke": "#f57c00",
+        "opacity": 0.6
+      }
+    },
+    {
+      "type": "circle",
+      "cx": 520,
+      "cy": 240,
+      "r": 6,
+      "style": {
+        "fill": "#ffcc80",
+        "stroke": "#f57c00",
+        "opacity": 0.6
+      }
+    },
+    {
+      "type": "circle",
+      "cx": 580,
+      "cy": 260,
+      "r": 6,
+      "style": {
+        "fill": "#ffcc80",
+        "stroke": "#f57c00",
+        "opacity": 0.6
+      }
+    }
+  ],
+  "style": {
+    "fontFamily": "Comic Sans MS, cursive",
+    "strokeWidth": 2,
+    "roughness": 1.2
+  }
+}

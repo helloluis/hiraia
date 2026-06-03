@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 140" width="100" height="140">
+  <!-- Glass body outline (trapezoid: narrower at bottom, wider at top) -->
+  <!-- Glass rim top: x from 18 to 82, y=12 -->
+  <!-- Glass base bottom: x from 28 to 72, y=128 -->
+
+  <!-- Water fill (bottom half of the glass interior) -->
+  <!-- Water region: from y=70 (midpoint) to y=126, clipped to glass inner shape -->
+  <!-- Inner glass: top at y=14, x 20-80; bottom at y=126, x 30-70 -->
+  <!-- Water surface at y=70 (halfway down inner height: 14 to 126 = 112 tall, half = 56, so 14+56=70) -->
+  <polygon
+    points="30,70 70,70 69,126 31,126"
+    fill="#b3e5fc"
+    stroke="none"
+  />
+
+  <!-- Water surface wave (subtle flat line with slight curve via path) -->
+  <path
+    d="M30,70 Q40,66 50,70 Q60,74 70,70"
+    fill="#b3e5fc"
+    stroke="#4fc3f7"
+    stroke-width="1.5"
+    stroke-linecap="round"
+  />
+
+  <!-- Glass body (trapezoid outline) — drawn after water so outline is on top -->
+  <polygon
+    points="18,12 82,12 71,128 29,128"
+    fill="none"
+    stroke="#1f2937"
+    stroke-width="2.5"
+    stroke-linejoin="round"
+  />
+
+  <!-- Glass rim (top horizontal line, slightly thicker) -->
+  <line
+    x1="18" y1="12" x2="82" y2="12"
+    stroke="#1f2937"
+    stroke-width="2.5"
+    stroke-linecap="round"
+  />
+
+  <!-- Glass base flat bottom -->
+  <line
+    x1="29" y1="128" x2="71" y2="128"
+    stroke="#1f2937"
+    stroke-width="2.5"
+    stroke-linecap="round"
+  />
+
+  <!-- Highlight on glass left side (thin white stripe for glass effect) -->
+  <line
+    x1="26" y1="20" x2="32" y2="118"
+    stroke="#ffffff"
+    stroke-width="3"
+    stroke-linecap="round"
+    opacity="0.6"
+  />
+
+  <!-- Small secondary highlight -->
+  <line
+    x1="35" y1="20" x2="39" y2="60"
+    stroke="#ffffff"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    opacity="0.4"
+  />
+</svg>

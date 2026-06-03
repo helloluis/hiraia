@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 190" width="230" height="190">
+  <!-- spinal cord (cross-section) -->
+  <ellipse cx="180" cy="95" rx="34" ry="42" fill="#f3a6b5" stroke="#1f2937" stroke-width="2.4"/>
+  <path d="M180 60 C172 78 172 112 180 130 C188 112 188 78 180 60 Z" fill="#e98aa0" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M168 80 C176 92 176 98 168 110 M192 80 C184 92 184 98 192 110" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <line x1="180" y1="55" x2="180" y2="40" stroke="#9aa0a6" stroke-width="2" stroke-linecap="round"/>
+  <line x1="180" y1="135" x2="180" y2="150" stroke="#9aa0a6" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- flame (stimulus) -->
+  <path d="M34 150 C24 138 28 126 34 120 C36 128 42 126 42 118 C50 126 50 140 44 150 Z" fill="#fbbf24" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M36 150 C30 142 33 134 38 130 C39 137 44 134 43 142 C45 147 42 150 39 151 Z" fill="#e53935" stroke="none"/>
+
+  <!-- hand -->
+  <path d="M40 60 C36 56 36 50 41 49 C44 48 46 51 47 54 L47 38 C47 33 53 33 53 38 L53 53 L55 36 C55 31 61 31 61 36 L61 53 L63 38 C63 33 69 33 69 38 L69 55 L71 44 C71 39 77 40 77 45 L78 66 C78 80 70 90 56 90 C46 90 40 84 36 76 C33 70 34 64 40 60 Z" fill="#f3a6b5" stroke="#1f2937" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- arm muscle (motor target) -->
+  <ellipse cx="62" cy="150" rx="30" ry="16" fill="#e98aa0" stroke="#1f2937" stroke-width="2.4"/>
+  <path d="M40 150 C50 142 74 142 84 150" fill="none" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+
+  <!-- sensory nerve (yellow) hand -> spinal cord -->
+  <path d="M72 78 C110 70 130 78 146 90" fill="none" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/>
+  <path d="M141 84 L150 92 L139 95 Z" fill="#fbbf24" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+
+  <!-- motor nerve (blue) spinal cord -> arm muscle -->
+  <path d="M150 108 C128 130 100 140 84 144" fill="none" stroke="#1565c0" stroke-width="4" stroke-linecap="round"/>
+  <path d="M92 138 L83 145 L92 150 Z" fill="#1565c0" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+
+  <!-- nerve cell bodies along sensory path -->
+  <circle cx="108" cy="74" r="4.5" fill="#8e44ad" stroke="#1f2937" stroke-width="1.6"/>
+  <circle cx="120" cy="132" r="4.5" fill="#8e44ad" stroke="#1f2937" stroke-width="1.6"/>
+</svg>

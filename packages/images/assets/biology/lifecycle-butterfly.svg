@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- clockwise connecting arrows around the loop -->
+  <path d="M 128 44 A 70 70 0 0 1 160 100" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 162 92 L 161 102 L 153 96 Z" fill="#1f2937" stroke="#1f2937" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M 156 128 A 70 70 0 0 1 100 170" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 108 168 L 99 171 L 103 162 Z" fill="#1f2937" stroke="#1f2937" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M 72 156 A 70 70 0 0 1 40 100" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 38 108 L 39 99 L 47 105 Z" fill="#1f2937" stroke="#1f2937" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M 44 72 A 70 70 0 0 1 100 30" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 92 32 L 101 29 L 97 38 Z" fill="#1f2937" stroke="#1f2937" stroke-width="2.4" stroke-linejoin="round"/>
+
+  <!-- Stage 1: eggs on a leaf (top) -->
+  <g>
+    <path d="M 100 8 C 84 10 76 22 78 34 C 92 36 108 30 112 14 C 108 10 104 8 100 8 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M 110 13 C 100 19 92 27 82 33" fill="none" stroke="#2e7d32" stroke-width="1.6" stroke-linecap="round"/>
+    <ellipse cx="91" cy="24" rx="2.6" ry="3.4" fill="#fbbf24" stroke="#1f2937" stroke-width="1.4"/>
+    <ellipse cx="98" cy="22" rx="2.6" ry="3.4" fill="#fbbf24" stroke="#1f2937" stroke-width="1.4"/>
+    <ellipse cx="95" cy="29" rx="2.6" ry="3.4" fill="#fbbf24" stroke="#1f2937" stroke-width="1.4"/>
+  </g>
+
+  <!-- Stage 2: green caterpillar (right) -->
+  <g>
+    <circle cx="172" cy="100" r="9" fill="#7cb342" stroke="#1f2937" stroke-width="2.2"/>
+    <circle cx="183" cy="100" r="9" fill="#2e7d32" stroke="#1f2937" stroke-width="2.2"/>
+    <circle cx="194" cy="100" r="9" fill="#7cb342" stroke="#1f2937" stroke-width="2.2"/>
+    <circle cx="160" cy="100" r="9" fill="#2e7d32" stroke="#1f2937" stroke-width="2.2"/>
+    <circle cx="157" cy="96" r="1.5" fill="#1f2937"/>
+    <path d="M 156 91 L 154 86" fill="none" stroke="#1f2937" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M 159 91 L 159 85" fill="none" stroke="#1f2937" stroke-width="1.6" stroke-linecap="round"/>
+  </g>
+
+  <!-- Stage 3: chrysalis hanging from twig (bottom) -->
+  <g>
+    <path d="M 80 178 L 120 178" fill="none" stroke="#5d4632" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 100 178 L 100 184" fill="none" stroke="#5d4632" stroke-width="2" stroke-linecap="round"/>
+    <path d="M 100 184 C 88 184 86 196 92 204 C 96 210 104 210 108 204 C 114 196 112 184 100 184 Z" fill="#b45309" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M 100 188 L 96 200 M 100 188 L 104 200 M 95 192 L 105 192" fill="none" stroke="#5d4632" stroke-width="1.4" stroke-linecap="round"/>
+  </g>
+
+  <!-- Stage 4: adult butterfly (left) -->
+  <g>
+    <ellipse cx="20" cy="100" rx="3" ry="9" fill="#5d4632" stroke="#1f2937" stroke-width="2"/>
+    <path d="M 20 93 L 15 86 M 20 93 L 25 86" fill="none" stroke="#1f2937" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M 18 94 C 4 80 0 90 6 98 C 10 102 16 100 18 96 Z" fill="#fbbf24" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M 22 94 C 36 80 40 90 34 98 C 30 102 24 100 22 96 Z" fill="#fbbf24" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M 18 106 C 6 118 2 110 7 103 C 11 99 16 102 18 106 Z" fill="#e53935" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M 22 106 C 34 118 38 110 33 103 C 29 99 24 102 22 106 Z" fill="#e53935" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+    <circle cx="10" cy="92" r="1.6" fill="#1f2937"/>
+    <circle cx="30" cy="92" r="1.6" fill="#1f2937"/>
+  </g>
+</svg>

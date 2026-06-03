@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 150" width="100" height="150">
+  <!-- Handle -->
+  <rect x="43" y="108" width="14" height="36" rx="7" ry="7" fill="#8d6e4f" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Handle grip bands -->
+  <rect x="43" y="118" width="14" height="3" rx="1.5" fill="#5d4632" stroke="none"/>
+  <rect x="43" y="126" width="14" height="3" rx="1.5" fill="#5d4632" stroke="none"/>
+  <rect x="43" y="134" width="14" height="3" rx="1.5" fill="#5d4632" stroke="none"/>
+
+  <!-- Mirror frame (outer oval) -->
+  <ellipse cx="50" cy="58" rx="42" ry="52" fill="#8d6e4f" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- Reflective surface (inner oval) -->
+  <ellipse cx="50" cy="58" rx="35" ry="45" fill="#b3e5fc" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Diagonal shine stripe (lighter pale blue) -->
+  <path d="M28,22 C32,18 38,16 42,18 L72,58 C68,62 62,64 58,62 Z" fill="#e1f5fe" stroke="none"/>
+
+  <!-- Smaller secondary shine -->
+  <path d="M52,18 C55,16 59,16 61,18 L68,30 C65,32 61,32 59,30 Z" fill="#ffffff" stroke="none" opacity="0.6"/>
+
+  <!-- Frame inner edge highlight ring -->
+  <ellipse cx="50" cy="58" rx="35" ry="45" fill="none" stroke="#5d4632" stroke-width="1.5" stroke-linejoin="round"/>
+
+  <!-- Frame outer outline (redraw on top) -->
+  <ellipse cx="50" cy="58" rx="42" ry="52" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+</svg>

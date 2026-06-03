@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Seed (top) -->
+  <g>
+    <ellipse cx="100" cy="40" rx="20" ry="14" fill="#8d6e4f" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M100 28 Q92 40 100 52" fill="none" stroke="#5d4632" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+  </g>
+
+  <!-- Seedling / sprout (right) -->
+  <g>
+    <path d="M165 95 L165 80" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M165 86 Q151 80 148 70 Q160 72 165 86 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M165 86 Q179 80 182 70 Q170 72 165 86 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M150 110 Q165 100 180 110" fill="#5d4632" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+  </g>
+
+  <!-- Young leafy plant (bottom) -->
+  <g>
+    <path d="M100 175 L100 140" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M100 152 Q82 146 76 134 Q94 134 100 152 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M100 152 Q118 146 124 134 Q106 134 100 152 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M100 165 Q86 160 81 150 Q96 150 100 165 Z" fill="#2e7d32" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M100 165 Q114 160 119 150 Q104 150 100 165 Z" fill="#2e7d32" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+  </g>
+
+  <!-- Mature flowering plant (left) -->
+  <g>
+    <path d="M35 110 L35 75" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M35 95 Q20 90 15 80 Q31 80 35 95 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M35 100 Q50 95 55 85 Q39 85 35 100 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <!-- flower petals -->
+    <circle cx="35" cy="64" r="7" fill="#f3a6b5" stroke="#1f2937" stroke-width="2.3"/>
+    <circle cx="24" cy="68" r="7" fill="#f3a6b5" stroke="#1f2937" stroke-width="2.3"/>
+    <circle cx="46" cy="68" r="7" fill="#f3a6b5" stroke="#1f2937" stroke-width="2.3"/>
+    <circle cx="28" cy="56" r="7" fill="#f3a6b5" stroke="#1f2937" stroke-width="2.3"/>
+    <circle cx="42" cy="56" r="7" fill="#f3a6b5" stroke="#1f2937" stroke-width="2.3"/>
+    <circle cx="35" cy="63" r="6" fill="#fbbf24" stroke="#1f2937" stroke-width="2.3"/>
+    <!-- ground -->
+    <path d="M20 110 Q35 100 50 110" fill="#5d4632" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+  </g>
+
+  <!-- Circular loop arrows (clockwise: seed -> seedling -> young -> mature -> seed) -->
+  <!-- top to right -->
+  <path d="M130 47 Q156 56 165 70" fill="none" stroke="#37536b" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M165 70 L159 71 M165 70 L165 77" fill="none" stroke="#37536b" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- right to bottom -->
+  <path d="M170 120 Q160 150 132 162" fill="none" stroke="#37536b" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M132 162 L138 161 M132 162 L131 156" fill="none" stroke="#37536b" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- bottom to left -->
+  <path d="M68 162 Q40 150 30 122" fill="none" stroke="#37536b" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M30 122 L29 128 M30 122 L36 123" fill="none" stroke="#37536b" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- left to top -->
+  <path d="M40 56 Q56 38 72 36" fill="none" stroke="#37536b" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M72 36 L66 34 M72 36 L70 42" fill="none" stroke="#37536b" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

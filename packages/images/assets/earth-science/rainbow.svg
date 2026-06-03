@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" width="160" height="120">
+  <!-- Rainbow center: cx=80, cy=110 -->
+  <!-- 6 bands, each 7px wide: outermost r=96 (red), innermost edge r=54 (violet) -->
+
+  <!-- Red band: r_outer=96, r_inner=89 -->
+  <path d="M -16 110 A 96 96 0 0 1 176 110 L 169 110 A 89 89 0 0 0 -9 110 Z"
+        fill="#e53935" stroke="none"/>
+  <!-- Orange band: r_outer=89, r_inner=82 -->
+  <path d="M -9 110 A 89 89 0 0 1 169 110 L 162 110 A 82 82 0 0 0 -2 110 Z"
+        fill="#fb8c00" stroke="none"/>
+  <!-- Yellow band: r_outer=82, r_inner=75 -->
+  <path d="M -2 110 A 82 82 0 0 1 162 110 L 155 110 A 75 75 0 0 0 5 110 Z"
+        fill="#fdd835" stroke="none"/>
+  <!-- Green band: r_outer=75, r_inner=68 -->
+  <path d="M 5 110 A 75 75 0 0 1 155 110 L 148 110 A 68 68 0 0 0 12 110 Z"
+        fill="#7cb342" stroke="none"/>
+  <!-- Blue band: r_outer=68, r_inner=61 -->
+  <path d="M 12 110 A 68 68 0 0 1 148 110 L 141 110 A 61 61 0 0 0 19 110 Z"
+        fill="#4fc3f7" stroke="none"/>
+  <!-- Violet band: r_outer=61, r_inner=54 -->
+  <path d="M 19 110 A 61 61 0 0 1 141 110 L 134 110 A 54 54 0 0 0 26 110 Z"
+        fill="#7b1fa2" stroke="none"/>
+
+  <!-- Outer edge outline (top of red) -->
+  <path d="M -16 110 A 96 96 0 0 1 176 110"
+        fill="none" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- Inner edge outline (bottom of violet) -->
+  <path d="M 26 110 A 54 54 0 0 1 134 110"
+        fill="none" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- White rectangle to hide the bottom half of arcs and ground -->
+  <rect x="0" y="110" width="160" height="10" fill="#ffffff" stroke="none"/>
+
+  <!-- Small cloud at left end of rainbow -->
+  <path d="M 4 106 Q 3 90 13 90 Q 14 80 24 79 Q 33 77 37 86 Q 45 86 46 95 Q 49 108 36 108 L 13 108 Q 4 108 4 106 Z"
+        fill="#ffffff" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Green ground strip -->
+  <rect x="0" y="110" width="160" height="10" fill="#7cb342" stroke="none"/>
+  <!-- Ground top edge line -->
+  <line x1="0" y1="110" x2="160" y2="110" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+</svg>

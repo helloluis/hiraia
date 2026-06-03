@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 110" width="240" height="110">
+  <!-- 1. CELL (smallest) -->
+  <ellipse cx="20" cy="78" rx="14" ry="12" fill="#7cb342" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <circle cx="20" cy="78" r="5" fill="#8e44ad" stroke="#1f2937" stroke-width="2"/>
+  <ellipse cx="13" cy="74" rx="2.4" ry="3.4" fill="#fbbf24" stroke="#1f2937" stroke-width="1.4" transform="rotate(-25 13 74)"/>
+  <ellipse cx="26" cy="83" rx="2.4" ry="3.4" fill="#4fc3f7" stroke="#1f2937" stroke-width="1.4" transform="rotate(30 26 83)"/>
+
+  <!-- arrow 1 -->
+  <line x1="37" y1="74" x2="50" y2="68" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M50 68 L44 67.6 L46.3 72.7 Z" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
+
+  <!-- 2. TISSUE (group of cells) -->
+  <g stroke="#1f2937" stroke-width="2" stroke-linejoin="round">
+    <ellipse cx="62" cy="62" rx="7.5" ry="6.5" fill="#7cb342"/>
+    <ellipse cx="76" cy="60" rx="7.5" ry="6.5" fill="#9ccc65"/>
+    <ellipse cx="69" cy="73" rx="7.5" ry="6.5" fill="#9ccc65"/>
+    <ellipse cx="83" cy="72" rx="7.5" ry="6.5" fill="#7cb342"/>
+    <circle cx="62" cy="62" r="2.6" fill="#8e44ad"/>
+    <circle cx="76" cy="60" r="2.6" fill="#8e44ad"/>
+    <circle cx="69" cy="73" r="2.6" fill="#8e44ad"/>
+    <circle cx="83" cy="72" r="2.6" fill="#8e44ad"/>
+  </g>
+
+  <!-- arrow 2 -->
+  <line x1="93" y1="62" x2="106" y2="56" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M106 56 L100 55.6 L102.3 60.7 Z" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
+
+  <!-- 3. ORGAN (heart) -->
+  <path d="M118 58
+           C118 50 128 48 130 56
+           C132 48 142 50 142 58
+           C142 67 130 76 130 76
+           C130 76 118 67 118 58 Z"
+        fill="#e53935" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M125 56 C129 58 132 58 136 55" fill="none" stroke="#b71c1c" stroke-width="1.8" stroke-linecap="round"/>
+
+  <!-- arrow 3 -->
+  <line x1="150" y1="56" x2="163" y2="50" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M163 50 L157 49.6 L159.3 54.7 Z" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
+
+  <!-- 4. ORGAN SYSTEM (torso outline with organs) -->
+  <path d="M176 36
+           C176 30 196 30 196 36
+           L194 66 C194 72 178 72 178 66 Z"
+        fill="#f3a6b5" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- lungs -->
+  <path d="M183 44 C180 46 180 54 183 56 C185 54 185 47 184 44 Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+  <path d="M189 44 C192 46 192 54 189 56 C187 54 187 47 188 44 Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+  <!-- heart -->
+  <path d="M183 58 C183 55 186 55 186.5 57 C187 55 190 55 190 58 C190 61 186.5 64 186.5 64 C186.5 64 183 61 183 58 Z"
+        fill="#e53935" stroke="#1f2937" stroke-width="1.4" stroke-linejoin="round"/>
+
+  <!-- arrow 4 -->
+  <line x1="202" y1="48" x2="214" y2="42" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M214 42 L208 41.6 L210.3 46.7 Z" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
+
+  <!-- 5. ORGANISM (whole person, largest) -->
+  <circle cx="225" cy="18" r="8.5" fill="#f3a6b5" stroke="#1f2937" stroke-width="2.4"/>
+  <path d="M225 26.5 L225 56" stroke="#1565c0" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M225 33 L212 45 M225 33 L238 45" stroke="#1565c0" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M225 56 L215 80 M225 56 L235 80" stroke="#1565c0" stroke-width="3" stroke-linecap="round" fill="none"/>
+</svg>

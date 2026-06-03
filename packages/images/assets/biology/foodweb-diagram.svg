@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 220" width="240" height="220">
+  <rect x="0" y="0" width="240" height="220" fill="#ffffff"/>
+
+  <!-- ARROWS (drawn first so organisms sit on top) -->
+  <!-- plant -> insect -->
+  <line x1="56" y1="178" x2="44" y2="76" stroke="#9aa0a6" stroke-width="2.4" stroke-linecap="round"/>
+  <polygon points="44,76 40,84 49,83" fill="#9aa0a6"/>
+  <!-- plant -> bird -->
+  <line x1="68" y1="174" x2="186" y2="74" stroke="#9aa0a6" stroke-width="2.4" stroke-linecap="round"/>
+  <polygon points="186,74 178,76 183,83" fill="#9aa0a6"/>
+  <!-- insect -> frog -->
+  <line x1="52" y1="74" x2="118" y2="124" stroke="#9aa0a6" stroke-width="2.4" stroke-linecap="round"/>
+  <polygon points="118,124 110,121 111,130" fill="#9aa0a6"/>
+  <!-- insect -> bird -->
+  <line x1="58" y1="62" x2="178" y2="64" stroke="#9aa0a6" stroke-width="2.4" stroke-linecap="round"/>
+  <polygon points="178,64 170,60 170,69" fill="#9aa0a6"/>
+  <!-- frog -> snake -->
+  <line x1="138" y1="132" x2="196" y2="166" stroke="#9aa0a6" stroke-width="2.4" stroke-linecap="round"/>
+  <polygon points="196,166 188,163 189,172" fill="#9aa0a6"/>
+  <!-- bird -> snake -->
+  <line x1="194" y1="78" x2="204" y2="150" stroke="#9aa0a6" stroke-width="2.4" stroke-linecap="round"/>
+  <polygon points="204,150 199,143 195,150" fill="#9aa0a6"/>
+  <!-- frog -> bird (frog eaten by bird too / crisscross) -->
+  <line x1="124" y1="120" x2="182" y2="72" stroke="#9aa0a6" stroke-width="2.4" stroke-linecap="round"/>
+  <polygon points="182,72 175,76 180,81" fill="#9aa0a6"/>
+
+  <!-- PLANT (bottom-left) -->
+  <line x1="62" y1="202" x2="62" y2="176" stroke="#2e7d32" stroke-width="3" stroke-linecap="round"/>
+  <path d="M62 188 C50 184 46 174 50 168 C58 172 62 180 62 188 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M62 184 C74 180 78 170 74 164 C66 168 62 176 62 184 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M62 196 C52 194 48 186 51 181 C58 184 62 190 62 196 Z" fill="#2e7d32" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <ellipse cx="62" cy="206" rx="22" ry="6" fill="#8d6e4f" stroke="#1f2937" stroke-width="2"/>
+
+  <!-- INSECT (top-left) -->
+  <ellipse cx="44" cy="50" rx="13" ry="9" fill="#e53935" stroke="#1f2937" stroke-width="2"/>
+  <line x1="44" y1="41" x2="44" y2="59" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="44" cy="38" r="5" fill="#1f2937"/>
+  <circle cx="38" cy="48" r="2.2" fill="#1f2937"/>
+  <circle cx="50" cy="48" r="2.2" fill="#1f2937"/>
+  <circle cx="38" cy="54" r="2.2" fill="#1f2937"/>
+  <circle cx="50" cy="54" r="2.2" fill="#1f2937"/>
+  <line x1="41" y1="34" x2="36" y2="29" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <line x1="47" y1="34" x2="52" y2="29" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- FROG (center) -->
+  <ellipse cx="116" cy="118" rx="22" ry="16" fill="#7cb342" stroke="#1f2937" stroke-width="2.2"/>
+  <circle cx="106" cy="104" r="7" fill="#7cb342" stroke="#1f2937" stroke-width="2.2"/>
+  <circle cx="126" cy="104" r="7" fill="#7cb342" stroke="#1f2937" stroke-width="2.2"/>
+  <circle cx="106" cy="103" r="2.6" fill="#1f2937"/>
+  <circle cx="126" cy="103" r="2.6" fill="#1f2937"/>
+  <path d="M104 122 Q116 130 128 122" fill="none" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M97 130 L90 138 L98 136" fill="#2e7d32" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M135 130 L142 138 L134 136" fill="#2e7d32" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- BIRD (top-right) -->
+  <ellipse cx="190" cy="56" rx="17" ry="13" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.2"/>
+  <circle cx="204" cy="46" r="9" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.2"/>
+  <circle cx="206" cy="44" r="2.4" fill="#1f2937"/>
+  <polygon points="212,46 222,48 212,52" fill="#fbbf24" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+  <path d="M180 54 Q170 48 174 62 Q182 60 186 58 Z" fill="#1565c0" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M188 68 L184 78 M196 68 L194 78" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+
+  <!-- SNAKE (bottom-right) -->
+  <path d="M188 200 C176 192 200 182 210 176 C220 170 200 162 210 156 C218 151 212 144 206 144" fill="none" stroke="#1f2937" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M188 200 C176 192 200 182 210 176 C220 170 200 162 210 156 C218 151 212 144 206 144" fill="none" stroke="#ef6c00" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="206" cy="143" r="6" fill="#ef6c00" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="207" cy="141" r="1.8" fill="#1f2937"/>
+  <line x1="201" y1="141" x2="195" y2="139" stroke="#e53935" stroke-width="1.8" stroke-linecap="round"/>
+</svg>

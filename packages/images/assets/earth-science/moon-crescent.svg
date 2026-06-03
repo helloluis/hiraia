@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <!--
+    Crescent moon (opens to the right / classic crescent).
+    Outer circle: center (60,60) r=50.
+    Inner circle: center (75,60) r=40.
+    Intersection tips: (97.5, 26.93) and (97.5, 93.07).
+
+    Path:
+      Move to top tip.
+      Large arc on outer circle (sweep counterclockwise, left side) to bottom tip.
+      Large arc on inner circle (sweep clockwise, left side) back to top tip.
+  -->
+  <path
+    d="M 97.5,26.93
+       A 50,50 0 1,0 97.5,93.07
+       A 40,40 0 1,1 97.5,26.93
+       Z"
+    fill="#fef08a"
+    stroke="#1f2937"
+    stroke-width="2.5"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+  />
+</svg>

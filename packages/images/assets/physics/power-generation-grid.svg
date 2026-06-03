@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150" width="300" height="150">
+  <!-- ground line -->
+  <line x1="0" y1="132" x2="300" y2="132" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- POWER PLANT (left) -->
+  <rect x="10" y="78" width="48" height="54" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- two cooling towers -->
+  <path d="M16 78 L20 46 Q28 44 36 46 L40 78 Z" fill="#cfd4d8" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M38 78 L42 52 Q49 50 56 52 L60 78 Z" fill="#cfd4d8" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- steam puffs -->
+  <circle cx="26" cy="38" r="6" fill="#eceff1" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="34" cy="32" r="5" fill="#eceff1" stroke="#1f2937" stroke-width="2"/>
+  <!-- plant windows -->
+  <rect x="18" y="92" width="9" height="9" fill="#fbbf24" stroke="#1f2937" stroke-width="1.5"/>
+  <rect x="32" y="92" width="9" height="9" fill="#fbbf24" stroke="#1f2937" stroke-width="1.5"/>
+  <rect x="18" y="108" width="9" height="9" fill="#fbbf24" stroke="#1f2937" stroke-width="1.5"/>
+  <rect x="32" y="108" width="9" height="9" fill="#fbbf24" stroke="#1f2937" stroke-width="1.5"/>
+
+  <!-- TRANSMISSION TOWER 1 -->
+  <line x1="92" y1="132" x2="100" y2="40" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="116" y1="132" x2="108" y2="40" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="96" y1="98" x2="112" y2="98" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="93" y1="78" x2="115" y2="78" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="95" y1="62" x2="113" y2="62" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- cross arms -->
+  <line x1="86" y1="56" x2="122" y2="56" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="90" y1="46" x2="118" y2="46" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- top -->
+  <line x1="100" y1="40" x2="108" y2="40" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- TRANSMISSION TOWER 2 -->
+  <line x1="160" y1="132" x2="168" y2="40" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="184" y1="132" x2="176" y2="40" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="164" y1="98" x2="180" y2="98" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="161" y1="78" x2="183" y2="78" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="163" y1="62" x2="181" y2="62" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="154" y1="56" x2="190" y2="56" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="158" y1="46" x2="186" y2="46" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="168" y1="40" x2="176" y2="40" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- POWER LINES (cables) plant -> tower1 -> tower2 -> pole -->
+  <path d="M58 84 Q75 92 90 56" fill="none" stroke="#b87333" stroke-width="2" stroke-linecap="round"/>
+  <path d="M122 56 Q142 70 154 56" fill="none" stroke="#b87333" stroke-width="2" stroke-linecap="round"/>
+  <path d="M190 56 Q210 72 232 70" fill="none" stroke="#b87333" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- TRANSFORMER ON A POLE -->
+  <line x1="234" y1="132" x2="234" y2="60" stroke="#b87333" stroke-width="3" stroke-linecap="round"/>
+  <!-- cross arm -->
+  <line x1="222" y1="66" x2="246" y2="66" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- transformer can -->
+  <rect x="226" y="74" width="16" height="22" rx="3" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <line x1="229" y1="80" x2="239" y2="80" stroke="#1f2937" stroke-width="1.5"/>
+  <line x1="229" y1="86" x2="239" y2="86" stroke="#1f2937" stroke-width="1.5"/>
+  <!-- insulators -->
+  <circle cx="224" cy="66" r="2.5" fill="#fbbf24" stroke="#1f2937" stroke-width="1.5"/>
+  <circle cx="244" cy="66" r="2.5" fill="#fbbf24" stroke="#1f2937" stroke-width="1.5"/>
+
+  <!-- service line pole -> house -->
+  <path d="M242 78 Q258 86 270 96" fill="none" stroke="#b87333" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- HOUSE (right) -->
+  <rect x="262" y="98" width="34" height="34" fill="#7cb342" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M258 98 L279 80 L300 98 Z" fill="#ef6c00" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- door -->
+  <rect x="274" y="114" width="10" height="18" fill="#b87333" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <!-- window glowing -->
+  <rect x="266" y="104" width="8" height="8" fill="#fbbf24" stroke="#1f2937" stroke-width="1.5"/>
+  <rect x="286" y="104" width="8" height="8" fill="#fbbf24" stroke="#1f2937" stroke-width="1.5"/>
+</svg>

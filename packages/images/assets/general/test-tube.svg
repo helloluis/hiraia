@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 140" width="60" height="140">
+  <!-- Tube body (glass walls) -->
+  <path d="M18 10 L18 105 Q18 128 30 128 Q42 128 42 105 L42 10 Z"
+        fill="#e0f7fa" stroke="#1f2937" stroke-width="2.2"
+        stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Liquid fill inside tube -->
+  <path d="M18.8 80 L18.8 105 Q18.8 127 30 127 Q41.2 127 41.2 105 L41.2 80 Z"
+        fill="#4fc3f7" stroke="none"/>
+  <!-- Slight lighter highlight on liquid surface -->
+  <rect x="18.8" y="78" width="22.4" height="4"
+        fill="#4fc3f7" stroke="none"/>
+  <!-- Liquid surface line -->
+  <line x1="18.8" y1="80" x2="41.2" y2="80"
+        stroke="#37536b" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Tube opening rim at top -->
+  <rect x="15" y="8" width="30" height="6" rx="2"
+        fill="#b0bec5" stroke="#1f2937" stroke-width="2.2"
+        stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

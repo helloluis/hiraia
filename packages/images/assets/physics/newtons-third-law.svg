@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 230" width="190" height="230">
+  <!-- Rocket body -->
+  <path d="M95 22 C112 38 118 62 118 92 L118 138 L72 138 L72 92 C72 62 78 38 95 22 Z" fill="#f5f5f5" stroke="#1f2937" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Nose cone tip accent -->
+  <path d="M95 22 C103 30 108 42 110 56 L80 56 C82 42 87 30 95 22 Z" fill="#e53935" stroke="#1f2937" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Window -->
+  <circle cx="95" cy="82" r="11" fill="#4fc3f7" stroke="#1f2937" stroke-width="3"/>
+  <!-- Left fin -->
+  <path d="M72 110 L52 140 L72 138 Z" fill="#e53935" stroke="#1f2937" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Right fin -->
+  <path d="M118 110 L138 140 L118 138 Z" fill="#e53935" stroke="#1f2937" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Nozzle -->
+  <path d="M80 138 L110 138 L116 150 L74 150 Z" fill="#9aa0a6" stroke="#1f2937" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- Exhaust gas clouds -->
+  <circle cx="80" cy="166" r="10" fill="#fbbf24" stroke="#1f2937" stroke-width="2.2"/>
+  <circle cx="100" cy="170" r="12" fill="#fbbf24" stroke="#1f2937" stroke-width="2.2"/>
+  <circle cx="89" cy="184" r="9" fill="#fbbf24" stroke="#1f2937" stroke-width="2.2"/>
+  <circle cx="105" cy="190" r="8" fill="#fbbf24" stroke="#1f2937" stroke-width="2.2"/>
+
+  <!-- Upward thrust arrow (reaction on rocket) -->
+  <line x1="150" y1="120" x2="150" y2="44" stroke="#e53935" stroke-width="6" stroke-linecap="round"/>
+  <path d="M150 32 L141 52 L159 52 Z" fill="#e53935" stroke="#e53935" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Downward exhaust arrow (action) -->
+  <line x1="40" y1="120" x2="40" y2="196" stroke="#e53935" stroke-width="6" stroke-linecap="round"/>
+  <path d="M40 208 L31 188 L49 188 Z" fill="#e53935" stroke="#e53935" stroke-width="2" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,316 @@
+{
+  "version": 1,
+  "width": 700,
+  "height": 500,
+  "title": "Photosynthesis",
+  "caption": "Plants use sunlight, water, and carbon dioxide to make glucose and oxygen",
+  "elements": [
+    {
+      "type": "circle",
+      "cx": 100,
+      "cy": 80,
+      "r": 45,
+      "style": {
+        "fill": "#fff59d",
+        "stroke": "#fbc02d"
+      },
+      "id": "sun"
+    },
+    {
+      "type": "line",
+      "from": [65, 45],
+      "to": [50, 30],
+      "style": {
+        "stroke": "#fbc02d",
+        "strokeWidth": 3
+      }
+    },
+    {
+      "type": "line",
+      "from": [100, 35],
+      "to": [100, 15],
+      "style": {
+        "stroke": "#fbc02d",
+        "strokeWidth": 3
+      }
+    },
+    {
+      "type": "line",
+      "from": [135, 45],
+      "to": [150, 30],
+      "style": {
+        "stroke": "#fbc02d",
+        "strokeWidth": 3
+      }
+    },
+    {
+      "type": "line",
+      "from": [145, 80],
+      "to": [165, 80],
+      "style": {
+        "stroke": "#fbc02d",
+        "strokeWidth": 3
+      }
+    },
+    {
+      "type": "line",
+      "from": [135, 115],
+      "to": [150, 130],
+      "style": {
+        "stroke": "#fbc02d",
+        "strokeWidth": 3
+      }
+    },
+    {
+      "type": "line",
+      "from": [55, 80],
+      "to": [35, 80],
+      "style": {
+        "stroke": "#fbc02d",
+        "strokeWidth": 3
+      }
+    },
+    {
+      "type": "line",
+      "from": [65, 115],
+      "to": [50, 130],
+      "style": {
+        "stroke": "#fbc02d",
+        "strokeWidth": 3
+      }
+    },
+    {
+      "type": "text",
+      "x": 100,
+      "y": 80,
+      "anchor": "middle",
+      "baseline": "middle",
+      "content": "SUN",
+      "style": {
+        "fontSize": 14,
+        "fontWeight": "bold"
+      }
+    },
+    {
+      "type": "arrow",
+      "from": [140, 110],
+      "to": [300, 200],
+      "style": {
+        "stroke": "#fbc02d",
+        "strokeWidth": 4
+      }
+    },
+    {
+      "type": "text",
+      "x": 200,
+      "y": 140,
+      "anchor": "middle",
+      "content": "Sunlight",
+      "style": {
+        "fontSize": 14,
+        "fontWeight": "bold"
+      }
+    },
+    {
+      "type": "ellipse",
+      "cx": 400,
+      "cy": 250,
+      "rx": 120,
+      "ry": 80,
+      "style": {
+        "fill": "#81c784",
+        "stroke": "#388e3c"
+      },
+      "id": "leaf"
+    },
+    {
+      "type": "text",
+      "x": 400,
+      "y": 250,
+      "anchor": "middle",
+      "baseline": "middle",
+      "content": "LEAF",
+      "style": {
+        "fontSize": 18,
+        "fontWeight": "bold"
+      }
+    },
+    {
+      "type": "rect",
+      "x": 350,
+      "y": 380,
+      "w": 100,
+      "h": 80,
+      "style": {
+        "fill": "#a1887f",
+        "stroke": "#6d4c41"
+      },
+      "id": "soil"
+    },
+    {
+      "type": "text",
+      "x": 400,
+      "y": 420,
+      "anchor": "middle",
+      "baseline": "middle",
+      "content": "Soil",
+      "style": {
+        "fontSize": 14
+      }
+    },
+    {
+      "type": "line",
+      "from": [400, 380],
+      "to": [400, 330],
+      "style": {
+        "stroke": "#5d4037",
+        "strokeWidth": 8
+      }
+    },
+    {
+      "type": "arrow",
+      "from": [380, 400],
+      "to": [380, 290],
+      "style": {
+        "stroke": "#1976d2",
+        "strokeWidth": 3
+      }
+    },
+    {
+      "type": "text",
+      "x": 320,
+      "y": 350,
+      "anchor": "middle",
+      "content": "Water",
+      "style": {
+        "fontSize": 13,
+        "fill": "#1565c0"
+      }
+    },
+    {
+      "type": "arrow",
+      "from": [580, 200],
+      "to": [480, 220],
+      "style": {
+        "stroke": "#757575",
+        "strokeWidth": 3
+      }
+    },
+    {
+      "type": "text",
+      "x": 600,
+      "y": 190,
+      "anchor": "middle",
+      "content": "CO₂",
+      "style": {
+        "fontSize": 14,
+        "fontWeight": "bold",
+        "fill": "#616161"
+      }
+    },
+    {
+      "type": "text",
+      "x": 580,
+      "y": 210,
+      "anchor": "middle",
+      "content": "(Carbon Dioxide)",
+      "style": {
+        "fontSize": 11,
+        "fill": "#757575"
+      }
+    },
+    {
+      "type": "arrow",
+      "from": [480, 280],
+      "to": [580, 320],
+      "style": {
+        "stroke": "#4caf50",
+        "strokeWidth": 3
+      }
+    },
+    {
+      "type": "text",
+      "x": 620,
+      "y": 320,
+      "anchor": "middle",
+      "content": "O₂",
+      "style": {
+        "fontSize": 14,
+        "fontWeight": "bold",
+        "fill": "#388e3c"
+      }
+    },
+    {
+      "type": "text",
+      "x": 620,
+      "y": 340,
+      "anchor": "middle",
+      "content": "(Oxygen)",
+      "style": {
+        "fontSize": 11,
+        "fill": "#66bb6a"
+      }
+    },
+    {
+      "type": "arrow",
+      "from": [320, 280],
+      "to": [220, 320],
+      "style": {
+        "stroke": "#ff9800",
+        "strokeWidth": 3
+      }
+    },
+    {
+      "type": "text",
+      "x": 160,
+      "y": 320,
+      "anchor": "middle",
+      "content": "Glucose",
+      "style": {
+        "fontSize": 14,
+        "fontWeight": "bold",
+        "fill": "#f57c00"
+      }
+    },
+    {
+      "type": "text",
+      "x": 160,
+      "y": 340,
+      "anchor": "middle",
+      "content": "(Food for plant)",
+      "style": {
+        "fontSize": 11,
+        "fill": "#ff9800"
+      }
+    },
+    {
+      "type": "rect",
+      "x": 50,
+      "y": 420,
+      "w": 600,
+      "h": 60,
+      "rx": 10,
+      "style": {
+        "fill": "#fff9c4",
+        "stroke": "#f9a825"
+      }
+    },
+    {
+      "type": "text",
+      "x": 350,
+      "y": 445,
+      "anchor": "middle",
+      "baseline": "middle",
+      "content": "Equation: 6CO₂ + 6H₂O + Light Energy → C₆H₁₂O₆ + 6O₂",
+      "style": {
+        "fontSize": 13,
+        "fontWeight": "bold"
+      }
+    }
+  ],
+  "style": {
+    "fontFamily": "Comic Sans MS, cursive",
+    "strokeWidth": 2,
+    "roughness": 1.3
+  }
+}

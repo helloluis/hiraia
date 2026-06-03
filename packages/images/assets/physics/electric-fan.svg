@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 150" width="110" height="150">
+  <!-- Base -->
+  <rect x="30" y="135" width="50" height="9" rx="4" fill="#7d8389" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Stand pole -->
+  <rect x="50" y="95" width="10" height="45" fill="#7d8389" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Tilt joint -->
+  <circle cx="55" cy="93" r="7" fill="#3f4348" stroke="#1f2937" stroke-width="2"/>
+  <!-- Guard outer ring -->
+  <circle cx="55" cy="55" r="44" fill="none" stroke="#1f2937" stroke-width="2.5"/>
+  <!-- Guard inner ring (front rim) -->
+  <circle cx="55" cy="55" r="40" fill="#f0f4f8" stroke="#1f2937" stroke-width="2"/>
+  <!-- Guard wire rings -->
+  <circle cx="55" cy="55" r="32" fill="none" stroke="#7d8389" stroke-width="1.5"/>
+  <circle cx="55" cy="55" r="22" fill="none" stroke="#7d8389" stroke-width="1.5"/>
+  <circle cx="55" cy="55" r="12" fill="none" stroke="#7d8389" stroke-width="1.5"/>
+  <!-- Guard horizontal spokes -->
+  <line x1="15" y1="55" x2="95" y2="55" stroke="#7d8389" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Guard vertical spokes -->
+  <line x1="55" y1="15" x2="55" y2="95" stroke="#7d8389" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Guard diagonal spokes -->
+  <line x1="26.7" y1="26.7" x2="83.3" y2="83.3" stroke="#7d8389" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="83.3" y1="26.7" x2="26.7" y2="83.3" stroke="#7d8389" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Blade 1 (top) -->
+  <path d="M55,55 C52,43 44,36 50,28 C60,32 64,44 55,55Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Blade 2 (right) -->
+  <path d="M55,55 C67,52 76,44 80,50 C76,60 64,64 55,55Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Blade 3 (bottom-left) -->
+  <path d="M55,55 C48,67 48,78 41,80 C35,72 40,60 55,55Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Hub center -->
+  <circle cx="55" cy="55" r="8" fill="#fbbf24" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="55" cy="55" r="3" fill="#b45309" stroke="#1f2937" stroke-width="1.5"/>
+</svg>

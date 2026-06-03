@@ -45,7 +45,7 @@ export interface ImageResult {
   prompt: string;
   width: number;
   height: number;
-  format: 'png' | 'jpeg';
+  format: 'png' | 'jpeg' | 'svg';
   generationTimeMs: number;
 }
 

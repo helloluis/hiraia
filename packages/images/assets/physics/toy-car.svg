@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 100" width="160" height="100">
+  <!-- Car body lower rectangle -->
+  <rect x="10" y="52" width="140" height="30" rx="6" ry="6" fill="#e53935" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- Car cabin/roof -->
+  <path d="M38 52 L52 24 L108 24 L122 52 Z" fill="#e53935" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Windshield (front) -->
+  <path d="M96 28 L116 52 L90 52 Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Rear window -->
+  <path d="M64 28 L44 52 L70 52 Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Middle window -->
+  <polygon points="70,28 96,28 90,52 70,52" fill="#4fc3f7" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Roof ridge line between cabin panels (subtle, no extra lines needed) -->
+  <!-- Front bumper -->
+  <rect x="140" y="62" width="10" height="10" rx="2" ry="2" fill="#b45309" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Rear bumper -->
+  <rect x="10" y="62" width="10" height="10" rx="2" ry="2" fill="#b45309" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Front wheel -->
+  <circle cx="118" cy="82" r="14" fill="#3f4348" stroke="#1f2937" stroke-width="2.5"/>
+  <circle cx="118" cy="82" r="7" fill="#7d8389" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="118" cy="82" r="3" fill="#1f2937"/>
+  <!-- Rear wheel -->
+  <circle cx="42" cy="82" r="14" fill="#3f4348" stroke="#1f2937" stroke-width="2.5"/>
+  <circle cx="42" cy="82" r="7" fill="#7d8389" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="42" cy="82" r="3" fill="#1f2937"/>
+  <!-- Headlight -->
+  <ellipse cx="148" cy="60" rx="5" ry="4" fill="#fbbf24" stroke="#1f2937" stroke-width="2"/>
+  <!-- Taillight -->
+  <ellipse cx="12" cy="60" rx="5" ry="4" fill="#e53935" stroke="#1f2937" stroke-width="2"/>
+</svg>

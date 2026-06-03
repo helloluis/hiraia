@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 150" width="60" height="150">
+  <!-- Wooden stick: thin rectangle, tan/beige color -->
+  <rect x="25" y="45" width="10" height="95" rx="3" ry="3"
+        fill="#c9a96e" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Match head base: slightly wider bulge at bottom of head -->
+  <ellipse cx="30" cy="48" rx="8" ry="6"
+           fill="#e53935" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Match head body: rounded dome -->
+  <ellipse cx="30" cy="32" rx="10" ry="18"
+           fill="#e53935" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Subtle highlight on head -->
+  <ellipse cx="26" cy="24" rx="3" ry="5"
+           fill="#ef9a9a" stroke="none"
+           transform="rotate(-10 26 24)"/>
+</svg>

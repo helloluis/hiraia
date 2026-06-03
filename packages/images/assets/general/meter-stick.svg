@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 38" width="140" height="38">
+  <!-- Meter stick body -->
+  <rect x="4" y="10" width="132" height="18" rx="2" ry="2"
+        fill="#fbbf24" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Top edge highlight strip -->
+  <rect x="4" y="10" width="132" height="4" rx="2" ry="1"
+        fill="#b45309" stroke="none"/>
+
+  <!-- Major tick marks (every 10 units = 13.2px apart, 11 marks at 0,10,20,...,100) -->
+  <!-- Position: x = 4 + (i/100)*132, i = 0,10,20,...,100 -->
+  <!-- i=0  x=4   -->
+  <line x1="4"    y1="10" x2="4"    y2="18" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- i=10 x=17.2 -->
+  <line x1="17.2" y1="10" x2="17.2" y2="18" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- i=20 x=30.4 -->
+  <line x1="30.4" y1="10" x2="30.4" y2="18" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- i=30 x=43.6 -->
+  <line x1="43.6" y1="10" x2="43.6" y2="18" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- i=40 x=56.8 -->
+  <line x1="56.8" y1="10" x2="56.8" y2="18" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- i=50 x=70 -->
+  <line x1="70"   y1="10" x2="70"   y2="20" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- i=60 x=83.2 -->
+  <line x1="83.2" y1="10" x2="83.2" y2="18" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- i=70 x=96.4 -->
+  <line x1="96.4" y1="10" x2="96.4" y2="18" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- i=80 x=109.6 -->
+  <line x1="109.6" y1="10" x2="109.6" y2="18" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- i=90 x=122.8 -->
+  <line x1="122.8" y1="10" x2="122.8" y2="18" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- i=100 x=136 -->
+  <line x1="136"  y1="10" x2="136"  y2="18" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+
+  <!-- Minor tick marks (every 5 units = 6.6px, mid-points between majors) -->
+  <!-- i=5  x=10.6 -->
+  <line x1="10.6" y1="10" x2="10.6" y2="15" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- i=15 x=23.8 -->
+  <line x1="23.8" y1="10" x2="23.8" y2="15" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- i=25 x=37 -->
+  <line x1="37"   y1="10" x2="37"   y2="15" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- i=35 x=50.2 -->
+  <line x1="50.2" y1="10" x2="50.2" y2="15" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- i=45 x=63.4 -->
+  <line x1="63.4" y1="10" x2="63.4" y2="15" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- i=55 x=76.6 -->
+  <line x1="76.6" y1="10" x2="76.6" y2="15" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- i=65 x=89.8 -->
+  <line x1="89.8" y1="10" x2="89.8" y2="15" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- i=75 x=103 -->
+  <line x1="103"  y1="10" x2="103"  y2="15" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- i=85 x=116.2 -->
+  <line x1="116.2" y1="10" x2="116.2" y2="15" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- i=95 x=129.4 -->
+  <line x1="129.4" y1="10" x2="129.4" y2="15" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+
+  <!-- Small dots along bottom edge to suggest finer graduations -->
+  <circle cx="10.6"  cy="27" r="0.9" fill="#1f2937"/>
+  <circle cx="23.8"  cy="27" r="0.9" fill="#1f2937"/>
+  <circle cx="37"    cy="27" r="0.9" fill="#1f2937"/>
+  <circle cx="50.2"  cy="27" r="0.9" fill="#1f2937"/>
+  <circle cx="63.4"  cy="27" r="0.9" fill="#1f2937"/>
+  <circle cx="76.6"  cy="27" r="0.9" fill="#1f2937"/>
+  <circle cx="89.8"  cy="27" r="0.9" fill="#1f2937"/>
+  <circle cx="103"   cy="27" r="0.9" fill="#1f2937"/>
+  <circle cx="116.2" cy="27" r="0.9" fill="#1f2937"/>
+  <circle cx="129.4" cy="27" r="0.9" fill="#1f2937"/>
+</svg>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 90" width="140" height="90">
+  <!-- Petri dish: shallow round dish at a slight angle (ellipse with low rim) -->
+
+  <!-- Dish body (bottom) - filled shallow cylinder seen from slight angle -->
+  <!-- Outer base ellipse shadow/depth suggestion -->
+  <ellipse cx="70" cy="72" rx="58" ry="10" fill="#b0bec5" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Dish side wall (the shallow cylindrical body) -->
+  <!-- Left side wall -->
+  <path d="M 12 62 L 12 72 Q 70 82 128 72 L 128 62" fill="#cfd8dc" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Dish interior (inside surface seen from above-ish angle) -->
+  <ellipse cx="70" cy="62" rx="58" ry="10" fill="#e8f5e9" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Lid rim ring (the petri lid sits slightly over the base) -->
+  <!-- Lid outer ellipse (top of lid, larger) -->
+  <ellipse cx="70" cy="40" rx="62" ry="11" fill="#e0f7fa" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- Lid side depth -->
+  <path d="M 8 40 L 8 50 Q 70 61 132 50 L 132 40" fill="#b2ebf2" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Lid bottom rim ellipse (where lid meets base) -->
+  <ellipse cx="70" cy="50" rx="62" ry="11" fill="none" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Lid top surface - the main flat ellipse of the lid -->
+  <ellipse cx="70" cy="40" rx="62" ry="11" fill="#e0f7fa" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- Lid top inner highlight (shows the flat glass surface) -->
+  <ellipse cx="70" cy="40" rx="48" ry="8" fill="none" stroke="#4fc3f7" stroke-width="1.5" stroke-linejoin="round"/>
+
+  <!-- Small colony dots / culture spots inside visible through lid (biology context) -->
+  <circle cx="58" cy="40" r="3.5" fill="#7cb342" stroke="#2e7d32" stroke-width="1.5"/>
+  <circle cx="76" cy="37" r="4" fill="#7cb342" stroke="#2e7d32" stroke-width="1.5"/>
+  <circle cx="88" cy="42" r="2.5" fill="#7cb342" stroke="#2e7d32" stroke-width="1.5"/>
+  <circle cx="66" cy="44" r="2" fill="#a5d6a7" stroke="#2e7d32" stroke-width="1.2"/>
+  <circle cx="82" cy="38" r="1.8" fill="#a5d6a7" stroke="#2e7d32" stroke-width="1.2"/>
+</svg>

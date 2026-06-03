@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140" width="120" height="140">
+  <!-- Shadow base -->
+  <ellipse cx="60" cy="133" rx="38" ry="6" fill="#1f2937" opacity="0.18"/>
+
+  <!-- Main crystal body: a hexagonal prism cluster -->
+
+  <!-- BACK/LEFT large crystal shard -->
+  <!-- Left tall facet (dark purple side) -->
+  <polygon points="22,110 36,48 50,44 50,110" fill="#7b5ea7" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Left top cap -->
+  <polygon points="22,110 36,48 50,44 38,28 18,60" fill="#9c7dc4" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Left front face (light purple) -->
+  <polygon points="22,110 50,110 50,44 36,48" fill="#b39ddb" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- MAIN large central crystal -->
+  <!-- Right dark side -->
+  <polygon points="76,118 92,52 72,46 72,118" fill="#5c8a9e" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- Top cap (lightest) -->
+  <polygon points="44,118 72,46 92,52 80,22 52,14 40,34" fill="#b2dfee" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- Front face (medium blue) -->
+  <polygon points="44,118 72,118 72,46 40,34" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- Inner facet on top cap (highlight) -->
+  <polygon points="52,14 80,22 68,36 46,28" fill="#e1f5fe" stroke="#1f2937" stroke-width="1.8" stroke-linejoin="round"/>
+  <!-- Left slant face -->
+  <polygon points="44,118 40,34 52,14 46,28 44,118" fill="#37b5e0" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- SMALL right crystal shard -->
+  <!-- Right dark face -->
+  <polygon points="88,112 100,60 90,56 90,112" fill="#7b5ea7" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Top cap -->
+  <polygon points="72,112 90,56 100,60 94,38 74,44" fill="#9c7dc4" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Front face -->
+  <polygon points="72,112 90,112 90,56 74,44" fill="#b39ddb" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Small accent crystal bottom-left -->
+  <polygon points="18,112 28,80 36,78 36,112" fill="#4fc3f7" stroke="#1f2937" stroke-width="1.8" stroke-linejoin="round"/>
+  <polygon points="18,112 28,80 36,78 30,64 16,80" fill="#b2dfee" stroke="#1f2937" stroke-width="1.8" stroke-linejoin="round"/>
+
+  <!-- Flat rock base connecting them all -->
+  <polygon points="14,115 106,115 100,125 20,125" fill="#8d6e4f" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Base shadow side -->
+  <polygon points="20,125 100,125 96,132 24,132" fill="#5d4632" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Sparkle highlights on main crystal -->
+  <!-- Top sparkle star -->
+  <line x1="58" y1="10" x2="58" y2="4" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="58" y1="10" x2="64" y2="6" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="58" y1="10" x2="62" y2="14" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Small sparkle right -->
+  <line x1="95" y1="42" x2="95" y2="37" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="95" y1="42" x2="100" y2="39" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="95" y1="42" x2="99" y2="45" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
+</svg>

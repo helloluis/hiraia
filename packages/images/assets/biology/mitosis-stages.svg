@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 90" width="250" height="90">
+  <!-- INTERPHASE -->
+  <circle cx="25" cy="45" r="20" fill="#eaf3fb" stroke="#1f2937" stroke-width="2.2"/>
+  <circle cx="25" cy="45" r="11" fill="#d8c2ec" stroke="#8e44ad" stroke-width="2"/>
+  <path d="M20 41 q4 -3 8 1" fill="none" stroke="#8e44ad" stroke-width="2" stroke-linecap="round"/>
+  <path d="M21 47 q5 3 9 -1" fill="none" stroke="#e53935" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- PROPHASE -->
+  <circle cx="75" cy="45" r="20" fill="#eaf3fb" stroke="#1f2937" stroke-width="2.2"/>
+  <circle cx="75" cy="45" r="12" fill="none" stroke="#8e44ad" stroke-width="1.6" stroke-dasharray="3 2.5"/>
+  <path d="M68 39 l4 5" fill="none" stroke="#8e44ad" stroke-width="3" stroke-linecap="round"/>
+  <path d="M72 39 l-4 5" fill="none" stroke="#8e44ad" stroke-width="3" stroke-linecap="round"/>
+  <path d="M79 47 l4 5" fill="none" stroke="#e53935" stroke-width="3" stroke-linecap="round"/>
+  <path d="M83 47 l-4 5" fill="none" stroke="#e53935" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- METAPHASE -->
+  <circle cx="125" cy="45" r="20" fill="#eaf3fb" stroke="#1f2937" stroke-width="2.2"/>
+  <!-- spindle poles -->
+  <circle cx="125" cy="27" r="2.6" fill="#fbbf24" stroke="#1f2937" stroke-width="1.4"/>
+  <circle cx="125" cy="63" r="2.6" fill="#fbbf24" stroke="#1f2937" stroke-width="1.4"/>
+  <path d="M125 30 L120 45 M125 30 L130 45 M125 60 L120 45 M125 60 L130 45" fill="none" stroke="#9aa0a6" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- chromosomes lined up centrally -->
+  <path d="M116 41 l4 5 M120 41 l-4 5" fill="none" stroke="#8e44ad" stroke-width="3" stroke-linecap="round"/>
+  <path d="M130 41 l4 5 M134 41 l-4 5" fill="none" stroke="#e53935" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- ANAPHASE -->
+  <circle cx="175" cy="45" r="20" fill="#eaf3fb" stroke="#1f2937" stroke-width="2.2"/>
+  <circle cx="175" cy="25" r="2.6" fill="#fbbf24" stroke="#1f2937" stroke-width="1.4"/>
+  <circle cx="175" cy="65" r="2.6" fill="#fbbf24" stroke="#1f2937" stroke-width="1.4"/>
+  <!-- chromosomes pulled to poles -->
+  <path d="M170 33 l4 4 M174 33 l-4 4" fill="none" stroke="#8e44ad" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M176 33 l4 4 M180 33 l-4 4" fill="none" stroke="#e53935" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M170 53 l4 4 M174 53 l-4 4" fill="none" stroke="#8e44ad" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M176 53 l4 4 M180 53 l-4 4" fill="none" stroke="#e53935" stroke-width="2.6" stroke-linecap="round"/>
+  <!-- pull arrows -->
+  <path d="M175 44 L175 38" fill="none" stroke="#1f2937" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M173 40 l2 -2 l2 2" fill="none" stroke="#1f2937" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M175 46 L175 52" fill="none" stroke="#1f2937" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M173 50 l2 2 l2 -2" fill="none" stroke="#1f2937" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- TELOPHASE / CYTOKINESIS -->
+  <path d="M225 25 a20 20 0 0 1 0 40 a13 13 0 0 1 0 -40 Z" fill="#eaf3fb" stroke="#1f2937" stroke-width="2.2"/>
+  <path d="M225 25 a20 20 0 0 0 0 40 a13 13 0 0 0 0 -40 Z" fill="#eaf3fb" stroke="#1f2937" stroke-width="2.2"/>
+  <circle cx="218" cy="45" r="6.5" fill="#d8c2ec" stroke="#8e44ad" stroke-width="1.6"/>
+  <circle cx="232" cy="45" r="6.5" fill="#d8c2ec" stroke="#8e44ad" stroke-width="1.6"/>
+</svg>

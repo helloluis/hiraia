@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "width": 550,
+  "height": 400,
+  "title": "Photosynthesis Overview",
+  "caption": "Plants convert sunlight, water, and CO₂ into glucose and oxygen",
+  "elements": [
+    {
+      "type": "asset",
+      "assetId": "sun",
+      "x": 50,
+      "y": 50,
+      "scale": 1.5
+    },
+    {
+      "type": "asset",
+      "assetId": "leaf",
+      "x": 220,
+      "y": 100,
+      "scale": 2.0
+    },
+    {
+      "type": "asset",
+      "assetId": "water-molecule",
+      "x": 50,
+      "y": 280,
+      "scale": 1.2
+    },
+    {
+      "type": "asset",
+      "assetId": "co2-molecule",
+      "x": 380,
+      "y": 50,
+      "scale": 1.2
+    },
+    {
+      "type": "arrow",
+      "from": [150, 100],
+      "to": [220, 150],
+      "style": {
+        "stroke": "#fbbf24",
+        "strokeWidth": 4
+      }
+    },
+    {
+      "type": "text",
+      "x": 180,
+      "y": 90,
+      "content": "Sunlight",
+      "style": {
+        "fontSize": 14,
+        "fontWeight": "bold",
+        "fill": "#f59e0b"
+      }
+    },
+    {
+      "type": "arrow",
+      "from": [110, 320],
+      "to": [220, 250],
+      "style": {
+        "stroke": "#3b82f6",
+        "strokeWidth": 3
+      }
+    },
+    {
+      "type": "text",
+      "x": 80,
+      "y": 350,
+      "content": "H2O",
+      "style": {
+        "fontSize": 13,
+        "fontWeight": "bold",
+        "fill": "#1e40af"
+      }
+    },
+    {
+      "type": "arrow",
+      "from": [440, 120],
+      "to": [380, 180],
+      "style": {
+        "stroke": "#64748b",
+        "strokeWidth": 3
+      }
+    },
+    {
+      "type": "text",
+      "x": 460,
+      "y": 100,
+      "content": "CO2",
+      "style": {
+        "fontSize": 14,
+        "fontWeight": "bold"
+      }
+    },
+    {
+      "type": "rect",
+      "x": 220,
+      "y": 320,
+      "w": 280,
+      "h": 50,
+      "style": {
+        "fill": "#dcfce7",
+        "stroke": "#166534",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "type": "text",
+      "x": 360,
+      "y": 350,
+      "content": "Glucose + Oxygen",
+      "style": {
+        "fontSize": 15,
+        "fontWeight": "bold",
+        "fill": "#166534",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "arrow",
+      "from": [320, 250],
+      "to": [360, 320],
+      "style": {
+        "stroke": "#166534",
+        "strokeWidth": 3
+      }
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 463" width="550" height="463">
+  <rect width="550" height="463" fill="#ffffff"/>
+  <text x="275" y="25" text-anchor="middle" font-size="18" font-weight="bold" font-family="Comic Sans MS, cursive">Photosynthesis Overview</text>
+  <g transform="translate(0, 35)">
+    <g transform="translate(50, 50) scale(1.5)" opacity="1">
+    <!-- Sun - educational diagram -->
+  <circle cx="50" cy="50" r="25" fill="#fbbf24" stroke="#b45309" stroke-width="2"/>
+  <line x1="50" y1="10" x2="50" y2="20" stroke="#fbbf24" stroke-width="3"/>
+  <line x1="50" y1="80" x2="50" y2="90" stroke="#fbbf24" stroke-width="3"/>
+  <line x1="10" y1="50" x2="20" y2="50" stroke="#fbbf24" stroke-width="3"/>
+  <line x1="80" y1="50" x2="90" y2="50" stroke="#fbbf24" stroke-width="3"/>
+  <line x1="20" y1="20" x2="28" y2="28" stroke="#fbbf24" stroke-width="3"/>
+  <line x1="72" y1="72" x2="80" y2="80" stroke="#fbbf24" stroke-width="3"/>
+  <line x1="80" y1="20" x2="72" y2="28" stroke="#fbbf24" stroke-width="3"/>
+  <line x1="28" y1="72" x2="20" y2="80" stroke="#fbbf24" stroke-width="3"/>
+  <text x="50" y="55" text-anchor="middle" font-size="12" font-weight="bold" font-family="Arial">SUN</text>
+  </g>
+    <g transform="translate(220, 100) scale(2)" opacity="1">
+    <!-- Leaf - educational diagram with realistic outline -->
+  <!-- Leaf body: tapered oval shape, wider at middle, pointed at tip and base -->
+  <path d="M60,10 C70,15 80,25 85,40 C90,55 85,70 75,80 C65,90 55,90 45,80 C35,70 30,55 35,40 C40,25 50,15 60,10 Z"
+        fill="#81c784" stroke="#2e7d32" stroke-width="2"/>
+  <!-- Central vein (midrib) -->
+  <path d="M60,12 L60,82" stroke="#1b5e20" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Secondary veins (right side) -->
+  <path d="M60,28 L78,22" stroke="#2e7d32" stroke-width="1" stroke-linecap="round"/>
+  <path d="M60,40 L82,35" stroke="#2e7d32" stroke-width="1" stroke-linecap="round"/>
+  <path d="M60,52 L80,50" stroke="#2e7d32" stroke-width="1" stroke-linecap="round"/>
+  <path d="M60,65 L78,68" stroke="#2e7d32" stroke-width="1" stroke-linecap="round"/>
+  <!-- Secondary veins (left side) -->
+  <path d="M60,28 L42,22" stroke="#2e7d32" stroke-width="1" stroke-linecap="round"/>
+  <path d="M60,40 L38,35" stroke="#2e7d32" stroke-width="1" stroke-linecap="round"/>
+  <path d="M60,52 L40,50" stroke="#2e7d32" stroke-width="1" stroke-linecap="round"/>
+  <path d="M60,65 L42,68" stroke="#2e7d32" stroke-width="1" stroke-linecap="round"/>
+  <!-- Stem -->
+  <path d="M60,82 L60,92" stroke="#388e3c" stroke-width="2" stroke-linecap="round"/>
+  <!-- Label -->
+  <text x="60" y="98" text-anchor="middle" font-size="11" font-weight="bold" font-family="Arial">Leaf</text>
+  </g>
+    <g transform="translate(50, 280) scale(1.2)" opacity="1">
+    <circle cx="60" cy="50" r="20" fill="#ef4444" stroke="#991b1b" stroke-width="2"/>
+  <text x="60" y="55" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">O</text>
+  <circle cx="25" cy="30" r="12" fill="#f0f0f0" stroke="#404040" stroke-width="1.5"/>
+  <text x="25" y="34" text-anchor="middle" font-size="11" font-weight="bold">H</text>
+  <circle cx="95" cy="30" r="12" fill="#f0f0f0" stroke="#404040" stroke-width="1.5"/>
+  <text x="95" y="34" text-anchor="middle" font-size="11" font-weight="bold">H</text>
+  <line x1="45" y1="40" x2="35" y2="35" stroke="#404040" stroke-width="2"/>
+  <line x1="75" y1="40" x2="85" y2="35" stroke="#404040" stroke-width="2"/>
+  <text x="60" y="90" text-anchor="middle" font-size="11" font-weight="bold" font-family="Arial">H2O</text>
+  </g>
+    <g transform="translate(380, 50) scale(1.2)" opacity="1">
+    <circle cx="70" cy="40" r="18" fill="#404040" stroke="#000" stroke-width="2"/>
+  <text x="70" y="45" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">C</text>
+  <circle cx="25" cy="40" r="16" fill="#ef4444" stroke="#991b1b" stroke-width="2"/>
+  <text x="25" y="44" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">O</text>
+  <circle cx="115" cy="40" r="16" fill="#ef4444" stroke="#991b1b" stroke-width="2"/>
+  <text x="115" y="44" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">O</text>
+  <line x1="48" y1="40" x2="38" y2="40" stroke="#000" stroke-width="2.5"/>
+  <line x1="92" y1="40" x2="102" y2="40" stroke="#000" stroke-width="2.5"/>
+  <text x="70" y="75" text-anchor="middle" font-size="11" font-weight="bold" font-family="Arial">CO2</text>
+  </g>
+    <path d="M150,100L167.69,112.4L185.68,125.33L201.88,137.55L220,150" stroke="#fbbf24" stroke-width="4" fill="none" opacity="1" />
+    <path d="M210.15,148.29L214.64,149.39L220,150M220,150L218.3,145.56L215.19,141.23" stroke="#fbbf24" stroke-width="4" fill="none" opacity="1" />
+    <text x="180" y="90" font-size="14" font-family="Comic Sans MS, cursive" font-weight="bold" fill="#000000" opacity="1" text-anchor="start" dominant-baseline="middle">Sunlight</text>
+    <path d="M110,320L127.85,309.07L147.14,296.3L164.42,285L183.69,273.55L200.71,261.61L220,250" stroke="#3b82f6" stroke-width="3" fill="none" opacity="1" />
+    <path d="M214.73,258.5L218.01,253.39L220,250M220,250L215.21,249.69L210.07,251.18" stroke="#3b82f6" stroke-width="3" fill="none" opacity="1" />
+    <text x="80" y="350" font-size="13" font-family="Comic Sans MS, cursive" font-weight="bold" fill="#000000" opacity="1" text-anchor="start" dominant-baseline="middle">H2O</text>
+    <path d="M440,120L424.55,134.16L409.4,150.54L395.06,164.09L380,180" stroke="#64748b" stroke-width="3" fill="none" opacity="1" />
+    <path d="M383.3,170.56L381.02,175.94L380,180M380,180L384.7,178.94L389.44,176.7" stroke="#64748b" stroke-width="3" fill="none" opacity="1" />
+    <text x="460" y="100" font-size="14" font-family="Comic Sans MS, cursive" font-weight="bold" fill="#000000" opacity="1" text-anchor="start" dominant-baseline="middle">CO2</text>
+    <path d="M220,320L239.65,319.9L259.11,319.14L280.11,320.19L299.51,320.28L319.44,319.62L340.46,320.69L360.02,319.43L379.59,319.6L399.18,320.31L420.35,320.37L440.82,319.21L460.85,319.87L480.85,319.3L500,320M500,320L499.25,344.07L500,370M500,370L479.73,369.96L460.21,370.77L439.19,370.42L420.83,369.57L400.4,369.38L380.04,370.62L359.27,370.95L340.12,370.8L319.87,370.15L299.69,370.18L279.66,370.44L259.61,369.9L240.66,370.37L220,370M220,370L220.95,345.75L220,320" stroke="#166534" stroke-width="2" fill="#dcfce7" opacity="1" />
+    <text x="360" y="350" font-size="15" font-family="Comic Sans MS, cursive" font-weight="bold" fill="#000000" opacity="1" text-anchor="start" dominant-baseline="middle">Glucose + Oxygen</text>
+    <path d="M320,250L329.87,267.59L339.61,284.23L350.38,302.14L360,320" stroke="#166534" stroke-width="3" fill="none" opacity="1" />
+    <path d="M351.76,314.33L356.43,317.94L360,320M360,320L358.87,314.97L359.3,310.02" stroke="#166534" stroke-width="3" fill="none" opacity="1" />
+  </g>
+  <text x="275" y="453" text-anchor="middle" font-size="12" font-family="Comic Sans MS, cursive" fill="#666">Plants convert sunlight, water, and CO₂ into glucose and oxygen</text>
+</svg>

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 220" width="240" height="220">
+  <rect x="0" y="0" width="240" height="220" fill="#ffffff"/>
+
+  <!-- ================= DIVERGENT (top) ================= -->
+  <!-- mantle band -->
+  <rect x="14" y="20" width="212" height="44" fill="#ef6c00" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round"/>
+  <!-- left plate (crust) -->
+  <path d="M14 36 L100 36 L108 28 L14 28 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- right plate (crust) -->
+  <path d="M132 28 L226 28 L226 36 L140 36 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- ridge / rising magma -->
+  <path d="M120 64 L112 40 L120 24 L128 40 Z" fill="#e53935" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round"/>
+  <!-- new crust mounds at ridge -->
+  <path d="M108 28 L120 22 L132 28 Z" fill="#5d4632" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round"/>
+  <!-- upwelling magma arrow (center, up) -->
+  <path d="M120 58 L120 44" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M120 42 L116 49 L124 49 Z" fill="#ffffff" stroke="#1f2937" stroke-width="1.4" stroke-linejoin="round"/>
+  <!-- left plate moving-apart arrow -->
+  <path d="M70 16 L40 16" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M38 16 L46 12 L46 20 Z" fill="#1f2937" stroke="#1f2937" stroke-width="1.4" stroke-linejoin="round"/>
+  <!-- right plate moving-apart arrow -->
+  <path d="M170 16 L200 16" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M202 16 L194 12 L194 20 Z" fill="#1f2937" stroke="#1f2937" stroke-width="1.4" stroke-linejoin="round"/>
+
+  <!-- ================= CONVERGENT (middle) ================= -->
+  <!-- mantle band -->
+  <rect x="14" y="92" width="212" height="50" fill="#ef6c00" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round"/>
+  <!-- overriding plate (right), with raised volcanic arc -->
+  <path d="M138 100 L150 86 L158 88 L162 100 L226 100 L226 110 L140 110 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- volcano peak on overriding plate -->
+  <path d="M150 86 L156 76 L162 86 Z" fill="#5d4632" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round"/>
+  <path d="M156 76 L153 81 L159 81 Z" fill="#e53935" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+  <!-- trench notch + subducting plate (left diving under) -->
+  <path d="M14 100 L120 100 L138 100 L168 138 L162 142 L132 110 L14 110 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- subduction motion arrow (left plate pushing right) -->
+  <path d="M40 105 L86 105" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M88 105 L80 101 L80 109 Z" fill="#1f2937" stroke="#1f2937" stroke-width="1.4" stroke-linejoin="round"/>
+  <!-- overriding plate motion arrow (pushing left) -->
+  <path d="M210 105 L188 105" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M186 105 L194 101 L194 109 Z" fill="#1f2937" stroke="#1f2937" stroke-width="1.4" stroke-linejoin="round"/>
+  <!-- descending slab arrow -->
+  <path d="M150 124 L160 136" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M161 138 L153 135 L158 130 Z" fill="#ffffff" stroke="#1f2937" stroke-width="1.4" stroke-linejoin="round"/>
+
+  <!-- ================= TRANSFORM (bottom) ================= -->
+  <!-- base rock band -->
+  <rect x="14" y="170" width="212" height="36" fill="#8d6e4f" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round"/>
+  <!-- left/upper plate block -->
+  <path d="M14 170 L116 170 L124 188 L14 188 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- right/lower plate block -->
+  <path d="M124 188 L116 170 L226 170 L226 206 L14 206 L14 188 Z" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- fault line (the slip plane) -->
+  <path d="M116 170 L124 188 L14 188" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- top plate sliding right arrow -->
+  <path d="M60 179 L96 179" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M98 179 L90 175 L90 183 Z" fill="#1f2937" stroke="#1f2937" stroke-width="1.4" stroke-linejoin="round"/>
+  <!-- bottom plate sliding left arrow -->
+  <path d="M180 197 L144 197" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M142 197 L150 193 L150 201 Z" fill="#1f2937" stroke="#1f2937" stroke-width="1.4" stroke-linejoin="round"/>
+</svg>

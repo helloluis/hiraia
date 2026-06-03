@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 100" width="160" height="100">
+  <!-- White of the eye (sclera) — almond shape -->
+  <path d="M 10 50 Q 40 10 80 10 Q 120 10 150 50 Q 120 90 80 90 Q 40 90 10 50 Z"
+        fill="#ffffff" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Iris -->
+  <circle cx="80" cy="50" r="24"
+          fill="#4fc3f7" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Pupil -->
+  <circle cx="80" cy="50" r="12"
+          fill="#1f2937" stroke="#1f2937" stroke-width="1.5"/>
+  <!-- Iris detail ring -->
+  <circle cx="80" cy="50" r="20"
+          fill="none" stroke="#37536b" stroke-width="1.5" opacity="0.5"/>
+  <!-- Highlight / light reflection -->
+  <circle cx="90" cy="42" r="5"
+          fill="#ffffff" stroke="none"/>
+  <circle cx="87" cy="55" r="2.5"
+          fill="#ffffff" stroke="none"/>
+  <!-- Upper eyelid line -->
+  <path d="M 10 50 Q 40 10 80 10 Q 120 10 150 50"
+        fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Upper eyelashes -->
+  <line x1="42" y1="22" x2="36" y2="11" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <line x1="58" y1="14" x2="55" y2="3"  stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <line x1="75" y1="10" x2="74" y2="0"  stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <line x1="92" y1="11" x2="93" y2="1"  stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <line x1="108" y1="17" x2="111" y2="7" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+</svg>

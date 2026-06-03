@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 120" width="80" height="120">
+  <!-- Raindrop / teardrop shape: pointed top, rounded bottom -->
+  <path
+    d="M40 8 C40 8, 70 55, 70 78 C70 96, 56 110, 40 110 C24 110, 10 96, 10 78 C10 55, 40 8, 40 8 Z"
+    fill="#4fc3f7"
+    stroke="#1f2937"
+    stroke-width="2.5"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+  />
+  <!-- Highlight glint (small ellipse upper-left of drop) -->
+  <ellipse
+    cx="30"
+    cy="55"
+    rx="5"
+    ry="9"
+    fill="#e0f7fa"
+    stroke="none"
+    transform="rotate(-20, 30, 55)"
+  />
+</svg>

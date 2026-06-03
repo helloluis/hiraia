@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 170" width="240" height="170">
+  <rect x="0" y="0" width="240" height="170" fill="#ffffff"/>
+
+  <!-- Metal bar (shiny silver) -->
+  <path d="M22 96 L58 96 L70 80 L34 80 Z" fill="#bdc3c7" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M22 96 L58 96 L58 126 L22 126 Z" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M58 96 L70 80 L70 110 L58 126 Z" fill="#7f878d" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- shine highlights -->
+  <path d="M28 100 L38 100 L34 122 L28 122 Z" fill="#eceff1" stroke="none"/>
+  <path d="M44 100 L48 100 L46 122 L44 122 Z" fill="#eceff1" stroke="none"/>
+
+  <!-- Nonmetal lump (dull yellow) -->
+  <path d="M104 92 C100 84 110 78 118 80 C124 74 136 78 137 86 C146 88 146 100 140 104 C142 114 132 122 124 118 C116 124 104 120 103 110 C96 106 98 96 104 92 Z" fill="#fbbf24" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- dull mottling -->
+  <circle cx="115" cy="94" r="4" fill="#e0a82e" stroke="none"/>
+  <circle cx="127" cy="104" r="5" fill="#e0a82e" stroke="none"/>
+  <circle cx="120" cy="110" r="3" fill="#e0a82e" stroke="none"/>
+
+  <!-- Metalloid piece (grey, semi-shiny) -->
+  <path d="M168 118 L172 86 L196 80 L206 100 L198 122 Z" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- facets -->
+  <path d="M172 86 L196 80 L186 102 L178 104 Z" fill="#b3b9bd" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+  <path d="M186 102 L206 100 L198 122 Z" fill="#7f878d" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+  <path d="M178 104 L186 102 L198 122 L168 118 Z" fill="#868c91" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+
+  <!-- Periodic-table staircase outline tinted into three regions -->
+  <g stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round">
+    <!-- overall block outline -->
+    <rect x="22" y="138" width="92" height="22" fill="#ffffff"/>
+    <!-- metals region (left, blue-ish silver) -->
+    <path d="M22 138 L70 138 L70 144 L80 144 L80 150 L92 150 L92 156 L100 156 L100 160 L22 160 Z" fill="#cfd8dc"/>
+    <!-- metalloid staircase band (grey) -->
+    <path d="M70 138 L80 138 L80 144 L70 144 Z" fill="#9aa0a6"/>
+    <path d="M80 144 L92 144 L92 150 L80 150 Z" fill="#9aa0a6"/>
+    <path d="M92 150 L100 150 L100 156 L92 156 Z" fill="#9aa0a6"/>
+    <!-- nonmetals region (right, yellow) -->
+    <path d="M70 138 L114 138 L114 160 L100 160 L100 156 L92 156 L92 150 L80 150 L80 144 L70 144 Z" fill="#fbbf24"/>
+    <!-- re-draw staircase steps over nonmetal to show grey band -->
+    <path d="M70 138 L80 138 L80 144 L70 144 Z" fill="#9aa0a6"/>
+    <path d="M80 144 L92 144 L92 150 L80 150 Z" fill="#9aa0a6"/>
+    <path d="M92 150 L100 150 L100 156 L92 156 Z" fill="#9aa0a6"/>
+    <rect x="22" y="138" width="92" height="22" fill="none" stroke="#1f2937" stroke-width="2"/>
+  </g>
+
+  <!-- Plus signs between chunks -->
+  <g stroke="#1f2937" stroke-width="2.4" stroke-linecap="round">
+    <line x1="82" y1="103" x2="92" y2="103"/>
+    <line x1="87" y1="98" x2="87" y2="108"/>
+    <line x1="150" y1="103" x2="160" y2="103"/>
+    <line x1="155" y1="98" x2="155" y2="108"/>
+  </g>
+
+  <!-- Arrow from chunks down to table -->
+  <g stroke="#1565c0" stroke-width="2.2" stroke-linecap="round" fill="none">
+    <path d="M152 130 C150 134 140 134 134 138"/>
+    <path d="M134 138 L139 136 M134 138 L137 142" stroke-linejoin="round"/>
+  </g>
+</svg>

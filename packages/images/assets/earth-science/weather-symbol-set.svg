@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 170" width="240" height="170">
+  <rect x="3" y="3" width="234" height="164" rx="10" fill="#ffffff" stroke="#1f2937" stroke-width="2.5"/>
+  <line x1="80" y1="6" x2="80" y2="164" stroke="#9aa0a6" stroke-width="1.5"/>
+  <line x1="160" y1="6" x2="160" y2="164" stroke="#9aa0a6" stroke-width="1.5"/>
+  <line x1="6" y1="85" x2="234" y2="85" stroke="#9aa0a6" stroke-width="1.5"/>
+
+  <!-- Cell 1: Sunny -->
+  <g stroke="#1f2937" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="40" y1="18" x2="40" y2="26"/>
+    <line x1="40" y1="55" x2="40" y2="63"/>
+    <line x1="13" y1="40" x2="21" y2="40"/>
+    <line x1="59" y1="40" x2="67" y2="40"/>
+    <line x1="21" y1="21" x2="27" y2="27"/>
+    <line x1="53" y1="53" x2="59" y2="59"/>
+    <line x1="59" y1="21" x2="53" y2="27"/>
+    <line x1="27" y1="53" x2="21" y2="59"/>
+  </g>
+  <circle cx="40" cy="40" r="14" fill="#fbbf24" stroke="#1f2937" stroke-width="2.2"/>
+
+  <!-- Cell 2: Partly cloudy (sun behind cloud) -->
+  <g stroke="#1f2937" stroke-width="2.2" stroke-linecap="round">
+    <line x1="116" y1="16" x2="116" y2="23"/>
+    <line x1="92" y1="30" x2="99" y2="30"/>
+    <line x1="98" y1="16" x2="103" y2="21"/>
+    <line x1="133" y1="16" x2="128" y2="21"/>
+    <line x1="139" y1="30" x2="146" y2="30"/>
+  </g>
+  <circle cx="116" cy="33" r="11" fill="#fbbf24" stroke="#1f2937" stroke-width="2.2"/>
+  <path d="M99 62 a11 11 0 0 1 2 -21 a14 14 0 0 1 27 -2 a10 10 0 0 1 2 23 z" fill="#ffffff" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+
+  <!-- Cell 3: Cloudy -->
+  <path d="M183 58 a12 12 0 0 1 1 -23 a16 16 0 0 1 31 0 a11 11 0 0 1 1 23 z" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M178 64 a10 10 0 0 1 0 -19 a13 13 0 0 1 24 0 a9 9 0 0 1 1 19 z" fill="#ffffff" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+
+  <!-- Cell 4: Rainy -->
+  <path d="M22 118 a11 11 0 0 1 1 -21 a14 14 0 0 1 27 0 a10 10 0 0 1 1 21 z" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <g stroke="#4fc3f7" stroke-width="2.5" stroke-linecap="round">
+    <line x1="27" y1="125" x2="24" y2="134"/>
+    <line x1="38" y1="125" x2="35" y2="134"/>
+    <line x1="49" y1="125" x2="46" y2="134"/>
+  </g>
+
+  <!-- Cell 5: Stormy (cloud with lightning) -->
+  <path d="M102 116 a11 11 0 0 1 1 -21 a14 14 0 0 1 27 0 a10 10 0 0 1 1 21 z" fill="#7d8389" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M118 119 l-9 13 l6 0 l-4 12 l13 -16 l-6 0 l5 -9 z" fill="#fbbf24" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Cell 6: Windy (cloud with wind streaks) -->
+  <path d="M177 110 a11 11 0 0 1 1 -21 a14 14 0 0 1 27 0 a10 10 0 0 1 1 21 z" fill="#ffffff" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <g stroke="#4fc3f7" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <path d="M174 124 h28 a5 5 0 1 0 -5 -5"/>
+    <path d="M178 133 h20 a4 4 0 1 1 -4 4"/>
+    <path d="M174 142 h14 a4 4 0 1 0 -4 -4"/>
+  </g>
+</svg>

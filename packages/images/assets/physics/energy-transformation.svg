@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 130" width="210" height="130">
+  <!-- Battery body -->
+  <rect x="14" y="48" width="44" height="40" rx="4" fill="#7cb342" stroke="#1f2937" stroke-width="2.4" stroke-linejoin="round"/>
+  <!-- Battery terminal cap -->
+  <rect x="58" y="58" width="7" height="20" rx="2" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.4" stroke-linejoin="round"/>
+  <!-- Battery plus terminal nub (top) -->
+  <rect x="22" y="40" width="12" height="8" rx="2" fill="#3f4348" stroke="#1f2937" stroke-width="2.4" stroke-linejoin="round"/>
+  <!-- Battery band -->
+  <rect x="40" y="48" width="9" height="40" fill="#2e7d32" stroke="#1f2937" stroke-width="2.4" stroke-linejoin="round"/>
+
+  <!-- Arrow 1: battery to wire -->
+  <line x1="72" y1="68" x2="92" y2="68" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M91 63 L99 68 L91 73 Z" fill="#1f2937" stroke="#1f2937" stroke-width="2.4" stroke-linejoin="round"/>
+
+  <!-- Wire (coiled / looping copper wire) -->
+  <path d="M104 84 C104 70 120 70 120 60 C120 50 136 50 136 64" fill="none" stroke="#b45309" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M104 84 C104 70 120 70 120 60 C120 50 136 50 136 64" fill="none" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- small connector dots -->
+  <circle cx="104" cy="84" r="3.4" fill="#5d4632" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="136" cy="64" r="3.4" fill="#5d4632" stroke="#1f2937" stroke-width="2"/>
+
+  <!-- Arrow 2: wire to bulb -->
+  <line x1="146" y1="68" x2="162" y2="68" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M161 63 L169 68 L161 73 Z" fill="#1f2937" stroke="#1f2937" stroke-width="2.4" stroke-linejoin="round"/>
+
+  <!-- Light rays around bulb -->
+  <line x1="186" y1="22" x2="186" y2="12" fill="none" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="166" y1="30" x2="159" y2="23" fill="none" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="206" y1="30" x2="213" y2="23" fill="none" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="160" y1="52" x2="150" y2="52" fill="none" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="212" y1="52" x2="222" y2="52" fill="none" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+
+  <!-- Bulb glass -->
+  <path d="M186 24 C172 24 164 35 164 48 C164 58 171 64 175 70 L197 70 C201 64 208 58 208 48 C208 35 200 24 186 24 Z" fill="#fbbf24" stroke="#1f2937" stroke-width="2.4" stroke-linejoin="round"/>
+  <!-- Filament -->
+  <path d="M180 50 L184 58 L188 50 L192 58" fill="none" stroke="#ef6c00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Bulb base -->
+  <rect x="175" y="70" width="22" height="8" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.4" stroke-linejoin="round"/>
+  <rect x="178" y="78" width="16" height="7" fill="#7d8389" stroke="#1f2937" stroke-width="2.4" stroke-linejoin="round"/>
+  <line x1="178" y1="73" x2="194" y2="73" fill="none" stroke="#1f2937" stroke-width="1.6"/>
+  <line x1="178" y1="76" x2="194" y2="76" fill="none" stroke="#1f2937" stroke-width="1.6"/>
+</svg>

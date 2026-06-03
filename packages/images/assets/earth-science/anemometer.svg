@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 150" width="100" height="150">
+  <!-- Ground base -->
+  <rect x="30" y="138" width="40" height="8" rx="3" fill="#8d6e4f" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Vertical pole -->
+  <rect x="46" y="55" width="8" height="85" fill="#7d8389" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Center hub at top of pole -->
+  <circle cx="50" cy="55" r="6" fill="#3f4348" stroke="#1f2937" stroke-width="2"/>
+
+  <!-- Arm 1: upper-left to lower-right -->
+  <line x1="50" y1="55" x2="20" y2="42" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Arm 2: upper-right -->
+  <line x1="50" y1="55" x2="80" y2="42" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Arm 3: downward (slightly left) -->
+  <line x1="50" y1="55" x2="35" y2="72" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Cup 1: upper-left arm tip — open to the right -->
+  <path d="M8,37 Q20,28 22,42 Q20,54 8,47 Z" fill="#e53935" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Cup 2: upper-right arm tip — open to the left -->
+  <path d="M92,37 Q80,28 78,42 Q80,54 92,47 Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Cup 3: lower arm tip — open upward -->
+  <path d="M24,82 Q35,72 46,77 Q44,90 24,82 Z" fill="#fbbf24" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

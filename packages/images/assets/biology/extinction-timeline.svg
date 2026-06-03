@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 150" width="240" height="150">
+  <!-- time arrow -->
+  <line x1="14" y1="118" x2="222" y2="118" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M222 118 L213 113 L213 123 Z" fill="#1f2937" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- tick marks -->
+  <line x1="56" y1="113" x2="56" y2="123" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <line x1="128" y1="113" x2="128" y2="123" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <line x1="196" y1="113" x2="196" y2="123" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- TRILOBITE -->
+  <g>
+    <!-- body -->
+    <ellipse cx="44" cy="64" rx="18" ry="26" fill="#8d6e4f" stroke="#1f2937" stroke-width="2.2"/>
+    <!-- head shield -->
+    <path d="M27 50 Q44 40 61 50 L58 60 Q44 53 30 60 Z" fill="#a98363" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- eyes -->
+    <circle cx="37" cy="51" r="2.4" fill="#1f2937"/>
+    <circle cx="51" cy="51" r="2.4" fill="#1f2937"/>
+    <!-- central lobe -->
+    <line x1="44" y1="58" x2="44" y2="88" stroke="#1f2937" stroke-width="2"/>
+    <!-- segments -->
+    <path d="M30 64 H58" stroke="#1f2937" stroke-width="1.8"/>
+    <path d="M29 72 H59" stroke="#1f2937" stroke-width="1.8"/>
+    <path d="M30 80 H58" stroke="#1f2937" stroke-width="1.8"/>
+  </g>
+  <!-- extinction X -->
+  <line x1="51" y1="106" x2="61" y2="116" stroke="#e53935" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="61" y1="106" x2="51" y2="116" stroke="#e53935" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- DINOSAUR -->
+  <g>
+    <!-- tail -->
+    <path d="M104 86 Q90 84 96 96" fill="none" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- body -->
+    <path d="M104 60 Q118 50 132 58 Q140 64 134 82 Q128 92 116 90 Q104 90 100 80 Q98 70 104 60 Z" fill="#2e7d32" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- neck and head -->
+    <path d="M128 60 Q138 44 150 44 Q160 44 158 54 Q154 60 144 58 Q136 60 132 66 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- eye -->
+    <circle cx="151" cy="50" r="2" fill="#1f2937"/>
+    <!-- legs -->
+    <path d="M112 90 L110 102" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M126 90 L128 102" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  </g>
+  <!-- extinction X -->
+  <line x1="123" y1="106" x2="133" y2="116" stroke="#e53935" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="133" y1="106" x2="123" y2="116" stroke="#e53935" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- DODO -->
+  <g>
+    <!-- body -->
+    <ellipse cx="196" cy="74" rx="20" ry="22" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.2"/>
+    <!-- head -->
+    <circle cx="186" cy="50" r="11" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.2"/>
+    <!-- beak -->
+    <path d="M178 50 Q166 50 170 60 Q176 58 178 54 Z" fill="#fbbf24" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- eye -->
+    <circle cx="186" cy="48" r="2.2" fill="#1f2937"/>
+    <!-- wing -->
+    <path d="M200 66 Q214 70 206 84 Q202 78 200 72 Z" fill="#7d8288" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+    <!-- tail tuft -->
+    <path d="M214 70 Q224 66 222 76 Q218 74 214 76 Z" fill="#7d8288" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+    <!-- legs -->
+    <path d="M190 95 L188 106" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M202 95 L204 106" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  </g>
+  <!-- extinction X -->
+  <line x1="191" y1="106" x2="201" y2="116" stroke="#e53935" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="201" y1="106" x2="191" y2="116" stroke="#e53935" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

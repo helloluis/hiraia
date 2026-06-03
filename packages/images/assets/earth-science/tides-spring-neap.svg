@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 220" width="440" height="220">
+  <rect x="0" y="0" width="440" height="220" fill="#2b3a55"/>
+
+  <!-- ===================== SPRING TIDE (left) ===================== -->
+  <!-- Sun -->
+  <circle cx="34" cy="110" r="24" fill="#fbbf24" stroke="#1f2937" stroke-width="2.5"/>
+  <g stroke="#fbbf24" stroke-width="3" stroke-linecap="round">
+    <line x1="34" y1="78" x2="34" y2="68"/>
+    <line x1="34" y1="142" x2="34" y2="152"/>
+    <line x1="11" y1="87" x2="4" y2="80"/>
+    <line x1="57" y1="87" x2="64" y2="80"/>
+    <line x1="11" y1="133" x2="4" y2="140"/>
+    <line x1="57" y1="133" x2="64" y2="140"/>
+  </g>
+
+  <!-- Sun gravity rays toward Earth (aligned) -->
+  <g stroke="#fbbf24" stroke-width="2" stroke-linecap="round" opacity="0.7">
+    <line x1="60" y1="104" x2="118" y2="106"/>
+    <line x1="60" y1="116" x2="118" y2="114"/>
+  </g>
+
+  <!-- Ocean bulge (large, horizontal ellipse along the Sun-Earth-Moon line) -->
+  <ellipse cx="150" cy="110" rx="42" ry="26" fill="#1565c0" stroke="#1f2937" stroke-width="2.5"/>
+  <!-- Earth on top of bulge -->
+  <circle cx="150" cy="110" r="22" fill="#7cb342" stroke="#1f2937" stroke-width="2.5"/>
+  <path d="M133 100 q8 -6 16 0 q9 5 18 -2" fill="none" stroke="#8d6e4f" stroke-width="3" stroke-linecap="round"/>
+  <path d="M136 122 q10 5 20 0" fill="none" stroke="#8d6e4f" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Moon in line on far side -->
+  <circle cx="246" cy="110" r="13" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.5"/>
+  <circle cx="241" cy="106" r="2.5" fill="#37536b"/>
+  <circle cx="250" cy="113" r="2" fill="#37536b"/>
+
+  <!-- Moon gravity rays toward Earth (same axis, reinforcing) -->
+  <g stroke="#90caf9" stroke-width="2" stroke-linecap="round" opacity="0.8">
+    <line x1="232" y1="106" x2="196" y2="106"/>
+    <line x1="232" y1="114" x2="196" y2="114"/>
+  </g>
+
+  <!-- Reinforcing direction arrows showing combined pull (big bulge) -->
+  <g stroke="#e53935" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <path d="M196 92 l-12 0"/>
+    <path d="M184 92 l5 -4 M184 92 l5 4"/>
+    <path d="M104 92 l12 0"/>
+    <path d="M116 92 l-5 -4 M116 92 l-5 4"/>
+  </g>
+
+  <!-- ===================== NEAP TIDE (right) ===================== -->
+  <!-- Sun -->
+  <circle cx="304" cy="190" r="20" fill="#fbbf24" stroke="#1f2937" stroke-width="2.5"/>
+  <g stroke="#fbbf24" stroke-width="3" stroke-linecap="round">
+    <line x1="304" y1="166" x2="304" y2="158"/>
+    <line x1="284" y1="174" x2="278" y2="168"/>
+    <line x1="324" y1="174" x2="330" y2="168"/>
+    <line x1="284" y1="206" x2="278" y2="212"/>
+    <line x1="324" y1="206" x2="330" y2="212"/>
+  </g>
+
+  <!-- Sun gravity rays upward toward Earth -->
+  <g stroke="#fbbf24" stroke-width="2" stroke-linecap="round" opacity="0.7">
+    <line x1="316" y1="168" x2="368" y2="112"/>
+    <line x1="326" y1="174" x2="378" y2="116"/>
+  </g>
+
+  <!-- Ocean bulge (smaller, near-round) -->
+  <ellipse cx="380" cy="84" rx="30" ry="24" fill="#1565c0" stroke="#1f2937" stroke-width="2.5"/>
+  <!-- Earth -->
+  <circle cx="380" cy="84" r="20" fill="#7cb342" stroke="#1f2937" stroke-width="2.5"/>
+  <path d="M365 76 q7 -5 14 0 q8 4 15 -2" fill="none" stroke="#8d6e4f" stroke-width="3" stroke-linecap="round"/>
+  <path d="M368 95 q9 4 18 0" fill="none" stroke="#8d6e4f" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Moon at right angle (above Earth) -->
+  <circle cx="380" cy="28" r="12" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.5"/>
+  <circle cx="376" cy="25" r="2.2" fill="#37536b"/>
+  <circle cx="384" cy="31" r="1.8" fill="#37536b"/>
+
+  <!-- Moon gravity ray downward toward Earth -->
+  <g stroke="#90caf9" stroke-width="2" stroke-linecap="round" opacity="0.8">
+    <line x1="380" y1="42" x2="380" y2="60"/>
+  </g>
+
+  <!-- Right-angle marker between Sun pull and Moon pull -->
+  <path d="M398 84 l10 0 l0 -10" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Competing direction arrows (perpendicular, weaker bulge) -->
+  <g stroke="#ef6c00" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <path d="M380 62 l0 -10"/>
+    <path d="M380 52 l-4 5 M380 52 l4 5"/>
+    <path d="M404 84 l10 0"/>
+    <path d="M414 84 l-5 -4 M414 84 l-5 4"/>
+  </g>
+</svg>

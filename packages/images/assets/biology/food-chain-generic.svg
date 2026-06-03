@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 160" width="480" height="160">
+  <rect x="0" y="0" width="480" height="160" fill="#ffffff"/>
+  <rect x="0" y="128" width="480" height="32" fill="#e8d5a8" stroke="#1f2937" stroke-width="2.4" stroke-linejoin="round"/>
+
+  <!-- 1. Tuft of grass -->
+  <g stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M40 128 C32 104 30 92 24 80" fill="#7cb342"/>
+    <path d="M40 128 C36 100 36 86 40 70" fill="#2e7d32"/>
+    <path d="M40 128 C44 102 48 90 56 78" fill="#7cb342"/>
+    <path d="M40 128 C46 104 52 94 62 86" fill="#2e7d32"/>
+    <path d="M40 128 C34 106 26 98 18 92" fill="#7cb342"/>
+  </g>
+
+  <!-- arrow 1 -->
+  <g stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="#1f2937">
+    <line x1="74" y1="96" x2="100" y2="96"/>
+    <path d="M100 96 L92 91 L92 101 Z"/>
+  </g>
+
+  <!-- 2. Grasshopper -->
+  <g stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="132" cy="102" rx="22" ry="11" fill="#7cb342"/>
+    <circle cx="152" cy="98" r="9" fill="#2e7d32"/>
+    <circle cx="155" cy="96" r="2.2" fill="#ffffff" stroke="none"/>
+    <line x1="158" y1="92" x2="170" y2="82" />
+    <line x1="159" y1="96" x2="172" y2="92" />
+    <path d="M124 106 L116 124 L124 124" fill="none"/>
+    <path d="M134 107 L130 126 L138 124" fill="none"/>
+    <path d="M118 100 C108 86 100 88 96 96" fill="#2e7d32"/>
+  </g>
+
+  <!-- arrow 2 -->
+  <g stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="#1f2937">
+    <line x1="178" y1="96" x2="204" y2="96"/>
+    <path d="M204 96 L196 91 L196 101 Z"/>
+  </g>
+
+  <!-- 3. Frog -->
+  <g stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="240" cy="108" rx="26" ry="18" fill="#7cb342"/>
+    <circle cx="230" cy="88" r="8" fill="#7cb342"/>
+    <circle cx="250" cy="88" r="8" fill="#7cb342"/>
+    <circle cx="230" cy="88" r="3" fill="#1f2937" stroke="none"/>
+    <circle cx="250" cy="88" r="3" fill="#1f2937" stroke="none"/>
+    <path d="M226 112 C232 118 248 118 254 112" fill="none"/>
+    <path d="M216 122 C210 126 210 122 214 116" fill="#2e7d32"/>
+    <path d="M264 122 C270 126 270 122 266 116" fill="#2e7d32"/>
+  </g>
+
+  <!-- arrow 3 -->
+  <g stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="#1f2937">
+    <line x1="278" y1="96" x2="304" y2="96"/>
+    <path d="M304 96 L296 91 L296 101 Z"/>
+  </g>
+
+  <!-- 4. Snake -->
+  <g stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M318 124 C330 124 330 108 342 108 C354 108 354 124 366 124 C376 124 380 116 378 108 C376 100 366 100 362 104" fill="none" stroke-width="9" stroke="#ef6c00"/>
+    <path d="M318 124 C330 124 330 108 342 108 C354 108 354 124 366 124 C376 124 380 116 378 108 C376 100 366 100 362 104" fill="none" stroke-width="2.4" stroke="#1f2937"/>
+    <circle cx="362" cy="104" r="5.5" fill="#ef6c00"/>
+    <circle cx="361" cy="103" r="1.6" fill="#1f2937" stroke="none"/>
+  </g>
+
+  <!-- arrow 4 -->
+  <g stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="#1f2937">
+    <line x1="386" y1="96" x2="412" y2="96"/>
+    <path d="M412 96 L404 91 L404 101 Z"/>
+  </g>
+
+  <!-- 5. Bird of prey -->
+  <g stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="446" cy="100" rx="14" ry="20" fill="#8d6e4f"/>
+    <circle cx="446" cy="74" r="11" fill="#5d4632"/>
+    <circle cx="449" cy="72" r="2.4" fill="#fbbf24" stroke="none"/>
+    <circle cx="449" cy="72" r="1" fill="#1f2937" stroke="none"/>
+    <path d="M455 76 L466 78 L455 82 Z" fill="#fbbf24"/>
+    <path d="M433 92 C414 82 410 92 420 98 C428 102 434 100 436 96" fill="#5d4632"/>
+    <path d="M459 92 C478 82 482 92 472 98 C464 102 458 100 456 96" fill="#5d4632"/>
+    <line x1="441" y1="120" x2="441" y2="128"/>
+    <line x1="451" y1="120" x2="451" y2="128"/>
+  </g>
+</svg>

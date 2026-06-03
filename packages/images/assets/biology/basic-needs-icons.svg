@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" width="240" height="200">
+  <rect x="0" y="0" width="240" height="200" fill="#ffffff"/>
+
+  <!-- Air (swirl) -->
+  <g stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="62" cy="56" r="40" fill="#e7f6fe" stroke="#1f2937"/>
+    <path d="M44 46 C44 38 56 38 56 45 C56 51 47 51 47 56 C47 64 60 64 65 58" stroke="#4fc3f7" stroke-width="4"/>
+    <path d="M48 72 C48 66 58 66 58 71 C58 76 51 76 51 80 C51 86 61 86 65 81" stroke="#4fc3f7" stroke-width="4"/>
+    <path d="M70 50 C70 44 80 44 80 49 C80 54 73 54 73 58" stroke="#4fc3f7" stroke-width="4"/>
+  </g>
+
+  <!-- Water (drop) -->
+  <g stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="178" cy="56" r="40" fill="#e7f6fe"/>
+    <path d="M178 30 C178 30 196 54 196 66 A18 18 0 0 1 160 66 C160 54 178 30 178 30 Z" fill="#4fc3f7"/>
+    <path d="M170 60 A10 10 0 0 0 178 76" fill="none" stroke="#ffffff" stroke-width="3"/>
+  </g>
+
+  <!-- Food (apple) -->
+  <g stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="62" cy="144" r="40" fill="#fdecea"/>
+    <path d="M62 132 C56 124 44 126 44 138 C44 150 54 162 62 164 C70 162 80 150 80 138 C80 126 68 124 62 132 Z" fill="#e53935"/>
+    <path d="M62 132 C62 124 64 118 70 116" fill="none" stroke="#5d4632" stroke-width="3"/>
+    <path d="M68 120 C74 114 84 116 82 124 C76 128 68 126 68 120 Z" fill="#2e7d32"/>
+  </g>
+
+  <!-- Sunlight (sun) -->
+  <g stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="178" cy="144" r="40" fill="#fff7e6"/>
+    <circle cx="178" cy="144" r="17" fill="#fbbf24"/>
+    <g stroke="#fbbf24" stroke-width="4">
+      <line x1="178" y1="115" x2="178" y2="122"/>
+      <line x1="178" y1="166" x2="178" y2="173"/>
+      <line x1="149" y1="144" x2="156" y2="144"/>
+      <line x1="200" y1="144" x2="207" y2="144"/>
+      <line x1="157" y1="123" x2="162" y2="128"/>
+      <line x1="194" y1="160" x2="199" y2="165"/>
+      <line x1="199" y1="123" x2="194" y2="128"/>
+      <line x1="162" y1="160" x2="157" y2="165"/>
+    </g>
+  </g>
+
+  <!-- Shelter (house) center -->
+  <g stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="120" cy="100" r="34" fill="#ffffff"/>
+    <rect x="104" y="100" width="32" height="24" fill="#e8d5a8"/>
+    <path d="M100 100 L120 82 L140 100 Z" fill="#e53935"/>
+    <rect x="115" y="108" width="10" height="16" fill="#8d6e4f"/>
+  </g>
+</svg>

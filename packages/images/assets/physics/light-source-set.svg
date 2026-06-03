@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180" width="200" height="180">
+  <!-- Sun (top-left) -->
+  <g stroke="#1f2937" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="45" y1="10" x2="45" y2="22" stroke="#b45309"/>
+    <line x1="45" y1="58" x2="45" y2="70" stroke="#b45309"/>
+    <line x1="10" y1="40" x2="22" y2="40" stroke="#b45309"/>
+    <line x1="68" y1="40" x2="80" y2="40" stroke="#b45309"/>
+    <line x1="20" y1="15" x2="29" y2="24" stroke="#b45309"/>
+    <line x1="61" y1="56" x2="70" y2="65" stroke="#b45309"/>
+    <line x1="70" y1="15" x2="61" y2="24" stroke="#b45309"/>
+    <line x1="29" y1="56" x2="20" y2="65" stroke="#b45309"/>
+    <circle cx="45" cy="40" r="18" fill="#fbbf24"/>
+  </g>
+
+  <!-- Light bulb (top-right) -->
+  <g stroke="#1f2937" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="155" y1="8" x2="155" y2="18" stroke="#b45309"/>
+    <line x1="130" y1="18" x2="137" y2="25" stroke="#b45309"/>
+    <line x1="180" y1="18" x2="173" y2="25" stroke="#b45309"/>
+    <path d="M155 22 C140 22 130 33 130 46 C130 56 137 62 141 68 L169 68 C173 62 180 56 180 46 C180 33 170 22 155 22 Z" fill="#fbbf24"/>
+    <path d="M147 50 L152 42 L158 42 L163 50" fill="none" stroke="#b45309" stroke-width="1.8"/>
+    <rect x="143" y="68" width="24" height="6" rx="2" fill="#9aa0a6"/>
+    <rect x="146" y="74" width="18" height="6" rx="2" fill="#7d8389"/>
+    <line x1="148" y1="80" x2="162" y2="80" stroke="#3f4348" stroke-width="2"/>
+  </g>
+
+  <!-- Candle (bottom-left) -->
+  <g stroke="#1f2937" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M40 110 C36 116 36 122 40 124 C44 122 44 116 40 110 Z" fill="#fbbf24"/>
+    <path d="M40 113 C38 117 38 120 40 121 C42 120 42 117 40 113 Z" fill="#ef6c00" stroke="none"/>
+    <line x1="40" y1="124" x2="40" y2="128" stroke="#3f4348" stroke-width="2"/>
+    <rect x="30" y="128" width="20" height="40" rx="3" fill="#e53935"/>
+    <ellipse cx="40" cy="128" rx="10" ry="3.5" fill="#ffffff"/>
+  </g>
+
+  <!-- Flashlight beaming (bottom-right) -->
+  <g stroke="#1f2937" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="112" y="138" width="34" height="20" rx="4" fill="#37536b"/>
+    <path d="M146 134 L160 128 L160 168 L146 162 Z" fill="#4fc3f7"/>
+    <!-- beam -->
+    <path d="M160 140 L192 124 L192 172 L160 156 Z" fill="#fbbf24" stroke="none"/>
+    <line x1="160" y1="140" x2="192" y2="124"/>
+    <line x1="160" y1="156" x2="192" y2="172"/>
+  </g>
+</svg>

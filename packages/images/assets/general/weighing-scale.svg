@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 140" width="110" height="140">
+
+  <!-- Base / foot -->
+  <rect x="22" y="126" width="66" height="10" rx="4" ry="4"
+        fill="#7d8389" stroke="#1f2937" stroke-width="2.2"
+        stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Body of scale (main cylinder block) -->
+  <rect x="30" y="62" width="50" height="68" rx="8" ry="8"
+        fill="#4fc3f7" stroke="#1f2937" stroke-width="2.2"
+        stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Dial face (circle on front of body) -->
+  <circle cx="55" cy="92" r="20"
+          fill="#fbbf24" stroke="#1f2937" stroke-width="2.2"
+          stroke-linejoin="round"/>
+
+  <!-- Dial inner ring (subtle detail) -->
+  <circle cx="55" cy="92" r="16"
+          fill="none" stroke="#1f2937" stroke-width="1.4"
+          stroke-linejoin="round"/>
+
+  <!-- Tick marks around dial -->
+  <!-- 12 o'clock -->
+  <line x1="55" y1="77" x2="55" y2="80"
+        stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- 1 o'clock -->
+  <line x1="63" y1="79.3" x2="61.6" y2="81.7"
+        stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- 2 o'clock -->
+  <line x1="69.7" y1="85" x2="67.5" y2="86.5"
+        stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- 3 o'clock -->
+  <line x1="71" y1="92" x2="74" y2="92"
+        stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- 4 o'clock -->
+  <line x1="69.7" y1="99" x2="67.5" y2="97.5"
+        stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- 5 o'clock -->
+  <line x1="63" y1="104.7" x2="61.6" y2="102.3"
+        stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- 6 o'clock -->
+  <line x1="55" y1="107" x2="55" y2="110"
+        stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- 7 o'clock -->
+  <line x1="47" y1="104.7" x2="48.4" y2="102.3"
+        stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- 8 o'clock -->
+  <line x1="40.3" y1="99" x2="42.5" y2="97.5"
+        stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- 9 o'clock -->
+  <line x1="36" y1="92" x2="39" y2="92"
+        stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- 10 o'clock -->
+  <line x1="40.3" y1="85" x2="42.5" y2="86.5"
+        stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- 11 o'clock -->
+  <line x1="47" y1="79.3" x2="48.4" y2="81.7"
+        stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Needle pointing to about 2 o'clock (some weight shown) -->
+  <line x1="55" y1="92" x2="66" y2="82"
+        stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- Needle pivot dot -->
+  <circle cx="55" cy="92" r="2.5"
+          fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
+
+  <!-- Pan support neck (connects body top to pan) -->
+  <rect x="48" y="50" width="14" height="14" rx="3" ry="3"
+        fill="#37536b" stroke="#1f2937" stroke-width="2.2"
+        stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Pan (flat tray on top) -->
+  <rect x="18" y="42" width="74" height="10" rx="5" ry="5"
+        fill="#7d8389" stroke="#1f2937" stroke-width="2.2"
+        stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Pan rim highlight line -->
+  <line x1="23" y1="45" x2="87" y2="45"
+        stroke="#1f2937" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+
+</svg>

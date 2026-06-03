@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 140" width="110" height="140">
+  <!-- Beaker body: wide cylinder shape, open top with slight flare/spout on one side -->
+  <!-- Main body trapezoid (slightly wider at top) -->
+  <polygon points="18,30 92,30 86,128 24,128" fill="#e8f4fb" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Blue liquid fill (inside beaker, about 40% full from bottom) -->
+  <!-- Liquid region clipped to body shape: from y=78 to y=128 on same trapezoid -->
+  <polygon points="22,78 88,78 86,128 24,128" fill="#4fc3f7" stroke="none"/>
+
+  <!-- Beaker top rim (wide rectangle across top) -->
+  <rect x="15" y="23" width="80" height="10" rx="2" fill="#d0e8f0" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Pouring spout: a notch/lip on the top-right of the rim -->
+  <polygon points="82,23 95,18 98,23 92,23" fill="#d0e8f0" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Redraw body outline on top of liquid to ensure clean edges -->
+  <polygon points="18,30 92,30 86,128 24,128" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Bottom of beaker (flat base) -->
+  <rect x="24" y="125" width="62" height="6" rx="2" fill="#c5dde8" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Liquid surface line -->
+  <line x1="22" y1="78" x2="88" y2="78" stroke="#37536b" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Tick marks on the right side of beaker body -->
+  <!-- Tick at ~90% fill level -->
+  <line x1="78" y1="46" x2="88" y2="46" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Tick at ~70% fill level -->
+  <line x1="79" y1="58" x2="89" y2="58" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Tick at ~50% fill level (at liquid surface) -->
+  <line x1="80" y1="69" x2="89" y2="69" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Tick at ~30% fill level (below surface, in liquid) -->
+  <line x1="81" y1="90" x2="89" y2="90" stroke="#37536b" stroke-width="2" stroke-linecap="round"/>
+  <!-- Tick at ~10% fill level (in liquid) -->
+  <line x1="82" y1="111" x2="89" y2="111" stroke="#37536b" stroke-width="2" stroke-linecap="round"/>
+</svg>

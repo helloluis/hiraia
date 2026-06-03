@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 200" width="230" height="200">
+  <!-- small cold balloon -->
+  <ellipse cx="42" cy="58" rx="20" ry="24" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M38 81 L46 81 L43 89 Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M43 89 C40 96 48 100 43 108" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- arrow showing growth -->
+  <path d="M68 60 L92 60" fill="none" stroke="#2e7d32" stroke-width="3" stroke-linecap="round"/>
+  <path d="M88 54 L96 60 L88 66 Z" fill="#2e7d32" stroke="#2e7d32" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- large hot balloon (expanded) -->
+  <ellipse cx="135" cy="48" rx="34" ry="40" fill="#e53935" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M129 87 L141 87 L135 98 Z" fill="#e53935" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M135 98 C131 108 142 113 135 124" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- flame under the large balloon -->
+  <path d="M135 150 C120 142 124 128 132 122 C130 132 138 130 137 122 C146 128 150 142 135 150 Z" fill="#fbbf24" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M135 148 C128 143 130 134 135 130 C140 134 142 143 135 148 Z" fill="#e53935" stroke="none"/>
+
+  <!-- burner base -->
+  <rect x="120" y="150" width="30" height="8" rx="2" fill="#9aa0a6" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <rect x="131" y="158" width="8" height="20" fill="#9aa0a6" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <rect x="118" y="178" width="34" height="7" rx="2" fill="#9aa0a6" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- graph axes -->
+  <line x1="180" y1="190" x2="180" y2="100" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="180" y1="190" x2="224" y2="190" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M176 105 L180 98 L184 105 Z" fill="#1f2937" stroke="#1f2937" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M219 186 L226 190 L219 194 Z" fill="#1f2937" stroke="#1f2937" stroke-width="1.5" stroke-linejoin="round"/>
+
+  <!-- rising straight line V vs T -->
+  <line x1="182" y1="186" x2="222" y2="106" stroke="#1565c0" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- axis labels: V and T -->
+  <text x="170" y="100" font-family="Arial, sans-serif" font-size="13" font-style="italic" fill="#1f2937" text-anchor="middle">V</text>
+  <text x="224" y="200" font-family="Arial, sans-serif" font-size="13" font-style="italic" fill="#1f2937" text-anchor="middle">T</text>
+</svg>

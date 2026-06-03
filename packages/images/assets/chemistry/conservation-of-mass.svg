@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 190" width="220" height="190">
+  <!-- base -->
+  <rect x="96" y="150" width="28" height="14" rx="3" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <rect x="80" y="164" width="60" height="9" rx="3" fill="#8d6e4f" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- central column -->
+  <rect x="106" y="55" width="8" height="98" rx="3" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- fulcrum knob -->
+  <circle cx="110" cy="52" r="6" fill="#fbbf24" stroke="#1f2937" stroke-width="2.2"/>
+  <!-- level beam -->
+  <rect x="30" y="48" width="160" height="8" rx="4" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+
+  <!-- left hanger strings -->
+  <line x1="40" y1="54" x2="40" y2="92" stroke="#1f2937" stroke-width="2"/>
+  <line x1="72" y1="54" x2="72" y2="92" stroke="#1f2937" stroke-width="2"/>
+  <!-- right hanger strings -->
+  <line x1="148" y1="54" x2="148" y2="92" stroke="#1f2937" stroke-width="2"/>
+  <line x1="180" y1="54" x2="180" y2="92" stroke="#1f2937" stroke-width="2"/>
+
+  <!-- left pan -->
+  <path d="M28 92 H84 L74 108 H38 Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- right pan -->
+  <path d="M136 92 H192 L182 108 H146 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+
+  <!-- LEFT PAN molecules: 2 H2 (blue) + O2 (red) -->
+  <!-- H2 #1 -->
+  <circle cx="34" cy="84" r="6" fill="#1565c0" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="44" cy="84" r="6" fill="#1565c0" stroke="#1f2937" stroke-width="2"/>
+  <!-- H2 #2 -->
+  <circle cx="56" cy="84" r="6" fill="#1565c0" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="66" cy="84" r="6" fill="#1565c0" stroke="#1f2937" stroke-width="2"/>
+  <!-- O2 -->
+  <circle cx="46" cy="72" r="7" fill="#e53935" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="58" cy="72" r="7" fill="#e53935" stroke="#1f2937" stroke-width="2"/>
+
+  <!-- arrow (reaction) -->
+  <line x1="92" y1="80" x2="128" y2="80" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M128 80 L120 75 M128 80 L120 85" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- RIGHT PAN molecules: 2 H2O -->
+  <!-- H2O #1 -->
+  <circle cx="152" cy="72" r="7" fill="#e53935" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="145" cy="84" r="5.5" fill="#1565c0" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="159" cy="84" r="5.5" fill="#1565c0" stroke="#1f2937" stroke-width="2"/>
+  <!-- H2O #2 -->
+  <circle cx="176" cy="72" r="7" fill="#e53935" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="169" cy="84" r="5.5" fill="#1565c0" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="183" cy="84" r="5.5" fill="#1565c0" stroke="#1f2937" stroke-width="2"/>
+
+  <!-- equals sign under the balance to reinforce equality -->
+  <line x1="98" y1="128" x2="122" y2="128" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="98" y1="136" x2="122" y2="136" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+</svg>

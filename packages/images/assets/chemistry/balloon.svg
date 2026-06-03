@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 150" width="110" height="150">
+  <!-- Balloon body: inflated teardrop shape, wider top, tapering to knot bottom -->
+  <path d="M55 12 C20 12 10 38 10 58 C10 90 28 112 55 115 C82 112 100 90 100 58 C100 38 90 12 55 12 Z"
+        fill="#e53935" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Highlight reflection on balloon -->
+  <ellipse cx="38" cy="35" rx="9" ry="14"
+           fill="#ff8a80" stroke="none" opacity="0.55"/>
+  <!-- Knot at bottom of balloon -->
+  <path d="M55 115 C51 118 48 122 50 125 C52 128 58 128 60 125 C62 122 59 118 55 115 Z"
+        fill="#b71c1c" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- String hanging from knot -->
+  <path d="M55 127 C52 132 58 136 54 141 C51 145 57 148 55 150"
+        fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+</svg>
