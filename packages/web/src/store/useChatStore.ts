@@ -12,7 +12,7 @@ export interface UiMessage {
 }
 
 const DEFAULT_SERVER =
-  process.env.NEXT_PUBLIC_QVAC_URL || 'http://localhost:8080';
+  (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_QVAC_URL) || 'http://localhost:8080';
 
 interface ChatState {
   // auth
