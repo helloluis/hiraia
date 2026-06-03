@@ -1,10 +1,21 @@
-import type { TutorEngine, Message, TutorConfig } from '@hiraia/shared';
+import type { Message } from '@hiraia/shared';
+import { MODEL_INFO } from '@/config/model';
+
+export interface ChatOptions {
+  /**
+   * Per-request LoRA scales (llama.cpp server `lora` field): one entry per
+   * server-loaded adapter, e.g. [{id:0,scale:1}, {id:1,scale:0}]. Omit for base.
+   */
+  lora?: Array<{ id: number; scale: number }>;
+}
 
 /**
- * RemoteEngine - Connects to QVAC's OpenAI-compatible HTTP API
- * Used for web app to access remote QVAC server
+ * RemoteEngine - Connects to QVAC's OpenAI-compatible HTTP API.
+ * Used by the web demo to talk to a remote QVAC/llama.cpp server. It is a
+ * thin chat client (no on-device visuals/embeddings/RAG), so it does not
+ * implement the full TutorEngine interface.
  */
-export class RemoteEngine implements TutorEngine {
+export class RemoteEngine {
   private baseUrl: string;
   private isReady: boolean = false;
 
@@ -12,7 +23,7 @@ export class RemoteEngine implements TutorEngine {
     this.baseUrl = baseUrl;
   }
 
-  async initialize(config: TutorConfig): Promise<void> {
+  async initialize(): Promise<void> {
     try {
       // Test connection to QVAC server
       const response = await fetch(`${this.baseUrl}/v1/models`);
@@ -31,9 +42,26 @@ export class RemoteEngine implements TutorEngine {
     return this.isReady;
   }
 
-  async *chat(messages: Message[]): AsyncGenerator<string, void, unknown> {
+  async *chat(messages: Message[], options: ChatOptions = {}): AsyncGenerator<string, void, unknown> {
     if (!this.isReady) {
       throw new Error('Engine not initialized');
+    }
+
+    const body: Record<string, unknown> = {
+      model: MODEL_INFO.serverModelId,
+      messages: messages.map(m => ({
+        role: m.role,
+        content: m.content,
+      })),
+      stream: true,
+      temperature: 0.7,
+      max_tokens: 512,
+    };
+
+    // Apply the per-language LoRA scales (llama.cpp server `lora` field).
+    // Adapters must be pre-loaded on the server via --lora flags (see config/model.ts).
+    if (options.lora && options.lora.length > 0) {
+      body.lora = options.lora;
     }
 
     const response = await fetch(`${this.baseUrl}/v1/chat/completions`, {
@@ -41,16 +69,7 @@ export class RemoteEngine implements TutorEngine {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        model: 'qwen3-1.7b',
-        messages: messages.map(m => ({
-          role: m.role,
-          content: m.content,
-        })),
-        stream: true,
-        temperature: 0.7,
-        max_tokens: 2048,
-      }),
+      body: JSON.stringify(body),
     });
 
     if (!response.ok) {
