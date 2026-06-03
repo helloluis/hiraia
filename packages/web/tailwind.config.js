@@ -9,6 +9,7 @@ export default {
     extend: {
       fontFamily: {
         title: ['var(--font-title)', 'Mansalva', 'cursive'],
+        display: ['var(--font-display)', 'Caveat Brush', 'cursive'],
         hand: ['var(--font-sans)', 'Patrick Hand', 'cursive'],
         serif: ['var(--font-serif)', 'Patrick Hand', 'cursive'],
         sans: ['var(--font-sans)', 'Patrick Hand', 'cursive'],

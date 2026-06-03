@@ -126,7 +126,7 @@ export function AuthScreen() {
       <div className="w-full bg-[#fcfdfd] py-16 sm:py-24 px-6 md:px-12 lg:px-24 border-b border-gray-100">
         <div className="max-w-7xl mx-auto">
           {/* Main Section Header */}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#0c343d] font-semibold tracking-tight leading-tight max-w-4xl mb-16 md:mb-20">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display text-[#0c343d] tracking-tight leading-tight max-w-4xl mb-16 md:mb-20">
             <span className="italic font-bold">hiraia</span> is a personal AI tutor in your pocket, built with QVAC
           </h2>
 
@@ -142,7 +142,7 @@ export function AuthScreen() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg sm:text-xl font-sans font-bold text-[#0c343d] mb-2">
+                  <h3 className="text-lg sm:text-xl font-display text-[#0c343d] mb-2">
                     Fine-tuned open-weights LLMs
                   </h3>
                   <ul className="list-disc pl-5 text-gray-600 space-y-1.5 text-sm sm:text-base leading-relaxed">
@@ -160,7 +160,7 @@ export function AuthScreen() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg sm:text-xl font-sans font-bold text-[#0c343d] mb-2">
+                  <h3 className="text-lg sm:text-xl font-display text-[#0c343d] mb-2">
                     Offline mode
                   </h3>
                   <ul className="list-disc pl-5 text-gray-600 space-y-1.5 text-sm sm:text-base leading-relaxed">
@@ -178,7 +178,7 @@ export function AuthScreen() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg sm:text-xl font-sans font-bold text-[#0c343d] mb-2">
+                  <h3 className="text-lg sm:text-xl font-display text-[#0c343d] mb-2">
                     Hybrid model
                   </h3>
                   <p className="text-gray-600 text-sm sm:text-base leading-relaxed pl-1">
@@ -195,7 +195,7 @@ export function AuthScreen() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg sm:text-xl font-sans font-bold text-[#0c343d] mb-2">
+                  <h3 className="text-lg sm:text-xl font-display text-[#0c343d] mb-2">
                     Entry-level phone requirements
                   </h3>
                   <p className="text-gray-600 text-sm sm:text-base leading-relaxed pl-1">
@@ -247,7 +247,7 @@ export function AuthScreen() {
 
             {/* Right Column: Descriptions */}
             <div className="space-y-4 sm:space-y-6">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif italic text-teal-300 font-semibold leading-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-display text-teal-300 leading-tight">
                 Why we built hiraia
               </h2>
               <p className="text-base sm:text-lg text-slate-200/90 leading-relaxed max-w-xl">

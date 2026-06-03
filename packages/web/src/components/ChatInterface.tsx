@@ -2,13 +2,9 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useChatStore } from '@/store/useChatStore';
-import ReactMarkdownRaw from 'react-markdown';
 import { MODEL_INFO, MODEL_STATS_LINE, LANGUAGES, type LanguageKey } from '@/config/model';
 import { AuthScreen } from './AuthScreen';
-
-// react-markdown 10's component type isn't assignable to the React 19 JSX
-// component type (types-only mismatch); cast to a simple component shape.
-const ReactMarkdown = ReactMarkdownRaw as unknown as React.ComponentType<{ children: string }>;
+import { AssistantMessage } from './AssistantMessage';
 
 export function ChatInterface() {
   const [input, setInput] = useState('');
@@ -196,9 +192,7 @@ export function ChatInterface() {
                       }`}
                     >
                       {message.role === 'assistant' ? (
-                        <div className="prose prose-sm max-w-none">
-                          <ReactMarkdown>{message.content}</ReactMarkdown>
-                        </div>
+                        <AssistantMessage content={message.content} streaming={message.id == null} />
                       ) : (
                         <p className="whitespace-pre-wrap">{message.content}</p>
                       )}
