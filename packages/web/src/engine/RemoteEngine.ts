@@ -1,5 +1,13 @@
-import type { Message } from '@hiraia/shared';
 import { MODEL_INFO } from '@/config/model';
+
+// Local message shape (kept self-contained so the client bundle has zero
+// dependency on the @hiraia/shared workspace, which transitively resolves into
+// @qvac/sdk's bare-runtime browser shims and crashes hydration).
+export interface Message {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+  timestamp?: Date;
+}
 
 export interface ChatOptions {
   /**
