@@ -137,6 +137,19 @@ def cmd_report(a):
                             FROM responses GROUP BY run_id"""):
         print(f"  {row[0]:20} n={row[1]} lang_ok={row[2]} eng_heavy={row[3]} "
               f"repetitive={row[4]} ends_q={row[5]} avg_words={row[6]}")
+    # human thumbs (only if the column exists / anything rated)
+    cols = [r[1] for r in c.execute("PRAGMA table_info(responses)")]
+    if "human_thumb" in cols:
+        print("\n=== HUMAN THUMBS (👍/👎) ===")
+        for row in c.execute("""SELECT run_id, COUNT(*),
+                                SUM(CASE WHEN human_thumb=1 THEN 1 ELSE 0 END),
+                                SUM(CASE WHEN human_thumb=0 THEN 1 ELSE 0 END),
+                                SUM(CASE WHEN human_thumb IS NULL THEN 1 ELSE 0 END)
+                                FROM responses GROUP BY run_id"""):
+            n, up, dn, un = row[1], row[2], row[3], row[4]
+            rated = up + dn
+            pct = f"{round(100*up/rated)}% 👍" if rated else "—"
+            print(f"  {row[0]:20} 👍={up} 👎={dn} unrated={un}  ({pct} of {rated} rated)")
 
 def main():
     ap = argparse.ArgumentParser()

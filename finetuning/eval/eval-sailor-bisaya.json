@@ -1,0 +1,542 @@
+{
+ "summary": {
+  "adapter": "/workspace/output/sailor-bisaya/adapter-bisaya-f16.gguf",
+  "base": "/workspace/models/sailor2-3b-chat-f16.gguf",
+  "lang": "cebuano",
+  "n": 25,
+  "lang_ok": 25,
+  "english_heavy": 0,
+  "repetitive": 1,
+  "too_short": 1,
+  "ends_question": 23,
+  "avg_words": 90,
+  "runtime_s": 201
+ },
+ "results": [
+  {
+   "id": "ceb-01",
+   "lang": "cebuano",
+   "grade": 3,
+   "register": "vague",
+   "topic": "states of matter / general",
+   "prompt": "unsa man ni solid liquid gas maam",
+   "reply": "\b-\b \bNindot kaayo nga pangutana, kay kining tulo mao ang tulo ka states of matter!\n\nAng solid kay lunsay nga porma sama sa bato o yelo; ang liquid kay nagapuno sa porma sa sudlanan sama sa tubig; ug ang gas kay nagtuyok-tuyok ug dili makahunahuna og porma sama sa hangin. Ang pagbalhin tawagon og **state change**.\n\nKaron pangatarungani: sa yelo nga gisagol sa tubig, unsa man ang mahitabo sa gidaghanon sa tubig nga mahimong gas, ug ngano kaha nga importante kini sa ref ug freezer?",
+   "scores": {
+    "words": 85,
+    "ceb_ratio": 0.341,
+    "tag_ratio": 0.071,
+    "eng_ratio": 0.012,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.6,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-02",
+   "lang": "cebuano",
+   "grade": 3,
+   "register": "misspelled",
+   "topic": "photosynthesis",
+   "prompt": "unsa man ang potosintesis",
+   "reply": "\b \bNindot nga pangutana! Ang **photosynthesis** mao ang paagi sa tanang tanom sa kalibutan sa paghimo og kaugalingong pagkaon.\n\nSamtang nagdawat ang dahon og kahayag sa adlaw, carbon dioxide, ug tubig, ang chlorophyll nagsama og enerhiya aron himuon ang glucose ug oxygen. Mao kini ang rason nganong ang mga tanom mao ang nagpabilin nga berde ug naghatag og oxygen para nato.\n\nSa imong hunahuna, unsang matang sa tanom ang labing naghimo og daghang oxygen kung itandi sa uban?",
+   "scores": {
+    "words": 77,
+    "ceb_ratio": 0.26,
+    "tag_ratio": 0.143,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.65,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-03",
+   "lang": "cebuano",
+   "grade": 3,
+   "register": "lazy_keywords",
+   "topic": "animals / living things",
+   "prompt": "mananap tanom",
+   "reply": "\b \bNindot kaayo nga pangutana! Ang mga buhing butang kay **life**, ug ang sekreto mao ang ilang **cell**.\n\nKining cell adunay nucleus (control center) ug cell membrane (pader). Ang tanang buhing butang gama sa cells, ug ang tanan nga buhing butang nagkinahanglan og tubig, hangin, ug pagkaon. Ang cell mao ang pundasyon sa tibuok buhing butang.\n\nSa imong hunahuna, unsa kaha ang mahitabo sa usa ka cell kung kini makagawas sa iyang control center ug dili na makabalik?",
+   "scores": {
+    "words": 77,
+    "ceb_ratio": 0.273,
+    "tag_ratio": 0.117,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.62,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-04",
+   "lang": "cebuano",
+   "grade": 4,
+   "register": "vague",
+   "topic": "homework help / unspecified",
+   "prompt": "maam tabangi ko sa assignment",
+   "reply": "\b \bSige, walay problema, andam ko motabang! Unsa man ang assignment nimo karong adlawa, ug asa nimo gikinahanglan ang tabang?",
+   "scores": {
+    "words": 19,
+    "ceb_ratio": 0.211,
+    "tag_ratio": 0.105,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": true,
+    "uniq_ratio": 0.89,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-05",
+   "lang": "cebuano",
+   "grade": 4,
+   "register": "txtspeak",
+   "topic": "plants vs animals",
+   "prompt": "unsa diay kalainan sa tanom ug hayop",
+   "reply": "\b \bNindot kaayo nga pangutana, kay daghan ang naglibog ana! Ang **plant** (tanom) walay kaugalingong **ginhawa** o **respiration**, mao nga ang ilang enerhiya gikan sa adlaw, sa ilang gigutom nga mga tanom, ug sa ilang palibot.\n\nAng **animal** (hayop) makahimo og kaugalingong enerhiya pinaagi sa **photosynthesis**—sama sa alibangbang—apan kinahanglan sila og pagkaon, tubig, ug hangin sama nato. Mao nga ang tanom mao ang atong \"pagkaon sa yuta\" o soil food web.\n\nSa imong hunahuna, unsa kaha'y mahitabo kung putlon ang tanang tanom sa usa ka lasang?",
+   "scores": {
+    "words": 87,
+    "ceb_ratio": 0.276,
+    "tag_ratio": 0.092,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.66,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-06",
+   "lang": "cebuano",
+   "grade": 4,
+   "register": "misspelled",
+   "topic": "gravity",
+   "prompt": "unsa man ang grabiti maam",
+   "reply": "\b \bMaayong pangutana! Ang **gravity** mao ang puwersa nga nagtukmod sa mga butang nga nagkaduol sa usag usa, ug kini tungod sa gravity mismo.\n\nMakita nato kini sa gravity sa bulan nga nagtukmod kanato nga maglakaw-lakaw sa ibabaw niini. Ang gravity dili lang makapaduol, kay nagdugtong usab kini og force tali sa duha ka butang nga magkalahi og mass, sama sa batas ni Newton nga F = ma. Kung mas bug-at ang butang, mas kusog ang gravity.\n\nSa imong hunahuna, ngano man nga kung magsaka ka sa taas nga building, mas gaan ka og timbang?",
+   "scores": {
+    "words": 95,
+    "ceb_ratio": 0.316,
+    "tag_ratio": 0.063,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.62,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-07",
+   "lang": "cebuano",
+   "grade": 5,
+   "register": "lazy_keywords",
+   "topic": "force / acceleration",
+   "prompt": "gravity acceleration",
+   "reply": "\b \bNindot nga pangutana! Ang **gravity** mao ang puwersa nga nagduso sa mga butang paubos gikan sa bituon, ug ang acceleration niini gitawag og **gravity acceleration** nga mga 9.8 meters kada segundo kwadrado sa ibabaw sa Yuta.\n\nKung mas bug-at ang butang, mas dako ang gravity acceleration niini. Pananglitan, ang usa ka sako nga bugas mas lisod ibira paubos kaysa usa ka sako nga asukal bisan parehas ang gitas-on.\n\nSa imong hunahuna, unsa kaha ang mahitabo kung kalit nga mahimong gamay ang gravity acceleration sa Yuta?",
+   "scores": {
+    "words": 86,
+    "ceb_ratio": 0.209,
+    "tag_ratio": 0.128,
+    "eng_ratio": 0.012,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.59,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-08",
+   "lang": "cebuano",
+   "grade": 5,
+   "register": "codeswitch",
+   "topic": "digestive system",
+   "prompt": "maam unsaon man pag digest sa pagkaon sa tiyan",
+   "reply": "\b \bNindot kaayo nga pangutana, kay ang tiyan mao ang nagsugod sa pag-process sa pagkaon! Sa sulod sa tiyan, ang acid mokusog sa pagkatunaw sa protina, sama sa pagluto sa kan-on sa kalayo.\n\nKung walay acid, dili matunaw ang protina, mao nga kinahanglan ta'g pagkaon nga maghatag og acid, sama sa kalamansi, ug magtagad dayon sa tiyan aron dili kini sobra ka-asido.\n\nKaron sulayi: kung magtulog ka dayon human mokaon, ngano man nga kinahanglan nato'y 30 minutos una?",
+   "scores": {
+    "words": 79,
+    "ceb_ratio": 0.342,
+    "tag_ratio": 0.051,
+    "eng_ratio": 0.013,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.63,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-09",
+   "lang": "cebuano",
+   "grade": 5,
+   "register": "incomplete",
+   "topic": "leaves / photosynthesis (incomplete)",
+   "prompt": "nganong berde man ang",
+   "reply": "\b \bMaayo kaayo nga pangutana! Ang kolor sa mga tanom nagsulti sa mga rason nga nagtubo sila sa ingon nga porma.\n\nAng berdeng kolor nagsuyop sa kahayag gikan sa adlaw, ug ang pula ug asul nga kolor mibalik sa atong mata. Mao nga ang berdeng dahon daw berde nga kahayag. Apan ang puti, dalag, ug pula nga kolor dili mosuyop sa kahayag, mao nga ang mga tanom magpintura sa ilang kaugalingon aron makakuha sa kahayag.\n\nKaron sulayi: kung ang berdeng dahon magsuyop sa tanang kahayag, ngano man nga kinahanglan pa gani og pula ug asul nga kolor ang kahayag aron makita nato kini?",
+   "scores": {
+    "words": 102,
+    "ceb_ratio": 0.343,
+    "tag_ratio": 0.108,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.53,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-10",
+   "lang": "cebuano",
+   "grade": 5,
+   "register": "vague",
+   "topic": "unspecified science",
+   "prompt": "wala ko kasabot sa among leksyon",
+   "reply": "\b \bWalay problema, tinuod nga makalibog ang pipila ka leksyon, pero maayo kini aron masabtan nimo ang imong nadunggan sa balita! Atong tan-awon kini sa mas sayon nga paagi.\n\nAng **cell** mao ang pinakagamay nga buhi nga bahin: ang tanang buhing butang gibuhat sa cell, ug naa kini sa tanang parte sa imong lawas. Ang tanan nagsalig sa usa'g-usa, sama sa tindera nga nagsalig sa kusina aron makahimo og pagkaon.\n\nKung ang cell mao ang pinakagamay nga buhi nga bahin, sa imong hunahuna, ngano man nga ang imong dugo dili na magdala og cell paingon sa imong kamot, ug unsa ang nahitabo sa cell didto?",
+   "scores": {
+    "words": 106,
+    "ceb_ratio": 0.377,
+    "tag_ratio": 0.094,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.58,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-11",
+   "lang": "cebuano",
+   "grade": 6,
+   "register": "misspelled",
+   "topic": "ecosystem",
+   "prompt": "unsa man ang ekosistem",
+   "reply": "\b \bMaayong pangutana! Ang **ekosistem** mao ang nagtinabangay nga komunidad sa tanang buhi ug wala molihok nga butang sa usa ka lugar, sama sa dakong lawa diin ang isda, tanom, plankton, ug bakterya nagtinabangay.\n\nAng adlaw mao ang gigikanan sa enerhiya, ug ang mga tanom maghimo niini pinaagi sa photosynthesis. Ang mga herbivores mokaon sa tanom, ug ang mga carnivores mokaon sa herbivores. Kon mawala ang usa ka parte niini, mobalhin ang enerhiya sa sunod nga lebel hangtod mawala ang tibuok sistema. Pananglitan, kon madaot ang mga tanom, mawad-an ang mga mananap ug ang tawo.\n\nSa imong hunahuna, unsang mga parte sa ekosistem ang labing importante ug ngano?",
+   "scores": {
+    "words": 108,
+    "ceb_ratio": 0.222,
+    "tag_ratio": 0.194,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.54,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-12",
+   "lang": "cebuano",
+   "grade": 6,
+   "register": "lazy_keywords",
+   "topic": "solar system",
+   "prompt": "planeta adlaw kalibutan",
+   "reply": "\b \bNindot kaayo nga pangutana! Ang **planeta** mao ang mga dako nga bola nga bato sa atong solar system nga nagtuyok sa adlaw, kasagaran adunay atmospera, ug dili gani kinahanglan adunay kinabuhi didto. Ang atong planeta mao ang **kalibutan** o Earth, diin kita nagpuyo.\n\nAng mga planeta gipangalan-pangalan sumala sa Latin nga adlaw, sunod sa Jupiter hangtod sa Pluto. Ang Earth usa ka **terrestrial planet** kay naa kini atmospera, tubig, ug nagtuyok sa iyang kaugalingon.\n\nSa imong hunahuna, ngano man nga importante kaayo ang pag-atiman sa atong kalibutan?",
+   "scores": {
+    "words": 89,
+    "ceb_ratio": 0.326,
+    "tag_ratio": 0.101,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.64,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-13",
+   "lang": "cebuano",
+   "grade": 6,
+   "register": "codeswitch",
+   "topic": "electricity",
+   "prompt": "maam unsaon paggana sa kuryente sa balay",
+   "reply": "\b \bNindot nga pangutana! Ang kuryente sa balay naggikan sa power plant nga nagsunog og gas o nukleyar, dayon gipadala kini pinaagi sa mga linya, ug didto sa balay, ang kuryente gitabangan sa mga transformer aron ma-adjust ang kusog.\n\nMao nga kung mag-ulan ug mahuyang ang kuryente sa kilid sa balay, sa taas nga poste mas kusog pa gihapon. Ang kuryente moabot sa balay pinaagi sa wire, ug sa kada wire naa'y voltage nga nagtuyok aron modagan ang kuryente.\n\nKung ang kuryente gitabangan sa mga transformer aron ma-adjust ang kusog, sa imong hunahuna ngano man nga dili maayo kung magbutang ta og dako kaayong transformer sa balay?",
+   "scores": {
+    "words": 109,
+    "ceb_ratio": 0.312,
+    "tag_ratio": 0.101,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.52,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-14",
+   "lang": "cebuano",
+   "grade": 7,
+   "register": "clean",
+   "topic": "cells",
+   "prompt": "Maam, unsa man ang kalainan sa plant cell ug animal cell?",
+   "reply": "\b \bMaayo nga pangutana! Ang tanang buhing butang adunay cells, ug ang cells sa tanom ug hayop lahi-lahi og trabaho. Sa tanom, ang cell naay espesyal nga parte nga gitawag og chloroplasts nga mokuha sa kahayag sa adlaw aron maghimo og pagkaon pinaagi sa photosynthesis.\n\nSa hayop, ang cell mao ang nagdumala sa tanan, sama sa building worker nga maghimog muscle ug blood cells.\n\nSa imong hunahuna, ngano kaha nga ang tanom kinahanglan maghimo og kaugalingong pagkaon ug ang hayop dili?",
+   "scores": {
+    "words": 81,
+    "ceb_ratio": 0.296,
+    "tag_ratio": 0.086,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.57,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-15",
+   "lang": "cebuano",
+   "grade": 7,
+   "register": "misspelled",
+   "topic": "photosynthesis",
+   "prompt": "giunsa man pag potosintesis sa mga dahon",
+   "reply": "\b \bNindot kaayo nga pangutana, kay ang mga dahon mao ang naghimo nato! Ang paghimo og pagkaon gitawag og **photosynthesis**, ug ang mga dahon nagkinahanglan og kahayag sa adlaw, tubig, ug carbon dioxide isip mga hilis.\n\nAng berde nga parte sa dahon adunay gagmayng cell nga gitawag og chloroplasts, ug didto mahitabo ang paghimo og pagkaon. Ang carbon dioxide gikan sa hangin mosulod sa chloroplasts, ug ang kahayag sa adlaw ug tubig mosuporta, ug ang resulta mao ang glucose nga mahimong pagkaon para sa tanom.\n\nNgano man nga ang mga tanom dili makakaon og protein o fats sama nato, ug unsa kahay gihimo sa chloroplasts nga dili nato mahimo?",
+   "scores": {
+    "words": 108,
+    "ceb_ratio": 0.287,
+    "tag_ratio": 0.148,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.51,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-16",
+   "lang": "cebuano",
+   "grade": 7,
+   "register": "txtspeak",
+   "topic": "matter / atoms",
+   "prompt": "unsa man gud ang atom",
+   "reply": "\b \bMaayo kaayo nga pangutana! Ang atom mao ang pinakagamay nga bahin sa tanang butang, sama sa building blocks sa tanang butang.\n\nAng atom naay tulo ka pangunahing parte: ang **proton** sa sentro (positive) ug ang **electron** nga naglibot (negative). Ang gidaghanon sa proton mao ang nagtino kung unsang elemento ang atom, sama sa oxygen (8 ka proton).\n\nAng nucleus mas bug-at pa sa atom, samtang ang **electron** nagtuyok sa gawas nga adunay kaugalingong gibug-aton. Sama sa usa ka tawo nga nagtuyok sa palibot sa usa ka poste.\n\nKung ang atom sa oxygen naay 8 ka proton, unsa kahay numero sa atom niini?",
+   "scores": {
+    "words": 102,
+    "ceb_ratio": 0.245,
+    "tag_ratio": 0.108,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.52,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-17",
+   "lang": "cebuano",
+   "grade": 8,
+   "register": "lazy_keywords",
+   "topic": "Newton's laws",
+   "prompt": "newton law motion",
+   "reply": "\b \bNindot kaayo nga pangutana! Ang **Newton's Laws of Motion** mao ang tulo ka lagda sa paglihok, ang labing importante nga giya sa pisika. Ang unang balaod nag-ingon nga ang acceleration (kasagaran gitawag og \"force\") katumbas sa net force nga gibahin sa mass: F = m × a.\n\nAng ikaduha nag-ingon nga ang force mao ang hinungdan sa acceleration: F = ma. Ang ikatulo nag-ingon nga kung adunay force sa usa ka butang, mahitabo usab kana sa opposite ug equal nga force sa lain.\n\nPananglitan, kung magduso ka og kahon ug kalit kining mobalik, naglihok kini tungod sa **Newton's second law**.\n\nKung magdagan ka ug kalit mohunong, unsa man nga balaod ang nakatabang sa imong lawas nga mobalik sa",
+   "scores": {
+    "words": 118,
+    "ceb_ratio": 0.28,
+    "tag_ratio": 0.085,
+    "eng_ratio": 0.008,
+    "lang_ok": true,
+    "ends_question": false,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.58,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-18",
+   "lang": "cebuano",
+   "grade": 8,
+   "register": "codeswitch",
+   "topic": "periodic table",
+   "prompt": "maam unsa may gamit sa periodic table",
+   "reply": "\b \bNindot nga pangutana! Ang **periodic table** mao ang organisadong listahan sa tanang element, gipang-organisar sumala sa ilang atomic number ug periodicity.\n\nKung susihon nimo ang mga elemento sa parehas nga grupo (sama sa Group 1 o Period 3), ang ilang kinaiya magkapareho kay parehas silag kauban nga atom. Sama sa **alkali metals** sama sa sodium, tanan sila reactive ug asinon.\n\nKung ang usa ka element mas bug-at pa kaysa laing parehas og grupo, asa man kaha niini nga hilis ang ilang posisyon, ug ngano man?",
+   "scores": {
+    "words": 85,
+    "ceb_ratio": 0.224,
+    "tag_ratio": 0.082,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.71,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-19",
+   "lang": "cebuano",
+   "grade": 8,
+   "register": "vague",
+   "topic": "unspecified physics",
+   "prompt": "unsa man tong puwersa maam wala ko katuo",
+   "reply": "\b \bAy, maayo nga gipangutana nimo, kay ang **puwersa** mao ang tinuod nga linya sa kinabuhi sa science!\n\nAng puwersa kay ang pagbalhin og momentum gikan sa usa ka butang ngadto sa lain, ug nagkinahanglan kini og **force** (F) nga gi-ihap sa F = mass × acceleration. Pananglitan, kung mokaon ka og bugas, ang imong tiyan motulod sa pagkaon paubos, mao nga naa kay puwersa.\n\nKung duha ka butang ang molihok sa parehas nga direksyon apan managsama og mass, managsama ba sila og acceleration? Ug ngano man?",
+   "scores": {
+    "words": 85,
+    "ceb_ratio": 0.306,
+    "tag_ratio": 0.071,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.61,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-20",
+   "lang": "cebuano",
+   "grade": 9,
+   "register": "misspelled",
+   "topic": "mitosis / meiosis",
+   "prompt": "unsa man ang maytosis ug miyosis",
+   "reply": "\b \bMaayong pangutana! Ang **mitosis** mao ang ordinaryong pagbahin sa cell, usa ka para sa pagtubo ug pag-ayo, ug ang resulta kay 2 ka cells nga parehas og DNA.\n\nAng **meiosis** mao ang pagbahin alang sa paghimo og sex cells, sama sa sperm ug egg, nga maghatag og katunga sa DNA matag usa. Mao nga sa meiosis, ang matag cell mahimong 23 ka chromosome, imbis ang normal nga 46. Ang resulta kay 23 ka chromosome sa sperm ug 23 sa egg, nga sagol sa matag usa, mao nga ang bata adunay 46 ka chromosome.\n\nSa imong tan-aw, ngano kaha nga ang meiosis naghatag og 23 ka chromosome sa matag sex cell imbis 46?",
+   "scores": {
+    "words": 106,
+    "ceb_ratio": 0.283,
+    "tag_ratio": 0.104,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.43,
+    "repetitive": true
+   }
+  },
+  {
+   "id": "ceb-21",
+   "lang": "cebuano",
+   "grade": 9,
+   "register": "clean",
+   "topic": "chemical bonding",
+   "prompt": "Maam, nganong magbugkos man ang mga atom aron mahimong molecule?",
+   "reply": "\b \bNindot kaayo nga pangutana, kay kini mao ang sekreto sa tanang butang! Ang atoms nagtuyok-tuyok ug nagdala og ilang kaugalingong lihok—kana ang **electron motion**.\n\nApan kung mag-uban sila, ang ilang lihok kinahanglan magkasinabot, mao nga magbugkos sila sama sa pag-arrange sa puzzles. Pananglitan, ang H2O nga tubig, ang oxygen ug hydrogen magbugkos kay nagkinahanglan kini og 8 ka electron sa ilang kinatibuk-ang shell.\n\nKung ang carbon gusto og 8 ka electron, unsa kahay klase sa atom ang iyang makuha aron mokumpleto ug mahimong stable?",
+   "scores": {
+    "words": 88,
+    "ceb_ratio": 0.261,
+    "tag_ratio": 0.102,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.66,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-22",
+   "lang": "cebuano",
+   "grade": 9,
+   "register": "lazy_keywords",
+   "topic": "electricity / Ohm",
+   "prompt": "voltage current resistance",
+   "reply": "\b \bNindot nga listahan! Ang **voltage** mao ang kusog nga nagduso sa kuryente aron moagos, ang **current** mao ang gidaghanon sa kasamtangang moagos kada oras, ug ang **resistance** mao ang gidak-on sa kausaban sa current kung mag-usab ang resistensya.\n\nAng **Ohm's Law** nag-ingon nga V = I × R, busa kung gusto nimong ibalik ang voltage o resistance, pwede nimong i-change ang current. Pananglitan, kung gusto nimong i-balanse ang 12 volts sa usa ka bombilya nga 6 volts ra ang mahimong moagos, kinahanglan nimo ibutang og 2 ka resistensya nga 6 ang matag usa sa series.\n\nSa imong hunahuna, unsa kahay mahitabo sa current kung dugangan nimo og resistensya ang usa ka circuit?",
+   "scores": {
+    "words": 111,
+    "ceb_ratio": 0.234,
+    "tag_ratio": 0.126,
+    "eng_ratio": 0.009,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.55,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-23",
+   "lang": "cebuano",
+   "grade": 10,
+   "register": "codeswitch",
+   "topic": "genetics",
+   "prompt": "maam pano ma inherit ang traits gikan sa parents",
+   "reply": "\b \bNindot kaayo nga pangutana! Ang **inheritance** mao ang paagi nga ang mga traits naaay pagsunod-sunod, ug ang importante mao ang **DNA** — ang instruction book para sa imong lawas.\n\nSa matag cell, ang DNA gisulod sa mga **chromosomes**, ug ang matag chromosome naay duha ka kopya. Kung ang usa gikan sa inahan ug ang usa sa amahan, maayo nga parehas ang duha ka kopya aron parehas ang matun-an.\n\nPananglitan, ang kolor sa mata ug ang gitas-on sa lawas maoy nakatino kung unsa ka kahawig sa imong ginikanan.\n\nKung ang imong utok adunay upat ka chromosome, pila man ka chromosome ang naa sa matag cell?",
+   "scores": {
+    "words": 106,
+    "ceb_ratio": 0.264,
+    "tag_ratio": 0.179,
+    "eng_ratio": 0.009,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.54,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-24",
+   "lang": "cebuano",
+   "grade": 10,
+   "register": "misspelled",
+   "topic": "mole / chemistry",
+   "prompt": "unsa man ang mol sa kemistri maam",
+   "reply": "\b \bMaayo kaayo nga pangutana! Ang **mol** mao ang sukod sa gidaghanon sa atom o substance.\n\nAng atom gibahin sa proton, neutron, ug electron, ug kini gibahin sa molar mass. Ang mole gisumpay sa 6.022 x 10^23 ka particle, mao nga ang 1 mole kay 6.022 x 10^23 ka particle.\n\nPananglitan, ang oxygen naay 12 ka proton ug 16 ka electron. Aron mahibaw-an ang molar mass, kuhaa ang proton (8) gikan sa oxygen, dayon kuhaa ang neutron (0), ug i-total ang electron (8 + 16 = 24). Ang molar mass kay 64 gramo kada mole.\n\nKaron sulayi kini: ang hydrogen naay 1 ka proton ug 1 ka electron. Pila kaha ka gramo ang molar mass niini,",
+   "scores": {
+    "words": 100,
+    "ceb_ratio": 0.21,
+    "tag_ratio": 0.13,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": false,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.46,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-25",
+   "lang": "cebuano",
+   "grade": 10,
+   "register": "vague",
+   "topic": "unspecified / lazy",
+   "prompt": "exam ugma wala pa ko nagtuon tabang",
+   "reply": "\b \bAyaw kabalaka, naa pa'y panahon! Hunahunaa ang exam sama sa hagit: kung mag-antos ka, mas lisod siya. Sa imong hunahuna, ngano man nga importante nga magtuon kag maayo sa wala pa ang exam?",
+   "scores": {
+    "words": 34,
+    "ceb_ratio": 0.324,
+    "tag_ratio": 0.059,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.85,
+    "repetitive": false
+   }
+  }
+ ]
+}
