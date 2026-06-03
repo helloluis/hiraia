@@ -63,7 +63,9 @@ export class RemoteEngine {
       })),
       stream: true,
       temperature: 0.7,
-      max_tokens: 512,
+      // Fits the server's -c 2048 context (leaves ~1k for system + history);
+      // 512 was clipping normal answers mid-sentence.
+      max_tokens: 1024,
     };
 
     // Apply the per-language LoRA scales (llama.cpp server `lora` field).
