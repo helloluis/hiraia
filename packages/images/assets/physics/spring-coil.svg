@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 150" width="80" height="150">
+  <!-- Top anchor plate -->
+  <rect x="16" y="5" width="48" height="9" rx="3" fill="#b0bec5" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Bottom anchor plate -->
+  <rect x="16" y="136" width="48" height="9" rx="3" fill="#b0bec5" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!--
+    Vertical coil spring: 8 loops, each 14px tall.
+    Spring spans y=14 to y=136.
+    Each loop: front arc (right side, x center 40, peak x=64) + back arc (left side, peak x=16).
+    Back arcs drawn first, then front arcs layered on top.
+
+    Coil crossing points (where wire crosses the center line, at x=40):
+      y = 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 136(tie)
+    Front arc: from y_top to y_bot on RIGHT side (x=40 -> peak x=64 -> x=40)
+    Back arc: from y_top to y_bot on LEFT side (x=40 -> peak x=16 -> x=40), but offset by half a loop
+
+    Simpler: each full coil = front-right half + back-left half, each 7px tall.
+    The 8 coils give:
+      Loop 1: front right y14->y21, back left y21->y28
+      Loop 2: front right y28->y35, back left y35->y42
+      ...etc
+    Each "half" arc: cubic bezier M x1,y1 C x1,ymid xpeak,ymid xpeak,ymid C xpeak,ymid x2,ymid x2,y2
+    Actually simpler cubic: M x1,y1 C ctrl1 ctrl2 x2,y2
+
+    Front-right half (14px tall, peak at x=64):
+      M 40,y1  C 64,y1  64,y2  40,y2
+    Back-left half (14px tall, peak at x=16):
+      M 40,y1  C 16,y1  16,y2  40,y2
+  -->
+
+  <!-- BACK arcs (left side of coil, drawn first so front overlaps) -->
+  <!-- Loop 1 back: y21 to y28 -->
+  <path d="M 40 21 C 16 21 16 28 40 28" fill="none" stroke="#9e9e9e" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 40 21 C 16 21 16 28 40 28" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Loop 2 back: y35 to y42 -->
+  <path d="M 40 35 C 16 35 16 42 40 42" fill="none" stroke="#9e9e9e" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 40 35 C 16 35 16 42 40 42" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Loop 3 back: y49 to y56 -->
+  <path d="M 40 49 C 16 49 16 56 40 56" fill="none" stroke="#9e9e9e" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 40 49 C 16 49 16 56 40 56" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Loop 4 back: y63 to y70 -->
+  <path d="M 40 63 C 16 63 16 70 40 70" fill="none" stroke="#9e9e9e" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 40 63 C 16 63 16 70 40 70" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Loop 5 back: y77 to y84 -->
+  <path d="M 40 77 C 16 77 16 84 40 84" fill="none" stroke="#9e9e9e" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 40 77 C 16 77 16 84 40 84" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Loop 6 back: y91 to y98 -->
+  <path d="M 40 91 C 16 91 16 98 40 98" fill="none" stroke="#9e9e9e" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 40 91 C 16 91 16 98 40 98" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Loop 7 back: y105 to y112 -->
+  <path d="M 40 105 C 16 105 16 112 40 112" fill="none" stroke="#9e9e9e" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 40 105 C 16 105 16 112 40 112" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Loop 8 back: y119 to y126 -->
+  <path d="M 40 119 C 16 119 16 126 40 126" fill="none" stroke="#9e9e9e" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 40 119 C 16 119 16 126 40 126" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- FRONT arcs (right side, drawn on top) -->
+  <!-- Loop 1 front: y14 to y21 -->
+  <path d="M 40 14 C 64 14 64 21 40 21" fill="none" stroke="#78909c" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 40 14 C 64 14 64 21 40 21" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Loop 2 front: y28 to y35 -->
+  <path d="M 40 28 C 64 28 64 35 40 35" fill="none" stroke="#78909c" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 40 28 C 64 28 64 35 40 35" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Loop 3 front: y42 to y49 -->
+  <path d="M 40 42 C 64 42 64 49 40 49" fill="none" stroke="#78909c" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 40 42 C 64 42 64 49 40 49" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Loop 4 front: y56 to y63 -->
+  <path d="M 40 56 C 64 56 64 63 40 63" fill="none" stroke="#78909c" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 40 56 C 64 56 64 63 40 63" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Loop 5 front: y70 to y77 -->
+  <path d="M 40 70 C 64 70 64 77 40 77" fill="none" stroke="#78909c" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 40 70 C 64 70 64 77 40 77" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Loop 6 front: y84 to y91 -->
+  <path d="M 40 84 C 64 84 64 91 40 91" fill="none" stroke="#78909c" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 40 84 C 64 84 64 91 40 91" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Loop 7 front: y98 to y105 -->
+  <path d="M 40 98 C 64 98 64 105 40 105" fill="none" stroke="#78909c" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 40 98 C 64 98 64 105 40 105" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Loop 8 front: y112 to y119 -->
+  <path d="M 40 112 C 64 112 64 119 40 119" fill="none" stroke="#78909c" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 40 112 C 64 112 64 119 40 119" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Final front: y126 to y136 (connector to bottom plate) -->
+  <path d="M 40 126 C 64 126 64 133 40 133" fill="none" stroke="#78909c" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 40 126 C 64 126 64 133 40 133" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Short vertical connectors at top and bottom to tie coil to plates -->
+  <line x1="40" y1="14" x2="40" y2="14" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="40" y1="133" x2="40" y2="136" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

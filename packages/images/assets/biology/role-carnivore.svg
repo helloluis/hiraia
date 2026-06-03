@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" width="240" height="180">
+  <rect x="0" y="0" width="240" height="180" fill="#dff0fa"/>
+  <rect x="0" y="132" width="240" height="48" fill="#cfe6a8"/>
+  <path d="M0 132 Q60 120 120 132 T240 132 L240 140 L0 140 Z" fill="#7cb342" stroke="#2e7d32" stroke-width="2" stroke-linejoin="round"/>
+  <circle cx="36" cy="34" r="18" fill="#fbbf24" stroke="#b45309" stroke-width="2.4"/>
+
+  <!-- Predator: eagle/cat-like raptor on the right -->
+  <g stroke="#1f2937" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+    <!-- body -->
+    <path d="M196 70 Q224 76 222 108 Q220 132 196 134 Q174 132 172 108 Q172 80 196 70 Z" fill="#8d6e4f"/>
+    <!-- wing -->
+    <path d="M190 86 Q166 92 164 116 Q180 116 192 106 Z" fill="#5d4632"/>
+    <!-- tail -->
+    <path d="M204 128 Q214 146 206 152 Q200 148 198 132 Z" fill="#5d4632"/>
+    <!-- head -->
+    <circle cx="200" cy="58" r="16" fill="#ffffff"/>
+    <!-- eye -->
+    <circle cx="204" cy="55" r="3" fill="#1f2937" stroke="none"/>
+    <!-- beak -->
+    <path d="M214 58 Q226 60 218 68 Q214 66 212 62 Z" fill="#fbbf24"/>
+    <!-- legs/talons -->
+    <path d="M188 134 L186 150 M186 150 L180 156 M186 150 L186 158 M186 150 L192 156" fill="none"/>
+    <path d="M204 134 L206 150 M206 150 L200 156 M206 150 L206 158 M206 150 L212 156" fill="none"/>
+  </g>
+
+  <!-- Prey: small mouse on the left ground -->
+  <g stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <ellipse cx="58" cy="130" rx="24" ry="15" fill="#9aa0a6"/>
+    <circle cx="34" cy="124" r="11" fill="#9aa0a6"/>
+    <circle cx="30" cy="116" r="5" fill="#cdd1d6"/>
+    <circle cx="33" cy="124" r="2.4" fill="#1f2937" stroke="none"/>
+    <path d="M24 126 Q18 124 16 128" fill="none"/>
+    <path d="M24 130 Q18 130 16 132" fill="none"/>
+    <path d="M80 132 Q98 130 100 142" fill="none"/>
+  </g>
+
+  <!-- Feeding arrow from prey to predator -->
+  <g stroke="#e53935" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M92 110 Q130 84 162 92"/>
+    <path d="M162 92 L152 88 M162 92 L153 98" fill="none"/>
+  </g>
+</svg>

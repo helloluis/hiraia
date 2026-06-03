@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="200" height="240">
+  <!-- Leaves at top -->
+  <path d="M100 38 C70 18 38 28 36 50 C36 70 70 72 100 56 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M100 38 C130 18 162 28 164 50 C164 70 130 72 100 56 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M52 50 H88" stroke="#2e7d32" stroke-width="2" stroke-linecap="round"/>
+  <path d="M112 50 H148" stroke="#2e7d32" stroke-width="2" stroke-linecap="round"/>
+  <path d="M88 44 L88 56 M148 44 L148 56" stroke="#2e7d32" stroke-width="1.6" stroke-linecap="round"/>
+
+  <!-- Stem outer walls (cut-away) -->
+  <path d="M84 60 L84 168" stroke="#2e7d32" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+  <path d="M116 60 L116 168" stroke="#2e7d32" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+  <rect x="84" y="60" width="32" height="108" fill="#a5d36b" stroke="none"/>
+
+  <!-- Xylem tube (left, blue, water up) -->
+  <rect x="90" y="64" width="9" height="100" rx="3" fill="#4fc3f7" stroke="#1565c0" stroke-width="2.2"/>
+  <!-- Phloem tube (right, green, food down) -->
+  <rect x="101" y="64" width="9" height="100" rx="3" fill="#aed581" stroke="#2e7d32" stroke-width="2.2"/>
+
+  <!-- Roots -->
+  <path d="M100 168 L84 168 L116 168 Z" fill="#8d6e4f" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M100 168 C100 188 96 196 78 214" fill="none" stroke="#8d6e4f" stroke-width="4" stroke-linecap="round"/>
+  <path d="M100 168 C100 188 104 196 122 214" fill="none" stroke="#8d6e4f" stroke-width="4" stroke-linecap="round"/>
+  <path d="M100 168 C100 192 100 204 100 224" fill="none" stroke="#8d6e4f" stroke-width="4" stroke-linecap="round"/>
+  <path d="M88 192 C80 198 74 200 64 206" fill="none" stroke="#8d6e4f" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M112 192 C120 198 126 200 136 206" fill="none" stroke="#8d6e4f" stroke-width="2.6" stroke-linecap="round"/>
+
+  <!-- Xylem up-arrows (blue) -->
+  <g stroke="#1565c0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M94.5 150 L94.5 130"/>
+    <path d="M91 135 L94.5 130 L98 135"/>
+    <path d="M94.5 118 L94.5 98"/>
+    <path d="M91 103 L94.5 98 L98 103"/>
+    <path d="M94.5 86 L94.5 70"/>
+    <path d="M91 75 L94.5 70 L98 75"/>
+  </g>
+
+  <!-- Phloem down-arrows (green) -->
+  <g stroke="#2e7d32" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M105.5 78 L105.5 98"/>
+    <path d="M102 93 L105.5 98 L109 93"/>
+    <path d="M105.5 110 L105.5 130"/>
+    <path d="M102 125 L105.5 130 L109 125"/>
+    <path d="M105.5 142 L105.5 158"/>
+    <path d="M102 153 L105.5 158 L109 153"/>
+  </g>
+</svg>

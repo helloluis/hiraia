@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 150" width="90" height="150">
+
+  <!-- Left arm: slim tapered shape, curves from center-top to lower-left -->
+  <path d="M 42 32 C 40 50 34 85 24 128 L 18 126 C 28 83 34 48 38 30 Z"
+        fill="#fbbf24" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Right arm: slim tapered shape, curves from center-top to lower-right -->
+  <path d="M 48 32 C 50 50 56 85 66 128 L 72 126 C 62 83 56 48 52 30 Z"
+        fill="#fbbf24" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Left jaw/tip at bottom -->
+  <path d="M 18 126 C 12 130 10 138 14 142 C 18 144 22 140 22 136 L 24 128 Z"
+        fill="#b45309" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Right jaw/tip at bottom -->
+  <path d="M 72 126 C 78 130 80 138 76 142 C 72 144 68 140 68 136 L 66 128 Z"
+        fill="#b45309" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Spring/hinge loop at top — two arms join here with a small U-loop -->
+  <path d="M 38 30 C 36 12 54 12 52 30"
+        fill="none" stroke="#b45309" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M 38 30 C 36 12 54 12 52 30"
+        fill="none" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Rivet dot at hinge -->
+  <circle cx="45" cy="29" r="3" fill="#7d8389" stroke="#1f2937" stroke-width="1.5"/>
+
+</svg>

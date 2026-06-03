@@ -54,7 +54,7 @@ describe('renderScene', () => {
 
     const result = renderScene(scene);
 
-    expect(result.svg).toContain('path');
+    expect(result.svg).toContain('<rect');
     expect(result.elementCount).toBe(1);
   });
 
@@ -77,7 +77,7 @@ describe('renderScene', () => {
 
     const result = renderScene(scene);
 
-    expect(result.svg).toContain('path');
+    expect(result.svg).toContain('<ellipse');
     expect(result.elementCount).toBe(1);
   });
 
@@ -265,7 +265,7 @@ describe('renderScene', () => {
 
     const result = renderScene(scene);
 
-    expect(result.svg).toContain('path');
+    expect(result.svg).toContain('<circle');
     expect(result.svg).toContain('6p 6n');
     expect(result.svg).toContain('Carbon');
   });

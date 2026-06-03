@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" width="220" height="220">
+  <!-- box (object) in center -->
+  <rect x="86" y="86" width="48" height="48" rx="3" fill="#fbbf24" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- center dot -->
+  <circle cx="110" cy="110" r="3" fill="#1f2937"/>
+
+  <!-- Normal force: up (green, equal to gravity) -->
+  <line x1="110" y1="86" x2="110" y2="22" stroke="#7cb342" stroke-width="5" stroke-linecap="round"/>
+  <polygon points="110,12 103,28 117,28" fill="#7cb342" stroke="#7cb342" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Gravity: down (blue) -->
+  <line x1="110" y1="134" x2="110" y2="198" stroke="#1565c0" stroke-width="5" stroke-linecap="round"/>
+  <polygon points="110,208 103,192 117,192" fill="#1565c0" stroke="#1565c0" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Applied push: to the right (red, large) -->
+  <line x1="134" y1="110" x2="200" y2="110" stroke="#e53935" stroke-width="5" stroke-linecap="round"/>
+  <polygon points="210,110 194,103 194,117" fill="#e53935" stroke="#e53935" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Friction: to the left (grey, smaller, opposing push) -->
+  <line x1="86" y1="110" x2="44" y2="110" stroke="#9aa0a6" stroke-width="5" stroke-linecap="round"/>
+  <polygon points="34,110 50,103 50,117" fill="#9aa0a6" stroke="#9aa0a6" stroke-width="2" stroke-linejoin="round"/>
+</svg>

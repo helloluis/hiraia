@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 220" width="240" height="220">
+  <!-- Tier 1: base / producers (plants) - green -->
+  <path d="M20 200 L220 200 L196 152 L44 152 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Tier 2: primary consumers - light green -->
+  <path d="M44 152 L196 152 L172 104 L68 104 Z" fill="#aed581" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Tier 3: secondary consumers - orange -->
+  <path d="M68 104 L172 104 L148 56 L92 56 Z" fill="#ef6c00" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Tier 4: apex predator - red -->
+  <path d="M92 56 L148 56 L120 8 Z" fill="#e53935" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Base icon: plant / grass (producers) -->
+  <g>
+    <path d="M120 192 L120 168" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M120 180 Q104 174 99 162 Q116 163 120 180 Z" fill="#2e7d32" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M120 180 Q136 174 141 162 Q124 163 120 180 Z" fill="#2e7d32" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M120 190 Q108 186 104 178 Q117 178 120 190 Z" fill="#2e7d32" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M120 190 Q132 186 136 178 Q123 178 120 190 Z" fill="#2e7d32" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tier 2 icon: grasshopper / insect (primary consumer) -->
+  <g>
+    <ellipse cx="120" cy="130" rx="20" ry="9" fill="#558b2f" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="103" cy="128" r="7" fill="#558b2f" stroke="#1f2937" stroke-width="2.3"/>
+    <circle cx="101" cy="126" r="2" fill="#1f2937" stroke="none"/>
+    <path d="M99 122 Q92 115 88 116" fill="none" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M132 128 Q140 118 146 124" fill="none" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M124 137 L130 146" fill="none" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M114 137 L110 146" fill="none" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tier 3 icon: frog (secondary consumer) -->
+  <g>
+    <ellipse cx="120" cy="84" rx="17" ry="13" fill="#7cb342" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="111" cy="74" r="5" fill="#ffffff" stroke="#1f2937" stroke-width="2.3"/>
+    <circle cx="129" cy="74" r="5" fill="#ffffff" stroke="#1f2937" stroke-width="2.3"/>
+    <circle cx="111" cy="74" r="2" fill="#1f2937" stroke="none"/>
+    <circle cx="129" cy="74" r="2" fill="#1f2937" stroke="none"/>
+    <path d="M113 88 Q120 93 127 88" fill="none" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M105 94 Q100 99 104 100" fill="#7cb342" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M135 94 Q140 99 136 100" fill="#7cb342" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tier 4 icon: bird of prey / eagle head (apex predator) -->
+  <g>
+    <circle cx="120" cy="34" r="11" fill="#5d4632" stroke="#1f2937" stroke-width="2.3"/>
+    <path d="M120 23 Q112 17 116 14 Q122 19 120 23 Z" fill="#5d4632" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M120 23 Q128 17 124 14 Q118 19 120 23 Z" fill="#5d4632" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="116" cy="32" r="2.3" fill="#1f2937" stroke="none"/>
+    <circle cx="124" cy="32" r="2.3" fill="#1f2937" stroke="none"/>
+    <path d="M115 39 L120 45 L125 39 Z" fill="#fbbf24" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+  </g>
+</svg>

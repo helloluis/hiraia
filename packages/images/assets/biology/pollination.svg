@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" width="200" height="150">
+  <!-- ground -->
+  <line x1="14" y1="138" x2="186" y2="138" stroke="#2e7d32" stroke-width="2.4" stroke-linecap="round"/>
+
+  <!-- LEFT FLOWER -->
+  <line x1="42" y1="138" x2="42" y2="78" stroke="#2e7d32" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M42 118 C30 112 24 116 22 124 C32 126 39 122 42 118 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- petals -->
+  <ellipse cx="42" cy="54" rx="11" ry="15" fill="#f3a6b5" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <ellipse cx="60" cy="68" rx="15" ry="11" fill="#f3a6b5" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <ellipse cx="42" cy="82" rx="11" ry="15" fill="#f3a6b5" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <ellipse cx="24" cy="68" rx="15" ry="11" fill="#f3a6b5" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <circle cx="42" cy="68" r="9" fill="#fbbf24" stroke="#1f2937" stroke-width="2.2"/>
+
+  <!-- RIGHT FLOWER -->
+  <line x1="158" y1="138" x2="158" y2="88" stroke="#2e7d32" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M158 122 C170 116 176 120 178 128 C168 130 161 126 158 122 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- petals -->
+  <ellipse cx="158" cy="64" rx="11" ry="15" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <ellipse cx="176" cy="78" rx="15" ry="11" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <ellipse cx="158" cy="92" rx="11" ry="15" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <ellipse cx="140" cy="78" rx="15" ry="11" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <circle cx="158" cy="78" r="9" fill="#fbbf24" stroke="#1f2937" stroke-width="2.2"/>
+
+  <!-- dashed curved path arrow from left bloom to right bloom -->
+  <path d="M58 50 C90 22 118 30 140 56" fill="none" stroke="#7f1d1d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 5"/>
+  <path d="M140 56 L132 49 M140 56 L133 63" fill="none" stroke="#7f1d1d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- BEE in flight along the path -->
+  <g>
+    <!-- wings -->
+    <ellipse cx="94" cy="28" rx="8" ry="5" fill="#4fc3f7" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+    <ellipse cx="106" cy="28" rx="8" ry="5" fill="#4fc3f7" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+    <!-- body -->
+    <ellipse cx="100" cy="38" rx="14" ry="9" fill="#fbbf24" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- stripes -->
+    <path d="M97 30 L94 46" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M104 30 L102 47" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- head -->
+    <circle cx="114" cy="38" r="6" fill="#5d4632" stroke="#1f2937" stroke-width="2.2"/>
+  </g>
+
+  <!-- pollen dots carried/floating -->
+  <circle cx="76" cy="40" r="2.4" fill="#fbbf24" stroke="#b45309" stroke-width="1.2"/>
+  <circle cx="84" cy="48" r="2.4" fill="#fbbf24" stroke="#b45309" stroke-width="1.2"/>
+  <circle cx="92" cy="52" r="2.4" fill="#fbbf24" stroke="#b45309" stroke-width="1.2"/>
+  <circle cx="122" cy="48" r="2.4" fill="#fbbf24" stroke="#b45309" stroke-width="1.2"/>
+  <circle cx="130" cy="42" r="2.4" fill="#fbbf24" stroke="#b45309" stroke-width="1.2"/>
+  <circle cx="116" cy="54" r="2.4" fill="#fbbf24" stroke="#b45309" stroke-width="1.2"/>
+</svg>

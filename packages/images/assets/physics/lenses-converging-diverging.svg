@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 200" width="360" height="200">
+  <!-- ===== CONVERGING (convex) lens, left side ===== -->
+  <!-- principal axis -->
+  <line x1="10" y1="100" x2="170" y2="100" stroke="#1f2937" stroke-width="1.5" stroke-dasharray="5 4" stroke-linecap="round"/>
+
+  <!-- convex (biconvex) lens body -->
+  <path d="M85 40 Q105 100 85 160 Q65 100 85 40 Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- incoming parallel rays (top) -->
+  <line x1="18" y1="70" x2="82" y2="70" stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="18" y1="100" x2="82" y2="100" stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="18" y1="130" x2="82" y2="130" stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- refracted rays converging to focal point at (150,100) -->
+  <line x1="88" y1="70" x2="150" y2="100" stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="88" y1="100" x2="150" y2="100" stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="88" y1="130" x2="150" y2="100" stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- rays continue past focal point, diverging -->
+  <line x1="150" y1="100" x2="168" y2="91" stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="150" y1="100" x2="168" y2="109" stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- focal point marker -->
+  <circle cx="150" cy="100" r="3.5" fill="#1f2937"/>
+
+  <!-- direction arrows on incoming rays -->
+  <path d="M58 66 L66 70 L58 74 Z" fill="#e53935"/>
+  <path d="M58 126 L66 130 L58 134 Z" fill="#e53935"/>
+
+  <!-- ===== DIVERGING (concave) lens, right side ===== -->
+  <!-- principal axis -->
+  <line x1="190" y1="100" x2="350" y2="100" stroke="#1f2937" stroke-width="1.5" stroke-dasharray="5 4" stroke-linecap="round"/>
+
+  <!-- concave (biconcave) lens body -->
+  <path d="M255 40 Q278 100 255 160 L268 160 Q282 100 268 40 Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- incoming parallel rays -->
+  <line x1="198" y1="70" x2="262" y2="70" stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="198" y1="100" x2="262" y2="100" stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="198" y1="130" x2="262" y2="130" stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- refracted rays spreading apart (virtual focal point at 225,100 behind) -->
+  <line x1="262" y1="70" x2="338" y2="55" stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="262" y1="100" x2="338" y2="100" stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="262" y1="130" x2="338" y2="145" stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- dashed back-projections to virtual focus -->
+  <line x1="262" y1="70" x2="225" y2="100" stroke="#e53935" stroke-width="1.4" stroke-dasharray="4 4" stroke-linecap="round"/>
+  <line x1="262" y1="130" x2="225" y2="100" stroke="#e53935" stroke-width="1.4" stroke-dasharray="4 4" stroke-linecap="round"/>
+
+  <!-- virtual focal point marker -->
+  <circle cx="225" cy="100" r="3.5" fill="none" stroke="#1f2937" stroke-width="2"/>
+
+  <!-- direction arrows on incoming rays -->
+  <path d="M238 66 L246 70 L238 74 Z" fill="#e53935"/>
+  <path d="M238 126 L246 130 L238 134 Z" fill="#e53935"/>
+
+  <!-- arrows on spreading output rays -->
+  <path d="M322 56 L330 57 L325 64 Z" fill="#e53935"/>
+  <path d="M322 144 L325 136 L330 143 Z" fill="#e53935"/>
+</svg>

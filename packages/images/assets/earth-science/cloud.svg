@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 100" width="150" height="100">
+  <!-- Main cloud body built from overlapping circles/ellipses -->
+  <!-- Bottom flat base ellipse -->
+  <ellipse cx="75" cy="72" rx="52" ry="18" fill="#ffffff" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Large central puff -->
+  <circle cx="75" cy="52" r="26" fill="#ffffff" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Left puff -->
+  <circle cx="44" cy="62" r="18" fill="#ffffff" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Right puff -->
+  <circle cx="108" cy="62" r="18" fill="#ffffff" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Small top-left puff -->
+  <circle cx="55" cy="48" r="14" fill="#ffffff" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Small top-right puff -->
+  <circle cx="97" cy="50" r="13" fill="#ffffff" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Cover interior outlines with white fill shapes (no stroke) to clean up overlaps -->
+  <ellipse cx="75" cy="72" rx="51" ry="17" fill="#ffffff" stroke="none"/>
+  <circle cx="75" cy="52" r="25" fill="#ffffff" stroke="none"/>
+  <circle cx="44" cy="62" r="17" fill="#ffffff" stroke="none"/>
+  <circle cx="108" cy="62" r="17" fill="#ffffff" stroke="none"/>
+  <circle cx="55" cy="48" r="13" fill="#ffffff" stroke="none"/>
+  <circle cx="97" cy="50" r="12" fill="#ffffff" stroke="none"/>
+  <!-- Redraw outer silhouette as a clean compound path -->
+  <path d="M23 72
+    Q23 54 44 54
+    Q44 34 60 34
+    Q65 22 75 22
+    Q90 22 97 34
+    Q110 34 116 46
+    Q130 46 127 62
+    Q130 82 108 82
+    L44 82
+    Q23 82 23 72
+    Z"
+    fill="#ffffff" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

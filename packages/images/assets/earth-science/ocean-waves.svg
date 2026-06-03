@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 100" width="150" height="100">
+  <!-- Sky -->
+  <rect x="0" y="0" width="150" height="42" fill="#4fc3f7" stroke="none"/>
+  <!-- Horizon line -->
+  <line x1="0" y1="42" x2="150" y2="42" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <!-- Deep water background -->
+  <rect x="0" y="42" width="150" height="58" fill="#37536b" stroke="none"/>
+
+  <!-- Wave row 1 — back (lighter, smaller) -->
+  <path d="M0 52 Q12 46 24 52 Q36 58 48 52 Q60 46 72 52 Q84 58 96 52 Q108 46 120 52 Q132 58 144 52 L150 52 L150 60 L0 60 Z"
+        fill="#4fc3f7" stroke="#1f2937" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- White caps row 1 -->
+  <path d="M10 52 Q16 48 22 52" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+  <path d="M58 52 Q64 48 70 52" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+  <path d="M106 52 Q112 48 118 52" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Wave row 2 — mid -->
+  <path d="M0 65 Q15 57 30 65 Q45 73 60 65 Q75 57 90 65 Q105 73 120 65 Q135 57 150 65 L150 76 L0 76 Z"
+        fill="#4fc3f7" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- White caps row 2 -->
+  <path d="M18 65 Q26 59 34 65" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M78 65 Q86 59 94 65" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- Wave row 3 — front -->
+  <path d="M0 80 Q18 70 36 80 Q54 90 72 80 Q90 70 108 80 Q126 90 150 80 L150 100 L0 100 Z"
+        fill="#4fc3f7" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- White caps row 3 -->
+  <path d="M24 80 Q34 73 44 80" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M96 80 Q106 73 116 80" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

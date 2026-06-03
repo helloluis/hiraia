@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" width="240" height="200">
+  <!-- ===== Unzipped double helix backbones ===== -->
+  <!-- Left double-stranded region (still zipped) -->
+  <path d="M20 60 C40 50 40 90 20 80 C40 90 40 130 20 120 C40 130 40 100 20 110" fill="none" stroke="#1565c0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M70 60 C50 50 50 90 70 80 C50 90 50 130 70 120 C50 130 50 100 70 110" fill="none" stroke="#1565c0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Base-pair rungs in the zipped region -->
+  <line x1="29" y1="64" x2="61" y2="64" stroke="#9aa0a6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="33" y1="79" x2="57" y2="79" stroke="#9aa0a6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="29" y1="94" x2="61" y2="94" stroke="#9aa0a6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="33" y1="109" x2="57" y2="109" stroke="#9aa0a6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="29" y1="124" x2="61" y2="124" stroke="#9aa0a6" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- ===== Fork point ===== -->
+  <circle cx="78" cy="100" r="4" fill="#1f2937" stroke="#1f2937" stroke-width="2"/>
+
+  <!-- ===== Upper template strand (separated, going up-right) ===== -->
+  <path d="M78 92 C100 70 120 60 150 50 C175 42 200 40 222 40" fill="none" stroke="#1565c0" stroke-width="3" stroke-linecap="round"/>
+  <!-- New complementary strand pairing to upper template -->
+  <path d="M88 76 C110 60 130 52 158 44 C182 38 205 34 226 34" fill="none" stroke="#e53935" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.1 0"/>
+
+  <!-- Bases on upper template (top side) -->
+  <line x1="106" y1="65" x2="111" y2="55" stroke="#7cb342" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="130" y1="56" x2="135" y2="48" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="158" y1="47" x2="162" y2="40" stroke="#8e44ad" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="186" y1="42" x2="190" y2="36" stroke="#4fc3f7" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="210" y1="40" x2="214" y2="35" stroke="#7cb342" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- ===== Lower template strand (separated, going down-right) ===== -->
+  <path d="M78 108 C100 130 120 140 150 150 C175 158 200 160 222 160" fill="none" stroke="#1565c0" stroke-width="3" stroke-linecap="round"/>
+  <!-- New complementary strand pairing to lower template -->
+  <path d="M88 124 C110 140 130 148 158 156 C182 162 205 166 226 166" fill="none" stroke="#e53935" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Bases on lower template (bottom side) -->
+  <line x1="106" y1="135" x2="111" y2="145" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="130" y1="144" x2="135" y2="152" stroke="#7cb342" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="158" y1="153" x2="162" y2="160" stroke="#4fc3f7" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="186" y1="158" x2="190" y2="164" stroke="#8e44ad" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="210" y1="160" x2="214" y2="165" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Free-floating incoming nucleotide bases near the fork -->
+  <line x1="120" y1="92" x2="126" y2="98" stroke="#4fc3f7" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="128" y1="104" x2="134" y2="110" stroke="#8e44ad" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Direction arrow along the fork opening -->
+  <line x1="95" y1="100" x2="140" y2="100" stroke="#1f2937" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4"/>
+  <path d="M140 100 L132 96 M140 100 L132 104" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 210" width="220" height="210">
+  <circle cx="55" cy="55" r="34" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.4"/>
+  <rect x="42" y="42" width="11" height="11" rx="1.5" fill="#1565c0" stroke="#1f2937" stroke-width="1.4"/>
+  <rect x="55" y="42" width="11" height="11" rx="1.5" fill="#1565c0" stroke="#1f2937" stroke-width="1.4"/>
+  <rect x="42" y="55" width="11" height="11" rx="1.5" fill="#1565c0" stroke="#1f2937" stroke-width="1.4"/>
+  <rect x="55" y="55" width="11" height="11" rx="1.5" fill="#1565c0" stroke="#1f2937" stroke-width="1.4"/>
+
+  <circle cx="165" cy="55" r="34" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.4"/>
+  <circle cx="155" cy="48" r="6" fill="#1565c0" stroke="#1f2937" stroke-width="1.3"/>
+  <circle cx="172" cy="46" r="6" fill="#1565c0" stroke="#1f2937" stroke-width="1.3"/>
+  <circle cx="160" cy="62" r="6" fill="#1565c0" stroke="#1f2937" stroke-width="1.3"/>
+  <circle cx="176" cy="62" r="6" fill="#1565c0" stroke="#1f2937" stroke-width="1.3"/>
+  <circle cx="167" cy="71" r="6" fill="#1565c0" stroke="#1f2937" stroke-width="1.3"/>
+
+  <circle cx="110" cy="160" r="34" fill="#fbbf24" stroke="#1f2937" stroke-width="2.4"/>
+  <circle cx="98" cy="150" r="4.5" fill="#e53935" stroke="#1f2937" stroke-width="1.2"/>
+  <circle cx="120" cy="146" r="4.5" fill="#e53935" stroke="#1f2937" stroke-width="1.2"/>
+  <circle cx="124" cy="166" r="4.5" fill="#e53935" stroke="#1f2937" stroke-width="1.2"/>
+  <circle cx="100" cy="170" r="4.5" fill="#e53935" stroke="#1f2937" stroke-width="1.2"/>
+  <circle cx="112" cy="158" r="4.5" fill="#e53935" stroke="#1f2937" stroke-width="1.2"/>
+
+  <defs></defs>
+
+  <!-- Solid <-> Liquid (top) : melting (left->right) / freezing (right->left) -->
+  <path d="M91 44 L128 44" fill="none" stroke="#2e7d32" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M128 44 L120 40 M128 44 L120 48" fill="none" stroke="#2e7d32" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M129 66 L92 66" fill="none" stroke="#1565c0" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M92 66 L100 62 M92 66 L100 70" fill="none" stroke="#1565c0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Liquid <-> Gas (right) : condensation (gas->liquid up) / evaporation (liquid->gas down) -->
+  <path d="M132 135 L153 89" fill="none" stroke="#8e44ad" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M153 89 L144 93 M153 89 L151 99" fill="none" stroke="#8e44ad" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M168 90 L147 136" fill="none" stroke="#e53935" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M147 136 L156 132 M147 136 L149 126" fill="none" stroke="#e53935" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Solid <-> Gas (left) : sublimation (solid->gas down) / deposition (gas->solid up) -->
+  <path d="M52 90 L73 136" fill="none" stroke="#7cb342" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M73 136 L64 132 M73 136 L71 126" fill="none" stroke="#7cb342" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M88 135 L67 89" fill="none" stroke="#8d6e4f" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M67 89 L76 93 M67 89 L69 99" fill="none" stroke="#8d6e4f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 150" width="240" height="150">
+  <!-- DNA double helix (left) -->
+  <path d="M22 26 C42 40 22 54 42 68 C22 82 42 96 22 110" fill="none" stroke="#1565c0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M42 26 C22 40 42 54 22 68 C42 82 22 96 42 110" fill="none" stroke="#4fc3f7" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="29" y1="33" x2="35" y2="33" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <line x1="25" y1="47" x2="39" y2="47" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <line x1="29" y1="61" x2="35" y2="61" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <line x1="25" y1="75" x2="39" y2="75" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <line x1="29" y1="89" x2="35" y2="89" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <line x1="25" y1="103" x2="39" y2="103" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Arrow 1: transcription (DNA -> mRNA) -->
+  <line x1="50" y1="68" x2="74" y2="68" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M74 68 L67 64 M74 68 L67 72" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- mRNA single strand (middle) with colored bases -->
+  <path d="M84 50 C92 58 100 42 108 50 C116 58 124 42 132 50 C140 58 148 42 156 50" fill="none" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="86" y="52" width="6" height="9" rx="1.5" fill="#e53935" stroke="#1f2937" stroke-width="1.6"/>
+  <rect x="98" y="52" width="6" height="9" rx="1.5" fill="#2e7d32" stroke="#1f2937" stroke-width="1.6"/>
+  <rect x="110" y="52" width="6" height="9" rx="1.5" fill="#1565c0" stroke="#1f2937" stroke-width="1.6"/>
+  <rect x="122" y="52" width="6" height="9" rx="1.5" fill="#8e44ad" stroke="#1f2937" stroke-width="1.6"/>
+  <rect x="134" y="52" width="6" height="9" rx="1.5" fill="#e53935" stroke="#1f2937" stroke-width="1.6"/>
+  <rect x="146" y="52" width="6" height="9" rx="1.5" fill="#2e7d32" stroke="#1f2937" stroke-width="1.6"/>
+
+  <!-- Arrow 2: translation (mRNA -> ribosome) -->
+  <line x1="100" y1="78" x2="100" y2="98" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M100 98 L96 91 M100 98 L104 91" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Ribosome (two subunits) reading mRNA -->
+  <ellipse cx="118" cy="120" rx="26" ry="13" fill="#f3a6b5" stroke="#1f2937" stroke-width="2.2"/>
+  <ellipse cx="118" cy="108" rx="22" ry="9" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.2"/>
+  <!-- mRNA threading through ribosome -->
+  <line x1="86" y1="116" x2="150" y2="116" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+
+  <!-- tRNA bringing amino acid -->
+  <path d="M112 96 L112 104 M124 96 L124 104" fill="none" stroke="#8d6e4f" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="112" cy="90" r="6" fill="#7cb342" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="124" cy="90" r="6" fill="#fbbf24" stroke="#1f2937" stroke-width="2"/>
+
+  <!-- Arrow 3: ribosome -> growing protein chain -->
+  <line x1="148" y1="116" x2="172" y2="116" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M172 116 L165 112 M172 116 L165 120" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Growing protein chain (amino acid beads) -->
+  <path d="M182 116 L196 104 L210 116 L224 104 L232 114" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="182" cy="116" r="6.5" fill="#e53935" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="196" cy="104" r="6.5" fill="#4fc3f7" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="210" cy="116" r="6.5" fill="#7cb342" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="224" cy="104" r="6.5" fill="#8e44ad" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="232" cy="114" r="6.5" fill="#fbbf24" stroke="#1f2937" stroke-width="2"/>
+</svg>

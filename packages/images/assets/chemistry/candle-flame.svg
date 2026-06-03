@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 130" width="80" height="130">
+
+  <!-- Candle body top ellipse fill (to look like a cylinder top face) -->
+  <ellipse
+    cx="40" cy="75" rx="22" ry="6"
+    fill="#f5f0e8"
+    stroke="none"
+  />
+
+  <!-- Candle body (rectangle for cylinder sides) -->
+  <rect
+    x="18" y="75" width="44" height="42"
+    fill="#f5f0e8"
+    stroke="none"
+  />
+
+  <!-- Candle body bottom ellipse fill -->
+  <ellipse
+    cx="40" cy="117" rx="22" ry="6"
+    fill="#e8e0d0"
+    stroke="none"
+  />
+
+  <!-- Candle body outline: rectangle sides -->
+  <rect
+    x="18" y="75" width="44" height="42"
+    fill="none"
+    stroke="#1f2937"
+    stroke-width="2.5"
+    stroke-linejoin="round"
+  />
+
+  <!-- Candle top ellipse outline -->
+  <ellipse
+    cx="40" cy="75" rx="22" ry="6"
+    fill="none"
+    stroke="#1f2937"
+    stroke-width="2.5"
+    stroke-linejoin="round"
+  />
+
+  <!-- Candle bottom ellipse outline -->
+  <ellipse
+    cx="40" cy="117" rx="22" ry="6"
+    fill="none"
+    stroke="#1f2937"
+    stroke-width="2.5"
+    stroke-linejoin="round"
+  />
+
+  <!-- Wax drip on left side (melted wax dripping down) -->
+  <path
+    d="M25,75 Q22,82 24,90 Q25,94 27,90 Q28,82 28,75"
+    fill="#f0e8d0"
+    stroke="#1f2937"
+    stroke-width="1.5"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+  />
+
+  <!-- Wick -->
+  <line
+    x1="40" y1="75" x2="40" y2="62"
+    stroke="#3f2a10"
+    stroke-width="2"
+    stroke-linecap="round"
+  />
+
+  <!-- Wick tip glow (small orange circle at wick top) -->
+  <circle
+    cx="40" cy="62" r="2"
+    fill="#ff8f00"
+    stroke="none"
+  />
+
+  <!-- Flame inner bright core (yellow, slightly smaller teardrop) -->
+  <path
+    d="M40,20 C34,28 31,40 33,52 C35,60 45,60 47,52 C49,40 46,28 40,20 Z"
+    fill="#fbbf24"
+    stroke="none"
+  />
+
+  <!-- Flame outer orange teardrop -->
+  <path
+    d="M40,14 C32,24 28,40 30,54 C32,63 48,63 50,54 C52,40 48,24 40,14 Z"
+    fill="#fb8c00"
+    stroke="#1f2937"
+    stroke-width="2"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+  />
+
+  <!-- Flame inner bright core (yellow, slightly smaller teardrop), drawn on top -->
+  <path
+    d="M40,20 C34,28 31,40 33,52 C35,60 45,60 47,52 C49,40 46,28 40,20 Z"
+    fill="#fbbf24"
+    stroke="none"
+  />
+
+  <!-- Flame highlight (small pale yellow) -->
+  <path
+    d="M40,26 C37,32 36,40 37,48 C37.5,52 42.5,52 43,48 C44,40 43,32 40,26 Z"
+    fill="#fff9c4"
+    stroke="none"
+  />
+
+</svg>

@@ -19,7 +19,10 @@ const DEFAULT_STYLE = {
   strokeWidth: 1.5,
   fontSize: 14,
   fontFamily: 'Comic Sans MS, cursive',
-  roughness: 1.2,
+  // Hand-drawn intensity. Now drives a scene-level SVG displacement filter
+  // (feTurbulence + feDisplacementMap) rather than per-primitive jitter, so the
+  // wobble also applies to embedded library assets. 0 = perfectly crisp.
+  roughness: 4,
 };
 
 /** Validate a Scene object and return any validation errors. */
@@ -76,6 +79,12 @@ export function renderScene(scene: Scene, seed = 42): RenderResult {
   const style = { ...DEFAULT_STYLE, ...scene.style };
   const rng = createRng(seed);
 
+  // The sketchy look is a single scene-level displacement filter applied to all
+  // geometry (including embedded assets). Elements themselves render as clean
+  // shapes — roughness 0 — so we don't double-roughen.
+  const sketchScale = style.roughness ?? 0;
+  const elementStyle = { ...style, roughness: 0 };
+
   const elementCount = countElements(scene.elements);
 
   // Reserve vertical bands for title and caption outside the user's drawing area.
@@ -92,17 +101,24 @@ export function renderScene(scene: Scene, seed = 42): RenderResult {
 
   const totalHeight = titlePad + scene.height + captionPad;
 
-  const renderedElements: string[] = [];
+  // Scene-level text is collected separately so it can sit on a crisp,
+  // un-filtered layer. Text *inside* assets/figures/groups stays with its
+  // shape (and its transform), so functional labels like a magnet's N/S
+  // remain correctly positioned.
+  const shapeParts: string[] = [];
+  const textParts: string[] = [];
 
   for (const el of scene.elements) {
     if (el.type.startsWith('figure:')) {
-      renderedElements.push(renderFigure(el, style, rng, warnings));
+      shapeParts.push(renderFigure(el, elementStyle, rng, warnings));
     } else if (el.type === 'asset') {
-      renderedElements.push(renderAsset(el, style, rng, warnings));
+      shapeParts.push(renderAsset(el, elementStyle, rng, warnings));
     } else if (el.type === 'compose') {
-      renderedElements.push(renderCompose(el, style, rng, warnings));
+      shapeParts.push(renderCompose(el, elementStyle, rng, warnings));
+    } else if (el.type === 'text') {
+      textParts.push(renderElement(el, elementStyle, rng, warnings));
     } else {
-      renderedElements.push(renderElement(el, style, rng, warnings));
+      shapeParts.push(renderElement(el, elementStyle, rng, warnings));
     }
   }
 
@@ -114,11 +130,24 @@ export function renderScene(scene: Scene, seed = 42): RenderResult {
     ? `<text x="${scene.width / 2}" y="${titlePad + scene.height + 18}" text-anchor="middle" font-size="${CAPTION_FONT_SIZE}" font-family="${style.fontFamily}" fill="#666">${escapeXml(scene.caption)}</text>`
     : '';
 
+  const shapeLayer = shapeParts.join('\n    ');
+  const textLayer = textParts.join('\n    ');
+
+  const sketchFilter =
+    sketchScale > 0
+      ? `<defs><filter id="hiraia-sketch" x="-15%" y="-15%" width="130%" height="130%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="${seed}" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="${sketchScale}" xChannelSelector="R" yChannelSelector="G"/></filter></defs>`
+      : '';
+  const sketchAttr = sketchScale > 0 ? ' filter="url(#hiraia-sketch)"' : '';
+
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${scene.width} ${totalHeight}" width="${scene.width}" height="${totalHeight}">
+  ${sketchFilter}
   <rect width="${scene.width}" height="${totalHeight}" fill="${style.background}"/>
   ${titleElement}
+  <g transform="translate(0, ${titlePad})"${sketchAttr}>
+    ${shapeLayer}
+  </g>
   <g transform="translate(0, ${titlePad})">
-    ${renderedElements.join('\n    ')}
+    ${textLayer}
   </g>
   ${captionElement}
 </svg>`;

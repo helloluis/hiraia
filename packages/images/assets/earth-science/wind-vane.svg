@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 150" width="130" height="150">
+
+  <!-- Base stand: two-tier -->
+  <rect x="45" y="132" width="40" height="10" rx="4" fill="#7d8389" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <ellipse cx="65" cy="132" rx="28" ry="7" fill="#7d8389" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- Vertical pole -->
+  <rect x="62.5" y="15" width="5" height="120" rx="2" fill="#8d6e4f" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Compass cross arms at mid-height of pole -->
+  <!-- N arm -->
+  <line x1="65" y1="80" x2="65" y2="52" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- S arm -->
+  <line x1="65" y1="80" x2="65" y2="108" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- E arm -->
+  <line x1="65" y1="80" x2="103" y2="80" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- W arm -->
+  <line x1="65" y1="80" x2="27" y2="80" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Direction letters -->
+  <text x="65" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1f2937">N</text>
+  <text x="65" y="122" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1f2937">S</text>
+  <text x="118" y="84" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1f2937">E</text>
+  <text x="13" y="84" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1f2937">W</text>
+
+  <!-- Pivot hub at top of pole (arrow rotates here) -->
+  <circle cx="65" cy="28" r="5.5" fill="#fbbf24" stroke="#1f2937" stroke-width="2.5"/>
+
+  <!-- Arrow vane on top pivot -->
+  <!-- Head points left (indicating wind from east), tail fin on right -->
+  <!-- Arrow shaft -->
+  <line x1="28" y1="28" x2="98" y2="28" stroke="#e53935" stroke-width="3" stroke-linecap="round"/>
+  <!-- Arrowhead (pointing west / left) -->
+  <polygon points="28,28 41,20 41,36" fill="#e53935" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Tail fin (larger, right side) -->
+  <polygon points="98,28 116,18 116,38" fill="#4fc3f7" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+</svg>

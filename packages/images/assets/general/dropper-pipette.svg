@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 150" width="60" height="150">
+  <!-- Rubber bulb: rounded dome at top -->
+  <ellipse cx="30" cy="28" rx="16" ry="18" fill="#e53935" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Bulb bottom highlight to show squeeze shape -->
+  <ellipse cx="30" cy="42" rx="10" ry="6" fill="#c62828" stroke="none"/>
+
+  <!-- Neck: narrow connector between bulb and glass tube -->
+  <rect x="24" y="44" width="12" height="10" rx="3" fill="#e53935" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Glass tube body: tall slender rectangle, light blue-tinted transparent look -->
+  <rect x="22" y="53" width="16" height="72" rx="3" fill="#e8f4fb" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Liquid inside the tube (about half full from bottom) -->
+  <rect x="24" y="89" width="12" height="35" rx="2" fill="#4fc3f7" stroke="none"/>
+  <!-- Liquid surface line -->
+  <line x1="24" y1="89" x2="36" y2="89" stroke="#37536b" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Tube inner highlight (left edge shine) -->
+  <line x1="25" y1="56" x2="25" y2="122" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Tapered tip: trapezoid narrowing to a point -->
+  <polygon points="22,125 38,125 33,138 27,138" fill="#e8f4fb" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Tip point -->
+  <polygon points="27,137 33,137 30,143" fill="#e8f4fb" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Liquid drop hanging from tip -->
+  <path d="M30,143 C27,146 26,149 30,149 C34,149 33,146 30,143 Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

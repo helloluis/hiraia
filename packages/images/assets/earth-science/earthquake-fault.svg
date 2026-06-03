@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <rect x="0" y="0" width="200" height="200" fill="#ffffff"/>
+
+  <!-- Left ground block (raised) -->
+  <path d="M6 118 L92 118 L100 130 L98 188 L6 188 Z" fill="#8d6e4f" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M6 118 L92 118 L100 130 L6 130 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Right ground block (dropped, offset lower) -->
+  <path d="M100 130 L194 130 L194 188 L98 188 Z" fill="#5d4632" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M100 130 L194 130 L194 144 L100 144 Z" fill="#2e7d32" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Fault line crack (jagged seam between blocks) -->
+  <path d="M92 118 L100 130 L93 142 L101 154 L94 166 L100 178 L98 188" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Surface cracks branching from fault -->
+  <path d="M62 118 L58 130 L66 138" fill="none" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M138 130 L144 140 L136 150" fill="none" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Concentric seismic-wave rings from focus -->
+  <circle cx="100" cy="160" r="14" fill="none" stroke="#ef6c00" stroke-width="2.5"/>
+  <circle cx="100" cy="160" r="26" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
+  <circle cx="100" cy="160" r="38" fill="none" stroke="#9aa0a6" stroke-width="2"/>
+  <!-- Focus point -->
+  <circle cx="100" cy="160" r="5" fill="#e53935" stroke="#1f2937" stroke-width="2"/>
+
+  <!-- Shaking building tilted above -->
+  <g>
+    <!-- Body -->
+    <path d="M118 116 L118 44 L160 38 L160 116 Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <!-- Roof -->
+    <path d="M116 44 L139 32 L162 38 L160 38 L118 44 Z" fill="#1565c0" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <!-- Windows -->
+    <rect x="125" y="54" width="12" height="12" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+    <rect x="143" y="52" width="12" height="12" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+    <rect x="125" y="74" width="12" height="12" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+    <rect x="143" y="72" width="12" height="12" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+    <!-- Door -->
+    <path d="M133 116 L133 96 L146 95 L146 116 Z" fill="#5d4632" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  </g>
+
+  <!-- Shaking motion lines beside building -->
+  <path d="M106 60 L100 56 M106 72 L99 70" fill="none" stroke="#7d8389" stroke-width="2" stroke-linecap="round"/>
+  <path d="M170 56 L177 52 M170 68 L178 66" fill="none" stroke="#7d8389" stroke-width="2" stroke-linecap="round"/>
+</svg>

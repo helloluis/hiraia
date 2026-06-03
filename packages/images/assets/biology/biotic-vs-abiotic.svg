@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" width="240" height="200">
+  <rect x="0" y="0" width="120" height="200" fill="#dcedc8" stroke="none"/>
+  <rect x="120" y="0" width="120" height="200" fill="#e3f2fd" stroke="none"/>
+  <rect x="0" y="150" width="240" height="50" fill="#e8d5a8" stroke="none"/>
+  <line x1="120" y1="0" x2="120" y2="200" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="8 7"/>
+
+  <!-- LIVING SIDE: plant -->
+  <path d="M34 150 L34 96" fill="none" stroke="#2e7d32" stroke-width="5" stroke-linecap="round"/>
+  <path d="M34 120 C20 112 14 120 16 132 C28 132 34 124 34 120 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M34 108 C48 100 54 108 52 120 C40 120 34 112 34 108 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <circle cx="34" cy="86" r="16" fill="#e53935" stroke="#1f2937" stroke-width="2.2"/>
+  <circle cx="34" cy="86" r="6" fill="#fbbf24" stroke="#1f2937" stroke-width="2"/>
+
+  <!-- LIVING SIDE: animal (rabbit-like) -->
+  <ellipse cx="84" cy="138" rx="20" ry="14" fill="#8d6e4f" stroke="#1f2937" stroke-width="2.2"/>
+  <circle cx="98" cy="126" r="11" fill="#8d6e4f" stroke="#1f2937" stroke-width="2.2"/>
+  <path d="M95 117 C92 104 90 102 92 100 C97 102 98 110 99 116 Z" fill="#8d6e4f" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M102 117 C102 104 103 101 106 100 C108 104 106 112 105 117 Z" fill="#8d6e4f" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <circle cx="101" cy="125" r="2.3" fill="#1f2937" stroke="none"/>
+  <circle cx="65" cy="138" r="5" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <line x1="80" y1="150" x2="80" y2="152" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
+  <line x1="90" y1="150" x2="90" y2="152" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- NON-LIVING SIDE: sun -->
+  <circle cx="155" cy="42" r="17" fill="#fbbf24" stroke="#1f2937" stroke-width="2.2"/>
+  <g stroke="#b45309" stroke-width="2.5" stroke-linecap="round">
+    <line x1="155" y1="15" x2="155" y2="6"/>
+    <line x1="155" y1="78" x2="155" y2="69"/>
+    <line x1="128" y1="42" x2="119" y2="42"/>
+    <line x1="191" y1="42" x2="182" y2="42"/>
+    <line x1="136" y1="23" x2="130" y2="17"/>
+    <line x1="174" y1="61" x2="180" y2="67"/>
+    <line x1="174" y1="23" x2="180" y2="17"/>
+    <line x1="136" y1="61" x2="130" y2="67"/>
+  </g>
+
+  <!-- NON-LIVING SIDE: water droplet -->
+  <path d="M210 30 C210 30 196 50 196 62 C196 72 203 79 210 79 C217 79 224 72 224 62 C224 50 210 30 210 30 Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M204 62 C204 56 206 52 209 49" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- NON-LIVING SIDE: air swirl -->
+  <g fill="none" stroke="#9aa0a6" stroke-width="2.5" stroke-linecap="round">
+    <path d="M150 105 C166 105 166 96 158 96 C152 96 152 102 156 102"/>
+    <path d="M150 116 C172 116 172 105 162 105"/>
+    <path d="M150 127 C168 127 170 120 161 120 C155 120 155 125 159 125"/>
+  </g>
+
+  <!-- NON-LIVING SIDE: rock -->
+  <path d="M180 150 C178 132 192 124 204 128 C214 130 224 138 224 150 Z" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M194 132 L200 140 L192 144" fill="none" stroke="#5d4632" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

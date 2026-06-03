@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- SUN (top-left) -->
+  <g stroke="#1f2937" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="48" y1="8" x2="48" y2="20" stroke="#fbbf24"/>
+    <line x1="48" y1="55" x2="48" y2="67" stroke="#fbbf24"/>
+    <line x1="9" y1="37" x2="21" y2="37" stroke="#fbbf24"/>
+    <line x1="75" y1="37" x2="87" y2="37" stroke="#fbbf24"/>
+    <line x1="20" y1="9" x2="29" y2="18" stroke="#fbbf24"/>
+    <line x1="67" y1="56" x2="76" y2="65" stroke="#fbbf24"/>
+    <line x1="76" y1="9" x2="67" y2="18" stroke="#fbbf24"/>
+    <line x1="29" y1="56" x2="20" y2="65" stroke="#fbbf24"/>
+    <circle cx="48" cy="37" r="20" fill="#fbbf24"/>
+  </g>
+
+  <!-- STOVE BURNER FLAME (top-right) -->
+  <g stroke="#1f2937" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- wavy heat lines -->
+    <path d="M132 12 q4 -5 8 0 q4 5 8 0" fill="none" stroke="#9aa0a6"/>
+    <path d="M154 14 q4 -5 8 0 q4 5 8 0" fill="none" stroke="#9aa0a6"/>
+    <!-- blue burner ring -->
+    <ellipse cx="151" cy="74" rx="34" ry="9" fill="#37536b"/>
+    <ellipse cx="151" cy="71" rx="34" ry="9" fill="#1565c0"/>
+    <!-- flames -->
+    <path d="M138 70 q-5 -16 8 -26 q-3 11 5 13 q4 -16 14 -22 q-4 14 3 19 q6 -8 4 -16 q9 12 1 25 q-18 9 -35 7 z" fill="#ef6c00"/>
+    <path d="M147 66 q-3 -12 7 -19 q-2 9 3 11 q3 -10 9 -14 q-1 11 2 14 q-12 9 -21 8 z" fill="#fbbf24"/>
+  </g>
+
+  <!-- CAMPFIRE (bottom-left) -->
+  <g stroke="#1f2937" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- wavy heat lines -->
+    <path d="M30 100 q4 -5 8 0 q4 5 8 0" fill="none" stroke="#9aa0a6"/>
+    <path d="M50 102 q4 -5 8 0 q4 5 8 0" fill="none" stroke="#9aa0a6"/>
+    <!-- flames -->
+    <path d="M30 168 q-9 -28 12 -44 q-4 16 7 19 q5 -26 21 -33 q-6 22 4 28 q9 -11 6 -24 q15 19 3 41 q-26 17 -53 13 z" fill="#e53935"/>
+    <path d="M42 164 q-5 -19 11 -29 q-2 13 5 16 q5 -16 14 -21 q-3 16 3 21 q-18 14 -33 13 z" fill="#fbbf24"/>
+    <!-- logs -->
+    <rect x="20" y="166" width="56" height="11" rx="5" fill="#8d6e4f" transform="rotate(8 48 171)"/>
+    <rect x="20" y="166" width="56" height="11" rx="5" fill="#5d4632" transform="rotate(-8 48 171)"/>
+  </g>
+
+  <!-- HOT FLAT-IRON (bottom-right) -->
+  <g stroke="#1f2937" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- wavy heat lines -->
+    <path d="M126 102 q4 -5 8 0 q4 5 8 0" fill="none" stroke="#9aa0a6"/>
+    <path d="M148 104 q4 -5 8 0 q4 5 8 0" fill="none" stroke="#9aa0a6"/>
+    <path d="M170 102 q4 -5 8 0 q4 5 8 0" fill="none" stroke="#9aa0a6"/>
+    <!-- handle -->
+    <path d="M132 142 q19 -22 38 0" fill="none" stroke="#3f4348" stroke-width="7"/>
+    <path d="M132 142 q19 -22 38 0" fill="none"/>
+    <!-- body -->
+    <path d="M120 150 h62 a8 8 0 0 1 8 8 v6 h-86 v-6 a8 8 0 0 1 8 -8 z" fill="#7d8389"/>
+    <!-- hot soleplate -->
+    <path d="M111 164 h78 l-10 14 a8 8 0 0 1 -6 3 h-46 a8 8 0 0 1 -6 -3 z" fill="#e53935"/>
+  </g>
+</svg>

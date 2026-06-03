@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 180" width="230" height="180">
+  <!-- ground -->
+  <line x1="8" y1="150" x2="222" y2="150" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+
+  <!-- car body -->
+  <path d="M28 132 L28 108 Q28 100 36 100 L70 100 L92 78 Q96 74 102 74 L150 74 Q158 74 162 80 L176 100 L198 100 Q206 100 206 108 L206 132 Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.4" stroke-linejoin="round"/>
+
+  <!-- windshield divider -->
+  <line x1="118" y1="76" x2="118" y2="100" stroke="#1f2937" stroke-width="2"/>
+  <!-- windows -->
+  <path d="M98 96 L116 80 L116 96 Z" fill="#e0f4ff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+  <path d="M122 80 L150 80 Q154 80 157 84 L166 96 L122 96 Z" fill="#e0f4ff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+
+  <!-- passenger seated, lurching forward -->
+  <!-- seat back -->
+  <rect x="62" y="98" width="9" height="34" rx="3" fill="#8d6e4f" stroke="#1f2937" stroke-width="1.8"/>
+  <!-- body tilted forward -->
+  <path d="M68 128 Q74 104 90 96" fill="none" stroke="#1f2937" stroke-width="6" stroke-linecap="round"/>
+  <!-- head -->
+  <circle cx="94" cy="92" r="9" fill="#fbbf24" stroke="#1f2937" stroke-width="2"/>
+  <!-- arm reaching forward -->
+  <path d="M80 110 Q92 106 104 110" fill="none" stroke="#1f2937" stroke-width="4.5" stroke-linecap="round"/>
+
+  <!-- wheels -->
+  <circle cx="68" cy="142" r="16" fill="#374151" stroke="#1f2937" stroke-width="2.4"/>
+  <circle cx="68" cy="142" r="6" fill="#9aa0a6" stroke="#1f2937" stroke-width="1.6"/>
+  <circle cx="172" cy="142" r="16" fill="#374151" stroke="#1f2937" stroke-width="2.4"/>
+  <circle cx="172" cy="142" r="6" fill="#9aa0a6" stroke="#1f2937" stroke-width="1.6"/>
+
+  <!-- braking skid marks behind wheels -->
+  <line x1="40" y1="158" x2="64" y2="158" stroke="#1f2937" stroke-width="2.6" stroke-linecap="round"/>
+  <line x1="146" y1="158" x2="168" y2="158" stroke="#1f2937" stroke-width="2.6" stroke-linecap="round"/>
+
+  <!-- forward motion arrow on passenger (large, bold red) -->
+  <line x1="108" y1="92" x2="148" y2="92" stroke="#e53935" stroke-width="6" stroke-linecap="round"/>
+  <path d="M148 92 L138 85 L138 99 Z" fill="#e53935" stroke="#e53935" stroke-width="2" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 150" width="130" height="150">
+  <!-- Outer casing / bezel -->
+  <circle cx="65" cy="72" r="55" fill="#7d8389" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- Inner bezel ring -->
+  <circle cx="65" cy="72" r="50" fill="#3f4348" stroke="#1f2937" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- Dial face -->
+  <circle cx="65" cy="72" r="44" fill="#fbbf24" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Dial face inner highlight -->
+  <circle cx="65" cy="72" r="40" fill="#fde68a" stroke="none"/>
+
+  <!-- Tick marks around the dial (major: every 30deg, minor: every 10deg) -->
+  <!-- Major ticks (length 7) at 0,30,60,90,120,150,180,210,240,270,300,330 degrees -->
+  <!-- We place ticks from radius 33 to 40, rotated around center 65,72 -->
+  <!-- Using transform rotate around center for each tick -->
+
+  <!-- Major ticks -->
+  <line x1="65" y1="32" x2="65" y2="39" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round" transform="rotate(0 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="39" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round" transform="rotate(30 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="39" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round" transform="rotate(60 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="39" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round" transform="rotate(90 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="39" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round" transform="rotate(120 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="39" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round" transform="rotate(150 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="39" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round" transform="rotate(180 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="39" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round" transform="rotate(210 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="39" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round" transform="rotate(240 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="39" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round" transform="rotate(270 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="39" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round" transform="rotate(300 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="39" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round" transform="rotate(330 65 72)"/>
+
+  <!-- Minor ticks (length 4) at 10,20,40,50,70,80,100,110,130,140,160,170,190,200,220,230,250,260,280,290,310,320,340,350 -->
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(10 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(20 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(40 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(50 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(70 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(80 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(100 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(110 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(130 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(140 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(160 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(170 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(190 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(200 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(220 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(230 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(250 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(260 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(280 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(290 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(310 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(320 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(340 65 72)"/>
+  <line x1="65" y1="32" x2="65" y2="36" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round" transform="rotate(350 65 72)"/>
+
+  <!-- Needle pointing to ~1 o'clock position (about -45deg from top = 315 deg rotation) -->
+  <!-- Needle: thin pointed shape, tail goes slightly past center -->
+  <polygon points="65,72 62,44 65,68 68,44" fill="#e53935" stroke="#1f2937" stroke-width="1.5" stroke-linejoin="round" transform="rotate(-45 65 72)"/>
+  <!-- Tail of needle (counter weight) -->
+  <polygon points="65,72 63.5,82 65,86 66.5,82" fill="#3f4348" stroke="#1f2937" stroke-width="1" stroke-linejoin="round" transform="rotate(-45 65 72)"/>
+
+  <!-- Center pivot dot -->
+  <circle cx="65" cy="72" r="4" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
+  <circle cx="65" cy="72" r="2" fill="#7d8389" stroke="none"/>
+
+  <!-- Base / stand -->
+  <rect x="50" y="125" width="30" height="8" rx="3" ry="3" fill="#8d6e4f" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <rect x="42" y="133" width="46" height="6" rx="3" ry="3" fill="#5d4632" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Stem connecting dial to base -->
+  <rect x="61" y="124" width="8" height="5" fill="#8d6e4f" stroke="#1f2937" stroke-width="1.5" stroke-linejoin="round"/>
+</svg>

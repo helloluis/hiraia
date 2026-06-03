@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 170" width="200" height="170">
+  <!-- Closed-loop wires -->
+  <path d="M48 120 L48 70 L75 70" fill="none" stroke="#1f2937" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M125 70 L152 70 L152 120" fill="none" stroke="#1f2937" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M48 120 L72 120" fill="none" stroke="#1f2937" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M152 120 L128 120" fill="none" stroke="#1f2937" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Dry cell (battery) at the bottom -->
+  <rect x="70" y="104" width="60" height="32" rx="5" fill="#fbbf24" stroke="#1f2937" stroke-width="2.5"/>
+  <rect x="70" y="104" width="20" height="32" rx="5" fill="#b45309" stroke="#1f2937" stroke-width="2.5"/>
+  <!-- Positive terminal nub -->
+  <rect x="130" y="113" width="7" height="14" rx="2" fill="#9aa0a6" stroke="#1f2937" stroke-width="2"/>
+
+  <!-- Closed switch (top, blade down/closed) -->
+  <circle cx="78" cy="70" r="5" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.5"/>
+  <circle cx="122" cy="70" r="5" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.5"/>
+  <line x1="78" y1="70" x2="120" y2="70" stroke="#3f4348" stroke-width="4.5" stroke-linecap="round"/>
+
+  <!-- Light bulb glowing at top center -->
+  <!-- Rays -->
+  <line x1="100" y1="14" x2="100" y2="2" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+  <line x1="79" y1="22" x2="71" y2="13" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+  <line x1="121" y1="22" x2="129" y2="13" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+  <line x1="70" y1="40" x2="58" y2="36" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+  <line x1="130" y1="40" x2="142" y2="36" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Bulb wire from switch line up to bulb base -->
+  <path d="M100 70 L100 60" fill="none" stroke="#1f2937" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- Glass globe -->
+  <circle cx="100" cy="38" r="22" fill="#fff8d6" stroke="#1f2937" stroke-width="2.5"/>
+  <!-- Filament -->
+  <path d="M93 44 L97 32 L103 44 L107 32" fill="none" stroke="#b45309" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Base / screw cap -->
+  <path d="M88 56 L112 56 L108 66 L92 66 Z" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <line x1="89" y1="60" x2="111" y2="60" stroke="#1f2937" stroke-width="1.5"/>
+  <line x1="90" y1="63" x2="110" y2="63" stroke="#1f2937" stroke-width="1.5"/>
+</svg>

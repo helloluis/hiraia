@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" width="240" height="200">
+  <rect x="4" y="4" width="232" height="192" rx="12" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+  <line x1="120" y1="14" x2="120" y2="186" stroke="#9aa0a6" stroke-width="1.6" stroke-dasharray="5 5"/>
+  <line x1="14" y1="100" x2="226" y2="100" stroke="#9aa0a6" stroke-width="1.6" stroke-dasharray="5 5"/>
+
+  <!-- Top-left: Latitude — globe with zone bands -->
+  <circle cx="62" cy="52" r="34" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.3"/>
+  <path d="M28 52 A34 34 0 0 1 96 52 Z" fill="#90caf9" stroke="none"/>
+  <path d="M28 52 A34 34 0 0 0 96 52 Z" fill="#90caf9" stroke="none"/>
+  <path d="M30.5 38 A34 34 0 0 1 93.5 38 Z" fill="#e53935" stroke="none"/>
+  <path d="M30.5 66 A34 34 0 0 0 93.5 66 Z" fill="#e53935" stroke="none"/>
+  <path d="M28.6 60 A34 34 0 0 1 95.4 60 Z" fill="#fbbf24" stroke="none"/>
+  <path d="M28.6 44 A34 34 0 0 0 95.4 44 Z" fill="#fbbf24" stroke="none"/>
+  <ellipse cx="62" cy="52" rx="34" ry="8" fill="none" stroke="#1f2937" stroke-width="1.6"/>
+  <line x1="29" y1="38" x2="95" y2="38" stroke="#1f2937" stroke-width="1.4"/>
+  <line x1="29" y1="66" x2="95" y2="66" stroke="#1f2937" stroke-width="1.4"/>
+  <circle cx="62" cy="52" r="34" fill="none" stroke="#1f2937" stroke-width="2.3"/>
+
+  <!-- Top-right: Altitude — mountain -->
+  <path d="M132 86 L172 30 L186 50 L198 36 L218 86 Z" fill="#8d6e4f" stroke="#1f2937" stroke-width="2.3" stroke-linejoin="round"/>
+  <path d="M163 42 L172 30 L181 42 L177 47 L172 41 L167 47 Z" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+  <path d="M191 44 L198 36 L205 47 L200 44 L195 49 Z" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+  <path d="M132 86 L150 64 L162 78 L178 60 L218 86 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Bottom-left: Distance from ocean — coastline -->
+  <rect x="14" y="108" width="100" height="80" rx="0" fill="#ffffff" stroke="none"/>
+  <path d="M14 188 L14 130 Q44 122 60 142 Q78 164 114 152 L114 188 Z" fill="#1565c0" stroke="none"/>
+  <path d="M14 130 Q44 122 60 142 Q78 164 114 152" fill="none" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M14 130 L14 118 Q50 110 64 128 L60 142 Q44 122 14 130 Z" fill="#7cb342" stroke="#1f2937" stroke-width="1.8" stroke-linejoin="round"/>
+  <path d="M22 168 L46 168 M30 178 L54 178 M70 166 L92 166" fill="none" stroke="#90caf9" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Bottom-right: Ocean currents — curved arrows -->
+  <rect x="126" y="108" width="100" height="80" fill="#37536b" stroke="none"/>
+  <path d="M138 168 Q168 138 200 160" fill="none" stroke="#e53935" stroke-width="3" stroke-linecap="round"/>
+  <path d="M200 160 L191 153 M200 160 L194 169" fill="none" stroke="#e53935" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M214 130 Q186 156 152 134" fill="none" stroke="#90caf9" stroke-width="3" stroke-linecap="round"/>
+  <path d="M152 134 L161 137 M152 134 L158 126" fill="none" stroke="#90caf9" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M150 174 Q176 178 198 174" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M198 174 L191 170 M198 174 L191 178" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 150" width="130" height="150">
+
+  <!-- Cup body: trapezoid, narrower at bottom, wider at top -->
+  <!-- Left wall: x goes from 30 at top to 38 at bottom -->
+  <!-- Right wall: x goes from 96 at top to 88 at bottom -->
+  <!-- Spout flares out from top-right corner -->
+
+  <!-- Liquid fill (drawn first, behind cup walls) -->
+  <polygon
+    points="33,100 87,100 85,130 35,130"
+    fill="#4fc3f7"
+    stroke="none"
+  />
+
+  <!-- Liquid surface shimmer line -->
+  <line x1="33" y1="100" x2="87" y2="100"
+    stroke="#37536b" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Cup body outline -->
+  <!-- Left wall vertical, right wall with slight outward taper, flat bottom -->
+  <path
+    d="M30,22 L38,134 L88,134 L96,22 Z"
+    fill="none"
+    stroke="#1f2937"
+    stroke-width="2.5"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+  />
+
+  <!-- Cup interior fill (white background so liquid shows only in lower portion) -->
+  <!-- Draw white fill on top part above liquid -->
+  <polygon
+    points="31,23 95,23 89,99 33,99"
+    fill="#f5f9ff"
+    stroke="none"
+  />
+
+  <!-- Re-stroke cup body outline over the fills -->
+  <path
+    d="M30,22 L38,134 L88,134 L96,22 Z"
+    fill="none"
+    stroke="#1f2937"
+    stroke-width="2.5"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+  />
+
+  <!-- Top rim line across the opening -->
+  <line x1="30" y1="22" x2="96" y2="22"
+    stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Pouring spout: flares up and out from top-right -->
+  <path
+    d="M96,22 L112,10 Q118,6 116,14 L106,30"
+    fill="#f5f9ff"
+    stroke="#1f2937"
+    stroke-width="2.5"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+  />
+
+  <!-- Handle on the left: a rounded D-loop -->
+  <path
+    d="M32,52 Q8,52 8,88 Q8,120 34,120"
+    fill="none"
+    stroke="#1f2937"
+    stroke-width="2.5"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+  />
+
+  <!-- Tick marks on right inner wall (measurement graduations) -->
+  <!-- Major tick at 3/4 height from bottom -->
+  <line x1="80" y1="42" x2="94" y2="42"
+    stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Minor tick -->
+  <line x1="83" y1="58" x2="93" y2="58"
+    stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+
+  <!-- Major tick -->
+  <line x1="80" y1="74" x2="94" y2="74"
+    stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Minor tick -->
+  <line x1="83" y1="90" x2="93" y2="90"
+    stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+
+  <!-- Liquid surface tick (coincides with liquid level) -->
+  <line x1="80" y1="100" x2="94" y2="100"
+    stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+
+</svg>

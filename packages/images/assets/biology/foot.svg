@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 100" width="140" height="100">
+
+  <!-- Main foot body: heel rounded on left, arch curve underneath, ball of foot on right -->
+  <!-- Foot sole / main body shape -->
+  <path d="M 18 72
+             C 10 72 8 65 8 58
+             C 8 50 10 44 16 42
+             C 20 40 24 40 26 38
+             C 28 35 28 30 30 26
+             C 31 22 34 20 38 20
+             C 42 20 45 22 46 26
+             C 47 30 46 34 44 37
+             C 50 36 58 36 66 36
+             C 74 36 82 37 88 38
+             C 96 39 102 42 106 48
+             C 110 53 110 60 108 66
+             C 106 72 100 76 92 77
+             C 80 78 40 78 18 72 Z"
+        fill="#ffe0b2" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Arch underside -- a slight concave under the midfoot -->
+  <!-- (already encoded in the main path above) -->
+
+  <!-- Big toe -->
+  <ellipse cx="34" cy="18" rx="7" ry="9"
+           fill="#ffe0b2" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Second toe -->
+  <ellipse cx="48" cy="16" rx="5.5" ry="8"
+           fill="#ffe0b2" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Third toe -->
+  <ellipse cx="60" cy="17" rx="5" ry="7.5"
+           fill="#ffe0b2" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Fourth toe -->
+  <ellipse cx="71" cy="19" rx="4.5" ry="7"
+           fill="#ffe0b2" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Little toe -->
+  <ellipse cx="81" cy="21" rx="4" ry="6"
+           fill="#ffe0b2" stroke="#1f2937" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Toenail on big toe -->
+  <ellipse cx="34" cy="13" rx="4.5" ry="3"
+           fill="#ffd9a0" stroke="#1f2937" stroke-width="1.5"/>
+
+  <!-- Toenail on second toe -->
+  <ellipse cx="48" cy="11" rx="3.5" ry="2.5"
+           fill="#ffd9a0" stroke="#1f2937" stroke-width="1.5"/>
+
+  <!-- Toenail on third toe -->
+  <ellipse cx="60" cy="12" rx="3" ry="2.2"
+           fill="#ffd9a0" stroke="#1f2937" stroke-width="1.5"/>
+
+  <!-- Toenail on fourth toe -->
+  <ellipse cx="71" cy="14" rx="2.8" ry="2"
+           fill="#ffd9a0" stroke="#1f2937" stroke-width="1.5"/>
+
+  <!-- Toenail on little toe -->
+  <ellipse cx="81" cy="16" rx="2.5" ry="1.8"
+           fill="#ffd9a0" stroke="#1f2937" stroke-width="1.5"/>
+
+  <!-- Ankle bump (medial malleolus) -->
+  <ellipse cx="16" cy="48" rx="6" ry="5"
+           fill="#ffcc99" stroke="#1f2937" stroke-width="2"/>
+
+  <!-- Subtle crease line across ball of foot -->
+  <path d="M 30 58 Q 60 54 92 60"
+        fill="none" stroke="#d4956a" stroke-width="1.2" stroke-linecap="round"/>
+
+</svg>

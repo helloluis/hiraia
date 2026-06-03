@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 220" width="230" height="220">
+  <rect x="10" y="10" width="100" height="95" rx="10" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+  <rect x="120" y="10" width="100" height="95" rx="10" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+  <rect x="10" y="115" width="100" height="95" rx="10" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+  <rect x="120" y="115" width="100" height="95" rx="10" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+
+  <!-- Temperature: thermometer (top-left) -->
+  <line x1="48" y1="30" x2="48" y2="78" fill="none" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="52" y1="30" x2="52" y2="78" fill="none" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M48 30 A6 6 0 0 1 60 30 L60 78" fill="none" stroke="none"/>
+  <path d="M48 30 A6 6 0 0 1 60 30" fill="none" stroke="#1f2937" stroke-width="2.2"/>
+  <line x1="60" y1="30" x2="60" y2="78" fill="none" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="54" cy="86" r="13" fill="#e53935" stroke="#1f2937" stroke-width="2.2"/>
+  <rect x="50" y="48" width="4" height="40" rx="2" fill="#e53935"/>
+  <line x1="62" y1="40" x2="70" y2="40" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <line x1="62" y1="52" x2="70" y2="52" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  <line x1="62" y1="64" x2="70" y2="64" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Concentration: beaker with many dots (top-right) -->
+  <path d="M150 32 L150 86 Q150 94 158 94 L182 94 Q190 94 190 86 L190 32" fill="#bbdefb" stroke="#1565c0" stroke-width="2.2" stroke-linejoin="round"/>
+  <line x1="146" y1="32" x2="194" y2="32" fill="none" stroke="#1565c0" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="186" y1="46" x2="190" y2="46" fill="none" stroke="#1565c0" stroke-width="2"/>
+  <line x1="186" y1="60" x2="190" y2="60" fill="none" stroke="#1565c0" stroke-width="2"/>
+  <circle cx="158" cy="48" r="3" fill="#1565c0"/>
+  <circle cx="170" cy="44" r="3" fill="#1565c0"/>
+  <circle cx="182" cy="50" r="3" fill="#1565c0"/>
+  <circle cx="164" cy="58" r="3" fill="#1565c0"/>
+  <circle cx="176" cy="60" r="3" fill="#1565c0"/>
+  <circle cx="156" cy="66" r="3" fill="#1565c0"/>
+  <circle cx="184" cy="68" r="3" fill="#1565c0"/>
+  <circle cx="168" cy="72" r="3" fill="#1565c0"/>
+  <circle cx="178" cy="80" r="3" fill="#1565c0"/>
+  <circle cx="160" cy="82" r="3" fill="#1565c0"/>
+  <circle cx="172" cy="84" r="3" fill="#1565c0"/>
+
+  <!-- Surface area: solid chunk beside powder (bottom-left) -->
+  <path d="M26 158 L40 148 L58 152 L62 172 L48 184 L30 180 Z" fill="#8d6e4f" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M40 148 L46 162 L62 172" fill="none" stroke="#1f2937" stroke-width="1.6"/>
+  <path d="M46 162 L48 184" fill="none" stroke="#1f2937" stroke-width="1.6"/>
+  <path d="M70 190 Q72 178 80 178 Q86 170 94 176 Q100 174 100 190 Z" fill="#8d6e4f" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="76" cy="172" r="2.4" fill="#8d6e4f" stroke="#1f2937" stroke-width="1.4"/>
+  <circle cx="86" cy="166" r="2.4" fill="#8d6e4f" stroke="#1f2937" stroke-width="1.4"/>
+  <circle cx="95" cy="170" r="2.4" fill="#8d6e4f" stroke="#1f2937" stroke-width="1.4"/>
+  <circle cx="84" cy="174" r="2.4" fill="#8d6e4f" stroke="#1f2937" stroke-width="1.4"/>
+
+  <!-- Catalyst: flask with speed-up arrow (bottom-right) -->
+  <path d="M163 130 L163 150 L150 184 Q148 192 156 192 L184 192 Q192 192 190 184 L177 150 L177 130 Z" fill="#e1bee7" stroke="#8e44ad" stroke-width="2.2" stroke-linejoin="round"/>
+  <line x1="158" y1="130" x2="182" y2="130" fill="none" stroke="#8e44ad" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M152 180 L188 180" fill="none" stroke="#8e44ad" stroke-width="2"/>
+  <circle cx="160" cy="186" r="2.4" fill="#8e44ad"/>
+  <circle cx="170" cy="184" r="2.4" fill="#8e44ad"/>
+  <circle cx="180" cy="186" r="2.4" fill="#8e44ad"/>
+  <path d="M156 162 q12 -8 28 0" fill="none" stroke="#2e7d32" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M184 162 l-7 -4 l1 8 Z" fill="#2e7d32" stroke="#2e7d32" stroke-width="1.6" stroke-linejoin="round"/>
+</svg>

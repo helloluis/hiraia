@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 130" width="140" height="130">
+
+  <!-- ========================================================
+       MEASURING SPOONS – 4 spoons fanning from a central ring
+       All handles attach to the ring; bowls face outward.
+       ======================================================== -->
+
+  <!-- ── SPOON 1 (largest) – upper-left, bowl at ~(18,18) ── -->
+  <!-- handle as a tapered path from ring to bowl neck -->
+  <path d="M56,30 Q38,24 24,18" fill="none" stroke="#1f2937" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M56,30 Q38,24 24,18" fill="none" stroke="#fbbf24" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- bowl (large ellipse, rotated ~-30°) -->
+  <ellipse cx="15" cy="13" rx="13" ry="10" fill="#fbbf24" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" transform="rotate(-25 15 13)"/>
+  <ellipse cx="15" cy="13" rx="8" ry="6" fill="#fcd34d" stroke="none" transform="rotate(-25 15 13)"/>
+
+  <!-- ── SPOON 2 – left, bowl at ~(12,68) ── -->
+  <path d="M57,42 Q36,56 20,68" fill="none" stroke="#1f2937" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M57,42 Q36,56 20,68" fill="none" stroke="#4fc3f7" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- bowl -->
+  <ellipse cx="12" cy="74" rx="11" ry="8" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" transform="rotate(-55 12 74)"/>
+  <ellipse cx="12" cy="74" rx="6.5" ry="5" fill="#81d4fa" stroke="none" transform="rotate(-55 12 74)"/>
+
+  <!-- ── SPOON 3 (medium) – straight down, bowl at (70,106) ── -->
+  <path d="M70,49 L70,96" fill="none" stroke="#1f2937" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M70,49 L70,96" fill="none" stroke="#7cb342" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- bowl -->
+  <ellipse cx="70" cy="107" rx="10" ry="8" fill="#7cb342" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <ellipse cx="70" cy="107" rx="6" ry="5" fill="#aed581" stroke="none"/>
+
+  <!-- ── SPOON 4 (smallest) – lower-right, bowl at ~(118,88) ── -->
+  <path d="M82,42 Q100,62 112,82" fill="none" stroke="#1f2937" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M82,42 Q100,62 112,82" fill="none" stroke="#e53935" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- bowl -->
+  <ellipse cx="118" cy="90" rx="9" ry="7" fill="#e53935" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" transform="rotate(40 118 90)"/>
+  <ellipse cx="118" cy="90" rx="5.5" ry="4" fill="#ef9a9a" stroke="none" transform="rotate(40 118 90)"/>
+
+  <!-- ── RING – center, drawn on top of handle ends ── -->
+  <!-- outer ring ring -->
+  <circle cx="70" cy="38" r="14" fill="#8d6e4f" stroke="#1f2937" stroke-width="2.5"/>
+  <!-- ring gap (hole) -->
+  <circle cx="70" cy="38" r="9" fill="#5d4632" stroke="#1f2937" stroke-width="2"/>
+  <!-- inner hole -->
+  <circle cx="70" cy="38" r="5" fill="#8d6e4f" stroke="none"/>
+  <circle cx="70" cy="38" r="3" fill="#1f2937" stroke="none"/>
+
+</svg>

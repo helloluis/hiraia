@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 130" width="130" height="130">
+  <!-- Clock body: outer ring -->
+  <circle cx="65" cy="65" r="58" fill="#e8e0d0" stroke="#1f2937" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Inner face -->
+  <circle cx="65" cy="65" r="52" fill="#faf6ef" stroke="#1f2937" stroke-width="1.5"/>
+
+  <!-- Hour tick marks (12 ticks, thicker) -->
+  <!-- 12 o'clock -->
+  <line x1="65" y1="16" x2="65" y2="26" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
+  <!-- 1 o'clock -->
+  <line x1="91.0" y1="22.0" x2="87.4" y2="31.2" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
+  <!-- 2 o'clock -->
+  <line x1="110.0" y1="39.0" x2="102.1" y2="43.5" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
+  <!-- 3 o'clock -->
+  <line x1="114" y1="65" x2="104" y2="65" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
+  <!-- 4 o'clock -->
+  <line x1="110.0" y1="91.0" x2="102.1" y2="86.5" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
+  <!-- 5 o'clock -->
+  <line x1="91.0" y1="108.0" x2="87.4" y2="98.8" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
+  <!-- 6 o'clock -->
+  <line x1="65" y1="114" x2="65" y2="104" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
+  <!-- 7 o'clock -->
+  <line x1="39.0" y1="108.0" x2="42.6" y2="98.8" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
+  <!-- 8 o'clock -->
+  <line x1="20.0" y1="91.0" x2="27.9" y2="86.5" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
+  <!-- 9 o'clock -->
+  <line x1="16" y1="65" x2="26" y2="65" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
+  <!-- 10 o'clock -->
+  <line x1="20.0" y1="39.0" x2="27.9" y2="43.5" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
+  <!-- 11 o'clock -->
+  <line x1="39.0" y1="22.0" x2="42.6" y2="31.2" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Minute tick marks (48 small ticks at non-hour positions) -->
+  <!-- Between 12 and 1 (minutes 1,2,3,4) -->
+  <line x1="71.3" y1="14.9" x2="70.1" y2="19.8" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="77.4" y1="16.8" x2="75.1" y2="21.4" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="83.1" y1="20.5" x2="79.8" y2="24.4" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="87.9" y1="25.8" x2="83.8" y2="29.0" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Between 1 and 2 (minutes 6,7,8,9) -->
+  <line x1="98.9" y1="31.8" x2="95.8" y2="35.9" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="104.2" y1="38.4" x2="100.2" y2="41.3" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="107.8" y1="46.0" x2="103.2" y2="47.8" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="109.5" y1="54.2" x2="104.6" y2="54.9" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Between 2 and 3 (minutes 11,12,13,14) -->
+  <line x1="113.1" y1="58.7" x2="108.1" y2="59.7" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="114.1" y1="65.0" x2="109.0" y2="65.0" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="113.1" y1="71.3" x2="108.1" y2="70.3" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="110.2" y1="77.1" x2="105.5" y2="75.1" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Between 3 and 4 (minutes 16,17,18,19) -->
+  <line x1="109.5" y1="75.8" x2="104.6" y2="75.1" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="107.8" y1="84.0" x2="103.2" y2="82.2" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="104.2" y1="91.6" x2="100.2" y2="88.7" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="98.9" y1="98.2" x2="95.8" y2="94.1" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Between 4 and 5 (minutes 21,22,23,24) -->
+  <line x1="94.2" y1="102.1" x2="91.9" y2="97.5" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="87.9" y1="104.2" x2="86.6" y2="99.2" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="83.1" y1="109.5" x2="79.8" y2="105.6" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="77.4" y1="113.2" x2="75.1" y2="108.6" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Between 5 and 6 (minutes 26,27,28,29) -->
+  <line x1="71.3" y1="115.1" x2="70.1" y2="110.2" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="65.0" y1="116.0" x2="65.0" y2="111.0" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="58.7" y1="115.1" x2="59.9" y2="110.2" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="52.6" y1="113.2" x2="54.9" y2="108.6" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Between 6 and 7 (minutes 31,32,33,34) -->
+  <line x1="46.9" y1="109.5" x2="50.2" y2="105.6" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="42.1" y1="104.2" x2="46.2" y2="100.9" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="35.8" y1="102.1" x2="38.1" y2="97.5" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="31.1" y1="98.2" x2="34.2" y2="94.1" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Between 7 and 8 (minutes 36,37,38,39) -->
+  <line x1="25.8" y1="91.6" x2="29.8" y2="88.7" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="22.2" y1="84.0" x2="26.8" y2="82.2" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="20.5" y1="75.8" x2="25.4" y2="75.1" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="19.8" y1="71.3" x2="24.7" y2="70.3" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Between 8 and 9 (minutes 41,42,43,44) -->
+  <line x1="16.9" y1="65.0" x2="21.9" y2="65.0" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="16.9" y1="58.7" x2="21.9" y2="59.7" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="19.8" y1="58.7" x2="24.7" y2="59.7" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="20.5" y1="54.2" x2="25.4" y2="54.9" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Between 9 and 10 (minutes 46,47,48,49) -->
+  <line x1="22.2" y1="46.0" x2="26.8" y2="47.8" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="25.8" y1="38.4" x2="29.8" y2="41.3" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="31.1" y1="31.8" x2="34.2" y2="35.9" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="35.8" y1="25.8" x2="38.9" y2="29.9" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Between 10 and 11 (minutes 51,52,53,54) -->
+  <line x1="42.1" y1="25.8" x2="43.4" y2="30.8" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="46.9" y1="20.5" x2="50.2" y2="24.4" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="52.6" y1="16.8" x2="54.9" y2="21.4" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="58.7" y1="14.9" x2="59.9" y2="19.8" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Hour hand (pointing to ~10 o'clock) -->
+  <!-- 10 o'clock = 300 degrees from top = -60 deg from vertical -->
+  <!-- Direction: cx=65, cy=65, length ~28 toward 10, toward 4 for tail -->
+  <line x1="65" y1="65" x2="41.8" y2="51.5" stroke="#1f2937" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- Minute hand (pointing to ~2 o'clock) -->
+  <!-- 2 o'clock = 60 degrees from top -->
+  <!-- Direction: cx=65, cy=65, length ~38 toward 2 -->
+  <line x1="65" y1="65" x2="97.9" y2="46.0" stroke="#1f2937" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- Center pivot dot -->
+  <circle cx="65" cy="65" r="4" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
+
+  <!-- Mounting pin at top -->
+  <rect x="62" y="6" width="6" height="5" rx="2" fill="#7d8389" stroke="#1f2937" stroke-width="1.5" stroke-linejoin="round"/>
+</svg>

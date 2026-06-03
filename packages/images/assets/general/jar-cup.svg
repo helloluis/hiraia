@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 140" width="100" height="140">
+  <!-- Glass jar body: slightly narrower at bottom, wider at top (classic drinking glass shape) -->
+  <polygon points="16,20 84,20 76,130 24,130" fill="#e8f4fb" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Glass highlight strip on left side to suggest transparency -->
+  <polygon points="22,26 30,26 24,122 18,122" fill="#ffffff" stroke="none" opacity="0.55"/>
+
+  <!-- Thin secondary highlight strip -->
+  <polygon points="35,26 40,26 35,122 31,122" fill="#ffffff" stroke="none" opacity="0.3"/>
+
+  <!-- Rim at the top of the glass -->
+  <rect x="13" y="14" width="74" height="9" rx="3" fill="#d0e8f0" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Flat base of the glass -->
+  <rect x="22" y="127" width="56" height="8" rx="3" fill="#c5dde8" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Redraw body outline on top to keep edges crisp -->
+  <polygon points="16,20 84,20 76,130 24,130" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

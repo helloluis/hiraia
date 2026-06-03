@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <!-- Ball base circle -->
+  <circle cx="60" cy="60" r="52" fill="#f5f5f5" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- Beach ball panel 1 - red -->
+  <path d="M60,8 C45,8 32,16 24,28 C38,32 52,34 60,34 C68,34 82,32 96,28 C88,16 75,8 60,8 Z" fill="#e53935" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Beach ball panel 2 - yellow -->
+  <path d="M20,45 C18,50 18,56 18,60 C18,66 19,72 21,77 C32,70 44,62 52,55 C48,48 42,40 34,34 C27,37 23,41 20,45 Z" fill="#fbbf24" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Beach ball panel 3 - blue -->
+  <path d="M100,45 C97,41 93,37 86,34 C78,40 72,48 68,55 C76,62 88,70 99,77 C101,72 102,66 102,60 C102,56 101,50 100,45 Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Beach ball panel 4 - green (bottom left) -->
+  <path d="M24,92 C32,104 45,112 60,112 C52,100 46,88 44,78 C36,78 28,84 24,92 Z" fill="#7cb342" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Beach ball panel 5 - orange (bottom right) -->
+  <path d="M96,92 C92,84 84,78 76,78 C74,88 68,100 60,112 C75,112 88,104 96,92 Z" fill="#b45309" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Center horizontal divider panel -->
+  <path d="M18,60 C18,57 18,54 20,50 C32,56 46,60 60,60 C74,60 88,56 100,50 C102,54 102,57 102,60 C102,63 101,66 99,70 C87,64 74,60 60,60 C46,60 33,64 21,70 C19,66 18,63 18,60 Z" fill="#e0e0e0" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Outer circle outline on top -->
+  <circle cx="60" cy="60" r="52" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- Shine highlight -->
+  <ellipse cx="42" cy="38" rx="10" ry="6" fill="white" stroke="none" opacity="0.5" transform="rotate(-30 42 38)"/>
+</svg>

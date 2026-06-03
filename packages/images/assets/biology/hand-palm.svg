@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 150" width="110" height="150">
+
+  <!-- WRIST -->
+  <rect x="30" y="116" width="52" height="22" rx="8" ry="8"
+        fill="#ffe0b2" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- PALM body -->
+  <rect x="20" y="76" width="72" height="48" rx="10" ry="10"
+        fill="#ffe0b2" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- THUMB — left side, angled outward -->
+  <rect x="6" y="64" width="18" height="38" rx="9" ry="9"
+        fill="#ffe0b2" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- INDEX finger -->
+  <rect x="22" y="28" width="16" height="56" rx="8" ry="8"
+        fill="#ffe0b2" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- MIDDLE finger (tallest) -->
+  <rect x="40" y="20" width="16" height="64" rx="8" ry="8"
+        fill="#ffe0b2" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- RING finger -->
+  <rect x="58" y="26" width="16" height="58" rx="8" ry="8"
+        fill="#ffe0b2" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- PINKY finger (shortest) -->
+  <rect x="76" y="36" width="14" height="50" rx="7" ry="7"
+        fill="#ffe0b2" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- Cover gaps between palm and fingers with skin-colored rects (no outline) -->
+  <rect x="22" y="72" width="16" height="12" fill="#ffe0b2"/>
+  <rect x="40" y="72" width="16" height="12" fill="#ffe0b2"/>
+  <rect x="58" y="72" width="16" height="12" fill="#ffe0b2"/>
+  <rect x="76" y="72" width="14" height="12" fill="#ffe0b2"/>
+  <rect x="6" y="90" width="18" height="12" fill="#ffe0b2"/>
+
+  <!-- Cover gap between thumb and palm -->
+  <rect x="18" y="72" width="8" height="16" fill="#ffe0b2"/>
+
+  <!-- Cover wrist-palm gap -->
+  <rect x="30" y="112" width="52" height="12" fill="#ffe0b2"/>
+
+  <!-- Finger crease lines (knuckle joints) — two per finger -->
+  <!-- Index -->
+  <line x1="24" y1="60" x2="36" y2="60" stroke="#c49565" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="24" y1="50" x2="36" y2="50" stroke="#c49565" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Middle -->
+  <line x1="42" y1="56" x2="54" y2="56" stroke="#c49565" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="42" y1="44" x2="54" y2="44" stroke="#c49565" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Ring -->
+  <line x1="60" y1="58" x2="72" y2="58" stroke="#c49565" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="60" y1="48" x2="72" y2="48" stroke="#c49565" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Pinky -->
+  <line x1="78" y1="64" x2="88" y2="64" stroke="#c49565" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="78" y1="54" x2="88" y2="54" stroke="#c49565" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Thumb -->
+  <line x1="8" y1="86" x2="22" y2="86" stroke="#c49565" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="8" y1="76" x2="22" y2="76" stroke="#c49565" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Palm crease lines -->
+  <path d="M 22,98 Q 48,92 90,96" stroke="#c49565" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M 22,108 Q 44,104 62,106" stroke="#c49565" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Wrist crease -->
+  <line x1="32" y1="124" x2="80" y2="124" stroke="#c49565" stroke-width="1.5" stroke-linecap="round"/>
+
+</svg>

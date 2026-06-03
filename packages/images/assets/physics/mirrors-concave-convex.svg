@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 200" width="260" height="200">
+  <!-- ===== CONCAVE MIRROR (left) : converging ===== -->
+  <!-- principal axis -->
+  <line x1="6" y1="100" x2="124" y2="100" stroke="#1f2937" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="5 4"/>
+  <!-- mirror (concave: reflective side faces right) -->
+  <path d="M104 46 A 66 66 0 0 0 104 154" fill="none" stroke="#9aa0a6" stroke-width="6" stroke-linecap="round"/>
+  <path d="M104 46 A 66 66 0 0 0 104 154" fill="none" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- focal point -->
+  <circle cx="58" cy="100" r="3.2" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
+
+  <!-- incoming parallel rays (red) -->
+  <line x1="10" y1="70" x2="96.5" y2="70" stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="10" y1="100" x2="98" y2="100" stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="10" y1="130" x2="96.5" y2="130" stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- arrowheads on incoming -->
+  <path d="M96.5 70 l-7 -3.2 l0 6.4 z" fill="#e53935" stroke="none"/>
+  <path d="M98 100 l-7 -3.2 l0 6.4 z" fill="#e53935" stroke="none"/>
+  <path d="M96.5 130 l-7 -3.2 l0 6.4 z" fill="#e53935" stroke="none"/>
+
+  <!-- reflected rays converging to focal point -->
+  <line x1="96.5" y1="70" x2="58" y2="100" stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="96.5" y1="130" x2="58" y2="100" stroke="#e53935" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- arrowheads pointing toward focus -->
+  <path d="M64 95.3 l3.5 6.7 l-7.4 -1.6 z" fill="#e53935" stroke="none"/>
+  <path d="M64 104.7 l3.5 -6.7 l-7.4 1.6 z" fill="#e53935" stroke="none"/>
+
+  <!-- ===== CONVEX MIRROR (right) : diverging ===== -->
+  <!-- principal axis -->
+  <line x1="136" y1="100" x2="254" y2="100" stroke="#1f2937" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="5 4"/>
+  <!-- mirror (convex: reflective side faces left) -->
+  <path d="M170 46 A 66 66 0 0 1 170 154" fill="none" stroke="#9aa0a6" stroke-width="6" stroke-linecap="round"/>
+  <path d="M170 46 A 66 66 0 0 1 170 154" fill="none" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- virtual focal point behind mirror -->
+  <circle cx="216" cy="100" r="3.2" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
+
+  <!-- incoming parallel rays (blue) -->
+  <line x1="140" y1="70" x2="160" y2="70" stroke="#1565c0" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="140" y1="100" x2="162" y2="100" stroke="#1565c0" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="140" y1="130" x2="160" y2="130" stroke="#1565c0" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- arrowheads on incoming -->
+  <path d="M160 70 l-7 -3.2 l0 6.4 z" fill="#1565c0" stroke="none"/>
+  <path d="M162 100 l-7 -3.2 l0 6.4 z" fill="#1565c0" stroke="none"/>
+  <path d="M160 130 l-7 -3.2 l0 6.4 z" fill="#1565c0" stroke="none"/>
+
+  <!-- reflected rays diverging (appear to come from virtual focus) -->
+  <line x1="160" y1="70" x2="142" y2="44" stroke="#1565c0" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="160" y1="130" x2="142" y2="156" stroke="#1565c0" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- arrowheads on diverging rays -->
+  <path d="M142 44 l8 0.7 l-4.4 5.5 z" fill="#1565c0" stroke="none"/>
+  <path d="M142 156 l8 -0.7 l-4.4 -5.5 z" fill="#1565c0" stroke="none"/>
+
+  <!-- dashed virtual ray extensions back to virtual focus -->
+  <line x1="160" y1="70" x2="216" y2="100" stroke="#1565c0" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="4 3"/>
+  <line x1="160" y1="130" x2="216" y2="100" stroke="#1565c0" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="4 3"/>
+</svg>

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 150" width="80" height="150">
+
+  <!-- Cap -->
+  <rect x="26" y="6" width="28" height="18" rx="4" ry="4"
+    fill="#e53935" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Cap ridge lines -->
+  <line x1="26" y1="11" x2="54" y2="11"
+    stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="26" y1="16" x2="54" y2="16"
+    stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+
+  <!-- Neck -->
+  <rect x="28" y="24" width="24" height="12" rx="2" ry="2"
+    fill="#ddeeff" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Shoulder taper -->
+  <path d="M28,36 Q18,44 16,54 L64,54 Q62,44 52,36 Z"
+    fill="#ddeeff" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Main body -->
+  <rect x="16" y="54" width="48" height="74" rx="6" ry="6"
+    fill="#ddeeff" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Bottom curve -->
+  <ellipse cx="40" cy="128" rx="24" ry="5"
+    fill="#c8e4f8" stroke="#1f2937" stroke-width="2"/>
+
+  <!-- Horizontal grip indents -->
+  <path d="M16,78 Q40,82 64,78"
+    fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M16,90 Q40,94 64,90"
+    fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M16,102 Q40,106 64,102"
+    fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Water fill (partial) -->
+  <rect x="18" y="92" width="44" height="34" rx="4" ry="4"
+    fill="#4fc3f7" stroke="none" opacity="0.45"/>
+
+  <!-- Label band (lighter rectangle for label area) -->
+  <rect x="18" y="60" width="44" height="28" rx="3" ry="3"
+    fill="#eef6ff" stroke="#1f2937" stroke-width="1.2" stroke-linejoin="round"/>
+
+</svg>

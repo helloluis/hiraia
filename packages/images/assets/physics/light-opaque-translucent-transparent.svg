@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 150" width="210" height="150">
+  <!-- ground line -->
+  <line x1="8" y1="128" x2="202" y2="128" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- ===================== OPAQUE PANEL ===================== -->
+  <!-- incoming rays from left, blocked -->
+  <line x1="6" y1="44" x2="38" y2="44" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="6" y1="62" x2="38" y2="62" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="6" y1="80" x2="38" y2="80" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+  <!-- shadow cast on the ground behind opaque panel -->
+  <ellipse cx="64" cy="128" rx="22" ry="4.5" fill="#9aa0a6" stroke="none"/>
+  <polygon points="46,120 84,120 92,127 38,127" fill="#7d8389" stroke="none"/>
+  <!-- opaque panel (solid grey) -->
+  <rect x="38" y="36" width="14" height="86" rx="2" fill="#5d4632" stroke="#1f2937" stroke-width="2.2"/>
+
+  <!-- ===================== TRANSLUCENT PANEL ===================== -->
+  <!-- incoming rays -->
+  <line x1="74" y1="44" x2="100" y2="44" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="74" y1="62" x2="100" y2="62" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="74" y1="80" x2="100" y2="80" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+  <!-- frosted translucent panel -->
+  <rect x="100" y="36" width="14" height="86" rx="2" fill="#cfe8f5" stroke="#1f2937" stroke-width="2.2"/>
+  <!-- diffused rays scattering out the right side (spread, faint) -->
+  <line x1="114" y1="50" x2="138" y2="40" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="114" y1="56" x2="140" y2="56" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="114" y1="62" x2="138" y2="74" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="114" y1="74" x2="136" y2="88" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="114" y1="48" x2="136" y2="30" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- ===================== TRANSPARENT PANEL ===================== -->
+  <!-- incoming rays -->
+  <line x1="148" y1="44" x2="166" y2="44" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="148" y1="62" x2="166" y2="62" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="148" y1="80" x2="166" y2="80" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+  <!-- clear glass panel -->
+  <rect x="166" y="36" width="14" height="86" rx="2" fill="#eaf6fc" stroke="#1f2937" stroke-width="2.2"/>
+  <!-- rays passing straight through -->
+  <line x1="180" y1="44" x2="204" y2="44" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="180" y1="62" x2="204" y2="62" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="180" y1="80" x2="204" y2="80" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+</svg>

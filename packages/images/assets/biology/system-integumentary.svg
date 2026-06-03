@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 200" width="180" height="200">
+  <!-- Skin block: epidermis (top thin layer) -->
+  <path d="M20 30 L160 30 L160 70 L20 70 Z" fill="#ffe0b2" stroke="#1f2937" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- wavy boundary accent on epidermis bottom -->
+  <path d="M20 64 Q35 58 50 64 T80 64 T110 64 T140 64 T160 64" fill="none" stroke="#5d4632" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Dermis (thicker layer below) -->
+  <path d="M20 70 L160 70 L160 160 L20 160 Z" fill="#f3a6b5" stroke="#1f2937" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Subcutaneous / fatty base layer -->
+  <path d="M20 160 L160 160 L160 185 L20 185 Z" fill="#fbbf24" stroke="#1f2937" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="40" cy="172" r="5" fill="#fde68a" stroke="#b45309" stroke-width="2"/>
+  <circle cx="62" cy="174" r="5" fill="#fde68a" stroke="#b45309" stroke-width="2"/>
+  <circle cx="86" cy="171" r="5" fill="#fde68a" stroke="#b45309" stroke-width="2"/>
+  <circle cx="120" cy="174" r="5" fill="#fde68a" stroke="#b45309" stroke-width="2"/>
+  <circle cx="142" cy="171" r="5" fill="#fde68a" stroke="#b45309" stroke-width="2"/>
+
+  <!-- Hair strand rising up through the skin and above the surface -->
+  <path d="M58 150 C56 120 60 90 58 70 C57 50 56 40 60 18" fill="none" stroke="#5d4632" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Hair follicle bulb in dermis -->
+  <ellipse cx="58" cy="152" rx="10" ry="12" fill="#8d6e4f" stroke="#1f2937" stroke-width="3" stroke-linejoin="round"/>
+  <ellipse cx="58" cy="154" rx="4" ry="5" fill="#5d4632" stroke="#1f2937" stroke-width="2"/>
+
+  <!-- Sebaceous gland blob attached to follicle -->
+  <circle cx="74" cy="118" r="9" fill="#fde68a" stroke="#b45309" stroke-width="2.5"/>
+  <path d="M66 118 L60 110" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Coiled sweat gland (coil in dermis) with duct rising to surface -->
+  <path d="M124 70 C124 90 124 105 124 118" fill="none" stroke="#4fc3f7" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M124 118
+           C112 118 112 128 124 128
+           C136 128 136 138 124 138
+           C112 138 112 148 124 148
+           C136 148 136 156 124 156" fill="none" stroke="#37536b" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- sweat pore opening at top -->
+  <circle cx="124" cy="68" r="3.5" fill="#4fc3f7" stroke="#1f2937" stroke-width="2"/>
+</svg>

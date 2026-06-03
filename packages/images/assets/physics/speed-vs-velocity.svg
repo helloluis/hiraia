@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" width="220" height="220">
+  <!-- ground line (top scene) -->
+  <line x1="20" y1="78" x2="160" y2="78" stroke="#9aa0a6" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- TOP CAR: speed only (motion lines, no direction arrow) -->
+  <!-- car body -->
+  <path d="M70 70 L80 52 L118 52 L132 70 Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <rect x="62" y="68" width="78" height="12" rx="5" fill="#1565c0" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- windows -->
+  <path d="M84 56 L96 56 L96 67 L78 67 Z" fill="#e6f7ff" stroke="#1f2937" stroke-width="2"/>
+  <path d="M101 56 L114 56 L124 67 L101 67 Z" fill="#e6f7ff" stroke="#1f2937" stroke-width="2"/>
+  <!-- wheels -->
+  <circle cx="82" cy="80" r="9" fill="#1f2937"/>
+  <circle cx="82" cy="80" r="4" fill="#9aa0a6"/>
+  <circle cx="120" cy="80" r="9" fill="#1f2937"/>
+  <circle cx="120" cy="80" r="4" fill="#9aa0a6"/>
+  <!-- motion lines (speed, scalar) trailing behind car -->
+  <line x1="58" y1="56" x2="38" y2="56" stroke="#9aa0a6" stroke-width="3" stroke-linecap="round"/>
+  <line x1="56" y1="64" x2="32" y2="64" stroke="#9aa0a6" stroke-width="3" stroke-linecap="round"/>
+  <line x1="58" y1="72" x2="38" y2="72" stroke="#9aa0a6" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- divider between scenes -->
+  <line x1="20" y1="118" x2="200" y2="118" stroke="#9aa0a6" stroke-width="1.5" stroke-dasharray="6 6"/>
+
+  <!-- ground line (bottom scene) -->
+  <line x1="20" y1="188" x2="200" y2="188" stroke="#9aa0a6" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- BOTTOM CAR: velocity (with bold direction arrow) -->
+  <path d="M70 180 L80 162 L118 162 L132 180 Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <rect x="62" y="178" width="78" height="12" rx="5" fill="#1565c0" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M84 166 L96 166 L96 177 L78 177 Z" fill="#e6f7ff" stroke="#1f2937" stroke-width="2"/>
+  <path d="M101 166 L114 166 L124 177 L101 177 Z" fill="#e6f7ff" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="82" cy="190" r="9" fill="#1f2937"/>
+  <circle cx="82" cy="190" r="4" fill="#9aa0a6"/>
+  <circle cx="120" cy="190" r="9" fill="#1f2937"/>
+  <circle cx="120" cy="190" r="4" fill="#9aa0a6"/>
+  <!-- bold velocity vector arrow pointing in direction of travel -->
+  <line x1="140" y1="166" x2="194" y2="166" stroke="#e53935" stroke-width="5" stroke-linecap="round"/>
+  <path d="M194 166 L182 159 L182 173 Z" fill="#e53935" stroke="#e53935" stroke-width="2" stroke-linejoin="round"/>
+</svg>

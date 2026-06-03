@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 150" width="110" height="150">
+  <!-- Heavy base: wide flat trapezoid at bottom -->
+  <polygon points="15,138 95,138 88,128 22,128" fill="#7d8389" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Base bottom edge rounded -->
+  <rect x="15" y="136" width="80" height="7" rx="3" fill="#3f4348" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Curved arm: pillar rising from base left-center, then arching right toward top -->
+  <!-- Vertical pillar section from base up -->
+  <rect x="38" y="52" width="14" height="78" rx="5" fill="#7d8389" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Arch curve top of arm going right: a thick rounded rectangle -->
+  <rect x="38" y="48" width="32" height="14" rx="6" fill="#7d8389" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Focus knob: large coarse focus knob on the right side of arm -->
+  <ellipse cx="52" cy="90" rx="8" ry="10" fill="#fbbf24" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Fine focus knob: smaller, just above coarse -->
+  <ellipse cx="52" cy="72" rx="5.5" ry="7" fill="#b45309" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Stage: flat horizontal platform with a clip -->
+  <!-- Stage plate -->
+  <rect x="26" y="98" width="58" height="7" rx="2" fill="#3f4348" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Stage clip: small bent clip on left side of stage -->
+  <rect x="27" y="94" width="5" height="10" rx="1.5" fill="#fbbf24" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Stage opening (hole in center) -->
+  <ellipse cx="55" cy="101" rx="7" ry="3.5" fill="#1f2937" stroke="#1f2937" stroke-width="1.5"/>
+
+  <!-- Condenser / sub-stage under stage -->
+  <rect x="48" y="105" width="14" height="10" rx="3" fill="#7d8389" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Body tube: connects arm arch to nose piece -->
+  <rect x="58" y="22" width="12" height="42" rx="4" fill="#3f4348" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Nosepiece (revolving): disk at bottom of body tube -->
+  <ellipse cx="64" cy="66" rx="11" ry="5" fill="#7d8389" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Objective lenses: three short cones/cylinders hanging from nosepiece -->
+  <!-- Longest (high power) objective pointing straight down -->
+  <rect x="61" y="67" width="6" height="22" rx="3" fill="#3f4348" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Tip of long objective -->
+  <ellipse cx="64" cy="89" rx="3.5" ry="2" fill="#4fc3f7" stroke="#1f2937" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Medium objective angled slightly left -->
+  <line x1="64" y1="66" x2="55" y2="84" stroke="#1f2937" stroke-width="4" stroke-linecap="round"/>
+  <line x1="64" y1="66" x2="55" y2="84" stroke="#3f4348" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="55" cy="85" rx="3" ry="1.8" fill="#4fc3f7" stroke="#1f2937" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Short objective angled right -->
+  <line x1="64" y1="66" x2="74" y2="80" stroke="#1f2937" stroke-width="4" stroke-linecap="round"/>
+  <line x1="64" y1="66" x2="74" y2="80" stroke="#3f4348" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="74" cy="81" rx="3" ry="1.8" fill="#4fc3f7" stroke="#1f2937" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Eyepiece tube at top of body tube -->
+  <rect x="59" y="10" width="10" height="16" rx="3" fill="#3f4348" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Eyepiece cap (top widened ring) -->
+  <rect x="56" y="8" width="16" height="6" rx="3" fill="#7d8389" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Eyepiece lens gleam -->
+  <ellipse cx="64" cy="11" rx="5" ry="2" fill="#4fc3f7" stroke="#1f2937" stroke-width="1.5"/>
+
+  <!-- Mirror / light source at bottom of condenser -->
+  <ellipse cx="55" cy="118" rx="8" ry="4" fill="#4fc3f7" stroke="#1f2937" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <ellipse cx="55" cy="118" rx="4" ry="2" fill="#e8f4fb" stroke="#1f2937" stroke-width="1.2"/>
+</svg>

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 120" width="140" height="120">
+  <!-- Sky background -->
+  <rect x="0" y="0" width="140" height="120" fill="#c9e8f7" stroke="none"/>
+
+  <!-- Ground strip -->
+  <rect x="0" y="100" width="140" height="20" fill="#7cb342" stroke="none"/>
+  <rect x="0" y="100" width="140" height="2.5" fill="#2e7d32" stroke="none"/>
+
+  <!-- Main mountain body -->
+  <polygon
+    points="70,8 10,100 130,100"
+    fill="#7d8389"
+    stroke="#1f2937"
+    stroke-width="2.5"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+  />
+
+  <!-- Snow/rock cap — lighter rocky area near the peak -->
+  <polygon
+    points="70,8 47,52 93,52"
+    fill="#e8eaed"
+    stroke="#1f2937"
+    stroke-width="2"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+  />
+
+  <!-- Snow cap tip highlight (bright white snow at very top) -->
+  <polygon
+    points="70,8 58,34 82,34"
+    fill="#ffffff"
+    stroke="#1f2937"
+    stroke-width="2"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+  />
+
+  <!-- Left shadow flank — darker grey for depth -->
+  <polygon
+    points="70,8 10,100 55,100"
+    fill="#3f4348"
+    stroke="none"
+    opacity="0.18"
+  />
+</svg>

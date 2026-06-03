@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 210" width="220" height="210">
+  <line x1="110" y1="200" x2="110" y2="150" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="58" y1="150" x2="162" y2="150" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="58" y1="150" x2="58" y2="105" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="162" y1="150" x2="162" y2="105" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="32" y1="105" x2="84" y2="105" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="136" y1="105" x2="188" y2="105" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="32" y1="105" x2="32" y2="60" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="84" y1="105" x2="84" y2="60" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="84" y1="60" x2="84" y2="60" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="64" y1="60" x2="104" y2="60" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="64" y1="60" x2="64" y2="40" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="104" y1="60" x2="104" y2="40" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+
+  <!-- tip A: fish (leftmost, y~60 base goes to icon at top-left) -->
+  <line x1="32" y1="60" x2="32" y2="44" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <g>
+    <ellipse cx="28" cy="32" rx="14" ry="8" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.2"/>
+    <path d="M42 32 L52 25 L52 39 Z" fill="#4fc3f7" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+    <circle cx="22" cy="30" r="1.8" fill="#1f2937"/>
+  </g>
+
+  <!-- tip B: frog (y branch ~40) -->
+  <g>
+    <ellipse cx="64" cy="28" rx="11" ry="9" fill="#7cb342" stroke="#1f2937" stroke-width="2.2"/>
+    <circle cx="59" cy="20" r="4" fill="#7cb342" stroke="#1f2937" stroke-width="2"/>
+    <circle cx="69" cy="20" r="4" fill="#7cb342" stroke="#1f2937" stroke-width="2"/>
+    <circle cx="59" cy="20" r="1.4" fill="#1f2937"/>
+    <circle cx="69" cy="20" r="1.4" fill="#1f2937"/>
+  </g>
+
+  <!-- tip C: lizard (y branch ~40) -->
+  <g>
+    <ellipse cx="104" cy="30" rx="12" ry="6" fill="#2e7d32" stroke="#1f2937" stroke-width="2.2"/>
+    <circle cx="116" cy="28" r="5" fill="#2e7d32" stroke="#1f2937" stroke-width="2"/>
+    <path d="M92 30 Q84 28 86 22" fill="none" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+    <circle cx="117" cy="27" r="1.3" fill="#1f2937"/>
+    <line x1="98" y1="35" x2="96" y2="39" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+    <line x1="110" y1="35" x2="112" y2="39" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- right side branches: split 136 & 188 from 162 -->
+  <line x1="136" y1="105" x2="136" y2="60" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="188" y1="105" x2="188" y2="44" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="120" y1="60" x2="152" y2="60" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="120" y1="60" x2="120" y2="44" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="152" y1="60" x2="152" y2="44" fill="none" stroke="#1f2937" stroke-width="2.4" stroke-linecap="round"/>
+
+  <!-- tip D: bird (x~120) -->
+  <g>
+    <ellipse cx="120" cy="32" rx="10" ry="7" fill="#fbbf24" stroke="#1f2937" stroke-width="2.2"/>
+    <circle cx="112" cy="27" r="5" fill="#fbbf24" stroke="#1f2937" stroke-width="2"/>
+    <path d="M107 27 L101 25 L107 30 Z" fill="#e53935" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+    <circle cx="111" cy="26" r="1.3" fill="#1f2937"/>
+    <path d="M122 30 Q128 26 130 32" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- tip E: rabbit/mammal (x~152) -->
+  <g>
+    <ellipse cx="152" cy="33" rx="11" ry="8" fill="#8d6e4f" stroke="#1f2937" stroke-width="2.2"/>
+    <circle cx="152" cy="22" r="5" fill="#8d6e4f" stroke="#1f2937" stroke-width="2"/>
+    <ellipse cx="148" cy="14" rx="2.5" ry="6" fill="#f3a6b5" stroke="#1f2937" stroke-width="1.8"/>
+    <ellipse cx="156" cy="14" rx="2.5" ry="6" fill="#f3a6b5" stroke="#1f2937" stroke-width="1.8"/>
+    <circle cx="150" cy="22" r="1.2" fill="#1f2937"/>
+    <circle cx="154" cy="22" r="1.2" fill="#1f2937"/>
+  </g>
+
+  <!-- tip F: insect/butterfly (x~188) -->
+  <g>
+    <ellipse cx="188" cy="30" rx="3" ry="9" fill="#1f2937" stroke="#1f2937" stroke-width="1.6"/>
+    <ellipse cx="180" cy="26" rx="7" ry="6" fill="#8e44ad" stroke="#1f2937" stroke-width="2"/>
+    <ellipse cx="196" cy="26" rx="7" ry="6" fill="#8e44ad" stroke="#1f2937" stroke-width="2"/>
+    <ellipse cx="181" cy="36" rx="5" ry="5" fill="#8e44ad" stroke="#1f2937" stroke-width="2"/>
+    <ellipse cx="195" cy="36" rx="5" ry="5" fill="#8e44ad" stroke="#1f2937" stroke-width="2"/>
+  </g>
+
+  <!-- common ancestor at base -->
+  <circle cx="110" cy="200" r="7" fill="#9aa0a6" stroke="#1f2937" stroke-width="2.4"/>
+</svg>
