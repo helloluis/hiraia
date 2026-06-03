@@ -11,13 +11,13 @@ export const MODEL_INFO = {
   tagline: 'Fine-tuned with Filipino & Bisaya adapters',
   /** Underlying base architecture. */
   arch: 'Qwen2 / SEA-grounded',
-  /** Approx parameter count. */
+  /** Approx parameter count (Sailor2-3B is an expanded ~3.6B; f16 GGUF is 6.67 GiB). */
   params: '~3.6B',
-  /** On-device deployment quantization. */
+  /** Deployment quantization (mradermacher build). */
   quant: 'Q4_K_M',
-  /** Quantized base size on disk/RAM (GB) — the mradermacher Q4_K_M build we serve. */
+  /** Base size on disk (GiB) — measured: 3.01 GiB file (~2.2 GB RAM at runtime, mmap'd). */
   baseSizeGB: 3.0,
-  /** Each LoRA adapter size (MB). */
+  /** Each LoRA adapter size (MB) — measured: 101.8 MiB. */
   adapterSizeMB: 102,
   /**
    * Model id sent to the QVAC/llama.cpp server in the `model` field.
@@ -88,7 +88,7 @@ export function loraScalesFor(language: LanguageKey): Array<{ id: number; scale:
   return ALL_LORA_IDS.map((id) => ({ id, scale: id === active ? 1.0 : 0.0 }));
 }
 
-/** Short stats string for the status bar. */
+/** Short, truthful stats string for the status bar. */
 export const MODEL_STATS_LINE =
-  `${MODEL_INFO.params} params · ${MODEL_INFO.quant} (~${MODEL_INFO.baseSizeGB} GB) ` +
-  `· +${MODEL_INFO.adapterSizeMB} MB adapter · runs on-device`;
+  `${MODEL_INFO.params} params · ${MODEL_INFO.quant} · ` +
+  `${MODEL_INFO.baseSizeGB} GB model + ${MODEL_INFO.adapterSizeMB} MB adapter`;
