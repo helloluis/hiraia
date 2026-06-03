@@ -1,0 +1,542 @@
+{
+ "summary": {
+  "adapter": "/workspace/output/sailor-tagalog/adapter-tagalog-f16.gguf",
+  "base": "/workspace/models/sailor2-3b-chat-f16.gguf",
+  "lang": "tagalog",
+  "n": 25,
+  "lang_ok": 25,
+  "english_heavy": 0,
+  "repetitive": 1,
+  "too_short": 1,
+  "ends_question": 25,
+  "avg_words": 79,
+  "runtime_s": 179
+ },
+ "results": [
+  {
+   "id": "tl-01",
+   "lang": "tagalog",
+   "grade": 3,
+   "register": "vague",
+   "topic": "states of matter / general",
+   "prompt": "ano po yung solid liquid gas",
+   "reply": "\b \bMagandang tanong! Ang tatlong estado ng matter ay Solid, Liquid, at Gas.\n\nSa **solid**, ang particles ay magkadikit at may sariling hugis, tulad ng bato o yelo. Sa **liquid**, malayo-layo na ang particles at umaagos, tulad ng tubig. Sa **gas**, malaya na ang particles at kumakalat sa buong lugar, tulad ng hangin o usok.\n\nSa palagay mo, alin sa tatlo ang pinaka-maraming particles, solid ba o gas?",
+   "scores": {
+    "words": 69,
+    "ceb_ratio": 0.087,
+    "tag_ratio": 0.13,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.58,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-02",
+   "lang": "tagalog",
+   "grade": 3,
+   "register": "misspelled",
+   "topic": "photosynthesis",
+   "prompt": "ano po ang potosintesis",
+   "reply": "\b \bMagandang tanong! Ang **photosynthesis** ay ang paraan ng halaman para gumawa ng sariling pagkain gamit ang sikat ng araw.\n\nNagaganap ito sa loob ng leaves, kung saan ang chlorophyll ay sumisipsip ng liwanag at tubig, at ang CO₂ mula sa hangin at ang glucose ay ginagawang pagkain. Kailangan din nito ng tubig mula sa ugat at oxygen mula sa hangin.\n\nBakit kaya kailangan ng halaman ang oxygen pagkatapos gumawa ng pagkain?",
+   "scores": {
+    "words": 71,
+    "ceb_ratio": 0.07,
+    "tag_ratio": 0.239,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.56,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-03",
+   "lang": "tagalog",
+   "grade": 3,
+   "register": "lazy_keywords",
+   "topic": "water cycle",
+   "prompt": "water cycle",
+   "reply": "\b \bMagandang tanong! Ang **water cycle** ay ang walang-katapusang pag-ikot ng tubig sa Earth, parang cycle.\n\nNagsisimula ito kapag ang araw ay nagpapainit sa tubig sa dagat, kaya ito ay sumisingaw paitaas bilang water vapor. Pagtaas ng hangin, lumalamig ito at nagiging maliliit na patak na bumubuo ng ulap, at dito nagsisimula ulit ang buong cycle. Tumutulong ang mga ulap para malinis ang hangin at umiwas ng baha.\n\nSa tingin mo, bakit mas maraming ulap sa Pilipinas kaysa sa ibang bansa?",
+   "scores": {
+    "words": 82,
+    "ceb_ratio": 0.073,
+    "tag_ratio": 0.195,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.66,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-04",
+   "lang": "tagalog",
+   "grade": 4,
+   "register": "vague",
+   "topic": "homework help / unspecified",
+   "prompt": "patulong po sa homework",
+   "reply": "\b \bNapaka-helpful ko! Ano ang pwede kong matulungan? Biology, chemistry, physics, o earth science?",
+   "scores": {
+    "words": 14,
+    "ceb_ratio": 0.0,
+    "tag_ratio": 0.071,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": true,
+    "uniq_ratio": 1.0,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-05",
+   "lang": "tagalog",
+   "grade": 4,
+   "register": "txtspeak",
+   "topic": "living things",
+   "prompt": "anu po pinagkaiba ng halaman sa hayop",
+   "reply": "\b \bMagandang tanong! Ang halaman at hayop ay parehong nabubuhay, pero may ilang pangunahing pagkakaiba.\n\nAng mga halaman ay **photosynthetic** - gumagawa sila ng sariling pagkain gamit ang liwanag, tubig, at carbon dioxide. Ang hayop naman ay kumakain at nangangailangan ng pagkain para sa lakas, at karamihan ay walang kakayahang maglakbay o magtanim ng buto.\n\nSa tingin mo, bakit kaya may mga halaman na makapal ang dahon at makapal ang katawan?",
+   "scores": {
+    "words": 69,
+    "ceb_ratio": 0.029,
+    "tag_ratio": 0.188,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.68,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-06",
+   "lang": "tagalog",
+   "grade": 4,
+   "register": "misspelled",
+   "topic": "gravity",
+   "prompt": "ano po ang grabiti",
+   "reply": "\b \bMagandang tanong! Ang **grabiti** ay ang puwersang humihila sa lahat ng bagay papunta sa lupa, parang hila ng magulang.\n\nMas malakas ito sa malapit na lugar tulad ng Earth, pero mas mahina kapag malayo ka sa Araw o Buwan. Kaya nga hindi ka nahuhulog sa buwan dahil sobrang lakas ng grabiti doon.\n\nKung mas malapit ka sa Earth kaysa Buwan, alin kaya ang mas madaling hawakan mo, ang Earth o ang Buwan? Bakit?",
+   "scores": {
+    "words": 73,
+    "ceb_ratio": 0.11,
+    "tag_ratio": 0.178,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.64,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-07",
+   "lang": "tagalog",
+   "grade": 5,
+   "register": "lazy_keywords",
+   "topic": "force / acceleration",
+   "prompt": "gravity acceleration",
+   "reply": "\b \bMagandang tanong! Ang **gravity acceleration** ay ang acceleration na dulot ng gravity, at ito ay constant sa loob ng Earth's surface dahil pareho lang ang gravitational pull sa lahat ng punto. Sa ibabaw ng Earth, ito ay mga 9.8 meters kada segundo kuwadrado.\n\nKung dalawang tao ang tumalon nang sabay-sabay mula sa eroplano, sino sa tingin mo ang mas mabilis dahil mas mababa ba o mas mataas ang gravity sa isang lugar?",
+   "scores": {
+    "words": 72,
+    "ceb_ratio": 0.097,
+    "tag_ratio": 0.208,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.68,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-08",
+   "lang": "tagalog",
+   "grade": 5,
+   "register": "codeswitch",
+   "topic": "digestive system",
+   "prompt": "paano po nagdidigest yung food natin sa tiyan",
+   "reply": "\b \bMagandang tanong! Sa tiyan, ang pag-digest ay hindi physical, kundi chemical. Pagkain ng pagkain, ang **enzymes** sa stomach acid ay nagsisimulang paliitin ang pagkain nang bahagya.\n\nPagkatapos, pumapasok ang pagkain sa small intestine kung saan nangyayari ang halos lahat ng pag-digest at absorption. Dito pumapasok ang nutrients papunta sa bloodstream, kaya napakahalaga ng vitamins at minerals tulad ng vitamin C at iron.\n\nSa tingin mo, bakit kailangan ng sapat na sustansya para makapagtrabaho nang maayos ang katawan mo?",
+   "scores": {
+    "words": 80,
+    "ceb_ratio": 0.075,
+    "tag_ratio": 0.175,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.69,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-09",
+   "lang": "tagalog",
+   "grade": 5,
+   "register": "incomplete",
+   "topic": "photosynthesis (incomplete)",
+   "prompt": "bakit po berde yung",
+   "reply": "\b \bMagandang tanong! Ang berdeng kulay ay galing sa **chlorophyll**, isang pigment sa dahon na sumisipsip ng asul at pula pero pinapayagan ang berde na dumaan.\n\nKapag umaga, kapag mas malakas ang sikat ng araw, mas maraming energy ang nakukuha ng dahon at mas maraming chlorophyll ang nagiging berde. Kaya mas berde ang dahon kapag umaga kaysa sa tanghali.\n\nBakit kaya mas maraming chlorophyll sa mga dahon na makapal at makintab kaysa sa manipis at madilim?",
+   "scores": {
+    "words": 75,
+    "ceb_ratio": 0.067,
+    "tag_ratio": 0.173,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.55,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-10",
+   "lang": "tagalog",
+   "grade": 5,
+   "register": "vague",
+   "topic": "unspecified science",
+   "prompt": "di ko po gets yung lesson namin",
+   "reply": "\b \bHindi ka nag-iisa! Mahirap talaga minsan ang science, pero huwag kang mag-alala — hindi ka nag-iisa.\n\nMagandang tanong o problema ang dala mo, kasi may ibang estudyanteng nangangailangan din ng tulong. Kung pwede, magtanong ka sa guro mo, dahil sila ang may tamang konteksto at paliwanag. Kung hindi, pwede mo rin akong tanungin, pero sa tingin ko mas makakatulong ang guro mo.\n\nAno ang naiintindihan mo ngayon?",
+   "scores": {
+    "words": 69,
+    "ceb_ratio": 0.058,
+    "tag_ratio": 0.174,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.71,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-11",
+   "lang": "tagalog",
+   "grade": 6,
+   "register": "misspelled",
+   "topic": "ecosystem",
+   "prompt": "ano po ang ekosistem",
+   "reply": "\b \bMagandang tanong! Ang **ekosistem** ay isang komunidad ng mga buhay at di-buhay na bagay na magkakaugnay sa isang lugar. Halimbawa sa isang gubat, ang mga puno, hayop tulad ng kalabaw at gagamba, pati ang tubig at sikat ng araw ay magkakaugnay.\n\nMagkakaiba ang mga ekosistem sa buong mundo, tulad ng coral reef sa dagat at rainforest sa Pilipinas.\n\nSa tingin mo, paano nakakaapekto ang pagputol ng puno sa balanse ng isang gubat?",
+   "scores": {
+    "words": 73,
+    "ceb_ratio": 0.096,
+    "tag_ratio": 0.192,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.58,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-12",
+   "lang": "tagalog",
+   "grade": 6,
+   "register": "lazy_keywords",
+   "topic": "solar system",
+   "prompt": "planets araw mundo",
+   "reply": "\b \bMagandang tanong! Ang Araw ang sentro ng solar system natin, at ang mga planeta ay umiikot dito.\n\nMula sa pinakamalayo hanggang pinakamalapit, naroon ang Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, at Neptune. Ang Mercury at Venus ang pinakamalapit sa Araw, at ang Earth naman ang tahanan natin.\n\nBakit kaya ang Earth lang ang may buhay, at ang ibang planeta ay walang tubig o buhay?",
+   "scores": {
+    "words": 65,
+    "ceb_ratio": 0.031,
+    "tag_ratio": 0.246,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.62,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-13",
+   "lang": "tagalog",
+   "grade": 6,
+   "register": "codeswitch",
+   "topic": "electricity",
+   "prompt": "pano po gumagana yung kuryente sa bahay",
+   "reply": "\b \bMagandang tanong! Ang kuryente ay dumadaloy sa isang circuit sa pamamagitan ng wire papunta sa switch at sa appliance.\n\nAng **electrons** sa wire ay gumagalaw sa dalawang direksyon dahil sa electric field ng mga kuryente. Kapag may switch, nakakapag-on at nakakapag-off ka ng ilaw, kaya ang kuryente ay nagpapagalaw ng electrons.\n\nKapag nahawakan mo ang wire na nakabukas, bakit kaya delikado at nakakapaso ito kahit malamig?",
+   "scores": {
+    "words": 68,
+    "ceb_ratio": 0.103,
+    "tag_ratio": 0.191,
+    "eng_ratio": 0.015,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.63,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-14",
+   "lang": "tagalog",
+   "grade": 7,
+   "register": "clean",
+   "topic": "cells",
+   "prompt": "Ano po ang pagkakaiba ng plant cell at animal cell?",
+   "reply": "\b \bMagandang tanong! Ang pinakamalaking pagkakaiba ay ang **cell membrane**.\n\nAng cell membrane ang humaharang sa loob at labas ng cell, kaya karamihan sa nutrients at waste ay dumadaan sa pamamagitan nito. Ito ang nagbibigay ng proteksyon sa loob at nagsisilbing \"pinto\" ng cell, kaya ang plant cells ay may chloroplast na nagpo-produce ng sariling pagkain at ang animal cells ay walang ganito.\n\nSa palagay mo, bakit kailangan ng halaman ang chloroplast kahit maliit lang ang cell nito?",
+   "scores": {
+    "words": 78,
+    "ceb_ratio": 0.064,
+    "tag_ratio": 0.192,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.59,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-15",
+   "lang": "tagalog",
+   "grade": 7,
+   "register": "misspelled",
+   "topic": "photosynthesis",
+   "prompt": "paano po nangyayari ang potosyntesis sa mga dahon",
+   "reply": "\b \bMagandang tanong! Ang **potosyntesis** ay ang proseso kung saan ginagamit ng halaman ang sikat ng araw para gawing enerhiya ang tubig at carbon dioxide.\n\nNangyayari ito sa mga dahon dahil doon may espesyal na bahaging tinatawag na **chloroplast**, at doon nandoon ang mga chlorophyll na sumisipsip ng enerhiya mula sa araw. Ang tubig at carbon dioxide ay ginagawang glucose (pagkain ng halaman), at ang enerhiya ay nagbibigay-lakas sa halaman.\n\nSa tingin mo, bakit kailangan ng halaman ang sikat ng araw at hindi ang lamig o dilim lang?",
+   "scores": {
+    "words": 88,
+    "ceb_ratio": 0.057,
+    "tag_ratio": 0.239,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.58,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-16",
+   "lang": "tagalog",
+   "grade": 7,
+   "register": "txtspeak",
+   "topic": "matter / atoms",
+   "prompt": "anu b ang atom",
+   "reply": "\b \bMagandang tanong! Ang **atom** ay ang pinakamaliit na yunit ng isang element, at binubuo ito ng tatlong pangunahing bahagi.\n\nMay **proton** ang gitna na may charge na positive, at may **electrons** na umiikot sa labas na may negative charge. Kaya ang atom ay may sariling **positive charge** sa gitna, na tinatawag na nucleus, at pantay na positive at negative charge sa kabuuan.\n\nKung pareho ang positive at negative, sa tingin mo magkakasama ba ang mga ito o maghihiwalay?",
+   "scores": {
+    "words": 78,
+    "ceb_ratio": 0.064,
+    "tag_ratio": 0.141,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.54,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-17",
+   "lang": "tagalog",
+   "grade": 8,
+   "register": "lazy_keywords",
+   "topic": "Newton's laws",
+   "prompt": "newton law of motion",
+   "reply": "\b \bMagandang tanong! Ang **Newton's Laws of Motion** ay tatlong batas tungkol sa galaw ng bagay.\n\nAng una ay **Inertia**: ang bagay ay gustong magpapatuloy sa dati nitong galaw o manatiling nakatigil, maliban kung may puwersang magbabago nito. Ang ikalawa ay **Force**: ang puwersang nagpapabago sa galaw, gaya ng hila ng tricycle o sipa ng bola. Ang ikatlo ay **Acceleration**: ang bilis ng pagbabago ng galaw, gaya ng mabilis na pagtakbo o mabagal na paglalakad.\n\nKapag itinulak mo ang pader, ano kaya ang nangyayari sa puwersang inilalapat mo at sa galaw ng pader?",
+   "scores": {
+    "words": 92,
+    "ceb_ratio": 0.065,
+    "tag_ratio": 0.196,
+    "eng_ratio": 0.011,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.61,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-18",
+   "lang": "tagalog",
+   "grade": 8,
+   "register": "codeswitch",
+   "topic": "periodic table",
+   "prompt": "ano po use ng periodic table sa chemistry",
+   "reply": "\b \bMagandang tanong! Ang **periodic table** ay parang mapa ng lahat ng elements, at sa bawat row, ang elements ay may magkakatulad na katangian dahil pare-pareho ang bilang ng valence electrons nila sa outer shell.\n\nSa periodic table, makikita mo ang mga alkali metals tulad ng sodium (Na) na malambot at madaling mag-react, at ang mga halogens tulad ng chlorine (Cl) na magaling mag-bond sa iba. May mga metal tulad ng copper at gold, at may nonmetals tulad ng oxygen at nitrogen.\n\nSa palagay mo, bakit kaya metallic ang sodium at chlorine pero nonmetal ang oxygen at nitrogen?",
+   "scores": {
+    "words": 100,
+    "ceb_ratio": 0.05,
+    "tag_ratio": 0.18,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.57,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-19",
+   "lang": "tagalog",
+   "grade": 8,
+   "register": "vague",
+   "topic": "unspecified physics",
+   "prompt": "ano po yung tungkol sa puwersa",
+   "reply": "\b \bMagandang tanong! Ang **puwersa** ay ang kakayahang baguhin ang galaw o hugis ng isang bagay, at may tatlong uri nito.\n\nMay **unang puwersa**, tulad ng hila o tulak, na nagpapabilis o nagpapabagal sa bagay. May **ikalawang puwersa**, tulad ng friction o pagkakahawak, na nagpapaiba ng galaw o hugis nito. At may **ikatlong puwersa**, tulad ng Newton's Third Law na nagpapantay sa puwersa kapag may dalawa o higit pang bagay na nagtulakan.\n\nKung may hila sa mesa papasok sa silid, sa tingin mo, alin sa tatlong uri ng puwersa ang nagpapaiba sa paggalaw nito?",
+   "scores": {
+    "words": 93,
+    "ceb_ratio": 0.086,
+    "tag_ratio": 0.118,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.52,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-20",
+   "lang": "tagalog",
+   "grade": 9,
+   "register": "misspelled",
+   "topic": "mitosis",
+   "prompt": "ano po ang maytosis at miyosis",
+   "reply": "\b \bMagandang tanong! Ang **mitosis** at **meiosis** ay dalawang uri ng cell division na may mahalagang papel sa buhay mo.\n\nAng **mitosis** ay ang normal na paghahati ng cells na nagbibigay ng dalawang katulad na cell, tulad ng cells ng balat at muscles. Ang **meiosis** naman ay ang sexual reproduction, kung saan ang isang cell ay nagiging dalawang gamete na may kalahating bilang ng chromosomes kumpara sa magulang, kaya nangyayari ang pagmamana.\n\nSa tingin mo, bakit kailangan ng mga bagong cells ng katawan natin ang meiosis kapag namamatay ang lumang cells?",
+   "scores": {
+    "words": 90,
+    "ceb_ratio": 0.044,
+    "tag_ratio": 0.233,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.59,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-21",
+   "lang": "tagalog",
+   "grade": 9,
+   "register": "clean",
+   "topic": "chemical bonding",
+   "prompt": "Bakit po nagbo-bond ang mga atom para gumawa ng molecule?",
+   "reply": "\b \bMagandang tanong! Kapag nagbo-bond ang mga atom, karaniwang may nawawalang electron, kaya hindi sila stable. Ang nawawalang electron na iyon ay tinatawag na **valence electron**, at may ibang atom na handang magbigay nito.\n\nHalimbawa, ang oxygen ay may 8 valence electrons at gusto ng 8, kaya naghahanap ito ng 2 electrons sa ibang atom. Ang hydrogen naman ay nag-iisa lang, kaya gustong magkaroon ng 2 electrons para maging stable.\n\nKung kailangan ng isang atom ang 8 valence electrons at ang isa ay nag-iisa lang, sa tingin mo bakit kaya sila nagbo-bond?",
+   "scores": {
+    "words": 90,
+    "ceb_ratio": 0.033,
+    "tag_ratio": 0.178,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.56,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-22",
+   "lang": "tagalog",
+   "grade": 9,
+   "register": "lazy_keywords",
+   "topic": "electricity / Ohm",
+   "prompt": "voltage current resistance",
+   "reply": "\b \bMagandang tanong! Ang formula na V = I × R ay nagpapakita ng ugnayan ng tatlong basic properties ng current sa isang circuit.\n\nAng **voltage** (V) ay kung gaano kalakas ang itulak ng battery sa current, ang **current** (I) ay ang dami ng dumadaloy, at ang **resistance** (R) ay kung gaano kahirap daanan ang current. Kapag pinagsama, ang formula ay naglalarawan ng kabaligtaran: mas maliit ang V, mas malaki ang I, at mas malaki ang R, mas maliit ang I.\n\nKung gusto mong mabawasan ang dumadaloy na current, ano kaya ang dapat mong gawin sa voltage o resistance?",
+   "scores": {
+    "words": 96,
+    "ceb_ratio": 0.062,
+    "tag_ratio": 0.219,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.48,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-23",
+   "lang": "tagalog",
+   "grade": 10,
+   "register": "codeswitch",
+   "topic": "genetics",
+   "prompt": "pano po namamana yung mga traits galing parents",
+   "reply": "\b \bMagandang tanong! Ang pagmamana ng traits ay tinatawag na **genetics**, at hindi ito tungkol sa pagpili kundi sa kung aling mga gene ang nasa chromosomes ng isang tao.\n\nAng bawat tao ay may dalawang kopya ng gene mula sa kanyang ina at isa mula sa kanyang ama, kaya ang bawat isa ay may isang good gene at isang bad gene. Kapag dalawang taong parehong may isang good at isang bad gene ang magkaanak, 50% ng kanilang anak ay magkakaroon ng sakit.\n\nKung ang isang mataas ang blood pressure ay magkaanak ng isang may mataas din, ano kaya ang posibilidad na mataas din ang anak nila?",
+   "scores": {
+    "words": 104,
+    "ceb_ratio": 0.077,
+    "tag_ratio": 0.183,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.5,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-24",
+   "lang": "tagalog",
+   "grade": 10,
+   "register": "misspelled",
+   "topic": "stoichiometry / mole",
+   "prompt": "ano po ang mol sa kemistri",
+   "reply": "\b \bMagandang tanong! Ang **mol** ay ang yunit ng dami ng substance, at ito ay direktang katapat ng dami ng tubig sa baso.\n\nKung kalahating litro ng tubig (500 ml) ay 500 g, kung kalahating litro rin ng asin (500 g) ay 500 g din, at kung kalahating litro ng asukal (500 g) ay 500 g din, magkatumbas ang dami nila sa mol. Kaya kapag may nakasulat na 500 g, ang tinutukoy ay ang mol, hindi ang dami ng tubig mismo.\n\nKung kalahating litro ng tubig ay 500 g, ano kaya ang dami ng asin kung kalahating litro rin ang asin?",
+   "scores": {
+    "words": 92,
+    "ceb_ratio": 0.076,
+    "tag_ratio": 0.228,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.39,
+    "repetitive": true
+   }
+  },
+  {
+   "id": "tl-25",
+   "lang": "tagalog",
+   "grade": 10,
+   "register": "vague",
+   "topic": "unspecified / lazy",
+   "prompt": "test bukas di pa ko nag-aaral help",
+   "reply": "\b \bNaiintindihan ko ang takot mo, pero mas mabuting mag-aral nang maayos kaysa mag-test nang kabado.\n\nKapag nag-aaral ka nang tama, may sapat kang kumpiyansa bago dumating ang exam. Kaya maglaan ng sapat na oras para sa bawat subject, at pag-aralan ang mahahalagang topics nang mabuti. Mag-practice din ng ilang solved problems para masanay sa pressure.\n\nKung nagkakaroon ka ng hirap sa isang topic, huwag kang matakot na humingi ng tulong sa guro, kaibigan, o magulang.\n\nAno sa tingin mo ang pinakamahirap na topic sa school mo ngayon?",
+   "scores": {
+    "words": 92,
+    "ceb_ratio": 0.076,
+    "tag_ratio": 0.13,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.73,
+    "repetitive": false
+   }
+  }
+ ]
+}
