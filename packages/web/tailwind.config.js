@@ -8,8 +8,10 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        serif: ['var(--font-serif)', 'Playfair Display', 'Georgia', 'serif'],
-        sans: ['var(--font-sans)', 'Plus Jakarta Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        title: ['var(--font-title)', 'Mansalva', 'cursive'],
+        hand: ['var(--font-sans)', 'Patrick Hand', 'cursive'],
+        serif: ['var(--font-serif)', 'Patrick Hand', 'cursive'],
+        sans: ['var(--font-sans)', 'Patrick Hand', 'cursive'],
       },
       colors: {
         primary: {

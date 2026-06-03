@@ -80,7 +80,7 @@ export function ChatInterface() {
       <header className="bg-white border-b border-gray-200 px-6 py-3">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <h1 className="text-xl font-bold text-primary-600">Hiraia</h1>
+            <h1 className="text-3xl font-title text-primary-600 leading-none">Hiraia</h1>
             <button
               onClick={() => { setServerDraft(serverUrl); setShowServerEdit((v) => !v); }}
               className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-700"
@@ -175,7 +175,7 @@ export function ChatInterface() {
 
         {/* Messages + input */}
         <div className="flex-1 flex flex-col min-w-0">
-          <div className="flex-1 overflow-y-auto px-6 py-4">
+          <div className="flex-1 overflow-y-auto px-6 py-4 notebook-paper">
             <div className="max-w-3xl mx-auto space-y-4">
               {messages.length === 0 && (
                 <div className="text-center py-12">

@@ -36,7 +36,7 @@ export function AuthScreen() {
         <div className="relative z-10 flex flex-col items-start gap-6 sm:gap-8 w-full max-w-sm mx-auto sm:mx-0 sm:ml-12 md:ml-20 lg:ml-28 xl:ml-36 px-4 sm:px-0 pt-16 sm:pt-20 md:pt-24">
           {/* Branding Headline aligned to the form */}
           <div className="select-none w-full">
-            <h1 className="font-serif italic font-semibold text-5xl md:text-7xl text-[#0c343d] tracking-tight leading-none">
+            <h1 className="font-title text-5xl md:text-7xl text-[#0c343d] tracking-tight leading-none">
               hiraia
             </h1>
             <p className="font-serif italic text-sm md:text-lg text-[#0c343d]/90 mt-2 md:mt-3">
@@ -130,7 +130,7 @@ export function AuthScreen() {
             <span className="italic font-bold">hiraia</span> is a personal AI tutor in your pocket, built with QVAC
           </h2>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-end">
             {/* Left Column: Feature Items */}
             <div className="lg:col-span-7 space-y-10 sm:space-y-12">
               
@@ -206,8 +206,8 @@ export function AuthScreen() {
 
             </div>
 
-            {/* Right Column: Hand and app image */}
-            <div className="lg:col-span-5 flex justify-center lg:justify-end mt-8 lg:mt-0">
+            {/* Right Column: Hand and app image (bleeds to the section's bottom edge) */}
+            <div className="lg:col-span-5 flex justify-center lg:justify-end mt-8 lg:mt-0 lg:-mb-24">
               <img 
                 src="/hand-and-app.png" 
                 alt="Hiraia App Preview" 
