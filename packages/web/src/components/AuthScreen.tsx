@@ -126,7 +126,7 @@ export function AuthScreen() {
       <div className="w-full bg-[#fcfdfd] py-16 sm:py-24 px-6 md:px-12 lg:px-24 border-b border-gray-100">
         <div className="max-w-7xl mx-auto">
           {/* Main Section Header */}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display text-[#0c343d] tracking-tight leading-tight max-w-4xl mb-16 md:mb-20">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display text-[#0c343d] tracking-tight leading-tight max-w-4xl mb-8 md:mb-10">
             <span className="italic font-bold">hiraia</span> is a personal AI tutor in your pocket, built with QVAC
           </h2>
 
@@ -200,6 +200,23 @@ export function AuthScreen() {
                   </h3>
                   <p className="text-gray-600 text-sm sm:text-base leading-relaxed pl-1">
                     Runs on cheap phones from <strong className="text-[#0c343d]">five years ago</strong>; <strong className="text-[#0c343d]">no other costs</strong> or ongoing fees!
+                  </p>
+                </div>
+              </div>
+
+              {/* Item 5: Free to download */}
+              <div className="flex gap-4 sm:gap-6 items-start">
+                <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center bg-[#f3a228] shadow-md shadow-[#f3a228]/10">
+                  <svg className="w-6 h-6 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg sm:text-xl font-display text-[#0c343d] mb-2">
+                    Free to download
+                  </h3>
+                  <p className="text-gray-600 text-sm sm:text-base leading-relaxed pl-1 italic">
+                    Android app coming soon!
                   </p>
                 </div>
               </div>
