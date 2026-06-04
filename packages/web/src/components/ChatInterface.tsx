@@ -182,7 +182,21 @@ export function ChatInterface() {
                       }`}
                     >
                       {message.role === 'assistant' ? (
-                        <AssistantMessage content={message.content} streaming={message.id == null} />
+                        message.id == null && message.content === '' ? (
+                          // Waiting on the first token. On CPU the prompt-eval can
+                          // take several seconds, so show a clear "still working"
+                          // state instead of an empty bubble that reads as broken.
+                          <div className="flex items-center gap-2 text-gray-500">
+                            <div className="flex gap-1">
+                              <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                              <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                              <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                            </div>
+                            <span className="text-xs">Thinking… (running on CPU, a few seconds)</span>
+                          </div>
+                        ) : (
+                          <AssistantMessage content={message.content} streaming={message.id == null} />
+                        )
                       ) : (
                         <p className="whitespace-pre-wrap">{message.content}</p>
                       )}
@@ -206,7 +220,10 @@ export function ChatInterface() {
                 </div>
               ))}
 
-              {isLoading && (
+              {/* Covers the brief gap between send and the streaming placeholder
+                  appearing; once the placeholder (empty assistant msg) is present it
+                  shows its own thinking indicator, so don't double up. */}
+              {isLoading && messages[messages.length - 1]?.role !== 'assistant' && (
                 <div className="flex justify-start">
                   <div className="bg-white border border-gray-200 rounded-2xl px-4 py-3">
                     <div className="flex gap-1">

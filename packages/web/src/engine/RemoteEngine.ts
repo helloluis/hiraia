@@ -63,9 +63,10 @@ export class RemoteEngine {
       })),
       stream: true,
       temperature: 0.7,
-      // Fits the server's -c 2048 context (leaves ~1k for system + history);
-      // 512 was clipping normal answers mid-sentence.
-      max_tokens: 1024,
+      // Tutor replies rarely need >~350 tokens; capping here keeps CPU generation
+      // (~5 tok/s on the demo box) from running for minutes. 1024 let replies run
+      // ~3x longer than necessary, which read as "no response" before they finished.
+      max_tokens: 384,
     };
 
     // Apply the per-language LoRA scales (llama.cpp server `lora` field).
