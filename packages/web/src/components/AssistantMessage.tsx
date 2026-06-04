@@ -1,9 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState, type ComponentType } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReactMarkdownRaw from 'react-markdown';
 
-const ReactMarkdown = ReactMarkdownRaw as unknown as ComponentType<{ children: string }>;
+// react-markdown 10's component type doesn't line up with React 19's JSX types
+// across TS versions; treat it as untyped (it renders fine at runtime).
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ReactMarkdown = ReactMarkdownRaw as any;
 
 /**
  * Returns `value` but updated at most once per `ms`. While `flush` is false
