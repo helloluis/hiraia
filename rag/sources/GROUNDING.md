@@ -85,9 +85,34 @@ and the **DepEd Tagalog SLMs** if/when we get LMS access (best for PH phrasing +
 - `learning-modules/` — ❌ DepEd SLMs: empty (gated — official portal needs a DepEd
   account; teacher Drive mirrors returned 401).
 
-**TODO to complete the corpus:** add a scraper (`rag/scripts/`) that pulls the NRC
-read-online chapters + the AAAS BSL chapters as text. These two are the heaviest factual
-sources and are fully open — just HTML, not PDF.
+✅ **NRC + AAAS scraped** via `rag/scripts/scrape-frameworks.mjs` (dependency-free fetch +
+tag-strip; both are plain HTML, free to read). Output: `frameworks/nrc-text/` (20 ch) +
+`frameworks/aaas-text/` (16 ch).
+
+## Working dataset evaluation (2026-06-04)
+
+| Source | Words |
+|---|---|
+| NRC Framework (20 ch) | 161,980 |
+| AAAS Benchmarks (16 ch) | 151,380 |
+| Harlen Big Ideas (2 PDFs) | 57,298 |
+| DepEd Science CGs (4 PDFs) | 113,445 |
+| **TOTAL** | **~484,000 words (~1,273 chunks @512 tok)** |
+
+- **Right-sized for on-device** — ~1,300 chunks is a tiny index.
+- **Covers the 1B's failure topics, accurately.** e.g. photosynthesis (52 hits) returns correct,
+  grade-banded prose ("Plants… use the energy from light to make sugars from carbon dioxide and
+  water through… photosynthesis"). Coverage: CO₂ 58, states-of-matter terms 236, ecosystem 269,
+  cell 874, energy 1772.
+
+**Open caveats / next experiments:**
+1. **English corpus → Filipino output.** Retrieved chunks are English; the 1B answers in Tagalog/
+   Bisaya. Should work (model is multilingual) but must be TESTED, not assumed.
+2. **Standards-level, not lesson-level** — concise "what's true" (good for fact-checking), terse for
+   explanations. Model supplies the kid-friendly phrasing; corpus supplies the facts.
+3. Some HTML boilerplate survived the scrape — a cleaning pass before/within chunking would help.
+4. **Retrieval mechanism undecided:** dense (GTE embeddings, +~150MB model on-device) vs. **BM25/
+   keyword** (no model, far lighter on the 4GB phone). Lean BM25 unless dense clearly wins.
 
 Pipeline to build the index lives in `rag/scripts/` (extract → chunk → embed → index),
 configured in `rag/config.js` (GTE embeddings, 512-token chunks, HNSW). On-device retrieval
