@@ -12,6 +12,7 @@ export function ChatInterface() {
   const [editTitle, setEditTitle] = useState('');
   const [showServerEdit, setShowServerEdit] = useState(false);
   const [serverDraft, setServerDraft] = useState('');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -24,6 +25,8 @@ export function ChatInterface() {
 
   useEffect(() => { checkAuth(); }, [checkAuth]);
   useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
+  // Default: sidebar open on wide viewports, collapsed on narrow (mobile-first).
+  useEffect(() => { if (typeof window !== 'undefined') setSidebarOpen(window.innerWidth >= 768); }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,9 +54,9 @@ export function ChatInterface() {
   const activeLang = LANGUAGES[language];
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
-      {/* Model status / notification bar */}
-      <div className="bg-slate-900 text-slate-100 px-6 py-2 text-xs sm:text-sm">
+    <div className="flex flex-col h-[100dvh] bg-gray-50">
+      {/* Model status / notification bar (fixed: outside the scroll area) */}
+      <div className="shrink-0 bg-slate-900 text-slate-100 px-4 sm:px-6 py-2 text-xs sm:text-sm">
         <div className="mx-auto flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
           <div className="flex items-center gap-2 min-w-0">
             <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" aria-hidden />
@@ -72,9 +75,17 @@ export function ChatInterface() {
       </div>
 
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-3">
+      <header className="shrink-0 bg-white border-b border-gray-200 px-4 sm:px-6 py-3">
         <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              onClick={() => setSidebarOpen((v) => !v)}
+              className="p-1.5 -ml-1 text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-100"
+              aria-label={sidebarOpen ? 'Hide threads' : 'Show threads'}
+              title="Toggle threads"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
+            </button>
             <h1 className="text-3xl font-title text-primary-600 leading-none">Hiraia</h1>
             <button
               onClick={() => { setServerDraft(serverUrl); setShowServerEdit((v) => !v); }}
@@ -105,9 +116,23 @@ export function ChatInterface() {
         )}
       </header>
 
-      <div className="flex flex-1 min-h-0">
-        {/* Thread sidebar */}
-        <aside className="w-60 shrink-0 border-r border-gray-200 bg-white flex flex-col">
+      <div className="flex flex-1 min-h-0 relative">
+        {/* Mobile drawer backdrop (covers the content row, not the fixed topbar) */}
+        {sidebarOpen && (
+          <div
+            className="absolute inset-0 z-20 bg-black/30 md:hidden"
+            onClick={() => setSidebarOpen(false)}
+            aria-hidden="true"
+          />
+        )}
+        {/* Thread sidebar — drawer on mobile, collapsible column on desktop */}
+        <aside
+          className={`${
+            sidebarOpen
+              ? 'translate-x-0 w-60 md:w-60'
+              : '-translate-x-full w-60 md:translate-x-0 md:w-0 md:border-r-0'
+          } absolute md:static inset-y-0 left-0 z-30 shrink-0 border-r border-gray-200 bg-white flex flex-col overflow-hidden transition-all duration-200`}
+        >
           <button
             onClick={() => createChat()}
             className="m-3 px-3 py-2 text-sm rounded-lg bg-primary-600 text-white hover:bg-primary-700"
@@ -124,7 +149,7 @@ export function ChatInterface() {
                   className={`group rounded-lg px-3 py-2 text-sm cursor-pointer flex items-center justify-between gap-1 ${
                     active ? 'bg-primary-50 text-primary-700' : 'hover:bg-gray-100 text-gray-700'
                   }`}
-                  onClick={() => selectChat(c.id)}
+                  onClick={() => { selectChat(c.id); if (typeof window !== 'undefined' && window.innerWidth < 768) setSidebarOpen(false); }}
                 >
                   {editingId === c.id ? (
                     <input
@@ -161,7 +186,7 @@ export function ChatInterface() {
 
         {/* Messages + input */}
         <div className="flex-1 flex flex-col min-w-0">
-          <div className="flex-1 overflow-y-auto px-6 py-4 notebook-paper">
+          <div className="flex-1 overflow-y-auto px-3 sm:px-6 py-4 notebook-paper">
             <div className="max-w-3xl mx-auto space-y-4">
               {messages.length === 0 && (
                 <div className="text-center py-12">
@@ -238,8 +263,8 @@ export function ChatInterface() {
             </div>
           </div>
 
-          {/* Input */}
-          <div className="bg-white border-t border-gray-200 px-6 py-4">
+          {/* Input (fixed: outside the scroll area) */}
+          <div className="shrink-0 bg-white border-t border-gray-200 px-4 sm:px-6 py-3 sm:py-4">
             <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
               <div className="flex gap-2">
                 <textarea
