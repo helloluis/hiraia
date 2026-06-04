@@ -1,5 +1,7 @@
-# Ignore generated files
-sources/
+# Ignore the downloaded source materials (large PDFs), but TRACK the markdown
+# docs at the top of sources/ (e.g. GROUNDING.md — our strategy notes).
+sources/*
+!sources/*.md
 
 # Keep config and scripts
 !config.js
