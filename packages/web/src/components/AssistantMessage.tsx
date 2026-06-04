@@ -43,12 +43,46 @@ function useThrottled(value: string, ms: number, flush: boolean): string {
   return out;
 }
 
+// The tutor may end a reply with an invisible control token, e.g.
+//   [image: cross-section of a leaf showing photosynthesis]
+// It signals "a diagram would help here"; the retrieval layer (when wired) maps
+// the description to an actual image and renders it. The token itself must NEVER
+// be shown to the student — whether or not a matching image is found. We also
+// suppress a half-typed token at the streaming tail so it doesn't flash before
+// it finishes arriving. The raw text (with the token) is still what gets saved,
+// so the model stays aware of it in multi-turn history.
+const COMPLETE_IMAGE_TAG = /\s*\[image:[^\]]*\]/gi;
+const IMAGE_TAG_PREFIX = '[image:';
+
+/** Hide a trailing, not-yet-closed token that could be forming an `[image:` tag. */
+function stripTrailingPartialTag(s: string): string {
+  const open = s.lastIndexOf('[');
+  if (open === -1 || s.indexOf(']', open) !== -1) return s; // none, or already closed
+  const tail = s.slice(open).toLowerCase();
+  if (IMAGE_TAG_PREFIX.startsWith(tail) || tail.startsWith(IMAGE_TAG_PREFIX)) {
+    return s.slice(0, open);
+  }
+  return s;
+}
+
+/** Strip image control tokens for display; also surface the first description. */
+export function parseImageTag(raw: string): { text: string; imageDesc: string | null } {
+  const m = raw.match(/\[image:\s*([^\]]*)\]/i);
+  const imageDesc = m?.[1]?.trim() ?? null;
+  const text = stripTrailingPartialTag(raw.replace(COMPLETE_IMAGE_TAG, '')).trimEnd();
+  return { text, imageDesc };
+}
+
 export function AssistantMessage({ content, streaming }: { content: string; streaming: boolean }) {
   // Markdown conversion lags the live stream by ~1s; snaps to full content when done.
   const shown = useThrottled(content, 1000, !streaming);
+  // The control token is removed before render; `imageDesc` is parsed and ready
+  // for the retrieval layer. Until that's wired, an unmatched (or any) token
+  // simply renders nothing — it is never shown to the student as raw text.
+  const { text } = parseImageTag(shown);
   return (
     <div className="prose prose-sm max-w-none chat-md">
-      <ReactMarkdown>{shown}</ReactMarkdown>
+      <ReactMarkdown>{text}</ReactMarkdown>
     </div>
   );
 }
