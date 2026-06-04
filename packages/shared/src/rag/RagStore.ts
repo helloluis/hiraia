@@ -28,8 +28,9 @@ const MIN_TOKEN_LEN = 3; // matches build-bank.py's `len(t) > 2`
  * on content words like "kuryente", "asul", "langit", "bakhaw".
  */
 const QUERY_STOP = new Set(
-  `bakit paano ano anong kung saan kailan sino alin para kaya
+  `bakit paano ano anong kung saan kailan sino sinong alin para kaya
    ngano nganong unsa unsay asa kinsa giunsa pila naunsa
+   ito iyan iyon nito niyan kini kana kanang
    what why how when where who whom which whose
    the are does did can could would should about from with into
    your you they them this that these those`
@@ -93,7 +94,13 @@ export class RagStore {
    * given language. Facts with zero overlap are dropped.
    */
   search(query: string, topK = 3, language: Language = 'english'): FactHit[] {
-    const qTokens = new Set(tokenize(query).filter((t) => !QUERY_STOP.has(t)));
+    // Normally we drop question/glue words so content words drive ranking. But a
+    // bare identity question ("sino ka", "ano kayo", "para saan to") is ALL such
+    // words — stripping leaves nothing. In that case fall back to the raw tokens
+    // so the pronouns/question words themselves can match the ABOUT_HIRAIA facts
+    // (which carry "sino", "kayo", "para", … as terms).
+    const stripped = tokenize(query).filter((t) => !QUERY_STOP.has(t));
+    const qTokens = new Set(stripped.length > 0 ? stripped : tokenize(query));
     if (qTokens.size === 0) return [];
     const key = LANG_KEY[language];
 

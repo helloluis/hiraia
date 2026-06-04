@@ -8,7 +8,14 @@
  */
 export interface ScienceFact {
   id: string;
-  domain: 'MATTER' | 'LIVING_THINGS' | 'FORCE_MOTION_ENERGY' | 'EARTH_SPACE';
+  domain:
+    | 'MATTER'
+    | 'LIVING_THINGS'
+    | 'FORCE_MOTION_ENERGY'
+    | 'EARTH_SPACE'
+    // Facts about Hiraia itself (identity, purpose, who built it) so the tutor
+    // can answer "sino ka / para saan to" authoritatively.
+    | 'ABOUT_HIRAIA';
   topic: string;
   /** Curriculum grade bands this fact suits (2–10); descriptive metadata. */
   grades: number[];
