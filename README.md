@@ -44,7 +44,9 @@ hiraia/
 │   ├── shared/       # Shared logic (prompts, curriculum, tutor engine interface)
 │   ├── mobile/       # Expo React Native app (Android APK)
 │   ├── web/          # Next.js web demo
-│   └── server/       # Hosted QVAC server config for web demo
+│   ├── server/       # Hosted QVAC server config for web demo
+│   ├── images/       # Educational illustration library + retrieval index
+│   └── factoids/     # Daily "Alam mo ba na…?" auto-message (see below)
 ├── finetuning/       # LoRA training scripts and datasets
 ├── rag/              # RAG pipeline (chunking, embedding, indexing)
 ├── references/       # Raw curriculum materials (gitignored)
@@ -52,6 +54,52 @@ hiraia/
 ```
 
 See [IMPLEMENTATION.md](./IMPLEMENTATION.md) for the full project specification and architecture decisions.
+
+## Daily factoid message (`@hiraia/factoids`)
+
+An unprompted message the tutor sends each student **every morning and evening**:
+a random ~50-word science factoid plus its matching picture, in the fixed format
+**`Alam mo ba na <hook>? <body>`** (`Did you know that…?` / `Nahibaw-an ba nimo
+nga…?`). Full docs: [`packages/factoids/README.md`](./packages/factoids/README.md).
+
+**Correctness model.** The on-device model is small and hallucinates, so factoids
+are **not** generated live. They come from a **curated + verified bank** (authored
+and fact-checked offline, stored `verified: true`; runtime only ever serves
+verified ones) and are **image-anchored** (each factoid is tied to a real subject
+in `packages/images`, so the picture is a guaranteed lookup, not a fuzzy search).
+
+**Timezone.** "07:00" and "20:00" are timezone-dependent and must be the
+**student's** zone (a morning message should land in *their* morning). The
+default is **`Asia/Manila` (GMT+8)** since Hiraia is Filipino-centric; pass a
+per-student IANA zone to override (`runScheduledMessage({ timeZone })` /
+`--tz`). Slot evaluation is DST-correct via `Intl`, never the server clock.
+
+**Regenerating the bank (scales with the language fine-tunes).** The pipeline is
+idempotent/incremental and model-pluggable (any OpenAI-compatible endpoint via
+`HIRAIA_LLM_*` env — point it at the sidecar running your best adapter; `--mock`
+for offline plumbing). It separates **fact from phrasing**:
+
+- `source` = the verified factual claim (English, language-neutral) — what the
+  verifier checks.
+- `hook`/`body` `{tl,en,ceb}` = per-language renderings — re-runnable freely as
+  the Tagalog/Cebuano fine-tunes improve, **without re-verifying any fact**.
+- `provenance.langMeta` = which adapter rendered each language, and when.
+
+```bash
+cd packages/factoids
+# 1. Refresh a language as a better fine-tune lands (the common case):
+node scripts/generate-factoids.mjs --mode translate --lang ceb --force
+# 2. Grow the bank with new factoids → staging (verified:false):
+node scripts/generate-factoids.mjs --mode draft --limit 30 --subject biology
+# 3. Fact-check the gate: staging PASS → bank (verified:true), FAIL stays staged:
+node scripts/verify-bank.mjs
+# 4. Audit live facts with a stronger model:
+node scripts/verify-bank.mjs --recheck
+```
+
+Because translations are renderings of an already-verified fact, improving them is
+cheap and safe — re-run `translate --lang ceb --force` whenever the Cebuano
+adapter improves and ship the new phrasing without touching the truth gate.
 
 ## Hackathon
 

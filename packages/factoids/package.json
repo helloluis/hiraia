@@ -1,0 +1,14 @@
+{
+  "name": "@hiraia/factoids",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Scheduled, unprompted 'Alam mo ba na…?' daily-factoid message for the Hiraia tutor. Image-anchored, served from a curated + verified factoid bank.",
+  "main": "src/index.mjs",
+  "scripts": {
+    "demo": "node src/cli.mjs",
+    "generate": "node scripts/generate-factoids.mjs",
+    "verify": "node scripts/verify-bank.mjs",
+    "test": "node --test"
+  }
+}
