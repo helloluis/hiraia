@@ -15,3 +15,6 @@ node_modules/
 
 # Ignore logs
 *.log
+
+# Built fact-bank DB is a build artifact (regenerate from science-facts.jsonl)
+bank/*.db
