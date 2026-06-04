@@ -2,13 +2,17 @@
 
 This document contains all specifications and steps for setting up a RunPod instance for LoRA fine-tuning of Hiraia language models.
 
+> **Base model: `sail/Sailor2-3B-Chat`** (Qwen2.5 arch, best Tagalog+Cebuano in our
+> bake-off). Qwen3-1.7B is no longer a candidate. Train with **unsloth** (GPU), then
+> convert the PEFT adapter to GGUF with **`--base-model-id sail/Sailor2-3B-Chat`**.
+
 ## Pod Configuration
 
 ### GPU Selection
-- **Recommended**: H100 (80GB VRAM)
-- **Cost**: ~$2.00-2.50/hour
-- **Training time**: ~20-30 minutes for 964 samples, 3 epochs
-- **Total cost per training run**: ~$0.70-1.25
+- **Recommended**: any 48GB+ GPU (L40 / A100 / H100). Sailor2-3B in 4-bit + ctx-1024 fits comfortably; GPU class barely changes wall-clock for unsloth here.
+- **Cost**: ~$0.80 (L40) to ~$2.50/hour (H100)
+- **Training time**: ~25–40 min/language for ~2.4k samples, 3 epochs, ctx 1024 (Sailor2-3B is ~2× Qwen3-1.7B, and ctx 1024 > the old 512 benchmark)
+- **Total cost per training run**: ~$1–4 per language
 
 ### Storage
 - **Network Volume**: 25GB standard (not high-performance, not S3-compatible)
@@ -121,8 +125,10 @@ sshpass -p 'JPttv5eAI8XA' scp -P 16554 -o StrictHostKeyChecking=no \
   root@157.66.254.40:/workspace/
 
 sshpass -p 'JPttv5eAI8XA' scp -P 16554 -o StrictHostKeyChecking=no \
-  datasets/tagalog/science-chat-v2.jsonl \
-  root@157.66.254.40:/workspace/
+  datasets/tagalog/train-v3.jsonl \
+  root@157.66.254.40:/workspace/train-tagalog-v3.jsonl
+# (Bisaya run: send datasets/bisaya/train-v3.jsonl -> /workspace/train-bisaya-v3.jsonl
+#  and scp train-bisaya-unsloth.py instead)
 ```
 
 ### Using GUI SFTP Clients
@@ -154,7 +160,7 @@ The script will display:
 - Model loading progress
 - Dataset size and split
 - Training progress with loss values every 10 steps
-- Expected training time: ~20-30 minutes on H100
+- Expected training time: ~25–40 minutes per language (Sailor2-3B, ctx 1024, ~2.4k samples)
 
 ### Disconnect While Training Continues
 In tmux:
@@ -211,8 +217,8 @@ sshpass -p 'PASSWORD' scp -P PORT -o StrictHostKeyChecking=no \
 
 ### During Training
 - Pod costs ~$2.00-2.50/hour while running
-- Training takes ~20-30 minutes
-- Expected cost per run: $0.70-1.25
+- Training takes ~25–40 minutes per language
+- Expected cost per run: ~$1–4 per language
 
 ### After Training
 **Important**: Stop or terminate the pod when done to avoid ongoing charges.
@@ -288,7 +294,7 @@ df -h /workspace
 
 ### File Locations
 - Training script: `/workspace/train-tagalog-unsloth.py`
-- Dataset: `/workspace/science-chat-v2.jsonl`
+- Dataset: `/workspace/train-tagalog-v3.jsonl` (v2 + image-tagged; Bisaya: `train-bisaya-v3.jsonl`)
 - Requirements: `/workspace/requirements-unsloth.txt`
 - Output: `/workspace/output/tagalog-unsloth/`
 
@@ -299,7 +305,7 @@ df -h /workspace
 ✓ Using GPU: NVIDIA H100 80GB HBM3
 ✓ VRAM: 80.0 GB
 
-Loading Qwen3-1.7B model...
+Loading Sailor2-3B-Chat model...
 ✓ Model loaded
 
 Applying LoRA configuration...
@@ -307,9 +313,9 @@ Applying LoRA configuration...
   Rank: 32, Alpha: 64
   Trainable parameters: 4.8M (2.8% of total)
 
-Loading dataset from /workspace/science-chat-v2.jsonl...
-✓ Loaded 964 samples
-✓ Train: 867, Validation: 97
+Loading dataset from /workspace/train-tagalog-v3.jsonl...
+✓ Loaded 2377 samples
+✓ Train: 2139, Validation: 238
 
 Formatting dataset...
 ✓ Dataset formatted

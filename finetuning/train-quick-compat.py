@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-QUICK compatibility-test trainer: produce a real (lightly-trained) Qwen3-1.7B
+QUICK compatibility-test trainer: produce a real (lightly-trained) Sailor2-3B
 LoRA adapter fast, so we can convert it to GGUF and confirm QVAC's llama.cpp
 loads it. NOT for quality — max_steps is tiny on purpose.
 Usage: python train-quick-compat.py <dataset.jsonl> <output_dir> [max_steps]
@@ -18,8 +18,8 @@ DATASET_PATH = sys.argv[1]
 OUTPUT_DIR = sys.argv[2]
 MAX_STEPS = int(sys.argv[3]) if len(sys.argv) > 3 else 60
 
-MODEL_NAME = os.environ.get("HIRAIA_BASE", "Qwen/Qwen3-1.7B")
-MAX_SEQ_LENGTH = 512
+MODEL_NAME = os.environ.get("HIRAIA_BASE", "sail/Sailor2-3B-Chat")
+MAX_SEQ_LENGTH = 1024
 LORA_RANK, LORA_ALPHA, LORA_DROPOUT = 32, 64, 0.05
 TARGET_MODULES = ["q_proj","k_proj","v_proj","o_proj","gate_proj","up_proj","down_proj"]
 

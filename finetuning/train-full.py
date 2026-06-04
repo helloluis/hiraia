@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Full LoRA trainer for Hiraia (Qwen3-1.7B) via Unsloth, tuned for the shortened
-kid-friendly datasets (everything fits c=512). Produces a PEFT adapter that is
-then converted to GGUF for the QVAC phone runtime.
+Full LoRA trainer for Hiraia (Sailor2-3B-Chat) via Unsloth. Produces a PEFT
+adapter that is then converted to GGUF for the QVAC phone runtime.
+NOTE: convert with --base-model-id sail/Sailor2-3B-Chat (must match this base).
 Usage: python train-full.py <dataset.jsonl> <output_dir> [epochs]
 """
 import unsloth
@@ -18,8 +18,8 @@ DATASET_PATH = sys.argv[1]
 OUTPUT_DIR = sys.argv[2]
 EPOCHS = float(sys.argv[3]) if len(sys.argv) > 3 else 3.0
 
-MODEL_NAME = os.environ.get("HIRAIA_BASE", "Qwen/Qwen3-1.7B")
-MAX_SEQ_LENGTH = 512          # shortened data fits comfortably
+MODEL_NAME = os.environ.get("HIRAIA_BASE", "sail/Sailor2-3B-Chat")
+MAX_SEQ_LENGTH = 1024         # fits image-tagged rows (tag at end must not truncate)
 LORA_RANK, LORA_ALPHA, LORA_DROPOUT = 32, 64, 0.05
 TARGET_MODULES = ["q_proj","k_proj","v_proj","o_proj","gate_proj","up_proj","down_proj"]
 

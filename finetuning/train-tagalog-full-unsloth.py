@@ -17,9 +17,9 @@ from datasets import load_dataset
 from trl import SFTTrainer, SFTConfig
 
 # Configuration
-MODEL_NAME = "Qwen/Qwen3-1.7B"
-DATASET_PATH = "/workspace/science-chat-tagalog-v2.jsonl"
-OUTPUT_DIR = "/workspace/output/tagalog-full-v2"
+MODEL_NAME = "sail/Sailor2-3B-Chat"
+DATASET_PATH = "/workspace/train-tagalog-v3.jsonl"
+OUTPUT_DIR = "/workspace/output/tagalog-sailor-v3-full"
 
 # Training hyperparameters
 LORA_RANK = 32
@@ -34,7 +34,7 @@ NUM_EPOCHS = 3
 LEARNING_RATE = 1e-4
 BATCH_SIZE = 4
 GRADIENT_ACCUMULATION_STEPS = 4
-MAX_SEQ_LENGTH = 2048
+MAX_SEQ_LENGTH = 1024   # fits all image-tagged rows (tag at end must not truncate); v2 long tails clip
 
 
 def formatting_prompts_func(examples, tokenizer):
@@ -62,7 +62,7 @@ def main():
     print(f"✓ VRAM: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB\n")
 
     # Load model with Unsloth optimizations
-    print("Loading Qwen3-1.7B model...")
+    print("Loading Sailor2-3B-Chat model...")
     model, tokenizer = FastLanguageModel.from_pretrained(
         model_name=MODEL_NAME,
         max_seq_length=MAX_SEQ_LENGTH,
@@ -73,7 +73,7 @@ def main():
 
     # Apply chat template and fix EOS token
     tokenizer = get_chat_template(tokenizer, chat_template="chatml")
-    # The TRL SFTConfig default end token placeholder is not in the Qwen3 vocab.
+    # The TRL SFTConfig default end token placeholder is not in the Sailor2 (Qwen2.5) vocab.
     # The ChatML end token IS present, so pin the tokenizer to it explicitly.
     chatml_end = "<" + "|im_end|" + ">"
     assert chatml_end in tokenizer.get_vocab(), "ChatML end token missing from vocab"
