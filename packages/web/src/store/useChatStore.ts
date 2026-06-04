@@ -65,7 +65,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
   serverUrl:
     (typeof window !== 'undefined' && localStorage.getItem('hiraia_server_url')) || DEFAULT_SERVER,
   connected: false,
-  language: 'english',
+  language: 'tagalog',
   chats: [],
   currentChatId: null,
   messages: [],

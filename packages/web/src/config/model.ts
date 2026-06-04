@@ -107,27 +107,42 @@ const CEBUANO_MARKERS = new Set([
   'kanimo', 'kaniya', 'nindot', 'maayo', 'palihug', 'lagi', 'bitaw', 'karon', 'ganina',
   'ugma', 'gahapon', 'pila', 'tagpila', 'mao', 'ganahan', 'makat-on', 'nakaila', 'kuan',
 ]);
+/**
+ * Common English function/question words. Used only to recognise an *obviously*
+ * all-English message (so English is a deliberate switch, never the fallback).
+ * None of these collide with Tagalog/Cebuano marker words above.
+ */
+const ENGLISH_MARKERS = new Set([
+  'the', 'is', 'are', 'am', 'was', 'were', 'be', 'a', 'an', 'of', 'to', 'in', 'on', 'at',
+  'what', 'why', 'how', 'when', 'where', 'who', 'which', 'can', 'could', 'would', 'should',
+  'do', 'does', 'did', 'please', 'explain', 'tell', 'about', 'this', 'that', 'these', 'those',
+  'and', 'or', 'but', 'with', 'for', 'your', 'you', 'i', 'me', 'my', 'we', 'they', 'it',
+  'give', 'show', 'help', 'want', 'need', 'know', 'thanks', 'thank', 'yes', 'okay',
+]);
 
 /**
  * Guess the language of a user message so we can pick the matching adapter
- * automatically (no manual selector). Counts unique marker words for Tagalog vs
- * Cebuano; the side with more wins. When a message carries no signal (English,
- * or a short ambiguous reply like "oo"/"salamat"), it sticks to `fallback` so
- * the conversation doesn't flip languages on every follow-up.
+ * automatically (no manual selector). Tagalog is the default: we only leave it
+ * when the message is *obviously* Cebuano (more Cebuano marker words than
+ * Tagalog) or *clearly* all-English (English words and zero Filipino markers).
+ * Anything else — mixed text, or a short ambiguous reply like "oo"/"salamat" —
+ * sticks to `fallback` so the conversation doesn't flip languages mid-thread.
  */
-export function detectLanguage(text: string, fallback: LanguageKey = 'english'): LanguageKey {
+export function detectLanguage(text: string, fallback: LanguageKey = 'tagalog'): LanguageKey {
   const words = text.toLowerCase().match(/[a-zñ'-]+/g) ?? [];
   let tl = 0;
   let ceb = 0;
+  let en = 0;
   for (const w of words) {
     if (TAGALOG_MARKERS.has(w)) tl++;
     if (CEBUANO_MARKERS.has(w)) ceb++;
+    if (ENGLISH_MARKERS.has(w)) en++;
   }
-  if (tl === 0 && ceb === 0) return fallback; // no Filipino signal -> keep current
-  if (ceb > tl) return 'cebuano';
-  if (tl > ceb) return 'tagalog';
-  // nonzero tie: keep the current Filipino language if there is one, else Tagalog
-  return fallback === 'cebuano' ? 'cebuano' : 'tagalog';
+  if (ceb > tl) return 'cebuano'; // obvious Cebuano
+  if (tl > 0) return 'tagalog'; // any Tagalog signal -> Tagalog
+  // no Filipino markers: English only if it clearly reads as English, else stay put
+  if (ceb === 0 && en > 0) return 'english';
+  return fallback;
 }
 
 /** Short, truthful stats string for the status bar. */
