@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { RemoteEngine } from '@/engine/RemoteEngine';
-import { LANGUAGES, loraScalesFor, type LanguageKey } from '@/config/model';
+import { LANGUAGES, loraScalesFor, detectLanguage, type LanguageKey } from '@/config/model';
 
 export interface User { id: number; email: string }
 export interface Chat { id: number; title: string | null; is_primary: number; created_at: string }
@@ -25,6 +25,8 @@ interface ChatState {
   engine: RemoteEngine | null;
   serverUrl: string;
   connected: boolean;
+  // language auto-detected from the latest user message (drives adapter + status bar)
+  language: LanguageKey;
   // threads + messages
   chats: Chat[];
   currentChatId: number | null;
@@ -42,7 +44,7 @@ interface ChatState {
   selectChat: (id: number) => Promise<void>;
   createChat: (title?: string) => Promise<void>;
   renameChat: (id: number, title: string) => Promise<void>;
-  sendMessage: (content: string, language: LanguageKey) => Promise<void>;
+  sendMessage: (content: string) => Promise<void>;
   setFeedback: (messageId: number, feedback: number) => Promise<void>;
 }
 
@@ -63,6 +65,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
   serverUrl:
     (typeof window !== 'undefined' && localStorage.getItem('hiraia_server_url')) || DEFAULT_SERVER,
   connected: false,
+  language: 'english',
   chats: [],
   currentChatId: null,
   messages: [],
@@ -156,12 +159,16 @@ export const useChatStore = create<ChatState>((set, get) => ({
     set({ chats: get().chats.map((c) => (c.id === id ? chat : c)) });
   },
 
-  sendMessage: async (content, language) => {
+  sendMessage: async (content) => {
     const { engine, currentChatId, messages } = get();
     if (!currentChatId) {
       set({ error: 'No chat selected' });
       return;
     }
+    // pick the adapter from the message itself; stick to the current language
+    // when the message has no Filipino signal (English / short follow-ups)
+    const language = detectLanguage(content, get().language);
+    set({ language });
     if (!engine || !get().connected) {
       const ok = await get().connect();
       if (!ok) return; // error already set

@@ -2,13 +2,12 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useChatStore } from '@/store/useChatStore';
-import { MODEL_INFO, MODEL_STATS_LINE, LANGUAGES, type LanguageKey } from '@/config/model';
+import { MODEL_INFO, MODEL_STATS_LINE, LANGUAGES } from '@/config/model';
 import { AuthScreen } from './AuthScreen';
 import { AssistantMessage } from './AssistantMessage';
 
 export function ChatInterface() {
   const [input, setInput] = useState('');
-  const [language, setLanguage] = useState<LanguageKey>('english');
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editTitle, setEditTitle] = useState('');
   const [showServerEdit, setShowServerEdit] = useState(false);
@@ -18,7 +17,7 @@ export function ChatInterface() {
   const {
     user, authChecked, checkAuth, logout,
     chats, currentChatId, selectChat, createChat, renameChat,
-    messages, isLoading, error,
+    messages, isLoading, error, language,
     connected, serverUrl, connect, setServerUrl, setFeedback,
     sendMessage,
   } = useChatStore();
@@ -31,7 +30,7 @@ export function ChatInterface() {
     if (!input.trim() || isLoading) return;
     const message = input.trim();
     setInput('');
-    await sendMessage(message, language);
+    await sendMessage(message);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -87,15 +86,6 @@ export function ChatInterface() {
             </button>
           </div>
           <div className="flex items-center gap-3">
-            <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value as LanguageKey)}
-              className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500"
-            >
-              {(Object.keys(LANGUAGES) as LanguageKey[]).map((key) => (
-                <option key={key} value={key}>{LANGUAGES[key].label}</option>
-              ))}
-            </select>
             <span className="hidden sm:inline text-sm text-gray-500">{user.email}</span>
             <button onClick={logout} className="text-sm text-gray-600 hover:text-gray-800">Log out</button>
           </div>

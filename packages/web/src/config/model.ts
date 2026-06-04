@@ -88,6 +88,48 @@ export function loraScalesFor(language: LanguageKey): Array<{ id: number; scale:
   return ALL_LORA_IDS.map((id) => ({ id, scale: id === active ? 1.0 : 0.0 }));
 }
 
+/**
+ * Marker words unique enough to each language to discriminate it from the others.
+ * Shared Filipino particles (mga, sa, ang, ako, lang, wala, oo, salamat, pwede,
+ * gusto, pero…) are deliberately left out — they'd score both sides equally and
+ * add only noise. None of these collide with common English words.
+ */
+const TAGALOG_MARKERS = new Set([
+  'ano', 'anong', 'bakit', 'sino', 'sinong', 'saan', 'paano', 'paanong', 'kailan',
+  'ito', 'iyan', 'iyon', 'nito', 'niyan', 'talaga', 'naman', 'kasi', 'hindi', 'huwag',
+  'ngayon', 'kahapon', 'bukas', 'ganito', 'ganyan', 'dahil', 'kung', 'kapag', 'dito',
+  'doon', 'po', 'opo', 'ho', 'paki', 'magkano', 'ilan', 'meron', 'mayroon', 'nasaan',
+  'kumusta', 'ng', 'nang', 'akin', 'iyo', 'kanya', 'atin', 'inyo', 'kanila', 'maganda',
+]);
+const CEBUANO_MARKERS = new Set([
+  'unsa', 'unsay', 'unsaon', 'giunsa', 'ngano', 'kinsa', 'asa', 'naa', 'kini', 'kana',
+  'kadto', 'gyud', 'gyod', 'jud', 'kaayo', 'dili', 'og', 'ug', 'nako', 'nimo', 'kanako',
+  'kanimo', 'kaniya', 'nindot', 'maayo', 'palihug', 'lagi', 'bitaw', 'karon', 'ganina',
+  'ugma', 'gahapon', 'pila', 'tagpila', 'mao', 'ganahan', 'makat-on', 'nakaila', 'kuan',
+]);
+
+/**
+ * Guess the language of a user message so we can pick the matching adapter
+ * automatically (no manual selector). Counts unique marker words for Tagalog vs
+ * Cebuano; the side with more wins. When a message carries no signal (English,
+ * or a short ambiguous reply like "oo"/"salamat"), it sticks to `fallback` so
+ * the conversation doesn't flip languages on every follow-up.
+ */
+export function detectLanguage(text: string, fallback: LanguageKey = 'english'): LanguageKey {
+  const words = text.toLowerCase().match(/[a-zñ'-]+/g) ?? [];
+  let tl = 0;
+  let ceb = 0;
+  for (const w of words) {
+    if (TAGALOG_MARKERS.has(w)) tl++;
+    if (CEBUANO_MARKERS.has(w)) ceb++;
+  }
+  if (tl === 0 && ceb === 0) return fallback; // no Filipino signal -> keep current
+  if (ceb > tl) return 'cebuano';
+  if (tl > ceb) return 'tagalog';
+  // nonzero tie: keep the current Filipino language if there is one, else Tagalog
+  return fallback === 'cebuano' ? 'cebuano' : 'tagalog';
+}
+
 /** Short, truthful stats string for the status bar. */
 export const MODEL_STATS_LINE =
   `${MODEL_INFO.params} params · ${MODEL_INFO.quant} · ` +
