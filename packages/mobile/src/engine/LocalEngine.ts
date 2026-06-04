@@ -10,7 +10,9 @@ import type {
   ImageResult,
   RagResult,
   TutorConfig,
+  Language,
 } from '@hiraia/shared';
+import { RagStore } from '@hiraia/shared';
 
 /**
  * LocalEngine implementation using QVAC SDK
@@ -20,6 +22,9 @@ export class LocalEngine implements TutorEngine {
   private modelId: string | null = null;
   private isReadyFlag = false;
   private config: TutorConfig | null = null;
+  // In-memory grounding bank (295 curated science facts). Built at init; no
+  // native deps, so it works in Expo Go and offline.
+  private rag: RagStore | null = null;
 
   async initialize(config: TutorConfig): Promise<void> {
     try {
@@ -34,6 +39,11 @@ export class LocalEngine implements TutorEngine {
       });
 
       this.config = config;
+
+      // Build the grounding retriever (cheap: indexes ~295 short facts in RAM).
+      this.rag = new RagStore();
+      console.log(`RAG bank ready: ${this.rag.size} facts`);
+
       this.isReadyFlag = true;
 
       console.log('Qwen3-1.7B model loaded successfully');
@@ -91,9 +101,16 @@ export class LocalEngine implements TutorEngine {
   }
 
   async ragSearch(query: string, topK: number): Promise<RagResult[]> {
-    // For now, return empty array
-    // In the future, we'll implement RAG search over curriculum documents
-    throw new Error('RAG search not yet implemented');
+    if (!this.rag) return [];
+    const language: Language = this.config?.language ?? 'english';
+    // Only confidently-relevant hits — a 1B is misled by loosely-related facts.
+    const hits = this.rag.retrieveForGrounding(query, language, topK);
+    return hits.map((h) => ({
+      content: h.text,
+      source: h.fact.source,
+      score: h.score,
+      metadata: { id: h.fact.id, topic: h.fact.topic, domain: h.fact.domain },
+    }));
   }
 
   isReady(): boolean {

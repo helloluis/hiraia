@@ -1,4 +1,4 @@
-import type { GradeLevel, Language } from '../types/index.js';
+import type { GradeLevel, Language, RagResult } from '../types/index.js';
 
 /**
  * Base system prompt template with placeholders for dynamic content.
@@ -120,6 +120,28 @@ export function generateSystemPrompt(language: Language, gradeLevel: GradeLevel)
 ${languageInstruction}
 
 ${gradeInstruction}`;
+}
+
+/**
+ * Build a grounding block from retrieved curriculum facts, to append to the
+ * system prompt. Empirically a small (1B) model answers far more accurately when
+ * handed a tight, verified fact than when left to recall on its own — but it is
+ * also easily misled by loosely-related text, so callers should pass only the
+ * confidently-relevant hits (see `RagStore.retrieveForGrounding`). Returns an
+ * empty string when there is nothing relevant, so the caller can append blindly.
+ */
+export function formatGroundingBlock(hits: RagResult[]): string {
+  if (hits.length === 0) return '';
+  const lines = hits
+    .map((h) => {
+      const topic = h.metadata?.['topic'];
+      return typeof topic === 'string' ? `- (${topic}) ${h.content}` : `- ${h.content}`;
+    })
+    .join('\n');
+  return `VERIFIED FACTS FROM THE CURRICULUM (use these as your source of truth):
+${lines}
+
+When the question is answered by the facts above, base your explanation on them and do not contradict them. Still teach in your own words at the student's level — do not just copy the fact. If the facts above do not cover the question, answer carefully from general knowledge and say so if you are unsure.`;
 }
 
 /**

@@ -1,1 +1,1 @@
-export { generateSystemPrompt, generateVisualPrompt } from './system.js';
+export { generateSystemPrompt, generateVisualPrompt, formatGroundingBlock } from './system.js';

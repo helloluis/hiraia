@@ -32,7 +32,7 @@ export const useEngineStore = create<EngineState>((set, get) => ({
           ctxSize: 4096,
         },
         enableVisuals: false, // Will enable when we implement image generation
-        enableRag: false, // Will enable when we implement RAG
+        enableRag: true, // Grounded on the curated 295-fact science bank (RagStore)
       };
 
       await engine.initialize(config);

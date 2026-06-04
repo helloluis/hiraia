@@ -14,6 +14,9 @@ export * from './engine/index.js';
 // System prompts
 export * from './prompts/index.js';
 
+// RAG grounding bank + retriever
+export * from './rag/index.js';
+
 // Curriculum mappings
 export * from './curriculum/index.js';
 
