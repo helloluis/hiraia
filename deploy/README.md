@@ -54,6 +54,21 @@ click the **"model offline"** chip in the header and set the URL to your VPS, e.
 
 Open firewall ports `3000` and `8080` (or put both behind nginx — see below).
 
+## 4. Updating (redeploy the latest `main`)
+
+`main` is the single source of truth. To pull the latest, rebuild the web app, and
+restart it, run **one command on the VPS**:
+
+```bash
+/root/hiraia/deploy/update.sh
+```
+
+It hard-resets the repo to `origin/main` (so **don't keep local edits on the server**
+— commit them instead; untracked models/adapters/DB are left alone), runs
+`pnpm install && pnpm build`, restarts `pm2: hiraia-web`, and checks it returns 200.
+The model server (`pm2: hiraia-llm`) is left running; restart it with
+`pm2 restart hiraia-llm` only when the model/adapters or `run-llama-server.sh` change.
+
 ---
 
 ## Notes

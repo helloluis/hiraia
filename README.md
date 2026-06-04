@@ -53,6 +53,16 @@ hiraia/
 
 See [IMPLEMENTATION.md](./IMPLEMENTATION.md) for the full project specification and architecture decisions.
 
+## Deployment
+
+The web demo runs on a VPS (`main` is the single source of truth). See
+[deploy/README.md](./deploy/README.md) for first-time setup; to redeploy the latest
+`main` it's one command on the server:
+
+```bash
+/root/hiraia/deploy/update.sh   # sync origin/main → build web → restart pm2 (hiraia-web)
+```
+
 ## Hackathon
 
 This project is being built for the [QVAC Hackathon I — Unleash Edge AI](https://dorahacks.io/hackathon/qvac-unleach-edge-ai-i/detail) on DoraHacks, targeting the **Mobile** track.
