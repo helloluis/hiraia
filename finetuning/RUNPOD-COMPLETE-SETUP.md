@@ -15,10 +15,24 @@ This document contains all specifications and steps for setting up a RunPod inst
 - **Total cost per training run**: ~$1–4 per language
 
 ### Storage
-- **Network Volume**: 25GB standard (not high-performance, not S3-compatible)
-- **Cost**: $2.50/month ($0.10/GB)
+
+> **⚠️ We maintain a persistent network volume — don't lose track of it:**
+> - **Volume ID: `5uwc7qp731`** · name **`hiraia-ks`** · **50 GB** · datacenter **US-KS-2**
+> - Cost: ~$5/month ($0.10/GB) — bills whether or not a pod is running, so it's our
+>   single source of cached state across pods. Historically holds the cached QVAC
+>   CUDA build (`/workspace/qvac-bin-v8828`) + base GGUFs used for the GGUF
+>   conversion / `llama-cli` sanity step. (An older volume `hjzp2ii9jf` was deleted.)
+> - **To reuse it, deploy the pod IN US-KS-2 and attach by id** (a network volume only
+>   mounts to pods in its own datacenter). Via the GraphQL deploy input use
+>   `networkVolumeId: "5uwc7qp731"` (and `dataCenterId: "US-KS-2"`) **instead of**
+>   `volumeInGb` — it mounts at `volumeMountPath` (`/workspace`).
+> - A pod deployed without `networkVolumeId` (e.g. `volumeInGb: 50`) gets a **fresh,
+>   throwaway** volume that is deleted with the pod — fine for a one-shot unsloth
+>   train (we pull the base model from HF anyway), but it does NOT touch `hiraia-ks`.
+
 - **Mount path**: `/workspace`
-- **Purpose**: Persistent storage for datasets, scripts, and trained adapters across pod restarts
+- **Purpose**: Persistent storage for the cached QVAC build, base models, datasets, and
+  trained adapters across pod restarts.
 
 ### Template
 - **Use**: RunPod PyTorch 2.2 or RunPod FastAI
