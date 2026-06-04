@@ -33,20 +33,27 @@ export class LocalEngine implements TutorEngine {
       console.log(`Loading ${ACTIVE_MODEL.displayName} model...`);
 
       if (ACTIVE_MODEL.modelSrc) {
-        // Real Sailor2 GGUF is wired. The SDK types modelSrc as a built-in registry
-        // descriptor object; the exact shape for a custom GGUF (registry path vs
-        // URL/file string) must be confirmed against @qvac/sdk when we bundle it —
-        // hence the cast. TODO: also pass `modelConfig.lora` = the per-language
-        // Tagalog/Bisaya adapter.
+        // Load the configured GGUF from its source (an https HuggingFace URL,
+        // downloaded + cached by QVAC on first run). The string-source overload
+        // needs an explicit modelType. `lora`, when set, applies our fine-tuned
+        // Tagalog/Bisaya adapter; without it the base model runs.
         this.modelId = await loadModel({
-          modelSrc: ACTIVE_MODEL.modelSrc as unknown as typeof QWEN3_1_7B_INST_Q4,
-          modelConfig: { ctx_size: ACTIVE_MODEL.ctxSize },
+          modelSrc: ACTIVE_MODEL.modelSrc,
+          modelType: ACTIVE_MODEL.modelType,
+          modelConfig: {
+            ctx_size: ACTIVE_MODEL.ctxSize,
+            ...(ACTIVE_MODEL.loraSrc ? { lora: ACTIVE_MODEL.loraSrc } : {}),
+          },
+          onProgress: (p) =>
+            console.log(
+              `[LocalEngine] ${ACTIVE_MODEL.displayName} loading: ${Math.round(p.percentage ?? 0)}%`
+            ),
         });
       } else {
-        // Sailor2 GGUF not bundled/sourced yet — load a stock SDK model as a
-        // placeholder so the app still runs. This is the main remaining integration.
+        // No source configured — load a stock SDK model as a placeholder so the
+        // app still runs.
         console.warn(
-          `[LocalEngine] ${ACTIVE_MODEL.displayName} GGUF not wired yet — loading a stock SDK model as a placeholder.`
+          `[LocalEngine] ${ACTIVE_MODEL.displayName} has no modelSrc — loading a stock SDK model as a placeholder.`
         );
         this.modelId = await loadModel({
           modelSrc: QWEN3_1_7B_INST_Q4,

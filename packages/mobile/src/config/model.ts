@@ -31,13 +31,23 @@ export interface OnDeviceModel {
   adapterSizeMB: number;
   /** Inference context window. */
   ctxSize: number;
+  /** QVAC model type — 'llm' for all our chat models. */
+  modelType: 'llm';
   /**
-   * QVAC `modelSrc` for the base GGUF (registry id, URL, or on-device path).
-   * NULL until the Sailor2 GGUF is bundled/downloaded — LocalEngine falls back
-   * to a stock SDK model as a placeholder so the app still runs. This is the
-   * main remaining integration (see NEXT in hiraia-mobile-ondevice memory).
+   * Base GGUF source passed to QVAC `loadModel`. Per the SDK this is a string:
+   * an https HuggingFace URL (downloaded + cached on first run), a local/bundled
+   * path, or a `pear://` Hyperdrive key. NULL → LocalEngine loads a stock SDK
+   * model as a placeholder.
    */
   modelSrc: string | null;
+  /**
+   * Absolute on-device path to the fine-tuned LoRA adapter GGUF, passed as
+   * `modelConfig.lora`. NULL until our Tagalog/Bisaya adapters are hosted (HF/URL)
+   * or bundled and resolved to a local path — without it the base model runs (no
+   * Filipino fine-tune). Per-language adapter switching is a follow-up; the SDK
+   * also supports per-completion lora.
+   */
+  loraSrc: string | null;
   note: string;
 }
 
@@ -48,7 +58,7 @@ export const ON_DEVICE_MODELS: Record<OnDeviceModelKey, OnDeviceModel> = {
     displayName: 'Sailor2-3B',
     params: '~3.6B',
     quant: 'Q4_K_M',
-    sizeGB: 3.0, // measured: 3.01 GiB file (~2.2 GB resident, mmap'd)
+    sizeGB: 3.23, // mradermacher Sailor2-3B-Chat.Q4_K_M.gguf (~2.2 GB resident, mmap'd)
     ramGB: 2.2,
     minRamGB: 6,
     adapterSizeMB: 102,
@@ -56,7 +66,10 @@ export const ON_DEVICE_MODELS: Record<OnDeviceModelKey, OnDeviceModel> = {
     // block + a few turns. Extending further (RoPE) risks quality drift on these
     // adapters — retrain at longer ctx if we need bigger windows.
     ctxSize: 2048,
-    modelSrc: null,
+    modelType: 'llm',
+    modelSrc:
+      'https://huggingface.co/mradermacher/Sailor2-3B-Chat-GGUF/resolve/main/Sailor2-3B-Chat.Q4_K_M.gguf',
+    loraSrc: null, // TODO: host our v3 TL/BIS GGUF adapters, then set the device path
     note: 'Primary target — needs a 6GB+ phone (2025 budget norm).',
   },
   // LOW-END FALLBACK — pursue under the accessibility grant for 4GB devices.
@@ -65,12 +78,16 @@ export const ON_DEVICE_MODELS: Record<OnDeviceModelKey, OnDeviceModel> = {
     displayName: 'Sailor2-1B',
     params: '~1B',
     quant: 'Q4_K_M',
-    sizeGB: 0.74, // measured: 739 MB base (bartowski/Sailor2-1B-Chat-GGUF)
+    sizeGB: 0.74, // ~739 MB base (bartowski/Sailor2-1B-Chat-GGUF)
     ramGB: 1.0,
     minRamGB: 4,
     adapterSizeMB: 141,
     ctxSize: 1024, // trained ctx; keep prompts tight on this tier
-    modelSrc: null,
+    modelType: 'llm',
+    // TODO: confirm exact bartowski filename before relying on the 4GB build.
+    modelSrc:
+      'https://huggingface.co/bartowski/Sailor2-1B-Chat-GGUF/resolve/main/Sailor2-1B-Chat-Q4_K_M.gguf',
+    loraSrc: null,
     note: 'Low-end/4GB fallback — leans hard on RAG; science accuracy is shaky solo.',
   },
 };
