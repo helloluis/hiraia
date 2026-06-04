@@ -20,6 +20,23 @@ import { SCIENCE_FACTS } from './facts.generated.js';
 const FIELD_WEIGHT = { topic: 8, terms: 4, body: 1 } as const;
 const MIN_TOKEN_LEN = 3; // matches build-bank.py's `len(t) > 2`
 
+/**
+ * Tagalog + Cebuano + English question/function words to drop from QUERIES.
+ * Kids phrase questions as "bakit/paano/ano …" / "ngano/unsa/giunsa …"; these
+ * words carry no topic signal and (since facts are indexed on their own body
+ * text) would otherwise match the wrong facts. Stripping them focuses scoring
+ * on content words like "kuryente", "asul", "langit", "bakhaw".
+ */
+const QUERY_STOP = new Set(
+  `bakit paano ano anong kung saan kailan sino alin para kaya
+   ngano nganong unsa unsay asa kinsa giunsa pila naunsa
+   what why how when where who whom which whose
+   the are does did can could would should about from with into
+   your you they them this that these those`
+    .split(/\s+/)
+    .filter(Boolean)
+);
+
 /** Lowercase, strip punctuation, split. Keeps ñ + a few accents for "niño" etc. */
 export function tokenize(text: string): string[] {
   return text
@@ -76,7 +93,7 @@ export class RagStore {
    * given language. Facts with zero overlap are dropped.
    */
   search(query: string, topK = 3, language: Language = 'english'): FactHit[] {
-    const qTokens = new Set(tokenize(query));
+    const qTokens = new Set(tokenize(query).filter((t) => !QUERY_STOP.has(t)));
     if (qTokens.size === 0) return [];
     const key = LANG_KEY[language];
 
