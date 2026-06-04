@@ -32,8 +32,18 @@ A tagged answer ends with, on its own line:
 Tagged rows use a tag-aware system prompt = the existing per-grade prompt + the
 repro-health refusal clause + this instruction:
 
-- **Tagalog:** ` Kapag makakatulong ang isang simpleng larawan sa pagpapaliwanag, magdagdag ng huling linyang: [image: maikli at tiyak na paglalarawan sa Ingles ng larawan]. Kung walang angkop na larawan, huwag maglagay ng ganitong linya.`
-- **Bisaya:** ` Kung makatabang ang usa ka simpleng hulagway sa pagpasabot, pagdugang og kataposang linya nga: [image: mubo ug tukma nga English nga paghulagway sa hulagway]. Kung walay angay nga hulagway, ayaw pagbutang niini nga linya.`
+- **Tagalog:** ` Kapag makakatulong ang isang simpleng larawan sa pagpapaliwanag, magdagdag ng huling linyang: [image: maikli at tiyak na paglalarawan sa Ingles ng larawan]. Kung walang angkop na larawan, huwag maglagay ng ganitong linya. At kung naipakita mo na ang isang larawan kani-kanina lang sa usapang ito, huwag mo na itong ulitin — magpakita lamang ng bago at angkop na larawan.`
+- **Bisaya:** ` Kung makatabang ang usa ka simpleng hulagway sa pagpasabot, pagdugang og kataposang linya nga: [image: mubo ug tukma nga English nga paghulagway sa hulagway]. Kung walay angay nga hulagway, ayaw pagbutang niini nga linya. Ug kung gipakita na nimo ang usa ka hulagway bag-o pa lang niini nga panag-istoryahanay, ayaw na kini balika — pagpakita lang og bag-o ug angay nga hulagway.`
+
+### Avoiding repeated images
+
+The system-prompt line above ("don't re-show an image you just showed") is a
+**soft nudge** only — the model can't reliably track per-chat / per-day state.
+The **hard guarantee lives in the retrieval layer** (when wired): keep a set of
+asset ids already shown recently in the chat + a per-day shown set; if a tag
+resolves to an already-shown asset, suppress the image (the token is stripped
+either way, so the student just sees clean text). Deterministic, stateful, and
+not dependent on the model's memory.
 
 > ⚠️ When the tag-trained LoRA is deployed, append the matching instruction to the
 > production system prompts in `packages/web/src/config/model.ts`. Do **not** add it
