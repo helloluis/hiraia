@@ -190,11 +190,11 @@ export const useChatStore = create<ChatState>((set, get) => ({
       set({ messages: [...history, placeholder] });
 
       const langConfig = LANGUAGES[language] ?? LANGUAGES.english;
-      // Only send the system prompt + the most recent turns. CPU prompt-eval is
-      // ~20 tok/s on the demo box, so a full thread (e.g. ~1800 tokens) costs ~90s
-      // BEFORE the first token streams — which reads as "no response". Capping the
-      // window keeps first-token latency low; full history still persists in the DB.
-      const MAX_HISTORY_MSGS = 8;
+      // Send the system prompt + recent turns. We keep a decent window so the tutor
+      // remembers the lesson's thread (important for teaching) — affordable now that
+      // the server reuses the cached prefix (-np 1 --cache-reuse), so a follow-up only
+      // re-evaluates the new turn, not the whole window. Full history persists in the DB.
+      const MAX_HISTORY_MSGS = 12;
       const recent = history.slice(-MAX_HISTORY_MSGS);
       const conversation = [
         { role: 'system' as const, content: langConfig.system, timestamp: new Date() },

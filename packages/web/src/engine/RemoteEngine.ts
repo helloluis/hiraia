@@ -63,10 +63,12 @@ export class RemoteEngine {
       })),
       stream: true,
       temperature: 0.7,
-      // Tutor replies rarely need >~350 tokens; capping here keeps CPU generation
-      // (~5 tok/s on the demo box) from running for minutes. 1024 let replies run
-      // ~3x longer than necessary, which read as "no response" before they finished.
-      max_tokens: 384,
+      // Safety ceiling, NOT a target — replies end naturally on the stop token, so
+      // this only bounds the occasional long explanation. We're tutoring kids, so we
+      // keep room for a complete worked-through answer; it streams, so length doesn't
+      // re-introduce the "no response" feel (that was first-token latency, fixed by the
+      // history window + server prompt-cache, not by this cap).
+      max_tokens: 640,
     };
 
     // Apply the per-language LoRA scales (llama.cpp server `lora` field).

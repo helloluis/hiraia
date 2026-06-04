@@ -4,7 +4,7 @@ exec /root/hiraia/deploy/llama.cpp/build/bin/llama-server \
   -m /root/hiraia/deploy/models/Sailor2-3B-Chat.Q4_K_M.gguf \
   --lora /root/hiraia/finetuning/adapters/adapter-sailor-tagalog-f16.gguf \
   --lora /root/hiraia/finetuning/adapters/adapter-sailor-bisaya-f16.gguf \
-  --host 127.0.0.1 --port 8080 -c 2048 -ngl 0 -t 4 \
+  --host 127.0.0.1 --port 8080 -c 4096 -ngl 0 -t 4 \
   -np 1 --cache-reuse 256
 # -np 1: single slot so each conversation's turns reuse the same KV cache. With the
 #   default 4 slots, follow-up turns bounced to a fresh slot, the cross-slot prompt-
