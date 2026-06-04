@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { LocalEngine } from '../engine/LocalEngine';
+import { ACTIVE_MODEL } from '../config/model';
 import type { TutorEngine, TutorConfig } from '@hiraia/shared';
 
 interface EngineState {
@@ -26,13 +27,13 @@ export const useEngineStore = create<EngineState>((set, get) => ({
         language: 'english',
         gradeLevel: 7,
         modelConfig: {
-          modelId: 'qwen3-1.7b',
+          modelId: ACTIVE_MODEL.key,
           modelType: 'llm',
           device: 'gpu',
-          ctxSize: 4096,
+          ctxSize: ACTIVE_MODEL.ctxSize,
         },
         enableVisuals: false, // Will enable when we implement image generation
-        enableRag: true, // Grounded on the curated 295-fact science bank (RagStore)
+        enableRag: true, // Grounded on the curated science-fact bank (RagStore)
       };
 
       await engine.initialize(config);

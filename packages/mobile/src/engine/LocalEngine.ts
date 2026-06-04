@@ -4,6 +4,7 @@ import {
   unloadModel,
   QWEN3_1_7B_INST_Q4,
 } from '@qvac/sdk';
+import { ACTIVE_MODEL } from '../config/model';
 import type {
   TutorEngine,
   Message,
@@ -15,8 +16,9 @@ import type {
 import { RagStore } from '@hiraia/shared';
 
 /**
- * LocalEngine implementation using QVAC SDK
- * Runs Qwen3-1.7B locally on-device for privacy and offline capability
+ * LocalEngine implementation using QVAC SDK.
+ * Runs the configured Hiraia model (ACTIVE_MODEL — Sailor2-3B by default)
+ * locally on-device for privacy and offline capability.
  */
 export class LocalEngine implements TutorEngine {
   private modelId: string | null = null;
@@ -28,15 +30,29 @@ export class LocalEngine implements TutorEngine {
 
   async initialize(config: TutorConfig): Promise<void> {
     try {
-      console.log('Loading Qwen3-1.7B model...');
+      console.log(`Loading ${ACTIVE_MODEL.displayName} model...`);
 
-      // Load the Qwen3-1.7B model with Q4 quantization
-      this.modelId = await loadModel({
-        modelSrc: QWEN3_1_7B_INST_Q4,
-        modelConfig: {
-          ctx_size: 4096, // Context window size
-        },
-      });
+      if (ACTIVE_MODEL.modelSrc) {
+        // Real Sailor2 GGUF is wired. The SDK types modelSrc as a built-in registry
+        // descriptor object; the exact shape for a custom GGUF (registry path vs
+        // URL/file string) must be confirmed against @qvac/sdk when we bundle it —
+        // hence the cast. TODO: also pass `modelConfig.lora` = the per-language
+        // Tagalog/Bisaya adapter.
+        this.modelId = await loadModel({
+          modelSrc: ACTIVE_MODEL.modelSrc as unknown as typeof QWEN3_1_7B_INST_Q4,
+          modelConfig: { ctx_size: ACTIVE_MODEL.ctxSize },
+        });
+      } else {
+        // Sailor2 GGUF not bundled/sourced yet — load a stock SDK model as a
+        // placeholder so the app still runs. This is the main remaining integration.
+        console.warn(
+          `[LocalEngine] ${ACTIVE_MODEL.displayName} GGUF not wired yet — loading a stock SDK model as a placeholder.`
+        );
+        this.modelId = await loadModel({
+          modelSrc: QWEN3_1_7B_INST_Q4,
+          modelConfig: { ctx_size: ACTIVE_MODEL.ctxSize },
+        });
+      }
 
       this.config = config;
 
@@ -46,7 +62,7 @@ export class LocalEngine implements TutorEngine {
 
       this.isReadyFlag = true;
 
-      console.log('Qwen3-1.7B model loaded successfully');
+      console.log(`${ACTIVE_MODEL.displayName} model loaded successfully`);
     } catch (error) {
       console.error('Failed to load model:', error);
       throw new Error(
