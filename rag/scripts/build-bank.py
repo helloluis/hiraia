@@ -42,8 +42,10 @@ def build(rows):
 def search(con, query, k=3):
     # FTS5 MATCH + bm25() ranking (lower = better). Quote terms for a tolerant OR-ish match.
     q = " OR ".join(t for t in query.replace("?", " ").split() if len(t) > 2)
+    # Weight columns (id, topic, terms, fact_tl): topic > terms > body so an
+    # on-topic fact outranks one that merely shares a keyword in its prose.
     cur = con.execute(
-        "SELECT f.topic, f.fact_tl, bm25(facts_fts) AS rank FROM facts_fts "
+        "SELECT f.topic, f.fact_tl, bm25(facts_fts, 0.0, 8.0, 4.0, 1.0) AS rank FROM facts_fts "
         "JOIN facts f ON f.id = facts_fts.id WHERE facts_fts MATCH ? ORDER BY rank LIMIT ?",
         (q, k))
     return cur.fetchall()
