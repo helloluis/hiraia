@@ -207,7 +207,11 @@ export function ChatInterface() {
               {messages.map((message, index) => {
                 const isFactoid = message.metadata?.kind === 'factoid' || (message.content && message.content.startsWith('💡'));
                 return (
-                  <div key={message.id ?? `tmp-${index}`} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div key={message.id ?? `tmp-${index}`} className={`flex items-end gap-2 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    {message.role === 'assistant' && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src="/hiraia-profile.png" alt="Hiraia" className="w-8 h-8 rounded-full shrink-0 ring-1 ring-gray-200" />
+                    )}
                     <div className="max-w-[80%]">
                       <div
                         className={`rounded-2xl px-4 py-3 ${
@@ -264,7 +268,9 @@ export function ChatInterface() {
                   appearing; once the placeholder (empty assistant msg) is present it
                   shows its own thinking indicator, so don't double up. */}
               {isLoading && messages[messages.length - 1]?.role !== 'assistant' && (
-                <div className="flex justify-start">
+                <div className="flex items-end gap-2 justify-start">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/hiraia-profile.png" alt="Hiraia" className="w-8 h-8 rounded-full shrink-0 ring-1 ring-gray-200" />
                   <div className="bg-white border border-gray-200 rounded-2xl px-4 py-3">
                     <div className="flex gap-1">
                       <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />

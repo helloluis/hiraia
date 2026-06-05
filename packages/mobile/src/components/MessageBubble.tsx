@@ -1,10 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
 import type { Message } from '@hiraia/shared';
 
 import { colors, fonts } from '../theme';
 
 import { RichText } from './RichText';
+
+const HIRAIA_AVATAR = require('../../assets/hiraia-profile.png');
 
 interface MessageBubbleProps {
   message: Message;
@@ -16,7 +18,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
 
   return (
     <View style={[styles.container, isUser ? styles.userContainer : styles.assistantContainer]}>
-      {!isUser && <Text style={styles.avatar}>🐻</Text>}
+      {!isUser && <Image source={HIRAIA_AVATAR} style={styles.avatar} />}
       <View
         style={[
           styles.bubble,
@@ -57,9 +59,11 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   avatar: {
-    fontSize: 24,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
     marginRight: 8,
-    marginTop: 4,
+    marginTop: 2,
   },
   bubble: {
     padding: 12,

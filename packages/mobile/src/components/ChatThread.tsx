@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Image, StyleSheet, Text, View } from 'react-native';
 
 import type { Message } from '@hiraia/shared';
 
@@ -7,6 +7,8 @@ import { colors, fonts } from '../theme';
 
 import { MessageBubble } from './MessageBubble';
 import { RichText } from './RichText';
+
+const HIRAIA_AVATAR = require('../../assets/hiraia-profile.png');
 
 interface ChatThreadProps {
   messages: Message[];
@@ -58,7 +60,7 @@ export function ChatThread({ messages, isStreaming, streamingContent }: ChatThre
 function StreamingBubble({ content }: { content: string }) {
   return (
     <View style={styles.streamingRow}>
-      <Text style={styles.avatar}>🐻</Text>
+      <Image source={HIRAIA_AVATAR} style={styles.avatar} />
       <View style={styles.streamingBubble}>
         {content ? (
           <RichText text={content} style={styles.streamingText} />
@@ -104,9 +106,11 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   avatar: {
-    fontSize: 24,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
     marginRight: 8,
-    marginTop: 4,
+    marginTop: 2,
   },
   streamingBubble: {
     padding: 12,

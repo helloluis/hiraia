@@ -53,7 +53,7 @@ export const useChatStore = create<ChatState>()(
               ...state.messages,
               {
                 role: 'assistant',
-                content: 'Sandali lang—inihahanda ko pa ang AI. Pakisubukang muli sa ilang segundo. 🐻',
+                content: 'Sandali lang—inihahanda ko pa ang AI. Pakisubukang muli sa ilang segundo. 🐱',
                 timestamp: new Date(),
               },
             ],
@@ -113,7 +113,7 @@ export const useChatStore = create<ChatState>()(
               ...state.messages,
               {
                 role: 'assistant',
-                content: 'Paumanhin, may naganap na error. Pakisubukang muli. 🐻',
+                content: 'Paumanhin, may naganap na error. Pakisubukang muli. 🐱',
                 timestamp: new Date(),
               },
             ],
