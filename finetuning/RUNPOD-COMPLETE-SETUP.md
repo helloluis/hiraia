@@ -6,6 +6,15 @@ This document contains all specifications and steps for setting up a RunPod inst
 > bake-off). Qwen3-1.7B is no longer a candidate. Train with **unsloth** (GPU), then
 > convert the PEFT adapter to GGUF with **`--base-model-id sail/Sailor2-3B-Chat`**.
 
+## Credentials
+
+The **RunPod API key is stored in `.env.local` at the repo root** (gitignored — never
+commit it) as `RUNPOD_API_KEY=...`. The automated launchers (`deploy_session.sh` for the
+v3 image-tag run, `deploy_grounded.sh` for the grounding-faithfulness run) source it from
+there to deploy/monitor/terminate pods via the RunPod GraphQL API. SSH uses
+`~/.ssh/id_ed25519` (must be registered with the RunPod account). If a launcher reports the
+key is missing, check that `.env.local` exists and contains `RUNPOD_API_KEY`.
+
 ## Pod Configuration
 
 ### GPU Selection
