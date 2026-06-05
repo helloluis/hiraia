@@ -13,9 +13,9 @@ export function ChatThread({ messages }: ChatThreadProps) {
     <View style={styles.container}>
       {messages.length === 0 ? (
         <View style={styles.emptyState}>
-          <Text style={styles.emptyTitle}>Welcome to Hiraia!</Text>
+          <Text style={styles.emptyTitle}>Maligayang Pagdating sa Hiraia!</Text>
           <Text style={styles.emptySubtitle}>
-            Ask me anything about Science. I'm here to help you learn.
+            Magtanong ka ng kahit ano tungkol sa agham. Nandito ako para tulungan kang matuto.
           </Text>
         </View>
       ) : (

@@ -32,7 +32,7 @@ export default function ChatScreen() {
             value={inputText}
             onChangeText={setInputText}
             onSend={handleSend}
-            placeholder="Ask me anything about Science..."
+            placeholder="Magtanong tungkol sa agham..."
           />
         </View>
       </KeyboardAvoidingView>
