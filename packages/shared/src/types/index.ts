@@ -35,6 +35,13 @@ export interface MessageMetadata {
   gradeLevel?: GradeLevel;
   topicContext?: string[];
   visualPromptGenerated?: boolean;
+  /**
+   * Non-conversational message kind. `factoid` = a pre-written "Alam mo ba na…?"
+   * card dropped into the thread on cold start to give the reader something to
+   * look at while the model warms up. Excluded from persisted history and from
+   * the context sent to the model.
+   */
+  kind?: 'factoid';
 }
 
 /**

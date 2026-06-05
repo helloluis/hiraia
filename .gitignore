@@ -58,6 +58,9 @@ references/modules/
 
 # local app database (kept out of git)
 data/
+# …but the mobile app's bundled source data (factoid bank) IS committed
+!packages/mobile/src/data/
+!packages/mobile/src/data/**
 deploy/models/
 deploy/llama.cpp/
 deploy/llama-bin/

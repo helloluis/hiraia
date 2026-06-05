@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -12,8 +12,20 @@ import { colors } from '../../theme';
 
 export default function ChatScreen() {
   const { messages, sendMessage, isStreaming, currentStreamingContent } = useChatStore();
+  const hasHydrated = useChatStore((s) => s.hasHydrated);
+  const showColdStartFactoid = useChatStore((s) => s.showColdStartFactoid);
   const isReady = useEngineStore((s) => s.isReady);
   const [inputText, setInputText] = useState('');
+
+  // Once persisted history has loaded, drop in one "Alam mo ba na…?" factoid so
+  // there's something to read while the model warms up. Exactly once per launch.
+  const factoidShown = useRef(false);
+  useEffect(() => {
+    if (hasHydrated && !factoidShown.current) {
+      factoidShown.current = true;
+      showColdStartFactoid();
+    }
+  }, [hasHydrated, showColdStartFactoid]);
 
   const handleSend = async () => {
     if (!inputText.trim()) return;

@@ -10,12 +10,25 @@ interface MessageBubbleProps {
 
 export function MessageBubble({ message }: MessageBubbleProps) {
   const isUser = message.role === 'user';
+  const isFactoid = message.metadata?.kind === 'factoid';
 
   return (
     <View style={[styles.container, isUser ? styles.userContainer : styles.assistantContainer]}>
       {!isUser && <Text style={styles.avatar}>🐻</Text>}
-      <View style={[styles.bubble, isUser ? styles.userBubble : styles.assistantBubble]}>
-        <Text style={[styles.text, isUser ? styles.userText : styles.assistantText]}>
+      <View
+        style={[
+          styles.bubble,
+          isUser ? styles.userBubble : styles.assistantBubble,
+          isFactoid && styles.factoidBubble,
+        ]}
+      >
+        <Text
+          style={[
+            styles.text,
+            isUser ? styles.userText : styles.assistantText,
+            isFactoid && styles.factoidText,
+          ]}
+        >
           {message.content}
         </Text>
         {message.timestamp && (
@@ -60,6 +73,13 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 4,
     borderWidth: 1,
     borderColor: colors.hairline,
+  },
+  factoidBubble: {
+    backgroundColor: '#fff3d6',
+    borderColor: 'rgba(243, 162, 40, 0.45)',
+  },
+  factoidText: {
+    color: '#5c3d00',
   },
   text: {
     fontFamily: fonts.body,
