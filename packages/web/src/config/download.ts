@@ -22,22 +22,18 @@
  */
 export const DOWNLOAD = {
   /** Flip to true only once `url` + `sha256` (+ ideally `signingCertSha256`) are real. */
-  released: false,
+  released: true,
 
   version: '0.1.0',
 
-  /**
-   * Direct link to the .apk. Currently the EAS build artifact (works, public).
-   * Recommended: re-host on a GitHub Release for a stable, branded URL (309 MB <
-   * GitHub's 2 GB asset limit) and point here. The sha256 below is host-agnostic.
-   */
-  url: 'https://expo.dev/artifacts/eas/d14GGgQRYmGPrwdRWK9HWY.apk',
+  /** Direct link to the .apk — the public GitHub Release asset (stable URL). */
+  url: 'https://github.com/helloluis/hiraia/releases/download/v0.1.0/hiraia.apk',
 
   /** APK file size in MB. Includes the bundled Filipino fine-tune; the 3.2 GB base model streams on first run. */
   fileSizeMB: 310,
 
   /** SHA-256 of the .apk file. macOS: `shasum -a 256 hiraia.apk` · Linux: `sha256sum` */
-  sha256: '5865f171f074d2aa364115d2ab5a94f39d07ae74540ee104726f4da861e131e7',
+  sha256: '708ea60542f8124668189ba9123594eb9764e918d992be23a035e4e8c3e07f48',
 
   /** SHA-256 of the signing cert. `apksigner verify --print-certs hiraia.apk` (or `eas credentials`). */
   signingCertSha256: '40d750d5576cb59c311c7ba713403e065b934967d7a7d1bc80652e1167a20c35',
