@@ -1,24 +1,25 @@
 # Files EAS should NOT upload for the mobile build. The Android build only needs
 # the JS workspace (packages/*) — the curated facts are already compiled into
-# packages/shared/src/rag/facts.generated.ts. Excluding these heavy, untracked
-# data dirs cut the upload from ~1.5 GB to tens of MB.
+# packages/shared/src/rag/facts.generated.ts.
 #
-# NOTE: do not exclude sibling workspace packages (packages/web, server, …) —
-# pnpm needs every workspace member present to install @hiraia/mobile.
+# IMPORTANT: anchor every entry with a leading slash so it matches ONLY the repo
+# root. An unanchored "rag/" also matched packages/shared/src/rag/ (the RagStore!)
+# and stripped it from the EAS upload — breaking the JS bundle. Likewise do NOT
+# blanket-ignore *.gguf: the bundled LoRA adapters live at
+# packages/mobile/assets/models/*.gguf and MUST be uploaded.
 
 # ML training: adapters, datasets, eval dumps (hundreds of MB, untracked)
-finetuning/
+/finetuning/
 
 # VPS deploy: llama.cpp build + GGUF models (multi-GB)
-deploy/
+/deploy/
 
-# RAG corpus + framework PDFs + SQLite build artifact (facts are bundled separately)
-rag/
+# RAG corpus + framework PDFs + SQLite build artifact (root only — NOT the
+# shared package's src/rag/)
+/rag/
 
 # Raw curriculum materials
-references/
+/references/
 
-# Stray data files / model weights
-science-chat.jsonl
-*.gguf
-*.bin
+# Stray data file
+/science-chat.jsonl

@@ -13,7 +13,16 @@
  * already runs Sailor2-3B + the Tagalog/Bisaya LoRA adapters server-side.
  */
 
+// Bundled LoRA adapter GGUFs (the Filipino fine-tune — the core value, shipped
+// IN the APK, not downloaded). Metro packages these as assets; LocalEngine
+// resolves them to an on-device path via expo-asset for QVAC's modelConfig.lora.
+import adapterTagalog from '../../assets/models/adapter-tagalog.gguf';
+import adapterBisaya from '../../assets/models/adapter-bisaya.gguf';
+
 export type OnDeviceModelKey = 'sailor2-3b' | 'sailor2-1b';
+
+/** Languages that have a fine-tuned adapter (English uses the base model). */
+export type AdapterLanguage = 'tagalog' | 'cebuano';
 
 export interface OnDeviceModel {
   key: OnDeviceModelKey;
@@ -41,14 +50,13 @@ export interface OnDeviceModel {
    */
   modelSrc: string | null;
   /**
-   * Absolute on-device path to the fine-tuned LoRA adapter GGUF, passed as
-   * `modelConfig.lora`. The adapter is BUNDLED IN THE APK (it's the Filipino
-   * fine-tune — the core value, must ship offline, not be downloaded) and resolved
-   * to a local path at runtime via expo-asset/expo-file-system. NULL only until
-   * that wiring lands — without it the base model runs (no fine-tune). Per-language
-   * switching is a follow-up; the SDK also supports per-completion lora.
+   * Per-language fine-tuned LoRA adapters, BUNDLED IN THE APK (the core value —
+   * shipped offline, not downloaded). Values are Metro asset module ids; the
+   * engine resolves the one matching the active language to a file path via
+   * expo-asset and passes it as `modelConfig.lora`. English uses the base model
+   * (no entry). Empty = no adapters for this model yet.
    */
-  loraSrc: string | null;
+  loraAssets: Partial<Record<AdapterLanguage, number>>;
   note: string;
 }
 
@@ -70,7 +78,7 @@ export const ON_DEVICE_MODELS: Record<OnDeviceModelKey, OnDeviceModel> = {
     modelType: 'llm',
     modelSrc:
       'https://huggingface.co/mradermacher/Sailor2-3B-Chat-GGUF/resolve/main/Sailor2-3B-Chat.Q4_K_M.gguf',
-    loraSrc: null, // TODO: host our v3 TL/BIS GGUF adapters, then set the device path
+    loraAssets: { tagalog: adapterTagalog, cebuano: adapterBisaya }, // f16, bundled (~102MB each)
     note: 'Primary target — needs a 6GB+ phone (2025 budget norm).',
   },
   // LOW-END FALLBACK — pursue under the accessibility grant for 4GB devices.
@@ -88,7 +96,7 @@ export const ON_DEVICE_MODELS: Record<OnDeviceModelKey, OnDeviceModel> = {
     // TODO: confirm exact bartowski filename before relying on the 4GB build.
     modelSrc:
       'https://huggingface.co/bartowski/Sailor2-1B-Chat-GGUF/resolve/main/Sailor2-1B-Chat-Q4_K_M.gguf',
-    loraSrc: null,
+    loraAssets: {}, // 1B v3 adapters are still safetensors — convert to GGUF before the 4GB build
     note: 'Low-end/4GB fallback — leans hard on RAG; science accuracy is shaky solo.',
   },
 };

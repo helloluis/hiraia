@@ -4,7 +4,9 @@ import {
   unloadModel,
   QWEN3_1_7B_INST_Q4,
 } from '@qvac/sdk';
+import { Asset } from 'expo-asset';
 import { ACTIVE_MODEL } from '../config/model';
+import type { AdapterLanguage } from '../config/model';
 import type {
   TutorEngine,
   Message,
@@ -28,21 +30,49 @@ export class LocalEngine implements TutorEngine {
   // native deps, so it works in Expo Go and offline.
   private rag: RagStore | null = null;
 
+  /**
+   * Resolve the bundled LoRA adapter GGUF for a language to an absolute on-device
+   * file path (for QVAC's `modelConfig.lora`). The adapter ships inside the APK
+   * as a Metro asset; expo-asset copies it out to a readable path on first use.
+   * Returns undefined for English (base model) or if no adapter is bundled.
+   */
+  private async resolveAdapterPath(language: Language): Promise<string | undefined> {
+    if (language !== 'tagalog' && language !== 'cebuano') return undefined;
+    const moduleId = ACTIVE_MODEL.loraAssets[language as AdapterLanguage];
+    if (moduleId == null) return undefined;
+    try {
+      const asset = Asset.fromModule(moduleId);
+      await asset.downloadAsync(); // bundled asset → copied to cache, sets localUri
+      const uri = asset.localUri ?? asset.uri;
+      const path = uri ? uri.replace(/^file:\/\//, '') : undefined;
+      if (path) console.log(`[LocalEngine] using ${language} adapter: ${path}`);
+      return path;
+    } catch (e) {
+      console.warn(`[LocalEngine] failed to resolve ${language} adapter; running base model:`, e);
+      return undefined;
+    }
+  }
+
   async initialize(config: TutorConfig): Promise<void> {
     try {
+      this.config = config;
       console.log(`Loading ${ACTIVE_MODEL.displayName} model...`);
+
+      // Resolve the bundled LoRA adapter for the active language (Filipino
+      // fine-tune; English uses the base model).
+      const loraPath = await this.resolveAdapterPath(config.language);
 
       if (ACTIVE_MODEL.modelSrc) {
         // Load the configured GGUF from its source (an https HuggingFace URL,
         // downloaded + cached by QVAC on first run). The string-source overload
-        // needs an explicit modelType. `lora`, when set, applies our fine-tuned
+        // needs an explicit modelType. `lora` applies our bundled fine-tuned
         // Tagalog/Bisaya adapter; without it the base model runs.
         this.modelId = await loadModel({
           modelSrc: ACTIVE_MODEL.modelSrc,
           modelType: ACTIVE_MODEL.modelType,
           modelConfig: {
             ctx_size: ACTIVE_MODEL.ctxSize,
-            ...(ACTIVE_MODEL.loraSrc ? { lora: ACTIVE_MODEL.loraSrc } : {}),
+            ...(loraPath ? { lora: loraPath } : {}),
           },
           onProgress: (p) =>
             console.log(
@@ -60,8 +90,6 @@ export class LocalEngine implements TutorEngine {
           modelConfig: { ctx_size: ACTIVE_MODEL.ctxSize },
         });
       }
-
-      this.config = config;
 
       // Build the grounding retriever (cheap: indexes ~295 short facts in RAM).
       this.rag = new RagStore();

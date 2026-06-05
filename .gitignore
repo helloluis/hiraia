@@ -35,6 +35,9 @@ desktop.ini
 
 # QVAC model files (downloaded at runtime, never committed)
 *.gguf
+# …except the bundled LoRA adapters (the fine-tune that ships IN the APK) —
+# tracked via Git LFS (see .gitattributes).
+!packages/mobile/assets/models/*.gguf
 model-cache/
 
 # LoRA training output

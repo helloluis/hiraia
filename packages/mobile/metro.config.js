@@ -6,6 +6,12 @@ const workspaceRoot = path.resolve(__dirname, '../..');
 
 const config = getDefaultConfig(__dirname);
 
+// 0. Treat bundled model files (.gguf — our LoRA adapters) as assets so Metro
+// packages them into the APK and expo-asset can resolve them to a file path at
+// runtime (for QVAC's modelConfig.lora). Without this Metro tries to parse them
+// as source.
+config.resolver.assetExts.push('gguf');
+
 // 1. Watch all files in the workspace
 config.watchFolders = [workspaceRoot];
 
