@@ -21,7 +21,8 @@
     "clean": "rm -rf dist .turbo"
   },
   "dependencies": {
-    "@hiraia/shared": "workspace:*"
+    "@hiraia/shared": "workspace:*",
+    "google-auth-library": "^10.6.2"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

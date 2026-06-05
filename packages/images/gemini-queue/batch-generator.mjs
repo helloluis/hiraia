@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { GoogleAuth } from 'google-auth-library';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const PKG = join(HERE, '..');
@@ -41,9 +42,40 @@ for (let i = 1; i < args.length; i++) {
   }
 }
 
+// Check credentials / select backend mode
+let auth;
+let isVertex = false;
+let projectId = '';
+const location = process.env.GCP_LOCATION || 'us-central1';
+
+const credentialsPath = join(HERE, 'credentials.json');
+if (existsSync(credentialsPath)) {
+  try {
+    const creds = JSON.parse(readFileSync(credentialsPath, 'utf8'));
+    projectId = creds.project_id || process.env.GCP_PROJECT_ID;
+    auth = new GoogleAuth({
+      keyFile: credentialsPath,
+      scopes: ['https://www.googleapis.com/auth/cloud-platform'],
+    });
+    isVertex = true;
+    console.log(`Using Gemini Enterprise / Vertex AI Mode (Project: ${projectId}, Location: ${location})`);
+  } catch (err) {
+    console.error('Error loading credentials.json:', err.message);
+  }
+} else if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+  auth = new GoogleAuth({
+    scopes: ['https://www.googleapis.com/auth/cloud-platform'],
+  });
+  isVertex = true;
+  try {
+    projectId = await auth.getProjectId();
+  } catch {}
+  console.log(`Using Gemini Enterprise / Vertex AI Mode via ADC (Project: ${projectId || 'default'}, Location: ${location})`);
+}
+
 const apiKey = process.env.GEMINI_API_KEY;
-if (!apiKey) {
-  console.error('Error: GEMINI_API_KEY environment variable is required.');
+if (!isVertex && !apiKey) {
+  console.error('Error: Either gemini-queue/credentials.json must exist (for Gemini Enterprise / Vertex AI) or GEMINI_API_KEY environment variable is required.');
   printUsage();
   process.exit(1);
 }
@@ -71,30 +103,93 @@ for (let i = 0; i < Math.min(limit, todoItems.length); i++) {
   console.log(`\n[${i + 1}/${limit}] Generating "${item.id}"...`);
   console.log(`Prompt: "${item.prompt.substring(0, 100)}..."`);
 
-  try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          instances: [
-            {
-              prompt: item.prompt,
-            },
-          ],
-          parameters: {
-            sampleCount: 1,
-            aspectRatio: '1:1',
-            outputOptions: {
-              mimeType: 'image/png',
-            },
-          },
-        }),
+    let refPath = join(HERE, 'references', `${item.id}.png`);
+    if (!existsSync(refPath)) {
+      refPath = join(HERE, 'references', `${item.id}.jpg`);
+    }
+    if (!existsSync(refPath)) {
+      refPath = join(HERE, 'references', `${item.id}.jpeg`);
+    }
+    let hasRef = false;
+    let base64Ref = '';
+    if (existsSync(refPath)) {
+      try {
+        base64Ref = readFileSync(refPath).toString('base64');
+        hasRef = true;
+        console.log(`[REFERENCE] Found reference image for ${item.id} (${refPath.split('.').pop()}), enabling Canny edge Controlled Customization.`);
+      } catch (err) {
+        console.error(`Failed to read reference image for ${item.id}:`, err.message);
       }
-    );
+    }
+
+    try {
+      let url;
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+    let body;
+
+    if (isVertex) {
+      const client = await auth.getClient();
+      const tokenResponse = await client.getAccessToken();
+      const accessToken = tokenResponse.token;
+      
+      url = `https://${location}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${location}/publishers/google/models/imagen-4.0-fast-generate-001:predict`;
+      headers['Authorization'] = `Bearer ${accessToken}`;
+      
+      const instances = [
+        {
+          prompt: item.prompt,
+        },
+      ];
+      const parameters = {
+        sampleCount: 1,
+        aspectRatio: '1:1',
+        outputMimeType: 'image/png',
+      };
+      
+      if (hasRef) {
+        instances[0].controlImage = {
+          bytesBase64Encoded: base64Ref,
+        };
+        parameters.controlType = 'CONTROL_TYPE_CANNY';
+        parameters.enableControlImageComputation = true;
+      }
+
+      body = JSON.stringify({ instances, parameters });
+    } else {
+      url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-fast-generate-001:predict?key=${apiKey}`;
+      
+      const instances = [
+        {
+          prompt: item.prompt,
+        },
+      ];
+      const parameters = {
+        sampleCount: 1,
+        aspectRatio: '1:1',
+        outputOptions: {
+          mimeType: 'image/png',
+        },
+      };
+
+      if (hasRef) {
+        instances[0].controlImage = {
+          bytesBase64Encoded: base64Ref,
+        };
+        parameters.controlType = 'CONTROL_TYPE_CANNY';
+        parameters.enableControlImageComputation = true;
+      }
+
+      body = JSON.stringify({ instances, parameters });
+    }
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers,
+      body,
+      signal: AbortSignal.timeout(60000),
+    });
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -130,6 +225,19 @@ for (let i = 0; i < Math.min(limit, todoItems.length); i++) {
 
   } catch (err) {
     console.error(`Failed to generate "${item.id}":`, err.message);
+    if (err.message.includes('status 429') || err.message.includes('429')) {
+      console.log('Exiting batch run due to rate limit (429)...');
+      process.exit(429);
+    }
+    // Update status in JSON memory
+    const originalIndex = data.images.findIndex(img => img.id === item.id);
+    if (originalIndex !== -1) {
+      const isSafetyBlock = err.message.includes('predictions') || err.message.includes('status 400') || err.message.includes('safety');
+      data.images[originalIndex].status = isSafetyBlock ? 'skipped' : 'failed';
+      console.log(`Marked "${item.id}" as ${data.images[originalIndex].status}`);
+    }
+    // Write progress back to the file
+    writeFileSync(promptFile, JSON.stringify(data, null, 2), 'utf8');
   }
 
   if (i < limit - 1 && i < todoItems.length - 1) {
