@@ -20,11 +20,19 @@ export function ChatInterface() {
     chats, currentChatId, selectChat, createChat, renameChat,
     messages, isLoading, error, language,
     connected, serverUrl, connect, setServerUrl, setFeedback,
-    sendMessage,
+    sendMessage, showColdStartFactoid,
   } = useChatStore();
 
   useEffect(() => { checkAuth(); }, [checkAuth]);
   useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
+
+  const factoidShown = useRef(false);
+  useEffect(() => {
+    if (authChecked && user && currentChatId && !factoidShown.current) {
+      factoidShown.current = true;
+      showColdStartFactoid();
+    }
+  }, [authChecked, user, currentChatId, showColdStartFactoid]);
   // Default: sidebar open on wide viewports, collapsed on narrow (mobile-first).
   useEffect(() => { if (typeof window !== 'undefined') setSidebarOpen(window.innerWidth >= 768); }, []);
 
@@ -203,6 +211,8 @@ export function ChatInterface() {
                       className={`rounded-2xl px-4 py-3 ${
                         message.role === 'user'
                           ? 'bg-primary-600 text-white'
+                          : message.metadata?.kind === 'factoid'
+                          ? 'bg-[#fff3d6] border border-[#f3a228]/45 text-[#5c3d00]'
                           : 'bg-white border border-gray-200 text-gray-800'
                       }`}
                     >
@@ -219,6 +229,8 @@ export function ChatInterface() {
                             </div>
                             <span className="text-xs">Thinking… (running on CPU, a few seconds)</span>
                           </div>
+                        ) : message.metadata?.kind === 'factoid' ? (
+                          <p className="whitespace-pre-wrap font-body text-base">{message.content}</p>
                         ) : (
                           <AssistantMessage content={message.content} streaming={message.id == null} />
                         )

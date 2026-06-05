@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { RemoteEngine } from '@/engine/RemoteEngine';
 import { LANGUAGES, loraScalesFor, detectLanguage, type LanguageKey } from '@/config/model';
+import { pickFactoidText } from '@/data/factoids';
 
 export interface User { id: number; email: string }
 export interface Chat { id: number; title: string | null; is_primary: number; created_at: string }
@@ -9,6 +10,7 @@ export interface UiMessage {
   role: 'user' | 'assistant' | 'system';
   content: string;
   message_feedback?: number | null; // 1 useful | -1 not useful | null
+  metadata?: { kind?: string } | null;
 }
 
 // NOTE: `process.env.NEXT_PUBLIC_QVAC_URL` is replaced at build time by Next with
@@ -34,6 +36,8 @@ interface ChatState {
   // ui
   isLoading: boolean;
   error: string | null;
+  lastFactoidIds?: string[];
+  showColdStartFactoid: () => void;
 
   checkAuth: () => Promise<void>;
   authenticate: (mode: 'login' | 'signup', email: string, password: string) => Promise<boolean>;
@@ -71,6 +75,63 @@ export const useChatStore = create<ChatState>((set, get) => ({
   messages: [],
   isLoading: false,
   error: null,
+  lastFactoidIds: [],
+
+  showColdStartFactoid: () => {
+    let lastIds: string[] = [];
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem('hiraia_last_factoid_ids');
+        if (stored) lastIds = JSON.parse(stored);
+      } catch {}
+    }
+
+    const picked = pickFactoidText('tagalog', lastIds);
+    if (!picked) return;
+
+    const factoidMessage: UiMessage = {
+      role: 'assistant',
+      content: '',
+      metadata: { kind: 'factoid' },
+    };
+
+    set((state) => ({
+      messages: [...state.messages, factoidMessage],
+    }));
+
+    let currentText = '';
+    let index = 0;
+    const speed = 20; // ms per tick
+    const charsPerTick = 4; // stream speed
+    const fullText = picked.text;
+
+    const tick = () => {
+      if (index >= fullText.length) {
+        const nextHistory = [...lastIds, picked.id].slice(-15);
+        if (typeof window !== 'undefined') {
+          try {
+            localStorage.setItem('hiraia_last_factoid_ids', JSON.stringify(nextHistory));
+          } catch {}
+        }
+        return;
+      }
+      currentText += fullText.slice(index, index + charsPerTick);
+      index += charsPerTick;
+      set((state) => {
+        const updated = [...state.messages];
+        if (updated.length > 0) {
+          updated[updated.length - 1] = {
+            ...updated[updated.length - 1],
+            content: currentText,
+          };
+        }
+        return { messages: updated };
+      });
+      setTimeout(tick, speed);
+    };
+
+    setTimeout(tick, speed);
+  },
 
   checkAuth: async () => {
     try {

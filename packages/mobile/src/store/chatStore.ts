@@ -12,7 +12,7 @@ interface ChatState {
   isStreaming: boolean;
   currentStreamingContent: string;
   hasHydrated: boolean;
-  lastFactoidId?: string;
+  lastFactoidIds?: string[];
   sendMessage: (content: string) => Promise<void>;
   showColdStartFactoid: () => void;
   clearMessages: () => void;
@@ -32,7 +32,7 @@ export const useChatStore = create<ChatState>()(
       isStreaming: false,
       currentStreamingContent: '',
       hasHydrated: false,
-      lastFactoidId: undefined,
+      lastFactoidIds: [],
 
       sendMessage: async (content: string) => {
         const { engine } = useEngineStore.getState();
@@ -127,20 +127,49 @@ export const useChatStore = create<ChatState>()(
       // something to read while the model warms up. Pre-written prose (not the
       // model — it isn't loaded yet). Not persisted; a fresh one shows each cold start.
       showColdStartFactoid: () => {
-        const picked = pickFactoidText('tagalog', get().lastFactoidId);
+        const lastIds = get().lastFactoidIds || [];
+        const picked = pickFactoidText('tagalog', lastIds);
         if (!picked) return;
+
+        const factoidMessage: Message = {
+          role: 'assistant',
+          content: '',
+          timestamp: new Date(),
+          metadata: { kind: 'factoid' },
+        };
+
         set((state) => ({
-          messages: [
-            ...state.messages,
-            {
-              role: 'assistant',
-              content: picked.text,
-              timestamp: new Date(),
-              metadata: { kind: 'factoid' },
-            },
-          ],
-          lastFactoidId: picked.id,
+          messages: [...state.messages, factoidMessage],
         }));
+
+        let currentText = '';
+        let index = 0;
+        const speed = 20; // ms per tick
+        const charsPerTick = 4; // stream speed
+        const fullText = picked.text;
+
+        const tick = () => {
+          if (index >= fullText.length) {
+            const nextHistory = [...lastIds, picked.id].slice(-15);
+            set({ lastFactoidIds: nextHistory });
+            return;
+          }
+          currentText += fullText.slice(index, index + charsPerTick);
+          index += charsPerTick;
+          set((state) => {
+            const updated = [...state.messages];
+            if (updated.length > 0) {
+              updated[updated.length - 1] = {
+                ...updated[updated.length - 1],
+                content: currentText,
+              };
+            }
+            return { messages: updated };
+          });
+          setTimeout(tick, speed);
+        };
+
+        setTimeout(tick, speed);
       },
 
       clearMessages: () => set({ messages: [], isStreaming: false, currentStreamingContent: '' }),
@@ -154,11 +183,20 @@ export const useChatStore = create<ChatState>()(
       // or the in-flight streaming state.
       partialize: (state) => ({
         messages: state.messages.filter((m) => !isFactoid(m)),
-        lastFactoidId: state.lastFactoidId,
+        lastFactoidIds: state.lastFactoidIds || [],
       }),
       merge: (persisted, current) => {
-        const p = (persisted ?? {}) as Partial<ChatState>;
-        return { ...current, ...p, messages: reviveMessages(p.messages) };
+        const p = (persisted ?? {}) as any;
+        let lastFactoidIds = p.lastFactoidIds || [];
+        if (p.lastFactoidId && lastFactoidIds.length === 0) {
+          lastFactoidIds = [p.lastFactoidId];
+        }
+        return {
+          ...current,
+          ...p,
+          lastFactoidIds,
+          messages: reviveMessages(p.messages),
+        };
       },
       onRehydrateStorage: () => (state) => {
         state?._setHydrated();
