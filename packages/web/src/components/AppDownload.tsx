@@ -78,7 +78,8 @@ export function AppDownload() {
           How the download works
         </p>
         <p className="text-xs sm:text-sm leading-relaxed text-gray-700">
-          The app itself is {apkSize}. The first time you open it, it downloads the AI model — about{' '}
+          The app is {apkSize} — it includes Hiraia&apos;s Filipino AI fine-tune built right in. The
+          first time you open it, it downloads the base AI model — about{' '}
           <strong className="text-[#0c343d]">{DOWNLOAD.modelDownloadGB} GB, one time</strong> — from{' '}
           <a
             href={DOWNLOAD.modelSourceUrl}
