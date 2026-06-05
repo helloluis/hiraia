@@ -19,22 +19,31 @@ export const useChatStore = create<ChatState>((set, get) => ({
   sendMessage: async (content: string) => {
     const { engine } = useEngineStore.getState();
 
-    if (!engine || !engine.isReady()) {
-      console.error('Engine not ready');
-      return;
-    }
-
+    // Always show the user's message immediately — never drop it silently.
     const userMessage: Message = {
       role: 'user',
       content,
       timestamp: new Date(),
     };
+    set((state) => ({ messages: [...state.messages, userMessage] }));
 
-    set((state) => ({
-      messages: [...state.messages, userMessage],
-      isStreaming: true,
-      currentStreamingContent: '',
-    }));
+    // The model takes ~20-30s to load on first launch. If it isn't ready yet,
+    // tell the user to wait rather than swallowing their message.
+    if (!engine || !engine.isReady()) {
+      set((state) => ({
+        messages: [
+          ...state.messages,
+          {
+            role: 'assistant',
+            content: 'Sandali lang—inihahanda ko pa ang AI. Pakisubukang muli sa ilang segundo. 🐻',
+            timestamp: new Date(),
+          },
+        ],
+      }));
+      return;
+    }
+
+    set({ isStreaming: true, currentStreamingContent: '' });
 
     try {
       // Retrieve curated curriculum facts for this question and ground the model
@@ -80,10 +89,18 @@ export const useChatStore = create<ChatState>((set, get) => ({
       }));
     } catch (error) {
       console.error('Error during chat:', error);
-      set({
+      set((state) => ({
+        messages: [
+          ...state.messages,
+          {
+            role: 'assistant',
+            content: 'Paumanhin, may naganap na error. Pakisubukang muli. 🐻',
+            timestamp: new Date(),
+          },
+        ],
         isStreaming: false,
         currentStreamingContent: '',
-      });
+      }));
     }
   },
 

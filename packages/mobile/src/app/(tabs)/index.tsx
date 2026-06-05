@@ -7,10 +7,12 @@ import { ChatTextInput } from '../../components/ChatTextInput';
 import { ChatThread } from '../../components/ChatThread';
 import { NotebookBackground } from '../../components/NotebookBackground';
 import { useChatStore } from '../../store/chatStore';
+import { useEngineStore } from '../../store/engineStore';
 import { colors } from '../../theme';
 
 export default function ChatScreen() {
-  const { messages, sendMessage } = useChatStore();
+  const { messages, sendMessage, isStreaming, currentStreamingContent } = useChatStore();
+  const isReady = useEngineStore((s) => s.isReady);
   const [inputText, setInputText] = useState('');
 
   const handleSend = async () => {
@@ -30,12 +32,16 @@ export default function ChatScreen() {
         <ChatHeader />
         <View style={styles.chatContainer}>
           <NotebookBackground />
-          <ChatThread messages={messages} />
+          <ChatThread
+            messages={messages}
+            isStreaming={isStreaming}
+            streamingContent={currentStreamingContent}
+          />
           <ChatTextInput
             value={inputText}
             onChangeText={setInputText}
             onSend={handleSend}
-            placeholder="Magtanong tungkol sa agham..."
+            placeholder={isReady ? 'Magtanong tungkol sa agham...' : 'Inihahanda ang AI...'}
           />
         </View>
       </KeyboardAvoidingView>
