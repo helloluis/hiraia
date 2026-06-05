@@ -204,58 +204,61 @@ export function ChatInterface() {
                 </div>
               )}
 
-              {messages.map((message, index) => (
-                <div key={message.id ?? `tmp-${index}`} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className="max-w-[80%]">
-                    <div
-                      className={`rounded-2xl px-4 py-3 ${
-                        message.role === 'user'
-                          ? 'bg-primary-600 text-white'
-                          : message.metadata?.kind === 'factoid'
-                          ? 'bg-[#fff3d6] border border-[#f3a228]/45 text-[#5c3d00]'
-                          : 'bg-white border border-gray-200 text-gray-800'
-                      }`}
-                    >
-                      {message.role === 'assistant' ? (
-                        message.id == null && message.content === '' ? (
-                          // Waiting on the first token. On CPU the prompt-eval can
-                          // take several seconds, so show a clear "still working"
-                          // state instead of an empty bubble that reads as broken.
-                          <div className="flex items-center gap-2 text-gray-500">
-                            <div className="flex gap-1">
-                              <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                              <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                              <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+              {messages.map((message, index) => {
+                const isFactoid = message.metadata?.kind === 'factoid' || (message.content && message.content.startsWith('💡'));
+                return (
+                  <div key={message.id ?? `tmp-${index}`} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    <div className="max-w-[80%]">
+                      <div
+                        className={`rounded-2xl px-4 py-3 ${
+                          message.role === 'user'
+                            ? 'bg-primary-600 text-white'
+                            : isFactoid
+                            ? 'bg-[#fff3d6] border border-[#f3a228]/45 text-[#5c3d00]'
+                            : 'bg-white border border-gray-200 text-gray-800'
+                        }`}
+                      >
+                        {message.role === 'assistant' ? (
+                          message.id == null && message.content === '' ? (
+                            // Waiting on the first token. On CPU the prompt-eval can
+                            // take several seconds, so show a clear "still working"
+                            // state instead of an empty bubble that reads as broken.
+                            <div className="flex items-center gap-2 text-gray-500">
+                              <div className="flex gap-1">
+                                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                              </div>
+                              <span className="text-xs">Thinking… (running on CPU, a few seconds)</span>
                             </div>
-                            <span className="text-xs">Thinking… (running on CPU, a few seconds)</span>
-                          </div>
-                        ) : message.metadata?.kind === 'factoid' ? (
-                          <p className="whitespace-pre-wrap font-body text-base">{message.content}</p>
+                          ) : isFactoid ? (
+                            <p className="whitespace-pre-wrap font-body text-base">{message.content}</p>
+                          ) : (
+                            <AssistantMessage content={message.content} streaming={message.id == null} />
+                          )
                         ) : (
-                          <AssistantMessage content={message.content} streaming={message.id == null} />
-                        )
-                      ) : (
-                        <p className="whitespace-pre-wrap">{message.content}</p>
+                          <p className="whitespace-pre-wrap">{message.content}</p>
+                        )}
+                      </div>
+                      {/* feedback thumbs on persisted assistant messages */}
+                      {message.role === 'assistant' && message.id && (
+                        <div className="flex gap-2 mt-1 pl-1">
+                          <button
+                            onClick={() => setFeedback(message.id!, 1)}
+                            className={`text-sm ${message.message_feedback === 1 ? 'opacity-100' : 'opacity-40 hover:opacity-80'}`}
+                            title="Helpful"
+                          >👍</button>
+                          <button
+                            onClick={() => setFeedback(message.id!, -1)}
+                            className={`text-sm ${message.message_feedback === -1 ? 'opacity-100' : 'opacity-40 hover:opacity-80'}`}
+                            title="Not helpful"
+                          >👎</button>
+                        </div>
                       )}
                     </div>
-                    {/* feedback thumbs on persisted assistant messages */}
-                    {message.role === 'assistant' && message.id && (
-                      <div className="flex gap-2 mt-1 pl-1">
-                        <button
-                          onClick={() => setFeedback(message.id!, 1)}
-                          className={`text-sm ${message.message_feedback === 1 ? 'opacity-100' : 'opacity-40 hover:opacity-80'}`}
-                          title="Helpful"
-                        >👍</button>
-                        <button
-                          onClick={() => setFeedback(message.id!, -1)}
-                          className={`text-sm ${message.message_feedback === -1 ? 'opacity-100' : 'opacity-40 hover:opacity-80'}`}
-                          title="Not helpful"
-                        >👎</button>
-                      </div>
-                    )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
 
               {/* Covers the brief gap between send and the streaming placeholder
                   appearing; once the placeholder (empty assistant msg) is present it

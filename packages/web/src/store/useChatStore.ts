@@ -105,7 +105,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
     const charsPerTick = 4; // stream speed
     const fullText = picked.text;
 
-    const tick = () => {
+    const tick = async () => {
       if (index >= fullText.length) {
         const nextHistory = [...lastIds, picked.id].slice(-15);
         if (typeof window !== 'undefined') {
@@ -113,15 +113,42 @@ export const useChatStore = create<ChatState>((set, get) => ({
             localStorage.setItem('hiraia_last_factoid_ids', JSON.stringify(nextHistory));
           } catch {}
         }
+        
+        // Persist to the database so that it is saved in the SQLite chat thread
+        const chatId = get().currentChatId;
+        if (chatId) {
+          try {
+            const { message: savedFactoid } = await api(`/api/chats/${chatId}/messages`, {
+              method: 'POST',
+              body: JSON.stringify({ role: 'assistant', content: fullText }),
+            });
+            set((state) => {
+              const updated = [...state.messages];
+              const last = updated[updated.length - 1];
+              if (last) {
+                // Replace the temporary streaming message with the persisted one
+                updated[updated.length - 1] = {
+                  ...last,
+                  ...savedFactoid,
+                  metadata: { kind: 'factoid' },
+                };
+              }
+              return { messages: updated };
+            });
+          } catch (e) {
+            console.error('Failed to persist cold-start factoid:', e);
+          }
+        }
         return;
       }
       currentText += fullText.slice(index, index + charsPerTick);
       index += charsPerTick;
       set((state) => {
         const updated = [...state.messages];
-        if (updated.length > 0) {
+        const last = updated[updated.length - 1];
+        if (last) {
           updated[updated.length - 1] = {
-            ...updated[updated.length - 1],
+            ...last,
             content: currentText,
           };
         }

@@ -81,10 +81,10 @@ export const useChatStore = create<ChatState>()(
             systemPrompt += `\n\n${groundingBlock}`;
           }
 
-          // Factoid cards aren't conversation turns — keep them out of the model's context.
+          // Factoid messages persist and influence the conversation context.
           const conversationMessages: Message[] = [
             { role: 'system', content: systemPrompt },
-            ...get().messages.filter((m) => !isFactoid(m)),
+            ...get().messages,
           ];
 
           // Stream tokens from the engine
@@ -125,7 +125,7 @@ export const useChatStore = create<ChatState>()(
 
       // Drop a pre-written "Alam mo ba na…?" factoid into the thread so there's
       // something to read while the model warms up. Pre-written prose (not the
-      // model — it isn't loaded yet). Not persisted; a fresh one shows each cold start.
+      // model — it isn't loaded yet).
       showColdStartFactoid: () => {
         const lastIds = get().lastFactoidIds || [];
         const picked = pickFactoidText('tagalog', lastIds);
@@ -158,9 +158,10 @@ export const useChatStore = create<ChatState>()(
           index += charsPerTick;
           set((state) => {
             const updated = [...state.messages];
-            if (updated.length > 0) {
+            const last = updated[updated.length - 1];
+            if (last) {
               updated[updated.length - 1] = {
-                ...updated[updated.length - 1],
+                ...last,
                 content: currentText,
               };
             }
@@ -168,21 +169,17 @@ export const useChatStore = create<ChatState>()(
           });
           setTimeout(tick, speed);
         };
-
         setTimeout(tick, speed);
       },
 
       clearMessages: () => set({ messages: [], isStreaming: false, currentStreamingContent: '' }),
-
       _setHydrated: () => set({ hasHydrated: true }),
     }),
     {
       name: 'hiraia-chat',
       storage: createJSONStorage(() => AsyncStorage),
-      // Persist only real conversation turns — never the transient factoid cards
-      // or the in-flight streaming state.
       partialize: (state) => ({
-        messages: state.messages.filter((m) => !isFactoid(m)),
+        messages: state.messages,
         lastFactoidIds: state.lastFactoidIds || [],
       }),
       merge: (persisted, current) => {

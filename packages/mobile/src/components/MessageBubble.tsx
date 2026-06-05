@@ -12,7 +12,7 @@ interface MessageBubbleProps {
 
 export function MessageBubble({ message }: MessageBubbleProps) {
   const isUser = message.role === 'user';
-  const isFactoid = message.metadata?.kind === 'factoid';
+  const isFactoid = message.metadata?.kind === 'factoid' || (message.content && message.content.startsWith('💡'));
 
   return (
     <View style={[styles.container, isUser ? styles.userContainer : styles.assistantContainer]}>
