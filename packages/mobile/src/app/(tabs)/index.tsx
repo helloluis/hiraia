@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChatHeader } from '../../components/ChatHeader';
 import { ChatTextInput } from '../../components/ChatTextInput';
 import { ChatThread } from '../../components/ChatThread';
+import { LoadingBar } from '../../components/LoadingBar';
 import { NotebookBackground } from '../../components/NotebookBackground';
 import { useChatStore } from '../../store/chatStore';
 import { useEngineStore } from '../../store/engineStore';
@@ -49,6 +50,7 @@ export default function ChatScreen() {
             isStreaming={isStreaming}
             streamingContent={currentStreamingContent}
           />
+          <LoadingBar loading={!isReady} />
           <ChatTextInput
             value={inputText}
             onChangeText={setInputText}

@@ -28,6 +28,8 @@ export const colors = {
   /** Primary teal (tailwind primary-500/600). */
   primary: '#165a6a',
   primaryDark: '#0f4a56',
+  /** Dark green — the model-loading progress bar. */
+  greenDark: '#0c6e47',
   /** Muted ink for secondary text. */
   inkMuted: '#5a7178',
   /** Notebook ruling — horizontal blue lines. */
