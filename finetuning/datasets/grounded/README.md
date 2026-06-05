@@ -62,10 +62,19 @@ distractor), with the gold answer using only the relevant one — runtime retrie
 up to 3, so the model must learn to pick. Cover every domain (MATTER, LIVING_THINGS,
 FORCE_MOTION_ENERGY, EARTH_SPACE, ABOUT_HIRAIA) and a spread of grades.
 
+## Files (canonical sources)
+
+- `seed.tagalog.json` — the 22 hand-authored gold examples (the quality bar / reference).
+- `examples.tagalog.json` — the **full** combined source: the seed + one grounded example
+  authored for every fact in the 305-fact bank + the abstain/chit-chat sets. This is what
+  the builder reads. Regenerate `train-grounded.jsonl` from it after any edit.
+
 ## Status
 
-Seed: 22 rows (grounded 15 / abstain 3 / chitchat 4) — establishes the format + bar.
-NEXT: expand authoring across the full bank (batch by domain, keep the rules above), then
-retrain the Tagalog adapter and re-eval with the **live-conversation** method (surface
-heuristics miss accuracy). Bisaya is deferred — re-run the same builder with a
-`seed.bisaya.json` (`language: "cebuano"`) when ready.
+**Full set built: 411 examples** — grounded 320 / abstain 58 / chit-chat 33 (≈78/14/8%).
+One grounded example authored per fact across all five domains; gold answers spot-checked
+for faithfulness. NEXT: retrain the Tagalog adapter on `train-grounded.jsonl` (same
+unsloth→GGUF pipeline) and re-eval with the **live-conversation** method (surface heuristics
+miss accuracy). Optional: add more abstain rows toward 20%, and a 2nd phrasing per fact.
+Bisaya is deferred — author `seed.bisaya.json` / `examples.bisaya.json` (`language:
+"cebuano"`) and re-run the same builder when ready.
