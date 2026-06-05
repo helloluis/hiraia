@@ -43,35 +43,60 @@ function Checksum({ label, value, hint }: { label: string; value: string; hint: 
  */
 export function AppDownload() {
   const [showVerify, setShowVerify] = useState(false);
-
-  if (!DOWNLOAD.released || !DOWNLOAD.url) {
-    return (
-      <p className="text-gray-600 text-sm sm:text-base leading-relaxed pl-1 italic">
-        Android app coming soon!
-      </p>
-    );
-  }
+  const live = DOWNLOAD.released && !!DOWNLOAD.url;
+  const apkSize = DOWNLOAD.fileSizeMB ? `~${DOWNLOAD.fileSizeMB} MB` : 'a small download';
 
   return (
     <div className="pl-1 space-y-3">
-      <a
-        href={DOWNLOAD.url}
-        download
-        className="inline-flex items-center gap-2 rounded-full bg-[#0f8c5c] px-5 py-2.5 text-sm sm:text-base font-semibold text-white shadow-md shadow-[#0f8c5c]/20 transition-colors hover:bg-[#0c7a4f]"
-      >
-        <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-        </svg>
-        Download for Android
-      </a>
+      {live ? (
+        <>
+          <a
+            href={DOWNLOAD.url}
+            download
+            className="inline-flex items-center gap-2 rounded-full bg-[#0f8c5c] px-5 py-2.5 text-sm sm:text-base font-semibold text-white shadow-md shadow-[#0f8c5c]/20 transition-colors hover:bg-[#0c7a4f]"
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+            Download for Android
+          </a>
+          <p className="text-xs sm:text-sm text-gray-500">
+            v{DOWNLOAD.version}
+            {DOWNLOAD.fileSizeMB ? ` · ${DOWNLOAD.fileSizeMB} MB APK` : ''} · Android{' '}
+            {DOWNLOAD.minAndroid}+ · {DOWNLOAD.minRamGB} GB RAM
+          </p>
+        </>
+      ) : (
+        <p className="text-gray-600 text-sm sm:text-base leading-relaxed italic">
+          Android app coming soon!
+        </p>
+      )}
 
-      <p className="text-xs sm:text-sm text-gray-500">
-        v{DOWNLOAD.version}
-        {DOWNLOAD.fileSizeMB ? ` · ${DOWNLOAD.fileSizeMB} MB` : ''} · Android {DOWNLOAD.minAndroid}+ ·{' '}
-        {DOWNLOAD.minRamGB} GB RAM
-      </p>
+      {/* "What to expect" — heads off the small-app-then-big-download confusion. */}
+      <div className="max-w-xl rounded-xl bg-[#fff8ec] p-4 ring-1 ring-[#f3a228]/30">
+        <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-[#0c343d]">
+          How the download works
+        </p>
+        <p className="text-xs sm:text-sm leading-relaxed text-gray-700">
+          The app itself is {apkSize}. The first time you open it, it downloads the AI model — about{' '}
+          <strong className="text-[#0c343d]">{DOWNLOAD.modelDownloadGB} GB, one time</strong> — from{' '}
+          <a
+            href={DOWNLOAD.modelSourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-[#0f8c5c] hover:underline"
+          >
+            {DOWNLOAD.modelSource}
+          </a>
+          , a public open-model host. After that, Hiraia runs{' '}
+          <strong className="text-[#0c343d]">fully offline</strong> — no internet, no account, and
+          nothing you type ever leaves your phone.
+        </p>
+      </div>
 
-      <button
+      {live && (
+        <>
+          <button
         type="button"
         onClick={() => setShowVerify((v) => !v)}
         className="inline-flex items-center gap-1 text-xs sm:text-sm font-medium text-[#0c343d] hover:text-[#0f8c5c]"
@@ -115,6 +140,8 @@ export function AppDownload() {
             />
           )}
         </div>
+      )}
+        </>
       )}
     </div>
   );

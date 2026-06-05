@@ -38,6 +38,16 @@ export const DOWNLOAD = {
   /** SHA-256 of the signing cert. `apksigner verify --print-certs hiraia.apk` (or `eas credentials`). */
   signingCertSha256: '',
 
+  /**
+   * One-time model download after install. The APK is small; on first launch the
+   * app fetches the AI model once, then runs fully offline. Mirror these to the
+   * mobile `ACTIVE_MODEL` in packages/mobile/src/config/model.ts (3B ≈ 3.2 GB
+   * from Hugging Face; 1B ≈ 0.74 GB).
+   */
+  modelDownloadGB: 3.2,
+  modelSource: 'Hugging Face',
+  modelSourceUrl: 'https://huggingface.co/mradermacher/Sailor2-3B-Chat-GGUF',
+
   minAndroid: 12,
   minRamGB: 6,
 } as const;
