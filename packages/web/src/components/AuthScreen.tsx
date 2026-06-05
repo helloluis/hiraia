@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useChatStore } from '@/store/useChatStore';
+import { AppDownload } from '@/components/AppDownload';
 
 export function AuthScreen() {
   const { authenticate, error } = useChatStore();
@@ -215,9 +216,7 @@ export function AuthScreen() {
                   <h3 className="text-lg sm:text-xl font-display text-[#0c343d] mb-2">
                     Free to download
                   </h3>
-                  <p className="text-gray-600 text-sm sm:text-base leading-relaxed pl-1 italic">
-                    Android app coming soon!
-                  </p>
+                  <AppDownload />
                 </div>
               </div>
 

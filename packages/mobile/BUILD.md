@@ -76,3 +76,34 @@ grounding (the 305-fact bank) is active for both.
 QVAC's native inference does not run on Android emulators (per their docs) — you need a
 physical device. On an Apple-Silicon Mac an arm64 emulator *might* load it CPU-only, but
 it's unsupported and unverified. Plan to test on the real phone.
+
+## Publishing the download (landing page)
+
+Hiraia isn't on the Play Store, so the landing page proves legitimacy with two published
+checksums. The values live in `packages/web/src/config/download.ts`; fill them after a
+build and flip `released: true`.
+
+```bash
+# Download the APK from the EAS build page (or `eas build:download`), name it hiraia.apk.
+
+# 1. APK file hash -> download.ts `sha256`
+shasum -a 256 hiraia.apk            # Linux: sha256sum hiraia.apk
+
+# 2. Signing certificate hash -> download.ts `signingCertSha256` (stable across releases)
+#    Needs Android build-tools on PATH (apksigner). Look for the "SHA-256" cert digest.
+apksigner verify --print-certs hiraia.apk
+#    Or, since EAS holds the keystore:
+npx eas-cli credentials   # Android > (keystore) > shows SHA-256 fingerprint
+
+# 3. File size in MB -> download.ts `fileSizeMB`
+du -m hiraia.apk
+```
+
+Then **host** `hiraia.apk` somewhere durable (a GitHub Release asset, or the VPS) and set
+`url` to that direct link. Set `version`, `fileSizeMB`, `sha256`, `signingCertSha256`, and
+`released: true`. The site then shows the Download button + a "Verify it's the official
+app" panel with both checksums and the commands above.
+
+> The **signing-cert** hash is the stronger anchor: Android rejects any update not signed
+> by the same key, and it doesn't change between releases — so reuse the same keystore for
+> every build (EAS does this by default once credentials are created).
