@@ -16,7 +16,7 @@ Different from train-tagalog-unsloth.py (the v3 image-tag run):
 
 import unsloth
 from unsloth import FastLanguageModel
-from unsloth.chat_templates import get_chat_template, standardize_sharegpt, train_on_responses_only
+from unsloth.chat_templates import get_chat_template, train_on_responses_only
 
 import os
 import torch
@@ -94,8 +94,9 @@ def main():
     print(f"Loading dataset from {DATASET_PATH}...")
     dataset = load_dataset("json", data_files=DATASET_PATH, split="train")
     print(f"✓ Loaded {len(dataset)} samples")
+    # Our rows are already {role, content} chat messages — no sharegpt conversion
+    # needed (and newer unsloth's standardize_sharegpt rejects this format).
     dataset = dataset.rename_column("messages", "conversations")
-    dataset = standardize_sharegpt(dataset)
     dataset = dataset.map(
         lambda examples: formatting_prompts_func(examples, tokenizer),
         batched=True,
