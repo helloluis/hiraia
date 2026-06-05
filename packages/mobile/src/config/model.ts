@@ -42,10 +42,11 @@ export interface OnDeviceModel {
   modelSrc: string | null;
   /**
    * Absolute on-device path to the fine-tuned LoRA adapter GGUF, passed as
-   * `modelConfig.lora`. NULL until our Tagalog/Bisaya adapters are hosted (HF/URL)
-   * or bundled and resolved to a local path — without it the base model runs (no
-   * Filipino fine-tune). Per-language adapter switching is a follow-up; the SDK
-   * also supports per-completion lora.
+   * `modelConfig.lora`. The adapter is BUNDLED IN THE APK (it's the Filipino
+   * fine-tune — the core value, must ship offline, not be downloaded) and resolved
+   * to a local path at runtime via expo-asset/expo-file-system. NULL only until
+   * that wiring lands — without it the base model runs (no fine-tune). Per-language
+   * switching is a follow-up; the SDK also supports per-completion lora.
    */
   loraSrc: string | null;
   note: string;
