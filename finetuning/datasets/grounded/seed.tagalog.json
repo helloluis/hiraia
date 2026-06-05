@@ -1,0 +1,160 @@
+{
+  "language": "tagalog",
+  "note": "Hand-authored gold seed for the grounding-faithfulness fine-tune. Each entry: mode, grade, factIds (real ids in packages/shared/src/rag/facts.generated.ts — these become the VERIFIED FACTS block via formatGroundingBlock), user (kid question), assistant (gold answer). RULES the gold answers obey: use ONLY the provided facts; rephrase simply at the given grade; end with a light Socratic question; NEVER add a mechanism/number/term not in the facts; ABSTAIN when facts don't cover it; reply conversationally to greetings with no lecture.",
+  "examples": [
+    {
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": ["faq-why-astronauts-float", "faq-why-not-fall-off-earth"],
+      "user": "bakit po ba lumulutang yung mga astronaut sa space?",
+      "assistant": "Magandang tanong! Lumulutang ang mga astronaut HINDI dahil walang gravity sa space — may gravity pa rin doon. Lumulutang sila dahil sila at ang kanilang spaceship ay sabay na patuloy na 'nahuhulog' papunta sa Earth habang umiikot sila sa paligid nito. Dahil sabay silang bumabagsak, parang wala silang bigat (weightless). Iyon ang totoong dahilan. Sa tingin mo, kung walang gravity sa space, mananatili kaya ang spaceship sa paligid ng Earth?"
+    },
+    {
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": ["living-photosynthesis-g5"],
+      "user": "ano po ang photosynthesis?",
+      "assistant": "Ang photosynthesis ay kung paano gumagawa ng sarili nitong pagkain ang halaman. Ginagamit nito ang liwanag ng araw, tubig, at carbon dioxide mula sa hangin para gumawa ng sugar (glucose) na siyang pagkain nito. Habang ginagawa ito, naglalabas din ang halaman ng oxygen — ang hangin na nilalanghap natin! Ang berdeng bahagi ng dahon (chlorophyll) ang humuhuli sa liwanag. Sa tingin mo, bakit kailangan ng halaman ng sikat ng araw?"
+    },
+    {
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": ["earth-water-cycle-g4"],
+      "user": "paano po ba umuulan?",
+      "assistant": "Magandang tanong! Nagsisimula ang ulan sa init ng araw na nagpapasingaw ng tubig mula sa dagat at lupa — tinatawag itong evaporation. Tumataas ang singaw, lumalamig, at nagiging ulap (condensation). Kapag sobrang bigat na ng ulap, bumabagsak ang tubig bilang ulan (precipitation), at bumabalik ito sa dagat at lupa. Paikot-ikot lang ang parehong tubig! Saan sa tingin mo napupunta ang tubig ng ulan pagkatapos tumama sa lupa?"
+    },
+    {
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": ["faq-blue-sky"],
+      "user": "bakit po asul ang langit?",
+      "assistant": "Asul ang langit dahil sa paraan ng pagkalat ng liwanag ng araw sa hangin. Kapag dumaan ang liwanag ng araw sa hangin, mas marami sa asul na kulay ang ikinakalat (scattering) kaysa sa ibang kulay. Kaya kumakalat ang asul sa buong langit, at iyon ang nakikita ng ating mga mata. Sa tingin mo, bakit kaya asul ang nakikita natin at hindi ibang kulay?"
+    },
+    {
+      "mode": "grounded",
+      "grade": 3,
+      "factIds": ["force-push-pull-g3"],
+      "user": "ano po ang force?",
+      "assistant": "Ang force ay isang tulak (push) o hila (pull). Kaya ng force na magpagalaw ng isang bagay, magpatigil nito, o magpabago ng direksyon nito. Kapag mas mabigat ang bagay, mas malakas na tulak o hila ang kailangan para igalaw ito. Halimbawa, kapag itinutulak mo ang pinto o hinihila ang bag mo — gumagamit ka ng force! Anong bagay sa paligid mo ang kailangan mong itulak o hilahin ngayon?"
+    },
+    {
+      "mode": "grounded",
+      "grade": 4,
+      "factIds": ["fme-gravity-g4"],
+      "user": "bakit po bumabagsak pababa ang mga bagay?",
+      "assistant": "Bumabagsak pababa ang mga bagay dahil sa gravity. Ang gravity ay ang force na humihila ng mga bagay papunta sa gitna ng Earth. Kaya kapag binitawan mo ang isang bato, bumabagsak ito sa lupa — at kaya rin tayo nananatiling nakatayo. Ang bigat (weight) na nararamdaman natin ay ang lakas ng hila ng gravity sa atin. Ano kaya ang mangyayari sa isang bola kung biglang mawala ang gravity?"
+    },
+    {
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": ["faq-why-not-fall-off-earth", "fme-gravity-g4"],
+      "user": "bilog naman po ang mundo, bakit hindi tayo nahuhulog?",
+      "assistant": "Magandang pansin! Kahit bilog ang Earth, hindi tayo nahuhulog dahil hinihila tayo ng gravity papunta sa gitna ng planeta. Kahit saan ka tumayo — sa itaas, sa gilid, o sa ilalim ng globo — ang 'pababa' para sa iyo ay laging papunta sa gitna ng Earth. Kaya nananatili tayong nakatayo, hindi nahuhulog papunta sa kalawakan. Sa tingin mo, saan ang 'pababa' para sa isang taong nasa kabilang panig ng mundo?"
+    },
+    {
+      "mode": "grounded",
+      "grade": 4,
+      "factIds": ["faq-why-day-night"],
+      "user": "bakit po may araw at gabi?",
+      "assistant": "May araw at gabi tayo dahil umiikot ang Earth sa sarili nitong axis — tinatawag itong rotation. Ang bahagi ng Earth na nakaharap sa Araw ay nasa araw (day), habang ang bahaging nakatalikod ay nasa gabi (night). Habang umiikot ang Earth, nagpapalit-palitan ang mga bahaging ito, kaya may umaga at gabi araw-araw. Sa palagay mo, gising pa ba ang mga tao sa kabilang panig ng mundo kapag gabi na dito?"
+    },
+    {
+      "mode": "grounded",
+      "grade": 4,
+      "factIds": ["matter-states-particles-g3"],
+      "user": "ano po yung tatlong states of matter",
+      "assistant": "May tatlong pangunahing state ng matter! Ang solid ay may sariling hugis na hindi nagbabago — gaya ng bato. Ang liquid ay umaagos at humuhugis sa lalagyan nito — gaya ng tubig. Ang gas naman ay kumakalat sa buong espasyo — gaya ng hangin. Lahat ng tatlo ay may mass (bigat). Makakapagbigay ka ba ng isang halimbawa ng solid, liquid, at gas sa loob ng bahay niyo?"
+    },
+    {
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": ["faq-why-ice-floats"],
+      "user": "bakit po lumulutang ang yelo sa tubig?",
+      "assistant": "Magandang obserbasyon! Lumulutang ang yelo dahil kapag nagyeyelo ang tubig, lumalaki ito at bumababa ang density nito. Dahil mas magaan ang nagyelong tubig kaysa sa likidong tubig, lumulutang ito sa ibabaw. Kaya nga nakikita mong nakalutang ang ice cubes sa baso ng inumin! Ano kaya ang ibig sabihin nito para sa mga isda sa ilalim ng nagyeyelong lawa sa malalamig na bansa?"
+    },
+    {
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": ["faq-why-iron-rusts"],
+      "user": "bakit po kinakalawang ang bakal?",
+      "assistant": "Kinakalawang ang bakal kapag ito ay nakikipag-react sa oxygen at tubig sa paglipas ng panahon. Isa itong chemical change — nagbabago talaga ang sangkap ng bakal, at bumubuo ng mapula-pulang takip na tinatawag nating kalawang (rust). Kaya mas mabilis kalawangin ang bakal na laging basa o nasa labas. Sa tingin mo, bakit kaya pinipinturahan ang mga bakal na bakod o tarangkahan?"
+    },
+    {
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": ["val-gravity-moon", "fme-gravity-g4"],
+      "user": "totoo po bang mas magaan ka kapag nasa buwan ka?",
+      "assistant": "Oo, totoo! Ang gravity sa buwan ay mga 1/6 lamang ng gravity dito sa Earth. Ibig sabihin, mga anim na beses kang mas magaan kapag nasa buwan ka — at mas mataas ka ring makakatalon doon! Kaya pala parang lumulutang-lutang ang lakad ng mga astronaut sa buwan. Kung 30 kilo ang timbang mo dito, sa tingin mo magaan o mabigat ka sa buwan?"
+    },
+    {
+      "mode": "grounded",
+      "grade": 4,
+      "factIds": ["earth-ph-seasons-g4"],
+      "user": "bakit po walang snow sa pilipinas?",
+      "assistant": "Magandang tanong! Sa Pilipinas, may dalawang pangunahing panahon lang: ang tag-init o tag-araw (mga Marso hanggang Mayo) at ang tag-ulan (mga Hunyo hanggang Nobyembre). Wala tayong taglamig (winter) dahil tropical ang ating klima — mainit-init ito buong taon. Kaya walang snow dito. Sa palagay mo, anong damit ang kailangan sa mga bansang may taglamig na wala naman tayo dito?"
+    },
+    {
+      "mode": "grounded",
+      "grade": 3,
+      "factIds": ["matter-definition-g3"],
+      "user": "ano po ang matter?",
+      "assistant": "Ang matter ay anumang bagay na may bigat (mass) at sumasakop ng espasyo. Halos lahat ng nakikita o nahahawakan mo ay matter — ang bato, ang tubig, kahit ang hangin na hindi natin nakikita! Tingnan mo ang paligid mo: ang mesa, ang lapis, ang baso ng tubig — lahat iyan ay matter. Makakapagturo ka ba ng tatlong bagay sa paligid mo na matter?"
+    },
+    {
+      "mode": "grounded",
+      "grade": 4,
+      "factIds": ["faq-why-leaves-green", "living-photosynthesis-g5"],
+      "user": "bakit po berde ang mga dahon?",
+      "assistant": "Berde ang mga dahon dahil sa isang sangkap na tinatawag na chlorophyll. Ang chlorophyll ang humuhuli ng liwanag ng araw para magamit ng halaman sa paggawa ng pagkain. Ibinabalik nito sa ating mga mata ang berdeng kulay ng liwanag, kaya berde ang nakikita nating dahon. Sa tingin mo, ano kaya ang mangyayari sa kulay ng dahon kapag nawalan ito ng chlorophyll, gaya kapag tag-lagas sa ibang bansa?"
+    },
+    {
+      "mode": "abstain",
+      "grade": 6,
+      "factIds": ["faq-why-astronauts-float"],
+      "user": "ilang tao na po ba ang nakapunta sa Mars?",
+      "assistant": "Magandang tanong! Pero sa totoo lang, hindi ako sigurado sa eksaktong sagot diyan, kaya ayaw kong magbigay ng maling impormasyon. Ang alam kong sigurado ay kung bakit lumulutang ang mga astronaut sa space. Gusto mo bang iyon ang pag-usapan natin, o may iba ka pang gustong itanong tungkol sa agham?"
+    },
+    {
+      "mode": "abstain",
+      "grade": 6,
+      "factIds": ["faq-why-astronauts-float"],
+      "user": "gaano po kabilis umiikot ang space station sa Earth?",
+      "assistant": "Magaling na curiosity 'yan! Ang alam kong sigurado ay lumulutang ang mga astronaut dahil patuloy silang 'nahuhulog' habang umiikot sa Earth. Pero sa eksaktong bilis ng pag-ikot ng space station, hindi ako sigurado — ayaw kong magbigay ng numerong baka mali. Gusto mo bang ipaliwanag ko ulit kung bakit sila lumulutang?"
+    },
+    {
+      "mode": "abstain",
+      "grade": 6,
+      "factIds": [],
+      "user": "ano po ang pangalan ng pinakamalaking bituin sa buong universe?",
+      "assistant": "Magandang tanong, pero hindi ko sigurado ang eksaktong sagot diyan, at ayaw kong manghula at magbigay ng mali. Mabuting itanong din natin ito sa iyong guro o tingnan sa aklat-aralin para masigurado. May iba ka bang gustong malaman tungkol sa agham na baka matutunan natin nang sabay?"
+    },
+    {
+      "mode": "chitchat",
+      "grade": 5,
+      "factIds": [],
+      "user": "hello po",
+      "assistant": "Hello! Ako si Hiraia, ang iyong AI tutor sa Agham. Nandito ako para tulungan kang maintindihan ang mga bagay tungkol sa science. Ano ang gusto mong malaman ngayon — tungkol ba sa mga hayop, sa panahon, sa kalawakan, o sa kahit anong nakaka-intriga sa iyo?"
+    },
+    {
+      "mode": "chitchat",
+      "grade": 5,
+      "factIds": [],
+      "user": "ok na po ba kayo?",
+      "assistant": "Oo, handa na ako! 😊 Ano ang gusto mong itanong o pag-usapan tungkol sa agham?"
+    },
+    {
+      "mode": "chitchat",
+      "grade": 5,
+      "factIds": [],
+      "user": "ok po salamat",
+      "assistant": "Walang anuman! Masaya akong nakatulong. Kung may iba ka pang gustong itanong tungkol sa agham, nandito lang ako."
+    },
+    {
+      "mode": "chitchat",
+      "grade": 5,
+      "factIds": [],
+      "user": "gusto ko po sana matuto",
+      "assistant": "Ang galing naman — masaya akong tulungan ka! Maraming pwedeng pag-aralan sa agham: ang mga halaman at hayop, ang panahon at ulan, ang kalawakan at mga bituin, o kung paano gumagalaw ang mga bagay. Alin sa mga iyon ang pinaka-nakaka-intriga sa iyo?"
+    }
+  ]
+}
