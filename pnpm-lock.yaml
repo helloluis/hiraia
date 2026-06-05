@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  compact-encoding: 3.1.0
+
 importers:
 
   .:
@@ -35,6 +38,8 @@ importers:
       typescript:
         specifier: ^5.7.0
         version: 5.9.3
+
+  packages/brand: {}
 
   packages/factoids: {}
 
@@ -70,7 +75,7 @@ importers:
         version: link:../shared
       '@qvac/sdk':
         specifier: ^0.11.0
-        version: 0.11.0(yr5zepotaa3awigifmbywvffae)
+        version: 0.11.0(dsxgsxho7yamwae7ucmerp6vwa)
       expo:
         specifier: ~54.0.0
         version: 54.0.35(@babel/core@7.29.7)(@expo/metro-runtime@4.0.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0)))(expo-router@6.0.24)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3)
@@ -146,7 +151,7 @@ importers:
     dependencies:
       '@qvac/sdk':
         specifier: ^0.11.0
-        version: 0.11.0(t36fbggv7von5f7hptl4r5zn54)
+        version: 0.11.0(nry4kocauadcdqz5h4iyz7ye4i)
 
   packages/shared:
     devDependencies:
@@ -1593,7 +1598,7 @@ packages:
       bare-stream: ^2.7.0
       bare-subprocess: ^5.2.3
       bare-zlib: ^1.3.1
-      compact-encoding: ^2.19.0
+      compact-encoding: 3.1.0
       corestore: ^7.4.5
       events: ^3.3.0
       expo-build-properties: '>=0.12.0'
@@ -3296,9 +3301,6 @@ packages:
 
   compact-encoding-net@1.3.0:
     resolution: {integrity: sha512-HIYjL3aMiSENApR691aMLngXt6rkTHb9HUkEukcx3YwIZpoMUVXHXyjBzoo9kVwC7KakooBA1RRWb46Cu6qtAQ==}
-
-  compact-encoding@2.19.2:
-    resolution: {integrity: sha512-/YjhHQE/5L4F7l5Bht69dRbP9RV6zoJPeowi8bMKQxNKe3Nh6hOY8pBGoVE9fz5GaWfEd8fWJ2aU9sB4KZuMYg==}
 
   compact-encoding@3.1.0:
     resolution: {integrity: sha512-HcXBKXucAr+rqCAzS+SmOgqXXkvbrUqLrqc4FSBGQ6Ifh8SCVTDiIcSfML92ZGK1ARePJIyug0698gnmaAwlBw==}
@@ -7846,7 +7848,6 @@ snapshots:
       - supports-color
       - typescript
       - utf-8-validate
-    optional: true
 
   '@expo/code-signing-certificates@0.0.6':
     dependencies:
@@ -7911,7 +7912,6 @@ snapshots:
     optionalDependencies:
       react: 19.2.7
       react-native: 0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7)
-    optional: true
 
   '@expo/env@2.0.11':
     dependencies:
@@ -7986,7 +7986,7 @@ snapshots:
       postcss: 8.4.49
       resolve-from: 5.0.0
     optionalDependencies:
-      expo: 54.0.35(@babel/core@7.29.7)(@expo/metro-runtime@4.0.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0)))(expo-router@6.0.24)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3)
+      expo: 54.0.35(@babel/core@7.29.7)(@expo/metro-runtime@4.0.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7)))(expo-router@6.0.24)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7))(react@19.2.7)(typescript@5.9.3)
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -8050,7 +8050,7 @@ snapshots:
       '@expo/json-file': 10.2.0
       '@react-native/normalize-colors': 0.81.5
       debug: 4.4.3
-      expo: 54.0.35(@babel/core@7.29.7)(@expo/metro-runtime@4.0.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0)))(expo-router@6.0.24)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3)
+      expo: 54.0.35(@babel/core@7.29.7)(@expo/metro-runtime@4.0.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7)))(expo-router@6.0.24)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7))(react@19.2.7)(typescript@5.9.3)
       resolve-from: 5.0.0
       semver: 7.8.1
       xml2js: 0.6.0
@@ -8089,7 +8089,6 @@ snapshots:
       expo-font: 14.0.12(expo@54.0.35)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7))(react@19.2.7)
       react: 19.2.7
       react-native: 0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7)
-    optional: true
 
   '@expo/ws-tunnel@1.0.6': {}
 
@@ -8563,7 +8562,7 @@ snapshots:
     dependencies:
       bare-events: 2.4.2
 
-  '@qvac/sdk@0.11.0(t36fbggv7von5f7hptl4r5zn54)':
+  '@qvac/sdk@0.11.0(dsxgsxho7yamwae7ucmerp6vwa)':
     dependencies:
       '@qvac/decoder-audio': 0.3.8(bare-abort-controller@1.1.2)(bare-buffer@3.6.0)(bare-events@2.8.3(bare-abort-controller@1.1.2))
       '@qvac/diffusion-cpp': 0.7.0(bare-abort-controller@1.1.2)(bare-buffer@3.6.0)
@@ -8611,13 +8610,13 @@ snapshots:
     optionalDependencies:
       '@modelcontextprotocol/sdk': 1.29.0(zod@4.4.3)
       '@qvac/cli': 0.4.0(bare-abort-controller@1.1.2)(bare-buffer@3.6.0)(bare-events@2.8.3(bare-abort-controller@1.1.2))(bare-url@2.4.3)
-      compact-encoding: 2.19.2
+      compact-encoding: 3.1.0
       expo-build-properties: 1.0.10(expo@54.0.35)
       expo-device: 8.0.10(expo@54.0.35)
-      expo-file-system: 19.0.23(expo@54.0.35)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7))
+      expo-file-system: 19.0.23(expo@54.0.35)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))
       hyperdht: 6.32.0(bare-abort-controller@1.1.2)(bare-buffer@3.6.0)(bare-url@2.4.3)
       pear-pipe: 1.0.6(bare-abort-controller@1.1.2)(bare-buffer@3.6.0)
-      react-native-bare-kit: 0.12.3(bare-abort-controller@1.1.2)(bare-buffer@3.6.0)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7))(react@19.2.7)
+      react-native-bare-kit: 0.12.3(bare-abort-controller@1.1.2)(bare-buffer@3.6.0)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
     transitivePeerDependencies:
       - bare-events
       - bare-url
@@ -8626,7 +8625,7 @@ snapshots:
       - react-native-b4a
       - sodium-javascript
 
-  '@qvac/sdk@0.11.0(yr5zepotaa3awigifmbywvffae)':
+  '@qvac/sdk@0.11.0(nry4kocauadcdqz5h4iyz7ye4i)':
     dependencies:
       '@qvac/decoder-audio': 0.3.8(bare-abort-controller@1.1.2)(bare-buffer@3.6.0)(bare-events@2.8.3(bare-abort-controller@1.1.2))
       '@qvac/diffusion-cpp': 0.7.0(bare-abort-controller@1.1.2)(bare-buffer@3.6.0)
@@ -8674,13 +8673,13 @@ snapshots:
     optionalDependencies:
       '@modelcontextprotocol/sdk': 1.29.0(zod@4.4.3)
       '@qvac/cli': 0.4.0(bare-abort-controller@1.1.2)(bare-buffer@3.6.0)(bare-events@2.8.3(bare-abort-controller@1.1.2))(bare-url@2.4.3)
-      compact-encoding: 2.19.2
+      compact-encoding: 3.1.0
       expo-build-properties: 1.0.10(expo@54.0.35)
       expo-device: 8.0.10(expo@54.0.35)
-      expo-file-system: 19.0.23(expo@54.0.35)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))
+      expo-file-system: 19.0.23(expo@54.0.35)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7))
       hyperdht: 6.32.0(bare-abort-controller@1.1.2)(bare-buffer@3.6.0)(bare-url@2.4.3)
       pear-pipe: 1.0.6(bare-abort-controller@1.1.2)(bare-buffer@3.6.0)
-      react-native-bare-kit: 0.12.3(bare-abort-controller@1.1.2)(bare-buffer@3.6.0)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+      react-native-bare-kit: 0.12.3(bare-abort-controller@1.1.2)(bare-buffer@3.6.0)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7))(react@19.2.7)
     transitivePeerDependencies:
       - bare-events
       - bare-url
@@ -9372,7 +9371,6 @@ snapshots:
       react-native: 0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7)
     optionalDependencies:
       '@types/react': 19.2.16
-    optional: true
 
   '@react-navigation/bottom-tabs@7.16.2(@react-navigation/native@7.2.5(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-screens@4.16.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
     dependencies:
@@ -10152,7 +10150,7 @@ snapshots:
       resolve-from: 5.0.0
     optionalDependencies:
       '@babel/runtime': 7.29.7
-      expo: 54.0.35(@babel/core@7.29.7)(@expo/metro-runtime@4.0.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0)))(expo-router@6.0.24)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3)
+      expo: 54.0.35(@babel/core@7.29.7)(@expo/metro-runtime@4.0.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7)))(expo-router@6.0.24)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7))(react@19.2.7)(typescript@5.9.3)
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
@@ -11124,13 +11122,6 @@ snapshots:
     transitivePeerDependencies:
       - react-native-b4a
 
-  compact-encoding@2.19.2:
-    dependencies:
-      b4a: 1.8.1
-    transitivePeerDependencies:
-      - react-native-b4a
-    optional: true
-
   compact-encoding@3.1.0:
     dependencies:
       b4a: 1.8.1
@@ -11837,12 +11828,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
       - typescript
-    optional: true
 
   expo-build-properties@1.0.10(expo@54.0.35):
     dependencies:
       ajv: 8.20.0
-      expo: 54.0.35(@babel/core@7.29.7)(@expo/metro-runtime@4.0.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0)))(expo-router@6.0.24)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3)
+      expo: 54.0.35(@babel/core@7.29.7)(@expo/metro-runtime@4.0.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7)))(expo-router@6.0.24)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7))(react@19.2.7)(typescript@5.9.3)
       semver: 7.8.1
 
   expo-constants@18.0.13(expo@54.0.35)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0)):
@@ -11862,11 +11852,10 @@ snapshots:
       react-native: 0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7)
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   expo-device@8.0.10(expo@54.0.35):
     dependencies:
-      expo: 54.0.35(@babel/core@7.29.7)(@expo/metro-runtime@4.0.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0)))(expo-router@6.0.24)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3)
+      expo: 54.0.35(@babel/core@7.29.7)(@expo/metro-runtime@4.0.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7)))(expo-router@6.0.24)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7))(react@19.2.7)(typescript@5.9.3)
       ua-parser-js: 0.7.41
 
   expo-file-system@19.0.23(expo@54.0.35)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0)):
@@ -11878,7 +11867,6 @@ snapshots:
     dependencies:
       expo: 54.0.35(@babel/core@7.29.7)(@expo/metro-runtime@4.0.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7)))(expo-router@6.0.24)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7))(react@19.2.7)(typescript@5.9.3)
       react-native: 0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7)
-    optional: true
 
   expo-font@14.0.12(expo@54.0.35)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
     dependencies:
@@ -11893,7 +11881,6 @@ snapshots:
       fontfaceobserver: 2.3.0
       react: 19.2.7
       react-native: 0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7)
-    optional: true
 
   expo-keep-awake@15.0.8(expo@54.0.35)(react@19.1.0):
     dependencies:
@@ -11904,7 +11891,6 @@ snapshots:
     dependencies:
       expo: 54.0.35(@babel/core@7.29.7)(@expo/metro-runtime@4.0.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7)))(expo-router@6.0.24)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7))(react@19.2.7)(typescript@5.9.3)
       react: 19.2.7
-    optional: true
 
   expo-linking@8.0.12(expo@54.0.35)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
     dependencies:
@@ -11946,7 +11932,6 @@ snapshots:
       invariant: 2.2.4
       react: 19.2.7
       react-native: 0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.2.16)(react@19.2.7)
-    optional: true
 
   expo-router@6.0.24(knywhsiod73a2wbvmadb3qyrpu):
     dependencies:
@@ -12121,7 +12106,6 @@ snapshots:
       - supports-color
       - typescript
       - utf-8-validate
-    optional: true
 
   exponential-backoff@3.1.3: {}
 
@@ -14975,7 +14959,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-    optional: true
 
   react-refresh@0.14.2: {}
 
