@@ -47,16 +47,19 @@ function groundingFor(factIds: string[], lang: Lang): RagResult[] {
 }
 
 function buildRow(ex: SeedExample, lang: Lang) {
-  let system = generateSystemPrompt(lang as any, ex.grade as any);
+  // tag-aware system (imageTags=true) so the adapter keeps [image: ...] behavior
+  let system = generateSystemPrompt(lang as any, ex.grade as any, true);
   const block = formatGroundingBlock(groundingFor(ex.factIds, lang));
   if (block) system += `\n\n${block}`;
-  return {
-    messages: [
-      { role: 'system', content: system },
-      { role: 'user', content: ex.user },
-      { role: 'assistant', content: ex.assistant },
-    ],
-  };
+  // Multi-turn examples carry a `turns` array; single-turn use user/assistant.
+  const turns =
+    Array.isArray((ex as any).turns) && (ex as any).turns.length
+      ? (ex as any).turns
+      : [
+          { role: 'user', content: ex.user },
+          { role: 'assistant', content: ex.assistant },
+        ];
+  return { messages: [{ role: 'system', content: system }, ...turns] };
 }
 
 const seedFile = process.argv[2] ?? join(HERE, 'seed.tagalog.json');

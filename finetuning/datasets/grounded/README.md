@@ -69,12 +69,23 @@ FORCE_MOTION_ENERGY, EARTH_SPACE, ABOUT_HIRAIA) and a spread of grades.
   authored for every fact in the 305-fact bank + the abstain/chit-chat sets. This is what
   the builder reads. Regenerate `train-grounded.jsonl` from it after any edit.
 
+## Tag-awareness + multi-turn
+
+Every row's system prompt is built tag-aware (`generateSystemPrompt(lang, grade, true)` →
+appends `IMAGE_TAG_INSTRUCTION`), so the adapter keeps the `[image: …]` behavior. Image-tag
+**positives** end the assistant answer with a final `[image: <English description>]` line;
+everything else (grounded-no-image, abstain, chit-chat) are **negatives** that teach
+restraint. Multi-turn rows carry a `turns` array (the builder uses it instead of
+`user`/`assistant`); each multi-turn stays on ONE grounded fact across follow-ups so the
+system's grounding block remains valid for the whole conversation.
+
 ## Status
 
-**Full set built: 411 examples** — grounded 320 / abstain 58 / chit-chat 33 (≈78/14/8%).
-One grounded example authored per fact across all five domains; gold answers spot-checked
-for faithfulness. NEXT: retrain the Tagalog adapter on `train-grounded.jsonl` (same
-unsloth→GGUF pipeline) and re-eval with the **live-conversation** method (surface heuristics
-miss accuracy). Optional: add more abstain rows toward 20%, and a 2nd phrasing per fact.
-Bisaya is deferred — author `seed.bisaya.json` / `examples.bisaya.json` (`language:
-"cebuano"`) and re-run the same builder when ready.
+**Comprehensive set built: 983 examples** — grounded 712 / abstain 148 / chit-chat 123;
+109 multi-turn; 292 image-tagged (~30%). This is the **Option C** build: faithful AND usable
+(keeps breadth, conversational range, and image-tagging), rather than a narrow grounded-only
+adapter. Spot-checked for faithfulness, tag format, and multi-turn simplification. NEXT:
+train on `train-grounded.jsonl` (Sailor2-3B, `train-tagalog-grounded.py`, ctx 2048,
+train_on_responses_only) and re-eval with the **live-conversation** method. When this adapter
+ships, the app's runtime prompt must also append `IMAGE_TAG_INSTRUCTION` (parity). Bisaya is
+deferred — author `examples.bisaya.json` (`language: "cebuano"`) and re-run the builder.

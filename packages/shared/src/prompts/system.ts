@@ -115,9 +115,32 @@ GRADE LEVEL: Grade 10 (ages 15-16)
 };
 
 /**
- * Generate a system prompt based on language and grade level.
+ * Image-tag instruction. When appended to the system prompt, the tutor may end a
+ * reply with a line `[image: <short English description>]` so a retrieval layer can
+ * show a matching picture (the token is stripped at display time). The model learns
+ * the *behavior* (when to ask for an image), never the catalog. Negatives (replies
+ * with no tag) teach restraint. Must match between training and runtime — append it
+ * to the production system prompt only once the tag-trained adapter ships.
  */
-export function generateSystemPrompt(language: Language, gradeLevel: GradeLevel): string {
+export const IMAGE_TAG_INSTRUCTION: Record<Language, string> = {
+  english: `
+IMAGES: When a simple picture would genuinely help your explanation, add a final line exactly like: [image: a short, specific English description of the picture]. If no picture would help, do not add this line. And if you already showed a picture earlier in this conversation, do not repeat it — only show a new, fitting picture.`,
+  tagalog: `
+MGA LARAWAN: Kapag makakatulong ang isang simpleng larawan sa pagpapaliwanag, magdagdag ng huling linyang: [image: maikli at tiyak na paglalarawan sa Ingles ng larawan]. Kung walang angkop na larawan, huwag maglagay ng ganitong linya. At kung naipakita mo na ang isang larawan kani-kanina lang sa usapang ito, huwag mo na itong ulitin — magpakita lamang ng bago at angkop na larawan.`,
+  cebuano: `
+MGA HULAGWAY: Kung makatabang ang usa ka simpleng hulagway sa pagpasabot, pagdugang og kataposang linya nga: [image: mubo ug tukma nga English nga paghulagway sa hulagway]. Kung walay angay nga hulagway, ayaw pagbutang niini nga linya. Ug kung gipakita na nimo ang usa ka hulagway bag-o pa lang niini nga panag-istoryahanay, ayaw na kini balika — pagpakita lang og bag-o ug angay nga hulagway.`,
+};
+
+/**
+ * Generate a system prompt based on language and grade level.
+ * When `imageTags` is true, the image-tag instruction is appended (train/runtime
+ * must agree — see IMAGE_TAG_INSTRUCTION).
+ */
+export function generateSystemPrompt(
+  language: Language,
+  gradeLevel: GradeLevel,
+  imageTags = false
+): string {
   const languageInstruction = PROMPT_TEMPLATE.languageInstructions[language];
   const gradeInstruction = PROMPT_TEMPLATE.gradeInstructions[gradeLevel];
 
@@ -125,7 +148,7 @@ export function generateSystemPrompt(language: Language, gradeLevel: GradeLevel)
 
 ${languageInstruction}
 
-${gradeInstruction}`;
+${gradeInstruction}${imageTags ? '\n' + IMAGE_TAG_INSTRUCTION[language] : ''}`;
 }
 
 /**
