@@ -22,7 +22,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#6366F1"
+        "backgroundColor": "#f1f0e8"
       },
       "package": "com.hiraia.app"
     },
@@ -36,7 +36,8 @@
           }
         }
       ],
-      "@qvac/sdk/expo-plugin"
+      "@qvac/sdk/expo-plugin",
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true
