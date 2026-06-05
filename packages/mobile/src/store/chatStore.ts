@@ -75,7 +75,9 @@ export const useChatStore = create<ChatState>()(
 
           // Build the system prompt, then append the verified facts (if any matched).
           // Tagalog by default (matches the loaded fine-tune adapter + grounding language).
-          let systemPrompt = generateSystemPrompt('tagalog', 7);
+          // Grade 5 (grade-school default) + imageTags=true — matches how the
+          // grounded faithfulness adapter was trained (train/serve parity).
+          let systemPrompt = generateSystemPrompt('tagalog', 5, true);
           const groundingBlock = formatGroundingBlock(grounding);
           if (groundingBlock) {
             systemPrompt += `\n\n${groundingBlock}`;

@@ -18,10 +18,13 @@ interface Segment {
 /** Strip block/inline markdown that we don't render, leaving readable text. */
 function cleanBlockMarkdown(s: string): string {
   return s
+    .replace(/\s*\[image:[^\]]*\]/gi, '') // image control tokens (retrieval not wired on mobile — strip, never show)
+    .replace(/\s*\[image:[^\]]*$/i, '') // trailing not-yet-closed image tag while streaming
     .replace(/^#{1,6}\s+/gm, '') // ATX header hashes
     .replace(/^\s{0,3}[-*+]\s+/gm, '• ') // list markers → bullet
     .replace(/`([^`]+)`/g, '$1') // inline code backticks
-    .replace(/^\s*```.*$/gm, ''); // fenced-code fences
+    .replace(/^\s*```.*$/gm, '') // fenced-code fences
+    .trimEnd();
 }
 
 /** Split text into bold / non-bold runs on **…**, after cleaning other markdown. */

@@ -23,7 +23,7 @@ export function ChatHeader() {
           <Text style={styles.pillText}>TL</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.pill}>
-          <Text style={styles.pillText}>G7</Text>
+          <Text style={styles.pillText}>G5</Text>
         </TouchableOpacity>
       </View>
     </View>
