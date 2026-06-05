@@ -34,8 +34,15 @@ set -a; . "$ENV_LOCAL"; set +a
 API="https://api.runpod.io/graphql?api_key=${RUNPOD_API_KEY}"
 gql(){ curl -s --max-time 60 "$API" -H 'Content-Type: application/json' -d "{\"query\":\"$1\"}"; }
 
-echo ">> deploying $GPU_TYPE in $DC_ID with volume $VOLUME_ID ..."
-DEPLOY=$(gql "mutation { podFindAndDeployOnDemand(input: { cloudType: SECURE, gpuCount: 1, gpuTypeId: \\\"$GPU_TYPE\\\", dataCenterId: \\\"$DC_ID\\\", networkVolumeId: \\\"$VOLUME_ID\\\", volumeMountPath: \\\"/workspace\\\", containerDiskInGb: $DISK_GB, minVcpuCount: 8, minMemoryInGb: 32, imageName: \\\"$IMAGE\\\", ports: \\\"22/tcp\\\", startSsh: true, name: \\\"$POD_NAME\\\" }) { id } }")
+# NO_VOLUME=1 deploys with a fresh throwaway volume in ANY datacenter with
+# capacity (no persistent hiraia-ks, so no QVAC GGUF converter — train only).
+if [ "${NO_VOLUME:-0}" = "1" ]; then
+  echo ">> deploying $GPU_TYPE (ANY datacenter, fresh volume — no QVAC build) ..."
+  DEPLOY=$(gql "mutation { podFindAndDeployOnDemand(input: { cloudType: SECURE, gpuCount: 1, gpuTypeId: \\\"$GPU_TYPE\\\", volumeInGb: $DISK_GB, volumeMountPath: \\\"/workspace\\\", containerDiskInGb: $DISK_GB, minVcpuCount: 8, minMemoryInGb: 32, imageName: \\\"$IMAGE\\\", ports: \\\"22/tcp\\\", startSsh: true, name: \\\"$POD_NAME\\\" }) { id } }")
+else
+  echo ">> deploying $GPU_TYPE in $DC_ID with volume $VOLUME_ID ..."
+  DEPLOY=$(gql "mutation { podFindAndDeployOnDemand(input: { cloudType: SECURE, gpuCount: 1, gpuTypeId: \\\"$GPU_TYPE\\\", dataCenterId: \\\"$DC_ID\\\", networkVolumeId: \\\"$VOLUME_ID\\\", volumeMountPath: \\\"/workspace\\\", containerDiskInGb: $DISK_GB, minVcpuCount: 8, minMemoryInGb: 32, imageName: \\\"$IMAGE\\\", ports: \\\"22/tcp\\\", startSsh: true, name: \\\"$POD_NAME\\\" }) { id } }")
+fi
 echo "$DEPLOY"
 POD_ID=$(echo "$DEPLOY" | sed -n 's/.*"id":"\([^"]*\)".*/\1/p' | head -1)
 [ -n "$POD_ID" ] || { echo "ERR: deploy failed (no pod id). Likely no $GPU_TYPE capacity in $DC_ID — retry with GPU_TYPE=\"NVIDIA A100 80GB PCIe\"."; exit 1; }
