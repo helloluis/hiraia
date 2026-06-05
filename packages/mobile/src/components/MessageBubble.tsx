@@ -4,6 +4,8 @@ import type { Message } from '@hiraia/shared';
 
 import { colors, fonts } from '../theme';
 
+import { RichText } from './RichText';
+
 interface MessageBubbleProps {
   message: Message;
 }
@@ -22,15 +24,14 @@ export function MessageBubble({ message }: MessageBubbleProps) {
           isFactoid && styles.factoidBubble,
         ]}
       >
-        <Text
-          style={[
-            styles.text,
-            isUser ? styles.userText : styles.assistantText,
-            isFactoid && styles.factoidText,
-          ]}
-        >
-          {message.content}
-        </Text>
+        {isUser ? (
+          <Text style={[styles.text, styles.userText]}>{message.content}</Text>
+        ) : (
+          <RichText
+            text={message.content}
+            style={[styles.text, styles.assistantText, isFactoid && styles.factoidText]}
+          />
+        )}
         {message.timestamp && (
           <Text style={[styles.timestamp, isUser ? styles.userTimestamp : styles.assistantTimestamp]}>
             {new Date(message.timestamp).toLocaleTimeString([], {

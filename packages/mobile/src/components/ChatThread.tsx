@@ -6,6 +6,7 @@ import type { Message } from '@hiraia/shared';
 import { colors, fonts } from '../theme';
 
 import { MessageBubble } from './MessageBubble';
+import { RichText } from './RichText';
 
 interface ChatThreadProps {
   messages: Message[];
@@ -60,7 +61,7 @@ function StreamingBubble({ content }: { content: string }) {
       <Text style={styles.avatar}>🐻</Text>
       <View style={styles.streamingBubble}>
         {content ? (
-          <Text style={styles.streamingText}>{content}</Text>
+          <RichText text={content} style={styles.streamingText} />
         ) : (
           <ActivityIndicator color={colors.primary} size="small" />
         )}
