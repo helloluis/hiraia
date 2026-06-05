@@ -7,6 +7,8 @@ import {
   View,
 } from 'react-native';
 
+import { colors, fonts } from '../theme';
+
 interface ChatTextInputProps {
   value: string;
   onChangeText: (text: string) => void;
@@ -32,7 +34,7 @@ export function ChatTextInput({ value, onChangeText, onSend, placeholder }: Chat
             setIsExpanded(text.split('\n').length > 1);
           }}
           placeholder={placeholder}
-          placeholderTextColor="#6B6B6B"
+          placeholderTextColor={colors.inkMuted}
           multiline
           maxLength={2000}
           textAlignVertical="top"
@@ -53,27 +55,31 @@ export function ChatTextInput({ value, onChangeText, onSend, placeholder }: Chat
 const styles = StyleSheet.create({
   container: {
     padding: 12,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.paper,
     borderTopWidth: 1,
-    borderTopColor: '#ECECEC',
+    borderTopColor: colors.hairline,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    backgroundColor: '#F7F7F8',
+    backgroundColor: colors.white,
     borderRadius: 24,
     padding: 8,
+    borderWidth: 1,
+    borderColor: colors.hairline,
   },
   attachButton: {
     padding: 8,
   },
   attachIcon: {
     fontSize: 24,
-    color: '#6B6B6B',
+    color: colors.inkMuted,
   },
   input: {
     flex: 1,
-    fontSize: 15,
+    fontFamily: fonts.body,
+    fontSize: 17,
+    color: colors.ink,
     maxHeight: 120, // ~5 lines
     paddingHorizontal: 8,
     paddingVertical: 8,
@@ -89,9 +95,9 @@ const styles = StyleSheet.create({
   },
   sendIcon: {
     fontSize: 20,
-    color: '#2563EB',
+    color: colors.primary,
   },
   sendIconDisabled: {
-    color: '#6B6B6B',
+    color: colors.inkMuted,
   },
 });

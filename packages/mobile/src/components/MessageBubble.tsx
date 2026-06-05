@@ -2,6 +2,8 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import type { Message } from '@hiraia/shared';
 
+import { colors, fonts } from '../theme';
+
 interface MessageBubbleProps {
   message: Message;
 }
@@ -11,13 +13,13 @@ export function MessageBubble({ message }: MessageBubbleProps) {
 
   return (
     <View style={[styles.container, isUser ? styles.userContainer : styles.assistantContainer]}>
-      {!isUser && <Text style={styles.avatar}>🤖</Text>}
+      {!isUser && <Text style={styles.avatar}>🐻</Text>}
       <View style={[styles.bubble, isUser ? styles.userBubble : styles.assistantBubble]}>
         <Text style={[styles.text, isUser ? styles.userText : styles.assistantText]}>
           {message.content}
         </Text>
         {message.timestamp && (
-          <Text style={styles.timestamp}>
+          <Text style={[styles.timestamp, isUser ? styles.userTimestamp : styles.assistantTimestamp]}>
             {new Date(message.timestamp).toLocaleTimeString([], {
               hour: '2-digit',
               minute: '2-digit',
@@ -50,26 +52,35 @@ const styles = StyleSheet.create({
     borderRadius: 18,
   },
   userBubble: {
-    backgroundColor: '#2563EB',
+    backgroundColor: colors.primary,
     borderBottomRightRadius: 4,
   },
   assistantBubble: {
-    backgroundColor: '#F7F7F8',
+    backgroundColor: colors.bubble,
     borderBottomLeftRadius: 4,
+    borderWidth: 1,
+    borderColor: colors.hairline,
   },
   text: {
-    fontSize: 15,
-    lineHeight: 22,
+    fontFamily: fonts.body,
+    fontSize: 17,
+    lineHeight: 24,
   },
   userText: {
-    color: '#FFFFFF',
+    color: colors.white,
   },
   assistantText: {
-    color: '#1A1A1A',
+    color: colors.ink,
   },
   timestamp: {
-    fontSize: 11,
-    color: '#6B6B6B',
+    fontFamily: fonts.body,
+    fontSize: 12,
     marginTop: 4,
+  },
+  userTimestamp: {
+    color: 'rgba(255, 255, 255, 0.7)',
+  },
+  assistantTimestamp: {
+    color: colors.inkMuted,
   },
 });

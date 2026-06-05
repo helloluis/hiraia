@@ -5,7 +5,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChatHeader } from '../../components/ChatHeader';
 import { ChatTextInput } from '../../components/ChatTextInput';
 import { ChatThread } from '../../components/ChatThread';
+import { NotebookBackground } from '../../components/NotebookBackground';
 import { useChatStore } from '../../store/chatStore';
+import { colors } from '../../theme';
 
 export default function ChatScreen() {
   const { messages, sendMessage } = useChatStore();
@@ -27,6 +29,7 @@ export default function ChatScreen() {
       >
         <ChatHeader />
         <View style={styles.chatContainer}>
+          <NotebookBackground />
           <ChatThread messages={messages} />
           <ChatTextInput
             value={inputText}
@@ -43,7 +46,7 @@ export default function ChatScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.paper,
   },
   chatContainer: {
     flex: 1,

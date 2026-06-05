@@ -2,6 +2,8 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 import type { Message } from '@hiraia/shared';
 
+import { colors, fonts } from '../theme';
+
 import { MessageBubble } from './MessageBubble';
 
 interface ChatThreadProps {
@@ -42,14 +44,17 @@ const styles = StyleSheet.create({
     padding: 32,
   },
   emptyTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    marginBottom: 8,
+    fontFamily: fonts.display,
+    fontSize: 34,
+    color: colors.ink,
+    marginBottom: 10,
     textAlign: 'center',
   },
   emptySubtitle: {
-    fontSize: 16,
-    color: '#6B6B6B',
+    fontFamily: fonts.body,
+    fontSize: 18,
+    lineHeight: 26,
+    color: colors.inkMuted,
     textAlign: 'center',
   },
   messageList: {
