@@ -24,7 +24,7 @@ export const useEngineStore = create<EngineState>((set, get) => ({
 
       // Default configuration for Hiraia tutor
       const config: TutorConfig = {
-        language: 'english',
+        language: 'tagalog', // default to Tagalog so the bundled fine-tune adapter loads
         gradeLevel: 7,
         modelConfig: {
           modelId: ACTIVE_MODEL.key,

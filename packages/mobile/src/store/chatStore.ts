@@ -47,7 +47,8 @@ export const useChatStore = create<ChatState>((set, get) => ({
       }
 
       // Build the system prompt, then append the verified facts (if any matched).
-      let systemPrompt = generateSystemPrompt('english', 7);
+      // Tagalog by default (matches the loaded fine-tune adapter + grounding language).
+      let systemPrompt = generateSystemPrompt('tagalog', 7);
       const groundingBlock = formatGroundingBlock(grounding);
       if (groundingBlock) {
         systemPrompt += `\n\n${groundingBlock}`;
