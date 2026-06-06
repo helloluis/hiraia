@@ -67,9 +67,25 @@ HARD RULES:
 - id: unique kebab-case, suffixed with the primary grade (e.g. snake-shed-skin-g4).
 `
 
+// Retry wrapper: agent() THROWS when a subagent fails to produce structured
+// output (e.g. under throttling). The per-beat pipeline already drops such
+// failures to null, but the planner sits outside it and would kill the whole
+// wave — so retry it a few times before giving up.
+async function tryAgent(prompt, opts, tries = 3) {
+  for (let i = 0; i < tries; i++) {
+    try {
+      const r = await agent(prompt, { ...opts, label: i ? `${opts.label}#${i + 1}` : opts.label })
+      if (r) return r
+    } catch (e) {
+      log(`retry ${opts.label} (attempt ${i + 1}/${tries}): ${e?.message || e}`)
+    }
+  }
+  return null
+}
+
 phase('Plan')
 const usedSample = usedBeats.slice(-400) // cap context; recent beats matter most for de-dup
-const plan = await agent(
+const plan = await tryAgent(
   `Wave ${wave} of an expansion toward ~20,000 facts. Propose exactly ${BEATS} NEW, specific, non-redundant concept "beats" for the Hiraia science bank, spread across the domains (${DOMAINS}) and across grades 3-10.
 
 Each beat is a MEDIUM-grained concept that can honestly sustain ~15-25 DISTINCT child-level facts (e.g. "how snakes move and shed skin", "the Philippine tarsier and tarsiers", "phases and tides caused by the Moon", "simple machines: the lever family", "dengue and mosquito-borne illness basics", "rice farming and the rice plant"), NOT a single narrow fact and NOT a whole domain.
@@ -85,6 +101,9 @@ Return ${BEATS} beats. ${BRIEF}`,
 
 const beats = (plan?.beats ?? []).slice(0, BEATS)
 log(`wave ${wave}: planned ${beats.length} beats`)
+// Planner exhausted its retries (hard throttle) — return empty so the wave
+// completes cleanly and the orchestrator can back off, rather than throwing.
+if (beats.length === 0) return { wave, facts: [], beats: [] }
 
 const results = await pipeline(
   beats,
