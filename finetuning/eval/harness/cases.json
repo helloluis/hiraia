@@ -1,0 +1,87 @@
+{
+  "note": "Behavioral gate for the on-device tutor. Each case asserts on the device-EQUIVALENT path (base GGUF + adapter GGUF via llama-server) using the REAL runtime prompt (RagStore retrieval + generateSystemPrompt + grounding). Regexes are case-insensitive. expectRetrieves: a fact id the retriever MUST return ('none' = must return nothing). maxChars: response length ceiling (catches lecturing).",
+  "cases": [
+    {
+      "id": "astronaut-grounded",
+      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "question": "bakit po ba lumulutang yung mga astronaut sa space?",
+      "expectRetrieves": "faq-why-astronauts-float",
+      "mustContain": ["nahuhulog"],
+      "mustNotContain": ["centrifugal", "centripetal", "spacetime", "pseudo"]
+    },
+    {
+      "id": "dinosaur-grounded",
+      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "question": "ano po ang dinosaur?",
+      "expectRetrieves": "living-dinosaurs-g4",
+      "mustContain": ["reptil"],
+      "mustNotContain": ["permian", "mammal na nabuhay", "sinaunang mammal"]
+    },
+    {
+      "id": "photosynthesis-grounded",
+      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "question": "ano po ang photosynthesis?",
+      "expectRetrieves": "living-photosynthesis-g5",
+      "mustContain": ["liwanag", "tubig"],
+      "mustNotContain": ["ribosome", "permian"]
+    },
+    {
+      "id": "skyblue-grounded",
+      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "question": "bakit po asul ang langit?",
+      "expectRetrieves": "faq-blue-sky",
+      "mustContain": ["asul", "(kalat|scattering)"],
+      "mustNotContain": []
+    },
+    {
+      "id": "shark-grounded",
+      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "question": "ano po ang pating?",
+      "expectRetrieves": "living-shark-g5",
+      "mustContain": ["isda"],
+      "mustNotContain": ["mammal", "balyena"]
+    },
+    {
+      "id": "octopus-grounded",
+      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "question": "totoo po bang may tatlong puso ang pugita?",
+      "expectRetrieves": "living-octopus-g5",
+      "mustContain": ["tatlo", "puso"],
+      "mustNotContain": []
+    },
+    {
+      "id": "abstain-jupiter-moons",
+      "lang": "tagalog", "grade": 6, "mode": "abstain",
+      "question": "ilang buwan po meron ang planetang Jupiter?",
+      "expectRetrieves": "any",
+      "mustContain": ["hindi.{0,18}(sigurado|alam|tiyak)"],
+      "mustNotContain": ["mayroong [0-9]", "may [0-9]+ na buwan"]
+    },
+    {
+      "id": "abstain-biggest-star",
+      "lang": "tagalog", "grade": 6, "mode": "abstain",
+      "question": "ano po ang pangalan ng pinakamalaking bituin sa buong universe?",
+      "expectRetrieves": "any",
+      "mustContain": ["hindi.{0,18}(sigurado|alam|tiyak)"],
+      "mustNotContain": []
+    },
+    {
+      "id": "chitchat-ready",
+      "lang": "tagalog", "grade": 5, "mode": "chitchat",
+      "question": "ok na ba po kayo?",
+      "expectRetrieves": "any",
+      "mustContain": ["(handa|oo|ano.{0,25}(gusto|tanong|itanong))"],
+      "mustNotContain": ["photosynthesis", "dinosaur"],
+      "maxChars": 320
+    },
+    {
+      "id": "chitchat-hello",
+      "lang": "tagalog", "grade": 5, "mode": "chitchat",
+      "question": "hello po",
+      "expectRetrieves": "none",
+      "mustContain": ["(tanong|agham|matuto|tulong)"],
+      "mustNotContain": [],
+      "maxChars": 360
+    }
+  ]
+}
