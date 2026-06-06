@@ -1,209 +1,263 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
-import { useEngineStore } from './engineStore';
+
 import { generateSystemPrompt, formatGroundingBlock } from '@hiraia/shared';
 import type { Message, RagResult } from '@hiraia/shared';
 
 import { pickFactoidText } from '../data/factoids';
+import { genId } from '../db';
+import {
+  addMessage,
+  createConversation,
+  getCompactions,
+  getMessages,
+  getLatestConversationId,
+  getSetting,
+  saveCompaction,
+  setConversationTitle,
+  setSetting,
+} from '../db/repo';
+import { useEngineStore } from './engineStore';
 
 interface ChatState {
+  conversationId: string | null;
   messages: Message[];
   isStreaming: boolean;
   currentStreamingContent: string;
   hasHydrated: boolean;
-  lastFactoidIds?: string[];
+  lastFactoidIds: string[];
+  hydrate: () => Promise<void>;
   sendMessage: (content: string) => Promise<void>;
   showColdStartFactoid: () => void;
-  clearMessages: () => void;
-  _setHydrated: () => void;
+  clearMessages: () => Promise<void>;
 }
 
-/** Persisted timestamps come back as ISO strings — revive them to Date. */
-const reviveMessages = (msgs: Message[] = []): Message[] =>
-  msgs.map((m) => ({ ...m, timestamp: m.timestamp ? new Date(m.timestamp) : undefined }));
-
 const isFactoid = (m: Message) => m.metadata?.kind === 'factoid';
+/** Real conversation turns carry a stable id; transient UI messages (cold-start
+ *  factoid, wait/error notices) do not — so this both gates persistence and keeps
+ *  them out of the model's context. */
+const isRealTurn = (m: Message) => !!m.id && !isFactoid(m);
 
-export const useChatStore = create<ChatState>()(
-  persist(
-    (set, get) => ({
-      messages: [],
-      isStreaming: false,
-      currentStreamingContent: '',
-      hasHydrated: false,
-      lastFactoidIds: [],
+// The QVAC model is single-instance (one generation at a time). Serialize chat()
+// and summarize() so the compacter never overlaps a response.
+let modelLock: Promise<unknown> = Promise.resolve();
+function withModelLock<T>(fn: () => Promise<T>): Promise<T> {
+  const result = modelLock.then(fn, fn);
+  modelLock = result.then(
+    () => undefined,
+    () => undefined
+  );
+  return result;
+}
 
-      sendMessage: async (content: string) => {
-        const { engine } = useEngineStore.getState();
+// Auto-compaction is OFF until a summarization-capable adapter ships. The current
+// grounded adapter's tutor persona overrides the summarize instruction — it
+// restates the answer (greeting and all) instead of compressing it, so it would
+// store greeting-laden near-copies as "memory" (proven by the harness compaction
+// probe, 0/3). The SQLite wiring (compactions table, summarize(), buildContext)
+// stays in place; flip this true once finetuning/eval/harness/probe-compaction.mts
+// passes against the new adapter. See finetuning/datasets/grounded summarization rows.
+const COMPACTION_ENABLED = false;
 
-        // Always show the user's message immediately — never drop it silently.
-        const userMessage: Message = {
-          role: 'user',
-          content,
-          timestamp: new Date(),
-        };
-        set((state) => ({ messages: [...state.messages, userMessage] }));
+const KEEP_FULL = 6; // last 3 exchanges sent verbatim
+const MAX_LOOKBACK = 30; // cap turns considered (older ones use compactions when present)
 
-        // The model takes ~20-30s to load on first launch. If it isn't ready yet,
-        // tell the user to wait rather than swallowing their message.
-        if (!engine || !engine.isReady()) {
-          set((state) => ({
-            messages: [
-              ...state.messages,
-              {
-                role: 'assistant',
-                content: 'Sandali lang—inihahanda ko pa ang AI. Pakisubukang muli sa ilang segundo. 🐱',
-                timestamp: new Date(),
-              },
-            ],
-          }));
-          return;
-        }
+export const useChatStore = create<ChatState>()((set, get) => ({
+  conversationId: null,
+  messages: [],
+  isStreaming: false,
+  currentStreamingContent: '',
+  hasHydrated: false,
+  lastFactoidIds: [],
 
-        set({ isStreaming: true, currentStreamingContent: '' });
-
-        try {
-          // Retrieve curated curriculum facts for this question and ground the model
-          // on them (the on-device model hallucinates science without grounding).
-          let grounding: RagResult[] = [];
-          try {
-            grounding = await engine.ragSearch(content, 3);
-          } catch (ragError) {
-            console.warn('RAG search failed; answering ungrounded:', ragError);
-          }
-
-          // Build the system prompt, then append the verified facts (if any matched).
-          // Tagalog by default (matches the loaded fine-tune adapter + grounding language).
-          // Grade 5 (grade-school default) + imageTags=true — matches how the
-          // grounded faithfulness adapter was trained (train/serve parity).
-          let systemPrompt = generateSystemPrompt('tagalog', 5, true);
-          const groundingBlock = formatGroundingBlock(grounding);
-          if (groundingBlock) {
-            systemPrompt += `\n\n${groundingBlock}`;
-          }
-
-          // Only send a window of recent turns. The tag-aware grounded system
-          // prompt is ~1.2k tokens, so an unbounded history overflows ctx_size
-          // (confirmed: a >ctx prompt throws exceed_context_size_error). Keep the
-          // last few exchanges — enough for follow-ups, bounded for the device.
-          const HISTORY_WINDOW = 10;
-          const conversationMessages: Message[] = [
-            { role: 'system', content: systemPrompt },
-            ...get().messages.slice(-HISTORY_WINDOW),
-          ];
-
-          // Stream tokens from the engine
-          let fullResponse = '';
-          for await (const token of engine.chat(conversationMessages)) {
-            fullResponse += token;
-            set({ currentStreamingContent: fullResponse });
-          }
-
-          // Add the complete assistant message
-          const assistantMessage: Message = {
-            role: 'assistant',
-            content: fullResponse,
-            timestamp: new Date(),
-          };
-
-          set((state) => ({
-            messages: [...state.messages, assistantMessage],
-            isStreaming: false,
-            currentStreamingContent: '',
-          }));
-        } catch (error) {
-          console.error('Error during chat:', error);
-          set((state) => ({
-            messages: [
-              ...state.messages,
-              {
-                role: 'assistant',
-                content: 'Paumanhin, may naganap na error. Pakisubukang muli. 🐱',
-                timestamp: new Date(),
-              },
-            ],
-            isStreaming: false,
-            currentStreamingContent: '',
-          }));
-        }
-      },
-
-      // Drop a pre-written "Alam mo ba na…?" factoid into the thread so there's
-      // something to read while the model warms up. Pre-written prose (not the
-      // model — it isn't loaded yet).
-      showColdStartFactoid: () => {
-        const lastIds = get().lastFactoidIds || [];
-        const picked = pickFactoidText('tagalog', lastIds);
-        if (!picked) return;
-
-        const factoidMessage: Message = {
-          role: 'assistant',
-          content: '',
-          timestamp: new Date(),
-          metadata: { kind: 'factoid' },
-        };
-
-        set((state) => ({
-          messages: [...state.messages, factoidMessage],
-        }));
-
-        let currentText = '';
-        let index = 0;
-        const speed = 20; // ms per tick
-        const charsPerTick = 4; // stream speed
-        const fullText = picked.text;
-
-        const tick = () => {
-          if (index >= fullText.length) {
-            const nextHistory = [...lastIds, picked.id].slice(-15);
-            set({ lastFactoidIds: nextHistory });
-            return;
-          }
-          currentText += fullText.slice(index, index + charsPerTick);
-          index += charsPerTick;
-          set((state) => {
-            const updated = [...state.messages];
-            const last = updated[updated.length - 1];
-            if (last) {
-              updated[updated.length - 1] = {
-                ...last,
-                content: currentText,
-              };
-            }
-            return { messages: updated };
-          });
-          setTimeout(tick, speed);
-        };
-        setTimeout(tick, speed);
-      },
-
-      clearMessages: () => set({ messages: [], isStreaming: false, currentStreamingContent: '' }),
-      _setHydrated: () => set({ hasHydrated: true }),
-    }),
-    {
-      name: 'hiraia-chat',
-      storage: createJSONStorage(() => AsyncStorage),
-      partialize: (state) => ({
-        messages: state.messages,
-        lastFactoidIds: state.lastFactoidIds || [],
-      }),
-      merge: (persisted, current) => {
-        const p = (persisted ?? {}) as any;
-        let lastFactoidIds = p.lastFactoidIds || [];
-        if (p.lastFactoidId && lastFactoidIds.length === 0) {
-          lastFactoidIds = [p.lastFactoidId];
-        }
-        return {
-          ...current,
-          ...p,
-          lastFactoidIds,
-          messages: reviveMessages(p.messages),
-        };
-      },
-      onRehydrateStorage: () => (state) => {
-        state?._setHydrated();
-      },
+  // Load the latest conversation (or start one) from SQLite.
+  hydrate: async () => {
+    try {
+      let convId = await getLatestConversationId();
+      if (!convId) {
+        convId = genId();
+        await createConversation(convId);
+      }
+      const messages = await getMessages(convId);
+      const lastFactoidIds = JSON.parse((await getSetting('lastFactoidIds')) ?? '[]');
+      set({ conversationId: convId, messages, lastFactoidIds, hasHydrated: true });
+    } catch (e) {
+      console.error('[chatStore] hydrate failed:', e);
+      set({ hasHydrated: true });
     }
-  )
-);
+  },
+
+  sendMessage: async (content: string) => {
+    const { engine } = useEngineStore.getState();
+    let convId = get().conversationId;
+    if (!convId) {
+      convId = genId();
+      await createConversation(convId);
+      set({ conversationId: convId });
+    }
+
+    // Always show the user's message immediately — never drop it silently.
+    const userMessage: Message = { id: genId(), role: 'user', content, timestamp: new Date() };
+    set((state) => ({ messages: [...state.messages, userMessage] }));
+    await addMessage(convId, userMessage);
+    // Name the thread from the first question.
+    if (get().messages.filter(isRealTurn).length === 1) {
+      await setConversationTitle(convId, content.slice(0, 60));
+    }
+
+    // The model takes ~20-30s to load on first launch. If it isn't ready, ask the
+    // user to wait (transient message — no id, not persisted, not in context).
+    if (!engine || !engine.isReady()) {
+      set((state) => ({
+        messages: [
+          ...state.messages,
+          {
+            role: 'assistant',
+            content: 'Sandali lang—inihahanda ko pa ang AI. Pakisubukang muli sa ilang segundo. 🐱',
+            timestamp: new Date(),
+          },
+        ],
+      }));
+      return;
+    }
+
+    set({ isStreaming: true, currentStreamingContent: '' });
+
+    try {
+      // Ground the model on the curated facts (it confabulates without grounding).
+      let grounding: RagResult[] = [];
+      try {
+        grounding = await engine.ragSearch(content, 3);
+      } catch (ragError) {
+        console.warn('RAG search failed; answering ungrounded:', ragError);
+      }
+      // Grade 5 + imageTags=true — parity with how the grounded adapter was trained.
+      let systemPrompt = generateSystemPrompt('tagalog', 5, true);
+      const groundingBlock = formatGroundingBlock(grounding);
+      if (groundingBlock) systemPrompt += `\n\n${groundingBlock}`;
+
+      const conversationMessages = await buildContext(get().messages, systemPrompt);
+
+      let fullResponse = '';
+      await withModelLock(async () => {
+        for await (const token of engine.chat(conversationMessages)) {
+          fullResponse += token;
+          set({ currentStreamingContent: fullResponse });
+        }
+      });
+
+      const assistantMessage: Message = {
+        id: genId(),
+        role: 'assistant',
+        content: fullResponse,
+        timestamp: new Date(),
+      };
+      set((state) => ({
+        messages: [...state.messages, assistantMessage],
+        isStreaming: false,
+        currentStreamingContent: '',
+      }));
+      await addMessage(convId, assistantMessage);
+      // Auto-compact this answer in the background (best-effort; serialized).
+      void compactInBackground(assistantMessage);
+    } catch (error) {
+      console.error('Error during chat:', error);
+      set((state) => ({
+        messages: [
+          ...state.messages,
+          { role: 'assistant', content: 'Paumanhin, may naganap na error. Pakisubukang muli. 🐱', timestamp: new Date() },
+        ],
+        isStreaming: false,
+        currentStreamingContent: '',
+      }));
+    }
+  },
+
+  // Pre-written "Alam mo ba na…?" card shown while the model warms up. Transient
+  // (no id) — not persisted, not sent to the model.
+  showColdStartFactoid: () => {
+    const lastIds = get().lastFactoidIds;
+    const picked = pickFactoidText('tagalog', lastIds);
+    if (!picked) return;
+
+    set((state) => ({
+      messages: [...state.messages, { role: 'assistant', content: '', timestamp: new Date(), metadata: { kind: 'factoid' } }],
+    }));
+
+    let currentText = '';
+    let index = 0;
+    const fullText = picked.text;
+    const tick = () => {
+      if (index >= fullText.length) {
+        const nextHistory = [...lastIds, picked.id].slice(-15);
+        set({ lastFactoidIds: nextHistory });
+        void setSetting('lastFactoidIds', JSON.stringify(nextHistory));
+        return;
+      }
+      currentText += fullText.slice(index, index + 4);
+      index += 4;
+      set((state) => {
+        const updated = [...state.messages];
+        const last = updated[updated.length - 1];
+        if (last) updated[updated.length - 1] = { ...last, content: currentText };
+        return { messages: updated };
+      });
+      setTimeout(tick, 20);
+    };
+    setTimeout(tick, 20);
+  },
+
+  // Start a fresh thread.
+  clearMessages: async () => {
+    const convId = genId();
+    await createConversation(convId);
+    set({ conversationId: convId, messages: [], isStreaming: false, currentStreamingContent: '' });
+  },
+}));
+
+/**
+ * Build the model context: real turns only, the last KEEP_FULL verbatim. Older
+ * turns are included ONLY as their compaction (summary) when one exists; an older
+ * turn with no compaction is DROPPED rather than sent in full. This keeps the
+ * prompt bounded — sending many full older turns is exactly what overflowed the
+ * 4096 ctx before. With compaction disabled (no summaries exist) this degrades to
+ * a safe sliding window of the last KEEP_FULL turns. As summaries accumulate
+ * (future adapter), effective lookback extends without growing the token cost.
+ */
+async function buildContext(allMessages: Message[], systemPrompt: string): Promise<Message[]> {
+  const real = allMessages.filter(isRealTurn);
+  const window = real.slice(-MAX_LOOKBACK);
+  const splitAt = Math.max(0, window.length - KEEP_FULL);
+  const older = window.slice(0, splitAt);
+  const recent = window.slice(splitAt);
+
+  const olderAsstIds = older.filter((m) => m.role === 'assistant').map((m) => m.id!);
+  const comp = await getCompactions(olderAsstIds);
+  // Keep an older assistant turn only as its compaction (summary); keep the user
+  // turn that precedes a compacted answer so role-alternation stays intact. Drop
+  // everything else older than the verbatim window to bound the prompt. (With
+  // compaction disabled there are no summaries, so older turns are all dropped.)
+  const olderMapped = older.flatMap((m, i) => {
+    if (m.role === 'assistant' && comp.has(m.id!)) return [{ ...m, content: comp.get(m.id!)! }];
+    const next = older[i + 1];
+    if (m.role === 'user' && next?.role === 'assistant' && comp.has(next.id!)) return [m];
+    return [];
+  });
+
+  return [{ role: 'system', content: systemPrompt }, ...olderMapped, ...recent];
+}
+
+/** Summarize an assistant answer and store it, so future turns cost fewer tokens. */
+async function compactInBackground(msg: Message): Promise<void> {
+  if (!COMPACTION_ENABLED) return; // disabled until a summarization-capable adapter ships
+  if (!msg.id || isFactoid(msg) || msg.content.length < 240) return; // short answers aren't worth it
+  const { engine } = useEngineStore.getState();
+  if (!engine?.summarize) return;
+  try {
+    const summary = await withModelLock(() => engine.summarize!(msg.content));
+    if (summary && summary.length < msg.content.length * 0.9) {
+      await saveCompaction(msg.id, summary);
+    }
+  } catch (e) {
+    // best-effort: leave uncompacted (sent full until a later attempt compacts it)
+  }
+}

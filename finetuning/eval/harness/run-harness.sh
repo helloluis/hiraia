@@ -53,5 +53,20 @@ echo ">> running behavioral gate ..."
 ENDPOINT="http://localhost:$PORT" "$ROOT/node_modules/.bin/tsx" "$HERE/run-eval.mts"
 RC=$?
 
+# Compaction probe: acceptance test for the auto-compacter's summarize(). The
+# current grounded adapter can't summarize (its tutor persona overrides the
+# instruction), so on-device compaction is DISABLED (COMPACTION_ENABLED=false in
+# chatStore). This probe is therefore INFORMATIONAL by default — it's the gate the
+# NEXT (summarization-trained) adapter must pass. Set REQUIRE_COMPACTION=1 to make
+# it block (run this once the new adapter is in place, before flipping the flag).
+echo ">> running compaction probe (acceptance test for the summarization adapter) ..."
+ENDPOINT="http://localhost:$PORT" "$ROOT/node_modules/.bin/tsx" "$HERE/probe-compaction.mts"
+RC_COMPACT=$?
+if [ "${REQUIRE_COMPACTION:-0}" = "1" ]; then
+  [ $RC -eq 0 ] && RC=$RC_COMPACT
+elif [ $RC_COMPACT -ne 0 ]; then
+  echo ">> NOTE: compaction probe failed — EXPECTED until the summarization adapter ships (informational; not blocking)."
+fi
+
 echo ">> stopping server"
 exit $RC

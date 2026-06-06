@@ -40,6 +40,13 @@ export interface TutorEngine {
   ragSearch(query: string, topK: number): Promise<RagResult[]>;
 
   /**
+   * Compress a (usually long) assistant answer into a short factual recap, used
+   * by the auto-compacter so older turns cost far fewer tokens in context.
+   * Optional — callers should feature-detect.
+   */
+  summarize?(text: string): Promise<string>;
+
+  /**
    * Check if the engine is ready to process requests.
    */
   isReady(): boolean;

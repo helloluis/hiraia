@@ -5,17 +5,22 @@ import { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+import { useChatStore } from '../store/chatStore';
 import { useEngineStore } from '../store/engineStore';
 import { colors, fontAssets } from '../theme';
 
 export default function RootLayout() {
   const { initialize } = useEngineStore();
+  const hydrate = useChatStore((s) => s.hydrate);
   const [fontsLoaded] = useFonts(fontAssets);
 
   useEffect(() => {
     // Initialize the QVAC engine when app starts
     void initialize();
-  }, [initialize]);
+    // Load persisted chat history from SQLite (replaces the old zustand-persist
+    // auto-hydration). Sets hasHydrated, which gates the cold-start factoid.
+    void hydrate();
+  }, [initialize, hydrate]);
 
   if (!fontsLoaded) {
     return (

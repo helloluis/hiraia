@@ -21,6 +21,8 @@ export type GradeLevel = 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
  * Represents a single message in a conversation.
  */
 export interface Message {
+  /** Stable unique id (used to key the SQLite store + per-message compactions). */
+  id?: string;
   role: 'system' | 'user' | 'assistant';
   content: string;
   timestamp?: Date;

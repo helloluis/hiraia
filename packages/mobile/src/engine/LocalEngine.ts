@@ -139,6 +139,32 @@ export class LocalEngine implements TutorEngine {
     }
   }
 
+  /**
+   * Compress an assistant answer into a 1-2 sentence factual recap (the
+   * auto-compacter's memory). Single-turn utility completion — no grounding,
+   * no tutor system prompt. Greedy via the model's default sampling.
+   */
+  async summarize(text: string): Promise<string> {
+    if (!this.modelId || !this.isReadyFlag) {
+      throw new Error('Engine not initialized. Call initialize() first.');
+    }
+    const instruction =
+      'Ibuod ang sumusunod na sagot ng science tutor sa ISA o DALAWANG napakaikling pangungusap, ' +
+      'para magamit bilang maikling alaala (memory) sa susunod na usapan. Panatilihin LANG ang ' +
+      'mahalagang science fact at termino. Alisin ang pagbati, mga halimbawa, at ang tanong sa dulo. ' +
+      'Sumagot ng buod lamang, walang ibang sasabihin.\n\nSAGOT:\n' + text;
+    const run = completion({
+      modelId: this.modelId,
+      history: [{ role: 'user', content: instruction }],
+      stream: true,
+    });
+    let out = '';
+    for await (const event of run.events) {
+      if (event.type === 'contentDelta' && event.text) out += event.text;
+    }
+    return out.trim();
+  }
+
   async generateVisual(prompt: string): Promise<ImageResult> {
     // For now, return a placeholder
     // In the future, we'll integrate with an image generation model
