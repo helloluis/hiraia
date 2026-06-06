@@ -49,6 +49,7 @@ const QUERY_STOP = new Set(
    ito iyan iyon nito niyan kini kana kanang
    ang mga yung nga kang iya niya nila ila
    may mayroon meron adunay naa
+   bang ba kaya nga daw raw pala naman lang lamang
    oo opo oho oonga sige gusto payag game pwede mao sure
    what why how when where who whom which whose
    the are does did can could would should about from with into
