@@ -12,7 +12,7 @@
  *   (run from packages/images so `sharp` resolves)
  */
 import sharp from 'sharp';
-import { readdirSync, statSync, mkdirSync, existsSync } from 'node:fs';
+import { readdirSync, statSync, mkdirSync, existsSync, copyFileSync, writeFileSync } from 'node:fs';
 import { join, dirname, relative } from 'node:path';
 
 const arg = (k, d) => { const i = process.argv.indexOf(`--${k}`); return i > -1 ? process.argv[i + 1] : d; };
@@ -20,6 +20,7 @@ const IN = arg('in', 'assets-png');        // Gemini's raw originals (never modi
 const OUT = arg('out', 'assets-png-min');  // downsized shipping copies (separate folder)
 const SIZE = +arg('size', 512);
 const COLORS = +arg('colors', 16);
+const BACKUP = arg('backup', IN === OUT ? `${IN}-raw` : '');
 
 function* walk(dir) {
   for (const e of readdirSync(dir)) {
@@ -31,10 +32,22 @@ function* walk(dir) {
 
 const files = [...walk(IN)];
 let before = 0, after = 0;
+
+if (BACKUP) {
+  console.log(`Backing up originals to: ${BACKUP}`);
+}
+
 for (const f of files) {
   const outPath = join(OUT, relative(IN, f));
-  mkdirSync(dirname(outPath), { recursive: true });
   const inBytes = statSync(f).size;
+
+  // Back up the original file if requested
+  if (BACKUP) {
+    const backupPath = join(BACKUP, relative(IN, f));
+    mkdirSync(dirname(backupPath), { recursive: true });
+    copyFileSync(f, backupPath);
+  }
+
   const buf = await sharp(f)
     .resize(SIZE, SIZE, { fit: 'inside', withoutEnlargement: true })
     .grayscale()
@@ -42,10 +55,13 @@ for (const f of files) {
     .linear(1.28, -38)
     .png({ palette: true, colours: COLORS, effort: 10, compressionLevel: 9 })
     .toBuffer();
+
   // write
-  const { writeFileSync } = await import('node:fs');
+  mkdirSync(dirname(outPath), { recursive: true });
   writeFileSync(outPath, buf);
+  
   before += inBytes; after += buf.length;
   console.log(`${String(Math.round(inBytes / 1024)).padStart(4)}KB -> ${String(Math.round(buf.length / 1024)).padStart(3)}KB  ${relative(IN, f)}`);
 }
 console.log(`\n${files.length} files: ${(before / 1024 / 1024).toFixed(2)}MB -> ${(after / 1024).toFixed(0)}KB total  (${(100 - after / before * 100).toFixed(1)}% smaller, avg ${(after / files.length / 1024).toFixed(1)}KB)`);
+
