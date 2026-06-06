@@ -4,7 +4,8 @@ import type { Message } from '@hiraia/shared';
 
 import { colors, fonts } from '../theme';
 
-import { RichText } from './RichText';
+import { ImageSlot } from './ImageSlot';
+import { RichText, extractImageDescs } from './RichText';
 
 const HIRAIA_AVATAR = require('../../assets/hiraia-profile.png');
 
@@ -15,6 +16,8 @@ interface MessageBubbleProps {
 export function MessageBubble({ message }: MessageBubbleProps) {
   const isUser = message.role === 'user';
   const isFactoid = message.metadata?.kind === 'factoid' || (message.content && message.content.startsWith('💡'));
+  // Picture slots the tutor asked for via [image: …] (rendered below the answer).
+  const imageDescs = !isUser && !isFactoid ? extractImageDescs(message.content) : [];
 
   return (
     <View style={[styles.container, isUser ? styles.userContainer : styles.assistantContainer]}>
@@ -34,6 +37,9 @@ export function MessageBubble({ message }: MessageBubbleProps) {
             style={[styles.text, styles.assistantText, isFactoid && styles.factoidText]}
           />
         )}
+        {imageDescs.map((desc, i) => (
+          <ImageSlot key={i} desc={desc} />
+        ))}
         {message.timestamp && (
           <Text style={[styles.timestamp, isUser ? styles.userTimestamp : styles.assistantTimestamp]}>
             {new Date(message.timestamp).toLocaleTimeString([], {

@@ -15,6 +15,17 @@ interface Segment {
   bold: boolean;
 }
 
+/** Pull the descriptions out of `[image: <desc>]` control tokens (the tutor emits
+ *  these to request a picture). The text still strips the tag; MessageBubble renders
+ *  an ImageSlot per description. */
+export function extractImageDescs(content: string): string[] {
+  const out: string[] = [];
+  const re = /\[image:\s*([^\]]+?)\s*\]/gi;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(content)) !== null) out.push((m[1] ?? '').trim());
+  return out;
+}
+
 /** Strip block/inline markdown that we don't render, leaving readable text. */
 function cleanBlockMarkdown(s: string): string {
   return s
