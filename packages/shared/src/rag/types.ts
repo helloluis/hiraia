@@ -13,6 +13,11 @@ export interface ScienceFact {
     | 'LIVING_THINGS'
     | 'FORCE_MOTION_ENERGY'
     | 'EARTH_SPACE'
+    // Philippine civic/cultural canon (national anthem, pledge, flag, prayers,
+    // constitution, symbols) and geography (regions + provinces) — so a Filipino
+    // tutor "just knows" the basics it would be embarrassing to miss.
+    | 'PH_CIVICS'
+    | 'PH_GEOGRAPHY'
     // Facts about Hiraia itself (identity, purpose, who built it) so the tutor
     // can answer "sino ka / para saan to" authoritatively.
     | 'ABOUT_HIRAIA';
