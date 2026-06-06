@@ -14,7 +14,7 @@ export function ChatHeader() {
 
       <View style={styles.titleContainer}>
         <Text style={styles.title} numberOfLines={1}>
-          Hiraia
+          hiraia
         </Text>
       </View>
 

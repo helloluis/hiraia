@@ -59,9 +59,14 @@ for (const c of cases) {
 for (const s of sequences) {
   total++;
   const seen = new Set<string>();
+  let ctx = s.context ?? '';
   for (let t = 0; t < s.turns; t++) {
-    const hits = store.retrieveForGrounding(s.query as any, s.lang as any, 3, 0.5, s.context ?? '', seen);
+    const hits = store.retrieveForGrounding(s.query as any, s.lang as any, 3, 0.5, ctx, seen);
     for (const h of hits as any[]) seen.add(h.fact.id);
+    // REALISTIC: next turn's context is the previous answer's text (which quotes the
+    // shown facts) — this is what re-surfaced the same fact on-device. The test must
+    // mirror it so the novelty guard actually catches the "same fact back-to-back" bug.
+    ctx = `${s.query} ${(hits as any[]).map((h) => h.text).join(' ')}`.slice(0, 400);
   }
   const distinct = seen.size;
   const ok = distinct >= s.minDistinct;

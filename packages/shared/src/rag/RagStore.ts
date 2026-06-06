@@ -201,10 +201,12 @@ export class RagStore {
         if (w > 0) ctxScore += w * (this.idf.get(t) ?? 0);
       }
       if (score > 0) {
-        let total = score + CONTEXT_WEIGHT * ctxScore;
-        // novelty: demote facts already shown this conversation so follow-ups
-        // ("ano pa?") surface fresh facts instead of repeating the top-3.
-        if (seenIds && seenIds.has(doc.fact.id)) total *= SEEN_PENALTY;
+        const seen = seenIds?.has(doc.fact.id) ?? false;
+        // Novelty: a fact already shown this conversation gets its query score
+        // demoted AND no context boost — the previous answer's TEXT lives in
+        // `context`, which would otherwise re-surface the very fact we're moving
+        // past (the "same fact back-to-back" bug). Fresh facts get the context tip.
+        const total = seen ? score * SEEN_PENALTY : score + CONTEXT_WEIGHT * ctxScore;
         scored.push({ fact: doc.fact, text: doc.fact.fact[key], score: total });
       }
     }

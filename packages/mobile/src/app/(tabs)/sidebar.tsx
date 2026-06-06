@@ -24,7 +24,7 @@ export default function SidebarScreen() {
     <View style={styles.overlay}>
       <SafeAreaView style={styles.panel} edges={['top', 'bottom']}>
       <View style={styles.header}>
-        <Text style={styles.title}>Hiraia</Text>
+        <Text style={styles.title}>hiraia</Text>
         <TouchableOpacity onPress={() => router.back()}>
           <Text style={styles.closeButton}>Isara</Text>
         </TouchableOpacity>

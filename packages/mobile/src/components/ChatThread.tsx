@@ -137,7 +137,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   messageList: {
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 28, // clearance so the newest line / streaming text clears the input
     gap: 16,
   },
   streamingRow: {
