@@ -2,11 +2,24 @@ import { useRouter } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import type { Language } from '@hiraia/shared';
+
 import { NotebookBackground } from '../../components/NotebookBackground';
+import { LANGUAGE_OPTIONS } from '../../config/languages';
+import { useEngineStore } from '../../store/engineStore';
 import { colors, fonts } from '../../theme';
 
 export default function SidebarScreen() {
   const router = useRouter();
+  const language = useEngineStore((s) => s.language);
+  const changeLanguage = useEngineStore((s) => s.changeLanguage);
+
+  const onPickLanguage = (lang: Language) => {
+    if (lang === language) return;
+    // Reloads the model (adapter swap, ~20-30s). Return to chat to watch it load.
+    void changeLanguage(lang);
+    router.back();
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -19,14 +32,32 @@ export default function SidebarScreen() {
       </View>
 
       <View style={styles.content}>
+        <Text style={styles.sectionTitle}>Wika</Text>
+        <View style={styles.langRow}>
+          {LANGUAGE_OPTIONS.map((opt) => {
+            const active = opt.lang === language;
+            return (
+              <TouchableOpacity
+                key={opt.lang}
+                style={[styles.langChip, active && styles.langChipActive]}
+                onPress={() => onPickLanguage(opt.lang)}
+                activeOpacity={0.85}
+              >
+                <Text style={[styles.langChipText, active && styles.langChipTextActive]}>
+                  {opt.label}
+                </Text>
+                {opt.beta && <Text style={styles.langBeta}> beta</Text>}
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+        <Text style={styles.langNote}>Sandali itong magri-restart kapag pinalitan.</Text>
+
         <Text style={styles.sectionTitle}>Mga Usapan</Text>
         <Text style={styles.placeholder}>Wala pang usapan</Text>
 
         <Text style={styles.sectionTitle}>Mga Tala</Text>
         <Text style={styles.placeholder}>Wala pang tala</Text>
-
-        <Text style={styles.sectionTitle}>Mga File</Text>
-        <Text style={styles.placeholder}>Walang naka-upload na file</Text>
       </View>
 
       <TouchableOpacity style={styles.newChatButton}>
@@ -74,6 +105,43 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     fontSize: 16,
     color: colors.inkMuted,
+  },
+  langRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  langChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 18,
+    borderWidth: 2,
+    borderColor: colors.primary,
+    backgroundColor: colors.white,
+  },
+  langChipActive: {
+    backgroundColor: colors.primary,
+  },
+  langChipText: {
+    fontFamily: fonts.display,
+    fontSize: 19,
+    color: colors.ink,
+  },
+  langChipTextActive: {
+    color: colors.white,
+  },
+  langBeta: {
+    fontFamily: fonts.body,
+    fontSize: 12,
+    color: colors.accent,
+  },
+  langNote: {
+    fontFamily: fonts.body,
+    fontSize: 14,
+    color: colors.inkMuted,
+    marginTop: 10,
   },
   newChatButton: {
     backgroundColor: colors.primary,

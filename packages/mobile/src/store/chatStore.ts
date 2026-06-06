@@ -86,7 +86,8 @@ export const useChatStore = create<ChatState>()((set, get) => ({
   },
 
   sendMessage: async (content: string) => {
-    const { engine } = useEngineStore.getState();
+    const { engine, language } = useEngineStore.getState();
+    const lang = language ?? 'tagalog';
     let convId = get().conversationId;
     if (!convId) {
       convId = genId();
@@ -129,8 +130,9 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       } catch (ragError) {
         console.warn('RAG search failed; answering ungrounded:', ragError);
       }
-      // Grade 5 + imageTags=true — parity with how the grounded adapter was trained.
-      let systemPrompt = generateSystemPrompt('tagalog', 5, true);
+      // Active language + grade 5 + imageTags=true — parity with how the grounded
+      // adapter was trained. RAG retrieval is scoped to the same language.
+      let systemPrompt = generateSystemPrompt(lang, 5, true);
       const groundingBlock = formatGroundingBlock(grounding);
       if (groundingBlock) systemPrompt += `\n\n${groundingBlock}`;
 
@@ -182,6 +184,11 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       messages: [...state.messages, { role: 'assistant', content: '', timestamp: new Date(), metadata: { kind: 'factoid' } }],
     }));
 
+    // Deliberate typewriter so it's clearly animated. The factoid plays while the
+    // model warms up (~20-30s), so a few seconds of type-on is well within budget.
+    // ~2 chars / 30ms ≈ 67 chars/sec → a typical factoid types on over ~2-4s.
+    const CHARS_PER_TICK = 2;
+    const TICK_MS = 30;
     let currentText = '';
     let index = 0;
     const fullText = picked.text;
@@ -192,17 +199,17 @@ export const useChatStore = create<ChatState>()((set, get) => ({
         void setSetting('lastFactoidIds', JSON.stringify(nextHistory));
         return;
       }
-      currentText += fullText.slice(index, index + 4);
-      index += 4;
+      currentText += fullText.slice(index, index + CHARS_PER_TICK);
+      index += CHARS_PER_TICK;
       set((state) => {
         const updated = [...state.messages];
         const last = updated[updated.length - 1];
         if (last) updated[updated.length - 1] = { ...last, content: currentText };
         return { messages: updated };
       });
-      setTimeout(tick, 20);
+      setTimeout(tick, TICK_MS);
     };
-    setTimeout(tick, 20);
+    setTimeout(tick, TICK_MS);
   },
 
   // Start a fresh thread.

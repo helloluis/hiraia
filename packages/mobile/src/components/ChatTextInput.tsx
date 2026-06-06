@@ -54,7 +54,9 @@ export function ChatTextInput({ value, onChangeText, onSend, placeholder }: Chat
 
 const styles = StyleSheet.create({
   container: {
-    padding: 12,
+    paddingHorizontal: 12,
+    paddingTop: 8,
+    paddingBottom: 6, // tightened from 12 — reclaim vertical space for the chat thread
     backgroundColor: colors.paper,
     borderTopWidth: 1,
     borderTopColor: colors.hairline,
@@ -88,14 +90,21 @@ const styles = StyleSheet.create({
     minHeight: 60,
   },
   sendButton: {
-    padding: 8,
+    width: 46,
+    height: 46,
+    borderRadius: 23, // fully round — soft, friendly CTA that fits the hand-drawn UI
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 4,
   },
   sendButtonDisabled: {
-    opacity: 0.4,
+    backgroundColor: colors.hairline,
   },
   sendIcon: {
-    fontSize: 20,
-    color: colors.primary,
+    fontSize: 22,
+    color: colors.white,
+    marginLeft: 2, // optically center the triangle glyph in the circle
   },
   sendIconDisabled: {
     color: colors.inkMuted,

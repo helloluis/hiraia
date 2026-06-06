@@ -40,6 +40,8 @@ export const colors = {
   bubble: '#f3f1e4',
   /** Hairline borders. */
   hairline: 'rgba(12, 52, 61, 0.12)',
+  /** Warm gold — 'beta'/heads-up accents (mirrors the web yellow download section). */
+  accent: '#f2c14e',
   white: '#FFFFFF',
 } as const;
 

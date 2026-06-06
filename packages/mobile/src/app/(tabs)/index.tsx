@@ -28,11 +28,15 @@ export default function ChatScreen() {
     }
   }, [hasHydrated, showColdStartFactoid]);
 
-  const handleSend = async () => {
-    if (!inputText.trim()) return;
+  const handleSend = () => {
+    const text = inputText.trim();
+    if (!text) return;
 
-    await sendMessage(inputText.trim());
+    // Clear the field immediately — sendMessage() doesn't resolve until the whole
+    // streamed response finishes, so awaiting it before clearing left the typed
+    // question sitting in the input the entire time the model was generating.
     setInputText('');
+    void sendMessage(text);
   };
 
   return (

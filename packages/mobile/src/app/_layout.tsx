@@ -5,24 +5,29 @@ import { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+import { LanguagePicker } from '../components/LanguagePicker';
 import { useChatStore } from '../store/chatStore';
 import { useEngineStore } from '../store/engineStore';
 import { colors, fontAssets } from '../theme';
 
 export default function RootLayout() {
-  const { initialize } = useEngineStore();
+  const bootstrap = useEngineStore((s) => s.bootstrap);
+  const changeLanguage = useEngineStore((s) => s.changeLanguage);
+  const bootstrapped = useEngineStore((s) => s.bootstrapped);
+  const language = useEngineStore((s) => s.language);
   const hydrate = useChatStore((s) => s.hydrate);
   const [fontsLoaded] = useFonts(fontAssets);
 
   useEffect(() => {
-    // Initialize the QVAC engine when app starts
-    void initialize();
+    // Resolve the saved language and (if set) load the engine for it. When none is
+    // saved, `language` stays null and the first-launch picker is shown below.
+    void bootstrap();
     // Load persisted chat history from SQLite (replaces the old zustand-persist
     // auto-hydration). Sets hasHydrated, which gates the cold-start factoid.
     void hydrate();
-  }, [initialize, hydrate]);
+  }, [bootstrap, hydrate]);
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded || !bootstrapped) {
     return (
       <View style={[styles.loading, { backgroundColor: colors.paper }]}>
         <ActivityIndicator color={colors.primary} />
@@ -38,6 +43,9 @@ export default function RootLayout() {
       >
         <Stack.Screen name="(tabs)" />
       </Stack>
+      {/* First launch: no language chosen yet → takeover picker (loads the engine
+          with the right adapter the first time, avoiding an immediate reload). */}
+      {language === null && <LanguagePicker onPick={changeLanguage} />}
     </GestureHandlerRootView>
   );
 }

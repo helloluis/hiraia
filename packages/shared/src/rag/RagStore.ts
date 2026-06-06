@@ -11,13 +11,17 @@ import { SCIENCE_FACTS } from './facts.generated.js';
  * which outranks a hit in the fact body. Scoring is idf-weighted token overlap —
  * deterministic, dependency-free, and easy to reason about at this corpus size.
  *
- * Recall mitigation for the known Tagalog/Cebuano morphology gap: every field is
- * indexed (topic + terms + ALL THREE language bodies), and `terms` already packs
- * TL+BIS+EN keywords. There is no stemming — inflected query forms can still miss
- * (see hiraia-rag-grounding memory); the fix is richer terms or a stemmer.
+ * LANGUAGE SCOPING: the fact bodies are indexed per-language, and a query is
+ * scored against the ACTIVE language's body only — plus a low-weight English
+ * bridge (kids code-switch — "ngano blue ang langit", "oxygen", "gravity") — but
+ * NOT the other vernacular's body. Tagalog and Cebuano share enough vocabulary
+ * that a blended index produced wrong-language distractors; scoping kills those.
+ * The language-neutral anchors (topic + terms, which pack TL+BIS+EN keywords) are
+ * always scored. No stemming yet — inflected forms can still miss (see
+ * hiraia-rag-grounding memory); the fix is richer terms or a stemmer.
  */
 
-const FIELD_WEIGHT = { topic: 8, terms: 4, body: 1 } as const;
+const FIELD_WEIGHT = { topic: 8, terms: 4, body: 1, bridge: 0.5 } as const;
 const MIN_TOKEN_LEN = 3; // matches build-bank.py's `len(t) > 2`
 
 /**
@@ -46,14 +50,16 @@ export function tokenize(text: string): string[] {
     .filter((t) => t.length >= MIN_TOKEN_LEN);
 }
 
+type LangKey = 'tl' | 'en' | 'bis';
+
 interface IndexedFact {
   fact: ScienceFact;
   topic: Set<string>;
   terms: Set<string>;
-  body: Set<string>;
+  body: Record<LangKey, Set<string>>; // one token set per language body
 }
 
-const LANG_KEY: Record<Language, 'tl' | 'en' | 'bis'> = {
+const LANG_KEY: Record<Language, LangKey> = {
   english: 'en',
   tagalog: 'tl',
   cebuano: 'bis',
@@ -68,13 +74,16 @@ export class RagStore {
     for (const fact of facts) {
       const topic = new Set(tokenize(fact.topic));
       const terms = new Set(tokenize(fact.terms.join(' ')));
-      const body = new Set(
-        tokenize(`${fact.fact.tl} ${fact.fact.en} ${fact.fact.bis}`)
-      );
+      const body: Record<LangKey, Set<string>> = {
+        tl: new Set(tokenize(fact.fact.tl)),
+        en: new Set(tokenize(fact.fact.en)),
+        bis: new Set(tokenize(fact.fact.bis)),
+      };
       this.docs.push({ fact, topic, terms, body });
 
-      // Document frequency: count each token once per fact (any field).
-      const seen = new Set([...topic, ...terms, ...body]);
+      // Document frequency: count each token once per fact (across all fields, so
+      // idf reflects the full multilingual vocabulary).
+      const seen = new Set([...topic, ...terms, ...body.tl, ...body.en, ...body.bis]);
       for (const t of seen) df.set(t, (df.get(t) ?? 0) + 1);
     }
 
@@ -108,13 +117,14 @@ export class RagStore {
     for (const doc of this.docs) {
       let score = 0;
       for (const t of qTokens) {
-        const w = doc.topic.has(t)
-          ? FIELD_WEIGHT.topic
-          : doc.terms.has(t)
-            ? FIELD_WEIGHT.terms
-            : doc.body.has(t)
-              ? FIELD_WEIGHT.body
-              : 0;
+        // topic/terms are language-neutral anchors; body is scoped to the active
+        // language, with a low-weight English bridge for code-switched terms.
+        // The OTHER vernacular's body is deliberately not scored.
+        let w = 0;
+        if (doc.topic.has(t)) w = FIELD_WEIGHT.topic;
+        else if (doc.terms.has(t)) w = FIELD_WEIGHT.terms;
+        else if (doc.body[key].has(t)) w = FIELD_WEIGHT.body;
+        else if (key !== 'en' && doc.body.en.has(t)) w = FIELD_WEIGHT.bridge;
         if (w > 0) score += w * (this.idf.get(t) ?? 0);
       }
       if (score > 0) {

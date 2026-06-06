@@ -1,56 +1,85 @@
 import { create } from 'zustand';
-import { LocalEngine } from '../engine/LocalEngine';
+
+import type { TutorEngine, TutorConfig, Language } from '@hiraia/shared';
+
 import { ACTIVE_MODEL } from '../config/model';
-import type { TutorEngine, TutorConfig } from '@hiraia/shared';
+import { getSetting, setSetting } from '../db/repo';
+import { LocalEngine } from '../engine/LocalEngine';
 
 interface EngineState {
   engine: TutorEngine | null;
-  isInitialized: boolean;
   isReady: boolean;
   error: string | null;
-  initialize: () => Promise<void>;
+  /** Active tutor language. null until the user picks one (first launch). */
+  language: Language | null;
+  /** True once the saved-language lookup has completed (gates the picker). */
+  bootstrapped: boolean;
+  /** Read the saved language and, if present, load the engine for it. */
+  bootstrap: () => Promise<void>;
+  /** Persist + (re)load the engine for a language. Used by the first-launch
+   *  picker and the Settings selector. Reloads the model (adapter swap). */
+  changeLanguage: (language: Language) => Promise<void>;
   shutdown: () => Promise<void>;
+}
+
+function buildConfig(language: Language): TutorConfig {
+  return {
+    language, // drives the bundled LoRA adapter (TL/BIS) or base model (EN) + RAG language
+    gradeLevel: 7,
+    modelConfig: {
+      modelId: ACTIVE_MODEL.key,
+      modelType: 'llm',
+      device: 'gpu',
+      ctxSize: ACTIVE_MODEL.ctxSize,
+    },
+    enableVisuals: false,
+    enableRag: true, // grounded on the curated science-fact bank (RagStore), scoped to `language`
+  };
 }
 
 export const useEngineStore = create<EngineState>((set, get) => ({
   engine: null,
-  isInitialized: false,
   isReady: false,
   error: null,
+  language: null,
+  bootstrapped: false,
 
-  initialize: async () => {
+  bootstrap: async () => {
+    let saved: Language | null = null;
     try {
+      saved = (await getSetting('language')) as Language | null;
+    } catch (e) {
+      console.warn('[engineStore] reading saved language failed:', e);
+    }
+    set({ language: saved, bootstrapped: true });
+    // No saved language → first launch; the picker will call changeLanguage().
+    if (saved) await get().changeLanguage(saved);
+  },
+
+  changeLanguage: async (language: Language) => {
+    if (get().engine && get().language === language && get().isReady) return; // no-op
+    try {
+      // Persist first so a crash mid-reload still remembers the choice.
+      await setSetting('language', language);
+      const prev = get().engine;
+      set({ language, isReady: false, error: null });
+      if (prev) {
+        try {
+          await prev.shutdown();
+        } catch (e) {
+          console.warn('[engineStore] shutdown before reload failed:', e);
+        }
+      }
       const engine = new LocalEngine();
-
-      // Default configuration for Hiraia tutor
-      const config: TutorConfig = {
-        language: 'tagalog', // default to Tagalog so the bundled fine-tune adapter loads
-        gradeLevel: 7,
-        modelConfig: {
-          modelId: ACTIVE_MODEL.key,
-          modelType: 'llm',
-          device: 'gpu',
-          ctxSize: ACTIVE_MODEL.ctxSize,
-        },
-        enableVisuals: false, // Will enable when we implement image generation
-        enableRag: true, // Grounded on the curated science-fact bank (RagStore)
-      };
-
-      await engine.initialize(config);
-
-      set({
-        engine,
-        isInitialized: true,
-        isReady: true,
-        error: null,
-      });
-
-      console.log('QVAC engine initialized successfully');
+      await engine.initialize(buildConfig(language));
+      set({ engine, isReady: true });
+      console.log(`QVAC engine ready (${language})`);
     } catch (error) {
       set({
         error: error instanceof Error ? error.message : 'Failed to initialize engine',
+        isReady: false,
       });
-      console.error('Failed to initialize QVAC engine:', error);
+      console.error('Failed to (re)initialize QVAC engine:', error);
     }
   },
 
@@ -58,11 +87,7 @@ export const useEngineStore = create<EngineState>((set, get) => ({
     const { engine } = get();
     if (engine) {
       await engine.shutdown();
-      set({
-        engine: null,
-        isInitialized: false,
-        isReady: false,
-      });
+      set({ engine: null, isReady: false });
     }
   },
 }));
