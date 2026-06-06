@@ -49,14 +49,13 @@ function withModelLock<T>(fn: () => Promise<T>): Promise<T> {
   return result;
 }
 
-// Auto-compaction is OFF until a summarization-capable adapter ships. The current
-// grounded adapter's tutor persona overrides the summarize instruction — it
-// restates the answer (greeting and all) instead of compressing it, so it would
-// store greeting-laden near-copies as "memory" (proven by the harness compaction
-// probe, 0/3). The SQLite wiring (compactions table, summarize(), buildContext)
-// stays in place; flip this true once finetuning/eval/harness/probe-compaction.mts
-// passes against the new adapter. See finetuning/datasets/grounded summarization rows.
-const COMPACTION_ENABLED = false;
+// Auto-compaction is ON: the v3 grounded+summarization adapter passes the harness
+// compaction probe 3/3 (summarize() produces clean ~120c memories, no abstention)
+// AND the full behavioral gate 11/11. The adapter was trained with 26 summarize
+// rows (served with no system prompt, matching summarize()) plus distractor-
+// robustness and abstain-balance rows. See finetuning/eval/harness/probe-compaction.mts
+// (gate it with REQUIRE_COMPACTION=1) and finetuning/datasets/grounded/.
+const COMPACTION_ENABLED = true;
 
 const KEEP_FULL = 6; // last 3 exchanges sent verbatim
 const MAX_LOOKBACK = 30; // cap turns considered (older ones use compactions when present)
