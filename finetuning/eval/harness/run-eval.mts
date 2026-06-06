@@ -22,6 +22,7 @@ interface Case {
   id: string; lang: keyof typeof LANG_OK; grade: number; mode: string; question?: string;
   history?: Turn[]; // multi-turn: full conversation; grounding uses the LAST user turn
   expectRetrieves?: string; mustContain?: string[]; mustNotContain?: string[]; maxChars?: number;
+  pending?: boolean; // codified behavior not yet trained into the adapter — reported, non-blocking
 }
 
 const cfg = JSON.parse(readFileSync(join(HERE, 'cases.json'), 'utf8')) as { cases: Case[] };
@@ -48,6 +49,7 @@ async function ask(messages: { role: string; content: string }[]): Promise<strin
 
 let pass = 0;
 const failures: string[] = [];
+const pending: string[] = [];
 
 for (const c of cfg.cases) {
   // retrieval grounds on the latest user message (matches chatStore)
@@ -84,13 +86,18 @@ for (const c of cfg.cases) {
   if (c.maxChars && answer.length > c.maxChars) fails.push(`too long (${answer.length} > ${c.maxChars} chars)`);
 
   const ok = fails.length === 0;
-  if (ok) pass++; else failures.push(c.id);
-  console.log(`${ok ? '✅ PASS' : '❌ FAIL'}  ${c.id}  [${c.mode}]  retrieved: ${retrievedIds.slice(0, 3).join(', ') || 'none'}`);
+  const tag = ok ? '✅ PASS' : c.pending ? '⏳ PEND' : '❌ FAIL';
+  if (ok) pass++;
+  else if (c.pending) pending.push(c.id);
+  else failures.push(c.id);
+  console.log(`${tag}  ${c.id}  [${c.mode}]  retrieved: ${retrievedIds.slice(0, 3).join(', ') || 'none'}`);
   console.log(`   A: ${answer.replace(/\n+/g, ' ').slice(0, 180)}`);
   if (!ok) fails.forEach((f) => console.log(`   ↳ ${f}`));
 }
 
-console.log(`\n===== ${pass}/${cfg.cases.length} passed =====`);
+const gated = cfg.cases.filter((c) => !c.pending).length;
+console.log(`\n===== ${pass}/${gated} gated passed${pending.length ? ` (+${pending.length} pending)` : ''} =====`);
+if (pending.length) console.log(`PENDING (codified, awaits next adapter): ${pending.join(', ')}`);
 if (failures.length) {
   console.log(`FAILED: ${failures.join(', ')}`);
   process.exit(1);

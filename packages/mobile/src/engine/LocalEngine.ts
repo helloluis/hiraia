@@ -177,12 +177,18 @@ export class LocalEngine implements TutorEngine {
     throw new Error('Embedding not yet implemented');
   }
 
-  async ragSearch(query: string, topK: number, context = ''): Promise<RagResult[]> {
+  async ragSearch(
+    query: string,
+    topK: number,
+    context = '',
+    seenIds?: ReadonlySet<string>
+  ): Promise<RagResult[]> {
     if (!this.rag) return [];
     const language: Language = this.config?.language ?? 'english';
     // Only confidently-relevant hits — a 1B is misled by loosely-related facts.
-    // `context` (recent turns) tips ambiguous follow-ups at a reduced weight.
-    const hits = this.rag.retrieveForGrounding(query, language, topK, 0.5, context);
+    // `context` (recent turns) tips ambiguous follow-ups; `seenIds` demotes facts
+    // already shown so "ano pa?" surfaces fresh ones.
+    const hits = this.rag.retrieveForGrounding(query, language, topK, 0.5, context, seenIds);
     return hits.map((h) => ({
       content: h.text,
       source: h.fact.source,

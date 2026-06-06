@@ -37,6 +37,11 @@ const isFactoid = (m: Message) => m.metadata?.kind === 'factoid';
  *  them out of the model's context. */
 const isRealTurn = (m: Message) => !!m.id && !isFactoid(m);
 
+// Facts already shown this conversation — RagStore demotes them so a kid asking
+// "ano pa?" keeps getting FRESH facts instead of the same top-3. Reset on a new
+// thread (clearMessages) and on hydrate (no per-fact history is persisted).
+let shownFactIds = new Set<string>();
+
 // The QVAC model is single-instance (one generation at a time). Serialize chat()
 // and summarize() so the compacter never overlaps a response.
 let modelLock: Promise<unknown> = Promise.resolve();
@@ -78,6 +83,7 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       }
       const messages = await getMessages(convId);
       const lastFactoidIds = JSON.parse((await getSetting('lastFactoidIds')) ?? '[]');
+      shownFactIds = new Set();
       set({ conversationId: convId, messages, lastFactoidIds, hasHydrated: true });
     } catch (e) {
       console.error('[chatStore] hydrate failed:', e);
@@ -131,7 +137,12 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       const ragContext = priorTurns.map((m) => m.content).join(' ');
       let grounding: RagResult[] = [];
       try {
-        grounding = await engine.ragSearch(content, 3, ragContext);
+        grounding = await engine.ragSearch(content, 3, ragContext, shownFactIds);
+        // remember what we showed so the next turn prefers fresh facts
+        for (const g of grounding) {
+          const id = (g.metadata as { id?: string } | undefined)?.id;
+          if (id) shownFactIds.add(id);
+        }
       } catch (ragError) {
         console.warn('RAG search failed; answering ungrounded:', ragError);
       }
@@ -221,6 +232,7 @@ export const useChatStore = create<ChatState>()((set, get) => ({
   clearMessages: async () => {
     const convId = genId();
     await createConversation(convId);
+    shownFactIds = new Set();
     set({ conversationId: convId, messages: [], isStreaming: false, currentStreamingContent: '' });
   },
 }));

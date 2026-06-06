@@ -25,6 +25,10 @@ const FIELD_WEIGHT = { topic: 8, terms: 4, body: 1, bridge: 0.5 } as const;
 // Recent-conversation context is scored at this fraction of query weight — enough
 // to tip ambiguous follow-ups, too little to override a fresh question's match.
 const CONTEXT_WEIGHT = 0.35;
+// Facts already shown this conversation are scored down so "tell me more" surfaces
+// FRESH facts instead of repeating the same top-3. Soft (not excluded): a re-ask
+// with no better alternative still returns the fact.
+const SEEN_PENALTY = 0.25;
 const MIN_TOKEN_LEN = 3; // matches build-bank.py's `len(t) > 2`
 
 /**
@@ -45,6 +49,7 @@ const QUERY_STOP = new Set(
    ito iyan iyon nito niyan kini kana kanang
    ang mga yung nga kang iya niya nila ila
    may mayroon meron adunay naa
+   oo opo oho oonga sige gusto payag game pwede mao sure
    what why how when where who whom which whose
    the are does did can could would should about from with into
    your you they them this that these those
@@ -141,19 +146,34 @@ export class RagStore {
    * impact fact over the asteroid-belt fact, without contaminating an unrelated
    * next question.
    */
-  search(query: string, topK = 3, language: Language = 'english', context = ''): FactHit[] {
+  search(
+    query: string,
+    topK = 3,
+    language: Language = 'english',
+    context = '',
+    seenIds?: ReadonlySet<string>
+  ): FactHit[] {
     // Normally we drop question/glue words so content words drive ranking. But a
     // bare identity question ("sino ka", "ano kayo", "para saan to") is ALL such
     // words — stripping leaves nothing. In that case fall back to the raw tokens
     // so the pronouns/question words themselves can match the ABOUT_HIRAIA facts
     // (which carry "sino", "kayo", "para", … as terms).
     const stripped = tokenize(query).filter((t) => !QUERY_STOP.has(t));
-    const qTokens = new Set(stripped.length > 0 ? stripped : tokenize(query));
-    if (qTokens.size === 0) return [];
-    // Context tokens that aren't already in the query (those would double-count).
-    const ctxTokens = new Set(
-      tokenize(context).filter((t) => !QUERY_STOP.has(t) && !qTokens.has(t))
+    const ctxStripped = tokenize(context).filter((t) => !QUERY_STOP.has(t));
+    // A pure glue/acceptance query ("oo", "sige", "oo gusto ko", "para saan to")
+    // strips to nothing. If there's conversation context, ground on IT (a follow-up
+    // acceptance grounds on what was just offered); else fall back to the raw tokens
+    // (bare identity questions → the ABOUT_HIRAIA facts).
+    const usingCtxAsQuery = stripped.length === 0 && ctxStripped.length > 0;
+    const qTokens = new Set(
+      stripped.length > 0 ? stripped : usingCtxAsQuery ? ctxStripped : tokenize(query)
     );
+    if (qTokens.size === 0) return [];
+    // Context is a reduced-weight tiebreaker for a contentful query; when it already
+    // became the query (acceptance fallback) there's no separate context layer.
+    const ctxTokens = usingCtxAsQuery
+      ? new Set<string>()
+      : new Set(ctxStripped.filter((t) => !qTokens.has(t)));
     const key = LANG_KEY[language];
 
     // Field weight for a token in a doc: topic/terms are language-neutral anchors;
@@ -181,7 +201,11 @@ export class RagStore {
         if (w > 0) ctxScore += w * (this.idf.get(t) ?? 0);
       }
       if (score > 0) {
-        scored.push({ fact: doc.fact, text: doc.fact.fact[key], score: score + CONTEXT_WEIGHT * ctxScore });
+        let total = score + CONTEXT_WEIGHT * ctxScore;
+        // novelty: demote facts already shown this conversation so follow-ups
+        // ("ano pa?") surface fresh facts instead of repeating the top-3.
+        if (seenIds && seenIds.has(doc.fact.id)) total *= SEEN_PENALTY;
+        scored.push({ fact: doc.fact, text: doc.fact.fact[key], score: total });
       }
     }
 
@@ -200,9 +224,10 @@ export class RagStore {
     language: Language = 'english',
     max = 3,
     floorRatio = 0.5,
-    context = ''
+    context = '',
+    seenIds?: ReadonlySet<string>
   ): FactHit[] {
-    const hits = this.search(query, max, language, context);
+    const hits = this.search(query, max, language, context, seenIds);
     if (hits.length === 0) return [];
     const top = hits[0]!.score;
     return hits.filter((h) => h.score >= top * floorRatio);

@@ -40,7 +40,12 @@ export interface TutorEngine {
    * follow-up queries toward the conversation's topic without overriding a fresh
    * question.
    */
-  ragSearch(query: string, topK: number, context?: string): Promise<RagResult[]>;
+  ragSearch(
+    query: string,
+    topK: number,
+    context?: string,
+    seenIds?: ReadonlySet<string>
+  ): Promise<RagResult[]>;
 
   /**
    * Compress a (usually long) assistant answer into a short factual recap, used

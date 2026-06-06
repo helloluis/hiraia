@@ -32,6 +32,14 @@ CTX="${CTX:-4096}"
 [ -f "$BASE" ] || { echo "ERR: base GGUF not at $BASE (set BASE=)"; exit 2; }
 [ -f "$ADAPTER" ] || { echo "ERR: adapter GGUF not at $ADAPTER (set ADAPTER=)"; exit 2; }
 
+# Retrieval stress-test runs FIRST — model-independent, fast, and codifies the
+# on-device "weird encounter" regressions (verb-hijack, distractor, follow-up
+# context, conversational novelty). Fail fast before spinning up the server.
+echo ">> running retrieval stress-test (model-independent) ..."
+"$ROOT/node_modules/.bin/tsx" "$ROOT/rag/pipeline/retrieval-stress.mts" || {
+  echo "ERR: retrieval regressions — gate FAILS (see above)"; exit 1;
+}
+
 echo ">> base:    $BASE"
 echo ">> adapter: $ADAPTER"
 echo ">> starting llama-server on :$PORT ..."

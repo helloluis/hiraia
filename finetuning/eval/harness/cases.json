@@ -104,6 +104,15 @@
       "expectRetrieves": "faq-why-astronauts-float",
       "mustContain": ["nahuhulog"],
       "mustNotContain": ["centrifugal", "spacetime"]
+    },
+    {
+      "id": "gibberish-unintelligible",
+      "_codified_from": "on-device 2026-06-06: gibberish input should get 'pasensya, hindi kita maintindihan', not a faked answer",
+      "lang": "tagalog", "grade": 5, "mode": "chitchat",
+      "question": "asdghjk qwopzx mnbvc lkjhg",
+      "expectRetrieves": "none",
+      "mustContain": ["hindi.{0,20}(maintind|naintind|kita maunawa)|pasensya|paki-?ulit|pakiulit"],
+      "mustNotContain": ["[Mm]agandang tanong"]
     }
   ]
 }
