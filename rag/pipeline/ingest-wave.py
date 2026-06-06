@@ -5,7 +5,7 @@ import json, sys, os, re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 BANK = os.path.join(ROOT, "rag/bank/science-facts.jsonl")
-DOMAINS = {"MATTER","LIVING_THINGS","FORCE_MOTION_ENERGY","EARTH_SPACE","ABOUT_HIRAIA"}
+DOMAINS = {"MATTER","LIVING_THINGS","FORCE_MOTION_ENERGY","EARTH_SPACE","ABOUT_HIRAIA","PH_CIVICS","PH_GEOGRAPHY"}
 
 out_file = sys.argv[1]
 data = json.load(open(out_file))

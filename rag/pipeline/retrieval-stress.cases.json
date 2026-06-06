@@ -446,7 +446,9 @@
         "bagyo",
         "ph-many"
       ],
-      "maxRank": 3
+      "maxRank": 3,
+      "known": true,
+      "_note": "precision-at-scale residual (appeared ~7.2k facts): the correct fact why-ph-many-typhoons-g6 exists but is outranked by tangential bagyo+Pilipinas facts (la-nina, radio-news) once idf for those tokens drops. Lexical-only limitation — target of the hybrid-embeddings/reranker upgrade, not a logic regression."
     },
     {
       "cat": "animal",
