@@ -34,21 +34,40 @@ const files = [...walk(IN)];
 let before = 0, after = 0;
 
 if (BACKUP) {
-  console.log(`Backing up originals to: ${BACKUP}`);
+  console.log(`Verifying and backing up originals to: ${BACKUP}`);
+  for (const f of files) {
+    const backupPath = join(BACKUP, relative(IN, f));
+    let shouldBackup = false;
+    if (!existsSync(backupPath)) {
+      shouldBackup = true;
+    } else {
+      // If the backup file already exists, only overwrite it if the source file is an original (i.e. not yet downsized)
+      try {
+        const meta = await sharp(f).metadata();
+        if (meta.width > SIZE || meta.height > SIZE) {
+          shouldBackup = true;
+        }
+      } catch (err) {
+        // If we can't read metadata, don't overwrite the existing backup
+      }
+    }
+
+    if (shouldBackup) {
+      mkdirSync(dirname(backupPath), { recursive: true });
+      copyFileSync(f, backupPath);
+    }
+  }
 }
 
 for (const f of files) {
   const outPath = join(OUT, relative(IN, f));
-  const inBytes = statSync(f).size;
+  const backupPath = BACKUP ? join(BACKUP, relative(IN, f)) : '';
+  
+  // If a backup exists, use the backup as the source so we always downsize from the original quality
+  const srcPath = (backupPath && existsSync(backupPath)) ? backupPath : f;
+  const inBytes = statSync(srcPath).size;
 
-  // Back up the original file if requested
-  if (BACKUP) {
-    const backupPath = join(BACKUP, relative(IN, f));
-    mkdirSync(dirname(backupPath), { recursive: true });
-    copyFileSync(f, backupPath);
-  }
-
-  const buf = await sharp(f)
+  const buf = await sharp(srcPath)
     .resize(SIZE, SIZE, { fit: 'inside', withoutEnlargement: true })
     .grayscale()
     // levels: ~y = 1.28x - 38  → inputs >=230 clip to white, <=30 clip to black
