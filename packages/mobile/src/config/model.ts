@@ -71,10 +71,11 @@ export const ON_DEVICE_MODELS: Record<OnDeviceModelKey, OnDeviceModel> = {
     ramGB: 2.2,
     minRamGB: 6,
     adapterSizeMB: 102,
-    // v3 LoRAs were trained at ctx 1024; 2048 gives room for the RAG grounding
-    // block + a few turns. Extending further (RoPE) risks quality drift on these
-    // adapters — retrain at longer ctx if we need bigger windows.
-    ctxSize: 2048,
+    // The grounded adapter trains at seq 2048, but the tag-aware grounded system
+    // prompt alone is ~1.2k tokens — at ctx 2048 even a few turns overflowed and
+    // threw exceed_context_size_error. 4096 gives headroom (base Qwen2.5 supports
+    // it; LoRA is context-length-agnostic); chatStore also windows history.
+    ctxSize: 4096,
     modelType: 'llm',
     modelSrc:
       'https://huggingface.co/mradermacher/Sailor2-3B-Chat-GGUF/resolve/main/Sailor2-3B-Chat.Q4_K_M.gguf',

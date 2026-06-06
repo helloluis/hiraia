@@ -24,6 +24,9 @@ BASE="${BASE:-$ROOT/deploy/models/Sailor2-3B-Chat.Q4_K_M.gguf}"
 ADAPTER="${ADAPTER:-$ROOT/finetuning/adapters/adapter-tagalog-grounded-f16.gguf}"
 PORT="${PORT:-8088}"
 NGL="${NGL:-99}"
+# MUST match ACTIVE_MODEL.ctxSize in packages/mobile/src/config/model.ts so the
+# gate catches on-device context-overflow (the longctx-multiturn guard relies on it).
+CTX="${CTX:-4096}"
 
 [ -x "$BIN" ] || { echo "ERR: llama-server not at $BIN (set BIN=)"; exit 2; }
 [ -f "$BASE" ] || { echo "ERR: base GGUF not at $BASE (set BASE=)"; exit 2; }
@@ -32,7 +35,7 @@ NGL="${NGL:-99}"
 echo ">> base:    $BASE"
 echo ">> adapter: $ADAPTER"
 echo ">> starting llama-server on :$PORT ..."
-"$BIN" -m "$BASE" --lora "$ADAPTER" -ngl "$NGL" --port "$PORT" --ctx-size 4096 \
+"$BIN" -m "$BASE" --lora "$ADAPTER" -ngl "$NGL" --port "$PORT" --ctx-size "$CTX" \
   > "$HERE/.server.log" 2>&1 &
 SERVER_PID=$!
 trap 'kill $SERVER_PID 2>/dev/null' EXIT

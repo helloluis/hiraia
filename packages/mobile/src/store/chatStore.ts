@@ -83,10 +83,14 @@ export const useChatStore = create<ChatState>()(
             systemPrompt += `\n\n${groundingBlock}`;
           }
 
-          // Factoid messages persist and influence the conversation context.
+          // Only send a window of recent turns. The tag-aware grounded system
+          // prompt is ~1.2k tokens, so an unbounded history overflows ctx_size
+          // (confirmed: a >ctx prompt throws exceed_context_size_error). Keep the
+          // last few exchanges — enough for follow-ups, bounded for the device.
+          const HISTORY_WINDOW = 10;
           const conversationMessages: Message[] = [
             { role: 'system', content: systemPrompt },
-            ...get().messages,
+            ...get().messages.slice(-HISTORY_WINDOW),
           ];
 
           // Stream tokens from the engine

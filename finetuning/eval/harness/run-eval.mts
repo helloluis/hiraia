@@ -17,8 +17,10 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const ENDPOINT = process.env.ENDPOINT ?? 'http://localhost:8088';
 const LANG_OK = { tagalog: 'tl', cebuano: 'bis', english: 'en' } as const;
 
+interface Turn { role: 'user' | 'assistant'; content: string }
 interface Case {
-  id: string; lang: keyof typeof LANG_OK; grade: number; mode: string; question: string;
+  id: string; lang: keyof typeof LANG_OK; grade: number; mode: string; question?: string;
+  history?: Turn[]; // multi-turn: full conversation; grounding uses the LAST user turn
   expectRetrieves?: string; mustContain?: string[]; mustNotContain?: string[]; maxChars?: number;
 }
 
@@ -26,19 +28,21 @@ const cfg = JSON.parse(readFileSync(join(HERE, 'cases.json'), 'utf8')) as { case
 const store = new RagStore();
 const stripTags = (s: string) => s.replace(/\s*\[image:[^\]]*\]/gi, '').trim();
 
-async function ask(system: string, user: string): Promise<string> {
+async function ask(messages: { role: string; content: string }[]): Promise<string> {
   const res = await fetch(`${ENDPOINT}/v1/chat/completions`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      messages: [{ role: 'system', content: system }, { role: 'user', content: user }],
+      messages,
       temperature: 0, max_tokens: 320, stream: false,
       // adapter loaded at server start (--lora); activate at scale 1.0 per request too.
       lora: [{ id: 0, scale: 1.0 }],
     }),
   });
-  if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+  // surface context-overflow etc. as a thrown error so the case FAILS (not silently)
+  if (!res.ok) throw new Error(`HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const data: any = await res.json();
+  if (data.error) throw new Error(`server error: ${JSON.stringify(data.error).slice(0, 200)}`);
   return stripTags(data.choices?.[0]?.message?.content ?? '');
 }
 
@@ -46,7 +50,9 @@ let pass = 0;
 const failures: string[] = [];
 
 for (const c of cfg.cases) {
-  const hits = store.retrieveForGrounding(c.question as any, c.lang as any, 3);
+  // retrieval grounds on the latest user message (matches chatStore)
+  const query = c.history ? [...c.history].reverse().find((t) => t.role === 'user')!.content : c.question!;
+  const hits = store.retrieveForGrounding(query as any, c.lang as any, 3);
   const retrievedIds = hits.map((h: any) => h.fact.id);
   let system = generateSystemPrompt(c.lang as any, c.grade as any, true);
   const block = formatGroundingBlock(
@@ -64,9 +70,12 @@ for (const c of cfg.cases) {
   }
 
   // 2) generation + output assertions
+  const messages = c.history
+    ? [{ role: 'system', content: system }, ...c.history]
+    : [{ role: 'system', content: system }, { role: 'user', content: c.question! }];
   let answer = '';
   try {
-    answer = await ask(system, c.question);
+    answer = await ask(messages);
   } catch (e: any) {
     fails.push(`request error: ${e.message}`);
   }
