@@ -5,6 +5,7 @@ import type { Message, RagResult } from '@hiraia/shared';
 
 import { pickFactoidText } from '../data/factoids';
 import { genId } from '../db';
+import { FACT_IMAGE } from '../generated/factImage';
 import {
   addMessage,
   createConversation,
@@ -146,6 +147,14 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       } catch (ragError) {
         console.warn('RAG search failed; answering ungrounded:', ragError);
       }
+      // Retrieval-driven illustration: the first grounded fact whose concept has a
+      // bundled image. Shown with the answer regardless of any model [image:] tag.
+      let imageSlug: string | undefined;
+      for (const g of grounding) {
+        const fid = (g.metadata as { id?: string } | undefined)?.id;
+        const slug = fid ? FACT_IMAGE[fid] : undefined;
+        if (slug) { imageSlug = slug; break; }
+      }
       // Active language + grade 5 + imageTags=true — parity with how the grounded
       // adapter was trained. RAG retrieval is scoped to the same language.
       let systemPrompt = generateSystemPrompt(lang, 5, true);
@@ -167,6 +176,7 @@ export const useChatStore = create<ChatState>()((set, get) => ({
         role: 'assistant',
         content: fullResponse,
         timestamp: new Date(),
+        ...(imageSlug ? { imageSlug } : {}),
       };
       set((state) => ({
         messages: [...state.messages, assistantMessage],

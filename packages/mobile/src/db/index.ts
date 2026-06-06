@@ -49,7 +49,11 @@ async function migrate(db: SQLite.SQLiteDatabase): Promise<void> {
     await db.execAsync(SCHEMA_V1);
     await db.execAsync('PRAGMA user_version = 1');
   }
-  // Future migrations: if (v < 2) { ...; PRAGMA user_version = 2 }
+  if (v < 2) {
+    // retrieval-driven illustration slug per assistant message
+    await db.execAsync('ALTER TABLE messages ADD COLUMN image_slug TEXT');
+    await db.execAsync('PRAGMA user_version = 2');
+  }
 }
 
 /** Opens (once) and migrates the database. */

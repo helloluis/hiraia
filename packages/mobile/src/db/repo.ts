@@ -44,14 +44,14 @@ export async function getLatestConversationId(): Promise<string | null> {
 }
 
 // --------------------------------------------------------------------- messages
-interface MsgRow { id: string; role: string; content: string; kind: string | null; created_at: number }
+interface MsgRow { id: string; role: string; content: string; kind: string | null; image_slug: string | null; created_at: number }
 
 export async function addMessage(conversationId: string, m: Message): Promise<void> {
   if (!m.id) return;
   const db = await getDb();
   await db.runAsync(
-    'INSERT OR REPLACE INTO messages (id, conversation_id, role, content, kind, created_at) VALUES (?, ?, ?, ?, ?, ?)',
-    m.id, conversationId, m.role, m.content, m.metadata?.kind ?? null, (m.timestamp ?? new Date()).getTime()
+    'INSERT OR REPLACE INTO messages (id, conversation_id, role, content, kind, image_slug, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    m.id, conversationId, m.role, m.content, m.metadata?.kind ?? null, m.imageSlug ?? null, (m.timestamp ?? new Date()).getTime()
   );
   await touchConversation(conversationId);
 }
@@ -59,7 +59,7 @@ export async function addMessage(conversationId: string, m: Message): Promise<vo
 export async function getMessages(conversationId: string): Promise<Message[]> {
   const db = await getDb();
   const rows = await db.getAllAsync<MsgRow>(
-    'SELECT id, role, content, kind, created_at FROM messages WHERE conversation_id = ? ORDER BY created_at ASC',
+    'SELECT id, role, content, kind, image_slug, created_at FROM messages WHERE conversation_id = ? ORDER BY created_at ASC',
     conversationId
   );
   return rows.map((r) => ({
@@ -67,6 +67,7 @@ export async function getMessages(conversationId: string): Promise<Message[]> {
     role: r.role as Message['role'],
     content: r.content,
     timestamp: new Date(r.created_at),
+    ...(r.image_slug ? { imageSlug: r.image_slug } : {}),
     ...(r.kind ? { metadata: { kind: r.kind as 'factoid' } } : {}),
   }));
 }

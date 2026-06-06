@@ -1,25 +1,20 @@
 import { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import { resolveImage } from '../generated/imageMap';
 import { colors, fonts } from '../theme';
 
 import { Lightbox } from './Lightbox';
 
 /**
- * A 128×128 thumbnail rendered wherever the tutor emits an `[image: <desc>]` token.
- * Tap → full-screen pinch-zoom Lightbox. Works REGARDLESS of a binary existing: until
- * the image library is bundled, `resolveImage` returns null and we show a placeholder
- * (so the end-to-end handler is testable now). When images ship, point resolveImage at
- * the bundled asset map and both the thumbnail and lightbox render the real picture.
+ * A 128×128 thumbnail for a science illustration. Tap → full-screen pinch-zoom
+ * Lightbox. `slug` resolves to a bundled 512×512 PNG via the generated IMAGE_MAP;
+ * if there's no match (e.g. a model [image:] description rather than a slug) it
+ * falls back to a placeholder so the flow still renders.
  */
-function resolveImage(_desc: string): number | null {
-  // TODO: map desc/slug → require('../../assets/science-images/<slug>.png') once bundled.
-  return null;
-}
-
-export function ImageSlot({ desc }: { desc: string }) {
+export function ImageSlot({ desc, slug }: { desc: string; slug?: string }) {
   const [open, setOpen] = useState(false);
-  const source = resolveImage(desc);
+  const source = resolveImage(slug ?? desc);
 
   return (
     <>

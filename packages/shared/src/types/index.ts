@@ -27,6 +27,9 @@ export interface Message {
   content: string;
   timestamp?: Date;
   metadata?: MessageMetadata;
+  /** Slug of a bundled illustration to show with this answer (retrieval-driven:
+   *  the concept the answer was grounded on). Resolved via the mobile IMAGE_MAP. */
+  imageSlug?: string;
 }
 
 /**

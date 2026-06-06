@@ -5,7 +5,7 @@ import type { Message } from '@hiraia/shared';
 import { colors, fonts } from '../theme';
 
 import { ImageSlot } from './ImageSlot';
-import { RichText, extractImageDescs } from './RichText';
+import { RichText } from './RichText';
 
 const HIRAIA_AVATAR = require('../../assets/hiraia-profile.png');
 
@@ -16,8 +16,8 @@ interface MessageBubbleProps {
 export function MessageBubble({ message }: MessageBubbleProps) {
   const isUser = message.role === 'user';
   const isFactoid = message.metadata?.kind === 'factoid' || (message.content && message.content.startsWith('💡'));
-  // Picture slots the tutor asked for via [image: …] (rendered below the answer).
-  const imageDescs = !isUser && !isFactoid ? extractImageDescs(message.content) : [];
+  // Retrieval-driven illustration for the concept this answer was grounded on.
+  const imageSlug = !isUser && !isFactoid ? message.imageSlug : undefined;
 
   return (
     <View style={[styles.container, isUser ? styles.userContainer : styles.assistantContainer]}>
@@ -37,9 +37,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
             style={[styles.text, styles.assistantText, isFactoid && styles.factoidText]}
           />
         )}
-        {imageDescs.map((desc, i) => (
-          <ImageSlot key={i} desc={desc} />
-        ))}
+        {imageSlug && <ImageSlot slug={imageSlug} desc={imageSlug.replace(/-/g, ' ')} />}
         {message.timestamp && (
           <Text style={[styles.timestamp, isUser ? styles.userTimestamp : styles.assistantTimestamp]}>
             {new Date(message.timestamp).toLocaleTimeString([], {

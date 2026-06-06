@@ -24,11 +24,10 @@
 # Stray data file
 /science-chat.jsonl
 
-# Image library asset BLOBS (~1.2GB) — the mobile app does NOT bundle these
-# (image retrieval is server-side / deferred). Keep the @hiraia/images PACKAGE
-# itself (src, package.json, index.json) so pnpm workspace resolution still
-# works — exclude ONLY the big generated PNG/raster dirs.
-/packages/images/assets-png/
+# Image library: the mobile app NOW bundles assets-png (512x512 PNGs) via the
+# generated imageMap — so it must be uploaded. Exclude only the heavy raw originals
+# backup and the unused raster dirs.
+/packages/images/assets-png-raw/
 /packages/images/gemini-queue/
 /packages/images/samples/
 /packages/images/pilot/
