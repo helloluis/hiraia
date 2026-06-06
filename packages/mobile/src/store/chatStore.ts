@@ -43,6 +43,11 @@ const isRealTurn = (m: Message) => !!m.id && !isFactoid(m);
 // thread (clearMessages) and on hydrate (no per-fact history is persisted).
 let shownFactIds = new Set<string>();
 
+// The tutor's abstain/redirect phrasings (TL/BIS/EN). When the answer matches, the
+// grounding wasn't really relevant, so we DON'T attach its illustration.
+const ABSTAIN_RE =
+  /hindi.{0,20}(alam|sigurado|tiyak|maintind|naintind|kahibal|sayod)|ayaw kong manghula|pasensya|paumanhin|wala.{0,12}(sapat|impormasyon|akong)|dili.{0,12}(sigurado|kahibalo)|i'?m not sure|i (do|don'?t) (not )?know/i;
+
 // The QVAC model is single-instance (one generation at a time). Serialize chat()
 // and summarize() so the compacter never overlaps a response.
 let modelLock: Promise<unknown> = Promise.resolve();
@@ -171,12 +176,18 @@ export const useChatStore = create<ChatState>()((set, get) => ({
         }
       });
 
+      // Suppress the illustration when the tutor abstained/redirected — the grounding
+      // wasn't actually relevant (e.g. a song question that coincidentally retrieved a
+      // body-diagram fact), so showing its picture is the "weird unrelated image" bug.
+      const abstained = ABSTAIN_RE.test(fullResponse);
+      const finalImageSlug = abstained ? undefined : imageSlug;
+
       const assistantMessage: Message = {
         id: genId(),
         role: 'assistant',
         content: fullResponse,
         timestamp: new Date(),
-        ...(imageSlug ? { imageSlug } : {}),
+        ...(finalImageSlug ? { imageSlug: finalImageSlug } : {}),
       };
       set((state) => ({
         messages: [...state.messages, assistantMessage],
