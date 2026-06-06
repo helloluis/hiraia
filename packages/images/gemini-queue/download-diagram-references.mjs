@@ -28,7 +28,9 @@ async function searchWiki(query) {
 }
 
 async function getImageUrl(fileTitle) {
-  const url = `https://commons.wikimedia.org/w/api.php?action=query&titles=${encodeURIComponent(fileTitle)}&prop=imageinfo&iiprop=url&format=json&origin=*`;
+  const isSvg = fileTitle.toLowerCase().endsWith('.svg');
+  const widthParam = isSvg ? '&iiurlwidth=1024' : '';
+  const url = `https://commons.wikimedia.org/w/api.php?action=query&titles=${encodeURIComponent(fileTitle)}&prop=imageinfo&iiprop=url${widthParam}&format=json&origin=*`;
   try {
     const res = await fetch(url, { headers: HEADERS });
     const data = await res.json();
@@ -36,7 +38,12 @@ async function getImageUrl(fileTitle) {
     for (const pageId in pages) {
       const page = pages[pageId];
       if (page.imageinfo && page.imageinfo[0]) {
-        return page.imageinfo[0].url;
+        if (isSvg) {
+          return { url: page.imageinfo[0].thumburl, ext: 'png' };
+        } else {
+          const ext = fileTitle.split('.').pop().toLowerCase();
+          return { url: page.imageinfo[0].url, ext };
+        }
       }
     }
   } catch (err) {
@@ -47,38 +54,8 @@ async function getImageUrl(fileTitle) {
 
 // Function to verify if ID represents a diagram, process, or system
 function isDiagramOrCycle(id, name) {
-  const hay = `${id} ${name}`.toLowerCase();
-  return (
-    hay.includes('diagram') ||
-    hay.includes('cycle') ||
-    hay.includes('lifecycle') ||
-    hay.includes('loop') ||
-    hay.includes('transport') ||
-    hay.includes('circuit') ||
-    hay.includes('structure') ||
-    hay.includes('scale') ||
-    hay.includes('pyramid') ||
-    hay.includes('hierarchy') ||
-    hay.includes('chain') ||
-    hay.includes('web') ||
-    hay.includes('diffusion') ||
-    hay.includes('metamorphosis') ||
-    hay.includes('evaporation') ||
-    hay.includes('homeostasis') ||
-    hay.includes('respiration') ||
-    hay.includes('photosynthesis') ||
-    hay.includes('transcription') ||
-    hay.includes('translation') ||
-    hay.includes('germination') ||
-    hay.includes('cell') ||
-    hay.includes('star') ||
-    hay.includes('dichotomous') ||
-    hay.includes('organelle') ||
-    hay.includes('blood') ||
-    hay.includes('model') ||
-    hay.includes('factors') ||
-    hay.includes('chart')
-  );
+  // Return true for all remaining flagged illustrations
+  return true;
 }
 
 async function downloadImage(url, destPath) {
@@ -154,23 +131,22 @@ async function main() {
     for (const query of queries) {
       const results = await searchWiki(query);
       
-      // Look for a suitable result (PNG or JPG)
+      // Look for a suitable result (PNG, JPG, JPEG, or SVG)
       const suitable = results.find(r => {
         const title = r.title.toLowerCase();
-        return title.endsWith('.png') || title.endsWith('.jpg') || title.endsWith('.jpeg');
+        return title.endsWith('.png') || title.endsWith('.jpg') || title.endsWith('.jpeg') || title.endsWith('.svg');
       });
 
       if (suitable) {
         const fileTitle = suitable.title;
-        const imgUrl = await getImageUrl(fileTitle);
-        if (imgUrl) {
-          const ext = fileTitle.split('.').pop().toLowerCase();
-          const destPath = join(referencesDir, `${id}.${ext}`);
+        const imgInfo = await getImageUrl(fileTitle);
+        if (imgInfo && imgInfo.url) {
+          const destPath = join(referencesDir, `${id}.${imgInfo.ext}`);
           console.log(`  -> Found: ${fileTitle}`);
-          console.log(`  -> Downloading: ${imgUrl}`);
-          const ok = await downloadImage(imgUrl, destPath);
+          console.log(`  -> Downloading: ${imgInfo.url}`);
+          const ok = await downloadImage(imgInfo.url, destPath);
           if (ok) {
-            console.log(`  -> Success! Saved as references/${id}.${ext}`);
+            console.log(`  -> Success! Saved as references/${id}.${imgInfo.ext}`);
             downloadCount++;
             found = true;
             break;

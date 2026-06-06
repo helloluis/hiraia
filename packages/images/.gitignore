@@ -14,4 +14,10 @@ index.json
 
 # experimental / regenerable render artifacts (assets-png/ raw renders ARE tracked)
 assets-png-min/
+assets-png-raw/
 bakeoff/
+
+# Temporary manually generated assets
+assets-png/manually-generated/*
+!assets-png/manually-generated/.gitkeep
+
