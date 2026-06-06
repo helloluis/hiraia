@@ -1,10 +1,9 @@
 import { useRouter } from 'expo-router';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import type { Language } from '@hiraia/shared';
 
-import { NotebookBackground } from '../../components/NotebookBackground';
 import { LANGUAGE_OPTIONS } from '../../config/languages';
 import { useEngineStore } from '../../store/engineStore';
 import { colors, fonts } from '../../theme';
@@ -22,8 +21,8 @@ export default function SidebarScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <NotebookBackground />
+    <View style={styles.overlay}>
+      <SafeAreaView style={styles.panel} edges={['top', 'bottom']}>
       <View style={styles.header}>
         <Text style={styles.title}>Hiraia</Text>
         <TouchableOpacity onPress={() => router.back()}>
@@ -63,14 +62,31 @@ export default function SidebarScreen() {
       <TouchableOpacity style={styles.newChatButton}>
         <Text style={styles.newChatText}>+ Bagong Usapan</Text>
       </TouchableOpacity>
-    </SafeAreaView>
+      </SafeAreaView>
+      {/* dimmed page peeking out beside the notebook cover; tap to close */}
+      <Pressable style={styles.backdrop} onPress={() => router.back()} />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  overlay: {
     flex: 1,
-    backgroundColor: colors.paper,
+    flexDirection: 'row',
+  },
+  panel: {
+    width: '80%',
+    backgroundColor: colors.cover,
+    // drop shadow along the right edge — looks like the cover of a notebook
+    shadowColor: '#000',
+    shadowOffset: { width: 4, height: 0 },
+    shadowOpacity: 0.28,
+    shadowRadius: 10,
+    elevation: 16,
+  },
+  backdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(12, 52, 61, 0.28)',
   },
   header: {
     flexDirection: 'row',

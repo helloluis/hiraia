@@ -59,8 +59,8 @@ export function ChatTextInput({ value, onChangeText, onSend, placeholder, disabl
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 12,
-    paddingTop: 8,
-    paddingBottom: 6, // tightened from 12 — reclaim vertical space for the chat thread
+    paddingTop: 6,
+    paddingBottom: 2, // minimal — the rounded field already has internal padding
     backgroundColor: colors.paper,
     borderTopWidth: 1,
     borderTopColor: colors.hairline,

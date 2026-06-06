@@ -8,18 +8,19 @@ import { colors, notebook } from '../theme';
  * cream fill, blue horizontal rules every 32px, and a pink vertical margin rule.
  * Drawn with plain Views (no react-native-svg) to avoid a native dependency.
  *
- * Render as the first child of a flex:1 container with the content layered on top.
+ * Pass `height` to size the lined sheet (ChatThread makes a sheet as tall as the
+ * scroll content, then translates it so the paper scrolls WITH the messages). With
+ * no height it fills the parent (static backdrop).
  */
-export function NotebookBackground() {
+export function NotebookBackground({ height }: { height?: number }) {
+  const h = height ?? Dimensions.get('window').height * 1.5;
   const lines = useMemo(() => {
-    // Cover the tallest plausible viewport; extra height is clipped by the parent.
-    const height = Dimensions.get('window').height * 1.5;
-    const count = Math.ceil(height / notebook.lineSpacing);
-    return Array.from({ length: count }, (_, i) => (i + 1) * notebook.lineSpacing);
-  }, []);
+    const count = Math.ceil(h / notebook.lineSpacing) + 1;
+    return Array.from({ length: count }, (_, i) => i * notebook.lineSpacing);
+  }, [h]);
 
   return (
-    <View style={styles.fill} pointerEvents="none">
+    <View style={[styles.fill, height != null && { height }]} pointerEvents="none">
       {lines.map((top) => (
         <View key={top} style={[styles.rule, { top }]} />
       ))}

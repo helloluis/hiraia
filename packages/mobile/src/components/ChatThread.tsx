@@ -1,14 +1,25 @@
-import { useEffect, useRef } from 'react';
-import { ActivityIndicator, FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import {
+  ActivityIndicator,
+  Animated,
+  Dimensions,
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 import type { Message } from '@hiraia/shared';
 
 import { colors, fonts } from '../theme';
 
 import { MessageBubble } from './MessageBubble';
+import { NotebookBackground } from './NotebookBackground';
 import { RichText } from './RichText';
 
 const HIRAIA_AVATAR = require('../../assets/hiraia-profile.png');
+const WINDOW_H = Dimensions.get('window').height;
 
 interface ChatThreadProps {
   messages: Message[];
@@ -18,6 +29,10 @@ interface ChatThreadProps {
 
 export function ChatThread({ messages, isStreaming, streamingContent }: ChatThreadProps) {
   const listRef = useRef<FlatList<Message>>(null);
+  // Scroll offset drives the lined paper so it moves WITH the messages (one sheet,
+  // not a fixed backdrop). Native-driven for smoothness.
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const [contentH, setContentH] = useState(0);
 
   // Keep the newest message (and the streaming bubble) in view.
   useEffect(() => {
@@ -29,6 +44,7 @@ export function ChatThread({ messages, isStreaming, streamingContent }: ChatThre
   if (messages.length === 0) {
     return (
       <View style={styles.container}>
+        <NotebookBackground />
         <View style={styles.emptyState}>
           <Text style={styles.emptyTitle}>Maligayang Pagdating sa Hiraia!</Text>
           <Text style={styles.emptySubtitle}>
@@ -41,13 +57,30 @@ export function ChatThread({ messages, isStreaming, streamingContent }: ChatThre
 
   return (
     <View style={styles.container}>
-      <FlatList
-        ref={listRef}
+      {/* lined sheet sized to the content, translated by -scrollY so it scrolls
+          with the messages (one continuous notebook page) */}
+      <Animated.View
+        style={[styles.paperLayer, { transform: [{ translateY: Animated.multiply(scrollY, -1) }] }]}
+        pointerEvents="none"
+      >
+        <NotebookBackground height={Math.max(contentH, WINDOW_H) + WINDOW_H} />
+      </Animated.View>
+      <Animated.FlatList
+        ref={listRef as never}
         data={messages}
-        renderItem={({ item }) => <MessageBubble message={item} />}
-        keyExtractor={(item, index) => `${item.timestamp?.getTime() ?? index}-${index}`}
+        renderItem={({ item }: { item: Message }) => <MessageBubble message={item} />}
+        keyExtractor={(item: Message, index: number) =>
+          `${item.timestamp?.getTime() ?? index}-${index}`
+        }
         contentContainerStyle={styles.messageList}
-        onContentSizeChange={() => listRef.current?.scrollToEnd({ animated: true })}
+        onContentSizeChange={(_w: number, h: number) => {
+          setContentH(h);
+          listRef.current?.scrollToEnd({ animated: true });
+        }}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+          useNativeDriver: true,
+        })}
+        scrollEventThrottle={16}
         ListFooterComponent={
           isStreaming ? <StreamingBubble content={streamingContent ?? ''} /> : null
         }
@@ -75,6 +108,13 @@ function StreamingBubble({ content }: { content: string }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    overflow: 'hidden', // clip the translated paper layer
+  },
+  paperLayer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
   },
   emptyState: {
     flex: 1,

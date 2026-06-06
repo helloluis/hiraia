@@ -42,6 +42,8 @@ export const colors = {
   hairline: 'rgba(12, 52, 61, 0.12)',
   /** Warm gold — 'beta'/heads-up accents (mirrors the web yellow download section). */
   accent: '#f2c14e',
+  /** Light teal-gray — the Menu/Settings panel ("notebook cover"). */
+  cover: '#dde7e4',
   white: '#FFFFFF',
 } as const;
 
