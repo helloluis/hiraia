@@ -113,6 +113,36 @@
       "expectRetrieves": "none",
       "mustContain": ["hindi.{0,20}(maintind|naintind|kita maunawa)|pasensya|paki-?ulit|pakiulit"],
       "mustNotContain": ["[Mm]agandang tanong"]
+    },
+
+    {
+      "_codified_from": "on-device 2026-06-06: verify the tutor EMITS [image: …] for diagram-worthy topics (the image handler's whole input)",
+      "id": "image-trex",
+      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "question": "Anong hitsura ng Tyrannosaurus rex?",
+      "expectRetrieves": "any",
+      "mustEmitImage": true
+    },
+    {
+      "id": "image-plant-parts",
+      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "question": "Ano ang mga bahagi ng halaman?",
+      "expectRetrieves": "any",
+      "mustEmitImage": true
+    },
+    {
+      "id": "image-water-cycle",
+      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "question": "Paano ang siklo ng tubig?",
+      "expectRetrieves": "any",
+      "mustEmitImage": true
+    },
+    {
+      "id": "image-human-heart",
+      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "question": "Ano ang puso ng tao?",
+      "expectRetrieves": "any",
+      "mustEmitImage": true
     }
   ]
 }

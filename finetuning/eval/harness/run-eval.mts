@@ -23,6 +23,7 @@ interface Case {
   history?: Turn[]; // multi-turn: full conversation; grounding uses the LAST user turn
   expectRetrieves?: string; mustContain?: string[]; mustNotContain?: string[]; maxChars?: number;
   pending?: boolean; // codified behavior not yet trained into the adapter — reported, non-blocking
+  mustEmitImage?: boolean; // the answer must contain an [image: …] tag (diagram-worthy topics)
 }
 
 const cfg = JSON.parse(readFileSync(join(HERE, 'cases.json'), 'utf8')) as { cases: Case[] };
@@ -44,7 +45,7 @@ async function ask(messages: { role: string; content: string }[]): Promise<strin
   if (!res.ok) throw new Error(`HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const data: any = await res.json();
   if (data.error) throw new Error(`server error: ${JSON.stringify(data.error).slice(0, 200)}`);
-  return stripTags(data.choices?.[0]?.message?.content ?? '');
+  return data.choices?.[0]?.message?.content ?? ''; // RAW (keeps [image:] for mustEmitImage)
 }
 
 let pass = 0;
@@ -75,15 +76,17 @@ for (const c of cfg.cases) {
   const messages = c.history
     ? [{ role: 'system', content: system }, ...c.history]
     : [{ role: 'system', content: system }, { role: 'user', content: c.question! }];
-  let answer = '';
+  let raw = '';
   try {
-    answer = await ask(messages);
+    raw = await ask(messages);
   } catch (e: any) {
     fails.push(`request error: ${e.message}`);
   }
+  const answer = stripTags(raw); // text assertions run on the displayed (tag-stripped) text
   for (const rx of c.mustContain ?? []) if (!new RegExp(rx, 'i').test(answer)) fails.push(`mustContain /${rx}/ missing`);
   for (const rx of c.mustNotContain ?? []) if (new RegExp(rx, 'i').test(answer)) fails.push(`mustNotContain /${rx}/ present`);
   if (c.maxChars && answer.length > c.maxChars) fails.push(`too long (${answer.length} > ${c.maxChars} chars)`);
+  if (c.mustEmitImage && !/\[image:/i.test(raw)) fails.push('mustEmitImage: no [image: …] tag emitted');
 
   const ok = fails.length === 0;
   const tag = ok ? '✅ PASS' : c.pending ? '⏳ PEND' : '❌ FAIL';
