@@ -16,10 +16,20 @@ const flaggedFiles = readdirSync(FLAGGED_DIR).filter(f => !f.startsWith('.'));
 const flaggedMap = {};
 for (const file of flaggedFiles) {
   const fullPath = join(FLAGGED_DIR, file);
+  let target = '';
   if (lstatSync(fullPath).isSymbolicLink()) {
-    const target = readlinkSync(fullPath); // e.g. ../biology/punnett-square.png
-    // Extract target category (e.g. biology) and filename
-    const parts = target.split('/');
+    target = readlinkSync(fullPath); // e.g. ../biology/punnett-square.png
+  } else {
+    // Git on Windows might check out symlinks as regular text files containing the path
+    const content = readFileSync(fullPath, 'utf8').trim();
+    if (content.startsWith('../') || content.includes('/')) {
+      target = content;
+    }
+  }
+
+  if (target) {
+    const normalizedTarget = target.replace(/\\/g, '/');
+    const parts = normalizedTarget.split('/');
     const category = parts[parts.length - 2];
     const name = parts[parts.length - 1];
     const id = name.replace(/\.png$/, '');
@@ -66,6 +76,8 @@ function getFlaggedMatch(filename) {
   if (mfLower.includes('walo')) return 'sea-snake-walo-walo.png';
   if (mfLower.includes('pulse')) return 'heartbeat-pulse-wrist.png';
   if (mfLower.includes('yoyo')) return 'yoyo-energy-transformation.png';
+  if (mfLower.includes('exercise')) return 'benefits-of-exercise-body.png';
+  if (mfLower.includes('diffusion-vs-osmosis')) return 'osmosis-turgid-vs-wilted.png';
 
   return null;
 }
