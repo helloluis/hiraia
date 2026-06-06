@@ -22,6 +22,9 @@ import { SCIENCE_FACTS } from './facts.generated.js';
  */
 
 const FIELD_WEIGHT = { topic: 8, terms: 4, body: 1, bridge: 0.5 } as const;
+// Recent-conversation context is scored at this fraction of query weight — enough
+// to tip ambiguous follow-ups, too little to override a fresh question's match.
+const CONTEXT_WEIGHT = 0.35;
 const MIN_TOKEN_LEN = 3; // matches build-bank.py's `len(t) > 2`
 
 /**
@@ -130,8 +133,15 @@ export class RagStore {
   /**
    * Return the top-k facts for a query, best first. Body text is resolved to the
    * given language. Facts with zero overlap are dropped.
+   *
+   * `context` (recent conversation turns) is scored at a fraction of the query's
+   * weight (CONTEXT_WEIGHT): the current message dominates ranking for a fresh,
+   * self-contained question, while context only TIPS otherwise-ambiguous matches —
+   * e.g. a follow-up "Dahil sa asteroid?" after a dinosaur-extinction turn picks the
+   * impact fact over the asteroid-belt fact, without contaminating an unrelated
+   * next question.
    */
-  search(query: string, topK = 3, language: Language = 'english'): FactHit[] {
+  search(query: string, topK = 3, language: Language = 'english', context = ''): FactHit[] {
     // Normally we drop question/glue words so content words drive ranking. But a
     // bare identity question ("sino ka", "ano kayo", "para saan to") is ALL such
     // words — stripping leaves nothing. In that case fall back to the raw tokens
@@ -140,24 +150,38 @@ export class RagStore {
     const stripped = tokenize(query).filter((t) => !QUERY_STOP.has(t));
     const qTokens = new Set(stripped.length > 0 ? stripped : tokenize(query));
     if (qTokens.size === 0) return [];
+    // Context tokens that aren't already in the query (those would double-count).
+    const ctxTokens = new Set(
+      tokenize(context).filter((t) => !QUERY_STOP.has(t) && !qTokens.has(t))
+    );
     const key = LANG_KEY[language];
+
+    // Field weight for a token in a doc: topic/terms are language-neutral anchors;
+    // body is scoped to the active language + a low-weight English bridge for
+    // code-switched terms. The OTHER vernacular's body is deliberately not scored.
+    const fieldWeight = (doc: IndexedFact, t: string): number => {
+      if (doc.topic.has(t)) return FIELD_WEIGHT.topic;
+      if (doc.terms.has(t)) return FIELD_WEIGHT.terms;
+      if (doc.body[key].has(t)) return FIELD_WEIGHT.body;
+      if (key !== 'en' && doc.body.en.has(t)) return FIELD_WEIGHT.bridge;
+      return 0;
+    };
 
     const scored: FactHit[] = [];
     for (const doc of this.docs) {
       let score = 0;
       for (const t of qTokens) {
-        // topic/terms are language-neutral anchors; body is scoped to the active
-        // language, with a low-weight English bridge for code-switched terms.
-        // The OTHER vernacular's body is deliberately not scored.
-        let w = 0;
-        if (doc.topic.has(t)) w = FIELD_WEIGHT.topic;
-        else if (doc.terms.has(t)) w = FIELD_WEIGHT.terms;
-        else if (doc.body[key].has(t)) w = FIELD_WEIGHT.body;
-        else if (key !== 'en' && doc.body.en.has(t)) w = FIELD_WEIGHT.bridge;
+        const w = fieldWeight(doc, t);
         if (w > 0) score += w * (this.idf.get(t) ?? 0);
       }
+      // context tips ties at a fraction of the weight; never drives ranking alone.
+      let ctxScore = 0;
+      for (const t of ctxTokens) {
+        const w = fieldWeight(doc, t);
+        if (w > 0) ctxScore += w * (this.idf.get(t) ?? 0);
+      }
       if (score > 0) {
-        scored.push({ fact: doc.fact, text: doc.fact.fact[key], score });
+        scored.push({ fact: doc.fact, text: doc.fact.fact[key], score: score + CONTEXT_WEIGHT * ctxScore });
       }
     }
 
@@ -175,9 +199,10 @@ export class RagStore {
     query: string,
     language: Language = 'english',
     max = 3,
-    floorRatio = 0.5
+    floorRatio = 0.5,
+    context = ''
   ): FactHit[] {
-    const hits = this.search(query, max, language);
+    const hits = this.search(query, max, language, context);
     if (hits.length === 0) return [];
     const top = hits[0]!.score;
     return hits.filter((h) => h.score >= top * floorRatio);

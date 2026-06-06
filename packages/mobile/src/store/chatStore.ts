@@ -124,9 +124,14 @@ export const useChatStore = create<ChatState>()((set, get) => ({
 
     try {
       // Ground the model on the curated facts (it confabulates without grounding).
+      // Pass the previous 1-2 real turns as low-weight context so a short follow-up
+      // ("Dahil sa asteroid?") retrieves on the conversation's topic, not the bare
+      // keyword (which would pull e.g. the asteroid BELT instead of the impact).
+      const priorTurns = get().messages.filter(isRealTurn).slice(-3, -1);
+      const ragContext = priorTurns.map((m) => m.content).join(' ');
       let grounding: RagResult[] = [];
       try {
-        grounding = await engine.ragSearch(content, 3);
+        grounding = await engine.ragSearch(content, 3, ragContext);
       } catch (ragError) {
         console.warn('RAG search failed; answering ungrounded:', ragError);
       }
@@ -184,11 +189,11 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       messages: [...state.messages, { role: 'assistant', content: '', timestamp: new Date(), metadata: { kind: 'factoid' } }],
     }));
 
-    // Deliberate typewriter so it's clearly animated. The factoid plays while the
-    // model warms up (~20-30s), so a few seconds of type-on is well within budget.
-    // ~2 chars / 30ms ≈ 67 chars/sec → a typical factoid types on over ~2-4s.
-    const CHARS_PER_TICK = 2;
-    const TICK_MS = 30;
+    // Deliberate single-char typewriter so it's clearly animated. The factoid plays
+    // while the model warms up (~20-30s), so a slow type-on is well within budget.
+    // ~1 char / 26ms ≈ 38 chars/sec → a typical factoid types on over ~4-7s.
+    const CHARS_PER_TICK = 1;
+    const TICK_MS = 26;
     let currentText = '';
     let index = 0;
     const fullText = picked.text;

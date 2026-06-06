@@ -14,16 +14,19 @@ interface ChatTextInputProps {
   onChangeText: (text: string) => void;
   onSend: () => void;
   placeholder?: string;
+  /** Disable input + send while the model is still loading (progress bar moving). */
+  disabled?: boolean;
 }
 
-export function ChatTextInput({ value, onChangeText, onSend, placeholder }: ChatTextInputProps) {
+export function ChatTextInput({ value, onChangeText, onSend, placeholder, disabled = false }: ChatTextInputProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const canSend = !disabled && !!value.trim();
 
   return (
     <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <TouchableOpacity style={styles.attachButton}>
-          <Text style={styles.attachIcon}>+</Text>
+      <View style={[styles.inputContainer, disabled && styles.inputContainerDisabled]}>
+        <TouchableOpacity style={styles.attachButton} disabled={disabled}>
+          <Text style={[styles.attachIcon, disabled && styles.dimmed]}>+</Text>
         </TouchableOpacity>
 
         <RNTextInput
@@ -35,17 +38,18 @@ export function ChatTextInput({ value, onChangeText, onSend, placeholder }: Chat
           }}
           placeholder={placeholder}
           placeholderTextColor={colors.inkMuted}
+          editable={!disabled}
           multiline
           maxLength={2000}
           textAlignVertical="top"
         />
 
         <TouchableOpacity
-          style={[styles.sendButton, !value.trim() && styles.sendButtonDisabled]}
+          style={[styles.sendButton, !canSend && styles.sendButtonDisabled]}
           onPress={onSend}
-          disabled={!value.trim()}
+          disabled={!canSend}
         >
-          <Text style={[styles.sendIcon, !value.trim() && styles.sendIconDisabled]}>➤</Text>
+          <Text style={[styles.sendIcon, !canSend && styles.sendIconDisabled]}>➤</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -69,6 +73,13 @@ const styles = StyleSheet.create({
     padding: 8,
     borderWidth: 1,
     borderColor: colors.hairline,
+  },
+  inputContainerDisabled: {
+    backgroundColor: colors.bubble, // muted fill while the model loads
+    opacity: 0.6,
+  },
+  dimmed: {
+    opacity: 0.5,
   },
   attachButton: {
     padding: 8,

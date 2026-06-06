@@ -59,6 +59,7 @@ export default function ChatScreen() {
             value={inputText}
             onChangeText={setInputText}
             onSend={handleSend}
+            disabled={!isReady}
             placeholder={isReady ? 'Magtanong tungkol sa agham...' : 'Inihahanda ang AI...'}
           />
         </View>
