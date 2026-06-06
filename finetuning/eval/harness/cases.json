@@ -50,12 +50,13 @@
       "mustNotContain": []
     },
     {
-      "id": "abstain-jupiter-moons",
-      "lang": "tagalog", "grade": 6, "mode": "abstain",
+      "id": "grounded-jupiter-moons",
+      "_note": "Was an abstain case; the Phase-1 bank now has accurate Jupiter-moon facts, so the tutor correctly answers (4 large Galilean moons) rather than abstaining. Now a coverage test.",
+      "lang": "tagalog", "grade": 6, "mode": "grounded",
       "question": "ilang buwan po meron ang planetang Jupiter?",
       "expectRetrieves": "any",
-      "mustContain": ["hindi.{0,18}(sigurado|alam|tiyak)"],
-      "mustNotContain": ["mayroong [0-9]", "may [0-9]+ na buwan"]
+      "mustContain": ["[Gg]alile|[Gg]anymede|[Ee]uropa|apat na malalak"],
+      "mustNotContain": []
     },
     {
       "id": "abstain-biggest-star",

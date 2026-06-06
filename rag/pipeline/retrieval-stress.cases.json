@@ -1,0 +1,63 @@
+{
+  "_note": "Retrieval stress-test for the ~5k bank. Each case: a natural kid query + the language + which fact SHOULD come back (matched by id-substring, robust to not knowing exact ids) within maxRank, and optionally ids that must NOT win. Categories probe the known Phase-2 failure modes.",
+  "cases": [
+    {"cat": "verb-hijack", "q": "paano gumagana ang utak", "lang": "tagalog", "expectIdIncludes": ["brain", "utak", "neuron", "nerve"], "mustNotIdIncludes": ["about-"], "maxRank": 3},
+    {"cat": "verb-hijack", "q": "paano gumagana ang puso", "lang": "tagalog", "expectIdIncludes": ["heart", "puso", "circulat", "blood"], "mustNotIdIncludes": ["about-"], "maxRank": 3},
+    {"cat": "verb-hijack", "q": "paano gumagana ang baterya", "lang": "tagalog", "expectIdIncludes": ["batter", "baterya"], "mustNotIdIncludes": ["about-"], "maxRank": 3},
+    {"cat": "verb-hijack", "q": "paano gumagana ang internet", "lang": "tagalog", "expectIdIncludes": ["internet"], "mustNotIdIncludes": ["about-"], "maxRank": 3},
+    {"cat": "verb-hijack", "q": "paano gumagana ang bulkan", "lang": "tagalog", "expectIdIncludes": ["volcano", "bulkan"], "mustNotIdIncludes": ["about-"], "maxRank": 3},
+
+    {"cat": "distractor", "q": "ilang puso ang pugita", "lang": "tagalog", "expectIdIncludes": ["octopus", "pugita"], "maxRank": 3},
+    {"cat": "distractor", "q": "May homework ako tungkol sa planet Uranus", "lang": "tagalog", "expectIdIncludes": ["uranus"], "maxRank": 3},
+    {"cat": "distractor", "q": "ano ang pangalan ng pinakamalaking bituin", "lang": "tagalog", "expectIdIncludes": ["star", "bituin", "galax", "sun"], "mustNotIdIncludes": ["about-name"], "maxRank": 3},
+
+    {"cat": "core-tl", "q": "bakit asul ang langit", "lang": "tagalog", "expectIdIncludes": ["blue-sky", "sky"], "maxRank": 2},
+    {"cat": "core-tl", "q": "ano ang photosynthesis", "lang": "tagalog", "expectIdIncludes": ["photosynthesis"], "maxRank": 3},
+    {"cat": "core-tl", "q": "bakit umuulan", "lang": "tagalog", "expectIdIncludes": ["rain", "ulan", "water-cycle"], "maxRank": 3},
+    {"cat": "core-tl", "q": "ano ang tunog", "lang": "tagalog", "expectIdIncludes": ["sound", "tunog"], "maxRank": 3},
+    {"cat": "core-tl", "q": "bakit nahuhulog ang mga bagay", "lang": "tagalog", "expectIdIncludes": ["gravity", "grav", "fall"], "maxRank": 3},
+
+    {"cat": "new-fact", "q": "ano ang valence electron", "lang": "tagalog", "expectIdIncludes": ["valence"], "maxRank": 3},
+    {"cat": "new-fact", "q": "ano ang ionic bond", "lang": "tagalog", "expectIdIncludes": ["ionic", "ion", "bond"], "maxRank": 3},
+    {"cat": "new-fact", "q": "ano ang aurora", "lang": "tagalog", "expectIdIncludes": ["aurora"], "maxRank": 3},
+    {"cat": "new-fact", "q": "ano ang DNA", "lang": "tagalog", "expectIdIncludes": ["dna", "gene", "chromosom"], "maxRank": 3},
+    {"cat": "new-fact", "q": "ano ang natural selection", "lang": "tagalog", "expectIdIncludes": ["selection", "evolution", "adapt"], "maxRank": 3},
+    {"cat": "new-fact", "q": "bakit kumikinang ang dagat sa gabi", "lang": "tagalog", "expectIdIncludes": ["bioluminescence", "glow", "plankton"], "maxRank": 3},
+    {"cat": "new-fact", "q": "ano ang black hole", "lang": "tagalog", "expectIdIncludes": ["black-hole"], "maxRank": 3},
+    {"cat": "new-fact", "q": "ano ang tornado", "lang": "tagalog", "expectIdIncludes": ["tornado", "buhawi"], "maxRank": 3},
+
+    {"cat": "en", "q": "what is a black hole", "lang": "english", "expectIdIncludes": ["black-hole"], "maxRank": 3},
+    {"cat": "en", "q": "how do vaccines work", "lang": "english", "expectIdIncludes": ["vaccin"], "maxRank": 3},
+    {"cat": "en", "q": "what is the water cycle", "lang": "english", "expectIdIncludes": ["water-cycle"], "maxRank": 3},
+    {"cat": "en", "q": "how does an octopus camouflage", "lang": "english", "expectIdIncludes": ["octopus", "camouflage"], "maxRank": 3},
+    {"cat": "en", "q": "why do we yawn", "lang": "english", "expectIdIncludes": ["yawn"], "maxRank": 3},
+    {"cat": "en", "q": "what are valence electrons", "lang": "english", "expectIdIncludes": ["valence"], "maxRank": 3},
+
+    {"cat": "bis", "q": "unsa ang kidlat", "lang": "cebuano", "expectIdIncludes": ["lightning", "kidlat", "kilat"], "maxRank": 3},
+    {"cat": "bis", "q": "unsa ang akapulko", "lang": "cebuano", "expectIdIncludes": ["akapulko"], "maxRank": 3},
+    {"cat": "bis", "q": "pila ka kasingkasing ang kugita", "lang": "cebuano", "expectIdIncludes": ["octopus", "pugita"], "maxRank": 3},
+    {"cat": "bis", "q": "ngano nga asul ang langit", "lang": "cebuano", "expectIdIncludes": ["blue-sky", "sky"], "maxRank": 3},
+    {"cat": "bis", "q": "unsa ang photosynthesis", "lang": "cebuano", "expectIdIncludes": ["photosynthesis"], "maxRank": 3},
+    {"cat": "bis", "q": "unsa ang bulkan", "lang": "cebuano", "expectIdIncludes": ["volcano", "bulkan"], "maxRank": 3},
+    {"cat": "bis", "q": "unsa ang DNA", "lang": "cebuano", "expectIdIncludes": ["dna", "gene"], "maxRank": 3},
+
+    {"cat": "morphology", "q": "paano ginagawa ang kuryente", "lang": "tagalog", "expectIdIncludes": ["electric", "kuryente", "current"], "maxRank": 3},
+    {"cat": "morphology", "q": "saan nagmumula ang ulan", "lang": "tagalog", "expectIdIncludes": ["rain", "ulan", "water-cycle", "evapor"], "maxRank": 3},
+    {"cat": "morphology", "q": "paano lumalaki ang halaman", "lang": "tagalog", "expectIdIncludes": ["plant", "halaman", "grow", "germinat", "photosynthesis"], "maxRank": 3},
+
+    {"cat": "ph", "q": "ano ang ampalaya", "lang": "tagalog", "expectIdIncludes": ["ampalaya"], "maxRank": 3},
+    {"cat": "ph", "q": "ano ang Philippine eagle", "lang": "tagalog", "expectIdIncludes": ["eagle", "philippine"], "maxRank": 3},
+    {"cat": "ph", "q": "ano ang PHIVOLCS alert level", "lang": "tagalog", "expectIdIncludes": ["phivolcs", "volcano-alert", "alert"], "maxRank": 3},
+    {"cat": "ph", "q": "ano ang sabila", "lang": "tagalog", "expectIdIncludes": ["aloe", "sabila"], "maxRank": 3},
+    {"cat": "ph", "q": "bakit maraming bagyo sa Pilipinas", "lang": "tagalog", "expectIdIncludes": ["typhoon", "bagyo", "ph-many"], "maxRank": 3},
+
+    {"cat": "animal", "q": "ano ang T. rex", "lang": "tagalog", "expectIdIncludes": ["trex", "rex", "tyrann"], "maxRank": 3},
+    {"cat": "animal", "q": "bakit lumilipad ang ibon", "lang": "tagalog", "expectIdIncludes": ["bird", "ibon", "fly"], "maxRank": 3},
+    {"cat": "animal", "q": "ano ang pinakamabilis na hayop", "lang": "tagalog", "expectIdIncludes": ["fastest", "cheetah", "record", "mabilis"], "maxRank": 3},
+    {"cat": "animal", "q": "paano natutulog ang dolphin", "lang": "tagalog", "expectIdIncludes": ["dolphin"], "maxRank": 3},
+
+    {"cat": "body", "q": "ano ang ginagawa ng baga", "lang": "tagalog", "expectIdIncludes": ["lung", "baga", "respirat", "breath"], "maxRank": 3},
+    {"cat": "body", "q": "bakit tayo humihinga", "lang": "tagalog", "expectIdIncludes": ["breath", "hinga", "respirat", "oxygen", "lung"], "maxRank": 3},
+    {"cat": "body", "q": "ano ang nilalaman ng dugo", "lang": "tagalog", "expectIdIncludes": ["blood", "dugo"], "maxRank": 3}
+  ]
+}

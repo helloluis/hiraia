@@ -32,22 +32,51 @@ const MIN_TOKEN_LEN = 3; // matches build-bank.py's `len(t) > 2`
  * on content words like "kuryente", "asul", "langit", "bakhaw".
  */
 const QUERY_STOP = new Set(
+  // Generic question/glue words PLUS topic-less PROCESS verbs a kid prepends to any
+  // topic ("paano gumagana ang X", "saan nagmumula ang Y", "ano ang ginagawa ng Z").
+  // Unstripped, those verbs hijack matches at 5k scale — the content noun must drive
+  // ranking. Kept conservative: only clearly topic-less operation verbs, NOT content
+  // verbs like humihinga/lumilipad/kumakain. TL + a few BIS forms.
   `bakit paano ano anong kung saan kailan sino sinong alin para kaya
    ngano nganong unsa unsay asa kinsa giunsa pila naunsa
    ito iyan iyon nito niyan kini kana kanang
+   ang mga yung nga kang iya niya nila ila
+   may mayroon meron adunay naa
    what why how when where who whom which whose
    the are does did can could would should about from with into
-   your you they them this that these those`
+   your you they them this that these those
+   gumagana gumana paggana gampanan
+   nagmumula nagmula magmula nanggaling nanggagaling pinagmumulan pinanggagalingan
+   ginagawa gumagawa ginawa gawin
+   nagiging naging magiging nagagawa
+   nangyayari nangyari mangyayari nagaganap naganap
+   ginagamit gumagamit gamitin
+   lumalaki tumataas bumababa
+   gibuhat gihimo nahimo nahitabo mahitabo gigamit gigikanan`
     .split(/\s+/)
     .filter(Boolean)
 );
 
-/** Lowercase, strip punctuation, split. Keeps ñ + a few accents for "niño" etc. */
+/**
+ * Conservative plural collapse so singular/plural forms unify (the query "dinosaur"
+ * must reach the fact whose terms say "dinosaurs"). Applied to BOTH index and query,
+ * so it only needs to be CONSISTENT, not linguistically correct — over-stemming a
+ * word the same way on both sides still matches. Excludes -ss/-us/-is/-os/-as/-ous
+ * and short words so proper nouns (Uranus, Venus) and Tagalog/Cebuano words survive.
+ */
+function stem(t: string): string {
+  if (t.length > 4 && t.endsWith('ies')) return t.slice(0, -3) + 'y'; // batteries->battery
+  if (t.length > 4 && t.endsWith('s') && !/(ss|us|is|os|as|ous)$/.test(t)) return t.slice(0, -1);
+  return t;
+}
+
+/** Lowercase, strip punctuation, split, stem. Keeps ñ + a few accents for "niño". */
 export function tokenize(text: string): string[] {
   return text
     .toLowerCase()
     .split(/[^a-z0-9ñáéíóúàèìòù]+/i)
-    .filter((t) => t.length >= MIN_TOKEN_LEN);
+    .filter((t) => t.length >= MIN_TOKEN_LEN)
+    .map(stem);
 }
 
 type LangKey = 'tl' | 'en' | 'bis';
