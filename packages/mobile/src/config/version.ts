@@ -17,7 +17,7 @@ export const HIRAIAPEDIA_VERSION = '1.0.1';
  * base model with no adapter. Bump when a new adapter ships for that language.
  */
 export const ADAPTER_VERSION: Record<Language, string> = {
-  tagalog: 'v4 · grounded',
+  tagalog: 'v5 · grounded · cached-prompt',
   cebuano: 'v3 · beta',
   english: '— (base model)',
 };
