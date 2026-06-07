@@ -7,7 +7,11 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { RagStore, SemanticIndex, normalizeQuery, buildContextualQuery } from '../../../packages/shared/src/rag/index.ts';
-import { generateSystemPrompt, formatGroundingBlock } from '../../../packages/shared/src/prompts/system.ts';
+import {
+  generateSystemPrompt,
+  formatGroundingBlock,
+  composeGroundedUserTurn,
+} from '../../../packages/shared/src/prompts/system.ts';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const CHAT = 'http://localhost:8088';
@@ -55,10 +59,10 @@ const PROBES = [
 (async () => {
   for (const p of PROBES) {
     const hits = await retrieve(p.q, p.ctx);
-    let system = generateSystemPrompt('tagalog', 5, true);
+    const system = generateSystemPrompt('tagalog', 5, true);
     const block = formatGroundingBlock(hits.map((h: any) => ({ content: h.text, source: h.fact.source, score: h.score, metadata: { topic: h.fact.topic } })));
-    if (block) system += `\n\n${block}`;
-    const base = [{ role: 'system', content: system }, ...p.prior, { role: 'user', content: p.q }];
+    // grounding rides the current user turn — static system (cache-friendly), matches chatStore
+    const base = [{ role: 'system', content: system }, ...p.prior, { role: 'user', content: composeGroundedUserTurn(block, p.q) }];
     console.log(`\n══════ ${p.id}  ·  retrieved: ${hits.map((h: any) => h.fact.id).slice(0, 3).join(', ') || 'none'}`);
     for (const temp of TEMPS) {
       const n = temp === 0 ? 1 : N;

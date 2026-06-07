@@ -11,7 +11,11 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { RagStore } from '../../../packages/shared/src/rag/RagStore.ts';
-import { generateSystemPrompt, formatGroundingBlock } from '../../../packages/shared/src/prompts/system.ts';
+import {
+  generateSystemPrompt,
+  formatGroundingBlock,
+  composeGroundedUserTurn,
+} from '../../../packages/shared/src/prompts/system.ts';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ENDPOINT = process.env.ENDPOINT ?? 'http://localhost:8088';
@@ -107,11 +111,12 @@ for (const c of cases) {
   const query = c.history ? [...c.history].reverse().find((t) => t.role === 'user')!.content : c.question!;
   const hits = store.retrieveForGrounding(query as any, c.lang as any, 3);
   const retrievedIds = hits.map((h: any) => h.fact.id);
-  let system = generateSystemPrompt(c.lang as any, c.grade as any, true);
+  // STATIC system (no grounding) — grounding rides the current user turn, matching
+  // chatStore + training, so this gate validates the cache-friendly serving path.
+  const system = generateSystemPrompt(c.lang as any, c.grade as any, true);
   const block = formatGroundingBlock(
     hits.map((h: any) => ({ content: h.text, source: h.fact.source, score: h.score, metadata: { topic: h.fact.topic } }))
   );
-  if (block) system += `\n\n${block}`;
 
   const fails: string[] = [];
 
@@ -122,10 +127,20 @@ for (const c of cases) {
     if (!retrievedIds.includes(c.expectRetrieves)) fails.push(`retrieval: expected '${c.expectRetrieves}', got [${retrievedIds.join(',') || 'none'}]`);
   }
 
-  // 2) generation + output assertions
-  const messages = c.history
-    ? [{ role: 'system', content: system }, ...c.history]
-    : [{ role: 'system', content: system }, { role: 'user', content: c.question! }];
+  // 2) generation + output assertions. Grounding goes into the CURRENT (last) user
+  // turn via composeGroundedUserTurn — same as chatStore, so the system stays static.
+  const baseTurns = c.history
+    ? c.history.map((t: { role: string; content: string }) => ({ ...t }))
+    : [{ role: 'user', content: c.question! }];
+  if (block) {
+    for (let i = baseTurns.length - 1; i >= 0; i--) {
+      if (baseTurns[i].role === 'user') {
+        baseTurns[i].content = composeGroundedUserTurn(block, baseTurns[i].content);
+        break;
+      }
+    }
+  }
+  const messages = [{ role: 'system', content: system }, ...baseTurns];
   let raw = '';
   try {
     raw = await ask(messages);

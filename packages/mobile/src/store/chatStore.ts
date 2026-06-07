@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { generateSystemPrompt, formatGroundingBlock } from '@hiraia/shared';
+import { generateSystemPrompt, formatGroundingBlock, composeGroundedUserTurn } from '@hiraia/shared';
 import type { Message, RagResult } from '@hiraia/shared';
 
 import { pickFactoidText } from '../data/factoids';
@@ -163,11 +163,26 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       }
       // Active language + grade 5 + imageTags=true — parity with how the grounded
       // adapter was trained. RAG retrieval is scoped to the same language.
-      let systemPrompt = generateSystemPrompt(lang, 5, true);
+      // The system prompt is STATIC (no grounding) so QVAC's system-prompt KV cache
+      // (keyed by a hash of the system message) stays warm across turns — the grounding
+      // moves into the current user turn instead (see composeGroundedUserTurn). This is
+      // the TTFT fix: only the new turn re-prefills, not the whole ~1500-token prompt.
+      const systemPrompt = generateSystemPrompt(lang, 5, true);
       const groundingBlock = formatGroundingBlock(grounding);
-      if (groundingBlock) systemPrompt += `\n\n${groundingBlock}`;
 
       const conversationMessages = await buildContext(get().messages, systemPrompt);
+      // Inject the grounding into the CURRENT (last) user turn, matching training.
+      if (groundingBlock) {
+        for (let i = conversationMessages.length - 1; i >= 0; i--) {
+          if (conversationMessages[i].role === 'user') {
+            conversationMessages[i] = {
+              ...conversationMessages[i],
+              content: composeGroundedUserTurn(groundingBlock, conversationMessages[i].content),
+            };
+            break;
+          }
+        }
+      }
 
       let fullResponse = '';
       await withModelLock(async () => {
