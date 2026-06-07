@@ -26,9 +26,16 @@ interface Case {
   mustEmitImage?: boolean; // legacy: answer must contain an [image: …] tag. Vestigial now — on-device
   // display is RETRIEVAL-driven (FACT_IMAGE[retrieved fact]), not tag-driven; prefer mustRetrieveIdIncludes.
   mustRetrieveIdIncludes?: string[]; // a retrieved fact id must contain one of these (the image-bearing concept)
+  mustContainEmoji?: boolean; // the answer should carry at least one emoji (engagement nudge)
+  adapter?: 'tagalog' | 'bisaya'; // which LoRA this case must run under (default tagalog); harness boots both
 }
 
 const cfg = JSON.parse(readFileSync(join(HERE, 'cases.json'), 'utf8')) as { cases: Case[] };
+// The harness boots one server per adapter (tagalog, then bisaya). Each pass runs
+// only the cases tagged for its adapter (default tagalog), so Cebuano answers are
+// tested against the Bisaya LoRA — the real device path, not the Tagalog one.
+const ADAPTER_TAG = process.env.ADAPTER_TAG ?? 'tagalog';
+const cases = cfg.cases.filter((c) => (c.adapter ?? 'tagalog') === ADAPTER_TAG);
 const store = new RagStore();
 const stripTags = (s: string) => s.replace(/\s*\[image:[^\]]*\]/gi, '').trim();
 
@@ -54,7 +61,7 @@ let pass = 0;
 const failures: string[] = [];
 const pending: string[] = [];
 
-for (const c of cfg.cases) {
+for (const c of cases) {
   // retrieval grounds on the latest user message (matches chatStore)
   const query = c.history ? [...c.history].reverse().find((t) => t.role === 'user')!.content : c.question!;
   const hits = store.retrieveForGrounding(query as any, c.lang as any, 3);
@@ -92,6 +99,8 @@ for (const c of cfg.cases) {
   // display-aligned image check: the retrieval-driven picture shows the right concept
   if (c.mustRetrieveIdIncludes && !c.mustRetrieveIdIncludes.some((s) => retrievedIds.some((id) => id.toLowerCase().includes(s.toLowerCase()))))
     fails.push(`mustRetrieveIdIncludes: none of [${c.mustRetrieveIdIncludes.join(',')}] in retrieved [${retrievedIds.join(',') || 'none'}]`);
+  // emoji engagement nudge (Extended_Pictographic covers the emoji blocks)
+  if (c.mustContainEmoji && !/\p{Extended_Pictographic}/u.test(raw)) fails.push('mustContainEmoji: no emoji in answer');
 
   const ok = fails.length === 0;
   const tag = ok ? '✅ PASS' : c.pending ? '⏳ PEND' : '❌ FAIL';
@@ -103,8 +112,8 @@ for (const c of cfg.cases) {
   if (!ok) fails.forEach((f) => console.log(`   ↳ ${f}`));
 }
 
-const gated = cfg.cases.filter((c) => !c.pending).length;
-console.log(`\n===== ${pass}/${gated} gated passed${pending.length ? ` (+${pending.length} pending)` : ''} =====`);
+const gated = cases.filter((c) => !c.pending).length;
+console.log(`\n===== [${ADAPTER_TAG}] ${pass}/${gated} gated passed${pending.length ? ` (+${pending.length} pending)` : ''} =====`);
 if (pending.length) console.log(`PENDING (codified, awaits next adapter): ${pending.join(', ')}`);
 if (failures.length) {
   console.log(`FAILED: ${failures.join(', ')}`);

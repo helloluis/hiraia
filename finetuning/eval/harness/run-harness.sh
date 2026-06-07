@@ -40,41 +40,51 @@ echo ">> running retrieval stress-test (model-independent) ..."
   echo "ERR: retrieval regressions — gate FAILS (see above)"; exit 1;
 }
 
+# The Bisaya LoRA that matches Sailor2-3B (== the shipping mobile adapter-bisaya.gguf;
+# the older adapter-bisaya-f16.gguf is a different-arch build and won't load).
+BIS_ADAPTER="${BIS_ADAPTER:-$ROOT/finetuning/adapters/adapter-sailor-bisaya-f16.gguf}"
 echo ">> base:    $BASE"
-echo ">> adapter: $ADAPTER"
-echo ">> starting llama-server on :$PORT ..."
-"$BIN" -m "$BASE" --lora "$ADAPTER" -ngl "$NGL" --port "$PORT" --ctx-size "$CTX" \
-  > "$HERE/.server.log" 2>&1 &
-SERVER_PID=$!
+
+# Boot a llama-server on $PORT with the given adapter and wait for /health.
+boot() {
+  "$BIN" -m "$BASE" --lora "$1" -ngl "$NGL" --port "$PORT" --ctx-size "$CTX" > "$HERE/.server.log" 2>&1 &
+  SERVER_PID=$!
+  for _ in $(seq 1 60); do
+    [ "$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 "http://localhost:$PORT/health" 2>/dev/null || true)" = "200" ] && return 0
+    if ! kill -0 $SERVER_PID 2>/dev/null; then echo "ERR: server died — see $HERE/.server.log"; tail -15 "$HERE/.server.log"; exit 2; fi
+    sleep 2
+  done
+  echo "ERR: server not ready"; exit 2
+}
+stop() { kill $SERVER_PID 2>/dev/null; wait $SERVER_PID 2>/dev/null || true; }
 trap 'kill $SERVER_PID 2>/dev/null' EXIT
+RC=0
 
-# wait for readiness (model load can take ~20-40s)
-echo ">> waiting for server /health ..."
-for i in $(seq 1 60); do
-  code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 "http://localhost:$PORT/health" 2>/dev/null || true)
-  [ "$code" = "200" ] && { echo ">> server ready"; break; }
-  if ! kill -0 $SERVER_PID 2>/dev/null; then echo "ERR: server died — see $HERE/.server.log"; tail -15 "$HERE/.server.log"; exit 2; fi
-  sleep 2
-done
-
-echo ">> running behavioral gate ..."
-ENDPOINT="http://localhost:$PORT" "$ROOT/node_modules/.bin/tsx" "$HERE/run-eval.mts"
-RC=$?
+# --- Pass 1: TAGALOG adapter — tagalog/english cases + homonym + PH civics/geo +
+#     emoji, then the compaction probe. ---
+echo ">> [tagalog] booting $ADAPTER ..."; boot "$ADAPTER"
+echo ">> [tagalog] behavioral gate ..."
+ADAPTER_TAG=tagalog ENDPOINT="http://localhost:$PORT" "$ROOT/node_modules/.bin/tsx" "$HERE/run-eval.mts" || RC=1
 
 # Compaction probe: acceptance test for the auto-compacter's summarize(). The
-# current grounded adapter can't summarize (its tutor persona overrides the
-# instruction), so on-device compaction is DISABLED (COMPACTION_ENABLED=false in
-# chatStore). This probe is therefore INFORMATIONAL by default — it's the gate the
-# NEXT (summarization-trained) adapter must pass. Set REQUIRE_COMPACTION=1 to make
-# it block (run this once the new adapter is in place, before flipping the flag).
-echo ">> running compaction probe (acceptance test for the summarization adapter) ..."
-ENDPOINT="http://localhost:$PORT" "$ROOT/node_modules/.bin/tsx" "$HERE/probe-compaction.mts"
-RC_COMPACT=$?
-if [ "${REQUIRE_COMPACTION:-0}" = "1" ]; then
-  [ $RC -eq 0 ] && RC=$RC_COMPACT
-elif [ $RC_COMPACT -ne 0 ]; then
-  echo ">> NOTE: compaction probe failed — EXPECTED until the summarization adapter ships (informational; not blocking)."
+# grounded adapter's tutor persona can fight the summarize instruction, so this is
+# INFORMATIONAL by default; set REQUIRE_COMPACTION=1 to make it block.
+echo ">> [tagalog] compaction probe ..."
+ENDPOINT="http://localhost:$PORT" "$ROOT/node_modules/.bin/tsx" "$HERE/probe-compaction.mts"; RC_COMPACT=$?
+if [ "${REQUIRE_COMPACTION:-0}" = "1" ]; then [ $RC_COMPACT -ne 0 ] && RC=1
+elif [ $RC_COMPACT -ne 0 ]; then echo ">> NOTE: compaction probe failed — informational (awaits summarization adapter)."; fi
+stop
+
+# --- Pass 2: BISAYA adapter — cebuano cases run against the REAL device path
+#     (the Bisaya LoRA), not the Tagalog one. ---
+if [ -f "$BIS_ADAPTER" ]; then
+  echo ">> [bisaya] booting $BIS_ADAPTER ..."; boot "$BIS_ADAPTER"
+  echo ">> [bisaya] behavioral gate ..."
+  ADAPTER_TAG=bisaya ENDPOINT="http://localhost:$PORT" "$ROOT/node_modules/.bin/tsx" "$HERE/run-eval.mts" || RC=1
+  stop
+else
+  echo ">> WARN: bisaya adapter not at $BIS_ADAPTER — skipping cebuano pass"
 fi
 
-echo ">> stopping server"
+[ $RC -eq 0 ] && echo ">> GATE GREEN" || echo ">> GATE RED"
 exit $RC

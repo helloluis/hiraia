@@ -271,6 +271,166 @@
         "heart",
         "puso"
       ]
+    },
+    {
+      "id": "ph-anthem",
+      "_cap": "PH_CIVICS",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "grounded",
+      "question": "ano po ang pambansang awit ng Pilipinas?",
+      "expectRetrieves": "ph-anthem-lupang-hinirang",
+      "mustContain": [
+        "Lupang Hinirang|Bayang magiliw"
+      ],
+      "mustNotContain": [
+        "hindi ko alam",
+        "wala akong"
+      ]
+    },
+    {
+      "id": "ph-flag-colors",
+      "_cap": "PH_CIVICS",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "grounded",
+      "question": "ano po ang ibig sabihin ng mga kulay ng watawat ng Pilipinas?",
+      "expectRetrieves": "ph-flag-colors",
+      "mustContain": [
+        "kapayapaan|katapangan|pagkakapantay|katotohanan"
+      ]
+    },
+    {
+      "id": "ph-province-capital",
+      "_cap": "PH_GEOGRAPHY",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "grounded",
+      "question": "ano po ang kabisera ng lalawigan ng Cebu?",
+      "expectRetrieves": "ph-prov-cebu",
+      "mustContain": [
+        "Cebu City"
+      ]
+    },
+    {
+      "id": "ph-national-bird",
+      "_cap": "PH_CIVICS",
+      "lang": "tagalog",
+      "grade": 4,
+      "mode": "grounded",
+      "question": "ano po ang pambansang ibon ng Pilipinas?",
+      "expectRetrieves": "any",
+      "mustContain": [
+        "agila|eagle"
+      ],
+      "mustRetrieveIdIncludes": [
+        "eagle",
+        "agila",
+        "symbol-bird",
+        "national-bird"
+      ]
+    },
+    {
+      "id": "homonym-puso",
+      "_cap": "homonym",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "grounded",
+      "question": "ano po ang ginagawa ng puso sa katawan?",
+      "expectRetrieves": "any",
+      "mustRetrieveIdIncludes": [
+        "heart"
+      ],
+      "mustContain": [
+        "dugo"
+      ],
+      "mustNotContain": [
+        "kanin|kakanin|niyog|bulaklak ng saging|hinabing dahon"
+      ]
+    },
+    {
+      "id": "homonym-baga",
+      "_cap": "homonym",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "grounded",
+      "question": "ano po ang ginagawa ng baga sa katawan?",
+      "expectRetrieves": "any",
+      "mustRetrieveIdIncludes": [
+        "lung",
+        "respir",
+        "baga"
+      ],
+      "mustContain": [
+        "hangin|oksiheno|oxygen|hining|huminga|paghinga|carbon"
+      ],
+      "mustNotContain": [
+        "habagat",
+        "monsoon",
+        "amihan"
+      ]
+    },
+    {
+      "id": "ceb-photosynthesis",
+      "_cap": "cebuano",
+      "adapter": "bisaya",
+      "lang": "cebuano",
+      "grade": 5,
+      "mode": "grounded",
+      "question": "unsa man ang photosynthesis?",
+      "expectRetrieves": "living-photosynthesis-g5",
+      "mustContain": [
+        "kahayag|adlaw|tubig"
+      ]
+    },
+    {
+      "id": "ceb-skyblue",
+      "_cap": "cebuano",
+      "adapter": "bisaya",
+      "lang": "cebuano",
+      "grade": 5,
+      "mode": "grounded",
+      "question": "ngano man nga asul ang langit?",
+      "expectRetrieves": "faq-blue-sky",
+      "mustContain": [
+        "asul|bughaw"
+      ]
+    },
+    {
+      "id": "en-photosynthesis",
+      "_cap": "english",
+      "lang": "english",
+      "grade": 5,
+      "mode": "grounded",
+      "question": "what is photosynthesis?",
+      "expectRetrieves": "living-photosynthesis-g5",
+      "mustContain": [
+        "light",
+        "water"
+      ]
+    },
+    {
+      "id": "emoji-chitchat",
+      "_cap": "emoji",
+      "lang": "tagalog",
+      "grade": 4,
+      "mode": "chitchat",
+      "question": "salamat po! ang saya kong matuto ng agham!",
+      "expectRetrieves": "any",
+      "mustContainEmoji": true,
+      "maxChars": 360,
+      "pending": true
+    },
+    {
+      "id": "emoji-grounded",
+      "_cap": "emoji",
+      "lang": "tagalog",
+      "grade": 4,
+      "mode": "grounded",
+      "question": "bakit po berde ang mga dahon?",
+      "expectRetrieves": "any",
+      "mustContainEmoji": true,
+      "pending": true
     }
   ]
 }
