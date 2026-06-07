@@ -79,6 +79,32 @@ restraint. Multi-turn rows carry a `turns` array (the builder uses it instead of
 `user`/`assistant`); each multi-turn stays on ONE grounded fact across follow-ups so the
 system's grounding block remains valid for the whole conversation.
 
+## Tier-3 accuracy component (`accuracy.tagalog.json`, 2026-06-07)
+
+The grounded/abstain split above fixed CONFABULATION, but on-device chat-driver probing
+(`finetuning/eval/harness/PROBING-FINDINGS.md`) then surfaced the OPPOSITE failure that
+prompt + retrieval couldn't fix: **over-abstention WITH facts present** — the adapter
+deflects ("hindi ako sigurado", "tanungin ang guro") even when the grounding answers the
+question, especially on messy/homework/emotional phrasing. (It was partly *trained* in:
+`abstain-balance` pairs questions with non-answering facts, and that generalizes too far.)
+
+`accuracy.tagalog.json` rebalances it (it does NOT remove faithfulness):
+
+- **grounded-confident counters** — the exact messy phrasings that deflected ("may homework
+  ako tungkol sa Venus", "ano bang gravity parang nahihilo ako") paired with ANSWERING facts
+  and a CONFIDENT gold answer. Pure upside: facts are present, no confab risk.
+- **affirm-settled / correct-premise** — "totoo bang patag ang mundo?" → affirm round Earth;
+  "lima lang ang planeta?" → correct to 8. (Some use empty `factIds` = answer from general
+  knowledge — the intended behavior for canonical settled science.)
+- **debunk-myth** — 10%-brain, reading-in-dark, gum-7-years → name it a myth + give the truth.
+- **safety + emotional** — scared-kid → acknowledge + safe steps; wires/lightning/smoking → clear safe answer.
+
+Builder now merges multiple components: `examples.tagalog.json` + `accuracy.tagalog.json`
+→ `train-grounded.jsonl` (run `tsx build-grounded.mts` with no args). KNOWN databank gap
+found while authoring: the bank has no explicit "the Earth is round/a sphere" fact, so the
+flat-earth example is general-knowledge (empty `factIds`) — add an earth-shape fact to
+Hiraiapedia so retrieval can ground it.
+
 ## Status
 
 **Comprehensive set built: 983 examples** — grounded 712 / abstain 148 / chit-chat 123;

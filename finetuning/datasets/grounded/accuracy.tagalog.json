@@ -1,0 +1,146 @@
+{
+  "_note": "Tier-3 accuracy component (2026-06-07). Targets what prompt+retrieval can't fix on their own — found via chat-driver probing (finetuning/eval/harness/PROBING-FINDINGS.md): (1) OVER-ABSTENTION WITH FACTS — the adapter deflects ('hindi ako sigurado') even when the grounding answers the question, especially on messy/homework/emotional phrasing. The counter-set below pairs exactly those phrasings with ANSWERING facts and a CONFIDENT gold answer (pure upside — facts are present, no confab risk). (2) AFFIRM settled science / CORRECT false premises. (3) DEBUNK common myths instead of affirming/deflecting. (4) SAFETY + emotional cues. Merge into examples.tagalog.json (or build separately) then rebuild train-grounded.jsonl. Keep the existing abstain set — this rebalances, it does not remove faithfulness.",
+  "language": "tagalog",
+  "examples": [
+    {
+      "_cat": "grounded-confident (messy homework phrasing + answering facts → use them, don't deflect)",
+      "mode": "grounded", "grade": 5, "factIds": ["venus-hottest-planet-g5", "why-venus-hottest-g6"],
+      "user": "may homework po ako tungkol sa planet Venus",
+      "assistant": "Ang galing, tutulungan kita! Ang Venus po ang pinakamainit na planeta — mas mainit pa kaysa Mercury kahit mas malapit ang Mercury sa araw — dahil ang makapal nitong ulap at hangin ang humuhuli sa init at ayaw itong palabasin. Iyan ang tinatawag na greenhouse effect. Para sa report mo, ano kaya ang gusto mong idagdag: kung gaano ito kainit, o kung bakit hindi makawala ang init dito? 🌋"
+    },
+    {
+      "mode": "grounded", "grade": 5, "factIds": ["living-photosynthesis-g5", "photosynthesis-makes-oxygen-g4"],
+      "user": "may homework po ako tungkol sa photosynthesis, di ko po gets eh",
+      "assistant": "Okay lang, gawin nating madali! Sa photosynthesis, ginagamit ng halaman ang liwanag ng araw, tubig, at carbon dioxide mula sa hangin para gumawa ng sarili nitong pagkain na sugar. Bukod doon, naglalabas ito ng oxygen na siyang nilalanghap natin. Kaya parang kusinero ang dahon na nagluluto gamit ang sikat ng araw! Anong bahagi po ang gusto mong linawin pa — ang ginagamit nito o ang nilalabas? 🌱"
+    },
+    {
+      "mode": "grounded", "grade": 5, "factIds": ["val-planets-order", "eight-planets-order-g4"],
+      "user": "may project po ako about sa mga planeta",
+      "assistant": "Magandang paksa iyan! May walong planeta sa ating Solar System, at mula sa pinakamalapit sa Araw: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, at Neptune. Pwede mong simulan ang project mo sa pagkakasunod-sunod nila, tapos pumili ng paborito mong planeta na bibigyan ng detalye. Aling planeta po ang pinaka-interesado kang malaman nang mas malalim? 🪐"
+    },
+    {
+      "mode": "grounded", "grade": 5, "factIds": ["fme-gravity-g4", "force-gravity-makes-fall-g3"],
+      "user": "ano po bang gravity, parang nahihilo ako dun",
+      "assistant": "Huwag kang mahihilo, gawin nating simple! Ang gravity po ay ang puwersang humihila ng mga bagay papunta sa gitna ng Earth. Kaya nga bumabagsak pababa ang bola o ang ulan kapag binitawan, at kaya tayo nananatiling nakatapak sa lupa at hindi lumulutang. Sa tingin mo po, ano kaya ang mangyayari sa isang bola kung biglang mawala ang gravity? ✨"
+    },
+    {
+      "mode": "grounded", "grade": 5, "factIds": ["arteries-carry-from-heart-g5", "heart-blood-loop-body-g6"],
+      "user": "paano po gumagana ang puso natin?",
+      "assistant": "Magandang tanong! Ang puso po ay isang kalamnang parang bomba na tumitibok para itulak ang dugo sa buong katawan. Ang mga ugat na tinatawag na arterya ang nagdadala ng dugo palabas mula sa puso patungo sa ibang bahagi, dala ang oxygen at pagkaing kailangan ng katawan. Kaya po hindi tumitigil ang tibok nito kahit tayo natutulog. Sa tingin mo po, bakit kailangang umikot ang dugo sa buong katawan? ❤️"
+    },
+    {
+      "mode": "grounded", "grade": 5, "factIds": ["living-respiration-g6", "breathing-balloon-lung-model-g5"],
+      "user": "ano po ginagawa ng baga sa katawan?",
+      "assistant": "Magandang tanong! Ang baga po ang humuhinga para makakuha ng oxygen mula sa hangin at maglabas ng carbon dioxide. Kapag huminga tayo, lumalaki ang baga na parang lobong pinupuno ng hangin, at lumiliit ito kapag bumuga tayo. Ginagamit ng katawan ang oxygen na iyon para makakuha ng enerhiya mula sa pagkain. Subukan mo pong huminga nang malalim — naramdaman mo ba ang paglaki ng iyong dibdib? 🫁"
+    },
+    {
+      "_cat": "the exact Jupiter follow-up that confabulated on-device — gold models correct mass→gravity→weight reasoning",
+      "mode": "grounded", "grade": 5, "factIds": ["weigh-more-bigger-planet-g6", "gravity-bigger-objects-stronger-g5"],
+      "turns": [
+        { "role": "user", "content": "paturo po tungkol sa planet Jupiter" },
+        { "role": "assistant", "content": "Ang Jupiter po ang pinakamalaking planeta sa Solar System — isang higanteng bola ng gas na may makukulay na guhit ng ulap. Gusto mo bang malaman kung bakit mas mabigat ang timbang mo kung nandoon ka? 🪐" },
+        { "role": "user", "content": "kasi mas matindi po ang gravity dun?" },
+        { "role": "assistant", "content": "Tama ka! Mas malaki ang masa ng isang planeta, mas malakas ang gravity nito — at napakalaki ng masa ng Jupiter. Kaya kung tatayo ka sa Jupiter, mas mabigat ang magiging TIMBANG mo doon kaysa dito sa Earth. Pero tandaan: ang MASA mo (ang dami ng laman ng katawan mo) ay hindi nagbabago kahit saan ka pumunta — ang timbang lang ang nagbabago dahil sa gravity. Sa tingin mo po, magaan o mabigat ka kaya sa Buwan na mas maliit ang gravity? ⚖️" }
+      ]
+    },
+    {
+      "mode": "grounded", "grade": 6, "factIds": ["ring-of-fire-why-earthquakes-g7"],
+      "user": "bakit po may lindol sa pinas?",
+      "assistant": "Magandang tanong! Madalas ang lindol sa Pilipinas dahil nasa Pacific Ring of Fire tayo — isang lugar sa paligid ng Pacific Ocean kung saan maraming tectonic plate ang nagtatagpo at nagtutulakan. Kapag biglang gumalaw o nag-usod ang mga bato sa ilalim ng lupa, nayayanig ang ibabaw at iyon ang nararamdaman nating lindol. Sa tingin mo po, bakit mas maraming bulkan din sa Ring of Fire? 🌋"
+    },
+    {
+      "mode": "grounded", "grade": 4, "factIds": ["rain-formation-g4"],
+      "user": "paano po nabubuo ang ulan?",
+      "assistant": "Magandang tanong! Umuulan kapag ang maliliit na patak ng tubig sa mga ulap ay nagsama-sama hanggang sa maging napakabigat na — kaya bumabagsak ang mga ito sa lupa bilang ulan. Galing naman sa tubig na sumingaw mula sa dagat at ilog ang nasa ulap. Sa tingin mo po, saan napupunta ang ulan pagkatapos bumagsak sa lupa? 💧"
+    },
+    {
+      "mode": "grounded", "grade": 4, "factIds": ["faq-why-we-sleep"],
+      "user": "bakit po natutulog tayo gabi-gabi?",
+      "assistant": "Magandang tanong! Natutulog tayo para makapagpahinga at makapag-ayos ang ating katawan at utak pagkatapos ng buong araw na paggalaw at pag-iisip. Habang natutulog tayo, nagkakaroon ng lakas ang katawan para sa susunod na araw. Sa tingin mo po, ano kaya ang nararamdaman natin kapag kulang tayo sa tulog? 😴"
+    },
+    {
+      "_cat": "affirm settled science / correct false premise",
+      "mode": "grounded", "grade": 5, "factIds": [],
+      "user": "totoo po bang patag ang mundo?",
+      "assistant": "Magandang tanong! Hindi po totoo — bilog (parang bola) ang hugis ng mundo, hindi patag. Pinatunayan ito ng mga larawan mula sa kalawakan at ng mga barkong unang naglayag paikot sa buong mundo at bumalik sa pinanggalingan nila. Kaya kahit mukhang patag ang lupa sa harap natin, talagang malaking bilog pala ito. Sa tingin mo po, bakit kaya mukhang patag ang lupa kahit bilog naman talaga ang mundo? 🌍"
+    },
+    {
+      "mode": "grounded", "grade": 5, "factIds": ["val-planets-order", "eight-planets-order-g4"],
+      "user": "sabi po ng teacher ko lima lang ang planeta sa solar system, totoo po ba?",
+      "assistant": "Magandang tanong, at mabuti't tinanong mo! Walo po ang opisyal na planeta sa ating Solar System, hindi lima: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, at Neptune. Baka po limang planeta ang nakikita natin nang walang teleskopyo — pero walo talaga lahat. Gusto mo po bang sabihin ko kung alin ang pinakamalaki sa kanila? 🪐"
+    },
+    {
+      "mode": "grounded", "grade": 6, "factIds": ["earth-day-night-seasons-g5", "faq-why-day-night"],
+      "user": "totoo po bang ang araw ang umiikot sa mundo?",
+      "assistant": "Magandang tanong! Hindi po — ang Earth ang umiikot, hindi ang araw. Umiikot ang Earth sa sarili nitong axis nang isang beses kada 24 oras, kaya nagkakaroon tayo ng araw at gabi. Kaya parang 'gumagalaw' ang araw sa langit, pero ang totoo ay tayo ang umiikot. Sa tingin mo po, anong bahagi ng Earth ang may araw kapag ikaw ay nasa gabi? ☀️"
+    },
+    {
+      "mode": "grounded", "grade": 5, "factIds": ["earth-moon-phases-g5"],
+      "user": "planeta po ba ang buwan?",
+      "assistant": "Magandang tanong! Hindi po planeta ang buwan — ito ay isang natural na satellite na umiikot sa Earth. Wala itong sariling liwanag; ang nakikita nating liwanag nito ay sinag ng araw na tumatama dito. Kaya iba ang buwan sa mga planeta na umiikot naman sa Araw. Sa tingin mo po, bakit kaya iba't iba ang hugis ng buwan na nakikita natin gabi-gabi? 🌙"
+    },
+    {
+      "_cat": "debunk myths (don't affirm, don't just deflect)",
+      "mode": "grounded", "grade": 6, "factIds": ["brain-uses-much-energy-g7"],
+      "user": "totoo po bang 10% lang ng utak natin ang ginagamit?",
+      "assistant": "Magandang tanong! Hindi po iyan totoo — isa iyang sikat na myth. Sa totoo lang, ginagamit natin ang halos lahat ng bahagi ng ating utak, at kahit maliit lang ito, gumagamit ito ng napakaraming enerhiya — humigit-kumulang ikalimang bahagi (20%) ng enerhiya ng buong katawan! Kaya mahalagang alagaan natin ito sa pamamagitan ng tulog at masustansyang pagkain. Sa tingin mo po, bakit kaya napakaraming enerhiya ang kailangan ng utak? 🧠"
+    },
+    {
+      "mode": "grounded", "grade": 5, "factIds": [],
+      "user": "nakakabulag po ba kapag nagbabasa sa madilim?",
+      "assistant": "Magandang tanong! Hindi po nakakabulag ang pagbabasa sa madilim — myth lang iyan. Ang totoo, nakakapagod at nakakapanikit lang ito sa mga mata, kaya nahihirapan tayong magbasa nang matagal. Kaya mas mabuting gumamit ng sapat na ilaw para komportable ang mga mata mo. Sa tingin mo po, ano ang nararamdaman ng mata mo kapag nagbasa ka sa sobrang dilim? 👀"
+    },
+    {
+      "mode": "grounded", "grade": 5, "factIds": [],
+      "user": "totoo po bang 7 taon bago matunaw ang chewing gum kapag nalunok?",
+      "assistant": "Magandang tanong! Hindi po totoo iyan — isa iyang lumang myth. Hindi nga natutunaw ng tiyan ang gum tulad ng ibang pagkain, pero hindi rin ito nananatili ng 7 taon — natural lang itong lumalabas ng katawan sa loob ng ilang araw. Siyempre, mas mabuting huwag lunukin ang gum. Sa tingin mo po, bakit kaya iba ang gum sa karaniwang pagkain na natutunaw? 😄"
+    },
+    {
+      "_cat": "safety + emotional",
+      "mode": "grounded", "grade": 5, "factIds": ["earthquake-duck-cover-hold-g4", "earthquake-after-shaking-g5"],
+      "user": "natatakot po ako sa lindol, ano po dapat kong gawin?",
+      "assistant": "Naiintindihan ko, normal lang matakot — pero may magagawa ka para ligtas! Kapag may lindol, gawin ang 'Yuko, Takip, Kapit' (Duck, Cover, Hold): yumuko sa ilalim ng matibay na mesa, takpan ang ulo, at kumapit hanggang tumigil ang pagyanig. Pagkatapos yumanig, kalmadong lumabas sa bukas na lugar na malayo sa mga gusali. Kapag handa ka, mas mababawasan ang takot — gusto mo po bang ulitin natin ang mga hakbang? 🤝"
+    },
+    {
+      "mode": "grounded", "grade": 6, "factIds": ["alcohol-drugs-affect-brain-g8"],
+      "user": "masama po ba ang manigarilyo?",
+      "assistant": "Magandang tanong, at mabuti't nagtatanong ka tungkol sa kalusugan! Oo po, nakakasama ang paninigarilyo sa katawan — lalo na sa baga at sa daluyan ng dugo — dahil maraming nakakalasong kemikal ang usok nito. Tulad ng alak at droga, nakakaapekto rin ito sa utak at sa pangkalahatang kalusugan. Kaya mas mabuting iwasan ito nang tuluyan. Gusto mo po bang malaman kung paano nasisira ang baga dahil sa usok? 🫁"
+    },
+    {
+      "mode": "grounded", "grade": 5, "factIds": ["broken-cord-is-dangerous-g5", "rubber-coating-wire-safety-g6"],
+      "user": "safe po bang humawak ng kuryenteng wire kung naka-rubber gloves?",
+      "assistant": "Magandang tanong, pero mahalaga itong sagutin nang tama para sa kaligtasan: HUWAG po hahawakan ang mga kawad ng kuryente, kahit may guwantes ka. Totoong insulator ang goma na nasa balot ng kable para hindi tayo makuryente sa normal na paggamit — pero hindi sapat na proteksyon ang ordinaryong rubber gloves laban sa kuryente. Kung may sirang kable o nakausling metal, huwag itong hawakan at agad sabihin sa nakatatanda. Gusto mo po bang malaman kung bakit ginagamit ang goma para balutin ang mga kable? ⚡"
+    },
+    {
+      "mode": "grounded", "grade": 5, "factIds": ["earth-lightning-g6", "faq-thunder-after-lightning"],
+      "user": "po delikado po ba talaga ang kidlat?",
+      "assistant": "Magandang tanong! Oo po, delikado ang kidlat dahil ito ay isang napakalakas na static electricity na dumadaloy mula sa ulap. Kaya kapag may kidlat at kulog, mas ligtas na nasa loob ka ng bahay at malayo sa matataas na bagay tulad ng puno. Kapag nakita mo ang kidlat bago marinig ang kulog, ibig sabihin malayo pa ito dahil mas mabilis ang liwanag kaysa tunog. Sa tingin mo po, bakit mas naaayos kapag nasa loob tayo ng bahay habang may bagyo? ⛈️"
+    },
+    {
+      "_cat": "more grounded-confident across domains (weight the over-abstention fix)",
+      "mode": "grounded", "grade": 6, "factIds": ["faq-why-volcano-erupts"],
+      "user": "may report po ako tungkol sa bulkan",
+      "assistant": "Magandang paksa iyan! Pumuputok ang bulkan kapag ang napakainit na tunaw na bato sa ilalim ng lupa (tinatawag na magma) ay tumataas at lumalabas sa ibabaw — at kapag nasa labas na ito, tinatawag itong lava. May mga gas din na naiipon sa loob na nagtutulak para sumabog ito. Para sa report mo, gusto mo bang idagdag kung bakit may magma sa ilalim ng lupa, o kung ano ang nangyayari pagkatapos pumutok? 🌋"
+    },
+    {
+      "mode": "grounded", "grade": 5, "factIds": ["faq-how-fish-breathe"],
+      "user": "paano po huminga ang isda sa ilalim ng tubig?",
+      "assistant": "Magandang tanong! Humihinga ang isda gamit ang mga bahaging tinatawag na hasang (gills), hindi baga tulad natin. Dumadaan ang tubig sa hasang, at mula doon kinukuha ng isda ang oxygen na natunaw sa tubig. Kaya kahit nasa ilalim ng tubig, nakakahinga pa rin ito! Sa tingin mo po, bakit hindi makakahinga ang isda kapag inalis sa tubig? 🐟"
+    },
+    {
+      "mode": "grounded", "grade": 5, "factIds": ["faq-why-leaves-green"],
+      "user": "bakit po berde ang mga dahon?",
+      "assistant": "Magandang tanong! Berde ang mga dahon dahil sa isang sangkap na tinatawag na chlorophyll, na siyang humuhuli sa liwanag ng araw para magamit sa paggawa ng pagkain (photosynthesis). Ibinabalik nito ang berdeng kulay ng liwanag, kaya berde ang nakikita nating dahon. Sa tingin mo po, ano kaya ang nangyayari sa kulay ng mga dahon kapag tag-lamig sa ibang bansa? 🍃"
+    },
+    {
+      "mode": "grounded", "grade": 6, "factIds": ["living-digestive-g6", "living-digestion-enzymes-g6"],
+      "user": "ano po nangyayari sa pagkain pagkatapos nating kainin?",
+      "assistant": "Magandang tanong! Pagkatapos kainin, dumadaan ang pagkain sa digestive system: nginunguya sa bibig, bumababa sa sikmura, at doon tinutunaw nang tulong ng mga enzyme na nagdudurog dito sa maliliit na bahagi. Mula roon, sinisipsip ng katawan ang sustansya para magamit bilang enerhiya at panlaki. Sa tingin mo po, bakit kailangan munang durugin nang maliit ang pagkain bago ito magamit ng katawan? 🍚"
+    },
+    {
+      "mode": "grounded", "grade": 5, "factIds": ["faq-blue-sky"],
+      "user": "anu po b kasi bkt asul ang langit?",
+      "assistant": "Magandang tanong! Asul ang langit dahil ikinakalat (scattering) ng mga maliliit na bahagi ng hangin ang liwanag ng araw — at mas marami nitong ikinakalat ang asul na kulay kaysa sa ibang kulay. Kaya kumakalat ang asul sa buong langit at iyon ang nakikita natin. Sa tingin mo po, anong kulay kaya ang langit kung wala tayong hangin? 💙"
+    }
+  ]
+}

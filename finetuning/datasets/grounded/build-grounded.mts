@@ -81,15 +81,23 @@ function buildRow(ex: SeedExample, lang: Lang) {
   return { messages: [{ role: 'system', content: system }, ...turns] };
 }
 
-const seedFile = process.argv[2] ?? join(HERE, 'seed.tagalog.json');
-const outFile = process.argv[3] ?? join(HERE, 'train-grounded.jsonl');
+// Canonical component files, merged in order. `examples.tagalog.json` is the existing
+// master (seed + a grounded example per fact + abstain-balance + gibberish + robustness
+// + summarize). `accuracy.tagalog.json` is the Tier-3 add: over-abstention COUNTERS
+// (messy phrasing + answering facts → confident answer) + affirm-settled / debunk-myth
+// / safety. Pass file args to override; output is train-grounded.jsonl (or $OUT).
+const DEFAULT_INPUTS = ['examples.tagalog.json', 'accuracy.tagalog.json'].map((f) => join(HERE, f));
+const inputs = process.argv.slice(2).length ? process.argv.slice(2) : DEFAULT_INPUTS;
+const outFile = process.env.OUT ?? join(HERE, 'train-grounded.jsonl');
 
-const seed: Seed = JSON.parse(readFileSync(seedFile, 'utf8'));
 const counts: Record<string, number> = { grounded: 0, abstain: 0, chitchat: 0, summarize: 0 };
 const lines: string[] = [];
-for (const ex of seed.examples) {
-  lines.push(JSON.stringify(buildRow(ex, seed.language)));
-  counts[ex.mode] = (counts[ex.mode] ?? 0) + 1;
+for (const file of inputs) {
+  const seed: Seed = JSON.parse(readFileSync(file, 'utf8'));
+  for (const ex of seed.examples) {
+    lines.push(JSON.stringify(buildRow(ex, seed.language)));
+    counts[ex.mode] = (counts[ex.mode] ?? 0) + 1;
+  }
 }
 
 writeFileSync(outFile, lines.join('\n') + '\n');
@@ -97,3 +105,4 @@ console.log(`wrote ${lines.length} rows -> ${outFile}`);
 console.log(
   `  modes: grounded=${counts.grounded} abstain=${counts.abstain} chitchat=${counts.chitchat} summarize=${counts.summarize}`
 );
+console.log(`  inputs: ${inputs.map((f) => f.split('/').pop()).join(', ')}`);
