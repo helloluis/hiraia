@@ -17,3 +17,23 @@ Run: `tsx lexical.mts` → `.convert-venv/bin/python embed.py` → `python compa
   around ~0.80 is a sane starting point (tune with off-topic negatives).
 - Homonym holdouts e5-small misses (like `baga`) are cheaper to fix with a
   one-line topic-weight tweak in the bank than by shipping a bigger model.
+
+## Benchmark (2026-06-07) — 450 labeled queries + 40 negatives
+Built `benchmark.jsonl` via gen-queries.workflow.js (16 agents): realistic kid
+queries → gold fact id, multilingual (TL/BIS/EN/Taglish) × styles, phrased in a
+kid's words (fair to lexical). Eval = bench-embed-corpus.py (e5 + LaBSE, per-lang)
++ bench-lexical.mts (RagStore) + bench-run.py (Recall@k/MRR, lang-scoped).
+
+| method | R@1 | R@3 | R@5 | MRR |
+|---|---|---|---|---|
+| lexical | .291 | .509 | .598 | .420 |
+| e5 | .340 | .538 | .627 | .455 |
+| LaBSE | .316 | .507 | .580 | .427 |
+| hybrid-e5 | .364 | .611 | .687 | .511 |
+| **hybrid-LaBSE** | **.404** | **.624** | **.707** | **.536** |
+
+**Conclusions:** (1) Hybrid (RRF lexical+semantic) beats every single method by ~+10pt
+R@3 — ship the hybrid. (2) hybrid-LaBSE wins Cebuano/Taglish/Tagalog (e5 wins only
+English) AND LaBSE is BERT-native (runs on QVAC where e5/XLM-R was broken) → LaBSE
+is the pick despite ~270MB Q4 footprint. (3) abstain floor ~0.86 keeps 88% pos /
+rejects 92% neg (usable, overlapping). Caveat: single-gold Recall = lower bound.
