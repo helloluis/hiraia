@@ -31,6 +31,19 @@ function buildPrompt(it) {
 
 const VALID = new Set(['biology', 'chemistry', 'physics', 'earth-science', 'general']);
 const STOP = new Set(['the', 'and', 'with', 'for', 'philippine', 'philippines', 'common', 'of', 'a']);
+// relationship verbs/preps stripped to form a "core" key, so two pairings with the
+// same two nouns but a different verb collapse (magnet-ATTRACTING-nail == magnet-LIFTING-nail).
+const REL = new Set([
+  'on', 'in', 'into', 'onto', 'at', 'to', 'from', 'near', 'over', 'under', 'inside', 'out',
+  'attracting', 'lifting', 'picking', 'pulling', 'reaching', 'eating', 'grabbing', 'holding',
+  'catching', 'feeding', 'carrying', 'clinging', 'gripping', 'hanging', 'resting', 'sitting',
+  'orbiting', 'rolling', 'sprouting', 'growing', 'tunneling', 'basking', 'cracking', 'using',
+  'its', 'a', 'an', 'up', 'down', 'high', 'leaves', 'leaf', 'tree-leaves',
+]);
+const coreKey = (s) =>
+  [...toksRaw(s)].filter((t) => !REL.has(t)).sort().join('-');
+const toksRaw = (s) =>
+  new Set(String(s).toLowerCase().split(/[^a-z0-9]+/).filter((t) => t.length > 2 && !STOP.has(t)));
 const toks = (s) =>
   new Set(
     String(s)
@@ -46,8 +59,11 @@ const jaccard = (a, b) => {
 };
 
 // ---- load workflow output(s) ----
-const outPaths = process.argv.slice(2).filter((a) => !a.startsWith('--'));
-if (!outPaths.length) { console.error('usage: ingest-image-concepts.mjs <output1.json> [<output2.json> ...] [--write]'); process.exit(2); }
+const argv = process.argv.slice(2);
+const outPaths = argv.filter((a) => !a.startsWith('--'));
+const PREFIX = (argv.find((a) => a.startsWith('--prefix=')) || '--prefix=expansion2-').split('=')[1];
+const KIND_OVERRIDE = (argv.find((a) => a.startsWith('--kind=')) || '').split('=')[1] || null; // 'scene' for pairs
+if (!outPaths.length) { console.error('usage: ingest-image-concepts.mjs <output1.json> [...] [--prefix=expansion2-] [--kind=scene] [--write]'); process.exit(2); }
 const kept = [];
 for (const p of outPaths) {
   const raw = JSON.parse(readFileSync(p, 'utf8'));
@@ -67,7 +83,8 @@ for (const f of readdirSync(PROMPTS).filter((f) => f.endsWith('.json'))) {
 
 const accepted = [];
 const seen = new Set();
-const drops = { bad: 0, dup_id: 0, dup_batch: 0, fuzzy: 0 };
+const coreSeen = new Set();
+const drops = { bad: 0, dup_id: 0, dup_batch: 0, dup_core: 0, fuzzy: 0 };
 for (const it of kept) {
   if (!it || !it.id || !it.name || !it.hint) { drops.bad++; continue; }
   const id = String(it.id).toLowerCase().replace(/[^a-z0-9-]/g, '');
@@ -82,11 +99,14 @@ for (const it of kept) {
     if (jaccard(ct, et) >= 0.6 || (ct.size && [...ct].every((t) => et.has(t)))) { dup = true; break; }
   }
   if (dup) { drops.fuzzy++; continue; }
+  const ck = coreKey(`${id} ${it.name}`);
+  if (ck && coreSeen.has(ck)) { drops.dup_core++; continue; } // verb-variant of an already-kept pairing
+  coreSeen.add(ck);
   seen.add(id);
   const subject = VALID.has(it.subject) ? it.subject : 'general';
-  const kind = it.kind === 'scene' ? 'scene' : 'object';
+  const kind = KIND_OVERRIDE || (it.kind === 'scene' ? 'scene' : 'object');
   accepted.push({
-    id, name: it.name, subject, topic: `expansion2-${subject}`,
+    id, name: it.name, subject, topic: `${PREFIX}${subject}`,
     output_png: `assets-png/${subject}/${id}.png`, status: 'todo',
     prompt: buildPrompt({ name: it.name, hint: it.hint, kind }),
   });
@@ -100,8 +120,8 @@ for (const [s, arr] of Object.entries(bySubject)) console.log(`  expansion2-${s}
 
 if (process.argv.includes('--write')) {
   for (const [s, arr] of Object.entries(bySubject)) {
-    const file = join(PROMPTS, `expansion2-${s}.json`);
-    writeFileSync(file, JSON.stringify({ topic: `expansion2-${s}`, style: STYLE, count: arr.length, images: arr }, null, 2) + '\n');
+    const file = join(PROMPTS, `${PREFIX}${s}.json`);
+    writeFileSync(file, JSON.stringify({ topic: `${PREFIX}${s}`, style: STYLE, count: arr.length, images: arr }, null, 2) + '\n');
     console.log(`wrote ${file}`);
   }
 } else {
