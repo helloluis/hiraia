@@ -4,3 +4,9 @@ declare module '*.gguf' {
   const asset: number;
   export default asset;
 }
+
+// The int8 semantic-vectors blob, same asset treatment as .gguf.
+declare module '*.bin' {
+  const asset: number;
+  export default asset;
+}

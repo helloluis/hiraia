@@ -110,3 +110,42 @@ export const ACTIVE_MODEL: OnDeviceModel = ON_DEVICE_MODELS[ACTIVE_MODEL_KEY];
 export const MODEL_STATS_LINE =
   `${ACTIVE_MODEL.displayName} · ${ACTIVE_MODEL.params} · ${ACTIVE_MODEL.quant} · ` +
   `${ACTIVE_MODEL.sizeGB} GB · needs ${ACTIVE_MODEL.minRamGB}GB+ RAM`;
+
+// The bundled int8 semantic-vectors blob + its meta (built by
+// rag/scripts/build-vectors.py from the SAME bank version). Cross-package assets
+// under the workspace root; Metro packages the .bin, expo-asset reads its bytes.
+import vectorsBlobAsset from '../../../../rag/bank/vectors-labse.i8.bin';
+import vectorsMeta from '../../../../rag/bank/vectors-labse.meta.json';
+
+/**
+ * On-device semantic embedder (LaBSE) for the hybrid retriever. Runs through the
+ * QVAC SDK's `llamacpp-embedding` plugin. LaBSE is BERT-native with CLS pooling
+ * and no dense head, so the GGUF == what we benchmarked (raw-CLS). The 384MB Q4
+ * GGUF is DOWNLOADED on first run (public HF model, like the LLM) to keep the APK
+ * light; only the 49MB vectors blob is bundled.
+ *
+ * CRITICAL: `pooling:'cls'` + `embdNormalize:2` make the live query vector live in
+ * the SAME space as the bundled corpus blob (parity 0.99999, verified). Changing
+ * the model/pooling REQUIRES rebuilding the blob with the matching embedder.
+ */
+export const EMBEDDER = {
+  modelSrc:
+    'https://huggingface.co/ChristianAzinn/labse-gguf/resolve/main/labse.Q4_K_M.gguf',
+  modelType: 'llamacpp-embedding' as const,
+  // CPU: one short query per turn — avoids the GPU/OpenCL kernel cold-start; the
+  // batch corpus embedding (where GPU would help) happens at build time, not here.
+  modelConfig: { pooling: 'cls' as const, embdNormalize: 2, device: 'cpu' as const },
+  /** vector dimensionality — must match the blob meta. */
+  dims: 768 as const,
+} as const;
+
+/** The bundled semantic-vectors blob asset (int8) + its build metadata. */
+export const VECTORS_BLOB_ASSET: number = vectorsBlobAsset;
+export const VECTORS_META = vectorsMeta as {
+  model: string;
+  dims: number;
+  scale: number;
+  count: number;
+  langs: ('tl' | 'bis' | 'en')[];
+  bankHash: string;
+};

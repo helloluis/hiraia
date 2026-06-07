@@ -11,6 +11,9 @@ const config = getDefaultConfig(__dirname);
 // runtime (for QVAC's modelConfig.lora). Without this Metro tries to parse them
 // as source.
 config.resolver.assetExts.push('gguf');
+// The bundled int8 semantic-vectors blob — Metro packages it so expo-asset can
+// read its bytes into an Int8Array at runtime (for the SemanticIndex).
+config.resolver.assetExts.push('bin');
 
 // 1. Watch all files in the workspace
 config.watchFolders = [workspaceRoot];
