@@ -1,5 +1,6 @@
 import type { Language } from '../types/index.js';
 import type { FactHit, ScienceFact } from './types.js';
+import type { SemanticIndex } from './SemanticIndex.js';
 import { SCIENCE_FACTS } from './facts.generated.js';
 
 /**
@@ -103,9 +104,21 @@ const LANG_KEY: Record<Language, LangKey> = {
   cebuano: 'bis',
 };
 
+// Reciprocal-rank-fusion constant. Standard k=60; the benchmark (R@3 .607) was
+// tuned at this value, fusing lexical + semantic candidate lists equally.
+const RRF_K = 60;
+// Semantic-similarity floor for abstention: below this top-1 cosine the query is
+// off-topic (return nothing → the tutor abstains). Calibrated on the 450-query
+// benchmark (LaBSE raw-CLS): positives mean 0.68, negatives mean 0.50. At 0.58
+// we keep ~95% of real questions across ALL languages (Cebuano included — its
+// positives sit at 0.68 too) while rejecting ~90% of off-topic. Biased slightly
+// toward answering (the product is a companion that "does know"); tune on-device.
+const SEMANTIC_FLOOR = 0.58;
+
 export class RagStore {
   private docs: IndexedFact[] = [];
   private idf = new Map<string, number>();
+  private semantic?: SemanticIndex;
 
   constructor(facts: ScienceFact[] = SCIENCE_FACTS) {
     const df = new Map<string, number>();
@@ -217,6 +230,67 @@ export class RagStore {
   }
 
   /**
+   * Attach the bundled semantic index (LaBSE int8 vectors). Loaded by the engine
+   * at startup from the bundled blob. Optional: without it, searchHybrid() falls
+   * back to lexical-only (graceful degradation while the embed model loads).
+   */
+  attachSemantic(index: SemanticIndex): void {
+    if (index.count !== this.docs.length) {
+      throw new Error(`semantic index size ${index.count} != bank ${this.docs.length} (stale vectors blob?)`);
+    }
+    this.semantic = index;
+  }
+
+  get hasSemantic(): boolean {
+    return this.semantic !== undefined;
+  }
+
+  /**
+   * Hybrid retrieval: reciprocal-rank-fuse the lexical ranking with semantic
+   * (LaBSE) cosine ranking. `queryVec` is the L2-normalized query embedding from
+   * the on-device embedder. On the 450-query benchmark this lifts Recall@3 from
+   * .509 (lexical) to .607 — semantic and lexical cover complementary blind spots
+   * (morphology/paraphrase vs exact terms/numbers/proper nouns).
+   *
+   * Falls back to lexical-only when no semantic index is attached or no query
+   * vector is supplied (e.g. embed model still warming up). `seenIds`/`context`
+   * keep the lexical half's novelty + follow-up behavior.
+   */
+  searchHybrid(
+    query: string,
+    queryVec: Float32Array | undefined,
+    topK = 3,
+    language: Language = 'english',
+    context = '',
+    seenIds?: ReadonlySet<string>
+  ): FactHit[] {
+    const CAND = 10; // fuse the top-10 of each list (matches the benchmark)
+    const lex = this.search(query, CAND, language, context, seenIds);
+    if (!this.semantic || !queryVec) return lex.slice(0, topK);
+
+    const sem = this.semantic.search(queryVec, language, CAND);
+    const key = LANG_KEY[language];
+    const score = new Map<string, number>();
+    const factById = new Map<string, ScienceFact>();
+    lex.forEach((h, r) => {
+      score.set(h.fact.id, (score.get(h.fact.id) ?? 0) + 1 / (RRF_K + r + 1));
+      factById.set(h.fact.id, h.fact);
+    });
+    sem.forEach((h, r) => {
+      const f = this.docs[h.index]!.fact;
+      score.set(f.id, (score.get(f.id) ?? 0) + 1 / (RRF_K + r + 1));
+      factById.set(f.id, f);
+    });
+    return [...score.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, topK)
+      .map(([id, s]) => {
+        const f = factById.get(id)!;
+        return { fact: f, text: f.fact[key], score: s };
+      });
+  }
+
+  /**
    * Search, then keep only confidently-relevant hits: at most `max`, and only
    * those scoring within `floorRatio` of the top hit. Use this to decide what to
    * inject as grounding — a small 1B is misled by loosely-related facts, so we
@@ -231,6 +305,34 @@ export class RagStore {
     seenIds?: ReadonlySet<string>
   ): FactHit[] {
     const hits = this.search(query, max, language, context, seenIds);
+    if (hits.length === 0) return [];
+    const top = hits[0]!.score;
+    return hits.filter((h) => h.score >= top * floorRatio);
+  }
+
+  /**
+   * Hybrid grounding: like retrieveForGrounding but fuses semantic + lexical, and
+   * ABSTAINS (returns []) when the query is off-topic — i.e. the best semantic
+   * cosine is below SEMANTIC_FLOOR. That floor is the clean signal the lexical
+   * score can't give: a bare keyword can spuriously match the bank, but a low
+   * cosine means nothing in the bank is really about this. Falls back to the
+   * lexical grounding path when no semantic index/query vector is available.
+   */
+  retrieveForGroundingHybrid(
+    query: string,
+    queryVec: Float32Array | undefined,
+    language: Language = 'english',
+    max = 3,
+    floorRatio = 0.5,
+    context = '',
+    seenIds?: ReadonlySet<string>
+  ): FactHit[] {
+    if (!this.semantic || !queryVec) {
+      return this.retrieveForGrounding(query, language, max, floorRatio, context, seenIds);
+    }
+    const topCos = this.semantic.search(queryVec, language, 1)[0]?.cosine ?? 0;
+    if (topCos < SEMANTIC_FLOOR) return []; // off-topic → abstain
+    const hits = this.searchHybrid(query, queryVec, max, language, context, seenIds);
     if (hits.length === 0) return [];
     const top = hits[0]!.score;
     return hits.filter((h) => h.score >= top * floorRatio);
