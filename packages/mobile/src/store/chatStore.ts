@@ -186,7 +186,9 @@ export const useChatStore = create<ChatState>()((set, get) => ({
 
       let fullResponse = '';
       await withModelLock(async () => {
-        for await (const token of engine.chat(conversationMessages)) {
+        // Pass the conversation id as the KV-cache key so QVAC caches the static system
+        // prompt (+ prior turns) and only the new turn re-prefills — the TTFT fix.
+        for await (const token of engine.chat(conversationMessages, convId)) {
           fullResponse += token;
           set({ currentStreamingContent: fullResponse });
         }

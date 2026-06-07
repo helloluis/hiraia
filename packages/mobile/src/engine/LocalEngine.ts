@@ -117,7 +117,7 @@ export class LocalEngine implements TutorEngine {
     }
   }
 
-  async *chat(messages: Message[]): AsyncIterable<string> {
+  async *chat(messages: Message[], kvCacheKey?: string): AsyncIterable<string> {
     if (!this.modelId || !this.isReadyFlag) {
       throw new Error('Engine not initialized. Call initialize() first.');
     }
@@ -131,11 +131,18 @@ export class LocalEngine implements TutorEngine {
 
       // Get streaming completion from QVAC. Temp 0.5 (not the ~0.8 llama.cpp
       // default) — see CHAT_TEMP: lower temp reduces factual wandering.
+      // kvCache (a stable per-conversation key) turns ON QVAC's on-device KV cache:
+      // the cache is keyed by {kvCacheKey}/{modelId}/{configHash(system prompt)}. With
+      // our STATIC system prompt the configHash is stable, so the cached system (+ prior
+      // turns, pruned by message count) is reused and only the new turn re-prefills —
+      // the TTFT fix. Without a key, QVAC does NO caching and re-prefills the whole
+      // prompt every turn (confirmed on-device: ~37s→50s TTFT, no reuse).
       const run = completion({
         modelId: this.modelId,
         history,
         stream: true,
         generationParams: { temp: CHAT_TEMP, predict: CHAT_MAX_TOKENS },
+        ...(kvCacheKey ? { kvCache: kvCacheKey } : {}),
       });
 
       // [perf] split the latency: TTFT (prompt prefill) vs decode (tok/s), so we

@@ -20,8 +20,11 @@ export interface TutorEngine {
   /**
    * Generate a streaming response to a conversation.
    * Yields tokens as they are generated for real-time display.
+   * `kvCacheKey` (optional) enables QVAC's on-device KV cache for this conversation:
+   * the static system prompt is cached and reused across turns so only the new turn
+   * re-prefills (the TTFT fix). Use a stable per-conversation id.
    */
-  chat(messages: Message[]): AsyncIterable<string>;
+  chat(messages: Message[], kvCacheKey?: string): AsyncIterable<string>;
 
   /**
    * Generate a visual/image based on a prompt.
