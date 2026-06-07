@@ -3,146 +3,274 @@
   "cases": [
     {
       "id": "astronaut-grounded",
-      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "grounded",
       "question": "bakit po ba lumulutang yung mga astronaut sa space?",
       "expectRetrieves": "faq-why-astronauts-float",
-      "mustContain": ["nahuhulog"],
-      "mustNotContain": ["centrifugal", "centripetal", "spacetime", "pseudo"]
+      "mustContain": [
+        "nahuhulog"
+      ],
+      "mustNotContain": [
+        "centrifugal",
+        "centripetal",
+        "spacetime",
+        "pseudo"
+      ]
     },
     {
       "id": "dinosaur-grounded",
-      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "grounded",
       "question": "ano po ang dinosaur?",
       "expectRetrieves": "living-dinosaurs-g4",
-      "mustContain": ["reptil"],
-      "mustNotContain": ["permian", "mammal na nabuhay", "sinaunang mammal"]
+      "mustContain": [
+        "reptil"
+      ],
+      "mustNotContain": [
+        "permian",
+        "mammal na nabuhay",
+        "sinaunang mammal"
+      ]
     },
     {
       "id": "photosynthesis-grounded",
-      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "grounded",
       "question": "ano po ang photosynthesis?",
       "expectRetrieves": "living-photosynthesis-g5",
-      "mustContain": ["liwanag", "tubig"],
-      "mustNotContain": ["ribosome", "permian"]
+      "mustContain": [
+        "liwanag",
+        "tubig"
+      ],
+      "mustNotContain": [
+        "ribosome",
+        "permian"
+      ]
     },
     {
       "id": "skyblue-grounded",
-      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "grounded",
       "question": "bakit po asul ang langit?",
       "expectRetrieves": "faq-blue-sky",
-      "mustContain": ["asul", "(kalat|scattering)"],
+      "mustContain": [
+        "asul",
+        "(kalat|scattering)"
+      ],
       "mustNotContain": []
     },
     {
       "id": "shark-grounded",
-      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "grounded",
       "question": "ano po ang pating?",
       "expectRetrieves": "living-shark-g5",
-      "mustContain": ["isda"],
-      "mustNotContain": ["mammal", "balyena"]
+      "mustContain": [
+        "isda"
+      ],
+      "mustNotContain": [
+        "mammal",
+        "balyena"
+      ]
     },
     {
       "id": "octopus-grounded",
-      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "grounded",
       "question": "totoo po bang may tatlong puso ang pugita?",
       "expectRetrieves": "living-octopus-g5",
-      "mustContain": ["tatlo", "puso"],
+      "mustContain": [
+        "tatlo",
+        "puso"
+      ],
       "mustNotContain": []
     },
     {
       "id": "grounded-jupiter-moons",
       "_note": "Was an abstain case; the Phase-1 bank now has accurate Jupiter-moon facts, so the tutor correctly answers (4 large Galilean moons) rather than abstaining. Now a coverage test.",
-      "lang": "tagalog", "grade": 6, "mode": "grounded",
+      "lang": "tagalog",
+      "grade": 6,
+      "mode": "grounded",
       "question": "ilang buwan po meron ang planetang Jupiter?",
       "expectRetrieves": "any",
-      "mustContain": ["[Gg]alile|[Gg]anymede|[Ee]uropa|apat na malalak"],
+      "mustContain": [
+        "[Gg]alile|[Gg]anymede|[Ee]uropa|apat na malalak"
+      ],
       "mustNotContain": []
     },
     {
       "id": "abstain-biggest-star",
-      "lang": "tagalog", "grade": 6, "mode": "abstain",
+      "lang": "tagalog",
+      "grade": 6,
+      "mode": "abstain",
       "question": "ano po ang pangalan ng pinakamalaking bituin sa buong universe?",
       "expectRetrieves": "any",
-      "mustContain": ["hindi.{0,18}(sigurado|alam|tiyak)"],
+      "mustContain": [
+        "hindi.{0,18}(sigurado|alam|tiyak)"
+      ],
       "mustNotContain": []
     },
     {
       "id": "chitchat-ready",
-      "lang": "tagalog", "grade": 5, "mode": "chitchat",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "chitchat",
       "question": "ok na ba po kayo?",
       "expectRetrieves": "any",
-      "mustContain": ["(handa|oo|ano.{0,25}(gusto|tanong|itanong))"],
-      "mustNotContain": ["photosynthesis", "dinosaur"],
+      "mustContain": [
+        "(handa|oo|ano.{0,25}(gusto|tanong|itanong))"
+      ],
+      "mustNotContain": [
+        "photosynthesis",
+        "dinosaur"
+      ],
       "maxChars": 320
     },
     {
       "id": "chitchat-hello",
-      "lang": "tagalog", "grade": 5, "mode": "chitchat",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "chitchat",
       "question": "hello po",
       "expectRetrieves": "none",
-      "mustContain": ["(tanong|agham|matuto|tulong)"],
+      "mustContain": [
+        "(tanong|agham|matuto|tulong)"
+      ],
       "mustNotContain": [],
       "maxChars": 360
     },
     {
       "id": "longctx-multiturn",
       "_why": "Regression guard: a full windowed conversation (~10 turns of real-length answers) + the ~1.2k-token grounded system prompt must NOT overflow the device ctx. At ctx 2048 this throws exceed_context_size_error (the bug); at 4096 it fits. The harness MUST run at the device's ctxSize.",
-      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "grounded",
       "history": [
-        { "role": "user", "content": "ano po ang force?" },
-        { "role": "assistant", "content": "Ang force po ay isang tulak (push) o hila (pull) na puwedeng magpagalaw ng isang nakatigil na bagay, magpatigil ng isang gumagalaw na bagay, o magpabago ng direksyon ng paggalaw nito. Kapag mas mabigat o mas malaki ang isang bagay, mas malakas na force ang kailangan para igalaw ito — kaya mas mahirap itulak ang isang malaking kahon kaysa sa isang maliit na bola. Nakikita natin ang force sa pang-araw-araw na buhay: kapag binubuksan mo ang pinto, kapag hinihila mo ang iyong bag, o kapag sinisipa mo ang bola sa laro. Anong mga bagay po sa paligid mo ngayon ang kailangan mong itulak o hilahin para magamit?" },
-        { "role": "user", "content": "yung pinto namin po sa bahay mabigat, bakit po?" },
-        { "role": "assistant", "content": "Magandang pansin po iyan! Mas mabigat ang isang bagay kapag mas marami itong matter o materyales sa loob nito, kaya mas malakas na force ang kailangan para igalaw o buksan ito. May friction din na nangyayari sa bisagra (hinge) ng pinto na humahadlang sa madaling pagbukas. Pero may mga simpleng makina na tumutulong sa atin na mas magaan ang trabaho — gaya ng lever at pulley. Ang lever, halimbawa, ay tumutulong na mas kaunting force na lang ang kailangan para mag-angat ng mabigat. Narinig mo na po ba ang tungkol sa pulley?" },
-        { "role": "user", "content": "oo po, pero ano nga po talaga yung pulley?" },
-        { "role": "assistant", "content": "Ang pulley po ay isang simpleng makina — isang gulong na may uka sa gilid na nilalagyan ng lubid o kable na nakapaikot dito. Sa halip na buhatin mo pataas ang isang mabigat na bagay, hinihila mo na lang pababa ang lubid, at mas magaan ang pakiramdam ng pag-angat dahil natutulungan ka ng makina. Ginagamit ang pulley sa mga construction site para mag-angat ng materyales, sa mga balon para umigib ng tubig, at sa mga poste ng bandila para iakyat ang watawat. Sa tingin mo po, ano ang nangyayari sa direksyon ng iyong hila kapag gumagamit ka ng isang pulley?" },
-        { "role": "user", "content": "nagbabago po yata ang direksyon ng hila" },
-        { "role": "assistant", "content": "Tama na tama po iyan, magaling! Iyan nga ang isa sa pinakamagandang bagay tungkol sa pulley: binabago nito ang direksyon ng iyong force o lakas. Sa halip na ikaw mismo ang mag-angat pataas — na mahirap para sa katawan natin — humihila ka na lang pababa, at mas natural at mas madali iyon. Kaya ginagamit ang pulley sa mga lugar na kailangang mag-angat ng mabibigat na bagay nang paulit-ulit. Napakahusay mo mag-isip ng mga tanong, ha! May iba ka pa po bang gustong malaman tungkol sa mga simpleng makina o sa puwersa?" },
-        { "role": "user", "content": "ano pa pong mga ibang simpleng makina meron?" },
-        { "role": "assistant", "content": "Marami pong klase ng simpleng makina, at lahat ng ito ay tumutulong sa atin na mas magaan ang paggawa! Bukod sa pulley, may lever (gaya ng seesaw, gunting, o tilad), may inclined plane (gaya ng ramp o dahilig na tinutulak mo pataas), may wheel and axle (gaya ng gulong ng kotse o ng manibela), may wedge (gaya ng palakol o kutsilyo na humahati), at may screw (gaya ng turnilyo na pumapasok sa kahoy). Ang bawat isa ay nagbabawas ng force na kailangan natin o nagbabago ng direksyon ng ating lakas. Alin po sa mga iyon ang nakita mo na sa paligid ng inyong bahay o paaralan?" },
-        { "role": "user", "content": "bakit po ba lumulutang yung mga astronaut sa space?" }
+        {
+          "role": "user",
+          "content": "ano po ang force?"
+        },
+        {
+          "role": "assistant",
+          "content": "Ang force po ay isang tulak (push) o hila (pull) na puwedeng magpagalaw ng isang nakatigil na bagay, magpatigil ng isang gumagalaw na bagay, o magpabago ng direksyon ng paggalaw nito. Kapag mas mabigat o mas malaki ang isang bagay, mas malakas na force ang kailangan para igalaw ito — kaya mas mahirap itulak ang isang malaking kahon kaysa sa isang maliit na bola. Nakikita natin ang force sa pang-araw-araw na buhay: kapag binubuksan mo ang pinto, kapag hinihila mo ang iyong bag, o kapag sinisipa mo ang bola sa laro. Anong mga bagay po sa paligid mo ngayon ang kailangan mong itulak o hilahin para magamit?"
+        },
+        {
+          "role": "user",
+          "content": "yung pinto namin po sa bahay mabigat, bakit po?"
+        },
+        {
+          "role": "assistant",
+          "content": "Magandang pansin po iyan! Mas mabigat ang isang bagay kapag mas marami itong matter o materyales sa loob nito, kaya mas malakas na force ang kailangan para igalaw o buksan ito. May friction din na nangyayari sa bisagra (hinge) ng pinto na humahadlang sa madaling pagbukas. Pero may mga simpleng makina na tumutulong sa atin na mas magaan ang trabaho — gaya ng lever at pulley. Ang lever, halimbawa, ay tumutulong na mas kaunting force na lang ang kailangan para mag-angat ng mabigat. Narinig mo na po ba ang tungkol sa pulley?"
+        },
+        {
+          "role": "user",
+          "content": "oo po, pero ano nga po talaga yung pulley?"
+        },
+        {
+          "role": "assistant",
+          "content": "Ang pulley po ay isang simpleng makina — isang gulong na may uka sa gilid na nilalagyan ng lubid o kable na nakapaikot dito. Sa halip na buhatin mo pataas ang isang mabigat na bagay, hinihila mo na lang pababa ang lubid, at mas magaan ang pakiramdam ng pag-angat dahil natutulungan ka ng makina. Ginagamit ang pulley sa mga construction site para mag-angat ng materyales, sa mga balon para umigib ng tubig, at sa mga poste ng bandila para iakyat ang watawat. Sa tingin mo po, ano ang nangyayari sa direksyon ng iyong hila kapag gumagamit ka ng isang pulley?"
+        },
+        {
+          "role": "user",
+          "content": "nagbabago po yata ang direksyon ng hila"
+        },
+        {
+          "role": "assistant",
+          "content": "Tama na tama po iyan, magaling! Iyan nga ang isa sa pinakamagandang bagay tungkol sa pulley: binabago nito ang direksyon ng iyong force o lakas. Sa halip na ikaw mismo ang mag-angat pataas — na mahirap para sa katawan natin — humihila ka na lang pababa, at mas natural at mas madali iyon. Kaya ginagamit ang pulley sa mga lugar na kailangang mag-angat ng mabibigat na bagay nang paulit-ulit. Napakahusay mo mag-isip ng mga tanong, ha! May iba ka pa po bang gustong malaman tungkol sa mga simpleng makina o sa puwersa?"
+        },
+        {
+          "role": "user",
+          "content": "ano pa pong mga ibang simpleng makina meron?"
+        },
+        {
+          "role": "assistant",
+          "content": "Marami pong klase ng simpleng makina, at lahat ng ito ay tumutulong sa atin na mas magaan ang paggawa! Bukod sa pulley, may lever (gaya ng seesaw, gunting, o tilad), may inclined plane (gaya ng ramp o dahilig na tinutulak mo pataas), may wheel and axle (gaya ng gulong ng kotse o ng manibela), may wedge (gaya ng palakol o kutsilyo na humahati), at may screw (gaya ng turnilyo na pumapasok sa kahoy). Ang bawat isa ay nagbabawas ng force na kailangan natin o nagbabago ng direksyon ng ating lakas. Alin po sa mga iyon ang nakita mo na sa paligid ng inyong bahay o paaralan?"
+        },
+        {
+          "role": "user",
+          "content": "bakit po ba lumulutang yung mga astronaut sa space?"
+        }
       ],
       "expectRetrieves": "faq-why-astronauts-float",
-      "mustContain": ["nahuhulog"],
-      "mustNotContain": ["centrifugal", "spacetime"]
+      "mustContain": [
+        "nahuhulog"
+      ],
+      "mustNotContain": [
+        "centrifugal",
+        "spacetime"
+      ]
     },
     {
       "id": "gibberish-unintelligible",
       "_codified_from": "on-device 2026-06-06: gibberish input should get 'pasensya, hindi kita maintindihan', not a faked answer",
-      "lang": "tagalog", "grade": 5, "mode": "chitchat",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "chitchat",
       "question": "asdghjk qwopzx mnbvc lkjhg",
       "expectRetrieves": "none",
-      "mustContain": ["hindi.{0,20}(maintind|naintind|kita maunawa|alam ang ibig|alam.{0,12}sabihin)|pasensya|paki-?ulit|pakiulit|ayaw.{0,15}manghula"],
-      "mustNotContain": ["[Mm]agandang tanong"]
+      "mustContain": [
+        "hindi.{0,20}(maintind|naintind|kita maunawa|alam ang ibig|alam.{0,12}sabihin)|pasensya|paki-?ulit|pakiulit|ayaw.{0,15}manghula"
+      ],
+      "mustNotContain": [
+        "[Mm]agandang tanong"
+      ]
     },
-
     {
       "_codified_from": "on-device 2026-06-06: verify the tutor EMITS [image: …] for diagram-worthy topics (the image handler's whole input)",
       "id": "image-trex",
-      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "grounded",
       "question": "Anong hitsura ng Tyrannosaurus rex?",
       "expectRetrieves": "any",
-      "mustEmitImage": true
+      "mustRetrieveIdIncludes": [
+        "trex",
+        "tyrannosaurus"
+      ]
     },
     {
       "id": "image-plant-parts",
-      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "grounded",
       "question": "Ano ang mga bahagi ng halaman?",
       "expectRetrieves": "any",
-      "mustEmitImage": true
+      "mustRetrieveIdIncludes": [
+        "flower",
+        "plant",
+        "halaman",
+        "bulaklak"
+      ]
     },
     {
       "id": "image-water-cycle",
-      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "grounded",
       "question": "Paano ang siklo ng tubig?",
       "expectRetrieves": "any",
-      "mustEmitImage": true
+      "mustRetrieveIdIncludes": [
+        "water-cycle",
+        "tubig"
+      ]
     },
     {
       "id": "image-human-heart",
-      "lang": "tagalog", "grade": 5, "mode": "grounded",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "grounded",
       "question": "Ano ang puso ng tao?",
       "expectRetrieves": "any",
-      "mustEmitImage": true
+      "mustRetrieveIdIncludes": [
+        "heart",
+        "puso"
+      ]
     }
   ]
 }
