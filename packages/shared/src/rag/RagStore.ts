@@ -89,6 +89,86 @@ export function tokenize(text: string): string[] {
     .map(stem);
 }
 
+// Below this many characters a query isn't "padded" — it's a terse reply/follow-up
+// ("oo", "bakit?", "ulan ba?"), so stripping filler would risk removing its only
+// content for zero dilution benefit. Skip normalization entirely below it. (Every R1
+// win is a 30+ char padded query, so this never undoes them.)
+const MIN_NORMALIZE_LEN = 24;
+
+/**
+ * Normalize a raw kid query before EMBEDDING it for semantic retrieval. Real kids
+ * wrap questions in conversational/politeness filler ("po", "may project ako about
+ * sa…", "sabi ng teacher ko…", "totoo po ba"), which dilutes the LaBSE sentence
+ * vector and drops covered topics under the abstain floor (measured: ~0.15 cosine).
+ * This strips that framing so the embedding reflects the CONTENT. Lexical search is
+ * unaffected (it has its own QUERY_STOP); only the embed input is normalized.
+ *
+ * SHORT inputs are returned untouched (see MIN_NORMALIZE_LEN) — a single-word reply
+ * has no padding to strip. We DO keep single-CONTENT-word RESULTS ("puso") since
+ * those are the ideal output; only an empty/scrap result falls back to the original.
+ */
+// Query-side colloquial/abbreviation expansion (R3): map a kid's slang to the formal
+// term the curriculum uses, applied to BOTH retrieval paths. Whole-word only, query
+// only (NOT the index — the corpus's literal "Las Piñas" must stay "pinas"). Fixes the
+// homonym collision where "pinas" (slang for Pilipinas) matched the place "Las Piñas":
+// "lindol sa pinas" retrieved Las Piñas shorebirds; "lindol sa pilipinas" retrieves the
+// Ring-of-Fire / fault facts. Keep this list short and unambiguous.
+// NB: do NOT add "ph"→"pilipinas" — pH (acids/bases) is a real grade-school science term.
+const COLLOQUIAL: [RegExp, string][] = [
+  [/\bpinas\b/gi, 'pilipinas'],
+];
+export function expandColloquial(text: string): string {
+  return COLLOQUIAL.reduce((s, [re, to]) => s.replace(re, to), text);
+}
+
+export function normalizeQuery(text: string): string {
+  const original = expandColloquial(text.trim()); // expand regardless of length
+  if (original.length < MIN_NORMALIZE_LEN) return original; // terse reply — leave it
+  let s = ` ${original} `;
+  // 1) framing PREFIXES that carry no science content (a kid wrapping a question)
+  s = s.replace(
+    /\b(?:may|meron|mayroon)\s+(?:akong?\s+)?(?:homework|project|assignment|report|takdang[-\s]?aralin|gawain|proyekto)\s+(?:po\s+)?(?:ako\s+)?(?:na\s+)?(?:tungkol|about|ukol)\s+(?:sa\s+)?/gi,
+    ' '
+  );
+  s = s.replace(
+    /\bsabi\s+(?:po\s+)?(?:ng\s+)?(?:aking\s+|akong\s+)?(?:teacher|guro|titser|kaibigan|kaklase|kapatid|nanay|tatay|magulang|lolo|lola)\s+(?:ko\s+)?(?:na\s+)?/gi,
+    ' '
+  );
+  s = s.replace(/\b(?:pwede|puwede)\s+(?:po\s+)?(?:ba\s+)?(?:akong?\s+)?(?:patulong|matulungan|magtanong|magpaturo)\s+(?:sa\s+)?/gi, ' ');
+  s = s.replace(/\bpatulong\s+(?:po\s+)?(?:naman\s+)?(?:sa\s+)?/gi, ' ');
+  // 2) framing SUFFIXES (claim-checks)
+  s = s.replace(/,?\s*totoo\s+(?:po\s+)?ba(?:ng)?(?:\s+po)?\s*\??\s*$/gi, ' ');
+  s = s.replace(/,?\s*(?:tama|mali)\s+(?:po\s+)?ba(?:\s+po)?\s*\??\s*$/gi, ' ');
+  s = s.replace(/\bdi\s+ba\s*(?:po)?\s*\??\s*$/gi, ' ');
+  // 3) standalone politeness/discourse PARTICLES that dilute the embedding (kept out
+  // of QUERY_STOP because the lexical side handles them differently)
+  s = s.replace(/\b(?:po|pô|naman|kasi|nga|talaga|ba|raw|daw|pala|eh|kaya)\b/gi, ' ');
+  const result = s.replace(/\s+/g, ' ').trim();
+  // Keep single content words (good!), but if stripping left only a scrap, use original.
+  return result.length >= 3 ? result : original;
+}
+
+// How much recent conversation to fold in as a topical anchor (chars). Enough to
+// carry the topic, bounded so a verbose prior answer can't crowd out the follow-up.
+const CONTEXT_ANCHOR_CHARS = 220;
+
+/**
+ * Build the EMBED input for a context-dependent follow-up (R2). A bare follow-up
+ * ("anong pinakamalaki sa kanila?", "bakit sila namatay?") is topic-blind, so its
+ * LaBSE vector lands far from any fact and the abstain floor fires. Folding a slice
+ * of the recent conversation in front of the (normalized) follow-up restores the
+ * topic — measured: bare ~0.49 → folded ~0.89, retrieving the right facts.
+ *
+ * Use as a FALLBACK only when the bare query abstains (so it never overrides a
+ * full question that switched topics — that one grounds on its own). Context first,
+ * follow-up last as the focus.
+ */
+export function buildContextualQuery(query: string, context: string): string {
+  const q = normalizeQuery(query);
+  const ctx = (context || '').replace(/\s+/g, ' ').trim();
+  return ctx ? `${ctx.slice(-CONTEXT_ANCHOR_CHARS)} ${q}` : q;
+}
+
 type LangKey = 'tl' | 'en' | 'bis';
 
 interface IndexedFact {
@@ -108,12 +188,15 @@ const LANG_KEY: Record<Language, LangKey> = {
 // tuned at this value, fusing lexical + semantic candidate lists equally.
 const RRF_K = 60;
 // Semantic-similarity floor for abstention: below this top-1 cosine the query is
-// off-topic (return nothing → the tutor abstains). Calibrated on the 450-query
-// benchmark (LaBSE raw-CLS): positives mean 0.68, negatives mean 0.50. At 0.58
-// we keep ~95% of real questions across ALL languages (Cebuano included — its
-// positives sit at 0.68 too) while rejecting ~90% of off-topic. Biased slightly
-// toward answering (the product is a companion that "does know"); tune on-device.
-const SEMANTIC_FLOOR = 0.58;
+// off-topic (return nothing → the tutor abstains). Originally 0.58 from the 450-query
+// benchmark (positives mean 0.68, negatives 0.50). RETUNED to 0.55 (R1, 2026-06-07)
+// after chat-driver probing showed REAL kid phrasing on COVERED topics lands at
+// 0.54–0.56 (e.g. "paano gumagana ang puso natin" 0.563) — the benchmark used clean
+// queries. 0.55 recovers those while genuinely-out-of-bank queries still abstain
+// (Einstein's-dog 0.542, dragon-wing 0.522, off-topic 0.39). Paired with
+// `normalizeQuery` (strips conversational filler before embedding). Guarded by
+// rag/pipeline/hybrid-stress.mts — re-tune there, not by feel.
+const SEMANTIC_FLOOR = 0.55;
 
 export class RagStore {
   private docs: IndexedFact[] = [];
@@ -172,8 +255,8 @@ export class RagStore {
     // words — stripping leaves nothing. In that case fall back to the raw tokens
     // so the pronouns/question words themselves can match the ABOUT_HIRAIA facts
     // (which carry "sino", "kayo", "para", … as terms).
-    const stripped = tokenize(query).filter((t) => !QUERY_STOP.has(t));
-    const ctxStripped = tokenize(context).filter((t) => !QUERY_STOP.has(t));
+    const stripped = tokenize(expandColloquial(query)).filter((t) => !QUERY_STOP.has(t));
+    const ctxStripped = tokenize(expandColloquial(context)).filter((t) => !QUERY_STOP.has(t));
     // A pure glue/acceptance query ("oo", "sige", "oo gusto ko", "para saan to")
     // strips to nothing. If there's conversation context, ground on IT (a follow-up
     // acceptance grounds on what was just offered); else fall back to the raw tokens

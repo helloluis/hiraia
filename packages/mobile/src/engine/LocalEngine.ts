@@ -17,7 +17,7 @@ import type {
   TutorConfig,
   Language,
 } from '@hiraia/shared';
-import { RagStore, SemanticIndex } from '@hiraia/shared';
+import { RagStore, SemanticIndex, normalizeQuery, buildContextualQuery } from '@hiraia/shared';
 
 /**
  * LocalEngine implementation using QVAC SDK.
@@ -243,11 +243,23 @@ export class LocalEngine implements TutorEngine {
     if (this.semanticReady && this.embedModelId) {
       let queryVec: Float32Array | undefined;
       try {
-        queryVec = Float32Array.from(await this.embed(query));
+        // Embed the NORMALIZED query (strip conversational filler) so covered topics
+        // don't fall under the abstain floor — see normalizeQuery / SEMANTIC_FLOOR.
+        queryVec = Float32Array.from(await this.embed(normalizeQuery(query)));
       } catch (e) {
         console.warn('[LocalEngine] query embed failed; lexical fallback:', e);
       }
       hits = this.rag.retrieveForGroundingHybrid(query, queryVec, language, topK, 0.5, context, seenIds);
+      // R2: a bare follow-up ("anong pinakamalaki sa kanila?") is topic-blind and
+      // abstains. Retry once with the conversation topic folded into the embed.
+      if (hits.length === 0 && queryVec && context.trim()) {
+        try {
+          const foldedVec = Float32Array.from(await this.embed(buildContextualQuery(query, context)));
+          hits = this.rag.retrieveForGroundingHybrid(query, foldedVec, language, topK, 0.5, context, seenIds);
+        } catch (e) {
+          console.warn('[LocalEngine] contextual re-embed failed:', e);
+        }
+      }
     } else {
       hits = this.rag.retrieveForGrounding(query, language, topK, 0.5, context, seenIds);
     }

@@ -27,15 +27,55 @@ interface Case {
   // display is RETRIEVAL-driven (FACT_IMAGE[retrieved fact]), not tag-driven; prefer mustRetrieveIdIncludes.
   mustRetrieveIdIncludes?: string[]; // a retrieved fact id must contain one of these (the image-bearing concept)
   mustContainEmoji?: boolean; // the answer should carry at least one emoji (engagement nudge)
+  mustGround?: boolean; // COVERED-topic probe: the answer must NOT deflect/over-abstain (no REFUSAL_MARKERS).
+  // Use ONLY when the bank demonstrably has facts on the topic (pair with expectRetrieves/mustRetrieveIdIncludes).
+  // This is the opposite of mode:abstain — it catches the model punting ("tanungin ang guro") on things it CAN answer.
   adapter?: 'tagalog' | 'bisaya'; // which LoRA this case must run under (default tagalog); harness boots both
 }
+
+// Deflection / over-abstention markers — phrases that PUNT to a teacher/book or
+// disclaim knowledge instead of using the grounded facts. For a topic we KNOW is
+// covered (mustGround cases) any of these is a FAILURE. NOTE: this is deliberately
+// NARROW (anchored deflection phrasings, not a bare "hindi") so it does NOT fire on
+// legitimate science prose like "hindi ito bituin kundi planeta". The genuine
+// abstain cases (mode:abstain, e.g. biggest-star) do NOT set mustGround, so the
+// required "hindi ako sigurado" there is unaffected.
+const REFUSAL_MARKERS: RegExp[] = [
+  /hindi\s+(?:po\s+)?ako(?:\s+po)?\s+(?:gaano\s+)?(?:sigurado|tiyak|kumpiyansa)/i,
+  /hindi\s+ko\s+(?:po\s+)?(?:alam|matiyak|masabi|maipaliwanag|sigurado|lubos na alam)/i,
+  /hindi\s+(?:po\s+)?(?:sigurado|tiyak)\s+(?:ang|ako)/i,
+  /wala\s+(?:po\s+)?ako(?:ng)?\s+(?:sapat\s+na\s+)?(?:impormasyon|alam|kaalaman|datos)/i,
+  /(?:tanungin|magtanong|itanong|kausapin|konsultahin).{0,24}\b(?:guro|titser|teacher|magulang)\b/i,
+  /(?:tingnan|basahin|hanapin|alamin|maghanap).{0,22}\b(?:libro|aklat|teksbuk|textbook|internet|reference)\b/i,
+  /ayaw\s+ko(?:ng)?\s+(?:po\s+)?(?:magbigay|magsabi|manghula|mag-?imbento).{0,18}mali/i,
+  /baka\s+(?:po\s+)?(?:ako\s+)?(?:magkamali|mali\s+ang|maling)/i,
+  // Bisaya
+  /wala\s+ko(?:y)?\s+(?:kasiguro|kasiguruhan|kahibalo|igong\s+impormasyon)/i,
+  /pangutan-?a.{0,22}\b(?:magtutudlo|titser|maestra|maestro|ginikanan)\b/i,
+  // English (base-model path)
+  /\bI(?:'m| am)\s+not\s+(?:sure|certain)\b/i,
+  /\bask\s+your\s+(?:teacher|parent)\b/i,
+  /\bI\s+(?:don'?t|do not)\s+(?:know|have enough)\b/i,
+];
 
 const cfg = JSON.parse(readFileSync(join(HERE, 'cases.json'), 'utf8')) as { cases: Case[] };
 // The harness boots one server per adapter (tagalog, then bisaya). Each pass runs
 // only the cases tagged for its adapter (default tagalog), so Cebuano answers are
 // tested against the Bisaya LoRA — the real device path, not the Tagalog one.
 const ADAPTER_TAG = process.env.ADAPTER_TAG ?? 'tagalog';
-const cases = cfg.cases.filter((c) => (c.adapter ?? 'tagalog') === ADAPTER_TAG);
+// Sampling temperature. Default 0 = deterministic gate (one greedy sample per case).
+// The DEVICE runs at the model's default temp (~0.8, LocalEngine.chat sets none), where
+// the model can STOCHASTICALLY wander into a deflection ("tanungin ang guro") on a
+// vaguely-phrased but covered query. Set TEMP=0.8 SAMPLES=5 to reproduce that — a
+// mustGround case then fails if ANY sample deflects (the on-device experience).
+const TEMP = Number(process.env.TEMP ?? '0');
+const SAMPLES = Math.max(1, Number(process.env.SAMPLES ?? '1'));
+// Optional focused run: CASES="venus,photosynth" runs only cases whose id contains
+// one of the comma-separated substrings (handy for probing a single failure mode).
+const CASE_FILTER = (process.env.CASES ?? '').split(',').map((s) => s.trim()).filter(Boolean);
+const cases = cfg.cases
+  .filter((c) => (c.adapter ?? 'tagalog') === ADAPTER_TAG)
+  .filter((c) => !CASE_FILTER.length || CASE_FILTER.some((s) => c.id.includes(s)));
 const store = new RagStore();
 const stripTags = (s: string) => s.replace(/\s*\[image:[^\]]*\]/gi, '').trim();
 
@@ -45,7 +85,8 @@ async function ask(messages: { role: string; content: string }[]): Promise<strin
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       messages,
-      temperature: 0, max_tokens: 320, stream: false,
+      temperature: TEMP, max_tokens: 320, stream: false,
+      ...(TEMP > 0 ? { seed: -1 } : {}), // vary samples when probing at device temp
       // adapter loaded at server start (--lora); activate at scale 1.0 per request too.
       lora: [{ id: 0, scale: 1.0 }],
     }),
@@ -101,6 +142,23 @@ for (const c of cases) {
     fails.push(`mustRetrieveIdIncludes: none of [${c.mustRetrieveIdIncludes.join(',')}] in retrieved [${retrievedIds.join(',') || 'none'}]`);
   // emoji engagement nudge (Extended_Pictographic covers the emoji blocks)
   if (c.mustContainEmoji && !/\p{Extended_Pictographic}/u.test(raw)) fails.push('mustContainEmoji: no emoji in answer');
+  // COVERED-topic probe: the model must USE the grounding, not punt to a teacher/book.
+  // At SAMPLES>1 (device-temp repro), draw extra samples and fail if ANY deflects —
+  // the kid only has to hit the bad branch once to be told "ask your teacher".
+  if (c.mustGround) {
+    const drawn = [answer];
+    if (SAMPLES > 1) {
+      for (let s = 1; s < SAMPLES; s++) {
+        try { drawn.push(stripTags(await ask(messages))); } catch { /* counted as a non-deflection draw */ }
+      }
+    }
+    const deflected = drawn.filter((a) => REFUSAL_MARKERS.some((rx) => rx.test(a)));
+    if (deflected.length) {
+      const m = REFUSAL_MARKERS.find((rx) => rx.test(deflected[0]));
+      const rate = SAMPLES > 1 ? ` (${deflected.length}/${SAMPLES} samples @ temp ${TEMP})` : '';
+      fails.push(`mustGround: deflected/over-abstained on a COVERED topic${rate} (matched ${m}); retrieved [${retrievedIds.join(',') || 'none'}]`);
+    }
+  }
 
   const ok = fails.length === 0;
   const tag = ok ? '✅ PASS' : c.pending ? '⏳ PEND' : '❌ FAIL';

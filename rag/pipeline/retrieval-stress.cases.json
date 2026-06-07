@@ -2,6 +2,50 @@
   "_note": "Retrieval stress-test for the ~5k bank. Each case: a natural kid query + the language + which fact SHOULD come back (matched by id-substring, robust to not knowing exact ids) within maxRank, and optionally ids that must NOT win. Categories probe the known Phase-2 failure modes.",
   "cases": [
     {
+      "_codified_from": "on-device probe 2026-06-07: a kid framing a question as homework — 'gumawa ng report tungkol sa mga planeta' — is HIJACKED by the common noun 'report' → returns peis-helps-warnings-response-g6 (PHIVOLCS intensity REPORTS) + broken-cord-is-dangerous-g5 (REPORT damaged wires), ZERO of the many planet facts. Companion to venus-homework-grounds in the behavioral harness (where the MODEL also over-abstains). known=true until 'report'/'project'/'assignment' are demoted as science signal (stopword-weighting or the semantic path).",
+      "cat": "verb-hijack",
+      "q": "Kailangan kong gumawa ng report tungkol sa mga planeta",
+      "lang": "tagalog",
+      "expectIdIncludes": [
+        "planet",
+        "venus",
+        "mars",
+        "mercury",
+        "jupiter",
+        "saturn",
+        "solar-system"
+      ],
+      "mustNotIdIncludes": [
+        "peis",
+        "broken-cord",
+        "warnings",
+        "report-damaged"
+      ],
+      "maxRank": 3,
+      "known": true
+    },
+    {
+      "cat": "verb-hijack",
+      "q": "May report ako tungkol sa bulkan",
+      "lang": "tagalog",
+      "expectIdIncludes": [
+        "volcano",
+        "bulkan",
+        "mayon",
+        "taal",
+        "lava",
+        "magma"
+      ],
+      "mustNotIdIncludes": [
+        "peis",
+        "broken-cord",
+        "warnings",
+        "report-damaged"
+      ],
+      "maxRank": 3,
+      "known": true
+    },
+    {
       "cat": "verb-hijack",
       "q": "paano gumagana ang utak",
       "lang": "tagalog",

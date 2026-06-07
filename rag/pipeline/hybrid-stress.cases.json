@@ -1,0 +1,27 @@
+{
+  "_note": "R1 regression gate for the HYBRID retriever (LaBSE + the 0.58 abstain floor) — the device path, which the lexical retrieval-stress can't see. Codifies what the chat-driver probing (finetuning/eval/harness/PROBING-FINDINGS.md) found: conversational kid phrasing on COVERED topics falls under the floor → no grounding → the tutor deflects/confabulates. 'Green' = recover those (mustGround) WITHOUT breaking genuine abstention (mustAbstain). Query vectors are precomputed faithfully (transformers raw-CLS = device-equivalent) in hybrid-stress.qvecs.json by gen-hybrid-fixtures.mts; regenerate when the bank, embedder, or query-normalization changes.",
+  "cases": [
+    { "id": "heart-howworks", "q": "paano po gumagana ang puso natin?", "lang": "tagalog", "mustGround": true, "expectIdIncludes": ["heart", "puso", "circulat", "blood"] },
+    { "id": "lung-function", "q": "ano po ginagawa ng baga sa katawan?", "lang": "tagalog", "mustGround": true, "expectIdIncludes": ["lung", "respir", "baga", "alveoli"] },
+    { "id": "planets-project", "q": "may project po ako about sa mga planeta", "lang": "tagalog", "mustGround": true, "expectIdIncludes": ["planet", "venus", "mars", "mercury", "jupiter", "saturn", "solar-system"] },
+    { "id": "planets-count", "q": "ilang planeta po meron sa solar system?", "lang": "tagalog", "mustGround": true, "expectIdIncludes": ["planet", "solar-system", "eight-planets"] },
+    { "id": "gravity-vague", "q": "ano po bang gravity, parang nahihilo ako dun", "lang": "tagalog", "mustGround": true, "expectIdIncludes": ["gravity", "force", "fall"] },
+    { "id": "earthquake-ph", "q": "bakit po may lindol sa pinas?", "lang": "tagalog", "mustGround": true, "expectIdIncludes": ["earthquake", "lindol", "tecton", "plate", "fault", "ring-of-fire", "philippines"], "mustNotIdIncludes": ["shorebird", "las-pinas", "wetland"], "_fixed_by": "R3 expandColloquial: pinas→pilipinas removes the Las Piñas collision." },
+    { "id": "dino-extinction", "q": "bakit po namatay ang mga dinosaur?", "lang": "tagalog", "mustGround": true, "expectIdIncludes": ["dinosaur", "extinct", "asteroid"] },
+    { "id": "boiling-water", "q": "bakit po kumukulo ang tubig pag iniinit?", "lang": "tagalog", "mustGround": true, "expectIdIncludes": ["boil", "kumukulo", "boiling", "hundred"] },
+    { "id": "teacher-5planets", "q": "sabi po ng teacher ko lima lang ang planeta sa solar system, totoo po ba?", "lang": "tagalog", "mustGround": true, "expectIdIncludes": ["planet", "solar-system", "eight-planets"] },
+    { "id": "venus-direct", "q": "Bakit po pinakamainit ang planetang Venus?", "lang": "tagalog", "mustGround": true, "expectIdIncludes": ["venus"] },
+    { "id": "skyblue-direct", "q": "bakit po asul ang langit?", "lang": "tagalog", "mustGround": true, "expectIdIncludes": ["sky", "blue", "scatter", "asul"] },
+
+    { "id": "abstain-einstein-dog", "q": "ano po ang pangalan ng alagang aso ni Einstein?", "lang": "tagalog", "mustAbstain": true },
+    { "id": "abstain-biggest-star", "q": "ano po ang pangalan ng pinakamalaking bituin sa buong universe?", "lang": "tagalog", "mustAbstain": true, "known": true, "_known": "Borderline (cos 0.586): STARS are covered, just not 'the biggest star' specifically — so this sits above genuinely-out-of-bank queries and grounds star facts at floor 0.55. Acceptable: the grounded prompt makes the model caveat ('I'm not sure of the exact biggest'). The behavioral gate's abstain-biggest-star case checks that caveat. Tracked, non-blocking." },
+    { "id": "abstain-dragon-wing", "q": "ano po ang kulay ng pakpak ng dragon?", "lang": "tagalog", "mustAbstain": true },
+    { "id": "abstain-pba-score", "q": "sino po ang nanalo sa PBA finals kahapon?", "lang": "tagalog", "mustAbstain": true },
+
+    { "id": "flat-earth-correct", "q": "totoo po bang patag ang mundo?", "lang": "tagalog", "mustGround": true, "expectIdIncludes": ["earth", "round", "sphere", "globe", "bilog"], "known": true },
+
+    { "id": "r2-dino-biggest", "q": "anong po pinakamalaki sa kanila?", "lang": "tagalog", "context": "ano po ang dinosaur? Ang mga dinosaur ay sinaunang mga reptilya na namuhay sa Earth mga 230 hanggang 66 milyong taon na ang nakalipas. Iba-iba ang laki nila.", "mustGround": true, "expectIdIncludes": ["dino"] },
+    { "id": "r2-dino-extinct", "q": "tapos po bakit sila namatay lahat?", "lang": "tagalog", "context": "ano po ang dinosaur? Ang mga dinosaur ay sinaunang mga reptilya na namuhay sa Earth mga 230 hanggang 66 milyong taon na ang nakalipas. Iba-iba ang laki nila.", "mustGround": true, "expectIdIncludes": ["dino", "extinct", "asteroid"] },
+    { "id": "r2-sky-night", "q": "eh po pano naman pag gabi?", "lang": "tagalog", "context": "bakit po asul ang langit? Asul ang langit dahil ikinakalat ng hangin ang liwanag ng araw, mas marami ang asul na ikinakalat kaysa ibang kulay.", "mustGround": true, "expectIdIncludes": ["sky", "blue", "night", "dark", "star"] }
+  ]
+}

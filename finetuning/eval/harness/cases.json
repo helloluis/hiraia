@@ -1,5 +1,5 @@
 {
-  "note": "Behavioral gate for the on-device tutor. Each case asserts on the device-EQUIVALENT path (base GGUF + adapter GGUF via llama-server) using the REAL runtime prompt (RagStore retrieval + generateSystemPrompt + grounding). Regexes are case-insensitive. expectRetrieves: a fact id the retriever MUST return ('none' = must return nothing). maxChars: response length ceiling (catches lecturing).",
+  "note": "Behavioral gate for the on-device tutor. Each case asserts on the device-EQUIVALENT path (base GGUF + adapter GGUF via llama-server) using the REAL runtime prompt (RagStore retrieval + generateSystemPrompt + grounding). Regexes are case-insensitive. expectRetrieves: a fact id the retriever MUST return ('none' = must return nothing, 'any' = don't assert). maxChars: response length ceiling (catches lecturing). mustGround:true = COVERED-topic probe — the answer must NOT deflect/over-abstain (no REFUSAL_MARKERS); use only where the bank has facts. pending:true = codified-but-not-yet-fixed (reported, non-blocking). Env: TEMP/SAMPLES (probe device-temp stochastic deflection), CASES (substring id filter).",
   "cases": [
     {
       "id": "astronaut-grounded",
@@ -408,6 +408,73 @@
         "light",
         "water"
       ]
+    },
+    {
+      "id": "venus-homework-grounds",
+      "_cap": "grounding-utilization",
+      "_codified_from": "on-device 2026-06-07: user asked 'May homework po ako tungkol sa planet Venus' and the tutor DEFLECTED ('hindi ako sigurado sa lahat ng detalye… tingnan sa libro o tanungin ang guro mo') even though the bank has 39 Venus facts AND retrieval surfaces them (why-venus-hottest-g6, venus-planet-g5). ROOT CAUSE (confirmed in-harness): at temp 0 the model answers Venus correctly EVERY time, but the device runs at the model's default temp ~0.8, where it stochastically takes the deflection branch — reproduced 1/5 samples (TEMP=0.8 SAMPLES=5). The trigger is vague homework-STATEMENT phrasing, not the topic (the direct 'Bakit pinakamainit ang Venus?' is robust 5/5). Pending until the grounded adapter commits to teaching covered topics at sampling temp. So this case PASSES the temp-0 gate; the device-temp probe in run-harness.sh measures the deflection rate.",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "grounded",
+      "question": "May homework po ako tungkol sa planet Venus",
+      "expectRetrieves": "venus-planet-g5",
+      "mustGround": true,
+      "mustContain": [
+        "[Vv]enus"
+      ],
+      "mustNotContain": [
+        "halaman|flytrap|kumakain ng insekto"
+      ],
+      "pending": true
+    },
+    {
+      "id": "venus-why-hot-grounds",
+      "_cap": "grounding-utilization",
+      "lang": "tagalog",
+      "grade": 6,
+      "mode": "grounded",
+      "question": "Bakit po pinakamainit ang planetang Venus?",
+      "expectRetrieves": "any",
+      "mustRetrieveIdIncludes": [
+        "venus"
+      ],
+      "mustGround": true,
+      "mustContain": [
+        "(init|mainit|greenhouse|ulap|nakuk?ulong|nakakulong|carbon|hangin)"
+      ]
+    },
+    {
+      "id": "dino-homework-grounds",
+      "_cap": "grounding-utilization",
+      "_note": "Homework-statement phrasing (not a question) on a richly-covered topic — must engage with the facts, not punt.",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "grounded",
+      "question": "May assignment po ako tungkol sa mga dinosaur",
+      "expectRetrieves": "any",
+      "mustRetrieveIdIncludes": [
+        "dino",
+        "fossil"
+      ],
+      "mustGround": true,
+      "mustContain": [
+        "(dinosaur|fossil|reptil|buto|milyong taon)"
+      ]
+    },
+    {
+      "id": "photosynthesis-homework-grounds",
+      "_cap": "grounding-utilization",
+      "_codified_from": "harness probe 2026-06-07: 'May homework po ako tungkol sa photosynthesis' is the SAME failure mode as venus-homework — a vague homework STATEMENT (not a question) on a fully-covered topic. At temp 0 the model returns a content-free clarifying question (no mustContain term); at the device temp 0.8 it DEFLECTS 4/5 samples ('hindi ako sigurado… tanungin ang guro mo') despite living-photosynthesis-g5 being retrieved. Pending until the grounded adapter commits to teaching when facts are present. Repro: TEMP=0.8 SAMPLES=5 CASES=photosynthesis-homework.",
+      "lang": "tagalog",
+      "grade": 5,
+      "mode": "grounded",
+      "question": "May homework po ako tungkol sa photosynthesis",
+      "expectRetrieves": "living-photosynthesis-g5",
+      "mustGround": true,
+      "mustContain": [
+        "(liwanag|araw|tubig|berde|oxygen|oksiheno)"
+      ],
+      "pending": true
     },
     {
       "id": "emoji-chitchat",

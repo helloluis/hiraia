@@ -35,9 +35,20 @@ CTX="${CTX:-4096}"
 # Retrieval stress-test runs FIRST — model-independent, fast, and codifies the
 # on-device "weird encounter" regressions (verb-hijack, distractor, follow-up
 # context, conversational novelty). Fail fast before spinning up the server.
-echo ">> running retrieval stress-test (model-independent) ..."
+echo ">> running retrieval stress-test (lexical, model-independent) ..."
 "$ROOT/node_modules/.bin/tsx" "$ROOT/rag/pipeline/retrieval-stress.mts" || {
   echo "ERR: retrieval regressions — gate FAILS (see above)"; exit 1;
+}
+
+# HYBRID retrieval gate (R1): the device path (LaBSE + abstain floor) that the lexical
+# test above can't see. Runs OFFLINE against precomputed faithful query vectors
+# (hybrid-stress.qvecs.json) — no embedder needed at gate time. Guards the floor +
+# normalizeQuery calibration so covered topics keep grounding and out-of-bank keeps
+# abstaining. Regenerate fixtures (gen-hybrid-fixtures.mts, embedder up) on bank/
+# embedder/normalization changes.
+echo ">> running HYBRID retrieval gate (R1, model-independent) ..."
+"$ROOT/node_modules/.bin/tsx" "$ROOT/rag/pipeline/hybrid-stress.mts" || {
+  echo "ERR: hybrid R1 regressions — gate FAILS (see above)"; exit 1;
 }
 
 # The Bisaya LoRA that matches Sailor2-3B (== the shipping mobile adapter-bisaya.gguf;
@@ -65,6 +76,21 @@ RC=0
 echo ">> [tagalog] booting $ADAPTER ..."; boot "$ADAPTER"
 echo ">> [tagalog] behavioral gate ..."
 ADAPTER_TAG=tagalog ENDPOINT="http://localhost:$PORT" "$ROOT/node_modules/.bin/tsx" "$HERE/run-eval.mts" || RC=1
+
+# Device-temp deflection probe: the gate above runs temp 0 (deterministic), but the
+# DEVICE runs at the model's DEFAULT temp (~0.8, LocalEngine.chat sets none) where the
+# grounded adapter can STOCHASTICALLY punt on a vaguely-phrased-but-covered query
+# (e.g. "May homework ako tungkol sa Venus" → "hindi ako sigurado… tanungin ang guro")
+# even though retrieval supplied the facts. This re-runs the mustGround cases at temp
+# 0.8 ×5 and REPORTS the per-case deflection rate. INFORMATIONAL: the over-abstention
+# is a known/pending behavior (those cases carry pending:true), so it never blocks; it
+# exists to MEASURE the rate release-over-release. Skip with SKIP_GROUNDING_TEMP=1.
+if [ "${SKIP_GROUNDING_TEMP:-0}" != "1" ]; then
+  echo ">> [tagalog] device-temp deflection probe (mustGround @ temp ${GROUND_TEMP:-0.8} ×${GROUND_SAMPLES:-5}) — informational ..."
+  ADAPTER_TAG=tagalog ENDPOINT="http://localhost:$PORT" TEMP="${GROUND_TEMP:-0.8}" SAMPLES="${GROUND_SAMPLES:-5}" \
+    CASES="homework-grounds,venus-why-hot" "$ROOT/node_modules/.bin/tsx" "$HERE/run-eval.mts" \
+    || echo ">> NOTE: device-temp probe surfaced over-abstention — informational (known, pending the next grounded adapter)."
+fi
 
 # Compaction probe: acceptance test for the auto-compacter's summarize(). The
 # grounded adapter's tutor persona can fight the summarize instruction, so this is

@@ -29,7 +29,36 @@ the app builds them — not the model in isolation.
 - **Retrieval regressions** — `expectRetrieves` asserts the right fact id is returned
   (model-independent; cheap).
 - **Abstention** — out-of-bank questions must express uncertainty, not invent.
+- **Over-abstention on COVERED topics** (`mustGround`) — the inverse failure: when the
+  bank demonstrably HAS facts on a topic, the model must USE them, not punt to a
+  teacher/book ("hindi ako sigurado… tanungin ang guro mo"). Codified after a kid asked
+  "May homework po ako tungkol sa planet Venus" on-device and got deflected despite 39
+  Venus facts in the bank. `mustGround:true` fails the case if the answer matches any
+  `REFUSAL_MARKERS` (deflection phrasings in TL/BIS/EN). Pair it with `expectRetrieves`/
+  `mustRetrieveIdIncludes` so you're asserting on a genuinely-covered topic.
 - **Lecturing** — chit-chat must stay short (`maxChars`) and not dump a science topic.
+
+### Device-temperature deflection (the temp-0 blind spot)
+
+The gate runs at **temp 0** (deterministic, stable regressions). But the **device runs
+at the model's default temp (~0.8** — `LocalEngine.chat` sets none), where the grounded
+adapter can **stochastically** deflect on a vaguely-phrased-but-covered query that temp 0
+answers fine. The Venus deflection was invisible at temp 0 and reproduced at temp 0.8
+(1/5 samples; the photosynthesis variant 4/5). To probe it:
+
+```bash
+TEMP=0.8 SAMPLES=5 CASES=homework-grounds ./run-eval.mts   # focused, via env
+```
+
+A `mustGround` case then fails if **any** of the N samples deflects (the kid only has to
+hit the bad branch once). `run-harness.sh` runs this automatically as an **informational**
+pass after the temp-0 gate (`SKIP_GROUNDING_TEMP=1` to skip; `GROUND_TEMP`/`GROUND_SAMPLES`
+to tune) — it measures the deflection rate release-over-release without blocking, since
+the over-abstention is a known/`pending` behavior awaiting the next grounded adapter.
+
+The companion **retrieval-side** failure (a vague "report/assignment about X" whose common
+verb hijacks lexical retrieval away from the covered facts) lives in
+`rag/pipeline/retrieval-stress.cases.json` as `verb-hijack` cases (model-independent).
 
 ## Run
 
