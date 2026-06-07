@@ -37,3 +37,21 @@ R@3 — ship the hybrid. (2) hybrid-LaBSE wins Cebuano/Taglish/Tagalog (e5 wins 
 English) AND LaBSE is BERT-native (runs on QVAC where e5/XLM-R was broken) → LaBSE
 is the pick despite ~270MB Q4 footprint. (3) abstain floor ~0.86 keeps 88% pos /
 rejects 92% neg (usable, overlapping). Caveat: single-gold Recall = lower bound.
+
+## LaBSE on-device reality (raw-CLS, no dense) — the SHIPPABLE number
+QVAC's GGMLBert runs LaBSE correctly (brain>heart, parity 0.99999 vs transformers
+raw-CLS) BUT the GGUF omits LaBSE's dense pooling head — so the shippable embedder
+is BERT raw-CLS, not the full sentence-transformers LaBSE that won the first bench.
+Re-benchmarked with raw-CLS (bench-labsecls.py):
+
+| method | R@1 | R@3 | R@5 | MRR | on QVAC |
+|---|---|---|---|---|---|
+| lexical | .291 | .509 | .598 | .420 | — |
+| hyb-e5 | .364 | .611 | .687 | .511 | NO (GGUF broken) |
+| **hyb-labse-cls** | .398 | .607 | .700 | .529 | **YES (verified)** |
+
+DECISION: ship hybrid-LaBSE-cls. Dense-head loss = ~1.7pt R@3 (still +10pt over
+lexical). e5's 0.611 is unreachable on-device (XLM-R GGUF broken on qvac runtime),
+so labse-cls 0.607 is the best ACHIEVABLE retriever. LaBSE GGUF: ChristianAzinn/
+labse-gguf (Q4_K_M for ship). Build-time corpus embed = transformers raw-CLS
+(=qvac GGUF); on-device query = qvac GGMLBert. Same space (parity 1.0).
