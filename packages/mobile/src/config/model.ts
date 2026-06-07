@@ -114,8 +114,8 @@ export const MODEL_STATS_LINE =
 // The bundled int8 semantic-vectors blob + its meta (built by
 // rag/scripts/build-vectors.py from the SAME bank version). Cross-package assets
 // under the workspace root; Metro packages the .bin, expo-asset reads its bytes.
-import vectorsBlobAsset from '../../../../rag/bank/vectors-labse.i8.bin';
-import vectorsMeta from '../../../../rag/bank/vectors-labse.meta.json';
+import vectorsBlobAsset from '../../assets/rag/vectors-labse.i8.bin';
+import vectorsMeta from '../../assets/rag/vectors-labse.meta.json';
 
 /**
  * On-device semantic embedder (LaBSE) for the hybrid retriever. Runs through the

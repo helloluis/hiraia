@@ -17,8 +17,8 @@ from transformers import AutoTokenizer, AutoModel
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # rag/
 BANK = os.path.join(HERE, "bank", "science-facts.jsonl")
-BIN = os.path.join(HERE, "bank", "vectors-labse.i8.bin")
-META = os.path.join(HERE, "bank", "vectors-labse.meta.json")
+BIN = os.path.join(HERE, "..", "packages", "mobile", "assets", "rag", "vectors-labse.i8.bin")
+META = os.path.join(HERE, "..", "packages", "mobile", "assets", "rag", "vectors-labse.meta.json")
 MODEL = "sentence-transformers/LaBSE"
 LANGS = ["tl", "bis", "en"]
 dev = "mps" if torch.backends.mps.is_available() else "cpu"
