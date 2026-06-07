@@ -45,12 +45,17 @@ const QUERY_STOP = new Set(
   // Unstripped, those verbs hijack matches at 5k scale — the content noun must drive
   // ranking. Kept conservative: only clearly topic-less operation verbs, NOT content
   // verbs like humihinga/lumilipad/kumakain. TL + a few BIS forms.
+  // `totoo/tinuod (ba)` is myth-framing ("is it TRUE that 10% of the brain…") — left in,
+  // its high IDF hijacks myth queries to "X-is-not-real" facts (dreams-not-real,
+  // sound-cannot-be-seen) instead of the topic's debunk fact. Strip it so the content
+  // noun (utak) drives, same rationale as the process verbs above.
   `bakit paano ano anong kung saan kailan sino sinong alin para kaya
    ngano nganong unsa unsay asa kinsa giunsa pila naunsa
    ito iyan iyon nito niyan kini kana kanang
    ang mga yung nga kang iya niya nila ila
    may mayroon meron adunay naa
    bang ba kaya nga daw raw pala naman lang lamang
+   totoo totoong tutoo tutuo tinuod tuod
    oo opo oho oonga sige gusto payag game pwede mao sure
    what why how when where who whom which whose
    the are does did can could would should about from with into
