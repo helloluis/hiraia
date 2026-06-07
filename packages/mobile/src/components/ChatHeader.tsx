@@ -1,10 +1,15 @@
 import { useRouter } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import { LANGUAGE_OPTIONS, DEFAULT_LANGUAGE } from '../config/languages';
+import { useEngineStore } from '../store/engineStore';
 import { colors, fonts } from '../theme';
 
 export function ChatHeader() {
   const router = useRouter();
+  const language = useEngineStore((s) => s.language) ?? DEFAULT_LANGUAGE;
+  const languageLabel =
+    LANGUAGE_OPTIONS.find((o) => o.lang === language)?.label ?? 'Tagalog';
 
   return (
     <View style={styles.container}>
@@ -19,11 +24,9 @@ export function ChatHeader() {
       </View>
 
       <View style={styles.pills}>
-        <TouchableOpacity style={styles.pill}>
-          <Text style={styles.pillText}>TL</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.pill}>
-          <Text style={styles.pillText}>G5</Text>
+        {/* Active language, spelled out. Tap to open the language picker. */}
+        <TouchableOpacity style={styles.pill} onPress={() => router.push('/sidebar')}>
+          <Text style={styles.pillText}>{languageLabel}</Text>
         </TouchableOpacity>
       </View>
     </View>

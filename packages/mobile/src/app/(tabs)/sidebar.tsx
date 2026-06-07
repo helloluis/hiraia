@@ -5,6 +5,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import type { Language } from '@hiraia/shared';
 
 import { LANGUAGE_OPTIONS } from '../../config/languages';
+import { ACTIVE_MODEL, VECTORS_META } from '../../config/model';
+import { HIRAIAPEDIA_VERSION, ADAPTER_VERSION } from '../../config/version';
 import { useEngineStore } from '../../store/engineStore';
 import { colors, fonts } from '../../theme';
 
@@ -12,6 +14,9 @@ export default function SidebarScreen() {
   const router = useRouter();
   const language = useEngineStore((s) => s.language);
   const changeLanguage = useEngineStore((s) => s.changeLanguage);
+
+  const langLabel = LANGUAGE_OPTIONS.find((o) => o.lang === language)?.label ?? '—';
+  const adapterInfo = language ? ADAPTER_VERSION[language] : '—';
 
   const onPickLanguage = (lang: Language) => {
     if (lang === language) return;
@@ -26,7 +31,7 @@ export default function SidebarScreen() {
       <View style={styles.header}>
         <Text style={styles.title}>hiraia</Text>
         <TouchableOpacity onPress={() => router.back()}>
-          <Text style={styles.closeButton}>Isara</Text>
+          <Text style={styles.closeButton}>← Isara</Text>
         </TouchableOpacity>
       </View>
 
@@ -57,6 +62,26 @@ export default function SidebarScreen() {
 
         <Text style={styles.sectionTitle}>Mga Tala</Text>
         <Text style={styles.placeholder}>Wala pang tala</Text>
+
+        <Text style={styles.sectionTitle}>Bersyon</Text>
+        <View style={styles.versionBlock}>
+          <View style={styles.versionRow}>
+            <Text style={styles.versionLabel}>Modelo</Text>
+            <Text style={styles.versionValue}>
+              {ACTIVE_MODEL.displayName} · {ACTIVE_MODEL.quant}
+            </Text>
+          </View>
+          <View style={styles.versionRow}>
+            <Text style={styles.versionLabel}>Adapter ({langLabel})</Text>
+            <Text style={styles.versionValue}>{adapterInfo}</Text>
+          </View>
+          <View style={styles.versionRow}>
+            <Text style={styles.versionLabel}>Hiraiapedia</Text>
+            <Text style={styles.versionValue}>
+              v{HIRAIAPEDIA_VERSION} · {VECTORS_META.count.toLocaleString()} datos
+            </Text>
+          </View>
+        </View>
       </View>
 
       <TouchableOpacity style={styles.newChatButton}>
@@ -121,6 +146,27 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     fontSize: 16,
     color: colors.inkMuted,
+  },
+  versionBlock: {
+    gap: 6,
+  },
+  versionRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+    gap: 12,
+  },
+  versionLabel: {
+    fontFamily: fonts.body,
+    fontSize: 15,
+    color: colors.inkMuted,
+  },
+  versionValue: {
+    fontFamily: fonts.body,
+    fontSize: 15,
+    color: colors.ink,
+    flexShrink: 1,
+    textAlign: 'right',
   },
   langRow: {
     flexDirection: 'row',

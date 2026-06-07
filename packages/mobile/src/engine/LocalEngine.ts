@@ -8,6 +8,7 @@ import {
 import { Asset } from 'expo-asset';
 import { File } from 'expo-file-system';
 import { ACTIVE_MODEL, EMBEDDER, VECTORS_BLOB_ASSET, VECTORS_META } from '../config/model';
+import { CHAT_TEMP, SUMMARY_TEMP } from '../config/inference';
 import type { AdapterLanguage } from '../config/model';
 import type {
   TutorEngine,
@@ -127,11 +128,13 @@ export class LocalEngine implements TutorEngine {
         content: msg.content,
       }));
 
-      // Get streaming completion from QVAC
+      // Get streaming completion from QVAC. Temp 0.5 (not the ~0.8 llama.cpp
+      // default) — see CHAT_TEMP: lower temp reduces factual wandering.
       const run = completion({
         modelId: this.modelId,
         history,
         stream: true,
+        generationParams: { temp: CHAT_TEMP },
       });
 
       // Yield each token as it's generated
@@ -166,6 +169,7 @@ export class LocalEngine implements TutorEngine {
       modelId: this.modelId,
       history: [{ role: 'user', content: instruction }],
       stream: true,
+      generationParams: { temp: SUMMARY_TEMP }, // greedy: faithful, deterministic recap
     });
     let out = '';
     for await (const event of run.events) {

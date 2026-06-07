@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   messageList: {
     paddingHorizontal: 16,
     paddingTop: 16,
-    paddingBottom: 28, // clearance so the newest line / streaming text clears the input
+    paddingBottom: 48, // clearance so the newest line / streaming spinner fully clears the input (+20px so the responding indicator isn't hidden under the text field)
     gap: 16,
   },
   streamingRow: {
