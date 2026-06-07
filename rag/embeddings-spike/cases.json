@@ -1,0 +1,52 @@
+[
+ {
+  "q": "paano gumagana ang utak",
+  "lang": "tagalog",
+  "expect": "brain|utak",
+  "note": "utak=brain; lexical returns brain-adjacent (sleep/yawn/dizzy)"
+ },
+ {
+  "q": "ano ang ginagawa ng baga",
+  "lang": "tagalog",
+  "expect": "lung|respir|baga|alveoli|diaphragm|huminga",
+  "mustnot": "habagat",
+  "note": "baga=lungs; homonym trap = habagat (monsoon) contains 'baga'"
+ },
+ {
+  "q": "ano ang ginagawa ng puso",
+  "lang": "tagalog",
+  "expect": "heart|puso|circulat|dugo",
+  "mustnot": "rice",
+  "note": "puso=heart; trap = rice cake / banana flower (lexically fixed via topic boost)"
+ },
+ {
+  "q": "paano gumagawa ng kuryente",
+  "lang": "tagalog",
+  "expect": "electric|kuryente|current|generator",
+  "note": "morphology: gumagawa vs stored ginagawa; kuryente too common"
+ },
+ {
+  "q": "bakit asul ang langit",
+  "lang": "tagalog",
+  "expect": "blue-sky|sky-blue|scatter|asul",
+  "note": "control — both should hit"
+ },
+ {
+  "q": "ano ang photosynthesis",
+  "lang": "tagalog",
+  "expect": "photosynthes",
+  "note": "control — both should hit"
+ },
+ {
+  "q": "anong hayop ang pinakamabilis tumakbo",
+  "lang": "tagalog",
+  "expect": "cheetah|fastest|mabilis",
+  "note": "no exact keyword in query; semantic should help"
+ },
+ {
+  "q": "bakit tayo humihinga",
+  "lang": "tagalog",
+  "expect": "oxygen|respir|lung|breath|huminga|baga",
+  "note": "why we breathe — conceptual"
+ }
+]
