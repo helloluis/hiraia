@@ -8,7 +8,7 @@ import {
 import { Asset } from 'expo-asset';
 import { File } from 'expo-file-system';
 import { ACTIVE_MODEL, EMBEDDER, VECTORS_BLOB_ASSET, VECTORS_META } from '../config/model';
-import { CHAT_TEMP, SUMMARY_TEMP } from '../config/inference';
+import { CHAT_TEMP, SUMMARY_TEMP, CHAT_MAX_TOKENS, GPU_LAYERS } from '../config/inference';
 import type { AdapterLanguage } from '../config/model';
 import type {
   TutorEngine,
@@ -78,6 +78,7 @@ export class LocalEngine implements TutorEngine {
           modelType: ACTIVE_MODEL.modelType,
           modelConfig: {
             ctx_size: ACTIVE_MODEL.ctxSize,
+            gpu_layers: GPU_LAYERS, // full GPU offload — default left part of the 3B on CPU (slow)
             ...(loraPath ? { lora: loraPath } : {}),
           },
           onProgress: (p) =>
@@ -134,15 +135,28 @@ export class LocalEngine implements TutorEngine {
         modelId: this.modelId,
         history,
         stream: true,
-        generationParams: { temp: CHAT_TEMP },
+        generationParams: { temp: CHAT_TEMP, predict: CHAT_MAX_TOKENS },
       });
 
-      // Yield each token as it's generated
+      // [perf] split the latency: TTFT (prompt prefill) vs decode (tok/s), so we
+      // can tell whether the cost is the prompt size or the per-token generation.
+      const t0 = Date.now();
+      let firstAt = 0;
+      let toks = 0;
       for await (const event of run.events) {
         if (event.type === 'contentDelta' && event.text) {
+          if (!firstAt) firstAt = Date.now();
+          toks++;
           yield event.text;
         }
       }
+      const total = Date.now() - t0;
+      const ttft = firstAt ? firstAt - t0 : total;
+      const decodeMs = Math.max(1, total - ttft);
+      const tps = toks > 1 ? (((toks - 1) * 1000) / decodeMs).toFixed(1) : '?';
+      console.log(
+        `[perf] chat: prefill/TTFT ${ttft}ms · decode ${decodeMs}ms · ${toks} chunks · ${tps} tok/s · total ${total}ms`
+      );
     } catch (error) {
       console.error('Error during chat completion:', error);
       throw new Error(
@@ -246,6 +260,7 @@ export class LocalEngine implements TutorEngine {
     let hits;
     if (this.semanticReady && this.embedModelId) {
       let queryVec: Float32Array | undefined;
+      const tEmbed0 = Date.now();
       try {
         // Embed the NORMALIZED query (strip conversational filler) so covered topics
         // don't fall under the abstain floor — see normalizeQuery / SEMANTIC_FLOOR.
@@ -253,17 +268,26 @@ export class LocalEngine implements TutorEngine {
       } catch (e) {
         console.warn('[LocalEngine] query embed failed; lexical fallback:', e);
       }
+      const embedMs = Date.now() - tEmbed0;
+      const tRetr0 = Date.now();
       hits = this.rag.retrieveForGroundingHybrid(query, queryVec, language, topK, 0.5, context, seenIds);
+      let reEmbedMs = 0;
       // R2: a bare follow-up ("anong pinakamalaki sa kanila?") is topic-blind and
       // abstains. Retry once with the conversation topic folded into the embed.
       if (hits.length === 0 && queryVec && context.trim()) {
         try {
+          const tRe0 = Date.now();
           const foldedVec = Float32Array.from(await this.embed(buildContextualQuery(query, context)));
+          reEmbedMs = Date.now() - tRe0;
           hits = this.rag.retrieveForGroundingHybrid(query, foldedVec, language, topK, 0.5, context, seenIds);
         } catch (e) {
           console.warn('[LocalEngine] contextual re-embed failed:', e);
         }
       }
+      // [perf] retrieval breakdown: embed (LaBSE) + vector search + optional R2 re-embed
+      console.log(
+        `[perf] ragSearch: embed ${embedMs}ms · search+R2 ${Date.now() - tRetr0}ms (re-embed ${reEmbedMs}ms) · ${hits.length} hits`
+      );
     } else {
       hits = this.rag.retrieveForGrounding(query, language, topK, 0.5, context, seenIds);
     }

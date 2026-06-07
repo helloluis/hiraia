@@ -60,13 +60,14 @@ function withModelLock<T>(fn: () => Promise<T>): Promise<T> {
   return result;
 }
 
-// Auto-compaction is ON: the v3 grounded+summarization adapter passes the harness
-// compaction probe 3/3 (summarize() produces clean ~120c memories, no abstention)
-// AND the full behavioral gate 11/11. The adapter was trained with 26 summarize
-// rows (served with no system prompt, matching summarize()) plus distractor-
-// robustness and abstain-balance rows. See finetuning/eval/harness/probe-compaction.mts
-// (gate it with REQUIRE_COMPACTION=1) and finetuning/datasets/grounded/.
-const COMPACTION_ENABLED = true;
+// Auto-compaction is OFF (2026-06-07). It runs a SECOND background LLM completion
+// (summarize) after every reply, which on a ~4 tok/s phone competes for the GPU and
+// can block the next turn (shared model lock) — net-negative for on-device latency,
+// and our replies are short enough that summarizing older turns buys little. Disabled
+// to ISOLATE the prefill perf work; the windowed history (KEEP_FULL) still bounds the
+// prompt. The adapter still ships summarize capability (26 SFT rows) so we can re-enable
+// it later (e.g. gated on device tok/s). Probe: finetuning/eval/harness/probe-compaction.mts.
+const COMPACTION_ENABLED = false;
 
 const KEEP_FULL = 6; // last 3 exchanges sent verbatim
 const MAX_LOOKBACK = 30; // cap turns considered (older ones use compactions when present)
