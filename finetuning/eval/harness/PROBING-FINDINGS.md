@@ -189,6 +189,19 @@ major/critical failures clear.** Many are downstream of R1–R2 (no grounding �
 
 ## Tier 2 — model behavior, prompt hardening (cheap, no retrain, high-value)
 
+**◑ FIRST PASS DONE (2026-06-07)** — added an `ACCURACY AND HONESTY` section to the base
+system prompt (packages/shared/src/prompts/system.ts). **Fixed (gated in cases.json):**
+reading-in-dark myth → debunked ("hindi sinisira ang paningin"); 10%-brain myth → debunked;
+math → no longer "subjective" (redirects/answers); favorite-food → clean decline (no more
+"eating your own brain"); moon → no longer "a planet". Controls held (genuine abstain +
+harmful-request refusal unchanged). Full gate GREEN, no regressions.
+**KEY LEARNING:** prompt hardening only works when the model ENGAGES — when **retrieval
+abstains, the adapter's trained "hindi sigurado" overrides the prompt.** So the residuals
+below are RETRIEVAL-gated, not prompt-fixable: flat-earth ("patag" cos 0.49 → no grounding;
+passes temp 0, flaky temp 0.8 — pending), smoking (no harm-fact retrieved — pending),
+scared-lindol ("takot"→sweat pollution). → these need retrieval/coverage work (R3/data) or
+Tier-3, NOT more prompt. Per-item status:
+
 - **E1 · Ungrounded confabulation guardrail.** When grounding is empty it INVENTS false/harmful
   content (moon=planet, reading-in-dark→blind, "eating your own brain", stars'-black-color).
   → harden the no-grounding branch: abstain or answer from cautious general knowledge, never
