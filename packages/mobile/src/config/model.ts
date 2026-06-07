@@ -19,13 +19,16 @@
 import adapterTagalog from '../../assets/models/adapter-tagalog.gguf';
 import adapterBisaya from '../../assets/models/adapter-bisaya.gguf';
 
-// LOCAL-MODEL MODE: HuggingFace migrated large GGUFs to its "Xet" CDN
+// SELF-HOSTED MODEL MIRROR. HuggingFace migrated large GGUFs to its "Xet" CDN
 // (302 → cas-bridge.xethub.hf.co), which QVAC's downloader can't finish — it
-// reproducibly dies at ~85%. So we DON'T download: the GGUFs are adb-pushed over
-// USB to the app's external files dir and loaded from there (modelSrc = a local
-// absolute path, which loadModel accepts directly). No network, no Xet, no stall.
-// Push target (USB):  adb push <gguf> /sdcard/Android/data/com.hiraia.app/files/models/
-const LOCAL_MODELS_DIR = '/storage/emulated/0/Android/data/com.hiraia.app/files/models';
+// reproducibly dies at ~85%. So instead of downloading from HF, we serve the GGUFs
+// from our own nginx (a plain static file with byte-range support, which QVAC
+// downloads + caches on first run, then loads from cache offline). It is a
+// VERIFIABLE MIRROR of the PUBLIC base model — inference stays 100% on-device, so
+// the privacy story is intact. Files live at /var/www/hiraia-models on the VPS,
+// served at https://hiraia.b11.dev/models/. Recheck HF/Xet ~2026-06-21 (if fixed,
+// switch back to the HF URL and retire the mirror — see hiraia-hf-xet-recheck).
+const MODELS_BASE_URL = 'https://hiraia.b11.dev/models';
 
 export type OnDeviceModelKey = 'sailor2-3b' | 'sailor2-1b';
 
@@ -85,8 +88,8 @@ export const ON_DEVICE_MODELS: Record<OnDeviceModelKey, OnDeviceModel> = {
     // it; LoRA is context-length-agnostic); chatStore also windows history.
     ctxSize: 4096,
     modelType: 'llm',
-    // local file pushed over USB (see LOCAL_MODELS_DIR note) — was the HF Xet URL
-    modelSrc: `${LOCAL_MODELS_DIR}/Sailor2-3B-Chat.Q4_K_M.gguf`,
+    // self-hosted mirror (see MODELS_BASE_URL note) — was the HF Xet URL
+    modelSrc: `${MODELS_BASE_URL}/Sailor2-3B-Chat.Q4_K_M.gguf`,
     loraAssets: { tagalog: adapterTagalog, cebuano: adapterBisaya }, // f16, bundled (~102MB each)
     note: 'Primary target — needs a 6GB+ phone (2025 budget norm).',
   },
@@ -137,8 +140,8 @@ import vectorsMeta from '../../assets/rag/vectors-labse.meta.json';
  * the model/pooling REQUIRES rebuilding the blob with the matching embedder.
  */
 export const EMBEDDER = {
-  // local file pushed over USB (same Xet-CDN workaround as the LLM)
-  modelSrc: `${LOCAL_MODELS_DIR}/labse.Q4_K_M.gguf`,
+  // self-hosted mirror (same as the LLM — see MODELS_BASE_URL)
+  modelSrc: `${MODELS_BASE_URL}/labse.Q4_K_M.gguf`,
   modelType: 'llamacpp-embedding' as const,
   // CPU: one short query per turn — avoids the GPU/OpenCL kernel cold-start; the
   // batch corpus embedding (where GPU would help) happens at build time, not here.
