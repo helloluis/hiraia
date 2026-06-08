@@ -49,6 +49,10 @@ const QUERY_STOP = new Set(
   // its high IDF hijacks myth queries to "X-is-not-real" facts (dreams-not-real,
   // sound-cannot-be-seen) instead of the topic's debunk fact. Strip it so the content
   // noun (utak) drives, same rationale as the process verbs above.
+  // image-REQUEST framing ("may PICTURE/LARAWAN ka ba ng dinosaur", "PAKITA mo ng X") asks
+  // to SEE X — the content is X, but unstripped "picture/larawan" hijacks to facts ABOUT
+  // pictures (screen pixels, pictograph, the eye's inverted image). Strip the request
+  // words so the topic (dinosaur) drives; the illustration still rides the top fact.
   `bakit paano ano anong kung saan kailan sino sinong alin para kaya
    ngano nganong unsa unsay asa kinsa giunsa pila naunsa
    ito iyan iyon nito niyan kini kana kanang
@@ -56,6 +60,7 @@ const QUERY_STOP = new Set(
    may mayroon meron adunay naa
    bang ba kaya nga daw raw pala naman lang lamang
    totoo totoong tutoo tutuo tinuod tuod
+   picture pic larawan litrato hulagway drawing pakita ipakita
    oo opo oho oonga sige gusto payag game pwede mao sure
    what why how when where who whom which whose
    the are does did can could would should about from with into

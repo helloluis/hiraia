@@ -7,6 +7,7 @@ import type { Language } from '@hiraia/shared';
 import { LANGUAGE_OPTIONS } from '../../config/languages';
 import { ACTIVE_MODEL, VECTORS_META } from '../../config/model';
 import { HIRAIAPEDIA_VERSION, ADAPTER_VERSION } from '../../config/version';
+import { useChatStore } from '../../store/chatStore';
 import { useEngineStore } from '../../store/engineStore';
 import { colors, fonts } from '../../theme';
 
@@ -15,9 +16,15 @@ export default function SidebarScreen() {
   const language = useEngineStore((s) => s.language);
   const changeLanguage = useEngineStore((s) => s.changeLanguage);
   const setOnboardingActive = useEngineStore((s) => s.setOnboardingActive);
+  const clearMessages = useChatStore((s) => s.clearMessages);
 
   const showTutorial = () => {
     setOnboardingActive(true);
+    router.back();
+  };
+
+  const newConversation = () => {
+    void clearMessages(); // fresh thread — avoids the model echoing a prior turn's context
     router.back();
   };
 
@@ -95,7 +102,7 @@ export default function SidebarScreen() {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.newChatButton}>
+      <TouchableOpacity style={styles.newChatButton} onPress={newConversation} activeOpacity={0.85}>
         <Text style={styles.newChatText}>+ Bagong Usapan</Text>
       </TouchableOpacity>
       </SafeAreaView>

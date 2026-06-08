@@ -131,18 +131,23 @@ export class LocalEngine implements TutorEngine {
 
       // Get streaming completion from QVAC. Temp 0.5 (not the ~0.8 llama.cpp
       // default) — see CHAT_TEMP: lower temp reduces factual wandering.
-      // kvCache (a stable per-conversation key) turns ON QVAC's on-device KV cache:
-      // the cache is keyed by {kvCacheKey}/{modelId}/{configHash(system prompt)}. With
-      // our STATIC system prompt the configHash is stable, so the cached system (+ prior
-      // turns, pruned by message count) is reused and only the new turn re-prefills —
-      // the TTFT fix. Without a key, QVAC does NO caching and re-prefills the whole
-      // prompt every turn (confirmed on-device: ~37s→50s TTFT, no reuse).
+      // kvCache:true turns ON QVAC's AUTO KV cache (keyed by a hash of the static system
+      // prompt). It caches/reuses the prefix of the EXACT history we send — which
+      // buildContext() has already WINDOWED to the last few turns — so the static system
+      // prefix is reused across turns (the TTFT win) while the prefilled context stays
+      // bounded.
+      //
+      // Do NOT use a custom string key (kvCache: convId): that mode slices by message
+      // COUNT and keeps appending every turn to the on-disk KV, ignoring our windowing —
+      // so a long chat's cached context grows past ctx_size and EVERY later prompt fails
+      // with "context overflow at prefill" (confirmed on-device 2026-06-08, 4266 > 4096).
+      // `kvCacheKey` is still just the on/off signal from the caller.
       const run = completion({
         modelId: this.modelId,
         history,
         stream: true,
         generationParams: { temp: CHAT_TEMP, predict: CHAT_MAX_TOKENS },
-        ...(kvCacheKey ? { kvCache: kvCacheKey } : {}),
+        ...(kvCacheKey ? { kvCache: true } : {}),
       });
 
       // [perf] split the latency: TTFT (prompt prefill) vs decode (tok/s), so we

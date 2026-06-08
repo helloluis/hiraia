@@ -646,6 +646,22 @@
         "jackfruit-langka",
         "ring-of-fire-map"
       ]
+    },
+    {
+      "_codified_from": "on-device 2026-06-08: 'May picture ka ba ng dinosaur' rambled about the EYE making an inverted image — retrieval surfaced screen/pictograph/eye-image facts because English 'picture' hijacked it (the content is 'dinosaur'). Fixed: image-REQUEST words (picture/larawan/litrato/pakita/...) added to QUERY_STOP.",
+      "cat": "image-request",
+      "q": "May picture ka ba ng dinosaur",
+      "lang": "tagalog",
+      "expectIdIncludes": [
+        "dino"
+      ],
+      "mustNotIdIncludes": [
+        "eye-image",
+        "screen",
+        "pictograph",
+        "graph-picto"
+      ],
+      "maxRank": 1
     }
   ],
   "_sequences_note": "Multi-turn novelty: repeating the same exploratory question must surface FRESH facts each turn (the dino-repetition bug). Simulated by accumulating shown ids and applying the seen-penalty.",
