@@ -1,4 +1,5 @@
 import { GoogleAuth } from 'google-auth-library';
+import sharp from 'sharp';
 import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync, symlinkSync, unlinkSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -213,7 +214,35 @@ Do not wrap the output in markdown code blocks. Reply with raw JSON.
   }
   
   // 7. Filter items to process
-  const pendingFiles = imageFiles.filter(img => !qcProgress[img.id]);
+  const pendingFiles = [];
+  let skippedDownsized = 0;
+  for (const img of imageFiles) {
+    if (qcProgress[img.id]) {
+      continue;
+    }
+    // Check if the image is already downsized (<= 512x512)
+    try {
+      const meta = await sharp(img.absPath).metadata();
+      if (meta.width <= 512 && meta.height <= 512) {
+        qcProgress[img.id] = {
+          needs_remake: false,
+          reasons: ['Skipped: Already downsized/approved in previous pass'],
+          timestamp: new Date().toISOString()
+        };
+        skippedDownsized++;
+        continue;
+      }
+    } catch (err) {
+      console.warn(`Could not read metadata for ${img.fileName}:`, err.message);
+    }
+    pendingFiles.push(img);
+  }
+
+  if (skippedDownsized > 0) {
+    console.log(`Automatically approved ${skippedDownsized} pre-downsized images.`);
+    writeFileSync(progressPath, JSON.stringify(qcProgress, null, 2), 'utf8');
+  }
+
   console.log(`Processing ${pendingFiles.length} pending images...`);
   
   const concurrency = 25;
