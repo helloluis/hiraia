@@ -623,6 +623,29 @@
         "blood"
       ],
       "maxRank": 3
+    },
+    {
+      "_codified_from": "on-device 2026-06-08: 'pinakamalaking buto sa katawan' (largest BONE) wrongly answered 'balat = pinakamalaking organ' (skin) AND showed a seismic-waves (earthquake) diagram. Root: 'buto' homonym (bone<->seed) surfaced jackfruit/coco-de-mer/skin; image decoupled (old picker scanned top-3). Fixed: femur-largest-bone-g5 fact + image picker tied to the TOP fact.",
+      "cat": "homonym",
+      "q": "Ano yung pinakamalaking buto sa katawan natin",
+      "lang": "tagalog",
+      "expectIdIncludes": [
+        "femur"
+      ],
+      "mustNotIdIncludes": [
+        "langka",
+        "coco-de-mer",
+        "seed",
+        "skin",
+        "balat"
+      ],
+      "maxRank": 1,
+      "mustNotImage": [
+        "seismic-waves",
+        "biomolecules",
+        "jackfruit-langka",
+        "ring-of-fire-map"
+      ]
     }
   ],
   "_sequences_note": "Multi-turn novelty: repeating the same exploratory question must surface FRESH facts each turn (the dino-repetition bug). Simulated by accumulating shown ids and applying the seen-penalty.",

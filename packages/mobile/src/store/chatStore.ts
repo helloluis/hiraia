@@ -153,14 +153,14 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       } catch (ragError) {
         console.warn('RAG search failed; answering ungrounded:', ragError);
       }
-      // Retrieval-driven illustration: the first grounded fact whose concept has a
-      // bundled image. Shown with the answer regardless of any model [image:] tag.
-      let imageSlug: string | undefined;
-      for (const g of grounding) {
-        const fid = (g.metadata as { id?: string } | undefined)?.id;
-        const slug = fid ? FACT_IMAGE[fid] : undefined;
-        if (slug) { imageSlug = slug; break; }
-      }
+      // Retrieval-driven illustration: ONLY the TOP grounded fact's image — the fact the
+      // answer is actually built on. Previously we scanned the whole top-3 for ANY fact
+      // with an image, which let an unrelated lower-ranked fact's picture attach to a
+      // different answer (e.g. a seismic-waves diagram on a "pinakamalaking buto" reply,
+      // a biomolecules chart on a DNA-vs-RNA reply). Better to show no picture than a
+      // mismatched one. Suppressed below when the model abstained.
+      const topFid = (grounding[0]?.metadata as { id?: string } | undefined)?.id;
+      const imageSlug: string | undefined = topFid ? FACT_IMAGE[topFid] : undefined;
       // Active language + grade 5 + imageTags=true — parity with how the grounded
       // adapter was trained. RAG retrieval is scoped to the same language.
       // The system prompt is STATIC (no grounding) so QVAC's system-prompt KV cache

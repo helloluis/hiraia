@@ -5,12 +5,17 @@
 //   node_modules/.bin/tsx rag/pipeline/retrieval-stress.mts
 import { readFileSync } from 'node:fs';
 import { RagStore } from '../../packages/shared/src/rag/RagStore.ts';
+// The on-device illustration is FACT_IMAGE[topGroundedFact] (chatStore: top fact ONLY,
+// not a top-3 scan). Mirror that here so `mustNotImage` can guard the "unrelated picture"
+// bug (e.g. a seismic-waves diagram attaching to a "pinakamalaking buto" answer).
+import { FACT_IMAGE } from '../../packages/mobile/src/generated/factImage.ts';
 
 interface Case {
   cat: string; q: string; lang: 'tagalog' | 'english' | 'cebuano';
   expectIdIncludes: string[]; mustNotIdIncludes?: string[]; maxRank: number;
   context?: string; // recent-conversation context for follow-up cases
   known?: boolean;  // documented-hard residual: reported but does NOT fail the gate
+  mustNotImage?: string[]; // image slugs that must NOT be shown for this query (picker = top fact)
 }
 interface Sequence {
   cat: string; lang: 'tagalog' | 'english' | 'cebuano';
@@ -43,13 +48,16 @@ for (const c of cases) {
     if (matches(topIds[i], c.expectIdIncludes)) { hitRank = i + 1; break; }
   }
   const badAtTop = c.mustNotIdIncludes && topIds[0] && matches(topIds[0], c.mustNotIdIncludes);
-  const ok = hitRank > 0 && !badAtTop;
+  // image the app WOULD show: the top grounded fact's bundled picture (chatStore picker)
+  const shownImage = topIds[0] ? (FACT_IMAGE as Record<string, string>)[topIds[0]] : undefined;
+  const badImage = c.mustNotImage && shownImage && c.mustNotImage.includes(shownImage);
+  const ok = hitRank > 0 && !badAtTop && !badImage;
 
   byCat[c.cat] = byCat[c.cat] || [0, 0]; byCat[c.cat][1]++;
   byLang[c.lang] = byLang[c.lang] || [0, 0]; byLang[c.lang][1]++;
   if (ok) { pass++; byCat[c.cat][0]++; byLang[c.lang][0]++; }
   else {
-    const msg = `[${c.cat}/${c.lang}] "${c.q}"\n      got: ${topIds.slice(0, 3).join(', ') || 'NONE'}${badAtTop ? '  (mustNot won @1)' : ''}`;
+    const msg = `[${c.cat}/${c.lang}] "${c.q}"\n      got: ${topIds.slice(0, 3).join(', ') || 'NONE'}${badAtTop ? '  (mustNot won @1)' : ''}${badImage ? `  (bad image: ${shownImage})` : ''}`;
     (c.known ? knownFails : fails).push(msg);
   }
 }
