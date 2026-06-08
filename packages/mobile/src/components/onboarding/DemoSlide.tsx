@@ -88,7 +88,7 @@ export function DemoSlide({ language }: { language: Language }) {
               <Image source={HIRAIA_AVATAR} style={styles.avatar} />
               <View style={[styles.bubble, styles.botBubble]}>
                 {phase === 'thinking' ? (
-                  <ThinkingIndicator />
+                  <ThinkingIndicator language={language} />
                 ) : (
                   <>
                     <Text style={[styles.bubbleText, styles.botText]}>{reply}</Text>
