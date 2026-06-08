@@ -14,6 +14,12 @@ export default function SidebarScreen() {
   const router = useRouter();
   const language = useEngineStore((s) => s.language);
   const changeLanguage = useEngineStore((s) => s.changeLanguage);
+  const setOnboardingActive = useEngineStore((s) => s.setOnboardingActive);
+
+  const showTutorial = () => {
+    setOnboardingActive(true);
+    router.back();
+  };
 
   const langLabel = LANGUAGE_OPTIONS.find((o) => o.lang === language)?.label ?? '—';
   const adapterInfo = language ? ADAPTER_VERSION[language] : '—';
@@ -82,6 +88,11 @@ export default function SidebarScreen() {
             </Text>
           </View>
         </View>
+
+        <Text style={styles.sectionTitle}>Tutorial</Text>
+        <TouchableOpacity style={styles.tutorialButton} onPress={showTutorial} activeOpacity={0.85}>
+          <Text style={styles.tutorialButtonText}>Ipakita ang tutorial</Text>
+        </TouchableOpacity>
       </View>
 
       <TouchableOpacity style={styles.newChatButton}>
@@ -204,6 +215,20 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.inkMuted,
     marginTop: 10,
+  },
+  tutorialButton: {
+    alignSelf: 'flex-start',
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+    borderRadius: 18,
+    borderWidth: 2,
+    borderColor: colors.primary,
+    backgroundColor: colors.white,
+  },
+  tutorialButtonText: {
+    fontFamily: fonts.display,
+    fontSize: 18,
+    color: colors.ink,
   },
   newChatButton: {
     backgroundColor: colors.primary,

@@ -174,10 +174,11 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       // Inject the grounding into the CURRENT (last) user turn, matching training.
       if (groundingBlock) {
         for (let i = conversationMessages.length - 1; i >= 0; i--) {
-          if (conversationMessages[i].role === 'user') {
+          const m = conversationMessages[i];
+          if (m?.role === 'user') {
             conversationMessages[i] = {
-              ...conversationMessages[i],
-              content: composeGroundedUserTurn(groundingBlock, conversationMessages[i].content),
+              ...m,
+              content: composeGroundedUserTurn(groundingBlock, m.content),
             };
             break;
           }

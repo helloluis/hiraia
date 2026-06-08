@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { LanguagePicker } from '../components/LanguagePicker';
+import { OnboardingCarousel } from '../components/onboarding/OnboardingCarousel';
 import { useChatStore } from '../store/chatStore';
 import { useEngineStore } from '../store/engineStore';
 import { colors, fontAssets } from '../theme';
@@ -15,6 +15,8 @@ export default function RootLayout() {
   const changeLanguage = useEngineStore((s) => s.changeLanguage);
   const bootstrapped = useEngineStore((s) => s.bootstrapped);
   const language = useEngineStore((s) => s.language);
+  const onboardingActive = useEngineStore((s) => s.onboardingActive);
+  const setOnboardingActive = useEngineStore((s) => s.setOnboardingActive);
   const hydrate = useChatStore((s) => s.hydrate);
   const [fontsLoaded] = useFonts(fontAssets);
 
@@ -43,9 +45,16 @@ export default function RootLayout() {
       >
         <Stack.Screen name="(tabs)" />
       </Stack>
-      {/* First launch: no language chosen yet → takeover picker (loads the engine
-          with the right adapter the first time, avoiding an immediate reload). */}
-      {language === null && <LanguagePicker onPick={changeLanguage} />}
+      {/* First launch (no language yet) OR Settings → "show tutorial": the onboarding
+          carousel. Slide-1 pick calls changeLanguage() — which loads the engine /
+          starts the model download — so the wait overlaps the rest of the tutorial. */}
+      {onboardingActive && (
+        <OnboardingCarousel
+          initialLanguage={language}
+          onPickLanguage={changeLanguage}
+          onFinish={() => setOnboardingActive(false)}
+        />
+      )}
     </GestureHandlerRootView>
   );
 }

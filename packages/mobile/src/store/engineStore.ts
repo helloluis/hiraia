@@ -14,6 +14,10 @@ interface EngineState {
   language: Language | null;
   /** True once the saved-language lookup has completed (gates the picker). */
   bootstrapped: boolean;
+  /** Whether the onboarding carousel is showing. True on first launch (no saved
+   *  language) and whenever Settings → "show tutorial" re-triggers it. */
+  onboardingActive: boolean;
+  setOnboardingActive: (active: boolean) => void;
   /** Read the saved language and, if present, load the engine for it. */
   bootstrap: () => Promise<void>;
   /** Persist + (re)load the engine for a language. Used by the first-launch
@@ -43,6 +47,9 @@ export const useEngineStore = create<EngineState>((set, get) => ({
   error: null,
   language: null,
   bootstrapped: false,
+  onboardingActive: false,
+
+  setOnboardingActive: (active: boolean) => set({ onboardingActive: active }),
 
   bootstrap: async () => {
     let saved: Language | null = null;
@@ -51,8 +58,9 @@ export const useEngineStore = create<EngineState>((set, get) => ({
     } catch (e) {
       console.warn('[engineStore] reading saved language failed:', e);
     }
-    set({ language: saved, bootstrapped: true });
-    // No saved language → first launch; the picker will call changeLanguage().
+    // First launch (no saved language) → show the onboarding carousel; its slide-1
+    // pick calls changeLanguage() which starts the model download in the background.
+    set({ language: saved, bootstrapped: true, onboardingActive: !saved });
     if (saved) await get().changeLanguage(saved);
   },
 
