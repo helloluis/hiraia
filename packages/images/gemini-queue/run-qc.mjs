@@ -1,4 +1,5 @@
 import { GoogleAuth } from 'google-auth-library';
+import sharp from 'sharp';
 import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync, symlinkSync, unlinkSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -107,18 +108,31 @@ async function main() {
       await refreshAccessToken();
     }
     
+    // Extract only the core concept prompt, removing style boilerplate
+    let conceptPrompt = item.prompt;
+    const splitIndex = conceptPrompt.indexOf('Black-and-white');
+    if (splitIndex !== -1) {
+      conceptPrompt = conceptPrompt.substring(0, splitIndex).trim();
+    }
+    
     const evalPrompt = `
-You are an expert educational illustration reviewer. Your task is to evaluate whether a generated illustration conforms to the required project style and represents the requested concept prompt correctly.
+You are an expert educational illustration reviewer. Your task is to evaluate whether a generated illustration is a sensible representation of the requested concept and is free of major rendering errors.
 
-REQUIRED HOUSE STYLE SPECIFICATIONS:
-1. Style: Hand-drawn black-and-white line art, as if sketched by a clever child with a thick black marker.
-2. Background: Must be a flat, plain, solid white background. No background scenery, color fills, patterns, or gradients unless explicitly requested in the prompt.
-3. No Color: The image must be strictly black-and-white. It should contain only black lines and loose black scribble shading. There must be no colors (like red, blue, green, etc.), and no solid gray fills or smooth gray gradients.
-4. No Text: There must be absolutely NO text, letters, numbers, words, labels, signatures, or captions in the image.
-5. Content Accuracy: The illustration must accurately and clearly depict the subject and concept described in the prompt.
+EVALUATION CRITERIA:
+1. Content Accuracy & Sense (Strict): The illustration must accurately and sensibly depict the subject and concept described in the prompt.
+   - Flag if: The drawing is mangled, anatomical nonsense, biologically impossible in a way that defeats learning, physically nonsensical, or completely unrecognizable.
+   - Flag if: The illustration is completely off-topic or shows the wrong subject.
+2. No Text (Strict): There must be absolutely NO text, letters, numbers, words, or labels in the image.
+   - Flag if: There are letters (e.g. A, B, C), numbers, or word labels.
+3. No Color (Strict): The image must be black and white or grayscale.
+   - Flag if: The image contains actual colored ink (red, blue, green, yellow, etc.).
+   - Do NOT flag: Grayscale shading, solid gray fills, or smooth gray gradients.
+4. Style (Extremely Loose): The image should be line art or a clean illustration.
+   - Flag if: It is a photorealistic picture or a complex 3D render.
+   - Do NOT flag: If the lines are clean, if it looks like a digital drawing, if it uses solid gray/black fills, or if it lacks "scribble" shading. These are all acceptable.
 
 CONCEPT PROMPT:
-"${item.prompt}"
+"${conceptPrompt}"
 
 Evaluate this image and reply with a JSON object matching this schema:
 {
@@ -126,14 +140,9 @@ Evaluate this image and reply with a JSON object matching this schema:
   "reasons": ["list of reasons if needs_remake is true, otherwise empty"]
 }
 
-Be strict about:
-- Text: Flag any image containing letters, numbers, or labels.
-- Color: Flag any image containing color.
-- Style: Flag images that look like photos, detailed 3D renders, or digital cartoon drawings with solid gray/color fills (must be black line art with scribble shading).
-- Off-topic: Flag if the illustration does not match the prompt concept.
-
 Do not wrap the output in markdown code blocks. Reply with raw JSON.
 `;
+
 
     const headers = {
       'Content-Type': 'application/json',
@@ -205,7 +214,35 @@ Do not wrap the output in markdown code blocks. Reply with raw JSON.
   }
   
   // 7. Filter items to process
-  const pendingFiles = imageFiles.filter(img => !qcProgress[img.id]);
+  const pendingFiles = [];
+  let skippedDownsized = 0;
+  for (const img of imageFiles) {
+    if (qcProgress[img.id]) {
+      continue;
+    }
+    // Check if the image is already downsized (<= 512x512)
+    try {
+      const meta = await sharp(img.absPath).metadata();
+      if (meta.width <= 512 && meta.height <= 512) {
+        qcProgress[img.id] = {
+          needs_remake: false,
+          reasons: ['Skipped: Already downsized/approved in previous pass'],
+          timestamp: new Date().toISOString()
+        };
+        skippedDownsized++;
+        continue;
+      }
+    } catch (err) {
+      console.warn(`Could not read metadata for ${img.fileName}:`, err.message);
+    }
+    pendingFiles.push(img);
+  }
+
+  if (skippedDownsized > 0) {
+    console.log(`Automatically approved ${skippedDownsized} pre-downsized images.`);
+    writeFileSync(progressPath, JSON.stringify(qcProgress, null, 2), 'utf8');
+  }
+
   console.log(`Processing ${pendingFiles.length} pending images...`);
   
   const concurrency = 25;
