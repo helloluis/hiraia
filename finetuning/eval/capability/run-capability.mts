@@ -105,32 +105,67 @@ async function ask(messages: { role: string; content: string }[], temp: number):
   return data.choices?.[0]?.message?.content ?? '';
 }
 
+// Concurrency for model calls. DEFAULT 1 (sequential) — measured: continuous batching
+// gives NO local speedup on a single Metal GPU (it's compute-bound; np>1 was ~10% SLOWER,
+// see FINDINGS F3). CONC>1 only helps on a LATENCY-bound backend (cloud GPU with spare
+// compute), paired with llama-server `-np <CONC> --cont-batching`. For fast LOCAL iteration,
+// drop SAMPLES instead. Retrieval stays sequential (fast CPU); only generations are pooled.
+const CONC = Math.max(1, Number(process.env.CONC ?? '1'));
+
+// Run `tasks` with at most `limit` in flight; preserves no order (results carry their index).
+async function pool<T>(tasks: (() => Promise<T>)[], limit: number): Promise<T[]> {
+  const out: T[] = new Array(tasks.length);
+  let next = 0;
+  const worker = async () => {
+    while (true) {
+      const i = next++;
+      if (i >= tasks.length) return;
+      out[i] = await tasks[i]();
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(limit, tasks.length) }, worker));
+  return out;
+}
+
 async function collectAnswers(): Promise<AnswerRow[]> {
   const store = new RagStore();
-  const rows: AnswerRow[] = [];
-  for (const p of PASS_PROBES) {
-    // RagStore + generateSystemPrompt take the full Language ('tagalog'/'cebuano'/
-    // 'english'), not the probe's short code — map it.
+  // 1. Build every prompt up front (retrieval is synchronous CPU work — cheap).
+  const built = PASS_PROBES.map((p) => {
+    // RagStore + generateSystemPrompt take the full Language, not the probe's short code.
     const lang = LANG_OK[p.lang];
     const hits = store.retrieveForGrounding(p.prompt as any, lang as any, 3);
-    const retrievedIds = hits.map((h: any) => h.fact.id);
     const system = generateSystemPrompt(lang as any, p.grade as any, true);
     const block = formatGroundingBlock(
       hits.map((h: any) => ({ content: h.text, source: h.fact.source, score: h.score, metadata: { topic: h.fact.topic } }))
     );
-    const userTurn = composeGroundedUserTurn(block, p.prompt);
-    const messages = [{ role: 'system', content: system }, { role: 'user', content: userTurn }];
-    const samples: string[] = [];
-    for (let i = 0; i < SAMPLES; i++) samples.push(stripTags(await ask(messages, TEMP)));
-    // Keep the WORST sample (shortest non-empty / first refusal) so a model that
-    // *sometimes* deflects on-device is scored on that failure, not its best face.
+    const messages = [{ role: 'system', content: system }, { role: 'user', content: composeGroundedUserTurn(block, p.prompt) }];
+    return { p, retrievedIds: hits.map((h: any) => h.fact.id), messages };
+  });
+  // 2. Flatten to (probe, sample) generation tasks and run them through the pool so
+  //    continuous batching can overlap them. SAMPLES draws per probe.
+  const jobs: { bi: number }[] = [];
+  for (let bi = 0; bi < built.length; bi++) for (let s = 0; s < SAMPLES; s++) jobs.push({ bi });
+  let done = 0;
+  const results = await pool(
+    jobs.map((j) => async () => {
+      const text = stripTags(await ask(built[j.bi].messages, TEMP));
+      process.stdout.write(`  [${++done}/${jobs.length}] ${built[j.bi].p.id}\n`);
+      return { bi: j.bi, text };
+    }),
+    CONC
+  );
+  // 3. Regroup samples per probe (original order), pick the WORST sample so a model that
+  //    *sometimes* deflects on-device is scored on that failure, not its best face.
+  const byProbe: string[][] = built.map(() => []);
+  for (const r of results) byProbe[r.bi].push(r.text);
+  const rows: AnswerRow[] = built.map((b, bi) => {
+    const samples = byProbe[bi];
     const refusalish = samples.find((s) => /tanungin|guro|hindi ko (?:po )?(?:alam|masabi)|ask your (?:teacher|parent)/i.test(s));
-    const answer = refusalish ?? samples.slice().sort((a, b) => a.length - b.length)[0] ?? '';
-    rows.push({ probe: p, answer, retrievedIds, samples });
-    process.stdout.write(`  answered ${p.id} (${p.tier})\n`);
-  }
+    const answer = refusalish ?? samples.slice().sort((a, b2) => a.length - b2.length)[0] ?? '';
+    return { probe: b.p, answer, retrievedIds: b.retrievedIds, samples };
+  });
   writeFileSync(ANSWERS_FILE, JSON.stringify(rows, null, 2));
-  console.log(`\n>> wrote ${rows.length} answers → ${ANSWERS_FILE}`);
+  console.log(`\n>> wrote ${rows.length} answers (${jobs.length} generations, conc ${CONC}) → ${ANSWERS_FILE}`);
   return rows;
 }
 

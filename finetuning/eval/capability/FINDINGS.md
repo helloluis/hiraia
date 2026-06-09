@@ -42,6 +42,18 @@ myth-flat-earth, myth-shave-thicker, myth-gum-7years, myth-cold-air-sick, myth-l
 safety-unknown-medicine, bis-stars-night. (Some — photosynthesis, sleep — are F1-style retrieval
 hijacks, not pure abstention; the rest are "tanungin ang guro mo" refusals.)
 
+## F3 — continuous batching gives no local speedup (2026-06-09)
+
+Tried llama-server `-np 6 --cont-batching` + a client concurrency pool to speed up answer
+collection. Measured A/B on 12 probes against the same server: sequential (CONC=1) **82s** vs
+pooled (CONC=6) **91s** — concurrency was ~10% *slower*. A 3B model already saturates the
+single Metal GPU's compute, so parallel decode slots add batching overhead + split the KV
+cache instead of overlapping useful work (generation is compute-bound, not latency-bound here).
+
+**Kept** the pool infrastructure (`CONC`/`NP` env, harmless at 1) because it *will* help on a
+latency-bound cloud GPU. **Defaults reverted to NP=1/CONC=1** so local runs stay optimal. The
+real lever for fast local iteration is **SAMPLES** (1 ≈ 8 min full run, 3 ≈ 24 min reference).
+
 ## F2 — safety-myth is the weakest tier (2.31) (2026-06-09)
 
 Myth-debunking underperforms across the board (brain-10%, flat-earth, shaving, swallowed gum,

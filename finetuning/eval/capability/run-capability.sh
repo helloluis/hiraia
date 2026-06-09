@@ -40,9 +40,14 @@ ADAPTER="${ADAPTER:-$ROOT/finetuning/adapters/adapter-tagalog-ttft-f16.gguf}"
 BIS_ADAPTER="${BIS_ADAPTER:-$ROOT/finetuning/adapters/adapter-sailor-bisaya-f16.gguf}"
 PORT="${PORT:-8089}"            # avoid 8088 (run-harness) / 8090 (embed)
 NGL="${NGL:-99}"
-CTX="${CTX:-4096}"             # match ACTIVE_MODEL.ctxSize (device path)
+CTX="${CTX:-4096}"             # PER-SLOT context (device path). Total KV = CTX * NP.
 TEMP="${TEMP:-0.7}"            # device runs hot; capability = typical behavior
 SAMPLES="${SAMPLES:-1}"        # >1 → keep the WORST sample per probe
+# Continuous batching: NP=1 (off) by DEFAULT — measured no local speedup on a single
+# Metal GPU (compute-bound; NP=6 was ~10% SLOWER, FINDINGS F3). Raise NP+CONC together
+# ONLY on a latency-bound cloud GPU. For fast local iteration, lower SAMPLES instead.
+NP="${NP:-1}"                 # parallel decode slots (continuous batching)
+CONC="${CONC:-$NP}"           # client-side concurrency; match the server's slot count
 TSX="$ROOT/node_modules/.bin/tsx"
 
 [ -x "$BIN" ]   || { echo "ERR: llama-server not at $BIN (set BIN=)"; exit 2; }
@@ -52,7 +57,10 @@ TSX="$ROOT/node_modules/.bin/tsx"
 [ -x "$TSX" ]   || { echo "ERR: tsx not at $TSX — run npm/yarn install"; exit 2; }
 
 boot() {
-  "$BIN" -m "$BASE" --lora "$1" -ngl "$NGL" --port "$PORT" --ctx-size "$CTX" > "$HERE/.server.log" 2>&1 &
+  # -np/--cont-batching: N parallel decode slots so the client's concurrent requests
+  # overlap. --ctx-size here is TOTAL KV split across slots, so size it NP * per-slot CTX.
+  "$BIN" -m "$BASE" --lora "$1" -ngl "$NGL" --port "$PORT" \
+    -np "$NP" --cont-batching --ctx-size "$((CTX * NP))" > "$HERE/.server.log" 2>&1 &
   SERVER_PID=$!
   for _ in $(seq 1 90); do
     [ "$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 "http://localhost:$PORT/health" 2>/dev/null || true)" = "200" ] && return 0
@@ -66,8 +74,8 @@ trap 'kill ${SERVER_PID:-0} 2>/dev/null' EXIT
 
 run_pass() { # $1=tag  $2=adapter
   echo ">> [$1] booting $(basename "$2") on :$PORT ..."; boot "$2"
-  echo ">> [$1] collecting answers (temp $TEMP, samples $SAMPLES) ..."
-  ENDPOINT="http://localhost:$PORT" ADAPTER_TAG="$1" TEMP="$TEMP" SAMPLES="$SAMPLES" \
+  echo ">> [$1] collecting answers (temp $TEMP, samples $SAMPLES, conc $CONC) ..."
+  ENDPOINT="http://localhost:$PORT" ADAPTER_TAG="$1" TEMP="$TEMP" SAMPLES="$SAMPLES" CONC="$CONC" \
     ${JUDGE_ENDPOINT:+JUDGE_ENDPOINT="$JUDGE_ENDPOINT"} ${JUDGE_MODEL:+JUDGE_MODEL="$JUDGE_MODEL"} \
     "$TSX" "$HERE/run-capability.mts" || { echo "ERR: pass $1 failed"; exit 1; }
   stop
