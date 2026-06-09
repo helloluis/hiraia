@@ -42,6 +42,40 @@ myth-flat-earth, myth-shave-thicker, myth-gum-7years, myth-cold-air-sick, myth-l
 safety-unknown-medicine, bis-stars-night. (Some — photosynthesis, sleep — are F1-style retrieval
 hijacks, not pure abstention; the rest are "tanungin ang guro mo" refusals.)
 
+## F7 — the benchmark uses LEXICAL-ONLY retrieval, not the device's HYBRID path (2026-06-09)
+
+Track-B diagnosis. The device (`LocalEngine.ts:285`) retrieves via `retrieveForGroundingHybrid`
+(lexical bm25 **+ LaBSE semantic** re-rank). The benchmark (`run-capability.mts`, and `run-eval.mts`)
+calls `retrieveForGrounding` — **lexical only, no query vector**. So the benchmark feeds the model
+worse grounding than the real device does. Evidence: for "paano gumagawa ng pagkain ang mga halaman"
+the lexical scorer ties dino-teeth-diet, leaf-food-factory, plants-make-sugar at **identical 21.328**
+→ dino wins on sort order. Semantic re-rank would separate them. Same story for the gabi=night/taro
+homonym ("araw at gabi" IS in 22 facts — not a coverage gap; the taro facts just win lexically).
+
+**Implications:**
+- The retrieval-driven failures (F1, the 6 hard-tail refusals, the Bucket-2 hijacks) are **overstated**
+  vs the device. The +0.41 Track-A A/B delta is still valid (both ran the same lexical retrieval).
+- **Track B's first fix is to make the benchmark device-faithful**: embed each probe query via the
+  LaBSE service (`labse-embed-service.py`, the device-equivalent raw-CLS), attach `SemanticIndex`
+  from `rag/bank/vectors-labse.i8.bin`, call `retrieveForGroundingHybrid`. Then re-benchmark — some
+  hijacks resolve for free — and fix only what REMAINS (true ranking/coverage bugs).
+- All pieces exist: the hybrid method (RagStore:414), the vector blob, the embed service, and a
+  reuse pattern in `rag/pipeline/gen-hybrid-fixtures.mts` + `hybrid-stress.mts`.
+
+**F7b — the vector blob was STALE → hybrid was silently OFF on-device too (2026-06-09).**
+Wiring the benchmark for hybrid exposed it: the blob had **21,108 vectors but the bank/facts.generated.ts
+has 25,735** (the deepening waves grew the bank, the blob was never regenerated). `attachSemantic`'s
+size guard rejects a mismatched blob → falls back to lexical. The DEVICE hits the same guard, so
+**hybrid retrieval has been silently disabled in production** — the benchmark was accidentally
+faithful (both lexical). Fix: regenerated the blob with `build-vectors.py` (25,735×3×768 int8,
+59 MB, bankHash ad0460782a0b) → mobile assets. This fixes the device AND enables the faithful
+benchmark. Validation (7 ex-hijack queries under true hybrid): photosynthesis/sleep/volcano-soil
+now rank the correct fact #1; day-night/bones/flat-earth now surface the right fact into the top-3
+(was absent under lexical) but not always #1 — remaining `gabi` homonym ties + 2 coverage gaps
+(no "lightning strikes twice" fact, no explicit "Earth is round" debunk fact) are the narrowed
+Track-B residue. NOTE: rag/bank/vectors-labse.* left stale (21,107); only mobile assets is read by
+the device + benchmark, but regenerate it too for consistency.
+
 ## F6 — Track-A SFT-rebalance result: +0.41, over-abstention fixed, honesty preserved (2026-06-09)
 
 Retrained the Tagalog grounded adapter on the +82-row rebalanced dataset (exact shipping recipe,

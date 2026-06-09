@@ -36,7 +36,7 @@ import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { RagStore } from '../../../packages/shared/src/rag/RagStore.ts';
+import { RagStore, SemanticIndex, normalizeQuery } from '../../../packages/shared/src/rag/index.ts';
 import {
   generateSystemPrompt,
   formatGroundingBlock,
@@ -52,6 +52,14 @@ const PHASE = process.env.PHASE ?? 'all'; // all | answers | judge | report
 const JUDGE_ENDPOINT = process.env.JUDGE_ENDPOINT ?? '';
 const JUDGE_MODEL = process.env.JUDGE_MODEL ?? '';
 const BASELINE = process.env.BASELINE ?? '';
+// DEVICE-FAITHFUL retrieval: the phone uses retrieveForGroundingHybrid (lexical + LaBSE
+// semantic), so the benchmark must too (FINDINGS F7). Embed each probe query via the
+// LaBSE service (labse-embed-service.py, the device-equivalent raw-CLS) + attach the
+// bundled vector blob. If the embedder is down, fall back to lexical-only with a loud warn.
+const EMBED_ENDPOINT = process.env.EMBED_ENDPOINT ?? 'http://localhost:8090';
+const ROOT = join(HERE, '../../..');
+const VEC_META = join(ROOT, 'packages/mobile/assets/rag/vectors-labse.meta.json');
+const VEC_BIN = join(ROOT, 'packages/mobile/assets/rag/vectors-labse.i8.bin');
 
 const LANG_OK = { tl: 'tagalog', bis: 'cebuano', en: 'english' } as const;
 const DIMS = ['accuracy', 'helpfulness', 'faithfulness', 'naturalness', 'pedagogy'] as const;
@@ -105,6 +113,34 @@ async function ask(messages: { role: string; content: string }[], temp: number):
   return data.choices?.[0]?.message?.content ?? '';
 }
 
+// ---- device-faithful HYBRID retrieval helpers (FINDINGS F7) ----
+// Attach the bundled int8 LaBSE vector blob so retrieveForGroundingHybrid can semantic-rerank,
+// exactly as LocalEngine does on the phone. Returns false if the blob is missing.
+function attachSemantic(store: RagStore): boolean {
+  if (!existsSync(VEC_META) || !existsSync(VEC_BIN)) return false;
+  const meta = JSON.parse(readFileSync(VEC_META, 'utf8'));
+  const bytes = readFileSync(VEC_BIN);
+  store.attachSemantic(new SemanticIndex({
+    dims: meta.dims, scale: meta.scale, count: meta.count, langs: meta.langs,
+    data: new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength),
+  }));
+  return true;
+}
+// Embed normalize(query) via the LaBSE service + L2-normalize (device embdNormalize:2),
+// matching gen-hybrid-fixtures.mts. Returns undefined if the embedder is unreachable.
+async function embedQuery(text: string): Promise<Float32Array | undefined> {
+  try {
+    const res = await fetch(`${EMBED_ENDPOINT}/v1/embeddings`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ input: normalizeQuery(text) }),
+    });
+    if (!res.ok) return undefined;
+    const v: number[] = (await res.json()).data[0].embedding;
+    let n = 0; for (const x of v) n += x * x; n = Math.sqrt(n) || 1;
+    return Float32Array.from(v, (x) => x / n);
+  } catch { return undefined; }
+}
+
 // Concurrency for model calls. DEFAULT 1 (sequential) — measured: continuous batching
 // gives NO local speedup on a single Metal GPU (it's compute-bound; np>1 was ~10% SLOWER,
 // see FINDINGS F3). CONC>1 only helps on a LATENCY-bound backend (cloud GPU with spare
@@ -129,18 +165,27 @@ async function pool<T>(tasks: (() => Promise<T>)[], limit: number): Promise<T[]>
 
 async function collectAnswers(): Promise<AnswerRow[]> {
   const store = new RagStore();
-  // 1. Build every prompt up front (retrieval is synchronous CPU work — cheap).
-  const built = PASS_PROBES.map((p) => {
-    // RagStore + generateSystemPrompt take the full Language, not the probe's short code.
-    const lang = LANG_OK[p.lang];
-    const hits = store.retrieveForGrounding(p.prompt as any, lang as any, 3);
+  // DEVICE-FAITHFUL retrieval: attach the LaBSE blob + embed each query so we use the
+  // SAME hybrid path as the phone (FINDINGS F7). Fall back to lexical-only with a loud
+  // warning if the blob or embedder is unavailable — the run is then NOT device-faithful.
+  const hasSemantic = attachSemantic(store);
+  const probe0 = await embedQuery(PASS_PROBES[0]?.prompt ?? 'test');
+  const hybrid = hasSemantic && !!probe0;
+  if (hybrid) console.log(`>> retrieval: HYBRID (lexical + LaBSE semantic, embedder ${EMBED_ENDPOINT}) — device-faithful`);
+  else console.log(`>> ⚠️  retrieval: LEXICAL-ONLY — NOT device-faithful (semantic=${hasSemantic}, embedder=${!!probe0}). Boot the embedder (run-capability.sh does) for a faithful run.`);
+
+  // 1. Build every prompt up front. Retrieval needs the query embedding (async), so embed first.
+  const built = await Promise.all(PASS_PROBES.map(async (p) => {
+    const lang = LANG_OK[p.lang]; // RagStore/generateSystemPrompt take the full Language, not the short code
+    const qvec = hybrid ? await embedQuery(p.prompt) : undefined;
+    const hits = store.retrieveForGroundingHybrid(p.prompt as any, qvec, lang as any, 3, 0.5);
     const system = generateSystemPrompt(lang as any, p.grade as any, true);
     const block = formatGroundingBlock(
       hits.map((h: any) => ({ content: h.text, source: h.fact.source, score: h.score, metadata: { topic: h.fact.topic } }))
     );
     const messages = [{ role: 'system', content: system }, { role: 'user', content: composeGroundedUserTurn(block, p.prompt) }];
     return { p, retrievedIds: hits.map((h: any) => h.fact.id), messages };
-  });
+  }));
   // 2. Flatten to (probe, sample) generation tasks and run them through the pool so
   //    continuous batching can overlap them. SAMPLES draws per probe.
   const jobs: { bi: number }[] = [];

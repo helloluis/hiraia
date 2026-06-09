@@ -49,12 +49,36 @@ SAMPLES="${SAMPLES:-1}"        # >1 → keep the WORST sample per probe
 NP="${NP:-1}"                 # parallel decode slots (continuous batching)
 CONC="${CONC:-$NP}"           # client-side concurrency; match the server's slot count
 TSX="$ROOT/node_modules/.bin/tsx"
+# DEVICE-FAITHFUL retrieval (FINDINGS F7): boot the LaBSE embed service so the benchmark
+# uses retrieveForGroundingHybrid (lexical + semantic), like the phone. The transformers
+# raw-CLS service is the device-equivalent embedder (0.99999 vs the QVAC GGUF).
+EMBED_PORT="${EMBED_PORT:-8090}"
+EMBED_PY="${EMBED_PY:-$ROOT/finetuning/.convert-venv/bin/python}"
+EMBED_SVC="$ROOT/finetuning/eval/harness/labse-embed-service.py"
+HYBRID="${HYBRID:-1}"          # set HYBRID=0 to skip the embedder (lexical-only, not device-faithful)
 
 [ -x "$BIN" ]   || { echo "ERR: llama-server not at $BIN (set BIN=)"; exit 2; }
 [ -f "$BASE" ]  || { echo "ERR: base GGUF not at $BASE (set BASE=)"; exit 2; }
 [ -f "$ADAPTER" ]     || { echo "ERR: tagalog adapter not at $ADAPTER (set ADAPTER=)"; exit 2; }
 [ -f "$BIS_ADAPTER" ] || { echo "ERR: bisaya adapter not at $BIS_ADAPTER (set BIS_ADAPTER=)"; exit 2; }
 [ -x "$TSX" ]   || { echo "ERR: tsx not at $TSX — run npm/yarn install"; exit 2; }
+
+# ---- boot the LaBSE embed service (once, shared across both adapter passes) ----
+EMBED_PID=""
+if [ "$HYBRID" = "1" ]; then
+  if [ -x "$EMBED_PY" ] && [ -f "$EMBED_SVC" ]; then
+    echo ">> booting LaBSE embed service on :$EMBED_PORT (device-equivalent raw-CLS) ..."
+    "$EMBED_PY" "$EMBED_SVC" "$EMBED_PORT" > "$HERE/.embed.log" 2>&1 &
+    EMBED_PID=$!
+    for _ in $(seq 1 60); do
+      [ "$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 "http://localhost:$EMBED_PORT/health" 2>/dev/null || true)" = "200" ] && { echo ">> embedder ready"; break; }
+      if ! kill -0 $EMBED_PID 2>/dev/null; then echo "WARN: embedder died — see $HERE/.embed.log; running LEXICAL-ONLY (not device-faithful)"; tail -8 "$HERE/.embed.log"; EMBED_PID=""; break; fi
+      sleep 2
+    done
+  else
+    echo "WARN: embedder python ($EMBED_PY) or service missing — running LEXICAL-ONLY (not device-faithful). Set EMBED_PY= to the convert venv."
+  fi
+fi
 
 boot() {
   # -np/--cont-batching: N parallel decode slots so the client's concurrent requests
@@ -70,12 +94,13 @@ boot() {
   echo "ERR: server not ready"; exit 2
 }
 stop() { kill $SERVER_PID 2>/dev/null; wait $SERVER_PID 2>/dev/null || true; }
-trap 'kill ${SERVER_PID:-0} 2>/dev/null' EXIT
+trap 'kill ${SERVER_PID:-0} ${EMBED_PID:-0} 2>/dev/null' EXIT
 
 run_pass() { # $1=tag  $2=adapter
   echo ">> [$1] booting $(basename "$2") on :$PORT ..."; boot "$2"
   echo ">> [$1] collecting answers (temp $TEMP, samples $SAMPLES, conc $CONC) ..."
   ENDPOINT="http://localhost:$PORT" ADAPTER_TAG="$1" TEMP="$TEMP" SAMPLES="$SAMPLES" CONC="$CONC" \
+    ${EMBED_PID:+EMBED_ENDPOINT="http://localhost:$EMBED_PORT"} \
     ${JUDGE_ENDPOINT:+JUDGE_ENDPOINT="$JUDGE_ENDPOINT"} ${JUDGE_MODEL:+JUDGE_MODEL="$JUDGE_MODEL"} \
     "$TSX" "$HERE/run-capability.mts" || { echo "ERR: pass $1 failed"; exit 1; }
   stop
