@@ -33,7 +33,9 @@ const exitVideo = require('../../../loader/videos/cat-exit.mp4');
 type LoaderPhase = 'sleeping' | 'nudged' | 'waking' | 'exiting' | 'done';
 
 export function LoaderOverlay({ onDismiss }: { onDismiss: () => void }) {
-  const SIMULATE_LOADING = true; // Set to true to test the animations over 2 minutes
+  // DEV-ONLY: true drives a fake 0→100 over ~2 min to preview the animations; MUST be false
+  // in real builds so the loader tracks the actual engine warm-up (storeProgress/storeIsReady).
+  const SIMULATE_LOADING = false;
 
   const storeProgress = useEngineStore((s) => s.loadingProgress);
   const storeIsReady = useEngineStore((s) => s.isReady);
