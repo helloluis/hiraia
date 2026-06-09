@@ -119,8 +119,8 @@ importers:
         specifier: ~6.0.9
         version: 6.0.9(expo@54.0.35)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))
       expo-video:
-        specifier: ^56.1.2
-        version: 56.1.2(expo@54.0.35)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+        specifier: ^3.0.16
+        version: 3.0.16(expo@54.0.35)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -3946,8 +3946,8 @@ packages:
       react-native-web:
         optional: true
 
-  expo-video@56.1.2:
-    resolution: {integrity: sha512-NPdbwcPfPd7lgOcgTFi7m7Dqp1+3OSXJHrUDU4tXA/Ly4vuNpe35eZNA21F/OJtJqk/nw3r6PDZnSqw5XY0p6w==}
+  expo-video@3.0.16:
+    resolution: {integrity: sha512-H1HlxcHGomZItqisGfW3YL/G9BHtNBfVSimDJcLuyxyU87wFnV8loO9tCjuhufkfh/aTa2sW5BYAjLjg9DvnBQ==}
     peerDependencies:
       expo: '*'
       react: '*'
@@ -12173,7 +12173,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  expo-video@56.1.2(expo@54.0.35)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
+  expo-video@3.0.16(expo@54.0.35)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
     dependencies:
       expo: 54.0.35(@babel/core@7.29.7)(@expo/metro-runtime@4.0.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0)))(expo-router@6.0.24)(react-native@0.81.5(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3)
       react: 19.1.0
