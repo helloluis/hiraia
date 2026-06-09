@@ -1,0 +1,982 @@
+{
+  "language": "tagalog",
+  "_note": "Track-A SFT-rebalance (2026-06-09). Targets the capability-baseline failure diagnosis (FINDINGS F4): Bucket-3 answer-from-knowledge when grounding is thin/wrong (answer-knowledge-mismatch rows carry deliberately IRRELEVANT factIds -> gold answer ignores them), myth-debunk at volume (safety-myth was the worst tier 2.31), and an abstain counterweight to preserve honesty. Questions DISJOINT from finetuning/eval/capability/probes.json (the held-out benchmark). Generated+verified by the rebalance-generate workflow.",
+  "examples": [
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 4,
+      "factIds": [
+        "object-color-reflection-g5",
+        "bangus-belong-to-fish-group-g3",
+        "earthworm-vermicompost-no-smell-g4"
+      ],
+      "user": "Bakit umiiyak tayo kapag may pumasok na alikabok sa mata?",
+      "assistant": "Magandang tanong iyan! 😊 Kapag may pumasok na alikabok sa mata mo, nakakaramdam ang mata na may bagay na hindi dapat naroon, kaya pinapagana nito ang mga luha para banlawan at itulak palabas ang alikabok. Parang panlinis at pang-protekta ang luha para hindi masaktan o magkagasgas ang mata mo. 💧 Napansin mo na ba na kumukurap din ang mata mo nang mabilis kapag may pumasok dito?"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "flower-fruit-not-all-flowers-g5",
+        "gecko-call-night-g4",
+        "feathers-shaft-barbs-zip-g4"
+      ],
+      "user": "Paano gumagaling ang sugat natin?",
+      "assistant": "Magaling na tanong! 😊 Kapag nasugatan ka, namumuo agad ang dugo para magsara ang sugat at maging parang takip (scab) ito. Sa ilalim noon, abalang-abala ang mga cells ng katawan mo sa pagbuo ng bagong balat, kaya unti-unting gumagaling ang sugat. Kaya mahalagang panatilihing malinis ito para hindi mahawaan! Alam mo ba kung bakit minsan may nararamdaman tayong kati habang gumagaling ang sugat? 🩹"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "remora-disc-strongest-natural-suction-g7",
+        "sound-from-vibration-g4",
+        "karambola-billiard-collision-g6"
+      ],
+      "user": "Bakit nangangati ang kagat ng lamok?",
+      "assistant": "Magandang tanong iyan! 🦟 Kapag kumagat ang lamok, nagsi-inject ito ng kaunting laway para hindi mamuo ang dugo habang sumisipsip. Ang katawan natin, iniisip na \"kaaway\" ang laway na iyon, kaya naglalabas ito ng kemikal na tinatawag na histamine — ito ang nagpapamaga at nagpapakati ng balat. 😊 Alam mo ba kung bakit mas mainam na huwag kamutin ang kagat kahit nangangati?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "thunder-is-exploding-air-g6",
+        "thunder-after-lightning-sound-slow-g5",
+        "speed-of-sound-g7"
+      ],
+      "user": "Bakit may kulog pagkatapos ng kidlat?",
+      "assistant": "Magandang tanong! ⚡ May kulog dahil sobrang init ng kidlat—biglang umiinit at lumalawak nang napakabilis ang hangin sa paligid nito, kaya pumuputok at umuugong na parang malakas na pagsabog. Naririnig natin ito pagkatapos makita ang kidlat dahil mas mabilis ang liwanag kaysa sa tunog (na umaabot lang ng mga 343 metro kada segundo). Gusto mo bang malaman kung paano mabibilang ang layo ng kidlat gamit ang oras bago dumating ang kulog? 🌩️"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "frog-breathe-skin-underwater-g6",
+        "gourami-gurami-g4",
+        "mudfish-dalag-g5"
+      ],
+      "user": "Paano humihinga ang isda sa ilalim ng tubig?",
+      "assistant": "Magaling na tanong! 🐟 Ang karamihan ng isda ay humihinga gamit ang kanilang hasang o gills. Habang dumadaloy ang tubig sa kanilang bibig palabas sa hasang, kinukuha ng manipis na bahaging ito ang oxygen na nakatunaw sa tubig at ipinapasok ito sa kanilang dugo. May ilang isda nga, tulad ng gurami at dalag, na may espesyal na bahagi para makahinga rin ng hangin mula sa ibabaw! May naisip ka na bang isdang gusto mong alamin kung paano huminga? 💧"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "star-vs-planet-g5",
+        "earth-stars-planets-vs-stars-g6",
+        "star-distance-g6"
+      ],
+      "user": "Bakit kumikislap ang mga bituin sa langit?",
+      "assistant": "Magandang tanong iyan! ✨ Kumikislap ang mga bituin dahil sobrang layo nila, kaya parang maliit na tuldok lang ng liwanag ang umaabot sa atin. Habang dumadaan ang liwanag na iyon sa makapal na hangin ng Earth, paiba-iba ang init at galaw ng hangin, kaya bahagyang nababaluktot at nanginginig ang liwanag — iyan ang nakikita nating pagkislap! 🌟 Ang mga planeta naman ay mas malapit at mukhang mas malaki kaya hindi gaanong kumikislap ang liwanag nila. Naisip mo na ba kung bakit mas malinaw kumislap ang mga bituin kapag malamig at maaliwalas ang gabi?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "earth-internal-heat-drives-plates-g9",
+        "landslide-earthquake-trigger-g6",
+        "earth-mantle-heat-engine-drives-surface-g10"
+      ],
+      "user": "Ano ang sanhi ng lindol?",
+      "assistant": "Magandang tanong yan! 🌏 Ang lindol ay nangyayari dahil ang ibabaw ng Daigdig ay binubuo ng malalaking piraso na tinatawag na tectonic plates, at ang mga ito ay dahan-dahang gumagalaw dahil sa init na lumalabas mula sa loob ng Daigdig. Kapag nag-ipon ng tensyon ang dalawang plate na nagkakatabi o nagkakaipit, biglang kumakawala ito at yumayanig ang lupa — yan ang lindol! 🌋 Sa palagay mo ba, bakit mas madalas magkaroon ng lindol sa ibang lugar kaysa sa iba?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "how-bees-make-honey-g4",
+        "bee-honey-g3",
+        "honeybee-pukyutan-g4"
+      ],
+      "user": "Paano gumagawa ng pulot-pukyutan ang mga bubuyog?",
+      "assistant": "Magandang tanong! 🐝 Sinisipsip muna ng bubuyog ang matamis na nectar mula sa mga bulaklak gamit ang parang straw na dila nila, at iniimbak ito sa loob ng kanilang katawan. Pagdating sa bahay-pukyutan, ibinubuga nila ito sa mga cell ng pugad at pinapaypayan ng kanilang mga pakpak para matuyo at lumapot — at iyon na ang nagiging pulot-pukyutan na pagkain ng buong kolonya! 🍯 Alam mo ba kung bakit gumagawa sila ng sobrang dami ng pulot?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "smell-and-taste-work-together-g5",
+        "five-senses-tongue-map-myth-g7",
+        "salt-body-taste-buds-g4"
+      ],
+      "user": "Bakit may iba’t ibang lasa ang nararamdaman ng dila natin?",
+      "assistant": "Magandang tanong yan! Sa ibabaw ng dila mo ay may napakaraming maliliit na sensor na tinatawag na taste buds 👅. Kapag natunaw ang pagkain sa laway mo, hinihigop ng mga ito ang lasa — matamis, maalat, maasim, mapait, at umami — tapos magpapadala sila ng signal sa utak mo para malaman mo kung ano ang kinakain mo. At alam mo ba? Halos lahat ng bahagi ng dila ay kayang makaramdam ng lahat ng lasa, hindi lang sa iisang sulok! May naamoy ka na bang pagkain na nakatulong para mas masarap ang lasa nito? 😊"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "calcium-strong-vitamin-d-helper-g6",
+        "vitamins-help-body-work-g5",
+        "vitamin-b12-folate-blood-g8"
+      ],
+      "user": "Bakit kailangan natin ng Vitamin C?",
+      "assistant": "Magandang tanong! 🍊 Kailangan natin ng Vitamin C para mas malusog ang ating katawan at mas matibay ang ating panlaban sa sakit, kaya hindi tayo madaling magkasakit. Tumutulong din ito para gumaling ang mga sugat at para maging malusog ang ating gilagid at balat. Marami kang makukuhang Vitamin C sa mga prutas tulad ng kalamansi, dalandan, at bayabas! Anong prutas naman ang gusto mong malaman kung mayaman sa Vitamin C? 😊"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "compound-fixed-ratio-g7",
+        "nitrogen-passes-food-chain-g7",
+        "fog-types-radiation-g7"
+      ],
+      "user": "Ano ang ozone layer at bakit ito mahalaga?",
+      "assistant": "Magandang tanong! 🌍 Ang ozone layer ay isang manipis na patong ng gas na ozone (O₃) na matatagpuan sa stratosphere, mga 15–35 kilometro sa itaas ng lupa. Napakahalaga nito dahil sinasalo at sinasala nito ang karamihan ng nakakapinsalang ultraviolet (UV) rays ng araw, kaya naproprotektahan tayo at ang iba pang nabubuhay mula sa sunog ng balat at iba pang sakit. Para itong sunscreen ng buong Earth! ☀️ Naisip mo na ba kung bakit may mga taong nag-aalala tungkol sa \"butas\" sa ozone layer?"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "tears-keep-eye-wet-g3",
+        "microscope-g7",
+        "bacteria-shapes-size-tiny-g6"
+      ],
+      "user": "Bakit lumalaki ang tinapay kapag niluluto?",
+      "assistant": "Magandang tanong! 🍞 Lumalaki ang tinapay dahil may maliliit na organismo na tinatawag na yeast sa loob nito. Habang niluluto o pinapaalsa, kumakain ang yeast ng asukal at naglalabas ng gas na carbon dioxide, na siyang gumagawa ng mga maliliit na bula kaya umaalsa at lumalaki ang masa. 🫧 Gusto mo bang malaman kung bakit may natatanggal na alkohol din habang nagbe-bake?"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "penguin-eyes-see-underwater-g6",
+        "deep-sea-cold-dark-no-sun-g5",
+        "rocks-made-of-minerals-g5"
+      ],
+      "user": "Bakit kumukulo ang tubig kapag iniinit?",
+      "assistant": "Magandang tanong! Kapag iniinit mo ang tubig, lumalakas ang galaw ng maliliit na particles nito. 🔥 Pag umabot na sa 100°C, sobrang bilis na nila kaya nagiging singaw (water vapor) ang tubig — yan ang mga bula at puting singaw na nakikita mong tumataas. Yan ang tinatawag na boiling! 💧 Sa palagay mo ba, mas mabilis kumulo ang tubig sa bundok o sa baba malapit sa dagat?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 4,
+      "factIds": [
+        "freezer-makes-ice-g4",
+        "freezer-temperature-number-g7",
+        "fridge-freezer-coldest-top-g6"
+      ],
+      "user": "Bakit nagiging yelo ang tubig sa freezer?",
+      "assistant": "Magandang tanong iyan! 🧊 Nagiging yelo ang tubig sa freezer dahil sobrang lamig doon — umaabot ito ng mga minus 18 degrees Celsius! Kapag inaalis ang init sa tubig at lumamig ito nang husto (sa baba ng 0 degrees Celsius), tumitigas ito at nagiging solid na yelo. Ang tawag diyan ay freezing. ❄️ Ano kaya ang mangyayari sa yelo kapag inilabas natin ito sa init?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "itlog-na-maalat-salted-g4",
+        "skin-sweat-replace-water-g5",
+        "drink-water-thirst-signal-g5"
+      ],
+      "user": "Bakit nauuhaw tayo kapag kumain ng maalat?",
+      "assistant": "Magandang tanong yan! 😊 Kapag kumain ka ng maalat, dumadami ang asin (sodium) sa dugo mo, kaya hindi balanse ang tubig sa loob ng katawan. Para ayusin ito, nagpapadala ng senyales ang utak mo na \"uminom ka na!\" — kaya nauuhaw ka, para ma-dilute o malabnaw muli ang sobrang asin. 💧 Ano sa palagay mo ang nangyayari sa katawan natin kapag uminom tayo pagkatapos kumain ng maalat?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 4,
+      "factIds": [
+        "dama-de-noche-g5",
+        "ylang-ylang-flower-g6",
+        "bees-flower-color-smell-g5"
+      ],
+      "user": "Bakit may amoy ang mga bulaklak?",
+      "assistant": "Magandang tanong iyan! 🌸 May amoy ang mga bulaklak para makaakit ng mga insekto tulad ng bubuyog at paru-paro. Kapag napalapit ang mga ito dahil sa bango, natutulungan nilang mailipat ang pollen mula sa isang bulaklak papunta sa iba — ito ang tinatawag na pollination, na nakakatulong para makabuo ng buto at bagong halaman. May napansin ka na bang bulaklak na mas mabango kapag gabi, gaya ng dama de noche? 🐝"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "bats-echolocation-not-blind-can-see-g6",
+        "philippine-flying-fox-no-echolocation-g6",
+        "bats-not-blind-g4"
+      ],
+      "user": "Paano nakakakita ang paniki sa dilim?",
+      "assistant": "Magandang tanong yan! 🦇 Karamihan ng paniki ay gumagamit ng echolocation — naglalabas sila ng matinis na tunog na bumabalik kapag tumama sa isang bagay o insekto, kaya \"nakikita\" nila kung saan ito sa pamamagitan ng tunog, parang sonar. May mata pa rin sila at hindi bulag, pero malaking tulong ang tunog sa madilim na gabi. May ibang paniki naman, tulad ng Philippine flying fox, na malalaki ang mata at matalas ang pang-amoy para humanap ng prutas sa halip na tunog. Astig di ba kung paano nakakakita sa dilim ang mga paniki?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "gecko-sticky-feet-g5",
+        "static-balloon-sticks-wall-g5",
+        "house-gecko-walk-upside-down-g4"
+      ],
+      "user": "Bakit kayang dumikit ng butiki sa dingding?",
+      "assistant": "Magandang tanong! 🦎 Kaya kayang dumikit ng butiki sa dingding dahil ang mga paa nito ay may napakaraming maliliit na buhok na kumakapit nang mahigpit sa ibabaw. Sobrang lakas ng kapit na ito kaya hindi ito nahuhulog kahit pataas o patiwarik pa siyang naglalakad sa kisame! ✨ Napansin mo na ba kung gaano kabilis sila gumalaw habang nakadikit?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "why-hair-turns-gray-g6",
+        "mammal-milk-fur-g4",
+        "hair-gray-old-g4"
+      ],
+      "user": "Bakit pumuputi ang buhok kapag tumatanda ang tao?",
+      "assistant": "Magandang tanong yan! 😊 Pumuputi ang buhok kapag tumatanda dahil unti-unting humihinto ang mga selula sa paggawa ng melanin — ito ang pigment na nagbibigay-kulay sa buhok natin. Kapag wala nang melanin, tumutubo ang buhok na walang kulay, kaya nagiging puti o uban. 🧓 Ano sa palagay mo, may makakain ba tayo para mas matagal manatiling itim ang buhok?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "kidneys-water-balance-g9",
+        "salt-body-kidneys-remove-salt-g6",
+        "kidneys-and-sweat-g6"
+      ],
+      "user": "Ano ang ginagawa ng mga bato (kidney) sa katawan natin?",
+      "assistant": "Magandang tanong! 🫘 Ang mga bato (kidneys) mo ay parang salaan na naglilinis ng dugo—inaalis nila ang mga waste at sobrang asin, tubig, o iba pang hindi kailangan ng katawan, at inilalabas ito bilang ihi. Kinokontrol din nila ang tamang dami ng tubig sa katawan: kapag kulang ka sa tubig o nakapagpawis nang marami, mas kaunti at mas konsentrado ang ihi mo. Kaya pala mahalaga ang pag-inom ng tubig—anong sa palagay mo ang mangyayari kung hindi gumana nang maayos ang ating mga bato? 💧"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 4,
+      "factIds": [
+        "plastic-burning-releases-toxic-smoke-g6",
+        "tarsier-head-turn-g4",
+        "fever-helps-fight-infection-g6"
+      ],
+      "user": "Bakit pawis tayo nang pawis kapag mainit?",
+      "assistant": "Magandang tanong iyan! 😊 Nagpapawis tayo kapag mainit dahil ito ang paraan ng katawan natin para magpalamig. Kapag tumatagaktak ang pawis sa balat natin, sumisingaw ito sa hangin, at ang pagsingaw na iyon ang nag-aalis ng sobrang init—kaya nakakaramdam tayo ng ginhawa. 💧 Sa tingin mo, bakit kaya mas mabilis tumuyo ang pawis kapag may hangin o electric fan?"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "macaque-swims-g4",
+        "gentler-ramp-less-force-g5",
+        "sea-snake-walo-walo-g6"
+      ],
+      "user": "Paano lumilipad ang mga ibon?",
+      "assistant": "Magandang tanong! 🐦 Lumilipad ang mga ibon dahil sa kanilang mga pakpak na hugis-espesyal — kapag pumapagaspas sila, itinutulak nito ang hangin pababa, kaya naman naitataas sila sa himpapawid. Malaking tulong din ang kanilang magagaan na buto at malambot na balahibo (feathers) para hindi sila mabigat. Napansin mo ba kung paano binubuka ng ibon ang kanyang mga pakpak kapag dumadausdos ito sa hangin? 🌤️"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "hermit-crab-changes-shell-when-grows-g3",
+        "manta-ray-cephalic-fins-g5",
+        "cacao-pods-inside-seeds-rows-g6"
+      ],
+      "user": "Bakit hindi nahuhulog ang tubig sa baso kahit baligtad sandali kapag iniikot nang mabilis?",
+      "assistant": "Magandang tanong 'yan! 🌀 Kapag iniikot mo nang mabilis ang baso, may puwersang humihila sa tubig papasok patungo sa gitna ng pag-ikot (tinatawag itong centripetal force). Kaya kahit sandaling nakabaligtad ang baso, ang inertia ng tubig ay gustong dumiretso palabas, kaya idinidiin nito ang sarili sa ilalim ng baso—kaya nananatili itong nakadikit sa loob at hindi nahuhulog. Pero kung dahan-dahan mong iikot, mananaig ang gravity at matatapon ang tubig! 💧 Ano kaya sa palagay mo ang mangyayari kung mas pabilisin mo pa ang pag-ikot?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "blowing-cools-food-g4",
+        "wound-healing-blowing-myth-g5"
+      ],
+      "user": "Bakit lumalamig ang sabaw kapag hinihipan natin?",
+      "assistant": "Magandang tanong yan! 😊 Kapag hinihipan natin ang mainit na sabaw, ang gumagalaw na hangin ay tinatangay ang init palayo, kaya mas mabilis itong lumalamig. Tumutulong din ang paghihip para mas mabilis sumingaw ang mainit na singaw sa ibabaw ng sabaw, at ang pagsingaw ay nagdadala ng init palabas. Subukan mong hipan ang isang basong mainit at isang malamig na tubig — ano sa tingin mo ang mararamdaman mo? 🌬️"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "exercise-uses-calories-g7",
+        "photosynthesis-source-of-our-food-g7",
+        "food-chemical-energy-body-g5"
+      ],
+      "user": "Ano ang nangyayari sa pagkain natin para maging enerhiya?",
+      "assistant": "Magandang tanong! 😋 Kapag kumain tayo, dumadaan ang pagkain sa digestion kung saan pinaghihiwa-hiwalay ito ng katawan sa mas maliliit na bahagi — gaya ng kanin na nagiging glucose (isang uri ng sugar). Pagkatapos, sa loob ng ating mga cell, may proseso na tinatawag na cellular respiration na pinagsasama ang glucose at oxygen para mapalabas ang chemical energy na nakaimbak dito, na nagbibigay sa atin ng lakas at init. 💪🔥 Kaya nga importante ang paghinga, dahil kailangan ng oxygen para magamit ang enerhiyang iyon! Anong sa palagay mo ang nangyayari kapag mas mabilis tayong huminga habang tumatakbo?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "why-philippines-has-wet-dry-seasons-g6",
+        "monsoon-wind-changes-direction-g5",
+        "amihan-cool-breeze-scene-g5"
+      ],
+      "user": "Bakit nagkakaroon ng tag-araw at tag-ulan na ihip ng hangin (monsoon) sa atin?",
+      "assistant": "Magandang tanong! 🌬️ Nagkakaroon tayo ng monsoon dahil sa pagkakaiba ng init ng lupa at karagatan: kapag mas mainit ang lupa kaysa dagat, ang basa at mainit na hangin ng habagat ay humihip mula sa timog-kanluran at nagdadala ng ulan. Kapag mas malamig naman ang lupa, ang amihan ay umiihip mula sa hilagang-silangan dala ang malamig at tuyong hangin tuwing Nobyembre hanggang Pebrero. Kaya nagbabago ang direksyon ng hangin kasabay ng panahon. 🌧️☀️ Napansin mo ba kung anong monsoon ang umiihip ngayon sa inyong lugar?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "transparent-sea-animals-g5",
+        "sublimation-mothballs-g6",
+        "shorebirds-wetlands-need-protection-g6"
+      ],
+      "user": "Bakit naglalaho ang asukal kapag inihalo sa tubig?",
+      "assistant": "Magandang tanong iyan! 😊 Hindi talaga nawawala ang asukal—nagkakawatak-watak lang ito sa napakaliliit na piraso na hindi na natin makita, at kumakalat ito nang pantay-pantay sa buong tubig. Tinatawag itong dissolving o pagkatunaw, at kaya pa rin natin itong matikman dahil naroon pa rin ang asukal! 🍬 Sa tingin mo kaya, mas mabilis matunaw ang asukal sa malamig o sa mainit na tubig?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "why-compass-points-north-g6",
+        "compass-invention-g5",
+        "compass-floating-needle-g6"
+      ],
+      "user": "Bakit gumagalaw ang mga karayom ng kompas patungong hilaga?",
+      "assistant": "Magandang tanong yan! 🧭 Ang karayom ng kompas ay isa palang maliit na magnet, at ang buong Earth natin ay parang isang higanteng magnet din na may magnetic field na pumapalibot dito. Kaya't ang karayom ay pumapantay sa magnetic field na iyon at palaging tumuturo sa magnetic north — ito ang tumutulong sa mga marino at manlalakbay para hindi maligaw. 🌏 Alam mo ba kung ano ang nasa loob ng Earth na nagdudulot ng magnetism nito?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "mangrove-tide-high-low-cycle-g5",
+        "moon-high-low-tide-g5",
+        "high-tide-low-tide-compare-g6"
+      ],
+      "user": "Ano ang sanhi ng pagtaas ng tubig-dagat (high tide)?",
+      "assistant": "Magandang tanong! 🌊 Tumataas ang tubig-dagat tuwing high tide dahil sa hila ng grabidad ng Buwan — at kaunti rin ng Araw — sa tubig ng karagatan. Hinihila nito ang tubig kaya namumuo ito sa panig ng Mundo na nakaharap sa Buwan (at sa kabilang panig din), kaya karaniwang dalawang beses sa isang araw nagta-high tide at nagla-low tide. Napansin mo na ba kung paano nagbabago ang antas ng dagat sa baybayin sa magkaibang oras? 🌙"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "why-sunset-red-g6",
+        "red-sunset-scattering-g6",
+        "sun-main-color-yellow-white-g5"
+      ],
+      "user": "Bakit nagkukulay-kahel o pula ang langit kapag paglubog ng araw?",
+      "assistant": "Magandang tanong iyan! 🌅 Ang liwanag ng araw ay puti, pero binubuo pala ito ng iba't ibang kulay. Tuwing paglubog ng araw, mas mahaba at mas makapal na hangin ang dinadaanan ng liwanag, kaya nakakalat na ang asul at natitira na lang ang pula at kahel na umaabot sa mata natin. Kaya ang ganda tingnan, 'di ba? 🧡 Sa palagay mo, anong kulay naman ang langit kapag tanghaling-tapat?"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "katala-trade-threat-g5",
+        "arachnid-spiders-mites-ticks-g6",
+        "momentum-mass-conserved-total-g10"
+      ],
+      "user": "Paano nakakahawa ang trangkaso sa ibang tao?",
+      "assistant": "Magandang tanong! 😊 Kumakalat ang trangkaso sa pamamagitan ng maliliit na patak (droplets) na lumalabas kapag may sipon, ubo, o bahing ang isang taong may sakit—nalalanghap o nahahawakan natin ito, lalo na kapag hinawakan natin ang ating mukha. Kaya napakahalaga ng paghuhugas ng kamay at pagtatakip ng bibig kapag umuubo! Alam mo ba kung ano pang sakit ang kumakalat sa ganitong paraan?"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "spore-reproduction-g8",
+        "bees-worker-bees-female-g4",
+        "handwashing-removes-bacteria-g5"
+      ],
+      "user": "Bakit nagkakaroon ng bula ang softdrinks?",
+      "assistant": "Magandang tanong iyan! 🥤 Ang mga softdrinks ay puno ng carbon dioxide gas na hinalo sa tubig sa ilalim ng mataas na pressure. Kapag binuksan mo ang bote o lata, bumababa ang pressure kaya ang gas ay nagiging maliliit na bula na umaakyat pataas — iyan ang sizzle na naririnig mo! Kaya nga tinatawag itong \"carbonated drinks.\" Napansin mo ba na mas marami ang bula kapag malamig pa ito kaysa kapag naiwan nang matagal na bukas? 😊"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "earth-ph-typhoon-formation-g6",
+        "soil-plants-protect-from-erosion-g5",
+        "too-much-sugar-fat-g5"
+      ],
+      "user": "Ano ang nagpapakislap sa alitaptap (firefly)?",
+      "assistant": "Magandang tanong! ✨ Ang alitaptap ay kumikislap dahil sa isang proseso na tinatawag na bioluminescence. May espesyal silang bahagi sa puwit na pinaghahalo ang isang kemikal na tinatawag na luciferin, ang oxygen, at ang enzyme na luciferase — kaya nagliliwanag sila nang walang init, parang \"malamig na ilaw\" 🔆. Ginagamit nila ito para magpadala ng senyales sa kapwa alitaptap. Sa tingin mo, bakit kaya sa gabi sila kumikislap? 🌙"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "carabao-water-swim-g3",
+        "anglerfish-bioluminescence-not-all-deep-fish-glow-g6",
+        "animals-see-different-colors-g6"
+      ],
+      "user": "Bakit nakakalangoy ang ilang hayop pero ang iba hindi?",
+      "assistant": "Magandang tanong iyan! 🐢 Marunong lumangoy ang ilang hayop dahil bagay ang kanilang katawan sa tubig — may mga paa o palikpik na parang sagwan, o magaan ang katawan na madaling lumutang, gaya ng pato, isda, at kalabaw. Ang ibang hayop naman ay mabigat ang katawan o hindi bagay sa paglangoy ang hugis ng kanilang mga paa, kaya nahihirapan o natatakot silang lumangoy. May ilan pa ngang natutong lumangoy kapag kinailangan! Sa tingin mo, anong parte ng katawan ng pato ang tumutulong dito para makalangoy? 🦆"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "stratus-blanket-sky-g5",
+        "solar-eclipse-new-moon-g7",
+        "earth-ph-day-night-rotation-g4"
+      ],
+      "user": "Bakit nagdidilim ang langit kapag malakas ang ulan?",
+      "assistant": "Magandang tanong iyan! Nagdidilim ang langit kapag malakas ang ulan dahil makakapal at matataas ang ulap na nagdadala ng ulan (tinatawag itong cumulonimbus). Sobrang kapal nila kaya hinaharang nila ang sikat ng araw bago ito makarating sa lupa, kaya nagmumukhang gabi kahit tanghali pa. ⛈️🌧️ Napansin mo na ba na bago bumagsak ang malakas na ulan, parang lumalamig at dumidilim muna ang paligid?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "gabi-taro-roots-anchor-water-g5",
+        "mangrove-salt-filter-roots-g4",
+        "roots-drink-water-g3"
+      ],
+      "user": "Paano umiinom ng tubig ang mga halaman mula sa ugat?",
+      "assistant": "Magaling na tanong! 🌱 Ang mga halaman ay umiinom gamit ang maliliit na ugat na sumisipsip ng tubig mula sa basang lupa. Mayroon silang napakaliit na buhok-buhok sa ugat (root hairs) na nagpaparami sa lugar na masisipsipan ng tubig, at ang tubig ay umaakyat papunta sa tangkay at mga dahon. 💧 Sa palagay mo, paano kaya umaakyat ang tubig pataas hanggang sa pinakatuktok ng matataas na puno?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "smell-travels-through-air-g4",
+        "gases-mix-evenly-g6",
+        "diffusion-perfume-smell-room-g7"
+      ],
+      "user": "Bakit kumakalat ang amoy sa buong silid?",
+      "assistant": "Magandang tanong! 😊 Kumakalat ang amoy dahil ito ay binubuo ng napakaliliit na particle ng gas na palagiang gumagalaw at malayang lumilipad sa hangin. Dahan-dahan silang naghahalo at nagkakalat sa buong silid hanggang umabot sa ating ilong — tinatawag itong diffusion. 👃 Ano sa palagay mo, mas mabilis bang kumalat ang amoy sa mainit o sa malamig na hangin?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "hail-layers-like-onion-g6",
+        "precipitation-forms-g5"
+      ],
+      "user": "Ano ang sanhi ng ulan ng yelo o granizo?",
+      "assistant": "Ang granizo o hail ay nabubuo sa loob ng matataas at malalamig na thunderstorm clouds! ⛈️ Tinatangay paitaas ng malalakas na hangin (updraft) ang mga patak ng tubig papunta sa napakalamig na bahagi ng ulap kung saan namumuo ang mga ito bilang yelo. Paulit-ulit silang tumataas-bumababa, nadadagdagan ng patong-patong na yelo na parang sibuyas, hanggang sa sobrang bigat na at bumagsak bilang granizo. 🧊 Curious ka ba kung bakit ibang-iba ang hail sa karaniwang niyebe?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 4,
+      "factIds": [
+        "tropism-helps-survival-g6",
+        "living-basic-needs-g3",
+        "plants-need-sunlight-water-air-g3"
+      ],
+      "user": "Bakit kailangan ng halaman ang araw para mabuhay?",
+      "assistant": "Magandang tanong iyan! 🌱 Kailangan ng halaman ang sikat ng araw dahil ginagamit nila ito para gumawa ng sariling pagkain sa proseso na tinatawag na photosynthesis. Pinagsasama ng dahon ang liwanag ng araw, tubig, at hangin (carbon dioxide) para gawing enerhiya at pagkain na ginagamit nila para tumubo at mabuhay. Kaya pala madalas nakaharap sa araw ang mga dahon, di ba? ☀️ Ano sa palagay mo ang mangyayari sa isang halaman na palaging nasa madilim na lugar?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "visible-light-spectrum-narrow-g9",
+        "human-sees-more-colors-detail-g6",
+        "mantis-shrimp-many-color-receptors-g6"
+      ],
+      "user": "Bakit may iba’t ibang kulay ang mga mata ng tao?",
+      "assistant": "Magandang tanong iyan! 👀 Iba-iba ang kulay ng mata natin dahil sa isang pigment na tinatawag na melanin sa bahagi ng mata na ang tawag ay iris. Kapag maraming melanin, nagiging kayumanggi (brown) ang mata; kapag kaunti lang, nagiging asul (blue) o berde (green) — at ito ay namamana natin sa ating mga magulang sa pamamagitan ng genes. 😊 Anong kulay kaya ng mata ng mga kapamilya mo?"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "voyager-farthest-probe-g7",
+        "soil-water-retention-test-g5",
+        "estuary-nursery-young-fish-shrimp-g6"
+      ],
+      "user": "Bakit lumulutang ang langis sa ibabaw ng sabaw?",
+      "assistant": "Magandang tanong iyan! 😊 Lumulutang ang langis sa ibabaw ng sabaw dahil mas magaan ito kaysa sa tubig — ibig sabihin, mas mababa ang density nito. Sa parehong dami, mas magaan ang langis kaysa tubig, kaya umaangat ito at naiipon sa ibabaw. At dahil hindi naghahalo ang langis at tubig, nananatili silang magkahiwalay. Napansin mo rin ba kung paano nagbubuo-buo ang langis sa maliliit na bilog sa ibabaw ng sabaw? 🍲"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "smallpox-eradicated-vaccine-g8",
+        "force-direction-matters-g4",
+        "butterfly-wings-up-rest-g5"
+      ],
+      "user": "Ano ang ginagawa ng utak natin?",
+      "assistant": "Magandang tanong iyan! 🧠 Ang utak natin ang parang \"boss\" ng buong katawan — ito ang nag-iisip, nag-aalala, at nagpapadala ng mga mensahe sa lahat ng parte ng katawan. Dahil dito, nakakakita, nakakarinig, nakakagalaw, at nakakaalala tayo, at kinokontrol din nito ang puso at paghinga natin kahit tulog tayo. Anong bahagi kaya ng katawan mo ang gusto mong malaman kung paano kausap ng utak? 😊"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "lymph-valves-one-direction-g9",
+        "cicada-food-for-animals-g6",
+        "octopus-squid-beak-g5"
+      ],
+      "user": "Bakit tumitigas ang putik kapag natuyo sa araw?",
+      "assistant": "Magandang tanong iyan! 🌞 Ang putik ay pinaghalong lupa at tubig — ang tubig ang nagpapalambot at nagpapadulas dito. Kapag iniinit ng araw, dahan-dahang sumisingaw ang tubig (tinatawag itong evaporation), kaya ang maliliit na butil ng lupa ay nagdidikit-dikit nang mahigpit at tumitigas. Ano kaya sa palagay mo ang mangyayari kung babuhusan ulit natin ng tubig ang tuyong putik? 💧"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "wet-floor-slipping-friction-g5",
+        "friction-stops-things-on-slopes-g5",
+        "philippine-flying-fox-vs-lemur-g6"
+      ],
+      "user": "Bakit dumadausdos tayo sa basang sahig?",
+      "assistant": "Magandang tanong yan! 😊 Dumadausdos tayo sa basang sahig kasi ang tubig ay binabawasan ang friction o alitan sa pagitan ng ating sapatos at ng sahig. Ang friction kasi ang nagbibigay sa atin ng kapit para hindi tayo madulas — kaya kapag basa, kulang ang kapit at madali tayong madausdos. Kaya nga kailangan tayong mag-ingat! Ano kaya ang puwedeng gawin para hindi tayo madulas sa basang sahig? 🤔"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "dew-formation-g5",
+        "dew-drops-leaf-g5",
+        "morning-mist-over-rice-field-g5"
+      ],
+      "user": "Paano nabubuo ang hamog sa umaga?",
+      "assistant": "Magandang tanong iyan! 🌿 Ang hamog ay nabubuo kapag lumalamig ang hangin tuwing gabi, kaya bumababa rin ang temperatura ng mga dahon at damo. Kapag dumikit ang water vapor (singaw ng tubig sa hangin) sa malamig na ibabaw na ito, nagba-condense ito—ibig sabihin, nagiging maliliit na patak ng tubig na siyang nakikita mong kumikinang sa umaga. 💧 Napansin mo ba na mas marami ang hamog tuwing malamig at malinaw ang gabi?"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "guava-leaf-decoction-stomach-g4",
+        "guava-fruit-has-fiber-g4",
+        "guava-flesh-seeds-inside-g3"
+      ],
+      "user": "Totoo bang kung lulunukin mo ang buto ng bayabas ay tutubo ito sa tiyan mo?",
+      "assistant": "Hindi totoo iyan! 😄 Ang buto ng bayabas ay hindi tutubo sa loob ng tiyan mo, dahil madilim doon, walang araw, at puno ng acid na pantunaw ng pagkain—hindi kayang mabuhay ng buto roon. Karaniwan, lumalabas lang ito kasama ng dumi mo nang ligtas. 🌱 Alam mo ba kung ano ang kailangan ng isang buto para tumubo nang maayos?"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "shark-baby-born-with-teeth-g6",
+        "pancreas-glucagon-ph-rice-meal-g9",
+        "rinse-after-eating-g3"
+      ],
+      "user": "Totoo bang nagkakasakit ang bata kapag naliligo agad pagkatapos kumain?",
+      "assistant": "Hindi totoo iyan! 😊 Hindi nagkakasakit ang bata kapag naliligo agad pagkatapos kumain — kuwento-kuwento lang iyan ng matatanda. Ang totoo, ligtas namang maligo, pero mas komportable kung kaunti munang magpahinga para hindi maistorbo ang tiyan habang nagde-digest. Ano pa kayang kuwento ang gusto mong alamin natin kung totoo nga ba? 💧"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "reading-dark-not-blind-g5",
+        "five-senses-protect-eyes-ph-g6"
+      ],
+      "user": "Totoo bang nakakabulag ang pagbasa sa madilim?",
+      "assistant": "Hindi totoo na nakakabulag ang pagbasa sa madilim. 😊 Pero totoo na nakakapagod at nasasakit ang mga mata kapag kulang sa ilaw, kaya't mahalagang may sapat na liwanag at pahinga ka habang nagbabasa. Kapag mahaba ang basahin mo, subukan mong tumingin sa malayo paminsan-minsan para magpahinga ang mga mata. 👀 Alam mo ba kung paano pa natin maaalagaan ang ating paningin?"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "goldfish-generic-g4",
+        "count-seconds-thunder-distance-g5"
+      ],
+      "user": "Totoo bang tatlong segundo lang ang memorya ng goldfish?",
+      "assistant": "Hindi totoo iyan! 🐟 Mas matalino pala ang goldfish kaysa sa akala ng marami—kaya nilang matandaan ang mga bagay nang ilang buwan, at natututo pa silang lumapit kapag may nakikitang tao o naririnig na tunog na senyales ng pagkain. Kaya hindi lang tatlong segundo ang memorya nila. May alam ka pa bang ibang interesting na kaya ng mga hayop? 😊"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "asian-palm-civet-coffee-g6",
+        "kape-alamid-from-droppings-g6",
+        "kape-alamid-name-meaning-g5"
+      ],
+      "user": "Totoo bang pumapandak ang tao kapag umiinom ng kape?",
+      "assistant": "Hindi totoo na pumapandak ang tao kapag umiinom ng kape! ☕ Ang taas mo ay nakadepende sa iyong genes at sa wastong nutrisyon, tulog, at ehersisyo, hindi sa kape. Ang totoo, may caffeine ang kape kaya hindi ito masyadong angkop sa mga bata dahil maaaring makaapekto sa tulog at pakiramdam. Ano kaya ang mga pagkaing nakakatulong para lumakas at tumangkad tayo? 😊"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "giant-clam-protected-by-law-g6",
+        "wild-fruit-not-all-safe-g5",
+        "gabi-cooking-removes-itch-g5"
+      ],
+      "user": "Totoo bang ligtas nang kainin ang pagkaing nahulog kung kukunin sa loob ng 5 segundo?",
+      "assistant": "Hindi totoo ang \"5-second rule\"! 🦠 Pagkahulog pa lang ng pagkain, dumidikit na agad ang mga bacteria mula sa sahig — hindi kailangang maghintay ng 5 segundo. Kaya mas ligtas na huwag nang kainin ang nahulog na pagkain, lalo na sa maruming lugar. Alam mo ba kung paano nagkakalat ng sakit ang mga bacteria? 😊"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "lunar-eclipse-full-moon-g7",
+        "full-moon-over-sea-g4",
+        "lunar-eclipse-only-full-moon-g6"
+      ],
+      "user": "Totoo bang nababaliw ang mga tao kapag full moon?",
+      "assistant": "Hindi totoo na nababaliw ang mga tao kapag full moon. 🌕 Maraming siyentipikong pag-aaral na ang nagsuri rito, at walang nakitang ugnayan ang kabilugan ng buwan sa pag-uugali, tulog, o \"kabaliwan\" ng tao — alamat lang ito na naipasa-pasa sa mga kuwento. Ang buwan ay nakakaapekto sa pagtaas-pagbaba ng tubig sa dagat (tides), pero hindi sa utak natin. Curious ka ba kung paano naman talaga nakakaapekto ang buwan sa mga tides? 🌊"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "left-right-cross-over-g8",
+        "right-side-up-but-flipped-g6",
+        "brain-control-two-sides-g7"
+      ],
+      "user": "Totoo bang mas matalino ang mga taong gumagamit ng kanang kamay kaysa kaliwa?",
+      "assistant": "Hindi totoo iyan! 😊 Walang kinalaman ang kamay na ginagamit mo sa kung gaano ka katalino — pareho lang ang kakayahan ng mga taong kanang-kamay at kaliwang-kamay (left-handed). Ang talino ay nagmumula sa pag-aaral, pagiging mausisa, at pagsasanay ng utak, hindi sa kung aling kamay ang mas ginagamit mo. Aling kamay ba ang mas komportable mong gamitin kapag nagsusulat ka? ✍️"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "lionfish-firefish-g6",
+        "yeast-vs-mushroom-both-fungi-g6",
+        "kamatis-vine-cluster-g4"
+      ],
+      "user": "Totoo bang nakakalason ang kamatis dahil kapamilya ito ng makamandag na halaman?",
+      "assistant": "Hindi totoo na nakakalason ang kamatis! 🍅 Totoo ngang kapamilya ito ng ilang makamandag na halaman sa pamilyang nightshade (Solanaceae), pero ligtas na ligtas kainin ang hinog na bunga nito — masustansya pa nga, puno ng vitamin C! Ang dahon at hilaw na bahagi lang ang may konting natural na sangkap na hindi dapat kainin nang marami. Nakatikim ka na ba ng iba pang prutas na minsang inaakalang gulay? 😋"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "lasik-reshapes-cornea-g7",
+        "fingerprints-form-cannot-be-changed-g7",
+        "stunting-mostly-irreversible-g7"
+      ],
+      "user": "Totoo bang lumalaki ang mata mo nang permanente kapag naduduwal?",
+      "assistant": "Hindi totoo iyan! 😊 Hindi lumalaki nang permanente ang mata mo kapag naduduwal o nahihilo. Maaaring lumaki lang nang kaunti ang pupil (ang itim na bilog sa gitna) bilang reaksyon ng katawan, pero pansamantala lang iyon at babalik din sa normal. Halos pare-pareho na ang laki ng mata mo mula nang lumaki ka. Gusto mo bang malaman kung bakit nagbabago ang laki ng pupil natin sa liwanag at dilim? 👀"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "lasik-reshapes-cornea-g7",
+        "nearsighted-eyeball-too-long-g6",
+        "farsighted-eyeball-too-short-g6"
+      ],
+      "user": "Totoo bang hihina ang mata mo kapag masyadong malapit kang manood ng TV nang permanente?",
+      "assistant": "Hindi totoo na permanenteng hihina ang mata mo dahil lang sa malapit na panonood ng TV! 📺 Ang totoo, baka mapagod o mangati ang mata mo nang pansamantala, pero gagaling din 'yan kapag napahinga ka. Mabuti pa ring lumayo nang kaunti at magpahinga ang mata paminsan-minsan. Ano sa palagay mo ang nararamdaman ng mata kapag matagal kang nakatutok sa screen? 👀"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "spider-venom-fangs-g6",
+        "spider-venom-fangs-g5",
+        "invertebrates-most-animals-g6"
+      ],
+      "user": "Totoo bang lahat ng gagamba ay nakakamatay ang kagat?",
+      "assistant": "Hindi totoo iyan! 🕷️ Karamihan ng gagamba ay may kaunting lason na ginagamit para mahuli ang biktima nilang maliliit na insekto, pero halos lahat ng uri ay hindi naman delikado o nakakamatay sa tao — kakaunti lang ang talagang mapanganib. Kaya ang mga gagamba sa bahay ay kaibigan natin dahil kinakain nila ang mga peste! Gusto mo bang malaman kung paano gumagawa ng sapot ang gagamba? 🕸️"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "feelings-not-bad-g6",
+        "dog-body-language-g4",
+        "cat-whiskers-mood-position-g4"
+      ],
+      "user": "Totoo bang umiinit ang dugo natin kapag galit tayo?",
+      "assistant": "Hindi totoo na literal na umiinit ang dugo natin kapag galit tayo — isang sawikain lang iyon! 😊 Ang nangyayari talaga, kapag galit ka, nagpapadala ang utak ng hudyat na nagpapabilis ng tibok ng puso at pagdaloy ng dugo, kaya nagiging mainit ang pakiramdam at namumula ang mukha. Pero ang init ng dugo mismo ay halos hindi nagbabago. Alam mo ba kung ano pa ang ginagawa ng katawan natin kapag kinakabahan o natatakot? 🫀"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "circuit-switch-opens-breaks-g5",
+        "doorbell-button-press-circuit-g5",
+        "light-switch-bulb-home-g5"
+      ],
+      "user": "Totoo bang nakukuryente ka kapag humawak ka ng switch na basa ang kamay?",
+      "assistant": "Oo, totoo ito kaya dapat tayong mag-ingat! ⚡ Ang tubig ay mahusay na conductor ng kuryente, at kapag basa ang kamay mo, mas madaling dumaloy ang kuryente sa katawan mo kaya mas malaki ang panganib na makuryente. Kaya laging tiyakin na tuyo ang kamay bago humawak ng switch o anumang de-kuryente. Anong palagay mo, bakit kaya mas ligtas tayong humawak ng switch kapag tuyo ang ating kamay? 💡"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "gravity-weaker-on-moon-g5",
+        "moon-gravity-one-sixth-earth-g6",
+        "lunar-eclipse-only-full-moon-g6"
+      ],
+      "user": "Totoo bang mas mabigat ang tao sa timbangan kapag full moon dahil sa gravity ng buwan?",
+      "assistant": "Hindi totoo iyan! 🌝 Oo, may gravity ang buwan, pero napakahina nito sa lugar natin kaya hindi nito kayang baguhin ang ipinapakita ng timbangan mo—hindi mo talaga ito mararamdaman. Humihila nga ang gravity ng buwan sa tubig sa dagat (kaya may tides), pero hindi nito kayang pabigatin o pagaanin ang iyong timbang. May nararamdaman ka bang ibang puwersa kapag full moon, o pakiramdam mo lang iyon? 😊"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "fever-rest-screen-rest-eyes-g5",
+        "sleep-deprivation-tired-g4",
+        "sleep-protects-against-getting-sick-often-g5"
+      ],
+      "user": "Totoo bang nagiging kabute ang utak kapag kulang sa tulog?",
+      "assistant": "Hindi totoo iyan! 😊 Hindi nagiging kabute ang utak natin kahit kulang tayo sa tulog. Ang totoo, kapag kulang sa tulog, napapagod ang utak at nahihirapan tayong mag-isip nang maayos, kaya mahalaga ang sapat na tulog para manatiling malusog at malakas. 💤 Anong oras kaya ang pinakamabuting matulog para magising kang fresh ang isip kinabukasan?"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "colds-spread-person-to-person-g5",
+        "diabetes-insulin-allergy-difference-g8",
+        "drink-water-sick-fever-g6"
+      ],
+      "user": "Totoo bang nakakahawa ang sipon kapag nilalanghap mo ang hangin ng may sakit?",
+      "assistant": "Oo, totoo ito! 🤧 Ang sipon ay galing sa virus, at kapag bumahing o umubo ang may sakit, lumilipad sa hangin ang maliliit na patak na may virus—pag nalanghap mo, pwede kang mahawa. Kaya nakakatulong magtakip ng bibig kapag bumabahing at maghugas ng kamay. Alam mo ba kung bakit mahalaga ang tubig at sabon para mawala ang mga mikrobyo? 💧"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "bacteria-make-yogurt-g5",
+        "handwashing-stops-good-bacteria-skin-g7",
+        "five-kingdoms-bacteria-useful-g6"
+      ],
+      "user": "Totoo bang lahat ng bakterya ay masama para sa katawan?",
+      "assistant": "Hindi totoo na lahat ng bakterya ay masama! 😊 Marami palang \"mabubuting bakterya\" na tumutulong sa atin — gaya ng mga nasa tiyan natin na tumutulong matunaw ang pagkain, o ang ginagamit para gawing yogurt at buro ang ilang pagkain. May mga bakterya rin sa ating balat na nagpoprotekta sa atin. Totoo, may ilang bakterya na nakakasakit, pero marami ang kapaki-pakinabang. 🦠 Gusto mo bang malaman kung paano tumutulong ang bakterya sa pagtunaw ng pagkain natin?"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "straw-mushroom-kabuteng-saging-g6",
+        "fungi-recycle-forest-g7",
+        "fungi-rot-fallen-leaves-logs-g5"
+      ],
+      "user": "Totoo bang nakakain ang lahat ng kabute sa gubat?",
+      "assistant": "Hindi totoo iyan! 🍄 Hindi lahat ng kabute sa gubat ay nakakain — may ibang uri na nakakalason at puwedeng makapagpasakit kapag nakain. Kaya hindi natin basta-basta dapat pinupulot o kinakain ang kabuteng hindi natin kilala. Alam mo ba kung paano binubulok ng ilang kabute ang mga bagsak na puno para mapayaman ang lupa? 🌿"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "magnet-strongest-electromagnet-switch-g6",
+        "val-human-teeth",
+        "why-baby-teeth-fall-out-g3"
+      ],
+      "user": "Totoo bang permanenteng nawawala ang ngipin kapag nilunok mo ito?",
+      "assistant": "Hindi totoo iyan! 😊 Kung malunok mo man ang isang ngipin, hindi ito permanenteng mawawala — dumadaan lang ito sa iyong tiyan at lumalabas kasama ng dumi, ligtas naman. Kapag natuklap ang gatas na ngipin (milk tooth), normal lang iyon dahil may bagong permanenteng ngipin na tumutubo sa ilalim. 🦷 Alam mo ba kung ilang permanenteng ngipin ang nabubuo natin paglaki?"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "mangrove-saltwater-can-you-drink-g6",
+        "reduce-soft-drinks-g5",
+        "calcium-strong-soda-weakens-g6"
+      ],
+      "user": "Totoo bang tumitigil ang paglaki ng tao pagkatapos uminom ng softdrinks?",
+      "assistant": "Hindi totoo na tumitigil ang paglaki ng tao dahil lang sa softdrinks. 🥤 Ang paglaki mo ay nakadepende sa genes mo, sapat na tulog, ehersisyo, at masustansiyang pagkain. Pero totoo na hindi maganda ang sobrang softdrinks dahil sa dami ng asukal nito — mas mabuting uminom ng gatas o tubig na may calcium para tumibay ang iyong mga buto! 💪 Anong masustansiyang inumin ang gusto mong subukan ngayon?"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "hair-nails-white-spots-myth-g4",
+        "rhino-horn-keratin-g5",
+        "hair-nails-same-material-g5"
+      ],
+      "user": "Totoo bang dumadami ang sungay-sungay sa kuko dahil sa kakulangan sa gatas?",
+      "assistant": "Hindi totoo iyan! 😊 Ang mga puting batik o \"sungay-sungay\" sa kuko ay hindi galing sa kakulangan sa gatas o kalsyum. Kadalasan, lumalabas ang mga ito kapag may maliit na pagkakabangga o pagkakapitik ang kuko habang tumutubo pa — kaya't likas lang itong nawawala paglaki ng kuko. Napansin mo na ba kung kailan lumitaw ang puting batik sa kuko mo? 🤔"
+    },
+    {
+      "_cat": "abstain-counterweight",
+      "mode": "abstain",
+      "grade": 5,
+      "factIds": [
+        "summer-direct-sunlight-g7",
+        "summer-solstice-longest-day-g6",
+        "summer-hot-from-direct-long-sun-g7"
+      ],
+      "user": "Ilang araw na natitira bago matapos ang summer break ko?",
+      "assistant": "Naku, hindi ko po kasi alam kung ilang araw na natitira sa summer break mo — iba-iba kasi ang kalendaryo ng bawat paaralan, at wala akong access diyan. 😊 Mas tama kung titingnan mo ang school calendar o itatanong sa magulang o guro mo. Pero habang naghihintay, gusto mo bang malaman natin kung bakit mas mainit at mas mahaba ang araw kapag tag-init? ☀️"
+    },
+    {
+      "_cat": "abstain-counterweight",
+      "mode": "abstain",
+      "grade": 4,
+      "factIds": [
+        "ph-prayer-ama-namin"
+      ],
+      "user": "Anong oras na ngayon sa lugar namin?",
+      "assistant": "Naku, hindi ko po kayang malaman kung anong oras na ngayon sa lugar ninyo. 🕒 Wala kasi akong relo o paraan para makita ang totoong oras sa labas. Pero pwede mong tingnan ang orasan sa dingding o sa telepono! Gusto mo bang malaman kung paano gumagana ang araw at gabi sa pag-ikot ng Mundo? ☀️🌙"
+    },
+    {
+      "_cat": "abstain-counterweight",
+      "mode": "abstain",
+      "grade": 6,
+      "factIds": [
+        "ph-prayer-ama-namin",
+        "kitchen-scale-everyday-mass-g4",
+        "palay-bigas-kanin-difference-g4"
+      ],
+      "user": "Magkano ang bigas sa palengke namin ngayon?",
+      "assistant": "Naku, hindi ko po kayang malaman ang presyo ng bigas sa inyong palengke ngayon. 😊 Nagbabago kasi ang presyo araw-araw at iba-iba pa sa bawat lugar, kaya ang pinakamabuting magtanong ay ang tindera mismo o ang nasa bahay na bumibili. Pero kung gusto mo, pwede tayong mag-usap kung paano lumalaki ang palay na pinagkukunan ng bigas — interesado ka ba? 🌾"
+    },
+    {
+      "_cat": "abstain-counterweight",
+      "mode": "abstain",
+      "grade": 6,
+      "factIds": [
+        "unbalanced-forces-tug-of-war-g6",
+        "ants-work-as-team-g3",
+        "ant-superorganism-cooperation-g6"
+      ],
+      "user": "Nanalo ba ang paborito kong team kahapon?",
+      "assistant": "Naku, hindi ko po malalaman kung nanalo ang paborito mong team kahapon — wala akong access sa balita o sa mga resulta ng laro, at hindi ko rin alam kung anong team iyon. 😊 Mas magandang tingnan sa sports news o tanungin ang kasama mong nanood! Pero kung gusto mo, may science tanong ako para sa'yo: alam mo ba kung bakit gumagalaw ang lubid patungo sa mas malakas na grupo sa tug-of-war? 🪢"
+    },
+    {
+      "_cat": "abstain-counterweight",
+      "mode": "abstain",
+      "grade": 6,
+      "factIds": [
+        "icon-method-observe-g3",
+        "icon-method-question-g3",
+        "gloves-safety-g3"
+      ],
+      "user": "Ano ang grado ko sa Science quiz kanina?",
+      "assistant": "Naku, pasensya na, hindi ko po malalaman ang grado mo sa Science quiz kanina—wala akong access sa mga resulta o records ng iyong klase. 😊 Ang pinakamabuting gawin ay tanungin ang iyong guro o tingnan ang naibalik na papel mo para makita mo ang iskor. Pero kung gusto mo, puwede kitang tulungang balikan ang mga paksa sa Science para mas handa ka sa susunod—ano ang pinakanahirapan mong tanong? 🔬"
+    },
+    {
+      "_cat": "abstain-counterweight",
+      "mode": "abstain",
+      "grade": 6,
+      "factIds": [
+        "talahib-scientific-name-wild-sugarcane-g5",
+        "joey-name-baby-kangaroo-g4",
+        "locust-swarm-grasshopper-g4"
+      ],
+      "user": "Anong pangalan ng magiging anak ko balang araw?",
+      "assistant": "Hindi ko po talaga malalaman iyan, kasi nasa hinaharap pa iyan at ikaw mismo (at ang pamilya mo balang araw) ang pipili ng pangalan na iyon. 😊 Walang agham o libro na makakahula ng pangalan ng magiging anak ng isang tao. Pero kung gusto mo, puwede kong ikuwento kung paano tinatawag ang mga anak ng iba't ibang hayop—alam mo ba na ang anak ng kangaroo ay tinatawag na \"joey\"? 🦘"
+    },
+    {
+      "_cat": "abstain-counterweight",
+      "mode": "abstain",
+      "grade": 5,
+      "factIds": [
+        "andromeda-will-collide-g10",
+        "older-people-balance-g6",
+        "traits-skip-generations-g7"
+      ],
+      "user": "Ilang taon na ang lola ko ngayon?",
+      "assistant": "Naku, hindi ko po kasi alam kung ilang taon na ang lola mo ngayon — personal na detalye iyan tungkol sa pamilya mo na wala sa kaalaman ko. 😊 Pinakamabuting tanungin mo mismo si Lola o ang mga magulang mo para sigurado! Pero kung gusto mo, may matutuklasan tayong tungkol sa kung bakit nagbabago ang katawan ng tao habang tumatanda — interesado ka ba? 🧓✨"
+    },
+    {
+      "_cat": "abstain-counterweight",
+      "mode": "abstain",
+      "grade": 6,
+      "factIds": [
+        "house-gecko-camouflage-color-g5",
+        "carbon-diamond-shape-crystal-g7",
+        "sanctuary-spillover-g7"
+      ],
+      "user": "Saan nagtatrabaho ang tatay ng katabi kong si Ana?",
+      "assistant": "Naku, hindi ko po talaga alam kung saan nagtatrabaho ang tatay ni Ana — pribadong bagay po iyon tungkol sa pamilya niya, at wala akong paraan para malaman iyon. 😊 Kung gusto mo talagang malaman, pwede mong tanungin nang magalang si Ana mismo. Pero kung may gusto kang itanong tungkol sa science — gaya ng kung bakit nagtatago sa pamamagitan ng kulay ang ilang hayop tulad ng butiki — handa akong tumulong! 🦎"
+    },
+    {
+      "_cat": "abstain-counterweight",
+      "mode": "abstain",
+      "grade": 6,
+      "factIds": [
+        "rafflesia-named-after-raffles-g7",
+        "indicator-color-rinse-clean-fair-test-g7",
+        "distilled-water-lab-experiments-fair-g7"
+      ],
+      "user": "Mananalo ba ako sa raffle sa school fair bukas?",
+      "assistant": "Hindi ko po talaga masasabi kung mananalo ka sa raffle bukas, kasi ang raffle ay nakabatay sa swerte at random na pagpili—wala pang resulta na puwedeng malaman nang maaga. 🍀 Sana po manalo ka, pero ang masasabi ko, mas masaya 'pag enjoy mo lang ang school fair kahit ano'ng mangyari! Gusto mo bang malaman natin kung paano gumagana ang \"probability\" o tsansa sa mga laro? 😊"
+    },
+    {
+      "_cat": "abstain-counterweight",
+      "mode": "abstain",
+      "grade": 5,
+      "factIds": [
+        "trusted-adult-g6",
+        "dark-colors-absorb-heat-g5",
+        "dark-vs-light-clothing-heat-g5"
+      ],
+      "user": "Anong kulay ng damit na susuotin ng titser ko bukas?",
+      "assistant": "Naku, hindi ko talaga malalaman kung anong kulay ng damit na isusuot ng titser mo bukas — sikreto pa nila iyon, at nasa isip lang nila! 😅 Ang pinakamabuting paraan para malaman ay magtanong nang mahinhin sa titser mo mismo. Pero kung gusto mo, may alam akong nakakatuwa: bakit kaya mas mainit kapag itim ang damit kaysa puti sa ilalim ng araw? ☀️"
+    },
+    {
+      "_cat": "abstain-counterweight",
+      "mode": "abstain",
+      "grade": 6,
+      "factIds": [
+        "ph-prayer-ama-namin",
+        "kids-can-plant-trees-g5",
+        "handwashing-prevents-school-clinic-context-g6"
+      ],
+      "user": "Ilan ang estudyante sa buong paaralan namin ngayong taon?",
+      "assistant": "Naku, hindi ko po talaga alam kung ilan ang estudyante sa inyong paaralan ngayong taon. 😊 Iba kasi ang bilang sa bawat eskwelahan, at wala akong access sa records ninyo. Ang pinakamabuting tanungin ay ang inyong principal o ang opisina ng paaralan — sila ang may eksaktong listahan! May iba ka kayang gustong itanong tungkol sa agham? 🌱"
+    },
+    {
+      "_cat": "abstain-counterweight",
+      "mode": "abstain",
+      "grade": 6,
+      "factIds": [
+        "dark-clouds-mean-rain-g3",
+        "philippine-fault-recurrence-not-on-schedule-g9",
+        "tsunami-danger-can-last-hours-g6"
+      ],
+      "user": "Kailan eksaktong uulan dito sa amin sa susunod na linggo?",
+      "assistant": "Hindi ko po talaga masasabi nang eksakto kung kailan uulan sa inyo sa susunod na linggo. 🌧️ Hindi kasi nakikita ng tao ang hinaharap, at ang panahon ay nagbabago-bago — kaya kahit ang mga weather forecaster ay tantiya lang at nag-a-update araw-araw. Para sa pinakabagong forecast, makakatulong ang PAGASA o ang weather app ninyo. Gusto mo bang malaman kung paano nahuhulaan ng mga siyentipiko na malapit nang umulan? ☁️"
+    },
+    {
+      "_cat": "abstain-counterweight",
+      "mode": "abstain",
+      "grade": 5,
+      "factIds": [
+        "ph-prayer-ama-namin"
+      ],
+      "user": "Gaano karaming langgam ang nasa bakuran namin ngayon?",
+      "assistant": "Pasensya na, hindi ko talaga malalaman kung ilang langgam ang nasa bakuran ninyo ngayon. 🐜 Wala akong paraan para makita o mabilang ang nangyayari sa inyong bahay sa totoong oras, at ang mga langgam ay patuloy na gumagalaw at nagbabago ang dami. Kung gusto mo, puwede mong subukang magmasid mismo sa labas—o gusto mo bang malaman kung paano nakakahanap ng pagkain ang mga langgam? 😊"
+    },
+    {
+      "_cat": "abstain-counterweight",
+      "mode": "abstain",
+      "grade": 5,
+      "factIds": [
+        "go-foods-where-stored-g5",
+        "genetics-dominant-recessive-g9",
+        "horizontal-drop-land-same-time-g10"
+      ],
+      "user": "Anong numero ang lalabas sa dice kapag inihagis ko mamaya?",
+      "assistant": "Pasensya na, hindi ko talaga mahuhulaan kung anong numero ang lalabas sa dice mo mamaya! 🎲 Random kasi ang pagbagsak nito, kaya kahit sino o kahit anong computer ay hindi makakaalam nang sigurado bago pa ihagis. Pero pantay-pantay ang tsansa ng 1 hanggang 6, kaya ⅙ o mga 16% ang chance ng bawat numero. Gusto mo bang malaman kung bakit \"random\" ang tawag dito? 😊"
+    },
+    {
+      "_cat": "abstain-counterweight",
+      "mode": "abstain",
+      "grade": 5,
+      "factIds": [
+        "gabi-taro-g4",
+        "gabi-taro-corm-g4",
+        "gabi-leaves-cooked-laing-g4"
+      ],
+      "user": "May bisita ba kaming darating mamayang gabi?",
+      "assistant": "Naku, hindi ko talaga malalaman kung may bisita kayong darating mamayang gabi. 🏠 Wala kasi akong paraan para makita ang nangyayari sa bahay ninyo—mas mabuting itanong mo iyan sa nanay o tatay mo. 😊 Pero kung gusto mo, may itatanong ka bang tungkol sa science? Tutulungan kita!"
+    }
+  ]
+}

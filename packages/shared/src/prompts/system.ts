@@ -183,6 +183,26 @@ When the question is answered by the facts above, base your explanation on them 
 }
 
 /**
+ * Compose the USER-turn content for a grounded turn: the VERIFIED FACTS block
+ * (if any) followed by the student's message.
+ *
+ * WHY grounding lives in the user turn and NOT the system prompt: QVAC's on-device
+ * KV cache is keyed by a hash of the SYSTEM prompt (generateConfigHash(systemPrompt)
+ * in @qvac/sdk's llamacpp-completion plugin). It primes the cache on the system
+ * prompt and reuses that prefix across turns. If the per-turn grounding block sits
+ * in the system prompt, the hash changes every turn → the cache never matches → the
+ * full ~1500-token prompt re-prefills every turn (the ~35s TTFT we measured). Keeping
+ * the system prompt STATIC (persona/grade/language/image-tag only) and moving the
+ * changing grounding into the user turn lets the system-prompt KV cache hit, so only
+ * the new turn's tokens prefill. Train and serve MUST both use this so the adapter
+ * sees grounding in the user turn at training time too. Empty grounding => just the
+ * message.
+ */
+export function composeGroundedUserTurn(groundingBlock: string, userMessage: string): string {
+  return groundingBlock ? `${groundingBlock}\n\n${userMessage}` : userMessage;
+}
+
+/**
  * Generate a visual prompt wrapper.
  * This is used when the tutor wants to generate an image to explain a concept.
  */

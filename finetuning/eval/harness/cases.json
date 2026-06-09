@@ -594,6 +594,23 @@
    "expectRetrieves": "any",
    "mustContainEmoji": true,
    "pending": true
+  },
+  {
+   "id": "homonym-buto-bone",
+   "_cap": "homonym",
+   "_codified_from": "on-device 2026-06-08: 'pinakamalaking buto sa katawan' answered 'balat (skin) = pinakamalaking organ' (wrong — answered organ, not bone) with a seismic-waves image. 'buto' homonym (bone<->seed). Fixed via femur-largest-bone-g5 fact + top-fact image picker.",
+   "lang": "tagalog",
+   "grade": 5,
+   "mode": "grounded",
+   "question": "Ano ang pinakamalaking buto sa katawan natin?",
+   "expectRetrieves": "femur-largest-bone-g5",
+   "mustContain": [
+    "(femur|hita)"
+   ],
+   "mustNotContain": [
+    "langka",
+    "balat.{0,25}pinakamalaki"
+   ]
   }
  ]
 }

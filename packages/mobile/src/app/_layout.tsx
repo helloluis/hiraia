@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { LanguagePicker } from '../components/LanguagePicker';
 import { LoaderOverlay } from '../components/LoaderOverlay';
+import { OnboardingCarousel } from '../components/onboarding/OnboardingCarousel';
 import { useChatStore } from '../store/chatStore';
 import { useEngineStore } from '../store/engineStore';
 import { colors, fontAssets } from '../theme';
@@ -17,6 +17,8 @@ export default function RootLayout() {
   const bootstrapped = useEngineStore((s) => s.bootstrapped);
   const language = useEngineStore((s) => s.language);
   const isReady = useEngineStore((s) => s.isReady);
+  const onboardingActive = useEngineStore((s) => s.onboardingActive);
+  const setOnboardingActive = useEngineStore((s) => s.setOnboardingActive);
   const hydrate = useChatStore((s) => s.hydrate);
   const [fontsLoaded] = useFonts(fontAssets);
 
@@ -24,19 +26,21 @@ export default function RootLayout() {
 
   useEffect(() => {
     // Resolve the saved language and (if set) load the engine for it. When none is
-    // saved, `language` stays null and the first-launch picker is shown below.
+    // saved, `language` stays null and the onboarding carousel is shown below.
     void bootstrap();
     // Load persisted chat history from SQLite (replaces the old zustand-persist
     // auto-hydration). Sets hasHydrated, which gates the cold-start factoid.
     void hydrate();
   }, [bootstrap, hydrate]);
 
-  // Show loader overlay when a language has been selected but the engine is warming up
+  // Show the warm-up loader (sleeping → waking cat) when a language is chosen but the
+  // engine isn't ready — EXCEPT during onboarding, whose DownloadSlide shows its own
+  // progress. After onboarding finishes, if the model is still warming, the loader takes over.
   useEffect(() => {
-    if (language !== null && !isReady) {
+    if (language !== null && !isReady && !onboardingActive) {
       setShowLoader(true);
     }
-  }, [language, isReady]);
+  }, [language, isReady, onboardingActive]);
 
   if (!fontsLoaded || !bootstrapped) {
     return (
@@ -54,11 +58,20 @@ export default function RootLayout() {
       >
         <Stack.Screen name="(tabs)" />
       </Stack>
-      {/* First launch: no language chosen yet → takeover picker (loads the engine
-          with the right adapter the first time, avoiding an immediate reload). */}
-      {language === null && <LanguagePicker onPick={changeLanguage} />}
 
-      {/* Loader overlay overlaying the chat layout */}
+      {/* First launch (no language yet) OR Settings → "show tutorial": the onboarding
+          carousel. Slide-1 pick calls changeLanguage() — which loads the engine / starts
+          the model download — so the wait overlaps the rest of the tutorial. */}
+      {onboardingActive && (
+        <OnboardingCarousel
+          initialLanguage={language}
+          onPickLanguage={changeLanguage}
+          onFinish={() => setOnboardingActive(false)}
+        />
+      )}
+
+      {/* Model warm-up takeover (sleeping → waking cat) for returning users, or after
+          onboarding finishes while the engine is still warming up. */}
       {showLoader && (
         <LoaderOverlay
           onDismiss={() => {

@@ -11,7 +11,11 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { SCIENCE_FACTS } from '../../../packages/shared/src/rag/facts.generated.ts';
-import { generateSystemPrompt, formatGroundingBlock } from '../../../packages/shared/src/prompts/system.ts';
+import {
+  generateSystemPrompt,
+  formatGroundingBlock,
+  composeGroundedUserTurn,
+} from '../../../packages/shared/src/prompts/system.ts';
 import type { RagResult } from '../../../packages/shared/src/types/index.ts';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -66,18 +70,27 @@ function buildRow(ex: SeedExample, lang: Lang) {
       ],
     };
   }
-  // tag-aware system (imageTags=true) so the adapter keeps [image: ...] behavior
-  let system = generateSystemPrompt(lang as any, ex.grade as any, true);
+  // STATIC system (tag-aware, imageTags=true) — NO grounding appended. The grounding
+  // moves into the user turn (composeGroundedUserTurn) so the on-device system-prompt
+  // KV cache stays warm; train this way so the adapter sees grounding in the user turn.
+  const system = generateSystemPrompt(lang as any, ex.grade as any, true);
   const block = formatGroundingBlock(groundingFor(ex.factIds, lang));
-  if (block) system += `\n\n${block}`;
   // Multi-turn examples carry a `turns` array; single-turn use user/assistant.
-  const turns =
+  const rawTurns =
     Array.isArray((ex as any).turns) && (ex as any).turns.length
       ? (ex as any).turns
       : [
           { role: 'user', content: ex.user },
           { role: 'assistant', content: ex.assistant },
         ];
+  // Prepend the grounding to the FIRST user turn — it's presented before any answer and
+  // (since multi-turn examples keep every turn on the same fact) stays valid throughout.
+  // At runtime the current turn's grounding rides its own user turn; the learned behavior
+  // ("use the VERIFIED FACTS shown in the user turn") is the same regardless of position.
+  const turns = rawTurns.map((t: { role: string; content: string }, i: number) => {
+    const firstUser = rawTurns.findIndex((x: { role: string }) => x.role === 'user');
+    return i === firstUser ? { ...t, content: composeGroundedUserTurn(block, t.content) } : t;
+  });
   return { messages: [{ role: 'system', content: system }, ...turns] };
 }
 
@@ -86,7 +99,12 @@ function buildRow(ex: SeedExample, lang: Lang) {
 // + summarize). `accuracy.tagalog.json` is the Tier-3 add: over-abstention COUNTERS
 // (messy phrasing + answering facts → confident answer) + affirm-settled / debunk-myth
 // / safety. Pass file args to override; output is train-grounded.jsonl (or $OUT).
-const DEFAULT_INPUTS = ['examples.tagalog.json', 'accuracy.tagalog.json'].map((f) => join(HERE, f));
+// `rebalance.tagalog.json` (2026-06-09) is the Track-A add from the capability-baseline F4
+// diagnosis: Bucket-3 answer-from-knowledge (mismatched grounding → ignore it, answer anyway),
+// myth-debunk at volume, + abstain counterweight. Disjoint from the held-out benchmark probes.
+const DEFAULT_INPUTS = ['examples.tagalog.json', 'accuracy.tagalog.json', 'rebalance.tagalog.json'].map((f) =>
+  join(HERE, f)
+);
 const inputs = process.argv.slice(2).length ? process.argv.slice(2) : DEFAULT_INPUTS;
 const outFile = process.env.OUT ?? join(HERE, 'train-grounded.jsonl');
 

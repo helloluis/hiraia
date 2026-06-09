@@ -26,7 +26,11 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { RagStore, SemanticIndex, normalizeQuery, buildContextualQuery } from '../../../packages/shared/src/rag/index.ts';
-import { generateSystemPrompt, formatGroundingBlock } from '../../../packages/shared/src/prompts/system.ts';
+import {
+  generateSystemPrompt,
+  formatGroundingBlock,
+  composeGroundedUserTurn,
+} from '../../../packages/shared/src/prompts/system.ts';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const SESS_DIR = join(HERE, '.chat-sessions');
@@ -152,11 +156,16 @@ async function sayCmd(kid: string) {
   }
   for (const h of hits as any[]) if (!s.shown.includes(h.fact.id)) s.shown.push(h.fact.id);
 
-  let system = generateSystemPrompt(s.lang as any, s.grade as any, true);
+  // STATIC system (no grounding); grounding rides the current user turn — matches chatStore.
+  const system = generateSystemPrompt(s.lang as any, s.grade as any, true);
   const block = formatGroundingBlock(hits.map((h: any) => ({ content: h.text, source: h.fact.source, score: h.score, metadata: { topic: h.fact.topic, id: h.fact.id } })));
-  if (block) system += `\n\n${block}`;
 
   const ctx = await buildContext(s, system);
+  if (block) {
+    for (let i = ctx.length - 1; i >= 0; i--) {
+      if (ctx[i].role === 'user') { ctx[i].content = composeGroundedUserTurn(block, ctx[i].content); break; }
+    }
+  }
   const raw = await complete(ctx, s.temp);
   const reply = raw.replace(/\s*\[image:[^\]]*\]/gi, '').trim();
   s.messages.push({ role: 'assistant', content: raw });

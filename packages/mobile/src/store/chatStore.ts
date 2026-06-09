@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { generateSystemPrompt, formatGroundingBlock } from '@hiraia/shared';
+import { generateSystemPrompt, formatGroundingBlock, composeGroundedUserTurn } from '@hiraia/shared';
 import type { Message, RagResult } from '@hiraia/shared';
 
 import { pickFactoidText } from '../data/factoids';
@@ -153,25 +153,43 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       } catch (ragError) {
         console.warn('RAG search failed; answering ungrounded:', ragError);
       }
-      // Retrieval-driven illustration: the first grounded fact whose concept has a
-      // bundled image. Shown with the answer regardless of any model [image:] tag.
-      let imageSlug: string | undefined;
-      for (const g of grounding) {
-        const fid = (g.metadata as { id?: string } | undefined)?.id;
-        const slug = fid ? FACT_IMAGE[fid] : undefined;
-        if (slug) { imageSlug = slug; break; }
-      }
+      // Retrieval-driven illustration: ONLY the TOP grounded fact's image — the fact the
+      // answer is actually built on. Previously we scanned the whole top-3 for ANY fact
+      // with an image, which let an unrelated lower-ranked fact's picture attach to a
+      // different answer (e.g. a seismic-waves diagram on a "pinakamalaking buto" reply,
+      // a biomolecules chart on a DNA-vs-RNA reply). Better to show no picture than a
+      // mismatched one. Suppressed below when the model abstained.
+      const topFid = (grounding[0]?.metadata as { id?: string } | undefined)?.id;
+      const imageSlug: string | undefined = topFid ? FACT_IMAGE[topFid] : undefined;
       // Active language + grade 5 + imageTags=true — parity with how the grounded
       // adapter was trained. RAG retrieval is scoped to the same language.
-      let systemPrompt = generateSystemPrompt(lang, 5, true);
+      // The system prompt is STATIC (no grounding) so QVAC's system-prompt KV cache
+      // (keyed by a hash of the system message) stays warm across turns — the grounding
+      // moves into the current user turn instead (see composeGroundedUserTurn). This is
+      // the TTFT fix: only the new turn re-prefills, not the whole ~1500-token prompt.
+      const systemPrompt = generateSystemPrompt(lang, 5, true);
       const groundingBlock = formatGroundingBlock(grounding);
-      if (groundingBlock) systemPrompt += `\n\n${groundingBlock}`;
 
       const conversationMessages = await buildContext(get().messages, systemPrompt);
+      // Inject the grounding into the CURRENT (last) user turn, matching training.
+      if (groundingBlock) {
+        for (let i = conversationMessages.length - 1; i >= 0; i--) {
+          const m = conversationMessages[i];
+          if (m?.role === 'user') {
+            conversationMessages[i] = {
+              ...m,
+              content: composeGroundedUserTurn(groundingBlock, m.content),
+            };
+            break;
+          }
+        }
+      }
 
       let fullResponse = '';
       await withModelLock(async () => {
-        for await (const token of engine.chat(conversationMessages)) {
+        // Pass the conversation id as the KV-cache key so QVAC caches the static system
+        // prompt (+ prior turns) and only the new turn re-prefills — the TTFT fix.
+        for await (const token of engine.chat(conversationMessages, convId)) {
           fullResponse += token;
           set({ currentStreamingContent: fullResponse });
         }

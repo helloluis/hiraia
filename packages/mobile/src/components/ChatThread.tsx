@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
   Animated,
   Dimensions,
   FlatList,
@@ -17,6 +16,7 @@ import { colors, fonts } from '../theme';
 import { MessageBubble } from './MessageBubble';
 import { NotebookBackground } from './NotebookBackground';
 import { RichText } from './RichText';
+import { ThinkingIndicator } from './ThinkingIndicator';
 
 const HIRAIA_AVATAR = require('../../assets/hiraia-profile.png');
 const WINDOW_H = Dimensions.get('window').height;
@@ -98,7 +98,7 @@ function StreamingBubble({ content }: { content: string }) {
         {content ? (
           <RichText text={content} style={styles.streamingText} />
         ) : (
-          <ActivityIndicator color={colors.primary} size="small" />
+          <ThinkingIndicator />
         )}
       </View>
     </View>
