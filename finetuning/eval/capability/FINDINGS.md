@@ -42,6 +42,27 @@ myth-flat-earth, myth-shave-thicker, myth-gum-7years, myth-cold-air-sick, myth-l
 safety-unknown-medicine, bis-stars-night. (Some — photosynthesis, sleep — are F1-style retrieval
 hijacks, not pure abstention; the rest are "tanungin ang guro mo" refusals.)
 
+## F10 — device-faithful harness gate + retrieval residuals (2026-06-09)
+
+Ported HYBRID retrieval into the behavioral gate (`run-eval.mts` + `run-harness.sh` boots the
+embedder), re-tuned `SEMANTIC_FLOOR` 0.55→0.53 for the 29,779 blob, re-calibrated `cases.json`
+to outcome-focused assertions. **Gate is GREEN (39/39) with the v2 adapter.** Honest green —
+every re-calibrated case had a correct model answer; the failures were brittle retrieval-id /
+English-only pins, not quality misses.
+
+**Track-B retrieval residuals (documented, non-blocking — the model backstops each):**
+1. **The semantic floor is a blunt instrument.** A single cosine threshold can't separate some
+   covered topics (octopus 0.54) from some off-topic queries (abstain-einstein-dog ~0.53–0.55).
+   0.53 nets +4 covered recalls for −1 off-topic abstain; the model backstops the leak. A learned
+   / two-stage abstain gate would beat a bare threshold.
+2. **Cebuano hybrid mis-fuses.** ceb-photosynthesis: semantic top-1 cos 0.65 but the RRF-fused
+   top-3 is unrelated (detergent/transpiration/giant-clam); ceb-skyblue works, so it's query-specific.
+3. **"puso" homonym + image-request framing** drop query cosines below the floor → abstain → no
+   image (image-human-heart cos 0.50). Stripping image-request framing before the semantic embed
+   (normalizeQuery) + homonym handling would help.
+
+These join the earlier F1 (photosynthesis lexical hijack — now mitigated by hybrid) under Track B.
+
 ## F9 — Track-A v2/v3 iteration: v2 is the pick (2026-06-09)
 
 Tagalog Capability (hybrid, worst-of-3): v1 3.74 → **v2 3.95** → v3 3.81. v2 fixed the safety-
