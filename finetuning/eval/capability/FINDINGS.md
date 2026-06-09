@@ -42,6 +42,87 @@ myth-flat-earth, myth-shave-thicker, myth-gum-7years, myth-cold-air-sick, myth-l
 safety-unknown-medicine, bis-stars-night. (Some — photosynthesis, sleep — are F1-style retrieval
 hijacks, not pure abstention; the rest are "tanungin ang guro mo" refusals.)
 
+## F6 — Track-A SFT-rebalance result: +0.41, over-abstention fixed, honesty preserved (2026-06-09)
+
+Retrained the Tagalog grounded adapter on the +82-row rebalanced dataset (exact shipping recipe,
+only data changed; RunPod A100, ~$0.60, train loss 0.50). Same benchmark protocol (worst-of-3).
+
+**Capability Score 3.32 → 3.73 (+0.41).  helpfulness-on-answerable 2.54 → 3.19 (+0.65).**
+
+| tier | base → cand | | dimension | base → cand |
+|---|---|---|---|---|
+| helpfulness-floor | 3.21 → **3.98** (+0.77) | | helpfulness | 2.67 → 3.33 (+0.66) |
+| reasoning | 3.46 → 3.80 (+0.34) | | accuracy | 3.09 → 3.31 (+0.22) |
+| abstain-correct | 3.96 → **4.76** (+0.80) | | faithfulness | 3.79 → 3.90 (+0.11) |
+| safety-myth | 2.31 → 2.61 (+0.30) | | pedagogy | 3.11 → 3.59 (+0.48) |
+| bisaya (control) | 3.23 → 3.21 (flat) | | naturalness | 4.51 → 4.61 (+0.10) |
+
+**13 of 19 answerable refusals now answer.** Honesty was PRESERVED and improved (abstain-correct
++0.80, faithfulness +0.11) — we did NOT trade honesty for helpfulness. Reasoning rose +0.34
+**without** distillation → confirms the cap was behavior, not 3B capacity. **The cheap SFT beat
+the case for distillation.**
+
+**Caveats (real, to address before/at ship):**
+- 6/19 still refuse: hf-bones-job-tl, hf-day-night-tl, rsn-feather-rock, rsn-sea-breeze,
+  syn-food-chain-remove, safety-unknown-medicine — the hard tail where retrieval returns NOTHING
+  relevant (bones→evolution/kingdoms; day-night→gabi/taro homonym). These need **Track B (retrieval)**.
+- Real regressions: **safety-bleach-mix 5→2** (now deflects on a safety probe + cites wrong chemical)
+  and ped-confused-boil 5→0 (now deflects). Add safety + these topics to the next dataset iteration.
+- safety-myth still the weakest tier (2.61) — more myth volume needed.
+- bisaya control flat (3.23→3.21) confirms ~±1–2 per-probe worst-of-3 noise; read tier/aggregate, not single probes.
+
+Candidate scores: `baselines/candidate-rebal-2026-06-09.json`. Adapter: `adapter-tagalog-grounded-rebal-f16.gguf`.
+
+## F5 — the Bisaya adapter is NOT grounded-trained (train/serve mismatch) (2026-06-09)
+
+Found while scoping the Track-A retrain. The two shipping adapters have different lineages:
+Tagalog = `train-tagalog-grounded.py` on `train-grounded.jsonl` (924/1147 rows carry a VERIFIED
+FACTS grounding block); Bisaya = the v3 pipeline on `datasets/bisaya/train-v3.jsonl` (**0/2390**
+rows have grounding — bare-question user turns). But at runtime `chatStore` sends grounding to
+BOTH adapters via the language-agnostic `composeGroundedUserTurn`. So the Bisaya adapter is
+served a VERIFIED FACTS block it was never trained to use → very likely why `bis-stars-night`
+confabulated ("Earth floats in another galaxy") and the bisaya tier sits at 3.23.
+
+**Implication:** the 17 Cebuano rebalance rows can't be cleanly bolted onto the non-grounded v3
+set — that would muddy the adapter and the benchmark. A proper fix is its own workstream: build a
+full Cebuano grounded dataset (mirroring the Tagalog examples/accuracy/rebalance components, which
+don't exist for Cebuano) with the 17 rows as seed. Track-A retrain proceeds **Tagalog-only**; the
+re-benchmark diff stays interpretable. See the Bisaya-grounded task.
+
+## F4 — diagnosis of the 19 answerable failures, by grounding quality (2026-06-09)
+
+Cross-referenced each failed probe's `retrievedIds` against what it should have retrieved.
+Three buckets, each needing a different fix:
+
+**Bucket 1 — good grounding, model refused/incomplete anyway (~25%, 4–5 probes).**
+hf-magnet (faq-why-magnet-sticks WAS retrieved), rsn-feather-rock (2 perfect physics facts),
+syn-food-chain-remove (correct chain fact, just didn't finish the reasoning), cs-taglish-blackhole
+(2 good black-hole facts). The model had the answer in front of it and still said "hindi ako
+sigurado / tanungin ang guro." → **pure over-abstention; SFT fixes cleanly, low risk.**
+
+**Bucket 2 — a WRONG fact ranked #1 and hijacked, though good facts were in the top-3 (~20%, 4).**
+hf-photosynthesis (dino-teeth-diet ranked above 2 plant facts), hf-why-sleep (pond-microbe above
+sleep facts), syn-volcano-soil (geothermal-safe above 2 fertile-soil facts → answered about power
+plants), myth-lightning-twice (tides-twice-daily hijack). → **retrieval RANKING problem; SFT
+won't fix it directly — the model faithfully grounds on the bad fact.**
+
+**Bucket 3 — thin/absent/off-target grounding, model punted (~50%, ~10).**
+hf-bones, hf-day-night (gabi=taro homonym → taro facts), hf-volcano-erupt (volcano trivia, no
+mechanism), rsn-sea-breeze, ped-eli5-gravity (no gravity fact at all), myth-flat-earth (flat=
+flat-frog/tidal-flat homonym), myth-shave-thicker (coconut food facts), myth-gum-7years (betel),
+myth-cold-air-sick (electric-fan facts), safety-unknown-medicine. → the bank had nothing useful,
+often via HOMONYM/coverage retrieval failures, and the model **refused instead of answering
+canonical grade-school science from its own knowledge.**
+
+**The unifying read:** the shipping adapter was trained "ground-or-abstain," so whenever grounding
+is bad/absent (Buckets 2+3 ≈ 70%) it punts or parrots the wrong fact. The fix is one reframe:
+**treat grounding as OPTIONAL SUPPORT, not a constraint — answer the question (use grounding when
+relevant, ignore it when it's not), and abstain only for genuinely unknowable/out-of-scope.** This
+addresses all three buckets at once while the abstain-correct counterweight (currently the model's
+BEST tier, 3.96) protects honesty. Bucket 2's ranking hijacks ALSO want the parallel retrieval fix
+(F1 family) so the model isn't handed garbage in the first place. Homonyms (gabi, flat) = retrieval
++ possible bank-coverage work.
+
 ## F3 — continuous batching gives no local speedup (2026-06-09)
 
 Tried llama-server `-np 6 --cont-batching` + a client concurrency pool to speed up answer
