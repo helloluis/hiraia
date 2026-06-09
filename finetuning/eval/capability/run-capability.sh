@@ -56,6 +56,8 @@ EMBED_PORT="${EMBED_PORT:-8090}"
 EMBED_PY="${EMBED_PY:-$ROOT/finetuning/.convert-venv/bin/python}"
 EMBED_SVC="$ROOT/finetuning/eval/harness/labse-embed-service.py"
 HYBRID="${HYBRID:-1}"          # set HYBRID=0 to skip the embedder (lexical-only, not device-faithful)
+JUDGE_ENDPOINT="${JUDGE_ENDPOINT:-}"  # default empty (set -u safe; runner handles empty = no inline judge)
+JUDGE_MODEL="${JUDGE_MODEL:-}"
 
 [ -x "$BIN" ]   || { echo "ERR: llama-server not at $BIN (set BIN=)"; exit 2; }
 [ -f "$BASE" ]  || { echo "ERR: base GGUF not at $BASE (set BASE=)"; exit 2; }
@@ -99,9 +101,12 @@ trap 'kill ${SERVER_PID:-0} ${EMBED_PID:-0} 2>/dev/null' EXIT
 run_pass() { # $1=tag  $2=adapter
   echo ">> [$1] booting $(basename "$2") on :$PORT ..."; boot "$2"
   echo ">> [$1] collecting answers (temp $TEMP, samples $SAMPLES, conc $CONC) ..."
+  # Literal env-assignment prefixes only (a ${VAR:+name=val} expansion is NOT recognized as
+  # an assignment prefix — bash tries to EXEC it). EMBED_ENDPOINT empty when no embedder →
+  # the runner's embedQuery fails fast → lexical fallback. JUDGE_* empty is handled by the runner.
   ENDPOINT="http://localhost:$PORT" ADAPTER_TAG="$1" TEMP="$TEMP" SAMPLES="$SAMPLES" CONC="$CONC" \
-    ${EMBED_PID:+EMBED_ENDPOINT="http://localhost:$EMBED_PORT"} \
-    ${JUDGE_ENDPOINT:+JUDGE_ENDPOINT="$JUDGE_ENDPOINT"} ${JUDGE_MODEL:+JUDGE_MODEL="$JUDGE_MODEL"} \
+    EMBED_ENDPOINT="${EMBED_PID:+http://localhost:$EMBED_PORT}" \
+    JUDGE_ENDPOINT="$JUDGE_ENDPOINT" JUDGE_MODEL="$JUDGE_MODEL" \
     "$TSX" "$HERE/run-capability.mts" || { echo "ERR: pass $1 failed"; exit 1; }
   stop
 }
