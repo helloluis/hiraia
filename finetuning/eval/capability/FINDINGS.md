@@ -7,6 +7,51 @@ these when we're ready to benchmark a new model, not before.
 
 ---
 
+## Baseline — current shipping model (2026-06-09)
+
+Sailor2-3B-Chat.Q4_K_M + shipping adapters (tagalog=`adapter-tagalog-ttft-f16`,
+bisaya=`adapter-sailor-bisaya-f16`), temp 0.7, worst-of-3 sampling, 102 probes, judged by
+the subscription judging workflow. Saved: `baselines/current-2026-06-09.json` (use as
+`BASELINE=` for candidate diffs).
+
+**Capability Score: 3.32 / 5**  ·  **helpfulness on answerable probes: 2.54 / 5** (over-abstention metric)
+
+| dimension | score | | tier | score (w) |
+|---|---|---|---|---|
+| accuracy | 3.09 | | safety-myth | **2.31** (1.5) ← weakest |
+| helpfulness | 2.67 | | helpfulness-floor | 3.21 (3.0) |
+| faithfulness | 3.79 | | bisaya | 3.23 (1.5) |
+| naturalness | **4.51** | | synthesis | 3.44 (2.0) |
+| pedagogy | 3.11 | | reasoning | 3.46 (2.0) |
+| | | | pedagogy | 3.50 (1.5) |
+| | | | codeswitch | 3.76 (1.5) |
+| | | | abstain-correct | **3.96** (1.5) ← best |
+
+**Read:** the model is **fluent** (naturalness 4.51) and **honest** (faithfulness 3.79,
+abstain-correct its best tier at 3.96) but **won't reliably answer** (helpfulness 2.67;
+**19 of 91 answerable probes scored helpfulness 0** — outright refused/deflected). Crucially,
+**reasoning (3.46) is one of the HIGHER tiers**, not the floor — so the score is capped by
+*behavior* (over-abstention) and *retrieval* (hijacks), NOT reasoning capacity. This is the
+evidence for the gated plan: a cheap SFT-rebalance should move the needle far more than
+distillation. Re-run the benchmark after Step-1 SFT and diff against this baseline.
+
+**The 19 answerable refusals/deflections:** hf-photosynthesis-tl, hf-why-sleep-tl,
+hf-bones-job-tl, hf-magnet-tl, hf-day-night-tl, hf-volcano-erupt-tl, rsn-feather-rock,
+rsn-sea-breeze, syn-volcano-soil, syn-food-chain-remove, cs-taglish-blackhole, ped-eli5-gravity,
+myth-flat-earth, myth-shave-thicker, myth-gum-7years, myth-cold-air-sick, myth-lightning-twice,
+safety-unknown-medicine, bis-stars-night. (Some — photosynthesis, sleep — are F1-style retrieval
+hijacks, not pure abstention; the rest are "tanungin ang guro mo" refusals.)
+
+## F2 — safety-myth is the weakest tier (2.31) (2026-06-09)
+
+Myth-debunking underperforms across the board (brain-10%, flat-earth, shaving, swallowed gum,
+cold-air-colds, lightning-twice). The model either refuses ("tanungin ang guro") or fails to
+clearly state *hindi totoo* + the correct fact. For a kid science tutor this matters as much as
+the helpfulness-floor — debunking is a core job. The SFT-rebalance set should include myth→clear-
+debunk pairs, not just answerable-content pairs. Re-check this tier specifically after Step 1.
+
+---
+
 ## F1 — Retrieval hijacks the flagship photosynthesis probe (2026-06-09)
 
 **Probe:** `hf-photosynthesis-tl` — *"Ipaliwanag mo nga kung paano gumagawa ng pagkain ang
