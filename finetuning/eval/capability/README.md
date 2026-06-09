@@ -63,6 +63,10 @@ parrot can't fluke a whole category. Counts below; run weight is `tier_weights` 
 - `pedagogy` (8, w 1.5) — is it actually a good *teacher*, not a fact dump.
 - `safety-myth` (10, w 1.5) — debunk myths / safe answers.
 - `bisaya` (14, w 1.5) — a cross-section of the above, in Cebuano (exposes the weaker-language gap).
+- `english` (18, **w 2.0**) — a cross-section in English, run against the **BASE model (no LoRA)** because
+  English uses the base model on-device. Exists because hackathon judges who don't speak Filipino will
+  pick English from the language selector — this is the path they experience. The runner gives it its own
+  pass: `run-capability.sh` boots the base GGUF with no `--lora` and sets `USE_LORA=0`.
 
 Run the same probe set against every candidate (current Sailor2-3B, SFT-rebalanced,
 distilled-from-20B) and compare deltas. This is the instrument that tells us whether any

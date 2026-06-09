@@ -83,7 +83,7 @@ const TIER_W = cfg._meta.tier_weights;
 // language matches the adapter currently on ENDPOINT. ADAPTER_TAG drives both the
 // language filter and the output filename. (all = single-adapter quick run, no filter.)
 const TAG_LANGS: Record<string, (keyof typeof LANG_OK)[]> = {
-  tagalog: ['tl', 'en'], bisaya: ['bis'], all: ['tl', 'en', 'bis'],
+  tagalog: ['tl'], bisaya: ['bis'], english: ['en'], all: ['tl', 'bis', 'en'],
 };
 const PASS_LANGS = TAG_LANGS[TAG] ?? ['tl', 'en', 'bis'];
 // Optional focused run: CASES="photosynthesis,ice-float" runs only probes whose id
@@ -96,6 +96,10 @@ const ANSWERS_FILE = join(HERE, `capability-answers.${TAG}.json`);
 const SCORES_FILE = join(HERE, `capability-scores.${TAG}.json`);
 const stripTags = (s: string) => s.replace(/\s*\[image:[^\]]*\]/gi, '').trim();
 
+// USE_LORA=0 for the ENGLISH pass — English uses the BASE model on-device (no adapter,
+// per model.ts), so the server is booted WITHOUT --lora and we must not send the lora param.
+const USE_LORA = process.env.USE_LORA !== '0';
+
 // ---- model call (mirrors run-eval.mts: static system + grounding on user turn) ----
 async function ask(messages: { role: string; content: string }[], temp: number): Promise<string> {
   const res = await fetch(`${ENDPOINT}/v1/chat/completions`, {
@@ -104,7 +108,7 @@ async function ask(messages: { role: string; content: string }[], temp: number):
     body: JSON.stringify({
       messages, temperature: temp, max_tokens: 360, stream: false,
       ...(temp > 0 ? { seed: -1 } : {}),
-      lora: [{ id: 0, scale: 1.0 }],
+      ...(USE_LORA ? { lora: [{ id: 0, scale: 1.0 }] } : {}),
     }),
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
@@ -115,16 +119,24 @@ async function ask(messages: { role: string; content: string }[], temp: number):
 
 // ---- device-faithful HYBRID retrieval helpers (FINDINGS F7) ----
 // Attach the bundled int8 LaBSE vector blob so retrieveForGroundingHybrid can semantic-rerank,
-// exactly as LocalEngine does on the phone. Returns false if the blob is missing.
+// exactly as LocalEngine does on the phone. Returns false if the blob is missing OR STALE (the
+// size guard throws when blob.count != bank — e.g. mid-deepening before build-vectors.py reruns).
+// The device catches the same stale-blob case and falls back to lexical; we mirror that here
+// instead of crashing the run.
 function attachSemantic(store: RagStore): boolean {
   if (!existsSync(VEC_META) || !existsSync(VEC_BIN)) return false;
-  const meta = JSON.parse(readFileSync(VEC_META, 'utf8'));
-  const bytes = readFileSync(VEC_BIN);
-  store.attachSemantic(new SemanticIndex({
-    dims: meta.dims, scale: meta.scale, count: meta.count, langs: meta.langs,
-    data: new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength),
-  }));
-  return true;
+  try {
+    const meta = JSON.parse(readFileSync(VEC_META, 'utf8'));
+    const bytes = readFileSync(VEC_BIN);
+    store.attachSemantic(new SemanticIndex({
+      dims: meta.dims, scale: meta.scale, count: meta.count, langs: meta.langs,
+      data: new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength),
+    }));
+    return true;
+  } catch (e) {
+    console.warn(`>> ⚠️  semantic blob unusable (${(e as Error).message}) — lexical fallback. Regen build-vectors.py.`);
+    return false;
+  }
 }
 // Embed normalize(query) via the LaBSE service + L2-normalize (device embdNormalize:2),
 // matching gen-hybrid-fixtures.mts. Returns undefined if the embedder is unreachable.

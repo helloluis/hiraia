@@ -83,9 +83,11 @@ if [ "$HYBRID" = "1" ]; then
 fi
 
 boot() {
+  # $1 = adapter path, or empty/"BASE" for the base model with NO LoRA (the English path).
   # -np/--cont-batching: N parallel decode slots so the client's concurrent requests
   # overlap. --ctx-size here is TOTAL KV split across slots, so size it NP * per-slot CTX.
-  "$BIN" -m "$BASE" --lora "$1" -ngl "$NGL" --port "$PORT" \
+  local LORA_ARG=(); [ -n "$1" ] && [ "$1" != "BASE" ] && LORA_ARG=(--lora "$1")
+  "$BIN" -m "$BASE" "${LORA_ARG[@]}" -ngl "$NGL" --port "$PORT" \
     -np "$NP" --cont-batching --ctx-size "$((CTX * NP))" > "$HERE/.server.log" 2>&1 &
   SERVER_PID=$!
   for _ in $(seq 1 90); do
@@ -98,13 +100,14 @@ boot() {
 stop() { kill $SERVER_PID 2>/dev/null; wait $SERVER_PID 2>/dev/null || true; }
 trap 'kill ${SERVER_PID:-0} ${EMBED_PID:-0} 2>/dev/null' EXIT
 
-run_pass() { # $1=tag  $2=adapter
-  echo ">> [$1] booting $(basename "$2") on :$PORT ..."; boot "$2"
-  echo ">> [$1] collecting answers (temp $TEMP, samples $SAMPLES, conc $CONC) ..."
+run_pass() { # $1=tag  $2=adapter ("" / "BASE" = base model, no LoRA → set USE_LORA=0)
+  local use_lora=1; { [ -z "$2" ] || [ "$2" = "BASE" ]; } && use_lora=0
+  echo ">> [$1] booting $([ "$use_lora" = 1 ] && basename "$2" || echo 'BASE model (no LoRA)') on :$PORT ..."; boot "$2"
+  echo ">> [$1] collecting answers (temp $TEMP, samples $SAMPLES, conc $CONC, lora $use_lora) ..."
   # Literal env-assignment prefixes only (a ${VAR:+name=val} expansion is NOT recognized as
   # an assignment prefix — bash tries to EXEC it). EMBED_ENDPOINT empty when no embedder →
   # the runner's embedQuery fails fast → lexical fallback. JUDGE_* empty is handled by the runner.
-  ENDPOINT="http://localhost:$PORT" ADAPTER_TAG="$1" TEMP="$TEMP" SAMPLES="$SAMPLES" CONC="$CONC" \
+  ENDPOINT="http://localhost:$PORT" ADAPTER_TAG="$1" TEMP="$TEMP" SAMPLES="$SAMPLES" CONC="$CONC" USE_LORA="$use_lora" \
     EMBED_ENDPOINT="${EMBED_PID:+http://localhost:$EMBED_PORT}" \
     JUDGE_ENDPOINT="$JUDGE_ENDPOINT" JUDGE_MODEL="$JUDGE_MODEL" \
     "$TSX" "$HERE/run-capability.mts" || { echo "ERR: pass $1 failed"; exit 1; }
@@ -114,8 +117,10 @@ run_pass() { # $1=tag  $2=adapter
 echo ">> base:    $BASE"
 echo ">> tagalog: $ADAPTER"
 echo ">> bisaya:  $BIS_ADAPTER"
+echo ">> english: BASE model (no LoRA) — the device's English path / what hackathon judges hit"
 run_pass tagalog "$ADAPTER"
 run_pass bisaya  "$BIS_ADAPTER"
+run_pass english "BASE"
 
 echo ""
 if [ -n "${JUDGE_ENDPOINT:-}" ]; then
