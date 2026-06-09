@@ -15,7 +15,7 @@ export interface TutorEngine {
    * Initialize the engine with configuration.
    * This should load models and prepare for inference.
    */
-  initialize(config: TutorConfig): Promise<void>;
+  initialize(config: TutorConfig, onProgress?: (progress: number) => void): Promise<void>;
 
   /**
    * Generate a streaming response to a conversation.

@@ -1,10 +1,4 @@
-import {
-  loadModel,
-  completion,
-  unloadModel,
-  embed,
-  QWEN3_1_7B_INST_Q4,
-} from '@qvac/sdk';
+import { loadModel, completion, unloadModel, embed, QWEN3_1_7B_INST_Q4 } from '@qvac/sdk';
 import { Asset } from 'expo-asset';
 import { File } from 'expo-file-system';
 import { ACTIVE_MODEL, EMBEDDER, VECTORS_BLOB_ASSET, VECTORS_META } from '../config/model';
@@ -59,7 +53,7 @@ export class LocalEngine implements TutorEngine {
     }
   }
 
-  async initialize(config: TutorConfig): Promise<void> {
+  async initialize(config: TutorConfig, onProgress?: (p: number) => void): Promise<void> {
     try {
       this.config = config;
       console.log(`Loading ${ACTIVE_MODEL.displayName} model...`);
@@ -81,10 +75,13 @@ export class LocalEngine implements TutorEngine {
             gpu_layers: GPU_LAYERS, // full GPU offload — default left part of the 3B on CPU (slow)
             ...(loraPath ? { lora: loraPath } : {}),
           },
-          onProgress: (p) =>
-            console.log(
-              `[LocalEngine] ${ACTIVE_MODEL.displayName} loading: ${Math.round(p.percentage ?? 0)}%`
-            ),
+          onProgress: (p) => {
+            const pct = Math.round(p.percentage ?? 0);
+            console.log(`[LocalEngine] ${ACTIVE_MODEL.displayName} loading: ${pct}%`);
+            if (onProgress) {
+              onProgress(pct);
+            }
+          },
         });
       } else {
         // No source configured — load a stock SDK model as a placeholder so the
@@ -95,6 +92,12 @@ export class LocalEngine implements TutorEngine {
         this.modelId = await loadModel({
           modelSrc: QWEN3_1_7B_INST_Q4,
           modelConfig: { ctx_size: ACTIVE_MODEL.ctxSize },
+          onProgress: (p) => {
+            const pct = Math.round(p.percentage ?? 0);
+            if (onProgress) {
+              onProgress(pct);
+            }
+          },
         });
       }
 
@@ -178,7 +181,8 @@ export class LocalEngine implements TutorEngine {
       'Ibuod ang sumusunod na sagot ng science tutor sa ISA o DALAWANG napakaikling pangungusap, ' +
       'para magamit bilang maikling alaala (memory) sa susunod na usapan. Panatilihin LANG ang ' +
       'mahalagang science fact at termino. Alisin ang pagbati, mga halimbawa, at ang tanong sa dulo. ' +
-      'Sumagot ng buod lamang, walang ibang sasabihin.\n\nSAGOT:\n' + text;
+      'Sumagot ng buod lamang, walang ibang sasabihin.\n\nSAGOT:\n' +
+      text;
     const run = completion({
       modelId: this.modelId,
       history: [{ role: 'user', content: instruction }],
@@ -270,16 +274,34 @@ export class LocalEngine implements TutorEngine {
       }
       const embedMs = Date.now() - tEmbed0;
       const tRetr0 = Date.now();
-      hits = this.rag.retrieveForGroundingHybrid(query, queryVec, language, topK, 0.5, context, seenIds);
+      hits = this.rag.retrieveForGroundingHybrid(
+        query,
+        queryVec,
+        language,
+        topK,
+        0.5,
+        context,
+        seenIds
+      );
       let reEmbedMs = 0;
       // R2: a bare follow-up ("anong pinakamalaki sa kanila?") is topic-blind and
       // abstains. Retry once with the conversation topic folded into the embed.
       if (hits.length === 0 && queryVec && context.trim()) {
         try {
           const tRe0 = Date.now();
-          const foldedVec = Float32Array.from(await this.embed(buildContextualQuery(query, context)));
+          const foldedVec = Float32Array.from(
+            await this.embed(buildContextualQuery(query, context))
+          );
           reEmbedMs = Date.now() - tRe0;
-          hits = this.rag.retrieveForGroundingHybrid(query, foldedVec, language, topK, 0.5, context, seenIds);
+          hits = this.rag.retrieveForGroundingHybrid(
+            query,
+            foldedVec,
+            language,
+            topK,
+            0.5,
+            context,
+            seenIds
+          );
         } catch (e) {
           console.warn('[LocalEngine] contextual re-embed failed:', e);
         }

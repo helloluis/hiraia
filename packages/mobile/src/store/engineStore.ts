@@ -14,6 +14,7 @@ interface EngineState {
   language: Language | null;
   /** True once the saved-language lookup has completed (gates the picker). */
   bootstrapped: boolean;
+  loadingProgress: number;
   /** Read the saved language and, if present, load the engine for it. */
   bootstrap: () => Promise<void>;
   /** Persist + (re)load the engine for a language. Used by the first-launch
@@ -43,6 +44,7 @@ export const useEngineStore = create<EngineState>((set, get) => ({
   error: null,
   language: null,
   bootstrapped: false,
+  loadingProgress: 0,
 
   bootstrap: async () => {
     let saved: Language | null = null;
@@ -62,7 +64,7 @@ export const useEngineStore = create<EngineState>((set, get) => ({
       // Persist first so a crash mid-reload still remembers the choice.
       await setSetting('language', language);
       const prev = get().engine;
-      set({ language, isReady: false, error: null });
+      set({ language, isReady: false, error: null, loadingProgress: 0 });
       if (prev) {
         try {
           await prev.shutdown();
@@ -71,13 +73,16 @@ export const useEngineStore = create<EngineState>((set, get) => ({
         }
       }
       const engine = new LocalEngine();
-      await engine.initialize(buildConfig(language));
-      set({ engine, isReady: true });
+      await engine.initialize(buildConfig(language), (p) => {
+        set({ loadingProgress: p });
+      });
+      set({ engine, isReady: true, loadingProgress: 100 });
       console.log(`QVAC engine ready (${language})`);
     } catch (error) {
       set({
         error: error instanceof Error ? error.message : 'Failed to initialize engine',
         isReady: false,
+        loadingProgress: 0,
       });
       console.error('Failed to (re)initialize QVAC engine:', error);
     }

@@ -1,11 +1,12 @@
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { LanguagePicker } from '../components/LanguagePicker';
+import { LoaderOverlay } from '../components/LoaderOverlay';
 import { useChatStore } from '../store/chatStore';
 import { useEngineStore } from '../store/engineStore';
 import { colors, fontAssets } from '../theme';
@@ -15,8 +16,11 @@ export default function RootLayout() {
   const changeLanguage = useEngineStore((s) => s.changeLanguage);
   const bootstrapped = useEngineStore((s) => s.bootstrapped);
   const language = useEngineStore((s) => s.language);
+  const isReady = useEngineStore((s) => s.isReady);
   const hydrate = useChatStore((s) => s.hydrate);
   const [fontsLoaded] = useFonts(fontAssets);
+
+  const [showLoader, setShowLoader] = useState(false);
 
   useEffect(() => {
     // Resolve the saved language and (if set) load the engine for it. When none is
@@ -26,6 +30,13 @@ export default function RootLayout() {
     // auto-hydration). Sets hasHydrated, which gates the cold-start factoid.
     void hydrate();
   }, [bootstrap, hydrate]);
+
+  // Show loader overlay when a language has been selected but the engine is warming up
+  useEffect(() => {
+    if (language !== null && !isReady) {
+      setShowLoader(true);
+    }
+  }, [language, isReady]);
 
   if (!fontsLoaded || !bootstrapped) {
     return (
@@ -46,6 +57,15 @@ export default function RootLayout() {
       {/* First launch: no language chosen yet → takeover picker (loads the engine
           with the right adapter the first time, avoiding an immediate reload). */}
       {language === null && <LanguagePicker onPick={changeLanguage} />}
+
+      {/* Loader overlay overlaying the chat layout */}
+      {showLoader && (
+        <LoaderOverlay
+          onDismiss={() => {
+            setShowLoader(false);
+          }}
+        />
+      )}
     </GestureHandlerRootView>
   );
 }
