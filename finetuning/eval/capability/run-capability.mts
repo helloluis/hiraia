@@ -1,0 +1,259 @@
+// ============================================================================
+// run-capability.mts — the Hiraia CAPABILITY benchmark runner.
+//
+// Unlike run-eval.mts (a green/red regression gate), this SCORES a model 0–5 on
+// 5 dimensions across hard, seeded probes — measuring how *good* the tutor is,
+// not whether it regressed. See README.md / rubric.md.
+//
+// Two phases, decoupled so judging can use the subscription (not the API):
+//
+//   PHASE 1 (answers): runs every probe through a llama-server (base GGUF +
+//     adapter — the device-equivalent engine), using the EXACT runtime prompt
+//     the app builds (RagStore retrieval + static system + grounding on the user
+//     turn). Writes capability-answers.<tag>.json.
+//
+//   PHASE 2 (judge): scores each answer against rubric.md.
+//       - DEFAULT: emits the answers bundle and prints the instruction to score
+//         it with the judging workflow (Claude subscription, no API key).
+//       - JUDGE_ENDPOINT set: scores inline via an OpenAI-compatible chat endpoint
+//         (a bigger local model, or an API judge if you choose to use one).
+//     Either way, final scores land in capability-scores.<tag>.json and a report
+//     prints: Capability Score + per-tier + per-dimension + (optional) a diff vs
+//     a baseline scores file (BASELINE=...).
+//
+// Usage:
+//   # device temp (the real experience) — abstention is stochastic, so sample:
+//   ENDPOINT=http://localhost:8088 TEMP=0.7 SAMPLES=3 \
+//     node_modules/.bin/tsx finetuning/eval/capability/run-capability.mts
+//
+//   # inline judge via a local OpenAI-compatible endpoint:
+//   JUDGE_ENDPOINT=http://localhost:9099 JUDGE_MODEL=qwen2.5-14b ... run-capability.mts
+//
+//   # score a pre-judged bundle and diff against a saved baseline:
+//   PHASE=report BASELINE=capability-scores.current.json ... run-capability.mts
+// ============================================================================
+import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import { RagStore } from '../../../packages/shared/src/rag/RagStore.ts';
+import {
+  generateSystemPrompt,
+  formatGroundingBlock,
+  composeGroundedUserTurn,
+} from '../../../packages/shared/src/prompts/system.ts';
+
+const HERE = dirname(fileURLToPath(import.meta.url));
+const ENDPOINT = process.env.ENDPOINT ?? 'http://localhost:8088';
+const TAG = process.env.ADAPTER_TAG ?? 'tagalog'; // which adapter is loaded on ENDPOINT
+const TEMP = Number(process.env.TEMP ?? '0.7'); // device runs hot; capability is about typical behavior
+const SAMPLES = Math.max(1, Number(process.env.SAMPLES ?? '1')); // >1 → keep the WORST per probe (device honesty)
+const PHASE = process.env.PHASE ?? 'all'; // all | answers | judge | report
+const JUDGE_ENDPOINT = process.env.JUDGE_ENDPOINT ?? '';
+const JUDGE_MODEL = process.env.JUDGE_MODEL ?? '';
+const BASELINE = process.env.BASELINE ?? '';
+
+const LANG_OK = { tl: 'tagalog', bis: 'cebuano', en: 'english' } as const;
+const DIMS = ['accuracy', 'helpfulness', 'faithfulness', 'naturalness', 'pedagogy'] as const;
+type Dim = (typeof DIMS)[number];
+
+interface Probe {
+  id: string; tier: string; lang: keyof typeof LANG_OK; grade: number;
+  prompt: string; intent: string; must_answer: boolean;
+  must_cover: string[]; dimensions_emphasis: Dim[];
+}
+interface Scored { accuracy: number; helpfulness: number; faithfulness: number; naturalness: number; pedagogy: number; notes: string }
+interface AnswerRow { probe: Probe; answer: string; retrievedIds: string[]; samples: string[] }
+interface ScoreRow extends AnswerRow { score: Scored }
+
+const cfg = JSON.parse(readFileSync(join(HERE, 'probes.json'), 'utf8')) as {
+  _meta: { tier_weights: Record<string, number> };
+  probes: Probe[];
+};
+const TIER_W = cfg._meta.tier_weights;
+// The device loads a PER-LANGUAGE adapter, so each pass scores only the probes whose
+// language matches the adapter currently on ENDPOINT. ADAPTER_TAG drives both the
+// language filter and the output filename. (all = single-adapter quick run, no filter.)
+const TAG_LANGS: Record<string, (keyof typeof LANG_OK)[]> = {
+  tagalog: ['tl', 'en'], bisaya: ['bis'], all: ['tl', 'en', 'bis'],
+};
+const PASS_LANGS = TAG_LANGS[TAG] ?? ['tl', 'en', 'bis'];
+// Optional focused run: CASES="photosynthesis,ice-float" runs only probes whose id
+// contains one of the comma-separated substrings (smoke tests, single-failure probing).
+const CASE_FILTER = (process.env.CASES ?? '').split(',').map((s) => s.trim()).filter(Boolean);
+const PASS_PROBES = cfg.probes
+  .filter((p) => PASS_LANGS.includes(p.lang))
+  .filter((p) => !CASE_FILTER.length || CASE_FILTER.some((s) => p.id.includes(s)));
+const ANSWERS_FILE = join(HERE, `capability-answers.${TAG}.json`);
+const SCORES_FILE = join(HERE, `capability-scores.${TAG}.json`);
+const stripTags = (s: string) => s.replace(/\s*\[image:[^\]]*\]/gi, '').trim();
+
+// ---- model call (mirrors run-eval.mts: static system + grounding on user turn) ----
+async function ask(messages: { role: string; content: string }[], temp: number): Promise<string> {
+  const res = await fetch(`${ENDPOINT}/v1/chat/completions`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      messages, temperature: temp, max_tokens: 360, stream: false,
+      ...(temp > 0 ? { seed: -1 } : {}),
+      lora: [{ id: 0, scale: 1.0 }],
+    }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
+  const data: any = await res.json();
+  if (data.error) throw new Error(`server error: ${JSON.stringify(data.error).slice(0, 200)}`);
+  return data.choices?.[0]?.message?.content ?? '';
+}
+
+async function collectAnswers(): Promise<AnswerRow[]> {
+  const store = new RagStore();
+  const rows: AnswerRow[] = [];
+  for (const p of PASS_PROBES) {
+    // RagStore + generateSystemPrompt take the full Language ('tagalog'/'cebuano'/
+    // 'english'), not the probe's short code — map it.
+    const lang = LANG_OK[p.lang];
+    const hits = store.retrieveForGrounding(p.prompt as any, lang as any, 3);
+    const retrievedIds = hits.map((h: any) => h.fact.id);
+    const system = generateSystemPrompt(lang as any, p.grade as any, true);
+    const block = formatGroundingBlock(
+      hits.map((h: any) => ({ content: h.text, source: h.fact.source, score: h.score, metadata: { topic: h.fact.topic } }))
+    );
+    const userTurn = composeGroundedUserTurn(block, p.prompt);
+    const messages = [{ role: 'system', content: system }, { role: 'user', content: userTurn }];
+    const samples: string[] = [];
+    for (let i = 0; i < SAMPLES; i++) samples.push(stripTags(await ask(messages, TEMP)));
+    // Keep the WORST sample (shortest non-empty / first refusal) so a model that
+    // *sometimes* deflects on-device is scored on that failure, not its best face.
+    const refusalish = samples.find((s) => /tanungin|guro|hindi ko (?:po )?(?:alam|masabi)|ask your (?:teacher|parent)/i.test(s));
+    const answer = refusalish ?? samples.slice().sort((a, b) => a.length - b.length)[0] ?? '';
+    rows.push({ probe: p, answer, retrievedIds, samples });
+    process.stdout.write(`  answered ${p.id} (${p.tier})\n`);
+  }
+  writeFileSync(ANSWERS_FILE, JSON.stringify(rows, null, 2));
+  console.log(`\n>> wrote ${rows.length} answers → ${ANSWERS_FILE}`);
+  return rows;
+}
+
+// ---- inline judge (only when JUDGE_ENDPOINT set) ----
+const RUBRIC = readFileSync(join(HERE, 'rubric.md'), 'utf8');
+function judgePrompt(r: AnswerRow): string {
+  const p = r.probe;
+  return (
+    `You are the impartial judge for the Hiraia tutor capability benchmark. Score the MODEL ANSWER ` +
+    `0–5 on each of: accuracy, helpfulness, faithfulness, naturalness, pedagogy. Use the rubric exactly. ` +
+    `Output ONLY strict JSON: {"accuracy":n,"helpfulness":n,"faithfulness":n,"naturalness":n,"pedagogy":n,"notes":"..."}.\n\n` +
+    `=== RUBRIC ===\n${RUBRIC}\n\n` +
+    `=== PROBE ===\nlang: ${LANG_OK[p.lang]} | grade: ${p.grade} | tier: ${p.tier}\n` +
+    `must_answer: ${p.must_answer}\nintent: ${p.intent}\nmust_cover: ${p.must_cover.join('; ')}\n` +
+    `QUESTION: ${p.prompt}\n\n=== MODEL ANSWER ===\n${r.answer || '(empty)'}\n\n` +
+    `Score now. JSON only.`
+  );
+}
+async function judgeInline(r: AnswerRow): Promise<Scored> {
+  const res = await fetch(`${JUDGE_ENDPOINT}/v1/chat/completions`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      ...(JUDGE_MODEL ? { model: JUDGE_MODEL } : {}),
+      messages: [{ role: 'user', content: judgePrompt(r) }],
+      temperature: 0, max_tokens: 250, stream: false,
+    }),
+  });
+  if (!res.ok) throw new Error(`judge HTTP ${res.status}`);
+  const data: any = await res.json();
+  const raw = data.choices?.[0]?.message?.content ?? '{}';
+  const m = raw.match(/\{[\s\S]*\}/);
+  const j = JSON.parse(m ? m[0] : '{}');
+  return {
+    accuracy: +j.accuracy || 0, helpfulness: +j.helpfulness || 0, faithfulness: +j.faithfulness || 0,
+    naturalness: +j.naturalness || 0, pedagogy: +j.pedagogy || 0, notes: String(j.notes ?? ''),
+  };
+}
+
+// ---- aggregation + report ----
+function probeScore(s: Scored, emphasis: Dim[]): number {
+  // dimension mean with the probe's emphasis dimensions double-weighted
+  let num = 0, den = 0;
+  for (const d of DIMS) {
+    const w = emphasis.includes(d) ? 2 : 1;
+    num += s[d] * w; den += w;
+  }
+  return num / den;
+}
+function report(rows: ScoreRow[], baseline?: ScoreRow[]) {
+  const byTier: Record<string, number[]> = {};
+  const byDim: Record<Dim, number[]> = { accuracy: [], helpfulness: [], faithfulness: [], naturalness: [], pedagogy: [] };
+  let wNum = 0, wDen = 0;
+  const helpAnswerable: number[] = [];
+  for (const r of rows) {
+    const ps = probeScore(r.score, r.probe.dimensions_emphasis);
+    const tw = TIER_W[r.probe.tier] ?? 1;
+    wNum += ps * tw; wDen += tw;
+    (byTier[r.probe.tier] ??= []).push(ps);
+    for (const d of DIMS) byDim[d].push(r.score[d]);
+    if (r.probe.must_answer) helpAnswerable.push(r.score.helpfulness);
+  }
+  const mean = (a: number[]) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0);
+  const cap = wNum / wDen;
+  console.log(`\n================  HIRAIA CAPABILITY SCORE (${TAG})  ================`);
+  console.log(`  CAPABILITY SCORE: ${cap.toFixed(2)} / 5   (tier-weighted, ${rows.length} probes)`);
+  console.log(`  helpfulness on answerable probes: ${mean(helpAnswerable).toFixed(2)} / 5   <-- over-abstention metric`);
+  console.log(`\n  per dimension:`);
+  for (const d of DIMS) console.log(`    ${d.padEnd(13)} ${mean(byDim[d]).toFixed(2)}`);
+  console.log(`\n  per tier (weight):`);
+  for (const t of Object.keys(TIER_W)) {
+    if (!byTier[t]) continue;
+    console.log(`    ${t.padEnd(18)} ${mean(byTier[t]).toFixed(2)}   (w ${TIER_W[t]}, n ${byTier[t].length})`);
+  }
+  if (baseline) {
+    const bMap = new Map(baseline.map((r) => [r.probe.id, r]));
+    let bNum = 0, bDen = 0;
+    for (const r of baseline) { const tw = TIER_W[r.probe.tier] ?? 1; bNum += probeScore(r.score, r.probe.dimensions_emphasis) * tw; bDen += tw; }
+    const bCap = bNum / bDen;
+    console.log(`\n  vs baseline: ${bCap.toFixed(2)} → ${cap.toFixed(2)}  (${cap >= bCap ? '+' : ''}${(cap - bCap).toFixed(2)})`);
+    // biggest movers
+    const movers = rows
+      .map((r) => ({ id: r.probe.id, tier: r.probe.tier, d: probeScore(r.score, r.probe.dimensions_emphasis) - (bMap.has(r.probe.id) ? probeScore(bMap.get(r.probe.id)!.score, r.probe.dimensions_emphasis) : 0) }))
+      .filter((m) => bMap.has(m.id))
+      .sort((a, b) => Math.abs(b.d) - Math.abs(a.d))
+      .slice(0, 6);
+    console.log(`  biggest movers:`);
+    for (const m of movers) console.log(`    ${m.d >= 0 ? '+' : ''}${m.d.toFixed(2)}  ${m.id} (${m.tier})`);
+  }
+  console.log(`==================================================================\n`);
+}
+
+// ---- orchestration ----
+const baseline = BASELINE && existsSync(BASELINE) ? (JSON.parse(readFileSync(BASELINE, 'utf8')) as ScoreRow[]) : undefined;
+
+if (PHASE === 'report') {
+  // Merge EVERY per-adapter score file (capability-scores.tagalog.json + .bisaya.json + …)
+  // into one 102-probe Capability Score. Dedup by probe id (last file wins).
+  const files = readdirSync(HERE).filter((f) => /^capability-scores\..+\.json$/.test(f));
+  if (!files.length) { console.error(`no capability-scores.*.json in ${HERE} — run judge first`); process.exit(2); }
+  const merged = new Map<string, ScoreRow>();
+  for (const f of files) for (const r of JSON.parse(readFileSync(join(HERE, f), 'utf8')) as ScoreRow[]) merged.set(r.probe.id, r);
+  console.log(`>> merged ${files.length} score file(s): ${files.join(', ')}`);
+  report([...merged.values()], baseline);
+} else {
+  const answers = PHASE === 'judge'
+    ? (JSON.parse(readFileSync(ANSWERS_FILE, 'utf8')) as AnswerRow[])
+    : await collectAnswers();
+
+  if (PHASE === 'answers') {
+    console.log(`\n>> answers only. Judge them with the subscription via the judging workflow,`);
+    console.log(`   or re-run with JUDGE_ENDPOINT=... PHASE=judge for an inline judge.\n`);
+  } else if (JUDGE_ENDPOINT) {
+    const scored: ScoreRow[] = [];
+    for (const a of answers) { scored.push({ ...a, score: await judgeInline(a) }); process.stdout.write(`  judged ${a.probe.id}\n`); }
+    writeFileSync(SCORES_FILE, JSON.stringify(scored, null, 2));
+    console.log(`>> wrote scores → ${SCORES_FILE}`);
+    report(scored, baseline);
+  } else {
+    console.log(`\n>> No JUDGE_ENDPOINT set. Answers are in ${ANSWERS_FILE}.`);
+    console.log(`>> To score with the Claude subscription (no API key), run the judging workflow:`);
+    console.log(`     one judge agent per answer, prompt = rubric.md + probe + answer → strict-JSON Scored,`);
+    console.log(`     then write capability-scores.${TAG}.json (array of {probe, answer, score}) and re-run`);
+    console.log(`     this script with PHASE=report to print the Capability Score + tier/dim breakdown.\n`);
+  }
+}
