@@ -1,5 +1,32 @@
 # Hiraia: Knowledge Distillation Strategy for Edge Deployment
 
+---
+
+## ⛔ DECISION (2026-06-09): DEFERRED — do NOT distill yet
+
+We ran the gated plan (baseline → cheap SFT-rebalance → re-benchmark) on the capability
+benchmark before committing the ~$400–500 distillation spend. **The trigger for distillation
+was "the benchmark proves reasoning is the ceiling." It was not met.**
+
+Evidence (see `finetuning/eval/capability/FINDINGS.md` F6/F8, and `baselines/*-2026-06-09.json`):
+- **Reasoning was never the floor** — it sat at ~3.5–3.8, one of the *higher* tiers, across every run.
+- **Reasoning rose +0.34 from a ~$0.60 SFT alone**, no distillation. A true 3B capacity ceiling
+  could not have moved under SFT.
+- The actually-low tiers were **behavioral / retrieval**: over-abstention (helpfulness),
+  safety-myth, and retrieval hijacks — none of which distillation addresses.
+- Faithful (device-hybrid) result: shipping **3.49 → rebalanced candidate 3.72**; combined with
+  the retrieval/blob fix the shipping-as-it-was **3.32 → 3.72 (+0.40)**, for ~$0.60 vs ~$450.
+
+**So distillation would spend the budget attacking a problem we don't have.** The remaining gaps
+are fixable with cheap SFT (Track A v2: safety + myth) and retrieval work (Track B residue).
+
+**Re-trigger (conditional, not killed):** if, after Track A v2, the model gives *shallow or wrong
+multi-step explanations that more SFT cannot fix*, that is a genuine capacity ceiling — distillation
+comes back on the table with the budget intact. The strategy below remains the plan IF that happens;
+prefer the Sailor2-lineage teacher/student (deferred decision) over the doc's original Qwen choice.
+
+---
+
 ## 🎯 Objective
 
 To develop a highly capable, pedagogically specialized 3B-parameter AI tutor for offline Filipino and Cebuano education, optimized to run smoothly on entry-level 6GB RAM Android devices (e.g., Redmi 13C) via the QVAC SDK.
