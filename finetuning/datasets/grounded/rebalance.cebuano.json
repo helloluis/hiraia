@@ -1,0 +1,206 @@
+{
+  "language": "cebuano",
+  "_note": "Track-A SFT-rebalance (2026-06-09). Targets the capability-baseline failure diagnosis (FINDINGS F4): Bucket-3 answer-from-knowledge when grounding is thin/wrong (answer-knowledge-mismatch rows carry deliberately IRRELEVANT factIds -> gold answer ignores them), myth-debunk at volume (safety-myth was the worst tier 2.31), and an abstain counterweight to preserve honesty. Questions DISJOINT from finetuning/eval/capability/probes.json (the held-out benchmark). Generated+verified by the rebalance-generate workflow.",
+  "examples": [
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 4,
+      "factIds": [
+        "oyster-makes-pearl-g6",
+        "dugong-long-lived-g7",
+        "metals-conduct-heat-and-electricity-both-g6"
+      ],
+      "user": "Nganong mohilak man ta kung naay abog nga mosulod sa mata?",
+      "assistant": "Maayong pangutana na! 👁️ Mohilak ta kay ang atong mata adunay gagmay nga glandula nga maghimo og luha. Kung naay abog nga mosulod, mopagawas dayon kini og daghang luha aron mahugasan ug mapagawas ang abog—usa kini ka paagi sa atong lawas sa pagpanalipod sa mata. Mao nga ang luha sama ra sa gamay nga tig-limpyo! 💧 Nakamatikod ka na ba nga mopilok pud ta dayon kung naay mosulod sa mata?"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "breathing-faster-when-running-g5",
+        "friction-wastes-energy-heat-g8",
+        "gumamela-stigma-five-knobs-g5"
+      ],
+      "user": "Unsaon pag-ayo sa atong samad?",
+      "assistant": "Maayo nga pangutana! Kung masamad ka, ang imong lawas mismo ang mo-ayo niini. Una, mahimong moundang ang pagdugo kay mag-form og scab (kugan) aron masirad-an ang samad ug mapugngan ang mga germ. Aron makatabang, hugasi ang samad og limpyo nga tubig ug sabon, butangan og clean bandage, ug ayaw kuti-kutiha ang scab para dili ma-impeksiyon. Unsa kaha sa imong hunahuna ang gamit sa kugan nga mo-form ibabaw sa samad? 🩹😊"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "locust-swarm-grasshopper-g4",
+        "ruler-measuring-length-g3",
+        "early-treatment-can-recover-g6"
+      ],
+      "user": "Nganong adunay dahunog human sa kilat?",
+      "assistant": "Maayong pangutana! ⚡ Adunay dahunog (thunder) tungod kay ang kilat (lightning) hilabihan kainit—mas init pa kay sa nawong sa adlaw—maong kalit nga mibuto ug milapad ang hangin sa palibot niini. Kanang kalit nga pagbuto sa hangin maoy nagmugna sa dahunog nga atong madungog. Mao nga makita una nato ang kilat ayha madungog ang dahunog, kay mas paspas ang kahayag kay sa tingog. Naniid ka na ba kung pila ka segundo ang gintang tali sa kilat ug sa dahunog? 🌩️"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "catfish-gills-underwater-g4",
+        "crab-arthropod-gills-breathe-g5",
+        "mudskipper-breathes-gills-mechanism-g5"
+      ],
+      "user": "Unsaon paghinga sa isda ilalom sa tubig?",
+      "assistant": "Maayong pangutana! 🐟 Ang isda makaginhawa ilalom sa tubig pinaagi sa ilang mga hasang (gills) sa kilid sa ulo. Magtulon sila og tubig, ug samtang moagi kini sa hasang, makuha sa lawas ang oksiheno nga natunaw sa tubig—mao nga dili sila kinahanglan mosaka aron makaginhawa sama nato. Nindot kaayo, di ba? Nahibawo ka ba kung nganong dili sila makaginhawa kon ibutang sa yuta? 💧"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "constellation-planets-not-part-g6",
+        "detergent-made-from-petroleum-g7",
+        "giant-clam-not-dangerous-myth-g5"
+      ],
+      "user": "Nganong mokidlap man ang mga bituon?",
+      "assistant": "Maayong pangutana! ✨ Mokidlap ang mga bituon kay layo kaayo sila, busa nipis ug huyang ra ang ilang kahayag pag-abot sa atong mata. Samtang moagi kini sa atong atmospera, ang nagkalainlaing hapnig sa hangin (init ug bugnaw) magtikyup-tikyup sa kahayag, mao nga morag nagpangidlap kini. Ang mga planeta sama sa Venus dili kaayo mokidlap kay mas duol sila ug mas dako ang ilang kahayag. 🌟 Naka-obserbar na ba ka nga mas mokidlap ang mga bituon kon bugnaw ug tin-aw ang gabii?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "earth-internal-heat-drives-plates-g9",
+        "landslide-earthquake-trigger-g6",
+        "earth-mantle-heat-engine-drives-surface-g10"
+      ],
+      "user": "Unsa ang hinungdan sa linog?",
+      "assistant": "Maayong pangutana! 🌍 Ang linog mahitabo tungod sa paglihok sa dagkong mga \"plate\" sa yuta nga naa sa ibabaw sa Kalibutan. Kini sila hinay nga magdinupdupanay o magkinis-anay, ug ang init gikan sa sulod sa Earth (ang mantle) maoy nagtukmod kanila nga molihok. Kung kalit silang molihok o magkasangka, mauyog ang yuta — mao kanay atong gitawag nga linog. Naa ka bay nahibaw-an nga lugar nga kanunay'g linog? 🤔"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 4,
+      "factIds": [
+        "skin-controls-fever-g6",
+        "detergent-made-from-petroleum-g7",
+        "giant-clam-not-dangerous-myth-g5"
+      ],
+      "user": "Nganong nagsingot man ta kung init?",
+      "assistant": "Maayong pangutana! 😊 Magsingot ta kung init kay paagi kini sa atong lawas sa pagpabugnaw. Kung mogawas ang singot sa atong panit ug mauga (mag-evaporate), gikuha niini ang sobra nga kainit, mao nga mobugnaw ta. Salamat sa singot, magpabilin ang atong lawas sa hustong temperatura! 💧 Sa imong hunahuna, ngano kaha mas paspas ta magsingot kung mag-dula ta o magdagan?"
+    },
+    {
+      "_cat": "answer-knowledge-real",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "detergent-made-from-petroleum-g7",
+        "giant-clam-not-dangerous-myth-g5",
+        "warming-recovers-room-for-more-solute-g6"
+      ],
+      "user": "Nganong nagbukal man ang tubig kung initon?",
+      "assistant": "Maayong pangutana! 🔥 Kung initon nimo ang tubig, mas paspas molihok ang gagmay kaayong mga molekula niini. Inig kainit pag-ayo (mga 100°C kon naa ka sa patag nga dapit), kusog na kaayo silang molihok mao nga ang tubig mahimong singaw ug motungha ang mga bula nga mosaka—mao kana ang atong tawag nga \"nagbukal.\" 💧 Sa imong hunahuna, mas paspas ba o mas hinay nga mobukal ang tubig kung anaa ka sa taas nga bukid?"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "flowerpecker-special-stomach-mistletoe-g8",
+        "guava-leaf-decoction-stomach-g4",
+        "guava-fruit-has-fiber-g4"
+      ],
+      "user": "Tinuod ba nga motubo sa tiyan ang liso sa bayabas kung tunlon nimo?",
+      "assistant": "Dili tinuod na! 😄 Ang imong tiyan kay puno og acid ug walay kahayag, husto nga tubig, ug hangin nga gikinahanglan sa liso aron motubo — mao nga dili gyud kini makaturok sa sulod nimo. Kasagaran, mogawas lang ang liso uban sa imong tae kay dili man kini matunaw. Naa ka kaha'y nahibal-an kung unsa gyud ang gikinahanglan sa usa ka liso aron motubo og tanom? 🌱"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "reading-dark-not-blind-g5"
+      ],
+      "user": "Tinuod ba nga mabuta ka kung magbasa sa ngitngit?",
+      "assistant": "Dili kana tinuod! 😊 Ang pagbasa sa ngitngit dili makabuta nimo — makapakapoy lang gyud ug makasakit sa imong mata kay maglisod kini sa pagtan-aw. Pahuway-pahuwaya ra ang mata ug pangitag igong kahayag aron komportable ka magbasa. 💡 Naa pa ba kay nadunggan nga \"tinuod ba\" bahin sa atong mata nga gusto nimong sutaon?"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "lunar-eclipse-full-moon-g7",
+        "full-moon-over-sea-g4",
+        "full-moon-bright-g4"
+      ],
+      "user": "Tinuod ba nga mabuang ang tawo kung full moon?",
+      "assistant": "Dili tinuod nga mabuang ang tawo kung full moon! 🌕 Daghang siyentipiko ang nagtuon niini, ug walay nakit-an nga koneksyon tali sa takdol ug sa pamatasan o panghunahuna sa tawo. Ang bulan makaapekto sa taob ug hunas sa dagat, apan dili sa atong utok. Gusto ka ba mahibalo nganong magkalainlain ang dagway sa bulan matag gabii? 😊"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "handwashing-stops-good-bacteria-skin-g7",
+        "bacteria-make-yogurt-g5",
+        "bagoong-salt-controls-microbes-g6"
+      ],
+      "user": "Tinuod ba nga tanang bakterya daotan sa lawas?",
+      "assistant": "Dili tinuod! 🦠 Dili tanang bakterya daotan — daghan pa gani ang mapuslanon kaayo. Pananglitan, adunay maayong bacteria sa atong tinai nga motabang sa paghilis sa pagkaon, ug ang uban gigamit sa paghimo og yogurt ug ferment sa pagkaon. Ang pipila lang ka klase ang makapasakit nato. Nahibawo ka ba kung unsa ang ginabuhat sa maayong bacteria sulod sa atong tiyan? 😊"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "goldfish-generic-g4"
+      ],
+      "user": "Tinuod ba nga tulo ka segundo ra ang memorya sa goldfish?",
+      "assistant": "Dili tinuod kana! 🐠 Ang goldfish makahinumdom ug mga butang sulod sa pipila ka bulan, dili lang tulo ka segundo. Pwede pa gani sila ma-train sa pagkilala sa pagkaon ug bisan sa nawong sa tag-iya nila. Unsa pa kaha nga hayop ang abtik nga makahinumdom sa imong hunahuna? 🤔"
+    },
+    {
+      "_cat": "abstain-counterweight",
+      "mode": "abstain",
+      "grade": 6,
+      "factIds": [
+        "icon-method-observe-g3",
+        "icon-method-question-g3",
+        "gloves-safety-g3"
+      ],
+      "user": "Unsa man ang grado nako sa Science quiz ganina?",
+      "assistant": "Pasensya, dili nako mahibal-an ang imong grado sa Science quiz ganina—wala may paagi nga makakita ko sa imong resulta o sa nahitabo sa inyong klase. 😊 Mas maayong pangutan-on ang inyong teacher o tan-awon ang gibalik nga papel para masiguro nimo. Samtang naghulat ka, gusto ka ba ako mangutana ug usa ka science question aron mas andam ka sa sunod nga quiz? 🔬"
+    },
+    {
+      "_cat": "abstain-counterweight",
+      "mode": "abstain",
+      "grade": 6,
+      "factIds": [
+        "unbalanced-forces-tug-of-war-g6",
+        "ants-work-as-team-g3",
+        "ant-superorganism-cooperation-g6"
+      ],
+      "user": "Modaog ba ang paborito nakong team ugma?",
+      "assistant": "Pasensya, dili gyud nako mahibal-an kung modaog ba ang imong paborito nga team ugma. 😅 Ang mga dula sa umaabot wala pa mahitabo, busa walay makasiguro sa resulta—bisan ang mga eksperto magtag-an ra. Apan maayo gihapong mag-suporta sa imong team! 💪 Gusto ka ba nga sultihan tika kung nganong mas kusgan ang usa ka grupo kaysa sa uban sa dula nga tug-of-war?"
+    },
+    {
+      "_cat": "abstain-counterweight",
+      "mode": "abstain",
+      "grade": 6,
+      "factIds": [
+        "copper-first-metal-tools-g7",
+        "sundial-oldest-clock-history-g6",
+        "bacteria-too-older-than-dinos-g5"
+      ],
+      "user": "Pila ka tawo ang naa sa among eskwelahan karon?",
+      "assistant": "Pasensya, gamay ra ko nga tutor 🤖 — dili nako mahibaw-an pila gyud ka tawo ang naa sa inyong eskwelahan karon, kay nagbag-o man na kada adlaw ug wala koy paagi sa pag-ihap niana. Mas maayong mangutana sa inyong principal o sa guard sa gate, kay sila ang naay attendance record. Pero kung gusto nimo, matabangan tika mosabot kung giunsa pag-ihap o pag-estimate ang gidaghanon sa mga tawo — gusto ka magsuway ana? 😊"
+    },
+    {
+      "_cat": "abstain-counterweight",
+      "mode": "abstain",
+      "grade": 4,
+      "factIds": [
+        "convection-sea-three-heat-transfer-context-g9",
+        "parallel-current-splits-g10",
+        "philippines-geothermal-rank-g7"
+      ],
+      "user": "Unsang orasa na karon diri sa among lugar?",
+      "assistant": "Pasensya, dili nako mahibaw-an ang eksaktong oras diha sa inyong lugar karon, kay wala koy paagi sa pagtan-aw sa orasan o sa imong lokasyon. ⏰ Mas maayo nga tan-awon nimo ang relo sa inyong balay o ang orasan sa imong device. Pero kung gusto ka, mahibaw-an nato ngano nga magkalahi ang oras sa lain-laing dapit sa kalibutan — interesado ka ba ana? 😊"
+    }
+  ]
+}

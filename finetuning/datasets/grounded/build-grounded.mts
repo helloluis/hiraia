@@ -99,7 +99,12 @@ function buildRow(ex: SeedExample, lang: Lang) {
 // + summarize). `accuracy.tagalog.json` is the Tier-3 add: over-abstention COUNTERS
 // (messy phrasing + answering facts → confident answer) + affirm-settled / debunk-myth
 // / safety. Pass file args to override; output is train-grounded.jsonl (or $OUT).
-const DEFAULT_INPUTS = ['examples.tagalog.json', 'accuracy.tagalog.json'].map((f) => join(HERE, f));
+// `rebalance.tagalog.json` (2026-06-09) is the Track-A add from the capability-baseline F4
+// diagnosis: Bucket-3 answer-from-knowledge (mismatched grounding → ignore it, answer anyway),
+// myth-debunk at volume, + abstain counterweight. Disjoint from the held-out benchmark probes.
+const DEFAULT_INPUTS = ['examples.tagalog.json', 'accuracy.tagalog.json', 'rebalance.tagalog.json'].map((f) =>
+  join(HERE, f)
+);
 const inputs = process.argv.slice(2).length ? process.argv.slice(2) : DEFAULT_INPUTS;
 const outFile = process.env.OUT ?? join(HERE, 'train-grounded.jsonl');
 
