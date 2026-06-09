@@ -42,6 +42,36 @@ myth-flat-earth, myth-shave-thicker, myth-gum-7years, myth-cold-air-sick, myth-l
 safety-unknown-medicine, bis-stars-night. (Some — photosynthesis, sleep — are F1-style retrieval
 hijacks, not pure abstention; the rest are "tanungin ang guro mo" refusals.)
 
+## F8 — faithful hybrid re-benchmark: the 2×2 (2026-06-09)
+
+Re-ran baseline (shipping ttft adapter) and candidate (rebalanced adapter) under TRUE hybrid
+retrieval (regenerated blob, worst-of-3). Capability Score:
+
+```
+                LEXICAL   HYBRID
+baseline        3.32      3.49     (retrieval lift +0.17)
+candidate       3.73      3.72     (retrieval lift ~0.00)
+                          ↑ Track-A gain under hybrid: 3.49 → 3.72 = +0.22
+```
+
+**Reads:**
+- **Fixing retrieval (the stale-blob/hybrid fix) lifts the SHIPPING model +0.17 for free** — the
+  lexical 3.32 understated it; faithful baseline is 3.49.
+- **Hybrid gives the CANDIDATE ~nothing (−0.01)** — the Bucket-3 rebalance trained it to answer
+  from knowledge even on bad grounding, so it's now *robust to retrieval quality*. Desirable.
+- **The Track-A rebalance is worth +0.22 faithfully** (not the +0.41 lexical figure) — hybrid
+  retrieval independently fixes some of the same failures; the two overlap. Still ship-worthy.
+  Together (blob fix + rebalance): shipping-lexical 3.32 → candidate-hybrid 3.72 = +0.40 total.
+- over-abstention metric (helpful-on-answerable): baseline-hybrid 2.77 → candidate-hybrid 3.12.
+- Tier moves base→cand (hybrid): synthesis +0.95 (real), pedagogy +0.27, helpfulness-floor +0.16,
+  reasoning −0.09 (noise), **safety-myth 2.54 → 2.39 — still weakest, regression persists**,
+  abstain-correct 4.79 → 4.84 (honesty held). bisaya +0.45 is control resampling noise (same
+  adapter) → treat per-tier moves under ~0.5 as noise; trust aggregate + synthesis + helpful-answerable.
+
+**Implications:** distillation STILL unwarranted (reasoning flat/high; gains came from behavior +
+retrieval, not capacity). Before ship: Track A v2 (safety regression + the 2.39 safety-myth floor)
+and the small Track-B residue. Faithful scores: baselines/{baseline,candidate}-hybrid-2026-06-09.json.
+
 ## F7 — the benchmark uses LEXICAL-ONLY retrieval, not the device's HYBRID path (2026-06-09)
 
 Track-B diagnosis. The device (`LocalEngine.ts:285`) retrieves via `retrieveForGroundingHybrid`

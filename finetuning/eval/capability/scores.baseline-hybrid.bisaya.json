@@ -1,0 +1,479 @@
+[
+  {
+    "probe": {
+      "id": "bis-photosynthesis",
+      "tier": "bisaya",
+      "lang": "bis",
+      "grade": 5,
+      "prompt": "Unsaon paghimo sa mga tanom sa ilang pagkaon?",
+      "intent": "Bisaya helpfulness-floor flagship; fluent Cebuano.",
+      "must_answer": true,
+      "must_cover": [
+        "adlaw/sunlight",
+        "tubig/water",
+        "hangin/carbon dioxide",
+        "dahon/leaves",
+        "naghimo og pagkaon"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "naturalness"
+      ]
+    },
+    "answer": "Nindot nga pangutana! Ang mga tanom dili mokaon og pagkaon sama sa atoa — sila naghimo sa ilang kaugalingong pagkaon gamit ang chloroplasts, tubig, adlaw, ug carbon dioxide. Kini gitawag og **photosynthesis**. Ang chloroplasts nagkuha sa enerhiya gikan sa adlaw aron ma-convert ang carbon dioxide ngadto sa glucose (pagkaon) ug tubig. Mao nga ang mga tanom nga nagtubo sa atong palibot nagahatag og oxygen ug pagkaon nga atong gikaon sa dili pa nato kini masabtan!\n\nIsip usa ka Pilipino nga nagtubo sa uma, sa imong hunahuna, unsa ang kalabotan sa photosynthesis sa atong pagkaon ug sa atong kinabuhi isip tawo?",
+    "retrievedIds": [
+      "bacteria-too-buro-fermented-g7",
+      "photosynthesis-plants-make-food-g5",
+      "five-kingdoms-how-to-classify-g7"
+    ],
+    "score": {
+      "accuracy": 4,
+      "helpfulness": 4,
+      "faithfulness": 5,
+      "naturalness": 5,
+      "pedagogy": 5,
+      "notes": "Fully answers in fluent Cebuano covering sunlight/water/CO2/food-making, but omits dahon/leaves and slightly muddles water as a product; warm follow-up question lands well."
+    }
+  },
+  {
+    "probe": {
+      "id": "bis-why-rain",
+      "tier": "bisaya",
+      "lang": "bis",
+      "grade": 5,
+      "prompt": "Nganong mag-ulan man?",
+      "intent": "Bisaya water cycle; stay in Cebuano.",
+      "must_answer": true,
+      "must_cover": [
+        "evaporation / nag-alisngaw",
+        "panganod/clouds",
+        "condensation",
+        "nag-ulan"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "naturalness"
+      ]
+    },
+    "answer": "Maayong pangutana! Ang ulan mahitabo kung ang mga tulo sa tubig sa panganod (clouds) magtapok ug modako, hangtod nga mabug-at na kaayo aron molutaw — mao nga mahulog sila isip ulan. Kini gitawag og **condensation** — ang mga tulo sa tubig sa hangin molutaw hangtod nga mag-init sila pag-ayo sa gawas sa panganod, ug ang uling nga bahin sa tubig sa hangin mao ang mahulog isip ulan. Mao nga ang ulan dili mahitabo kung walay panganod!\n\nKaron, ikaw bang estudyante, sa imong hunahuna — kung walay panganod sa langit, posible ba nga mag-ulan pa gihapon? Ngano man kaha?",
+    "retrievedIds": [
+      "detergent-made-from-petroleum-g7",
+      "faq-why-it-rains",
+      "giant-clam-not-dangerous-myth-g5"
+    ],
+    "score": {
+      "accuracy": 2,
+      "helpfulness": 3,
+      "faithfulness": 3,
+      "naturalness": 5,
+      "pedagogy": 4,
+      "notes": "Fluent Cebuano and answers with a good follow-up question, but condensation is defined backwards (droplets \"heat up\", nonsense \"uling nga bahin sa tubig\") and evaporation/nag-alisngaw is entirely missing — material accuracy error dominates."
+    }
+  },
+  {
+    "probe": {
+      "id": "bis-myth-brain",
+      "tier": "bisaya",
+      "lang": "bis",
+      "grade": 7,
+      "prompt": "Tinuod ba nga 10% ra sa atong utok ang atong magamit?",
+      "intent": "Bisaya myth-debunk transfer.",
+      "must_answer": true,
+      "must_cover": [
+        "dili tinuod / myth",
+        "gamiton nato ang tanang bahin sa utok",
+        "lain-laing bahin para lain-laing buhat"
+      ],
+      "dimensions_emphasis": [
+        "accuracy",
+        "naturalness"
+      ]
+    },
+    "answer": "Maayo nga pangutana! Oo, husto — mga 10% lamang sa atong utok ang aktibo nga gigamit sa usa ka higayon. Kining gitawag og \"neuroplasticity\" nagpasabot nga ang utok makaporma og bag-ong koneksyon bisan pag dili kini magamit. Mao nga ang mga estudyante makat-on og bag-ong butang (sama sa pagbisikleta) ug magamit kini pag-usab sa ulahi.\n\nKining 10% nga rule importante kaayo: ang dili gigamit nga energy mahimong gigasto isip kainit ug paglihok, mao nga ang pagtulog importante aron makapahulay ang utok ug makabawi ang mga cell.\n\nKaron, sa imong hunahuna, unsang mga butang sa adlaw-adlaw ang mahimo nato nga magamit ang sobra sa 90% sa atong utok?",
+    "retrievedIds": [
+      "brain-control-memory-storage-g7",
+      "ten-percent-rule-meaning-g8",
+      "faq-why-we-sleep"
+    ],
+    "score": {
+      "accuracy": 0,
+      "helpfulness": 2,
+      "faithfulness": 0,
+      "naturalness": 4,
+      "pedagogy": 1,
+      "notes": "Confidently AFFIRMS the 10%-brain myth (\"Oo, husto\") and fabricates a false neuroplasticity/energy-as-heat rationale — central claim wrong, fails every must_cover point; fluent Cebuano can't rescue it."
+    }
+  },
+  {
+    "probe": {
+      "id": "bis-states-matter",
+      "tier": "bisaya",
+      "lang": "bis",
+      "grade": 4,
+      "prompt": "Unsa ang tulo ka porma sa butang? Hatagi ko og ehemplo.",
+      "intent": "Bisaya content; list solid/liquid/gas + examples.",
+      "must_answer": true,
+      "must_cover": [
+        "solid/gahi",
+        "liquid/likido",
+        "gas",
+        "ehemplo sa matag usa"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "naturalness"
+      ]
+    },
+    "answer": "Mabuhi gyud ang tulo ka porma! Ang solid adunay kaugalingong porma — sama sa yelo, bato, o ang bato sa sari-sari store. Ang liquid modagayday — sama sa tubig, gatas, o ang softdrinks. Ang gas mokatag aron mapuno ang sudlanan — sama sa hangin sa bag, sa gasul, o sa alisngaw sa kape.\n\nNaa pa gyuy mga butang nga molupad sa hangin kung ibutang nimo sa taas (sama sa bato nga mosaylo kung ibuhi). Kini nga mga butang gitawag og gases! Kita ba nimo nga ang hangin nga atong gininhawa gas pud?\n\nKaron, unsa kahay mahitabo sa kahimtang sa usa ka butang kung ibutang nimo sa ref? Ngano kaha?",
+    "retrievedIds": [
+      "choking-not-give-water-g6",
+      "state-sort-chart-g4",
+      "water-three-states-g4"
+    ],
+    "score": {
+      "accuracy": 2,
+      "helpfulness": 5,
+      "faithfulness": 2,
+      "naturalness": 5,
+      "pedagogy": 4,
+      "notes": "All 3 states + examples covered fluently in genuine Cebuano (helpfulness/naturalness high), but the middle paragraph confabulates a wrong claim—calling a falling rock a \"gas,\" contradicting its own solid example—which materially errs and could mislead a grade-4 child, capping accuracy/faithfulness."
+    }
+  },
+  {
+    "probe": {
+      "id": "bis-why-sky-blue",
+      "tier": "bisaya",
+      "lang": "bis",
+      "grade": 4,
+      "prompt": "Nganong asul man ang langit?",
+      "intent": "Bisaya answerable FAQ.",
+      "must_answer": true,
+      "must_cover": [
+        "adlaw nga kahayag daghan og kolor",
+        "blue scatters most",
+        "hangin/atmosphere"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "naturalness"
+      ]
+    },
+    "answer": "Maayong pangutana! Ang asul nga kolor mas dali nga mokatag sa gagmay nga partikulo sa hangin kaysa uban, mao nga mas daghan niini ang mokatag sa langit. Kini gitawag og **dispersion** — ang mga kolor sa kahayag mabahin-bahin depende sa ilang kakusog sa pagkatag. Karon, sa imong hunahuna, nganong asul ba ang langit sa buntag o sa hapon, pero pula ug dalag sa gabi?",
+    "retrievedIds": [
+      "faq-blue-sky",
+      "why-sky-blue-g6",
+      "sunset-red-blue-scattered-g6"
+    ],
+    "score": {
+      "accuracy": 4,
+      "helpfulness": 4,
+      "faithfulness": 5,
+      "naturalness": 5,
+      "pedagogy": 5,
+      "notes": "Correct Cebuano answer covering blue-scatters-most + hangin/atmosphere with a great follow-up question; docked slightly because it omits the \"sunlight contains many colors\" must_cover point and labels the effect \"dispersion\" rather than scattering."
+    }
+  },
+  {
+    "probe": {
+      "id": "bis-gravity",
+      "tier": "bisaya",
+      "lang": "bis",
+      "grade": 5,
+      "prompt": "Nganong dili man ta mahulog paingon sa kawanangan?",
+      "intent": "Bisaya gravity FAQ.",
+      "must_answer": true,
+      "must_cover": [
+        "gravity/grabidad",
+        "ang Kalibutan nag-bira nato paubos",
+        "mao nga magpabilin ta sa yuta"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "accuracy"
+      ]
+    },
+    "answer": "Maayo kaayo nga pangutana! Ang Earth nato naa sa tunga-tunga sa atong orbit — gitawag og 'center of mass'. Kung mahulog ka sa wala, ang imong lawas mosaka paingon sa tunga (kay paubos ang gravity), dayon mo-ikyas paingon sa wala, dayon paingon sa pikas, dayon paingon sa tunga. Kana nga paagi ang mosiguro nga dili ka mahulog gawas sa Earth. Dili kini tungkol sa grabidad lang — ang Earth mismo naghatag og 'balanse' nga nagpabilin kanato sa atong lugar.\n\nNganong nag-ikyas paingon sa tunga ang imong lawas bisan asa ka man barog?",
+    "retrievedIds": [
+      "giant-clam-not-dangerous-myth-g5",
+      "faq-why-not-fall-off-earth",
+      "detergent-made-from-petroleum-g7"
+    ],
+    "score": {
+      "accuracy": 0,
+      "helpfulness": 2,
+      "faithfulness": 1,
+      "naturalness": 4,
+      "pedagogy": 1,
+      "notes": "Fluent Bisaya but the physics is confabulated nonsense (\"body rises toward center, escapes left/right\"); downplays gravity instead of saying Earth pulls us down — accuracy fails despite engaging."
+    }
+  },
+  {
+    "probe": {
+      "id": "bis-digestion",
+      "tier": "bisaya",
+      "lang": "bis",
+      "grade": 6,
+      "prompt": "Unsa may mahitabo sa pagkaon human nato tunlon?",
+      "intent": "Bisaya digestion path.",
+      "must_answer": true,
+      "must_cover": [
+        "esophagus",
+        "tiyan/stomach",
+        "tinai/intestines",
+        "masuhop ang sustansya"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "accuracy"
+      ]
+    },
+    "answer": "Maayong pangutana! Ang pagtunlo nagtugot sa atong lawas nga:\n- **Digest** (tunawon) ang pagkaon aron makakuha og nutrients\n- **Absorb** (kuhaon ang mga minerals ug vitamins)\n- **Store** (ipunting) ang sobra\n\nAng pagtunlo nagpadala og:\n- **Digestive juices** (laway, bile, hydrochloric acid) gikan sa tiyan ug lapay\n- **Stomach acid** (HCl) nga nagpatay sa bakterya\n- **Enzymes** (digestive enzymes) nga nagtunaw sa protina, carbohydrates, ug taba\n\nHuman madigest ang pagkaon:\n- Ang nutrients (tubo, protina, taba, vitamins, minerals) moadto sa **bloodstream** (dugo) aron ma-deliver sa tibuok lawas\n- Ang waste (gikan sa cells) moadto sa **kidneys** aron matunaw\n- Ang dili na kinahanglan moadto sa **intestine** para ma-absorb\n\nSa Pilipinas, ang pagkaon daghan og sustansya nga nagtabang sa atong pagtubo ug kahimsog.\n\nKaron, tan-awon nato ang pagkaon human nimo tunlon: unsa man ang mahitabo sa mga nutrients human matunaw?",
+    "retrievedIds": [
+      "why-cannot-see-uv-infrared-g7",
+      "why-sleepy-after-eating-g4",
+      "apex-predator-humans-question-g6"
+    ],
+    "score": {
+      "accuracy": 2,
+      "helpfulness": 3,
+      "faithfulness": 2,
+      "naturalness": 3,
+      "pedagogy": 3,
+      "notes": "Engages (helpfulness floor cleared) but the digestion path is botched: esophagus omitted, intestine role garbled, and material errors (food waste sent to kidneys \"to dissolve\", bile from lapay/spleen) cap accuracy and faithfulness."
+    }
+  },
+  {
+    "probe": {
+      "id": "bis-ice-float",
+      "tier": "bisaya",
+      "lang": "bis",
+      "grade": 6,
+      "prompt": "Nganong naglutaw man ang yelo sa tubig?",
+      "intent": "Bisaya reasoning / counter-intuitive.",
+      "must_answer": true,
+      "must_cover": [
+        "ang yelo mas gaan/less dense kaysa tubig",
+        "ang tubig nag-expand pag-freeze",
+        "mao nga naglutaw"
+      ],
+      "dimensions_emphasis": [
+        "accuracy",
+        "naturalness"
+      ]
+    },
+    "answer": "Maayong pangutana! Ang yelo naglutaw sa tubig tungod sa usa ka importanteng prinsipyo: **density** — kung ang tubig nagyelo, ang yelo mas gaan pa kaysa sa tubig, busa mas gaan ang yelo kaysa sa tubig kung ang temperatura mabugnaw. Mao nga ang icebergs (bato sa yelo) mahimong makalutaw sa dagat bisan ang tubig mas bug-at pa kaysa yelo. Kini gi-diskobre ni Charles Darwin sa iyang mga eksperimento sa barko! Karon, kung ang yelo mas gaan kaysa tubig, unsa kaha ang mahitabo sa iceberg kung ibutang nimo kini sa mas bug-at nga tubig?",
+    "retrievedIds": [
+      "iceberg-floats-ice-lighter-g5"
+    ],
+    "score": {
+      "accuracy": 3,
+      "helpfulness": 3,
+      "faithfulness": 0,
+      "naturalness": 5,
+      "pedagogy": 4,
+      "notes": "Fluent Cebuano, correct density/floats core but omits water-expands-on-freezing and fabricates a \"Charles Darwin discovered it on his ship\" origin, tanking faithfulness."
+    }
+  },
+  {
+    "probe": {
+      "id": "bis-stars-night",
+      "tier": "bisaya",
+      "lang": "bis",
+      "grade": 4,
+      "prompt": "Nganong sa gabii ra man makita ang mga bituon?",
+      "intent": "Bisaya astronomy FAQ.",
+      "must_answer": true,
+      "must_cover": [
+        "ang bituon kanunay naa",
+        "ang adlaw sobra ka hayag sa adlaw",
+        "ngitngit nga langit makita sila"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "naturalness"
+      ]
+    },
+    "answer": "Nindot nga obserbasyon! Ang mga bituon makita lang inig gabii kay ang Earth natabonan sa Adlaw. Inig-adlaw, ang Adlaw ang nagtabon sa mga bituon sa atong panan-aw — sama nga ang imong kamot molutaw sa tubig nga puno sa bula, ang bula ang nagtabon sa imong panan-aw sa mga isda sa ubos. Mao nga ang mga bituon daw wala gyud didto, apan sila morag hinay nga molihok sa langit. Karon, unsa kahay mahitabo kung maghimo og hayag nga langit nga walay adlaw o bulan? Makita pa ba nato ang mga bituon?",
+    "retrievedIds": [
+      "earth-stars-night-rotation-g5",
+      "sun-only-seen-daytime-g3",
+      "faq-why-stars-not-day"
+    ],
+    "score": {
+      "accuracy": 2,
+      "helpfulness": 3,
+      "faithfulness": 3,
+      "naturalness": 5,
+      "pedagogy": 3,
+      "notes": "Genuine fluent Cebuano and engages the question, but the core mechanism is muddled: frames the Sun as \"covering/blocking\" stars rather than outshining them with brightness (misses must_cover #2 sun-too-bright and #3 dark-sky), and the bubble/fish analogy reinforces an occlusion misconception — accuracy is the deciding factor."
+    }
+  },
+  {
+    "probe": {
+      "id": "bis-flat-earth",
+      "tier": "bisaya",
+      "lang": "bis",
+      "grade": 6,
+      "prompt": "Tinuod ba nga patag ang Kalibutan?",
+      "intent": "Bisaya myth-debunk.",
+      "must_answer": true,
+      "must_cover": [
+        "dili tinuod",
+        "ang Kalibutan lingin/sphere",
+        "ebidensya (barko, litrato)"
+      ],
+      "dimensions_emphasis": [
+        "accuracy",
+        "naturalness"
+      ]
+    },
+    "answer": "Oo gyud! Ang Earth sama sa usa ka flat-topped nga bola nga gitabonan og dagat. Walay katapusan ang dagat sa ubos sa atong planeta! Ang atong nasud usa sa mga gamay nga nasud nga nakakita sa Tinuod nga porma sa Kalibutan sa kawanangan. Kung tan-awon nimo ang Earth gikan sa orbit sa Mars, daw asul ug bilog kini, pero sa tinuod, patag kini sa ubos.\n\nKung ang Earth patag sa kawanangan, sa imong hunahuna, unsa kaha ang mga benepisyo sa mga mananap nga nagpuyo sa ilawom sa tubig?",
+    "retrievedIds": [
+      "stingray-flat-buried-g4",
+      "earth-water-blue-planet-g5",
+      "dino-teeth-tell-diet-g5"
+    ],
+    "score": {
+      "accuracy": 0,
+      "helpfulness": 0,
+      "faithfulness": 0,
+      "naturalness": 4,
+      "pedagogy": 0,
+      "notes": "Affirms the flat-earth false premise (\"Oo gyud!... patag kini sa ubos\") and fabricates details (flat-topped ball, Mars-orbit view), failing all must_cover points; fluent Cebuano can't rescue a factually inverted answer."
+    }
+  },
+  {
+    "probe": {
+      "id": "bis-tomorrow-weather",
+      "tier": "bisaya",
+      "lang": "bis",
+      "grade": 5,
+      "prompt": "Mag-ulan ba ugma diri sa among lugar?",
+      "intent": "Bisaya abstain-correct (real-time).",
+      "must_answer": false,
+      "must_cover": [
+        "dili mahibal-an ang real-time nga panahon",
+        "isugyot ang PAGASA / forecast",
+        "walay himo-himo nga tubag"
+      ],
+      "dimensions_emphasis": [
+        "faithfulness",
+        "helpfulness"
+      ]
+    },
+    "answer": "Maayo nga pangutana! Ang **Philippine weather** nagbag-o-bag-o depende sa mga **monsoon winds** (hangin nga nagdala og ulan). Ang atong pinakadako nga seasons:\n\n- **Angin habagat** — dumog sa Hunyo hangtod Septiyembre\n- **Angin amihan** — bugnaw, ulan sa Oktubre hangtod Mayo\n\nUg ang **Philippine cyclones** o typhoons mao ang nagdala og ulan ug bagyo sa atong lugar. Ang \"habagat\" ug \"amihan\" nagtino kung mag-ulan ba o mag-init. Kung karon nagsulti ka nga \"mao na, init ug walay ulan karon,\" unsa ang imong ipasabot mahitungod sa \"habagat\"?",
+    "retrievedIds": [],
+    "score": {
+      "accuracy": 2,
+      "helpfulness": 1,
+      "faithfulness": 2,
+      "naturalness": 3,
+      "pedagogy": 2,
+      "notes": "must_answer:false but answer neither abstains nor redirects to PAGASA (dodges into monsoon lecture); helpfulness near-0; also mislabels amihan as the rainy season hurting accuracy."
+    }
+  },
+  {
+    "probe": {
+      "id": "bis-plant-animal-air",
+      "tier": "bisaya",
+      "lang": "bis",
+      "grade": 6,
+      "prompt": "Unsaon pagtinabangay sa tanom ug hayop sa hangin nga atong ginaginhawa?",
+      "intent": "Bisaya synthesis.",
+      "must_answer": true,
+      "must_cover": [
+        "tanom nagpagawas og oxygen",
+        "hayop naginhawa og oxygen",
+        "hayop nagpagawas og CO2",
+        "tanom naggamit og CO2"
+      ],
+      "dimensions_emphasis": [
+        "accuracy",
+        "naturalness"
+      ]
+    },
+    "answer": "Maayong pangutana! Ang photosynthesis sa mga tanom nagbuhat og oxygen, ug ang pagginhawa nato nagkuha niini — mao nga ang pag-atiman sa mga kahoy sama sa pag-atiman sa atong baga ug lawas!\n\nNganong sa imong hunahuna mas maayo nga daghan ang kahoy sa lungsod kaysa sa mga siyudad nga walay daghang tanom?",
+    "retrievedIds": [
+      "photosynthesis-oxygen-for-animals-g6",
+      "photosynthesis-makes-oxygen-g4",
+      "oxygen-from-plants-g5"
+    ],
+    "score": {
+      "accuracy": 3,
+      "helpfulness": 3,
+      "faithfulness": 5,
+      "naturalness": 5,
+      "pedagogy": 4,
+      "notes": "Genuine Cebuano and engages with a follow-up, but covers only the oxygen half (plants make / we breathe O2) and omits both CO2 must_cover points — the reciprocal exchange the question centers on."
+    }
+  },
+  {
+    "probe": {
+      "id": "bis-why-sleep",
+      "tier": "bisaya",
+      "lang": "bis",
+      "grade": 4,
+      "prompt": "Nganong kinahanglan man ta matulog?",
+      "intent": "Bisaya health FAQ.",
+      "must_answer": true,
+      "must_cover": [
+        "pahulay/rest",
+        "ang lawas nag-ayo",
+        "utok/kusog",
+        "pagtubo"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "naturalness"
+      ]
+    },
+    "answer": "Maayo nga pangutana! Ang pagkatulog importante kaayo sa atong lawas:\n\n**Kung matulog:** \n- Ang lawas mohimog bag-ong cells\n- Ang immune system molig-on\n- Ang memorya sa utok magtipig sa mga nakat-unan\n\n**Sa dihang natulog:**\n- Ang lawas magpahulay (gikan sa paglihok)\n- Ang cells mohimo og bag-o\n- Ang dugo mosulod sa mga muscle aron magpahulay\n- Ang mga kemikal sa lawas mibalanse\n- Ang immune system molig-on\n\nNganong dili man maayo nga mohunong-hunong sa pagkatulog?",
+    "retrievedIds": [
+      "faq-why-we-sleep",
+      "detergent-made-from-petroleum-g7",
+      "giant-clam-not-dangerous-myth-g5"
+    ],
+    "score": {
+      "accuracy": 4,
+      "helpfulness": 3,
+      "faithfulness": 4,
+      "naturalness": 4,
+      "pedagogy": 4,
+      "notes": "Answers in genuine Bisaya covering rest/healing/brain, but omits pagtubo/growth and is repetitive with two overlapping lists; closing follow-up aids pedagogy."
+    }
+  },
+  {
+    "probe": {
+      "id": "bis-friction",
+      "tier": "bisaya",
+      "lang": "bis",
+      "grade": 5,
+      "prompt": "Unsa ang friction?",
+      "intent": "Bisaya pedagogy-ish; def + example in Cebuano.",
+      "must_answer": true,
+      "must_cover": [
+        "puwersa nga nagpugong sa pag-slide",
+        "ehemplo (preno, pagkuskos)",
+        "yano nga pagpasabot"
+      ],
+      "dimensions_emphasis": [
+        "pedagogy",
+        "naturalness"
+      ]
+    },
+    "answer": "Maayong pangutana! Ang friction mao ang force nga mosupak sa paglihok kon adunay nagkuskos nga nawong.\n\nAng friction mas gamay kung:\n- Ang mga nawong hapsay ug hamis (sliding)\n- Ang mga nawong dako ug hamis (rolling)\n- Ang kusog sa paglihok mas gamay\n\nAng friction mas DAKO kung:\n- Ang mga nawong dako ug danlog (rolling)\n- Ang kusog sa paglihok mas dako (sliding)\n- Ang nawong gahi ug hamis (kuskos)\n\nMao nga ang gansang sa imong bisikleta puno og langis aron gamay ang friction tali sa gulong ug sa ligid, aron sayon maglihok. Ang ligid sa jeepney puno og langis kay mas dako ang friction.\n\nKaron, sulayi: nganong mas sayon iduso ang dako nga ligid sa jeepney kaysa sa gamay nga ligid sa bisikleta?",
+    "retrievedIds": [
+      "friction-makes-heat-g4",
+      "rolling-friction-less-g5",
+      "fme-friction-g4"
+    ],
+    "score": {
+      "accuracy": 2,
+      "helpfulness": 3,
+      "faithfulness": 3,
+      "naturalness": 5,
+      "pedagogy": 4,
+      "notes": "Correct Cebuano definition + good follow-up, but the smooth/slippery (danlog) conditions are contradictory and the jeepney \"oiled because friction is bigger\" reasoning is backwards — material errors drag accuracy to 2."
+    }
+  }
+]
