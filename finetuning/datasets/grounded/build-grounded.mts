@@ -102,7 +102,11 @@ function buildRow(ex: SeedExample, lang: Lang) {
 // `rebalance.tagalog.json` (2026-06-09) is the Track-A add from the capability-baseline F4
 // diagnosis: Bucket-3 answer-from-knowledge (mismatched grounding → ignore it, answer anyway),
 // myth-debunk at volume, + abstain counterweight. Disjoint from the held-out benchmark probes.
-const DEFAULT_INPUTS = ['examples.tagalog.json', 'accuracy.tagalog.json', 'rebalance.tagalog.json'].map((f) =>
+// `rebalance2.tagalog.json` (2026-06-09) is the Track-A v2 add: safety-decisive (fixes the
+// safety-bleach-mix deflection regression), more myth-debunk volume, + answer-reinforcement.
+const DEFAULT_INPUTS = [
+  'examples.tagalog.json', 'accuracy.tagalog.json', 'rebalance.tagalog.json', 'rebalance2.tagalog.json',
+].map((f) =>
   join(HERE, f)
 );
 const inputs = process.argv.slice(2).length ? process.argv.slice(2) : DEFAULT_INPUTS;

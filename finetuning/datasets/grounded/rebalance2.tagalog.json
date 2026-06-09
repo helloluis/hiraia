@@ -1,0 +1,521 @@
+{
+  "language": "tagalog",
+  "_note": "Track-A v2 SFT-rebalance (2026-06-09). Fixes the v1 candidate regressions/floor (FINDINGS F6/F8): safety-decisive (the safety-bleach-mix h0 deflection), more myth-debunk volume (safety-myth tier ~2.4), + answer-reinforcement. DISJOINT from the held-out benchmark probes. Generated+verified by rebalance2-generate.",
+  "examples": [
+    {
+      "_cat": "safety-decisive-mismatch",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "concentrated-dilute-g7",
+        "clownfish-rarely-leaves-anemone-g6",
+        "mosquito-life-cycle-four-stages-g4"
+      ],
+      "user": "Pwede ko bang ihalo ang muriatic acid at bleach para mas malinis ang banyo?",
+      "assistant": "Hindi! Huwag na huwag mong ihahalo ang muriatic acid at bleach. 😷 Kapag pinaghalo ang dalawang ito, lumalabas ang nakakalasong chlorine gas na pwedeng makasakit sa baga at mata mo — delikado talaga ito. Mas ligtas na gamitin lang ang isa sa kanila nang mag-isa, at siguraduhing bukas ang bintana para may sariwang hangin. Lagi kang may kasamang nakatatanda kapag naglilinis ng banyo, ha? 🧼"
+    },
+    {
+      "_cat": "safety-decisive-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "intestine-villi-tiny-fingers-g7",
+        "big-changes-stress-g7",
+        "both-eyes-move-together-g5"
+      ],
+      "user": "Nakakita ako ng lumang gamot na walang label sa cabinet, pwede ko bang inumin kapag masakit ang ulo ko?",
+      "assistant": "Hindi, huwag mong iinumin ang gamot na walang label! 🚫 Hindi natin alam kung anong gamot iyon, baka expired na o hindi tama para sa sakit ng ulo, at pwede itong makalason o makasama sa katawan mo. Ang dapat mong gawin: sabihan ang isang nasa hustong gulang—tatay, nanay, o lola mo—para sila ang magbigay ng tamang at ligtas na gamot, o magpahinga ka muna at uminom ng tubig. May matatanda ka bang malapit na pwede mong tawagin ngayon? 💛"
+    },
+    {
+      "_cat": "safety-decisive-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "octopus-open-jar-g6",
+        "heron-spear-helps-balance-nature-g5",
+        "well-reaches-groundwater-g6"
+      ],
+      "user": "Nagliliyab ang mantika sa kawali — pwede ko bang buhusan ng tubig para mamatay ang apoy?",
+      "assistant": "Hindi, huwag na huwag mong buhusan ng tubig ang nagliliyab na mantika! 🔥 Lulubog kasi ang tubig sa ilalim ng mainit na langis at biglang sasabog ito pataas kasama ang apoy, kaya lalaki at kakalat ang sunog. Sa halip, patayin ang kalan kung kaya, at takpan ang kawali ng metal na takip para mawalan ng hangin ang apoy — o lagyan ng baking soda, hindi tubig. Tatandaan mo ba ito para ligtas ka sa kusina? 😊"
+    },
+    {
+      "_cat": "safety-decisive-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "copper-best-soldered-joints-g7",
+        "five-senses-smell-taste-team-g6",
+        "genetics-mutation-rate-is-rare-per-gene-g10"
+      ],
+      "user": "May naamoy akong tumutulong gas sa kusina. Dapat ko bang buksan ang ilaw para makita ko?",
+      "assistant": "Hindi, huwag mong buksan ang ilaw! ⚠️ Ang pag-on ng switch ay maaaring magbuga ng maliit na kislap, at puwede nitong masunog o pasabugin ang naipong gas. Sa halip, huwag hawakan ang anumang switch o gamit, mabilis na buksan ang mga bintana at pinto para makalabas ang gas, isara kung kaya ang gas valve, at tawagin agad ang isang matanda para tumulong. Alam mo ba kung saan ang gas valve ng inyong kalan? 🪟"
+    },
+    {
+      "_cat": "safety-decisive-mismatch",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "static-attract-amber-history-g6",
+        "tuna-fast-swimmer-g5",
+        "redtide-toxin-vs-allergy-g8"
+      ],
+      "user": "May taong nakuryentehan at nakahawak pa sa kable. Pwede ko ba siyang hawakan agad para iligtas?",
+      "assistant": "Hindi, huwag mo siyang hawakan agad! ⚠️ Kung nakahawak pa siya sa kable na may kuryente, dadaloy din ang kuryente sa iyo at maaari ka ring makuryente. Ang unang gawin: patayin ang switch o breaker para mawalan ng kuryente, o itulak siya palayo gamit ang isang tuyong kahoy o plastik—huwag kamay. Pagkatapos ay tumawag agad ng tulong. Alam mo ba kung nasaan ang breaker sa inyong bahay? 💡"
+    },
+    {
+      "_cat": "safety-decisive-mismatch",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "bread-gluten-traps-co2-g8",
+        "balintong-philippine-pangolin-g4",
+        "cockroach-insect-three-body-g3"
+      ],
+      "user": "Ligtas bang magluto gamit ang uling sa loob ng saradong kwarto kapag malakas ang ulan?",
+      "assistant": "Hindi, huwag na huwag magluto gamit ang uling sa loob ng saradong kwarto! 🚫 Kapag nasusunog ang uling, naglalabas ito ng carbon monoxide—isang gas na walang amoy at walang kulay na nakakalason at pwedeng ikamatay kung walang sapat na hangin. Kahit malakas ang ulan, magluto sa labas o sa lugar na maaliwalas at maraming daanan ng hangin. Alam mo ba kung saan kayo karaniwang nagluluto sa inyong bahay? 😊"
+    },
+    {
+      "_cat": "safety-decisive",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "vinegar-making-suka-fermentation-g6",
+        "never-mix-bleach-acid-g8",
+        "ginger-tea-soothes-stomach-g5"
+      ],
+      "user": "Pwede bang painumin ng suka ang taong nakainom ng lason para sumuka siya?",
+      "assistant": "Hindi, huwag na huwag pipilitin painumin ng suka o pasusukahin ang taong nakainom ng lason. 🚫 Maaaring lalong masunog ang lalamunan at bibig kapag bumalik ang nakakalasong likido, o baka mahinga papunta sa baga at ikamatay. Ang tama: huwag pasukahin, tawagan agad ang emergency hotline o pumunta sa pinakamalapit na ospital, at dalhin ang lalagyan ng nainom. Alam mo ba ang emergency number na puwedeng tawagan sa inyong lugar? 💚"
+    },
+    {
+      "_cat": "safety-decisive",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "circuit-current-powers-phone-charger-g8",
+        "static-grounding-humid-air-helps-g7",
+        "static-grounding-g8"
+      ],
+      "user": "Ligtas bang gumamit ng cellphone habang naka-charge at basa ang kamay ko?",
+      "assistant": "Hindi, huwag gamitin ang cellphone habang naka-charge at basa ang kamay mo. ⚠️ Ang tubig ay madaling dinaraanan ng kuryente, kaya kung may depekto o sira ang charger, puwede kang ma-kuryente—delikado ito! Punasan mo munang mabuti ang iyong mga kamay at, kung kaya, hugutin muna sa saksakan bago gamitin. Alam mo ba kung bakit mas mabilis dumaloy ang kuryente sa basang kamay? 💧"
+    },
+    {
+      "_cat": "safety-decisive",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "fuse-breaker-current-makes-heat-g7",
+        "never-touch-bare-wires-g5",
+        "current-and-magnet-force-g8"
+      ],
+      "user": "Pwede bang hawakan ang nakabukas na electric wire kung naka-tsinelas ako?",
+      "assistant": "Hindi! Huwag na huwag mong hawakan ang nakabukas na electric wire, kahit naka-tsinelas ka pa. ⚠️ Ang tsinelas ay hindi sapat na proteksiyon — pwede pa ring dumaloy ang kuryente sa katawan mo (lalo na kung basa ang kamay, pawisan, o nakatapak ka sa basang sahig) at ito ay nakamamatay. Ang tamang gawin: layuan agad ito at sabihan ang isang nakatatandang tao para patayin ang kuryente at ayusin ito. Gusto mo bang ikuwento ko kung bakit napakapeligro talaga ng kuryente? 😊"
+    },
+    {
+      "_cat": "safety-decisive",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "tears-keep-not-rub-eyes-g4",
+        "handwashing-after-mechanism-loosen-g5",
+        "soap-breaks-needs-rubbing-friction-g5"
+      ],
+      "user": "Nahapdi ang mata ko dahil napasok ng sabon — dapat ko bang kuskusin nang mabuti?",
+      "assistant": "Hindi, huwag mong kuskusin ang mata mo! 🙅 Kapag kinuskos mo, baka mas masaktan o ma-iritate pa ito. Ang dapat mong gawin: banlawan ang mata ng malinis na tubig nang dahan-dahan sa loob ng ilang minuto, at hayaan mong kumurap-kurap para tumulong ang luha na maghugas ng sabon. Kung patuloy ang hapdi o pamumula, sabihin agad sa isang nakatatanda. Nabanlawan mo na ba ng tubig ang mata mo? 💧"
+    },
+    {
+      "_cat": "safety-decisive-mismatch",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "radiation-heat-no-medium-g7",
+        "phytoplankton-absorb-carbon-g9",
+        "philippine-eagle-soars-glides-g4"
+      ],
+      "user": "Ligtas bang sumilong sa ilalim ng mataas na puno kapag may kulog at kidlat?",
+      "assistant": "Hindi, huwag kang sumilong sa ilalim ng mataas na puno kapag may kulog at kidlat! ⚡ Ang matataas na puno ang madalas tamaan ng kidlat, kaya delikadong-delikado tumayo sa ilalim nito. Mas ligtas na pumasok sa loob ng bahay o gusali at iwasan ang bukas na lugar hanggang humupa ang bagyo. Alam mo ba kung ano pa ang dapat iwasang hawakan sa loob ng bahay habang may kidlat? 🏠"
+    },
+    {
+      "_cat": "safety-decisive-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "lever-everyday-tools-g5",
+        "metamorphosis-helps-avoid-competition-g6",
+        "monitor-lizard-hunted-by-people-g7"
+      ],
+      "user": "Pwede bang kainin ang laman ng lata na namaga o kinakalawang na?",
+      "assistant": "Hindi, huwag mong kainin iyon! 🚫 Ang lata na namamaga o bulging ay tanda na may bakterya sa loob na gumagawa ng nakakalasong gas (gaya ng botulism), at delikado itong makalason. Pati ang kinakalawang na lata ay maaaring may butas o dumi na nakakasama sa pagkain, kaya itapon na lang ito nang ligtas. Naintindihan mo ba kung bakit mas mabuting maging maingat sa de-latang pagkain? 😊"
+    },
+    {
+      "_cat": "safety-decisive-mismatch",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "genetics-mutation-not-contagious-misconception-g8",
+        "leaves-green-yellowing-water-clue-g5",
+        "philippine-crocodile-critically-endangered-g5"
+      ],
+      "user": "May nakagat sa akin na ahas — dapat ko bang hiwain at supsupin ang sugat para lumabas ang kamandag?",
+      "assistant": "Hindi, huwag na huwag mong hihiwain o sususupsupin ang sugat — mas lalo lang itong makakasama dahil maaaring mahawa ang sugat at mas mabilis kumalat ang kamandag. 🐍 Ang tamang gawin: manatiling kalmado, huwag gumalaw nang sobra, panatilihin ang nakagat na bahagi sa pantay o mas mababa sa puso, at magmadali sa pinakamalapit na ospital para mabigyan ng anti-venom. Tandaan: doktor lang ang makakapagligtas, kaya pagpunta agad sa ospital ang pinakaimportante. Kaya mo bang tandaan ang unang dapat gawin kung sakaling may makagat na ahas? 💚"
+    },
+    {
+      "_cat": "safety-decisive-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "earth-crust-two-types-g7",
+        "dark-matter-invisible-mass-g10",
+        "reef-shark-pups-birth-g5"
+      ],
+      "user": "Ligtas bang ihalo ang iba’t ibang panlinis na sabay-sabay para mas malakas?",
+      "assistant": "Hindi, huwag na huwag mong ihalo nang sabay-sabay ang iba't ibang panlinis! 🚫 Lalo na ang bleach at ammonia (o toilet cleaner) — kapag pinagsama ang mga ito, lumilikha sila ng nakalalasong usok na pwedeng makasira ng baga at delikado pang malanghap. Gumamit ng isang panlinis lamang sa isang pagkakataon, at palaging nasa bukas na lugar na maayos ang hangin. Gusto mo bang malaman kung bakit mapanganib na pagsamahin ang bleach at suka? 😊"
+    },
+    {
+      "_cat": "safety-decisive-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "swiftlet-cave-not-bat-misconception-g6",
+        "seagrass-meadow-three-coastal-habitats-g8",
+        "drink-water-skin-healthy-g6"
+      ],
+      "user": "Pwede bang painitin ang sarado o de-lata na pagkain habang nakatakip pa para mabilis?",
+      "assistant": "Hindi, huwag mong painitin ang sarado o de-latang pagkain na nakatakip o nakasara pa! ⚠️ Kapag uminit ang loob, naiipon ang singaw at presyon na walang labasan, kaya pwede itong pumutok o sumabog at masaktan ka o mapaso. Buksan mo muna ang lata o lalagyan, ilipat sa kaldero o microwave-safe na sisidlan, saka init. Alam mo ba kung bakit mas mabilis uminit ang pagkain kapag nakatakip ang kaldero? 😊"
+    },
+    {
+      "_cat": "debunk-myth-mismatch",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "commensalism-one-study-importance-g8",
+        "la-nina-rain-floods-ph-g7",
+        "greenhouse-reduce-by-renewable-energy-g8"
+      ],
+      "user": "Totoo bang nakakalunod kapag lumangoy ka agad pagkatapos kumain?",
+      "assistant": "Hindi totoo na agad kang malulunod kapag lumangoy pagkatapos kumain! 🏊 Ang dating paniniwalang ito ay isang myth lang. Totoo na maaari kang makaramdam ng konting hapdi o pulikat sa tiyan kung sobra-sobra ang kinain mo, kaya mas mabuting magpahinga muna ng ilang minuto—pero hindi ito sanhi ng paglunod. Gusto mo bang malaman kung bakit nga ba mahalaga pa rin ang pag-iingat tuwing lumalangoy? 😊"
+    },
+    {
+      "_cat": "debunk-myth-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "malunggay-leaves-vitamins-g4",
+        "cave-echo-shout-g5",
+        "three-groups-classify-light-g4"
+      ],
+      "user": "Totoo bang dapat ihian ang kagat ng dikya (jellyfish) para gumaling?",
+      "assistant": "Hindi totoo iyan! 🪼 Ang pag-ihi sa kagat ng dikya ay hindi nakakagamot — puwede pa ngang lumala dahil maaaring mapasabog nito ang natitirang mga maliliit na lason (stinger cells) sa balat. Mas mabuting hugasan ang kagat ng tubig-dagat (hindi tubig-tabang) at alisin nang dahan-dahan ang mga galamay, tapos magpatingin sa matanda o doktor. May naranasan ka na bang makagat ng dikya sa dagat? 😊"
+    },
+    {
+      "_cat": "debunk-myth-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "fridge-back-coils-warm-g6",
+        "bee-queen-one-per-hive-g4",
+        "printing-press-changed-learning-g6"
+      ],
+      "user": "Totoo bang nakukuryente ang ibong nakatuntong sa kable ng kuryente?",
+      "assistant": "Hindi totoo, kaya hindi nakukuryente ang ibon kahit nakatuntong sa kable! 🐦 Ang dahilan: dumadaloy lang ang kuryente kung may daanan papunta sa ibang lugar na mas mababa ang boltahe, pero ang ibon ay isang punto lang ang hinahawakan — iisang kable. Kapag may hinawakan siyang ibang kable o poste habang nasa una, saka lang siya makukuryente. Ang galing ng science, 'di ba? Gusto mo bang malaman kung bakit naman tayong mga tao ay madaling makuryente? ⚡"
+    },
+    {
+      "_cat": "debunk-myth-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "lungs-clean-air-job-g6",
+        "lymph-empties-into-veins-g9",
+        "philippine-eagle-largest-g5"
+      ],
+      "user": "Totoo bang nawawala ang sustansya ng pagkain kapag iniinit sa microwave?",
+      "assistant": "Hindi totoo iyan! Hindi naman lahat ng sustansya ay nawawala kapag iniinit sa microwave. 😊 Totoo na sa anumang pagluluto—paksiw, prito, o microwave man—medyo nababawasan ang ilang bitamina gaya ng Vitamin C, pero dahil mabilis magluto ang microwave, madalas mas marami pang sustansyang naiiingatan kumpara sa matagal na pagpapakulo. Gusto mo bang malaman kung anong paraan ng pagluluto ang pinakamabuti para sa gulay? 🥦"
+    },
+    {
+      "_cat": "debunk-myth-mismatch",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "ice-floats-on-water-g6",
+        "philippines-islands-coastline-very-long-g7",
+        "bee-sting-swelling-itch-g5"
+      ],
+      "user": "Totoo bang gumagaling agad ang trangkaso kapag uminom ng antibiotics?",
+      "assistant": "Hindi totoo iyan! 🤧 Ang trangkaso ay sanhi ng virus, pero ang antibiotics ay para lang sa bacteria—kaya wala itong epekto sa trangkaso at hindi nito napapabilis ang paggaling. Ang pinakamabisa talaga ay magpahinga, uminom ng maraming tubig, at hayaang labanan ng katawan ang virus. Alam mo ba kung bakit delikadong uminom ng antibiotics kahit hindi kailangan? 😊"
+    },
+    {
+      "_cat": "debunk-myth-mismatch",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "faq-where-wind-comes-from",
+        "sponge-clean-water-ecosystem-g7",
+        "moon-gravity-tides-g4"
+      ],
+      "user": "Totoo bang nakakasira ng tiyan ang pag-inom ng tubig habang kumakain?",
+      "assistant": "Hindi totoo iyan! 😊 Ang pag-inom ng tubig habang kumakain ay hindi nakakasira ng tiyan — sa katunayan, nakakatulong pa ito na lumambot at madaling lunukin ang pagkain. Ang tubig ay bahagi ng tamang panunaw, kaya okay lang uminom habang kumakain. May iba ka pa bang naririnig na \"totoo ba\" tungkol sa pagkain na gusto mong patunayan natin? 💧"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "tb-curable-many-pills-combination-g7",
+        "wash-fruits-vinegar-soak-comparison-g7",
+        "soap-better-than-water-alone-g4"
+      ],
+      "user": "Totoo bang mas mabisa ang gamot kapag dinoble mo ang dami na ininom?",
+      "assistant": "Hindi totoo iyan, at mapanganib pala kapag ginawa! 😟 Ang gamot ay may tamang dosis na sinusukat para sa edad at timbang mo — hindi ito gumagaling nang mas mabilis kapag dinoble, sa halip ay puwedeng makalason o makasakit sa katawan, gaya ng pinsala sa atay o tiyan. Kaya laging sundin lang ang nakasulat sa reseta o sabi ng doktor at magulang. Gusto mo bang malaman kung bakit kaya may iba't ibang dosis ang gamot para sa bata at matanda? 💊"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "reef-fish-warning-colors-poison-g6",
+        "why-animals-bright-warning-color-g5"
+      ],
+      "user": "Totoo bang lahat ng kabuteng makulay at maganda ay puwedeng kainin?",
+      "assistant": "Hindi totoo iyan! 🍄 Ang kulay o ganda ng kabute ay hindi palatandaan na puwede itong kainin. Marami sa pinakamakulay at magaganda ang tingin na kabute ay sobrang nakakalason at puwedeng magdulot ng matinding sakit o kamatayan. Kaya kailanman, huwag pumitas o kumain ng kabuteng natagpuan sa labas kung walang nakakatandang eksperto na nagsabing ligtas ito. May nakita ka bang ganitong klaseng kabute, kaya ka naisipang itanong? 😊"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "no-toothpaste-butter-burn-g5",
+        "active-vs-charcoal-toothpaste-misconception-g9",
+        "toothpaste-base-acid-g7"
+      ],
+      "user": "Totoo bang gumagaling ang paso kapag pinahiran ng toothpaste o bawang?",
+      "assistant": "Hindi totoo iyan! 🙅 Ang toothpaste o bawang ay hindi nakakagamot ng paso—sa halip, mas nakakasama pa ito dahil maaaring magdulot ng impeksiyon at nakaka-irita sa balat. Kapag napaso, ang tama ay ibabad o patuluyin agad sa malinis at malamig na tubig nang mga 10 minuto, tapos takpan ng malinis na tela. Alam mo ba kung bakit malamig na tubig ang ginagamit at hindi yelo? 💧"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 4,
+      "factIds": [
+        "frog-jump-tagulan-active-g4",
+        "phone-airplane-mode-stops-signals-g6",
+        "aircon-thermostat-target-temp-g7"
+      ],
+      "user": "Totoo bang dumadami pa ang langgam kapag pinapatay mo sila?",
+      "assistant": "Hindi totoo iyan! 🐜 Hindi dumadami ang langgam kapag pinapatay mo sila — namamatay talaga sila. Pero kapag may pagkaing nakatambay, marami pa ring langgam ang darating dahil naaamoy nila ito at sumusunod sa \"amoy-bakas\" na iniwan ng kanilang kasama. Kaya ang sekreto ay itago at linisin ang pagkain para wala silang puntahan. May naiwan ka bang pagkain sa bahay na baka pinupuntahan nila? 😊"
+    },
+    {
+      "_cat": "debunk-myth-mismatch",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "soap-water-loving-end-g6",
+        "philippine-eagle-owl-ear-tufts-g5",
+        "virus-dengue-aedes-aegypti-g7"
+      ],
+      "user": "Totoo bang permanenteng nagiging duling ang mata kapag matagal mong dinuling?",
+      "assistant": "Hindi totoo, anak! Hindi nagiging permanenteng duling ang mata mo kahit gaano katagal mong dinuling ito. Kapag kusa mong dinuling ang iyong mata, ginagamit mo lang ang mga maliliit na kalamnan sa paligid nito, at babalik naman ito sa normal kapag nag-relax ka. 😊 Pero alam mo bang may totoong duling na dulot ng problema sa mga kalamnan o nerbiyo ng mata — gusto mo bang malaman kung paano ito naiiba?"
+    },
+    {
+      "_cat": "debunk-myth-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "faq-why-metal-hot-in-sun",
+        "giant-panda-strong-teeth-jaws-g5",
+        "anvil-cloud-storm-top-g7"
+      ],
+      "user": "Totoo bang nakakapagpaputi ng ngipin ang pagkuskos ng asin o uling dito?",
+      "assistant": "Hindi totoo na nakakapagpaputi ng ngipin ang pagkuskos ng asin o uling! 🦷 Magaspang kasi ang mga ito, kaya sa halip na linisin, nagagasgas at nasisira nila ang enamel—ang pinakamatigas na panlabas na takip ng ngipin mo. Kapag naubos ang enamel, mas nagiging madilaw pa nga ang ngipin at mas madaling masira. Ang pinakaligtas talaga ay regular na pagsisipilyo gamit ang toothpaste na may fluoride. Gusto mo bang malaman kung bakit ang fluoride ang tunay na tutulong sa ngipin mo? 😊"
+    },
+    {
+      "_cat": "debunk-myth-mismatch",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "constellation-orion-need-no-telescope-g4",
+        "handwashing-prevents-vs-vaccines-comparison-g8",
+        "barnacle-filter-not-shellfish-clam-g6"
+      ],
+      "user": "Totoo bang lumalaki nang mas mabilis ang halaman kapag kinakausap mo ito araw-araw?",
+      "assistant": "Magandang tanong! Pero hindi ito totoo — ang halaman ay hindi nakakaintindi ng salita, kaya hindi sila lumalaki nang mas mabilis dahil lang kinakausap mo sila. 🌱 Ang totoong kailangan nila para lumaki ay sikat ng araw, tubig, mabuting lupa, at hangin (carbon dioxide). May nagsasabi ngang kapag malapit ka habang nagsasalita ay kaunting carbon dioxide mula sa hininga mo ang naidaragdag, pero napakaliit lang niyan para makaapekto. Gusto mo bang subukan natin kung paano lumalago ang halaman kapag inilagay sa madilim na lugar? 😊"
+    },
+    {
+      "_cat": "debunk-myth-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "storm-surge-definition-g7",
+        "switch-breaks-circuit-with-insulator-g6",
+        "opaque-no-light-through-g4"
+      ],
+      "user": "Totoo bang nakakahawa ang bulutong (chickenpox) kahit gumaling na ang tao?",
+      "assistant": "Hindi totoo iyan! 😊 Kapag ganap nang gumaling ang isang tao sa bulutong—ibig sabihin, tuyo na at nag-scab na lahat ng mga butlig—hindi na siya nakakahawa. Naililipat lang ang bulutong habang may sariwang butlig pa, pero pagkagaling, ligtas na siya makasama. May alam ka pa bang ibang sakit na gusto mong malaman kung paano kumakalat? 🦠"
+    },
+    {
+      "_cat": "debunk-myth-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "rain-gauge-millimeters-meaning-g5",
+        "diabetes-insulin-glucometer-finger-prick-g9",
+        "thermometer-not-touch-flame-g5"
+      ],
+      "user": "Totoo bang dapat magpalipas ng ilang oras bago linisin ang sugat para hindi mahawa?",
+      "assistant": "Hindi totoo iyan! 🩹 Dapat agad-agad linisin ang sugat gamit ang malinis na tubig at sabon—hindi mo na hihintayin pa na lumipas ang ilang oras. Kapag pinabayaan mong matagal, mas madaling makapasok ang mga mikrobyo at mahawa ito. Pagkalinis, takpan mo ng malinis na benda para protektado. May tanong ka pa ba tungkol sa pag-aalaga ng sugat? 😊"
+    },
+    {
+      "_cat": "debunk-myth-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "fungi-not-plants-g5",
+        "umbra-penumbra-source-size-matters-g7",
+        "tsunami-from-not-just-tall-power-g8"
+      ],
+      "user": "Totoo bang nakakabulag ang pagtitig sa eklipse kahit sandali lang?",
+      "assistant": "Oo, totoo iyan! Mapanganib talaga ang pagtitig sa araw tuwing eklipse, kahit sandali lang. Ang sobrang liwanag ay sumusunog sa sensitibong bahagi ng iyong mata (ang retina), at hindi mo ito nararamdaman dahil walang sakit, pero pwede itong magdulot ng permanenteng pinsala o pagkabulag. Kaya kung manonood ka ng eklipse, gumamit ka lang ng espesyal na eclipse glasses, ha? Gusto mo bang malaman kung paano ito ligtas na pwedeng panoorin? 😊🌒"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 8,
+      "factIds": [
+        "freezing-melting-followup-time-g6",
+        "freezer-makes-ice-g4",
+        "freezing-melting-frost-freezer-g6"
+      ],
+      "user": "Totoo bang mas mabilis lumamig ang mainit na tubig kaysa malamig na tubig sa freezer?",
+      "assistant": "Magandang tanong! Karaniwang hindi ito totoo — sa ilalim ng pantay na kondisyon, ang malamig na tubig ang mas mabilis umabot sa freezing dahil mas malapit na ito sa zero, samantalang kailangan munang mawalan ng maraming init ng mainit na tubig. 🧊 May ilang espesyal na sitwasyon kung saan parang mas mabilis mag-yelo ang mainit na tubig (tinatawag itong \"Mpemba effect\"), pero hindi ito laging nangyayari at pinagtatalunan pa ng mga siyentipiko. Gusto mo bang malaman kung bakit minsan nangyayari ito? 😊"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "asian-palm-civet-coffee-g6",
+        "kape-alamid-from-droppings-g6",
+        "kape-alamid-name-meaning-g5"
+      ],
+      "user": "Totoo bang nakakapagpabata ang pag-inom ng maraming kape araw-araw?",
+      "assistant": "Hindi totoo na nakakapagpabata ang pag-inom ng maraming kape araw-araw. ☕ Ang kape ay may caffeine na nagpapagising sa atin, pero hindi nito napipigilan ang paglaki o pagtanda ng katawan. Sa katunayan, ang sobrang dami ng kape ay puwedeng makasama sa pagtulog at puso, lalo na sa mga batang katulad mo. Ano kaya sa palagay mo ang totoong nakakatulong para maging malusog ang katawan natin? 😊"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "cold-flu-common-rainy-season-g5",
+        "battery-invention-g6",
+        "hair-nails-dead-cells-g4"
+      ],
+      "user": "Hindi ko maintindihan kung bakit kumukulo ang tubig pero hindi naman nasusunog. Tulungan mo ako.",
+      "assistant": "Magandang tanong iyan! 😊 Kapag pinapainit mo ang tubig, lumalakas ang galaw ng maliliit na bahagi nito hanggang sa maging singaw ito — iyon ang kumukulo, at nangyayari iyon sa mga 100°C lang. Ang \"masunog\" naman ay ibang bagay: kailangan noon ng apoy na nakikipag-reaksyon sa hangin (oxygen), pero ang tubig ay hindi nasusunog — sa totoo lang, ginagamit pa nga natin ito para patayin ang apoy! 💧 Gusto mo bang malaman kung saan napupunta ang singaw na lumalabas sa kumukulong tubig?"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "rice-growing-takes-months-g4",
+        "shooting-star-not-a-star-g5",
+        "snake-shed-because-growing-g5"
+      ],
+      "user": "Bakit ako nahihilo kapag sobrang bilis akong umikot tapos huminto?",
+      "assistant": "Magandang tanong 'yan! 🌀 Sa loob ng tenga mo may maliliit na tubo na may likido na tumutulong sa balanse mo. Kapag mabilis kang umikot, gumagalaw din 'yung likido — at kahit huminto ka na, patuloy pa rin itong umiikot saglit, kaya naloloko ang utak mo at parang umiikot pa rin ang paligid. 'Yan ang dahilan kaya ka nahihilo! Gusto mo bang malaman kung paano kayang gawin ng mga sayaw na umikot nang hindi sila nahihilo? 😊"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "soap-grease-cleaning-action-g6",
+        "heart-four-upper-vs-lower-job-g6",
+        "compost-worms-cold-blooded-temperature-g7"
+      ],
+      "user": "Bakit may bahaghari kung minsan sa ibabaw ng bula ng sabon?",
+      "assistant": "Magandang tanong yan! Ang balat ng bula ng sabon ay napakanipis na patong ng tubig at sabon. Kapag tumama ang liwanag dito, ang ibang sinag ay nagbabalik sa labas na bahagi at ang iba ay sa loob, at kapag nagsalubong silang muli ay nagiging magkakaibang kulay — kaya nabubuo ang bahaghari na parang gumagalaw habang nagbabago ang kapal ng balat. 🌈 Napansin mo ba na nagbabago ang kulay habang papalapit nang papalapit ang bula sa pagputok?"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 4,
+      "factIds": [
+        "refraction-light-mirage-road-g7",
+        "fever-rest-appetite-loss-g5",
+        "fever-rest-light-food-soup-g4"
+      ],
+      "user": "Bakit umuusok ang mainit na sopas kahit hindi naman ito apoy?",
+      "assistant": "Magaling na tanong, parang siyentista ka! 🔬 Ang \"usok\" na nakikita mo sa mainit na sopas ay hindi talaga usok mula sa apoy—ito ay singaw ng tubig. Sa init, may tubig na nagiging gas (water vapor) na pumapaitaas, at pagtama nito sa mas malamig na hangin, lumalamig ito at nagiging napakaliliit na patak ng tubig na nakikita natin na parang puting usok. Kaya nawawala ito kapag lumalamig na ang sopas. May napansin ka rin bang ganitong \"usok\" sa mainit na kape o sa tubig na pinapakuluan? ☕"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "oil-water-do-not-mix-g4",
+        "soap-grease-water-dont-mix-g5",
+        "oil-water-dont-mix-g5"
+      ],
+      "user": "Bakit hindi naghahalo ang langis at tubig kahit haluin ko?",
+      "assistant": "Magandang tanong iyan! 😊 Hindi naghahalo ang langis at tubig dahil magkaiba ang kanilang mga maliliit na particle—ang tubig ay \"nagkakapit\" sa kapwa tubig, at ang langis naman sa kapwa langis, kaya ayaw nilang magsama. Kahit haluin mo, maghihiwalay pa rin sila, at lumulutang sa ibabaw ang langis dahil mas magaan ito kaysa tubig. Gusto mo bang malaman kung paano sila pinagsasama sa sabon? 🧼"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "hand-sanitizer-alcohol-g4",
+        "handwashing-after-alcohol-when-no-water-g5",
+        "hand-sanitizer-alcohol-g6"
+      ],
+      "user": "Bakit lumalamig ang kamay ko kapag nilagyan ng alcohol?",
+      "assistant": "Magandang tanong iyan! 🌬️ Lumalamig ang kamay mo dahil mabilis sumingaw ang alcohol — kapag nagiging singaw ito, kumukuha ito ng init mula sa balat mo, kaya nararamdaman mong malamig. Parang ganito rin ang nangyayari kapag basa ka at hinangin ka, mas malamig ang pakiramdam. Napansin mo ba na mas mabilis itong matuyo kaysa sa tubig? 😊"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "fever-body-cool-cloth-not-cold-g6",
+        "house-gecko-sticky-toes-mechanism-g5",
+        "house-gecko-toes-inspire-tape-g6"
+      ],
+      "user": "Bakit dumidikit ang malamig na yelo sa basang daliri ko?",
+      "assistant": "Magandang tanong iyan! 🧊 Dumidikit ang yelo sa basang daliri mo dahil ang manipis na tubig sa balat mo ay napakabilis na nagyeyelo kapag dumampi sa sobrang lamig na yelo. Itong maliit na bahaging nagyelo ang parang pandikit na kumakapit sa daliri at sa yelo nang sabay. Kaya nga kapag tuyo ang kamay mo, hindi ito gaanong dumidikit! Napansin mo na rin ba ito sa frozen na bote o sa freezer? 😊"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "earphones-tiny-speakers-magnet-g6",
+        "ears-hear-sound-g4",
+        "kubing-jaw-sound-needs-medium-g6"
+      ],
+      "user": "Bakit may parang tunog ng dagat kapag inilapit ko ang kabibe sa tenga ko?",
+      "assistant": "Magandang tanong iyan! 🐚 Hindi galing sa dagat ang tunog na iyon — ang totoo, ang hugis-kurbado ng loob ng kabibe ay parang maliit na silid na sumasalo sa mga ingay sa paligid mo, gaya ng hangin at maging ng dugong dumadaloy sa iyong tenga. Pinapalakas at pinaglalaro ng kabibe ang mga tunog na ito kaya parang lagaslas ng alon ang naririnig mo. Subukan mo kayang ilapit ang isang baso sa tenga mo — may parehong tunog din ba? 😊"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "otap-oval-pastry-g4",
+        "microwave-heats-water-molecules-g7",
+        "oven-mitt-protects-hands-g4"
+      ],
+      "user": "Bakit lumalaki ang tinapay sa oven pero ang biskwit hindi?",
+      "assistant": "Magandang tanong iyan! 😊 Lumalaki ang tinapay dahil may pampaalsa ito tulad ng lebadura (yeast), na bumubuo ng maliliit na bula ng gas habang nagluluto—kaya umaangat at lumalambot ang masa. Ang karaniwang biskwit naman ay walang ganoong pampaalsa o kakaunti lang, kaya mas siksik at malutong ito imbes na umangat. Gusto mo bang malaman kung paano gumagawa ng bula ang lebadura sa loob ng masa? 🍞"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "hot-air-rises-expansion-g7",
+        "thermal-expansion-hot-air-rises-g7",
+        "convection-sea-density-balloon-analogy-g8"
+      ],
+      "user": "Bakit gumagaan ang pakiramdam ko sa tubig kapag lumalangoy ako?",
+      "assistant": "Magandang tanong iyan! 😊 Kapag lumalangoy ka, tumutulak pataas ang tubig sa iyong katawan — tinatawag itong \"buoyancy\" o lakas-pataas. Itong pagtulak ng tubig ang bumabawas sa bigat na nararamdaman mo, kaya parang gumagaan ka. Mas malakas ang pagtulak na ito ng tubig kaysa sa hangin, kaya doon mo lang nararamdaman ang ganitong paggaan! Naranasan mo na bang parang lumulutang ka lang kapag nakahiga sa tubig? 🏊"
+    }
+  ]
+}
