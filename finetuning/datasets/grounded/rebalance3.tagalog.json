@@ -1,0 +1,366 @@
+{
+  "language": "tagalog",
+  "_note": "Track-A v3 SFT-rebalance (2026-06-09). Recovers the v2 synthesis/codeswitch wobble (20 synth+Taglish answer-knowledge rows) + more myth-debunk (10), keeping the safety/myth gains. DISJOINT from the benchmark.",
+  "examples": [
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "cacao-pods-seeds-bitter-raw-g6",
+        "dna-double-not-visible-eye-g8",
+        "shellfish-shut-shell-danger-g4"
+      ],
+      "user": "Bakit namamatay ang mga isda kapag sobrang dami ng lumalagong algae sa lawa?",
+      "assistant": "Magandang tanong iyan! Kapag sobrang dami ng algae sa lawa, namamatay sila nang sabay-sabay at binubulok ng bakterya — at sa proseso ng pagbubulok, naaubos nila ang oxygen na nakalusaw sa tubig. Dahil kailangan ng oxygen ang isda para makahinga gamit ang kanilang hasang, nauubusan sila ng hangin kaya namamatay. 🐟 May ilan pang uri ng algae na naglalabas ng lason na nakakasama rin sa mga isda."
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "tb-curable-early-detection-easier-g7",
+        "density-less-dense-floats-g5",
+        "moons-orbit-planets-g4"
+      ],
+      "user": "Ano ang mangyayari sa mga halaman kung mawala ang lahat ng bubuyog at paru-paro?",
+      "assistant": "Magkakaproblema nang malaki ang mga halaman! 🐝 Maraming halaman ang umaasa sa mga bubuyog at paru-paro para dalhin ang pollen mula sa isang bulaklak patungo sa iba—ito ang tinatawag na pollination, at kailangan nito para makabuo ng prutas at buto. Kung mawawala sila, mahihirapang mamunga ang maraming halaman, kaya kokonti ang prutas, gulay, at buto—at apektado rin ang pagkain natin at ng mga hayop. Sa tingin mo ba, ano ang puwede nating gawin para tulungang protektahan ang mga bubuyog at paru-paro? 🦋"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "invasive-golden-apple-snail-g6",
+        "pinworm-itchy-night-g5",
+        "size-does-not-decide-floating-g6"
+      ],
+      "user": "Bakit mas mainit sa siyudad kaysa sa probinsya kahit magkalapit lang sila?",
+      "assistant": "Magandang tanong yan! 🌆 Mas mainit sa siyudad dahil puno ito ng konkreto, semento, at aspaltong kalsada na sumisipsip at nag-iipon ng init mula sa araw, tapos dahan-dahang inilalabas ito. Sa probinsya naman, mas maraming puno at halaman na nagbibigay ng lilim at sumisipsip ng init, kaya mas presko. Dagdag pa, ang dami ng sasakyan, gusali, at aircon sa siyudad ay naglalabas din ng sariling init. Sa tingin mo, ano kayang puwede nating gawin para lumamig nang kaunti ang mga siyudad? 🌳"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "earthworm-vermicompost-harvest-g4",
+        "crop-rotation-yield-g8",
+        "earthworm-healthy-soil-sign-g4"
+      ],
+      "user": "Bakit mas masagana ang ani kapag maraming bulate sa lupa?",
+      "assistant": "Magandang tanong yan! 🌱 Mas masagana ang ani kapag maraming bulate kasi binubutas-butasan nila ang lupa habang gumagapang, kaya mas madaling makapasok ang hangin at tubig papunta sa mga ugat. Saka kapag kinakain nila ang mga dahon at sanga na nabubulok, lumalabas ang kanilang dumi na puno ng sustansya — parang natural na pataba para sa mga halaman! Kaya pala palatandaan ng malusog at matabang lupa ang dami ng bulate. May nakikita ka bang bulate sa hardin o paso ninyo? 😊"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "carbon-stored-in-forest-diagram-g7",
+        "deforestation-rainforest-oxygen-g7",
+        "photosynthesis-vs-climate-co2-sink-g9"
+      ],
+      "user": "Ano ang mangyayari sa klima kung putulin ang lahat ng puno sa kagubatan?",
+      "assistant": "Kung puputulin ang lahat ng puno sa kagubatan, sobrang sasama ang klima natin! 🌍 Wala nang sisipsip ng carbon dioxide kaya mas iipon ito sa hangin at mas iinit ang mundo. Bababa rin ang ulan dahil ang mga puno ang nagpapakawala ng singaw ng tubig na bumubuo ng ulap — kaya pwedeng magkaroon ng tagtuyot at baha. Mahalaga talaga ang mga puno, 'di ba? Gusto mo bang malaman kung paano tayo makakatulong magtanim? 🌳"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "hydro-dam-energy-chain-g8",
+        "energy-hydroelectric-g6",
+        "hydroelectric-water-spins-generator-g8"
+      ],
+      "user": "Paano nagiging kuryente ang tubig sa isang hydroelectric dam?",
+      "assistant": "Magandang tanong iyan! 💧 Sa isang hydroelectric dam, naiipon ang tubig sa mataas na bahagi kaya may naipong potensyal na enerhiya ito. Kapag pinakawalan, dumadaloy ito pababa nang malakas at pinapaikot ang isang turbina, at ang turbina naman ang nagpapaandar sa generator na siyang gumagawa ng kuryente. Kaya napupunta sa ating mga ilaw at gamit ang enerhiyang galing mismo sa lakas ng tubig! ⚡ Gusto mo bang malaman kung saan ginagamit ang ganitong dam sa Pilipinas?"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "dog-ears-keep-out-water-g4",
+        "disease-spread-why-some-not-sick-g5",
+        "sea-otter-cant-drink-saltwater-myth-g8"
+      ],
+      "user": "Bakit nagkakasakit ang mga tao kapag marumi ang tubig na kanilang iniinom?",
+      "assistant": "Magandang tanong yan! Ang maruming tubig ay may mga maliliit na mikrobyo (germs) tulad ng bacteria at parasites na hindi natin nakikita. Kapag nainom natin ito, pumapasok ang mga germ sa ating tiyan at nagiging sanhi ng sakit gaya ng pagtatae, pagsusuka, o lagnat. Kaya napakahalagang pakuluan o salain muna ang tubig bago inumin para mapatay ang mga germ. Alam mo ba kung paano natin masisigurong malinis ang tubig sa inyong bahay? 💧😊"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "convection-wind-is-convection-g7",
+        "renewable-energy-source-is-sun-g7",
+        "abaniko-fan-cooling-self-g4"
+      ],
+      "user": "Ano ang koneksyon ng init ng araw sa pag-ihip ng hangin?",
+      "assistant": "Magandang tanong 'yan! Hindi pantay na pinapainit ng araw ang Earth, kaya may mga lugar na mas mainit kaysa sa iba. Sa mainit na lugar, umaakyat ang hangin pataas, at para pumalit dito, dumadaloy ang hangin mula sa mas malamig na lugar — 'yan ang nararamdaman nating ihip! 🌬️☀️ Kaya pala kung walang araw, wala ring hangin na umiihip. Gusto mo bang malaman kung bakit mas malakas ang hangin sa tabing-dagat?"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "mangrove-fishery-livelihood-g7",
+        "mangroves-g5",
+        "ocean-mangrove-protect-g6"
+      ],
+      "user": "Bakit mahalaga ang mga mangrove sa mga isda at sa baybayin?",
+      "assistant": "Magandang tanong yan! 🌿 Ang mga mangrove o bakawan ay napakahalaga kasi ang magkakabuhol nitong mga ugat ay ligtas na pugad kung saan namumugad at lumalaki ang maliliit na isda, hipon, at alimango bago sila lumangoy sa dagat. Para naman sa baybayin, ito ang humaharang sa malalakas na alon at bagyo, kaya nababawasan ang pagkasira ng dalampasigan. Kaya nga mahalaga rin ito sa kabuhayan ng mga mangingisdang Pilipino! 🐟 Alam mo ba kung anong ibang hayop ang maaaring matagpuan sa mga bakawan?"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "rust-needs-water-and-air-g6",
+        "sound-faster-water-g7",
+        "rust-humid-electrolyte-salt-air-g6"
+      ],
+      "user": "Bakit mas mabilis mainitan ang buhangin kaysa sa tubig-dagat kapag tanghali?",
+      "assistant": "Magandang tanong 'yan! Mas mabilis mainitan ang buhangin dahil mas mababa ang \"specific heat\" nito — ibig sabihin, kaunting init lang ay tumataas na agad ang temperatura niya. Ang tubig naman ay kailangan ng mas maraming init bago tumaas ang temperatura, at umaalon din ito kaya nahahati ang init sa malalim na bahagi. Kaya 'pag tanghali, nakakapaso na ang buhangin pero malamig pa rin ang tubig-dagat! 🌊☀️ Napansin mo na ba ito noong nasa beach ka?"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "force-changes-multiple-forces-add-g8",
+        "seeds-fruit-helps-travel-g4",
+        "shrimp-cold-climate-warming-effect-g7"
+      ],
+      "user": "Sir bakit po nagkakaroon ng high tide at low tide? Like anong nagca-cause non?",
+      "assistant": "Magandang tanong yan! 🌊 Ang high tide at low tide ay sanhi ng gravity o hila ng Buwan (at kaunti rin ng Araw) sa tubig ng dagat. Sa bahaging nakaharap sa Buwan, hinihila palapit ang tubig kaya tumataas (high tide); at dahil sa pag-ikot ng Earth, may kapareho ring pagtaas sa kabilang panig—kaya karamihan ng lugar ay nakararanas ng dalawang high tide at dalawang low tide kada araw. Gusto mo bang malaman kung bakit mas malaki ang alon kapag full moon o new moon? 🌕"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "hot-spring-dissolved-minerals-g7",
+        "sun-much-cant-look-directly-g5",
+        "feathers-keep-birds-dry-g3"
+      ],
+      "user": "Teacher totoo po ba na may sariling gravity ang buwan? Paano po nakakaapekto sa atin?",
+      "assistant": "Oo, totoo! 🌙 May sariling gravity ang buwan, kaya lang mas mahina ito kaysa sa Earth dahil mas maliit ang buwan. Pero kahit malayo ito, ang gravity ng buwan ang humihila sa tubig ng ating mga karagatan — kaya may pagtaas (high tide) at pagbaba (low tide) ng tubig sa dagat. 🌊 Napansin mo na ba ang pagbabago ng tubig sa dagat kapag pumupunta kayo sa beach?"
+    },
+    {
+      "_cat": "answer-knowledge-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "paper-thin-light-g3",
+        "fme-gravity-g4",
+        "volcano-ash-vs-pyroclastic-g7"
+      ],
+      "user": "Po bakit po ba umiinit yung cellphone ko kapag matagal kong ginagamit?",
+      "assistant": "Magandang tanong yan! Umiinit ang cellphone mo kasi habang ginagamit mo, ang processor at battery nito ay sobrang busy at gumagawa ng trabaho — at kapag dumadaloy ang kuryente sa loob, may bahagi nitong nagiging init. Lalo itong umiinit kapag matagal kang naglalaro ng games o nanonood ng video, o kapag mainit din ang paligid. Kaya minsan ang gadget natin ay parang tao rin na pinapawisan kapag pagod. 😊📱 Napansin mo ba kung anong gawain sa phone ang pinakamabilis magpainit nito?"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "hydro-dam-energy-chain-g8",
+        "energy-hydroelectric-g6",
+        "hydroelectric-water-spins-generator-g8"
+      ],
+      "user": "Sir paano po nagiging electricity yung lakas ng tubig sa hydroelectric dam?",
+      "assistant": "Magandang tanong, iho! 💧 Kapag bumababa ang tubig mula sa taas ng dam, nagiging galaw (kinetic energy) ang lakas nito at pinapaikot nito ang malalaking turbina. Konektado ang turbina sa isang generator na may magnet at mga kabel — kaya pag umiikot ito, gumagawa ng kuryente! Kaya yung enerhiya ng bumabagsak na tubig, nagiging elektrisidad para sa mga bahay natin. ⚡ Naisip mo na ba kung bakit kailangang nasa mataas na lugar ang dam para gumana ito?"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "why-goosebumps-g4",
+        "goosebumps-cold-and-fear-g4",
+        "goosebumps-hair-g4"
+      ],
+      "user": "Teacher bakit po nagkakaroon ng goosebumps tayo kapag nilalamig o natatakot?",
+      "assistant": "Magandang tanong yan! 😊 Nagkakaroon tayo ng goosebumps o kilabot kapag ang maliliit na kalamnan sa ilalim ng balat natin ay humihila pataas sa ating mga balahibo, kaya tumatayo ang mga ito. Isa itong lumang reflex mula pa sa ating mga ninuno na makakapal ang balahibo — para magkulong ng init kapag nilalamig, o para magmukhang mas malaki at nakakatakot kapag natatakot o nagugulat. Kaya nga kahit hindi na kasing kapal ng balahibo natin ngayon, nararamdaman pa rin natin ito! 🐾 Napansin mo na ba kung kailan ka pinaka-nagkakaroon ng kilabot?"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "object-color-sunset-orange-g7",
+        "why-sunset-red-g6",
+        "red-sunset-scattering-g6"
+      ],
+      "user": "Po anong nagpapaganda po ng kulay ng sunset? Like bakit kahel po siya?",
+      "assistant": "Magandang tanong iyan! 🌅 Kapag papalubog na ang araw, mas makapal na hangin ang dinadaanan ng liwanag bago umabot sa atin. Dito nakakalat na ang asul na liwanag, kaya ang natitira at umaabot sa mga mata natin ay ang kulay kahel at pula — kaya parang nagliliyab ang langit! Ano sa palagay mo, mas maganda ba ang kulay ng langit sa paglubog o sa pagsikat ng araw? 😊"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "aircon-thermostat-smart-app-control-g8",
+        "magnetic-field-phone-compass-ph-g7",
+        "lightning-avoid-no-phone-corded-g6"
+      ],
+      "user": "Sir totoo po ba na may bacteria kahit saan kahit malinis? Like sa phone ko po?",
+      "assistant": "Oo, totoo iyan! 🦠 Halos nasa lahat ng lugar may bacteria—sa hangin, sa balat natin, at oo, lalo na sa cellphone mo na madalas mong hawakan at idikit sa mukha. Karamihan sa kanila ay hindi nakakasama, pero mabuti pa ring i-wipe minsan ang phone mo at maghugas ng kamay. Gusto mo bang malaman kung saan pa sa bahay ninyo madalas may maraming bacteria?"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "snake-s-shape-slither-g4",
+        "mountain-zigzag-road-inclined-plane-g6",
+        "river-meander-bends-g6-2"
+      ],
+      "user": "Teacher bakit po nahihilo ako pag nasa sasakyang mabilis o paliko-liko?",
+      "assistant": "Magandang tanong yan! Nahihilo ka dahil hindi sang-ayon ang mga senyales na natatanggap ng utak mo. 🤔 Nararamdaman kasi ng maliit na \"balanse sensor\" sa loob ng tenga mo na gumagalaw at lumiliko ka, pero ang mga mata mong nakatingin sa loob ng sasakyan ay parang nakatigil lang—kaya nalilito ang utak at nag-mo-motion sickness ka. Para mabawasan, subukan mong tumingin sa malayo o sa daan sa labas ng bintana. Gusto mo bang malaman pa kung paano gumagana ang balanse sensor sa tenga natin? 😊"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "why-soda-fizzes-g4",
+        "soda-fizz-dissolved-gas-g6",
+        "carbon-dioxide-makes-fizz-g4"
+      ],
+      "user": "Po bakit po lumalaki yung mga bula sa softdrinks kapag binuksan?",
+      "assistant": "Magandang tanong, iho/iha! 🥤 Kasi ang softdrinks ay may carbon dioxide na gas na pinilit na natunaw sa loob nito habang naka-presyon ang bote. Kapag binuksan mo, bumababa nang bigla ang presyon, kaya nagtitipon-tipon ang gas at lumalaki ang mga bula habang tumatakas paitaas — kaya nga parang \"sumisitsit\" o kumukulo kahit malamig pa. Napansin mo ba na mas marami ang bula kapag niyugyog mo muna ang bote bago buksan? 😊"
+    },
+    {
+      "_cat": "answer-knowledge",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "float-sink-oil-floats-on-water-g5",
+        "shrimp-cold-deep-water-cooler-g6",
+        "freezing-melting-water-expands-g6"
+      ],
+      "user": "Sir bakit po ba pakiramdam ko mas magaan ako kapag nasa tubig na malalim?",
+      "assistant": "Magandang tanong yan! Kapag nasa tubig ka, may puwersang nagtutulak sa katawan mo pataas — tinatawag itong buoyancy o ang pagtulak ng tubig. 💧 Habang lumulubog ka, mas marami sa katawan mo ang nababalot ng tubig, kaya mas malakas ang tulak pataas at mas magaan ang pakiramdam mo — kahit hindi nagbabago ang totoo mong timbang. Hindi po talaga ito dahil sa lalim mismo kundi dahil mas malaki ang bahagi mong nakalubog sa tubig. Gusto mo bang malaman kung bakit may mga bagay na lumulutang habang ang iba naman ay lumulubog? 🐟"
+    },
+    {
+      "_cat": "debunk-myth-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "banana-pseudostem-leaf-sheaths-g5",
+        "skin-first-barrier-germs-g6",
+        "electromagnet-attracts-iron-steel-only-g8"
+      ],
+      "user": "Totoo bang mas mabilis at mas makapal tumubo ang kuko kapag madalas putulin?",
+      "assistant": "Hindi totoo iyan! 😊 Hindi nagiging mas mabilis o mas makapal tumubo ang kuko kahit gaano mo pa kadalas putulin. Ang totoo, ang bilis ng pagtubo ng kuko ay nakadepende sa edad, sustansya sa kinakain mo, at sa daloy ng dugo sa mga daliri — hindi sa pagputol. Pakiramdam lang natin na mas mabilis dahil pansin natin agad kapag bago putol. Gusto mo bang malaman kung bakit mas mabilis tumubo ang kuko sa kamay kaysa sa paa? 💅"
+    },
+    {
+      "_cat": "debunk-myth-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "kangkong-grows-fast-g4",
+        "palawan-peacock-female-camouflage-g5",
+        "palawan-peacock-cannot-relocate-g7"
+      ],
+      "user": "Totoo bang biglang pumuputi ang buhok kapag sobrang natakot o nabigla ang tao?",
+      "assistant": "Hindi totoo na biglang pumuputi ang buhok sa isang iglap kapag natakot ka! 😊 Kasi ang bahaging buhok na sumisibol na sa labas ay patay na sangkap — hindi na puwedeng biglang mawala ang kulay nito sa isang gabi. Ang nangyayari, kapag sobrang stress, puwedeng malagas ang mga maitim na buhok kaya mas nakikita ang mga natitirang puti, o unti-unting tumitigil ang katawan sa paggawa ng kulay habang tumatagal. Gusto mo bang malaman kung ano talaga ang nagbibigay ng itim na kulay sa buhok natin? 🧬"
+    },
+    {
+      "_cat": "debunk-myth-mismatch",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "philippine-tarsier-turns-head-g5",
+        "oil-floats-cooking-example-g5",
+        "solar-panels-clean-home-energy-g6"
+      ],
+      "user": "Totoo bang lumalaki ang utak ng tao sa laki kapag mas marami siyang natutunan?",
+      "assistant": "Hindi totoo na lumalaki sa laki ang utak natin kapag marami tayong natutunan. 🧠 Ang totoo, hindi ang sukat ang nagbabago kundi ang mga koneksyon sa loob—gumagawa ang utak ng mas maraming \"linya\" o ugnayan sa pagitan ng mga selula nito kapag may natututunan tayo. Kaya nagiging mas magaling tayong mag-isip, hindi dahil lumalaki ang ulo natin. 😊 Gusto mo bang malaman kung paano tumitibay ang mga koneksyong ito kapag inuulit-ulit natin ang isang bagay?"
+    },
+    {
+      "_cat": "debunk-myth-mismatch",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "silkworm-spins-cocoon-g4",
+        "crab-arthropod-claw-strength-g6",
+        "fungi-decomposers-g6"
+      ],
+      "user": "Totoo bang mas matalino ang mga batang isinilang nang maaga sa umaga?",
+      "assistant": "Hindi totoo iyan! 😊 Walang kinalaman ang oras ng panganganak—umaga man o gabi—sa magiging talino ng isang bata. Ang talino ay umuunlad dahil sa pagkatuto, masustansyang pagkain, pagtulog, at pagmamahal at suporta ng pamilya. Kaya kahit anong oras ka ipinanganak, kaya mong maging matalino kung patuloy kang mag-aaral! 🌟 Ano kayang gusto mong matutunan ngayon?"
+    },
+    {
+      "_cat": "debunk-myth-mismatch",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "yeast-is-living-microbe-g5",
+        "skin-keeps-mosquito-bite-ph-g4",
+        "bivalve-two-shells-g6"
+      ],
+      "user": "Totoo bang nakakasama sa mata ang pagbabasa habang nakahiga?",
+      "assistant": "Hindi totoo na nakakasira ng mata ang pagbabasa habang nakahiga. 😊 Ang totoo, hindi ito naninira ng mata, pero kapag madilim o masyadong malapit ang libro, napapagod at nahihirapang mag-focus ang mga mata mo kaya minsan nangangalumata o nasasakit ang ulo. Mas okay magbasa nang nakaupo na may maliwanag na ilaw para komportable ang mga mata mo. Gusto mo bang malaman kung bakit kailangan natin ng sapat na liwanag kapag nagbabasa? 💡"
+    },
+    {
+      "_cat": "debunk-myth-mismatch",
+      "mode": "grounded",
+      "grade": 7,
+      "factIds": [
+        "jackfruit-strong-grows-on-trunk-g4",
+        "physical-vs-chemical-separation-g8",
+        "vaccine-adjuvant-booster-g8"
+      ],
+      "user": "Totoo bang namamana ng anak ang peklat o sugat ng kanyang magulang?",
+      "assistant": "Hindi totoo 'yan! 😊 Ang mga peklat o sugat ay nakukuha lang sa buhay ng tao — galing sa aksidente o sa paghilom ng balat — kaya hindi naililipat sa mga DNA o \"blueprint\" na minamana ng anak. Ang minamana lang natin sa magulang ay mga katangiang nasa genes, tulad ng kulay ng mata o tangkad, hindi mga marka sa balat. Curious ka ba kung paano gumagaling ang sugat at bakit may natitirang peklat? 🤔"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "leaf-insect-color-change-misconception-g6",
+        "hot-spring-color-bacteria-g6",
+        "menudo-stew-bowl-g5"
+      ],
+      "user": "Totoo bang ligtas pa ring kainin ang patatas kahit luntian o nagbabago na ang kulay?",
+      "assistant": "Hindi totoo na ligtas pa ring kainin ang patatas kapag naging luntian na ito. 🥔 Kapag berde ang balat, senyales ito na dumami ang isang likas na sangkap na tinatawag na solanine na nakakalason at puwedeng magpasakit ng tiyan. Mas mabuting itapon ito o alisin nang husto ang berdeng bahagi at usbong bago magluto. Gusto mo bang malaman kung bakit nagiging berde ang patatas? 😊"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 5,
+      "factIds": [
+        "drink-water-sick-fever-g6",
+        "snake-cold-fever-behavior-g6",
+        "wound-healing-inflammation-stage-g6"
+      ],
+      "user": "Totoo bang gumagaling ang ubo kapag uminom ng mainit na softdrink?",
+      "assistant": "Hindi totoo 'yan! 😊 Ang softdrink, mainit man o malamig, ay hindi gamot sa ubo—puno pa nga ito ng asukal at gas na pwedeng makapang-irita sa lalamunan mo. Ang totoong nakakatulong sa ubo ay maraming pahinga, pag-inom ng tubig o mainit na sopas, at minsan mainit na tubig na may pulot at kalamansi. Gusto mo bang malaman kung bakit nakaka-soothe ang pulot sa masakit na lalamunan? 🍯"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "calcium-bones-soda-myth-g7",
+        "why-soda-fizzes-g4",
+        "co2-heavier-makes-soda-bubbles-g6"
+      ],
+      "user": "Totoo bang nakakapagpalakas ng buto ang pag-inom ng softdrink dahil may bula?",
+      "assistant": "Hindi totoo iyan! 😊 Ang bula sa softdrinks ay galing lang sa carbon dioxide na gas—wala itong kinalaman sa paglakas ng buto. Sa totoo lang, ang sobrang pag-inom ng softdrinks ay nakakasagabal pa sa paggamit ng katawan ng kaltsyum na kailangan ng ating mga buto. Mas mabuting uminom ng gatas o tubig para tumibay ang buto. Alam mo ba kung anong pagkain pa ang nakakapagpalakas ng buto? 🦴"
+    },
+    {
+      "_cat": "debunk-myth",
+      "mode": "grounded",
+      "grade": 6,
+      "factIds": [
+        "drink-more-pee-more-g3",
+        "heavier-object-more-mass-g4",
+        "shrew-eats-own-body-weight-g5"
+      ],
+      "user": "Totoo bang nababawasan ang timbang mo kapag umihi o pumawis ka nang marami?",
+      "assistant": "Oo, totoo na bumababa nga ang timbang mo kapag umihi o pumawis ka nang marami—pero pansamantala lang iyon! 💧 Tubig kasi ang nawawala sa katawan mo, hindi taba, kaya pagbalik mo ng inom o kain, babalik din ang timbang. Kaya hindi ito ang paraan para tunay na pumayat. Alam mo ba kung bakit kailangan nating uminom ulit ng tubig pagkatapos pawisan? 😊"
+    }
+  ]
+}

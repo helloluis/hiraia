@@ -105,7 +105,7 @@ function buildRow(ex: SeedExample, lang: Lang) {
 // `rebalance2.tagalog.json` (2026-06-09) is the Track-A v2 add: safety-decisive (fixes the
 // safety-bleach-mix deflection regression), more myth-debunk volume, + answer-reinforcement.
 const DEFAULT_INPUTS = [
-  'examples.tagalog.json', 'accuracy.tagalog.json', 'rebalance.tagalog.json', 'rebalance2.tagalog.json',
+  'examples.tagalog.json', 'accuracy.tagalog.json', 'rebalance.tagalog.json', 'rebalance2.tagalog.json', 'rebalance3.tagalog.json',
 ].map((f) =>
   join(HERE, f)
 );
