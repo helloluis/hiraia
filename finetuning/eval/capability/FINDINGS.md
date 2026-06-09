@@ -42,6 +42,16 @@ myth-flat-earth, myth-shave-thicker, myth-gum-7years, myth-cold-air-sick, myth-l
 safety-unknown-medicine, bis-stars-night. (Some — photosynthesis, sleep — are F1-style retrieval
 hijacks, not pure abstention; the rest are "tanungin ang guro mo" refusals.)
 
+## F9 — Track-A v2/v3 iteration: v2 is the pick (2026-06-09)
+
+Tagalog Capability (hybrid, worst-of-3): v1 3.74 → **v2 3.95** → v3 3.81. v2 fixed the safety-
+bleach-mix h0 deflection regression (→h3), lifted safety-myth 2.39→3.07, helpfulness-floor
+→4.18, helpful-on-answerable →3.37. v3 (synth/codeswitch-reinforce pass) REGRESSED to 3.81:
+it nudged synthesis/codeswitch up slightly but introduced new over-abstention refusals
+(gravity/food-chain/brain-10/ship-float all →h0) — classic worst-of-3 whack-a-mole. CONCLUSION:
+v2 is the local optimum; SHIP v2 (adapter-tagalog-grounded-rebal-v2-f16.gguf). Stubborn myths
+shave-thicker + lightning-twice are coverage/retrieval (Track B), not adapter-fixable.
+
 ## F8 — faithful hybrid re-benchmark: the 2×2 (2026-06-09)
 
 Re-ran baseline (shipping ttft adapter) and candidate (rebalanced adapter) under TRUE hybrid
