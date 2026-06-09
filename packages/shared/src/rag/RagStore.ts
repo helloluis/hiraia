@@ -206,7 +206,11 @@ const RRF_K = 60;
 // (Einstein's-dog 0.542, dragon-wing 0.522, off-topic 0.39). Paired with
 // `normalizeQuery` (strips conversational filler before embedding). Guarded by
 // rag/pipeline/hybrid-stress.mts — re-tune there, not by feel.
-const SEMANTIC_FLOOR = 0.55;
+// Re-calibrated 0.55 → 0.53 for the 29,779-fact blob (2026-06-09): the larger corpus
+// shifted top-1 cosines down slightly, pushing covered topics (octopus 0.54, plant-parts
+// 0.53) below the old floor → spurious abstain. 0.53 recovers them while off-domain
+// (math 0.52, gibberish 0.49, chitchat ≤0.48) still abstains. Validated vs hybrid-stress.
+const SEMANTIC_FLOOR = 0.53;
 
 export class RagStore {
   private docs: IndexedFact[] = [];

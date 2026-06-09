@@ -10,14 +10,14 @@ import type { Language } from '@hiraia/shared';
  */
 
 /** The curated science databank (the fact bank + its bundled semantic vectors). */
-export const HIRAIAPEDIA_VERSION = '1.0.2';
+export const HIRAIAPEDIA_VERSION = '1.0.3';
 
 /**
  * The per-language LoRA build applied on top of the base model. English runs the
  * base model with no adapter. Bump when a new adapter ships for that language.
  */
 export const ADAPTER_VERSION: Record<Language, string> = {
-  tagalog: 'v5 · grounded · cached-prompt',
+  tagalog: 'v6 · grounded · rebalanced',
   cebuano: 'v3 · beta',
   english: '— (base model)',
 };

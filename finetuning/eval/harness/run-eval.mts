@@ -6,11 +6,11 @@
 //
 //   run via run-harness.sh (which starts/stops the server). Standalone:
 //   ENDPOINT=http://localhost:8088 node_modules/.bin/tsx run-eval.mts
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { RagStore } from '../../../packages/shared/src/rag/RagStore.ts';
+import { RagStore, SemanticIndex, normalizeQuery } from '../../../packages/shared/src/rag/index.ts';
 import {
   generateSystemPrompt,
   formatGroundingBlock,
@@ -83,6 +83,37 @@ const cases = cfg.cases
 const store = new RagStore();
 const stripTags = (s: string) => s.replace(/\s*\[image:[^\]]*\]/gi, '').trim();
 
+// DEVICE-FAITHFUL retrieval: the phone uses retrieveForGroundingHybrid (lexical + LaBSE
+// semantic), so the gate must too (FINDINGS F7) — lexical-only gave false Cebuano fails
+// (correct answers failing retrieval-id assertions on garbage lexical grounding). Embed each
+// query via the LaBSE service + attach the bundled blob. Falls back to lexical (loud warn) if
+// the embedder/blob is unavailable.
+const ROOT = join(HERE, '../../..');
+const EMBED_ENDPOINT = process.env.EMBED_ENDPOINT ?? 'http://localhost:8090';
+function attachSemantic(): boolean {
+  const META = join(ROOT, 'packages/mobile/assets/rag/vectors-labse.meta.json');
+  const BIN = join(ROOT, 'packages/mobile/assets/rag/vectors-labse.i8.bin');
+  if (!existsSync(META) || !existsSync(BIN)) return false;
+  try {
+    const meta = JSON.parse(readFileSync(META, 'utf8'));
+    const bytes = readFileSync(BIN);
+    store.attachSemantic(new SemanticIndex({ dims: meta.dims, scale: meta.scale, count: meta.count, langs: meta.langs, data: new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength) }));
+    return true;
+  } catch (e) { console.warn(`>> ⚠️ semantic blob unusable (${(e as Error).message}) — lexical fallback`); return false; }
+}
+async function embedQuery(text: string): Promise<Float32Array | undefined> {
+  try {
+    const res = await fetch(`${EMBED_ENDPOINT}/v1/embeddings`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ input: normalizeQuery(text) }) });
+    if (!res.ok) return undefined;
+    const v: number[] = (await res.json()).data[0].embedding;
+    let n = 0; for (const x of v) n += x * x; n = Math.sqrt(n) || 1;
+    return Float32Array.from(v, (x) => x / n);
+  } catch { return undefined; }
+}
+const HAS_SEMANTIC = attachSemantic();
+const HYBRID = HAS_SEMANTIC && !!(await embedQuery('test'));
+console.log(HYBRID ? '>> retrieval: HYBRID (device-faithful)' : '>> ⚠️ retrieval: LEXICAL-ONLY (not device-faithful — boot the embedder)');
+
 async function ask(messages: { role: string; content: string }[]): Promise<string> {
   const res = await fetch(`${ENDPOINT}/v1/chat/completions`, {
     method: 'POST',
@@ -109,7 +140,8 @@ const pending: string[] = [];
 for (const c of cases) {
   // retrieval grounds on the latest user message (matches chatStore)
   const query = c.history ? [...c.history].reverse().find((t) => t.role === 'user')!.content : c.question!;
-  const hits = store.retrieveForGrounding(query as any, c.lang as any, 3);
+  const qvec = HYBRID ? await embedQuery(query) : undefined;
+  const hits = store.retrieveForGroundingHybrid(query as any, qvec, c.lang as any, 3, 0.5);
   const retrievedIds = hits.map((h: any) => h.fact.id);
   // STATIC system (no grounding) — grounding rides the current user turn, matching
   // chatStore + training, so this gate validates the cache-friendly serving path.

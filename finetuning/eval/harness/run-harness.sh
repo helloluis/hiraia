@@ -56,6 +56,26 @@ echo ">> running HYBRID retrieval gate (R1, model-independent) ..."
 BIS_ADAPTER="${BIS_ADAPTER:-$ROOT/finetuning/adapters/adapter-sailor-bisaya-f16.gguf}"
 echo ">> base:    $BASE"
 
+# Boot the LaBSE embed service on :8090 so run-eval.mts uses the device's HYBRID retrieval
+# (FINDINGS F7) — lexical-only gave false Cebuano fails (correct answers failing retrieval-id
+# assertions on garbage lexical grounding). run-eval defaults EMBED_ENDPOINT to :8090 and
+# self-detects; if the embedder is absent it falls back to lexical with a warning.
+EMBED_PORT="${EMBED_PORT:-8090}"
+EMBED_PY="${EMBED_PY:-$ROOT/finetuning/.convert-venv/bin/python}"
+EMBED_PID=""
+if [ -x "$EMBED_PY" ] && [ -f "$HERE/labse-embed-service.py" ]; then
+  echo ">> booting LaBSE embed service on :$EMBED_PORT (device-faithful retrieval) ..."
+  "$EMBED_PY" "$HERE/labse-embed-service.py" "$EMBED_PORT" > "$HERE/.embed.log" 2>&1 &
+  EMBED_PID=$!
+  for _ in $(seq 1 60); do
+    [ "$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 "http://localhost:$EMBED_PORT/health" 2>/dev/null || true)" = "200" ] && { echo ">> embedder ready"; break; }
+    if ! kill -0 $EMBED_PID 2>/dev/null; then echo "WARN: embedder died — gate runs LEXICAL (see $HERE/.embed.log)"; EMBED_PID=""; break; fi
+    sleep 2
+  done
+else
+  echo "WARN: embedder ($EMBED_PY) missing — gate runs LEXICAL-ONLY (not device-faithful)"
+fi
+
 # Boot a llama-server on $PORT with the given adapter and wait for /health.
 boot() {
   "$BIN" -m "$BASE" --lora "$1" -ngl "$NGL" --port "$PORT" --ctx-size "$CTX" > "$HERE/.server.log" 2>&1 &
@@ -68,7 +88,7 @@ boot() {
   echo "ERR: server not ready"; exit 2
 }
 stop() { kill $SERVER_PID 2>/dev/null; wait $SERVER_PID 2>/dev/null || true; }
-trap 'kill $SERVER_PID 2>/dev/null' EXIT
+trap 'kill $SERVER_PID ${EMBED_PID:-} 2>/dev/null' EXIT
 RC=0
 
 # --- Pass 1: TAGALOG adapter — tagalog/english cases + homonym + PH civics/geo +
