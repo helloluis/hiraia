@@ -12,7 +12,13 @@ import type {
   TutorConfig,
   Language,
 } from '@hiraia/shared';
-import { RagStore, SemanticIndex, normalizeQuery, buildContextualQuery } from '@hiraia/shared';
+import {
+  RagStore,
+  SemanticIndex,
+  normalizeQuery,
+  buildContextualQuery,
+  generateSystemPrompt,
+} from '@hiraia/shared';
 
 /**
  * LocalEngine implementation using QVAC SDK.
@@ -109,6 +115,14 @@ export class LocalEngine implements TutorEngine {
       // usable on lexical retrieval immediately; the hybrid upgrades in when ready.
       void this.initSemantic();
 
+      // Warm-up pass: prefill the model with the STATIC system prompt before the
+      // user ever arrives in chat. This compiles the Metal graph, heats the
+      // kernels, AND primes QVAC's system-prompt KV cache, so the student's first
+      // real message hits the cache and skips the full ~1500-token prefill (the
+      // big first-TTFT win). The throwaway output is discarded. This is the slow
+      // tail of init — the loader bar tracks it.
+      await this.warmUp();
+
       this.isReadyFlag = true;
 
       console.log(`${ACTIVE_MODEL.displayName} model loaded successfully`);
@@ -117,6 +131,40 @@ export class LocalEngine implements TutorEngine {
       throw new Error(
         `Failed to initialize LocalEngine: ${error instanceof Error ? error.message : 'Unknown error'}`
       );
+    }
+  }
+
+  /**
+   * Run a single throwaway completion at the end of init to warm the model. The
+   * history is just the STATIC system prompt + a trivial user turn, with predict:1
+   * (we discard the token) and kvCache:true. This must mirror EXACTLY the static
+   * system prompt chatStore sends — generateSystemPrompt(lang, 5, true) — so the
+   * KV cache primed here is the same one the first real turn looks up. Non-fatal:
+   * a failure just means the first real message pays the normal cold TTFT.
+   */
+  private async warmUp(): Promise<void> {
+    if (!this.modelId || !this.config) return;
+    try {
+      const t0 = Date.now();
+      // grade 5 + imageTags=true => byte-for-byte match with chatStore's system prompt.
+      const systemPrompt = generateSystemPrompt(this.config.language, 5, true);
+      const run = completion({
+        modelId: this.modelId,
+        history: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: 'Hello' },
+        ],
+        stream: true,
+        generationParams: { temp: CHAT_TEMP, predict: 1 },
+        kvCache: true, // prime the system-prompt KV cache the first real turn will hit
+      });
+      // Drain and discard — we only care about the prefill side effect.
+      for await (const _event of run.events) {
+        // no-op
+      }
+      console.log(`[LocalEngine] warm-up complete (${Date.now() - t0}ms)`);
+    } catch (e) {
+      console.warn('[LocalEngine] warm-up failed (non-fatal):', e);
     }
   }
 

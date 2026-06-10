@@ -10,7 +10,10 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#6366F1"
+      "backgroundColor": "#165a69"
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#165a69"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -38,7 +41,8 @@
       ],
       "@qvac/sdk/expo-plugin",
       "./plugins/withQvacAddons.js",
-      "expo-asset"
+      "expo-asset",
+      "expo-video"
     ],
     "experiments": {
       "typedRoutes": true

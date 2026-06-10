@@ -49,6 +49,7 @@ export function LoaderOverlay({ onDismiss }: { onDismiss: () => void }) {
 
   const [phase, setPhase] = useState<LoaderPhase>('sleeping');
   const [wakingFinished, setWakingFinished] = useState(false);
+  const [exitFinished, setExitFinished] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
 
   // Simulation timer (0 to 100 over 120 seconds, i.e., 1200ms per 1%)
@@ -84,6 +85,10 @@ export function LoaderOverlay({ onDismiss }: { onDismiss: () => void }) {
     p.play();
   });
 
+  // The reaction clip chosen when the user taps the sleeping cat. Picked once per tap
+  // (in handlePressCat) and held in a ref so the source-sync effect doesn't re-roll it.
+  const nudgeSourceRef = useRef(sleepingReactions[0]);
+
   // Keep track of the current phase in a ref to use in the event listener safely
   const phaseRef = useRef<LoaderPhase>(phase);
   useEffect(() => {
@@ -95,6 +100,15 @@ export function LoaderOverlay({ onDismiss }: { onDismiss: () => void }) {
   useEffect(() => {
     progressRef.current = loadingProgress;
   }, [loadingProgress]);
+
+  // The exit video may finish playing BEFORE the model is actually ready (the loader
+  // timing is an estimate that may overextend). We must never slide the cover off into
+  // a not-ready chat, so the dismiss is gated on the real isReady — read via a ref so
+  // the player event listener sees the latest value.
+  const isReadyRef = useRef(isReady);
+  useEffect(() => {
+    isReadyRef.current = isReady;
+  }, [isReady]);
 
   // Handle play to end event to transition between states
   useEventListener(player, 'playToEnd', () => {
@@ -114,9 +128,22 @@ export function LoaderOverlay({ onDismiss }: { onDismiss: () => void }) {
         setPhase('exiting');
       }
     } else if (currentPhase === 'exiting') {
-      setPhase('done');
+      // Walk-off finished. Only dismiss once the model is truly ready; otherwise hold
+      // on the last exit frame and let the isReady effect below release it.
+      setExitFinished(true);
+      if (isReadyRef.current) {
+        setPhase('done');
+      }
     }
   });
+
+  // Release the held exit frame the moment the engine becomes ready (covers the case
+  // where the animation overextended past the real load).
+  useEffect(() => {
+    if (phase === 'exiting' && exitFinished && isReady) {
+      setPhase('done');
+    }
+  }, [phase, exitFinished, isReady]);
 
   // Handle progress-based phase transitions
   useEffect(() => {
@@ -140,8 +167,9 @@ export function LoaderOverlay({ onDismiss }: { onDismiss: () => void }) {
       nextSource = sleepingDefault;
       shouldLoop = true;
     } else if (phase === 'nudged') {
-      const randomIndex = Math.floor(Math.random() * sleepingReactions.length);
-      nextSource = sleepingReactions[randomIndex];
+      // Use the reaction chosen ONCE on tap (in handlePressCat). Re-rolling here would
+      // re-fire on every activeSource change and flicker between reaction clips.
+      nextSource = nudgeSourceRef.current;
       shouldLoop = false;
     } else if (phase === 'waking') {
       nextSource = wakingVideo;
@@ -193,6 +221,9 @@ export function LoaderOverlay({ onDismiss }: { onDismiss: () => void }) {
 
   const handlePressCat = () => {
     if (phase === 'sleeping') {
+      // Pick the reaction clip now, once, so the source-sync effect plays exactly one.
+      const i = Math.floor(Math.random() * sleepingReactions.length);
+      nudgeSourceRef.current = sleepingReactions[i];
       setPhase('nudged');
     }
   };
@@ -310,7 +341,10 @@ function getSubtextMessage(lang: string | null, progress: number): string {
 const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#226474',
+    // Must EXACTLY match the baked-in background of the cat videos (#165a69) so the
+    // notebook-cover overlay and the video region read as one seamless surface.
+    // Same value is set for the Android splash (colors.xml) + status bar (styles.xml).
+    backgroundColor: '#165a69',
     zIndex: 999,
     justifyContent: 'space-between',
     paddingVertical: 60,
