@@ -26,6 +26,15 @@ def norm_topic(s):
 def slug_ok(s):
     return bool(re.match(r"^[a-z0-9][a-z0-9-]*$", s or ""))
 
+def normalize_slug(s):
+    # Many generators emit valid slugs but with uppercase acronyms (AC-, DC-,
+    # MERALCO-, 220V) or stray separators. Lowercase + sanitize rather than drop:
+    # the id is just a unique key, so this loses no fact.
+    s = unicodedata.normalize("NFKD", (s or "").lower())
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    s = re.sub(r"[^a-z0-9]+", "-", s).strip("-")
+    return s if slug_ok(s) else ""
+
 # --- existing bank state -------------------------------------------------
 existing_ids, existing_topics = set(), set()
 for l in open(BANK):
@@ -93,10 +102,10 @@ def has_vernacular(terms):
     return len(terms) >= 6 and (nonascii or len(set(terms)) >= 6)
 
 for x in raw:
-    fid = x.get("id", "")
+    fid = normalize_slug(x.get("id", ""))
     dom = x.get("domain")
     topic_key = (dom, norm_topic(x.get("topic", "")))
-    if not slug_ok(fid):
+    if not fid:
         drops["bad_id"] += 1; continue
     if dom not in DOMAINS:
         drops["bad_domain"] += 1; continue
