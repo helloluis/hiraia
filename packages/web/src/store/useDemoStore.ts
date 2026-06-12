@@ -3,15 +3,18 @@ import type { LanguageKey } from '@/config/model';
 import { pickFactoidText } from '@/data/factoids';
 
 /**
- * Ephemeral store for the in-browser "Try the web demo" lightbox.
+ * Store for the in-browser "Try the web demo" lightbox.
  *
- * Deliberately self-contained and *memory-only*: unlike the authenticated
- * `useChatStore`, NOTHING here is persisted or sent to our servers — the
- * messages a visitor types and the (canned) replies we show never touch the
- * central DB. Closing the lightbox wipes the conversation. The demo mirrors the
- * mobile app's first-launch flow (pick language → cold-start loader → chat with
- * an opening trivia card) but does not run a real model: replies are a friendly
- * canned placeholder until the on-device LLM is wired into the web path.
+ * Mirrors the mobile app's first-launch flow (pick language → cold-start loader →
+ * chat with an opening trivia card). There's no real model in the web path yet,
+ * so replies are a friendly canned placeholder per language.
+ *
+ * Persistence: every message — visitor questions, our canned replies, and the
+ * opening factoid — is logged to `demo_messages` via /api/demo/messages, keyed by
+ * an anonymous session id kept in localStorage. That id survives reloads on the
+ * same browser (so a returning visitor's thread is restored on reopen) but not
+ * across browsers. We keep these transcripts for product insight, not as
+ * per-user history — there are no accounts here.
  */
 
 export type DemoPhase = 'language' | 'loading' | 'chat';
@@ -27,6 +30,8 @@ export interface DemoMessage {
 
 interface DemoState {
   isOpen: boolean;
+  /** true while we fetch any prior transcript for this browser's session. */
+  restoring: boolean;
   phase: DemoPhase;
   language: LanguageKey | null;
   messages: DemoMessage[];
@@ -44,6 +49,39 @@ interface DemoState {
 
 let idCounter = 0;
 const nextId = () => `demo-${Date.now()}-${idCounter++}`;
+
+const DEMO_SESSION_KEY = 'hiraia_demo_session';
+
+/** Stable anonymous id for this browser's demo, created lazily and persisted. */
+function getDemoSessionId(): string {
+  const fallback = () => `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  if (typeof window === 'undefined') return 'ssr';
+  try {
+    let id = localStorage.getItem(DEMO_SESSION_KEY);
+    if (!id) {
+      id = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : fallback();
+      localStorage.setItem(DEMO_SESSION_KEY, id);
+    }
+    return id;
+  } catch {
+    return fallback();
+  }
+}
+
+/** Fire-and-forget: log a message to the demo transcript. Never blocks the UI. */
+function persist(
+  role: 'user' | 'assistant',
+  content: string,
+  language: LanguageKey | null,
+  kind?: 'factoid'
+) {
+  if (typeof window === 'undefined') return;
+  void fetch('/api/demo/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ sessionId: getDemoSessionId(), role, content, kind, language }),
+  }).catch(() => {});
+}
 
 /** Stream `fullText` into the message with `id`, char-batches on a ~20ms tick. */
 function streamInto(
@@ -98,19 +136,75 @@ const CANNED_REPLY: Record<LanguageKey, string> = {
     'preview sa kasinatian — i-download ang app para sa kompleto nga tutor, bisan walay internet!',
 };
 
+interface DemoRow {
+  id: number;
+  role: 'user' | 'assistant';
+  content: string;
+  kind?: string | null;
+  language?: string | null;
+}
+
 export const useDemoStore = create<DemoState>((set, get) => ({
   isOpen: false,
+  restoring: false,
   phase: 'language',
   language: null,
   messages: [],
   isResponding: false,
   shownFactoidIds: [],
 
-  openDemo: () =>
-    set({ isOpen: true, phase: 'language', language: null, messages: [], isResponding: false }),
+  openDemo: async () => {
+    set({
+      isOpen: true,
+      restoring: true,
+      phase: 'language',
+      language: null,
+      messages: [],
+      isResponding: false,
+    });
+
+    // Restore this browser's prior transcript, if any: jump straight into the
+    // chat with the saved language so a returning visitor sees their old thread.
+    try {
+      const sessionId = getDemoSessionId();
+      const res = await fetch(`/api/demo/messages?sessionId=${encodeURIComponent(sessionId)}`);
+      const data = await res.json().catch(() => ({}));
+      const rows = (data.messages ?? []) as DemoRow[];
+      if (!get().isOpen) return; // closed while fetching
+
+      if (rows.length > 0) {
+        const language = [...rows].reverse().find((r) => r.language)?.language as
+          | LanguageKey
+          | undefined;
+        set({
+          restoring: false,
+          phase: 'chat',
+          language: language ?? 'tagalog',
+          messages: rows.map((r) => ({
+            id: `db-${r.id}`,
+            role: r.role,
+            content: r.content,
+            kind: r.kind === 'factoid' ? 'factoid' : undefined,
+            streaming: false,
+          })),
+        });
+        return;
+      }
+    } catch {
+      /* best-effort restore — fall through to a fresh setup flow */
+    }
+    set({ restoring: false });
+  },
 
   closeDemo: () =>
-    set({ isOpen: false, phase: 'language', language: null, messages: [], isResponding: false }),
+    set({
+      isOpen: false,
+      restoring: false,
+      phase: 'language',
+      language: null,
+      messages: [],
+      isResponding: false,
+    }),
 
   pickLanguage: (language) => set({ language, phase: 'loading' }),
 
@@ -132,7 +226,9 @@ export const useDemoStore = create<DemoState>((set, get) => ({
       ],
       shownFactoidIds: [...state.shownFactoidIds, picked.id].slice(-15),
     }));
-    streamInto(set, get, id, picked.text);
+    streamInto(set, get, id, picked.text, () =>
+      persist('assistant', picked.text, language, 'factoid')
+    );
   },
 
   sendMessage: (text) => {
@@ -151,11 +247,16 @@ export const useDemoStore = create<DemoState>((set, get) => ({
         { id: assistantId, role: 'assistant', content: '', streaming: true },
       ],
     }));
+    persist('user', trimmed, language);
 
     // Small "thinking" beat before the reply starts streaming, like the app's
     // cold prompt-eval — then stream the canned response and release the input.
+    const reply = CANNED_REPLY[language];
     setTimeout(() => {
-      streamInto(set, get, assistantId, CANNED_REPLY[language], () => set({ isResponding: false }));
+      streamInto(set, get, assistantId, reply, () => {
+        set({ isResponding: false });
+        persist('assistant', reply, language);
+      });
     }, 600);
   },
 }));

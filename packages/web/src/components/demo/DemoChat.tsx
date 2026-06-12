@@ -7,8 +7,9 @@ import { AssistantMessage } from '@/components/AssistantMessage';
 
 /**
  * The demo chat surface inside the lightbox — a trimmed version of the
- * authenticated ChatInterface (no sidebar / threads / auth / DB). It reads the
- * ephemeral `useDemoStore`: messages stay in memory and are wiped on close.
+ * authenticated ChatInterface (no sidebar / threads / auth). It reads
+ * `useDemoStore`, which streams the canned replies and logs every message to
+ * the anonymous demo transcript (restored on reopen in the same browser).
  */
 
 const PLACEHOLDER: Record<LanguageKey, string> = {

@@ -9,11 +9,13 @@ import { DemoChat } from './DemoChat';
 /**
  * The "Try the web demo" lightbox: a fixed-overlay modal that runs the whole
  * setup flow — pick language → cold-start loader → chat — mirroring the mobile
- * app's first launch. Everything lives in the ephemeral `useDemoStore`; closing
- * the lightbox wipes it. Nothing the visitor types is logged or persisted.
+ * app's first launch. On reopen it briefly restores this browser's prior demo
+ * thread (keyed by an anonymous localStorage session id) and drops the visitor
+ * straight back into the chat.
  */
 export function DemoLightbox() {
   const isOpen = useDemoStore((s) => s.isOpen);
+  const restoring = useDemoStore((s) => s.restoring);
   const phase = useDemoStore((s) => s.phase);
   const closeDemo = useDemoStore((s) => s.closeDemo);
 
@@ -64,9 +66,17 @@ export function DemoLightbox() {
           </svg>
         </button>
 
-        {phase === 'language' && <DemoLanguagePicker />}
-        {phase === 'loading' && <DemoLoader />}
-        {phase === 'chat' && <DemoChat />}
+        {restoring ? (
+          <div className="flex h-full w-full items-center justify-center bg-[#fdfdf6]">
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary-600/30 border-t-primary-600" />
+          </div>
+        ) : (
+          <>
+            {phase === 'language' && <DemoLanguagePicker />}
+            {phase === 'loading' && <DemoLoader />}
+            {phase === 'chat' && <DemoChat />}
+          </>
+        )}
       </div>
     </div>
   );
