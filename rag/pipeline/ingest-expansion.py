@@ -38,20 +38,46 @@ for l in open(BANK):
 print(f"bank: {len(existing_ids)} facts, {len(existing_topics)} domain+topic keys")
 
 # --- load all agent outputs ----------------------------------------------
+# Some agent writes intermittently corrupt the key/value colon into '>' (e.g.
+# `"grades">[8,9]` instead of `"grades":[8,9]`) — an HTML-entity (`&gt;`) leak
+# from the write path. A `"` immediately followed by `>` is never valid JSON, so
+# repairing `">` -> `":` is safe; we only USE the repair when the raw line fails
+# to parse AND the repaired line parses.
+def parse_line(line):
+    try:
+        return json.loads(line)
+    except Exception:
+        pass
+    repaired = line.replace('">', '":')
+    try:
+        return json.loads(repaired)
+    except Exception:
+        return None
+
 files = sorted(glob.glob(os.path.join(EXP, "*.jsonl")))
 raw = []
+total_repaired, total_unparsable = 0, 0
 for fp in files:
-    n = 0
+    n = rep = unp = 0
     for line in open(fp):
         line = line.strip()
         if not line:
             continue
         try:
             raw.append(json.loads(line)); n += 1
+            continue
         except Exception:
             pass
-    print(f"  {os.path.basename(fp)}: {n} records")
-print(f"total raw records: {len(raw)}")
+        obj = parse_line(line)
+        if obj is not None:
+            raw.append(obj); n += 1; rep += 1
+        else:
+            unp += 1
+    total_repaired += rep; total_unparsable += unp
+    print(f"  {os.path.basename(fp)}: {n} records" +
+          (f" ({rep} repaired)" if rep else "") +
+          (f" [{unp} unparsable]" if unp else ""))
+print(f"total raw records: {len(raw)} | repaired: {total_repaired} | unparsable: {total_unparsable}")
 
 # --- dedup + validate ----------------------------------------------------
 accepted, seen_ids, seen_topics = [], set(), set()
