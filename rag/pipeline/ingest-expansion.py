@@ -13,7 +13,7 @@ import json, sys, os, re, glob, unicodedata
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 BANK = os.path.join(ROOT, "rag/bank/science-facts.jsonl")
-EXP = os.path.join(ROOT, "rag/pipeline/.expansion")
+EXP = os.path.join(ROOT, "rag/pipeline/expansion-run")
 DOMAINS = {"MATTER", "LIVING_THINGS", "FORCE_MOTION_ENERGY", "EARTH_SPACE",
            "ABOUT_HIRAIA", "PH_CIVICS", "PH_GEOGRAPHY"}
 
