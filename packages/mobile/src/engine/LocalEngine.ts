@@ -1,7 +1,14 @@
 import { loadModel, completion, unloadModel, embed, QWEN3_1_7B_INST_Q4 } from '@qvac/sdk';
 import { Asset } from 'expo-asset';
 import { File } from 'expo-file-system';
-import { ACTIVE_MODEL, EMBEDDER, VECTORS_BLOB_ASSET, VECTORS_META } from '../config/model';
+import {
+  ACTIVE_MODEL,
+  EMBEDDER,
+  VECTORS_BLOB_ASSET,
+  VECTORS_META,
+  IMAGE_VECTORS_BLOB_ASSET,
+  IMAGE_VECTORS_META,
+} from '../config/model';
 import { CHAT_TEMP, SUMMARY_TEMP, CHAT_MAX_TOKENS, GPU_LAYERS } from '../config/inference';
 import type { AdapterLanguage } from '../config/model';
 import type {
@@ -20,6 +27,14 @@ import {
   generateSystemPrompt,
 } from '@hiraia/shared';
 
+// Minimum cosine for an [image:] description to resolve to a bundled illustration.
+// Calibrated offline against the SFT tag descriptions (rag/scripts/
+// validate-image-vectors.py, 2026-06-10): true matches median 0.79; every
+// out-of-catalog decoy AND every observed cross-topic mismatch lands ≤0.693.
+// 0.70 blocks all of those while the trained English tags clear it (~90% of the
+// 533 SFT descs). Below the floor we show no picture rather than a wrong one.
+const IMAGE_TAG_FLOOR = 0.7;
+
 /**
  * LocalEngine implementation using QVAC SDK.
  * Runs the configured Hiraia model (ACTIVE_MODEL — Sailor2-3B by default)
@@ -35,23 +50,35 @@ export class LocalEngine implements TutorEngine {
   // BACKGROUND after the LLM (lexical-first); until ready, retrieval is lexical.
   private embedModelId: string | null = null;
   private semanticReady = false;
+  // Image-tag retrieval blob (one vector per bundled PNG); loaded with the
+  // semantic init. Null → resolveImageTag returns null (no picture, never wrong).
+  private imageVectors: Int8Array | null = null;
 
   /**
    * Resolve the bundled LoRA adapter GGUF for a language to an absolute on-device
    * file path (for QVAC's `modelConfig.lora`). The adapter ships inside the APK
    * as a Metro asset; expo-asset copies it out to a readable path on first use.
-   * Returns undefined for English (base model) or if no adapter is bundled.
+   * Returns undefined only if no adapter is bundled / resolution fails.
    */
   private async resolveAdapterPath(language: Language): Promise<string | undefined> {
-    if (language !== 'tagalog' && language !== 'cebuano') return undefined;
-    const moduleId = ACTIVE_MODEL.loraAssets[language as AdapterLanguage];
+    // English routes through the TAGALOG adapter, not the base model: the
+    // capability A/B (2026-06-11) scored the English probes 3.75/5 through the
+    // tagalog adapter vs 1.78/5 on the raw base path — the SFT'd tutor behavior
+    // (grounding adherence, abstention, brevity) transfers across languages,
+    // while raw Sailor2 fabricates. No separate English LoRA needed.
+    const adapterLang: AdapterLanguage | null =
+      language === 'tagalog' || language === 'cebuano' ? language
+      : language === 'english' ? 'tagalog'
+      : null;
+    if (!adapterLang) return undefined;
+    const moduleId = ACTIVE_MODEL.loraAssets[adapterLang];
     if (moduleId == null) return undefined;
     try {
       const asset = Asset.fromModule(moduleId);
       await asset.downloadAsync(); // bundled asset → copied to cache, sets localUri
       const uri = asset.localUri ?? asset.uri;
       const path = uri ? uri.replace(/^file:\/\//, '') : undefined;
-      if (path) console.log(`[LocalEngine] using ${language} adapter: ${path}`);
+      if (path) console.log(`[LocalEngine] using ${adapterLang} adapter for ${language}: ${path}`);
       return path;
     } catch (e) {
       console.warn(`[LocalEngine] failed to resolve ${language} adapter; running base model:`, e);
@@ -300,6 +327,62 @@ export class LocalEngine implements TutorEngine {
     } catch (e) {
       console.warn('[LocalEngine] semantic init failed — staying lexical-only:', e);
       this.semanticReady = false;
+    }
+    // Image-tag blob (~3MB): independent of the fact-bank blob — its failure only
+    // disables [image:] resolution, never retrieval.
+    try {
+      const asset = Asset.fromModule(IMAGE_VECTORS_BLOB_ASSET);
+      await asset.downloadAsync();
+      const uri = asset.localUri ?? asset.uri;
+      const bytes = await new File(uri).bytes();
+      const expected = IMAGE_VECTORS_META.count * IMAGE_VECTORS_META.dims;
+      if (bytes.byteLength !== expected) {
+        throw new Error(`stale image blob: ${bytes.byteLength} bytes, expected ${expected}`);
+      }
+      this.imageVectors = new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+      console.log(`[LocalEngine] image-tag index ready (${IMAGE_VECTORS_META.count} slugs)`);
+    } catch (e) {
+      console.warn('[LocalEngine] image-tag index failed — [image:] tags will not resolve:', e);
+      this.imageVectors = null;
+    }
+  }
+
+  /**
+   * Resolve the tutor's `[image: <english desc>]` description to a bundled
+   * illustration slug: embed the desc with the (already warm) LaBSE embedder and
+   * brute-force cosine over the per-image catalog vectors. Returns null below the
+   * confidence floor — better no picture than a mismatched one (same principle as
+   * the FACT_IMAGE top-fact rule). The floor is calibrated offline against the
+   * SFT tag descriptions (see rag/scripts/build-image-vectors.py validation).
+   */
+  async resolveImageTag(desc: string): Promise<{ slug: string; cosine: number } | null> {
+    if (!this.imageVectors || !this.semanticReady || !this.embedModelId) return null;
+    try {
+      const t0 = Date.now();
+      const q = Float32Array.from(await this.embed(desc)); // CLS + L2 (embdNormalize:2)
+      const { dims, scale, count, slugs } = IMAGE_VECTORS_META;
+      const vecs = this.imageVectors;
+      let best = -1;
+      let bestDot = -Infinity;
+      for (let i = 0; i < count; i++) {
+        let dot = 0;
+        const off = i * dims;
+        for (let d = 0; d < dims; d++) dot += q[d]! * vecs[off + d]!;
+        if (dot > bestDot) {
+          bestDot = dot;
+          best = i;
+        }
+      }
+      const cosine = bestDot * scale; // corpus rows were unit-norm before int8 quant
+      console.log(
+        `[LocalEngine] resolveImageTag "${desc.slice(0, 60)}" → ${slugs[best]} ` +
+          `(cos ${cosine.toFixed(3)}, ${Date.now() - t0}ms)`
+      );
+      if (best < 0 || cosine < IMAGE_TAG_FLOOR) return null;
+      return { slug: slugs[best]!, cosine };
+    } catch (e) {
+      console.warn('[LocalEngine] resolveImageTag failed:', e);
+      return null;
     }
   }
 

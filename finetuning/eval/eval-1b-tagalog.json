@@ -1,0 +1,671 @@
+{
+ "summary": {
+  "model": "/workspace/output/tagalog-sailor-1b-v3/merged-model",
+  "lang": "tagalog",
+  "n": 25,
+  "lang_ok": 25,
+  "english_heavy": 0,
+  "repetitive": 0,
+  "ends_question": 25,
+  "with_image_tag": 14,
+  "total_image_tags": 14,
+  "malformed_image_tags": 0,
+  "avg_words": 103,
+  "runtime_s": 120
+ },
+ "results": [
+  {
+   "id": "tl-01",
+   "lang": "tagalog",
+   "grade": 3,
+   "register": "vague",
+   "topic": "states of matter / general",
+   "prompt": "ano po yung solid liquid gas",
+   "reply": "Ang mga bagay na nasa iba't ibang estado ay tinatawag na **states**! Ang tatlong pangunahing states ay:\n- **Solid** - malinaw na hugis pero may fixed shape; hindi nagbabago ang anyo kapag pinainit o pinabayaan.\n- **Liquid** - malinaw na hugis at gumagalaw dahil sa fluid motion; nagbabago ng hugis depende sa pressure at temperatura.\n- **Gas** - walang hugis, umaagos, at lumalaki kapag pinainit; mabilis dumami.\n\nAng tubig ay isang halimbawa ng gas — habang umiinit, lumalaki ito (kaya naman nakasimula ang pagbuo ng water cycle)!\n\nKung gusto mong alamin kung ano ang state ng isang bagay gamit ang panlasa, anong bagay ang gagamitin? Bakit?\n\n[image: A clear glass of water with the label \"Water\" in English.]",
+   "scores": {
+    "words": 99,
+    "ceb_ratio": 0.04,
+    "tag_ratio": 0.202,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.68,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A clear glass of water with the label \"Water\" in English."
+    ]
+   }
+  },
+  {
+   "id": "tl-02",
+   "lang": "tagalog",
+   "grade": 3,
+   "register": "misspelled",
+   "topic": "photosynthesis",
+   "prompt": "ano po ang potosintesis",
+   "reply": "Ang photosynthesis ay ang proseso kung saan ginagawa ng halaman ang sarili nilang enerhiya gamit ang liwanag mula sa araw!\n\nNarito ang nangyayari:\n1. Ang chloroplasts (isang uri ng green cell organelle) ay gumagana bilang photoresistor\n2. Nag-e-expand ang chlorophyll molecule at nagiging liwanag\n3. Ang light energy ay ginagamit para gawing glucose (carbon dioxide + tubig + init)\n4. Ang carbon dioxide ay naiimbak sa ugat at palayan\n\nKaya ang mga puno ay lumilitaw na berde kapag umaga! Sa Pilipinas, mas marami tayong halaman sa berdeng lugar tulad ng palayan.\n\nSa tingin mo, bakit mahalaga ang photosynthesis para sa lahat ng buhay?",
+   "scores": {
+    "words": 99,
+    "ceb_ratio": 0.071,
+    "tag_ratio": 0.192,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.7,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  },
+  {
+   "id": "tl-03",
+   "lang": "tagalog",
+   "grade": 3,
+   "register": "lazy_keywords",
+   "topic": "water cycle",
+   "prompt": "water cycle",
+   "reply": "Ang water cycle ay ang paulit-ulit na proseso kung paano ginagalugad ng tubig ang mundo! Ito ay parang malaking balloon — araw-araw nagbabalik-balik ang tubig mula sa dagat hanggang sa ulap, tapos bumabalik sa ilog, at pati sa lawa!\n\nSa paligid natin:\n- Ang araw ay nagbibigay ng init para masimulan ang cycle (sunlight)\n- Sa pamamagitan ng evaporation, lumalamig ang tubig → gumawa ng ulap\n- Sa loob ng ulap, nagiging maliliit na patak ng tubig (precipitation)\n- Pumapasok ang tubig sa karagatan at iba pang anyong tubig\n- Pagkatapos, umaagos sa ilog papunta sa lawa at dagat\n\nKaya kapag may bagyo o ulan dito sa Pilipinas, tinatawag nating **rain**! Bakit kaya mahalaga ang water cycle?\n\n[image: A diagram showing the water cycle from sun to rain in a simplified graphic.]",
+   "scores": {
+    "words": 113,
+    "ceb_ratio": 0.106,
+    "tag_ratio": 0.168,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.61,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A diagram showing the water cycle from sun to rain in a simplified graphic."
+    ]
+   }
+  },
+  {
+   "id": "tl-04",
+   "lang": "tagalog",
+   "grade": 4,
+   "register": "vague",
+   "topic": "homework help / unspecified",
+   "prompt": "patulong po sa homework",
+   "reply": "Nandito ako para tulungan ka! Aling uri ng homework ang gusto mong malaman ko? Halimbawa, math, science, art, o exercise? Maaari nating gawing mas madaling maintindihan gamit ang mga halimbawa mula sa bahay — kahit hindi pa ka nag-aaral. Halimbawa, kung may homework na \"Pagsasama-sama ng mga hugis,\" maaaring i-break down ang problem sa:\n- Ang bawat hugis ay parang numero mula 1 hanggang 9.\n- I-susunod ang bilang ng hugis sa loob ng puzzle.\n- Pagkatapos, susukatin ang bilang ng iba pang hugis.\n\nKung gusto mong malaman kung ilang hugis ang kailangan mong gawin, ano ang unang bagay na isipin mo?\n\n[image: A set of colorful shapes arranged in a grid, each shape shown with its number or label.]",
+   "scores": {
+    "words": 100,
+    "ceb_ratio": 0.06,
+    "tag_ratio": 0.18,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.68,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A set of colorful shapes arranged in a grid, each shape shown with its number or label."
+    ]
+   }
+  },
+  {
+   "id": "tl-05",
+   "lang": "tagalog",
+   "grade": 4,
+   "register": "txtspeak",
+   "topic": "living things",
+   "prompt": "anu po pinagkaiba ng halaman sa hayop",
+   "reply": "Magandang tanong! Ang halaman ay may tatlong pangunahing katangian:\n1. **Nabubuhay sa lupa** (arable plants) — gumagalaw sila sa lupa, kumukuha ng tubig mula sa lupa, at lumalaki gamit ang ugat.\n2. **Walang kakayahang lumangoy** — hindi sila kayang umakyat sa hangin para makarating sa ibang lugar.\n3. **Hindi kumakain ng sarili** — hindi nila ginagawa ito.\n\nAng hayop naman ay mas mahusay na nag-iisang marami — hindi sila pwedeng bumagsak sa lupa tulad ng halaman. Halimbawa: isda ay nakakapaglangoy, pero hindi sila kumakain ng pagkain ng hayop gaya ng karne.\n\nSa tingin mo, bakit mahirap manghuli ng hayop?",
+   "scores": {
+    "words": 93,
+    "ceb_ratio": 0.075,
+    "tag_ratio": 0.237,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.68,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  },
+  {
+   "id": "tl-06",
+   "lang": "tagalog",
+   "grade": 4,
+   "register": "misspelled",
+   "topic": "gravity",
+   "prompt": "ano po ang grabiti",
+   "reply": "Ang **gravity** ay ang puwersa na nagtatrabaho sa pagitan ng dalawang bagay! Parang ang isang malaking kahon na nakabalot sa paligid mo — kapag mas mabigat ang isang bagay, kailangan nitong lumayo sa kanya para maupo nang ligtas!\n\nMay dalawang uri ng gravity:\n- **Gravity ng Earth:** Para suportahan ang buhay sa lupa (mga puno, halaman, hayop)\n- **Graviton:** Sa mga particle (mas malakas kaysa gravity)\n\nMaaaring gumawa ng bangka o rocket gamit ang gravity! Bakit kaya mahirap magtayo ng bangka sa maliliit na tubig gaya ng dagat kumpara sa karagatan?\n\n[image: A diagram showing a ball with different masses attached to opposite ends of a string, and the force acting on each mass.]",
+   "scores": {
+    "words": 88,
+    "ceb_ratio": 0.08,
+    "tag_ratio": 0.205,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.67,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A diagram showing a ball with different masses attached to opposite ends of a string, and the force acting on each mass."
+    ]
+   }
+  },
+  {
+   "id": "tl-07",
+   "lang": "tagalog",
+   "grade": 5,
+   "register": "lazy_keywords",
+   "topic": "force / acceleration",
+   "prompt": "gravity acceleration",
+   "reply": "Magandang tanong! Ang gravity ay puwersa ngunit hindi solid — masakit itong sabihin, pero totoo.\n\nAng gravity ay nagbibigay-daan sa lahat ng bagay na gumagalaw patungo sa parehong bilis at direksyon, kahit nasa iba't ibang distansya mula sa source ng puwersa.\n\nSa loob ng bahay:\n- Ang iyong mesa ay nahuhulog (dahil sa gravity) malapit sa mesa\n- Ngunit kapag lumampas ka sa mesa at dumating sa taas ng kwarto, biglang huminto ang mesa dahil nawala ang gravity\n\nKaya:\n- Mas mahirap ihulog ang bagay papunta sa mesa (mas malayo sa source)\n- Mas madaling ihulog ang bagay papuntang salamin (malapit sa source)\n\nNgayon, bakit kaya may mga bagay na parang nakatigil man sa hangin? Hindi ba dapat silang gumagalaw? Bakit kumakalabog ang bola kapag inilubog sa tubig?\n\n[image: A ball on the ground being thrown upward and a ball floating above the ground showing equal height.]",
+   "scores": {
+    "words": 124,
+    "ceb_ratio": 0.105,
+    "tag_ratio": 0.153,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.6,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A ball on the ground being thrown upward and a ball floating above the ground showing equal height."
+    ]
+   }
+  },
+  {
+   "id": "tl-08",
+   "lang": "tagalog",
+   "grade": 5,
+   "register": "codeswitch",
+   "topic": "digestive system",
+   "prompt": "paano po nagdidigest yung food natin sa tiyan",
+   "reply": "Ang digestion ay proseso ng paghihiwalay ng pagkain sa maliliit na bahagi (chips) para maging mas madaling kainin ng katawan. Narito ang nangyayari:\n\n1. **Mouth** — Ang dila ay gumagawa ng saliva na may enzyme na **amylase** (na nag-break down ng carbohydrates). Pinagsama-sama niya ito sa bibig.\n\n2. **Esophagus** — Ang pagkain ay dumadaan sa espesyal na tubo papunta sa stomach.\n\n3. **Stomach** — Dito nabubuo ang **mucosal lining**, na may acid (hydrochloric), enzymes, at digestive juices. Nagbe-break down din siya ng taba at proteins.\n\n4. **Intestines** — May dalawang sections:\n   - **Small intestine** — dito ang **proteins, fats, at sugar** ay pinaghihiwalay.\n   - **Large intestine** — dito ang natitirang pagkain ay bumabalik sa tiyan para i-digest ulit.\n\n5. **Rectum / anus** — Pagkatapos ng 24 oras, inilalabas ang natunaw na pagkain sa pamamagitan ng pagtibok ng bituka papunta sa anus.\n\nMahalaga ang digestion dahil kinukuha nito ang energy mula sa pagkain at ginagawa itong mga nutrients na pwedeng gamitin ng katawan. Ngunit kapag kulang tayo sa fiber, hindi nakakaya ng tiyan na ma-digest nang maayos — kaya minsan nararamdaman nating gutom pa rin kahit sobrang dami na ng kinain! Sa tingin mo, bakit mahalaga ang fiber sa ating digestive system?",
+   "scores": {
+    "words": 189,
+    "ceb_ratio": 0.063,
+    "tag_ratio": 0.18,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.63,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  },
+  {
+   "id": "tl-09",
+   "lang": "tagalog",
+   "grade": 5,
+   "register": "incomplete",
+   "topic": "photosynthesis (incomplete)",
+   "prompt": "bakit po berde yung",
+   "reply": "Ang berde ay nagtatakda ng kulay para sa halaman! Ang dahilan ay ang chlorophyll — isang pigment na nakukuha natin sa ugat ng halaman.\n\nAng chlorophyll ay gumagawa ng liwanag kapag pinainit ng araw ang ugat. Dahil dito, nagiging berde ang halaman. Hindi lahat ng berdeng halaman ay galing sa ugat; marami rin ang nagmula sa tangkay, bulaklak, o buto.\n\nSa tingin mo, bakit mahalaga ang chlorophyll? Paano nakakaapekto ang dami ng chlorophyll sa bilis ng paggawa ng liwanag?\n\n[image: A leaf with a green color band running along the stem and from the base up to the top.]",
+   "scores": {
+    "words": 78,
+    "ceb_ratio": 0.077,
+    "tag_ratio": 0.282,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.58,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A leaf with a green color band running along the stem and from the base up to the top."
+    ]
+   }
+  },
+  {
+   "id": "tl-10",
+   "lang": "tagalog",
+   "grade": 5,
+   "register": "vague",
+   "topic": "unspecified science",
+   "prompt": "di ko po gets yung lesson namin",
+   "reply": "Naiintindihan ko! Huwag mawalan ng pag-asa — masaya akong tulungan ka pa. Sa tingin mo, ano ang nangyayari kapag pinagsama-sama mo ang mga bola sa isang malaking basket?",
+   "scores": {
+    "words": 29,
+    "ceb_ratio": 0.069,
+    "tag_ratio": 0.172,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.9,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  },
+  {
+   "id": "tl-11",
+   "lang": "tagalog",
+   "grade": 6,
+   "register": "misspelled",
+   "topic": "ecosystem",
+   "prompt": "ano po ang ekosistem",
+   "reply": "Ang **ekosistem** ay isang komunidad ng iba't ibang living things (organismo) at non-living things sa isang lugar! 🌱\n\nHalimbawa:\n- **Forest ecosystem**: Mga puno, hayop, halaman, ugali ng forest\n- **Ocean ecosystem**: Pagkain ng maraming isda, dolphin, coral reef\n- **Rivers ecosystem**: Isda, hayop sa tubig, dam\n\nAng lahat ng ito ay nagtatrabaho nang magkasama para mapanatili ang kalidad ng tubig, lupa, at hangin.\n\nAnong uri ng ecosystem ang nakikita mo sa inyong paligid?",
+   "scores": {
+    "words": 71,
+    "ceb_ratio": 0.042,
+    "tag_ratio": 0.197,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.69,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  },
+  {
+   "id": "tl-12",
+   "lang": "tagalog",
+   "grade": 6,
+   "register": "lazy_keywords",
+   "topic": "solar system",
+   "prompt": "planets araw mundo",
+   "reply": "Ang mga planeta ay ang maliliit na bituin sa kalangitan! Ang Araw naman ang pinaka-importanteng planeta dahil dito nanggaling ang lahat ng buhay.\n\nNarito ang listahan:\n- **Araw** (Sun) — ang sentro ng ating solar system!\n- **Mercury** — pinakamaliit na planeta; may pinakamaliit na radius, mabilis lumubog sa araw, at hindi nagiging gas\n- **Venus** — pinakamalapit na planeta; mainit, walang atmosphere, at parang \"itim na bola\"\n- **Earth** — ang ating tirahan; may tubig, oxygen, at Earth-like atmosphere\n- **Mars** — may klima — init sa gabi, yelo sa araw\n\nHindi nakakalimutan ang Mars — isa sa mga unang planeta na tinuklas ng mga Espanyol noong 1509!\n\nMay napansin ka bang ibang bagay sa kalangitan? Mga bituin ba o ibang anyo ng energy?",
+   "scores": {
+    "words": 114,
+    "ceb_ratio": 0.053,
+    "tag_ratio": 0.184,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.61,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  },
+  {
+   "id": "tl-13",
+   "lang": "tagalog",
+   "grade": 6,
+   "register": "codeswitch",
+   "topic": "electricity",
+   "prompt": "pano po gumagana yung kuryente sa bahay",
+   "reply": "Ang kuryente ay nagmumula sa generator (generator ng kuryente) na nasa loob ng power plant! Narito ang pangunahing proseso:\n1. Ang generator ay gumagalaw ng magnetic field gamit ang electromagnet.\n2. Habang gumagalaw, umaakyat ang magnetic field mula sa loob ng generator papunta sa wire.\n3. Sa wire, umiikot ang electrons — ito ang kuryente!\n4. Pagdating sa bahay, pinapadala ng distributor sa bawat bahay.\n\nKaya kapag may ilaw, TV, o computer, ang kuryente ay dumadaloy sa mga ito para gumawa ng liwanag, tunog, o video! Mas malaki pa ba ang bilis ng kuryente sa bahay kaysa sa labas? Bakit?\n\n[image: A diagram showing a large electrical generator in the background and a small circuit connected to an LED bulb.]",
+   "scores": {
+    "words": 95,
+    "ceb_ratio": 0.095,
+    "tag_ratio": 0.232,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.58,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A diagram showing a large electrical generator in the background and a small circuit connected to an LED bulb."
+    ]
+   }
+  },
+  {
+   "id": "tl-14",
+   "lang": "tagalog",
+   "grade": 7,
+   "register": "clean",
+   "topic": "cells",
+   "prompt": "Ano po ang pagkakaiba ng plant cell at animal cell?",
+   "reply": "Magandang tanong! Ang difference ay nasa:\n- **Structure** — ang plant cell ay may **tubular na cell wall** (parang kawayan), habang ang animal cell ay may **cell membrane**, cell body, at iba pang organelles.\n- **Function** — ang plant cell ay gumagawa ng sariling pagkain mula sa liwanag ng araw gamit ang chlorophyll, habang ang animal cell ay kailangan pa rin ng pagkain mula sa labas.\n\nMahalaga ito para maintindihan kung bakit may halaman at hayop! Isipin mo ang iyong mga kamatis — plant cell ba sila o animal cell?\n\n[image: A cross-section of a plant cell showing its tubular outer cell wall and inner cell membrane.]",
+   "scores": {
+    "words": 85,
+    "ceb_ratio": 0.035,
+    "tag_ratio": 0.188,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.64,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A cross-section of a plant cell showing its tubular outer cell wall and inner cell membrane."
+    ]
+   }
+  },
+  {
+   "id": "tl-15",
+   "lang": "tagalog",
+   "grade": 7,
+   "register": "misspelled",
+   "topic": "photosynthesis",
+   "prompt": "paano po nangyayari ang potosyntesis sa mga dahon",
+   "reply": "Magandang tanong! Sa mga dahon, may espesyal na proseso na tinatawag na **photosynthesis**.\n\nAng dahilan ay ang photosynthetic pigment — karaniwang **chlorophyll** — na nagbibigay ng berdeng kulay. Ang chlorophyll ay gumagawa ng liwanag (photons) para sa photosynthesis. Pagkatapos, ginagamit ng chloroplast ang energy mula sa liwanag para gawing glucose (sugars) at oxygen.\n\nKaya kapag umuulan, ang dahon ay hindi talaga natutuyo — pinoprotektahan niya ang sarili laban sa sobrang init at tubig na nawala sa hangin. Ito ay tinatawag na **transpiration**!\n\nMga iba pang halimbawa ng photosynthesis:\n- Pagsunog ng kahoy (coal burning)\n- Pagkain ng mga hayop\n- Pagbubuhos ng tubig\n\nSa tingin mo, bakit mas madaling maging malusog ang mga puno kaysa sa mga damo?",
+   "scores": {
+    "words": 112,
+    "ceb_ratio": 0.062,
+    "tag_ratio": 0.223,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.65,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  },
+  {
+   "id": "tl-16",
+   "lang": "tagalog",
+   "grade": 7,
+   "register": "txtspeak",
+   "topic": "matter / atoms",
+   "prompt": "anu b ang atom",
+   "reply": "Ang **atom** ay ang pinaka-maliit na particle ng isang substance! Ito ay binubuo ng napakaraming maliliit na particles na tinatawag na **protons**, **neutrons**, at **electrons**.\n\nAng protons ay nasa nucleus — isa sa gitna nito. Ang electrons naman ay nasa labas ng nucleus. Ang bilang ng electrons ay depende sa klase ng substance:\n\n- **Hydrogen:** may 1 electron → hydrogen\n- **Carbon:** may 6 electrons → carbon\n- **Nitrogen:** may 7 electrons → nitrogen\n\nSa loob ng atom, ang mga proton ay nasa nucleus (nasa gitna), at ang electrons ay nasa labas.\n\nKaya kapag nagbabanggaan ang dalawang atoms, ang resulta ay **atomic bond** — isang bagong atom na nabuo! Halimbawa, kapag hinahati ng dalawang atoms ang isa't isa, nabubuo ang new molecule.\n\nBakit kaya mahalaga na maging malinis ang ating bahay? Ano ang mangyayari kung may bacteria dito?\n\n[image: A diagram showing a single atom of a metal with a nucleus and shells of electrons around it.]",
+   "scores": {
+    "words": 128,
+    "ceb_ratio": 0.031,
+    "tag_ratio": 0.195,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.52,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A diagram showing a single atom of a metal with a nucleus and shells of electrons around it."
+    ]
+   }
+  },
+  {
+   "id": "tl-17",
+   "lang": "tagalog",
+   "grade": 8,
+   "register": "lazy_keywords",
+   "topic": "Newton's laws",
+   "prompt": "newton law of motion",
+   "reply": "Magandang tanong! Ang Newton's First Law ay nagde-describe kung paano gumagalaw ang bagay kapag walang puwersa na humahadlang.\n\n\"Ang isang bagay ay patuloy na gagalaw nang pare-pareho, bilis at direksyon, maliban kung may external force na humihinto sa kanya.\"\n\nHalimbawa:\n- Humihinto ang bola habang umaakyat — dahil walang puwersang humahadlang (Newton's First Law).\n- Bumibilis ang kotse nang hindi humihinto — dahil may puwersang nagtutulak dito (force).\n\nKaya alam natin: \"Kapag walang puwersa, patuloy na gagalaw ang bagay.\" Halimbawa: bumibiyahe ang bus kapag dumadaan ang tricycle sa harapan niya!\n\nSa paligid mo, nakikita mo ba ang halimbawa ng Newton's First Law?",
+   "scores": {
+    "words": 100,
+    "ceb_ratio": 0.05,
+    "tag_ratio": 0.21,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.59,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  },
+  {
+   "id": "tl-18",
+   "lang": "tagalog",
+   "grade": 8,
+   "register": "codeswitch",
+   "topic": "periodic table",
+   "prompt": "ano po use ng periodic table sa chemistry",
+   "reply": "Ang **periodic table** ay nagpapakita ng pattern sa loob ng isang chemical element! 🌟\n\nSa tatlong rows mula kaliwa hanggang kanan:\n- **Group A**: Mga metal (tulad ng Gold) → may pinakamaraming electrons → madaling bumuo ng ion.\n- **Group B**: Nonmetals (tulad ng Carbon) → may mas kaunting electrons → karaniwang may negative charge.\n\nIto ang dahilan kung bakit kadalasan: Ang **Gold ay ginagawang wire para sa lighting** — dahil ang Group 1 metals ay may pinakamaraming valence electrons na pwedeng gumawa ng bagong atoms!\n\nKaya kapag nagsisiksikan ka sa classroom, subukang alamin kung anong group ang element na kinukuha niyo para hindi ka maging malaking problema!\n\nNapansin mo ba na ang ilang elements ay nasa isang row? Ano kaya ang ibig sabihin nito para sa kung paano sila naiiba sa isa't isa?\n\n[image: A simple diagram showing the periodic table in horizontal columns with groups on each side and atomic numbers below.]",
+   "scores": {
+    "words": 125,
+    "ceb_ratio": 0.072,
+    "tag_ratio": 0.176,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.68,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simple diagram showing the periodic table in horizontal columns with groups on each side and atomic numbers below."
+    ]
+   }
+  },
+  {
+   "id": "tl-19",
+   "lang": "tagalog",
+   "grade": 8,
+   "register": "vague",
+   "topic": "unspecified physics",
+   "prompt": "ano po yung tungkol sa puwersa",
+   "reply": "Ang **puwersa** ay isang bagay na nagtutulak o naghihila ng isang bagay! 📈\n\nHalimbawa:\n- Nagdadala ka ng basket mula sa taas ng mesa patungo sa labas gamit ang iyong kamay — iyan ay **pagtutulak** (pull)\n- Pinupunit ng tatay ang papel gamit ang kutsilyo — iyan ay **pagtutulak** (push)\n\nMay dalawang uri ng puwersa:\n\n1. **Pagtutulak/paghila (Pull/Push)**: Nasa gilid mo → gumagalaw ang bagay (hal. kutsara na nahuhulog kapag nasa mesa ka!)\n2. **Paglipat (Transfer)**: May ibang direksyon → hindi gumagalaw ang bagay (hal. pagpapatunaw ng tubig sa baso!)\n\nAlam mo ba kung bakit mahirap mag-push ng malaking sako ng bigas? Ano kaya ang puwersa na ginagamit mo para hilahin siya?\n\n[image: A person lifting a small basket with one hand while holding the other side to maintain balance.]",
+   "scores": {
+    "words": 106,
+    "ceb_ratio": 0.047,
+    "tag_ratio": 0.198,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.62,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A person lifting a small basket with one hand while holding the other side to maintain balance."
+    ]
+   }
+  },
+  {
+   "id": "tl-20",
+   "lang": "tagalog",
+   "grade": 9,
+   "register": "misspelled",
+   "topic": "mitosis",
+   "prompt": "ano po ang maytosis at miyosis",
+   "reply": "Magandang tanong! Ang **maytosis** ay kapag masyadong maraming sanggol ang ipinanganak sa parehong oras — madalas nito ay nagdadala ng masama.\n\nAng **miyosis** (pagbubuntis) ay kapag gumawa ang babae ng tatlong itlog para sa isang sperm cell — tinatawag itong fertilization.\n\nSa tingin mo, bakit may mga babae na hindi kayang magkaroon ng anak dahil sa maytosis?",
+   "scores": {
+    "words": 55,
+    "ceb_ratio": 0.091,
+    "tag_ratio": 0.236,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.76,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  },
+  {
+   "id": "tl-21",
+   "lang": "tagalog",
+   "grade": 9,
+   "register": "clean",
+   "topic": "chemical bonding",
+   "prompt": "Bakit po nagbo-bond ang mga atom para gumawa ng molecule?",
+   "reply": "Napaka-interesanteng tanong! Ang bond ay nangyayari kapag ang dalawang atoms ay may **magkaibang valence electrons**.\n\nHalimbawa:\n- Carbon + Oxygen → CO₂ (carbon nagdadala ng 4 valence electrons, oxygen 8)\n- Hydrogen + Chlorine → HCl (hydrogen nagdadala ng 1 electron, chlorine nagdadala ng 7)\n\nAng bagong substance na nabuo ay mas malakas kaysa sa original na compound dahil ang carbon ay natutulungan ng oxygen na makuha ang lahat ng 8 electrons niya, habang ang hydrogen ay natutulungan ng chlorine na makuha ang 1 electron.\n\nAng prosesong ito ay tinatawag na **chemical bonding** — ang pagbabahagi ng electrons sa pagitan ng dalawang elements. Halos lahat ng bagay sa Earth ay gawa sa chemical bonds!\n\nSa tingin mo, bakit hindi nag-bo-bond ang mga atoms kung pareho silang may parehong bilang ng electrons? Anong mangyayari sa bagong compound kung magkakaroon ng pantay-pantay na bilang ng electrons?",
+   "scores": {
+    "words": 135,
+    "ceb_ratio": 0.059,
+    "tag_ratio": 0.215,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.51,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  },
+  {
+   "id": "tl-22",
+   "lang": "tagalog",
+   "grade": 9,
+   "register": "lazy_keywords",
+   "topic": "electricity / Ohm",
+   "prompt": "voltage current resistance",
+   "reply": "Ang voltage ay ang lakas na nagpapatakbo ng circuit! Parang kuryente!\n\nAng current ay kung gaano karaming electrons ang dumadaan sa isang punto sa loob ng isang segundo.\n\nAt ang resistance naman ay kung gaano kadaling dumaloy ang kuryente — mas mababa ang resistance = mas madaling dumaloy ang kuryente (kaya ginagamit ang wire na may mababang resistensya).\n\nKaya kapag pinunit mo ang wires at tinapon sa labas, ang kuryente ay hindi na makakarating pa sa iba pang bahagi dahil mas mahirap na dumaan ang kuryente sa bagong wire — kaya gumagamit tayo ng resistor para hindi masira ang kuryente.\n\nSa tingin mo, bakit mas mabilis dumadaloy ang kuryente sa metal kaysa sa plastic?\n\n[image: A simple circuit diagram showing a wire with a small current running through it connected to a light bulb.]",
+   "scores": {
+    "words": 111,
+    "ceb_ratio": 0.09,
+    "tag_ratio": 0.216,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.57,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simple circuit diagram showing a wire with a small current running through it connected to a light bulb."
+    ]
+   }
+  },
+  {
+   "id": "tl-23",
+   "lang": "tagalog",
+   "grade": 10,
+   "register": "codeswitch",
+   "topic": "genetics",
+   "prompt": "pano po namamana yung mga traits galing parents",
+   "reply": "Ang **traits** ay mga katangian ng isang bagay na nakukuha mula sa ina at ama! Tulad ng kulay ng balahibo ng aso o kulay ng mata ng hayop.\n\nHalimbawa:\n- Ang aso ay may iba't ibang kulay (yellow, black, brown)\n- Ang pusa ay may iba't ibang kulay (black, white, gray)\n- Ang kalabaw ay may puting balahibo\n\nMay dalawang paraan para mapasa ang trait:\n\n1. **Sexual reproduction**: Ang sperm at egg ay nagdadala ng trait mula sa ina papunta sa ama.\n2. **Asexual reproduction**: Sa pamamagitan ng paghahati ng cells (gametes), ang trait ay nai-transfer sa anak.\n\nKaya nga kapag pinaghalo ang dalawang aso — ang isa ay brown, ang isa ay puti — pareho silang binibigyan ng gene para sa brown color!\n\nAno sa tingin mo ang mangyayari sa isang uri ng insekto kung mamamatay ang ama? Paano ito nakakaapekto sa kanyang offspring?",
+   "scores": {
+    "words": 139,
+    "ceb_ratio": 0.086,
+    "tag_ratio": 0.201,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.55,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  },
+  {
+   "id": "tl-24",
+   "lang": "tagalog",
+   "grade": 10,
+   "register": "misspelled",
+   "topic": "stoichiometry / mole",
+   "prompt": "ano po ang mol sa kemistri",
+   "reply": "Ang **mol** ay ang unit para sa dami sa chemistry! Ang isa ay nagmula sa salitang Latin na \"molusca\", na nangangahulugang maliit na shell.\n\nSa chemistry:\n- Isang mole = ang dami ng isang atom ng isang element sa isang compound\n- Halimbawa: 1 mole ng oxygen (O₂) ay may 8 atoms ng oxygen\n\nKaya kapag binibilang mo ang asukal sa cake, kailangan mong hatiin sa 64 na maliliit na piraso!\n\nAling elements ang ginagamit mo araw-araw? May nakikita ka bang formula na gumagamit ng 2, 8, o 16 na atoms?\n\n[image: A diagram showing a molecule of water with arrows indicating the arrangement of molecules into individual atoms.]",
+   "scores": {
+    "words": 83,
+    "ceb_ratio": 0.084,
+    "tag_ratio": 0.157,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.58,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A diagram showing a molecule of water with arrows indicating the arrangement of molecules into individual atoms."
+    ]
+   }
+  },
+  {
+   "id": "tl-25",
+   "lang": "tagalog",
+   "grade": 10,
+   "register": "vague",
+   "topic": "unspecified / lazy",
+   "prompt": "test bukas di pa ko nag-aaral help",
+   "reply": "Walang problema! Hindi naman masama na subukan mong alamin muna ang konsepto bago gumawa ng test. Madaling paraan ito para mapabuti ang iyong learning. Halimbawa, kung gusto mong malaman kung ano ang difference ng tubig at asin, masaya akong suportahan ka — maghanda ka ng experiment gamit ang sabon (tubig + sabon) at asin (asin + tubig). Pag-aralan mo kung bakit magkaiba ang amoy ng dalawa.\n\nKung may bagong konsepto na gusto mong pag-aralan, anong bahagi ng aralin ang pinaka-interesado ka? Makakatulong ito sa iyo na maunawaan nang mas maayos ang tanong. Mag-ingat lang — huwag mag-alala kung hindi agad nakukuha ang sagot. Masaya akong tumulong!\n\n[image: A clear glass of water with a drop of salt on top labeled \"salt,\" and another clear glass filled with tap water.]",
+   "scores": {
+    "words": 107,
+    "ceb_ratio": 0.056,
+    "tag_ratio": 0.187,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.66,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A clear glass of water with a drop of salt on top labeled \"salt,\" and another clear glass filled with tap water."
+    ]
+   }
+  }
+ ]
+}

@@ -21,7 +21,10 @@ cd "$ROOT"
 
 BIN="${BIN:-/opt/homebrew/bin/llama-server}"
 BASE="${BASE:-$ROOT/deploy/models/Sailor2-3B-Chat.Q4_K_M.gguf}"
-ADAPTER="${ADAPTER:-$ROOT/finetuning/adapters/adapter-tagalog-grounded-f16.gguf}"
+# Default to the BUNDLED APK assets — the gate must test exactly what ships.
+# (Pointing at finetuning/adapters/ snapshots drifted from the bundle before:
+# 2026-06-11 the gate default was grounded-f16 while the APK carried rebal-v2.)
+ADAPTER="${ADAPTER:-$ROOT/packages/mobile/assets/models/adapter-tagalog.gguf}"
 PORT="${PORT:-8088}"
 NGL="${NGL:-99}"
 # MUST match ACTIVE_MODEL.ctxSize in packages/mobile/src/config/model.ts so the
@@ -51,9 +54,8 @@ echo ">> running HYBRID retrieval gate (R1, model-independent) ..."
   echo "ERR: hybrid R1 regressions — gate FAILS (see above)"; exit 1;
 }
 
-# The Bisaya LoRA that matches Sailor2-3B (== the shipping mobile adapter-bisaya.gguf;
-# the older adapter-bisaya-f16.gguf is a different-arch build and won't load).
-BIS_ADAPTER="${BIS_ADAPTER:-$ROOT/finetuning/adapters/adapter-sailor-bisaya-f16.gguf}"
+# Bisaya: same principle — gate the bundled APK asset directly.
+BIS_ADAPTER="${BIS_ADAPTER:-$ROOT/packages/mobile/assets/models/adapter-bisaya.gguf}"
 echo ">> base:    $BASE"
 
 # Boot the LaBSE embed service on :8090 so run-eval.mts uses the device's HYBRID retrieval

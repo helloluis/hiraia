@@ -1,0 +1,685 @@
+{
+ "summary": {
+  "model": "/workspace/output/tagalog-sailor-v5/merged-model",
+  "lang": "tagalog",
+  "n": 25,
+  "lang_ok": 25,
+  "english_heavy": 0,
+  "repetitive": 0,
+  "ends_question": 25,
+  "with_image_tag": 21,
+  "total_image_tags": 21,
+  "malformed_image_tags": 0,
+  "avg_words": 99,
+  "runtime_s": 157
+ },
+ "results": [
+  {
+   "id": "tl-01",
+   "lang": "tagalog",
+   "grade": 3,
+   "register": "vague",
+   "topic": "states of matter / general",
+   "prompt": "ano po yung solid liquid gas",
+   "reply": "Magandang tanong! Ang tatlong pangunahing anyo ng matter ay solid, liquid, at gas. Ang lahat ng bagay sa paligid natin — mula sa maliliit na butil hanggang sa malaking puno — ay isa sa tatlo.\n\nSolid: ang mga bagay ay may tiyak na hugis (halimbawa, bato, lapis)\nLiquid: ang mga bagay ay dumadaloy kapag inalog (tubig, gatas)\nGas: ang mga bagay ay napupuno ang buong espasyo (hangin, oxygen)\n\nMahalaga: ang bawat bagay ay pwedeng maging isa sa tatlong ito depende sa temperatura. Halimbawa, ang tubig ay solid sa malamig na temperatura pero liquid kapag mainit. Ang solid ay bumabalik sa dati kapag pinainit.\n\nNaranasan mo na bang subukan na palitan ang anyo ng isang bagay? Ano ang mangyayari?\n\n[image: A diagram showing three shapes of water: a frozen block of ice with a clear surface, a glass of water in a straight line, and an open can of soda showing the gas bubbles.]",
+   "scores": {
+    "words": 116,
+    "ceb_ratio": 0.069,
+    "tag_ratio": 0.19,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.56,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A diagram showing three shapes of water: a frozen block of ice with a clear surface, a glass of water in a straight line"
+    ]
+   }
+  },
+  {
+   "id": "tl-02",
+   "lang": "tagalog",
+   "grade": 3,
+   "register": "misspelled",
+   "topic": "photosynthesis",
+   "prompt": "ano po ang potosintesis",
+   "reply": "Ang **potosintesis** ay ang proseso kung paano ginagawa ng halaman ang sarili nilang pagkain mula sa sikat ng araw, tubig, at carbon dioxide! Sa loob ng dahon may maliliit na bahagi na tinatawag na **chloroplasts**, at dito nangyayari ang photosynthesis.\n\nSa madaling salita:\n- Tubig + CO₂ → Glucose (pagkain) + O₂ (hangin)\n\nNapakahusay ng halaman — kayang gumawa ng sariling pagkain nang hindi kailangan bumili!\n\nKaya nga napaka-importante ng puno sa ating kalikasan — sila ang nagbibigay ng oxygen para sa lahat ng buhay sa Earth! Bakit kaya mas maraming puno sa bansang tropikal tulad ng Pilipinas?\n\n[image: A simplified diagram of a plant showing the chloroplasts within a leaf cell and arrows showing water entering through the stomates.]",
+   "scores": {
+    "words": 93,
+    "ceb_ratio": 0.097,
+    "tag_ratio": 0.194,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.71,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simplified diagram of a plant showing the chloroplasts within a leaf cell and arrows showing water entering through th"
+    ]
+   }
+  },
+  {
+   "id": "tl-03",
+   "lang": "tagalog",
+   "grade": 3,
+   "register": "lazy_keywords",
+   "topic": "water cycle",
+   "prompt": "water cycle",
+   "reply": "Narinig ko ang water cycle pero hindi ako sigurado kung ano talaga siya! Ang water cycle ba ay tulad ng mga balon na nagtatrabaho nang sabay-sabay?\n\nHindi — mas malaki ang water cycle kaysa sa maraming balon na nagtatrabo nang sabay! Ito ay isang malaking sistema ng tubig kung saan ang tubig ay patuloy na gumagalaw mula sa dagat papuntang himpapawid (ulan), bumabalik muli sa dagat, at paulit-ulit.\n\nMga pangunahing bahagi:\n- **Evaporation** — Tubig sa dagat ay umaakyat bilang singaw\n- **Transpiration** — Tubig galing sa halaman ay umaakyat din bilang singaw\n- **Condensation** — Singaw ay lumalamig at nagiging ulan (ulan)\n- **Precipitation** — Ulan ay bumabagsak sa lupa\n\nAng buong prosesong ito ay tumatagal ng libu-libong taon!\n\nSa tingin mo, bakit kaya ang ilog ay puno ng tubig sa tag-init pero nauubos kapag taglamig? Ano ang koneksyon dito sa water cycle?",
+   "scores": {
+    "words": 139,
+    "ceb_ratio": 0.086,
+    "tag_ratio": 0.158,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.59,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  },
+  {
+   "id": "tl-04",
+   "lang": "tagalog",
+   "grade": 4,
+   "register": "vague",
+   "topic": "homework help / unspecified",
+   "prompt": "patulong po sa homework",
+   "reply": "Naku, hindi ko pwedeng tulungan ang homework niyo dahil nasa tamang edad pa kayo para dito. Pero masaya akong makarinig ng inyong natutunan! Ano ang pinaka-mahalagang bagay na natutuhan niyo ngayon?",
+   "scores": {
+    "words": 32,
+    "ceb_ratio": 0.0,
+    "tag_ratio": 0.219,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.94,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  },
+  {
+   "id": "tl-05",
+   "lang": "tagalog",
+   "grade": 4,
+   "register": "txtspeak",
+   "topic": "living things",
+   "prompt": "anu po pinagkaiba ng halaman sa hayop",
+   "reply": "Ang halaman ay **walang buhay**, hindi sila kumain o umihi tulad ng hayop. Ang halaman ay gumagawa ng sarili nilang pagkain gamit ang sikat ng araw (photosynthesis) at nagbibigay din ng oxygen para sa lahat ng buhay. Habang ang hayop naman ay kailangan ng pagkain mula sa iba.\n\nParang ikaw at ako:\n- Ako = may buhay at kayang lumakad, tumakbo, kumain, at huminga.\n- Ikaw = walang buhay pero kaya mong tumakbo at kumain.\n\nKung ang halaman ay kailangan ng tubig, sikat ng araw, at hangin para mabuhay, ano sa tingin mo ang kakailanganin ng hayop? Ano ang ginagawa niya para mabuhay?\n\n[image: A cross-section of a leaf showing the chloroplasts where photosynthesis occurs, with arrows indicating water movement and gas exchange.]",
+   "scores": {
+    "words": 99,
+    "ceb_ratio": 0.04,
+    "tag_ratio": 0.283,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.55,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A cross-section of a leaf showing the chloroplasts where photosynthesis occurs, with arrows indicating water movement an"
+    ]
+   }
+  },
+  {
+   "id": "tl-06",
+   "lang": "tagalog",
+   "grade": 4,
+   "register": "misspelled",
+   "topic": "gravity",
+   "prompt": "ano po ang grabiti",
+   "reply": "Ang grabiti ay ang puwersa na humihila sa lahat ng bagay — tulad ng bola at papel — patungo sa Earth! Ito rin ang dahilan kung bakit nakakabit ang mga balahibo sa iyong damit kapag basa ka — hinihilain sila ng tubig paibaba. Ang Earth mismo ay may grabiti, at ang buwan at araw ay may sariling grabiti rin.\n\nSa tingin mo, bakit mas mababa ang grabiti sa space (walang gravity) — sa kalawakan? Ano ang mangyayari sa mga bagay doon?\n\n[image: A ball on the floor and a ball in space hanging from a string, showing that only the weight of the ball pulls downward, not the combined pull of all its parts.]",
+   "scores": {
+    "words": 77,
+    "ceb_ratio": 0.104,
+    "tag_ratio": 0.208,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.64,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A ball on the floor and a ball in space hanging from a string, showing that only the weight of the ball pulls downward, "
+    ]
+   }
+  },
+  {
+   "id": "tl-07",
+   "lang": "tagalog",
+   "grade": 5,
+   "register": "lazy_keywords",
+   "topic": "force / acceleration",
+   "prompt": "gravity acceleration",
+   "reply": "Magandang tanong! Ang gravity ay ang puwersa na humihila sa lahat ng bagay patungo sa Earth. Sa Earth, ang gravity ay may bilis na halos **9.8 m/s²** (meters per second squared). Ito ang dahilan kung bakit nahuhulog ang bola kapag iniabot natin ito. May iba pang uri ng puwersa bukod sa gravity — tulad ng electromagnetic force at strong nuclear force. Ngunit ang gravity ang pinaka-malaking puwersa na nakakaapekto sa araw-araw nating buhay.\n\nKung iiwan mo ang bola sa kalawakan at hayaan itong mahulog, ano kaya ang mangyayari? Bakit hindi ito mahuhulog nang ganoon kadalian doon?\n\n[image: A simple diagram showing a ball falling toward the ground as explained by gravity with arrows pointing downward.]",
+   "scores": {
+    "words": 97,
+    "ceb_ratio": 0.082,
+    "tag_ratio": 0.196,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.66,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simple diagram showing a ball falling toward the ground as explained by gravity with arrows pointing downward."
+    ]
+   }
+  },
+  {
+   "id": "tl-08",
+   "lang": "tagalog",
+   "grade": 5,
+   "register": "codeswitch",
+   "topic": "digestive system",
+   "prompt": "paano po nagdidigest yung food natin sa tiyan",
+   "reply": "Napaka-interesting na tanong! Ang tiyan (stomach) ay may espesyal na lining na tinatawag na **mucous membrane**. Dito, ang enzymes mula sa pancreas ay nagsisimulang mag-break down ng carbohydrates, proteins, at fats.\n\nAng enzyme na **Amylase** ay nagtutunaw ng starch (carbohydrate). Habang kinakain ang karne, ang enzyme na **Pepsinogen** ay unti-unting nagiging **Pepsin** at nagdi-digest ng proteins.\n\nIto ang tinatawag na **chemical digestion** — ang enzymes ang gumaganap ng trabaho. Pagkatapos, dumadaan pa ang pagkain sa small intestine para mas malalaking molecules. Ngayon, ano ang iniisip mo? Bakit nga ba importante na uminom ng sapat na tubig habang kumakain?\n\n[image: A stomach lining showing the digestive process of breaking down starch from rice and protein from meat.]",
+   "scores": {
+    "words": 101,
+    "ceb_ratio": 0.03,
+    "tag_ratio": 0.188,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.69,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A stomach lining showing the digestive process of breaking down starch from rice and protein from meat."
+    ]
+   }
+  },
+  {
+   "id": "tl-09",
+   "lang": "tagalog",
+   "grade": 5,
+   "register": "incomplete",
+   "topic": "photosynthesis (incomplete)",
+   "prompt": "bakit po berde yung",
+   "reply": "Ang dahon ay berde dahil may **chlorophyll** ito — isang pigment na nag-aabsorb ng enerhiya mula sa araw para gawing asukal at oxygen! Ang iba't ibang kulay tulad ng pula, dilaw, at orange ay hindi nakakaabot sa dahon dahil hindi sila kayang i-absorb ng chlorophyll.\n\nKaya kapag nalanta ang isang halaman (walang sapat na chlorophyll), bumabalik ito sa mas madidilim na kulay — tinatawag nating brown o kayumanggi. Ito ay senyas na kulang ang sikat ng araw o tubig!\n\nSa tingin mo, bakit ang mga dahon ng puno ay napakahaba ng ugat? May koneksyon ba ito sa kakayahang mag-absorb ng sikat ng araw?\n\n[image: A leaf with its veins and light-absorbing pigment showing across the top of a tree branch.]",
+   "scores": {
+    "words": 104,
+    "ceb_ratio": 0.048,
+    "tag_ratio": 0.24,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.62,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A leaf with its veins and light-absorbing pigment showing across the top of a tree branch."
+    ]
+   }
+  },
+  {
+   "id": "tl-10",
+   "lang": "tagalog",
+   "grade": 5,
+   "register": "vague",
+   "topic": "unspecified science",
+   "prompt": "di ko po gets yung lesson namin",
+   "reply": "Huwag kang matakot — normal lang ang hindi pa gaanong maintindihan! Ang mahalaga ay sinusubukan mong intindihin. Tingnan natin ito:\n\nAng katawan natin ay may dalawang bahagi — ang panloob (internal) at panlabas (external). Ang panloob ay kinabibilangan ng utak, puso, baga, at iba pang organo; ang panlabas naman ay kinabibilangan ng balat, buhok, at kuko.\n\nKapag hinila mo ang kuko mo, nagiging mas maikli ba ito? O nananatiling pareho?\n\n[image: A diagram showing two halves of the human body labeled with internal and external organs.]",
+   "scores": {
+    "words": 68,
+    "ceb_ratio": 0.0,
+    "tag_ratio": 0.235,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.72,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A diagram showing two halves of the human body labeled with internal and external organs."
+    ]
+   }
+  },
+  {
+   "id": "tl-11",
+   "lang": "tagalog",
+   "grade": 6,
+   "register": "misspelled",
+   "topic": "ecosystem",
+   "prompt": "ano po ang ekosistem",
+   "reply": "Magandang tanong! Ang **ekosistema** ay ang buhay na komunidad sa loob ng isang lugar — lahat ng halaman, hayop, tubig, hangin, at lupa na nakikipag-interact nang sama-sama.\n\nHalimbawa:\n- Sa hardin niyo: may mga bulaklak (halaman), ibon, palaka, at inaalis mong dahon.\n- Sa dagat: may isda, plankton, coral reefs, at algae.\n- Sa lungsod: may mga puno, mga taong nagtatrabaho, at mga sasakyang dumadaan.\n\nSa Pilipinas, marami tayong uri ng ekosistema tulad ng:\n- Tropical rainforest\n- Coral reef\n- Mangrove forest\n- Palayan\n\nKaya nga importante ang **biodiversity** - ang iba't ibang uri ng buhay na nakatira sa isang lugar!\n\nAno pa ang mga uri ng ekosistema na alam mo?",
+   "scores": {
+    "words": 105,
+    "ceb_ratio": 0.067,
+    "tag_ratio": 0.162,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.66,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  },
+  {
+   "id": "tl-12",
+   "lang": "tagalog",
+   "grade": 6,
+   "register": "lazy_keywords",
+   "topic": "solar system",
+   "prompt": "planets araw mundo",
+   "reply": "Tama! Ang Araw (Sun) ay isang malaking bituin na nagbibigay ng liwanag at init sa ating planeta — parang ilaw na nasa loob ng bahay natin. Isipin mo ang Araw bilang isang maliit na araw na nakatayo sa gitna ng kalangitan.\n\nAng Earth ay isa sa walong pangunahing planeta. Narito tayo dahil may sapat na tubig at oxygen para mabuhay ang mga halaman at hayop. Isa pa, nasa tamang distansya tayo mula sa Araw — hindi masyadong mainit at hindi masyadong malamig. Ito ang tinatawag na \"Goldilocks Zone\"!\n\nKaya kapag sinabi mong \"Earth,\" ito ang ibig sabihin: ang ating planeta — mas maliit kaysa sa Araw pero mas malaki kaysa sa buwan. Sa tingin mo, bakit napaka-importante ng tubig para sa lahat ng nabubuhay dito?",
+   "scores": {
+    "words": 123,
+    "ceb_ratio": 0.065,
+    "tag_ratio": 0.195,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.62,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  },
+  {
+   "id": "tl-13",
+   "lang": "tagalog",
+   "grade": 6,
+   "register": "codeswitch",
+   "topic": "electricity",
+   "prompt": "pano po gumagana yung kuryente sa bahay",
+   "reply": "Magaling! Ang kuryente ay gawa sa enerhiya mula sa iba't ibang uri ng fuel tulad ng coal, oil, o gas. Sa Pilipinas, karamihan ng kuryente ay nagmumula sa **hydroelectric dams** (tulad ng San Roque Dam) at sa mga fossil fuels.\n\nAng kuryente ay dumadaan sa wire papunta sa bahay natin:\n1. Mula sa power plant → 2. Na-convert sa AC electricity ng transformer → 3. Dumaan sa wires → 4. Nakarating sa outlet\n\nKaya kapag may ilaw, TV, o appliance sa bahay natin, hindi ito diretsahang gumagana — dumaan pa ito sa mga wire at transformers!\n\nSa tingin mo, bakit mas mahal ang kuryente tuwing tag-init? Bakit kailangan nating magtipid?\n\n[image: A simple circuit diagram showing the flow of electrical energy from a power plant through transformers to houses.]",
+   "scores": {
+    "words": 104,
+    "ceb_ratio": 0.135,
+    "tag_ratio": 0.154,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.66,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simple circuit diagram showing the flow of electrical energy from a power plant through transformers to houses."
+    ]
+   }
+  },
+  {
+   "id": "tl-14",
+   "lang": "tagalog",
+   "grade": 7,
+   "register": "clean",
+   "topic": "cells",
+   "prompt": "Ano po ang pagkakaiba ng plant cell at animal cell?",
+   "reply": "Magaling! May dalawa silang pangunahing bahagi:\n- **Animal Cell**: may nucleus (ginagalaw), mitochondria para gumawa ng enerhiya, at plastids (para sa photosynthesis)\n- **Plant Cell**: may nucleus, chloroplasts para sa photosynthesis, at cellulose wall para protektahan\n\nAng pinagsasama nila ay nagbibigay ng buhay. Ang tao ay may halos parehong bilang ng cells tulad ng halaman, pero mas marami ang animal cells natin dahil kailangan nating gumalaw at mangaso.\n\nTanong: Bakit kaya mahalaga ang cell membrane sa pagitan ng plant cell at animal cell?\n\n[image: A simple diagram showing the cell structure with labeled parts for both animal and plant cells.]",
+   "scores": {
+    "words": 81,
+    "ceb_ratio": 0.037,
+    "tag_ratio": 0.185,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.64,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simple diagram showing the cell structure with labeled parts for both animal and plant cells."
+    ]
+   }
+  },
+  {
+   "id": "tl-15",
+   "lang": "tagalog",
+   "grade": 7,
+   "register": "misspelled",
+   "topic": "photosynthesis",
+   "prompt": "paano po nangyayari ang potosyntesis sa mga dahon",
+   "reply": "Magandang tanong! Ang **photosynthesis** ay isang proseso kung saan gumagawa ng pagkain ang mga halaman gamit ang sikat ng araw (sunlight). Narito ang pangunahing hakbang:\n1. Nag-aabsorb ang mga selula ng liwanag mula sa araw\n2. Ginagamit nila ang enerhiyang ito para gumawa ng glucose at oxygen\n3. Ang glucose ay ginagamit upang gumawa ng iba pang bagay tulad ng carbohydrates\n\nAng mga green pigment cells sa loob ng dahon ay nagko-concentrate ng solar energy.\n\nSa tingin mo, bakit berde ang kulay ng mga dahon? Ano ang may kinalaman dito?\n\n[image: A sunlit leaf with a cluster of tiny dots inside the leaf showing chloroplasts where photosynthesis takes place.]",
+   "scores": {
+    "words": 89,
+    "ceb_ratio": 0.045,
+    "tag_ratio": 0.292,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.67,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A sunlit leaf with a cluster of tiny dots inside the leaf showing chloroplasts where photosynthesis takes place."
+    ]
+   }
+  },
+  {
+   "id": "tl-16",
+   "lang": "tagalog",
+   "grade": 7,
+   "register": "txtspeak",
+   "topic": "matter / atoms",
+   "prompt": "anu b ang atom",
+   "reply": "Magaling! Ang atom ay ang pinaka-maliit na bahagi ng isang bagay na nagtataglay pa rin ng lahat ng katangian nito. May tatlong uri ng atoms:\n\n**1. Proton:** positibong singil (kumakatawan sa **metallicidad**) — nasa nucleus\n**2. Neutron:** neutral na particle (nasa nucleus)\n**3. Electrons:** negatibong singil na umiikot sa nucleus\n\nAng bilang ng proton sa loob ng nucleus ay tinatawag na atomic number. Ito ang nagtatakda kung ano ang elementong iyan — halimbawa, ang carbon ay may 6 protons.\n\nKaya kapag sinabi mong \"isang atom ng oxygen,\" ibig sabihin ay may isa lang proton at dalawang electron doon!\n\nNgayon, bakit kaya mas madaling mabahin ang isang molecule kaysa sa isang malaking solid? Ano ang koneksyon niya sa laki ng atoms?\n\n[image: A simple diagram of an atom with a central nucleus containing protons and neutrons surrounded by electrons in orbit around the nucleus.]",
+   "scores": {
+    "words": 115,
+    "ceb_ratio": 0.052,
+    "tag_ratio": 0.174,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.64,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simple diagram of an atom with a central nucleus containing protons and neutrons surrounded by electrons in orbit arou"
+    ]
+   }
+  },
+  {
+   "id": "tl-17",
+   "lang": "tagalog",
+   "grade": 8,
+   "register": "lazy_keywords",
+   "topic": "Newton's laws",
+   "prompt": "newton law of motion",
+   "reply": "Tama! Ito ang tatlong batas ni Isaac Newton tungkol sa galaw:\n\n1. Ang bagay ay patuloy na gumagalaw nang pare-pareho hangga't may puwersa na humihila dito.\n2. Pag binigyan ng puwersa (tulad ng biglaang pagsipa), babaguhin ang direksyon pero hindi ang bilis ng bagay.\n3. Kapag nawala ang puwersa, mababawasan ang bilis, babaguhin ang direksyon, o mapapatigil.\n\nAng lahat ng ito ay naka-base sa palaging paggalaw ng mundo sa loob ng libu-libong taon!\n\nKaya kapag biglang tumigil ang jeepney habang nagmamaneho, bakit kaya napakahirap bumaba agad? Ano ang ibig sabihin ng Batas 2?\n\n[image: A boy kicking a soccer ball at full speed while standing still to show how the force from the kick changes direction.]",
+   "scores": {
+    "words": 92,
+    "ceb_ratio": 0.033,
+    "tag_ratio": 0.261,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.68,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A boy kicking a soccer ball at full speed while standing still to show how the force from the kick changes direction."
+    ]
+   }
+  },
+  {
+   "id": "tl-18",
+   "lang": "tagalog",
+   "grade": 8,
+   "register": "codeswitch",
+   "topic": "periodic table",
+   "prompt": "ano po use ng periodic table sa chemistry",
+   "reply": "Ang **periodic table** ay isang listahan ng lahat ng elements (elemento) — parang encyclopedia ng buhay! Sa pamamagitan nito, alam natin:\n- Ang bilang atom ng bawat element\n- Anong uri sila ng substance — metal, nonmetal, o metalloid\n- Paano sila nagre-react sa isa't isa\n\nKaya halimbawa, kapag alam mong may iron (Fe) sa katawan mo, mas madaling malaman kung bakit ka nagkakaroon ng anemia dahil kulang ka sa iron!\n\nSa tingin mo, paano nakakaapekto ang lokasyon ng isang element sa periodic table sa kanyang properties?\n\n[image: A schematic representation of the periodic table with the s-block and p-block elements labeled.]",
+   "scores": {
+    "words": 83,
+    "ceb_ratio": 0.096,
+    "tag_ratio": 0.181,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.71,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A schematic representation of the periodic table with the s-block and p-block elements labeled."
+    ]
+   }
+  },
+  {
+   "id": "tl-19",
+   "lang": "tagalog",
+   "grade": 8,
+   "register": "vague",
+   "topic": "unspecified physics",
+   "prompt": "ano po yung tungkol sa puwersa",
+   "reply": "Ang **puwersa** ay ang lakas na nagdudulot ng pagbabago sa galaw o hugis ng bagay! Halimbawa:\n- Ang hanging humahampas sa iyong papel kapag binabasa mo ito\n- Ang push ng teacher mo kapag tinutulak niya ang mesa\n- Ang bigat ng iyong katawan\n\nMay dalawang uri ng puwersa:\n\n1. **Nakikitang puwersa** (visible forces)\n   - Mga mahahawakan natin o nakikita\n   - Pwedeng maraming puwersa na sabay-sabay na gumana\n\n2. **Hindi nakikitang puwersa** (invisible forces)\n   - Hindi natin nakikita pero naroon sila\n   - Gravity, magnetism, electric field\n\nSa tingin mo, bakit mas madaling ikilos ang malambot na bola kaysa sa matigas na bola? Ano ang uri ng puwersa ang kumikilos dito?\n\n[image: A ball rolling down a ramp shows the direction of gravity pulling downwards and the normal force pushing upward from the ramp against the ball.]",
+   "scores": {
+    "words": 102,
+    "ceb_ratio": 0.039,
+    "tag_ratio": 0.245,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.63,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A ball rolling down a ramp shows the direction of gravity pulling downwards and the normal force pushing upward from the"
+    ]
+   }
+  },
+  {
+   "id": "tl-20",
+   "lang": "tagalog",
+   "grade": 9,
+   "register": "misspelled",
+   "topic": "mitosis",
+   "prompt": "ano po ang maytosis at miyosis",
+   "reply": "Ang **mitosis** ay ang proseso ng cell division para gumawa ng dalawang anak cells nang hindi nagbabago ang DNA nila.\n- Isang beses lang ginagawa (para sa growth)\n- Pareho ang bilang ng chromosomes\n\nAng **meiosis** ay ang proseso ng paggawa ng gametes (sperm at egg) na may half ng chromosomes ng original cell.\n\nIsipin mo ito:\n- Ang mitosis ay parang paghahati ng mansanas — pareho pa rin ang lasa!\n- Ang meiosis ay parang paggawa ng ibang uri ng mansanas — mas marami, pero baka magkaiba ang lasa!\n\nKaya importante ang meiosis: binibigyan niya ang katawan natin ng sapat na bilang ng gametes para sa reproduction. Sa tingin mo, bakit kailangan ng katawan nating lahat ng sperm at egg cells?\n\n[image: A cross-section of a budding yeast cell showing the duplicated chromosomes during mitotic cell division.]",
+   "scores": {
+    "words": 116,
+    "ceb_ratio": 0.034,
+    "tag_ratio": 0.293,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.56,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A cross-section of a budding yeast cell showing the duplicated chromosomes during mitotic cell division."
+    ]
+   }
+  },
+  {
+   "id": "tl-21",
+   "lang": "tagalog",
+   "grade": 9,
+   "register": "clean",
+   "topic": "chemical bonding",
+   "prompt": "Bakit po nagbo-bond ang mga atom para gumawa ng molecule?",
+   "reply": "Ang bonding ay nangyayari kapag ang dalawang atoms ay may gusto pa ring magkaroon ng isa pang atom — tinatawag itong \"unavailability.\" Ang resulta ay ang pagbuo ng molecule.\n\nHalimbawa, ang oxygen (O₂) ay binubuo ng dalawang oxygen atoms na nakatali sa isa't isa. Nag-bo-bond sila dahil:\n- Isa ay nagbigay ng isa sa labas niya (naging O₁)\n- Isa ay natanggap ang isa mula sa iba (naging O₂)\n\nIto rin ang dahilan kung bakit mainit ang gasolina kapag sinindihan — ang oxygen molecules ay nagbo-bond at nag-react sa carbon atoms para gumawa ng init! Ito ang pinaka-simpleng anyo ng chemical reaction.\n\nNaiintindihan mo ba kung bakit kailangan ng tatlong atoms para bumuo ng CO₂?\n\n[image: Two overlapping circles showing the shared electrons of a double bond between two atoms.]",
+   "scores": {
+    "words": 116,
+    "ceb_ratio": 0.052,
+    "tag_ratio": 0.233,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.6,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "Two overlapping circles showing the shared electrons of a double bond between two atoms."
+    ]
+   }
+  },
+  {
+   "id": "tl-22",
+   "lang": "tagalog",
+   "grade": 9,
+   "register": "lazy_keywords",
+   "topic": "electricity / Ohm",
+   "prompt": "voltage current resistance",
+   "reply": "Napaka-gandang tanong! Ang tatlong ito ay parang \"triad\" ng electricity — kailangan silang balanse para gumana nang maayos ang ilaw sa bahay niyo:\n- **Voltage** = lakas ng kuryente (tulad ng lakas ng baterya)\n- **Current** = bilis ng daloy (kung gaano mabilis dumadaloy ang electrons)\n- **Resistance** = kaligtasan ng kuryente na dumaan\n\nAng formula nila ay V = I × R, kung saan ang V ay voltage, I ay current, at R ay resistance.\n\nHalimbawa: kung ang baterya ay may voltage na 6V at ang wire ay may resistance na 1Ω, anong current ang dadaloy? Subukan mong gawing simple ang problema!\n\n[image: A diagram showing a light bulb labeled as 6V, with arrows showing the direction of voltage and current flowing through wires.]",
+   "scores": {
+    "words": 94,
+    "ceb_ratio": 0.043,
+    "tag_ratio": 0.191,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.6,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A diagram showing a light bulb labeled as 6V, with arrows showing the direction of voltage and current flowing through w"
+    ]
+   }
+  },
+  {
+   "id": "tl-23",
+   "lang": "tagalog",
+   "grade": 10,
+   "register": "codeswitch",
+   "topic": "genetics",
+   "prompt": "pano po namamana yung mga traits galing parents",
+   "reply": "Napaka-interesanteng tanong! Ang **genetics** ay nasa likod nito!\n\nAng lahat ng traits (kulay ng mata, kulay ng buhok, taas) ay nakaimbak sa loob ng cell ng iyong DNA — ang molecule na nag-iimbak ng instructions para gumawa ng proteins.\n\nMay dalawang uri ng genes:\n- **Dominant** — nakatira sa isang chromosome lang, nakikita agad\n- **Recessive** — nakatira sa dalawang chromosomes, kailangan ng isa pang copy mula sa ibang parent\n\nKaya kapag may sakit ang nanay pero hindi niya ipinapahiwatig sa anak, dahil recessive trait siya — kailangan ng dalawang copies mula sa parehong magulang ang anak para magkaroon ng sakit. Ganun din sa mga katangian tulad ng kulay ng mata.\n\nKung gusto mong malaman ang kasaysayan ng isang trait, magandang tingnan ang genealogy chart ng pamilya mo. Anong mahalagang impormasyon ang natuklasan mo?\n\n[image: A simple family tree diagram showing a child's chromosomes and the inheritance of traits.]",
+   "scores": {
+    "words": 130,
+    "ceb_ratio": 0.085,
+    "tag_ratio": 0.238,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.66,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simple family tree diagram showing a child's chromosomes and the inheritance of traits."
+    ]
+   }
+  },
+  {
+   "id": "tl-24",
+   "lang": "tagalog",
+   "grade": 10,
+   "register": "misspelled",
+   "topic": "stoichiometry / mole",
+   "prompt": "ano po ang mol sa kemistri",
+   "reply": "Magandang tanong! Ang **mol** ay yunit ng dami ng substance — parang pera para sa mga bagay sa chemistry.\n\nAng bawat substance ay may tiyak na bilang ng particles (atoms, molecules) na nagtataglay nito. Ito ay tinatawag na atomic mass unit (amu).\n\nHalimbawa, ang carbon ay may 6 atoms; ang oxygen ay may 8 atoms. Dahil parehong atom ang bilang, mas madaling isaalang-alang ang dalawang molecule ng oxygen kaysa apat na molekula ng carbon dioxide:\n\n**Dalawang molekula ng O₂ = 2 × 8 amu → ~16 amu**\n**Isang molekula ng CO₂ = 1 × 12 + 1 × 16 = 44 amu**\n\nKaya kapag sinabing \"isang mole ng oxygen gas,\" ibig sabihin ay may sapat kang atoms para bumuo ng dalawang molekula. Bakit kaya kailangan ng mas maraming oxygen para gumawa ng mas maraming molekula?\n\n[image: Two oxygen molecules with arrows showing the number of bonds between two atoms and the number of atoms.]",
+   "scores": {
+    "words": 117,
+    "ceb_ratio": 0.017,
+    "tag_ratio": 0.205,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.56,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "Two oxygen molecules with arrows showing the number of bonds between two atoms and the number of atoms."
+    ]
+   }
+  },
+  {
+   "id": "tl-25",
+   "lang": "tagalog",
+   "grade": 10,
+   "register": "vague",
+   "topic": "unspecified / lazy",
+   "prompt": "test bukas di pa ko nag-aaral help",
+   "reply": "Huwag magmadali! Mas mabuting unti-unting mag-aralan araw-araw para maunawaan nang mabuti kaysa magmadali at kalimutan ang lahat mamaya. Ang pagtitiyaga ay gumaganti — kapag dahan-dahang pinag-aralan ang bagay, mas malaki ang matandaan mo kaysa bigla-biglang pagbabasa. Isang tip: basahin nang tahimik sa sarili habang nakatuon sa isang konsepto — ito ang tinatawag na **silent reading** na may parehong epekto tulad ng pag-uusap. Ano sa tingin mo ang mas mabilis mong natatandaan: maraming mahirap na paksa nang sabay-sabay, o munting bahagi araw-araw? Bakit?\n\n[image: A simple diagram showing a silent reader looking at a book with their eyes closed and focused.]",
+   "scores": {
+    "words": 89,
+    "ceb_ratio": 0.034,
+    "tag_ratio": 0.157,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.75,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simple diagram showing a silent reader looking at a book with their eyes closed and focused."
+    ]
+   }
+  }
+ ]
+}

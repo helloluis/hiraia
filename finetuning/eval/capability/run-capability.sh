@@ -34,10 +34,12 @@ cd "$ROOT"
 
 BIN="${BIN:-/opt/homebrew/bin/llama-server}"
 BASE="${BASE:-$ROOT/deploy/models/Sailor2-3B-Chat.Q4_K_M.gguf}"
-# SHIPPING adapters (hash-matched to packages/mobile/assets/models/*.gguf). Override
-# ADAPTER= / BIS_ADAPTER= to A/B a candidate (SFT-rebalanced, distilled, …).
-ADAPTER="${ADAPTER:-$ROOT/finetuning/adapters/adapter-tagalog-ttft-f16.gguf}"
-BIS_ADAPTER="${BIS_ADAPTER:-$ROOT/finetuning/adapters/adapter-sailor-bisaya-f16.gguf}"
+# SHIPPING adapters = the BUNDLED APK assets, referenced directly so the default
+# can never drift from the bundle (2026-06-11: this pointed at ttft-f16 while the
+# APK carried rebal-v2 — the "shipping" baseline was measured on the wrong adapter).
+# Override ADAPTER= / BIS_ADAPTER= to A/B a candidate (SFT-rebalanced, distilled, …).
+ADAPTER="${ADAPTER:-$ROOT/packages/mobile/assets/models/adapter-tagalog.gguf}"
+BIS_ADAPTER="${BIS_ADAPTER:-$ROOT/packages/mobile/assets/models/adapter-bisaya.gguf}"
 PORT="${PORT:-8089}"            # avoid 8088 (run-harness) / 8090 (embed)
 NGL="${NGL:-99}"
 CTX="${CTX:-4096}"             # PER-SLOT context (device path). Total KV = CTX * NP.
@@ -87,7 +89,9 @@ boot() {
   # -np/--cont-batching: N parallel decode slots so the client's concurrent requests
   # overlap. --ctx-size here is TOTAL KV split across slots, so size it NP * per-slot CTX.
   local LORA_ARG=(); [ -n "$1" ] && [ "$1" != "BASE" ] && LORA_ARG=(--lora "$1")
-  "$BIN" -m "$BASE" "${LORA_ARG[@]}" -ngl "$NGL" --port "$PORT" \
+  # ${arr[@]+...} guard: macOS bash 3.2 treats an EMPTY array expansion as unbound
+  # under `set -u` (bites only the BASE/no-LoRA pass, where LORA_ARG stays empty).
+  "$BIN" -m "$BASE" ${LORA_ARG[@]+"${LORA_ARG[@]}"} -ngl "$NGL" --port "$PORT" \
     -np "$NP" --cont-batching --ctx-size "$((CTX * NP))" > "$HERE/.server.log" 2>&1 &
   SERVER_PID=$!
   for _ in $(seq 1 90); do

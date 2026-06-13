@@ -17,9 +17,9 @@ from datasets import load_dataset
 from trl import SFTTrainer, SFTConfig
 
 # Configuration
-MODEL_NAME = "sail/Sailor2-3B-Chat"
+MODEL_NAME = "sail/Sailor2-1B-Chat"   # on-device target: fits 4GB phones (Q4 ~739MB)
 DATASET_PATH = "/workspace/train-bisaya-v3.jsonl"
-OUTPUT_DIR = "/workspace/output/bisaya-sailor-v3"
+OUTPUT_DIR = "/workspace/output/bisaya-sailor-1b-v3"
 
 # Training hyperparameters
 LORA_RANK = 32
@@ -62,7 +62,7 @@ def main():
     print(f"✓ VRAM: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB\n")
 
     # Load model with Unsloth optimizations
-    print("Loading Sailor2-3B-Chat model...")
+    print(f"Loading {MODEL_NAME} model...")
     model, tokenizer = FastLanguageModel.from_pretrained(
         model_name=MODEL_NAME,
         max_seq_length=MAX_SEQ_LENGTH,

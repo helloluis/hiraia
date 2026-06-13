@@ -32,7 +32,11 @@ const MODELS_BASE_URL = 'https://hiraia.b11.dev/models';
 
 export type OnDeviceModelKey = 'sailor2-3b' | 'sailor2-1b';
 
-/** Languages that have a fine-tuned adapter (English uses the base model). */
+/**
+ * Languages that have their OWN fine-tuned adapter. English has no separate
+ * LoRA — LocalEngine routes it through the tagalog adapter (measured better
+ * than the base model on the English capability probes, 3.75 vs 1.78 / 5).
+ */
 export type AdapterLanguage = 'tagalog' | 'cebuano';
 
 export interface OnDeviceModel {
@@ -64,8 +68,8 @@ export interface OnDeviceModel {
    * Per-language fine-tuned LoRA adapters, BUNDLED IN THE APK (the core value —
    * shipped offline, not downloaded). Values are Metro asset module ids; the
    * engine resolves the one matching the active language to a file path via
-   * expo-asset and passes it as `modelConfig.lora`. English uses the base model
-   * (no entry). Empty = no adapters for this model yet.
+   * expo-asset and passes it as `modelConfig.lora`. English rides the TAGALOG
+   * adapter (see LocalEngine.resolveAdapterPath). Empty = no adapters yet.
    */
   loraAssets: Partial<Record<AdapterLanguage, number>>;
   note: string;
@@ -159,4 +163,21 @@ export const VECTORS_META = vectorsMeta as {
   count: number;
   langs: ('tl' | 'bis' | 'en')[];
   bankHash: string;
+};
+
+// The bundled IMAGE-TAG retrieval blob: one LaBSE vector per bundled 512x512 PNG
+// (built by rag/scripts/build-image-vectors.py from the image catalog captions).
+// Lets the tutor's free-form `[image: <english desc>]` control token resolve to a
+// real bundled illustration on-device (brute-force cosine over ~4k vectors).
+import imageVectorsBlobAsset from '../../assets/rag/image-vectors-labse.i8.bin';
+import imageVectorsMeta from '../../assets/rag/image-vectors-labse.meta.json';
+
+/** The bundled image-tag vectors blob asset (int8) + its build metadata. */
+export const IMAGE_VECTORS_BLOB_ASSET: number = imageVectorsBlobAsset;
+export const IMAGE_VECTORS_META = imageVectorsMeta as {
+  model: string;
+  dims: number;
+  scale: number;
+  count: number;
+  slugs: string[];
 };

@@ -35,11 +35,12 @@ PHASE=report node_modules/.bin/tsx finetuning/eval/capability/run-capability.mts
 # (or JUDGE_ENDPOINT=... for an inline local/API judge)
 ```
 
-Defaults to the **exact shipping adapters** (hash-matched to `packages/mobile/assets/models/`):
-tagalog = `adapter-tagalog-ttft-f16.gguf`, bisaya = `adapter-sailor-bisaya-f16.gguf`.
+Defaults to the **bundled APK assets directly** (`packages/mobile/assets/models/*.gguf`) —
+both eval harnesses reference the bundle so the "shipping" default can never drift from it.
 
 - Design + scoring: `finetuning/eval/capability/README.md`, `rubric.md`
-- Probe set: `finetuning/eval/capability/probes.json` (102 probes, 8 tiers; helpfulness-floor heaviest)
+- Probe set: `finetuning/eval/capability/probes.json` (134 probes, 10 tiers; helpfulness-floor
+  heaviest; `multi-turn` tier = scripted dialogues judged on repetition/state-tracking)
 - It measures the **holistic** device path (retrieval + model). A retrieval miss is a real
   capability failure and is allowed to score low — see `FINDINGS.md` (e.g. F1: retrieval
   hijacks the photosynthesis probe). Fix those alongside a new-model benchmark, not before.

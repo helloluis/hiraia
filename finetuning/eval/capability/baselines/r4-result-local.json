@@ -1,0 +1,194 @@
+[
+  {
+    "tag": "tagalog",
+    "id": "hf-digestion-tl",
+    "score": {
+      "accuracy": 0,
+      "helpfulness": 0,
+      "faithfulness": 0,
+      "naturalness": 2,
+      "pedagogy": 1,
+      "notes": "The model failed the must_answer requirement by answering a different question (about saliva) instead of the digestive path, and it hallucinated a false claim that eating makes people sleepy."
+    }
+  },
+  {
+    "tag": "tagalog",
+    "id": "hf-heart-job-tl",
+    "score": {
+      "accuracy": 5,
+      "helpfulness": 5,
+      "faithfulness": 5,
+      "naturalness": 5,
+      "pedagogy": 5,
+      "notes": "Model correctly identifies the heart's function (pumping blood, delivering oxygen/nutrients via continuous beating) in natural Tagalog with an encouraging tone suitable for a 5th grader."
+    }
+  },
+  {
+    "tag": "tagalog",
+    "id": "hf-bones-job-tl",
+    "score": {
+      "accuracy": 0,
+      "helpfulness": 0,
+      "faithfulness": 0,
+      "naturalness": 2,
+      "pedagogy": 1,
+      "notes": "The model failed completely on accuracy and helpfulness by hallucinating that bones help with breathing (lungs do that) and ignoring the required must_cover points (support, protect organs, blood cells)."
+    }
+  },
+  {
+    "tag": "tagalog",
+    "id": "hf-blood-red-tl",
+    "score": {
+      "accuracy": 2,
+      "helpfulness": 3,
+      "faithfulness": 3,
+      "naturalness": 5,
+      "pedagogy": 3,
+      "notes": "The model correctly identifies hemoglobin and iron but fails to explain the actual cause of the red color (oxygen binding), instead inventing a false analogy about blushing and embarrassment."
+    }
+  },
+  {
+    "tag": "tagalog",
+    "id": "hf-fever-tl",
+    "score": {
+      "accuracy": 3,
+      "helpfulness": 3,
+      "faithfulness": 3,
+      "naturalness": 5,
+      "pedagogy": 3,
+      "notes": "Correctly explains fever as a defense mechanism but fails the must_answer requirement by abruptly pivoting to an unrelated question about sweating instead of fully addressing the prompt."
+    }
+  },
+  {
+    "tag": "tagalog",
+    "id": "syn-heart-lungs",
+    "score": {
+      "accuracy": 2,
+      "helpfulness": 2,
+      "faithfulness": 3,
+      "naturalness": 5,
+      "pedagogy": 1,
+      "notes": "The model failed the core intent by not explaining the mechanism (lungs add oxygen, heart pumps it to cells) and instead dodged the question to ask the student a meta-question about importance."
+    }
+  },
+  {
+    "tag": "tagalog",
+    "id": "ab-personal-medical",
+    "score": {
+      "accuracy": 5,
+      "helpfulness": 5,
+      "faithfulness": 5,
+      "naturalness": 5,
+      "pedagogy": 5,
+      "notes": "Model correctly abstained from prescribing, redirected to adults/doctor, and offered safe general comfort in natural Tagalog."
+    }
+  },
+  {
+    "tag": "tagalog",
+    "id": "ab-serious-illness",
+    "score": {
+      "accuracy": 5,
+      "helpfulness": 5,
+      "faithfulness": 5,
+      "naturalness": 5,
+      "pedagogy": 5,
+      "notes": "Model correctly abstains from diagnosing, directs the child to an adult/doctor, and uses warm, natural Tagalog without fabrication."
+    }
+  },
+  {
+    "tag": "tagalog",
+    "id": "ped-analogy-cell",
+    "score": {
+      "accuracy": 3,
+      "helpfulness": 3,
+      "faithfulness": 5,
+      "naturalness": 5,
+      "pedagogy": 3,
+      "notes": "Answered the question but failed to provide the requested analogy and missed covering the 'parts have jobs' requirement, resulting in a partial response."
+    }
+  },
+  {
+    "tag": "tagalog",
+    "id": "myth-gum-7years",
+    "score": {
+      "accuracy": 0,
+      "helpfulness": 0,
+      "faithfulness": 0,
+      "naturalness": 1,
+      "pedagogy": 0,
+      "notes": "The model completely hallucinated a response about 'malunggay pod' and 'nganga' (a vulgar term) instead of addressing the chewing gum myth, resulting in a total failure of accuracy, helpfulness, and faithfulness."
+    }
+  },
+  {
+    "tag": "tagalog",
+    "id": "mt-photosynthesis-night-tl",
+    "score": {
+      "accuracy": 0,
+      "helpfulness": 1,
+      "faithfulness": 0,
+      "naturalness": 3,
+      "pedagogy": 1,
+      "notes": "The model failed the core intent in Turn 2 by claiming photosynthesis happens at night (factually wrong) and failed Turn 3 by refusing to answer the specific question about a month of darkness, instead deflecting with a vague refusal ('Hindi ko alam') and irrelevant advice."
+    }
+  },
+  {
+    "tag": "tagalog",
+    "id": "mt-heart-blood-tl",
+    "score": {
+      "accuracy": 5,
+      "helpfulness": 5,
+      "faithfulness": 5,
+      "naturalness": 5,
+      "pedagogy": 5,
+      "notes": "The tutor successfully covered all must_cover points across the three turns, correctly affirmed the student's 'pump' analogy in Turn 2 without repeating the full explanation, and accurately explained the role of red blood cells/iron in Turn 3."
+    }
+  },
+  {
+    "tag": "tagalog",
+    "id": "mt-digestion-hunger-tl",
+    "score": {
+      "accuracy": 2,
+      "helpfulness": 1,
+      "faithfulness": 2,
+      "naturalness": 3,
+      "pedagogy": 1,
+      "notes": "The tutor failed the multi-turn constraints: Turn 2 ignored the student's specific question about hunger returning and instead lectured about solar energy (wrong topic), while Turn 3 failed to address the 'stomach stretching' mechanism required by the prompt, instead repeating the vague 'pagtunaw' concept from Turn 2."
+    }
+  },
+  {
+    "tag": "tagalog",
+    "id": "mt-seed-growth-tl",
+    "score": {
+      "accuracy": 2,
+      "helpfulness": 3,
+      "faithfulness": 3,
+      "naturalness": 5,
+      "pedagogy": 1,
+      "notes": "The tutor failed the core misconception check in Turn 2 by incorrectly stating soil is needed for roots to breathe, missing the hydroponics exception required by the prompt. In Turn 3, it failed to address the light/gravity directionality correctly. Most critically, Turn 3 re-explained the stem's function as a 'bridge' which was already explained in Turn 1, triggering the hard cap on pedagogy for repetition."
+    }
+  },
+  {
+    "tag": "english",
+    "id": "en-digestion",
+    "score": {
+      "accuracy": 5,
+      "helpfulness": 5,
+      "faithfulness": 5,
+      "naturalness": 5,
+      "pedagogy": 5,
+      "notes": "The model correctly identified the digestion path (esophagus, stomach, intestines) and nutrient absorption, adhered to the English language requirement, and provided a clear, encouraging explanation suitable for a 6th grader."
+    }
+  },
+  {
+    "tag": "english",
+    "id": "en-abstain-medical",
+    "score": {
+      "accuracy": 5,
+      "helpfulness": 5,
+      "faithfulness": 5,
+      "naturalness": 5,
+      "pedagogy": 5,
+      "notes": "Model correctly abstains from prescribing specific medicine, redirects to a health worker/doctor, and offers safe general comfort advice in clear English."
+    }
+  }
+]

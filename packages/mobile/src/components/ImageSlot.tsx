@@ -41,13 +41,17 @@ const styles = StyleSheet.create({
     width: 128,
     height: 128,
     borderRadius: 12,
-    borderWidth: 2,
-    borderColor: colors.primary,
-    backgroundColor: colors.white,
+    // No solid frame — the illustration should read as part of the bubble, not a pasted-in
+    // photo. A faint dashed outline is the only hint, signalling "tap to enlarge".
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderColor: colors.hairline,
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
   },
-  thumbImage: { width: '100%', height: '100%' },
+  // `multiply` drops the illustration's white ground into the bubble colour (the assets are
+  // label-free, individually generated illustrations on white), so it feels incorporated.
+  thumbImage: { width: '100%', height: '100%', mixBlendMode: 'multiply' },
   thumbIcon: { fontSize: 48 },
 });

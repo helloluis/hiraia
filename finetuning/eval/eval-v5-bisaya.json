@@ -1,0 +1,683 @@
+{
+ "summary": {
+  "model": "/workspace/output/bisaya-sailor-v5/merged-model",
+  "lang": "cebuano",
+  "n": 25,
+  "lang_ok": 25,
+  "english_heavy": 0,
+  "repetitive": 0,
+  "ends_question": 24,
+  "with_image_tag": 20,
+  "total_image_tags": 20,
+  "malformed_image_tags": 0,
+  "avg_words": 83,
+  "runtime_s": 135
+ },
+ "results": [
+  {
+   "id": "ceb-01",
+   "lang": "cebuano",
+   "grade": 3,
+   "register": "vague",
+   "topic": "states of matter / general",
+   "prompt": "unsa man ni solid liquid gas maam",
+   "reply": "Maayo kaayo nga pangutana! Tan-awa:\n- **Solid** = bukid-buok (solid block), yelo, ug bato\n- **Liquid** = tubig, juice, ug softdrinks\n- **Gas** = hangin, singaw sa kalan, ug uling\n\nKining tanan naa'y lain-laing gidaghanon sa space. Ang **gas** kay dako kaayo og gidaghanon; ang **liquid** gamay ra og gidaghanon apan sagad mo-puno og baso; ug ang **solid** gamay og gidaghanon pero bukid-buok.\n\nHuna-hunaa: kung itago ninyo ang imong kamot sulod sa imong sando, unsa man ang gibati nimo? Solid ba o liquid?\n\n[image: A simple diagram showing the three states of matter with arrows for each: solid lines going to left, liquid lines going up, and gas lines going out.]",
+   "scores": {
+    "words": 83,
+    "ceb_ratio": 0.193,
+    "tag_ratio": 0.072,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.69,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simple diagram showing the three states of matter with arrows for each: solid lines going to left, liquid lines going "
+    ]
+   }
+  },
+  {
+   "id": "ceb-02",
+   "lang": "cebuano",
+   "grade": 3,
+   "register": "misspelled",
+   "topic": "photosynthesis",
+   "prompt": "unsa man ang potosintesis",
+   "reply": "Ang **photosynthesis** mao ang proseso diin ang tanom mogawas og oxygen! Ang tanom mogamit og tubig, carbon dioxide, ug adlaw aron makahimo og glucose (sugar) ug oxygen. Ang resulta:\n- Glucose = enerhiya para sa tanom\n- Oxygen = gigawas aron atong himoon ang hangin!\n\nSa imong hunahuna, unsa ang maayo bahin sa photosynthesis? Ngano kaha importante ang oxygen sa ato?\n\n[image: A tall plant with leaves arranged in a circle around the stem, showing the photosynthetic process.]",
+   "scores": {
+    "words": 57,
+    "ceb_ratio": 0.246,
+    "tag_ratio": 0.158,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.63,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A tall plant with leaves arranged in a circle around the stem, showing the photosynthetic process."
+    ]
+   }
+  },
+  {
+   "id": "ceb-03",
+   "lang": "cebuano",
+   "grade": 3,
+   "register": "lazy_keywords",
+   "topic": "animals / living things",
+   "prompt": "mananap tanom",
+   "reply": "Maayo nga pangutana! Ang mananap (animal) mao ang mga buhi nga hayop sama sa aso, isda, langgam, kabog, ug iba pa. Ang tanom (plant) mao ang mga buhi usab nga tanom sama sa mangga, saging, mais, ug ubas.\n\nAron mas sayon:\n- **Mananap** = mga buhi nga hayop\n- **Tanom** = mga buhi nga tanom\n\nKaron, unsang klase sa buhi ang dili makakaon og karne? Tan-awa ang sagbot nga gamayng insekto nga nagpuyo duol kanila!\n\n[image: A tiny insect plant-pollinating spider webbing on a flower.]",
+   "scores": {
+    "words": 72,
+    "ceb_ratio": 0.222,
+    "tag_ratio": 0.139,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.61,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A tiny insect plant-pollinating spider webbing on a flower."
+    ]
+   }
+  },
+  {
+   "id": "ceb-04",
+   "lang": "cebuano",
+   "grade": 4,
+   "register": "vague",
+   "topic": "homework help / unspecified",
+   "prompt": "maam tabangi ko sa assignment",
+   "reply": "Oo, andama ang imong assignment para atong masulbad! Unsang klase ba ang imong homework?",
+   "scores": {
+    "words": 14,
+    "ceb_ratio": 0.214,
+    "tag_ratio": 0.214,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": true,
+    "uniq_ratio": 0.86,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  },
+  {
+   "id": "ceb-05",
+   "lang": "cebuano",
+   "grade": 4,
+   "register": "txtspeak",
+   "topic": "plants vs animals",
+   "prompt": "unsa diay kalainan sa tanom ug hayop",
+   "reply": "Maayo kaayo! Ang tanom (plant) gitawag og autotroph kay sila nakaghimo og kaugalingong pagkaon pinaagi sa photosynthesis gamit ang adlaw, tubig, ug carbon dioxide.\n\nAng hayop (animal) gitawag og heterotroph kay kinahanglan nila kan-on aron maka-pick-up og energy para molihok. Walay kaugalingong kakayahang motrabaho!\n\nApan importante pud nga hinumdoman nga dili tanan hayop tanom usab! Pananglitan, ang kabog ug baki sama sa atoa dinhi sa Pilipinas — sila ba tanom o hayop? Ngano man?\n\n[image: A simple diagram showing a plant with leaves, stem, and roots; and an animal with head, body, legs.]",
+   "scores": {
+    "words": 76,
+    "ceb_ratio": 0.171,
+    "tag_ratio": 0.092,
+    "eng_ratio": 0.013,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.76,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simple diagram showing a plant with leaves, stem, and roots; and an animal with head, body, legs."
+    ]
+   }
+  },
+  {
+   "id": "ceb-06",
+   "lang": "cebuano",
+   "grade": 4,
+   "register": "misspelled",
+   "topic": "gravity",
+   "prompt": "unsa man ang grabiti maam",
+   "reply": "Maayo nga pangutana! Ang **grabiti** (gravity) mao ang puwersa nga nagpabilin sa mga butang sa yuta. Sa Earth, ang atong planeta adunay gravity — kung ituslok nimo ang imong kamot sa ibabaw, mobalik kini tungod kay ang gravity mosuporta. Ang ubang butang sama sa bulan dili adunay gravity — busa sila moalsa palayo sa Earth.\n\nPananglitan:\n- Ang **mga dahon sa puno** moadto sa yuta tungod kay ang gravity naghatag kanila og direksyon.\n- Ang **bulawan** gisiksik sa kaldero tungod kay ang gravity mas kusog didto.\n- Mao usab ang bato nga modagan sa dalan!\n\nHunahunaa kini: kung walay gravity sa Earth, unsa kaha ang manghitabo sa mga dahon ug bulkan?\n\n[image: A simplified diagram of the Earth showing the Earth and Moon labeled with arrows representing gravitational forces between them.]",
+   "scores": {
+    "words": 106,
+    "ceb_ratio": 0.283,
+    "tag_ratio": 0.151,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.58,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simplified diagram of the Earth showing the Earth and Moon labeled with arrows representing gravitational forces betwe"
+    ]
+   }
+  },
+  {
+   "id": "ceb-07",
+   "lang": "cebuano",
+   "grade": 5,
+   "register": "lazy_keywords",
+   "topic": "force / acceleration",
+   "prompt": "gravity acceleration",
+   "reply": "Maayo! Ang gravity (grabidad) mao ang puwersa nga nagduso sa tanan ngadto sa Earth — sama sa batas nga nagduso kanato paingon sa yuta.\n\nAng acceleration kay ang rate diin ang speed molihok padali o pabag-on. Sa atong atmosphere, ang average nga gravity acceleration kay mga **9.8 meters per second squared** (m/s²). Kung mas taas ka sa atop sa building, mas daghan ang gravity; pero kung mas ubos ka sa yuta, mas gamay ang gravity!\n\nPananglitan:\n- Pagbuhat og jump, motaas ka tungod sa gravity.\n- Kung modagan ka, moagi ang imong speed tungod sa gravity.\n- Ang eroplano naglihok padali samtang nahimutang sa kalangitan.\n\nUnsa man ang imong hunahuna bahin sa kung asa nga lugar ang labing grabe ang gravity?\n\n[image: A diagram of a person standing on the ground with arrows showing the force of gravity pulling them downward.]",
+   "scores": {
+    "words": 118,
+    "ceb_ratio": 0.229,
+    "tag_ratio": 0.119,
+    "eng_ratio": 0.008,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.58,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A diagram of a person standing on the ground with arrows showing the force of gravity pulling them downward."
+    ]
+   }
+  },
+  {
+   "id": "ceb-08",
+   "lang": "cebuano",
+   "grade": 5,
+   "register": "codeswitch",
+   "topic": "digestive system",
+   "prompt": "maam unsaon man pag digest sa pagkaon sa tiyan",
+   "reply": "Maayo kaayo! Ang imong lawas adunay espesyal nga bahagi nga gitawag og **stomach** (tiyan). Sulod niini, adunay enzyme nga gitawag og **pepsin** nga molusaw sa protein gikan sa imong gikaon. Pagkahuman, mosaka ang pagkaon ngadto sa small intestine diin mas daghan pang pagluto mahitabo. Karon, hunahunaa kung giunsa paglihok sa pagkaon sa sulod sa imong tiyan — pila ka lakang?\n\n[image: A simple diagram of a human stomach showing the four parts and an arrow indicating digestion.]",
+   "scores": {
+    "words": 59,
+    "ceb_ratio": 0.254,
+    "tag_ratio": 0.034,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.71,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simple diagram of a human stomach showing the four parts and an arrow indicating digestion."
+    ]
+   }
+  },
+  {
+   "id": "ceb-09",
+   "lang": "cebuano",
+   "grade": 5,
+   "register": "incomplete",
+   "topic": "leaves / photosynthesis (incomplete)",
+   "prompt": "nganong berde man ang",
+   "reply": "Nindot nga obserbasyon! Ang dahon berde tungod kay adunay **chlorophyll** — usa ka compound nga makakuha og enerhiya gikan sa **sunlight** aron ma-process ang pagkaon. Kining energy kinahanglan para sa photosynthesis, ang proseso diin ang tanom mosuhop og carbon dioxide gikan sa hangin ug tubig gikan sa yuta. Mao nga ang green nga dahon importante kaayo sa atong kalikupan!\n\nKaron sulayi ni: kung ikaw usa ka tanom, unsa man ang imong gusto nga pagkaon aron motubo ka og himsog?",
+   "scores": {
+    "words": 79,
+    "ceb_ratio": 0.253,
+    "tag_ratio": 0.101,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.7,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  },
+  {
+   "id": "ceb-10",
+   "lang": "cebuano",
+   "grade": 5,
+   "register": "vague",
+   "topic": "unspecified science",
+   "prompt": "wala ko kasabot sa among leksyon",
+   "reply": "Okay ra na! Ang importante kay gusto kang matun-an ang usa ka butang hangtod masabtan gyud nimo.\n\nSa imong hunahuna, unsa man ang kalainan sa dako (large) ug gamay (small)? Magkalain ba sila kanunay? Ngano kaha? Sulayan nato og hunahuna!\n\n[image: Two animals side by side, labeled \"large\" and \"small\": a cow on the left, a tiny ant on the right.]",
+   "scores": {
+    "words": 41,
+    "ceb_ratio": 0.244,
+    "tag_ratio": 0.098,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.9,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "Two animals side by side, labeled \"large\" and \"small\": a cow on the left, a tiny ant on the right."
+    ]
+   }
+  },
+  {
+   "id": "ceb-11",
+   "lang": "cebuano",
+   "grade": 6,
+   "register": "misspelled",
+   "topic": "ecosystem",
+   "prompt": "unsa man ang ekosistem",
+   "reply": "Maayo nga pangutana! Ang **ekosistema** mao ang usa ka lugar diin ang tanan nga buhi nga butang (tanom, hayop) ug dili-buhi nga butang (hangin, tubig, yuta) nagtinabangay.\n\nSa usa ka halamanon nga ekosistema, ang tanom mokuha og enerhiya gikan sa adlaw pinaagi sa photosynthesis.\nAng tanom motubo ug motubo hangtod mahimong gamhanan ang mga punoan.\nKining mga punoan moprotekta batok sa ulan ug mosuyop og tubig para sa ilang anak nga tanom.\nUg ang gagmayng insekto ug langgam motabok-tabok sa palibot aron mangitag pagkaon!\n\nMga bahin:\n- **Producers**: tanom\n- **Consumers**: tanom (grass), mananap (baki)\n- **Decomposers**: bacteria ug fungi\n\nUnsa man ang imong hunahuna? Sa inyong balay, unsa ang usa ka simple nga ekosistema?\n\n[image: A close-up illustration of a sunlit grassland ecosystem showing plants, insects, and small animals intertwined together.]",
+   "scores": {
+    "words": 114,
+    "ceb_ratio": 0.237,
+    "tag_ratio": 0.114,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.61,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A close-up illustration of a sunlit grassland ecosystem showing plants, insects, and small animals intertwined together."
+    ]
+   }
+  },
+  {
+   "id": "ceb-12",
+   "lang": "cebuano",
+   "grade": 6,
+   "register": "lazy_keywords",
+   "topic": "solar system",
+   "prompt": "planeta adlaw kalibutan",
+   "reply": "Maayo nga nahibal-an nato! Ang **Adlaw** (Sun) mao ang pinaka-lahi nga planeta sa atong solar system.\n\nAng **Adlaw**:\n\n- Usa ka bola sa init nga gas nga nagpadagan sa tanang kinabuhi.\n- Naapil sa **solar system** pinaagi sa gravity sa ubang planeta.\n- May diametro nga 1,400,000 kilometros!\n- Naghatag og kainit aron mainom ang tubig ug maporma ang yuta.\n- Adunay daghang bulan (Mars, Venus, Earth).\n\nKaron palihog hunahunaa: ngano man importante kaayo nga ang atong adlaw maoy naghatag kanato og kainit?\n\n[image: A simple diagram of the Sun showing its eight major regions: photosphere, chromosphere, corona, sunspots, solar wind, X-rays, CME, and coronal mass ejection.]",
+   "scores": {
+    "words": 79,
+    "ceb_ratio": 0.253,
+    "tag_ratio": 0.076,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.7,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simple diagram of the Sun showing its eight major regions: photosphere, chromosphere, corona, sunspots, solar wind, X-"
+    ]
+   }
+  },
+  {
+   "id": "ceb-13",
+   "lang": "cebuano",
+   "grade": 6,
+   "register": "codeswitch",
+   "topic": "electricity",
+   "prompt": "maam unsaon paggana sa kuryente sa balay",
+   "reply": "Maayo nga pangutana! Ang kuryente gi-generate pinaagi sa **power plants** (puy-anan sa enerhiya) sama sa dam ug coal-fired power plant. Sa sulod niini, init gikan sa fuel gitunaw aron modagan ang tubig sa turbines, ug ang spinning turbine mobalhin og electrical energy ngadto sa grid.\n\nSa imong balay:\n1. Ang kuryente mosaka gikan sa poste ngadto sa inyong balay.\n2. Ang **electrical outlet** magpagawas og koryente para sa tanang suga ug appliances.\n3. Kung dili gamiton, ang lampara ma-shutoff aron masulayan ang inyong balay og energy savings!\n\nPananglitan, ang **Philippine Electric Cooperative Authority** nag-monitor sa consumption ug naghatag og tips kon unsaon pagtipid og kuryente.\n\nNaa bay nahibal-an kang tip nga makapamenos og bill sa kuryente?\n\n[image: A simple diagram showing the flow of electricity through a home: power line from the city to your house, outlets, and appliances connected to the wall.]",
+   "scores": {
+    "words": 119,
+    "ceb_ratio": 0.21,
+    "tag_ratio": 0.076,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.66,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simple diagram showing the flow of electricity through a home: power line from the city to your house, outlets, and ap"
+    ]
+   }
+  },
+  {
+   "id": "ceb-14",
+   "lang": "cebuano",
+   "grade": 7,
+   "register": "clean",
+   "topic": "cells",
+   "prompt": "Maam, unsa man ang kalainan sa plant cell ug animal cell?",
+   "reply": "Maayo kaayo nga pangutana! Ang **plant cell** may:\n- **Cell wall** — gihimo sa cellulose (gikan sa tanom)\n- **Dormant endoplasmic reticulum**\n- **Plastids** — pula (chloroplasts) para sa photosynthesis\n\nAng **animal cell** may:\n- Walay cell wall\n- **Nucleus** (nagsilbing 'boss' sa selula)\n- **Smooth endoplasmic reticulum**\n\nPananglitan, ang dahon sa saging usa ka plant cell, samtang ang atong bukog usa ka animal cell! Unsa man imong gusto masayran bahin sa duha?\n\n[image: A side-by-side comparison of a plant cell and an animal cell diagram with arrows pointing to the differences.]",
+   "scores": {
+    "words": 65,
+    "ceb_ratio": 0.169,
+    "tag_ratio": 0.077,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.68,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A side-by-side comparison of a plant cell and an animal cell diagram with arrows pointing to the differences."
+    ]
+   }
+  },
+  {
+   "id": "ceb-15",
+   "lang": "cebuano",
+   "grade": 7,
+   "register": "misspelled",
+   "topic": "photosynthesis",
+   "prompt": "giunsa man pag potosintesis sa mga dahon",
+   "reply": "Maayo nga pangutana! Ang mga tanom nagbuhat og pagkaon pinaagi sa **photosynthesis**.\n\nAng proseso:\n1. Ang tanom motigom og suga gikan sa adlaw (solar energy) gamit ang chloroplasts.\n2. Gamiton nila kining enerhiya para mokuha og carbon dioxide gikan sa hangin.\n3. Gikopya nila ang tubig gikan sa yuta.\n\nSa katapusan, sila makagama og **glucose** (pagkaon) ug oxygen!\n\nMao nga importante kaayo ang mga punoan: sila ang atong 'food factory' ug nagbugkos sa CO₂ aron maporma ang oxygen nga atong giginhawa.\n\nKaron, unsa man ang imong hunahuna? Sa dihang magtanom ka og gulay sama sa kangkong, unsa nga klase sa enerhiya ang gigamit sa tanom para motubo?\n\n[image: A simple diagram of a plant leaf showing the chloroplasts and sunlight through the petiole.]",
+   "scores": {
+    "words": 104,
+    "ceb_ratio": 0.231,
+    "tag_ratio": 0.154,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.62,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simple diagram of a plant leaf showing the chloroplasts and sunlight through the petiole."
+    ]
+   }
+  },
+  {
+   "id": "ceb-16",
+   "lang": "cebuano",
+   "grade": 7,
+   "register": "txtspeak",
+   "topic": "matter / atoms",
+   "prompt": "unsa man gud ang atom",
+   "reply": "Maayo nga pangutana! Ang **atom** mao ang pinaka-gaan ug pinakasugdanong bahin sa tanan nga butang.\n\nAng atom may:\n- Usa ka gamay kaayong nucleus (puso) diin nakapunting ang positibo nga charge.\n- Mga electron nga naglibot-libot palibot sa nucleus — adunay positive (+) ug negative (-).\n\nHunahunaa ang atom sama sa isang bola nga puno og charge:\n\n- Positive = gitawag og protons (p)\n- Negative = gitawag og electrons (e)\n\nKining duha mag-balanse aron masiguro nga dili magkasakit ang atom!\n\nSa atong kalibutan, daghan kaayog atom — sama sa bilyon-bilyon ka gagmayng bola sa charge.\n\nNaa kay laing pangutana?\n\n[image: A simple diagram of a basic atomic model showing the nucleus with charged particles and the electrons orbiting around it.]",
+   "scores": {
+    "words": 94,
+    "ceb_ratio": 0.213,
+    "tag_ratio": 0.074,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.65,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simple diagram of a basic atomic model showing the nucleus with charged particles and the electrons orbiting around it"
+    ]
+   }
+  },
+  {
+   "id": "ceb-17",
+   "lang": "cebuano",
+   "grade": 8,
+   "register": "lazy_keywords",
+   "topic": "Newton's laws",
+   "prompt": "newton law motion",
+   "reply": "Maayo kaayo nga pangutana! Ang **First Law of Motion** (Law of Inertia) nag-ingon nga:\n\"Ang tanan nga butang mosunod sa iyang kasamtangang lihok hangtod dili na siya mausab\".\n\nKining balaod importante sa atong adlaw-adlaw kay daghan ta'y nahibal-an gikan niini:\n\n- Kung modagan ang jeep, ang mga pasahero molihok padulong sa unahan.\n- Ang bata nga naglukso moatras pagkahuman molukso.\n- Ang bola mobalik sa imong kamot.\n\nSulayi ni sa balay: kuhaa ang papel ug tul-id nga ibilin sa semento. Unsa man ang mahitabo kung itulod nimo kini? Ngano man?\n\n[image: A simple paper plane lying on a flat surface, showing the force applied to make it move.]",
+   "scores": {
+    "words": 91,
+    "ceb_ratio": 0.264,
+    "tag_ratio": 0.11,
+    "eng_ratio": 0.022,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.77,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simple paper plane lying on a flat surface, showing the force applied to make it move."
+    ]
+   }
+  },
+  {
+   "id": "ceb-18",
+   "lang": "cebuano",
+   "grade": 8,
+   "register": "codeswitch",
+   "topic": "periodic table",
+   "prompt": "maam unsa may gamit sa periodic table",
+   "reply": "Ang **periodic table** (talahanayan sa panahon) usa ka organized nga tabular display sa tanan nga elementong chemical! Ang matag elemento adunay unique nga number ug position. Ang elements nahimog mga groups ug families base sa ilang properties:\n\n- Group 1 = alkali metals\n- Group 2 = alkaline earth metals\n- Period 7 — ang pinaka-dako nga group!\n\nMao nga ang chlorine (Cl) sa group 17 nagpuyo kauban ang sodium (Na) ug potassium (K). Sulayi pag-isip — ngano man nga ang oxygen kinahanglan sa tubig pero dili sa carbon?\n\n[image: A periodic table showing the symbols and positions of elements arranged in columns for group names and rows for family names.]",
+   "scores": {
+    "words": 80,
+    "ceb_ratio": 0.225,
+    "tag_ratio": 0.1,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.72,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A periodic table showing the symbols and positions of elements arranged in columns for group names and rows for family n"
+    ]
+   }
+  },
+  {
+   "id": "ceb-19",
+   "lang": "cebuano",
+   "grade": 8,
+   "register": "vague",
+   "topic": "unspecified physics",
+   "prompt": "unsa man tong puwersa maam wala ko katuo",
+   "reply": "Maayo kaayo nga pangutana! Ang **puwersa** (force) kay usa ka pwersa o puwersa nga makapalihok sa butang.\n\nAng mga panig-ingnan:\n1. Kung mosaka ka og hagdan, ikaw adunay puwersa gikan sa imong tiil paingon sa hagdan.\n2. Kung modagan ka, ikaw adunay puwersa gikan sa imong tiil padulong sa likod.\n3. Kung motindog ka, ikaw adunay puwersa gikan sa yuta padulong kanimo.\n\nKaron palandunga ni: kung dili ka molihok tungod kay walay puwersa nga nakasumada kanimo, unsa kaha ang nahitabo? Unsa man ang nahitabo sa imong lawas?",
+   "scores": {
+    "words": 85,
+    "ceb_ratio": 0.294,
+    "tag_ratio": 0.094,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.55,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  },
+  {
+   "id": "ceb-20",
+   "lang": "cebuano",
+   "grade": 9,
+   "register": "misspelled",
+   "topic": "mitosis / meiosis",
+   "prompt": "unsa man ang maytosis ug miyosis",
+   "reply": "Maayo kaayo nga pangutana! Ang **mitosis** kay ang proseso diin ang usa ka cell mobahin ngadto sa duha ka identical nga cells.\n\nAng **meiosis** kay lahi kaayo — kini ang proseso diin ang usa ka cell mobahin ngadto sa apat ka distinct cells (duha ka gamayng x chromosome ug duha ka gamayng y chromosome). Sa meiosis, ang DNA nga gibalhin sa anak cells mas gamay kay sa mitotic division — gitawag og **halfing of chromosomes**!\n\nMao kini ang rason ngano importante ang meiosis — aron maporma ang sperm ug egg cells para sa reproduction!\n\nKaron sulayi: kung ang mitosis mobalhin og daghang DNA, unsa kaha ang resulta sa meiosis? Ngano man?",
+   "scores": {
+    "words": 108,
+    "ceb_ratio": 0.241,
+    "tag_ratio": 0.12,
+    "eng_ratio": 0.009,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.55,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  },
+  {
+   "id": "ceb-21",
+   "lang": "cebuano",
+   "grade": 9,
+   "register": "clean",
+   "topic": "chemical bonding",
+   "prompt": "Maam, nganong magbugkos man ang mga atom aron mahimong molecule?",
+   "reply": "Maayo kaayo nga pangutana! Ang mga atom dili gyud nagkadikit-dikit — nagkalayo sila. Apan ang molekula (molecule) gibutang sa lugar diin mas gamay ang distansya kaysa atomic size.\n\nAng **electron** naglihok-lihok sa palibot sa nucleus. Ang duha ka electron mag-usik-usik sa duha ka opposite charge area nga gitawag og **valence shell**. Ang ikatulo nga electron magpabilin sa sulod aron dili ma-displace.\n\nKaron, tan-awa ang duha ka atom nga nag-bonding:\n1. Ang duha ka valence shells mag-charged isip positibo ug negatibo.\n2. Mahitabo ang **electron sharing** — bisan asa ang electron mapunta, maghatag siya og space!\n\nSa kinatibuk-an, ang mga atom magpares-pares para magka-balanse ang electrical charges nila.\n\nMao nga ang bond — sama sa glue — magpalig-on sa bonding aron mag-stick ang molecules.\n\nNakamatikod ba ka unsa ang resulta sa duha ka atom human sila nagbond?\n\n[image: Two hydrogen atoms bonded together with arrows connecting them, each atom shown with a small hydrogen bubble around it.]",
+   "scores": {
+    "words": 143,
+    "ceb_ratio": 0.168,
+    "tag_ratio": 0.147,
+    "eng_ratio": 0.007,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.64,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "Two hydrogen atoms bonded together with arrows connecting them, each atom shown with a small hydrogen bubble around it."
+    ]
+   }
+  },
+  {
+   "id": "ceb-22",
+   "lang": "cebuano",
+   "grade": 9,
+   "register": "lazy_keywords",
+   "topic": "electricity / Ohm",
+   "prompt": "voltage current resistance",
+   "reply": "Maayo kaayo nga list! Ang **voltage** mao ang puwersa nga nagpapasiga sa elektrisidad — mas taas = mas hayag.\n\nAng **current** mao ang gidaghanon sa electron nga naglihok kada segundo — parehas sa tubig nga nag-agos (kung daghan = paspas).\n\nAng **resistance** mao ang pagsupak sa daloy sa kuryente — sama sa bato nga mosumpo sa imong lakaw.\n\nKining tanan importante para sa **electrical circuits** diin ang kuryente modagan gikan sa baterya ngadto sa bombilya!\n\n[image: A simple circuit diagram showing a light bulb connected to a battery and resistor.]",
+   "scores": {
+    "words": 71,
+    "ceb_ratio": 0.296,
+    "tag_ratio": 0.113,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": false,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.68,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simple circuit diagram showing a light bulb connected to a battery and resistor."
+    ]
+   }
+  },
+  {
+   "id": "ceb-23",
+   "lang": "cebuano",
+   "grade": 10,
+   "register": "codeswitch",
+   "topic": "genetics",
+   "prompt": "maam pano ma inherit ang traits gikan sa parents",
+   "reply": "Maayo kaayo nga pangutana! Ang **inheritance** nagkahulogan og \"pagpasa\" o \"pagkuha.\" Ang **genes** (DNA) gipasa gikan sa imong mga ginikanan ngadto kanimo — sama sa pagpasa og kolor sa mata.\n\nNaa'y duha ka klase:\n1. **Dominant** — kusog kaayo, kasagaran mas dako o mas hayag.\n2. **Recessive** — mas gamay o mas hinay, kinahanglan moa'y duha ka pareho nga bersyon aron motungha.\n\nPananglitan: kung ikaw adunay brown nga mata ug ang imong mama adunay blue nga mata, posible kang moa'y:\n- **Brown eyes dominant** → ikaw brown usab (kasagaran)\n- **Blue eyes recessive** → kay aduna'y duha ka blue genes, brown ug blue\n\nKaron, hunahunaa kini: kung ikaw adunay dalag nga buhok ug ang imong mama naa'y itom nga buhok — unsa man ang posibilidad nga ikaw adunay itom pud nga buhok?\n\n[image: A person's head showing hair in various colors, with a top view of the scalp and a side view showing the hair pattern.]",
+   "scores": {
+    "words": 122,
+    "ceb_ratio": 0.213,
+    "tag_ratio": 0.082,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.55,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A person's head showing hair in various colors, with a top view of the scalp and a side view showing the hair pattern."
+    ]
+   }
+  },
+  {
+   "id": "ceb-24",
+   "lang": "cebuano",
+   "grade": 10,
+   "register": "misspelled",
+   "topic": "mole / chemistry",
+   "prompt": "unsa man ang mol sa kemistri maam",
+   "reply": "Ang **mol** kay usa ka yunit nga gigamit para sukdon ang gidaghanon sa substance. Kada **mole** (602 million) sa carbon atoms may parehas nga timbang (atomic mass) sama sa hydrogen.\n\nPananglitan:\n- Usa ka mole nga tubig = 18 grams\n- Usa ka mole nga oxygen = 16 grams\n\nKaron sulayi ni: unsa man ang timbang sa usa ka mole nga iron? Unsa imong buhaton aron masukod kini?\n\n[image: A simple diagram of a molecule showing the central atom surrounded by two arrows for each pair of bonded atoms.]",
+   "scores": {
+    "words": 61,
+    "ceb_ratio": 0.246,
+    "tag_ratio": 0.066,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.66,
+    "repetitive": false,
+    "n_image_tags": 1,
+    "has_image_tag": true,
+    "image_tag_well_formed": true,
+    "image_descs": [
+     "A simple diagram of a molecule showing the central atom surrounded by two arrows for each pair of bonded atoms."
+    ]
+   }
+  },
+  {
+   "id": "ceb-25",
+   "lang": "cebuano",
+   "grade": 10,
+   "register": "vague",
+   "topic": "unspecified / lazy",
+   "prompt": "exam ugma wala pa ko nagtuon tabang",
+   "reply": "Maayo nga naghunahuna ka bahin sa imong exam! Ang exam dili kinahanglan lisod kung andama nimo kanunay.\n\nKaron:\n1. Unsa man ang **exam**?\n2. Ngano importante ang pag-andam?\n3. Asa man mo kasagaran motuon?\n\nNgano man importante ang pagtuon aron maayo kang makasaysay?",
+   "scores": {
+    "words": 41,
+    "ceb_ratio": 0.244,
+    "tag_ratio": 0.098,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.76,
+    "repetitive": false,
+    "n_image_tags": 0,
+    "has_image_tag": false,
+    "image_tag_well_formed": true,
+    "image_descs": []
+   }
+  }
+ ]
+}

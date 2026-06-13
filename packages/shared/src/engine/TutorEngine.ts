@@ -58,6 +58,14 @@ export interface TutorEngine {
   summarize?(text: string): Promise<string>;
 
   /**
+   * Resolve the tutor's `[image: <english desc>]` control-token description to a
+   * bundled illustration slug via embedding retrieval over the image catalog.
+   * Returns null when nothing matches confidently (better no picture than a
+   * wrong one). Optional — callers should feature-detect.
+   */
+  resolveImageTag?(desc: string): Promise<{ slug: string; cosine: number } | null>;
+
+  /**
    * Check if the engine is ready to process requests.
    */
   isReady(): boolean;

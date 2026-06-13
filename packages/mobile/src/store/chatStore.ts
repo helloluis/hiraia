@@ -43,6 +43,15 @@ const isRealTurn = (m: Message) => !!m.id && !isFactoid(m);
 // thread (clearMessages) and on hydrate (no per-fact history is persisted).
 let shownFactIds = new Set<string>();
 
+// Illustrations already shown this conversation. The system prompt's "don't
+// re-show a recent image" line is a soft nudge only — the hard guarantee lives
+// here (TAGGED-DATASET.md): a tag resolving to an already-shown slug is
+// suppressed (token is stripped anyway, the student just sees clean text).
+let shownImageSlugs = new Set<string>();
+
+// First `[image: <desc>]` control token the tutor emitted in an answer.
+const IMAGE_TAG_RE = /\[image:\s*([^\]]+?)\s*\]/i;
+
 // The tutor's abstain/redirect phrasings (TL/BIS/EN). When the answer matches, the
 // grounding wasn't really relevant, so we DON'T attach its illustration.
 const ABSTAIN_RE =
@@ -91,6 +100,7 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       const messages = await getMessages(convId);
       const lastFactoidIds = JSON.parse((await getSetting('lastFactoidIds')) ?? '[]');
       shownFactIds = new Set();
+      shownImageSlugs = new Set();
       set({ conversationId: convId, messages, lastFactoidIds, hasHydrated: true });
     } catch (e) {
       console.error('[chatStore] hydrate failed:', e);
@@ -195,11 +205,23 @@ export const useChatStore = create<ChatState>()((set, get) => ({
         }
       });
 
-      // Suppress the illustration when the tutor abstained/redirected — the grounding
-      // wasn't actually relevant (e.g. a song question that coincidentally retrieved a
-      // body-diagram fact), so showing its picture is the "weird unrelated image" bug.
+      // Illustration, in priority order:
+      // 1. The tutor's own [image: <desc>] control token (the trained, principled
+      //    intent signal) → embedding-resolved to a bundled slug. Trust it even if
+      //    the abstain regex fires — the model explicitly asked to show a picture.
+      // 2. Otherwise the TOP grounded fact's curated image, suppressed when the
+      //    tutor abstained/redirected (the grounding wasn't actually relevant).
+      let tagSlug: string | undefined;
+      const tagDesc = IMAGE_TAG_RE.exec(fullResponse)?.[1];
+      if (tagDesc && engine.resolveImageTag) {
+        const hit = await engine.resolveImageTag(tagDesc);
+        // Already shown this conversation → suppress, don't substitute (the model
+        // asked for THIS picture; a different one would mislabel the answer).
+        if (hit && !shownImageSlugs.has(hit.slug)) tagSlug = hit.slug;
+      }
       const abstained = ABSTAIN_RE.test(fullResponse);
-      const finalImageSlug = abstained ? undefined : imageSlug;
+      const finalImageSlug = tagSlug ?? (abstained ? undefined : imageSlug);
+      if (finalImageSlug) shownImageSlugs.add(finalImageSlug);
 
       const assistantMessage: Message = {
         id: genId(),
@@ -273,6 +295,7 @@ export const useChatStore = create<ChatState>()((set, get) => ({
     const convId = genId();
     await createConversation(convId);
     shownFactIds = new Set();
+    shownImageSlugs = new Set();
     set({ conversationId: convId, messages: [], isStreaming: false, currentStreamingContent: '' });
   },
 }));

@@ -1,0 +1,30 @@
+{
+  "_meta": {
+    "what": "Probe ids whose transcripts deterministically trip the Anthropic Usage Policy classifier (child-tutor + body/biology vocabulary in Tagalog/Cebuano). These must NEVER enter a Claude context — not a subagent's, not the main session's (in-session judging killed the main session 2026-06-12). Judge them with judge-local.mjs against a local model instead.",
+    "trigger_cluster": "dugo (blood), tiyan/sumasakit (stomach/pain), buto/bukog (seed/bone), lason (poison), plant-kept-in-dark-room, first-person child medical symptoms",
+    "how_built": "lexeme scan over probe+answer text (ids only, content never printed) + the known 2026-06-10 kill set; generous on body/medical, tight elsewhere — a false negative only costs one killed workflow agent (it lands in `unjudged` and gets local-judged in the mop-up)",
+    "validated": "2026-06-12: with these 20 excluded, the 114-probe judging workflow ran with ZERO classifier kills (round 1, no retries needed)"
+  },
+  "ids": [
+    "hf-digestion-tl",
+    "hf-heart-job-tl",
+    "hf-bones-job-tl",
+    "hf-blood-red-tl",
+    "hf-fever-tl",
+    "syn-heart-lungs",
+    "ab-personal-medical",
+    "ab-serious-illness",
+    "ped-analogy-cell",
+    "myth-gum-7years",
+    "mt-heart-blood-tl",
+    "mt-digestion-hunger-tl",
+    "mt-photosynthesis-night-tl",
+    "mt-seed-growth-tl",
+    "en-digestion",
+    "en-abstain-medical",
+    "bis-digestion",
+    "bis-myth-brain",
+    "bis-why-sleep",
+    "mt-bis-plants-dark"
+  ]
+}

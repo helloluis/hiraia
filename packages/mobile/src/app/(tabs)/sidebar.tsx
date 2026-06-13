@@ -56,14 +56,20 @@ export default function SidebarScreen() {
             return (
               <TouchableOpacity
                 key={opt.lang}
-                style={[styles.langChip, active && styles.langChipActive]}
+                style={[
+                  styles.langChip,
+                  active && styles.langChipActive,
+                  opt.comingSoon && styles.langChipComingSoon,
+                ]}
                 onPress={() => onPickLanguage(opt.lang)}
+                disabled={opt.comingSoon}
                 activeOpacity={0.85}
               >
                 <Text style={[styles.langChipText, active && styles.langChipTextActive]}>
                   {opt.label}
                 </Text>
                 {opt.beta && <Text style={styles.langBeta}> beta</Text>}
+                {opt.comingSoon && <Text style={styles.langSoon}> malapit na!</Text>}
               </TouchableOpacity>
             );
           })}
@@ -216,6 +222,15 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     fontSize: 12,
     color: colors.accent,
+  },
+  langChipComingSoon: {
+    opacity: 0.45,
+    borderColor: colors.inkMuted,
+  },
+  langSoon: {
+    fontFamily: fonts.body,
+    fontSize: 12,
+    color: colors.inkMuted,
   },
   langNote: {
     fontFamily: fonts.body,
