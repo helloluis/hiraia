@@ -38,15 +38,23 @@ export function ImageSlot({ desc, slug }: { desc: string; slug?: string }) {
 const styles = StyleSheet.create({
   thumb: {
     marginTop: 10,
-    width: 128,
-    height: 128,
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: colors.primary,
+    // Spans the chat bubble's line width on a phone (width 100%), but capped so it doesn't
+    // dominate on tablets / wide viewports. Illustrations are square (512×512) → aspectRatio 1.
+    width: '100%',
+    maxWidth: 320,
+    aspectRatio: 1,
+    alignSelf: 'flex-start',
+    // A clean, deliberate rounded card — the illustration's white ground reads as the card
+    // surface (Android RN can't blend it into the bubble). A faint dashed outline is the only
+    // hint that it's tappable ("tap to enlarge").
+    borderRadius: 14,
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderColor: colors.hairline,
     backgroundColor: colors.white,
     alignItems: 'center',
     justifyContent: 'center',
-    overflow: 'hidden',
+    overflow: 'hidden', // clip the illustration to the rounded card
   },
   thumbImage: { width: '100%', height: '100%' },
   thumbIcon: { fontSize: 48 },

@@ -36,7 +36,7 @@ import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { RagStore, SemanticIndex, normalizeQuery } from '../../../packages/shared/src/rag/index.ts';
+import { RagStore, SemanticIndex, normalizeQuery, buildContextualQuery } from '../../../packages/shared/src/rag/index.ts';
 import {
   generateSystemPrompt,
   formatGroundingBlock,
@@ -69,7 +69,11 @@ interface Probe {
   id: string; tier: string; lang: keyof typeof LANG_OK; grade: number;
   prompt: string; intent: string; must_answer: boolean;
   must_cover: string[]; dimensions_emphasis: Dim[];
+  // MULTI-TURN probes (tier 'multi-turn'): scripted student turns, played sequentially.
+  // prompt === turns[0] (kept for filters/display). The judge scores the whole transcript.
+  turns?: string[];
 }
+const isMultiTurn = (p: Probe) => !!p.turns && p.turns.length > 1;
 interface Scored { accuracy: number; helpfulness: number; faithfulness: number; naturalness: number; pedagogy: number; notes: string }
 interface AnswerRow { probe: Probe; answer: string; retrievedIds: string[]; samples: string[] }
 interface ScoreRow extends AnswerRow { score: Scored }
@@ -140,11 +144,13 @@ function attachSemantic(store: RagStore): boolean {
 }
 // Embed normalize(query) via the LaBSE service + L2-normalize (device embdNormalize:2),
 // matching gen-hybrid-fixtures.mts. Returns undefined if the embedder is unreachable.
-async function embedQuery(text: string): Promise<Float32Array | undefined> {
+// raw=true skips normalizeQuery — used for the R2 contextual re-embed, where the device
+// embeds buildContextualQuery() output as-is (LocalEngine.ragSearch).
+async function embedQuery(text: string, raw = false): Promise<Float32Array | undefined> {
   try {
     const res = await fetch(`${EMBED_ENDPOINT}/v1/embeddings`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ input: normalizeQuery(text) }),
+      body: JSON.stringify({ input: raw ? text : normalizeQuery(text) }),
     });
     if (!res.ok) return undefined;
     const v: number[] = (await res.json()).data[0].embedding;
@@ -186,8 +192,52 @@ async function collectAnswers(): Promise<AnswerRow[]> {
   if (hybrid) console.log(`>> retrieval: HYBRID (lexical + LaBSE semantic, embedder ${EMBED_ENDPOINT}) — device-faithful`);
   else console.log(`>> ⚠️  retrieval: LEXICAL-ONLY — NOT device-faithful (semantic=${hasSemantic}, embedder=${!!probe0}). Boot the embedder (run-capability.sh does) for a faithful run.`);
 
+  const singleProbes = PASS_PROBES.filter((p) => !isMultiTurn(p));
+  const multiProbes = PASS_PROBES.filter(isMultiTurn);
+
+  // ---- MULTI-TURN dialogue runner (tier 'multi-turn') ----
+  // Plays the scripted student turns sequentially, mirroring chatStore.sendMessage exactly:
+  //   - rag context = previous 2 RAW turns (chatStore's priorTurns slice(-3,-1))
+  //   - seenIds dedup across turns (shownFactIds — "prefer fresh facts")
+  //   - R2 contextual re-embed when a bare follow-up retrieves nothing (LocalEngine.ragSearch)
+  //   - grounding injected ONLY into the current user turn; history keeps the raw turns
+  // Turn N's retrieval context contains the model's turn N-1 answer, so a dialogue cannot
+  // be prebuilt — it runs sequentially; dialogues themselves go through the pool.
+  async function runDialogue(p: Probe, hybrid: boolean): Promise<{ text: string; ids: string[] }> {
+    const lang = LANG_OK[p.lang];
+    const system = generateSystemPrompt(lang as any, p.grade as any, true);
+    const history: { role: string; content: string }[] = [];
+    const seen = new Set<string>();
+    const ids: string[] = [];
+    const lines: string[] = [];
+    for (const turn of p.turns!) {
+      const ctx = history.slice(-2).map((m) => m.content).join(' ');
+      const qvec = hybrid ? await embedQuery(turn) : undefined;
+      let hits = store.retrieveForGroundingHybrid(turn as any, qvec, lang as any, 3, 0.5, ctx, seen);
+      if (!hits.length && qvec && ctx.trim()) {
+        const folded = await embedQuery(buildContextualQuery(turn, ctx), true);
+        if (folded) hits = store.retrieveForGroundingHybrid(turn as any, folded, lang as any, 3, 0.5, ctx, seen);
+      }
+      for (const h of hits as any[]) { seen.add(h.fact.id); ids.push(h.fact.id); }
+      const block = formatGroundingBlock(
+        hits.map((h: any) => ({ content: h.text, source: h.fact.source, score: h.score, metadata: { topic: h.fact.topic } }))
+      );
+      const answer = stripTags(await ask(
+        [
+          { role: 'system', content: system },
+          ...history,
+          { role: 'user', content: composeGroundedUserTurn(block, turn) },
+        ],
+        TEMP
+      ));
+      history.push({ role: 'user', content: turn }, { role: 'assistant', content: answer });
+      lines.push(`STUDENT: ${turn}`, `TUTOR: ${answer}`);
+    }
+    return { text: lines.join('\n\n'), ids };
+  }
+
   // 1. Build every prompt up front. Retrieval needs the query embedding (async), so embed first.
-  const built = await Promise.all(PASS_PROBES.map(async (p) => {
+  const built = await Promise.all(singleProbes.map(async (p) => {
     const lang = LANG_OK[p.lang]; // RagStore/generateSystemPrompt take the full Language, not the short code
     const qvec = hybrid ? await embedQuery(p.prompt) : undefined;
     const hits = store.retrieveForGroundingHybrid(p.prompt as any, qvec, lang as any, 3, 0.5);
@@ -221,8 +271,32 @@ async function collectAnswers(): Promise<AnswerRow[]> {
     const answer = refusalish ?? samples.slice().sort((a, b2) => a.length - b2.length)[0] ?? '';
     return { probe: b.p, answer, retrievedIds: b.retrievedIds, samples };
   });
+
+  // 4. Multi-turn dialogues: each SAMPLE is one full dialogue run. Pooled at the
+  //    dialogue level (turns within a dialogue are inherently sequential).
+  if (multiProbes.length) {
+    const mJobs = multiProbes.flatMap((p) => Array.from({ length: SAMPLES }, () => p));
+    let mDone = 0;
+    const mResults = await pool(
+      mJobs.map((p) => async () => {
+        const r = await runDialogue(p, hybrid);
+        process.stdout.write(`  [mt ${++mDone}/${mJobs.length}] ${p.id}\n`);
+        return { p, ...r };
+      }),
+      CONC
+    );
+    for (const p of multiProbes) {
+      const runs = mResults.filter((r) => r.p.id === p.id);
+      const texts = runs.map((r) => r.text);
+      // worst-of-N: a transcript containing a refusal beats length as the honest pick
+      const refusalish = texts.find((s) => /tanungin|guro|hindi ko (?:po )?(?:alam|masabi)|ask your (?:teacher|parent)/i.test(s));
+      const answer = refusalish ?? texts.slice().sort((a, b2) => a.length - b2.length)[0] ?? '';
+      rows.push({ probe: p, answer, retrievedIds: [...new Set(runs.flatMap((r) => r.ids))], samples: texts });
+    }
+  }
+
   writeFileSync(ANSWERS_FILE, JSON.stringify(rows, null, 2));
-  console.log(`\n>> wrote ${rows.length} answers (${jobs.length} generations, conc ${CONC}) → ${ANSWERS_FILE}`);
+  console.log(`\n>> wrote ${rows.length} answers (${jobs.length} single-turn generations + ${multiProbes.length * SAMPLES} dialogues, conc ${CONC}) → ${ANSWERS_FILE}`);
   return rows;
 }
 
@@ -230,6 +304,14 @@ async function collectAnswers(): Promise<AnswerRow[]> {
 const RUBRIC = readFileSync(join(HERE, 'rubric.md'), 'utf8');
 function judgePrompt(r: AnswerRow): string {
   const p = r.probe;
+  const mt = isMultiTurn(p);
+  const body = mt
+    ? `=== DIALOGUE (multi-turn; STUDENT turns were scripted, every TUTOR turn is the model under test) ===\n${r.answer || '(empty)'}\n\n` +
+      `This is a MULTI-TURN probe: score the TUTOR's conduct across the WHOLE dialogue, per the ` +
+      `rubric's "Multi-turn dialogue probes" section. Hard caps: re-delivering an earlier answer ` +
+      `near-verbatim caps pedagogy at 1; asking the student a question they already answered (or ` +
+      `re-asking the tutor's own earlier question) caps helpfulness at 1.`
+    : `QUESTION: ${p.prompt}\n\n=== MODEL ANSWER ===\n${r.answer || '(empty)'}`;
   return (
     `You are the impartial judge for the Hiraia tutor capability benchmark. Score the MODEL ANSWER ` +
     `0–5 on each of: accuracy, helpfulness, faithfulness, naturalness, pedagogy. Use the rubric exactly. ` +
@@ -237,7 +319,7 @@ function judgePrompt(r: AnswerRow): string {
     `=== RUBRIC ===\n${RUBRIC}\n\n` +
     `=== PROBE ===\nlang: ${LANG_OK[p.lang]} | grade: ${p.grade} | tier: ${p.tier}\n` +
     `must_answer: ${p.must_answer}\nintent: ${p.intent}\nmust_cover: ${p.must_cover.join('; ')}\n` +
-    `QUESTION: ${p.prompt}\n\n=== MODEL ANSWER ===\n${r.answer || '(empty)'}\n\n` +
+    `${body}\n\n` +
     `Score now. JSON only.`
   );
 }

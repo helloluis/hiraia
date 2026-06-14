@@ -35,15 +35,24 @@ export function LanguagePicker({ onPick }: { onPick: (language: Language) => voi
           {LANGUAGE_OPTIONS.map((opt) => (
             <TouchableOpacity
               key={opt.lang}
-              style={[styles.option, picked === opt.lang && styles.optionPicked]}
+              style={[
+                styles.option,
+                picked === opt.lang && styles.optionPicked,
+                opt.comingSoon && styles.optionComingSoon,
+              ]}
               onPress={() => choose(opt.lang)}
-              disabled={!!picked}
+              disabled={!!picked || opt.comingSoon}
               activeOpacity={0.85}
             >
               <Text style={styles.optionLabel}>{opt.label}</Text>
               {opt.beta && (
                 <View style={styles.betaPill}>
                   <Text style={styles.betaText}>beta</Text>
+                </View>
+              )}
+              {opt.comingSoon && (
+                <View style={styles.soonPill}>
+                  <Text style={styles.soonText}>malapit na!</Text>
                 </View>
               )}
             </TouchableOpacity>
@@ -121,6 +130,22 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     fontSize: 12,
     color: colors.ink,
+  },
+  optionComingSoon: {
+    opacity: 0.45,
+    borderColor: colors.inkMuted,
+  },
+  soonPill: {
+    marginLeft: 10,
+    backgroundColor: colors.inkMuted,
+    borderRadius: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  },
+  soonText: {
+    fontFamily: fonts.body,
+    fontSize: 12,
+    color: colors.white,
   },
   note: {
     fontFamily: fonts.body,

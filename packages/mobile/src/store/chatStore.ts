@@ -3,6 +3,7 @@ import { create } from 'zustand';
 import { generateSystemPrompt, formatGroundingBlock, composeGroundedUserTurn } from '@hiraia/shared';
 import type { Message, RagResult } from '@hiraia/shared';
 
+import { uiStrings } from '../config/strings';
 import { pickFactoidText } from '../data/factoids';
 import { genId } from '../db';
 import { FACT_IMAGE } from '../generated/factImage';
@@ -30,6 +31,8 @@ interface ChatState {
   sendMessage: (content: string) => Promise<void>;
   showColdStartFactoid: () => void;
   clearMessages: () => Promise<void>;
+  /** Load a past conversation (from the sidebar history) and make it active. */
+  switchConversation: (id: string) => Promise<void>;
 }
 
 const isFactoid = (m: Message) => m.metadata?.kind === 'factoid';
@@ -42,6 +45,15 @@ const isRealTurn = (m: Message) => !!m.id && !isFactoid(m);
 // "ano pa?" keeps getting FRESH facts instead of the same top-3. Reset on a new
 // thread (clearMessages) and on hydrate (no per-fact history is persisted).
 let shownFactIds = new Set<string>();
+
+// Illustrations already shown this conversation. The system prompt's "don't
+// re-show a recent image" line is a soft nudge only — the hard guarantee lives
+// here (TAGGED-DATASET.md): a tag resolving to an already-shown slug is
+// suppressed (token is stripped anyway, the student just sees clean text).
+let shownImageSlugs = new Set<string>();
+
+// First `[image: <desc>]` control token the tutor emitted in an answer.
+const IMAGE_TAG_RE = /\[image:\s*([^\]]+?)\s*\]/i;
 
 // The tutor's abstain/redirect phrasings (TL/BIS/EN). When the answer matches, the
 // grounding wasn't really relevant, so we DON'T attach its illustration.
@@ -91,6 +103,7 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       const messages = await getMessages(convId);
       const lastFactoidIds = JSON.parse((await getSetting('lastFactoidIds')) ?? '[]');
       shownFactIds = new Set();
+      shownImageSlugs = new Set();
       set({ conversationId: convId, messages, lastFactoidIds, hasHydrated: true });
     } catch (e) {
       console.error('[chatStore] hydrate failed:', e);
@@ -125,7 +138,7 @@ export const useChatStore = create<ChatState>()((set, get) => ({
           ...state.messages,
           {
             role: 'assistant',
-            content: 'Sandali lang—inihahanda ko pa ang AI. Pakisubukang muli sa ilang segundo. 🐱',
+            content: uiStrings(lang).waitPreparing,
             timestamp: new Date(),
           },
         ],
@@ -195,11 +208,23 @@ export const useChatStore = create<ChatState>()((set, get) => ({
         }
       });
 
-      // Suppress the illustration when the tutor abstained/redirected — the grounding
-      // wasn't actually relevant (e.g. a song question that coincidentally retrieved a
-      // body-diagram fact), so showing its picture is the "weird unrelated image" bug.
+      // Illustration, in priority order:
+      // 1. The tutor's own [image: <desc>] control token (the trained, principled
+      //    intent signal) → embedding-resolved to a bundled slug. Trust it even if
+      //    the abstain regex fires — the model explicitly asked to show a picture.
+      // 2. Otherwise the TOP grounded fact's curated image, suppressed when the
+      //    tutor abstained/redirected (the grounding wasn't actually relevant).
+      let tagSlug: string | undefined;
+      const tagDesc = IMAGE_TAG_RE.exec(fullResponse)?.[1];
+      if (tagDesc && engine.resolveImageTag) {
+        const hit = await engine.resolveImageTag(tagDesc);
+        // Already shown this conversation → suppress, don't substitute (the model
+        // asked for THIS picture; a different one would mislabel the answer).
+        if (hit && !shownImageSlugs.has(hit.slug)) tagSlug = hit.slug;
+      }
       const abstained = ABSTAIN_RE.test(fullResponse);
-      const finalImageSlug = abstained ? undefined : imageSlug;
+      const finalImageSlug = tagSlug ?? (abstained ? undefined : imageSlug);
+      if (finalImageSlug) shownImageSlugs.add(finalImageSlug);
 
       const assistantMessage: Message = {
         id: genId(),
@@ -221,7 +246,7 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       set((state) => ({
         messages: [
           ...state.messages,
-          { role: 'assistant', content: 'Paumanhin, may naganap na error. Pakisubukang muli. 🐱', timestamp: new Date() },
+          { role: 'assistant', content: uiStrings(lang).errorGeneric, timestamp: new Date() },
         ],
         isStreaming: false,
         currentStreamingContent: '',
@@ -233,7 +258,9 @@ export const useChatStore = create<ChatState>()((set, get) => ({
   // (no id) — not persisted, not sent to the model.
   showColdStartFactoid: () => {
     const lastIds = get().lastFactoidIds;
-    const picked = pickFactoidText('tagalog', lastIds);
+    // Follow the active tutor language (was hardcoded Tagalog → English mode still got a TL factoid).
+    const lang = useEngineStore.getState().language ?? 'tagalog';
+    const picked = pickFactoidText(lang, lastIds);
     if (!picked) return;
 
     set((state) => ({
@@ -273,7 +300,18 @@ export const useChatStore = create<ChatState>()((set, get) => ({
     const convId = genId();
     await createConversation(convId);
     shownFactIds = new Set();
+    shownImageSlugs = new Set();
     set({ conversationId: convId, messages: [], isStreaming: false, currentStreamingContent: '' });
+  },
+
+  switchConversation: async (id: string) => {
+    if (get().conversationId === id) return; // already here
+    try {
+      const messages = await getMessages(id);
+      set({ conversationId: id, messages, isStreaming: false, currentStreamingContent: '' });
+    } catch (e) {
+      console.error('[chatStore] switchConversation failed:', e);
+    }
   },
 }));
 

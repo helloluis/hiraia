@@ -1,6 +1,6 @@
 import { Text, type StyleProp, type TextStyle } from 'react-native';
 
-import { fonts } from '../theme';
+import { colors, fonts } from '../theme';
 
 /**
  * Lightweight markdown rendering for chat bubbles. The model emits markdown
@@ -12,7 +12,30 @@ import { fonts } from '../theme';
 
 interface Segment {
   text: string;
-  bold: boolean;
+  kind: 'plain' | 'bold' | 'italic';
+}
+
+/**
+ * The intent-distilled tutor reasons in a leading `<think> … </think>` block before
+ * answering (it's how it sees through "essay tungkol sa X" framing to the real topic).
+ * UX = reveal-then-replace: WHILE the block is still open mid-stream, show the reasoning
+ * as muted "thinking…" text so the kid sees something during the slow on-device decode;
+ * the moment `</think>` closes, drop it and render only the final answer. Adaptive — a
+ * turn with no `<think>` (e.g. a simple grounded reply) just renders normally.
+ */
+export function splitThink(content: string): { thinking: string | null; answer: string } {
+  const open = content.indexOf('<think>');
+  if (open === -1) return { thinking: null, answer: content };
+  const before = content.slice(0, open);
+  const rest = content.slice(open + '<think>'.length);
+  const close = rest.indexOf('</think>');
+  if (close === -1) {
+    // still thinking: nothing to answer yet, surface the in-progress reasoning
+    return { thinking: rest.trim(), answer: before.trimStart() };
+  }
+  // done: replace the think block with the final answer
+  const answer = (before + rest.slice(close + '</think>'.length)).trim();
+  return { thinking: null, answer };
 }
 
 /** Pull the descriptions out of `[image: <desc>]` control tokens (the tutor emits
@@ -29,6 +52,7 @@ export function extractImageDescs(content: string): string[] {
 /** Strip block/inline markdown that we don't render, leaving readable text. */
 function cleanBlockMarkdown(s: string): string {
   return s
+    .replace(/<\/?think>/gi, '') // defensive: never show raw think tags if splitThink missed an edge
     .replace(/\s*\[image:[^\]]*\]/gi, '') // image control tokens (retrieval not wired on mobile — strip, never show)
     .replace(/\s*\[image:[^\]]*$/i, '') // trailing not-yet-closed image tag while streaming
     .replace(/^#{1,6}\s+/gm, '') // ATX header hashes
@@ -38,17 +62,22 @@ function cleanBlockMarkdown(s: string): string {
     .trimEnd();
 }
 
-/** Split text into bold / non-bold runs on **…**, after cleaning other markdown. */
+/** Split text into bold / italic / plain runs on **…**, *…* and _…_, after cleaning
+ *  other markdown. Bold is split first so its inner asterisks don't trip the italic rule. */
 function parseInline(input: string): Segment[] {
   const cleaned = cleanBlockMarkdown(input);
   const segments: Segment[] = [];
-  for (const part of cleaned.split(/(\*\*[^*]+\*\*)/g)) {
+  // one regex captures **bold**, *italic*, or _italic_ as delimiters
+  for (const part of cleaned.split(/(\*\*[^*]+\*\*|\*[^*\s][^*]*\*|_[^_\s][^_]*_)/g)) {
     if (!part) continue;
-    const bold = /^\*\*[^*]+\*\*$/.test(part);
-    segments.push({
-      text: bold ? part.slice(2, -2) : part.replace(/\*/g, ''),
-      bold,
-    });
+    if (/^\*\*[^*]+\*\*$/.test(part)) {
+      segments.push({ text: part.slice(2, -2), kind: 'bold' });
+    } else if (/^\*[^*]+\*$/.test(part) || /^_[^_]+_$/.test(part)) {
+      segments.push({ text: part.slice(1, -1), kind: 'italic' });
+    } else {
+      // strip any stray, unmatched emphasis marks from plain runs
+      segments.push({ text: part.replace(/(\*\*|\*|_)/g, ''), kind: 'plain' });
+    }
   }
   return segments;
 }
@@ -60,18 +89,36 @@ interface RichTextProps {
 }
 
 export function RichText({ text, style, boldStyle }: RichTextProps) {
-  const segments = parseInline(text);
+  const { thinking, answer } = splitThink(text);
+  // Reveal phase: block still open and no answer yet → show muted reasoning.
+  if (thinking !== null && !answer) {
+    return (
+      <Text style={[style, { opacity: 0.55, fontStyle: 'italic' }]}>
+        {`💭 ${thinking}`}
+      </Text>
+    );
+  }
+  const segments = parseInline(answer);
   return (
     <Text style={style}>
-      {segments.map((seg, i) =>
-        seg.bold ? (
-          <Text key={i} style={[{ fontFamily: fonts.display }, boldStyle]}>
-            {seg.text}
-          </Text>
-        ) : (
-          seg.text
-        )
-      )}
+      {segments.map((seg, i) => {
+        if (seg.kind === 'bold') {
+          // key terms pop in the brand teal + display font so a kid's eye lands on them
+          return (
+            <Text key={i} style={[{ fontFamily: fonts.display, color: colors.primary }, boldStyle]}>
+              {seg.text}
+            </Text>
+          );
+        }
+        if (seg.kind === 'italic') {
+          return (
+            <Text key={i} style={{ fontStyle: 'italic' }}>
+              {seg.text}
+            </Text>
+          );
+        }
+        return seg.text;
+      })}
     </Text>
   );
 }

@@ -74,6 +74,33 @@ This is the headline dimension. It hinges on the probe's `must_answer` flag.
 
 ---
 
+## Multi-turn dialogue probes (tier: `multi-turn`)
+
+These probes are full transcripts: the STUDENT turns were scripted by the benchmark; every
+TUTOR turn is the model under test. Score the tutor's conduct across the **whole dialogue**
+on the same 5 dimensions, then apply these dialogue-state rules (they exist because the
+on-device model demonstrably fails them):
+
+**Hard caps (apply after normal scoring):**
+- **Repetition** — a TUTOR turn re-delivers a previous TUTOR turn's explanation near-verbatim
+  (same sentences/structure, no new information) → **pedagogy capped at 1**. Briefly *recapping*
+  one clause to build on it is fine; re-teaching the same content is not.
+- **Re-asking answered questions** — the tutor asks the student something the student already
+  answered (e.g. re-asks its own check question after the student answered it correctly), or
+  re-asks the student's own original question back at them → **helpfulness capped at 1**.
+
+**Positive expectations:**
+- Each TUTOR turn must add **new** information responsive to that turn's student question.
+- When the student correctly restates the explanation ("Tama po ba ako?"), the tutor must
+  **confirm and build**, not re-explain from scratch.
+- `must_cover` spans the whole dialogue — cover each point in the turn where it belongs.
+- Accuracy applies per turn: one factually wrong turn scores accuracy as if it were the
+  central claim (a wrong turn-3 is not excused by a good turn-1).
+- Naturalness: language consistency across all turns (a `bis` dialogue that drifts into
+  Tagalog mid-conversation scores ≤2).
+
+---
+
 ## Aggregation (done by `run-capability.mts`, not the judge)
 
 Per probe: a weighted dimension blend, with the probe's `dimensions_emphasis` doubled, then the

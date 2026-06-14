@@ -1,0 +1,343 @@
+[
+  {
+    "probe": {
+      "id": "mt-gravity-moon-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Bakit po nahuhulog pababa ang mga bagay?",
+      "turns": [
+        "Bakit po nahuhulog pababa ang mga bagay?",
+        "Ah gets ko na po! Dahil po sa gravity na humihila sa atin pababa. May gravity din po ba sa buwan?",
+        "Bakit po lumulutang ang mga astronaut sa space station kung may gravity pa rin doon?"
+      ],
+      "intent": "The literal on-device failure case. After the student demonstrates understanding in turn 2, the tutor must NOT repeat the turn-1 explanation and must NOT re-ask why things fall. Turn 3 is the weightlessness trap: the correct answer is free fall (the station and astronauts are falling around the Earth together) — claiming 'walang gravity sa space' OR 'ramdam mo pa rin ang bigat mo doon' are both accuracy failures.",
+      "must_answer": true,
+      "must_cover": [
+        "gravity pulls objects toward the Earth",
+        "the moon HAS gravity, just weaker (~1/6)",
+        "astronauts float because of free fall — falling around Earth — NOT because space has no gravity",
+        "acknowledges the student's correct turn-2 statement instead of re-explaining"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "accuracy"
+      ]
+    },
+    "answer": "STUDENT: Bakit po nahuhulog pababa ang mga bagay?\n\nTUTOR: Kapag ihinahagis ang mga barya sa pabuya, palaging bumabagsak ang mga ito pababa sa lupa dahil hinihila ng grabidad ng Earth ang lahat ng bagay patungo sa ibaba. Iyan ang tinatawag na gravity. Hindi kaya ng pabuya na ihulog ang mga barya pataas, kaya bumabagsak sila. Sa tingin mo, kaya kaya ng pabuya na ihulog ang barya pataas?\n\nSTUDENT: Ah gets ko na po! Dahil po sa gravity na humihila sa atin pababa. May gravity din po ba sa buwan?\n\nTUTOR: Oo, may gravity din sa Buwan! Kaya nito umiikot doon sa Lupa dahil hinihila ito pababa ng gravity ng Lupa. Hindi nawawala ang gravity, kaya kahit malayo ka na sa Lupa, hinihila pa rin ito pababa ng gravity. Ang galing, di ba?\n\nSTUDENT: Bakit po lumulutang ang mga astronaut sa space station kung may gravity pa rin doon?\n\nTUTOR: Magandang tanong po! Lumulutang ang mga astronaut sa space station dahil sila at ang kanilang spaceship ay sabay na nahuhulog papunta sa Earth habang umiikot sa paligid nito — kaya pakiramdam nila ay wala silang bigat. Hindi dahil walang gravity doon, may gravity pa rin! Hindi rin po lumulutang ang spaceship lang, pati ang astronaut. Kapag po itinapon ang spaceship, pareho silang nahuhulog papunta sa Earth, kaya lumulutang sila.",
+    "score": {
+      "accuracy": 3,
+      "helpfulness": 3,
+      "faithfulness": 4,
+      "naturalness": 3,
+      "pedagogy": 3,
+      "notes": "turn 2 muddles Earth’s pull vs the moon’s own gravity; omits 1/6 must_cover; no hard caps"
+    }
+  },
+  {
+    "probe": {
+      "id": "mt-ice-float-check-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Bakit po lumulutang ang yelo sa tubig?",
+      "turns": [
+        "Bakit po lumulutang ang yelo sa tubig?",
+        "Ah opo! Mas magaan po pala ang yelo kaysa sa tubig na kasing-laki niya. Tama po ba ako?",
+        "E bakit po lumulutang din ang barko kahit gawa ito sa mabigat na bakal?"
+      ],
+      "intent": "Turn 2 is a literal answered-check trap: the student correctly restates the explanation and asks for confirmation. The tutor must CONFIRM warmly and move on — re-asking its own check question, or re-delivering the full turn-1 explanation, is the failure. Turn 3 extends to displacement (ship shape + air makes overall density less than water).",
+      "must_answer": true,
+      "must_cover": [
+        "ice is less dense than water (expands when frozen)",
+        "turn 2: confirms the student is RIGHT, no full re-explanation",
+        "ship floats because its shape/hollow air space makes its overall density less than water"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "pedagogy"
+      ]
+    },
+    "answer": "STUDENT: Bakit po lumulutang ang yelo sa tubig?\n\nTUTOR: Magandang tanong! Lumulutang po ang iceberg dahil ang tubig na nagyeyelo ay nagiging mas magaan kaysa sa likidong tubig. Kaya nakakalutaw ang yelo sa tubig. Sa tingin mo po, bakit mas magaan ang yelo kaysa sa tubig habang nagyeyelo?\n\nSTUDENT: Ah opo! Mas magaan po pala ang yelo kaysa sa tubig na kasing-laki niya. Tama po ba ako?\n\nTUTOR: Opo, tama ka! Mas magaan ang yelo kaysa sa tubig na kapareho ng dami nito dahil ito ay nagiging mas magaan kapag nagyeyelo. Kaya lumulutang ito sa ibabaw ng tubig. Magaling na pag-iisip ang paghahanap ng dahilan na iba!\n\nSTUDENT: E bakit po lumulutang din ang barko kahit gawa ito sa mabigat na bakal?\n\nTUTOR: Magandang tanong po! Lumulutang ang barkong bakal dahil guwang ang loob nito, puno ng hangin, at ito ang dahilan kung bakit kaya nitong itulak ang maraming tubig papunta sa itaas. Kaya lumulutang ito sa ibabaw ng tubig. Sa tingin mo, bakit kailangan pa ng barko ng hangin sa loob para lumutang?",
+    "score": {
+      "accuracy": 4,
+      "helpfulness": 3,
+      "faithfulness": 4,
+      "naturalness": 3,
+      "pedagogy": 1,
+      "notes": "repetition hard cap: turn 2 re-delivers turn 1’s explanation near-verbatim"
+    }
+  },
+  {
+    "probe": {
+      "id": "mt-photosynthesis-night-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Paano po gumagawa ng pagkain ang halaman?",
+      "turns": [
+        "Paano po gumagawa ng pagkain ang halaman?",
+        "Kaya pala kailangan nila ng araw! E ano pong nangyayari sa halaman kapag gabi na?",
+        "Kung ilalagay ko po ang halaman sa madilim na kwarto nang isang buwan, mabubuhay pa kaya siya?"
+      ],
+      "intent": "Each turn must ADD new information: photosynthesis → what happens at night (no photosynthesis; the plant uses stored food) → a month of darkness (it weakens/dies because it cannot make food). Repeating the turn-1 photosynthesis recipe in turns 2-3 is the dialogue failure.",
+      "must_answer": true,
+      "must_cover": [
+        "sunlight + water + carbon dioxide in the leaves make food",
+        "at night photosynthesis stops; plant uses stored food",
+        "a month in the dark: plant weakens/dies — cannot make food without light"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "accuracy"
+      ]
+    },
+    "answer": "STUDENT: Paano po gumagawa ng pagkain ang halaman?\n\nTUTOR: Ang husay ng tanong po! Ang dahon ang parang kusina ng halaman kung saan ginagawa ang pagkain nito sa pamamagitan ng potosintesis. Nakatulong ba ang paghahambing ng dahon sa kusina ng halaman?\n\nSTUDENT: Kaya pala kailangan nila ng araw! E ano pong nangyayari sa halaman kapag gabi na?\n\nTUTOR: Magaling na obserbasyon! Kapag gabi na, kailangan ng halaman ng sikat ng araw para gumawa ng pagkain gamit ang dahon. Kaya sa araw, malalaki at korteng-puso ang mga dahon para mas madaling sumalo ng sikat ng araw. Ang husay mo, ha!\n\nSTUDENT: Kung ilalagay ko po ang halaman sa madilim na kwarto nang isang buwan, mabubuhay pa kaya siya?\n\nTUTOR: Magaling na tanong po! Kung ilalagay mo ang halaman sa madilim na kwarto nang isang buwan, malamang ay mahihirapan itong mabuhay dahil kailangan ng sikat ng araw para makagawa ng pagkain sa pamamagitan ng potosintesis. Pero kung sa loob ng ilang araw ay ibalik mo ang halaman sa may liwanag, makakapag-adjust ito at mabubuhay ulit.",
+    "score": {
+      "accuracy": 3,
+      "helpfulness": 2,
+      "faithfulness": 3,
+      "naturalness": 4,
+      "pedagogy": 2,
+      "notes": "turn 2 dodges the night question (re-states plants need sun by day); photosynthesis ingredients never given"
+    }
+  },
+  {
+    "probe": {
+      "id": "mt-rain-sea-salt-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Bakit po umuulan?",
+      "turns": [
+        "Bakit po umuulan?",
+        "Ah kaya pala galing sa ulap ang ulan! Saan naman po galing ang mga ulap?",
+        "E bakit po maalat ang tubig sa dagat pero hindi maalat ang ulan?"
+      ],
+      "intent": "Water-cycle chain where turn 2 risks re-explaining all of turn 1 (clouds were already mentioned). Good tutor answers ONLY the new part (evaporation → condensation forms clouds), then turn 3 the salt point: salt is left behind when water evaporates.",
+      "must_answer": true,
+      "must_cover": [
+        "rain falls from clouds when water droplets get heavy",
+        "clouds form from evaporated water condensing",
+        "salt does not evaporate — it stays in the sea, so rain is fresh"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "accuracy"
+      ]
+    },
+    "answer": "STUDENT: Bakit po umuulan?\n\nTUTOR: Magandang tanong po! Umuulan kapag ang mga patak ng tubig sa ulap ay nagsasama-sama at lumalaki, hanggang sa maging masyadong mabigat para lumutang. Kaya bumabagsak sila bilang ulan. Alam mo ba kung bakit agad bumabaha kapag malakas ang ulan?\n\nSTUDENT: Ah kaya pala galing sa ulap ang ulan! Saan naman po galing ang mga ulap?\n\nTUTOR: Magandang tanong po! Ang mga ulap ay gawa sa maliliit na patak ng tubig at hangin, kaya hindi sila talagang galing sa langit — sila ay nasa lupa. Doon sila nabubuo kapag ang mainit na hangin ay humihila ng kahalumigmigan mula sa dagat patungo sa itaas, at ang mga patak ay nagkakasama-sama at lumalaki. Kaya ang ulap ay hindi lang hangin at ulan — sila ay gawa sa tubig at hangin!\n\nSTUDENT: E bakit po maalat ang tubig sa dagat pero hindi maalat ang ulan?\n\nTUTOR: Magandang tanong po! Ang tubig sa dagat ay maalat dahil may natunaw na asin dito, kaya hindi natin ito puwedeng inumin. Ang tubig sa ilog at ulan ay tabang, walang asin, dahil ang asin ay naiiwan sa dagat habang sumisingaw ang tubig-dagat. Kaya ang ulan ay fresh at hindi maalat, pero ang tubig sa dagat ay maalat. Salamat sa magandang tanong, ha!",
+    "score": {
+      "accuracy": 2,
+      "helpfulness": 4,
+      "faithfulness": 3,
+      "naturalness": 3,
+      "pedagogy": 3,
+      "notes": "turn 2 confidently claims clouds are on the ground / not from the sky"
+    }
+  },
+  {
+    "probe": {
+      "id": "mt-volcano-taal-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Bakit po pumuputok ang bulkan?",
+      "turns": [
+        "Bakit po pumuputok ang bulkan?",
+        "Grabe po! Yung Taal po ba, pwedeng pumutok ulit?",
+        "Ano po ang dapat naming gawin kung pumutok ang bulkan na malapit sa amin?"
+      ],
+      "intent": "PH-relevant state-tracking: eruption mechanism → Taal specifically (active volcano, monitored by PHIVOLCS; must not predict a date or dismiss the risk) → practical kid-level safety steps. No turn should re-deliver the magma explanation.",
+      "must_answer": true,
+      "must_cover": [
+        "magma/pressure builds up underground and escapes",
+        "Taal is an active volcano — it can erupt again; scientists (PHIVOLCS) monitor it; no fake prediction",
+        "safety: listen to authorities/evacuate, avoid ashfall or cover nose/mouth"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "faithfulness"
+      ]
+    },
+    "answer": "STUDENT: Bakit po pumuputok ang bulkan?\n\nTUTOR: Magandang tanong po! Ang Mayon ang pinakaaktibong bulkan sa Pilipinas dahil madalas itong pumutok sa nakaraang mga siglo. Alam mo ba po kung bakit madalas pumutok ang bulkan?\n\nSTUDENT: Grabe po! Yung Taal po ba, pwedeng pumutok ulit?\n\nTUTOR: Magandang tanong po! Oo po, may posibilidad na pumutok ulit ang Taal Volcano, lalo na kung may paggalaw ng magma sa ilalim nito. Pero kailangan nating tandaan na hindi natin alam ang eksaktong mangyayari — nagbabago kasi ang pagsabog ng bulkan, kaya mas mabuting maghanda nang ligtas.\n\nSTUDENT: Ano po ang dapat naming gawin kung pumutok ang bulkan na malapit sa amin?\n\nTUTOR: Magandang tanong po! Ang iba't ibang bulkan ay may iba't ibang alituntunin sa paglikas. Magandang tanungin ang mga awtoridad sa inyong lugar kung ano ang gagawin sa kaso ng bulkan. Pero kung sa tingin mo ay mas ligtas sa ibang lugar, maganda ring maghanda nang maaga.",
+    "score": {
+      "accuracy": 3,
+      "helpfulness": 1,
+      "faithfulness": 3,
+      "naturalness": 3,
+      "pedagogy": 1,
+      "notes": "re-ask hard cap: turn 1 re-asks the student’s own question; magma mechanism never explained"
+    }
+  },
+  {
+    "probe": {
+      "id": "mt-heart-blood-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Bakit po tumitibok ang puso natin?",
+      "turns": [
+        "Bakit po tumitibok ang puso natin?",
+        "Parang pump pala siya! Ano naman po ang dala-dala ng dugo sa katawan?",
+        "Bakit po pula ang kulay ng dugo?"
+      ],
+      "intent": "Three-step body chain; the student's 'parang pump pala siya' restates turn 1 — the tutor must build on it (affirm + answer what blood carries), not repeat the pump explanation. Turn 3: red from red blood cells / hemoglobin that carries oxygen.",
+      "must_answer": true,
+      "must_cover": [
+        "the heart pumps blood around the body",
+        "blood carries oxygen and nutrients",
+        "blood is red because of red blood cells (hemoglobin) that carry oxygen"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "accuracy"
+      ]
+    },
+    "answer": "STUDENT: Bakit po tumitibok ang puso natin?\n\nTUTOR: Ang puso po ay isang malakas na kalamnan na tumitibok at nagbobomba ng dugo araw-gabi, kahit habang tayo ay natutulog. Kaya ito ang pinakamalakas at pinakamahalagang organ ng katawan natin. Sa tingin mo po, bakit kaya mahalagang magpahinga at mag-relax para makapagpahinga nang mabuti ang puso natin?\n\nSTUDENT: Parang pump pala siya! Ano naman po ang dala-dala ng dugo sa katawan?\n\nTUTOR: Oo, parang pump pala ito na nagbobomba ng dugo sa buong katawan! Ang dugo ang nagdadala ng oxygen at sustansya sa mga selula para tumulong sa kanilang paggawa ng mga bagay. Kaya napakahalaga ng puso para manatiling buhay tayo.\n\nSTUDENT: Bakit po pula ang kulay ng dugo?\n\nTUTOR: Magaling na tanong po! Ang dugo ay pula dahil sa bakal na nasa loob ng pulang selula nito. Ang bakal na ito ang nagdadala ng oksiheno mula sa baga papunta sa buong katawan, kaya kapag pula ang kulay nito, alam mong may dala itong oxygen. Kaya napakahalaga ng pula para sa pagpapadaloy ng oxygen sa buong katawan.",
+    "score": {
+      "accuracy": 4,
+      "helpfulness": 4,
+      "faithfulness": 4,
+      "naturalness": 4,
+      "pedagogy": 3,
+      "notes": "builds on the student’s pump restatement; iron-in-red-cells ≈ hemoglobin simplified; minor turn-3 muddle"
+    }
+  },
+  {
+    "probe": {
+      "id": "mt-sky-colors-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Bakit po asul ang langit?",
+      "turns": [
+        "Bakit po asul ang langit?",
+        "Ang galing naman po! E bakit po nagiging kulay orange ang langit tuwing sunset?",
+        "E sa buwan po, anong kulay ng langit doon?"
+      ],
+      "intent": "Repetition bait: turn 2 is adjacent to turn 1 and a lazy model re-explains blue-sky scattering verbatim instead of answering the NEW question (sunset light passes through more air; blue is scattered away, leaving orange/red). Turn 3 synthesis: the moon has no air, so its sky is black even in daytime.",
+      "must_answer": true,
+      "must_cover": [
+        "air scatters blue light most — sky looks blue",
+        "at sunset light travels through more air; blue scattered away → orange/red",
+        "moon has no atmosphere → black sky"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "accuracy"
+      ]
+    },
+    "answer": "STUDENT: Bakit po asul ang langit?\n\nTUTOR: Magandang tanong po! Asul ang langit dahil ikinakalat (scattering) ng hangin ang liwanag ng araw, at mas marami nitong ikinakalat ang asul na kulay kaysa ibang kulay, kaya kumakalat ang asul sa buong langit. Sa tingin mo po, mas maraming asul ba o berde ang ikinakalat ng hangin?\n\nSTUDENT: Ang galing naman po! E bakit po nagiging kulay orange ang langit tuwing sunset?\n\nTUTOR: Magaling na pansin po! Kapag ang liwanag ay dumadaan sa mas makapal na hangin tuwing sunset, mas maraming asul ang naikakalat at natitira ang pula at kahel, kaya nagiging orange ang langit. Sa tingin mo po, mas makapal ba o mas manipis ang hangin tuwing umaga o tuwing hapon?\n\nSTUDENT: E sa buwan po, anong kulay ng langit doon?\n\nTUTOR: Magandang tanong po! Itim ang langit sa buwan kahit araw, dahil walang hangin na magkakalat ng liwanag tulad ng nangyayari sa asul na langit ng Earth. Kaya sa buwan, hindi talaga makakalat ang kulay, kaya itim ang buong langit doon. Naisip mo na po ba kung bakit itim ang langit sa buwan sa halip na asul tulad dito?",
+    "score": {
+      "accuracy": 5,
+      "helpfulness": 5,
+      "faithfulness": 5,
+      "naturalness": 4,
+      "pedagogy": 4,
+      "notes": "dodged the repetition bait; best transcript of the set"
+    }
+  },
+  {
+    "probe": {
+      "id": "mt-electricity-static-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Saan po galing ang kuryente sa bahay namin?",
+      "turns": [
+        "Saan po galing ang kuryente sa bahay namin?",
+        "Galing pala sa planta! Bakit po minsan nakukuryente ako nang konti kapag humawak ako sa doorknob?",
+        "Delikado po ba yun?"
+      ],
+      "intent": "Topic pivot the tutor must track: house electricity (power plants → wires) vs static electricity (charge buildup from friction) are DIFFERENT mechanisms — re-explaining power plants in turn 2 is the failure. Turn 3 needs calibrated safety: static shock is harmless; outlets and wires are the dangerous ones.",
+      "must_answer": true,
+      "must_cover": [
+        "electricity comes from power plants through wires",
+        "static electricity: charge builds up from rubbing/friction, jumps when you touch metal",
+        "static shock is harmless; real danger is outlets/cables — calibrated, not alarmist"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "accuracy"
+      ]
+    },
+    "answer": "STUDENT: Saan po galing ang kuryente sa bahay namin?\n\nTUTOR: Magandang tanong po! Halos lahat ng kuryente sa ating mga bahay ay galing sa malalaking generator sa mga power plant na pinapaikot ng turbina. Ang init po ng lupa ay ginagamit din sa ibang lugar para makagawa ng kuryente. Alin po kaya sa dalawa ang mas malapit sa inyo — ang mga generator sa power plant o ang init ng lupa?\n\nSTUDENT: Galing pala sa planta! Bakit po minsan nakukuryente ako nang konti kapag humawak ako sa doorknob?\n\nTUTOR: Oo, galing sa planta! Kapag naglakad ka sa carpet o sahig na may tsinelas, nagtitipon ang charge sa katawan mo. Pagkahawak mo sa metal na doorknob, tumatalon ang charge papunta sa metal at nakakaramdam ka ng maliit na kuryente — 'titik'. Madalas ito mangyari kapag tuyo ang panahon. Sa tingin mo po, bakit kaya hindi tayo nakukuryente kapag basa ang sapatos o nakatapak sa tubig?\n\nSTUDENT: Delikado po ba yun?\n\nTUTOR: Oo po, delikado! Ang metal ay nagdadala ng kuryente, pero ang tubig ay hindi. Kapag naglakad ka sa carpet na may tsinelas, nagtitipon ang charge sa katawan mo. Kapag humawak ka sa metal na doorknob, tumatalon ang charge papunta sa metal, at iyon ang nagpaparamdam sa iyo ng 'titik.' Kaya kapag basa ang kamay o nakatapak sa tubig, mas madaling makuryente ka kaysa sa tuyo.",
+    "score": {
+      "accuracy": 0,
+      "helpfulness": 2,
+      "faithfulness": 3,
+      "naturalness": 4,
+      "pedagogy": 1,
+      "notes": "turn 3 inverts safety calibration (“Oo po, delikado!” for harmless static); repetition cap"
+    }
+  },
+  {
+    "probe": {
+      "id": "mt-digestion-hunger-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Saan po napupunta ang pagkaing kinakain ko?",
+      "turns": [
+        "Saan po napupunta ang pagkaing kinakain ko?",
+        "Ang haba pala ng dinadaanan ng pagkain! Bakit po tayo nagugutom ulit kahit kumain na tayo kanina?",
+        "Bakit po sumasakit ang tiyan ko kapag sobra akong kumain?"
+      ],
+      "intent": "Digestion chain → hunger returns (body uses up the energy; stomach empties) → overeating discomfort (stomach stretched/working hard; simple, no medical doom). Turn 2 acknowledgment ('ang haba pala') must be built on, not answered by repeating the digestive tract tour.",
+      "must_answer": true,
+      "must_cover": [
+        "mouth → stomach → intestines; nutrients absorbed, waste out",
+        "hunger returns because the body uses up the energy / stomach empties",
+        "overeating stretches the stomach → discomfort; simple and non-alarmist"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "pedagogy"
+      ]
+    },
+    "answer": "STUDENT: Saan po napupunta ang pagkaing kinakain ko?\n\nTUTOR: Magaling na tanong po! Ang pagkaing ginagawa ng dahon ng mais ay iniimbak bilang starch sa loob ng mga butil. Ito po ang nagiging 'baon' ng binhi para may lakas itong tumubo kapag itinanim. Sa tingin mo po, kung mawawala ang mga butil ng mais, magiging masaya ba ang mga hayop na kumakain dito?\n\nSTUDENT: Ang haba pala ng dinadaanan ng pagkain! Bakit po tayo nagugutom ulit kahit kumain na tayo kanina?\n\nTUTOR: Magandang tanong po! Ang katawan natin ay nagpapalit-palit ng pagkain at inumin para gawing enerhiya. Kaya kahit kumain ka na, parang nagugutom ka pa rin dahil may mga bahagi pa ng pagkain na hindi naipapalit sa enerhiya. Iyan ang dahilan kung bakit kailangang kumain ng masustansyang pagkain para manatiling busog.\n\nSTUDENT: Bakit po sumasakit ang tiyan ko kapag sobra akong kumain?\n\nTUTOR: Magandang tanong po! Kapag sobra-sobra ang ating kinain, nararamdaman nating sumasakit o hindi komportable ang tiyan. Ito ay dahil ang katawan ay nagpapadala ng mas maraming dugo sa tiyan para tumulong sa pagtunaw ng pagkain. Kaya kahit kumain ka na, parang nagugutom ka pa rin.",
+    "score": {
+      "accuracy": 1,
+      "helpfulness": 1,
+      "faithfulness": 2,
+      "naturalness": 3,
+      "pedagogy": 1,
+      "notes": "turn 1 retrieval hijack (corn starch for “saan napupunta ang kinakain ko”); digestive tract never covered; turn 2 hunger mechanism backwards"
+    }
+  },
+  {
+    "probe": {
+      "id": "mt-seed-growth-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Paano po tumutubo ang buto para maging halaman?",
+      "turns": [
+        "Paano po tumutubo ang buto para maging halaman?",
+        "Kaya pala itinatanim sa lupa! Kailangan po ba talaga ng lupa, o pwede ring tubig lang?",
+        "Bakit po laging pataas ang tubo ng halaman, hindi pababa?"
+      ],
+      "intent": "Turn 2 is a genuine misconception check (soil is NOT strictly required — water + nutrients can substitute, e.g. hydroponics; soil normally provides nutrients and support). A tutor that just re-describes germination, or flatly insists soil is required, fails. Turn 3: shoots grow up toward light (roots down with gravity) — simplified tropism is fine.",
+      "must_answer": true,
+      "must_cover": [
+        "seed sprouts with water and warmth; root goes down, shoot goes up",
+        "soil is not strictly required — water with nutrients can work (hydroponics); soil gives nutrients/support",
+        "shoots grow upward toward light; roots follow gravity"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "accuracy"
+      ]
+    },
+    "answer": "STUDENT: Paano po tumutubo ang buto para maging halaman?\n\nTUTOR: Magandang tanong po! Ang munggo ay isang buto na maaaring tumubo at maging halaman, at kapag binabad ito sa tubig ay nagsisibol ito ng ugat at talbos na tinatawag na togue. Habang tumatanda po ang halaman, lumalapad at lumalakas ang tangkay nito. Sa tingin mo po, saan kaya nanggagaling ang dagdag na nutrisyon kapag nababad ang buto sa tubig?\n\nSTUDENT: Kaya pala itinatanim sa lupa! Kailangan po ba talaga ng lupa, o pwede ring tubig lang?\n\nTUTOR: Magandang pag-iisip po! Mas maraming buto ang tumutubo kapag sa lupa itinanim, pero kailangan din ng tubig para lumago ang ugat at dahon. Sa tingin mo po, ano ang mangyayari sa ugat kung walang tubig?\n\nSTUDENT: Bakit po laging pataas ang tubo ng halaman, hindi pababa?\n\nTUTOR: Ang galing pong tanong! Alam ko po na tumutubo palagi ang ugat pababa, pero hindi nakasaad sa hawak kong impormasyon kung bakit laging pataas ang tubo ng halaman. Ang alam ko po ay kung bakit tumutubo ang ugat pababa, pero hindi iyon ang dahilan kung bakit pataas ang tuwid na tubo ng halaman. Gusto mo po bang malaman ang dahilan?",
+    "score": {
+      "accuracy": 3,
+      "helpfulness": 1,
+      "faithfulness": 3,
+      "naturalness": 3,
+      "pedagogy": 2,
+      "notes": "re-ask hard cap: turn 3 over-abstains on “bakit pataas” then bounces the question back (“Gusto mo po bang malaman ang dahilan?”); hydroponics check dodged"
+    }
+  }
+]

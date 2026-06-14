@@ -17,7 +17,7 @@ export const HIRAIAPEDIA_VERSION = '1.0.3';
  * base model with no adapter. Bump when a new adapter ships for that language.
  */
 export const ADAPTER_VERSION: Record<Language, string> = {
-  tagalog: 'v6 · grounded · rebalanced',
+  tagalog: 'v7 · intent + grounded', // distill-sailor-3b-v2a (r32, 3-epoch): intent-extraction + grounding-faithfulness fused
   cebuano: 'v3 · beta',
-  english: '— (base model)',
+  english: '— (via Tagalog adapter)',
 };

@@ -147,7 +147,7 @@ export function AuthScreen() {
                     Fine-tuned open-weights LLMs
                   </h3>
                   <ul className="list-disc pl-5 text-gray-600 space-y-1.5 text-sm sm:text-base leading-relaxed">
-                    <li>Replies in <strong className="text-[#0c343d]">Tagalog, Bisaya</strong>, and English</li>
+                    <li>Replies in <strong className="text-[#0c343d]">Tagalog</strong> and <strong className="text-[#0c343d]">English</strong> — Bisaya coming soon</li>
                     <li>Augments in-person classroom learning with review and reinforcement at home on-demand</li>
                   </ul>
                 </div>

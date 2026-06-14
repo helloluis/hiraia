@@ -1,0 +1,36 @@
+# Variant-A sweep (2026-06-13). Baseline to beat: 3.59 TL+EN (new-bank SFT).
+# Reward levers env-toggled in reward.py: RW_COVERAGE / RW_ANTIDEFLECT / RW_LENGTHBAND
+# All: 400 steps, G=6, LR=2e-6, KL=0.10, MAX_NEW_TOKENS=192, SEED=42. Judge=Qwen3.5-35B-A3B (pod), same-judge deltas; Claude calibration on winner.
+# variant  pod_id           ip:port               gpu   cov anti len  out_dir
+A_r5cov    8w3ngqu150gxd2   216.81.248.128:11120  A100  1 1 1  tagalog-sailor-3b-grpo-r5cov
+B_r5len    wovx9vdbgop73b   216.81.245.138:15540  A100  0 0 1  tagalog-sailor-3b-grpo-r5len
+C_r5anti   h5zwd71l54p2ki   216.81.245.97:18595   H100  0 1 0  tagalog-sailor-3b-grpo-r5anti
+D_r5covonly xb6ve8jt0grdmu  216.81.245.34:11090   H100  1 0 0  tagalog-sailor-3b-grpo-r5covonly
+
+# 2026-06-13 USER DIRECTIVE: do NOT terminate pod C (the judge/eval server) after this sweep.
+# Keep it warm for the next training round (reuses stock llama-server build + 35B judge + base gguf on the volume).
+# pod C = hiraia-grpo-C / h5zwd71l54p2ki / 216.81.245.97:18595 (H100, ~$2.89/hr idle cost).
+
+# ============================================================================
+# WORKING JUDGE-POD RECIPE (confirmed 2026-06-13 ~04:30) — pod C / volume 5uwc7qp731
+# ============================================================================
+# Build llama.cpp (CUDA) — the gotchas that cost ~2h:
+#   - nvcc NOT on PATH in runpod/pytorch image: export PATH=/usr/local/cuda/bin:$PATH CUDACXX=/usr/local/cuda/bin/nvcc
+#   - LLAMA_BUILD_UI=OFF ONLY works on a CLEAN build dir (rm -rf build first); contaminated dirs keep generating the broken ui.cpp
+#   - no prebuilt CUDA-linux binary exists upstream (only ROCm/SYCL/Vulkan/win) -> must build from source
+#   git clone https://github.com/ggml-org/llama.cpp /workspace/llamacpp   # (b9618 works)
+#   cmake -B build -DGGML_CUDA=ON -DLLAMA_CURL=OFF -DLLAMA_BUILD_UI=OFF -DLLAMA_USE_PREBUILT_UI=OFF \
+#         -DCMAKE_CUDA_ARCHITECTURES=90 -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF
+#   cmake --build build -j 32 --target llama-server   # binary: /workspace/llamacpp/build/bin/llama-server
+# Serve (RUNTIME GOTCHA: -fit off REQUIRED; the auto device-memory-fit step crashes on this pod):
+#   LD_LIBRARY_PATH=/workspace/llamacpp/build/bin /workspace/llamacpp/build/bin/llama-server \
+#     -m <gguf> -ngl 99 --port 9099 -np 4 --cont-batching --ctx-size 16384 -fit off
+# Judge model: Qwen3.5-9B-Q4_K_M (/workspace/judge/) WORKS + returns clean JSON (enable_thinking:false in judge-local.mjs).
+#   35B-A3B gguf CRASHES on load even with -fit off (corrupt cross-pod wget -c resume OR moe arch) -> re-download fresh next session.
+# ============================================================================
+
+# 2026-06-13 ~1:05pm GMT+8: 35B-A3B JUDGE CONFIRMED WORKING on pod C.
+#   /workspace/judge/Qwen3.5-35B-A3B-Q4_K_M.gguf (22016023168 bytes, hf_xet integrity-verified).
+#   Serve: LD_LIBRARY_PATH=/workspace/llamacpp/build/bin <binary> -m <gguf> -ngl 99 --port 9099 -np 4 --cont-batching --ctx-size 16384 -fit off
+#   GOTCHA: 35B MoE takes ~50s to LOAD — do NOT trust impatient health-check loops (they false-negatived as "crashed"/"DIED" repeatedly; the model was fine, just loading). Watch the LOG for "server is listening", give 60-90s.
+#   (The "corrupt download" was a MISDIAGNOSIS — same slow-load false-negative. Both 9B and 35B work with -fit off.)

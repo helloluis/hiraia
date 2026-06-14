@@ -5,8 +5,10 @@ import type { Language } from '@hiraia/shared';
  * should be reviewed by a native speaker — flagged in the PR.
  */
 
-// Order the slide-1 question cycles through (typewritered, each replacing the last).
-export const LANG_CYCLE: Language[] = ['tagalog', 'english', 'cebuano'];
+// Order the slide-1 question cycles through (typewritered, each replacing the
+// last). Cebuano is out of the cycle while Bisaya is "coming soon" — don't
+// typewriter a question in a language whose button is disabled.
+export const LANG_CYCLE: Language[] = ['tagalog', 'english'];
 
 // Slide 1 — "How do you want to use Hiraia?" (cycled across languages).
 export const Q_HOW_USE: Record<Language, string> = {

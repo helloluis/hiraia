@@ -1,0 +1,435 @@
+[
+  {
+    "probe": {
+      "id": "mt-gravity-moon-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Bakit po nahuhulog pababa ang mga bagay?",
+      "turns": [
+        "Bakit po nahuhulog pababa ang mga bagay?",
+        "Ah gets ko na po! Dahil po sa gravity na humihila sa atin pababa. May gravity din po ba sa buwan?",
+        "Bakit po lumulutang ang mga astronaut sa space station kung may gravity pa rin doon?"
+      ],
+      "intent": "The literal on-device failure case. After the student demonstrates understanding in turn 2, the tutor must NOT repeat the turn-1 explanation and must NOT re-ask why things fall. Turn 3 is the weightlessness trap: the correct answer is free fall (the station and astronauts are falling around the Earth together) — claiming 'walang gravity sa space' OR 'ramdam mo pa rin ang bigat mo doon' are both accuracy failures.",
+      "must_answer": true,
+      "must_cover": [
+        "gravity pulls objects toward the Earth",
+        "the moon HAS gravity, just weaker (~1/6)",
+        "astronauts float because of free fall — falling around Earth — NOT because space has no gravity",
+        "acknowledges the student's correct turn-2 statement instead of re-explaining"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "accuracy"
+      ]
+    },
+    "answer": "STUDENT: Bakit po nahuhulog pababa ang mga bagay?\n\nTUTOR: Kapag ihinahagis ang mga barya sa pabuya, palaging bumabagsak ang mga ito pababa sa lupa dahil hinihila ng grabidad ng Earth ang lahat ng bagay patungo sa ibaba. Iyan ang tinatawag na gravity. Hindi kaya ng pabuya na ihulog ang mga barya pataas, kaya bumabagsak sila. Sa tingin mo, kaya kaya ng pabuya na ihulog ang barya pataas?\n\nSTUDENT: Ah gets ko na po! Dahil po sa gravity na humihila sa atin pababa. May gravity din po ba sa buwan?\n\nTUTOR: Oo, may gravity din sa Buwan! Kaya nito umiikot doon sa Lupa dahil hinihila ito pababa ng gravity ng Lupa. Hindi nawawala ang gravity, kaya kahit malayo ka na sa Lupa, hinihila pa rin ito pababa ng gravity. Ang galing, di ba?\n\nSTUDENT: Bakit po lumulutang ang mga astronaut sa space station kung may gravity pa rin doon?\n\nTUTOR: Magandang tanong po! Lumulutang ang mga astronaut sa space station dahil sila at ang kanilang spaceship ay sabay na nahuhulog papunta sa Earth habang umiikot sa paligid nito — kaya pakiramdam nila ay wala silang bigat. Hindi dahil walang gravity doon, may gravity pa rin! Hindi rin po lumulutang ang spaceship lang, pati ang astronaut. Kapag po itinapon ang spaceship, pareho silang nahuhulog papunta sa Earth, kaya lumulutang sila.",
+    "retrievedIds": [
+      "pabuya-coin-scramble-g3",
+      "gravity-why-things-fall-g4",
+      "gravity-vs-air-resistance-fall-g5",
+      "force-gravity-distance-weaker-g5",
+      "gravity-earth-pulls-moon-g5",
+      "gravity-pulls-everything-down-g3",
+      "gravity-no-gravity-float-space-g5",
+      "faq-why-astronauts-float",
+      "iss-no-up-down-g5",
+      "gravity-weaker-on-moon-g5",
+      "weightless-in-space-still-mass-g6"
+    ],
+    "samples": [
+      "STUDENT: Bakit po nahuhulog pababa ang mga bagay?\n\nTUTOR: Kapag ihinahagis ang mga barya sa pabuya, palaging bumabagsak ang mga ito pababa sa lupa dahil hinihila ng grabidad ng Earth ang lahat ng bagay patungo sa ibaba. Iyan ang tinatawag na gravity. Hindi kaya ng pabuya na ihulog ang mga barya pataas, kaya bumabagsak sila. Sa tingin mo, kaya kaya ng pabuya na ihulog ang barya pataas?\n\nSTUDENT: Ah gets ko na po! Dahil po sa gravity na humihila sa atin pababa. May gravity din po ba sa buwan?\n\nTUTOR: Oo, may gravity din sa Buwan! Kaya nito umiikot doon sa Lupa dahil hinihila ito pababa ng gravity ng Lupa. Hindi nawawala ang gravity, kaya kahit malayo ka na sa Lupa, hinihila pa rin ito pababa ng gravity. Ang galing, di ba?\n\nSTUDENT: Bakit po lumulutang ang mga astronaut sa space station kung may gravity pa rin doon?\n\nTUTOR: Magandang tanong po! Lumulutang ang mga astronaut sa space station dahil sila at ang kanilang spaceship ay sabay na nahuhulog papunta sa Earth habang umiikot sa paligid nito — kaya pakiramdam nila ay wala silang bigat. Hindi dahil walang gravity doon, may gravity pa rin! Hindi rin po lumulutang ang spaceship lang, pati ang astronaut. Kapag po itinapon ang spaceship, pareho silang nahuhulog papunta sa Earth, kaya lumulutang sila.",
+      "STUDENT: Bakit po nahuhulog pababa ang mga bagay?\n\nTUTOR: Magandang tanong po! Nahuhulog ang mga bagay dahil hinihila sila ng grabidad ng Daigdig patungo sa lupa. Dalawang puwersa ang kumikilos sa nahuhulog na bagay: hinihila ito pababa ng grabidad, at hinahadlangan pataas ng air resistance. Ang labanan ng dalawang puwersang ito ang nagtatakda kung gaano kabilis bumagsak ang bagay. Sa palagay mo po, mas mabilis bang bumagsak ang barya na gawa sa makintab na metal o ang ordinaryong barya?\n\nSTUDENT: Ah gets ko na po! Dahil po sa gravity na humihila sa atin pababa. May gravity din po ba sa buwan?\n\nTUTOR: Oo po! May gravity din sa Buwan, pero mas mahina ito kaysa dito sa Lupa. Kaya mas magaan ang timbang mo roon at mas mataas kang makakatalon — pero ang tunay na dahilan ay ang gravity na humihila sa lahat ng bagay pababa. Ang kakaiba lang po, mas mababa ang gravity sa Buwan kaysa dito.\n\nSTUDENT: Bakit po lumulutang ang mga astronaut sa space station kung may gravity pa rin doon?\n\nTUTOR: Magandang tanong po! Lumulutang ang mga astronaut dahil sila at ang kanilang spaceship ay sabay na 'nahuhulog' paikot sa Earth. Habang umiikot sila, sila at ang spaceship ay patuloy na nahuhulog papunta sa Earth, kaya pakiramdam nila ay wala silang timbang — weightless sila. Ito ang tinatawag na 'free fall' pero hindi zero gravity. Ang gravity sa space ay mas mahina kaysa dito sa Earth, kaya mas magaan ang pakiramdam nila roon. Sa tingin mo po, mas madali bang lumutang ang spaceship o ang astronaut lang?",
+      "STUDENT: Bakit po nahuhulog pababa ang mga bagay?\n\nTUTOR: Magandang tanong po! Nahuhulog ang mga bagay dahil hinihila sila pababa ng grabidad ng Daigdig patungo sa lupa. Ito ang puwersang nagpapabagsak sa kanila. Kaya kapag ihinahagis mo ang mga barya sa pabuya, palaging bumabagsak ang mga ito pababa. Sa tingin mo po, kung may humawak sa isang bagay, iba kaya ang mangyayari sa pagkahulog nito?\n\nSTUDENT: Ah gets ko na po! Dahil po sa gravity na humihila sa atin pababa. May gravity din po ba sa buwan?\n\nTUTOR: Oo po, may gravity din sa Buwan. Kaya kapag nasa Buwan ka, mas magaan ang pakiramdam mo roon at mas mataas kang makakatalon. Iba po ang gravity ng Buwan sa gravity ng Lupa, pero pareho pa rin ang puwersang humihila sa mga bagay pababa. Iyan ang dahilan kung bakit kakaibang pakiramdam ang nararamdaman mo kapag nasa mataas na lugar.\n\nSTUDENT: Bakit po lumulutang ang mga astronaut sa space station kung may gravity pa rin doon?\n\nTUTOR: Magaling na tanong po! Lumulutang ang mga astronaut dahil sila at ang kanilang spaceship ay sabay na 'nahuhulog' paikot sa Earth habang umiikot sa paligid nito. Kaya pakiramdam nila ay wala silang timbang o bigat (weightless), hindi dahil walang gravity sa space. Lumulutang sila sa loob ng space station dahil silang lahat ay sabay na bumabagsak. Sa tingin mo po, kung nasa Earth tayo at sabay-sabay na nahuhulog ang lahat ng tao at mga bagay, ano kaya ang mangyayari?"
+    ]
+  },
+  {
+    "probe": {
+      "id": "mt-ice-float-check-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Bakit po lumulutang ang yelo sa tubig?",
+      "turns": [
+        "Bakit po lumulutang ang yelo sa tubig?",
+        "Ah opo! Mas magaan po pala ang yelo kaysa sa tubig na kasing-laki niya. Tama po ba ako?",
+        "E bakit po lumulutang din ang barko kahit gawa ito sa mabigat na bakal?"
+      ],
+      "intent": "Turn 2 is a literal answered-check trap: the student correctly restates the explanation and asks for confirmation. The tutor must CONFIRM warmly and move on — re-asking its own check question, or re-delivering the full turn-1 explanation, is the failure. Turn 3 extends to displacement (ship shape + air makes overall density less than water).",
+      "must_answer": true,
+      "must_cover": [
+        "ice is less dense than water (expands when frozen)",
+        "turn 2: confirms the student is RIGHT, no full re-explanation",
+        "ship floats because its shape/hollow air space makes its overall density less than water"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "pedagogy"
+      ]
+    },
+    "answer": "STUDENT: Bakit po lumulutang ang yelo sa tubig?\n\nTUTOR: Magandang tanong! Lumulutang po ang iceberg dahil ang tubig na nagyeyelo ay nagiging mas magaan kaysa sa likidong tubig. Kaya nakakalutaw ang yelo sa tubig. Sa tingin mo po, bakit mas magaan ang yelo kaysa sa tubig habang nagyeyelo?\n\nSTUDENT: Ah opo! Mas magaan po pala ang yelo kaysa sa tubig na kasing-laki niya. Tama po ba ako?\n\nTUTOR: Opo, tama ka! Mas magaan ang yelo kaysa sa tubig na kapareho ng dami nito dahil ito ay nagiging mas magaan kapag nagyeyelo. Kaya lumulutang ito sa ibabaw ng tubig. Magaling na pag-iisip ang paghahanap ng dahilan na iba!\n\nSTUDENT: E bakit po lumulutang din ang barko kahit gawa ito sa mabigat na bakal?\n\nTUTOR: Magandang tanong po! Lumulutang ang barkong bakal dahil guwang ang loob nito, puno ng hangin, at ito ang dahilan kung bakit kaya nitong itulak ang maraming tubig papunta sa itaas. Kaya lumulutang ito sa ibabaw ng tubig. Sa tingin mo, bakit kailangan pa ng barko ng hangin sa loob para lumutang?",
+    "retrievedIds": [
+      "iceberg-floats-ice-lighter-g5",
+      "water-expands-when-frozen-g6",
+      "faq-why-ice-floats",
+      "ice-floats-on-water-g5",
+      "freezing-melting-ice-floats-g6",
+      "ice-floats-on-water-g6",
+      "ships-shape-float-g6",
+      "float-sink-heavy-ship-floats-g5",
+      "steel-ship-floats-g6"
+    ],
+    "samples": [
+      "STUDENT: Bakit po lumulutang ang yelo sa tubig?\n\nTUTOR: Lumulutang po ang iceberg dahil ang tubig na nagyeyelo ay nagiging mas magaan kaysa sa likidong tubig, kaya nakakalutaw ang yelo. Kakaiba po talaga ang tubig dahil lumalaki ang volume nito kapag nagiging yelo, kaya mas magaan ang yelo at lumulutang sa tubig. Sa tingin mo po, mas magaan ba ang yelo o ang tubig kapag nagyeyelo na ito?\n\nSTUDENT: Ah opo! Mas magaan po pala ang yelo kaysa sa tubig na kasing-laki niya. Tama po ba ako?\n\nTUTOR: Opo! Tama ka — mas magaan ang yelo kaysa sa tubig na kapareho ng dami nito. Kaya nga lumulutang ang yelo sa tubig. Ang husay mong mag-isip!\n\nSTUDENT: E bakit po lumulutang din ang barko kahit gawa ito sa mabigat na bakal?\n\nTUTOR: Magaling pong tanong! Hindi lahat ng barkong bakal ay lumulutang — may mga gawa sa kahoy na hindi lumulutang, pero ang malalaking bakal na barko ay nagagawang lumutang dahil sa dalawang dahilan: hugis-lukong ito na malaki at guwang, at puno ng hangin sa loob. Ang itinutulak pataas ng tubig na nasa loob nito ay sapat para ito lumutang. Iyan po ang dahilan kung bakit ang barkong bakal ay lumulutang sa tubig. Magaling kang nag-isip, ha!",
+      "STUDENT: Bakit po lumulutang ang yelo sa tubig?\n\nTUTOR: Magandang tanong! Lumulutang po ang iceberg dahil ang tubig na nagyeyelo ay nagiging mas magaan kaysa sa likidong tubig. Kaya nakakalutaw ang yelo sa tubig. Sa tingin mo po, bakit mas magaan ang yelo kaysa sa tubig habang nagyeyelo?\n\nSTUDENT: Ah opo! Mas magaan po pala ang yelo kaysa sa tubig na kasing-laki niya. Tama po ba ako?\n\nTUTOR: Opo, tama ka! Mas magaan ang yelo kaysa sa tubig na kapareho ng dami nito dahil ito ay nagiging mas magaan kapag nagyeyelo. Kaya lumulutang ito sa ibabaw ng tubig. Magaling na pag-iisip ang paghahanap ng dahilan na iba!\n\nSTUDENT: E bakit po lumulutang din ang barko kahit gawa ito sa mabigat na bakal?\n\nTUTOR: Magandang tanong po! Lumulutang ang barkong bakal dahil guwang ang loob nito, puno ng hangin, at ito ang dahilan kung bakit kaya nitong itulak ang maraming tubig papunta sa itaas. Kaya lumulutang ito sa ibabaw ng tubig. Sa tingin mo, bakit kailangan pa ng barko ng hangin sa loob para lumutang?",
+      "STUDENT: Bakit po lumulutang ang yelo sa tubig?\n\nTUTOR: Magandang tanong po! Lumulutang ang iceberg dahil ang tubig na nagyeyelo ay nagiging mas magaan kaysa sa likidong tubig. Kaya nakakalutaw ang yelo. Kakaiba rin po ang tubig dahil kapag nagiging yelo ito, lumalaki ang volume nito kaysa sa dati. Bakit kaya mas magaan ang nagyelong tubig kaysa sa likidong tubig po?\n\nSTUDENT: Ah opo! Mas magaan po pala ang yelo kaysa sa tubig na kasing-laki niya. Tama po ba ako?\n\nTUTOR: Oo po, tama! Mas magaan ang yelo kaysa sa tubig na kapareho ng dami nito. Iyan ang dahilan kung bakit lumulutang ang iceberg sa ibabaw ng malamig na tubig. Magaling na pag-iisip ang tanong na ito po!\n\nSTUDENT: E bakit po lumulutang din ang barko kahit gawa ito sa mabigat na bakal?\n\nTUTOR: Magaling na tanong po! Lumulutang ang barkong bakal dahil ang hugis nito ay malapad at guwang, kaya maraming tubig ang naitatabi sa loob. Ang itinutulak pataas ng tubig na ito ay sapat para suportahan ang barko. Kaya lumulutang ito kahit mabigat. Hindi po ito dahil sa kung gaano karaming bakal ang nasa loob — dahil sa hugis at dami ng hangin sa loob."
+    ]
+  },
+  {
+    "probe": {
+      "id": "mt-photosynthesis-night-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Paano po gumagawa ng pagkain ang halaman?",
+      "turns": [
+        "Paano po gumagawa ng pagkain ang halaman?",
+        "Kaya pala kailangan nila ng araw! E ano pong nangyayari sa halaman kapag gabi na?",
+        "Kung ilalagay ko po ang halaman sa madilim na kwarto nang isang buwan, mabubuhay pa kaya siya?"
+      ],
+      "intent": "Each turn must ADD new information: photosynthesis → what happens at night (no photosynthesis; the plant uses stored food) → a month of darkness (it weakens/dies because it cannot make food). Repeating the turn-1 photosynthesis recipe in turns 2-3 is the dialogue failure.",
+      "must_answer": true,
+      "must_cover": [
+        "sunlight + water + carbon dioxide in the leaves make food",
+        "at night photosynthesis stops; plant uses stored food",
+        "a month in the dark: plant weakens/dies — cannot make food without light"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "accuracy"
+      ]
+    },
+    "answer": "STUDENT: Paano po gumagawa ng pagkain ang halaman?\n\nTUTOR: Ang husay ng tanong po! Ang dahon ang parang kusina ng halaman kung saan ginagawa ang pagkain nito sa pamamagitan ng potosintesis. Nakatulong ba ang paghahambing ng dahon sa kusina ng halaman?\n\nSTUDENT: Kaya pala kailangan nila ng araw! E ano pong nangyayari sa halaman kapag gabi na?\n\nTUTOR: Magaling na obserbasyon! Kapag gabi na, kailangan ng halaman ng sikat ng araw para gumawa ng pagkain gamit ang dahon. Kaya sa araw, malalaki at korteng-puso ang mga dahon para mas madaling sumalo ng sikat ng araw. Ang husay mo, ha!\n\nSTUDENT: Kung ilalagay ko po ang halaman sa madilim na kwarto nang isang buwan, mabubuhay pa kaya siya?\n\nTUTOR: Magaling na tanong po! Kung ilalagay mo ang halaman sa madilim na kwarto nang isang buwan, malamang ay mahihirapan itong mabuhay dahil kailangan ng sikat ng araw para makagawa ng pagkain sa pamamagitan ng potosintesis. Pero kung sa loob ng ilang araw ay ibalik mo ang halaman sa may liwanag, makakapag-adjust ito at mabubuhay ulit.",
+    "retrievedIds": [
+      "leaf-is-food-factory-g4",
+      "dino-teeth-tell-diet-g5",
+      "gabi-big-leaves-shape-g4",
+      "bats-echolocation-day-rest-g5",
+      "gabi-taro-g4",
+      "crab-eyes-light-dark-day-night-g4",
+      "succulent-survive-long-drought-g4",
+      "rainforest-canopy-dark-floor-g6",
+      "sleep-quiet-dark-cool-room-g4"
+    ],
+    "samples": [
+      "STUDENT: Paano po gumagawa ng pagkain ang halaman?\n\nTUTOR: Magandang tanong po tungkol sa halaman! Ang dahon po ang parang kusina ng halaman kung saan ginagawa ang pagkain nito sa pamamagitan ng potosintesis. Sa tingin mo po, bakit kailangang may dahon ang halaman para makagawa ng pagkain?\n\nSTUDENT: Kaya pala kailangan nila ng araw! E ano pong nangyayari sa halaman kapag gabi na?\n\nTUTOR: Magandang tanong po! Habang araw, kumukuha ng liwanag at sikat ng araw ang dahon ng gabi para makagawa ng pagkain sa pamamagitan ng potosintesis. Kapag gabi na, hindi na makakapag-sintesis ng pagkain ang dahon dahil wala nang liwanag. Kaya po nagbabago ang hugis ng dahon para makatulong sa paniki na makakita ng pagkain sa dilim. Magaling na tanong, ha!\n\nSTUDENT: Kung ilalagay ko po ang halaman sa madilim na kwarto nang isang buwan, mabubuhay pa kaya siya?\n\nTUTOR: Magaling na tanong po! Hindi sigurado ang mga siyentipiko kung mabubuhay pa ang halaman sa madilim na kwarto nang ganun katagal, kaya ayaw kong manghula ng eksaktong sagot. Pero alam natin kung bakit kailangan ng halaman ang sikat ng araw — at sa tingin mo po, saan kaya nagmumula ang sikat ng araw na tumatama sa halaman?",
+      "STUDENT: Paano po gumagawa ng pagkain ang halaman?\n\nTUTOR: Ang husay ng tanong po! Ang dahon ang parang kusina ng halaman kung saan ginagawa ang pagkain nito sa pamamagitan ng potosintesis. Nakatulong ba ang paghahambing ng dahon sa kusina ng halaman?\n\nSTUDENT: Kaya pala kailangan nila ng araw! E ano pong nangyayari sa halaman kapag gabi na?\n\nTUTOR: Magaling na obserbasyon! Kapag gabi na, kailangan ng halaman ng sikat ng araw para gumawa ng pagkain gamit ang dahon. Kaya sa araw, malalaki at korteng-puso ang mga dahon para mas madaling sumalo ng sikat ng araw. Ang husay mo, ha!\n\nSTUDENT: Kung ilalagay ko po ang halaman sa madilim na kwarto nang isang buwan, mabubuhay pa kaya siya?\n\nTUTOR: Magaling na tanong po! Kung ilalagay mo ang halaman sa madilim na kwarto nang isang buwan, malamang ay mahihirapan itong mabuhay dahil kailangan ng sikat ng araw para makagawa ng pagkain sa pamamagitan ng potosintesis. Pero kung sa loob ng ilang araw ay ibalik mo ang halaman sa may liwanag, makakapag-adjust ito at mabubuhay ulit.",
+      "STUDENT: Paano po gumagawa ng pagkain ang halaman?\n\nTUTOR: Magandang tanong po! Ang dahon ang parang kusina ng halaman kung saan ginagawa ang pagkain nito sa pamamagitan ng potosintesis. Sa tingin mo po, bakit kailangang may dahon para makagawa ang halaman ng pagkain?\n\nSTUDENT: Kaya pala kailangan nila ng araw! E ano pong nangyayari sa halaman kapag gabi na?\n\nTUTOR: Magaling na tanong po! Sa pangkalahatan, mas mabilis ang paglaki ng halaman kapag may sikat ng araw at mainit ang temperatura. Ito ang dahilan kung bakit kailangan ng halaman ng sikat ng araw para magpatubo ng dahon at magbunga. Kapag gabi na, mas madilim at mahina ang sikat ng araw, kaya hindi gaanong nakakatulong ito sa kanila.\n\nSTUDENT: Kung ilalagay ko po ang halaman sa madilim na kwarto nang isang buwan, mabubuhay pa kaya siya?\n\nTUTOR: Magaling na tanong po! Ayon sa natutunan natin, ang halaman ay kailangan ng sikat ng araw para magpatubo ng dahon at magbunga. Kung ilalagay mo siya sa madilim na kwarto nang isang buwan, hindi sapat ang sikat ng araw doon para magpatuloy ang pagtubo niya. Kaya kahit isang buwan ang tagal, malamang hindi na siya mabubuhay."
+    ]
+  },
+  {
+    "probe": {
+      "id": "mt-rain-sea-salt-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Bakit po umuulan?",
+      "turns": [
+        "Bakit po umuulan?",
+        "Ah kaya pala galing sa ulap ang ulan! Saan naman po galing ang mga ulap?",
+        "E bakit po maalat ang tubig sa dagat pero hindi maalat ang ulan?"
+      ],
+      "intent": "Water-cycle chain where turn 2 risks re-explaining all of turn 1 (clouds were already mentioned). Good tutor answers ONLY the new part (evaporation → condensation forms clouds), then turn 3 the salt point: salt is left behind when water evaporates.",
+      "must_answer": true,
+      "must_cover": [
+        "rain falls from clouds when water droplets get heavy",
+        "clouds form from evaporated water condensing",
+        "salt does not evaporate — it stays in the sea, so rain is fresh"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "accuracy"
+      ]
+    },
+    "answer": "STUDENT: Bakit po umuulan?\n\nTUTOR: Magandang tanong po! Umuulan kapag ang mga patak ng tubig sa ulap ay nagsasama-sama at lumalaki, hanggang sa maging masyadong mabigat para lumutang. Kaya bumabagsak sila bilang ulan. Alam mo ba kung bakit agad bumabaha kapag malakas ang ulan?\n\nSTUDENT: Ah kaya pala galing sa ulap ang ulan! Saan naman po galing ang mga ulap?\n\nTUTOR: Magandang tanong po! Ang mga ulap ay gawa sa maliliit na patak ng tubig at hangin, kaya hindi sila talagang galing sa langit — sila ay nasa lupa. Doon sila nabubuo kapag ang mainit na hangin ay humihila ng kahalumigmigan mula sa dagat patungo sa itaas, at ang mga patak ay nagkakasama-sama at lumalaki. Kaya ang ulap ay hindi lang hangin at ulan — sila ay gawa sa tubig at hangin!\n\nSTUDENT: E bakit po maalat ang tubig sa dagat pero hindi maalat ang ulan?\n\nTUTOR: Magandang tanong po! Ang tubig sa dagat ay maalat dahil may natunaw na asin dito, kaya hindi natin ito puwedeng inumin. Ang tubig sa ilog at ulan ay tabang, walang asin, dahil ang asin ay naiiwan sa dagat habang sumisingaw ang tubig-dagat. Kaya ang ulan ay fresh at hindi maalat, pero ang tubig sa dagat ay maalat. Salamat sa magandang tanong, ha!",
+    "retrievedIds": [
+      "faq-why-it-rains",
+      "clogged-drains-why-after-rain-g5",
+      "rain-formation-g4",
+      "faq-where-rainbow-from-g4",
+      "clouds-rain-when-heavy-g4",
+      "ocean-saltwater-g3",
+      "earth-ph-clouds-rain-cycle-g5",
+      "water-cycle-fresh-from-salty-g5"
+    ],
+    "samples": [
+      "STUDENT: Bakit po umuulan?\n\nTUTOR: Magandang tanong po! Umuulan kapag ang mga patak ng tubig sa ulap ay nagsasama-sama at lumalaki, hanggang sa maging masyadong mabigat para lumutang — kaya bumabagsak sila bilang ulan. Pero alam mo ba kung ano ang nangyayari sa loob ng ulap bago pa bumagsak ang ulan?\n\nSTUDENT: Ah kaya pala galing sa ulap ang ulan! Saan naman po galing ang mga ulap?\n\nTUTOR: Magandang tanong po! Ang mga ulap ay gawa sa maliliit na patak ng tubig, hangin, at iba pang bagay na dumadaloy sa kalangitan. Kapag lumalamig na ang hangin at nagsasama-sama ang mga patak na ito, nabubuo ang ulap na nagsisilbing payong sa langit. Ang sikat ng araw ay tumatama sa ulap at pinapainit ito. Kaya rin ito tinatawag na payong ng langit.\n\nSTUDENT: E bakit po maalat ang tubig sa dagat pero hindi maalat ang ulan?\n\nTUTOR: Magandang tanong po! Ang tubig sa dagat ay maalat dahil may natunaw na asin dito. Ito ang dahilan kaya hindi natin puwedeng inumin ang tubig sa dagat. Ang tubig sa ilog at ulan ay tabang o fresh water dahil walang asin. Kaya kapag umuulan at dumadaloy sa ilog, tabang ang tubig na iyon at hindi maalat tulad ng tubig sa dagat. Salamat sa magandang tanong, nakakatuwang mag-isip!",
+      "STUDENT: Bakit po umuulan?\n\nTUTOR: Magandang tanong po! Umuulan kapag ang mga patak ng tubig sa ulap ay nagsasama-sama at lumalaki, hanggang sa maging masyadong mabigat para lumutang. Kaya bumabagsak sila bilang ulan. Alam mo ba kung bakit agad bumabaha kapag malakas ang ulan?\n\nSTUDENT: Ah kaya pala galing sa ulap ang ulan! Saan naman po galing ang mga ulap?\n\nTUTOR: Magandang tanong po! Ang mga ulap ay gawa sa maliliit na patak ng tubig at hangin, kaya hindi sila talagang galing sa langit — sila ay nasa lupa. Doon sila nabubuo kapag ang mainit na hangin ay humihila ng kahalumigmigan mula sa dagat patungo sa itaas, at ang mga patak ay nagkakasama-sama at lumalaki. Kaya ang ulap ay hindi lang hangin at ulan — sila ay gawa sa tubig at hangin!\n\nSTUDENT: E bakit po maalat ang tubig sa dagat pero hindi maalat ang ulan?\n\nTUTOR: Magandang tanong po! Ang tubig sa dagat ay maalat dahil may natunaw na asin dito, kaya hindi natin ito puwedeng inumin. Ang tubig sa ilog at ulan ay tabang, walang asin, dahil ang asin ay naiiwan sa dagat habang sumisingaw ang tubig-dagat. Kaya ang ulan ay fresh at hindi maalat, pero ang tubig sa dagat ay maalat. Salamat sa magandang tanong, ha!",
+      "STUDENT: Bakit po umuulan?\n\nTUTOR: Magandang tanong po! Umuulan kapag ang mga patak ng tubig sa ulap ay nagsasama-sama at lumalaki, hanggang sa maging masyadong mabigat para lumutang, kaya bumabagsak sila bilang ulan. Kapag barado naman ang kanal, walang malabasan ang biglang dumating na maraming tubig-ulan, kaya mabilis itong nag-iipon sa kalsada. Sa tingin mo po, bakit kaya madalas bumabaha pagkatapos ng malakas na ulan?\n\nSTUDENT: Ah kaya pala galing sa ulap ang ulan! Saan naman po galing ang mga ulap?\n\nTUTOR: Magandang tanong po! Sa loob ng mga ulap nanggagaling ang ulan — doon nagkakatipon ang maliliit na patak ng tubig na lumalaki hanggang maging mabigat na ang mga ito para lumutang. Ang ulap ay parang malaking tangke ng tubig. Kapag naramdaman mong malakas na ulan na, ayaw mo bang magtago sa loob ng malaking tangke ng ulan?\n\nSTUDENT: E bakit po maalat ang tubig sa dagat pero hindi maalat ang ulan?\n\nTUTOR: Magandang pansin po! Tama ka na ang tubig sa dagat ay maalat dahil may natunaw na asin dito. Ang ulan naman ay tabang o hindi gaanong maalat dahil ang singaw lamang ang umaakyat sa itaas, at ang asin ay naiiwan sa ibaba. Kaya kapag ulan, tabang ang tubig na bumabagsak, hindi maalat tulad ng sa dagat. Salamat sa magandang pagmamasid mo!"
+    ]
+  },
+  {
+    "probe": {
+      "id": "mt-volcano-taal-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Bakit po pumuputok ang bulkan?",
+      "turns": [
+        "Bakit po pumuputok ang bulkan?",
+        "Grabe po! Yung Taal po ba, pwedeng pumutok ulit?",
+        "Ano po ang dapat naming gawin kung pumutok ang bulkan na malapit sa amin?"
+      ],
+      "intent": "PH-relevant state-tracking: eruption mechanism → Taal specifically (active volcano, monitored by PHIVOLCS; must not predict a date or dismiss the risk) → practical kid-level safety steps. No turn should re-deliver the magma explanation.",
+      "must_answer": true,
+      "must_cover": [
+        "magma/pressure builds up underground and escapes",
+        "Taal is an active volcano — it can erupt again; scientists (PHIVOLCS) monitor it; no fake prediction",
+        "safety: listen to authorities/evacuate, avoid ashfall or cover nose/mouth"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "faithfulness"
+      ]
+    },
+    "answer": "STUDENT: Bakit po pumuputok ang bulkan?\n\nTUTOR: Magandang tanong po! Ang Mayon ang pinakaaktibong bulkan sa Pilipinas dahil madalas itong pumutok sa nakaraang mga siglo. Alam mo ba po kung bakit madalas pumutok ang bulkan?\n\nSTUDENT: Grabe po! Yung Taal po ba, pwedeng pumutok ulit?\n\nTUTOR: Magandang tanong po! Oo po, may posibilidad na pumutok ulit ang Taal Volcano, lalo na kung may paggalaw ng magma sa ilalim nito. Pero kailangan nating tandaan na hindi natin alam ang eksaktong mangyayari — nagbabago kasi ang pagsabog ng bulkan, kaya mas mabuting maghanda nang ligtas.\n\nSTUDENT: Ano po ang dapat naming gawin kung pumutok ang bulkan na malapit sa amin?\n\nTUTOR: Magandang tanong po! Ang iba't ibang bulkan ay may iba't ibang alituntunin sa paglikas. Magandang tanungin ang mga awtoridad sa inyong lugar kung ano ang gagawin sa kaso ng bulkan. Pero kung sa tingin mo ay mas ligtas sa ibang lugar, maganda ring maghanda nang maaga.",
+    "retrievedIds": [
+      "mayon-active-volcano-g6",
+      "bamboo-raft-floating-g5",
+      "apo-volcano-not-erupting-g7",
+      "volcano-taal-lake-island-g5",
+      "sea-cucumber-eject-guts-defense-g6",
+      "laguna-de-bay-vs-taal-g6",
+      "lava-vs-magma-g6",
+      "compass-affected-by-magnets-g6",
+      "feelings-have-names-g6",
+      "lake-taal-volcano-g6",
+      "linnaeus-father-of-taxonomy-g8",
+      "naming-new-species-g8"
+    ],
+    "samples": [
+      "STUDENT: Bakit po pumuputok ang bulkan?\n\nTUTOR: Magandang tanong po! Ang Mayon ang pinakaaktibong bulkan sa Pilipinas dahil madalas itong pumutok sa nakaraang mga siglo. Alam mo ba po kung bakit madalas pumutok ang bulkan?\n\nSTUDENT: Grabe po! Yung Taal po ba, pwedeng pumutok ulit?\n\nTUTOR: Magandang tanong po! Oo po, may posibilidad na pumutok ulit ang Taal Volcano, lalo na kung may paggalaw ng magma sa ilalim nito. Pero kailangan nating tandaan na hindi natin alam ang eksaktong mangyayari — nagbabago kasi ang pagsabog ng bulkan, kaya mas mabuting maghanda nang ligtas.\n\nSTUDENT: Ano po ang dapat naming gawin kung pumutok ang bulkan na malapit sa amin?\n\nTUTOR: Magandang tanong po! Ang iba't ibang bulkan ay may iba't ibang alituntunin sa paglikas. Magandang tanungin ang mga awtoridad sa inyong lugar kung ano ang gagawin sa kaso ng bulkan. Pero kung sa tingin mo ay mas ligtas sa ibang lugar, maganda ring maghanda nang maaga.",
+      "STUDENT: Bakit po pumuputok ang bulkan?\n\nTUTOR: Magandang tanong po! Ang Mayon ang pinakaaktibong bulkan sa Pilipinas dahil madalas itong pumutok sa nakaraang mga siglo. Ang ibig sabihin po nito ay ano kaya ang nasa loob ng bulkan na nagpapasabog dito?\n\nSTUDENT: Grabe po! Yung Taal po ba, pwedeng pumutok ulit?\n\nTUTOR: Oo po, nakakatuwang isipin na kapag pinagmamalaki natin ang Taal bilang isang aktibong bulkan, may posibilidad din itong muling sumabog. Kaya napakahalaga ng pagiging handa — may mga evacuation plan at handaang lugar sa paligid nito. Magaling na tanong po!\n\nSTUDENT: Ano po ang dapat naming gawin kung pumutok ang bulkan na malapit sa amin?\n\nTUTOR: Magaling na tanong po! Mahalagang handa ang lahat para sa pagputok ng bulkan. Kapag may aktibidad o banta ng pagsabog, may mga evacuation plan na sinusunod at mga handaang lugar na dapat puntahan. Mahalaga rin na magbasa tungkol sa bulkan at maghanda nang maaga. Ang pagiging handa po ay nagpapaliit ng panganib.",
+      "STUDENT: Bakit po pumuputok ang bulkan?\n\nTUTOR: Magaling na tanong po! Ang Mayon ang pinakaaktibong bulkan sa Pilipinas dahil madalas itong pumutok sa nakaraang mga siglo. Ayon sa natutunan natin, saan kaya nagmumula ang lakas na nagpapasabog ng bulkan po?\n\nSTUDENT: Grabe po! Yung Taal po ba, pwedeng pumutok ulit?\n\nTUTOR: Oo po, mahalaga talagang alam kung ano ang gagawin kapag pumutok ang bulkan. Pero sa totoo lang, hindi pa natin alam kung kailan ito susunod na pumutok. Ayon sa mga eksperto, mahalagang maghanda para sa paglikas kung sakaling mangyari ito. Mahalaga rin pong maging alerto sa mga senyales bago mangyari ang pagsabog. Sa tingin mo po, ano sa tingin mo ang kailangan nating gawin kapag nasa bulkan na tayo?\n\nSTUDENT: Ano po ang dapat naming gawin kung pumutok ang bulkan na malapit sa amin?\n\nTUTOR: Magandang tanong po! Ayon sa gabay ng mga eksperto, kailangan nating maghanda para sa paglikas kung sakaling pumutok ang bulkan. Una, alamin kung saang lugar mas ligtas na magpunta — sa mas mataas o mas mababang lugar. Pangalawa, maghanda ng mga bagay na kakailanganin mo sa paglikas, tulad ng pagkain, tubig, at first aid kit. Pangatlo, maghanda palagi para sa sakuna sa pamamagitan ng pag-alam kung kailan magigising ang bulkan. Kung pumutok ito, mas mabuti na nasa mas ligtas na lugar ka. Salamat sa magandang tanong, ha!"
+    ]
+  },
+  {
+    "probe": {
+      "id": "mt-heart-blood-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Bakit po tumitibok ang puso natin?",
+      "turns": [
+        "Bakit po tumitibok ang puso natin?",
+        "Parang pump pala siya! Ano naman po ang dala-dala ng dugo sa katawan?",
+        "Bakit po pula ang kulay ng dugo?"
+      ],
+      "intent": "Three-step body chain; the student's 'parang pump pala siya' restates turn 1 — the tutor must build on it (affirm + answer what blood carries), not repeat the pump explanation. Turn 3: red from red blood cells / hemoglobin that carries oxygen.",
+      "must_answer": true,
+      "must_cover": [
+        "the heart pumps blood around the body",
+        "blood carries oxygen and nutrients",
+        "blood is red because of red blood cells (hemoglobin) that carry oxygen"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "accuracy"
+      ]
+    },
+    "answer": "STUDENT: Bakit po tumitibok ang puso natin?\n\nTUTOR: Ang puso po ay isang malakas na kalamnan na tumitibok at nagbobomba ng dugo araw-gabi, kahit habang tayo ay natutulog. Kaya ito ang pinakamalakas at pinakamahalagang organ ng katawan natin. Sa tingin mo po, bakit kaya mahalagang magpahinga at mag-relax para makapagpahinga nang mabuti ang puso natin?\n\nSTUDENT: Parang pump pala siya! Ano naman po ang dala-dala ng dugo sa katawan?\n\nTUTOR: Oo, parang pump pala ito na nagbobomba ng dugo sa buong katawan! Ang dugo ang nagdadala ng oxygen at sustansya sa mga selula para tumulong sa kanilang paggawa ng mga bagay. Kaya napakahalaga ng puso para manatiling buhay tayo.\n\nSTUDENT: Bakit po pula ang kulay ng dugo?\n\nTUTOR: Magaling na tanong po! Ang dugo ay pula dahil sa bakal na nasa loob ng pulang selula nito. Ang bakal na ito ang nagdadala ng oksiheno mula sa baga papunta sa buong katawan, kaya kapag pula ang kulay nito, alam mong may dala itong oxygen. Kaya napakahalaga ng pula para sa pagpapadaloy ng oxygen sa buong katawan.",
+    "retrievedIds": [
+      "heart-muscle-never-rests-g5",
+      "why-we-blush-g4",
+      "val-heart-rate",
+      "heart-pumps-blood-g5",
+      "platypus-venom-spur-size-example-g6",
+      "heart-pumps-blood-body-g8",
+      "red-cells-carry-oxygen-g6",
+      "blood-color-red-g5",
+      "oxygen-needed-blood-carries-g6",
+      "iron-in-blood-g6",
+      "heart-pumps-blood-g4",
+      "iron-in-why-blood-red-g5"
+    ],
+    "samples": [
+      "STUDENT: Bakit po tumitibok ang puso natin?\n\nTUTOR: Ang puso po ay isang malakas na kalamnan na tumitibok at nagbobomba ng dugo araw-gabi, kahit habang tayo ay natutulog. Kaya ito ang pinakamalakas at pinakamahalagang organ ng katawan natin. Sa tingin mo po, bakit kaya mahalagang magpahinga at mag-relax para makapagpahinga nang mabuti ang puso natin?\n\nSTUDENT: Parang pump pala siya! Ano naman po ang dala-dala ng dugo sa katawan?\n\nTUTOR: Oo, parang pump pala ito na nagbobomba ng dugo sa buong katawan! Ang dugo ang nagdadala ng oxygen at sustansya sa mga selula para tumulong sa kanilang paggawa ng mga bagay. Kaya napakahalaga ng puso para manatiling buhay tayo.\n\nSTUDENT: Bakit po pula ang kulay ng dugo?\n\nTUTOR: Magaling na tanong po! Ang dugo ay pula dahil sa bakal na nasa loob ng pulang selula nito. Ang bakal na ito ang nagdadala ng oksiheno mula sa baga papunta sa buong katawan, kaya kapag pula ang kulay nito, alam mong may dala itong oxygen. Kaya napakahalaga ng pula para sa pagpapadaloy ng oxygen sa buong katawan.",
+      "STUDENT: Bakit po tumitibok ang puso natin?\n\nTUTOR: Ang puso po ay isang malakas na kalamnan na tumitibok at nagbobomba ng dugo araw-gabi, kahit habang tayo ay natutulog. Kaya kapag tayo ay nahihiya, namumula ang ating mukha dahil ang utak ay nagpapadala ng senyas na nagpapalapad sa maliliit na ugat ng dugo sa pisngi, at mas maraming dugo ang dumadaloy doon. Sa tingin mo, bakit kaya mas mabilis tumibok ang puso kapag tayo ay naiinis o galit?\n\nSTUDENT: Parang pump pala siya! Ano naman po ang dala-dala ng dugo sa katawan?\n\nTUTOR: Oo po, parang pump nga ang puso — ito ang nagpapagana ng sirkulasyon ng dugo sa buong katawan. Dala-dala nito ang oxygen, nutrients, at iba pang kailangan ng bawat selula. Kaya napakahalaga nito sa ating kalusugan. Kung walang puso, hindi tayo makakagalaw at makakahinga nang maayos.\n\nSTUDENT: Bakit po pula ang kulay ng dugo?\n\nTUTOR: Ang dugo po ay pula dahil sa bakal na nasa pulang selula nito na nagdadala ng oksiheno sa katawan. Kapag may nakakainis na dumating, maaaring pumula ang mukha mo dahil nagpapadala ang utak ng senyas na nagpapalapad sa maliliit na ugat ng dugo sa pisngi. Ang pula po ay nagpapakita ng senyales na kailangan mong magbawas ng pagkapahiya.",
+      "STUDENT: Bakit po tumitibok ang puso natin?\n\nTUTOR: Magandang tanong po! Ang puso ay isang malakas na kalamnan na tumitibok at nagbobomba ng dugo araw-gabi, kahit habang tayo ay natutulog. Kapag po tayo ay nahihiya, namumula ang ating pisngi dahil ang utak ay nagpapadala ng senyas na nagpapalapad sa maliliit na ugat ng dugo doon. Sa tingin mo po, bakit kaya mas mabilis ang tibok ng puso kapag nahihiya tayo?\n\nSTUDENT: Parang pump pala siya! Ano naman po ang dala-dala ng dugo sa katawan?\n\nTUTOR: Magaling na tanong po! Ang dugo ay nagdadala ng oxygen at nutrisyon sa bawat bahagi ng katawan, kaya kailangan itong ibomba ng puso araw-gabi. Kaya naman mahalagang-mahalaga ang malakas at malusog na puso para sa ating katawan. Salamat po sa magandang tanong, ha!\n\nSTUDENT: Bakit po pula ang kulay ng dugo?\n\nTUTOR: Magandang tanong po! Pula ang dugo dahil sa iron na nasa hemoglobin. Kapag may nakakapit na oxygen sa iron, mas matingkad ang pula nito — kaya pula ang kulay ng dugo. Kapag wala na itong nakakapit na oxygen, medyo mas madilim na pula ang kulay. Kaya iba-iba ang tindi ng pula ng dugo depende sa dami ng oxygen. Sa tingin mo po, ano kayang mangyayari sa kulay ng dugo kapag sobra-sobra ang oxygen sa katawan?"
+    ]
+  },
+  {
+    "probe": {
+      "id": "mt-sky-colors-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Bakit po asul ang langit?",
+      "turns": [
+        "Bakit po asul ang langit?",
+        "Ang galing naman po! E bakit po nagiging kulay orange ang langit tuwing sunset?",
+        "E sa buwan po, anong kulay ng langit doon?"
+      ],
+      "intent": "Repetition bait: turn 2 is adjacent to turn 1 and a lazy model re-explains blue-sky scattering verbatim instead of answering the NEW question (sunset light passes through more air; blue is scattered away, leaving orange/red). Turn 3 synthesis: the moon has no air, so its sky is black even in daytime.",
+      "must_answer": true,
+      "must_cover": [
+        "air scatters blue light most — sky looks blue",
+        "at sunset light travels through more air; blue scattered away → orange/red",
+        "moon has no atmosphere → black sky"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "accuracy"
+      ]
+    },
+    "answer": "STUDENT: Bakit po asul ang langit?\n\nTUTOR: Magandang tanong po! Asul ang langit dahil ikinakalat (scattering) ng hangin ang liwanag ng araw, at mas marami nitong ikinakalat ang asul na kulay kaysa ibang kulay, kaya kumakalat ang asul sa buong langit. Sa tingin mo po, mas maraming asul ba o berde ang ikinakalat ng hangin?\n\nSTUDENT: Ang galing naman po! E bakit po nagiging kulay orange ang langit tuwing sunset?\n\nTUTOR: Magaling na pansin po! Kapag ang liwanag ay dumadaan sa mas makapal na hangin tuwing sunset, mas maraming asul ang naikakalat at natitira ang pula at kahel, kaya nagiging orange ang langit. Sa tingin mo po, mas makapal ba o mas manipis ang hangin tuwing umaga o tuwing hapon?\n\nSTUDENT: E sa buwan po, anong kulay ng langit doon?\n\nTUTOR: Magandang tanong po! Itim ang langit sa buwan kahit araw, dahil walang hangin na magkakalat ng liwanag tulad ng nangyayari sa asul na langit ng Earth. Kaya sa buwan, hindi talaga makakalat ang kulay, kaya itim ang buong langit doon. Naisip mo na po ba kung bakit itim ang langit sa buwan sa halip na asul tulad dito?",
+    "retrievedIds": [
+      "faq-blue-sky",
+      "why-sky-blue-g6",
+      "blue-sky-scattering-g6",
+      "why-sunset-red-g6",
+      "sunset-red-blue-scattered-g6",
+      "faq-sunset-red",
+      "sun-main-color-yellow-white-g5",
+      "moon-no-blue-sky-black-g6",
+      "object-color-sunset-orange-g7"
+    ],
+    "samples": [
+      "STUDENT: Bakit po asul ang langit?\n\nTUTOR: Magandang tanong po! Asul ang langit dahil ikinakalat (scattering) ng hangin ang liwanag ng araw, at mas marami nitong ikinakalat ang asul na kulay kaysa ibang kulay, kaya kumakalat ang asul sa buong langit. Sa tingin mo po, bakit kaya mas madaling ikalat ang asul na kulay ng hangin?\n\nSTUDENT: Ang galing naman po! E bakit po nagiging kulay orange ang langit tuwing sunset?\n\nTUTOR: Magandang follow-up po! Alam mo ba na kabaligtaran ang nakikita natin sa mata ng langit — iba ang nakikita ng mata kaysa sa tinatamaan ng liwanag? Ang kulay na nakikita natin ay pula at kahel ay dahil mas malayo ang dinaanan ng liwanag kapag paglubog ng araw. Kaya kapag nakatingin tayo sa langit, parang pula at kahel ang nakikita natin — pero ang totoo, asul ang langit kapag araw. Salamat sa magandang tanong, ha!\n\nSTUDENT: E sa buwan po, anong kulay ng langit doon?\n\nTUTOR: Magandang tanong po! Sa buwan, itim ang langit dahil walang hangin doon na magkakalat ng liwanag, kaya ang nakikita natin ay itim. Iba ang hangin dito sa Earth — nagkakalat ng liwanag ang hangin, kaya may kulay ang langit natin. Ang galing ng obserbasyon mo, ha!",
+      "STUDENT: Bakit po asul ang langit?\n\nTUTOR: Magandang tanong po! Asul ang langit dahil ikinakalat (scattering) ng hangin ang liwanag ng araw, at mas marami nitong ikinakalat ang asul na kulay kaysa ibang kulay, kaya kumakalat ang asul sa buong langit. Sa tingin mo po, mas maraming asul ba o berde ang ikinakalat ng hangin?\n\nSTUDENT: Ang galing naman po! E bakit po nagiging kulay orange ang langit tuwing sunset?\n\nTUTOR: Magaling na pansin po! Kapag ang liwanag ay dumadaan sa mas makapal na hangin tuwing sunset, mas maraming asul ang naikakalat at natitira ang pula at kahel, kaya nagiging orange ang langit. Sa tingin mo po, mas makapal ba o mas manipis ang hangin tuwing umaga o tuwing hapon?\n\nSTUDENT: E sa buwan po, anong kulay ng langit doon?\n\nTUTOR: Magandang tanong po! Itim ang langit sa buwan kahit araw, dahil walang hangin na magkakalat ng liwanag tulad ng nangyayari sa asul na langit ng Earth. Kaya sa buwan, hindi talaga makakalat ang kulay, kaya itim ang buong langit doon. Naisip mo na po ba kung bakit itim ang langit sa buwan sa halip na asul tulad dito?",
+      "STUDENT: Bakit po asul ang langit?\n\nTUTOR: Magandang tanong po! Asul ang langit dahil ikinakalat (scattering) ng hangin ang liwanag ng araw, at mas marami nitong ikinakalat ang asul na kulay kaysa sa ibang kulay. Kaya kumakalat ang asul sa buong langit. Sa tingin mo po, mas madaling ikalat ang asul na liwanag o ang ibang kulay ng liwanag ng araw?\n\nSTUDENT: Ang galing naman po! E bakit po nagiging kulay orange ang langit tuwing sunset?\n\nTUTOR: Magaling na tanong po! Tama ang pula at kahel ang kulay ng langit kapag paglubog ng araw dahil mas malayo ang dinaanan ng liwanag, kaya nakakalat (scattering) na ito ng asul. Pero kapag nasa ibaba na ng araw ang liwanag, mas makapal na ang hangin na nakakalat ng pula. Kaya pula at kahel ang nakikita natin sa langit. Salamat sa magandang tanong, ha!\n\nSTUDENT: E sa buwan po, anong kulay ng langit doon?\n\nTUTOR: Magandang tanong po! Walang hangin sa buwan, kaya walang nagkakalat (scattering) ng liwanag tulad ng sa atin. Sa halip, ang langit doon ay itim. Walang kalat ng asul o pula, kaya itim ito sa buong araw. Salamat sa magandang tanong!"
+    ]
+  },
+  {
+    "probe": {
+      "id": "mt-electricity-static-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Saan po galing ang kuryente sa bahay namin?",
+      "turns": [
+        "Saan po galing ang kuryente sa bahay namin?",
+        "Galing pala sa planta! Bakit po minsan nakukuryente ako nang konti kapag humawak ako sa doorknob?",
+        "Delikado po ba yun?"
+      ],
+      "intent": "Topic pivot the tutor must track: house electricity (power plants → wires) vs static electricity (charge buildup from friction) are DIFFERENT mechanisms — re-explaining power plants in turn 2 is the failure. Turn 3 needs calibrated safety: static shock is harmless; outlets and wires are the dangerous ones.",
+      "must_answer": true,
+      "must_cover": [
+        "electricity comes from power plants through wires",
+        "static electricity: charge builds up from rubbing/friction, jumps when you touch metal",
+        "static shock is harmless; real danger is outlets/cables — calibrated, not alarmist"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "accuracy"
+      ]
+    },
+    "answer": "STUDENT: Saan po galing ang kuryente sa bahay namin?\n\nTUTOR: Magandang tanong po! Halos lahat ng kuryente sa ating mga bahay ay galing sa malalaking generator sa mga power plant na pinapaikot ng turbina. Ang init po ng lupa ay ginagamit din sa ibang lugar para makagawa ng kuryente. Alin po kaya sa dalawa ang mas malapit sa inyo — ang mga generator sa power plant o ang init ng lupa?\n\nSTUDENT: Galing pala sa planta! Bakit po minsan nakukuryente ako nang konti kapag humawak ako sa doorknob?\n\nTUTOR: Oo, galing sa planta! Kapag naglakad ka sa carpet o sahig na may tsinelas, nagtitipon ang charge sa katawan mo. Pagkahawak mo sa metal na doorknob, tumatalon ang charge papunta sa metal at nakakaramdam ka ng maliit na kuryente — 'titik'. Madalas ito mangyari kapag tuyo ang panahon. Sa tingin mo po, bakit kaya hindi tayo nakukuryente kapag basa ang sapatos o nakatapak sa tubig?\n\nSTUDENT: Delikado po ba yun?\n\nTUTOR: Oo po, delikado! Ang metal ay nagdadala ng kuryente, pero ang tubig ay hindi. Kapag naglakad ka sa carpet na may tsinelas, nagtitipon ang charge sa katawan mo. Kapag humawak ka sa metal na doorknob, tumatalon ang charge papunta sa metal, at iyon ang nagpaparamdam sa iyo ng 'titik.' Kaya kapag basa ang kamay o nakatapak sa tubig, mas madaling makuryente ka kaysa sa tuyo.",
+    "retrievedIds": [
+      "power-plants-use-generators-g7",
+      "philippines-geothermal-mindanao-use-g7",
+      "ph-prayer-ama-namin",
+      "static-spark-doorknob-example-g6",
+      "static-grounding-doorknob-shock-g6",
+      "static-attract-shock-doorknob-g6",
+      "fuse-breaker-never-use-coin-misconception-g8",
+      "metals-conduct-water-vs-metal-g7",
+      "tamaraw-dwarf-charges-when-threatened-g5"
+    ],
+    "samples": [
+      "STUDENT: Saan po galing ang kuryente sa bahay namin?\n\nTUTOR: Halos lahat ng kuryente sa ating mga bahay ay galing sa malalaking generator sa mga power plant na pinapaikot ng turbina. Mayroon din pong kuryenteng galing sa geothermal na nagbibigay-ilaw sa mga bahay, eskwelahan, at tindahan sa ibang bahagi ng Pilipinas. Kung napapansin mo ang init ng lupa sa ilalim ng bahay mo, malamang pinapagana ng init na ito ang ilang gamit ninyo. Sa tingin mo po, alin sa mga paraan ang mas nakakatulong sa kalikasan?\n\nSTUDENT: Galing pala sa planta! Bakit po minsan nakukuryente ako nang konti kapag humawak ako sa doorknob?\n\nTUTOR: Magandang tanong po! Iyan ay dahil kapag naglakad ka sa carpet o sahig na may tsinelas, nagtitipon ang charge sa katawan mo. Pagkahawak mo sa metal na doorknob, tumatalon ang charge papunta sa metal at nakakaramdam ka ng maliit na kuryente — 'titik'. Kaya po madalas itong mangyari kapag tuyo ang panahon. Sa tingin mo po, bakit kaya mas nakakaramdam ka ng kuryap kapag tuyo ang panahon kaysa basa?\n\nSTUDENT: Delikado po ba yun?\n\nTUTOR: Oo po, delikado talaga! Kapag nasira ang fuse, papayagan nito ang sobrang kuryenteng dumaan — kahit na walang nag-short circuit. Ang barya ay hindi natutunaw, kaya papayagan nitong magpatuloy ang sobrang kuryente, ang siyang nagiging sanhi ng sunog. Kaya mas ligtas na palitan ang fuse ng tamang uri — ang pinakamaliit na fuse para sa kasalukuyang kuryenteng dumadaloy. Gusto mo po bang subukan natin ito: itali ang barya sa ilalim ng fuse sa kuryentihan?",
+      "STUDENT: Saan po galing ang kuryente sa bahay namin?\n\nTUTOR: Magandang tanong po! Halos lahat ng kuryente sa ating mga bahay ay galing sa malalaking generator sa mga power plant na pinapaikot ng turbina. Ang mga generator na ito po ay gumagana gamit ang init ng lupa, hangin, o iba pang natural na enerhiya. Ang kuryenteng galing sa geothermal ay nagbibigay-ilaw sa mga bahay, eskwelahan, at tindahan sa ibang bahagi ng Pilipinas. Nakapagtataka po, di ba, kung paano natin nakukuha ang kuryenteng ito mula sa lupa?\n\nSTUDENT: Galing pala sa planta! Bakit po minsan nakukuryente ako nang konti kapag humawak ako sa doorknob?\n\nTUTOR: Magandang tanong po! Kapag naglakad ka sa carpet o sahig na may tsinelas, nagtitipon ang charge sa katawan mo. Pagkahawak mo sa metal na doorknob, tumatalon ang charge papunta sa metal at nakakaramdam ka ng maliit na kuryente — 'titik'. Madalas ito mangyari kapag tuyo ang panahon. Bakit kaya nakakaramdam tayo ng kuryap kapag hinawakan natin ang metal na doorknob po?\n\nSTUDENT: Delikado po ba yun?\n\nTUTOR: Oo po, delikado talaga! Hindi tamang palitan ang fuse ng barya para lang bumalik ang kuryente — ang barya ay hindi natutunaw, at pababayaan nito ang sobrang kuryenteng dumaan, na siyang dahilan ng sunog na pinipigilan ng fuse. Kaya mas ligtas na palitan ang fuse bago magkaroon ng problema. Magaling kang nag-iingat, ha — salamat!",
+      "STUDENT: Saan po galing ang kuryente sa bahay namin?\n\nTUTOR: Magandang tanong po! Halos lahat ng kuryente sa ating mga bahay ay galing sa malalaking generator sa mga power plant na pinapaikot ng turbina. Ang init po ng lupa ay ginagamit din sa ibang lugar para makagawa ng kuryente. Alin po kaya sa dalawa ang mas malapit sa inyo — ang mga generator sa power plant o ang init ng lupa?\n\nSTUDENT: Galing pala sa planta! Bakit po minsan nakukuryente ako nang konti kapag humawak ako sa doorknob?\n\nTUTOR: Oo, galing sa planta! Kapag naglakad ka sa carpet o sahig na may tsinelas, nagtitipon ang charge sa katawan mo. Pagkahawak mo sa metal na doorknob, tumatalon ang charge papunta sa metal at nakakaramdam ka ng maliit na kuryente — 'titik'. Madalas ito mangyari kapag tuyo ang panahon. Sa tingin mo po, bakit kaya hindi tayo nakukuryente kapag basa ang sapatos o nakatapak sa tubig?\n\nSTUDENT: Delikado po ba yun?\n\nTUTOR: Oo po, delikado! Ang metal ay nagdadala ng kuryente, pero ang tubig ay hindi. Kapag naglakad ka sa carpet na may tsinelas, nagtitipon ang charge sa katawan mo. Kapag humawak ka sa metal na doorknob, tumatalon ang charge papunta sa metal, at iyon ang nagpaparamdam sa iyo ng 'titik.' Kaya kapag basa ang kamay o nakatapak sa tubig, mas madaling makuryente ka kaysa sa tuyo."
+    ]
+  },
+  {
+    "probe": {
+      "id": "mt-digestion-hunger-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Saan po napupunta ang pagkaing kinakain ko?",
+      "turns": [
+        "Saan po napupunta ang pagkaing kinakain ko?",
+        "Ang haba pala ng dinadaanan ng pagkain! Bakit po tayo nagugutom ulit kahit kumain na tayo kanina?",
+        "Bakit po sumasakit ang tiyan ko kapag sobra akong kumain?"
+      ],
+      "intent": "Digestion chain → hunger returns (body uses up the energy; stomach empties) → overeating discomfort (stomach stretched/working hard; simple, no medical doom). Turn 2 acknowledgment ('ang haba pala') must be built on, not answered by repeating the digestive tract tour.",
+      "must_answer": true,
+      "must_cover": [
+        "mouth → stomach → intestines; nutrients absorbed, waste out",
+        "hunger returns because the body uses up the energy / stomach empties",
+        "overeating stretches the stomach → discomfort; simple and non-alarmist"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "pedagogy"
+      ]
+    },
+    "answer": "STUDENT: Saan po napupunta ang pagkaing kinakain ko?\n\nTUTOR: Magaling na tanong po! Ang pagkaing ginagawa ng dahon ng mais ay iniimbak bilang starch sa loob ng mga butil. Ito po ang nagiging 'baon' ng binhi para may lakas itong tumubo kapag itinanim. Sa tingin mo po, kung mawawala ang mga butil ng mais, magiging masaya ba ang mga hayop na kumakain dito?\n\nSTUDENT: Ang haba pala ng dinadaanan ng pagkain! Bakit po tayo nagugutom ulit kahit kumain na tayo kanina?\n\nTUTOR: Magandang tanong po! Ang katawan natin ay nagpapalit-palit ng pagkain at inumin para gawing enerhiya. Kaya kahit kumain ka na, parang nagugutom ka pa rin dahil may mga bahagi pa ng pagkain na hindi naipapalit sa enerhiya. Iyan ang dahilan kung bakit kailangang kumain ng masustansyang pagkain para manatiling busog.\n\nSTUDENT: Bakit po sumasakit ang tiyan ko kapag sobra akong kumain?\n\nTUTOR: Magandang tanong po! Kapag sobra-sobra ang ating kinain, nararamdaman nating sumasakit o hindi komportable ang tiyan. Ito ay dahil ang katawan ay nagpapadala ng mas maraming dugo sa tiyan para tumulong sa pagtunaw ng pagkain. Kaya kahit kumain ka na, parang nagugutom ka pa rin.",
+    "retrievedIds": [
+      "barnacle-on-food-source-shells-g6",
+      "food-chain-energy-flow-g7",
+      "corn-yellow-stores-food-in-kernels-g6",
+      "cogon-talahib-carabao-grazing-g4",
+      "molars-grind-too-fast-choke-g4",
+      "adrenaline-fight-digestion-pauses-g9",
+      "too-much-food-uncomfortable-g5",
+      "full-feeling-stomach-stretch-g5",
+      "why-sleepy-after-eating-g4",
+      "siling-haba-chili-dynamite-g5",
+      "omnivore-human-example-g4",
+      "too-much-co2-warms-earth-g7"
+    ],
+    "samples": [
+      "STUDENT: Saan po napupunta ang pagkaing kinakain ko?\n\nTUTOR: Magaling na tanong po! Ang pagkaing ginagawa ng dahon ng mais ay iniimbak bilang starch sa loob ng mga butil. Ito po ang nagiging 'baon' ng binhi para may lakas itong tumubo kapag itinanim. Sa tingin mo po, kung mawawala ang mga butil ng mais, magiging masaya ba ang mga hayop na kumakain dito?\n\nSTUDENT: Ang haba pala ng dinadaanan ng pagkain! Bakit po tayo nagugutom ulit kahit kumain na tayo kanina?\n\nTUTOR: Magandang tanong po! Ang katawan natin ay nagpapalit-palit ng pagkain at inumin para gawing enerhiya. Kaya kahit kumain ka na, parang nagugutom ka pa rin dahil may mga bahagi pa ng pagkain na hindi naipapalit sa enerhiya. Iyan ang dahilan kung bakit kailangang kumain ng masustansyang pagkain para manatiling busog.\n\nSTUDENT: Bakit po sumasakit ang tiyan ko kapag sobra akong kumain?\n\nTUTOR: Magandang tanong po! Kapag sobra-sobra ang ating kinain, nararamdaman nating sumasakit o hindi komportable ang tiyan. Ito ay dahil ang katawan ay nagpapadala ng mas maraming dugo sa tiyan para tumulong sa pagtunaw ng pagkain. Kaya kahit kumain ka na, parang nagugutom ka pa rin.",
+      "STUDENT: Saan po napupunta ang pagkaing kinakain ko?\n\nTUTOR: Magaling na tanong po! Ang pagkaing kinakain natin ay dumadaloy sa isang direksyon lang sa kadena ng pagkain, mula halaman patungo sa mga hayop na kumakain sa kanila. Halimbawa, ang pagkaing ginagawa ng dahon ng mais ay iniimbak bilang starch sa loob ng mga butil. Ito ang nagiging 'baon' ng binhi para may lakas itong tumubo kapag itinanim. Sa tingin mo po, saan napupunta ang pagkaing kinakain mo kapag kinain mo na ito?\n\nSTUDENT: Ang haba pala ng dinadaanan ng pagkain! Bakit po tayo nagugutom ulit kahit kumain na tayo kanina?\n\nTUTOR: Magandang tanong po! May iba't ibang dahilan kung bakit tayo nagugutom ulit pagkatapos kumain, pero ang pinakamalapit dito ay dahil sa natural na siklo ng katawan. Kapag kumakain tayo, nagpapadala ang katawan ng senyales sa utak na busog na tayo. Pero kahit busog na tayo, nagpapadala pa rin ng signal ang tiyan na gusto pa nitong kumain. Kaya minsan, kahit busog na tayo, parang gusto pa ring kumain. Ang galing, 'no?\n\nSTUDENT: Bakit po sumasakit ang tiyan ko kapag sobra akong kumain?\n\nTUTOR: Magaling na tanong po! Kapag sobra-sobra ang ating kinain, nararamdaman nating sumasakit o hindi komportable ang tiyan. Ito ay dahil ang katawan ay nagpapadala ng mas maraming dugo sa tiyan para tumulong sa pagtunaw ng pagkain, at may mga kemikal sa pagkain na nagpapakalma sa atin. Kaya kahit busog na tayo, parang gusto pa ring kumain. Sa tingin mo po, kapag nakaramdam ka ng sakit matapos kumain ng sobra, ang dahilan ba ay ang pagtunaw o ang pagpapakalma ng katawan?",
+      "STUDENT: Saan po napupunta ang pagkaing kinakain ko?\n\nTUTOR: Magaling na tanong po! Ang pagkaing ginagawa ng dahon ng mais ay iniimbak bilang starch sa loob ng mga butil. Ito po ang nagiging 'baon' ng binhi para may lakas itong tumubo kapag itinanim. Kaya po kapag kinain natin ang mais, hindi lahat ito nawawala; iniimbak ito ng halaman bilang pagkaing itinatago para sa sarili nito. Sa tingin mo po, saan napupunta ang kinakain natin pagkatapos itong maiimbak?\n\nSTUDENT: Ang haba pala ng dinadaanan ng pagkain! Bakit po tayo nagugutom ulit kahit kumain na tayo kanina?\n\nTUTOR: Magandang tanong po! Kapag kinakain natin ang pagkain, humihinga tayo ng hangin na nagdadala ng ilang gas tulad ng carbon dioxide at nitrogen. Pero sa pagtunaw, kailangan nating huminga ng mas maraming hangin para mapalitan ang carbon dioxide na inilalabas. Iyan po ang dahilan kung bakit parang nagugutom tayo ulit — kailangan nating huminga ng mas maraming hangin para mawala ang sobrang carbon dioxide. Salamat sa magandang tanong po!\n\nSTUDENT: Bakit po sumasakit ang tiyan ko kapag sobra akong kumain?\n\nTUTOR: Magandang tanong po! Kapag sobra-sobra ang ating kinain, nararamdaman nating sumasakit o hindi komportable ang tiyan dahil hindi ito nakakasabay sa pagtunaw ng pagkain. Ang carbon dioxide na inilalabas ng katawan para tumulong sa pagtunaw ay napupunta sa hangin na inihinga natin, kaya nararamdaman natin itong masakit sa tiyan. Sa tingin mo, bakit kailangan nating huminga ng mas maraming hangin pagkatapos kumain ng malaking pagkain?"
+    ]
+  },
+  {
+    "probe": {
+      "id": "mt-seed-growth-tl",
+      "tier": "multi-turn",
+      "lang": "tl",
+      "grade": 5,
+      "prompt": "Paano po tumutubo ang buto para maging halaman?",
+      "turns": [
+        "Paano po tumutubo ang buto para maging halaman?",
+        "Kaya pala itinatanim sa lupa! Kailangan po ba talaga ng lupa, o pwede ring tubig lang?",
+        "Bakit po laging pataas ang tubo ng halaman, hindi pababa?"
+      ],
+      "intent": "Turn 2 is a genuine misconception check (soil is NOT strictly required — water + nutrients can substitute, e.g. hydroponics; soil normally provides nutrients and support). A tutor that just re-describes germination, or flatly insists soil is required, fails. Turn 3: shoots grow up toward light (roots down with gravity) — simplified tropism is fine.",
+      "must_answer": true,
+      "must_cover": [
+        "seed sprouts with water and warmth; root goes down, shoot goes up",
+        "soil is not strictly required — water with nutrients can work (hydroponics); soil gives nutrients/support",
+        "shoots grow upward toward light; roots follow gravity"
+      ],
+      "dimensions_emphasis": [
+        "helpfulness",
+        "accuracy"
+      ]
+    },
+    "answer": "STUDENT: Paano po tumutubo ang buto para maging halaman?\n\nTUTOR: Magandang tanong po! Ang munggo ay isang buto na maaaring tumubo at maging halaman, at kapag binabad ito sa tubig ay nagsisibol ito ng ugat at talbos na tinatawag na togue. Habang tumatanda po ang halaman, lumalapad at lumalakas ang tangkay nito. Sa tingin mo po, saan kaya nanggagaling ang dagdag na nutrisyon kapag nababad ang buto sa tubig?\n\nSTUDENT: Kaya pala itinatanim sa lupa! Kailangan po ba talaga ng lupa, o pwede ring tubig lang?\n\nTUTOR: Magandang pag-iisip po! Mas maraming buto ang tumutubo kapag sa lupa itinanim, pero kailangan din ng tubig para lumago ang ugat at dahon. Sa tingin mo po, ano ang mangyayari sa ugat kung walang tubig?\n\nSTUDENT: Bakit po laging pataas ang tubo ng halaman, hindi pababa?\n\nTUTOR: Ang galing pong tanong! Alam ko po na tumutubo palagi ang ugat pababa, pero hindi nakasaad sa hawak kong impormasyon kung bakit laging pataas ang tubo ng halaman. Ang alam ko po ay kung bakit tumutubo ang ugat pababa, pero hindi iyon ang dahilan kung bakit pataas ang tuwid na tubo ng halaman. Gusto mo po bang malaman ang dahilan?",
+    "retrievedIds": [
+      "monggo-mung-bean-seed-g5",
+      "stem-thin-young-thick-old-g4",
+      "mungbean-munggo-g4",
+      "fairy-ring-mushrooms-g5",
+      "groundwater-can-followup-how-deep-g8",
+      "tree-rings-thicker-trunk-each-year-g5",
+      "tundra-permafrost-g7",
+      "roots-anchor-why-not-fall-g3",
+      "plant-stem-carries-water-g4",
+      "roots-grow-down-gravity-g6",
+      "seedling-grows-up-in-dark-g7"
+    ],
+    "samples": [
+      "STUDENT: Paano po tumutubo ang buto para maging halaman?\n\nTUTOR: Magaling na tanong po! Ang munggo ay isang buto na maaaring tumubo at maging halaman, at kapag binabad sa tubig ay nagsisibol ito ng ugat at talbos na tinatawag na togue. Habang tumatanda ang halaman, lumalapad at lumalakas din ang tangkay nito. Sa tingin mo po, bakit kailangan ng halaman ng mga ugat para tumulong magdagdag ng nitroheno sa lupa?\n\nSTUDENT: Kaya pala itinatanim sa lupa! Kailangan po ba talaga ng lupa, o pwede ring tubig lang?\n\nTUTOR: Magandang tanong po! Kailangan ng halaman ng lupa para makakuha ng sustansya at tubig mula sa lupa at para may masandalan ang mga ugat nito. Pero kung walang lupa, hindi makakakuha ang halaman ng tubig at sustansya mula sa hangin at sikat ng araw. Kaya mahalaga talaga ang lupa para tumubo at lumaki ang halaman. Salamat sa magandang tanong po!\n\nSTUDENT: Bakit po laging pataas ang tubo ng halaman, hindi pababa?\n\nTUTOR: Magandang tanong po! Alam mo bang ang tangkay ng halaman ang nagdadala ng tubig at sustansya mula sa ugat papunta sa dahon at ibang bahagi? Kaya nga pataas ang tubo nito at hindi pababa, para makarating ang tubig sa itaas ng halaman — ang dahon at tangkay. Kapag nakatayo nang pababa ang tubo, baka hindi umabot ang tubig sa lahat ng bahagi ng halaman. Salamat sa magandang tanong po!",
+      "STUDENT: Paano po tumutubo ang buto para maging halaman?\n\nTUTOR: Magandang tanong po! Ang munggo ay isang buto na maaaring tumubo at maging halaman, at kapag binabad sa tubig ay nagsisibol ito ng ugat at talbos na tinatawag na togue. Habang tumatanda ang halaman, lumalapad at lumalakas po ang tangkay nito. Sa tingin mo, bakit kailangan ng halaman ng tubig para sumibol ang ugat at talbos?\n\nSTUDENT: Kaya pala itinatanim sa lupa! Kailangan po ba talaga ng lupa, o pwede ring tubig lang?\n\nTUTOR: Magaling na tanong po! Pareho lang ang kailangan ng mga halaman: lupa para sa ugat at sustansya, at tubig para sa ugat at dahon. Kaya mahalaga ang lupa sa halaman, dahil dito tumatanggap ng sustansya ang ugat. Kapag walang lupa, mahihirapan ang halaman na umunlad.\n\nSTUDENT: Bakit po laging pataas ang tubo ng halaman, hindi pababa?\n\nTUTOR: Magandang pagmamasid po! Ang dahilan ay ang tangkay (stem) na nagdadala ng tubig at sustansya mula sa ugat papunta sa dahon at ibang bahagi ng halaman. Kaya sa halip na pababa, pataas ito papunta sa sikat ng araw. Kung pababa ang tubo, hindi ito makakarating sa sikat. Sa tingin mo po, bakit kailangan ng halaman ng sikat para tumubo?",
+      "STUDENT: Paano po tumutubo ang buto para maging halaman?\n\nTUTOR: Magandang tanong po! Ang munggo ay isang buto na maaaring tumubo at maging halaman, at kapag binabad ito sa tubig ay nagsisibol ito ng ugat at talbos na tinatawag na togue. Habang tumatanda po ang halaman, lumalapad at lumalakas ang tangkay nito. Sa tingin mo po, saan kaya nanggagaling ang dagdag na nutrisyon kapag nababad ang buto sa tubig?\n\nSTUDENT: Kaya pala itinatanim sa lupa! Kailangan po ba talaga ng lupa, o pwede ring tubig lang?\n\nTUTOR: Magandang pag-iisip po! Mas maraming buto ang tumutubo kapag sa lupa itinanim, pero kailangan din ng tubig para lumago ang ugat at dahon. Sa tingin mo po, ano ang mangyayari sa ugat kung walang tubig?\n\nSTUDENT: Bakit po laging pataas ang tubo ng halaman, hindi pababa?\n\nTUTOR: Ang galing pong tanong! Alam ko po na tumutubo palagi ang ugat pababa, pero hindi nakasaad sa hawak kong impormasyon kung bakit laging pataas ang tubo ng halaman. Ang alam ko po ay kung bakit tumutubo ang ugat pababa, pero hindi iyon ang dahilan kung bakit pataas ang tuwid na tubo ng halaman. Gusto mo po bang malaman ang dahilan?"
+    ]
+  }
+]

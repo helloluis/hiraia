@@ -1,0 +1,542 @@
+{
+ "summary": {
+  "adapter": "/workspace/output/bisaya-full/adapter-bisaya-f16.gguf",
+  "base": "/workspace/models/qwen3-1.7b-q8_0.gguf",
+  "lang": "cebuano",
+  "n": 25,
+  "lang_ok": 25,
+  "english_heavy": 0,
+  "repetitive": 6,
+  "too_short": 0,
+  "ends_question": 20,
+  "avg_words": 98,
+  "runtime_s": 99
+ },
+ "results": [
+  {
+   "id": "ceb-01",
+   "lang": "cebuano",
+   "grade": 3,
+   "register": "vague",
+   "topic": "states of matter / general",
+   "prompt": "unsa man ni solid liquid gas maam",
+   "reply": "\b \bMaayo nga pangutana! Ang mga state of matter adunay tulo ka klase: solid, liquid, ug gas. Ang **solid** naay fixed shape ug volume, sama sa bukog nga adunay fixed kaayo, ang **liquid** naay fixed volume lang, pero mohatag og volume sa pagtunaw, sama sa tubig, ug ang **gas** mohatag og volume ug pagtunaw sa porma sa espasyo, sama sa hangin.\n\nNaa pa sila nga mga state nga dili naay porma, sama sa plasma sa adlaw, pero naay tinuod nga solid, liquid, ug gas nga naa gyud sa tanang lugar.\n\nKung gusto nimo nga gamiton ang gas sa balay, ngano man kaha nga gas ang pinakaagian sa mga gaspahong atong gamiton?",
+   "scores": {
+    "words": 110,
+    "ceb_ratio": 0.3,
+    "tag_ratio": 0.082,
+    "eng_ratio": 0.009,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.49,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-02",
+   "lang": "cebuano",
+   "grade": 3,
+   "register": "misspelled",
+   "topic": "photosynthesis",
+   "prompt": "unsa man ang potosintesis",
+   "reply": "\b \bSige, mokuha nimo ni sa atong mga buoton nga tan-awon! Ang **photosynthesis** mao ang proseso sa tanom nga mokuha sa hangin, tubig, ug kahayag sa adlaw aron makabuhat og pagkaon (glucose) ug oxygen.\n\nNaa'y tulo ka dapit: ang **chlorophyll** sa cell makaporma og sugar sa gamot, ug ang oxygen mokuha sa gamot. Mao ni ngano nga tanom motubo, ug ngano nga ang oxygen nato gikan sa silingan.\n\nKung ang tanom makahimo og pagkaon aron mabuhat og oxygen, ngano man nga dili kaayo makasagop sa kahayag sa adlaw?",
+   "scores": {
+    "words": 88,
+    "ceb_ratio": 0.364,
+    "tag_ratio": 0.08,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.55,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-03",
+   "lang": "cebuano",
+   "grade": 3,
+   "register": "lazy_keywords",
+   "topic": "animals / living things",
+   "prompt": "mananap tanom",
+   "reply": "\b \bMaayo nga pangutana! Ang tanom usa ka **plant** — usa lang ka klase sa buhing buhing tawo nga magdugay, magbira sa pagkaon, ug magpuno sa pagkaon para sa iyang anak.\n\nNagdugay kini kung adunay gawas nga pagkaon, samtang ang tanom wala sila, mabira sa **photosynthesis** — ang paghimo sa kahayag sa adlaw gikan sa panahon sa kahayag nga makapahulay niini.\n\nKung ang tanom wala makahulay sa kahayag, sa imong hunahuna, asa man niini kaha makapahulay, ug ngano?",
+   "scores": {
+    "words": 75,
+    "ceb_ratio": 0.333,
+    "tag_ratio": 0.067,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.6,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-04",
+   "lang": "cebuano",
+   "grade": 4,
+   "register": "vague",
+   "topic": "homework help / unspecified",
+   "prompt": "maam tabangi ko sa assignment",
+   "reply": "\b \bHala, nindot nga gusto nimo tabangi! Ang assignment nito kay pananglitan sa **kinetic energy**, pero dili na nindot.\n\nMga 3 ka puntos ang kinaiya sa kinetic energy: nagporma kini sa **mass** ug **velocity**, ang massa naa sa pwersa sa enerhiya, ug mas dako ang velocity, mas dako ang enerhiya. Pananglitan, kung magbutang ka og puthaw sa taas nga plangga, mas kusog na ang pwersa (dako ang velocity) kaysa kung magbutang ka sa bahin sa plangga.\n\nKung magsunog ka og kandila ug magbutang ka og kandila sa hangin nga adunay 100 ka joule nga enerhiya, mas dako ba o mas gamay ang pwersa sa kandila? Sa imong tubagon, ngano man?",
+   "scores": {
+    "words": 107,
+    "ceb_ratio": 0.262,
+    "tag_ratio": 0.084,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.5,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-05",
+   "lang": "cebuano",
+   "grade": 4,
+   "register": "txtspeak",
+   "topic": "plants vs animals",
+   "prompt": "unsa diay kalainan sa tanom ug hayop",
+   "reply": "\b \bNindot nga pangutana! Ang tanom ug hayop adunay kalainan.\n\nAng **tanom** nagsalamin sa kahayag sa init nga adlaw pinaagi sa photosynthesis ug magtan-aw sa kahayag aron maghimo og pagkaon. Ang **hayop** dili man makasalamin ug dili man makatindog sa kahayag; naa silay daghan kaayong organs, sama sa pako, nga nagpuyo sa pagkaon.\n\nAng tanom giputol sa kahayag, ang hayop giputol sa pagkaon.\n\nKaron pangutana: kung ang tanom maghimo og pagkaon pinaagi sa kahayag, ngano man kaha nga dili man makatindog ang hayop nga walay pagkaon?",
+   "scores": {
+    "words": 86,
+    "ceb_ratio": 0.291,
+    "tag_ratio": 0.081,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.47,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-06",
+   "lang": "cebuano",
+   "grade": 4,
+   "register": "misspelled",
+   "topic": "gravity",
+   "prompt": "unsa man ang grabiti maam",
+   "reply": "\b \bMaayo nga pangutana! Ang **gravity** mao ang kusog nga pag-atras sa butang tungod sa pagtuyok sa Earth.\n\nAng gravity mag-usab sa pag-amping sa mga butang tungod sa gravity sa Earth, ug ang gravity sa bulan mohatag og bulkan ug mohatag og bulan.\n\nSa imong hunahuna, ngano man dungan kung mosunod ka sa kahayag sa bulan kung masayop ka sulod sa silingan?",
+   "scores": {
+    "words": 64,
+    "ceb_ratio": 0.328,
+    "tag_ratio": 0.078,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.55,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-07",
+   "lang": "cebuano",
+   "grade": 5,
+   "register": "lazy_keywords",
+   "topic": "force / acceleration",
+   "prompt": "gravity acceleration",
+   "reply": "\b \bNindot kaayo nga pangutana! Ang gravity o gravity acceleration mao ang pagkahulay sa kahayag sa Earth.\n\nAng mga tawo sa Earth mas dako sa gravity kaysa sa MARS kay mas dako ang Earth ug mas pinakaag sa porma niini, mao nga mas dako ang gravitational pull. Sa Earth, kining gravity nagpangita sa mga butang nga nagdala sa ilang kasing tibuok. Sa physics, ang gravity acceleration kay 9.8 m/s², mao nga kada oras nag-agi ang mga butang sa 9.8 meter.\n\nNgano man nga ang mga planet nga naay atmospera mas dako sa gravity kaysa ang mga planet nga walay?",
+   "scores": {
+    "words": 98,
+    "ceb_ratio": 0.276,
+    "tag_ratio": 0.143,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.48,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-08",
+   "lang": "cebuano",
+   "grade": 5,
+   "register": "codeswitch",
+   "topic": "digestive system",
+   "prompt": "maam unsaon man pag digest sa pagkaon sa tiyan",
+   "reply": "\b \bNindot nga pangutana! Ang tiyan adunay duha ka mga sistema nga nagpabase sa pagkaon.\n\nAng **gauntlet** (gauntlet) nagsunod sa pagkaon gikan sa ulo hangtod sa tiyan, ug ang **pharynx** (pharynx) nagsunod sa pagkaon gikan sa tiyan hangtod sa digestive tract. Sa pagkaon sa **bulb** nga gitawag og **bulb** o **gastrointestinal tract**, ang acids ug enzymes sa saliva ug digesting enzymes sa tiyan mokuha sa pagkaon, ug ang acid mahimong **hydrochloric acid** nga magpabilin sa bacterial infection.\n\nKung magkaon ka og pagkaon nga puno og bacteria, mas paspas nimo mahimong sakit kay mas daghan ang bacteria nga mokuha sa acid.\n\nKung magkaon ka og **lunch** nga puno og bulak ug langka, unsa man ang mga",
+   "scores": {
+    "words": 114,
+    "ceb_ratio": 0.272,
+    "tag_ratio": 0.079,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": false,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.46,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-09",
+   "lang": "cebuano",
+   "grade": 5,
+   "register": "incomplete",
+   "topic": "leaves / photosynthesis (incomplete)",
+   "prompt": "nganong berde man ang",
+   "reply": "\b \bSige, dili ka maglibog! Ang berde nga bulak o mangga nagtandi sa kahayag sa kahayag nga gipansin sa tanang mga tawo. Kini gitawag og **natural selection**, ug ang mga hayop nga magtandi sa kahayag nga mas dugay mao nga mas daghan silang magkasumpay ug matumba.\n\nMao nga ang mga berde nga bulak ug mangga makapalong ug maapektuhan sa mga hayop nga mokuha og kahayag, busa sa panahon nga mokuha sila og kahayag, mas daghan silang matumba. Mao kini nga rason ngano nga ang mga bulak ug mangga berde sa uban ka panahon.\n\nKung ang tanang bulak sa usa ka lugar berde, sa imong hunahuna, unsa man ang mahimo nimo aron makatabang sa mga bulak nga mas daghan matumba",
+   "scores": {
+    "words": 118,
+    "ceb_ratio": 0.331,
+    "tag_ratio": 0.102,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": false,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.44,
+    "repetitive": true
+   }
+  },
+  {
+   "id": "ceb-10",
+   "lang": "cebuano",
+   "grade": 5,
+   "register": "vague",
+   "topic": "unspecified science",
+   "prompt": "wala ko kasabot sa among leksyon",
+   "reply": "\b \bHala, naglibog ka ana, kay importante kaayo ni sa science!\n\nAng **energy** mao ang ability o power nimo makasulod ug makagawas, ug ang nag-atubangan sa enerhiya kay paglihok. Pananglitan, kung mohatag ka og enerhiya sa bola, ang bola molihok ug ang enerhiya masayop.\n\nAng mga panalipod sama sa flashlight o radio adunay **potential energy** nga molihok pa sa pagpadayon, ug ang **kinetic energy** mao ang energy sa paglihok. Pero sa kada panalipod, naa silay enerhiya nga mao gani niya.\n\nKaron sulayi: kung ang bola molihok nga 10 meters, asa man nga enerhiya ang nag-atubangan sa enerhiya sa bola, ug ngano?",
+   "scores": {
+    "words": 101,
+    "ceb_ratio": 0.287,
+    "tag_ratio": 0.109,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.53,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-11",
+   "lang": "cebuano",
+   "grade": 6,
+   "register": "misspelled",
+   "topic": "ecosystem",
+   "prompt": "unsa man ang ekosistem",
+   "reply": "\b \bNindot nga pangutana! Ang **ecosystem** mao ang tanang buhat sa usa ka dapit sa kalibotan nga nagpuno sa daghang gigamit nga buhat o biolohiyang sistema nga nagpasida sa mga buhing butang.\n\nPananglitan, ang kalibotan o ang tanang biolohiyang buhat sa usa ka lugar adunay ecosystem. Mao usab ang mangga nga gipanagawas sa usa ka mangga, ug ang tubig sa ilalom sa tubig, ug ang kahoy nga pagsaka sa kahoy. Ang mga organism sama sa mangga, kahoy, ug tawo makadawat og daghang gamit sa ilang pagkaon ug pagtubo.\n\nKung ang mangga naa'y kahoy nga magpuno sa kahayag nga gama sa balay, sa imong hunahuna, unsa man ang gamit niini sa pagtubo?",
+   "scores": {
+    "words": 110,
+    "ceb_ratio": 0.291,
+    "tag_ratio": 0.109,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.49,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-12",
+   "lang": "cebuano",
+   "grade": 6,
+   "register": "lazy_keywords",
+   "topic": "solar system",
+   "prompt": "planeta adlaw kalibutan",
+   "reply": "\b \bHala, masabtan nimo na ang planeta adlaw kalibutan! Ang kalibutan adlaw kay naa sa ubos ang Earth gamay kaayo sa adlaw kung mosaka kini, mao nga adlaw ang atong ginatawag.\n\nAng Earth adunay duha ka adlaw: ang nagtindog nga adlaw sa kausaban nga gitawag og **Eclipse**, ug ang nagtindog nga adlaw sa pagtindog nga gitawag og **Eclipse**. Mao kana ngano nga adunay eclipse sa gabii pero walay sa ulahi.\n\nKung ang Earth adunay duha ka adlaw nga nagtindog, unsa man ang mahitabo kung ang Earth ug ang bulan magtindog?",
+   "scores": {
+    "words": 89,
+    "ceb_ratio": 0.326,
+    "tag_ratio": 0.124,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.48,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-13",
+   "lang": "cebuano",
+   "grade": 6,
+   "register": "codeswitch",
+   "topic": "electricity",
+   "prompt": "maam unsaon paggana sa kuryente sa balay",
+   "reply": "\b \bSige, dili gyud makita nato ang kuryente, mao kana ang **electrical current**! Ang current mao ang kantidad nga nag-unod sa kuryente kada segundo, ug naa'y **electricity** nga gitawag og voltage nga nag-ayo kini. Ang balay naa'y tunga nga 120 volts nga gitawag og household circuit.\n\nAng mga pader nga nag-pagos sa gawas nga balay giputi sa **main fusebox** aron makaporma og circuit. Makaporma sila og **parallel circuit** kay kung magbangga ang usa, ang lain dili dali mabali, ug makaporma og **series circuit** kay kung magbangga ang usa, ang tanan mabali.\n\nKung naa kay tulo ka pader sa balay, series ba o parallel ang ilang pagporma, ug ngano man?",
+   "scores": {
+    "words": 110,
+    "ceb_ratio": 0.282,
+    "tag_ratio": 0.109,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.55,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-14",
+   "lang": "cebuano",
+   "grade": 7,
+   "register": "clean",
+   "topic": "cells",
+   "prompt": "Maam, unsa man ang kalainan sa plant cell ug animal cell?",
+   "reply": "\b \bNindot nga pangutana, kay ang duha nagtinabangay pero naa gyuy kalainan!\n\nAng **plant cell** adunay cell wall nga nagtubo sa cell, ug gamiton nila ang photosynthesis aron makatulog og glucose. Ang **animal cell** wala na kay cell wall, mao nga mas mubo ang kuryente sa dagan, ug naa sila ang mitochondria nga nagtrabaho sa paghimo og enerhiya. Kung mawala ang cell wall sa plant cell, kanunay siyang mawala pa sa pagtubo.\n\nMao nga ang plant cell mas dako ug mas kusgan, samtang ang animal cell mas gamay ug mas mubo. Naa pa silay gamay nga partikulo nga gitawag og nucleus sa duha, apan ang plant cell naa pa gyud sila.\n\nKung ang cell wall mao ang nagtubo sa cell ug ang chloroplast mao ang nagpuyo sa",
+   "scores": {
+    "words": 126,
+    "ceb_ratio": 0.278,
+    "tag_ratio": 0.111,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": false,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.44,
+    "repetitive": true
+   }
+  },
+  {
+   "id": "ceb-15",
+   "lang": "cebuano",
+   "grade": 7,
+   "register": "misspelled",
+   "topic": "photosynthesis",
+   "prompt": "giunsa man pag potosintesis sa mga dahon",
+   "reply": "\b \bHala, naa kay kasingkasing sa kahayag! Ang photosynthesis mao ang proseso diin ang dahon maghimo og pagkaon sa kahayag, tubig, ug carbon dioxide gikan sa tanom.\n\nNaa siya sa kahoy ug kahoy nga nagtuyok og 30 degrees, kay ang kahayag nagsunod sa tubig gikan sa pagsunog sa tubig. Ang resulta mao ang glucose ug oxygen, ug ang oxygen gitukod sa tanom.\n\nSa imong hunahuna, ngano man kaha nga ang kahoy dili mosaka sa kahayag kung gisunog ang tanang dahon?",
+   "scores": {
+    "words": 78,
+    "ceb_ratio": 0.346,
+    "tag_ratio": 0.115,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.54,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-16",
+   "lang": "cebuano",
+   "grade": 7,
+   "register": "txtspeak",
+   "topic": "matter / atoms",
+   "prompt": "unsa man gud ang atom",
+   "reply": "\b \bNindot nga pangutana! Ang atom mao ang pinakagamay nga bahin sa matang, naa kaayo ni sa tanang butang.\n\nNagsumpay ang atom sa matag electron, proton, ug neutron. Sa **proton** naa ang positive charge, sa **electron** ang negative, ug sa **neutron** walay charge. Kung naa kay 8 ka proton ug 8 ka electron, walay charge ang atom, mao nga nabuhat niya og neutral nga charge.\n\nKung naa kay 6 ka proton ug 8 ka electron, dili na naay charge ang atom, mao nga nabuhat siya og neutral nga charge. Sa imong hunahuna, ngano man kaha makapahinay ang charge sa matag atom?",
+   "scores": {
+    "words": 96,
+    "ceb_ratio": 0.354,
+    "tag_ratio": 0.083,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.44,
+    "repetitive": true
+   }
+  },
+  {
+   "id": "ceb-17",
+   "lang": "cebuano",
+   "grade": 8,
+   "register": "lazy_keywords",
+   "topic": "Newton's laws",
+   "prompt": "newton law motion",
+   "reply": "\b \bHala, interesado kaayo ni nga topiko! Ang **Newton's First Law of Motion** mokuha sa kausaban sa paglihok. Kung walay force, mabug-at ang paglihok.\n\nPananglitan, kung magdala ka og kandila sa lamesa ug dili mohatag ka og force, mabug-ati ang kandila sa paglihok. Kung magdala ka og kandila sa lamesa ug motiponon kini, maglihok ang kandila ug mabugat ang imong lamesa.\n\nKung magdala ka og bato sa basa nga pader ug mohatag ka og force aron dili maglihok, asa man ka magdala? Unsaon nimo pag-control ang paglihok?",
+   "scores": {
+    "words": 89,
+    "ceb_ratio": 0.258,
+    "tag_ratio": 0.067,
+    "eng_ratio": 0.011,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.52,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-18",
+   "lang": "cebuano",
+   "grade": 8,
+   "register": "codeswitch",
+   "topic": "periodic table",
+   "prompt": "maam unsa may gamit sa periodic table",
+   "reply": "\b \bSige, mokuha nimo ang periodic table! Ang **periodic table** usa ka panudlo nga nagtukod sa mga element nga nagtinabangay sa ilang pagkaon, kinaiya, ug konus.\n\nAng mga element nagbira sa duha ka klase: ang metals (sakyanan, lata, tubig) ug nonmetals (gas, ligid). Ang mga metals mohatag og electron, ug ang nonmetals makahatag ug makahulog, mao nga makita nato kung unsang kinaiya ang element.\n\nSa imong hunahuna, ngano man dili na mohatag og electron ang metals? Unsa may panghitabo sa electron sa mga metals nga makahatag og electron?",
+   "scores": {
+    "words": 87,
+    "ceb_ratio": 0.253,
+    "tag_ratio": 0.138,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.56,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-19",
+   "lang": "cebuano",
+   "grade": 8,
+   "register": "vague",
+   "topic": "unspecified physics",
+   "prompt": "unsa man tong puwersa maam wala ko katuo",
+   "reply": "\b \bSige, tabangan nimo ni sa imong hunahuna! Ang mga **powers** mao ang kantidad sa work nga atong gipakita gikan sa pagpuyo, pagtan-aw, o pagbalik sa enerhiya.\n\nKung mokuha ka og enerhiya, ang work kay makuha nimo sa pagsagop ngadto sa kinabuhi. Sa gamit sa Work = Force × Distance, kung 100 N ka force nga mo-pagsagop og 50 m, ang work kay 5,000 Joule.\n\nAng paglihok sa usa ka bato gikan sa balay ngadto sa kaldero naa'y work, pero ang pagbalik niya sa balay naa'y work pula. Sa imong hunahuna, ngano man kaha nga ang work mao ang kantidad sa enerhiya nga mokuha o mokunhod?",
+   "scores": {
+    "words": 102,
+    "ceb_ratio": 0.294,
+    "tag_ratio": 0.088,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.51,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-20",
+   "lang": "cebuano",
+   "grade": 9,
+   "register": "misspelled",
+   "topic": "mitosis / meiosis",
+   "prompt": "unsa man ang maytosis ug miyosis",
+   "reply": "\b \bNindot nga pangutana! Ang **mitosis** mao ang pag-ayo sa cell para sa pagtigom o paghimo sa tawo, ug ang resulta mao ang **duplicated** ka kaugalingong cell.\n\nAng **meiosis** mao ang pag-ayo para sa gamay nga mga grupo nga maghimo og sperm ug egg, ug ang resulta mao ang **hapot nga chromosome** nga makuha nato.\n\nAng resulta sa mitosis mao ang tawo, ang resulta sa meiosis mao ang sperm ug egg.\n\nNgano man kinahanglan man tawo nga magtigom? Ngano man kinahanglan makuha og hapot nga chromosome?",
+   "scores": {
+    "words": 87,
+    "ceb_ratio": 0.299,
+    "tag_ratio": 0.172,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.41,
+    "repetitive": true
+   }
+  },
+  {
+   "id": "ceb-21",
+   "lang": "cebuano",
+   "grade": 9,
+   "register": "clean",
+   "topic": "chemical bonding",
+   "prompt": "Maam, nganong magbugkos man ang mga atom aron mahimong molecule?",
+   "reply": "\b \bSige, masabtan nato kung unsa ang mga atom ug asinip gyud sila! Ang **atom** mao ang pinaka-simple nga bahin sa chemical nga gibuga sa usa o duha ka atom, ug ang **molecule** mao ang bahin nga nagtinabangay sa duha o daghan kaayo nga atoms nga maghatag og kaayong patindog nga butang.\n\nUnya, ang mga atom magtinabangay aron mahimong molecules. Sama sa panganod nga magtinabangay og bunga aron mahimong nawa. Kung magtinabangay ang duha ka atom, naa silay bond, ug ang kusog sa bond mao ang gibug-aton, mao nga ang chlorine ug oxygen magtinabangay aron mahimong molecule.\n\nKung ang chlorine ug oxygen magtinabangay aron mahimong molecule, unsa man ang posible nga mga molecule, ug ngano mao kana",
+   "scores": {
+    "words": 118,
+    "ceb_ratio": 0.339,
+    "tag_ratio": 0.127,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": false,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.47,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-22",
+   "lang": "cebuano",
+   "grade": 9,
+   "register": "lazy_keywords",
+   "topic": "electricity / Ohm",
+   "prompt": "voltage current resistance",
+   "reply": "\b \bNindot nga pangutana! Ang **voltage**, **current**, ug **resistance** mao ang traidyado sa pagkahibalo sa kuryente.\n\nAng voltage (V) mao ang pressure o tigulang sa kuryente nga nagdala sa enerhiya sa wires, ug ang current (I) mao ang kantidad sa enerhiya nga paspas naay pagdala sa wires. Ang resistance (R) mao ang batasan sa wires sa pagdala sa kuryente, ug mas dako ang resistance, mas bug-at ang current.\n\nPananglitan, kung ang voltage 12 volts ug ang resistance 4 ohms, ang current I = V ÷ R = 3 amps. Kung mas gaan ang resistance, mas bug-at ang current.\n\nKung ang voltage 9 volts ug ang resistance 3 ohms, kinsa man ang mas bug-at nga current?",
+   "scores": {
+    "words": 109,
+    "ceb_ratio": 0.239,
+    "tag_ratio": 0.165,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.36,
+    "repetitive": true
+   }
+  },
+  {
+   "id": "ceb-23",
+   "lang": "cebuano",
+   "grade": 10,
+   "register": "codeswitch",
+   "topic": "genetics",
+   "prompt": "maam pano ma inherit ang traits gikan sa parents",
+   "reply": "\b \bNindot kaayo nga pangutana! Ang **inheritance** mao ang pagpuno sa mga trait sa anak sa parent, ug naa silay mga klase niini.\n\nAng **simple dominance**: ang trait sa usa ka parent mabuhat sa matag anak, sama sa pula o hapsay sa oras. Ang **codominance** mao ang pag-usa-usa sa matag trait, sama sa pula ug hapsay nga oras nga magpagawas sa usa. Ang **incomplete dominance** mao ang kolor nga magpadayon sa duha ka matag trait, sama sa pula ug hapsay nga oras nga magpadayon sa pula, apan naa pa'y hapsay nga nakita.\n\nSa imong hunahuna, ngano kaha nga ang mga trait magpadayon sa usa ka generasyon pero magpuno sa lain?",
+   "scores": {
+    "words": 111,
+    "ceb_ratio": 0.333,
+    "tag_ratio": 0.108,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.42,
+    "repetitive": true
+   }
+  },
+  {
+   "id": "ceb-24",
+   "lang": "cebuano",
+   "grade": 10,
+   "register": "misspelled",
+   "topic": "mole / chemistry",
+   "prompt": "unsa man ang mol sa kemistri maam",
+   "reply": "\b \bMaayo nga pangutana! Ang **molarity** (mol/L) mao ang kapaspas o concentration sa usa ka subka sa solution, naa kay lahi ang gamit niini depende sa pwesto.\n\nAng formula kay mol = mass ÷ molar mass. Pananglitan, kung naa kay 20 gram sa carbon dioxide (M = 44 g/mol) ug dili nimo naa kini, ang mol kay 20 ÷ 44 ≈ 0.454 mol. Kung gibalik nimo ang volume ug volume, ang resulta kay molarity.\n\nMao nga ang concentration mao ang 'dunot' nga nagpaspas sa pwesto, ug mas lisod kini sa molarity kaysa sa gamay nga volume.\n\nKung ang 100 ml nga carbon dioxide naa sa 20 g, unsa man ang mol nga naa kanato, ug unsa man ang volume sa 25°C ug",
+   "scores": {
+    "words": 111,
+    "ceb_ratio": 0.387,
+    "tag_ratio": 0.108,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": false,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.46,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "ceb-25",
+   "lang": "cebuano",
+   "grade": 10,
+   "register": "vague",
+   "topic": "unspecified / lazy",
+   "prompt": "exam ugma wala pa ko nagtuon tabang",
+   "reply": "\b \bSige, sayon ra ni nga pangutana, kay sayo gyod na! Ang **exam** mao ang dili pa nimo kahatagon nga klase sa pagsagol sa pagsabot o science.\n\nKaron pangutana ko: ngano man nga makakita ka og kalat sa dagat? Unsa man ang mga klase sa kahayag ug ngano kaha kung dili nato makita ang kalat?",
+   "scores": {
+    "words": 54,
+    "ceb_ratio": 0.333,
+    "tag_ratio": 0.093,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.74,
+    "repetitive": false
+   }
+  }
+ ]
+}

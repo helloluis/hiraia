@@ -27,8 +27,10 @@ interface Case {
   history?: Turn[]; // multi-turn: full conversation; grounding uses the LAST user turn
   expectRetrieves?: string; mustContain?: string[]; mustNotContain?: string[]; maxChars?: number;
   pending?: boolean; // codified behavior not yet trained into the adapter — reported, non-blocking
-  mustEmitImage?: boolean; // legacy: answer must contain an [image: …] tag. Vestigial now — on-device
-  // display is RETRIEVAL-driven (FACT_IMAGE[retrieved fact]), not tag-driven; prefer mustRetrieveIdIncludes.
+  mustEmitImage?: boolean; // answer must contain an [image: …] tag. Since the tag→bundled-image
+  // resolution shipped on mobile (#51: display strips the tag and shows the matched asset), the tag
+  // IS the display mechanism; v4 Family-A trains image REQUESTS to answer-and-tag, never abstain.
+  mustNotEmitImage?: boolean; // answer must NOT carry a tag (pop-culture/vague requests redirect/clarify instead)
   mustRetrieveIdIncludes?: string[]; // a retrieved fact id must contain one of these (the image-bearing concept)
   mustContainEmoji?: boolean; // the answer should carry at least one emoji (engagement nudge)
   mustGround?: boolean; // COVERED-topic probe: the answer must NOT deflect/over-abstain (no REFUSAL_MARKERS).
@@ -184,6 +186,7 @@ for (const c of cases) {
   for (const rx of c.mustNotContain ?? []) if (new RegExp(rx, 'i').test(answer)) fails.push(`mustNotContain /${rx}/ present`);
   if (c.maxChars && answer.length > c.maxChars) fails.push(`too long (${answer.length} > ${c.maxChars} chars)`);
   if (c.mustEmitImage && !/\[image:/i.test(raw)) fails.push('mustEmitImage: no [image: …] tag emitted');
+  if (c.mustNotEmitImage && /\[image:/i.test(raw)) fails.push('mustNotEmitImage: unexpected [image: …] tag emitted');
   // display-aligned image check: the retrieval-driven picture shows the right concept
   if (c.mustRetrieveIdIncludes && !c.mustRetrieveIdIncludes.some((s) => retrievedIds.some((id) => id.toLowerCase().includes(s.toLowerCase()))))
     fails.push(`mustRetrieveIdIncludes: none of [${c.mustRetrieveIdIncludes.join(',')}] in retrieved [${retrievedIds.join(',') || 'none'}]`);

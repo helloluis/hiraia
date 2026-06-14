@@ -66,3 +66,42 @@ data/
 deploy/models/
 deploy/llama.cpp/
 deploy/llama-bin/
+
+# --- session artifacts that must never be committed (added 2026-06-14) ---
+# built APKs (large); build locally, never commit
+*.apk
+# local backups (e.g. adapter-tagalog.gguf.pre-v2a.bak)
+*.bak
+# LoRA training outputs (8.9GB); shipped adapters live in packages/mobile/assets/models
+finetuning/adapters/
+# intent-distill intermediate shards + raw eval generations
+finetuning/distill/work/
+finetuning/distill/work-v2/
+finetuning/distill/eval/items/
+finetuning/distill/eval/items-trained/
+finetuning/distill/eval/items-withfact/
+finetuning/distill/eval/items-v2a/
+finetuning/distill/eval/items-v2b/
+finetuning/distill/eval/items-v2c/
+finetuning/distill/eval/eval-out.json
+finetuning/distill/eval/eval-trained-out.json
+finetuning/distill/eval/eval-withfact-out.json
+finetuning/distill/eval/eval-v2a-out.json
+finetuning/distill/eval/eval-v2b-out.json
+finetuning/distill/eval/eval-v2c-out.json
+finetuning/distill/eval/heldout.json
+finetuning/distill/eval/heldout-v2.json
+finetuning/distill/eval/judge-args.json
+finetuning/distill/eval/safe-args.json
+# runpod scratch state
+finetuning/.grounded-pod
+finetuning/.ttft-pod
+# python bytecode + build caches + scratch
+__pycache__/
+*.pyc
+*.tsbuildinfo
+session-*.zip
+finetuning/rl/pod-logs/
+
+# v3 distill scratch (large training artifacts)
+finetuning/distill/work-v3/

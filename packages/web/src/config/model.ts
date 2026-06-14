@@ -8,7 +8,7 @@ export const MODEL_INFO = {
   /** Friendly name shown in the status bar. */
   displayName: 'Sailor2-3B',
   /** What the model has been adapted for (status bar subtitle). */
-  tagline: 'Fine-tuned with Filipino & Bisaya adapters',
+  tagline: 'Fine-tuned with Filipino adapters · Bisaya coming soon',
   /** Underlying base architecture. */
   arch: 'Qwen2 / SEA-grounded',
   /** Approx parameter count (Sailor2-3B is an expanded ~3.6B; f16 GGUF is 6.67 GiB). */
@@ -34,9 +34,11 @@ export type LanguageKey = 'english' | 'tagalog' | 'cebuano';
  * Per-language config. `loraId` is the index of the adapter as loaded by the
  * server, e.g. launching with:
  *   llama-server -m sailor2-3b-chat.gguf \
- *     --lora adapter-sailor-tagalog-f16.gguf \   # -> id 0
- *     --lora adapter-sailor-bisaya-f16.gguf      # -> id 1
- * English uses no adapter (base model handles English fine).
+ *     --lora adapter-tagalog.gguf \   # -> id 0 (v2a: Tagalog + English)
+ *     --lora adapter-bisaya.gguf      # -> id 1 (Bisaya)
+ * English has no separate adapter — it RIDES the Tagalog (v2a) adapter, exactly as
+ * the shipped APK does (measured better than the bare base; see mobile config/model.ts
+ * "English rides the TAGALOG adapter"). So english.loraId = 0, not null.
  */
 export const LANGUAGES: Record<LanguageKey, {
   label: string;
@@ -46,8 +48,8 @@ export const LANGUAGES: Record<LanguageKey, {
 }> = {
   english: {
     label: 'English',
-    adapterLabel: 'base model (no adapter)',
-    loraId: null,
+    adapterLabel: 'Tagalog (v2a) adapter',
+    loraId: 0,
     system:
       'You are Hiraia, a friendly science tutor for Filipino students (grades 3-10). ' +
       'Explain concepts simply and correctly for the age, use the Socratic method, and ' +
@@ -64,13 +66,21 @@ export const LANGUAGES: Record<LanguageKey, {
   },
   cebuano: {
     label: 'Cebuano (Bisaya)',
-    adapterLabel: 'Bisaya adapter',
+    adapterLabel: 'Bisaya adapter (coming soon)',
     loraId: 1,
     system:
       'Ikaw si Hiraia, usa ka AI tutor nga nagtabang sa mga estudyanteng Pilipino nga ' +
       'makat-on og Science. Naggamit ka og Socratic method ug natural nga Bisaya.',
   },
 };
+
+/**
+ * Bisaya is descoped for launch (2026-06-12: Tagalog + English first — the
+ * Bisaya adapter isn't at shippable quality). While true, detectLanguage never
+ * routes to cebuano; obviously-Bisaya messages stay on the fallback (Tagalog
+ * adapter — the best available reply quality for them today).
+ */
+export const CEBUANO_COMING_SOON = true;
 
 /** All adapter ids the server is expected to have loaded (derived from LANGUAGES). */
 export const ALL_LORA_IDS: number[] = Object.values(LANGUAGES)
@@ -138,7 +148,7 @@ export function detectLanguage(text: string, fallback: LanguageKey = 'tagalog'):
     if (CEBUANO_MARKERS.has(w)) ceb++;
     if (ENGLISH_MARKERS.has(w)) en++;
   }
-  if (ceb > tl) return 'cebuano'; // obvious Cebuano
+  if (ceb > tl) return CEBUANO_COMING_SOON ? fallback : 'cebuano'; // obvious Cebuano (gated while coming soon)
   if (tl > 0) return 'tagalog'; // any Tagalog signal -> Tagalog
   // no Filipino markers: English only if it clearly reads as English, else stay put
   if (ceb === 0 && en > 0) return 'english';

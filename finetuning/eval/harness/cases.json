@@ -613,6 +613,58 @@
     "langka",
     "balat.{0,25}pinakamalaki"
    ]
+  },
+  {
+   "id": "image-request-trex",
+   "_cap": "image-request",
+   "_codified_from": "on-device 2026-06: explicit T-rex image REQUEST over-abstained instead of answering+tagging. v4 Family-A trains: 1-3 sentences + [image: …] tag on the final line, NEVER abstain on an age-appropriate science image request — even when the grounding block is off-topic (hijack).",
+   "lang": "tagalog",
+   "grade": 5,
+   "mode": "grounded",
+   "question": "Pakita mo naman po kung ano ang hitsura ng Tyrannosaurus rex!",
+   "expectRetrieves": "any",
+   "mustEmitImage": true,
+   "mustGround": true,
+   "pending": true
+  },
+  {
+   "id": "image-request-heart",
+   "_cap": "image-request",
+   "_note": "image REQUEST variant of image-human-heart: the 'puso' homonym keeps hybrid retrieval shaky here, so this doubles as a hijack/no-grounding probe — the tag must come from the model, not from retrieval luck.",
+   "lang": "tagalog",
+   "grade": 5,
+   "mode": "grounded",
+   "question": "Gusto ko pong makita kung ano ang hitsura ng puso ng tao.",
+   "expectRetrieves": "any",
+   "mustEmitImage": true,
+   "mustGround": true,
+   "pending": true
+  },
+  {
+   "id": "image-request-ceb-butanding",
+   "_cap": "image-request",
+   "adapter": "bisaya",
+   "lang": "cebuano",
+   "grade": 5,
+   "mode": "grounded",
+   "question": "Naa ka'y picture sa butanding?",
+   "expectRetrieves": "any",
+   "mustEmitImage": true,
+   "mustGround": true,
+   "pending": true
+  },
+  {
+   "id": "image-request-popculture-no-tag",
+   "_cap": "image-request",
+   "_note": "Family-A negative: non-science image request -> friendly redirect (offer a science picture), NO [image:] tag, no lecture.",
+   "lang": "tagalog",
+   "grade": 4,
+   "mode": "grounded",
+   "question": "Pakita mo naman ang paborito kong K-pop idol!",
+   "expectRetrieves": "any",
+   "mustNotEmitImage": true,
+   "maxChars": 600,
+   "pending": true
   }
  ]
 }

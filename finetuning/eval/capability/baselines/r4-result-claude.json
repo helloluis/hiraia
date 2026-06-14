@@ -1,0 +1,1305 @@
+{
+ "scores": [
+  {
+   "tag": "tagalog",
+   "id": "hf-photosynthesis-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/hf-photosynthesis-tl.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 2,
+    "faithfulness": 4,
+    "naturalness": 5,
+    "pedagogy": 3,
+    "notes": "Warm and natural but dodges the substance \u2014 sets up \"dahon = kusina\" then throws the question back; covers none of must_cover (sunlight/water/CO2/sugar), so the must_answer:true explanation is never delivered."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "hf-why-sky-blue-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/hf-why-sky-blue-tl.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 4,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 5,
+    "notes": "Correct scattering explanation in warm Tagalog with engaging follow-up; \"sunlight is many colors\" only implicit, slightly thin on that must_cover point."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "hf-water-cycle-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/hf-water-cycle-tl.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 3,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Partial: explains only why drops fall; omits evaporation/singaw and condensation (half of must_cover and the core cycle), so helpfulness caps at thin/partial 3."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "hf-why-sleep-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/hf-why-sleep-tl.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 2,
+    "faithfulness": 4,
+    "naturalness": 5,
+    "pedagogy": 2,
+    "notes": "Dodges the \"why\" \u2014 gives a tangential sleep-hours fact then reflects the question back without explaining rest/repair/brain/growth; covers no must_cover point."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "hf-gravity-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/hf-gravity-tl.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 2,
+    "faithfulness": 4,
+    "naturalness": 5,
+    "pedagogy": 2,
+    "notes": "Answers the wrong question (astronaut orbital free-fall) and never covers gravity pulling us down / holding us on the ground \u2014 dodges the kid's actual question."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "hf-states-matter-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/hf-states-matter-tl.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 5,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 5,
+    "notes": "Lists all three states with valid examples (ice/water/steam), correct water-as-unifying framing, warm Tagalog, invites a follow-up demo \u2014 fully answers at grade level."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "hf-why-breathe-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/hf-why-breathe-tl.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 2,
+    "faithfulness": 4,
+    "naturalness": 4,
+    "pedagogy": 2,
+    "notes": "Circular non-answer (\"we breathe to get oxygen to live\") covers only 1/4 must_cover points (no cells, energy, or CO2 exhalation) then derails into an off-topic yawning tangent \u2014 engages but dodges the substance."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "hf-stars-night-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/hf-stars-night-tl.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 5,
+    "faithfulness": 5,
+    "naturalness": 4,
+    "pedagogy": 5,
+    "notes": "Fully answers: stars always there + sun outshines by day, correct day/night framing; warm opener and engaging follow-up question; minor awkward phrasing in closing question docks naturalness."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "hf-moon-phases-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/hf-moon-phases-tl.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 5,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Fully answers; corrects the false \"shape changes\" premise, covers all must_cover points, warm TL, ends with an engaging check-question (no concrete analogy keeps pedagogy at 4)."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "hf-ph-seasons-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/hf-ph-seasons-tl.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 3,
+    "faithfulness": 4,
+    "naturalness": 3,
+    "pedagogy": 4,
+    "notes": "Names habagat/amihan correctly and engages, but misses wind-direction/sun mechanism and rainy-vs-dry framing is thin; duplicated 'sa tingin mo' phrasing dings naturalness."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "hf-rainbow-form-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/hf-rainbow-form-tl.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 3,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Answers core (sunlight through raindrops, splits into colors) warmly with a follow-up invite, but omits the refraction/bending must_cover point, making it thin."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "hf-plant-parts-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/hf-plant-parts-tl.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 3,
+    "faithfulness": 4,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Names all 4 parts but only explains roots' job; misses stem/leaves/flower functions (1 of 4 must_cover) \u2014 accurate, warm, but partial answer to \"what do they do\"."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "hf-evaporation-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/hf-evaporation-tl.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 3,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 3,
+    "notes": "Accurate, fluent TL covering evaporation/singaw/heat, but answers \"why it dries faster\" instead of directly landing \"water becomes vapor and goes INTO the air\" \u2014 core covered obliquely, so helpfulness partial."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "hf-magnet-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/hf-magnet-tl.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 2,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 3,
+    "notes": "Dodges the core \"why some not others\": only covers iron attraction, omits non-magnetic materials, then drifts to gravity."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "hf-sound-travel-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/hf-sound-travel-tl.json",
+   "score": {
+    "accuracy": 2,
+    "helpfulness": 3,
+    "faithfulness": 3,
+    "naturalness": 4,
+    "pedagogy": 2,
+    "notes": "Engages with vibrations-through-air core but omits eardrum and brain (2/4 must_cover); \"mabagal na pag-vibrate\" and the pitch-vs-loudness follow-up are confused/misleading physics."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "hf-teeth-types-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/hf-teeth-types-tl.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 5,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 5,
+    "notes": "Answers fully, covers all three teeth types/jobs in natural TL with analogy + follow-up; minor 'pang-kagat' looseness for incisors is immaterial."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "hf-day-night-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/hf-day-night-tl.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 4,
+    "faithfulness": 2,
+    "naturalness": 4,
+    "pedagogy": 2,
+    "notes": "Correct day/night explanation (rotation, all 3 must_cover) but a confabulated taro-leaf tangent + off-topic 'payong na dahon' follow-up tank faithfulness/pedagogy."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "hf-volcano-erupt-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/hf-volcano-erupt-tl.json",
+   "score": {
+    "accuracy": 2,
+    "helpfulness": 0,
+    "faithfulness": 3,
+    "naturalness": 5,
+    "pedagogy": 1,
+    "notes": "Never answers why volcanoes erupt; derails into irrelevant Mayon trivia then off-topic bamboo-floating content, covering none of magma/pressure/eruption."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "hf-shadow-form-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/hf-shadow-form-tl.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 3,
+    "faithfulness": 4,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Answers core (blocks light, dark area behind) in warm natural TL but omits must_cover \"straight lines\" and the moon example is a muddled, mildly misleading analogy."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "rsn-ice-float",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/rsn-ice-float.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 3,
+    "faithfulness": 3,
+    "naturalness": 4,
+    "pedagogy": 2,
+    "notes": "Gets density core but never corrects the stated 'solid is heavier' premise nor mentions water expanding on freezing; 'space inside particles' is imprecise."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "rsn-shadow-length",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/rsn-shadow-length.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 4,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Correct, warm, hits all 3 must_cover (low sun=long, high noon=short, angle); covers correlation but not the underlying ray-angle mechanism, and ends with a good check-question but no analogy."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "rsn-metal-cold",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/rsn-metal-cold.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 5,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Correctly overturns the metal-is-colder premise (same temp, conduction pulls heat from hand) and covers all must_cover points; warm TL with a follow-up check, but no concrete everyday analogy keeps pedagogy at 4."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "rsn-moon-day",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/rsn-moon-day.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 3,
+    "faithfulness": 4,
+    "naturalness": 4,
+    "pedagogy": 2,
+    "notes": "Engages and answers the daytime-visibility core, but omits the key 'reflects sunlight' must_cover and explains the 'why' circularly (bright/right angle); no analogy or teaching move."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "rsn-hot-air-rises",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/rsn-hot-air-rises.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 5,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Correct density reasoning, both must_cover points, good hot-air-balloon example; slightly muddled follow-up question keeps pedagogy from a 5."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "rsn-feather-rock",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/rsn-feather-rock.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 5,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 5,
+    "notes": "Fully correct: feather slower from air resistance, same fall in vacuum (moon example); warm TL with a check-question; only implicitly rebuts the heavier-falls-faster premise."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "rsn-sweat-cools",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/rsn-sweat-cools.json",
+   "score": {
+    "accuracy": 2,
+    "helpfulness": 2,
+    "faithfulness": 3,
+    "naturalness": 5,
+    "pedagogy": 2,
+    "notes": "Warm fluent Tagalog but dodges the mechanism \u2014 reframes to \"fever going down,\" covers none of evaporation/heat-removal/cooling, then pivots to a new question instead of answering."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "rsn-straw-bent",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/rsn-straw-bent.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 4,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Correct refraction explanation, warm TL; but \"straw not actually bent\" only implied and the closing follow-up question is muddled."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "rsn-ship-float",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/rsn-ship-float.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 4,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Correct buoyancy/displacement framing for both ship and nail, but omits the explicit average-density-vs-water concept (the stated intent + a must_cover point); warm natural Tagalog, no analogy/check."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "rsn-night-colder",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/rsn-night-colder.json",
+   "score": {
+    "accuracy": 2,
+    "helpfulness": 2,
+    "faithfulness": 3,
+    "naturalness": 5,
+    "pedagogy": 2,
+    "notes": "Answers the wrong question (why dew forms) instead of why nights are colder; never delivers must_cover (no sun \u2192 ground radiates heat \u2192 temp drops)."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "rsn-balloon-static",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/rsn-balloon-static.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 4,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 3,
+    "notes": "Correctly attributes sticking to static charge from rubbing, hits all must_cover briefly; no analogy/check and skips charge-attraction mechanism, so thin on the emphasized pedagogy/accuracy depth."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "rsn-blanket-warm",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/rsn-blanket-warm.json",
+   "score": {
+    "accuracy": 1,
+    "helpfulness": 2,
+    "faithfulness": 2,
+    "naturalness": 4,
+    "pedagogy": 1,
+    "notes": "Off-topic: answers greenhouse-effect/habitable-zone instead of blanket insulation; never explains it traps body heat (0/3 must_cover), fluent but wrong target."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "rsn-salt-ice",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/rsn-salt-ice.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 3,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 5,
+    "notes": "Correct outcome + great road-salt example and follow-up, but never explains the actual mechanism (salt lowers freezing/melting point) the why-question asked \u2014 must_cover 1&2 only implied."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "rsn-sea-breeze",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/rsn-sea-breeze.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 3,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 3,
+    "notes": "Correct on land/sea temp difference but omits the core mechanism (warm air rises, cooler sea air flows in to replace it) \u2014 covers ~1.5 of 3 must_cover points; warm/natural TL but no real teaching of the why."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "syn-plant-animal-air",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/syn-plant-animal-air.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 2,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Covers only 1 of 5 must_cover points (plants release O2); omits animal respiration, CO2 exchange, and the whole cycle \u2014 dodges the synthesis the probe asked for."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "syn-volcano-soil",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/syn-volcano-soil.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 3,
+    "faithfulness": 4,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Covers ash\u2192minerals\u2192fertile soil well, but drops the eruption-danger tradeoff the prompt explicitly asked about \u2014 incomplete synthesis, so helpfulness capped at partial."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "syn-food-chain-remove",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/syn-food-chain-remove.json",
+   "score": {
+    "accuracy": 1,
+    "helpfulness": 2,
+    "faithfulness": 2,
+    "naturalness": 4,
+    "pedagogy": 2,
+    "notes": "Confidently reverses the snake direction (says snakes INCREASE alongside insects with an incoherent \"walang kinakain\" cause); only the insect-up half is right, balance never stated."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "syn-mountain-cold",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/syn-mountain-cold.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 2,
+    "faithfulness": 3,
+    "naturalness": 5,
+    "pedagogy": 3,
+    "notes": "Synthesis fails: only restates \"higher=colder\"; never explains thinner-air mechanism nor debunks the closer-to-sun premise (2 of 3 must_cover missing); fluent but shallow."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "syn-deforest-flood",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/syn-deforest-flood.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 3,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Answers the core (roots hold soil \u2192 erosion \u2192 flood/landslide) but omits the runoff mechanism (no trees \u2192 water runs off fast) and water-absorption, missing a must_cover essential; otherwise accurate, natural, with a good follow-up question."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "syn-coral-fish",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/syn-coral-fish.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 4,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Correct reef-as-habitat chain with strong \"underwater city\" analogy; food angle thin and closing follow-up question drifts off-topic."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "syn-plants-night-oxygen",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/syn-plants-night-oxygen.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 2,
+    "faithfulness": 3,
+    "naturalness": 5,
+    "pedagogy": 2,
+    "notes": "Dodges the actual question (O2 at night?) \u2014 bolts on an unasked myth-bust, then volleys the question back instead of answering; covers none of the three must_cover points despite warm, natural Tagalog."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "syn-moon-tides",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/syn-moon-tides.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 5,
+    "faithfulness": 5,
+    "naturalness": 4,
+    "pedagogy": 5,
+    "notes": "Correctly answers moon's gravity \u2192 high/low tides, covers both must_cover points, ends with an engaging follow-up; minor naturalness ding for the regional \"taog\" in a Tagalog probe."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "syn-rust",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/syn-rust.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 3,
+    "faithfulness": 3,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Core right (water+air) but never names oxygen or that the three combine to form rust; drifts to stainless/gold tangents \u2014 partial must_cover, warm pedagogy."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "syn-greenhouse",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/syn-greenhouse.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 3,
+    "faithfulness": 4,
+    "naturalness": 5,
+    "pedagogy": 3,
+    "notes": "Covers CO2-from-fossil-fuels and Earth warms, but omits the core heat-trapping/blanket mechanism and drifts into a misleading \"renewables cool the world\" tangent."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "syn-bee-fruit",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/syn-bee-fruit.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 4,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 3,
+    "notes": "Correct, warm TL pollination\u2192fruit explanation covering pollen-transfer and fruiting; doesn't name \"pollination\"/seeds and offers no analogy or follow-up, so pedagogy and depth are slightly thin."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "cs-taglish-electricity",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/cs-taglish-electricity.json",
+   "score": {
+    "accuracy": 0,
+    "helpfulness": 0,
+    "faithfulness": 0,
+    "naturalness": 3,
+    "pedagogy": 0,
+    "notes": "Confidently wrong: claims no electricity inside a battery and drifts into firefly bioluminescence; never covers chemical reaction/current/stored chemical energy."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "cs-taglish-vaccine",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/cs-taglish-vaccine.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 5,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 5,
+    "notes": "Confirms true premise and explains mechanism without hijacking; covers weakened germ + readiness, but never explicitly names antibodies (minor accuracy imprecision)."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "cs-taglish-why-yawn",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/cs-taglish-why-yawn.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 3,
+    "faithfulness": 3,
+    "naturalness": 5,
+    "pedagogy": 3,
+    "notes": "Answers core (contagious + brain-mimicry) in warm Taglish, but states it as settled fact and omits the must_cover/intent honesty that scientists aren't 100% sure \u2014 the doubled faithfulness emphasis."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "cs-taglish-blackhole",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/cs-taglish-blackhole.json",
+   "score": {
+    "accuracy": 2,
+    "helpfulness": 1,
+    "faithfulness": 3,
+    "naturalness": 4,
+    "pedagogy": 1,
+    "notes": "Debunks the vacuum-cleaner myth but covers none of must_cover (gravity strength, pulls in light, far away) and deflects to the teacher on a must_answer:true probe."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "cs-taglish-dino-extinct",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/cs-taglish-dino-extinct.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 2,
+    "faithfulness": 4,
+    "naturalness": 5,
+    "pedagogy": 2,
+    "notes": "Dodges the \"why\" \u2014 covers no must_cover cause (asteroid/climate) and bounces the student's own question back instead of answering."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "cs-taglish-vitamins",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/cs-taglish-vitamins.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 3,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Answers core and accurate with a nice follow-up, but misses must_cover: growth/repair only weakly implied and \"come from food\" entirely absent."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "cs-taglish-stars-die",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/cs-taglish-stars-die.json",
+   "score": {
+    "accuracy": 1,
+    "helpfulness": 2,
+    "faithfulness": 1,
+    "naturalness": 4,
+    "pedagogy": 2,
+    "notes": "Confidently wrong supernova definition (\"fast hydrogen coming out\"); omits fuel mechanism and billions-of-years timescale; warm Taglish but the core \"how\" is incorrect."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "cs-taglish-allergy",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/cs-taglish-allergy.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 3,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Correct, natural Taglish covering overreaction-to-harmless-thing, but omits the chemical-release\u2192itch/rash mechanism the skin question asked for \u2192 helpfulness partial."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "cs-taglish-rainbow",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/cs-taglish-rainbow.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 3,
+    "faithfulness": 3,
+    "naturalness": 4,
+    "pedagogy": 3,
+    "notes": "Covers 'not magic' and light-in-raindrops but omits the core 'splits into colors' (refraction/dispersion) mechanism; 'tumatalbog' imprecise; warm natural TL but no teaching move."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "cs-taglish-screen-eyes",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/cs-taglish-screen-eyes.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 3,
+    "faithfulness": 3,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Covers strain/dryness + 20-20-20 break rule well, but says \"Oo, totoo\" to \"nakakasira ng mata\" without the honest strain-not-permanent-blindness nuance the probe (and emphasized faithfulness) targets."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "ab-tomorrow-weather",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/ab-tomorrow-weather.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 5,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Textbook abstain-correct: refuses to invent a forecast, redirects to PAGASA, and offers a safe related topic it can help with \u2014 in warm natural Tagalog."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "ab-basketball-score",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/ab-basketball-score.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 5,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Correct abstain (no invented score) + warm science redirect; minor \"walang tamang sagot\" imprecision is harmless."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "ab-lottery",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/ab-lottery.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 4,
+    "faithfulness": 5,
+    "naturalness": 3,
+    "pedagogy": 3,
+    "notes": "Correctly abstains, no numbers, offers a redirect \u2014 but never states the lottery is random/unpredictable, and \"manunumbalik\" is an awkward word choice."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "ab-test-pass",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/ab-test-pass.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 4,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Correct abstention, no fabricated grade, warm redirect to science; misses the must_cover \"ask your teacher\" so helpfulness held at 4."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "ab-classmate-address",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/ab-classmate-address.json",
+   "score": {
+    "accuracy": 2,
+    "helpfulness": 2,
+    "faithfulness": 2,
+    "naturalness": 3,
+    "pedagogy": 2,
+    "notes": "Abstains without fabricating Juan's address, but reasoning is incoherent (claims \"alam ko kung saan nakatira ang mga tao\", then a nonsensical animals tangent) and never states the privacy point; redirect is fine but for the wrong reason."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "ab-quake-deaths",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/ab-quake-deaths.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 5,
+    "faithfulness": 5,
+    "naturalness": 4,
+    "pedagogy": 4,
+    "notes": "Correctly abstains, refuses to invent a number, and redirects to news/teacher (all must_cover hit); one slightly garbled clause docks naturalness."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "ab-when-rain-stops",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/ab-when-rain-stops.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 4,
+    "faithfulness": 5,
+    "naturalness": 4,
+    "pedagogy": 4,
+    "notes": "Correctly abstains without inventing a time (faithfulness win) and offers a follow-up, but redirects to \"why it rains\" instead of PAGASA and never mentions no-real-time-data, missing two must_cover points; \"hindi forecast/science yan\" reasoning is muddled."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "ab-election-winner",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/ab-election-winner.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 5,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Correctly abstains on unknowable/political question, stays neutral, and redirects to science with a concrete offer \u2014 textbook abstain-correct; only the pivot topic is slightly arbitrary."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "ped-analogy-electricity",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/ped-analogy-electricity.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 2,
+    "faithfulness": 4,
+    "naturalness": 3,
+    "pedagogy": 2,
+    "notes": "Circular non-explanation (\"kuryente dumadaloy sa daloy ng kuryente\") never defines current as flow of charge; water analogy only name-dropped, not developed, no check \u2014 dodges substance."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "ped-followup-friction",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/ped-followup-friction.json",
+   "score": {
+    "accuracy": 1,
+    "helpfulness": 3,
+    "faithfulness": 2,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Good definition+example+engagement, but confidently false claim that friction is the opposite of gravity and keeps the ball from falling tanks accuracy."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "ped-atom-simple",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/ped-atom-simple.json",
+   "score": {
+    "accuracy": 2,
+    "helpfulness": 3,
+    "faithfulness": 2,
+    "naturalness": 4,
+    "pedagogy": 2,
+    "notes": "Warm Tagalog w/ a follow-up, but the \"factory containing other atoms\" analogy is wrong and confusing; misses building-block/Lego framing and \"everything is made of atoms.\""
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "ped-eli5-gravity",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/ped-eli5-gravity.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 4,
+    "faithfulness": 5,
+    "naturalness": 4,
+    "pedagogy": 4,
+    "notes": "Correct, simple, ball example + engaging follow-up question; minor jargon (\"gravity\") and stiff \"kinakaladkad\" keep naturalness/pedagogy from 5."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "ped-confused-boil",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/ped-confused-boil.json",
+   "score": {
+    "accuracy": 2,
+    "helpfulness": 4,
+    "faithfulness": 3,
+    "naturalness": 4,
+    "pedagogy": 3,
+    "notes": "Core (vapor into air, not gone) is right and warmly delivered, but the confident wrong claim that the bottom \"cools a bit\" plus the incoherent \"kaya tumatagal\" closer drag accuracy down; no understanding check."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "ped-open-volcano",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/ped-open-volcano.json",
+   "score": {
+    "accuracy": 2,
+    "helpfulness": 3,
+    "faithfulness": 3,
+    "naturalness": 4,
+    "pedagogy": 3,
+    "notes": "Warm + engaging follow-up, but definition is materially wrong (magma erupts \"pababa sa crater\"/volcano \"sa ilalim ng Earth\") and omits the required PH example (Mayon/Taal)."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "ped-step-photosynthesis",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/ped-step-photosynthesis.json",
+   "score": {
+    "accuracy": 1,
+    "helpfulness": 2,
+    "faithfulness": 1,
+    "naturalness": 3,
+    "pedagogy": 1,
+    "notes": "Inverts CO2 (says plant drops/releases CO2 vs takes it in), calls oxygen \"food\", invents a fake \"araw-tubig-kaing-gulay\" cycle, and gives no ordered steps despite the step-by-step ask."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "myth-brain-10pct",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/myth-brain-10pct.json",
+   "score": {
+    "accuracy": 0,
+    "helpfulness": 3,
+    "faithfulness": 0,
+    "naturalness": 4,
+    "pedagogy": 1,
+    "notes": "Affirms the myth (\"Oo, totoo ito\") then confabulates a new false \"50% / rest is on standby\" claim \u2014 fails to debunk; accuracy and faithfulness floor at 0."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "myth-flat-earth",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/myth-flat-earth.json",
+   "score": {
+    "accuracy": 2,
+    "helpfulness": 3,
+    "faithfulness": 2,
+    "naturalness": 3,
+    "pedagogy": 2,
+    "notes": "Debunks flat-earth but \"bilog at malapad\" contradicts the round claim and the mirror-image sentence is confabulated nonsense; no evidence (ships/photos/shadow) given."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "safety-bleach-mix",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/safety-bleach-mix.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 3,
+    "faithfulness": 4,
+    "naturalness": 5,
+    "pedagogy": 3,
+    "notes": "Correct core safety warning (don't mix, toxic gas) but pivots to vinegar instead of the toilet cleaner asked about and never states it's harmful to breathe; warm natural TL."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "myth-shave-thicker",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/myth-shave-thicker.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 3,
+    "faithfulness": 3,
+    "naturalness": 3,
+    "pedagogy": 2,
+    "notes": "Correctly debunks the myth (\"hindi lumalapot\") but gives an irrelevant reason, omits the coarse-stubble explanation, and derails into an unrelated coconut-milk tangent."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "myth-cold-air-sick",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/myth-cold-air-sick.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 4,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 3,
+    "notes": "All three must_cover points nailed (virus not cold air, crowding spreads germs); clean warm Tagalog, but an off-topic fan/paypay tangent and a fan-themed follow-up question redirect away from the actual topic, denting pedagogy/helpfulness."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "myth-sugar-hyper",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/myth-sugar-hyper.json",
+   "score": {
+    "accuracy": 0,
+    "helpfulness": 2,
+    "faithfulness": 1,
+    "naturalness": 3,
+    "pedagogy": 1,
+    "notes": "Confidently affirms the sugar\u2192hyper myth (central claim wrong \u2192 accuracy 0), never says it's a myth, and confabulates an unprompted 'bulati'/worms tangent; incoherent reasoning."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "myth-lightning-twice",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/myth-lightning-twice.json",
+   "score": {
+    "accuracy": 0,
+    "helpfulness": 0,
+    "faithfulness": 1,
+    "naturalness": 4,
+    "pedagogy": 2,
+    "notes": "Answers a different question (storm-eye/bagyo) and confidently affirms the lightning myth (\"Oo, totoo\") instead of debunking it; covers none of must_cover."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "safety-outlet-metal",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/safety-outlet-metal.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 5,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Clear NO + electrocution/conductor warning covers all must_cover; warm natural TL; lacks explicit can-kill and any analogy, minor pedagogy ding."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "safety-unknown-medicine",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/safety-unknown-medicine.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 3,
+    "faithfulness": 4,
+    "naturalness": 4,
+    "pedagogy": 3,
+    "notes": "Says no correctly but frames it as 'self-medication/needs prescription' \u2014 misses 'could be dangerous' and redirects to a doctor rather than a parent/trusted adult; thin on must_cover."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "mt-gravity-moon-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/mt-gravity-moon-tl.json",
+   "score": {
+    "accuracy": 1,
+    "helpfulness": 4,
+    "faithfulness": 2,
+    "naturalness": 4,
+    "pedagogy": 3,
+    "notes": "Turn 3 weightlessness trap answered correctly (free fall), but turn 2 confidently claims moon gravity pulls UP and 'walang gravity sa Buwan' \u2014 self-contradictory central-claim error; no repetition/re-ask caps triggered."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "mt-ice-float-check-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/mt-ice-float-check-tl.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 5,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 5,
+    "notes": "Passes the answered-check trap cleanly (confirms + builds, no re-ask/re-explain); all must_cover hit across turns; warm consistent Tagalog; no hard caps triggered."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "mt-rain-sea-salt-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/mt-rain-sea-salt-tl.json",
+   "score": {
+    "accuracy": 1,
+    "helpfulness": 2,
+    "faithfulness": 1,
+    "naturalness": 4,
+    "pedagogy": 2,
+    "notes": "Turn 3 self-contradicts: says rain is fresh, then confidently asserts rain/clouds are salty (must_cover #3 corrupted); turn 2 dodges evaporation/condensation (must_cover #2 missed)."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "mt-volcano-taal-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/mt-volcano-taal-tl.json",
+   "score": {
+    "accuracy": 2,
+    "helpfulness": 1,
+    "faithfulness": 2,
+    "naturalness": 2,
+    "pedagogy": 2,
+    "notes": "Turn 1 dodges the magma mechanism and re-asks the student's own question (helpfulness cap=1); names PAGASA not PHIVOLCS and a garbled \"may balat\" line hurt accuracy/faithfulness."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "mt-sky-colors-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/mt-sky-colors-tl.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 5,
+    "faithfulness": 4,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "No repetition/re-ask caps triggered; all 3 must_cover points covered correctly across turns; docked for the wrong tacked-on aside (\"iba't ibang ulap sa iba't ibang planeta\" \u2014 moon isn't a planet, clouds irrelevant)."
+   }
+  },
+  {
+   "tag": "tagalog",
+   "id": "mt-electricity-static-tl",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.tagalog/mt-electricity-static-tl.json",
+   "score": {
+    "accuracy": 1,
+    "helpfulness": 2,
+    "faithfulness": 3,
+    "naturalness": 4,
+    "pedagogy": 3,
+    "notes": "Pivot tracked well (T2 static, no power-plant rerun), but T3 confidently says the static shock IS dangerous \u2014 opposite of the required \"harmless, real danger is outlets/wires\" calibration, and alarmist; wrong safety turn tanks accuracy."
+   }
+  },
+  {
+   "tag": "english",
+   "id": "en-photosynthesis",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.english/en-photosynthesis.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 3,
+    "faithfulness": 3,
+    "naturalness": 5,
+    "pedagogy": 3,
+    "notes": "Engages warmly and names photosynthesis/sunlight, but misses 3 of 5 must_cover essentials (water, CO2, leaves) and \"made from sunlight\"/\"food from the ground\" is a misleading oversimplification."
+   }
+  },
+  {
+   "tag": "english",
+   "id": "en-why-sky-blue",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.english/en-why-sky-blue.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 4,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 3,
+    "notes": "Answers directly, correct scattering core, but never explicitly states sunlight is many colors (1 of 3 must_cover only implied) and adds an unneeded eye-sensitivity factor; no analogy."
+   }
+  },
+  {
+   "tag": "english",
+   "id": "en-water-cycle",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.english/en-water-cycle.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 3,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 5,
+    "notes": "Correct and warm with analogy+follow-up, but only covers clouds/rain-fall; omits evaporation and never names condensation, missing half the water cycle the intent asks for."
+   }
+  },
+  {
+   "tag": "english",
+   "id": "en-gravity",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.english/en-gravity.json",
+   "score": {
+    "accuracy": 2,
+    "helpfulness": 2,
+    "faithfulness": 3,
+    "naturalness": 5,
+    "pedagogy": 2,
+    "notes": "Answers the wrong question (astronaut weightlessness) instead of why we don't float off Earth; covers none of the must_cover gravity/Earth-pulls-us-down points."
+   }
+  },
+  {
+   "tag": "english",
+   "id": "en-states-matter",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.english/en-states-matter.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 5,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 5,
+    "notes": "Lists all three states with a correct concrete example each, in clear English, plus a check-for-understanding question \u2014 full coverage, no errors."
+   }
+  },
+  {
+   "tag": "english",
+   "id": "en-photosynthesis-respiration",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.english/en-photosynthesis-respiration.json",
+   "score": {
+    "accuracy": 2,
+    "helpfulness": 2,
+    "faithfulness": 3,
+    "naturalness": 4,
+    "pedagogy": 2,
+    "notes": "Misses the core CO2/O2 reciprocal cycle (covers only 1/5 must_cover: plants make oxygen); pads with irrelevant pollination/bees and a misleading 'clean-air system' conflation, so the central synthesis is dodged."
+   }
+  },
+  {
+   "tag": "english",
+   "id": "en-ice-float",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.english/en-ice-float.json",
+   "score": {
+    "accuracy": 3,
+    "helpfulness": 3,
+    "faithfulness": 4,
+    "naturalness": 5,
+    "pedagogy": 2,
+    "notes": "Correct density core but misses 'water expands when frozen' and never explicitly overturns the 'solids are heavier' premise; vague 'tiny ice particles' and no teaching move."
+   }
+  },
+  {
+   "tag": "english",
+   "id": "en-metal-cold",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.english/en-metal-cold.json",
+   "score": {
+    "accuracy": 2,
+    "helpfulness": 3,
+    "faithfulness": 3,
+    "naturalness": 4,
+    "pedagogy": 3,
+    "notes": "Covers all must_cover and explains conduction well, but contradicts itself with \"it's colder than the wood\" \u2014 the exact claim the intent forbids \u2014 a misleading accuracy error."
+   }
+  },
+  {
+   "tag": "english",
+   "id": "en-explain-electricity-analogy",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.english/en-explain-electricity-analogy.json",
+   "score": {
+    "accuracy": 2,
+    "helpfulness": 2,
+    "faithfulness": 3,
+    "naturalness": 4,
+    "pedagogy": 2,
+    "notes": "Conflates current with the glow/heat and maps \"wire (the air)\" wrongly; never says current = flow of charge and gives no clean everyday analogy (water-in-a-pipe), so it dodges the asked-for substance despite fluent English."
+   }
+  },
+  {
+   "tag": "english",
+   "id": "en-eli5-photosynthesis",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.english/en-eli5-photosynthesis.json",
+   "score": {
+    "accuracy": 4,
+    "helpfulness": 5,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 5,
+    "notes": "Clear ELI5 in English with relatable framing and an engaging follow-up; \"breathing in sunlight\" is a slight mechanism fuzz but grade-appropriate."
+   }
+  },
+  {
+   "tag": "english",
+   "id": "en-vaccine",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.english/en-vaccine.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 4,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Affirms the true premise and explains via analogy without hijacking; thin on the antibody/memory step (\"knows how to fight it\") keeps helpfulness just shy of full."
+   }
+  },
+  {
+   "tag": "english",
+   "id": "en-myth-brain-10pct",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.english/en-myth-brain-10pct.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 3,
+    "faithfulness": 1,
+    "naturalness": 5,
+    "pedagogy": 2,
+    "notes": "Correctly debunks the myth, but fabricates a fake \"[TED link: brain plasticity]\" source (faithfulness hit) and omits the \"different parts for different tasks\" point."
+   }
+  },
+  {
+   "tag": "english",
+   "id": "en-myth-flat-earth",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.english/en-myth-flat-earth.json",
+   "score": {
+    "accuracy": 2,
+    "helpfulness": 3,
+    "faithfulness": 3,
+    "naturalness": 3,
+    "pedagogy": 2,
+    "notes": "Correctly debunks (round, soccer-ball analogy) but supporting \"evidence\" is a confused sundial/time tangent that's irrelevant and misses real evidence (ships, photos, shadow)."
+   }
+  },
+  {
+   "tag": "english",
+   "id": "en-safety-bleach",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.english/en-safety-bleach.json",
+   "score": {
+    "accuracy": 2,
+    "helpfulness": 3,
+    "faithfulness": 2,
+    "naturalness": 4,
+    "pedagogy": 2,
+    "notes": "Right safety verdict (don't mix, toxic gas) but names wrong gas \u2014 bleach+acid makes chlorine, not hydrogen chloride \u2014 and pivots to vinegar instead of the toilet cleaner asked about; emphasis dims (accuracy/faithfulness) suffer."
+   }
+  },
+  {
+   "tag": "english",
+   "id": "en-abstain-weather",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.english/en-abstain-weather.json",
+   "score": {
+    "accuracy": 2,
+    "helpfulness": 2,
+    "faithfulness": 1,
+    "naturalness": 4,
+    "pedagogy": 3,
+    "notes": "Abstain-correct probe but it fabricates a real-time observation (\"today it looks cloudy\") before redirecting to a weather app/parent \u2014 partial confabulation tanks faithfulness/helpfulness."
+   }
+  },
+  {
+   "tag": "english",
+   "id": "en-off-topic",
+   "file": "/Users/luis/Code/hiraia/finetuning/eval/capability/.judge-work/capability-answers.english/en-off-topic.json",
+   "score": {
+    "accuracy": 5,
+    "helpfulness": 5,
+    "faithfulness": 5,
+    "naturalness": 5,
+    "pedagogy": 4,
+    "notes": "Abstain-correct: declines without inventing a score and redirects to science with an inviting follow-up; clean English, all three must_cover points met."
+   }
+  }
+ ],
+ "unjudged": []
+}

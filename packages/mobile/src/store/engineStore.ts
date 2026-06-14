@@ -2,6 +2,7 @@ import { create } from 'zustand';
 
 import type { TutorEngine, TutorConfig, Language } from '@hiraia/shared';
 
+import { LANGUAGE_OPTIONS, DEFAULT_LANGUAGE } from '../config/languages';
 import { ACTIVE_MODEL } from '../config/model';
 import { getSetting, setSetting } from '../db/repo';
 import { LocalEngine } from '../engine/LocalEngine';
@@ -31,7 +32,7 @@ interface EngineState {
 function buildConfig(language: Language): TutorConfig {
   return {
     language, // drives the bundled LoRA adapter (TL/BIS) or base model (EN) + RAG language
-    gradeLevel: 7,
+    gradeLevel: 5,
     modelConfig: {
       modelId: ACTIVE_MODEL.key,
       modelType: 'llm',
@@ -60,6 +61,14 @@ export const useEngineStore = create<EngineState>((set, get) => ({
       saved = (await getSetting('language')) as Language | null;
     } catch (e) {
       console.warn('[engineStore] reading saved language failed:', e);
+    }
+    // A persisted choice that is now comingSoon (e.g. a beta tester who picked
+    // Bisaya before the descope) falls back to the default instead of booting a
+    // language the UI no longer offers. changeLanguage() re-persists it.
+    const opt = saved && LANGUAGE_OPTIONS.find((o) => o.lang === saved);
+    if (saved && (!opt || opt.comingSoon)) {
+      console.warn(`[engineStore] saved language "${saved}" unavailable — falling back to ${DEFAULT_LANGUAGE}`);
+      saved = DEFAULT_LANGUAGE;
     }
     // First launch (no saved language) → show the onboarding carousel; its slide-1
     // pick calls changeLanguage() which starts the model download in the background.

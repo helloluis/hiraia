@@ -1,0 +1,542 @@
+{
+ "summary": {
+  "adapter": "/workspace/output/tagalog-full/adapter-tagalog-f16.gguf",
+  "base": "/workspace/models/qwen3-1.7b-q8_0.gguf",
+  "lang": "tagalog",
+  "n": 25,
+  "lang_ok": 25,
+  "english_heavy": 0,
+  "repetitive": 3,
+  "too_short": 2,
+  "ends_question": 25,
+  "avg_words": 85,
+  "runtime_s": 102
+ },
+ "results": [
+  {
+   "id": "tl-01",
+   "lang": "tagalog",
+   "grade": 3,
+   "register": "vague",
+   "topic": "states of matter / general",
+   "prompt": "ano po yung solid liquid gas",
+   "reply": "\b-\b \bMagandang tanong! Ang **states of matter** ay ang pagkakaiba ng hugis at arrangement ng molecules sa ibabaw ng isang substance.\n\nAng solid ay matigas at fixed ang hugis, halimbawa ang salamin o bato; ang liquid ay humahalo at may fixed na laki, halimbawa ang tubig; at ang gas ay humahalo at hindi fixed ang hugis, halimbawa ang hangin o hangin ng lupa. Ang tubig ay umuunlad sa solid hanggang liquid, at ang gas ay nagiging liquid kapag dumuro ng init.\n\nSa loob ng mga 100 degrees Celsius, magiging solid ang gas, liquid ang liquid, at gas ang solid. Kung ang gas ay nagiging liquid kapag dumuro, ano kaya ang natutunaw sa tubig?",
+   "scores": {
+    "words": 111,
+    "ceb_ratio": 0.045,
+    "tag_ratio": 0.243,
+    "eng_ratio": 0.009,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.44,
+    "repetitive": true
+   }
+  },
+  {
+   "id": "tl-02",
+   "lang": "tagalog",
+   "grade": 3,
+   "register": "misspelled",
+   "topic": "photosynthesis",
+   "prompt": "ano po ang potosintesis",
+   "reply": "\b \bMagandang tanong! Ang **potosintesis** ay ang proseso kung saan ang mga elemento ay dumating sa mag-likas na chemical reaction para makuha ang isang compound, at kailangang mag-add ng energy.\n\nHalimbawa, ang hydrogen at oxygen ay mag-likas na mag-react para makuha ang tubig, pero kailangang mag-add ng energy para maging magkatalinuman. Hindi ito nakakaluluto o nag-bake, kaya pwede pa itong pagdo-bake ng mga materyales.\n\nSa palagay mo, bakit ang pagdo-bake ng mga materyales ay nakakaluluto at kailangan ng energy?",
+   "scores": {
+    "words": 86,
+    "ceb_ratio": 0.035,
+    "tag_ratio": 0.233,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.58,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-03",
+   "lang": "tagalog",
+   "grade": 3,
+   "register": "lazy_keywords",
+   "topic": "water cycle",
+   "prompt": "water cycle",
+   "reply": "\b \bMagandang tanong! Ang **water cycle** ay ang paglipat ng tubig mula sa dagat, lupa, at baso papuntang ulan at ulan ulan ulan, at pabalik sa loob ng sistema.\n\nGumagawa ito ng mga proseso tulad ng evaporation sa dagat, condensation na nagiging ulan, precipitation, at transpiration sa halaman. Ang mga ulan ang pinakamahusay na dahilan kung bakit ang mga baso ay mabigat sa tubig. Kaya pwede natin sila na bang pumasa sa maliliit na baso para makita ang water cycle sa hangin?\n\nSa palagay mo, bakit ang mga baso ay mas mabigat kaysa sa mga baso ng maliit na laman?",
+   "scores": {
+    "words": 99,
+    "ceb_ratio": 0.101,
+    "tag_ratio": 0.202,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.54,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-04",
+   "lang": "tagalog",
+   "grade": 4,
+   "register": "vague",
+   "topic": "homework help / unspecified",
+   "prompt": "patulong po sa homework",
+   "reply": "\b \bMagandang tanong! Ang mga teacher ay tumutulong sa mga estudyante na matuto ng kanilang aral, kaya pwede natin mag-talk.\n\nAno ang aral na kailangan mong tulong?",
+   "scores": {
+    "words": 27,
+    "ceb_ratio": 0.037,
+    "tag_ratio": 0.222,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.85,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-05",
+   "lang": "tagalog",
+   "grade": 4,
+   "register": "txtspeak",
+   "topic": "living things",
+   "prompt": "anu po pinagkaiba ng halaman sa hayop",
+   "reply": "\b \bMagandang tanong! Ang halaman at hayop ay magkaiba sa iba't ibang katangian. Ang halaman ay umaakyat mula sa tubig at lumalaki sa halamang puno, habang ang hayop ay umaakyat sa sarili o sa iba pang hayop.\n\nAng halaman ay may **gamot**, tulad ng mga mangga na may vitamin C, at ang hayop ay may **antibodies** para ma-defense sa sakit. Ito ang tinatawag na **evolution** — ang mga hayop ay dumadaloy para sa magkalapad na katangian.\n\nKung ang halaman ay may gamot pero hindi naman ang hayop, sa tingin mo bakit kailangang mag-protect ang mga hayop sa sakit?",
+   "scores": {
+    "words": 98,
+    "ceb_ratio": 0.102,
+    "tag_ratio": 0.194,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.53,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-06",
+   "lang": "tagalog",
+   "grade": 4,
+   "register": "misspelled",
+   "topic": "gravity",
+   "prompt": "ano po ang grabiti",
+   "reply": "\b \bMagandang tanong! Ang **grabiti** ay ang pagbabago ng orientation o pagbabago ng orientation ng isang particle sa space.\n\nSa ordinaryong kondisyon, ang particles ay nasa fixed na orientation, tulad ng mga molecule sa gas o liquid. Pero kapag naglalaman ang medium ng particles, kumakalat ang particles at mabilis silang umikot sa magkapantay na posisyon. Kaya ang grabiti ay ang pagbabago ng orientation ng particles sa random na direksyon.\n\nSa crystals, ang particles ay naka-singaw sa mga fixed positions kaya walang grabiti, pero sa liquid o gas, ang particles ay naglalakad kaya may grabiti. Ang mga crystal sa gilid ay may grabiti, at ang mga particles sa liquid o gas ay walang grabiti.\n\nKung ang crystals ay naka-singaw sa mga fixed positions, sa crystals kaya ba may grabiti o walang, at bakit?",
+   "scores": {
+    "words": 133,
+    "ceb_ratio": 0.098,
+    "tag_ratio": 0.188,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.38,
+    "repetitive": true
+   }
+  },
+  {
+   "id": "tl-07",
+   "lang": "tagalog",
+   "grade": 5,
+   "register": "lazy_keywords",
+   "topic": "force / acceleration",
+   "prompt": "gravity acceleration",
+   "reply": "\b \bMagandang tanong! Ang gravity o gravitational force ay ang puwersa ng Earth na humuhuli sa iyong dahon, at ang acceleration na sinisira niya sa iyong galaw ay tinatawag na gravity acceleration, o g.\n\nAng gravity acceleration ay nagbabago sa velocity ng bawat particle sa paglipas ng oras. Kaya ang mga pagsusunod nito ay may acceleration, at ang acceleration ay nangangahulugan ng kusang paggalaw, hindi ng galaw. Halimbawa, ang mga particle na lumalabas sa orbit ay umiikot sa Earth sa eksaktong paraan dahil sa gravity acceleration nila.\n\nKung ang Earth ay may gravity acceleration na 9.8 m/s², ano ang gravity acceleration ng Moon?",
+   "scores": {
+    "words": 102,
+    "ceb_ratio": 0.088,
+    "tag_ratio": 0.186,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.5,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-08",
+   "lang": "tagalog",
+   "grade": 5,
+   "register": "codeswitch",
+   "topic": "digestive system",
+   "prompt": "paano po nagdidigest yung food natin sa tiyan",
+   "reply": "\b \bMagandang tanong! Ang tiyan niyo ay ang **digestive system**, ang sistema na nagpapaitas ng pagkain at nagpapalaki ito para gamitin.\n\nPumapasok ang pagkain sa tiyan at lumalabas ang mabuti at lumalabas ang mabuti, pero ang mainit na dugo ay naiiiwan para pumasa at magkaroon ng energy. Ang tiyan ay may enzymes na nagpapalaki at nagpapalaki ng nutrients para mabuhay ang katawan.\n\nKung ang tiyan ay mas mabigat at mas mainit kaysa sa mainit na dugo, paano mo kaya nakakalaban ang tiyan na ito?",
+   "scores": {
+    "words": 83,
+    "ceb_ratio": 0.036,
+    "tag_ratio": 0.229,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.51,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-09",
+   "lang": "tagalog",
+   "grade": 5,
+   "register": "incomplete",
+   "topic": "photosynthesis (incomplete)",
+   "prompt": "bakit po berde yung",
+   "reply": "\b \bMagandang tanong! Ang berde ay parang \"lumang tuktok\" dahil sa ating mga paa.\n\nAng mga cell ng paa ay may pigment na chlorophyll na ginagawa sila na gumagawa ng pagkain mula sa hangin. Dahil dito, berde ang tuktok. Kapag naglilinis ng mga pollutant ang mga paa at dumi, masyadong berde ang tuktok.\n\nSa palagay mo, bakit kailangang hawakan ang kalamnan natin para hindi na ma-photosynthesize?",
+   "scores": {
+    "words": 66,
+    "ceb_ratio": 0.045,
+    "tag_ratio": 0.288,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.65,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-10",
+   "lang": "tagalog",
+   "grade": 5,
+   "register": "vague",
+   "topic": "unspecified science",
+   "prompt": "di ko po gets yung lesson namin",
+   "reply": "\b \bAno ang lesson na di mo gets? May magiging magpapaliwanag ng mga kailangan mo sa inyo ang magbigay ng impormasyon.",
+   "scores": {
+    "words": 20,
+    "ceb_ratio": 0.05,
+    "tag_ratio": 0.25,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": true,
+    "uniq_ratio": 0.85,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-11",
+   "lang": "tagalog",
+   "grade": 6,
+   "register": "misspelled",
+   "topic": "ecosystem",
+   "prompt": "ano po ang ekosistem",
+   "reply": "\b \bMagandang tanong! Ang **ekosistem** ay ang buong sistema ng buhay sa isang lugar, tulad ng ugat ng dagat, lugar ng puno, o isang isla.\n\nPumapasok ang tubig, isang puno, at hangin; dumadaan ang liwanag, ugat, at panahon, at tumatama ang panahon at ulan. Tumutulong ang mga bioluminescent na halaman para mapagod ang mga hayop sa dagat.\n\nSa palagay mo, paano nakakaapekto sa isang ekosistema ang paggamit ng mga basura sa dagat?",
+   "scores": {
+    "words": 71,
+    "ceb_ratio": 0.07,
+    "tag_ratio": 0.239,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.59,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-12",
+   "lang": "tagalog",
+   "grade": 6,
+   "register": "lazy_keywords",
+   "topic": "solar system",
+   "prompt": "planets araw mundo",
+   "reply": "\b \bMagandang tanong! Ang mga planeta ay malaking burol ng gas at gas, na may orbit ang pinakamalaking at pinaka-baagusan na.\n\nAng pinakamabigat ay Jupiter, ang pinakalayo ay Saturn, at ang pinakamabigat at mabigat na may halo ay Jupiter. Ang planeta na may halo, ang Jupiter, ay ang pinakamabigat at pinaka-baagusan, at may halo nito.\n\nSa loob ng burol, ang mga gas ay binubuo ng hydrogen at helium, at ang burol ay nakatutok sa mga bagay na pabago ang hugis. Ang mga gas ay lumilipat sa orbit at nagiging bulkan o halo, at ang bulkan ay nagpapakita ng dahilan kung paano gumagalaw ang mga gas.\n\nSa tingin mo, bakit ang Jupiter ang pinakamabigat at pinaka-baagusan na planeta sa solar system?",
+   "scores": {
+    "words": 122,
+    "ceb_ratio": 0.049,
+    "tag_ratio": 0.205,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.39,
+    "repetitive": true
+   }
+  },
+  {
+   "id": "tl-13",
+   "lang": "tagalog",
+   "grade": 6,
+   "register": "codeswitch",
+   "topic": "electricity",
+   "prompt": "pano po gumagana yung kuryente sa bahay",
+   "reply": "\b \bMagandang tanong! Ang kuryente sa bahay ay gumagamit ng napakalaking dami ng **current**, at bawal na itong gumalaw pataas o labas dahil madalas na nahihirapan niya ang mga wire.\n\nGaya ng kuryente sa gilid ng lampo, gumagawa ito ng napakalaking current at maaaring tumuklas sa wire. Kaya tinutulak ng engineer ang mga wire na may refugyo para hindi na tumuklas sa kuryente kapag kumalat ang current.\n\nSa palagay mo, paano mo kaagad na humawak ng isang lampo? Bakit kaya kailangan ng refugyo o circuit breaker?",
+   "scores": {
+    "words": 85,
+    "ceb_ratio": 0.059,
+    "tag_ratio": 0.224,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.61,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-14",
+   "lang": "tagalog",
+   "grade": 7,
+   "register": "clean",
+   "topic": "cells",
+   "prompt": "Ano po ang pagkakaiba ng plant cell at animal cell?",
+   "reply": "\b \bMagandang tanong! Ang **cell** ay ang pinakamaliit na bahagi ng buhay, at may iba't ibang uri nito, tulad ng **plant cell** at **animal cell**.\n\nAng plant cell ay may cell wall at chloroplast sa loob, kaya uminom ito ng chlorophyll para gumawa ng sarili nito ng pagkain. Ang animal cell naman ay walang cell wall at chloroplast, kaya may sarili silang pagkain at dumaan sa pagputik. Tandaan: ang cell wall ang nakakatulong sa paggalaw ng plant cell, pero ang animal cell ay walang ito.\n\nKaya ba sila magkasama o magkaiba?",
+   "scores": {
+    "words": 90,
+    "ceb_ratio": 0.033,
+    "tag_ratio": 0.189,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.5,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-15",
+   "lang": "tagalog",
+   "grade": 7,
+   "register": "misspelled",
+   "topic": "photosynthesis",
+   "prompt": "paano po nangyayari ang potosyntesis sa mga dahon",
+   "reply": "\b \bMagandang tanong! Ang potosyntesis ay ang paggawa ng mga protein sa mga dahon gamit ang chloroplast.\n\nDagdag sa chlorophyll ang mga nutrients mula sa tubig at gusali, at tumutulog ang mga cells para mabuo ang mga amino acids. Pagkatapos, bumubuo ang mga cells ang mga protein at bumabangga ang dahon para lumalamig.\n\nKapag pinapainit ang dahon, nagiging malamig ang mga cell, kaya natutunaw ang mga protein at nagiging kumukulo ang dahon. Kaya nga ang mga dahon na napainit ay mas mabango o mas mataba.\n\nSa palagay mo, bakit mas mataba ang dahon na napainit kaysa sa malamig?",
+   "scores": {
+    "words": 97,
+    "ceb_ratio": 0.062,
+    "tag_ratio": 0.299,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.51,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-16",
+   "lang": "tagalog",
+   "grade": 7,
+   "register": "txtspeak",
+   "topic": "matter / atoms",
+   "prompt": "anu b ang atom",
+   "reply": "\b \bMagandang tanong! Ang **atom** ay ang pinakamaliit na bahagi ng isang elemento, at ang pinakaimportanteng sabi nito ay ang mga protons at neutrons na nasa center na tinatawag na **nucleus**, at ang mga electrons na malayo sa ito na nagpapalaki ng atom.\n\nAng protons at neutrons ay magkaiba ng bilis, at kung magkaiba silang bilis, ang magkahiwalay na bilis ang nagpapalaki ng atom. Kapag magkasama ang 6 protons at 6 neutrons, kaya ang nucleus ay isa sa pinakamaliit na atoms.\n\nKapag nag-a-change ang bilis ng protons o neutrons, paano mo ito tandaan?",
+   "scores": {
+    "words": 92,
+    "ceb_ratio": 0.033,
+    "tag_ratio": 0.239,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.48,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-17",
+   "lang": "tagalog",
+   "grade": 8,
+   "register": "lazy_keywords",
+   "topic": "Newton's laws",
+   "prompt": "newton law of motion",
+   "reply": "\b \bMagandang tanong! Ang **Newton's Laws of Motion** ay ang mga prinsipyo ng paggalaw na ginamit ang 3 na beses sa physics.\n\nAng **First Law** ay tinatawag na Inertia — ang bagay ay gumagalaw o gumalaw pabalik kahit paano, at hindi gumalaw pa hasta sa balangkas o friction. Ang **Second Law** ay F = ma — mas malaki ang puwersa, mas malaki ang acceleration. Ang **Third Law** ay may parang nag-e-reaction sa bawat action — ang pangingapoy ay naglalaman ng pagsabog sa katawan.\n\nSa palagay mo, bakit kailangang mag-control ng bagay na gumagalaw sa kinabukasan?",
+   "scores": {
+    "words": 92,
+    "ceb_ratio": 0.065,
+    "tag_ratio": 0.163,
+    "eng_ratio": 0.011,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.65,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-18",
+   "lang": "tagalog",
+   "grade": 8,
+   "register": "codeswitch",
+   "topic": "periodic table",
+   "prompt": "ano po use ng periodic table sa chemistry",
+   "reply": "\b \bMagandang tanong! Ang periodic table ay ang kamay ng chemistry — ang pangunahing tool sa pag-aaral.\n\nPumapasok ang elements sa mga period at group para malaman ang maraming pangunahing katangian nila. Ang mga group ay may magkagawa ng mga chemical properties, tulad ng halimbawa ng group 1 (metal na makakaroon ng 1 electron sa pagsunog) at group 17 (nonmetal na may 7 electrons sa valence shell).\n\nKapag inilagay mo ang elements sa isang grupo, mas mainam mo paubosin ang periodic table para maipapaliwanag ang ilang katangian nila. Kaya nagsasama-sama ang periodic table at mga chemical reaction equations para malaman ang mga element.\n\nSa tingin mo, bakit ang tinatawag na \"periodic table\" at hindi \"periodic table of elements\"?",
+   "scores": {
+    "words": 114,
+    "ceb_ratio": 0.053,
+    "tag_ratio": 0.237,
+    "eng_ratio": 0.009,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.54,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-19",
+   "lang": "tagalog",
+   "grade": 8,
+   "register": "vague",
+   "topic": "unspecified physics",
+   "prompt": "ano po yung tungkol sa puwersa",
+   "reply": "\b \bMagandang tanong! Ang **puwersa** ay ang ebidensya ng paggalaw o pagtunaw sa isang bagay o sistema.\n\nMay dalawa itong uri: magandang puwersa (halimbawa, puwet ng tiyan) at mabigat na puwersa (halimbawa, puwang). Ang puwersa ay hindi siyang ang dahilan ng paggalaw, kundi ang dahilan nito.\n\nSa mga nagtutulak at nagpapalakas, ang puwersa ay nagbibigay ng ebidensya. Sa mga nagpapalakas, ang puwersa ay nagpapalaki o nagpapalakas.\n\nSa palagay mo, bakit mas mabilis gumalaw ang isang bagay kumpara sa isa na malaki?",
+   "scores": {
+    "words": 80,
+    "ceb_ratio": 0.062,
+    "tag_ratio": 0.188,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.55,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-20",
+   "lang": "tagalog",
+   "grade": 9,
+   "register": "misspelled",
+   "topic": "mitosis",
+   "prompt": "ano po ang maytosis at miyosis",
+   "reply": "\b \bMagandang tanong! Ang **maytosis** ay ang paglalagay ng cell sa **2 daughter cells**, kaya umaalis ang cell at nagiging dalawa. Ang **mitosis** naman ay para sa reproduction at pagbabagong pagkain, kaya marami sa cells sa katawan mo ay binubuo dito.\n\nAng **miyosis** naman ay ang pagbabago ng diploid na cell, at ang resulta ay 4 daughter cells na halos pareho pero halos 2 na sa laki. Kaya ang gamit ng miyosis ay sa mga cell na pwedeng magbabago, tulad ng gamit ng sperm at egg cells. Bakit kaya magiging 4 na cell ang miyosis?",
+   "scores": {
+    "words": 90,
+    "ceb_ratio": 0.067,
+    "tag_ratio": 0.2,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.5,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-21",
+   "lang": "tagalog",
+   "grade": 9,
+   "register": "clean",
+   "topic": "chemical bonding",
+   "prompt": "Bakit po nagbo-bond ang mga atom para gumawa ng molecule?",
+   "reply": "\b \bMagandang tanong! Ang mga atom ay nagbo-bond para gumawa ng molecule dahil may puwetang enerhiya sa kanilang orbitals.\n\nKung pareho ang orbitals, gustong gustong magpakita ng enerhiya nila para makita ang puwetang, kaya nagbo-bond sila. Ang mga bond ay gumagawa ng bonds sa pamamagitan ng shared electrons — halimbawa, ang oxygen ay magiging oxygen molecule (O₂) dahil ang dalawa ay nag-u-share ng 2 electrons.\n\nBakit kaya ang oxygen molecule ay gas, pero ang nitrogen molecule ay gas din pero hindi magkaiba?",
+   "scores": {
+    "words": 83,
+    "ceb_ratio": 0.036,
+    "tag_ratio": 0.241,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.57,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-22",
+   "lang": "tagalog",
+   "grade": 9,
+   "register": "lazy_keywords",
+   "topic": "electricity / Ohm",
+   "prompt": "voltage current resistance",
+   "reply": "\b \bMagandang tanong! Ang tatlong ito ay nagkakaiba pero magkadepende kung saan sila ang nasa.\n\nSa circuit, ang voltage ay humahawak sa wire, ang current ang naghahambing kung gaano karaming energy ang dumating, at ang resistance ang nagbibigay ng kabaligtaran kung gaano karaming voltage na ang dapat. Halimbawa, kung mas mabigat ang resistance, mas mababa ang current sa parehong voltage.\n\nSa ating sasakyan, ang battery ay gumagawa ng voltage, ang motor ang nagsisilbing resistance, at ang current ang naglalaman ng karamunting galaw. Ano kaya ang nangyari sa current kapag nag-change ang resistance o voltage?",
+   "scores": {
+    "words": 94,
+    "ceb_ratio": 0.096,
+    "tag_ratio": 0.245,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.55,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-23",
+   "lang": "tagalog",
+   "grade": 10,
+   "register": "codeswitch",
+   "topic": "genetics",
+   "prompt": "pano po namamana yung mga traits galing parents",
+   "reply": "\b \bMagandang tanong! Ang mga traits o karakter ay may mga **genotype** at **pheno** (resulta sa paggamit ng genes). Ang pamilya ay may DNA na kabaligtaran kaya may mga anak na may parehong trait.\n\nKapag pareho ang alleles, pareho silang phenotypic; kapag magkaiba, hindi na pareho. Halimbawa, alam mo na ang mga pamilya na may 5 o 6 na anak, pero ang mga anak ay magkakaroon ng panganib ng 25% na may trait na pumapasok sa kanila.\n\nKung magkaiba ang alleles kaya ang mga anak, ano kaya ang phenotypic na trait ng kanilang anak?",
+   "scores": {
+    "words": 90,
+    "ceb_ratio": 0.089,
+    "tag_ratio": 0.233,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.48,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-24",
+   "lang": "tagalog",
+   "grade": 10,
+   "register": "misspelled",
+   "topic": "stoichiometry / mole",
+   "prompt": "ano po ang mol sa kemistri",
+   "reply": "\b \bMagandang tanong! Ang **mol** ay isang kung gaano karami ang mga particle (dapat pumunta sa 6.022×10²³) ng isang substance.\n\nGumagamit ka ng formula na nasa periodic table. Halimbawa, ang 1 mol ng oxygen gas (O₂) ay 2 mol ng oxygen atoms, at ang 1 mol ng glucose ay 6 mol ng carbon, 12 mol ng hydrogen, at 6 mol ng oxygen. Para sa mabagal na mga test, ang 1 mol ay 1 gram na mass para sa elemento.\n\nKung ang 100.0 g ng silver (Ag) ay 1 mol, ano ang mass ng 3.01×10²³ atoms?",
+   "scores": {
+    "words": 82,
+    "ceb_ratio": 0.061,
+    "tag_ratio": 0.256,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": false,
+    "uniq_ratio": 0.51,
+    "repetitive": false
+   }
+  },
+  {
+   "id": "tl-25",
+   "lang": "tagalog",
+   "grade": 10,
+   "register": "vague",
+   "topic": "unspecified / lazy",
+   "prompt": "test bukas di pa ko nag-aaral help",
+   "reply": "\b \bNapaka-wala ako ng test bukas! Pero magandang kakaunti kung paano mo ito makakatulong. Paano kaya mo itong gawing maganda ang pag-aaral?",
+   "scores": {
+    "words": 23,
+    "ceb_ratio": 0.087,
+    "tag_ratio": 0.174,
+    "eng_ratio": 0.0,
+    "lang_ok": true,
+    "ends_question": true,
+    "english_heavy": false,
+    "too_short": true,
+    "uniq_ratio": 0.91,
+    "repetitive": false
+   }
+  }
+ ]
+}

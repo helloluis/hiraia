@@ -5,9 +5,9 @@ import {
   Animated,
   Dimensions,
   Easing,
+  Pressable,
   StyleSheet,
   Text,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 
@@ -254,18 +254,22 @@ export function LoaderOverlay({ onDismiss }: { onDismiss: () => void }) {
         <Text style={styles.welcomeText}>{welcomeMessage}</Text>
       </View>
 
-      <View style={styles.middleContainer}>
-        <TouchableWithoutFeedback onPress={handlePressCat}>
-          <View style={styles.videoContainer}>
-            <VideoView
-              player={player}
-              style={styles.video}
-              nativeControls={false}
-              contentFit="contain"
-            />
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
+      <Pressable
+        onPress={handlePressCat}
+        style={styles.middleContainer}
+        android_disableSound
+      >
+        {/* The native VideoView swallows touches, so wrap it in a pointerEvents="none"
+            layer — taps fall through to the Pressable above and trigger a reaction. */}
+        <View style={styles.videoContainer} pointerEvents="none">
+          <VideoView
+            player={player}
+            style={styles.video}
+            nativeControls={false}
+            contentFit="contain"
+          />
+        </View>
+      </Pressable>
 
       <View style={styles.bottomContainer}>
         <View style={styles.progressWrapper}>
