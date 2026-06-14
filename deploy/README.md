@@ -69,6 +69,55 @@ It hard-resets the repo to `origin/main` (so **don't keep local edits on the ser
 The model server (`pm2: hiraia-llm`) is left running; restart it with
 `pm2 restart hiraia-llm` only when the model/adapters or `run-llama-server.sh` change.
 
+## 5. Grounded web demo (server-side RAG) — the public "Try the demo" lightbox
+
+The public demo (`/`, the lightbox — distinct from the authed browser-direct chat above)
+is a **faithful replica of the shipped APK's grounded path**, served entirely server-side:
+
+```
+visitor → /api/demo/chat (Next route, server-side)
+            ├─ server/rag.ts  → embed query (LaBSE :8090) → retrieve over the bundled
+            │                    int8 vectors → grounding block (same bank as the phone)
+            ├─ build prompt: generateSystemPrompt (static) + grounding in the USER turn
+            └─ → llama-server :8080 (v2a adapter)  → stream SSE back to the browser
+```
+
+Three processes now: **hiraia-llm** (:8080, generation), **hiraia-embed** (:8090, LaBSE),
+**hiraia-web** (:3005). The browser never touches :8080/:8090 for the demo — the route
+proxies them (both bound to 127.0.0.1).
+
+**Start the embedder (once):**
+```bash
+pm2 start /root/hiraia/deploy/run-embed-server.sh --name hiraia-embed && pm2 save
+curl -s 127.0.0.1:8090/v1/embeddings -H 'Content-Type: application/json' \
+  -d '{"input":"ano ang photosynthesis","model":"labse"}' | python3 -c \
+  'import json,sys;e=json.load(sys.stdin)["data"][0]["embedding"];print("dims",len(e))'  # → 768
+```
+`run-embed-server.sh` auto-downloads `labse.Q4_K_M.gguf` from the model mirror on first
+run (into the gitignored `deploy/models/`, so it survives `update.sh`). It MUST be the
+**Q4_K_M** quant + **CLS** pooling — that's what the corpus vectors blob's 0.99999
+query/corpus parity was verified against (see mobile `config/model.ts` EMBEDDER).
+
+**The web route needs no env in the default layout** — it defaults to `localhost:8080`
+(generation), `localhost:8090` (embed), and reads the vectors blob from
+`packages/mobile/assets/rag/` (relative to the web cwd). Override with `HIRAIA_MODEL_URL`,
+`HIRAIA_EMBED_URL`, `HIRAIA_RAG_DIR` if the layout changes.
+
+**Bank ↔ vectors must match:** `server/rag.ts` attaches the int8 blob only if its fact
+count equals `@hiraia/shared`'s `SCIENCE_FACTS` length (else it throws and stays
+lexical-only). So whenever the fact bank changes, rebuild the vectors blob in the SAME
+commit. A `git lfs pull` on deploy keeps the blob current.
+
+### Ship process when a new official APK goes out
+The web demo's model + bank should track the shipped APK exactly:
+1. The APK's adapter GGUFs already live at `packages/mobile/assets/models/adapter-{tagalog,bisaya}.gguf`
+   (git-lfs). `run-llama-server.sh` points there — so they ship to the VPS automatically.
+2. On the VPS: `deploy/update.sh` (rebuilds + restarts web), then
+   `git lfs pull && pm2 restart hiraia-llm` to load the new adapter, and — only if the
+   bank changed — the rebuilt web already picked up the new `SCIENCE_FACTS` + blob.
+3. Verify: `/qvac/lora-adapters` lists id 0 + 1; a science query returns a grounded
+   answer; an off-topic query abstains (no spurious facts).
+
 ---
 
 ## Notes

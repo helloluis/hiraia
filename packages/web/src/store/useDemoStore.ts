@@ -119,13 +119,21 @@ function streamInto(
   setTimeout(tick, speed);
 }
 
-/** The intent-distilled model reasons in a leading <think>…</think> block; show only the
- *  final answer in the demo (empty while still thinking → the bubble shows its dots). */
+/** The intent-distilled model reasons in a leading <think>…</think> block, and may end a
+ *  reply with an `[image: …]` control token (the phone resolves it to a bundled
+ *  illustration — the web demo has no picture retrieval, so we strip it). Show only the
+ *  final answer text in the demo (empty while still thinking → the bubble shows its dots). */
 function stripThink(s: string): string {
+  // 1) drop the reasoning block — show only what follows </think>
   const close = s.indexOf('</think>');
-  if (close >= 0) return s.slice(close + '</think>'.length).replace(/<think>/g, '').replace(/^\s+/, '');
-  if (s.includes('<think>')) return '';
-  return s;
+  let out: string;
+  if (close >= 0) out = s.slice(close + '</think>'.length).replace(/<think>/g, '');
+  else if (s.includes('<think>')) return '';
+  else out = s;
+  // 2) strip completed [image: …] tokens, then any trailing partial one still streaming
+  //    in (so "…[image: a ca" never flashes before its closing bracket arrives)
+  out = out.replace(/\[image:[^\]]*\]/gi, '').replace(/\[image:[^\]]*$/i, '');
+  return out.replace(/^\s+/, '').replace(/[ \t]+$/, '');
 }
 
 /** Fallback preview reply per language, used only if the model backend is unreachable. */

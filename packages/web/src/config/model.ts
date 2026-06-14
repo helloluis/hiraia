@@ -34,9 +34,11 @@ export type LanguageKey = 'english' | 'tagalog' | 'cebuano';
  * Per-language config. `loraId` is the index of the adapter as loaded by the
  * server, e.g. launching with:
  *   llama-server -m sailor2-3b-chat.gguf \
- *     --lora adapter-sailor-tagalog-f16.gguf \   # -> id 0
- *     --lora adapter-sailor-bisaya-f16.gguf      # -> id 1
- * English uses no adapter (base model handles English fine).
+ *     --lora adapter-tagalog.gguf \   # -> id 0 (v2a: Tagalog + English)
+ *     --lora adapter-bisaya.gguf      # -> id 1 (Bisaya)
+ * English has no separate adapter — it RIDES the Tagalog (v2a) adapter, exactly as
+ * the shipped APK does (measured better than the bare base; see mobile config/model.ts
+ * "English rides the TAGALOG adapter"). So english.loraId = 0, not null.
  */
 export const LANGUAGES: Record<LanguageKey, {
   label: string;
@@ -46,8 +48,8 @@ export const LANGUAGES: Record<LanguageKey, {
 }> = {
   english: {
     label: 'English',
-    adapterLabel: 'base model (no adapter)',
-    loraId: null,
+    adapterLabel: 'Tagalog (v2a) adapter',
+    loraId: 0,
     system:
       'You are Hiraia, a friendly science tutor for Filipino students (grades 3-10). ' +
       'Explain concepts simply and correctly for the age, use the Socratic method, and ' +
