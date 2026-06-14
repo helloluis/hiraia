@@ -16,6 +16,7 @@ import {
   formatGroundingBlock,
   composeGroundedUserTurn,
 } from '../../../packages/shared/src/prompts/system.ts';
+import { presentationViolations } from '../presentation.mts';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ENDPOINT = process.env.ENDPOINT ?? 'http://localhost:8088';
@@ -192,6 +193,13 @@ for (const c of cases) {
     fails.push(`mustRetrieveIdIncludes: none of [${c.mustRetrieveIdIncludes.join(',')}] in retrieved [${retrievedIds.join(',') || 'none'}]`);
   // emoji engagement nudge (Extended_Pictographic covers the emoji blocks)
   if (c.mustContainEmoji && !/\p{Extended_Pictographic}/u.test(raw)) fails.push('mustContainEmoji: no emoji in answer');
+  // v3 PRESENTATION INVARIANTS — universal, apply to EVERY case regardless of flags:
+  // illustration restraint (≤1 well-formed [image:] tag) + engagement sanity (no emoji spam)
+  // + an English persona-leak guard. Single source of truth in ../presentation.mts, shared with
+  // the capability benchmark so an invariant added once is enforced in BOTH instruments. These
+  // lock in v3's behavior so a future adapter can't silently regress to multi/malformed tags or
+  // emoji storms. (Run on the RAW reply — the tag is part of what's checked.)
+  for (const v of presentationViolations(raw, c.lang)) fails.push(`presentation: ${v}`);
   // COVERED-topic probe: the model must USE the grounding, not punt to a teacher/book.
   // At SAMPLES>1 (device-temp repro), draw extra samples and fail if ANY deflects —
   // the kid only has to hit the bad branch once to be told "ask your teacher".

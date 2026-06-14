@@ -91,7 +91,7 @@ archives `capability-scores.*.json` (PHASE=report merges those).
 
 ## Tiers (what each exposes)
 
-**134 probes** total (120 answerable, 14 abstain-correct), sized so no single probe's
+**143 probes** total (129 answerable, 14 abstain-correct), sized so no single probe's
 stochastic pass/fail moves the score and every tier holds many *distinct* science topics — a
 parrot can't fluke a whole category. Counts below; run weight is `tier_weights` in `probes.json`.
 
@@ -108,6 +108,13 @@ parrot can't fluke a whole category. Counts below; run weight is `tier_weights` 
   English uses the base model on-device. Exists because hackathon judges who don't speak Filipino will
   pick English from the language selector — this is the path they experience. The runner gives it its own
   pass: `run-capability.sh` boots the base GGUF with no `--lora` and sets `USE_LORA=0`.
+- `presentation` (9, w 1.5) — **v3 targets**: illustration use vs restraint (a picture when one helps,
+  none on chit-chat/definitions), natural non-forced endings (incl. an English no-persona-leak probe),
+  and engagement (a few emoji + bold, never spam). The judge scores these under naturalness/pedagogy
+  (see rubric.md "Presentation probes"); ALONGSIDE, `run-capability.mts` reports **objective** metrics
+  from `../presentation.mts` — image-tag emission + well-formed rate, multi-turn image-repeat rate,
+  emoji present/spam, bold rate — with a baseline diff, so v3's behavior is locked in and can't
+  silently regress. The same `presentation.mts` invariants hard-fail in the regression gate.
 
 Run the same probe set against every candidate (current Sailor2-3B, SFT-rebalanced,
 distilled-from-20B) and compare deltas. This is the instrument that tells us whether any

@@ -101,6 +101,29 @@ on-device model demonstrably fails them):
 
 ---
 
+## Presentation probes (tier: `presentation`)
+
+These probes target the v3 behaviors: **illustration use vs restraint**, **natural endings**, and
+**engagement**. Score the same 5 dimensions, but weigh these into `naturalness` and `pedagogy`:
+
+- **Image tags are STRIPPED before the child sees the reply.** Judge the displayed text — do NOT
+  reward or penalize the literal `[image: …]` token (the runner measures image behavior
+  objectively, separately). Just don't let a stray bracketed line read as part of the answer.
+- **Illustration restraint** (`pres-img-restraint-*`): a thank-you, greeting, or definition does
+  NOT need a picture and does NOT need a lesson. A reply that dumps an unnecessary diagram or
+  launches a lecture on a chit-chat turn scores **pedagogy ≤ 2** (over-eager). Brief + warm wins.
+- **Endings** (`pres-ending-*`): a good reply closes with **at most one** natural follow-up that
+  fits the topic. **Caps:** more than one tacked-on question, or a generic forced question
+  unrelated to what was just taught → **naturalness ≤ 2**. For the English ending probe, ANY drift
+  into Tagalog/Bisaya (the "almost perfect except the ending" persona-leak) → **naturalness ≤ 1**.
+- **Engagement** (`pres-engage-*`): warm, kid-facing, a few fitting emoji and a bolded key term
+  make it land for a young child. But engagement never excuses inaccuracy, and an emoji storm or
+  bold-everything is worse than plain — judge it as trying-too-hard (naturalness ≤ 3).
+- **Multi-turn no-repeat** (`pres-mt-no-repeat-*`): inherits the `multi-turn` hard caps. Re-showing
+  the SAME picture, or re-teaching the same content on a later turn, caps pedagogy at 1.
+
+---
+
 ## Aggregation (done by `run-capability.mts`, not the judge)
 
 Per probe: a weighted dimension blend, with the probe's `dimensions_emphasis` doubled, then the
@@ -113,6 +136,10 @@ Report:
 3. **Per-dimension breakdown** — esp. the helpfulness mean across `must_answer:true` probes
    (the over-abstention metric).
 4. **current-vs-candidate diff** — same probe set, two models, side by side.
+5. **Presentation metrics** — objective, deterministic (no judge): image-tag emission +
+   well-formed rate, multi-turn image-repeat rate, emoji present/spam, bold rate. Computed by
+   `run-capability.mts` via `../presentation.mts` and shown with a baseline diff. These lock in
+   v3's illustration-restraint + engagement targets so a future adapter can't silently regress.
 
 A model is "better" only if it lifts helpfulness on answerable probes **without** dropping the
 abstain-correct tier — i.e. it learned to answer, not just to talk more.
