@@ -65,6 +65,21 @@ a prompt nudge can be validated but is secondary.
 `finetuning/distill/` (next adapter style data).
 **Done.** Replies render colored bold + italics; the tutor reliably uses a few fitting emojis.
 
+## P1 — Answer-ending quality (no persona leak / no backwards Socratic)
+
+**Why.** Observed (English, "Tell me about gravity"): a clean body followed by a broken trailer —
+*"You are a helpful tutor, right? 🌍 Can you explain how gravity works?"* Two failures: (1) **persona
+leakage** (echoing the system-prompt identity back out), (2) a **backwards follow-up** that asks the
+kid to re-explain their own question. Worse in **English**, which has no dedicated adapter (routes
+through the Tagalog LoRA), so endings wobble more.
+
+**Lever.** Training-side (next adapter): teach endings that close with a *real* guiding question or a
+warm closer, and **never** echo the persona or ask the learner to re-explain. Consider strengthening
+the English slice of the distill data. Avoid a display-side regex strip (brittle, the trap we left
+behind). A system-prompt nudge can be A/B-tested but is secondary (train/serve parity + KV-cache hash).
+**Files.** `finetuning/distill/` (next adapter data), `packages/shared/src/prompts/system.ts`.
+**Done.** Replies end cleanly; no persona-echo or backwards questions across a TL+EN probe set.
+
 ## P1 — Visual integration + eager illustrations
 
 **Why.** Pictures should feel part of the bubble, and the tutor should offer them readily.

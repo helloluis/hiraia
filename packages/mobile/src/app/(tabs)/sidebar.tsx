@@ -1,12 +1,15 @@
 import { useRouter } from 'expo-router';
-import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import type { Language } from '@hiraia/shared';
 
 import { LANGUAGE_OPTIONS } from '../../config/languages';
 import { ACTIVE_MODEL, VECTORS_META } from '../../config/model';
+import { uiStrings } from '../../config/strings';
 import { HIRAIAPEDIA_VERSION, ADAPTER_VERSION } from '../../config/version';
+import { listConversations, type Conversation } from '../../db/repo';
 import { useChatStore } from '../../store/chatStore';
 import { useEngineStore } from '../../store/engineStore';
 import { colors, fonts } from '../../theme';
@@ -17,6 +20,21 @@ export default function SidebarScreen() {
   const changeLanguage = useEngineStore((s) => s.changeLanguage);
   const setOnboardingActive = useEngineStore((s) => s.setOnboardingActive);
   const clearMessages = useChatStore((s) => s.clearMessages);
+  const switchConversation = useChatStore((s) => s.switchConversation);
+  const activeConvId = useChatStore((s) => s.conversationId);
+
+  // Past conversations for the history list. Loaded each time the sidebar opens; only
+  // titled ones show (an untitled, just-created "new chat" stays hidden until first use).
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  useEffect(() => {
+    void listConversations().then(setConversations).catch(() => undefined);
+  }, []);
+  const pastChats = conversations.filter((c) => c.title);
+
+  const openConversation = (id: string) => {
+    void switchConversation(id);
+    router.back();
+  };
 
   const showTutorial = () => {
     setOnboardingActive(true);
@@ -28,6 +46,7 @@ export default function SidebarScreen() {
     router.back();
   };
 
+  const t = uiStrings(language);
   const langLabel = LANGUAGE_OPTIONS.find((o) => o.lang === language)?.label ?? '—';
   const adapterInfo = language ? ADAPTER_VERSION[language] : '—';
 
@@ -44,12 +63,12 @@ export default function SidebarScreen() {
       <View style={styles.header}>
         <Text style={styles.title}>hiraia</Text>
         <TouchableOpacity onPress={() => router.back()}>
-          <Text style={styles.closeButton}>← Isara</Text>
+          <Text style={styles.closeButton}>{t.close}</Text>
         </TouchableOpacity>
       </View>
 
-      <View style={styles.content}>
-        <Text style={styles.sectionTitle}>Wika</Text>
+      <ScrollView style={styles.content} contentContainerStyle={styles.contentInner}>
+        <Text style={styles.sectionTitle}>{t.sectionLanguage}</Text>
         <View style={styles.langRow}>
           {LANGUAGE_OPTIONS.map((opt) => {
             const active = opt.lang === language;
@@ -68,24 +87,42 @@ export default function SidebarScreen() {
                 <Text style={[styles.langChipText, active && styles.langChipTextActive]}>
                   {opt.label}
                 </Text>
-                {opt.beta && <Text style={styles.langBeta}> beta</Text>}
-                {opt.comingSoon && <Text style={styles.langSoon}> malapit na!</Text>}
+                {opt.beta && <Text style={styles.langBeta}> {t.beta}</Text>}
+                {opt.comingSoon && <Text style={styles.langSoon}> {t.comingSoon}</Text>}
               </TouchableOpacity>
             );
           })}
         </View>
-        <Text style={styles.langNote}>Sandali itong magri-restart kapag pinalitan.</Text>
+        <Text style={styles.langNote}>{t.langRestartNote}</Text>
 
-        <Text style={styles.sectionTitle}>Mga Usapan</Text>
-        <Text style={styles.placeholder}>Wala pang usapan</Text>
+        <Text style={styles.sectionTitle}>{t.sectionConversations}</Text>
+        {pastChats.length === 0 ? (
+          <Text style={styles.placeholder}>{t.noConversations}</Text>
+        ) : (
+          pastChats.map((c) => (
+            <TouchableOpacity
+              key={c.id}
+              style={[styles.convRow, c.id === activeConvId && styles.convRowActive]}
+              onPress={() => openConversation(c.id)}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.convTitle} numberOfLines={1}>
+                {c.title}
+              </Text>
+              <Text style={styles.convDate}>
+                {new Date(c.updated_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+              </Text>
+            </TouchableOpacity>
+          ))
+        )}
 
-        <Text style={styles.sectionTitle}>Mga Tala</Text>
-        <Text style={styles.placeholder}>Wala pang tala</Text>
+        <Text style={styles.sectionTitle}>{t.sectionNotes}</Text>
+        <Text style={styles.placeholder}>{t.noNotes}</Text>
 
-        <Text style={styles.sectionTitle}>Bersyon</Text>
+        <Text style={styles.sectionTitle}>{t.sectionVersion}</Text>
         <View style={styles.versionBlock}>
           <View style={styles.versionRow}>
-            <Text style={styles.versionLabel}>Modelo</Text>
+            <Text style={styles.versionLabel}>{t.labelModel}</Text>
             <Text style={styles.versionValue}>
               {ACTIVE_MODEL.displayName} · {ACTIVE_MODEL.quant}
             </Text>
@@ -97,19 +134,19 @@ export default function SidebarScreen() {
           <View style={styles.versionRow}>
             <Text style={styles.versionLabel}>Hiraiapedia</Text>
             <Text style={styles.versionValue}>
-              v{HIRAIAPEDIA_VERSION} · {VECTORS_META.count.toLocaleString()} datos
+              v{HIRAIAPEDIA_VERSION} · {VECTORS_META.count.toLocaleString()} {t.facts}
             </Text>
           </View>
         </View>
 
-        <Text style={styles.sectionTitle}>Tutorial</Text>
+        <Text style={styles.sectionTitle}>{t.tutorial}</Text>
         <TouchableOpacity style={styles.tutorialButton} onPress={showTutorial} activeOpacity={0.85}>
-          <Text style={styles.tutorialButtonText}>Ipakita ang tutorial</Text>
+          <Text style={styles.tutorialButtonText}>{t.showTutorial}</Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
 
       <TouchableOpacity style={styles.newChatButton} onPress={newConversation} activeOpacity={0.85}>
-        <Text style={styles.newChatText}>+ Bagong Usapan</Text>
+        <Text style={styles.newChatText}>{t.newConversation}</Text>
       </TouchableOpacity>
       </SafeAreaView>
       {/* dimmed page peeking out beside the notebook cover; tap to close */}
@@ -157,7 +194,36 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+  },
+  contentInner: {
     padding: 16,
+    paddingBottom: 24,
+  },
+  convRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 12,
+    backgroundColor: colors.white,
+    marginBottom: 8,
+  },
+  convRowActive: {
+    borderWidth: 2,
+    borderColor: colors.primary,
+  },
+  convTitle: {
+    flex: 1,
+    fontFamily: fonts.body,
+    fontSize: 16,
+    color: colors.ink,
+  },
+  convDate: {
+    fontFamily: fonts.body,
+    fontSize: 13,
+    color: colors.inkMuted,
   },
   sectionTitle: {
     fontFamily: fonts.display,

@@ -1,6 +1,6 @@
 import { Text, type StyleProp, type TextStyle } from 'react-native';
 
-import { fonts } from '../theme';
+import { colors, fonts } from '../theme';
 
 /**
  * Lightweight markdown rendering for chat bubbles. The model emits markdown
@@ -12,7 +12,7 @@ import { fonts } from '../theme';
 
 interface Segment {
   text: string;
-  bold: boolean;
+  kind: 'plain' | 'bold' | 'italic';
 }
 
 /**
@@ -62,17 +62,22 @@ function cleanBlockMarkdown(s: string): string {
     .trimEnd();
 }
 
-/** Split text into bold / non-bold runs on **…**, after cleaning other markdown. */
+/** Split text into bold / italic / plain runs on **…**, *…* and _…_, after cleaning
+ *  other markdown. Bold is split first so its inner asterisks don't trip the italic rule. */
 function parseInline(input: string): Segment[] {
   const cleaned = cleanBlockMarkdown(input);
   const segments: Segment[] = [];
-  for (const part of cleaned.split(/(\*\*[^*]+\*\*)/g)) {
+  // one regex captures **bold**, *italic*, or _italic_ as delimiters
+  for (const part of cleaned.split(/(\*\*[^*]+\*\*|\*[^*\s][^*]*\*|_[^_\s][^_]*_)/g)) {
     if (!part) continue;
-    const bold = /^\*\*[^*]+\*\*$/.test(part);
-    segments.push({
-      text: bold ? part.slice(2, -2) : part.replace(/\*/g, ''),
-      bold,
-    });
+    if (/^\*\*[^*]+\*\*$/.test(part)) {
+      segments.push({ text: part.slice(2, -2), kind: 'bold' });
+    } else if (/^\*[^*]+\*$/.test(part) || /^_[^_]+_$/.test(part)) {
+      segments.push({ text: part.slice(1, -1), kind: 'italic' });
+    } else {
+      // strip any stray, unmatched emphasis marks from plain runs
+      segments.push({ text: part.replace(/(\*\*|\*|_)/g, ''), kind: 'plain' });
+    }
   }
   return segments;
 }
@@ -96,15 +101,24 @@ export function RichText({ text, style, boldStyle }: RichTextProps) {
   const segments = parseInline(answer);
   return (
     <Text style={style}>
-      {segments.map((seg, i) =>
-        seg.bold ? (
-          <Text key={i} style={[{ fontFamily: fonts.display }, boldStyle]}>
-            {seg.text}
-          </Text>
-        ) : (
-          seg.text
-        )
-      )}
+      {segments.map((seg, i) => {
+        if (seg.kind === 'bold') {
+          // key terms pop in the brand teal + display font so a kid's eye lands on them
+          return (
+            <Text key={i} style={[{ fontFamily: fonts.display, color: colors.primary }, boldStyle]}>
+              {seg.text}
+            </Text>
+          );
+        }
+        if (seg.kind === 'italic') {
+          return (
+            <Text key={i} style={{ fontStyle: 'italic' }}>
+              {seg.text}
+            </Text>
+          );
+        }
+        return seg.text;
+      })}
     </Text>
   );
 }

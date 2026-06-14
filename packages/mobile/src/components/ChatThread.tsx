@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Animated,
   Dimensions,
@@ -7,10 +7,14 @@ import {
   StyleSheet,
   Text,
   View,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
 } from 'react-native';
 
 import type { Message } from '@hiraia/shared';
 
+import { uiStrings } from '../config/strings';
+import { useEngineStore } from '../store/engineStore';
 import { colors, fonts } from '../theme';
 
 import { MessageBubble } from './MessageBubble';
@@ -20,6 +24,32 @@ import { ThinkingIndicator } from './ThinkingIndicator';
 
 const HIRAIA_AVATAR = require('../../assets/hiraia-profile.png');
 const WINDOW_H = Dimensions.get('window').height;
+// How close to the bottom (px) still counts as "following the stream". Within this
+// slack we keep auto-scrolling; scroll up past it and we stop fighting the user.
+const STICK_SLOP = 48;
+
+// A chat row is either a message or a centered date page-break ("June 14, 2026") so a
+// kid can scroll and find an old exchange by day.
+type Row = { kind: 'date'; key: string; label: string } | { kind: 'msg'; key: string; message: Message };
+
+const dayKey = (d: Date) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+const formatDay = (d: Date) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+/** Build the render list, inserting a date divider before each new day's first message. */
+function withDateDividers(messages: Message[]): Row[] {
+  const out: Row[] = [];
+  let lastDay: string | null = null;
+  messages.forEach((m, idx) => {
+    const ts = m.timestamp ?? new Date();
+    const k = dayKey(ts);
+    if (k !== lastDay) {
+      lastDay = k;
+      out.push({ kind: 'date', key: `date-${k}`, label: formatDay(ts) });
+    }
+    out.push({ kind: 'msg', key: `${ts.getTime?.() ?? idx}-${idx}`, message: m });
+  });
+  return out;
+}
 
 interface ChatThreadProps {
   messages: Message[];
@@ -33,23 +63,30 @@ export function ChatThread({ messages, isStreaming, streamingContent }: ChatThre
   // not a fixed backdrop). Native-driven for smoothness.
   const scrollY = useRef(new Animated.Value(0)).current;
   const [contentH, setContentH] = useState(0);
+  // Whether to keep following new content. True while the user is at/near the bottom;
+  // flips false the moment they scroll up to re-read, so a streaming reply never yanks
+  // the viewport back. Updated from onScroll.
+  const stickToBottom = useRef(true);
+  const t = uiStrings(useEngineStore((s) => s.language));
+  const rows = useMemo(() => withDateDividers(messages), [messages]);
 
-  // Keep the newest message (and the streaming bubble) in view.
+  // A NEW message (the kid's send, or a fresh assistant turn) always pins to the bottom.
+  // Mid-stream growth is handled in onContentSizeChange, gated on stickToBottom — so if
+  // the line being printed is already in view, we leave the viewport alone.
   useEffect(() => {
     if (messages.length > 0) {
+      stickToBottom.current = true;
       requestAnimationFrame(() => listRef.current?.scrollToEnd({ animated: true }));
     }
-  }, [messages.length, isStreaming, streamingContent]);
+  }, [messages.length]);
 
   if (messages.length === 0) {
     return (
       <View style={styles.container}>
         <NotebookBackground />
         <View style={styles.emptyState}>
-          <Text style={styles.emptyTitle}>Maligayang Pagdating sa Hiraia!</Text>
-          <Text style={styles.emptySubtitle}>
-            Magtanong ka ng kahit ano tungkol sa agham. Nandito ako para tulungan kang matuto.
-          </Text>
+          <Text style={styles.emptyTitle}>{t.welcomeTitle}</Text>
+          <Text style={styles.emptySubtitle}>{t.welcomeSubtitle}</Text>
         </View>
       </View>
     );
@@ -67,18 +104,34 @@ export function ChatThread({ messages, isStreaming, streamingContent }: ChatThre
       </Animated.View>
       <Animated.FlatList
         ref={listRef as never}
-        data={messages}
-        renderItem={({ item }: { item: Message }) => <MessageBubble message={item} />}
-        keyExtractor={(item: Message, index: number) =>
-          `${item.timestamp?.getTime() ?? index}-${index}`
+        data={rows}
+        renderItem={({ item }: { item: Row }) =>
+          item.kind === 'date' ? (
+            <DateDivider label={item.label} />
+          ) : (
+            <MessageBubble message={item.message} />
+          )
         }
+        keyExtractor={(item: Row) => item.key}
         contentContainerStyle={styles.messageList}
         onContentSizeChange={(_w: number, h: number) => {
           setContentH(h);
-          listRef.current?.scrollToEnd({ animated: true });
+          // Only follow the growing stream when the user is already at the bottom. If
+          // the newest line is already in view (they scrolled to it), leave it be. The
+          // 10px breathing room below the new line comes from messageList paddingBottom.
+          if (stickToBottom.current) {
+            requestAnimationFrame(() => listRef.current?.scrollToEnd({ animated: true }));
+          }
         }}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
           useNativeDriver: true,
+          // Track whether the user is following the bottom; if they scroll up past the
+          // slack, stop auto-following so the stream doesn't fight them.
+          listener: (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+            const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent;
+            const distanceFromBottom = contentSize.height - contentOffset.y - layoutMeasurement.height;
+            stickToBottom.current = distanceFromBottom <= STICK_SLOP;
+          },
         })}
         scrollEventThrottle={16}
         ListFooterComponent={
@@ -105,10 +158,31 @@ function StreamingBubble({ content }: { content: string }) {
   );
 }
 
+/** A centered, underlined date page-break between days of messages. */
+function DateDivider({ label }: { label: string }) {
+  return (
+    <View style={styles.dateDividerRow}>
+      <Text style={styles.dateDividerText}>{label}</Text>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     overflow: 'hidden', // clip the translated paper layer
+  },
+  dateDividerRow: {
+    alignItems: 'center',
+    marginTop: 4,
+    marginBottom: 4,
+  },
+  dateDividerText: {
+    fontFamily: fonts.body,
+    fontSize: 13,
+    color: colors.inkMuted,
+    textDecorationLine: 'underline',
+    letterSpacing: 0.3,
   },
   paperLayer: {
     position: 'absolute',
@@ -139,7 +213,7 @@ const styles = StyleSheet.create({
   messageList: {
     paddingHorizontal: 16,
     paddingTop: 16,
-    paddingBottom: 48, // clearance so the newest line / streaming spinner fully clears the input (+20px so the responding indicator isn't hidden under the text field)
+    paddingBottom: 58, // clearance so the newest line / streaming spinner clears the input, +10px breathing room above it while streaming
     gap: 16,
   },
   streamingRow: {

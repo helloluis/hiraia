@@ -6,6 +6,7 @@ import { ChatHeader } from '../../components/ChatHeader';
 import { ChatTextInput } from '../../components/ChatTextInput';
 import { ChatThread } from '../../components/ChatThread';
 import { LoadingBar } from '../../components/LoadingBar';
+import { uiStrings } from '../../config/strings';
 import { useChatStore } from '../../store/chatStore';
 import { useEngineStore } from '../../store/engineStore';
 import { colors } from '../../theme';
@@ -15,6 +16,7 @@ export default function ChatScreen() {
   const hasHydrated = useChatStore((s) => s.hasHydrated);
   const showColdStartFactoid = useChatStore((s) => s.showColdStartFactoid);
   const isReady = useEngineStore((s) => s.isReady);
+  const t = uiStrings(useEngineStore((s) => s.language));
   const [inputText, setInputText] = useState('');
 
   // Once persisted history has loaded, drop in one "Alam mo ba na…?" factoid so
@@ -58,7 +60,7 @@ export default function ChatScreen() {
             onChangeText={setInputText}
             onSend={handleSend}
             disabled={!isReady}
-            placeholder={isReady ? 'Magtanong tungkol sa agham...' : 'Inihahanda ang AI...'}
+            placeholder={isReady ? t.inputPlaceholder : t.inputPreparing}
           />
         </View>
       </KeyboardAvoidingView>

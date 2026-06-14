@@ -3,6 +3,7 @@ import { create } from 'zustand';
 import { generateSystemPrompt, formatGroundingBlock, composeGroundedUserTurn } from '@hiraia/shared';
 import type { Message, RagResult } from '@hiraia/shared';
 
+import { uiStrings } from '../config/strings';
 import { pickFactoidText } from '../data/factoids';
 import { genId } from '../db';
 import { FACT_IMAGE } from '../generated/factImage';
@@ -30,6 +31,8 @@ interface ChatState {
   sendMessage: (content: string) => Promise<void>;
   showColdStartFactoid: () => void;
   clearMessages: () => Promise<void>;
+  /** Load a past conversation (from the sidebar history) and make it active. */
+  switchConversation: (id: string) => Promise<void>;
 }
 
 const isFactoid = (m: Message) => m.metadata?.kind === 'factoid';
@@ -135,7 +138,7 @@ export const useChatStore = create<ChatState>()((set, get) => ({
           ...state.messages,
           {
             role: 'assistant',
-            content: 'Sandali lang—inihahanda ko pa ang AI. Pakisubukang muli sa ilang segundo. 🐱',
+            content: uiStrings(lang).waitPreparing,
             timestamp: new Date(),
           },
         ],
@@ -243,7 +246,7 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       set((state) => ({
         messages: [
           ...state.messages,
-          { role: 'assistant', content: 'Paumanhin, may naganap na error. Pakisubukang muli. 🐱', timestamp: new Date() },
+          { role: 'assistant', content: uiStrings(lang).errorGeneric, timestamp: new Date() },
         ],
         isStreaming: false,
         currentStreamingContent: '',
@@ -255,7 +258,9 @@ export const useChatStore = create<ChatState>()((set, get) => ({
   // (no id) — not persisted, not sent to the model.
   showColdStartFactoid: () => {
     const lastIds = get().lastFactoidIds;
-    const picked = pickFactoidText('tagalog', lastIds);
+    // Follow the active tutor language (was hardcoded Tagalog → English mode still got a TL factoid).
+    const lang = useEngineStore.getState().language ?? 'tagalog';
+    const picked = pickFactoidText(lang, lastIds);
     if (!picked) return;
 
     set((state) => ({
@@ -297,6 +302,16 @@ export const useChatStore = create<ChatState>()((set, get) => ({
     shownFactIds = new Set();
     shownImageSlugs = new Set();
     set({ conversationId: convId, messages: [], isStreaming: false, currentStreamingContent: '' });
+  },
+
+  switchConversation: async (id: string) => {
+    if (get().conversationId === id) return; // already here
+    try {
+      const messages = await getMessages(id);
+      set({ conversationId: id, messages, isStreaming: false, currentStreamingContent: '' });
+    } catch (e) {
+      console.error('[chatStore] switchConversation failed:', e);
+    }
   },
 }));
 
