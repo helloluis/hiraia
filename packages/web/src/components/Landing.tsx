@@ -1,6 +1,7 @@
 'use client';
 
 import { AppDownload } from '@/components/AppDownload';
+import { HiraiaBench } from '@/components/HiraiaBench';
 import { DemoLightbox } from '@/components/demo/DemoLightbox';
 import { useDemoStore } from '@/store/useDemoStore';
 
@@ -284,6 +285,9 @@ export function Landing() {
           <AppDownload />
         </div>
       </div>
+
+      {/* SECTION 2.6: HIRAIA PERFORMANCE — the hiraiabench comparison */}
+      <HiraiaBench />
 
       {/* SECTION 3: VIDEO OVERVIEW (DARK GREEN BACKGROUND) */}
       <div className="w-full bg-[#051f25] py-16 sm:py-24 px-6 md:px-12 lg:px-24">

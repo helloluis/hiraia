@@ -119,7 +119,16 @@ function streamInto(
   setTimeout(tick, speed);
 }
 
-/** Honest, on-brand canned reply per language (no real model in the web demo). */
+/** The intent-distilled model reasons in a leading <think>…</think> block; show only the
+ *  final answer in the demo (empty while still thinking → the bubble shows its dots). */
+function stripThink(s: string): string {
+  const close = s.indexOf('</think>');
+  if (close >= 0) return s.slice(close + '</think>'.length).replace(/<think>/g, '').replace(/^\s+/, '');
+  if (s.includes('<think>')) return '';
+  return s;
+}
+
+/** Fallback preview reply per language, used only if the model backend is unreachable. */
 const CANNED_REPLY: Record<LanguageKey, string> = {
   tagalog:
     'Magandang tanong! 🌟 Sa totoong Hiraia app, sasagutin ko ito gamit ang on-device ' +
@@ -239,6 +248,12 @@ export const useDemoStore = create<DemoState>((set, get) => ({
     const assistantId = nextId();
     const language = get().language ?? 'tagalog';
 
+    // Short context window of prior real turns (skip the opening factoid + any streaming row).
+    const history = get()
+      .messages.filter((m) => !m.streaming && m.kind !== 'factoid' && (m.role === 'user' || m.role === 'assistant'))
+      .slice(-6)
+      .map((m) => ({ role: m.role, content: m.content }));
+
     set((state) => ({
       isResponding: true,
       messages: [
@@ -249,14 +264,73 @@ export const useDemoStore = create<DemoState>((set, get) => ({
     }));
     persist('user', trimmed, language);
 
-    // Small "thinking" beat before the reply starts streaming, like the app's
-    // cold prompt-eval — then stream the canned response and release the input.
-    const reply = CANNED_REPLY[language];
-    setTimeout(() => {
+    const finishCanned = () => {
+      const reply = CANNED_REPLY[language];
       streamInto(set, get, assistantId, reply, () => {
         set({ isResponding: false });
         persist('assistant', reply, language);
       });
-    }, 600);
+    };
+
+    // Stream the REAL on-device model via the server-side proxy. Falls back to the canned
+    // preview if the model backend is unreachable, so the demo never looks broken.
+    void (async () => {
+      let raw = '';
+      try {
+        const res = await fetch('/api/demo/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: trimmed, language, history }),
+        });
+        if (!res.ok || !res.body) throw new Error('model unavailable');
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          if (!get().isOpen) {
+            void reader.cancel();
+            return;
+          }
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop() ?? '';
+          for (const line of lines) {
+            const t = line.trim();
+            if (!t.startsWith('data:')) continue;
+            const data = t.slice(5).trim();
+            if (!data || data === '[DONE]') continue;
+            try {
+              const delta = JSON.parse(data)?.choices?.[0]?.delta?.content;
+              if (typeof delta === 'string' && delta) {
+                raw += delta;
+                const visible = stripThink(raw);
+                set((state) => ({
+                  messages: state.messages.map((m) =>
+                    m.id === assistantId ? { ...m, content: visible } : m
+                  ),
+                }));
+              }
+            } catch {
+              /* ignore partial/non-JSON SSE lines */
+            }
+          }
+        }
+
+        const finalText = stripThink(raw).trim();
+        if (!finalText) throw new Error('empty reply');
+        set((state) => ({
+          isResponding: false,
+          messages: state.messages.map((m) =>
+            m.id === assistantId ? { ...m, content: finalText, streaming: false } : m
+          ),
+        }));
+        persist('assistant', finalText, language);
+      } catch {
+        finishCanned();
+      }
+    })();
   },
 }));
