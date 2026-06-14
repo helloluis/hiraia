@@ -14,11 +14,15 @@ import fs from 'node:fs';
  *   users 1──* chats 1──* messages
  *   users 1──* sessions
  * Assistant messages carry `message_feedback` (1 = useful, -1 = not useful, NULL = none).
+ *
+ * `demo_messages` is intentionally separate and anonymous: the public web demo
+ * has no accounts, so its transcripts are keyed only by a client-generated
+ * session id (localStorage) — no user_id, no FK. We keep them for product
+ * insight into what visitors actually try, not as per-user history.
  */
 
 const DB_PATH =
-  process.env.HIRAIA_DB_PATH ||
-  path.join(process.cwd(), '..', '..', 'data', 'hiraia.db');
+  process.env.HIRAIA_DB_PATH || path.join(process.cwd(), '..', '..', 'data', 'hiraia.db');
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS users (
@@ -54,6 +58,17 @@ CREATE TABLE IF NOT EXISTS messages (
   created_at       TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX IF NOT EXISTS idx_messages_chat ON messages(chat_id);
+
+CREATE TABLE IF NOT EXISTS demo_messages (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  session_id TEXT NOT NULL,                     -- client-generated demo session (localStorage), NOT an auth session
+  role       TEXT NOT NULL CHECK (role IN ('user','assistant')),
+  kind       TEXT,                              -- 'factoid' for the cold-start trivia card, else NULL
+  language   TEXT,                              -- demo language at the time (tagalog|english|cebuano)
+  content    TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_demo_messages_session ON demo_messages(session_id);
 `;
 
 let _db: Database.Database | null = null;
