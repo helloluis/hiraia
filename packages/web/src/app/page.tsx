@@ -1,5 +1,5 @@
-import { ChatInterface } from '@/components/ChatInterface';
+import { Landing } from '@/components/Landing';
 
 export default function Home() {
-  return <ChatInterface />;
+  return <Landing />;
 }
