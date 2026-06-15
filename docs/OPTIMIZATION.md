@@ -29,8 +29,21 @@ also adds latency — but it's now shown as a live "thinking" stream, turning de
 **Files.** `packages/mobile/src/engine/LocalEngine.ts` (QVAC chat, KV-cache key), `packages/shared/
 src/prompts/system.ts` (static system prompt), `packages/mobile/src/store/chatStore.ts` (compaction).
 
-**Definition of done.** A repeatable on-device TTFT measurement, and a measured reduction (target:
-first visible token in the single-digit seconds on a warm cache).
+**Measurement tool.** `packages/mobile/scripts/measure-ttft.sh` — clears logcat, you drive a
+2-turn chat on the phone, it parses the engine's `[perf] chat:`/`[perf] ragSearch:` logs and
+prints a per-turn table (retrieval · prefill/TTFT · decode · tok/s · perceived total) plus a
+**KV-cache verdict** (turn-2 prefill should crater vs turn-1) and the decode-floor estimate.
+`LOGFILE=<capture> …` re-parses a saved logcat with no device.
+
+**What the data already says (off the held-out v3 answers, ~3 tok/s):** the cost is
+DECODE-bound, not prefill. `<think>` is ~52 tok ≈ ~17s *before* the answer (framed queries only —
+clean questions skip it), the answer ~87 tok ≈ ~29s. Config is already tuned (GPU_LAYERS=99,
+CHAT_MAX_TOKENS=220, static-system KV-cache path correct). So the real software lever is a
+**terser `<think>`** in the next adapter (1 sentence ≈ 15 tok, saves ~10s); prefill just needs the
+on-device measurement above to confirm the cache hits in practice.
+
+**Definition of done.** A repeatable on-device TTFT measurement (↑ the tool), and a measured
+reduction (target: first visible token in the single-digit seconds on a warm cache).
 
 ---
 
