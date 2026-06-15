@@ -29,7 +29,11 @@ EMBED_PORT="${EMBED_PORT:-8090}"
 CTX="${CTX:-4096}"
 NGL="${NGL:-99}"
 
-for f in "$BIN" "$BASE" "$ADAPTER" "$EMBED"; do
+REQUIRED=("$BIN" "$BASE" "$ADAPTER")
+# The GGUF embedder is only needed for the (approximate) llama backend; the default
+# transformers raw-CLS backend uses labse-embed-service.py and never reads $EMBED.
+[ "${EMBED_BACKEND:-transformers}" = "llama" ] && REQUIRED+=("$EMBED")
+for f in "${REQUIRED[@]}"; do
   [ -e "$f" ] || { echo "ERR: missing $f"; exit 2; }
 done
 

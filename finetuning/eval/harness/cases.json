@@ -138,10 +138,10 @@
    "grade": 5,
    "mode": "chitchat",
    "question": "hello po",
-   "_note": "expectRetrieves 'any' not 'none': at SEMANTIC_FLOOR 0.53 a bare greeting can spuriously clear the floor (cos ~0.57) and retrieve unrelated facts; the chitchat-trained model correctly IGNORES that grounding and greets (asserted by mustContain). Device-faithful: retrieval may fire, behavior is what matters.",
+   "_note": "expectRetrieves 'any' not 'none': at SEMANTIC_FLOOR 0.53 a bare greeting can spuriously clear the floor (cos ~0.57) and retrieve unrelated facts; the chitchat-trained model correctly IGNORES that grounding and greets (asserted by mustContain). Device-faithful: retrieval may fire, behavior is what matters. mustContain is a proxy for 'invited engagement instead of lecturing a fact' — widened 2026-06-15 (v5) to accept the invite phrasing 'science topic / pag-usapan' the v5 adapter uses (e.g. 'Anong science topic ang gusto mong pag-usapan?'); maxChars still guards against lecturing.",
    "expectRetrieves": "any",
    "mustContain": [
-    "(tanong|agham|matuto|tulong)"
+    "(tanong|agham|matuto|tulong|pag-usap|usapan|topic|question|science)"
    ],
    "mustNotContain": [],
    "maxChars": 360

@@ -25,7 +25,7 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { RagStore, SemanticIndex, normalizeQuery, buildContextualQuery } from '../../../packages/shared/src/rag/index.ts';
+import { RagStore, SemanticIndex, normalizeQuery, buildContextualQuery, CONTEXT_FALLBACK_FLOOR } from '../../../packages/shared/src/rag/index.ts';
 import {
   generateSystemPrompt,
   formatGroundingBlock,
@@ -36,6 +36,11 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const SESS_DIR = join(HERE, '.chat-sessions');
 const CHAT = process.env.CHAT_ENDPOINT ?? 'http://localhost:8088';
 const EMBED = process.env.EMBED_ENDPOINT ?? 'http://localhost:8090';
+// System-prompt ablation: SYS_PROMPT_FILE (path) or SYS_PROMPT (inline) overrides the full
+// generateSystemPrompt — to test how short a prompt the fine-tune can run on (TTFT work).
+const SYS_OVERRIDE = process.env.SYS_PROMPT_FILE
+  ? readFileSync(process.env.SYS_PROMPT_FILE, 'utf8').replace(/\n$/, '')
+  : process.env.SYS_PROMPT || undefined;
 const BLOB = join(HERE, '../../../packages/mobile/assets/rag/vectors-labse.i8.bin');
 const META = join(HERE, '../../../packages/mobile/assets/rag/vectors-labse.meta.json');
 
@@ -148,16 +153,24 @@ async function sayCmd(kid: string) {
   const ragContext = s.messages.slice(-3, -1).map((m) => m.content).join(' ');
   const seen = new Set(s.shown);
   const qv = await embed(normalizeQuery(kid)); // R1: embed normalized query (device parity)
-  let hits = store.retrieveForGroundingHybrid(kid as any, qv, s.lang as any, 3, 0.5, ragContext, seen);
-  // R2: topic-blind follow-up abstained — retry with the conversation topic folded in.
-  if (hits.length === 0 && qv && ragContext.trim()) {
+  // CONTEXT-GATING: R1 retrieves CONTEXT-FREE. A confident, self-sufficient question carries its
+  // own topic and retrieves correctly alone — folding the prior turn in only POLLUTES it (an
+  // off-topic earlier turn drags the wrong facts up: the "solar system"→solar-panel collision).
+  // R2 (context fold) fires only when the bare query is WEAK — empty OR topCos < the gate floor —
+  // i.e. a genuine topic-blind follow-up ("anong pinakamabilis sa kanila?") that needs the topic.
+  const r1 = store.retrieveForGroundingHybridDiag(kid as any, qv, s.lang as any, 3, 0.5, '', seen);
+  let hits = r1.hits;
+  if ((hits.length === 0 || r1.topCos < CONTEXT_FALLBACK_FLOOR) && qv && ragContext.trim()) {
     const foldedVec = await embed(buildContextualQuery(kid, ragContext));
-    if (foldedVec) hits = store.retrieveForGroundingHybrid(kid as any, foldedVec, s.lang as any, 3, 0.5, ragContext, seen);
+    if (foldedVec) {
+      const r2 = store.retrieveForGroundingHybridDiag(kid as any, foldedVec, s.lang as any, 3, 0.5, ragContext, seen);
+      if (r2.hits.length) hits = r2.hits; // keep R2 only if it found something (else keep R1)
+    }
   }
   for (const h of hits as any[]) if (!s.shown.includes(h.fact.id)) s.shown.push(h.fact.id);
 
   // STATIC system (no grounding); grounding rides the current user turn — matches chatStore.
-  const system = generateSystemPrompt(s.lang as any, s.grade as any, true);
+  const system = SYS_OVERRIDE ?? generateSystemPrompt(s.lang as any, s.grade as any, true);
   const block = formatGroundingBlock(hits.map((h: any) => ({ content: h.text, source: h.fact.source, score: h.score, metadata: { topic: h.fact.topic, id: h.fact.id } })));
 
   const ctx = await buildContext(s, system);
