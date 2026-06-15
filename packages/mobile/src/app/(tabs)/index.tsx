@@ -19,13 +19,15 @@ export default function ChatScreen() {
   const t = uiStrings(useEngineStore((s) => s.language));
   const [inputText, setInputText] = useState('');
 
-  // Once persisted history has loaded, drop in one "Alam mo ba na…?" factoid so
-  // there's something to read while the model warms up. Exactly once per launch.
+  // Once persisted history has loaded, offer a "Alam mo ba na…?" factoid so there's
+  // something to read while the model warms up. The store decides whether to actually
+  // show one (it no-ops if a fresh factoid is already on screen / shown < 1h ago), so
+  // this is safe to re-fire on a resume re-mount.
   const factoidShown = useRef(false);
   useEffect(() => {
     if (hasHydrated && !factoidShown.current) {
       factoidShown.current = true;
-      showColdStartFactoid();
+      void showColdStartFactoid();
     }
   }, [hasHydrated, showColdStartFactoid]);
 

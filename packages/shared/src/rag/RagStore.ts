@@ -212,6 +212,13 @@ const RRF_K = 60;
 // (math 0.52, gibberish 0.49, chitchat ≤0.48) still abstains. Validated vs hybrid-stress.
 const SEMANTIC_FLOOR = 0.53;
 
+// Context-fold GATE (multi-turn): if the BARE query's top semantic cosine is at/above this, it's a
+// confident, self-sufficient question → retrieve context-FREE (folding the prior turn in would
+// pollute it). Below this (but above the abstain floor) → a topic-blind follow-up that needs the
+// conversation topic folded in (the R2 path). Sits between SEMANTIC_FLOOR (0.53) and the ~0.65-0.70
+// of confident full questions. Tune in rag/pipeline stress, not by feel.
+export const CONTEXT_FALLBACK_FLOOR = 0.62;
+
 export class RagStore {
   private docs: IndexedFact[] = [];
   private idf = new Map<string, number>();
@@ -424,14 +431,35 @@ export class RagStore {
     context = '',
     seenIds?: ReadonlySet<string>
   ): FactHit[] {
+    return this.retrieveForGroundingHybridDiag(query, queryVec, language, max, floorRatio, context, seenIds).hits;
+  }
+
+  /**
+   * Same as retrieveForGroundingHybrid but ALSO returns `topCos` — the best semantic cosine of the
+   * BARE query (computed anyway for the abstain floor, so it's free). Callers use it to GATE
+   * multi-turn context-folding: a CONFIDENT bare query (topCos high) carries its own topic and must
+   * NOT have prior-turn context folded in (that pollutes it — the "solar system"→solar-panel
+   * collision); a WEAK bare query (low topCos, even if non-abstaining) is a topic-blind follow-up
+   * ("anong pinakamabilis sa kanila?") that DOES need the conversation topic folded in. So the
+   * caller's R2 fallback should fire on (hits empty OR topCos < CONTEXT_FALLBACK_FLOOR), not just empty.
+   */
+  retrieveForGroundingHybridDiag(
+    query: string,
+    queryVec: Float32Array | undefined,
+    language: Language = 'english',
+    max = 3,
+    floorRatio = 0.5,
+    context = '',
+    seenIds?: ReadonlySet<string>
+  ): { hits: FactHit[]; topCos: number } {
     if (!this.semantic || !queryVec) {
-      return this.retrieveForGrounding(query, language, max, floorRatio, context, seenIds);
+      return { hits: this.retrieveForGrounding(query, language, max, floorRatio, context, seenIds), topCos: 0 };
     }
     const topCos = this.semantic.search(queryVec, language, 1)[0]?.cosine ?? 0;
-    if (topCos < SEMANTIC_FLOOR) return []; // off-topic → abstain
+    if (topCos < SEMANTIC_FLOOR) return { hits: [], topCos }; // off-topic → abstain
     const hits = this.searchHybrid(query, queryVec, max, language, context, seenIds);
-    if (hits.length === 0) return [];
+    if (hits.length === 0) return { hits: [], topCos };
     const top = hits[0]!.score;
-    return hits.filter((h) => h.score >= top * floorRatio);
+    return { hits: hits.filter((h) => h.score >= top * floorRatio), topCos };
   }
 }

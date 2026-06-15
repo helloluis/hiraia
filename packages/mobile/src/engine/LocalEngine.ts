@@ -24,6 +24,7 @@ import {
   SemanticIndex,
   normalizeQuery,
   buildContextualQuery,
+  CONTEXT_FALLBACK_FLOOR,
   generateSystemPrompt,
 } from '@hiraia/shared';
 
@@ -105,7 +106,7 @@ export class LocalEngine implements TutorEngine {
           modelType: ACTIVE_MODEL.modelType,
           modelConfig: {
             ctx_size: ACTIVE_MODEL.ctxSize,
-            gpu_layers: GPU_LAYERS, // full GPU offload — default left part of the 3B on CPU (slow)
+            gpu_layers: GPU_LAYERS, // 99 = full GPU offload (Adreno/Vulkan beats CPU prefill on our flagship). QVAC 0.13 adds OpenMP for the Android ARM64 CPU ops on the non-offloaded path.
             ...(loraPath ? { lora: loraPath } : {}),
           },
           onProgress: (p) => {
@@ -175,6 +176,10 @@ export class LocalEngine implements TutorEngine {
       const t0 = Date.now();
       // grade 5 + imageTags=true => byte-for-byte match with chatStore's system prompt.
       const systemPrompt = generateSystemPrompt(this.config.language, 5, true);
+      // predict:1 (not 0): generating a single throwaway token guarantees the prompt is fully
+      // prefilled and the KV cache persisted. QVAC 0.13 has no public `prefill: true` completion
+      // flag (only an internal VLA path), and predict:0 risks short-circuiting before the eval that
+      // primes the cache — so the 1-token warm-up stays the reliable prime. The token is discarded.
       const run = completion({
         modelId: this.modelId,
         history: [
@@ -189,7 +194,16 @@ export class LocalEngine implements TutorEngine {
       for await (const _event of run.events) {
         // no-op
       }
-      console.log(`[LocalEngine] warm-up complete (${Date.now() - t0}ms)`);
+      // Cold-prefill telemetry: how long the unwarmed system-prompt prefill took + its token count.
+      // The first real turn should then report cacheTokens ≈ promptTokens here (cache hit).
+      let warmStat = '';
+      try {
+        const s = await run.stats;
+        if (s) warmStat = ` · prefill ${s.timeToFirstToken ?? '?'}ms · ${s.promptTokens ?? '?'} prompt tok · ${s.backendDevice ?? '?'}`;
+      } catch {
+        /* best-effort */
+      }
+      console.log(`[LocalEngine] warm-up complete (${Date.now() - t0}ms)${warmStat}`);
     } catch (e) {
       console.warn('[LocalEngine] warm-up failed (non-fatal):', e);
     }
@@ -247,6 +261,25 @@ export class LocalEngine implements TutorEngine {
       console.log(
         `[perf] chat: prefill/TTFT ${ttft}ms · decode ${decodeMs}ms · ${toks} chunks · ${tps} tok/s · total ${total}ms`
       );
+      // SDK-precise on-device metrics (QVAC ≥0.13): exact prefill TTFT + prompt-processing
+      // throughput (ppTPS = promptTokens / TTFT), the KV-cache hit size — which CONFIRMS the
+      // static-system-prompt cache is being reused across turns (the TTFT win) — and whether
+      // the run landed on cpu/gpu. Best-effort; never breaks chat if stats are absent.
+      try {
+        const s = await run.stats;
+        if (s) {
+          const ppTps =
+            s.timeToFirstToken && s.promptTokens
+              ? ((s.promptTokens * 1000) / s.timeToFirstToken).toFixed(0)
+              : '?';
+          console.log(
+            `[perf] chat(sdk): TTFT ${s.timeToFirstToken ?? '?'}ms · prompt ${s.promptTokens ?? '?'} tok ` +
+              `(${s.cacheTokens ?? 0} from KV cache) · ppTPS ${ppTps} · decode ${s.tokensPerSecond?.toFixed(1) ?? '?'} tok/s · ${s.backendDevice ?? '?'}`
+          );
+        }
+      } catch {
+        /* stats are best-effort telemetry */
+      }
     } catch (error) {
       console.error('Error during chat completion:', error);
       throw new Error(
@@ -355,7 +388,10 @@ export class LocalEngine implements TutorEngine {
    * the FACT_IMAGE top-fact rule). The floor is calibrated offline against the
    * SFT tag descriptions (see rag/scripts/build-image-vectors.py validation).
    */
-  async resolveImageTag(desc: string): Promise<{ slug: string; cosine: number } | null> {
+  async resolveImageTag(
+    desc: string,
+    minCosine: number = IMAGE_TAG_FLOOR
+  ): Promise<{ slug: string; cosine: number } | null> {
     if (!this.imageVectors || !this.semanticReady || !this.embedModelId) return null;
     try {
       const t0 = Date.now();
@@ -378,7 +414,7 @@ export class LocalEngine implements TutorEngine {
         `[LocalEngine] resolveImageTag "${desc.slice(0, 60)}" → ${slugs[best]} ` +
           `(cos ${cosine.toFixed(3)}, ${Date.now() - t0}ms)`
       );
-      if (best < 0 || cosine < IMAGE_TAG_FLOOR) return null;
+      if (best < 0 || cosine < minCosine) return null;
       return { slug: slugs[best]!, cosine };
     } catch (e) {
       console.warn('[LocalEngine] resolveImageTag failed:', e);
@@ -417,34 +453,24 @@ export class LocalEngine implements TutorEngine {
       }
       const embedMs = Date.now() - tEmbed0;
       const tRetr0 = Date.now();
-      hits = this.rag.retrieveForGroundingHybrid(
-        query,
-        queryVec,
-        language,
-        topK,
-        0.5,
-        context,
-        seenIds
-      );
+      // CONTEXT-GATING (R1): retrieve CONTEXT-FREE. A confident, self-sufficient question carries
+      // its own topic; folding the prior turn in only POLLUTES it (an off-topic earlier turn drags
+      // the wrong facts up — the "solar system"→solar-panel collision). topCos tells us if the bare
+      // query is confident.
+      const r1 = this.rag.retrieveForGroundingHybridDiag(query, queryVec, language, topK, 0.5, '', seenIds);
+      hits = r1.hits;
       let reEmbedMs = 0;
-      // R2: a bare follow-up ("anong pinakamalaki sa kanila?") is topic-blind and
-      // abstains. Retry once with the conversation topic folded into the embed.
-      if (hits.length === 0 && queryVec && context.trim()) {
+      // R2: bare query is WEAK — empty (abstained) OR low-confidence (topCos < gate floor) — i.e. a
+      // topic-blind follow-up ("anong pinakamabilis sa kanila?"). NOW fold the conversation topic in.
+      if ((hits.length === 0 || r1.topCos < CONTEXT_FALLBACK_FLOOR) && queryVec && context.trim()) {
         try {
           const tRe0 = Date.now();
           const foldedVec = Float32Array.from(
             await this.embed(buildContextualQuery(query, context))
           );
           reEmbedMs = Date.now() - tRe0;
-          hits = this.rag.retrieveForGroundingHybrid(
-            query,
-            foldedVec,
-            language,
-            topK,
-            0.5,
-            context,
-            seenIds
-          );
+          const r2 = this.rag.retrieveForGroundingHybridDiag(query, foldedVec, language, topK, 0.5, context, seenIds);
+          if (r2.hits.length) hits = r2.hits; // keep R2 only if it found something (else keep R1)
         } catch (e) {
           console.warn('[LocalEngine] contextual re-embed failed:', e);
         }

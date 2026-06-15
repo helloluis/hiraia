@@ -34,4 +34,10 @@ export const CHAT_MAX_TOKENS = 220;
  * default, which left part of the 3B on CPU (slow decode). Full Vulkan/Adreno offload on
  * a 6GB+ device. If a low-end GPU ever fails to load, lower this.
  */
+// Full GPU offload (99 = all layers). RESULT of the 2026-06-15 CPU-vs-GPU A/B on this
+// flagship SM8850 (Adreno): GPU wins PREFILL decisively (~24s vs ~40–50s on full CPU i8mm),
+// CPU only wins decode (~6 vs ~4 tok/s). Since prefill dominates TTFT, GPU stays. The
+// research's "CPU beats mobile-GPU prefill" holds for weak Mali GPUs, NOT this Adreno. The
+// real TTFT lever is fewer PREFILLED TOKENS (prompt/RAG compression + KV stable-history),
+// not the backend. The only other QVAC LLM knob is `device` (untested).
 export const GPU_LAYERS = 99;

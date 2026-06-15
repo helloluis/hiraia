@@ -17,6 +17,11 @@ interface UIStrings {
   inputPreparing: string;
   waitPreparing: string;
   errorGeneric: string;
+  // per-turn "thinking" narration (cosmetic; shown before the first token, never sent to the model)
+  thinkingSearching: string;
+  thinkingReadingAbout: string; // followed by the retrieved topic, e.g. "… dinosaur"
+  thinkingReading: string; // fallback when the topic isn't clean enough to show
+  thinkingWorking: string;
   // sidebar
   close: string;
   sectionLanguage: string;
@@ -45,6 +50,10 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     inputPreparing: 'Inihahanda ang AI...',
     waitPreparing: 'Sandali lang—inihahanda ko pa ang AI. Pakisubukang muli sa ilang segundo. 🐱',
     errorGeneric: 'Paumanhin, may naganap na error. Pakisubukang muli. 🐱',
+    thinkingSearching: 'Naghahanap ng sagot',
+    thinkingReadingAbout: 'Binabasa ang tungkol sa',
+    thinkingReading: 'Binabasa ang nahanap',
+    thinkingWorking: 'Iniisip ang sagot',
     close: '← Isara',
     sectionLanguage: 'Wika',
     langRestartNote: 'Sandali itong magri-restart kapag pinalitan.',
@@ -69,6 +78,10 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     inputPreparing: 'Preparing the AI...',
     waitPreparing: "One moment—I'm still preparing the AI. Please try again in a few seconds. 🐱",
     errorGeneric: 'Sorry, something went wrong. Please try again. 🐱',
+    thinkingSearching: 'Looking for the answer',
+    thinkingReadingAbout: 'Reading about',
+    thinkingReading: 'Reading what I found',
+    thinkingWorking: 'Thinking it through',
     close: '← Close',
     sectionLanguage: 'Language',
     langRestartNote: 'It restarts briefly when you switch.',
@@ -93,6 +106,10 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     inputPreparing: 'Giandam ang AI...',
     waitPreparing: 'Kadiyot lang—giandam pa nako ang AI. Palihug sulayi pag-usab sa pipila ka segundo. 🐱',
     errorGeneric: 'Pasayloa, naay sayop nga nahitabo. Palihug sulayi pag-usab. 🐱',
+    thinkingSearching: 'Nangita og tubag',
+    thinkingReadingAbout: 'Gibasa ang bahin sa',
+    thinkingReading: 'Gibasa ang nakit-an',
+    thinkingWorking: 'Gihunahuna ang tubag',
     close: '← Sirado',
     sectionLanguage: 'Pinulongan',
     langRestartNote: 'Mag-restart kini dali kung mag-usab ka.',

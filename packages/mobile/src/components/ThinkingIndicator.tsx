@@ -3,6 +3,7 @@ import { StyleSheet, Text } from 'react-native';
 
 import type { Language } from '@hiraia/shared';
 
+import { useChatStore } from '../store/chatStore';
 import { useEngineStore } from '../store/engineStore';
 import { colors, fonts } from '../theme';
 
@@ -41,6 +42,25 @@ const PHRASES: Record<Language, string[]> = {
   english: ['thinking', 'typing', 'writing', 'searching', 'finding', 'looking'],
 };
 
+// Fuller "still working on it" phrases rotated DURING the long prefill (after retrieval),
+// interleaved with the topic anchor ("Binabasa ang tungkol sa <topic>") so a ~30s wait
+// shows variety instead of one frozen line. Cosmetic only.
+const WORKING_PHRASES: Record<Language, string[]> = {
+  tagalog: [
+    'Pinag-iisipan ang sagot',
+    'Isinusulat ang paliwanag',
+    'Inaayos ang mga salita',
+    'Halos tapos na',
+  ],
+  cebuano: [
+    'Gihunahuna ang tubag',
+    'Gisulat ang pasabot',
+    'Gihan-ay ang mga pulong',
+    'Hapit na',
+  ],
+  english: ['Thinking it through', 'Writing the explanation', 'Putting the words together', 'Almost there'],
+};
+
 type Cue = { kind: 'emoji'; value: string } | { kind: 'text'; value: string };
 
 const EMOJI_STEP_MS = 380; // gap between the 1st/2nd/3rd emoji
@@ -53,6 +73,32 @@ export function ThinkingIndicator({ language }: { language?: Language }) {
   const lang: Language = language ?? active ?? 'tagalog';
   const [display, setDisplay] = useState('');
 
+  // Real-pipeline narration set by chatStore.sendMessage ("Naghahanap…" → "Binabasa
+  // ang tungkol sa <topic>…"). When present it OVERRIDES the random cues below, so the
+  // wait reflects what's actually happening. Empty (e.g. warm-up) → random cues.
+  const status = useChatStore((s) => s.thinkingStatus);
+  // Always-animating ellipsis (… cycles 0→3 dots) so a 30s prefill never looks frozen.
+  const [dots, setDots] = useState('');
+  useEffect(() => {
+    const id = setInterval(() => setDots((d) => (d.length >= 3 ? '' : `${d}.`)), 450);
+    return () => clearInterval(id);
+  }, []);
+
+  // In status mode, rotate through [topic anchor, …working phrases] every ~3.5s so the
+  // long prefill has variety. Resets to the anchor (index 0) whenever the stage/turn
+  // changes (status string changes), so the topic shows first.
+  const rotation = useMemo<string[]>(
+    () => (status ? [status, ...(WORKING_PHRASES[lang] ?? WORKING_PHRASES.tagalog)] : []),
+    [status, lang]
+  );
+  const [rotIdx, setRotIdx] = useState(0);
+  useEffect(() => {
+    if (!status) return;
+    setRotIdx(0);
+    const id = setInterval(() => setRotIdx((i) => (i + 1) % rotation.length), 3500);
+    return () => clearInterval(id);
+  }, [status, rotation.length]);
+
   const library = useMemo<Cue[]>(
     () => [
       ...EMOJIS.map((value) => ({ kind: 'emoji' as const, value })),
@@ -62,6 +108,7 @@ export function ThinkingIndicator({ language }: { language?: Language }) {
   );
 
   useEffect(() => {
+    if (status) return; // status mode (real pipeline narration) handles the display
     let cancelled = false;
     const timers: ReturnType<typeof setTimeout>[] = [];
     const later = (fn: () => void, ms: number) => {
@@ -111,9 +158,15 @@ export function ThinkingIndicator({ language }: { language?: Language }) {
       cancelled = true;
       clearAll();
     };
-  }, [library]);
+  }, [library, status]);
 
-  return <Text style={styles.text}>{display}</Text>;
+  // Status mode: rotating phrase (topic anchor ↔ working phrases) + live ellipsis, so the
+  // long prefill shows what's happening AND varies. Otherwise: the random warm-up cue.
+  return (
+    <Text style={styles.text}>
+      {status ? `${rotation[rotIdx] ?? status} ${dots}` : display}
+    </Text>
+  );
 }
 
 const styles = StyleSheet.create({

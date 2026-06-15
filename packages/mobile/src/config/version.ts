@@ -17,7 +17,7 @@ export const HIRAIAPEDIA_VERSION = '1.0.3';
  * base model with no adapter. Bump when a new adapter ships for that language.
  */
 export const ADAPTER_VERSION: Record<Language, string> = {
-  tagalog: 'v7 · intent + grounded', // distill-sailor-3b-v2a (r32, 3-epoch): intent-extraction + grounding-faithfulness fused
+  tagalog: 'v9 · intent + grounded + multi-turn', // distill-sailor-3b-v4 (r32, f16, md5 a1f563ff): adds multi-turn confirm-and-build (P4) + faithful settled-science confidence (P3, fixes "ilan ang planeta"→confident "8") atop v3's intent + grounding-faithfulness + image-tags; gate green 2026-06-15. NOTE: [image:] emission still evaporates on the GGUF path (v5-cycle issue, needs conversion fix not data) — engagement inconsistent.
   cebuano: 'v3 · beta',
   english: '— (via Tagalog adapter)',
 };

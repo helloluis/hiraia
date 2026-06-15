@@ -29,6 +29,7 @@ import {
   SemanticIndex,
   normalizeQuery,
   buildContextualQuery,
+  CONTEXT_FALLBACK_FLOOR,
   type Language,
   type RagResult,
 } from '@hiraia/shared';
@@ -141,13 +142,18 @@ export async function retrieveGrounding(
     queryVec = await embed(normalizeQuery(query));
   }
 
-  let hits = store.retrieveForGroundingHybrid(query, queryVec, language, topK, 0.5, context, seenIds);
+  // CONTEXT-GATING (R1): retrieve CONTEXT-FREE — a confident, self-sufficient question carries its
+  // own topic; folding the prior turn in only pollutes it (the "solar system"→solar-panel collision).
+  const r1 = store.retrieveForGroundingHybridDiag(query, queryVec, language, topK, 0.5, '', seenIds);
+  let hits = r1.hits;
 
-  // R2 — topic-blind follow-up abstained; retry once with context folded in.
-  if (hits.length === 0 && queryVec && context.trim()) {
+  // R2 — bare query is WEAK (empty OR low-confidence topCos) → a topic-blind follow-up that needs
+  // the conversation topic folded in.
+  if ((hits.length === 0 || r1.topCos < CONTEXT_FALLBACK_FLOOR) && queryVec && context.trim()) {
     const foldedVec = await embed(buildContextualQuery(query, context));
     if (foldedVec) {
-      hits = store.retrieveForGroundingHybrid(query, foldedVec, language, topK, 0.5, context, seenIds);
+      const r2 = store.retrieveForGroundingHybridDiag(query, foldedVec, language, topK, 0.5, context, seenIds);
+      if (r2.hits.length) hits = r2.hits;
     }
   }
 

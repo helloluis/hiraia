@@ -25,11 +25,15 @@ interface ChatState {
   messages: Message[];
   isStreaming: boolean;
   currentStreamingContent: string;
+  // Cosmetic per-turn narration shown BEFORE the first token (retrieval → prefill).
+  // UI-only: never added to messages/history, so it costs zero tokens.
+  thinkingStatus: string;
   hasHydrated: boolean;
   lastFactoidIds: string[];
+  lastFactoidAt: number;
   hydrate: () => Promise<void>;
   sendMessage: (content: string) => Promise<void>;
-  showColdStartFactoid: () => void;
+  showColdStartFactoid: () => Promise<void>;
   clearMessages: () => Promise<void>;
   /** Load a past conversation (from the sidebar history) and make it active. */
   switchConversation: (id: string) => Promise<void>;
@@ -54,6 +58,13 @@ let shownImageSlugs = new Set<string>();
 
 // First `[image: <desc>]` control token the tutor emitted in an answer.
 const IMAGE_TAG_RE = /\[image:\s*([^\]]+?)\s*\]/i;
+
+// Confidence floor for the RETRIEVAL-DRIVEN illustration (top grounded FACT's text →
+// an image), separate from LocalEngine's stricter model-tag floor (0.70). The fact text
+// is often Tagalog vs the English image descriptions (cross-lingual LaBSE → lower
+// cosines), so this bar is lower. Tuned on-device from the logged resolveImageTag
+// cosines — conservative to start (better no picture than a wrong one).
+const RETRIEVAL_IMAGE_FLOOR = 0.55;
 
 // The tutor's abstain/redirect phrasings (TL/BIS/EN). When the answer matches, the
 // grounding wasn't really relevant, so we DON'T attach its illustration.
@@ -84,16 +95,28 @@ const COMPACTION_ENABLED = false;
 const KEEP_FULL = 6; // last 3 exchanges sent verbatim
 const MAX_LOOKBACK = 30; // cap turns considered (older ones use compactions when present)
 
+// A factoid is session context the kid is reading/being influenced by — not a
+// throwaway splash. Don't re-roll one that's already on screen / was shown less
+// than this ago (e.g. on a background→resume that re-mounts the screen).
+const FACTOID_TTL_MS = 60 * 60 * 1000; // 1 hour
+
 export const useChatStore = create<ChatState>()((set, get) => ({
   conversationId: null,
   messages: [],
   isStreaming: false,
   currentStreamingContent: '',
+  thinkingStatus: '',
   hasHydrated: false,
   lastFactoidIds: [],
+  lastFactoidAt: 0,
 
   // Load the latest conversation (or start one) from SQLite.
   hydrate: async () => {
+    // Idempotent: a background→resume can re-mount the tree and re-fire this; if we
+    // already hydrated, DON'T reload — that would clobber live (e.g. mid-stream) state
+    // and momentarily blank the just-sent question. The store is a singleton, so the
+    // first hydrate's result is still here.
+    if (get().hasHydrated) return;
     try {
       let convId = await getLatestConversationId();
       if (!convId) {
@@ -102,9 +125,10 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       }
       const messages = await getMessages(convId);
       const lastFactoidIds = JSON.parse((await getSetting('lastFactoidIds')) ?? '[]');
+      const lastFactoidAt = Number((await getSetting('lastFactoidShownAt')) ?? 0);
       shownFactIds = new Set();
       shownImageSlugs = new Set();
-      set({ conversationId: convId, messages, lastFactoidIds, hasHydrated: true });
+      set({ conversationId: convId, messages, lastFactoidIds, lastFactoidAt, hasHydrated: true });
     } catch (e) {
       console.error('[chatStore] hydrate failed:', e);
       set({ hasHydrated: true });
@@ -146,7 +170,8 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       return;
     }
 
-    set({ isStreaming: true, currentStreamingContent: '' });
+    // Stage 1 (cosmetic): "looking for the answer" while retrieval runs.
+    set({ isStreaming: true, currentStreamingContent: '', thinkingStatus: uiStrings(lang).thinkingSearching });
 
     try {
       // Ground the model on the curated facts (it confabulates without grounding).
@@ -166,6 +191,18 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       } catch (ragError) {
         console.warn('RAG search failed; answering ungrounded:', ragError);
       }
+      // Stage 2 (cosmetic): "reading about <topic>" using the retrieved top fact's topic.
+      // Only show the topic if it's clean human text (letters/spaces) — a raw id-slug
+      // ("solar-system-...-g4") falls back to a generic phrase. Pure UI; no tokens.
+      const topTopic = (grounding[0]?.metadata as { topic?: string } | undefined)?.topic?.trim();
+      const cleanTopic = topTopic && /^[\p{L} ]{2,28}$/u.test(topTopic) ? topTopic : '';
+      set({
+        thinkingStatus: cleanTopic
+          ? `${uiStrings(lang).thinkingReadingAbout} ${cleanTopic}`
+          : grounding.length
+            ? uiStrings(lang).thinkingReading
+            : uiStrings(lang).thinkingWorking,
+      });
       // Retrieval-driven illustration: ONLY the TOP grounded fact's image — the fact the
       // answer is actually built on. Previously we scanned the whole top-3 for ANY fact
       // with an image, which let an unrelated lower-ranked fact's picture attach to a
@@ -223,7 +260,23 @@ export const useChatStore = create<ChatState>()((set, get) => ({
         if (hit && !shownImageSlugs.has(hit.slug)) tagSlug = hit.slug;
       }
       const abstained = ABSTAIN_RE.test(fullResponse);
-      const finalImageSlug = tagSlug ?? (abstained ? undefined : imageSlug);
+
+      // 2b. RETRIEVAL-DRIVEN illustration — the RELIABLE path on the Q4 GGUF, where the
+      // model almost never emits a tag. Embed the TOP grounded fact and semantic-match a
+      // bundled image (reuses resolveImageTag's embed+cosine). Gated on: no model tag, not
+      // abstained (grounding was actually used). Post-generation → ZERO TTFT cost.
+      let retrievalSlug: string | undefined;
+      if (!tagSlug && !abstained && engine.resolveImageTag && grounding[0]?.content) {
+        const hit = await engine.resolveImageTag(grounding[0].content, RETRIEVAL_IMAGE_FLOOR);
+        if (hit && !shownImageSlugs.has(hit.slug)) retrievalSlug = hit.slug;
+      }
+
+      // Priority: model's explicit tag → semantic fact-match → precomputed FACT_IMAGE → none.
+      // DEDUP applies to EVERY path (incl. the FACT_IMAGE fallback, which previously bypassed
+      // it) so the same illustration isn't re-spammed — e.g. repeated "t-rex" questions get
+      // the tyrannosaurus image once, then text-only.
+      let finalImageSlug = tagSlug ?? retrievalSlug ?? (abstained ? undefined : imageSlug);
+      if (finalImageSlug && shownImageSlugs.has(finalImageSlug)) finalImageSlug = undefined;
       if (finalImageSlug) shownImageSlugs.add(finalImageSlug);
 
       const assistantMessage: Message = {
@@ -237,6 +290,7 @@ export const useChatStore = create<ChatState>()((set, get) => ({
         messages: [...state.messages, assistantMessage],
         isStreaming: false,
         currentStreamingContent: '',
+        thinkingStatus: '',
       }));
       await addMessage(convId, assistantMessage);
       // Auto-compact this answer in the background (best-effort; serialized).
@@ -250,47 +304,70 @@ export const useChatStore = create<ChatState>()((set, get) => ({
         ],
         isStreaming: false,
         currentStreamingContent: '',
+        thinkingStatus: '',
       }));
     }
   },
 
-  // Pre-written "Alam mo ba na…?" card shown while the model warms up. Transient
-  // (no id) — not persisted, not sent to the model.
-  showColdStartFactoid: () => {
+  // "Alam mo ba na…?" card shown while the model warms up. PERSISTED (it's context
+  // the kid is reading) but kept out of the model context by isRealTurn (factoids
+  // carry an id now, but isFactoid still excludes them). Skips re-rolling when one is
+  // already on screen / was shown < FACTOID_TTL_MS ago — so a background→resume keeps
+  // the SAME factoid instead of swapping in a new random one.
+  showColdStartFactoid: async () => {
+    const now = Date.now();
+    const onScreen = [...get().messages].reverse().find(isFactoid);
+    const onScreenFresh = !!onScreen && now - new Date(onScreen.timestamp ?? 0).getTime() < FACTOID_TTL_MS;
+    const shownRecently = get().lastFactoidAt > 0 && now - get().lastFactoidAt < FACTOID_TTL_MS;
+    if (onScreenFresh || shownRecently) return; // keep the existing one; don't re-roll
+
     const lastIds = get().lastFactoidIds;
     // Follow the active tutor language (was hardcoded Tagalog → English mode still got a TL factoid).
     const lang = useEngineStore.getState().language ?? 'tagalog';
     const picked = pickFactoidText(lang, lastIds);
     if (!picked) return;
 
-    set((state) => ({
-      messages: [...state.messages, { role: 'assistant', content: '', timestamp: new Date(), metadata: { kind: 'factoid' } }],
-    }));
+    // Attach to (and persist with) the active thread.
+    let convId = get().conversationId;
+    if (!convId) {
+      convId = genId();
+      await createConversation(convId);
+      set({ conversationId: convId });
+    }
 
-    // Deliberate single-char typewriter so it's clearly animated. The factoid plays
-    // while the model warms up (~20-30s), so a slow type-on is well within budget.
-    // ~1 char / 26ms ≈ 38 chars/sec → a typical factoid types on over ~4-7s.
+    const factoid: Message = {
+      id: genId(),
+      role: 'assistant',
+      content: picked.text,
+      timestamp: new Date(now),
+      metadata: { kind: 'factoid' },
+    };
+    // Persist the FULL text up front; the typewriter below is cosmetic for this view
+    // (a reload — e.g. after resume — shows the complete card immediately).
+    await addMessage(convId, factoid);
+    const nextHistory = [...lastIds, picked.id].slice(-15);
+    set((state) => ({
+      messages: [...state.messages, { ...factoid, content: '' }],
+      lastFactoidIds: nextHistory,
+      lastFactoidAt: now,
+    }));
+    void setSetting('lastFactoidIds', JSON.stringify(nextHistory));
+    void setSetting('lastFactoidShownAt', String(now));
+
+    // Deliberate single-char typewriter so it's clearly animated. ~1 char / 26ms ≈
+    // 38 chars/sec → a typical factoid types on over ~4-7s while the model warms up.
+    // Animate BY ID (not last-element) so a reply arriving mid-type can't be clobbered.
     const CHARS_PER_TICK = 1;
     const TICK_MS = 26;
-    let currentText = '';
     let index = 0;
     const fullText = picked.text;
     const tick = () => {
-      if (index >= fullText.length) {
-        const nextHistory = [...lastIds, picked.id].slice(-15);
-        set({ lastFactoidIds: nextHistory });
-        void setSetting('lastFactoidIds', JSON.stringify(nextHistory));
-        return;
-      }
-      currentText += fullText.slice(index, index + CHARS_PER_TICK);
       index += CHARS_PER_TICK;
-      set((state) => {
-        const updated = [...state.messages];
-        const last = updated[updated.length - 1];
-        if (last) updated[updated.length - 1] = { ...last, content: currentText };
-        return { messages: updated };
-      });
-      setTimeout(tick, TICK_MS);
+      const slice = fullText.slice(0, index);
+      set((state) => ({
+        messages: state.messages.map((m) => (m.id === factoid.id ? { ...m, content: slice } : m)),
+      }));
+      if (index < fullText.length) setTimeout(tick, TICK_MS);
     };
     setTimeout(tick, TICK_MS);
   },

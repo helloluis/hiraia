@@ -6,6 +6,7 @@ import {
   Image,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
   type NativeScrollEvent,
   type NativeSyntheticEvent,
@@ -67,18 +68,54 @@ export function ChatThread({ messages, isStreaming, streamingContent }: ChatThre
   // flips false the moment they scroll up to re-read, so a streaming reply never yanks
   // the viewport back. Updated from onScroll.
   const stickToBottom = useRef(true);
+  // The floating "jump to newest" arrow: shown once the user is more than ONE screen up;
+  // blinks while a reply is actively printing (something new below to read).
+  const [showScrollBtn, setShowScrollBtn] = useState(false);
+  const prevStreaming = useRef(false);
+  const blink = useRef(new Animated.Value(1)).current;
+  const isPrinting = !!streamingContent; // the answer is actively streaming tokens
   const t = uiStrings(useEngineStore((s) => s.language));
   const rows = useMemo(() => withDateDividers(messages), [messages]);
 
-  // A NEW message (the kid's send, or a fresh assistant turn) always pins to the bottom.
-  // Mid-stream growth is handled in onContentSizeChange, gated on stickToBottom — so if
-  // the line being printed is already in view, we leave the viewport alone.
+  const scrollToBottom = (animated = true) => {
+    stickToBottom.current = true;
+    setShowScrollBtn(false);
+    requestAnimationFrame(() => listRef.current?.scrollToEnd({ animated }));
+  };
+
+  // Follow a new message ONLY if the user is still at the bottom — never yank them down
+  // when they've scrolled up to read; the floating arrow handles that case instead.
   useEffect(() => {
-    if (messages.length > 0) {
-      stickToBottom.current = true;
+    if (messages.length > 0 && stickToBottom.current) {
       requestAnimationFrame(() => listRef.current?.scrollToEnd({ animated: true }));
     }
   }, [messages.length]);
+
+  // When the "thinking…" narration first begins, reveal it with ONE auto-scroll. After
+  // that we respect wherever the user scrolls (only-once, per the UX spec).
+  useEffect(() => {
+    if (isStreaming && !prevStreaming.current) scrollToBottom(true);
+    prevStreaming.current = !!isStreaming;
+  }, [isStreaming]);
+
+  // Blink the arrow while the reply prints (and the user is scrolled up); steady otherwise.
+  useEffect(() => {
+    if (showScrollBtn && isPrinting) {
+      const loop = Animated.loop(
+        Animated.sequence([
+          Animated.timing(blink, { toValue: 0.25, duration: 500, useNativeDriver: true }),
+          Animated.timing(blink, { toValue: 1, duration: 500, useNativeDriver: true }),
+        ])
+      );
+      loop.start();
+      return () => {
+        loop.stop();
+        blink.setValue(1);
+      };
+    }
+    blink.setValue(1);
+    return undefined;
+  }, [showScrollBtn, isPrinting, blink]);
 
   if (messages.length === 0) {
     return (
@@ -131,6 +168,9 @@ export function ChatThread({ messages, isStreaming, streamingContent }: ChatThre
             const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent;
             const distanceFromBottom = contentSize.height - contentOffset.y - layoutMeasurement.height;
             stickToBottom.current = distanceFromBottom <= STICK_SLOP;
+            // Floating "jump to newest" arrow once the user is more than one full screen up.
+            const scrolledFar = distanceFromBottom > layoutMeasurement.height;
+            setShowScrollBtn((prev) => (prev !== scrolledFar ? scrolledFar : prev));
           },
         })}
         scrollEventThrottle={16}
@@ -138,6 +178,18 @@ export function ChatThread({ messages, isStreaming, streamingContent }: ChatThre
           isStreaming ? <StreamingBubble content={streamingContent ?? ''} /> : null
         }
       />
+      {showScrollBtn && (
+        <Animated.View style={[styles.scrollFab, { opacity: blink }]} pointerEvents="box-none">
+          <TouchableOpacity
+            style={styles.scrollFabBtn}
+            onPress={() => scrollToBottom(true)}
+            activeOpacity={0.8}
+            accessibilityLabel="Pumunta sa pinakabagong mensahe"
+          >
+            <Text style={styles.scrollFabIcon}>↓</Text>
+          </TouchableOpacity>
+        </Animated.View>
+      )}
     </View>
   );
 }
@@ -243,5 +295,29 @@ const styles = StyleSheet.create({
     fontSize: 17,
     lineHeight: 24,
     color: colors.ink,
+  },
+  scrollFab: {
+    position: 'absolute',
+    right: 16,
+    bottom: 16,
+  },
+  scrollFabBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.22,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 4,
+  },
+  scrollFabIcon: {
+    color: colors.white,
+    fontSize: 24,
+    lineHeight: 26,
+    fontWeight: '700',
   },
 });

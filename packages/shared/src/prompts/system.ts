@@ -140,24 +140,35 @@ MGA LARAWAN: Kapag makakatulong ang isang simpleng larawan sa pagpapaliwanag, ma
 MGA HULAGWAY: Kung makatabang ang usa ka simpleng hulagway sa pagpasabot, pagdugang og kataposang linya nga: [image: mubo ug tukma nga English nga paghulagway sa hulagway]. Kung walay angay nga hulagway, ayaw pagbutang niini nga linya. Ug kung gipakita na nimo ang usa ka hulagway bag-o pa lang niini nga panag-istoryahanay, ayaw na kini balika — pagpakita lang og bag-o ug angay nga hulagway.`,
 };
 
+/** Output-language line for the contracted system prompt. */
+const SHORT_LANGUAGE_LINE: Record<Language, string> = {
+  tagalog: 'Reply in natural, conversational Tagalog (gumamit ng "po").',
+  english: 'Reply in clear, simple English.',
+  cebuano: 'Reply in natural, conversational Cebuano Bisaya.',
+};
+
 /**
- * Generate a system prompt based on language and grade level.
- * When `imageTags` is true, the image-tag instruction is appended (train/runtime
- * must agree — see IMAGE_TAG_INSTRUCTION).
+ * Generate the system prompt. CONTRACTED (2026-06-15, ~240 tok vs the old ~1300): the v4
+ * LoRA already carries the tutoring SKILL (grounded answering, grade level, conciseness,
+ * Socratic tone, language), so the prompt only ANCHORS the two behaviors that proved fragile
+ * under compression in the ablation — chitchat-gating and the abstention BALANCE (confident
+ * when grounded/settled vs. abstain-without-confabulation when truly unknown). Validated by
+ * role-play at device temp 0.5; the full PROMPT_TEMPLATE above is retained for reference / a
+ * fast revert. The TTFT payoff: smaller cold prefill + warm-up + ~1000 freed context tokens.
+ * `imageTags` is now ignored — illustrations come from the retrieval-driven path
+ * (LocalEngine.resolveImageTag on the top grounded fact), not a model-emitted tag.
  */
 export function generateSystemPrompt(
   language: Language,
   gradeLevel: GradeLevel,
   imageTags = false
 ): string {
-  const languageInstruction = PROMPT_TEMPLATE.languageInstructions[language];
-  const gradeInstruction = PROMPT_TEMPLATE.gradeInstructions[gradeLevel];
+  void imageTags;
+  return `You are Hiraia, a warm, encouraging science tutor for Filipino grade-${gradeLevel} students. ${SHORT_LANGUAGE_LINE[language]}
 
-  return `${PROMPT_TEMPLATE.base}
-
-${languageInstruction}
-
-${gradeInstruction}${imageTags ? '\n' + IMAGE_TAG_INSTRUCTION[language] : ''}`;
+- When VERIFIED FACTS are provided, OR the question is settled science, answer DIRECTLY and CONFIDENTLY in your own words at the student's level — 2-3 short paragraphs, 1-2 fitting emoji, ending with a friendly follow-up question. Do NOT say you are unsure when the facts cover it or the answer is settled (the Earth is round; there are eight planets; the Sun is a star). Gently correct common myths.
+- ONLY when the facts do not cover the question AND you genuinely do not know — including an exact name, number, date, or superlative (the biggest/largest/farthest/oldest) you cannot verify — say plainly that you are not sure and suggest asking a teacher. Never invent a specific to fill the gap.
+- If the student only greets, thanks, or reacts with no science question — or sends something unintelligible — IGNORE any provided facts: greet back warmly, or say you didn't quite understand and gently ask them to rephrase. Do NOT explain a topic.`;
 }
 
 /**
