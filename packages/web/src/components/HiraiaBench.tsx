@@ -33,10 +33,11 @@ export function HiraiaBench() {
           Hiraia performance
         </h2>
         <p className="text-base sm:text-lg text-[#0c343d]/80 leading-relaxed max-w-3xl mb-8 md:mb-10">
-          <span className="font-semibold">hiraiabench</span> measures our fine-tuning honestly: a tiny
-          on-device 3B model that beats its untrained base everywhere and leads a recent open model{' '}
-          <span className="whitespace-nowrap">~3× its size</span> on the Filipino-language dimensions —
-          with a cloud frontier model as the reference ceiling. Scored 0–5 by a blind LLM judge across{' '}
+          <span className="font-semibold">hiraiabench</span> measures our fine-tuning honestly. Read the
+          table top to bottom: scores fall as the models get smaller — <span className="italic">except
+          our row</span>. Hiraia is a 3B model, but our fine-tune makes it score like one several times
+          its size, beating its own untrained base and matching far larger open models on the dimensions
+          that matter for a Filipino science tutor. Scored 0–5 by a blind LLM judge across{' '}
           {BENCH_META.n_probes} probes; higher is better.
         </p>
 
@@ -58,10 +59,20 @@ export function HiraiaBench() {
               {BENCH_ROWS.map((r) => (
                 <tr key={r.model} className={`border-t border-gray-200 ${r.highlight ? 'bg-[#f3a228]/15' : 'bg-white'}`}>
                   <th scope="row" className={`px-4 sm:px-6 py-4 sticky left-0 z-10 ${r.highlight ? 'bg-[#fdf3e1]' : 'bg-white'}`}>
-                    <div className={`font-display text-base sm:text-lg ${r.highlight ? 'text-[#0c343d]' : 'text-gray-800'}`}>
+                    <div className={`font-display text-base sm:text-lg flex items-center gap-2 ${r.highlight ? 'text-[#0c343d]' : 'text-gray-800'}`}>
+                      {r.highlight && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src="/hiraia-profile.png"
+                          alt="Hiraia"
+                          width={28}
+                          height={28}
+                          className="rounded-full ring-2 ring-[#f3a228] shrink-0"
+                        />
+                      )}
                       {r.model}
                       {r.highlight && (
-                        <span className="ml-2 align-middle text-[10px] uppercase tracking-wider font-sans font-bold text-[#0c343d] bg-[#f3a228] rounded-full px-2 py-0.5">
+                        <span className="align-middle text-[10px] uppercase tracking-wider font-sans font-bold text-[#0c343d] bg-[#f3a228] rounded-full px-2 py-0.5">
                           ours
                         </span>
                       )}
@@ -84,7 +95,19 @@ export function HiraiaBench() {
           </table>
         </div>
 
-        <div className="mt-5 max-w-3xl space-y-2">
+        <div className="mt-8 max-w-3xl">
+          <h3 className="font-display text-lg sm:text-xl text-[#0c343d] mb-4">What each category means</h3>
+          <dl className="grid sm:grid-cols-2 gap-x-10 gap-y-4">
+            {BENCH_META.category_notes.map((c) => (
+              <div key={c.name}>
+                <dt className="font-sans font-semibold text-sm text-[#0c343d]">{c.name}</dt>
+                <dd className="text-xs sm:text-sm text-gray-500 leading-relaxed mt-0.5">{c.note}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        <div className="mt-8 max-w-3xl space-y-2 border-t border-gray-100 pt-5">
           <p className="text-xs sm:text-sm text-gray-500">{BENCH_META.methodology}</p>
           <ul className="text-xs text-gray-400 list-disc pl-5 space-y-1">
             {BENCH_META.footnotes.map((f, i) => (
