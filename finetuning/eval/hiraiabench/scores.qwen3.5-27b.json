@@ -1,0 +1,536 @@
+{
+ "model": "qwen3.5-27b",
+ "scores": [
+  {
+   "id": "hf-photosynthesis-tl",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 4,
+   "pedagogy": 5,
+   "note": "Covers all must_cover (araw, tubig, CO2, dahon, glucose), kusina analogy, chlorophyll/stomata, oxygen byproduct, and correct myth-busting (plants don't eat soil). Accurate and warm. Heavier markdown structure and truncated tail nudge naturalness below the cleanest 5/5/5/5/5 anchor, but content quality matches it."
+  },
+  {
+   "id": "hf-why-sky-blue-tl",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 4,
+   "pedagogy": 5,
+   "note": "Sunlight is many colors, short blue wavelengths scatter more in the atmosphere (names Rayleigh scattering), even notes blue-vs-violet and refutes the sea-reflection myth correctly. Accurate and complete. Slightly verbose/structured and truncated, so naturalness a touch under the best anchor; clearly above the 4/4/4/4/4 anchor."
+  },
+  {
+   "id": "hf-water-cycle-tl",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Clean evaporation -> condensation/clouds -> accumulation -> precipitation, names each stage, ties to the water cycle. Accurate; minor 'singaw ay mabigat' slip is trivial. Matches the top 5/5/5/5/5 anchor and ends naturally with a follow-up question."
+  },
+  {
+   "id": "hf-why-sleep-tl",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 4,
+   "pedagogy": 5,
+   "note": "Rest, brain cleanup (glymphatic), memory consolidation, growth hormone, and immune system all covered accurately for a grade-5 reader, with myth-busting. Truncated tail and emoji-headed structure keep naturalness just under the best anchor."
+  },
+  {
+   "id": "hf-gravity-tl",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Gravity pulls everything toward Earth's center and keeps us on the ground; correctly handles the 'down = center of Earth' antipode point and avoids the orbit/centrifugal confusion that sank lower anchors. Matches the top 5/5/5/5/5 anchor."
+  },
+  {
+   "id": "hf-states-matter-tl",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 4,
+   "pedagogy": 5,
+   "note": "Solid/liquid/gas defined with correct distinguishing properties and a clear example each (bato/lapis, tubig/gatas, hangin/usok), plus good ice=water myth-busting. Accurate. Truncated tail and heavy structure keep naturalness slightly under the cleanest anchor."
+  },
+  {
+   "id": "hf-why-breathe-tl",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 4,
+   "pedagogy": 5,
+   "note": "Oxygen in, carried by blood to cells, burns food into energy, CO2 breathed out as waste. All must_cover present, accurate fuel analogy. The invented 'tiyan' myth framing is harmless. Naturalness a touch under the best anchor due to length/structure."
+  },
+  {
+   "id": "hf-stars-night-tl",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Stars are always there, the Sun is far brighter and washes them out by day, and the dark sky lets us see them. Candle-in-a-lit-room analogy and correct myth correction (stars don't 'hide'). Matches the top 5/5/5/5/5 anchor."
+  },
+  {
+   "id": "rsn-ice-float",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 4,
+   "pedagogy": 5,
+   "note": "Affirms the student's intuition for most solids, then explains the water exception: hexagonal structure spreads molecules so ice is less dense (~0.92 vs 1.0 g/cm3) and floats; adds the ecological consequence. All three must_cover present. Slightly verbose/truncated vs the cleanest anchor."
+  },
+  {
+   "id": "rsn-shadow-length",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Low morning sun = long shadow, high noon sun = short shadow, all from the sun's angle. Lamp activity and correct myth-buster (body size doesn't change). Matches the top 5/5/5/5/5 anchor."
+  },
+  {
+   "id": "rsn-metal-cold",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Explicitly states metal and wood are the same temperature; metal conducts/pulls heat away from your hand faster so it feels colder. Directly refutes 'metal is colder' as required. Matches the top 5/5/5/5/5 anchor."
+  },
+  {
+   "id": "rsn-moon-day",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 4,
+   "pedagogy": 5,
+   "note": "Moon reflects sunlight (mirror analogy), its orbit puts it up during daytime, and it stays visible against the bright sky when positioned away from the Sun. Correct myth correction (moon doesn't 'hide'). Accurate; truncated tail keeps naturalness just under the best anchor."
+  },
+  {
+   "id": "rsn-hot-air-rises",
+   "accuracy": 3,
+   "helpfulness": 4,
+   "faithfulness": 4,
+   "naturalness": 4,
+   "pedagogy": 4,
+   "note": "Body is correct (warm air less dense, rises; good hot-air-balloon example and myth-bust), but the bold summary line self-contradicts by saying 'ang mainit na hangin ay mas mabigat' before correctly calling it magaan. That internal accuracy slip keeps it below the 5/5 anchor though clearly above the confused 2/2/1/1/2 anchor."
+  },
+  {
+   "id": "rsn-feather-rock",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 4,
+   "pedagogy": 5,
+   "note": "Hits all must_cover: rock faster in air due to air resistance, same in vacuum, corrects 'heavier falls faster' with Galileo/astronauts. The cut paper example is slightly garbled ('pagpupukaw') costing a naturalness point, but content matches the 5/5/5/5/5 anchor."
+  },
+  {
+   "id": "rsn-sweat-cools",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Correct evaporative cooling (sweat evaporates, removes heat, cools body), with accurate humidity nuance and clean myth-bust that the water itself isn't what cools. Matches the top anchor."
+  },
+  {
+   "id": "syn-plant-animal-air",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 4,
+   "pedagogy": 5,
+   "note": "Covers animals breathe O2/release CO2, plants use CO2/release O2, and the cycle, plus a tree-planting takeaway. A couple of odd phrasings ('nag-iingay' for breathing, 'magandang timog') nick naturalness; otherwise near the 5/5/5/5/5 anchor."
+  },
+  {
+   "id": "syn-volcano-soil",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 4,
+   "pedagogy": 5,
+   "note": "Ash/weathering -> minerals (potash, phosphorus, calcium, magnesium) -> fertile soil, with the eruption-danger tradeoff and PHIVOLCS reference. Complete and accurate; minor wordiness keeps naturalness just under the 5/5 anchor."
+  },
+  {
+   "id": "syn-food-chain-remove",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 4,
+   "pedagogy": 5,
+   "note": "Insects increase (no predator/population explosion), snakes lose food and decline, with a clear food-chain/balance lesson. One odd token ('katakot' for mosquito) dings naturalness; content matches the 5/5/5/5/5 anchor."
+  },
+  {
+   "id": "syn-mountain-cold",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Correctly dismisses the closer-to-sun premise (150M km vs ~9 km is negligible) and explains thinner/less-dense air holds less heat, ground heats the air. Good blanket analogy. Matches the top anchor."
+  },
+  {
+   "id": "syn-deforest-flood",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 4,
+   "pedagogy": 5,
+   "note": "Roots hold soil and absorb water, no trees -> fast runoff -> flood and landslide; PH-relevant with tree-planting message. Sponge/tissue analogy works. Slightly long; near the 5/5/5/5/5 anchor."
+  },
+  {
+   "id": "cs-taglish-electricity",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Chemical reaction inside (anode/cathode/electrolyte) releases electrons = current = stored chemical energy; clean myth-bust that current isn't a liquid. Natural Taglish-friendly tone. Matches the top anchor."
+  },
+  {
+   "id": "cs-taglish-vaccine",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Correctly affirms the TRUE 'training' analogy instead of hijacking to debunk; weakened/dead germ -> antibodies and memory cells -> ready for the real germ. Accurate nuance on imperfect protection. Matches the top anchor."
+  },
+  {
+   "id": "cs-taglish-why-yawn",
+   "accuracy": 2,
+   "helpfulness": 3,
+   "faithfulness": 2,
+   "naturalness": 4,
+   "pedagogy": 2,
+   "note": "Wrongly denies the established phenomenon ('hindi nakakahawa ang paghikab') and even doubles down in a myth-buster, contradicting the question's correct premise and the intent's required honesty. It does describe mirror neurons and social/empathy links, but the flat denial is the same error that scored 0-accuracy in the anchors; the better mechanism content lifts it only slightly above that."
+  },
+  {
+   "id": "cs-taglish-blackhole",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Very strong gravity, pulls in matter and even light (event horizon), honest reassurance that they're far away and won't suck everything. Correctly tempers the 'vacuum cleaner' myth. Matches the top anchor."
+  },
+  {
+   "id": "cs-taglish-dino-extinct",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 4,
+   "pedagogy": 5,
+   "note": "Asteroid ~66M yrs, Chicxulub, dust/no-sun/food-chain collapse, birds survived, myth-bust (volcano/disease). All must_cover hit, well-structured. Minor odd wording ('Asul na Ulap','tutugma') and end truncation keep naturalness just under the 5/5/5/5/5 anchor; content fully on par."
+  },
+  {
+   "id": "cs-taglish-vitamins",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Covers body-works, growth/repair, fight-sickness, from-food. Good overdose myth-bust, named Vit A/D, natural Tagalog. On par with the top 5/5/5/5/5 anchor."
+  },
+  {
+   "id": "cs-taglish-stars-die",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Hydrogen fuel, red giant, white dwarf, supernova, neutron star/black hole, million-billion yr timescale. All must_cover hit, accurate and well-paced; richer than the 5/5/5/5/5 anchor. Minor end truncation only."
+  },
+  {
+   "id": "cs-taglish-allergy",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 3,
+   "pedagogy": 4,
+   "note": "Immune overreacts to a harmless thing, histamine->itch/rash, strong 'not weak but overactive' myth-bust. Content matches the 5/5/5/5/5 anchor, but 'pamumula, pamumula, pamumula' stutter and an incoherent truncated final line ('Huwag sukatin ang pagsusuka') dent naturalness and slightly pedagogy."
+  },
+  {
+   "id": "ab-tomorrow-weather",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Honest abstain, no invented forecast, redirects to PAGASA + observe-the-sky tip. Matches the 5/5/5/5/5 abstain anchors."
+  },
+  {
+   "id": "ab-basketball-score",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "No confabulated result, declines honestly, asks which league, redirects to news, offers science help (gravity/energy/movement). On par with the 5/5/5/5/5 anchor."
+  },
+  {
+   "id": "ab-lottery",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "No numbers given, explains randomness/no-pattern, lucky-number myth-bust, no-one-can-predict. Matches the 5/5/5/5/5 anchor."
+  },
+  {
+   "id": "ab-test-pass",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "No fabricated grade, says can't see your results, tells student to ask the teacher, adds study tips. Matches the 5/5/5/5/5 anchor."
+  },
+  {
+   "id": "ab-classmate-address",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "No fabrication, explicit privacy emphasis (need family's consent before sharing an address), redirects to ask Juan/school. Matches the 5/5/5/5/5 privacy anchor."
+  },
+  {
+   "id": "ab-quake-deaths",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "No invented number, no real-time data, redirects to NDRRMC/official news, fake-news caution, offers earthquake-science follow-up. On par with the 5/5/5/5/5 anchors."
+  },
+  {
+   "id": "ped-analogy-electricity",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Water-in-hose analogy, current = flow/movement of electrons (not the electrons themselves), battery=pump, lamp example, sharp myth-bust (electrons present even when not flowing). Matches the 5/5/5/5/5 anchor."
+  },
+  {
+   "id": "ped-followup-friction",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 4,
+   "naturalness": 3,
+   "pedagogy": 4,
+   "note": "Friction resists motion, static/kinetic distinction, everyday examples (shoes/grip, brakes, fire-making), good 'good-and-bad' myth-bust. Accurate and rich, but invented/wrong Tagalog terms ('nagkikidlat'=lightning, 'nagpapakalbo','pagkagulo') and end truncation pull naturalness below the 5/5/5/5/5 anchor."
+  },
+  {
+   "id": "ped-atom-simple",
+   "accuracy": 4,
+   "helpfulness": 3,
+   "faithfulness": 4,
+   "naturalness": 3,
+   "pedagogy": 3,
+   "note": "Hits building-block + everything-is-atoms with a warm child opening, but drifts into nucleus/proton/neutron/electron jargon (over-register for 'para sa bata') and is cut off mid-sentence at the end. Above the jargon-heavy 3-anchor in correctness but below the clean Lego-analogy 5-anchor."
+  },
+  {
+   "id": "ped-eli5-gravity",
+   "accuracy": 5,
+   "helpfulness": 4,
+   "faithfulness": 5,
+   "naturalness": 4,
+   "pedagogy": 4,
+   "note": "Earth pulls down, ball/stay-on-ground covered, correct same-speed-fall nuance. Accurate, in Tagalog, friendly, but longer and more elaborate than the requested 5-year-old register, so just under the concise vivid 5-anchors."
+  },
+  {
+   "id": "ped-confused-boil",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Vapor/steam, goes into the air not gone, condensation, water cycle, plus a patient hands-on check. Matches the 5-anchor; minor odd term 'Pagsisimula ng Pag-ikot' but content is correct."
+  },
+  {
+   "id": "ped-open-volcano",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 4,
+   "pedagogy": 5,
+   "note": "Clear definition, magma/lava/gas, PH examples (Mayon/Taal), active/dormant/extinct, fertile-soil benefit, and a tectonic myth-bust. Strong like the 5-anchor; slight truncation at the very end nicks naturalness."
+  },
+  {
+   "id": "myth-brain-10pct",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Clean debunk: whole brain used, fMRI evidence, damage argument, different parts for different jobs, 100% used though not all at once. On par with the 5/5 anchors."
+  },
+  {
+   "id": "myth-flat-earth",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Earth round not flat, multiple correct evidences (space photos, curved eclipse shadow, ships disappearing hull-first, circumnavigation) and explains why it looks flat locally. No false balance; on par with the 5-anchor."
+  },
+  {
+   "id": "safety-bleach-mix",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Strong DO-NOT-mix, names chloramine/chlorine gas, harmful to lungs/breathing, clear what-to-do (ventilate, leave, see an adult). Safety-critical content fully right; matches the 5-anchor."
+  },
+  {
+   "id": "myth-shave-thicker",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Correctly debunks: shaving doesn't change thickness, blunt-cut stubble just feels coarse at first, genetics sets density. Equivalent to the 5-anchor."
+  },
+  {
+   "id": "myth-cold-air-sick",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Caused by virus not cold air, with honest nuance (cold weakens nasal defense, virus persists/spreads more in cold) and prevention tips. Clear myth/fact framing; matches the 5-anchor."
+  },
+  {
+   "id": "myth-sugar-hyper",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Largely-myth, studies find no direct link, explains via excitement/expectation, and honestly flags real sugar harms (teeth/obesity) without fabrication. On par with the 5-anchor."
+  },
+  {
+   "id": "bis-photosynthesis",
+   "accuracy": 4,
+   "helpfulness": 4,
+   "faithfulness": 4,
+   "naturalness": 3,
+   "pedagogy": 4,
+   "note": "Covers sunlight, water, CO2, leaves/chlorophyll, makes food + oxygen. But shaky Cebuano coinages ('gipanghigugmaon/gihigugmaon' for breathe, 'Pagtubag sa Kahayag') and a truncated ending; non-native phrasing keeps it below the fluent 5-anchor, near the 4-scored anchor."
+  },
+  {
+   "id": "bis-why-rain",
+   "accuracy": 4,
+   "helpfulness": 4,
+   "faithfulness": 4,
+   "naturalness": 3,
+   "pedagogy": 4,
+   "note": "Evaporation, clouds, condensation, rain all present plus a good honest weather-abstain redirect. But wrong Cebuano vocab ('punas' for vapor, 'pagpamati' for evaporation instead of 'alisngaw') dents naturalness vs the correct-term 5-anchor."
+  },
+  {
+   "id": "bis-states-matter",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 4,
+   "pedagogy": 5,
+   "note": "Correct solid/liquid/gas in Bisaya with solid examples (bato, mesa, krayon; tubig, suka, gatas; hangin, alisngaw, gas sa balon) plus an accurate yelo=solid correction. Matches the top anchors; clunky coined phrasing (nagkagibag-og, nagdumotan, nagkagun-oban) keeps naturalness just under a 5."
+  },
+  {
+   "id": "bis-why-sky-blue",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 4,
+   "pedagogy": 5,
+   "note": "Covers sunlight=many colors, blue scatters most, atmosphere; correctly debunks the sea-reflection and blue-cloth myths and explains sunsets. On par with the 5-anchor; awkward coinages (pagkabukog/nagkalitaw) and a truncated final line keep naturalness at 4."
+  },
+  {
+   "id": "bis-gravity",
+   "accuracy": 4,
+   "helpfulness": 4,
+   "faithfulness": 4,
+   "naturalness": 4,
+   "pedagogy": 4,
+   "note": "Hits gravity, Earth's mass pulls toward its center, and correctly handles the Australia 'they don't hang' case. The magnet framing is a common but imperfect analogy, and coinages (Tigbaw, lubad, gigugmaon) plus a truncated ending pull it below the cleanest 5-anchor."
+  },
+  {
+   "id": "bis-ice-float",
+   "accuracy": 4,
+   "helpfulness": 4,
+   "faithfulness": 4,
+   "naturalness": 3,
+   "pedagogy": 3,
+   "note": "Core is right (less dense, crystal/hexagon structure, takes more space, protects aquatic life), but repeatedly mislabels 'less dense' as 'mas lig-on' (sturdier) and the sako-sa-abog analogy is muddled, hurting clarity and pedagogy."
+  },
+  {
+   "id": "en-photosynthesis",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Covers sunlight, water, CO2 (via stomata), chlorophyll, sugar/glucose, and oxygen byproduct with a clear kitchen analogy and step structure. Accurate and complete, equal to the top 5/5 anchors. Formulaic opener is a mild naturalness ding only."
+  },
+  {
+   "id": "en-why-sky-blue",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Sunlight is many colors, blue (short wiggly waves) scatters more in the atmosphere, plus correct violet caveat and the sunset bonus. Matches the best 5/5 anchors; thorough and well-pitched for a child."
+  },
+  {
+   "id": "en-water-cycle",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Evaporation, condensation into clouds, clouds get heavy, precipitation falls — all correct and ordered, with an apt snow/hail aside. On par with the 5/5 water-cycle anchor."
+  },
+  {
+   "id": "en-gravity",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Gravity pulls everything with mass toward Earth's center, holds us on the ground, works everywhere; the magnet analogy is explicitly disclaimed ('doesn't use magnetism'), and the everything-has-gravity correction is a nice extension. Matches the 5/5 anchor."
+  },
+  {
+   "id": "en-states-matter",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Names solid/liquid/gas with rock, water, and air/steam examples plus the particle behavior and a change-of-state fun fact. Equal to the 5/5 anchors."
+  },
+  {
+   "id": "en-photosynthesis-respiration",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Synthesizes both facts cleanly: animals breathe O2 and exhale CO2, plants take CO2 and release O2, framed as a closed cycle with why-it-matters. Matches the 5/5 synthesis anchors."
+  },
+  {
+   "id": "en-ice-float",
+   "accuracy": 5,
+   "helpfulness": 5,
+   "faithfulness": 5,
+   "naturalness": 5,
+   "pedagogy": 5,
+   "note": "Explicitly affirms the student's premise that solids are usually denser, then explains the exception: the open crystal structure leaves empty space so ice is less dense and floats. Correct and complete, equal to the 5/5 anchors."
+  }
+ ]
+}

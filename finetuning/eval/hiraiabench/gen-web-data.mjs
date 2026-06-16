@@ -48,10 +48,11 @@ const meta = {
     'Single-turn probes from our internal capability suite (no retrieval/RAG), one shared neutral tutor prompt for every model, blind comparative LLM-judging (answers anonymized, scored 0-5 on accuracy/helpfulness/faithfulness/naturalness/pedagogy, then projected to the 7 categories).',
   footnotes: [
     'Qwen3.5 ships in many sizes (0.8B–72B + a 30B-A3B MoE); we show 9B (~3× our size) and 27B (~9×) as open references. No 14B exists in this generation.',
-    'Open models run at their on-device Q4_K_M (llama.cpp), the quant a deployer would actually use; Hiraia is the shipped 3B + LoRA.',
+    'The 3B/1.7B/9B models and Hiraia run at Q4_K_M (llama.cpp) — the on-device quant a deployer would use; the 27B runs at bf16 (vLLM) as a full-precision larger-model reference.',
     'No RAG: every model answers from its own weights under the same tutor prompt. Hiraia’s product adds retrieval grounding on top — not reflected here.',
     'Hiraia’s Bisaya here uses the tl/en LoRA (cross-lingual transfer); the product ships a separate Bisaya adapter, not benchmarked.',
-    'Claude Opus 4.8 saturates the rubric (5.0) — it is the frontier reference ceiling, not a same-class model. Qwen3.5-27B was scored against the other five as frozen calibration anchors.',
+    'Under the shared Filipino-tutor prompt the 27B answered English questions in Tagalog (a language-matching miss, not an English deficit); its English row was re-measured with an explicit “reply in English” instruction.',
+    'Claude Opus 4.8 saturates the rubric (5.0) — the frontier reference ceiling, not a same-class model. Qwen3.5-27B was scored against the other five as frozen calibration anchors.',
   ],
 };
 

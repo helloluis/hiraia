@@ -31,6 +31,7 @@ def strip_think(s):
 
 def ask(prompt, lang):
     body = {
+        "model": os.environ.get("MODEL_API_NAME", "default"),  # vLLM requires it; llama.cpp ignores it
         "messages": [
             {"role": "system", "content": SYS.get(lang, SYS["en"])},
             {"role": "user", "content": prompt},
