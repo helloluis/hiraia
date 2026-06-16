@@ -46,8 +46,13 @@ export interface RemoteModelSpec {
 }
 
 const CHUNK_BYTES = 8 * 1024 * 1024; // 8 MB — small enough that a drop loses little
-const CHUNK_TIMEOUT_MS = 45_000; // a single chunk that stalls this long is aborted + retried
+// Per-chunk timeout must allow a full chunk to arrive even on a slow link, or a
+// slow-but-working connection gets its chunks aborted and re-fetched forever. Floor the
+// tolerated throughput very low (~70 KB/s for an 8 MB chunk → ~120 s) so genuinely slow
+// 5G/3G still completes; only a truly dead socket hits it.
+const CHUNK_TIMEOUT_MS = 120_000;
 const MAX_CONSECUTIVE_FAILS = 40; // give up only after many back-to-back failures
+const LOG = (m: string) => console.log(`[modelDownload] ${m}`);
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 const stripScheme = (uri: string) => uri.replace(/^file:\/\//, '');
 
@@ -134,11 +139,14 @@ export async function ensureRemoteModel(
     offset = 0;
   }
 
+  const startedOffset = offset;
+  if (offset > 0) LOG(`${spec.filename}: resuming from ${(offset / 1e6).toFixed(0)}MB on disk`);
   let fails = 0;
   while (total === 0 || offset < total) {
     if (signal?.aborted) throw new Error('model download aborted');
     const end = total > 0 ? Math.min(offset + CHUNK_BYTES, total) - 1 : offset + CHUNK_BYTES - 1;
     try {
+      const t0 = Date.now();
       const { bytes, total: t } = await fetchRange(spec.url, offset, end, signal);
       if (total === 0 && t > 0) total = t; // learned the size from Content-Range
       if (bytes.length === 0) throw new Error('empty chunk');
@@ -153,19 +161,25 @@ export async function ensureRemoteModel(
       offset += bytes.length;
       fails = 0;
       if (total > 0) onProgress?.(Math.min(99, Math.round((offset / total) * 100)));
+      const secs = (Date.now() - t0) / 1000;
+      const pct = total > 0 ? Math.round((offset / total) * 100) : 0;
+      LOG(
+        `${spec.filename}: ${pct}% (${(offset / 1e6).toFixed(0)}/${(total / 1e6).toFixed(0)}MB) ` +
+          `+${(bytes.length / 1e6).toFixed(1)}MB in ${secs.toFixed(1)}s = ${(bytes.length / 1e6 / secs).toFixed(2)}MB/s`
+      );
     } catch (e) {
       if (signal?.aborted) throw new Error('model download aborted');
+      const msg = e instanceof Error ? e.message : String(e);
+      LOG(`${spec.filename}: chunk @${(offset / 1e6).toFixed(0)}MB failed (${msg}) — retry #${fails + 1}`);
       if (++fails >= MAX_CONSECUTIVE_FAILS) {
-        throw new Error(
-          `model download failed after ${fails} consecutive errors: ${spec.filename}` +
-            (e instanceof Error ? ` (${e.message})` : '')
-        );
+        throw new Error(`model download failed after ${fails} consecutive errors: ${spec.filename} (${msg})`);
       }
       await sleep(Math.min(15_000, 500 * 2 ** Math.min(fails, 5))); // backoff, then resume
       // Re-read the on-disk size in case a partial write landed — never lose committed bytes.
       offset = new File(partUri).size;
     }
   }
+  LOG(`${spec.filename}: download complete (${(offset / 1e6).toFixed(0)}MB, ${((offset - startedOffset) / 1e6).toFixed(0)}MB this session)`);
 
   // Integrity gate: the assembled file MUST be exactly the expected size before we trust
   // it. A mismatch means a corrupt/partial transfer — discard and let the caller retry.
