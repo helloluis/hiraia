@@ -10,6 +10,7 @@ import {
   IMAGE_VECTORS_META,
 } from '../config/model';
 import { CHAT_TEMP, SUMMARY_TEMP, CHAT_MAX_TOKENS, GPU_LAYERS } from '../config/inference';
+import { ensureRemoteModel, filenameFromUrl } from './modelDownload';
 import type { AdapterLanguage } from '../config/model';
 import type {
   TutorEngine,
@@ -97,12 +98,24 @@ export class LocalEngine implements TutorEngine {
       const loraPath = await this.resolveAdapterPath(config.language);
 
       if (ACTIVE_MODEL.modelSrc) {
-        // Load the configured GGUF from its source (an https HuggingFace URL,
-        // downloaded + cached by QVAC on first run). The string-source overload
-        // needs an explicit modelType. `lora` applies our bundled fine-tuned
+        // For a REMOTE GGUF (our nginx mirror), download it ourselves with the
+        // resilient resumable downloader (retry + resume + survives backgrounding —
+        // see modelDownload.ts) and hand QVAC the LOCAL path. QVAC's own URL
+        // downloader has no retry and stalls when the app is backgrounded. A bundled
+        // / local path or pear:// key is passed straight through. ensureRemoteModel
+        // drives the loader's download band; once it returns, loadModel reads from
+        // disk (no network) so its own onProgress just snaps to 100.
+        const src = /^https?:\/\//.test(ACTIVE_MODEL.modelSrc)
+          ? await ensureRemoteModel(
+              { url: ACTIVE_MODEL.modelSrc, filename: filenameFromUrl(ACTIVE_MODEL.modelSrc) },
+              onProgress
+            )
+          : ACTIVE_MODEL.modelSrc;
+
+        // Load the configured GGUF. `lora` applies our bundled fine-tuned
         // Tagalog/Bisaya adapter; without it the base model runs.
         this.modelId = await loadModel({
-          modelSrc: ACTIVE_MODEL.modelSrc,
+          modelSrc: src,
           modelType: ACTIVE_MODEL.modelType,
           modelConfig: {
             ctx_size: ACTIVE_MODEL.ctxSize,
@@ -110,11 +123,9 @@ export class LocalEngine implements TutorEngine {
             ...(loraPath ? { lora: loraPath } : {}),
           },
           onProgress: (p) => {
-            const pct = Math.round(p.percentage ?? 0);
-            console.log(`[LocalEngine] ${ACTIVE_MODEL.displayName} loading: ${pct}%`);
-            if (onProgress) {
-              onProgress(pct);
-            }
+            // Local-file load — no network. Log only; the bar already finished its
+            // download band via ensureRemoteModel above.
+            console.log(`[LocalEngine] ${ACTIVE_MODEL.displayName} loading: ${Math.round(p.percentage ?? 0)}%`);
           },
         });
       } else {
@@ -331,9 +342,18 @@ export class LocalEngine implements TutorEngine {
     try {
       if (!this.rag) return;
       const t0 = Date.now();
-      // 1) embedder (LaBSE GGUF via the QVAC llamacpp-embedding plugin)
+      // 1) embedder (LaBSE GGUF via the QVAC llamacpp-embedding plugin). Same
+      // resilient local download as the base model (retry/resume/background) — it's
+      // another remote file in the "lots of files" first-run set. Background phase,
+      // so its progress is logged, not surfaced on the loader bar.
+      const embedSrc = /^https?:\/\//.test(EMBEDDER.modelSrc)
+        ? await ensureRemoteModel(
+            { url: EMBEDDER.modelSrc, filename: filenameFromUrl(EMBEDDER.modelSrc) },
+            (pct) => console.log(`[LocalEngine] LaBSE downloading: ${pct}%`)
+          )
+        : EMBEDDER.modelSrc;
       this.embedModelId = await loadModel({
-        modelSrc: EMBEDDER.modelSrc,
+        modelSrc: embedSrc,
         modelType: EMBEDDER.modelType,
         modelConfig: EMBEDDER.modelConfig,
         onProgress: (p) =>

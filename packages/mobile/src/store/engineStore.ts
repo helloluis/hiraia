@@ -7,6 +7,8 @@ import { ACTIVE_MODEL } from '../config/model';
 import { getSetting, setSetting } from '../db/repo';
 import { LocalEngine } from '../engine/LocalEngine';
 
+export type LoadingPhase = 'idle' | 'downloading' | 'warming' | 'ready';
+
 interface EngineState {
   engine: TutorEngine | null;
   isReady: boolean;
@@ -17,6 +19,11 @@ interface EngineState {
   bootstrapped: boolean;
   /** Model warm-up progress 0–100, driven into the LoaderOverlay. */
   loadingProgress: number;
+  /** Which init phase the bar is currently reflecting, so the loader can show
+   *  honest copy: 'downloading' = the one-time 3 GB base-model fetch (first run
+   *  only); 'warming' = load-into-RAM + the warm-up prefill (every cold start);
+   *  'ready' = done; 'idle' = not loading. */
+  loadingPhase: LoadingPhase;
   /** Whether the onboarding carousel is showing. True on first launch (no saved
    *  language) and whenever Settings → "show tutorial" re-triggers it. */
   onboardingActive: boolean;
@@ -51,6 +58,7 @@ export const useEngineStore = create<EngineState>((set, get) => ({
   language: null,
   bootstrapped: false,
   loadingProgress: 0,
+  loadingPhase: 'idle',
   onboardingActive: false,
 
   setOnboardingActive: (active: boolean) => set({ onboardingActive: active }),
@@ -82,7 +90,7 @@ export const useEngineStore = create<EngineState>((set, get) => ({
       // Persist first so a crash mid-reload still remembers the choice.
       await setSetting('language', language);
       const prev = get().engine;
-      set({ language, isReady: false, error: null, loadingProgress: 0 });
+      set({ language, isReady: false, error: null, loadingProgress: 0, loadingPhase: 'warming' });
       if (prev) {
         try {
           await prev.shutdown();
@@ -92,67 +100,89 @@ export const useEngineStore = create<EngineState>((set, get) => ({
       }
       const engine = new LocalEngine();
 
-      // Progress is NOT a single linear signal. loadModel's onProgress reports the
-      // DOWNLOAD percentage — meaningful only on a genuine first-run download; when the
-      // GGUF is already cached it jumps straight to 100 instantly. The slow, unobservable
-      // work (loading ~2GB into RAM + the warm-up prefill) emits no granular signal.
+      // Progress is NOT one linear signal — init has two very differently-sized phases,
+      // and only the first is observable:
+      //   • DOWNLOAD (first run only): loadModel's onProgress streams 1→99 as QVAC fetches
+      //     the ~3 GB base GGUF over the network — minutes, and directly observable. On a
+      //     cached run there are no bytes to fetch, so onProgress jumps straight to 100.
+      //   • WARM-UP tail (every cold start): loading ~2 GB into RAM + the warm-up prefill.
+      //     Tens of seconds, and emits NO granular signal — only a time estimate.
+      // (The LaBSE embedder downloads in the background via initSemantic() and is NOT
+      //  awaited, so it's correctly excluded from this bar.)
       //
-      // The loader's wake→stretch→walk-off is two ~10s videos (~20s total) and must
-      // OVERLAP the final load — start the wake at ~85% while loading still finishes —
-      // not play as dead time after the model is ready. So we drive the bar on a time
-      // ESTIMATE: ease 0→84 (under the 85% wake gate) during load, then at
-      // EXPECTED_TOTAL_MS − ANIM_MS cross 85 to start the wake and climb toward ~99
-      // across the animation window (crossing the 95% exit gate right as the wake video
-      // ends). The estimate only tunes how well the animation overlaps the tail —
-      // correctness is guaranteed by gating the loader's final dismiss on isReady (see
-      // LoaderOverlay). If the model is ready EARLY, the snap-to-100 below starts the
-      // wake immediately; if LATE, the loader holds on the last exit frame until ready.
-      const EXPECTED_TOTAL_MS = 48000; // ~cached load + warm-up prefill on the target device
-      const ANIM_MS = 20000; // wake (~10s) + exit (~10s)
-      const WAKE_AT_MS = Math.max(0, EXPECTED_TOTAL_MS - ANIM_MS);
-      const LOAD_CEIL = 84; // stay under the 85% wake gate during the load phase
+      // We therefore allocate the bar by phase rather than on one fixed clock:
+      //   - while a real download streams → map the REAL bytes onto 0→DL_CEIL (honest;
+      //     never races ahead of the network);
+      //   - once the download finishes (or immediately, if cached) → ease the warm-up tail
+      //     up toward TAIL_CEIL on the time estimate.
+      // The bar never crosses the WAKE gate (97) on the timer — only the real isReady
+      // snap-to-100 below does — so the cat never "wakes" while real work remains.
+      // Correctness is still guaranteed by gating the loader's final dismiss on isReady
+      // (LoaderOverlay holds the last exit frame if the warm-up estimate runs short).
+      const EXPECTED_WARMUP_MS = 45000; // load-into-RAM + warm-up prefill on the target device
+      const DL_CEIL = 90; // a streaming 3 GB download fills the bar up to here
+      const WAKE_AT = 97; // matches the LoaderOverlay wake gate
+      const TAIL_CEIL = WAKE_AT - 1; // 96 — approach but never reach the wake gate on the timer
       const startedAt = Date.now();
-      let sawRealDownload = false;
-      let downloadFloor = 0;
+      let downloadPct = 0;
+      let sawSignal = false; // received at least one progress callback from init
+      let sawRealBytes = false; // observed a genuine in-progress download (1 < pct < 99)
+      let downloadDone = false; // pct reached 100 — download complete OR already cached
+      let tailStartedAt = 0; // set when the warm-up tail begins
+      let shown = 0; // last value shown — the bar is monotonic (never ticks backwards)
       let ready = false;
       const ramp = setInterval(() => {
         if (ready) return;
-        const elapsed = Date.now() - startedAt;
         let pct: number;
-        if (elapsed < WAKE_AT_MS) {
-          const eased = LOAD_CEIL * (1 - Math.exp(-elapsed / (WAKE_AT_MS / 2.2)));
-          pct = Math.min(LOAD_CEIL, Math.max(eased, downloadFloor));
+        let phase: LoadingPhase;
+        if (!downloadDone) {
+          // Still fetching (or waiting to learn the phase). CRUCIAL: never run the warm-up
+          // TIME estimate here — that's what used to race ahead of a slow 3 GB download.
+          // Track real bytes once we have a signal; before the first signal, just creep so
+          // the bar can't get ahead of an unknown download.
+          phase = 'downloading';
+          if (sawSignal) {
+            pct = (downloadPct / 100) * DL_CEIL;
+          } else {
+            pct = Math.min(6, ((Date.now() - startedAt) / 12000) * 6); // ≤6% while connecting
+          }
         } else {
-          const into = Math.min(ANIM_MS, elapsed - WAKE_AT_MS);
-          // 85 → 96 over the ~10s wake video (crosses the 95 exit gate as it ends),
-          // then 96 → 99 over the ~10s exit video. Never hits 100 on the timer alone.
-          pct = into < 10000 ? 85 + (into / 10000) * 11 : 96 + ((into - 10000) / 10000) * 3;
+          // Download complete (or cached) → NOW ease the short warm-up tail on a time
+          // estimate. Cached → tail spans 0→TAIL_CEIL; after a real download → from DL_CEIL.
+          phase = 'warming';
+          if (tailStartedAt === 0) tailStartedAt = Date.now();
+          const base = sawRealBytes ? DL_CEIL : 0;
+          const span = TAIL_CEIL - base;
+          const frac = Math.min(1, (Date.now() - tailStartedAt) / EXPECTED_WARMUP_MS);
+          pct = base + span * (1 - (1 - frac) * (1 - frac)); // ease-out → TAIL_CEIL at expected time
         }
-        set({ loadingProgress: Math.round(pct) });
+        shown = Math.max(shown, Math.round(pct)); // monotonic
+        set({ loadingProgress: shown, loadingPhase: phase });
       }, 200);
 
       try {
         await engine.initialize(buildConfig(language), (p) => {
-          // A value strictly inside the endpoints proves a genuine download is streaming;
-          // a lone 100 means "already cached" and must not move the bar.
-          if (p > 1 && p < 99) sawRealDownload = true;
-          if (sawRealDownload) downloadFloor = Math.min(55, Math.round((p / 100) * 55));
+          sawSignal = true;
+          downloadPct = p;
+          if (p > 1 && p < 99) sawRealBytes = true; // a genuine streaming download
+          if (p >= 100) downloadDone = true; // complete, or (instant 100) already cached
         });
       } finally {
         ready = true;
         clearInterval(ramp);
       }
 
-      // Model is genuinely ready: drive to 100 so the loader can finish wake→exit and
-      // dismiss. If the animation hasn't started yet (model beat the estimate), this is
-      // what triggers the wake.
-      set({ engine, isReady: true, loadingProgress: 100 });
+      // Model is genuinely ready: snap to 100 so the loader crosses the 97 wake gate and
+      // plays the (shortened) wake→exit, then dismisses. This is the ONLY thing that
+      // crosses 97 — so the cat wakes exactly when the model is actually ready.
+      set({ engine, isReady: true, loadingProgress: 100, loadingPhase: 'ready' });
       console.log(`QVAC engine ready (${language})`);
     } catch (error) {
       set({
         error: error instanceof Error ? error.message : 'Failed to initialize engine',
         isReady: false,
         loadingProgress: 0,
+        loadingPhase: 'idle',
       });
       console.error('Failed to (re)initialize QVAC engine:', error);
     }

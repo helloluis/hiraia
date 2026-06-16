@@ -3,9 +3,9 @@ import { useVideoPlayer, VideoView } from 'expo-video';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   Animated,
+  AppState,
   Dimensions,
   Easing,
-  Pressable,
   StyleSheet,
   Text,
   View,
@@ -13,6 +13,7 @@ import {
 
 import { useEngineStore } from '../store/engineStore';
 import { colors, fonts } from '../theme';
+import { LoaderDoodle } from './LoaderDoodle';
 
 const { height: screenHeight } = Dimensions.get('window');
 
@@ -39,6 +40,7 @@ export function LoaderOverlay({ onDismiss }: { onDismiss: () => void }) {
 
   const storeProgress = useEngineStore((s) => s.loadingProgress);
   const storeIsReady = useEngineStore((s) => s.isReady);
+  const storePhase = useEngineStore((s) => s.loadingPhase);
   const language = useEngineStore((s) => s.language);
 
   const [simulatedProgress, setSimulatedProgress] = useState(0);
@@ -46,6 +48,8 @@ export function LoaderOverlay({ onDismiss }: { onDismiss: () => void }) {
 
   const loadingProgress = SIMULATE_LOADING ? simulatedProgress : storeProgress;
   const isReady = SIMULATE_LOADING ? simulatedIsReady : storeIsReady;
+  // The simulator only exercises the warm-up curve, so treat it as the 'warming' phase.
+  const loadingPhase = SIMULATE_LOADING ? 'warming' : storePhase;
 
   const [phase, setPhase] = useState<LoaderPhase>('sleeping');
   const [wakingFinished, setWakingFinished] = useState(false);
@@ -117,7 +121,7 @@ export function LoaderOverlay({ onDismiss }: { onDismiss: () => void }) {
 
     if (currentPhase === 'nudged') {
       // Return to sleep or transition directly to waking if progress jumped
-      if (currentProgress >= 85) {
+      if (currentProgress >= 97) {
         setPhase('waking');
       } else {
         setPhase('sleeping');
@@ -148,7 +152,7 @@ export function LoaderOverlay({ onDismiss }: { onDismiss: () => void }) {
   // Handle progress-based phase transitions
   useEffect(() => {
     if (phase === 'sleeping' || phase === 'nudged') {
-      if (loadingProgress >= 85) {
+      if (loadingProgress >= 97) {
         setPhase('waking');
       }
     } else if (phase === 'waking' && wakingFinished) {
@@ -199,6 +203,24 @@ export function LoaderOverlay({ onDismiss }: { onDismiss: () => void }) {
     player.play();
   }, [phase, player, activeSource, slideAnim]);
 
+  // Re-attach the video surface when the app returns to the foreground. On some
+  // Adreno devices the native decoder surface comes back BLACK after a background→
+  // resume (observed in logcat: "setOutputSurface … BAD_INDEX" on onHostResume),
+  // leaving a black rectangle where the cat should be. Re-playing — and, for the
+  // looping clips, re-setting the source — forces the surface to repaint. We skip
+  // the one-shot end phases so we don't restart a clip mid-transition.
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (state) => {
+      if (state !== 'active') return;
+      const p = phaseRef.current;
+      if (p === 'sleeping' || p === 'nudged') {
+        player.replace(activeSource);
+      }
+      player.play();
+    });
+    return () => sub.remove();
+  }, [player, activeSource]);
+
   // Animate progress bar smoothly
   useEffect(() => {
     Animated.timing(progressAnim, {
@@ -234,7 +256,7 @@ export function LoaderOverlay({ onDismiss }: { onDismiss: () => void }) {
   const secondsRemaining = Math.max(0, Math.round((100 - loadingProgress) * 1.2));
   const subtextMessage = SIMULATE_LOADING
     ? `Testing animations (${secondsRemaining}s remaining)...`
-    : getSubtextMessage(language, loadingProgress);
+    : getSubtextMessage(language, loadingProgress, loadingPhase);
 
   const progressWidth = progressAnim.interpolate({
     inputRange: [0, 1],
@@ -242,48 +264,69 @@ export function LoaderOverlay({ onDismiss }: { onDismiss: () => void }) {
   });
 
   return (
-    <Animated.View
-      style={[
-        styles.overlay,
-        {
-          transform: [{ translateY: slideAnim }],
-        },
-      ]}
-    >
-      <View style={styles.topContainer}>
-        <Text style={styles.welcomeText}>{welcomeMessage}</Text>
-      </View>
-
-      <Pressable
-        onPress={handlePressCat}
-        style={styles.middleContainer}
-        android_disableSound
+    // Tap/swipe anywhere paints ephemeral crayon marks (something to do while waiting);
+    // a near-stationary tap is forwarded to handlePressCat to nudge the sleeping cat.
+    <LoaderDoodle onTap={handlePressCat}>
+      <Animated.View
+        style={[
+          styles.overlay,
+          {
+            transform: [{ translateY: slideAnim }],
+          },
+        ]}
       >
-        {/* The native VideoView swallows touches, so wrap it in a pointerEvents="none"
-            layer — taps fall through to the Pressable above and trigger a reaction. */}
-        <View style={styles.videoContainer} pointerEvents="none">
-          <VideoView
-            player={player}
-            style={styles.video}
-            nativeControls={false}
-            contentFit="contain"
-          />
+        <View style={styles.topContainer}>
+          <Text style={styles.welcomeText}>{welcomeMessage}</Text>
         </View>
-      </Pressable>
 
-      <View style={styles.bottomContainer}>
-        <View style={styles.progressWrapper}>
-          <View style={styles.progressTrack}>
-            <Animated.View style={[styles.progressFill, { width: progressWidth }]} />
-          </View>
-          <View style={styles.progressLabels}>
-            <Text style={styles.subtext}>{subtextMessage}</Text>
-            <Text style={styles.percentageText}>{Math.round(loadingProgress)}%</Text>
+        {/* pointerEvents="none" so the touch falls through to the full-screen doodle
+            gesture (the native video would otherwise swallow it). TextureView (not the
+            default SurfaceView) so the crayon layer composites OVER the cat and to dodge
+            the SurfaceView black-frame-on-resume bug. */}
+        <View style={styles.middleContainer} pointerEvents="none">
+          <View style={styles.videoContainer}>
+            <VideoView
+              player={player}
+              style={styles.video}
+              nativeControls={false}
+              contentFit="contain"
+              surfaceType="textureView"
+            />
           </View>
         </View>
-      </View>
-    </Animated.View>
+
+        <View style={styles.bottomContainer}>
+          <View style={styles.progressWrapper}>
+            <View style={styles.progressTrack}>
+              <Animated.View style={[styles.progressFill, { width: progressWidth }]} />
+            </View>
+            <View style={styles.progressLabels}>
+              <Text style={styles.subtext}>{subtextMessage}</Text>
+              <Text style={styles.percentageText}>{Math.round(loadingProgress)}%</Text>
+            </View>
+            {loadingPhase === 'downloading' && (
+              <Text style={styles.helperText}>{getDownloadHelperText(language)}</Text>
+            )}
+          </View>
+        </View>
+      </Animated.View>
+    </LoaderDoodle>
   );
+}
+
+// Reassurance shown during the one-time first-run download (the ~3 GB base model +
+// the embedder). It's a big, one-time fetch — tell the student it only happens once
+// and runs in the background, so a long bar doesn't read as "stuck".
+function getDownloadHelperText(lang: string | null): string {
+  switch (lang) {
+    case 'cebuano':
+      return 'Daghan pa among gi-download — kausa ra ni nga himuon, dayon paspas na! 📚';
+    case 'english':
+      return "We're downloading a lot of files — just this once, then it's quick! 📚";
+    case 'tagalog':
+    default:
+      return 'Marami pang dino-download — isang beses lang po ito, tapos mabilis na! 📚';
+  }
 }
 
 function getWelcomeMessage(lang: string | null): string {
@@ -298,7 +341,26 @@ function getWelcomeMessage(lang: string | null): string {
   }
 }
 
-function getSubtextMessage(lang: string | null, progress: number): string {
+function getSubtextMessage(
+  lang: string | null,
+  progress: number,
+  phase: 'idle' | 'downloading' | 'warming' | 'ready'
+): string {
+  // The one-time 3 GB base-model download (first run only) gets its own honest copy —
+  // it's a fetch, not the in-memory "loading her brain" step.
+  if (phase === 'downloading') {
+    switch (lang) {
+      case 'cebuano':
+        return 'gi-download ang utak ni Hiraia...';
+      case 'english':
+        return "downloading Hiraia's brain...";
+      case 'tagalog':
+      default:
+        return 'dino-download ang utak ni Hiraia...';
+    }
+  }
+  // Warm-up tail (every cold start). The cat wakes at 97%, so the "waking" copy only
+  // shows in the final approach (≥95) and the rest is the load-into-RAM message.
   if (progress < 15) {
     switch (lang) {
       case 'cebuano':
@@ -309,7 +371,7 @@ function getSubtextMessage(lang: string | null, progress: number): string {
       default:
         return 'nag-bo-boot up pa...';
     }
-  } else if (progress < 85) {
+  } else if (progress < 95) {
     switch (lang) {
       case 'cebuano':
         return 'gipang-load ang utak ni Hiraia...';
@@ -319,7 +381,7 @@ function getSubtextMessage(lang: string | null, progress: number): string {
       default:
         return 'niloload ang utak ni Hiraia...';
     }
-  } else if (progress < 95) {
+  } else {
     switch (lang) {
       case 'cebuano':
         return 'nagmata na siya...';
@@ -328,16 +390,6 @@ function getSubtextMessage(lang: string | null, progress: number): string {
       case 'tagalog':
       default:
         return 'nagigising na siya...';
-    }
-  } else {
-    switch (lang) {
-      case 'cebuano':
-        return 'hapit na...';
-      case 'english':
-        return 'almost ready...';
-      case 'tagalog':
-      default:
-        return 'malapit na...';
     }
   }
 }
@@ -416,6 +468,13 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     fontSize: 18,
     color: 'rgba(253, 253, 246, 0.7)',
+  },
+  helperText: {
+    fontFamily: fonts.body,
+    fontSize: 14,
+    color: 'rgba(253, 253, 246, 0.55)',
+    marginTop: 8,
+    lineHeight: 19,
   },
   percentageText: {
     fontFamily: fonts.body,
