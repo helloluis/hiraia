@@ -189,14 +189,17 @@ export const useDemoStore = create<DemoState>((set, get) => ({
       const rows = (data.messages ?? []) as DemoRow[];
       if (!get().isOpen) return; // closed while fetching
 
+      // Keep the prior transcript visible but ALWAYS start at the language picker rather
+      // than auto-jumping into chat with a stale `language` guess. Visitors with old DB
+      // rows that pre-date language persistence were getting hard-defaulted to Tagalog,
+      // so the placeholder/factoid would stay in Tagalog even after they picked English.
+      // Explicitly re-picking the language each time the demo opens is a tiny extra tap
+      // and makes the language state the visitor sees match the one they intended.
       if (rows.length > 0) {
-        const language = [...rows].reverse().find((r) => r.language)?.language as
-          | LanguageKey
-          | undefined;
         set({
           restoring: false,
-          phase: 'chat',
-          language: language ?? 'tagalog',
+          phase: 'language',
+          language: null,
           messages: rows.map((r) => ({
             id: `db-${r.id}`,
             role: r.role,

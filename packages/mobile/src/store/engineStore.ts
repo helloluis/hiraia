@@ -6,6 +6,7 @@ import { LANGUAGE_OPTIONS, DEFAULT_LANGUAGE } from '../config/languages';
 import { ACTIVE_MODEL } from '../config/model';
 import { getSetting, setSetting } from '../db/repo';
 import { LocalEngine } from '../engine/LocalEngine';
+import { useChatStore } from './chatStore';
 
 export type LoadingPhase = 'idle' | 'downloading' | 'warming' | 'ready';
 
@@ -91,6 +92,11 @@ export const useEngineStore = create<EngineState>((set, get) => ({
       await setSetting('language', language);
       const prev = get().engine;
       set({ language, isReady: false, error: null, loadingProgress: 0, loadingPhase: 'warming' });
+      // Re-roll the cold-start "Alam mo ba na…?" factoid in the NEW language. The composed
+      // text is locked at roll time, so the one currently on screen stays Tagalog forever
+      // (it lives in the TTL cache for ~1h) — clear + re-roll keeps the language consistent.
+      // Best-effort, fire-and-forget; the new factoid renders the moment it's set.
+      void useChatStore.getState().refreshFactoidForNewLanguage();
       if (prev) {
         try {
           await prev.shutdown();

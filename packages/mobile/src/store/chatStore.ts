@@ -34,6 +34,11 @@ interface ChatState {
   hydrate: () => Promise<void>;
   sendMessage: (content: string) => Promise<void>;
   showColdStartFactoid: () => Promise<void>;
+  /** Drop the on-screen cold-start factoid + reset the TTL so the next showColdStartFactoid
+   *  picks a fresh one. Called when the tutor language changes so the new factoid is in the
+   *  new language (the old composed text is locked to whatever language was active when it
+   *  was rolled). */
+  refreshFactoidForNewLanguage: () => Promise<void>;
   clearMessages: () => Promise<void>;
   /** Load a past conversation (from the sidebar history) and make it active. */
   switchConversation: (id: string) => Promise<void>;
@@ -373,6 +378,21 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       if (index < fullText.length) setTimeout(tick, TICK_MS);
     };
     setTimeout(tick, TICK_MS);
+  },
+
+  // Drop any cold-start factoid currently on screen + reset the TTL, then ask for a fresh
+  // one so it's in the active language. Used by engineStore.changeLanguage — without this,
+  // a kid who picks English after a Tagalog factoid is already on screen keeps seeing
+  // "Alam mo ba na…" until the 1-hour TTL expires.
+  refreshFactoidForNewLanguage: async () => {
+    set((state) => ({
+      messages: state.messages.filter((m) => !isFactoid(m)),
+      lastFactoidAt: 0,
+    }));
+    void setSetting('lastFactoidShownAt', '0');
+    // Re-roll in the new language. showColdStartFactoid reads the current language from
+    // engineStore each time, so by the time changeLanguage has set it this fires correctly.
+    await get().showColdStartFactoid();
   },
 
   // Start a fresh thread.
