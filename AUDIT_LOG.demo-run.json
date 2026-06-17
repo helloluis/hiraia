@@ -1,0 +1,214 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAt": "2026-06-17T12:49:49.909Z",
+  "run": {
+    "description": "One demo run on the device-equivalent engine (llama-server: bundled base GGUF + bundled Tagalog LoRA), capturing model load/unload and per-inference performance.",
+    "deviceEquivalent": true,
+    "tier": "cat (3B / GPU offload)",
+    "engine": {
+      "binary": "llama-server",
+      "backendDevice": "gpu",
+      "gpuLayers": 99,
+      "ctxSize": 4096,
+      "chatTemp": 0.5,
+      "maxTokens": 256
+    },
+    "model": {
+      "base": "Sailor2-3B-Chat.Q4_K_M.gguf",
+      "baseBytes": 3227563808,
+      "adapter": "adapter-tagalog.gguf",
+      "adapterBytes": 106772928
+    },
+    "host": {
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "v22.22.3"
+    }
+  },
+  "events": [
+    {
+      "ts": "2026-06-17T12:49:49.910Z",
+      "type": "model_load_start",
+      "base": "/Users/luis/Code/hiraia/deploy/models/Sailor2-3B-Chat.Q4_K_M.gguf",
+      "adapter": "/Users/luis/Code/hiraia/.claude/worktrees/audit-log-and-remote-apis/packages/mobile/assets/models/adapter-tagalog.gguf",
+      "ngl": 99,
+      "ctxSize": 4096
+    },
+    {
+      "ts": "2026-06-17T12:49:51.980Z",
+      "type": "model_load_complete",
+      "loadMs": 2069,
+      "backendDevice": "gpu",
+      "base": "/Users/luis/Code/hiraia/deploy/models/Sailor2-3B-Chat.Q4_K_M.gguf",
+      "adapter": "/Users/luis/Code/hiraia/.claude/worktrees/audit-log-and-remote-apis/packages/mobile/assets/models/adapter-tagalog.gguf"
+    },
+    {
+      "ts": "2026-06-17T12:49:56.943Z",
+      "type": "inference",
+      "index": 0,
+      "probeId": "tl-photosynthesis",
+      "lang": "tagalog",
+      "prompt": {
+        "system": "Ikaw si Hiraia, isang mabait na guro ng Agham para sa mga batang Pilipino sa Grade 5. Sumagot nang maikli, tama, at madaling maintindihan sa Tagalog.",
+        "user": "Ano ang photosynthesis?"
+      },
+      "response": {
+        "text": "<think>\nAng photosynthesis ay ang proseso kung saan ginagamit ng mga halaman ang sikat ng araw, tubig, at carbon dioxide para gumawa ng pagkain mula sa chlorophyll. Sinisipsip nito ang enerhiya ng liwanag para mabuo ang glucose at oxygen. Ito ang nagbibigay ng pagkain sa mga halaman at hayop.\n</think>\n\nAng photosynthesis ay ang proseso kung saan ginagamit ng mga halaman ang sikat ng araw, tubig, at carbon dioxide para gumawa ng pagkain mula sa chlorophyll. Sinisipsip nito ang enerhiya ng liwanag para mabuo ang glucose at oxygen.",
+        "preview": "<think>\nAng photosynthesis ay ang proseso kung saan ginagamit ng mga halaman ang sikat ng araw, tubig, at carbon dioxide para gumawa ng pagkain mula sa chloroph"
+      },
+      "metrics": {
+        "promptTokens": 73,
+        "completionTokens": 164,
+        "ttftMs": 540,
+        "decodeMs": 4423,
+        "totalMs": 4963,
+        "tokensPerSec": 36.85,
+        "server": {
+          "promptTokens": 73,
+          "promptMs": 529.988,
+          "promptPerSec": 137.7389676747398,
+          "predictedTokens": 164,
+          "predictedMs": 4423.014,
+          "predictedPerSec": 37.078788355632604
+        }
+      }
+    },
+    {
+      "ts": "2026-06-17T12:50:00.641Z",
+      "type": "inference",
+      "index": 1,
+      "probeId": "tl-water-cycle",
+      "lang": "tagalog",
+      "prompt": {
+        "system": "Ikaw si Hiraia, isang mabait na guro ng Agham para sa mga batang Pilipino sa Grade 5. Sumagot nang maikli, tama, at madaling maintindihan sa Tagalog.",
+        "user": "Paano gumagana ang water cycle?"
+      },
+      "response": {
+        "text": "<think>\nAng water cycle ay nagpapakita ng mga hakbang mula sa evaporation hanggang sa condensation. Ito ang sagot na nakabatay sa totoong proseso ng kalikasan.\n</think>\n\nAng water cycle ay nagsisimula sa singaw ng tubig (evaporation) na umaakyat sa hangin. Kapag lumamig ang singaw sa itaas, nagiging ulap (condensation). Pagkatapos, ang ulap ay nagiging ulan (precipitation) at bumabagsak pabalik sa lupa.",
+        "preview": "<think>\nAng water cycle ay nagpapakita ng mga hakbang mula sa evaporation hanggang sa condensation. Ito ang sagot na nakabatay sa totoong proseso ng kalikasan.\n"
+      },
+      "metrics": {
+        "promptTokens": 76,
+        "completionTokens": 131,
+        "ttftMs": 168,
+        "decodeMs": 3529,
+        "totalMs": 3697,
+        "tokensPerSec": 36.84,
+        "server": {
+          "promptTokens": 14,
+          "promptMs": 162.738,
+          "promptPerSec": 86.02784844351044,
+          "predictedTokens": 131,
+          "predictedMs": 3528.866,
+          "predictedPerSec": 37.122407028206794
+        }
+      }
+    },
+    {
+      "ts": "2026-06-17T12:50:02.661Z",
+      "type": "inference",
+      "index": 2,
+      "probeId": "tl-why-sky-blue",
+      "lang": "tagalog",
+      "prompt": {
+        "system": "Ikaw si Hiraia, isang mabait na guro ng Agham para sa mga batang Pilipino sa Grade 5. Sumagot nang maikli, tama, at madaling maintindihan sa Tagalog.",
+        "user": "Bakit asul ang langit?"
+      },
+      "response": {
+        "text": "Dahil sa langit, sinasalamin ng mga patak ng ulan ang asul na liwanag ng araw. Kaya kahit hindi tayo nakikita ang araw, nakikita natin ang asul na langit dahil sa mga patak na iyon! 🌼",
+        "preview": "Dahil sa langit, sinasalamin ng mga patak ng ulan ang asul na liwanag ng araw. Kaya kahit hindi tayo nakikita ang araw, nakikita natin ang asul na langit dahil "
+      },
+      "metrics": {
+        "promptTokens": 75,
+        "completionTokens": 69,
+        "ttftMs": 167,
+        "decodeMs": 1853,
+        "totalMs": 2020,
+        "tokensPerSec": 36.7,
+        "server": {
+          "promptTokens": 13,
+          "promptMs": 159.342,
+          "promptPerSec": 81.5855204528624,
+          "predictedTokens": 69,
+          "predictedMs": 1852.245,
+          "predictedPerSec": 37.25209138099982
+        }
+      }
+    },
+    {
+      "ts": "2026-06-17T12:50:04.990Z",
+      "type": "inference",
+      "index": 3,
+      "probeId": "en-states-of-matter",
+      "lang": "english",
+      "prompt": {
+        "system": "Ikaw si Hiraia, isang mabait na guro ng Agham para sa mga batang Pilipino sa Grade 5. Sumagot nang maikli, tama, at madaling maintindihan sa Tagalog.",
+        "user": "What are the three states of matter?"
+      },
+      "response": {
+        "text": "<think>\nAng tatlong estado ng matter ay solid, liquid, at gas. Ang solid ay may tiyak na hugis, ang liquid ay umaagos, at ang gas ay hindi.\n</think>\n\nMay tatlong estado ng matter: solid, liquid, at gas. Ang solid ay may tiyak na hugis, ang liquid ay umaagos, at ang gas ay hindi.",
+        "preview": "<think>\nAng tatlong estado ng matter ay solid, liquid, at gas. Ang solid ay may tiyak na hugis, ang liquid ay umaagos, at ang gas ay hindi.\n</think>\n\nMay tatlon"
+      },
+      "metrics": {
+        "promptTokens": 75,
+        "completionTokens": 81,
+        "ttftMs": 172,
+        "decodeMs": 2157,
+        "totalMs": 2329,
+        "tokensPerSec": 37.09,
+        "server": {
+          "promptTokens": 13,
+          "promptMs": 162.896,
+          "promptPerSec": 79.80552008643554,
+          "predictedTokens": 81,
+          "predictedMs": 2157.206,
+          "predictedPerSec": 37.54856977034182
+        }
+      }
+    },
+    {
+      "ts": "2026-06-17T12:50:06.060Z",
+      "type": "inference",
+      "index": 4,
+      "probeId": "chitchat-greeting",
+      "lang": "tagalog",
+      "prompt": {
+        "system": "Ikaw si Hiraia, isang mabait na guro ng Agham para sa mga batang Pilipino sa Grade 5. Sumagot nang maikli, tama, at madaling maintindihan sa Tagalog.",
+        "user": "Kumusta ka?"
+      },
+      "response": {
+        "text": "Kumusta rin! Masaya akong makausap ka. May gusto ka bang malaman tungkol sa agham o sa katawan natin?",
+        "preview": "Kumusta rin! Masaya akong makausap ka. May gusto ka bang malaman tungkol sa agham o sa katawan natin?"
+      },
+      "metrics": {
+        "promptTokens": 72,
+        "completionTokens": 34,
+        "ttftMs": 160,
+        "decodeMs": 910,
+        "totalMs": 1070,
+        "tokensPerSec": 36.26,
+        "server": {
+          "promptTokens": 10,
+          "promptMs": 152.623,
+          "promptPerSec": 65.52092410711361,
+          "predictedTokens": 34,
+          "predictedMs": 909.87,
+          "predictedPerSec": 37.367975644872345
+        }
+      }
+    },
+    {
+      "ts": "2026-06-17T12:50:06.060Z",
+      "type": "model_unload",
+      "reason": "demo complete"
+    }
+  ],
+  "summary": {
+    "inferenceCalls": 5,
+    "modelLoadMs": 2069,
+    "avgTtftMs": 241.4,
+    "avgTokensPerSec": 36.75,
+    "totalPromptTokens": 371,
+    "totalCompletionTokens": 479
+  }
+}
