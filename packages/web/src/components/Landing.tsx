@@ -2,6 +2,7 @@
 
 import { AppDownload } from '@/components/AppDownload';
 import { HiraiaBench } from '@/components/HiraiaBench';
+import { YouTubeEmbed } from '@/components/YouTubeEmbed';
 import { DemoLightbox } from '@/components/demo/DemoLightbox';
 import { useDemoStore } from '@/store/useDemoStore';
 
@@ -293,27 +294,8 @@ export function Landing() {
       <div className="w-full bg-[#051f25] py-16 sm:py-24 px-6 md:px-12 lg:px-24">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 items-center">
-            {/* Left Column: YouTube Placeholder Video Card */}
-            <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black/40 border border-white/10 shadow-2xl flex items-center justify-center group cursor-pointer">
-              {/* Fake Video Cover Image (Simulating YouTube Thumbnail blur) */}
-              <div
-                className="absolute inset-0 bg-cover bg-center filter brightness-[0.4] group-hover:scale-105 transition-transform duration-500"
-                style={{ backgroundImage: "url('/landing.jpeg')" }}
-              />
-
-              {/* Play Button Icon */}
-              <div className="relative z-10 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg shadow-red-600/30 group-hover:bg-red-700 group-hover:scale-110 transition-all duration-300">
-                <svg className="w-6 h-6 sm:w-8 sm:h-8 fill-current ml-1" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </div>
-
-              {/* Overlay Vignette */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
-              <div className="absolute bottom-4 left-4 text-white/60 text-xs sm:text-sm font-sans tracking-wide">
-                YouTube Video Placeholder
-              </div>
-            </div>
+            {/* Left Column: founder overview video (click-to-play, inline) */}
+            <YouTubeEmbed id="nmoIvZcPmEE" title="Why we built Hiraia" poster="/landing.jpeg" />
 
             {/* Right Column: Descriptions */}
             <div className="space-y-4 sm:space-y-6">

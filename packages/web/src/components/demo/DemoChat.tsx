@@ -18,6 +18,15 @@ const PLACEHOLDER: Record<LanguageKey, string> = {
   cebuano: 'Pangutana bahin sa siyensya...',
 };
 
+// Shown beside the bouncing dots while the model retrieves + prefills + reasons (its
+// <think> output is stripped, so the bubble stays "empty" for a few seconds). Without a
+// label the wait reads as unresponsive; this makes it clearly alive, like the phone.
+const THINKING: Record<LanguageKey, string> = {
+  tagalog: 'Iniisip...',
+  english: 'Thinking...',
+  cebuano: 'Gihunahuna...',
+};
+
 export function DemoChat() {
   const { language, messages, isResponding, sendMessage } = useDemoStore();
   const [input, setInput] = useState('');
@@ -96,19 +105,22 @@ export function DemoChat() {
                   >
                     {message.role === 'assistant' ? (
                       isEmptyAssistant ? (
-                        <div className="flex gap-1">
-                          <div
-                            className="h-2 w-2 animate-bounce rounded-full bg-gray-400"
-                            style={{ animationDelay: '0ms' }}
-                          />
-                          <div
-                            className="h-2 w-2 animate-bounce rounded-full bg-gray-400"
-                            style={{ animationDelay: '150ms' }}
-                          />
-                          <div
-                            className="h-2 w-2 animate-bounce rounded-full bg-gray-400"
-                            style={{ animationDelay: '300ms' }}
-                          />
+                        <div className="flex items-center gap-2">
+                          <div className="flex gap-1">
+                            <div
+                              className="h-2 w-2 animate-bounce rounded-full bg-gray-400"
+                              style={{ animationDelay: '0ms' }}
+                            />
+                            <div
+                              className="h-2 w-2 animate-bounce rounded-full bg-gray-400"
+                              style={{ animationDelay: '150ms' }}
+                            />
+                            <div
+                              className="h-2 w-2 animate-bounce rounded-full bg-gray-400"
+                              style={{ animationDelay: '300ms' }}
+                            />
+                          </div>
+                          <span className="text-sm italic text-gray-400">{THINKING[activeLang]}</span>
                         </div>
                       ) : isFactoid ? (
                         <p className="whitespace-pre-wrap font-body text-base">{message.content}</p>
