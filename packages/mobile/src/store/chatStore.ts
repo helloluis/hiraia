@@ -211,6 +211,9 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       // mismatched one. Suppressed below when the model abstained.
       const topFid = (grounding[0]?.metadata as { id?: string } | undefined)?.id;
       const imageSlug: string | undefined = topFid ? FACT_IMAGE[topFid] : undefined;
+      // Science domain of the fact the answer is built on — scopes image retrieval to that
+      // domain so a match can't drift off-topic on a shared word (earthquake→pangolin).
+      const topDomain = (grounding[0]?.metadata as { domain?: string } | undefined)?.domain;
       // Active language + grade 5 + imageTags=true — parity with how the grounded
       // adapter was trained. RAG retrieval is scoped to the same language.
       // The system prompt is STATIC (no grounding) so QVAC's system-prompt KV cache
@@ -254,7 +257,7 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       let tagSlug: string | undefined;
       const tagDesc = IMAGE_TAG_RE.exec(fullResponse)?.[1];
       if (tagDesc && engine.resolveImageTag) {
-        const hit = await engine.resolveImageTag(tagDesc);
+        const hit = await engine.resolveImageTag(tagDesc, undefined, topDomain);
         // Already shown this conversation → suppress, don't substitute (the model
         // asked for THIS picture; a different one would mislabel the answer).
         if (hit && !shownImageSlugs.has(hit.slug)) tagSlug = hit.slug;
@@ -267,7 +270,7 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       // abstained (grounding was actually used). Post-generation → ZERO TTFT cost.
       let retrievalSlug: string | undefined;
       if (!tagSlug && !abstained && engine.resolveImageTag && grounding[0]?.content) {
-        const hit = await engine.resolveImageTag(grounding[0].content, RETRIEVAL_IMAGE_FLOOR);
+        const hit = await engine.resolveImageTag(grounding[0].content, RETRIEVAL_IMAGE_FLOOR, topDomain);
         if (hit && !shownImageSlugs.has(hit.slug)) retrievalSlug = hit.slug;
       }
 

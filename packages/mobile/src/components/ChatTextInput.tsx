@@ -1,13 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
+  Keyboard,
   StyleSheet,
   Text,
   TextInput as RNTextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { colors, fonts } from '../theme';
+
+/** Resting bottom padding of the input bar; the nav-bar inset is added on top of this. */
+const BASE_BOTTOM_PAD = 2;
 
 interface ChatTextInputProps {
   value: string;
@@ -22,8 +27,25 @@ export function ChatTextInput({ value, onChangeText, onSend, placeholder, disabl
   const [isExpanded, setIsExpanded] = useState(false);
   const canSend = !disabled && !!value.trim();
 
+  // Lift the input bar above the Android system navigation bar. With edge-to-edge,
+  // app content draws UNDER the 3-button nav bar; insets.bottom IS that bar's height
+  // (≈0 with gesture nav), so it doubles as the "is there a nav bar down there?"
+  // detector. Only apply it when the keyboard is HIDDEN — once the keyboard is up it
+  // covers the nav bar, and adding the inset then would leave a dead gap above the keys.
+  const insets = useSafeAreaInsets();
+  const [keyboardUp, setKeyboardUp] = useState(false);
+  useEffect(() => {
+    const show = Keyboard.addListener('keyboardDidShow', () => setKeyboardUp(true));
+    const hide = Keyboard.addListener('keyboardDidHide', () => setKeyboardUp(false));
+    return () => {
+      show.remove();
+      hide.remove();
+    };
+  }, []);
+  const bottomPad = keyboardUp ? BASE_BOTTOM_PAD : Math.max(insets.bottom, BASE_BOTTOM_PAD);
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingBottom: bottomPad }]}>
       <View style={[styles.inputContainer, disabled && styles.inputContainerDisabled]}>
         <TouchableOpacity style={styles.attachButton} disabled={disabled}>
           <Text style={[styles.attachIcon, disabled && styles.dimmed]}>+</Text>
@@ -60,7 +82,7 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 12,
     paddingTop: 6,
-    paddingBottom: 2, // minimal — the rounded field already has internal padding
+    paddingBottom: BASE_BOTTOM_PAD, // minimal at rest; nav-bar inset added dynamically above
     backgroundColor: colors.paper,
     borderTopWidth: 1,
     borderTopColor: colors.hairline,

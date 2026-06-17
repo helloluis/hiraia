@@ -55,6 +55,16 @@ export interface OnDeviceModel {
   adapterSizeMB: number;
   /** Inference context window. */
   ctxSize: number;
+  /**
+   * Per-tier runtime placement. The cat (3B) flagship offloads to GPU/Vulkan
+   * (gpuLayers 99 — beats CPU on prefill on an Adreno 800+). The kitten (1B) on
+   * budget Adreno-6xx CANNOT use the GPU (ggml-vulkan 16-bit-storage device gate;
+   * OpenCL unsupported), so it pins `device:'cpu'` + gpuLayers 0 — paired with the
+   * build.gradle backend gate that keeps only the armv8.0 CPU .so. Keeping this
+   * per-tier (not hard-coded in the engine) means flipping ACTIVE_MODEL_KEY can
+   * never silently force the 3B onto CPU.
+   */
+  runtime: { device?: 'cpu'; gpuLayers: number };
   /** QVAC model type — 'llm' for all our chat models. */
   modelType: 'llm';
   /**
@@ -71,7 +81,10 @@ export interface OnDeviceModel {
    * expo-asset and passes it as `modelConfig.lora`. English rides the TAGALOG
    * adapter (see LocalEngine.resolveAdapterPath). Empty = no adapters yet.
    */
-  loraAssets: Partial<Record<AdapterLanguage, number>>;
+  // Per-language LoRA adapter source: a Metro asset module id (number → BUNDLED in the APK,
+  // legacy/cat path) OR a mirror URL (string → DOWNLOADED on first run via ensureRemoteModel,
+  // keeps the APK small). resolveAdapterPath handles both.
+  loraAssets: Partial<Record<AdapterLanguage, number | string>>;
   note: string;
 }
 
@@ -91,6 +104,7 @@ export const ON_DEVICE_MODELS: Record<OnDeviceModelKey, OnDeviceModel> = {
     // threw exceed_context_size_error. 4096 gives headroom (base Qwen2.5 supports
     // it; LoRA is context-length-agnostic); chatStore also windows history.
     ctxSize: 4096,
+    runtime: { gpuLayers: 99 }, // cat: full GPU/Vulkan offload (Adreno 800+ flagship)
     modelType: 'llm',
     // self-hosted mirror (see MODELS_BASE_URL note) — was the HF Xet URL
     modelSrc: `${MODELS_BASE_URL}/Sailor2-3B-Chat.Q4_K_M.gguf`,
@@ -107,18 +121,25 @@ export const ON_DEVICE_MODELS: Record<OnDeviceModelKey, OnDeviceModel> = {
     ramGB: 1.0,
     minRamGB: 4,
     adapterSizeMB: 141,
-    ctxSize: 1024, // trained ctx; keep prompts tight on this tier
+    // 1024 was too tight: the grounded turn (contracted system + 3 facts + question) hit 1036
+    // tokens on-device → CONTEXT_OVERFLOW. The LoRA trained at seq 2048 and the Qwen2 base
+    // supports far more, and a 1B's KV cache is tiny (~30KB/token → 4096 ≈ ~120MB), so we match
+    // the 3B's 4096 for multi-turn headroom at negligible RAM cost on a 4GB device.
+    ctxSize: 4096,
+    runtime: { device: 'cpu', gpuLayers: 0 }, // kitten: CPU-only (budget Adreno-6xx can't use GPU)
     modelType: 'llm',
     // TODO: confirm exact bartowski filename before relying on the 4GB build.
     modelSrc:
       'https://huggingface.co/bartowski/Sailor2-1B-Chat-GGUF/resolve/main/Sailor2-1B-Chat-Q4_K_M.gguf',
-    loraAssets: {}, // 1B v3 adapters are still safetensors — convert to GGUF before the 4GB build
-    note: 'Low-end/4GB fallback — leans hard on RAG; science accuracy is shaky solo.',
+    // hiraia-kitten adapter: trained on Sailor2-1B (r32/a64, v7 dataset), converted to GGUF,
+    // DOWNLOADED from the mirror (not bundled). English rides the tagalog adapter.
+    loraAssets: { tagalog: 'https://hiraia.b11.dev/models/adapter-kitten-tagalog.gguf' },
+    note: 'Low-end/4GB fallback (hiraia-kitten) — CPU-only on budget devices; leans hard on RAG.',
   },
 };
 
 /** The model the on-device build loads. Flip to 'sailor2-1b' for the 4GB path. */
-export const ACTIVE_MODEL_KEY: OnDeviceModelKey = 'sailor2-3b';
+export const ACTIVE_MODEL_KEY: OnDeviceModelKey = 'sailor2-1b';
 export const ACTIVE_MODEL: OnDeviceModel = ON_DEVICE_MODELS[ACTIVE_MODEL_KEY];
 
 /** Short, truthful stats line for a status/about display. */

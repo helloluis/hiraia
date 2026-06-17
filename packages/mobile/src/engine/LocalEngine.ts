@@ -9,7 +9,8 @@ import {
   IMAGE_VECTORS_BLOB_ASSET,
   IMAGE_VECTORS_META,
 } from '../config/model';
-import { CHAT_TEMP, SUMMARY_TEMP, CHAT_MAX_TOKENS, GPU_LAYERS } from '../config/inference';
+import { CHAT_TEMP, SUMMARY_TEMP, CHAT_MAX_TOKENS } from '../config/inference';
+import { IMAGE_CATEGORY } from '../generated/imageCategory.generated';
 import { ensureRemoteModel, filenameFromUrl } from './modelDownload';
 import type { AdapterLanguage } from '../config/model';
 import type {
@@ -36,6 +37,24 @@ import {
 // 0.70 blocks all of those while the trained English tags clear it (~90% of the
 // 533 SFT descs). Below the floor we show no picture rather than a wrong one.
 const IMAGE_TAG_FLOOR = 0.7;
+
+// DOMAIN SCOPING for image retrieval. The embedding match alone does naive word-association
+// across topics — an EARTH_SPACE earthquake fact matched a "philippine-pangolin" (biology) image
+// on the shared word "Philippine" (cos 0.59); a FORCE_MOTION_ENERGY gravity fact matched an
+// atomic-model (chemistry) diagram. So we constrain candidate images to the catalog categories
+// that belong to the grounded fact's science domain — a geology question can never surface an
+// animal, an animal question can never surface a reaction diagram. 'general' (topic-agnostic
+// filler) is allowed everywhere; 'flagged' never. An unknown/absent domain → no scoping (the
+// strict cosine floor still applies). Maps the 7 fact domains to the 5 image catalog folders.
+const DOMAIN_IMAGE_CATEGORIES: Record<string, ReadonlySet<string>> = {
+  LIVING_THINGS: new Set(['biology', 'general']),
+  EARTH_SPACE: new Set(['earth-science', 'physics', 'general']), // weather/geology + astronomy
+  FORCE_MOTION_ENERGY: new Set(['physics', 'general']),
+  MATTER: new Set(['chemistry', 'physics', 'general']),
+  PH_GEOGRAPHY: new Set(['earth-science', 'general']),
+  PH_CIVICS: new Set(['general']),
+  ABOUT_HIRAIA: new Set(['general']),
+};
 
 /**
  * LocalEngine implementation using QVAC SDK.
@@ -73,14 +92,22 @@ export class LocalEngine implements TutorEngine {
       : language === 'english' ? 'tagalog'
       : null;
     if (!adapterLang) return undefined;
-    const moduleId = ACTIVE_MODEL.loraAssets[adapterLang];
-    if (moduleId == null) return undefined;
+    const src = ACTIVE_MODEL.loraAssets[adapterLang];
+    if (src == null) return undefined;
     try {
-      const asset = Asset.fromModule(moduleId);
+      // A string source is a MIRROR URL → download it (resilient chunked downloader, cached
+      // on first run) so the adapter does NOT bloat the APK. A numeric source is a bundled
+      // Metro asset (legacy path). Either resolves to a bare on-device path for QVAC's lora.
+      if (typeof src === 'string') {
+        const path = await ensureRemoteModel({ url: src, filename: filenameFromUrl(src) });
+        console.log(`[LocalEngine] using downloaded ${adapterLang} adapter for ${language}: ${path}`);
+        return path;
+      }
+      const asset = Asset.fromModule(src);
       await asset.downloadAsync(); // bundled asset → copied to cache, sets localUri
       const uri = asset.localUri ?? asset.uri;
       const path = uri ? uri.replace(/^file:\/\//, '') : undefined;
-      if (path) console.log(`[LocalEngine] using ${adapterLang} adapter for ${language}: ${path}`);
+      if (path) console.log(`[LocalEngine] using bundled ${adapterLang} adapter for ${language}: ${path}`);
       return path;
     } catch (e) {
       console.warn(`[LocalEngine] failed to resolve ${language} adapter; running base model:`, e);
@@ -119,7 +146,15 @@ export class LocalEngine implements TutorEngine {
           modelType: ACTIVE_MODEL.modelType,
           modelConfig: {
             ctx_size: ACTIVE_MODEL.ctxSize,
-            gpu_layers: GPU_LAYERS, // 99 = full GPU offload (Adreno/Vulkan beats CPU prefill on our flagship). QVAC 0.13 adds OpenMP for the Android ARM64 CPU ops on the non-offloaded path.
+            // Per-tier runtime placement (config/model.ts ACTIVE_MODEL.runtime). The cat (3B)
+            // offloads to GPU/Vulkan (gpuLayers 99). The kitten (1B) on a budget Adreno-6xx
+            // CANNOT use the GPU (ggml-vulkan 16-bit-storage device gate; OpenCL unsupported),
+            // so it pins device:'cpu' + gpuLayers 0 — paired with the build.gradle backend gate
+            // that keeps only the armv8.0 CPU .so (ggml otherwise mis-picks a higher ISA the A73
+            // can't run → "no backends loaded"). Driving this from the model config means
+            // flipping ACTIVE_MODEL_KEY can never silently force the 3B onto CPU.
+            ...(ACTIVE_MODEL.runtime.device ? { device: ACTIVE_MODEL.runtime.device } : {}),
+            gpu_layers: ACTIVE_MODEL.runtime.gpuLayers,
             ...(loraPath ? { lora: loraPath } : {}),
           },
           onProgress: (p) => {
@@ -410,7 +445,8 @@ export class LocalEngine implements TutorEngine {
    */
   async resolveImageTag(
     desc: string,
-    minCosine: number = IMAGE_TAG_FLOOR
+    minCosine: number = IMAGE_TAG_FLOOR,
+    domain?: string
   ): Promise<{ slug: string; cosine: number } | null> {
     if (!this.imageVectors || !this.semanticReady || !this.embedModelId) return null;
     try {
@@ -418,9 +454,13 @@ export class LocalEngine implements TutorEngine {
       const q = Float32Array.from(await this.embed(desc)); // CLS + L2 (embdNormalize:2)
       const { dims, scale, count, slugs } = IMAGE_VECTORS_META;
       const vecs = this.imageVectors;
+      // Scope candidates to the grounded fact's science domain so the cosine can't pick an
+      // off-topic image on a shared word (see DOMAIN_IMAGE_CATEGORIES). Unknown domain → no scope.
+      const allowed = domain ? DOMAIN_IMAGE_CATEGORIES[domain] : undefined;
       let best = -1;
       let bestDot = -Infinity;
       for (let i = 0; i < count; i++) {
+        if (allowed && !allowed.has(IMAGE_CATEGORY[slugs[i]!] ?? 'general')) continue;
         let dot = 0;
         const off = i * dims;
         for (let d = 0; d < dims; d++) dot += q[d]! * vecs[off + d]!;
@@ -429,12 +469,13 @@ export class LocalEngine implements TutorEngine {
           best = i;
         }
       }
+      if (best < 0) return null; // domain scoping left no candidate
       const cosine = bestDot * scale; // corpus rows were unit-norm before int8 quant
       console.log(
         `[LocalEngine] resolveImageTag "${desc.slice(0, 60)}" → ${slugs[best]} ` +
-          `(cos ${cosine.toFixed(3)}, ${Date.now() - t0}ms)`
+          `(cos ${cosine.toFixed(3)}, cat ${IMAGE_CATEGORY[slugs[best]!] ?? '-'}, dom ${domain ?? '-'}, ${Date.now() - t0}ms)`
       );
-      if (best < 0 || cosine < minCosine) return null;
+      if (cosine < minCosine) return null;
       return { slug: slugs[best]!, cosine };
     } catch (e) {
       console.warn('[LocalEngine] resolveImageTag failed:', e);

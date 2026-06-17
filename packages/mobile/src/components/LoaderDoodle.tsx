@@ -37,10 +37,14 @@ const CRAYONS = [
 ];
 
 const LIFE_MS = 2500; // a mark's full bloom→fade lifetime
-const MAX_MARKS = 150; // hard cap on live Views (oldest dropped first); raised to match
-// the longer lifetime so a sustained scribble isn't truncated before its marks fade
+const MAX_MARKS = 36; // hard cap on live Views (oldest dropped first). Each live mark is an
+// Animated.View the budget Adreno-610 GPU must alpha-composite over the loader VIDEO every
+// frame, so this is the dominant frame-budget lever — kept low so the draw stays smooth even
+// while the device is mid-download/warm-up. ~36 still reads as a continuous crayon trail.
 
-const MIN_STEP = 7; // min px of travel between marks along a swipe
+const MIN_STEP = 18; // min px of travel between marks along a swipe. Bigger step = fewer
+// marks created = fewer UI→JS hops + setMarks renders (the pipeline latency that made marks
+// lag behind the finger); still dense enough to read as a continuous line.
 const TAP_SLOP = 8; // total displacement under this on release = a tap (nudge), not a stroke
 
 interface DoodleMark {
@@ -51,7 +55,11 @@ interface DoodleMark {
   color: string;
 }
 
-function Mark({ x, y, size, color }: Omit<DoodleMark, 'id'>) {
+// A mark's props are fixed for its whole life (position/size/colour never change after
+// creation), so memoize: when a new mark is appended, React re-runs the list .map but
+// every EXISTING <Mark> bails out of re-rendering. That turns an O(n) re-render per added
+// mark into O(1) — the single biggest win for swipe smoothness on a low-end device.
+const Mark = React.memo(function Mark({ x, y, size, color }: Omit<DoodleMark, 'id'>) {
   // t runs 0→1 linearly over the lifetime; opacity/scale are shaped separately so the
   // mark POPS in like a crayon press, STAYS solid for ~the first second, then fades out
   // over the rest — rather than dissolving the instant it's drawn.
@@ -82,7 +90,7 @@ function Mark({ x, y, size, color }: Omit<DoodleMark, 'id'>) {
       ]}
     />
   );
-}
+});
 
 export function LoaderDoodle({
   onTap,
@@ -94,34 +102,24 @@ export function LoaderDoodle({
   const [marks, setMarks] = useState<DoodleMark[]>([]);
   const idRef = useRef(0);
   const colorRef = useRef<string>(CRAYONS[0] ?? '#ff5d5d');
-  const timers = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
-
-  // Cancel pending removals on unmount (the whole loader unmounts after dismiss).
-  useEffect(() => {
-    const pending = timers.current;
-    return () => {
-      pending.forEach((t) => clearTimeout(t));
-      pending.clear();
-    };
-  }, []);
 
   const beginStroke = useCallback(() => {
     colorRef.current = CRAYONS[Math.floor(Math.random() * CRAYONS.length)] ?? '#ff5d5d';
   }, []);
 
+  // Append one mark, capped at MAX_MARKS (oldest sliced off). We deliberately do NOT schedule
+  // a per-mark removal timer: that doubled the setState rate (one to add, one to remove) and
+  // each fired its own render mid-scribble. A mark animates itself to opacity 0 via its worklet
+  // and then just sits there inert (a completed Reanimated style costs nothing per frame) until
+  // the cap slices it out on a later stroke or the loader unmounts — so faded marks are free.
   const addMark = useCallback((x: number, y: number) => {
     const id = idRef.current++;
     const size = 16 + Math.random() * 16;
     const mark: DoodleMark = { id, x, y, size, color: colorRef.current };
     setMarks((prev) => {
-      const next = [...prev, mark];
-      return next.length > MAX_MARKS ? next.slice(next.length - MAX_MARKS) : next;
+      const next = prev.length >= MAX_MARKS ? prev.slice(prev.length - (MAX_MARKS - 1)) : prev;
+      return [...next, mark];
     });
-    const handle = setTimeout(() => {
-      timers.current.delete(handle);
-      setMarks((prev) => prev.filter((m) => m.id !== id));
-    }, LIFE_MS + 80);
-    timers.current.add(handle);
   }, []);
 
   // One Pan gesture handles everything: onBegin paints the first mark, onUpdate paints

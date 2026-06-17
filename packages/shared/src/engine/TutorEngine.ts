@@ -63,11 +63,17 @@ export interface TutorEngine {
    * `[image: <english desc>]` control token, and (2) RETRIEVAL-DRIVEN — the top
    * grounded fact's text, so a picture shows even when the (quant-fragile) model
    * emits no tag. `minCosine` overrides the default confidence floor (the fact path
-   * is cross-lingual and wants a lower bar than the English tags). Returns null when
-   * nothing matches confidently (better no picture than a wrong one). Optional —
-   * callers should feature-detect.
+   * is cross-lingual and wants a lower bar than the English tags). `domain` scopes the
+   * candidate images to the grounded fact's science domain so the match can't drift
+   * off-topic on a shared word (e.g. earthquake→pangolin). Returns null when nothing
+   * matches confidently (better no picture than a wrong one). Optional — callers should
+   * feature-detect.
    */
-  resolveImageTag?(desc: string, minCosine?: number): Promise<{ slug: string; cosine: number } | null>;
+  resolveImageTag?(
+    desc: string,
+    minCosine?: number,
+    domain?: string
+  ): Promise<{ slug: string; cosine: number } | null>;
 
   /**
    * Check if the engine is ready to process requests.
