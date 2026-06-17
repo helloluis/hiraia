@@ -45,10 +45,11 @@ export function Landing() {
             <p className="text-base sm:text-lg leading-relaxed text-white">
               Our on-device AI app works on entry-level Android phones worth around{' '}
               <strong className="text-white">$100</strong> and speaks fluent{' '}
-              <strong className="text-white">Tagalog</strong>,{' '}
-              <strong className="text-white">English</strong>, and{' '}
-              <strong className="text-white">Bisaya</strong>{' '}
-              <span className="italic text-teal-200">(coming soon!)</span>
+              <strong className="text-white">Tagalog</strong> and{' '}
+              <strong className="text-white">English</strong>{' '}
+              <span className="italic text-teal-200">
+                (with <strong className="not-italic text-white">Bisaya</strong> coming soon!)
+              </span>
             </p>
             <p className="mt-3 text-sm sm:text-base leading-relaxed text-slate-100/80">
               Try the web demo now, or download the APK directly to your mobile phone below.
