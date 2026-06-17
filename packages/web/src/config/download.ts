@@ -29,7 +29,8 @@ export const DOWNLOAD = {
   /** Direct link to the .apk — the public GitHub Release asset (stable URL). */
   url: 'https://github.com/helloluis/hiraia/releases/download/v0.1.0/hiraia.apk',
 
-  /** APK file size in MB. Includes the bundled Filipino fine-tune; the 3.2 GB base model streams on first run. */
+  /** APK file size in MB. The app + offline knowledge bank + illustrations only — the AI model
+   * and the right Filipino adapter download on first run, picked from the device + chosen language. */
   fileSizeMB: 310,
 
   /** SHA-256 of the .apk file. macOS: `shasum -a 256 hiraia.apk` · Linux: `sha256sum` */
@@ -39,14 +40,14 @@ export const DOWNLOAD = {
   signingCertSha256: '40d750d5576cb59c311c7ba713403e065b934967d7a7d1bc80652e1167a20c35',
 
   /**
-   * One-time model download after install. The APK is small; on first launch the
-   * app fetches the AI model once, then runs fully offline. Mirror these to the
-   * mobile `ACTIVE_MODEL` in packages/mobile/src/config/model.ts (3B ≈ 3.2 GB
-   * from Hugging Face; 1B ≈ 0.74 GB).
+   * One-time model download after install, served from Hiraia's OWN servers (a verifiable
+   * mirror of the public Sailor2 base — inference stays 100% on-device). The exact bytes depend
+   * on the phone + chosen language: a capable phone gets the 3B (base ~3.2 GB + embedder ~0.4 GB
+   * ≈ 3.6 GB); an entry-level phone gets the 1B (~1.3 GB total). See packages/mobile/src/config/
+   * model.ts (ACTIVE_MODEL + the kitten/cat tiers). `modelDownloadRange` is what the UI shows.
    */
-  modelDownloadGB: 3.2,
-  modelSource: 'Hugging Face',
-  modelSourceUrl: 'https://huggingface.co/mradermacher/Sailor2-3B-Chat-GGUF',
+  modelDownloadRange: '1.5–4 GB',
+  modelDownloadGB: 3.2, // 3B base only, for reference (full 3B path ≈ 3.6 GB with the embedder)
 
   minAndroid: 12,
   minRamGB: 6,

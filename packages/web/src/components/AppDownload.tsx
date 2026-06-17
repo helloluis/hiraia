@@ -82,18 +82,15 @@ export function AppDownload() {
             How the download works
           </p>
           <p className="text-xs sm:text-sm leading-relaxed text-gray-700">
-            The app is {apkSize} — it includes Hiraia&apos;s Filipino AI fine-tune built right in. The
-            first time you open it, it downloads the base AI model — about{' '}
-            <strong className="text-[#0c343d]">{DOWNLOAD.modelDownloadGB} GB, one time</strong> — from{' '}
-            <a
-              href={DOWNLOAD.modelSourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-[#0f8c5c] hover:underline"
-            >
-              {DOWNLOAD.modelSource}
-            </a>
-            , a public open-model host. After that, Hiraia runs{' '}
+            The app itself is a small {apkSize} download — just Hiraia, its offline science
+            knowledge bank, and the illustrations. The first time you open it, Hiraia checks your
+            phone and the language you choose, then downloads the{' '}
+            <strong className="text-[#0c343d]">AI model and Filipino adapter that best fit your device</strong>{' '}
+            — a one-time download of{' '}
+            <strong className="text-[#0c343d]">about {DOWNLOAD.modelDownloadRange}</strong>, served from{' '}
+            <strong className="text-[#0c343d]">Hiraia&apos;s own servers</strong>. A capable phone gets
+            the larger, higher-quality model; an entry-level one gets a lighter model tuned to run
+            smoothly on it. After that, Hiraia runs{' '}
             <strong className="text-[#0c343d]">fully offline</strong> — no internet, no account, and
             nothing you type ever leaves your phone.
           </p>
