@@ -385,6 +385,18 @@ export class RagStore {
       score.set(f.id, (score.get(f.id) ?? 0) + 1 / (RRF_K + r + 1));
       factById.set(f.id, f);
     });
+    // POST-FUSION novelty demotion. The lexical side already passed `seenIds` and
+    // demoted seen facts inside `this.search`, but the SEMANTIC side does not —
+    // an already-shown fact whose embedding still matches the follow-up query
+    // re-surfaces at the top of `sem`, and RRF puts it right back as #1 (the
+    // "same fact back-to-back" bug we hit when asking a follow-up about Mars on
+    // the kitten). Applying the penalty to the FUSED score makes the dedup work
+    // regardless of which side ranked the seen fact.
+    if (seenIds) {
+      for (const [id, s] of score) {
+        if (seenIds.has(id)) score.set(id, s * SEEN_PENALTY);
+      }
+    }
     return [...score.entries()]
       .sort((a, b) => b[1] - a[1])
       .slice(0, topK)

@@ -43,7 +43,7 @@ export const DOWNLOAD = {
   cat: {
     url: 'https://hiraia.b11.dev/models/hiraia-cat.apk',
     fileSizeMB: 666,
-    sha256: 'f16b44a2d1c3dcacac12f6c96448efd0a00cb1ef9c9cf02a16a5dc0bbe9d506b',
+    sha256: '0f19b5126a0fecb1cb3ba47914bad3493583d9fe8ce833c2e265b38ffc55a190',
     modelDownloadRange: '~3.6 GB',
   } as TierDownload,
 
@@ -57,7 +57,7 @@ export const DOWNLOAD = {
   kitten: {
     url: 'https://hiraia.b11.dev/models/hiraia-kitten.apk',
     fileSizeMB: 547,
-    sha256: '86679911e14f2f1f4ec729baac1cd958719bd412f7fb0239d754756a052de6b0',
+    sha256: 'e7097e9a813b3ff770cd7077c3363468810fb87a9dcc874222ff810819c347c2',
     modelDownloadRange: '~1.3 GB',
   } as TierDownload,
 
