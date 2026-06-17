@@ -166,7 +166,7 @@ export function AuthScreen() {
                     Offline mode
                   </h3>
                   <ul className="list-disc pl-5 text-gray-600 space-y-1.5 text-sm sm:text-base leading-relaxed">
-                    <li>No internet required for chat, entire package is <strong className="text-[#0c343d]">less than 2Gb</strong></li>
+                    <li>No internet required for chat, entire package is <strong className="text-[#0c343d]">less than 4 GB</strong></li>
                     <li>Internet only required for <strong className="text-[#0c343d]">student evaluation and sync</strong></li>
                   </ul>
                 </div>

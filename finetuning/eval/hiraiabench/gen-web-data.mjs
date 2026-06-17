@@ -10,6 +10,10 @@ import { dirname, join } from 'node:path';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const r = JSON.parse(readFileSync(join(HERE, 'bench-results.json'), 'utf8'));
+// Derive the probe count from the canonical bench set so the headline never goes stale when
+// the set grows (it did: 59 → 67). All same-class models run the full set; the saturated Opus
+// ceiling ran the earlier 59 — immaterial since it scores 5.0 throughout.
+const N_PROBES = JSON.parse(readFileSync(join(HERE, 'bench-set.json'), 'utf8')).probes.length;
 const CATS = ['Science Accuracy', 'Tagalog Fluency', 'English Fluency', 'Bisaya', 'Pedagogy', 'Safety & Honesty', 'Code-switching'];
 
 // display order BIGGEST → SMALLEST, so scores descend with size — EXCEPT Hiraia, our 3B fine-tune,
@@ -41,7 +45,7 @@ const category_notes = [
 ];
 
 const meta = {
-  n_probes: 59,
+  n_probes: N_PROBES,
   categories: CATS,
   category_notes,
   methodology:

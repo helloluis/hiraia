@@ -192,7 +192,7 @@ export function Landing() {
                   <ul className="list-disc pl-5 text-gray-600 space-y-1.5 text-sm sm:text-base leading-relaxed">
                     <li>
                       No internet required for chat, entire package is{' '}
-                      <strong className="text-[#0c343d]">less than 2Gb</strong>
+                      <strong className="text-[#0c343d]">less than 4 GB</strong>
                     </li>
                     <li>
                       Internet only required for{' '}

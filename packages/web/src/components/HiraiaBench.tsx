@@ -45,11 +45,11 @@ export function HiraiaBench() {
           <table className="w-full min-w-[760px] text-left border-collapse">
             <thead>
               <tr className="bg-[#0c343d] text-white">
-                <th className="px-4 sm:px-6 py-4 font-display text-base sm:text-lg sticky left-0 bg-[#0c343d] z-10">
+                <th className="px-4 sm:px-6 py-4 font-display text-base sm:text-lg sticky left-0 bg-[#0c343d] z-10 w-[168px] min-w-[168px] sm:w-auto sm:min-w-0">
                   Model
                 </th>
                 {BENCH_CATEGORIES.map((m) => (
-                  <th key={m} className="px-2 sm:px-4 py-4 font-display text-xs sm:text-sm text-center whitespace-nowrap" title={m}>
+                  <th key={m} className="px-2 sm:px-4 py-4 font-display text-xs sm:text-sm text-center whitespace-nowrap min-w-[56px]" title={m}>
                     {SHORT[m] ?? m}
                   </th>
                 ))}
@@ -58,7 +58,7 @@ export function HiraiaBench() {
             <tbody>
               {BENCH_ROWS.map((r) => (
                 <tr key={r.model} className={`border-t border-gray-200 ${r.highlight ? 'bg-[#f3a228]/15' : 'bg-white'}`}>
-                  <th scope="row" className={`px-4 sm:px-6 py-4 sticky left-0 z-10 ${r.highlight ? 'bg-[#fdf3e1]' : 'bg-white'}`}>
+                  <th scope="row" className={`px-4 sm:px-6 py-4 sticky left-0 z-10 w-[168px] min-w-[168px] sm:w-auto sm:min-w-0 ${r.highlight ? 'bg-[#fdf3e1]' : 'bg-white'}`}>
                     <div className={`font-display text-base sm:text-lg flex items-center gap-2 ${r.highlight ? 'text-[#0c343d]' : 'text-gray-800'}`}>
                       {r.highlight && (
                         // eslint-disable-next-line @next/next/no-img-element
@@ -82,7 +82,7 @@ export function HiraiaBench() {
                   {r.scores.map((s, i) => (
                     <td
                       key={i}
-                      className={`px-2 sm:px-4 py-4 text-center font-display text-base sm:text-lg ${
+                      className={`px-2 sm:px-4 py-4 text-center font-display text-base sm:text-lg min-w-[56px] ${
                         r.highlight ? 'text-[#0c343d] font-bold' : 'text-gray-700'
                       }`}
                     >
