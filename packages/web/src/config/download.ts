@@ -26,8 +26,14 @@ export const DOWNLOAD = {
 
   version: '0.1.0',
 
-  /** Direct link to the .apk — the public GitHub Release asset (stable URL). */
-  url: 'https://github.com/helloluis/hiraia/releases/download/v0.1.0/hiraia.apk',
+  /**
+   * Direct link to the .apk — served from our OWN mirror (same nginx as the model files), NOT the
+   * GitHub release. GitHub redirects to a SIGNED CDN URL that EXPIRES (~1h) and finalizes poorly on
+   * mobile (downloads stalled at 100%). The mirror is a plain static file with `Accept-Ranges: bytes`,
+   * so a spotty-connection download can RESUME instead of restarting (verified). Same bytes as the
+   * GitHub release → the sha256/cert checksums below still match. (Re-mirror on each new APK release.)
+   */
+  url: 'https://hiraia.b11.dev/models/hiraia.apk',
 
   /** APK file size in MB. The app + offline knowledge bank + illustrations only — the AI model
    * and the right Filipino adapter download on first run, picked from the device + chosen language. */
