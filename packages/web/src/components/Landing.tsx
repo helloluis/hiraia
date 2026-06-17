@@ -43,8 +43,8 @@ export function Landing() {
           {/* Floating glassmorphic card — pitch + the two calls to action */}
           <div className="w-full bg-[#0c343d]/45 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/10 p-6 sm:p-8">
             <p className="text-base sm:text-lg leading-relaxed text-white">
-              Our on-device AI app works on entry-level Android phones worth{' '}
-              <strong className="text-white">$90</strong> and speaks fluent{' '}
+              Our on-device AI app works on entry-level Android phones worth around{' '}
+              <strong className="text-white">$100</strong> and speaks fluent{' '}
               <strong className="text-white">Tagalog</strong>,{' '}
               <strong className="text-white">English</strong>, and{' '}
               <strong className="text-white">Bisaya</strong>{' '}
