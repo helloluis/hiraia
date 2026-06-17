@@ -155,36 +155,24 @@ export function AppDownload() {
           modelDownloadRange={DOWNLOAD.cat.modelDownloadRange}
           primary
         />
-        {/* Kitten download is held until the proper Adreno-610-safe build is uploaded — the
-            current build's Vulkan exclusions didn't fire on the training pod, so we're shipping
-            the working LOCAL build but the upload to the VPS is connection-bottlenecked. Until
-            then, show "Coming soon" rather than a download that won't run on budget phones. */}
-        <div className="flex h-full flex-col rounded-2xl bg-[#fdf6e9] p-5 sm:p-6 shadow-sm ring-1 ring-[#0c343d]/10 opacity-90">
-          <div className="mb-1 flex items-center gap-2">
-            <span className="text-2xl" aria-hidden>🐱</span>
-            <h3 className="font-display text-2xl text-[#0c343d]">Hiraia Kitten</h3>
-            <span className="ml-auto rounded-full bg-[#0c343d]/5 px-2.5 py-0.5 text-xs font-medium text-[#0c343d]/70">
-              1B model · CPU
-            </span>
-          </div>
-          <p className="text-sm font-medium text-[#0c343d]/85">For phones with 8 GB RAM or less.</p>
-          <p className="mt-2 text-xs text-gray-600 leading-relaxed">
-            Smaller 1B model, CPU-only — runs on phones that can&apos;t handle the larger one.
-            Slightly less detailed, still grounded in the same curriculum.
-          </p>
-          <div className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-[#0c343d]/10 px-5 py-3.5 text-base font-bold text-[#0c343d]/70 cursor-not-allowed">
-            Coming soon
-          </div>
-          <p className="mt-2 text-xs text-[#0c343d]/60">
-            Final upload in progress — should land within a day.
-          </p>
-        </div>
+        <TierCard
+          tag="1B model · CPU"
+          name="Hiraia Kitten"
+          emoji="🐱"
+          forWhom="For phones with 8 GB RAM or less."
+          modelLine="Smaller 1B model, CPU-only — runs on phones that can't handle the larger one. Slightly less detailed, still grounded in the same curriculum."
+          url={DOWNLOAD.kitten.url}
+          fileSizeMB={DOWNLOAD.kitten.fileSizeMB}
+          sha256={DOWNLOAD.kitten.sha256}
+          modelDownloadRange={DOWNLOAD.kitten.modelDownloadRange}
+          primary={false}
+        />
       </div>
 
       <p className="text-xs text-[#0c343d]/70">
-        <strong>Most people should get Cat for now.</strong> If your phone has <strong>8 GB+ RAM</strong>,
-        it&apos;ll run great. We&apos;re finishing Kitten — the lighter version for phones with less than
-        8 GB — and will publish it within the day.
+        <strong>Not sure which?</strong> If your phone has <strong>8 GB+ RAM</strong>, get{' '}
+        <strong>Cat</strong>. If it has <strong>less than 8 GB</strong>, get <strong>Kitten</strong>. The
+        app is free either way — if Cat won&apos;t open on your phone, just install Kitten instead.
       </p>
 
       {/* Shared "how it works" explainer. */}

@@ -45,12 +45,17 @@ export interface RemoteModelSpec {
   filename: string;
 }
 
-const CHUNK_BYTES = 8 * 1024 * 1024; // 8 MB — small enough that a drop loses little
+// Larger chunks let a FAST link (Wi-Fi 5/6) keep the TCP pipe full; smaller chunks turn
+// the per-roundtrip overhead (HEAD + Range setup + JS-side File.open/writeBytes/close on
+// every chunk) into a hard cap of ~3-5 MB/s. 32 MB measured well on a 600 Mbps link
+// (~80 MB/s sustained) while still bounding a dropped chunk's wasted bytes. The resume
+// cursor is the `.part` file's on-disk size, so a drop only loses the in-flight chunk.
+const CHUNK_BYTES = 32 * 1024 * 1024;
 // Per-chunk timeout must allow a full chunk to arrive even on a slow link, or a
-// slow-but-working connection gets its chunks aborted and re-fetched forever. Floor the
-// tolerated throughput very low (~70 KB/s for an 8 MB chunk → ~120 s) so genuinely slow
-// 5G/3G still completes; only a truly dead socket hits it.
-const CHUNK_TIMEOUT_MS = 120_000;
+// slow-but-working connection gets its chunks aborted and re-fetched forever. With 32 MB
+// chunks at a ~70 KB/s floor → ~480 s. Set generously so genuinely slow 5G/3G still
+// completes; only a truly dead socket hits it.
+const CHUNK_TIMEOUT_MS = 480_000;
 const MAX_CONSECUTIVE_FAILS = 40; // give up only after many back-to-back failures
 const LOG = (m: string) => console.log(`[modelDownload] ${m}`);
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
