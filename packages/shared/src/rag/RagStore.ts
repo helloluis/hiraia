@@ -140,6 +140,15 @@ export function normalizeQuery(text: string): string {
     /\b(?:may|meron|mayroon)\s+(?:akong?\s+)?(?:homework|project|assignment|report|takdang[-\s]?aralin|gawain|proyekto)\s+(?:po\s+)?(?:ako\s+)?(?:na\s+)?(?:tungkol|about|ukol)\s+(?:sa\s+)?/gi,
     ' '
   );
+  // "kailangan ko(ng) gumawa/gawin ng report/project/essay tungkol sa X" and the
+  // "gusto ko(ng) gumawa ..." variant — a SECOND school-work framing the original
+  // pattern missed. Without this, "Kailangan kong gumawa ng report tungkol sa mga
+  // planeta" embeds the whole framed string and the semantic side hijacks onto a
+  // "school project"/"report" fact instead of the planets (gate: planets-project).
+  s = s.replace(
+    /\b(?:kailangan|gusto|kelangan)\s+(?:ko(?:ng)?\s+)?(?:po\s+)?(?:gumawa|gawin|mag-?gawa|magsulat|sumulat)\s+(?:po\s+)?(?:ng\s+)?(?:homework|project|proyekto|report|ulat|assignment|takdang[-\s]?aralin|gawain|sanaysay|essay)\s+(?:po\s+)?(?:tungkol|about|ukol|hinggil)\s+(?:sa\s+)?/gi,
+    ' '
+  );
   s = s.replace(
     /\bsabi\s+(?:po\s+)?(?:ng\s+)?(?:aking\s+|akong\s+)?(?:teacher|guro|titser|kaibigan|kaklase|kapatid|nanay|tatay|magulang|lolo|lola)\s+(?:ko\s+)?(?:na\s+)?/gi,
     ' '

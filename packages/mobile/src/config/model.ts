@@ -133,7 +133,10 @@ export const ON_DEVICE_MODELS: Record<OnDeviceModelKey, OnDeviceModel> = {
       'https://huggingface.co/bartowski/Sailor2-1B-Chat-GGUF/resolve/main/Sailor2-1B-Chat-Q4_K_M.gguf',
     // hiraia-kitten adapter: trained on Sailor2-1B (r32/a64, v7 dataset), converted to GGUF,
     // DOWNLOADED from the mirror (not bundled). English rides the tagalog adapter.
-    loraAssets: { tagalog: 'https://hiraia.b11.dev/models/adapter-kitten-tagalog.gguf' },
+    // VERSIONED filename (-v7): ensureRemoteModel caches by file existence only (no sha/size
+    // re-check), so bumping the filename is the cache-bust that forces existing installs to
+    // re-download on APK update. v7 adds the English bucket (fixes English-mode-answers-in-Tagalog).
+    loraAssets: { tagalog: 'https://hiraia.b11.dev/models/adapter-kitten-tagalog-v7.gguf' },
     note: 'Low-end/4GB fallback (hiraia-kitten) — CPU-only on budget devices; leans hard on RAG.',
   },
 };

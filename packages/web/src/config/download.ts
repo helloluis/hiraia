@@ -34,7 +34,7 @@ export const DOWNLOAD = {
   /** Flip to true only once both tier URLs + sha256s are real. */
   released: true,
 
-  version: '0.2.0',
+  version: '0.2.2',
 
   /**
    * PRIMARY TIER. Sailor2-3B + the v9+ Filipino adapter; uses the GPU/Vulkan path,
@@ -42,23 +42,25 @@ export const DOWNLOAD = {
    */
   cat: {
     url: 'https://hiraia.b11.dev/models/hiraia-cat.apk',
-    fileSizeMB: 666,
-    sha256: 'a3598a9602136b615c55b8d078709b9df5b4706cf689b7be94f0849bdf2454e5',
+    fileSizeMB: 679,
+    sha256: '9a5196e254bda4eaf247d288e835104382380097e47e299a494996f9f36110fb',
     modelDownloadRange: '~3.6 GB',
   } as TierDownload,
 
   /**
    * ACCESSIBLE TIER. Sailor2-1B + the kitten-v6 Filipino adapter (mirror-downloaded);
    * CPU-only on armv8.0, no GPU required — for budget devices the larger model can't load.
-   * kitten-v6 is the best-balanced 1B to date (focused 3.6k-row dataset + CF-defense replay
-   * buckets); it improves myth-correction/abstention over v3 but the 1B retains a residual
-   * reflex bias on specific yes/no safety questions at temp 0.5 — a structural capacity
-   * limit no LoRA has closed across v1–v6. A stronger base (Qwen3.5) is the real fix.
+   * kitten-v7 adds an English bucket (fixes the v6 regression where English-mode queries were
+   * answered in Tagalog) atop the focused ~4k-row v5/v6 lineage (CF-defense replay buckets,
+   * myth-correction/abstention balance). The 1B retains a residual reflex bias on specific
+   * yes/no safety questions at temp 0.5 — a structural capacity limit no LoRA has closed
+   * across v1–v7; a stronger base (Qwen3.5) is the real fix. The adapter is mirror-downloaded
+   * from a VERSIONED url (-v7) so existing installs re-fetch it on update.
    */
   kitten: {
     url: 'https://hiraia.b11.dev/models/hiraia-kitten.apk',
-    fileSizeMB: 547,
-    sha256: '9dde6c991754685ee7c67592a165070c3260b9f495fe88cf508766cabec8b3e3',
+    fileSizeMB: 560,
+    sha256: '151a2733237661336a6d2a8be5ec8a893838de4b0f057cd69b87f863e05a3fa8',
     modelDownloadRange: '~1.3 GB',
   } as TierDownload,
 
