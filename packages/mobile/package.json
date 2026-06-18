@@ -8,6 +8,9 @@
     "build": "expo export --platform android",
     "android": "expo run:android",
     "ios": "expo run:ios",
+    "prebuild": "expo prebuild && node scripts/post-prebuild.mjs",
+    "prebuild:cat": "expo prebuild && node scripts/post-prebuild.mjs",
+    "prebuild:kitten": "expo prebuild && HIRAIA_TIER=kitten node scripts/post-prebuild.mjs",
     "lint": "eslint . --ext .ts,.tsx",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf .expo .expo-shared dist"

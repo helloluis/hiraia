@@ -34,9 +34,13 @@ import {
 // Calibrated offline against the SFT tag descriptions (rag/scripts/
 // validate-image-vectors.py, 2026-06-10): true matches median 0.79; every
 // out-of-catalog decoy AND every observed cross-topic mismatch lands ≤0.693.
-// 0.70 blocks all of those while the trained English tags clear it (~90% of the
-// 533 SFT descs). Below the floor we show no picture rather than a wrong one.
-const IMAGE_TAG_FLOOR = 0.7;
+// Raised 0.70 → 0.75 (2026-06-17) alongside the chatStore.ts priority swap that
+// makes FACT_IMAGE the curated baseline FIRST. The model tag is now the OVERRIDE
+// path for facts not in the curated map, so its bar should be tighter — sub-0.75
+// cosines are cluster-bias hits (the gravity→atomic-model class). 0.75 keeps the
+// strong tags (median 0.79 still clears it) and culls the borderline noise that
+// previously beat the curated baseline.
+const IMAGE_TAG_FLOOR = 0.75;
 
 // DOMAIN SCOPING for image retrieval. The embedding match alone does naive word-association
 // across topics — an EARTH_SPACE earthquake fact matched a "philippine-pangolin" (biology) image

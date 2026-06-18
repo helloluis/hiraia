@@ -65,11 +65,13 @@ let shownImageSlugs = new Set<string>();
 const IMAGE_TAG_RE = /\[image:\s*([^\]]+?)\s*\]/i;
 
 // Confidence floor for the RETRIEVAL-DRIVEN illustration (top grounded FACT's text →
-// an image), separate from LocalEngine's stricter model-tag floor (0.70). The fact text
+// an image), separate from LocalEngine's stricter model-tag floor (0.75). The fact text
 // is often Tagalog vs the English image descriptions (cross-lingual LaBSE → lower
-// cosines), so this bar is lower. Tuned on-device from the logged resolveImageTag
-// cosines — conservative to start (better no picture than a wrong one).
-const RETRIEVAL_IMAGE_FLOOR = 0.55;
+// cosines), so this bar is lower. Raised 0.55 → 0.60 alongside the priority swap that
+// makes FACT_IMAGE first: the semantic paths now only override the curated map when
+// they're meaningfully confident, killing cluster-bias substitutions like
+// gravity→atomic-model and speed-of-sound→speed-of-light.
+const RETRIEVAL_IMAGE_FLOOR = 0.6;
 
 // The tutor's abstain/redirect phrasings (TL/BIS/EN). When the answer matches, the
 // grounding wasn't really relevant, so we DON'T attach its illustration.
@@ -253,37 +255,48 @@ export const useChatStore = create<ChatState>()((set, get) => ({
         }
       });
 
-      // Illustration, in priority order:
-      // 1. The tutor's own [image: <desc>] control token (the trained, principled
-      //    intent signal) → embedding-resolved to a bundled slug. Trust it even if
-      //    the abstain regex fires — the model explicitly asked to show a picture.
-      // 2. Otherwise the TOP grounded fact's curated image, suppressed when the
-      //    tutor abstained/redirected (the grounding wasn't actually relevant).
+      // Illustration, in priority order (rebalanced 2026-06-17 after the gravity→atomic-model
+      // and speed-of-sound→speed-of-light cluster-bias misses):
+      // 1. FACT_IMAGE[topFid] — the CURATED id→slug map from gen-image-map.mjs (1,565 exact
+      //    + 1,991 fuzzy of 34,729 facts). For any fact_id we ground on, this is the
+      //    highest-confidence answer available — letting LaBSE override it (as the prior
+      //    order did) is what produced "speed → light" / "gravity → atom" substitutions
+      //    on crowded clusters.
+      // 2. The tutor's own [image: <desc>] control token. Strict cosine floor (0.75 in
+      //    LocalEngine) so a tag only overrides the curated map when it's confidently
+      //    on-topic. Trust the model even if the abstain regex fires — the model explicitly
+      //    asked to show a picture.
+      // 3. RETRIEVAL-DRIVEN match on the TOP grounded fact's text (raised floor 0.60) — only
+      //    fires if the curated map missed AND the model didn't emit a tag.
+      // Abstain suppresses ALL paths — the grounding wasn't really relevant if the tutor
+      // is saying "hindi ko alam".
+      const abstained = ABSTAIN_RE.test(fullResponse);
+
+      // Curated baseline. Cheap (object lookup) — try this first.
+      let baselineSlug: string | undefined = abstained ? undefined : imageSlug;
+
+      // Model tag — semantic, can override the baseline when confidently on-topic.
       let tagSlug: string | undefined;
       const tagDesc = IMAGE_TAG_RE.exec(fullResponse)?.[1];
       if (tagDesc && engine.resolveImageTag) {
         const hit = await engine.resolveImageTag(tagDesc, undefined, topDomain);
-        // Already shown this conversation → suppress, don't substitute (the model
-        // asked for THIS picture; a different one would mislabel the answer).
         if (hit && !shownImageSlugs.has(hit.slug)) tagSlug = hit.slug;
       }
-      const abstained = ABSTAIN_RE.test(fullResponse);
 
-      // 2b. RETRIEVAL-DRIVEN illustration — the RELIABLE path on the Q4 GGUF, where the
-      // model almost never emits a tag. Embed the TOP grounded fact and semantic-match a
-      // bundled image (reuses resolveImageTag's embed+cosine). Gated on: no model tag, not
-      // abstained (grounding was actually used). Post-generation → ZERO TTFT cost.
+      // Retrieval-driven match on the grounded fact's text — only consulted when the
+      // curated baseline + model tag both gave nothing. Cross-lingual LaBSE on TL fact text
+      // → English image desc; floor 0.60 keeps it conservative.
       let retrievalSlug: string | undefined;
-      if (!tagSlug && !abstained && engine.resolveImageTag && grounding[0]?.content) {
+      if (!baselineSlug && !tagSlug && !abstained && engine.resolveImageTag && grounding[0]?.content) {
         const hit = await engine.resolveImageTag(grounding[0].content, RETRIEVAL_IMAGE_FLOOR, topDomain);
         if (hit && !shownImageSlugs.has(hit.slug)) retrievalSlug = hit.slug;
       }
 
-      // Priority: model's explicit tag → semantic fact-match → precomputed FACT_IMAGE → none.
-      // DEDUP applies to EVERY path (incl. the FACT_IMAGE fallback, which previously bypassed
-      // it) so the same illustration isn't re-spammed — e.g. repeated "t-rex" questions get
-      // the tyrannosaurus image once, then text-only.
-      let finalImageSlug = tagSlug ?? retrievalSlug ?? (abstained ? undefined : imageSlug);
+      // Final: curated baseline FIRST (a known-good id→slug match beats any embedding
+      // similarity by construction); model tag is the override path for facts NOT in the
+      // curated map; semantic retrieval is the last resort. DEDUP applies to every path
+      // so the same illustration isn't re-spammed.
+      let finalImageSlug = baselineSlug ?? tagSlug ?? retrievalSlug;
       if (finalImageSlug && shownImageSlugs.has(finalImageSlug)) finalImageSlug = undefined;
       if (finalImageSlug) shownImageSlugs.add(finalImageSlug);
 

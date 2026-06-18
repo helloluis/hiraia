@@ -139,7 +139,7 @@ export const ON_DEVICE_MODELS: Record<OnDeviceModelKey, OnDeviceModel> = {
 };
 
 /** The model the on-device build loads. Flip to 'sailor2-1b' for the 4GB path. */
-export const ACTIVE_MODEL_KEY: OnDeviceModelKey = 'sailor2-1b';
+export const ACTIVE_MODEL_KEY: OnDeviceModelKey = 'sailor2-3b';
 export const ACTIVE_MODEL: OnDeviceModel = ON_DEVICE_MODELS[ACTIVE_MODEL_KEY];
 
 /** Short, truthful stats line for a status/about display. */

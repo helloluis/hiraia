@@ -43,21 +43,22 @@ export const DOWNLOAD = {
   cat: {
     url: 'https://hiraia.b11.dev/models/hiraia-cat.apk',
     fileSizeMB: 666,
-    sha256: '0f19b5126a0fecb1cb3ba47914bad3493583d9fe8ce833c2e265b38ffc55a190',
+    sha256: 'a3598a9602136b615c55b8d078709b9df5b4706cf689b7be94f0849bdf2454e5',
     modelDownloadRange: '~3.6 GB',
   } as TierDownload,
 
   /**
-   * ACCESSIBLE TIER. Sailor2-1B + the kitten-v3 Filipino adapter; CPU-only on armv8.0,
-   * no GPU required — for budget devices the larger model can't load. Shipping the
-   * current adapter for the hackathon submission; the 1B has a known reflex bias on
-   * specific yes/no safety questions ("Hindi po, mabuti pa nga ang manigarilyo") that
-   * a future device-side guardrail will catch — out of scope for the v0.2.0 build.
+   * ACCESSIBLE TIER. Sailor2-1B + the kitten-v6 Filipino adapter (mirror-downloaded);
+   * CPU-only on armv8.0, no GPU required — for budget devices the larger model can't load.
+   * kitten-v6 is the best-balanced 1B to date (focused 3.6k-row dataset + CF-defense replay
+   * buckets); it improves myth-correction/abstention over v3 but the 1B retains a residual
+   * reflex bias on specific yes/no safety questions at temp 0.5 — a structural capacity
+   * limit no LoRA has closed across v1–v6. A stronger base (Qwen3.5) is the real fix.
    */
   kitten: {
     url: 'https://hiraia.b11.dev/models/hiraia-kitten.apk',
     fileSizeMB: 547,
-    sha256: 'e7097e9a813b3ff770cd7077c3363468810fb87a9dcc874222ff810819c347c2',
+    sha256: '9dde6c991754685ee7c67592a165070c3260b9f495fe88cf508766cabec8b3e3',
     modelDownloadRange: '~1.3 GB',
   } as TierDownload,
 
