@@ -29,7 +29,7 @@ export const HIRAIAPEDIA_VERSION = '1.1.0';
 const TAGALOG_ADAPTER =
   ACTIVE_MODEL_KEY === 'sailor2-1b'
     ? 'kitten v7 · + English bucket' // Sailor2-1B (r16/a16, mirror-downloaded): adds an English bucket so English-mode queries answer in English (fixes the v6 English-answered-in-Tagalog regression) atop the focused ~4k-row v5/v6 lineage.
-    : 'v10 · intent + grounded + multi-turn'; // distill-sailor-3b-v10 (r32, f16, md5 eb8069dd): multi-turn confirm-and-build (P4) + faithful settled-science confidence (P3) + smoking-safety negation fix, atop v3's intent + grounding-faithfulness + image-tags; gate green. NOTE: [image:] emission still evaporates on the GGUF path (needs a conversion fix, not data).
+    : 'v11 · intent + grounded + English-clean'; // distill-sailor-3b-v11 (r32, f16, md5 9730e560): v9plus + a 363-row English bucket that fixes the English→Tagalog leak on chitchat/identity/off-topic + Taglish-contaminated input (role-play QA 6→0 leaks); keeps v10's intent + grounding + multi-turn; gate green. NOTE: [image:] emission still evaporates on the GGUF path (needs a conversion fix, not data).
 
 export const ADAPTER_VERSION: Record<Language, string> = {
   tagalog: TAGALOG_ADAPTER,
