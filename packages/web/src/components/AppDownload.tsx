@@ -53,10 +53,11 @@ interface TierCardProps {
   sha256: string;
   modelDownloadRange: string;
   primary: boolean;
+  experimental?: boolean;
 }
 
 function TierCard({
-  tag, name, emoji, forWhom, modelLine, url, fileSizeMB, sha256, modelDownloadRange, primary,
+  tag, name, emoji, forWhom, modelLine, url, fileSizeMB, sha256, modelDownloadRange, primary, experimental,
 }: TierCardProps) {
   const [showVerify, setShowVerify] = useState(false);
   const sizeText = fileSizeMB ? `~${fileSizeMB} MB` : 'small download';
@@ -74,12 +75,27 @@ function TierCard({
             Most users
           </span>
         )}
+        {experimental && (
+          <span className="ml-1 rounded-full bg-[#b54708] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+            Experimental
+          </span>
+        )}
         <span className="ml-auto rounded-full bg-[#0c343d]/5 px-2.5 py-0.5 text-xs font-medium text-[#0c343d]/70">
           {tag}
         </span>
       </div>
       <p className="text-sm font-medium text-[#0c343d]/85">{forWhom}</p>
       <p className="mt-2 text-xs text-gray-600 leading-relaxed">{modelLine}</p>
+      {experimental && (
+        <p className="mt-2 flex gap-1.5 rounded-lg bg-[#fff4ed] px-3 py-2 text-xs leading-relaxed text-[#b54708] ring-1 ring-[#b54708]/20">
+          <span aria-hidden>⚠️</span>
+          <span>
+            <strong>Experimental.</strong> The smaller 1B model can make mistakes — including on safety
+            and &ldquo;is this true?&rdquo; questions. Always double-check important answers with a teacher
+            or trusted adult. For the most reliable answers, use Hiraia Cat if your phone supports it.
+          </span>
+        </p>
+      )}
 
       <a
         href={url}
@@ -166,6 +182,7 @@ export function AppDownload() {
           sha256={DOWNLOAD.kitten.sha256}
           modelDownloadRange={DOWNLOAD.kitten.modelDownloadRange}
           primary={false}
+          experimental
         />
       </div>
 

@@ -34,7 +34,7 @@ export const DOWNLOAD = {
   /** Flip to true only once both tier URLs + sha256s are real. */
   released: true,
 
-  version: '0.2.2',
+  version: '0.2.3',
 
   /**
    * PRIMARY TIER. Sailor2-3B + the v9+ Filipino adapter; uses the GPU/Vulkan path,
@@ -43,7 +43,7 @@ export const DOWNLOAD = {
   cat: {
     url: 'https://hiraia.b11.dev/models/hiraia-cat.apk',
     fileSizeMB: 679,
-    sha256: '9a5196e254bda4eaf247d288e835104382380097e47e299a494996f9f36110fb',
+    sha256: '327290c7de1ed5dc3a5e686072e4dfae6f26ca48c42e06283521e6e8e4f74753',
     modelDownloadRange: '~3.6 GB',
   } as TierDownload,
 
@@ -60,7 +60,7 @@ export const DOWNLOAD = {
   kitten: {
     url: 'https://hiraia.b11.dev/models/hiraia-kitten.apk',
     fileSizeMB: 560,
-    sha256: '151a2733237661336a6d2a8be5ec8a893838de4b0f057cd69b87f863e05a3fa8',
+    sha256: '1b3302802baf40e87b8da20a33006e01eb0c3460739c66ebdc374d1759e751d0',
     modelDownloadRange: '~1.3 GB',
   } as TierDownload,
 

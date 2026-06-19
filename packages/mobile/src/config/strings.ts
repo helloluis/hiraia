@@ -40,6 +40,8 @@ interface UIStrings {
   newConversation: string;
   // loader
   bootingUp: string;
+  // kitten-tier experimental disclaimer (shown only on the 1B build's chat screen)
+  kittenExperimental: string;
 }
 
 const UI_STRINGS: Record<Language, UIStrings> = {
@@ -70,6 +72,8 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     showTutorial: 'Ipakita ang tutorial',
     newConversation: '+ Bagong Usapan',
     bootingUp: 'nag-boot up pa...',
+    kittenExperimental:
+      'Eksperimental pa ang Kitten — minsan nagkakamali, lalo na sa tanong na "totoo ba ito?" o tungkol sa kaligtasan. Laging i-double-check ang mahalagang sagot sa guro o magulang.',
   },
   english: {
     welcomeTitle: 'Welcome to Hiraia!',
@@ -98,6 +102,8 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     showTutorial: 'Show the tutorial',
     newConversation: '+ New Conversation',
     bootingUp: 'still booting up...',
+    kittenExperimental:
+      'Kitten is experimental — it can make mistakes, especially on "is this true?" and safety questions. Always double-check important answers with a teacher or parent.',
   },
   cebuano: {
     welcomeTitle: 'Maayong Pag-abot sa Hiraia!',
@@ -126,6 +132,8 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     showTutorial: 'Ipakita ang tutorial',
     newConversation: '+ Bag-ong Panag-istorya',
     bootingUp: 'nag-boot up pa...',
+    kittenExperimental:
+      'Eksperimento pa ang Kitten — mahimong masayop, ilabi na sa "tinuod ba ni?" ug sa mga pangutana bahin sa kaluwasan. Kanunay i-double-check ang importante nga tubag sa magtutudlo o ginikanan.',
   },
 };
 
