@@ -167,29 +167,12 @@ export function AuthScreen() {
                   </h3>
                   <ul className="list-disc pl-5 text-gray-600 space-y-1.5 text-sm sm:text-base leading-relaxed">
                     <li>No internet required for chat, entire package is <strong className="text-[#0c343d]">less than 4 GB</strong></li>
-                    <li>Internet only required for <strong className="text-[#0c343d]">student evaluation and sync</strong></li>
+                    <li>Internet only needed for the <strong className="text-[#0c343d]">initial download and databank updates</strong></li>
                   </ul>
                 </div>
               </div>
 
-              {/* Item 3: Hybrid model */}
-              <div className="flex gap-4 sm:gap-6 items-start">
-                <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center bg-[#f3a228] shadow-md shadow-[#f3a228]/10">
-                  <svg className="w-6 h-6 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-lg sm:text-xl font-display text-[#0c343d] mb-2">
-                    Hybrid model
-                  </h3>
-                  <p className="text-gray-600 text-sm sm:text-base leading-relaxed pl-1">
-                    Can use FB Messenger for higher-quality cloud-based replies and <strong className="text-[#0c343d]">fine-tuned image generation</strong>
-                  </p>
-                </div>
-              </div>
-
-              {/* Item 4: Entry-level phone requirements */}
+              {/* Item 3: Entry-level phone requirements */}
               <div className="flex gap-4 sm:gap-6 items-start">
                 <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center bg-[#0f8c5c] shadow-md shadow-[#0f8c5c]/10">
                   <svg className="w-6 h-6 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
