@@ -11,6 +11,12 @@
  * fine-tune and the system prompt, not the sampling temperature. 0.5 keeps enough
  * natural variation to not feel robotic while tightening accuracy. (Going to 0
  * makes long chats repetitive.)
+ *
+ * NB (2026-06-20): tried a kitten-only drop to 0.3 to curb the 1B's confabulation —
+ * local roleplay A/B showed it NET WORSE: it only marginally helped a few ungrounded
+ * cases but made the myth-affirmation reflex MORE deterministic (affirmed both flat-earth
+ * and 10%-brain vs only flat-earth at 0.5) and noticeably increased repetition. The 1B's
+ * confabulation is baked into its token distribution — temperature can't fix it. Kept at 0.5.
  */
 export const CHAT_TEMP = 0.5;
 

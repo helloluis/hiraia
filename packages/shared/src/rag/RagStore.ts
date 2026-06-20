@@ -67,6 +67,8 @@ const QUERY_STOP = new Set(
    what why how when where who whom which whose
    the are does did can could would should about from with into
    your you they them this that these those
+   teach tell explain show describe learn
+   ituro ipaliwanag ikwento kwentuhan pakituro pakipaliwanag pakikwento
    gumagana gumana paggana gampanan
    nagmumula nagmula magmula nanggaling nanggagaling pinagmumulan pinanggagalingan
    ginagawa gumagawa ginawa gawin
@@ -135,7 +137,6 @@ export function expandColloquial(text: string): string {
 
 export function normalizeQuery(text: string): string {
   const original = expandColloquial(text.trim()); // expand regardless of length
-  if (original.length < MIN_NORMALIZE_LEN) return original; // terse reply — leave it
   let s = ` ${original} `;
   // 1) framing PREFIXES that carry no science content (a kid wrapping a question)
   s = s.replace(
@@ -157,16 +158,35 @@ export function normalizeQuery(text: string): string {
   );
   s = s.replace(/\b(?:pwede|puwede)\s+(?:po\s+)?(?:ba\s+)?(?:akong?\s+)?(?:patulong|matulungan|magtanong|magpaturo)\s+(?:sa\s+)?/gi, ' ');
   s = s.replace(/\bpatulong\s+(?:po\s+)?(?:naman\s+)?(?:sa\s+)?/gi, ' ');
+  // ENGLISH/Taglish imperative TEACHING framing: "teach me about / tell me about / explain /
+  // show me / describe X", "I want to learn/know about X". Without this, "Teach me about
+  // photosynthesis" embeds toward TEACHING facts and grounded on "a vaccine TEACHES the body"
+  // + a lichen fact, burying the core photosynthesis fact (on-device QA 2026-06-20). The bare
+  // topic ("photosynthesis") retrieves correctly — so strip the framing, keep the noun.
+  s = s.replace(/\b(?:(?:can|could|will|would)\s+you\s+|you\s+|please\s+)*(?:teach|tell|explain|show|describe)\s+(?:me|us)\s+(?:about|the|on|regarding)?\s*/gi, ' ');
+  s = s.replace(/\b(?:please\s+)?(?:explain|describe)\s+(?:to\s+(?:me|us)\s+)?(?:about\s+|the\s+)?/gi, ' ');
+  s = s.replace(/\bi\s+(?:just\s+)?(?:want|wanna|would\s+like|'?d\s+like|like)\s+(?:to\s+)?(?:learn|know|hear|understand)\s+(?:more\s+)?(?:about|of)?\s*/gi, ' ');
+  // Tagalog teaching framing: "ituro/ipaliwanag/ikwento mo (sa akin) (ang/tungkol sa) X", "pakituro".
+  s = s.replace(/\b(?:ituro|pakituro|ipaliwanag|pakipaliwanag|ikwento|pakikwento|kwentuhan)\s+(?:mo\s+)?(?:po\s+)?(?:ako\s+)?(?:sa\s+akin\s+)?(?:naman\s+)?(?:ang\s+|kung\s+|tungkol\s+(?:sa\s+)?|ng\s+|about\s+)?/gi, ' ');
   // 2) framing SUFFIXES (claim-checks)
   s = s.replace(/,?\s*totoo\s+(?:po\s+)?ba(?:ng)?(?:\s+po)?\s*\??\s*$/gi, ' ');
   s = s.replace(/,?\s*(?:tama|mali)\s+(?:po\s+)?ba(?:\s+po)?\s*\??\s*$/gi, ' ');
   s = s.replace(/\bdi\s+ba\s*(?:po)?\s*\??\s*$/gi, ' ');
-  // 3) standalone politeness/discourse PARTICLES that dilute the embedding (kept out
-  // of QUERY_STOP because the lexical side handles them differently)
-  s = s.replace(/\b(?:po|pô|naman|kasi|nga|talaga|ba|raw|daw|pala|eh|kaya)\b/gi, ' ');
-  const result = s.replace(/\s+/g, ' ').trim();
+  const framed = s.replace(/\s+/g, ' ').trim();
+  // 3) standalone politeness/discourse PARTICLES dilute the embedding but could eat a terse
+  // reply's ONLY content, so strip them ONLY for originally-long inputs (MIN_NORMALIZE_LEN).
+  // The framing prefixes/suffixes above are EXPLICIT patterns (never fire on a bare terse
+  // reply), so they already ran at any length — which is what fixes a short framed query like
+  // "explain the water cycle" (≈23 chars) that previously skipped normalization entirely.
+  if (original.length >= MIN_NORMALIZE_LEN) {
+    const stripped = ` ${framed} `
+      .replace(/\b(?:po|pô|naman|kasi|nga|talaga|ba|raw|daw|pala|eh|kaya)\b/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (stripped.length >= 3) return stripped;
+  }
   // Keep single content words (good!), but if stripping left only a scrap, use original.
-  return result.length >= 3 ? result : original;
+  return framed.length >= 3 ? framed : original;
 }
 
 // How much recent conversation to fold in as a topical anchor (chars). Enough to
@@ -208,6 +228,7 @@ const LANG_KEY: Record<Language, LangKey> = {
 // Reciprocal-rank-fusion constant. Standard k=60; the benchmark (R@3 .607) was
 // tuned at this value, fusing lexical + semantic candidate lists equally.
 const RRF_K = 60;
+
 // Semantic-similarity floor for abstention: below this top-1 cosine the query is
 // off-topic (return nothing → the tutor abstains). Originally 0.58 from the 450-query
 // benchmark (positives mean 0.68, negatives 0.50). RETUNED to 0.55 (R1, 2026-06-07)

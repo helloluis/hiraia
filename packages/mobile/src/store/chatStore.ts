@@ -31,6 +31,8 @@ interface ChatState {
   hasHydrated: boolean;
   lastFactoidIds: string[];
   lastFactoidAt: number;
+  /** Synchronous in-flight lock so concurrent showColdStartFactoid calls can't double-post. */
+  factoidPosting: boolean;
   hydrate: () => Promise<void>;
   sendMessage: (content: string) => Promise<void>;
   showColdStartFactoid: () => Promise<void>;
@@ -116,6 +118,7 @@ export const useChatStore = create<ChatState>()((set, get) => ({
   hasHydrated: false,
   lastFactoidIds: [],
   lastFactoidAt: 0,
+  factoidPosting: false,
 
   // Load the latest conversation (or start one) from SQLite.
   hydrate: async () => {
@@ -337,60 +340,74 @@ export const useChatStore = create<ChatState>()((set, get) => ({
   // the SAME factoid instead of swapping in a new random one.
   showColdStartFactoid: async () => {
     const now = Date.now();
+    // In-flight lock. The dedup below is check-then-act, but the marker that suppresses a
+    // duplicate (lastFactoidAt + the inserted message) only commits AFTER the awaits
+    // (createConversation/addMessage). Two near-simultaneous fires — a fast startup re-mount,
+    // a resume re-mount, or a language re-roll overlapping the cold start — would both pass the
+    // stale guard and post TWO factoids. Claim a synchronous flag up front so a concurrent
+    // caller bails immediately; release it in `finally` once the post is committed (the
+    // typewriter below is a fire-and-forget setTimeout chain, so `finally` runs right after the
+    // critical section, not during the animation).
+    if (get().factoidPosting) return;
     const onScreen = [...get().messages].reverse().find(isFactoid);
     const onScreenFresh = !!onScreen && now - new Date(onScreen.timestamp ?? 0).getTime() < FACTOID_TTL_MS;
     const shownRecently = get().lastFactoidAt > 0 && now - get().lastFactoidAt < FACTOID_TTL_MS;
     if (onScreenFresh || shownRecently) return; // keep the existing one; don't re-roll
 
-    const lastIds = get().lastFactoidIds;
-    // Follow the active tutor language (was hardcoded Tagalog → English mode still got a TL factoid).
-    const lang = useEngineStore.getState().language ?? 'tagalog';
-    const picked = pickFactoidText(lang, lastIds);
-    if (!picked) return;
+    set({ factoidPosting: true });
+    try {
+      const lastIds = get().lastFactoidIds;
+      // Follow the active tutor language (was hardcoded Tagalog → English mode still got a TL factoid).
+      const lang = useEngineStore.getState().language ?? 'tagalog';
+      const picked = pickFactoidText(lang, lastIds);
+      if (!picked) return;
 
-    // Attach to (and persist with) the active thread.
-    let convId = get().conversationId;
-    if (!convId) {
-      convId = genId();
-      await createConversation(convId);
-      set({ conversationId: convId });
-    }
+      // Attach to (and persist with) the active thread.
+      let convId = get().conversationId;
+      if (!convId) {
+        convId = genId();
+        await createConversation(convId);
+        set({ conversationId: convId });
+      }
 
-    const factoid: Message = {
-      id: genId(),
-      role: 'assistant',
-      content: picked.text,
-      timestamp: new Date(now),
-      metadata: { kind: 'factoid' },
-    };
-    // Persist the FULL text up front; the typewriter below is cosmetic for this view
-    // (a reload — e.g. after resume — shows the complete card immediately).
-    await addMessage(convId, factoid);
-    const nextHistory = [...lastIds, picked.id].slice(-15);
-    set((state) => ({
-      messages: [...state.messages, { ...factoid, content: '' }],
-      lastFactoidIds: nextHistory,
-      lastFactoidAt: now,
-    }));
-    void setSetting('lastFactoidIds', JSON.stringify(nextHistory));
-    void setSetting('lastFactoidShownAt', String(now));
-
-    // Deliberate single-char typewriter so it's clearly animated. ~1 char / 26ms ≈
-    // 38 chars/sec → a typical factoid types on over ~4-7s while the model warms up.
-    // Animate BY ID (not last-element) so a reply arriving mid-type can't be clobbered.
-    const CHARS_PER_TICK = 1;
-    const TICK_MS = 26;
-    let index = 0;
-    const fullText = picked.text;
-    const tick = () => {
-      index += CHARS_PER_TICK;
-      const slice = fullText.slice(0, index);
+      const factoid: Message = {
+        id: genId(),
+        role: 'assistant',
+        content: picked.text,
+        timestamp: new Date(now),
+        metadata: { kind: 'factoid' },
+      };
+      // Persist the FULL text up front; the typewriter below is cosmetic for this view
+      // (a reload — e.g. after resume — shows the complete card immediately).
+      await addMessage(convId, factoid);
+      const nextHistory = [...lastIds, picked.id].slice(-15);
       set((state) => ({
-        messages: state.messages.map((m) => (m.id === factoid.id ? { ...m, content: slice } : m)),
+        messages: [...state.messages, { ...factoid, content: '' }],
+        lastFactoidIds: nextHistory,
+        lastFactoidAt: now,
       }));
-      if (index < fullText.length) setTimeout(tick, TICK_MS);
-    };
-    setTimeout(tick, TICK_MS);
+      void setSetting('lastFactoidIds', JSON.stringify(nextHistory));
+      void setSetting('lastFactoidShownAt', String(now));
+
+      // Deliberate single-char typewriter so it's clearly animated. ~1 char / 26ms ≈
+      // 38 chars/sec → a typical factoid types on over ~4-7s while the model warms up.
+      // Animate BY ID (not last-element) so a reply arriving mid-type can't be clobbered.
+      const CHARS_PER_TICK = 1;
+      const TICK_MS = 26;
+      let index = 0;
+      const fullText = picked.text;
+      const tick = () => {
+        index += CHARS_PER_TICK;
+        const slice = fullText.slice(0, index);
+        set((state) => ({
+          messages: state.messages.map((m) => (m.id === factoid.id ? { ...m, content: slice } : m)),
+        }));
+        if (index < fullText.length) setTimeout(tick, TICK_MS);
+      };
+      setTimeout(tick, TICK_MS);
+    } finally {
+      set({ factoidPosting: false });
+    }
   },
 
   // Drop any cold-start factoid currently on screen + reset the TTL, then ask for a fresh
