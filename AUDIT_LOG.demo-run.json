@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-06-17T12:49:49.909Z",
+  "generatedAt": "2026-06-20T13:33:02.408Z",
   "run": {
     "description": "One demo run on the device-equivalent engine (llama-server: bundled base GGUF + bundled Tagalog LoRA), capturing model load/unload and per-inference performance.",
     "deviceEquivalent": true,
@@ -27,23 +27,23 @@
   },
   "events": [
     {
-      "ts": "2026-06-17T12:49:49.910Z",
+      "ts": "2026-06-20T13:33:02.413Z",
       "type": "model_load_start",
       "base": "/Users/luis/Code/hiraia/deploy/models/Sailor2-3B-Chat.Q4_K_M.gguf",
-      "adapter": "/Users/luis/Code/hiraia/.claude/worktrees/audit-log-and-remote-apis/packages/mobile/assets/models/adapter-tagalog.gguf",
+      "adapter": "/Users/luis/Code/hiraia/packages/mobile/assets/models/adapter-tagalog.gguf",
       "ngl": 99,
       "ctxSize": 4096
     },
     {
-      "ts": "2026-06-17T12:49:51.980Z",
+      "ts": "2026-06-20T13:33:05.468Z",
       "type": "model_load_complete",
-      "loadMs": 2069,
+      "loadMs": 3055,
       "backendDevice": "gpu",
       "base": "/Users/luis/Code/hiraia/deploy/models/Sailor2-3B-Chat.Q4_K_M.gguf",
-      "adapter": "/Users/luis/Code/hiraia/.claude/worktrees/audit-log-and-remote-apis/packages/mobile/assets/models/adapter-tagalog.gguf"
+      "adapter": "/Users/luis/Code/hiraia/packages/mobile/assets/models/adapter-tagalog.gguf"
     },
     {
-      "ts": "2026-06-17T12:49:56.943Z",
+      "ts": "2026-06-20T13:33:08.365Z",
       "type": "inference",
       "index": 0,
       "probeId": "tl-photosynthesis",
@@ -53,28 +53,28 @@
         "user": "Ano ang photosynthesis?"
       },
       "response": {
-        "text": "<think>\nAng photosynthesis ay ang proseso kung saan ginagamit ng mga halaman ang sikat ng araw, tubig, at carbon dioxide para gumawa ng pagkain mula sa chlorophyll. Sinisipsip nito ang enerhiya ng liwanag para mabuo ang glucose at oxygen. Ito ang nagbibigay ng pagkain sa mga halaman at hayop.\n</think>\n\nAng photosynthesis ay ang proseso kung saan ginagamit ng mga halaman ang sikat ng araw, tubig, at carbon dioxide para gumawa ng pagkain mula sa chlorophyll. Sinisipsip nito ang enerhiya ng liwanag para mabuo ang glucose at oxygen.",
-        "preview": "<think>\nAng photosynthesis ay ang proseso kung saan ginagamit ng mga halaman ang sikat ng araw, tubig, at carbon dioxide para gumawa ng pagkain mula sa chloroph"
+        "text": "Ang photosynthesis ay ang proseso kung saan ginagamit ng mga halaman ang sikat ng araw, tubig, at carbon dioxide para gumawa ng pagkain. Ginagawa ito ng kanilang mga dahon, at ang pagkain na ito ang nagbibigay ng enerhiya sa kanila at sa mga hayop na kumakain sa kanila.",
+        "preview": "Ang photosynthesis ay ang proseso kung saan ginagamit ng mga halaman ang sikat ng araw, tubig, at carbon dioxide para gumawa ng pagkain. Ginagawa ito ng kanilan"
       },
       "metrics": {
         "promptTokens": 73,
-        "completionTokens": 164,
-        "ttftMs": 540,
-        "decodeMs": 4423,
-        "totalMs": 4963,
-        "tokensPerSec": 36.85,
+        "completionTokens": 88,
+        "ttftMs": 538,
+        "decodeMs": 2359,
+        "totalMs": 2897,
+        "tokensPerSec": 36.88,
         "server": {
           "promptTokens": 73,
-          "promptMs": 529.988,
-          "promptPerSec": 137.7389676747398,
-          "predictedTokens": 164,
-          "predictedMs": 4423.014,
-          "predictedPerSec": 37.078788355632604
+          "promptMs": 530.301,
+          "promptPerSec": 137.6576698893647,
+          "predictedTokens": 88,
+          "predictedMs": 2359.418,
+          "predictedPerSec": 37.29733349495511
         }
       }
     },
     {
-      "ts": "2026-06-17T12:50:00.641Z",
+      "ts": "2026-06-20T13:33:10.758Z",
       "type": "inference",
       "index": 1,
       "probeId": "tl-water-cycle",
@@ -84,28 +84,28 @@
         "user": "Paano gumagana ang water cycle?"
       },
       "response": {
-        "text": "<think>\nAng water cycle ay nagpapakita ng mga hakbang mula sa evaporation hanggang sa condensation. Ito ang sagot na nakabatay sa totoong proseso ng kalikasan.\n</think>\n\nAng water cycle ay nagsisimula sa singaw ng tubig (evaporation) na umaakyat sa hangin. Kapag lumamig ang singaw sa itaas, nagiging ulap (condensation). Pagkatapos, ang ulap ay nagiging ulan (precipitation) at bumabagsak pabalik sa lupa.",
-        "preview": "<think>\nAng water cycle ay nagpapakita ng mga hakbang mula sa evaporation hanggang sa condensation. Ito ang sagot na nakabatay sa totoong proseso ng kalikasan.\n"
+        "text": "Magandang tanong! Ang water cycle ay tulad ng bilog na tubig sa loob ng kalawakan. Umuulan, sumisingaw ang tubig, lumalamig at nagiging ulap, at bumabagsak ulit bilang ulan. Ginagawa ito ng araw at ng mga ulap, at paulit-ulit ito.",
+        "preview": "Magandang tanong! Ang water cycle ay tulad ng bilog na tubig sa loob ng kalawakan. Umuulan, sumisingaw ang tubig, lumalamig at nagiging ulap, at bumabagsak ulit"
       },
       "metrics": {
         "promptTokens": 76,
-        "completionTokens": 131,
-        "ttftMs": 168,
-        "decodeMs": 3529,
-        "totalMs": 3697,
-        "tokensPerSec": 36.84,
+        "completionTokens": 82,
+        "ttftMs": 166,
+        "decodeMs": 2226,
+        "totalMs": 2392,
+        "tokensPerSec": 36.39,
         "server": {
           "promptTokens": 14,
-          "promptMs": 162.738,
-          "promptPerSec": 86.02784844351044,
-          "predictedTokens": 131,
-          "predictedMs": 3528.866,
-          "predictedPerSec": 37.122407028206794
+          "promptMs": 162.875,
+          "promptPerSec": 85.95548733691481,
+          "predictedTokens": 82,
+          "predictedMs": 2226.041,
+          "predictedPerSec": 36.836697976362515
         }
       }
     },
     {
-      "ts": "2026-06-17T12:50:02.661Z",
+      "ts": "2026-06-20T13:33:13.670Z",
       "type": "inference",
       "index": 2,
       "probeId": "tl-why-sky-blue",
@@ -115,28 +115,28 @@
         "user": "Bakit asul ang langit?"
       },
       "response": {
-        "text": "Dahil sa langit, sinasalamin ng mga patak ng ulan ang asul na liwanag ng araw. Kaya kahit hindi tayo nakikita ang araw, nakikita natin ang asul na langit dahil sa mga patak na iyon! 🌼",
-        "preview": "Dahil sa langit, sinasalamin ng mga patak ng ulan ang asul na liwanag ng araw. Kaya kahit hindi tayo nakikita ang araw, nakikita natin ang asul na langit dahil "
+        "text": "Nangyayari ang asul na langit dahil sa kung paano nagbabaluktot ang liwanag ng araw sa hangin. Ang asul ay nagbabaluktot nang mas malaki kaysa sa ibang kulay, kaya ang asul na liwanag ay dumadaan sa mas mahabang landas bago marating ang ating mga mata. Kaya nakikita natin ang asul na langit.",
+        "preview": "Nangyayari ang asul na langit dahil sa kung paano nagbabaluktot ang liwanag ng araw sa hangin. Ang asul ay nagbabaluktot nang mas malaki kaysa sa ibang kulay, k"
       },
       "metrics": {
         "promptTokens": 75,
-        "completionTokens": 69,
-        "ttftMs": 167,
-        "decodeMs": 1853,
-        "totalMs": 2020,
-        "tokensPerSec": 36.7,
+        "completionTokens": 102,
+        "ttftMs": 171,
+        "decodeMs": 2740,
+        "totalMs": 2911,
+        "tokensPerSec": 36.86,
         "server": {
           "promptTokens": 13,
-          "promptMs": 159.342,
-          "promptPerSec": 81.5855204528624,
-          "predictedTokens": 69,
-          "predictedMs": 1852.245,
-          "predictedPerSec": 37.25209138099982
+          "promptMs": 162.495,
+          "promptPerSec": 80.00246161420351,
+          "predictedTokens": 102,
+          "predictedMs": 2740.19,
+          "predictedPerSec": 37.22369616705411
         }
       }
     },
     {
-      "ts": "2026-06-17T12:50:04.990Z",
+      "ts": "2026-06-20T13:33:14.380Z",
       "type": "inference",
       "index": 3,
       "probeId": "en-states-of-matter",
@@ -146,28 +146,28 @@
         "user": "What are the three states of matter?"
       },
       "response": {
-        "text": "<think>\nAng tatlong estado ng matter ay solid, liquid, at gas. Ang solid ay may tiyak na hugis, ang liquid ay umaagos, at ang gas ay hindi.\n</think>\n\nMay tatlong estado ng matter: solid, liquid, at gas. Ang solid ay may tiyak na hugis, ang liquid ay umaagos, at ang gas ay hindi.",
-        "preview": "<think>\nAng tatlong estado ng matter ay solid, liquid, at gas. Ang solid ay may tiyak na hugis, ang liquid ay umaagos, at ang gas ay hindi.\n</think>\n\nMay tatlon"
+        "text": "Ang tatlong estado ng bagay ay: ragn (solid), likido, at gas.",
+        "preview": "Ang tatlong estado ng bagay ay: ragn (solid), likido, at gas."
       },
       "metrics": {
         "promptTokens": 75,
-        "completionTokens": 81,
-        "ttftMs": 172,
-        "decodeMs": 2157,
-        "totalMs": 2329,
-        "tokensPerSec": 37.09,
+        "completionTokens": 21,
+        "ttftMs": 166,
+        "decodeMs": 544,
+        "totalMs": 710,
+        "tokensPerSec": 36.76,
         "server": {
           "promptTokens": 13,
-          "promptMs": 162.896,
-          "promptPerSec": 79.80552008643554,
-          "predictedTokens": 81,
-          "predictedMs": 2157.206,
-          "predictedPerSec": 37.54856977034182
+          "promptMs": 160.039,
+          "promptPerSec": 81.2302001387162,
+          "predictedTokens": 21,
+          "predictedMs": 543.847,
+          "predictedPerSec": 38.61380130808849
         }
       }
     },
     {
-      "ts": "2026-06-17T12:50:06.060Z",
+      "ts": "2026-06-20T13:33:15.293Z",
       "type": "inference",
       "index": 4,
       "probeId": "chitchat-greeting",
@@ -177,38 +177,38 @@
         "user": "Kumusta ka?"
       },
       "response": {
-        "text": "Kumusta rin! Masaya akong makausap ka. May gusto ka bang malaman tungkol sa agham o sa katawan natin?",
-        "preview": "Kumusta rin! Masaya akong makausap ka. May gusto ka bang malaman tungkol sa agham o sa katawan natin?"
+        "text": "Kumusta rin! Masaya akong nakausap ka. Ano ang gusto mong malaman tungkol sa agham?",
+        "preview": "Kumusta rin! Masaya akong nakausap ka. Ano ang gusto mong malaman tungkol sa agham?"
       },
       "metrics": {
         "promptTokens": 72,
-        "completionTokens": 34,
-        "ttftMs": 160,
-        "decodeMs": 910,
-        "totalMs": 1070,
-        "tokensPerSec": 36.26,
+        "completionTokens": 29,
+        "ttftMs": 153,
+        "decodeMs": 760,
+        "totalMs": 913,
+        "tokensPerSec": 36.84,
         "server": {
           "promptTokens": 10,
-          "promptMs": 152.623,
-          "promptPerSec": 65.52092410711361,
-          "predictedTokens": 34,
-          "predictedMs": 909.87,
-          "predictedPerSec": 37.367975644872345
+          "promptMs": 149.444,
+          "promptPerSec": 66.91469714408073,
+          "predictedTokens": 29,
+          "predictedMs": 759.956,
+          "predictedPerSec": 38.1601040060214
         }
       }
     },
     {
-      "ts": "2026-06-17T12:50:06.060Z",
+      "ts": "2026-06-20T13:33:15.293Z",
       "type": "model_unload",
       "reason": "demo complete"
     }
   ],
   "summary": {
     "inferenceCalls": 5,
-    "modelLoadMs": 2069,
-    "avgTtftMs": 241.4,
+    "modelLoadMs": 3055,
+    "avgTtftMs": 238.8,
     "avgTokensPerSec": 36.75,
     "totalPromptTokens": 371,
-    "totalCompletionTokens": 479
+    "totalCompletionTokens": 322
   }
 }
