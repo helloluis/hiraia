@@ -31,6 +31,8 @@ const CONTEXT_WEIGHT = 0.35;
 // with no better alternative still returns the fact.
 const SEEN_PENALTY = 0.25;
 const MIN_TOKEN_LEN = 3; // matches build-bank.py's `len(t) > 2`
+// How many top candidates from EACH of the lexical + semantic rankings get RRF-fused.
+const HYBRID_CAND = 10; // fuse the top-10 of each list (matches the 450-query benchmark)
 
 /**
  * Tagalog + Cebuano + English question/function words to drop from QUERIES.
@@ -377,11 +379,29 @@ export class RagStore {
     context = '',
     seenIds?: ReadonlySet<string>
   ): FactHit[] {
-    const CAND = 10; // fuse the top-10 of each list (matches the benchmark)
-    const lex = this.search(query, CAND, language, context, seenIds);
-    if (!this.semantic || !queryVec) return lex.slice(0, topK);
+    if (!this.semantic || !queryVec) {
+      return this.search(query, HYBRID_CAND, language, context, seenIds).slice(0, topK);
+    }
+    const sem = this.semantic.search(queryVec, language, HYBRID_CAND);
+    return this.fuseHybrid(query, sem, topK, language, context, seenIds);
+  }
 
-    const sem = this.semantic.search(queryVec, language, CAND);
+  /**
+   * RRF-fuse a PRECOMPUTED semantic ranking with the lexical ranking. Factored out of
+   * searchHybrid so a caller that ALREADY ran the semantic scan (the grounding-diag path,
+   * which needs `topCos` from the same scan) reuses it instead of paying for a SECOND full
+   * 40k-vector scan — the dominant repeated cost on the CPU-only kitten. Bit-identical to
+   * the old inline fusion: same `sem`, same lexical pass, same RRF + seen-penalty + sort.
+   */
+  private fuseHybrid(
+    query: string,
+    sem: ReturnType<SemanticIndex['search']>,
+    topK: number,
+    language: Language,
+    context: string,
+    seenIds?: ReadonlySet<string>
+  ): FactHit[] {
+    const lex = this.search(query, HYBRID_CAND, language, context, seenIds);
     const key = LANG_KEY[language];
     const score = new Map<string, number>();
     const factById = new Map<string, ScienceFact>();
@@ -476,9 +496,15 @@ export class RagStore {
     if (!this.semantic || !queryVec) {
       return { hits: this.retrieveForGrounding(query, language, max, floorRatio, context, seenIds), topCos: 0 };
     }
-    const topCos = this.semantic.search(queryVec, language, 1)[0]?.cosine ?? 0;
+    // ONE semantic scan, reused for BOTH the topCos abstain gate and the hybrid fusion.
+    // The bare-query topCos scan and searchHybrid's candidate scan were identical full-
+    // corpus passes over the same queryVec — folding them halves the semantic-scan cost
+    // on every confident query (the kitten's hot path). search() returns cosine-desc, so
+    // sem[0] is the same top hit search(…,1) gave → topCos is bit-identical.
+    const sem = this.semantic.search(queryVec, language, HYBRID_CAND);
+    const topCos = sem[0]?.cosine ?? 0;
     if (topCos < SEMANTIC_FLOOR) return { hits: [], topCos }; // off-topic → abstain
-    const hits = this.searchHybrid(query, queryVec, max, language, context, seenIds);
+    const hits = this.fuseHybrid(query, sem, max, language, context, seenIds);
     if (hits.length === 0) return { hits: [], topCos };
     const top = hits[0]!.score;
     return { hits: hits.filter((h) => h.score >= top * floorRatio), topCos };

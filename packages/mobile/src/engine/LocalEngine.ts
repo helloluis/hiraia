@@ -32,15 +32,18 @@ import {
 
 // Minimum cosine for an [image:] description to resolve to a bundled illustration.
 // Calibrated offline against the SFT tag descriptions (rag/scripts/
-// validate-image-vectors.py, 2026-06-10): true matches median 0.79; every
-// out-of-catalog decoy AND every observed cross-topic mismatch lands ≤0.693.
-// Raised 0.70 → 0.75 (2026-06-17) alongside the chatStore.ts priority swap that
-// makes FACT_IMAGE the curated baseline FIRST. The model tag is now the OVERRIDE
-// path for facts not in the curated map, so its bar should be tighter — sub-0.75
-// cosines are cluster-bias hits (the gravity→atomic-model class). 0.75 keeps the
-// strong tags (median 0.79 still clears it) and culls the borderline noise that
-// previously beat the curated baseline.
-const IMAGE_TAG_FLOOR = 0.75;
+// validate-image-vectors.py): true matches median 0.79; every out-of-catalog decoy
+// AND every observed cross-topic mismatch lands ≤0.693.
+// History: 0.70 → 0.75 (2026-06-17, alongside making FACT_IMAGE the curated baseline
+// and the model tag an OVERRIDE) — but that OVER-CORRECTED. A re-calibration (2026-06-20,
+// 533 real tags) put the true-positive p25 at 0.746, so 0.75 was silently rejecting ~25%
+// of legitimate, correctly-matched tags — e.g. "a t-rex dinosaur" (0.741), "the eight
+// planets of the solar system"→solar-system (0.715), photosynthesis (0.714). Reverted to
+// 0.70: it sits just above the empirical decoy/cross-topic ceiling (≤0.693) so genuine
+// no-match cases still abstain, and the WITHIN-science cluster-bias class (gravity→atomic-
+// model, earthquake→pangolin) is now caught independently by DOMAIN_IMAGE_CATEGORIES
+// scoping below — not the floor — so the floor no longer needs to over-tighten for it.
+const IMAGE_TAG_FLOOR = 0.7;
 
 // DOMAIN SCOPING for image retrieval. The embedding match alone does naive word-association
 // across topics — an EARTH_SPACE earthquake fact matched a "philippine-pangolin" (biology) image
@@ -415,6 +418,17 @@ export class LocalEngine implements TutorEngine {
         })
       );
       this.semanticReady = true;
+      // Warm the embed graph so the FIRST real ragSearch doesn't eat the cold
+      // build/alloc spike (the chat model has warmUp(); the embedder had none — and
+      // on the CPU-only kitten the LaBSE forward pass is the dominant retrieval cost).
+      // Throwaway + best-effort: never block readiness on it.
+      try {
+        const tw = Date.now();
+        await this.embed('init');
+        console.log(`[LocalEngine] embed warm (${Date.now() - tw}ms)`);
+      } catch {
+        /* non-fatal — first real query just pays the cold cost */
+      }
       console.log(`[LocalEngine] semantic hybrid ready (${Date.now() - t0}ms)`);
     } catch (e) {
       console.warn('[LocalEngine] semantic init failed — staying lexical-only:', e);

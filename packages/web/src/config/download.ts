@@ -48,14 +48,17 @@ export const DOWNLOAD = {
   } as TierDownload,
 
   /**
-   * ACCESSIBLE TIER. Sailor2-1B + the kitten-v6 Filipino adapter (mirror-downloaded);
+   * ACCESSIBLE TIER. Sailor2-1B + the kitten-v7 Filipino adapter (mirror-downloaded);
    * CPU-only on armv8.0, no GPU required — for budget devices the larger model can't load.
    * kitten-v7 adds an English bucket (fixes the v6 regression where English-mode queries were
    * answered in Tagalog) atop the focused ~4k-row v5/v6 lineage (CF-defense replay buckets,
    * myth-correction/abstention balance). The 1B retains a residual reflex bias on specific
    * yes/no safety questions at temp 0.5 — a structural capacity limit no LoRA has closed
-   * across v1–v7; a stronger base (Qwen3.5) is the real fix. The adapter is mirror-downloaded
-   * from a VERSIONED url (-v7) so existing installs re-fetch it on update.
+   * across v1–v7, and DPO (full-data + safety-only) only trades it for premise-affirmation
+   * sycophancy rather than fixing it; a more capable budget-tier base is the real fix
+   * (Qwen3.5 was ruled out — garbled Tagalog). Shipped with an "experimental" disclaimer.
+   * The adapter is mirror-downloaded from a VERSIONED url (-v7) so existing installs re-fetch
+   * it on update.
    */
   kitten: {
     url: 'https://hiraia.b11.dev/models/hiraia-kitten.apk',
