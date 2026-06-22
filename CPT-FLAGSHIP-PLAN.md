@@ -79,6 +79,22 @@ We did a low-budget recon + minimal local run of SailCraft and a full sweep of i
 
 **Day-1 data recipe (when funded):** Python-3.11 venv → add `tl`/`ceb` `languages_id` rows + `default`-seeded threshold dicts + `stopwords-tl` + `filipino-badwords` → decide perplexity (skip first; train ceb/tl LMs later) → run all 4 stages on a CulturaX ceb+tl sample → tune cutoffs against the `_filter_cases.xlsx` logs. The config edits are trivial; the only real effort is the optional LM training + Cebuano stopword curation.
 
+## 5b. Tier-1 prep — VALIDATED (2026-06-22, $0 local)
+
+We ran the three highest-value de-risks before any funding. **All three favorable; only one empirical gate remains (on-device speed on the Redmi).**
+
+**A — Base device path: GREEN.** Validated end-to-end on local tooling:
+- Repo **`Qwen/Qwen3.5-2B-Base` (apache-2.0)**; vision auto-strips at convert (omit `--mmproj`; add `--no-mtp`); non-thinking via `enable_thinking=false` (Qwen3.5 dropped the soft `/no_think` switch).
+- **GGUF converts natively** in the local llama.cpp (b9501 has a dedicated `QWEN35` arch) → Q4_K_M **1.2GB**, loads + serves on Mac (runtime kernels work, not just format).
+- **QVAC supports it on the Redmi tier**: `@qvac/llm-llamacpp@0.24.0` ships compiled `llm_build_qwen35`/`qwen35moe` builders, a `qwen35` chat-format, and `libqvac-ggml-cpu-android_armv8.0_1.so` (the SD685 ISA). **No QVAC update needed.**
+- **Architecture surprise — it's a hybrid SSM + attention model** (Mamba-style linear attention interleaved with full attention; 2048 hidden / 24 layers / vocab 248320). Implication: SSM is cheaper on prefill (the ARMv8.0 binding limit) → potentially *faster* than Sailor2-2.4B on-device — BUT the SSM/conv1d kernels at armv8.0 (no i8mm) are the specific empirical unknown.
+- Probes confirm the premise: Tagalog garbled, Cebuano near-absent → ideal CPT starting condition.
+- **The one remaining gate: on-device Redmi TTFT/decode** — GGUF preserved at `deploy/models/Qwen3.5-2B-Base.Q4_K_M.gguf`; `adb push` + force the CPU backend (separate from the known Adreno-610 Vulkan issue).
+
+**B — Data pipeline: VALIDATED end-to-end on real Filipino.** All 4 SailCraft stages ran on MADLAD-400 tl+ceb (3k docs each) via `uv venv --python 3.11`. **Committable configs + `git apply`-verified patches at `finetuning/cpt/sailcraft-filipino/`** (one-command driver `run_filipino_pipeline.sh`). New operational gotchas captured there: needs **two venvs** (text-dedup vs cleaning deps conflict); **MADLAD-400 Tagalog is the `fil` folder, not `tl`**; on 3.11 stay on `text-dedup==0.4.0` (`--path json --data_files`, drop `--local`); stage 3 needs `rustup` (the upstream TF deps are vestigial); **the `ceb` LID gate (cutoff 0.70) already filters Cebuano noise** the missing perplexity LM would have caught. CulturaX content access now granted (terms accepted on the `Cryptopop` HF account; 302 ✓) — though FineWeb-2 (ungated) is the practical core.
+
+**C — Corpus inventory: the token budget is smaller (and cheaper) than first penciled.** Measured the Qwen tokenizer at **~2.0 tokens/word** (dataset-card "token" counts are ~words → ~2× understated). Distinct clean: **Tagalog ~3.9B / Cebuano ~0.37B** Qwen-tokens (natural ratio ~10.6:1). **A Filipino-heavy CPT realistically caps at ~20–30B tokens** — forcing 50–100B would mean 63–82% English/Chinese, defeating the purpose. Recommended **~25B mix: ~63% tl (15.6B, ~4 epochs) / ~12% ceb upsampled (~2.9B, ~8 epochs) / ~25% en+zh anchor**; lean probe at ~5–8B first. **Cebuano-Wikipedia is 99.12% Lsjbot bot-stubs** — filter by `Lsjbot` creator metadata; do NOT count it raw (it teaches boilerplate). "Is there enough Cebuano?": not standalone (~0.37B is data-starved), but viable via upsampling + Tagalog cross-lingual transfer — exactly Sailor2's bet.
+
 ## 6. Budget
 
 Compute is cheap at 2B; **the cost is iteration + human time**, not GPU-hours.
@@ -86,14 +102,14 @@ Compute is cheap at 2B; **the cost is iteration + human time**, not GPU-hours.
 | Phase | Compute $ | Calendar |
 |------|----------|---------|
 | Data (SailCraft on CPU boxes; lean = lean on pre-cleaned sources) | $0.2–1k | 2–4 wks |
-| CPT (50–100B tok; ~$1–3k **per run**) | $1–3k × runs | run = 2–4 days; +ablations |
+| CPT (**~25B tok realistic ceiling — see §5b**; ~$1k/run, ~30h on 8×H100) | ~$1–2k × runs | run ≈ 1–1.5 days; +ablations |
 | SFT | $0.1–0.5k | 1–2 wks |
 | KD + DPO | $0.5–1.5k | 2–3 wks |
 | Ship (GGUF/QVAC/QA) | $0.2–0.5k | 2–4 wks |
 
-- **Lean / MVP** (single ~30B CPT, light calibration): **~$2–3k, ~6–8 weeks.**
-- **Thorough** (50–100B CPT + 2–3 ablation re-runs, full KD+DPO+grounded-reader, full QA): **~$6–12k, ~2.5–4 months.**
-- **The cost driver is the number of CPT re-runs** (you won't nail the data mix first try) — that's the $2k↔$6k swing.
+- **Lean / MVP** (single ~15–20B CPT at the §5b mix, light calibration): **~$1.5–2.5k, ~6–8 weeks.**
+- **Thorough** (~25B CPT + 2–3 ablation re-runs, full KD+DPO+grounded-reader, full QA): **~$4–8k, ~2.5–4 months.** (Lower than first penciled — the §5b inventory caps the CPT smaller/cheaper than 50–100B.)
+- **The cost driver is the number of CPT re-runs** (you won't nail the data mix first try) — that's the $1.5k↔$5k swing.
 - **Human/engineering time is the real expense** (the $ is compute only). In-house = ~a quarter of focused work; contracted ML eng ≈ $30–60k+ loaded (would dwarf compute).
 
 ### De-risk first — the probe gate

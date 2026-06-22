@@ -1,0 +1,63 @@
+diff --git a/code/data_cleaning/filtering.py b/code/data_cleaning/filtering.py
+index 6415b60..46d1aa2 100644
+--- a/code/data_cleaning/filtering.py
++++ b/code/data_cleaning/filtering.py
+@@ -6,7 +6,9 @@ import numpy as np
+ import fasttext
+ 
+ import sentencepiece
+-import kenlm
++# Lazy kenlm: only needed for the perplexity filter. We skip perplexity for the
++# Filipino first pass (no tl/ceb KenLM .arpa.bin exists), and kenlm 0.2.0 does not
++# build on modern CPython. Import it only when a kenlm model is actually loaded.
+ import json
+ 
+ import pathlib
+@@ -43,7 +45,9 @@ class LoadParameters:
+         stopwords_lang_id = langs_id.loc[
+             langs_id["dataset_id"] == lang_dataset_id, "stopwords_id"
+         ].iloc[0]
+-        if stopwords_lang_id:
++        # NaN-guard: a partially-resourced language (e.g. ceb) has empty config
++        # cells that pandas stores as NaN (a truthy float) -> KeyError: nan.
++        if pd.notna(stopwords_lang_id) and stopwords_lang_id:
+             stopwords_lang = set(stopwords[stopwords_lang_id])
+         else:
+             stopwords_lang = None
+@@ -54,7 +58,7 @@ class LoadParameters:
+         flagged_words_lang_id = langs_id.loc[
+             langs_id["dataset_id"] == lang_dataset_id, "flagged_words_id"
+         ].iloc[0]
+-        if flagged_words_lang_id:
++        if pd.notna(flagged_words_lang_id) and flagged_words_lang_id:
+             flagged_words_lang = set(flagged_words[flagged_words_lang_id])
+         else:
+             flagged_words_lang = None
+@@ -65,7 +69,7 @@ class LoadParameters:
+         fasttext_lang_id = langs_id.loc[
+             langs_id["dataset_id"] == lang_dataset_id, "fasttext_id"
+         ].iloc[0]
+-        if fasttext_lang_id:
++        if pd.notna(fasttext_lang_id) and fasttext_lang_id:
+             model_lang_id = fasttext.load_model(path_fasttext_model)
+         else:
+             model_lang_id = None
+@@ -76,7 +80,7 @@ class LoadParameters:
+         sentencepiece_lang_id = langs_id.loc[
+             langs_id["dataset_id"] == lang_dataset_id, "sentencepiece_id"
+         ].iloc[0]
+-        if sentencepiece_lang_id:
++        if pd.notna(sentencepiece_lang_id) and sentencepiece_lang_id:
+             sentencepiece_model = sentencepiece.SentencePieceProcessor()
+             sentencepiece_model.load(path_sentencepiece_model)
+         else:
+@@ -88,7 +92,8 @@ class LoadParameters:
+         kenlm_lang_id = langs_id.loc[
+             langs_id["dataset_id"] == lang_dataset_id, "kenlm_id"
+         ].iloc[0]
+-        if kenlm_lang_id:
++        if pd.notna(kenlm_lang_id) and kenlm_lang_id:
++            import kenlm  # lazy: only import when a real LM is configured
+             kenlm_model = kenlm.Model(path_kenlm_model)
+         else:
+             kenlm_model = None

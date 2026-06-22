@@ -1,0 +1,10 @@
+# Stage 2 (near-dedup / MinHash) only. INSTALL IN A SEPARATE venv from the
+# data-cleaning stack — text-dedup's transitive deps conflict with the pinned
+# transformers==4.37.2 / datasets==2.19.0 of the cleaning stage.
+#
+# IMPORTANT: text-dedup 0.4.1 requires Python>=3.12 and changed the CLI; on the
+# recommended Python 3.11 you MUST stay on 0.4.0. The 0.4.0 `--local` flag means
+# "load_from_disk (Arrow)", NOT "read a local jsonl" — so DO NOT pass --local when
+# feeding a .jsonl via `--path json --data_files ...` (that is the 0.4.0 way).
+text-dedup==0.4.0
+datasets==2.19.0
