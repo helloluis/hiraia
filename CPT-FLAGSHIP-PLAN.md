@@ -58,6 +58,27 @@ Sailor2 demonstrably learned Cebuano from **public sources we have equal access 
 - **Trap: Cebuano Wikipedia is ~99% bot-generated** (Lsjbot) — looks like a token goldmine, is templated noise. Downweight hard.
 - The Sailor2 paper documents the full data mix + CPT recipe — this is a **reproduction**, not novel R&D.
 
+## 5a. SailCraft readiness — dry-run + fork hunt (validated 2026-06-22)
+
+We did a low-budget recon + minimal local run of SailCraft and a full sweep of its branches/forks/adjacent repos, specifically to head off Filipino gotchas. **Verdict: no architectural surprises; the Filipino config work is bounded and unblocked; the only genuinely effortful piece (a Cebuano/Tagalog perplexity LM) is optional for a first pass.**
+
+- **Architecture is low-budget-friendly.** Single-machine, **CPU-first** (parallelism = HF `datasets.map` across cores), **no Spark/Slurm/Ray, no GPU**. Four stages: ① initial clean (config-driven, per-language) → ② near-dedup (MinHash) → ③ exact-dedup (Rust suffix-array — only stage needing a Rust toolchain) → ④ second clean. Input/output = JSONL with a `text` field; intermediates are HF Arrow; each stage emits a `_filter_cases.xlsx` reason log (built for threshold tuning).
+- **Filipino is NOT shipped — and there is NO fork shortcut.** Verified: upstream has only `main`; all 11 forks are stale/identical (the one "ahead" adds an unrelated CI file); and no adjacent repo has it either — cc_net (Filipino LMs 403), `edugp/kenlm` (24 langs, no tl/ceb), SailCraft's own `sailcraft_lm_resource` (14 langs, no Filipino), SEA-LION (models only, no pipeline). **Do not chase forks.**
+- **Setup gotcha #1 — use Python 3.10/3.11, NOT 3.14.** The 2022-era pins rot on modern Python (`kenlm` won't build — removed CPython internals; `pandas==1.5.2` no wheel; `text-dedup` 0.4.0→0.4.1 CLI change; `emoji` API change). On 3.11 (pyenv/conda) the pins install as authored — removes ~80% of the friction.
+- **Setup gotcha #2 — a latent `NaN`-guard bug** bites exactly when you add a *partially*-resourced language (the Filipino case): an empty config cell becomes `NaN` → `KeyError: nan`. One-line `pd.notna(x) and x` fix in `filtering.py`.
+- **The cheap pieces all exist as free MIT/CC assets:**
+  - **Thresholds:** SailCraft ships a `default` `parameters_filtering` dict — copy → `parameters_filtering_{tl,ceb}` (this is precisely how `lo`/`ms`/`th` already run, with no native lists). Re-tune on real crawl.
+  - **Tagalog stopwords:** `stopwords-iso/stopwords-tl` (146 words, MIT) — drop-in.
+  - **Flagged/profanity:** `jromest/filipino-badwords-list` (~97, MIT; tl-centric + some ceb terms).
+  - **Language ID:** fastText `lid.176` already emits `__label__ceb` + `__label__tl` — the LID step needs nothing.
+  - **Corpus:** CulturaX has both `tl` and `ceb` folders (+ MADLAD-400/OSCAR).
+  - **Model slot:** `download_sentencepiece_kenlm_models.py` is the drop-in for trained LMs (host alongside `sailcraft_lm_resource`).
+- **The one hard gap — KenLM `.arpa.bin` + SentencePiece `.sp.model` for tl AND ceb** (the perplexity filter). Nobody published them. **It is OPTIONAL for a first pass** — set `cond_check_perplexity=False` and lean on LID + heuristics. When wanted (worth it to catch Cebuano-Wikipedia bot-noise), train on CulturaX (cc_net recipe: SentencePiece, then a 5-gram KenLM on SP-tokenized text), then **re-calibrate the perplexity thresholds to your own LM** (the shipped per-lang cutoffs were tuned to cc_net's LMs and won't transfer).
+- **Small must-build list:** a **Cebuano stopword list** (none exists clean — build from ceb frequency/function words, cross-check against Tagalog), native Cebuano flagged-words, and empirical threshold tuning.
+- **Dry-run proof:** with `ceb`+`tl` configs added, **stage 1 ran end-to-end** on a synthetic ceb/tl corpus (18→12 docs, sensible filter reasons). Stage 2 needs the `text-dedup` call updated to the 0.4.1 CLI; stage 3 needs Rust installed.
+
+**Day-1 data recipe (when funded):** Python-3.11 venv → add `tl`/`ceb` `languages_id` rows + `default`-seeded threshold dicts + `stopwords-tl` + `filipino-badwords` → decide perplexity (skip first; train ceb/tl LMs later) → run all 4 stages on a CulturaX ceb+tl sample → tune cutoffs against the `_filter_cases.xlsx` logs. The config edits are trivial; the only real effort is the optional LM training + Cebuano stopword curation.
+
 ## 6. Budget
 
 Compute is cheap at 2B; **the cost is iteration + human time**, not GPU-hours.
@@ -119,4 +140,5 @@ A candidate ships only if **all** hold (run after CPT → SFT → KD → DPO, be
 - Strategy lineage: `PARAMETRIC-VS-RAG.md` (Option C)
 - Eval instruments: `finetuning/eval/capability/` (scored A/B) + `finetuning/eval/harness/` (green/red gate); shipped 1B baseline `finetuning/eval/capability/baselines/capability-baseline.2026-06-11-shipping.json` (3.24)
 - Open external: `github.com/sail-sg/sailcraft`, Sailor2 paper (arXiv 2502.12982), `huggingface.co/sailor2`, Qwen HF org
+- Filipino data assets (§5a): `github.com/stopwords-iso/stopwords-tl` (MIT), `github.com/jromest/filipino-badwords-list` (MIT), `huggingface.co/datasets/uonlp/CulturaX` (tl+ceb), `huggingface.co/edugp/kenlm` (KenLM format ref; no Filipino), `github.com/facebookresearch/cc_net` (LM-training recipe); fastText `lid.176` (supports ceb+tl)
 - Device limits: memory `hiraia-redmi-cpu-llama-bench`; GGUF gotcha: `hiraia-gguf-convert-tokenizer-gotcha`
