@@ -150,6 +150,34 @@ A candidate ships only if **all** hold (run after CPT → SFT → KD → DPO, be
 7. GGUF (text-only, non-thinking) → QVAC → Redmi speed check.
 8. Capability + gate + role-play QA against §9. Ship or iterate.
 
+## 11. Hallucination defense-in-depth (on-device)
+
+The honest answer to "you can't stop a small model hallucinating" is: don't make the model perfect — **stack independent, cheap layers so any single fabrication is caught before a child sees it** (the failure rate compounds *down*). Deep-research (2023–2026, claims adversarially verified, 24/25 confirmed) on what is both *effective* and *cheap-phone-feasible*:
+
+**Two kinds of hallucination need different defenses — the key distinction:**
+- **Contextual stray** — the answer drifts from the retrieved facts. Catchable by *cheap* single-pass detectors.
+- **Parametric confabulation** — the model invents a fact with no/weak grounding (our prune+heal failure: elections, "biggest star"). The cheap detectors do **not** catch this; it's defeated either *architecturally* (domain gate + strict retrieve-or-abstain → no ungrounded answer exists to fabricate) or by *expensive* sampling reserved for high-stakes.
+
+**Tier 0 — FREE (training-time or single-pass; always on):**
+- **Abstention tuning** (R-Tuning [arXiv:2311.09677]; GRAIT [2406.15927]): teach-to-abstain at training time, zero inference cost; R-Tuning reaches 93.23 AP on OpenLLaMA-**3B** (works at our scale). **⚠️ Verification KILLED the convenient assumption that learned refusal *generalizes* to untrained out-of-scope (refuted 0–3).** So abstention must be trained on explicit out-of-scope buckets, and a **bounded-domain gate must be its own layer** — the model will not "just know" what's off-curriculum. (This is exactly why the prune+heal model confabulated on elections/addresses.)
+- **Bounded-curriculum domain gate**: a cheap OOD/scope classifier → refuse off-curriculum. **Highest leverage for us** — grade-5 science is finite.
+- **TARG logit-margin gating** (training-free, single-pass, no second model): retrieve-or-abstain from the logit margin.
+
+**Tier 1 — CHEAP (one extra pass; on grounded answers):**
+- **Lookback Lens** [2407.07071]: a single linear classifier over attention ratios — detects contextual stray with **no extra inference pass** (AUROC ~58–66; transfers across models). Caveat: needs FlashAttention **off** to expose attention maps.
+- **OR a small encoder verifier** over (query, context, answer): **MiniCheck-FT5 770M** (GPT-4-level faithfulness, ~400× cheaper [2404.10774]) / **Luna 440M** (beats GPT-3.5 [2406.00975]) → now **LettuceDetect** [2511.09803]. One forward pass of a <1B encoder — plausibly cheap on CPU, but **unmeasured on our hardware**.
+
+**Tier 2 — EXPENSIVE (multi-sample; ONLY on flagged high-stakes: numbers, safety, medical):**
+- **Semantic entropy** (Farquhar/Kuhn, Nature 2024 [s41586-024-07421-0]): sample K≈5–10, cluster by meaning, measure entropy — the one method shown to catch *parametric* confabulation. ~5–10× inference → never always-on. Cheaper variants: **Semantic Entropy Probes** (single forward pass) and a **Bayesian estimator validated on Llama-3.2-3B** (sub-3B!) at ~half the samples — the one uncertainty method with sub-3B evidence.
+
+**Honest caveats (carry these to skeptics — they strengthen the case):**
+- **No technique here has published 1–3B-CPU wall-clock numbers.** The decoding-time methods are mostly 7B+ GPU-validated, and one (END) was *negative* on Qwen-2-7B. We'd be early adopters → **measure each layer on the Redmi before trusting it.**
+- The cheap detectors catch *contextual* stray only; *parametric* confabulation is defeated by the Tier-0 architecture (domain gate + retrieve-or-abstain) — which is why those layers matter most, and why "we have RAG" alone is insufficient without strict abstention.
+
+**Folds into the build:** Tier-0 abstention + domain-gate data joins SFT/DPO (§3.5) and the scope gate is a product layer; Tier-1 runs as a post-generation check; Tier-2 fires only on the high-stakes flag. The **`abstain-correct` benchmark tier (§9) is the measurement** — every layer is validated against it on-device. **Compounding argument for skeptics:** independent layers multiply — if scope-gating catches 80%, retrieve-or-abstain 80% of the rest, a verifier 70%, calibration 50%, the fabrication-reaching-a-child rate is a fraction of a percent *even with a model that hallucinates freely in isolation*.
+
+Refs: semantic entropy (Nature s41586-024-07421-0), Lookback Lens (2407.07071), R-Tuning (2311.09677), GRAIT (2406.15927), MiniCheck (2404.10774 / github.com/Liyan06/MiniCheck), Luna (2406.00975), LettuceDetect (2511.09803), CoVe (2309.11495), SelfCheckGPT (2303.08896); Semantic Entropy Probes + Bayesian estimator on Llama-3.2-3B (training-time-calibration sources in the deep-research run). Full verified claim set + the 1 killed claim: deep-research run `wdhb4g90h`.
+
 ## References
 
 - Retrospective (what we tried + why it failed): `finetuning/distill/ceb-heal/PRUNE-HEAL-RETROSPECTIVE.md`
