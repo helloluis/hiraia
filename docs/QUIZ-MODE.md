@@ -13,7 +13,8 @@ A quiz is a **test-prep** feature, so a wrong answer marked "correct" is the wor
    - Unsupported → *"Sorry, we can't make a quiz about that yet."* → back to the topic prompt.
 4. **Per question** (×5):
    - Show the question + **tappable multiple-choice options** (4), **order shuffled on every display** so the correct answer is never tied to a position (can't memorize "it's always B"). Shuffle is render-only; storage keeps a stable answer index.
-   - **⏱ 15-second timer per question** — a visible countdown (bar or number).
+   - **⏱ 30-second timer per question** — a visible countdown bar. (Raised from 15s after role-play QA: the bank's questions are wordy — median ~51 Tagalog words across the question + 4 options — so 15s auto-failed slow grade-5 readers on questions they knew.)
+   - **Difficulty ramp**: each round is ordered EASY → HARD (the hidden 0–2 difficulty), opening gently and ending with the hardest 1–2; hard items are capped at 2 per round so a round never stacks trivia.
      - **Tap correct** → celebratory effect (confetti + party emoji), brief, then next.
      - **Tap wrong** → **✗** beside their choice + **✓** on the correct answer + a **one-sentence explanation**.
      - **Timer expires (no tap)** → treated as a miss: reveal the correct answer (✓) + explanation, no celebration, auto-advance.

@@ -7,7 +7,10 @@ import { useChatStore } from './chatStore';
 import { useEngineStore } from './engineStore';
 
 export const QUESTIONS_PER_QUIZ = 5;
-export const SECONDS_PER_QUESTION = 15;
+// 30s, not 15: the bank's questions are wordy (median ~51 Tagalog words across the
+// question + 4 options; 69% exceed 40 words), and the target reader is a grade-5 kid
+// who's behind academically. 15s auto-failed slow readers on questions they knew.
+export const SECONDS_PER_QUESTION = 30;
 
 interface AnswerLog {
   question: string;

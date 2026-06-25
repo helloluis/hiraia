@@ -93,15 +93,47 @@ export function resolveTopic(input: string): string | null {
   return null;
 }
 
+/** Max hard (difficulty 2) questions allowed in a single round — keep it grade-5-kind. */
+const MAX_HARD_PER_ROUND = 2;
+
+const shuffle = <T,>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
+
 /**
- * Pick `count` questions for a topic, preferring ones not in `seen` (soft no-repeat
- * for replayability). Falls back to the full pool when the unseen pool is too thin.
+ * Build a round of `count` questions for a topic:
+ *  - prefer UNSEEN questions (soft no-repeat for replayability), falling back to
+ *    already-seen ones only to fill a thin pool;
+ *  - cap HARD (difficulty 2) questions at MAX_HARD_PER_ROUND so a round never stacks
+ *    trivia a struggling grade-5 reader can't reach;
+ *  - return them ordered EASY → HARD, so each round opens gently and ends with the
+ *    hardest 1-2 (difficulty is the hidden 0-2 metric).
+ *
+ * NOTE: there's no within-round *concept* de-dup yet — `factId` is unique per question
+ * (one question per fact), so two different facts can still test the same idea in one
+ * round. A real fix needs a concept/subtopic label (a labeling pass over the bank).
  */
 export function pickQuestions(topic: string, count: number, seen: Set<string>): QuizQuestion[] {
   const pool = BY_TOPIC.get(topic) ?? [];
   if (pool.length === 0) return [];
-  const unseen = pool.filter((q) => !seen.has(q.id));
-  const src = unseen.length >= count ? unseen : pool;
-  const shuffled = [...src].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, Math.min(count, shuffled.length));
+
+  // unseen first, then seen as fallback — each group shuffled for variety.
+  const ordered = [...shuffle(pool.filter((q) => !seen.has(q.id))), ...shuffle(pool.filter((q) => seen.has(q.id)))];
+
+  const chosen: QuizQuestion[] = [];
+  let hard = 0;
+  for (const q of ordered) {
+    if (chosen.length >= count) break;
+    if (q.d >= 2 && hard >= MAX_HARD_PER_ROUND) continue; // defer hard ones past the cap
+    chosen.push(q);
+    if (q.d >= 2) hard++;
+  }
+  // If the hard-cap left us short (tiny / hard-heavy topic), top up ignoring the cap.
+  if (chosen.length < count) {
+    for (const q of ordered) {
+      if (chosen.length >= count) break;
+      if (!chosen.includes(q)) chosen.push(q);
+    }
+  }
+
+  // Ramp easy → hard (stable-ish: difficulty asc; equal-difficulty keeps the shuffled order).
+  return chosen.sort((a, b) => a.d - b.d);
 }
