@@ -25,6 +25,7 @@ export interface QuizQuestion {
   a: number; // index of the correct option in `o`
   e: Tri; // explanation
   d: number; // hidden difficulty 0-2
+  c?: number; // concept cluster id (LaBSE-clustered per topic) — within-round de-dup key
 }
 
 export interface QuizTopic {
@@ -102,14 +103,16 @@ const shuffle = <T,>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
  * Build a round of `count` questions for a topic:
  *  - prefer UNSEEN questions (soft no-repeat for replayability), falling back to
  *    already-seen ones only to fill a thin pool;
+ *  - de-dup by CONCEPT (`c`, the LaBSE concept-cluster id from
+ *    cluster-quiz-concepts.py) so one round never serves two different facts that
+ *    test the same idea (e.g. two "which metals does a magnet attract" questions);
  *  - cap HARD (difficulty 2) questions at MAX_HARD_PER_ROUND so a round never stacks
  *    trivia a struggling grade-5 reader can't reach;
  *  - return them ordered EASY → HARD, so each round opens gently and ends with the
  *    hardest 1-2 (difficulty is the hidden 0-2 metric).
  *
- * NOTE: there's no within-round *concept* de-dup yet — `factId` is unique per question
- * (one question per fact), so two different facts can still test the same idea in one
- * round. A real fix needs a concept/subtopic label (a labeling pass over the bank).
+ * Constraints relax in order (concept-dedup, then hard-cap) only if the pool is too
+ * thin to fill `count` — so a small topic still yields a full round.
  */
 export function pickQuestions(topic: string, count: number, seen: Set<string>): QuizQuestion[] {
   const pool = BY_TOPIC.get(topic) ?? [];
@@ -119,21 +122,25 @@ export function pickQuestions(topic: string, count: number, seen: Set<string>): 
   const ordered = [...shuffle(pool.filter((q) => !seen.has(q.id))), ...shuffle(pool.filter((q) => seen.has(q.id)))];
 
   const chosen: QuizQuestion[] = [];
+  const picked = new Set<string>();
+  const usedConcepts = new Set<number>();
   let hard = 0;
-  for (const q of ordered) {
-    if (chosen.length >= count) break;
-    if (q.d >= 2 && hard >= MAX_HARD_PER_ROUND) continue; // defer hard ones past the cap
-    chosen.push(q);
-    if (q.d >= 2) hard++;
-  }
-  // If the hard-cap left us short (tiny / hard-heavy topic), top up ignoring the cap.
-  if (chosen.length < count) {
+  const fill = (dedupeConcept: boolean, capHard: boolean) => {
     for (const q of ordered) {
       if (chosen.length >= count) break;
-      if (!chosen.includes(q)) chosen.push(q);
+      if (picked.has(q.id)) continue;
+      if (capHard && q.d >= 2 && hard >= MAX_HARD_PER_ROUND) continue;
+      if (dedupeConcept && q.c != null && usedConcepts.has(q.c)) continue;
+      chosen.push(q);
+      picked.add(q.id);
+      if (q.d >= 2) hard++;
+      if (q.c != null) usedConcepts.add(q.c);
     }
-  }
+  };
+  fill(true, true); // ideal: distinct concepts, hard-capped
+  if (chosen.length < count) fill(false, true); // thin pool: allow repeat concepts
+  if (chosen.length < count) fill(false, false); // tiny/hard-heavy: allow extra hard too
 
-  // Ramp easy → hard (stable-ish: difficulty asc; equal-difficulty keeps the shuffled order).
+  // Ramp easy → hard (difficulty asc; equal-difficulty keeps the shuffled order).
   return chosen.sort((a, b) => a.d - b.d);
 }
