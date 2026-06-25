@@ -43,10 +43,11 @@ export interface MessageMetadata {
   /**
    * Non-conversational message kind. `factoid` = a pre-written "Alam mo ba na…?"
    * card dropped into the thread on cold start to give the reader something to
-   * look at while the model warms up. Excluded from persisted history and from
-   * the context sent to the model.
+   * look at while the model warms up. `quiz` = a recap of a finished Quiz-mode
+   * round, materialized into the thread on exit so the session is retained. Both
+   * are kept out of the context sent to the model.
    */
-  kind?: 'factoid';
+  kind?: 'factoid' | 'quiz';
 }
 
 /**

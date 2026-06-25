@@ -6,10 +6,12 @@ import { ChatHeader } from '../../components/ChatHeader';
 import { ChatTextInput } from '../../components/ChatTextInput';
 import { ChatThread } from '../../components/ChatThread';
 import { LoadingBar } from '../../components/LoadingBar';
+import { QuizOverlay } from '../../components/QuizOverlay';
 import { ACTIVE_MODEL_KEY } from '../../config/model';
 import { uiStrings } from '../../config/strings';
 import { useChatStore } from '../../store/chatStore';
 import { useEngineStore } from '../../store/engineStore';
+import { useQuizStore } from '../../store/quizStore';
 import { colors } from '../../theme';
 
 // The 1B "kitten" build can make mistakes — including on safety / "is this true?"
@@ -23,6 +25,7 @@ export default function ChatScreen() {
   const showColdStartFactoid = useChatStore((s) => s.showColdStartFactoid);
   const isReady = useEngineStore((s) => s.isReady);
   const t = uiStrings(useEngineStore((s) => s.language));
+  const quizActive = useQuizStore((s) => s.active);
   const [inputText, setInputText] = useState('');
   // Re-shows each cold open (dismissal not persisted) — it's a safety notice.
   const [showKittenNote, setShowKittenNote] = useState(IS_KITTEN);
@@ -49,6 +52,13 @@ export default function ChatScreen() {
     setInputText('');
     void sendMessage(text);
   };
+
+  // Quiz mode takes over the whole screen (yellow legal-pad). Render it instead of the
+  // chat so the chat's KeyboardAvoidingView / input bar don't fight the quiz layout;
+  // on exit the round is appended back into the chat thread (quizStore → addQuizRecap).
+  if (quizActive) {
+    return <QuizOverlay />;
+  }
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>

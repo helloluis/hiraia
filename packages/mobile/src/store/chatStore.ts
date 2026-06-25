@@ -44,13 +44,19 @@ interface ChatState {
   clearMessages: () => Promise<void>;
   /** Load a past conversation (from the sidebar history) and make it active. */
   switchConversation: (id: string) => Promise<void>;
+  /** Materialize a finished Quiz-mode round into the active thread (persisted +
+   *  displayed, but kept out of the model context). Called by quizStore.exit(). */
+  addQuizRecap: (text: string) => Promise<void>;
 }
 
 const isFactoid = (m: Message) => m.metadata?.kind === 'factoid';
+const isQuizRecap = (m: Message) => m.metadata?.kind === 'quiz';
 /** Real conversation turns carry a stable id; transient UI messages (cold-start
  *  factoid, wait/error notices) do not — so this both gates persistence and keeps
- *  them out of the model's context. */
-const isRealTurn = (m: Message) => !!m.id && !isFactoid(m);
+ *  them out of the model's context. Quiz recaps are persisted + displayed but, like
+ *  factoids, stay OUT of the model context (a 5-question dump shouldn't bloat the
+ *  prompt). */
+const isRealTurn = (m: Message) => !!m.id && !isFactoid(m) && !isQuizRecap(m);
 
 // Facts already shown this conversation — RagStore demotes them so a kid asking
 // "ano pa?" keeps getting FRESH facts instead of the same top-3. Reset on a new
@@ -442,6 +448,27 @@ export const useChatStore = create<ChatState>()((set, get) => ({
     } catch (e) {
       console.error('[chatStore] switchConversation failed:', e);
     }
+  },
+
+  // Drop a finished Quiz-mode round into the active thread. PERSISTED (the kid can
+  // scroll back to their quiz) but kept out of the model context by isRealTurn
+  // (kind==='quiz'), like a factoid — a 5-question recap shouldn't bloat the prompt.
+  addQuizRecap: async (text: string) => {
+    let convId = get().conversationId;
+    if (!convId) {
+      convId = genId();
+      await createConversation(convId);
+      set({ conversationId: convId });
+    }
+    const recap: Message = {
+      id: genId(),
+      role: 'assistant',
+      content: text,
+      timestamp: new Date(),
+      metadata: { kind: 'quiz' },
+    };
+    await addMessage(convId, recap);
+    set((state) => ({ messages: [...state.messages, recap] }));
   },
 }));
 
