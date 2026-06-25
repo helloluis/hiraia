@@ -170,6 +170,57 @@ function PlayView() {
     return () => clearTimeout(id);
   }, [secs, revealed, index, selectOption]);
 
+  // --- keep the result + NEXT reachable on long (multi-screen) questions ---
+  const scrollRef = useRef<ScrollView>(null);
+  const atBottomRef = useRef(true); // is NEXT roughly on-screen right now?
+  const lastInteractRef = useRef(0); // ms of the kid's last scroll (idle detection)
+  const autoScrollPendingRef = useRef(false); // scroll once the reveal block lays out
+  const shakeCountRef = useRef(0);
+  const shakeX = useRef(new Animated.Value(0)).current;
+  const shakeTranslate = shakeX.interpolate({ inputRange: [-1, 1], outputRange: [-7, 7] });
+
+  const runShake = () => {
+    shakeX.setValue(0);
+    Animated.sequence(
+      [1, -1, 1, -1, 0].map((toValue) =>
+        Animated.timing(shakeX, { toValue, duration: 55, useNativeDriver: true })
+      )
+    ).start();
+  };
+
+  // new question → snap to top + clear nudge state
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ y: 0, animated: false });
+    atBottomRef.current = true;
+    autoScrollPendingRef.current = false;
+    shakeCountRef.current = 0;
+  }, [index]);
+
+  // once answered/revealed → pull the result + NEXT into view, then nudge if the kid idles
+  useEffect(() => {
+    if (!revealed) return;
+    autoScrollPendingRef.current = true; // onContentSizeChange scrolls once the reveal lays out
+    scrollRef.current?.scrollToEnd({ animated: true }); // immediate best-effort too
+    lastInteractRef.current = Date.now();
+    shakeCountRef.current = 0;
+    const id = setInterval(() => {
+      const idle = Date.now() - lastInteractRef.current;
+      const due = Math.floor(idle / 5000); // shake NEXT every 5s of inactivity
+      if (due > shakeCountRef.current) {
+        shakeCountRef.current = due;
+        runShake();
+      }
+      if (idle >= 15000 && !atBottomRef.current) {
+        // sat >15s scrolled away (re-reading the question) → bring NEXT back
+        scrollRef.current?.scrollToEnd({ animated: true });
+        lastInteractRef.current = Date.now();
+        shakeCountRef.current = 0;
+      }
+    }, 1000);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [revealed, index]);
+
   if (!q) return null;
 
   const correctDisplay = order.indexOf(q.a);
@@ -197,7 +248,23 @@ function PlayView() {
         />
       </View>
 
-      <ScrollView contentContainerStyle={styles.playBody}>
+      <ScrollView
+        ref={scrollRef}
+        contentContainerStyle={styles.playBody}
+        scrollEventThrottle={100}
+        onScroll={(e) => {
+          const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent;
+          atBottomRef.current =
+            contentSize.height - contentOffset.y - layoutMeasurement.height <= 40;
+          lastInteractRef.current = Date.now();
+        }}
+        onContentSizeChange={() => {
+          if (revealed && autoScrollPendingRef.current) {
+            autoScrollPendingRef.current = false;
+            scrollRef.current?.scrollToEnd({ animated: true });
+          }
+        }}
+      >
         <Text style={styles.questionText}>{localize(q.q, lang)}</Text>
 
         {order.map((optIdx, displayIdx) => {
@@ -235,9 +302,11 @@ function PlayView() {
             {timedOut && <Text style={styles.timeUp}>{Q.timeUp}</Text>}
             {gotItRight && <Text style={styles.correctHeadline}>{Q.correct}</Text>}
             <Text style={styles.explanation}>{localize(q.e, lang)}</Text>
-            <TouchableOpacity style={styles.nextButton} onPress={next}>
-              <Text style={styles.nextButtonText}>{isLast ? Q.finish : Q.next}</Text>
-            </TouchableOpacity>
+            <Animated.View style={[styles.nextWrap, { transform: [{ translateX: shakeTranslate }] }]}>
+              <TouchableOpacity style={styles.nextButton} onPress={next}>
+                <Text style={styles.nextButtonText}>{isLast ? Q.finish : Q.next}</Text>
+              </TouchableOpacity>
+            </Animated.View>
           </View>
         )}
       </ScrollView>
@@ -504,6 +573,9 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     color: colors.inkMuted,
     marginBottom: 18,
+  },
+  nextWrap: {
+    alignSelf: 'flex-start',
   },
   nextButton: {
     alignSelf: 'flex-start',
