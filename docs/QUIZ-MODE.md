@@ -49,7 +49,14 @@ Source of truth: **`rag/bank/quiz-bank.jsonl`** (sibling to `science-facts.jsonl
 }
 ```
 - **`answer` is a canonical index**, language-independent. The UI shuffles the option order on display (Fisher-Yates on indices) and remaps the correct position — so storage is stable and "memorize the letter" fails.
-- **Size/delivery**: ~10k questions × trilingual ≈ ~15–20 MB. Shard by domain/topic and lazy-load (or download) so the base APK isn't bloated — same as the fact-bank handling.
+- **Size/delivery (measured 2026-06-26, trilingual)**: ~1.4 KB/question compact JSON, **~0.44 KB/question gzipped** (container-independent — `.sql`, JSON, NDJSON all gzip to the same floor; the bytes are the unique text). So a full bank is ~**11 MB gzipped @ 25k**, ~**22 MB @ 50k** — storage is NOT a constraint (the APK is already ~500 MB of adapters+images; OTA over WiFi is a few seconds).
+
+### Scaling delivery — pre-ship checklist (when the bank outgrows the bundled sample)
+The current build `import`s `src/data/quiz-bank.json` (1,567-q sample, 2.2 MB) straight into the JS bundle — parsed at app startup. Fine at this size; **do NOT keep inlining once the bank exceeds ~10–15k questions** (a >~15 MB JSON parsed at boot costs startup latency + JS heap). At that point:
+- [ ] **Ship a prebuilt SQLite seed DB** (DECIDED 2026-06-26). Build it server-side from `quiz-bank.jsonl`, gzip it (~12 MB @ 25k / ~25 MB @ 50k), and on first run / OTA update **decompress + drop the file** into the `expo-sqlite` dir (zero per-row `INSERT` cost on the budget Redmi — important; executing 25–50k inserts at setup would stall a slow phone). SQLite is ~25% larger *at rest* than JSON but that's irrelevant; it's chosen for **runtime**, not size.
+- [ ] **Runtime = query-on-demand**: no startup parse, low RAM; index `topic` / `concept` / `difficulty`; `pickQuestions` (unseen-pref → concept-dedup → easy→hard ramp, hard≤2) becomes indexed SQL. Reuses the `expo-sqlite` already in the chat store (no new dep).
+- [ ] **Persistent per-child seen-memory** as a `seen` table (replaces the session-only `Set`; also covers the AsyncStorage plan below) — survives restarts, enables resurface-wrong spaced repetition via a JOIN.
+- [ ] **OTA growth = row deltas** (`UPSERT` of new/changed questions as SQL or NDJSON), not a whole-DB re-download. Prebuilt `.db` = the initial seed; deltas keep updates small.
 
 ### Per-child seen-memory (replay control)
 - A **local, on-device, per-child** log (AsyncStorage) — *not* in the bank: `{ [quizId]: { seen: count, last: ts, lastCorrect: bool } }`. Offline, private, no server.
