@@ -118,3 +118,14 @@ rag/pipeline/quiz-*-translate-input.jsonl
 rag/pipeline/quiz-batchA-rejected-factids.txt
 rag/pipeline/fw-*.log
 rag/bank/quiz-bank.jsonl.pre-expansion.bak
+
+# fact-bank expansion/verification working files (bank + blob + scripts are the deliverables)
+rag/pipeline/fact-candidates/
+rag/pipeline/fact-verdicts/
+rag/pipeline/newfact-verdicts/
+rag/pipeline/*-to-verify.jsonl
+rag/pipeline/fact-candidates-distinct.jsonl
+rag/pipeline/flagged-facts-review.jsonl
+rag/bank/*.pre-correction.bak
+rag/bank/*.pre-newfacts.bak
+rag/bank/*.pre-expansion.bak

@@ -1,0 +1,112 @@
+# Fact correction change-log
+
+- conceptual corrections applied: **107**
+- web-verified numeric fixes: **4**
+- web-confirmed correct (kept, marked reviewed): **1**
+- numeric quarantined (text kept, excluded from quiz pending source check): **18**
+
+## Web-verified numeric fixes
+- `speed-of-sound-steel-g8`
+  - was: Sound travels through steel at about 5,000 meters per second (m/s) — fastest among solids.
+  - now: Sound travels very fast through solids like steel — about 5,960 meters per second — and even faster through diamond.
+- `la-nina-sea-surface-temp-g7`
+  - was: La Nina is officially declared when sea surface temperature in the central Pacific is more than 0.5°C below average for three consecutive months.
+  - now: La Niña is officially declared when the central Pacific sea surface temperature stays 0.5°C or more below average for about five consecutive months.
+- `typhoon-signal-5-new-2022-g6`
+  - was: PAGASA's Tropical Cyclone Wind Signal No. 5 was added in 2022 for super typhoons with winds over 220 km/h; it indicates catastrophic damage.
+  - now: PAGASA's Tropical Cyclone Wind Signal No. 5, for super typhoons, is raised for winds of at least 185 km/h — PAGASA lowered this threshold from 220 km/h in 2022.
+- `sperm-whale-dive-depth-record-g8`
+  - was: The sperm whale is the deepest-diving mammal — recorded diving over 3,000 meters for more than 90 minutes in a single dive; their muscles contain so much myoglobin (oxygen-storing protein) that they are nearly black when cut.
+  - now: The Cuvier's beaked whale is the deepest-diving mammal, recorded diving close to 3,000 meters — far deeper than the sperm whale.
+
+## Conceptual corrections (sample of 30)
+- `complementary-colors-opposite-wheel-g7`
+  - was: Complementary colours are opposite each other on the colour wheel — such as red and green, or blue and orange — mixing complementary lights produces white light
+  - now: Complementary colours are opposite each other on the colour wheel — for example, red and green, or blue and orange — and when you mix complementary lights (such
+- `rescue-raft-floodwater-g5`
+  - was: A rescue raft floats on floodwater because the water pushes up on it harder than its weight, so it can carry people away from danger.
+  - now: A rescue raft floats because the water pushes up on it with a buoyant force that balances its weight, letting it stay on the surface and carry people.
+- `force-balanced-no-move-g5`
+  - was: When two forces are equal and opposite, they are balanced and the object does not move.
+  - now: When two forces are equal and opposite, they cancel out, so the object’s speed doesn’t change; it stays still if it was at rest, or moves at a steady speed if i
+- `normal-force-reaction-floor-g4`
+  - was: When you stand on the floor, you do not fall through because the floor pushes back up on you with a normal force equal to your weight — Newton's third law.
+  - now: When you stand on the floor, the floor pushes up on you with a normal force that balances your weight, keeping you from falling; this balance is an example of N
+- `saggeypo-bamboo-pipes-g5`
+  - was: The saggeypo is an instrument made of bamboo pipes that makes sound when you blow air through them.
+  - now: The saggeypo is an instrument made of bamboo tubes that makes sound when you strike it against the ground, not when you blow into it.
+- `mudskipper-eats-small-animals-g4`
+  - was: The mudskipper eats small animals such as insects, worms, and algae found in the mud.
+  - now: The mudskipper eats small animals such as insects and worms, and also eats algae, which is a plant‑like organism, not an animal.
+- `keystone-species-sharks-reef-g7`
+  - was: Sharks act as keystone species on coral reefs by controlling populations of herbivorous fish, preventing overgrazing of the algae that healthy coral needs.
+  - now: Sharks are keystone species on coral reefs; by eating large predatory fish they help keep herbivorous fish numbers balanced, which helps maintain the right amou
+- `desert-sand-and-rock-g4`
+  - was: The ground of a desert is often sand or rock because few plants grow there.
+  - now: The ground of a desert is often sand or rock because the low rainfall and strong winds limit soil formation and plant growth.
+- `wind-local-names-ph-g5`
+  - was: Filipinos have local names for different types of winds: 'amihan' is the northeast monsoon, 'habagat' is the southwest monsoon, and 'salamin' is a term for sea 
+  - now: Filipinos have local names for different winds: "amihan" is the northeast monsoon and "habagat" is the southwest monsoon; there is no common term "salamin" for 
+- `geologic-time-scale-eras-g9`
+  - was: The geologic time scale organizes Earth's long history into increasingly long intervals of time: eons, eras, periods, and epochs.
+  - now: The geologic time scale organizes Earth's history into decreasingly long intervals: eons, eras, periods, and epochs.
+- `neptune-ring-arc-g8`
+  - was: Neptune's rings are not complete circles like Saturn's but have arcs — segments that are denser and brighter than other parts. The Adams ring, Neptune's most fa
+  - now: Neptune's rings are faint, complete circles, but the Adams ring contains bright arcs called Liberté, Egalité, and Fraternité.
+- `weather-solar-radiation-midday-g5`
+  - was: At midday the sun is highest in the sky and its rays strike the ground most directly; this is why noon is the hottest part of the day, especially in the Philipp
+  - now: At midday the sun is highest and its rays are most direct, but the day's highest temperature usually occurs a few hours later, in the mid‑afternoon, because the
+- `slow-vibration-thunder-low-rumble-g5`
+  - was: The deep rumble of thunder comes from a huge amount of air vibrating slowly in the sky. Because the air moves slowly and over a wide area, the sound we hear is 
+  - now: Thunder is the sound made when lightning heats the air so quickly that it expands and creates a shock wave, and the deep rumble we hear comes from low‑frequency
+- `kubing-jaw-feel-vibration-g4`
+  - was: When you play a kubing, you can sometimes feel a tiny tickle or buzz on your lips or teeth. That is the real vibration of the tongue passing into your skin. It 
+  - now: When you play a kubing, you can feel a tiny tickle on your lips or teeth because the metal tongue of the instrument vibrates and transmits those vibrations to y
+- `feathers-light-strong-flight-g5`
+  - was: Flying animals like birds and bats are light because their bones are hollow. The lighter the body, the easier it is for the wings to make enough lift to fly.
+  - now: Birds have hollow bones that make them light, while bats have solid but thin bones; both are light enough for their wings to generate lift.
+- `wave-energy-color-light-g9`
+  - was: In visible light, color tells the energy of the wave — blue and violet have higher energy than red, which is why we see different colors in a rainbow.
+  - now: In visible light, blue and violet light have higher energy than red light, and a rainbow shows different colors because water droplets bend (refract) each color
+- `torso-organs-g6`
+  - was: The torso, or middle of the body, holds vital organs like the heart, lungs, and liver, which are shielded by the chest bones called ribs.
+  - now: The torso holds vital organs like the heart, lungs, and liver; the heart and lungs are protected by the ribs, while the liver sits under the lower ribs in the a
+- `jackfruit-strong-evergreen-tree-g4`
+  - was: The jackfruit tree stays green all year and does not shed its leaves. It has strong, deep roots, which is why it can carry such heavy fruits.
+  - now: The jackfruit tree is an evergreen that keeps its leaves most of the year but does shed old leaves, and its strong trunk and branches, not just its roots, suppo
+- `pearl-made-by-oyster-g5`
+  - was: A pearl is made by oysters and mussels; it is the only gemstone made by a living animal.
+  - now: A pearl is made by oysters and some mussels, and it is one of the few gemstones that come from a living animal, though coral is another animal-made gemstone.
+- `sailfin-lizard-ibid-g6`
+  - was: The sailfin lizard, or ibid, is a reptile found only in the Philippines that lives near rivers and can swim using its broad, flattened tail.
+  - now: The sailfin lizard, also called ibid, lives near rivers in the Philippines and nearby countries such as Indonesia, and it can swim using its broad, flattened ta
+- `bee-sting-do-all-bees-sting-g5`
+  - was: Some kids think every bee can sting, but that is not true. Male bees (drones) have no stinger. Only the female worker bees have a stinger they use for defense.
+  - now: Male bees (drones) have no stinger; both female worker bees and queen bees have stingers, though workers are the ones that usually sting to defend the hive.
+- `makahiya-water-thorns-spines-g3`
+  - was: Besides folding because of water, the makahiya has another defense. There are small thorns on its stem that prick when you grab it. So it has two defenses: the 
+  - now: The makahiya (Mimosa pudica) protects itself by quickly folding its leaves when touched, and it does not have thorns on its stem.
+- `tongue-five-basic-tastes-g5`
+  - was: The tongue senses sweet, salty, sour, and bitter, while the nose adds the full flavor.
+  - now: The tongue can detect five basic tastes—sweet, salty, sour, bitter, and umami—and the nose helps us sense the full flavor of foods.
+- `three-veggies-eggplant-purple-color-g4`
+  - was: Eggplant skin is purple because of a natural color called pigment inside it. The same kind of color also makes ube and other purple fruits their color.
+  - now: Eggplant skin is purple because of anthocyanin pigments, and the same pigments give ube (a purple yam, which is a tuber) and other purple fruits their color.
+- `sailfin-lizard-big-size-g5`
+  - was: The ibid is one of the largest lizards in the Philippines — it can reach almost one meter in length, including its long tail.
+  - now: The sailfin lizard is one of the largest lizards in the Philippines—it can grow to almost one meter long, including its long tail.
+- `protist-dinoflagellate-bioluminescent-g7`
+  - was: Some dinoflagellates such as Noctiluca scintillans are bioluminescent; when ocean water is disturbed at night, they produce beautiful blue light in the waves.
+  - now: Some dinoflagellates such as Noctiluca scintillans are bioluminescent; when ocean water is disturbed at night, they produce a beautiful blue‑green glow in the w
+- `mosquito-pupa-fourth-stage-g5`
+  - was: A mosquito's life has four stages: egg, larva (wriggler), pupa, and adult. The pupa is the fourth and last stage before it flies away.
+  - now: A mosquito’s life has four stages—egg, larva (wriggler), pupa, and adult—and the adult is the fourth stage when it can fly away.
+- `bacteria-bioluminescence-deep-sea-g8`
+  - was: Some bacteria such as Aliivibrio fischeri are bioluminescent and live inside the light organ of deep-sea anglerfish, producing the light the fish uses to lure p
+  - now: Some bioluminescent bacteria live inside the light organ of deep‑sea anglerfish and produce the glow the fish uses to lure prey.
+- `dinosaurs-extinct-g4`
+  - was: Dinosaurs are extinct — there are no living dinosaurs today. They died out millions of years ago, and what we know about them comes from their fossils.
+  - now: All non‑avian dinosaurs died out millions of years ago, but birds are living descendants of a group of dinosaurs, so they are considered avian dinosaurs.
+- `kamote-sweet-potato-parts-g4`
+  - was: Sweet potato stores starch and sugars in enlarged roots—these swollen roots are what we eat; sweet potato is a true root crop unlike cassava which has a tuberou
+  - now: Sweet potato stores starch in enlarged storage roots that we eat, and cassava also has tuberous roots, not a tuberous stem.
