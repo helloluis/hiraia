@@ -105,3 +105,16 @@ finetuning/rl/pod-logs/
 
 # v3 distill scratch (large training artifacts)
 finetuning/distill/work-v3/
+
+# quiz-bank expansion working files (intermediates; bank is the deliverable)
+rag/pipeline/quiz-batchA/
+rag/pipeline/quiz-batchBCD/
+rag/pipeline/quiz-batchE/
+rag/pipeline/quiz-xlate/
+rag/pipeline/quiz-*-facts.jsonl
+rag/pipeline/quiz-new-kept.jsonl
+rag/pipeline/quiz-batchE-kept.jsonl
+rag/pipeline/quiz-*-translate-input.jsonl
+rag/pipeline/quiz-batchA-rejected-factids.txt
+rag/pipeline/fw-*.log
+rag/bank/quiz-bank.jsonl.pre-expansion.bak
