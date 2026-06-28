@@ -23,7 +23,7 @@ os.makedirs(OUT, exist_ok=True)
 # target NEW facts per domain (oversample ~1.6x to survive dedup+verify) -> ~10k kept
 TARGETS = {'PH_GEOGRAPHY': 2500, 'PH_CIVICS': 2500, 'EARTH_SPACE': 1500,
            'FORCE_MOTION_ENERGY': 1500, 'MATTER': 1500, 'LIVING_THINGS': 500}
-OVERSAMPLE = 1.6
+OVERSAMPLE = float(os.environ.get('FW_OVERSAMPLE', '1.6'))
 
 ANGLES = [
     'Philippine-specific examples (places, plants, animals, people, everyday Filipino life)',
@@ -34,6 +34,12 @@ ANGLES = [
     'practical / safety / health angle a 10-year-old can use',
     'something observable in nature or the local environment',
     'a specific named example (a species, landmark, hero, invention, place)',
+    'a specific Philippine province, region, island, or local landmark',
+    'a plant, animal, or sea creature found in or native to the Philippines',
+    'a Filipino tradition, festival, food, hero, or cultural practice',
+    'a step or stage in a process, life cycle, or natural cycle',
+    'a tool, simple machine, material, or technology and what it is for',
+    'a body part, organ, or health/hygiene fact a child should know',
 ]
 DOMAIN_HINT = {
     'PH_GEOGRAPHY': 'Philippine geography: regions, provinces, islands, mountains, volcanoes, rivers, lakes, seas, climate, natural resources, biodiversity, landmarks, national parks',
