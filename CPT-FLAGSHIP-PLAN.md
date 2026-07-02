@@ -1,8 +1,16 @@
 # CPT Flagship Plan — make the on-device ~2B the *true* flagship
 
-**Status:** PLANNED. **Trigger:** Tether funding confirmation.
+**Status:** PLANNED → **PREP WEEK (reviewed 2026-06-29; funding still pending — $0 prep only, GPU spend holds for the trigger).** **Trigger:** Tether funding confirmation.
 **Predecessor / why this exists:** [`finetuning/distill/ceb-heal/PRUNE-HEAL-RETROSPECTIVE.md`](finetuning/distill/ceb-heal/PRUNE-HEAL-RETROSPECTIVE.md) — the budget prune+heal+SFT attempt that proved capacity is fine but calibration can't be SFT'd in.
 **Strategy lineage:** this is **Option C** of [`PARAMETRIC-VS-RAG.md`](PARAMETRIC-VS-RAG.md) (CPT a clean base → Filipino), made concrete.
+
+### 2026-06-29 review — decisions + what changed since this was written
+
+- **KD teacher swapped** (§3 note): cat-3B has a tokenizer mismatch with Qwen3.5 → token-level KD teacher is now a **tutor-SFT'd Qwen3.5-9B**; cat-3B demoted to data-gen teacher.
+- **Fresh live evidence for the thesis (2026-06-26):** the shipped 1B, running on the real Redmi, answered a bare "Hello po" with a confabulated lecture ("the Philippine Eagle is a mammal", "you can see a platypus on Mount Apo") *with RAG grounding present* — §2's failure class and §11's missing-domain-gate, observed on-device. It is the standing A/B target for this model.
+- **New tailwinds:** the RAG fact bank is now **49,556 verified/gap-filled trilingual facts** (better grounded-reader substrate for stage 4; 27,775 quiz-backing facts 3-layer-verified, 111 corrected); and a proven **Fireworks bulk pipeline** (`rag/pipeline/fw-*.py`, ~$29 for a 27k-quiz + 9k-fact run) can mass-generate the SFT/DPO/**out-of-scope abstention buckets** §11 requires, without Claude-cap exposure.
+- **Pre-GPU checklist added:** ① **write the probe CPT config down** (LR/WSD schedule, seq len, mix weights, held-out tl/ceb perplexity eval — source: the Sailor2 paper recipe); ② **1-GPU stack smoke test** — full-param training of the *hybrid SSM+attention* Qwen3.5 arch needs recent `transformers` + mamba/causal-conv1d kernels + FSDP, and our existing pipelines are unsloth/TRL LoRA-centric (a few hundred steps on one rented GPU validates this before an 8×H100 commit); ③ the Redmi speed gate (§5b-A) — run in progress 2026-06-29.
+- **Prep-week plan ($0-ish, pre-funding):** full corpus pull (FineWeb-2 `fil_Latn`/`ceb_Latn` core + MADLAD-400 + CulturaX) → SailCraft at scale (the §5a Day-1 recipe, validated on samples) → tokenize a ~5–10B probe mix → stack smoke test. Then the **probe CPT (§6) is the first GPU spend** when the trigger lands.
 
 ---
 
@@ -24,7 +32,7 @@ The principled fixes are different in kind from SFT — and that's this plan.
 
 ## 3. Approach (one line)
 
-> **Qwen3.5-2B (text-only) → Sailor2-recipe Filipino+Cebuano CPT → tutor SFT → token-level KD from the cat-3B → grounded-reader training → DPO calibration.**
+> **Qwen3.5-2B (text-only) → Sailor2-recipe Filipino+Cebuano CPT → tutor SFT → token-level KD from a Qwen3.5-9B tutor-SFT teacher → grounded-reader training → DPO calibration.**
 
 Each layer targets a specific lesson: CPT fixes the *foundation* (real, diverse, non-synthetic Tagalog+Cebuano); KD transfers the teacher's *uncertainty* (the calibration SFT can't); grounded-reader makes "retrieve-or-abstain" *architectural* (confabulation has no surface to appear on); DPO finishes residual *abstain ≫ confabulate* calibration.
 
@@ -33,12 +41,14 @@ Each layer targets a specific lesson: CPT fixes the *foundation* (real, diverse,
 | Stage | What | Why it's here |
 |------|------|------|
 | 0. Data | Source tl+ceb+anchor (MADLAD-400, CulturaX, FineWeb-2 `fil_Latn`/`ceb_Latn`, OPUS, BloomLibrary, filtered web) → clean with **SailCraft** (open: `sail-sg/sailcraft`) | Real diverse corpus, not synthetic-science (the prune+heal brittleness) |
-| 1. CPT | Continued-pretrain Qwen3.5-2B on ~50–100B tokens, Tagalog-heavy + Cebuano (upsampled) + English/Chinese anchor | Fix the linguistic foundation; Qwen3.5's Tagalog is garbled out-of-box, Cebuano ~zero |
+| 1. CPT | Continued-pretrain Qwen3.5-2B on **~25B tokens** (the realistic ceiling — §5b-C; *not* the 50–100B first penciled), Tagalog-heavy + Cebuano (upsampled) + English/Chinese anchor | Fix the linguistic foundation; Qwen3.5's Tagalog is garbled out-of-box, Cebuano ~zero |
 | 2. SFT | Tutor instruction-tune (reuse/expand the kitten/cat datasets, both languages) | Behavior + persona; now on a *chat-capable, calibrated* base |
-| 3. KD | Token-level distillation from the cat-3B (or larger) | Transfer the teacher's **uncertainty distribution** — the calibration lever |
+| 3. KD | Token-level distillation from a **Qwen3.5-9B tutor-SFT teacher** (decided 2026-06-29 — see note below) | Transfer the teacher's **uncertainty distribution** — the calibration lever |
 | 4. Grounded-reader | Train strict retrieve-or-abstain over the RAG bank | Remove the confabulation surface for facts the bank doesn't cover |
 | 5. DPO | Preference pairs (honest abstain ≫ confident-wrong on unverifiable superlatives/specifics) | Finish residual calibration; viable on a capable 2B (1B collapsed — capacity-bound) |
 | 6. Ship | GGUF + QVAC integration + Redmi speed validation + capability/gate/role-play QA | The on-device reality checks |
+
+> **KD-teacher decision (2026-06-29): the cat-3B CANNOT be the token-level KD teacher.** Sailor2-3B uses the Qwen2 tokenizer (~151k vocab); Qwen3.5-2B's vocab is 248,320 — token-level logit distillation requires a **shared tokenizer**, and cross-tokenizer KD (ULD-style) is research-grade risk on the exact step the calibration story depends on. **Resolution: SFT a Qwen3.5-9B on the tutor data as the KD teacher** (same tokenizer → clean token-level KD; the 9B Q4 GGUF is already in `deploy/models/`). The cat-3B is demoted to a *data-generation* teacher (responses, preference pairs) where tokenizers don't need to match.
 
 ## 4. Base-model decision
 
@@ -48,7 +58,7 @@ Each layer targets a specific lesson: CPT fixes the *foundation* (real, diverse,
 - **Garbled Tagalog out-of-box, ~zero Cebuano** (our bake-off) → this is the *premise* of the CPT, not a blocker.
 - **Strip the native vision tower** — we use retrieval-images, not a VLM; the encoder is dead weight in the on-device GGUF.
 - **Hybrid-thinking by default** — must run/train in non-thinking mode or it leaks `<think>` to kids (the 1B already had a `<think>`-leak problem).
-- Verify the exact text-only 2B repo + license on the official Qwen HF org before committing.
+- ~~Verify the exact text-only 2B repo + license on the official Qwen HF org before committing.~~ ✅ **Done (§5b-A):** `Qwen/Qwen3.5-2B-Base`, apache-2.0.
 
 ## 5. Data — the constraint that *isn't*
 
@@ -89,7 +99,10 @@ We ran the three highest-value de-risks before any funding. **All three favorabl
 - **QVAC supports it on the Redmi tier**: `@qvac/llm-llamacpp@0.24.0` ships compiled `llm_build_qwen35`/`qwen35moe` builders, a `qwen35` chat-format, and `libqvac-ggml-cpu-android_armv8.0_1.so` (the SD685 ISA). **No QVAC update needed.**
 - **Architecture surprise — it's a hybrid SSM + attention model** (Mamba-style linear attention interleaved with full attention; 2048 hidden / 24 layers / vocab 248320). Implication: SSM is cheaper on prefill (the ARMv8.0 binding limit) → potentially *faster* than Sailor2-2.4B on-device — BUT the SSM/conv1d kernels at armv8.0 (no i8mm) are the specific empirical unknown.
 - Probes confirm the premise: Tagalog garbled, Cebuano near-absent → ideal CPT starting condition.
-- **The one remaining gate: on-device Redmi TTFT/decode** — GGUF preserved at `deploy/models/Qwen3.5-2B-Base.Q4_K_M.gguf`; `adb push` + force the CPU backend (separate from the known Adreno-610 Vulkan issue).
+- ~~The one remaining gate: on-device Redmi TTFT/decode~~ ✅ **MEASURED (2026-06-29, llama-bench on the real Redmi, CPU, 4 threads, same-binary Sailor2-1B baseline reproduced the known 19.3/11.8):**
+  - **Qwen3.5-2B Q4_K_M: prefill 10.94 t/s · decode 5.93 t/s** (vs 1B: 20.13 / 12.73 → **1.8× / 2.1× slower**, i.e. exactly the ~2B envelope the `hiraia-redmi-cpu-llama-bench` memory predicted; the Sailor 1.7B interpolation was 11.0/6.9, so the hybrid arch is **in line with a same-size transformer** at armv8.0).
+  - **Read: the SSM prefill *bonus* did NOT materialize at pp512 — but neither did an SSM kernel *penalty*.** The kernels run correctly at armv8.0; the model costs what a 1.9B costs. VERDICT: **GO, with UX mitigation required** — naïve in-app TTFT would roughly double vs the 1B's measured ~13–24s, so the static-system-prompt KV cache (already shipped), lean grounding turns, and a Q4_0-with-runtime-repack quant test are required levers for stage 6, and §9-crit-5 stays a hard ship gate.
+  - *(Adreno-610 load blocker RESOLVED 2026-06-26 — the kitten Vulkan-free + armv8.0-forced build runs the 1B on-device: TTFT ~24s / 4.4 tok/s in-app. The in-app tax vs bench is ~2-3×; apply the same haircut when projecting the 2B.)*
 
 **B — Data pipeline: VALIDATED end-to-end on real Filipino.** All 4 SailCraft stages ran on MADLAD-400 tl+ceb (3k docs each) via `uv venv --python 3.11`. **Committable configs + `git apply`-verified patches at `finetuning/cpt/sailcraft-filipino/`** (one-command driver `run_filipino_pipeline.sh`). New operational gotchas captured there: needs **two venvs** (text-dedup vs cleaning deps conflict); **MADLAD-400 Tagalog is the `fil` folder, not `tl`**; on 3.11 stay on `text-dedup==0.4.0` (`--path json --data_files`, drop `--local`); stage 3 needs `rustup` (the upstream TF deps are vestigial); **the `ceb` LID gate (cutoff 0.70) already filters Cebuano noise** the missing perplexity LM would have caught. CulturaX content access now granted (terms accepted on the `Cryptopop` HF account; 302 ✓) — though FineWeb-2 (ungated) is the practical core.
 
@@ -144,9 +157,9 @@ A candidate ships only if **all** hold (run after CPT → SFT → KD → DPO, be
 1. Funding confirmed → stand up data infra (Vultr SG) + SailCraft.
 2. Assemble + clean the tl+ceb+anchor corpus; QC the Cebuano slice (Wikipedia-bot filter).
 3. **Probe CPT** (~$500, 1 wk) → go/no-go.
-4. Full CPT (50–100B) on 8×H100 → ablate data mix (1–2 re-runs).
+4. Full CPT (**~25B, §5b mix**) on 8×H100 → ablate data mix (1–2 re-runs).
 5. Tutor SFT (both languages) on the CPT'd base.
-6. KD from cat-3B → grounded-reader rows → DPO calibration.
+6. SFT the **Qwen3.5-9B KD teacher** → token-level KD → grounded-reader rows → DPO calibration.
 7. GGUF (text-only, non-thinking) → QVAC → Redmi speed check.
 8. Capability + gate + role-play QA against §9. Ship or iterate.
 
