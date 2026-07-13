@@ -11,6 +11,8 @@ export const fonts = {
   display: 'CaveatBrush',
   /** Body + UI text. */
   body: 'PatrickHand',
+  /** Felt-tip marker — big, short card facts (question-cards feed). */
+  marker: 'PermanentMarker',
 } as const;
 
 // Map files for useFonts(). Keep keys in sync with `fonts` above.
@@ -18,6 +20,7 @@ export const fontAssets = {
   Mansalva: require('../assets/fonts/Mansalva-Regular.ttf'),
   CaveatBrush: require('../assets/fonts/CaveatBrush-Regular.ttf'),
   PatrickHand: require('../assets/fonts/PatrickHand-Regular.ttf'),
+  PermanentMarker: require('../assets/fonts/PermanentMarker-Regular.ttf'),
 };
 
 export const colors = {
@@ -42,6 +45,8 @@ export const colors = {
   hairline: 'rgba(12, 52, 61, 0.12)',
   /** Warm gold — 'beta'/heads-up accents (mirrors the web yellow download section). */
   accent: '#f2c14e',
+  /** Blue ballpoint ink — "teacher's notes" (question-cards choices, corrections). */
+  inkBlue: '#2743a6',
   /** Light teal-gray — the Menu/Settings panel ("notebook cover"). */
   cover: '#dde7e4',
   white: '#FFFFFF',

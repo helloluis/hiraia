@@ -70,6 +70,8 @@ interface UIStrings {
   kittenExperimental: string;
   // quiz mode
   quiz: QuizStrings;
+  // question-cards feed (home screen)
+  cards: { questionHeader: string; continueNote: string; readLabel: string };
 }
 
 const UI_STRINGS: Record<Language, UIStrings> = {
@@ -126,6 +128,11 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       playAgain: 'Ulitin?',
       end: 'Tapusin',
     },
+    cards: {
+      questionHeader: 'Tanong! ✏️',
+      continueNote: 'ituloy',
+      readLabel: 'pahina',
+    },
   },
   english: {
     welcomeTitle: 'Welcome to Hiraia!',
@@ -180,6 +187,11 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       playAgain: 'Start again?',
       end: 'End quiz',
     },
+    cards: {
+      questionHeader: 'Question! ✏️',
+      continueNote: 'continue',
+      readLabel: 'pages',
+    },
   },
   cebuano: {
     welcomeTitle: 'Maayong Pag-abot sa Hiraia!',
@@ -233,6 +245,11 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       praiseLow: 'Maayong sugod! Sulayi pag-usab. 🐱',
       playAgain: 'Usba?',
       end: 'Tapuson',
+    },
+    cards: {
+      questionHeader: 'Pangutana! ✏️',
+      continueNote: 'padayon',
+      readLabel: 'panid',
     },
   },
 };
