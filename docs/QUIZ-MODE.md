@@ -71,3 +71,19 @@ The current build `import`s `src/data/quiz-bank.json` (1,567-q sample, 2.2 MB) s
 5. Topic-resolution threshold (min questions for a topic to count as "supported").
 
 See also: `CPT-FLAGSHIP-PLAN.md` (LLM effort, separate), `MULTIMODAL-IDEAS.md`.
+
+---
+
+## Question-cards feed — future enhancement note (2026-07-13)
+
+**Page-curl (skeuomorphic upgrade):** the v1 feed uses a cheap 2D `Animated` corner-peel
+(z-rotate + slide-up + shadow, native driver). If we keep the notebook skeuomorphism and
+want a *real* paper curl that follows the finger, the reference implementation is William
+Candillon's **Riveo** (`wcandillon/can-it-be-done-in-react-native`, season5/src/Riveo): a
+GLSL fragment shader (`pageCurl.ts`) run via `@shopify/react-native-skia`
+(`RuntimeShader` on a Skia `Group.layer`), driven by a gesture-handler Pan → reanimated
+shared values → shader uniforms. Adoption path = add react-native-skia, snapshot each card
+to a Skia image on flip (so the shader has pixels to bend), port the shader, wire pan→
+uniforms. **Gate first: smoke-test Skia's GPU backend on the Adreno 610** (our Vulkan
+history — Skia defaults to GLES, likely fine, but verify on the real Redmi before committing
+the dependency + card-render rewrite).

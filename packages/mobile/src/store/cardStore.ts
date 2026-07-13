@@ -13,6 +13,7 @@ import { create } from 'zustand';
 
 import {
   getCard,
+  jumpCard,
   nextChoices,
   questionForFact,
   startCard,
@@ -35,6 +36,8 @@ interface CardState {
   question: CardQuestion | null;
   /** The choice that was intercepted by the question (resumed on continue). */
   pending: CardChoice | null;
+  /** True once the interject question has been answered (gates swipe-to-continue). */
+  questionAnswered: boolean;
   /** Monotonic page number — keys the flip + typewriter remounts. */
   pageKey: number;
   pagesRead: number;
@@ -49,6 +52,8 @@ interface CardState {
   choose: (choice: CardChoice) => void;
   answerQuestion: (correct: boolean) => void;
   continueAfterQuestion: () => void;
+  /** "Shake to reroll" — teleport to an unrelated fresh topic (escape a deep/stale thread). */
+  jumpToRandom: () => void;
 }
 
 const nextGap = () => 4 + Math.floor(Math.random() * 2); // every 4-5 pages
@@ -65,6 +70,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
   choices: [],
   question: null,
   pending: null,
+  questionAnswered: false,
   pageKey: 0,
   pagesRead: 0,
   correctCount: 0,
@@ -120,6 +126,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
         set({
           question: picked,
           pending: choice,
+          questionAnswered: false,
           untilQuestion: nextGap(),
           askedFacts: new Set(s.askedFacts).add(picked.f),
           questionsAsked: s.questionsAsked + 1,
@@ -134,7 +141,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
   answerQuestion: (correct) => {
     const s = get();
     const correctCount = s.correctCount + (correct ? 1 : 0);
-    set({ correctCount });
+    set({ correctCount, questionAnswered: true }); // enables the corner-swipe-to-continue fallback
     persist({ pagesRead: s.pagesRead, correctCount, seen: s.seen });
   },
 
@@ -142,8 +149,30 @@ export const useCardStore = create<CardState>()((set, get) => ({
     const s = get();
     if (!s.pending) return;
     const pending = s.pending;
-    set({ question: null, pending: null });
+    set({ question: null, pending: null, questionAnswered: false });
     advance(pending, set, get);
+  },
+
+  jumpToRandom: () => {
+    const s = get();
+    const lang = useEngineStore.getState().language ?? 'tagalog';
+    const dest = jumpCard(s.current?.id ?? null, s.seen);
+    const seen = new Set(s.seen);
+    seen.add(dest.id);
+    const pagesRead = s.pagesRead + 1;
+    set({
+      current: dest,
+      choices: nextChoices(dest.id, seen, lang),
+      question: null,
+      pending: null,
+      questionAnswered: false,
+      seen,
+      recent: [dest.id], // fresh trail — the jump is a hard topic switch
+      pagesRead,
+      untilQuestion: nextGap(), // don't interject right after a jump
+      pageKey: s.pageKey + 1,
+    });
+    persist({ pagesRead, correctCount: s.correctCount, seen });
   },
 }));
 

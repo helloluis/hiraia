@@ -81,8 +81,12 @@ export const useEngineStore = create<EngineState>((set, get) => ({
     }
     // First launch (no saved language) → show the onboarding carousel; its slide-1
     // pick calls changeLanguage() which starts the model download in the background.
+    //
+    // LAZY LOAD (question-cards branch): we do NOT warm the LLM on boot. The home
+    // screen is the zero-model card feed, so the ~700MB download + ~25s warm-up is
+    // deferred until the kid actually opens chat (/chat calls ensureEngine on mount).
+    // A returning user with a saved language lands on the feed instantly.
     set({ language: saved, bootstrapped: true, onboardingActive: !saved });
-    if (saved) await get().changeLanguage(saved);
   },
 
   changeLanguage: async (language: Language) => {

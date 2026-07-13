@@ -6,13 +6,16 @@
  */
 import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import type { Language } from '@hiraia/shared';
 
 import { uiStrings } from '../../config/strings';
 import { type CardQuestion } from '../../data/cards';
 import { localize } from '../../data/quiz';
-import { colors, fonts } from '../../theme';
+import { colors, fonts, notebook } from '../../theme';
+
+const GUTTER_LEFT = notebook.marginX + 14; // stay right of the red margin rule
 
 function shuffled(n: number): number[] {
   const a = Array.from({ length: n }, (_, i) => i);
@@ -34,6 +37,8 @@ interface QuestionPageProps {
 
 export function QuestionPage({ question, language, onAnswer, onContinue }: QuestionPageProps) {
   const t = uiStrings(language);
+  const insets = useSafeAreaInsets();
+  const bottomPad = Math.max(insets.bottom, 8);
   const order = useMemo(() => shuffled(question.o.length), [question.f, question.o.length]);
   const [selected, setSelected] = useState<number | null>(null);
   const revealed = selected !== null;
@@ -47,7 +52,7 @@ export function QuestionPage({ question, language, onAnswer, onContinue }: Quest
   };
 
   return (
-    <View style={styles.page}>
+    <View style={[styles.page, { paddingBottom: 78 + bottomPad }]}>
       <Text style={styles.header}>{t.cards.questionHeader}</Text>
       <Text style={styles.question}>{localize(question.q, language)}</Text>
 
@@ -90,7 +95,7 @@ export function QuestionPage({ question, language, onAnswer, onContinue }: Quest
       )}
 
       {revealed && (
-        <Pressable onPress={onContinue} hitSlop={14} style={styles.continueNote}>
+        <Pressable onPress={onContinue} hitSlop={20} style={[styles.continueNote, { bottom: 14 + bottomPad }]}>
           <Text style={styles.continueText}>
             {t.cards.continueNote} <Text style={styles.continueArrow}>⤴</Text>
           </Text>
@@ -103,9 +108,10 @@ export function QuestionPage({ question, language, onAnswer, onContinue }: Quest
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    paddingHorizontal: 26,
+    paddingLeft: GUTTER_LEFT, // stay right of the red margin rule
+    paddingRight: 26,
     paddingTop: 10,
-    paddingBottom: 86,
+    // paddingBottom applied inline (78 + bottom safe-area inset) to clear the nav bar.
   },
   header: {
     fontFamily: fonts.marker,

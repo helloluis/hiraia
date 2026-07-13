@@ -33,7 +33,7 @@ const exitVideo = require('../../../loader/videos/cat-exit.mp4');
 
 type LoaderPhase = 'sleeping' | 'nudged' | 'waking' | 'exiting' | 'done';
 
-export function LoaderOverlay({ onDismiss }: { onDismiss: () => void }) {
+export function LoaderOverlay({ onDismiss, splash = false }: { onDismiss: () => void; splash?: boolean }) {
   // DEV-ONLY: true drives a fake 0→100 over ~2 min to preview the animations; MUST be false
   // in real builds so the loader tracks the actual engine warm-up (storeProgress/storeIsReady).
   const SIMULATE_LOADING = false;
@@ -128,18 +128,31 @@ export function LoaderOverlay({ onDismiss }: { onDismiss: () => void }) {
       }
     } else if (currentPhase === 'waking') {
       setWakingFinished(true);
-      if (currentProgress >= 95) {
+      // SPLASH: the cat is a brief cosmetic intro decoupled from the (lazily-loaded)
+      // model — walk off as soon as it finishes waking, regardless of progress/isReady.
+      if (splash || currentProgress >= 95) {
         setPhase('exiting');
       }
     } else if (currentPhase === 'exiting') {
       // Walk-off finished. Only dismiss once the model is truly ready; otherwise hold
-      // on the last exit frame and let the isReady effect below release it.
+      // on the last exit frame and let the isReady effect below release it. In SPLASH
+      // mode there is no model to wait for → dismiss now.
       setExitFinished(true);
-      if (isReadyRef.current) {
+      if (splash || isReadyRef.current) {
         setPhase('done');
       }
     }
   });
+
+  // SPLASH: nudge the sleeping cat awake shortly after mount so the whole intro
+  // (sleep → wake → walk off) plays in ~3-4s instead of tracking a model load.
+  useEffect(() => {
+    if (!splash) return;
+    const id = setTimeout(() => {
+      setPhase((p) => (p === 'sleeping' ? 'waking' : p));
+    }, 750);
+    return () => clearTimeout(id);
+  }, [splash]);
 
   // Release the held exit frame the moment the engine becomes ready (covers the case
   // where the animation overextended past the real load).

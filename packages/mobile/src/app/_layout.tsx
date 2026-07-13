@@ -1,7 +1,7 @@
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -16,31 +16,32 @@ export default function RootLayout() {
   const changeLanguage = useEngineStore((s) => s.changeLanguage);
   const bootstrapped = useEngineStore((s) => s.bootstrapped);
   const language = useEngineStore((s) => s.language);
-  const isReady = useEngineStore((s) => s.isReady);
   const onboardingActive = useEngineStore((s) => s.onboardingActive);
   const setOnboardingActive = useEngineStore((s) => s.setOnboardingActive);
   const hydrate = useChatStore((s) => s.hydrate);
   const [fontsLoaded] = useFonts(fontAssets);
 
-  const [showLoader, setShowLoader] = useState(false);
+  // Brief cat-waking SPLASH on cold open (question-cards branch). The model is now
+  // lazy-loaded (see engineStore.bootstrap), so this is a ~3-4s cosmetic intro, NOT a
+  // ~25s model warm-up. Shown once per app launch, for a returning user (skip during
+  // onboarding, which has its own flow).
+  const [showSplash, setShowSplash] = useState(false);
 
   useEffect(() => {
-    // Resolve the saved language and (if set) load the engine for it. When none is
-    // saved, `language` stays null and the onboarding carousel is shown below.
+    // Resolve the saved language (no eager engine load anymore).
     void bootstrap();
-    // Load persisted chat history from SQLite (replaces the old zustand-persist
-    // auto-hydration). Sets hasHydrated, which gates the cold-start factoid.
+    // Load persisted chat history from SQLite (gates the cold-start factoid in chat).
     void hydrate();
   }, [bootstrap, hydrate]);
 
-  // Show the warm-up loader (sleeping → waking cat) when a language is chosen but the
-  // engine isn't ready — EXCEPT during onboarding, whose DownloadSlide shows its own
-  // progress. After onboarding finishes, if the model is still warming, the loader takes over.
+  // Fire the splash once bootstrap knows there's a saved language and we're not onboarding.
+  const splashFired = useRef(false);
   useEffect(() => {
-    if (language !== null && !isReady && !onboardingActive) {
-      setShowLoader(true);
+    if (bootstrapped && language !== null && !onboardingActive && !splashFired.current) {
+      splashFired.current = true;
+      setShowSplash(true);
     }
-  }, [language, isReady, onboardingActive]);
+  }, [bootstrapped, language, onboardingActive]);
 
   if (!fontsLoaded || !bootstrapped) {
     return (
@@ -70,15 +71,8 @@ export default function RootLayout() {
         />
       )}
 
-      {/* Model warm-up takeover (sleeping → waking cat) for returning users, or after
-          onboarding finishes while the engine is still warming up. */}
-      {showLoader && (
-        <LoaderOverlay
-          onDismiss={() => {
-            setShowLoader(false);
-          }}
-        />
-      )}
+      {/* Brief cat-waking splash on cold open (model is lazy-loaded; this is cosmetic). */}
+      {showSplash && <LoaderOverlay splash onDismiss={() => setShowSplash(false)} />}
     </GestureHandlerRootView>
   );
 }

@@ -120,6 +120,21 @@ export function startCard(seen: ReadonlySet<string>): CardFact {
 }
 
 /**
+ * "Shake to reroll" — teleport to a completely unrelated card: a random unseen fact from
+ * a DIFFERENT domain than the current one (so the kid escapes a thread that's gone too
+ * deep / stale). Falls back across domains then the whole pool as the unseen set thins.
+ */
+export function jumpCard(currentId: string | null, seen: ReadonlySet<string>): CardFact {
+  const cur = currentId ? BY_ID.get(currentId) : undefined;
+  const usable = (f: CardFact) => f.id !== currentId && !seen.has(f.id);
+  const otherDomain = POOL.filter((f) => usable(f) && (!cur || f.domain !== cur.domain));
+  if (otherDomain.length) return pick(otherDomain)!;
+  const anyUnseen = POOL.filter(usable);
+  if (anyUnseen.length) return pick(anyUnseen)!;
+  return (pick(POOL.filter((f) => f.id !== currentId)) ?? POOL[0]) as CardFact;
+}
+
+/**
  * Short, kid-tappable label for a choice. PLACEHOLDER heuristic until the data build
  * ships curated trilingual edge labels: prefer a distinctive term that appears in the
  * localized fact text (so the label matches the app language), else the topic's first
@@ -137,6 +152,10 @@ const BAD_LABELS = new Set([
   'tumutubo', 'lumalaki', 'ginagawa', 'gumagawa', 'nagmumula', 'nabubuo', 'ginagamit',
   'matatagpuan', 'makikita', 'tawag', 'uri', 'iba', 'bawat', 'grows', 'made', 'used',
   'found', 'heart puso',
+  // inflected generic verbs the term index surfaces (caught by the harness) — they read
+  // as actions, not topics, so they make poor choice labels.
+  'humahawak', 'humuhigop', 'sumusuporta', 'kumakain', 'naglalabas', 'naglalaman',
+  'nagpapalipat', 'pumoprotekta', 'tumutulong', 'nagpaparami', 'kumikilos',
 ]);
 
 export function choiceLabel(fact: CardFact, language: Language): string {

@@ -10,12 +10,17 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import type { Language } from '@hiraia/shared';
 
 import { cardText, type CardChoice, type CardFact } from '../../data/cards';
-import { colors, fonts } from '../../theme';
+import { colors, fonts, notebook } from '../../theme';
 import { ImageSlot } from '../ImageSlot';
+
+// Content starts to the RIGHT of the red margin rule (the notebook's gutter), like a
+// child writing inside the margin. `+14` is the writing gutter past the rule.
+const GUTTER_LEFT = notebook.marginX + 14;
 
 const CHARS_PER_TICK = 5;
 const TICK_MS = 24; // ≈ 210 chars/s — a card lands in ~1s; tap to finish instantly
@@ -46,6 +51,8 @@ interface CardPageProps {
 }
 
 export function CardPage({ fact, choices, language, onChoose, instant = false }: CardPageProps) {
+  const insets = useSafeAreaInsets();
+  const bottomPad = Math.max(insets.bottom, 8); // clear the Android nav bar
   const text = cardText(fact, language);
   const tier = tierFor(text);
   const [shown, setShown] = useState(instant ? text.length : 0);
@@ -86,7 +93,7 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
   const hidden = text.slice(Math.min(shown, text.length));
 
   return (
-    <Pressable style={styles.page} onPress={skip} disabled={done}>
+    <Pressable style={[styles.page, { paddingBottom: 78 + bottomPad }]} onPress={skip} disabled={done}>
       <View style={[styles.content, tier.centered ? styles.contentCentered : styles.contentTop]}>
         <Animated.View style={[styles.imageWrap, { opacity: extrasOpacity, width: tier.centered ? 250 : 190 }]}>
           <ImageSlot desc={fact.topic} slug={fact.slug} />
@@ -107,7 +114,7 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
       </View>
 
       {/* the two teacher's-note choices, blue ink, bottom corners */}
-      <Animated.View style={[styles.choicesRow, { opacity: extrasOpacity }]} pointerEvents={done ? 'auto' : 'none'}>
+      <Animated.View style={[styles.choicesRow, { bottom: 12 + bottomPad, opacity: extrasOpacity }]} pointerEvents={done ? 'auto' : 'none'}>
         {choices[0] && (
           <Pressable onPress={() => onChoose(choices[0]!)} hitSlop={14} style={[styles.choice, styles.choiceLeft]}>
             <Text style={styles.choiceText} numberOfLines={1}>
@@ -130,9 +137,11 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    paddingHorizontal: 26,
+    paddingLeft: GUTTER_LEFT, // stay right of the red margin rule
+    paddingRight: 26,
     paddingTop: 8,
-    paddingBottom: 86, // clearance for the choice notes
+    // paddingBottom applied inline (78 + bottom safe-area inset) so content clears both
+    // the choice notes and the Android nav bar.
   },
   content: {
     flex: 1,
@@ -154,9 +163,9 @@ const styles = StyleSheet.create({
   },
   choicesRow: {
     position: 'absolute',
-    left: 22,
+    left: GUTTER_LEFT, // left teacher's-note stays right of the margin rule too
     right: 22,
-    bottom: 16,
+    // bottom applied inline (12 + bottom safe-area inset) to clear the Android nav bar.
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',

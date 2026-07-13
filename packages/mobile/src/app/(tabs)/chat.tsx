@@ -24,11 +24,23 @@ export default function ChatScreen() {
   const hasHydrated = useChatStore((s) => s.hasHydrated);
   const showColdStartFactoid = useChatStore((s) => s.showColdStartFactoid);
   const isReady = useEngineStore((s) => s.isReady);
-  const t = uiStrings(useEngineStore((s) => s.language));
+  const language = useEngineStore((s) => s.language);
+  const changeLanguage = useEngineStore((s) => s.changeLanguage);
+  const t = uiStrings(language);
   const quizActive = useQuizStore((s) => s.active);
   const [inputText, setInputText] = useState('');
   // Re-shows each cold open (dismissal not persisted) — it's a safety notice.
   const [showKittenNote, setShowKittenNote] = useState(IS_KITTEN);
+
+  // LAZY LOAD: the model is NOT warmed on app boot (the home screen is the card feed).
+  // Warm it the first time chat is opened. changeLanguage is a no-op if already ready.
+  const engineKicked = useRef(false);
+  useEffect(() => {
+    if (language && !isReady && !engineKicked.current) {
+      engineKicked.current = true;
+      void changeLanguage(language);
+    }
+  }, [language, isReady, changeLanguage]);
 
   // Once persisted history has loaded, offer a "Alam mo ba na…?" factoid so there's
   // something to read while the model warms up. The store decides whether to actually
