@@ -58,6 +58,23 @@ export interface TutorEngine {
   summarize?(text: string): Promise<string>;
 
   /**
+   * Generate ONE short, warm encouragement sentence for a question-cards "reward"
+   * card, naming a few of the topics the child just read. GROUNDED on the provided
+   * topic labels — the model writes only the celebratory framing and must NOT add new
+   * facts (the caller guards + falls back to a template). Optional — feature-detect.
+   */
+  generateReward?(topics: string[], count: number, language: string): Promise<string>;
+
+  /**
+   * Grounded one-shot answer to a kid's typed query in the question-cards feed, used as the
+   * FALLBACK when the feed's local card search finds nothing (the feed is retrieval-first).
+   * Retrieves from the fact bank and answers STRICTLY from those facts; returns
+   * `grounded:false` when retrieval is empty so the caller shows an honest abstention rather
+   * than a hallucination. Optional — callers should feature-detect.
+   */
+  answerQuery?(query: string, language: string): Promise<{ text: string; grounded: boolean }>;
+
+  /**
    * Resolve a text description to a bundled illustration slug via embedding
    * retrieval over the image catalog. Used two ways: (1) the tutor's own
    * `[image: <english desc>]` control token, and (2) RETRIEVAL-DRIVEN — the top

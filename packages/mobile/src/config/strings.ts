@@ -71,7 +71,16 @@ interface UIStrings {
   // quiz mode
   quiz: QuizStrings;
   // question-cards feed (home screen)
-  cards: { questionHeader: string; continueNote: string; readLabel: string };
+  cards: {
+    questionHeader: string;
+    continueNote: string;
+    readLabel: string;
+    searchPlaceholder: string;
+    yourQuestion: string;
+    thinking: string;
+    abstain: string;
+    abstainSuggest: string;
+  };
 }
 
 const UI_STRINGS: Record<Language, UIStrings> = {
@@ -132,6 +141,11 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       questionHeader: 'Tanong! ✏️',
       continueNote: 'ituloy',
       readLabel: 'pahina',
+      searchPlaceholder: 'Anong gusto mong malaman?',
+      yourQuestion: 'Ang tanong mo',
+      thinking: 'Iniisip ko pa',
+      abstain: 'Hmm, wala pa akong alam diyan.',
+      abstainSuggest: 'Pero subukan natin ito',
     },
   },
   english: {
@@ -191,6 +205,11 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       questionHeader: 'Question! ✏️',
       continueNote: 'continue',
       readLabel: 'pages',
+      searchPlaceholder: 'What do you want to learn about?',
+      yourQuestion: 'You asked',
+      thinking: "I'm thinking",
+      abstain: "Hmm, I don't know about that yet.",
+      abstainSuggest: "But let's try this",
     },
   },
   cebuano: {
@@ -250,6 +269,11 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       questionHeader: 'Pangutana! ✏️',
       continueNote: 'padayon',
       readLabel: 'panid',
+      searchPlaceholder: 'Unsa ang gusto nimong hibaw-an?',
+      yourQuestion: 'Ang pangutana nimo',
+      thinking: 'Naghunahuna pa ko',
+      abstain: 'Hmm, wala pa ko kahibalo ana.',
+      abstainSuggest: 'Pero sulayan nato ni',
     },
   },
 };

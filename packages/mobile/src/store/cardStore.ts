@@ -16,16 +16,39 @@ import {
   jumpCard,
   nextChoices,
   questionForFact,
+  searchCards,
   startCard,
   type CardChoice,
   type CardFact,
   type CardQuestion,
 } from '../data/cards';
+import {
+  recentTopics,
+  sanitizeReward,
+  templateReward,
+  type RewardContent,
+  type ViewLogEntry,
+} from '../data/reward';
 import { getSetting, setSetting } from '../db/repo';
 import { useEngineStore } from './engineStore';
 
 const SEEN_CAP = 2500; // persisted seen-set cap (pool is ~3.5k; cycling is fine)
 const RECENT_WINDOW = 5; // "ask about something the kid just saw"
+const VIEWLOG_CAP = 40; // session view-log for the reward recap (topic + timestamp)
+const REWARD_PREFETCH_AT = 5; // start generating the reward text N cards before it's due
+const REWARD_MIN_TOPICS = 3; // don't reward until there's something to celebrate
+
+/**
+ * A search result that isn't a straight card navigation: either a model-generated grounded
+ * answer, or an honest abstention. (A retrieval HIT navigates directly to the found card
+ * with a `queryBanner` instead — no FeedResponse needed.)
+ */
+export interface FeedResponse {
+  query: string;
+  kind: 'generated' | 'abstain';
+  text: string | null; // generated answer (already localized)
+  suggestion: string | null; // topic label of the nearest card, for the abstention path
+}
 
 interface CardState {
   hydrated: boolean;
@@ -38,6 +61,16 @@ interface CardState {
   pending: CardChoice | null;
   /** True once the interject question has been answered (gates swipe-to-continue). */
   questionAnswered: boolean;
+  /** Interject REWARD page — periodic "you've learned a lot!" recap (LLM or template). */
+  reward: RewardContent | null;
+  /** Search RESPONSE page — a generated grounded answer or an abstention (see FeedResponse). */
+  response: FeedResponse | null;
+  /** True while a fallback generation is in flight (retrieval missed, model is answering). */
+  asking: boolean;
+  /** Card to land on when the kid continues past a generated/abstain response page. */
+  responseAnchorId: string | null;
+  /** "Ang tanong mo: X" ribbon shown when a search navigated straight to a found card. */
+  queryBanner: string | null;
   /** Monotonic page number — keys the flip + typewriter remounts. */
   pageKey: number;
   pagesRead: number;
@@ -45,18 +78,32 @@ interface CardState {
   questionsAsked: number;
   seen: Set<string>;
   recent: string[]; // last few factIds (question sourcing)
-  untilQuestion: number; // pages left until the next interject
+  viewLog: ViewLogEntry[]; // {factId, topic, ts} for the reward recap window
+  untilQuestion: number; // pages left until the next interject question
+  untilReward: number; // pages left until the next reward card (jittered)
   askedFacts: Set<string>; // don't re-ask the same fact this session
+  rewardPrefetch: RewardContent | null; // pre-generated reward text, ready to show
+  rewardPrefetching: boolean; // a generation is in flight
 
   hydrate: () => Promise<void>;
   choose: (choice: CardChoice) => void;
   answerQuestion: (correct: boolean) => void;
   continueAfterQuestion: () => void;
+  continueAfterReward: () => void;
+  /** Kid typed a query: retrieval-first → found card, else warm-model answer, else abstain. */
+  ask: (query: string) => Promise<void>;
+  continueAfterResponse: () => void;
+  /** Kick a background model warm-up so reward text can be generated (non-blocking). */
+  warmModel: () => void;
   /** "Shake to reroll" — teleport to an unrelated fresh topic (escape a deep/stale thread). */
   jumpToRandom: () => void;
 }
 
-const nextGap = () => 4 + Math.floor(Math.random() * 2); // every 4-5 pages
+const nextGap = () => 4 + Math.floor(Math.random() * 2); // question: every 4-5 pages
+// reward: jittered 15-25 pages so it lands as a dopamine hit, never on a fixed beat.
+// TODO(testing): temporarily 6-10 so the reward is reachable in a short play session —
+// restore to `15 + rand(0..10)` before ship.
+const nextRewardGap = () => 6 + Math.floor(Math.random() * 5);
 
 function persist(s: { pagesRead: number; correctCount: number; seen: Set<string> }) {
   void setSetting('cards.pages', String(s.pagesRead));
@@ -71,14 +118,23 @@ export const useCardStore = create<CardState>()((set, get) => ({
   question: null,
   pending: null,
   questionAnswered: false,
+  reward: null,
+  response: null,
+  asking: false,
+  responseAnchorId: null,
+  queryBanner: null,
   pageKey: 0,
   pagesRead: 0,
   correctCount: 0,
   questionsAsked: 0,
   seen: new Set<string>(),
   recent: [],
+  viewLog: [],
   untilQuestion: nextGap(),
+  untilReward: nextRewardGap(),
   askedFacts: new Set<string>(),
+  rewardPrefetch: null,
+  rewardPrefetching: false,
 
   hydrate: async () => {
     if (get().hydrated) return;
@@ -103,17 +159,36 @@ export const useCardStore = create<CardState>()((set, get) => ({
       current: first,
       choices: nextChoices(first.id, seen, lang),
       recent: [first.id],
+      viewLog: [{ factId: first.id, topic: first.topic, ts: Date.now() }],
       pageKey: 1,
     });
   },
 
   choose: (choice) => {
     const s = get();
-    if (s.question) return; // a question page is up — must answer/continue first
+    if (s.question || s.reward || s.response) return; // an interject page is up — resolve it first
 
-    // Interject due? Ask about a RECENTLY-READ fact (not the one we're heading to)
-    // that has an exact MCQ and wasn't asked this session. The kid's choice is stashed
-    // and resumed after the answer. If nothing qualifies, defer and retry next page.
+    // REWARD due? (jittered 15-25 pages, needs enough distinct topics.) Rarer than the
+    // quiz, so check it first; it intercepts the flip and resumes the choice after.
+    if (s.untilReward <= 1 && recentTopics(s.viewLog).length >= REWARD_MIN_TOPICS) {
+      const lang = useEngineStore.getState().language ?? 'tagalog';
+      const topics = recentTopics(s.viewLog);
+      const minutes = Math.max(1, Math.round((Date.now() - (s.viewLog[0]?.ts ?? Date.now())) / 60000));
+      // Use the prefetched LLM line if it's ready; else the deterministic template.
+      const content = s.rewardPrefetch ?? templateReward(topics, s.pagesRead, minutes, lang);
+      set({
+        reward: content,
+        pending: choice,
+        rewardPrefetch: null,
+        untilReward: nextRewardGap(),
+        pageKey: s.pageKey + 1,
+      });
+      return;
+    }
+
+    // Interject QUESTION due? Ask about a RECENTLY-READ fact (not the one we're heading
+    // to) that has an exact MCQ and wasn't asked this session. If nothing qualifies,
+    // defer and retry next page.
     if (s.untilQuestion <= 1) {
       const candidates = s.recent
         .filter((id) => id !== choice.factId && !s.askedFacts.has(id))
@@ -153,6 +228,92 @@ export const useCardStore = create<CardState>()((set, get) => ({
     advance(pending, set, get);
   },
 
+  continueAfterReward: () => {
+    const s = get();
+    const pending = s.pending;
+    set({ reward: null, pending: null });
+    if (pending) advance(pending, set, get);
+  },
+
+  ask: async (query) => {
+    const q = query.trim();
+    const s = get();
+    if (!q || s.asking) return;
+    const lang = useEngineStore.getState().language ?? 'tagalog';
+
+    // Retrieval-first: a confident local match navigates straight to that card (instant,
+    // zero-model), with a "you asked" banner. The card becomes the new feed anchor.
+    const res = searchCards(q, s.current?.id ?? null);
+    if (res.best) {
+      navigateTo(res.best, set, get, q);
+      return;
+    }
+
+    // Miss → try the warm model for a grounded answer; anything less is an honest abstention.
+    const suggestion = res.suggestion;
+    const anchorId = suggestion?.id ?? null;
+    const es = useEngineStore.getState();
+    const engine = es.engine;
+    if (engine?.isReady() && engine.answerQuery) {
+      set({ asking: true });
+      try {
+        const ans = await engine.answerQuery(q, lang);
+        const clean = sanitizeAnswer(ans.text);
+        if (ans.grounded && clean && !get().response) {
+          set({
+            asking: false,
+            question: null,
+            reward: null,
+            queryBanner: null,
+            response: { query: q, kind: 'generated', text: clean, suggestion: null },
+            responseAnchorId: anchorId,
+            pageKey: get().pageKey + 1,
+          });
+          return;
+        }
+      } catch (e) {
+        console.warn('[cards] answerQuery failed; abstaining', e);
+      }
+      set({ asking: false });
+    }
+
+    // Abstain — honest "I don't know that yet", offering the nearest topic as a soft landing.
+    set({
+      question: null,
+      reward: null,
+      queryBanner: null,
+      response: {
+        query: q,
+        kind: 'abstain',
+        text: null,
+        suggestion: suggestion ? suggestion.topic : null,
+      },
+      responseAnchorId: anchorId,
+      pageKey: get().pageKey + 1,
+    });
+  },
+
+  continueAfterResponse: () => {
+    const s = get();
+    const dest = (s.responseAnchorId && getCard(s.responseAnchorId)) || null;
+    set({ response: null, responseAnchorId: null });
+    if (dest) {
+      navigateTo(dest, set, get);
+    } else {
+      navigateTo(jumpCard(s.current?.id ?? null, s.seen), set, get);
+    }
+  },
+
+  warmModel: () => {
+    // Background, non-blocking: load the model so reward text can be generated. The feed
+    // itself never waits on this (zero-model); if it isn't ready when a reward is due, the
+    // deterministic template is used instead.
+    const es = useEngineStore.getState();
+    if (es.engine?.isReady() || es.isReady) return;
+    const lang = es.language;
+    if (lang) void es.changeLanguage(lang);
+  },
+
   jumpToRandom: () => {
     const s = get();
     const lang = useEngineStore.getState().language ?? 'tagalog';
@@ -166,6 +327,8 @@ export const useCardStore = create<CardState>()((set, get) => ({
       question: null,
       pending: null,
       questionAnswered: false,
+      response: null,
+      queryBanner: null,
       seen,
       recent: [dest.id], // fresh trail — the jump is a hard topic switch
       pagesRead,
@@ -179,6 +342,53 @@ export const useCardStore = create<CardState>()((set, get) => ({
 type Set_ = (partial: Partial<CardState>) => void;
 type Get_ = () => CardState;
 
+/**
+ * Navigate to an explicit card (from a search hit or a response-continue). Records it like a
+ * normal page turn, sets an optional "you asked" banner, and resets the interject counter so
+ * a question/reward doesn't fire on the very page after a topic jump.
+ */
+function navigateTo(fact: CardFact, set: Set_, get: Get_, banner?: string) {
+  const s = get();
+  const lang = useEngineStore.getState().language ?? 'tagalog';
+  const seen = new Set(s.seen);
+  seen.add(fact.id);
+  const recent = [...s.recent, fact.id].slice(-RECENT_WINDOW);
+  const viewLog = [...s.viewLog, { factId: fact.id, topic: fact.topic, ts: Date.now() }].slice(-VIEWLOG_CAP);
+  const pagesRead = s.pagesRead + 1;
+  set({
+    current: fact,
+    choices: nextChoices(fact.id, seen, lang),
+    seen,
+    recent,
+    viewLog,
+    pagesRead,
+    question: null,
+    reward: null,
+    response: null,
+    pending: null,
+    questionAnswered: false,
+    queryBanner: banner ?? null,
+    untilQuestion: nextGap(), // don't interject right after a search / topic jump
+    untilReward: s.untilReward - 1,
+    pageKey: s.pageKey + 1,
+  });
+  persist({ pagesRead, correctCount: s.correctCount, seen });
+}
+
+/**
+ * Light guard on a model-generated answer before it reaches a child: trim, strip any leaked
+ * prompt scaffolding, collapse whitespace, and reject empty/degenerate output (the caller
+ * then abstains rather than showing junk).
+ */
+function sanitizeAnswer(raw: string): string | null {
+  let t = (raw ?? '').trim();
+  if (!t) return null;
+  t = t.replace(/^(sagot|answer|tubag)\s*:\s*/i, '').replace(/\s+/g, ' ').trim();
+  if (t.length < 8) return null;
+  if (t.length > 320) t = t.slice(0, 317).trimEnd() + '…';
+  return t;
+}
+
 /** Advance the walk onto the chosen card (the normal page-turn). */
 function advance(choice: CardChoice, set: Set_, get: Get_) {
   const s = get();
@@ -189,16 +399,55 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
   const seen = new Set(s.seen);
   seen.add(nextFact.id);
   const recent = [...s.recent, nextFact.id].slice(-RECENT_WINDOW);
+  const viewLog = [...s.viewLog, { factId: nextFact.id, topic: nextFact.topic, ts: Date.now() }].slice(-VIEWLOG_CAP);
   const pagesRead = s.pagesRead + 1;
+  const untilReward = s.untilReward - 1;
 
   set({
     current: nextFact,
     choices: nextChoices(nextFact.id, seen, lang),
     seen,
     recent,
+    viewLog,
     pagesRead,
     untilQuestion: s.untilQuestion - 1,
+    untilReward,
+    queryBanner: null, // a normal page-turn clears any lingering search banner
     pageKey: s.pageKey + 1,
   });
   persist({ pagesRead, correctCount: s.correctCount, seen });
+
+  // Prefetch the LLM reward line a few cards ahead so it's fully rendered before it's due
+  // (hides the on-device generation latency behind dwell time).
+  if (untilReward <= REWARD_PREFETCH_AT) void prefetchReward(get, set);
+}
+
+/**
+ * Generate the reward line in the background (once) if the model is warm. Grounded on the
+ * kid's real recent topics; sanitized + fell back to a template by the caller on any doubt.
+ */
+async function prefetchReward(get: Get_, set: Set_) {
+  const s = get();
+  if (s.rewardPrefetch || s.rewardPrefetching) return;
+  const es = useEngineStore.getState();
+  const engine = es.engine;
+  if (!engine?.isReady() || !engine.generateReward) return;
+  const topics = recentTopics(s.viewLog);
+  if (topics.length < REWARD_MIN_TOPICS) return;
+  const lang = es.language ?? 'tagalog';
+  const minutes = Math.max(1, Math.round((Date.now() - (s.viewLog[0]?.ts ?? Date.now())) / 60000));
+
+  set({ rewardPrefetching: true });
+  try {
+    const raw = await engine.generateReward(topics, get().pagesRead, lang);
+    const clean = sanitizeReward(raw);
+    // Only accept if still un-shown and valid; otherwise the template covers it.
+    if (clean && !get().reward) {
+      set({ rewardPrefetch: { text: clean, topics: topics.slice(0, 3), count: get().pagesRead, source: 'llm', minutes } });
+    }
+  } catch (e) {
+    console.warn('[cards] reward prefetch failed; template will be used', e);
+  } finally {
+    set({ rewardPrefetching: false });
+  }
 }

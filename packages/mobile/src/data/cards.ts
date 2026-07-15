@@ -14,18 +14,18 @@
  *
  * Everything here is deterministic + local: no model, no network, no latency.
  */
-import type { Language, ScienceFact } from '@hiraia/shared';
-import { SCIENCE_FACTS } from '@hiraia/shared';
+import type { Language } from '@hiraia/shared';
 
-import { FACT_IMAGE } from '../generated/factImage';
+import cardsPool from '../generated/cardsPool.generated.json';
 import questionsJson from './cards-questions.json';
 
 export interface CardFact {
-  id: string;
+  id: string; // factoid id (ffct-NNNNN)
+  factId: string; // underlying source-fact id — the key into the MCQ bank
   domain: string;
   topic: string;
   terms: string[];
-  fact: { tl: string; en: string; bis: string };
+  fact: { tl: string; en: string; bis: string }; // feed-voice text (Q&A question baked in)
   slug: string; // bundled illustration
 }
 
@@ -54,16 +54,10 @@ const QUESTIONS = new Map<string, CardQuestion>(
 );
 
 // ---- pool: image-backed facts only ----
-const POOL: CardFact[] = (SCIENCE_FACTS as ScienceFact[])
-  .filter((f) => FACT_IMAGE[f.id])
-  .map((f) => ({
-    id: f.id,
-    domain: f.domain,
-    topic: f.topic,
-    terms: (f.terms ?? []).map((t) => t.toLowerCase()),
-    fact: f.fact,
-    slug: FACT_IMAGE[f.id]!,
-  }));
+// The card pool is the bundled-illustration subset of the 36k curriculum factoid bank
+// (~17k cards across all four MATATAG elementary domains). Text is the feed-voice factoid
+// (Q&A question baked in); `terms` come from the underlying source fact for retrieval.
+const POOL: CardFact[] = (cardsPool as { cards: CardFact[] }).cards;
 
 const BY_ID = new Map(POOL.map((f) => [f.id, f]));
 const BY_DOMAIN = new Map<string, CardFact[]>();
@@ -81,6 +75,81 @@ for (const f of POOL) {
     arr.push(f.id);
     TERM_INDEX.set(t, arr);
   }
+}
+
+// full-text token index for the SEARCH BOX. A kid's typed query is tokenized and matched
+// against each card's topic + terms + trilingual text, weighted by inverse document
+// frequency so distinctive words ("bulkan", "photosynthesis") dominate over common ones.
+// Zero-model, local, instant — the same doctrine as the rest of the feed.
+const SEARCH_STOP = new Set([
+  'the', 'a', 'an', 'of', 'and', 'or', 'in', 'on', 'to', 'is', 'are', 'be', 'it', 'its',
+  'that', 'this', 'what', 'why', 'how', 'when', 'where', 'who', 'does', 'do', 'can', 'for',
+  'with', 'as', 'at', 'by', 'about', 'tell', 'me', 'my',
+  'ang', 'ng', 'sa', 'mga', 'ay', 'na', 'ba', 'ito', 'iyan', 'yan', 'ako', 'ko', 'mo',
+  'niya', 'ni', 'kung', 'kapag', 'para', 'may', 'ano', 'bakit', 'paano', 'saan', 'sino',
+  'kailan', 'gusto', 'malaman', 'tungkol',
+  'unsa', 'nga', 'og', 'ug', 'kang', 'kini', 'kana', 'ngano', 'giunsa', 'hibaw',
+]);
+
+function searchTokens(s: string): string[] {
+  return (s.toLowerCase().match(/[a-z0-9ñ]+/gi) ?? [])
+    .map((t) => t.toLowerCase())
+    .filter((t) => t.length > 2 && !SEARCH_STOP.has(t));
+}
+
+const FACT_TOKENS = new Map<string, Set<string>>();
+const TOKEN_DF = new Map<string, number>();
+for (const f of POOL) {
+  const toks = new Set<string>([
+    ...searchTokens(f.topic),
+    ...f.terms.flatMap((t) => searchTokens(t)),
+    ...searchTokens(f.fact.en ?? ''),
+    ...searchTokens(f.fact.tl ?? ''),
+    ...searchTokens(f.fact.bis ?? ''),
+  ]);
+  FACT_TOKENS.set(f.id, toks);
+  for (const t of toks) TOKEN_DF.set(t, (TOKEN_DF.get(t) ?? 0) + 1);
+}
+
+export interface SearchResult {
+  /** Best card at/above the confidence floor, else null (→ caller abstains or generates). */
+  best: CardFact | null;
+  /** Fraction (0..1) of the query's idf mass the top card covers. */
+  score: number;
+  /** Top card regardless of floor — a "did you mean" anchor for the abstention path. */
+  suggestion: CardFact | null;
+}
+
+// A card must cover at least this fraction of the query's information (idf mass) to be
+// served as a confident answer; below it the caller abstains or falls to generation.
+export const SEARCH_FLOOR = 0.34;
+
+/**
+ * Retrieval for the search box: score every pool card by the idf-weighted overlap of the
+ * query's tokens with the card's tokens, return the best (with its normalized score) plus
+ * the top card as an abstention suggestion. Excludes the current card.
+ */
+export function searchCards(query: string, currentId: string | null): SearchResult {
+  const empty: SearchResult = { best: null, score: 0, suggestion: null };
+  const qtoks = [...new Set(searchTokens(query))].filter((t) => TOKEN_DF.has(t));
+  if (!qtoks.length) return empty;
+  const idf = (t: string) => 1 / (TOKEN_DF.get(t) ?? POOL.length);
+  const mass = qtoks.reduce((s, t) => s + idf(t), 0);
+  if (mass <= 0) return empty;
+  let best: CardFact | null = null;
+  let bestScore = 0;
+  for (const f of POOL) {
+    if (f.id === currentId) continue;
+    const toks = FACT_TOKENS.get(f.id)!;
+    let s = 0;
+    for (const t of qtoks) if (toks.has(t)) s += idf(t);
+    const frac = s / mass;
+    if (frac > bestScore) {
+      bestScore = frac;
+      best = f;
+    }
+  }
+  return { best: bestScore >= SEARCH_FLOOR ? best : null, score: bestScore, suggestion: best };
 }
 
 const FALLBACK: Record<Language, Array<keyof CardFact['fact']>> = {
@@ -106,7 +175,9 @@ export function getCard(id: string): CardFact | undefined {
 }
 
 export function questionForFact(id: string): CardQuestion | undefined {
-  return QUESTIONS.get(id);
+  // Cards are keyed by factoid id; the MCQ bank is keyed by the underlying source-fact id.
+  const factId = BY_ID.get(id)?.factId ?? id;
+  return QUESTIONS.get(factId);
 }
 
 function pick<T>(arr: T[]): T | undefined {

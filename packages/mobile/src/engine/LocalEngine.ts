@@ -369,6 +369,90 @@ export class LocalEngine implements TutorEngine {
     return out.trim();
   }
 
+  /**
+   * One-shot warm "reward card" line for the question-cards feed. GROUNDED strictly on
+   * the topic labels the child actually read — the model writes ONLY the celebration and
+   * is told not to add facts. The caller (cardStore) guards the output and falls back to
+   * a deterministic template, so a hallucinated or empty result never reaches a child.
+   */
+  async generateReward(topics: string[], count: number, language: string): Promise<string> {
+    if (!this.modelId || !this.isReadyFlag) {
+      throw new Error('Engine not initialized. Call initialize() first.');
+    }
+    const list = topics.slice(0, 6).join(', ');
+    const byLang: Record<string, string> = {
+      tagalog:
+        `Isang bata ang kabababasa lang tungkol sa mga paksang ito sa agham: ${list}. ` +
+        `Sumulat ng ISANG maikli, masaya, at nakaka-engganyong pangungusap sa Tagalog na bumabati sa kanya ` +
+        `dahil sa dami ng natutunan niya ngayon, na binabanggit ang 2-3 sa mga paksa sa itaas. ` +
+        `HUWAG magdagdag ng bagong impormasyon o science fact — pagbati LANG. Wag hihigit sa 25 salita.`,
+      english:
+        `A child just finished reading about these science topics: ${list}. ` +
+        `Write ONE short, cheerful, encouraging English sentence congratulating them on how much they learned today, ` +
+        `naming 2-3 of the topics above. Do NOT add any new information or science facts — praise ONLY. Under 25 words.`,
+      cebuano:
+        `Usa ka bata ang bag-o lang nakabasa mahitungod niini nga mga hilisgutan sa siyensya: ${list}. ` +
+        `Pagsulat og USA ka mubo, malipayon, ug makadasig nga pangungusap sa Binisaya nga nagbati kaniya ` +
+        `tungod sa iyang nakat-onan karon, nga naghisgot sa 2-3 sa mga hilisgutan sa taas. ` +
+        `AYAW pagdugang og bag-ong impormasyon o science fact — pagdayeg LANG. Ilalom sa 25 ka pulong.`,
+    };
+    const instruction = byLang[language] ?? byLang.tagalog!;
+    const run = completion({
+      modelId: this.modelId,
+      history: [{ role: 'user', content: instruction }],
+      stream: true,
+      generationParams: { temp: 0.7 }, // warmth/variety — this is prose, not a fact
+    });
+    let out = '';
+    for await (const event of run.events) {
+      if (event.type === 'contentDelta' && event.text) out += event.text;
+    }
+    return out.trim();
+  }
+
+  /**
+   * Grounded one-shot answer to a kid's typed feed query — used ONLY as the fallback when
+   * the local card search finds nothing (the feed is retrieval-first). Retrieves from the
+   * full fact bank and answers STRICTLY from those facts in 1-2 short sentences; if
+   * retrieval returns nothing it reports grounded:false so the caller shows an honest
+   * abstention instead of a hallucination. Optional — callers feature-detect.
+   */
+  async answerQuery(query: string, language: string): Promise<{ text: string; grounded: boolean }> {
+    if (!this.modelId || !this.isReadyFlag) {
+      throw new Error('Engine not initialized. Call initialize() first.');
+    }
+    // ragSearch already applies its own confidence floor, so any hit is usable grounding.
+    const hits = await this.ragSearch(query, 4);
+    if (!hits.length) return { text: '', grounded: false };
+    const context = hits.map((h) => `- ${h.content}`).join('\n');
+    const byLang: Record<string, string> = {
+      tagalog:
+        `Ikaw ay isang mabait na science tutor para sa batang Grade 5. Gamit LAMANG ang mga FACT sa ibaba, ` +
+        `sagutin ang tanong sa 1-2 maikli at simpleng pangungusap sa Tagalog. Kung hindi masagot ng mga fact ang tanong, ` +
+        `sabihin mong hindi mo pa alam. HUWAG mag-imbento ng bagong impormasyon.\n\nMGA FACT:\n${context}\n\nTANONG: ${query}\n\nSAGOT:`,
+      english:
+        `You are a kind science tutor for a Grade 5 child. Using ONLY the FACTS below, answer the question in ` +
+        `1-2 short, simple English sentences. If the facts do not answer it, say you don't know yet. Do NOT invent ` +
+        `new information.\n\nFACTS:\n${context}\n\nQUESTION: ${query}\n\nANSWER:`,
+      cebuano:
+        `Ikaw usa ka maayong science tutor para sa batang Grade 5. Gamit LANG ang mga FACT sa ubos, tubaga ang ` +
+        `pangutana sa 1-2 mubo ug simple nga pangungusap sa Binisaya. Kung dili matubag sa mga fact ang pangutana, ` +
+        `ingna nga wala ka pa kahibalo. AYAW pag-imbento og bag-ong impormasyon.\n\nMGA FACT:\n${context}\n\nPANGUTANA: ${query}\n\nTUBAG:`,
+    };
+    const instruction = byLang[language] ?? byLang.tagalog!;
+    const run = completion({
+      modelId: this.modelId,
+      history: [{ role: 'user', content: instruction }],
+      stream: true,
+      generationParams: { temp: 0.3 }, // low temp: faithful to the retrieved facts
+    });
+    let out = '';
+    for await (const event of run.events) {
+      if (event.type === 'contentDelta' && event.text) out += event.text;
+    }
+    return { text: out.trim(), grounded: true };
+  }
+
   async generateVisual(prompt: string): Promise<ImageResult> {
     // For now, return a placeholder
     // In the future, we'll integrate with an image generation model

@@ -129,3 +129,21 @@ rag/pipeline/flagged-facts-review.jsonl
 rag/bank/*.pre-correction.bak
 rag/bank/*.pre-newfacts.bak
 rag/bank/*.pre-expansion.bak
+
+# --- image-gen harness outputs (generated; large) ---
+packages/images/qwen-queue/out-final/
+packages/images/qwen-queue/out-openai/
+packages/images/qwen-queue/out-batch-test/
+packages/images/qwen-queue/batch-requests.jsonl
+packages/images/qwen-queue/worklist.jsonl
+packages/images/qwen-queue/sample.jsonl
+packages/images/qwen-queue/manifest*.jsonl
+packages/images/qwen-queue/batch-id.txt
+packages/images/qwen-queue/moderation-declined.txt
+
+# --- factoid build intermediates (regenerable; large) ---
+rag/pipeline/factoids-gen-*/
+rag/pipeline/factoids-bio/
+rag/pipeline/factoids-bio-b2/
+rag/pipeline/factoids-bio-b3/
+rag/pipeline/factoids-*-src.jsonl

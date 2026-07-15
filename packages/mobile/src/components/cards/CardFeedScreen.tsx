@@ -16,10 +16,12 @@ import { useEffect, useRef, useState } from 'react';
 import {
   Animated,
   Easing,
+  Keyboard,
   PanResponder,
   Pressable,
   StyleSheet,
   Text,
+  TextInput,
   useWindowDimensions,
   View,
 } from 'react-native';
@@ -27,12 +29,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { uiStrings } from '../../config/strings';
 import type { CardChoice, CardFact, CardQuestion } from '../../data/cards';
-import { useCardStore } from '../../store/cardStore';
+import { useCardStore, type FeedResponse } from '../../store/cardStore';
 import { useEngineStore } from '../../store/engineStore';
 import { colors, fonts } from '../../theme';
 import { NotebookBackground } from '../NotebookBackground';
+import type { RewardContent } from '../../data/reward';
 import { CardPage } from './CardPage';
 import { QuestionPage } from './QuestionPage';
+import { ResponseCard } from './ResponseCard';
+import { RewardCard } from './RewardCard';
 
 const FLIP_MS = 380;
 
@@ -44,6 +49,8 @@ interface PageSnap {
   fact: CardFact | null;
   choices: CardChoice[];
   question: CardQuestion | null;
+  reward: RewardContent | null;
+  response: FeedResponse | null;
   side: Side;
 }
 
@@ -57,17 +64,37 @@ export function CardFeedScreen() {
   const current = useCardStore((s) => s.current);
   const choices = useCardStore((s) => s.choices);
   const question = useCardStore((s) => s.question);
+  const reward = useCardStore((s) => s.reward);
+  const response = useCardStore((s) => s.response);
+  const asking = useCardStore((s) => s.asking);
+  const queryBanner = useCardStore((s) => s.queryBanner);
   const pageKey = useCardStore((s) => s.pageKey);
   const pagesRead = useCardStore((s) => s.pagesRead);
   const correctCount = useCardStore((s) => s.correctCount);
   const choose = useCardStore((s) => s.choose);
   const answerQuestion = useCardStore((s) => s.answerQuestion);
   const continueAfterQuestion = useCardStore((s) => s.continueAfterQuestion);
+  const continueAfterReward = useCardStore((s) => s.continueAfterReward);
+  const continueAfterResponse = useCardStore((s) => s.continueAfterResponse);
+  const ask = useCardStore((s) => s.ask);
+  const warmModel = useCardStore((s) => s.warmModel);
   const jumpToRandom = useCardStore((s) => s.jumpToRandom);
+
+  const [queryText, setQueryText] = useState('');
+  const submitQuery = () => {
+    const q = queryText.trim();
+    if (!q) return;
+    Keyboard.dismiss();
+    setQueryText('');
+    void ask(q);
+  };
 
   useEffect(() => {
     void hydrate();
-  }, [hydrate]);
+    // Background, non-blocking: warm the model while the kid reads, so reward text can be
+    // generated ahead of time. The feed itself never waits on it.
+    warmModel();
+  }, [hydrate, warmModel]);
 
   // Which corner the last navigation came from (drives the peel origin). Tapping the
   // left choice / swiping the left corner → 'left'; right → 'right'.
@@ -102,8 +129,8 @@ export function CardFeedScreen() {
       if (clearTimer.current) clearTimeout(clearTimer.current);
       clearTimer.current = setTimeout(() => setOutgoing(null), FLIP_MS + 400);
     }
-    lastSnap.current = { pageKey, fact: current, choices, question, side: sideRef.current };
-  }, [pageKey, current, choices, question, flip]);
+    lastSnap.current = { pageKey, fact: current, choices, question, reward, response, side: sideRef.current };
+  }, [pageKey, current, choices, question, reward, response, flip]);
 
   useEffect(() => () => {
     if (clearTimer.current) clearTimeout(clearTimer.current);
@@ -117,6 +144,16 @@ export function CardFeedScreen() {
       onPanResponderRelease: (_e, g) => {
         if (g.dy > -55) return;
         const s = useCardStore.getState();
+        if (s.response) {
+          sideRef.current = 'right';
+          s.continueAfterResponse();
+          return;
+        }
+        if (s.reward) {
+          sideRef.current = 'right';
+          s.continueAfterReward();
+          return;
+        }
         if (s.question) {
           // A swipe-up anywhere is a fallback for the continue note (also nav-bar-safe),
           // but only once the question has actually been answered.
@@ -189,6 +226,23 @@ export function CardFeedScreen() {
         </View>
       </View>
 
+      {/* persistent "ask anything" box — the kid's agency: type a topic or a question and
+          RAG decides (found card → response card → honest abstention). */}
+      <View style={styles.searchBar}>
+        <Text style={styles.searchIcon}>🔍</Text>
+        <TextInput
+          style={styles.searchInput}
+          value={queryText}
+          onChangeText={setQueryText}
+          onSubmitEditing={submitQuery}
+          placeholder={t.cards.searchPlaceholder}
+          placeholderTextColor={colors.inkMuted}
+          returnKeyType="search"
+          editable={!asking}
+          selectionColor={colors.inkBlue}
+        />
+      </View>
+
       {/* the pad */}
       <View
         style={styles.pad}
@@ -199,7 +253,11 @@ export function CardFeedScreen() {
             transformed, so it's always visible + tappable (hang-proof). */}
         <View style={styles.pageLayer} key={pageKey}>
           <NotebookBackground />
-          {question ? (
+          {response ? (
+            <ResponseCard response={response} language={language} onContinue={continueAfterResponse} />
+          ) : reward ? (
+            <RewardCard reward={reward} language={language} onContinue={continueAfterReward} />
+          ) : question ? (
             <QuestionPage
               question={question}
               language={language}
@@ -214,6 +272,20 @@ export function CardFeedScreen() {
               onChoose={(c) => chooseFrom(c, choices[0] === c ? 'left' : 'right')}
             />
           )}
+          {/* "you asked" ribbon when a search navigated straight to a found card */}
+          {queryBanner && !response && !reward && !question ? (
+            <View style={styles.banner} pointerEvents="none">
+              <Text style={styles.bannerText} numberOfLines={1}>
+                {t.cards.yourQuestion}: “{queryBanner}”
+              </Text>
+            </View>
+          ) : null}
+          {/* thinking veil while the fallback generation is in flight */}
+          {asking ? (
+            <View style={styles.thinking} pointerEvents="none">
+              <Text style={styles.thinkingText}>{t.cards.thinking}…</Text>
+            </View>
+          ) : null}
         </View>
 
         {/* outgoing page peeling up from the swiped corner */}
@@ -237,7 +309,7 @@ export function CardFeedScreen() {
             pointerEvents="none"
           >
             <NotebookBackground />
-            {outgoing.fact && !outgoing.question ? (
+            {outgoing.fact && !outgoing.question && !outgoing.reward && !outgoing.response ? (
               <CardPage
                 fact={outgoing.fact}
                 choices={outgoing.choices}
@@ -297,6 +369,58 @@ const styles = StyleSheet.create({
     fontFamily: fonts.display,
     fontSize: 19,
     color: colors.inkBlue,
+  },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 16,
+    marginBottom: 6,
+    paddingHorizontal: 12,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.white,
+    borderWidth: 1.5,
+    borderColor: 'rgba(12,52,61,0.18)',
+  },
+  searchIcon: { fontSize: 15, marginRight: 8, opacity: 0.7 },
+  searchInput: {
+    flex: 1,
+    fontFamily: fonts.body,
+    fontSize: 16,
+    color: colors.ink,
+    padding: 0,
+  },
+  banner: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(240,246,247,0.92)',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(12,52,61,0.12)',
+    paddingHorizontal: 20,
+    paddingVertical: 6,
+  },
+  bannerText: {
+    fontFamily: fonts.body,
+    fontSize: 13,
+    color: colors.inkBlue,
+    fontStyle: 'italic',
+  },
+  thinking: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(247,244,236,0.72)',
+  },
+  thinkingText: {
+    fontFamily: fonts.display,
+    fontSize: 22,
+    color: colors.inkMuted,
   },
   pad: {
     flex: 1,

@@ -20,16 +20,12 @@ const REPO = join(MOBILE, '..', '..');
 function loadCards() {
   const src = readFileSync(join(MOBILE, 'src/data/cards.ts'), 'utf8')
     .replace(
-      "import type { Language, ScienceFact } from '@hiraia/shared';",
-      `import type { ScienceFact } from '${join(REPO, 'packages/shared/src/rag/types.ts')}';\ntype Language = 'tagalog'|'english'|'cebuano';`
+      "import type { Language } from '@hiraia/shared';",
+      `type Language = 'tagalog'|'english'|'cebuano';`
     )
     .replace(
-      "import { SCIENCE_FACTS } from '@hiraia/shared';",
-      `import { SCIENCE_FACTS } from '${join(REPO, 'packages/shared/src/rag/facts.generated.ts')}';`
-    )
-    .replace(
-      "import { FACT_IMAGE } from '../generated/factImage';",
-      `import { FACT_IMAGE } from '${join(MOBILE, 'src/generated/factImage.ts')}';`
+      "import cardsPool from '../generated/cardsPool.generated.json';",
+      `import cardsPool from '${join(MOBILE, 'src/generated/cardsPool.generated.json')}' with { type: 'json' };`
     )
     .replace(
       "import questionsJson from './cards-questions.json';",
