@@ -52,12 +52,33 @@ STYLE = ('. Black and white pen-and-ink drawing, hand-inked with a brush pen, co
          'black ink on a plain white background, a single subject centered with generous empty '
          'white space around it, no scenery.')
 
-def _req(url, data=None, method=None, headers=None, raw=False):
+def _req(url, data=None, method=None, headers=None, raw=False, to_file=None, tries=6):
+    """HTTP with retry on transient errors (429/5xx/timeout) so a gateway blip can't kill a
+    multi-hour run. `to_file` streams the (potentially multi-GB) response body to disk instead
+    of loading it into memory — used for batch output files."""
     h = {'Authorization': f'Bearer {KEY}'}
     if headers: h.update(headers)
-    r = urllib.request.Request(url, data=data, method=method, headers=h)
-    resp = urllib.request.urlopen(r, timeout=180)
-    return resp.read() if raw else json.load(resp)
+    for attempt in range(tries):
+        try:
+            r = urllib.request.Request(url, data=data, method=method, headers=h)
+            resp = urllib.request.urlopen(r, timeout=300)
+            if to_file:
+                with open(to_file, 'wb') as f:
+                    while True:
+                        chunk = resp.read(1 << 20)
+                        if not chunk: break
+                        f.write(chunk)
+                return to_file
+            return resp.read() if raw else json.load(resp)
+        except urllib.error.HTTPError as e:
+            if e.code in (429, 500, 502, 503, 504) and attempt < tries - 1:
+                ra = e.headers.get('Retry-After')
+                time.sleep(float(ra) if ra else min(60, 2 ** (attempt + 1))); continue
+            raise
+        except (urllib.error.URLError, TimeoutError, ConnectionError):
+            if attempt < tries - 1:
+                time.sleep(min(60, 2 ** (attempt + 1))); continue
+            raise
 
 def build():
     rows = [json.loads(l) for l in open(WORKLIST) if l.strip()]
@@ -96,46 +117,16 @@ def submit():
 def fetch():
     bid = open(ID_FILE).read().strip()
     while True:
-        b = _req(f'{API}/batches/{bid}')
-        st = b['status']; c = b['request_counts']
-        print(f'  status={st} {c}', flush=True)
+        b = _req(f'{API}/batches/{bid}'); st = b['status']
+        print(f'  status={st} {b["request_counts"]}', flush=True)
         if st in ('completed', 'failed', 'expired', 'cancelled'): break
         time.sleep(60)
-    man = open(MANIFEST, 'a'); saved = declined = tot_out = tot_in = 0
-    if b.get('output_file_id'):
-        txt = _req(f'{API}/files/{b["output_file_id"]}/content', raw=True).decode()
-        for line in txt.strip().splitlines():
-            o = json.loads(line); cid = o['custom_id']
-            resp = o.get('response') or {}
-            if resp.get('status_code') == 200 and resp.get('body', {}).get('data'):
-                body = resp['body']; u = body.get('usage', {})
-                raw = base64.b64decode(body['data'][0]['b64_json'])
-                open(os.path.join(OUT, f'{cid}.png'), 'wb').write(raw)
-                d_in = u.get('input_tokens_details', {})
-                txt_in = d_in.get('text_tokens', u.get('input_tokens', 0)); out = u.get('output_tokens', 0)
-                cost = round((txt_in*P_TEXT_IN + out*P_IMG_OUT) * 0.5, 6)  # 50% batch discount
-                tot_out += out; tot_in += txt_in; saved += 1
-                man.write(json.dumps({'id': cid, 'provider': 'openai-batch', 'model': MODEL,
-                    'quality': QUALITY, 'in_text_tokens': txt_in, 'out_tokens': out,
-                    'cost_usd': cost, 'bytes': len(raw), 'status': 'ok'}, ensure_ascii=False) + '\n')
-    # errors (incl. moderation declines) → collect ids for a Qwen fallback pass
-    dfh = open(DECLINED, 'a')
-    if b.get('error_file_id'):
-        etxt = _req(f'{API}/files/{b["error_file_id"]}/content', raw=True).decode()
-        for line in etxt.strip().splitlines():
-            o = json.loads(line); cid = o.get('custom_id', '?')
-            err = json.dumps(o.get('response') or o.get('error') or {})[:200]
-            is_mod = 'safety' in err.lower() or 'moderation' in err.lower()
-            declined += 1; dfh.write(cid + '\n')
-            man.write(json.dumps({'id': cid, 'provider': 'openai-batch', 'status': 'declined',
-                'moderation': is_mod, 'error': err}, ensure_ascii=False) + '\n')
-    man.flush()
-    cost = round((tot_in*P_TEXT_IN + tot_out*P_IMG_OUT) * 0.5, 4)
-    print(f'\nfetch: saved {saved} images | {declined} declined/errored (ids -> {DECLINED})')
-    print(f'  tokens: {tot_in:,} in / {tot_out:,} out | BATCH cost: ${cost:.2f} (avg ${cost/max(saved,1):.4f}/img)')
-    if declined:
-        print(f'  NEXT: run the Qwen fallback over the {declined} declined ids, e.g.')
-        print(f'    WORKLIST=<subset from {DECLINED}> python3 packages/images/qwen-queue/gen-images.py')
+    if st == 'failed':
+        print(f'  batch failed: {json.dumps(b.get("errors"))[:300]}'); return
+    man = open(MANIFEST, 'a')
+    saved, declined, out = _download_batch(bid, man)  # hardened: streams to disk, retries 504s
+    print(f'\nfetch: saved {saved} images | {declined} declined (ids -> {DECLINED}) | '
+          f'batch cost ${round(out*P_IMG_OUT*0.5, 2)}')
 
 def _upload_and_create(path):
     boundary = '----hiraiabatch'
@@ -152,17 +143,23 @@ def _upload_and_create(path):
 def _download_batch(bid, man):
     b = _req(f'{API}/batches/{bid}'); saved = declined = out = 0
     if b.get('output_file_id'):
-        for line in _req(f'{API}/files/{b["output_file_id"]}/content', raw=True).decode().strip().splitlines():
-            o = json.loads(line); cid = o['custom_id']; resp = o.get('response') or {}
-            if resp.get('status_code') == 200 and resp.get('body', {}).get('data'):
-                u = resp['body'].get('usage', {})
-                raw = base64.b64decode(resp['body']['data'][0]['b64_json'])
-                open(os.path.join(OUT, f'{cid}.png'), 'wb').write(raw)
-                ti = u.get('input_tokens_details', {}).get('text_tokens', u.get('input_tokens', 0)); ot = u.get('output_tokens', 0)
-                out += ot; saved += 1
-                man.write(json.dumps({'id': cid, 'provider': 'openai-batch', 'quality': QUALITY,
-                    'in_text_tokens': ti, 'out_tokens': ot, 'cost_usd': round((ti*P_TEXT_IN+ot*P_IMG_OUT)*0.5, 6),
-                    'bytes': len(raw), 'status': 'ok'}, ensure_ascii=False) + '\n')
+        tmp = os.path.join(HERE, f'.out-{bid}.jsonl')
+        _req(f'{API}/files/{b["output_file_id"]}/content', to_file=tmp)  # stream ~GBs to disk
+        with open(tmp) as fh:
+            for line in fh:  # parse line-by-line — never hold the whole file in memory
+                line = line.strip()
+                if not line: continue
+                o = json.loads(line); cid = o['custom_id']; resp = o.get('response') or {}
+                if resp.get('status_code') == 200 and resp.get('body', {}).get('data'):
+                    u = resp['body'].get('usage', {})
+                    raw = base64.b64decode(resp['body']['data'][0]['b64_json'])
+                    open(os.path.join(OUT, f'{cid}.png'), 'wb').write(raw)
+                    ti = u.get('input_tokens_details', {}).get('text_tokens', u.get('input_tokens', 0)); ot = u.get('output_tokens', 0)
+                    out += ot; saved += 1
+                    man.write(json.dumps({'id': cid, 'provider': 'openai-batch', 'quality': QUALITY,
+                        'in_text_tokens': ti, 'out_tokens': ot, 'cost_usd': round((ti*P_TEXT_IN+ot*P_IMG_OUT)*0.5, 6),
+                        'bytes': len(raw), 'status': 'ok'}, ensure_ascii=False) + '\n')
+        os.remove(tmp)
     if b.get('error_file_id'):
         with open(DECLINED, 'a') as dfh:
             for line in _req(f'{API}/files/{b["error_file_id"]}/content', raw=True).decode().strip().splitlines():
