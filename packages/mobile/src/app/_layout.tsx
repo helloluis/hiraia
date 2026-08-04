@@ -1,7 +1,7 @@
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -18,30 +18,40 @@ export default function RootLayout() {
   const language = useEngineStore((s) => s.language);
   const onboardingActive = useEngineStore((s) => s.onboardingActive);
   const setOnboardingActive = useEngineStore((s) => s.setOnboardingActive);
+  const isReady = useEngineStore((s) => s.isReady);
+  const engineError = useEngineStore((s) => s.error);
   const hydrate = useChatStore((s) => s.hydrate);
   const [fontsLoaded] = useFonts(fontAssets);
 
-  // Brief cat-waking SPLASH on cold open (question-cards branch). The model is now
-  // lazy-loaded (see engineStore.bootstrap), so this is a ~3-4s cosmetic intro, NOT a
-  // ~25s model warm-up. Shown once per app launch, for a returning user (skip during
-  // onboarding, which has its own flow).
-  const [showSplash, setShowSplash] = useState(false);
+  // Sleeping-cat WARM-UP loader (returning user): bootstrap() starts the engine load at
+  // boot, and the gated LoaderOverlay (tap-to-nudge the sleeping cat, wake video at 97%,
+  // dismisses only once isReady) covers the wait so the model is warm before the kid can
+  // reach the feed's search box. On a load error we skip the loader entirely and land on
+  // the (zero-model) feed; the feed's warmModel() retries in the background.
+  const [loaderVisible, setLoaderVisible] = useState(false);
 
   useEffect(() => {
-    // Resolve the saved language (no eager engine load anymore).
+    // Resolve the saved language and (for a returning user) start warming the engine.
     void bootstrap();
     // Load persisted chat history from SQLite (gates the cold-start factoid in chat).
     void hydrate();
   }, [bootstrap, hydrate]);
 
-  // Fire the splash once bootstrap knows there's a saved language and we're not onboarding.
-  const splashFired = useRef(false);
+  // Show the loader once bootstrap knows there's a saved language, we're not onboarding,
+  // and the engine still isn't ready. Stays up until the overlay's own wake→exit→dismiss
+  // sequence calls onDismiss (the overlay gates that on the real isReady).
   useEffect(() => {
-    if (bootstrapped && language !== null && !onboardingActive && !splashFired.current) {
-      splashFired.current = true;
-      setShowSplash(true);
+    if (bootstrapped && language !== null && !onboardingActive && !isReady && !engineError) {
+      setLoaderVisible(true);
     }
-  }, [bootstrapped, language, onboardingActive]);
+  }, [bootstrapped, language, onboardingActive, isReady, engineError]);
+
+  // Bail OUT of the loader on a load error — otherwise the kid would be stuck on the
+  // sleeping cat at 0% forever. The (zero-model) feed is usable without the engine, and
+  // its warmModel() retries the load in the background (which re-shows the loader).
+  useEffect(() => {
+    if (loaderVisible && engineError) setLoaderVisible(false);
+  }, [loaderVisible, engineError]);
 
   if (!fontsLoaded || !bootstrapped) {
     return (
@@ -71,8 +81,8 @@ export default function RootLayout() {
         />
       )}
 
-      {/* Brief cat-waking splash on cold open (model is lazy-loaded; this is cosmetic). */}
-      {showSplash && <LoaderOverlay splash onDismiss={() => setShowSplash(false)} />}
+      {/* Engine warm-up (started in bootstrap): sleeping-cat loader until isReady. */}
+      {loaderVisible && <LoaderOverlay onDismiss={() => setLoaderVisible(false)} />}
     </GestureHandlerRootView>
   );
 }

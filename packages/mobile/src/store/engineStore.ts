@@ -82,15 +82,19 @@ export const useEngineStore = create<EngineState>((set, get) => ({
     // First launch (no saved language) → show the onboarding carousel; its slide-1
     // pick calls changeLanguage() which starts the model download in the background.
     //
-    // LAZY LOAD (question-cards branch): we do NOT warm the LLM on boot. The home
-    // screen is the zero-model card feed, so the ~700MB download + ~25s warm-up is
-    // deferred until the kid actually opens chat (/chat calls ensureEngine on mount).
-    // A returning user with a saved language lands on the feed instantly.
+    // EAGER WARM-UP: a returning user (saved language) starts the model download
+    // (first run) / warm-up (every cold start) immediately at boot, behind the
+    // sleeping-cat LoaderOverlay — so the model is warm and answering within ~10-15s
+    // by the time the kid reaches the feed's search box.
     set({ language: saved, bootstrapped: true, onboardingActive: !saved });
+    if (saved) void get().changeLanguage(saved);
   },
 
   changeLanguage: async (language: Language) => {
     if (get().engine && get().language === language && get().isReady) return; // no-op
+    // Already warming for THIS language — bootstrap, the feed's warmModel, and /chat all
+    // kick a load; a second concurrent LocalEngine init would double the ~2 GB in RAM.
+    if (get().loadingPhase !== 'idle' && get().language === language) return;
     try {
       // Persist first so a crash mid-reload still remembers the choice.
       await setSetting('language', language);

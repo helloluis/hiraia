@@ -14,6 +14,7 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import {
+  ActivityIndicator,
   Animated,
   Easing,
   Keyboard,
@@ -241,6 +242,17 @@ export function CardFeedScreen() {
           editable={!asking}
           selectionColor={colors.inkBlue}
         />
+        {/* While an answer is being generated the submit button becomes a progress
+            circle, so the kid knows the app is working and they should wait. */}
+        {asking ? (
+          <ActivityIndicator size="small" color={colors.inkBlue} style={styles.searchSpinner} />
+        ) : (
+          <Pressable onPress={submitQuery} disabled={!queryText.trim()} hitSlop={8}>
+            <Text style={[styles.searchSend, !queryText.trim() && styles.searchSendOff]}>
+              ➤
+            </Text>
+          </Pressable>
+        )}
       </View>
 
       {/* the pad */}
@@ -390,6 +402,13 @@ const styles = StyleSheet.create({
     color: colors.ink,
     padding: 0,
   },
+  searchSend: {
+    fontSize: 15,
+    color: colors.inkBlue,
+    marginLeft: 8,
+  },
+  searchSendOff: { opacity: 0.3 },
+  searchSpinner: { marginLeft: 8 },
   banner: {
     position: 'absolute',
     top: 0,
