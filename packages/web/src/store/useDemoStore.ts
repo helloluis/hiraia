@@ -6,18 +6,17 @@ import { pickFactoidText } from '@/data/factoids';
  * Store for the in-browser "Try the web demo" lightbox.
  *
  * Mirrors the mobile app's first-launch flow (pick language → cold-start loader →
- * chat with an opening trivia card). There's no real model in the web path yet,
- * so replies are a friendly canned placeholder per language.
+ * the question-cards feed). The feed itself lives in useCardDemoStore; this store
+ * owns the lightbox shell state (phase, language, transcript logging).
  *
- * Persistence: every message — visitor questions, our canned replies, and the
- * opening factoid — is logged to `demo_messages` via /api/demo/messages, keyed by
- * an anonymous session id kept in localStorage. That id survives reloads on the
- * same browser (so a returning visitor's thread is restored on reopen) but not
- * across browsers. We keep these transcripts for product insight, not as
- * per-user history — there are no accounts here.
+ * Persistence: typed queries (and any legacy chat messages) are logged to
+ * `demo_messages` via /api/demo/messages, keyed by an anonymous session id kept in
+ * localStorage. That id survives reloads on the same browser but not across
+ * browsers. We keep these transcripts for product insight, not as per-user
+ * history — there are no accounts here.
  */
 
-export type DemoPhase = 'language' | 'loading' | 'chat';
+export type DemoPhase = 'language' | 'loading' | 'cards' | 'chat';
 
 export interface DemoMessage {
   id: string;
@@ -69,7 +68,7 @@ function getDemoSessionId(): string {
 }
 
 /** Fire-and-forget: log a message to the demo transcript. Never blocks the UI. */
-function persist(
+export function persist(
   role: 'user' | 'assistant',
   content: string,
   language: LanguageKey | null,
@@ -229,8 +228,9 @@ export const useDemoStore = create<DemoState>((set, get) => ({
   pickLanguage: (language) => set({ language, phase: 'loading' }),
 
   finishLoading: () => {
-    set({ phase: 'chat' });
-    get().showColdStartFactoid();
+    // The loader hands off to the question-cards feed (the gamified home screen),
+    // replacing the old canned-chat phase.
+    set({ phase: 'cards' });
   },
 
   showColdStartFactoid: () => {

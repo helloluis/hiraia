@@ -1,17 +1,27 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 import { useDemoStore } from '@/store/useDemoStore';
 import { DemoLanguagePicker } from './DemoLanguagePicker';
 import { DemoLoader } from './DemoLoader';
-import { DemoChat } from './DemoChat';
+
+// The card feed + its ~1.1 MB of bundled demo data load on demand, client-only, so
+// the landing page bundle doesn't pay for a demo the visitor may never open.
+const CardFeedDemo = dynamic(() => import('./cards/CardFeedDemo').then((m) => m.CardFeedDemo), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-full w-full items-center justify-center bg-[#fdfdf6]">
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary-600/30 border-t-primary-600" />
+    </div>
+  ),
+});
 
 /**
  * The "Try the web demo" lightbox: a fixed-overlay modal that runs the whole
- * setup flow — pick language → cold-start loader → chat — mirroring the mobile
- * app's first launch. On reopen it briefly restores this browser's prior demo
- * thread (keyed by an anonymous localStorage session id) and drops the visitor
- * straight back into the chat.
+ * setup flow — pick language → cold-start loader → the question-cards feed —
+ * mirroring the mobile app's first launch. On reopen it briefly restores this
+ * browser's prior demo session (keyed by an anonymous localStorage session id).
  */
 export function DemoLightbox() {
   const isOpen = useDemoStore((s) => s.isOpen);
@@ -74,7 +84,7 @@ export function DemoLightbox() {
           <>
             {phase === 'language' && <DemoLanguagePicker />}
             {phase === 'loading' && <DemoLoader />}
-            {phase === 'chat' && <DemoChat />}
+            {phase === 'cards' && <CardFeedDemo />}
           </>
         )}
       </div>

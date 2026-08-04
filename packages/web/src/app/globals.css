@@ -44,6 +44,25 @@ strong, b, h1, h2, h3, h4, h5, h6 {
       repeating-linear-gradient(180deg, transparent 0 31px, rgba(120, 170, 210, 0.4) 31px 32px);
     background-attachment: local;
   }
+
+  /* Card-feed demo: the outgoing page lifts up and off the pad (the web stand-in for
+     the mobile corner-peel), and the reward card's star pops in. */
+  @keyframes demo-page-peel {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    75% { opacity: 1; }
+    100% { transform: translateY(-112%) rotate(-7deg); opacity: 0; }
+  }
+  .demo-page-peel {
+    animation: demo-page-peel 360ms cubic-bezier(0.55, 0.06, 0.68, 0.19) forwards;
+    box-shadow: 0 8px 14px rgba(0, 0, 0, 0.25);
+  }
+  @keyframes demo-star-pop {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+  }
+  .demo-star-pop {
+    animation: demo-star-pop 480ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
 }
 
 /* Markdown rendered in chat bubbles (no typography plugin, so style the basics). */
