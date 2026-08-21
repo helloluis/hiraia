@@ -134,12 +134,32 @@ rag/bank/*.pre-expansion.bak
 packages/images/qwen-queue/out-final/
 packages/images/qwen-queue/out-openai/
 packages/images/qwen-queue/out-batch-test/
+packages/images/qwen-queue/out-round3/
+packages/images/qwen-queue/out/
 packages/images/qwen-queue/batch-requests.jsonl
+packages/images/qwen-queue/.batch-req.jsonl
 packages/images/qwen-queue/worklist.jsonl
 packages/images/qwen-queue/sample.jsonl
 packages/images/qwen-queue/manifest*.jsonl
 packages/images/qwen-queue/batch-id.txt
+packages/images/qwen-queue/submitted-ids.txt
+packages/images/qwen-queue/batches-to-download.json
 packages/images/qwen-queue/moderation-declined.txt
+
+# --- illustration review harness (packages/images/review/) ---
+# The audit trail (worklists, verdicts, reports, scripts) IS tracked — it's what makes the
+# 2,612-image rework reproducible. Only the bulky regenerable artifacts are ignored: the
+# contact sheets alone are 3.7GB, and the webp/png dirs are staging on the way into
+# factoid-webp/ + assets-png/, which are themselves tracked.
+packages/images/review/sheets/
+packages/images/review/regen-webp/
+packages/images/review/round3-webp/
+packages/images/review/worklist.jsonl
+packages/images/review/manifests/
+packages/images/review/smoke/
+packages/images/review/.tmp-crops/
+packages/images/review/.merge-stage/
+packages/images/review/.r3-stage/
 
 # --- factoid build intermediates (regenerable; large) ---
 rag/pipeline/factoids-gen-*/

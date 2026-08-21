@@ -35,11 +35,15 @@ def strip_style(p):
         if i >= 0: cut = min(cut, i)
     s = p[:cut].strip().rstrip(',.').strip()
     return re.sub(r'^(a )?simple illustration (of|showing) ', '', s, flags=re.I).strip() or p
+# 2026-08 review fix: the full-set audit found baked-in text was 87% of all flags — the old
+# boilerplate stripped the bank's "no text" clause and replaced it with nothing. gpt-image has
+# no negative_prompt, so text suppression must live in the positive style.
 STYLE = ('. Black and white pen-and-ink drawing, hand-inked with a brush pen, confident varied '
          'line weight and light cross-hatching for shading, bold and expressive with slightly '
          'imperfect organic linework, in the style of a vintage scientific encyclopedia engraving, '
          'black ink on a plain white background, a single subject centered with generous empty '
-         'white space around it, no scenery.')
+         'white space around it, no scenery, absolutely no text, words, letters, numbers, labels, '
+         'captions, signatures or watermarks anywhere in the image.')
 
 def _req(url, data=None, method=None, headers=None, tries=6):
     h = {'Authorization': f'Bearer {KEY}'}

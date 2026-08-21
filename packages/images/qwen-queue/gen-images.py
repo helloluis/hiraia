@@ -69,7 +69,10 @@ CLEAN_STYLE = ('. Black and white pen-and-ink drawing, hand-inked with a brush p
                'imperfect organic linework, in the style of a vintage scientific encyclopedia '
                'engraving, black ink on plain white, generous empty white space around it.')
 # Everything we DON'T want goes here (this is where "no paper/frame/tape/color" belongs).
-NEG = ('color, colored, colorful, saturated, vibrant, rainbow, yellow, cream, beige, sepia, tinted, '
+# 2026-08 review fix: added the text family — baked-in words/labels were 87% of audit flags.
+NEG = ('text, words, letters, numbers, typography, writing, alphabet, characters, label, labels, '
+       'caption, captions, title, signature, watermark, logo, brand name, '
+       'color, colored, colorful, saturated, vibrant, rainbow, yellow, cream, beige, sepia, tinted, '
        'watercolor, painting, photograph, realistic photo, 3d render, gradient, grey background, '
        'gray background, dark background, black background, vignette, drop shadow, shadow, border, '
        'frame, rectangle, box, card, sticker, die cut, cutout, white outline, panel, app icon, '

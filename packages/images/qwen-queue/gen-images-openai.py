@@ -60,8 +60,10 @@ def strip_style(prompt):
 _INK = ('. Black and white pen-and-ink drawing, hand-inked with a brush pen, confident varied '
         'line weight and light cross-hatching for shading, bold and expressive with slightly '
         'imperfect organic linework, in the style of a vintage scientific encyclopedia engraving, ')
-STYLE_TRANSPARENT = _INK + 'a single subject centered and isolated on a fully transparent background, no scenery.'
-STYLE_WHITE = _INK + 'black ink on a plain white background, a single subject centered with generous empty white space around it, no scenery.'
+# 2026-08 review fix: baked-in text was 87% of audit flags — suppress it explicitly (gpt-image
+# has no negative_prompt, so this must be in the positive style).
+STYLE_TRANSPARENT = _INK + 'a single subject centered and isolated on a fully transparent background, no scenery, absolutely no text, words, letters, numbers, labels, captions, signatures or watermarks anywhere in the image.'
+STYLE_WHITE = _INK + 'black ink on a plain white background, a single subject centered with generous empty white space around it, no scenery, absolutely no text, words, letters, numbers, labels, captions, signatures or watermarks anywhere in the image.'
 
 def gen(prompt):
     style = STYLE_TRANSPARENT if BG == 'transparent' else STYLE_WHITE

@@ -1,0 +1,65 @@
+ROUND 3 QA RECONCILIATION - 36 regenerated illustrations
+========================================================
+Sources: two independent judging passes over sheets round3-0000/0001/0002.
+Bar applied: only GARBLED / faux lettering counts as a text defect; legible words,
+numerals, units and intentional symbols are ACCEPTABLE. fixed=false with no new
+defect is still a HOLD (the regen failed its purpose).
+
+COUNTS
+  total ids ................ 36 (each id from round3-prompts.jsonl appears exactly once)
+  MERGE .................... 34
+  HOLD ..................... 2
+  agreed by both passes .... 33 (all "ok / fixed")
+  disagreements broken ..... 3 (by cropping the tile and looking, not by preferring a pass)
+  legible/non-garbled text flags overturned .... 1
+
+DISAGREEMENTS AND HOW EACH TIE WAS BROKEN
+  ffct-33060  (sheet round3-0001, row2 col2)
+     pass A: fixed=false, off-topic ("banded with red-spot oval: reads Jupiter")
+     pass B: fixed=true,  ok
+     -> looked at the tile + the webp. The planet behind the probe carries strong
+        horizontal cloud bands and a distinct spiral red-spot-like oval. The regen
+        prompt asked for a SMOOTH RINGLESS sphere; the factoid is "Voyager 2 is the
+        only spacecraft to visit Neptune (1989)". Pass A is correct.
+     -> resolved TOWARD PASS A: HOLD (off-topic, fixed=false).
+
+  ffct-34205  (sheet round3-0002, row0 col0)
+     pass A: fixed=true,  ok
+     pass B: fixed=false, garbled-text ("faux weekday smudges in calendar header")
+     -> nearest-neighbour pixel zoom on the header row: the marks are ~10x2 px
+        dashes, one per column, with no letterform structure at native resolution -
+        ruled ticks, not faux words. No other lettering anywhere in the frame; the
+        previously garbled text is gone. Subject is correct for the fact (Galileo
+        1610 discovers Jupiter's moons): telescope + banded Jupiter + moons + calendar.
+     -> resolved TOWARD PASS A: MERGE. This is the 1 overturned text flag.
+
+  ffct-34389  (sheet round3-0002, row0 col1)
+     pass A: fixed=true, ok
+     pass B: fixed=true, other ("planet drawn as Jupiter, not Neptune")
+     -> looked at the tile. The garbled calendar lettering IS fixed (page is blank),
+        so fixed=true stands, but pass B's observation is correct: the planet has
+        Jovian bands and a Great-Red-Spot swirl while the factoid is "Neptune takes
+        165 Earth years for one year". A wrong-planet illustration on a science card
+        is a factual defect, so it cannot merge.
+     -> resolved TOWARD PASS B's observation: HOLD (off-topic, text defect fixed).
+
+NOT OVERTURNED / CHECKED FOR COMPLETENESS
+  ffct-34074 - hull reads "EMDEN", a legible real word (the ship's name in the prompt).
+               Correctly not flagged by either pass; acceptable under the project bar. MERGE.
+  ffct-26470 - dense dot field on the book page is BRAILLE, not faux lettering. MERGE.
+  ffct-06038 / ffct-25739 - barcodes and clock-face tick marks are intentional symbols. MERGE.
+
+HOLDS - one-line disposition each
+  ffct-33060  wrong planet (banded Jupiter + red spot) for the Voyager-2-at-Neptune fact
+              -> re-roll with an explicit "no bands, no stripes, no storm-spot swirl,
+                 featureless smooth sphere" negative and drop the word Neptune from the art prompt.
+  ffct-34389  wrong planet (banded Jupiter + red spot) for the Neptune-165-year fact; the
+              garbled calendar text it was rerolled for IS fixed
+              -> re-roll art only: sleepy smooth featureless sphere on a blank calendar page
+                 with the snail; keep the calendar page text-free.
+
+CROSS-CHECKS
+  [ok] all 36 ids from round3-prompts.jsonl appear exactly once in round3-verdicts.json
+  [ok] every merge-decision id has round3-webp/<id>.webp (34/34 present)
+  [ok] no stray files in round3-webp/ outside the 36 ids
+  [ok] no image or library file was modified by this pass

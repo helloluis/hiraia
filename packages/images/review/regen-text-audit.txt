@@ -1,0 +1,128 @@
+REGEN BAKED-IN-TEXT CALIBRATION AUDIT
+adjudicated 2026-08-21 | read-only pass | companion file: regen-text-audit.csv
+
+VERDICT: the calibration gap is REAL and large. The zero-flag batches (003/006/007/010)
+under-detected baked-in text; their "0 of 150" is a detection failure, not a quality
+difference. Recommend a targeted re-review before the library merge.
+
+--------------------------------------------------------------------------------
+1. WHAT I CHECKED
+--------------------------------------------------------------------------------
+Cropped tiles straight out of the sheets (art area only, y = r*568 .. r*568+512, so the
+harness caption strip is excluded by construction) and viewed them at 2x, with 6-12x
+nearest-neighbour + autocontrast zooms for the faint claims.
+
+  21 of the 48 claims spot-checked, spanning all 12 sheets
+    19 CONFIRMED
+     2 NOT CONFIRMED (ffct-33620, ffct-19018 - both self-rated medium/low by the re-audit)
+     0 REFUTED among the high-confidence stratum: 18 of 18 confirmed (100%)
+
+  9 control tiles the re-audit marked hasText=false, on the same sheets, all with
+  numeral-inviting prompts (ffct-33615, ffct-19458, ffct-19038, ffct-33591, ffct-25660,
+  ffct-25746, ffct-19505, ffct-33350, ffct-19017):
+    9 of 9 genuinely text-free -> NO evidence of over-flagging in the other direction.
+    The generator substituted stars, dots, checkmarks or empty grids where the prompt
+    asked for numbers, which is exactly the desired behaviour - so a clean tile is a
+    real signal, not a scoring artifact.
+
+  Two claims fail a strict "legible glyphs" bar and should be dropped:
+    ffct-33620 - faint blobs in the calendar header bands, no resolvable letterforms at 6x
+    ffct-19018 - a two-row grey smudge on the ruler face, not resolvable at 12x
+  (ffct-33580 was not checked; treat the same way. ffct-26312 DID confirm at 8x: real
+  faux-lettering on nameplate bands.)
+
+--------------------------------------------------------------------------------
+2. THE NUMBERS
+--------------------------------------------------------------------------------
+On the 12 audited sheets (192 tiles), prior pass recorded 0 text flags.
+  raw claims                                  48 / 192 = 25.0%
+  confirmation-adjusted  (44 high x 1.00) + (4 med/low x 0.33) = 45 / 192 = 23.4%
+  restricted to tiles whose PROMPT explicitly asks for a word/letter/number:
+                                              39 / 83   = 47.0%
+
+Independent base rate, 4 sheets picked at random from the same four batches and NOT part
+of the 12 (64 tiles, deliberately unenriched):
+  regen-0044 (b003)  4/16   ffct-19337 "NaHCO3" box, ffct-19349 "NaHCO3" box,
+                            ffct-19350 "H2O2" bottle label, ffct-19379 ornate numeral "9"
+  regen-0074 (b006)  0/16
+  regen-0091 (b007)  0/16
+  regen-0120 (b010)  3/16   ffct-32446 "2" on flag, ffct-32447 "3" on flag,
+                            ffct-32449 "5" on flag
+  ---------------------------------------------------------------
+  total              7/64 = 10.9%     prior pass on these 64: 0 flags
+
+Apples-to-apples, on identical prompt class (prompt explicitly requests text):
+  batch 011 (strictest)              23 / 63  = 36.5% detected
+  batches 003/006/007/010             0 / 239 =  0.0% detected
+  this audit, same four batches      39 / 83  = 47.0% found
+Same generator, same prompt class, 36.5% vs 0%. That is calibration, not quality.
+
+--------------------------------------------------------------------------------
+3. ROOT CAUSE (this is the important finding)
+--------------------------------------------------------------------------------
+506 of the 2,612 regeneration prompts (19.4%) explicitly instruct the image model to draw
+a word, letter or number - e.g. "A calendar page showing the number 365", "the element
+sulfur with the letter S and the number 16", "The word MEGA with the number 1,000,000".
+
+That is by design: build-regen-worklist.py routes 'text' verdicts down the KEEP-SUBJECT
+path, reusing the ORIGINAL prompt, on the stated premise that "the boilerplate fix
+addresses those failure classes". It does not. For text-as-subject prompts the model
+simply complies. Roughly one regeneration in five was structurally incapable of fixing
+the defect it was queued for.
+
+Explicit-text prompt density per batch (this predicts where the defects are):
+  003 50.5% | 006 37.5% | 011 32.8% | 010 28.6% | 009 22.9% | 002 19.8% | 012 15.1%
+  008 14.1% | 005 13.5% | 001 10.9% | 004  9.4% | 007  7.8% | 013  0.9% | 000  0.0%
+
+--------------------------------------------------------------------------------
+4. HOW MANY OF THE 2,612 ARE MIS-MARKED "ok"
+--------------------------------------------------------------------------------
+Current recorded verdicts: 2551 ok | 30 text | 29 off-topic | 2 scary.
+
+  zero-flag four (003/006/007/010), 768 images
+      12 audited sheets (numeral-dense, enriched)  192 x 23.4%  =  45
+      remaining 36 sheets                          576 x 10.9%  =  63
+                                                             subtotal 108   (recorded: 0)
+  001/002/004/008/013, 884 images
+      explicit-text density 13.2% vs 31.4% for the four -> 10.9% x (13.2/31.4) = 4.6%
+                                                   884 x  4.6%  =  41   (recorded: 0)
+  strict 000/005/009/011/012, 960 images
+      explicit-text density 16.9% -> 10.9% x (16.9/31.4) = 5.9%
+                                                   960 x  5.9%  =  56   (recorded: 30)
+                                                                        -> ~26 missed
+  ---------------------------------------------------------------------------------
+  estimated TRUE baked-in-text count  ~205  (7.8% of 2,612)
+  currently flagged                     30
+  estimated MIS-MARKED "ok"           ~175   plausible range 110 - 300
+
+The range is dominated by the 7-of-64 base-rate sample (95% CI ~4.5%-21%). The lower bound
+is firm: 45 mis-marked images are already itemised by name in regen-text-audit.csv, plus 7
+more found incidentally on the 4 random sheets = 52 named, verified-class defects that the
+prior pass called "ok". The true count is 3.5x to 10x the recorded 30.
+
+CONFIDENCE: high on direction and on the zero-flag batches being broken (18/18 confirmed,
+0/9 controls over-flagged, and an independent random-sheet sample reproduces it).
+Medium on the exact total for the full 2,612 - the extrapolation to the un-sampled batches
+leans on prompt-density scaling, not on direct observation.
+
+--------------------------------------------------------------------------------
+5. RECOMMENDATION
+--------------------------------------------------------------------------------
+DO NOT merge the library on the current verdicts.
+
+1. Fix the pipeline first, or round 3 reproduces this exactly. In build-regen-worklist.py,
+   send 'text' verdicts to the REWRITE path, not keep-subject: the subject itself has to
+   be restated without the word/letter/number (e.g. "a calendar page with a blank date
+   cell" instead of "showing the number 365"). Regenerating a text-as-subject prompt with
+   nicer boilerplate cannot work.
+2. Mandatory re-review, tier 1: the 506 images whose prompt explicitly requests text
+   (~32 sheets, one pass). Hit rate there is ~47%, so ~200 of the ~205 estimated defects
+   sit in this 19% of the library. This is the cheap, high-yield sweep.
+3. Tier 2: sample ~15% of the remaining 2,106 to bound the residual; escalate to full
+   re-review only if that sample lands above ~3%.
+4. Re-review all 14 batches against ONE written bar, not just the four zero-flag ones -
+   batch 011 detected 36.5% on the same prompt class where this audit found 47%, so even
+   the strictest pass is leaving roughly a quarter of its own class on the floor.
+5. Set the bar as "legible glyphs inside the artwork". Decorative garble should be a
+   separate, lower-severity verdict: 2 of the 3 garble claims checked here did not survive
+   magnification, and the harness caption strip must never count.

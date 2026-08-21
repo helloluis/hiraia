@@ -64,7 +64,15 @@ STYLE = ('. Black and white pen-and-ink drawing, hand-inked with a brush pen, co
          'imperfect organic linework, in the style of a vintage scientific encyclopedia engraving, '
          'black ink on a plain white background, a single subject centered with generous empty '
          'white space around it, no scenery.')
-QWEN_NEG = ('color, colored, colorful, yellow, sepia, tinted, watercolor, painting, photograph, '
+# 2026-08 review fix: gpt-image has no negative_prompt, so text suppression must ride the
+# positive prompt — appended for the OpenAI call only (Qwen gets it via QWEN_NEG instead,
+# since negations in a diffusion positive prompt backfire).
+TEXT_FREE = (', absolutely no text, words, letters, numbers, labels, captions, signatures or '
+             'watermarks anywhere in the image')
+# 2026-08 review fix: added the text family — baked-in words/labels were 87% of audit flags.
+QWEN_NEG = ('text, words, letters, numbers, typography, writing, alphabet, characters, label, labels, '
+            'caption, captions, title, signature, watermark, logo, brand name, '
+            'color, colored, colorful, yellow, sepia, tinted, watercolor, painting, photograph, '
             '3d render, gradient, grey background, dark background, black background, vignette, shadow, '
             'border, frame, box, card, sticker, paper, tape, sketchbook, notebook, scene, mockup, vector')
 
@@ -72,7 +80,7 @@ class Moderation(Exception): pass
 
 # ---- OpenAI ----
 def openai_gen(prompt):
-    payload = {'model': OAI_MODEL, 'prompt': strip_style(prompt) + STYLE, 'size': OAI_SIZE,
+    payload = {'model': OAI_MODEL, 'prompt': strip_style(prompt) + STYLE + TEXT_FREE, 'size': OAI_SIZE,
                'quality': OAI_QUALITY, 'n': 1, 'background': 'opaque', 'output_format': 'png'}
     body = json.dumps(payload).encode()
     for attempt in range(6):
