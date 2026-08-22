@@ -95,11 +95,21 @@ export const useEngineStore = create<EngineState>((set, get) => ({
     // Already warming for THIS language — bootstrap, the feed's warmModel, and /chat all
     // kick a load; a second concurrent LocalEngine init would double the ~2 GB in RAM.
     if (get().loadingPhase !== 'idle' && get().language === language) return;
+
+    // ARM THE GUARD SYNCHRONOUSLY, before the first await. The two checks above are a
+    // check-then-act, and the state they check used to be set AFTER `await setSetting(...)`
+    // — so bootstrap() and the feed's warmModel(), which fire within ~10ms of each other at
+    // launch, both slipped through the gap and each called loadModel. SDK 0.13.1 tolerated
+    // the duplicate; 0.17.1 rejects it outright:
+    //     MODEL_LOAD_FAILED (52200): Model with ID "…" is already registered
+    // which left the engine uninitialised and the tutor dead for the whole session. There
+    // must be NO await between reading loadingPhase and writing it.
+    const prev = get().engine;
+    set({ language, isReady: false, error: null, loadingProgress: 0, loadingPhase: 'warming' });
     try {
-      // Persist first so a crash mid-reload still remembers the choice.
+      // Persist AFTER arming the guard — a crash in this window just loses the preference,
+      // whereas persisting first re-opened the race.
       await setSetting('language', language);
-      const prev = get().engine;
-      set({ language, isReady: false, error: null, loadingProgress: 0, loadingPhase: 'warming' });
       // Re-roll the cold-start "Alam mo ba na…?" factoid in the NEW language. The composed
       // text is locked at roll time, so the one currently on screen stays Tagalog forever
       // (it lives in the TTL cache for ~1h) — clear + re-roll keeps the language consistent.
