@@ -268,12 +268,40 @@ function overlap(a: CardFact, b: CardFact): number {
 }
 
 /**
- * The two "turn the page" choices for the current card:
+ * Cards walked on one thread before the feed offers a fork. Mirrors the mobile app
+ * (packages/mobile/src/data/cards.ts) — keep the two in sync.
+ *
+ * Why a cadence counter and not "the thread ran out": measured over 40 x 60-card walks of
+ * the real graph, the median card has ONE follow-on above 15% term overlap and 46% have
+ * none, with no bimodality in the strength distribution. Branching on exhaustion fires on
+ * ~half of all cards, the opposite of occasional. The LaBSE edge graph from the funded
+ * data build is what will make thread strength a usable signal.
+ */
+export const BRANCH_EVERY = 8;
+
+export interface NextStepOpts {
+  /** Cards walked since a branch was last OFFERED; at >= BRANCH_EVERY the thread forks. */
+  threadDepth?: number;
+}
+
+/**
+ * The "turn the page" choice(s) for the current card.
+ *
+ * Returns ONE choice (the deep, associated next topic) on a normal page, and TWO (deep
+ * plus a lateral jump) when the thread forks — on the BRANCH_EVERY cadence, or at once
+ * when this card has no genuinely associated follow-on left. Callers can treat
+ * `choices.length > 1` as "this page branches".
+ *
  *   deep    — most-associated unseen fact (shared distinctive terms)
  *   lateral — random same-domain unseen fact with ~no overlap (fresh topic)
  * Falls back gracefully as the unseen pool thins; last resort allows seen cards.
  */
-export function nextChoices(currentId: string, seen: ReadonlySet<string>, language: LanguageKey): CardChoice[] {
+export function nextChoices(
+  currentId: string,
+  seen: ReadonlySet<string>,
+  language: LanguageKey,
+  opts: NextStepOpts = {}
+): CardChoice[] {
   const cur = BY_ID.get(currentId);
   if (!cur) return [];
   const usable = (f: CardFact) => f.id !== currentId && !seen.has(f.id);
@@ -303,6 +331,11 @@ export function nextChoices(currentId: string, seen: ReadonlySet<string>, langua
     }
   }
 
+  // A card with no ASSOCIATED follow-on left is a dead end: whatever comes next is an
+  // unrelated jump anyway, so the reader should get the choice. Captured before the
+  // fallbacks below, which fill `deep` with a random card.
+  const deadEnd = !deep;
+
   // lateral: same domain, minimal overlap, not the deep pick, and NOT a reworded twin
   // of the current card (same-topic-wording facts exist across grades/domains).
   const domainPool = (BY_DOMAIN.get(cur.domain) ?? []).filter(
@@ -325,9 +358,15 @@ export function nextChoices(currentId: string, seen: ReadonlySet<string>, langua
     lateral = pick(others);
   }
 
+  // Fork on the cadence, or immediately at a dead end. Otherwise the page is single-path.
+  const branch = deadEnd || (opts.threadDepth ?? 0) >= BRANCH_EVERY;
+
   const out: CardChoice[] = [];
   if (deep) out.push({ factId: deep.id, label: choiceLabel(deep, language), kind: 'deep' });
   if (lateral) out.push({ factId: lateral.id, label: choiceLabel(lateral, language), kind: 'lateral' });
+
+  if (!branch) return out.slice(0, 1); // single arrow: the associated next topic
+
   // never offer two identical labels — retitle the second from its topic
   if (out.length === 2 && out[0]!.label === out[1]!.label) {
     const f = BY_ID.get(out[1]!.factId)!;

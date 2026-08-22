@@ -68,7 +68,9 @@ async function main() {
   const add = (kind: string, detail: string) => issues.push({ kind, detail });
   const stats = {
     cards: 0,
-    deadEnds: 0,
+    deadEnds: 0, // genuinely stuck: nextChoices returned NOTHING
+    forks: 0, // pages that offered two choices (cadence or dead-end escape)
+    forkGaps: [] as number[], // cards between consecutive forks
     dupLabels: 0,
     genericLabels: 0,
     longFacts: 0,
@@ -90,6 +92,9 @@ async function main() {
       const recent: string[] = [];
       const asked = new Set<string>();
       let untilQuestion = nextGap();
+      // mirrors cardStore.threadDepth: cards since a fork was last OFFERED
+      let threadDepth = 0;
+      let sinceFork = 0;
 
       let cur = C.startCard(seen);
       seen.add(cur.id);
@@ -114,11 +119,28 @@ async function main() {
         }
 
         // --- path/choice quality ---
-        const choices = C.nextChoices(cur.id, seen, lang) as Array<{ factId: string; label: string; kind: string }>;
-        if (choices.length < 2) {
+        // cardStore pre-increments before asking, so mirror that exactly or the measured
+        // fork cadence drifts one card from the app's.
+        const depth = threadDepth + 1;
+        const choices = C.nextChoices(cur.id, seen, lang, { threadDepth: depth }) as Array<{
+          factId: string;
+          label: string;
+          kind: string;
+        }>;
+        // The feed is single-path by design, so ONE choice is the healthy case. Only an
+        // empty result means the walk is genuinely stuck.
+        if (choices.length === 0) {
           stats.deadEnds++;
-          add('dead-end', `${policy.name}: only ${choices.length} choice(s) after ${cur.topic}`);
+          add('dead-end', `${policy.name}: no choices at all after ${cur.topic}`);
         }
+        sinceFork++;
+        if (choices.length > 1) {
+          stats.forks++;
+          stats.forkGaps.push(sinceFork);
+          sinceFork = 0;
+        }
+        // reset the counter on the page that offered the fork, exactly as cardStore does
+        threadDepth = choices.length > 1 ? 0 : depth;
         if (choices.length === 2) {
           if (choices[0]!.label.toLowerCase() === choices[1]!.label.toLowerCase()) {
             stats.dupLabels++;
@@ -173,6 +195,8 @@ async function main() {
         // --- advance ---
         const pick = choices[policy.pick(i)] ?? choices[0];
         if (!pick) break; // truly stuck
+        // taking the lateral fork is a topic switch, so it restarts the thread (cardStore)
+        if (pick.kind === 'lateral') threadDepth = 0;
         const next = C.getCard(pick.factId);
         if (!next) break;
         if (seen.has(next.id)) {
@@ -203,7 +227,13 @@ async function main() {
   lines.push(`  reading load: median ${med(stats.factWords)} words (tagalog) | long (>48w): ${stats.longFacts} (${pct(stats.longFacts)})`);
   lines.push(`  missing a translation: ${stats.missingTrans}`);
   lines.push('PATH / CHOICES');
-  lines.push(`  dead-ends (<2 choices): ${stats.deadEnds}`);
+  lines.push(`  dead-ends (no choices at all): ${stats.deadEnds}`);
+  {
+    const g = stats.forkGaps;
+    const mean = g.length ? (g.reduce((a, b) => a + b, 0) / g.length).toFixed(1) : 'n/a';
+    const pct = ((100 * stats.forks) / Math.max(stats.cards, 1)).toFixed(1);
+    lines.push(`  forks (2 choices offered): ${stats.forks} (${pct}% of cards, mean gap ${mean})`);
+  }
   lines.push(`  duplicate labels: ${stats.dupLabels}`);
   lines.push(`  weak/generic labels: ${stats.genericLabels}  | median label length: ${med(stats.labelLens)} chars`);
   lines.push(`  repeats within a run: ${stats.repeatsInRun}  | consecutive same-topic: ${stats.consecDup}`);

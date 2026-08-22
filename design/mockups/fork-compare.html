@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fork colour pairs &mdash; independent verification</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#f7f7f6;color:#1b1b1b;
+    font:15px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:1010px;margin:0 auto;padding:44px 16px 90px}
+  h1{font-size:25px;margin:0 0 6px;font-weight:650;letter-spacing:-.01em}
+  .sub{color:#666;font-size:13px;margin:0 0 26px}
+  .intro{background:#fff;border:1px solid #e0e0dd;border-radius:8px;padding:20px 22px;margin-bottom:16px}
+  .intro p{margin:0 0 10px;max-width:74ch}
+  .intro p:last-child{margin-bottom:0}
+  .reqs{background:#fff;border:1px solid #e0e0dd;border-radius:8px;padding:20px 22px;margin-bottom:34px}
+  .reqs h3,.intro h3{margin:0 0 10px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#777;font-weight:650}
+  .reqs ol{margin:0;padding-left:20px} .reqs li{margin:4px 0;max-width:80ch}
+  .method{font-size:12.5px;color:#666;background:#fff;border:1px solid #e0e0dd;border-radius:8px;
+    padding:16px 18px;margin-bottom:34px}
+  .method code{background:#f0f0ee;padding:1px 4px;border-radius:3px;font-size:11.5px}
+  section.pair{background:#fff;border:1px solid #e0e0dd;border-radius:8px;padding:24px;margin-bottom:26px}
+  .ph{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px}
+  .rank{font-size:13px;font-weight:700;color:#fff;background:#2f2f2f;border-radius:5px;
+    padding:4px 9px;margin-top:3px;flex:none}
+  h2{font-size:20px;margin:0;font-weight:650;letter-spacing:-.01em}
+  .strat{margin:2px 0 0;font-size:12.5px;color:#777}
+  .strat a{color:#777}
+  .swatches{display:flex;gap:26px;flex-wrap:wrap;margin-bottom:18px}
+  .sw{display:flex;gap:10px;align-items:center}
+  .chip{width:58px;height:44px;border-radius:5px;border:1px solid rgba(0,0,0,.18);
+    display:flex;align-items:center;justify-content:center;flex:none}
+  .chip span{color:#F4EAD5;font-weight:700;font-size:14px}
+  .swm{display:flex;flex-direction:column;line-height:1.35}
+  .swm b{font-size:12.5px;font-weight:620}
+  .swm code{font-size:12px;color:#444;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .swm span{font-size:11.5px;color:#888}
+  table.num{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:14px}
+  table.num th{text-align:left;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;
+    color:#888;font-weight:600;padding:0 8px 6px 0;border-bottom:1px solid #e6e6e3}
+  table.num td{padding:5px 8px 5px 0;border-bottom:1px solid #f0f0ee;vertical-align:baseline}
+  table.num td:first-child{color:#555;width:44%}
+  table.num td:not(:first-child){font-variant-numeric:tabular-nums;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px}
+  tr.hl td{background:#fafaf8}
+  .ok{color:#1d6b33} .bad{color:#a32020;font-weight:600}
+  .big{color:#1d6b33;font-weight:650} .dim{color:#999}
+  .verdict{font-size:13.5px;line-height:1.6;background:#fafaf8;border-left:3px solid #cfcfca;
+    padding:12px 14px;margin:0 0 20px;max-width:none}
+  .fw{width:100%;overflow:hidden;border:1px solid #e6e6e3;border-radius:6px;background:#20342C}
+  .fw iframe{width:1500px;height:2200px;border:0;transform:scale(.64);transform-origin:0 0}
+  .rec{background:#fff;border:2px solid #2f2f2f;border-radius:8px;padding:26px 24px;margin-top:40px}
+  .rec h2{margin:0 0 4px} .rec h3{font-size:13px;margin:22px 0 6px;font-weight:650}
+  .rec p{max-width:80ch;margin:0 0 11px;font-size:14px}
+  .rec ul{max-width:80ch;padding-left:20px;margin:0 0 11px} .rec li{margin:5px 0;font-size:14px}
+  .flag{background:#fff8f0;border:1px solid #f0dcc4;border-radius:8px;padding:18px 20px;margin-bottom:34px;font-size:13.5px}
+  .flag h3{margin:0 0 10px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#8a5a20;font-weight:650}
+  .flag ul{margin:0;padding-left:20px} .flag li{margin:5px 0;max-width:80ch}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .sum{width:100%;border-collapse:collapse;font-size:13px;background:#fff;
+    border:1px solid #e0e0dd;border-radius:8px;margin-bottom:34px;overflow:hidden}
+  .sum th{text-align:left;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:#888;
+    font-weight:600;padding:11px 12px;border-bottom:1px solid #e6e6e3;background:#fafaf8}
+  .sum td{padding:9px 12px;border-bottom:1px solid #f0f0ee;font-variant-numeric:tabular-nums}
+  .sum td:first-child{font-family:inherit}
+  .sum tr:last-child td{border-bottom:0}
+</style></head>
+<body><div class="wrap">
+
+<h1>Fork colour pairs &mdash; independent verification</h1>
+<p class="sub">Four proposals, all numbers recomputed from the hexes actually present in each file.
+  Nothing below is a designer&rsquo;s claim.</p>
+
+<div class="intro">
+  <h3>The problem</h3>
+  <p>The branch card&rsquo;s two options are currently painted brick red <code>#B24F35</code> and
+  teal green <code>#2F6360</code> &mdash; a traffic light. A child reads red as <i>wrong</i> and green as
+  <i>right</i> before reading either word, so a fork that is supposed to offer two equal roads
+  instead nominates an answer.</p>
+  <p>Each candidate below replaces both fork colours plus the banner/keyline colour (which was
+  also brick, i.e. the same colour as choice A, quietly endorsing it). Gold <code>#D8A03A</code>
+  stays the single-path &ldquo;next&rdquo; ticket and teal is demoted to quiz stock in all four.</p>
+</div>
+
+<div class="reqs">
+  <h3>Requirements under test</h3>
+  <ol>
+    <li>Neither colour in the red hue band (HSL &lt;20&deg; or &gt;340&deg;) or the green band (80&ndash;170&deg;).</li>
+    <li>Zero implied valence &mdash; no colour that reads as alert, correct, or default.</li>
+    <li>Cream <code>#F4EAD5</code> label and letter chip clear WCAG AA (&ge;4.5:1) on both.</li>
+    <li>The pair stays separable for dichromats: &Delta;E<sub>00</sub> &ge;10 under deuteranopia,
+        protanopia and tritanopia (requirement 8).</li>
+    <li>Neither collides with the gold &ldquo;next&rdquo; ticket (&Delta;E<sub>00</sub> ~15 floor) or with
+        the quiz teal / forest ink.</li>
+    <li>The banner colour belongs to neither option.</li>
+    <li>Still mid-century: low chroma, period pigments, no neon or pastel.</li>
+    <li>Solid colours only &mdash; React-Native-portable as <code>backgroundColor</code>.</li>
+  </ol>
+</div>
+
+<div class="method">
+  <b>Method.</b> WCAG 2.1 relative-luminance contrast. Dichromat simulation is
+  Brettel&ndash;Vi&eacute;not&ndash;Mollon 1997 two-half-plane projection at severity 1.0 in linear sRGB,
+  using the libDaltonLens precomputed parameters; verified against the textbook cases &mdash;
+  pure red renders <code>#A48B00</code> under deutan and <code>#6C5C0C</code> under protan, pure blue
+  renders <code>#006288</code> under tritan, all three exact. Distances are CIEDE2000 in CIELAB/D65.
+  Reference point: the incumbent brick/teal pair scores <b>4.33:1</b> on its own label (an AA
+  <i>fail</i>) and falls to <b>&Delta;E<sub>00</sub> 17.2</b> under protanopia, where it becomes
+  <code>#6B6036</code> against <code>#5E5F60</code> &mdash; two muddy mid-tones at the same lightness
+  (&Delta;L* 0.6). That is the bar every candidate has to beat.
+</div>
+
+<table class="sum">
+  <tr><th>pair</th><th>WCAG A / B</th><th>worst CVD &Delta;E<sub>00</sub></th>
+      <th>gold clearance A / B</th><th>hue A / B</th></tr>
+  <tr><td><b>Federal Blue &amp; Dark Ochre</b> <span class="dim">inkpair</span></td>
+      <td class="ok">7.21 / 5.09</td><td class="ok"><b>39.0</b></td><td>59.1 / 27.2</td><td>216&deg; / 41&deg;</td></tr>
+  <tr><td><b>Denim &amp; Tobacco</b> <span class="dim">coolwarm</span></td>
+      <td class="ok">7.25 / 4.90</td><td class="ok">33.3</td><td>54.8 / 27.7</td><td>209&deg; / 27&deg;</td></tr>
+  <tr><td><b>Blueprint &amp; Heather</b> <span class="dim">valuesplit</span></td>
+      <td class="ok">10.21 / 4.82</td><td class="ok">18.7</td><td>64.4 / 44.9</td><td>225&deg; / 300&deg;</td></tr>
+  <tr><td><b>Blueprint &amp; Mulberry</b> <span class="dim">twocool</span></td>
+      <td class="ok">4.59 / 6.41</td><td class="ok">16.5</td><td>52.0 / 51.7</td><td>204&deg; / 331&deg;</td></tr>
+  <tr><td class="dim">incumbent brick / teal <span class="dim">(for reference)</span></td>
+      <td class="bad">4.33 / 5.72</td><td class="bad">17.2</td><td class="dim">&mdash;</td>
+      <td class="bad">12&deg; RED / 177&deg;</td></tr>
+</table>
+
+<div class="flag">
+  <h3>Designer claims that did not survive recomputation</h3>
+  <ul>
+    <li><b>valuesplit</b> &mdash; the only material misses in the set. Its tritanopia row is wrong in
+      both the hex and the distance: choice B simulates to <code>#726264</code>, not the claimed
+      <code>#71635B</code>, and the pair&rsquo;s tritan separation is <b>29.4</b>, not the claimed 26.4.
+      Its deuteranopia hex for choice A is <code>#153661</code>, not <code>#103761</code>
+      (&Delta;E<sub>00</sub> 20.8 vs the claimed 20.6). Both errors run in the proposal&rsquo;s own favour
+      or are neutral, and neither changes its ranking &mdash; but the tritan row as printed in the
+      file is not reproducible.</li>
+    <li><b>inkpair</b> &mdash; rounding-level slips only. Protan B is <code>#6F6022</code> not
+      <code>#6E6022</code>; tritan is 39.0/&Delta;E76 35.6 against a claimed 39.3/36.2. Its
+      &ldquo;incumbent fell to 16.9 under protanopia&rdquo; is 17.2 by my maths. Its three
+      &ldquo;ruled out&rdquo; pairs all score slightly <i>better</i> than claimed
+      (8.4/6.6 not 8.0/6.3; 14.1/10.0 not 13.7/9.3) &mdash; still failures, conclusion unaffected.</li>
+    <li><b>coolwarm</b> &mdash; nothing failed. Every figure reproduced exactly, including the
+      50%-severity row (34.4 / 33.2 / 34.2), the banner bias of 0.1, the 5.1 tritan collision with
+      the quiz teal it discloses against itself, and the <code>#84562F</code> fallback (5.24:1, 29.6).</li>
+    <li><b>twocool</b> &mdash; nothing failed. Every figure reproduced exactly, including the
+      unflattering ones: protan 16.5, deutan B collapsing to the neutral <code>#55575B</code>, and
+      the incumbent&rsquo;s 17.2 that its own copy concedes is close.</li>
+    <li>Not a claim failure, but worth recording: <b>every</b> proposal describes brick as retired,
+      and in all four it is. <code>--brick</code> survives only as a dead declaration in coolwarm and
+      as the &ldquo;fail&rdquo; text colour of inkpair&rsquo;s own documentation table &mdash; it paints no card
+      element in any file. <code>--teal</code> is declared but unused in all four, so the
+      &ldquo;teal keeps its day job&rdquo; claim is stated, not demonstrated on-page.</li>
+  </ul>
+</div>
+
+
+<section class="pair" id="inkpair">
+  <header class="ph">
+    <div class="rank">#1</div>
+    <div>
+      <h2>Federal Blue &amp; Dark Ochre</h2>
+      <p class="strat">strategy: two printed inks &middot; <a href="fork-inkpair.html">fork-inkpair.html</a></p>
+    </div>
+  </header>
+
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:#2B4C7E"><span>Aa</span></div>
+      <div class="swm"><b>A &mdash; Federal Blue</b><code>#2B4C7E</code><span>L* 32.2 &middot; C* 32.3 &middot; h 279&deg;</span></div></div>
+    <div class="sw"><div class="chip" style="background:#7A5E22"><span>Aa</span></div>
+      <div class="swm"><b>B &mdash; Dark Ochre</b><code>#7A5E22</code><span>L* 41.6 &middot; C* 37.7 &middot; h 83&deg;</span></div></div>
+    <div class="sw"><div class="chip" style="background:#4D4740"><span>Aa</span></div>
+      <div class="swm"><b>banner &mdash; Press Graphite</b><code>#4D4740</code><span>L* 30.5 &middot; C* 5.2 &middot; h 78&deg;</span></div></div>
+  </div>
+
+  <table class="num">
+    <tr><th></th><th>choice A</th><th>choice B</th><th>A&harr;B</th></tr>
+    <tr><td>WCAG, #F4EAD5 on it</td>
+        <td class="ok">7.21:1</td>
+        <td class="ok">5.09:1</td>
+        <td>&mdash;</td></tr>
+    <tr><td>normal vision</td><td colspan="2" class="dim">#2B4C7E / #7A5E22</td>
+        <td class="big">41.8</td></tr>
+    <tr><td>deuteranopia (~6% of boys)</td><td class="dim">#2A4C7E</td><td class="dim">#726221</td>
+        <td class="big">43.4</td></tr>
+    <tr><td>protanopia (~1%)</td><td class="dim">#2A4C7E</td><td class="dim">#6F6022</td>
+        <td class="big">42.8</td></tr>
+    <tr><td>tritanopia (&lt;0.01%)</td><td class="dim">#195363</td><td class="dim">#7E585C</td>
+        <td class="big">39.0</td></tr>
+    <tr class="hl"><td><b>worst case across all three</b></td><td colspan="2"></td>
+        <td class="ok"><b>39.0</b></td></tr>
+    <tr><td>&Delta;E<sub>00</sub> from gold #D8A03A <span class="dim">(floor ~15)</span></td>
+        <td class="ok">59.1</td>
+        <td class="ok">27.2</td><td></td></tr>
+    <tr><td>&Delta;E<sub>00</sub> from quiz teal #2F6360</td><td>23.5</td><td>29.3</td><td></td></tr>
+    <tr><td>&Delta;E<sub>00</sub> from forest ink #1C3B2E</td><td>28.1</td><td>29.1</td><td></td></tr>
+    <tr><td>banner &Delta;E<sub>00</sub> from each <span class="dim">(bias 4.7)</span></td>
+        <td>23.7</td><td>19.0</td><td></td></tr>
+    <tr><td>HSL hue &mdash; red band &lt;20&deg;/&gt;340&deg;, green 80&ndash;170&deg;</td>
+        <td class="ok">216&deg; &middot; clear</td><td class="ok">41&deg; &middot; clear</td><td></td></tr>
+  </table>
+
+  <p class="verdict"><b>Best in set.</b> Worst-case dichromat separation &Delta;E<sub>00</sub> 39.0 (protan/deutan &gt;42) &mdash; nearly 4&times; the floor and 2.3&times; the incumbent&rsquo;s 17.2. Both inks clear AA with the widest floor of the four (5.09:1). Only soft spot: ochre is gold&rsquo;s hue family, separated by lightness (&Delta;L* 27.9) rather than hue &mdash; &Delta;E<sub>00</sub> 27.2, still past the 15 floor.</p>
+
+  <div class="fw" style="height:1360px"><iframe src="fork-inkpair.html" loading="lazy" style="height:2125px" title="Federal Blue &amp; Dark Ochre"></iframe></div>
+</section>
+<section class="pair" id="coolwarm">
+  <header class="ph">
+    <div class="rank">#2</div>
+    <div>
+      <h2>Denim &amp; Tobacco</h2>
+      <p class="strat">strategy: cool / warm split &middot; <a href="fork-coolwarm.html">fork-coolwarm.html</a></p>
+    </div>
+  </header>
+
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:#2F4E6B"><span>Aa</span></div>
+      <div class="swm"><b>A &mdash; Denim Slate</b><code>#2F4E6B</code><span>L* 32.1 &middot; C* 20.4 &middot; h 264&deg;</span></div></div>
+    <div class="sw"><div class="chip" style="background:#8A5A32"><span>Aa</span></div>
+      <div class="swm"><b>B &mdash; Tobacco Tan</b><code>#8A5A32</code><span>L* 42.7 &middot; C* 34.5 &middot; h 63&deg;</span></div></div>
+    <div class="sw"><div class="chip" style="background:#4A453D"><span>Aa</span></div>
+      <div class="swm"><b>banner &mdash; Graphite</b><code>#4A453D</code><span>L* 29.5 &middot; C* 5.6 &middot; h 85&deg;</span></div></div>
+  </div>
+
+  <table class="num">
+    <tr><th></th><th>choice A</th><th>choice B</th><th>A&harr;B</th></tr>
+    <tr><td>WCAG, #F4EAD5 on it</td>
+        <td class="ok">7.25:1</td>
+        <td class="ok">4.90:1</td>
+        <td>&mdash;</td></tr>
+    <tr><td>normal vision</td><td colspan="2" class="dim">#2F4E6B / #8A5A32</td>
+        <td class="big">34.7</td></tr>
+    <tr><td>deuteranopia (~6% of boys)</td><td class="dim">#3A4B6B</td><td class="dim">#756730</td>
+        <td class="big">36.9</td></tr>
+    <tr><td>protanopia (~1%)</td><td class="dim">#3E4D6B</td><td class="dim">#6C5F32</td>
+        <td class="big">33.3</td></tr>
+    <tr><td>tritanopia (&lt;0.01%)</td><td class="dim">#29515E</td><td class="dim">#8D555B</td>
+        <td class="big">38.8</td></tr>
+    <tr class="hl"><td><b>worst case across all three</b></td><td colspan="2"></td>
+        <td class="ok"><b>33.3</b></td></tr>
+    <tr><td>&Delta;E<sub>00</sub> from gold #D8A03A <span class="dim">(floor ~15)</span></td>
+        <td class="ok">54.8</td>
+        <td class="ok">27.7</td><td></td></tr>
+    <tr><td>&Delta;E<sub>00</sub> from quiz teal #2F6360</td><td>18.5</td><td>33.3</td><td></td></tr>
+    <tr><td>&Delta;E<sub>00</sub> from forest ink #1C3B2E</td><td>22.8</td><td>34.4</td><td></td></tr>
+    <tr><td>banner &Delta;E<sub>00</sub> from each <span class="dim">(bias 0.1)</span></td>
+        <td>20.2</td><td>20.1</td><td></td></tr>
+    <tr><td>HSL hue &mdash; red band &lt;20&deg;/&gt;340&deg;, green 80&ndash;170&deg;</td>
+        <td class="ok">209&deg; &middot; clear</td><td class="ok">27&deg; &middot; clear</td><td></td></tr>
+  </table>
+
+  <p class="verdict"><b>Strong second, same idea, thinner margins.</b> Worst case 33.3 (protan) and every claim recomputed exactly. Loses to inkpair on three numbers: contrast floor 4.90 vs 5.09, worst-case CVD 33.3 vs 39.0, and denim sits &Delta;E<sub>00</sub> 18.5 from the quiz teal vs 23.5 &mdash; and under tritanopia denim collapses to 5.1 from the simulated quiz stock. Wins on one: the banner is perfectly equidistant (20.2 / 20.1).</p>
+
+  <div class="fw" style="height:1203px"><iframe src="fork-coolwarm.html" loading="lazy" style="height:1880px" title="Denim &amp; Tobacco"></iframe></div>
+</section>
+<section class="pair" id="valuesplit">
+  <header class="ph">
+    <div class="rank">#3</div>
+    <div>
+      <h2>Blueprint &amp; Heather</h2>
+      <p class="strat">strategy: value-led &middot; <a href="fork-valuesplit.html">fork-valuesplit.html</a></p>
+    </div>
+  </header>
+
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:#243361"><span>Aa</span></div>
+      <div class="swm"><b>A &mdash; Blueprint</b><code>#243361</code><span>L* 22.3 &middot; C* 30.8 &middot; h 288&deg;</span></div></div>
+    <div class="sw"><div class="chip" style="background:#755F75"><span>Aa</span></div>
+      <div class="swm"><b>B &mdash; Heather</b><code>#755F75</code><span>L* 43.1 &middot; C* 15.9 &middot; h 325&deg;</span></div></div>
+    <div class="sw"><div class="chip" style="background:#4B4641"><span>Aa</span></div>
+      <div class="swm"><b>banner &mdash; Graphite</b><code>#4B4641</code><span>L* 30.1 &middot; C* 3.9 &middot; h 74&deg;</span></div></div>
+  </div>
+
+  <table class="num">
+    <tr><th></th><th>choice A</th><th>choice B</th><th>A&harr;B</th></tr>
+    <tr><td>WCAG, #F4EAD5 on it</td>
+        <td class="ok">10.21:1</td>
+        <td class="ok">4.82:1</td>
+        <td>&mdash;</td></tr>
+    <tr><td>normal vision</td><td colspan="2" class="dim">#243361 / #755F75</td>
+        <td class="big">22.0</td></tr>
+    <tr><td>deuteranopia (~6% of boys)</td><td class="dim">#153661</td><td class="dim">#626874</td>
+        <td class="big">20.8</td></tr>
+    <tr><td>protanopia (~1%)</td><td class="dim">#0E3461</td><td class="dim">#5B6375</td>
+        <td class="big">18.7</td></tr>
+    <tr><td>tritanopia (&lt;0.01%)</td><td class="dim">#153A45</td><td class="dim">#726264</td>
+        <td class="big">29.4</td></tr>
+    <tr class="hl"><td><b>worst case across all three</b></td><td colspan="2"></td>
+        <td class="ok"><b>18.7</b></td></tr>
+    <tr><td>&Delta;E<sub>00</sub> from gold #D8A03A <span class="dim">(floor ~15)</span></td>
+        <td class="ok">64.4</td>
+        <td class="ok">44.9</td><td></td></tr>
+    <tr><td>&Delta;E<sub>00</sub> from quiz teal #2F6360</td><td>27.7</td><td>33.1</td><td></td></tr>
+    <tr><td>&Delta;E<sub>00</sub> from forest ink #1C3B2E</td><td>27.8</td><td>34.0</td><td></td></tr>
+    <tr><td>banner &Delta;E<sub>00</sub> from each <span class="dim">(bias 3.4)</span></td>
+        <td>22.7</td><td>19.3</td><td></td></tr>
+    <tr><td>HSL hue &mdash; red band &lt;20&deg;/&gt;340&deg;, green 80&ndash;170&deg;</td>
+        <td class="ok">225&deg; &middot; clear</td><td class="ok">300&deg; &middot; clear</td><td></td></tr>
+  </table>
+
+  <p class="verdict"><b>Cleanest hue story, weakest premise.</b> Blue 225&deg; and lilac 300&deg; are the two colours furthest from both forbidden bands, and gold clearance is the best in the set (64.4 / 44.9). But separation is 18.7 at protanopia and the mechanism is lightness &mdash; the rendered protan/deutan frames show choice B as a true neutral (#5B6375 / #626874), which is exactly how every UI kit draws <i>disabled</i>. Contrast floor 4.82 is also the tightest of the four.</p>
+
+  <div class="fw" style="height:1222px"><iframe src="fork-valuesplit.html" loading="lazy" style="height:1910px" title="Blueprint &amp; Heather"></iframe></div>
+</section>
+<section class="pair" id="twocool">
+  <header class="ph">
+    <div class="rank">#4</div>
+    <div>
+      <h2>Blueprint &amp; Mulberry</h2>
+      <p class="strat">strategy: two cool hues &middot; <a href="fork-twocool.html">fork-twocool.html</a></p>
+    </div>
+  </header>
+
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:#1E6EA5"><span>Aa</span></div>
+      <div class="swm"><b>A &mdash; Blueprint Blue</b><code>#1E6EA5</code><span>L* 44.4 &middot; C* 36.3 &middot; h 264&deg;</span></div></div>
+    <div class="sw"><div class="chip" style="background:#77435C"><span>Aa</span></div>
+      <div class="swm"><b>B &mdash; Dusty Mulberry</b><code>#77435C</code><span>L* 35.4 &middot; C* 26.5 &middot; h 349&deg;</span></div></div>
+    <div class="sw"><div class="chip" style="background:#5F6340"><span>Aa</span></div>
+      <div class="swm"><b>banner &mdash; Olive Drab</b><code>#5F6340</code><span>L* 40.8 &middot; C* 20.9 &middot; h 112&deg;</span></div></div>
+  </div>
+
+  <table class="num">
+    <tr><th></th><th>choice A</th><th>choice B</th><th>A&harr;B</th></tr>
+    <tr><td>WCAG, #F4EAD5 on it</td>
+        <td class="ok">4.59:1</td>
+        <td class="ok">6.41:1</td>
+        <td>&mdash;</td></tr>
+    <tr><td>normal vision</td><td colspan="2" class="dim">#1E6EA5 / #77435C</td>
+        <td class="big">35.0</td></tr>
+    <tr><td>deuteranopia (~6% of boys)</td><td class="dim">#4168A5</td><td class="dim">#55575B</td>
+        <td class="big">19.0</td></tr>
+    <tr><td>protanopia (~1%)</td><td class="dim">#496CA5</td><td class="dim">#454C5C</td>
+        <td class="big">16.5</td></tr>
+    <tr><td>tritanopia (&lt;0.01%)</td><td class="dim">#00748C</td><td class="dim">#75464C</td>
+        <td class="big">46.1</td></tr>
+    <tr class="hl"><td><b>worst case across all three</b></td><td colspan="2"></td>
+        <td class="ok"><b>16.5</b></td></tr>
+    <tr><td>&Delta;E<sub>00</sub> from gold #D8A03A <span class="dim">(floor ~15)</span></td>
+        <td class="ok">52.0</td>
+        <td class="ok">51.7</td><td></td></tr>
+    <tr><td>&Delta;E<sub>00</sub> from quiz teal #2F6360</td><td>21.4</td><td>38.2</td><td></td></tr>
+    <tr><td>&Delta;E<sub>00</sub> from forest ink #1C3B2E</td><td>32.0</td><td>43.1</td><td></td></tr>
+    <tr><td>banner &Delta;E<sub>00</sub> from each <span class="dim">(bias 1.7)</span></td>
+        <td>38.9</td><td>37.2</td><td></td></tr>
+    <tr><td>HSL hue &mdash; red band &lt;20&deg;/&gt;340&deg;, green 80&ndash;170&deg;</td>
+        <td class="ok">204&deg; &middot; clear</td><td class="ok">331&deg; &middot; clear</td><td></td></tr>
+  </table>
+
+  <p class="verdict"><b>Last.</b> Protanopia separation 16.5 is the lowest number anywhere in this set &mdash; only 4.9 clear of the discredited brick/teal pair it replaces (17.2), so it barely improves the thing the brief exists to fix. Under deuteranopia choice B renders #55575B, a true grey. Mulberry&rsquo;s HSL hue 331&deg; is also 9&deg; off the red band, the closest approach to red of any candidate.</p>
+
+  <div class="fw" style="height:1402px"><iframe src="fork-twocool.html" loading="lazy" style="height:2190px" title="Blueprint &amp; Mulberry"></iframe></div>
+</section>
+
+<div class="rec">
+  <h2>Recommendation &mdash; Federal Blue &amp; Dark Ochre (<code>fork-inkpair.html</code>)</h2>
+  <p><b>Ship it.</b> It is the only candidate that is simultaneously the safest for colour-blind
+  children and the most comfortable on contrast, and it wins those on margin rather than on a
+  tie-break.</p>
+  <ul>
+    <li><b>Colour-blind safety, by a wide margin.</b> Worst case across the three deficiencies is
+      <b>&Delta;E<sub>00</sub> 39.0</b>, and the two common ones are 43.4 (deutan) and 42.8 (protan).
+      That is ~4&times; the requirement-8 floor of 10 and <b>2.3&times; the incumbent&rsquo;s 17.2</b>.
+      No other candidate gets past 33.3. The reason is structural, not lucky: blue-vs-yellow is
+      the one opponent channel protanopia and deuteranopia leave intact, so the simulated blue
+      <code>#2A4C7E</code> is almost identical to the real one.</li>
+    <li><b>Widest contrast floor.</b> 7.21:1 and <b>5.09:1</b> &mdash; the highest &ldquo;weaker member&rdquo;
+      of the four (coolwarm 4.90, valuesplit 4.82). On a 4.5:1 requirement that headroom is the
+      difference between a pass and a pass you can still tune.</li>
+    <li><b>Requirement 1 is clean.</b> HSL 216&deg; and 41&deg; &mdash; blue and amber, neither in the red
+      band nor the green band, and 41&deg; is 21&deg; clear of the red boundary (twocool&rsquo;s mulberry is
+      only 9&deg; clear at 331&deg;).</li>
+    <li><b>Mid-century holds.</b> C* 32 and C* 38 against the brick it replaces at C* 52 and the
+      gold that stays at C* 60 &mdash; it is <i>less</i> saturated than the current card. Blue-and-ochre
+      is a literal two-colour schoolbook press job, and the graphite banner is the shared key plate.</li>
+  </ul>
+
+  <h3>Why the others place behind</h3>
+  <ul>
+    <li><b>#2 Denim &amp; Tobacco</b> &mdash; the same strategy executed slightly thinner. Its numbers
+      were the most honestly reported in the set (everything reproduced exactly), and its banner
+      is the most elegantly neutral thing here: 20.2 from A and 20.1 from B, a bias of 0.1 against
+      inkpair&rsquo;s 23.7/19.0. But it loses on the three numbers that matter more: contrast floor
+      4.90 vs 5.09, worst-case CVD 33.3 vs 39.0, and denim sits &Delta;E<sub>00</sub> 18.5 from the
+      quiz teal against federal blue&rsquo;s 23.5 &mdash; and under tritanopia denim lands 5.1 from the
+      simulated quiz stock, a genuine (if rare) collision inkpair does not have.</li>
+    <li><b>#3 Blueprint &amp; Heather</b> &mdash; best hue hygiene (225&deg; / 300&deg;, the furthest any
+      candidate gets from both forbidden bands) and the best gold clearance (64.4 / 44.9), but it
+      buys colour-blind robustness with lightness, and lightness <i>is</i> valence. At 18.7 protan it
+      is barely better than the pair it replaces, and the rendered protan and deutan frames show
+      choice B as <code>#5B6375</code> / <code>#626874</code> &mdash; a true neutral grey, which is how
+      every UI kit draws a disabled control. It also has the tightest contrast in the set (4.82:1)
+      and choice A at L* 22.3 is value-identical to the forest-ink border at L* 22.2, so A&rsquo;s
+      outline disappears while B&rsquo;s does not. Two rows that do not look like each other is the
+      opposite of what this brief asks for.</li>
+    <li><b>#4 Blueprint &amp; Mulberry</b> &mdash; the most principled argument (refuse temperature, so
+      neither option can read as the warm alert) and the worst execution of it. Protanopia
+      separation is <b>16.5</b>, the lowest number in this entire comparison and only 4.9 clear of
+      the brick/teal pair the brief exists to kill; under deuteranopia choice B renders
+      <code>#55575B</code>, a flat grey. It fixes the semantics of the traffic light while barely
+      moving its actual accessibility failure.</li>
+  </ul>
+
+  <h3>If you want to separate #1 from #2</h3>
+  <p>They are close on intent and far apart on only one axis, so decide it on a device, not a
+  spreadsheet. Inkpair&rsquo;s single real risk is the one its own author names: ochre is gold&rsquo;s hue
+  family and is held apart from the &ldquo;next&rdquo; ticket by lightness alone
+  (&Delta;E<sub>00</sub> 27.2, &Delta;L* 27.9). Put both cards on the Redmi at low brightness in
+  daylight and ask whether choice B reads as &ldquo;the dark gold one&rdquo;. If it does, darken the
+  ochre to <code>#6B5114</code> &mdash; I recomputed the author&rsquo;s fallback and it holds: contrast rises
+  to <b>6.25:1</b> and gold clearance to <b>33.5</b>, so the fix is free. If instead the panel
+  test is clean, ship inkpair as drawn and, if you want coolwarm&rsquo;s one advantage, lift its
+  perfectly equidistant banner treatment by nudging the graphite a step cooler so it sits
+  equidistant from the two inks rather than 4.7 closer to the ochre.</p>
+</div>
+
+</div></body></html>

@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="tl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hiraia — Mid-century classroom card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Chivo:wght@400;700;900&family=Zilla+Slab:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   HIRAIA — DIRECTION: "MID-CENTURY CLASSROOM CARD"
+   A 1950s laminated flash card, punched for a binder.
+   ============================================================ */
+
+:root{
+  /* --- the ten colours. nothing outside this list is used. --- */
+  --stock:  #F4EAD5;   /* card stock — warm cream                     */
+  --ink:    #1C3B2E;   /* forest ink — rules, body copy, card edge    */
+  --board:  #20342C;   /* the desk/board behind the deck              */
+  --gold:   #D8A03A;   /* mustard gold — the primary "next" action    */
+  --teal:   #2F6360;   /* dusty teal — quiz stock ONLY (no longer a fork colour) */
+  --blue:   #2B4C7E;   /* federal blue — fork choice A                */
+  --ochre:  #7A5E22;   /* dark ochre — fork choice B                  */
+  --graph:  #4D4740;   /* press graphite — fork banner + keyline      */
+  --sage:   #8C9E6E;   /* sage — hairlines, off-state ticks           */
+  --peach:  #E7B08B;   /* warm peach — the mat around every print     */
+  --olive:  #5B6B52;   /* muted olive — small labels on cream         */
+  --white:  #FFFFFF;   /* RN-fallback plate (see notes)               */
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--ink);
+  color:var(--stock);
+  font-family:'Zilla Slab',Georgia,serif;
+  padding:26px 0 60px;
+}
+
+/* ================= SPEC STRIP ================= */
+.spec{
+  max-width:1420px;margin:0 auto 26px;padding:20px 24px;
+  background:var(--stock);color:var(--ink);
+  border:3px solid var(--ink);border-radius:14px;
+  box-shadow:0 8px 0 rgba(28,59,46,.55);
+  display:flex;flex-wrap:wrap;gap:22px 34px;align-items:flex-start;
+}
+.spec .id{flex:0 0 300px}
+.spec h1{
+  font-family:'Alfa Slab One',Georgia,serif;font-size:26px;line-height:1.02;
+  letter-spacing:-.01em;color:var(--ink);
+}
+.spec h1 span{display:block;color:var(--blue)}
+.spec .lede{
+  font-size:14.5px;line-height:1.45;font-weight:500;color:var(--olive);
+  margin-top:9px;max-width:36ch;
+}
+.spec .col-h{
+  font-family:'Chivo',sans-serif;font-weight:900;font-size:9.5px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--blue);
+  margin-bottom:10px;
+}
+.sw{display:flex;flex-wrap:wrap;gap:8px;max-width:660px}
+.sw div{width:98px}
+.sw i{
+  display:block;height:34px;border:2px solid var(--ink);border-radius:5px;
+}
+.sw b{
+  display:block;font-family:'Chivo',sans-serif;font-weight:900;font-size:9px;
+  letter-spacing:.06em;margin-top:5px;color:var(--ink);text-transform:uppercase;
+}
+.sw em{
+  display:block;font-family:'Chivo',sans-serif;font-style:normal;font-weight:400;
+  font-size:9px;letter-spacing:.02em;color:var(--olive);line-height:1.35;
+}
+.fonts p{font-size:13.5px;line-height:1.5;max-width:30ch;color:var(--ink)}
+.fonts p b{font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:14px}
+.fonts p+p{margin-top:9px}
+
+/* ================= FRAME RAIL ================= */
+.rail{
+  max-width:1420px;margin:0 auto;overflow-x:auto;overflow-y:hidden;
+  padding:6px 24px 22px;
+  display:flex;gap:26px;align-items:flex-start;
+  scrollbar-color:var(--sage) var(--ink);
+}
+.slot{flex:0 0 auto}
+.cap{
+  font-family:'Chivo',sans-serif;font-weight:900;font-size:9.5px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--sage);
+  margin:12px 0 0 4px;
+}
+.cap s{text-decoration:none;color:var(--gold)}
+
+/* ================= PHONE ================= */
+.frame{
+  position:relative;width:320px;height:640px;
+  background:var(--board);border-radius:22px;overflow:hidden;
+  border:2px solid var(--ink);
+  box-shadow:0 12px 0 rgba(28,59,46,.6);
+  display:flex;flex-direction:column;
+}
+
+/* ---- app chrome (lives on the board, NOT on the card) ---- */
+.chrome{
+  height:42px;flex:0 0 42px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 15px;
+}
+.wordmark{
+  font-family:'Alfa Slab One',Georgia,serif;font-size:15px;letter-spacing:.03em;
+  color:var(--stock);
+}
+.wordmark s{text-decoration:none;color:var(--gold)}
+.meter{display:flex;align-items:center;gap:5px}
+.tick{
+  display:block;width:6px;height:15px;border-radius:2px;
+  background:rgba(140,158,110,.34);
+}
+.tick.on{background:var(--gold)}
+.meter b{
+  font-family:'Chivo',sans-serif;font-weight:900;font-size:12px;
+  color:var(--stock);margin-left:4px;letter-spacing:.02em;
+}
+
+/* ---- the deck ---- */
+.deck{position:relative;margin:11px 16px 0;height:552px;flex:0 0 552px}
+
+/* fanned cards behind — on a FORK these are the two branches */
+.fan{
+  position:absolute;left:0;top:0;right:0;bottom:0;
+  border:3px solid var(--ink);border-radius:18px;
+  background:var(--stock);
+  transform-origin:50% 16px;
+}
+.fan-s{transform:translateY(8px) scaleX(.965)}
+/* the two branch cards. inset 10px and dropped 5px so the fan opens
+   sideways AND downward without running off the 320px frame.
+   measured: max horizontal swing 22px, room 26px. */
+.fan-a,.fan-b{left:10px;right:10px;bottom:-5px}
+/* signs chosen so the BLUE card (choice A) fans out on the left and
+   the OCHRE card (choice B) fans out on the right — matches the A/B order.
+   These two must stay equal to the .pick colours; teal is quiz stock only. */
+.fan-a{background:var(--blue);transform:rotate(2.3deg) translateY(3px)}
+.fan-b{background:var(--ochre);transform:rotate(-2.3deg) translateY(3px)}
+
+/* the card itself */
+.card{
+  position:absolute;left:0;top:0;right:0;bottom:0;
+  background:var(--stock);
+  border:3px solid var(--ink);border-radius:18px;
+  padding:24px 13px 14px;
+  display:flex;flex-direction:column;
+  box-shadow:0 3px 0 rgba(28,59,46,.35);
+}
+.card.quiz{background:var(--teal)}
+
+/* the printed inner keyline — a second, thinner rule inboard of the edge */
+.keyline{
+  position:absolute;left:6px;top:6px;right:6px;bottom:6px;
+  border:2px solid var(--sage);border-radius:12px;pointer-events:none;
+}
+.keyline.k-fork{border-color:var(--graph)}
+.keyline.k-quiz{border-color:var(--gold)}
+
+/* punched holes (the binder rings were removed — holes only) */
+.hole{
+  position:absolute;top:5px;width:13px;height:13px;border-radius:50%;
+  background:var(--board);
+}
+.hole.h1{left:33%}
+.hole.h2{left:63%}
+
+/* ---- index band ---- */
+.band{
+  flex:0 0 34px;height:34px;border-radius:8px;background:var(--ink);
+  display:flex;align-items:center;gap:8px;padding:0 5px 0 5px;
+  position:relative;z-index:3;
+}
+.band.b-fork{background:var(--graph)}
+.band.b-quiz{background:var(--gold)}
+.no{
+  flex:0 0 auto;min-width:26px;height:24px;border-radius:5px;
+  background:var(--gold);color:var(--ink);
+  font-family:'Alfa Slab One',Georgia,serif;font-size:13px;
+  display:flex;align-items:center;justify-content:center;
+  padding:0 5px;
+}
+.band.b-quiz .no{background:var(--ink);color:var(--gold)}
+.topic{
+  flex:1 1 auto;min-width:0;
+  font-family:'Chivo',sans-serif;font-weight:900;font-size:10.5px;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--stock);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.band.b-quiz .topic{color:var(--ink)}
+.stamp{
+  flex:0 0 26px;width:26px;height:26px;border-radius:50%;
+  background:var(--stock);border:2px solid var(--stock);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
+.stamp img{width:26px;height:26px;object-fit:contain}
+
+/* ---- the printed illustration: peach mat + cream window ---- */
+.plate{
+  flex:1 1 auto;min-height:136px;margin-top:10px;
+  background:var(--peach);
+  border:3px solid var(--ink);border-radius:7px;
+  padding:6px;
+}
+.window{
+  width:100%;height:100%;background:var(--stock);border-radius:2px;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
+.window img{
+  width:100%;height:100%;object-fit:contain;
+  mix-blend-mode:multiply;      /* knocks the white bed out — see notes */
+}
+
+/* ---- factoid type ---- */
+.body{margin-top:12px}
+.q{
+  font-family:'Zilla Slab',Georgia,serif;font-weight:700;
+  font-size:18px;line-height:1.28;color:var(--ink);letter-spacing:-.005em;
+}
+.divider{display:flex;align-items:center;gap:7px;margin:9px 0}
+.divider u{flex:1 1 auto;height:2px;background:var(--sage);text-decoration:none;border-radius:2px}
+.divider i{
+  flex:0 0 8px;width:8px;height:8px;background:var(--gold);
+  transform:rotate(45deg);border-radius:1px;
+}
+.a{
+  font-family:'Zilla Slab',Georgia,serif;font-weight:500;
+  font-size:16.5px;line-height:1.38;color:var(--ink);
+}
+.fact{
+  font-family:'Zilla Slab',Georgia,serif;font-weight:500;
+  color:var(--ink);
+}
+.fact.len-md{font-size:16.5px;line-height:1.4}   /* <=120 chars */
+.fact.len-lg{font-size:15px;line-height:1.42}    /* 121-220     */
+.fact.len-xl{font-size:14px;line-height:1.42}    /* >220 (max ~260) */
+.fact strong{font-weight:700}
+
+/* ---- the "next" tab: a chunky printed ticket with a solid ledge ---- */
+.foot{margin-top:12px}
+.ledge{background:var(--ink);border-radius:13px;padding-bottom:5px}
+.tab{
+  background:var(--gold);border:3px solid var(--ink);border-radius:13px;
+  min-height:56px;display:flex;align-items:center;gap:9px;padding:7px 7px 7px 12px;
+}
+.tab .lab{flex:1 1 auto;min-width:0}
+.tab .eyebrow{
+  font-family:'Chivo',sans-serif;font-weight:900;font-size:8.5px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--olive);
+  display:block;margin-bottom:1px;
+}
+.tab .word{
+  font-family:'Zilla Slab',Georgia,serif;font-weight:700;font-size:18.5px;
+  line-height:1.12;color:var(--ink);display:block;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.arrow{
+  flex:0 0 38px;width:38px;height:38px;border-radius:9px;background:var(--ink);
+  color:var(--gold);font-size:15px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* ---- FORK ---- */
+.forkhead{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.forkhead u{flex:1 1 auto;height:3px;background:var(--graph);text-decoration:none;border-radius:2px}
+.forkhead b{
+  flex:0 0 auto;
+  font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:12px;
+  letter-spacing:.13em;color:var(--blue);text-transform:uppercase;
+}
+.forks{display:flex;flex-direction:column;gap:7px}
+.ledge-a{background:var(--ink);border-radius:12px;padding-bottom:4px}
+.pick{
+  border:3px solid var(--ink);border-radius:12px;min-height:48px;
+  display:flex;align-items:center;gap:9px;padding:6px 10px;
+}
+.pick.p-a{background:var(--blue)}
+.pick.p-b{background:var(--ochre)}
+.pick .key{
+  flex:0 0 26px;width:26px;height:26px;border-radius:6px;background:var(--stock);
+  color:var(--ink);font-family:'Alfa Slab One',Georgia,serif;font-size:13px;
+  display:flex;align-items:center;justify-content:center;
+}
+.pick .word{
+  flex:1 1 auto;min-width:0;
+  font-family:'Zilla Slab',Georgia,serif;font-weight:700;font-size:17px;
+  color:var(--stock);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.pick .chev{
+  flex:0 0 auto;color:var(--stock);font-size:13px;opacity:.85;
+}
+/* the cat steps forward at a fork — bigger than its band stamp, and
+   it is the thing announcing the split. sits INLINE in the banner row. */
+.forkcat{
+  flex:0 0 40px;width:40px;height:40px;border-radius:50%;
+  background:var(--peach);border:3px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
+.forkcat img{width:35px;height:35px;object-fit:contain}
+.forkzone{margin-top:12px}
+
+/* ---- QUIZ ---- */
+.qcat{
+  width:88px;height:88px;border-radius:50%;margin:20px auto 0;
+  background:var(--peach);border:3px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
+.qcat img{width:76px;height:76px;object-fit:contain}
+.qkicker{
+  font-family:'Chivo',sans-serif;font-weight:900;font-size:9px;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--gold);
+  text-align:center;margin-top:11px;
+}
+.qq{
+  font-family:'Zilla Slab',Georgia,serif;font-weight:700;font-size:22px;
+  line-height:1.24;color:var(--stock);text-align:center;margin-top:7px;
+  padding:0 4px;
+}
+.opts{margin-top:auto;display:flex;flex-direction:column;gap:10px}
+.ledge-o{background:var(--ink);border-radius:11px;padding-bottom:4px}
+.opt{
+  background:var(--stock);border:3px solid var(--ink);border-radius:11px;
+  min-height:52px;display:flex;align-items:center;gap:10px;padding:5px 10px;
+}
+.opt .key{
+  flex:0 0 26px;width:26px;height:26px;border-radius:6px;background:var(--ink);
+  color:var(--gold);font-family:'Alfa Slab One',Georgia,serif;font-size:13px;
+  display:flex;align-items:center;justify-content:center;
+}
+.opt .word{
+  flex:1 1 auto;min-width:0;
+  font-family:'Zilla Slab',Georgia,serif;font-weight:600;font-size:16px;
+  color:var(--ink);line-height:1.15;
+}
+.qfoot{
+  margin-top:13px;text-align:center;
+  font-family:'Chivo',sans-serif;font-weight:900;font-size:8.5px;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--gold);
+}
+
+/* ---- deck counter under the card ---- */
+.counter{
+  position:absolute;left:0;right:0;bottom:8px;text-align:center;
+  font-family:'Chivo',sans-serif;font-weight:900;font-size:9px;
+  letter-spacing:.2em;text-transform:uppercase;color:rgba(140,158,110,.85);
+}
+
+/* ================= NOTES ================= */
+.notes{
+  max-width:1420px;margin:14px auto 0;padding:22px 26px;
+  background:var(--board);border:3px solid var(--sage);border-radius:14px;
+  color:var(--stock);
+}
+.notes h2{
+  font-family:'Alfa Slab One',Georgia,serif;font-size:15px;letter-spacing:.02em;
+  color:var(--gold);margin-bottom:12px;
+}
+.notes ul{list-style:none;display:flex;flex-wrap:wrap;gap:14px}
+.notes li{
+  flex:1 1 300px;min-width:280px;font-size:13.5px;line-height:1.5;font-weight:400;
+  padding-left:14px;border-left:3px solid var(--sage);
+}
+.notes li b{font-family:'Chivo',sans-serif;font-weight:900;font-size:10px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:3px}
+.notes li.ok{border-left-color:var(--gold)}
+.notes li.hot{border-left-color:var(--blue)}
+.notes li.hot b{color:var(--blue)}
+</style>
+</head>
+<body>
+
+<!-- ==================== SPEC STRIP ==================== -->
+<section class="spec">
+  <div class="id">
+    <h1>Mid-century<br>classroom card<span>Hiraia · direction 03</span></h1>
+    <p class="lede">Every factoid is a laminated 1950s schoolroom flash card, punched for a
+    binder. Sturdy stock, a printed double rule, a peach-matted engraving,
+    and one fat mustard ticket to pull for the next card. At a fork the deck visibly splits
+    into two colour-coded cards.</p>
+  </div>
+
+  <div>
+    <div class="col-h">Palette — 10 colours, nothing else</div>
+    <div class="sw">
+      <div><i style="background:#F4EAD5"></i><b>#F4EAD5</b><em>Card stock (warm cream)</em></div>
+      <div><i style="background:#1C3B2E"></i><b>#1C3B2E</b><em>Forest ink — rules, body copy</em></div>
+      <div><i style="background:#20342C"></i><b>#20342C</b><em>Board behind the deck</em></div>
+      <div><i style="background:#D8A03A"></i><b>#D8A03A</b><em>Mustard gold — next action</em></div>
+      <div><i style="background:#2F6360"></i><b>#2F6360</b><em>Dusty teal — quiz stock</em></div>
+      <div><i style="background:#2B4C7E"></i><b>#2B4C7E</b><em>Federal blue — fork choice A</em></div>
+      <div><i style="background:#7A5E22"></i><b>#7A5E22</b><em>Dark ochre — fork choice B</em></div>
+      <div><i style="background:#4D4740"></i><b>#4D4740</b><em>Press graphite — fork banner / keyline</em></div>
+      <div><i style="background:#8C9E6E"></i><b>#8C9E6E</b><em>Sage — hairlines, off ticks</em></div>
+      <div><i style="background:#E7B08B"></i><b>#E7B08B</b><em>Warm peach — print mat</em></div>
+      <div><i style="background:#5B6B52"></i><b>#5B6B52</b><em>Muted olive — small labels</em></div>
+      <div><i style="background:#FFFFFF"></i><b>#FFFFFF</b><em>Plate white — RN fallback bed</em></div>
+    </div>
+  </div>
+
+  <div class="fonts">
+    <div class="col-h">Type</div>
+    <p><b>Alfa Slab One</b><br>Fat Clarendon slab — card numbers, the fork banner, key chips.
+      The look of 1950s printed classroom furniture.</p>
+    <p><b>Zilla Slab</b> 500/700<br>Squared, low-contrast slab for every Tagalog sentence.
+      Official-feeling and holds up at 15px on a cheap 720p panel.</p>
+    <p><b>Chivo</b> 900<br>Tracked-out gothic caps for all micro-labels — topic band,
+      eyebrows, counters.</p>
+  </div>
+</section>
+
+<!-- ==================== FRAMES ==================== -->
+<div class="rail">
+
+  <!-- ---------- 1 · SHORT FACTOID, SINGLE CHOICE ---------- -->
+  <div class="slot">
+    <div class="frame">
+      <div class="chrome">
+        <div class="wordmark">HIRAIA<s>.</s></div>
+        <div class="meter">
+          <span class="tick on"></span><span class="tick on"></span><span class="tick"></span>
+          <span class="tick"></span><span class="tick"></span><b>12</b>
+        </div>
+      </div>
+
+      <div class="deck">
+        <div class="fan fan-s"></div>
+
+        <div class="card">
+          <div class="keyline"></div>
+          <div class="hole h1"></div><div class="hole h2"></div>
+
+          <div class="band">
+            <span class="no">12</span>
+            <span class="topic">Suka</span>
+            <span class="stamp"><img src="./assets/cat.png" alt="Hiraia"></span>
+          </div>
+
+          <div class="plate">
+            <div class="window"><img src="./assets/vinegar-bottle-suka.png" alt=""></div>
+          </div>
+
+          <div class="body">
+            <p class="q">Bakit napakaasim ng lasa ng suka?</p>
+            <div class="divider"><u></u><i></i><u></u></div>
+            <p class="a">Ang suka ay isang asido dahil naglalaman ito ng acetic acid,
+              kaya maasim ang lasa nito!</p>
+          </div>
+
+          <div class="foot">
+            <div class="ledge">
+              <div class="tab">
+                <span class="lab">
+                  <span class="eyebrow">Sunod na kard</span>
+                  <span class="word">acetic acid</span>
+                </span>
+                <span class="arrow">&#9654;</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="counter">Kard 12 sa 40</div>
+    </div>
+    <p class="cap"><s>01</s> &nbsp;Maikling factoid · isang pagpipilian</p>
+  </div>
+
+  <!-- ---------- 2 · LONG FACTOID, SINGLE CHOICE ---------- -->
+  <div class="slot">
+    <div class="frame">
+      <div class="chrome">
+        <div class="wordmark">HIRAIA<s>.</s></div>
+        <div class="meter">
+          <span class="tick on"></span><span class="tick on"></span><span class="tick on"></span>
+          <span class="tick"></span><span class="tick"></span><b>13</b>
+        </div>
+      </div>
+
+      <div class="deck">
+        <div class="fan fan-s"></div>
+
+        <div class="card">
+          <div class="keyline"></div>
+          <div class="hole h1"></div><div class="hole h2"></div>
+
+          <div class="band">
+            <span class="no">13</span>
+            <span class="topic">Food web</span>
+            <span class="stamp"><img src="./assets/cat.png" alt="Hiraia"></span>
+          </div>
+
+          <div class="plate">
+            <div class="window"><img src="./assets/pond-food-web-diagram.png" alt=""></div>
+          </div>
+
+          <div class="body">
+            <p class="fact len-lg">Ang maliliit na <strong>phytoplankton</strong> ang pundasyon
+              ng buong food web ng karagatan — kinakain sila ng zooplankton, kinakain naman ito
+              ng maliliit na isda, hanggang sa pinakamalaking balyena.</p>
+          </div>
+
+          <div class="foot">
+            <div class="ledge">
+              <div class="tab">
+                <span class="lab">
+                  <span class="eyebrow">Sunod na kard</span>
+                  <span class="word">zooplankton</span>
+                </span>
+                <span class="arrow">&#9654;</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="counter">Kard 13 sa 40</div>
+    </div>
+    <p class="cap"><s>02</s> &nbsp;Mahabang factoid · isang pagpipilian</p>
+  </div>
+
+  <!-- ---------- 3 · FORK, TWO CHOICES ---------- -->
+  <div class="slot">
+    <div class="frame">
+      <div class="chrome">
+        <div class="wordmark">HIRAIA<s>.</s></div>
+        <div class="meter">
+          <span class="tick on"></span><span class="tick on"></span><span class="tick on"></span>
+          <span class="tick on"></span><span class="tick"></span><b>14</b>
+        </div>
+      </div>
+
+      <div class="deck">
+        <div class="fan fan-a"></div>
+        <div class="fan fan-b"></div>
+
+        <div class="card">
+          <div class="keyline k-fork"></div>
+          <div class="hole h1"></div><div class="hole h2"></div>
+
+          <div class="band b-fork">
+            <span class="no">14</span>
+            <span class="topic">Lunar eclipse</span>
+            <span class="stamp"><img src="./assets/cat.png" alt="Hiraia"></span>
+          </div>
+
+          <div class="plate">
+            <div class="window"><img src="./assets/blood-moon-eclipse-stages.png" alt=""></div>
+          </div>
+
+          <div class="body">
+            <p class="fact len-lg">Tuwing lunar eclipse, <strong>namumula ang buwan!</strong>
+              Sinasala ng atmospera ng Earth ang ibang kulay at tinatapat lang ang pulang
+              liwanag ng Araw sa buwan.</p>
+          </div>
+
+          <div class="foot forkzone">
+            <div class="forkhead">
+              <span class="forkcat"><img src="./assets/cat.png" alt="Hiraia"></span>
+              <b>Sangandaan</b><u></u>
+            </div>
+            <div class="forks">
+              <div class="ledge-a">
+                <div class="pick p-a">
+                  <span class="key">A</span>
+                  <span class="word">atmospera</span>
+                  <span class="chev">&#9654;</span>
+                </div>
+              </div>
+              <div class="ledge-a">
+                <div class="pick p-b">
+                  <span class="key">B</span>
+                  <span class="word">mga bituin</span>
+                  <span class="chev">&#9654;</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="counter">Dalawang daan — pumili ka</div>
+    </div>
+    <p class="cap"><s>03</s> &nbsp;Sangandaan · dalawang pagpipilian</p>
+  </div>
+
+  <!-- ---------- 4 · QUIZ INTERJECT ---------- -->
+  <div class="slot">
+    <div class="frame">
+      <div class="chrome">
+        <div class="wordmark">HIRAIA<s>.</s></div>
+        <div class="meter">
+          <span class="tick on"></span><span class="tick on"></span><span class="tick on"></span>
+          <span class="tick on"></span><span class="tick on"></span><b>15</b>
+        </div>
+      </div>
+
+      <div class="deck">
+        <div class="fan fan-s"></div>
+
+        <div class="card quiz">
+          <div class="keyline k-quiz"></div>
+          <div class="hole h1"></div><div class="hole h2"></div>
+
+          <div class="band b-quiz">
+            <span class="no">03</span>
+            <span class="topic">Pagsusulit</span>
+            <span class="stamp"><img src="./assets/cat.png" alt="Hiraia"></span>
+          </div>
+
+          <div class="qcat"><img src="./assets/cat.png" alt="Hiraia"></div>
+          <p class="qkicker">Sandali — tanong!</p>
+          <p class="qq">Bakit maasim ang suka?</p>
+
+          <div class="opts">
+            <div class="ledge-o"><div class="opt"><span class="key">A</span><span class="word">May acetic acid ito</span></div></div>
+            <div class="ledge-o"><div class="opt"><span class="key">B</span><span class="word">May asukal ito</span></div></div>
+            <div class="ledge-o"><div class="opt"><span class="key">C</span><span class="word">Malamig ito</span></div></div>
+            <div class="ledge-o"><div class="opt"><span class="key">D</span><span class="word">Matigas ito</span></div></div>
+          </div>
+          <p class="qfoot">Pumili ng isang sagot</p>
+        </div>
+      </div>
+
+      <div class="counter">Pagsusulit 3 sa 8</div>
+    </div>
+    <p class="cap"><s>04</s> &nbsp;Pagsusulit · apat na sagot</p>
+  </div>
+
+</div>
+
+<!-- ==================== PORTING NOTES ==================== -->
+<section class="notes">
+  <h2>React Native port — what is free, what costs</h2>
+  <ul>
+    <li class="hot"><b>The one real cost — knocking out the white</b>
+      The engraving sits on <em>cream</em>, not white, via <code>mix-blend-mode:multiply</code>.
+      RN has no blend modes on <code>&lt;Image&gt;</code>. Three ways out, best first:
+      (1) one-time build step — <code>convert img.png -fuzz 6% -transparent white out.png</code>
+      over the 23,044 assets, then the plain RN Image composites on cream for free;
+      (2) <code>@shopify/react-native-skia</code> <code>&lt;Image blendMode="multiply"&gt;</code>;
+      (3) fall back to the white plate (<code>#FFFFFF</code>, in the palette for exactly this) —
+      the design still works, it just reads as a pasted-in label rather than a printed one.</li>
+
+    <li class="ok"><b>Free — the whole card</b>
+      Card, keyline, band, mat, tabs, holes, fans are all View + borderWidth +
+      borderRadius + backgroundColor + absolute positioning. Nothing uses CSS grid,
+      backdrop-filter, gradients or SVG filters.</li>
+
+    <li class="ok"><b>Free — the chunky ledge under every button</b>
+      Deliberately <em>not</em> a box-shadow (Android RN ignores shadow offset and only honours
+      <code>elevation</code>). It is a dark parent View with 4–5px of bottom padding and a
+      slightly larger radius. Ports byte-for-byte.</li>
+
+    <li class="ok"><b>Free — the adaptive type scale</b>
+      The illustration plate is <code>flex:1, minHeight:136</code>; the factoid block is auto.
+      Four steps off <code>string.length</code> alone — no measurement pass:
+      question/answer 18 + 16.5px, &le;120 chars 16.5px, 121&ndash;220 15px, &gt;220 14px.
+      Measured windows: 237px (short), 249px (178-char food web), 174px (fork).
+      Stress-tested at the 260-character ceiling on the fork card &mdash; the tightest
+      layout in the system &mdash; and it still clears the floor.</li>
+
+    <li class="ok"><b>Free — the fanned fork cards</b>
+      Two absolutely-positioned Views with <code>transform:[{rotate:'2.3deg'}]</code>.
+      RN needs an explicit <code>transformOrigin</code> shim (RN 0.74+ supports it; below that,
+      wrap in a translate–rotate–translate triple).</li>
+
+    <li class="hot"><b>Watch — the fat display face</b>
+      Alfa Slab One and Zilla Slab must be bundled as static TTFs and registered per platform.
+      Three families ≈ 6 files ≈ 400KB in the APK. Chivo 900 is the only weight of Chivo used —
+      ship that one file, not the family.</li>
+
+    <li><b>Watch — text ellipsis</b>
+      Topic band and choice words use <code>text-overflow:ellipsis</code>; RN equivalent is
+      <code>numberOfLines={1} ellipsizeMode="tail"</code>. Long topic labels
+      (&ldquo;lunar eclipse&rdquo; is near the limit at 10.5px / 0.15em) truncate rather than wrap.</li>
+
+    <li><b>Polish only, safe to drop</b>
+      The 3px drop-ledge under the card and the
+      hairline-plus-diamond divider are decorative; the card is fully legible without them.</li>
+  </ul>
+</section>
+
+</body>
+</html>

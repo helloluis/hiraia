@@ -80,6 +80,12 @@ interface CardState {
   recent: string[]; // last few factIds (question sourcing)
   viewLog: ViewLogEntry[]; // {factId, topic, ts} for the reward recap window
   untilQuestion: number; // pages left until the next interject question
+  /**
+   * Cards walked since a branch was last OFFERED. Drives the single-path-vs-fork decision
+   * in nextChoices (see BRANCH_EVERY). Lives here, not in cards.ts, so the graph module
+   * stays pure. Session-only — a fresh launch starts a fresh thread.
+   */
+  threadDepth: number;
   untilReward: number; // pages left until the next reward card (jittered)
   askedFacts: Set<string>; // don't re-ask the same fact this session
   rewardPrefetch: RewardContent | null; // pre-generated reward text, ready to show
@@ -132,6 +138,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
   viewLog: [],
   untilQuestion: nextGap(),
   untilReward: nextRewardGap(),
+  threadDepth: 0,
   askedFacts: new Set<string>(),
   rewardPrefetch: null,
   rewardPrefetching: false,
@@ -157,7 +164,8 @@ export const useCardStore = create<CardState>()((set, get) => ({
       correctCount,
       seen,
       current: first,
-      choices: nextChoices(first.id, seen, lang),
+      choices: nextChoices(first.id, seen, lang, { threadDepth: 0 }),
+      threadDepth: 0,
       recent: [first.id],
       viewLog: [{ factId: first.id, topic: first.topic, ts: Date.now() }],
       pageKey: 1,
@@ -323,7 +331,8 @@ export const useCardStore = create<CardState>()((set, get) => ({
     const pagesRead = s.pagesRead + 1;
     set({
       current: dest,
-      choices: nextChoices(dest.id, seen, lang),
+      choices: nextChoices(dest.id, seen, lang, { threadDepth: 0 }),
+      threadDepth: 0, // the reroll already switched topic — start the new thread fresh
       question: null,
       pending: null,
       questionAnswered: false,
@@ -357,7 +366,8 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, banner?: string) {
   const pagesRead = s.pagesRead + 1;
   set({
     current: fact,
-    choices: nextChoices(fact.id, seen, lang),
+    choices: nextChoices(fact.id, seen, lang, { threadDepth: 0 }),
+    threadDepth: 0, // a search/topic jump starts a new thread
     seen,
     recent,
     viewLog,
@@ -403,9 +413,15 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
   const pagesRead = s.pagesRead + 1;
   const untilReward = s.untilReward - 1;
 
+  // Taking the lateral fork is itself a topic switch, so it restarts the thread; otherwise
+  // the counter walks up until nextChoices forks, then resets on the page that offered it.
+  const depth = choice.kind === 'lateral' ? 0 : s.threadDepth + 1;
+  const choices = nextChoices(nextFact.id, seen, lang, { threadDepth: depth });
+
   set({
     current: nextFact,
-    choices: nextChoices(nextFact.id, seen, lang),
+    choices,
+    threadDepth: choices.length > 1 ? 0 : depth,
     seen,
     recent,
     viewLog,

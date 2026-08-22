@@ -1,7 +1,8 @@
 /**
  * One notebook page of the question-cards feed: illustration + the fact, typewritered
- * onto a blank page, with the two blue-ink "teacher's note" choices at the bottom
- * corners. Tap anywhere while typing → complete instantly (visual-novel convention).
+ * onto a blank page, with blue-ink "teacher's note" choices along the bottom. Normally
+ * ONE centred note (single-path); on a fork, two notes split to the bottom corners.
+ * Tap anywhere while typing → complete instantly (visual-novel convention).
  *
  * Typography reacts to content length: short facts go BIG in felt marker (centered),
  * long facts settle into smaller handwriting (top-left). The typewriter renders the
@@ -55,6 +56,8 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
   const bottomPad = Math.max(insets.bottom, 8); // clear the Android nav bar
   const text = cardText(fact, language);
   const tier = tierFor(text);
+  // Two choices == this page forks. nextChoices returns a single choice on a normal page.
+  const branching = choices.length > 1;
   const [shown, setShown] = useState(instant ? text.length : 0);
   const done = shown >= text.length;
   const extrasOpacity = useRef(new Animated.Value(instant ? 1 : 0)).current;
@@ -113,16 +116,33 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
         </Text>
       </View>
 
-      {/* the two teacher's-note choices, blue ink, bottom corners */}
-      <Animated.View style={[styles.choicesRow, { bottom: 12 + bottomPad, opacity: extrasOpacity }]} pointerEvents={done ? 'auto' : 'none'}>
+      {/*
+        Teacher's-note choices, blue ink, along the bottom. A normal page is SINGLE-PATH —
+        one note, centred, so turning the page stays a rhythm rather than a decision. When
+        the thread forks (the BRANCH_EVERY cadence or a dead end, see nextChoices) the
+        second note appears and the pair splits to the corners. Keeping the fork visually
+        distinct is the point: it reads as a real moment instead of the default state.
+      */}
+      <Animated.View
+        style={[
+          styles.choicesRow,
+          branching ? styles.choicesRowBranch : styles.choicesRowSingle,
+          { bottom: 12 + bottomPad, opacity: extrasOpacity },
+        ]}
+        pointerEvents={done ? 'auto' : 'none'}
+      >
         {choices[0] && (
-          <Pressable onPress={() => onChoose(choices[0]!)} hitSlop={14} style={[styles.choice, styles.choiceLeft]}>
+          <Pressable
+            onPress={() => onChoose(choices[0]!)}
+            hitSlop={14}
+            style={[styles.choice, branching ? styles.choiceLeft : styles.choiceSingle]}
+          >
             <Text style={styles.choiceText} numberOfLines={1}>
               {choices[0].label} <Text style={styles.choiceArrow}>⤴</Text>
             </Text>
           </Pressable>
         )}
-        {choices[1] && (
+        {branching && choices[1] && (
           <Pressable onPress={() => onChoose(choices[1]!)} hitSlop={14} style={[styles.choice, styles.choiceRight]}>
             <Text style={styles.choiceText} numberOfLines={1}>
               {choices[1].label} <Text style={styles.choiceArrow}>⤴</Text>
@@ -167,14 +187,23 @@ const styles = StyleSheet.create({
     right: 22,
     // bottom applied inline (12 + bottom safe-area inset) to clear the Android nav bar.
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'flex-end',
+  },
+  choicesRowSingle: {
+    justifyContent: 'center',
+  },
+  choicesRowBranch: {
+    justifyContent: 'space-between',
   },
   choice: {
     maxWidth: '46%',
     borderBottomWidth: 1.5,
     borderBottomColor: colors.inkBlue,
     paddingBottom: 1,
+  },
+  choiceSingle: {
+    maxWidth: '80%', // no sibling to share the row with, so let the label breathe
+    transform: [{ rotate: '-1deg' }],
   },
   choiceLeft: {
     transform: [{ rotate: '-2deg' }],

@@ -3,7 +3,7 @@
 /**
  * One notebook page of the question-cards feed — WEB DEMO port of the mobile
  * packages/mobile/src/components/cards/CardPage.tsx (keep in sync): illustration + the
- * fact, typewritered onto a blank page, with the two blue-ink "teacher's note" choices
+ * fact, typewritered onto a blank page, with blue-ink "teacher's note" choices
  * at the bottom corners. Click anywhere while typing → complete instantly.
  *
  * Typography reacts to content length: short facts go BIG in felt marker (centered),
@@ -50,6 +50,8 @@ interface DemoCardPageProps {
 export function DemoCardPage({ fact, choices, language, onChoose, instant = false }: DemoCardPageProps) {
   const text = cardText(fact, language);
   const tier = tierFor(text);
+  // Two choices == this page forks; nextChoices returns one on a normal page.
+  const branching = choices.length > 1;
   const [shown, setShown] = useState(instant ? text.length : 0);
   const [imgFailed, setImgFailed] = useState(false);
   const done = shown >= text.length;
@@ -127,23 +129,30 @@ export function DemoCardPage({ fact, choices, language, onChoose, instant = fals
         </p>
       </div>
 
-      {/* the two teacher's-note choices, blue ink, bottom corners */}
+      {/*
+        Teacher's-note choices, blue ink, along the bottom. A normal page is SINGLE-PATH —
+        one centred note — so turning the page stays a rhythm rather than a decision. On a
+        fork (BRANCH_EVERY cadence or a dead end, see nextChoices) the second note appears
+        and the pair splits to the corners, so a fork reads as a real moment.
+      */}
       <div
-        className="absolute bottom-3 right-[22px] flex items-end justify-between"
+        className={`absolute bottom-3 right-[22px] flex items-end ${branching ? 'justify-between' : 'justify-center'}`}
         style={{ ...extras, left: GUTTER_LEFT, pointerEvents: done ? 'auto' : 'none' }}
       >
         {choices[0] && (
           <button
             type="button"
             onClick={() => onChoose(choices[0]!)}
-            className="max-w-[46%] -rotate-2 border-b-[1.5px] border-[#2743a6] pb-px text-left"
+            className={`border-b-[1.5px] border-[#2743a6] pb-px ${
+              branching ? 'max-w-[46%] -rotate-2 text-left' : 'max-w-[80%] -rotate-1 text-center'
+            }`}
           >
             <span className="block truncate whitespace-nowrap font-display text-[23px] text-[#2743a6]">
               {choices[0].label} <span className="text-[16px]">⤴</span>
             </span>
           </button>
         )}
-        {choices[1] && (
+        {branching && choices[1] && (
           <button
             type="button"
             onClick={() => onChoose(choices[1]!)}

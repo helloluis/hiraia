@@ -82,6 +82,8 @@ interface CardDemoState {
   recent: string[]; // last few factIds (question sourcing)
   viewLog: ViewLogEntry[]; // {factId, topic, ts} for the reward recap window
   untilQuestion: number; // pages left until the next interject question
+  /** Cards walked since a branch was last OFFERED — drives single-path vs fork. */
+  threadDepth: number;
   untilReward: number; // pages left until the next reward card (jittered)
   askedFacts: Set<string>; // don't re-ask the same fact this session
 
@@ -124,6 +126,7 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
   recent: [],
   viewLog: [],
   untilQuestion: nextGap(),
+  threadDepth: 0,
   untilReward: nextRewardGap(),
   askedFacts: new Set<string>(),
 
@@ -135,7 +138,8 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
       hydrated: true,
       seen,
       current: first,
-      choices: nextChoices(first.id, seen, language),
+      choices: nextChoices(first.id, seen, language, { threadDepth: 0 }),
+      threadDepth: 0,
       recent: [first.id],
       viewLog: [{ factId: first.id, topic: first.topic, ts: Date.now() }],
       pageKey: 1,
@@ -145,7 +149,7 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
   relocale: (language) => {
     const s = get();
     if (!s.hydrated || !s.current) return;
-    set({ choices: nextChoices(s.current.id, s.seen, language) });
+    set({ choices: nextChoices(s.current.id, s.seen, language, { threadDepth: s.threadDepth }) });
   },
 
   choose: (choice, language) => {
@@ -272,7 +276,8 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
     seen.add(dest.id);
     set({
       current: dest,
-      choices: nextChoices(dest.id, seen, language),
+      choices: nextChoices(dest.id, seen, language, { threadDepth: 0 }),
+      threadDepth: 0, // the reroll already switched topic
       question: null,
       pending: null,
       questionAnswered: false,
@@ -303,7 +308,8 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, language: LanguageKey,
   const viewLog = [...s.viewLog, { factId: fact.id, topic: fact.topic, ts: Date.now() }].slice(-VIEWLOG_CAP);
   set({
     current: fact,
-    choices: nextChoices(fact.id, seen, language),
+    choices: nextChoices(fact.id, seen, language, { threadDepth: 0 }),
+    threadDepth: 0, // a search/topic jump starts a new thread
     seen,
     recent,
     viewLog,
@@ -331,9 +337,14 @@ function advance(choice: CardChoice, set: Set_, get: Get_, language: LanguageKey
   const recent = [...s.recent, nextFact.id].slice(-RECENT_WINDOW);
   const viewLog = [...s.viewLog, { factId: nextFact.id, topic: nextFact.topic, ts: Date.now() }].slice(-VIEWLOG_CAP);
 
+  // Taking the lateral fork is itself a topic switch, so it restarts the thread.
+  const depth = choice.kind === 'lateral' ? 0 : s.threadDepth + 1;
+  const choices = nextChoices(nextFact.id, seen, language, { threadDepth: depth });
+
   set({
     current: nextFact,
-    choices: nextChoices(nextFact.id, seen, language),
+    choices,
+    threadDepth: choices.length > 1 ? 0 : depth,
     seen,
     recent,
     viewLog,

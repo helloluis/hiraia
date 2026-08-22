@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="tl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hiraia — Fork colours: DENIM &amp; TOBACCO (cool/warm split)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Chivo:wght@400;700;900&family=Zilla+Slab:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   HIRAIA — FORK COLOUR PROPOSAL "COOLWARM"
+   Direction 03 "mid-century classroom card", unchanged.
+   ONLY the fork's two choice colours, the SANGANDAAN banner and
+   the fork keyline are different. Everything else is verbatim.
+   ============================================================ */
+
+:root{
+  /* --- the existing palette, untouched --- */
+  --stock:  #F4EAD5;   /* card stock — warm cream                     */
+  --ink:    #1C3B2E;   /* forest ink — rules, body copy, card edge    */
+  --board:  #20342C;   /* the desk/board behind the deck              */
+  --gold:   #D8A03A;   /* mustard gold — the primary "next" action    */
+  --teal:   #2F6360;   /* dusty teal — STAYS the quiz stock           */
+  --sage:   #8C9E6E;   /* sage — hairlines, off-state ticks           */
+  --peach:  #E7B08B;   /* warm peach — the mat around every print     */
+  --olive:  #5B6B52;   /* muted olive — small labels on cream         */
+  --white:  #FFFFFF;   /* RN-fallback plate                           */
+
+  /* --- RETIRED --- */
+  /* --brick: #B24F35   brick red — was fork accent + choice A        */
+
+  /* --- NEW: the cool/warm fork axis --- */
+  --denim:   #2F4E6B;  /* choice A — dusty denim slate (cool)         */
+  --tobacco: #8A5A32;  /* choice B — tobacco tan     (warm)           */
+  --graph:   #4A453D;  /* fork banner + fork keyline — neutral graphite */
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--ink);
+  color:var(--stock);
+  font-family:'Zilla Slab',Georgia,serif;
+  padding:26px 0 60px;
+}
+
+/* ================= SPEC STRIP ================= */
+.spec{
+  max-width:1420px;margin:0 auto 22px;padding:20px 24px;
+  background:var(--stock);color:var(--ink);
+  border:3px solid var(--ink);border-radius:14px;
+  box-shadow:0 8px 0 rgba(28,59,46,.55);
+  display:flex;flex-wrap:wrap;gap:22px 30px;align-items:flex-start;
+}
+.spec .id{flex:0 0 292px}
+.spec h1{
+  font-family:'Alfa Slab One',Georgia,serif;font-size:25px;line-height:1.04;
+  letter-spacing:-.01em;color:var(--ink);
+}
+.spec h1 span{display:block;color:var(--graph);font-size:24px}
+.spec .kicker{
+  font-family:'Chivo',sans-serif;font-weight:900;font-size:9.5px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--olive);margin-bottom:7px;
+}
+.spec .lede{
+  font-size:14px;line-height:1.45;font-weight:500;color:var(--olive);
+  margin-top:9px;max-width:38ch;
+}
+.spec .lede b{color:var(--ink);font-weight:700}
+.col-h{
+  font-family:'Chivo',sans-serif;font-weight:900;font-size:9.5px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--graph);
+  margin-bottom:10px;
+}
+.sw{display:flex;flex-wrap:wrap;gap:8px;max-width:430px}
+.sw div{width:134px}
+.sw i{display:block;height:38px;border:2px solid var(--ink);border-radius:5px}
+.sw i.tall{height:38px}
+.sw b{
+  display:block;font-family:'Chivo',sans-serif;font-weight:900;font-size:9.5px;
+  letter-spacing:.06em;margin-top:5px;color:var(--ink);text-transform:uppercase;
+}
+.sw em{
+  display:block;font-family:'Chivo',sans-serif;font-style:normal;font-weight:400;
+  font-size:9px;letter-spacing:.02em;color:var(--olive);line-height:1.4;margin-top:1px;
+}
+.sw s{
+  display:block;text-decoration:none;font-family:'Chivo',sans-serif;font-weight:700;
+  font-size:9px;color:var(--ink);margin-top:2px;letter-spacing:.02em;
+}
+
+/* receipts table */
+table.rec{border-collapse:collapse;font-family:'Chivo',sans-serif;font-size:9.5px}
+table.rec th{
+  font-weight:900;font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--olive);text-align:left;padding:0 12px 5px 0;border-bottom:2px solid var(--sage);
+}
+table.rec td{padding:4px 12px 4px 0;border-bottom:1px solid rgba(140,158,110,.45);color:var(--ink)}
+table.rec td.m{font-weight:700;letter-spacing:.02em}
+table.rec td.n{font-weight:900;font-variant-numeric:tabular-nums}
+table.rec td.ok{color:#3E6B2E;font-weight:900}
+table.rec .chip{
+  display:inline-block;width:11px;height:11px;border-radius:3px;
+  border:1.5px solid var(--ink);vertical-align:-1px;margin-right:5px;
+}
+.why{flex:1 1 292px;max-width:340px}
+.why p{font-size:13.5px;line-height:1.5;color:var(--ink);font-weight:500}
+.why p+p{margin-top:9px}
+.why p b{font-weight:700}
+.why .foot{
+  font-family:'Chivo',sans-serif;font-size:9.5px;line-height:1.5;font-weight:400;
+  color:var(--olive);margin-top:11px;padding-left:11px;border-left:3px solid var(--sage);
+  letter-spacing:.01em;
+}
+
+/* ================= FRAME RAIL ================= */
+.rail{
+  max-width:1420px;margin:0 auto;overflow-x:auto;overflow-y:hidden;
+  padding:6px 24px 22px;
+  display:flex;gap:26px;align-items:flex-start;
+  scrollbar-color:var(--sage) var(--ink);
+}
+.slot{flex:0 0 auto;width:320px}
+.cap{
+  font-family:'Chivo',sans-serif;font-weight:900;font-size:9.5px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--sage);
+  margin:12px 0 0 4px;
+}
+.cap s{text-decoration:none;color:var(--gold)}
+.cap em{
+  display:block;font-style:normal;font-weight:400;font-size:9px;letter-spacing:.04em;
+  color:rgba(244,234,213,.62);margin-top:4px;line-height:1.5;
+}
+.cap em u{text-decoration:none;font-weight:900;color:var(--stock)}
+
+/* ================= PHONE ================= */
+.frame{
+  position:relative;width:320px;height:640px;
+  background:var(--board);border-radius:22px;overflow:hidden;
+  border:2px solid var(--ink);
+  box-shadow:0 12px 0 rgba(28,59,46,.6);
+  display:flex;flex-direction:column;
+
+  /* the ONLY three colours that get swapped per simulation */
+  --pa:#2F4E6B;   /* choice A */
+  --pb:#8A5A32;   /* choice B */
+  --fk:#4A453D;   /* banner + keyline */
+}
+/* Brettel 1997 dichromat projections of the three colours above.
+   Applied as flat hexes — no CSS filter — so the cream stock, the
+   peach mat, the brass rings and the engraving stay TRUE and the
+   reader compares only the thing that actually changed. */
+.frame.deutan{--pa:#3A4B6B;--pb:#756730;--fk:#49463D}
+.frame.protan{--pa:#3E4D6B;--pb:#6C5F32;--fk:#48453D}
+.frame.tritan{--pa:#29515E;--pb:#8D555B;--fk:#4B4445}
+
+/* ---- app chrome (lives on the board, NOT on the card) ---- */
+.chrome{
+  height:42px;flex:0 0 42px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 15px;
+}
+.wordmark{
+  font-family:'Alfa Slab One',Georgia,serif;font-size:15px;letter-spacing:.03em;
+  color:var(--stock);
+}
+.wordmark s{text-decoration:none;color:var(--gold)}
+.meter{display:flex;align-items:center;gap:5px}
+.tick{display:block;width:6px;height:15px;border-radius:2px;background:rgba(140,158,110,.34)}
+.tick.on{background:var(--gold)}
+.meter b{
+  font-family:'Chivo',sans-serif;font-weight:900;font-size:12px;
+  color:var(--stock);margin-left:4px;letter-spacing:.02em;
+}
+
+/* ---- the deck ---- */
+.deck{position:relative;margin:11px 16px 0;height:552px;flex:0 0 552px}
+
+/* fanned cards behind — on a FORK these are the two branches */
+.fan{
+  position:absolute;left:0;top:0;right:0;bottom:0;
+  border:3px solid var(--ink);border-radius:18px;
+  background:var(--stock);
+  transform-origin:50% 16px;
+}
+.fan-a,.fan-b{left:10px;right:10px;bottom:-5px}
+/* signs chosen so the DENIM card (choice A) fans out on the left and
+   the TOBACCO card (choice B) fans out on the right — matches A/B order. */
+.fan-a{background:var(--pa);transform:rotate(2.3deg) translateY(3px)}
+.fan-b{background:var(--pb);transform:rotate(-2.3deg) translateY(3px)}
+
+/* the card itself */
+.card{
+  position:absolute;left:0;top:0;right:0;bottom:0;
+  background:var(--stock);
+  border:3px solid var(--ink);border-radius:18px;
+  padding:24px 13px 14px;
+  display:flex;flex-direction:column;
+  box-shadow:0 3px 0 rgba(28,59,46,.35);
+}
+
+/* the printed inner keyline */
+.keyline{
+  position:absolute;left:6px;top:6px;right:6px;bottom:6px;
+  border:2px solid var(--sage);border-radius:12px;pointer-events:none;
+}
+.keyline.k-fork{border-color:var(--fk)}
+
+/* punched holes + brass rings */
+.hole{
+  position:absolute;top:5px;width:13px;height:13px;border-radius:50%;
+  background:var(--board);
+}
+.hole.h1{left:33%}
+.hole.h2{left:63%}
+.ring{
+  position:absolute;top:-12px;width:31px;height:31px;border-radius:50%;
+  border:4px solid var(--gold);z-index:6;
+}
+.ring.r1{left:calc(33% - 3px)}
+.ring.r2{left:calc(63% - 3px)}
+.ring i{
+  position:absolute;left:3px;top:2px;width:9px;height:5px;border-radius:50%;
+  background:var(--peach);
+}
+
+/* ---- index band ---- */
+.band{
+  flex:0 0 34px;height:34px;border-radius:8px;background:var(--ink);
+  display:flex;align-items:center;gap:8px;padding:0 5px;
+  position:relative;z-index:3;
+}
+.band.b-fork{background:var(--fk)}
+.no{
+  flex:0 0 auto;min-width:26px;height:24px;border-radius:5px;
+  background:var(--gold);color:var(--ink);
+  font-family:'Alfa Slab One',Georgia,serif;font-size:13px;
+  display:flex;align-items:center;justify-content:center;padding:0 5px;
+}
+.topic{
+  flex:1 1 auto;min-width:0;
+  font-family:'Chivo',sans-serif;font-weight:900;font-size:10.5px;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--stock);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.stamp{
+  flex:0 0 26px;width:26px;height:26px;border-radius:50%;
+  background:var(--stock);border:2px solid var(--stock);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
+.stamp img{width:26px;height:26px;object-fit:contain}
+
+/* ---- the printed illustration: peach mat + cream window ---- */
+.plate{
+  flex:1 1 auto;min-height:136px;margin-top:10px;
+  background:var(--peach);
+  border:3px solid var(--ink);border-radius:7px;padding:6px;
+}
+.window{
+  width:100%;height:100%;background:var(--stock);border-radius:2px;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
+.window img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+
+/* ---- factoid type ---- */
+.body{margin-top:12px}
+.fact{font-family:'Zilla Slab',Georgia,serif;font-weight:500;color:var(--ink)}
+.fact.len-lg{font-size:15px;line-height:1.42}
+.fact strong{font-weight:700}
+
+/* ---- FORK ---- */
+.foot{margin-top:12px}
+.forkzone{margin-top:12px}
+.forkhead{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.forkhead u{flex:1 1 auto;height:3px;background:var(--fk);text-decoration:none;border-radius:2px}
+.forkhead b{
+  flex:0 0 auto;
+  font-family:'Alfa Slab One',Georgia,serif;font-weight:400;font-size:12px;
+  letter-spacing:.13em;color:var(--fk);text-transform:uppercase;
+}
+.forks{display:flex;flex-direction:column;gap:7px}
+.ledge-a{background:var(--ink);border-radius:12px;padding-bottom:4px}
+.pick{
+  border:3px solid var(--ink);border-radius:12px;min-height:48px;
+  display:flex;align-items:center;gap:9px;padding:6px 10px;
+}
+.pick.p-a{background:var(--pa)}
+.pick.p-b{background:var(--pb)}
+.pick .key{
+  flex:0 0 26px;width:26px;height:26px;border-radius:6px;background:var(--stock);
+  color:var(--ink);font-family:'Alfa Slab One',Georgia,serif;font-size:13px;
+  display:flex;align-items:center;justify-content:center;
+}
+.pick .word{
+  flex:1 1 auto;min-width:0;
+  font-family:'Zilla Slab',Georgia,serif;font-weight:700;font-size:17px;
+  color:var(--stock);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.pick .chev{flex:0 0 auto;color:var(--stock);font-size:13px;opacity:.85}
+.forkcat{
+  flex:0 0 40px;width:40px;height:40px;border-radius:50%;
+  background:var(--peach);border:3px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
+.forkcat img{width:35px;height:35px;object-fit:contain}
+
+/* ---- deck counter under the card ---- */
+.counter{
+  position:absolute;left:0;right:0;bottom:8px;text-align:center;
+  font-family:'Chivo',sans-serif;font-weight:900;font-size:9px;
+  letter-spacing:.2em;text-transform:uppercase;color:rgba(140,158,110,.85);
+}
+
+/* ================= NOTES ================= */
+.notes{
+  max-width:1420px;margin:14px auto 0;padding:22px 26px;
+  background:var(--board);border:3px solid var(--sage);border-radius:14px;
+  color:var(--stock);
+}
+.notes h2{
+  font-family:'Alfa Slab One',Georgia,serif;font-size:15px;letter-spacing:.02em;
+  color:var(--gold);margin-bottom:12px;
+}
+.notes ul{list-style:none;display:flex;flex-wrap:wrap;gap:14px}
+.notes li{
+  flex:1 1 300px;min-width:270px;font-size:13.5px;line-height:1.5;font-weight:400;
+  padding-left:14px;border-left:3px solid var(--sage);
+}
+.notes li b{
+  font-family:'Chivo',sans-serif;font-weight:900;font-size:10px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:3px;
+}
+.notes li code{font-family:'Chivo',sans-serif;font-size:11.5px;font-weight:700}
+.notes li.hot{border-left-color:var(--peach)}
+.notes li.hot b{color:var(--peach)}
+</style>
+</head>
+<body>
+
+<!-- ==================== SPEC STRIP ==================== -->
+<section class="spec">
+  <div class="id">
+    <p class="kicker">Fork colours · option "coolwarm"</p>
+    <h1>Denim &amp;<br>Tobacco<span>a temperature split</span></h1>
+    <p class="lede">The fork stops being a verdict and becomes a <b>compass</b>: one cool road,
+      one warm road. Red and green are off the board entirely, so nothing on the card can be
+      read as the right answer or the wrong one. Blue-vs-brown is also the one axis that
+      dichromats keep — it rides the blue&ndash;yellow channel that protan and deutan leave alone.</p>
+  </div>
+
+  <div>
+    <div class="col-h">The three colours that changed</div>
+    <div class="sw">
+      <div><i style="background:#2F4E6B"></i><b>#2F4E6B</b><em>Choice A — denim slate (cool)</em><s>was #B24F35 brick</s></div>
+      <div><i style="background:#8A5A32"></i><b>#8A5A32</b><em>Choice B — tobacco tan (warm)</em><s>was #2F6360 teal</s></div>
+      <div><i style="background:#4A453D"></i><b>#4A453D</b><em>Fork banner + fork keyline — graphite</em><s>was #B24F35 (= choice A)</s></div>
+      <div><i style="background:#D8A03A"></i><b>#D8A03A</b><em>Gold ticket — untouched</em><s>&Delta;E 54.8 / 27.7 clear</s></div>
+      <div><i style="background:#2F6360"></i><b>#2F6360</b><em>Teal — kept, quiz stock only</em><s>no longer a fork colour</s></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="col-h">Receipts — measured, not eyeballed</div>
+    <table class="rec">
+      <tr><th>Test</th><th>Choice A · denim</th><th>Choice B · tobacco</th><th>&Delta;E00 A&harr;B</th></tr>
+      <tr>
+        <td class="m">WCAG — #F4EAD5 label + chip</td>
+        <td class="ok">7.25 : 1</td>
+        <td class="ok">4.90 : 1</td>
+        <td class="n">34.7</td>
+      </tr>
+      <tr>
+        <td class="m">Deuteranopia (Brettel&nbsp;1997)</td>
+        <td class="n"><span class="chip" style="background:#3A4B6B"></span>#3A4B6B</td>
+        <td class="n"><span class="chip" style="background:#756730"></span>#756730</td>
+        <td class="n">36.9</td>
+      </tr>
+      <tr>
+        <td class="m">Protanopia</td>
+        <td class="n"><span class="chip" style="background:#3E4D6B"></span>#3E4D6B</td>
+        <td class="n"><span class="chip" style="background:#6C5F32"></span>#6C5F32</td>
+        <td class="n">33.3</td>
+      </tr>
+      <tr>
+        <td class="m">Tritanopia</td>
+        <td class="n"><span class="chip" style="background:#29515E"></span>#29515E</td>
+        <td class="n"><span class="chip" style="background:#8D555B"></span>#8D555B</td>
+        <td class="n">38.8</td>
+      </tr>
+      <tr>
+        <td class="m">Distance from gold #D8A03A</td>
+        <td class="n">54.8</td>
+        <td class="n">27.7</td>
+        <td class="n">&ge;15 ✓</td>
+      </tr>
+      <tr>
+        <td class="m">Banner #4A453D sits between</td>
+        <td class="n">20.2</td>
+        <td class="n">20.1</td>
+        <td class="n">bias 0.1</td>
+      </tr>
+    </table>
+    <p style="font-family:'Chivo',sans-serif;font-size:9px;line-height:1.55;color:#5B6B52;margin-top:9px;max-width:56ch">
+      Method — sRGB &rarr; linear &rarr; LMS, projected onto the dichromat half-planes of
+      Brettel/Mollon/Viénot 1997 (libDaltonLens matrices, full severity), back to sRGB.
+      Distances are CIEDE2000 in CIE&nbsp;Lab (D65). Sanity-checked: pure red renders
+      #6C5C0C under protan, pure blue renders #006288 under tritan.
+      Anomalous trichromacy at 50% severity still separates 34.4 / 33.2 / 34.2.
+    </p>
+  </div>
+
+  <div class="why">
+    <div class="col-h">Why this reads "different", not "right vs wrong"</div>
+    <p>A fork should feel like <b>two roads out of one town</b>, and warm/cool is the oldest way
+      a printer says that without ranking anything &mdash; a 1950s wall map used slate for water
+      and tan for land, and no child ever thought the land was winning.</p>
+    <p>Brick-vs-teal failed because red and green are a <b>traffic light</b>: the eye scores them
+      before it reads the words. Denim and tobacco carry no verdict at all, only a change of
+      temperature &mdash; and because the banner above them is a neutral graphite that belongs to
+      neither, nothing on the card whispers a preferred answer.</p>
+    <p class="foot"><b>WHAT ELSE MOVED — nothing.</b> Teal #2F6360 stays exactly where it was as
+      the quiz-page stock; it simply stops doing double duty as choice&nbsp;B. The gold ticket,
+      the sage keyline on normal cards, the peach mat and the forest ink are untouched.</p>
+  </div>
+</section>
+
+<!-- ==================== FRAMES ==================== -->
+<div class="rail">
+
+  <!-- ---------- 1 · NORMAL VISION ---------- -->
+  <div class="slot">
+    <div class="frame">
+      <div class="chrome">
+        <div class="wordmark">HIRAIA<s>.</s></div>
+        <div class="meter">
+          <span class="tick on"></span><span class="tick on"></span><span class="tick on"></span>
+          <span class="tick on"></span><span class="tick"></span><b>14</b>
+        </div>
+      </div>
+
+      <div class="deck">
+        <div class="fan fan-a"></div>
+        <div class="fan fan-b"></div>
+
+        <div class="card">
+          <div class="keyline k-fork"></div>
+          <div class="hole h1"></div><div class="hole h2"></div>
+
+          <div class="band b-fork">
+            <span class="no">14</span>
+            <span class="topic">Lunar eclipse</span>
+            <span class="stamp"><img src="./assets/cat.png" alt="Hiraia"></span>
+          </div>
+
+          <div class="plate">
+            <div class="window"><img src="./assets/blood-moon-eclipse-stages.png" alt=""></div>
+          </div>
+
+          <div class="body">
+            <p class="fact len-lg">Tuwing lunar eclipse, <strong>namumula ang buwan!</strong>
+              Sinasala ng atmospera ng Earth ang ibang kulay at tinatapat lang ang pulang
+              liwanag ng Araw sa buwan.</p>
+          </div>
+
+          <div class="foot forkzone">
+            <div class="forkhead">
+              <span class="forkcat"><img src="./assets/cat.png" alt="Hiraia"></span>
+              <b>Sangandaan</b><u></u>
+            </div>
+            <div class="forks">
+              <div class="ledge-a">
+                <div class="pick p-a">
+                  <span class="key">A</span>
+                  <span class="word">atmospera</span>
+                  <span class="chev">&#9654;</span>
+                </div>
+              </div>
+              <div class="ledge-a">
+                <div class="pick p-b">
+                  <span class="key">B</span>
+                  <span class="word">mga bituin</span>
+                  <span class="chev">&#9654;</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <span class="ring r1"><i></i></span>
+        <span class="ring r2"><i></i></span>
+      </div>
+
+      <div class="counter">Dalawang daan — pumili ka</div>
+    </div>
+    <p class="cap"><s>01</s> &nbsp;Normal na paningin
+      <em>A <u>#2F4E6B</u> &nbsp;·&nbsp; B <u>#8A5A32</u> &nbsp;·&nbsp; banner <u>#4A453D</u> &nbsp;·&nbsp; &Delta;E00 <u>34.7</u></em></p>
+  </div>
+
+  <!-- ---------- 2 · DEUTERANOPIA ---------- -->
+  <div class="slot">
+    <div class="frame deutan">
+      <div class="chrome">
+        <div class="wordmark">HIRAIA<s>.</s></div>
+        <div class="meter">
+          <span class="tick on"></span><span class="tick on"></span><span class="tick on"></span>
+          <span class="tick on"></span><span class="tick"></span><b>14</b>
+        </div>
+      </div>
+
+      <div class="deck">
+        <div class="fan fan-a"></div>
+        <div class="fan fan-b"></div>
+
+        <div class="card">
+          <div class="keyline k-fork"></div>
+          <div class="hole h1"></div><div class="hole h2"></div>
+
+          <div class="band b-fork">
+            <span class="no">14</span>
+            <span class="topic">Lunar eclipse</span>
+            <span class="stamp"><img src="./assets/cat.png" alt="Hiraia"></span>
+          </div>
+
+          <div class="plate">
+            <div class="window"><img src="./assets/blood-moon-eclipse-stages.png" alt=""></div>
+          </div>
+
+          <div class="body">
+            <p class="fact len-lg">Tuwing lunar eclipse, <strong>namumula ang buwan!</strong>
+              Sinasala ng atmospera ng Earth ang ibang kulay at tinatapat lang ang pulang
+              liwanag ng Araw sa buwan.</p>
+          </div>
+
+          <div class="foot forkzone">
+            <div class="forkhead">
+              <span class="forkcat"><img src="./assets/cat.png" alt="Hiraia"></span>
+              <b>Sangandaan</b><u></u>
+            </div>
+            <div class="forks">
+              <div class="ledge-a">
+                <div class="pick p-a">
+                  <span class="key">A</span>
+                  <span class="word">atmospera</span>
+                  <span class="chev">&#9654;</span>
+                </div>
+              </div>
+              <div class="ledge-a">
+                <div class="pick p-b">
+                  <span class="key">B</span>
+                  <span class="word">mga bituin</span>
+                  <span class="chev">&#9654;</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <span class="ring r1"><i></i></span>
+        <span class="ring r2"><i></i></span>
+      </div>
+
+      <div class="counter">Dalawang daan — pumili ka</div>
+    </div>
+    <p class="cap"><s>02</s> &nbsp;Deuteranopia · ~6% ng lalaki
+      <em>A <u>#3A4B6B</u> &nbsp;·&nbsp; B <u>#756730</u> &nbsp;·&nbsp; banner <u>#49463D</u> &nbsp;·&nbsp; &Delta;E00 <u>36.9</u></em></p>
+  </div>
+
+  <!-- ---------- 3 · PROTANOPIA ---------- -->
+  <div class="slot">
+    <div class="frame protan">
+      <div class="chrome">
+        <div class="wordmark">HIRAIA<s>.</s></div>
+        <div class="meter">
+          <span class="tick on"></span><span class="tick on"></span><span class="tick on"></span>
+          <span class="tick on"></span><span class="tick"></span><b>14</b>
+        </div>
+      </div>
+
+      <div class="deck">
+        <div class="fan fan-a"></div>
+        <div class="fan fan-b"></div>
+
+        <div class="card">
+          <div class="keyline k-fork"></div>
+          <div class="hole h1"></div><div class="hole h2"></div>
+
+          <div class="band b-fork">
+            <span class="no">14</span>
+            <span class="topic">Lunar eclipse</span>
+            <span class="stamp"><img src="./assets/cat.png" alt="Hiraia"></span>
+          </div>
+
+          <div class="plate">
+            <div class="window"><img src="./assets/blood-moon-eclipse-stages.png" alt=""></div>
+          </div>
+
+          <div class="body">
+            <p class="fact len-lg">Tuwing lunar eclipse, <strong>namumula ang buwan!</strong>
+              Sinasala ng atmospera ng Earth ang ibang kulay at tinatapat lang ang pulang
+              liwanag ng Araw sa buwan.</p>
+          </div>
+
+          <div class="foot forkzone">
+            <div class="forkhead">
+              <span class="forkcat"><img src="./assets/cat.png" alt="Hiraia"></span>
+              <b>Sangandaan</b><u></u>
+            </div>
+            <div class="forks">
+              <div class="ledge-a">
+                <div class="pick p-a">
+                  <span class="key">A</span>
+                  <span class="word">atmospera</span>
+                  <span class="chev">&#9654;</span>
+                </div>
+              </div>
+              <div class="ledge-a">
+                <div class="pick p-b">
+                  <span class="key">B</span>
+                  <span class="word">mga bituin</span>
+                  <span class="chev">&#9654;</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <span class="ring r1"><i></i></span>
+        <span class="ring r2"><i></i></span>
+      </div>
+
+      <div class="counter">Dalawang daan — pumili ka</div>
+    </div>
+    <p class="cap"><s>03</s> &nbsp;Protanopia · ~2% ng lalaki
+      <em>A <u>#3E4D6B</u> &nbsp;·&nbsp; B <u>#6C5F32</u> &nbsp;·&nbsp; banner <u>#48453D</u> &nbsp;·&nbsp; &Delta;E00 <u>33.3</u></em></p>
+  </div>
+
+  <!-- ---------- 4 · TRITANOPIA ---------- -->
+  <div class="slot">
+    <div class="frame tritan">
+      <div class="chrome">
+        <div class="wordmark">HIRAIA<s>.</s></div>
+        <div class="meter">
+          <span class="tick on"></span><span class="tick on"></span><span class="tick on"></span>
+          <span class="tick on"></span><span class="tick"></span><b>14</b>
+        </div>
+      </div>
+
+      <div class="deck">
+        <div class="fan fan-a"></div>
+        <div class="fan fan-b"></div>
+
+        <div class="card">
+          <div class="keyline k-fork"></div>
+          <div class="hole h1"></div><div class="hole h2"></div>
+
+          <div class="band b-fork">
+            <span class="no">14</span>
+            <span class="topic">Lunar eclipse</span>
+            <span class="stamp"><img src="./assets/cat.png" alt="Hiraia"></span>
+          </div>
+
+          <div class="plate">
+            <div class="window"><img src="./assets/blood-moon-eclipse-stages.png" alt=""></div>
+          </div>
+
+          <div class="body">
+            <p class="fact len-lg">Tuwing lunar eclipse, <strong>namumula ang buwan!</strong>
+              Sinasala ng atmospera ng Earth ang ibang kulay at tinatapat lang ang pulang
+              liwanag ng Araw sa buwan.</p>
+          </div>
+
+          <div class="foot forkzone">
+            <div class="forkhead">
+              <span class="forkcat"><img src="./assets/cat.png" alt="Hiraia"></span>
+              <b>Sangandaan</b><u></u>
+            </div>
+            <div class="forks">
+              <div class="ledge-a">
+                <div class="pick p-a">
+                  <span class="key">A</span>
+                  <span class="word">atmospera</span>
+                  <span class="chev">&#9654;</span>
+                </div>
+              </div>
+              <div class="ledge-a">
+                <div class="pick p-b">
+                  <span class="key">B</span>
+                  <span class="word">mga bituin</span>
+                  <span class="chev">&#9654;</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <span class="ring r1"><i></i></span>
+        <span class="ring r2"><i></i></span>
+      </div>
+
+      <div class="counter">Dalawang daan — pumili ka</div>
+    </div>
+    <p class="cap"><s>04</s> &nbsp;Tritanopia · bihira, &lt;0.01%
+      <em>A <u>#29515E</u> &nbsp;·&nbsp; B <u>#8D555B</u> &nbsp;·&nbsp; banner <u>#4B4445</u> &nbsp;·&nbsp; &Delta;E00 <u>38.8</u></em></p>
+  </div>
+
+</div>
+
+<!-- ==================== NOTES ==================== -->
+<section class="notes">
+  <h2>What to know before this ships</h2>
+  <ul>
+    <li><b>The diff is four lines</b>
+      <code>--brick</code> is deleted. <code>.pick.p-a</code> &amp; <code>.fan-a</code> &rarr; #2F4E6B,
+      <code>.pick.p-b</code> &amp; <code>.fan-b</code> &rarr; #8A5A32,
+      <code>.band.b-fork</code> + <code>.keyline.k-fork</code> + <code>.forkhead</code> &rarr; #4A453D.
+      Card geometry, type, rings, mat and ledges are byte-identical to direction 03.</li>
+
+    <li><b>RN-portable by construction</b>
+      Three flat hexes. No gradient, no blend mode, no filter on any swatch. The simulation
+      frames here are literally different <code>backgroundColor</code> values, which is why the
+      cream stock and the engraving look identical across all four — only the fork moved.</li>
+
+    <li class="hot"><b>Honest weak point — tobacco is the tighter contrast</b>
+      4.90:1 passes AA for normal text and clears AA-large (3:1) with room, but it is the
+      floor of the pair. Do not lighten #8A5A32 toward camel: at L*&nbsp;47 it drops under 4.5:1
+      <em>and</em> starts drifting toward the gold ticket. If it ever needs more margin, go
+      darker (#84562F = 5.24:1), never lighter.</li>
+
+    <li class="hot"><b>Honest weak point — tritan pulls denim toward the quiz teal</b>
+      Under tritanopia the denim reads #29515E and the quiz stock #2F6360 reads #35606F —
+      only &Delta;E00&nbsp;5.1 apart. They never share a screen (the quiz is its own full-bleed
+      card, gold keyline, four cream options) so it is a non-collision in practice, but if you
+      want it airtight the quiz stock is the thing to move, not the fork.</li>
+
+    <li><b>The banner is the quiet fix</b>
+      The old fork banner was brick — the same colour as choice A — so the card was literally
+      shouting one option's name before the child read either word. #4A453D is 20.2 from A and
+      20.1 from B: a printer's graphite rule that endorses nothing, and still reads clearly
+      apart from the forest-ink band of an ordinary card (&Delta;E00 17.1).</li>
+
+    <li><b>Sits with the cat</b>
+      The mascot is olive tabby, forest outline, gold eyes, peach nose. Denim is the cool this
+      palette never had, and the olive fur pops against it. Tobacco is not a new hue at all:
+      Lab hue 63&deg; against the peach mat's 60&deg; &mdash; it is literally the peach of every
+      print mat and the cat's nose taken from L*&nbsp;76 down to L*&nbsp;43. So the warm end of
+      the card still belongs to the cat, and the button reads as printed board, not as paint.</li>
+  </ul>
+</section>
+
+</body>
+</html>

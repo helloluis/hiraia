@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hiraia question-cards — three visual directions</title>
+<style>
+  :root{
+    --bg:#FAFAF9;
+    --panel:#FFFFFF;
+    --line:#E3E3E0;
+    --line-2:#CFCFCB;
+    --ink:#1B1B19;
+    --ink-2:#5C5C57;
+    --ink-3:#8A8A83;
+    --accent:#3A3A36;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --s:0.32;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:var(--sans);
+    font-size:14px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- header ---------- */
+  header{padding:34px 28px 22px;border-bottom:1px solid var(--line);background:var(--bg)}
+  .kicker{
+    font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ink-3);margin:0 0 8px;
+  }
+  h1{font-size:23px;line-height:1.2;font-weight:600;letter-spacing:-.01em;margin:0 0 14px}
+  .howto{
+    display:flex;gap:14px;align-items:flex-start;
+    max-width:960px;background:var(--panel);
+    border:1px solid var(--line);border-radius:6px;padding:14px 16px;
+  }
+  .howto img{width:40px;height:40px;object-fit:contain;flex:0 0 auto;margin-top:-2px}
+  .howto p{margin:0;font-size:13.5px;color:var(--ink-2)}
+  .howto b{color:var(--ink);font-weight:600}
+
+  /* ---------- toolbar ---------- */
+  .bar{
+    position:sticky;top:0;z-index:20;
+    display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;
+    padding:10px 28px;background:rgba(250,250,249,.94);
+    backdrop-filter:saturate(1.4) blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .bar .lbl{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+  .grp{display:flex;border:1px solid var(--line-2);border-radius:5px;overflow:hidden}
+  .grp button{
+    font:inherit;font-size:12px;padding:5px 11px;border:0;
+    background:var(--panel);color:var(--ink-2);cursor:pointer;
+    border-right:1px solid var(--line);
+  }
+  .grp button:last-child{border-right:0}
+  .grp button:hover{background:#F1F1EF}
+  .grp button[aria-pressed="true"]{background:var(--accent);color:#fff}
+  .hint{font-size:12px;color:var(--ink-3);margin-left:auto}
+
+  /* ---------- columns ---------- */
+  .rail{
+    display:flex;gap:26px;align-items:flex-start;
+    padding:24px 28px 60px;overflow-x:auto;
+  }
+  body.stacked .rail{flex-direction:column;align-items:flex-start;overflow-x:visible}
+
+  .col{flex:0 0 auto;max-width:100%;width:calc(var(--w) * var(--s) * 1px + 2px);min-width:360px}
+  body.stacked .col{width:auto;min-width:0}
+  .head{display:flex;flex-direction:column}
+  .col h2{
+    font-size:17px;font-weight:600;letter-spacing:-.005em;margin:0 0 2px;
+    display:flex;align-items:baseline;gap:9px;
+  }
+  .col h2 i{
+    font-style:normal;font-family:var(--mono);font-size:11px;
+    color:var(--ink-3);border:1px solid var(--line-2);border-radius:3px;
+    padding:1px 5px;
+  }
+  .concept{margin:0 0 12px;font-size:13px;color:var(--ink-2)}
+  .meta{
+    display:flex;flex-wrap:wrap;gap:14px 26px;align-items:flex-start;
+    margin:0 0 12px;padding:11px 13px;width:100%;
+    background:var(--panel);border:1px solid var(--line);border-radius:6px;
+  }
+  .meta h3{
+    font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+    color:var(--ink-3);font-weight:600;margin:0 0 7px;
+  }
+  .sw{display:flex;flex-wrap:wrap;gap:4px;max-width:308px}
+  .sw i{
+    width:22px;height:22px;border-radius:3px;display:block;
+    border:1px solid rgba(0,0,0,.14);cursor:help;
+  }
+  .fonts{font-size:12.5px;color:var(--ink-2);max-width:262px}
+  .fonts span{display:block}
+  .fonts b{color:var(--ink);font-weight:600}
+  .fonts em{font-style:normal;color:var(--ink-3)}
+  .links{margin:0 0 10px;font-size:12px}
+  .links a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line-2)}
+  .links a:hover{color:var(--ink)}
+
+  /* ---------- iframe viewport ---------- */
+  .viewport{
+    overflow:auto;resize:both;
+    border:1px solid var(--line-2);border-radius:6px;
+    background:#fff;
+    /* default box = the scaled document, so nothing scrolls internally at Fit */
+    width:calc(var(--w) * var(--s) * 1px + 2px);
+    height:calc(var(--h) * var(--s) * 1px + 2px);
+    max-width:100%;
+  }
+  .scaler{
+    width:calc(var(--w) * var(--s) * 1px);
+    height:calc(var(--h) * var(--s) * 1px);
+    overflow:hidden;
+  }
+  .scaler iframe{
+    display:block;border:0;
+    width:calc(var(--w) * 1px);
+    height:calc(var(--h) * 1px);
+    transform:scale(var(--s));
+    transform-origin:0 0;
+  }
+  footer{
+    padding:0 28px 60px;font-size:12.5px;color:var(--ink-3);max-width:900px;
+  }
+  footer a{color:var(--ink-2)}
+</style>
+</head>
+<body>
+
+<header>
+  <p class="kicker">Hiraia · question-cards feed · visual direction review</p>
+  <h1>Three visual directions for the factoid card</h1>
+  <div class="howto">
+    <img src="./assets/cat.png" alt="Hiraia cat mascot">
+    <p><b>How to read this.</b> These are three complete, competing looks for the same four
+    screens — a short factoid, a long factoid, a two-way <em>sangandaan</em> fork, and the quiz
+    interject. Pick <b>one direction, or parts of several</b>: the palette, the type, the frame,
+    the button shape, the paper, the fork treatment and the quiz styling are all independently
+    swappable. <b>Everything here is changeable except the cat mascot</b> — the cat is fixed, and
+    each direction is built to sit alongside it. Judge them at a glance first (do they read as
+    different <em>things</em>?), then zoom to 100% and read the small type. Portability notes and
+    a cost verdict live in <a href="./PORTABILITY.md">PORTABILITY.md</a>.</p>
+  </div>
+</header>
+
+<div class="bar">
+  <span class="lbl">Zoom</span>
+  <div class="grp" id="zoom">
+    <button data-s="fit" aria-pressed="true">Fit</button>
+    <button data-s="0.5">50%</button>
+    <button data-s="0.75">75%</button>
+    <button data-s="1">100%</button>
+  </div>
+  <span class="lbl">Layout</span>
+  <div class="grp" id="layout">
+    <button data-l="row" aria-pressed="true">Side by side</button>
+    <button data-l="stacked">Stacked</button>
+  </div>
+  <span class="hint">Every panel is resizable — drag its bottom-right corner.</span>
+</div>
+
+<div class="rail" id="rail">
+
+  <!-- ============ 1 ============ -->
+  <section class="col" style="--w:1460;--h:1700">
+    <div class="head">
+    <h2><i>01</i> Risograph print shop</h2>
+    <p class="concept">Every card is a page torn out of a zine run off on the school riso —
+      newsprint stock, mis-registered duotone ink, halftone grain, crop marks and a page number.</p>
+    <div class="meta">
+      <div>
+        <h3>Palette · 9</h3>
+        <div class="sw">
+          <i style="background:#F4ECDC" title="#F4ECDC newsprint stock"></i>
+          <i style="background:#E7DAC0" title="#E7DAC0 press bed"></i>
+          <i style="background:#2B3A87" title="#2B3A87 riso federal blue — plate ink 1"></i>
+          <i style="background:#E8756A" title="#E8756A riso coral — mis-registration ink"></i>
+          <i style="background:#2C6B50" title="#2C6B50 riso medium green — the FORK ink"></i>
+          <i style="background:#D79B2C" title="#D79B2C riso mustard — quiz, streak"></i>
+          <i style="background:#1A1C22" title="#1A1C22 registration black — all body type"></i>
+          <i style="background:#DDE0EF" title="#DDE0EF blue 15% — illustration bed"></i>
+          <i style="background:#F0DFB6" title="#F0DFB6 mustard 22% — quiz page stock"></i>
+        </div>
+      </div>
+      <div class="fonts">
+        <h3>Type</h3>
+        <span><b>Fraunces</b> <em>— fact &amp; question</em></span>
+        <span><b>Bricolage Grotesque</b> <em>— body &amp; buttons</em></span>
+        <span><b>Courier Prime</b> <em>— labels, tabs, page nos.</em></span>
+      </div>
+    </div>
+    <p class="links"><a href="./riso.html" target="_blank">Open full mockup ↗</a></p>
+    </div>
+    <div class="viewport"><div class="scaler">
+      <iframe src="./riso.html" title="Risograph print shop" scrolling="no"></iframe>
+    </div></div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="col" style="--w:1460;--h:1620">
+    <div class="head">
+    <h2><i>02</i> Mid-century classroom card</h2>
+    <p class="concept">Every factoid is a laminated 1950s schoolroom flash card, punched and hung
+      on a brass binder ring — and at a fork the deck visibly splits into two colour-coded cards.</p>
+    <div class="meta">
+      <div>
+        <h3>Palette · 10</h3>
+        <div class="sw">
+          <i style="background:#F4EAD5" title="#F4EAD5 card stock, warm cream"></i>
+          <i style="background:#1C3B2E" title="#1C3B2E forest ink — edge, body copy, rules"></i>
+          <i style="background:#20342C" title="#20342C the board behind the deck"></i>
+          <i style="background:#D8A03A" title="#D8A03A mustard gold — next ticket, brass rings"></i>
+          <i style="background:#2F6360" title="#2F6360 dusty teal — quiz stock, choice B"></i>
+          <i style="background:#B24F35" title="#B24F35 brick red — fork band, choice A"></i>
+          <i style="background:#8C9E6E" title="#8C9E6E sage — keyline, hairline divider"></i>
+          <i style="background:#E7B08B" title="#E7B08B warm peach — illustration mat"></i>
+          <i style="background:#5B6B52" title="#5B6B52 muted olive — small eyebrow labels"></i>
+          <i style="background:#FFFFFF" title="#FFFFFF plate white — the RN no-blend fallback bed"></i>
+        </div>
+      </div>
+      <div class="fonts">
+        <h3>Type</h3>
+        <span><b>Alfa Slab One</b> <em>— numbers, key chips, fork banner</em></span>
+        <span><b>Zilla Slab</b> 500/700 <em>— every Tagalog sentence</em></span>
+        <span><b>Chivo</b> 900 <em>— tracked micro-labels only</em></span>
+      </div>
+    </div>
+    <p class="links"><a href="./midcentury.html" target="_blank">Open full mockup ↗</a></p>
+    </div>
+    <div class="viewport"><div class="scaler">
+      <iframe src="./midcentury.html" title="Mid-century classroom card" scrolling="no"></iframe>
+    </div></div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="col" style="--w:1460;--h:1330">
+    <div class="head">
+    <h2><i>03</i> Natural-history specimen plate</h2>
+    <p class="concept">Each factoid is a plate tipped into a Victorian collector's album — aged
+      stock, a letterpress label cartouche clamping the engraving, and a plate number to collect.</p>
+    <div class="meta">
+      <div>
+        <h3>Palette · 12</h3>
+        <div class="sw">
+          <i style="background:#2B352D" title="#2B352D cabinet green — field, quiz band"></i>
+          <i style="background:#EDE3CC" title="#EDE3CC oatmeal stock — card paper"></i>
+          <i style="background:#F7F1E1" title="#F7F1E1 chalk — mount margin, cream type"></i>
+          <i style="background:#E6D9BC" title="#E6D9BC sepia wash — multiply layer on art"></i>
+          <i style="background:#FFFFFF" title="#FFFFFF plate, tint OFF — the no-blend fallback"></i>
+          <i style="background:#2A2620" title="#2A2620 sepia ink — body + headline"></i>
+          <i style="background:#605847" title="#605847 muted sepia — rubrics, meta, captions"></i>
+          <i style="background:#7C8A66" title="#7C8A66 sage — hairlines, frame, fleuron"></i>
+          <i style="background:#9C4F32" title="#9C4F32 clay — cartouche, corner ticks, choice II"></i>
+          <i style="background:#C69240" title="#C69240 faded ochre — plate nos., gilt, fork furniture"></i>
+          <i style="background:#35533C" title="#35533C forest — primary next plate"></i>
+          <i style="background:#E2AD8C" title="#E2AD8C warm peach — inner hairlines, quiz numeral"></i>
+        </div>
+      </div>
+      <div class="fonts">
+        <h3>Type</h3>
+        <span><b>Fraunces</b> <em>— everything a child reads</em></span>
+        <span><b>Alegreya Sans SC</b> <em>— letterpress furniture</em></span>
+        <span><b>Bodoni Moda</b> <em>— numerals only</em></span>
+      </div>
+    </div>
+    <p class="links"><a href="./specimen.html" target="_blank">Open full mockup ↗</a>
+      &nbsp;·&nbsp; <span style="color:var(--ink-3)">has a SEPIA TINT: ON/OFF toggle — that is the
+      React&nbsp;Native no-blend fallback</span></p>
+    </div>
+    <div class="viewport"><div class="scaler">
+      <iframe src="./specimen.html" title="Natural-history specimen plate" scrolling="no"></iframe>
+    </div></div>
+  </section>
+
+</div>
+
+<footer>
+  All four frames in every direction are drawn at the real device size (320×640 CSS px) against the
+  same content from <code>CONTENT.json</code> and the same shared illustrations in
+  <code>./assets/</code>, so differences you see are design differences, not content differences.
+</footer>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var rail = document.getElementById('rail');
+  var mode = 'fit';
+
+  function apply(){
+    var stacked = document.body.classList.contains('stacked');
+    var s;
+    if (mode === 'fit') {
+      var cols = stacked ? 1 : 3;
+      var avail = (rail.clientWidth - 56 - (cols - 1) * 26) / cols;
+      s = Math.min(1, Math.max(0.18, (avail - 2) / 1460));
+    } else {
+      s = parseFloat(mode);
+    }
+    root.style.setProperty('--s', s.toFixed(4));
+    // a manual drag-resize wins until the next zoom/layout change
+    [].forEach.call(document.querySelectorAll('.viewport'), function(v){
+      v.style.width = ''; v.style.height = '';
+    });
+    // line the three panels up on the same baseline
+    var heads = [].slice.call(document.querySelectorAll('.head'));
+    heads.forEach(function(h){ h.style.height = ''; });
+    if (!stacked) {
+      var tallest = heads.reduce(function(m, h){ return Math.max(m, h.offsetHeight); }, 0);
+      heads.forEach(function(h){ h.style.height = tallest + 'px'; });
+    }
+  }
+
+  document.getElementById('zoom').addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    [].forEach.call(this.children, function(x){ x.setAttribute('aria-pressed', x === b); });
+    mode = b.dataset.s; apply();
+  });
+
+  document.getElementById('layout').addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    [].forEach.call(this.children, function(x){ x.setAttribute('aria-pressed', x === b); });
+    document.body.classList.toggle('stacked', b.dataset.l === 'stacked');
+    apply();
+  });
+
+  var t; addEventListener('resize', function(){ clearTimeout(t); t = setTimeout(apply, 120); });
+  apply();
+})();
+</script>
+
+</body>
+</html>
