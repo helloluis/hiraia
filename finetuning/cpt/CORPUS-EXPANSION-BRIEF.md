@@ -133,3 +133,43 @@ bloom ~8M); volume ~35 GB used of 300 GB.
 - `nohup … &` over ssh needs `< /dev/null` or ssh hangs on the open channel.
 - Bloom: `bloomdigital/index.htm` from the old probe 404s on current books; and Bloom ceb/tl
   books are multilingual — extract per-`lang`-tag text only.
+
+## v3 Results (filled in 2026-08-23, same session)
+
+**Deliverables (verified on the volume):**
+- `final_output/pool_tl_v3/data_clean.jsonl` — **15,054,966 docs / 5.47 GB / ≈1.65B Qwen3.5
+  tokens** (0.3008 tok/B; `corpus/TOKEN-YIELD.v3.json`). VERIFY=OK (line count + head/tail parse).
+- `final_output/pool_ceb_v3/data_clean.jsonl` — 9,356 docs / ~5.5M tokens.
+- **Running tl total: v1 ~1.5–2B + v2 ~1.49B + v3 ~1.65B ≈ 4.6–5.1B tokens** — at the low edge
+  of the 5–6B target (mix-time cross-dedup will shave some). ceb: ~0.37B + v3 ~5.5M (negligible).
+
+**v3 sources (all new vs v1/v2):** DCAD-2000 `fil_Latn` (MaLA keep 23.65GB + FW2-remove 2.33GB,
+CC BY 4.0) and `ceb_Latn` (MaLA keep 13.39GB + new_cc) — `openbmb/DCAD-2000`, ungated; OPUS mono
+tl/ceb (CCAligned, CCMatrix, ParaCrawl, WikiMatrix, OpenSubtitles + small supplements, chunked to
+~2KB pseudo-docs); **DepEd LR portal crawl: 24,975 modules** (SDO Muntinlupa Google Site → Drive
+IDs → pdftotext, ~97% born-digital). LRMDS harvested separately to the Mac (1,272 language docs +
+196 science docs in `finetuning/reference-materials/`; 107 resources are server-side restricted,
+~40 were Word `.doc` files — sniff magic bytes, not just %PDF).
+
+**Key findings:** DCAD ceb mala-keep was **99.9% Lsjbot bot text** (perplexity+stopwords
+pre-filter; spot-checked — the ceb-wiki trap runs through Oscar22/MC4 too, not just Wikipedia).
+Real public Cebuano remains scarce everywhere we looked. DCAD fil mala is real but register-mixed
+(e-commerce spam, SMS-speak, MT-garbage pockets — SailCraft stage 1 dropped 45% of pool docs).
+
+**Ops lessons (cost: 4 dead pods, ~$15):**
+- Full-pool minhash on 20M+ docs died SIGKILL-silently on 4 pods across 3 hosts (canary idle pod
+  survived 32 min — workload-triggered, likely host-OOM politics on packed GPU hosts; probe
+  session confirmed no watchdog on their side). **Fix: shard stages 2-4 (3× ~7M docs) — or run
+  them off RunPod.** The overnight Mac run (10 cores/32GB) completed all shards without incident.
+- SailCraft `exact_dedup/run_example.sh` `realpath`s its cache args — `mkdir -p` the cache dir
+  first or stage 3 silently no-ops and stage 4 crashes on the missing file.
+- pdftotext output needs a control-char strip (`[\000-\010\013-\014\016-\037]`) before SailCraft —
+  its openpyxl `_filter_cases.xlsx` logger crashes stage 1 with IllegalCharacterError otherwise.
+- 300GB volume filled up: `cache/data_clean_cache` accumulated **140GB** of datasets map caches
+  across runs — delete it between runs; `df` on the mfs mount shows the SHARED fs, not the quota.
+- No rsync on modern macOS — use scp or chunked transfer for multi-GB pulls.
+
+**Scripts:** `pull_corpus_v3.py`, `prep_pools_v3.py` (DCAD quality pre-filters), `harvest_opus.py`,
+`crawl_deped.py` (Google Site BFS → Drive IDs), `harvest_lrmds.py` (kamai login → local session,
+Word-doc sniffing), `local_driver_v3.sh` (sharded Mac stages), `driver_v3.sh`,
+`deploy_expansion_v3.sh`.
