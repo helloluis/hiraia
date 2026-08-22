@@ -5,7 +5,7 @@
  * and every patch is wrapped in HIRAIA_KEEP_START / HIRAIA_KEEP_END sentinels so
  * the next run finds and replaces its own block instead of stacking duplicates.
  *
- * THREE OVERRIDES:
+ * FOUR OVERRIDES (three files):
  *
  *   1. android/app/build.gradle  —  packagingOptions.jniLibs excludes for the
  *      KITTEN tier (budget-Adreno-610 / armv8.0 phones). See the existing inline
@@ -32,7 +32,11 @@
  *
  *   3. android/gradle.properties  —  bump org.gradle.jvmargs above Expo's
  *      512m default. Hermes JS compilation reproducibly OOMs at 512m on this
- *      workspace; 6144m gives headroom.
+ *      workspace; 6144m gives headroom. ALSO pins android.minSdkVersion=29:
+ *      react-native-bare-kit (the QVAC worker runtime) declares minSdk 29 while
+ *      prebuild emits 24, and the manifest merger hard-fails on the mismatch.
+ *      This was previously only ever set by hand, so it survived in a long-lived
+ *      android/ tree but broke the first time anyone regenerated one.
  *
  * Usage:
  *   node scripts/post-prebuild.mjs                   # cat tier (default)
@@ -153,6 +157,11 @@ const GRADLE_PROPS = path.join(ANDROID, 'gradle.properties');
 const HEAP_BLOCK = [
   '# HIRAIA_KEEP_START — bump heap past Expo default; Hermes JS compile OOMs at 512m',
   'org.gradle.jvmargs=-Xmx6144m -XX:MaxMetaspaceSize=1024m',
+  // react-native-bare-kit (the QVAC worker runtime) declares minSdk 29, and Expo's
+  // prebuild emits 24 — the manifest merger then hard-fails processReleaseMainManifest.
+  // 29 is also exactly the floor Android BlendMode needs for the card feed's multiply
+  // on the greyscale engravings, so there is no reason to want a lower number.
+  'android.minSdkVersion=29',
   '# HIRAIA_KEEP_END',
 ].join('\n');
 
@@ -162,13 +171,14 @@ function patchGradleProps() {
 
   // Strip prior managed block.
   src = src.replace(/\n?# HIRAIA_KEEP_START[\s\S]*?# HIRAIA_KEEP_END\n?/m, '\n');
-  // Strip any unmanaged jvmargs line so it can't shadow ours.
+  // Strip any unmanaged jvmargs / minSdk lines so they can't shadow ours.
   src = src.replace(/^org\.gradle\.jvmargs=.*$\n?/m, '');
+  src = src.replace(/^android\.minSdkVersion=.*$\n?/m, '');
 
   if (!src.endsWith('\n')) src += '\n';
   src += '\n' + HEAP_BLOCK + '\n';
   writeFileSync(GRADLE_PROPS, src);
-  log('gradle.properties ← org.gradle.jvmargs=-Xmx6144m');
+  log('gradle.properties ← org.gradle.jvmargs=-Xmx6144m, android.minSdkVersion=29');
 }
 
 log('tier =', isKitten ? 'kitten' : 'cat');
