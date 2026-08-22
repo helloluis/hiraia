@@ -44,7 +44,9 @@ NONTOPIC = set((
     'red blue green yellow black white brown grey gray orange purple pink '
     'pula asul berde dilaw itim puti kayumanggi kahel lila rosas '
     'thing things part kind kinds type types way ways sort form '
-    'bagay bahagi uri paraan anyo butang klase'
+    'bagay bahagi uri paraan anyo butang klase '
+    # directional adverbs and 'unremarkable' words -- "upward", "regular"
+    'upward downward inward outward forward backward sideways lengthwise regular normal usual common typical ordinary simple general basic main major minor karaniwan pangkaraniwan normal kasagaran ordinaryo pangunahing more less most least very quite just only also then than such both either neither'
 ).split())
 def toks(s):
     return {t for t in re.split(r'[^a-z0-9]+', (s or '').lower()) if len(t) > 2 and t not in STOP}
