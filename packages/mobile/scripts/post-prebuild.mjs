@@ -5,7 +5,7 @@
  * and every patch is wrapped in HIRAIA_KEEP_START / HIRAIA_KEEP_END sentinels so
  * the next run finds and replaces its own block instead of stacking duplicates.
  *
- * FOUR OVERRIDES (three files):
+ * FIVE OVERRIDES (four files):
  *
  *   1. android/app/build.gradle  —  packagingOptions.jniLibs excludes for the
  *      KITTEN tier (budget-Adreno-610 / armv8.0 phones). See the existing inline
@@ -29,6 +29,10 @@
  *      (e.g. ColorOS) INVERT our colors — that historically mangled the factoid
  *      card to unreadable light-on-light. We pin the Light parent and add
  *      `forceDarkAllowed=false` + the matching status bar colour.
+ *
+ *   4. android/app/src/main/res/values/colors.xml — define iconBackground and
+ *      correct splashscreen_background from app.json. Prebuild references the
+ *      former without defining it, which fails processReleaseResources.
  *
  *   3. android/gradle.properties  —  bump org.gradle.jvmargs above Expo's
  *      512m default. Hermes JS compilation reproducibly OOMs at 512m on this
@@ -181,8 +185,50 @@ function patchGradleProps() {
   log('gradle.properties ← org.gradle.jvmargs=-Xmx6144m, android.minSdkVersion=29');
 }
 
+// ---------------------------------------------------------------- colors.xml
+const COLORS = path.join(ANDROID, 'app/src/main/res/values/colors.xml');
+const APP_JSON = path.join(MOBILE, 'app.json');
+
+/**
+ * Expo 54's prebuild emits mipmap-anydpi-v26/ic_launcher.xml referencing
+ * `@color/iconBackground` but does NOT emit the colour itself, and it writes
+ * splashscreen_background as #FFFFFF regardless of the configured splash colour.
+ * processReleaseResources then hard-fails:
+ *
+ *     AAPT: error: resource color/iconBackground ... not found
+ *
+ * Both values ARE declared in app.json (android.adaptiveIcon.backgroundColor and
+ * splash.backgroundColor), so read them from there rather than hardcoding — the
+ * config stays the single source of truth and these cannot drift from it.
+ *
+ * Like minSdk, this had only ever been fixed by hand in a long-lived android/
+ * tree, so it survived there and only surfaced on a fresh regeneration.
+ */
+function patchColors() {
+  if (!existsSync(COLORS)) { log('SKIP colors.xml — not present'); return; }
+  const cfg = JSON.parse(readFileSync(APP_JSON, 'utf8')).expo ?? {};
+  const wanted = {
+    iconBackground: cfg.android?.adaptiveIcon?.backgroundColor,
+    splashscreen_background: cfg.splash?.backgroundColor,
+  };
+
+  let src = readFileSync(COLORS, 'utf8');
+  for (const [name, value] of Object.entries(wanted)) {
+    if (!value) { log(`SKIP colors.xml/${name} — not set in app.json`); continue; }
+    const row = `  <color name="${name}">${value}</color>`;
+    const existing = new RegExp(`^[ \\t]*<color name="${name}">.*</color>[ \\t]*$`, 'm');
+    src = existing.test(src)
+      ? src.replace(existing, row)                       // correct a wrong value
+      : src.replace('</resources>', `${row}\n</resources>`); // or add the missing one
+  }
+  writeFileSync(COLORS, src);
+  const shown = Object.entries(wanted).filter(([, v]) => v).map(([k, v]) => `${k}=${v}`);
+  log('colors.xml    ←', shown.join(', '));
+}
+
 log('tier =', isKitten ? 'kitten' : 'cat');
 patchGradle();
 patchStyles();
 patchGradleProps();
+patchColors();
 log('done');
