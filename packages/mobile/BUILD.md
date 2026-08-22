@@ -21,11 +21,17 @@ Android toolchain needed).
 - **`@qvac/rag` is pinned in this package's `dependencies`** even though nothing here
   imports it directly — it is a transitive dep of `@qvac/sdk`. Do not "clean it up".
 
-  Why: two workspaces pull different SDK majors. `packages/mobile` is on
-  `@qvac/sdk@0.13.1`, which needs `@qvac/rag@^0.6.x` and imports `@qvac/rag/errors.js`;
-  `packages/server` is on `@qvac/sdk@0.11.0`, which pulls `@qvac/rag@0.5.0`. That older
-  version has neither an `exports` map nor an `errors.js`. `shamefully-hoist` flattens
-  exactly ONE version of each package to the root, and it picked 0.5.0 — so bare-pack,
+  It is now belt-and-braces rather than load-bearing: as of the 0.17.1 upgrade BOTH
+  workspaces (`packages/mobile` and `packages/server`) are on `@qvac/sdk@^0.17.1`, which
+  declares `@qvac/rag@^0.6.4`, so there is exactly ONE `@qvac/rag` in the tree and
+  whatever `shamefully-hoist` flattens to the root is already the right one. The pin
+  costs nothing and re-arms the guard the moment the two workspaces diverge again.
+
+  What it guards against (the bug it was added for): the workspaces used to pull
+  different SDK lines — mobile on `@qvac/sdk@0.13.1` (needs `@qvac/rag@^0.6.x`, imports
+  `@qvac/rag/errors.js`) and server on `@qvac/sdk@0.11.0` (pulls `@qvac/rag@0.5.0`,
+  which has neither an `exports` map nor an `errors.js`). `shamefully-hoist` flattens
+  exactly ONE version of each package to the root and it picked 0.5.0, so bare-pack,
   resolving up from `packages/mobile/node_modules/@qvac/sdk`, found the wrong one and
   died with:
 
@@ -34,23 +40,29 @@ Android toolchain needed).
 
   which failed `expo prebuild` at its QVAC mod BEFORE any config-driven mod ran — so it
   silently emitted a raw, unconfigured template tree (placeholder package name, template
-  AndroidManifest) that then failed Gradle in confusing ways much later.
+  AndroidManifest) that then failed Gradle in confusing ways much later. Declaring
+  `@qvac/rag` here puts the correct version in `packages/mobile/node_modules/`, where it
+  shadows any mis-hoisted root copy for anything resolving from this package.
 
-  Declaring `@qvac/rag` here puts the correct 0.6.x in `packages/mobile/node_modules/`,
-  where it shadows the mis-hoisted root copy for anything resolving from this package.
-  The real cure is to get both workspaces onto one SDK major; that is blocked because
-  `packages/server` imports `QWEN3_1_7B_INST_Q4`, which is absent from BOTH SDK versions'
-  type surface, so the server needs its own look before it can move.
-
-  That cure is worth real money, not just tidiness: the same split means the APK ships
-  DUPLICATE native engines. `shamefully-hoist` flattens both SDKs' engine packages to the
-  root and the Android build packages every `libqvac__*.so` it finds, so a release APK
-  currently carries both `llm-llamacpp` 0.20.1 AND 0.24.0, and both `embed-llamacpp`
-  0.16.0 AND 0.19.1 — about **14.5 MB of dead native code**, pulled in only by a
-  Node-only server package that never runs on a phone. Verify with:
+- **Keep `packages/server` on the same `@qvac/sdk` version as this package.** The same
+  hoist that decides `@qvac/rag` also decides which `@qvac/{llm,embed}-llamacpp` native
+  engine ends up in the APK, and it is NOT necessarily this package's. `bare-link` (see
+  `plugins/withQvacAddons.js`) resolves engines from the flattened ROOT, so while the
+  workspaces were split the release APK carried the server's engines and stale copies of
+  mobile's — both `llm-llamacpp` 0.20.1 AND 0.24.0, both `embed-llamacpp` 0.16.0 AND
+  0.19.1, about **14.5 MB of dead native code** pulled in by a Node-only package that
+  never runs on a phone. Worse than the size: the worker bundle dlopen()s a
+  version-suffixed name (`libqvac__llm-llamacpp.<version>.so`), so if the hoisted engine
+  is not the one the bundle was packed against you get
+  `AddonError: dlopen failed: library "…" not found` at runtime. Both workspaces on one
+  SDK version keeps bundle and linked engine in sync by construction. Verify with:
 
       python3 -c "import zipfile; z=zipfile.ZipFile('android/app/build/outputs/apk/release/app-release.apk'); \
         print([i for i in z.namelist() if 'libqvac__' in i])"
+
+  (`plugins/withQvacAddons.js` also wipes `android/app/src/main/jniLibs` before linking,
+  so stale engine `.so` from a previous SDK version can no longer accumulate in a
+  long-lived `android/` tree.)
 - A physical **Android 12+** device with **6 GB+ RAM** (for Sailor2-3B). Target ABI is
   **arm64-v8a only** (the plugin strips other ABIs to shrink the APK).
 
