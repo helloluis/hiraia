@@ -75,6 +75,10 @@ interface UIStrings {
     questionHeader: string;
     continueNote: string;
     readLabel: string;
+    /** Eyebrow on the single-path "next" ticket (mid-century card). */
+    nextCard: string;
+    /** Banner announcing a two-way split in the thread (mid-century card). */
+    fork: string;
     searchPlaceholder: string;
     yourQuestion: string;
     thinking: string;
@@ -86,7 +90,8 @@ interface UIStrings {
 const UI_STRINGS: Record<Language, UIStrings> = {
   tagalog: {
     welcomeTitle: 'Maligayang Pagdating sa Hiraia!',
-    welcomeSubtitle: 'Magtanong ka ng kahit ano tungkol sa agham. Nandito ako para tulungan kang matuto.',
+    welcomeSubtitle:
+      'Magtanong ka ng kahit ano tungkol sa agham. Nandito ako para tulungan kang matuto.',
     inputPlaceholder: 'Magtanong tungkol sa agham...',
     inputPreparing: 'Inihahanda ang AI...',
     waitPreparing: 'Sandali lang—inihahanda ko pa ang AI. Pakisubukang muli sa ilang segundo. 🐱',
@@ -123,7 +128,8 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       topicPlaceholder: 'hal. dinosaur, kalawakan, katawan ng tao',
       tryLabel: 'Subukan:',
       start: 'Simulan',
-      unsupported: 'Pasensya, hindi pa kami makakagawa ng quiz tungkol diyan. Subukan ang ibang paksa!',
+      unsupported:
+        'Pasensya, hindi pa kami makakagawa ng quiz tungkol diyan. Subukan ang ibang paksa!',
       progress: 'Tanong {n} ng {total}',
       timeUp: 'Naubos ang oras!',
       correct: 'Tama! 🎉',
@@ -141,6 +147,8 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       questionHeader: 'Tanong! ✏️',
       continueNote: 'ituloy',
       readLabel: 'pahina',
+      nextCard: 'Sunod na kard',
+      fork: 'Sangandaan',
       searchPlaceholder: 'Anong gusto mong malaman?',
       yourQuestion: 'Ang tanong mo',
       thinking: 'Iniisip ko pa',
@@ -205,6 +213,8 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       questionHeader: 'Question! ✏️',
       continueNote: 'continue',
       readLabel: 'pages',
+      nextCard: 'Next card',
+      fork: 'Crossroads',
       searchPlaceholder: 'What do you want to learn about?',
       yourQuestion: 'You asked',
       thinking: "I'm thinking",
@@ -214,10 +224,12 @@ const UI_STRINGS: Record<Language, UIStrings> = {
   },
   cebuano: {
     welcomeTitle: 'Maayong Pag-abot sa Hiraia!',
-    welcomeSubtitle: 'Pangutana bisan unsa bahin sa siyensya. Ania ko aron motabang nimo nga makakat-on.',
+    welcomeSubtitle:
+      'Pangutana bisan unsa bahin sa siyensya. Ania ko aron motabang nimo nga makakat-on.',
     inputPlaceholder: 'Pangutana bahin sa siyensya...',
     inputPreparing: 'Giandam ang AI...',
-    waitPreparing: 'Kadiyot lang—giandam pa nako ang AI. Palihug sulayi pag-usab sa pipila ka segundo. 🐱',
+    waitPreparing:
+      'Kadiyot lang—giandam pa nako ang AI. Palihug sulayi pag-usab sa pipila ka segundo. 🐱',
     errorGeneric: 'Pasayloa, naay sayop nga nahitabo. Palihug sulayi pag-usab. 🐱',
     thinkingSearching: 'Nangita og tubag',
     thinkingReadingAbout: 'Gibasa ang bahin sa',
@@ -251,7 +263,8 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       topicPlaceholder: 'pananglitan dinosaur, kawanangan, lawas sa tawo',
       tryLabel: 'Sulayi:',
       start: 'Sugod',
-      unsupported: 'Pasayloa, dili pa mi makahimo og quiz bahin niana. Sulayi ang laing hilisgutan!',
+      unsupported:
+        'Pasayloa, dili pa mi makahimo og quiz bahin niana. Sulayi ang laing hilisgutan!',
       progress: 'Pangutana {n} sa {total}',
       timeUp: 'Nahurot na ang oras!',
       correct: 'Husto! 🎉',
@@ -269,6 +282,8 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       questionHeader: 'Pangutana! ✏️',
       continueNote: 'padayon',
       readLabel: 'panid',
+      nextCard: 'Sunod nga kard',
+      fork: 'Sangang-dalan',
       searchPlaceholder: 'Unsa ang gusto nimong hibaw-an?',
       yourQuestion: 'Ang pangutana nimo',
       thinking: 'Naghunahuna pa ko',
