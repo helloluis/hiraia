@@ -97,18 +97,26 @@ export function IndexBand({
   stamp,
 }: {
   tone?: BandTone;
-  chip: string;
+  /**
+   * OPTIONAL now. The factoid pages used to print a catalogue NUMBER here ("9258"), which
+   * carried no meaning for a reader and cost the band a chunk of its width. It is gone.
+   * The quiz keeps a chip because its chip is a LABEL ("PAGSUSULIT") — it is what tells a
+   * kid this page is a different kind of page — so the prop survives for that use.
+   */
+  chip?: string;
   label: string;
   stamp: ReactNode;
 }) {
   const ink = BAND_INK[tone];
   return (
     <View style={[cardFrame.band, { backgroundColor: ink.band }]}>
-      <View style={[cardFrame.chip, { backgroundColor: ink.chip }]}>
-        <Text style={[cardFrame.chipText, { color: ink.chipText }]} numberOfLines={1}>
-          {chip}
-        </Text>
-      </View>
+      {chip ? (
+        <View style={[cardFrame.chip, { backgroundColor: ink.chip }]}>
+          <Text style={[cardFrame.chipText, { color: ink.chipText }]} numberOfLines={1}>
+            {chip}
+          </Text>
+        </View>
+      ) : null}
       <Text
         style={[cardFrame.bandLabel, { color: ink.label }]}
         numberOfLines={1}
@@ -250,9 +258,12 @@ export const cardFrame = StyleSheet.create({
   },
   bandLabel: {
     flex: 1,
-    fontFamily: fonts.gothic, // stands in for the mockup's Chivo 900 (see theme.ts)
-    fontSize: 10.5,
-    letterSpacing: 1.6, // the mockup's 0.15em at 10.5px
+    // Patua One, not the gothic: chosen on measured width. At this size + tracking the pool's
+    // median 33-char topic needs 264-268dp in the previous faces against a ~250dp band, and
+    // 217dp in this one — the difference between truncating mid-word and fitting. See theme.ts.
+    fontFamily: fonts.bandTitle,
+    fontSize: 11.5, // a touch larger than the gothic's 10.5: the narrower face buys the room
+    letterSpacing: 1.4,
     textTransform: 'uppercase',
   },
   stamp: {

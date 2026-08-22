@@ -37,14 +37,24 @@ export default function RootLayout() {
     void hydrate();
   }, [bootstrap, hydrate]);
 
-  // Show the loader once bootstrap knows there's a saved language, we're not onboarding,
-  // and the engine still isn't ready. Stays up until the overlay's own wake→exit→dismiss
-  // sequence calls onDismiss (the overlay gates that on the real isReady).
-  useEffect(() => {
-    if (bootstrapped && language !== null && !onboardingActive && !isReady && !engineError) {
-      setLoaderVisible(true);
-    }
-  }, [bootstrapped, language, onboardingActive, isReady, engineError]);
+  // The warm-up loader NO LONGER covers the app.
+  //
+  // Measured on the target device: `warm-up complete (77835ms)` — 78 seconds of sleeping cat
+  // before anything was reachable. But the card feed is entirely ZERO-MODEL: local card data
+  // and bundled images, no LLM. The only things that need the engine are the feed's search
+  // box, /chat, and the reward-card text. Blocking the whole app on a model the home screen
+  // never calls made the first minute and a half of every cold start dead air.
+  //
+  // The loading state now lives INSIDE the one control that is actually unavailable — the
+  // search field renders a quiet warming state and only offers its placeholder once the
+  // engine is ready (see CardFeedScreen). /chat still waits for the model, correctly, since
+  // it genuinely cannot function without one.
+  //
+  // `loaderVisible` is kept (not deleted) because the onboarding path and a background
+  // warmModel() retry both still have legitimate reasons to raise it; it is simply no longer
+  // raised by the returning-user warm-up.
+  void isReady;
+  void engineError;
 
   // Bail OUT of the loader on a load error — otherwise the kid would be stuck on the
   // sleeping cat at 0% forever. The (zero-model) feed is usable without the engine, and

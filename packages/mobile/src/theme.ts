@@ -18,8 +18,18 @@ export const fonts = {
   /** Squared low-contrast slab — every Tagalog sentence on a card. */
   cardBody: 'ZillaSlab',
   cardBodyBold: 'ZillaSlabBold',
-  /** Tracked-out gothic caps — micro-labels, topic band, counters. */
+  /** Tracked-out gothic caps — micro-labels, counters. */
   gothic: 'ArchivoBlack',
+  /**
+   * The card's index band. Patua One, chosen on MEASURED width, not taste: rendering the
+   * band's tracked caps at 10.5px/0.15em, a 33-character topic (the pool median) needs
+   * 268dp in Alfa Slab One and 264dp in Archivo Black against a ~250dp band — which is
+   * precisely why every card was truncating mid-word. Patua One does the same string in
+   * 217dp and stays a heavy slab serif, so the band fits even on the topic FALLBACK path,
+   * before generated titles land. (Bevan was wider than the incumbent; Bitter and Rokkitt
+   * ship only as variable fonts, which Android RN will not instance reliably.)
+   */
+  bandTitle: 'PatuaOne',
 } as const;
 
 // Map files for useFonts(). Keep keys in sync with `fonts` above.
@@ -35,6 +45,7 @@ export const fontAssets = {
   // Archivo Black stands in for the mockup's Chivo 900: Chivo ships only as a
   // variable font and Android RN will not instance a weight axis reliably.
   ArchivoBlack: require('../assets/fonts/ArchivoBlack-Regular.ttf'),
+  PatuaOne: require('../assets/fonts/PatuaOne-Regular.ttf'),
 };
 
 export const colors = {

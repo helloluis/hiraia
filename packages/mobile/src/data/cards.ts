@@ -27,6 +27,19 @@ export interface CardFact {
   terms: string[];
   fact: { tl: string; en: string; bis: string }; // feed-voice text (Q&A question baked in)
   slug: string; // bundled illustration
+  /**
+   * SHORT display title for the index band ("Eels & Eggs"), pregenerated per card.
+   * Optional so the app keeps working before the generated titles are assembled into the
+   * pool — the band falls back to `topic`, which is what it printed before. The topic is a
+   * poor band label twice over: it restates the body text sitting directly beneath it, and
+   * at a median 33 characters it truncated mid-word on most cards.
+   *
+   * Trilingual, mirroring `fact`, so the band follows the reader's language rather than
+   * pinning English above Tagalog body copy.
+   */
+  title?: { tl: string; en: string; bis: string };
+  /** Taxonomy leaf ids (rag/pipeline/card-taxonomy.json) — powers "other <category>". */
+  cats?: string[];
 }
 
 export interface CardChoice {
@@ -66,6 +79,75 @@ for (const f of POOL) {
   arr.push(f);
   BY_DOMAIN.set(f.domain, arr);
 }
+
+/**
+ * TAXONOMY — the mid-level category layer between a card and its domain.
+ *
+ * The pool's only built-in grouping is `domain`, which has FOUR values across ~17k cards, so
+ * it can express "other living things" and nothing finer. The generated leaves (about a
+ * hundred, median ~70 cards) are what let the feed offer "other marine animals".
+ *
+ * Optional at runtime: the taxonomy is written into the generated pool by
+ * rag/pipeline/assemble-card-titles.py, so before that runs these are simply empty and the
+ * feed falls back to its previous same-domain lateral. The feature appears when the data does.
+ */
+interface TaxonomyLeaf {
+  id: string;
+  parent: string | null;
+  label_en: string;
+  label_tl: string;
+  label_bis: string;
+}
+const TAXONOMY: TaxonomyLeaf[] = (cardsPool as { taxonomy?: TaxonomyLeaf[] }).taxonomy ?? [];
+const LEAF = new Map(TAXONOMY.map((l) => [l.id, l]));
+
+/** leaf id -> the cards in it (only leaves that actually hold cards appear). */
+const BY_CAT = new Map<string, CardFact[]>();
+for (const f of POOL) {
+  for (const c of f.cats ?? []) {
+    const arr = BY_CAT.get(c) ?? [];
+    arr.push(f);
+    BY_CAT.set(c, arr);
+  }
+}
+
+/** "other <category>", in the reader's language. */
+const OTHER_PREFIX: Record<Language, string> = {
+  tagalog: 'iba pang',
+  english: 'other',
+  cebuano: 'ubang',
+};
+
+function leafLabel(id: string, language: Language): string {
+  const l = LEAF.get(id);
+  if (!l) return '';
+  if (language === 'english') return l.label_en;
+  if (language === 'cebuano') return l.label_bis || l.label_tl || l.label_en;
+  return l.label_tl || l.label_en;
+}
+
+/**
+ * A category the reader has NOT just been shown. Ascending is only worth doing if it opens a
+ * genuinely different shelf — offering "other marine animals" three cards running is the same
+ * broken-record failure as repeating an illustration, one level up.
+ */
+function freshCategory(
+  cur: CardFact,
+  recentIds: readonly string[] | undefined,
+  exclude: ReadonlySet<string>
+): string | undefined {
+  const cats = (cur.cats ?? []).filter((c) => BY_CAT.has(c) && !exclude.has(c));
+  if (!cats.length) return undefined;
+  const recentCats = new Set<string>();
+  for (const id of (recentIds ?? []).slice(-CAT_COOLDOWN)) {
+    for (const c of BY_ID.get(id)?.cats ?? []) recentCats.add(c);
+  }
+  const unused = cats.filter((c) => !recentCats.has(c));
+  return pick(unused.length ? unused : cats);
+}
+
+/** How many recent cards' categories are held back before a category may be offered again. */
+const CAT_COOLDOWN = 6;
 
 // term -> factIds (within the pool) + document frequency for idf weighting
 const TERM_INDEX = new Map<string, string[]>();
@@ -166,6 +248,20 @@ export function cardText(fact: CardFact, language: Language): string {
   return '';
 }
 
+/**
+ * The card's band title in the reader's language, or '' when the card has none yet (the
+ * generated titles are assembled into the pool separately). Callers fall back to `topic`.
+ * Same fallback chain as cardText, so a missing Cebuano title shows Tagalog before English.
+ */
+export function cardTitle(fact: CardFact, language: Language): string {
+  if (!fact.title) return '';
+  for (const k of FALLBACK[language] ?? FALLBACK.tagalog) {
+    const v = fact.title[k];
+    if (v && v.trim()) return v.trim();
+  }
+  return '';
+}
+
 export function poolSize(): number {
   return POOL.length;
 }
@@ -219,6 +315,54 @@ const TOPIC_STOP = new Set([
 // Generic verbs/adjectives that slip through as terms but read as non-topics for a
 // choice label ("tumutubo" = grows, "heart puso" = a bilingual gloss pair). Reject as
 // labels; the topic-word fallback gives something more specific.
+/**
+ * NON-TOPICAL words: they describe a MODIFIER, never a subject.
+ *
+ * One list, because one bug produced three separate symptoms the owner reported:
+ *   - a fact about the OUTER / MIDDLE / INNER ear was illustrated with the SOLAR SYSTEM
+ *     (slug `inner-vs-outer-planets`, matched on {inner, outer})
+ *   - next-card NON-SEQUITURS: the Sun's surface -> an Etruscan shrew, linked by a numeral;
+ *     stratosphere -> a barquillos wafer, linked by Cebuano `matahum` ("beautiful")
+ *   - a next-card LABEL that read "once" — a quantity adverb, and also the ANSWER to the
+ *     question printed on the card the reader was looking at
+ * All three are term overlap treating a modifier as if it carried subject meaning. Rarity is
+ * not aboutness: a token can be vanishingly rare in the bank and still say nothing about what
+ * a card is ABOUT, which is why no idf threshold ever reached this class.
+ *
+ * Trilingual by necessity — `terms` mixes EN/TL/BIS, so an English-only list leaves the
+ * Cebuano and Tagalog halves of the same failure untouched. Mirrors NONTOPIC in
+ * rag/pipeline/build-factoid-src.py, which applies the same rule when illustrations are
+ * assigned upstream; keep the two in sync.
+ */
+export const NON_TOPICAL = new Set(
+  (
+    'inner outer upper lower middle centre center front back side top bottom left right ' +
+    'loob labas taas baba gitna harap likod sulod gawas ibabaw ubos ' +
+    'first second third last next new old young big small large little long short tall ' +
+    'high low deep shallow fast slow hot cold warm cool wet dry hard soft light heavy ' +
+    'dark bright thick thin wide narrow strong weak clean dirty ' +
+    'malaki maliit mabilis mabagal mainit malamig mataas mababa mahaba maikli ' +
+    'dako gamay paspas hinay init bugnaw halapad hataas ' +
+    'once twice many few all some none each every other another same different ' +
+    'one two three four five six seven eight nine ten hundred thousand million ' +
+    'isa dalawa tatlo apat lima marami konti lahat iba pareho ' +
+    'usa duha tulo upat daghan tanan lain ' +
+    'red blue green yellow black white brown grey gray orange purple pink ' +
+    'pula asul berde dilaw itim puti kayumanggi kahel lila rosas ' +
+    'thing things part kind kinds type types way ways sort form ' +
+    'bagay bahagi uri paraan anyo butang klase'
+  ).split(' ')
+);
+
+/** True when a term says nothing about what a card is ABOUT (see NON_TOPICAL). */
+function isTopical(term: string): boolean {
+  const t = term.trim().toLowerCase();
+  if (!t) return false;
+  // A multiword term counts as topical only if some word in it is itself topical:
+  // "deep sea" is a subject, "deep blue" is not.
+  return t.split(/\s+/).some((w) => w.length > 2 && !NON_TOPICAL.has(w));
+}
+
 const BAD_LABELS = new Set([
   'tumutubo', 'lumalaki', 'ginagawa', 'gumagawa', 'nagmumula', 'nabubuo', 'ginagamit',
   'matatagpuan', 'makikita', 'tawag', 'uri', 'iba', 'bawat', 'grows', 'made', 'used',
@@ -239,6 +383,11 @@ export function choiceLabel(fact: CardFact, language: Language): string {
   for (const t of fact.terms) {
     if (t.length < 4 || t.length > 22) continue;
     if (BAD_LABELS.has(t)) continue;
+    // A modifier is not a topic. This is what produced the "once" ticket: `deep sea`
+    // was present in the card's terms and would have won, but the displayed text said
+    // "deep ocean", so the includes() test below dropped it and the quantity adverb
+    // `once` — which is literally the ANSWER on screen — became the label instead.
+    if (!isTopical(t)) continue;
     if (!text.includes(t)) continue;
     const df = TERM_INDEX.get(t)?.length ?? 1;
     if (df > 30) continue; // too common to be a topic
@@ -279,6 +428,13 @@ function linkOf(a: CardFact, b: CardFact): Link {
   const seenTerm = new Set<string>();
   for (const t of a.terms) {
     if (!bTerms.has(t) || seenTerm.has(t)) continue;
+    // A shared MODIFIER is not a relationship. Filtering here rather than at the call sites
+    // keeps mass/count/minDf consistent: a term that cannot express aboutness must not
+    // contribute ranking weight, must not count toward the link-strength floors, and above
+    // all must not become the rarest shared term — minDf is the specificity signal, and a
+    // rare-but-meaningless token (a numeral, a colour, a Cebuano adjective) hijacking it is
+    // exactly how "the Sun's surface" came to sit next to "the Etruscan shrew".
+    if (!isTopical(t)) continue;
     seenTerm.add(t);
     const df = TERM_INDEX.get(t)?.length ?? 1;
     mass += 1 / df;
@@ -500,6 +656,28 @@ export function nextChoices(
   const lateralPool = fresh.length ? fresh : domainPool;
   let lateral = pick(lateralPool);
 
+  /**
+   * ...but prefer to go UP THE STACK rather than sideways by keyword.
+   *
+   * A random same-domain card is an unlabelled promise: the ticket can only name some term
+   * scraped out of the destination, which is how a next-card button came to read "once". A
+   * CATEGORY names the shelf — "other marine animals" — and draws from ~70 cards instead of
+   * one, so the reader is choosing a direction rather than a specific card they cannot see.
+   * That is also why this is the better answer to a dead end: with no associated follow-on
+   * left, the honest offer is a subject, not a card picked at random and dressed up as
+   * related.
+   */
+  let lateralCat: string | undefined;
+  const cat = freshCategory(cur, opts.recentIds, new Set());
+  if (cat) {
+    const inCat = (BY_CAT.get(cat) ?? []).filter((f) => servable(f) && f.id !== deep?.id);
+    const chosen = pick(inCat);
+    if (chosen) {
+      lateral = chosen;
+      lateralCat = cat;
+    }
+  }
+
   // fallbacks as the unseen pool thins: relax the picture cooldown first (a repeated
   // illustration beats an empty page), then allow any unseen card, then any card at all.
   if (!lateral) {
@@ -509,7 +687,21 @@ export function nextChoices(
 
   const out: CardChoice[] = [];
   if (deep) out.push({ factId: deep.id, label: choiceLabel(deep, language), kind: 'deep' });
-  if (lateral) out.push({ factId: lateral.id, label: choiceLabel(lateral, language), kind: 'lateral' });
+  if (lateral) {
+    // When the lateral came from a category, LABEL IT AS THE CATEGORY. This is the whole
+    // point of ascending: "iba pang hayop-dagat" tells the reader what shelf they are moving
+    // to, where a term lifted out of the destination card tells them nothing and occasionally
+    // spoils the card they are still reading. Falls back to the term label when the card has
+    // no category yet (before the generated taxonomy is assembled into the pool).
+    const catLabel = lateralCat
+      ? `${OTHER_PREFIX[language] ?? OTHER_PREFIX.tagalog} ${leafLabel(lateralCat, language)}`.trim()
+      : '';
+    out.push({
+      factId: lateral.id,
+      label: catLabel || choiceLabel(lateral, language),
+      kind: 'lateral',
+    });
+  }
 
   // Fork on the cadence, or immediately at a dead end. Otherwise the page is single-path.
   if (!deadEnd && (opts.threadDepth ?? 0) < BRANCH_EVERY) return out.slice(0, 1);

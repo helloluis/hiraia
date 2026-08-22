@@ -11,10 +11,12 @@
  * caption under the card. Everything PRINTED ON the card — index band, punched holes,
  * keyline, illustration plate, type, tickets — belongs to the page components.
  *
- * Navigation: tap a choice ticket, or SWIPE the card away. The card tracks the finger on
- * the UI thread, springs back if it is let go under the commit threshold ("let me read
- * that again") and carries on off the deck past it; a swipe UP from a bottom corner, the
- * gesture that shipped first, still works and is the nav-bar-safe way past an interject.
+ * Navigation: tap a choice ticket, or SWIPE the card away. LEFT, RIGHT and UP are three
+ * first-class directions on ONE tuning — same distance, same velocity gate, same spring —
+ * and a drag locks to an axis the moment it has a direction, so it can never mean two
+ * things at once. The card tracks the finger on the UI thread, springs back if it is let
+ * go under the commit threshold ("let me read that again") and carries on off the deck
+ * past it. DOWN is tracked but never commits: there is no previous card to go back to.
  * Every 4-5 pages the flip is intercepted by a single MCQ about a recently-read fact.
  *
  * ROBUSTNESS: the incoming page carries the live drag and nothing else — and the drag
@@ -82,11 +84,21 @@ const METER_TICKS = 5;
 const DRAG_SLOP = 10;
 
 /**
- * Commit distance for a sideways swipe, as a fraction of the screen's width. ~115dp on
- * the ~360dp panel this ships to: one comfortable thumb sweep, and far enough that the
- * kid can push the card, realise they had not finished reading it, and walk it back to
- * rest. Below about a quarter of the width it starts committing on the sideways drift
- * that comes free with a tap, and the feed would feel like it was running away from them.
+ * Commit distance, as a fraction of the screen's WIDTH — and the SAME distance on both
+ * axes, which is what makes up a first-class direction instead of a special case: one
+ * physical sweep turns the page whichever way it is aimed, so there is one gesture to
+ * learn, not three. ~115dp on the ~360dp panel this ships to: one comfortable thumb
+ * sweep, and far enough that the kid can push the card, realise they had not finished
+ * reading it, and walk it back to rest. Below about a quarter of the width it starts
+ * committing on the drift that comes free with a tap, and the feed would feel like it was
+ * running away from them.
+ *
+ * Deliberately NOT re-derived from the taller vertical axis: 0.32 of the deck's ~620dp of
+ * height is ~200dp, which is a reach rather than a sweep, and an "equal effort" argument
+ * for a longer up-swipe does not survive the fact that a thumb's vertical range on a phone
+ * held in one hand is the SHORTER of the two. It does mean up costs more travel than the
+ * 55dp of the corner-swipe this replaces (that was a secondary escape hatch, tuned as
+ * one) — the first thing to confirm on-device, and a one-line change if 115dp reads long.
  */
 const COMMIT_FRACTION = 0.32;
 
@@ -102,24 +114,77 @@ const COMMIT_VELOCITY = 800;
 /**
  * ...but a flick has to have gone somewhere. Without this floor the high instantaneous
  * velocity of a 5dp twitch — which is exactly what lifting a finger looks like on a cheap
- * digitiser — would turn the page.
+ * digitiser — would turn the page. Shared with the vertical axis, where it earns its keep
+ * twice over: a finger leaving the glass smears the last samples UP the panel, so up is
+ * precisely the direction a velocity-only rule fires by accident. ~43dp here.
  */
 const FLICK_MIN_FRACTION = 0.12;
 
 /**
- * Commit distance for the swipe UP that shipped first (it doubles as the nav-bar-safe way
- * past an interject page). Unchanged from the pan responder this replaces: it is the
- * secondary gesture, with no "walk it back" story to serve, so it stays short.
+ * How far the finger travels before the drag LOCKS to an axis, and with it to a meaning.
+ * Sits a couple of dp past DRAG_SLOP — one or two frames after the pan activates — because
+ * the activation frame on its own is a coin flip on a cheap digitiser: an 11dp-across,
+ * 10dp-up sample is "sideways" by a hair, and mis-locking is the worst outcome this
+ * gesture has (a fork's left branch taken when the kid meant "next"). Waiting those few dp
+ * costs nothing visible: the card is held at rest until the lock, and 14dp is inside the
+ * movement a tap is allowed anyway.
+ *
+ * Once locked the axis is HELD for the rest of the gesture and the perpendicular offset is
+ * pinned at 0, so the card slides on a rail. Free 2D tracking was the alternative and it
+ * reads as loose — the card ends up somewhere nobody aimed it, and the direction that
+ * commits is whichever axis happened to be ahead at lift-off.
+ *
+ * Being far below FLICK_MIN_FRACTION (~43dp) is load-bearing: the axis is always decided
+ * long before any commit test can pass, so no swipe can commit without having locked.
  */
-const COMMIT_UP_PX = 55;
-const FLICK_MIN_UP_PX = 24;
+const AXIS_LOCK_PX = 14;
 
-/** Corner bands for a swipe UP on a FORK: the outer 40% each side is that side's pick. */
+/**
+ * Vertical commit distance, in dp. The horizontal axis commits on a FRACTION of the screen
+ * width, but the vertical one cannot borrow that: on a phone held in one hand the thumb's
+ * comfortable vertical range is the SHORTER of the two, while the screen is much taller —
+ * so `height * COMMIT_FRACTION` (~265dp here) would be an arm movement, not a flick.
+ * A fixed 115dp is roughly the same perceived effort as the horizontal 32%, and it is the
+ * value the doc block above is written against. It does cost more travel than the 55dp
+ * corner-swipe this replaces, which was tuned as a secondary escape hatch rather than a
+ * primary gesture — the first thing to confirm on-device, and a one-line change if it
+ * reads long.
+ */
+const COMMIT_UP_PX = 115;
+
+/**
+ * The vertical twin of FLICK_MIN_FRACTION: how far an upward flick must actually have
+ * travelled before velocity alone is allowed to commit it. Matches the ~43dp that
+ * FLICK_MIN_FRACTION works out to horizontally, so both axes demand the same minimum
+ * "went somewhere" before trusting a fast sample. This matters more going up than sideways:
+ * a finger leaving the glass smears its last samples UP the panel, so up is exactly the
+ * direction a velocity-only rule would fire by accident.
+ */
+const FLICK_MIN_UP_PX = 43;
+
+/**
+ * Corner bands for a swipe UP on a FORK: the outer 40% each side is that side's pick, the
+ * corner it will peel from. The middle band names neither branch and the app must not
+ * guess for the kid, so a vertical drag that starts there RESISTS (LOCKED_GRIP) and
+ * springs back — dead travel on a 115dp gesture would read as the app being broken, where
+ * a card that holds on says "this one needs a side" in the language of the gesture. Left
+ * and right are unaffected: they name their branch by direction, wherever they start.
+ */
 const FORK_EDGE = 0.4;
 
-/** How much of the finger a page that cannot be dismissed yet gives back (see `locked`). */
+/**
+ * How much of the finger a drag that cannot go anywhere gives back: an interject question
+ * that has not been answered yet (see `locked`), or an up-swipe from the ambiguous middle
+ * of a fork (see FORK_EDGE).
+ */
 const LOCKED_GRIP = 0.12;
-/** Nothing lives below the card, so a downward drag is rubber-banded, not tracked 1:1. */
+/**
+ * Downward drag. There is no "previous card" in the store — no history, and synthesising
+ * one would mean restoring the choices, the quiz state and the interject counter with it —
+ * so a swipe DOWN deliberately does NOTHING but spring back. It is still tracked, at a
+ * quarter of the finger: a card that ignores the drag outright reads as a frozen screen,
+ * where one that gives a little and pulls itself home says "there is nothing down here".
+ */
 const DOWN_GRIP = 0.25;
 
 /**
@@ -130,10 +195,21 @@ const DOWN_GRIP = 0.25;
  */
 const SETTLE_SPRING = { duration: 340, dampingRatio: 0.88 } as const;
 
-/** Values for the gesture's `axis` shared value: undecided, then locked to one axis. */
+/** Values for the gesture's `axis` shared value: undecided, then locked (see AXIS_LOCK_PX). */
 const AXIS_NONE = 0;
 const AXIS_X = 1;
 const AXIS_Y = 2;
+
+/**
+ * Is this vertical drag one the card cannot answer? On a FORK an up-swipe means "the
+ * branch under the corner I started from" (FORK_EDGE), so a drag that starts in the middle
+ * band names neither. Runs on the UI thread inside the pan, hence the worklet: `gate` is
+ * the forking shared value, `downX` the screen x the finger went down at.
+ */
+function forkMiddleUp(gate: number, downX: number, screenW: number) {
+  'worklet';
+  return gate === 1 && downX > screenW * FORK_EDGE && downX < screenW * (1 - FORK_EDGE);
+}
 
 /** How far a TAPPED page swings sideways as it hinges off its corner (fraction of card). */
 const TAP_DRIFT = 0.12;
@@ -149,7 +225,10 @@ const TAP_GUARD_MS = 180;
 
 type Side = 'left' | 'right';
 
-/** Which way a committed swipe went. 'up' is the corner swipe; the rest are sideways. */
+/**
+ * Which way a committed swipe went. All three are first-class; 'up' is the one that does
+ * not name a side by itself, so it borrows one from the half of the card it started on.
+ */
 type SwipeDir = Side | 'up';
 
 /** What was on the pad for the page being peeled away. */
@@ -217,6 +296,11 @@ export function CardFeedScreen() {
   const reward = useCardStore((s) => s.reward);
   const response = useCardStore((s) => s.response);
   const asking = useCardStore((s) => s.asking);
+  // The feed itself needs no model, but the SEARCH FIELD does — so the warm-up state is shown
+  // here rather than as a full-screen gate (see the note in app/_layout.tsx).
+  const engineReady = useEngineStore((s) => s.isReady);
+  const engineError = useEngineStore((s) => s.error);
+  const warming = !engineReady && !engineError;
   const queryBanner = useCardStore((s) => s.queryBanner);
   const pageKey = useCardStore((s) => s.pageKey);
   const pagesRead = useCardStore((s) => s.pagesRead);
@@ -290,6 +374,19 @@ export function CardFeedScreen() {
   useEffect(() => {
     locked.value = question && !questionAnswered ? 1 : 0;
   }, [question, questionAnswered, locked]);
+
+  /**
+   * Two choices == this card FORKS. The deck visibly splits (the fan behind becomes the two
+   * colour-coded branches) and the gesture gains a meaning it has nowhere else: left is
+   * pick A, right is pick B. Same `choices.length` rule the page components use for their
+   * tickets — the fan and the swipe just echo it. Declared up here, above the loading
+   * return, because the pan needs it as a shared value (see forkMiddleUp).
+   */
+  const forking = choices.length > 1 && !question && !reward && !response;
+  const forkGate = useSharedValue(0);
+  useEffect(() => {
+    forkGate.value = forking ? 1 : 0;
+  }, [forking, forkGate]);
 
   // Same body twice on purpose: Reanimated wants one animated style per view, and the
   // printed ledge is the card's own drop shadow — it has to travel with the card.
@@ -386,9 +483,9 @@ export function CardFeedScreen() {
    * A FORK has two destinations, so there the direction IS the choice — left takes pick A
    * and right takes pick B, matching the two colour-coded cards fanned behind the deck
    * (blue A leaning left, ochre B leaning right) and the corner each pick already peels
-   * from. On a single-path card either direction simply means "next". A swipe up keeps its
-   * original meaning: on a fork it is the corner it started from, and the ambiguous middle
-   * band does nothing.
+   * from. A swipe UP has no side of its own, so on a fork it keeps the meaning it always
+   * had: the corner it started from (the ambiguous middle band never reaches this function
+   * — the pan refuses it). On a single-path card every direction simply means "next".
    */
   const commitSwipe = useCallback(
     (dir: SwipeDir, releaseX: number, releaseY: number, downX: number) => {
@@ -566,10 +663,6 @@ export function CardFeedScreen() {
     );
   }
 
-  // Two choices == this card forks, and the deck visibly splits: the fanned cards behind
-  // become the two colour-coded branches instead of one plain card. Same `choices.length`
-  // rule the page components use for their tickets — the fan just echoes it.
-  const forking = choices.length > 1 && !question && !reward && !response;
   const ticksOn = Math.max(0, Math.min(METER_TICKS, METER_TICKS - untilQuestion));
   const canSend = queryText.trim().length > 0;
 
@@ -593,19 +686,40 @@ export function CardFeedScreen() {
         <View style={styles.searchField}>
           <View style={styles.searchDiamond} />
           <TextInput
-            style={styles.searchInput}
+            style={[styles.searchInput, !engineReady && styles.searchInputIdle]}
             value={queryText}
             onChangeText={setQueryText}
             onSubmitEditing={submitQuery}
-            placeholder={t.cards.searchPlaceholder}
+            placeholder={
+              warming
+                ? t.cards.searchWarming
+                : engineError
+                  ? t.cards.searchUnavailable
+                  : t.cards.searchPlaceholder
+            }
             placeholderTextColor={card.olive}
             returnKeyType="search"
-            editable={!asking}
+            // Non-interactive until the engine can actually answer. A kid tapping in and
+            // getting a dead keyboard is worse than the field plainly looking not-yet-ready.
+            editable={!asking && engineReady}
             selectionColor={card.sage}
           />
           {/* While an answer is being generated the submit button becomes a progress
               circle, so the kid knows the app is working and they should wait. */}
-          {asking ? (
+          {warming ? (
+            // Deliberately the small olive spinner, not the ink one used for `asking`: this is
+            // "not ready yet", a passive state, and must not compete with the card for
+            // attention the way an active in-flight request should.
+            <ActivityIndicator size="small" color={card.olive} style={styles.searchSpinner} />
+          ) : engineError ? (
+            // Warm-up failed. Never spin forever — offer the retry that warmModel() already
+            // implements, so a transient failure is one tap from recovery.
+            <Pressable onPress={warmModel} hitSlop={8}>
+              <View style={[styles.sendChip, styles.sendChipOff]}>
+                <View style={styles.sendArrow} />
+              </View>
+            </Pressable>
+          ) : asking ? (
             <ActivityIndicator size="small" color={card.ink} style={styles.searchSpinner} />
           ) : (
             <Pressable onPress={submitQuery} disabled={!canSend} hitSlop={8}>
@@ -869,6 +983,11 @@ const styles = StyleSheet.create({
     borderTopColor: 'transparent',
     borderBottomColor: 'transparent',
     borderLeftColor: card.gold,
+  },
+  searchInputIdle: {
+    // Dimmed while the engine warms so the field reads as not-yet-available at a glance,
+    // without changing its size and reflowing the row when it becomes live.
+    opacity: 0.55,
   },
   searchSpinner: { width: 32 },
   reroll: {

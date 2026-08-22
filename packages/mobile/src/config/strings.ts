@@ -80,6 +80,10 @@ interface UIStrings {
     /** Banner announcing a two-way split in the thread (mid-century card). */
     fork: string;
     searchPlaceholder: string;
+    /** Shown in the search field while the model is still warming (the feed itself needs none). */
+    searchWarming: string;
+    /** Shown if warm-up failed — tapping the field retries, so this must not read as fatal. */
+    searchUnavailable: string;
     yourQuestion: string;
     thinking: string;
     abstain: string;
@@ -150,6 +154,8 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       nextCard: 'Sunod na kard',
       fork: 'Sangandaan',
       searchPlaceholder: 'Anong gusto mong malaman?',
+      searchWarming: 'Ginigising si Hiraia…',
+      searchUnavailable: 'Pindutin para subukan ulit',
       yourQuestion: 'Ang tanong mo',
       thinking: 'Iniisip ko pa',
       abstain: 'Hmm, wala pa akong alam diyan.',
@@ -216,6 +222,8 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       nextCard: 'Next card',
       fork: 'Crossroads',
       searchPlaceholder: 'What do you want to learn about?',
+      searchWarming: 'Waking Hiraia up…',
+      searchUnavailable: 'Tap to try again',
       yourQuestion: 'You asked',
       thinking: "I'm thinking",
       abstain: "Hmm, I don't know about that yet.",
@@ -285,6 +293,8 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       nextCard: 'Sunod nga kard',
       fork: 'Sangang-dalan',
       searchPlaceholder: 'Unsa ang gusto nimong hibaw-an?',
+      searchWarming: 'Ginapukaw si Hiraia…',
+      searchUnavailable: 'I-tap para sulayan pag-usab',
       yourQuestion: 'Ang pangutana nimo',
       thinking: 'Naghunahuna pa ko',
       abstain: 'Hmm, wala pa ko kahibalo ana.',

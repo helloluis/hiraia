@@ -168,3 +168,12 @@ rag/pipeline/factoids-bio/
 rag/pipeline/factoids-bio-b2/
 rag/pipeline/factoids-bio-b3/
 rag/pipeline/factoids-*-src.jsonl
+
+# --- card title/taxonomy generation (regenerable Fireworks output) ---
+# The DERIVED artifacts are tracked (card-taxonomy.json is curated and load-bearing; the
+# titles are folded into cardsPool.generated.json by assemble-card-titles.py). The raw
+# per-batch shards are not — they are large, reproducible, and only exist to make the run
+# resumable.
+rag/pipeline/taxonomy-probe/
+rag/pipeline/card-titles/
+rag/bank/*.pre-rematch.bak

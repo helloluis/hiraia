@@ -35,7 +35,7 @@ import {
 import type { Language } from '@hiraia/shared';
 
 import { uiStrings } from '../../config/strings';
-import { cardText, type CardChoice, type CardFact } from '../../data/cards';
+import { cardText, cardTitle, type CardChoice, type CardFact } from '../../data/cards';
 import { resolveImage } from '../../generated/imageMap';
 import { card, fonts } from '../../theme';
 import { Lightbox } from '../Lightbox';
@@ -85,19 +85,6 @@ function splitQA(text: string): { ask: string | null; body: string } {
   const i = text.indexOf(QA_SEPARATOR);
   if (i <= 0) return { ask: null, body: text };
   return { ask: text.slice(0, i), body: text.slice(i + QA_SEPARATOR.length) };
-}
-
-/**
- * The number printed in the index band. It is the card's own catalogue number (its position
- * in the bank, parsed off the `ffct-NNNNN` id), NOT how many cards the kid has read —
- * CardPage is mounted a second time as the frozen OUTGOING page during a peel, and a live
- * read-count would re-render that snapshot carrying the NEXT card's number. Deriving it
- * from the fact keeps both copies honest, and a catalogue number is what a real card index
- * band carries anyway. 1-based, so no card is ever printed "0".
- */
-function catalogueNo(id: string): string {
-  const digits = /(\d+)\s*$/.exec(id);
-  return digits ? String(Number(digits[1]) + 1) : id.toUpperCase();
 }
 
 /**
@@ -186,8 +173,7 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
       {/* index band: catalogue number, topic in tracked gothic caps, cat stamp */}
       <IndexBand
         tone={branching ? 'graphite' : 'ink'}
-        chip={catalogueNo(fact.id)}
-        label={fact.topic}
+        label={cardTitle(fact, language) || fact.topic}
         stamp={<Image source={CAT} style={cardFrame.stampImage} resizeMode="contain" />}
       />
 
