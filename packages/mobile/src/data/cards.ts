@@ -258,17 +258,39 @@ export function choiceLabel(fact: CardFact, language: Language): string {
   return words.slice(0, 2).join(' ') || fact.domain.toLowerCase().replace(/_/g, ' ');
 }
 
-/** idf-weighted term overlap between two pool facts. */
-function overlap(a: CardFact, b: CardFact): number {
-  let s = 0;
+/**
+ * How two pool facts are related, in one pass over the shared terms:
+ *   mass  — idf-weighted overlap (the ranking score; rare shared terms dominate)
+ *   count — how many terms they share at all
+ *   minDf — document frequency of the RAREST shared term (its specificity)
+ * Together these separate "both mention water" from "both are about pangolin scales".
+ */
+interface Link {
+  mass: number;
+  count: number;
+  minDf: number;
+}
+
+function linkOf(a: CardFact, b: CardFact): Link {
+  let mass = 0;
+  let count = 0;
+  let minDf = Infinity;
   const bTerms = new Set(b.terms);
+  const seenTerm = new Set<string>();
   for (const t of a.terms) {
-    if (bTerms.has(t)) {
-      const df = TERM_INDEX.get(t)?.length ?? 1;
-      s += 1 / df;
-    }
+    if (!bTerms.has(t) || seenTerm.has(t)) continue;
+    seenTerm.add(t);
+    const df = TERM_INDEX.get(t)?.length ?? 1;
+    mass += 1 / df;
+    count += 1;
+    if (df < minDf) minDf = df;
   }
-  return s;
+  return { mass, count, minDf };
+}
+
+/** idf-weighted term overlap between two pool facts (the ranking score alone). */
+function overlap(a: CardFact, b: CardFact): number {
+  return linkOf(a, b).mass;
 }
 
 /**
@@ -286,25 +308,140 @@ function overlap(a: CardFact, b: CardFact): number {
  */
 export const BRANCH_EVERY = 8;
 
+/**
+ * How many just-read cards' illustrations are off-limits for the next pick (on top of the
+ * current card's own).
+ *
+ * 2,837 distinct pictures back the 16,948 cards, so one picture stands in for a whole
+ * cluster of restatements — and a child notices the repeated PICTURE long before the
+ * repeated wording. Measured by the harness over 1,920 walked pages: 24.0% of page-turns
+ * reused the current card's illustration and 28.6% reused one of the last three. Blocking
+ * a short trailing window takes both to 0.0% and costs almost nothing: the deep pick is
+ * lost on 0.3% of pages, and those become forks (a real choice), not dead air.
+ *
+ * Kept short — 5 is exactly cardStore's RECENT_WINDOW, the whole trail it already keeps —
+ * because this is a freshness rule, not a de-dup rule: 4 still let 0.5% of pictures come
+ * back at 5 cards' distance, while a window longer than the trail would start pushing
+ * genuinely related follow-ons out of reach on picture-dense topics like the water cycle.
+ */
+const SLUG_COOLDOWN = 5;
+
+/**
+ * Near-duplicate cap: a candidate carrying more than this fraction of the current card's
+ * own term mass is the same fact reworded, not a next topic.
+ *
+ * The old 0.55 was too loose, but the cap alone is NOT the lever for restatements: swept on
+ * its own over 3.1k cards, 0.55 -> 0.25 moved the same-illustration rate only 25.9% ->
+ * 24.1%, because a reworded fact is a near-duplicate in PICTURE and topic far more often
+ * than in term mass. The illustration cooldown above is what removes them. With it in
+ * place, swept over 8,456 cards, the cap does clean up the residual wording band —
+ * jaccard>0.35: 2.44% (0.55) -> 2.35% (0.45) -> 1.75% (0.25) -> 1.49% (0.15) — while
+ * candidates lost stay flat (1.23% -> 1.29%) until 0.15, where the cost jumps to 1.71% for
+ * a smaller gain. 0.25 is that knee. The trade it buys is visible and intended: deep picks
+ * carry less shared term mass (median 0.40 -> 0.34) precisely because the near-twins are
+ * gone.
+ */
+const DEEP_DUP_CAP = 0.25;
+
+/**
+ * Floor for a candidate to count as GENUINELY associated ("deep") rather than a card that
+ * merely happens to share a common word — the "burnay vinegar -> chloroplasts, both mention
+ * water" failure. Two clauses, because one shared term and several shared terms fail in
+ * different ways.
+ *
+ * LINK_MASS_FLOOR (several shared terms): why idf mass and not a term COUNT — terms are
+ * trilingual, so one concept appears up to three times ("araw"/"adlaw"/"sun"). A plain "two
+ * distinct shared terms" rule is passed by pairs sharing a single generic concept in two
+ * languages; measured examples: "how far is the Sun from Earth" -> "green algae in pond
+ * water" (araw:375, adlaw:208) and "nearest star to Earth" -> "plants make the energy
+ * stored in go foods" (sun:139, araw:375, adlaw:208). Summed idf mass is alias-proof: those
+ * score 0.008 and 0.015, while a real link ("pangolin rolling defense" -> "Philippine
+ * pangolin has scales", df 21-46) scores 0.15. 0.02 = "as distinctive as one term appearing
+ * in 1 card in 50" — the p1 of accepted links is 0.06, so this only bites the junk tail.
+ *
+ * LINK_RARE_DF (a single shared term): document frequency, not mass, decides whether one
+ * word can carry a thread by itself. Measured: single-term links are the largest healthy
+ * band (21.5% of picks) and are overwhelmingly df<=5 — both cards sit in a tiny cluster
+ * about that exact thing. The single-term NON-SEQUITURS cluster at df 15-40, where the
+ * shared word is a generic descriptor that happens to be phrased unusually: "leaf insect
+ * mimics damaged leaf" -> "soft feather edges muffle sound" (gilid:30, "edge"), "SI base
+ * unit for amount of substance" -> "hirudin in leeches" (sangkap:29, "component"),
+ * "surface temperature of the Sun" -> "water plants shade keeps shrimp cool" (init sa
+ * adlaw:15). Requiring df<=10 removes that whole band; the tightening cost nothing
+ * measurable (fork rate 11.8% -> 11.8%, dead-end forks 0.3% of pages), while df<=5 starts
+ * charging for it (0.7%).
+ */
+const LINK_MASS_FLOOR = 0.02;
+const LINK_RARE_DF = 10;
+
+/**
+ * Text-overlap cap on the deep pick: the last way a restatement gets through.
+ *
+ * Term mass and the illustration cooldown both miss the case where the bank holds the SAME
+ * fact written twice with different vocabulary and a different picture — measured examples
+ * (illustration cooldown already on): "abaca-fiber-stripping" -> "abaca-fiber-bundle",
+ * "organ-heart" -> "blood-circulation-loop", "drum" -> "tambol-marching-drum". They read as
+ * the app saying the same sentence again.
+ *
+ * FACT_TOKENS is already built for the search box (topic + terms + all three languages), so
+ * the check is a jaccard over two prepared sets, and it runs only when a candidate is about
+ * to become the new best — a handful of times per page turn, not once per candidate.
+ *
+ * Swept on the adjacency QA (1,180 walked pairs), heavy-restatement pairs (tagalog
+ * content-word jaccard > 0.30): 1.9% with no cap -> 1.7% at 0.40 -> 1.2% at 0.35 -> 1.1% at
+ * 0.30, with the fork rate flat (11.6%) and mean idf overlap essentially unmoved (0.381 ->
+ * 0.379). 0.35 is the knee; below it the cap starts costing link strength for almost no
+ * further gain.
+ */
+const TEXT_DUP_JACCARD = 0.35;
+
+/** Fraction of the two cards' combined vocabulary (topic + terms + tl/en/bis) they share. */
+function textJaccard(a: CardFact, b: CardFact): number {
+  const A = FACT_TOKENS.get(a.id);
+  const B = FACT_TOKENS.get(b.id);
+  if (!A?.size || !B?.size) return 0;
+  let both = 0;
+  for (const t of A) if (B.has(t)) both += 1;
+  return both / (A.size + B.size - both);
+}
+
 export interface NextStepOpts {
   /**
    * Cards walked since a branch was last OFFERED; at >= BRANCH_EVERY the thread forks.
    * The caller owns this counter (see cardStore) so this module stays pure/stateless.
    */
   threadDepth?: number;
+  /**
+   * Card ids the reader just saw, oldest first (cardStore's `recent` trail). Only their
+   * ILLUSTRATIONS are used here — the last SLUG_COOLDOWN pictures are not served again.
+   * Passing ids rather than slugs keeps the caller in the vocabulary it already has; the
+   * lookup is a pool read, so the module stays pure.
+   */
+  recentIds?: readonly string[];
+}
+
+/** Illustrations that would read as a repeat right now: the current card's + the trail's. */
+function cooldownSlugs(cur: CardFact, recentIds?: readonly string[]): Set<string> {
+  const slugs = new Set<string>([cur.slug]);
+  for (const id of (recentIds ?? []).slice(-SLUG_COOLDOWN)) {
+    const f = BY_ID.get(id);
+    if (f) slugs.add(f.slug);
+  }
+  return slugs;
 }
 
 /**
  * The "turn the page" choice(s) for the current card.
  *
- * Returns ONE choice — the deep, associated next topic — on a normal page, and TWO (deep
- * plus a lateral jump to a fresh topic) when the thread forks. A fork happens either on
- * the BRANCH_EVERY cadence or immediately when this card has no genuinely associated
- * follow-on left, so a dead end always gives the reader an active way out.
- * Callers can treat `choices.length > 1` as "this page branches".
+ * Returns ONE choice — the deep, associated next topic — on a normal page, and TWO when the
+ * thread forks: either the BRANCH_EVERY cadence (deep + a lateral jump) or a dead end, where
+ * this card has no genuinely associated follow-on left and the reader gets two fresh topics
+ * instead of one silently-random "related" card. Callers can treat `choices.length > 1` as
+ * "this page branches".
  *
- *   deep    — most-associated unseen fact (shared distinctive terms)
- *   lateral — random same-domain unseen fact with ~no overlap (fresh topic)
+ *   deep    — most-associated unseen fact: shared terms above LINK_MASS_FLOOR, below the
+ *             near-duplicate cap, and NOT reusing a recently-shown illustration
+ *   lateral — unseen same-domain fact with ~no overlap (fresh topic, same category)
  * Falls back gracefully as the unseen pool thins; last resort allows seen cards.
  */
 export function nextChoices(
@@ -315,72 +452,79 @@ export function nextChoices(
 ): CardChoice[] {
   const cur = BY_ID.get(currentId);
   if (!cur) return [];
-  const usable = (f: CardFact) => f.id !== currentId && !seen.has(f.id);
 
-  // deep: candidates sharing any term, ranked by idf-weighted overlap — but capped
-  // below the NEAR-DUPLICATE band. The bank contains near-identical facts (same fact,
-  // different grade/domain), and they score highest by construction; serving one right
-  // after its twin reads as a repeat. A candidate sharing >55% of the current card's
-  // weighted term mass (or the same topic wording) is treated as a dup, not a neighbor.
-  const selfScore = overlap(cur, cur);
+  const blockedSlugs = cooldownSlugs(cur, opts.recentIds);
   const topicKey = (f: CardFact) =>
     f.topic.toLowerCase().split(/\s+/).filter((w) => w.length > 3).sort().join(' ');
   const curTopicKey = topicKey(cur);
+
+  const unseen = (f: CardFact) => f.id !== currentId && !seen.has(f.id);
+  // Servable next to THIS card: unseen, a different picture from the last few pages, and
+  // not the same fact reworded under the same topic wording (those exist across grades).
+  const servable = (f: CardFact) =>
+    unseen(f) && !blockedSlugs.has(f.slug) && topicKey(f) !== curTopicKey;
+
+  // deep: candidates sharing any term, ranked by idf-weighted overlap, but only those whose
+  // shared terms are specific enough to be a real thread (see LINK_MASS_FLOOR) and not so
+  // heavy that the candidate is this card restated (see DEEP_DUP_CAP).
+  const selfScore = overlap(cur, cur);
   const candIds = new Set<string>();
   for (const t of cur.terms) for (const id of TERM_INDEX.get(t) ?? []) candIds.add(id);
   let deep: CardFact | undefined;
   let deepScore = 0;
   for (const id of candIds) {
     const f = BY_ID.get(id);
-    if (!f || !usable(f)) continue;
-    const s = overlap(cur, f);
-    if (s > selfScore * 0.55) continue; // near-duplicate of the current card
-    if (topicKey(f) === curTopicKey) continue; // same topic wording = same fact reworded
-    if (s > deepScore) {
-      deepScore = s;
-      deep = f;
-    }
+    if (!f || !servable(f)) continue;
+    const link = linkOf(cur, f);
+    if (link.mass > selfScore * DEEP_DUP_CAP) continue; // near-duplicate of the current card
+    if (link.mass < LINK_MASS_FLOOR) continue; // only generic words in common
+    if (link.count < 2 && link.minDf > LINK_RARE_DF) continue; // one unremarkable word
+    if (link.mass <= deepScore) continue;
+    if (textJaccard(cur, f) > TEXT_DUP_JACCARD) continue; // same fact, different words
+    deepScore = link.mass;
+    deep = f;
   }
 
-  // A card with no ASSOCIATED follow-on left is a dead end: anything we serve next is an
-  // unrelated jump anyway, so the reader should get the choice rather than have one picked
-  // for them. Captured before the fallbacks below, which fill `deep` with a random card.
+  // A card with no ASSOCIATED follow-on left is a dead end. Anything served next is an
+  // unrelated jump anyway, so the reader picks it rather than having it picked for them —
+  // and we label both options for what they are (lateral), instead of dressing a random
+  // card up as the "related" one.
   const deadEnd = !deep;
 
-  // lateral: same domain, minimal overlap, not the deep pick, and NOT a reworded twin
-  // of the current card (same-topic-wording facts exist across grades/domains).
+  // lateral: fresh topic in the same domain — minimal term overlap so it reads as a real
+  // change of subject, with the servable filter keeping the picture and wording fresh too.
   const domainPool = (BY_DOMAIN.get(cur.domain) ?? []).filter(
-    (f) => usable(f) && f.id !== deep?.id && topicKey(f) !== curTopicKey
+    (f) => servable(f) && f.id !== deep?.id
   );
   const fresh = domainPool.filter((f) => overlap(cur, f) < selfScore * 0.35);
-  let lateral = pick(fresh.length ? fresh : domainPool);
+  const lateralPool = fresh.length ? fresh : domainPool;
+  let lateral = pick(lateralPool);
 
-  // fallbacks: thin pool → any unseen anywhere → any (seen allowed)
-  if (!deep && !lateral) {
-    const anyUnseen = POOL.filter(usable);
+  // fallbacks as the unseen pool thins: relax the picture cooldown first (a repeated
+  // illustration beats an empty page), then allow any unseen card, then any card at all.
+  if (!lateral) {
+    const anyUnseen = POOL.filter((f) => unseen(f) && f.id !== deep?.id);
     lateral = pick(anyUnseen.length ? anyUnseen : POOL.filter((f) => f.id !== currentId));
   }
-  if (!deep && lateral) {
-    const others = POOL.filter((f) => usable(f) && f.id !== lateral!.id);
-    deep = pick(others);
-  }
-  if (deep && !lateral) {
-    const others = POOL.filter((f) => usable(f) && f.id !== deep!.id);
-    lateral = pick(others);
-  }
-
-  // Fork on the cadence, or immediately at a dead end. Otherwise the page is single-path.
-  const branch = deadEnd || (opts.threadDepth ?? 0) >= BRANCH_EVERY;
 
   const out: CardChoice[] = [];
   if (deep) out.push({ factId: deep.id, label: choiceLabel(deep, language), kind: 'deep' });
   if (lateral) out.push({ factId: lateral.id, label: choiceLabel(lateral, language), kind: 'lateral' });
 
-  if (!branch) {
-    // Single arrow. Prefer the associated card; `lateral` only stands in when this card
-    // had no deep pick at all, which the dead-end check has already turned into a branch —
-    // so in practice this keeps out[0] and drops the fork.
-    return out.slice(0, 1);
+  // Fork on the cadence, or immediately at a dead end. Otherwise the page is single-path.
+  if (!deadEnd && (opts.threadDepth ?? 0) < BRANCH_EVERY) return out.slice(0, 1);
+
+  // Dead end: the second option is another fresh topic, not a fake "related" card. Prefer
+  // one from a different domain so the two escapes are visibly different offers.
+  if (deadEnd && lateral) {
+    const otherDomain = POOL.filter(
+      (f) => servable(f) && f.domain !== cur.domain && f.id !== lateral!.id
+    );
+    const second =
+      pick(otherDomain) ??
+      pick(lateralPool.filter((f) => f.id !== lateral!.id)) ??
+      pick(POOL.filter((f) => unseen(f) && f.id !== lateral!.id));
+    if (second) out.push({ factId: second.id, label: choiceLabel(second, language), kind: 'lateral' });
   }
 
   // never offer two identical labels — retitle the second from its topic

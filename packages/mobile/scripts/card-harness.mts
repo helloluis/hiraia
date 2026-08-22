@@ -76,6 +76,8 @@ async function main() {
     longFacts: 0,
     missingTrans: 0,
     consecDup: 0,
+    consecSameSlug: 0, // next card reuses the CURRENT card's illustration
+    slugRepeatIn3: 0, // …or one shown in the last three pages
     quizAsked: 0,
     quizUnavailable: 0,
     quizBadShape: 0,
@@ -99,6 +101,9 @@ async function main() {
       let cur = C.startCard(seen);
       seen.add(cur.id);
       recent.push(cur.id);
+      // trailing illustrations, newest last — a repeat here is the "app is repeating
+      // itself" failure a child actually notices (the picture, not the wording)
+      const slugTrail: string[] = [cur.slug];
 
       for (let i = 0; i < CARDS; i++) {
         stats.cards++;
@@ -122,7 +127,12 @@ async function main() {
         // cardStore pre-increments before asking, so mirror that exactly or the measured
         // fork cadence drifts one card from the app's.
         const depth = threadDepth + 1;
-        const choices = C.nextChoices(cur.id, seen, lang, { threadDepth: depth }) as Array<{
+        // recentIds mirrors cardStore: nextChoices uses the trail's ILLUSTRATIONS to keep a
+        // picture from coming back within a few pages.
+        const choices = C.nextChoices(cur.id, seen, lang, {
+          threadDepth: depth,
+          recentIds: [...recent],
+        }) as Array<{
           factId: string;
           label: string;
           kind: string;
@@ -205,6 +215,12 @@ async function main() {
         }
         // consecutive near-dup (same normalized topic)
         const key = (f: { topic: string }) => f.topic.toLowerCase().split(/\s+/).filter((w) => w.length > 3).sort().join(' ');
+        if (next.slug === cur.slug) {
+          stats.consecSameSlug++;
+          add('same-illustration', `${cur.topic} → ${next.topic} (both: ${next.slug})`);
+        }
+        if (slugTrail.slice(-3).includes(next.slug)) stats.slugRepeatIn3++;
+        slugTrail.push(next.slug);
         if (key(next) === key(cur)) {
           stats.consecDup++;
           add('consecutive-dup-topic', `${cur.topic} → ${next.topic}`);
@@ -237,6 +253,7 @@ async function main() {
   lines.push(`  duplicate labels: ${stats.dupLabels}`);
   lines.push(`  weak/generic labels: ${stats.genericLabels}  | median label length: ${med(stats.labelLens)} chars`);
   lines.push(`  repeats within a run: ${stats.repeatsInRun}  | consecutive same-topic: ${stats.consecDup}`);
+  lines.push(`  same illustration as previous card: ${stats.consecSameSlug} (${pct(stats.consecSameSlug)})  | reused within 3 pages: ${stats.slugRepeatIn3} (${pct(stats.slugRepeatIn3)})`);
   lines.push('QUIZ INTERJECTS');
   lines.push(`  fired: ${stats.quizAsked} | about a recent fact: ${stats.quizAboutRecent} | NONE available: ${stats.quizUnavailable} | bad shape: ${stats.quizBadShape}`);
   lines.push('');

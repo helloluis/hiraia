@@ -11,21 +11,24 @@
  * caption under the card. Everything PRINTED ON the card — index band, punched holes,
  * keyline, illustration plate, type, tickets — belongs to the page components.
  *
- * Navigation: tap a choice ticket, or swipe UP from the bottom-left / bottom-right corner.
+ * Navigation: tap a choice ticket, or SWIPE the card away. The card tracks the finger on
+ * the UI thread, springs back if it is let go under the commit threshold ("let me read
+ * that again") and carries on off the deck past it; a swipe UP from a bottom corner, the
+ * gesture that shipped first, still works and is the nav-bar-safe way past an interject.
  * Every 4-5 pages the flip is intercepted by a single MCQ about a recently-read fact.
  *
- * ROBUSTNESS: the incoming page never carries a transform (always visible + tappable),
- * the outgoing (peeling) page always animates fully off-screen, and a safety timer clears
- * it even if the animation callback is dropped — so a transition can never strand a layer
- * over the screen (the earlier hang).
+ * ROBUSTNESS: the incoming page carries the live drag and nothing else — and the drag
+ * always ends at rest, whether the swipe committed or sprang back — the outgoing (peeling)
+ * page always animates fully off-screen, and a safety timer clears it even if the
+ * animation callback is dropped, so a transition can never strand a layer over the screen
+ * (the earlier hang).
  */
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Animated,
   Easing,
   Keyboard,
-  PanResponder,
   Pressable,
   StyleSheet,
   Text,
@@ -33,6 +36,13 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Reanimated, {
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { uiStrings } from '../../config/strings';
@@ -56,7 +66,91 @@ const FLIP_MS = 380;
  */
 const METER_TICKS = 5;
 
+/*
+ * ---- swipe-to-advance ----
+ * The tickets stay: a swipe is an ADDITIONAL way to press them, never the only one. The
+ * numbers below are the whole feel of the gesture, so each one carries its reasoning.
+ */
+
+/**
+ * How far the finger travels before the drag takes the touch away from the tickets and
+ * from the typewriter's tap-to-complete underneath it. Gesture Handler's own default, and
+ * just above Android's 8dp view-configuration touch slop: the wobble that comes free with
+ * a child's tap can never read as a swipe, while a deliberate sweep is captured within a
+ * frame or two of leaving the point the finger went down at.
+ */
+const DRAG_SLOP = 10;
+
+/**
+ * Commit distance for a sideways swipe, as a fraction of the screen's width. ~115dp on
+ * the ~360dp panel this ships to: one comfortable thumb sweep, and far enough that the
+ * kid can push the card, realise they had not finished reading it, and walk it back to
+ * rest. Below about a quarter of the width it starts committing on the sideways drift
+ * that comes free with a tap, and the feed would feel like it was running away from them.
+ */
+const COMMIT_FRACTION = 0.32;
+
+/**
+ * Velocity escape hatch, in dp/s: a flick still travelling this fast when the finger
+ * leaves commits even though it never reached COMMIT_FRACTION. Reading the gesture as
+ * intent rather than as distance is what "responsive" means here. 800dp/s is ~13dp per
+ * frame at 60Hz — a deliberate flick clears it easily, while the slow, considered drag of
+ * someone re-reading the card (well under 400dp/s) never does.
+ */
+const COMMIT_VELOCITY = 800;
+
+/**
+ * ...but a flick has to have gone somewhere. Without this floor the high instantaneous
+ * velocity of a 5dp twitch — which is exactly what lifting a finger looks like on a cheap
+ * digitiser — would turn the page.
+ */
+const FLICK_MIN_FRACTION = 0.12;
+
+/**
+ * Commit distance for the swipe UP that shipped first (it doubles as the nav-bar-safe way
+ * past an interject page). Unchanged from the pan responder this replaces: it is the
+ * secondary gesture, with no "walk it back" story to serve, so it stays short.
+ */
+const COMMIT_UP_PX = 55;
+const FLICK_MIN_UP_PX = 24;
+
+/** Corner bands for a swipe UP on a FORK: the outer 40% each side is that side's pick. */
+const FORK_EDGE = 0.4;
+
+/** How much of the finger a page that cannot be dismissed yet gives back (see `locked`). */
+const LOCKED_GRIP = 0.12;
+/** Nothing lives below the card, so a downward drag is rubber-banded, not tracked 1:1. */
+const DOWN_GRIP = 0.25;
+
+/**
+ * Under the threshold the card SPRINGS back to rest — the "walk it back so I can read it
+ * again" behaviour. Deliberately a spring and not a tween: a tween lands dead and reads as
+ * the app refusing the gesture, where an all-but-critically-damped spring (0.88) lands
+ * like a card dropping back onto a deck — one small settle, no wobble.
+ */
+const SETTLE_SPRING = { duration: 340, dampingRatio: 0.88 } as const;
+
+/** Values for the gesture's `axis` shared value: undecided, then locked to one axis. */
+const AXIS_NONE = 0;
+const AXIS_X = 1;
+const AXIS_Y = 2;
+
+/** How far a TAPPED page swings sideways as it hinges off its corner (fraction of card). */
+const TAP_DRIFT = 0.12;
+/**
+ * How far a SWIPED page carries on past the point the finger let it go (a multiple of
+ * that offset). The tap peel swings the card the OTHER way, which is right for a hinge and
+ * wrong for a throw: a card the kid just pushed left has to keep going left.
+ */
+const TOSS_CARRY = 2.2;
+
+/** How long after a drag an on-card tap is ignored (see `dragging`). */
+const TAP_GUARD_MS = 180;
+
 type Side = 'left' | 'right';
+
+/** Which way a committed swipe went. 'up' is the corner swipe; the rest are sideways. */
+type SwipeDir = Side | 'up';
 
 /** What was on the pad for the page being peeled away. */
 interface PageSnap {
@@ -66,7 +160,15 @@ interface PageSnap {
   question: CardQuestion | null;
   reward: RewardContent | null;
   response: FeedResponse | null;
+}
+
+/** A page on its way off the deck: what was printed on it, and how it left. */
+interface Peel extends PageSnap {
   side: Side;
+  /** Where the card was when the finger let go — 0,0 for a tap. See the peel transform. */
+  fromX: number;
+  fromY: number;
+  via: 'tap' | 'swipe';
 }
 
 /**
@@ -120,7 +222,7 @@ export function CardFeedScreen() {
   const pagesRead = useCardStore((s) => s.pagesRead);
   const correctCount = useCardStore((s) => s.correctCount);
   const untilQuestion = useCardStore((s) => s.untilQuestion);
-  const choose = useCardStore((s) => s.choose);
+  const questionAnswered = useCardStore((s) => s.questionAnswered);
   const answerQuestion = useCardStore((s) => s.answerQuestion);
   const continueAfterQuestion = useCardStore((s) => s.continueAfterQuestion);
   const continueAfterReward = useCardStore((s) => s.continueAfterReward);
@@ -145,16 +247,23 @@ export function CardFeedScreen() {
     warmModel();
   }, [hydrate, warmModel]);
 
-  // Which corner the last navigation came from (drives the peel origin). Tapping the
-  // left choice / swiping the left corner → 'left'; right → 'right'.
+  // Which way the last navigation went (drives the peel origin). Taking the left choice /
+  // swiping the card leftwards → 'left'; right → 'right'.
   const sideRef = useRef<Side>('right');
-  const chooseFrom = (choice: CardChoice, side: Side) => {
+  // Where the finger let go, when the navigation came from a swipe (null = it came from a
+  // tap). Read once by the peel below, so the outgoing page can carry on from where the
+  // card actually is instead of restarting from the middle of the deck.
+  const release = useRef<{ x: number; y: number } | null>(null);
+  // Reads `choose` off the store rather than closing over it, so this stays referentially
+  // stable: the gesture's worklet captures it through runOnJS and must not be rebuilt on
+  // every keystroke in the search box.
+  const chooseFrom = useCallback((choice: CardChoice, side: Side) => {
     sideRef.current = side;
-    choose(choice);
-  };
+    useCardStore.getState().choose(choice);
+  }, []);
 
   // ---- page-peel transition ----
-  const [outgoing, setOutgoing] = useState<PageSnap | null>(null);
+  const [outgoing, setOutgoing] = useState<Peel | null>(null);
   const flip = useRef(new Animated.Value(0)).current;
   // The card rect, measured off the deck. The peel pivots on the CARD's bottom corner, not
   // the screen's, now that the card is inset from the board.
@@ -162,10 +271,80 @@ export function CardFeedScreen() {
   const lastSnap = useRef<PageSnap | null>(null);
   const clearTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // ---- the live card's drag offset ----
+  // Shared values, so the card is moved by the UI thread on every frame with no JS round
+  // trip. The target device is an SM6225: a transform that has to wait on the JS thread
+  // visibly stutters there, and a card that lags the finger is the entire complaint this
+  // gesture exists to answer.
+  const dragX = useSharedValue(0);
+  const dragY = useSharedValue(0);
+  // AXIS_NONE until the drag has committed to an axis, then held for the rest of the
+  // gesture — otherwise a sloppy diagonal wanders between two different meanings.
+  const axis = useSharedValue(AXIS_NONE);
+  // Screen x the finger went down at; the corner mapping for a swipe UP needs it.
+  const originX = useSharedValue(0);
+  // 1 while the page must not be swiped away — an interject question that has not been
+  // answered. The card still moves, but barely (LOCKED_GRIP), so the gate is FELT as
+  // "this one is holding on" rather than read as a dead screen.
+  const locked = useSharedValue(0);
   useEffect(() => {
+    locked.value = question && !questionAnswered ? 1 : 0;
+  }, [question, questionAnswered, locked]);
+
+  // Same body twice on purpose: Reanimated wants one animated style per view, and the
+  // printed ledge is the card's own drop shadow — it has to travel with the card.
+  const cardDrag = useAnimatedStyle(() => ({
+    transform: [{ translateX: dragX.value }, { translateY: dragY.value }],
+  }));
+  const ledgeDrag = useAnimatedStyle(() => ({
+    transform: [{ translateX: dragX.value }, { translateY: dragY.value }],
+  }));
+
+  // ---- tap vs drag ----
+  /**
+   * True from the moment the drag actually takes over until a few frames after the finger
+   * lifts. Gesture Handler cancels the React Native touch responder when a handler
+   * activates, so the Pressables under the card should never also fire — but that is two
+   * touch systems having to agree, and the failure mode is the worst one in the feed: the
+   * page turns TWICE and the kid loses a card they never saw. A real tap never sets this,
+   * because the pan cannot activate inside DRAG_SLOP.
+   */
+  const dragging = useRef(false);
+  const dragRelease = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const markDragStart = useCallback(() => {
+    if (dragRelease.current) clearTimeout(dragRelease.current);
+    dragging.current = true;
+  }, []);
+  const markDragEnd = useCallback(() => {
+    if (!dragging.current) return;
+    if (dragRelease.current) clearTimeout(dragRelease.current);
+    dragRelease.current = setTimeout(() => {
+      dragging.current = false;
+    }, TAP_GUARD_MS);
+  }, []);
+  /** Run an on-card navigation that came from a TAP (see `dragging`). */
+  const tapNav = useCallback((run: () => void) => {
+    if (!dragging.current) run();
+  }, []);
+
+  useLayoutEffect(() => {
     const prev = lastSnap.current;
     if (prev && prev.pageKey !== pageKey) {
-      setOutgoing({ ...prev, side: sideRef.current });
+      const from = release.current;
+      release.current = null;
+      setOutgoing({
+        ...prev,
+        side: sideRef.current,
+        fromX: from?.x ?? 0,
+        fromY: from?.y ?? 0,
+        via: from ? 'swipe' : 'tap',
+      });
+      // The outgoing snapshot has just taken the swipe's offset over, so the live layer —
+      // which is already showing the NEXT card — drops back to rest in the same commit.
+      // That is why this is a LAYOUT effect: as a passive effect it would let the incoming
+      // card paint one frame at the old finger offset first, which reads as a jump.
+      dragX.value = 0;
+      dragY.value = 0;
       flip.setValue(0);
       Animated.timing(flip, {
         toValue: 1,
@@ -180,73 +359,192 @@ export function CardFeedScreen() {
       if (clearTimer.current) clearTimeout(clearTimer.current);
       clearTimer.current = setTimeout(() => setOutgoing(null), FLIP_MS + 400);
     }
-    lastSnap.current = {
-      pageKey,
-      fact: current,
-      choices,
-      question,
-      reward,
-      response,
-      side: sideRef.current,
-    };
-  }, [pageKey, current, choices, question, reward, response, flip]);
+    lastSnap.current = { pageKey, fact: current, choices, question, reward, response };
+  }, [pageKey, current, choices, question, reward, response, flip, dragX, dragY]);
 
   useEffect(
     () => () => {
       if (clearTimer.current) clearTimeout(clearTimer.current);
+      if (dragRelease.current) clearTimeout(dragRelease.current);
     },
     []
   );
 
-  // ---- corner-swipe-up = tap the corresponding choice ----
-  const pan = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponderCapture: (_e, g) =>
-        g.dy < -14 && Math.abs(g.dy) > Math.abs(g.dx) * 1.2,
-      onPanResponderRelease: (_e, g) => {
-        if (g.dy > -55) return;
-        const s = useCardStore.getState();
-        if (s.response) {
-          sideRef.current = 'right';
-          s.continueAfterResponse();
-          return;
-        }
-        if (s.reward) {
-          sideRef.current = 'right';
-          s.continueAfterReward();
-          return;
-        }
-        if (s.question) {
-          // A swipe-up anywhere is a fallback for the continue note (also nav-bar-safe),
-          // but only once the question has actually been answered.
-          if (s.questionAnswered) {
-            sideRef.current = 'right';
-            s.continueAfterQuestion();
-          }
-          return;
-        }
-        if (g.x0 < width * 0.4 && s.choices[0]) chooseFrom(s.choices[0], 'left');
-        else if (g.x0 > width * 0.6 && s.choices[1]) chooseFrom(s.choices[1], 'right');
-      },
-    })
-  ).current;
+  // ---- swipe → the same navigation the tickets do ----
+  /** Put the card back on the deck. Spring, never a tween — see SETTLE_SPRING. */
+  const settle = useCallback(() => {
+    dragX.value = withSpring(0, SETTLE_SPRING);
+    dragY.value = withSpring(0, SETTLE_SPRING);
+  }, [dragX, dragY]);
 
-  // Peel transform: card hinges up from the swiped bottom corner, slides off the top.
+  /**
+   * A swipe cleared the threshold. Runs on the JS thread and reads the store fresh, the
+   * way the pan responder this replaces did, then performs exactly the navigation the
+   * on-card button would have: the store contract is untouched, a swipe is just another
+   * way to press.
+   *
+   * A FORK has two destinations, so there the direction IS the choice — left takes pick A
+   * and right takes pick B, matching the two colour-coded cards fanned behind the deck
+   * (blue A leaning left, ochre B leaning right) and the corner each pick already peels
+   * from. On a single-path card either direction simply means "next". A swipe up keeps its
+   * original meaning: on a fork it is the corner it started from, and the ambiguous middle
+   * band does nothing.
+   */
+  const commitSwipe = useCallback(
+    (dir: SwipeDir, releaseX: number, releaseY: number, downX: number) => {
+      const s = useCardStore.getState();
+      const before = s.pageKey;
+      // Hand the peel the exact offset the finger let go at, before anything navigates.
+      release.current = { x: releaseX, y: releaseY };
+      // A sideways swipe names its own side. A swipe UP doesn't, so the peel hinges on the
+      // half of the card the finger came from — the corner peel this gesture always had.
+      const side: Side = dir === 'up' ? (downX < width / 2 ? 'left' : 'right') : dir;
+
+      if (s.response) {
+        sideRef.current = side;
+        s.continueAfterResponse();
+      } else if (s.reward) {
+        sideRef.current = side;
+        s.continueAfterReward();
+      } else if (s.question) {
+        // Gated: the quiz has to be answered first. `locked` already stops the card
+        // getting this far, and this is the belt to that pair of braces.
+        if (s.questionAnswered) {
+          sideRef.current = side;
+          s.continueAfterQuestion();
+        }
+      } else if (s.choices.length > 1) {
+        if (dir === 'up') {
+          if (downX < width * FORK_EDGE && s.choices[0]) chooseFrom(s.choices[0], 'left');
+          else if (downX > width * (1 - FORK_EDGE) && s.choices[1])
+            chooseFrom(s.choices[1], 'right');
+        } else if (dir === 'left' && s.choices[0]) {
+          chooseFrom(s.choices[0], 'left');
+        } else if (dir === 'right' && s.choices[1]) {
+          chooseFrom(s.choices[1], 'right');
+        }
+      } else if (s.choices[0]) {
+        // Single path: every direction is "next", a swipe up from anywhere included. The
+        // old rule only honoured the left corner, which left the right-hand half of a
+        // single-path card silently dead.
+        chooseFrom(s.choices[0], side);
+      }
+
+      // Nothing navigated — the ambiguous middle of a fork, an unanswered question, an
+      // empty choice list. The card is sitting where the finger left it, so put it back.
+      // Checking the page number rather than each branch's preconditions means a store
+      // action that declines for its own reasons can never strand the card off-centre.
+      if (useCardStore.getState().pageKey === before) {
+        release.current = null;
+        settle();
+      }
+    },
+    [width, chooseFrom, settle]
+  );
+
+  /**
+   * One pan for the whole pad. It tracks the card on the UI thread and only crosses to JS
+   * once, on a commit; everything the worklet needs to decide (the axis, whether the page
+   * is locked, where the finger went down) lives in shared values.
+   */
+  const swipe = useMemo(
+    () =>
+      Gesture.Pan()
+        .activeOffsetX([-DRAG_SLOP, DRAG_SLOP])
+        .activeOffsetY([-DRAG_SLOP, DRAG_SLOP])
+        .onBegin((e) => {
+          originX.value = e.absoluteX;
+          axis.value = AXIS_NONE;
+        })
+        .onStart(() => {
+          runOnJS(markDragStart)();
+        })
+        .onUpdate((e) => {
+          if (axis.value === AXIS_NONE) {
+            axis.value = Math.abs(e.translationX) >= Math.abs(e.translationY) ? AXIS_X : AXIS_Y;
+          }
+          const grip = locked.value === 1 ? LOCKED_GRIP : 1;
+          if (axis.value === AXIS_X) {
+            dragX.value = e.translationX * grip;
+            dragY.value = 0;
+          } else {
+            const ty = e.translationY < 0 ? e.translationY : e.translationY * DOWN_GRIP;
+            dragY.value = ty * grip;
+            dragX.value = 0;
+          }
+        })
+        .onEnd((e, success) => {
+          // Carrying the finger's velocity into the spring is what makes walking the card
+          // back feel like one continuous motion rather than a hand-off.
+          const settleBack = () => {
+            dragX.value = withSpring(0, { ...SETTLE_SPRING, velocity: e.velocityX });
+            dragY.value = withSpring(0, { ...SETTLE_SPRING, velocity: e.velocityY });
+          };
+          if (!success || locked.value === 1) {
+            settleBack();
+            return;
+          }
+          if (axis.value === AXIS_X) {
+            const tx = e.translationX;
+            // The velocity escape hatch only counts when it AGREES with where the card
+            // actually is: someone dragging the card back to centre is moving fast in the
+            // opposite direction, and that gesture means "keep this card", not "away".
+            const flicked =
+              Math.abs(e.velocityX) > COMMIT_VELOCITY &&
+              e.velocityX * tx > 0 &&
+              Math.abs(tx) > width * FLICK_MIN_FRACTION;
+            if (Math.abs(tx) > width * COMMIT_FRACTION || flicked) {
+              runOnJS(commitSwipe)(
+                tx < 0 ? 'left' : 'right',
+                dragX.value,
+                dragY.value,
+                originX.value
+              );
+            } else {
+              settleBack();
+            }
+          } else {
+            const flicked = e.velocityY < -COMMIT_VELOCITY && e.translationY < -FLICK_MIN_UP_PX;
+            if (e.translationY < -COMMIT_UP_PX || flicked) {
+              runOnJS(commitSwipe)('up', dragX.value, dragY.value, originX.value);
+            } else {
+              settleBack();
+            }
+          }
+        })
+        .onFinalize(() => {
+          runOnJS(markDragEnd)();
+        }),
+    [width, commitSwipe, markDragStart, markDragEnd, axis, dragX, dragY, locked, originX]
+  );
+
+  // Peel transform: card hinges up from the swiped corner, slides off the top.
   // 2D (no 3D perspective → no foreshorten/recede), corner-anchored via a translate
   // sandwich, with a small tilt so it reads as peeling from that corner.
   const side = outgoing?.side ?? 'right';
   const cardW = pageSize.w || width; // fall back to the screen until the deck has measured
   const cx = side === 'left' ? -cardW / 2 : cardW / 2; // pivot = bottom-left / bottom-right corner
   const cy = pageSize.h / 2;
-  const lift = flip.interpolate({ inputRange: [0, 1], outputRange: [0, -(pageSize.h * 1.12)] });
+  // Where the peel STARTS: the middle of the deck for a tap, or exactly where the finger
+  // let the card go for a swipe. That hand-off is what makes a swiped page turn read as
+  // one motion instead of a snap back to centre followed by an animation.
+  const fromX = outgoing?.fromX ?? 0;
+  const fromY = outgoing?.fromY ?? 0;
+  // ...and where it ENDS. A tapped page swings the way its hinge takes it; a swiped page
+  // carries on the way it was thrown, because reversing a card the kid has just pushed
+  // left would read as the app arguing with them.
+  const exitX =
+    outgoing?.via === 'swipe'
+      ? fromX * TOSS_CARRY
+      : side === 'left'
+        ? cardW * TAP_DRIFT
+        : -cardW * TAP_DRIFT;
+  const lift = flip.interpolate({ inputRange: [0, 1], outputRange: [fromY, -(pageSize.h * 1.12)] });
   const tilt = flip.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', side === 'left' ? '10deg' : '-10deg'],
   });
-  const drift = flip.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, side === 'left' ? cardW * 0.12 : -cardW * 0.12],
-  });
+  const drift = flip.interpolate({ inputRange: [0, 1], outputRange: [fromX, exitX] });
   const shadeOpacity = flip.interpolate({ inputRange: [0, 0.5, 1], outputRange: [0, 0.22, 0] });
 
   const wordmark = (
@@ -347,103 +645,120 @@ export function CardFeedScreen() {
         </View>
       ) : null}
 
-      {/* the deck: board behind, card on top. `pad` clips the peel to the board area;
-          `deck` deliberately does NOT clip, so the fanned branch cards can lean past the
-          card edge the way they do in the mockup. */}
-      <View style={styles.pad} {...pan.panHandlers}>
-        <View
-          style={styles.deck}
-          onLayout={(e) => {
-            const { width: w, height: h } = e.nativeEvent.layout;
-            setPageSize((prev) => (prev.w === w && prev.h === h ? prev : { w, h }));
-          }}
-        >
-          {/* fanned cards behind — on a fork these are the two branches, blue on the left
-              and ochre on the right, matching the A/B order of the tickets. */}
-          {forking ? (
-            <>
-              <View style={[styles.fan, styles.fanBranch, styles.fanA]} pointerEvents="none" />
-              <View style={[styles.fan, styles.fanBranch, styles.fanB]} pointerEvents="none" />
-            </>
-          ) : (
-            <View style={[styles.fan, styles.fanSingle]} pointerEvents="none" />
-          )}
-
-          {/* the card's ledge: a darker slab peeking 4px below the card. NOT a shadow —
-              Android honours only `elevation`, which can't be offset downward. */}
-          <View style={styles.cardLedge} pointerEvents="none" />
-
-          {/* incoming card — never transformed, so it's always visible + tappable
-              (hang-proof). The layer IS the card surface: stock, ink edge, rounded. */}
-          <View style={[styles.cardLayer, { backgroundColor: stockFor(question) }]} key={pageKey}>
-            {response ? (
-              <ResponseCard
-                response={response}
-                language={language}
-                onContinue={continueAfterResponse}
-              />
-            ) : reward ? (
-              <RewardCard reward={reward} language={language} onContinue={continueAfterReward} />
-            ) : question ? (
-              <QuestionPage
-                question={question}
-                language={language}
-                onAnswer={answerQuestion}
-                onContinue={continueAfterQuestion}
-              />
+      {/* The deck: board behind, card on top. `pad` clips the peel to the board area and
+          is also the swipe's catchment, so a drag that starts on the margin around the
+          card counts; `deck` deliberately does NOT clip, so the fanned branch cards can
+          lean past the card edge the way they do in the mockup. */}
+      <GestureDetector gesture={swipe}>
+        <View style={styles.pad}>
+          <View
+            style={styles.deck}
+            onLayout={(e) => {
+              const { width: w, height: h } = e.nativeEvent.layout;
+              setPageSize((prev) => (prev.w === w && prev.h === h ? prev : { w, h }));
+            }}
+          >
+            {/* fanned cards behind — on a fork these are the two branches, blue on the left
+                and ochre on the right, matching the A/B order of the tickets. */}
+            {forking ? (
+              <>
+                <View style={[styles.fan, styles.fanBranch, styles.fanA]} pointerEvents="none" />
+                <View style={[styles.fan, styles.fanBranch, styles.fanB]} pointerEvents="none" />
+              </>
             ) : (
-              <CardPage
-                fact={current}
-                choices={choices}
-                language={language}
-                onChoose={(c) => chooseFrom(c, choices[0] === c ? 'left' : 'right')}
-              />
+              <View style={[styles.fan, styles.fanSingle]} pointerEvents="none" />
             )}
-            {/* thinking veil while the fallback generation is in flight */}
-            {asking ? (
-              <View style={styles.thinking} pointerEvents="none">
-                <Text style={styles.thinkingText}>{t.cards.thinking}…</Text>
-              </View>
-            ) : null}
-          </View>
 
-          {/* outgoing card peeling up from the swiped corner */}
-          {outgoing && pageSize.h > 0 && (
-            <Animated.View
-              style={[
-                styles.cardLayer,
-                styles.outgoing,
-                {
-                  backgroundColor: stockFor(outgoing.question),
-                  transform: [
-                    { translateX: drift },
-                    { translateY: lift },
-                    { translateX: -cx },
-                    { translateY: -cy },
-                    { rotate: tilt },
-                    { translateX: cx },
-                    { translateY: cy },
-                  ],
-                },
-              ]}
-              pointerEvents="none"
+            {/* the card's ledge: a darker slab peeking 4px below the card. NOT a shadow —
+                Android honours only `elevation`, which can't be offset downward. It is the
+                card's own printed drop shadow, so it rides along with the drag. */}
+            <Reanimated.View style={[styles.cardLedge, ledgeDrag]} pointerEvents="none" />
+
+            {/* Incoming card. It carries the DRAG and nothing else — never the peel — so it
+                is always visible + tappable (hang-proof). The layer itself is deliberately
+                NOT keyed: it has to survive a page change so that the reset to rest and the
+                new page land in the same commit (see the layout effect). The PAGE inside it
+                is what's keyed. The layer IS the card surface: stock, ink edge, rounded. */}
+            <Reanimated.View
+              style={[styles.cardLayer, { backgroundColor: stockFor(question) }, cardDrag]}
             >
-              {outgoing.fact && !outgoing.question && !outgoing.reward && !outgoing.response ? (
-                <CardPage
-                  fact={outgoing.fact}
-                  choices={outgoing.choices}
+              {response ? (
+                <ResponseCard
+                  key={pageKey}
+                  response={response}
                   language={language}
-                  onChoose={() => undefined}
-                  instant
+                  onContinue={() => tapNav(continueAfterResponse)}
                 />
+              ) : reward ? (
+                <RewardCard
+                  key={pageKey}
+                  reward={reward}
+                  language={language}
+                  onContinue={() => tapNav(continueAfterReward)}
+                />
+              ) : question ? (
+                <QuestionPage
+                  key={pageKey}
+                  question={question}
+                  language={language}
+                  onAnswer={answerQuestion}
+                  onContinue={() => tapNav(continueAfterQuestion)}
+                />
+              ) : (
+                <CardPage
+                  key={pageKey}
+                  fact={current}
+                  choices={choices}
+                  language={language}
+                  onChoose={(c) => tapNav(() => chooseFrom(c, choices[0] === c ? 'left' : 'right'))}
+                />
+              )}
+              {/* thinking veil while the fallback generation is in flight */}
+              {asking ? (
+                <View style={styles.thinking} pointerEvents="none">
+                  <Text style={styles.thinkingText}>{t.cards.thinking}…</Text>
+                </View>
               ) : null}
+            </Reanimated.View>
+
+            {/* outgoing card peeling up from the swiped corner */}
+            {outgoing && pageSize.h > 0 && (
               <Animated.View
-                style={[StyleSheet.absoluteFill, styles.shade, { opacity: shadeOpacity }]}
-              />
-            </Animated.View>
-          )}
+                style={[
+                  styles.cardLayer,
+                  styles.outgoing,
+                  {
+                    backgroundColor: stockFor(outgoing.question),
+                    transform: [
+                      { translateX: drift },
+                      { translateY: lift },
+                      { translateX: -cx },
+                      { translateY: -cy },
+                      { rotate: tilt },
+                      { translateX: cx },
+                      { translateY: cy },
+                    ],
+                  },
+                ]}
+                pointerEvents="none"
+              >
+                {outgoing.fact && !outgoing.question && !outgoing.reward && !outgoing.response ? (
+                  <CardPage
+                    fact={outgoing.fact}
+                    choices={outgoing.choices}
+                    language={language}
+                    onChoose={() => undefined}
+                    instant
+                  />
+                ) : null}
+                <Animated.View
+                  style={[StyleSheet.absoluteFill, styles.shade, { opacity: shadeOpacity }]}
+                />
+              </Animated.View>
+            )}
+          </View>
         </View>
-      </View>
+      </GestureDetector>
 
       {/* deck counter under the card (mockup `.counter`), with the quiz score at the right */}
       <View style={[styles.caption, { paddingBottom: Math.max(insets.bottom, 10) }]}>

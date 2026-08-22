@@ -33,7 +33,9 @@ import { getSetting, setSetting } from '../db/repo';
 import { useEngineStore } from './engineStore';
 
 const SEEN_CAP = 2500; // persisted seen-set cap (pool is ~3.5k; cycling is fine)
-const RECENT_WINDOW = 5; // "ask about something the kid just saw"
+// Trail of just-read cards. Two consumers: "ask about something the kid just saw" (quiz
+// interjects) and the illustration cooldown in nextChoices (don't reuse a recent picture).
+const RECENT_WINDOW = 5;
 const VIEWLOG_CAP = 40; // session view-log for the reward recap (topic + timestamp)
 const REWARD_PREFETCH_AT = 5; // start generating the reward text N cards before it's due
 const REWARD_MIN_TOPICS = 3; // don't reward until there's something to celebrate
@@ -77,7 +79,7 @@ interface CardState {
   correctCount: number;
   questionsAsked: number;
   seen: Set<string>;
-  recent: string[]; // last few factIds (question sourcing)
+  recent: string[]; // last few card ids (question sourcing + nextChoices' picture cooldown)
   viewLog: ViewLogEntry[]; // {factId, topic, ts} for the reward recap window
   untilQuestion: number; // pages left until the next interject question
   /**
@@ -164,7 +166,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
       correctCount,
       seen,
       current: first,
-      choices: nextChoices(first.id, seen, lang, { threadDepth: 0 }),
+      choices: nextChoices(first.id, seen, lang, { threadDepth: 0, recentIds: [first.id] }),
       threadDepth: 0,
       recent: [first.id],
       viewLog: [{ factId: first.id, topic: first.topic, ts: Date.now() }],
@@ -331,7 +333,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
     const pagesRead = s.pagesRead + 1;
     set({
       current: dest,
-      choices: nextChoices(dest.id, seen, lang, { threadDepth: 0 }),
+      choices: nextChoices(dest.id, seen, lang, { threadDepth: 0, recentIds: [dest.id] }),
       threadDepth: 0, // the reroll already switched topic — start the new thread fresh
       question: null,
       pending: null,
@@ -366,7 +368,7 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, banner?: string) {
   const pagesRead = s.pagesRead + 1;
   set({
     current: fact,
-    choices: nextChoices(fact.id, seen, lang, { threadDepth: 0 }),
+    choices: nextChoices(fact.id, seen, lang, { threadDepth: 0, recentIds: recent }),
     threadDepth: 0, // a search/topic jump starts a new thread
     seen,
     recent,
@@ -416,7 +418,7 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
   // Taking the lateral fork is itself a topic switch, so it restarts the thread; otherwise
   // the counter walks up until nextChoices forks, then resets on the page that offered it.
   const depth = choice.kind === 'lateral' ? 0 : s.threadDepth + 1;
-  const choices = nextChoices(nextFact.id, seen, lang, { threadDepth: depth });
+  const choices = nextChoices(nextFact.id, seen, lang, { threadDepth: depth, recentIds: recent });
 
   set({
     current: nextFact,
