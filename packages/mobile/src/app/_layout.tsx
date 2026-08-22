@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { LoaderOverlay } from '../components/LoaderOverlay';
 import { OnboardingCarousel } from '../components/onboarding/OnboardingCarousel';
 import { useChatStore } from '../store/chatStore';
 import { useEngineStore } from '../store/engineStore';
@@ -23,12 +22,8 @@ export default function RootLayout() {
   const hydrate = useChatStore((s) => s.hydrate);
   const [fontsLoaded] = useFonts(fontAssets);
 
-  // Sleeping-cat WARM-UP loader (returning user): bootstrap() starts the engine load at
-  // boot, and the gated LoaderOverlay (tap-to-nudge the sleeping cat, wake video at 97%,
-  // dismisses only once isReady) covers the wait so the model is warm before the kid can
-  // reach the feed's search box. On a load error we skip the loader entirely and land on
-  // the (zero-model) feed; the feed's warmModel() retries in the background.
-  const [loaderVisible, setLoaderVisible] = useState(false);
+  // bootstrap() starts the engine load at boot for a returning user. Nothing waits on it —
+  // see the note below the effects.
 
   useEffect(() => {
     // Resolve the saved language and (for a returning user) start warming the engine.
@@ -47,21 +42,20 @@ export default function RootLayout() {
   //
   // The loading state now lives INSIDE the one control that is actually unavailable — the
   // search field renders a quiet warming state and only offers its placeholder once the
-  // engine is ready (see CardFeedScreen). /chat still waits for the model, correctly, since
-  // it genuinely cannot function without one.
+  // engine is ready (see CardFeedScreen). /chat needs the model but does not need a cover
+  // either: it kicks its own load and shows an "Alam mo ba na…?" factoid to read meanwhile.
   //
-  // `loaderVisible` is kept (not deleted) because the onboarding path and a background
-  // warmModel() retry both still have legitimate reasons to raise it; it is simply no longer
-  // raised by the returning-user warm-up.
+  // Nothing raises the overlay any more, and that is correct rather than an oversight:
+  //   - it was already gated on !onboardingActive, so it never covered first launch;
+  //   - /chat kicks its own load and shows a "Alam mo ba na…?" factoid while the model
+  //     warms, so it never needed a full-screen cover either;
+  //   - the feed is zero-model and now says so in the search field.
+  // Its ONLY job was the returning-user warm-up, which is the thing being removed. The
+  // component is left in the tree unused rather than deleted — the sleeping-cat wake
+  // sequence is brand work worth keeping available — but it is no longer wired here.
   void isReady;
   void engineError;
 
-  // Bail OUT of the loader on a load error — otherwise the kid would be stuck on the
-  // sleeping cat at 0% forever. The (zero-model) feed is usable without the engine, and
-  // its warmModel() retries the load in the background (which re-shows the loader).
-  useEffect(() => {
-    if (loaderVisible && engineError) setLoaderVisible(false);
-  }, [loaderVisible, engineError]);
 
   if (!fontsLoaded || !bootstrapped) {
     return (
@@ -92,7 +86,6 @@ export default function RootLayout() {
       )}
 
       {/* Engine warm-up (started in bootstrap): sleeping-cat loader until isReady. */}
-      {loaderVisible && <LoaderOverlay onDismiss={() => setLoaderVisible(false)} />}
     </GestureHandlerRootView>
   );
 }
