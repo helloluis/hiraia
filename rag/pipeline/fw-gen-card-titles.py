@@ -106,7 +106,12 @@ def call(prompt, attempt=0):
                 u.get('prompt_tokens', 0), u.get('completion_tokens', 0))
     except urllib.error.HTTPError as e:
         # A 429 means we misjudged the window; honour Retry-After and let the budget catch up.
-        if e.code in (429, 500, 502, 503, 529) and attempt < 6:
+        # 412 belongs here: it looks like a client precondition error but is TRANSIENT on
+        # this endpoint — a batch that 412s repeatedly succeeds unchanged moments later. It
+        # was originally absent, so 27 batches (~875 cards) died on first contact without a
+        # single retry, and the clustering fooled me into diagnosing a rate limit. It is not
+        # one: they failed at 22k gen-tok/min, a ninth of the ceiling.
+        if e.code in (412, 429, 500, 502, 503, 529) and attempt < 6:
             ra = e.headers.get('Retry-After')
             time.sleep(float(ra) if ra else min(90, 2 ** (attempt + 1)))
             return call(prompt, attempt + 1)
@@ -163,7 +168,11 @@ def do_call(batch, idx, leaves, valid, tries=3):
         except Exception as e:
             with _lock:
                 _stats['failed'] += 1
-            print(f'  FAIL #{idx}: {type(e).__name__}', flush=True)
+            # Log the HTTP code: a burst of these at the end of a long run is the adaptive
+            # rate limit SHRINKING, not random flakiness, and 429 vs 5xx is the difference
+            # between "slow down" and "retry later". Without the code the sweep is guesswork.
+            code = getattr(e, 'code', '')
+            print(f'  FAIL #{idx}: {type(e).__name__} {code}', flush=True)
             return
         got = obj_from(c, rc) or {}
         arr = got.get('out') or []
@@ -219,10 +228,25 @@ def main():
         for dom, cs in sorted(by.items()):
             picked += cs[:max(1, round(LIMIT * len(cs) / len(cards)))]
         cards = picked
-    batches = [cards[i:i + PER_CALL] for i in range(0, len(cards), PER_CALL)]
-    done = {os.path.basename(p) for p in glob.glob(os.path.join(OUT, 'titles-*.jsonl'))
-            if os.path.getsize(p) > 0}
-    work = [(b, i) for i, b in enumerate(batches) if f'titles-{i}.jsonl' not in done]
+    if os.environ.get('FW_MISSING') == '1':
+        # Gap-fill by CARD ID, not by shard index. Index-based resume assumes the pool has not
+        # changed between runs; it did (16,948 -> 16,993 when illustrations were re-matched),
+        # so shard N no longer covers the same cards and some gaps can never be reached.
+        have = set()
+        for f in glob.glob(os.path.join(OUT, 'titles-*.jsonl')):
+            for line in open(f):
+                if line.strip():
+                    have.add(json.loads(line)['id'])
+        cards = [c for c in cards if c['id'] not in have]
+        print(f'MISSING mode: {len(cards)} untitled cards')
+        batches = [cards[i:i + PER_CALL] for i in range(0, len(cards), PER_CALL)]
+        # write into a distinct namespace so these never collide with the positional shards
+        work = [(b, f'gap{i}') for i, b in enumerate(batches)]
+    else:
+        batches = [cards[i:i + PER_CALL] for i in range(0, len(cards), PER_CALL)]
+        done = {os.path.basename(p) for p in glob.glob(os.path.join(OUT, 'titles-*.jsonl'))
+                if os.path.getsize(p) > 0}
+        work = [(b, i) for i, b in enumerate(batches) if f'titles-{i}.jsonl' not in done]
     print(f'{len(cards)} cards -> {len(batches)} batches ({PER_CALL}/call), {len(work)} to run')
     print(f'model {MODEL.split("/")[-1]} | conc {CONC} | gen budget {GEN_TPM:,} tok/min')
     with ThreadPoolExecutor(max_workers=CONC) as ex:
