@@ -98,6 +98,14 @@ def main():
         # image-map run with no edit here.
         if slug and slug not in bundled and not CARD_ID.match(slug):
             slug = ''
+        # An illustration GENERATED for this card is filed under the card's own id, because
+        # nothing else names it — it was drawn from the card's own one-sentence description
+        # and belongs to it alone. So a card with no slug adopts its own id the moment that
+        # file lands in cards-png. This is what makes collecting a batch a two-step job (drop
+        # the files in, re-run this) rather than an edit anywhere.
+        if not slug and c['id'] in bundled:
+            slug = c['id']
+
         card = {k: c[k] for k in KEEP if k in c}
         for extra in ('emphasis', 'poster'):
             if extra in c:
