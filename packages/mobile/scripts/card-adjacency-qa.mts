@@ -328,7 +328,11 @@ function makePair(
     toDomain: b.domain,
     fromSlug: a.slug,
     toSlug: b.slug,
-    sameSlug: a.slug === b.slug,
+    // An EMPTY slug is not an illustration: a typographic card shows no picture at all, so
+    // two of them in a row is not a repeat a reader can perceive. Since the DepEd cards and
+    // the re-matched originals made typographic a common, legitimate state (11,712 cards),
+    // counting '' === '' as a repeat inflated this metric and its own chance floor together.
+    sameSlug: a.slug !== '' && a.slug === b.slug,
     fromTl: a.fact.tl ?? '',
     toTl: b.fact.tl ?? '',
     fromEn: a.fact.en ?? '',
@@ -358,7 +362,12 @@ function computeMetrics(pairs: Pair[], slugSeqs: string[][], cards: number, stop
   // Per WALK, not pooled: a child sees one session, so cross-session slug reuse is not a
   // repeat they can perceive.
   m['distinctSlugRate'] = round(
-    mean(slugSeqs.filter((s) => s.length).map((s) => (100 * new Set(s).size) / s.length)),
+    mean(
+      slugSeqs
+        .map((s) => s.filter(Boolean))
+        .filter((s) => s.length)
+        .map((s) => (100 * new Set(s).size) / s.length)
+    ),
     2
   );
   m['sameSlugChanceFloor'] = chanceFloor();
@@ -416,8 +425,9 @@ function repeatWithin(slugSeqs: string[][], N: number): number {
   for (const seq of slugSeqs) {
     for (let i = 1; i < seq.length; i++) {
       total++;
+      if (!seq[i]) continue; // a card with no illustration cannot repeat one
       for (let k = Math.max(0, i - N); k < i; k++) {
-        if (seq[k] === seq[i]) {
+        if (seq[k] && seq[k] === seq[i]) {
           hits++;
           break;
         }
@@ -433,11 +443,13 @@ function repeatWithin(slugSeqs: string[][], N: number): number {
  * floor any tuning is measured against, not zero.
  */
 function chanceFloor(): number {
+  // Over the ILLUSTRATED cards only, to match sameSlug above.
+  const illustrated = POOL.filter((f) => f.slug);
   const counts = new Map<string, number>();
-  for (const f of POOL) counts.set(f.slug, (counts.get(f.slug) ?? 0) + 1);
+  for (const f of illustrated) counts.set(f.slug, (counts.get(f.slug) ?? 0) + 1);
   let num = 0;
   for (const c of counts.values()) num += c * (c - 1);
-  return pct(num, POOL.length * (POOL.length - 1));
+  return pct(num, illustrated.length * (illustrated.length - 1));
 }
 
 function computeDistributions(pairs: Pair[]) {

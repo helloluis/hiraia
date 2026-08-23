@@ -21,6 +21,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 SRC = os.path.join(HERE, 'cardsPool.merged.json')
 ED = os.path.join(os.path.dirname(ROOT), 'hiraia/rag/pipeline/editorial.json')
+ART = os.path.join(HERE, 'original-art-chosen.json')
 IMAGEMAP = os.path.join(ROOT, 'packages/mobile/src/generated/imageMap.ts')
 OUT = os.path.join(ROOT, 'packages/mobile/src/generated/cardsPool.generated.json')
 
@@ -44,8 +45,23 @@ def main():
     ed = json.load(open(ED)) if os.path.exists(ED) else {}
     print(f'  editorial records: {len(ed):,}')
 
+    # Re-matched illustrations for the ORIGINAL cards. They never went through the two-stage
+    # matcher and carried whatever the old token-overlap pass gave them — a fruit DOVE card
+    # illustrated with a fruit BAT, a milkfish card with a plate of rellenong bangus. Applied
+    # HERE, like the editorial pass, so a rebuild of the pool cannot silently drop it.
+    # A null means the model found nothing that shows the card's subject; that card falls
+    # back to type, which is a better answer than a picture of the wrong thing.
+    art = json.load(open(ART)) if os.path.exists(ART) else {}
+    print(f'  re-matched illustrations: {len(art):,}')
+
     out, stat = [], collections.Counter()
     for c in pool['cards']:
+        if c['id'] in art:
+            new_ref = art[c['id']]
+            if new_ref != c.get('slug'):
+                stat['art replaced' if new_ref else 'art dropped'] += 1
+            c['slug'] = new_ref or ''
+            c.pop('image', None) if not new_ref else None
         e = ed.get(c['id'])
         if e:
             con = e.get('concise')
