@@ -23,6 +23,8 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   Animated,
+  Dimensions,
+  type LayoutChangeEvent,
   Image,
   Pressable,
   StyleSheet,
@@ -72,25 +74,53 @@ interface Tier {
  * floor. The question half rides the same ramp so a long Q&A card shrinks as a PAIR,
  * instead of keeping an 18px head over a 13px body.
  */
-function tierFor(text: string, hasArt: boolean): Tier {
+function tierFor(text: string): Tier {
   const n = text.length;
-  if (hasArt) {
-    if (n <= 120) return { fontSize: 16.5, lineHeight: 23, askSize: 18, askLineHeight: 23 };
-    if (n <= 220) return { fontSize: 15, lineHeight: 21.5, askSize: 16.5, askLineHeight: 21 };
-    if (n <= 300) return { fontSize: 14, lineHeight: 20, askSize: 15.5, askLineHeight: 20 };
-    return { fontSize: 13, lineHeight: 18.5, askSize: 14.5, askLineHeight: 19 };
-  }
-  // NO ILLUSTRATION — the type takes the plate's room rather than leaving a hole.
-  // An illustration is preferred, never required: most of the bank has one, but the DepEd
-  // cards outrun the drawn library and a card with something worth reading should not be
-  // held back for want of a picture. So the page becomes a typographic card — big, generously
-  // led, optically centred — which reads as a deliberate variant in a flashcard deck rather
-  // than as a missing asset. Roughly 1.6x the illustrated ramp, which is what it takes to
-  // fill a plate-sized gap at these lengths.
-  if (n <= 120) return { fontSize: 26, lineHeight: 34, askSize: 28, askLineHeight: 36 };
-  if (n <= 220) return { fontSize: 22, lineHeight: 30, askSize: 23.5, askLineHeight: 31 };
-  if (n <= 300) return { fontSize: 19, lineHeight: 26.5, askSize: 20.5, askLineHeight: 27 };
-  return { fontSize: 17, lineHeight: 24, askSize: 18.5, askLineHeight: 25 };
+  if (n <= 120) return { fontSize: 16.5, lineHeight: 23, askSize: 18, askLineHeight: 23 };
+  if (n <= 220) return { fontSize: 15, lineHeight: 21.5, askSize: 16.5, askLineHeight: 21 };
+  if (n <= 300) return { fontSize: 14, lineHeight: 20, askSize: 15.5, askLineHeight: 20 };
+  return { fontSize: 13, lineHeight: 18.5, askSize: 14.5, askLineHeight: 19 };
+}
+
+/**
+ * Type size for a card with NO ILLUSTRATION, fitted to the plate it inherits.
+ *
+ * An illustration is preferred, never required — most of the bank has one, but the DepEd
+ * cards outrun the drawn library and a card worth reading should not be held back for want
+ * of a picture. Such a card keeps the same peach mat the art would have sat in and fills it
+ * with type, so it reads as a deliberate variant of the deck rather than as a failed image.
+ *
+ * Size is FITTED rather than stepped. The four-tier ramp above is calibrated for a caption
+ * under a picture; reused here it left 60% of the card empty and, worse, gave 137, 154 and
+ * 206-character cards the identical size, so how full a card looked was an accident of which
+ * tier it fell in. Solving for the size that fills the plate removes that.
+ *
+ *   lines  = chars / (width / (K * size))     K = mean glyph advance / em, measured ~0.48
+ *   height = lines * LINE_RATIO * size        so height grows with the SQUARE of size
+ *   => size = sqrt(FILL * height * width / (chars * K * LINE_RATIO))
+ *
+ * MAX_SIZE is the real constraint and it comes from the column, not the box: past ~25px this
+ * card is under 24 characters a line, and the rag gets bad enough to hurt a 10-year-old more
+ * than the empty space does. So short cards stay at the cap with air around them — which is
+ * why they sit in the mat, which makes that air read as composition — and only genuinely long
+ * cards scale down.
+ */
+const FILL = 0.8;
+const GLYPH = 0.48;
+const LINE_RATIO = 1.36;
+const MAX_SIZE = 25;
+const MIN_SIZE = 16;
+
+function fitType(text: string, width: number, height: number): Tier {
+  const n = Math.max(text.length, 1);
+  const raw = Math.sqrt((FILL * height * width) / (n * GLYPH * LINE_RATIO));
+  const fontSize = Math.round(Math.min(MAX_SIZE, Math.max(MIN_SIZE, raw)) * 10) / 10;
+  return {
+    fontSize,
+    lineHeight: Math.round(fontSize * LINE_RATIO * 10) / 10,
+    askSize: Math.round(fontSize * 1.06 * 10) / 10,
+    askLineHeight: Math.round(fontSize * 1.38 * 10) / 10,
+  };
 }
 
 /** Split the baked "question?\n\nanswer." pair; `ask` is null on a plain factoid. */
@@ -131,12 +161,31 @@ interface CardPageProps {
   instant?: boolean;
 }
 
+/**
+ * Last measured inner size of the type plate, shared across cards. Seeded from the window:
+ * the deck insets 16px a side, the card adds a 3px edge and 13px of padding, and the mat
+ * another 3px border plus 6px + 8px of padding — 49px a side in total. The height seed is
+ * deliberately rough; it is corrected by the first onLayout and only ever affects cards long
+ * enough to fall below the size cap.
+ */
+let lastPlateBox = {
+  w: Math.max(180, Dimensions.get('window').width - 98),
+  h: Math.max(240, Dimensions.get('window').height * 0.55),
+};
+
 export function CardPage({ fact, choices, language, onChoose, instant = false }: CardPageProps) {
   const t = uiStrings(language);
   const text = cardText(fact, language);
   const { ask, body } = splitQA(text);
   const art = resolveImage(fact.slug);
-  const tier = tierFor(text, art != null);
+  /**
+   * The type plate's own box, measured. Seeded from the window so the very first card is
+   * already close (a wrong seed would resize the type one frame in, mid-typewriter); every
+   * card after the first reuses the real measurement, which is why it is cached at module
+   * level rather than per instance.
+   */
+  const [plateBox, setPlateBox] = useState(lastPlateBox);
+  const tier = art != null ? tierFor(text) : fitType(text, plateBox.w, plateBox.h);
   // Two choices == this page forks. nextChoices returns a single choice on a normal page.
   const branching = choices.length > 1;
   const [shown, setShown] = useState(instant ? text.length : 0);
@@ -177,6 +226,36 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
   // The answer half starts revealing where the question (plus its separator) ended.
   const bodyShown = ask == null ? shown : shown - ask.length - QA_SEPARATOR.length;
 
+  // The same type in both layouts; only its container and its size differ.
+  const factBlock = (
+    <>
+      {ask != null ? (
+        <>
+          <Typed
+            text={ask}
+            shown={shown}
+            style={[styles.ask, { fontSize: tier.askSize, lineHeight: tier.askLineHeight }]}
+          />
+          {/* hairline + gold lozenge, the printed rule between a question and its answer */}
+          <Divider style={styles.divider} />
+        </>
+      ) : null}
+      <Typed
+        text={body}
+        shown={bodyShown}
+        style={[styles.fact, { fontSize: tier.fontSize, lineHeight: tier.lineHeight }]}
+      />
+    </>
+  );
+
+  const onPlateLayout = (e: LayoutChangeEvent) => {
+    const { width: w, height: h } = e.nativeEvent.layout;
+    if (Math.abs(w - plateBox.w) > 4 || Math.abs(h - plateBox.h) > 4) {
+      lastPlateBox = { w, h };
+      setPlateBox(lastPlateBox);
+    }
+  };
+
   return (
     <Pressable style={cardFrame.content} onPress={skip} disabled={done}>
       {/* keyline + punched binder holes — the shared die-cut, graphite on a fork so the
@@ -211,27 +290,20 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
         </Animated.View>
       ) : null}
 
-      {/* the factoid itself: either a printed question/answer pair, or one plain block.
-          With no plate above it, this block inherits the plate's flex and centres itself in
-          the space, so the card is filled by type instead of topped by a gap. */}
-      <View style={[styles.body, art == null && styles.bodyAlone]}>
-        {ask != null ? (
-          <>
-            <Typed
-              text={ask}
-              shown={shown}
-              style={[styles.ask, { fontSize: tier.askSize, lineHeight: tier.askLineHeight }]}
-            />
-            {/* hairline + gold lozenge, the printed rule between a question and its answer */}
-            <Divider style={styles.divider} />
-          </>
-        ) : null}
-        <Typed
-          text={body}
-          shown={bodyShown}
-          style={[styles.fact, { fontSize: tier.fontSize, lineHeight: tier.lineHeight }]}
-        />
-      </View>
+      {/* The factoid itself: a printed question/answer pair, or one plain block.
+          With an illustration above it this is a caption under the art. WITHOUT one it takes
+          over the mat entirely and is centred in it, so the card is filled by type rather
+          than topped by an empty frame — a different printing of the same card, not a card
+          missing its picture. */}
+      {art == null ? (
+        <View style={styles.typePlate}>
+          <View style={styles.typeInner} onLayout={onPlateLayout}>
+            {factBlock}
+          </View>
+        </View>
+      ) : (
+        <View style={styles.body}>{factBlock}</View>
+      )}
 
       {/*
         SINGLE-PATH is the normal state: one fat mustard ticket, full width, so turning the
@@ -332,11 +404,30 @@ const styles = StyleSheet.create({
 
   // ---- factoid type (sizes come from the tier, inline; family + colour live here) ----
   body: { marginTop: 12 },
-  bodyAlone: {
+
+  // ---- the type plate: what a card with no illustration prints instead ----
+  // Deliberately the SAME mat as the art plate above, at the same size and in the same
+  // place. That is the whole idea: the reader sees a card of the deck, printed differently,
+  // not a card whose picture failed to arrive.
+  typePlate: {
     flex: 1,
-    marginTop: 10, // matches the plate's own marginTop so the band spacing is unchanged
+    minHeight: 136,
+    marginTop: 10,
+    backgroundColor: card.peach,
+    borderWidth: 3,
+    borderColor: card.ink,
+    borderRadius: 7,
+    padding: 6,
+  },
+  typeInner: {
+    flex: 1,
+    // Card STOCK, not the plate white the art sits on: type belongs on the card's own paper,
+    // and white here would read as an empty photo window with words in it.
+    backgroundColor: card.stock,
+    borderRadius: 2,
     justifyContent: 'center',
-    paddingHorizontal: 2,
+    paddingVertical: 12,
+    paddingHorizontal: 8, // kept tight — every px here comes straight off the line length
   },
   ask: {
     fontFamily: fonts.cardBodyBold,
