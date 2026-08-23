@@ -177,3 +177,22 @@ rag/pipeline/factoids-*-src.jsonl
 rag/pipeline/taxonomy-probe/
 rag/pipeline/card-titles/
 rag/bank/*.pre-rematch.bak
+
+# DepEd card pipeline — large regenerable intermediates
+rag/pipeline/deped-modules.jsonl          # 20 MB of raw module text; comes from the harvest
+rag/pipeline/card-illustrations.json      # 60 MB top-8 shortlists; rebuilt by match-illustrations.py
+rag/pipeline/card-illustrations.v1.json
+rag/pipeline/card-illustrations.chosen.v1.json
+rag/pipeline/illustration-items.json      # rebuilt locally, free
+rag/pipeline/*-vectors.npy                # embedding caches
+rag/pipeline/cardsPool.deped*.json        # assembled from deped-cards-v3/ instantly
+rag/pipeline/cardsPool.merged.json        # the app pool is the shipped form of this
+rag/pipeline/ab-*/                         # A/B generation samples
+rag/pipeline/ab2-*/
+rag/pipeline/ab3-*/
+rag/pipeline/deped-cards/                  # superseded v1 generation
+rag/pipeline/deped-cards-v3.prepolish/     # pre-polish backup
+rag/pipeline/imagegen/*.jsonl              # multi-GB batch outputs
+!rag/pipeline/imagegen/worklist.jsonl
+rag/pipeline/imagegen/raw/                 # 1024px PNGs; webp is what ships
+rag/pipeline/imagegen/webp/                # incomplete until all 3 batches land

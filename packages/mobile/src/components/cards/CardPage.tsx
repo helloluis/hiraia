@@ -72,12 +72,25 @@ interface Tier {
  * floor. The question half rides the same ramp so a long Q&A card shrinks as a PAIR,
  * instead of keeping an 18px head over a 13px body.
  */
-function tierFor(text: string): Tier {
+function tierFor(text: string, hasArt: boolean): Tier {
   const n = text.length;
-  if (n <= 120) return { fontSize: 16.5, lineHeight: 23, askSize: 18, askLineHeight: 23 };
-  if (n <= 220) return { fontSize: 15, lineHeight: 21.5, askSize: 16.5, askLineHeight: 21 };
-  if (n <= 300) return { fontSize: 14, lineHeight: 20, askSize: 15.5, askLineHeight: 20 };
-  return { fontSize: 13, lineHeight: 18.5, askSize: 14.5, askLineHeight: 19 };
+  if (hasArt) {
+    if (n <= 120) return { fontSize: 16.5, lineHeight: 23, askSize: 18, askLineHeight: 23 };
+    if (n <= 220) return { fontSize: 15, lineHeight: 21.5, askSize: 16.5, askLineHeight: 21 };
+    if (n <= 300) return { fontSize: 14, lineHeight: 20, askSize: 15.5, askLineHeight: 20 };
+    return { fontSize: 13, lineHeight: 18.5, askSize: 14.5, askLineHeight: 19 };
+  }
+  // NO ILLUSTRATION — the type takes the plate's room rather than leaving a hole.
+  // An illustration is preferred, never required: most of the bank has one, but the DepEd
+  // cards outrun the drawn library and a card with something worth reading should not be
+  // held back for want of a picture. So the page becomes a typographic card — big, generously
+  // led, optically centred — which reads as a deliberate variant in a flashcard deck rather
+  // than as a missing asset. Roughly 1.6x the illustrated ramp, which is what it takes to
+  // fill a plate-sized gap at these lengths.
+  if (n <= 120) return { fontSize: 26, lineHeight: 34, askSize: 28, askLineHeight: 36 };
+  if (n <= 220) return { fontSize: 22, lineHeight: 30, askSize: 23.5, askLineHeight: 31 };
+  if (n <= 300) return { fontSize: 19, lineHeight: 26.5, askSize: 20.5, askLineHeight: 27 };
+  return { fontSize: 17, lineHeight: 24, askSize: 18.5, askLineHeight: 25 };
 }
 
 /** Split the baked "question?\n\nanswer." pair; `ask` is null on a plain factoid. */
@@ -121,9 +134,9 @@ interface CardPageProps {
 export function CardPage({ fact, choices, language, onChoose, instant = false }: CardPageProps) {
   const t = uiStrings(language);
   const text = cardText(fact, language);
-  const tier = tierFor(text);
   const { ask, body } = splitQA(text);
   const art = resolveImage(fact.slug);
+  const tier = tierFor(text, art != null);
   // Two choices == this page forks. nextChoices returns a single choice on a normal page.
   const branching = choices.length > 1;
   const [shown, setShown] = useState(instant ? text.length : 0);
@@ -185,19 +198,23 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
         whole 18.8k-image bank; that is the funded pipeline job, not this restyle.)
         Tap → the same pinch-zoom Lightbox the illustration always had.
       */}
-      <Animated.View style={[styles.plate, { opacity: extrasOpacity }]}>
-        <Pressable
-          style={styles.window}
-          onPress={() => setZoom(true)}
-          disabled={!done || art == null}
-          accessibilityLabel={`Larawan: ${fact.topic}. I-tap para palakihin.`}
-        >
-          {art != null ? <Image source={art} style={styles.art} resizeMode="contain" /> : null}
-        </Pressable>
-      </Animated.View>
+      {art != null ? (
+        <Animated.View style={[styles.plate, { opacity: extrasOpacity }]}>
+          <Pressable
+            style={styles.window}
+            onPress={() => setZoom(true)}
+            disabled={!done}
+            accessibilityLabel={`Larawan: ${fact.topic}. I-tap para palakihin.`}
+          >
+            <Image source={art} style={styles.art} resizeMode="contain" />
+          </Pressable>
+        </Animated.View>
+      ) : null}
 
-      {/* the factoid itself: either a printed question/answer pair, or one plain block */}
-      <View style={styles.body}>
+      {/* the factoid itself: either a printed question/answer pair, or one plain block.
+          With no plate above it, this block inherits the plate's flex and centres itself in
+          the space, so the card is filled by type instead of topped by a gap. */}
+      <View style={[styles.body, art == null && styles.bodyAlone]}>
         {ask != null ? (
           <>
             <Typed
@@ -279,7 +296,9 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
         ) : null}
       </Animated.View>
 
-      <Lightbox visible={zoom} desc={fact.topic} source={art} onClose={() => setZoom(false)} />
+      {art != null ? (
+        <Lightbox visible={zoom} desc={fact.topic} source={art} onClose={() => setZoom(false)} />
+      ) : null}
     </Pressable>
   );
 }
@@ -313,6 +332,12 @@ const styles = StyleSheet.create({
 
   // ---- factoid type (sizes come from the tier, inline; family + colour live here) ----
   body: { marginTop: 12 },
+  bodyAlone: {
+    flex: 1,
+    marginTop: 10, // matches the plate's own marginTop so the band spacing is unchanged
+    justifyContent: 'center',
+    paddingHorizontal: 2,
+  },
   ask: {
     fontFamily: fonts.cardBodyBold,
     color: card.ink,

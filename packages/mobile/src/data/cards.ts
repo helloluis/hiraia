@@ -579,12 +579,21 @@ export interface NextStepOpts {
   recentIds?: readonly string[];
 }
 
-/** Illustrations that would read as a repeat right now: the current card's + the trail's. */
+/**
+ * Illustrations that would read as a repeat right now: the current card's + the trail's.
+ *
+ * An empty slug is NOT an illustration and must never enter this set. A card without a
+ * picture renders as a typographic card (see CardPage), and thousands of them share the
+ * empty string — pooled into the cooldown they would all block each other, so one imageless
+ * card in the trail would make every other imageless card unservable and the feed would
+ * narrow to the illustrated bank alone.
+ */
 function cooldownSlugs(cur: CardFact, recentIds?: readonly string[]): Set<string> {
-  const slugs = new Set<string>([cur.slug]);
+  const slugs = new Set<string>();
+  if (cur.slug) slugs.add(cur.slug);
   for (const id of (recentIds ?? []).slice(-SLUG_COOLDOWN)) {
     const f = BY_ID.get(id);
-    if (f) slugs.add(f.slug);
+    if (f?.slug) slugs.add(f.slug);
   }
   return slugs;
 }
@@ -621,7 +630,7 @@ export function nextChoices(
   // Servable next to THIS card: unseen, a different picture from the last few pages, and
   // not the same fact reworded under the same topic wording (those exist across grades).
   const servable = (f: CardFact) =>
-    unseen(f) && !blockedSlugs.has(f.slug) && topicKey(f) !== curTopicKey;
+    unseen(f) && !(f.slug && blockedSlugs.has(f.slug)) && topicKey(f) !== curTopicKey;
 
   // deep: candidates sharing any term, ranked by idf-weighted overlap, but only those whose
   // shared terms are specific enough to be a real thread (see LINK_MASS_FLOOR) and not so
