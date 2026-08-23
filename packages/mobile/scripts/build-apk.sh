@@ -59,6 +59,55 @@ if [ -z "${ANDROID_HOME:-}" ]; then
 fi
 export ANDROID_SDK_ROOT="$ANDROID_HOME"
 
+# ---------------------------------------------------------------------------------------
+# The card inventory is GENERATED. Since it moved out of the JS bundle, three artefacts are
+# built by rag/pipeline/build-cards-db.py and shipped as-is:
+#
+#   src/generated/cardsIndex.generated.json  the resident index (bundled)
+#   assets/data/cards.db                     card text, MCQs, the search index
+#   assets/data/tokens.bin                   per-card vocabularies for textJaccard
+#
+# Nothing in the build regenerates them, so a stale one ships silently and is very hard to
+# read back from the symptom: an edited card still shows its OLD text, a re-matched
+# illustration still shows the OLD picture, a new card is missing from search. Worse, the
+# database's tokeniser reads the stop list out of src/data/cards.ts, so editing THAT quietly
+# desynchronises the search index from the app that queries it.
+#
+# So compare mtimes and refuse rather than warn. Regenerating costs about a minute.
+# ---------------------------------------------------------------------------------------
+GEN=(
+  "$MOBILE/src/generated/cardsIndex.generated.json"
+  "$MOBILE/assets/data/cards.db"
+  "$MOBILE/assets/data/tokens.bin"
+)
+SRC=(
+  "$MOBILE/src/generated/cardsPool.generated.json"
+  "$MOBILE/src/data/cards-questions.json"
+  "$MOBILE/src/data/cards.ts"
+)
+STALE=0
+for g in "${GEN[@]}"; do
+  if [ ! -f "$g" ]; then
+    echo "!! missing $(basename "$g")"
+    STALE=1
+    continue
+  fi
+  for s in "${SRC[@]}"; do
+    [ -f "$s" ] || continue
+    if [ "$s" -nt "$g" ]; then
+      echo "!! $(basename "$g") is OLDER than $(basename "$s")"
+      STALE=1
+    fi
+  done
+done
+if [ "$STALE" = 1 ]; then
+  echo
+  echo "   The card inventory is out of date. Rebuild it, then run this again:"
+  echo "     python3 rag/pipeline/build-cards-db.py"
+  exit 1
+fi
+echo ">> card inventory is current"
+
 cd "$MOBILE"
 echo ">> clearing bundle outputs so Metro cannot be skipped"
 rm -rf "$AND/app/build/generated/assets/createBundleReleaseJsAndAssets" \

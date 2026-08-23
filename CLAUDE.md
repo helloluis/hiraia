@@ -53,6 +53,9 @@ both eval harnesses reference the bundle so the "shipping" default can never dri
 ## Conventions (load-bearing)
 - Use the Claude **subscription**, not the API, for assisted work (incl. the benchmark judge).
 - Adapters + images are **bundled in the APK** (the core offline value).
+- The card inventory is **generated**: run `python3 rag/pipeline/build-cards-db.py` before
+  building an APK, after changing the pool, the questions, or `cards.ts` (the builder reads
+  its stop list). `build-apk.sh` refuses a stale one — see `packages/mobile/BUILD.md`.
 - `RUNPOD_API_KEY` lives in `.env.local` (gitignored) — never commit it.
 - `scp` uses `-P` (capital). On the default branch, branch first. Commit only when asked.
 - Avoid heuristic intent-detection; prefer principled retrieval/grounding.

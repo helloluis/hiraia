@@ -8,6 +8,51 @@ per QVAC's docs it runs on a **physical Android 12+ device only** (not emulators
 This doc covers producing a **shareable release APK** via EAS (cloud build — no local
 Android toolchain needed).
 
+## The card inventory is GENERATED — rebuild it before you build
+
+The feed's content no longer lives in the JS bundle. Three artefacts are produced by
+`rag/pipeline/build-cards-db.py` and shipped as they are:
+
+| file | what it is | ships as |
+|---|---|---|
+| `src/generated/cardsIndex.generated.json` | ids, terms, slug, cats, topic, domain — everything sequencing reads | bundled (9.5 MB) |
+| `assets/data/cards.db` | card text, titles, emphasis, MCQs, and the 46,177-token search index | asset (~16 MB in the APK, 51 MB once copied out) |
+| `assets/data/tokens.bin` | each card's vocabulary as sorted int hashes, for `textJaccard` | asset (4.8 MB) |
+
+```bash
+python3 rag/pipeline/build-cards-db.py     # ~1 minute
+```
+
+**Nothing in the build regenerates these.** `build-apk.sh` compares their mtimes against
+their sources and refuses to build if any is older, because a stale one ships silently and
+the symptom is nearly unreadable: an edited card shows its OLD text, a re-matched
+illustration shows the OLD picture, a newly added card is missing from search results but
+present in the feed.
+
+### Rebuild after ANY of these
+
+- `src/generated/cardsPool.generated.json` changed — i.e. after `rag/pipeline/wire-app-pool.py`,
+  which is itself what applies the editorial pass and the illustration re-match
+- `src/data/cards-questions.json` changed
+- **`src/data/cards.ts` changed.** Non-obvious and the easiest to miss: the builder reads the
+  `SEARCH_STOP` list out of that file so the index is tokenised exactly the way
+  `searchTokens()` will tokenise a query. Editing the stop list without rebuilding leaves the
+  index and the app disagreeing about what a token is — it does not crash, it just quietly
+  changes what search finds and how `textJaccard` scores near-duplicates.
+
+### Why it is precomputed
+
+`searchCards` used to tokenise all three languages of all 29,737 cards at module init to
+build its index — 427 ms of the 742 ms the feed spent starting up, and the one thing that
+genuinely required the whole inventory to be resident in memory. Precomputing it took module
+init to 102 ms and let the text move to SQLite.
+
+It also changed the algorithm rather than just the storage. The old in-memory index ran the
+wrong way (card → tokens), so a query had to scan every card; the database holds the inverted
+one, so a query touches only the cards carrying one of its tokens. Measured: `"volcano"` reads
+290 cards instead of 29,737, 2.5–16× faster, with identical picks.
+
+
 ## Prerequisites
 
 - **Node ≥ 22.17** (we use 22.22).
