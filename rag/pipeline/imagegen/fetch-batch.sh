@@ -18,4 +18,13 @@ curl -sS -L -C - --retry 5 --retry-delay 5 --speed-limit 1024 --speed-time 120 \
      -o "$OUT" -w 'http %{http_code}  %{size_download} bytes  %{time_total}s\n' "$URL"
 echo "extracting..."
 python3 "$HERE/extract.py" "$OUT"
-python3 "$HERE/to-webp.py"
+# Straight from the raw 1024px PNGs to the bundle format — 512px indexed-grayscale PNG, the
+# same treatment the rest of the card art gets. Deliberately NOT via WebP: that would be a
+# second lossy step and would have to be redone, and the point of this directory is that a
+# file appearing in it IS a wired illustration.
+( cd "$HERE/../../../packages/images" && node to-card-png.mjs --in "$HERE/raw" )
+echo "re-generating the image map..."
+node "$HERE/../../../packages/mobile/scripts/gen-image-map.mjs"
+echo
+echo "Now re-run the pool so the new art is picked up:"
+echo "  python3 rag/pipeline/wire-app-pool.py"

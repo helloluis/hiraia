@@ -186,7 +186,8 @@ rag/pipeline/card-illustrations.chosen.v1.json
 rag/pipeline/illustration-items.json      # rebuilt locally, free
 rag/pipeline/*-vectors.npy                # embedding caches
 rag/pipeline/cardsPool.deped*.json        # assembled from deped-cards-v3/ instantly
-rag/pipeline/cardsPool.merged.json        # the app pool is the shipped form of this
+# (cardsPool.merged.json IS tracked — it is the input to wire-app-pool.py, and
+#  rebuilding it needs a running llama-server plus ~8 min of embedding.)
 rag/pipeline/ab-*/                         # A/B generation samples
 rag/pipeline/ab2-*/
 rag/pipeline/ab3-*/

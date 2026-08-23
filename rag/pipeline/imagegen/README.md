@@ -27,8 +27,13 @@ For each batch, open platform.openai.com/batches, copy the download URL, then:
     rag/pipeline/imagegen/fetch-batch.sh <batch_id> '<signed-url>'
 
 It resumes from whatever is already on disk (so batch 1 pulls only the remaining ~3.2 GB),
-extracts PNGs while tolerating a truncated final line, and converts to 512x512 WebP.
-The URLs expire in a few hours - paste each one promptly.
+extracts PNGs while tolerating a truncated final line, converts them to the bundle format in
+packages/images/cards-png/, and regenerates the image map. Then re-run:
+
+    python3 rag/pipeline/wire-app-pool.py
+
+and the newly arrived illustrations are live - no other step, and nothing already converted is
+touched. The URLs expire in a few hours, so paste each one promptly.
 
 ## Next time: size batches by OUTPUT, not request count
 

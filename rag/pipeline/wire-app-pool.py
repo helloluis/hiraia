@@ -25,6 +25,8 @@ OUT = os.path.join(ROOT, 'packages/mobile/src/generated/cardsPool.generated.json
 
 # Fields the app's CardFact contract reads, plus the DepEd provenance worth carrying: it is
 # what makes a card's claim checkable later, and it costs a few bytes a row.
+CARD_ID = re.compile(r'^(?:ffct|dcard)-\d+$')
+
 KEEP = ('id', 'factId', 'domain', 'topic', 'terms', 'fact', 'slug', 'title', 'cats',
         'grade', 'quarter', 'competency', 'source_module', 'source')
 
@@ -40,6 +42,14 @@ def main():
         img = c.get('image')
         if not slug and isinstance(img, dict) and img.get('ref'):
             slug = img['ref']
+        # A NAMED clip-art slug that has no file anywhere is a dead reference — the
+        # re-ranker chose from the QC list (4,388 slugs), which is slightly wider than what
+        # assets-png actually bundles (4,228). Clear those so the card is honestly
+        # typographic. Card ids (ffct-/dcard-) are NOT cleared even when unbundled: their art
+        # exists and is queued, and keeping the ref is what lets it light up on the next
+        # image-map run with no edit here.
+        if slug and slug not in bundled and not CARD_ID.match(slug):
+            slug = ''
         card = {k: c[k] for k in KEEP if k in c}
         card['slug'] = slug
         if not card.get('terms'):
