@@ -95,6 +95,7 @@ export function CardPrint({ keyline = 'sage' }: { keyline?: KeylineTone }) {
 export function IndexBand({
   tone = 'ink',
   chip,
+  chipSymbol = false,
   label,
   stamp,
 }: {
@@ -106,6 +107,15 @@ export function IndexBand({
    * kid this page is a different kind of page — so the prop survives for that use.
    */
   chip?: string;
+  /**
+   * Draw the chip in the SYSTEM font rather than the slab.
+   *
+   * Alfa Slab One is a display face with 672 glyphs and none of the marks a verdict needs —
+   * checked directly: it has no U+2713, U+2717 or U+2605, so a tick set in it renders as a
+   * tofu box. The option rows already dodge this by leaving fontFamily unset and letting
+   * Android's fallback chain find the symbol; this lets the chip do the same.
+   */
+  chipSymbol?: boolean;
   label: string;
   stamp: ReactNode;
 }) {
@@ -114,7 +124,14 @@ export function IndexBand({
     <View style={[cardFrame.band, { backgroundColor: ink.band }]}>
       {chip ? (
         <View style={[cardFrame.chip, { backgroundColor: ink.chip }]}>
-          <Text style={[cardFrame.chipText, { color: ink.chipText }]} numberOfLines={1}>
+          <Text
+            style={[
+              cardFrame.chipText,
+              chipSymbol && cardFrame.chipSymbol,
+              { color: ink.chipText },
+            ]}
+            numberOfLines={1}
+          >
             {chip}
           </Text>
         </View>
@@ -315,6 +332,8 @@ export const cardFrame = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  /** Symbol chips drop the slab and take the system font, which has the marks it lacks. */
+  chipSymbol: { fontFamily: undefined, fontSize: 15, fontWeight: '700' },
   chipText: {
     fontFamily: fonts.slab,
     fontSize: 13,

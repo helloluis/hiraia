@@ -142,9 +142,9 @@ export function QuestionPage({ question, language, onAnswer, onContinue }: Quest
   // the row loop below indexes by display position exactly like the shuffle does.
   const optionTexts = order.map((optIdx) => localize(question.o[optIdx], language));
   const tier = tierFor(questionText.length, Math.max(...optionTexts.map((o) => o.length), 0));
-  // Once answered, the hero yields its space to the explanation and the ticket: the disc
-  // shrinks to a stamp beside the verdict and the question — already read — steps down.
-  const catSize = revealed ? Math.min(tier.cat, 44) : tier.cat;
+  // Once answered the hero is gone entirely, so the disc only ever draws at full size; the
+  // question — already read — steps down to give the explanation its room.
+  const catSize = tier.cat;
   const qSize = revealed ? tier.q - 2 : tier.q;
   const qLine = revealed ? tier.qLine - 3 : tier.qLine;
 
@@ -155,32 +155,22 @@ export function QuestionPage({ question, language, onAnswer, onContinue }: Quest
 
       {/* A factoid card's index chip carries its catalogue number; a quiz card has none to
           carry, so the chip holds the mark that says what this page is. */}
+      {/* The chip is the VERDICT once the page is answered — a tick or a cross where the "?"
+          was. Putting it here is what let the whole verdict ROW go: the row said the same
+          thing a second time, one line further down, next to a cat the band already shows. */}
       <IndexBand
         tone="gold"
-        chip="?"
+        chip={revealed ? (gotIt ? '✓' : '✗') : '?'}
+        chipSymbol={revealed}
         label={labels.band}
         stamp={<Image source={CAT} style={cardFrame.stampImage} resizeMode="contain" />}
       />
 
-      {revealed ? (
-        <View style={styles.verdictRow}>
-          <View style={[styles.disc, discSize(catSize)]}>
-            <Image source={CAT} style={imageSize(catSize)} resizeMode="contain" />
-          </View>
-          {/* The verdict is a stamped chip, not coloured text: gold-on-ink and
-              cream-on-graphite both clear AA, where the same words set in gold
-              directly on teal stock would sit at 2.9:1. */}
-          {gotIt ? (
-            <View style={styles.verdictChip}>
-              <Text style={styles.verdictText}>{t.quiz.correct}</Text>
-            </View>
-          ) : (
-            <View style={styles.answerChip}>
-              <Text style={styles.answerText}>{labels.answer}</Text>
-            </View>
-          )}
-        </View>
-      ) : (
+      {/* Before answering, the cat is the interruption: full-size disc and an eyebrow. After
+          answering it yields the space outright — the verdict is in the band, the correct
+          answer is the highlighted row, and repeating either here only pushed the
+          explanation off the bottom of the card. */}
+      {revealed ? null : (
         <>
           <View style={[styles.disc, styles.discHero, discSize(catSize)]}>
             <Image source={CAT} style={imageSize(catSize)} resizeMode="contain" />
@@ -206,7 +196,9 @@ export function QuestionPage({ question, language, onAnswer, onContinue }: Quest
           if (revealed) {
             if (isCorrect) {
               state = 'correct';
-              mark = '✓';
+              // A STAR when this was the reader's own pick, a tick when it is merely the
+              // answer they missed. The row is the only place that distinction now lives.
+              mark = gotIt ? '★' : '✓';
             } else if (isChosen) {
               state = 'wrong';
               mark = '✗';
@@ -323,43 +315,6 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     // Cream, not the mockup's gold: gold on teal stock measures 2.9:1, which is not a
     // daylight-legible micro-label on a cheap 720p panel. Cream is 5.6:1.
-    color: card.stock,
-  },
-  verdictRow: {
-    marginTop: 14,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 10,
-  },
-  verdictChip: {
-    backgroundColor: card.gold,
-    borderWidth: 3,
-    borderColor: card.ink,
-    borderRadius: 9,
-    paddingHorizontal: 10,
-    paddingVertical: 3,
-  },
-  verdictText: {
-    fontFamily: fonts.slab,
-    fontSize: 16,
-    lineHeight: 22,
-    color: card.ink,
-    includeFontPadding: false,
-  },
-  answerChip: {
-    backgroundColor: card.graphite, // neutral press-grey: a heading, not a scolding
-    borderWidth: 3,
-    borderColor: card.ink,
-    borderRadius: 9,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-  },
-  answerText: {
-    fontFamily: fonts.gothic,
-    fontSize: 10,
-    letterSpacing: 1.6,
-    textTransform: 'uppercase',
     color: card.stock,
   },
   question: {
