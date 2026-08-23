@@ -39,6 +39,7 @@ import type { Language } from '@hiraia/shared';
 import { uiStrings } from '../../config/strings';
 import { cardText, cardTitle, type CardChoice, type CardFact } from '../../data/cards';
 import { resolveImage } from '../../generated/imageMap';
+import { posterFor, displayScale, type PosterSpec } from './posterLayout';
 import { card, fonts } from '../../theme';
 import { Lightbox } from '../Lightbox';
 import { Arrow, CardPrint, Divider, IndexBand, Ticket, cardFrame } from './CardFrame';
@@ -111,8 +112,39 @@ const LINE_RATIO = 1.36;
 const MAX_SIZE = 25;
 const MIN_SIZE = 16;
 
-function fitType(text: string, width: number, height: number): Tier {
-  const n = Math.max(text.length, 1);
+/**
+ * What the LAYOUT costs, over and above the characters, expressed as characters so one
+ * formula still does the work.
+ *
+ * The fit models the card as one continuous flow of text. It is not: it is up to four
+ * stacked blocks — question, rule, the words before the lifted term, the term, the rest —
+ * and each block rounds up to a whole line while the rule carries fixed margins. Ignoring
+ * that overflowed the plate on long two-part cards; a 329-character card with both a long
+ * question and a lead line ran its foot off the bottom.
+ *
+ * Charges, in lines:
+ *   the display line is (scale - 1) taller than the body lines it replaces
+ *   half a line per block boundary, for the rounding-up each one does
+ *   1.2 lines for a two-part card: the rule, its margins, and the ask block's own rounding
+ *
+ * Converted to characters at the capped size — `size` is what we are solving for, so the cap
+ * stands in. It only has to be close.
+ */
+function layoutAllowance(spec: PosterSpec, isQA: boolean, width: number): number {
+  const perLine = width / (GLYPH * MAX_SIZE);
+  let lines = 0;
+  if (spec.kind === 'lead' || spec.kind === 'numeral') {
+    const termLines = Math.max(1, Math.ceil(spec.term.length / Math.max(perLine, 1)));
+    lines += (displayScale(spec.kind) - 1) * termLines;
+    if (spec.before.trim()) lines += 0.5;
+    if (spec.after.trim()) lines += 0.5;
+  }
+  if (isQA) lines += 1.2;
+  return lines * perLine;
+}
+
+function fitType(text: string, width: number, height: number, allowance = 0): Tier {
+  const n = Math.max(text.length + allowance, 1);
   const raw = Math.sqrt((FILL * height * width) / (n * GLYPH * LINE_RATIO));
   const fontSize = Math.round(Math.min(MAX_SIZE, Math.max(MIN_SIZE, raw)) * 10) / 10;
   return {
@@ -128,6 +160,30 @@ function splitQA(text: string): { ask: string | null; body: string } {
   const i = text.indexOf(QA_SEPARATOR);
   if (i <= 0) return { ask: null, body: text };
   return { ask: text.slice(0, i), body: text.slice(i + QA_SEPARATOR.length) };
+}
+
+/**
+ * One run of text mid-reveal, as a nested <Text> so it can sit INSIDE another Text and keep
+ * the line flowing. Splitting a sentence into differently-styled runs would otherwise break
+ * it into separate paragraphs, which is right for a lifted display line and wrong for an
+ * emphasised word in the middle of a clause.
+ */
+function Seg({
+  text,
+  shown,
+  style,
+}: {
+  text: string;
+  shown: number;
+  style?: StyleProp<TextStyle>;
+}) {
+  const cut = Math.max(0, Math.min(shown, text.length));
+  return (
+    <Text style={style}>
+      {text.slice(0, cut)}
+      <Text style={styles.unrevealed}>{text.slice(cut)}</Text>
+    </Text>
+  );
 }
 
 /**
@@ -173,6 +229,18 @@ let lastPlateBox = {
   h: Math.max(240, Dimensions.get('window').height * 0.55),
 };
 
+/**
+ * Emphasis for a card that HAS an illustration: the accent, never a lifted display line.
+ * Under a picture the type is a caption, and a word at 1.5x would compete with the art for
+ * the eye — which is the one thing the illustration is there to win.
+ */
+function inlineOnly(text: string, spans?: readonly string[]): PosterSpec {
+  const term = spans?.[0];
+  const i = term ? text.indexOf(term) : -1;
+  if (!term || i < 0) return { kind: 'plain', before: '', term: '', after: text };
+  return { kind: 'inline', before: text.slice(0, i), term, after: text.slice(i + term.length) };
+}
+
 export function CardPage({ fact, choices, language, onChoose, instant = false }: CardPageProps) {
   const t = uiStrings(language);
   const text = cardText(fact, language);
@@ -185,7 +253,15 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
    * level rather than per instance.
    */
   const [plateBox, setPlateBox] = useState(lastPlateBox);
-  const tier = art != null ? tierFor(text) : fitType(text, plateBox.w, plateBox.h);
+  const emphasis =
+    fact.emphasis?.[language === 'english' ? 'en' : language === 'cebuano' ? 'bis' : 'tl'];
+  // The body's layout is settled BEFORE the type is sized: a lifted display line changes how
+  // much room the rest of the sentence has.
+  const bodySpec = art == null ? posterFor(body, emphasis) : inlineOnly(body, emphasis);
+  const tier =
+    art != null
+      ? tierFor(text)
+      : fitType(text, plateBox.w, plateBox.h, layoutAllowance(bodySpec, ask != null, plateBox.w));
   // Two choices == this page forks. nextChoices returns a single choice on a normal page.
   const branching = choices.length > 1;
   const [shown, setShown] = useState(instant ? text.length : 0);
@@ -226,25 +302,83 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
   // The answer half starts revealing where the question (plus its separator) ended.
   const bodyShown = ask == null ? shown : shown - ask.length - QA_SEPARATOR.length;
 
+  /**
+   * The factoid, set according to its poster layout.
+   *
+   * `shown` is a single running count over the whole string, so each run is handed the count
+   * MINUS everything before it and clamps itself. That keeps one typewriter across three
+   * differently-styled runs rather than three that start together.
+   */
+  const renderFact = (text: string, spec: PosterSpec, from: number) => {
+    const bodyType = { fontSize: tier.fontSize, lineHeight: tier.lineHeight };
+    if (spec.kind === 'plain') {
+      return <Typed text={text} shown={from} style={[styles.fact, bodyType]} />;
+    }
+    if (spec.kind === 'inline') {
+      // one paragraph — the runs nest so the line keeps flowing through the accent
+      return (
+        <Text style={[styles.fact, bodyType]}>
+          <Seg text={spec.before} shown={from} />
+          <Seg text={spec.term} shown={from - spec.before.length} style={styles.em} />
+          <Seg text={spec.after} shown={from - spec.before.length - spec.term.length} />
+        </Text>
+      );
+    }
+    const size = Math.round(tier.fontSize * displayScale(spec.kind) * 10) / 10;
+    const display = {
+      fontSize: size,
+      lineHeight: Math.round(size * 1.08 * 10) / 10,
+    };
+    return (
+      <>
+        {spec.before.trim() ? (
+          <Typed
+            text={spec.before.trim()}
+            shown={from}
+            style={[styles.fact, styles.preLead, bodyType]}
+          />
+        ) : null}
+        <Typed
+          text={spec.term}
+          shown={from - spec.before.length}
+          style={[spec.kind === 'numeral' ? styles.numeral : styles.lead, display]}
+        />
+        {spec.after.trim() ? (
+          <Typed
+            text={spec.after.replace(/^\s+/, '')}
+            shown={from - spec.before.length - spec.term.length}
+            style={[styles.fact, bodyType]}
+          />
+        ) : null}
+      </>
+    );
+  };
+
   // The same type in both layouts; only its container and its size differ.
   const factBlock = (
     <>
       {ask != null ? (
         <>
-          <Typed
-            text={ask}
-            shown={shown}
-            style={[styles.ask, { fontSize: tier.askSize, lineHeight: tier.askLineHeight }]}
-          />
+          {/* The question always takes the INLINE treatment, never a lifted line: it is the
+              hook, and a display word here would upstage the answer it exists to set up. */}
+          {(() => {
+            const q = inlineOnly(ask, emphasis);
+            const qs = [styles.ask, { fontSize: tier.askSize, lineHeight: tier.askLineHeight }];
+            return q.kind === 'plain' ? (
+              <Typed text={ask} shown={shown} style={qs} />
+            ) : (
+              <Text style={qs}>
+                <Seg text={q.before} shown={shown} />
+                <Seg text={q.term} shown={shown - q.before.length} style={styles.em} />
+                <Seg text={q.after} shown={shown - q.before.length - q.term.length} />
+              </Text>
+            );
+          })()}
           {/* hairline + gold lozenge, the printed rule between a question and its answer */}
           <Divider style={styles.divider} />
         </>
       ) : null}
-      <Typed
-        text={body}
-        shown={bodyShown}
-        style={[styles.fact, { fontSize: tier.fontSize, lineHeight: tier.lineHeight }]}
-      />
+      {renderFact(body, bodySpec, bodyShown)}
     </>
   );
 
@@ -434,6 +568,21 @@ const styles = StyleSheet.create({
     color: card.ink,
     letterSpacing: -0.1,
   },
+  // ---- emphasis: the term the card is teaching ----
+  em: { fontFamily: fonts.cardBodyBold, color: card.accent },
+  /** The lifted term. Bold slab in the accent — size does the work, colour confirms it. */
+  lead: {
+    fontFamily: fonts.cardBodyBold,
+    color: card.accent,
+    letterSpacing: -0.6,
+    marginVertical: 3,
+  },
+  /** A quantity, set as a figure. The display slab is used ONLY here, where the card's whole
+   *  point is a number and it should read as an image rather than as a word. */
+  numeral: { fontFamily: fonts.slab, color: card.accent, letterSpacing: -1, marginVertical: 4 },
+  /** The words before a lifted term — "Ang", "Sa halimbawa ng acacia, ang". Dropped back so
+   *  the term is what the eye lands on, but not so far that the sentence loses its start. */
+  preLead: { opacity: 0.66 },
   fact: {
     fontFamily: fonts.cardBody,
     color: card.ink,

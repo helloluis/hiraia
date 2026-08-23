@@ -129,6 +129,14 @@ export const card = {
   olive: '#5B6B52',
   /** Plate white — the bed an engraving sits on (the art has a white background). */
   plate: '#FFFFFF',
+  /**
+   * Oxblood — the ONE accent that marks the term a card is teaching, on a poster card and
+   * inline under an illustration. 7.84:1 on cream stock (AAA), and deliberately outside the
+   * signalling palette: `gold` means "continue", `forkA`/`forkB` mean "choose", `teal` means
+   * "quiz". Emphasis had to mean none of those, so it takes the warm end of the mat's own
+   * family rather than borrowing a colour that already carries an instruction.
+   */
+  accent: '#7A2E22',
 } as const;
 
 /**

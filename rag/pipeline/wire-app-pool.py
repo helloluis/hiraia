@@ -20,6 +20,7 @@ import json, os, re, collections
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 SRC = os.path.join(HERE, 'cardsPool.merged.json')
+ED = os.path.join(os.path.dirname(ROOT), 'hiraia/rag/pipeline/editorial.json')
 IMAGEMAP = os.path.join(ROOT, 'packages/mobile/src/generated/imageMap.ts')
 OUT = os.path.join(ROOT, 'packages/mobile/src/generated/cardsPool.generated.json')
 
@@ -29,6 +30,7 @@ CARD_ID = re.compile(r'^(?:ffct|dcard)-\d+$')
 
 KEEP = ('id', 'factId', 'domain', 'topic', 'terms', 'fact', 'slug', 'title', 'cats',
         'grade', 'quarter', 'competency', 'source_module', 'source')
+SEP = '\n\n'
 
 
 def main():
@@ -36,8 +38,38 @@ def main():
     bundled = set(re.findall(r'"([^"]+)":\s*require', open(IMAGEMAP).read()))
     print(f'  bundled slugs in IMAGE_MAP: {len(bundled):,}')
 
+    # The editorial pass is applied HERE rather than as a later step over the finished file,
+    # so that re-running this script cannot silently drop it: emphasis and the poster flag are
+    # not in KEEP and would not survive a rebuild otherwise.
+    ed = json.load(open(ED)) if os.path.exists(ED) else {}
+    print(f'  editorial records: {len(ed):,}')
+
     out, stat = [], collections.Counter()
     for c in pool['cards']:
+        e = ed.get(c['id'])
+        if e:
+            con = e.get('concise')
+            # A rewrite must not change a card's SHAPE: a two-part card that came back as one
+            # block would silently fuse its question into its answer.
+            if con and con.get('tl') and con.get('en') and (SEP in c['fact']['tl']) == (SEP in con['tl']):
+                for l in ('tl', 'en', 'bis'):
+                    if con.get(l):
+                        c['fact'][l] = con[l]
+                stat['tightened'] += 1
+            # Emphasis spans are exact substrings chosen against the ORIGINAL wording, so a
+            # rewritten card can leave one stale. Re-check against the text that ships; a span
+            # that no longer appears is dropped rather than fuzzy-matched onto the wrong run.
+            emph = {}
+            for l in ('tl', 'en', 'bis'):
+                keep = [x for x in ((e.get('emphasis') or {}).get(l) or []) if x and x in (c['fact'].get(l) or '')]
+                if keep:
+                    emph[l] = keep
+            if emph:
+                c['emphasis'] = emph
+                stat['emphasis'] += 1
+            if e.get('poster'):
+                c['poster'] = True
+                stat['poster'] += 1
         slug = c.get('slug') or ''
         img = c.get('image')
         if not slug and isinstance(img, dict) and img.get('ref'):
@@ -51,6 +83,9 @@ def main():
         if slug and slug not in bundled and not CARD_ID.match(slug):
             slug = ''
         card = {k: c[k] for k in KEEP if k in c}
+        for extra in ('emphasis', 'poster'):
+            if extra in c:
+                card[extra] = c[extra]
         card['slug'] = slug
         if not card.get('terms'):
             card['terms'] = []
@@ -68,6 +103,7 @@ def main():
     print(f'  typographic (no art) : {stat["typographic"]:,}')
     print(f'  art exists, unbundled: {stat["awaiting bundling"]:,}')
     print(f'  taxonomy leaves      : {len(pool.get("taxonomy") or []):,}')
+    print(f'  tightened / emphasis / poster: {stat["tightened"]:,} / {stat["emphasis"]:,} / {stat["poster"]:,}')
     missing = [k for k in ('id', 'factId', 'domain', 'topic', 'fact', 'slug')
                if any(k not in c for c in out)]
     print(f'  contract check: {"MISSING " + str(missing) if missing else "all required fields present"}')

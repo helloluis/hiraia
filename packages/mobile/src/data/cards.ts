@@ -40,6 +40,19 @@ export interface CardFact {
   title?: { tl: string; en: string; bis: string };
   /** Taxonomy leaf ids (rag/pipeline/card-taxonomy.json) — powers "other <category>". */
   cats?: string[];
+  /**
+   * The one or two words this card is ABOUT, as EXACT substrings of `fact` in each language.
+   * Exactness is the contract: the renderer locates the span by string search, so anything
+   * that is not present verbatim is simply not emphasised. rag/pipeline/wire-app-pool.py
+   * re-checks every span against the text that ships and drops the stale ones.
+   */
+  emphasis?: { tl?: string[]; en?: string[]; bis?: string[] };
+  /**
+   * Set when the editorial pass judged this card STRONGER as typography than as a picture —
+   * definitions, named laws, formulas, single striking numbers. Advisory: it says a card
+   * would carry a poster well, not that it lacks art.
+   */
+  poster?: boolean;
 }
 
 export interface CardChoice {

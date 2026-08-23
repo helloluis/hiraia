@@ -23,6 +23,7 @@ MOBILE = os.path.dirname(HERE)
 ROOT = os.path.dirname(os.path.dirname(MOBILE))
 POOL = os.path.join(MOBILE, 'src/generated/cardsPool.generated.json')
 CARDPAGE = os.path.join(MOBILE, 'src/components/cards/CardPage.tsx')
+POSTER = os.path.join(MOBILE, 'src/components/cards/posterLayout.ts')
 FONTS = os.path.join(MOBILE, 'assets/fonts')
 CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 
@@ -32,15 +33,38 @@ PLATE_W, PLATE_H = 291.0, 468.0     # the type plate's inner box at that card si
 
 
 def constants():
-    """FILL / GLYPH / LINE_RATIO / MAX_SIZE / MIN_SIZE, read from the component."""
-    src = open(CARDPAGE).read()
+    """Every tunable, read from the source that ships so the sheet cannot drift from it."""
     out = {}
-    for k in ('FILL', 'GLYPH', 'LINE_RATIO', 'MAX_SIZE', 'MIN_SIZE'):
-        m = re.search(rf'const {k} = ([\d.]+);', src)
-        if not m:
-            sys.exit(f'could not find `const {k}` in CardPage.tsx')
-        out[k] = float(m.group(1))
+    for path, keys in ((CARDPAGE, ('FILL', 'GLYPH', 'LINE_RATIO', 'MAX_SIZE', 'MIN_SIZE')),
+                       (POSTER, ('NUMERAL_MAX_CHARS', 'NUMERAL_MAX_WORDS', 'LEAD_MAX_CHARS',
+                                 'LEAD_MAX_POSITION'))):
+        src = open(path).read()
+        for k in keys:
+            m = re.search(rf'const {k} = ([\d.]+);', src)
+            if not m:
+                sys.exit(f'could not find `const {k}` in {os.path.basename(path)}')
+            out[k] = float(m.group(1))
     return out
+
+
+def poster_for(text, spans, C):
+    """Mirror of posterFor() in posterLayout.ts."""
+    term = (spans or [None])[0]
+    if not term:
+        return ('plain', '', '', text)
+    i = text.find(term)
+    if i < 0:
+        return ('plain', '', '', text)
+    before, after = text[:i], text[i + len(term):]
+    numeral = (re.search(r'\d', term) and len(term) <= C['NUMERAL_MAX_CHARS']
+               and len(term.split()) <= C['NUMERAL_MAX_WORDS'])
+    lead = len(term) <= C['LEAD_MAX_CHARS'] and i / max(len(text), 1) < C['LEAD_MAX_POSITION']
+    if not numeral and not lead:
+        return ('inline', before, term, after)
+    tail = after.strip()
+    if 0 < len(tail) <= 2 and not re.search(r'\w', tail):
+        term, after = term + tail, ''
+    return ('numeral' if numeral else 'lead', before, term, after)
 
 
 def main():
@@ -51,8 +75,23 @@ def main():
     a = ap.parse_args()
     C = constants()
 
-    def fit(n):
-        raw = math.sqrt(C['FILL'] * PLATE_H * PLATE_W / (max(n, 1) * C['GLYPH'] * C['LINE_RATIO']))
+    def allowance(kind, before, term, after, is_qa):
+        """Mirror of layoutAllowance() — the stacked blocks cost height the flow model misses."""
+        per = PLATE_W / (C['GLYPH'] * C['MAX_SIZE'])
+        lines = 0.0
+        if kind in ('lead', 'numeral'):
+            scale = 1.9 if kind == 'numeral' else 1.5
+            lines += (scale - 1) * max(1, math.ceil(len(term) / max(per, 1)))
+            if before.strip():
+                lines += 0.5
+            if after.strip():
+                lines += 0.5
+        if is_qa:
+            lines += 1.2
+        return lines * per
+
+    def fit(n, extra=0.0):
+        raw = math.sqrt(C['FILL'] * PLATE_H * PLATE_W / (max(n + extra, 1) * C['GLYPH'] * C['LINE_RATIO']))
         return round(min(C['MAX_SIZE'], max(C['MIN_SIZE'], raw)), 1)
 
     cards = [c for c in json.load(open(POOL))['cards'] if not c.get('slug')]
@@ -83,15 +122,33 @@ def main():
     def card_html(label, c):
         t = txt(c)
         title = (c.get('title') or {}).get(a.lang) or c.get('topic') or ''
-        fs = fit(len(t))
+        is_qa = '\n\n' in t
+        seg = t.split('\n\n', 1)[1] if is_qa else t
+        k0, b0, term0, a0 = poster_for(seg, (c.get('emphasis') or {}).get(a.lang), C)
+        fs = fit(len(t), allowance(k0, b0, term0, a0, is_qa))
         lh = round(fs * C['LINE_RATIO'], 1)
+        def block(seg):
+            kind, before, term, after = poster_for(seg, (c.get('emphasis') or {}).get(a.lang), C)
+            if kind == 'plain':
+                return f'<div class="fact" style="font-size:{fs}px;line-height:{lh}px">{esc(seg)}</div>'
+            if kind == 'inline':
+                return (f'<div class="fact" style="font-size:{fs}px;line-height:{lh}px">'
+                        f'{esc(before)}<span class="em">{esc(term)}</span>{esc(after)}</div>')
+            big = round(fs * (1.9 if kind == 'numeral' else 1.5), 1)
+            pre = (f'<div class="fact preLead" style="font-size:{fs}px;line-height:{lh}px">'
+                   f'{esc(before.strip())}</div>') if before.strip() else ''
+            post = (f'<div class="fact" style="font-size:{fs}px;line-height:{lh}px">'
+                    f'{esc(after.lstrip())}</div>') if after.strip() else ''
+            return (pre + f'<div class="{kind}" style="font-size:{big}px;'
+                    f'line-height:{round(big*1.08,1)}px">{esc(term)}</div>' + post)
+
         if '\n\n' in t:
             ask, body = t.split('\n\n', 1)
             core = (f'<div class="ask" style="font-size:{round(fs*1.06,1)}px;'
                     f'line-height:{round(fs*1.38,1)}px">{esc(ask)}</div><div class="rule"></div>'
-                    f'<div class="fact" style="font-size:{fs}px;line-height:{lh}px">{esc(body)}</div>')
+                    + block(body))
         else:
-            core = f'<div class="fact" style="font-size:{fs}px;line-height:{lh}px">{esc(t)}</div>'
+            core = block(t)
         cpl = int(PLATE_W / (C['GLYPH'] * fs))
         return (f'<figure><figcaption>{esc(label)} &middot; {len(t)}ch &middot; {fs}px &middot; '
                 f'~{cpl} ch/line</figcaption><div class="board"><div class="card">'
@@ -122,6 +179,10 @@ figcaption{{color:#8C9E6E;font-size:11px;letter-spacing:1.2px;text-transform:upp
 .typeinner{{flex:1;background:#F4EAD5;border-radius:2px;display:flex;flex-direction:column;justify-content:center;padding:12px 8px}}
 .ask{{font-family:'ZillaSlabBold';color:#1C3B2E;letter-spacing:-.1px}}
 .fact{{font-family:'ZillaSlab';color:#1C3B2E}}
+.preLead{{opacity:.66}}
+.em{{font-family:'ZillaSlabBold';color:#7A2E22}}
+.lead{{font-family:'ZillaSlabBold';color:#7A2E22;letter-spacing:-.6px;margin:3px 0}}
+.numeral{{font-family:'AlfaSlabOne';color:#7A2E22;letter-spacing:-1px;margin:4px 0}}
 .rule{{height:3px;background:#1C3B2E;border-radius:2px;margin:10px 0;width:52%}}
 .foot{{margin-top:12px}}
 .ticket{{min-height:48px;background:#D8A03A;border:3px solid #1C3B2E;border-radius:11px;display:flex;align-items:center;gap:9px;padding:6px 10px}}
