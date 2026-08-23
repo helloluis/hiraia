@@ -27,6 +27,7 @@ import {
   type LayoutChangeEvent,
   Image,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -324,6 +325,14 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
    * level rather than per instance.
    */
   const [plateBox, setPlateBox] = useState(lastPlateBox);
+  /**
+   * Whether the type actually outran its plate. The fit is tuned so this should not happen —
+   * it is charged for the display line, the block rounding and the Q&A rule — but it is an
+   * ESTIMATE built on a mean glyph width, and RN's own text measurement is what decides. A
+   * card that overflows anyway would otherwise have its last line clipped by the plate's
+   * `overflow: hidden`, and unreadable is worse than scrollable.
+   */
+  const [overflowing, setOverflowing] = useState(false);
   const emphasis =
     fact.emphasis?.[language === 'english' ? 'en' : language === 'cebuano' ? 'bis' : 'tl'];
   // The body's layout is settled BEFORE the type is sized: a lifted display line changes how
@@ -467,6 +476,16 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
     }
   };
 
+  /**
+   * A few px of slack before declaring an overflow: content and frame are measured on
+   * different passes and rounding alone can put them a fraction apart, which would flip a
+   * scroll bar onto a card that fits.
+   */
+  const onContentSize = (_w: number, h: number) => {
+    const over = h > plateBox.h + 2;
+    if (over !== overflowing) setOverflowing(over);
+  };
+
   return (
     <Pressable style={cardFrame.content} onPress={skip} disabled={done}>
       {/* keyline + punched binder holes — the shared die-cut, graphite on a fork so the
@@ -508,9 +527,25 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
           missing its picture. */}
       {art == null ? (
         <View style={styles.typePlate}>
-          <View style={styles.typeInner} onLayout={onPlateLayout}>
+          {/*
+            Scrollable ONLY when the type overran the plate. The feed's pan gesture reads
+            vertical drags as a page turn, so a permanently scrollable view here would eat
+            the swipe (QuestionPage avoids a ScrollView outright for that reason). Gating it
+            on the measurement keeps the gesture intact on every card that fits — which,
+            given the fit, is essentially all of them — and surrenders the vertical drag only
+            on a card that would otherwise be clipped. Even then the reader is not stuck: the
+            feed also advances on a left or right swipe, and those are unaffected.
+          */}
+          <ScrollView
+            style={styles.typeInner}
+            contentContainerStyle={styles.typeInnerContent}
+            scrollEnabled={overflowing}
+            showsVerticalScrollIndicator={overflowing}
+            onLayout={onPlateLayout}
+            onContentSizeChange={onContentSize}
+          >
             {factBlock}
-          </View>
+          </ScrollView>
         </View>
       ) : (
         <View style={styles.body}>{factBlock}</View>
@@ -636,6 +671,11 @@ const styles = StyleSheet.create({
     // and white here would read as an empty photo window with words in it.
     backgroundColor: card.stock,
     borderRadius: 2,
+  },
+  typeInnerContent: {
+    // flexGrow rather than flex so the block still centres when it fits, and simply grows
+    // past the frame when it does not.
+    flexGrow: 1,
     justifyContent: 'center',
     paddingVertical: 12,
     paddingHorizontal: 8, // kept tight — every px here comes straight off the line length
