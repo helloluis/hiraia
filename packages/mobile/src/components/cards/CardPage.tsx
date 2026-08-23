@@ -40,7 +40,13 @@ import { runOnJS } from 'react-native-reanimated';
 import type { Language } from '@hiraia/shared';
 
 import { uiStrings } from '../../config/strings';
-import { cardText, cardTitle, type CardChoice, type CardFact } from '../../data/cards';
+import {
+  cardEmphasis,
+  cardText,
+  cardTitle,
+  type CardChoice,
+  type CardFact,
+} from '../../data/cards';
 import { resolveImage } from '../../generated/imageMap';
 import {
   posterFor,
@@ -341,8 +347,7 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
    * `overflow: hidden`, and unreadable is worse than scrollable.
    */
   const [overflowing, setOverflowing] = useState(false);
-  const emphasis =
-    fact.emphasis?.[language === 'english' ? 'en' : language === 'cebuano' ? 'bis' : 'tl'];
+  const emphasis = cardEmphasis(fact, language);
   // The body's layout is settled BEFORE the type is sized: a lifted display line changes how
   // much room the rest of the sentence has.
   const bodySpec =

@@ -16,8 +16,16 @@
  */
 import type { Language } from '@hiraia/shared';
 
-import cardsPool from '../generated/cardsPool.generated.json';
-import questionsJson from './cards-questions.json';
+import cardsIndex from '../generated/cardsIndex.generated.json';
+
+import {
+  loadQuestions,
+  loadText,
+  questionOf,
+  searchTokenRows,
+  textOf,
+  tokenJaccard,
+} from './cardDb';
 
 export interface CardFact {
   id: string; // factoid id (ffct-NNNNN)
@@ -25,7 +33,12 @@ export interface CardFact {
   domain: string;
   topic: string;
   terms: string[];
-  fact: { tl: string; en: string; bis: string }; // feed-voice text (Q&A question baked in)
+  /**
+   * NOT on the card any more — see cardText()/cardTitle()/cardEmphasis(), which read it from
+   * the database. Sequencing never needed a card's prose (it works off terms, slug, cats,
+   * topic and domain), and carrying 19 MB of it through the JS bundle cost ~100 MB of
+   * Hermes bytecode and 742 ms of module init.
+   */
   slug: string; // bundled illustration
   /**
    * SHORT display title for the index band ("Eels & Eggs"), pregenerated per card.
@@ -37,7 +50,6 @@ export interface CardFact {
    * Trilingual, mirroring `fact`, so the band follows the reader's language rather than
    * pinning English above Tagalog body copy.
    */
-  title?: { tl: string; en: string; bis: string };
   /** Taxonomy leaf ids (rag/pipeline/card-taxonomy.json) — powers "other <category>". */
   cats?: string[];
   /**
@@ -46,13 +58,11 @@ export interface CardFact {
    * that is not present verbatim is simply not emphasised. rag/pipeline/wire-app-pool.py
    * re-checks every span against the text that ships and drops the stale ones.
    */
-  emphasis?: { tl?: string[]; en?: string[]; bis?: string[] };
   /**
    * Set when the editorial pass judged this card STRONGER as typography than as a picture —
    * definitions, named laws, formulas, single striking numbers. Advisory: it says a card
    * would carry a poster well, not that it lacks art.
    */
-  poster?: boolean;
 }
 
 export interface CardChoice {
@@ -75,15 +85,23 @@ export interface CardQuestion {
   e: Tri;
   d: number;
 }
-const QUESTIONS = new Map<string, CardQuestion>(
-  (questionsJson as { questions: CardQuestion[] }).questions.map((q) => [q.f, q])
+/**
+ * WHICH facts have an MCQ — that is all the interject needs to decide, and it is ~200 KB of
+ * ids against 15.6 MB of questions. The question itself is fetched when one is actually
+ * asked (see questionForFact).
+ */
+const HAS_QUESTION = new Set<string>(
+  (cardsIndex as { questionFactIds?: string[] }).questionFactIds ?? []
 );
 
 // ---- pool: image-backed facts only ----
 // The card pool is the bundled-illustration subset of the 36k curriculum factoid bank
 // (~17k cards across all four MATATAG elementary domains). Text is the feed-voice factoid
 // (Q&A question baked in); `terms` come from the underlying source fact for retrieval.
-const POOL: CardFact[] = (cardsPool as { cards: CardFact[] }).cards;
+const POOL: CardFact[] = (cardsIndex as { cards: CardFact[] }).cards;
+
+/** Card id -> its ordinal in the pool, which is how the binary token index is addressed. */
+const ORD = new Map<string, number>(POOL.map((f, i) => [f.id, i]));
 
 const BY_ID = new Map(POOL.map((f) => [f.id, f]));
 const BY_DOMAIN = new Map<string, CardFact[]>();
@@ -111,7 +129,7 @@ interface TaxonomyLeaf {
   label_tl: string;
   label_bis: string;
 }
-const TAXONOMY: TaxonomyLeaf[] = (cardsPool as { taxonomy?: TaxonomyLeaf[] }).taxonomy ?? [];
+const TAXONOMY: TaxonomyLeaf[] = (cardsIndex as { taxonomy?: TaxonomyLeaf[] }).taxonomy ?? [];
 const LEAF = new Map(TAXONOMY.map((l) => [l.id, l]));
 
 /** leaf id -> the cards in it (only leaves that actually hold cards appear). */
@@ -177,13 +195,78 @@ for (const f of POOL) {
 // frequency so distinctive words ("bulkan", "photosynthesis") dominate over common ones.
 // Zero-model, local, instant — the same doctrine as the rest of the feed.
 const SEARCH_STOP = new Set([
-  'the', 'a', 'an', 'of', 'and', 'or', 'in', 'on', 'to', 'is', 'are', 'be', 'it', 'its',
-  'that', 'this', 'what', 'why', 'how', 'when', 'where', 'who', 'does', 'do', 'can', 'for',
-  'with', 'as', 'at', 'by', 'about', 'tell', 'me', 'my',
-  'ang', 'ng', 'sa', 'mga', 'ay', 'na', 'ba', 'ito', 'iyan', 'yan', 'ako', 'ko', 'mo',
-  'niya', 'ni', 'kung', 'kapag', 'para', 'may', 'ano', 'bakit', 'paano', 'saan', 'sino',
-  'kailan', 'gusto', 'malaman', 'tungkol',
-  'unsa', 'nga', 'og', 'ug', 'kang', 'kini', 'kana', 'ngano', 'giunsa', 'hibaw',
+  'the',
+  'a',
+  'an',
+  'of',
+  'and',
+  'or',
+  'in',
+  'on',
+  'to',
+  'is',
+  'are',
+  'be',
+  'it',
+  'its',
+  'that',
+  'this',
+  'what',
+  'why',
+  'how',
+  'when',
+  'where',
+  'who',
+  'does',
+  'do',
+  'can',
+  'for',
+  'with',
+  'as',
+  'at',
+  'by',
+  'about',
+  'tell',
+  'me',
+  'my',
+  'ang',
+  'ng',
+  'sa',
+  'mga',
+  'ay',
+  'na',
+  'ba',
+  'ito',
+  'iyan',
+  'yan',
+  'ako',
+  'ko',
+  'mo',
+  'niya',
+  'ni',
+  'kung',
+  'kapag',
+  'para',
+  'may',
+  'ano',
+  'bakit',
+  'paano',
+  'saan',
+  'sino',
+  'kailan',
+  'gusto',
+  'malaman',
+  'tungkol',
+  'unsa',
+  'nga',
+  'og',
+  'ug',
+  'kang',
+  'kini',
+  'kana',
+  'ngano',
+  'giunsa',
+  'hibaw',
 ]);
 
 function searchTokens(s: string): string[] {
@@ -192,19 +275,12 @@ function searchTokens(s: string): string[] {
     .filter((t) => t.length > 2 && !SEARCH_STOP.has(t));
 }
 
-const FACT_TOKENS = new Map<string, Set<string>>();
-const TOKEN_DF = new Map<string, number>();
-for (const f of POOL) {
-  const toks = new Set<string>([
-    ...searchTokens(f.topic),
-    ...f.terms.flatMap((t) => searchTokens(t)),
-    ...searchTokens(f.fact.en ?? ''),
-    ...searchTokens(f.fact.tl ?? ''),
-    ...searchTokens(f.fact.bis ?? ''),
-  ]);
-  FACT_TOKENS.set(f.id, toks);
-  for (const t of toks) TOKEN_DF.set(t, (TOKEN_DF.get(t) ?? 0) + 1);
-}
+/**
+ * The search index used to be built HERE, tokenising all three languages of all 29,737 cards
+ * at module init — 427 ms on a desktop, several times that on the phone, and the one thing
+ * that genuinely required the whole inventory to be resident. It is precomputed into the
+ * database now (46,177 tokens), and searchCards looks up only the query's own tokens.
+ */
 
 export interface SearchResult {
   /** Best card at/above the confidence floor, else null (→ caller abstains or generates). */
@@ -224,20 +300,37 @@ export const SEARCH_FLOOR = 0.34;
  * query's tokens with the card's tokens, return the best (with its normalized score) plus
  * the top card as an abstention suggestion. Excludes the current card.
  */
-export function searchCards(query: string, currentId: string | null): SearchResult {
+export async function searchCards(query: string, currentId: string | null): Promise<SearchResult> {
   const empty: SearchResult = { best: null, score: 0, suggestion: null };
-  const qtoks = [...new Set(searchTokens(query))].filter((t) => TOKEN_DF.has(t));
+  const qtoks = [...new Set(searchTokens(query))];
   if (!qtoks.length) return empty;
-  const idf = (t: string) => 1 / (TOKEN_DF.get(t) ?? POOL.length);
-  const mass = qtoks.reduce((s, t) => s + idf(t), 0);
+
+  // Only the query's own tokens are fetched, and only the cards carrying one of them are
+  // scored. The old version walked the whole pool because its index ran the wrong way.
+  const rows = await searchTokenRows(qtoks);
+  if (!rows.length) return empty;
+
+  const idf = (df: number) => 1 / (df || POOL.length);
+  const mass = rows.reduce((s, r) => s + idf(r.df), 0);
   if (mass <= 0) return empty;
+
+  // ordinal -> accumulated idf mass. Same score as before: the fraction of the query's mass
+  // a card covers. A card carrying none of the tokens scored 0 and could never win, which is
+  // why skipping it entirely changes nothing (verified: identical picks on every probe).
+  const acc = new Map<number, number>();
+  for (const r of rows) {
+    const w = idf(r.df);
+    for (const part of r.ords.split(',')) {
+      const o = +part;
+      acc.set(o, (acc.get(o) ?? 0) + w);
+    }
+  }
+
   let best: CardFact | null = null;
   let bestScore = 0;
-  for (const f of POOL) {
-    if (f.id === currentId) continue;
-    const toks = FACT_TOKENS.get(f.id)!;
-    let s = 0;
-    for (const t of qtoks) if (toks.has(t)) s += idf(t);
+  for (const [ord, s] of acc) {
+    const f = POOL[ord];
+    if (!f || f.id === currentId) continue;
     const frac = s / mass;
     if (frac > bestScore) {
       bestScore = frac;
@@ -247,32 +340,54 @@ export function searchCards(query: string, currentId: string | null): SearchResu
   return { best: bestScore >= SEARCH_FLOOR ? best : null, score: bestScore, suggestion: best };
 }
 
-const FALLBACK: Record<Language, Array<keyof CardFact['fact']>> = {
+const FALLBACK: Record<Language, Array<'tl' | 'en' | 'bis'>> = {
   tagalog: ['tl', 'en', 'bis'],
   english: ['en', 'tl', 'bis'],
   cebuano: ['bis', 'tl', 'en'],
 };
 
+/**
+ * The card's text in the reader's language.
+ *
+ * Read from the database's warm map rather than the card, because the prose is 19 MB and
+ * carrying it through the JS bundle cost ~100 MB of Hermes bytecode. '' means the card has
+ * not been warmed yet — the store warms a page and its successors before either is shown, so
+ * in practice this is only reachable for one frame on a cold start.
+ */
 export function cardText(fact: CardFact, language: Language): string {
+  const row = textOf(fact.id);
+  if (!row) return '';
   for (const k of FALLBACK[language] ?? FALLBACK.tagalog) {
-    const v = fact.fact[k];
+    const v = row.fact[k];
     if (v && v.trim()) return v.trim();
   }
   return '';
 }
 
 /**
- * The card's band title in the reader's language, or '' when the card has none yet (the
- * generated titles are assembled into the pool separately). Callers fall back to `topic`.
- * Same fallback chain as cardText, so a missing Cebuano title shows Tagalog before English.
+ * The card's band title in the reader's language, or '' when it has none. Callers fall back
+ * to `topic`. Same fallback chain as cardText, so a missing Cebuano title shows Tagalog
+ * before English.
  */
 export function cardTitle(fact: CardFact, language: Language): string {
-  if (!fact.title) return '';
+  const row = textOf(fact.id);
+  if (!row?.title) return '';
   for (const k of FALLBACK[language] ?? FALLBACK.tagalog) {
-    const v = fact.title[k];
+    const v = row.title[k];
     if (v && v.trim()) return v.trim();
   }
   return '';
+}
+
+/** The emphasis spans for this card in the reader's language, if it has been warmed. */
+export function cardEmphasis(fact: CardFact, language: Language): string[] | undefined {
+  const k = language === 'english' ? 'en' : language === 'cebuano' ? 'bis' : 'tl';
+  return textOf(fact.id)?.emphasis?.[k];
+}
+
+/** Whether this card reads better as a poster than with a picture (editorial judgement). */
+export function cardIsPoster(fact: CardFact): boolean {
+  return textOf(fact.id)?.poster === true;
 }
 
 export function poolSize(): number {
@@ -284,9 +399,15 @@ export function getCard(id: string): CardFact | undefined {
 }
 
 export function questionForFact(id: string): CardQuestion | undefined {
-  // Cards are keyed by factoid id; the MCQ bank is keyed by the underlying source-fact id.
   const factId = BY_ID.get(id)?.factId ?? id;
-  return QUESTIONS.get(factId);
+  if (!HAS_QUESTION.has(factId)) return undefined;
+  return (questionOf(factId) as CardQuestion | null) ?? undefined;
+}
+
+/** Whether a card HAS an MCQ — resident, so the interject can decide without a query. */
+export function hasQuestionForFact(id: string): boolean {
+  const factId = BY_ID.get(id)?.factId ?? id;
+  return HAS_QUESTION.has(factId);
 }
 
 function pick<T>(arr: T[]): T | undefined {
@@ -321,8 +442,30 @@ export function jumpCard(currentId: string | null, seen: ReadonlySet<string>): C
  * significant words.
  */
 const TOPIC_STOP = new Set([
-  'what', 'why', 'how', 'is', 'are', 'the', 'a', 'an', 'of', 'and', 'or', 'in', 'on',
-  'to', 'does', 'do', 'its', 'their', 'has', 'have', 'ang', 'ng', 'sa', 'mga',
+  'what',
+  'why',
+  'how',
+  'is',
+  'are',
+  'the',
+  'a',
+  'an',
+  'of',
+  'and',
+  'or',
+  'in',
+  'on',
+  'to',
+  'does',
+  'do',
+  'its',
+  'their',
+  'has',
+  'have',
+  'ang',
+  'ng',
+  'sa',
+  'mga',
 ]);
 
 // Generic verbs/adjectives that slip through as terms but read as non-topics for a
@@ -380,13 +523,37 @@ function isTopical(term: string): boolean {
 }
 
 const BAD_LABELS = new Set([
-  'tumutubo', 'lumalaki', 'ginagawa', 'gumagawa', 'nagmumula', 'nabubuo', 'ginagamit',
-  'matatagpuan', 'makikita', 'tawag', 'uri', 'iba', 'bawat', 'grows', 'made', 'used',
-  'found', 'heart puso',
+  'tumutubo',
+  'lumalaki',
+  'ginagawa',
+  'gumagawa',
+  'nagmumula',
+  'nabubuo',
+  'ginagamit',
+  'matatagpuan',
+  'makikita',
+  'tawag',
+  'uri',
+  'iba',
+  'bawat',
+  'grows',
+  'made',
+  'used',
+  'found',
+  'heart puso',
   // inflected generic verbs the term index surfaces (caught by the harness) — they read
   // as actions, not topics, so they make poor choice labels.
-  'humahawak', 'humuhigop', 'sumusuporta', 'kumakain', 'naglalabas', 'naglalaman',
-  'nagpapalipat', 'pumoprotekta', 'tumutulong', 'nagpaparami', 'kumikilos',
+  'humahawak',
+  'humuhigop',
+  'sumusuporta',
+  'kumakain',
+  'naglalabas',
+  'naglalaman',
+  'nagpapalipat',
+  'pumoprotekta',
+  'tumutulong',
+  'nagpaparami',
+  'kumikilos',
 ]);
 
 export function choiceLabel(fact: CardFact, language: Language): string {
@@ -569,12 +736,7 @@ const TEXT_DUP_JACCARD = 0.35;
 
 /** Fraction of the two cards' combined vocabulary (topic + terms + tl/en/bis) they share. */
 function textJaccard(a: CardFact, b: CardFact): number {
-  const A = FACT_TOKENS.get(a.id);
-  const B = FACT_TOKENS.get(b.id);
-  if (!A?.size || !B?.size) return 0;
-  let both = 0;
-  for (const t of A) if (B.has(t)) both += 1;
-  return both / (A.size + B.size - both);
+  return tokenJaccard(ORD.get(a.id) ?? -1, ORD.get(b.id) ?? -1);
 }
 
 export interface NextStepOpts {
@@ -636,7 +798,12 @@ export function nextChoices(
 
   const blockedSlugs = cooldownSlugs(cur, opts.recentIds);
   const topicKey = (f: CardFact) =>
-    f.topic.toLowerCase().split(/\s+/).filter((w) => w.length > 3).sort().join(' ');
+    f.topic
+      .toLowerCase()
+      .split(/\s+/)
+      .filter((w) => w.length > 3)
+      .sort()
+      .join(' ');
   const curTopicKey = topicKey(cur);
 
   const unseen = (f: CardFact) => f.id !== currentId && !seen.has(f.id);
@@ -741,7 +908,8 @@ export function nextChoices(
       pick(otherDomain) ??
       pick(lateralPool.filter((f) => f.id !== lateral!.id)) ??
       pick(POOL.filter((f) => unseen(f) && f.id !== lateral!.id));
-    if (second) out.push({ factId: second.id, label: choiceLabel(second, language), kind: 'lateral' });
+    if (second)
+      out.push({ factId: second.id, label: choiceLabel(second, language), kind: 'lateral' });
   }
 
   // never offer two identical labels — retitle the second from its topic
@@ -750,4 +918,29 @@ export function nextChoices(
     out[1]!.label = f.topic.split(/\s+/).slice(0, 2).join(' ');
   }
   return out;
+}
+
+/**
+ * Warm everything a page needs before it is shown: its own text, the text of the cards it can
+ * turn to, and the MCQs for the recent trail the interject draws from.
+ *
+ * The feed is linear — from a card you can only reach its own choices — so warming one page
+ * ahead is enough for the reader never to meet a cold one.
+ */
+export async function warmPage(
+  ids: readonly (string | null | undefined)[],
+  language: Language,
+  recentFactIds: readonly string[] = []
+): Promise<void> {
+  const cards = ids.filter((x): x is string => !!x);
+  const next: string[] = [];
+  for (const id of cards) {
+    if (!BY_ID.has(id)) continue;
+    // The successors this page can actually offer. Cheap: it reads the resident index only.
+    for (const c of nextChoices(id, new Set([id]), language)) next.push(c.factId);
+  }
+  await Promise.all([
+    loadText([...cards, ...next]),
+    recentFactIds.length ? loadQuestions(recentFactIds) : Promise.resolve(),
+  ]);
 }

@@ -91,12 +91,40 @@ function loadCards() {
       `type Language = 'tagalog'|'english'|'cebuano';`
     )
     .replace(
-      "import cardsPool from '../generated/cardsPool.generated.json';",
-      `import cardsPool from '${join(MOBILE, 'src/generated/cardsPool.generated.json')}' with { type: 'json' };`
+      "import cardsIndex from '../generated/cardsIndex.generated.json';",
+      `import cardsIndex from '${join(MOBILE, 'src/generated/cardsIndex.generated.json')}' with { type: 'json' };`
     )
+    // cardDb is the React-Native data layer (expo-asset, expo-sqlite); none of it exists in
+    // Node. The harness walks the FEED, which reads only the resident index, so the pieces it
+    // stubs out are the ones a walk never touches: text, MCQs, and the search postings. The
+    // token index IS needed — textJaccard suppresses near-duplicate neighbours — so it is
+    // read straight off the same binary the app ships.
     .replace(
-      "import questionsJson from './cards-questions.json';",
-      `import questionsJson from '${join(MOBILE, 'src/data/cards-questions.json')}' with { type: 'json' };`
+      /import \{[^}]*\} from '\.\/cardDb';/,
+      `
+      const __tokBuf = (await import('node:fs')).readFileSync('${join(MOBILE, 'assets/data/tokens.bin')}');
+      const __n = __tokBuf.readInt32LE(0);
+      const __all = new Int32Array(__tokBuf.buffer, __tokBuf.byteOffset + 4, (__tokBuf.byteLength - 4) >> 2);
+      const __off = __all.subarray(0, __n + 1);
+      const __tok = __all.subarray(__n + 1);
+      function tokenJaccard(a: number, b: number): number {
+        if (a < 0 || b < 0) return 0;
+        const as = __off[a]!, ae = __off[a + 1]!, bs = __off[b]!, be = __off[b + 1]!;
+        const la = ae - as, lb = be - bs;
+        if (!la || !lb) return 0;
+        let i = as, j = bs, both = 0;
+        while (i < ae && j < be) {
+          const x = __tok[i]!, y = __tok[j]!;
+          if (x === y) { both++; i++; j++; } else if (x < y) i++; else j++;
+        }
+        return both / (la + lb - both);
+      }
+      const textOf = (_id: string) => undefined;
+      const questionOf = (_f: string) => undefined;
+      const loadText = async () => {};
+      const loadQuestions = async () => {};
+      const searchTokenRows = async () => [];
+      `
     );
   const dir = mkdtempSync(join(tmpdir(), 'cardqa-'));
   const file = join(dir, 'cards-impl.mts');
@@ -104,13 +132,16 @@ function loadCards() {
   return import(file);
 }
 
+const EMPTY_TEXT = { tl: '', en: '', bis: '' };
+/** Text for a card, from the bulk map above. */
+const textOf = (c: { id: string }) => TEXT.get(c.id) ?? EMPTY_TEXT;
+
 interface CardFact {
   id: string;
   factId: string;
   domain: string;
   topic: string;
   terms: string[];
-  fact: { tl: string; en: string; bis: string };
   slug: string;
 }
 interface CardChoice {
@@ -124,10 +155,22 @@ interface CardChoice {
 // generated pool. Reading the JSON directly (rather than exporting the index) keeps this a
 // read-only observer of a file another agent owns.
 const POOL: CardFact[] = (
-  JSON.parse(readFileSync(join(MOBILE, 'src/generated/cardsPool.generated.json'), 'utf8')) as {
+  JSON.parse(readFileSync(join(MOBILE, 'src/generated/cardsIndex.generated.json'), 'utf8')) as {
     cards: CardFact[];
   }
 ).cards;
+/**
+ * The card TEXT, read straight from the source the database is built from. The app fetches
+ * this per card at runtime; the harness needs it in bulk to measure wording similarity, and
+ * reading the JSON keeps it a read-only observer of a file it does not own.
+ */
+const TEXT = new Map<string, { tl: string; en: string; bis: string }>(
+  (
+    JSON.parse(readFileSync(join(MOBILE, 'src/generated/cardsPool.generated.json'), 'utf8')) as {
+      cards: Array<{ id: string; fact: { tl: string; en: string; bis: string } }>;
+    }
+  ).cards.map((c) => [c.id, c.fact])
+);
 const DF = new Map<string, number>();
 for (const f of POOL) for (const t of new Set(f.terms)) DF.set(t, (DF.get(t) ?? 0) + 1);
 const df = (t: string) => DF.get(t) ?? 1;
@@ -300,7 +343,7 @@ function makePair(
   meta: { walk: number; index: number; policy: string; step: 'deep' | 'lateral'; fork: boolean; forkReason: 'cadence' | 'dead-end' | null }
 ): Pair {
   const shared = [...new Set(a.terms)].filter((t) => b.terms.includes(t));
-  const j = jaccard(contentTokens(a.fact.tl ?? ''), contentTokens(b.fact.tl ?? ''));
+  const j = jaccard(contentTokens(textOf(a) .tl), contentTokens(textOf(b).tl));
   const ov = idfOverlap(a, b);
   const self = idfOverlap(a, a) || 1;
   const rarest = shared.length ? Math.min(...shared.map(df)) : null;
@@ -333,10 +376,10 @@ function makePair(
     // the re-matched originals made typographic a common, legitimate state (11,712 cards),
     // counting '' === '' as a repeat inflated this metric and its own chance floor together.
     sameSlug: a.slug !== '' && a.slug === b.slug,
-    fromTl: a.fact.tl ?? '',
-    toTl: b.fact.tl ?? '',
-    fromEn: a.fact.en ?? '',
-    toEn: b.fact.en ?? '',
+    fromTl: textOf(a).tl,
+    toTl: textOf(b).tl,
+    fromEn: textOf(a).en,
+    toEn: textOf(b).en,
     jaccard: round(j, 3),
     sharedTerms: shared,
     rarestSharedDf: rarest,

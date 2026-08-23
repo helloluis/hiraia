@@ -14,6 +14,10 @@ config.resolver.assetExts.push('gguf');
 // The bundled int8 semantic-vectors blob — Metro packages it so expo-asset can
 // read its bytes into an Int8Array at runtime (for the SemanticIndex).
 config.resolver.assetExts.push('bin');
+// The prebuilt card database. Metro packages it so expo-asset can resolve a path we can copy
+// somewhere SQLite is able to open — the APK entry is a compressed zip member, not a file, so
+// it has to be materialised once before it can be queried.
+config.resolver.assetExts.push('db');
 
 // 1. Watch all files in the workspace
 config.watchFolders = [workspaceRoot];

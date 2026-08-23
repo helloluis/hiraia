@@ -10,3 +10,10 @@ declare module '*.bin' {
   const asset: number;
   export default asset;
 }
+
+// The prebuilt card-text database, same asset treatment. Importing it yields the module id
+// expo-asset resolves to a file we copy out of the APK on first run.
+declare module '*.db' {
+  const asset: number;
+  export default asset;
+}

@@ -18,10 +18,12 @@ import {
   questionForFact,
   searchCards,
   startCard,
+  warmPage,
   type CardChoice,
   type CardFact,
   type CardQuestion,
 } from '../data/cards';
+import { loadTokenIndex } from '../data/cardDb';
 import {
   recentTopics,
   sanitizeReward,
@@ -160,6 +162,15 @@ export const useCardStore = create<CardState>()((set, get) => ({
     const lang = useEngineStore.getState().language ?? 'tagalog';
     const first = startCard(seen);
     seen.add(first.id);
+    // The card's prose lives in the database now, so it has to be here before the page
+    // paints — this is the ONE await the feed has, and it covers the first card and the
+    // pages it can turn to. The token index rides along for the duplicate check.
+    // Best-effort: a database that will not open must NOT stop the feed from rendering. The
+    // first build of this let the rejection escape and the app never left its splash screen.
+    await Promise.all([
+      loadTokenIndex().catch(() => undefined),
+      warmPage([first.id], lang).catch((e) => console.warn('[cards] warm failed:', e)),
+    ]);
     set({
       hydrated: true,
       pagesRead,
@@ -183,7 +194,10 @@ export const useCardStore = create<CardState>()((set, get) => ({
     if (s.untilReward <= 1 && recentTopics(s.viewLog).length >= REWARD_MIN_TOPICS) {
       const lang = useEngineStore.getState().language ?? 'tagalog';
       const topics = recentTopics(s.viewLog);
-      const minutes = Math.max(1, Math.round((Date.now() - (s.viewLog[0]?.ts ?? Date.now())) / 60000));
+      const minutes = Math.max(
+        1,
+        Math.round((Date.now() - (s.viewLog[0]?.ts ?? Date.now())) / 60000)
+      );
       // Use the prefetched LLM line if it's ready; else the deterministic template.
       const content = s.rewardPrefetch ?? templateReward(topics, s.pagesRead, minutes, lang);
       set({
@@ -253,7 +267,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
 
     // Retrieval-first: a confident local match navigates straight to that card (instant,
     // zero-model), with a "you asked" banner. The card becomes the new feed anchor.
-    const res = searchCards(q, s.current?.id ?? null);
+    const res = await searchCards(q, s.current?.id ?? null);
     if (res.best) {
       navigateTo(res.best, set, get, q);
       return;
@@ -358,13 +372,29 @@ type Get_ = () => CardState;
  * normal page turn, sets an optional "you asked" banner, and resets the interject counter so
  * a question/reward doesn't fire on the very page after a topic jump.
  */
+/**
+ * Warm the page that was just committed and the ones it leads to.
+ *
+ * Deliberately NOT awaited: the card being shown was warmed a page ago, so this is preparing
+ * the NEXT turn while the reader is still on this one. A page turn therefore never waits on
+ * the database.
+ */
+function warmAfter(get: Get_) {
+  const s = get();
+  const lang = useEngineStore.getState().language ?? 'tagalog';
+  const recentFactIds = s.recent.map((id) => getCard(id)?.factId).filter((x): x is string => !!x);
+  void warmPage([s.current?.id], lang, recentFactIds);
+}
+
 function navigateTo(fact: CardFact, set: Set_, get: Get_, banner?: string) {
   const s = get();
   const lang = useEngineStore.getState().language ?? 'tagalog';
   const seen = new Set(s.seen);
   seen.add(fact.id);
   const recent = [...s.recent, fact.id].slice(-RECENT_WINDOW);
-  const viewLog = [...s.viewLog, { factId: fact.id, topic: fact.topic, ts: Date.now() }].slice(-VIEWLOG_CAP);
+  const viewLog = [...s.viewLog, { factId: fact.id, topic: fact.topic, ts: Date.now() }].slice(
+    -VIEWLOG_CAP
+  );
   const pagesRead = s.pagesRead + 1;
   set({
     current: fact,
@@ -385,6 +415,7 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, banner?: string) {
     pageKey: s.pageKey + 1,
   });
   persist({ pagesRead, correctCount: s.correctCount, seen });
+  warmAfter(get);
 }
 
 /**
@@ -395,7 +426,10 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, banner?: string) {
 function sanitizeAnswer(raw: string): string | null {
   let t = (raw ?? '').trim();
   if (!t) return null;
-  t = t.replace(/^(sagot|answer|tubag)\s*:\s*/i, '').replace(/\s+/g, ' ').trim();
+  t = t
+    .replace(/^(sagot|answer|tubag)\s*:\s*/i, '')
+    .replace(/\s+/g, ' ')
+    .trim();
   if (t.length < 8) return null;
   if (t.length > 320) t = t.slice(0, 317).trimEnd() + '…';
   return t;
@@ -411,7 +445,10 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
   const seen = new Set(s.seen);
   seen.add(nextFact.id);
   const recent = [...s.recent, nextFact.id].slice(-RECENT_WINDOW);
-  const viewLog = [...s.viewLog, { factId: nextFact.id, topic: nextFact.topic, ts: Date.now() }].slice(-VIEWLOG_CAP);
+  const viewLog = [
+    ...s.viewLog,
+    { factId: nextFact.id, topic: nextFact.topic, ts: Date.now() },
+  ].slice(-VIEWLOG_CAP);
   const pagesRead = s.pagesRead + 1;
   const untilReward = s.untilReward - 1;
 
@@ -438,6 +475,7 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
   // Prefetch the LLM reward line a few cards ahead so it's fully rendered before it's due
   // (hides the on-device generation latency behind dwell time).
   if (untilReward <= REWARD_PREFETCH_AT) void prefetchReward(get, set);
+  warmAfter(get);
 }
 
 /**
@@ -461,7 +499,15 @@ async function prefetchReward(get: Get_, set: Set_) {
     const clean = sanitizeReward(raw);
     // Only accept if still un-shown and valid; otherwise the template covers it.
     if (clean && !get().reward) {
-      set({ rewardPrefetch: { text: clean, topics: topics.slice(0, 3), count: get().pagesRead, source: 'llm', minutes } });
+      set({
+        rewardPrefetch: {
+          text: clean,
+          topics: topics.slice(0, 3),
+          count: get().pagesRead,
+          source: 'llm',
+          minutes,
+        },
+      });
     }
   } catch (e) {
     console.warn('[cards] reward prefetch failed; template will be used', e);
