@@ -20,13 +20,12 @@
  * every "shadow" is a ledge — a darker parent View with a few px of bottom padding —
  * because RN on Android ignores shadowOffset and honours only `elevation`.
  */
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Animated,
   Dimensions,
   type LayoutChangeEvent,
   Image,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -34,6 +33,9 @@ import {
   type StyleProp,
   type TextStyle,
 } from 'react-native';
+
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { runOnJS } from 'react-native-reanimated';
 
 import type { Language } from '@hiraia/shared';
 
@@ -49,10 +51,16 @@ import {
 } from './posterLayout';
 import { card, fonts } from '../../theme';
 import { Lightbox } from '../Lightbox';
-import { Arrow, CardPrint, Divider, IndexBand, Ticket, cardFrame } from './CardFrame';
+import { TapTarget, Arrow, CardPrint, Divider, IndexBand, Ticket, cardFrame } from './CardFrame';
 
 // The mascot stamp in the index band (and stepping forward at a fork) is the SAME asset
 // the chat avatar uses — one cat, one file, no new art path.
+/**
+ * Travel that turns a tap into a drag. Matches the feed pan's own activation slop, so there
+ * is no band where the tap has already failed but the pan has not yet started.
+ */
+const DRAG_SLOP = 10;
+
 const CAT = require('../../../assets/hiraia-profile.png');
 
 const CHARS_PER_TICK = 5;
@@ -486,20 +494,55 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
     if (over !== overflowing) setOverflowing(over);
   };
 
+  /**
+   * Tap-to-skip over the WHOLE card, as an RNGH gesture rather than a Pressable.
+   *
+   * It used to be `<Pressable style={cardFrame.content}>`, which put RN's responder system
+   * across the entire card for the length of every typewriter reveal — and the feed's swipe
+   * is an RNGH pan on an ancestor. Mixing the two is where a drag gets swallowed: whichever
+   * claims the touch first keeps it, so a swipe begun on the card during the reveal could
+   * simply not happen. Expressed as a Tap, RNGH arbitrates both in one tree: a Tap fails the
+   * moment the finger travels, so any real drag falls through to the pan, and a genuine tap
+   * still skips.
+   */
+  const skipTap = useMemo(
+    () =>
+      Gesture.Tap()
+        .maxDistance(DRAG_SLOP)
+        .enabled(!done)
+        .onEnd((_e, ok) => {
+          if (ok) runOnJS(skip)();
+        }),
+    [done, skip]
+  );
+
+  /** Same reasoning for the illustration, which covers a large share of the card. */
+  const zoomTap = useMemo(
+    () =>
+      Gesture.Tap()
+        .maxDistance(DRAG_SLOP)
+        .enabled(done && art != null)
+        .onEnd((_e, ok) => {
+          if (ok) runOnJS(setZoom)(true);
+        }),
+    [done, art]
+  );
+
   return (
-    <Pressable style={cardFrame.content} onPress={skip} disabled={done}>
-      {/* keyline + punched binder holes — the shared die-cut, graphite on a fork so the
+    <GestureDetector gesture={skipTap}>
+      <View style={cardFrame.content}>
+        {/* keyline + punched binder holes — the shared die-cut, graphite on a fork so the
           card's own furniture favours neither branch */}
-      <CardPrint keyline={branching ? 'graphite' : 'sage'} />
+        <CardPrint keyline={branching ? 'graphite' : 'sage'} />
 
-      {/* index band: catalogue number, topic in tracked gothic caps, cat stamp */}
-      <IndexBand
-        tone={branching ? 'graphite' : 'ink'}
-        label={cardTitle(fact, language) || fact.topic}
-        stamp={<Image source={CAT} style={cardFrame.stampImage} resizeMode="contain" />}
-      />
+        {/* index band: catalogue number, topic in tracked gothic caps, cat stamp */}
+        <IndexBand
+          tone={branching ? 'graphite' : 'ink'}
+          label={cardTitle(fact, language) || fact.topic}
+          stamp={<Image source={CAT} style={cardFrame.stampImage} resizeMode="contain" />}
+        />
 
-      {/*
+        {/*
         The engraving, matted. The art is greyscale line work on an opaque WHITE bed, so it
         sits on a white plate inside a peach mat — the mat is what makes it read as a
         mounted print rather than a pasted-in label. (Printing it straight onto the cream
@@ -507,27 +550,29 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
         whole 18.8k-image bank; that is the funded pipeline job, not this restyle.)
         Tap → the same pinch-zoom Lightbox the illustration always had.
       */}
-      {art != null ? (
-        <Animated.View style={[styles.plate, { opacity: extrasOpacity }]}>
-          <Pressable
-            style={styles.window}
-            onPress={() => setZoom(true)}
-            disabled={!done}
-            accessibilityLabel={`Larawan: ${fact.topic}. I-tap para palakihin.`}
-          >
-            <Image source={art} style={styles.art} resizeMode="contain" />
-          </Pressable>
-        </Animated.View>
-      ) : null}
+        {art != null ? (
+          <Animated.View style={[styles.plate, { opacity: extrasOpacity }]}>
+            <GestureDetector gesture={zoomTap}>
+              <View
+                style={styles.window}
+                accessible
+                accessibilityRole="imagebutton"
+                accessibilityLabel={`Larawan: ${fact.topic}. I-tap para palakihin.`}
+              >
+                <Image source={art} style={styles.art} resizeMode="contain" />
+              </View>
+            </GestureDetector>
+          </Animated.View>
+        ) : null}
 
-      {/* The factoid itself: a printed question/answer pair, or one plain block.
+        {/* The factoid itself: a printed question/answer pair, or one plain block.
           With an illustration above it this is a caption under the art. WITHOUT one it takes
           over the mat entirely and is centred in it, so the card is filled by type rather
           than topped by an empty frame — a different printing of the same card, not a card
           missing its picture. */}
-      {art == null ? (
-        <View style={styles.typePlate}>
-          {/*
+        {art == null ? (
+          <View style={styles.typePlate}>
+            {/*
             Scrollable ONLY when the type overran the plate. The feed's pan gesture reads
             vertical drags as a page turn, so a permanently scrollable view here would eat
             the swipe (QuestionPage avoids a ScrollView outright for that reason). Gating it
@@ -536,22 +581,22 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
             on a card that would otherwise be clipped. Even then the reader is not stuck: the
             feed also advances on a left or right swipe, and those are unaffected.
           */}
-          <ScrollView
-            style={styles.typeInner}
-            contentContainerStyle={styles.typeInnerContent}
-            scrollEnabled={overflowing}
-            showsVerticalScrollIndicator={overflowing}
-            onLayout={onPlateLayout}
-            onContentSizeChange={onContentSize}
-          >
-            {factBlock}
-          </ScrollView>
-        </View>
-      ) : (
-        <View style={styles.body}>{factBlock}</View>
-      )}
+            <ScrollView
+              style={styles.typeInner}
+              contentContainerStyle={styles.typeInnerContent}
+              scrollEnabled={overflowing}
+              showsVerticalScrollIndicator={overflowing}
+              onLayout={onPlateLayout}
+              onContentSizeChange={onContentSize}
+            >
+              {factBlock}
+            </ScrollView>
+          </View>
+        ) : (
+          <View style={styles.body}>{factBlock}</View>
+        )}
 
-      {/*
+        {/*
         SINGLE-PATH is the normal state: one fat mustard ticket, full width, so turning the
         card stays a rhythm rather than a decision. The second choice only ever appears when
         the thread genuinely forks (the BRANCH_EVERY cadence or a dead end, see
@@ -559,65 +604,68 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
         stepping forward, two colour-coded picks. Keeping that distinct is the point: a fork
         should read as a real moment, not as the default state.
       */}
-      <Animated.View
-        style={[styles.foot, { opacity: extrasOpacity }]}
-        pointerEvents={done ? 'auto' : 'none'}
-      >
-        {branching && choices[0] && choices[1] ? (
-          <>
-            <View style={styles.forkHead}>
-              <View style={styles.forkCat}>
-                <Image source={CAT} style={styles.forkCatImage} resizeMode="contain" />
+        <Animated.View
+          style={[styles.foot, { opacity: extrasOpacity }]}
+          pointerEvents={done ? 'auto' : 'none'}
+        >
+          {branching && choices[0] && choices[1] ? (
+            <>
+              <View style={styles.forkHead}>
+                <View style={styles.forkCat}>
+                  <Image source={CAT} style={styles.forkCatImage} resizeMode="contain" />
+                </View>
+                <Text style={styles.forkWord} numberOfLines={1}>
+                  {t.cards.fork}
+                </Text>
+                <View style={styles.forkRule} />
               </View>
-              <Text style={styles.forkWord} numberOfLines={1}>
-                {t.cards.fork}
-              </Text>
-              <View style={styles.forkRule} />
-            </View>
-            <View style={styles.picks}>
-              <View style={cardFrame.rowLedge}>
-                <Pressable
-                  style={({ pressed }) => [styles.pick, styles.pickA, pressed && cardFrame.pressed]}
-                  onPress={() => onChoose(choices[0]!)}
-                >
-                  <View style={styles.key}>
-                    <Text style={styles.keyText}>A</Text>
-                  </View>
-                  <Text style={styles.pickWord} numberOfLines={1} ellipsizeMode="tail">
-                    {choices[0].label}
-                  </Text>
-                  <Arrow color={card.stock} />
-                </Pressable>
+              <View style={styles.picks}>
+                <View style={cardFrame.rowLedge}>
+                  <TapTarget
+                    style={(pressed) => [styles.pick, styles.pickA, pressed && cardFrame.pressed]}
+                    onPress={() => onChoose(choices[0]!)}
+                    accessibilityLabel={choices[0].label}
+                  >
+                    <View style={styles.key}>
+                      <Text style={styles.keyText}>A</Text>
+                    </View>
+                    <Text style={styles.pickWord} numberOfLines={1} ellipsizeMode="tail">
+                      {choices[0].label}
+                    </Text>
+                    <Arrow color={card.stock} />
+                  </TapTarget>
+                </View>
+                <View style={cardFrame.rowLedge}>
+                  <TapTarget
+                    style={(pressed) => [styles.pick, styles.pickB, pressed && cardFrame.pressed]}
+                    onPress={() => onChoose(choices[1]!)}
+                    accessibilityLabel={choices[1].label}
+                  >
+                    <View style={styles.key}>
+                      <Text style={styles.keyText}>B</Text>
+                    </View>
+                    <Text style={styles.pickWord} numberOfLines={1} ellipsizeMode="tail">
+                      {choices[1].label}
+                    </Text>
+                    <Arrow color={card.stock} />
+                  </TapTarget>
+                </View>
               </View>
-              <View style={cardFrame.rowLedge}>
-                <Pressable
-                  style={({ pressed }) => [styles.pick, styles.pickB, pressed && cardFrame.pressed]}
-                  onPress={() => onChoose(choices[1]!)}
-                >
-                  <View style={styles.key}>
-                    <Text style={styles.keyText}>B</Text>
-                  </View>
-                  <Text style={styles.pickWord} numberOfLines={1} ellipsizeMode="tail">
-                    {choices[1].label}
-                  </Text>
-                  <Arrow color={card.stock} />
-                </Pressable>
-              </View>
-            </View>
-          </>
-        ) : choices[0] ? (
-          <Ticket
-            eyebrow={t.cards.nextCard}
-            label={choices[0].label}
-            onPress={() => onChoose(choices[0]!)}
-          />
-        ) : null}
-      </Animated.View>
+            </>
+          ) : choices[0] ? (
+            <Ticket
+              eyebrow={t.cards.nextCard}
+              label={choices[0].label}
+              onPress={() => onChoose(choices[0]!)}
+            />
+          ) : null}
+        </Animated.View>
 
-      {art != null ? (
-        <Lightbox visible={zoom} desc={fact.topic} source={art} onClose={() => setZoom(false)} />
-      ) : null}
-    </Pressable>
+        {art != null ? (
+          <Lightbox visible={zoom} desc={fact.topic} source={art} onClose={() => setZoom(false)} />
+        ) : null}
+      </View>
+    </GestureDetector>
   );
 }
 

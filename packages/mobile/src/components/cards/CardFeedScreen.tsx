@@ -179,13 +179,19 @@ const FORK_EDGE = 0.4;
  */
 const LOCKED_GRIP = 0.12;
 /**
- * Downward drag. There is no "previous card" in the store — no history, and synthesising
- * one would mean restoring the choices, the quiz state and the interject counter with it —
- * so a swipe DOWN deliberately does NOTHING but spring back. It is still tracked, at a
- * quarter of the finger: a card that ignores the drag outright reads as a frozen screen,
- * where one that gives a little and pulls itself home says "there is nothing down here".
+ * A card leaves in whatever direction it was thrown — up, down, left or right.
+ *
+ * Down used to be the one direction that did nothing: it read as "go back", and there is no
+ * previous card to go back TO (no history, and synthesising one would mean restoring the
+ * choices, the quiz state and the interject counter with it). So it was tracked at a quarter
+ * of the finger and sprung home.
+ *
+ * That was the wrong reading of the gesture. Flicking a sheet off a deck is not navigation
+ * backwards; it is the same "away" the other three directions mean. Making one direction
+ * behave differently only taught the reader that the card sometimes refuses them. Down now
+ * commits like the rest, and the peel hinges on the TOP corner so the card leaves the way it
+ * was pushed.
  */
-const DOWN_GRIP = 0.25;
 
 /**
  * Under the threshold the card SPRINGS back to rest — the "walk it back so I can read it
@@ -229,7 +235,7 @@ type Side = 'left' | 'right';
  * Which way a committed swipe went. All three are first-class; 'up' is the one that does
  * not name a side by itself, so it borrows one from the half of the card it started on.
  */
-type SwipeDir = Side | 'up';
+type SwipeDir = Side | 'up' | 'down';
 
 /** What was on the pad for the page being peeled away. */
 interface PageSnap {
@@ -244,6 +250,8 @@ interface PageSnap {
 /** A page on its way off the deck: what was printed on it, and how it left. */
 interface Peel extends PageSnap {
   side: Side;
+  /** Thrown downward: the peel hinges on the TOP corner and leaves past the bottom. */
+  down: boolean;
   /** Where the card was when the finger let go — 0,0 for a tap. See the peel transform. */
   fromX: number;
   fromY: number;
@@ -334,6 +342,7 @@ export function CardFeedScreen() {
   // Which way the last navigation went (drives the peel origin). Taking the left choice /
   // swiping the card leftwards → 'left'; right → 'right'.
   const sideRef = useRef<Side>('right');
+  const downRef = useRef(false);
   // Where the finger let go, when the navigation came from a swipe (null = it came from a
   // tap). Read once by the peel below, so the outgoing page can carry on from where the
   // card actually is instead of restarting from the middle of the deck.
@@ -432,6 +441,7 @@ export function CardFeedScreen() {
       setOutgoing({
         ...prev,
         side: sideRef.current,
+        down: downRef.current,
         fromX: from?.x ?? 0,
         fromY: from?.y ?? 0,
         via: from ? 'swipe' : 'tap',
@@ -493,9 +503,11 @@ export function CardFeedScreen() {
       const before = s.pageKey;
       // Hand the peel the exact offset the finger let go at, before anything navigates.
       release.current = { x: releaseX, y: releaseY };
-      // A sideways swipe names its own side. A swipe UP doesn't, so the peel hinges on the
-      // half of the card the finger came from — the corner peel this gesture always had.
-      const side: Side = dir === 'up' ? (downX < width / 2 ? 'left' : 'right') : dir;
+      // A sideways swipe names its own side. A VERTICAL one doesn't, so the peel hinges on
+      // the half of the card the finger came from — the corner peel this gesture always had.
+      const vertical = dir === 'up' || dir === 'down';
+      const side: Side = vertical ? (downX < width / 2 ? 'left' : 'right') : dir;
+      downRef.current = dir === 'down';
 
       if (s.response) {
         sideRef.current = side;
@@ -511,7 +523,9 @@ export function CardFeedScreen() {
           s.continueAfterQuestion();
         }
       } else if (s.choices.length > 1) {
-        if (dir === 'up') {
+        if (vertical) {
+          // A fork is a decision, so a vertical throw only counts from one of the edges —
+          // the ambiguous middle settles back rather than guessing for the kid.
           if (downX < width * FORK_EDGE && s.choices[0]) chooseFrom(s.choices[0], 'left');
           else if (downX > width * (1 - FORK_EDGE) && s.choices[1])
             chooseFrom(s.choices[1], 'right');
@@ -565,8 +579,7 @@ export function CardFeedScreen() {
             dragX.value = e.translationX * grip;
             dragY.value = 0;
           } else {
-            const ty = e.translationY < 0 ? e.translationY : e.translationY * DOWN_GRIP;
-            dragY.value = ty * grip;
+            dragY.value = e.translationY * grip;
             dragX.value = 0;
           }
         })
@@ -601,9 +614,15 @@ export function CardFeedScreen() {
               settleBack();
             }
           } else {
-            const flicked = e.velocityY < -COMMIT_VELOCITY && e.translationY < -FLICK_MIN_UP_PX;
-            if (e.translationY < -COMMIT_UP_PX || flicked) {
-              runOnJS(commitSwipe)('up', dragX.value, dragY.value, originX.value);
+            const ty = e.translationY;
+            // Same rule as the horizontal axis: velocity only rescues a throw that AGREES
+            // with where the card actually is, so dragging it back fast never commits.
+            const flicked =
+              Math.abs(e.velocityY) > COMMIT_VELOCITY &&
+              e.velocityY * ty > 0 &&
+              Math.abs(ty) > FLICK_MIN_UP_PX;
+            if (Math.abs(ty) > COMMIT_UP_PX || flicked) {
+              runOnJS(commitSwipe)(ty < 0 ? 'up' : 'down', dragX.value, dragY.value, originX.value);
             } else {
               settleBack();
             }
@@ -619,9 +638,13 @@ export function CardFeedScreen() {
   // 2D (no 3D perspective → no foreshorten/recede), corner-anchored via a translate
   // sandwich, with a small tilt so it reads as peeling from that corner.
   const side = outgoing?.side ?? 'right';
+  const thrownDown = outgoing?.down ?? false;
   const cardW = pageSize.w || width; // fall back to the screen until the deck has measured
-  const cx = side === 'left' ? -cardW / 2 : cardW / 2; // pivot = bottom-left / bottom-right corner
-  const cy = pageSize.h / 2;
+  const cx = side === 'left' ? -cardW / 2 : cardW / 2; // pivot = left / right edge
+  // The hinge is the corner the card leaves AROUND: the bottom one as it lifts off the top,
+  // the top one as it drops off the bottom. Peeling a downward throw from the bottom corner
+  // would swing the card up into the screen before it left, which reads as a bounce.
+  const cy = thrownDown ? -pageSize.h / 2 : pageSize.h / 2;
   // Where the peel STARTS: the middle of the deck for a tap, or exactly where the finger
   // let the card go for a swipe. That hand-off is what makes a swiped page turn read as
   // one motion instead of a snap back to centre followed by an animation.
@@ -636,10 +659,16 @@ export function CardFeedScreen() {
       : side === 'left'
         ? cardW * TAP_DRIFT
         : -cardW * TAP_DRIFT;
-  const lift = flip.interpolate({ inputRange: [0, 1], outputRange: [fromY, -(pageSize.h * 1.12)] });
+  const lift = flip.interpolate({
+    inputRange: [0, 1],
+    outputRange: [fromY, thrownDown ? pageSize.h * 1.12 : -(pageSize.h * 1.12)],
+  });
+  // The tilt follows the hinge, so it reverses with it — a downward peel that kept the
+  // upward rotation would look like the card twisting against its own exit.
+  const tiltDeg = (side === 'left' ? 10 : -10) * (thrownDown ? -1 : 1);
   const tilt = flip.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', side === 'left' ? '10deg' : '-10deg'],
+    outputRange: ['0deg', `${tiltDeg}deg`],
   });
   const drift = flip.interpolate({ inputRange: [0, 1], outputRange: [fromX, exitX] });
   const shadeOpacity = flip.interpolate({ inputRange: [0, 0.5, 1], outputRange: [0, 0.22, 0] });

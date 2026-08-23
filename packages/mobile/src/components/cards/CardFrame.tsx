@@ -21,8 +21,10 @@
  * because RN on Android ignores shadowOffset/shadowRadius and honours only `elevation`,
  * which cannot be offset downward.
  */
-import type { ReactNode } from 'react';
-import { Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
+import { useMemo, useState, type ReactNode } from 'react';
+import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { runOnJS } from 'react-native-reanimated';
 
 import { card, fonts } from '../../theme';
 
@@ -155,6 +157,67 @@ export function Arrow({ color = card.gold }: { color?: string }) {
  * for exactly this across the whole deck — it is what "just keep going" looks like, which
  * is why a fork's two picks are never gold.
  */
+/**
+ * Travel that turns a tap into a drag — the same slop the feed's pan activates on, so there
+ * is no band where the tap has already failed but the pan has not yet started.
+ */
+const DRAG_SLOP = 10;
+
+/**
+ * A tap target that yields to the feed's swipe.
+ *
+ * Every button on a card sits inside the pan that turns the page, and the tickets sit along
+ * the bottom edge — exactly where an upward swipe naturally begins. An RN Pressable there
+ * puts the responder system in contention with the RNGH pan on an ancestor: whichever claims
+ * the touch first keeps it, so a swipe started on a ticket could be swallowed. As an RNGH
+ * Tap both live in one gesture tree, and a Tap fails the instant the finger travels past
+ * DRAG_SLOP, so a drag always reaches the pan while a real tap still fires.
+ *
+ * `pressed` is tracked here because Pressable's render-prop is what we gave up to get this.
+ */
+export function TapTarget({
+  onPress,
+  hitSlop,
+  style,
+  children,
+  accessibilityLabel,
+}: {
+  onPress: () => void;
+  hitSlop?: number;
+  /** Receives the pressed state, mirroring Pressable's render prop. */
+  style: (pressed: boolean) => StyleProp<ViewStyle>;
+  children: ReactNode;
+  accessibilityLabel?: string;
+}) {
+  const [pressed, setPressed] = useState(false);
+  const tap = useMemo(
+    () =>
+      Gesture.Tap()
+        .maxDistance(DRAG_SLOP)
+        .hitSlop(
+          hitSlop ? { top: hitSlop, bottom: hitSlop, left: hitSlop, right: hitSlop } : undefined
+        )
+        .onBegin(() => runOnJS(setPressed)(true))
+        .onEnd((_e, ok) => {
+          if (ok) runOnJS(onPress)();
+        })
+        .onFinalize(() => runOnJS(setPressed)(false)),
+    [onPress, hitSlop]
+  );
+  return (
+    <GestureDetector gesture={tap}>
+      <View
+        style={style(pressed)}
+        accessible
+        accessibilityRole="button"
+        accessibilityLabel={accessibilityLabel}
+      >
+        {children}
+      </View>
+    </GestureDetector>
+  );
+}
+
 export function Ticket({
   label,
   eyebrow,
@@ -170,10 +233,11 @@ export function Ticket({
 }) {
   return (
     <View style={[cardFrame.ticketLedge, style]}>
-      <Pressable
+      <TapTarget
         onPress={onPress}
         hitSlop={hitSlop}
-        style={({ pressed }) => [cardFrame.ticket, pressed && cardFrame.pressed]}
+        accessibilityLabel={label}
+        style={(pressed) => [cardFrame.ticket, pressed && cardFrame.pressed]}
       >
         <View style={cardFrame.ticketLabel}>
           {eyebrow ? (
@@ -188,7 +252,7 @@ export function Ticket({
         <View style={cardFrame.arrow}>
           <Arrow />
         </View>
-      </Pressable>
+      </TapTarget>
     </View>
   );
 }
