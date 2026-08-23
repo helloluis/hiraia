@@ -47,6 +47,26 @@ def constants():
     return out
 
 
+DISPLAY_WORD = ['accent', 'knockout', 'rule', 'outline']
+DISPLAY_FIGURE = ['figure', 'knockout', 'outline']
+INLINE_SET = ['accent', 'highlight', 'underline', 'caps']
+
+
+def _hash(i):
+    """Mirror of hash() in posterLayout.ts (32-bit wrap, then abs)."""
+    x = 0
+    for ch in i:
+        x = (x * 31 + ord(ch)) & 0xFFFFFFFF
+    if x >= 2 ** 31:
+        x -= 2 ** 32
+    return abs(x)
+
+
+def style_for(cid, kind):
+    st = DISPLAY_FIGURE if kind == 'numeral' else DISPLAY_WORD if kind == 'lead' else INLINE_SET
+    return st[_hash(cid) % len(st)]
+
+
 def poster_for(text, spans, C):
     """Mirror of posterFor() in posterLayout.ts."""
     term = (spans or [None])[0]
@@ -131,16 +151,21 @@ def main():
             kind, before, term, after = poster_for(seg, (c.get('emphasis') or {}).get(a.lang), C)
             if kind == 'plain':
                 return f'<div class="fact" style="font-size:{fs}px;line-height:{lh}px">{esc(seg)}</div>'
+            sty = style_for(c['id'], kind)
             if kind == 'inline':
                 return (f'<div class="fact" style="font-size:{fs}px;line-height:{lh}px">'
-                        f'{esc(before)}<span class="em">{esc(term)}</span>{esc(after)}</div>')
-            big = round(fs * (1.9 if kind == 'numeral' else 1.5), 1)
+                        f'{esc(before)}<span class="i-{sty}">{esc(term)}</span>{esc(after)}</div>')
+            big = round(fs * (1.9 if sty == 'figure' else 1.5), 1)
             pre = (f'<div class="fact preLead" style="font-size:{fs}px;line-height:{lh}px">'
                    f'{esc(before.strip())}</div>') if before.strip() else ''
             post = (f'<div class="fact" style="font-size:{fs}px;line-height:{lh}px">'
                     f'{esc(after.lstrip())}</div>') if after.strip() else ''
-            return (pre + f'<div class="{kind}" style="font-size:{big}px;'
-                    f'line-height:{round(big*1.08,1)}px">{esc(term)}</div>' + post)
+            st = f'font-size:{big}px;line-height:{round(big*1.08,1)}px'
+            if sty == 'rule':
+                el = f'<div class="d-rule" style="{st}">{esc(term)}<div class="ruleline"></div></div>'
+            else:
+                el = f'<div class="d-{sty}" style="{st}">{esc(term)}</div>'
+            return pre + el + post
 
         if '\n\n' in t:
             ask, body = t.split('\n\n', 1)
@@ -180,9 +205,17 @@ figcaption{{color:#8C9E6E;font-size:11px;letter-spacing:1.2px;text-transform:upp
 .ask{{font-family:'ZillaSlabBold';color:#1C3B2E;letter-spacing:-.1px}}
 .fact{{font-family:'ZillaSlab';color:#1C3B2E}}
 .preLead{{opacity:.66}}
-.em{{font-family:'ZillaSlabBold';color:#7A2E22}}
-.lead{{font-family:'ZillaSlabBold';color:#7A2E22;letter-spacing:-.6px;margin:3px 0}}
-.numeral{{font-family:'AlfaSlabOne';color:#7A2E22;letter-spacing:-1px;margin:4px 0}}
+.i-accent{{font-family:'ZillaSlabBold';color:#7A2E22}}
+.i-highlight{{font-family:'ZillaSlabBold';color:#1C3B2E;background:#E7B08B;border-radius:3px;padding:0 3px}}
+.i-underline{{font-family:'ZillaSlabBold';color:#7A2E22;text-decoration:underline}}
+.i-caps{{font-family:'ArchivoBlack';color:#4D4740;text-transform:uppercase;letter-spacing:1.2px;font-size:.82em}}
+.d-accent{{font-family:'ZillaSlabBold';color:#7A2E22;letter-spacing:-.6px;margin:3px 0}}
+.d-knockout{{font-family:'ZillaSlabBold';color:#F4EAD5;background:#1C3B2E;letter-spacing:-.4px;margin:5px 0;padding:3px 9px;border-radius:5px;align-self:flex-start}}
+.d-outline{{font-family:'ZillaSlabBold';color:#1C3B2E;letter-spacing:-.4px;margin:5px 0;padding:3px 9px;border:3px solid #1C3B2E;border-radius:7px;align-self:flex-start}}
+.d-rule{{font-family:'ZillaSlabBold';color:#1C3B2E;letter-spacing:-.6px;margin:3px 0;align-self:flex-start}}
+.ruleline{{height:5px;background:#7A2E22;border-radius:3px;margin-top:2px}}
+.d-figure{{font-family:'AlfaSlabOne';color:#7A2E22;letter-spacing:-1px;margin:4px 0}}
+
 .rule{{height:3px;background:#1C3B2E;border-radius:2px;margin:10px 0;width:52%}}
 .foot{{margin-top:12px}}
 .ticket{{min-height:48px;background:#D8A03A;border:3px solid #1C3B2E;border-radius:11px;display:flex;align-items:center;gap:9px;padding:6px 10px}}

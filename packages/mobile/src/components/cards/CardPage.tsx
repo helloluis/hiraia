@@ -39,7 +39,13 @@ import type { Language } from '@hiraia/shared';
 import { uiStrings } from '../../config/strings';
 import { cardText, cardTitle, type CardChoice, type CardFact } from '../../data/cards';
 import { resolveImage } from '../../generated/imageMap';
-import { posterFor, displayScale, type PosterSpec } from './posterLayout';
+import {
+  posterFor,
+  displayScale,
+  emphasisStyleFor,
+  type PosterSpec,
+  type EmphasisStyle,
+} from './posterLayout';
 import { card, fonts } from '../../theme';
 import { Lightbox } from '../Lightbox';
 import { Arrow, CardPrint, Divider, IndexBand, Ticket, cardFrame } from './CardFrame';
@@ -229,16 +235,81 @@ let lastPlateBox = {
   h: Math.max(240, Dimensions.get('window').height * 0.55),
 };
 
+/** The nested-Text style for an inline treatment. */
+function inlineEmphasis(style: EmphasisStyle): StyleProp<TextStyle> {
+  switch (style) {
+    case 'highlight':
+      return styles.emHighlight;
+    case 'underline':
+      return styles.emUnderline;
+    case 'caps':
+      return styles.emCaps;
+    default:
+      return styles.em;
+  }
+}
+
+/**
+ * A lifted term, drawn in one of the display treatments.
+ *
+ * `knockout` and `outline` need a box around the word rather than a style on it, and `rule`
+ * needs a bar beneath it — none of which a Text style can express — so those wrap. The wrapper
+ * is `alignSelf: flex-start` so the block hugs the word instead of stretching the column,
+ * which is what makes it read as a printed chip rather than a banner.
+ */
+function DisplayTerm({
+  text,
+  shown,
+  styleName,
+  size,
+}: {
+  text: string;
+  shown: number;
+  styleName: EmphasisStyle;
+  size: { fontSize: number; lineHeight: number };
+}) {
+  if (styleName === 'knockout' || styleName === 'outline') {
+    const box = styleName === 'knockout' ? styles.dKnockBox : styles.dOutlineBox;
+    const type = styleName === 'knockout' ? styles.dKnockText : styles.dOutlineText;
+    return (
+      <View style={box}>
+        <Typed text={text} shown={shown} style={[type, size]} />
+      </View>
+    );
+  }
+  if (styleName === 'rule') {
+    return (
+      <View style={styles.dRuleWrap}>
+        <Typed text={text} shown={shown} style={[styles.dRuleText, size]} />
+        <View style={styles.dRuleBar} />
+      </View>
+    );
+  }
+  return (
+    <Typed
+      text={text}
+      shown={shown}
+      style={[styleName === 'figure' ? styles.numeral : styles.lead, size]}
+    />
+  );
+}
+
 /**
  * Emphasis for a card that HAS an illustration: the accent, never a lifted display line.
  * Under a picture the type is a caption, and a word at 1.5x would compete with the art for
  * the eye — which is the one thing the illustration is there to win.
  */
-function inlineOnly(text: string, spans?: readonly string[]): PosterSpec {
+function inlineOnly(text: string, spans: readonly string[] | undefined, id: string): PosterSpec {
   const term = spans?.[0];
   const i = term ? text.indexOf(term) : -1;
-  if (!term || i < 0) return { kind: 'plain', before: '', term: '', after: text };
-  return { kind: 'inline', before: text.slice(0, i), term, after: text.slice(i + term.length) };
+  if (!term || i < 0) return { kind: 'plain', style: 'accent', before: '', term: '', after: text };
+  return {
+    kind: 'inline',
+    style: emphasisStyleFor(id, 'inline'),
+    before: text.slice(0, i),
+    term,
+    after: text.slice(i + term.length),
+  };
 }
 
 export function CardPage({ fact, choices, language, onChoose, instant = false }: CardPageProps) {
@@ -257,7 +328,8 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
     fact.emphasis?.[language === 'english' ? 'en' : language === 'cebuano' ? 'bis' : 'tl'];
   // The body's layout is settled BEFORE the type is sized: a lifted display line changes how
   // much room the rest of the sentence has.
-  const bodySpec = art == null ? posterFor(body, emphasis) : inlineOnly(body, emphasis);
+  const bodySpec =
+    art == null ? posterFor(body, emphasis, fact.id) : inlineOnly(body, emphasis, fact.id);
   const tier =
     art != null
       ? tierFor(text)
@@ -319,7 +391,11 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
       return (
         <Text style={[styles.fact, bodyType]}>
           <Seg text={spec.before} shown={from} />
-          <Seg text={spec.term} shown={from - spec.before.length} style={styles.em} />
+          <Seg
+            text={spec.term}
+            shown={from - spec.before.length}
+            style={inlineEmphasis(spec.style)}
+          />
           <Seg text={spec.after} shown={from - spec.before.length - spec.term.length} />
         </Text>
       );
@@ -338,10 +414,11 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
             style={[styles.fact, styles.preLead, bodyType]}
           />
         ) : null}
-        <Typed
+        <DisplayTerm
           text={spec.term}
           shown={from - spec.before.length}
-          style={[spec.kind === 'numeral' ? styles.numeral : styles.lead, display]}
+          styleName={spec.style}
+          size={display}
         />
         {spec.after.trim() ? (
           <Typed
@@ -362,7 +439,7 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
           {/* The question always takes the INLINE treatment, never a lifted line: it is the
               hook, and a display word here would upstage the answer it exists to set up. */}
           {(() => {
-            const q = inlineOnly(ask, emphasis);
+            const q = inlineOnly(ask, emphasis, fact.id);
             const qs = [styles.ask, { fontSize: tier.askSize, lineHeight: tier.askLineHeight }];
             return q.kind === 'plain' ? (
               <Typed text={ask} shown={shown} style={qs} />
@@ -580,6 +657,59 @@ const styles = StyleSheet.create({
   /** A quantity, set as a figure. The display slab is used ONLY here, where the card's whole
    *  point is a number and it should read as an image rather than as a word. */
   numeral: { fontFamily: fonts.slab, color: card.accent, letterSpacing: -1, marginVertical: 4 },
+  /** Ink on a peach swatch — the mat's own colour, so the span reads as MARKED rather than
+   *  pasted in from somewhere else. 6.40:1. A span that wraps draws one swatch per line,
+   *  which is what a highlighter does too. */
+  emHighlight: {
+    fontFamily: fonts.cardBodyBold,
+    color: card.ink,
+    backgroundColor: card.peach,
+  },
+  /** Accent, underlined. RN has no decoration thickness or offset, so this is a hairline on
+   *  device where the mockup shows a bar — the `rule` display treatment is where a real bar
+   *  lives. */
+  emUnderline: {
+    fontFamily: fonts.cardBodyBold,
+    color: card.accent,
+    textDecorationLine: 'underline',
+  },
+  /** Tracked-out gothic caps in graphite, 7.67:1. The most restrained of the set: it marks a
+   *  span as a CATEGORY rather than shouting a name. */
+  emCaps: {
+    fontFamily: fonts.gothic,
+    color: card.graphite,
+    textTransform: 'uppercase',
+    letterSpacing: 1.2,
+  },
+
+  // ---- display treatments that need a box or a bar, not just a text style ----
+  /** Stock reversed out of ink, 10.25:1 — the loudest of the set. */
+  dKnockBox: {
+    alignSelf: 'flex-start',
+    backgroundColor: card.ink,
+    borderRadius: 5,
+    paddingHorizontal: 9,
+    paddingVertical: 3,
+    marginVertical: 5,
+  },
+  dKnockText: { fontFamily: fonts.cardBodyBold, color: card.stock, letterSpacing: -0.4 },
+  /** The term boxed, as a worksheet boxes a word it wants you to keep. */
+  dOutlineBox: {
+    alignSelf: 'flex-start',
+    borderWidth: 3,
+    borderColor: card.ink,
+    borderRadius: 7,
+    paddingHorizontal: 9,
+    paddingVertical: 3,
+    marginVertical: 5,
+  },
+  dOutlineText: { fontFamily: fonts.cardBodyBold, color: card.ink, letterSpacing: -0.4 },
+  /** A printed underscore: a real bar under the word, which a text decoration cannot give
+   *  us at this weight. Hugs the word rather than the column. */
+  dRuleWrap: { alignSelf: 'flex-start', marginVertical: 3 },
+  dRuleText: { fontFamily: fonts.cardBodyBold, color: card.ink, letterSpacing: -0.6 },
+  dRuleBar: { height: 5, borderRadius: 3, backgroundColor: card.accent, marginTop: 2 },
+
   /** The words before a lifted term — "Ang", "Sa halimbawa ng acacia, ang". Dropped back so
    *  the term is what the eye lands on, but not so far that the sentence loses its start. */
   preLead: { opacity: 0.66 },
