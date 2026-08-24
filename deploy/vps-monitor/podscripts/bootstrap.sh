@@ -62,9 +62,15 @@ PYHF
   # No cache to match, so use a worker count that does not collapse. Measured 2026-08-24:
   # 160 workers = 930 ex/s, SLOWER than one core (1,973 ex/s). Fewer is faster here.
   echo 8 > /workspace/fullrun/NUM_PROC
-  curl -s -m 30 -H "X-Token: $TOK" \
-    "https://huggingface.co/Cryptopop/hiraia-cpt-corpus-archive/resolve/main/mix-v1/CANARY-RESULT.json" \
-    -H "Authorization: Bearer __HF_TOKEN__" -o /workspace/fullrun/CANARY-RESULT.json 2>/dev/null || true
+  # Write the measured canary values directly. Fetching them was fragile (mixing the admin
+  # X-Token with HF auth returned "Repository not found", which json.load then swallowed --
+  # silently disabling Liger and making the run slower than the budget assumed).
+  cat > /workspace/fullrun/CANARY-RESULT.json <<'EOSC'
+{"sec_per_step": 41.780799, "memory_gib": 33.47, "liger": "yes",
+ "measured_utc": "2026-08-24T11:08:16Z",
+ "note": "measured on 8xH100 SXM, 25 canary steps, Liger enabled"}
+EOSC
+  python3 -c "import json;json.load(open('/workspace/fullrun/CANARY-RESULT.json'))" || die "canary json"
 fi
 echo ">> MODE=$MODE num_proc=$(cat /workspace/fullrun/NUM_PROC)"
 
