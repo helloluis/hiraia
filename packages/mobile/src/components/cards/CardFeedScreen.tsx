@@ -48,7 +48,13 @@ import Reanimated, {
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { uiStrings } from '../../config/strings';
-import type { CardChoice, CardFact, CardQuestion } from '../../data/cards';
+import {
+  getCard,
+  nextChoices,
+  type CardChoice,
+  type CardFact,
+  type CardQuestion,
+} from '../../data/cards';
 import type { RewardContent } from '../../data/reward';
 import { useCardStore, type FeedResponse } from '../../store/cardStore';
 import { useEngineStore } from '../../store/engineStore';
@@ -121,23 +127,21 @@ const COMMIT_VELOCITY = 800;
 const FLICK_MIN_FRACTION = 0.12;
 
 /**
- * How far the finger travels before the drag LOCKS to an axis, and with it to a meaning.
- * Sits a couple of dp past DRAG_SLOP — one or two frames after the pan activates — because
- * the activation frame on its own is a coin flip on a cheap digitiser: an 11dp-across,
- * 10dp-up sample is "sideways" by a hair, and mis-locking is the worst outcome this
- * gesture has (a fork's left branch taken when the kid meant "next"). Waiting those few dp
- * costs nothing visible: the card is held at rest until the lock, and 14dp is inside the
- * movement a tap is allowed anyway.
+ * The card is NOT locked to an axis; it follows the finger on both.
  *
- * Once locked the axis is HELD for the rest of the gesture and the perpendicular offset is
- * pinned at 0, so the card slides on a rail. Free 2D tracking was the alternative and it
- * reads as loose — the card ends up somewhere nobody aimed it, and the direction that
- * commits is whichever axis happened to be ahead at lift-off.
+ * It used to lock, and the lock was the bug: it was applied on the pan's very first update —
+ * a few pixels of noise — with ties going to X, so a drag that began a hair sideways was
+ * pinned horizontally for the rest of the gesture and the perpendicular offset held at 0.
+ * Vertical swipes read as ignored and the card felt railed. (An AXIS_LOCK_PX of 14dp was
+ * written to defer the decision past that first frame for exactly this reason, and never
+ * wired up.)
  *
- * Being far below FLICK_MIN_FRACTION (~43dp) is load-bearing: the axis is always decided
- * long before any commit test can pass, so no swipe can commit without having locked.
+ * Locking was the right model when only SOME directions meant something — mis-reading the
+ * axis could take a fork's left branch when the kid meant "next". Now every direction is
+ * "away", so reading it wrongly costs nothing on an ordinary page, and the question of which
+ * direction was MEANT belongs to the whole gesture rather than its first frame. It is
+ * answered at release, from the axis the finger actually travelled furthest on.
  */
-const AXIS_LOCK_PX = 14;
 
 /**
  * Vertical commit distance, in dp. The horizontal axis commits on a FRACTION of the screen
@@ -200,11 +204,6 @@ const LOCKED_GRIP = 0.12;
  * like a card dropping back onto a deck — one small settle, no wobble.
  */
 const SETTLE_SPRING = { duration: 340, dampingRatio: 0.88 } as const;
-
-/** Values for the gesture's `axis` shared value: undecided, then locked (see AXIS_LOCK_PX). */
-const AXIS_NONE = 0;
-const AXIS_X = 1;
-const AXIS_Y = 2;
 
 /**
  * Is this vertical drag one the card cannot answer? On a FORK an up-swipe means "the
@@ -371,9 +370,6 @@ export function CardFeedScreen() {
   // gesture exists to answer.
   const dragX = useSharedValue(0);
   const dragY = useSharedValue(0);
-  // AXIS_NONE until the drag has committed to an axis, then held for the rest of the
-  // gesture — otherwise a sloppy diagonal wanders between two different meanings.
-  const axis = useSharedValue(AXIS_NONE);
   // Screen x the finger went down at; the corner mapping for a swipe UP needs it.
   const originX = useSharedValue(0);
   // 1 while the page must not be swiped away — an interject question that has not been
@@ -392,6 +388,29 @@ export function CardFeedScreen() {
    * return, because the pan needs it as a shared value (see forkMiddleUp).
    */
   const forking = choices.length > 1 && !question && !reward && !response;
+
+  /**
+   * The card underneath — what a swipe is about to reveal, printed on the sheet behind.
+   *
+   * The layer behind the deck used to be a blank cream card, so dragging the top one aside
+   * exposed an empty rectangle and the turn read as the content vanishing rather than a page
+   * being lifted off a stack. Its text is already warm: the store loads a page's successors
+   * while the reader is still on the page above it.
+   *
+   * Single-path pages only. A fork deliberately shows two BLANK coloured sheets instead —
+   * they are the two branches, and printing either one's content behind the card would say
+   * the choice has already been made.
+   */
+  const beneath = useMemo(() => {
+    if (forking || question || reward || response) return null;
+    const nextId = choices[0]?.factId;
+    return nextId ? (getCard(nextId) ?? null) : null;
+  }, [forking, question, reward, response, choices]);
+
+  const beneathChoices = useMemo(
+    () => (beneath ? nextChoices(beneath.id, new Set([beneath.id]), language) : []),
+    [beneath, language]
+  );
   const forkGate = useSharedValue(0);
   useEffect(() => {
     forkGate.value = forking ? 1 : 0;
@@ -565,23 +584,23 @@ export function CardFeedScreen() {
         .activeOffsetY([-DRAG_SLOP, DRAG_SLOP])
         .onBegin((e) => {
           originX.value = e.absoluteX;
-          axis.value = AXIS_NONE;
         })
         .onStart(() => {
           runOnJS(markDragStart)();
         })
         .onUpdate((e) => {
-          if (axis.value === AXIS_NONE) {
-            axis.value = Math.abs(e.translationX) >= Math.abs(e.translationY) ? AXIS_X : AXIS_Y;
-          }
+          // The card follows the FINGER, on both axes.
+          //
+          // It used to lock to an axis on the first frame of movement and zero the other for
+          // the rest of the gesture. That frame is a few pixels of noise, and the tie went to
+          // X — so a drag that began a hair more sideways was pinned horizontally no matter
+          // where the finger went afterwards. Vertical swipes read as ignored and the card
+          // felt like it was on rails. Which direction was MEANT is a question about the
+          // whole gesture, so it is answered at the end (see onEnd) rather than guessed at
+          // the start.
           const grip = locked.value === 1 ? LOCKED_GRIP : 1;
-          if (axis.value === AXIS_X) {
-            dragX.value = e.translationX * grip;
-            dragY.value = 0;
-          } else {
-            dragY.value = e.translationY * grip;
-            dragX.value = 0;
-          }
+          dragX.value = e.translationX * grip;
+          dragY.value = e.translationY * grip;
         })
         .onEnd((e, success) => {
           // Carrying the finger's velocity into the spring is what makes walking the card
@@ -594,7 +613,8 @@ export function CardFeedScreen() {
             settleBack();
             return;
           }
-          if (axis.value === AXIS_X) {
+          // Decided now, from the whole gesture: the axis the finger actually travelled on.
+          if (Math.abs(e.translationX) > Math.abs(e.translationY)) {
             const tx = e.translationX;
             // The velocity escape hatch only counts when it AGREES with where the card
             // actually is: someone dragging the card back to centre is moving fast in the
@@ -631,7 +651,7 @@ export function CardFeedScreen() {
         .onFinalize(() => {
           runOnJS(markDragEnd)();
         }),
-    [width, commitSwipe, markDragStart, markDragEnd, axis, dragX, dragY, locked, originX]
+    [width, commitSwipe, markDragStart, markDragEnd, dragX, dragY, locked, originX]
   );
 
   // Peel transform: card hinges up from the swiped corner, slides off the top.
@@ -809,7 +829,17 @@ export function CardFeedScreen() {
                 <View style={[styles.fan, styles.fanBranch, styles.fanB]} pointerEvents="none" />
               </>
             ) : (
-              <View style={[styles.fan, styles.fanSingle]} pointerEvents="none" />
+              <View style={[styles.fan, styles.fanSingle]} pointerEvents="none">
+                {beneath ? (
+                  <CardPage
+                    fact={beneath}
+                    choices={beneathChoices}
+                    language={language}
+                    onChoose={() => undefined}
+                    instant
+                  />
+                ) : null}
+              </View>
             )}
 
             {/* the card's ledge: a darker slab peeking 4px below the card. NOT a shadow —
