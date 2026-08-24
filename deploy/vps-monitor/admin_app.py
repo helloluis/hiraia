@@ -28,6 +28,7 @@ HEARTBEATS = os.path.join(STATE_DIR, "heartbeats.jsonl")
 RUNS = os.path.join(STATE_DIR, "runs.jsonl")
 NOTES = os.path.join(STATE_DIR, "notes.jsonl")
 GREENLIGHT = os.path.join(STATE_DIR, "greenlight.json")
+PODSCRIPTS = os.environ.get("HIRAIA_PODSCRIPTS", "/opt/hiraia-monitor/podscripts")
 MONITOR_LOG = os.environ.get("HIRAIA_MONITOR_LOG", "/var/log/hiraia-monitor.log")
 PORT = int(os.environ.get("ADMIN_PORT", "8135"))
 MOUNT = os.environ.get("ADMIN_MOUNT", "/admin")  # absolute paths: /admin (no slash) must work too
@@ -1156,6 +1157,23 @@ class Handler(BaseHTTPRequestHandler):
             if self.headers.get("X-Token") != cfg().get("hb_token", "\0"):
                 return self._json(403, {"error": "bad token"})
             return self._json(200, greenlight_state())
+        if path in ("/api/bootstrap", "/api/launcher", "/api/hbvals"):
+            # A freshly-created pod fetches its own setup over HTTPS. This is why nothing has
+            # to be pre-staged on the volume (which needs a pod to write to -- chicken and egg)
+            # and why no SSH private key has to live on this internet-facing box.
+            if self.headers.get("X-Token") != cfg().get("hb_token", "\0"):
+                return self._json(403, {"error": "bad token"})
+            fn = {"/api/bootstrap": "bootstrap.sh", "/api/launcher": "launcher.sh",
+                  "/api/hbvals": "hbvals.py"}[path]
+            try:
+                body = open(os.path.join(PODSCRIPTS, fn)).read()
+            except OSError as e:
+                return self._json(404, {"error": f"{fn}: {e}"})
+            c = cfg()
+            body = (body.replace("__RUNPOD_KEY__", c.get("runpod_api_key", ""))
+                        .replace("__HB_TOKEN__", c.get("hb_token", ""))
+                        .replace("__HF_TOKEN__", c.get("hf_token", "")))
+            return self._send(200, body, "text/plain; charset=utf-8")
         if not self._session_ok():
             if path.startswith("/api/"):
                 return self._json(401, {"error": "unauthenticated"})
