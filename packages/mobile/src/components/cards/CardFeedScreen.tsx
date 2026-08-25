@@ -333,10 +333,22 @@ export function CardFeedScreen() {
 
   useEffect(() => {
     void hydrate();
-    // Background, non-blocking: warm the model while the kid reads, so reward text can be
-    // generated ahead of time. The feed itself never waits on it.
-    warmModel();
-  }, [hydrate, warmModel]);
+    // The model is NOT warmed here any more.
+    //
+    // It used to start at mount, described as "background, non-blocking" because the feed
+    // never awaits it. That is true of the control flow and false of the device: loading
+    // ~2 GB and running a warm-up prefill is ~98s of CPU on four budget cores, and it
+    // contends for the JS thread the whole time. The drag itself stayed smooth (it is a
+    // UI-thread worklet) but the COMMIT crosses to JS, so a swipe hung for seconds before
+    // the card would leave — the app was least usable exactly while it claimed to be
+    // getting ready.
+    //
+    // Nothing on the feed path needs it. Browsing, quizzes and illustrations are all
+    // zero-model; the only consumers are the free-text ask and the reward line, and
+    // prefetchReward already returns early when the engine is cold so the reward falls back
+    // to its template. So the warm-up now starts when the reader reaches for it — see the
+    // search field, which wakes the model on a tap.
+  }, [hydrate]);
 
   // Which way the last navigation went (drives the peel origin). Taking the left choice /
   // swiping the card leftwards → 'left'; right → 'right'.
@@ -732,7 +744,19 @@ export function CardFeedScreen() {
           RAG decides (found card → response card → honest abstention). Printed as a cream
           index-card field on the board; the gold diamond is the mockup's divider mark. */}
       <View style={styles.searchRow}>
-        <View style={styles.searchField}>
+        {/*
+          Tapping the field WAKES the model.
+          The reader reaches for the ask box, and that is the moment the engine is actually
+          wanted — so it is the moment the load starts, rather than at launch where it stole
+          the JS thread from the feed. The placeholder already tells them what is happening
+          ("Ginigising si Hiraia…"), and the same one-tap retry existed for a failed warm-up.
+        */}
+        <Pressable
+          style={styles.searchField}
+          onPress={warmModel}
+          disabled={engineReady || warming}
+          accessibilityLabel={t.cards.searchPlaceholder}
+        >
           <View style={styles.searchDiamond} />
           <TextInput
             style={[styles.searchInput, !engineReady && styles.searchInputIdle]}
@@ -779,7 +803,7 @@ export function CardFeedScreen() {
               </View>
             </Pressable>
           )}
-        </View>
+        </Pressable>
         {/* "Reroll" — jump to an unrelated fresh topic. Placeholder trigger; a
             shake gesture (expo-sensors) is the intended trigger, TBD. */}
         <Pressable
