@@ -13,6 +13,10 @@ export default {
         hand: ['var(--font-sans)', 'Patrick Hand', 'cursive'],
         serif: ['var(--font-serif)', 'Patrick Hand', 'cursive'],
         sans: ['var(--font-sans)', 'Patrick Hand', 'cursive'],
+        slab: ['"Alfa Slab One"', 'Georgia', 'serif'],
+        zilla: ['"Zilla Slab"', 'Georgia', 'serif'],
+        gothic: ['"Archivo Black"', 'sans-serif'],
+        band: ['"Patua One"', 'Georgia', 'serif'],
       },
       colors: {
         primary: {
