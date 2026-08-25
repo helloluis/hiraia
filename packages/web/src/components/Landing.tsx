@@ -204,20 +204,22 @@ export function Landing() {
         style={{ backgroundImage: "url('/landing.jpeg')" }}
         aria-label="Hiraia"
       >
-        <div className="relative z-10 w-full max-w-md px-4 pt-10 sm:ml-10 sm:max-w-lg sm:px-0 sm:pt-14 md:ml-16 lg:ml-24">
+        <div className="relative z-10 w-full max-w-[21rem] px-4 pt-10 sm:ml-10 sm:max-w-[24rem] sm:px-0 sm:pt-14 md:ml-16 lg:ml-24">
           <div className="mc-card">
             <div className="mc-keyline" aria-hidden />
             <div className="mc-hole mc-hole-a" aria-hidden />
             <div className="mc-hole mc-hole-b" aria-hidden />
 
-            <div className="mc-band">
-              <span className="mc-topic">Science tutor</span>
+            <div className="mc-band !h-auto !min-h-[34px] !py-1.5">
+              <span className="mc-topic !whitespace-normal leading-tight !tracking-[0.08em]">
+                MATATAG-compatible science tutor
+              </span>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/hiraia-profile.png" alt="" width={26} height={26} className="mc-stamp" />
             </div>
 
             <h1 className="mt-5 font-slab text-[2.75rem] leading-none tracking-wide text-[var(--ink)] sm:text-6xl">
-              HIRAIA<span className="text-[var(--gold)]">.</span>
+              HIRAIA
             </h1>
             <p className="mt-4 font-zilla text-[1.35rem] font-bold leading-snug text-[var(--ink)] text-balance sm:text-[1.55rem]">
               An AI science tutor that runs entirely offline
@@ -235,7 +237,7 @@ export function Landing() {
             <div className="relative z-[1] mt-6 flex flex-col gap-3">
               <Ticket onClick={openDemo}>Try the demo</Ticket>
               <Ticket onClick={scrollToDownload} ghost>
-                Download the APK
+                Download for free
               </Ticket>
             </div>
           </div>
