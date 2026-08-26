@@ -1,0 +1,37 @@
+{
+ "templates": {
+  "tagalog": "Ang estudyante ay nagtype ng \"{term}\", pero wala tayong science cards tungkol dito. Magmungkahi ng tatlong paksa sa science na malapit dito at kawili-wili para sa Grade 5, sa Tagalog. Ang 'topic' ay isang pangngalan (1-3 salita); ang 'why' ay isang maikling pangungusap kung bakit ito konektado.",
+  "cebuano": "Ang estudyante nagtype og \"{term}\", pero wala tay science cards bahin niini. Isugyot ang tulo ka science topic nga duol niini ug makapaikag para sa Grade 5, sa Cebuano. Ang 'topic' usa ka noun (1-3 ka pulong); ang 'why' usa ka mubo nga sentence nganong konektado kini.",
+  "english": "The student typed \"{term}\", but we have no science cards about it. Suggest three science topics close to it and interesting for Grade 5, in English. 'topic' is a noun phrase (1-3 words); 'why' is one short sentence on why it connects."
+ },
+ "schema": {
+  "type": "object",
+  "properties": {
+   "directions": {
+    "type": "array",
+    "minItems": 3,
+    "maxItems": 3,
+    "items": {
+     "type": "object",
+     "properties": {
+      "topic": {
+       "type": "string",
+       "maxLength": 40
+      },
+      "why": {
+       "type": "string",
+       "maxLength": 160
+      }
+     },
+     "required": [
+      "topic",
+      "why"
+     ]
+    }
+   }
+  },
+  "required": [
+   "directions"
+  ]
+ }
+}

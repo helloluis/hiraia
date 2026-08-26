@@ -19,6 +19,12 @@ def clean(l):
     return l.strip()
 def directions(ans):
     global PREAMBLE, TRUNC
+    # JSON mode (grammar-constrained runs): [{topic, why}] -> "topic — why" lines
+    try:
+        j=json.loads(ans); ds=j.get("directions") if isinstance(j,dict) else j
+        if isinstance(ds,list) and ds and isinstance(ds[0],dict):
+            return [f"{x.get('topic','').strip()} — {x.get('why','').strip()}" for x in ds if x.get('topic','').strip()]
+    except Exception: pass
     lines=[clean(l) for l in ans.strip().splitlines() if l.strip()]
     # preamble = a line that ends with ':' and precedes the list, or a bare pleasantry with no separator
     if lines and (lines[0].endswith(":") or (len(lines)>1 and not re.search(r"\s[-–—:]\s",lines[0]) and len(lines[0])<60)):
