@@ -112,3 +112,45 @@ clarifying question. Same 12-probe test; target 8/8. Cost ~$2.
 
 **Standing verdict unchanged:** this is an SFT-data problem with a visible dose-response
 (0/4 → 1/4 from one bucket). The synth-ceb corpus would not have moved this number.
+
+### v2 full results — one regression that reframes v3
+
+Deterministic scoring (`finetuning/eval/pod-eval/score_answers.py`) over all 183 answers:
+
+| | v1 | v2 |
+|---|---|---|
+| routing, Cebuano-mode | 4/8 | **5/8** |
+| gate chitchat | 5/6 | 5/6 |
+| gate grounded, forbidden-term violations | 0/34 | 0/34 |
+| gate abstain | 1/1 | **0/1** |
+| bisaya tier, Cebuano replies | 13/14 | 13/14 |
+| all Tagalog tiers, Tagalog replies | 100% | 100% |
+| **english tier, English replies** | **13/18** | **6/18** |
+| median answer length | ~470 | ~560 (+20%) |
+
+**The English regression is the finding.** All 12 English-mode failures switched to **Tagalog**
+(not Cebuano), on prompts like *"Why is the sky blue?"* and *"Can I mix bleach and toilet
+cleaner?"* — v1 answered those in English. So the bucket's English-term rows are not the direct
+cause (they taught English-word→Cebuano). Rather, 804 more Cebuano-answer rows shifted the
+model's prior toward "reply in a Philippine language," and under the English system prompt that
+resolved to the dominant one, Tagalog. v1 held English by a thin margin (13/18); v2 tipped it.
+
+This is the *same class* of failure as the Cebuano leak: the mode-lock not winning over the
+prompt's surface language. It was latent in v1 and the bucket exposed it.
+
+**The abstain regression is a factual error**: *"the largest star is the Supernova"* — a
+supernova is an explosion, not a star. v1 said it wasn't sure; v2 confabulated. One case, but
+it is the exact failure the accuracy-over-fluency rule exists for. Possibly the same +20%
+verbosity pressure — v2 answers more, including when it shouldn't.
+
+**v3 is therefore not "more Cebuano." It is mode-lock buckets for every mode:**
+- Cebuano-mode neutral bucket (as v2, coverage extended via authored answers for the 16 topics
+  with no definitional source row — 2 of the 3 surviving leaks are among them)
+- **English-mode bucket**: English system prompt + Filipino/Taglish-flavoured user turns →
+  English answer. The deployed English prompt already says *"never switch to Tagalog or
+  Bisaya"*; the data must show it.
+- Re-check `abstain-correct` (7/10 refusals, was 8/10) and the gate abstain case; if v3 keeps
+  answering the unanswerable, add abstain rows to counter the verbosity drift.
+
+The synth-ceb verdict is unchanged and now stronger: both leaks are mode-routing behaviours,
+learnable from a few hundred rows each, and neither is a corpus-knowledge problem.
