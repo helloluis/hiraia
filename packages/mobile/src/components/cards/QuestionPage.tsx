@@ -36,7 +36,7 @@ import type { Language } from '@hiraia/shared';
 
 import { uiStrings } from '../../config/strings';
 import { type CardQuestion } from '../../data/cards';
-import { localize } from '../../data/quiz';
+import { localize } from '../../data/tri';
 import { card, fonts } from '../../theme';
 import { CardPrint, Divider, IndexBand, Ticket, cardFrame } from './CardFrame';
 
@@ -186,7 +186,7 @@ export function QuestionPage({ question, language, onAnswer, onContinue }: Quest
         {questionText}
       </Text>
 
-      <View style={[styles.options, { gap: tier.gap }]}>
+      <View style={[styles.options, revealed && styles.optionsRevealed, { gap: tier.gap }]}>
         {optionTexts.map((text, displayIdx) => {
           const isCorrect = displayIdx === correctDisplay;
           const isChosen = displayIdx === selected;
@@ -268,7 +268,13 @@ export function QuestionPage({ question, language, onAnswer, onContinue }: Quest
         <>
           {/* the printed rule + diamond that introduces an answer everywhere in the deck */}
           <Divider style={styles.divider} />
-          <Text style={styles.explanation}>{localize(question.e, language)}</Text>
+          {/* Clamped, not free-flowing. v2 explanations are capped at 120-145 chars by the
+              generator, but the legacy bank still in the deck reaches 354 — and one long
+              enough would push the ticket out again. Ellipsis costs a few words; losing the
+              continue button costs the whole page. */}
+          <Text style={styles.explanation} numberOfLines={5} ellipsizeMode="tail">
+            {localize(question.e, language)}
+          </Text>
           <Ticket
             label={t.cards.continueNote}
             onPress={onContinue}
@@ -330,6 +336,19 @@ const styles = StyleSheet.create({
     marginTop: 'auto', // the rows sit on the bottom edge of the card, as printed
     paddingTop: 12,
   },
+  /**
+   * Answering is what breaks the printed look, so it is also what has to give it up.
+   *
+   * `marginTop: 'auto'` above pins the rows to the bottom edge — correct while the kid is
+   * still choosing. But the verdict then appends a rule, an explanation and the continue
+   * ticket BELOW rows that are already flush with the card's bottom, and the card does not
+   * scroll (a ScrollView here fights the feed's page-turn pan). The ticket went off-frame,
+   * which is a dead end: the one control the kid must reach is the one that gets pushed out.
+   *
+   * Dropping the auto margin lets the whole stack pack upward and hand the freed space to
+   * the explanation and the ticket. The pre-answer composition is untouched.
+   */
+  optionsRevealed: { marginTop: 12 },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
