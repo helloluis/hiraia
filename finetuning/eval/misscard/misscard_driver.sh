@@ -23,7 +23,7 @@ command -v uv >/dev/null || pip install -q uv
 [ -x /root/venv/bin/python ] || { uv venv --python 3.12 /root/venv >/dev/null 2>&1 && uv pip install -q --python /root/venv/bin/python huggingface_hub requests fasttext-wheel "numpy<2" || hold venv; }
 PY=/root/venv/bin/python
 mkdir -p /root/gguf
-( HF_HOME=/root/hf $PY -c "
+( HF_HOME=/root/hf timeout 600 $PY -c "
 import os
 from huggingface_hub import hf_hub_download
 p=hf_hub_download('$REPO','$GGUF_PATH',token=os.environ['HF_TOKEN'],local_dir='/root/gguf'); print('GGUF:',p,os.path.getsize(p))" > /root/pull.log 2>&1 ) &
@@ -33,7 +33,7 @@ LID=$!
 [ -d /root/llama.cpp ] || git clone -q --depth 1 https://github.com/ggml-org/llama.cpp /root/llama.cpp
 [ -x /root/llama.cpp/build/bin/llama-server ] || ( cd /root/llama.cpp && cmake -B build -DGGML_CUDA=OFF -DLLAMA_CURL=OFF > /root/build.log 2>&1 && cmake --build build --config Release -j "$THREADS" --target llama-server >> /root/build.log 2>&1 )
 [ -x /root/llama.cpp/build/bin/llama-server ] || hold "llama-server not built"
-wait $PULL; cat /root/pull.log; wait $LID; [ -s /root/lid.176.ftz ] || hold "lid.176.ftz download failed"
+wait $PULL || true; cat /root/pull.log; wait $LID || true; [ -s /root/lid.176.ftz ] || hold "lid.176.ftz download failed"
 G=$(find /root/gguf -name "*.gguf" | head -1); [ -s "$G" ] || hold "GGUF missing"
 /root/llama.cpp/build/bin/llama-server -m "$G" --port 8080 -c 2048 -t "$THREADS" -np 4 --jinja >/root/srv.log 2>&1 &
 for i in $(seq 1 120); do curl -s localhost:8080/health 2>/dev/null | grep -q ok && break; sleep 2; done
