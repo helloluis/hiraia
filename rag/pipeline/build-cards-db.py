@@ -28,7 +28,6 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 POOL = os.path.join(ROOT, 'packages/mobile/src/generated/cardsPool.generated.json')
 QUESTIONS = os.path.join(ROOT, 'packages/mobile/src/data/cards-questions.json')
-QUIZBANK = os.path.join(ROOT, 'packages/mobile/src/data/quiz-bank.json')
 OUT_DB = os.path.join(ROOT, 'packages/mobile/assets/data/cards.db')
 OUT_IDX = os.path.join(ROOT, 'packages/mobile/src/generated/cardsIndex.generated.json')
 OUT_TOKENS = os.path.join(ROOT, 'packages/mobile/assets/data/tokens.bin')
@@ -165,19 +164,11 @@ def main():
     print(f'  card_question: {len(qrows):,} keyed by factId')
     index['questionFactIds'] = sorted(seen)
 
-    # the OTHER bank travels with it too — same reason, same cost profile. (The MCQ bank is
-    # already stored above as card_question, keyed the way the interject looks it up; storing
-    # it a second time by ordinal cost 20 MB for nothing.)
-    for name, path in (('quiz_bank', QUIZBANK),):
-        if not os.path.exists(path):
-            continue
-        data = json.load(open(path))
-        items = data if isinstance(data, list) else (data.get('questions') or list(data.values())[0])
-        db.execute(f'CREATE TABLE {name}(i INTEGER PRIMARY KEY, json TEXT)')
-        db.executemany(f'INSERT INTO {name} VALUES(?,?)',
-                       [(i, json.dumps(q, ensure_ascii=False, separators=(',', ':')))
-                        for i, q in enumerate(items)])
-        print(f'  {name}: {len(items):,} rows')
+    # The practice-quiz sample used to be stored here as a `quiz_bank` table. It is gone
+    # for two reasons: quiz mode is archived (see archive/quiz-mode/), and nothing ever read
+    # the table anyway — the feature imported its JSON directly, so the sample shipped TWICE,
+    # 2.2 MB in the JS bundle and another 2.26 MB of never-read rows in this database.
+    # The interject's own MCQs live in card_question above, keyed the way it looks them up.
 
     db.commit()
     db.execute('VACUUM')
@@ -192,8 +183,7 @@ def main():
     gz = gzip.compress(raw, 9)  # reported only, to show what the APK will do with it
 
     idx = os.path.getsize(OUT_IDX)
-    before = os.path.getsize(POOL) + os.path.getsize(QUESTIONS) + (
-        os.path.getsize(QUIZBANK) if os.path.exists(QUIZBANK) else 0)
+    before = os.path.getsize(POOL) + os.path.getsize(QUESTIONS)
     print(f'\n  was inlined in the JS bundle : {before/1e6:6.1f} MB of JSON (~2x as bytecode)')
     print(f'  resident index (bundled)     : {idx/1e6:6.1f} MB')
     print(f'  tokens.bin (asset)           : {os.path.getsize(OUT_TOKENS)/1e6:6.1f} MB')

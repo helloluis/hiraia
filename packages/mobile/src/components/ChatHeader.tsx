@@ -1,10 +1,8 @@
 import { useRouter } from 'expo-router';
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { LANGUAGE_OPTIONS, DEFAULT_LANGUAGE } from '../config/languages';
-import { uiStrings } from '../config/strings';
 import { useEngineStore } from '../store/engineStore';
-import { useQuizStore } from '../store/quizStore';
 import { colors, fonts } from '../theme';
 
 export function ChatHeader() {
@@ -12,16 +10,7 @@ export function ChatHeader() {
   const language = useEngineStore((s) => s.language) ?? DEFAULT_LANGUAGE;
   const languageLabel =
     LANGUAGE_OPTIONS.find((o) => o.lang === language)?.label ?? 'Tagalog';
-  const openQuiz = useQuizStore((s) => s.open);
-  const Q = uiStrings(language).quiz;
-
-  // Anti-mistap confirm before taking over the screen with quiz mode.
-  const confirmQuiz = () => {
-    Alert.alert(Q.confirmTitle, Q.confirmBody, [
-      { text: Q.confirmCancel, style: 'cancel' },
-      { text: Q.confirmStart, onPress: () => openQuiz() },
-    ]);
-  };
+  // Quiz mode is archived — the pill that opened it is gone. See the note in chat.tsx.
 
   return (
     <View style={styles.container}>
@@ -36,10 +25,6 @@ export function ChatHeader() {
       </View>
 
       <View style={styles.pills}>
-        {/* Practice-quiz mode. Confirms first (anti-mistap), then takes over the screen. */}
-        <TouchableOpacity style={styles.quizPill} onPress={confirmQuiz}>
-          <Text style={styles.quizPillText}>{Q.button}</Text>
-        </TouchableOpacity>
         {/* Active language, spelled out. Tap to open the language picker. */}
         <TouchableOpacity style={styles.pill} onPress={() => router.push('/sidebar')}>
           <Text style={styles.pillText}>{languageLabel}</Text>
@@ -90,19 +75,5 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     fontSize: 15,
     color: colors.primary,
-  },
-  quizPill: {
-    backgroundColor: colors.accent,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: 'rgba(12,52,61,0.18)',
-  },
-  quizPillText: {
-    fontFamily: fonts.display,
-    fontSize: 16,
-    color: colors.ink,
-    letterSpacing: 0.5,
   },
 });

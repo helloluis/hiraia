@@ -6,12 +6,10 @@ import { ChatHeader } from '../../components/ChatHeader';
 import { ChatTextInput } from '../../components/ChatTextInput';
 import { ChatThread } from '../../components/ChatThread';
 import { LoadingBar } from '../../components/LoadingBar';
-import { QuizOverlay } from '../../components/QuizOverlay';
 import { ACTIVE_MODEL_KEY } from '../../config/model';
 import { uiStrings } from '../../config/strings';
 import { useChatStore } from '../../store/chatStore';
 import { useEngineStore } from '../../store/engineStore';
-import { useQuizStore } from '../../store/quizStore';
 import { colors } from '../../theme';
 
 // The 1B "kitten" build can make mistakes — including on safety / "is this true?"
@@ -27,7 +25,6 @@ export default function ChatScreen() {
   const language = useEngineStore((s) => s.language);
   const changeLanguage = useEngineStore((s) => s.changeLanguage);
   const t = uiStrings(language);
-  const quizActive = useQuizStore((s) => s.active);
   const [inputText, setInputText] = useState('');
   // Re-shows each cold open (dismissal not persisted) — it's a safety notice.
   const [showKittenNote, setShowKittenNote] = useState(IS_KITTEN);
@@ -65,13 +62,13 @@ export default function ChatScreen() {
     void sendMessage(text);
   };
 
-  // Quiz mode takes over the whole screen (yellow legal-pad). Render it instead of the
-  // chat so the chat's KeyboardAvoidingView / input bar don't fight the quiz layout;
-  // on exit the round is appended back into the chat thread (quizStore → addQuizRecap).
-  if (quizActive) {
-    return <QuizOverlay />;
-  }
-
+  // Quiz mode is ARCHIVED. It was a separate full-screen practice mode reached from the
+  // chat header, but the card feed's interject now covers the same ground in the place the
+  // kid already is, and nothing in the current design points at it. QuizOverlay and
+  // quizStore are left in the tree unwired (as LoaderOverlay is) rather than deleted —
+  // but its 2.2 MB bundled question sample is no longer shipped, and 969 of those 1,567
+  // questions were tied to facts that never became cards, so they were unreachable twice
+  // over: no UI to open, and no card to ask about.
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <KeyboardAvoidingView

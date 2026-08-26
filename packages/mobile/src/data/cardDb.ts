@@ -206,20 +206,6 @@ export function questionOf(factId: string): unknown | undefined {
   return QUESTIONS.get(factId) ?? undefined;
 }
 
-/** One row out of a quiz bank table, by index. */
-export async function bankRow(table: 'question' | 'quiz_bank', i: number): Promise<unknown> {
-  await ensureDb();
-  if (!db) return null;
-  const r = await db.getFirstAsync<{ json: string }>(`SELECT json FROM ${table} WHERE i = ?`, [i]);
-  return r ? JSON.parse(r.json) : null;
-}
-
-export async function bankCount(table: 'question' | 'quiz_bank'): Promise<number> {
-  await ensureDb();
-  if (!db) return 0;
-  const r = await db.getFirstAsync<{ n: number }>(`SELECT COUNT(*) AS n FROM ${table}`);
-  return r?.n ?? 0;
-}
 
 // ---------------------------------------------------------------------------------------
 // The token index: every card's vocabulary, as one flat Int32Array.
