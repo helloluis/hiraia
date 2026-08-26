@@ -59,7 +59,7 @@ print(p.get('desiredStatus'), p.get('publicIp') or '-', pm.get('22') or '-')" 2>
   sleep 15
 done
 echo "$POD $IP $PORT x x" > /tmp/eval-pod.txt
-SSH="ssh -o StrictHostKeyChecking=no -o ConnectTimeout=40 -i $HOME/.ssh/id_ed25519 -p $PORT root@$IP"
+SSH="ssh -o StrictHostKeyChecking=no -o ConnectTimeout=40 -i ${HOME:-/root}/.ssh/id_ed25519 -p $PORT root@$IP"
 scp -o StrictHostKeyChecking=no -o ConnectTimeout=30 -P "$PORT" "$HERE"/kit/*.json "$HERE/eval_driver.sh" "root@$IP:/root/" >/dev/null
 printf '%s' "$HUGGINGFACE_API_KEY" > /tmp/.t && scp -o StrictHostKeyChecking=no -P "$PORT" /tmp/.t "root@$IP:/root/.hftok" >/dev/null; rm -f /tmp/.t
 # env.sh is written LOCALLY and scp'd: a heredoc inside an ssh "..." string goes through two
