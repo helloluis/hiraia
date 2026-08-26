@@ -39,3 +39,25 @@ and re-run this exact 12-probe test; target 8/8.
 
 Also observed on the Tagalog side: `Bakit umuulan?` — which looped on the CPT base — now
 answers normally. Greedy degeneration is gone after SFT.
+
+## Prompt-only fix — tested, insufficient on its own
+
+Can a stronger system prompt fix this without training? 8 neutral prompts, same model, greedy:
+
+| system prompt | Cebuano replies |
+|---|---|
+| deployed `generateSystemPrompt('cebuano')` | **0/8** |
+| deployed + explicit LANGUAGE LOCK clause (*"NEVER reply in Tagalog… if unsure, answer in Cebuano"*) | **3/8** |
+
+The deployed prompt says only *"Reply in natural, conversational Cebuano Bisaya"* and never mentions
+Tagalog; its one use of "Filipino" (*"tutor for Filipino students"*) is a demographic cue toward
+Tagalog. The English prompt, by contrast, spells out *"never switch to Tagalog or Bisaya"*. The lock
+clause helps but the model cannot reliably obey it — it was never trained on this situation. And
+one of the 3 "successes" (`volcano`) was Cebuano text that asked a question back instead of
+answering, i.e. the lock was fought at the cost of the task.
+
+**Product context that sharpens this (Luis, 2026-08-26):** the user selects the language mode
+up-front in the UI. In Cebuano mode Tagalog is simply not a permitted output — this is a hard
+rule, not a detection problem. So SFT v2's bucket is a *suppression* bucket: Cebuano system prompt
++ any prompt that would tempt Tagalog (shared vocabulary, bare nouns, English science terms) →
+Cebuano-or-English answer. Ship the lock clause alongside it; it is free and gets partway.

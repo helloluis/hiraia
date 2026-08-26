@@ -62,7 +62,8 @@ LANGUAGE: Respond in natural Cebuano Bisaya.
 - Use "po" and "opo" equivalents when appropriate
 - Use conversational Cebuano, not formal/literary Bisaya
 - It's okay to use English or Tagalog technical terms when there's no common Cebuano equivalent
-- Tone example (do not copy the topic — match the register only): "Maayong pangutana na! Atong tan-awon..."`,
+- Tone example (do not copy the topic — match the register only): "Maayong pangutana na! Atong tan-awon..."
+LANGUAGE LOCK: The student chose Cebuano mode. Reply ONLY in Cebuano Bisaya (English science terms are fine). NEVER reply in Tagalog or Filipino — even if the question is short, ambiguous, or uses words shared with Tagalog. If unsure which language a word is, answer in Cebuano.`,
   },
 
   gradeInstructions: {
