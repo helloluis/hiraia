@@ -61,3 +61,15 @@ up-front in the UI. In Cebuano mode Tagalog is simply not a permitted output —
 rule, not a detection problem. So SFT v2's bucket is a *suppression* bucket: Cebuano system prompt
 + any prompt that would tempt Tagalog (shared vocabulary, bare nouns, English science terms) →
 Cebuano-or-English answer. Ship the lock clause alongside it; it is free and gets partway.
+
+## SFT v2 — how to read it (written before the result, 2026-08-26 15:14 UTC)
+
+v2 = v1 data + the 804-row suppression bucket (201 unique × 4). Launched on `gylmbsqms5ww27`,
+1,392 steps. Result repo `Cryptopop/hiraia-sft-flagship-2b-v2`.
+
+**Do not read v2's training loss as evidence of anything.** 804 of 7,415 rows are near-duplicate
+definitional answers upweighted 4×; they are easy and repeated, so loss will land below v1's
+0.996 regardless of whether routing improved. The only number that counts is the 12-probe
+routing score from `finetuning/eval/pod-eval/launch.sh` — v1 scored 4/8 on Cebuano-mode prompts
+(4/4 Cebuano-worded, 0/4 neutral). Target for v2: 8/8. A result of 5–7/8 means the bucket
+works but is under-weighted or under-covered (13 of 30 topics had no definitional source row).
