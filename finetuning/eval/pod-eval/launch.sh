@@ -44,6 +44,11 @@ for price,dc,gid,dn in sorted(hits)[:15]:
 sys.stderr.write("NO CAPACITY\n"); sys.exit(1)
 PY
 )
+# fail-safe: if anything below fails before the driver is running, do not leave a driverless pod billing
+LAUNCHED=0
+cleanup(){ if [ "$LAUNCHED" != 1 ]; then echo "launcher failed before the driver started — terminating $POD" >&2
+  curl -s -m 30 -X DELETE -H "Authorization: Bearer $RUNPOD_API_KEY" -H "User-Agent: hiraia/1.0" "https://rest.runpod.io/v1/pods/$POD" >/dev/null; fi; }
+trap cleanup EXIT
 echo "created $POD; waiting for ssh"
 for i in $(seq 1 40); do
   R=$(curl -s --max-time 30 -H "Authorization: Bearer $RUNPOD_API_KEY" -H "User-Agent: hiraia/1.0" "https://rest.runpod.io/v1/pods/$POD" | python3 -c "
@@ -79,6 +84,6 @@ $SSH 'chmod 600 /root/.hftok /root/env.sh; chmod +x /root/eval_driver.sh /root/d
 . /root/env.sh; [ -n "$HF_TOKEN" ] && [ "${HF_TOKEN#\$}" = "$HF_TOKEN" ] || { echo "env.sh: HF_TOKEN did not resolve"; exit 1; }
 nohup /root/deadman.sh >/dev/null 2>&1 </dev/null &
 nohup /root/eval_driver.sh "'"$REPO"'" "'"$GGUF"'" "'"$LABEL"'" >/dev/null 2>&1 </dev/null &
-echo LAUNCHED'
+echo LAUNCHED' && LAUNCHED=1
 
 echo "eval '$LABEL' running on $POD — watch hiraia.b11.dev/admin; answers land at $REPO/eval/$LABEL-eval-answers.json"
