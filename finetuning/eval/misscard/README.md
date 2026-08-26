@@ -45,3 +45,23 @@ can do at 99%.
 **What the model IS good for in this product, from today's evidence:** card 1 on a hit
 (templated single generation, 99% language, fluent) — and nothing that requires it to reason
 about what the bank contains.
+
+### Caveat on the retrieval prototype — "retrievable by construction" is not "sensible"
+
+Reading the 27 retrieval-based triples by hand: only **7/27 are plausible** follow-ons (`my dog`
+→ dogs/foals, `birthday` → birthstones, `christmas` → parol/Sinulog, `qwerty` → the QWERTY
+keyboard fact). The other 20 are **surface-form coincidences**: `tiktok` → tokay gecko,
+`roblox` → fruit bats, `minecraft` → meerkats/mudskipper, `hello` → slime protection. And the
+top-1 score does not separate the two groups (both 0.43–0.67).
+
+That is the real shape of the problem: **for a true miss, "nearby" is undefined** — by
+definition there is no conceptual neighbour in the bank, so nearest-neighbour returns noise
+that happens to share letters. The 7 plausible cases are not really misses; they have a partial
+concept (dog, birthday, christmas) that retrieval finds. They are weak hits and the feed's
+normal edge-walk handles them.
+
+**So the miss card cannot be "three related things" by any mechanism** — not the model (~25%),
+not similarity search (~26%). The honest design for a true miss is a card that says "walang
+cards tungkol sa 'minecraft'" and offers **three directions from a curated, mode-specific list
+of popular topics** (rotated, not searched). The model may write the one connective sentence.
+Which topics go on that list is a product decision.
