@@ -17,3 +17,31 @@ three lines, each `topic — one sentence why it connects`, in the mode language
 
 Probes: 72 terms (27 true misses, 15 borderline science, 30 kid-plausible extras) × 3 modes = 216.
 Model: SFT v1 Q4_K_M. Scorer needs the LaBSE service on :8091.
+
+## Result — three attempts on SFT v1, 2026-08-26 (216 probes each, T=0.7)
+
+| | ≥3 directions | mode language | **all 3 retrievable (≥0.63)** | preamble | truncated |
+|---|---|---|---|---|---|
+| v1 prose template | 68/216 | 211/216 | **57/216 (26%)** | 113 | 49 |
+| v2 "EXACTLY three lines, no intro" | 87/216 | 198/216 | **60/216 (28%)** | 127 | 88 |
+| v3 JSON-schema constrained decoding | 151/216 | 180/216 | **55/216 (25%)** | 58 | 53 |
+
+**The bar was ≥90% retrievable. Every approach lands at ~25%, flat.** Format compliance is
+solvable (the schema forces three `{topic, why}` objects), but what the model puts *in* the
+slots is not: `my dog` → Bacteria / Enzymes / Enzymes; `kumusta` → "the colour of your hair";
+`minecraft` → a truncated non-topic. The prose-v2 wording made a 2B model *more* verbose, not
+less. Constrained decoding forces the shape of a good answer onto a model that cannot produce
+the substance — it does not know, in any phrasing, what "three nearby science topics that exist
+in our bank" means.
+
+**This is a capability ceiling, not a prompt problem, and the fix is the same one that closed
+routing: don't ask the model to do what retrieval does better.** The three directions for a
+miss card should be the top-3 *distinct topics* in the bank nearest the query — retrievable
+by construction (100%), instant, deterministic, and inspectable. `retrieval-directions.json`
+shows this for all 27 true misses. The model's role on a miss card, if any, is one line of
+connective text ("Wala tay cards sa 'minecraft', pero…"), which the routing benchmark says it
+can do at 99%.
+
+**What the model IS good for in this product, from today's evidence:** card 1 on a hit
+(templated single generation, 99% language, fluent) — and nothing that requires it to reason
+about what the bank contains.
