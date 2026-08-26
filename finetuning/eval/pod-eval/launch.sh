@@ -57,20 +57,28 @@ echo "$POD $IP $PORT x x" > /tmp/eval-pod.txt
 SSH="ssh -o StrictHostKeyChecking=no -o ConnectTimeout=40 -i $HOME/.ssh/id_ed25519 -p $PORT root@$IP"
 scp -o StrictHostKeyChecking=no -o ConnectTimeout=30 -P "$PORT" "$HERE"/kit/*.json "$HERE/eval_driver.sh" "root@$IP:/root/" >/dev/null
 printf '%s' "$HUGGINGFACE_API_KEY" > /tmp/.t && scp -o StrictHostKeyChecking=no -P "$PORT" /tmp/.t "root@$IP:/root/.hftok" >/dev/null; rm -f /tmp/.t
-$SSH "chmod 600 /root/.hftok; chmod +x /root/eval_driver.sh
-cat > /root/env.sh <<E
+# env.sh is written LOCALLY and scp'd: a heredoc inside an ssh "..." string goes through two
+# rounds of unescaping and HF_TOKEN lands on the pod as the literal text $(cat /root/.hftok).
+ENV=$(mktemp)
+cat > "$ENV" <<E
 export RUNPOD_POD_ID='$POD'
 export RUNPOD_API_KEY='$RUNPOD_API_KEY'
 export HB_TOKEN='$HB'
-export HF_TOKEN=\"\\\$(cat /root/.hftok)\"
+export HF_TOKEN="\$(cat /root/.hftok)"
 E
-chmod 600 /root/env.sh
-cat > /root/deadman.sh <<E
+DEAD=$(mktemp)
+cat > "$DEAD" <<E
 #!/usr/bin/env bash
 sleep 7200; [ -e /root/DEADMAN_CANCEL ] && exit 0
 curl -s -m 30 -X DELETE -H 'Authorization: Bearer $RUNPOD_API_KEY' https://rest.runpod.io/v1/pods/$POD
 E
-chmod +x /root/deadman.sh; nohup /root/deadman.sh >/dev/null 2>&1 </dev/null &
-nohup /root/eval_driver.sh '$REPO' '$GGUF' '$LABEL' >/dev/null 2>&1 </dev/null &
-echo LAUNCHED"
+scp -o StrictHostKeyChecking=no -P "$PORT" "$ENV" "root@$IP:/root/env.sh" >/dev/null
+scp -o StrictHostKeyChecking=no -P "$PORT" "$DEAD" "root@$IP:/root/deadman.sh" >/dev/null
+rm -f "$ENV" "$DEAD"
+$SSH 'chmod 600 /root/.hftok /root/env.sh; chmod +x /root/eval_driver.sh /root/deadman.sh
+. /root/env.sh; [ -n "$HF_TOKEN" ] && [ "${HF_TOKEN#\$}" = "$HF_TOKEN" ] || { echo "env.sh: HF_TOKEN did not resolve"; exit 1; }
+nohup /root/deadman.sh >/dev/null 2>&1 </dev/null &
+nohup /root/eval_driver.sh "'"$REPO"'" "'"$GGUF"'" "'"$LABEL"'" >/dev/null 2>&1 </dev/null &
+echo LAUNCHED'
+
 echo "eval '$LABEL' running on $POD — watch hiraia.b11.dev/admin; answers land at $REPO/eval/$LABEL-eval-answers.json"
