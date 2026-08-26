@@ -154,3 +154,32 @@ verbosity pressure — v2 answers more, including when it shouldn't.
 
 The synth-ceb verdict is unchanged and now stronger: both leaks are mode-routing behaviours,
 learnable from a few hundred rows each, and neither is a corpus-knowledge problem.
+
+## SUPERSEDED — the app composes the prompt (Luis, 2026-08-26 evening)
+
+Everything above treats the kid's raw input as what the model sees. It isn't. The app already
+rewrites the user turn (`composeGroundedUserTurn` injects retrieved facts there), and Luis's
+point stands: if a kid in Cebuano mode types `gravity`, the app can send
+
+    Ipasabot ang "gravity" sa yano nga Cebuano para sa usa ka Grade 5 nga estudyante.
+
+The mode is a fact the app holds; the model never has to *infer* it from two words. That
+dissolves the neutral-turn problem, the bucket, the 16 uncovered topics, and the authoring
+question. It also means **v1, not v2, is the candidate to ship** — v2's only gain was on inputs
+the app will never send, and it cost the English tier.
+
+Product context: the UI will steer kids toward one- or two-word input via placeholder/examples.
+So short, often-English input is the *contract*, and the template is what carries the mode.
+The template lives in the USER turn (system prompt stays static for the QVAC KV cache — see the
+comment on `composeGroundedUserTurn`).
+
+**What still has to be true, and is now being measured:** the model must follow a
+native-language instruction template reliably, with an embedded term that may be English,
+misspelled, lowercase, or two words. `finetuning/eval/routing/` is that benchmark: 82 grade-5
+terms × 3 modes × input variants = 1,188 probes, sampled at T=0.7, replies labelled with
+fastText lid.176 (not a regex). First run is on SFT v1. Target ≥95% expected-language per mode.
+If it clears, the routing question is closed and the remaining work is answer quality, plus an
+app-side reply-language check for the tail.
+
+The 8-probe greedy regex test above was too small, greedy-only, and regex-scored; its numbers
+(4/8, 5/8) should not be cited.
