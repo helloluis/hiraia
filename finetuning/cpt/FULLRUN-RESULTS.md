@@ -63,6 +63,44 @@ Greedy, 45 new tokens, same prompts as the probe.
    acquisition. The generation change (degenerate → fluent, correct) is the stronger evidence.
    The English number is free of this critique (reserved shard, never trained on).
 
+## Gate 4 — GGUF ship path: PASS (with a required flag)
+
+Converted, quantized and generated from `checkpoint-3273`. Two traps, both now understood.
+
+**1. `--no-mtp` is REQUIRED, or the GGUF is unloadable.** The base model carries a
+Multi-Token-Prediction head. Stripping the vision tower and saving `language_model` drops the
+MTP weights, but `mtp_num_hidden_layers: 1` survives in the config — so the converter stamps
+`block_count = num_hidden_layers + mtp = 25` while writing only 24 blocks. The file converts
+and quantizes to exactly the right size, then dies at load:
+
+    check_tensor_dims: tensor 'blk.24.attn_norm.weight' not found
+
+Setting `mtp_num_hidden_layers: 0` does NOT work (`assert self.opt_num_mtp_layers != 0` in
+`conversion/qwen.py`). Pass `--no-mtp` instead. This is not a llama.cpp regression — b10603 and
+b10630 behave identically; the earlier ckpt-125 pass simply had no MTP field to trip over.
+
+    convert_hf_to_gguf.py <ckpt> --no-mtp --outfile f16.gguf --outtype f16
+    -> block_count 24, blk.0..blk.23  CONSISTENT
+
+**2. `nproc` lies again.** `llama-server -t $(nproc)` used 160 threads against a 17-core cgroup
+quota and produced **0.05 tok/s**, which reads as a hang. With `-t 16` on the same machine:
+
+| | |
+|---|---|
+| prefill | **97.1 tok/s** |
+| decode | **44.5 tok/s** |
+| Q4_K_M size | 1.56 GB |
+
+Q4_K_M output is correct in both languages:
+- `"Ang photosynthesis ay"` -> *"ang proseso kung saan ang mga halaman ay gumagawa ng kan..."*
+- `"Ang adlaw mao ang"` -> *"sentro sa atong solar nga sistema, nga adunay daghang mga"*
+
+(x86 with 16 cores is not the Redmi; this proves the arch converts and runs on CPU, it is not
+an on-device speed estimate.)
+
+**Artifacts** — `Cryptopop/hiraia-cpt-flagship-2b` (PRIVATE): `model.safetensors` + tokenizer +
+config, and `gguf/hiraia-cpt-2b-Q4_K_M.gguf`.
+
 ## Next
 
 SFT/KD on this base → grounded → DPO, then GGUF for on-device. Gate 4 (GGUF convert/load/
