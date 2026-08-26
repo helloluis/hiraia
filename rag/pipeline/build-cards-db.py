@@ -22,7 +22,7 @@ handful of cards actually being shown.
   -> packages/mobile/assets/data/cards.db             (ships; the APK deflates it)
   -> packages/mobile/src/generated/cardsIndex.generated.json  (bundled, small)
 """
-import json, os, gzip, zlib, struct, sqlite3, collections
+import json, os, gzip, hashlib, zlib, struct, sqlite3, collections
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
@@ -177,9 +177,16 @@ def main():
     # Ships UNCOMPRESSED. The APK deflates .db assets itself (measured below), so gzipping
     # it here would only buy the same bytes at the cost of needing a gunzip in JS — and
     # expo-sqlite needs a real file on disk either way.
-    json.dump(index, open(OUT_IDX, 'w'), ensure_ascii=False, separators=(',', ':'))
-
     raw = open(OUT_DB, 'rb').read()
+
+    # Stamp the database's CONTENT into the resident index so the app can tell a new database
+    # from the copy it already wrote. cardDb copies the bundled db only when the file is
+    # ABSENT, so without this every rebuild shipped an asset the app then ignored — the deck
+    # kept serving whatever database it created on first launch, however old. The index is
+    # written here rather than above because the stamp needs the finished file.
+    index['dbVersion'] = hashlib.sha256(raw).hexdigest()[:12]
+    json.dump(index, open(OUT_IDX, 'w'), ensure_ascii=False, separators=(',', ':'))
+    print(f'  dbVersion: {index["dbVersion"]}')
     gz = gzip.compress(raw, 9)  # reported only, to show what the APK will do with it
 
     idx = os.path.getsize(OUT_IDX)

@@ -22,8 +22,13 @@ import { Directory, File } from 'expo-file-system';
 import * as SQLite from 'expo-sqlite';
 
 import DB_ASSET from '../../assets/data/cards.db';
+import cardsIndex from '../generated/cardsIndex.generated.json';
 
 const DB_NAME = 'cards.db';
+/** Content hash of the bundled database, stamped by build-cards-db.py. */
+const DB_VERSION = (cardsIndex as { dbVersion?: string }).dbVersion ?? 'unversioned';
+/** Sits beside the database and records which build wrote it. */
+const STAMP_NAME = 'cards.db.version';
 
 export interface CardTextRow {
   fact: { tl: string; en: string; bis: string };
@@ -62,11 +67,30 @@ async function open(): Promise<void> {
   const raw = String(SQLite.defaultDatabaseDirectory ?? '');
   const dir = raw.startsWith('file://') ? raw : `file://${raw}`;
   const target = new File(dir, DB_NAME);
-  if (!target.exists) {
+  const stamp = new File(dir, STAMP_NAME);
+  //
+  // Copy when the database is MISSING **or STALE**. It used to copy on absence alone, and
+  // that shipped silently wrong content for as long as the app stayed installed: the deck
+  // kept serving the database it wrote on first launch while every later APK carried a newer
+  // one it never read. The symptom is the worst kind — the build is verifiably correct, the
+  // install reports success, and the app still shows the old cards.
+  //
+  // This is the same failure the downloaded LoRA adapters hit (cached by file existence, no
+  // size or hash check), which is why the stamp records a CONTENT hash rather than a version
+  // someone has to remember to bump.
+  let fresh = false;
+  try {
+    fresh = target.exists && stamp.exists && stamp.textSync().trim() === DB_VERSION;
+  } catch {
+    fresh = false; // an unreadable stamp means re-copy, never means keep
+  }
+  if (!fresh) {
     new Directory(dir).create({ intermediates: true, idempotent: true });
+    if (target.exists) target.delete();
     const asset = Asset.fromModule(DB_ASSET);
     await asset.downloadAsync();
     new File(asset.localUri ?? asset.uri).copy(target);
+    stamp.write(DB_VERSION);
   }
   db = await SQLite.openDatabaseAsync(DB_NAME);
 }
