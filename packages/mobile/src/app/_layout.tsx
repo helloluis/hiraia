@@ -22,11 +22,12 @@ export default function RootLayout() {
   const hydrate = useChatStore((s) => s.hydrate);
   const [fontsLoaded] = useFonts(fontAssets);
 
-  // bootstrap() starts the engine load at boot for a returning user. Nothing waits on it —
-  // see the note below the effects.
+  // bootstrap() resolves the saved language and nothing more — it deliberately does NOT
+  // load the engine. See the note below the effects.
 
   useEffect(() => {
-    // Resolve the saved language and (for a returning user) start warming the engine.
+    // Resolve the saved language. The engine is NOT started here — it loads only when
+    // something needs it (search field tap, /chat, or onboarding's language pick).
     void bootstrap();
     // Load persisted chat history from SQLite (gates the cold-start factoid in chat).
     void hydrate();

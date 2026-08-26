@@ -71,23 +71,37 @@ export const useEngineStore = create<EngineState>((set, get) => ({
     } catch (e) {
       console.warn('[engineStore] reading saved language failed:', e);
     }
+    const rawSaved = saved;
     // A persisted choice that is now comingSoon (e.g. a beta tester who picked
     // Bisaya before the descope) falls back to the default instead of booting a
-    // language the UI no longer offers. changeLanguage() re-persists it.
+    // language the UI no longer offers. Re-persisted just below.
     const opt = saved && LANGUAGE_OPTIONS.find((o) => o.lang === saved);
     if (saved && (!opt || opt.comingSoon)) {
       console.warn(`[engineStore] saved language "${saved}" unavailable — falling back to ${DEFAULT_LANGUAGE}`);
       saved = DEFAULT_LANGUAGE;
     }
+    // A fallback substitution above only changed the IN-MEMORY language. changeLanguage()
+    // used to re-persist it as a side effect of the eager warm-up; with that gone, persist
+    // it here or the same fallback runs again on every launch.
+    if (saved && saved !== rawSaved) void setSetting('language', saved);
+
     // First launch (no saved language) → show the onboarding carousel; its slide-1
     // pick calls changeLanguage() which starts the model download in the background.
     //
-    // EAGER WARM-UP: a returning user (saved language) starts the model download
-    // (first run) / warm-up (every cold start) immediately at boot, behind the
-    // sleeping-cat LoaderOverlay — so the model is warm and answering within ~10-15s
-    // by the time the kid reaches the feed's search box.
+    // NO EAGER WARM-UP. A returning user used to start the model load right here, behind
+    // the sleeping-cat LoaderOverlay. That overlay is gone (the feed is zero-model, so
+    // covering the app for ~98s of warm-up was dead air) — but removing the COVER without
+    // removing the LOAD just hid the cost: the load still ran at boot and still contended
+    // for the JS thread, so swipes stalled for seconds while the app looked idle and
+    // usable. Loading ~2 GB on four budget cores is not "background" on this device.
+    //
+    // The engine is now loaded only when something actually needs it:
+    //   - the feed's search field, on tap (cardStore.warmModel)
+    //   - /chat, which kicks its own load and shows a factoid while it waits
+    //   - onboarding slide-1, where picking a language IS the request to set up
+    // A reward card that comes due before the engine is ready falls back to its
+    // deterministic template, which is the existing contract.
     set({ language: saved, bootstrapped: true, onboardingActive: !saved });
-    if (saved) void get().changeLanguage(saved);
   },
 
   changeLanguage: async (language: Language) => {

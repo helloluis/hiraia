@@ -307,7 +307,17 @@ export function CardFeedScreen() {
   // here rather than as a full-screen gate (see the note in app/_layout.tsx).
   const engineReady = useEngineStore((s) => s.isReady);
   const engineError = useEngineStore((s) => s.error);
-  const warming = !engineReady && !engineError;
+  // "warming" means a load is IN FLIGHT — not merely "not ready yet".
+  //
+  // It used to be `!engineReady && !engineError`, which is true from the very first frame.
+  // Combined with `disabled={engineReady || warming}` that left the field permanently
+  // disabled, so the tap that is supposed to WAKE the model could never fire. The bug was
+  // invisible while bootstrap() eagerly loaded the engine at launch: not-ready and loading
+  // were then the same state, and the load always completed on its own. Removing the boot
+  // warm-up split them apart, and the idle state is the whole point of this control — it is
+  // what the reader taps to start the load.
+  const loadingPhase = useEngineStore((s) => s.loadingPhase);
+  const warming = loadingPhase === 'downloading' || loadingPhase === 'warming';
   const queryBanner = useCardStore((s) => s.queryBanner);
   const pageKey = useCardStore((s) => s.pageKey);
   const pagesRead = useCardStore((s) => s.pagesRead);
@@ -759,6 +769,10 @@ export function CardFeedScreen() {
         >
           <View style={styles.searchDiamond} />
           <TextInput
+            // Until the engine can answer, the input must not swallow the touch — the
+            // parent Pressable is the wake target, and `editable={false}` alone is not a
+            // reliable guarantee that the tap reaches it.
+            pointerEvents={engineReady ? 'auto' : 'none'}
             style={[styles.searchInput, !engineReady && styles.searchInputIdle]}
             value={queryText}
             onChangeText={setQueryText}
