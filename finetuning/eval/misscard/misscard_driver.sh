@@ -54,7 +54,7 @@ def label(text):
 def ask(mode,user):
     r=requests.post("http://localhost:8080/v1/chat/completions",timeout=300,json={
         "messages":[{"role":"system","content":SP[mode]},{"role":"user","content":user}],
-        "max_tokens":160,"temperature":TEMP,"chat_template_kwargs":{"enable_thinking":False}})
+        "max_tokens":300,"temperature":TEMP,"chat_template_kwargs":{"enable_thinking":False}})
     r.raise_for_status(); return r.json()["choices"][0]["message"].get("content") or ""
 a=ask("tagalog",probes[0]["user_turn"]); assert a.strip(), "EMPTY self-check"; print("[selfcheck]",a[:70],label(a),flush=True)
 jobs=[(p,s) for p in probes for s in range(SAMPLES)]
@@ -70,7 +70,7 @@ with ThreadPoolExecutor(max_workers=4) as ex:
         if done%50==0: print(f"[prog] {done}/{len(jobs)}  {(time.time()-t0)/done:.1f}s/each",flush=True)
 empties=sum(1 for r in out if not r["answer"].strip() or r["answer"].startswith("<ERR"))
 assert empties < len(out)*0.02, f"{empties} empty/error answers"
-json.dump({"label":LABEL,"samples":SAMPLES,"temperature":TEMP,"n":len(out),"results":out},open(f"/root/routing-{LABEL}.json","w"),ensure_ascii=False)
+json.dump({"label":LABEL,"samples":SAMPLES,"temperature":TEMP,"n":len(out),"results":out},open(f"/root/misscard-{LABEL}.json","w"),ensure_ascii=False)
 EXP={"tagalog":"tl","cebuano":"ceb","english":"en"}
 by={}
 for r in out: by.setdefault(r["mode"],[]).append(r["lid"]==EXP[r["mode"]])
