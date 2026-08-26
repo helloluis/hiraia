@@ -433,6 +433,28 @@ export function CardFeedScreen() {
     () => (beneath ? nextChoices(beneath.id, new Set([beneath.id]), language) : []),
     [beneath, language]
   );
+  /**
+   * Did this card just arrive from the preview underneath?
+   *
+   * The fan renders the next card in full (`instant`), so during a swipe the reader already
+   * sees its illustration and text. It then becomes the top card as a FRESH mount — different
+   * parent, new key — which restarts the typewriter and drops `extrasOpacity` back to 0. The
+   * card the reader was looking at visibly un-finished itself and re-revealed, illustration
+   * and all, for as long as the type took to run.
+   *
+   * The typewriter is still right for a card arriving unseen — first launch, a search, a
+   * reroll, or the page after a quiz, where the fan is empty. It is only wrong for the one
+   * case it now contradicts: a card already shown in full a moment ago.
+   *
+   * The ref holds the PREVIOUS render's beneath id: the effect below commits after render,
+   * so while rendering the new page it still describes what was underneath during the swipe.
+   */
+  const prevBeneathId = useRef<string | null>(null);
+  const cameFromPreview = !!current && prevBeneathId.current === current.id;
+  useEffect(() => {
+    prevBeneathId.current = beneath?.id ?? null;
+  });
+
   const forkGate = useSharedValue(0);
   useEffect(() => {
     forkGate.value = forking ? 1 : 0;
@@ -921,6 +943,7 @@ export function CardFeedScreen() {
                   fact={current}
                   choices={choices}
                   language={language}
+                  instant={cameFromPreview}
                   onChoose={(c) => tapNav(() => chooseFrom(c, choices[0] === c ? 'left' : 'right'))}
                 />
               )}
