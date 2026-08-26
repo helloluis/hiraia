@@ -73,3 +73,42 @@ definitional answers upweighted 4×; they are easy and repeated, so loss will la
 routing score from `finetuning/eval/pod-eval/launch.sh` — v1 scored 4/8 on Cebuano-mode prompts
 (4/4 Cebuano-worded, 0/4 neutral). Target for v2: 8/8. A result of 5–7/8 means the bucket
 works but is under-weighted or under-covered (13 of 30 topics had no definitional source row).
+
+## SFT v2 result — 5/8 (worded 4/4, neutral 1/4). Partial, and diagnostic.
+
+`Cryptopop/hiraia-sft-flagship-2b-v2`: 1,392/1,392 steps, loss 1.49→0.84, verified on HF.
+Routing on the identical 12 probes, same prompt, same decoding:
+
+| | worded | neutral | Cebuano-mode |
+|---|---|---|---|
+| v1 | 4/4 | 0/4 | 4/8 |
+| **v2** | 4/4 | **1/4** | **5/8** |
+
+Tagalog controls 4/4 on both. No regression on worded prompts.
+
+**The interesting part is the shape of the three remaining leaks.** v1 answered them in fluent,
+confident Tagalog. v2 does not:
+
+| prompt | v2 reply |
+|---|---|
+| `Ang hangin` | *refuses* — "hindi ako makapagbigay ng sagot sa hangin" |
+| `Ang bato` | *clarifies* — "ano ang gusto mong malaman tungkol sa bato?" |
+| `Ang mga bituon` | **Cebuano**, but a question back — "Nakakita ka na ba og bituon?" |
+| `Ang tubig` | Tagalog (unchanged) |
+
+The model learned that a bare noun under a Cebuano prompt is a situation to be careful in — it
+stopped confidently answering in the wrong language — but not that the resolution is "answer in
+Cebuano." The bucket taught the *case* without winning the *response*. Two reasons, both fixable:
+
+1. **Under-weighted.** 804 rows (10.7%) against 2,599 Cebuano-worded rows that all reinforce
+   "the question's language decides."
+2. **Under-covered.** 13 of 30 topics had no definitional source row — including `hangin` and
+   `bato`, two of the three that still leak. `bituon` *was* covered, and it flipped.
+
+**v3 plan:** cover all 30 topics (write Cebuano definitional answers for the 13 missing ones —
+short, and the bucket's answers are already the model's own style), raise the upweight to ~8×
+(~1,600 rows, ~18%), and add bare-noun rows whose *answer* is a direct Cebuano explanation, not a
+clarifying question. Same 12-probe test; target 8/8. Cost ~$2.
+
+**Standing verdict unchanged:** this is an SFT-data problem with a visible dose-response
+(0/4 → 1/4 from one bucket). The synth-ceb corpus would not have moved this number.
