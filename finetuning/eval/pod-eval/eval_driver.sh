@@ -43,10 +43,19 @@ command -v uv >/dev/null || pip install -q uv
 [ -x /root/venv/bin/python ] || { uv venv --python 3.12 /root/venv >/dev/null 2>&1 && uv pip install -q --python /root/venv/bin/python huggingface_hub requests || hold venv; }
 PY=/root/venv/bin/python
 mkdir -p /root/gguf
+# Pull the GGUF if the repo has one; otherwise pull the safetensors and CONVERT (--no-mtp, then
+# Q4_K_M, then verify block_count == 24) and upload the GGUF back so the next run finds it.
 ( HF_HOME=/root/hf $PY - <<P
-import os
-from huggingface_hub import hf_hub_download
-p=hf_hub_download("$REPO","$GGUF_PATH",token=os.environ["HF_TOKEN"],local_dir="/root/gguf"); print("GGUF:",p,os.path.getsize(p))
+import os, sys
+from huggingface_hub import hf_hub_download, HfApi, snapshot_download
+api=HfApi(token=os.environ["HF_TOKEN"])
+files=api.list_repo_files("$REPO")
+if "$GGUF_PATH" in files:
+    p=hf_hub_download("$REPO","$GGUF_PATH",token=os.environ["HF_TOKEN"],local_dir="/root/gguf"); print("GGUF:",p,os.path.getsize(p))
+else:
+    print("NO GGUF in repo — will convert from safetensors"); open("/root/NEED_CONVERT","w").write("$GGUF_PATH")
+    snapshot_download("$REPO",token=os.environ["HF_TOKEN"],local_dir="/root/hfmodel",allow_patterns=["*.json","*.safetensors","*.jinja","tokenizer*"])
+    print("safetensors pulled")
 P
 ) > /root/pull.log 2>&1 &
 PULL=$!
@@ -57,7 +66,35 @@ if [ ! -x /root/llama.cpp/build/bin/llama-server ]; then
   [ -x /root/llama.cpp/build/bin/llama-server ] || hold "llama-server not built (see /root/build.log)"
 fi
 wait $PULL; cat /root/pull.log
-G=$(find /root/gguf -name "*.gguf" | head -1); [ -s "$G" ] || hold "GGUF missing after pull"
+if [ -e /root/NEED_CONVERT ]; then
+  echo ">> converting safetensors -> GGUF (--no-mtp) -> Q4_K_M"
+  [ -x /root/venv-conv/bin/python ] || { uv venv --python 3.12 /root/venv-conv >/dev/null 2>&1 \
+    && uv pip install -q --python /root/venv-conv/bin/python "transformers==4.57.6" torch numpy sentencepiece protobuf gguf huggingface_hub || hold "conv venv"; }
+  CV=/root/venv-conv/bin/python
+  $CV - <<'P'
+import json; p="/root/hfmodel/tokenizer_config.json"; d=json.load(open(p)); v=d.get("extra_special_tokens")
+if isinstance(v,list): d["extra_special_tokens"]={} if not v else {str(i):x for i,x in enumerate(v)}; json.dump(d,open(p,"w"),ensure_ascii=False,indent=2); print("patched extra_special_tokens list->dict")
+P
+  ( cd /root/llama.cpp && cmake --build build --config Release -j "$THREADS" --target llama-quantize >> /root/build.log 2>&1 ) || hold "llama-quantize build"
+  $CV /root/llama.cpp/convert_hf_to_gguf.py /root/hfmodel --no-mtp --outfile /root/gguf/model-f16.gguf --outtype f16 2>&1 | grep -viE "writing:|byte/s" | tail -2
+  [ -s /root/gguf/model-f16.gguf ] || hold "convert produced no file"
+  $CV - <<'P' || hold "GGUF block_count/tensor mismatch (is --no-mtp still honoured?)"
+from gguf import GGUFReader; import re
+r=GGUFReader("/root/gguf/model-f16.gguf")
+bc=next((f.contents() for f in r.fields.values() if f.name.endswith("block_count")),None)
+ns={int(m.group(1)) for t in r.tensors if (m:=re.match(r"blk\.(\d+)\.",t.name))}
+print(f"block_count={bc} blk_tensors={len(ns)}"); assert bc==len(ns)==24,(bc,len(ns))
+P
+  /root/llama.cpp/build/bin/llama-quantize /root/gguf/model-f16.gguf /root/gguf/model-Q4_K_M.gguf Q4_K_M "$THREADS" >/dev/null 2>&1 || hold quantize
+  rm -f /root/gguf/model-f16.gguf
+  $CV - <<P || echo "WARN: GGUF upload failed (eval continues; convert will rerun next time)"
+import os
+from huggingface_hub import HfApi
+HfApi(token=os.environ["HF_TOKEN"]).upload_file(path_or_fileobj="/root/gguf/model-Q4_K_M.gguf",path_in_repo="$GGUF_PATH",repo_id="$REPO",commit_message="Q4_K_M GGUF (--no-mtp), built by eval_driver")
+print("GGUF uploaded to $REPO/$GGUF_PATH")
+P
+fi
+G=$(find /root/gguf -name "*.gguf" | head -1); [ -s "$G" ] || hold "GGUF missing after pull/convert"
 echo ">> serving $G on CPU"
 /root/llama.cpp/build/bin/llama-server -m "$G" --port 8080 -c 4096 -t "$THREADS" -np 2 --jinja >/root/srv.log 2>&1 &
 for i in $(seq 1 120); do curl -s localhost:8080/health 2>/dev/null | grep -q ok && break; sleep 2; done
