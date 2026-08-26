@@ -1,0 +1,14 @@
+[
+ {"id":"route-ceb-tubig","lang":"cebuano","prompt":"Ang tubig","expect":"ceb","note":"the CPT base answered this in Tagalog"},
+ {"id":"route-ceb-adlaw","lang":"cebuano","prompt":"Unsa ang adlaw?","expect":"ceb"},
+ {"id":"route-ceb-photo","lang":"cebuano","prompt":"Unsaon paghimo sa mga tanom sa ilang pagkaon?","expect":"ceb"},
+ {"id":"route-ceb-ulan","lang":"cebuano","prompt":"Ngano nga nag-ulan?","expect":"ceb"},
+ {"id":"route-ceb-kasingkasing","lang":"cebuano","prompt":"Unsa ang buhat sa kasingkasing?","expect":"ceb"},
+ {"id":"route-ceb-ambig1","lang":"cebuano","prompt":"Ang hangin","expect":"ceb","note":"ambiguous — word exists in both"},
+ {"id":"route-ceb-ambig2","lang":"cebuano","prompt":"Ang bato","expect":"ceb","note":"ambiguous"},
+ {"id":"route-ceb-ambig3","lang":"cebuano","prompt":"Ang mga bituon","expect":"ceb","note":"ambiguous"},
+ {"id":"route-tl-tubig","lang":"tagalog","prompt":"Ang tubig","expect":"tl","note":"control: same prompt, Tagalog system"},
+ {"id":"route-tl-araw","lang":"tagalog","prompt":"Ano ang araw?","expect":"tl"},
+ {"id":"route-tl-ulan","lang":"tagalog","prompt":"Bakit umuulan?","expect":"tl","note":"the CPT base looped on this"},
+ {"id":"route-tl-photo","lang":"tagalog","prompt":"Paano gumagawa ng pagkain ang halaman?","expect":"tl"}
+]
