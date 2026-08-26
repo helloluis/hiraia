@@ -20,7 +20,7 @@ except Exception: print(16)")
 ( while [ ! -e /root/SERVING ]; do hb 0 0 boot "routing $LABEL: build + pull"; sleep 45; done ) &
 apt-get update -qq && apt-get install -y -qq cmake build-essential git >/dev/null 2>&1
 command -v uv >/dev/null || pip install -q uv
-[ -x /root/venv/bin/python ] || { uv venv --python 3.12 /root/venv >/dev/null 2>&1 && uv pip install -q --python /root/venv/bin/python huggingface_hub requests fasttext-wheel numpy || hold venv; }
+[ -x /root/venv/bin/python ] || { uv venv --python 3.12 /root/venv >/dev/null 2>&1 && uv pip install -q --python /root/venv/bin/python huggingface_hub requests fasttext-wheel "numpy<2" || hold venv; }
 PY=/root/venv/bin/python
 mkdir -p /root/gguf
 ( HF_HOME=/root/hf $PY -c "
