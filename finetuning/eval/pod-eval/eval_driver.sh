@@ -141,7 +141,13 @@ json.dump(out,open(f"/root/{LABEL}-eval-answers.json","w"),ensure_ascii=False,in
 print("DONE",{k:len(out[k]) for k in ("routing","capability","gate")},flush=True)
 P
 hb 0 183 eval "eval $LABEL: routing + capability + gate probes"
-$PY /root/run_probes.py "$LABEL" || hold "probe run failed"
+# Progress sidecar: the probe run is ~50 min of silence otherwise, and Guard 2 kills on 20 min
+# of heartbeat staleness. Nearly lost a healthy eval to this on 2026-08-26.
+( while sleep 45; do
+    N=$(grep -ac "\[cap\]" $LOG); P=$(grep -a "\[cap\]" $LOG | tail -1 | grep -oE "[0-9]+/[0-9]+")
+    hb "${N:-0}" 143 eval "eval $LABEL: capability probe ${P:-starting}"; done ) & SIDE=$!
+$PY /root/run_probes.py "$LABEL"; RC=$?; kill $SIDE 2>/dev/null
+[ $RC -eq 0 ] || hold "probe run failed"
 $PY - <<P || hold "upload failed (answers still on pod)"
 import os
 from huggingface_hub import HfApi
