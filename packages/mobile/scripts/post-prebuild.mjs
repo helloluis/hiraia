@@ -114,20 +114,50 @@ function patchGradle() {
 // ---------------------------------------------------------------- styles.xml
 const STYLES = path.join(ANDROID, 'app', 'src', 'main', 'res', 'values', 'styles.xml');
 
-const STYLE_OVERRIDES = [
-  '    <!-- HIRAIA_KEEP_START — light-only design; block OEM auto-dark inversion -->',
-  '    <item name="android:forceDarkAllowed" tools:targetApi="29">false</item>',
-  '    <item name="android:enforceNavigationBarContrast" tools:targetApi="29">true</item>',
-  '    <item name="android:statusBarColor">#165a69</item>',
-  '    <!-- HIRAIA_KEEP_END -->',
-].join('\n');
+/** Every <item> patchStyles owns. Anything here is removed before being re-written. */
+const MANAGED_ITEMS = [
+  'android:forceDarkAllowed',
+  'android:enforceNavigationBarContrast',
+  'android:statusBarColor',
+];
+
+/**
+ * The status bar colour is declared in app.json (androidStatusBar.backgroundColor) like
+ * every other themed colour, so read it from there rather than repeating the literal.
+ * A brand change should touch the config once, not once per file that names a colour —
+ * the same reason patchColors() below reads iconBackground and splashscreen_background
+ * from app.json instead of hardcoding them.
+ */
+function styleOverrides() {
+  const bar = JSON.parse(readFileSync(APP_JSON, 'utf8')).expo?.androidStatusBar?.backgroundColor;
+  if (!bar) log('SKIP styles.xml/statusBarColor — androidStatusBar not set in app.json');
+  return [
+    '    <!-- HIRAIA_KEEP_START — light-only design; block OEM auto-dark inversion -->',
+    '    <item name="android:forceDarkAllowed" tools:targetApi="29">false</item>',
+    '    <item name="android:enforceNavigationBarContrast" tools:targetApi="29">true</item>',
+    ...(bar ? [`    <item name="android:statusBarColor">${bar}</item>`] : []),
+    '    <!-- HIRAIA_KEEP_END -->',
+  ].join('\n');
+}
 
 function patchStyles() {
   if (!existsSync(STYLES)) { log('SKIP styles.xml — not present'); return; }
   let src = readFileSync(STYLES, 'utf8');
 
-  // Strip prior managed block.
-  src = src.replace(/[ \t]*<!-- HIRAIA_KEEP_START[\s\S]*?HIRAIA_KEEP_END -->\n?/m, '');
+  // Strip prior managed state — ALL of it, not just the marker block.
+  //
+  // android/ is gitignored and long-lived, so styles.xml survives every prebuild and each
+  // run appends to it. An older version of this script inserted these items WITHOUT the
+  // KEEP markers, so those copies were never stripped and piled up: a real tree had 18
+  // <item name="android:statusBarColor"> entries in one <style>, 16 of them a stale colour.
+  // aapt takes the LAST duplicate, so the oldest value silently won and a colour change in
+  // app.json appeared to do nothing. Remove every item we manage — by name, wherever it
+  // sits — so the block below is the only one left and the file self-heals.
+  src = src.replace(/[ \t]*<!-- HIRAIA_KEEP_START[\s\S]*?HIRAIA_KEEP_END -->\n?/gm, '');
+  for (const name of MANAGED_ITEMS) {
+    src = src.replace(
+      new RegExp(`^[ \\t]*<item name="${name}"[^>]*>[\\s\\S]*?</item>[ \\t]*\\n?`, 'gm'), '');
+  }
 
   // Pin the Light theme parent (Expo prebuild emits DayNight).
   src = src.replace(
@@ -150,7 +180,7 @@ function patchStyles() {
     writeFileSync(STYLES, src);
     return;
   }
-  src = src.replace(APPTHEME_OPEN, `$1\n${STYLE_OVERRIDES}\n`);
+  src = src.replace(APPTHEME_OPEN, `$1\n${styleOverrides()}\n`);
   writeFileSync(STYLES, src);
   log('styles.xml    ← light theme + force-dark off + status bar colour');
 }
