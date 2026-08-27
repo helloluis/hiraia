@@ -48,8 +48,18 @@ Tag confidence is the margin over the runner-up competency; ~19k of 30k tagged c
 `horse mane and tail` (conf 0.00) correctly falls into the off-curriculum band; `wheelbarrow`
 (0.23, correct) stays in — hence 0.20 not 0.25.
 
+## Calendar — SY 2026-27 is THREE terms (DO 009 s. 2026), not four quarters
+
+Opens 2026-06-08, closes 2027-04-08, 201 class days. Instruction: T1 Jun 15–Sep 1, T2 Sep 16–Dec 4,
+T3 Jan 4–Mar 23; each term ends with a two-week end-of-term block. MATATAG competencies stay in
+FOUR quarters and no official quarter→term pacing guide exists yet, so the app infers the
+curriculum quarter from the **fraction of instructional weekdays elapsed** (Q = ⌊4·f⌋+1). Today
+(2026-08-27) → 31% → Q2 — which is the cell the calibration above uses. Summer → no current
+quarter, all quarters ×1. Boundary fuzz is tolerated by the adjacent-quarter ×3. Data:
+`rag/sources/curriculum-guides/sy-calendar.json`.
+
 ## Open
 - Calibrate the ×8/×3/×1.5 against the per-cell counts (see tag-curriculum.py output): a cell
   with 2,000 cards at ×8 vs. a cell with 300 at ×1.5 should still surface the small cell.
-- The DepEd Order for SY 2026-27 (quarter dates); `week` is missing on ~30% of modules.
+- ~~Confirm the DepEd calendar~~ DONE (DO 009 s. 2026). Still open: an official MATATAG quarter→term pacing guide would replace the fraction inference.
 - Grades 7–10: the competency table is elementary-only (G3–G6). JHS cards get grade-only weight.
