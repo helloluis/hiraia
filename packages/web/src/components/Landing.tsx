@@ -251,8 +251,9 @@ export function Landing() {
             Science on your phone
           </h2>
           <p className="mt-5 max-w-2xl font-zilla text-lg font-medium leading-relaxed text-[var(--stock)]/90 sm:text-xl">
-            Hiraia is an AI tutor for Filipino students. After a one-time download,
-            it works (forever!) without an internet connection. No account
+            Hiraia is an AI tutor for Filipino students that infers what is being
+            focused on at school, and reinforces them at home. After a one-time
+            download, it works (forever!) without an internet connection. No account
             registration is required, no information is collected, and no personal
             data ever leaves the device.
           </p>
