@@ -56,7 +56,7 @@ FOUR quarters and no official quarter→term pacing guide exists yet, so the app
 curriculum quarter from the **fraction of instructional weekdays elapsed** (Q = ⌊4·f⌋+1). Today
 (2026-08-27) → 31% → Q2 — which is the cell the calibration above uses. Summer → no current
 quarter, all quarters ×1. Boundary fuzz is tolerated by the adjacent-quarter ×3. Data:
-`rag/sources/curriculum-guides/sy-calendar.json`.
+`rag/pipeline/sy-calendar.json`.
 
 ## Open
 - Calibrate the ×8/×3/×1.5 against the per-cell counts (see tag-curriculum.py output): a cell
