@@ -23,3 +23,15 @@ bank/*.db
 # Accepted facts are appended to bank/science-facts.jsonl; the run dir is disposable.
 pipeline/.expansion/
 pipeline/.wave-run.workflow.js
+
+# raw Fireworks label batches (assembled into rag/bank/curriculum-tags.json)
+pipeline/competency-labels*/
+pipeline/rag/
+pipeline/competency-labels*.log
+
+# image-generation staging (raw PNG/WebP downloads); the committed artefacts are packages/images/factoid-webp + cards-png
+pipeline/imagegen/raw/
+pipeline/imagegen/webp/
+pipeline/imagegen/out*/
+pipeline/imagegen/*.png
+pipeline/imagegen/batch_*.jsonl

@@ -17,7 +17,13 @@ only path for what ships.
 import json, re, random, sys, collections
 ROOT = __import__("os").path.join(__import__("os").path.dirname(__file__), "..", "..")
 def norm(s): return re.sub(r'[^a-z0-9 ]', ' ', (s or '').lower())
-cur = json.load(open(f"{ROOT}/rag/sources/curriculum-guides/matatag-elementary-competencies.json"))
+# Every MATATAG competency file (elementary G3-6 + jhs G7-10 when present), merged on "quarters".
+import glob as _glob
+_files = sorted(_glob.glob(f"{ROOT}/rag/sources/curriculum-guides/matatag-*-competencies.json"))
+cur = {"quarters": [], "sources": []}
+for _f in _files:
+    _d = json.load(open(_f)); cur["quarters"] += _d["quarters"]; cur["sources"].append(_d.get("source", _f))
+print(f"competency files: {[f.rsplit('/',1)[-1] for f in _files]} -> {sum(len(q['competencies']) for q in cur['quarters'])} competencies, grades {sorted({q['grade'] for q in cur['quarters']})}")
 comps = []
 for q in cur["quarters"]:
     for c in q["competencies"]:
