@@ -906,15 +906,15 @@
   "tiles": [
    [
     "3.49 → 3.72",
-    "capability score (0–5), 102 tutoring probes — June 3B line; data rebalance alone, hybrid retrieval"
+    "capability score (0–5), 102 probes — June 3B line, rebalance only"
    ],
    [
     "99 · 96 · 94%",
-    "reply-language accuracy, SFT v1 2B (Tagalog · Cebuano · English); Cebuano 99% after correcting fastText tl/ceb mislabels"
+    "reply-language accuracy, SFT v1 2B (tl · ceb · en); Cebuano 99% corrected"
    ],
    [
     "64%",
-    "of Tagalog replies open with an 'I'm not sure' hedge (SFT v1 2B); about two-thirds go on to explain the term anyway"
+    "of Tagalog replies open with a hedge; two-thirds still explain the term"
    ]
   ],
   "pedagogy": "Scripted probes (102 in June, 143 now; 11 tiers, LLM-judged 0–5) showed the June model fluent but over-cautious: 19 of 91 answerable questions were refused. A retrieval fix plus a small data rebalance (+82 rows) lifted the score 3.32 → 3.72 (rebalance alone +0.22), and grounding faithfulness was fixed — the tutor defers to retrieved verified facts and abstains when none apply. The 2B line inherits the same harness; its capability run is the next measurement.",
