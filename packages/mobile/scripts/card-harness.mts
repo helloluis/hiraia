@@ -164,9 +164,9 @@ async function main() {
             const q = chosen.q as { o: unknown[]; a: number; q: Record<string, string>; e: Record<string, string> };
             const okShape =
               Array.isArray(q.o) &&
-              q.o.length === 4 &&
+              q.o.length === 3 && // shipping ruleset: three short choices (card-ui cards.db is 87% three-option)
               q.a >= 0 &&
-              q.a < 4 &&
+              q.a < q.o.length &&
               !!q.q.tl &&
               !!q.e.tl;
             if (!okShape) {
