@@ -1,0 +1,143 @@
+{
+ "stages": {
+  "bank": {
+   "done_at": "2026-08-27T18:46:42+01:00",
+   "appended": 723,
+   "by_stream": {
+    "main": 656,
+    "G5-L-3": 67
+   },
+   "bank_before": 49556,
+   "bank_after": 50279,
+   "bank_sha256": "043a5f97f6285a97f055cb529df31322483becd2bc76a2d538ebc9e82493a83b"
+  },
+  "src": {
+   "done_at": "2026-08-27T18:46:42+01:00",
+   "rows": 723,
+   "main": 656,
+   "aup": 67
+  },
+  "gen": {
+   "done_at": "2026-08-27T18:50:59+01:00",
+   "rows": 723,
+   "src_rows": 723,
+   "formats": {
+    "straight": 410,
+    "qa": 313
+   },
+   "regen_rounds": 1,
+   "files": 91
+  },
+  "assemble": {
+   "done_at": "2026-08-27T18:51:24+01:00",
+   "bank_before": 36384,
+   "bank_after": 37107,
+   "new": 723,
+   "first_id": "ffct-36384",
+   "last_id": "ffct-37106",
+   "prefix_identical_to_head": true,
+   "by_domain": {
+    "EARTH_SPACE": 282,
+    "MATTER": 113,
+    "FORCE_MOTION_ENERGY": 261,
+    "LIVING_THINGS": 67
+   }
+  },
+  "tags": {
+   "done_at": "2026-08-27T19:41:53+01:00",
+   "added": 0,
+   "kept": 723,
+   "factoids_entries": 45796,
+   "bank_entries": 0,
+   "unchanged_vs_loaded": 45073,
+   "unchanged_vs_backup": 45073,
+   "backup": "rag/bank/.backup-2026-08-27/curriculum-tags.json",
+   "generated_unchanged": true
+  },
+  "vectors": {
+   "done_at": "2026-08-27T18:59:55+01:00",
+   "count": 50279,
+   "bankHash": "af171fe8a9f9",
+   "export": 50279
+  },
+  "gate": {
+   "done_at": "2026-08-27T19:05:15+01:00",
+   "rc": 0,
+   "verdict": ">> GATE GREEN"
+  },
+  "fetch": {
+   "done_at": "2026-08-27T20:32:02+01:00",
+   "by_status": {
+    "completed": 7
+   },
+   "request_counts": {
+    "total": 723,
+    "completed": 705,
+    "failed": 18
+   },
+   "webp_staged_this_run": 330,
+   "webp_staged": 705,
+   "declined": 18,
+   "declined_ids": [
+    "ffct-37029",
+    "ffct-37045",
+    "ffct-37053",
+    "ffct-37054",
+    "ffct-37055",
+    "ffct-37057",
+    "ffct-37058",
+    "ffct-37065",
+    "ffct-37066",
+    "ffct-37070",
+    "ffct-37071",
+    "ffct-37073",
+    "ffct-37074",
+    "ffct-37075",
+    "ffct-37077",
+    "ffct-37086",
+    "ffct-37096",
+    "ffct-37097"
+   ]
+  }
+ },
+ "fireworks": {
+  "calls": 92,
+  "tokens_in": 159532,
+  "tokens_out": 573085,
+  "est_usd": 0.54,
+  "runs": [
+   {
+    "label": "mislaunch-killed",
+    "when": "2026-08-27T18:47:57+01:00",
+    "tokens_in": 46840,
+    "tokens_out": 167726,
+    "est_usd": 0.16,
+    "calls": 27,
+    "failed": null,
+    "estimated": true,
+    "note": "first launch with FW_LIMIT omitted, killed before its summary line; its 27 gen files (batch indices 0..28, incl. the smoke batch 0; mtimes 18:47:13-18:47:57) were on disk when full-1 started (\"64 of 91 calls to go\"); tokens = 27 x the full-1 per-call average (1735 in / 6212 out); booked manually 2026-08-27 (review fix)"
+   },
+   {
+    "label": "full-1",
+    "when": "2026-08-27T18:50:37+01:00",
+    "tokens_in": 111028,
+    "tokens_out": 397573,
+    "est_usd": 0.37,
+    "calls": 64,
+    "failed": 0
+   },
+   {
+    "label": "regen1-main",
+    "when": "2026-08-27T18:50:59+01:00",
+    "tokens_in": 1664,
+    "tokens_out": 7786,
+    "est_usd": 0.01,
+    "calls": 1,
+    "failed": 0
+   }
+  ],
+  "note": "est_usd at $0.22/$0.88 per M tokens (script estimate; reconcile with the Fireworks bill); mislaunch-killed is an estimate"
+ },
+ "backup_date": "2026-08-27",
+ "backup_dir": "rag/bank/.backup-2026-08-27"
+}

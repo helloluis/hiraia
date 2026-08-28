@@ -1,0 +1,49 @@
+{
+ "when": "2026-08-27T13:10:05",
+ "out": "/Users/luis/Code/hiraia/rag/pipeline/lane-a/out",
+ "dry_run": false,
+ "writer": "outside-model",
+ "stages": [
+  "translate",
+  "emit"
+ ],
+ "verify_model": "accounts/fireworks/models/gpt-oss-120b",
+ "translate_model": "accounts/fireworks/models/gpt-oss-120b",
+ "thresholds": {
+  "t_exist": 0.86,
+  "t_cand": 0.9,
+  "en_words": [
+   15,
+   35
+  ],
+  "min_terms": 6
+ },
+ "counts": {
+  "translate": {
+   "main": 656,
+   "G5-L-3": 67
+  }
+ },
+ "rejects": 2,
+ "dedup_drops": {
+  "near-existing": 35,
+  "near-candidate": 8
+ },
+ "verify_drops": {
+  "suspect": 15,
+  "wrong": 1
+ },
+ "translate_pending": 0,
+ "ready": {
+  "main": 656,
+  "G5-L-3": 67
+ },
+ "fireworks": {
+  "calls": {
+   "translate": 2
+  },
+  "tokens_in": 1392,
+  "tokens_out": 3292,
+  "est_usd": 0.0022
+ }
+}
