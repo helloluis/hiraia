@@ -88,4 +88,4 @@ and timing are checked by `packages/mobile/scripts/feed-weights-check.mts`.
 - ~~Calibrate the ×8/×3/×1.5 against the per-cell counts~~ DONE (table above; reproduced through
   `packages/shared/src/curriculum/feedWeighting.ts`). Recency is ×1 until tags carry a `week`.
 - ~~Confirm the DepEd calendar~~ DONE (DO 009 s. 2026). Still open: an official MATATAG quarter→term pacing guide would replace the fraction inference.
-- Grades 7–10: the competency table is elementary-only (G3–G6). JHS cards get grade-only weight.
+- ~~Grades 7–10 grade-only~~ DONE: the 180 JHS competencies are extracted and labelled; quarter weighting applies to all 324.
