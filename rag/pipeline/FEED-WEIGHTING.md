@@ -5,34 +5,46 @@ with a weight — not uniformly. Heaviest: what the student is likely studying *
 Lightest: what they have already seen.
 
 ## Inputs
-- `curriculum-tags.json` — one MATATAG competency per card (`G5-L-5`), with grade + quarter.
-  ~88% of feed cards; the rest are off-curriculum.
+- `curriculum-tags.json` (v2, multi-label) — every MATATAG competency a card serves (`codes`, ≤3, best
+  first, G3–10) and the distinct grade-quarter `cells` they imply. A spiral curriculum revisits ideas,
+  so most cards carry two codes. The **curriculum factor is the MAX over the card's cells**. Labels come
+  from `fw-label-competencies.py` (Fireworks qwen3.7-plus, 83% agreement with Claude seed labels); the
+  lexical anchor tagger (≈50% precision) is retired to `curriculum-tags.lexical.json`.
 - `sy-calendar.json` — quarter date ranges (ASSUMED; confirm against the DepEd Order).
-- `card_seen` / `topic_seen` — persistent SQLite (`seen-store.sql`).
+- `card_seen` / `competency_seen` — persistent SQLite (`seen-store.sql`). Topic-level seen-ness keys on the
+  competency code, not `card.topic` (a per-card slug — 15,739 distinct values, 67% sentence-shaped).
 - The student's grade setting (default 5).
 
 ## Weight = product of four factors
 
 | factor | rule | range |
 |---|---|---|
-| **curriculum** | same grade & current quarter ×8; same grade, adjacent quarter ×3; same grade, other quarter ×1.5; adjacent grade, current quarter ×2; other ×1; off-curriculum OR tag confidence <0.20 ×0.4 | 0.4–8 |
+| **curriculum** | max over the card's cells (cells agreed by two labelers or from a confident label count in full; weak cells are capped at ×3); each cell's lift above ×1 is scaled by that cell's own competency normalisation `sqrt(median_n / n_code)` clamped [0.1, 1] (it only ever dampens, so no cell exceeds its band) — a tagged card is never below ×1, so off-curriculum stays lightest; of: same grade & current quarter ×6; same grade, adjacent quarter ×3; same grade, other quarter ×1.5; adjacent grade, current quarter ×2; other ×1; off-curriculum OR tag confidence <0.20 ×0.4 | 0.4–6 |
 | **recency in SY** | within the current quarter, weeks already covered (from `week`, when known) ×1.5 vs. weeks ahead ×1 — favour review over preview | 1–1.5 |
-| **seen** | card: `0.5 ** times`, recovering by +50% per 7 days since `last_seen` (cap 1.0); topic: `0.8 ** times` likewise | (0, 1] |
+| **seen** | card: `0.5 ** times`, recovering by +50% per 7 days since `last_seen` (cap 1.0); competency: `0.8 ** times` likewise | (0, 1] |
 | **base** | every card 1.0; illustrated-and-verified required to be in the pool at all | 1 |
 
-`w = curriculum × recency × seen_card × seen_topic`. Sample proportional to `w`. Never zero:
+`w = curriculum × recency × seen_card × seen_competency`. Sample proportional to `w`. Never zero:
 a card seen five times is ~3% as likely as fresh, not excluded.
 
 ## Where each draw uses it
 - **session start / reroll**: full weight over the whole pool.
 - **edge-walk (cards 2–10)**: neighbour set from the existing edges, *re-ranked* by `w` — the
   drift still follows edges, but leans toward this month's competencies and away from seen.
-- **miss card**: three directions = top-3 *distinct topics* by `w` from the curated pool of
-  competency titles for the student's grade — never a similarity search (see misscard/README).
+- **miss card**: three directions = top-3 *distinct competencies* by `w` (a competency's weight =
+  its curriculum factor × its `competency_seen` decay), each shown through a short kid-facing
+  trilingual LABEL authored per competency (e.g. G5-M-2 → "Solid, liquid, gas" / "Solido, likido,
+  gas") — never `card.topic`, never a similarity search (see misscard/README). Tapping a direction
+  starts the feed inside that competency's cards. Labels are a swarm deliverable (content
+  competencies only).
 - **quiz interject**: unchanged (the quiz bank is keyed by factId; seen-ness of the *card* is
   enough).
 
-## Calibration (Grade 5, Q2, against the real feed pool — `tag-curriculum.py`)
+## Calibration v2 (Grade 5, Q2, v2 multi-label tags — `feed-calibration.mts`)
+
+Re-fitted after the LLM re-tag: 16,414/16,948 pool cards tagged, 8,355 with two cells. Multi-cell cards push more mass into the current cell, so the current-quarter multiplier moved from ×8 to ×6, landing the Grade-5/Q2 share of draws in the 25–32% band (sweep: see `feed-calibration.mts`). The v1 single-label table below is kept for history.
+
+## Calibration v1 (single-label lexical tags — superseded)
 
 | cell | cards | weight | share of draws |
 |---|---|---|---|
@@ -56,10 +68,24 @@ FOUR quarters and no official quarter→term pacing guide exists yet, so the app
 curriculum quarter from the **fraction of instructional weekdays elapsed** (Q = ⌊4·f⌋+1). Today
 (2026-08-27) → 31% → Q2 — which is the cell the calibration above uses. Summer → no current
 quarter, all quarters ×1. Boundary fuzz is tolerated by the adjacent-quarter ×3. Data:
-`rag/pipeline/sy-calendar.json`.
+`rag/pipeline/sy-calendar.json`. **Rollover:** dates outside every known DepEd calendar use a generic PH
+school-year model (opens the second Monday of June, closes the second Friday of April, one instructional
+window) — `calendarFor()` in `feedWeighting.ts` — so SY 2027-28 and later keep weighting without an app
+update; add each new DepEd Order to `KNOWN_CALENDARS` when it is published.
+
+## Cost (measured on the Mac, 16,948-card pool; the Redmi SD685 is roughly 8–15× slower)
+The curriculum factor is a **session table** (`cards.ts` `ensureWeightTable`), built once and rebuilt only when the
+grade or the inferred quarter changes; the seen-store is a **sparse overlay** resolved once per draw (competency
+codes as small ints, one tight loop over typed arrays; seen cards applied by index). Per call: startCard 0.30 ms
+un-weighted → **0.21 ms weighted** (0.44 ms with 400 seen cards / 150 seen competencies — faster than the old
+un-weighted path, which copied a filtered pool); jumpCard 0.28 → 0.49 ms; nextChoices **~12 ms un-weighted**
+(pre-existing lexical edge scoring over the domain pool) → ~12.6 ms weighted. So the weighting costs well under a
+millisecond at session start / reroll and ~1 ms per page turn; the edge-walk's own 12 ms is the cost worth attacking
+next, and it predates this work. Untagged cards never decay as a group ('off' is not a competency). Equivalence, rebuild-on-key-change, bump-visible-next-draw
+and timing are checked by `packages/mobile/scripts/feed-weights-check.mts`.
 
 ## Open
-- Calibrate the ×8/×3/×1.5 against the per-cell counts (see tag-curriculum.py output): a cell
-  with 2,000 cards at ×8 vs. a cell with 300 at ×1.5 should still surface the small cell.
+- ~~Calibrate the ×8/×3/×1.5 against the per-cell counts~~ DONE (table above; reproduced through
+  `packages/shared/src/curriculum/feedWeighting.ts`). Recency is ×1 until tags carry a `week`.
 - ~~Confirm the DepEd calendar~~ DONE (DO 009 s. 2026). Still open: an official MATATAG quarter→term pacing guide would replace the fraction inference.
 - Grades 7–10: the competency table is elementary-only (G3–G6). JHS cards get grade-only weight.

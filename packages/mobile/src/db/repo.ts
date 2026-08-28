@@ -1,5 +1,5 @@
 // Typed repositories over the SQLite tables. Keep all SQL here.
-import type { Message } from '@hiraia/shared';
+import type { Message, SeenRecord } from '@hiraia/shared';
 
 import { getDb } from './index';
 
@@ -140,4 +140,50 @@ export async function getAllSettings(): Promise<Record<string, string>> {
   const db = await getDb();
   const rows = await db.getAllAsync<{ key: string; value: string }>('SELECT key, value FROM settings');
   return Object.fromEntries(rows.map((r) => [r.key, r.value]));
+}
+
+// ------------------------------------------ feed seen-store (rag/pipeline/seen-store.sql)
+/** A card became current: bump card_seen + competency_seen ('off' = untagged / low-confidence). */
+export async function recordCardSeen(cardId: string, competency: string, now: number): Promise<void> {
+  const db = await getDb();
+  // One transaction: the caller has already bumped BOTH counters in memory, so they must land
+  // together — a crash between two auto-committed upserts would leave competency_seen lagging
+  // card_seen for good.
+  await db.withTransactionAsync(async () => {
+    await db.runAsync(
+      `INSERT INTO card_seen (card_id, first_seen, last_seen, times) VALUES (?, ?, ?, 1)
+       ON CONFLICT(card_id) DO UPDATE SET times = times + 1, last_seen = excluded.last_seen`,
+      cardId, now, now
+    );
+    await db.runAsync(
+      `INSERT INTO competency_seen (competency, last_seen, times) VALUES (?, ?, 1)
+       ON CONFLICT(competency) DO UPDATE SET times = times + 1, last_seen = excluded.last_seen`,
+      competency, now
+    );
+  });
+}
+
+/** Both seen tables as maps (card id → record, competency code → record) for the feed weighting. */
+export async function loadSeen(): Promise<{ cards: Map<string, SeenRecord>; competencies: Map<string, SeenRecord> }> {
+  const db = await getDb();
+  const cards = await db.getAllAsync<{ card_id: string; last_seen: number; times: number }>(
+    'SELECT card_id, last_seen, times FROM card_seen'
+  );
+  const competencies = await db.getAllAsync<{ competency: string; last_seen: number; times: number }>(
+    'SELECT competency, last_seen, times FROM competency_seen'
+  );
+  return {
+    cards: new Map(cards.map((r) => [r.card_id, { times: r.times, lastSeen: r.last_seen }])),
+    competencies: new Map(competencies.map((r) => [r.competency, { times: r.times, lastSeen: r.last_seen }])),
+  };
+}
+
+/** Bump competency_seen for one more code a shown card serves (recordCardSeen already bumped the primary). */
+export async function recordCompetencySeen(competency: string, now: number): Promise<void> {
+  const db = await getDb();
+  await db.runAsync(
+    'INSERT INTO competency_seen (competency, last_seen, times) VALUES (?, ?, 1) ON CONFLICT(competency) DO UPDATE SET last_seen = excluded.last_seen, times = competency_seen.times + 1',
+    competency,
+    now
+  );
 }

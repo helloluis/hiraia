@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import type { Language } from '@hiraia/shared';
 
+import { GRADE_OPTIONS } from '../../config/grades';
 import { LANGUAGE_OPTIONS } from '../../config/languages';
 import { ACTIVE_MODEL, VECTORS_META } from '../../config/model';
 import { uiStrings } from '../../config/strings';
@@ -18,6 +19,8 @@ export default function SidebarScreen() {
   const router = useRouter();
   const language = useEngineStore((s) => s.language);
   const changeLanguage = useEngineStore((s) => s.changeLanguage);
+  const grade = useEngineStore((s) => s.grade);
+  const changeGrade = useEngineStore((s) => s.changeGrade);
   const setOnboardingActive = useEngineStore((s) => s.setOnboardingActive);
   const clearMessages = useChatStore((s) => s.clearMessages);
   const switchConversation = useChatStore((s) => s.switchConversation);
@@ -94,6 +97,25 @@ export default function SidebarScreen() {
           })}
         </View>
         <Text style={styles.langNote}>{t.langRestartNote}</Text>
+
+        <Text style={styles.sectionTitle}>{t.sectionGrade}</Text>
+        <View style={styles.langRow}>
+          {GRADE_OPTIONS.map((g) => {
+            const active = g === grade;
+            // No reload (the adapter is per-language, not per-grade) — apply in place and
+            // stay on the sheet, unlike a language pick.
+            return (
+              <TouchableOpacity
+                key={g}
+                style={[styles.langChip, active && styles.langChipActive]}
+                onPress={() => void changeGrade(g)}
+                activeOpacity={0.85}
+              >
+                <Text style={[styles.langChipText, active && styles.langChipTextActive]}>{g}</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
 
         <Text style={styles.sectionTitle}>{t.sectionConversations}</Text>
         {pastChats.length === 0 ? (

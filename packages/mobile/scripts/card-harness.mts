@@ -3,8 +3,9 @@
  * exactly the way cardStore walks it, headless, across many sessions and "kid policies",
  * and reports quality issues with the factoids, the quiz interjects, and the path choices.
  *
- * It shims cards.ts's app-only imports (@hiraia/shared, the generated image map, the
- * questions JSON) to their source paths so it can run under tsx without Metro.
+ * It shims cards.ts's app-only imports (@hiraia/shared, the generated pool + curriculum
+ * tags, the questions JSON) to their source paths so it can run under tsx without Metro.
+ * Draws run WITHOUT a FeedContext (uniform), exactly like cards.ts without one.
  *
  *   npx tsx scripts/card-harness.mts                 # default: 6 runs × 40 cards, all policies
  *   RUNS=10 CARDS=60 npx tsx scripts/card-harness.mts
@@ -15,17 +16,23 @@ import { join } from 'node:path';
 
 const MOBILE = new URL('..', import.meta.url).pathname;
 const REPO = join(MOBILE, '..', '..');
+const SHARED = join(REPO, 'packages/shared/src');
 
 // ---- shim cards.ts's imports to runnable source paths, then dynamic-import it ----
 function loadCards() {
   const src = readFileSync(join(MOBILE, 'src/data/cards.ts'), 'utf8')
     .replace(
-      "import type { Language } from '@hiraia/shared';",
-      `type Language = 'tagalog'|'english'|'cebuano';`
+      /from '@hiraia\/shared';/,
+      // keep whatever names cards.ts imports; only the module path is swapped (shared/index.ts re-exports all)
+      `from '${join(SHARED, 'index.ts')}';`
     )
     .replace(
       "import cardsPool from '../generated/cardsPool.generated.json';",
       `import cardsPool from '${join(MOBILE, 'src/generated/cardsPool.generated.json')}' with { type: 'json' };`
+    )
+    .replace(
+      "import curriculumTagsJson from '../generated/curriculumTags.generated.json';",
+      `import curriculumTagsJson from '${join(MOBILE, 'src/generated/curriculumTags.generated.json')}' with { type: 'json' };`
     )
     .replace(
       "import questionsJson from './cards-questions.json';",

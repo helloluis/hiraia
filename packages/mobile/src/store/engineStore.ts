@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 
-import type { TutorEngine, TutorConfig, Language } from '@hiraia/shared';
+import type { TutorEngine, TutorConfig, Language, GradeLevel } from '@hiraia/shared';
 
+import { DEFAULT_GRADE, toGradeLevel } from '../config/grades';
 import { LANGUAGE_OPTIONS, DEFAULT_LANGUAGE } from '../config/languages';
 import { ACTIVE_MODEL } from '../config/model';
 import { getSetting, setSetting } from '../db/repo';
@@ -16,6 +17,10 @@ interface EngineState {
   error: string | null;
   /** Active tutor language. null until the user picks one (first launch). */
   language: Language | null;
+  /** The student's grade (3–10). Pitches the tutor's static system prompt ("grade-N
+   *  students"), the grounded feed answers, and the feed's curriculum weighting. Defaults
+   *  to 5 (most of our kids are behind academically). Persisted in settings key 'grade'. */
+  grade: GradeLevel;
   /** True once the saved-language lookup has completed (gates the picker). */
   bootstrapped: boolean;
   /** Model warm-up progress 0–100, driven into the LoaderOverlay. */
@@ -34,13 +39,16 @@ interface EngineState {
   /** Persist + (re)load the engine for a language. Used by the first-launch
    *  picker and the Settings selector. Reloads the model (adapter swap). */
   changeLanguage: (language: Language) => Promise<void>;
+  /** Persist + apply a grade. Cheap — no model reload (the adapter is per-language, not
+   *  per-grade); a ready engine just re-primes its system-prompt KV cache in place. */
+  changeGrade: (grade: GradeLevel) => Promise<void>;
   shutdown: () => Promise<void>;
 }
 
-function buildConfig(language: Language): TutorConfig {
+function buildConfig(language: Language, gradeLevel: GradeLevel): TutorConfig {
   return {
     language, // drives the bundled LoRA adapter (TL/BIS) or base model (EN) + RAG language
-    gradeLevel: 5,
+    gradeLevel, // the student's grade — LocalEngine pitches its prompts at it (see warmUp)
     modelConfig: {
       modelId: ACTIVE_MODEL.key,
       modelType: 'llm',
@@ -57,6 +65,7 @@ export const useEngineStore = create<EngineState>((set, get) => ({
   isReady: false,
   error: null,
   language: null,
+  grade: DEFAULT_GRADE,
   bootstrapped: false,
   loadingProgress: 0,
   loadingPhase: 'idle',
@@ -66,10 +75,13 @@ export const useEngineStore = create<EngineState>((set, get) => ({
 
   bootstrap: async () => {
     let saved: Language | null = null;
+    let grade: GradeLevel = DEFAULT_GRADE;
     try {
       saved = (await getSetting('language')) as Language | null;
+      // 'grade' is a digit string ("3".."10"); anything missing/unparseable → the default.
+      grade = toGradeLevel(await getSetting('grade')) ?? DEFAULT_GRADE;
     } catch (e) {
-      console.warn('[engineStore] reading saved language failed:', e);
+      console.warn('[engineStore] reading saved settings failed:', e);
     }
     // A persisted choice that is now comingSoon (e.g. a beta tester who picked
     // Bisaya before the descope) falls back to the default instead of booting a
@@ -86,7 +98,7 @@ export const useEngineStore = create<EngineState>((set, get) => ({
     // (first run) / warm-up (every cold start) immediately at boot, behind the
     // sleeping-cat LoaderOverlay — so the model is warm and answering within ~10-15s
     // by the time the kid reaches the feed's search box.
-    set({ language: saved, bootstrapped: true, onboardingActive: !saved });
+    set({ language: saved, grade, bootstrapped: true, onboardingActive: !saved });
     if (saved) void get().changeLanguage(saved);
   },
 
@@ -174,8 +186,9 @@ export const useEngineStore = create<EngineState>((set, get) => ({
         set({ loadingProgress: shown, loadingPhase: phase });
       }, 200);
 
+      const config = buildConfig(language, get().grade);
       try {
-        await engine.initialize(buildConfig(language), (p) => {
+        await engine.initialize(config, (p) => {
           sawSignal = true;
           downloadPct = p;
           if (p > 1 && p < 99) sawRealBytes = true; // a genuine streaming download
@@ -184,6 +197,19 @@ export const useEngineStore = create<EngineState>((set, get) => ({
       } finally {
         ready = true;
         clearInterval(ramp);
+      }
+
+      // The grade can change WHILE the model loads — onboarding slide 2 (grade) lands seconds
+      // after slide 1 kicks off this load, and Settings stays reachable. The engine was primed
+      // with the grade captured at load start; bring it up to date BEFORE going ready so its
+      // prompt config matches the store (chatStore reads the same value → byte-identical
+      // system prompt → the primed KV cache hits on the first real turn). changeGrade() skips
+      // the engine while isReady is false, so a change landing DURING a re-prime is only caught
+      // by re-checking after each one — loop until the engine and the store agree.
+      let primed = config.gradeLevel;
+      while (get().grade !== primed) {
+        primed = get().grade;
+        await engine.setGrade(primed);
       }
 
       // Model is genuinely ready: snap to 100 so the loader crosses the 97 wake gate and
@@ -200,6 +226,28 @@ export const useEngineStore = create<EngineState>((set, get) => ({
       });
       console.error('Failed to (re)initialize QVAC engine:', error);
     }
+  },
+
+  changeGrade: async (grade: GradeLevel) => {
+    try {
+      // Persist first so a crash mid-apply still remembers the choice (mirrors changeLanguage).
+      await setSetting('grade', String(grade));
+    } catch (e) {
+      console.warn('[engineStore] saving grade failed:', e);
+    }
+    const changed = get().grade !== grade;
+    set({ grade });
+    if (!changed) return;
+    // Unlike a language change this needs NO model reload — the LoRA adapter is per-language,
+    // not per-grade. What does change is the STATIC system prompt ("grade-N students"), which
+    // is exactly what QVAC's KV cache is keyed on: the cache LocalEngine.warmUp() primed at
+    // init would now miss on the first real turn (a full cold prefill — the TTFT we hide).
+    // So a READY engine re-primes in place (LocalEngine.setGrade → warmUp again; a few
+    // seconds, non-fatal, serialized against rapid taps). An engine still loading picks the
+    // new grade up at the end of changeLanguage(); no engine yet (first launch, before the
+    // language pick) has nothing to prime — buildConfig reads the grade when the load starts.
+    const { engine, isReady } = get();
+    if (isReady && engine instanceof LocalEngine) await engine.setGrade(grade);
   },
 
   shutdown: async () => {

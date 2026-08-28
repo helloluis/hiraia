@@ -11,21 +11,24 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import type { Language } from '@hiraia/shared';
+import type { GradeLevel, Language } from '@hiraia/shared';
 
+import { useEngineStore } from '../../store/engineStore';
 import { colors, fonts } from '../../theme';
 import { NotebookBackground } from '../NotebookBackground';
 import { DemoSlide } from './DemoSlide';
 import { DownloadSlide } from './DownloadSlide';
+import { GradeSlide } from './GradeSlide';
 import { LanguageSlide } from './LanguageSlide';
 
-const SLIDES = 3;
+const SLIDES = 4;
 
 /**
- * The onboarding carousel (first launch + Settings → "show tutorial"). Three swipeable
- * slides: language pick → chat demo → download notice. Picking a language on slide 1
- * fires `onPickLanguage` (which starts the model download in the background) and advances
- * to slide 2, so the wait overlaps the tutorial. `onFinish` (slide-3 OK) dismisses it.
+ * The onboarding carousel (first launch + Settings → "show tutorial"). Four swipeable
+ * slides: language pick → grade pick → chat demo → download notice. Picking a language on
+ * slide 1 fires `onPickLanguage` (which starts the model download in the background) and
+ * advances to slide 2, so the wait overlaps the tutorial; the grade pick on slide 2 is
+ * applied straight to engineStore (no reload). `onFinish` (slide-4 OK) dismisses it.
  * The user can swipe back to any earlier slide at any time.
  */
 export function OnboardingCarousel({
@@ -45,6 +48,11 @@ export function OnboardingCarousel({
   // whether a language has been chosen — pre-set (re-watch from Settings) or picked here.
   // Gates NEXT on slide 1 so first-time kids must actually pick before moving on.
   const [chosen, setChosen] = useState(initialLanguage != null);
+  // The grade lives in engineStore (persisted like the language). Slide 2 pre-highlights the
+  // current value — Grade 5 by default — and a tap applies it right away via changeGrade;
+  // read from the store here since _layout only wires the language.
+  const grade = useEngineStore((s) => s.grade);
+  const changeGrade = useEngineStore((s) => s.changeGrade);
 
   const goTo = (i: number) => scrollRef.current?.scrollTo({ x: i * width, animated: true });
 
@@ -55,8 +63,16 @@ export function OnboardingCarousel({
     goTo(1);
   };
 
+  const handlePickGrade = (picked: GradeLevel) => {
+    void changeGrade(picked); // persists; a ready engine re-primes its system prompt in place
+    goTo(2);
+  };
+
   const showBack = index > 0;
-  const showNext = (index === 0 && chosen) || index === 1;
+  // NEXT: slide 1 needs an actual language pick (first-time kids must choose); slide 2 shows
+  // it immediately — Grade 5 is pre-highlighted and is a real default, so tapping is optional;
+  // the last slide has its own OK.
+  const showNext = index === 0 ? chosen : index < SLIDES - 1;
 
   const onScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) =>
     setIndex(Math.round(e.nativeEvent.contentOffset.x / width));
@@ -74,6 +90,9 @@ export function OnboardingCarousel({
       >
         <View style={{ width }}>
           <LanguageSlide onPick={handlePick} />
+        </View>
+        <View style={{ width }}>
+          <GradeSlide language={lang} selected={grade} active={index === 1} onPick={handlePickGrade} />
         </View>
         <View style={{ width }}>
           <DemoSlide language={lang} />

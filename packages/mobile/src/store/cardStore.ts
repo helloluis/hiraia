@@ -7,11 +7,18 @@
  * flip is INTERCEPTED by one question page asking about a recently-read fact (75% of
  * the pool has an exact MCQ). Answering shows a single "continue" note that resumes the
  * walk onto the card the kid originally chose — their choice is honored, never dropped.
- * Counters (pages read / questions correct) + the seen-set persist via the settings table.
+ * Counters (pages read / questions correct) persist via the settings table. The seen-set is
+ * SESSION-ONLY; across restarts seen-ness lives in the SQLite seen-store as a weight, not a filter.
+ * Every draw is weighted by a FeedContext (rag/pipeline/FEED-WEIGHTING.md): the student's
+ * grade, the inferred curriculum quarter, and the SQLite seen-store (card + competency).
  */
 import { create } from 'zustand';
 
+import { inferCurriculumQuarter, type SeenRecord } from '@hiraia/shared';
+
+import { DEFAULT_GRADE } from '../config/grades';
 import {
+  competencyKeys,
   getCard,
   jumpCard,
   nextChoices,
@@ -21,6 +28,7 @@ import {
   type CardChoice,
   type CardFact,
   type CardQuestion,
+  type FeedContext,
 } from '../data/cards';
 import {
   recentTopics,
@@ -29,10 +37,10 @@ import {
   type RewardContent,
   type ViewLogEntry,
 } from '../data/reward';
-import { getSetting, setSetting } from '../db/repo';
+import { getSetting, loadSeen, recordCardSeen, recordCompetencySeen, setSetting } from '../db/repo';
+import { withModelLock } from '../engine/modelLock';
 import { useEngineStore } from './engineStore';
 
-const SEEN_CAP = 2500; // persisted seen-set cap (pool is ~3.5k; cycling is fine)
 const RECENT_WINDOW = 5; // "ask about something the kid just saw"
 const VIEWLOG_CAP = 40; // session view-log for the reward recap (topic + timestamp)
 const REWARD_PREFETCH_AT = 5; // start generating the reward text N cards before it's due
@@ -76,6 +84,8 @@ interface CardState {
   pagesRead: number;
   correctCount: number;
   questionsAsked: number;
+  /** Cards shown THIS SESSION — the hard "don't repeat this sitting" filter. Deliberately not
+   *  persisted: across restarts the SQLite seen-store only LOWERS a card's weight (never zero). */
   seen: Set<string>;
   recent: string[]; // last few factIds (question sourcing)
   viewLog: ViewLogEntry[]; // {factId, topic, ts} for the reward recap window
@@ -105,11 +115,50 @@ const nextGap = () => 4 + Math.floor(Math.random() * 2); // question: every 4-5 
 // restore to `15 + rand(0..10)` before ship.
 const nextRewardGap = () => 6 + Math.floor(Math.random() * 5);
 
-function persist(s: { pagesRead: number; correctCount: number; seen: Set<string> }) {
+function persist(s: { pagesRead: number; correctCount: number }) {
   void setSetting('cards.pages', String(s.pagesRead));
   void setSetting('cards.correct', String(s.correctCount));
-  void setSetting('cards.seen', JSON.stringify([...s.seen].slice(-SEEN_CAP)));
 }
+
+/**
+ * In-memory mirror of the SQLite seen-store (card_seen / competency_seen): loaded once at
+ * hydrate, bumped as each card is shown (so in-session draws decay too) and written through
+ * fire-and-forget. It is a weight-reduction memory, never a blocklist — the only hard filter is
+ * the `seen` set above, which lives for one session.
+ */
+const seenStore: { cards: Map<string, SeenRecord>; competencies: Map<string, SeenRecord> } = {
+  cards: new Map(),
+  competencies: new Map(),
+};
+
+/** Fresh weighting context for one draw: grade + clock are re-read every time. */
+function feedContext(): FeedContext {
+  return {
+    studentGrade: useEngineStore.getState().grade ?? DEFAULT_GRADE,
+    currentQuarter: inferCurriculumQuarter(new Date()).quarter,
+    now: Date.now(),
+    cardSeen: seenStore.cards,
+    competencySeen: seenStore.competencies,
+  };
+}
+
+function bump(map: Map<string, SeenRecord>, key: string, now: number) {
+  map.set(key, { times: (map.get(key)?.times ?? 0) + 1, lastSeen: now });
+}
+
+/** A card became current: bump its card_seen + competency_seen rows (memory, then SQLite). */
+function markSeen(card: CardFact, now: number) {
+  // Every code the card serves decays (a card drawn for its secondary cell must dampen THAT competency too).
+  const codes = competencyKeys(card.id);
+  bump(seenStore.cards, card.id, now);
+  for (const code of codes) if (code !== 'off') bump(seenStore.competencies, code, now); // untagged cards are not a group
+  recordCardSeen(card.id, codes[0] ?? 'off', now).catch((e) => console.warn('[cards] recordCardSeen failed', e));
+  for (const code of codes.slice(1)) {
+    recordCompetencySeen(code, now).catch((e) => console.warn('[cards] recordCompetencySeen failed', e));
+  }
+}
+
+let hydrating: Promise<void> | null = null;
 
 export const useCardStore = create<CardState>()((set, get) => ({
   hydrated: false,
@@ -138,30 +187,41 @@ export const useCardStore = create<CardState>()((set, get) => ({
 
   hydrate: async () => {
     if (get().hydrated) return;
-    let pagesRead = 0;
-    let correctCount = 0;
-    let seen = new Set<string>();
-    try {
-      pagesRead = Number((await getSetting('cards.pages')) ?? 0) || 0;
-      correctCount = Number((await getSetting('cards.correct')) ?? 0) || 0;
-      seen = new Set<string>(JSON.parse((await getSetting('cards.seen')) ?? '[]'));
-    } catch (e) {
-      console.warn('[cards] hydrate failed, starting fresh', e);
-    }
-    const lang = useEngineStore.getState().language ?? 'tagalog';
-    const first = startCard(seen);
-    seen.add(first.id);
-    set({
-      hydrated: true,
-      pagesRead,
-      correctCount,
-      seen,
-      current: first,
-      choices: nextChoices(first.id, seen, lang),
-      recent: [first.id],
-      viewLog: [{ factId: first.id, topic: first.topic, ts: Date.now() }],
-      pageKey: 1,
+    if (hydrating) return hydrating; // re-entrant call (StrictMode double effect / remount) shares one draw
+    hydrating = (async () => {
+      let pagesRead = 0;
+      let correctCount = 0;
+      const seen = new Set<string>(); // session-only (see CardState.seen)
+      try {
+        pagesRead = Number((await getSetting('cards.pages')) ?? 0) || 0;
+        correctCount = Number((await getSetting('cards.correct')) ?? 0) || 0;
+        const stored = await loadSeen();
+        seenStore.cards = stored.cards;
+        seenStore.competencies = stored.competencies;
+      } catch (e) {
+        console.warn('[cards] hydrate failed, starting fresh', e);
+      }
+      const lang = useEngineStore.getState().language ?? 'tagalog';
+      const ctx = feedContext();
+      const first = startCard(seen, ctx);
+      seen.add(first.id);
+      markSeen(first, ctx.now);
+      set({
+        hydrated: true,
+        pagesRead,
+        correctCount,
+        seen,
+        current: first,
+        choices: nextChoices(first.id, seen, lang, ctx),
+        recent: [first.id],
+        viewLog: [{ factId: first.id, topic: first.topic, ts: ctx.now }],
+        pageKey: 1,
+      });
+
+    })().finally(() => {
+      hydrating = null;
     });
+    return hydrating;
   },
 
   choose: (choice) => {
@@ -217,7 +277,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
     const s = get();
     const correctCount = s.correctCount + (correct ? 1 : 0);
     set({ correctCount, questionAnswered: true }); // enables the corner-swipe-to-continue fallback
-    persist({ pagesRead: s.pagesRead, correctCount, seen: s.seen });
+    persist({ pagesRead: s.pagesRead, correctCount });
   },
 
   continueAfterQuestion: () => {
@@ -257,7 +317,8 @@ export const useCardStore = create<CardState>()((set, get) => ({
     if (engine?.isReady() && engine.answerQuery) {
       set({ asking: true });
       try {
-        const ans = await engine.answerQuery(q, lang);
+        // Under the model lock: the single-instance model may be mid-chat or re-priming a grade.
+        const ans = await withModelLock(() => engine.answerQuery!(q, lang));
         const clean = sanitizeAnswer(ans.text);
         if (ans.grounded && clean && !get().response) {
           set({
@@ -300,7 +361,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
     if (dest) {
       navigateTo(dest, set, get);
     } else {
-      navigateTo(jumpCard(s.current?.id ?? null, s.seen), set, get);
+      navigateTo(jumpCard(s.current?.id ?? null, s.seen, feedContext()), set, get);
     }
   },
 
@@ -317,13 +378,15 @@ export const useCardStore = create<CardState>()((set, get) => ({
   jumpToRandom: () => {
     const s = get();
     const lang = useEngineStore.getState().language ?? 'tagalog';
-    const dest = jumpCard(s.current?.id ?? null, s.seen);
+    const ctx = feedContext();
+    const dest = jumpCard(s.current?.id ?? null, s.seen, ctx);
     const seen = new Set(s.seen);
     seen.add(dest.id);
+    markSeen(dest, ctx.now);
     const pagesRead = s.pagesRead + 1;
     set({
       current: dest,
-      choices: nextChoices(dest.id, seen, lang),
+      choices: nextChoices(dest.id, seen, lang, ctx),
       question: null,
       pending: null,
       questionAnswered: false,
@@ -335,7 +398,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
       untilQuestion: nextGap(), // don't interject right after a jump
       pageKey: s.pageKey + 1,
     });
-    persist({ pagesRead, correctCount: s.correctCount, seen });
+    persist({ pagesRead, correctCount: s.correctCount });
   },
 }));
 
@@ -350,14 +413,16 @@ type Get_ = () => CardState;
 function navigateTo(fact: CardFact, set: Set_, get: Get_, banner?: string) {
   const s = get();
   const lang = useEngineStore.getState().language ?? 'tagalog';
+  const ctx = feedContext();
   const seen = new Set(s.seen);
   seen.add(fact.id);
+  markSeen(fact, ctx.now);
   const recent = [...s.recent, fact.id].slice(-RECENT_WINDOW);
-  const viewLog = [...s.viewLog, { factId: fact.id, topic: fact.topic, ts: Date.now() }].slice(-VIEWLOG_CAP);
+  const viewLog = [...s.viewLog, { factId: fact.id, topic: fact.topic, ts: ctx.now }].slice(-VIEWLOG_CAP);
   const pagesRead = s.pagesRead + 1;
   set({
     current: fact,
-    choices: nextChoices(fact.id, seen, lang),
+    choices: nextChoices(fact.id, seen, lang, ctx),
     seen,
     recent,
     viewLog,
@@ -372,7 +437,7 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, banner?: string) {
     untilReward: s.untilReward - 1,
     pageKey: s.pageKey + 1,
   });
-  persist({ pagesRead, correctCount: s.correctCount, seen });
+  persist({ pagesRead, correctCount: s.correctCount });
 }
 
 /**
@@ -395,17 +460,19 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
   const nextFact = getCard(choice.factId);
   if (!nextFact) return;
   const lang = useEngineStore.getState().language ?? 'tagalog';
+  const ctx = feedContext();
 
   const seen = new Set(s.seen);
   seen.add(nextFact.id);
+  markSeen(nextFact, ctx.now);
   const recent = [...s.recent, nextFact.id].slice(-RECENT_WINDOW);
-  const viewLog = [...s.viewLog, { factId: nextFact.id, topic: nextFact.topic, ts: Date.now() }].slice(-VIEWLOG_CAP);
+  const viewLog = [...s.viewLog, { factId: nextFact.id, topic: nextFact.topic, ts: ctx.now }].slice(-VIEWLOG_CAP);
   const pagesRead = s.pagesRead + 1;
   const untilReward = s.untilReward - 1;
 
   set({
     current: nextFact,
-    choices: nextChoices(nextFact.id, seen, lang),
+    choices: nextChoices(nextFact.id, seen, lang, ctx),
     seen,
     recent,
     viewLog,
@@ -415,7 +482,7 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
     queryBanner: null, // a normal page-turn clears any lingering search banner
     pageKey: s.pageKey + 1,
   });
-  persist({ pagesRead, correctCount: s.correctCount, seen });
+  persist({ pagesRead, correctCount: s.correctCount });
 
   // Prefetch the LLM reward line a few cards ahead so it's fully rendered before it's due
   // (hides the on-device generation latency behind dwell time).
@@ -439,7 +506,7 @@ async function prefetchReward(get: Get_, set: Set_) {
 
   set({ rewardPrefetching: true });
   try {
-    const raw = await engine.generateReward(topics, get().pagesRead, lang);
+    const raw = await withModelLock(() => engine.generateReward!(topics, get().pagesRead, lang));
     const clean = sanitizeReward(raw);
     // Only accept if still un-shown and valid; otherwise the template covers it.
     if (clean && !get().reward) {

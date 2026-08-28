@@ -1,6 +1,7 @@
 // SQLite is the app's durable store (replaces the zustand→AsyncStorage blob).
 // One DB, versioned migrations via PRAGMA user_version. Tables: conversations
-// (thread names), messages, compactions (auto-compacter), notes, settings.
+// (thread names), messages, compactions (auto-compacter), notes, settings,
+// card_seen + competency_seen (feed seen-store).
 import * as SQLite from 'expo-sqlite';
 
 const DB_NAME = 'hiraia.db';
@@ -41,6 +42,23 @@ CREATE TABLE IF NOT EXISTS settings (
 );
 `;
 
+// Feed "seen" store (rag/pipeline/seen-store.sql): a weight-reduction memory, not a
+// blocklist. Topic-level seen-ness keys on the curriculum competency code ('off' for
+// untagged cards) — never card.topic, which is a per-card slug.
+const SCHEMA_V3 = `
+CREATE TABLE IF NOT EXISTS card_seen (
+  card_id    TEXT PRIMARY KEY,
+  first_seen INTEGER NOT NULL,
+  last_seen  INTEGER NOT NULL,
+  times      INTEGER NOT NULL DEFAULT 1
+);
+CREATE TABLE IF NOT EXISTS competency_seen (
+  competency TEXT PRIMARY KEY,
+  last_seen  INTEGER NOT NULL,
+  times      INTEGER NOT NULL DEFAULT 1
+);
+`;
+
 async function migrate(db: SQLite.SQLiteDatabase): Promise<void> {
   await db.execAsync('PRAGMA journal_mode = WAL;');
   const row = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
@@ -53,6 +71,10 @@ async function migrate(db: SQLite.SQLiteDatabase): Promise<void> {
     // retrieval-driven illustration slug per assistant message
     await db.execAsync('ALTER TABLE messages ADD COLUMN image_slug TEXT');
     await db.execAsync('PRAGMA user_version = 2');
+  }
+  if (v < 3) {
+    await db.execAsync(SCHEMA_V3);
+    await db.execAsync('PRAGMA user_version = 3');
   }
 }
 

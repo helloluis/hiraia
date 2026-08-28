@@ -12,6 +12,7 @@
  * it even if the animation callback is dropped — so a transition can never strand a layer
  * over the screen (the earlier hang).
  */
+import { useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
@@ -56,7 +57,9 @@ interface PageSnap {
 }
 
 export function CardFeedScreen() {
+  const router = useRouter();
   const language = useEngineStore((s) => s.language) ?? 'tagalog';
+  const onboardingActive = useEngineStore((s) => s.onboardingActive);
   const t = uiStrings(language);
   const { width } = useWindowDimensions();
 
@@ -91,11 +94,14 @@ export function CardFeedScreen() {
   };
 
   useEffect(() => {
+    // The feed mounts UNDER the first-launch onboarding overlay. Don't draw (and mark seen)
+    // the first card until the kid is through it — the grade picked there weights that draw.
+    if (onboardingActive) return;
     void hydrate();
     // Background, non-blocking: warm the model while the kid reads, so reward text can be
     // generated ahead of time. The feed itself never waits on it.
     warmModel();
-  }, [hydrate, warmModel]);
+  }, [hydrate, warmModel, onboardingActive]);
 
   // Which corner the last navigation came from (drives the peel origin). Tapping the
   // left choice / swiping the left corner → 'left'; right → 'right'.
@@ -202,9 +208,16 @@ export function CardFeedScreen() {
     <SafeAreaView style={styles.container} edges={['top']}>
       {/* counters + spine */}
       <View style={styles.header}>
-        <Text style={styles.pageCount}>
-          {t.cards.readLabel} {pagesRead}
-        </Text>
+        <View style={styles.headerLeft}>
+          {/* Menu / Settings (language, grade, past chats). The feed is the home screen, so
+              this is the only way to the sidebar from the pad. */}
+          <Pressable onPress={() => router.push('/sidebar')} hitSlop={12} style={styles.menu}>
+            <Text style={styles.menuIcon}>☰</Text>
+          </Pressable>
+          <Text style={styles.pageCount}>
+            {t.cards.readLabel} {pagesRead}
+          </Text>
+        </View>
         <View style={styles.holes}>
           {Array.from({ length: 5 }, (_, i) => (
             <View key={i} style={styles.hole} />
@@ -362,11 +375,18 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(12,52,61,0.25)',
     backgroundColor: colors.white,
   },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    minWidth: 72,
+  },
+  menu: { padding: 2 },
+  menuIcon: { fontSize: 20, color: colors.ink },
   pageCount: {
     fontFamily: fonts.body,
     fontSize: 15,
     color: colors.inkMuted,
-    minWidth: 72,
   },
   headerRight: {
     flexDirection: 'row',

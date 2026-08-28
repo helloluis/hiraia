@@ -9,9 +9,11 @@ import {
   IMAGE_VECTORS_BLOB_ASSET,
   IMAGE_VECTORS_META,
 } from '../config/model';
+import { DEFAULT_GRADE } from '../config/grades';
 import { CHAT_TEMP, SUMMARY_TEMP, CHAT_MAX_TOKENS } from '../config/inference';
 import { IMAGE_CATEGORY } from '../generated/imageCategory.generated';
 import { ensureRemoteModel, filenameFromUrl } from './modelDownload';
+import { withModelLock } from './modelLock';
 import type { AdapterLanguage } from '../config/model';
 import type {
   TutorEngine,
@@ -20,6 +22,7 @@ import type {
   RagResult,
   TutorConfig,
   Language,
+  GradeLevel,
 } from '@hiraia/shared';
 import {
   RagStore,
@@ -72,6 +75,8 @@ export class LocalEngine implements TutorEngine {
   private modelId: string | null = null;
   private isReadyFlag = false;
   private config: TutorConfig | null = null;
+  // Grade whose system prompt is currently primed in QVAC's KV cache (see warmUp/setGrade).
+  private primedGrade: GradeLevel | null = null;
   // In-memory grounding bank. Built at init; no native deps, so it works offline.
   private rag: RagStore | null = null;
   // Semantic embedder (LaBSE via QVAC) for the hybrid retriever. Loaded in the
@@ -219,7 +224,7 @@ export class LocalEngine implements TutorEngine {
    * Run a single throwaway completion at the end of init to warm the model. The
    * history is just the STATIC system prompt + a trivial user turn, with predict:1
    * (we discard the token) and kvCache:true. This must mirror EXACTLY the static
-   * system prompt chatStore sends — generateSystemPrompt(lang, 5, true) — so the
+   * system prompt chatStore sends — generateSystemPrompt(lang, grade, true) — so the
    * KV cache primed here is the same one the first real turn looks up. Non-fatal:
    * a failure just means the first real message pays the normal cold TTFT.
    */
@@ -227,8 +232,10 @@ export class LocalEngine implements TutorEngine {
     if (!this.modelId || !this.config) return;
     try {
       const t0 = Date.now();
-      // grade 5 + imageTags=true => byte-for-byte match with chatStore's system prompt.
-      const systemPrompt = generateSystemPrompt(this.config.language, 5, true);
+      // language + grade (both from the engineStore-built config; chatStore reads the same
+      // store) + imageTags=true => byte-for-byte match with chatStore's system prompt.
+      const grade = this.config.gradeLevel;
+      const systemPrompt = generateSystemPrompt(this.config.language, grade, true);
       // predict:1 (not 0): generating a single throwaway token guarantees the prompt is fully
       // prefilled and the KV cache persisted. QVAC 0.13 has no public `prefill: true` completion
       // flag (only an internal VLA path), and predict:0 risks short-circuiting before the eval that
@@ -257,9 +264,29 @@ export class LocalEngine implements TutorEngine {
         /* best-effort */
       }
       console.log(`[LocalEngine] warm-up complete (${Date.now() - t0}ms)${warmStat}`);
+      this.primedGrade = grade;
     } catch (e) {
       console.warn('[LocalEngine] warm-up failed (non-fatal):', e);
     }
+  }
+
+  /**
+   * Apply a new student grade WITHOUT reloading the model — the LoRA adapter is per-language;
+   * the grade only changes the static system prompt ("grade-N students") and the feed's
+   * grounded-answer prompts. Since QVAC's KV cache is keyed on the prompt text, the cache
+   * warmUp() primed at init would miss on the next real turn, so we re-run the warm-up
+   * prefill in place (a few seconds, non-fatal). The re-prime is a real completion on the
+   * single-instance model, so it runs under the shared model lock: it can never overlap an
+   * in-flight chat / feed generation, and rapid taps queue behind each other — a queued one
+   * is skipped once it is stale (superseded) or already primed.
+   */
+  async setGrade(grade: GradeLevel): Promise<void> {
+    if (!this.config) return;
+    this.config = { ...this.config, gradeLevel: grade };
+    await withModelLock(async () => {
+      if (this.config?.gradeLevel !== grade || this.primedGrade === grade) return;
+      await this.warmUp();
+    });
   }
 
   async *chat(messages: Message[], kvCacheKey?: string): AsyncIterable<string> {
@@ -425,17 +452,19 @@ export class LocalEngine implements TutorEngine {
     const hits = await this.ragSearch(query, 4);
     if (!hits.length) return { text: '', grounded: false };
     const context = hits.map((h) => `- ${h.content}`).join('\n');
+    // Pitched at the student's grade (engineStore → config; kept current by setGrade).
+    const grade = this.config?.gradeLevel ?? DEFAULT_GRADE;
     const byLang: Record<string, string> = {
       tagalog:
-        `Ikaw ay isang mabait na science tutor para sa batang Grade 5. Gamit LAMANG ang mga FACT sa ibaba, ` +
+        `Ikaw ay isang mabait na science tutor para sa batang Grade ${grade}. Gamit LAMANG ang mga FACT sa ibaba, ` +
         `sagutin ang tanong sa 1-2 maikli at simpleng pangungusap sa Tagalog. Kung hindi masagot ng mga fact ang tanong, ` +
         `sabihin mong hindi mo pa alam. HUWAG mag-imbento ng bagong impormasyon.\n\nMGA FACT:\n${context}\n\nTANONG: ${query}\n\nSAGOT:`,
       english:
-        `You are a kind science tutor for a Grade 5 child. Using ONLY the FACTS below, answer the question in ` +
+        `You are a kind science tutor for a Grade ${grade} child. Using ONLY the FACTS below, answer the question in ` +
         `1-2 short, simple English sentences. If the facts do not answer it, say you don't know yet. Do NOT invent ` +
         `new information.\n\nFACTS:\n${context}\n\nQUESTION: ${query}\n\nANSWER:`,
       cebuano:
-        `Ikaw usa ka maayong science tutor para sa batang Grade 5. Gamit LANG ang mga FACT sa ubos, tubaga ang ` +
+        `Ikaw usa ka maayong science tutor para sa batang Grade ${grade}. Gamit LANG ang mga FACT sa ubos, tubaga ang ` +
         `pangutana sa 1-2 mubo ug simple nga pangungusap sa Binisaya. Kung dili matubag sa mga fact ang pangutana, ` +
         `ingna nga wala ka pa kahibalo. AYAW pag-imbento og bag-ong impormasyon.\n\nMGA FACT:\n${context}\n\nPANGUTANA: ${query}\n\nTUBAG:`,
     };
