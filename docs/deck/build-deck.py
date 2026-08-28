@@ -137,25 +137,36 @@ for i, (v, l) in enumerate([(f"{cov['pool_cards']:,}", "illustrated fact cards")
 notes(s, f"Sources: rag/bank/COVERAGE-ROUNDUP.md/.json (pool cards, bank facts, competencies with cards); packages/mobile/src/data/cards-questions.json (cards with an MCQ = {cov['pool_cards_with_mcq']:,}); repository commit {COMMIT} on branch question-cards; published APK: hiraia.org/models/hiraia.apk = v0.1.0 (June 2026, Sailor2-3B tier).")
 shot(s, 10.35, 1.05, 5.5, "01-engraving-card.png", "current build (card-ui, 26 Aug 2026)")
 text(s, 0.9, 6.7, 9.2, 0.4, f"Evidence: repository at commit {COMMIT} (branch question-cards) and its evaluation records; the published app is {apk} — the feed shown here ships in the next build. Sources are in the slide notes.", F_BODY, 11, MUTED)
-# 2 runs
+# 2 user experience
+s = new_slide("User experience", "The app teaches with a deck of flash cards drawn from the DepEd MATATAG curriculum: a child reads a card, is quizzed on what they just read, is told what they have covered, and can ask for a topic at any time.", 2)
+UX = [("02-feed-card.png", "A card carries one fact, one illustration, and the topic that comes next."),
+      ("04-quiz-card.png", "Every few cards a question interrupts the deck, on a fact just read."),
+      ("05-reward-card.png", "A periodic recap names the topics the child actually covered."),
+      ("06-search-card.png", "Typing a word moves the deck to a matching card — here, \u201cbulkan\u201d.")]
+for i, (fn, cap) in enumerate(UX):
+    shot(s, 0.78 + i * 3.06, 2.0, 3.85, fn, "")
+    text(s, 0.42 + i * 3.06, 6.05, 2.72, 0.85, cap, F_BODY, 11.5, INK, align=PP_ALIGN.CENTER)
+notes(s, f"Screenshots captured from the current UI build (card-ui branch, 26 Aug 2026) running on an Android 34 emulator at 720x1600. The deck is drawn from {cov['pool_cards']:,} illustrated cards; {cov['pool_cards_with_mcq']:,} of them have a verified multiple-choice question. Search is a local lexical/semantic match over the bundled card pool — a confident hit navigates to that card with the \u201cang tanong mo\u201d banner shown here; when nothing matches, the on-device model answers from retrieved facts or says it does not know.")
+
+# 3 runs
 rc = ev.get("runs_curated", {}); RC = rc.get("rows", [])
-s = new_slide("Training runs on RunPod", "Most of the compute went into a continued-pretrained Filipino base model; the rest into tutoring fine-tunes, a pruning experiment, and evaluation.", 2)
+s = new_slide("Training runs on RunPod", "Most of the compute went into a continued-pretrained Filipino base model; the rest into tutoring fine-tunes, a pruning experiment, and evaluation.", 3)
 rows = [["run", "GPUs", "GPU-h", "cost", "basis", "outcome"]] + [[r["name"], r["gpu"], f"{r['hours']:.0f}", f"${r['cost']:,.0f}", r["basis"], r["outcome"]] for r in RC]
 if len(rows) == 1: rows.append(["(pending)", "", "", "", "", ""])
 table(s, 0.5, 1.9, 12.3, rows, [3.5, 1.4, 0.7, 0.8, 1.6, 4.3], size=11)
 text(s, 0.5, 6.05, 12.3, 0.95, rc.get("totals", ""), F_DISPLAY, 13, PRIMARY, bold=True)
 _cav = " ".join(x for x in re.split(r"(?<=[.;]) ", runs.get("caveats", "")) if "memory" not in x.lower())
 notes(s, "Per-run sources and hour/cost bases: docs/deck/data/evidence.json (runs, 49 entries; per-entry source = repo file:line or git commit). " + rc.get("grouping", "") + " " + _cav)
-# 3 feed
-s = new_slide("A curriculum-aware feed", "Cards are weighted by the student's grade and the curriculum quarter inferred from the device date; the boost moves through the school year by itself.", 3)
+# 4 feed
+s = new_slide("A curriculum-aware feed", "Cards are weighted by the student's grade and the curriculum quarter inferred from the device date; the boost moves through the school year by itself.", 4)
 s.shapes.add_picture(chart_draw_share(), Inches(0.5), Inches(1.9), width=Inches(7.4))
 shot(s, 8.3, 1.9, 3.25, "02-feed-card.png", "fact card"); shot(s, 10.45, 1.9, 3.25, "04-quiz-card.png", "interject quiz card")
 w = cov["weights"]; table(s, 0.5, 5.65, 7.4, [["current quarter, same grade", "adjacent quarter", "other quarter, same grade", "adjacent grade, current", "off-curriculum"], [f"×{w['current']}", f"×{w['adjacent']}", f"×{w['other_same_grade']}", f"×{w['adjacent_grade_current']}", f"×{w['off']}"]], [1.6, 1.3, 1.6, 1.5, 1.4], size=10)
 bullets(s, 8.25, 5.45, 4.8, 1.5, [f"{cov['pool_cards']:,} illustrated cards; {cov['summary']['bank_facts_labelled']:,} facts labelled to {cov['summary']['competencies']} competencies (LLM labels, 83% inter-model agreement; single-model cells down-weighted)", f"{cov['pool_cards_with_mcq']:,} cards ({100*cov['pool_cards_with_mcq']//cov['pool_cards']}%) carry a verified quiz question", f"0 elementary competencies below floor; {cov['summary']['below_floor_now']} junior-high competencies below floor in the card pool ({len(cov['laggards'])} once DepEd module cards are counted)"], size=12)
 notes(s, f"Screenshots are from the current UI build (card-ui branch, 26 Aug 2026, installed on an Android 34 emulator); the curriculum weighting charted here is implemented on the question-cards branch at commit {COMMIT} and the two branches are not yet merged, so the screenshots show the interface, not the weighting. Weighting: rag/pipeline/FEED-WEIGHTING.md; simulation from packages/shared/src/curriculum/feedWeighting.ts on the bundled tags (docs/deck/data/draw-share-by-month.json; the chart attributes a multi-cell card to the Grade-5 cell that won, so its Aug figure (26.1%) is not the same statistic as feed-calibration.mts's 'draws carrying a G5-Q2 cell' ({cov['calibration_g5_q2_share']}%) — both come from the same module and pool). Quarter weighting applies to all 324 competencies (elementary and junior high). Coverage: rag/bank/COVERAGE-ROUNDUP.md (below floor now = {cov['summary']['below_floor_now']}, all junior high; laggards after module cards = {len(cov['laggards'])}). Quiz: packages/mobile/src/data/cards-questions.json ({cov['pool_cards_with_mcq']:,} of {cov['pool_cards']:,}).")
-# 4 model
+# 5 model
 ec = ev.get("evals_curated", {})
-s = new_slide("Model progress: fluency and pedagogy", ec.get("message", ""), 4)
+s = new_slide("Model progress: fluency and pedagogy", ec.get("message", ""), 5)
 if ec.get("ppl"):
     fig, ax = plt.subplots(figsize=(5.6, 3.5), dpi=200); langs = [x[0] for x in ec["ppl"]]; y = range(len(langs)); h = 0.34
     ax.barh([i + h/2 for i in y], [x[1] for x in ec["ppl"]], height=h, color=CHART_GREY, linewidth=0)
@@ -176,15 +187,15 @@ for i, (v, l) in enumerate(tiles):
 text(s, 6.4, 1.9, 6.4, 0.4, "Pedagogy (measured on scripted probes)", F_TITLE, 13, PRIMARY); text(s, 6.4, 2.3, 6.4, 1.9, ec.get("pedagogy", ""), F_BODY, 12.5, INK)
 text(s, 6.4, 4.25, 6.4, 0.4, "Known weaknesses (measured)", F_TITLE, 13, PRIMARY); bullets(s, 6.4, 4.65, 6.4, 2.2, ec.get("weaknesses", []), size=11.5)
 notes(s, "Sources: " + ec.get("sources", "") + "\n" + "\n".join(f"{m['metric']}: {m['before']} → {m['after']} — {m['source']}" for m in evals.get("metrics", [])))
-# 5 next
-s = new_slide("Next 2–3 weeks", "Consolidate the model, then prove it on the device.", 5)
+# 6 next
+s = new_slide("Next 2–3 weeks", "Consolidate the model, then prove it on the device.", 6)
 left = ["More SFT and knowledge distillation on the CPT base (mode-locked buckets, teacher-generated tutoring turns)", "Extensive synthetic testing on-device: scripted student sessions on the Redmi, TTFT and per-page latency budgets", "Model-as-judge quality control on every generated fact, quiz and translation (decorrelated judge, AUP-safe routing)", "APK-level optimisations: bundle size (engravings subset, indexed PNG), cold start, SQLite migrations, edge-walk cost"]
 right = ["Native-speaker review of the Tagalog and Cebuano copy (onboarding, settings, hedging clause)", "Junior-high gap fill: Lane B facts for the 16 remaining thin competencies; module-card supply", "Finish the quiz lane (10.7k pool cards still without a question) and per-competency Miss-Card labels", "Over-the-air fact-bank updates so content ships without an APK", "Retrieval-QA cases per new competency before each gate run", "Draft a classroom-pilot protocol (consent, offline logging, pre/post measures) to propose to DepEd schools"]
 bullets(s, 0.5, 1.95, 6.3, 5, left, size=14); bullets(s, 6.9, 1.95, 6.0, 5, right, size=14)
 text(s, 0.5, 6.1, 12.3, 0.4, "To report next time: the 2B capability run on the same 143 probes; on-device TTFT and per-page latency on the Redmi; quiz coverage after the lane completes; bundle size after optimisation.", F_DISPLAY, 13, PRIMARY, bold=True)
 notes(s, "Plan items trace to: rag/pipeline/FACT-SWARM-SPEC.md (Lane B, quiz lane, module cards), rag/pipeline/FEED-WEIGHTING.md (Miss-Card labels, edge-walk cost), finetuning/eval/routing/README.md (hedge-clause wording sweep), finetuning/cpt/*.md (SFT/KD on the CPT base), memory of on-device measurements on the Redmi SD685 (kitten tier ~4.4 tok/s, TTFT ~24 s).")
-# 6 links
-s = new_slide("Links", "Code, build and evaluation records are public; model weights follow once the release checklist is done.", 6)
+# 7 links
+s = new_slide("Links", "Code, build and evaluation records are public; model weights follow once the release checklist is done.", 7)
 L = [("Website", links["website"], ""), ("APK (direct download)", links["apk_download"], f"v0.1.0, 325 MB, sha256 708ea605…, Android 12+, 6 GB+ RAM; mirror: github.com/helloluis/hiraia/releases/tag/v0.1.0"), ("GitHub", links["github"], "source, pipelines and evaluation harness (public)"),
      ("Hugging Face", links["huggingface"] if hf_public else "to be published", "model weights + evaluation kit: release pending; corpus provenance will be documented, DepEd-derived text is not redistributed" if not hf_public else "")]
 for i, (k, v, note) in enumerate(L):
