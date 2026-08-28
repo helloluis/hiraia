@@ -379,22 +379,25 @@ export class LocalEngine implements TutorEngine {
     if (!this.modelId || !this.isReadyFlag) {
       throw new Error('Engine not initialized. Call initialize() first.');
     }
-    const list = topics.slice(0, 6).join(', ');
+    // The topic names are printed as chips under this line, in the reader's language; a card's
+    // stored label is often an English phrase, so asking the model to name topics mixes languages
+    // mid-sentence. It gets the COUNT only, and is told not to name anything.
+    const n = topics.length;
     const byLang: Record<string, string> = {
       tagalog:
-        `Isang bata ang kabababasa lang tungkol sa mga paksang ito sa agham: ${list}. ` +
-        `Sumulat ng ISANG maikli, masaya, at nakaka-engganyong pangungusap sa Tagalog na bumabati sa kanya ` +
-        `dahil sa dami ng natutunan niya ngayon, na binabanggit ang 2-3 sa mga paksa sa itaas. ` +
-        `HUWAG magdagdag ng bagong impormasyon o science fact — pagbati LANG. Wag hihigit sa 25 salita.`,
+        `Isang bata ang kabababasa lang ng ${count} pahina tungkol sa ${n} paksa sa agham. ` +
+        `Sumulat ng ISANG maikli, masaya, at nakaka-engganyong pangungusap sa Tagalog na bumabati sa kanya. ` +
+        `HUWAG banggitin ang pangalan ng anumang paksa at HUWAG magdagdag ng science fact — pagbati LANG. ` +
+        `Wag hihigit sa 20 salita.`,
       english:
-        `A child just finished reading about these science topics: ${list}. ` +
-        `Write ONE short, cheerful, encouraging English sentence congratulating them on how much they learned today, ` +
-        `naming 2-3 of the topics above. Do NOT add any new information or science facts — praise ONLY. Under 25 words.`,
+        `A child has just read ${count} pages covering ${n} science topics. ` +
+        `Write ONE short, cheerful, encouraging English sentence congratulating them. ` +
+        `Do NOT name any topic and do NOT add science facts — praise ONLY. Under 20 words.`,
       cebuano:
-        `Usa ka bata ang bag-o lang nakabasa mahitungod niini nga mga hilisgutan sa siyensya: ${list}. ` +
-        `Pagsulat og USA ka mubo, malipayon, ug makadasig nga pangungusap sa Binisaya nga nagbati kaniya ` +
-        `tungod sa iyang nakat-onan karon, nga naghisgot sa 2-3 sa mga hilisgutan sa taas. ` +
-        `AYAW pagdugang og bag-ong impormasyon o science fact — pagdayeg LANG. Ilalom sa 25 ka pulong.`,
+        `Usa ka bata ang bag-o lang nakabasa og ${count} ka panid mahitungod sa ${n} ka hilisgutan sa siyensya. ` +
+        `Pagsulat og USA ka mubo, malipayon, ug makadasig nga tudling-pulong sa Binisaya nga nagdayeg kaniya. ` +
+        `AYAW hisguti ang ngalan sa bisan unsang hilisgutan ug ayaw pagdugang og science fact — pagdayeg LANG. ` +
+        `Ilalom sa 20 ka pulong.`,
     };
     const instruction = byLang[language] ?? byLang.tagalog!;
     const run = completion({

@@ -369,6 +369,22 @@ export function cardText(fact: CardFact, language: Language): string {
  * to `topic`. Same fallback chain as cardText, so a missing Cebuano title shows Tagalog
  * before English.
  */
+/**
+ * The band title for a card id, in the reader's language, or '' when the row has not been
+ * warmed yet. The reward recap resolves titles at DISPLAY time through this: at LOG time the
+ * lazily-loaded card database may not have the row yet, and falling back to `topic` there put
+ * raw English slugs ("ants farm aphids for honeydew") into a Tagalog list.
+ */
+export function cardTitleById(id: string, language: Language): string {
+  const row = textOf(id);
+  if (!row?.title) return '';
+  for (const k of FALLBACK[language] ?? FALLBACK.tagalog) {
+    const v = row.title[k];
+    if (v && v.trim()) return v.trim();
+  }
+  return '';
+}
+
 export function cardTitle(fact: CardFact, language: Language): string {
   const row = textOf(fact.id);
   if (!row?.title) return '';

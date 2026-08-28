@@ -27,8 +27,15 @@ export function recentTopics(log: ViewLogEntry[], max = 6): string[] {
   const seen = new Set<string>();
   for (let i = log.length - 1; i >= 0 && out.length < max; i--) {
     const t = (log[i]!.topic || '').trim();
-    const key = t.toLowerCase();
-    if (t.length < 3 || seen.has(key)) continue;
+    // Dedupe on the bare noun phrase: card titles differ by an article or a plural marker far more
+    // often than by meaning ("Kulay Babala" / "Mga Kulay Babala"), and two near-identical chips in a
+    // three-chip recap read as a bug.
+    const key = t
+      .toLowerCase()
+      .replace(/^(mga|ang|ang mga|si|sina|the|a|an)\s+/u, '')
+      .replace(/[^\p{L}\p{N}]+/gu, ' ')
+      .trim();
+    if (t.length < 3 || !key || seen.has(key)) continue;
     seen.add(key);
     out.push(t);
   }
@@ -40,15 +47,19 @@ const HEAD: Record<Language, string> = {
   english: 'Wow, great job! 🌟',
   cebuano: 'Maayo kaayo! 🌟',
 };
-const LEARNED: Record<Language, (n: number) => string> = {
-  tagalog: (n) => `Natutunan mo ang tungkol sa`,
-  english: () => `You just learned about`,
-  cebuano: () => `Nakat-on ka bahin sa`,
-};
 const PAGES: Record<Language, (n: number) => string> = {
-  tagalog: (n) => `${n} pahina na ang nabasa mo!`,
-  english: (n) => `That's ${n} pages already!`,
-  cebuano: (n) => `${n} na ka panid ang imong nabasa!`,
+  tagalog: (n) => `${n} pahina na ang nabasa mo.`,
+  english: (n) => `That is ${n} pages so far.`,
+  cebuano: (n) => `${n} na ka panid ang imong nabasa.`,
+};
+// The topics are PRINTED BELOW as their own chips, in the reader's language. The sentence must
+// never splice them inline: a card's stored label is often an English phrase, and dropping it into
+// a Tagalog clause ("Natutunan mo ang tungkol sa Mainly males grow the large sail") reads as
+// nonsense. So the sentence counts pages and hands off to the list.
+const RECAP: Record<Language, string> = {
+  tagalog: 'Heto ang mga huling binasa mo:',
+  english: 'Here is what you just read:',
+  cebuano: 'Kini ang imong bag-o lang nabasa:',
 };
 
 /** Deterministic, always-safe reward text (fallback + first-run). */
@@ -60,12 +71,7 @@ export function templateReward(
 ): RewardContent {
   const lang = language ?? 'tagalog';
   const named = topics.slice(0, 3);
-  const list = named.length
-    ? named.join(language === 'english' ? ', ' : ', ') + (named.length > 1 ? '' : '')
-    : '';
-  const sentence = list
-    ? `${LEARNED[lang](count)} ${list}. ${PAGES[lang](count)}`
-    : `${PAGES[lang](count)}`;
+  const sentence = named.length ? `${PAGES[lang](count)} ${RECAP[lang]}` : PAGES[lang](count);
   return { text: `${HEAD[lang]} ${sentence}`, topics: named, count, source: 'template', minutes };
 }
 

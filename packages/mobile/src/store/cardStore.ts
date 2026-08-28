@@ -10,8 +10,11 @@
  * Counters (pages read / questions correct) + the seen-set persist via the settings table.
  */
 import { create } from 'zustand';
+import type { Language } from '@hiraia/shared';
 
 import {
+  cardTitle,
+  cardTitleById,
   getCard,
   jumpCard,
   nextChoices,
@@ -121,6 +124,15 @@ function persist(s: { pagesRead: number; correctCount: number; seen: Set<string>
   void setSetting('cards.seen', JSON.stringify([...s.seen].slice(-SEEN_CAP)));
 }
 
+
+/**
+ * Topic labels for the reward recap, resolved from the card database at display time (the log
+ * may have been written before the row was warm) and falling back to whatever was logged.
+ */
+function recapTopics(log: ViewLogEntry[], language: Language): string[] {
+  return recentTopics(log.map((e) => ({ ...e, topic: cardTitleById(e.factId, language) || e.topic })));
+}
+
 export const useCardStore = create<CardState>()((set, get) => ({
   hydrated: false,
   current: null,
@@ -180,7 +192,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
       choices: nextChoices(first.id, seen, lang, { threadDepth: 0, recentIds: [first.id] }),
       threadDepth: 0,
       recent: [first.id],
-      viewLog: [{ factId: first.id, topic: first.topic, ts: Date.now() }],
+      viewLog: [{ factId: first.id, topic: cardTitle(first, lang) || first.topic, ts: Date.now() }],
       pageKey: 1,
     });
   },
@@ -193,7 +205,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
     // quiz, so check it first; it intercepts the flip and resumes the choice after.
     if (s.untilReward <= 1 && recentTopics(s.viewLog).length >= REWARD_MIN_TOPICS) {
       const lang = useEngineStore.getState().language ?? 'tagalog';
-      const topics = recentTopics(s.viewLog);
+      const topics = recapTopics(s.viewLog, lang);
       const minutes = Math.max(
         1,
         Math.round((Date.now() - (s.viewLog[0]?.ts ?? Date.now())) / 60000)
@@ -392,7 +404,7 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, banner?: string) {
   const seen = new Set(s.seen);
   seen.add(fact.id);
   const recent = [...s.recent, fact.id].slice(-RECENT_WINDOW);
-  const viewLog = [...s.viewLog, { factId: fact.id, topic: fact.topic, ts: Date.now() }].slice(
+  const viewLog = [...s.viewLog, { factId: fact.id, topic: cardTitle(fact, lang) || fact.topic, ts: Date.now() }].slice(
     -VIEWLOG_CAP
   );
   const pagesRead = s.pagesRead + 1;
@@ -447,7 +459,7 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
   const recent = [...s.recent, nextFact.id].slice(-RECENT_WINDOW);
   const viewLog = [
     ...s.viewLog,
-    { factId: nextFact.id, topic: nextFact.topic, ts: Date.now() },
+    { factId: nextFact.id, topic: cardTitle(nextFact, lang) || nextFact.topic, ts: Date.now() },
   ].slice(-VIEWLOG_CAP);
   const pagesRead = s.pagesRead + 1;
   const untilReward = s.untilReward - 1;
@@ -488,9 +500,9 @@ async function prefetchReward(get: Get_, set: Set_) {
   const es = useEngineStore.getState();
   const engine = es.engine;
   if (!engine?.isReady() || !engine.generateReward) return;
-  const topics = recentTopics(s.viewLog);
-  if (topics.length < REWARD_MIN_TOPICS) return;
   const lang = es.language ?? 'tagalog';
+  const topics = recapTopics(s.viewLog, lang);
+  if (topics.length < REWARD_MIN_TOPICS) return;
   const minutes = Math.max(1, Math.round((Date.now() - (s.viewLog[0]?.ts ?? Date.now())) / 60000));
 
   set({ rewardPrefetching: true });
