@@ -36,12 +36,15 @@ os.makedirs(OUT, exist_ok=True)
 
 TOPICS = ['Animals','Insects & Spiders','Sea Creatures & Fish','Birds','Plants','The Human Body','Health & Safety','Food & Nutrition','Life Cycles & Growth','Dinosaurs & Fossils','Space & Astronomy','Weather & Sky','Rocks, Volcanoes & Earthquakes','Water & the Water Cycle','Earth & Seasons','Magnets','Forces & Motion','Simple Machines & Tools','Energy & Electricity','Light & Sound','States of Matter','Materials & Things','Changes in Matter','Air & Gases','Recycling & the Environment','Philippine Places','Festivals & Landmarks','World Geography','Philippine Heroes & History','Flag, Anthem & Symbols','Government & Nation','Filipino Culture']
 
+# SHIPPING RULESET (card-ui cards.db, 87% of the deck): THREE options, short enough that a card
+# never scrolls — median option there is 19 characters. Options longer than ~40 characters push the
+# answer rows off the card on a 720px phone, so the prompt caps them.
 GEN_HEAD = '''You write ONE multiple-choice quiz question per fact for a Filipino science tutor (Philippine K-12). Each fact carries "grades" = the grade levels it is taught at; pitch the question, its vocabulary and its distractors at THAT grade band (grade 5 if grades are missing) — never simplify away or skip a fact for being above grade 5 when its grades say so. Reason first, then output ONLY the final JSON array.
 
-For EACH fact: a clear single-sentence English question answerable from the fact (do NOT reference "the fact"); EXACTLY 4 options where one is correct and the other three are PLAUSIBLE, same-category, grade-band-level distractors that are NEVER accidentally true (tap a real misconception, not another true statement); answer = 0-based index of the correct option; a one-sentence explanation; difficulty 0 (easy) / 1 / 2 (hard); factId and domain copied from the fact; quizTopic = the single best fit from this list: %s.
+For EACH fact: a clear single-sentence English question answerable from the fact (do NOT reference "the fact"); EXACTLY 3 options where one is correct and the other two are PLAUSIBLE, same-category, grade-band-level distractors that are NEVER accidentally true (tap a real misconception, not another true statement); answer = 0-based index of the correct option; a one-sentence explanation; difficulty 0 (easy) / 1 / 2 (hard); EVERY option must be at most 40 characters — a short phrase or a number with its unit, never a sentence, and all three about the same length so none stands out; factId and domain copied from the fact; quizTopic = the single best fit from this list: %s.
 
 FINAL ANSWER = a JSON array, one object per fact IN ORDER, each exactly:
-{"factId":"..","domain":"..","quizTopic":"..","q":"..","options":["a","b","c","d"],"answer":0,"explanation":"..","difficulty":1}
+{"factId":"..","domain":"..","quizTopic":"..","q":"..","options":["a","b","c"],"answer":0,"explanation":"..","difficulty":1}
 FACTS:
 ''' % json.dumps(TOPICS)
 
