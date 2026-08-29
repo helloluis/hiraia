@@ -181,6 +181,8 @@ export interface CurriculumWeights {
   sameGradeAdjacentQuarter: number;
   sameGradeOtherQuarter: number;
   adjacentGradeCurrentQuarter: number;
+  /** School out: every cell of the student's own grade, weighted equally. */
+  schoolOutSameGrade: number;
   other: number;
   offCurriculum: number;
   minConfidence: number;
@@ -192,6 +194,7 @@ export const DEFAULT_CURRICULUM_WEIGHTS: CurriculumWeights = {
   sameGradeAdjacentQuarter: 3,
   sameGradeOtherQuarter: 1.5,
   adjacentGradeCurrentQuarter: 2,
+  schoolOutSameGrade: 6,
   other: 1,
   offCurriculum: 0.4,
   minConfidence: 0.2,
@@ -205,8 +208,10 @@ function cellMultiplier(
 ): number {
   const sameGrade = cell.grade === studentGrade;
   if (currentQuarter === null) {
-    // Summer: the grade still matters, no quarter does.
-    return sameGrade ? w.sameGradeOtherQuarter : w.other;
+    // School is out (outside the DepEd school year). There is no quarter to favour, so the
+    // student's WHOLE grade is equally relevant and carries the in-quarter weight: over the break
+    // the feed reviews the year they just finished, evenly, instead of drifting into other grades.
+    return sameGrade ? w.schoolOutSameGrade : w.other;
   }
   if (sameGrade) {
     if (cell.quarter === currentQuarter) return w.sameGradeCurrentQuarter;
@@ -224,6 +229,8 @@ function cellMultiplier(
  * the adjacent-quarter level, with the lift above ×1 scaled by that cell's own norm). A tag
  * without `cells` is the single-label v1 shape and behaves as one strong un-normalised cell.
  * Always ≥ w.other for a tagged card, so off-curriculum (×0.4) stays the lightest band.
+ * When school is out there is no current quarter: every cell of the student's grade weighs the
+ * same (schoolOutSameGrade), so the break reviews their whole year rather than favouring a month.
  */
 export function curriculumMultiplier(
   tag: CurriculumTag | null | undefined,

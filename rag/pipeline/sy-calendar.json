@@ -63,7 +63,7 @@
   }
  ],
  "curriculum_quarter_inference": {
-  "rule": "MATATAG competencies are organised in FOUR quarters; SY 2026-27 runs THREE terms. No official quarter-to-term pacing guide was found. Infer: fraction = instructional weekdays elapsed / total instructional weekdays (end-of-term blocks count as the end of that term's instruction); quarter = min(4, floor(4*fraction)+1). Outside the school year (summer) there is no current quarter: every quarter weights x1.",
+  "rule": "MATATAG competencies are organised in FOUR quarters; SY 2026-27 runs THREE terms. No official quarter-to-term pacing guide was found. Infer: fraction = instructional weekdays elapsed / total instructional weekdays (end-of-term blocks count as the end of that term's instruction); quarter = min(4, floor(4*fraction)+1). Outside the school year (summer) there is no current quarter: the feed weights EVERY cell of the student's own grade equally at the in-quarter multiplier (see FEED-WEIGHTING.md, schoolOutSameGrade).",
   "replace_when": "DepEd publishes a MATATAG curriculum map / pacing guide for the three-term calendar."
  }
 }

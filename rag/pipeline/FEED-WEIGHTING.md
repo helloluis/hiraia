@@ -19,7 +19,7 @@ Lightest: what they have already seen.
 
 | factor | rule | range |
 |---|---|---|
-| **curriculum** | max over the card's cells (cells agreed by two labelers or from a confident label count in full; weak cells are capped at ×3); each cell's lift above ×1 is scaled by that cell's own competency normalisation `sqrt(median_n / n_code)` clamped [0.1, 1] (it only ever dampens, so no cell exceeds its band) — a tagged card is never below ×1, so off-curriculum stays lightest; of: same grade & current quarter ×6; same grade, adjacent quarter ×3; same grade, other quarter ×1.5; adjacent grade, current quarter ×2; other ×1; off-curriculum OR tag confidence <0.20 ×0.4 | 0.4–6 |
+| **curriculum** | max over the card's cells (cells agreed by two labelers or from a confident label count in full; weak cells are capped at ×3); each cell's lift above ×1 is scaled by that cell's own competency normalisation `sqrt(median_n / n_code)` clamped [0.1, 1] (it only ever dampens, so no cell exceeds its band) — a tagged card is never below ×1, so off-curriculum stays lightest; of: **school out: every cell of the student's own grade ×6, equally** (see below); in term, same grade & current quarter ×6; same grade, adjacent quarter ×3; same grade, other quarter ×1.5; adjacent grade, current quarter ×2; other ×1; off-curriculum OR tag confidence <0.20 ×0.4 | 0.4–6 |
 | **recency in SY** | within the current quarter, weeks already covered (from `week`, when known) ×1.5 vs. weeks ahead ×1 — favour review over preview | 1–1.5 |
 | **seen** | card: `0.5 ** times`, recovering by +50% per 7 days since `last_seen` (cap 1.0); competency: `0.8 ** times` likewise | (0, 1] |
 | **base** | every card 1.0; illustrated-and-verified required to be in the pool at all | 1 |
@@ -66,8 +66,17 @@ Opens 2026-06-08, closes 2027-04-08, 201 class days. Instruction: T1 Jun 15–Se
 T3 Jan 4–Mar 23; each term ends with a two-week end-of-term block. MATATAG competencies stay in
 FOUR quarters and no official quarter→term pacing guide exists yet, so the app infers the
 curriculum quarter from the **fraction of instructional weekdays elapsed** (Q = ⌊4·f⌋+1). Today
-(2026-08-27) → 31% → Q2 — which is the cell the calibration above uses. Summer → no current
-quarter, all quarters ×1. Boundary fuzz is tolerated by the adjacent-quarter ×3. Data:
+(2026-08-27) → 31% → Q2 — which is the cell the calibration above uses. Boundary fuzz is tolerated by
+the adjacent-quarter ×3.
+
+**When school is out** (outside the school year — the April–June break, and any date the calendar does
+not cover) there is no quarter to infer, so the rule changes shape rather than switching off: **every
+card tagged to the student's own grade is weighted equally, at the in-quarter ×6**, and everything else
+stays at baseline. The break reviews the whole year the child just finished instead of drifting into
+other grades — measured for a Grade-5 reader, their own grade goes from 39% of draws to **61%**
+(Q1 10.4% · Q2 22.0% · Q3 10.9% · Q4 17.9% — equal per card, so the shares follow how many cards each
+cell has), with other grades falling from 59% to 38%. The grade a child is *entering* is not assumed:
+the stored grade is whatever they last set. Data:
 `rag/pipeline/sy-calendar.json`. **Rollover:** dates outside every known DepEd calendar use a generic PH
 school-year model (opens the second Monday of June, closes the second Friday of April, one instructional
 window) — `calendarFor()` in `feedWeighting.ts` — so SY 2027-28 and later keep weighting without an app
