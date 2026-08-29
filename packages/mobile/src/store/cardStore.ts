@@ -35,6 +35,7 @@ import {
   type ViewLogEntry,
 } from '../data/reward';
 import { getSetting, setSetting } from '../db/repo';
+import { withModelLock } from '../engine/modelLock';
 import { useEngineStore } from './engineStore';
 
 const SEEN_CAP = 2500; // persisted seen-set cap (pool is ~3.5k; cycling is fine)
@@ -293,7 +294,9 @@ export const useCardStore = create<CardState>()((set, get) => ({
     if (engine?.isReady() && engine.answerQuery) {
       set({ asking: true });
       try {
-        const ans = await engine.answerQuery(q, lang);
+        // Serialized with every other generation on the single-instance model — chat,
+        // the reward prefetch, and the grade re-prime (LocalEngine.setGrade).
+        const ans = await withModelLock(() => engine.answerQuery!(q, lang));
         const clean = sanitizeAnswer(ans.text);
         if (ans.grounded && clean && !get().response) {
           set({
@@ -507,7 +510,7 @@ async function prefetchReward(get: Get_, set: Set_) {
 
   set({ rewardPrefetching: true });
   try {
-    const raw = await engine.generateReward(topics, get().pagesRead, lang);
+    const raw = await withModelLock(() => engine.generateReward!(topics, get().pagesRead, lang));
     const clean = sanitizeReward(raw);
     // Only accept if still un-shown and valid; otherwise the template covers it.
     if (clean && !get().reward) {

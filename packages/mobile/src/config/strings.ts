@@ -52,6 +52,7 @@ interface UIStrings {
   close: string;
   sectionLanguage: string;
   langRestartNote: string;
+  sectionGrade: string; // the student's grade level (chips 3–10)
   beta: string;
   comingSoon: string;
   sectionConversations: string;
@@ -107,6 +108,7 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     close: '← Isara',
     sectionLanguage: 'Wika',
     langRestartNote: 'Sandali itong magri-restart kapag pinalitan.',
+    sectionGrade: 'Baitang',
     beta: 'beta',
     comingSoon: 'malapit na!',
     sectionConversations: 'Mga Usapan',
@@ -176,6 +178,7 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     close: '← Close',
     sectionLanguage: 'Language',
     langRestartNote: 'It restarts briefly when you switch.',
+    sectionGrade: 'Grade',
     beta: 'beta',
     comingSoon: 'coming soon',
     sectionConversations: 'Conversations',
@@ -246,6 +249,7 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     close: '← Sirado',
     sectionLanguage: 'Pinulongan',
     langRestartNote: 'Mag-restart kini dali kung mag-usab ka.',
+    sectionGrade: 'Grado',
     beta: 'beta',
     comingSoon: 'hapit na!',
     sectionConversations: 'Mga Panag-istorya',

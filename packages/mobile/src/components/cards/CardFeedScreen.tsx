@@ -25,6 +25,7 @@
  * animation callback is dropped, so a transition can never strand a layer over the screen
  * (the earlier hang).
  */
+import { useRouter } from 'expo-router';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
@@ -47,6 +48,7 @@ import Reanimated, {
 } from 'react-native-reanimated';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { GRADE_WORD } from '../../config/grades';
 import { uiStrings } from '../../config/strings';
 import {
   getCard,
@@ -290,7 +292,11 @@ function DieFace() {
 }
 
 export function CardFeedScreen() {
+  const router = useRouter();
   const language = useEngineStore((s) => s.language) ?? 'tagalog';
+  // The student's grade, printed in the footer — which is also the way INTO Settings from
+  // the feed (see the footer below).
+  const grade = useEngineStore((s) => s.grade);
   const t = uiStrings(language);
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
@@ -994,12 +1000,36 @@ export function CardFeedScreen() {
         </View>
       </GestureDetector>
 
-      {/* deck counter under the card (mockup `.counter`), with the quiz score at the right */}
+      {/* Deck counter under the card (mockup `.counter`), with the quiz score at the right.
+          It now reads "GRADE 5 · PAHINA 8" and is the ONLY door to Settings on this screen:
+          the sidebar used to hang off the chat header, which is shelved, so on the feed the
+          language and grade were unreachable. Putting the control on the label itself keeps
+          the chrome as bare as the mockup draws it — no second button next to the die — and
+          it is SAFE here in a way it would not be on the card: the footer sits OUTSIDE the
+          GestureDetector that wraps the deck, so a tap on it cannot be stolen by (or steal
+          from) the swipe. "Grade" stays English in all three languages (GRADE_WORD); only
+          the page word is localised.
+          The leading ☰ is load-bearing, not decoration: without it this strip is
+          byte-identical in style to the static "✓ 3" beside it and to the read counter it
+          replaced, so it reads as a caption and never gets tapped — and an EXISTING install
+          has a saved language, so bootstrap() leaves onboardingActive false and the grade
+          slide never shows it that Settings exists. Language, grade and chat history would
+          then be unreachable for exactly the users who already have the app. */}
       <View style={[styles.caption, { paddingBottom: Math.max(insets.bottom, 10) }]}>
         <View style={styles.captionSide} />
-        <Text style={styles.captionText} numberOfLines={1}>
-          {t.cards.readLabel} {pagesRead}
-        </Text>
+        <Pressable
+          style={({ pressed }) => [styles.captionTap, pressed && styles.captionTapPressed]}
+          onPress={() => router.push('/sidebar')}
+          hitSlop={10}
+          // No accessibilityLabel: the rendered "Grade 5 · pahina 8" IS the label, and it is
+          // already localised — a hand-written one would only repeat it in one language.
+          accessibilityRole="button"
+        >
+          <Text style={styles.captionText} numberOfLines={1}>
+            <Text style={styles.captionMenuGlyph}>☰</Text>{'  '}
+            {GRADE_WORD[language]} {grade} · {t.cards.readLabel} {pagesRead}
+          </Text>
+        </Pressable>
         <Text style={[styles.captionScore, styles.captionSide]} numberOfLines={1}>
           ✓ {correctCount}
         </Text>
@@ -1249,8 +1279,15 @@ const styles = StyleSheet.create({
     // paddingBottom applied inline (bottom safe-area inset) to clear the Android nav bar
   },
   captionSide: { width: 46 }, // equal gutters keep the counter optically centred
+  // The tap target, not the type: it takes the row's growth so the label stays optically
+  // centred between the two 46dp gutters, and gives the whole strip a comfortable target
+  // (the 9.5px caps alone would be a ~14dp-tall one) rather than only the glyphs.
+  captionTap: { flex: 1, paddingVertical: 4 },
+  captionTapPressed: { opacity: 0.55 },
+  // The affordance. Gold (the wordmark's accent) against the sage caption, and a size up from
+  // the 9.5px caps, so the row announces itself as a control instead of a label.
+  captionMenuGlyph: { fontSize: 12, color: card.gold },
   captionText: {
-    flex: 1,
     textAlign: 'center',
     fontFamily: fonts.gothic,
     fontSize: 9.5,

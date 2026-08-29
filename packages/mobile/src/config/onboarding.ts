@@ -24,21 +24,30 @@ export const LANG_BUTTON: Record<Language, string> = {
   cebuano: 'Magbinisaya ko',
 };
 
-// Slide 2 — caption above the chat demo (shown in the chosen language).
+// Slide 2 — "What grade are you in?" (typewritered in the language just chosen). The word
+// on the buttons underneath is NOT here: it is English "Grade" in all three languages and
+// the deck footer prints the same word, so it lives once in config/grades.ts (GRADE_WORD).
+export const Q_GRADE: Record<Language, string> = {
+  tagalog: 'Anong grade ka na?',
+  english: 'What grade are you in?',
+  cebuano: 'Unsa nga grade ka na?',
+};
+
+// Slide 3 — caption above the chat demo (shown in the chosen language).
 export const DEMO_CAPTION: Record<Language, string> = {
   tagalog: 'Magtanong ng kahit ano tungkol sa agham!',
   english: 'Ask anything about grade-school science!',
   cebuano: 'Pangutana bisan unsa bahin sa siyensya!',
 };
 
-// Slide 2 — the message the demo "user" types.
+// Slide 3 — the message the demo "user" types.
 export const DEMO_QUESTION: Record<Language, string> = {
   tagalog: 'paexplain po ng photosynthesis',
   english: 'explain photosynthesis please',
   cebuano: 'palihug i-explain ang photosynthesis',
 };
 
-// Slide 2 — Hiraia's short demo reply (1–2 sentences).
+// Slide 3 — Hiraia's short demo reply (1–2 sentences).
 export const DEMO_ANSWER: Record<Language, string> = {
   tagalog:
     'Sa photosynthesis, gumagawa ng sariling pagkain ang halaman gamit ang sikat ng araw, tubig, at hangin! 🌱',
@@ -47,10 +56,10 @@ export const DEMO_ANSWER: Record<Language, string> = {
     'Sa photosynthesis, ang mga tanom maghimo og kaugalingong pagkaon gamit ang adlaw, tubig, ug hangin! 🌱',
 };
 
-// Slide 2 — the illustration slug shown in the demo reply (resolves via imageMap).
+// Slide 3 — the illustration slug shown in the demo reply (resolves via imageMap).
 export const DEMO_IMAGE_SLUG = 'plant-parts';
 
-// Slide 3 — download notice.
+// Slide 4 — download notice.
 export const DL_TITLE: Record<Language, string> = {
   tagalog: 'Sandali lang — may ida-download',
   english: 'One quick download',

@@ -312,8 +312,18 @@ export const cardFrame = StyleSheet.create({
     borderRadius: 7,
     backgroundColor: card.board, // punched clean through to the board behind the deck
   },
-  holeLeft: { left: '33%' },
-  holeRight: { left: '63%' },
+  // Centred as a PAIR: each dot is inset 35% from its OWN edge, so the pair is symmetric at any
+  // width. (The old 33%/63% pair put both left edges 2% left of where symmetry wants them, which
+  // reads as a tilted card.) The margin is +13 - 6.5: half a dot BACK, plus the parent's 13dp
+  // padding FORWARD. That second term is a Yoga quirk, not a fudge — RN defaults to YGErrataAll,
+  // so AbsolutePercentAgainstInnerSize is on and the 35% resolves against the parent's INNER
+  // width (W - 26) while the inset origin is the parent's border edge (here W). Without the
+  // +13 the pair stays centred but the GAP opens to 0.30W + 18.2 instead of 0.30(W - 26) —
+  // ~26dp wider, which on a ~330dp card is a 28% wider spread than the mockup draws. In CSS the
+  // percentage and the origin share the padding box, so `.hole` in midcentury.html needs only
+  // the -6.5 half-dot.
+  holeLeft: { left: '35%', marginLeft: 6.5 },
+  holeRight: { right: '35%', marginRight: 6.5 },
 
   // ---- index band ----
   band: {

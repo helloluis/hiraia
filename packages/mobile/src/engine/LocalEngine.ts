@@ -9,9 +9,11 @@ import {
   IMAGE_VECTORS_BLOB_ASSET,
   IMAGE_VECTORS_META,
 } from '../config/model';
+import { DEFAULT_GRADE } from '../config/grades';
 import { CHAT_TEMP, SUMMARY_TEMP, CHAT_MAX_TOKENS } from '../config/inference';
 import { IMAGE_CATEGORY } from '../generated/imageCategory.generated';
 import { ensureRemoteModel, filenameFromUrl } from './modelDownload';
+import { withModelLock } from './modelLock';
 import type { AdapterLanguage } from '../config/model';
 import type {
   TutorEngine,
@@ -20,6 +22,7 @@ import type {
   RagResult,
   TutorConfig,
   Language,
+  GradeLevel,
 } from '@hiraia/shared';
 import {
   RagStore,
@@ -72,6 +75,8 @@ export class LocalEngine implements TutorEngine {
   private modelId: string | null = null;
   private isReadyFlag = false;
   private config: TutorConfig | null = null;
+  // Grade whose system prompt is currently primed in QVAC's KV cache (see warmUp/setGrade).
+  private primedGrade: GradeLevel | null = null;
   // In-memory grounding bank. Built at init; no native deps, so it works offline.
   private rag: RagStore | null = null;
   // Semantic embedder (LaBSE via QVAC) for the hybrid retriever. Loaded in the
@@ -196,14 +201,14 @@ export class LocalEngine implements TutorEngine {
       // usable on lexical retrieval immediately; the hybrid upgrades in when ready.
       void this.initSemantic();
 
-      // Warm-up pass: prefill the model with the STATIC system prompt before the
-      // user ever arrives in chat. This compiles the Metal graph, heats the
-      // kernels, AND primes QVAC's system-prompt KV cache, so the student's first
-      // real message hits the cache and skips the full ~1500-token prefill (the
-      // big first-TTFT win). The throwaway output is discarded. This is the slow
-      // tail of init — the loader bar tracks it.
-      await this.warmUp();
-
+      // NO warm-up here — see primeSystemPrompt(). The system-prompt prefill is the slow
+      // tail of a cold start (measured `warm-up complete (77835ms)` on the target Redmi) and
+      // it is keyed on the GRADE, which the child is still choosing while this load runs:
+      // onboarding's grade slide lands seconds after the language pick that kicked the load
+      // off. Warming in here would prime the grade captured at load START and then have to
+      // throw that away and prefill again for the grade actually picked — two ~78s prefills
+      // for 7 of the 8 grades. The caller (engineStore.changeLanguage) instead primes ONCE,
+      // explicitly, with the settled grade, before it flips isReady.
       this.isReadyFlag = true;
 
       console.log(`${ACTIVE_MODEL.displayName} model loaded successfully`);
@@ -216,10 +221,11 @@ export class LocalEngine implements TutorEngine {
   }
 
   /**
-   * Run a single throwaway completion at the end of init to warm the model. The
+   * Run a single throwaway completion to warm the model (driven by primeSystemPrompt /
+   * setGrade — never by initialize() itself; see there). The
    * history is just the STATIC system prompt + a trivial user turn, with predict:1
    * (we discard the token) and kvCache:true. This must mirror EXACTLY the static
-   * system prompt chatStore sends — generateSystemPrompt(lang, 5, true) — so the
+   * system prompt chatStore sends — generateSystemPrompt(lang, grade, true) — so the
    * KV cache primed here is the same one the first real turn looks up. Non-fatal:
    * a failure just means the first real message pays the normal cold TTFT.
    */
@@ -227,8 +233,10 @@ export class LocalEngine implements TutorEngine {
     if (!this.modelId || !this.config) return;
     try {
       const t0 = Date.now();
-      // grade 5 + imageTags=true => byte-for-byte match with chatStore's system prompt.
-      const systemPrompt = generateSystemPrompt(this.config.language, 5, true);
+      // language + grade (both from the engineStore-built config; chatStore reads the same
+      // store) + imageTags=true => byte-for-byte match with chatStore's system prompt.
+      const grade = this.config.gradeLevel;
+      const systemPrompt = generateSystemPrompt(this.config.language, grade, true);
       // predict:1 (not 0): generating a single throwaway token guarantees the prompt is fully
       // prefilled and the KV cache persisted. QVAC 0.13 has no public `prefill: true` completion
       // flag (only an internal VLA path), and predict:0 risks short-circuiting before the eval that
@@ -257,9 +265,53 @@ export class LocalEngine implements TutorEngine {
         /* best-effort */
       }
       console.log(`[LocalEngine] warm-up complete (${Date.now() - t0}ms)${warmStat}`);
+      this.primedGrade = grade;
     } catch (e) {
       console.warn('[LocalEngine] warm-up failed (non-fatal):', e);
     }
+  }
+
+  /**
+   * Prefill the STATIC system prompt for `grade`. This is the init-time warm-up, made
+   * EXPLICIT so the caller owns when it runs and which grade it runs for (initialize() no
+   * longer warms up). Compiles the graph, heats the kernels, and primes QVAC's
+   * system-prompt KV cache so the student's first real turn skips the full prefill.
+   *
+   * Deliberately does NOT take the shared model lock. It only ever runs on an engine that
+   * is not ready yet, so nothing can be generating on it — while the lock is module-wide
+   * and may still be held by a stale completion belonging to the engine we just shut down
+   * (a feed reward prefetch holds it for a whole generation, tens of seconds on this
+   * device). Taking it here would make readiness wait on that unrelated generation, and a
+   * completion on an unloaded model that never settles would strand isReady for the whole
+   * session. Steady-state re-priming (setGrade, below) still takes the lock, because there
+   * it genuinely can collide with a live chat / feed turn.
+   */
+  async primeSystemPrompt(grade: GradeLevel): Promise<void> {
+    if (!this.config) return;
+    this.config = { ...this.config, gradeLevel: grade };
+    if (this.primedGrade === grade) return;
+    await this.warmUp();
+  }
+
+  /**
+   * Apply a new student grade to a READY engine WITHOUT reloading the model — the LoRA
+   * adapter is per-language; the grade only changes the static system prompt ("grade-N
+   * students") and the feed's grounded-answer prompt. Since QVAC's KV cache is keyed on the
+   * prompt text, the cache primeSystemPrompt() primed at the end of the load would MISS on
+   * the next real turn, so we re-run the warm-up prefill in place (non-fatal). Use
+   * primeSystemPrompt() instead while the engine is still coming up — this path is the
+   * steady-state one. The re-prime is a real completion on the
+   * single-instance model, so it runs under the shared model lock: it can never overlap an
+   * in-flight chat / feed generation, and rapid taps queue behind each other — a queued one
+   * is skipped once it is stale (superseded by a later tap) or already primed.
+   */
+  async setGrade(grade: GradeLevel): Promise<void> {
+    if (!this.config) return;
+    this.config = { ...this.config, gradeLevel: grade };
+    await withModelLock(async () => {
+      if (this.config?.gradeLevel !== grade || this.primedGrade === grade) return;
+      await this.warmUp();
+    });
   }
 
   async *chat(messages: Message[], kvCacheKey?: string): AsyncIterable<string> {
@@ -428,17 +480,19 @@ export class LocalEngine implements TutorEngine {
     const hits = await this.ragSearch(query, 4);
     if (!hits.length) return { text: '', grounded: false };
     const context = hits.map((h) => `- ${h.content}`).join('\n');
+    // Pitched at the student's grade (engineStore → config; kept current by setGrade).
+    const grade = this.config?.gradeLevel ?? DEFAULT_GRADE;
     const byLang: Record<string, string> = {
       tagalog:
-        `Ikaw ay isang mabait na science tutor para sa batang Grade 5. Gamit LAMANG ang mga FACT sa ibaba, ` +
+        `Ikaw ay isang mabait na science tutor para sa batang Grade ${grade}. Gamit LAMANG ang mga FACT sa ibaba, ` +
         `sagutin ang tanong sa 1-2 maikli at simpleng pangungusap sa Tagalog. Kung hindi masagot ng mga fact ang tanong, ` +
         `sabihin mong hindi mo pa alam. HUWAG mag-imbento ng bagong impormasyon.\n\nMGA FACT:\n${context}\n\nTANONG: ${query}\n\nSAGOT:`,
       english:
-        `You are a kind science tutor for a Grade 5 child. Using ONLY the FACTS below, answer the question in ` +
+        `You are a kind science tutor for a Grade ${grade} child. Using ONLY the FACTS below, answer the question in ` +
         `1-2 short, simple English sentences. If the facts do not answer it, say you don't know yet. Do NOT invent ` +
         `new information.\n\nFACTS:\n${context}\n\nQUESTION: ${query}\n\nANSWER:`,
       cebuano:
-        `Ikaw usa ka maayong science tutor para sa batang Grade 5. Gamit LANG ang mga FACT sa ubos, tubaga ang ` +
+        `Ikaw usa ka maayong science tutor para sa batang Grade ${grade}. Gamit LANG ang mga FACT sa ubos, tubaga ang ` +
         `pangutana sa 1-2 mubo ug simple nga pangungusap sa Binisaya. Kung dili matubag sa mga fact ang pangutana, ` +
         `ingna nga wala ka pa kahibalo. AYAW pag-imbento og bag-ong impormasyon.\n\nMGA FACT:\n${context}\n\nPANGUTANA: ${query}\n\nTUBAG:`,
     };

@@ -6,6 +6,7 @@ import type { Message, RagResult } from '@hiraia/shared';
 import { uiStrings } from '../config/strings';
 import { pickFactoidText } from '../data/factoids';
 import { genId } from '../db';
+import { withModelLock } from '../engine/modelLock';
 import { FACT_IMAGE } from '../generated/factImage';
 import {
   addMessage,
@@ -85,18 +86,6 @@ const RETRIEVAL_IMAGE_FLOOR = 0.6;
 // grounding wasn't really relevant, so we DON'T attach its illustration.
 const ABSTAIN_RE =
   /hindi.{0,20}(alam|sigurado|tiyak|maintind|naintind|kahibal|sayod)|ayaw kong manghula|pasensya|paumanhin|wala.{0,12}(sapat|impormasyon|akong)|dili.{0,12}(sigurado|kahibalo)|i'?m not sure|i (do|don'?t) (not )?know/i;
-
-// The QVAC model is single-instance (one generation at a time). Serialize chat()
-// and summarize() so the compacter never overlaps a response.
-let modelLock: Promise<unknown> = Promise.resolve();
-function withModelLock<T>(fn: () => Promise<T>): Promise<T> {
-  const result = modelLock.then(fn, fn);
-  modelLock = result.then(
-    () => undefined,
-    () => undefined
-  );
-  return result;
-}
 
 // Auto-compaction is OFF (2026-06-07). It runs a SECOND background LLM completion
 // (summarize) after every reply, which on a ~4 tok/s phone competes for the GPU and
@@ -230,13 +219,15 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       // Science domain of the fact the answer is built on — scopes image retrieval to that
       // domain so a match can't drift off-topic on a shared word (earthquake→pangolin).
       const topDomain = (grounding[0]?.metadata as { domain?: string } | undefined)?.domain;
-      // Active language + grade 5 + imageTags=true — parity with how the grounded
-      // adapter was trained. RAG retrieval is scoped to the same language.
+      // Active language + the student's grade + imageTags=true — parity with how the
+      // grounded adapter was trained. RAG retrieval is scoped to the same language.
+      // The grade comes from engineStore — the SAME source LocalEngine.warmUp() reads (via
+      // its config) — so this prompt is byte-identical to the one that primed the KV cache.
       // The system prompt is STATIC (no grounding) so QVAC's system-prompt KV cache
       // (keyed by a hash of the system message) stays warm across turns — the grounding
       // moves into the current user turn instead (see composeGroundedUserTurn). This is
       // the TTFT fix: only the new turn re-prefills, not the whole ~1500-token prompt.
-      const systemPrompt = generateSystemPrompt(lang, 5, true);
+      const systemPrompt = generateSystemPrompt(lang, useEngineStore.getState().grade, true);
       const groundingBlock = formatGroundingBlock(grounding);
 
       const conversationMessages = await buildContext(get().messages, systemPrompt);
