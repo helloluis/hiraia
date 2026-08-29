@@ -27,29 +27,27 @@ const fmt = (s: number | null) => (s == null ? '—' : s.toFixed(1));
 
 export function HiraiaBench() {
   return (
-    <div className="w-full bg-[#fcfdfd] py-16 sm:py-24 px-6 md:px-12 lg:px-24 border-b border-gray-100">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-display text-[#0c343d] tracking-tight leading-tight mb-2">
+    <div id="bench" className="px-5 py-16 sm:px-12 sm:py-20 md:px-16 lg:px-24">
+      <div className="mx-auto max-w-5xl">
+        <h2 className="text-3xl leading-none text-[var(--stock)] sm:text-4xl md:text-[2.75rem]">
           Hiraia performance
         </h2>
-        <p className="text-base sm:text-lg text-[#0c343d]/80 leading-relaxed max-w-3xl mb-8 md:mb-10">
-          <span className="font-semibold">hiraiabench</span> measures our fine-tuning honestly. Read the
-          table top to bottom: scores fall as the models get smaller — <span className="italic">except
-          our row</span>. Hiraia is a 3B model, but our fine-tune makes it score like one several times
-          its size, beating its own untrained base and matching far larger open models on the dimensions
-          that matter for a Filipino science tutor. Scored 0–5 by a blind LLM judge across{' '}
-          {BENCH_META.n_probes} probes; higher is better.
+        <p className="mb-8 mt-3 max-w-3xl font-zilla text-lg font-medium leading-relaxed text-[var(--stock)]/85">
+          How the on-device model compares — science, Tagalog, English, and tutoring —
+          scored 0–5 by a blind judge across {BENCH_META.n_probes} probes. The app also
+          looks up facts from a verified bank; this table is the model on its own.
         </p>
 
-        <div className="overflow-x-auto rounded-2xl border border-gray-200 shadow-sm">
+        <div className="mc-card mc-card-flush">
+          <div className="overflow-x-auto">
           <table className="w-full min-w-[760px] text-left border-collapse">
             <thead>
-              <tr className="bg-[#0c343d] text-white">
-                <th className="px-4 sm:px-6 py-4 font-display text-base sm:text-lg sticky left-0 bg-[#0c343d] z-10 w-[168px] min-w-[168px] sm:w-auto sm:min-w-0">
+              <tr className="bg-[var(--ink)] text-[var(--stock)]">
+                <th className="sticky left-0 z-10 w-[168px] min-w-[168px] bg-[var(--ink)] px-4 py-4 font-slab text-base sm:w-auto sm:min-w-0 sm:px-6 sm:text-lg">
                   Model
                 </th>
                 {BENCH_CATEGORIES.map((m) => (
-                  <th key={m} className="px-2 sm:px-4 py-4 font-display text-xs sm:text-sm text-center whitespace-nowrap min-w-[56px]" title={m}>
+                  <th key={m} className="min-w-[56px] whitespace-nowrap px-2 py-4 text-center font-gothic text-[9px] uppercase tracking-widest sm:px-4" title={m}>
                     {SHORT[m] ?? m}
                   </th>
                 ))}
@@ -57,33 +55,33 @@ export function HiraiaBench() {
             </thead>
             <tbody>
               {BENCH_ROWS.map((r) => (
-                <tr key={r.model} className={`border-t border-gray-200 ${r.highlight ? 'bg-[#f3a228]/15' : 'bg-white'}`}>
-                  <th scope="row" className={`px-4 sm:px-6 py-4 sticky left-0 z-10 w-[168px] min-w-[168px] sm:w-auto sm:min-w-0 ${r.highlight ? 'bg-[#fdf3e1]' : 'bg-white'}`}>
-                    <div className={`font-display text-base sm:text-lg flex items-center gap-2 ${r.highlight ? 'text-[#0c343d]' : 'text-gray-800'}`}>
+                <tr key={r.model} className={`border-t border-[var(--ink)]/15 ${r.highlight ? 'bg-[#E8D5A0]' : 'bg-[var(--stock)]'}`}>
+                  <th scope="row" className={`sticky left-0 z-10 w-[168px] min-w-[168px] px-4 py-4 sm:w-auto sm:min-w-0 sm:px-6 ${r.highlight ? 'bg-[#E8D5A0]' : 'bg-[var(--stock)]'}`}>
+                    <div className="flex items-center gap-2 font-slab text-base text-[var(--ink)] sm:text-lg">
                       {r.highlight && (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
                           src="/hiraia-profile.png"
-                          alt="Hiraia"
+                          alt=""
                           width={28}
                           height={28}
-                          className="rounded-full ring-2 ring-[#f3a228] shrink-0"
+                          className="h-7 w-7 shrink-0 rounded-full bg-[var(--ink)]"
                         />
                       )}
                       {r.model}
                       {r.highlight && (
-                        <span className="align-middle text-[10px] uppercase tracking-wider font-sans font-bold text-[#0c343d] bg-[#f3a228] rounded-full px-2 py-0.5">
+                        <span className="rounded bg-[var(--gold)] px-2 py-0.5 font-gothic text-[9px] uppercase tracking-widest text-[var(--ink)]">
                           ours
                         </span>
                       )}
                     </div>
-                    <div className="text-xs sm:text-sm text-gray-500 font-sans">{r.note}</div>
+                    <div className="mt-0.5 font-zilla text-xs font-medium text-[var(--olive)]">{r.note}</div>
                   </th>
                   {r.scores.map((s, i) => (
                     <td
                       key={i}
-                      className={`px-2 sm:px-4 py-4 text-center font-display text-base sm:text-lg min-w-[56px] ${
-                        r.highlight ? 'text-[#0c343d] font-bold' : 'text-gray-700'
+                      className={`min-w-[56px] px-2 py-4 text-center font-zilla text-base sm:px-4 sm:text-lg ${
+                        r.highlight ? 'font-bold text-[var(--ink)]' : 'text-[var(--ink)]/80'
                       }`}
                     >
                       {fmt(s)}
@@ -93,23 +91,24 @@ export function HiraiaBench() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
 
         <div className="mt-8 max-w-3xl">
-          <h3 className="font-display text-lg sm:text-xl text-[#0c343d] mb-4">What each category means</h3>
-          <dl className="grid sm:grid-cols-2 gap-x-10 gap-y-4">
+          <h3 className="mb-4 font-slab text-lg text-[var(--stock)] sm:text-xl">What each category means</h3>
+          <dl className="grid gap-x-10 gap-y-4 sm:grid-cols-2">
             {BENCH_META.category_notes.map((c) => (
               <div key={c.name}>
-                <dt className="font-sans font-semibold text-sm text-[#0c343d]">{c.name}</dt>
-                <dd className="text-xs sm:text-sm text-gray-500 leading-relaxed mt-0.5">{c.note}</dd>
+                <dt className="font-zilla text-sm font-bold text-[var(--stock)]">{c.name}</dt>
+                <dd className="mt-0.5 font-zilla text-xs font-medium leading-relaxed text-[var(--sage)] sm:text-sm">{c.note.replace('a 5th-grader', 'a student')}</dd>
               </div>
             ))}
           </dl>
         </div>
 
-        <div className="mt-8 max-w-3xl space-y-2 border-t border-gray-100 pt-5">
-          <p className="text-xs sm:text-sm text-gray-500">{BENCH_META.methodology}</p>
-          <ul className="text-xs text-gray-400 list-disc pl-5 space-y-1">
+        <div className="mt-8 max-w-3xl space-y-2 border-t border-[var(--sage)]/40 pt-5">
+          <p className="font-zilla text-xs font-medium text-[var(--sage)] sm:text-sm">{BENCH_META.methodology}</p>
+          <ul className="list-disc space-y-1 pl-5 font-zilla text-xs text-[var(--sage)]/80">
             {BENCH_META.footnotes.map((f, i) => (
               <li key={i}>{f}</li>
             ))}

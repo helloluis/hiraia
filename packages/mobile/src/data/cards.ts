@@ -12,11 +12,31 @@
  *   - choice labels are derived heuristically from the target fact's topic/terms
  *     (placeholder quality — flagged for the data build).
  *
+ * Draws are WEIGHTED when the caller passes a FeedContext (rag/pipeline/FEED-WEIGHTING.md):
+ * heaviest = the student's grade in the current curriculum quarter, lightest = already seen.
+ * Without a context every draw is uniform (the headless harness relies on that).
+ *
  * Everything here is deterministic + local: no model, no network, no latency.
  */
-import type { Language } from '@hiraia/shared';
+import {
+  DEFAULT_CURRICULUM_WEIGHTS,
+  curriculumMultiplier,
+  recencyMultiplier,
+  seenCardMultiplier,
+  seenCompetencyMultiplier,
+  type CurriculumTag,
+  type GradeLevel,
+  type Language,
+  type Quarter,
+  type SeenRecord,
+} from '@hiraia/shared';
 
 import cardsIndex from '../generated/cardsIndex.generated.json';
+// curriculumTags.generated.json (scripts/gen-curriculum-tags.mjs, v2 multi-label from
+// rag/pipeline/assemble-competency-labels.py; ~97% of the pool): per card
+// [competency, grade, quarter, confidence, cells[[grade, quarter, strength, norm]], codes] — a card
+// serves up to three competencies (spiral curriculum), each cell carries its own strength and norm.
+import curriculumTagsJson from '../generated/curriculumTags.generated.json';
 
 import {
   loadQuestions,
@@ -109,6 +129,152 @@ for (const f of POOL) {
   const arr = BY_DOMAIN.get(f.domain) ?? [];
   arr.push(f);
   BY_DOMAIN.set(f.domain, arr);
+}
+
+// ---- curriculum tags: one MATATAG competency per card (rag/pipeline/tag-curriculum.py) ----
+// [competency, grade, quarter, confidence] for the tagged ~85% of the pool; the rest are
+// off-curriculum. The competency code is the feed's topic axis — never card.topic, which is
+// a per-card slug (15,739 distinct values in 16,948 cards).
+type TagRow = [string, number, number, number, [number, number, number, number][]?, string[]?];
+const TAGS = new Map<string, CurriculumTag>();
+for (const [id, [competency, grade, quarter, confidence, cells, codes]] of Object.entries(
+  curriculumTagsJson as unknown as Record<string, TagRow>
+)) {
+  TAGS.set(id, {
+    competency,
+    grade,
+    quarter,
+    confidence,
+    cells: cells?.map(([g, q, s, n]) => ({ grade: g, quarter: q, strength: s === 2 ? 2 : 1, norm: n })),
+    codes,
+  });
+}
+
+/** Every competency code a card serves (best first), or ['off'] — for competency_seen bumps. */
+export function competencyKeys(id: string): string[] {
+  const tag = TAGS.get(id);
+  if (!tag || tag.confidence < DEFAULT_CURRICULUM_WEIGHTS.minConfidence) return ['off'];
+  return tag.codes?.length ? [...tag.codes] : [tag.competency];
+}
+
+/** competency_seen key: the tag code, or 'off' for untagged / low-confidence cards (seen-store.sql). */
+export function competencyKey(id: string): string {
+  const tag = TAGS.get(id);
+  return tag && tag.confidence >= DEFAULT_CURRICULUM_WEIGHTS.minConfidence ? tag.competency : 'off';
+}
+
+/**
+ * Per-draw feed-weighting context: the student's grade, the curriculum quarter inferred from
+ * the device date (null in summer), and the persistent seen-store (card_seen keyed by card id,
+ * competency_seen keyed by competency code or 'off'). Optional at every draw site.
+ */
+export interface FeedContext {
+  studentGrade: GradeLevel;
+  currentQuarter: Quarter | null;
+  now: number; // epoch ms
+  cardSeen: ReadonlyMap<string, SeenRecord>;
+  competencySeen: ReadonlyMap<string, SeenRecord>;
+}
+
+/**
+ * Session weight table. The curriculum factor depends only on (grade, inferred quarter, tags), so
+ * it is computed ONCE per session and rebuilt only when the grade or the quarter changes (rare —
+ * settings edit, or the calendar rolling into the next quarter). What changes between draws is the
+ * seen-store, and only for the few cards/competencies just shown, so it is applied per draw as a
+ * SPARSE overlay: competency decay via a small per-code multiplier array and one tight loop over
+ * pre-flattened int code lists, card decay by iterating the seen cards themselves. No per-card Map
+ * lookups, no filtered copies of the pool.
+ */
+// (the id -> ordinal map the weight table indexes by is ORD, declared with the pool above)
+const TAG_AT: (CurriculumTag | undefined)[] = POOL.map((f) => TAGS.get(f.id));
+// competency codes as small ints; each card's codes flattened into CODE_LIST[CODE_OFFSETS[i] .. CODE_OFFSETS[i+1])
+// 'off' (untagged / low-confidence) is deliberately NOT a competency here: 500+ unrelated cards must not
+// decay together because a few of them were shown.
+const CODE_INDEX = new Map<string, number>();
+const CODE_OFFSETS = new Int32Array(POOL.length + 1);
+const codeInts: number[] = [];
+for (let i = 0; i < POOL.length; i += 1) {
+  CODE_OFFSETS[i] = codeInts.length;
+  for (const code of competencyKeys(POOL[i]!.id)) {
+    if (code === 'off') continue;
+    let k = CODE_INDEX.get(code);
+    if (k === undefined) {
+      k = CODE_INDEX.size;
+      CODE_INDEX.set(code, k);
+    }
+    codeInts.push(k);
+  }
+}
+CODE_OFFSETS[POOL.length] = codeInts.length;
+const CODE_LIST = Int32Array.from(codeInts);
+const CODE_MUL = new Float64Array(CODE_INDEX.size);
+const weightTable = { key: '', base: new Float64Array(POOL.length) };
+const EFFECTIVE = new Float64Array(POOL.length); // base × seen overlays, resolved once per draw
+const SCRATCH = new Float64Array(POOL.length); // predicate-masked weights during selection
+/** Test hook: how many times the session table has been (re)built. */
+export const weightTableStats = { rebuilds: 0 };
+
+function ensureWeightTable(ctx: FeedContext): Float64Array {
+  const key = `${ctx.studentGrade}|${ctx.currentQuarter ?? 'summer'}`;
+  if (weightTable.key !== key) {
+    for (let i = 0; i < POOL.length; i += 1) {
+      weightTable.base[i] =
+        curriculumMultiplier(TAG_AT[i], ctx.studentGrade, ctx.currentQuarter) * recencyMultiplier();
+    }
+    weightTable.key = key;
+    weightTableStats.rebuilds += 1;
+  }
+  return weightTable.base;
+}
+
+/** Weights bound to one draw: index form for pool scans, card form for small candidate lists. */
+export interface Weigher {
+  at(i: number): number;
+  of(card: CardFact): number;
+}
+
+/**
+ * Resolve base × seen overlays into EFFECTIVE once for this draw (~0.1–0.3 ms for the whole pool),
+ * then every lookup is an array read. A Weigher is only valid until the next weigher() call.
+ */
+export function weigher(ctx: FeedContext): Weigher {
+  EFFECTIVE.set(ensureWeightTable(ctx));
+  let anyCode = false;
+  CODE_MUL.fill(1);
+  for (const [code, rec] of ctx.competencySeen) {
+    const k = CODE_INDEX.get(code);
+    if (k === undefined) continue; // 'off' and unknown codes never decay a group
+    CODE_MUL[k] = seenCompetencyMultiplier(rec, ctx.now);
+    anyCode = true;
+  }
+  if (anyCode) {
+    // every code the card serves decays it; the strongest decay wins
+    for (let i = 0; i < POOL.length; i += 1) {
+      let m = 1;
+      for (let p = CODE_OFFSETS[i]!; p < CODE_OFFSETS[i + 1]!; p += 1) {
+        const v = CODE_MUL[CODE_LIST[p]!]!;
+        if (v < m) m = v;
+      }
+      if (m < 1) EFFECTIVE[i] = EFFECTIVE[i]! * m;
+    }
+  }
+  for (const [id, rec] of ctx.cardSeen) {
+    const i = ORD.get(id);
+    if (i !== undefined) EFFECTIVE[i] = EFFECTIVE[i]! * seenCardMultiplier(rec, ctx.now);
+  }
+  return {
+    at: (i) => EFFECTIVE[i] ?? 0,
+    // cards outside the pool are unsupported by the feed: lightest band, no overlays
+    of: (card) => {
+      const i = ORD.get(card.id);
+      return i === undefined ? DEFAULT_CURRICULUM_WEIGHTS.offCurriculum : EFFECTIVE[i]!;
+    },
+  };
+}
+
+/** w = curriculum × recency × seenCard × seenCompetency — always > 0, never a blocklist. */
+export function weightOf(card: CardFact, ctx: FeedContext): number {
+  return weigher(ctx).of(card);
 }
 
 /**
@@ -430,10 +596,54 @@ function pick<T>(arr: T[]): T | undefined {
   return arr.length ? arr[Math.floor(Math.random() * arr.length)] : undefined;
 }
 
-/** Random entry card (session start). Prefers unseen. */
-export function startCard(seen: ReadonlySet<string>): CardFact {
-  const unseen = POOL.filter((f) => !seen.has(f.id));
-  return (pick(unseen.length ? unseen : POOL) ?? POOL[0]) as CardFact;
+/**
+ * One card from the pool matching `pred`: uniform without a context (the headless harness path),
+ * else proportional to the session weight table × seen overlays — a single pass over the pool
+ * into a reused scratch buffer, no filtered copies of the pool.
+ */
+function drawFrom(pred: (f: CardFact) => boolean, w?: Weigher): CardFact | undefined {
+  if (!w) return pick(POOL.filter(pred));
+  let total = 0;
+  for (let i = 0; i < POOL.length; i += 1) {
+    const v = pred(POOL[i]!) ? w.at(i) : 0;
+    SCRATCH[i] = v;
+    total += v;
+  }
+  if (total <= 0) return undefined;
+  let r = Math.random() * total;
+  let last: CardFact | undefined;
+  for (let i = 0; i < POOL.length; i += 1) {
+    const v = SCRATCH[i] ?? 0;
+    if (v <= 0) continue;
+    last = POOL[i];
+    r -= v;
+    if (r < 0) return last;
+  }
+  return last;
+}
+
+/** Uniform pick from a small candidate array, or proportional to the session weights when a context is given. */
+function draw(arr: CardFact[], w?: Weigher): CardFact | undefined {
+  if (!w || arr.length === 0) return pick(arr);
+  let total = 0;
+  for (let k = 0; k < arr.length; k += 1) {
+    const v = w.of(arr[k]!);
+    SCRATCH[k] = v;
+    total += v;
+  }
+  if (total <= 0) return pick(arr);
+  let r = Math.random() * total;
+  for (let k = 0; k < arr.length; k += 1) {
+    r -= SCRATCH[k] ?? 0;
+    if (r < 0) return arr[k];
+  }
+  return arr[arr.length - 1];
+}
+
+/** Entry card (session start). Prefers unseen; weighted by the feed context when given. */
+export function startCard(seen: ReadonlySet<string>, ctx?: FeedContext): CardFact {
+  const w = ctx ? weigher(ctx) : undefined;
+  return (drawFrom((f) => !seen.has(f.id), w) ?? drawFrom(() => true, w) ?? POOL[0]) as CardFact;
 }
 
 /**
@@ -441,14 +651,16 @@ export function startCard(seen: ReadonlySet<string>): CardFact {
  * a DIFFERENT domain than the current one (so the kid escapes a thread that's gone too
  * deep / stale). Falls back across domains then the whole pool as the unseen set thins.
  */
-export function jumpCard(currentId: string | null, seen: ReadonlySet<string>): CardFact {
+export function jumpCard(currentId: string | null, seen: ReadonlySet<string>, ctx?: FeedContext): CardFact {
   const cur = currentId ? BY_ID.get(currentId) : undefined;
   const usable = (f: CardFact) => f.id !== currentId && !seen.has(f.id);
-  const otherDomain = POOL.filter((f) => usable(f) && (!cur || f.domain !== cur.domain));
-  if (otherDomain.length) return pick(otherDomain)!;
-  const anyUnseen = POOL.filter(usable);
-  if (anyUnseen.length) return pick(anyUnseen)!;
-  return (pick(POOL.filter((f) => f.id !== currentId)) ?? POOL[0]) as CardFact;
+  const w = ctx ? weigher(ctx) : undefined;
+  return (
+    drawFrom((f) => usable(f) && (!cur || f.domain !== cur.domain), w) ??
+    drawFrom(usable, w) ??
+    drawFrom((f) => f.id !== currentId, w) ??
+    POOL[0]
+  ) as CardFact;
 }
 
 /**
@@ -768,6 +980,11 @@ export interface NextStepOpts {
    * lookup is a pool read, so the module stays pure.
    */
   recentIds?: readonly string[];
+  /**
+   * Curriculum weighting for this draw (rag/pipeline/FEED-WEIGHTING.md). Omitted → every
+   * choice is drawn uniformly, which is the path the headless harnesses walk.
+   */
+  ctx?: FeedContext;
 }
 
 /**
@@ -801,6 +1018,10 @@ function cooldownSlugs(cur: CardFact, recentIds?: readonly string[]): Set<string
  *   deep    — most-associated unseen fact: shared terms above LINK_MASS_FLOOR, below the
  *             near-duplicate cap, and NOT reusing a recently-shown illustration
  *   lateral — unseen same-domain fact with ~no overlap (fresh topic, same category)
+ *
+ * With a feed context (opts.ctx) the surviving neighbours are re-RANKED by (edge score ×
+ * card weight): the drift still follows the card graph — every gate below is unchanged —
+ * but leans toward this quarter's competencies and away from what has been seen.
  * Falls back gracefully as the unseen pool thins; last resort allows seen cards.
  */
 export function nextChoices(
@@ -811,6 +1032,10 @@ export function nextChoices(
 ): CardChoice[] {
   const cur = BY_ID.get(currentId);
   if (!cur) return [];
+  // One weigher for this whole call: it reads the session weight table through a shared
+  // buffer and is only valid until the next weigher(), so it is taken once and passed down.
+  const w = opts.ctx ? weigher(opts.ctx) : undefined;
+  const weight = (f: CardFact) => (w ? w.of(f) : 1);
 
   const blockedSlugs = cooldownSlugs(cur, opts.recentIds);
   const topicKey = (f: CardFact) =>
@@ -843,9 +1068,15 @@ export function nextChoices(
     if (link.mass > selfScore * DEEP_DUP_CAP) continue; // near-duplicate of the current card
     if (link.mass < LINK_MASS_FLOOR) continue; // only generic words in common
     if (link.count < 2 && link.minDf > LINK_RARE_DF) continue; // one unremarkable word
-    if (link.mass <= deepScore) continue;
+    // The curriculum weight re-RANKS the survivors; it never re-gates them. The three floors
+    // above are calibrated on RAW idf mass, so folding the weight in before them would let a
+    // heavily-weighted junk edge through and drop a genuine follow-on for being off-quarter.
+    // Applied here, the thread still walks the graph and the weight only decides between
+    // edges that are already good enough to serve.
+    const ranked = link.mass * weight(f);
+    if (ranked <= deepScore) continue;
     if (textJaccard(cur, f) > TEXT_DUP_JACCARD) continue; // same fact, different words
-    deepScore = link.mass;
+    deepScore = ranked;
     deep = f;
   }
 
@@ -862,7 +1093,7 @@ export function nextChoices(
   );
   const fresh = domainPool.filter((f) => overlap(cur, f) < selfScore * 0.35);
   const lateralPool = fresh.length ? fresh : domainPool;
-  let lateral = pick(lateralPool);
+  let lateral = draw(lateralPool, w);
 
   /**
    * ...but prefer to go UP THE STACK rather than sideways by keyword.
@@ -879,7 +1110,7 @@ export function nextChoices(
   const cat = freshCategory(cur, opts.recentIds, new Set());
   if (cat) {
     const inCat = (BY_CAT.get(cat) ?? []).filter((f) => servable(f) && f.id !== deep?.id);
-    const chosen = pick(inCat);
+    const chosen = draw(inCat, w);
     if (chosen) {
       lateral = chosen;
       lateralCat = cat;
@@ -889,8 +1120,8 @@ export function nextChoices(
   // fallbacks as the unseen pool thins: relax the picture cooldown first (a repeated
   // illustration beats an empty page), then allow any unseen card, then any card at all.
   if (!lateral) {
-    const anyUnseen = POOL.filter((f) => unseen(f) && f.id !== deep?.id);
-    lateral = pick(anyUnseen.length ? anyUnseen : POOL.filter((f) => f.id !== currentId));
+    lateral =
+      drawFrom((f) => unseen(f) && f.id !== deep?.id, w) ?? drawFrom((f) => f.id !== currentId, w);
   }
 
   const out: CardChoice[] = [];
@@ -917,13 +1148,13 @@ export function nextChoices(
   // Dead end: the second option is another fresh topic, not a fake "related" card. Prefer
   // one from a different domain so the two escapes are visibly different offers.
   if (deadEnd && lateral) {
-    const otherDomain = POOL.filter(
-      (f) => servable(f) && f.domain !== cur.domain && f.id !== lateral!.id
-    );
     const second =
-      pick(otherDomain) ??
-      pick(lateralPool.filter((f) => f.id !== lateral!.id)) ??
-      pick(POOL.filter((f) => unseen(f) && f.id !== lateral!.id));
+      drawFrom((f) => servable(f) && f.domain !== cur.domain && f.id !== lateral!.id, w) ??
+      draw(
+        lateralPool.filter((f) => f.id !== lateral!.id),
+        w
+      ) ??
+      drawFrom((f) => unseen(f) && f.id !== lateral!.id, w);
     if (second)
       out.push({ factId: second.id, label: choiceLabel(second, language), kind: 'lateral' });
   }
@@ -942,21 +1173,20 @@ export function nextChoices(
  *
  * The feed is linear — from a card you can only reach its own choices — so warming one page
  * ahead is enough for the reader never to meet a cold one.
+ *
+ * The successors are PASSED IN, never re-derived here. Draws are weighted (grade, quarter,
+ * seen-decay) and the weights move between calls, so recomputing `nextChoices` in this
+ * function would warm a different card than the one the reader can actually tap — and the
+ * page they do tap would paint with empty body text (`textOf` is a synchronous cache read).
+ * The store already knows its real targets: it hands them over.
  */
 export async function warmPage(
   ids: readonly (string | null | undefined)[],
-  language: Language,
   recentFactIds: readonly string[] = []
 ): Promise<void> {
-  const cards = ids.filter((x): x is string => !!x);
-  const next: string[] = [];
-  for (const id of cards) {
-    if (!BY_ID.has(id)) continue;
-    // The successors this page can actually offer. Cheap: it reads the resident index only.
-    for (const c of nextChoices(id, new Set([id]), language)) next.push(c.factId);
-  }
+  const cards = ids.filter((x): x is string => !!x && BY_ID.has(x));
   await Promise.all([
-    loadText([...cards, ...next]),
+    loadText(cards),
     recentFactIds.length ? loadQuestions(recentFactIds) : Promise.resolve(),
   ]);
 }

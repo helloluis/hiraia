@@ -13,7 +13,7 @@ const OUT = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'fonts
 await mkdir(OUT, { recursive: true });
 
 const CSS_URL =
-  'https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Mansalva&family=Patrick+Hand&display=swap';
+  'https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Mansalva&family=Patrick+Hand&family=Alfa+Slab+One&family=Zilla+Slab:wght@400;500;700&family=Archivo+Black&family=Patua+One&display=swap';
 // modern-browser UA so Google returns woff2 (not ttf)
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36';
 
@@ -31,7 +31,10 @@ for (const [, subset, body] of blocks) {
   const style = (body.match(/font-style:\s*([^;]+)/) || [])[1]?.trim() || 'normal';
   const range = (body.match(/unicode-range:\s*([^;]+)/) || [])[1]?.trim();
   const url = body.match(/src:\s*url\(([^)]+)\)/)[1];
-  const file = `${slug(family)}-${subset}.woff2`;
+  const file =
+    weight === '400'
+      ? `${slug(family)}-${subset}.woff2`
+      : `${slug(family)}-${weight}-${subset}.woff2`;
   const buf = Buffer.from(await (await fetch(url, { headers: { 'User-Agent': UA } })).arrayBuffer());
   await writeFile(join(OUT, file), buf);
   console.error(`saved public/fonts/${file} (${(buf.length / 1024).toFixed(1)} KB)`);

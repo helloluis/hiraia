@@ -61,9 +61,37 @@ echo ">> base:    $BASE"
 # Boot the LaBSE embed service on :8090 so run-eval.mts uses the device's HYBRID retrieval
 # (FINDINGS F7) — lexical-only gave false Cebuano fails (correct answers failing retrieval-id
 # assertions on garbage lexical grounding). run-eval defaults EMBED_ENDPOINT to :8090 and
-# self-detects; if the embedder is absent it falls back to lexical with a warning.
+# self-detects. The embedder is REQUIRED (see below): its absence used to downgrade the run
+# silently, and the downgraded run then decided the verdict.
 EMBED_PORT="${EMBED_PORT:-8090}"
+# .convert-venv is gitignored, so it exists only in the PRIMARY checkout: a linked worktree
+# has to look there too, or every gate run from a worktree silently downgrades to lexical.
+# git-common-dir points at the main repo's .git whatever checkout we are in.
+GIT_COMMON="$(git -C "$ROOT" rev-parse --git-common-dir 2>/dev/null || true)"
+case "$GIT_COMMON" in
+  "")  MAIN_ROOT="$ROOT" ;;
+  /*)  MAIN_ROOT="$(dirname "$GIT_COMMON")" ;;
+  *)   MAIN_ROOT="$(cd "$ROOT/$GIT_COMMON/.." 2>/dev/null && pwd || echo "$ROOT")" ;;
+esac
+if [ -z "${EMBED_PY:-}" ]; then
+  for _cand in "$ROOT/finetuning/.convert-venv/bin/python" "$MAIN_ROOT/finetuning/.convert-venv/bin/python"; do
+    if [ -x "$_cand" ]; then EMBED_PY="$_cand"; break; fi
+  done
+fi
 EMBED_PY="${EMBED_PY:-$ROOT/finetuning/.convert-venv/bin/python}"
+# The embedder is REQUIRED, not best-effort. Without it the gate scores Cebuano on garbage
+# lexical grounding and reports RED for a reason that has nothing to do with the model — a
+# false verdict is worse than no verdict, so refuse to render one.
+if [ ! -x "$EMBED_PY" ] || [ ! -f "$HERE/labse-embed-service.py" ]; then
+  if [ "${ALLOW_LEXICAL:-0}" != "1" ]; then
+    echo "ERR: LaBSE embedder not available ($EMBED_PY)."
+    echo "     The gate's retrieval must be HYBRID (device-faithful) or its verdict is not valid."
+    echo "     Fix: EMBED_PY=/path/to/finetuning/.convert-venv/bin/python $0"
+    echo "     Or:  ALLOW_LEXICAL=1 $0   (advisory run only — do NOT treat the result as a gate)"
+    exit 2
+  fi
+  echo "WARN: ALLOW_LEXICAL=1 — gate runs LEXICAL-ONLY (advisory, NOT device-faithful)"
+fi
 EMBED_PID=""
 if [ -x "$EMBED_PY" ] && [ -f "$HERE/labse-embed-service.py" ]; then
   echo ">> booting LaBSE embed service on :$EMBED_PORT (device-faithful retrieval) ..."
@@ -71,11 +99,14 @@ if [ -x "$EMBED_PY" ] && [ -f "$HERE/labse-embed-service.py" ]; then
   EMBED_PID=$!
   for _ in $(seq 1 60); do
     [ "$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 "http://localhost:$EMBED_PORT/health" 2>/dev/null || true)" = "200" ] && { echo ">> embedder ready"; break; }
-    if ! kill -0 $EMBED_PID 2>/dev/null; then echo "WARN: embedder died — gate runs LEXICAL (see $HERE/.embed.log)"; EMBED_PID=""; break; fi
+    if ! kill -0 $EMBED_PID 2>/dev/null; then
+      EMBED_PID=""
+      [ "${ALLOW_LEXICAL:-0}" = "1" ] || { echo "ERR: embedder died — see $HERE/.embed.log"; tail -15 "$HERE/.embed.log"; exit 2; }
+      echo "WARN: embedder died — ALLOW_LEXICAL=1, running LEXICAL (advisory; see $HERE/.embed.log)"
+      break
+    fi
     sleep 2
   done
-else
-  echo "WARN: embedder ($EMBED_PY) missing — gate runs LEXICAL-ONLY (not device-faithful)"
 fi
 
 # Boot a llama-server on $PORT with the given adapter and wait for /health.

@@ -13,6 +13,10 @@ const IMAGES = join(MOBILE, '../images/assets-png');
 // lets the rest of the image batch land later without touching any code.
 const CARD_IMAGES = join(MOBILE, '../images/cards-png');
 const FACTS = join(MOBILE, '../../rag/bank/science-facts.jsonl');
+// The wired pool decides which card art is REACHABLE. cards-png accumulates a file per card the
+// art pipeline ever drew, including cards a later dedup dropped, and every require() below is
+// bundled into the APK whether or not anything can reach it.
+const POOL = join(MOBILE, 'src/generated/cardsPool.generated.json');
 const OUT_MAP = join(MOBILE, 'src/generated/imageMap.ts');
 const OUT_FACT = join(MOBILE, 'src/generated/factImage.ts');
 
@@ -28,7 +32,29 @@ function walk(dir) {
 }
 
 const files = walk(IMAGES).sort();
-const cardFiles = existsSync(CARD_IMAGES) ? walk(CARD_IMAGES).sort() : [];
+const allCardFiles = existsSync(CARD_IMAGES) ? walk(CARD_IMAGES).sort() : [];
+
+/**
+ * Card art named for a card that is not in the pool is unreachable: nothing renders it and
+ * nothing can ever adopt it (wire-app-pool.py only lets a card adopt its OWN id as a slug). It
+ * is pure APK weight — 1,343 dcard PNGs, 21 MB, left behind by the DepEd dedup in
+ * merge-card-banks.py. Only CARD-ID files are filtered: a hand-named clip-art slug is a shared
+ * library asset, reachable through FACT_IMAGE and the image vectors, and is always kept.
+ *
+ * This does not feed back into wire-app-pool.py's `bundled` set in any way that matters: the
+ * ids dropped here have no card, so no card can lose its illustration to this.
+ */
+const CARD_ID = /^(?:ffct|dcard)-\d+$/;
+const poolIds = existsSync(POOL)
+  ? new Set(JSON.parse(readFileSync(POOL, 'utf8')).cards.map((c) => c.id))
+  : null;
+if (!poolIds) console.warn(`gen-image-map: ${POOL} missing — bundling ALL card art unpruned`);
+const cardFiles = allCardFiles.filter((f) => {
+  const s = basename(f, '.png');
+  return !poolIds || !CARD_ID.test(s) || poolIds.has(s);
+});
+const orphaned = allCardFiles.length - cardFiles.length;
+
 const slugPath = new Map(); // slug -> file
 // assets-png first, so a hand-named clip-art slug always wins a collision with a card id.
 for (const f of [...files, ...cardFiles]) {
@@ -88,4 +114,4 @@ export const FACT_IMAGE: Record<string, string> = {
 ${fiEntries.join('\n')}
 };
 `);
-console.log(`imageMap: ${mapEntries.length} images | factImage: ${Object.keys(factImage).length}/${facts.length} facts (${exact} exact + ${fuzzy} fuzzy, ${Math.round(100*Object.keys(factImage).length/facts.length)}%)`);
+console.log(`imageMap: ${mapEntries.length} images (${orphaned} orphaned card PNGs skipped — no such card in the pool) | factImage: ${Object.keys(factImage).length}/${facts.length} facts (${exact} exact + ${fuzzy} fuzzy, ${Math.round(100*Object.keys(factImage).length/facts.length)}%)`);

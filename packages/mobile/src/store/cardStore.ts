@@ -7,14 +7,18 @@
  * flip is INTERCEPTED by one question page asking about a recently-read fact (75% of
  * the pool has an exact MCQ). Answering shows a single "continue" note that resumes the
  * walk onto the card the kid originally chose — their choice is honored, never dropped.
- * Counters (pages read / questions correct) + the seen-set persist via the settings table.
+ * Counters (pages read / questions correct) persist via the settings table. The seen-set is
+ * SESSION-ONLY; across restarts seen-ness lives in the SQLite seen-store as a weight, not a filter.
+ * Every draw is weighted by a FeedContext (rag/pipeline/FEED-WEIGHTING.md): the student's
+ * grade, the inferred curriculum quarter, and the SQLite seen-store (card + competency).
  */
 import { create } from 'zustand';
-import type { Language } from '@hiraia/shared';
+import { inferCurriculumQuarter, type Language, type SeenRecord } from '@hiraia/shared';
 
 import {
   cardTitle,
   cardTitleById,
+  competencyKeys,
   getCard,
   jumpCard,
   nextChoices,
@@ -25,6 +29,7 @@ import {
   type CardChoice,
   type CardFact,
   type CardQuestion,
+  type FeedContext,
 } from '../data/cards';
 import { loadTokenIndex } from '../data/cardDb';
 import {
@@ -34,11 +39,10 @@ import {
   type RewardContent,
   type ViewLogEntry,
 } from '../data/reward';
-import { getSetting, setSetting } from '../db/repo';
+import { getSetting, loadSeen, recordCardSeen, recordCompetencySeen, setSetting } from '../db/repo';
 import { withModelLock } from '../engine/modelLock';
 import { useEngineStore } from './engineStore';
 
-const SEEN_CAP = 2500; // persisted seen-set cap (pool is ~3.5k; cycling is fine)
 // Trail of just-read cards. Two consumers: "ask about something the kid just saw" (quiz
 // interjects) and the illustration cooldown in nextChoices (don't reuse a recent picture).
 const RECENT_WINDOW = 5;
@@ -84,6 +88,8 @@ interface CardState {
   pagesRead: number;
   correctCount: number;
   questionsAsked: number;
+  /** Cards shown THIS SESSION — the hard "don't repeat this sitting" filter. Deliberately not
+   *  persisted: across restarts the SQLite seen-store only LOWERS a card's weight (never zero). */
   seen: Set<string>;
   recent: string[]; // last few card ids (question sourcing + nextChoices' picture cooldown)
   viewLog: ViewLogEntry[]; // {factId, topic, ts} for the reward recap window
@@ -119,12 +125,10 @@ const nextGap = () => 4 + Math.floor(Math.random() * 2); // question: every 4-5 
 // restore to `15 + rand(0..10)` before ship.
 const nextRewardGap = () => 6 + Math.floor(Math.random() * 5);
 
-function persist(s: { pagesRead: number; correctCount: number; seen: Set<string> }) {
+function persist(s: { pagesRead: number; correctCount: number }) {
   void setSetting('cards.pages', String(s.pagesRead));
   void setSetting('cards.correct', String(s.correctCount));
-  void setSetting('cards.seen', JSON.stringify([...s.seen].slice(-SEEN_CAP)));
 }
-
 
 /**
  * Topic labels for the reward recap, resolved from the card database at display time (the log
@@ -133,6 +137,46 @@ function persist(s: { pagesRead: number; correctCount: number; seen: Set<string>
 function recapTopics(log: ViewLogEntry[], language: Language): string[] {
   return recentTopics(log.map((e) => ({ ...e, topic: cardTitleById(e.factId, language) || e.topic })));
 }
+
+/**
+ * In-memory mirror of the SQLite seen-store (card_seen / competency_seen): loaded once at
+ * hydrate, bumped as each card is shown (so in-session draws decay too) and written through
+ * fire-and-forget. It is a weight-reduction memory, never a blocklist — the only hard filter is
+ * the `seen` set above, which lives for one session.
+ */
+const seenStore: { cards: Map<string, SeenRecord>; competencies: Map<string, SeenRecord> } = {
+  cards: new Map(),
+  competencies: new Map(),
+};
+
+/** Fresh weighting context for one draw: grade + clock are re-read every time. */
+function feedContext(): FeedContext {
+  return {
+    studentGrade: useEngineStore.getState().grade,
+    currentQuarter: inferCurriculumQuarter(new Date()).quarter,
+    now: Date.now(),
+    cardSeen: seenStore.cards,
+    competencySeen: seenStore.competencies,
+  };
+}
+
+function bump(map: Map<string, SeenRecord>, key: string, now: number) {
+  map.set(key, { times: (map.get(key)?.times ?? 0) + 1, lastSeen: now });
+}
+
+/** A card became current: bump its card_seen + competency_seen rows (memory, then SQLite). */
+function markSeen(card: CardFact, now: number) {
+  // Every code the card serves decays (a card drawn for its secondary cell must dampen THAT competency too).
+  const codes = competencyKeys(card.id);
+  bump(seenStore.cards, card.id, now);
+  for (const code of codes) if (code !== 'off') bump(seenStore.competencies, code, now); // untagged cards are not a group
+  recordCardSeen(card.id, codes[0] ?? 'off', now).catch((e) => console.warn('[cards] recordCardSeen failed', e));
+  for (const code of codes.slice(1)) {
+    recordCompetencySeen(code, now).catch((e) => console.warn('[cards] recordCompetencySeen failed', e));
+  }
+}
+
+let hydrating: Promise<void> | null = null;
 
 export const useCardStore = create<CardState>()((set, get) => ({
   hydrated: false,
@@ -162,40 +206,63 @@ export const useCardStore = create<CardState>()((set, get) => ({
 
   hydrate: async () => {
     if (get().hydrated) return;
-    let pagesRead = 0;
-    let correctCount = 0;
-    let seen = new Set<string>();
-    try {
-      pagesRead = Number((await getSetting('cards.pages')) ?? 0) || 0;
-      correctCount = Number((await getSetting('cards.correct')) ?? 0) || 0;
-      seen = new Set<string>(JSON.parse((await getSetting('cards.seen')) ?? '[]'));
-    } catch (e) {
-      console.warn('[cards] hydrate failed, starting fresh', e);
-    }
-    const lang = useEngineStore.getState().language ?? 'tagalog';
-    const first = startCard(seen);
-    seen.add(first.id);
-    // The card's prose lives in the database now, so it has to be here before the page
-    // paints — this is the ONE await the feed has, and it covers the first card and the
-    // pages it can turn to. The token index rides along for the duplicate check.
-    // Best-effort: a database that will not open must NOT stop the feed from rendering. The
-    // first build of this let the rejection escape and the app never left its splash screen.
-    await Promise.all([
-      loadTokenIndex().catch(() => undefined),
-      warmPage([first.id], lang).catch((e) => console.warn('[cards] warm failed:', e)),
-    ]);
-    set({
-      hydrated: true,
-      pagesRead,
-      correctCount,
-      seen,
-      current: first,
-      choices: nextChoices(first.id, seen, lang, { threadDepth: 0, recentIds: [first.id] }),
-      threadDepth: 0,
-      recent: [first.id],
-      viewLog: [{ factId: first.id, topic: cardTitle(first, lang) || first.topic, ts: Date.now() }],
-      pageKey: 1,
+    if (hydrating) return hydrating; // re-entrant call (StrictMode double effect / remount) shares one draw
+    hydrating = (async () => {
+      let pagesRead = 0;
+      let correctCount = 0;
+      const seen = new Set<string>(); // session-only (see CardState.seen)
+      try {
+        pagesRead = Number((await getSetting('cards.pages')) ?? 0) || 0;
+        correctCount = Number((await getSetting('cards.correct')) ?? 0) || 0;
+        // Cross-session seen-ness is a WEIGHT, not a filter: loadSeen only makes a card (and
+        // the competencies it serves) less likely to come up again — see FEED-WEIGHTING.md.
+        const stored = await loadSeen();
+        seenStore.cards = stored.cards;
+        seenStore.competencies = stored.competencies;
+      } catch (e) {
+        console.warn('[cards] hydrate failed, starting fresh', e);
+      }
+      const lang = useEngineStore.getState().language ?? 'tagalog';
+      const ctx = feedContext();
+      const first = startCard(seen, ctx);
+      seen.add(first.id);
+      markSeen(first, ctx.now);
+      // Token index first — it is what the duplicate check reads, so the choices have to be
+      // drawn after it, not beside it.
+      // Best-effort: a database that will not open must NOT stop the feed from rendering. The
+      // first build of this let the rejection escape and the app never left its splash screen.
+      await loadTokenIndex().catch(() => undefined);
+      // Draw the choices HERE, then warm exactly them. They are what the reader can tap, so
+      // they are what must be warm; re-deriving them inside warmPage would pick different
+      // cards (the draw is weighted, and the weights move between calls) and the page the
+      // reader actually turned to would paint with no body text.
+      const choices = nextChoices(first.id, seen, lang, {
+        threadDepth: 0,
+        recentIds: [first.id],
+        ctx,
+      });
+      // The card's prose lives in the database now, so it has to be here before the page
+      // paints — this is the ONE await the feed has, and it covers the first card and the
+      // pages it can turn to.
+      await warmPage([first.id, ...choices.map((c) => c.factId)]).catch((e) =>
+        console.warn('[cards] warm failed:', e)
+      );
+      set({
+        hydrated: true,
+        pagesRead,
+        correctCount,
+        seen,
+        current: first,
+        choices,
+        threadDepth: 0,
+        recent: [first.id],
+        viewLog: [{ factId: first.id, topic: cardTitle(first, lang) || first.topic, ts: ctx.now }],
+        pageKey: 1,
+      });
+    })().finally(() => {
+      hydrating = null;
     });
+    return hydrating;
   },
 
   choose: (choice) => {
@@ -254,7 +321,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
     const s = get();
     const correctCount = s.correctCount + (correct ? 1 : 0);
     set({ correctCount, questionAnswered: true }); // enables the corner-swipe-to-continue fallback
-    persist({ pagesRead: s.pagesRead, correctCount, seen: s.seen });
+    persist({ pagesRead: s.pagesRead, correctCount });
   },
 
   continueAfterQuestion: () => {
@@ -339,7 +406,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
     if (dest) {
       navigateTo(dest, set, get);
     } else {
-      navigateTo(jumpCard(s.current?.id ?? null, s.seen), set, get);
+      navigateTo(jumpCard(s.current?.id ?? null, s.seen, feedContext()), set, get);
     }
   },
 
@@ -356,13 +423,15 @@ export const useCardStore = create<CardState>()((set, get) => ({
   jumpToRandom: () => {
     const s = get();
     const lang = useEngineStore.getState().language ?? 'tagalog';
-    const dest = jumpCard(s.current?.id ?? null, s.seen);
+    const ctx = feedContext();
+    const dest = jumpCard(s.current?.id ?? null, s.seen, ctx);
     const seen = new Set(s.seen);
     seen.add(dest.id);
+    markSeen(dest, ctx.now);
     const pagesRead = s.pagesRead + 1;
     set({
       current: dest,
-      choices: nextChoices(dest.id, seen, lang, { threadDepth: 0, recentIds: [dest.id] }),
+      choices: nextChoices(dest.id, seen, lang, { threadDepth: 0, recentIds: [dest.id], ctx }),
       threadDepth: 0, // the reroll already switched topic — start the new thread fresh
       question: null,
       pending: null,
@@ -375,9 +444,36 @@ export const useCardStore = create<CardState>()((set, get) => ({
       untilQuestion: nextGap(), // don't interject right after a jump
       pageKey: s.pageKey + 1,
     });
-    persist({ pagesRead, correctCount: s.correctCount, seen });
+    persist({ pagesRead, correctCount: s.correctCount });
   },
 }));
+
+/**
+ * The choices the store WILL serve once the card underneath becomes current.
+ *
+ * The deck prints that card in full on the sheet behind the top one — illustration, type and
+ * choice tickets — so the preview has to be drawn from the same inputs `advance` will use: the
+ * same seen set, the same trail, the same thread depth and the same weighting context. Drawn
+ * with defaults instead (no ctx, a one-element seen set) it names a different deep card on
+ * roughly half of pages, and the label the reader had already started reading on the sheet
+ * beneath would swap the instant the swipe completed.
+ *
+ * Only meaningful on a single-path page: a fork shows two blank coloured sheets, never a
+ * printed preview, so there is nothing to agree with.
+ */
+export function previewChoices(language: Language): CardChoice[] {
+  const s = useCardStore.getState();
+  const choice = s.choices.length === 1 ? s.choices[0] : undefined;
+  const next = choice ? getCard(choice.factId) : undefined;
+  if (!choice || !next) return [];
+  const seen = new Set(s.seen);
+  seen.add(next.id);
+  return nextChoices(next.id, seen, language, {
+    threadDepth: choice.kind === 'lateral' ? 0 : s.threadDepth + 1,
+    recentIds: [...s.recent, next.id].slice(-RECENT_WINDOW),
+    ctx: feedContext(),
+  });
+}
 
 type Set_ = (partial: Partial<CardState>) => void;
 type Get_ = () => CardState;
@@ -393,27 +489,35 @@ type Get_ = () => CardState;
  * Deliberately NOT awaited: the card being shown was warmed a page ago, so this is preparing
  * the NEXT turn while the reader is still on this one. A page turn therefore never waits on
  * the database.
+ *
+ * It warms `s.choices` — the store's OWN targets, the two cards the reader can actually tap —
+ * and never lets warmPage re-derive them. The draw is weighted (grade, quarter, seen-decay)
+ * and the weights move on every page, so a second `nextChoices` call would name a different
+ * card; the page the reader turned to would then be cold, and `textOf` is a synchronous cache
+ * read with no subscription, so it would stay blank for the whole dwell.
  */
 function warmAfter(get: Get_) {
   const s = get();
-  const lang = useEngineStore.getState().language ?? 'tagalog';
   const recentFactIds = s.recent.map((id) => getCard(id)?.factId).filter((x): x is string => !!x);
-  void warmPage([s.current?.id], lang, recentFactIds);
+  void warmPage([s.current?.id, ...s.choices.map((c) => c.factId)], recentFactIds);
 }
 
 function navigateTo(fact: CardFact, set: Set_, get: Get_, banner?: string) {
   const s = get();
   const lang = useEngineStore.getState().language ?? 'tagalog';
+  const ctx = feedContext();
   const seen = new Set(s.seen);
   seen.add(fact.id);
+  markSeen(fact, ctx.now);
   const recent = [...s.recent, fact.id].slice(-RECENT_WINDOW);
-  const viewLog = [...s.viewLog, { factId: fact.id, topic: cardTitle(fact, lang) || fact.topic, ts: Date.now() }].slice(
-    -VIEWLOG_CAP
-  );
+  const viewLog = [
+    ...s.viewLog,
+    { factId: fact.id, topic: cardTitle(fact, lang) || fact.topic, ts: ctx.now },
+  ].slice(-VIEWLOG_CAP);
   const pagesRead = s.pagesRead + 1;
   set({
     current: fact,
-    choices: nextChoices(fact.id, seen, lang, { threadDepth: 0, recentIds: recent }),
+    choices: nextChoices(fact.id, seen, lang, { threadDepth: 0, recentIds: recent, ctx }),
     threadDepth: 0, // a search/topic jump starts a new thread
     seen,
     recent,
@@ -429,7 +533,7 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, banner?: string) {
     untilReward: s.untilReward - 1,
     pageKey: s.pageKey + 1,
   });
-  persist({ pagesRead, correctCount: s.correctCount, seen });
+  persist({ pagesRead, correctCount: s.correctCount });
   warmAfter(get);
 }
 
@@ -456,13 +560,15 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
   const nextFact = getCard(choice.factId);
   if (!nextFact) return;
   const lang = useEngineStore.getState().language ?? 'tagalog';
+  const ctx = feedContext();
 
   const seen = new Set(s.seen);
   seen.add(nextFact.id);
+  markSeen(nextFact, ctx.now);
   const recent = [...s.recent, nextFact.id].slice(-RECENT_WINDOW);
   const viewLog = [
     ...s.viewLog,
-    { factId: nextFact.id, topic: cardTitle(nextFact, lang) || nextFact.topic, ts: Date.now() },
+    { factId: nextFact.id, topic: cardTitle(nextFact, lang) || nextFact.topic, ts: ctx.now },
   ].slice(-VIEWLOG_CAP);
   const pagesRead = s.pagesRead + 1;
   const untilReward = s.untilReward - 1;
@@ -470,7 +576,7 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
   // Taking the lateral fork is itself a topic switch, so it restarts the thread; otherwise
   // the counter walks up until nextChoices forks, then resets on the page that offered it.
   const depth = choice.kind === 'lateral' ? 0 : s.threadDepth + 1;
-  const choices = nextChoices(nextFact.id, seen, lang, { threadDepth: depth, recentIds: recent });
+  const choices = nextChoices(nextFact.id, seen, lang, { threadDepth: depth, recentIds: recent, ctx });
 
   set({
     current: nextFact,
@@ -485,7 +591,7 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
     queryBanner: null, // a normal page-turn clears any lingering search banner
     pageKey: s.pageKey + 1,
   });
-  persist({ pagesRead, correctCount: s.correctCount, seen });
+  persist({ pagesRead, correctCount: s.correctCount });
 
   // Prefetch the LLM reward line a few cards ahead so it's fully rendered before it's due
   // (hides the on-device generation latency behind dwell time).

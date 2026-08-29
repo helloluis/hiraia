@@ -23,9 +23,10 @@
  *   BASELINE=/tmp/before.json npx tsx scripts/card-adjacency-qa.mts   # BEFORE -> AFTER table
  */
 import { createHash } from 'node:crypto';
-import { readFileSync, writeFileSync, mkdtempSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+
+import { CARDS_SRC, loadCards } from './load-cards-node.mts';
 
 const MOBILE = new URL('..', import.meta.url).pathname;
 
@@ -58,7 +59,6 @@ const rand = mulberry32(SEED);
 Math.random = rand;
 
 // ---- load the real graph ----
-const CARDS_SRC = readFileSync(join(MOBILE, 'src/data/cards.ts'), 'utf8');
 const STORE_SRC = readFileSync(join(MOBILE, 'src/store/cardStore.ts'), 'utf8');
 
 /**
@@ -83,54 +83,6 @@ const TRAIL =
 
 // cardStore.RECENT_WINDOW — the trail it keeps and hands to nextChoices.
 const RECENT_WINDOW = 5;
-
-function loadCards() {
-  const src = CARDS_SRC
-    .replace(
-      "import type { Language } from '@hiraia/shared';",
-      `type Language = 'tagalog'|'english'|'cebuano';`
-    )
-    .replace(
-      "import cardsIndex from '../generated/cardsIndex.generated.json';",
-      `import cardsIndex from '${join(MOBILE, 'src/generated/cardsIndex.generated.json')}' with { type: 'json' };`
-    )
-    // cardDb is the React-Native data layer (expo-asset, expo-sqlite); none of it exists in
-    // Node. The harness walks the FEED, which reads only the resident index, so the pieces it
-    // stubs out are the ones a walk never touches: text, MCQs, and the search postings. The
-    // token index IS needed — textJaccard suppresses near-duplicate neighbours — so it is
-    // read straight off the same binary the app ships.
-    .replace(
-      /import \{[^}]*\} from '\.\/cardDb';/,
-      `
-      const __tokBuf = (await import('node:fs')).readFileSync('${join(MOBILE, 'assets/data/tokens.bin')}');
-      const __n = __tokBuf.readInt32LE(0);
-      const __all = new Int32Array(__tokBuf.buffer, __tokBuf.byteOffset + 4, (__tokBuf.byteLength - 4) >> 2);
-      const __off = __all.subarray(0, __n + 1);
-      const __tok = __all.subarray(__n + 1);
-      function tokenJaccard(a: number, b: number): number {
-        if (a < 0 || b < 0) return 0;
-        const as = __off[a]!, ae = __off[a + 1]!, bs = __off[b]!, be = __off[b + 1]!;
-        const la = ae - as, lb = be - bs;
-        if (!la || !lb) return 0;
-        let i = as, j = bs, both = 0;
-        while (i < ae && j < be) {
-          const x = __tok[i]!, y = __tok[j]!;
-          if (x === y) { both++; i++; j++; } else if (x < y) i++; else j++;
-        }
-        return both / (la + lb - both);
-      }
-      const textOf = (_id: string) => undefined;
-      const questionOf = (_f: string) => undefined;
-      const loadText = async () => {};
-      const loadQuestions = async () => {};
-      const searchTokenRows = async () => [];
-      `
-    );
-  const dir = mkdtempSync(join(tmpdir(), 'cardqa-'));
-  const file = join(dir, 'cards-impl.mts');
-  writeFileSync(file, src);
-  return import(file);
-}
 
 const EMPTY_TEXT = { tl: '', en: '', bis: '' };
 /** Text for a card, from the bulk map above. */
@@ -348,7 +300,9 @@ function makePair(
   const self = idfOverlap(a, a) || 1;
   const rarest = shared.length ? Math.min(...shared.map(df)) : null;
   const flags: string[] = [];
-  if (a.slug === b.slug) flags.push('same-slug');
+  // Same rule as `sameSlug` below: an empty slug is not an illustration, so two typographic
+  // cards in a row are not a repeat. Flagging them contradicted this script's own metric.
+  if (a.slug !== '' && a.slug === b.slug) flags.push('same-slug');
   if (j > 0.5) flags.push('near-identical-text');
   // Zero overlap is the DESIGNED behaviour of a lateral fork (a deliberately fresh topic);
   // on a deep step it means the term index found nothing and a random fallback filled in.

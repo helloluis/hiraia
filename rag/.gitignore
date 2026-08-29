@@ -9,6 +9,13 @@ sources/*
 !README.md
 !scripts/
 !*.json
+# ...but `!*.json` above is broad enough to un-ignore the root .gitignore's large regenerable
+# JSON intermediates, and this file is the deeper one, so it wins. Re-ignore them here.
+pipeline/cardsPool.deped*.json
+pipeline/card-illustrations.json
+pipeline/card-illustrations.v1.json
+pipeline/card-illustrations.chosen.v1.json
+pipeline/illustration-items.json
 
 # Ignore node modules
 node_modules/
@@ -23,3 +30,15 @@ bank/*.db
 # Accepted facts are appended to bank/science-facts.jsonl; the run dir is disposable.
 pipeline/.expansion/
 pipeline/.wave-run.workflow.js
+
+# raw Fireworks label batches (assembled into rag/bank/curriculum-tags.json)
+pipeline/competency-labels*/
+pipeline/rag/
+pipeline/competency-labels*.log
+
+# image-generation staging (raw PNG/WebP downloads); the committed artefacts are packages/images/factoid-webp + cards-png
+pipeline/imagegen/raw/
+pipeline/imagegen/webp/
+pipeline/imagegen/out*/
+pipeline/imagegen/*.png
+pipeline/imagegen/batch_*.jsonl

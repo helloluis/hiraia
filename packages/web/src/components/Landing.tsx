@@ -1,16 +1,194 @@
 'use client';
 
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { AppDownload } from '@/components/AppDownload';
 import { HiraiaBench } from '@/components/HiraiaBench';
 import { YouTubeEmbed } from '@/components/YouTubeEmbed';
 import { DemoLightbox } from '@/components/demo/DemoLightbox';
 import { useDemoStore } from '@/store/useDemoStore';
 
-/**
- * Public landing page. We don't gate the site behind login/signup anymore — the
- * hero invites visitors straight into the in-browser demo (a lightbox that
- * mirrors the mobile app's setup flow) or down to the APK download.
- */
+/** A few of the in-app engravings. Tagalog on the card; English types in on hover/tap. */
+const FLASH_CARDS: {
+  src: string;
+  alt: string;
+  topicTl: string;
+  topicEn: string;
+  tl: string;
+  en: string;
+}[] = [
+  {
+    src: '/demo/cards/philippine-tarsier-cling.png',
+    alt: 'Tarsier',
+    topicTl: 'Mga buhay',
+    topicEn: 'Living things',
+    tl: 'Primate ang tarsier — pero hindi ito unggoy.',
+    en: 'A tarsier is a primate — but it isn’t a monkey.',
+  },
+  {
+    src: '/demo/cards/mayon-volcano-cone.png',
+    alt: 'Bulkang Mayon',
+    topicTl: 'Lupa at kalawakan',
+    topicEn: 'Earth & space',
+    tl: 'Ang Mayon ang pinaka-aktibong bulkan sa Pilipinas, tanyag sa hugis-kono nito.',
+    en: 'Mayon is the Philippines’ most active volcano, famous for its cone.',
+  },
+  {
+    src: '/demo/cards/green-sea-turtle-pawikan.png',
+    alt: 'Pawikan',
+    topicTl: 'Mga buhay',
+    topicEn: 'Living things',
+    tl: 'Nakakahanap ng daan pauwi ang pawikan gamit ang magnetic field ng Earth.',
+    en: 'Sea turtles find their way home using Earth’s magnetic field.',
+  },
+  {
+    src: '/demo/cards/halo-halo-layers-heterogeneous.png',
+    alt: 'Halo-halo',
+    topicTl: 'Materya',
+    topicEn: 'Matter',
+    tl: 'Heterogeneous mixture ang halo-halo: makikita mo ang bawat patong.',
+    en: 'Halo-halo is a heterogeneous mixture: you can see every layer.',
+  },
+  {
+    src: '/demo/cards/firefly-alitaptap.png',
+    alt: 'Alitaptap',
+    topicTl: 'Mga buhay',
+    topicEn: 'Living things',
+    tl: 'Sa mga bakawan ng Pilipinas, libu-libong alitaptap ang sabay-sabay na kumikislap.',
+    en: 'In Philippine mangroves, thousands of fireflies flash as one.',
+  },
+  {
+    src: '/demo/cards/mangrove-prop-roots.png',
+    alt: 'Ugat ng bakawan',
+    topicTl: 'Lupa at kalawakan',
+    topicEn: 'Earth & space',
+    tl: 'Pinabagal ng ugat ng bakawan ang tubig para maipon ang putik at magdagdag ng lupa.',
+    en: 'Mangrove roots slow the water so mud settles and builds new land.',
+  },
+  {
+    src: '/demo/cards/nipa-hut-bahay-kubo-scene.png',
+    alt: 'Bahay kubo',
+    topicTl: 'Materya',
+    topicEn: 'Matter',
+    tl: 'Dahon ng nipa ang bubong ng bahay kubo — mahigpit ang saga, hindi tinatablan ng ulan.',
+    en: 'Nipa leaves roof a bahay kubo — woven tight, they shed rain and stay cool.',
+  },
+  {
+    src: '/demo/cards/palayok-clay-pot.png',
+    alt: 'Palayok',
+    topicTl: 'Materya',
+    topicEn: 'Matter',
+    tl: 'Seramika ang palayok: matibay sa init, malutong kapag nahulog.',
+    en: 'A palayok is ceramic: tough against heat, brittle if you drop it.',
+  },
+];
+
+const TICK_MS = 24;
+const CHARS_PER_TICK = 3;
+
+function prefersReducedMotion() {
+  return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function isFinePointer() {
+  return typeof window !== 'undefined' && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+}
+
+function SampleCard(card: (typeof FLASH_CARDS)[number]) {
+  const [english, setEnglish] = useState(false);
+  const target = english ? card.en : card.tl;
+  const [shown, setShown] = useState(card.tl.length);
+  const skipAnim = useRef(true);
+
+  useEffect(() => {
+    if (skipAnim.current) {
+      skipAnim.current = false;
+      setShown(target.length);
+      return;
+    }
+    if (prefersReducedMotion()) {
+      setShown(target.length);
+      return;
+    }
+    setShown(0);
+    let i = 0;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const tick = () => {
+      i += CHARS_PER_TICK;
+      setShown(i);
+      if (i < target.length) timer = setTimeout(tick, TICK_MS);
+    };
+    timer = setTimeout(tick, 40);
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [target]);
+
+  const showEn = () => setEnglish(true);
+  const showTl = () => setEnglish(false);
+  const toggle = () => setEnglish((v) => !v);
+
+  const visible = target.slice(0, Math.min(shown, target.length));
+  const reserve = card.tl.length >= card.en.length ? card.tl : card.en;
+
+  return (
+    <li className="mc-fan">
+      <button
+        type="button"
+        className="mc-card w-full cursor-pointer p-3 text-left sm:p-3.5"
+        aria-label={`${card.alt}. ${english ? card.en : card.tl}`}
+        onMouseEnter={() => {
+          if (isFinePointer()) showEn();
+        }}
+        onMouseLeave={() => {
+          if (isFinePointer()) showTl();
+        }}
+        onClick={() => {
+          if (!isFinePointer()) toggle();
+        }}
+      >
+        <div className="mc-keyline" aria-hidden />
+        <div className="mc-band mb-3">
+          <span className="mc-topic">{english ? card.topicEn : card.topicTl}</span>
+        </div>
+        <div className="mc-plate">
+          <div className="mc-window aspect-square">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={card.src} alt="" />
+          </div>
+        </div>
+        <p className="relative z-[1] mt-3 font-zilla text-[13px] font-medium leading-snug text-[var(--ink)] sm:text-[15px]">
+          <span className="invisible block" aria-hidden>
+            {reserve}
+          </span>
+          <span className="absolute inset-0">
+            {visible}
+            <span className="opacity-0">{target.slice(visible.length)}</span>
+          </span>
+        </p>
+      </button>
+    </li>
+  );
+}
+
+function Ticket({
+  children,
+  onClick,
+  ghost,
+}: {
+  children: ReactNode;
+  onClick: () => void;
+  ghost?: boolean;
+}) {
+  return (
+    <div className="mc-ledge">
+      <button type="button" onClick={onClick} className={ghost ? 'mc-ticket mc-ticket-ghost' : 'mc-ticket'}>
+        <span className="flex-1">{children}</span>
+        <span className="mc-arrow" aria-hidden />
+      </button>
+    </div>
+  );
+}
+
 export function Landing() {
   const openDemo = useDemoStore((s) => s.openDemo);
 
@@ -19,272 +197,170 @@ export function Landing() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-white overflow-x-hidden">
-      {/* HERO SECTION (90% screen height) */}
-      <div
-        className="h-[90vh] w-full flex items-start justify-start bg-cover bg-center bg-no-repeat relative font-sans"
+    <div className="mc min-h-screen w-full overflow-x-hidden">
+      {/* HERO — photograph stays; overlay is a laminated classroom card. */}
+      <section
+        className="relative flex min-h-[100svh] w-full items-start justify-start bg-cover bg-center bg-no-repeat sm:bg-[center_40%]"
         style={{ backgroundImage: "url('/landing.jpeg')" }}
+        aria-label="Hiraia"
       >
-        {/* Subtle overlay for contrast and depth */}
-        <div className="absolute inset-0 bg-black/15" />
+        <div className="relative z-10 w-full max-w-[21rem] px-4 pt-10 sm:ml-10 sm:max-w-[24rem] sm:px-0 sm:pt-14 md:ml-16 lg:ml-24">
+          <div className="mc-card">
+            <div className="mc-keyline" aria-hidden />
+            <div className="mc-hole mc-hole-a" aria-hidden />
+            <div className="mc-hole mc-hole-b" aria-hidden />
 
-        {/* Responsive Container for logo + card to align them perfectly on the left */}
-        <div className="relative z-10 flex flex-col items-start gap-6 sm:gap-8 w-full max-w-md mx-auto sm:mx-0 sm:ml-12 md:ml-20 lg:ml-28 xl:ml-36 px-4 sm:px-0 pt-16 sm:pt-20 md:pt-24">
-          {/* Branding Headline aligned to the card */}
-          <div className="select-none w-full">
-            <h1 className="font-title text-5xl md:text-7xl text-[#0c343d] tracking-tight leading-none">
-              hiraia
-            </h1>
-            <p className="font-serif italic text-sm md:text-lg text-[#0c343d]/90 mt-2 md:mt-3">
-              Decentralized AI tutoring for the global south
-            </p>
-          </div>
-
-          {/* Floating glassmorphic card — pitch + the two calls to action */}
-          <div className="w-full bg-[#0c343d]/45 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/10 p-6 sm:p-8">
-            <p className="text-base sm:text-lg leading-relaxed text-white">
-              Our on-device AI app works on entry-level Android phones worth around{' '}
-              <strong className="text-white">$100</strong> and speaks fluent{' '}
-              <strong className="text-white">Tagalog</strong> and{' '}
-              <strong className="text-white">English</strong>{' '}
-              <span className="italic text-teal-200">
-                (with <strong className="not-italic text-white">Bisaya</strong> coming soon!)
+            <div className="mc-band !h-auto !min-h-[34px] !py-1.5">
+              <span className="mc-topic !whitespace-normal leading-tight !tracking-[0.08em]">
+                MATATAG-compatible science tutor
               </span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/hiraia-profile.png" alt="" width={26} height={26} className="mc-stamp" />
+            </div>
+
+            <h1 className="mt-5 font-slab text-[2.75rem] leading-none tracking-wide text-[var(--ink)] sm:text-6xl">
+              HIRAIA
+            </h1>
+            <p className="mt-4 font-zilla text-[1.35rem] font-bold leading-snug text-[var(--ink)] text-balance sm:text-[1.55rem]">
+              An AI science tutor that runs entirely offline
             </p>
-            <p className="mt-3 text-sm sm:text-base leading-relaxed text-slate-100/80">
-              Try the web demo now, or download the APK directly to your mobile phone below.
+            <div className="mc-divider my-4" aria-hidden>
+              <span />
+              <i />
+              <span />
+            </div>
+            <p className="font-zilla text-base font-medium leading-relaxed text-[var(--ink)] sm:text-[1.05rem]">
+              Our on-device AI works on entry-level Android phones and speaks fluent
+              Tagalog and English.
             </p>
 
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <button
-                type="button"
-                onClick={openDemo}
-                className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#f3a228] px-5 py-3 font-bold text-[#0c343d] shadow-lg shadow-[#f3a228]/20 transition-all hover:bg-[#ffb03f] active:scale-[0.98]"
-              >
-                <svg
-                  className="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                Try the web demo
-              </button>
-              <button
-                type="button"
-                onClick={scrollToDownload}
-                className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/5 px-5 py-3 font-semibold text-white transition-all hover:bg-white/10 active:scale-[0.98]"
-              >
-                <svg
-                  className="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
-                  />
-                </svg>
-                Download the APK
-              </button>
+            <div className="relative z-[1] mt-6 flex flex-col gap-3">
+              <Ticket onClick={openDemo}>Try the demo</Ticket>
+              <Ticket onClick={scrollToDownload} ghost>
+                Download for free
+              </Ticket>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-[#0c343d]/80 animate-bounce select-none pointer-events-none">
-          <span className="text-[10px] font-bold uppercase tracking-widest font-sans">
-            Learn More
-          </span>
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-          </svg>
-        </div>
-      </div>
-
-      {/* SECTION 2: FEATURE SPECIFICATIONS */}
-      <div className="w-full bg-[#fcfdfd] py-16 sm:py-24 px-6 md:px-12 lg:px-24 border-b border-gray-100">
-        <div className="max-w-7xl mx-auto">
-          {/* Main Section Header */}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display text-[#0c343d] tracking-tight leading-tight max-w-4xl mb-8 md:mb-10">
-            <span className="italic font-bold">hiraia</span> is a personal AI tutor in your pocket,
-            built with QVAC
+      {/* PRODUCT — type sits on the board, like app chrome. */}
+      <section className="px-5 py-16 sm:px-12 sm:py-20 md:px-16 lg:px-24">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="max-w-3xl text-3xl leading-none text-[var(--stock)] sm:text-4xl md:text-[2.75rem]">
+            Science on your phone
           </h2>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-end">
-            {/* Left Column: Feature Items */}
-            <div className="lg:col-span-7 space-y-10 sm:space-y-12">
-              {/* Item 1: Fine-tuned open-weights LLMs */}
-              <div className="flex gap-4 sm:gap-6 items-start">
-                <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center bg-[#f3a228] shadow-md shadow-[#f3a228]/10">
-                  <svg
-                    className="w-6 h-6 sm:w-7 sm:h-7 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m11.177-12.138A25.907 25.907 0 0012 11.5"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-lg sm:text-xl font-display text-[#0c343d] mb-2">
-                    Fine-tuned open-weights LLMs
-                  </h3>
-                  <ul className="list-disc pl-5 text-gray-600 space-y-1.5 text-sm sm:text-base leading-relaxed">
-                    <li>
-                      Replies in <strong className="text-[#0c343d]">Tagalog, Bisaya</strong>, and
-                      English
-                    </li>
-                    <li>
-                      Augments in-person classroom learning with review and reinforcement at home
-                      on-demand
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Item 2: Offline mode */}
-              <div className="flex gap-4 sm:gap-6 items-start">
-                <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center bg-[#0f8c5c] shadow-md shadow-[#0f8c5c]/10">
-                  <svg
-                    className="w-6 h-6 sm:w-7 sm:h-7 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 9.75v6.75m0 0l-3-3m3 3l3-3m-8.25 6a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-lg sm:text-xl font-display text-[#0c343d] mb-2">
-                    Offline mode
-                  </h3>
-                  <ul className="list-disc pl-5 text-gray-600 space-y-1.5 text-sm sm:text-base leading-relaxed">
-                    <li>
-                      No internet required for chat, entire package is{' '}
-                      <strong className="text-[#0c343d]">less than 4 GB</strong>
-                    </li>
-                    <li>
-                      Internet only needed for the{' '}
-                      <strong className="text-[#0c343d]">initial download and databank updates</strong>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Item 3: Entry-level phone requirements */}
-              <div className="flex gap-4 sm:gap-6 items-start">
-                <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center bg-[#0f8c5c] shadow-md shadow-[#0f8c5c]/10">
-                  <svg
-                    className="w-6 h-6 sm:w-7 sm:h-7 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-lg sm:text-xl font-display text-[#0c343d] mb-2">
-                    Entry-level phone requirements
-                  </h3>
-                  <p className="text-gray-600 text-sm sm:text-base leading-relaxed pl-1">
-                    Runs on cheap phones from{' '}
-                    <strong className="text-[#0c343d]">five years ago</strong>;{' '}
-                    <strong className="text-[#0c343d]">no other costs</strong> or ongoing fees!
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column: Hand and app image (bleeds to the section's bottom edge) */}
-            <div className="lg:col-span-5 flex justify-center lg:justify-end mt-8 lg:mt-0 lg:-mb-24">
-              <img
-                src="/hand-and-app.png"
-                alt="Hiraia App Preview"
-                className="w-full max-w-[320px] sm:max-w-[400px] lg:max-w-none object-contain drop-shadow-[0_25px_25px_rgba(12,52,61,0.15)] hover:scale-[1.01] transition-transform duration-300"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* SECTION 2.5: FREE TO DOWNLOAD (YELLOW — the one call to action) */}
-      <div
-        id="download"
-        className="w-full bg-[#f3a228] py-16 sm:py-24 px-6 md:px-12 lg:px-24 border-b border-[#0c343d]/10 scroll-mt-4"
-      >
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display text-[#0c343d] tracking-tight leading-tight mb-2">
-            Free to download
-          </h2>
-          <p className="text-base sm:text-lg text-[#0c343d]/80 leading-relaxed max-w-2xl mb-8 md:mb-10">
-            No account, no fees, no Play Store. Just download, install, and start learning.
+          <p className="mt-5 max-w-2xl font-zilla text-lg font-medium leading-relaxed text-[var(--stock)]/90 sm:text-xl">
+            Hiraia is an AI tutor for Filipino students that infers what is being
+            focused on at school, and reinforces them at home. After a one-time
+            download, it works (forever!) without an internet connection. No account
+            registration is required, no information is collected, and no personal
+            data ever leaves the device.
           </p>
-          <AppDownload />
-        </div>
-      </div>
 
-      {/* SECTION 2.6: HIRAIA PERFORMANCE — the hiraiabench comparison */}
-      <HiraiaBench />
-
-      {/* SECTION 3: VIDEO OVERVIEW (DARK GREEN BACKGROUND) */}
-      <div className="w-full bg-[#051f25] py-16 sm:py-24 px-6 md:px-12 lg:px-24">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 items-center">
-            {/* Left Column: founder overview video (click-to-play, inline) */}
-            <YouTubeEmbed id="nmoIvZcPmEE" title="Why we built Hiraia" poster="/landing.jpeg" />
-
-            {/* Right Column: Descriptions */}
-            <div className="space-y-4 sm:space-y-6">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-display text-teal-300 leading-tight">
-                Why we built hiraia
-              </h2>
-              <p className="text-base sm:text-lg text-slate-200/90 leading-relaxed max-w-xl">
-                Founder Luis Buenaventura talks about the declining aptitude of Filipino
-                schoolchildren and what we believe AI can do to get us back on track.
+          <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-10">
+            <div>
+              <p className="mc-label text-[10px] text-[var(--gold)]">On-device and Offline</p>
+              <p className="mt-2 font-zilla text-base font-medium leading-relaxed text-[var(--stock)]/85 sm:text-lg">
+                The AI model, the illustrations, and our science fact bank all live
+                on the phone, and can optionally connect to a public P2P network for
+                curriculum updates.
+              </p>
+            </div>
+            <div>
+              <p className="mc-label text-[10px] text-[var(--gold)]">Tagalog and English</p>
+              <p className="mt-2 font-zilla text-base font-medium leading-relaxed text-[var(--stock)]/85 sm:text-lg">
+                Built for Philippine elementary to junior high, based on the
+                Department of Education&apos;s new 2027 MATATAG science curriculum.
+              </p>
+            </div>
+            <div>
+              <p className="mc-label text-[10px] text-[var(--gold)]">100% Free Forever</p>
+              <p className="mt-2 font-zilla text-base font-medium leading-relaxed text-[var(--stock)]/85 sm:text-lg">
+                No payments or subscriptions necessary. Download and share freely
+                with friends and classmates.
               </p>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* The in-browser demo lightbox (renders only when opened). */}
+      {/* DECK */}
+      <section className="px-5 pb-16 sm:px-12 sm:pb-20 md:px-16 lg:px-24">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="max-w-3xl text-3xl leading-none text-[var(--stock)] sm:text-4xl">
+            Flip a card. Learn a fact.
+          </h2>
+          <p className="mt-3 max-w-2xl font-zilla text-lg font-medium leading-relaxed text-[var(--stock)]/85">
+            The app is a stack of illustrated science cards — about 50,000 verified
+            facts, and nearly 15,000 drawings that ship with it.
+          </p>
+
+          <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
+            {FLASH_CARDS.map((c) => (
+              <SampleCard key={c.src} {...c} />
+            ))}
+          </ul>
+
+          <div className="mt-12 max-w-xs">
+            <Ticket onClick={openDemo}>Try the demo</Ticket>
+          </div>
+        </div>
+      </section>
+
+      {/* DOWNLOAD */}
+      <section id="download" className="scroll-mt-4 px-5 py-16 sm:px-12 sm:py-20 md:px-16 lg:px-24">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="text-3xl leading-none text-[var(--stock)] sm:text-4xl md:text-[2.75rem]">
+            Free to download
+          </h2>
+          <p className="mt-3 max-w-2xl font-zilla text-lg font-medium leading-relaxed text-[var(--stock)]/85">
+            No account, no fees. Just download and start learning. The first time
+            you launch the app, it will download its 2GB AI tutoring model. After
+            that, Hiraia no longer requires an internet connection.
+          </p>
+          <div className="mt-8">
+            <AppDownload />
+          </div>
+        </div>
+      </section>
+
+      <HiraiaBench />
+
+      <section className="px-5 py-16 sm:px-12 sm:py-20 md:px-16 lg:px-24">
+        <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <YouTubeEmbed id="nmoIvZcPmEE" title="Why we built Hiraia" poster="/landing.jpeg" />
+          <div>
+            <p className="mc-label text-[10px] text-[var(--gold)]">The reason</p>
+            <h2 className="mt-2 text-3xl leading-none text-[var(--stock)] sm:text-4xl">
+              Why we built hiraia
+            </h2>
+            <p className="mt-4 max-w-xl font-zilla text-lg font-medium leading-relaxed text-[var(--stock)]/85">
+              Founder Luis Buenaventura on science education in the Philippines, and
+              what an on-device tutor can do when the internet isn’t a given.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <footer className="border-t-[3px] border-[var(--ink)] px-5 py-10 sm:px-12 md:px-16 lg:px-24">
+        <div className="mx-auto flex max-w-5xl flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <p>
+            <span className="font-slab text-2xl tracking-wide text-[var(--stock)]">
+              HIRAIA<span className="text-[var(--gold)]">.</span>
+            </span>
+            <span className="mt-1 block max-w-md font-zilla text-sm font-medium text-[var(--sage)]">
+              Not-for-profit. Built on{' '}
+              <a href="https://qvac.tether.io" className="underline decoration-[var(--sage)] underline-offset-2 hover:text-[var(--stock)]">
+                QVAC
+              </a>
+              .
+            </span>
+          </p>
+          <p className="mc-label text-[10px] text-[var(--sage)]">hiraia.org</p>
+        </div>
+      </footer>
+
       <DemoLightbox />
     </div>
   );

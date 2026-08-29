@@ -20,7 +20,9 @@ import json, os, re, collections
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 SRC = os.path.join(HERE, 'cardsPool.merged.json')
-ED = os.path.join(os.path.dirname(ROOT), 'hiraia/rag/pipeline/editorial.json')
+# In THIS worktree. Was hard-coded to a sibling `hiraia` checkout, which only made sense
+# while the two banks lived in two worktrees; editorial.json is tracked here.
+ED = os.environ.get('EDITORIAL') or os.path.join(HERE, 'editorial.json')
 ART = os.path.join(HERE, 'original-art-chosen.json')
 IMAGEMAP = os.path.join(ROOT, 'packages/mobile/src/generated/imageMap.ts')
 OUT = os.path.join(ROOT, 'packages/mobile/src/generated/cardsPool.generated.json')
@@ -116,6 +118,21 @@ def main():
         out.append(card)
         stat['illustrated' if slug in bundled else ('typographic' if not slug
                                                     else 'awaiting bundling')] += 1
+
+    # PRESENT is not enough: the pool is the graph's only structure, and a blank value silently
+    # disables an edge type. A blank `domain` puts the card alone in its own BY_DOMAIN bucket, so
+    # its lateral pool is empty and the card is a dead end; a blank `topic` gives it topicKey '',
+    # which collides with every other blank and gets them excluded from each other as "the same
+    # fact reworded". Repair the row upstream (rag/pipeline/factoid-patches.json carries
+    # domain/topic for a factoid whose factId does not resolve in science-facts.jsonl).
+    blank = [c['id'] for c in out if not (c.get('domain') or '').strip()
+             or not (c.get('topic') or '').strip()]
+    if blank:
+        raise SystemExit(f'  REFUSING to wire {len(blank)} card(s) with a blank domain/topic: '
+                         + ', '.join(blank[:10]) + (' …' if len(blank) > 10 else ''))
+    noterms = [c['id'] for c in out if not c.get('terms')]
+    print(f'  structure check: every card has a domain and a topic'
+          + (f'; {len(noterms)} with NO terms (no deep edge): ' + ', '.join(noterms[:10]) if noterms else ''))
 
     json.dump({'cards': out, 'taxonomy': pool.get('taxonomy') or []},
               open(OUT, 'w'), ensure_ascii=False)

@@ -52,13 +52,12 @@ import { GRADE_WORD } from '../../config/grades';
 import { uiStrings } from '../../config/strings';
 import {
   getCard,
-  nextChoices,
   type CardChoice,
   type CardFact,
   type CardQuestion,
 } from '../../data/cards';
 import type { RewardContent } from '../../data/reward';
-import { useCardStore, type FeedResponse } from '../../store/cardStore';
+import { previewChoices, useCardStore, type FeedResponse } from '../../store/cardStore';
 import { useEngineStore } from '../../store/engineStore';
 import { card, cardAlpha, fonts } from '../../theme';
 import { CARD_EDGE, CARD_RADIUS } from './CardFrame';
@@ -297,6 +296,7 @@ export function CardFeedScreen() {
   // The student's grade, printed in the footer — which is also the way INTO Settings from
   // the feed (see the footer below).
   const grade = useEngineStore((s) => s.grade);
+  const onboardingActive = useEngineStore((s) => s.onboardingActive);
   const t = uiStrings(language);
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
@@ -348,6 +348,9 @@ export function CardFeedScreen() {
   };
 
   useEffect(() => {
+    // The feed mounts UNDER the first-launch onboarding overlay. Don't draw (and mark seen)
+    // the first card until the kid is through it — the grade picked there weights that draw.
+    if (onboardingActive) return;
     void hydrate();
     // The model is NOT warmed here any more.
     //
@@ -364,7 +367,7 @@ export function CardFeedScreen() {
     // prefetchReward already returns early when the engine is cold so the reward falls back
     // to its template. So the warm-up now starts when the reader reaches for it — see the
     // search field, which wakes the model on a tap.
-  }, [hydrate]);
+  }, [hydrate, onboardingActive]);
 
   // Which way the last navigation went (drives the peel origin). Taking the left choice /
   // swiping the card leftwards → 'left'; right → 'right'.
@@ -435,8 +438,13 @@ export function CardFeedScreen() {
     return nextId ? (getCard(nextId) ?? null) : null;
   }, [forking, question, reward, response, choices]);
 
+  /**
+   * Its choice tickets are PRINTED on that sheet, so they have to be the ones the store will
+   * actually offer — the store draws them from its own state (seen set, trail, thread depth,
+   * weighting context), which is why this asks the store rather than re-deriving them here.
+   */
   const beneathChoices = useMemo(
-    () => (beneath ? nextChoices(beneath.id, new Set([beneath.id]), language) : []),
+    () => (beneath ? previewChoices(language) : []),
     [beneath, language]
   );
   /**

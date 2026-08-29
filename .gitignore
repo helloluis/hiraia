@@ -119,6 +119,8 @@ rag/pipeline/quiz-*-translate-input.jsonl
 rag/pipeline/quiz-batchA-rejected-factids.txt
 rag/pipeline/fw-*.log
 rag/bank/quiz-bank.jsonl.pre-expansion.bak
+rag/pipeline/quiz-lane/
+rag/bank/quiz-bank.jsonl.*.bak
 
 # fact-bank expansion/verification working files (bank + blob + scripts are the deliverables)
 rag/pipeline/fact-candidates/
@@ -179,22 +181,38 @@ rag/pipeline/taxonomy-probe/
 rag/pipeline/card-titles/
 rag/bank/*.pre-rematch.bak
 
-# DepEd card pipeline — large regenerable intermediates
-rag/pipeline/deped-modules.jsonl          # 20 MB of raw module text; comes from the harvest
-rag/pipeline/card-illustrations.json      # 60 MB top-8 shortlists; rebuilt by match-illustrations.py
+# DepEd card pipeline — large regenerable intermediates.
+# NOTE: a `#` only starts a comment at the START of a line. These patterns used to carry
+# trailing "# why" notes, which made each one a literal pattern containing spaces and a hash
+# that matched nothing — so 184 MB of embedding caches and 24 MB of assembled pool showed up
+# as untracked, one `git add .` away from the history. Keep every note on its own line.
+# 20 MB of raw module text; comes from the harvest
+rag/pipeline/deped-modules.jsonl
+# 60 MB top-8 shortlists; rebuilt by match-illustrations.py
+rag/pipeline/card-illustrations.json
 rag/pipeline/card-illustrations.v1.json
 rag/pipeline/card-illustrations.chosen.v1.json
-rag/pipeline/illustration-items.json      # rebuilt locally, free
-rag/pipeline/*-vectors.npy                # embedding caches
-rag/pipeline/cardsPool.deped*.json        # assembled from deped-cards-v3/ instantly
+# rebuilt locally, free
+rag/pipeline/illustration-items.json
+# embedding caches (merge-card-banks.py rebuilds them from a running llama-server)
+rag/pipeline/*-vectors.npy
+# assembled from deped-cards-v3/ (tracked) instantly — see also rag/.gitignore, whose
+# `!*.json` would otherwise un-ignore this one
+rag/pipeline/cardsPool.deped*.json
 # (cardsPool.merged.json IS tracked — it is the input to wire-app-pool.py, and
 #  rebuilding it needs a running llama-server plus ~8 min of embedding.)
-rag/pipeline/ab-*/                         # A/B generation samples
+# A/B generation samples
+rag/pipeline/ab-*/
 rag/pipeline/ab2-*/
 rag/pipeline/ab3-*/
-rag/pipeline/deped-cards/                  # superseded v1 generation
-rag/pipeline/deped-cards-v3.prepolish/     # pre-polish backup
-rag/pipeline/imagegen/*.jsonl              # multi-GB batch outputs
+# superseded v1 generation
+rag/pipeline/deped-cards/
+# pre-polish backup
+rag/pipeline/deped-cards-v3.prepolish/
+# multi-GB batch outputs
+rag/pipeline/imagegen/*.jsonl
 !rag/pipeline/imagegen/worklist.jsonl
-rag/pipeline/imagegen/raw/                 # 1024px PNGs; webp is what ships
-rag/pipeline/imagegen/webp/                # incomplete until all 3 batches land
+# 1024px PNGs; webp is what ships
+rag/pipeline/imagegen/raw/
+# incomplete until all 3 batches land
+rag/pipeline/imagegen/webp/

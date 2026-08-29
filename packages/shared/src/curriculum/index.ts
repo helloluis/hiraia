@@ -37,7 +37,11 @@ export interface CurriculumTopic {
 
 /**
  * Mapping of grade levels to their primary domains per quarter.
- * Based on DepEd K-12 Science curriculum.
+ * MATATAG Science CG (DepEd 2023), one domain per quarter. Grades 3–7 run
+ * Matter → Living Things → Force/Motion/Energy → Earth & Space; from Grade 8 the
+ * order ROTATES per grade (CG p.27: G8 opens with Life Science, G9 with Force,
+ * Motion & Energy, G10 with Earth & Space). Source: rag/sources/curriculum-guides/
+ * FINAL-MATATAG-Science-CG-2023-Grades-3-10.pdf, JHS tables pp.46–67.
  */
 export const GRADE_DOMAIN_MAP: Record<GradeLevel, Record<Quarter, ScienceDomain>> = {
   3: {
@@ -71,22 +75,22 @@ export const GRADE_DOMAIN_MAP: Record<GradeLevel, Record<Quarter, ScienceDomain>
     4: 'earth_space',
   },
   8: {
-    1: 'matter',
-    2: 'living_things',
-    3: 'force_motion_energy',
-    4: 'earth_space',
+    1: 'living_things',
+    2: 'matter',
+    3: 'earth_space',
+    4: 'force_motion_energy',
   },
   9: {
-    1: 'matter',
-    2: 'living_things',
-    3: 'force_motion_energy',
-    4: 'earth_space',
+    1: 'force_motion_energy',
+    2: 'earth_space',
+    3: 'living_things',
+    4: 'matter',
   },
   10: {
-    1: 'matter',
-    2: 'living_things',
-    3: 'force_motion_energy',
-    4: 'earth_space',
+    1: 'earth_space',
+    2: 'force_motion_energy',
+    3: 'matter',
+    4: 'living_things',
   },
 };
 
@@ -134,3 +138,5 @@ export function getCurrentDomain(gradeLevel: GradeLevel, quarter: Quarter): Scie
 export function getDomainName(domain: ScienceDomain, language: 'english' | 'tagalog' | 'cebuano'): string {
   return DOMAIN_NAMES[domain][language];
 }
+
+export * from './feedWeighting.js';

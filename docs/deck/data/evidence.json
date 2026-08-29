@@ -1,0 +1,929 @@
+{
+ "runs": {
+  "runs": [
+   {
+    "name": "tagalog-v1 LoRA (Qwen3-1.7B, 964 samples, 3 ep)",
+    "date": "2026-05-30",
+    "gpu": "1x H100 (RunPod, type per commit)",
+    "gpu_hours": 0.5,
+    "gpu_hours_basis": "ESTIMATE: no duration recorded; RUNPOD-COMPLETE-SETUP.md:23 gives ~25-40 min/language for the later 3B recipe, 1.7B@ctx512 is shorter -> ~0.5 h x 1 GPU. Cost ESTIMATE 0.5 h x $3.29/hr (secure H100 rate in memory qvac-finetune-cuda-fix.md 'SESSION END STATE 2026-06-02').",
+    "cost_usd": 1.65,
+    "purpose": "First Tagalog LoRA on Qwen3-1.7B",
+    "outcome": "Adapter produced (eval loss 1.28); base later judged too weak (Jun 3 bake-off)",
+    "source": "git commit c45bfa3e3 body ('first H100-trained Tagalog LoRA adapter for Qwen3-1.7B'); git log --format='%ad %s' -- finetuning line '2026-05-30 feat(finetuning): add trained Tagalog LoRA adapter (tagalog-v1)'"
+   },
+   {
+    "name": "tagalog-v2 LoRA (Qwen3-1.7B, 2,008 samples)",
+    "date": "2026-05-31",
+    "gpu": "1x H100",
+    "gpu_hours": 0.5,
+    "gpu_hours_basis": "ESTIMATE as above (no duration recorded). Cost ESTIMATE 0.5 h x $3.29/hr.",
+    "cost_usd": 1.65,
+    "purpose": "Expanded Tagalog dataset retrain",
+    "outcome": "Adapter added to repo",
+    "source": "git commit 6b1eed7a1 body ('Add tagalog-v2 LoRA adapter (trained on H100 via RunPod/Unsloth)')"
+   },
+   {
+    "name": "bisaya-v1 + tagalog-full-v2 LoRAs (Qwen3-1.7B, r32/a64, 3 ep)",
+    "date": "2026-06-01",
+    "gpu": "1x H100",
+    "gpu_hours": 1,
+    "gpu_hours_basis": "ESTIMATE: two ~2k-sample runs, no duration recorded -> ~1 h x 1 GPU. Cost ESTIMATE 1 h x $3.29/hr.",
+    "cost_usd": 3.29,
+    "purpose": "First Bisaya adapter + full-set Tagalog adapter",
+    "outcome": "bisaya-v1 train_loss 1.718; tagalog-full-v2 train_loss 1.289 / eval 1.136 (eval/run-*.log: TL 24/25, BIS 25/25 lang_ok on Mac MPS)",
+    "source": "git commit bd7384701 body ('Trained on RunPod H100 (Qwen3-1.7B, LoRA r=32 a=64, 3 epochs)'); finetuning/eval/run-tagalog.log, run-bisaya.log"
+   },
+   {
+    "name": "QVAC-native llama-finetune-lora CUDA attempts (qvac-fabric-llm.cpp, Qwen3-1.7B)",
+    "date": "2026-06-01",
+    "gpu": "1x H100 secure ($3.29/hr) then 1x A100 (US-KS-2) then 1x L40 ($0.82/hr) for the unsloth->GGUF proof",
+    "gpu_hours": 8,
+    "gpu_hours_basis": "PARTLY DOCUMENTED: '~5+ hrs elapsed, $3.29/hr secure H100' (memory qvac-finetune-cuda-fix.md 'SESSION END STATE (2026-06-02)'), then a Jun 3 validation session that auto-terminated at low balance (~$0.90 left) and an A100 US-KS-2 session (balance $11.78 after top-up) + L40 proof run. ESTIMATE total ~8 GPU-h; cost ESTIMATE ~$20 (5 h x $3.29 = $16.45 documented + ~$3.5 A100/L40).",
+    "cost_usd": 20,
+    "purpose": "Train GGUF LoRA with QVAC's own finetune tool (phone-native path)",
+    "outcome": "ABANDONED: QVAC-native training ~100x too slow at ctx 1024 (unoptimized OUT_PROD kernel); unsloth GPU train -> convert_lora_to_gguf became THE path (proven on L40)",
+    "source": "memory qvac-finetune-cuda-fix.md lines 110-112, 131-132, 160, 186-188; git commit 375c5dd7a (QVAC CUDA build on H100)"
+   },
+   {
+    "name": "Base-model bake-off (Qwen3-1.7B vs Qwen3.5-2B/4B vs Sailor2-1B/3B, raw, transformers)",
+    "date": "2026-06-03",
+    "gpu": "1x A100",
+    "gpu_hours": 1,
+    "gpu_hours_basis": "ESTIMATE: 5 bases x 8 prompts, no duration recorded -> ~1 h. Cost ESTIMATE 1 h x ~$1.50/hr (A100 80GB, between $1.19 run-full.sh:7 and $1.39-1.59 Aug guard log).",
+    "cost_usd": 1.5,
+    "purpose": "Pick the base model (eval)",
+    "outcome": "Sailor2-3B-Chat chosen (best at both TL+CEB); Qwen3-1.7B catastrophic",
+    "source": "memory hiraia-base-model-bakeoff.md ('A100, transformers ... 4 Tagalog + 4 Cebuano student prompts'); git commit 59526b016; finetuning/eval/bakeoff-results.json"
+   },
+   {
+    "name": "Sailor2-3B v1 adapters TL+BIS (unsloth c512, 3 ep, 2008/2023 samples)",
+    "date": "2026-06-03",
+    "gpu": "1x L40 ($0.82/hr, US-KS-2, vol 5uwc7qp731)",
+    "gpu_hours": 1.5,
+    "gpu_hours_basis": "ESTIMATE: two runs at ~25-40 min each (RUNPOD-COMPLETE-SETUP.md:23) -> ~1.5 h. Cost ESTIMATE 1.5 h x $0.82.",
+    "cost_usd": 1.23,
+    "purpose": "First Sailor2-3B TL+BIS LoRAs on the proven unsloth->GGUF->QVAC pipeline",
+    "outcome": "Fluent, factually-correct Tagalog/Cebuano; shipped to VPS demo",
+    "source": "finetuning/eval/eval.db runs table (sailor-tagalog-v1, sailor-bisaya-v1, created_at 2026-06-03 18:40:45, engine transformers-unsloth); memory qvac-finetune-cuda-fix.md 'PROVEN end-to-end on an L40 ($0.82/hr, US-KS-2)'"
+   },
+   {
+    "name": "Sailor2-3B v3 adapters TL+BIS (image-tag SFT, r32/a64, 3 ep) + second pod for eval",
+    "date": "2026-06-04",
+    "gpu": "1x L40 (US-KS-2, vol 5uwc7qp731) x2 pods",
+    "gpu_hours": 2.5,
+    "gpu_hours_basis": "PARTLY DOCUMENTED: Tagalog 402 steps ~20 min (memory hiraia-sailor-v3-adapters.md); Bisaya similar; pod terminated after download; a SECOND pod was spun up just to eval (memory hiraia-eval-immediately-after-train.md). ESTIMATE ~1.5 h train pod + ~1 h eval pod. Cost ESTIMATE 2.5 h x $0.82.",
+    "cost_usd": 2.05,
+    "purpose": "First adapters that self-emit [image:] tags",
+    "outcome": "TL 25/25 lang_ok, 18/25 image tags; BIS 24/25, 16/25 tags; shipped to VPS + APK",
+    "source": "memory hiraia-sailor-v3-adapters.md ('trained on RunPod (L40, US-KS-2, vol 5uwc7qp731) ... ~20 min'); git commit 94df43c79"
+   },
+   {
+    "name": "Sailor2-1B v3 adapters TL+BIS (r32/a64, 3 ep)",
+    "date": "2026-06-04",
+    "gpu": "1x L4",
+    "gpu_hours": 0.7,
+    "gpu_hours_basis": "DOCUMENTED cost ~$0.38; '~20min/lang' -> ~0.7 h x 1 GPU.",
+    "cost_usd": 0.38,
+    "purpose": "4GB-phone fallback tier (later abandoned, then revived as 'kitten')",
+    "outcome": "Surface metrics great (25/25 lang_ok) but science accuracy shaky -> RAG load-bearing",
+    "source": "memory hiraia-mobile-ondevice.md ('1B FINE-TUNE DONE (2026-06-04, ~$0.38 on an L4) ... ~20min/lang')"
+   },
+   {
+    "name": "Grounded-faithfulness adapter v1 (Sailor2-3B, 983 rows, 4 ep, train_on_responses_only)",
+    "date": "2026-06-06",
+    "gpu": "1x H100 (no-volume pod, any DC)",
+    "gpu_hours": 0.5,
+    "gpu_hours_basis": "DOCUMENTED train 6 min; pod lifetime not recorded -> ESTIMATE 0.5 h. Cost ESTIMATE 0.5 h x $3.29.",
+    "cost_usd": 1.65,
+    "purpose": "Fix confabulation: teach the model to defer to the injected VERIFIED FACTS block",
+    "outcome": "Faithfulness FIXED (astronaut/abstain/chitchat all correct); final loss ~0.21-0.28",
+    "source": "git commit 664bef02b body ('on an H100. 6 min train'); memory hiraia-grounded-finetune.md"
+   },
+   {
+    "name": "Grounded + summarization adapters v1/v2/v3 (3 gated iterations, 1027 rows)",
+    "date": "2026-06-06",
+    "gpu": "1x H100 (warm no-volume pod)",
+    "gpu_hours": 2.5,
+    "gpu_hours_basis": "ESTIMATE: three train->gate iterations on one warm pod; adapter GGUFs timestamped 04:21, 05:26, 05:57 (ls finetuning/adapters) -> pod >=2 h; ESTIMATE 2.5 h. Cost ESTIMATE 2.5 h x $3.29.",
+    "cost_usd": 8.23,
+    "purpose": "Add summarization for on-device SQLite compaction + abstain-balance",
+    "outcome": "v3 gate 11/11 + compaction 3/3; shipped (commit f13eded)",
+    "source": "memory hiraia-grounded-finetune.md ('trained in 3 gated iterations on a warm H100 (NO_VOLUME)'); ls -la finetuning/adapters (adapter-tagalog-grounded-summ/-v2/-v3-f16.gguf Jun 6 04:21/05:26/05:57)"
+   },
+   {
+    "name": "Grounded v4 Tier-3 accuracy adapter (1065 rows, 240 steps)",
+    "date": "2026-06-07",
+    "gpu": "1x RTX 6000 Ada (US-KS-2, vol 5uwc7qp731; L40/A40/A100 supply-constrained)",
+    "gpu_hours": 1.5,
+    "gpu_hours_basis": "ESTIMATE: 240 steps + full unsloth venv reinstall + disk-quota cleanup on the pod -> ~1.5 h. Cost ESTIMATE 1.5 h x $0.77/hr (RTX 6000 Ada rate in memory hiraia-rl-grpo-plan.md).",
+    "cost_usd": 1.16,
+    "purpose": "Counter over-abstention + myth/safety/settled-science parity",
+    "outcome": "Gate GREEN; bundled as v4 grounded adapter",
+    "source": "memory hiraia-grounded-finetune.md ('on a RunPod RTX 6000 Ada (US-KS-2, vol 5uwc7qp731) ... 240 steps, loss ~0.21')"
+   },
+   {
+    "name": "TTFT static-system-prompt adapter v5 (same 1065 rows, grounding moved to user turn)",
+    "date": "2026-06-07",
+    "gpu": "1x A100 80GB (US-KS-2, vol 5uwc7qp731)",
+    "gpu_hours": 1,
+    "gpu_hours_basis": "ESTIMATE ~1 h (same recipe as v4; no duration recorded). Cost ESTIMATE 1 h x $1.40/hr (A100 80GB PCIe, Aug-26 guard-log rate $1.39).",
+    "cost_usd": 1.4,
+    "purpose": "Make QVAC KV-cache hit (system prompt static)",
+    "outcome": "Gate GREEN; bundled as 'v5 grounded cached-prompt' (became the shipping ttft adapter)",
+    "source": "memory hiraia-ttft-static-system.md ('retrained ... on a RunPod A100 80GB (US-KS-2, vol 5uwc7qp731)')"
+   },
+   {
+    "name": "Track-A SFT-rebalance retrains v1/v2/v3 (+82/+43/+30 rows)",
+    "date": "2026-06-09",
+    "gpu": "1x A100 (RunPod)",
+    "gpu_hours": 1.5,
+    "gpu_hours_basis": "DOCUMENTED cost 'A100 ~$0.60' for v1 (commit c3acd1fd3; FINDINGS.md:143); v2/v3 same recipe, assumed same cost -> 3 x $0.60. GPU-h ESTIMATE ~0.5 h each.",
+    "cost_usd": 1.8,
+    "purpose": "Capability-benchmark A/B: fix over-abstention (F4 diagnosis)",
+    "outcome": "v1 3.32->3.73; v2 3.95 (safety fixed) = pick; v3 3.81 regressed",
+    "source": "git commits c3acd1fd3 ('A100 ~$0.60, train loss 0.50'), c5b100c61, ef160cfb2; finetuning/eval/capability/FINDINGS.md:143"
+   },
+   {
+    "name": "v4 + v5 counterweight adapters TL+BIS (train-v4 + ~140 rows/lang)",
+    "date": "2026-06-10",
+    "gpu": "1x A100-SXM4 (US-KS-2, vol 5uwc7qp731)",
+    "gpu_hours": 3,
+    "gpu_hours_basis": "DOCUMENTED '~$2' for the v5 cycle (memory hiraia-sailor-v5-cycle.md); v4 adapters (09:47/10:28) and v5 (12:33) built the same morning on the same pod per adapter timestamps. GPU-h ESTIMATE ~3 h pod life.",
+    "cost_usd": 2,
+    "purpose": "Counterweight rebalance (abstain/no-confab/brevity/myth/imgtag/compaction)",
+    "outcome": "Gate RED (fixed myth/no-confab/compaction; broke astronaut/shark/chitchat); imgtag GGUF-vs-merged gap opened",
+    "source": "memory hiraia-sailor-v5-cycle.md ('Trained 2026-06-10 on A100-SXM4 pod (US-KS-2, volume 5uwc7qp731), ~$2'); ls finetuning/adapters (adapter-*-v4/v5-f16.gguf Jun 10)"
+   },
+   {
+    "name": "GRPO environment-setup pod (venv-grpo dependency war)",
+    "date": "2026-06-11",
+    "gpu": "1x H100 PCIe (US-KS-2, vol 5uwc7qp731)",
+    "gpu_hours": 4,
+    "gpu_hours_basis": "DOCUMENTED: 'the $10 went to ~4h H100 PCIe, mostly venv debugging'; pod KILLED by RunPod at $0 balance.",
+    "cost_usd": 10,
+    "purpose": "Stand up unsloth+trl+vllm GRPO stack",
+    "outcome": "Pod terminated at $0 balance before training; volume survived with the venv staged",
+    "source": "memory hiraia-rl-grpo-plan.md ('Pod run 2026-06-11 — KILLED at $0 balance ... the $10 went to ~4h H100 PCIe')"
+   },
+   {
+    "name": "GRPO round 1 + round 2 (tagalog + bisaya, 600 steps each, G=6) on pod hdilcskq1t69qk",
+    "date": "2026-06-11",
+    "gpu": "1x RTX 6000 Ada 48GB ($0.77/hr)",
+    "gpu_hours": 31,
+    "gpu_hours_basis": "DOCUMENTED pod life '~31h ≈ $24' (memory hiraia-rl-grpo-plan.md; 12 h of it an AUP-killed-session stall). Training within it (pod-logs train_runtime): tagalog r1 2h54 (memory), bisaya r1 12,459 s = 3h28, tagalog r2 7,967 s = 2h13, bisaya r2 12,350 s = 3h26; plus in-session CUDA llama-server capability collection.",
+    "cost_usd": 24,
+    "purpose": "RL adherence stage on the SFT adapters (programmatic reward)",
+    "outcome": "r1 REWARD-HACKED (emoji spam; TL 3.58->2.13); r2 NOT SHIPPABLE (2.98 vs 3.30; english +1.36 but abstain -1.44, bisaya -1.06)",
+    "source": "finetuning/rl/pod-logs/session-grpo-{tagalog-r2,bisaya,bisaya-r2}.log ('GPU: NVIDIA RTX 6000 Ada Generation', train_runtime lines); chain-round2.log ('R2-ALL-DONE at Thu Jun 11 20:19:11 UTC 2026'); memory hiraia-rl-grpo-plan.md ('Pod hdilcskq1t69qk TERMINATED 2026-06-12 (~31h ≈ $24)')"
+   },
+   {
+    "name": "GRPO round 3 + round 4 (tagalog only, 600 steps; r3 KL 0.10, r4 LR 2e-6) on pod 5z30fvwul3at23",
+    "date": "2026-06-12",
+    "gpu": "1x L40 ($0.82/hr, vol 5uwc7qp731)",
+    "gpu_hours": 6,
+    "gpu_hours_basis": "DOCUMENTED chain timestamps: r3 13:02->15:43 UTC (train 8,998 s = 2h30), r4 15:58->18:38 UTC (train 8,590 s = 2h23); pod then used for answer collection and terminated -> ESTIMATE ~6 h. Cost: user added $20, '~$15 of the $20 RunPod top-up unspent' -> ~$5.",
+    "cost_usd": 5,
+    "purpose": "Fix r2 confabulation/collapse via reward + LR changes",
+    "outcome": "r3 COLLAPSED (reward 0.90->0.46); r4 clean but 3.41 vs 3.59 baseline (-0.18) -> GRPO STOPPED",
+    "source": "finetuning/rl/pod-logs/session-grpo-tagalog-r3.log, -r4.log ('GPU: NVIDIA L40', train_runtime), chain-round3.log/chain-round4.log timestamps; memory hiraia-rl-grpo-plan.md ('Pod: hiraia-grpo-r3 5z30fvwul3at23, L40 $0.82/hr ... User added $20'; '~$15 of the $20 RunPod top-up unspent')"
+   },
+   {
+    "name": "GRPO round-5 variant sweep (4 parallel pods, 400 steps) + pod C kept as judge server / intent-distill v1 trainer",
+    "date": "2026-06-13",
+    "gpu": "2x A100 (pods 8w3ngqu150gxd2, wovx9vdbgop73b) + 2x H100 (h5zwd71l54p2ki=pod C, xb6ve8jt0grdmu)",
+    "gpu_hours": 14,
+    "gpu_hours_basis": "ESTIMATE: 400 steps at r4's ~14 s/it -> ~1.5 h per sweep pod (4 x 1.5 = 6 GPU-h); pod C additionally kept warm '~$2.89/hr' as the 35B/9B judge server and ran the intent-distill v1 SFT until it 'died — RAN OUT OF BALANCE mid-train' -> ESTIMATE ~8 h more. Cost ESTIMATE 2x1.5x$1.19 + 2x1.5x$2.89 + 8x$2.89 ≈ $35 (no documented figure).",
+    "cost_usd": 35,
+    "purpose": "Test 4 reward levers (coverage/anti-deflect/length); judge infra; first intent-distillation SFT",
+    "outcome": "ALL variants lose to SFT (3.30-3.37 vs 3.84) -> GRPO abandoned; intent-distill v1 beats base 30-0 (grounding behaviour, not knowledge)",
+    "source": "finetuning/rl/.sweep-state (pod ids/GPUs, 'pod C ... H100, ~$2.89/hr idle cost'); memory hiraia-rl-grpo-plan.md ('VARIANT-A SWEEP VERDICT'); memory hiraia-intent-distillation.md ('Runs on pod hiraia-grpo-C (H100 ...)'; 'old pod died — RAN OUT OF BALANCE mid-train')"
+   },
+   {
+    "name": "Intent-distillation v2a / v2b / v2c (7,685 rows; r32-3ep / r64-3ep / r32-2ep) in parallel",
+    "date": "2026-06-13",
+    "gpu": "3x H100 (three fresh API-provisioned pods)",
+    "gpu_hours": 3,
+    "gpu_hours_basis": "ESTIMATE ~1 h per pod incl. setup (adapters saved 13:17-13:34 +08). Cost ESTIMATE 3 h x $2.89/hr (June H100 rate).",
+    "cost_usd": 8.67,
+    "purpose": "Grounded intent-distillation SFT variants (Path B)",
+    "outcome": "v2a WINS (grounding 5.00, distractor-robust 3.93) and SHIPPED to APK; r64 backfired",
+    "source": "memory hiraia-intent-distillation.md ('Trained 3 variants in PARALLEL on 3 fresh API-provisioned H100s'); git commit c4fbce1b2; ls finetuning/adapters (distill-sailor-3b-v2a/b/c Jun 13)"
+   },
+   {
+    "name": "Distill v3 (style/engagement retrain) + throwaway eval-v3 pod",
+    "date": "2026-06-14",
+    "gpu": "1x H100 (train) + 1x cheap any-DC GPU (A5000/A4000/A40/A6000/L40S/L40/A100 list) for eval",
+    "gpu_hours": 1.5,
+    "gpu_hours_basis": "ESTIMATE: ~1 h train pod + ~0.5 h eval pod (no durations recorded). Cost ESTIMATE 1 h x $2.89 + 0.5 h x ~$0.5.",
+    "cost_usd": 3.15,
+    "purpose": "Fix ending-quality/illustration/emoji style gaps; held-out eval vs v2a",
+    "outcome": "v3 ≈ v2a (flat, no grounding regression); capability 3.41/5; image-tag evaporation on GGUF flagged",
+    "source": "memory hiraia-intent-distillation.md ('v3 distill adapter trained ... eval-gen-v3-pod.py'; 'deploy volume-less any-DC (finetuning/deploy_eval_v3_distill.sh)'); finetuning/deploy_eval_v3_distill.sh:28-34 GPU candidate list"
+   },
+   {
+    "name": "Distill v4 (skill-only, 8,655 rows, multi-turn) on pod sqiwis55pn81x9",
+    "date": "2026-06-15",
+    "gpu": "1x L40/L40S/RTX A6000-class (deploy_v4_distill.sh GPUS list: L40, L40S, RTX A6000, A100 80GB PCIe, A40)",
+    "gpu_hours": 2,
+    "gpu_hours_basis": "ESTIMATE: comparable v6 run 'took ~90 min on an L40S/A6000' (memory hiraia-runpod-gpu-pref.md) -> ~2 h pod. Cost ESTIMATE 2 h x ~$0.80/hr (L40 $0.82).",
+    "cost_usd": 1.6,
+    "purpose": "P3 over-abstention + multi-turn fixes",
+    "outcome": "Gate GREEN, modest net-positive (over-abstention fixed; image-tag still evaporates); pod terminated",
+    "source": "memory hiraia-v4-training-agenda.md ('Pod sqiwis55pn81x9 TERMINATED'); finetuning/deploy_v4_distill.sh:12 GPUS array"
+   },
+   {
+    "name": "Distill v5 + v6 (chitchat-gating / abstain-adjacent patches)",
+    "date": "2026-06-15",
+    "gpu": "1x L40S or RTX A6000 each",
+    "gpu_hours": 3,
+    "gpu_hours_basis": "DOCUMENTED 'the Sailor2-3B v6 run took ~90 min on an L40S/A6000' -> 2 x 1.5 h. Cost ESTIMATE 3 h x $0.82.",
+    "cost_usd": 2.46,
+    "purpose": "Bake chitchat gating + abstention balance into weights",
+    "outcome": "Each gate green; superseded by v7 the same day",
+    "source": "memory hiraia-runpod-gpu-pref.md; git commit b96ea0446 ('v5→v7 skill-distillation LoRA'); ls finetuning/adapters (distill-sailor-3b-v5 09:34, -v6 12:50 Jun 15)"
+   },
+   {
+    "name": "Distill v7 (safety/myth-debunk patch) — the shipping tagalog adapter for v0.2.x",
+    "date": "2026-06-15",
+    "gpu": "1x H100 (H100-preferred from 2026-06-15)",
+    "gpu_hours": 1,
+    "gpu_hours_basis": "ESTIMATE ~1 h (H100 ~2x faster than the 90-min L40S runs). Cost ESTIMATE 1 h x $2.89.",
+    "cost_usd": 2.89,
+    "purpose": "Fix temp-0.5 'Hindi po, hindi masama' negation",
+    "outcome": "Gate green, role-play OK; bundled (md5 d12e6ec3)",
+    "source": "git commit b96ea0446 body ('deploy_v{5,6,7}_distill.sh: H100-preferred'); memory hiraia-runpod-gpu-pref.md"
+   },
+   {
+    "name": "Distill v8 (warmth/pedagogy, FAILED) + v9 (clarity+examples)",
+    "date": "2026-06-16",
+    "gpu": "1x H100 each",
+    "gpu_hours": 2,
+    "gpu_hours_basis": "ESTIMATE ~1 h each (no durations recorded). Cost ESTIMATE 2 h x $2.89.",
+    "cost_usd": 5.78,
+    "purpose": "Chase pedagogy score",
+    "outcome": "v8 FAILED (agreeable -> safety crashed); v9 became the base for v9plus",
+    "source": "memory hiraia-final-run-v9plus.md ('v8 FAILED chasing pedagogy via warmth'); ls finetuning/adapters (distill-sailor-3b-v8 Jun 16 01:28, -v9 07:21); finetuning/deploy_v8_distill.sh, deploy_v9_distill.sh GPUS lists (H100 first)"
+   },
+   {
+    "name": "Final pre-deadline run: 3B v9plus (10,040 rows) on pod k51kgcy2cevomw + 1B kitten-v2 (10,232 rows) on pod m4hvfohdn85e8o, parallel",
+    "date": "2026-06-17",
+    "gpu": "2x H100 (one per pod, SKIP_VOLUME=1)",
+    "gpu_hours": 2,
+    "gpu_hours_basis": "ESTIMATE ~1 h per pod (cat v11 on the same 10k-row recipe trained in ~19 min on H100; 5 h watchdog on the kitten pod). Cost ESTIMATE 2 h x $2.89.",
+    "cost_usd": 5.78,
+    "purpose": "Over-abstention teach rows + mixed-polarity safety rows for both tiers",
+    "outcome": "v9plus became the cat v10 base; kitten-v2 -> later kitten iterations",
+    "source": "memory hiraia-final-run-v9plus.md ('parallel H100 pods ... k51kgcy2cevomw 3B, m4hvfohdn85e8o 1B')"
+   },
+   {
+    "name": "Kitten v1 (Sailor2-1B, train-distill-v7.jsonl, r32/a64, 3 ep)",
+    "date": "2026-06-17",
+    "gpu": "1x H100",
+    "gpu_hours": 0.5,
+    "gpu_hours_basis": "DOCUMENTED '~15 min' train; pod ESTIMATE 0.5 h. Cost ESTIMATE 0.5 h x $2.89.",
+    "cost_usd": 1.45,
+    "purpose": "Budget-tier (CPU/Adreno 6xx) adapter",
+    "outcome": "loss 0.47 / eval 0.40; converted on-pod; hosted on mirror",
+    "source": "memory hiraia-kitten-cat-tiers.md ('Kitten trained 2026-06-17 (RunPod H100, ~15 min)')"
+   },
+   {
+    "name": "Kitten v3, v4 (Jun 17), kitten v5, v6 + cat v10 and two follow-up trials (praise-scrub, LR sweep) (Jun 18), kitten v7 (Jun 19) — 8 LoRA runs",
+    "date": "2026-06-17",
+    "gpu": "1x H100 per run (deploy_kitten_v3/v4_distill.sh, H100-preferred list)",
+    "gpu_hours": 6,
+    "gpu_hours_basis": "ESTIMATE: 8 runs x ~0.75 h pod each (1B runs ~15 min train; 3B ~20 min; no per-run records). Cost ESTIMATE 6 h x $2.89.",
+    "cost_usd": 17.34,
+    "purpose": "Iterate the 1B kitten (safety/English buckets) and the 3B cat v10",
+    "outcome": "kitten-v6 shipped v0.2.1, kitten-v7 shipped v0.2.2 (English fix); cat v10 shipped (3.71/5); v11/v12 trials did not beat v10",
+    "source": "finetuning/deploy_kitten_v3_distill.sh, deploy_kitten_v4_distill.sh (mtimes Jun 17 07:41/12:38); git commits 34c23fd28 ('The v11/v12 follow-ups (praise-scrub + LR sweep) did not beat v10'), 674fa6562 (kitten v7); memory hiraia-hf-archives.md ('kitten v5/v6'); ls finetuning/adapters (distill-sailor-1b-kitten-v7-resft Jun 19 17:26)"
+   },
+   {
+    "name": "Cat v11 English-clean (v9plus + 363-row English bucket, r32/a64, 3 ep)",
+    "date": "2026-06-19",
+    "gpu": "1x H100",
+    "gpu_hours": 0.75,
+    "gpu_hours_basis": "DOCUMENTED '~19 min H100' train; pod ESTIMATE 0.75 h. Cost ESTIMATE 0.75 h x $2.89.",
+    "cost_usd": 2.17,
+    "purpose": "Fix English->Tagalog leak found in role-play QA",
+    "outcome": "Leak 6 -> 0, gate green; shipped v0.2.4 (md5 9730e560)",
+    "source": "memory hiraia-cat-v11-english.md ('~19 min H100'); git commit 370cd1f68; finetuning/deploy_cat_v11_distill.sh"
+   },
+   {
+    "name": "Kitten DPO attempts 1-4 (SFT v7 re-create + DPO variants; attempt 4 = safety-only on pod h8ezm1p007sl8o)",
+    "date": "2026-06-19",
+    "gpu": "1x H100 per pod (deploy_dpo_kitten.sh, H100-preferred), >=3 pods",
+    "gpu_hours": 4,
+    "gpu_hours_basis": "ESTIMATE: 4 attempts, each pod runs SFT(v7) then dpoA+dpoB; attempt-1 pod terminated before the adapter was fetched (re-run); no durations recorded -> ~1 h per pod. Cost ESTIMATE 4 h x $2.89 (memory hiraia-qwen35-tagalog-bench.md budgeted 'DPO on Sailor2-1B (~$5-10)').",
+    "cost_usd": 11.56,
+    "purpose": "Fix the 1B safety/myth polarity reflex structurally",
+    "outcome": "NEGATIVE: DPO collapses into premise-affirmation (myth_false 50->88-100%); STOP DPO on the 1B; kitten ships as v7 SFT",
+    "source": "memory hiraia-kitten-dpo.md (attempts 1-4, 'pod h8ezm1p007sl8o', 'Pod terminated, billing zero'); finetuning/deploy_dpo_kitten.sh:96; ls finetuning/adapters (distill-sailor-1b-kitten-v8dpo/-v8dpo2 Jun 19, -dpoA/-dpoB Jun 20)"
+   },
+   {
+    "name": "Prune+heal 2.4B experiment: Cebuano corpus gen (8x A100 PCIe + 3 smoke pods), heal (8x A100-SXM), re-SFT x3 (1x A40; 2x H100; 1x H100)",
+    "date": "2026-06-21",
+    "gpu": "8x A100 80GB PCIe ($1.19/hr) for gen; 8x A100-SXM4-80GB pod drj1d6ukb3w9yz for heal; 1x A40 (u6dr08f21r3wej), 2x H100 (5fzbbxfm252pd3), 1x H100 (4fn7y3zymrjbmf) for re-SFT; plus prune pod, 4 heal-smoke pods, one 2-GPU heal attempt (32uc6u0jcuwi05)",
+    "gpu_hours": 56,
+    "gpu_hours_basis": "DOCUMENTED cost ~$86 total (corpus gen ~$42, heal 'build 37min + train ~3.1h' ~$40, re-SFT x3 ~$3; 'GPU training was only ~4h'). GPU-h ESTIMATE: gen 8 x ~3 h = 24 + heal 8 x ~3.7 h = 29.6 + re-SFT ~1.2 + smoke/prune pods ~1 -> ~56 GPU-h.",
+    "cost_usd": 86,
+    "purpose": "Budget-tier upgrade: prune Sailor2-3B -> 2.414B, heal on 800M tokens, re-SFT kitten adapters",
+    "outcome": "Heal WORKED (ppl tl 6.74/ceb 9.91) but KILL-SWITCH FAILED: capability 2.06 vs 1B 3.24 (abstain-correct 1.29, confabulation) -> reverted to 1B; motivated the CPT flagship plan",
+    "source": "finetuning/distill/ceb-heal/PRUNE-HEAL-RETROSPECTIVE.md:74-87 (cost table), :25 (heal 8xA100-SXM ~3.1h), :35-41 (re-SFT hardware); ceb-heal/ceb-pods.txt + ceb-pods-full.txt (pod ids, GPU counts, timestamps); run-full.sh:7 ($1.19/hr); memory hiraia-2b4-heal-resft-verdict.md ('parallel 2×H100, ~9.5min, $1.35'; 're-SFT A40 ~$0.6')"
+   },
+   {
+    "name": "1-GPU CPT stack smoke test (checklist ②: ms-swift/fla/causal-conv1d pins on sm90)",
+    "date": "2026-08-22",
+    "gpu": "1x H100 SXM (US-NE-1, corpus volume 1atl7503ky); B200 variant ($6.79/hr) scaffolded but deferred",
+    "gpu_hours": 1.5,
+    "gpu_hours_basis": "ESTIMATE: existence inferred from deploy_probe_cpt.sh:6 ('the smoked sm90 stack runs bit-identical') and PROBE-CPT-CONFIG changelog ('B200 path deferred'); no duration or cost recorded -> ~1.5 h x $3.29.",
+    "cost_usd": 4.94,
+    "purpose": "Validate the pinned training stack before the 8xH100 commit",
+    "outcome": "Stack pins validated on H100 (sm90); Blackwell smoke not run",
+    "source": "finetuning/cpt/deploy_probe_cpt.sh:6,48-49; finetuning/cpt/deploy_smoke_b200.sh:86; finetuning/cpt/PROBE-CPT-CONFIG.md:71-83"
+   },
+   {
+    "name": "Probe CPT run 1 (Qwen3.5-2B-Base, ~5.1B tokens, 4,900 steps, bs2xga16, cosine 8e-5) — pod vazmv3sl7e0u3r",
+    "date": "2026-08-22",
+    "gpu": "8x H100 80GB HBM3 SXM (any-DC), $26.32/hr",
+    "gpu_hours": 84.8,
+    "gpu_hours_basis": "train_runtime 3.707e4 s = 10.30 h (PROBE-RUN-STATUS.md:28); pod life from run-dir timestamp v0-20260822-045637 to self-terminate 2026-08-22T15:30:58Z ≈ 10.6 h x 8 GPUs = 84.8 GPU-h. Cost DOCUMENTED '~$285' (memory) / '≈$273' projected (PROBE-RUN-STATUS.md:8).",
+    "cost_usd": 285,
+    "purpose": "~6B-token de-risk probe of the CPT recipe",
+    "outcome": "Ran flawlessly (loss 2.85->2.44, self-terminated) but trained a rank-8 LoRA by mistake (ms-swift 'swift pt' defaults tuner_type=lora) -> not a valid full-param probe; ops pipeline proven",
+    "source": "finetuning/cpt/PROBE-RUN-STATUS.md:3-8,17,28-38; memory hiraia-cpt-flagship-plan.md ('The 08-22 probe (8×H100 any-DC, ~$285, 4,900 steps/5.1B tok ...) trained a rank-8 LoRA'); finetuning/cpt/RUN-LOG.md:81"
+   },
+   {
+    "name": "Probe run 1 helper pod 5pjlozwn7fbcrt (checkpoint sync target on volume 1atl7503ky, 36h TTL)",
+    "date": "2026-08-22",
+    "gpu": "1x (GPU type not recorded; run-2 launcher default = RTX PRO 6000 Blackwell MIG 1g.24gb $0.59/hr, else H100)",
+    "gpu_hours": 28,
+    "gpu_hours_basis": "ESTIMATE: '~14h old' at 16:00 UTC Aug 22 (created ~02:00 UTC), gone before run 2's new helper at ~01:00 UTC Aug 23 -> <=~28 h. Cost ESTIMATE 28 h x $0.59 (MIG assumption; if it was an H100 the figure is ~$92).",
+    "cost_usd": 16.52,
+    "purpose": "Ferry checkpoints from the any-DC trainer to the corpus volume",
+    "outcome": "Held the 10 LoRA checkpoints (348M) intact",
+    "source": "finetuning/cpt/PROBE-RUN-STATUS.md:5-6,41-48; finetuning/cpt/deploy_probe_anydc.sh:53 (helper GPU order)"
+   },
+   {
+    "name": "Run-2 pre-flight debug attempts 1-7 (LoRA default, env-injection, vision assertion, canaries)",
+    "date": "2026-08-23",
+    "gpu": "8x H100 SXM (canary launches), $26.32/hr",
+    "gpu_hours": 16.7,
+    "gpu_hours_basis": "DOCUMENTED 'Debug cost ≈ $55 total' (PROBE-RUN-STATUS.md:63); GPU-h derived = $55 / $26.32 x 8 = 16.7 (ESTIMATE via cost ÷ rate).",
+    "cost_usd": 55,
+    "purpose": "Adversarial pre-flight before the full-param probe",
+    "outcome": "Found ZeRO-2 required, LR regime wrong, 8 other blockers; all encoded as guards",
+    "source": "finetuning/cpt/PROBE-RUN-STATUS.md:61-63; RUN-LOG.md:77"
+   },
+   {
+    "name": "Probe CPT run 2 (full-param + ZeRO-2, 4.19M batch, 1,225 steps planned) — pod fzi92l969pui56, artifacts lost",
+    "date": "2026-08-23",
+    "gpu": "8x H100 80GB HBM3 SXM (any-DC, no volume), $26.32/hr",
+    "gpu_hours": 167.2,
+    "gpu_hours_basis": "Cost DOCUMENTED '~$550' (commit b58357e30; memory hiraia-runpod-cgroup-quota.md 'cost ~$550 + a lost 11h run'). GPU-h derived = $550 / $26.32 x 8 ≈ 167 (ESTIMATE); of this ~11 h x 8 = 88 GPU-h was training (committed 06:35 UTC, 1,125/1,225 steps at 31.6 s/it), the rest was the runaway pod billing until the account hit $0.",
+    "cost_usd": 550,
+    "purpose": "Full-parameter probe of the CPT recipe (5.13B tokens)",
+    "outcome": "Trained cleanly to >=92% (loss 3.89->1.968) but cross-DC rsync fell behind: only checkpoint-125 survived; pod drained the account to $0 and RunPod destroyed the local disk (10 checkpoints). Recoverable science = ckpt-125.",
+    "source": "finetuning/cpt/PROBE-RUN-STATUS.md:56-83; RUN-LOG.md:73,69; git commit b58357e30 body ('what destroyed run 2 and ~$550'); VPS heartbeats.jsonl (pod fzi92l969pui56, 9 backfilled beats, maxstep 1025/1225)"
+   },
+   {
+    "name": "Probe run 2 helper pod 7ewpl5u6qe0g51 (48h TTL, volume 1atl7503ky)",
+    "date": "2026-08-23",
+    "gpu": "1x RTX PRO 6000 Blackwell MIG 1g.24gb ($0.59/hr) or H100 (launcher order; actual type not logged)",
+    "gpu_hours": 23,
+    "gpu_hours_basis": "ESTIMATE: '~7h old' at 08:00 UTC Aug 23 (created ~01:00 UTC); absent from the first VPS guard tick at 23:52 UTC Aug 23 -> <=~23 h. Cost ESTIMATE 23 h x $0.59.",
+    "cost_usd": 13.57,
+    "purpose": "Cross-DC checkpoint sync target for run 2",
+    "outcome": "Received only checkpoint-125 complete (7.6 MB/s link could not keep up)",
+    "source": "finetuning/cpt/PROBE-RUN-STATUS.md:59,66-70,77-80; deploy_probe_anydc.sh:53; VPS /var/log/hiraia-monitor.log head (no helper pod listed at 2026-08-23T23:52Z)"
+   },
+   {
+    "name": "Checkpoint-125 held-out perplexity eval (3 pod launches: 6lu9adsm7jre7i, ra9gc6u3pznz4k, bbde3r5dwqfegz)",
+    "date": "2026-08-23",
+    "gpu": "1x H100 SXM ($3.29/hr, volume 1atl7503ky)",
+    "gpu_hours": 1.1,
+    "gpu_hours_basis": "VPS guard log max ages 0.3 h + 0.6 h + 0.2 h = 1.1 h (first two launches reported running while doing nothing). Cost ESTIMATE 1.1 h x $3.29.",
+    "cost_usd": 3.62,
+    "purpose": "Gates 1-3 of PROBE-CPT-CONFIG §5 on the surviving checkpoint",
+    "outcome": "STRONG GO: tl 21.30->7.84 (-63.2%), ceb 25.02->9.25 (-63.0%), en +1.5%",
+    "source": "ssh kamai /var/log/hiraia-monitor.log ('pod hiraia-eval-ckpt125 (...) age=... $3.29/hr'); heartbeats.jsonl pod bbde3r5dwqfegz (eval tl/ceb/en 400 docs); PROBE-RUN-STATUS.md:93-103; RUN-LOG.md:61"
+   },
+   {
+    "name": "Gate 4 GGUF convert/quantize/load test on ckpt-125 — pod pchco6nwkddk15 (hiraia-eval-gguf)",
+    "date": "2026-08-24",
+    "gpu": "1x RTX PRO 6000 Blackwell MIG 1g.24gb ($0.59/hr), US-NE-1",
+    "gpu_hours": 0.25,
+    "gpu_hours_basis": "DOCUMENTED '~15 min', '$0.59/hr', cost '~$0.15'. (A mistaken empty POST spawned an unnamed 4090 for seconds, deleted immediately.)",
+    "cost_usd": 0.15,
+    "purpose": "Prove a CPT'd Qwen3.5-2B converts to GGUF and generates",
+    "outcome": "GATE 4 PASS (llama.cpp b10603, block_count=24, Q4_K_M 1.56 GB, not lossy)",
+    "source": "finetuning/cpt/GATE4-GGUF-BRIEF.md:92-107,134; RUN-LOG.md:53"
+   },
+   {
+    "name": "Full CPT run attempt 1 — pod 91dvthe56vrrg2 (AP-IN-2, volume ump7ia07oh): preprocessing + canary + HOLD, no training",
+    "date": "2026-08-24",
+    "gpu": "8x H100 80GB HBM3 SXM, $26.32/hr",
+    "gpu_hours": 65.6,
+    "gpu_hours_basis": "VPS guard log: first seen 2026-08-24T03:30Z, last 11:41Z, max age 8.2 h x 8 GPUs = 65.6 GPU-h. Cost ESTIMATE 8.2 h x $26.32 = $215.82 (heartbeats: 298 'tokenizing mix (Map)' beats, 10 canary, 50 held; dead-man self-terminated 12 min before the greenlight).",
+    "cost_usd": 215.82,
+    "purpose": "Launch the 20-25B-token full run",
+    "outcome": "WASTED: num_proc collapse made the Map ~5 h; operator HOLD (Anthropic API degraded); pod self-terminated before greenlight; AP-IN-2 8xH100 stock then vanished; Map cache on the AP-IN-2 volume could not be reused in EUR-IS-3",
+    "source": "ssh kamai /var/log/hiraia-monitor.log (pod hiraia-fullrun (91dvthe56vrrg2) age=0.0h..8.2h $26.32/hr); heartbeats.jsonl summary; RUN-LOG.md:45,41,37; notes.jsonl HOLD/GREENLIGHT entries (07:30Z, 11:54Z); deploy/vps-monitor/autograb.py:5-9"
+   },
+   {
+    "name": "Staging pod hyseh0ejsmwea4 (hiraia-stage) for the relaunch",
+    "date": "2026-08-24",
+    "gpu": "1x H100 SXM ($3.29/hr)",
+    "gpu_hours": 0.2,
+    "gpu_hours_basis": "VPS guard log 13:21Z-13:27Z, max age 0.2 h. Cost ESTIMATE 0.2 h x $3.29.",
+    "cost_usd": 0.66,
+    "purpose": "Stage the mix/podscripts for the autograb relaunch",
+    "outcome": "Done; autograb fired at 13:29Z",
+    "source": "ssh kamai /var/log/hiraia-monitor.log ('pod hiraia-stage (hyseh0ejsmwea4) age=0.1h limit=4.0h $3.29/hr')"
+   },
+   {
+    "name": "FULL CPT RUN — Qwen3.5-2B-Base, 3,273 steps, ~13.7B tokens, WSD 8e-5, loss 4.144->1.756 — pod ol02p8b7hl0z71 (EUR-IS-3, volume 0kt4j6h85v)",
+    "date": "2026-08-24",
+    "gpu": "8x H100 80GB HBM3 SXM, $26.32/hr (quoted $21.52)",
+    "gpu_hours": 294.4,
+    "gpu_hours_basis": "VPS guard log: created 2026-08-24T13:29:44Z, last tick 2026-08-26T02:16Z, max age 36.8 h x 8 GPUs = 294.4 GPU-h (training alone: train_runtime 128,359.7 s = 35.66 h -> 285.3 GPU-h; ~1 h bootstrap/re-tokenize with num_proc=8). Cost DOCUMENTED '~$972 (budget $1,000)'; 36.8 h x $26.32 = $968.6 cross-checks.",
+    "cost_usd": 972,
+    "purpose": "The flagship continued-pretraining run (Tagalog/Cebuano + en/zh anchors)",
+    "outcome": "SUCCESS, self-terminated cleanly, zero errors: held-out ppl tl 22.64->4.57 (-79.8%), ceb 25.42->4.45 (-82.5%), en 15.57->14.97 (-3.9%, improved). Weights: Cryptopop/hiraia-cpt-flagship-2b",
+    "source": "finetuning/cpt/FULLRUN-RESULTS.md:12-19; finetuning/cpt/fullrun-logging.jsonl ('train_runtime': 128359.7125, '3273/3273 ... elapsed_time 1d 11h 39m 20s'); git commit 8f9e30da6; ssh kamai /var/log/hiraia-monitor.log (autograb CREATED ol02p8b7hl0z71 13:29:44Z; age=36.8h); heartbeats.jsonl (2,159 train beats, maxstep 3270/3273)"
+   },
+   {
+    "name": "Final-checkpoint eval + Gate 4 on checkpoint-3273 — pod 94f2wgwixcv3yb (hiraia-eval)",
+    "date": "2026-08-26",
+    "gpu": "1x H100 SXM ($3.29/hr, EUR-IS-3 volume)",
+    "gpu_hours": 1.2,
+    "gpu_hours_basis": "VPS guard log 02:26Z-03:34Z, max age 1.2 h. Cost ESTIMATE 1.2 h x $3.29.",
+    "cost_usd": 3.95,
+    "purpose": "Held-out ppl (400 docs x 1024 tok x 3 langs) + GGUF ship-path re-check",
+    "outcome": "ppl numbers above; GATE 4 PASS (--no-mtp required; -t 16 gives 97 tok/s prefill / 44.5 decode on CPU)",
+    "source": "ssh kamai /var/log/hiraia-monitor.log ('pod hiraia-eval (94f2wgwixcv3yb) ... $3.29/hr'); finetuning/cpt/FULLRUN-RESULTS.md:66-102; FULLRUN-EVAL-RESULT.json; git commit d2519fbff"
+   },
+   {
+    "name": "Audit pod o7u9mf16ysv3sa (hiraia-audit)",
+    "date": "2026-08-26",
+    "gpu": "1x RTX PRO 6000 MIG-class ($0.59/hr)",
+    "gpu_hours": 0.5,
+    "gpu_hours_basis": "VPS guard log 04:15Z-04:45Z, max age 0.5 h. Cost ESTIMATE 0.5 h x $0.59. Purpose not documented in repo (ran between SFT attempts 2 and 3).",
+    "cost_usd": 0.3,
+    "purpose": "Unrecorded audit/inspection during the SFT v1 attempts",
+    "outcome": "n/a",
+    "source": "ssh kamai /var/log/hiraia-monitor.log ('pod hiraia-audit (o7u9mf16ysv3sa) age=0.5h limit=... $0.59/hr')"
+   },
+   {
+    "name": "SFT v1 on the CPT flagship (6,687 rows, 3 ep, 1,254 steps, --template qwen3) — 5 pods: qoe3z895f0kz5g (rc=1), es4ahsdpey19hb (smoke fail), wdytgmug57zllw (66-step false success), gbtbwn9ffpqqr9 (good run destroyed by own guard), zfsdo02l1l1mew (take 4, success)",
+    "date": "2026-08-26",
+    "gpu": "1x A100 80GB PCIe ($1.39-1.59/hr; final on CA-MTL-3)",
+    "gpu_hours": 2.8,
+    "gpu_hours_basis": "VPS guard log max ages 0.2+0.2+0.3+1.0+1.1 = 2.8 h. Cost DOCUMENTED: successful run '~47 min, ~$1.40'; 'Total cost incl. 3 failed attempts ~$6'.",
+    "cost_usd": 6,
+    "purpose": "First instruction-tune of the CPT base (tl 56% / ceb 39% / en 5%)",
+    "outcome": "SUCCESS on attempt 4: loss 1.651->0.996, verified via trainer_state.json on HF (Cryptopop/hiraia-sft-flagship-2b) — the current ship candidate",
+    "source": "finetuning/cpt/SFT-V1-RESULTS.md:1-15; ssh kamai /var/log/hiraia-monitor.log (five hiraia-sft pods with $1.39/$1.59 rates); heartbeats.jsonl per-pod notes ('SFT FAILED: swift sft rc=1', 'only 836 steps — silent data loss', 'SFT v1 COMPLETE (1254 steps), verified on HF')"
+   },
+   {
+    "name": "SFT v1 eval launches (39xy15pzgszc4r build fail; a46vmtwhpejl78 empty answers/<think> trap; 1mnqjli71rchiq take 3 OK; 5sn9yq9y6nndo5; jp713ji0ooo98d launcher dry-run held)",
+    "date": "2026-08-26",
+    "gpu": "cheapest 24GB+ single GPU any-DC ($0.53-0.72/hr; types not logged)",
+    "gpu_hours": 0.5,
+    "gpu_hours_basis": "VPS guard log max ages ~0.0+0.2+0.1+0.0 h plus a short dry-run -> ~0.5 h. Cost ESTIMATE ~$0.40 (0.25 h x $0.53 + 0.15 h x $0.72 + dry-run).",
+    "cost_usd": 0.4,
+    "purpose": "12 routing + 129 capability + 42 gate probes on the SFT v1 Q4_K_M GGUF (CPU llama-server)",
+    "outcome": "Routing 4/8 (worded 4/4, neutral 0/4) -> synth-ceb NOT the fix; three launches lost to <think>/CUDA-Blackwell/nproc traps",
+    "source": "ssh kamai /var/log/hiraia-monitor.log (hiraia-eval pods $0.53/$0.72/hr); heartbeats.jsonl notes; finetuning/eval/pod-eval/README.md:8 ('~$0.33–0.53/hr'); SFT-V1-ROUTING-FINDING.md:12-24; git commit 91fee193c ('what cost three pod launches')"
+   },
+   {
+    "name": "SFT v2 (v1 data + 804-row Cebuano neutral-turn bucket, 7,677 rows, 1,392 steps) — pod gylmbsqms5ww27",
+    "date": "2026-08-26",
+    "gpu": "1x A100 80GB PCIe ($1.39/hr)",
+    "gpu_hours": 1.3,
+    "gpu_hours_basis": "VPS guard log 14:46Z-15:58Z, max age 1.3 h. Cost ESTIMATE 1.3 h x $1.39 = $1.81 (SFT-V1-ROUTING-FINDING.md:111 budgets the same-shape v3 at '~$2').",
+    "cost_usd": 1.81,
+    "purpose": "Fix Cebuano->Tagalog leak on language-neutral prompts",
+    "outcome": "Routing 5/8 (neutral 1/4) but English tier regressed 13/18 -> 6/18 and one abstain regression -> v1, not v2, is the ship candidate (SUPERSEDED by app-composed template)",
+    "source": "finetuning/cpt/SFT-V1-ROUTING-FINDING.md:65-79,116-169; ssh kamai /var/log/hiraia-monitor.log ('pod hiraia-sft (gylmbsqms5ww27) ... $1.39/hr'); heartbeats.jsonl ('SFT v2 COMPLETE (1392 steps), verified on HF')"
+   },
+   {
+    "name": "SFT v2 eval (6vt32k00du8ls5 RTX A6000 terminated in ~1 min by launcher fail-safe; 5cev9khugbw2ob full eval)",
+    "date": "2026-08-26",
+    "gpu": "1x RTX A6000 ($0.33/hr, EU-SE-1) + 1x cheapest 24GB GPU ($0.53/hr)",
+    "gpu_hours": 0.65,
+    "gpu_hours_basis": "VPS guard log 5cev9khugbw2ob max age 0.6 h; eval-trigger log shows the A6000 pod terminated within ~1 min ('~$0.01'). Cost ESTIMATE 0.6 h x $0.53 + $0.01.",
+    "cost_usd": 0.33,
+    "purpose": "Routing + capability + gate probes on SFT v2",
+    "outcome": "Routing 5/8; english 6/18; abstain 0/1 — v2 rejected",
+    "source": "ssh kamai /var/log/hiraia-eval-trigger.log ('pod: $0.33/hr RTX A6000 EU-SE-1 ... terminating 6vt32k00du8ls5'); /var/log/hiraia-monitor.log (5cev9khugbw2ob $0.53/hr age 0.6h); git commit 0b52550cf ('fail-safe terminated the orphaned pod as designed (~$0.01)')"
+   },
+   {
+    "name": "Template-routing benchmark on SFT v1 (1,188 probes, T=0.7, fastText lid) — pod deksfqhhh8utw5",
+    "date": "2026-08-26",
+    "gpu": "1x cheapest 24GB+ GPU ($0.74/hr; CPU llama-server)",
+    "gpu_hours": 0.6,
+    "gpu_hours_basis": "VPS guard log 17:36Z-18:07Z, max age 0.6 h. Cost ESTIMATE 0.6 h x $0.74 = $0.44 (README: 'each template variant costs ~$0.50 and 40 min').",
+    "cost_usd": 0.44,
+    "purpose": "Does the app-composed user-turn template close language routing?",
+    "outcome": "Routing CLOSED: tl 99%, ceb 96% raw / 99.3% corrected, en 94%; real finding = 64% hedge rate in Tagalog mode ($0 template fix)",
+    "source": "finetuning/eval/routing/README.md (result table + '~$0.50 and 40 min'); ssh kamai /var/log/hiraia-monitor.log ('pod hiraia-eval (deksfqhhh8utw5) ... $0.74/hr'); git commit 4440db6d7"
+   },
+   {
+    "name": "Miss-card benchmark x3 templates on SFT v1 (216 probes each: prose, 'EXACTLY three lines', JSON-schema) — pod ioxkberngjvrbh",
+    "date": "2026-08-26",
+    "gpu": "1x cheapest 24GB+ GPU ($0.72/hr; CPU llama-server)",
+    "gpu_hours": 0.6,
+    "gpu_hours_basis": "VPS guard log 20:30Z-21:06Z, max age 0.6 h. Cost ESTIMATE 0.6 h x $0.72.",
+    "cost_usd": 0.43,
+    "purpose": "Can the model propose three retrievable science directions on a retrieval miss?",
+    "outcome": "NO: 26%/28%/25% all-three-retrievable vs 90% bar -> capability ceiling; directions must come from a curated list",
+    "source": "finetuning/eval/misscard/README.md (results table); ssh kamai /var/log/hiraia-monitor.log ('pod hiraia-eval (ioxkberngjvrbh) ... $0.72/hr'); git commits 36f20f87c, 977a6116a, 112d1cdb6"
+   }
+  ],
+  "totals": "49 entries (some grouping multiple same-day LoRA runs). GPU-hours total ≈ 853 (basis: wall-clock x GPU count per entry; ~13 entries with recorded wall-clock/train_runtime or guard-log pod ages, the rest estimated as stated). USD total ≈ $2,402, of which $1,997 is from figures written in the repo/memory/VPS records (13 entries: full CPT ~$972, probe run 2 ~$550, probe run 1 ~$285, prune+heal ~$86, run-2 pre-flight ~$55, GRPO r1+r2 ~$24, GRPO setup $10, SFT v1 ~$6, GRPO r3+r4 ~$5, v4/v5 ~$2, Track-A ~$1.80, 1B v3 $0.38, Gate 4 $0.15) and ≈$404 is estimated from RunPod rates observed in this project ($26.32/hr 8xH100 SXM = $3.29/GPU-h; H100 June $2.89; A100 80GB $1.19-1.59; RTX 6000 Ada $0.77; L40 $0.82; MIG $0.59; eval pods $0.53-0.74). Split: May-Jun 2026 (Sailor2/Qwen3 LoRA, GRPO, DPO, prune+heal) ≈ 162 GPU-h / ≈$271; Aug 2026 (CPT flagship: probes, full run, SFT, evals) ≈ 691 GPU-h / ≈$2,131. 8xH100 pods alone (probe 1, pre-flight, probe 2, AP-IN-2 abort, EUR-IS-3 full run) ≈ 629 GPU-h / ≈$2,078 — 87% of all spend. Of the 8xH100 spend, ≈$1,050 (probe run 1 LoRA-by-mistake $285 + run 2 lost artifacts $550 + AP-IN-2 abort ~$216) produced no shippable artifact; the $972 EUR-IS-3 run is the one that did. Cross-check: RunPod balance $1,335 at 2026-08-24T06:33Z (RUN-LOG.md:45) vs $185.44 on 2026-08-28 (VPS guard log) = $1,150 spent, consistent with AP-IN-2 remainder (~$137) + full run ($972) + Aug-26 SFT/eval pods (~$14) + volume storage.",
+  "caveats": "(1) No RunPod billing export exists in the repo; there is no per-run spend ledger (memory hiraia-cpt-flagship-plan.md notes one is required for QVAC reimbursement but none was found). Costs marked DOCUMENTED are the project's own contemporaneous figures ('~$972', '~$550', '~$285', '~$86', '≈$55', '~$24', '~$6'), not invoices. (2) Every June LoRA run except the 1B v3 ($0.38), Track-A ($0.60), v5 (~$2), GRPO pods ($10/$24/$5) and prune+heal ($86) has NO recorded duration or cost; those GPU-hours/costs are estimates from the recipe (~15-40 min train + setup) and the rates above. The kitten v3-v7 / cat v10 group (8 runs) is the least certain (±$10). (3) GPU-hours = pod wall-clock x GPU count. For probe run 2 and the run-2 pre-flight, wall-clock is unknown, so GPU-h was derived as cost ÷ $26.32/hr x 8 (167 and 16.7 GPU-h); run 2's ~$550 includes an unknown number of hours of runaway idle billing after the ~11 h of training. (4) The full-run GPU-hours use the VPS guard-log pod age (36.8 h); train_runtime alone was 35.66 h (fullrun-logging.jsonl). (5) The two probe helper pods (36h/48h TTL) have no recorded GPU type; costed at the $0.59/hr MIG rate the launcher tries first — if either was an H100 ($3.29/hr) add up to ~$75 each. (6) Excluded from the run list and totals as data-prep (not training/eval), with recorded costs: SailCraft corpus-cleaning 1xH100 SXM run 2026-08-21 (~$25 lost to an idle overnight pod per memory hiraia-runpod-cgroup-quota.md, run itself uncosted), corpus expansion v2 pod 6xy1ddwk4g6nap H100 SXM 2.5 h ≈$8 + inspect pod ~10 min (CORPUS-EXPANSION-BRIEF.md:117-118, 'Expansion cost ~$9'), v3 '4 dead pods, ~$15' (CORPUS-EXPANSION-BRIEF.md:159), consolidation/mix pods 2026-08-24 (xu1pf9rf158j9h 1xH100 0.4 h ≈$1.3; 8womicsvtj3gt0/y8ys0evywikvcv/xb7pnw9ngyu8r4 MIG ≈$0.5; expansion-xfer pods MIG minutes) — together roughly $50-60 more. Also excluded: network-volume storage (5uwc7qp731 50GB US-KS-2 ~$5/mo; 1atl7503ky, 6er6skgoyb, ump7ia07oh, 0kt4j6h85v 300GB at ~$0.07/GB/mo), the hiraiabench Qwen3.5-27B pod build that failed (cost unrecorded, small), the Vultr VPS, Fireworks/Ox synth-ceb API spend, and Claude-subscription judging. (7) The June Cebuano corpus generation (8xA100, ~$42) is generation, not training, but is inside the documented $86 prune+heal figure and is reported there rather than split out. (8) The B200 smoke ($6.79/hr scaffold) never ran; the sm90 stack smoke on H100 is inferred from deploy_probe_cpt.sh comments and costed as an estimate. (9) The VPS mission-control run log/heartbeats only begin 2026-08-23T23:52Z (deployed after the run-2 loss), so earlier pod lifetimes come from docs/logs, not telemetry; the 9 run-2 heartbeats in heartbeats.jsonl were backfilled for the loss curve. (10) RunPod's quoted rate is not the billed rate (EUR-IS-3 quoted $21.52/hr, billed $26.32/hr — commit b58357e30); all 8xH100 figures use the billed $26.32. (11) SSH to the VPS (host alias 'kamai' → 45.76.180.229, ~/.ssh/config) worked read-only; notes.jsonl matches RUN-LOG.md plus 6 later entries (HOLD, GREENLIGHT, AUTOGRAB, synth-ceb closed, SFT v2 auto-eval)."
+ },
+ "evals": {
+  "model_lineage": "June 2026 (shipped, \"cat\" tier): sail/Sailor2-3B-Chat Q4_K_M + per-language LoRA adapters bundled in the APK (packages/mobile/src/config/model.ts:19-20,111; adapters ~102 MB f16 each). Adapter iterations on that base: tagalog-v1 (2026-05-30, commit c45bfa3e3) → grounded/ttft adapters → Track-A rebalance (2026-06-09, FINDINGS.md F6) → rebal-v2 (F9, \"v2 is the pick\") → intent-distillation v2a (commit c4fbce1b2, 2026-06-13) → v5→v7 skill-distillation (commit b96ea0446, 2026-06-15) → cat v10 (v0.2.1, commit 34c23fd28, 2026-06-18) → cat v11 \"English-clean\" (v0.2.4, commit 370cd1f68, 2026-06-19). Bisaya adapter = bisaya-sailor-v3 lineage, NOT grounded-trained (FINDINGS.md F5:171-185). English rides the Tagalog adapter on-device (model.ts:36-37,81-82). Budget \"kitten\" tier: Sailor2-1B-Chat Q4_K_M + downloaded adapter-kitten-tagalog-v7.gguf (model.ts:133-139), shipped v0.2.0-v0.2.6 (2026-06-17..20) with an \"experimental\" disclaimer (commit 52713e6e0). Dead ends (June): GRPO rounds 2/4 (not shipped), kitten DPO (not shipped), Sailor2-3B→2.4B prune+heal+re-SFT (killed 2026-06-22, PRUNE-HEAL-RETROSPECTIVE.md). August 2026 (flagship rebuild, funded): Qwen/Qwen3.5-2B-Base (1.88B text params, hybrid Gated-DeltaNet, 24 layers, vocab 248,320) → probe CPT run-2 ckpt-125 (525M tokens, only surviving artifact; PROBE-RUN-STATUS.md) → full CPT `Cryptopop/hiraia-cpt-flagship-2b` (3,273 steps, ~13.7B tokens, 8×H100 ~35.5h, ~$972; FULLRUN-RESULTS.md:12-18) → SFT v1 `Cryptopop/hiraia-sft-flagship-2b` (full-param, 6,687 rows, 3 ep, 1,254 steps, loss 1.651→0.996, mix tl 56%/ceb 39%/en 5%, ~$1.40; SFT-V1-RESULTS.md:4-13) = the current ship candidate per SFT-V1-ROUTING-FINDING.md:168 and routing/README.md:68. SFT v2 (`-v2`, +804-row Cebuano suppression bucket) exists but is NOT the candidate (regressed English tier 13/18→6/18; SFT-V1-ROUTING-FINDING.md:128,168). Ship path for the 2B is merged weights → GGUF Q4_K_M with --no-mtp (FULLRUN-RESULTS.md Gate 4; GATE4-GGUF-BRIEF.md:92-104), because Qwen3.5 LoRA→GGUF is broken upstream (PROBE-CPT-CONFIG.md §6).",
+  "metrics": [
+   {
+    "metric": "Held-out perplexity, Tagalog (400 docs x 1024 tok)",
+    "before": "22.639 (Qwen3.5-2B-Base); probe base 21.299 (different carve-out)",
+    "after": "4.570 after full CPT (-79.8%); 7.835 at probe ckpt-125 / 525M tokens (-63.2%)",
+    "what_it_shows": "MEASURED. The CPT corpus moves the base's Tagalog from garbled to fluent; the delta at 10% of the probe budget already cleared gate 1. Part of the drop is domain adaptation (held-out carved from the same cleaned pools as training).",
+    "source": "finetuning/cpt/FULLRUN-RESULTS.md:34 and finetuning/cpt/FULLRUN-EVAL-RESULT.json (base.tl.ppl=22.639, cpt.tl.ppl=4.57); probe: finetuning/cpt/PROBE-RUN-STATUS.md:101; caveat FULLRUN-RESULTS.md:64-67"
+   },
+   {
+    "metric": "Held-out perplexity, Cebuano (400 docs x 1024 tok)",
+    "before": "25.416 (base); probe base 25.020",
+    "after": "4.448 after full CPT (-82.5%); 9.249 at ckpt-125 (-63.0%)",
+    "what_it_shows": "MEASURED. Cebuano fluency formed even though ceb is only 5.6% of the 24.78B-token mix (8 effective epochs of 0.178B distinct tokens). Cebuano held-out ppl ended BELOW Tagalog's.",
+    "source": "finetuning/cpt/FULLRUN-RESULTS.md:35; FULLRUN-EVAL-RESULT.json cpt.ceb.ppl=4.448; PROBE-RUN-STATUS.md:102; mix shares finetuning/cpt/FULL-MIX-README.md table"
+   },
+   {
+    "metric": "Held-out perplexity, English (reserved FineWeb shard, never trained on)",
+    "before": "15.568 (base); probe base 15.567",
+    "after": "14.968 after full CPT (-3.9%, improved); 15.796 at ckpt-125 (+1.5%)",
+    "what_it_shows": "MEASURED. No catastrophic forgetting of English; the anchor mix (25%) preserved it. This number is free of the carve-out critique.",
+    "source": "finetuning/cpt/FULLRUN-RESULTS.md:36,38; FULLRUN-EVAL-RESULT.json; PROBE-RUN-STATUS.md:103"
+   },
+   {
+    "metric": "Greedy generation quality, base vs CPT (45 new tokens, same prompts)",
+    "before": "Base: 'Ang araw ay ... mga puno, mga puno, mga puno' (degenerate); photosynthesis -> '___ at ___' filler; Cebuano 'Ang adlaw mao ang' answered in Tagalog and loops",
+    "after": "CPT: 'Ang photosynthesis ay isang proseso na nangyayari sa mga halaman, algae, at ilang mga bakterya' (fluent, correct); 'Ang adlaw mao ang sentro sa atong solar nga sistema... usa ka bituon' (correct Cebuano, fixes ckpt-125's adlaw=day error)",
+    "what_it_shows": "MEASURED (qualitative, logged verbatim). Stronger evidence than ppl because it is independent of the held-out overlap. Residual: 'Bakit umuulan?' still loops under greedy on the raw CPT base (ordinary base-LM behaviour; gone after SFT per SFT-V1-ROUTING-FINDING.md:35-36).",
+    "source": "finetuning/cpt/FULLRUN-EVAL-RESULT.json base.gen / cpt.gen; FULLRUN-RESULTS.md:42-49,53-56"
+   },
+   {
+    "metric": "Template-routing language accuracy, SFT v1 (n=1,188, T=0.7, fastText lid.176, app-composed user-turn template)",
+    "before": "No prior instrument. Raw-prompt greedy test on the same model: 0/4 Cebuano-mode language-neutral prompts answered in Cebuano (doc says do not cite 4/8, 5/8 figures: SFT-V1-ROUTING-FINDING.md:185)",
+    "after": "Tagalog 441/446 = 99%; Cebuano 427/446 = 96% raw, 99.3% after correcting 16 lid tl/ceb confusions; English 279/296 = 94%. Wrong-language EXPLANATIONS only 14/1,188 = 1.2% (27 of 41 misroutes are hedges)",
+    "what_it_shows": "MEASURED. With the app carrying the mode in the user turn, the 2B answers in the selected language >=94% raw; routing declared 'closed' (target was >=95%). All 17 English misroutes went to Tagalog.",
+    "source": "finetuning/eval/routing/README.md:34-46; reproduced with `python3 finetuning/eval/routing/score_routing.py routing-sft-v1.json` (this session): 441/446, 427/446, 279/296; misrouted 41, hedges 27, explanations 14; low-confidence lid 37/1188"
+   },
+   {
+    "metric": "SFT v1 hedge rate ('not sure' opener) by mode on grade-5 core terms",
+    "before": "n/a (new finding on SFT v1; capability probes show the model explains these terms fluently)",
+    "after": "Tagalog 284/446 = 64%; Cebuano 156/446 = 35%; English 64/296 = 22%; 179 of the 284 Tagalog hedges then explain anyway",
+    "what_it_shows": "MEASURED. The template clause 'if you don't know this word, say you're unsure' is read as an instruction to hedge; worst in Tagalog because SFT abstain-balance rows are Tagalog-heavy. Documented as a $0 template-wording fix, NOT yet re-run.",
+    "source": "finetuning/eval/routing/README.md:48-66; reproduced this session: 284/446 = 63.7% (regex HEDGE in score_routing.py); the '179 explain anyway' figure is README:58 only (not reproduced)"
+   },
+   {
+    "metric": "hiraiabench Tagalog Fluency (naturalness on tl probes, n=46; no RAG, shared neutral prompt, blind judge)",
+    "before": "Sailor2-3B untrained base: 2.39",
+    "after": "Hiraia-v7 (Sailor2-3B + cat v7 LoRA): 3.91. References: Qwen3.5-9B 3.17, Qwen3.5-27B 4.5, Qwen3-1.7B 0.15, Claude Opus 4.8 5.0",
+    "what_it_shows": "MEASURED (June). The 3B fine-tune out-scores an untrained model ~3x its size on Tagalog register; public table on hiraia.b11.dev.",
+    "source": "finetuning/eval/hiraiabench/bench-results.json (hiraia-v7.'Tagalog Fluency'=3.91, sailor2-3b=2.39, qwen3.5-9b=3.17, qwen3.5-27b=4.5); model = finetuning/adapters/distill-sailor-3b-v7/adapter-tagalog-v7-f16.gguf per run-all-local.sh; methodology packages/web/src/components/hiraiabench-data.ts:44-49; commit 9eb1d3510 2026-06-16"
+   },
+   {
+    "metric": "hiraiabench English Fluency (n=7) / Bisaya (mean naturalness+accuracy, n=6)",
+    "before": "Sailor2-3B base: English 2.0, Bisaya 2.5",
+    "after": "Hiraia-v7: English 3.57, Bisaya 3.0 (Qwen3.5-9B: 5.0 / 1.75; 27B: 5.0 / 3.92)",
+    "what_it_shows": "MEASURED. English improved but is the weakest fluency row vs the 9B; Bisaya row for Hiraia used the tl/en LoRA only (cross-lingual transfer), the shipped Bisaya adapter was not benchmarked here.",
+    "source": "finetuning/eval/hiraiabench/bench-results.json; footnote hiraiabench-data.ts:49"
+   },
+   {
+    "metric": "Capability benchmark naturalness dimension (Claude-judged, device-faithful, Tagalog adapter, temp 0.7, worst-of-3)",
+    "before": "4.51 (2026-06-09 shipping ttft adapter, lexical retrieval, 102 probes)",
+    "after": "4.61 (Track-A rebalanced adapter); 4.60 (rebal-v2 hybrid, 88 tl probes); tl-language mean naturalness 4.58 -> 4.69 (candidate-hybrid)",
+    "what_it_shows": "MEASURED. Fluency was already the strongest dimension on the June 3B; behavioural SFT did not degrade it.",
+    "source": "finetuning/eval/capability/FINDINGS.md:24,153; recomputed this session from baselines/current-2026-06-09.json (4.51), baselines/candidate-rebal-2026-06-09.json (4.61), scores.v2-hybrid.tagalog.json (4.60), scores.candidate-hybrid.tagalog.json (4.69)"
+   },
+   {
+    "metric": "English path A/B on the 18-probe english tier (Claude-judged)",
+    "before": "Sailor2-3B BASE, no LoRA (the original on-device English path): tier 1.78, naturalness 1.00, helpfulness-on-answerable 2.87",
+    "after": "Same base + Tagalog adapter: tier 3.75, accuracy 4.11, h0 refusals 0/15; shipping 2026-06-13 (v2a, English routed through Tagalog adapter): english tier 3.64, naturalness 4.11",
+    "what_it_shows": "MEASURED. Routing English through the Tagalog LoRA doubled the English tier; this became the shipped design (model.ts:36-37). Residual: drifts into Tagalog on some English questions (fixed later by cat v11 English bucket per commit 370cd1f68 - commit-message claim, not re-benchmarked in a doc I found).",
+    "source": "finetuning/rl/README.md:22 ('3.75 vs 1.78'); recomputed from finetuning/eval/capability/ab/capability-scores.english-tladapter.json (3.75, n=18) and baselines/capability-baseline.2026-06-11-shipping.json english tier (1.78); baselines/capability-baseline.2026-06-13-shipping-newbank.json english 3.64"
+   },
+   {
+    "metric": "June adapter smoke: replies in target language (25 prompts, GGUF adapters on Sailor2-3B f16)",
+    "before": "tagalog-full-v2 (Qwen3-1.7B era): 24/25 lang_ok, 1 english_heavy, avg 187 words, ends_question 4/25",
+    "after": "sailor v5 GGUF: tagalog 25/25, cebuano 25/25, english_heavy 0, avg 111/89 words; image tags 9/25 (tl) 18/25 (ceb), malformed 0",
+    "what_it_shows": "MEASURED (deterministic script). Language adherence saturated early; the later v4/v5 work moved brevity and image-tag emission, not language.",
+    "source": "finetuning/eval/results-tagalog.json summary; finetuning/eval/eval-v5-gguf-tagalog.json summary; finetuning/eval/eval-v5-gguf-bisaya.json summary"
+   },
+   {
+    "metric": "Prune+heal 2.4B per-language perplexity (Sailor2-3B pruned 9352->4608 FFN, healed on 800M tokens)",
+    "before": "Tagalog 10.26 pre-prune -> 12.50 pruned; Cebuano 19.96 pruned; English 52.64 pruned",
+    "after": "Healed: Tagalog 6.74, Cebuano 9.91, English 21.51",
+    "what_it_shows": "MEASURED. Fluency recovered at/below pre-prune - the capacity thesis held - but the model was killed for calibration (see pedagogy). Evidence that fluency alone does not make a shippable tutor.",
+    "source": "finetuning/distill/ceb-heal/PRUNE-HEAL-RETROSPECTIVE.md:29-31"
+   },
+   {
+    "metric": "SFT v1 (Qwen3.5-2B) deterministic reply-language by capability tier (no LLM judge; regex language heuristic)",
+    "before": "n/a (first eval of the CPT line)",
+    "after": "v1: all Tagalog tiers 100% Tagalog (e.g. helpfulness-floor 24/24, reasoning 14/14), bisaya tier 13/14 Cebuano, english tier 13/18 English. v2: english 6/18 (all 12 failures switched to Tagalog), bisaya 13/14",
+    "what_it_shows": "MEASURED. English mode-lock is the fragile edge of the 2B; the Cebuano suppression bucket (v2) tipped it, which is why v1 is the candidate.",
+    "source": "reproduced this session with `python3 finetuning/eval/pod-eval/score_answers.py finetuning/cpt/sft-v1-eval-answers.json finetuning/cpt/sft-v2-eval-answers.json`; finetuning/cpt/SFT-V1-ROUTING-FINDING.md:120-136"
+   },
+   {
+    "metric": "Capability Score (tier-weighted 0-5, 143-probe instrument, Claude-judged, device-faithful, temp 0.7, worst-of-3), Sailor2-3B cat line",
+    "before": "3.32 (2026-06-09 shipping ttft adapter, lexical retrieval, 102 probes); 3.49 same adapter under true hybrid retrieval",
+    "after": "3.73 Track-A rebalanced adapter (+0.41 lexical / +0.22 under hybrid: 3.49->3.72); 3.95 rebal-v2 hybrid (88 tl probes, the pick); 3.81 v3 (regressed, not shipped)",
+    "what_it_shows": "MEASURED. A cheap SFT rebalance (+82 rows, ~$0.60) moved the headline more than any other intervention; the retrieval blob fix alone was worth +0.17 for free.",
+    "source": "finetuning/eval/capability/FINDINGS.md:17,83-90,145,68; recomputed this session with the run-capability.mts aggregation: baselines/current-2026-06-09.json 3.32, baselines/baseline-hybrid-2026-06-09.json 3.49, baselines/candidate-rebal-2026-06-09.json 3.73, baselines/candidate-hybrid-2026-06-09.json 3.72, scores.v2-hybrid.tagalog.json 3.95, scores.v3-hybrid.tagalog.json 3.81"
+   },
+   {
+    "metric": "Helpfulness on answerable probes (the over-abstention metric) and outright refusals",
+    "before": "2.54; 19 of 91 answerable probes refused/deflected (helpfulness 0)",
+    "after": "3.19 after rebalance (13 of the 19 now answer, 6 remain - all retrieval-empty hard tail); 3.37 on rebal-v2 with 1/78 refusals",
+    "what_it_shows": "MEASURED. The June model's cap was behaviour (ground-or-abstain training), not 3B capacity: reasoning tier rose +0.34 without distillation.",
+    "source": "FINDINGS.md:17,32,145,155,161-163,69; recomputed: current-2026-06-09.json help-answerable 2.54 (h0=19/91), candidate-rebal 3.19 (h0=9... note FINDINGS says 6/19 of the ORIGINAL 19 still refuse), scores.v2-hybrid.tagalog.json 3.37 (h0=1/78)"
+   },
+   {
+    "metric": "Abstain-correct tier (honesty on unknowables; guards against over-correcting into confabulation)",
+    "before": "3.96 (2026-06-09 shipping)",
+    "after": "4.76 rebalanced (+0.80); 4.84 candidate-hybrid; 4.63-4.69 on the 2026-06-11/13 shipping snapshots",
+    "what_it_shows": "MEASURED. Helpfulness was gained WITHOUT trading away honesty on the 3B line - the property the 2.4B and DPO experiments later failed.",
+    "source": "FINDINGS.md:151,99; recomputed from baselines files (4.76, 4.84, 4.63, 4.64)"
+   },
+   {
+    "metric": "Safety-myth tier (debunk myths, safe answers)",
+    "before": "2.31 (weakest tier, 2026-06-09)",
+    "after": "2.61 rebalanced; 3.07 rebal-v2; 2.66-2.77 on 2026-06-11/13 shipping snapshots (still the weakest scored tier)",
+    "what_it_shows": "MEASURED. Improved but never above ~3/5 on the 3B; stubborn myths (shave-thicker, lightning-twice) are retrieval/coverage misses, not adapter-fixable.",
+    "source": "FINDINGS.md:21,152,68-69,74; recomputed: v2 3.07, 0613 2.66, 0611 2.70"
+   },
+   {
+    "metric": "Full-tier shipping snapshots incl. multi-turn + english (134/116 probes)",
+    "before": "2026-06-11 'shipping' snapshot: 3.24 (help-answerable 2.77; tiers helpfulness-floor 3.79, multi-turn 2.74, english 1.78, bisaya 3.01, safety-myth 2.70, abstain-correct 4.63, pedagogy 2.93); same-judge overlay 3.30",
+    "after": "2026-06-13 shipping-newbank (v2a intent adapter, tl+en only, 116 probes): 3.59 (help-answerable 3.14, h0 5/103; english 3.64, multi-turn 2.99, pedagogy 3.52, abstain-correct 4.64, safety-myth 2.66)",
+    "what_it_shows": "MEASURED. The 3.24 file is the number CPT-FLAGSHIP-PLAN.md uses as the bar the 2B must beat (target >=3.5, abstain-correct not below ~4.6). See caveat on WHICH model produced 3.24.",
+    "source": "recomputed this session from finetuning/eval/capability/baselines/capability-baseline.2026-06-11-shipping.json (3.24, n=134), .samejudge.json (3.30), capability-baseline.2026-06-13-shipping-newbank.json (3.59, n=116); commit c4fbce1b2 2026-06-13; CPT-FLAGSHIP-PLAN.md:21,147,198"
+   },
+   {
+    "metric": "Multi-turn tier (scripted 3-turn dialogues; repetition/re-asking hard caps)",
+    "before": "mt-baseline: Tagalog 2.77 (n=10), Bisaya 1.79 (n=4)",
+    "after": "2.74 (2026-06-11, n=14) -> 2.99 (2026-06-13, n=10 tl)",
+    "what_it_shows": "MEASURED. Multi-turn state-tracking remains a ~3/5 weakness on the 3B; role-play QA (below) confirms myth-caving on turn 2+.",
+    "source": "finetuning/eval/capability/scores.mt-baseline.tagalog.json / .bisaya.json (recomputed 2.77 / 1.79); baselines 0611 (2.74) and 0613 (2.99) recomputed"
+   },
+   {
+    "metric": "Pedagogy dimension (teaches vs dumps: analogy, check-for-understanding)",
+    "before": "3.11 (2026-06-09 shipping)",
+    "after": "3.59 rebalanced (+0.48); 3.75 rebal-v2; 3.66 candidate-hybrid; hiraiabench Pedagogy (n=6, no RAG): Sailor2-3B 2.0 -> Hiraia-v7 2.67 (Qwen3.5-9B 3.67, 27B 4.33)",
+    "what_it_shows": "MEASURED. Teaching moves improved with the SFT rebalance; on the no-RAG public bench the 3B still trails the 9B on pedagogy.",
+    "source": "FINDINGS.md:152; recomputed scores.v2-hybrid.tagalog.json pedagogy 3.75; finetuning/eval/hiraiabench/bench-results.json Pedagogy"
+   },
+   {
+    "metric": "hiraiabench Science Accuracy (n=20) / Safety & Honesty (n=12) / Code-switching (n=8), no RAG",
+    "before": "Sailor2-3B base: 2.25 / 1.5 / 2.88",
+    "after": "Hiraia-v7: 3.05 / 3.13 / 3.25 (Qwen3.5-9B: 3.25 / 3.38 / 3.44; Qwen3.5-27B: 4.9 / 5.0 / 4.63; Qwen3-1.7B: 0 / 0.42 / 0.06)",
+    "what_it_shows": "MEASURED. Fine-tuning roughly doubled Safety & Honesty vs the base and put the 3B within ~0.2-0.3 of the 9B on every category except English/Pedagogy; the 27B is far ahead.",
+    "source": "finetuning/eval/hiraiabench/bench-results.json; category definitions finetuning/eval/hiraiabench/aggregate.mjs:12-18; 59 judged of 67 probes (8 AUP-dropped), bench-set.json meta"
+   },
+   {
+    "metric": "Regression gate (finetuning/eval/harness/run-harness.sh), device-faithful hybrid, temp 0",
+    "before": "Pre-hybrid gate broke on the +5040 fact expansion; re-calibrated 2026-06-09",
+    "after": "GREEN 39/39 with the v2 adapter (2026-06-09). cases.json today: 42 cases = 30 gated + 12 pending (known-unfixed, non-blocking); modes grounded 35 / chitchat 6 / abstain 1; langs tagalog 38 / cebuano 3 / english 1; grades 4-6 only. Also gates retrieval-stress + hybrid-stress 16/16.",
+    "what_it_shows": "MEASURED but green BY CONSTRUCTION (tuned to current behaviour). No archived run output exists after June; harness/.server.log shows a run on 2026-08-27 19:00 against Sailor2-3B on the M1 Pro (decode 35.4 t/s) but its pass/fail is not persisted.",
+    "source": "FINDINGS.md:49 (39/39); commit 79712b2af 2026-06-09; counts computed this session from finetuning/eval/harness/cases.json (last commit 674fa6562 2026-06-19); PROBING-FINDINGS.md:172 (16/16); finetuning/eval/harness/.server.log (2026-08-27)"
+   },
+   {
+    "metric": "Natural kid-phrasing probe (chat-tutor.mts, 3B + grounded LoRA, hybrid retrieval, temp 0.8, ~40 probes, 2026-06-07)",
+    "before": "10 good / 7 minor / 15 major / 8 critical = ~57% major-or-critical (denied Earth is round, called math subjective, affirmed reading-in-dark myth, moon=planet)",
+    "after": "After R1 (normalizeQuery + SEMANTIC_FLOOR 0.58->0.55) and R2 (buildContextualQuery follow-up folding): 5/5 previously-deflecting topics answer, '5 planets?' now corrects to 8, hybrid-stress gate 13/13 -> 16/16; Tier-2 prompt hardening fixed reading-dark/10%-brain/math/moon (gated in cases.json). Residuals: flat-earth, smoking, scared-lindol remain retrieval-gated (pending cases)",
+    "what_it_shows": "MEASURED (hand-scored). Most June failures were retrieval-side ('the model never got the facts'); the model deflects even with facts at device temp (class C) - the behaviour later targeted by the rebalance.",
+    "source": "finetuning/eval/harness/PROBING-FINDINGS.md:21,58,82-83,153-175,190-203"
+   },
+   {
+    "metric": "Role-play edge QA (102 scripted 3-4 turn dialogues, 50 tl / 52 en, device temp 0.5, 2026-06-19)",
+    "before": "KITTEN 1B v7: fails turn 1 on TL safety/myth (affirms flat-earth/10%-brain/full-moon, says eclipse/raw chicken 'safe'), multi-turn collapse; temp-independent - greedy re-run went 8 -> 11 criticals",
+    "after": "CAT 3B v10: single-turn mostly solid (correct safety polarity, settled science), but caves on myths by turn 2+ (flat-earth 'totoo na patag ang Earth!'), 2 English safety failures (outlet, eclipse), EN->TL leak ~5/52 EN convos (~10%)",
+    "what_it_shows": "MEASURED (deterministic analyzer + 142-agent judge, manually verified). The 1B's safety-negation/myth affirmation is a capacity limit baked into weights; the 3B's weakness is multi-turn robustness. Cat v11 later added an English bucket (commit 370cd1f68) - not re-scored in a doc.",
+    "source": "finetuning/eval/harness/ROLEPLAY-QA-FINDINGS.md:1-9,16-17,23-37,47-56"
+   },
+   {
+    "metric": "Kitten 1B DPO safety/myth polarity (32 probes, 8 per bucket, temp 0.5; 'fail' = wrong polarity)",
+    "before": "v7 base: safety_hazardous 6/8 fail, safety_safe 6/8, myth_false 4/8, myth_true 5/8",
+    "after": "v8dpo2: safety_hazardous 0/8, safety_safe 1/8, myth_true 0/8 BUT myth_false 7/8 fail (affirms false myths); dpoB: 2/8, 1/8, 8/8, 1/8",
+    "what_it_shows": "MEASURED, NEGATIVE. DPO fixed safety polarity by collapsing into premise-affirmation (sycophancy) - myth debunking got worse. Not shipped; kitten stays at v7 SFT with an experimental label.",
+    "source": "finetuning/eval/harness/dpo-eval-v7base.json .stats; dpo-eval-v8dpo2.json .stats; dpo-eval-dpoB.json .stats; semantics finetuning/eval/harness/dpo-eval.mts:1-3"
+   },
+   {
+    "metric": "GRPO rounds on the 3B (programmatic rewards, June)",
+    "before": "Same-judge shipping baseline 3.30 (2026-06-11); newbank baseline 3.59 (2026-06-13)",
+    "after": "GRPO r2: 2.98 (bisaya 2.05 vs 3.11, abstain-correct 3.24 vs 4.69; english 3.21 vs 1.85 = only win); GRPO r4: 3.41 vs 3.59. Variant sweep (Qwen3.5-9B screening judge): baseline 3.84, all four variants 3.30-3.37",
+    "what_it_shows": "MEASURED, NEGATIVE. RL did not beat SFT on this scale; not shipped.",
+    "source": "recomputed this session from baselines/capability-grpo-r2.2026-06-12.json, capability-grpo-r4.2026-06-13.json, capability-baseline.2026-06-11-shipping.samejudge.json; finetuning/eval/capability/baselines/capability-grpo-sweep.2026-06-13.txt"
+   },
+   {
+    "metric": "Prune+heal 2.4B capability (Sailor2-3B -> 2.414B, healed, re-SFT x3; 126 probes, Claude-judged)",
+    "before": "'1B baseline' 3.24 (abstain-correct ~4.6)",
+    "after": "2.06 / 5 (-1.18); help-answerable 1.99; abstain-correct 1.29, bisaya 1.17, english 0.41, helpfulness-floor 2.75, safety-myth 2.74; biggest movers all confabulation on unknowables (serious illness -4.71, election winner -4.57, tomorrow's weather -4.29)",
+    "what_it_shows": "MEASURED, NEGATIVE, and the pivotal lesson: the 2.4B fixed the 1B's safety/myth/over-abstention failures (capacity thesis validated) but traded over-abstention for confabulation; three SFT iterations could not restore calibration -> justified the CPT-grade rebuild instead of more SFT.",
+    "source": "finetuning/distill/ceb-heal/PRUNE-HEAL-RETROSPECTIVE.md:12,48-52,62-63; reproduced this session from the working-tree finetuning/eval/capability/capability-scores.{tagalog,english,bisaya}.json (combined 2.06, abstain-correct 1.29, help-answerable 1.99, h0 24/113) - these files were collected against finetuning/distill/ceb-heal/gguf/sailor2-2b4-healed.Q4_K_M.gguf per capability/.server.log:11"
+   },
+   {
+    "metric": "SFT v1 (Qwen3.5-2B) deterministic behavioural gate + abstention (no LLM judge)",
+    "before": "n/a (first eval of the CPT line); v2 for comparison",
+    "after": "v1: chitchat 5/6, abstain 1/1, grounded forbidden-term violations 0/34; abstain-correct tier refusal/deflect 8/10, safety-myth refusal 1/10, all other tiers 0 refusals; median answer ~470 chars. v2: abstain 0/1 (confabulated 'the largest star is the Supernova'), abstain-correct refusals 7/10, median +20% longer",
+    "what_it_shows": "MEASURED (regex only). Shape checks say v1 answers content questions without refusing and still abstains on unknowables; QUALITY (0-5) is NOT yet judged for the 2B line.",
+    "source": "reproduced this session: `python3 finetuning/eval/pod-eval/score_answers.py finetuning/cpt/sft-v1-eval-answers.json finetuning/cpt/sft-v2-eval-answers.json`; finetuning/cpt/SFT-V1-ROUTING-FINDING.md:118-129,141-144"
+   },
+   {
+    "metric": "Miss-card direction generation, SFT v1 (216 probes = 72 terms x 3 modes, T=0.7; bar: >=90% of cards with all 3 directions retrievable at cosine >=0.63)",
+    "before": "Pre-registered bar >=90%",
+    "after": "v1 prose template 57/216 (26%); v2 'exactly three lines' 60/216 (28%); v3 JSON-schema constrained decoding 55/216 (25%). Mode-language compliance 211/216, 198/216, 180/216. Retrieval-only alternative: 7/27 true-miss triples sensible",
+    "what_it_shows": "MEASURED, NEGATIVE. A 2B cannot reason about what the fact bank contains under any prompting; product decision: directions come from a curated list, model writes <=1 connective line. Retrieval score cut at 0.63 separates science from misses at 97% balanced accuracy (n=139 science / 27 miss).",
+    "source": "finetuning/eval/misscard/README.md:25-29,51-63; finetuning/eval/retrieval/README.md:17-20"
+   },
+   {
+    "metric": "Objective presentation metrics (finetuning/eval/presentation.mts: image-tag emission/well-formed/no-repeat, emoji present/spam >4, bold, English persona-leak)",
+    "before": "2026-06-11 english tier on the BASE model (no LoRA): emojiPresent 13/18, emojiSpam 6/18, bold 18/18, persona-leak 0/18; tagalog adapter answers: emoji 0/88, bold 0/88",
+    "after": "2026-06-13 (v2a) tagalog: emojiPresent 14/88, spam 0, bold 0; bisaya bold 14/14; english persona-leak 0/18. 2.4B run (Jun 22, raw captured): image tags 4/93 all well-formed, 0 repeated images across 11 multi-turn dialogues, emoji spam 0",
+    "what_it_shows": "MEASURED this session with the real presentation.mts. The base-model English path was emoji-spamming (6/18) - the adapter route is clean. Image-tag rates for the June archives read as 0 because those runs did not capture `raw` (tags are stripped in `answer`); only the Jun-22 archive has raw.",
+    "source": "computed via tsx script importing finetuning/eval/presentation.mts over baselines/answers-2026-06-11-shipping/*.json, HEAD:finetuning/eval/capability/capability-answers.*.json (commit c4fbce1b2), and working-tree capability-answers.*.json; raw-capture caveat in finetuning/eval/capability/run-capability.mts report() comment"
+   },
+   {
+    "metric": "On-device speed, Redmi (SD685/Adreno 610, CPU-only, ARMv8.0, llama-bench 4 threads, Q4_K_M)",
+    "before": "Sailor2-1B: prefill 20.13 / decode 12.73 t/s (bench; earlier 19.3/11.8); in-app 1B TTFT ~24 s, 4.4 tok/s. Sailor2-3B: ~2.6 t/s decode (unusable on this device)",
+    "after": "Qwen3.5-2B: prefill 10.94 / decode 5.93 t/s (1.8x / 2.1x slower than the 1B; in line with a same-size transformer; hybrid SSM kernels run correctly at armv8.0)",
+    "what_it_shows": "MEASURED (2026-06-29). The 2B fits the budget-device envelope with UX mitigation (static-system KV cache); naive TTFT would roughly double vs the 1B. The 3B cat is a comfort tier for GPU/6GB+ phones.",
+    "source": "CPT-FLAGSHIP-PLAN.md:102-105; PRUNE-HEAL-RETROSPECTIVE.md:20 (1B 11.8, 3B 2.6 t/s)"
+   },
+   {
+    "metric": "Device-equivalent latency, cat tier on M1 Pro Metal (llama-server, Sailor2-3B Q4_K_M + adapter-tagalog.gguf, temp 0.5)",
+    "before": "cold call TTFT 539 ms",
+    "after": "warm calls ~163 ms TTFT (static system prompt KV cache reuse); avg decode 37.5 tok/s; model load 1,056 ms",
+    "what_it_shows": "MEASURED (2026-06-20 audit run). Not a phone number - demonstrates the KV-cache TTFT win the app relies on.",
+    "source": "AUDIT_LOG.md 'Run summary' + per-call table; generator finetuning/eval/audit/run-audit-demo.mjs"
+   },
+   {
+    "metric": "GGUF ship path for the CPT'd Qwen3.5-2B (Gate 4)",
+    "before": "Untested; open upstream hybrid-arch conversion bug ggml-org#24737",
+    "after": "PASS: convert_hf_to_gguf.py --no-mtp on llama.cpp b10603, qwen35.block_count=24, Q4_K_M 1,560,460,800 B (1.45 GiB, +23% vs base 1.27 GB due to 248,320 vocab), generations match safetensors; x86 16-core CPU: prefill 97.1 / decode 44.5 tok/s",
+    "what_it_shows": "MEASURED. The full-run artifact is usable on-device via llama.cpp; --no-mtp is mandatory (otherwise unloadable).",
+    "source": "finetuning/cpt/GATE4-GGUF-BRIEF.md:92-104; finetuning/cpt/FULLRUN-RESULTS.md:70-101; RUN-LOG.md 2026-08-24 02:30 UTC entry"
+   },
+   {
+    "metric": "Training run facts (for the cost/scale slide)",
+    "before": "June adapters: LoRA on Sailor2-3B, e.g. Track-A rebalance ~$0.60 on an A100 (FINDINGS.md:142-143); prune+heal total ~$86 (retrospective 'Costs')",
+    "after": "Full CPT: 3,273 steps, ~13.7B tokens trained (mix 24.78B pool, 2.63 epochs of tl), loss 4.144 -> 1.756, 8xH100 ~35.5h, ~$972 (budget $1,000). SFT v1: 6,687 rows, 3 ep, 1,254 steps, loss 1.651 -> 0.996, 1xA100 ~47 min ~$1.40 (~$6 incl. 3 failed attempts). Probe run 2 lost 9/10 checkpoints to a cross-DC sync failure (~$278 run + drained account)",
+    "what_it_shows": "CLAIMED in run records (self-reported by the pipeline; SFT step count verified from trainer_state.json on HF).",
+    "source": "finetuning/cpt/FULLRUN-RESULTS.md:12-18; finetuning/cpt/SFT-V1-RESULTS.md:3-14; finetuning/cpt/PROBE-RUN-STATUS.md 'RUN 2 OUTCOME'"
+   }
+  ],
+  "pedagogy_evidence": "MEASURED (June, Sailor2-3B cat line, Claude-judged 0-5 capability instrument, 143 probes/11 tiers, helpfulness-floor weighted 3.0 so over-abstention dominates): the shipping model started fluent-but-unhelpful (Capability 3.32; helpfulness-on-answerable 2.54; 19/91 answerable probes refused; safety-myth 2.31 weakest; abstain-correct 3.96 best - FINDINGS.md:17-36). One SFT rebalance (+82 rows, same recipe, ~$0.60) lifted it to 3.73 (+0.41), helpfulness-on-answerable 3.19 (+0.65), pedagogy 3.11->3.59, reasoning +0.34, abstain-correct 3.96->4.76, safety-myth 2.31->2.61, with 13 of 19 refusals fixed and honesty preserved (FINDINGS.md:145-158); rebal-v2 reached 3.95 with helpfulness-floor 4.18 and safety-myth 3.07 (FINDINGS.md:68-69, scores.v2-hybrid.tagalog.json recomputed). The full-tier shipping snapshots moved 3.24 (2026-06-11, 134 probes) -> 3.59 (2026-06-13 v2a, 116 probes; english 1.78->3.64, multi-turn 2.74->2.99) - recomputed from baselines/. Grounding: gate asserts grounded answers contain the right concept and no confabulation markers; hybrid retrieval fix alone lifted the same adapter 3.32->3.49 (FINDINGS.md:83-90); F4 diagnosis showed ~70% of refusals were bad/absent grounding and the adapter was trained 'ground-or-abstain' (FINDINGS.md:187-219). Abstention: the June 3B keeps abstain-correct 4.6-4.8; the 2.4B experiment shows what losing it looks like (1.29, confabulates diagnoses/election results) and is the documented reason the flagship plan pre-commits 'do not ship if abstain-correct regresses' (CPT-FLAGSHIP-PLAN.md:147-153). Myth handling: measurably the weakest scored behaviour on every model - 3B safety-myth never above 3.07; kitten 1B affirms myths and flips safety polarity temp-independently (ROLEPLAY-QA-FINDINGS.md:47-56); DPO on the 1B cut hazardous-safety failures 6/8->0/8 but pushed myth_false failures to 7/8 (dpo-eval-*.json); cat 3B caves on myths at turn 2+ (ROLEPLAY-QA:23-29). Engagement/presentation: v3 targets (illustration restraint, natural endings, emoji/bold) are enforced objectively by presentation.mts in both instruments; measured this session: adapter-routed replies have 0 emoji spam and 0 malformed/repeated image tags, whereas the base-model English path spammed emoji in 6/18 replies. Public no-RAG comparison (hiraiabench, 59 judged probes): fine-tuning raised Safety & Honesty 1.5->3.13 and Pedagogy 2.0->2.67 over the untrained Sailor2-3B, within ~0.3 of Qwen3.5-9B on accuracy/safety/code-switching (bench-results.json). For the new 2B line (SFT v1) pedagogy evidence is DETERMINISTIC ONLY so far: 0/34 forbidden-term violations on grounded cases, chitchat 5/6, abstain 1/1, abstain-correct tier refuses 8/10, no refusals on any content tier (score_answers.py); the routing bench shows fluent grade-5 explanations but a 64% Tagalog hedge-opener rate driven by template wording (routing/README.md:48-66). CLAIMED/qualitative: greedy 'Bakit umuulan?' loop on the CPT base is gone after SFT (SFT-V1-ROUTING-FINDING.md:35-36); when SFT v1 answers in Cebuano the science is correct (ibid.:24-27).",
+  "fluency_evidence": "MEASURED, CPT line: held-out perplexity Tagalog 22.639 -> 4.570 (-79.8%), Cebuano 25.416 -> 4.448 (-82.5%), English 15.568 -> 14.968 (-3.9%, improved) on 400 docs x 1024 tokens (FULLRUN-RESULTS.md:34-36; FULLRUN-EVAL-RESULT.json); the probe checkpoint at only 525M tokens already gave -63.2% / -63.0% / +1.5% (PROBE-RUN-STATUS.md:101-103). Verbatim greedy generations flip from degenerate repetition ('mga puno, mga puno') and fill-in-the-blank filler to fluent, scientifically correct Tagalog and correct Cebuano ('Ang adlaw mao ang sentro sa atong solar nga sistema... usa ka bituon') (FULLRUN-EVAL-RESULT.json gen; FULLRUN-RESULTS.md:42-49). Caveat: tl/ceb held-outs are carve-outs of the same cleaned pools (domain adaptation inflates the drop); English is a reserved shard and clean (FULLRUN-RESULTS.md:64-67); the base English ppl matched across runs (15.568 vs 15.567) as a methodology sanity check. MEASURED, SFT v1 language routing under the app-composed template (1,188 probes, T=0.7, fastText lid): Tagalog 99% (441/446), Cebuano 96% raw / 99.3% corrected (427/446 + 16 lid confusions), English 94% (279/296); wrong-language explanations 14/1,188 = 1.2% (routing/README.md:34-46; reproduced). By input variant, Cebuano mode stays 91-99% even with English, lowercase, misspelt or two-word terms. Deterministic tier check on SFT v1: 100% Tagalog replies on all Tagalog tiers, 13/14 Cebuano on the bisaya tier, 13/18 English on the english tier (score_answers.py). MEASURED, June 3B line: capability naturalness dimension 4.51 -> 4.61/4.60 across the rebalance (FINDINGS.md:153; recomputed), Tagalog-probe naturalness 4.58 -> 4.69; hiraiabench (no RAG, blind judge): Tagalog Fluency 2.39 (Sailor2-3B base) -> 3.91 (Hiraia-v7) vs Qwen3.5-9B 3.17 / 27B 4.5; English Fluency 2.0 -> 3.57; Bisaya 2.5 -> 3.0 (bench-results.json). English via the Tagalog adapter scored 3.75 vs 1.78 on the bare base (ab/capability-scores.english-tladapter.json; rl/README.md:22). Early adapter smokes: 25/25 replies in target language for both v5 GGUF adapters (eval-v5-gguf-*.json). MEASURED, 2.4B prune+heal: ppl Tagalog 6.74 / Cebuano 9.91 / English 21.51 after heal (PRUNE-HEAL-RETROSPECTIVE.md:29-31) - fluent but killed for calibration. CLAIMED (verbatim examples, not scored): SFT v1 Cebuano is 'fluent... the science is correct' when it does answer in Cebuano (SFT-V1-ROUTING-FINDING.md:24-27); fastText lid.176 mislabels short Cebuano hedges as Tagalog (routing/README.md:41-43).",
+  "known_weaknesses": "1) HEDGING (SFT v1, 2B): 64% of Tagalog-mode replies open with 'Hindi ko alam ang salitang iyan' on grade-5 core terms it can explain (284/446; Cebuano 35%, English 22%); 179 of those then explain anyway - template clause read as an instruction (routing/README.md:48-66). Fix is a $0 wording sweep, NOT yet run. 2) ENGLISH MODE-LOCK (2B): english tier 13/18 English replies on v1 and 6/18 on v2; routing bench English 94% with every misroute going to Tagalog (SFT-V1-ROUTING-FINDING.md:128-136; routing/README.md:38,46). 3) CEBUANO->TAGALOG LEAK on language-neutral prompts: present in the CPT base ('Ang tubig' answered in Tagalog, FULLRUN-RESULTS.md:57-60) and in SFT v1 under raw prompts; only mitigated by the app-composed template, and SFT data has 97% Cebuano-worded user turns / 1% neutral (SFT-V1-ROUTING-FINDING.md:29-33). 4) SAFETY-NEGATION + MYTH AFFIRMATION ON THE 1B KITTEN: affirms flat-earth/10%-brain/full-moon, calls eclipse viewing and raw chicken 'safe'; temp-independent (8->11 criticals at greedy); DPO trades it for sycophancy (myth_false 7/8 fail); shipped only with an 'experimental - may be wrong' label (ROLEPLAY-QA-FINDINGS.md:47-56,69-72; dpo-eval-v8dpo2.json; commit 52713e6e0). 5) 3B CAT: multi-turn myth-caving and confabulation by turn 2+, two English safety failures (outlet, eclipse), ~10% EN->TL leak on v10 (ROLEPLAY-QA:23-37); safety-myth remains the weakest scored tier (<=3.07); multi-turn tier ~2.7-3.0; over-abstention hard tail 6/19 where retrieval returns nothing (FINDINGS.md:161-163); Bisaya adapter never grounded-trained yet served grounding (F5). 6) CALIBRATION IS THE KILL RISK for any bigger model: the 2.4B scored 2.06 with abstain-correct 1.29 (confabulated diagnoses, election winners, addresses); SFT v2 already showed one confabulation ('largest star is the Supernova') under +20% verbosity pressure (SFT-V1-ROUTING-FINDING.md:141-144). The 2B has NO judged abstain-correct score yet. 7) MISS-CARD REASONING: the 2B cannot propose bank-retrievable topics for out-of-bank input (~25% vs 90% bar under three prompting regimes) - product routed around it (misscard/README.md). 8) RETRIEVAL-SIDE: homonym/verb hijacks (gabi/taro, pinas/Las Pinas, puso), semantic-floor bluntness, comparison/multi-entity queries retrieve nothing (PROBING-FINDINGS.md:95-134; FINDINGS.md F10). 9) JHS CONTENT: no JHS-specific evaluation exists in any eval directory; capability probes are graded 3-8 (grade 5: 54, 6: 47, 7: 23, 4: 16, 3: 2, 8: 1 of 143) with no JHS tier, the regression gate covers grades 4-6 only, hiraiabench probes carry no grade; the June probing note found 'grade register barely adapts' (PROBING-FINDINGS.md:240-241). 10) DEVICE SPEED: the 2B is 1.8x/2.1x slower than the 1B on the Redmi (10.94/5.93 t/s) with in-app TTFT expected to roughly double from the 1B's ~24 s without mitigation (CPT-FLAGSHIP-PLAN.md:103-105). 11) CEBUANO DATA SCARCITY: only 0.178B distinct Cebuano tokens exist after consolidation (<half the June estimate), forcing 8 epochs at 5.6% of the mix (FULL-MIX-README.md; RUN-LOG.md 02:29 UTC entry).",
+  "caveats": "A) PROVENANCE CONFLICT on the '3.24 = shipped 1B kitten' figure: CPT-FLAGSHIP-PLAN.md:21,147,198 and PRUNE-HEAL-RETROSPECTIVE.md:12,48 call finetuning/eval/capability/baselines/capability-baseline.2026-06-11-shipping.json 'the 1B's 3.24', but that archive was collected 2026-06-11/12 worst-of-3 with hybrid retrieval, its english tier is bare-base-model output, run-capability.sh:38 says the 2026-06-11 'shipping' run pointed at the ttft-f16 (Sailor2-3B) adapter, and the earliest commit MESSAGE mentioning the kitten is 2026-06-17 (3e6a62868). I found no judged capability run of the 1B kitten anywhere in the repo. Confirm with Luis before putting '1B = 3.24' on a slide; the safe statement is '3.24 = June shipping snapshot, 134 probes'. B) The working-tree finetuning/eval/capability/capability-scores.*.json (Jun 22) are the 2.4B healed model (capability/.server.log:11), NOT the shipping model; scores files are gitignored so there is no committed 'shipping' scores file - shipping numbers come from baselines/. C) NO LLM-JUDGED 0-5 CAPABILITY SCORE EXISTS for the CPT model or SFT v1/v2 yet; all 2B evidence is perplexity, greedy generation samples, fastText language labels, and regex shape checks. The plan's ship criterion (>=3.5 and abstain-correct >= ~4.6) is untested; the 143-probe baseline re-mint is pending. D) Perplexity base values differ between probe (tl 21.299) and full run (22.639) because held-outs were re-carved from consolidated pools (FULL-MIX-README.md 'Provenance'); compare deltas within a table, not across. E) Judges differ across archives: Claude subscription workflow for most probes, local Qwen2.5-14B for AUP-denylisted body/biology probes (README.md:52-90); the 2.4B run left 20 such probes unscored (retrospective 'Results'); hiraiabench used blind comparative judging with the 27B scored against frozen anchors; the GRPO sweep used a Qwen3.5-9B screening judge. Per-tier moves under ~0.5 are noise (FINDINGS.md:100); 2026-06-11 archive is worst-of-3, the 2026-06-13 HEAD answers are single-sample. F) Regression gate is green by construction and 12 of 42 cases are 'pending' (codified, unfixed); no gate output after June is archived. G) hiraiabench is single-turn, no RAG, 67 probes (59 judged, 8 AUP-dropped), Hiraia's Bisaya row on the tl/en LoRA; Opus saturates the rubric. H) Routing bench is one sample at T=0.7 (+/-2-3% resolution per mode); 37/1188 lid labels are low-confidence; the '179 explain anyway' count is from the README only (my proxy: 144 of 284 hedges exceed 200 chars). I) The 4/8 and 5/8 greedy routing numbers in SFT-V1-ROUTING-FINDING.md are explicitly deprecated by that document (line 185) - do not cite them. J) Cost figures (~$972 CPT, ~$1.40/$6 SFT, ~$86 prune-heal) are self-reported run records, not invoices. K) Cat v11's 'English leak 6->0' is a commit-message claim (370cd1f68) and memory note; I found no repo document with the re-scored role-play result. L) Redmi 3B '2.6 t/s' appears in PRUNE-HEAL-RETROSPECTIVE.md:20 and the 1B/2B numbers in CPT-FLAGSHIP-PLAN.md:102-105; the raw llama-bench logs are not in the repo. M) Presentation image-tag rates for the June archives read as 0 because `raw` was not captured then (tags stripped before archiving), so only emoji/bold/persona-leak are meaningful for those files."
+ },
+ "brand": {
+  "colors": "TWO PALETTES COEXIST (see caveats). \n\n(A) APP / NOTEBOOK PALETTE — single source of truth /Users/luis/Code/hiraia/packages/mobile/src/theme.ts (header comment line 2: \"mirrors packages/web (globals.css / tailwind.config.js). Hand-drawn, notebook-paper aesthetic\"):\n- paper #fdfdf6 \"Notebook paper cream\" (theme.ts:28) = web --background (packages/web/src/app/globals.css:28) = .notebook-paper background-color (globals.css:68)\n- ink #0c343d \"Dark teal ink\" (theme.ts:30) = web --foreground (globals.css:29) = tailwind primary-700 (packages/web/tailwind.config.js:30)\n- primary #165a6a (theme.ts:32) = tailwind primary-500 (tailwind.config.js:28); primaryDark #0f4a56 (theme.ts:33) = primary-600 (tailwind.config.js:29); .chat-md a colour #0f4a56 (globals.css:347)\n- greenDark #0c6e47 \"model-loading progress bar\" (theme.ts:35)\n- inkMuted #5a7178 \"secondary text\" (theme.ts:37)\n- rule rgba(120,170,210,0.4) horizontal blue ruling (theme.ts:39; globals.css:71); margin rgba(244,143,160,0.5) vertical pink margin line (theme.ts:41; globals.css:70)\n- bubble #f3f1e4 assistant bubble (theme.ts:43)\n- hairline rgba(12,52,61,0.12) borders (theme.ts:45)\n- accent #f2c14e \"Warm gold — beta/heads-up accents\" (theme.ts:47)\n- inkBlue #2743a6 \"Blue ballpoint ink — teacher's notes\" (theme.ts:49; hard-coded on web at packages/web/src/components/demo/cards/DemoCardPage.tsx:139-141). NOTE: branch-only, not on main (git diff main -- theme.ts adds it)\n- cover #dde7e4 \"Light teal-gray — Menu/Settings panel (notebook cover)\" (theme.ts:51)\n- white #FFFFFF (theme.ts:52)\n- Full tailwind primary scale (tailwind.config.js:23-33): 50 #f0f7f9, 100 #dbeff2, 200 #bce0e6, 300 #8ec9d4, 400 #5aa6b5, 500 #165a6a, 600 #0f4a56, 700 #0c343d, 800 #082329, 900 #041114, 950 #020708\n- Native shell: splash backgroundColor #165a69 and androidStatusBar #165a69 (packages/mobile/app.json:13,16 — note one-unit off from #165a6a); adaptiveIcon backgroundColor #f1f0e8 (app.json:28)\n- Usage frequency in mobile src (grep count): colors.ink 40, primary 36, white 33, inkMuted 33, hairline 22, inkBlue 16, paper 13, bubble 6, accent 6, rule/margin/cover/greenDark 1 each. accent is used for beta chips/CTA in sidebar.tsx:312, ChatHeader.tsx:95, LanguagePicker.tsx:124, LoaderOverlay.tsx:471,495; cover in sidebar.tsx:187.\n\n(B) WEBSITE LANDING \"MID-CENTURY CLASSROOM CARD\" PALETTE — globals.css :root 35-47 and .mc scope 100-113 (commit c7f97071c 2026-08-25 \"restyle hiraia.org to the mid-century flash-card brand\"):\n- --stock #F4EAD5 (card face / cream), --ink #1C3B2E (card border, band, text), --board #20342C (page background), --gold #D8A03A (chips, ticket buttons, labels), --teal #2F6360, --fork-a #2B4C7E, --fork-b #7A5E22, --graph #4D4740, --sage #8C9E6E (keyline, dividers, footer text), --peach #E7B08B (illustration plate frame), --olive #5B6B52 (small labels), --accent #7A2E22 (defined, unused in Landing.tsx), --plate #FFFFFF\n- Card shadow rgba(28,59,46,0.55) 0 8px 0 hard offset (globals.css:143)\n- Web favicon (packages/web/src/app/icon.png) pixel census via PIL: #1c3b2e 92.6%, #f4ead5 6.0%, #e7b08b 1.2% — i.e. the same stock/ink/peach values.\n\nSampled from the notebook logo PNG (PIL, packages/brand/logo.png): ink #0c343d at (300,600); paper #fdfdfc at (512,100); blue rule ~#accccd at (100,190); pink rule ~#e0b3ae at (100,505); vignette corner #d8d3b8 at (5,5). Dominant: #ffffff 38.6%, #0c343d 11.3%.",
+  "fonts": "APP (packages/mobile/src/theme.ts:7-24; TTFs in /Users/luis/Code/hiraia/packages/mobile/assets/fonts/):\n- title = 'Mansalva' — \"Brand title (logo wordmark)\" (theme.ts:9), Mansalva-Regular.ttf; used 6x\n- display = 'CaveatBrush' — \"Headers / bold / display\" (theme.ts:11), CaveatBrush-Regular.ttf; used 39x\n- body = 'PatrickHand' — \"Body + UI text\" (theme.ts:13), PatrickHand-Regular.ttf; used 52x\n- marker = 'PermanentMarker' — \"Felt-tip marker — big, short card facts (question-cards feed)\" (theme.ts:15), PermanentMarker-Regular.ttf; used 2x (CardPage.tsx:38, QuestionPage.tsx:117). BRANCH-ONLY (question-cards), absent on main per git diff.\n- Card typography tiers (packages/mobile/src/components/cards/CardPage.tsx:36-40, mirrored in web DemoCardPage.tsx:33-39): <=70 chars → marker 30/44 centred; <=150 → display 27/38 centred; <=260 → body 20/30 left; else body 17/26 left.\n\nWEB — self-hosted woff2 in packages/web/public/fonts (17 files, latin + latin-ext), downloaded from Google Fonts by packages/web/scripts/fetch-fonts.mjs:15-16 (families: Caveat Brush, Mansalva, Patrick Hand, Alfa Slab One, Zilla Slab 400/500/700, Archivo Black, Patua One).\n- Notebook set (globals.css:30-33): --font-title \"Mansalva\"; --font-display \"Caveat Brush\"; --font-sans/--font-serif \"Patrick Hand\" (fallback ui-rounded, Comic Sans MS). body uses --font-sans (globals.css:50-54); ALL strong/b/h1-h6 use Caveat Brush at weight 400 (globals.css:56-61); .chat-md strong/h1-h3 likewise (331-337).\n- Tailwind aliases (tailwind.config.js:10-20): font-title Mansalva, font-display Caveat Brush, font-hand/font-serif/font-sans Patrick Hand, font-slab \"Alfa Slab One\", font-zilla \"Zilla Slab\", font-gothic \"Archivo Black\", font-band \"Patua One\".\n- Landing (.mc scope, globals.css:100-134): body Zilla Slab weight 500 (116-117); h1-h4 Alfa Slab One 400 (119-122); strong/b Zilla Slab 700 (123-126); .mc-label Archivo Black uppercase letter-spacing 0.18em (129-134); .mc-topic Patua One 11.5px uppercase 0.14em (189-200); .mc-chip Alfa Slab One 13px (176-188); .mc-ticket Zilla Slab 700 18px line-height 1.1 (256-273).\n- Landing sizes (packages/web/src/components/Landing.tsx): H1 \"HIRAIA\" font-slab 2.75rem, sm:6xl, tracking-wide, leading-none (221-223); hero subtitle font-zilla 1.35rem/sm:1.55rem bold leading-snug text-balance (224-226); hero body 1rem/sm:1.05rem medium leading-relaxed (232-235); section h2 3xl → sm:4xl → md:2.75rem leading-none in stock colour (250, 291, 314); section body font-zilla lg/xl medium stock/90 (253); labels mc-label 10px gold (263, 271, 278); card caption font-zilla 13px/sm:15px medium (159); footer wordmark font-slab 2xl tracking-wide (349).",
+  "logo_files": "/Users/luis/Code/hiraia/packages/brand/ (package.json: \"@hiraia/brand\" — \"Hiraia brand assets — logo and app icons.\"):\n- logo.png — 1024x1024, RGBA, 70,385 B (git: c4fbce1b2 2026-06-13). Hand-lettered lowercase \"hi\" in dark-teal ink #0c343d on a cream ruled index-card: two pale-blue rules (~#accccd) with one pink rule (~#e0b3ae) between, soft vignette to #d8d3b8 at the corners.\n- logo-with-padding.png — 1024x1024, RGBA, 69,898 B (same art, more margin).\n- logo.ai — 256,495 B (vector source, Illustrator).\n- hiraia.psd — 1024x1024, 1,743,559 B (Photoshop source).\n/Users/luis/Code/hiraia/packages/mobile/assets/:\n- icon.png — 1024x1024, no alpha, 61,410 B — full-bleed notebook \"hi\" (commit c6b4d9e60 2026-06-05 \"full-bleed notebook icon (no indigo) from logo-with-padding\"); referenced app.json:7. PIL: #0c343d 8.5%, whites ~50%.\n- adaptive-icon.png — 1024x1024, RGBA, 67,134 B — same art, Android adaptive foreground (app.json:27, bg #f1f0e8).\n- splash.png — 1024x1024, RGBA, 58,284 B — the ruled \"hi\" card inset (~60% width) centred on transparent; shown on #165a69 with resizeMode contain (app.json:10-14).\n- hiraia-profile.png — 256x256, RGBA, 46,003 B — cat mascot avatar (calico: green/gold patches, big sparkly eyes); duplicated at packages/web/public/hiraia-profile.png. Used as the tutor avatar in ChatThread.tsx:26, MessageBubble.tsx:10, LanguagePicker.tsx:30, onboarding slides, and as the 26px round \"stamp\" in the landing hero band (Landing.tsx:218, .mc-stamp globals.css:201-208).\nWeb favicon (mid-century mark, commit b2336bf37 2026-08-26 \"use the mid-century app mark as favicon\"):\n- /Users/luis/Code/hiraia/packages/web/src/app/icon.png — 1024x1024, 9,222 B; apple-icon.png — 180x180, 3,564 B. Slab-serif \"hi\" in stock #f4ead5 on board-green #1c3b2e with a peach #e7b08b downward triangle under it (pencil-tip/bookmark). No vector source for this mark exists in packages/brand — PNG only.\nWordmarks in type: app uses Mansalva (theme.ts:9); website uses \"HIRAIA\" in Alfa Slab One (Landing.tsx:221-223) and footer \"HIRAIA.\" with a gold period (Landing.tsx:349-351).",
+  "visual_language": "The brand is built on a NOTEBOOK-PAGE metaphor — a child's school notebook you write science in — rendered with handwriting fonts, dark-teal ink instead of black, and black-line engraving illustrations. Two expressions exist:\n\n1) APP + IN-BROWSER DEMO + LOGO (\"notebook paper\"): Background is cream paper #fdfdf6 with 1px horizontal blue ruling every 32px (rgba(120,170,210,0.4)) and a 2px vertical pink margin line at x=44-46px (rgba(244,143,160,0.5)) — CSS at globals.css:67-73 (.notebook-paper), geometry theme.ts:55-59 (lineSpacing 32, marginX 44). Text starts to the right of the margin like a pupil writing inside the gutter (GUTTER_LEFT = marginX+14 = 58px, CardPage.tsx:21-23, DemoCardPage.tsx:19-20). Body copy is Patrick Hand, headings/bold Caveat Brush, the wordmark Mansalva, short punchy facts Permanent Marker (30px, centred). Ink is #0c343d; secondary #5a7178; the two topic choices per page are \"teacher's notes\" in blue ballpoint #2743a6, underlined 1.5px, tilted -2deg and +1.5deg at the bottom corners (DemoCardPage.tsx:130-150). Illustrations sit in a 250px (or 190px) square, 14px radius, dashed hairline border rgba(12,52,61,0.12) on white (DemoCardPage.tsx:107-114). Facts typewriter in at ~210 chars/s, tap to finish (CardPage.tsx:26-27). Page turn is a corner-peel on mobile; on web the page lifts off and rotates -7deg over 360ms with a soft shadow (globals.css:77-85) and the reward star pops with an overshoot ease (86-92). Chrome: assistant bubbles #f3f1e4, hairline borders, gold #f2c14e chips for beta/heads-up, the Menu/Settings drawer in \"notebook cover\" #dde7e4, model-loading bar #0c6e47, status bar/splash #165a69. Mascot: a calico cat avatar (hiraia-profile.png); loader shows a sleeping/waking cat video.\n\n2) WEBSITE LANDING (hiraia.org, since 2026-08-25, \"mid-century classroom flash-card\"): the page itself is a dark board-green #20342C; content lives on cream #F4EAD5 index cards with a 3px ink #1C3B2E border, 18px radius, hard 8px offset shadow rgba(28,59,46,0.55), an inner 2px sage #8C9E6E keyline inset 6px, and two punched holes (13px, board colour) at 33%/63% (globals.css:136-163). Each card has an ink \"band\" header with a gold #D8A03A chip (Alfa Slab One) and a Patua One uppercase topic (165-200); the illustration sits in a peach #E7B08B \"plate\" frame with 3px ink border, image multiply-blended onto stock (210-229); a sage divider with a rotated gold diamond (231-249); CTAs are gold \"tickets\" (Zilla Slab 700, 18px) with an ink arrow box, resting on an ink \"ledge\" (251-317); cards in the grid are fanned -1.4/+1.2/-0.5deg and lift 4px on hover (319-326). Labels are Archivo Black, uppercase, 0.18em tracking, gold. Hero = full-bleed photo /landing.jpeg (2048x1152: Filipino schoolkids under a tree passing a phone showing the cat loader) with the card pinned top-left at max-w 21rem/24rem (Landing.tsx:202-245). Section rhythm: px-5 py-16 → sm:px-12 sm:py-20 → md:px-16 → lg:px-24, content max-w-5xl (Landing.tsx:248, 289, 312, 330); flash-card grid 2 → 3 → 4 columns, gap 4/5 (299). Footer: 3px ink top border, \"HIRAIA.\" with gold period, \"Not-for-profit. Built on QVAC.\", \"hiraia.org\" label (346-362). Live site confirmed serving this markup (13 \"mc-card\" matches in fetched HTML).\n\nILLUSTRATIONS: black-ink engraving/crosshatch line-art on white, no labels, Filipino subject matter (tarsier, Mayon, pawikan, halo-halo, alitaptap, bakawan, bahay kubo, palayok — Landing.tsx:19-83). Web demo copies are 512x512 PNG; the app ships grayscale WebP engravings (packages/images/factoid-webp, 19,540 files listed) plus 4,228 clip-art PNGs (packages/images/assets-png; wired by packages/mobile/scripts/gen-image-map.mjs:9-14).\n\nHERO COPY TONE: plain, confident, short declaratives, product name in caps, no exclamation except one parenthetical \"(forever!)\". Band: \"MATATAG-compatible science tutor\" (Landing.tsx:215). H1 \"HIRAIA\" (222). Sub: \"An AI science tutor that runs entirely offline\" (225). Body: \"Our on-device AI works on entry-level Android phones and speaks fluent Tagalog and English.\" (233-234). CTAs \"Try the demo\" / \"Download for free\" (238-241). Section heads: \"Science on your phone\", \"Flip a card. Learn a fact.\", \"Free to download\", \"Why we built hiraia\" (250, 292, 315, 336). Pillars: \"On-device and Offline\", \"Tagalog and English\", \"100% Free Forever\" (263, 271, 278). Card text is Tagalog first, English types in on hover/tap (Landing.tsx:10, 96-171). Page metadata: title \"Hiraia — an AI science tutor that runs entirely offline\"; description \"On-device AI for Filipino students. Works on entry-level Android phones and speaks Tagalog and English.\" (packages/web/src/app/layout.tsx:5-7). Name: a play on Filipino \"hiraya\" (hope / fruit of one's dreams) with \"AI\" in the middle (README.md \"What's in a name?\").",
+  "links": {
+   "website": "https://hiraia.org (nginx server_name hiraia.org www.hiraia.org — /Users/luis/Code/hiraia/deploy/nginx/hiraia.org.conf:2; footer label Landing.tsx:360; live fetch title 'Hiraia — an AI science tutor that runs entirely offline'. The demo model server and the RAG 'about Hiraia' answers still use https://hiraia.b11.dev — packages/web/.env.production:3, rag/scripts/update-about-hiraia.py:77-79)",
+   "apk_download": "https://hiraia.org/models/hiraia.apk (packages/web/src/config/download.ts:22, rendered by AppDownload.tsx:59; nginx alias /var/www/hiraia-models/ hiraia.org.conf:7-14; live HEAD 2026-08-28: HTTP 200, content-length 324817567, last-modified Wed 17 Jun 2026 03:46:09 GMT, accept-ranges bytes). Mirror: https://github.com/helloluis/hiraia/releases/download/v0.1.0/hiraia.apk (GitHub pre-release v0.1.0, 324,817,567 B, sha256 708ea60542f8124668189ba9123594eb9764e918d992be23a035e4e8c3e07f48, published 2026-06-05T04:05:46Z, 16 downloads)",
+   "github": "https://github.com/helloluis/hiraia (git remote origin git@github.com:helloluis/hiraia.git; gh repo view: PUBLIC, description 'Fine-tuned local inference model for tutoring grade school kids in the global south', homepageUrl empty)",
+   "huggingface": "NONE PUBLIC. All Hiraia-owned repos are under HF account 'Cryptopop' (finetuning/cpt/GATE4-GGUF-BRIEF.md:35) and are private: https://huggingface.co/Cryptopop/hiraia-adapters-archive (401 unauthenticated), https://huggingface.co/datasets/Cryptopop/hiraia-cpt-corpus-archive (401), Cryptopop/hiraia-cpt-flagship-2b (FULLRUN-RESULTS.md:19 '(PRIVATE)'), Cryptopop/hiraia-sft-flagship-2b (SFT-V1-RESULTS.md:3 '(PRIVATE)'), Cryptopop/hiraia-sft-flagship-2b-v2 (SFT-V1-ROUTING-FINDING.md:68), Cryptopop/hiraia-heal-corpus (finetuning/distill/ceb-heal/resft-pipeline.sh:8). HF public API author listing for Cryptopop returns [] for both models and datasets. Public third-party HF links referenced by the code: base model https://huggingface.co/mradermacher/Sailor2-3B-Chat-GGUF (deploy/serve-model.sh:23), https://huggingface.co/bartowski/Sailor2-1B-Chat-GGUF (packages/mobile/src/config/model.ts:133), https://huggingface.co/sailor2 (CPT-FLAGSHIP-PLAN.md:199), https://huggingface.co/blog/qvac/medpsy (README.md). For a public deck, link the Sailor2 org or omit HF."
+  },
+  "latest_apk": "PUBLISHED: version 0.1 (packages/web/src/config/download.ts:19 version '0.1'; packages/mobile/app.json:5 version \"0.1.0\"; packages/mobile/android/app/build.gradle:95-96 versionCode 1 / versionName \"0.1.0\"). The live file https://hiraia.org/models/hiraia.apk is 324,817,567 bytes, Last-Modified 2026-06-17 03:46:09 GMT (curl -I). It is byte-identical in size to the GitHub pre-release asset v0.1.0/hiraia.apk (324,817,567 B, published 2026-06-05T04:05:46Z, sha256 708ea605...c07f48), and four sampled 64 KiB byte ranges (offsets 0, 100,000,000, 250,000,000, 324,700,000) matched md5 between the two URLs — so the live APK is almost certainly the 2026-06-05 v0.1.0 build re-uploaded on 2026-06-17 (inference from size + 4 sampled ranges, not a full-file hash). Git tags: v0.1.0 = c6b4d9e60 2026-06-05 11:34 +0800; v0.2.0-hackathon = e8bd9ed7f 2026-06-17 21:53 +0800 \"native streaming downloader + RAG follow-up dedup\" (tag exists, but no 0.2.x version string anywhere in packages/mobile src/app.json/package.json — grep empty). Site download card: \"Requires Android 12+; 6GB+ memory recommended\" (AppDownload.tsx:54; download.ts:31 minAndroid 12); sha256 field empty (download.ts:25) so only the signing-cert hash 40d750d5576cb59c311c7ba713403e065b934967d7a7d1bc80652e1167a20c35 (download.ts:29) is shown.\nNEWEST LOCAL BUILDS (gitignored via packages/mobile/.gitignore:6 'apk-out/', unpublished): /Users/luis/Code/hiraia/packages/mobile/apk-out/hiraia-kitten-cards.apk 604,783,165 B 2026-07-15 01:09; hiraia-cat-quiz.apk 700,036,307 B 2026-07-14 01:44; hiraia-kitten-quiz.apk 580,514,281 B 2026-07-14 01:46 (naming from packages/mobile/scripts/build-both-apks.sh:45, which builds cat=Sailor2-3B and kitten=Sailor2-1B tiers). Repo root /Users/luis/Code/hiraia/hiraia-labse.apk 516,380,471 B 2026-06-07 (gitignored *.apk). No CHANGELOG/RELEASE-notes file exists in the repo (find returned nothing). Shipping model config: ACTIVE_MODEL_KEY 'sailor2-3b' (packages/mobile/src/config/model.ts:145); adapters labelled \"v11 · intent + grounded + English-clean\" (Tagalog) and \"v3 · beta\" (Cebuano), databank \"1.1.0\" (packages/mobile/src/config/version.ts:19,32,36).",
+  "ui_assets": "- /Users/luis/Code/hiraia/packages/web/public/demo/cards/*.png — 442 engraving illustrations, 6.9 MB total, 440 at 512x512 (exceptions: adaptation-finch-beak-shapes.png 512x442, continental-drift-pangaea.png 512x308), dated 2026-08-04. Black line-art on white; drop straight onto paper or stock backgrounds (landing uses mix-blend-mode multiply, globals.css:228). The eight on the landing: philippine-tarsier-cling, mayon-volcano-cone, green-sea-turtle-pawikan, halo-halo-layers-heterogeneous, firefly-alitaptap, mangrove-prop-roots, nipa-hut-bahay-kubo-scene, palayok-clay-pot (Landing.tsx:19-83).\n- /Users/luis/Code/hiraia/packages/web/public/landing.jpeg — 2048x1152, 303,155 B, hero photo (kids under a tree with a phone showing the cat loader \"gising na, hiraia!\"); also the YouTube poster (Landing.tsx:204, 332). Commit a447b9005 2026-08-27.\n- /Users/luis/Code/hiraia/packages/web/public/demo/cat-sleeping-loop.mp4 (5,439,501 B) and cat-waking.mp4 (6,686,325 B) — the model-loading cat animation used by DemoLoader.tsx:15-16.\n- /Users/luis/Code/hiraia/packages/web/public/hiraia-profile.png — 256x256 cat mascot avatar.\n- /Users/luis/Code/hiraia/packages/web/public/hand-and-app.png (1306x1498, 1,765,236 B) and hand-and-app.jpeg (2816x1536, 2,073,874 B) — LEGACY hand-holding-phone mockup from the 2026-06-03 green landing (commit 27487737e: green header \"hiraia\", green chat bubbles, plant diagram). Only referenced by AuthScreen.tsx:197, which is mounted only through ChatInterface.tsx:60 — and ChatInterface is not imported by page.tsx/Landing.tsx, so it is dead on the live site. It matches neither the current app (notebook) nor the current site (mid-century). Do not use as a screenshot.\n- No real device screenshots or phone-frame renders exist in the repo (find for *screenshot*/*mockup* outside node_modules returned nothing). Best stand-in: the in-browser demo at hiraia.org (\"Try the demo\" → DemoLightbox, sm:max-w-md, height min(760px,92vh), rounded-3xl — packages/web/src/components/demo/DemoLightbox.tsx:58) renders the actual question-cards feed on notebook paper at phone proportions (~448x760); screenshot it. The language picker → cat loader → card feed flow mirrors the mobile first launch (DemoLightbox.tsx:22-26).\n- Full illustration libraries if higher counts are wanted: packages/images/factoid-webp (19,540 files listed), packages/images/cards-png (19,539 PNG), packages/images/assets-png (4,228 clip-art PNG), packages/images/assets (420 SVG) — counts from find/ls.\n- Video: \"Why we built Hiraia\" https://www.youtube.com/watch?v=nmoIvZcPmEE (Landing.tsx:332).\n- Fonts for the deck: TTFs at packages/mobile/assets/fonts/ (Mansalva, CaveatBrush, PatrickHand, PermanentMarker -Regular.ttf); woff2 at packages/web/public/fonts/ (incl. Alfa Slab One, Zilla Slab 400/500/700, Archivo Black, Patua One).",
+  "caveats": "1) TWO BRAND SYSTEMS: the website landing was restyled to a \"mid-century classroom flash-card\" look on 2026-08-25 (commit c7f97071c; favicon b2336bf37 2026-08-26; hero recrop a447b9005 2026-08-27) — dark board green, cream stock cards, slab serifs — while the app, the in-browser demo, the brand logo/app icon and theme.ts remain the notebook-paper system (#fdfdf6/#0c343d/Mansalva/Caveat Brush/Patrick Hand). theme.ts's claim that it \"mirrors packages/web\" (theme.ts:2) is now only true for the demo lightbox (.notebook-paper, globals.css:66). A deck \"consistent with website and app\" must bridge both: notebook paper + ink teal for product surfaces, stock/board/gold cards for marketing surfaces. The favicon mark (slab \"hi\" + peach triangle) and the app icon (handwritten \"hi\" on ruled card) are different marks.\n2) BRANCH STATE: cwd is branch question-cards, 59 commits ahead of main, 0 behind. NONE of the web restyle commits (c7f97071c, b2336bf37, a447b9005) nor the question-cards theme additions (fcd8bae92; marker font PermanentMarker and inkBlue #2743a6) are on main (git branch --contains). The live site nonetheless serves the mid-century markup (13 \"mc-card\" matches), so it was deployed from this branch. Working tree also has uncommitted edits (git status) — none to theme.ts, tailwind, globals.css or Landing.tsx.\n3) COPY VS FACTS: landing says \"about 50,000 verified facts, and nearly 15,000 drawings\" (Landing.tsx:295-296); README says \"~35k-fact\" databank and \"4,200+ illustrations\"; version.ts:15 says \"~40k trilingual facts\"; the illustration dir has 19,540 files. Treat the landing numbers as marketing copy, not verified counts. Landing also says \"2GB AI tutoring model\" / \"2B model\" (Landing.tsx:319; AppDownload.tsx:7,77) while the shipped config is Sailor2-3B (~3.2 GB download per BUILD.md) — copy is written for the not-yet-shipped 2B flagship. Landing says \"Department of Education's new 2027 MATATAG science curriculum\" (Landing.tsx:274) and \"optionally connect to a public P2P network for curriculum updates\" (266-267) — aspirational; no P2P code found.\n4) ANDROID MINIMUM: site says Android 12+ (download.ts:31) but app.json:39 minSdkVersion 29 (= Android 10).\n5) APK IDENTITY: the \"same file\" conclusion for hiraia.org/models/hiraia.apk vs the GitHub v0.1.0 asset rests on identical size plus 4 sampled 64 KiB ranges, not a full sha256 of the live file. The v0.2.0-hackathon tag (2026-06-17) has no corresponding version bump or published artefact found.\n6) HUGGING FACE: nothing Hiraia-owned is public; all Cryptopop/* repos returned 401 and the author listing is empty. Do not put an HF link on a public deck unless a repo is made public first. Third-party base-model links are public.\n7) DOMAINS: hiraia.b11.dev (Vultr VPS) still hosts the demo LLM (/qvac proxy, .env.production:3), the model mirror for the app (packages/mobile/src/config/model.ts:31 MODELS_BASE_URL), and the /admin panel; the RAG \"about Hiraia\" answers in the app still tell kids to visit hiraia.b11.dev (update-about-hiraia.py:77-79). Public brand domain is hiraia.org.\n8) MINOR COLOUR DRIFT: app.json splash/status bar use #165a69 (app.json:13,16) vs theme primary #165a6a; adaptive-icon background #f1f0e8 (app.json:28) vs paper #fdfdf6 — use the theme.ts values as canonical.\n9) PIXEL COLOURS quoted for logo.png and icon.png (e.g. blue rule ~#accccd, pink rule ~#e0b3ae, favicon #1c3b2e/#f4ead5/#e7b08b) are single-pixel/census samples via PIL, not design-source values; the CSS variables are the authoritative values.\n10) FONT LICENSING: all faces were fetched from Google Fonts (fetch-fonts.mjs:15-16); licences were not verified in-repo.\n11) No screenshots, CHANGELOG, release notes, or design/mockups directory exist in the repo (globals.css:10 references design/mockups/midcentury.html, which is absent)."
+ },
+ "runs_curated": {
+  "rows": [
+   {
+    "name": "Full continued pre-training — Qwen3.5-2B, ≈13.7B tokens",
+    "gpu": "8 × H100 80GB",
+    "hours": 294.4,
+    "cost": 972,
+    "basis": "cost documented; hours from pod age",
+    "outcome": "Held-out perplexity: Tagalog −80%, Cebuano −82%, English −4% (improved)"
+   },
+   {
+    "name": "CPT probe run 2 (full-parameter, ZeRO-2)",
+    "gpu": "8 × H100",
+    "hours": 167.2,
+    "cost": 550,
+    "basis": "documented",
+    "outcome": "Only checkpoint-125 (525M tokens) survived a cross-DC sync failure — it validated the thesis: perplexity −63% tl / −63% ceb; GGUF export de-risked"
+   },
+   {
+    "name": "CPT probe run 1 (≈5.1B tokens, trained as LoRA by mistake)",
+    "gpu": "8 × H100",
+    "hours": 84.8,
+    "cost": 285,
+    "basis": "documented",
+    "outcome": "No usable artefact; the pod/volume/heartbeat pipeline was proven"
+   },
+   {
+    "name": "Full CPT attempt 1 (aborted)",
+    "gpu": "8 × H100",
+    "hours": 65.6,
+    "cost": 215.82,
+    "basis": "estimate",
+    "outcome": "Pre-processing collapse (worker count vs cgroup quota); run held and restarted"
+   },
+   {
+    "name": "Prune + heal 2.4B experiment (Sailor2-3B)",
+    "gpu": "8 × A100",
+    "hours": 56,
+    "cost": 86,
+    "basis": "documented",
+    "outcome": "Heal recovered fluency (ppl tl 6.7 / ceb 9.9); conservative re-SFT under-fit — not shipped"
+   },
+   {
+    "name": "GRPO rounds 1–5 (1B/3B)",
+    "gpu": "1–4 × H100 / RTX 6000",
+    "hours": 55,
+    "cost": 74,
+    "basis": "mostly documented",
+    "outcome": "Not shippable: capability 3.30 → 2.98; English +1.4 but abstention and Bisaya regressed"
+   },
+   {
+    "name": "SFT v1 / v2 on the CPT base (Qwen3.5-2B)",
+    "gpu": "1 × A100 80GB",
+    "hours": 2.8,
+    "cost": 6,
+    "basis": "documented",
+    "outcome": "v1 is the ship candidate: reply-language accuracy tl 99% · ceb 99% · en 94%"
+   },
+   {
+    "name": "Adapter iterations on Sailor2-3B / 1B and tooling (36 entries, May–June)",
+    "gpu": "H100 / L40 / A100 / L4",
+    "hours": 59.85,
+    "cost": 127.87,
+    "basis": "mostly estimated",
+    "outcome": "Shipped adapters v3 → v11: grounding faithfulness, static-prompt TTFT, kitten/cat tiers; QVAC-native training path evaluated and dropped"
+   },
+   {
+    "name": "Checkpoint-sync, eval and debug pods",
+    "gpu": "various",
+    "hours": 67.7,
+    "cost": 85.09,
+    "basis": "mixed",
+    "outcome": "Evaluation on a device-equivalent GGUF; pre-flight debugging of run 2"
+   }
+  ],
+  "totals": "≈853 GPU-hours and ≈$2,402 on RunPod since late May 2026 (rows sum to the totals); ≈$2,000 of that from figures recorded at the time, the rest estimated at list price — no billing export yet. About 80% of the compute went into continued pre-training of the Filipino base model.",
+  "grouping": "Grouping rule over the 49 raw entries in evidence.json→runs: 'full cpt run' without 'attempt' = row 1; 'probe cpt run 2/1' (not helper) = rows 2–3; 'attempt' = row 4; prune+heal = row 5; any 'GRPO' = row 6; SFT v1/v2 on the CPT/flagship base = row 7; 'helper pod' or 'pre-flight' = row 9; everything else (adapter LoRAs, QVAC CUDA attempts, DPO, bake-off) = row 8."
+ },
+ "evals_curated": {
+  "message": "From a fluent-but-cautious 3B adapter line to a continued-pretrained 2B base that reads and writes Tagalog and Cebuano: fluency is measured on held-out text, pedagogy on scripted tutoring probes.",
+  "ppl": [
+   [
+    "Tagalog",
+    22.639,
+    4.57
+   ],
+   [
+    "Cebuano",
+    25.416,
+    4.448
+   ],
+   [
+    "English",
+    15.568,
+    14.968
+   ]
+  ],
+  "tiles": [
+   [
+    "3.49 → 3.72",
+    "capability score (0–5), 102 probes — June 3B line, rebalance only"
+   ],
+   [
+    "99 · 96 · 94%",
+    "reply-language accuracy, SFT v1 2B (tl · ceb · en); Cebuano 99% corrected"
+   ],
+   [
+    "64%",
+    "of Tagalog replies open with a hedge; two-thirds still explain the term"
+   ]
+  ],
+  "pedagogy": "Scripted probes (102 in June, 143 now; 11 tiers, LLM-judged 0–5) showed the June model fluent but over-cautious: 19 of 91 answerable questions were refused. A retrieval fix plus a small data rebalance (+82 rows) lifted the score 3.32 → 3.72 (rebalance alone +0.22), and grounding faithfulness was fixed — the tutor defers to retrieved verified facts and abstains when none apply. The 2B line inherits the same harness; its capability run is the next measurement.",
+  "weaknesses": [
+   "Hedging: the SFT v1 2B prefixes 64% of Tagalog replies with a 'not sure' clause on grade-5 terms; about two-thirds of those then explain the term — a template-wording effect, not a knowledge gap",
+   "English mode-lock is the 2B's fragile edge (94% vs 99% in Tagalog and Cebuano); misroutes fall to Tagalog",
+   "The 1B budget tier cannot learn safety negation (DPO tested and rejected); junior-high content is thinner than elementary"
+  ],
+  "sources": "finetuning/cpt/FULLRUN-RESULTS.md (perplexity, 400 docs × 1,024 tokens); finetuning/eval/capability/ (capability score, rubric); finetuning/eval/routing/routing-sft-v1.json (reply-language accuracy, hedge rate); finetuning/cpt/SFT-V1-RESULTS.md; finetuning/eval/capability/FINDINGS.md (2×2: blob fix +0.17 for the shipping model, rebalance +0.22 faithful vs +0.41 lexical; together 3.32 → 3.72)",
+  "ppl_caveat": "held-out = 400 docs × 1,024 tokens carved from the same cleaned pools (0 exact duplicates), so part of the drop is domain adaptation; logged greedy generations are the independent check"
+ }
+}

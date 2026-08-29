@@ -1,0 +1,69 @@
+{
+ "school_year": "2026-2027",
+ "source": "DepEd Order No. 009, s. 2026 \u2014 three-term school calendar (issued 2026-04-20). Dates cross-checked: gmanetwork.com explainer 984622, depedclub.com, teachpinas.com.",
+ "confirmed": true,
+ "class_days": 201,
+ "opens": "2026-06-08",
+ "closes": "2027-04-08",
+ "terms": [
+  {
+   "term": 1,
+   "start": "2026-06-08",
+   "end": "2026-09-15",
+   "opening_block": [
+    "2026-06-08",
+    "2026-06-11"
+   ],
+   "instruction": [
+    "2026-06-15",
+    "2026-09-01"
+   ],
+   "exam": [
+    "2026-08-28",
+    "2026-09-01"
+   ],
+   "end_of_term": [
+    "2026-09-02",
+    "2026-09-15"
+   ]
+  },
+  {
+   "term": 2,
+   "start": "2026-09-16",
+   "end": "2026-12-18",
+   "instruction": [
+    "2026-09-16",
+    "2026-12-04"
+   ],
+   "exam": [
+    "2026-12-03",
+    "2026-12-04"
+   ],
+   "end_of_term": [
+    "2026-12-07",
+    "2026-12-18"
+   ]
+  },
+  {
+   "term": 3,
+   "start": "2027-01-04",
+   "end": "2027-04-08",
+   "instruction": [
+    "2027-01-04",
+    "2027-03-23"
+   ],
+   "exam": [
+    "2027-03-22",
+    "2027-03-23"
+   ],
+   "end_of_term": [
+    "2027-03-24",
+    "2027-04-08"
+   ]
+  }
+ ],
+ "curriculum_quarter_inference": {
+  "rule": "MATATAG competencies are organised in FOUR quarters; SY 2026-27 runs THREE terms. No official quarter-to-term pacing guide was found. Infer: fraction = instructional weekdays elapsed / total instructional weekdays (end-of-term blocks count as the end of that term's instruction); quarter = min(4, floor(4*fraction)+1). Outside the school year (summer) there is no current quarter: the feed weights EVERY cell of the student's own grade equally at the in-quarter multiplier (see FEED-WEIGHTING.md, schoolOutSameGrade).",
+  "replace_when": "DepEd publishes a MATATAG curriculum map / pacing guide for the three-term calendar."
+ }
+}

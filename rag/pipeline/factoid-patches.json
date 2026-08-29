@@ -1,0 +1,845 @@
+{
+ "scheme": "post-assembly overlay for rag/bank/factoids.jsonl, keyed by ffct id and applied by assemble-factoids.py after id assignment (gen-*.jsonl inputs are regenerated verbatim on every assembly, so an edit made to the bank alone is lost). Fields: text / q = per-language replacements (these 41 are the 2026-07 card-fit compressions of apply-card-fixes.py, <=46 displayed words, facts preserved, plus the hand tweak on ffct-33134); retired = true tombstones a card — the id and row stay (a hole would be re-minted; card_seen, tags and factoid-webp/<id>.webp are keyed by id) and gen-cards-pool.py skips it. 2026-08 card-fit sweep (fw-compress-factoids.py, qwen3.7-plus, <=46 displayed words, same facts) covers the 64 factoids the engraving wiring exposed.",
+ "patches": {
+  "ffct-01770": {
+   "text": {
+    "bis": "Modikit ang gecko tungod sa huyang kaayo nga puwersa tali sa mga molekula nga gitawag og van der Waals forces. Gamay ang gahum sa usa ka balhibo, apan minilyon kini — igo na aron mokupot ang tibuok lawas niini."
+   }
+  },
+  "ffct-02350": {
+   "text": {
+    "en": "A slug is like a snail without a shell! With no home to hide in, it stays in damp, dark places to avoid drying out or being spotted by enemies — a snail's shell keeps it safer."
+   }
+  },
+  "ffct-03206": {
+   "text": {
+    "tl": "Tamang hugis ng enzyme ang nagpapagana sa 'active site' para pabilisin reaksyon. Sobrang init ay nagbabago ng hugis — 'denatured' na ito, hindi na gumagana, tulad ng puti ng itlog na tumigas.",
+    "bis": "Sakto nga porma sa enzyme ang naghimo sa 'active site' nga molihok ug magpaspas sa reaksyon. Sobra nga init mausab ang porma — 'denatured' na kini, dili na molihok, sama sa puti sa itlog nga mogahi."
+   },
+   "q": {
+    "tl": "Ano ang 'denatured' na enzyme?",
+    "bis": "Unsa ang 'denatured' nga enzyme?"
+   }
+  },
+  "ffct-03357": {
+   "q": {
+    "bis": "Asa makit-an ang usa sa pinakadagko nga kolonya sa paniki?"
+   },
+   "text": {
+    "bis": "Sa Monfort Bat Cave sa Samal Island duol sa Davao, minilyon ka paniki ang nagbitay nga nagdasok sa bungbong — usa kini sa pinakadagko nga kolonya sa fruit bat sa kalibutan!"
+   }
+  },
+  "ffct-04095": {
+   "text": {
+    "bis": "Gamiton sa tanom aron makahimo og protina ug chlorophyll, ang berde nga bahin nga motabang sa paghimo og pagkaon gikan sa adlaw. Kon kulang, mangluspad ug magpabilin nga gamay — mao nga importante ang tabang sa kilat!"
+   },
+   "q": {
+    "bis": "Nganong kinahanglan sa tanom ang nitrogen?"
+   }
+  },
+  "ffct-04179": {
+   "text": {
+    "tl": "Hindi! Kalabasa may dalawang bulaklak: isa gumagawa ng pollen, isa magiging prutas. Kailangan madala ang pollen sa pangalawa, kung hindi walang prutas.",
+    "bis": "Dili! Ang kalabasa adunay duha ka bulak: usa naghimo og pollen, usa mahimong prutas. Kinahanglan madala ang pollen sa ikaduha, kung dili walay prutas."
+   },
+   "q": {
+    "tl": "Kaya bang gumawa ng prutas ang isang bulaklak lang?",
+    "bis": "Makahimo ba og prutas ang usa ka bulak?"
+   }
+  },
+  "ffct-04195": {
+   "text": {
+    "tl": "Oo! Sa pagtatae ng bata, inirerekomenda ng doktor ang ORS at zinc ng ilang araw. ORS humahawak ng tubig, zinc pampabilis ng paggaling, pampabawas ng susunod na pagtatae.",
+    "bis": "Oo! Sa kalibang sa bata, girekomenda sa doktor ang ORS ug zinc sa pipila ka adlaw. ORS mag-atiman sa tubig, zinc pampaspas sa pagkaayo, pampabawas sa sunod nga kalibang."
+   },
+   "q": {
+    "tl": "May kasama bang gamot ang ORS?",
+    "bis": "Aduna bay kauban nga tambal ang ORS?"
+   }
+  },
+  "ffct-04532": {
+   "text": {
+    "bis": "Gisundog sa inhenyero ang mata sa mandaragit! Duha ka kamera sa robot ug self-driving nga awto aron makakita og giladmon ug masukod ang gilay-on — sama sa mata."
+   },
+   "q": {
+    "bis": "Nganong duha ka kamera ang gibutang sa robot?"
+   }
+  },
+  "ffct-05234": {
+   "text": {
+    "bis": "Dili tanan motubo sa parehas nga dapit! Ang uban gusto sa ubos nga kanunay nalunod sa taog, ang uban sa mas taas ug uga. Mao nga naporma ang nagkahan-ay nga matang."
+   },
+   "q": {
+    "bis": "Nganong nagkahan-ay ang bakhaw?"
+   }
+  },
+  "ffct-05700": {
+   "text": {
+    "en": "It spread too fast, sickening many at once. People used distance and lockdowns to slow it down, keeping hospitals from running out of beds and doctors."
+   },
+   "q": {
+    "en": "Why 'slow the spread' of COVID-19?"
+   }
+  },
+  "ffct-05820": {
+   "text": {
+    "tl": "Imbes tumingin, nakakaramdam sila ng maliliit na galaw ng tubig gamit ang sensitibong lateral line sa katawan. Parang 'nakikinig' sila para malaman kung may pagkain o hadlang.",
+    "bis": "Imbis motan-aw, makabati sila sa pinakagamay nga lihok sa tubig gamit ang sensitibo nga lateral line sa lawas. Daw 'naminaw' sila aron mahibal-an kung naay pagkaon o babag."
+   },
+   "q": {
+    "tl": "Paano nararamdaman ng bulag na isda ang paligid?",
+    "bis": "Giunsa pagbati sa buta nga isda ang palibot?"
+   }
+  },
+  "ffct-06041": {
+   "text": {
+    "tl": "Ang scavenger (uwak, aso) ay nakikitang hayop na kumakain ng malalaking piraso ng patay na bagay. Ang decomposer (bacteria, fungi) ay maliit, hindi nakikita, at ganap na nilalansag ang natitira sa lupa.",
+    "bis": "Ang scavenger (uwak, iro) makita nga hayop nga mokaon og dagkong tipik sa patay nga butang. Ang decomposer (bacteria, fungi) gamay, dili makita, ug bug-os niining gubaon ang nahibilin sa yuta."
+   },
+   "q": {
+    "tl": "Pagkaiba ng decomposer sa scavenger?",
+    "bis": "Kalainan sa decomposer ug scavenger?"
+   }
+  },
+  "ffct-06222": {
+   "text": {
+    "bis": "Aduna silay daghang gagmay nga kaunoran libot sa dalunggan para pag-isa, pagpaubos, ug pagliko. Mas daghan silag kaunoran kaysa tawo, mao nga lisod tang molihok sa atong dalunggan!"
+   },
+   "q": {
+    "bis": "Nganong sayon ra sa iro nga ilihok ang dalunggan?"
+   }
+  },
+  "ffct-06235": {
+   "text": {
+    "bis": "Padayong mosulod ang tubig sa paramecium kay mas tabang ang tubig sa gawas — ang contractile vacuole, sama sa bomba, moibot sa sobrang tubig pagawas aron dili kini mobuto!"
+   }
+  },
+  "ffct-06237": {
+   "text": {
+    "tl": "Kayang baguhin ng octopus at cuttlefish ang kulay sa isang segundo gamit ang espesyal na cell sa balat na chromatophores, para magtago sa predator o makipag-usap sa ibang cephalopod!"
+   },
+   "q": {
+    "tl": "Gaano kabilis nagpapalit ng kulay ang octopus?"
+   }
+  },
+  "ffct-06261": {
+   "text": {
+    "tl": "Hiram sa pagtatago ng gamu-gamo at hayop! Putol-putol na pattern na tugma sa paligid ang ginagamit sa damit ng sundalo at kagamitan para hindi makita. Camouflage iyan mula sa kalikasan.",
+    "bis": "Gikan sa pagtago sa gamu-gamo ug hayop! Baliko nga pattern nga pareho sa palibot ang gigamit sa sapot sa sundalo ug gamit sa gawas aron dili makita. Camouflage kini gikan sa kinaiyahan."
+   },
+   "q": {
+    "tl": "Saan galing ang camouflage?",
+    "bis": "Asa gikan ang camouflage?"
+   }
+  },
+  "ffct-06532": {
+   "text": {
+    "tl": "Sa malalim na dagat, lumalaki ang invertebrate higit sa kamag-anak sa mababaw na tubig: deep-sea gigantism. Ang giant isopod ay umaabot ng 50 sentimetro, ang kamag-anak sa lupa ay ilang sentimetro lang!",
+    "bis": "Sa lawom nga dagat, mudako ang invertebrate og mas dako sa paryenti sa mababaw nga tubig: deep-sea gigantism. Ang giant isopod makaabot og 50 sentimetro, ang paryenti sa yuta pipila lang ka sentimetro!"
+   },
+   "q": {
+    "tl": "Bakit malaki ang giant isopod?",
+    "bis": "Nganong dako ang giant isopod?"
+   }
+  },
+  "ffct-06536": {
+   "text": {
+    "bis": "Ang nagsiga nga pamingwit sa anglerfish usa ka adaptasyon aron mabuhi kini. Diyutay ang pagkaon sa lawom nga dagat, mao nga maghulat lang kini ug paduolon ang biktima sa kahayag — makatipid og enerhiya."
+   }
+  },
+  "ffct-06553": {
+   "text": {
+    "tl": "Nangyayari ito dahil sa codominance: nakuha mo ang gene ng A mula sa isang magulang at ang gene ng B mula sa isa — PAREHO silang lumalabas! Walang nananaig, kaya sabay ang dalawang antigen.",
+    "bis": "Mahitabo kini tungod sa codominance: nakuha nimo ang gene sa A gikan sa usa ka ginikanan ug ang gene sa B gikan sa lain — PAREHO sila nagpakita! Walay modaog, mao nga dungan mogawas ang duha ka antigen."
+   }
+  },
+  "ffct-06567": {
+   "text": {
+    "tl": "Mas malaki ang Great Barrier Reef ng Australia, pero mas maraming uri ng coral at isda kada sukat ang bahura ng Pilipinas — nasa gitna tayo ng Coral Triangle, ang may pinakamaraming buhay-dagat sa mundo!",
+    "bis": "Mas dako ang Great Barrier Reef sa Australia, apan mas daghan ang matang sa coral ug isda kada sukod sa bahura sa Pilipinas — anaa kita sa sentro sa Coral Triangle, ang labing adunahan og kinabuhi sa dagat!"
+   }
+  },
+  "ffct-06577": {
+   "text": {
+    "tl": "Gumagana dahil napakahusay tumingin ng kulay ang ibon, mas magaling pa sa atin! Madali nilang makita ang matingkad na pula o dilaw sa araw. Kung bulag sa kulay, hindi gagana ang trick.",
+    "bis": "Molihok kay maayo kaayo motan-aw og kolor ang langgam, mas maayo pa kaysa kanato! Sayon makita ang hayag nga pula o dalag sa adlaw. Kon buta sa kolor, dili molihok kini."
+   },
+   "q": {
+    "tl": "Bakit gumagana ang babalang kulay?",
+    "bis": "Ngano molihok ang pasidaan nga kolor?"
+   }
+  },
+  "ffct-07668": {
+   "text": {
+    "bis": "Kon duha ka heterozygous nga ginikanan itawid, mogawas ang 3 ngadto sa 1 nga ratio — tulo ang adunay dominanteng kinaiya sa matag usa nga adunay recessive."
+   },
+   "q": {
+    "bis": "Unsa ang ratio sa Bb x Bb?"
+   }
+  },
+  "ffct-07712": {
+   "text": {
+    "tl": "Parehong galing sa sugat, pero iba! Rabies ay virus mula sa laway ng hayop; tetano naman ay bakterya mula sa marumi o kinakalawang na bagay. Iba ang bakuna para sa bawat isa."
+   },
+   "q": {
+    "tl": "Magkapareho ba ang rabies at tetano?"
+   }
+  },
+  "ffct-08771": {
+   "text": {
+    "tl": "Ang babaeng crown-of-thorns starfish ay kayang maglabas ng higit 60 milyong itlog sa isang taon — kapag sagana ang pagkain at kaunti ang predator, sumasabog ang populasyon nito at nasisira ang mga reef sa loob ng ilang buwan!",
+    "bis": "Ang babaye nga crown-of-thorns starfish makahimo og labaw sa 60 milyon nga itlog matag tuig — kon daghan ang pagkaon ug gamay ang mandaragit, mosabog ang populasyon niini ug malaglag ang mga reef!"
+   }
+  },
+  "ffct-08793": {
+   "text": {
+    "tl": "Dahil sa maraming butas, malaki ang surface area kaya nasisipsip ang lason sa tiyan bago masipsip ng katawan. Hindi gamot sa bahay; doktor lang ang magbibigay, hindi gumagana sa lahat ng lason.",
+    "en": "Its tiny holes give huge surface area to soak up stomach poison before absorption. It's not a home remedy; only a doctor should give it, and it doesn't work on every poison.",
+    "bis": "Sa daghang lungag, dako ang surface area busa masuyop ang hilo sa tiyan sa dili pa masuyop sa lawas. Dili tambal sa balay; doktor ra ang mohatag, dili molihok sa tanang hilo."
+   },
+   "q": {
+    "tl": "Paano nakakatulong ang activated charcoal sa lason?",
+    "en": "How does activated charcoal help with poisoning?",
+    "bis": "Unsaon pagtabang sa activated charcoal sa hilo?"
+   }
+  },
+  "ffct-09027": {
+   "text": {
+    "bis": "Baho og lami ang monarch butterfly kay mikaon kini og makahilo nga milkweed sa ulod pa kini, ug nagpabilin ang hilo sa lawas niini — kon kan-on sa langgam, masakit kini ug dili na mosulay pag-usab!"
+   }
+  },
+  "ffct-09220": {
+   "text": {
+    "tl": "Pareho ang DNA ng selula, pero hindi lahat ng gene 'naka-on'. Ibang gene ang bukas sa balat kaysa kalamnan, parang switch na iba depende sa trabaho."
+   },
+   "q": {
+    "tl": "Bakit magkaiba ang selula ng balat at kalamnan kahit iisa ang DNA?"
+   }
+  },
+  "ffct-09425": {
+   "text": {
+    "bis": "Dili eksaktong parehas! Ang active fault usa lang ka liki sa yuta nga nagalihok; ang plate boundary mao ang dako nga ngilit tali sa higante nga mga tipak sa yuta."
+   }
+  },
+  "ffct-09563": {
+   "text": {
+    "tl": "Hinaharang ng red tide poison (saxitoxin) ang maliliit na pintuan sa ugat na nagpapadala ng senyales. Kapag sarado, hindi makapag-utos ang utak sa kalamnan, kaya namamanhid at nanghihina ang tao.",
+    "bis": "Ang red tide poison (saxitoxin) moharang sa gagmay nga pultahan sa ugat nga nagdala og senyales. Kon sirado kini, dili makamando ang utok sa kaunoran, mao nga manhod ug maluya ang tawo."
+   },
+   "q": {
+    "tl": "Bakit nanghihina at namamanhid ang taong nalasunan ng red tide?",
+    "bis": "Nganong manhod ug maluya ang tawo nga nahilo sa red tide?"
+   }
+  },
+  "ffct-11515": {
+   "text": {
+    "bis": "Ang ordinaryong tanom malaya sa parat nga yuta kay gisuyop sa asin ang tubig sa gamot niini. Apan ang bakhaw kaya mobabag o mopagawas sa asin — dili kini giuhaw bisan sa tubig-dagat!"
+   }
+  },
+  "ffct-12147": {
+   "text": {
+    "bis": "Sayop kana! Ang kaayo sa pagpaminaw ug pagtino sa direksyon nagdepende sa himsog nga sulod nga bahin sa dalunggan ug sa utok, dili sa gidak-on. Dako man o gamay, molihok gihapon og maayo."
+   },
+   "q": {
+    "bis": "Mas maayo ba modungog ang dako nga dalunggan?"
+   }
+  },
+  "ffct-12278": {
+   "text": {
+    "tl": "Pareho silang nagpapadala ng mensahe pero magkaiba ng bilis: ang nervous system ay sobrang bilis, habang ang endocrine system ay mas mabagal pero mas matagal ang epekto dahil dumadaan sa dugo."
+   },
+   "q": {
+    "tl": "Alin ang mas mabilis, ang nervous system o ang endocrine system?"
+   }
+  },
+  "ffct-12375": {
+   "text": {
+    "tl": "Ang tendon, isang matibay na litid. Humihila ang kalamnan, dinala ng tendon ang puwersa para gumalaw ang buto. Mararamdaman mo ito sa likod ng paa kapag tumitiyad ka!",
+    "bis": "Ang tendon o kumbira, lig-on nga pisi. Mobira ang kaunoran, modala ang tendon sa kusog aron molihok ang bukog. Mabati nimo kini sa likod sa tikod kon motiyad ka!"
+   },
+   "q": {
+    "tl": "Ano ang kumokonekta sa kalamnan sa buto?",
+    "bis": "Unsa ang naghikot sa kaunoran ngadto sa bukog?"
+   }
+  },
+  "ffct-12636": {
+   "text": {
+    "bis": "Ang sea otter! Sa panit nga sama kadako sa imong kuko, adunay gatosan ka libo hangtod halos usa ka milyon ka lugas sa balahibo — ang tibuok ulo nimo mga gatos ka libo ra!"
+   }
+  },
+  "ffct-12785": {
+   "text": {
+    "tl": "Pareho silang arthropod — walang buto sa loob, may matigas na balat sa labas, at mga paang may buko-buko. Pero ang alimango ay may sampung paa at sipit at nasa tubig; ang gagamba ay walo at nasa lupa.",
+    "bis": "Parehong arthropod sila — walay bukog sa sulod, gahi ang panit sa gawas, ug mga tiil nga may buko-buko. Apan ang alimango may napulo ka tiil ug sipit ug anaa sa tubig; ang lawalawa may walo ug anaa sa yuta."
+   }
+  },
+  "ffct-12796": {
+   "text": {
+    "tl": "Dahil ang magkamag-anak na halaman, tulad ng kamatis, talong, at patatas, ay may parehong peste at sakit. Ang pagpapalit ng kamag-anak nito ay hindi nakakaputol sa siklo — pumili ng pananim mula sa ibang pamilya.",
+    "bis": "Tungod kay ang managparyente nga tanom, sama sa kamatis, talong, ug patatas, adunay parehong peste ug sakit. Ang pag-ilis og paryente niini dili makaputol sa siklo — pagpili og tanom gikan sa laing pamilya."
+   }
+  },
+  "ffct-12853": {
+   "text": {
+    "bis": "Daghang tambal ang gikan sa mga mananap sa coral reef. Adunay sponge ug kuhol sa dagat nga mohimo og espesyal nga kemikal nga gihimong tambal batok sa kanser — busa ang pag-amping sa reef pag-amping usab sa umaabot nga tambal."
+   }
+  },
+  "ffct-13755": {
+   "text": {
+    "tl": "May maliliit na algae sa loob ng coral na gumagawa ng pagkain mula sa sikat ng araw at nagbibigay ng kulay dito. Kapag sobrang init ng tubig, umaalis ang algae at namumuti ang coral — ito ang coral bleaching.",
+    "bis": "Adunay gagmayng algae nga nagpuyo sulod sa coral nga naghimo og pagkaon gikan sa adlaw ug naghatag sa kolor niini. Kon mainit kaayo ang tubig, mobiya ang algae ug mamuti ang coral — mao ang coral bleaching."
+   }
+  },
+  "ffct-13985": {
+   "text": {
+    "tl": "Ang archerfish, na nabubuhay sa mga ilog at baybayin ng Pilipinas, ay pinatutumba ang mga insekto sa sanga gamit ang tumpak na jet ng tubig mula sa bibig — nakakapag-adjust pa ito sa pagbaluktot ng liwanag sa tubig!",
+    "bis": "Ang archerfish, nga makita sa mga suba ug estero sa Pilipinas, makapukan ang mga insekto sa sanga gamit ang tukma nga jet sa tubig gikan sa baba niini — makapag-adjust pa kini sa pagbaliko sa suga sa tubig!"
+   }
+  },
+  "ffct-13996": {
+   "text": {
+    "tl": "Parehong dala ng lamok. Ang dengue, virus mula sa Aedes na kumakagat sa araw. Ang malaria, parasite mula sa Anopheles na kumakagat sa gabi. Kaya magkaiba ang gamot nila.",
+    "bis": "Parehong dala sa lamok. Ang dengue, virus gikan sa Aedes nga mopaak sa adlaw. Ang malaria, parasite gikan sa Anopheles nga mopaak sa gabii. Mao nga lahi ang tambal nila."
+   },
+   "q": {
+    "tl": "Ano ang pagkakaiba ng dengue sa malaria?",
+    "bis": "Unsay kalahian sa dengue ug malaria?"
+   }
+  },
+  "ffct-14197": {
+   "text": {
+    "en": "Huge numbers of young queens fly out together, but most die — eaten by birds or unable to find a safe spot. Only a few succeed in starting their own colony, which is why every surviving queen matters!",
+    "tl": "Maraming batang reyna ang lumilipad nang sabay-sabay, pero karamihan namamatay — kinakain ng ibon o hindi nakakahanap ng ligtas na lugar. Iilan lang ang nakakapagsimula ng sariling kolonya — kaya mahalaga ang bawat nabubuhay na reyna!",
+    "bis": "Daghan kaayong batan-ong reyna ang molupad nga dungan, apan kadaghanan mamatay — kaonon sa langgam o dili makakita og luwas nga dapit. Pipila ra ang molampos sa pagsugod og kaugalingong kolonya — importante kaayo ang matag buhi nga reyna!"
+   }
+  },
+  "ffct-16704": {
+   "q": {
+    "tl": "Bakit iisa ang itsura ng salt water, pero sa halo-halo nakikita ang sangkap?"
+   },
+   "text": {
+    "tl": "Ang homogeneous mixture ay iisa ang itsura sa buong bahagi, gaya ng asin sa tubig. Ang heterogeneous mixture ay nakikita pa ang magkakaibang bahagi, gaya ng halo-halo!"
+   }
+  },
+  "ffct-16706": {
+   "text": {
+    "tl": "Sa mixture, nananatili ang katangian ng bawat sangkap. Alat pa rin ang asin, kaya mababawi! Sa compound, nabubuo ang bagong sangkap na may ibang katangian, kaya hindi na mapaghihiwalay.",
+    "bis": "Sa mixture, magpabilin ang kinaiya sa matag sangkap. Parat gihapon ang asin, ug mabawi kini! Apan sa compound, maporma ang bag-ong sustansya nga adunay laing kinaiya, busa dili na mabulag."
+   },
+   "q": {
+    "tl": "Mababawi ba ang asin sa salt water? Paano sa compound?",
+    "bis": "Mabawi ba ang asin sa salt water? Unsa sa compound?"
+   }
+  },
+  "ffct-17162": {
+   "text": {
+    "tl": "Tanda ng reaksyong kemikal ang bagong amoy! Galing ito sa maliliit na gas na pumapasok sa ilong. Kapag bumuo ang reaksyon ng bagong gas, may bagong amoy ka."
+   },
+   "q": {
+    "tl": "Bakit iba ang amoy ng panis na gatas o sunog na pagkain?"
+   }
+  },
+  "ffct-17163": {
+   "text": {
+    "bis": "Ang init mahimong pisikal nga kausaban lang. Apan kon makita nimo ang init, pagbag-o sa kolor, ug bula nga dungan, sigurado nga tinuod nga reaksiyong kemikal!"
+   },
+   "q": {
+    "bis": "Nganong mas maayo kon duha o daghan ka timailhan sa reaksiyong kemikal?"
+   }
+  },
+  "ffct-17166": {
+   "text": {
+    "en": "Yes! In an instant cold pack for a swollen foot, a reaction absorbs heat from surroundings—temperature drops without ice!"
+   },
+   "q": {
+    "en": "Can a sudden cold feeling mean a chemical reaction?"
+   }
+  },
+  "ffct-17356": {
+   "text": {
+    "bis": "Ang bag-ong plastik gihimo gikan sa lana! Pag-recycle, mas gamay nga lana ug enerhiya ang gigamit—makatipid sa natural nga kapanguhaan."
+   },
+   "q": {
+    "bis": "Nganong makatabang ang pag-recycle sa plastik?"
+   }
+  },
+  "ffct-17525": {
+   "text": {
+    "bis": "Ang iron! Ginahimo kini nga steel—pundasyon sa buildings, taytayan, barko, ug sakyanan. Barato, daghan, ug lig-on kaayo."
+   },
+   "q": {
+    "bis": "Unsa nga transition metal ang nagtukod sa atong modernong kalibotan?"
+   }
+  },
+  "ffct-17836": {
+   "q": {
+    "bis": "Kinsa ang una nga nagpuno og oxygen sa hangin sa Kalibutan?"
+   }
+  },
+  "ffct-18031": {
+   "text": {
+    "tl": "Ang kawayan ay damo at isa sa pinakamabilis lumalagong halaman sa mundo — kayang lumaki ng ilang sentimetro sa isang araw! Ginagamit din itong matibay at magaan na materyal sa pagtatayo.",
+    "bis": "Ang kawayan balili ug usa sa pinakapaspas motubo nga tanom sa kalibutan — motubo og pipila ka sentimetro sa usa ka adlaw! Gigamit usab kini nga lig-on ug gaan nga materyales sa pagtukod."
+   }
+  },
+  "ffct-18426": {
+   "q": {
+    "tl": "Paano nakalalakad sa tubig ang water striders?"
+   }
+  },
+  "ffct-18429": {
+   "text": {
+    "tl": "Ang tubig ay may napakataas na specific heat—kailangan ng maraming enerhiya para magbago ang temperatura! Kaya ang mga lugar tulad ng Pilipinas ay mas malambot.",
+    "bis": "Ang tubig adunay napaka-taas nga specific heat—kinahanglan og daghang enerhiya aron mabag-o ang temperatura! Mao nga ang mga lugar sama sa Pilipinas mas malumo."
+   },
+   "q": {
+    "tl": "Bakit mas malambot ang temperatura sa mga lugar malapit sa dagat?",
+    "bis": "Nganong mas malumo ang temperatura sa mga lugar duol sa dagat?"
+   }
+  },
+  "ffct-23499": {
+   "text": {
+    "bis": "Dili mabaliskad sa patag nga salamin ang taas ug ubos! Apan ang wala ug tuo murag magbayloay—kung ipataas nimo ang tuong kamot, murag wala ang gipataas."
+   },
+   "q": {
+    "bis": "Ngano nga murag sayop ang kamot sa salamin?"
+   }
+  },
+  "ffct-23750": {
+   "text": {
+    "bis": "Walay thermostat kini aron sukdon ang init! Mohuyop lang sa speed nga imong gipili, mao nga kinahanglan nimo palungon sa kamot. Ang aircon ra ang naay thermostat."
+   },
+   "q": {
+    "bis": "Ngano dili kusang mohunong ang electric fan kon bugnaw na?"
+   }
+  },
+  "ffct-23772": {
+   "q": {
+    "bis": "Kaya bang itulod sa butang ang iyang kaugalingon?"
+   }
+  },
+  "ffct-23878": {
+   "q": {
+    "bis": "Nahibaw-an ba nimo nga ang kanon natipigan nga kahayag sa adlaw?"
+   }
+  },
+  "ffct-24307": {
+   "text": {
+    "bis": "Ang nagdugtong nga tumoy mao ang fulcrum, mopislit sa tunga (effort), ug ang tumoy mipunit sa load. Wala modaghan sa kusog, apan tukma—perpekto sa gagmay nga butang sama sa tunok!"
+   },
+   "q": {
+    "bis": "Unsaon nga ang tweezers espesyal nga lever?"
+   }
+  },
+  "ffct-24571": {
+   "text": {
+    "tl": "Oo! Maliit lang ang kuryenteng kailangan ng LED, kaya kaya itong paandarin ng baterya o powerbank — kaya nasa mga laruan at flashlight ito. Ang bulb sa bahay may parte na nagbabago ng kuryente mula sa saksakan.",
+    "bis": "Oo! Gamay ra ang kuryente nga gikinahanglan sa LED, mao nga makaya kini sa baterya o powerbank — naa kini sa mga dulaan ug flashlight. Ang bulb sa balay adunay parte nga mag-usab sa kuryente gikan sa saksakan."
+   }
+  },
+  "ffct-24573": {
+   "text": {
+    "tl": "Mas mataas ang frequency, mas malaki ang enerhiya! Kaya ang ultraviolet na sobrang taas ang frequency ay nakakapaso, pero hindi ang ordinaryong liwanag."
+   },
+   "q": {
+    "tl": "Bakit nasusunog ang balat sa araw pero hindi sa ordinaryong ilaw?"
+   }
+  },
+  "ffct-24609": {
+   "text": {
+    "bis": "Sa orchestra, gagmay nga instrumento nga may mubo nga kuwerdas sama sa violin motukar sa taas nga nota. Dagko nga may taas nga kuwerdas sama sa cello motukar sa ubos."
+   },
+   "q": {
+    "bis": "Ngano taas ang tingog sa violin, ubos sa cello?"
+   }
+  },
+  "ffct-24613": {
+   "text": {
+    "tl": "May force na kailangang dumikit, tulad ng pagtulak o friction (contact forces). May force na gumagana sa malayo, tulad ng gravity at magnetism (non-contact forces)! Kaya nahuhulog ang bagay, hinihila ng gravity.",
+    "bis": "Adunay force nga mohikap, sama sa pagduso o friction (contact forces). Adunay force usab gikan sa layo, sama sa gravity ug magnetism (non-contact forces)! Mao nga mahulog ang butang, gibira sa gravity."
+   },
+   "q": {
+    "tl": "Paano gumagalaw ang bagay kahit walang humahawak?",
+    "bis": "Unsaon paglihok ang butang bisan walay nagkupot?"
+   }
+  },
+  "ffct-24614": {
+   "text": {
+    "tl": "Mas malakas ang force mo, mas malaki ang pagbabago sa galaw! Bahagyang tulak ang bola, mahina ang gulong; malakas na tulak, mas mabilis at mas malayo. Ang pagbabago ay nakadepende sa lakas ng force!"
+   }
+  },
+  "ffct-24869": {
+   "text": {
+    "bis": "Ang rolling resistance mao ang kiskisan sa gulong ug daan! Ang gulong nga kulang sa hangin adunay mas taas nga rolling resistance, nagdugang sa gasolina."
+   },
+   "q": {
+    "bis": "Unsa ang rolling resistance, ug nganong mas daghang gasolina ang gulong nga kulang sa hangin?"
+   }
+  },
+  "ffct-25251": {
+   "text": {
+    "tl": "Oo! Ang OTEC (Ocean Thermal Energy Conversion) gumagamit ng pagkakaiba ng temperatura ng mainit na tubig sa ibabaw at malamig na tubig sa kalaliman para sa kuryente. Malaki ang potensyal ng tropical na dagat ng Pilipinas!",
+    "bis": "Oo! Ang OTEC (Ocean Thermal Energy Conversion) naggamit sa pagkalahi sa temperatura sa mainit nga tubig sa nawong ug malamig nga tubig sa kalaliman aron makahimo og kuryente. Dako ang potensyal sa dagat sa Pilipinas!"
+   }
+  },
+  "ffct-25569": {
+   "q": {
+    "bis": "Unsaon pagkasabot sa mga musikero sa parehas nga pitch?"
+   }
+  },
+  "ffct-29181": {
+   "text": {
+    "tl": "Ang asteroid ay natirang building blocks mula noong nabuo ang solar system bilyong taon na ang nakakalipas! Hindi sila naging bahagi ng planeta, kaya pinag-aaralan para malaman kung paano nabuo ang mga planeta.",
+    "bis": "Ang asteroid nahabiling building blocks gikan sa una nga naporma ang solar system bilyon ka tuig na ang milabay! Wala sila mahimong bahin sa planeta, mao nga gitun-an aron mahibaloan giunsa pagkaporma ang mga planeta."
+   },
+   "q": {
+    "tl": "Ano ang asteroid, at bakit pinag-aaralan ng mga siyentista?",
+    "bis": "Unsa ang asteroid, ug ngano nga gitun-an sa mga siyentista?"
+   }
+  },
+  "ffct-31480": {
+   "q": {
+    "bis": "Nganong baliko ang layer sa bato sa pipila ka bukid?"
+   }
+  },
+  "ffct-31550": {
+   "text": {
+    "tl": "Nasa Ring of Fire ang Pilipinas — isang malaking singsing ng aktibidad sa paligid ng Pacific Ocean! Dito nagbabanggaan ang malalaking piraso ng Earth na plates. Kaya marami tayong bulkan at lindol.",
+    "en": "The Philippines sits on the Ring of Fire around the Pacific! Earth slabs called plates push and grind here, causing volcanoes and earthquakes. Normal where plates meet!",
+    "bis": "Ang Pilipinas naa sa Ring of Fire palibot sa Pacific! Mga piraso sa Earth nga plates nagabangga dinhi, hinungdan sa bulkan ug linog. Normal kung magkita ang plates!"
+   },
+   "q": {
+    "tl": "Bakit maraming bulkan at lindol sa Pilipinas?",
+    "en": "Why so many volcanoes and earthquakes in the Philippines?",
+    "bis": "Ngano daghan og bulkan ug linog sa Pilipinas?"
+   }
+  },
+  "ffct-31551": {
+   "q": {
+    "en": "What is a fault?",
+    "tl": "Ano ang fault?",
+    "bis": "Unsa ang fault?"
+   },
+   "text": {
+    "en": "A fault is a crack in Earth's surface where two sides of the ground can move. When they suddenly slip, the ground shakes — an earthquake! That's why we practice duck, cover, and hold — especially with the West Valley Fault near Metro Manila!",
+    "tl": "Ang fault ay bitak sa balat ng Earth kung saan gumagalaw ang dalawang panig ng lupa. Kapag biglang dumulas ang mga ito, nayayanig ang lupa — lindol! Kaya nagdi-drill tayo ng duck, cover, at hold — lalo na't may West Valley Fault sa Metro Manila!",
+    "bis": "Ang fault usa ka liki sa panit sa Kalibutan diin ang duha ka kilid sa yuta makalihok. Kung kalit silang modahili, mauyog ang yuta — linog! Mao nga magdrill ta og duck, cover, ug hold — kay naa ang West Valley Fault sa Metro Manila!"
+   }
+  },
+  "ffct-31552": {
+   "text": {
+    "tl": "Ang Pilipinas ay kapuluan — mahigit 7,000 isla na napapaligiran ng tubig! Nabuo ang mga isla mula sa bulkan at pagtaas ng lupa sa ilalim ng dagat, kaya halos lahat malapit sa dagat.",
+    "en": "The Philippines is an archipelago — over 7,000 islands surrounded by water! Islands were built by volcanoes and land rising from the sea floor, so almost every part is near the sea.",
+    "bis": "Ang Pilipinas usa ka kapuloan — kapin sa 7,000 ka pulo nga gilibutan og tubig! Mga pulo nabuo gikan sa bulkan ug pagsaka sa yuta gikan sa salog sa dagat, kaya duol sa dagat."
+   },
+   "q": {
+    "tl": "Bakit kapuluan ang Pilipinas?",
+    "en": "What makes the Philippines an archipelago?",
+    "bis": "Ngano nga kapuloan ang Pilipinas?"
+   }
+  },
+  "ffct-31553": {
+   "text": {
+    "bis": "Ang habagat usa ka init nga hangin nga mohuyop gikan sa habagatang-kasadpan panahon sa init! Magdala kini og umog nga hangin gikan sa dagat, busa kusog ang ulan sa kasadpang Pilipinas gikan Hunyo hangtod Septyembre."
+   }
+  },
+  "ffct-31554": {
+   "text": {
+    "en": "The amihan is a cool wind that blows from the northeast from December to February! It brings cool, dry air — that's why the weather feels crisp, especially around Christmas. It's the opposite of the habagat, which brings rain.",
+    "tl": "Ang amihan ay malamig na hangin mula sa hilagang-silangan, mula Disyembre hanggang Pebrero! Dala nito ang malamig at tuyong hangin — kaya presko ang panahon, lalo na tuwing Pasko. Kasalungat ito ng habagat na nagdadala ng ulan.",
+    "bis": "Ang amihan usa ka bugnaw nga hangin nga mohuyop gikan sa amihanang sidlakan gikan Disyembre hangtod Pebrero! Magdala kini og bugnaw ug uga nga hangin — mao nga presko ang panahon, ilabi na sa Pasko. Sukwahi kini sa habagat nga magdala og ulan."
+   }
+  },
+  "ffct-31561": {
+   "text": {
+    "tl": "Karamihan sa tubig natin ay nagsisimula bilang ulan sa mga bundok! Umaagos ito pababa sa mga sapa at ilog papunta sa mga lungsod at bukid, at ang ilan ay iniipon sa mga dam para sa inumin at patubig.",
+    "bis": "Daghan sa atong tubig nagsugod isip ulan sa mga bukid! Modagayday kini paubos sa mga sapa ug suba padulong sa mga siyudad ug uma, ug ang uban gitipigan sa mga dam para sa imnon ug patubig."
+   }
+  },
+  "ffct-31967": {
+   "text": {
+    "tl": "Gamit ang MRI machine! May SOBRA lakas na magnet ito — mas malakas pa sa fridge magnets. Ang magnetic field nito ay kumukuha ng malilinaw na larawan ng loob mo para sa doktor!",
+    "bis": "Gamit ang MRI machine! Adunay SOBRA kusog nga magnet — mas kusog pa sa fridge magnets. Ang magnetic field niini makakuha og klaro nga hulagway sa imong sulod para sa mga doktor!"
+   },
+   "q": {
+    "tl": "Paano nakikita ng doktor ang loob mo nang hindi ka binubuksan?",
+    "bis": "Unsaon pagkakita sa doktor sa sulod sa lawas nga dili ka ablihan?"
+   }
+  },
+  "ffct-32665": {
+   "q": {
+    "tl": "Paano tumutulong ang mga geostationary satellite sa pagbabantay ng panahon?",
+    "bis": "Unsaon pagtabang sa mga geostationary satellite sa pagmonitor sa panahon?"
+   },
+   "text": {
+    "bis": "Ang mga geostationary satellite sama sa Himawari nagpabilin sa ibabaw sa usa ka fixed point sa Yuta. Naghatag kini og padayon nga mga larawan sa mga panganod ug bagyo sa Pilipinas ug Asya matag napulo ka minuto!"
+   }
+  },
+  "ffct-32736": {
+   "text": {
+    "bis": "Scoria! Itom o pula nga bato puno sa buslot gikan sa gas bubbles sa lava — mas bug-at kaysa pumice ug komon sa palibot sa cinder cone volcanoes."
+   },
+   "q": {
+    "bis": "Unong itom ug buslot-buslot nga bato mas bug-at kaysa pumice sa cinder cone volcanoes?"
+   }
+  },
+  "ffct-32764": {
+   "text": {
+    "bis": "Ihap nila ang varves! Kini taonan nga sediment layers: baga, magaspang sa ting-init, ug nipis, pino sa tigtugnaw. Matag pares, usa ka tuig!"
+   },
+   "q": {
+    "bis": "Unsaon pagbasa sa siyentipiko sa lapok sa lawa?"
+   }
+  },
+  "ffct-32765": {
+   "text": {
+    "tl": "Contact metamorphism: init lang sa maliit na lugar malapit sa magma. Regional metamorphism: malawak na lugar kapag nagtatagpo ang tectonic plates, nag-iipon ng presyon at init sa milyun-milyong taon!"
+   },
+   "q": {
+    "tl": "Ano ang pagkakaiba ng contact at regional metamorphism?"
+   }
+  },
+  "ffct-32801": {
+   "q": {
+    "bis": "Nganong grabe kusog mousabog ang mga bulkan sama sa Mayon?"
+   },
+   "text": {
+    "bis": "Kadaghanan sa bulkan sa Pilipinas mga stratovolcano nga may alternating nga layer sa lava ug pyroclastic material. Ang baga ug viscous nga lava nagkulong sa gas — hinungdan sa grabe kusog nga pagsabog!"
+   }
+  },
+  "ffct-32833": {
+   "text": {
+    "tl": "Na-scrape ang sediment at nagtitipon bilang accretionary prism! Ito ay magulong, mixed na bato sa harapan ng subduction zone sa Pilipinas."
+   },
+   "q": {
+    "tl": "Ano ang nangyayari sa dumi at bato kapag sumisid ang tectonic plate?"
+   }
+  },
+  "ffct-32838": {
+   "text": {
+    "tl": "Sumabog ang large igneous provinces (LIPs), naglalabas ng CO2 sa milyun-milyong taon. Nag-warm ito ng klima, nag-cause ng oceanic anoxia (kulang oxygen), naka-link sa mass extinctions!",
+    "bis": "Mosabog ang dagkong igneous provinces (LIPs), nagpagawas og CO2 sa milyun-milyon ka tuig. Makapainit kini sa klima, makdulot og oceanic anoxia (kulang oxygen), nalambigit sa mass extinctions!"
+   },
+   "q": {
+    "tl": "Kaya bang baguhin ng malalaking pagsabog ng bulkan ang karagatan ng Earth?",
+    "bis": "Makausab ba ang dagkong pagbuto sa bulkan sa kadagatan sa Yuta?"
+   }
+  },
+  "ffct-32860": {
+   "text": {
+    "tl": "Fossil ng sinaunang fern at puno sa coal deposits nagpapatunay na ang uling nagmula sa malalaking tropical swamp forests milyun-milyong taon na! Ipinapakita rin nito ang hugis ng sinaunang dahon.",
+    "bis": "Fossil sa karaan nga pako, kahoy sa coal deposit nagpakita nga ang karbon naggikan sa dagkong tropical swamp forests gatusan ka milyon ka tuig na! Gipakita usab ang porma sa karaan nga dahon."
+   },
+   "q": {
+    "tl": "Anong lihim ang ibinubunyag ng fossil sa uling?",
+    "bis": "Unsay sekreto sa fossil sa karbon?"
+   }
+  },
+  "ffct-32861": {
+   "q": {
+    "en": "What are ammonites?",
+    "tl": "Ano ang ammonite?",
+    "bis": "Unsa ang ammonite?"
+   },
+   "text": {
+    "tl": "Ang ammonite ay mga extinct na cephalopod na may coiled shell — kamag-anak ng squid! Napakalawak at napakarami nila kaya ginagamit silang index fossils para sa Mesozoic rocks. Namatay silang lahat sa asteroid impact 66 milyong taon na ang nakalipas.",
+    "bis": "Ang mga ammonite mga extinct nga cephalopod nga may lingin nga kabhang — paryente sa pusit! Kaylap ug lain-lain sila kaayo, mao nga gigamit sila ingon index fossils para sa Mesozoic rocks. Namatay silang tanan sa asteroid impact 66 milyong tuig ang milabay."
+   }
+  },
+  "ffct-32862": {
+   "text": {
+    "bis": "Ang nautilus! Wala magbag-o sulod sa 400 milyong tuig gikan sa Paleozoic era. Ang chambered shells niini sama ra sa katigulangan.",
+    "tl": "Ang living fossils halos hindi nagbago sa milyun-milyong taon! Ang nautilus sa dagat ng Pilipinas ay isang halimbawa. Ang chambered shells nila ay kapareho pa rin ng ninuno nila sa Paleozoic era mahigit 400 milyong taon na."
+   },
+   "q": {
+    "bis": "Unsa ang living fossil sa dagat sa Pilipinas?",
+    "tl": "Anong living fossil ang lumalangoy sa dagat ng Pilipinas?"
+   }
+  },
+  "ffct-32864": {
+   "text": {
+    "tl": "Sa mababaw na pool, sumasabog ang tubig at pumapaikot ng calcite particles. Binabalot nito ang sentro nang paulit-ulit, nagiging makinis na calcite sphere!",
+    "bis": "Sa mabaw nga pool, mosabog ang tubig ug mopaligid sa calcite particles. Nagbalot kini sa sentro nga balik-balik, naghimo og hamis nga calcite sphere!"
+   },
+   "q": {
+    "tl": "Paano nabubuo ang cave pearl sa yungib?",
+    "bis": "Unsaon pagporma ang cave pearl sa kuweba?"
+   }
+  },
+  "ffct-32866": {
+   "q": {
+    "en": "How did El Nido's karst towers form?",
+    "tl": "Paano nabuo ang mga karst tower ng El Nido?",
+    "bis": "Unsaon pagporma sa mga karst tower sa El Nido?"
+   },
+   "text": {
+    "tl": "Sikat ang El Nido, Palawan sa mga karst tower nito: mga patayong limestone walls na tumatayo mula sa dagat! Nabuo ang mga ito sa milyun-milyong taon habang tinunaw ng ulan ang limestone at iniwan ang pinakamatigas na bahagi.",
+    "bis": "Bantog ang El Nido, Palawan sa mga karst tower niini: mga patindog nga limestone walls nga motindog gikan sa dagat! Naporma kini sa milyon-milyon ka tuig samtang gitunaw sa ulan ang limestone ug gibilin ang pinakalig-on nga bahin."
+   }
+  },
+  "ffct-32894": {
+   "text": {
+    "tl": "Ang MakBan sa Laguna at Batangas, Pilipinas! Gumagamit ito ng mainit na steam mula sa ilalim ng lupa malapit sa Mt. Makiling at Mt. Banahaw.",
+    "bis": "Ang MakBan sa Laguna ug Batangas, Pilipinas! Naggamit kini og mainit nga steam gikan sa ilalom sa yuta duol sa Mt. Makiling ug Mt. Banahaw."
+   },
+   "q": {
+    "tl": "Saan ang pinakamalaking geothermal complex sa mundo?",
+    "bis": "Asa ang labing dagkong geothermal complex sa kalibutan?"
+   }
+  },
+  "ffct-32903": {
+   "text": {
+    "tl": "1 hanggang 4 kilometro! Gumagamit ang inhinyero ng directional drilling para maabot ang mainit na reservoir na hindi direkta sa ilalim, katulad sa oil at gas exploration."
+   },
+   "q": {
+    "tl": "Gaano kalalim ang geothermal well?"
+   }
+  },
+  "ffct-32954": {
+   "text": {
+    "tl": "Ang volcanic ash ay nakakapinsala sa kalusugan! Ang pino nitong particle ay pumapasok sa baga at nagdudulot ng respiratory problems. Dapat magsuot ng mask, manatili sa loob, at linisin ang abo sa bubong — ang basang abo ay sobrang bigat, pwedeng magpaguho ng bahay!",
+    "bis": "Ang volcanic ash makadaot sa kalusugan! Ang pino nga particle niini mosulod sa baga ug magdulot og respiratory problems. Kinahanglang magsuot og mask, magpabilin sa sulod, ug limpyohon ang abo sa bubong — ang basang abo bug-at kaayo, makapaguba sa balay!"
+   }
+  },
+  "ffct-32957": {
+   "text": {
+    "bis": "Ang South Sea pearl mao ang national gem! Gigamit ang gold sa jewellery, ug makit-an ang mga mineral sama sa agate ug topaz."
+   },
+   "q": {
+    "bis": "Unsang bililhong bahandi ang naa sa yuta sa Pilipinas?"
+   }
+  },
+  "ffct-32958": {
+   "text": {
+    "tl": "Pinira ng alon ang basalt at dark volcanic rocks! Ang dark minerals sa volcanic rock ang nagbibigay ng espesyal na itim na kulay.",
+    "bis": "Ang baybayon duol sa bulkan Mayon adunay itom nga buhangin gikan sa basalt ug dark volcanic rocks nga gipira sa balod! Ang dark minerals mao ang naghatag sa itom nga kolor!"
+   },
+   "q": {
+    "tl": "Bakit may itim na buhangin sa beach malapit sa bulkang Mayon?",
+    "bis": "Nganong itom ang buhangin sa ubang baybayon sa Pilipinas?"
+   }
+  },
+  "ffct-32970": {
+   "text": {
+    "tl": "Ang matigas na bato ay napakatibay para sa sahig! Ang malambot na limestone ay madaling putulin, kaya perpekto sa gusali at semento.",
+    "bis": "Ang gahi nga bato lig-on kaayo para sa salog! Ang humok nga limestone mas sayon putlon, mao nga perpekto para sa gusali ug semento."
+   },
+   "q": {
+    "tl": "Bakit matigas na bato tulad ng granite sa kalsada, pero malambot na limestone sa gusali?",
+    "bis": "Nganong gahi nga bato sama sa granite sa dalan, pero humok nga limestone sa gusali?"
+   }
+  },
+  "ffct-33000": {
+   "text": {
+    "bis": "Ang Palawan adunay continental crust! Bahin kini kaniadto sa Sundaland, dako nga yuta sa Southeast Asia, nga mibulag sa Mesozoic ug nagdrift sa karon nga posisyon."
+   },
+   "q": {
+    "bis": "Nganong lahi ang geology sa Palawan sa ubang pulo sa Pilipinas?"
+   }
+  },
+  "ffct-33081": {
+   "text": {
+    "tl": "Tinatapos nila ang buhay sa makapangyarihang supernova! Lumilikha ito ng mabibigat na elemento tulad ng bakal, ginto, at pilak, na kakalat sa kalawakan para sa bagong bituin at planeta.",
+    "bis": "Gitapos nila ang kinabuhi sa gamhanan nga supernova! Nagmugna kini og mabug-at nga elemento sama sa puthaw, bulawan, ug plata, ug nagkuyanap niini sa kalawakan para sa bag-ong bituin ug planeta."
+   },
+   "q": {
+    "tl": "Paano gumawa ng ginto at pilak ang malalaking bituin?",
+    "bis": "Unsaon paghimo og bulawan ug plata sa dagkong bituin?"
+   }
+  },
+  "ffct-33118": {
+   "text": {
+    "bis": "Ang satellite mao ang bisan unsang butang nga nag-orbit sa mas dako nga butang! Natural sama sa Moon sa Yuta; artificial mga spacecraft nga gihimo sa tawo, sama sa ISS ug GPS satellites."
+   }
+  },
+  "ffct-33134": {
+   "text": {
+    "tl": "Ang inner planets (Mercury, Venus, Earth, Mars) ay rocky planets na may solid surface. Ang outer planets (Jupiter, Saturn, Uranus, Neptune) ay gas o ice giants na walang solid ground. Ang asteroid belt ang nasa pagitan nila!",
+    "bis": "Ang inner planets (Mercury, Venus, Earth, Mars) mga rocky planets nga may solid surface. Ang outer planets (Jupiter, Saturn, Uranus, Neptune) mga gas o ice giants nga walay solid ground. Ang asteroid belt anaa sa taliwala nila!"
+   }
+  },
+  "ffct-33144": {
+   "text": {
+    "tl": "Umiikot ang Moon sa Earth sa 27.3 araw (sidereal period), pero umaabante ang Earth sa Araw, kaya kailangan pang gumalaw ang Moon para maulit ang phase, synodic period 29.5 araw!",
+    "bis": "Mo-orbit ang Moon sa Yuta sulod sa 27.3 ka adlaw (sidereal period), apan nagdala usab ang Yuta sa Adlaw, kaya kinahanglan pa og dugang ang Moon aron maulit ang phase, busa ang synodic period 29.5 ka adlaw!"
+   },
+   "q": {
+    "tl": "Bakit mas matagal ang phase cycle ng Moon?",
+    "bis": "Ngano nga mas dugay ang phase cycle sa Moon?"
+   }
+  },
+  "ffct-33145": {
+   "q": {
+    "tl": "Paano ginagamit ng ilang kalendaryo ang Moon?",
+    "bis": "Unsaon paggamit sa ubang kalendaryo sa Moon?"
+   }
+  },
+  "ffct-33232": {
+   "text": {
+    "tl": "Umiikot ito sa accretion disk, isang mainit na whirlpool ng gas! Ang pinaka-enerhiyang black hole nagpapalabas ng relativistic jets ng matter perpendicular sa disk sa bilis na halos kasingbilis ng ilaw!",
+    "bis": "Naglibot kini sa accretion disk, usa ka init nga whirlpool sa gas! Ang pinaka-enerhiyang black hole nagpagawas og relativistic jets sa matter perpendicular sa disk sa bilis nga hapit kasingkusog sa kahayag!"
+   },
+   "q": {
+    "tl": "Ano ang nangyayari sa matter malapit sa black hole?",
+    "bis": "Unsay mahitabo sa matter moduol sa black hole?"
+   }
+  },
+  "ffct-33234": {
+   "text": {
+    "tl": "Hindi! Ang equator ng Araw umiikot nang mas mabilis — 25 araw — habang ang poles 35 araw. Ang differential rotation na ito ay nagpi-twist sa magnetic field ng Araw at lumilikha ng sunspots.",
+    "bis": "Dili! Ang equator sa Adlaw nagkibot nga mas paspas — 25 ka adlaw — samtang ang pole 35 ka adlaw. Kining differential rotation nagpi-twist sa magnetic field sa Adlaw ug nagtabang paghimo og sunspots."
+   },
+   "q": {
+    "tl": "Pareho ba ang pag-ikot ng Araw?",
+    "bis": "Pareho ba ang pagkibot sa Adlaw?"
+   }
+  },
+  "ffct-33256": {
+   "text": {
+    "tl": "Oo! Mars spacecraft images nagpapakita ng sinaunang valley at channel na ginawa ng dumadaloy na tubig, nagpapatunay na Mars dating may liquid water — higit sa 3 bilyong taon bago naging tuyo!",
+    "bis": "Oo! Mars spacecraft images nagpakita og karaan nga valley ug channel nga giukit sa nagdagan nga tubig, nagpamatuod nga Mars kaniadto adunay liquid water — labaw sa 3 bilyong tuig bago mauga!"
+   },
+   "q": {
+    "tl": "May tubig ba dati ang Mars?",
+    "bis": "Adunay ba tubig kaniadto ang Mars?"
+   }
+  },
+  "ffct-33277": {
+   "text": {
+    "bis": "Ang Neptune morag malalim nga asul tungod kay ang methane sa atmosphere nagsuyop sa pula nga suga sa Adlaw ug nagpabalik sa asul. Mas lalim ang asul niini kaysa Uranus, tungod sa wala pa nahibaloan nga factor!"
+   }
+  },
+  "ffct-33278": {
+   "text": {
+    "bis": "Ang disk sa Milky Way mga 100,000 light-years ang gilapdon apan 1,000 light-years ra ang giladmon — sama sa dako nga CD! Ang solar system anaa sa spiral arm, 26,000 light-years gikan sa sentro."
+   },
+   "q": {
+    "bis": "Unza kadako ang Milky Way?"
+   }
+  },
+  "ffct-33282": {
+   "text": {
+    "tl": "Nagtitipon sa cluster, na bumubuo ng supercluster! Ang Milky Way ay nasa Virgo Supercluster (Laniakea), 110 milyong light-years ang lapad. Lahat ng supercluster ay bumubuo ng cosmic web ng filament at void.",
+    "bis": "Nagtipon sa cluster, nagporma og supercluster! Ang Milky Way bahin sa Virgo Supercluster (Laniakea), 110 milyong light-years ang gilapdon. Ang tanan nga supercluster nagporma sa cosmic web sa filament ug void."
+   },
+   "q": {
+    "tl": "Paano nagkakahati ang mga galaksi sa universe?",
+    "bis": "Unsaon pagkahan-ay sa mga galaxy sa universe?"
+   }
+  },
+  "ffct-33316": {
+   "text": {
+    "tl": "Nang dumadaan ang exoplanet sa harap ng bituin, ang liwanag ay dumadaan sa atmosphere nito. Sa pagsusuri ng spectrum, nalalaman ng astronomer ang laman, kasama ang posibleng biosignatures tulad ng tubig at oxygen!",
+    "bis": "Kung ang exoplanet moagi sa atubangan sa bituin, ang kahayag moagi sa atmosphere niini. Sa pag-analyze sa spectrum, makila sa astronomer ang sulod, lakip ang posibleng biosignatures sama sa tubig ug oxygen!"
+   },
+   "q": {
+    "tl": "Paano nalalaman ang atmosphere ng exoplanet?",
+    "bis": "Unsaon pagkabalo sa atmosphere sa exoplanet?"
+   }
+  },
+  "ffct-14733": {
+   "domain": "LIVING_THINGS",
+   "topic": "orchid aerial roots"
+  }
+ }
+}

@@ -1,0 +1,5 @@
+# never commit the live config: it holds the RunPod API key, the admin password
+# hash, the session secret and the heartbeat token. install.sh generates it on the VPS.
+config.json
+*.bak-*
+__pycache__/

@@ -24,8 +24,11 @@ import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
-UI = os.path.join(os.path.dirname(ROOT), 'hiraia-card-ui')
-OLD = os.path.join(UI, 'packages/mobile/src/generated/cardsPool.generated.json')
+# The ORIGINAL bank: gen-cards-pool.py's output, in THIS worktree. It used to be hard-coded
+# to a sibling `hiraia-card-ui` checkout, which only made sense while the deck lived on its
+# own branch; on `unified` that path is a stale copy of a DIFFERENT factoid bank.
+OLD = os.environ.get('OLD_POOL') or os.path.join(
+    ROOT, 'packages/mobile/src/generated/cardsPool.generated.json')
 NEW = os.path.join(HERE, os.environ.get('NEW_POOL', 'cardsPool.deped.v3.json'))
 OUT = os.path.join(HERE, 'cardsPool.merged.json')
 OLDVEC = os.path.join(HERE, 'oldpool-vectors.npy')
@@ -110,12 +113,32 @@ def main():
             keep_mask.append(True)
     kept = [c for c, m in zip(kept, keep_mask) if m]
 
+    # DepEd ids are APPEND-ONLY. They used to be minted 1..N over whatever survived THIS
+    # run's dedup, which is stable only for as long as the old bank never changes. It changed
+    # — the feed bank went from 17k clip-art-only cards to 36.5k once the engravings were
+    # wired — and a re-mint would silently re-point 7,638 bundled dcard-*.png illustrations
+    # and ~10.6k curriculum tags at different cards, with nothing failing to say so. So a card
+    # that already earned an id keeps it (matched on its English text, which is unique across
+    # the bank), and only genuinely new cards take the next free number.
+    prev = {}
+    if os.path.exists(OUT):
+        for c in json.load(open(OUT))['cards']:
+            if c['id'].startswith('dcard-'):
+                prev[c['fact']['en'].strip()] = c['id']
+    nxt = max((int(i.split('-')[1]) for i in prev.values()), default=0) + 1
     merged = list(oldc)
-    for n, c in enumerate(kept, 1):
+    reused = minted = 0
+    for c in kept:
         c = dict(c)
-        c['id'] = f'dcard-{n:05d}'
+        pid = prev.get(c['fact']['en'].strip())
+        if pid:
+            c['id'], reused = pid, reused + 1
+        else:
+            c['id'], nxt, minted = f'dcard-{nxt:05d}', nxt + 1, minted + 1
         c['source'] = 'deped'
         merged.append(c)
+    print(f'  DepEd ids: {reused:,} kept from the previous merge, {minted:,} newly minted, '
+          f'{len(prev) - reused:,} retired (now covered by the feed bank)')
     for c in merged:
         c.setdefault('source', 'original')
 

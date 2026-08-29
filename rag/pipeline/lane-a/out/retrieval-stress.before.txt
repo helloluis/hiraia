@@ -1,0 +1,36 @@
+bank: 40534 facts | 56 cases + 3 sequences
+
+===== 56/59 passed (95%) =====
+
+by category:
+  animal           4/4
+  bis              7/7
+  body             3/3
+  core-tl          5/5
+  distractor       3/3
+  en               6/6
+  followup         3/3
+  homonym          1/1
+  image-request    1/1
+  morphology       3/3
+  new-fact         8/8
+  novelty-animals  1/1
+  novelty-dino     1/1
+  novelty-space    1/1
+  ph               5/5
+  verb-hijack      4/7
+
+by language:
+  tagalog    43/46
+  english    6/6
+  cebuano    7/7
+
+KNOWN residuals (non-blocking — Phase-2.5 reranker; 3):
+  ~ [verb-hijack/tagalog] "Kailangan kong gumawa ng report tungkol sa mga planeta"
+      got: weather-station-automatic-aws-g6, peis-helps-warnings-response-g6, broken-cord-is-dangerous-g5
+  ~ [verb-hijack/tagalog] "May report ako tungkol sa bulkan"
+      got: peis-helps-warnings-response-g6, broken-cord-is-dangerous-g5, richter-scale-phivolcs-reports-number-g7  (mustNot won @1)
+  ~ [verb-hijack/tagalog] "paano gumagana ang utak"
+      got: faq-why-we-sleep, why-we-yawn-g3, why-we-get-dizzy-spinning-g4
+
+RETRIEVAL OK — no regressions.

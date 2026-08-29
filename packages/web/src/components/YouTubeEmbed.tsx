@@ -23,7 +23,7 @@ export function YouTubeEmbed({
 
   if (playing) {
     return (
-      <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black border border-white/10 shadow-2xl">
+      <div className="relative aspect-video w-full overflow-hidden rounded-[18px] border-[3px] border-[var(--ink,#1C3B2E)] bg-black">
         <iframe
           className="absolute inset-0 h-full w-full"
           src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`}
@@ -40,7 +40,7 @@ export function YouTubeEmbed({
       type="button"
       onClick={() => setPlaying(true)}
       aria-label={`Play video: ${title}`}
-      className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black/40 border border-white/10 shadow-2xl flex items-center justify-center group cursor-pointer"
+      className="group relative flex aspect-video w-full cursor-pointer items-center justify-center overflow-hidden rounded-[18px] border-[3px] border-[var(--ink,#1C3B2E)] bg-black/40"
     >
       {/* Cover image */}
       <div
@@ -49,7 +49,7 @@ export function YouTubeEmbed({
       />
 
       {/* Play Button Icon */}
-      <div className="relative z-10 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg shadow-red-600/30 group-hover:bg-red-700 group-hover:scale-110 transition-all duration-300">
+      <div className="relative z-10 flex h-16 w-16 items-center justify-center rounded-full bg-[var(--gold,#D8A03A)] text-[var(--ink,#1C3B2E)] shadow-lg transition-transform duration-300 group-hover:scale-110 sm:h-20 sm:w-20">
         <svg className="w-6 h-6 sm:w-8 sm:h-8 fill-current ml-1" viewBox="0 0 24 24" aria-hidden>
           <path d="M8 5v14l11-7z" />
         </svg>

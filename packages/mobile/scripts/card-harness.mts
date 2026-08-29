@@ -3,39 +3,20 @@
  * exactly the way cardStore walks it, headless, across many sessions and "kid policies",
  * and reports quality issues with the factoids, the quiz interjects, and the path choices.
  *
- * It shims cards.ts's app-only imports (@hiraia/shared, the generated image map, the
- * questions JSON) to their source paths so it can run under tsx without Metro.
+ * It loads cards.ts through scripts/load-cards-node.mts, which shims the four app-only
+ * imports (@hiraia/shared, the resident index, the curriculum tags, and cardDb — replaced
+ * by a node:sqlite reader over the SAME cards.db + tokens.bin the APK ships).
+ * Draws run WITHOUT a FeedContext (uniform), exactly like cards.ts without one.
  *
  *   npx tsx scripts/card-harness.mts                 # default: 6 runs × 40 cards, all policies
  *   RUNS=10 CARDS=60 npx tsx scripts/card-harness.mts
  */
-import { readFileSync, writeFileSync, mkdtempSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const MOBILE = new URL('..', import.meta.url).pathname;
-const REPO = join(MOBILE, '..', '..');
+import { loadCards } from './load-cards-node.mts';
 
-// ---- shim cards.ts's imports to runnable source paths, then dynamic-import it ----
-function loadCards() {
-  const src = readFileSync(join(MOBILE, 'src/data/cards.ts'), 'utf8')
-    .replace(
-      "import type { Language } from '@hiraia/shared';",
-      `type Language = 'tagalog'|'english'|'cebuano';`
-    )
-    .replace(
-      "import cardsPool from '../generated/cardsPool.generated.json';",
-      `import cardsPool from '${join(MOBILE, 'src/generated/cardsPool.generated.json')}' with { type: 'json' };`
-    )
-    .replace(
-      "import questionsJson from './cards-questions.json';",
-      `import questionsJson from '${join(MOBILE, 'src/data/cards-questions.json')}' with { type: 'json' };`
-    );
-  const dir = mkdtempSync(join(tmpdir(), 'cardharness-'));
-  const file = join(dir, 'cards-impl.mts');
-  writeFileSync(file, src);
-  return import(file);
-}
+const MOBILE = new URL('..', import.meta.url).pathname;
 
 type Lang = 'tagalog' | 'english' | 'cebuano';
 const RUNS = Number(process.env.RUNS ?? 6);
@@ -189,9 +170,9 @@ async function main() {
             const q = chosen.q as { o: unknown[]; a: number; q: Record<string, string>; e: Record<string, string> };
             const okShape =
               Array.isArray(q.o) &&
-              q.o.length === 4 &&
+              q.o.length === 3 && // shipping ruleset: three short choices (card-ui cards.db is 87% three-option)
               q.a >= 0 &&
-              q.a < 4 &&
+              q.a < q.o.length &&
               !!q.q.tl &&
               !!q.e.tl;
             if (!okShape) {
@@ -215,11 +196,15 @@ async function main() {
         }
         // consecutive near-dup (same normalized topic)
         const key = (f: { topic: string }) => f.topic.toLowerCase().split(/\s+/).filter((w) => w.length > 3).sort().join(' ');
-        if (next.slug === cur.slug) {
+        // An EMPTY slug is not an illustration, so two typographic pages in a row are not a
+        // repeated picture — mirror the guard nextChoices uses (`f.slug && blocked.has(...)`).
+        // The pool only grew typographic cards once the DepEd bank joined it; without this the
+        // metric counted "no picture, twice" as the failure a child notices.
+        if (next.slug && next.slug === cur.slug) {
           stats.consecSameSlug++;
           add('same-illustration', `${cur.topic} → ${next.topic} (both: ${next.slug})`);
         }
-        if (slugTrail.slice(-3).includes(next.slug)) stats.slugRepeatIn3++;
+        if (next.slug && slugTrail.slice(-3).includes(next.slug)) stats.slugRepeatIn3++;
         slugTrail.push(next.slug);
         if (key(next) === key(cur)) {
           stats.consecDup++;

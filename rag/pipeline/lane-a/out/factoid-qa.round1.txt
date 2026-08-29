@@ -1,0 +1,45 @@
+==================== FACTOID QA ====================
+factoids: 723 (malformed lines 0) | dup factIds: 0
+format: qa 313 (43%) / straight 410 (56%)
+reading load: median 22 tagalog words | image prompts written: 723
+issues: NONE
+
+--- QA samples (question / body / SOURCE fact — check faithfulness) ---
+  Q: Ano ang pattern ng pagsabog ng Kanlaon?
+  A: Ang Kanlaon sa Negros ay naglabas ng abo at singaw nang ilang beses sa mga nakaraang dekada. Ito ay isang pattern ng palaging gumagalaw pero kadalasan maliit lang!
+  src: Kanlaon on Negros has sent up ash and steam several times in recent decades, a pattern of restless but often s
+
+  Q: Paano tinatrato ng mga bayan ang paggising ng Bulusan?
+  A: Minsan minsan, gumigising ang Bulusan sa Sorsogon sa mga pagsabog ng abo! Kaya itinuturing ng mga bayan doon na paulit-ulit ang panganib.
+  src: Bulusan in Sorsogon also wakes with ash explosions now and then, so nearby towns treat unrest as a repeating r
+
+  Q: Kaya bang hulaan ng mga siyentipiko ang eksaktong araw ng pagsabog?
+  A: Pinagmamasdan ng mga siyentipiko ang lindol, gas, at pag-alsa ng lupa! Pero hindi pa nila matukoy ang eksaktong araw mula sa pattern lang.
+  src: Scientists watch earthquakes, gas, and ground swelling before many eruptions, but they still cannot name the e
+
+  Q: Bakit binabantayan ng mga barangay malapit sa Taal ang usok at maliliit na lindol?
+  A: Dahil nangyari na ang mga palatandaang ito bago ang ilang modernong pagputok! Pagbabantay ay nakatutulong para maging ligtas ang lahat.
+  src: Communities near Taal watch steaming and small quakes because those signs have come before several of its mode
+
+  Q: Ilang aktibong bulkan ang nasa listahan ng PHIVOLCS sa Pilipinas?
+  A: May halos dalawampu't apat na aktibong bulkan sa listahan ng PHIVOLCS! Ibig sabihin, nagputok sila kamakailan o may palatandaan pa ng galaw.
+  src: PHIVOLCS lists about two dozen volcanoes as active, which means they have erupted in recent times or still sho
+
+  Q: Bakit kailangang hugasan ang mga baso pagkatapos ng pagsubok?
+  A: Ang natirang pulbos ay pwedeng magpabago ng resulta! Hugasan at patuyuin ang mga baso pagkatapos ng bawat pagsubok para patas.
+  src: Wash and dry glassware between trials, because leftover powder from the last run can change the next result wi
+
+--- STRAIGHT samples (body / SOURCE) ---
+  • Madalas sumabog ang Bulkang Mayon sa nakaraang isang daang taon! Kaya madalas naalala ng mga pamilya sa paligid ang higit sa isang pagsabog.
+    src: Mayon Volcano has erupted many times in the last hundred years, so nearby families often remember more than on
+  • Sa Pilipinas, may mga bulkan na madalas sumabog habang ang iba ay tahimik ng ilang dekada. Hindi pareho ang pattern sa bawat bundok!
+    src: In the Philippines, some volcanoes erupt often while others stay quiet for decades, so the pattern is not the 
+  • Sumabog ang Bulkang Taal noong 1965 at muli noong 2020! Ipinapakita nito na maaaring magpahinga ng dekada ang bulkan bago muling gumising nang biglaan.
+    src: Taal Volcano erupted in 1965 and again in 2020, showing a volcano can rest for decades and then wake quite sud
+  • Isinusulat ng PHIVOLCS ang bawat pagsabog! Nakakatulong ito para ikumpara ng mga siyentipiko at komunidad ang kasalukuyang galaw sa mga pattern ng nakaraang isang daang taon.
+    src: PHIVOLCS writes down each eruption so scientists and communities can compare today's unrest with patterns from
+
+--- image prompt samples (style check) ---
+  • A volcano erupting with a family watching from a safe distance, hand-drawn line art, black and white, clean single-weight ink outlines, no shading and no color, simple and friendly for children, cente
+  • Two volcanoes side by side, one erupting and one sleeping, hand-drawn line art, black and white, clean single-weight ink outlines, no shading and no color, simple and friendly for children, centered o
+  • A volcano sleeping with a clock showing decades passing, then suddenly waking up, hand-drawn line art, black and white, clean single-weight ink outlines, no shading and no color, simple and friendly f
