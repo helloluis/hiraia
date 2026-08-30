@@ -28,7 +28,7 @@ ROOT = os.path.dirname(os.path.dirname(HERE))
 # to a sibling `hiraia-card-ui` checkout, which only made sense while the deck lived on its
 # own branch; on `unified` that path is a stale copy of a DIFFERENT factoid bank.
 OLD = os.environ.get('OLD_POOL') or os.path.join(
-    ROOT, 'packages/mobile/src/generated/cardsPool.generated.json')
+    ROOT, 'rag/pipeline/cardsPool.app.json')
 NEW = os.path.join(HERE, os.environ.get('NEW_POOL', 'cardsPool.deped.v3.json'))
 OUT = os.path.join(HERE, 'cardsPool.merged.json')
 OLDVEC = os.path.join(HERE, 'oldpool-vectors.npy')

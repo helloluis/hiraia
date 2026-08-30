@@ -2,7 +2,7 @@
 """Join the generated card TITLES + taxonomy CATS back into the bundled card pool.
 
 fw-gen-card-titles.py writes one jsonl shard per batch; this folds them into
-packages/mobile/src/generated/cardsPool.generated.json as `title` (trilingual, mirroring
+rag/pipeline/cardsPool.app.json as `title` (trilingual, mirroring
 `fact`) and `cats` (taxonomy leaf ids). Idempotent — safe to re-run after filling gaps.
 
 Cards with no generated title keep none: cards.ts's cardTitle() returns '' and the index band
@@ -15,7 +15,7 @@ import json, glob, os, collections
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
-POOL = os.path.join(ROOT, 'packages/mobile/src/generated/cardsPool.generated.json')
+POOL = os.path.join(ROOT, 'rag/pipeline/cardsPool.app.json')
 SHARDS = os.path.join(HERE, 'card-titles', 'titles-*.jsonl')
 TAX = os.path.join(HERE, 'card-taxonomy.json')
 

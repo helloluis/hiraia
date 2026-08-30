@@ -7,7 +7,7 @@ Output (rag/bank/, gitignored .bin — regenerate on bank change):
   vectors-labse.i8.bin    int8, lang-major [tl | bis | en], each count*dims
   vectors-labse.meta.json {model, dims, scale, count, langs, bankHash}
 
-Fact order == SCIENCE_FACTS order (the bank file order), so blob index i maps to
+Fact order == the bank file order (== `fact.ord` in cards.db), so blob index i maps to
 the i-th fact; no id list needed in the blob.
   finetuning/.convert-venv/bin/python rag/scripts/build-vectors.py
 """

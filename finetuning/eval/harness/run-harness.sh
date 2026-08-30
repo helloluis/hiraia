@@ -35,7 +35,22 @@ CTX="${CTX:-4096}"
 [ -f "$BASE" ] || { echo "ERR: base GGUF not at $BASE (set BASE=)"; exit 2; }
 [ -f "$ADAPTER" ] || { echo "ERR: adapter GGUF not at $ADAPTER (set ADAPTER=)"; exit 2; }
 
-# Retrieval stress-test runs FIRST — model-independent, fast, and codifies the
+# BANK <-> cards.db <-> vectors-blob triangle, before anything reads any of them.
+# The gate's retrieval runs off the JSONL, but the PHONE reads the bank out of cards.db and
+# attaches the vectors blob to it, so an edit that rewrites facts in place (row count
+# unchanged) can leave those three disagreeing while every test below stays green. On device
+# the mismatch surfaces as attachSemantic throwing inside LocalEngine.initSemantic, which is
+# caught and downgraded to a warning — a green gate would ship an APK that had silently
+# fallen back to lexical-only retrieval (Recall@3 .607 -> .509, no SEMANTIC_FLOOR abstain).
+# --check proves ordinal alignment, row content, the inverted index, and both hashes.
+echo ">> checking fact bank <-> cards.db <-> vectors blob ..."
+python3 "$ROOT/rag/pipeline/build-facts-db.py" --check || {
+  echo "ERR: cards.db / vectors blob disagree with the fact bank — gate FAILS."
+  echo "     rebuild: python3 rag/pipeline/build-cards-db.py  &&  python3 rag/scripts/build-vectors.py"
+  exit 1;
+}
+
+# Retrieval stress-test runs next — model-independent, fast, and codifies the
 # on-device "weird encounter" regressions (verb-hijack, distractor, follow-up
 # context, conversational novelty). Fail fast before spinning up the server.
 echo ">> running retrieval stress-test (lexical, model-independent) ..."

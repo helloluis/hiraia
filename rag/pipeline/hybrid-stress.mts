@@ -10,6 +10,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { RagStore, SemanticIndex, normalizeQuery, expandColloquial } from '../../packages/shared/src/rag/index.ts';
+import { loadFactSource } from '../../packages/shared/src/rag/bankFile.ts';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 
@@ -50,8 +51,15 @@ const META = join(HERE, '../../packages/mobile/assets/rag/vectors-labse.meta.jso
 const BIN = join(HERE, '../../packages/mobile/assets/rag/vectors-labse.i8.bin');
 const meta = JSON.parse(readFileSync(META, 'utf8'));
 const bytes = readFileSync(BIN);
-const store = new RagStore();
-store.attachSemantic(new SemanticIndex({ dims: meta.dims, scale: meta.scale, count: meta.count, langs: meta.langs, data: new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength) }));
+// loadFactSource, not loadFactBank: it stamps the store with md5(science-facts.jsonl)[:12],
+// which is the only thing that lets attachSemantic reject a blob built for a DIFFERENT bank
+// of the same size. Editing facts in place — the routine correction workflow — leaves the row
+// count at 50,279 while every vector goes wrong, so the count check alone sees nothing. This
+// is the gate that stands between a stale blob and an APK build: on the phone attachSemantic
+// does throw, but LocalEngine.initSemantic downgrades that to a warning and ships lexical-only
+// retrieval (Recall@3 .607 -> .509, no SEMANTIC_FLOOR abstain). Hashing the bank costs ~60 ms.
+const store = new RagStore(loadFactSource());
+store.attachSemantic(new SemanticIndex({ dims: meta.dims, scale: meta.scale, count: meta.count, langs: meta.langs, data: new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength) }), meta.bankHash);
 
 const matches = (id: string, subs: string[] = []) => subs.some((s) => id.toLowerCase().includes(s.toLowerCase()));
 let pass = 0, gated = 0;

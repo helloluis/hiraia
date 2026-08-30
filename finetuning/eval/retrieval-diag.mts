@@ -7,19 +7,26 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { RagStore, SemanticIndex, normalizeQuery } from '../../packages/shared/src/rag/index.ts';
+import { RagStore, SemanticIndex, normalizeQuery, MemoryFactSource } from '../../packages/shared/src/rag/index.ts';
+import { loadFactBank, bankFileHash } from '../../packages/shared/src/rag/bankFile.ts';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '../..');
 const EMBED = process.env.EMBED_ENDPOINT ?? 'http://localhost:8090';
-const store = new RagStore();
+const bank = loadFactBank();
+// The bank is needed as an ARRAY here (the ordinal map below), so it is wrapped rather than
+// re-read via loadFactSource — same stamp, one parse. The hash is what lets attachSemantic
+// reject a blob built for a different bank of the same size.
+const store = new RagStore(new MemoryFactSource(bank, bankFileHash()));
 const META = JSON.parse(readFileSync(join(ROOT, 'packages/mobile/assets/rag/vectors-labse.meta.json'), 'utf8'));
 const bytes = readFileSync(join(ROOT, 'packages/mobile/assets/rag/vectors-labse.i8.bin'));
 const sem = new SemanticIndex({ dims: META.dims, scale: META.scale, count: META.count, langs: META.langs, data: new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength) });
-store.attachSemantic(sem);
-// @ts-ignore — reach the doc list for id->index lookup
-const docs: any[] = (store as any).docs;
-const idIndex = new Map<string, number>(docs.map((d, i) => [d.fact.id, i]));
+store.attachSemantic(sem, META.bankHash);
+// id -> ORDINAL. This used to reach into RagStore's private `docs` array; the store no longer
+// keeps one (the bank lives in an inverted index it reads through), and it never needed to be
+// the source anyway — the ordinal IS the bank file's line number, which is also what the
+// vectors blob is indexed by.
+const idIndex = new Map<string, number>(bank.map((f, i) => [f.id, i]));
 
 async function embed(text: string): Promise<Float32Array> {
   const res = await fetch(`${EMBED}/v1/embeddings`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ input: normalizeQuery(text) }) });
@@ -45,7 +52,7 @@ for (const c of CASES) {
   // lexical (RagStore.search, tl)
   const lex = store.search(c.q, 50, 'tagalog').map((h: any) => ({ id: h.fact.id, score: +h.score.toFixed(2) }));
   // semantic (direct)
-  const semHits = sem.search(qvec, 'tagalog', 50).map((h: any) => ({ id: docs[h.index].fact.id, cos: +h.cosine.toFixed(3) }));
+  const semHits = sem.search(qvec, 'tagalog', 50).map((h: any) => ({ id: bank[h.index]!.id, cos: +h.cosine.toFixed(3) }));
   // hybrid (RRF) via searchHybrid
   const hyb = store.searchHybrid(c.q, qvec, 50, 'tagalog').map((h: any) => ({ id: h.fact.id }));
   console.log(`\n===== "${c.q}"`);

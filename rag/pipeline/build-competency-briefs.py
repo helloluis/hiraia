@@ -8,7 +8,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 ap = argparse.ArgumentParser(); ap.add_argument("--grades", default="3-10"); ap.add_argument("--max-existing", type=int, default=60); a = ap.parse_args()
 lo, hi = (int(x) for x in a.grades.split("-"))
 G = json.load(open(f"{ROOT}/rag/bank/competency-gaps.json")); T = json.load(open(f"{ROOT}/rag/bank/curriculum-tags.json"))["factoids"]
-pool = {c["id"]: c for c in json.load(open(f"{ROOT}/packages/mobile/src/generated/cardsPool.generated.json"))["cards"]}
+pool = {c["id"]: c for c in json.load(open(f"{ROOT}/rag/pipeline/cardsPool.app.json"))["cards"]}
 byc = collections.defaultdict(list)
 for i, t in T.items():
     if i in pool:

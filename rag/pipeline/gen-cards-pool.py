@@ -21,7 +21,7 @@ import json, re
 FACTS = 'rag/bank/science-facts.jsonl'
 FACTOIDS = 'rag/bank/factoids.jsonl'
 IMAGEMAP = 'packages/mobile/src/generated/imageMap.ts'
-OUT = 'packages/mobile/src/generated/cardsPool.generated.json'
+OUT = 'rag/pipeline/cardsPool.app.json'
 BUDGET = 48                      # displayed words per language (Q hook + body); apply-card-fixes.py compresses to <=46
 
 # source-fact terms, by id (lexical retrieval signal the factoids don't carry themselves)

@@ -20,7 +20,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
-POOL = os.path.join(ROOT, 'packages/mobile/src/generated/cardsPool.generated.json')
+POOL = os.path.join(ROOT, 'rag/pipeline/cardsPool.app.json')
 OUT = os.path.join(HERE, 'taxonomy-probe')
 # deepseek-v4-flash: benchmarked head-to-head against qwen3p7-plus on this exact task —
 # qwen burned its whole token budget on reasoning and returned nothing parseable, deepseek

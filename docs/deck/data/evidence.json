@@ -921,7 +921,7 @@
   "weaknesses": [
    "Hedging: the SFT v1 2B prefixes 64% of Tagalog replies with a 'not sure' clause on grade-5 terms; about two-thirds of those then explain the term — a template-wording effect, not a knowledge gap",
    "English mode-lock is the 2B's fragile edge (94% vs 99% in Tagalog and Cebuano); misroutes fall to Tagalog",
-   "The 1B budget tier cannot learn safety negation (DPO tested and rejected); junior-high content is thinner than elementary"
+   "Junior-high content is thinner than elementary. The 1B budget tier could not learn safety negation (DPO tested and rejected) and has been retired \u2014 the build now targets 6 GB+ devices only"
   ],
   "sources": "finetuning/cpt/FULLRUN-RESULTS.md (perplexity, 400 docs × 1,024 tokens); finetuning/eval/capability/ (capability score, rubric); finetuning/eval/routing/routing-sft-v1.json (reply-language accuracy, hedge rate); finetuning/cpt/SFT-V1-RESULTS.md; finetuning/eval/capability/FINDINGS.md (2×2: blob fix +0.17 for the shipping model, rebalance +0.22 faithful vs +0.41 lexical; together 3.32 → 3.72)",
   "ppl_caveat": "held-out = 400 docs × 1,024 tokens carved from the same cleaned pools (0 exact duplicates), so part of the drop is domain adaptation; logged greedy generations are the independent check"

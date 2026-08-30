@@ -9,7 +9,7 @@ loop** (so the AUP child+biology false-positive problem can't wedge a run).
 
 - `build-rl-prompts.mts` — prompt-set generator. Imports the SAME runtime functions as
   the app + SFT builder (`generateSystemPrompt`/`formatGroundingBlock`/
-  `composeGroundedUserTurn`) and the same bank (`SCIENCE_FACTS`) → train/serve lockstep.
+  `composeGroundedUserTurn`) and the same bank (`rag/bank/science-facts.jsonl`) → train/serve lockstep.
   Rerun: `node_modules/.bin/tsx finetuning/rl/build-rl-prompts.mts` (seed=42, deterministic).
 - `prompts/rl-prompts.tagalog.jsonl` (3500 = 2800 tl + **700 en**) /
   `prompts/rl-prompts.bisaya.jsonl` (1700) / `prompts/STATS.md`. Buckets: grounded 50% /

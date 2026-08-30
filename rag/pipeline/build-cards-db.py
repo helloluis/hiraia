@@ -18,20 +18,32 @@ So the index stays resident and every adjacency decision stays SYNCHRONOUS — n
 nextChoices, no async render path — and the text moves to a database that is queried for the
 handful of cards actually being shown.
 
+The same database now also carries the tutor's grounding fact bank, which had the same
+problem in `packages/shared/src/rag/facts.generated.ts` — see build-facts-db.py, which this
+script calls so that one command produces the whole asset.
+
   python3 rag/pipeline/build-cards-db.py
   -> packages/mobile/assets/data/cards.db             (ships; the APK deflates it)
   -> packages/mobile/src/generated/cardsIndex.generated.json  (bundled, small)
 """
-import json, os, gzip, hashlib, zlib, struct, sqlite3, collections
+import json, os, gzip, hashlib, importlib.util, zlib, struct, sqlite3, collections
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
-POOL = os.path.join(ROOT, 'packages/mobile/src/generated/cardsPool.generated.json')
+POOL = os.path.join(ROOT, 'rag/pipeline/cardsPool.app.json')
 QUESTIONS = os.path.join(ROOT, 'packages/mobile/src/data/cards-questions.json')
 OUT_DB = os.path.join(ROOT, 'packages/mobile/assets/data/cards.db')
 OUT_IDX = os.path.join(ROOT, 'packages/mobile/src/generated/cardsIndex.generated.json')
 OUT_TOKENS = os.path.join(ROOT, 'packages/mobile/assets/data/tokens.bin')
 SEP = '\x1f'  # unit separator: never occurs in the content, so joins are lossless
+
+# The fact-bank half of this database. A hyphenated filename is not importable and renaming
+# it would break the pipeline docs that name it, so it is loaded by path.
+_spec = importlib.util.spec_from_file_location('build_facts_db', os.path.join(HERE, 'build-facts-db.py'))
+_facts_mod = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_facts_mod)
+build_facts = _facts_mod.build_facts
+db_version = _facts_mod.db_version
 
 
 def main():
@@ -170,6 +182,15 @@ def main():
     # 2.2 MB in the JS bundle and another 2.26 MB of never-read rows in this database.
     # The interject's own MCQs live in card_question above, keyed the way it looks them up.
 
+    # ---------- the grounding fact bank, in the SAME database ----------
+    # The tutor's 50,279-fact bank had the identical problem the cards had, one file over:
+    # `packages/shared/src/rag/facts.generated.ts` is 43.5 MB of TypeScript that Metro cannot
+    # tree-shake. It lands here rather than in a second database because there is no reason for
+    # a phone to carry two, and because this script recreates cards.db from scratch — so the
+    # facts have to be written BEFORE the VACUUM and before the content stamp below, or every
+    # rebuild would silently drop them.
+    build_facts(db)
+
     db.commit()
     db.execute('VACUUM')
     db.close()
@@ -184,7 +205,7 @@ def main():
     # ABSENT, so without this every rebuild shipped an asset the app then ignored — the deck
     # kept serving whatever database it created on first launch, however old. The index is
     # written here rather than above because the stamp needs the finished file.
-    index['dbVersion'] = hashlib.sha256(raw).hexdigest()[:12]
+    index['dbVersion'] = db_version(OUT_DB)
     json.dump(index, open(OUT_IDX, 'w'), ensure_ascii=False, separators=(',', ':'))
     print(f'  dbVersion: {index["dbVersion"]}')
     gz = gzip.compress(raw, 9)  # reported only, to show what the APK will do with it

@@ -4,9 +4,14 @@
 // myths so the stubborn shave-thicker pattern generalizes). DISJOINT from the benchmark probes.
 //   run: node_modules/.bin/tsx finetuning/datasets/grounded/build-rebalance3-spec.mts
 import { writeFileSync } from 'node:fs';
-import { SCIENCE_FACTS } from '../../../packages/shared/src/rag/facts.generated.ts';
+import { loadFactBank } from '../../../packages/shared/src/rag/bankFile.ts';
 import { RagStore } from '../../../packages/shared/src/rag/RagStore.ts';
-const store = new RagStore();
+
+// The curated bank, read from its source of truth (rag/bank/science-facts.jsonl).
+// It used to arrive as a generated 43.5 MB TypeScript array; the array is gone, the
+// file it was transcribed from is not.
+const SCIENCE_FACTS = loadFactBank();
+const store = new RagStore(SCIENCE_FACTS);
 const byId = new Map(SCIENCE_FACTS.map((f) => [f.id, f]));
 const ALL = SCIENCE_FACTS.map((f) => f.id);
 let _s = 4242; const rnd = () => ((_s = (_s * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);

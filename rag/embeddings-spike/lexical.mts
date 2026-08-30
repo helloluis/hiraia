@@ -3,11 +3,12 @@
 //   node_modules/.bin/tsx rag/embeddings-spike/lexical.mts
 import { readFileSync, writeFileSync } from 'node:fs';
 import { RagStore } from '../../packages/shared/src/rag/RagStore.ts';
+import { loadFactBank } from '../../packages/shared/src/rag/bankFile.ts';
 
 const cases = JSON.parse(readFileSync(new URL('./cases.json', import.meta.url), 'utf8')) as {
   q: string; lang: 'tagalog' | 'cebuano' | 'english';
 }[];
-const store = new RagStore();
+const store = new RagStore(loadFactBank());
 const out: Record<string, { id: string; score: number }[]> = {};
 for (const c of cases) {
   const hits = store.search(c.q, 8, c.lang);

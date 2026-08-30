@@ -5,6 +5,7 @@
 //   node_modules/.bin/tsx rag/pipeline/retrieval-stress.mts
 import { readFileSync } from 'node:fs';
 import { RagStore } from '../../packages/shared/src/rag/RagStore.ts';
+import { loadFactBank } from '../../packages/shared/src/rag/bankFile.ts';
 // The on-device illustration is FACT_IMAGE[topGroundedFact] (chatStore: top fact ONLY,
 // not a top-3 scan). Mirror that here so `mustNotImage` can guard the "unrelated picture"
 // bug (e.g. a seismic-waves diagram attaching to a "pinakamalaking buto" answer).
@@ -27,7 +28,7 @@ const raw = JSON.parse(readFileSync(new URL('./retrieval-stress.cases.json', imp
 // drop the {_codified_from}/{_note} marker objects (documentation, not cases)
 const cases = raw.cases.filter((c) => c.q && c.cat);
 const sequences = raw.sequences ?? [];
-const store = new RagStore();
+const store = new RagStore(loadFactBank());
 console.log(`bank: ${store.size} facts | ${cases.length} cases + ${sequences.length} sequences\n`);
 
 const matches = (id: string, subs: string[]) => subs.some((s) => id.toLowerCase().includes(s.toLowerCase()));

@@ -24,13 +24,18 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { SCIENCE_FACTS } from '../../packages/shared/src/rag/facts.generated.ts';
+import { loadFactBank } from '../../packages/shared/src/rag/bankFile.ts';
 import {
   generateSystemPrompt,
   formatGroundingBlock,
   composeGroundedUserTurn,
 } from '../../packages/shared/src/prompts/system.ts';
 import type { RagResult } from '../../packages/shared/src/types/index.ts';
+
+// The curated bank, read from its source of truth (rag/bank/science-facts.jsonl).
+// It used to arrive as a generated 43.5 MB TypeScript array; the array is gone, the
+// file it was transcribed from is not.
+const SCIENCE_FACTS = loadFactBank();
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = join(HERE, 'prompts');

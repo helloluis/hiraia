@@ -9,7 +9,7 @@ comp = {}
 for f in sorted(glob.glob(f"{ROOT}/rag/sources/curriculum-guides/matatag-*-competencies.json")):
     for q in json.load(open(f))["quarters"]:
         for c in q["competencies"]: comp[c["code"]] = (q["grade"], q["quarter"])
-pool = {c["id"] for c in json.load(open(f"{ROOT}/packages/mobile/src/generated/cardsPool.generated.json"))["cards"]}
+pool = {c["id"] for c in json.load(open(f"{ROOT}/rag/pipeline/cardsPool.app.json"))["cards"]}
 webp = {os.path.basename(p)[:-5] for p in glob.glob(f"{ROOT}/packages/images/factoid-webp/*.webp")}
 cells = collections.defaultdict(lambda: collections.Counter()); n = 0
 for fn in glob.glob(f"{ROOT}/rag/pipeline/competency-labels/lab-*.jsonl"):

@@ -1,6 +1,6 @@
 {
   "language": "tagalog",
-  "note": "Hand-authored gold seed for the grounding-faithfulness fine-tune. Each entry: mode, grade, factIds (real ids in packages/shared/src/rag/facts.generated.ts — these become the VERIFIED FACTS block via formatGroundingBlock), user (kid question), assistant (gold answer). RULES the gold answers obey: use ONLY the provided facts; rephrase simply at the given grade; end with a light Socratic question; NEVER add a mechanism/number/term not in the facts; ABSTAIN when facts don't cover it; reply conversationally to greetings with no lecture.",
+  "note": "Hand-authored gold seed for the grounding-faithfulness fine-tune. Each entry: mode, grade, factIds (real ids in rag/bank/science-facts.jsonl — these become the VERIFIED FACTS block via formatGroundingBlock), user (kid question), assistant (gold answer). RULES the gold answers obey: use ONLY the provided facts; rephrase simply at the given grade; end with a light Socratic question; NEVER add a mechanism/number/term not in the facts; ABSTAIN when facts don't cover it; reply conversationally to greetings with no lecture.",
   "examples": [
     {
       "mode": "grounded",

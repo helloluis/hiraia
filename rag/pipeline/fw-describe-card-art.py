@@ -27,7 +27,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 UI = os.path.join(os.path.dirname(ROOT), 'hiraia-card-ui')
-POOL = os.path.join(UI, 'packages/mobile/src/generated/cardsPool.generated.json')
+POOL = os.path.join(UI, 'rag/pipeline/cardsPool.app.json')
 OUT = os.path.join(HERE, 'original-art-wanted.json')
 URL = 'https://api.fireworks.ai/inference/v1/chat/completions'
 KEY = os.environ['FIREWORKS_API_KEY']

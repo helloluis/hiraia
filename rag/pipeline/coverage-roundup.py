@@ -10,7 +10,7 @@ for f in sorted(glob.glob(f"{ROOT}/rag/sources/curriculum-guides/matatag-*-compe
         for c in q["competencies"]: comp[c["code"]] = dict(grade=q["grade"], quarter=q["quarter"], domain=q["domain"], text=c["text"])
 kinds = json.load(open(f"{ROOT}/rag/bank/competency-kinds.json"))["competencies"] if os.path.exists(f"{ROOT}/rag/bank/competency-kinds.json") else {}
 T = json.load(open(f"{ROOT}/rag/bank/curriculum-tags.json"))["factoids"]
-pool = {c["id"] for c in json.load(open(f"{ROOT}/packages/mobile/src/generated/cardsPool.generated.json"))["cards"]}
+pool = {c["id"] for c in json.load(open(f"{ROOT}/rag/pipeline/cardsPool.app.json"))["cards"]}
 webp = {os.path.basename(p)[:-5] for p in glob.glob(f"{ROOT}/packages/images/factoid-webp/*.webp")}
 fact_of = {}
 for l in open(f"{ROOT}/rag/bank/factoids.jsonl"):

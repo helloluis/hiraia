@@ -7,6 +7,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { RagStore, SemanticIndex, normalizeQuery, buildContextualQuery } from '../../../packages/shared/src/rag/index.ts';
+import { loadFactSource } from '../../../packages/shared/src/rag/bankFile.ts';
 import {
   generateSystemPrompt,
   formatGroundingBlock,
@@ -21,8 +22,10 @@ const N = 4; // samples per temp (temp 0 is deterministic → 1)
 
 const META = JSON.parse(readFileSync(join(HERE, '../../../packages/mobile/assets/rag/vectors-labse.meta.json'), 'utf8'));
 const bytes = readFileSync(join(HERE, '../../../packages/mobile/assets/rag/vectors-labse.i8.bin'));
-const store = new RagStore();
-store.attachSemantic(new SemanticIndex({ dims: META.dims, scale: META.scale, count: META.count, langs: META.langs, data: new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength) }));
+// loadFactSource stamps the store with md5(science-facts.jsonl)[:12] so attachSemantic can
+// reject a blob built for a different bank of the SAME size (facts edited in place).
+const store = new RagStore(loadFactSource());
+store.attachSemantic(new SemanticIndex({ dims: META.dims, scale: META.scale, count: META.count, langs: META.langs, data: new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength) }), META.bankHash);
 
 async function embed(t: string): Promise<Float32Array> {
   const r = await fetch(`${EMBED}/v1/embeddings`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ input: t }) });

@@ -20,7 +20,7 @@ model, translates, mints ids, illustrates and ships them. You do none of that.
    `rag/bank/competency-*.json`, anything under `packages/mobile/`, `packages/shared/`, `packages/images/`, or any
    `*.generated.*` file.
 3. **Do not run any pipeline script.** Specifically not `assemble-factoids.py`, `assemble-newfacts.py`, `ingest-*.py`,
-   `gen-cards-pool.py`, `build-vectors.py`, `export-facts-ts.py`, `tag-curriculum.py`, `fw-*.py`, `gen-*.mjs`. Several of
+   `gen-cards-pool.py`, `build-vectors.py`, `build-facts-db.py`, `tag-curriculum.py`, `fw-*.py`, `gen-*.mjs`. Several of
    them rewrite shared files wholesale and re-mint card ids by position — running one would silently corrupt ids that
    images, tags and the on-device seen-store are keyed by.
 4. **Do not mint ids.** Use temporary ids of the form `lane-b-<CODE>-<nnn>` (e.g. `lane-b-G6-E-3-001`) inside your own

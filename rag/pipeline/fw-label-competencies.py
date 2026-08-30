@@ -71,7 +71,7 @@ def do_batch(cards):
         if _stats['batches'] % 25 == 0: print(f"  ...{_stats['batches']} batches | labeled {_stats['labeled']} | off {_stats['off']} | {_stats['in']//1000}k in {_stats['out']//1000}k out", flush=True)
 def main():
     if os.environ.get('FW_INPUT'): cards = json.load(open(os.environ['FW_INPUT']))
-    else: cards = [{'id': c['id'], 'domain': c['domain'], 'fact_en': c['fact']['en']} for c in json.load(open(f'{ROOT}/packages/mobile/src/generated/cardsPool.generated.json'))['cards']]
+    else: cards = [{'id': c['id'], 'domain': c['domain'], 'fact_en': c['fact']['en']} for c in json.load(open(f'{ROOT}/rag/pipeline/cardsPool.app.json'))['cards']]
     done = set()
     for fn in glob.glob(os.path.join(OUT, 'lab-*.jsonl')):
         for l in open(fn): done.add(json.loads(l)['id'])

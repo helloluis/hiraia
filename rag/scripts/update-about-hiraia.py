@@ -5,7 +5,7 @@
 - Add new facts: mission, accuracy, founder (Luis bio + why), how it's built (Sailor2/LoRA, RAG/DepEd,
   device tiers), how to get a copy (download, requirements, web demo).
 Run: python3 rag/scripts/update-about-hiraia.py
-Then regenerate facts.generated.ts + rebuild the vectors blob.
+Then rebuild the cards.db fact tables (rag/pipeline/build-facts-db.py) + the vectors blob.
 """
 import json
 

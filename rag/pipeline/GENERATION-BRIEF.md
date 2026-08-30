@@ -63,8 +63,9 @@ from this bank). Distill from authoritative open sources; do not free-associate.
 2. **generate** → append on-schema facts to `rag/bank/science-facts.jsonl`
    (this brief; loop or workflow).
 3. `validate.py` → schema + unique ids + all-3-languages + terms-have-vernacular.
-4. `rag/scripts/export-facts-ts.py` → `packages/shared/src/rag/facts.generated.ts`
-   (the bundled artifact the app ships).
+4. `rag/pipeline/build-facts-db.py` → the `fact`/`fact_token`/`fact_meta` tables in
+   `packages/mobile/assets/data/cards.db` (the asset the app ships; also re-stamps
+   `cardsIndex.generated.json`'s `dbVersion` so the phone picks the new copy up).
 5. **Phase-1 exit:** `retrieval-stress.mts` — scored precision eval across the
    bigger bank (hit-rate@k per language + morphology variants). This is what 5,000
    exists to stress-test before we commit to five digits.

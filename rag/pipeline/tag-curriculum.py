@@ -72,7 +72,7 @@ tf, tb = tag_rows(fds, ftext, gr), tag_rows(bank, btext, gr)
 json.dump({"scheme": "best-one, anchors weighted by competency-IDF x corpus-rarity, phrases x2, own-grade tie-break x1.5", "factoids": tf, "bank": tb},
           open(f"{ROOT}/rag/bank/curriculum-tags.json", "w"))
 print(f"tagged: factoids {sum(1 for v in tf.values() if v)}/{len(tf)}  bank {sum(1 for v in tb.values() if v)}/{len(tb)}  -> rag/bank/curriculum-tags.json")
-feed = json.load(open(f"{ROOT}/packages/mobile/src/generated/cardsPool.generated.json"))["cards"]
+feed = json.load(open(f"{ROOT}/rag/pipeline/cardsPool.app.json"))["cards"]
 cov = collections.Counter(); off = 0
 for c in feed:
     t = tf.get(c["id"])

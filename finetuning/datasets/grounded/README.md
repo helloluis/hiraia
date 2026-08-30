@@ -21,7 +21,7 @@ This dataset retrains that behavior. Every row mirrors the **runtime prompt** an
 
 - `seed.tagalog.json` — hand-authored gold examples (the quality bar). Each entry:
   `{ mode, grade, factIds[], user, assistant }`. `factIds` reference real ids in
-  `packages/shared/src/rag/facts.generated.ts`; the builder turns them into the VERIFIED
+  `rag/bank/science-facts.jsonl`; the builder turns them into the VERIFIED
   FACTS block. Modes: `grounded` | `abstain` | `chitchat`.
 - `build-grounded.mts` — assembles each row's `system` with the SAME functions the app
   uses (`generateSystemPrompt` + `formatGroundingBlock`) and fills the facts from the SAME

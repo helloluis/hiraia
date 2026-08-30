@@ -23,7 +23,7 @@ ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
 SHARDS = os.path.join(HERE, 'quiz-v2')
 LEGACY = os.path.join(ROOT, 'rag/bank/quiz-bank.jsonl')
 FACTS = os.path.join(ROOT, 'rag/bank/science-facts.jsonl')
-POOL = os.path.join(ROOT, 'packages/mobile/src/generated/cardsPool.generated.json')
+POOL = os.path.join(ROOT, 'rag/pipeline/cardsPool.app.json')
 BANK_OUT = os.path.join(ROOT, 'rag/bank/quiz-bank-v2.jsonl')
 APP_OUT = os.path.join(ROOT, 'packages/mobile/src/data/cards-questions.json')
 

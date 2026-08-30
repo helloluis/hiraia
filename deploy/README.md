@@ -75,12 +75,25 @@ The public demo (`/`, the lightbox — distinct from the authed browser-direct c
 is a **faithful replica of the shipped APK's grounded path**, served entirely server-side:
 
 ```
-visitor → /api/demo/chat (Next route, server-side)
+visitor → /api/demo/chat (Next route, server-side)          — the conversational demo
             ├─ server/rag.ts  → embed query (LaBSE :8090) → retrieve over the bundled
             │                    int8 vectors → grounding block (same bank as the phone)
             ├─ build prompt: generateSystemPrompt (static) + grounding in the USER turn
             └─ → llama-server :8080 (v2a adapter)  → stream SSE back to the browser
+
+visitor → /api/demo/card (Next route, server-side)          — the FEED's ask box
+            ├─ the browser searched the bundled ~5% card subset FIRST and missed; this is
+            │    the miss path, and it is the phone's LocalEngine.answerQuery
+            ├─ server/rag.ts `retrieveForCard` → the SAME three-way gate the phone runs
+            │    (shared isOffDomain + the spelling probe): fact card / in-domain gap /
+            │    off-domain. The two gap shapes are MODEL-FREE and never reach :8080
+            └─ → llama-server :8080, shared card prompt (@hiraia/shared prompts/cards.ts),
+                 buffered (not streamed) so sanitizeCardAnswer runs before the card ships
 ```
+
+The card route degrades to the honest gap card at every layer — embedder down (it then
+refuses to classify anything as off-domain, because without a cosine every query looks it),
+generation down, retrieval down — and never returns a 5xx to the browser.
 
 Three processes now: **hiraia-llm** (:8080, generation), **hiraia-embed** (:8090, LaBSE),
 **hiraia-web** (:3005). The browser never touches :8080/:8090 for the demo — the route
@@ -104,7 +117,7 @@ query/corpus parity was verified against (see mobile `config/model.ts` EMBEDDER)
 `HIRAIA_EMBED_URL`, `HIRAIA_RAG_DIR` if the layout changes.
 
 **Bank ↔ vectors must match:** `server/rag.ts` attaches the int8 blob only if its fact
-count equals `@hiraia/shared`'s `SCIENCE_FACTS` length (else it throws and stays
+count equals the bank's length, and its `bankHash` the bank's hash (else it throws and stays
 lexical-only). So whenever the fact bank changes, rebuild the vectors blob in the SAME
 commit. A `git lfs pull` on deploy keeps the blob current.
 
@@ -114,7 +127,8 @@ The web demo's model + bank should track the shipped APK exactly:
    (git-lfs). `run-llama-server.sh` points there — so they ship to the VPS automatically.
 2. On the VPS: `deploy/update.sh` (rebuilds + restarts web), then
    `git lfs pull && pm2 restart hiraia-llm` to load the new adapter, and — only if the
-   bank changed — the rebuilt web already picked up the new `SCIENCE_FACTS` + blob.
+   bank changed — the web reads `rag/bank/science-facts.jsonl` at boot, so a `git pull`
+   already gave it the new bank; only the blob needs the `git lfs pull`.
 3. Verify: `/qvac/lora-adapters` lists id 0 + 1; a science query returns a grounded
    answer; an off-topic query abstains (no spurious facts).
 

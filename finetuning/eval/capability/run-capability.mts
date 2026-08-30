@@ -37,6 +37,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { RagStore, SemanticIndex, normalizeQuery, buildContextualQuery } from '../../../packages/shared/src/rag/index.ts';
+import { loadFactSource } from '../../../packages/shared/src/rag/bankFile.ts';
 import {
   generateSystemPrompt,
   formatGroundingBlock,
@@ -140,7 +141,7 @@ function attachSemantic(store: RagStore): boolean {
     store.attachSemantic(new SemanticIndex({
       dims: meta.dims, scale: meta.scale, count: meta.count, langs: meta.langs,
       data: new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength),
-    }));
+    }), meta.bankHash);
     return true;
   } catch (e) {
     console.warn(`>> ⚠️  semantic blob unusable (${(e as Error).message}) — lexical fallback. Regen build-vectors.py.`);
@@ -187,7 +188,9 @@ async function pool<T>(tasks: (() => Promise<T>)[], limit: number): Promise<T[]>
 }
 
 async function collectAnswers(): Promise<AnswerRow[]> {
-  const store = new RagStore();
+  // loadFactSource stamps the store with md5(science-facts.jsonl)[:12] so attachSemantic can
+  // reject a blob built for a different bank of the SAME size (facts edited in place).
+  const store = new RagStore(loadFactSource());
   // DEVICE-FAITHFUL retrieval: attach the LaBSE blob + embed each query so we use the
   // SAME hybrid path as the phone (FINDINGS F7). Fall back to lexical-only with a loud
   // warning if the blob or embedder is unavailable — the run is then NOT device-faithful.

@@ -17,7 +17,7 @@ carries its SOURCE id for fixing at the bank layer (never edit the generated JSO
 import json, re, sys
 from collections import Counter
 
-POOL = 'packages/mobile/src/generated/cardsPool.generated.json'
+POOL = 'rag/pipeline/cardsPool.app.json'
 QUESTIONS = 'packages/mobile/src/data/cards-questions.json'
 QUIZBANK = 'rag/bank/quiz-bank.jsonl'
 FACTOIDS = 'rag/bank/factoids.jsonl'

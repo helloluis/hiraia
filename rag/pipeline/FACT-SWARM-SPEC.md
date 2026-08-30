@@ -68,7 +68,7 @@ pool cards; gate rc 0; calibration G5/Q2 25.5% at ×6. Roundup: **16 laggards, a
 | review | `review/make-sheets.py` **batch mode** (new worklist arg) → verdicts → regen | reject-rate ≤5% |
 | quiz | `fw-genverify.py` → `fw-translate.py` → `assemble-quiz-bank.py` → `gen-cards-questions.py` | ≥1 MCQ per new factId (interject quiz is keyed by factId) |
 | miss-card labels | one trilingual kid-facing label per content competency, judged for grade-5 readability | needed by the Miss Card |
-| pool + gate | append to `cardsPool.merged.json` → `wire-app-pool.py` → `gen-curriculum-tags.mjs` → `build-vectors.py` → `export-facts-ts.py` → retrieval-stress cases per new competency → `run-harness.sh` green | the gate broke on the +5k expansion before |
+| pool + gate | append to `cardsPool.merged.json` → `wire-app-pool.py` → `gen-curriculum-tags.mjs` → `build-vectors.py` → `build-facts-db.py` → retrieval-stress cases per new competency → `run-harness.sh` green | the gate broke on the +5k expansion before |
 
 ## AUP routing
 `rag/bank/aup-competencies.json` (new) = **all LIVING_THINGS codes** + any card whose text hits the

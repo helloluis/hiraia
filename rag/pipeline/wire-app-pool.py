@@ -13,7 +13,7 @@ change here. Cards with no picture at all get an empty slug, which cards.ts is c
 to treat as a repeated illustration.
 
   python3 rag/pipeline/wire-app-pool.py
-  -> packages/mobile/src/generated/cardsPool.generated.json
+  -> rag/pipeline/cardsPool.app.json
 """
 import json, os, re, collections
 
@@ -25,7 +25,7 @@ SRC = os.path.join(HERE, 'cardsPool.merged.json')
 ED = os.environ.get('EDITORIAL') or os.path.join(HERE, 'editorial.json')
 ART = os.path.join(HERE, 'original-art-chosen.json')
 IMAGEMAP = os.path.join(ROOT, 'packages/mobile/src/generated/imageMap.ts')
-OUT = os.path.join(ROOT, 'packages/mobile/src/generated/cardsPool.generated.json')
+OUT = os.path.join(ROOT, 'rag/pipeline/cardsPool.app.json')
 
 # Fields the app's CardFact contract reads, plus the DepEd provenance worth carrying: it is
 # what makes a card's claim checkable later, and it costs a few bytes a row.

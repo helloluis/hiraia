@@ -3,11 +3,12 @@
 // bench-cache/lexical.json: { "<query>": [factId,...] }.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { RagStore } from '../../packages/shared/src/rag/RagStore.ts';
+import { loadFactBank } from '../../packages/shared/src/rag/bankFile.ts';
 
 const HERE = new URL('.', import.meta.url);
 const bench = readFileSync(new URL('benchmark.jsonl', HERE), 'utf8')
   .trim().split('\n').map((l) => JSON.parse(l)) as { query: string; lang: string }[];
-const store = new RagStore();
+const store = new RagStore(loadFactBank());
 const scope = (l: string) => (l === 'cebuano' ? 'cebuano' : l === 'english' ? 'english' : 'tagalog');
 const out: Record<string, string[]> = {};
 for (const b of bench) {

@@ -23,8 +23,8 @@ Stages — every one is idempotent and resumable, and refuses to apply the same 
             ({} by design — bank-fact coverage is derived from factoids via factId; the fragment stays in out/lane-a-tags.json);
             refuses to write unless every pre-existing entry is unchanged vs the loaded file AND vs the backup; then
             gen-curriculum-tags.mjs (the new factoids have no image so they are NOT pool cards → generated file unchanged)
-  vectors   rag/scripts/build-vectors.py (convert-venv python) + rag/scripts/export-facts-ts.py; meta count + bankHash
-            must equal the bank
+  vectors   rag/scripts/build-vectors.py (convert-venv python) + rag/pipeline/build-facts-db.py; the blob meta AND
+            cards.db's fact_meta must both carry the bank's count + bankHash
   images    illustration worklist per stream {id: ffct, prompt} → OpenAI Batch /v1/images/generations with
             batch-submit-all.py's exact request body (gpt-image-2 low 1024, engraving STYLE), CHUNK≈120 so each output
             file is API-downloadable; SUBMIT ONLY — batch ids + submission time → out/image-batches.json; never waits
@@ -43,6 +43,7 @@ Stages — every one is idempotent and resumable, and refuses to apply the same 
 State: out/append-state.json (stage → when/what). Spend ledger (Fireworks tokens, OpenAI images) lives there too.
 """
 import argparse, datetime, glob, hashlib, importlib.util, json, math, os, re, shutil, signal, subprocess, sys, time, urllib.error, urllib.request
+import sqlite3
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
@@ -66,7 +67,8 @@ GEN_TAGS_MJS = os.path.join(ROOT, 'packages', 'mobile', 'scripts', 'gen-curricul
 GEN_TAGS_OUT = os.path.join(ROOT, 'packages', 'mobile', 'src', 'generated', 'curriculumTags.generated.json')
 VENV_PY = os.path.join(ROOT, 'finetuning', '.convert-venv', 'bin', 'python')
 VEC_META = os.path.join(ROOT, 'packages', 'mobile', 'assets', 'rag', 'vectors-labse.meta.json')
-EXPORT_TS = os.path.join(ROOT, 'packages', 'shared', 'src', 'rag', 'facts.generated.ts')
+CARDS_DB = os.path.join(ROOT, 'packages', 'mobile', 'assets', 'data', 'cards.db')
+BUILD_FACTS = os.path.join(ROOT, 'rag', 'pipeline', 'build-facts-db.py')
 GATE = os.path.join(ROOT, 'finetuning', 'eval', 'harness', 'run-harness.sh')
 
 STREAMS = [('main', 'lane-a-ingest-ready.jsonl'), ('G5-L-3', 'lane-a-ingest-ready.G5-L-3.jsonl')]
@@ -666,15 +668,19 @@ def stage_vectors(st):
         meta = json.load(open(VEC_META))
         if meta.get('count') != n or meta.get('bankHash') != h:
             raise SystemExit(f'vectors: meta {meta} does not match bank count {n} hash {h}')
-    _, text = run([sys.executable, os.path.join(ROOT, 'rag', 'scripts', 'export-facts-ts.py')], log_to=os.devnull)
+    # The app reads the bank out of cards.db, not out of a generated TypeScript array, so the
+    # fact tables are rebuilt here and checked the same way the blob is: fact_meta must carry
+    # the bank's own count and hash. build-facts-db.py re-stamps the resident index's
+    # dbVersion too, without which the phone would keep the copy it already wrote.
+    _, text = run([sys.executable, BUILD_FACTS], log_to=os.devnull)
     log(text.rstrip())
-    with open(EXPORT_TS, encoding='utf-8') as f:
-        hdr = [next(f) for _ in range(3)][2].strip()
-    m = re.search(r'// (\d+) facts', hdr)
-    if not m or int(m.group(1)) != n:
-        raise SystemExit(f'vectors: export header {hdr!r} != bank {n}')
-    log(f'vectors: blob count {meta["count"]:,} hash {meta["bankHash"]} == bank; export {m.group(1)} facts == bank')
-    mark(st, 'vectors', count=n, bankHash=h, export=int(m.group(1)))
+    con = sqlite3.connect(CARDS_DB)
+    fm = dict(con.execute('SELECT key, value FROM fact_meta').fetchall())
+    con.close()
+    if int(fm.get('count', -1)) != n or fm.get('bankHash') != h:
+        raise SystemExit(f'vectors: cards.db fact_meta {fm.get("count")}/{fm.get("bankHash")} != bank {n}/{h}')
+    log(f'vectors: blob count {meta["count"]:,} hash {meta["bankHash"]} == bank; cards.db fact_meta == bank')
+    mark(st, 'vectors', count=n, bankHash=h, export=n)
 
 
 # ---------------------------------------------------------------------------------------------- stage: images

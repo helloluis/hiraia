@@ -7,7 +7,7 @@ then the freshly generated block is appended. So the pipeline is:
 
   node rag/scripts/gen-ph-reference.mjs
   python3 rag/scripts/merge-ph-reference.py
-  python3 rag/scripts/export-facts-ts.py   # regenerate the bundled TS
+  python3 rag/pipeline/build-facts-db.py   # rebuild the fact tables the app ships
 """
 import json, os
 

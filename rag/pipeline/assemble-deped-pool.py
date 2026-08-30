@@ -2,7 +2,7 @@
 """Fold the generated shards, the chosen illustrations and the taxonomy into ONE card pool.
 
 Deliberately a PARALLEL bank: it is written to its own file and never touches the shipping
-cardsPool.generated.json, so the new writing can be compared against the old on equal terms
+cardsPool.app.json, so the new writing can be compared against the old on equal terms
 before anything replaces anything.
 
 The shape matches the existing pool exactly (same keys, same taxonomy record) so the app and

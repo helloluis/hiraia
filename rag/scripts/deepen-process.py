@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Process a vertical-deepen workflow output: assemble -> id-dedup -> semantic-dedup
 (LaBSE >0.90 vs existing-concept + intra-batch) -> validate -> append -> rebuild
-facts.generated. Run with the LaBSE venv. Usage: deepen-process.py <workflow_output.json>"""
+the bank + cards.db. Run with the LaBSE venv. Usage: deepen-process.py <workflow_output.json>"""
 import json, re, sys, os, subprocess, collections
 import numpy as np, torch, torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModel
@@ -66,4 +66,7 @@ with open(BANK,'a',encoding='utf-8') as fo:
     for c in kept: fo.write(json.dumps(c,ensure_ascii=False)+'\n')
 total=sum(1 for l in open(BANK,encoding='utf-8') if l.strip())
 print(f"generated={sum(len(c.get('facts',[])) for c in concepts)} valid={len(cands)} dropped={dict(drop)} semdup={ddup} KEPT={len(kept)} -> bank={total}")
-subprocess.run(['python3', os.path.join(HERE,'scripts','export-facts-ts.py')], check=True)
+# The bank now ships inside cards.db, so an append has to rebuild the fact tables (and the
+# dbVersion stamp) rather than regenerate a TypeScript array. Vectors still need a separate
+# rag/scripts/build-vectors.py run — the blob is positional and every appended row adds one.
+subprocess.run(['python3', os.path.join(os.path.dirname(HERE),'rag','pipeline','build-facts-db.py')], check=True)

@@ -26,6 +26,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { RagStore, SemanticIndex, normalizeQuery, buildContextualQuery, CONTEXT_FALLBACK_FLOOR } from '../../../packages/shared/src/rag/index.ts';
+import { loadFactSource } from '../../../packages/shared/src/rag/bankFile.ts';
 import {
   generateSystemPrompt,
   formatGroundingBlock,
@@ -81,14 +82,16 @@ function load(): Sess {
 function save(s: Sess) { mkdirSync(SESS_DIR, { recursive: true }); writeFileSync(sessPath, JSON.stringify(s, null, 1)); }
 
 // ---- engine plumbing ----
-const store = new RagStore();
+// loadFactSource stamps the store with md5(science-facts.jsonl)[:12] so attachSemantic can
+// reject a blob built for a different bank of the SAME size (facts edited in place).
+const store = new RagStore(loadFactSource());
 let semReady = false;
 function attachSemantic() {
   try {
     const meta = JSON.parse(readFileSync(META, 'utf8'));
     const bytes = readFileSync(BLOB);
     const data = new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength);
-    store.attachSemantic(new SemanticIndex({ dims: meta.dims, scale: meta.scale, count: meta.count, langs: meta.langs, data }));
+    store.attachSemantic(new SemanticIndex({ dims: meta.dims, scale: meta.scale, count: meta.count, langs: meta.langs, data }), meta.bankHash);
     semReady = true;
   } catch (e) { console.warn(`[warn] semantic index not attached (${(e as Error).message}) — lexical-only`); }
 }

@@ -4,6 +4,7 @@
 //   node_modules/.bin/tsx rag/embeddings-spike/bench-ts.mts
 import { readFileSync } from 'node:fs';
 import { RagStore } from '../../packages/shared/src/rag/RagStore.ts';
+import { loadFactSource } from '../../packages/shared/src/rag/bankFile.ts';
 import { SemanticIndex, type SemanticBlob } from '../../packages/shared/src/rag/SemanticIndex.ts';
 import type { Language } from '../../packages/shared/src/types/index.ts';
 
@@ -14,8 +15,10 @@ const blob: SemanticBlob = {
   dims: meta.dims, scale: meta.scale, count: meta.count, langs: meta.langs,
   data: new Int8Array(binBuf.buffer, binBuf.byteOffset, binBuf.byteLength),
 };
-const store = new RagStore();
-store.attachSemantic(new SemanticIndex(blob));
+// loadFactSource stamps the store with md5(science-facts.jsonl)[:12] so attachSemantic can
+// reject a blob built for a different bank of the SAME size (facts edited in place).
+const store = new RagStore(loadFactSource());
+store.attachSemantic(new SemanticIndex(blob), meta.bankHash);
 console.log(`blob: ${meta.count} facts x ${meta.dims}d x ${meta.langs.length} langs (scale ${meta.scale.toFixed(5)})`);
 
 const bench = readFileSync(new URL('benchmark.jsonl', HERE), 'utf8').trim().split('\n').map((l) => JSON.parse(l));

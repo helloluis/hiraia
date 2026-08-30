@@ -10,7 +10,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 ap = argparse.ArgumentParser(); ap.add_argument("--floor", type=int, default=60); ap.add_argument("--min-conf", type=float, default=0.20); ap.add_argument("--tags", default=None); ap.add_argument("--out", default=None)
 a = ap.parse_args()
 T = json.load(open(a.tags or f"{ROOT}/rag/bank/curriculum-tags.json"))
-pool = json.load(open(f"{ROOT}/packages/mobile/src/generated/cardsPool.generated.json"))["cards"]
+pool = json.load(open(f"{ROOT}/rag/pipeline/cardsPool.app.json"))["cards"]
 pool_ids = {c["id"] for c in pool}
 fact_of = {r["id"]: r.get("factId") for r in (json.loads(l) for l in open(f"{ROOT}/rag/bank/factoids.jsonl") if l.strip())}
 feed, bank_facts = collections.Counter(), collections.defaultdict(set)

@@ -23,6 +23,7 @@ import { fileURLToPath } from 'node:url';
 import {
   RagStore, SemanticIndex, normalizeQuery, buildContextualQuery, CONTEXT_FALLBACK_FLOOR,
 } from '../../../packages/shared/src/rag/index.ts';
+import { loadFactSource } from '../../../packages/shared/src/rag/bankFile.ts';
 import {
   generateSystemPrompt, formatGroundingBlock, composeGroundedUserTurn,
 } from '../../../packages/shared/src/prompts/system.ts';
@@ -41,7 +42,9 @@ const LANG_OK = { tagalog: 'tl', cebuano: 'bis', english: 'en' } as const;
 interface Script { id: string; category: string; lang: keyof typeof LANG_OK; persona?: string; turns: string[] }
 
 const scripts: Script[] = (JSON.parse(readFileSync(SCRIPTS, 'utf8')).scripts ?? []) as Script[];
-const store = new RagStore();
+// loadFactSource stamps the store with md5(science-facts.jsonl)[:12] so attachSemantic can
+// reject a blob built for a different bank of the SAME size (facts edited in place).
+const store = new RagStore(loadFactSource());
 
 // --- device-faithful hybrid retrieval (mirror of LocalEngine.ragSearch) -------
 function attachSemantic(): boolean {
@@ -51,7 +54,7 @@ function attachSemantic(): boolean {
   try {
     const meta = JSON.parse(readFileSync(META, 'utf8'));
     const bytes = readFileSync(BIN);
-    store.attachSemantic(new SemanticIndex({ dims: meta.dims, scale: meta.scale, count: meta.count, langs: meta.langs, data: new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength) }));
+    store.attachSemantic(new SemanticIndex({ dims: meta.dims, scale: meta.scale, count: meta.count, langs: meta.langs, data: new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength) }), meta.bankHash);
     return true;
   } catch (e) { console.warn(`>> ⚠️ semantic blob unusable (${(e as Error).message})`); return false; }
 }

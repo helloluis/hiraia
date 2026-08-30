@@ -11,6 +11,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { RagStore, SemanticIndex, normalizeQuery } from '../../../packages/shared/src/rag/index.ts';
+import { loadFactSource } from '../../../packages/shared/src/rag/bankFile.ts';
 import {
   generateSystemPrompt,
   formatGroundingBlock,
@@ -83,7 +84,9 @@ const CASE_FILTER = (process.env.CASES ?? '').split(',').map((s) => s.trim()).fi
 const cases = cfg.cases
   .filter((c) => (c.adapter ?? 'tagalog') === ADAPTER_TAG)
   .filter((c) => !CASE_FILTER.length || CASE_FILTER.some((s) => c.id.includes(s)));
-const store = new RagStore();
+// loadFactSource stamps the store with md5(science-facts.jsonl)[:12] so attachSemantic can
+// reject a blob built for a different bank of the SAME size (facts edited in place).
+const store = new RagStore(loadFactSource());
 const stripTags = (s: string) => s.replace(/\s*\[image:[^\]]*\]/gi, '').trim();
 
 // DEVICE-FAITHFUL retrieval: the phone uses retrieveForGroundingHybrid (lexical + LaBSE
@@ -100,7 +103,7 @@ function attachSemantic(): boolean {
   try {
     const meta = JSON.parse(readFileSync(META, 'utf8'));
     const bytes = readFileSync(BIN);
-    store.attachSemantic(new SemanticIndex({ dims: meta.dims, scale: meta.scale, count: meta.count, langs: meta.langs, data: new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength) }));
+    store.attachSemantic(new SemanticIndex({ dims: meta.dims, scale: meta.scale, count: meta.count, langs: meta.langs, data: new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength) }), meta.bankHash);
     return true;
   } catch (e) { console.warn(`>> ⚠️ semantic blob unusable (${(e as Error).message}) — lexical fallback`); return false; }
 }

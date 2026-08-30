@@ -15,11 +15,11 @@ brings the curriculum weighting, the grade setting, the data and the tooling.
 | `.gitignore`, `config/strings.ts`, `engine/LocalEngine.ts`, `scripts/card-harness.mts` | auto-merged; read the result rather than trusting it. |
 | `packages/web/src/app/{icon,apple-icon}.png` | card-ui (new brand mark). |
 | `packages/images/cards-png/ffct-{19779,25671}.png` | regenerate from the canonical WebP. |
-| `generated/*`, `data/cards-questions.json`, `shared/src/rag/facts.generated.ts` | DO NOT merge — delete the conflict and regenerate. |
+| `generated/*`, `data/cards-questions.json`, `rag/pipeline/cardsPool.app.json` | DO NOT merge — delete the conflict and regenerate. |
 
 ## Regenerate, in order (sources are the merged bank)
 1. `merge-card-banks.py` → `cardsPool.merged.json` (must now include the 723 Lane A factoids and every engraving-backed card)
-2. `wire-app-pool.py` → `cardsPool.generated.json` (the resident index)
+2. `wire-app-pool.py` → `cardsPool.app.json` (the resident index)
 3. `build-cards-db.py` → `assets/data/cards.db` + `tokens.bin` (card text, questions, titles)
 4. `gen-image-map.mjs` (walks assets-png + cards-png, minus card art for ids that are not in
    the wired pool). It reads the pool that step 2 wrote, and step 2 reads the map this writes —
@@ -27,7 +27,7 @@ brings the curriculum weighting, the grade setting, the data and the tooling.
    illustration to it); re-run step 2 once after this to confirm the counts are unchanged.
 5. `gen-curriculum-tags.mjs` → `curriculumTags.generated.json` (weighting input)
 6. `gen-cards-questions.py` (three-option interject set)
-7. `build-vectors.py` + `export-facts-ts.py` (retrieval blob and export must agree with the bank)
+7. `build-vectors.py` + `build-facts-db.py` (the retrieval blob and cards.db's `fact_meta` must both agree with the bank)
 
 ## Verify
 `tsc` (mobile + shared) · `card-harness.mts` · `feed-weights-check.mts` (exact equivalence, rebuild-on-key-change, sibling decay) · `feed-calibration.mts` · `coverage-roundup.py` · `run-harness.sh` (regression gate must be green) · then an APK on the emulator: onboarding → grade → deck → quiz → recap → search, and the footer reading "Grade N · Pahina M".

@@ -7,7 +7,7 @@ in the CardQuestion shape {f, q, o, a, e, d}.
 """
 import json
 
-POOL = 'packages/mobile/src/generated/cardsPool.generated.json'
+POOL = 'rag/pipeline/cardsPool.app.json'
 QUIZ = 'rag/bank/quiz-bank.jsonl'
 OUT = 'packages/mobile/src/data/cards-questions.json'
 
