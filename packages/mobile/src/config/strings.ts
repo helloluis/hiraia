@@ -41,6 +41,14 @@ interface UIStrings {
   welcomeSubtitle: string;
   inputPlaceholder: string;
   inputPreparing: string;
+  /**
+   * Shown in the chat input when the model load FAILED (most often: the LoRA
+   * adapter could not be fetched, so the tutor would have had to run as the raw
+   * base model, which fabricates — see LocalEngine.resolveAdapterPath). Tapping
+   * the bar retries, so like `cards.searchUnavailable` this must read as
+   * recoverable, not fatal.
+   */
+  inputUnavailable: string;
   waitPreparing: string;
   errorGeneric: string;
   // per-turn "thinking" narration (cosmetic; shown before the first token, never sent to the model)
@@ -67,8 +75,6 @@ interface UIStrings {
   newConversation: string;
   // loader
   bootingUp: string;
-  // kitten-tier experimental disclaimer (shown only on the 1B build's chat screen)
-  kittenExperimental: string;
   // quiz mode
   quiz: QuizStrings;
   // question-cards feed (home screen)
@@ -87,8 +93,14 @@ interface UIStrings {
     searchUnavailable: string;
     yourQuestion: string;
     thinking: string;
+    /** In-domain GAP: it is science, we just have no page for it yet. */
     abstain: string;
+    /** Precedes the nearest topic on the gap card (a soft landing back into the deck). */
     abstainSuggest: string;
+    /** Not science at all — states the scope of the DECK, never a science topic. */
+    offdomain: string;
+    /** Static examples under the off-domain line (by definition there is no retrieved topic). */
+    offdomainHint: string;
   };
 }
 
@@ -99,6 +111,7 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       'Magtanong ka ng kahit ano tungkol sa agham. Nandito ako para tulungan kang matuto.',
     inputPlaceholder: 'Magtanong tungkol sa agham...',
     inputPreparing: 'Inihahanda ang AI...',
+    inputUnavailable: 'Hindi handa si Hiraia—pindutin para subukan ulit',
     waitPreparing: 'Sandali lang—inihahanda ko pa ang AI. Pakisubukang muli sa ilang segundo. 🐱',
     errorGeneric: 'Paumanhin, may naganap na error. Pakisubukang muli. 🐱',
     thinkingSearching: 'Naghahanap ng sagot',
@@ -122,8 +135,6 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     showTutorial: 'Ipakita ang tutorial',
     newConversation: '+ Bagong Usapan',
     bootingUp: 'nag-boot up pa...',
-    kittenExperimental:
-      'Eksperimental pa ang Kitten. Laging i-double-check ang mahalagang sagot sa guro o magulang.',
     quiz: {
       button: 'QUIZ!',
       confirmTitle: 'Magsimula ng pagsusulit?',
@@ -160,8 +171,10 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       searchUnavailable: 'Pindutin para subukan ulit',
       yourQuestion: 'Ang tanong mo',
       thinking: 'Iniisip ko pa',
-      abstain: 'Hmm, wala pa akong alam diyan.',
+      abstain: 'Hmm, wala pa akong pahina tungkol diyan.',
       abstainSuggest: 'Pero subukan natin ito',
+      offdomain: 'Tutor ako sa agham, kaya agham lang ang laman ng mga kard ko.',
+      offdomainHint: 'Subukan mo: hayop, panahon, katawan, o kalawakan.',
     },
   },
   english: {
@@ -169,6 +182,7 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     welcomeSubtitle: "Ask me anything about science. I'm here to help you learn.",
     inputPlaceholder: 'Ask about science...',
     inputPreparing: 'Preparing the AI...',
+    inputUnavailable: "Hiraia isn't ready—tap to try again",
     waitPreparing: "One moment—I'm still preparing the AI. Please try again in a few seconds. 🐱",
     errorGeneric: 'Sorry, something went wrong. Please try again. 🐱',
     thinkingSearching: 'Looking for the answer',
@@ -192,8 +206,6 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     showTutorial: 'Show the tutorial',
     newConversation: '+ New Conversation',
     bootingUp: 'still booting up...',
-    kittenExperimental:
-      'Kitten is experimental. Always double-check important answers with a teacher or parent.',
     quiz: {
       button: 'QUIZ!',
       confirmTitle: 'Start a quiz?',
@@ -229,8 +241,10 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       searchUnavailable: 'Tap to try again',
       yourQuestion: 'You asked',
       thinking: "I'm thinking",
-      abstain: "Hmm, I don't know about that yet.",
+      abstain: "Hmm, I don't have a page about that yet.",
       abstainSuggest: "But let's try this",
+      offdomain: "I'm a science tutor, so all my cards are about science.",
+      offdomainHint: 'Try: animals, weather, your body, or space.',
     },
   },
   cebuano: {
@@ -239,6 +253,7 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       'Pangutana bisan unsa bahin sa siyensya. Ania ko aron motabang nimo nga makakat-on.',
     inputPlaceholder: 'Pangutana bahin sa siyensya...',
     inputPreparing: 'Giandam ang AI...',
+    inputUnavailable: 'Dili pa andam si Hiraia—i-tap para sulayan pag-usab',
     waitPreparing:
       'Kadiyot lang—giandam pa nako ang AI. Palihug sulayi pag-usab sa pipila ka segundo. 🐱',
     errorGeneric: 'Pasayloa, naay sayop nga nahitabo. Palihug sulayi pag-usab. 🐱',
@@ -263,8 +278,6 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     showTutorial: 'Ipakita ang tutorial',
     newConversation: '+ Bag-ong Panag-istorya',
     bootingUp: 'nag-boot up pa...',
-    kittenExperimental:
-      'Eksperimento pa ang Kitten. Kanunay i-double-check ang importante nga tubag sa magtutudlo o ginikanan.',
     quiz: {
       button: 'QUIZ!',
       confirmTitle: 'Magsugod og pagsulay?',
@@ -301,8 +314,10 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       searchUnavailable: 'I-tap para sulayan pag-usab',
       yourQuestion: 'Ang pangutana nimo',
       thinking: 'Naghunahuna pa ko',
-      abstain: 'Hmm, wala pa ko kahibalo ana.',
+      abstain: 'Hmm, wala pa koy panid mahitungod ana.',
       abstainSuggest: 'Pero sulayan nato ni',
+      offdomain: 'Tutor ko sa siyensya, mao nga siyensya ra ang sulod sa akong mga kard.',
+      offdomainHint: 'Sulayi: mananap, panahon, lawas, o kawanangan.',
     },
   },
 };

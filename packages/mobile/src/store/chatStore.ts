@@ -4,6 +4,7 @@ import { generateSystemPrompt, formatGroundingBlock, composeGroundedUserTurn } f
 import type { Message, RagResult } from '@hiraia/shared';
 
 import { uiStrings } from '../config/strings';
+import { artSourceFor } from '../data/artSource';
 import { pickFactoidText } from '../data/factoids';
 import { genId } from '../db';
 import { withModelLock } from '../engine/modelLock';
@@ -270,34 +271,49 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       //    fires if the curated map missed AND the model didn't emit a tag.
       // Abstain suppresses ALL paths — the grounding wasn't really relevant if the tutor
       // is saying "hindi ko alam".
+      // A path that names a slug this device does not have counts as a MISS, not a win: see
+      // `usable` below. Otherwise the highest-priority path silently wins with a placeholder.
       const abstained = ABSTAIN_RE.test(fullResponse);
 
+      /**
+       * A candidate only wins if it will actually DRAW. Every path here names a slug from a
+       * table generated at build time, but the art on the device is the head of a list plus
+       * whatever backfill has landed, so a slug can be perfectly correct and still have no
+       * file — in which case ImageSlot renders the 🖼️ placeholder. Committing to an absent
+       * slug would also BURN it in `shownImageSlugs` and lock the next candidate out of the
+       * rest of the conversation, so presence is checked before a candidate is accepted, not
+       * after. `artSourceFor` is the exact predicate ImageSlot itself resolves through.
+       */
+      const usable = (slug: string | undefined): slug is string =>
+        !!slug && !shownImageSlugs.has(slug) && artSourceFor(slug) != null;
+
       // Curated baseline. Cheap (object lookup) — try this first.
-      let baselineSlug: string | undefined = abstained ? undefined : imageSlug;
+      const baselineSlug: string | undefined = abstained || !usable(imageSlug) ? undefined : imageSlug;
 
       // Model tag — semantic, can override the baseline when confidently on-topic.
       let tagSlug: string | undefined;
       const tagDesc = IMAGE_TAG_RE.exec(fullResponse)?.[1];
       if (tagDesc && engine.resolveImageTag) {
         const hit = await engine.resolveImageTag(tagDesc, undefined, topDomain);
-        if (hit && !shownImageSlugs.has(hit.slug)) tagSlug = hit.slug;
+        if (hit && usable(hit.slug)) tagSlug = hit.slug;
       }
 
-      // Retrieval-driven match on the grounded fact's text — only consulted when the
-      // curated baseline + model tag both gave nothing. Cross-lingual LaBSE on TL fact text
-      // → English image desc; floor 0.60 keeps it conservative.
+      // Retrieval-driven match on the grounded fact's text — the last resort, consulted when
+      // neither the curated baseline nor the model tag produced a picture this device can
+      // draw (an absent baseline is no baseline). Cross-lingual LaBSE on TL fact text →
+      // English image desc; floor 0.60 keeps it conservative. Still gated so the embedding
+      // pass is skipped on the common turn where the baseline already won.
       let retrievalSlug: string | undefined;
       if (!baselineSlug && !tagSlug && !abstained && engine.resolveImageTag && grounding[0]?.content) {
         const hit = await engine.resolveImageTag(grounding[0].content, RETRIEVAL_IMAGE_FLOOR, topDomain);
-        if (hit && !shownImageSlugs.has(hit.slug)) retrievalSlug = hit.slug;
+        if (hit && usable(hit.slug)) retrievalSlug = hit.slug;
       }
 
       // Final: curated baseline FIRST (a known-good id→slug match beats any embedding
       // similarity by construction); model tag is the override path for facts NOT in the
-      // curated map; semantic retrieval is the last resort. DEDUP applies to every path
-      // so the same illustration isn't re-spammed.
-      let finalImageSlug = baselineSlug ?? tagSlug ?? retrievalSlug;
-      if (finalImageSlug && shownImageSlugs.has(finalImageSlug)) finalImageSlug = undefined;
+      // curated map; semantic retrieval is the last resort. Dedup and presence were applied
+      // to every path above, so only a slug that will really render is burned here.
+      const finalImageSlug = baselineSlug ?? tagSlug ?? retrievalSlug;
       if (finalImageSlug) shownImageSlugs.add(finalImageSlug);
 
       const assistantMessage: Message = {

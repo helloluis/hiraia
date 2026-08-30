@@ -1,12 +1,17 @@
 /**
  * Response interject page of the question-cards feed — shown when the kid TYPED a query and
- * the local card search found no confident match. Two shapes:
- *   - generated : a short grounded answer from the (background-warmed) model, prefixed with
- *     the kid's question so it reads like a teacher answering them.
- *   - abstain   : an honest "I don't know that yet" (retrieval missed AND the model couldn't
- *     ground / wasn't ready), offering the nearest topic as a soft landing.
- * A confident retrieval HIT never reaches here — it navigates straight to the found card
- * with a small "you asked" banner instead. A gold "ituloy" ticket continues the walk.
+ * the local card search found no confident match. Three shapes:
+ *   - generated : a short grounded fact card from the (background-warmed) model, prefixed with
+ *     the kid's question so it reads like a card printed in answer to them.
+ *   - abstain   : an in-domain GAP — science, but no page for it yet — offering the nearest
+ *     topic as a soft landing.
+ *   - offdomain : the query wasn't science at all. States what the DECK holds and offers
+ *     four example subjects; deliberately NO nearest topic, because answering "roblox" with a
+ *     science card is the thing this shape exists to stop.
+ * The two miss shapes share the disc-centred layout — they are the same KIND of page, and the
+ * only visible difference is the sentence. A confident retrieval HIT never reaches here — it
+ * navigates straight to the found card with a small "you asked" banner instead. A gold
+ * "ituloy" ticket continues the walk.
  *
  * LOOK — design/mockups/midcentury.html. The mockup draws four frames and this is not one
  * of them, so every treatment below is DERIVED from one that is, and each is credited
@@ -58,7 +63,9 @@ export function ResponseCard({
   onContinue: () => void;
 }) {
   const t = uiStrings(language);
-  const abstain = response.kind === 'abstain';
+  const offDomain = response.kind === 'offdomain';
+  // Both misses print the disc and one centred sentence; only `generated` prints an answer.
+  const miss = response.kind !== 'generated';
 
   return (
     <View style={cardFrame.content}>
@@ -88,10 +95,8 @@ export function ResponseCard({
       {/* the printed rule + gold diamond that introduces an answer everywhere in the deck */}
       <Divider style={styles.divider} />
 
-      <View
-        style={[styles.answerWrap, abstain ? styles.answerWrapAbstain : styles.answerWrapAnswer]}
-      >
-        {abstain ? (
+      <View style={[styles.answerWrap, miss ? styles.answerWrapAbstain : styles.answerWrapAnswer]}>
+        {miss ? (
           <>
             {/* .qcat one size down — the peach-matted disc with the 3px ink edge, in place
                 of the old 🤔. Emoji render in full colour on Android and break the
@@ -101,15 +106,22 @@ export function ResponseCard({
             <View style={styles.disc}>
               <Image source={CAT} style={styles.discImage} resizeMode="contain" />
             </View>
-            <Text style={styles.abstain}>{t.cards.abstain}</Text>
-            {response.suggestion && (
-              <Text style={styles.suggest}>
-                {t.cards.abstainSuggest}:{' '}
-                {/* the soft landing, set in the bold slab so the topic reads as a printed
-                    proper noun. Still deliberately not pressable — the ticket below stays
-                    the only action on the card. */}
-                <Text style={styles.suggestTopic}>{response.suggestion}</Text>
-              </Text>
+            <Text style={styles.abstain}>{offDomain ? t.cards.offdomain : t.cards.abstain}</Text>
+            {offDomain ? (
+              /* No retrieved topic exists for an off-domain query, and offering one anyway is
+                 precisely the behaviour we removed — so this line is STATIC: four subjects the
+                 bank is genuinely dense in, so a kid who follows it lands on a real card. */
+              <Text style={styles.suggest}>{t.cards.offdomainHint}</Text>
+            ) : (
+              response.suggestion && (
+                <Text style={styles.suggest}>
+                  {t.cards.abstainSuggest}:{' '}
+                  {/* the soft landing, set in the bold slab so the topic reads as a printed
+                      proper noun. Still deliberately not pressable — the ticket below stays
+                      the only action on the card. */}
+                  <Text style={styles.suggestTopic}>{response.suggestion}</Text>
+                </Text>
+              )
             )}
           </>
         ) : (

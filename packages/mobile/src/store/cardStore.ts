@@ -13,11 +13,21 @@
  * grade, the inferred curriculum quarter, and the SQLite seen-store (card + competency).
  */
 import { create } from 'zustand';
-import { inferCurriculumQuarter, type Language, type SeenRecord } from '@hiraia/shared';
+// `sanitizeCardAnswer` is the guard that trims a model-generated card, strips the prompt's
+// own SAGOT:/ANSWER:/TUBAG: cue if it is echoed, and caps the card at the length
+// ResponseCard is laid out for. It sits next to the prompt it cleans up after
+// (@hiraia/shared prompts/cards.ts) so the web demo's card route applies the same one.
+import {
+  inferCurriculumQuarter,
+  sanitizeCardAnswer,
+  type Language,
+  type SeenRecord,
+} from '@hiraia/shared';
 
 import {
   cardTitle,
   cardTitleById,
+  choiceLabel,
   competencyKeys,
   getCard,
   jumpCard,
@@ -51,15 +61,20 @@ const REWARD_PREFETCH_AT = 5; // start generating the reward text N cards before
 const REWARD_MIN_TOPICS = 3; // don't reward until there's something to celebrate
 
 /**
- * A search result that isn't a straight card navigation: either a model-generated grounded
- * answer, or an honest abstention. (A retrieval HIT navigates directly to the found card
- * with a `queryBanner` instead — no FeedResponse needed.)
+ * A search result that isn't a straight card navigation. Three shapes:
+ *   generated — a model-written fact card, grounded on the fact bank;
+ *   abstain   — an in-domain GAP: science, but no page for it yet (offers the nearest topic);
+ *   offdomain — not science at all ("roblox"): we say we are only a science tutor, and
+ *               deliberately offer NO topic (suggesting a science card to a child who asked
+ *               about a game is the behaviour this split exists to remove).
+ * (A retrieval HIT navigates directly to the found card with a `queryBanner` instead — no
+ * FeedResponse needed.)
  */
 export interface FeedResponse {
   query: string;
-  kind: 'generated' | 'abstain';
+  kind: 'generated' | 'abstain' | 'offdomain';
   text: string | null; // generated answer (already localized)
-  suggestion: string | null; // topic label of the nearest card, for the abstention path
+  suggestion: string | null; // topic label of the nearest card — the abstain path only
 }
 
 interface CardState {
@@ -353,18 +368,22 @@ export const useCardStore = create<CardState>()((set, get) => ({
       return;
     }
 
-    // Miss → try the warm model for a grounded answer; anything less is an honest abstention.
+    // Miss → try the warm model for a grounded fact card; anything less is an honest miss.
     const suggestion = res.suggestion;
-    const anchorId = suggestion?.id ?? null;
     const es = useEngineStore.getState();
     const engine = es.engine;
+    // Set only by answerQuery, and only when the embedder was up to judge it: the query wasn't
+    // science, so neither a card nor a science topic is the right answer.
+    let offDomain = false;
     if (engine?.isReady() && engine.answerQuery) {
       set({ asking: true });
       try {
-        // Serialized with every other generation on the single-instance model — chat,
-        // the reward prefetch, and the grade re-prime (LocalEngine.setGrade).
-        const ans = await withModelLock(() => engine.answerQuery!(q, lang));
-        const clean = sanitizeAnswer(ans.text);
+        // NOT wrapped in withModelLock: answerQuery takes it itself, around the generation and
+        // nothing else. Retrieval and the off-domain judgement are model-free, and holding the
+        // lock across them made a static sentence wait for whatever was already generating.
+        const ans = await engine.answerQuery!(q, lang);
+        offDomain = ans.offDomain === true;
+        const clean = sanitizeCardAnswer(ans.text);
         if (ans.grounded && clean && !get().response) {
           set({
             asking: false,
@@ -372,7 +391,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
             reward: null,
             queryBanner: null,
             response: { query: q, kind: 'generated', text: clean, suggestion: null },
-            responseAnchorId: anchorId,
+            responseAnchorId: suggestion?.id ?? null,
             pageKey: get().pageKey + 1,
           });
           return;
@@ -383,18 +402,27 @@ export const useCardStore = create<CardState>()((set, get) => ({
       set({ asking: false });
     }
 
-    // Abstain — honest "I don't know that yet", offering the nearest topic as a soft landing.
+    // Honest miss. In-domain gap → "no page on that yet", offering the nearest topic as a soft
+    // landing. Off-domain → "I'm only a science tutor", with NO nearest topic and no anchor:
+    // the continue ticket resumes the ordinary walk instead of landing on whichever science
+    // card happened to sit closest to a question about a video game.
+    // The card's LOCALIZED name, never `topic` — that field is an untranslated English
+    // slug-phrase, so printing it raw ended every Tagalog and Cebuano gap card on an English
+    // fragment ("Pero subukan natin ito: how geckos blend in with pale color"). The curated
+    // title first, then the same label the feed's own choices use. Mirrored in the web demo
+    // (packages/web/src/store/useCardDemoStore.ts) — keep the two in sync.
+    const nearest = suggestion ? cardTitle(suggestion, lang) || choiceLabel(suggestion, lang) : null;
     set({
       question: null,
       reward: null,
       queryBanner: null,
       response: {
         query: q,
-        kind: 'abstain',
+        kind: offDomain ? 'offdomain' : 'abstain',
         text: null,
-        suggestion: suggestion ? suggestion.topic : null,
+        suggestion: offDomain ? null : nearest,
       },
-      responseAnchorId: anchorId,
+      responseAnchorId: offDomain ? null : (suggestion?.id ?? null),
       pageKey: get().pageKey + 1,
     });
   },
@@ -535,23 +563,6 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, banner?: string) {
   });
   persist({ pagesRead, correctCount: s.correctCount });
   warmAfter(get);
-}
-
-/**
- * Light guard on a model-generated answer before it reaches a child: trim, strip any leaked
- * prompt scaffolding, collapse whitespace, and reject empty/degenerate output (the caller
- * then abstains rather than showing junk).
- */
-function sanitizeAnswer(raw: string): string | null {
-  let t = (raw ?? '').trim();
-  if (!t) return null;
-  t = t
-    .replace(/^(sagot|answer|tubag)\s*:\s*/i, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-  if (t.length < 8) return null;
-  if (t.length > 320) t = t.slice(0, 317).trimEnd() + '…';
-  return t;
 }
 
 /** Advance the walk onto the chosen card (the normal page-turn). */

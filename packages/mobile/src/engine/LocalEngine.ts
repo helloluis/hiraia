@@ -12,7 +12,8 @@ import {
 import { DEFAULT_GRADE } from '../config/grades';
 import { CHAT_TEMP, SUMMARY_TEMP, CHAT_MAX_TOKENS } from '../config/inference';
 import { IMAGE_CATEGORY } from '../generated/imageCategory.generated';
-import { ensureRemoteModel, filenameFromUrl } from './modelDownload';
+import { openFactSource } from '../data/cardDb';
+import { ensureRemoteAsset } from './modelDownload';
 import { withModelLock } from './modelLock';
 import type { AdapterLanguage } from '../config/model';
 import type {
@@ -23,6 +24,7 @@ import type {
   TutorConfig,
   Language,
   GradeLevel,
+  SqlFactSource,
 } from '@hiraia/shared';
 import {
   RagStore,
@@ -30,7 +32,10 @@ import {
   normalizeQuery,
   buildContextualQuery,
   CONTEXT_FALLBACK_FLOOR,
+  isOffDomain,
   generateSystemPrompt,
+  buildCardPrompt,
+  CARD_TEMP,
 } from '@hiraia/shared';
 
 // Minimum cosine for an [image:] description to resolve to a bundled illustration.
@@ -88,12 +93,46 @@ export class LocalEngine implements TutorEngine {
   private imageVectors: Int8Array | null = null;
 
   /**
-   * Resolve the bundled LoRA adapter GGUF for a language to an absolute on-device
-   * file path (for QVAC's `modelConfig.lora`). The adapter ships inside the APK
-   * as a Metro asset; expo-asset copies it out to a readable path on first use.
-   * Returns undefined only if no adapter is bundled / resolution fails.
+   * Resolve the LoRA adapter GGUF for a language to an absolute on-device file
+   * path (for QVAC's `modelConfig.lora`). The adapter is DOWNLOADED from the
+   * mirror and verified against its declared size + MD5 (config/model.ts
+   * REMOTE_ASSETS) by the same gate as the base model — QVAC cannot fetch it for
+   * us, `modelConfig.lora` is a bare string the llama.cpp plugin never resolves.
+   *
+   * THE ADAPTER IS REQUIRED. A download or verification failure THROWS; it does
+   * not quietly return undefined.
+   *
+   * That used to be a fallback: log a warning, load the base model anyway, "a
+   * working tutor beats no tutor". It is the wrong trade here, for three reasons.
+   *
+   *   1. The adapter is not a polish layer, it IS the tutor. Measured on the
+   *      capability probes (2026-06-11): 3.75/5 through the adapter vs 1.78/5 on
+   *      raw Sailor2. The base model fabricates science at a child who has no way
+   *      to tell — and this project ranks factual accuracy above everything else.
+   *      A tutor that is confidently wrong in fluent Tagalog is a worse product
+   *      than a tutor that is honestly unavailable.
+   *   2. Failing HERE is nearly free, and failing later is not. This resolves
+   *      BEFORE the 3.23 GB base download starts (see initialize), so a missing
+   *      adapter costs a child on prepaid data ~0 MB instead of 3.23 GB spent on
+   *      a load we already know produces the degraded tutor.
+   *   3. It cannot be shipped by accident. A silent fallback looks like a working
+   *      build on a device check; a thrown error does not.
+   *
+   * The app is NOT bricked by this throw. The card feed — the home screen — is
+   * zero-model and keeps working; engineStore catches this, parks `error`, and the
+   * existing UI turns the feed's search field and the chat input into an honest
+   * "tap to try again" (CardFeedScreen / chat.tsx). Only the tutor is withheld,
+   * and only while it would be lying.
+   *
+   * Returns undefined ONLY when the config genuinely declares no adapter for the
+   * language (`loraRemote` empty) — the documented "no adapters yet" state, which
+   * is a deliberate choice rather than a failure.
    */
-  private async resolveAdapterPath(language: Language): Promise<string | undefined> {
+  private async resolveAdapterPath(
+    language: Language,
+    onProgress?: (pct: number) => void,
+    signal?: AbortSignal
+  ): Promise<string | undefined> {
     // English routes through the TAGALOG adapter, not the base model: the
     // capability A/B (2026-06-11) scored the English probes 3.75/5 through the
     // tagalog adapter vs 1.78/5 on the raw base path — the SFT'd tutor behavior
@@ -104,26 +143,29 @@ export class LocalEngine implements TutorEngine {
       : language === 'english' ? 'tagalog'
       : null;
     if (!adapterLang) return undefined;
-    const src = ACTIVE_MODEL.loraAssets[adapterLang];
-    if (src == null) return undefined;
+    const spec = ACTIVE_MODEL.loraRemote[adapterLang];
+    if (!spec) {
+      console.warn(
+        `[LocalEngine] no adapter configured for ${adapterLang} — loading the RAW BASE MODEL. ` +
+          `This is only correct while config/model.ts deliberately ships no adapter.`
+      );
+      return undefined;
+    }
     try {
-      // A string source is a MIRROR URL → download it (resilient chunked downloader, cached
-      // on first run) so the adapter does NOT bloat the APK. A numeric source is a bundled
-      // Metro asset (legacy path). Either resolves to a bare on-device path for QVAC's lora.
-      if (typeof src === 'string') {
-        const path = await ensureRemoteModel({ url: src, filename: filenameFromUrl(src) });
-        console.log(`[LocalEngine] using downloaded ${adapterLang} adapter for ${language}: ${path}`);
-        return path;
-      }
-      const asset = Asset.fromModule(src);
-      await asset.downloadAsync(); // bundled asset → copied to cache, sets localUri
-      const uri = asset.localUri ?? asset.uri;
-      const path = uri ? uri.replace(/^file:\/\//, '') : undefined;
-      if (path) console.log(`[LocalEngine] using bundled ${adapterLang} adapter for ${language}: ${path}`);
+      const path = await ensureRemoteAsset(spec, onProgress, signal);
+      console.log(`[LocalEngine] using ${adapterLang} adapter for ${language}: ${path}`);
       return path;
     } catch (e) {
-      console.warn(`[LocalEngine] failed to resolve ${language} adapter; running base model:`, e);
-      return undefined;
+      const cause = e instanceof Error ? e.message : String(e);
+      console.error(
+        `[LocalEngine] ADAPTER UNAVAILABLE (${adapterLang}, ${spec.filename}) — REFUSING to load. ` +
+          `Without it the tutor scores 1.78/5 instead of 3.75/5 and fabricates science at a ` +
+          `child, so an honest "unavailable" beats a silent downgrade. The base GGUF was NOT ` +
+          `downloaded (this check runs first), so nothing was spent on prepaid data. ` +
+          `Most likely cause: ${spec.url} is not reachable — check it is uploaded and 200s. ` +
+          `Cause: ${cause}`
+      );
+      throw new Error(`${spec.label} unavailable — the tutor cannot load without it (${cause})`);
     }
   }
 
@@ -132,46 +174,62 @@ export class LocalEngine implements TutorEngine {
       this.config = config;
       console.log(`Loading ${ACTIVE_MODEL.displayName} model...`);
 
-      // Resolve the bundled LoRA adapter for the active language (Filipino
-      // fine-tune; English uses the base model).
-      const loraPath = await this.resolveAdapterPath(config.language);
+      // Two files have to land before the model can load: the ~102 MB adapter and
+      // the ~3.23 GB base GGUF. Both go through the verifying downloader. They
+      // share ONE 0–100 progress signal, split by their true relative size, so the
+      // bar never stalls at 0 during the adapter nor jumps backwards afterwards.
+      // (engineStore consumes this unchanged: >=100 still means "download done".)
+      const ADAPTER_BAND = 4; // ~102 MB of ~3.33 GB total ≈ 3%
+      const band = (from: number, to: number) => (pct: number) =>
+        onProgress?.(Math.round(from + ((to - from) * pct) / 100));
+
+      // Resolve the LoRA adapter for the active language (Filipino fine-tune;
+      // English rides the Tagalog adapter).
+      //
+      // ORDER IS LOAD-BEARING: the ~102 MB adapter is fetched and verified BEFORE
+      // the 3.23 GB base GGUF, and a failure throws (resolveAdapterPath). The
+      // adapter is what makes this a tutor rather than a fabulist, so a run that
+      // cannot have one is abandoned while it has cost the child ~102 MB of
+      // prepaid data instead of 3.33 GB. Do not "optimise" this by starting the
+      // base download first or in parallel.
+      const loraPath = await this.resolveAdapterPath(config.language, band(0, ADAPTER_BAND));
 
       if (ACTIVE_MODEL.modelSrc) {
-        // For a REMOTE GGUF (our nginx mirror), download it ourselves with the
-        // resilient resumable downloader (retry + resume + survives backgrounding —
-        // see modelDownload.ts) and hand QVAC the LOCAL path. QVAC's own URL
-        // downloader has no retry and stalls when the app is backgrounded. A bundled
-        // / local path or pear:// key is passed straight through. ensureRemoteModel
-        // drives the loader's download band; once it returns, loadModel reads from
-        // disk (no network) so its own onProgress just snaps to 100.
-        const src = /^https?:\/\//.test(ACTIVE_MODEL.modelSrc)
-          ? await ensureRemoteModel(
-              { url: ACTIVE_MODEL.modelSrc, filename: filenameFromUrl(ACTIVE_MODEL.modelSrc) },
-              onProgress
-            )
-          : ACTIVE_MODEL.modelSrc;
+        // For a REMOTE GGUF (our nginx mirror), download it ourselves and hand QVAC
+        // the LOCAL path. This is NOT just a transport preference: our downloader is
+        // the only thing that VERIFIES the bytes against a declared size + MD5
+        // before installing them. QVAC's own https loader has no checksum support at
+        // all (sha256 is honoured only for `registry://` sources) and, worse, on a
+        // size mismatch it leaves the bad file in place and RESUMES onto it — so a
+        // captive-portal login page becomes the permanent prefix of a
+        // correct-length model. See modelDownload.ts. A local path or pear:// key is
+        // passed straight through. ensureRemoteAsset drives the loader's download
+        // band; once it returns, loadModel reads from disk (no network) so its own
+        // onProgress just snaps to 100.
+        const src =
+          ACTIVE_MODEL.remote
+            ? await ensureRemoteAsset(ACTIVE_MODEL.remote, band(ADAPTER_BAND, 100))
+            : ACTIVE_MODEL.modelSrc;
 
-        // Load the configured GGUF. `lora` applies our bundled fine-tuned
-        // Tagalog/Bisaya adapter; without it the base model runs.
+        // Load the configured GGUF. `lora` applies the downloaded + verified
+        // Tagalog/Bisaya fine-tune. It is absent only when config/model.ts
+        // declares no adapter for this language at all — a failed adapter has
+        // already thrown above rather than reaching this point.
         this.modelId = await loadModel({
           modelSrc: src,
           modelType: ACTIVE_MODEL.modelType,
           modelConfig: {
             ctx_size: ACTIVE_MODEL.ctxSize,
-            // Per-tier runtime placement (config/model.ts ACTIVE_MODEL.runtime). The cat (3B)
-            // offloads to GPU/Vulkan (gpuLayers 99). The kitten (1B) on a budget Adreno-6xx
-            // CANNOT use the GPU (ggml-vulkan 16-bit-storage device gate; OpenCL unsupported),
-            // so it pins device:'cpu' + gpuLayers 0 — paired with the build.gradle backend gate
-            // that keeps only the armv8.0 CPU .so (ggml otherwise mis-picks a higher ISA the A73
-            // can't run → "no backends loaded"). Driving this from the model config means
-            // flipping ACTIVE_MODEL_KEY can never silently force the 3B onto CPU.
-            ...(ACTIVE_MODEL.runtime.device ? { device: ACTIVE_MODEL.runtime.device } : {}),
+            // Runtime placement lives with the model it was measured for
+            // (config/model.ts ACTIVE_MODEL.runtime): full GPU/Vulkan offload,
+            // gpuLayers 99. Prefill dominates TTFT and the GPU wins prefill on the
+            // target Adreno, so libqvac-ggml-vulkan.so must stay in the APK.
             gpu_layers: ACTIVE_MODEL.runtime.gpuLayers,
             ...(loraPath ? { lora: loraPath } : {}),
           },
           onProgress: (p) => {
             // Local-file load — no network. Log only; the bar already finished its
-            // download band via ensureRemoteModel above.
+            // download band via ensureRemoteAsset above.
             console.log(`[LocalEngine] ${ACTIVE_MODEL.displayName} loading: ${Math.round(p.percentage ?? 0)}%`);
           },
         });
@@ -193,9 +251,30 @@ export class LocalEngine implements TutorEngine {
         });
       }
 
-      // Build the lexical grounding retriever (indexes the fact bank in RAM).
-      this.rag = new RagStore();
-      console.log(`RAG bank ready: ${this.rag.size} facts`);
+      // Build the lexical grounding retriever over the fact bank in cards.db. Nothing is
+      // loaded here beyond a row count — RagStore reads the inverted index per query and
+      // materialises only the handful of facts it returns (see data/cardDb openFactSource).
+      // SqlFactSource's constructor THROWS on a truncated or bank-mismatched cards.db, and
+      // openFactSource does not catch it. Unguarded, that rejection unwinds to this method's
+      // catch and becomes `Failed to initialize LocalEngine` — engineStore then parks the app
+      // on an error screen and the child gets no chat at all. Ungrounded answers are a far
+      // better failure than no tutor, so the throw is folded into the same null the
+      // could-not-open path already returns and handled by the branch below.
+      let facts: SqlFactSource | null = null;
+      try {
+        facts = await openFactSource();
+      } catch (e) {
+        console.error('[LocalEngine] cards.db fact bank unusable — answers will be UNGROUNDED:', e);
+      }
+      if (facts) {
+        this.rag = new RagStore(facts);
+        console.log(`RAG bank ready: ${this.rag.size} facts (cards.db ${facts.bankHash ?? '?'})`);
+      } else {
+        // There is no in-bundle fallback bank any more, so this is not a degraded mode with a
+        // slower path — it is NO grounding at all, and every answer becomes ungenerated or
+        // unsourced. Loud on purpose.
+        console.error('[LocalEngine] fact bank unavailable — answers will be UNGROUNDED');
+      }
 
       // Load the semantic embedder + vectors blob in the BACKGROUND — the app is
       // usable on lexical retrieval immediately; the hybrid upgrades in when ready.
@@ -466,48 +545,85 @@ export class LocalEngine implements TutorEngine {
   }
 
   /**
-   * Grounded one-shot answer to a kid's typed feed query — used ONLY as the fallback when
-   * the local card search finds nothing (the feed is retrieval-first). Retrieves from the
-   * full fact bank and answers STRICTLY from those facts in 1-2 short sentences; if
-   * retrieval returns nothing it reports grounded:false so the caller shows an honest
-   * abstention instead of a hallucination. Optional — callers feature-detect.
+   * Grounded one-shot FACT CARD for a kid's typed feed query — used ONLY as the fallback when
+   * the local card search finds nothing (the feed is retrieval-first). Retrieves from the full
+   * fact bank and states the answer STRICTLY from those facts.
+   *
+   * THREE outcomes, not two (the caller renders one card per outcome):
+   *   grounded            → a printed fact card;
+   *   !grounded           → an honest in-domain gap ("no page on that yet");
+   *   !grounded+offDomain → not science at all ("roblox") → "I'm only a science tutor".
+   * The last two are model-FREE: nothing is generated, so nothing can be hallucinated.
+   * Optional — callers feature-detect.
    */
-  async answerQuery(query: string, language: string): Promise<{ text: string; grounded: boolean }> {
+  async answerQuery(
+    query: string,
+    language: string
+  ): Promise<{ text: string; grounded: boolean; offDomain: boolean }> {
     if (!this.modelId || !this.isReadyFlag) {
       throw new Error('Engine not initialized. Call initialize() first.');
     }
-    // ragSearch already applies its own confidence floor, so any hit is usable grounding.
-    const hits = await this.ragSearch(query, 4);
-    if (!hits.length) return { text: '', grounded: false };
-    const context = hits.map((h) => `- ${h.content}`).join('\n');
+    // Retrieval applies its own confidence floor; the diagnostics come out of the same pass.
+    const r = await this.ragSearchDiag(query, 4);
+    // OFF-DOMAIN. Only classifiable when the embedder ran: without it topCos is 0 and every
+    // query would look off-domain, so a warming/failed embedder falls through to the ordinary
+    // gap path below rather than telling a child their science question isn't science. It is
+    // not a silent hole: in that state the local card search has already found nothing either,
+    // so the child gets the honest gap line with NO topic suggested (the suggestion comes from
+    // the same search that just came back empty) — a vaguer card, not a wrong one. Classifying
+    // on the lexical half alone would be worse than vague: without a cosine to save them,
+    // "pterodactyl", "brontosaurus" and "narwhal" are all unreachable words too.
+    //
+    // `lexicallyUnreachable` runs the spelling probe, so it is asked HERE, behind `lexEmpty`,
+    // rather than being returned by retrieval: the chat path shares that retrieval and never
+    // reads this. Retrieval used the CONFIG language, so the probe must too.
+    const ragLang: Language = this.config?.language ?? 'english';
+    const unreachable =
+      r.semantic && r.lexEmpty && !!this.rag && this.rag.lexicallyUnreachable(query, ragLang);
+    if (r.semantic && isOffDomain(r.topCos, unreachable)) {
+      return { text: '', grounded: false, offDomain: true };
+    }
+    // IN-DOMAIN GAP, form 1: no word of the query exists anywhere in the bank. Semantic
+    // retrieval will still hand back its nearest neighbours (that is what a nearest-neighbour
+    // search does), but they are about something else — "roblox" fused onto a mangrove-roots
+    // fact and the model dutifully wrote a card about mangrove roots. Grounding we know is
+    // unrelated to the question is not grounding, so no card gets written.
+    if (r.semantic && r.lexEmpty) return { text: '', grounded: false, offDomain: false };
+    const hits = r.hits;
+    // Form 2: retrieval abstained outright (top cosine under the bank's own floor).
+    if (!hits.length) return { text: '', grounded: false, offDomain: false };
     // Pitched at the student's grade (engineStore → config; kept current by setGrade).
     const grade = this.config?.gradeLevel ?? DEFAULT_GRADE;
-    const byLang: Record<string, string> = {
-      tagalog:
-        `Ikaw ay isang mabait na science tutor para sa batang Grade ${grade}. Gamit LAMANG ang mga FACT sa ibaba, ` +
-        `sagutin ang tanong sa 1-2 maikli at simpleng pangungusap sa Tagalog. Kung hindi masagot ng mga fact ang tanong, ` +
-        `sabihin mong hindi mo pa alam. HUWAG mag-imbento ng bagong impormasyon.\n\nMGA FACT:\n${context}\n\nTANONG: ${query}\n\nSAGOT:`,
-      english:
-        `You are a kind science tutor for a Grade ${grade} child. Using ONLY the FACTS below, answer the question in ` +
-        `1-2 short, simple English sentences. If the facts do not answer it, say you don't know yet. Do NOT invent ` +
-        `new information.\n\nFACTS:\n${context}\n\nQUESTION: ${query}\n\nANSWER:`,
-      cebuano:
-        `Ikaw usa ka maayong science tutor para sa batang Grade ${grade}. Gamit LANG ang mga FACT sa ubos, tubaga ang ` +
-        `pangutana sa 1-2 mubo ug simple nga pangungusap sa Binisaya. Kung dili matubag sa mga fact ang pangutana, ` +
-        `ingna nga wala ka pa kahibalo. AYAW pag-imbento og bag-ong impormasyon.\n\nMGA FACT:\n${context}\n\nPANGUTANA: ${query}\n\nTUBAG:`,
-    };
-    const instruction = byLang[language] ?? byLang.tagalog!;
-    const run = completion({
-      modelId: this.modelId,
-      history: [{ role: 'user', content: instruction }],
-      stream: true,
-      generationParams: { temp: 0.3 }, // low temp: faithful to the retrieved facts
+    // The instruction ITSELF lives in @hiraia/shared (prompts/cards.ts), not here, because the
+    // web demo's /api/demo/card route runs the SAME prompt against the VPS llama-server: a card
+    // printed on hiraia.org and a card printed in the APK have to be the same card. The wording
+    // is calibrated (the deleted hedge, the "print the nearest FACT whole" escape, the 30-word
+    // cap and the SAGOT:/ANSWER:/TUBAG: cue sanitizeCardAnswer strips) — see the notes there —
+    // so a second copy of it would silently lose that calibration.
+    const instruction = buildCardPrompt({
+      query,
+      facts: hits.map((h) => h.content),
+      grade,
+      language,
     });
-    let out = '';
-    for await (const event of run.events) {
-      if (event.type === 'contentDelta' && event.text) out += event.text;
-    }
-    return { text: out.trim(), grounded: true };
+    // ONLY the generation is serialized on the single-instance model. The three model-free
+    // outcomes above return before this point and take no lock at all, so "I'm only a science
+    // tutor" prints immediately instead of queueing behind an in-flight reward line or chat
+    // stream to display a fixed sentence.
+    const out = await withModelLock(async () => {
+      const run = completion({
+        modelId: this.modelId!,
+        history: [{ role: 'user', content: instruction }],
+        stream: true,
+        generationParams: { temp: CARD_TEMP }, // low temp: faithful to the retrieved facts
+      });
+      let acc = '';
+      for await (const event of run.events) {
+        if (event.type === 'contentDelta' && event.text) acc += event.text;
+      }
+      return acc;
+    });
+    return { text: out.trim(), grounded: true, offDomain: false };
   }
 
   async generateVisual(prompt: string): Promise<ImageResult> {
@@ -529,10 +645,9 @@ export class LocalEngine implements TutorEngine {
       // resilient local download as the base model (retry/resume/background) — it's
       // another remote file in the "lots of files" first-run set. Background phase,
       // so its progress is logged, not surfaced on the loader bar.
-      const embedSrc = /^https?:\/\//.test(EMBEDDER.modelSrc)
-        ? await ensureRemoteModel(
-            { url: EMBEDDER.modelSrc, filename: filenameFromUrl(EMBEDDER.modelSrc) },
-            (pct) => console.log(`[LocalEngine] LaBSE downloading: ${pct}%`)
+      const embedSrc = EMBEDDER.remote
+        ? await ensureRemoteAsset(EMBEDDER.remote, (pct) =>
+            console.log(`[LocalEngine] LaBSE downloading: ${pct}%`)
           )
         : EMBEDDER.modelSrc;
       this.embedModelId = await loadModel({
@@ -548,7 +663,11 @@ export class LocalEngine implements TutorEngine {
       const uri = asset.localUri ?? asset.uri;
       const bytes = await new File(uri).bytes(); // Uint8Array
       const data = new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength);
-      // 3) attach (size guard inside attachSemantic catches a stale blob)
+      // 3) attach. The guard inside attachSemantic catches a stale blob two ways: the count
+      // must equal the bank's row count, and — since an edit that rewrites facts without
+      // adding or removing any leaves the count identical while every vector goes wrong —
+      // the blob's `bankHash` must equal the one build-facts-db.py stamped into cards.db.
+      // Both are md5(science-facts.jsonl)[:12], written by the two builders independently.
       this.rag.attachSemantic(
         new SemanticIndex({
           dims: VECTORS_META.dims,
@@ -556,12 +675,13 @@ export class LocalEngine implements TutorEngine {
           count: VECTORS_META.count,
           langs: VECTORS_META.langs,
           data,
-        })
+        }),
+        VECTORS_META.bankHash
       );
       this.semanticReady = true;
       // Warm the embed graph so the FIRST real ragSearch doesn't eat the cold
-      // build/alloc spike (the chat model has warmUp(); the embedder had none — and
-      // on the CPU-only kitten the LaBSE forward pass is the dominant retrieval cost).
+      // build/alloc spike (the chat model has warmUp(); the embedder had none, and the
+      // LaBSE forward pass is a real share of the per-query retrieval cost).
       // Throwaway + best-effort: never block readiness on it.
       try {
         const tw = Date.now();
@@ -656,11 +776,32 @@ export class LocalEngine implements TutorEngine {
     context = '',
     seenIds?: ReadonlySet<string>
   ): Promise<RagResult[]> {
-    if (!this.rag) return [];
+    return (await this.ragSearchDiag(query, topK, context, seenIds)).hits;
+  }
+
+  /**
+   * ragSearch plus the two retrieval diagnostics the feed's card path needs to tell an
+   * IN-DOMAIN GAP from an OFF-DOMAIN query: `topCos` (best LaBSE cosine of the BARE query) and
+   * `lexEmpty` (no word of the query appears anywhere in the bank). Both are computed inside
+   * retrieval anyway, so this costs nothing. `semantic` reports whether the embedder actually
+   * ran — when it did not, topCos is 0 and NEITHER signal may be used to classify.
+   */
+  private async ragSearchDiag(
+    query: string,
+    topK: number,
+    context = '',
+    seenIds?: ReadonlySet<string>
+  ): Promise<{ hits: RagResult[]; topCos: number; lexEmpty: boolean; semantic: boolean }> {
+    if (!this.rag) return { hits: [], topCos: 0, lexEmpty: true, semantic: false };
     const language: Language = this.config?.language ?? 'english';
     // Hybrid when the embedder is warm; lexical-first while it loads (or if it
     // failed). Only confidently-relevant hits — a small model is misled by noise.
     let hits;
+    // The BARE-query diagnostics (R1). A context-folded R2 answers a different question than
+    // the one the child typed, so it must never decide whether that question was on-topic.
+    let topCos = 0;
+    let lexEmpty = true;
+    let semantic = false;
     if (this.semanticReady && this.embedModelId) {
       let queryVec: Float32Array | undefined;
       const tEmbed0 = Date.now();
@@ -679,6 +820,9 @@ export class LocalEngine implements TutorEngine {
       // query is confident.
       const r1 = this.rag.retrieveForGroundingHybridDiag(query, queryVec, language, topK, 0.5, '', seenIds);
       hits = r1.hits;
+      topCos = r1.topCos;
+      lexEmpty = r1.lexEmpty;
+      semantic = !!queryVec && this.rag.hasSemantic;
       let reEmbedMs = 0;
       // R2: bare query is WEAK — empty (abstained) OR low-confidence (topCos < gate floor) — i.e. a
       // topic-blind follow-up ("anong pinakamabilis sa kanila?"). NOW fold the conversation topic in.
@@ -701,13 +845,19 @@ export class LocalEngine implements TutorEngine {
       );
     } else {
       hits = this.rag.retrieveForGrounding(query, language, topK, 0.5, context, seenIds);
+      lexEmpty = hits.length === 0;
     }
-    return hits.map((h) => ({
-      content: h.text,
-      source: h.fact.source,
-      score: h.score,
-      metadata: { id: h.fact.id, topic: h.fact.topic, domain: h.fact.domain },
-    }));
+    return {
+      hits: hits.map((h) => ({
+        content: h.text,
+        source: h.fact.source,
+        score: h.score,
+        metadata: { id: h.fact.id, topic: h.fact.topic, domain: h.fact.domain },
+      })),
+      topCos,
+      lexEmpty,
+      semantic,
+    };
   }
 
   isReady(): boolean {
