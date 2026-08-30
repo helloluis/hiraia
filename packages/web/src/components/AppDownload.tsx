@@ -51,7 +51,7 @@ export function AppDownload() {
           <span className="mc-chip text-[10px]">v{DOWNLOAD.version}</span>
         </div>
         <p className="relative z-[1] font-zilla text-sm font-medium leading-relaxed text-[var(--ink)]">
-          Requires Android {DOWNLOAD.minAndroid}+; Phones with 6GB+ memory are recommended.
+          Requires Android {DOWNLOAD.minAndroid}+ and a phone with {DOWNLOAD.minRamGB}GB+ of memory.
         </p>
 
         <div className="relative z-[1] mt-auto pt-5">

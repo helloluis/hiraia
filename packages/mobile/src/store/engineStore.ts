@@ -48,7 +48,10 @@ interface EngineState {
 
 function buildConfig(language: Language, gradeLevel: GradeLevel): TutorConfig {
   return {
-    language, // drives the bundled LoRA adapter (TL/BIS) or base model (EN) + RAG language
+    // Selects the downloaded LoRA adapter (TL, or BIS; EN rides the TL one) and scopes RAG.
+    // The adapter is REQUIRED — if it cannot be fetched and verified LocalEngine throws
+    // rather than quietly running the raw base model, and that surfaces as `error` below.
+    language,
     gradeLevel, // the student's grade — LocalEngine pitches its prompts at it (see warmUp)
     modelConfig: {
       modelId: ACTIVE_MODEL.key,
@@ -59,6 +62,178 @@ function buildConfig(language: Language, gradeLevel: GradeLevel): TutorConfig {
     enableVisuals: false,
     enableRag: true, // grounded on the curated science-fact bank (RagStore), scoped to `language`
   };
+}
+
+/**
+ * ONE ENGINE LOAD AT A TIME, AND THE LAST PICK WINS.
+ *
+ * `changeLanguage` is reachable from four places — onboarding slide 1, the sidebar
+ * language picker, the feed's search field (cardStore.warmModel) and /chat's lazy kick —
+ * and its guards only ever caught a second load of the SAME language. Picking a DIFFERENT
+ * language while one was loading therefore passed every check and started a SECOND
+ * `LocalEngine.initialize` alongside the first, with nothing cancelling either. That is not
+ * merely wasteful:
+ *
+ *   • Both fetch the same files. English rides the TAGALOG adapter, so an English pick
+ *     during a Tagalog load resolves to the IDENTICAL `.part` path, and two append-mode
+ *     writers on one file interleave into bytes that fail the MD5 gate — up to ~1 GB of a
+ *     prepaid balance spent to end with no tutor. (`ensureRemoteAsset` now refuses to run
+ *     two transfers of one file, which contains that damage; the second engine is still
+ *     pointless work.)
+ *   • Whichever `loadModel` loses is rejected by SDK 0.17.1 with MODEL_LOAD_FAILED (52200)
+ *     "Model with ID … is already registered", which leaves the engine uninitialised and
+ *     the tutor dead for the WHOLE session.
+ *
+ * A promise chain fixes both: a pick that arrives mid-load WAITS instead of racing, and
+ * `requestedLanguage` collapses a burst of picks down to the last one so we never spend a
+ * load on a language the child has already moved on from. It also subsumes the old
+ * synchronous check-then-act guard — every decision now happens inside the serialised
+ * section, so there is no window at all for a concurrent caller to slip through.
+ */
+let loadQueue: Promise<void> = Promise.resolve();
+let requestedLanguage: Language | null = null;
+
+/**
+ * Load (or reload) the engine for `language`. Called ONLY from the queue in
+ * `changeLanguage`, and assumes no other load is running.
+ */
+async function loadEngineFor(language: Language): Promise<void> {
+  const set = useEngineStore.setState;
+  const get = useEngineStore.getState;
+
+  // Claim the load. Serialised by the queue above, so there is no check-then-act race
+  // left to lose — but the state still has to be armed before the first await so the
+  // loader UI reflects the new language from the moment the load actually begins.
+  const prev = get().engine;
+  set({ language, isReady: false, error: null, loadingProgress: 0, loadingPhase: 'warming' });
+  try {
+    // Persist AFTER arming the guard — a crash in this window just loses the preference,
+    // whereas persisting first re-opened the race.
+    await setSetting('language', language);
+    // Re-roll the cold-start "Alam mo ba na…?" factoid in the NEW language. The composed
+    // text is locked at roll time, so the one currently on screen stays Tagalog forever
+    // (it lives in the TTL cache for ~1h) — clear + re-roll keeps the language consistent.
+    // Best-effort, fire-and-forget; the new factoid renders the moment it's set.
+    void useChatStore.getState().refreshFactoidForNewLanguage();
+    if (prev) {
+      try {
+        await prev.shutdown();
+      } catch (e) {
+        console.warn('[engineStore] shutdown before reload failed:', e);
+      }
+    }
+    const engine = new LocalEngine();
+
+    // Progress is NOT one linear signal — init has two very differently-sized phases,
+    // and only the first is observable:
+    //   • DOWNLOAD (first run only): loadModel's onProgress streams 1→99 as QVAC fetches
+    //     the ~3 GB base GGUF over the network — minutes, and directly observable. On a
+    //     cached run there are no bytes to fetch, so onProgress jumps straight to 100.
+    //   • WARM-UP tail (every cold start): loading ~2 GB into RAM + the warm-up prefill.
+    //     Tens of seconds, and emits NO granular signal — only a time estimate.
+    // (The LaBSE embedder downloads in the background via initSemantic() and is NOT
+    //  awaited, so it's correctly excluded from this bar.)
+    //
+    // We therefore allocate the bar by phase rather than on one fixed clock:
+    //   - while a real download streams → map the REAL bytes onto 0→DL_CEIL (honest;
+    //     never races ahead of the network);
+    //   - once the download finishes (or immediately, if cached) → ease the warm-up tail
+    //     up toward TAIL_CEIL on the time estimate.
+    // The bar never crosses the WAKE gate (97) on the timer — only the real isReady
+    // snap-to-100 below does — so the cat never "wakes" while real work remains.
+    // Correctness is still guaranteed by gating the loader's final dismiss on isReady
+    // (LoaderOverlay holds the last exit frame if the warm-up estimate runs short).
+    const EXPECTED_WARMUP_MS = 45000; // load-into-RAM + warm-up prefill on the target device
+    const DL_CEIL = 90; // a streaming 3 GB download fills the bar up to here
+    const WAKE_AT = 97; // matches the LoaderOverlay wake gate
+    const TAIL_CEIL = WAKE_AT - 1; // 96 — approach but never reach the wake gate on the timer
+    const startedAt = Date.now();
+    let downloadPct = 0;
+    let sawSignal = false; // received at least one progress callback from init
+    let sawRealBytes = false; // observed a genuine in-progress download (1 < pct < 99)
+    let downloadDone = false; // pct reached 100 — download complete OR already cached
+    let tailStartedAt = 0; // set when the warm-up tail begins
+    let shown = 0; // last value shown — the bar is monotonic (never ticks backwards)
+    let ready = false;
+    const ramp = setInterval(() => {
+      if (ready) return;
+      let pct: number;
+      let phase: LoadingPhase;
+      if (!downloadDone) {
+        // Still fetching (or waiting to learn the phase). CRUCIAL: never run the warm-up
+        // TIME estimate here — that's what used to race ahead of a slow 3 GB download.
+        // Track real bytes once we have a signal; before the first signal, just creep so
+        // the bar can't get ahead of an unknown download.
+        phase = 'downloading';
+        if (sawSignal) {
+          pct = (downloadPct / 100) * DL_CEIL;
+        } else {
+          pct = Math.min(6, ((Date.now() - startedAt) / 12000) * 6); // ≤6% while connecting
+        }
+      } else {
+        // Download complete (or cached) → NOW ease the short warm-up tail on a time
+        // estimate. Cached → tail spans 0→TAIL_CEIL; after a real download → from DL_CEIL.
+        phase = 'warming';
+        if (tailStartedAt === 0) tailStartedAt = Date.now();
+        const base = sawRealBytes ? DL_CEIL : 0;
+        const span = TAIL_CEIL - base;
+        const frac = Math.min(1, (Date.now() - tailStartedAt) / EXPECTED_WARMUP_MS);
+        pct = base + span * (1 - (1 - frac) * (1 - frac)); // ease-out → TAIL_CEIL at expected time
+      }
+      shown = Math.max(shown, Math.round(pct)); // monotonic
+      set({ loadingProgress: shown, loadingPhase: phase });
+    }, 200);
+
+    const config = buildConfig(language, get().grade);
+    try {
+      await engine.initialize(config, (p) => {
+        sawSignal = true;
+        downloadPct = p;
+        if (p > 1 && p < 99) sawRealBytes = true; // a genuine streaming download
+        if (p >= 100) downloadDone = true; // complete, or (instant 100) already cached
+      });
+
+      // The system-prompt prefill is EXPLICIT — initialize() no longer warms up — and runs
+      // exactly ONCE, for the grade the child has actually settled on. That prefill is the
+      // slow tail of a cold start (~78s on the target device) and the KV cache it primes is
+      // keyed on the grade, which is still in flux while the model loads: onboarding's grade
+      // slide lands seconds after the language pick that kicked this load off, and Settings
+      // stays reachable. Warming inside initialize() therefore primed the load-START grade
+      // and made this reconcile throw it away and pay a SECOND ~78s prefill for every grade
+      // but the default 5.
+      // changeGrade() skips the engine while isReady is false, so a change landing DURING a
+      // prime is only caught by re-checking after each one — loop until they agree. Kept
+      // inside the try so the loader bar keeps easing through the warm-up tail (the ramp is
+      // cleared in the finally, once the engine is genuinely primed).
+      // primeSystemPrompt (unlike setGrade) does NOT take the shared model lock: this engine
+      // has no generation of its own to race, and the module-wide lock can still be held by a
+      // stale completion from the engine we just shut down — coupling readiness to that would
+      // delay isReady, or strand it forever if the completion never settles.
+      let primed = get().grade;
+      await engine.primeSystemPrompt(primed);
+      while (get().grade !== primed) {
+        primed = get().grade;
+        await engine.primeSystemPrompt(primed);
+      }
+    } finally {
+      ready = true;
+      clearInterval(ramp);
+    }
+
+    // Model is genuinely ready: snap to 100 so the loader crosses the 97 wake gate and
+    // plays the (shortened) wake→exit, then dismisses. This is the ONLY thing that
+    // crosses 97 — so the cat wakes exactly when the model is actually ready.
+    set({ engine, isReady: true, loadingProgress: 100, loadingPhase: 'ready' });
+    console.log(`QVAC engine ready (${language})`);
+  } catch (error) {
+    set({
+      error: error instanceof Error ? error.message : 'Failed to initialize engine',
+      isReady: false,
+      loadingProgress: 0,
+      loadingPhase: 'idle',
+    });
+    console.error('Failed to (re)initialize QVAC engine:', error);
+  }
 }
 
 export const useEngineStore = create<EngineState>((set, get) => ({
@@ -118,149 +293,29 @@ export const useEngineStore = create<EngineState>((set, get) => ({
   },
 
   changeLanguage: async (language: Language) => {
-    if (get().engine && get().language === language && get().isReady) return; // no-op
-    // Already warming for THIS language — bootstrap, the feed's warmModel, and /chat all
-    // kick a load; a second concurrent LocalEngine init would double the ~2 GB in RAM.
-    if (get().loadingPhase !== 'idle' && get().language === language) return;
+    // Cheap synchronous fast path so the feed's search field and /chat's kick do not
+    // queue anything at all once the tutor is up. It is only a fast path: the same test
+    // is repeated inside the queue, which is where it is authoritative.
+    if (get().engine && get().language === language && get().isReady) return;
+    // NOTE the guard that used to sit here — `loadingPhase !== 'idle' && language ===
+    // <the one loading>` — is GONE, not moved. It only ever blocked a duplicate load of
+    // the SAME language, which is exactly the case the queue below handles for free,
+    // while letting a DIFFERENT language through to race the load already running.
 
-    // ARM THE GUARD SYNCHRONOUSLY, before the first await. The two checks above are a
-    // check-then-act, and the state they check used to be set AFTER `await setSetting(...)`
-    // — so bootstrap() and the feed's warmModel(), which fire within ~10ms of each other at
-    // launch, both slipped through the gap and each called loadModel. SDK 0.13.1 tolerated
-    // the duplicate; 0.17.1 rejects it outright:
-    //     MODEL_LOAD_FAILED (52200): Model with ID "…" is already registered
-    // which left the engine uninitialised and the tutor dead for the whole session. There
-    // must be NO await between reading loadingPhase and writing it.
-    const prev = get().engine;
-    set({ language, isReady: false, error: null, loadingProgress: 0, loadingPhase: 'warming' });
-    try {
-      // Persist AFTER arming the guard — a crash in this window just loses the preference,
-      // whereas persisting first re-opened the race.
-      await setSetting('language', language);
-      // Re-roll the cold-start "Alam mo ba na…?" factoid in the NEW language. The composed
-      // text is locked at roll time, so the one currently on screen stays Tagalog forever
-      // (it lives in the TTL cache for ~1h) — clear + re-roll keeps the language consistent.
-      // Best-effort, fire-and-forget; the new factoid renders the moment it's set.
-      void useChatStore.getState().refreshFactoidForNewLanguage();
-      if (prev) {
-        try {
-          await prev.shutdown();
-        } catch (e) {
-          console.warn('[engineStore] shutdown before reload failed:', e);
-        }
-      }
-      const engine = new LocalEngine();
-
-      // Progress is NOT one linear signal — init has two very differently-sized phases,
-      // and only the first is observable:
-      //   • DOWNLOAD (first run only): loadModel's onProgress streams 1→99 as QVAC fetches
-      //     the ~3 GB base GGUF over the network — minutes, and directly observable. On a
-      //     cached run there are no bytes to fetch, so onProgress jumps straight to 100.
-      //   • WARM-UP tail (every cold start): loading ~2 GB into RAM + the warm-up prefill.
-      //     Tens of seconds, and emits NO granular signal — only a time estimate.
-      // (The LaBSE embedder downloads in the background via initSemantic() and is NOT
-      //  awaited, so it's correctly excluded from this bar.)
-      //
-      // We therefore allocate the bar by phase rather than on one fixed clock:
-      //   - while a real download streams → map the REAL bytes onto 0→DL_CEIL (honest;
-      //     never races ahead of the network);
-      //   - once the download finishes (or immediately, if cached) → ease the warm-up tail
-      //     up toward TAIL_CEIL on the time estimate.
-      // The bar never crosses the WAKE gate (97) on the timer — only the real isReady
-      // snap-to-100 below does — so the cat never "wakes" while real work remains.
-      // Correctness is still guaranteed by gating the loader's final dismiss on isReady
-      // (LoaderOverlay holds the last exit frame if the warm-up estimate runs short).
-      const EXPECTED_WARMUP_MS = 45000; // load-into-RAM + warm-up prefill on the target device
-      const DL_CEIL = 90; // a streaming 3 GB download fills the bar up to here
-      const WAKE_AT = 97; // matches the LoaderOverlay wake gate
-      const TAIL_CEIL = WAKE_AT - 1; // 96 — approach but never reach the wake gate on the timer
-      const startedAt = Date.now();
-      let downloadPct = 0;
-      let sawSignal = false; // received at least one progress callback from init
-      let sawRealBytes = false; // observed a genuine in-progress download (1 < pct < 99)
-      let downloadDone = false; // pct reached 100 — download complete OR already cached
-      let tailStartedAt = 0; // set when the warm-up tail begins
-      let shown = 0; // last value shown — the bar is monotonic (never ticks backwards)
-      let ready = false;
-      const ramp = setInterval(() => {
-        if (ready) return;
-        let pct: number;
-        let phase: LoadingPhase;
-        if (!downloadDone) {
-          // Still fetching (or waiting to learn the phase). CRUCIAL: never run the warm-up
-          // TIME estimate here — that's what used to race ahead of a slow 3 GB download.
-          // Track real bytes once we have a signal; before the first signal, just creep so
-          // the bar can't get ahead of an unknown download.
-          phase = 'downloading';
-          if (sawSignal) {
-            pct = (downloadPct / 100) * DL_CEIL;
-          } else {
-            pct = Math.min(6, ((Date.now() - startedAt) / 12000) * 6); // ≤6% while connecting
-          }
-        } else {
-          // Download complete (or cached) → NOW ease the short warm-up tail on a time
-          // estimate. Cached → tail spans 0→TAIL_CEIL; after a real download → from DL_CEIL.
-          phase = 'warming';
-          if (tailStartedAt === 0) tailStartedAt = Date.now();
-          const base = sawRealBytes ? DL_CEIL : 0;
-          const span = TAIL_CEIL - base;
-          const frac = Math.min(1, (Date.now() - tailStartedAt) / EXPECTED_WARMUP_MS);
-          pct = base + span * (1 - (1 - frac) * (1 - frac)); // ease-out → TAIL_CEIL at expected time
-        }
-        shown = Math.max(shown, Math.round(pct)); // monotonic
-        set({ loadingProgress: shown, loadingPhase: phase });
-      }, 200);
-
-      const config = buildConfig(language, get().grade);
-      try {
-        await engine.initialize(config, (p) => {
-          sawSignal = true;
-          downloadPct = p;
-          if (p > 1 && p < 99) sawRealBytes = true; // a genuine streaming download
-          if (p >= 100) downloadDone = true; // complete, or (instant 100) already cached
-        });
-
-        // The system-prompt prefill is EXPLICIT — initialize() no longer warms up — and runs
-        // exactly ONCE, for the grade the child has actually settled on. That prefill is the
-        // slow tail of a cold start (~78s on the target device) and the KV cache it primes is
-        // keyed on the grade, which is still in flux while the model loads: onboarding's grade
-        // slide lands seconds after the language pick that kicked this load off, and Settings
-        // stays reachable. Warming inside initialize() therefore primed the load-START grade
-        // and made this reconcile throw it away and pay a SECOND ~78s prefill for every grade
-        // but the default 5.
-        // changeGrade() skips the engine while isReady is false, so a change landing DURING a
-        // prime is only caught by re-checking after each one — loop until they agree. Kept
-        // inside the try so the loader bar keeps easing through the warm-up tail (the ramp is
-        // cleared in the finally, once the engine is genuinely primed).
-        // primeSystemPrompt (unlike setGrade) does NOT take the shared model lock: this engine
-        // has no generation of its own to race, and the module-wide lock can still be held by a
-        // stale completion from the engine we just shut down — coupling readiness to that would
-        // delay isReady, or strand it forever if the completion never settles.
-        let primed = get().grade;
-        await engine.primeSystemPrompt(primed);
-        while (get().grade !== primed) {
-          primed = get().grade;
-          await engine.primeSystemPrompt(primed);
-        }
-      } finally {
-        ready = true;
-        clearInterval(ramp);
-      }
-
-      // Model is genuinely ready: snap to 100 so the loader crosses the 97 wake gate and
-      // plays the (shortened) wake→exit, then dismisses. This is the ONLY thing that
-      // crosses 97 — so the cat wakes exactly when the model is actually ready.
-      set({ engine, isReady: true, loadingProgress: 100, loadingPhase: 'ready' });
-      console.log(`QVAC engine ready (${language})`);
-    } catch (error) {
-      set({
-        error: error instanceof Error ? error.message : 'Failed to initialize engine',
-        isReady: false,
-        loadingProgress: 0,
-        loadingPhase: 'idle',
-      });
-      console.error('Failed to (re)initialize QVAC engine:', error);
-    }
+    // Record the ask SYNCHRONOUSLY. If several picks land while a load is running, only
+    // the LAST one is still what the child wants; the superseded entries drop out below
+    // instead of each paying for a full model load.
+    requestedLanguage = language;
+    const queued = loadQueue.then(async () => {
+      if (requestedLanguage !== language) return; // superseded by a later pick
+      const { engine, language: current, isReady } = get();
+      if (engine && current === language && isReady) return; // already loaded — no-op
+      await loadEngineFor(language);
+    });
+    // The chain has to survive a failed load or every later pick would inherit the
+    // rejection. loadEngineFor already parks the reason in `error` for the UI.
+    loadQueue = queued.catch(() => {});
+    return queued;
   },
 
   changeGrade: async (grade: GradeLevel) => {

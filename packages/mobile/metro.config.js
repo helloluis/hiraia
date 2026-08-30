@@ -6,11 +6,13 @@ const workspaceRoot = path.resolve(__dirname, '../..');
 
 const config = getDefaultConfig(__dirname);
 
-// 0. Treat bundled model files (.gguf — our LoRA adapters) as assets so Metro
-// packages them into the APK and expo-asset can resolve them to a file path at
-// runtime (for QVAC's modelConfig.lora). Without this Metro tries to parse them
-// as source.
-config.resolver.assetExts.push('gguf');
+// 0. NO 'gguf' HERE, deliberately. The two LoRA adapters (213.5 MB) used to be
+// Metro-bundled assets inside the APK; they are now DOWNLOADED from the mirror and
+// verified against a declared size + MD5, exactly like the base model and the LaBSE
+// embedder (src/config/model.ts REMOTE_ASSETS, src/engine/modelDownload.ts). Adding
+// 'gguf' back would put every .gguf under assets/ into the APK again — the files are
+// still on disk because they are what gets uploaded to the mirror, so this line is
+// all that stands between them and the shipped binary.
 // The bundled int8 semantic-vectors blob — Metro packages it so expo-asset can
 // read its bytes into an Int8Array at runtime (for the SemanticIndex).
 config.resolver.assetExts.push('bin');

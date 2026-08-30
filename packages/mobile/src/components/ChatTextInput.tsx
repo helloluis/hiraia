@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   Keyboard,
+  Pressable,
   StyleSheet,
   Text,
   TextInput as RNTextInput,
@@ -21,9 +22,23 @@ interface ChatTextInputProps {
   placeholder?: string;
   /** Disable input + send while the model is still loading (progress bar moving). */
   disabled?: boolean;
+  /**
+   * Tapped when the bar is DISABLED. Used to retry a failed model load, so a
+   * child is never left with a dead input bar and no way forward. Omit it and the
+   * disabled bar stays inert (the normal "still loading" case — there is nothing
+   * useful a tap could do while a download is genuinely in flight).
+   */
+  onDisabledPress?: () => void;
 }
 
-export function ChatTextInput({ value, onChangeText, onSend, placeholder, disabled = false }: ChatTextInputProps) {
+export function ChatTextInput({
+  value,
+  onChangeText,
+  onSend,
+  placeholder,
+  disabled = false,
+  onDisabledPress,
+}: ChatTextInputProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const canSend = !disabled && !!value.trim();
 
@@ -44,36 +59,58 @@ export function ChatTextInput({ value, onChangeText, onSend, placeholder, disabl
   }, []);
   const bottomPad = keyboardUp ? BASE_BOTTOM_PAD : Math.max(insets.bottom, BASE_BOTTOM_PAD);
 
+  const bar = (
+    <View style={[styles.inputContainer, disabled && styles.inputContainerDisabled]}>
+      <TouchableOpacity style={styles.attachButton} disabled={disabled}>
+        <Text style={[styles.attachIcon, disabled && styles.dimmed]}>+</Text>
+      </TouchableOpacity>
+
+      <RNTextInput
+        // A disabled bar is a RETRY TARGET (see the Pressable below), and this field is
+        // `flex: 1` — it covers ~80% of the bar, including the middle, where the "tap to
+        // try again" copy is rendered as the placeholder and where a child naturally taps.
+        // `editable={false}` alone does NOT reliably let that touch fall through to the
+        // parent responder on Android; the feed's search field hit the same wall and fixes
+        // it the same way (CardFeedScreen `pointerEvents={engineReady ? 'auto' : 'none'}`).
+        pointerEvents={disabled ? 'none' : 'auto'}
+        style={[styles.input, isExpanded && styles.inputExpanded]}
+        value={value}
+        onChangeText={(text: string) => {
+          onChangeText(text);
+          setIsExpanded(text.split('\n').length > 1);
+        }}
+        placeholder={placeholder}
+        placeholderTextColor={colors.inkMuted}
+        editable={!disabled}
+        multiline
+        maxLength={2000}
+        textAlignVertical="top"
+      />
+
+      <TouchableOpacity
+        style={[styles.sendButton, !canSend && styles.sendButtonDisabled]}
+        onPress={onSend}
+        disabled={!canSend}
+      >
+        <Text style={[styles.sendIcon, !canSend && styles.sendIconDisabled]}>➤</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
   return (
     <View style={[styles.container, { paddingBottom: bottomPad }]}>
-      <View style={[styles.inputContainer, disabled && styles.inputContainerDisabled]}>
-        <TouchableOpacity style={styles.attachButton} disabled={disabled}>
-          <Text style={[styles.attachIcon, disabled && styles.dimmed]}>+</Text>
-        </TouchableOpacity>
-
-        <RNTextInput
-          style={[styles.input, isExpanded && styles.inputExpanded]}
-          value={value}
-          onChangeText={(text: string) => {
-            onChangeText(text);
-            setIsExpanded(text.split('\n').length > 1);
-          }}
-          placeholder={placeholder}
-          placeholderTextColor={colors.inkMuted}
-          editable={!disabled}
-          multiline
-          maxLength={2000}
-          textAlignVertical="top"
-        />
-
-        <TouchableOpacity
-          style={[styles.sendButton, !canSend && styles.sendButtonDisabled]}
-          onPress={onSend}
-          disabled={!canSend}
-        >
-          <Text style={[styles.sendIcon, !canSend && styles.sendIconDisabled]}>➤</Text>
-        </TouchableOpacity>
-      </View>
+      {/* A disabled bar swallows touches, so the retry has to live OUTSIDE it — the
+          whole bar becomes the tap target, matching the feed's search field, where
+          the same failure is one tap from recovery. Moving the HANDLER out is only half
+          of it: the field itself has to stop swallowing the touch, which is what the
+          `pointerEvents` above does. */}
+      {disabled && onDisabledPress ? (
+        <Pressable onPress={onDisabledPress} accessibilityRole="button">
+          {bar}
+        </Pressable>
+      ) : (
+        bar
+      )}
     </View>
   );
 }

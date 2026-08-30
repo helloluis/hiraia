@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { AppDownload } from '@/components/AppDownload';
+import { DOWNLOAD } from '@/config/download';
 import { HiraiaBench } from '@/components/HiraiaBench';
 import { YouTubeEmbed } from '@/components/YouTubeEmbed';
 import { DemoLightbox } from '@/components/demo/DemoLightbox';
@@ -316,8 +317,9 @@ export function Landing() {
           </h2>
           <p className="mt-3 max-w-2xl font-zilla text-lg font-medium leading-relaxed text-[var(--stock)]/85">
             No account, no fees. Just download and start learning. The first time
-            you launch the app, it will download its 2GB AI tutoring model. After
-            that, Hiraia no longer requires an internet connection.
+            you launch the app, it will download its {DOWNLOAD.modelDownloadGB}GB AI
+            tutoring model. After that, Hiraia no longer requires an internet
+            connection.
           </p>
           <div className="mt-8">
             <AppDownload />

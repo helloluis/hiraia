@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useChatStore } from '@/store/useChatStore';
 import { AppDownload } from '@/components/AppDownload';
+import { DOWNLOAD } from '@/config/download';
 import { YouTubeEmbed } from '@/components/YouTubeEmbed';
 
 export function AuthScreen() {
@@ -166,7 +167,15 @@ export function AuthScreen() {
                     Offline mode
                   </h3>
                   <ul className="list-disc pl-5 text-gray-600 space-y-1.5 text-sm sm:text-base leading-relaxed">
-                    <li>No internet required for chat, entire package is <strong className="text-[#0c343d]">less than 4 GB</strong></li>
+                    {/*
+                      Two numbers, stated separately, because they are two different costs to
+                      the user: APK bytes (art + adapters are bundled — the release APK measures
+                      ~1.06 GB; DOWNLOAD.apk.fileSizeMB carries the exact figure once measured)
+                      and the first-run download (base model + embedder). Their sum is ~4.7 GB
+                      of storage, so the old "less than 4 GB" was a bound the build already
+                      exceeded — and it fails as a stalled download, not a storage warning.
+                    */}
+                    <li>No internet required for chat — the app is <strong className="text-[#0c343d]">about 1 GB</strong>, and the AI model is a further <strong className="text-[#0c343d]">~{DOWNLOAD.modelDownloadGB} GB</strong> one-time download</li>
                     <li>Internet only needed for the <strong className="text-[#0c343d]">initial download and databank updates</strong></li>
                   </ul>
                 </div>

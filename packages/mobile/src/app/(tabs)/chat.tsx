@@ -1,33 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ChatHeader } from '../../components/ChatHeader';
 import { ChatTextInput } from '../../components/ChatTextInput';
 import { ChatThread } from '../../components/ChatThread';
 import { LoadingBar } from '../../components/LoadingBar';
-import { ACTIVE_MODEL_KEY } from '../../config/model';
 import { uiStrings } from '../../config/strings';
 import { useChatStore } from '../../store/chatStore';
 import { useEngineStore } from '../../store/engineStore';
 import { colors } from '../../theme';
-
-// The 1B "kitten" build can make mistakes — including on safety / "is this true?"
-// questions (role-play QA, 2026-06-19). Surface a dismissible disclaimer on the
-// opening chat screen so a kid/parent sees it. Cat (3B) build never shows this.
-const IS_KITTEN = ACTIVE_MODEL_KEY === 'sailor2-1b';
 
 export default function ChatScreen() {
   const { messages, sendMessage, isStreaming, currentStreamingContent } = useChatStore();
   const hasHydrated = useChatStore((s) => s.hasHydrated);
   const showColdStartFactoid = useChatStore((s) => s.showColdStartFactoid);
   const isReady = useEngineStore((s) => s.isReady);
+  const engineError = useEngineStore((s) => s.error);
   const language = useEngineStore((s) => s.language);
   const changeLanguage = useEngineStore((s) => s.changeLanguage);
   const t = uiStrings(language);
   const [inputText, setInputText] = useState('');
-  // Re-shows each cold open (dismissal not persisted) — it's a safety notice.
-  const [showKittenNote, setShowKittenNote] = useState(IS_KITTEN);
 
   // LAZY LOAD: the model is NOT warmed on app boot (the home screen is the card feed).
   // Warm it the first time chat is opened. changeLanguage is a no-op if already ready.
@@ -38,6 +31,22 @@ export default function ChatScreen() {
       void changeLanguage(language);
     }
   }, [language, isReady, changeLanguage]);
+
+  // A FAILED load must not masquerade as a slow one. Before this, `disabled={!isReady}`
+  // and `placeholder={t.inputPreparing}` meant an engine that had already given up sat
+  // behind a creeping progress bar and the words "Preparing the AI…" forever — the exact
+  // silent-degradation this screen now refuses elsewhere (LocalEngine declines to run the
+  // raw base model when the LoRA adapter is missing, and that refusal lands here as
+  // `error`). So: stop the bar, say so plainly, and make the whole bar a retry target —
+  // the same affordance the feed's search field already offers.
+  const retryLoad = () => {
+    if (!language) return;
+    // changeLanguage() serialises every load behind one promise chain, so a retry tapped
+    // while something is still running waits for it rather than stacking a second
+    // LocalEngine init (and a second writer on the same download .part).
+    engineKicked.current = true;
+    void changeLanguage(language);
+  };
 
   // Once persisted history has loaded, offer a "Alam mo ba na…?" factoid so there's
   // something to read while the model warms up. The store decides whether to actually
@@ -77,28 +86,25 @@ export default function ChatScreen() {
         keyboardVerticalOffset={0}
       >
         <ChatHeader />
-        {showKittenNote && (
-          <View style={styles.kittenNote}>
-            <Text style={styles.kittenNoteIcon}>⚠️</Text>
-            <Text style={styles.kittenNoteText}>{t.kittenExperimental}</Text>
-            <Pressable onPress={() => setShowKittenNote(false)} hitSlop={10} accessibilityLabel="Dismiss">
-              <Text style={styles.kittenNoteClose}>✕</Text>
-            </Pressable>
-          </View>
-        )}
         <View style={styles.chatContainer}>
           <ChatThread
             messages={messages}
             isStreaming={isStreaming}
             streamingContent={currentStreamingContent}
           />
-          <LoadingBar loading={!isReady} />
+          {/* `failed` matters: without it an engine that gave up plays the SUCCESS
+              animation (fill to 100%, fade) — the bar would say "done" at the exact
+              moment the tutor became unavailable. */}
+          <LoadingBar loading={!isReady && !engineError} failed={!!engineError} />
           <ChatTextInput
             value={inputText}
             onChangeText={setInputText}
             onSend={handleSend}
             disabled={!isReady}
-            placeholder={isReady ? t.inputPlaceholder : t.inputPreparing}
+            placeholder={
+              engineError ? t.inputUnavailable : isReady ? t.inputPlaceholder : t.inputPreparing
+            }
+            onDisabledPress={engineError ? retryLoad : undefined}
           />
         </View>
       </KeyboardAvoidingView>
@@ -113,30 +119,5 @@ const styles = StyleSheet.create({
   },
   chatContainer: {
     flex: 1,
-  },
-  kittenNote: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    backgroundColor: '#fff4ed',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#b54708',
-  },
-  kittenNoteIcon: {
-    fontSize: 14,
-    lineHeight: 18,
-  },
-  kittenNoteText: {
-    flex: 1,
-    fontSize: 12,
-    lineHeight: 16,
-    color: '#9a3412',
-  },
-  kittenNoteClose: {
-    fontSize: 13,
-    color: '#9a3412',
-    paddingHorizontal: 2,
   },
 });
