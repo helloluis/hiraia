@@ -1,173 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { AppDownload } from '@/components/AppDownload';
 import { YouTubeEmbed } from '@/components/YouTubeEmbed';
 import { DemoLightbox } from '@/components/demo/DemoLightbox';
 import { useDemoStore } from '@/store/useDemoStore';
-
-/** A few of the in-app engravings. Tagalog on the card; English types in on hover/tap. */
-const FLASH_CARDS: {
-  src: string;
-  alt: string;
-  topicTl: string;
-  topicEn: string;
-  tl: string;
-  en: string;
-}[] = [
-  {
-    src: '/demo/cards/philippine-tarsier-cling.png',
-    alt: 'Tarsier',
-    topicTl: 'Mga buhay',
-    topicEn: 'Living things',
-    tl: 'Primate ang tarsier — pero hindi ito unggoy.',
-    en: 'A tarsier is a primate — but it isn’t a monkey.',
-  },
-  {
-    src: '/demo/cards/mayon-volcano-cone.png',
-    alt: 'Bulkang Mayon',
-    topicTl: 'Lupa at kalawakan',
-    topicEn: 'Earth & space',
-    tl: 'Ang Mayon ang pinaka-aktibong bulkan sa Pilipinas, tanyag sa hugis-kono nito.',
-    en: 'Mayon is the Philippines’ most active volcano, famous for its cone.',
-  },
-  {
-    src: '/demo/cards/green-sea-turtle-pawikan.png',
-    alt: 'Pawikan',
-    topicTl: 'Mga buhay',
-    topicEn: 'Living things',
-    tl: 'Nakakahanap ng daan pauwi ang pawikan gamit ang magnetic field ng Earth.',
-    en: 'Sea turtles find their way home using Earth’s magnetic field.',
-  },
-  {
-    src: '/demo/cards/halo-halo-layers-heterogeneous.png',
-    alt: 'Halo-halo',
-    topicTl: 'Materya',
-    topicEn: 'Matter',
-    tl: 'Heterogeneous mixture ang halo-halo: makikita mo ang bawat patong.',
-    en: 'Halo-halo is a heterogeneous mixture: you can see every layer.',
-  },
-  {
-    src: '/demo/cards/firefly-alitaptap.png',
-    alt: 'Alitaptap',
-    topicTl: 'Mga buhay',
-    topicEn: 'Living things',
-    tl: 'Sa mga bakawan ng Pilipinas, libu-libong alitaptap ang sabay-sabay na kumikislap.',
-    en: 'In Philippine mangroves, thousands of fireflies flash as one.',
-  },
-  {
-    src: '/demo/cards/mangrove-prop-roots.png',
-    alt: 'Ugat ng bakawan',
-    topicTl: 'Lupa at kalawakan',
-    topicEn: 'Earth & space',
-    tl: 'Pinabagal ng ugat ng bakawan ang tubig para maipon ang putik at magdagdag ng lupa.',
-    en: 'Mangrove roots slow the water so mud settles and builds new land.',
-  },
-  {
-    src: '/demo/cards/nipa-hut-bahay-kubo-scene.png',
-    alt: 'Bahay kubo',
-    topicTl: 'Materya',
-    topicEn: 'Matter',
-    tl: 'Dahon ng nipa ang bubong ng bahay kubo — mahigpit ang saga, hindi tinatablan ng ulan.',
-    en: 'Nipa leaves roof a bahay kubo — woven tight, they shed rain and stay cool.',
-  },
-  {
-    src: '/demo/cards/palayok-clay-pot.png',
-    alt: 'Palayok',
-    topicTl: 'Materya',
-    topicEn: 'Matter',
-    tl: 'Seramika ang palayok: matibay sa init, malutong kapag nahulog.',
-    en: 'A palayok is ceramic: tough against heat, brittle if you drop it.',
-  },
-];
-
-const TICK_MS = 24;
-const CHARS_PER_TICK = 3;
-
-function prefersReducedMotion() {
-  return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-}
-
-function isFinePointer() {
-  return typeof window !== 'undefined' && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-}
-
-function SampleCard(card: (typeof FLASH_CARDS)[number]) {
-  const [english, setEnglish] = useState(false);
-  const target = english ? card.en : card.tl;
-  const [shown, setShown] = useState(card.tl.length);
-  const skipAnim = useRef(true);
-
-  useEffect(() => {
-    if (skipAnim.current) {
-      skipAnim.current = false;
-      setShown(target.length);
-      return;
-    }
-    if (prefersReducedMotion()) {
-      setShown(target.length);
-      return;
-    }
-    setShown(0);
-    let i = 0;
-    let timer: ReturnType<typeof setTimeout> | null = null;
-    const tick = () => {
-      i += CHARS_PER_TICK;
-      setShown(i);
-      if (i < target.length) timer = setTimeout(tick, TICK_MS);
-    };
-    timer = setTimeout(tick, 40);
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
-  }, [target]);
-
-  const showEn = () => setEnglish(true);
-  const showTl = () => setEnglish(false);
-  const toggle = () => setEnglish((v) => !v);
-
-  const visible = target.slice(0, Math.min(shown, target.length));
-  const reserve = card.tl.length >= card.en.length ? card.tl : card.en;
-
-  return (
-    <li className="mc-fan">
-      <button
-        type="button"
-        className="mc-card w-full cursor-pointer p-3 text-left sm:p-3.5"
-        aria-label={`${card.alt}. ${english ? card.en : card.tl}`}
-        onMouseEnter={() => {
-          if (isFinePointer()) showEn();
-        }}
-        onMouseLeave={() => {
-          if (isFinePointer()) showTl();
-        }}
-        onClick={() => {
-          if (!isFinePointer()) toggle();
-        }}
-      >
-        <div className="mc-keyline" aria-hidden />
-        <div className="mc-band mb-3">
-          <span className="mc-topic">{english ? card.topicEn : card.topicTl}</span>
-        </div>
-        <div className="mc-plate">
-          <div className="mc-window aspect-square">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={card.src} alt="" />
-          </div>
-        </div>
-        <p className="relative z-[1] mt-3 font-zilla text-[13px] font-medium leading-snug text-[var(--ink)] sm:text-[15px]">
-          <span className="invisible block" aria-hidden>
-            {reserve}
-          </span>
-          <span className="absolute inset-0">
-            {visible}
-            <span className="opacity-0">{target.slice(visible.length)}</span>
-          </span>
-        </p>
-      </button>
-    </li>
-  );
-}
 
 function Ticket({
   children,
@@ -292,52 +129,12 @@ export function Landing() {
         </div>
       </section>
 
-      {/* DECK */}
-      <section className="px-5 pb-16 sm:px-12 sm:pb-20 md:px-16 lg:px-24">
-        <div className="mx-auto max-w-5xl">
-          <h2 className="max-w-3xl text-3xl leading-none text-[var(--stock)] sm:text-4xl">
-            Flip a card. Learn a fact.
-          </h2>
-          <p className="mt-3 max-w-2xl font-zilla text-lg font-medium leading-relaxed text-[var(--stock)]/85">
-            The app is a stack of illustrated science cards — about 50,000 verified
-            facts, and nearly 15,000 drawings that ship with it.
-          </p>
-
-          <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
-            {FLASH_CARDS.map((c) => (
-              <SampleCard key={c.src} {...c} />
-            ))}
-          </ul>
-
-          <div className="mt-12 max-w-xs">
-            <Ticket onClick={openDemo}>Try the demo</Ticket>
-          </div>
-        </div>
-      </section>
-
-      {/* DOWNLOAD */}
-      <section
-        id="download"
-        className="scroll-mt-4 bg-[var(--gold)] px-5 py-16 sm:px-12 sm:py-20 md:px-16 lg:px-24"
-      >
-        <div className="mx-auto max-w-5xl">
-          <h2 className="text-3xl leading-none text-[var(--ink)] sm:text-4xl md:text-[2.75rem]">
-            Free to download
-          </h2>
-          <p className="mt-3 max-w-2xl font-zilla text-lg font-medium leading-relaxed text-[var(--ink)] opacity-80">
-            No account, no fees. Just download and start learning. The first time
-            you launch the app, it will download its 2GB AI tutoring model. After
-            that, Hiraia no longer requires an internet connection.
-          </p>
-          <div className="mt-8">
-            <AppDownload />
-          </div>
-        </div>
-      </section>
-
       <section className="bg-white px-5 py-16 sm:px-12 sm:py-20 md:px-16 lg:px-24">
         <div className="mx-auto max-w-6xl">
-          <ul className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-4 lg:gap-6">
+          <h2 className="max-w-4xl text-3xl leading-tight text-[var(--ink)] sm:text-4xl md:text-[2.75rem]">
+            50k science facts, 30k illustrations, 20k mini-quizzes
+          </h2>
+          <ul className="mt-10 grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-4 lg:gap-6">
             {[
               {
                 src: '/screens/card.jpg',
@@ -373,6 +170,26 @@ export function Landing() {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* DOWNLOAD */}
+      <section
+        id="download"
+        className="scroll-mt-4 bg-[var(--gold)] px-5 py-16 sm:px-12 sm:py-20 md:px-16 lg:px-24"
+      >
+        <div className="mx-auto max-w-5xl">
+          <h2 className="text-3xl leading-none text-[var(--ink)] sm:text-4xl md:text-[2.75rem]">
+            Free to download
+          </h2>
+          <p className="mt-3 max-w-2xl font-zilla text-lg font-medium leading-relaxed text-[var(--ink)] opacity-80">
+            No account, no fees. Just download and start learning. The first time
+            you launch the app, it will download its 2GB AI tutoring model. After
+            that, Hiraia no longer requires an internet connection.
+          </p>
+          <div className="mt-8">
+            <AppDownload />
+          </div>
         </div>
       </section>
 

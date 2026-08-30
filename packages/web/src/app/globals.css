@@ -270,27 +270,6 @@ strong, b, h1, h2, h3, h4, h5, h6 {
   flex: 0 0 26px;
 }
 
-.mc-plate {
-  background: var(--peach);
-  border: 3px solid var(--ink);
-  border-radius: 7px;
-  padding: 6px;
-}
-.mc-window {
-  background: var(--stock);
-  border-radius: 2px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.mc-window img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  mix-blend-mode: multiply;
-}
-
 .mc-divider {
   display: flex;
   align-items: center;
@@ -379,12 +358,7 @@ strong, b, h1, h2, h3, h4, h5, h6 {
   stroke-linejoin: miter;
 }
 
-.mc-fan:nth-child(3n + 1) { transform: rotate(-1.4deg); }
-.mc-fan:nth-child(3n + 2) { transform: rotate(1.2deg); }
-.mc-fan:nth-child(3n) { transform: rotate(-0.5deg); }
-.mc-fan:hover { transform: rotate(0deg) translateY(-4px); }
 @media (prefers-reduced-motion: reduce) {
-  .mc-fan:nth-child(n), .mc-fan:hover { transform: none; }
   .mc-ticket:active { transform: none; }
 }
 
