@@ -385,8 +385,9 @@ export function Landing() {
               Why we built hiraia
             </h2>
             <p className="mt-4 max-w-xl font-zilla text-lg font-medium leading-relaxed text-[var(--stock)]/85">
-              Founder Luis Buenaventura on science education in the Philippines, and
-              what an on-device tutor can do when the internet isn’t a given.
+              Creator Luis Buenaventura on science education in the Philippines, and
+              the importance of an on-device AI tutor when 2/3 of all households
+              don&apos;t have a fixed internet connection.
             </p>
           </div>
         </div>
