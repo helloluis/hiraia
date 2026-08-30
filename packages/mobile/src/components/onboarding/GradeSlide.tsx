@@ -1,24 +1,31 @@
+/**
+ * Card 2 of the onboarding deck: "what grade are you in?" typewriters on in the language
+ * just picked on card 1, above a 2×4 grid of grade plates (3–10). The current grade —
+ * Grade 5 by default, because our kids are behind academically and the tutor pitches low
+ * unless told otherwise — is pre-highlighted; tapping any grade applies it and advances.
+ *
+ * PRINTED ON the card surface OnboardingCarousel owns: this fills `cardFrame.content` and
+ * adds the deck's shared die-cut (punched holes, keyline, index band), exactly as the feed
+ * pages do. The grade plates use the same printing as card 1's language plates — peach
+ * plate, 3px ink edge, on a ledge — with the CURRENT grade knocked out in ink, which is the
+ * deck's loudest "this one is set" treatment (CardPage's `dKnockBox`) and, unlike gold or
+ * the fork pair, carries no instruction of its own.
+ */
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import type { GradeLevel, Language } from '@hiraia/shared';
 
 import { GRADE_OPTIONS, GRADE_WORD } from '../../config/grades';
-import { Q_GRADE } from '../../config/onboarding';
-import { colors, fonts } from '../../theme';
+import { Q_GRADE, SLIDE_BAND } from '../../config/onboarding';
+import { card, fonts } from '../../theme';
+import { CardPrint, IndexBand, cardFrame } from '../cards/CardFrame';
 import { useTypewriter } from './useTypewriter';
 
 const COLUMNS = 2;
-// Bottom clearance for the carousel's absolutely-positioned BACK/NEXT bar (OnboardingCarousel
-// navBar: bottom 20 + ~56 tall). It renders ABOVE the slides, so on a short 360×640 phone the
-// centred grid's last row would otherwise sit under it and a tap on Grade 9/10 would hit NEXT.
-const NAV_BAR_CLEARANCE = 80;
 
-/**
- * Slide 2: "what grade are you in?" typewriters on in the language just picked on slide 1,
- * above a 2×4 grid of grade buttons (3–10) styled like the language options. The current
- * grade (Grade 5 by default — our kids are behind academically, so the tutor pitches low
- * unless told otherwise) is pre-highlighted; tapping any grade applies it and advances.
- */
+/** The mascot — the same alpha-cut PNG every card in the deck stamps its band with. */
+const CAT = require('../../../assets/hiraia-profile.png');
+
 export function GradeSlide({
   language,
   selected,
@@ -37,18 +44,31 @@ export function GradeSlide({
   });
 
   const rows: GradeLevel[][] = [];
-  for (let i = 0; i < GRADE_OPTIONS.length; i += COLUMNS) rows.push(GRADE_OPTIONS.slice(i, i + COLUMNS));
+  for (let i = 0; i < GRADE_OPTIONS.length; i += COLUMNS)
+    rows.push(GRADE_OPTIONS.slice(i, i + COLUMNS));
 
   return (
-    <View style={styles.slide}>
-      <Image source={require('../../../assets/hiraia-profile.png')} style={styles.avatar} />
+    <View style={cardFrame.content}>
+      {/* keyline + punched binder holes — the deck's shared die-cut */}
+      <CardPrint keyline="sage" />
 
-      {/* fixed-height so the grid doesn't jump as the question types */}
-      <View style={styles.questionBox}>
-        <Text style={styles.question}>
-          {typed}
-          <Text style={styles.caret}>▍</Text>
-        </Text>
+      <IndexBand
+        tone="ink"
+        label={SLIDE_BAND[language].grade}
+        stamp={<Image source={CAT} style={cardFrame.stampImage} resizeMode="contain" />}
+      />
+
+      <View style={styles.hero}>
+        <View style={styles.disc}>
+          <Image source={CAT} style={styles.discImage} resizeMode="contain" />
+        </View>
+        {/* fixed-height so the grid doesn't jump as the question types */}
+        <View style={styles.questionBox}>
+          <Text style={styles.question}>
+            {typed}
+            <Text style={styles.caret}>▍</Text>
+          </Text>
+        </View>
       </View>
 
       <View style={styles.grid}>
@@ -57,16 +77,20 @@ export function GradeSlide({
             {row.map((g) => {
               const isSelected = g === selected;
               return (
-                <TouchableOpacity
-                  key={g}
-                  style={[styles.option, isSelected && styles.optionSelected]}
-                  onPress={() => onPick(g)}
-                  activeOpacity={0.85}
-                >
-                  <Text style={[styles.optionLabel, isSelected && styles.optionLabelSelected]}>
-                    {GRADE_WORD[language]} {g}
-                  </Text>
-                </TouchableOpacity>
+                <View key={g} style={[cardFrame.rowLedge, styles.cell]}>
+                  <TouchableOpacity
+                    style={[styles.option, isSelected && styles.optionSelected]}
+                    onPress={() => onPick(g)}
+                    activeOpacity={0.85}
+                  >
+                    <Text
+                      style={[styles.optionLabel, isSelected && styles.optionLabelSelected]}
+                      numberOfLines={1}
+                    >
+                      {GRADE_WORD[language]} {g}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               );
             })}
           </View>
@@ -77,38 +101,53 @@ export function GradeSlide({
 }
 
 const styles = StyleSheet.create({
-  slide: {
-    flex: 1,
+  hero: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 4 },
+  disc: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    backgroundColor: card.peach, // the warm mat every print in this deck sits on
+    borderWidth: 3,
+    borderColor: card.ink,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 32,
-    paddingBottom: NAV_BAR_CLEARANCE,
+    overflow: 'hidden',
   },
-  avatar: { width: 84, height: 84, borderRadius: 42, marginBottom: 16 },
-  // two lines max ("Anong grade ka na?") — shorter than slide 1's box so the 4-row grid fits
-  // above the nav bar on a 360×640 phone
-  questionBox: { height: 80, justifyContent: 'center', marginBottom: 16 },
+  discImage: { width: 62, height: 62 },
+  questionBox: { height: 76, justifyContent: 'center', marginTop: 12 },
   question: {
-    fontFamily: fonts.display,
-    fontSize: 23,
-    lineHeight: 32,
-    color: colors.ink,
+    fontFamily: fonts.cardBodyBold,
+    fontSize: 21,
+    lineHeight: 28,
+    color: card.ink, // 10.25:1 on cream stock
     textAlign: 'center',
   },
-  caret: { color: colors.primary },
-  grid: { width: '100%', gap: 10 },
-  row: { flexDirection: 'row', gap: 10 },
+  // Quiet ink, 7.67:1 on stock. NOT `card.accent`: the palette reserves oxblood for the term
+  // a card is teaching, and a caret teaches nothing (same call as LanguageSlide's).
+  caret: { color: card.graphite },
+
+  // ---- the 2x4 grade grid ----
+  grid: { gap: 8, paddingTop: 12 },
+  row: { flexDirection: 'row', gap: 8 },
+  cell: { flex: 1 },
   option: {
-    flex: 1,
+    minHeight: 44, // the touch minimum; the ledge under it adds 4 more
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.white,
-    borderWidth: 2,
-    borderColor: colors.primary,
-    borderRadius: 18,
-    paddingVertical: 12,
+    backgroundColor: card.peach,
+    borderWidth: 3,
+    borderColor: card.ink,
+    borderRadius: 11,
+    paddingVertical: 5,
+    paddingHorizontal: 8,
   },
-  optionSelected: { backgroundColor: colors.primary },
-  optionLabel: { fontFamily: fonts.display, fontSize: 22, color: colors.ink },
-  optionLabelSelected: { color: colors.white },
+  /** Knocked out of ink — the deck's "this one is set", and it borrows no signal colour. */
+  optionSelected: { backgroundColor: card.ink },
+  optionLabel: {
+    fontFamily: fonts.cardBodyBold,
+    fontSize: 18,
+    lineHeight: 23,
+    color: card.ink, // 6.40:1 on peach
+  },
+  optionLabelSelected: { color: card.stock }, // 10.25:1 on ink
 });

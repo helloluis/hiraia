@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, type StyleProp, type TextStyle } from 'react-native';
 
 import type { Language } from '@hiraia/shared';
 
@@ -20,6 +20,11 @@ import { colors, fonts } from '../theme';
  * Text phrases are scoped to the ACTIVE language (no Bisaya in a Tagalog chat); emojis
  * are language-neutral. Pass `language` to override (e.g. the onboarding demo); otherwise
  * it follows the engine's current language.
+ *
+ * `style` likewise overrides only the TYPE. The chat is still on the notebook theme and
+ * keeps its handwriting in muted blue-grey; the onboarding demo now prints on a mid-century
+ * card, where that face and that blue-grey are the one thing on the card from another
+ * palette. Nothing about the animation changes with it.
  */
 
 // Language-neutral cues. Each is animated as three copies appearing one at a time.
@@ -68,7 +73,14 @@ const TYPE_STEP_MS = 55; // per-character typewriter speed
 const DWELL_MIN_MS = 3000;
 const DWELL_MAX_MS = 5000;
 
-export function ThinkingIndicator({ language }: { language?: Language }) {
+export function ThinkingIndicator({
+  language,
+  style,
+}: {
+  language?: Language;
+  /** Type overrides (face/size/colour); defaults to the notebook theme's muted hand. */
+  style?: StyleProp<TextStyle>;
+}) {
   const active = useEngineStore((s) => s.language);
   const lang: Language = language ?? active ?? 'tagalog';
   const [display, setDisplay] = useState('');
@@ -163,7 +175,7 @@ export function ThinkingIndicator({ language }: { language?: Language }) {
   // Status mode: rotating phrase (topic anchor ↔ working phrases) + live ellipsis, so the
   // long prefill shows what's happening AND varies. Otherwise: the random warm-up cue.
   return (
-    <Text style={styles.text}>
+    <Text style={[styles.text, style]}>
       {status ? `${rotation[rotIdx] ?? status} ${dots}` : display}
     </Text>
   );

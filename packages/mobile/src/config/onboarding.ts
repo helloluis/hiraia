@@ -33,48 +33,130 @@ export const Q_GRADE: Record<Language, string> = {
   cebuano: 'Unsa nga grade ka na?',
 };
 
-// Slide 3 — caption above the chat demo (shown in the chosen language).
+// ---------------------------------------------------------------------------------------
+// Slide 3 — the TUTORIAL card.
+//
+// It used to mock the chat (a kid types a question, a reply streams in). The deck is the
+// product now, so the tutorial teaches the deck: a mini card being turned, four beats in a
+// loop — TAP the ticket, TAP pick A, swipe RIGHT for B, swipe UP.
+//
+// Tap comes FIRST on purpose. A swipe is an additional way to press the ticket that is
+// already on the card, never the only way, and a child who only ever taps must not be
+// taught they have to swipe. That is also why one of the two FORK beats is a press and not
+// a swipe: a fork's picks are tappable in the feed, and a vertical throw from the middle of
+// a fork is refused outright, so a tutorial that only ever swiped a fork would teach the one
+// gesture that can do nothing. (The feed also honours a downward throw, which on a
+// single-path card means exactly what UP means — a fifth beat would lengthen the loop for
+// no new information, so it is left out.)
+// ---------------------------------------------------------------------------------------
+
+// The headline above the mini deck (shown in the chosen language).
 export const DEMO_CAPTION: Record<Language, string> = {
-  tagalog: 'Magtanong ng kahit ano tungkol sa agham!',
-  english: 'Ask anything about grade-school science!',
-  cebuano: 'Pangutana bisan unsa bahin sa siyensya!',
+  tagalog: 'Ganito paglaruan ang mga card:',
+  english: 'This is how the cards work:',
+  cebuano: 'Mao ni ang paagi sa mga card:',
 };
 
-// Slide 3 — the message the demo "user" types.
-export const DEMO_QUESTION: Record<Language, string> = {
-  tagalog: 'paexplain po ng photosynthesis',
-  english: 'explain photosynthesis please',
-  cebuano: 'palihug i-explain ang photosynthesis',
+/**
+ * The line under the mini deck that NAMES the beat currently being shown. One key per beat
+ * of DemoSlide's loop.
+ *
+ * `left` names BOTH affordances of a fork pick, because that beat shows the tap and the feed
+ * accepts either; the "or" is there on purpose — these are alternatives to each other, not
+ * separate things a child has to learn. `right` names only the swipe, so the pair reads as
+ * one lesson rather than the same sentence printed twice.
+ */
+export const DEMO_HINT: Record<Language, { tap: string; left: string; right: string; up: string }> =
+  {
+    tagalog: {
+      tap: 'Pindutin ang gintong tiket.',
+      left: 'Pindutin ang A, o i-swipe pakaliwa.',
+      right: 'I-swipe pakanan para sa B.',
+      up: 'I-swipe pataas para sa susunod.',
+    },
+    english: {
+      tap: 'Tap the gold ticket.',
+      left: 'Tap A, or swipe left.',
+      right: 'Swipe right for B.',
+      up: 'Swipe up for the next one.',
+    },
+    cebuano: {
+      tap: 'I-tap ang bulawan nga tiket.',
+      left: 'I-tap ang A, o i-swipe pawala.',
+      right: 'I-swipe patuo para sa B.',
+      up: 'I-swipe pataas para sa sunod.',
+    },
+  };
+
+/**
+ * The words printed ON the mini cards in the loop — a topic for the index band, the single
+ * gold ticket's label, the two picks of a fork and the word that heads one. They are held
+ * here rather than read out of `strings.ts` because these are props in a mock, not app copy
+ * another screen shares; `fork` matches `t.cards.fork` by hand so the mock and the real
+ * card say the same word.
+ */
+export const DEMO_MINI: Record<
+  Language,
+  { band: string; next: string; fork: string; pickA: string; pickB: string }
+> = {
+  tagalog: {
+    band: 'Kalawakan',
+    next: 'Susunod',
+    fork: 'Sangandaan',
+    pickA: 'Araw',
+    pickB: 'Buwan',
+  },
+  english: { band: 'Space', next: 'Next', fork: 'Crossroads', pickA: 'Sun', pickB: 'Moon' },
+  cebuano: {
+    band: 'Kawanangan',
+    next: 'Sunod',
+    fork: 'Sangang-dalan',
+    pickA: 'Adlaw',
+    pickB: 'Bulan',
+  },
 };
 
-// Slide 3 — Hiraia's short demo reply (1–2 sentences).
-export const DEMO_ANSWER: Record<Language, string> = {
-  tagalog:
-    'Sa photosynthesis, gumagawa ng sariling pagkain ang halaman gamit ang sikat ng araw, tubig, at hangin! 🌱',
-  english: 'In photosynthesis, plants make their own food using sunlight, water, and air! 🌱',
-  cebuano:
-    'Sa photosynthesis, ang mga tanom maghimo og kaugalingong pagkaon gamit ang adlaw, tubig, ug hangin! 🌱',
+/**
+ * The gold Ticket at the foot of slide 3, which is now the LAST action of onboarding: it
+ * dismisses the carousel. Gold because the deck reserves gold for the ordinary
+ * continuation, which is exactly what "start" is here.
+ */
+export const DEMO_START: Record<Language, string> = {
+  tagalog: 'Simulan na!',
+  english: "Let's start!",
+  cebuano: 'Sugdan na!',
 };
 
-// Slide 3 — the illustration slug shown in the demo reply (resolves via imageMap).
+// Slide 3 — the illustration printed on the mini cards (resolves via imageMap).
 export const DEMO_IMAGE_SLUG = 'plant-parts';
 
-// Slide 4 — download notice.
-export const DL_TITLE: Record<Language, string> = {
-  tagalog: 'Sandali lang — may ida-download',
-  english: 'One quick download',
-  cebuano: 'Kadiyot lang — naay i-download',
-};
-export const DL_BODY: Record<Language, string> = {
-  tagalog:
-    'Kailangan munang i-download ang malaking file na naglalaman ng Hiraiapedia at ng AI na guro. Maaaring tumagal ito nang ilang minuto — pasensya na! Nagsimula na itong mag-download habang binabasa mo ito. 📚',
-  english:
-    'We first need to download a large file with the Hiraiapedia and the AI tutor. This can take a few minutes — sorry for the wait! It already started downloading while you read this. 📚',
-  cebuano:
-    'Kinahanglan una namong i-download ang dakong file nga naay Hiraiapedia ug AI nga magtutudlo. Mahimong molungtad kini og pipila ka minuto — pasensya na! Nagsugod na kini pag-download samtang nagbasa ka. 📚',
-};
-export const DL_OK: Record<Language, string> = {
-  tagalog: 'Sige!',
-  english: 'OK!',
-  cebuano: 'Sige!',
+/**
+ * The index-band label printed across the top of each onboarding card, per language.
+ *
+ * The onboarding slides are printed on the same flash cards as the feed, and every card in
+ * the deck carries a band naming what KIND of page it is (CardFrame.IndexBand). These are
+ * those three names. They live here with the rest of the onboarding copy rather than in
+ * config/strings.ts for the same reason QuestionPage and RewardCard keep their own band
+ * labels local: they are set-in-metal labels belonging to these three cards only, not app
+ * copy another screen shares. Kept SHORT — the band is one line and truncates.
+ *
+ * `grade` is the English word on purpose, exactly as GRADE_OPTIONS' buttons are (see the
+ * note on GRADE_WORD in config/grades.ts).
+ */
+export const SLIDE_BAND: Record<Language, { language: string; grade: string; demo: string }> = {
+  tagalog: {
+    language: 'Wika',
+    grade: 'Grade',
+    demo: 'Paano gamitin',
+  },
+  english: {
+    language: 'Language',
+    grade: 'Grade',
+    demo: 'How it works',
+  },
+  cebuano: {
+    language: 'Pinulongan',
+    grade: 'Grade',
+    demo: 'Unsaon paggamit',
+  },
 };
