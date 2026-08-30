@@ -324,29 +324,29 @@ export function Landing() {
         </div>
       </section>
 
-      <section className="px-5 py-16 sm:px-12 sm:py-20 md:px-16 lg:px-24">
+      <section className="bg-white px-5 py-16 sm:px-12 sm:py-20 md:px-16 lg:px-24">
         <div className="mx-auto max-w-6xl">
           <ul className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-4 lg:gap-6">
             {[
               {
                 src: '/screens/card.png',
                 alt: 'A science card with an illustration of a bird at a nest',
-                caption: 'A card carries one fact, one illustration, and the topic that comes next.',
+                caption: 'Each card carries one fact and one illustration.',
               },
               {
                 src: '/screens/quiz.png',
                 alt: 'A quiz card asking a question about what was just read',
-                caption: 'Every few cards a question interrupts the deck, on a fact just read.',
+                caption: "After swiping past a few cards, a quiz checks the student's memory.",
               },
               {
                 src: '/screens/recap.png',
                 alt: 'A recap card naming topics the child just covered',
-                caption: 'A periodic recap names the topics the child actually covered.',
+                caption: 'A recap card reinforces the facts already discussed.',
               },
               {
                 src: '/screens/search.png',
-                alt: 'A volcano card after searching for the word bulkan',
-                caption: 'Typing a word moves the deck to a matching card — here, “bulkan”.',
+                alt: 'A volcano card after searching for a topic',
+                caption: "A dynamic card can be generated based on the student's desired topic.",
               },
             ].map((s) => (
               <li key={s.src} className="flex flex-col items-center">
@@ -354,9 +354,9 @@ export function Landing() {
                 <img
                   src={s.src}
                   alt={s.alt}
-                  className="w-full max-w-[220px] drop-shadow-[0_12px_0_rgba(28,59,46,0.45)]"
+                  className="w-full max-w-[220px] drop-shadow-[0_10px_18px_rgba(28,59,46,0.18)]"
                 />
-                <p className="mt-4 max-w-[220px] text-center font-zilla text-sm font-medium leading-snug text-[var(--stock)]/85 sm:text-[15px]">
+                <p className="mt-4 max-w-[220px] text-center font-zilla text-sm font-medium leading-snug text-[var(--ink)] sm:text-[15px]">
                   {s.caption}
                 </p>
               </li>
