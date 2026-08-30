@@ -329,23 +329,23 @@ export function Landing() {
           <ul className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-4 lg:gap-6">
             {[
               {
-                src: '/screens/card.png',
-                alt: 'A science card with an illustration of a bird at a nest',
+                src: '/screens/card.jpg',
+                alt: 'A science card about constellations, with a drawing of Earth',
                 caption: 'Each card carries one fact and one illustration.',
               },
               {
-                src: '/screens/quiz.png',
-                alt: 'A quiz card asking a question about what was just read',
+                src: '/screens/quiz.jpg',
+                alt: 'A quiz asking why the Philippines has two seasons',
                 caption: "After swiping past a few cards, a quiz checks the student's memory.",
               },
               {
-                src: '/screens/recap.png',
-                alt: 'A recap card naming topics the child just covered',
+                src: '/screens/recap.jpg',
+                alt: 'A recap card celebrating topics the student just read',
                 caption: 'A recap card reinforces the facts already discussed.',
               },
               {
-                src: '/screens/search.png',
-                alt: 'A volcano card after searching for a topic',
+                src: '/screens/search.jpg',
+                alt: 'A generated card about why the Philippines has no winter',
                 caption: "A dynamic card can be generated based on the student's desired topic.",
               },
             ].map((s) => (
@@ -354,7 +354,7 @@ export function Landing() {
                 <img
                   src={s.src}
                   alt={s.alt}
-                  className="w-full max-w-[220px] drop-shadow-[0_10px_18px_rgba(28,59,46,0.18)]"
+                  className="w-full max-w-[220px] rounded-[28px] drop-shadow-[0_10px_18px_rgba(28,59,46,0.18)]"
                 />
                 <p className="mt-4 max-w-[220px] text-center font-zilla text-sm font-medium leading-snug text-[var(--ink)] sm:text-[15px]">
                   {s.caption}
