@@ -5,18 +5,29 @@
  * pages and a reward recap every 6-10 (jittered). Web differences:
  *
  *  - in-memory only (no SQLite persistence) — counters reset on page reload;
- *  - no on-device model: rewards always use the deterministic template, and a typed
- *    query that misses retrieval shows the honest abstention card (with a note that
- *    the real app answers on-device) after a short "thinking" beat — that beat exists
- *    to demonstrate the app's submit-button→progress affordance;
- *  - typed queries are logged to the demo transcript (same endpoint the old chat demo
- *    used) for product insight;
- *  - actions take `language` as a parameter instead of reading an engine store.
+ *  - rewards always use the deterministic template (no local model to write one);
+ *  - a typed query that misses the local card search is answered for REAL, by the same
+ *    grounded path the phone runs — only the model lives on the VPS instead of in the
+ *    handset. POST /api/demo/card retrieves from the full fact bank, classifies the query
+ *    three ways (fact card / in-domain gap / off-domain) on the shared `isOffDomain` gate,
+ *    and prints a card from the shared card prompt. The "thinking" beat is therefore real
+ *    work now, not a simulated one;
+ *  - typed queries AND the cards printed in answer are logged to the demo transcript (same
+ *    endpoint the old chat demo used) for product insight;
+ *  - actions take `language` (and, for the card path, `grade`) as parameters instead of
+ *    reading an engine store;
+ *  - the grade onboarding collected weights the DRAWS as well as the answer: `hydrate` builds
+ *    a `feedWeigher` for it and every unforced pick (entry card, reroll, lateral fork) goes
+ *    through it. The seen-decay half of the phone's rule is not ported — a demo that resets on
+ *    reload has no seen-store to persist into.
  */
 import { create } from 'zustand';
 
+import { DEFAULT_GRADE, type GradeLevel } from '@/config/grades';
 import type { LanguageKey } from '@/config/model';
 import {
+  choiceLabel,
+  feedWeigher,
   getCard,
   jumpCard,
   nextChoices,
@@ -26,6 +37,7 @@ import {
   type CardChoice,
   type CardFact,
   type CardQuestion,
+  type FeedWeigher,
 } from '@/data/cards';
 import {
   recentTopics,
@@ -35,21 +47,43 @@ import {
 } from '@/data/reward';
 import { persist as logDemoMessage } from '@/store/useDemoStore';
 
-const RECENT_WINDOW = 5; // "ask about something the kid just saw"
-const VIEWLOG_CAP = 40; // session view-log for the reward recap (topic + timestamp)
-const REWARD_MIN_TOPICS = 3; // don't reward until there's something to celebrate
-const ASK_BEAT_MS = 750; // simulated "thinking" so the progress affordance reads
+// The trail: what the reader just saw. Two jobs — sourcing the interject question ("ask
+// about something the kid just saw") and feeding nextChoices' illustration/category
+// cooldowns, which is why it is exactly SLUG_COOLDOWN long in cards.ts.
+const RECENT_WINDOW = 5;
 
 /**
- * A search result that isn't a straight card navigation. On web this is always an
- * honest abstention (there's no model to generate); the 'generated' shape is kept to
- * stay structurally aligned with the mobile store.
+ * How long the browser waits for /api/demo/card before printing the honest gap card instead.
+ *
+ * The route has its own 25 s ceiling on the generation, but that only bounds a SLOW answer —
+ * it cannot bound a stalled socket (a VPS blip, a phone handing off between wifi and cell),
+ * and while `asking` is true the input is disabled and every page turn is refused, so an
+ * unbounded fetch wedges the whole feed until the visitor reloads the page. 12 s is inside a
+ * child's patience and well under the route's own timeout, and the existing catch already
+ * downgrades an abort to the gap card, so a timeout needs no branch of its own.
+ */
+const ASK_TIMEOUT_MS = 12_000;
+const VIEWLOG_CAP = 40; // session view-log for the reward recap (topic + timestamp)
+const REWARD_MIN_TOPICS = 3; // don't reward until there's something to celebrate
+
+/**
+ * A search result that isn't a straight card navigation — one of the three shapes the feed
+ * can print in answer to a typed question. Same three the phone has (cardStore.FeedResponse):
+ *
+ *   generated — a grounded fact card written from the full bank;
+ *   abstain   — an in-domain GAP ("no page about that yet"), offering the nearest DEMO-SUBSET
+ *               topic as a soft landing. The suggestion comes from the local card search that
+ *               already ran, not from the server: it has to be a card this demo can actually
+ *               navigate to;
+ *   offdomain — the query wasn't science. NO suggestion, by design — offering a science topic
+ *               in answer to "roblox" is the behaviour this shape exists to remove.
  */
 export interface FeedResponse {
   query: string;
-  kind: 'generated' | 'abstain';
-  text: string | null; // generated answer (already localized) — never set on web
-  suggestion: string | null; // topic label of the nearest card, for the abstention path
+  kind: 'generated' | 'abstain' | 'offdomain';
+  text: string | null; // the printed card — set on 'generated' only
+  /** Localized label of the nearest DEMO-SUBSET card; never set on 'offdomain'. */
+  suggestion: string | null;
 }
 
 interface CardDemoState {
@@ -86,16 +120,28 @@ interface CardDemoState {
   threadDepth: number;
   untilReward: number; // pages left until the next reward card (jittered)
   askedFacts: Set<string>; // don't re-ask the same fact this session
+  /** The student's grade, as the feed is currently weighted for it. */
+  grade: GradeLevel;
+  /**
+   * Curriculum draw weights for `grade` (data/cards.ts feedWeigher). Held here rather than
+   * threaded through every action: it depends only on the grade and today's date, so it is
+   * built once per session and passed to every unforced draw.
+   */
+  weights: FeedWeigher | null;
 
-  hydrate: (language: LanguageKey) => void;
+  hydrate: (language: LanguageKey, grade?: GradeLevel) => void;
   /** Re-bake the (language-bound) choice labels after a language switch. */
   relocale: (language: LanguageKey) => void;
   choose: (choice: CardChoice, language: LanguageKey) => void;
   answerQuestion: (correct: boolean) => void;
   continueAfterQuestion: (language: LanguageKey) => void;
   continueAfterReward: (language: LanguageKey) => void;
-  /** Visitor typed a query: retrieval hit → found card; miss → abstention page. */
-  ask: (query: string, language: LanguageKey) => void;
+  /**
+   * Visitor typed a query. Retrieval hit in the bundled subset → navigate straight to that
+   * card (instant, zero-model). Miss → ask the server for a real card: /api/demo/card.
+   * `grade` pitches the generated card (onboarding's grade slide).
+   */
+  ask: (query: string, language: LanguageKey, grade?: number) => Promise<void>;
   continueAfterResponse: (language: LanguageKey) => void;
   /** "Reroll" — teleport to an unrelated fresh topic (escape a deep/stale thread). */
   jumpToRandom: (language: LanguageKey) => void;
@@ -129,16 +175,27 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
   threadDepth: 0,
   untilReward: nextRewardGap(),
   askedFacts: new Set<string>(),
+  grade: DEFAULT_GRADE,
+  weights: null,
 
-  hydrate: (language) => {
-    if (get().hydrated) return;
-    const first = startCard(new Set());
+  hydrate: (language, grade = DEFAULT_GRADE) => {
+    const prev = get();
+    if (prev.hydrated) {
+      // Already walking. A visitor who reopened onboarding and picked a DIFFERENT grade gets
+      // the new weights from here on; the pages already read are not rewritten.
+      if (prev.grade !== grade) set({ grade, weights: feedWeigher(grade) });
+      return;
+    }
+    const weights = feedWeigher(grade);
+    const first = startCard(new Set(), weights);
     const seen = new Set([first.id]);
     set({
       hydrated: true,
+      grade,
+      weights,
       seen,
       current: first,
-      choices: nextChoices(first.id, seen, language, { threadDepth: 0 }),
+      choices: nextChoices(first.id, seen, language, { threadDepth: 0, recentIds: [first.id], weights }),
       threadDepth: 0,
       recent: [first.id],
       viewLog: [{ factId: first.id, topic: first.topic, ts: Date.now() }],
@@ -149,7 +206,13 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
   relocale: (language) => {
     const s = get();
     if (!s.hydrated || !s.current) return;
-    set({ choices: nextChoices(s.current.id, s.seen, language, { threadDepth: s.threadDepth }) });
+    set({
+      choices: nextChoices(s.current.id, s.seen, language, {
+        threadDepth: s.threadDepth,
+        recentIds: s.recent,
+        weights: s.weights ?? undefined,
+      }),
+    });
   },
 
   choose: (choice, language) => {
@@ -217,13 +280,14 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
     if (pending) advance(pending, set, get, language);
   },
 
-  ask: (query, language) => {
+  ask: async (query, language, grade) => {
     const q = query.trim();
     const s = get();
     if (!q || s.asking) return;
 
     // Retrieval-first: a confident local match navigates straight to that card (instant,
-    // zero-model), with a "you asked" banner. The card becomes the new feed anchor.
+    // zero-model), with a "you asked" banner. The card becomes the new feed anchor. This is
+    // the common case and it never leaves the browser.
     const res = searchCards(q, s.current?.id ?? null);
     logDemoMessage('user', q, language);
     if (res.best) {
@@ -231,31 +295,67 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
       return;
     }
 
-    // Miss: show the thinking affordance briefly, then the honest abstention card with
-    // the nearest topic as a soft landing. (The real app would ask the warm on-device
-    // model here; the browser demo has none.)
+    // Miss → ask the server for a real card. The demo ships ~5% of the deck, so a miss here is
+    // usually a card that exists in the full app and not in this subset; the route retrieves
+    // from the WHOLE fact bank, which is why it can answer questions this pool cannot.
     const suggestion = res.suggestion;
-    const anchorId = suggestion?.id ?? null;
     const fromPage = s.pageKey;
     set({ asking: true });
-    setTimeout(() => {
-      const cur = get();
-      if (!cur.asking || cur.pageKey !== fromPage) return; // visitor moved on meanwhile
-      set({
-        asking: false,
-        question: null,
-        reward: null,
-        queryBanner: null,
-        response: {
-          query: q,
-          kind: 'abstain',
-          text: null,
-          suggestion: suggestion ? suggestion.topic : null,
-        },
-        responseAnchorId: anchorId,
-        pageKey: cur.pageKey + 1,
+
+    let kind: FeedResponse['kind'] = 'abstain';
+    let text: string | null = null;
+    try {
+      const r = await fetch('/api/demo/card', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: q, language, grade }),
+        signal: AbortSignal.timeout(ASK_TIMEOUT_MS),
       });
-    }, ASK_BEAT_MS);
+      if (r.ok) {
+        const data = (await r.json()) as { kind?: string; text?: string | null };
+        if (data.kind === 'generated' && data.text) {
+          kind = 'generated';
+          text = data.text;
+        } else if (data.kind === 'offdomain') {
+          kind = 'offdomain';
+        }
+      }
+    } catch {
+      // Network/route down → the honest gap card. A typed question always gets a page.
+    }
+
+    // The visitor may have turned the page (or asked again) while this was in flight; if so
+    // the answer is stale and printing it would yank them off whatever they are now reading.
+    const cur = get();
+    if (!cur.asking || cur.pageKey !== fromPage) {
+      set({ asking: false }); // clear the veil either way — nothing else can be in flight
+      return;
+    }
+
+    if (text) logDemoMessage('assistant', text, language);
+
+    // Off-domain gets NO nearest topic and NO anchor: the continue ticket resumes the ordinary
+    // walk instead of landing on whichever science card happened to sit closest to a question
+    // about a video game.
+    const offDomain = kind === 'offdomain';
+    set({
+      asking: false,
+      question: null,
+      reward: null,
+      queryBanner: null,
+      response: {
+        query: q,
+        kind,
+        text,
+        // `topic` is the card's untranslated English slug-phrase — printing it raw ended every
+        // Tagalog gap card on an English fragment ("Pero subukan natin ito: how geckos blend
+        // in"). choiceLabel is the localizer every other choice in the feed already goes
+        // through. Mirrored in packages/mobile/src/store/cardStore.ts — keep the two in sync.
+        suggestion: offDomain || !suggestion ? null : choiceLabel(suggestion, language),
+      },
+      responseAnchorId: offDomain ? null : (suggestion?.id ?? null),
+      pageKey: cur.pageKey + 1,
+    });
   },
 
   continueAfterResponse: (language) => {
@@ -265,18 +365,26 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
     if (dest) {
       navigateTo(dest, set, get, language);
     } else {
-      navigateTo(jumpCard(s.current?.id ?? null, s.seen), set, get, language);
+      navigateTo(jumpCard(s.current?.id ?? null, s.seen, s.weights ?? undefined), set, get, language);
     }
   },
 
   jumpToRandom: (language) => {
     const s = get();
-    const dest = jumpCard(s.current?.id ?? null, s.seen);
+    // Gated on `asking` exactly as `choose` is: the reroll turned the page out from under an
+    // answer that was still in flight, leaving the thinking veil and the disabled input stuck
+    // over a card the visitor never asked about.
+    if (s.asking) return;
+    const dest = jumpCard(s.current?.id ?? null, s.seen, s.weights ?? undefined);
     const seen = new Set(s.seen);
     seen.add(dest.id);
     set({
       current: dest,
-      choices: nextChoices(dest.id, seen, language, { threadDepth: 0 }),
+      choices: nextChoices(dest.id, seen, language, {
+        threadDepth: 0,
+        recentIds: [dest.id],
+        weights: s.weights ?? undefined,
+      }),
       threadDepth: 0, // the reroll already switched topic
       question: null,
       pending: null,
@@ -308,7 +416,11 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, language: LanguageKey,
   const viewLog = [...s.viewLog, { factId: fact.id, topic: fact.topic, ts: Date.now() }].slice(-VIEWLOG_CAP);
   set({
     current: fact,
-    choices: nextChoices(fact.id, seen, language, { threadDepth: 0 }),
+    choices: nextChoices(fact.id, seen, language, {
+      threadDepth: 0,
+      recentIds: recent,
+      weights: s.weights ?? undefined,
+    }),
     threadDepth: 0, // a search/topic jump starts a new thread
     seen,
     recent,
@@ -339,7 +451,11 @@ function advance(choice: CardChoice, set: Set_, get: Get_, language: LanguageKey
 
   // Taking the lateral fork is itself a topic switch, so it restarts the thread.
   const depth = choice.kind === 'lateral' ? 0 : s.threadDepth + 1;
-  const choices = nextChoices(nextFact.id, seen, language, { threadDepth: depth });
+  const choices = nextChoices(nextFact.id, seen, language, {
+    threadDepth: depth,
+    recentIds: recent,
+    weights: s.weights ?? undefined,
+  });
 
   set({
     current: nextFact,

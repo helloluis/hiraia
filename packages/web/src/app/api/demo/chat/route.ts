@@ -6,6 +6,7 @@ import {
 } from '@hiraia/shared';
 import { loraScalesFor, MODEL_INFO, type LanguageKey } from '@/config/model';
 import { retrieveGrounding, warmRag } from '@/server/rag';
+import { callerKey, TokenBucket } from '@/server/throttle';
 
 /**
  * Real-model backend for the public "Try the web demo" lightbox.
@@ -35,6 +36,26 @@ import { retrieveGrounding, warmRag } from '@/server/rag';
 export const runtime = 'nodejs';
 
 const MODEL_URL = process.env.HIRAIA_MODEL_URL || 'http://localhost:8080';
+
+/**
+ * Same throttles the card route carries (server/throttle.ts), for the same reason: this is
+ * UNAUTHENTICATED generation on the single box that also serves hiraia.org and the APK
+ * download. A chat turn is longer than a card, so the bucket is tighter — a visitor asking
+ * questions types slower than one card-search miss per page turn.
+ *
+ * Unlike the card route there is no honest gap card to fall back to, so a throttled caller
+ * gets 429 with Retry-After rather than a silent non-answer; the client shows it as a "try
+ * again in a moment" rather than a broken reply.
+ */
+const CHAT_BUCKET = new TokenBucket({ burst: 4, perMinute: 8 });
+
+// NO concurrency semaphore here, deliberately, unlike the card route. This response is
+// STREAMED (`stream: true`, we hand back `upstream.body`), so a slot could only be released
+// when the stream ends — and a client that disconnects mid-stream would hold it forever
+// unless that is handled precisely. A leaked slot is a worse failure than an unbounded one:
+// it degrades permanently and silently. The per-caller bucket above plus llama-server's own
+// slot limit bound this path; if it ever needs a semaphore, release it from the stream's
+// cancel/close handlers, not from the fetch.
 const LANGS = new Set<LanguageKey>(['tagalog', 'english', 'cebuano']);
 
 // Warm the RAG store (load the int8 blob into RAM) at module init so the first
@@ -42,6 +63,12 @@ const LANGS = new Set<LanguageKey>(['tagalog', 'english', 'cebuano']);
 warmRag();
 
 export async function POST(req: NextRequest) {
+  if (!CHAT_BUCKET.take(callerKey(req))) {
+    return new Response(JSON.stringify({ error: 'rate_limited' }), {
+      status: 429,
+      headers: { 'Content-Type': 'application/json', 'Retry-After': '8' },
+    });
+  }
   const { message, language, history } = await req.json().catch(() => ({}));
   if (typeof message !== 'string' || !message.trim()) {
     return new Response(JSON.stringify({ error: 'empty message' }), { status: 400 });

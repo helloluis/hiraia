@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   // @hiraia/shared ships raw TS (main → src/index.ts), so Next must transpile it to
   // import runtime values from it. It is SERVER-ONLY here (the /api/demo/chat RAG path
-  // imports RagStore/SemanticIndex/SCIENCE_FACTS/prompt helpers); the client never
+  // imports RagStore/SemanticIndex/the JSONL bank loader/prompt helpers); the client never
   // imports runtime values from it (factoids.ts uses `import type`, erased at build).
   // Safe to transpile: the package has zero dependencies and no @qvac imports (only
   // mentions it in comments), so it cannot drag the bare-runtime browser shims that

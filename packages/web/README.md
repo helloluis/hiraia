@@ -110,3 +110,27 @@ The web demo allows judges to try Hiraia without installing the mobile app:
 ## License
 
 Apache 2.0
+
+## The demo card feed (inventory + the dynamic card)
+
+The lightbox's question-cards feed walks a **~5% subset of the app's 46,421-card pool**
+(2,321 cards, 1,725 illustrations, 25 MB). Regenerate it with:
+
+```bash
+node packages/web/scripts/build-demo-subset.mjs        # ~40s, fully deterministic
+DEMO_SKIP_IMAGES=1 node packages/web/scripts/build-demo-subset.mjs   # data only
+npx tsx scripts/smoke-card-demo.mts                    # headless store walk, no server needed
+```
+
+The subset is **not** a random sample. The feed is a walk over a card graph, so the subset
+is chosen for that graph: it ships a frozen full-corpus idf table (`src/data/demo-df.json`)
+because every edge gate is a threshold on idf mass, and it is grown by connected expansion
+from one seed per (domain, grade) cell. The result is one component, zero dead ends and a
+fork rate of 11.0% against the device's measured 11.8%. A random 5% shatters into 794
+components with 33.5% dead ends, and 90% of the "related topic" links it serves are junk.
+**The full rule, and the measurements, are in the header of `scripts/build-demo-subset.mjs`.**
+
+A typed question that the subset cannot answer is not a dead end either: it goes to
+`/api/demo/card`, which retrieves over the WHOLE fact bank server-side and returns one of the
+same three cards the phone prints — a grounded fact card, an honest in-domain gap, or "I'm
+only a science tutor". See `src/server/rag.ts` (`retrieveForCard`) and `deploy/README.md` §5.

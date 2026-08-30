@@ -4,7 +4,8 @@
  * replica (not a weaker, ungrounded chat).
  *
  * Parity with mobile (packages/mobile/src/engine/LocalEngine.ts):
- *   1. Build a RagStore over the SAME bank (@hiraia/shared SCIENCE_FACTS).
+ *   1. Build a RagStore over the SAME bank (rag/bank/science-facts.jsonl, the source of
+ *      truth the phone's cards.db is also built from).
  *   2. attachSemantic() the SAME bundled int8 LaBSE vectors blob (lang-major).
  *   3. Embed the query with the SAME model (LaBSE raw-CLS + L2) — here via a
  *      co-located llama-server (`--embedding --pooling cls`, localhost:8090)
@@ -24,11 +25,13 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
+import { loadFactSource } from '@hiraia/shared/node';
 import {
   RagStore,
   SemanticIndex,
   normalizeQuery,
   buildContextualQuery,
+  isOffDomain,
   CONTEXT_FALLBACK_FLOOR,
   type Language,
   type RagResult,
@@ -58,7 +61,11 @@ interface VectorsMeta {
 let storePromise: Promise<RagStore> | null = null;
 
 function buildStore(): RagStore {
-  const store = new RagStore(); // defaults to SCIENCE_FACTS — same bank as the blob
+  // Read the bank from the JSONL rather than a bundled copy of it. The server has the repo
+  // checked out and Node has no reason to go through SQLite: it holds the bank in RAM for the
+  // process lifetime either way. `loadFactSource` also stamps it with md5(bank)[:12], which is
+  // what lets attachSemantic below reject a blob built for a different bank of the same size.
+  const store = new RagStore(loadFactSource());
   try {
     const meta = JSON.parse(readFileSync(META_PATH, 'utf8')) as VectorsMeta;
     const buf = readFileSync(BLOB_PATH); // Node Buffer (== Uint8Array)
@@ -72,7 +79,8 @@ function buildStore(): RagStore {
         count: meta.count,
         langs: meta.langs,
         data,
-      })
+      }),
+      meta.bankHash
     );
     console.log(
       `[rag] semantic index attached: ${meta.count} facts × ${meta.langs.join('/')} (bank ${meta.bankHash})`
@@ -163,6 +171,80 @@ export async function retrieveGrounding(
     score: h.score,
     metadata: { id: h.fact.id, topic: h.fact.topic, domain: h.fact.domain },
   }));
+}
+
+/**
+ * The three-way outcome of a FEED CARD query, decided before any model runs.
+ * Mirrors LocalEngine.answerQuery's classification on the phone.
+ */
+export type CardOutcome =
+  /** grounding that can be printed → generate a fact card from `hits` */
+  | 'grounded'
+  /** it is science, we just have no page for it → honest gap card, model-free */
+  | 'gap'
+  /** not science at all → "I'm only a science tutor", model-free, NO nearest topic */
+  | 'offdomain';
+
+export interface CardRetrieval {
+  outcome: CardOutcome;
+  hits: RagResult[];
+  /** Diagnostics, for the route log — the numbers the outcome was decided on. */
+  topCos: number;
+  lexEmpty: boolean;
+  /** Whether the embedder actually ran; when false NEITHER diagnostic may classify. */
+  semantic: boolean;
+}
+
+/**
+ * Retrieval for the feed's DYNAMIC CARD path — the same routing the phone runs in
+ * LocalEngine.answerQuery, with the same floors, so a query typed into hiraia.org lands on
+ * the same one of three cards it would land on in the APK.
+ *
+ * Deliberately CONTEXT-FREE (no R2 fold, unlike `retrieveGrounding` above): a card query is a
+ * standalone question typed into the feed's ask box, not a follow-up in a conversation, and
+ * folding an earlier topic in would answer a question the child did not ask.
+ *
+ * The order of the gates is load-bearing:
+ *   1. OFF-DOMAIN — only classifiable when the embedder ran. Without it topCos is 0 and every
+ *      query would look off-domain, so a cold/failed embedder falls through to the gap card
+ *      rather than telling a child their science question isn't science. The gate is
+ *      `isOffDomain` (shared), and its OOV arm takes lexical UNREACHABILITY — the spelling
+ *      probe — not bare emptiness, so "batirya"/"amiba"/"erthquake" are not called off-topic.
+ *   2. GAP form 1 — no word of the query exists anywhere in the bank. Semantic retrieval still
+ *      returns its nearest neighbours (that is what a nearest-neighbour search does) but they
+ *      are about something else, and grounding we know is unrelated is not grounding.
+ *   3. GAP form 2 — retrieval abstained outright (top cosine under the bank's own floor).
+ * Anything that survives all three is grounded and gets a printed card.
+ */
+export async function retrieveForCard(
+  query: string,
+  language: Language,
+  topK = 4
+): Promise<CardRetrieval> {
+  const store = await getStore();
+  let queryVec: Float32Array | undefined;
+  if (store.hasSemantic) queryVec = await embed(normalizeQuery(query));
+
+  const r = store.retrieveForGroundingHybridDiag(query, queryVec, language, topK, 0.5, '');
+  const semantic = !!queryVec && store.hasSemantic;
+  const hits: RagResult[] = r.hits.map((h) => ({
+    content: h.text,
+    source: h.fact.source,
+    score: h.score,
+    metadata: { id: h.fact.id, topic: h.fact.topic, domain: h.fact.domain },
+  }));
+
+  // `lexicallyUnreachable` runs the spelling probe, so it is asked HERE, behind `lexEmpty`,
+  // rather than being returned by retrieval: the chat path shares that retrieval and never
+  // reads it. Retrieval used this language, so the probe must too.
+  const unreachable =
+    semantic && r.lexEmpty && store.lexicallyUnreachable(query, language);
+  let outcome: CardOutcome = 'grounded';
+  if (semantic && isOffDomain(r.topCos, unreachable)) outcome = 'offdomain';
+  else if (semantic && r.lexEmpty) outcome = 'gap';
+  else if (!hits.length) outcome = 'gap';
+
+  return { outcome, hits, topCos: r.topCos, lexEmpty: r.lexEmpty, semantic };
 }
 
 /** Eagerly warm the store (blob load) at server start so the first query isn't slow. */

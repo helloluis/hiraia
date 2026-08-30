@@ -3,12 +3,16 @@
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 import { useDemoStore } from '@/store/useDemoStore';
-import { DemoLanguagePicker } from './DemoLanguagePicker';
 import { DemoLoader } from './DemoLoader';
+import { LANG_CHANGE } from './onboarding/copy';
+import { OnboardingCarousel } from './onboarding/OnboardingCarousel';
 
-// The card feed + its ~1.1 MB of bundled demo data load on demand, client-only, so
-// the landing page bundle doesn't pay for a demo the visitor may never open.
-const CardFeedDemo = dynamic(() => import('./cards/CardFeedDemo').then((m) => m.CardFeedDemo), {
+/** The dynamic chunk, named once so the warm-up below and the render agree on it. */
+const loadCardFeed = () => import('./cards/CardFeedDemo');
+
+// The card feed + its ~4.7 MB of bundled demo data (cards + MCQ bank + df table) load on
+// demand, client-only, so the landing page doesn't pay for a demo the visitor may never open.
+const CardFeedDemo = dynamic(() => loadCardFeed().then((m) => m.CardFeedDemo), {
   ssr: false,
   loading: () => (
     <div className="flex h-full w-full items-center justify-center bg-[#fdfdf6]">
@@ -18,16 +22,43 @@ const CardFeedDemo = dynamic(() => import('./cards/CardFeedDemo').then((m) => m.
 });
 
 /**
- * The "Try the web demo" lightbox: a fixed-overlay modal that runs the whole
- * setup flow — pick language → cold-start loader → the question-cards feed —
- * mirroring the mobile app's first launch. On reopen it briefly restores this
- * browser's prior demo session (keyed by an anonymous localStorage session id).
+ * The "Try the web demo" lightbox: a fixed-overlay modal that runs the whole setup flow —
+ * onboarding (language → grade → tutorial) → cold-start loader → the question-cards feed —
+ * mirroring the mobile app's first launch. On reopen it briefly restores this browser's
+ * prior demo session (keyed by an anonymous localStorage session id).
+ *
+ * Onboarding runs once per browser (see ONBOARDING_KEY in useDemoStore); the loader runs every
+ * time, because on device it is the model actually loading. The loader's "change the language"
+ * plate re-runs the whole flow; the feed carries its own language pill for the far commoner
+ * case of just wanting a different language (the loader auto-advances in ~6.9 s, so a control
+ * that lives only there is a control with an expiry date).
  */
 export function DemoLightbox() {
   const isOpen = useDemoStore((s) => s.isOpen);
   const restoring = useDemoStore((s) => s.restoring);
   const phase = useDemoStore((s) => s.phase);
+  const language = useDemoStore((s) => s.language);
+  const grade = useDemoStore((s) => s.grade);
   const closeDemo = useDemoStore((s) => s.closeDemo);
+  const pickLanguage = useDemoStore((s) => s.pickLanguage);
+  const pickGrade = useDemoStore((s) => s.pickGrade);
+  const finishOnboarding = useDemoStore((s) => s.finishOnboarding);
+  const restartOnboarding = useDemoStore((s) => s.restartOnboarding);
+
+  /**
+   * Warm the feed's chunk the moment the demo opens, rather than at the instant it is needed.
+   *
+   * `dynamic(..., { ssr: false })` on a component that is not in the initial render tree gets
+   * no preload link, so the 4.7 MB / 1.5 MB-gzipped chunk only began downloading when the
+   * cold-start loader handed off — putting a small generic spinner immediately after a
+   * six-second branded one on any slow connection, which is most Philippine mobile links. The
+   * onboarding and the loader are between 7 and 60 seconds of screen time that were being
+   * spent on nothing; this spends them on the download. Visitors who never open the demo still
+   * pay nothing.
+   */
+  useEffect(() => {
+    if (isOpen) void loadCardFeed();
+  }, [isOpen]);
 
   // Close on Escape and lock body scroll while open.
   useEffect(() => {
@@ -82,8 +113,27 @@ export function DemoLightbox() {
           </div>
         ) : (
           <>
-            {phase === 'language' && <DemoLanguagePicker />}
-            {phase === 'loading' && <DemoLoader />}
+            {phase === 'onboarding' && (
+              <OnboardingCarousel
+                initialLanguage={language}
+                initialGrade={grade}
+                onPickLanguage={pickLanguage}
+                onPickGrade={pickGrade}
+                onFinish={finishOnboarding}
+              />
+            )}
+            {phase === 'loading' && (
+              <>
+                <DemoLoader />
+                <button
+                  type="button"
+                  onClick={restartOnboarding}
+                  className="absolute left-3 top-3 z-10 rounded-full bg-black/25 px-3 py-1.5 font-hand text-[13px] text-white backdrop-blur transition-colors hover:bg-black/40"
+                >
+                  {LANG_CHANGE[language ?? 'tagalog']}
+                </button>
+              </>
+            )}
             {phase === 'cards' && <CardFeedDemo />}
           </>
         )}
