@@ -20,6 +20,7 @@
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 MOBILE="$(cd "$HERE/.." && pwd)"
+REPO="$(cd "$MOBILE/../.." && pwd)"
 AND="$MOBILE/android"
 APK="$AND/app/build/outputs/apk/release/app-release.apk"
 
@@ -60,11 +61,11 @@ fi
 export ANDROID_SDK_ROOT="$ANDROID_HOME"
 
 # ---------------------------------------------------------------------------------------
-# The card inventory is GENERATED. Since it moved out of the JS bundle, three artefacts are
-# built by rag/pipeline/build-cards-db.py and shipped as-is:
+# The card inventory AND the tutor's fact bank are GENERATED. Since they moved out of the JS
+# bundle, three artefacts are built by rag/pipeline/build-cards-db.py and shipped as-is:
 #
 #   src/generated/cardsIndex.generated.json  the resident index (bundled)
-#   assets/data/cards.db                     card text, MCQs, the search index
+#   assets/data/cards.db                     card text, MCQs, the search index, the fact bank
 #   assets/data/tokens.bin                   per-card vocabularies for textJaccard
 #
 # Nothing in the build regenerates them, so a stale one ships silently and is very hard to
@@ -72,6 +73,11 @@ export ANDROID_SDK_ROOT="$ANDROID_HOME"
 # illustration still shows the OLD picture, a new card is missing from search. Worse, the
 # database's tokeniser reads the stop list out of src/data/cards.ts, so editing THAT quietly
 # desynchronises the search index from the app that queries it.
+#
+# science-facts.jsonl is in the SRC list for the same reason and one more: cards.db now holds
+# the grounding fact bank, and its ordinals must line up with assets/rag/vectors-labse.i8.bin,
+# which is positional. A bank edited after the database was built means the tutor retrieves
+# one fact and embeds another — a failure with no symptom at build time at all.
 #
 # So compare mtimes and refuse rather than warn. Regenerating costs about a minute.
 # ---------------------------------------------------------------------------------------
@@ -81,10 +87,34 @@ GEN=(
   "$MOBILE/assets/data/tokens.bin"
 )
 SRC=(
-  "$MOBILE/src/generated/cardsPool.generated.json"
+  "$REPO/rag/pipeline/cardsPool.app.json"
+  "$REPO/rag/bank/science-facts.jsonl"
   "$MOBILE/src/data/cards-questions.json"
-  "$MOBILE/src/data/cards.ts"
 )
+# cards.ts is NOT in SRC. It is a CONSUMER of cards.db, not an input to it, so mtime-ing the
+# whole file failed every time anyone edited the feed's logic — which is most days — and a
+# guard that cries wolf on every edit is one people learn to bypass. The real dependency is
+# narrow and exact: build-cards-db.py:108-110 reads ONE declaration out of this file,
+# `const SEARCH_STOP = new Set([...])`, and excludes those words from the token index. Change
+# that list and the search index desynchronises from the app querying it. So hash exactly
+# that block and compare it to the hash recorded when the database was built.
+STOPSIG="$MOBILE/assets/data/.search-stop.sha256"
+STOPNOW="$(sed -n '/const SEARCH_STOP = new Set(\[/,/\]);/p' "$MOBILE/src/data/cards.ts" | shasum -a 256 | cut -d' ' -f1)"
+if [ -z "$STOPNOW" ]; then
+  echo "!! could not find \`const SEARCH_STOP = new Set([\` in cards.ts — the guard cannot check"
+  echo "   the token index against it. If the declaration was renamed, update this check AND"
+  echo "   rag/pipeline/build-cards-db.py:108, which parses it by that exact text."
+  exit 1
+elif [ ! -f "$STOPSIG" ]; then
+  echo "!! no $(basename "$STOPSIG") — cannot tell whether the token index matches the stop list."
+  echo "   If the database is current: printf '%s' \"$STOPNOW\" > \"$STOPSIG\""
+  exit 1
+elif [ "$STOPNOW" != "$(cat "$STOPSIG")" ]; then
+  echo "!! SEARCH_STOP in cards.ts has changed since cards.db was built — the token index and"
+  echo "   the app's tokeniser now disagree, which shows up as words that cannot be searched."
+  echo "   Rebuild: python3 rag/pipeline/build-cards-db.py   (then refresh $(basename "$STOPSIG"))"
+  exit 1
+fi
 STALE=0
 for g in "${GEN[@]}"; do
   if [ ! -f "$g" ]; then
@@ -109,6 +139,19 @@ fi
 echo ">> card inventory is current"
 
 cd "$MOBILE"
+
+# ---------------------------------------------------------------------------------------
+# Re-apply the native overrides BEFORE gradle runs. `pnpm prebuild` also calls this, but
+# android/ is gitignored and long-lived, so the common fast loop — edit JS, `pnpm apk` — never
+# regenerates it and never re-runs the patcher. A machine whose tree last built the retired
+# kitten APK still carries that tier's jniLibs excludes, and shipping them now strips
+# libqvac-ggml-vulkan.so out of an APK that asks for gpuLayers 99: it builds, installs and
+# runs the 3B on the CPU, with no signal anywhere. post-prebuild.mjs evicts them, and is
+# idempotent, so running it on every build costs nothing and closes the hole.
+# ---------------------------------------------------------------------------------------
+echo ">> re-applying native overrides (post-prebuild)"
+node "$MOBILE/scripts/post-prebuild.mjs"
+
 echo ">> clearing bundle outputs so Metro cannot be skipped"
 rm -rf "$AND/app/build/generated/assets/createBundleReleaseJsAndAssets" \
        "$AND/app/build/generated/res/createBundleReleaseJsAndAssets" \
@@ -147,6 +190,20 @@ fi
 # If Gradle still skipped the bundle, the APK is a lie. Say so loudly.
 if grep -q "createBundleReleaseJsAndAssets UP-TO-DATE" /tmp/apk-build.log; then
   echo "!! WARNING: the JS bundle was SKIPPED — this APK may run old code"
+fi
+
+# Belt and braces on the same failure the post-prebuild call above prevents: assert the GPU
+# backend actually made it into the archive. Without it the 3B silently falls back to CPU.
+#
+# NOTE `grep -c`, not `grep -q`. Under `set -o pipefail` (line 20) `grep -q` exits the moment
+# it matches, `unzip` then dies of SIGPIPE, and the PIPELINE reports 141 — so the guard fired
+# on every build even though the library was there (measured: status=141 with the .so present
+# at 88,609,816 bytes). `grep -c` drains the stream, so the status is grep's own.
+VULKAN_SO_COUNT="$(unzip -l "$APK" 2>/dev/null | grep -c "libqvac-ggml-vulkan\.so" || true)"
+if [ "$VULKAN_SO_COUNT" -eq 0 ]; then
+  echo "!! Vulkan backend missing from the APK — the 3B would run on CPU. Check jniLibs"
+  echo "   excludes in android/app/build.gradle (see scripts/post-prebuild.mjs)."
+  exit 1
 fi
 
 echo

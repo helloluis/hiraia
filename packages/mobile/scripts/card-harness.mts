@@ -67,6 +67,13 @@ async function main() {
     lateralNotFresh: 0,
     labelLens: [] as number[],
     factWords: [] as number[],
+    // The INDEX BAND's label, which is the authored title when the card has one and its
+    // internal `topic` made presentable when it does not (42% of the deck). The band prints
+    // one line in tracked caps and clips whatever overruns, so what is audited here is that
+    // the fallback never comes back longer than the band holds and never stops mid-word.
+    bandFallback: 0,
+    bandLens: [] as number[],
+    bandMidWord: 0,
   };
 
   for (const policy of policies) {
@@ -97,6 +104,21 @@ async function main() {
             stats.missingTrans++;
             add('missing-translation', `${cur.id} has no ${L} text`);
             break;
+          }
+        }
+        // --- index-band label (title, else the topic made presentable) ---
+        const bandTitle = C.cardTitle(cur, lang);
+        const band = C.bandLabel(bandTitle, cur.topic);
+        stats.bandLens.push(band.length);
+        if (!bandTitle) stats.bandFallback++;
+        if (band.length > 34) add('band-label-too-long', `${cur.id}: "${band}" (${band.length})`);
+        // Cut on a word boundary: whatever the source continued with must start a new word.
+        if (band.endsWith('…')) {
+          const stem = band.slice(0, -1);
+          const rest = (bandTitle || cur.topic).replace(/\s+/g, ' ').slice(stem.length);
+          if (rest && !/^\s/.test(rest)) {
+            stats.bandMidWord++;
+            add('band-label-mid-word', `${cur.id}: "${band}" cuts "${bandTitle || cur.topic}"`);
           }
         }
         if (words(tl) > 48) {
@@ -227,6 +249,10 @@ async function main() {
   lines.push('FACTOIDS');
   lines.push(`  reading load: median ${med(stats.factWords)} words (tagalog) | long (>48w): ${stats.longFacts} (${pct(stats.longFacts)})`);
   lines.push(`  missing a translation: ${stats.missingTrans}`);
+  lines.push(
+    `  index band: median ${med(stats.bandLens)} chars, longest ${Math.max(...stats.bandLens)} | ` +
+      `topic fallback used on ${stats.bandFallback} (${pct(stats.bandFallback)}) | cut mid-word: ${stats.bandMidWord}`
+  );
   lines.push('PATH / CHOICES');
   lines.push(`  dead-ends (no choices at all): ${stats.deadEnds}`);
   {

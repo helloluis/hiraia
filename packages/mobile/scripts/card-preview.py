@@ -21,7 +21,7 @@ import argparse, base64, json, math, os, random, re, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 MOBILE = os.path.dirname(HERE)
 ROOT = os.path.dirname(os.path.dirname(MOBILE))
-POOL = os.path.join(MOBILE, 'src/generated/cardsPool.generated.json')
+POOL = os.path.join(MOBILE, '../../rag/pipeline/cardsPool.app.json')
 CARDPAGE = os.path.join(MOBILE, 'src/components/cards/CardPage.tsx')
 POSTER = os.path.join(MOBILE, 'src/components/cards/posterLayout.ts')
 FONTS = os.path.join(MOBILE, 'assets/fonts')

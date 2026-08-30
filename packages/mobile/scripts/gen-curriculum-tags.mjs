@@ -21,7 +21,7 @@ import { join, dirname } from 'node:path';
 
 const MOBILE = new URL('..', import.meta.url).pathname;
 const TAGS = process.env.TAGS ?? join(MOBILE, '../../rag/bank/curriculum-tags.json');
-const POOL = join(MOBILE, 'src/generated/cardsPool.generated.json');
+const POOL = join(MOBILE, '../../rag/pipeline/cardsPool.app.json');
 const CG = join(MOBILE, '../../rag/sources/curriculum-guides');
 const OUT = join(MOBILE, 'src/generated/curriculumTags.generated.json');
 

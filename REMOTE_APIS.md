@@ -15,31 +15,55 @@ touches, split into what the **shipped app** calls at runtime versus what is onl
 
 All of these are **static file downloads over HTTPS** (plain GET, byte-range supported),
 fetched **once** on first run and then cached on disk for fully-offline use. They are
-served from a self-hosted nginx mirror (`https://hiraia.b11.dev/models/`) or HuggingFace.
-There are no request bodies, no auth, and no per-user data — only model weights are
-transferred.
+served from a self-hosted nginx mirror (`https://hiraia.b11.dev/models/`). There are no
+request bodies, no auth, and no per-user data — only model weights are transferred.
 
 | # | Endpoint | What it is | Required? | Referenced in |
 |---|----------|-----------|-----------|---------------|
-| 1 | `https://hiraia.b11.dev/models/Sailor2-3B-Chat.Q4_K_M.gguf` (~3.23 GB) | Base LLM, **cat** (3B/GPU) tier. Verifiable mirror of the public HF model. | Yes (cat tier) | `packages/mobile/src/config/model.ts:110` |
-| 2 | `https://huggingface.co/bartowski/Sailor2-1B-Chat-GGUF/resolve/main/Sailor2-1B-Chat-Q4_K_M.gguf` (~0.74 GB) | Base LLM, **kitten** (1B/CPU) tier for 4 GB devices. | Yes (kitten tier) | `packages/mobile/src/config/model.ts:133` |
-| 3 | `https://hiraia.b11.dev/models/adapter-kitten-tagalog.gguf` (~141 MB) | Tagalog LoRA fine-tune for the **kitten** tier (downloaded, not bundled). | Only on kitten tier | `packages/mobile/src/config/model.ts:136` |
-| 4 | `https://hiraia.b11.dev/models/labse.Q4_K_M.gguf` (~384 MB) | LaBSE semantic embedder for hybrid RAG retrieval. | Optional — falls back to lexical-only RAG if absent | `packages/mobile/src/config/model.ts:169` |
+| 1 | `https://hiraia.b11.dev/models/Sailor2-3B-Chat.Q4_K_M.gguf` (~3.23 GB) | Base LLM. Verifiable mirror of the public HF model. | Yes | `packages/mobile/src/config/model.ts` (`ACTIVE_MODEL.modelSrc`) |
+| 2 | `https://hiraia.b11.dev/models/labse.Q4_K_M.gguf` (~384 MB) | LaBSE semantic embedder for hybrid RAG retrieval. | Optional — falls back to lexical-only RAG if absent | `packages/mobile/src/config/model.ts` (`EMBEDDER.modelSrc`) |
+| 3 | `https://hiraia.b11.dev/models/adapter-tagalog-v11.gguf` (~107 MB) | Tagalog LoRA fine-tune. Also serves English (`LocalEngine.resolveAdapterPath`). | **Yes**, for Tagalog/English — the engine REFUSES to load without it | `packages/mobile/src/config/model.ts` (`REMOTE_ASSETS.adapterTagalog`) |
+| 4 | `https://hiraia.b11.dev/models/adapter-bisaya-v11.gguf` (~107 MB) | Bisaya/Cebuano LoRA fine-tune. | **Yes**, for Bisaya — same refusal | `packages/mobile/src/config/model.ts` (`REMOTE_ASSETS.adapterBisaya`) |
+
+That is the whole list. One adapter is fetched per active language, so a first run costs
+**~3.33 GB** (base + one adapter) plus the optional ~384 MB embedder; the second adapter is
+only fetched if the child switches to the other Filipino language.
+
+**A proxy allowlist needs all four.** Rows 3 and 4 are not optional extras: if the adapter
+cannot be fetched and verified, `LocalEngine` throws rather than quietly running the raw
+base model (it scores 1.78/5 vs 3.75/5 on the capability probes and fabricates science at a
+child), and the tutor reports itself unavailable. A school proxy that whitelists only rows
+1–2 therefore hard-fails the app.
+
+The list used to be four rows for a different reason: the app shipped a second "kitten" tier
+(Sailor2-1B on 4 GB devices) that pulled its own base GGUF from HuggingFace and its own
+Tagalog adapter from the mirror. **That tier is retired** — one device target, 6 GB+ RAM,
+Sailor2-3B. The `adapter-kitten-tagalog-v7.gguf` file still sits on the VPS; nothing in the
+app requests it any more.
 
 Notes:
 
-- **The Filipino LoRA adapters for the cat (3B) tier are bundled in the APK**, not
-  downloaded (`adapter-tagalog.gguf`, `adapter-bisaya.gguf` — the core offline value). Only
-  the large base weights and the embedder are fetched on first run to keep the APK small.
+- **The Filipino LoRA adapters are DOWNLOADED, not bundled.** They used to be Metro-bundled
+  assets inside the APK. Externalising them takes 213.5 MB off every install and — the real
+  reason — subjects them to the same declared size + MD5 gate as every other downloaded
+  byte, which a bundled asset never needed and a QVAC-fetched one cannot have
+  (`modelConfig.lora` is a bare string the llama.cpp plugin never resolves). The filenames
+  are version-suffixed (`-v11`) because the on-device cache keys on filename: shipping new
+  adapter weights means a new name, not new bytes at the old one.
 - **Why self-hosted, not HuggingFace directly:** HuggingFace migrated large GGUFs to its
   "Xet" CDN (302 → `cas-bridge.xethub.hf.co`), which QVAC's downloader reproducibly fails
   to finish (~85 %). The mirror is a **verifiable copy of the public base model**; inference
   stays 100 % on-device, so the privacy story is unchanged. See `hiraia-hf-xet-recheck` —
   if HF/Xet is fixed we switch back to the HF URL and retire the mirror.
-- **Download mechanism:** a resilient, resumable, chunked HTTP-Range downloader (8 MB
-  chunks, 4 in parallel, per-chunk timeout, on-disk resume + integrity-size gate). See
-  `packages/mobile/src/engine/modelDownload.ts` (`ensureRemoteModel()`).
-- **No fallback to a remote model on failure:** if the base weights can't be downloaded the
+- **Download mechanism:** `packages/mobile/src/engine/modelDownload.ts`
+  (`ensureRemoteAsset()`) — a single resumable HTTP-Range stream per asset, serialised so
+  one file is never transferred twice at once, with a 60 s stall watchdog, resume-from-disk
+  across app launches (the `.part` file IS the resume state, so an interrupted 3.23 GB
+  transfer never restarts from byte 0), and a **declared size + MD5 gate**: nothing reaches
+  the final path without matching the digests pinned in `src/config/model.ts`
+  (`REMOTE_ASSETS`). A captive-portal login page, a truncated body or a 0-byte 200 is
+  rejected and deleted rather than cached forever as "the model".
+- **No fallback to a remote model on failure:** if the weights can't be downloaded the
   app surfaces an error; it never silently routes inference to a remote server.
 
 ### Data leaving the device at runtime

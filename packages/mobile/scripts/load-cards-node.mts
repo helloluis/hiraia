@@ -8,7 +8,7 @@
  * expo-asset + expo-sqlite and simply does not exist in Node.
  *
  * That shim used to be copy-pasted into each harness, and it drifted: the inventory moved
- * from cardsPool.generated.json into cards.db and the copies kept swapping an import that
+ * from cardsPool.app.json into cards.db and the copies kept swapping an import that
  * cards.ts no longer has, so they died on '@hiraia/shared' instead. One copy, here.
  *
  * cardDb is replaced by a stub over the SAME artefacts the app ships — cards.db for the
@@ -28,6 +28,12 @@ export const CARDS_SRC = readFileSync(join(MOBILE, 'src/data/cards.ts'), 'utf8')
 
 const DB = join(MOBILE, 'assets/data/cards.db');
 const TOKENS = join(MOBILE, 'assets/data/tokens.bin');
+/**
+ * The art-presence registry is the REAL module, not a stub — it imports nothing, so it loads
+ * under Node unchanged, and a harness that swapped in a copy would be testing the copy. Only
+ * the specifier moves, because cards.ts is rewritten into a temp directory.
+ */
+const ART_PRESENCE = join(MOBILE, 'src/data/artPresence.ts');
 
 const CARD_DB_STUB = `
   const { DatabaseSync: __DB } = await import('node:sqlite');
@@ -82,9 +88,56 @@ const CARD_DB_STUB = `
   }
 `;
 
-/** Dynamic-import cards.ts with its app-only imports rewritten. */
-export function loadCards(): Promise<any> {
-  const src = CARDS_SRC
+/**
+ * The three sites where art PRESENCE changed the feed's behaviour, and their pre-presence
+ * form. Reverse-applying these to today's cards.ts reconstructs the build that existed
+ * before this module was consulted at all — which is the only way an identity check can
+ * compare the new feed against the old one rather than against itself.
+ *
+ * If one of these stops matching, the check that uses it fails loudly (see
+ * `loadCards({ prePresence: true })`) instead of silently comparing two identical modules.
+ * That is deliberate: a fourth presence-dependent site would otherwise ship untested.
+ */
+export const PRE_PRESENCE_PATCH: readonly (readonly [string, string])[] = [
+  ['if (hasArt(cur.slug)) slugs.add(cur.slug);', 'if (cur.slug) slugs.add(cur.slug);'],
+  ['if (f && hasArt(f.slug)) slugs.add(f.slug);', 'if (f?.slug) slugs.add(f.slug);'],
+  [
+    'unseen(f) && !blockedSlugs.has(f.slug) && topicKey(f) !== curTopicKey;',
+    'unseen(f) && !(f.slug && blockedSlugs.has(f.slug)) && topicKey(f) !== curTopicKey;',
+  ],
+];
+
+export interface LoadCardsOpts {
+  /**
+   * Reverse-apply PRE_PRESENCE_PATCH, i.e. load the feed as it behaved BEFORE art presence
+   * existed: the illustration cooldown gates on slug truthiness rather than on whether the
+   * file is on the device. `cardHasArt` and the `hasArt` import stay (they are additive and
+   * do not steer a walk), so the two modules differ only where behaviour could differ.
+   */
+  prePresence?: boolean;
+}
+
+/**
+ * Dynamic-import cards.ts with its app-only imports rewritten.
+ *
+ * Two variants can be loaded in one process. They are separate module instances, but both
+ * import the registry by the SAME absolute path, so they share one `artPresence` — install a
+ * manifest once and both feeds see it.
+ */
+export function loadCards(opts: LoadCardsOpts = {}): Promise<any> {
+  let base = CARDS_SRC;
+  if (opts.prePresence) {
+    for (const [now, before] of PRE_PRESENCE_PATCH) {
+      if (!base.includes(now)) {
+        throw new Error(
+          `load-cards-node: pre-presence patch is stale — cards.ts no longer contains ${JSON.stringify(now)}. ` +
+            `Update PRE_PRESENCE_PATCH so the identity check keeps comparing old behaviour against new.`
+        );
+      }
+      base = base.replace(now, before);
+    }
+  }
+  const src = base
     .replace(/from '@hiraia\/shared';/, `from '${join(SHARED, 'index.ts')}';`)
     .replace(
       "import cardsIndex from '../generated/cardsIndex.generated.json';",
@@ -94,7 +147,20 @@ export function loadCards(): Promise<any> {
       "import curriculumTagsJson from '../generated/curriculumTags.generated.json';",
       `import curriculumTagsJson from '${join(MOBILE, 'src/generated/curriculumTags.generated.json')}' with { type: 'json' };`
     )
-    .replace(/import \{[^}]*\} from '\.\/cardDb';/, CARD_DB_STUB);
+    .replace(
+      "import { hasArt } from './artPresence';",
+      `import { hasArt } from '${ART_PRESENCE}';`
+    )
+    .replace(/import \{[^}]*\} from '\.\/cardDb';/, CARD_DB_STUB)
+    // The art-presence registry, RE-EXPORTED from the module that consults it
+    // (`mod.artPresence`). A harness must be able to install a partial bundled manifest and
+    // have the feed see it, and it cannot get there by importing the file itself: tsx does
+    // NOT dedupe a static absolute-path import against a dynamic import of the same path, so
+    // that yields a second, independent copy of the registry and every presence check
+    // silently reads the default. Re-exporting is instance-identity by construction.
+    .concat(`\nexport * as artPresence from '${ART_PRESENCE}';\n`);
+  // A fresh temp dir per call: two variants must be two module instances, and Node keys the
+  // ESM cache on the resolved path.
   const file = join(mkdtempSync(join(tmpdir(), 'cards-node-')), 'cards-impl.mts');
   writeFileSync(file, src);
   return import(file);

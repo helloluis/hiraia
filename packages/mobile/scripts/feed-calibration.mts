@@ -7,7 +7,7 @@ import { join } from 'node:path';
 const MOBILE = new URL('..', import.meta.url).pathname;
 import { cardWeight, weightedPick, curriculumMultiplier } from '../../shared/src/curriculum/feedWeighting.ts';
 const raw = JSON.parse(fs.readFileSync(join(MOBILE, 'src/generated/curriculumTags.generated.json'),'utf8'));
-const pool = JSON.parse(fs.readFileSync(join(MOBILE, 'src/generated/cardsPool.generated.json'),'utf8')).cards as {id:string}[];
+const pool = JSON.parse(fs.readFileSync(join(MOBILE, '../../rag/pipeline/cardsPool.app.json'),'utf8')).cards as {id:string}[];
 const tag = (id: string) => { const r = raw[id]; if (!r) return null; const [competency, grade, quarter, confidence, cells, codes] = r; return { competency, grade, quarter, confidence, cells: cells?.map(([g,q,s,n]: number[]) => ({grade:g, quarter:q, strength: s===2?2:1, norm: n})), codes }; };
 const ctx = { studentGrade: 5 as const, currentQuarter: 2 as const, now: Date.now() };
 const tagged = pool; // whole pool: untagged cards weigh offCurriculum and belong in the share

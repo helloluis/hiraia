@@ -9,10 +9,10 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "prebuild": "expo prebuild && node scripts/post-prebuild.mjs",
-    "prebuild:cat": "expo prebuild && node scripts/post-prebuild.mjs",
-    "prebuild:kitten": "expo prebuild && HIRAIA_TIER=kitten node scripts/post-prebuild.mjs",
+    "apk": "bash scripts/build-apk.sh",
     "lint": "eslint . --ext .ts,.tsx",
     "qa:cards": "npx tsx scripts/card-harness.mts",
+    "qa:art": "npx tsx scripts/art-presence-check.mts",
     "qa:adjacency": "RUNS=${RUNS:-30} CARDS=${CARDS:-60} SAMPLE=${SAMPLE:-300} npx tsx scripts/card-adjacency-qa.mts",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf .expo .expo-shared dist"
@@ -49,6 +49,7 @@
     "@qvac/cli": "^0.4.0",
     "@types/react": "~19.1.0",
     "bare-pack": "^1.5.1",
+    "process": "npm:bare-process@4.4.1",
     "typescript": "^5.7.0"
   }
 }

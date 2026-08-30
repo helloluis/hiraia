@@ -8,16 +8,21 @@ per QVAC's docs it runs on a **physical Android 12+ device only** (not emulators
 This doc covers producing a **shareable release APK** via EAS (cloud build — no local
 Android toolchain needed).
 
-## The card inventory is GENERATED — rebuild it before you build
+## The content is GENERATED — rebuild it before you build
 
-The feed's content no longer lives in the JS bundle. Three artefacts are produced by
-`rag/pipeline/build-cards-db.py` and shipped as they are:
+Neither the feed's cards nor the tutor's fact bank live in the JS bundle any more. Three
+artefacts are produced by `rag/pipeline/build-cards-db.py` and shipped as they are:
 
 | file | what it is | ships as |
 |---|---|---|
-| `src/generated/cardsIndex.generated.json` | ids, terms, slug, cats, topic, domain — everything sequencing reads | bundled (9.5 MB) |
-| `assets/data/cards.db` | card text, titles, emphasis, MCQs, and the 46,177-token search index | asset (~16 MB in the APK, 51 MB once copied out) |
-| `assets/data/tokens.bin` | each card's vocabulary as sorted int hashes, for `textJaccard` | asset (4.8 MB) |
+| `src/generated/cardsIndex.generated.json` | ids, terms, slug, cats, topic, domain — everything sequencing reads | bundled (15.2 MB) |
+| `assets/data/cards.db` | card text, titles, emphasis, MCQs, the search index, **and the 50,279-fact grounding bank** (`fact` / `fact_token` / `fact_meta`) | asset (133 MB on disk, ~43.5 MB deflated in the APK) |
+| `assets/data/tokens.bin` | each card's vocabulary as sorted int hashes, for `textJaccard` | asset (7.8 MB) |
+
+The fact bank moved here from `packages/shared/src/rag/facts.generated.ts`, which was a
+43.5 MB TypeScript array Metro could not tree-shake — 41.2 MB of Hermes bytecode, STORED
+uncompressed in the APK because the React Native gradle plugin puts the bundle extension in
+`noCompress`. The same content costs 17.8 MB deflated as SQLite rows.
 
 ```bash
 python3 rag/pipeline/build-cards-db.py     # ~1 minute
@@ -31,8 +36,14 @@ present in the feed.
 
 ### Rebuild after ANY of these
 
-- `src/generated/cardsPool.generated.json` changed — i.e. after `rag/pipeline/wire-app-pool.py`,
+- `rag/pipeline/cardsPool.app.json` changed — i.e. after `rag/pipeline/wire-app-pool.py`,
   which is itself what applies the editorial pass and the illustration re-match
+- **`rag/bank/science-facts.jsonl` changed.** The database carries the grounding bank now, and
+  its `ord` column has to line up with `assets/rag/vectors-labse.i8.bin`, which is POSITIONAL
+  (vector i belongs to bank row i). Rebuild the vectors blob in the same breath — a bank edit
+  that touches neither makes the tutor retrieve one fact and embed another, with no symptom at
+  build time. `RagStore.attachSemantic` compares both the count and the `bankHash` the two
+  builders stamp independently, so a mismatch fails loudly at app start rather than silently.
 - `src/data/cards-questions.json` changed
 - **`src/data/cards.ts` changed.** Non-obvious and the easiest to miss: the builder reads the
   `SEARCH_STOP` list out of that file so the index is tokenised exactly the way
@@ -108,8 +119,9 @@ one, so a query touches only the cards carrying one of its tokens. Measured: `"v
   (`plugins/withQvacAddons.js` also wipes `android/app/src/main/jniLibs` before linking,
   so stale engine `.so` from a previous SDK version can no longer accumulate in a
   long-lived `android/` tree.)
-- A physical **Android 12+** device with **6 GB+ RAM** (for Sailor2-3B). Target ABI is
-  **arm64-v8a only** (the plugin strips other ABIs to shrink the APK).
+- A physical **Android 12+** device with **6 GB+ RAM**. That is the single supported
+  device target — there is no lighter build. Target ABI is **arm64-v8a only**
+  (`reactNativeArchitectures` in `android/gradle.properties`, pinned by post-prebuild).
 
 ## Build a shareable APK with EAS (recommended)
 
@@ -130,6 +142,26 @@ npx eas-cli build --platform android --profile preview
 When it finishes, EAS prints an install URL/QR. Open it on the device (or share it) to
 download `hiraia.apk` and sideload it. (Android: enable "Install unknown apps".)
 
+> **EAS never runs `scripts/post-prebuild.mjs`.** It is invoked only from `pnpm prebuild`
+> and `pnpm apk`, both local. EAS runs its own prebuild in the cloud, eas.json declares no
+> `prebuildCommand`, and the npm hooks EAS honours (`eas-build-pre-install` /
+> `eas-build-post-install`) both fire BEFORE prebuild, when there is no `android/` to
+> patch. So anything a cloud build depends on has to be a **config plugin**:
+>
+> - `plugins/withGradleProps.js` carries the gradle.properties settings (JVM heap, arm64
+>   only, minify, resource shrinking, `expo.useLegacyPackaging` — the −145 MB download
+>   win). It must stay FIRST in `app.json`'s `plugins` array: Expo runs the
+>   last-registered mod first, so first-registered has the final say over
+>   `expo-build-properties`, which writes three of the same keys. Verify the transform
+>   without a prebuild: `node scripts/check-gradle-props.mjs`.
+> - `plugins/withQvacAddons.js` links the native addons.
+>
+> The **remaining** post-prebuild patches (build.gradle namespace, light-only
+> `styles.xml`, the `colors.xml` `iconBackground` that `processReleaseResources` fails
+> without) are still local-only. If a cloud build ever regenerates `android/` from
+> scratch, those have to become config plugins too — check an EAS build's resource step
+> before trusting it.
+
 ## Local build (alternative — needs the full Android toolchain)
 
 Only if you want to build without EAS. Requires JDK 17, Android SDK, and **NDK
@@ -137,29 +169,84 @@ Only if you want to build without EAS. Requires JDK 17, Android SDK, and **NDK
 
 ```bash
 cd packages/mobile
-npx expo prebuild -p android      # generates android/, builds the QVAC worker bundle
-cd android
-./gradlew assembleRelease         # APK at app/build/outputs/apk/release/app-release.apk
+pnpm prebuild                     # generates android/, builds the QVAC worker bundle,
+                                  #   then re-applies our native overrides
+pnpm apk                          # APK at android/app/build/outputs/apk/release/app-release.apk
 ```
 
 `android/` and `qvac/` are gitignored — both are regenerated by prebuild.
 
+**Use `pnpm prebuild`, not `npx expo prebuild` on its own.** A clean prebuild silently
+reverts settings the build depends on — the ABI list back to all four architectures,
+release minification and resource shrinking back to false, the JVM heap back to a size
+Hermes OOMs at, and the namespace/applicationId to a template default, which surfaces much
+later and much less legibly as `Unresolved reference 'R'` in Kotlin. `scripts/post-prebuild.mjs`
+re-pins all of them, plus the light-only theme and two missing colour resources, in
+sentinel-wrapped blocks. (The gradle.properties half of that list is ALSO applied by the
+`withGradleProps` config plugin, from the same `scripts/gradle-props.cjs`, so it survives a
+prebuild this script does not follow — see the EAS note above.) `pnpm prebuild` runs it — and so does `pnpm apk`, on every build,
+because `android/` is gitignored and long-lived: the usual edit-JS-and-rebuild loop never
+regenerates it and would otherwise never re-apply these. It also pins
+`minSdkVersion=29` belt-and-braces: app.json's expo-build-properties plugin already emits
+that during prebuild, but a hand-edited tree that drops below react-native-bare-kit's floor
+of 29 hard-fails the manifest merger. It is idempotent, so running it by hand
+against an existing `android/` tree is always safe:
+
+```bash
+node scripts/post-prebuild.mjs
+```
+
+There is **one** native configuration and **one** APK. The app used to ship a second
+"kitten" build (Sailor2-1B, CPU-only, 4 GB phones) whose prebuild stripped the Vulkan and
+OpenCL backends out of the APK; that tier is retired. Do not re-add jniLibs excludes —
+`libqvac-ggml-vulkan.so` is what the shipping model offloads to, and removing it fails
+quietly (the APK builds, installs, and runs the 3B slowly on the CPU). post-prebuild
+actively deletes those excludes if it finds them in a long-lived tree.
+
 ## First run: the model download
 
-The APK itself is ~tens of MB (app + bare worker + native engines). The **LLM weights
-are not bundled** — on first launch the app downloads the model set in
-`src/config/model.ts` (`ACTIVE_MODEL`) and caches it:
+The APK itself is ~tens of MB (app + bare worker + native engines). **No model weights are
+bundled.** On first launch the app downloads, from the mirror
+(`https://hiraia.b11.dev/models/`), everything listed in `src/config/model.ts`
+`REMOTE_ASSETS`:
 
-- **Sailor2-3B (default):** ~3.2 GB, one-time, over Wi-Fi. Best quality.
-- **Sailor2-1B (fallback):** ~739 MB — flip `ACTIVE_MODEL_KEY` to `'sailor2-1b'` in
-  `config/model.ts` for a much lighter first-run download (4 GB phones / quick demos).
+| asset | size | when |
+|---|---|---|
+| `Sailor2-3B-Chat.Q4_K_M.gguf` | 3,227,563,808 B (~3.23 GB) | first run, blocking |
+| `adapter-tagalog-v11.gguf` **or** `adapter-bisaya-v11.gguf` | 106,772,928 B (~107 MB) each | first run, blocking — one per active language (English rides the Tagalog adapter) |
+| `labse.Q4_K_M.gguf` | 383,762,048 B (~384 MB) | background; retrieval is lexical-only until it lands |
 
-> For a demo where you can't wait on a 3.2 GB download, either pre-seed the device once
-> on Wi-Fi, or ship the 1B build.
+So a first run costs **~3.33 GB blocking** plus ~384 MB in the background.
 
-The fine-tuned Tagalog/Bisaya **LoRA adapter is not wired yet** (`loraSrc: null`), so the
-**base** Sailor2 runs until we host the adapter GGUF and set its on-device path. RAG
-grounding (the 305-fact bank) is active for both.
+> For a demo where you can't wait on a 3.3 GB download, pre-seed the device once on Wi-Fi.
+
+The fine-tuned Tagalog/Bisaya **LoRA adapters are DOWNLOADED** (`loraRemote` in
+`config/model.ts`), not bundled — `assets/models/` is in `.easignore` and `metro.config.js`
+deliberately does NOT register `gguf` as an asset extension. Do not "restore" either: it
+puts 213.5 MB back into every install and drops the adapters out of the integrity gate.
+Every downloaded byte is checked against a declared size + MD5 before it is installed
+(`src/engine/modelDownload.ts`); a captive-portal login page can no longer be cached
+forever as the model. The adapter is REQUIRED — `LocalEngine` refuses to load the raw base
+model without it. RAG grounding is active for every language.
+
+### ⚠️ Pre-ship step: the adapters must be live on the mirror FIRST
+
+An APK built before the adapters are published is unusable — the tutor throws
+"adapter unavailable" on every launch, in every language. Upload
+`packages/mobile/assets/models/adapter-tagalog.gguf` and `adapter-bisaya.gguf` to the
+mirror **under their `-v11` names**, then confirm both before building:
+
+```bash
+for f in adapter-tagalog-v11.gguf adapter-bisaya-v11.gguf; do
+  curl -sI "https://hiraia.b11.dev/models/$f" | head -1          # expect HTTP/… 200
+  curl -sI "https://hiraia.b11.dev/models/$f" | grep -i content-length   # expect 106772928
+done
+```
+
+The digests the app enforces are pinned in `src/config/model.ts`; re-derive them with
+`md5 -q <file>` / `shasum -a 256 <file>` against the exact bytes you uploaded. Changing an
+adapter's CONTENT later requires a NEW filename (`-v12`) — the on-device cache keys on
+filename, so existing installs keep the old file forever otherwise.
 
 ## Why no emulator?
 

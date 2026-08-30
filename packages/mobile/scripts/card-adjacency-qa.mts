@@ -118,7 +118,7 @@ const POOL: CardFact[] = (
  */
 const TEXT = new Map<string, { tl: string; en: string; bis: string }>(
   (
-    JSON.parse(readFileSync(join(MOBILE, 'src/generated/cardsPool.generated.json'), 'utf8')) as {
+    JSON.parse(readFileSync(join(MOBILE, '../../rag/pipeline/cardsPool.app.json'), 'utf8')) as {
       cards: Array<{ id: string; fact: { tl: string; en: string; bis: string } }>;
     }
   ).cards.map((c) => [c.id, c.fact])

@@ -11,12 +11,6 @@
  * fine-tune and the system prompt, not the sampling temperature. 0.5 keeps enough
  * natural variation to not feel robotic while tightening accuracy. (Going to 0
  * makes long chats repetitive.)
- *
- * NB (2026-06-20): tried a kitten-only drop to 0.3 to curb the 1B's confabulation —
- * local roleplay A/B showed it NET WORSE: it only marginally helped a few ungrounded
- * cases but made the myth-affirmation reflex MORE deterministic (affirmed both flat-earth
- * and 10%-brain vs only flat-earth at 0.5) and noticeably increased repetition. The 1B's
- * confabulation is baked into its token distribution — temperature can't fix it. Kept at 0.5.
  */
 export const CHAT_TEMP = 0.5;
 
@@ -35,15 +29,6 @@ export const SUMMARY_TEMP = 0;
  */
 export const CHAT_MAX_TOKENS = 220;
 
-/**
- * GPU layers to offload (llama.cpp convention: 99 = "all"). Without this QVAC uses its
- * default, which left part of the 3B on CPU (slow decode). Full Vulkan/Adreno offload on
- * a 6GB+ device. If a low-end GPU ever fails to load, lower this.
- */
-// Full GPU offload (99 = all layers). RESULT of the 2026-06-15 CPU-vs-GPU A/B on this
-// flagship SM8850 (Adreno): GPU wins PREFILL decisively (~24s vs ~40–50s on full CPU i8mm),
-// CPU only wins decode (~6 vs ~4 tok/s). Since prefill dominates TTFT, GPU stays. The
-// research's "CPU beats mobile-GPU prefill" holds for weak Mali GPUs, NOT this Adreno. The
-// real TTFT lever is fewer PREFILLED TOKENS (prompt/RAG compression + KV stable-history),
-// not the backend. The only other QVAC LLM knob is `device` (untested).
-export const GPU_LAYERS = 99;
+// NB: GPU offload is NOT configured here. It travels with the model that was measured
+// for it — config/model.ts ACTIVE_MODEL.runtime.gpuLayers (99 = all layers). This file
+// used to export a second, unread GPU_LAYERS constant that could silently disagree with it.

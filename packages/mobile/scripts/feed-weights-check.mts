@@ -13,7 +13,7 @@ const SHARED = join(MOBILE, '../shared/src');
 const cards = await loadCards();
 const shared = await import(join(SHARED, 'curriculum/feedWeighting.ts'));
 const raw = JSON.parse(readFileSync(join(MOBILE, 'src/generated/curriculumTags.generated.json'), 'utf8'));
-const pool = JSON.parse(readFileSync(join(MOBILE, 'src/generated/cardsPool.generated.json'), 'utf8')).cards as { id: string }[];
+const pool = JSON.parse(readFileSync(join(MOBILE, '../../rag/pipeline/cardsPool.app.json'), 'utf8')).cards as { id: string }[];
 const tag = (id: string) => { const r = raw[id]; if (!r) return null; return { competency: r[0], grade: r[1], quarter: r[2], confidence: r[3], cells: r[4].map(([g, q, s, n]: number[]) => ({ grade: g, quarter: q, strength: s === 2 ? 2 : 1, norm: n })), codes: r[5] }; };
 const codesOf = (id: string) => { const t = tag(id); return !t || t.confidence < 0.2 ? ['off'] : (t.codes ?? [t.competency]); };
 let seed = 7; const rand = () => (seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296;

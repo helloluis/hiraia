@@ -37,8 +37,9 @@ prints a per-turn table (retrieval · prefill/TTFT · decode · tok/s · perceiv
 
 **What the data already says (off the held-out v3 answers, ~3 tok/s):** the cost is
 DECODE-bound, not prefill. `<think>` is ~52 tok ≈ ~17s *before* the answer (framed queries only —
-clean questions skip it), the answer ~87 tok ≈ ~29s. Config is already tuned (GPU_LAYERS=99,
-CHAT_MAX_TOKENS=220, static-system KV-cache path correct). So the real software lever is a
+clean questions skip it), the answer ~87 tok ≈ ~29s. Config is already tuned
+(`ACTIVE_MODEL.runtime.gpuLayers` = 99 in `packages/mobile/src/config/model.ts`,
+`CHAT_MAX_TOKENS` = 220 in `config/inference.ts`, static-system KV-cache path correct). So the real software lever is a
 **terser `<think>`** in the next adapter (1 sentence ≈ 15 tok, saves ~10s); prefill just needs the
 on-device measurement above to confirm the cache hits in practice.
 
