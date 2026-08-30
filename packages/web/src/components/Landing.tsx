@@ -199,10 +199,18 @@ export function Landing() {
     <div className="mc min-h-screen w-full overflow-x-hidden">
       {/* HERO — photograph stays; overlay is a laminated classroom card. */}
       <section
-        className="relative flex min-h-[100svh] w-full items-start justify-start bg-cover bg-center bg-no-repeat sm:bg-[center_40%]"
-        style={{ backgroundImage: "url('/landing.jpeg')" }}
+        className="mc-hero relative flex min-h-[100svh] w-full items-start justify-start"
         aria-label="Hiraia"
       >
+        <div className="mc-hero-photo" aria-hidden>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/landing.jpeg" alt="" />
+        </div>
+        <div className="mc-hero-pixels" aria-hidden>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/landing.jpeg" alt="" />
+        </div>
+        <div className="mc-hero-fade" aria-hidden />
         <div className="relative z-10 w-full max-w-[21rem] px-4 pt-10 sm:ml-10 sm:max-w-[24rem] sm:px-0 sm:pt-14 md:ml-16 lg:ml-24">
           <div className="mc-card">
             <div className="mc-keyline" aria-hidden />
@@ -308,12 +316,15 @@ export function Landing() {
       </section>
 
       {/* DOWNLOAD */}
-      <section id="download" className="scroll-mt-4 px-5 py-16 sm:px-12 sm:py-20 md:px-16 lg:px-24">
+      <section
+        id="download"
+        className="scroll-mt-4 bg-[var(--gold)] px-5 py-16 sm:px-12 sm:py-20 md:px-16 lg:px-24"
+      >
         <div className="mx-auto max-w-5xl">
-          <h2 className="text-3xl leading-none text-[var(--stock)] sm:text-4xl md:text-[2.75rem]">
+          <h2 className="text-3xl leading-none text-[var(--ink)] sm:text-4xl md:text-[2.75rem]">
             Free to download
           </h2>
-          <p className="mt-3 max-w-2xl font-zilla text-lg font-medium leading-relaxed text-[var(--stock)]/85">
+          <p className="mt-3 max-w-2xl font-zilla text-lg font-medium leading-relaxed text-[var(--ink)] opacity-80">
             No account, no fees. Just download and start learning. The first time
             you launch the app, it will download its 2GB AI tutoring model. After
             that, Hiraia no longer requires an internet connection.

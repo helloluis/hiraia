@@ -126,6 +126,69 @@ strong, b, h1, h2, h3, h4, h5, h6 {
 }
 .mc a { color: inherit; }
 
+/* Hero: pixelated dissolve from the photo into the board (~96px, 8px cells). */
+.mc-hero {
+  --hero-fade: 96px;
+  --hero-px: 8;
+  background: var(--board);
+}
+.mc-hero-photo {
+  position: absolute;
+  inset: 0;
+}
+.mc-hero-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.mc-hero-pixels {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #0000 calc(100% - var(--hero-fade)), #000 calc(100% - var(--hero-fade)));
+  mask-image: linear-gradient(to bottom, #0000 calc(100% - var(--hero-fade)), #000 calc(100% - var(--hero-fade)));
+}
+.mc-hero-pixels img {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: calc(100% / var(--hero-px));
+  height: calc(100% / var(--hero-px));
+  object-fit: cover;
+  object-position: center;
+  image-rendering: pixelated;
+  transform: scale(var(--hero-px));
+  transform-origin: bottom left;
+}
+.mc-hero-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  height: var(--hero-fade);
+  pointer-events: none;
+  background-color: var(--board);
+  -webkit-mask-image: url('/hero-fade-mask.png');
+  mask-image: url('/hero-fade-mask.png');
+  -webkit-mask-size: 256px var(--hero-fade);
+  mask-size: 256px var(--hero-fade);
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+  -webkit-mask-position: bottom left;
+  mask-position: bottom left;
+}
+@media (min-width: 640px) {
+  .mc-hero-photo img,
+  .mc-hero-pixels img {
+    object-position: center 40%;
+  }
+}
+
 .mc-label {
   font-family: 'Archivo Black', sans-serif;
   font-weight: 400;

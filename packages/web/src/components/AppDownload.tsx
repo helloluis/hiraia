@@ -39,7 +39,7 @@ export function AppDownload() {
   const [showVerify, setShowVerify] = useState(false);
 
   if (!live) {
-    return <p className="font-zilla text-lg font-bold text-[var(--stock)]">Android app coming soon.</p>;
+    return <p className="font-zilla text-lg font-bold text-[var(--ink)]">Android app coming soon.</p>;
   }
 
   return (
