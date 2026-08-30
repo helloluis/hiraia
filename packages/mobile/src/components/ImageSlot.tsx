@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Image, type LayoutChangeEvent, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { resolveImage } from '../generated/imageMap';
+import { useArtSource } from '../data/artSource';
 import { colors, fonts } from '../theme';
 
 import { Lightbox } from './Lightbox';
@@ -24,7 +24,7 @@ const MAX_SIDE = 320;
 export function ImageSlot({ desc, slug }: { desc: string; slug?: string }) {
   const [open, setOpen] = useState(false);
   const [side, setSide] = useState(0); // measured square side = min(available width, MAX_SIDE)
-  const source = resolveImage(slug ?? desc);
+  const source = useArtSource(slug ?? desc);
 
   const onWrapLayout = (e: LayoutChangeEvent) => {
     const next = Math.min(e.nativeEvent.layout.width, MAX_SIDE);

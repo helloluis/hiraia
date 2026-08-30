@@ -1,10 +1,13 @@
 /**
  * A single curated science fact in the grounding bank.
  *
- * Source of truth is `rag/bank/science-facts.jsonl` at the repo root; the
- * bundled `facts.generated.ts` is compiled from it via
- * `rag/scripts/export-facts-ts.py`. Edit the JSONL, regenerate — never edit the
- * generated module by hand.
+ * Source of truth is `rag/bank/science-facts.jsonl` at the repo root. Node reads it
+ * directly (`loadFactBank`, `@hiraia/shared/node`); the app reads it out of the `fact` table
+ * in `packages/mobile/assets/data/cards.db`, compiled from the same JSONL by
+ * `rag/pipeline/build-facts-db.py`. Edit the JSONL, rebuild the database.
+ *
+ * LINE ORDER IS AN API. Line N is fact ordinal N, and `assets/rag/vectors-labse.i8.bin` is
+ * positional — vector i belongs to bank row i. Append; never reorder.
  */
 export interface ScienceFact {
   id: string;

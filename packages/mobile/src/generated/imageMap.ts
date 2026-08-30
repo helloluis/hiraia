@@ -2,6 +2,7 @@
 // 30062 bundled 512x512 science images (4271 clip-art + 25834 card art).
 // Metro packages each require().
 /* eslint-disable */
+import { installBundledArt } from '../data/artPresence';
 export const IMAGE_MAP: Record<string, number> = {
   "abaca-fiber-bundle": require("../../../images/assets-png/biology/abaca-fiber-bundle.png"),
   "abaca-plant": require("../../../images/assets-png/biology/abaca-plant.png"),
@@ -30070,3 +30071,9 @@ export function resolveImage(slug: string): number | null {
   return IMAGE_MAP[slug] ?? IMAGE_MAP[slug.replace(/-g\d+$/, '').toLowerCase()] ?? null;
 }
 export const IMAGE_SLUGS: ReadonlySet<string> = new Set(Object.keys(IMAGE_MAP));
+// This map IS the bundled-art manifest — it is generated FROM the files Metro packages, so
+// registering it here is the one wiring that cannot drift from the APK. Everything that can
+// draw a bundled illustration imports this module, so the manifest is installed before any
+// picture is resolved; the feed (src/data/cards.ts) deliberately does NOT import it and stays
+// correct either way (see artPresence.hasArt).
+installBundledArt(IMAGE_SLUGS);

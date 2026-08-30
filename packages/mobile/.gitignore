@@ -2,6 +2,7 @@
 # config plugin). Build artifact; do not commit. ~10 MB bundle + addons manifest.
 /qvac/
 
-# local release-APK build outputs (scripts/build-both-apks.sh)
+# local scratch dir for copied-out release APKs (the build itself leaves the APK
+# under android/app/build/outputs/ — see scripts/build-apk.sh)
 apk-out/
 scripts/card-harness-report.txt

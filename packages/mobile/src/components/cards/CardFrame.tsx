@@ -160,13 +160,30 @@ export function Divider({ style }: { style?: StyleProp<ViewStyle> }) {
 }
 
 /**
- * The right-pointing arrow, drawn from borders rather than typed. Every arrow glyph in
+ * The deck's arrow, drawn from borders rather than typed. Every arrow glyph in
  * this range is a coin-flip on Android's font fallback — U+25B6 lives in the colour-emoji
  * set and renders as a blue play button, which breaks the ten-colour palette on sight, and
  * U+25BA can fall back to tofu. Borders can neither fall back nor recolour themselves.
  */
-export function Arrow({ color = card.gold }: { color?: string }) {
-  return <View style={[cardFrame.arrowGlyph, { borderLeftColor: color }]} />;
+export function Arrow({
+  color = card.gold,
+  direction = 'right',
+}: {
+  color?: string;
+  /**
+   * Which way it points. A left arrow is NOT this one rotated 180deg by the caller:
+   * `arrowGlyph` carries a `marginLeft: 2` optical nudge (a triangle's mass sits left of its
+   * bounding box), and rotating the wrapper carries that nudge round with it, so the
+   * correction ends up pointing the wrong way and the glyph lands 4dp off-centre. The mirror
+   * is printed here instead — still one arrow implementation, now with two directions.
+   */
+  direction?: 'left' | 'right';
+}) {
+  return direction === 'left' ? (
+    <View style={[cardFrame.arrowGlyph, cardFrame.arrowGlyphLeft, { borderRightColor: color }]} />
+  ) : (
+    <View style={[cardFrame.arrowGlyph, { borderLeftColor: color }]} />
+  );
 }
 
 /**
@@ -444,6 +461,14 @@ export const cardFrame = StyleSheet.create({
     borderTopColor: 'transparent',
     borderBottomColor: 'transparent',
     marginLeft: 2, // optical centring: a triangle's mass sits left of its bounding box
+  },
+  /** The same triangle mirrored: the coloured border moves to the right edge, and the
+      optical nudge moves with it (a left-pointing triangle's mass sits RIGHT of its box). */
+  arrowGlyphLeft: {
+    borderLeftWidth: 0,
+    borderRightWidth: 10,
+    marginLeft: 0,
+    marginRight: 2,
   },
 
   // ---- the answer/choice row ledge (mockup `.ledge-a` / `.ledge-o`) ----

@@ -66,13 +66,21 @@ export interface TutorEngine {
   generateReward?(topics: string[], count: number, language: string): Promise<string>;
 
   /**
-   * Grounded one-shot answer to a kid's typed query in the question-cards feed, used as the
+   * Grounded one-shot FACT CARD for a kid's typed query in the question-cards feed, used as the
    * FALLBACK when the feed's local card search finds nothing (the feed is retrieval-first).
-   * Retrieves from the fact bank and answers STRICTLY from those facts; returns
-   * `grounded:false` when retrieval is empty so the caller shows an honest abstention rather
-   * than a hallucination. Optional — callers should feature-detect.
+   * Retrieves from the fact bank and states the answer STRICTLY from those facts; returns
+   * `grounded:false` when retrieval cannot serve the query so the caller shows an honest
+   * miss rather than a hallucination.
+   *
+   * `offDomain` splits that miss in two: true means the query was not science at all (nothing
+   * in the bank shares a single word with it AND it is semantically far from everything), so
+   * the caller should say we are only a science tutor instead of offering a science topic.
+   * Absent/false = an in-domain gap. Optional — callers should feature-detect both.
    */
-  answerQuery?(query: string, language: string): Promise<{ text: string; grounded: boolean }>;
+  answerQuery?(
+    query: string,
+    language: string
+  ): Promise<{ text: string; grounded: boolean; offDomain?: boolean }>;
 
   /**
    * Resolve a text description to a bundled illustration slug via embedding

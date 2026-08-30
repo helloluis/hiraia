@@ -38,6 +38,7 @@ import cardsIndex from '../generated/cardsIndex.generated.json';
 // serves up to three competencies (spiral curriculum), each cell carries its own strength and norm.
 import curriculumTagsJson from '../generated/curriculumTags.generated.json';
 
+import { hasArt } from './artPresence';
 import {
   loadQuestions,
   loadText,
@@ -461,6 +462,11 @@ export interface SearchResult {
 // served as a confident answer; below it the caller abstains or falls to generation.
 export const SEARCH_FLOOR = 0.34;
 
+// What one out-of-vocabulary query token contributes to that information. `idf(df) = 1/df`
+// peaks at 1 for a token in a single card, and a token in NO card cannot be commoner than
+// that, so 1 is the value the scale already implies rather than a tuned constant.
+const UNKNOWN_TOKEN_IDF = 1;
+
 /**
  * Retrieval for the search box: score every pool card by the idf-weighted overlap of the
  * query's tokens with the card's tokens, return the best (with its normalized score) plus
@@ -477,12 +483,21 @@ export async function searchCards(query: string, currentId: string | null): Prom
   if (!rows.length) return empty;
 
   const idf = (df: number) => 1 / (df || POOL.length);
-  const mass = rows.reduce((s, r) => s + idf(r.df), 0);
+  // Tokens the index has never seen are still part of what the child asked, and they are the
+  // RAREST part of it — so they belong in the denominator. Counting only the words we happened
+  // to recognise is what let "taylor swift" navigate to a swift-nest card with a confident
+  // score of 1.00: `taylor` was not in the vocabulary, so it was not in the query either, and
+  // a card covering the one word we knew covered "all" of it. An unseen token is at least as
+  // rare as a df-1 token, whose idf is 1 — the cap of this idf, and so the natural weight.
+  const mass =
+    rows.reduce((s, r) => s + idf(r.df), 0) + (qtoks.length - rows.length) * UNKNOWN_TOKEN_IDF;
   if (mass <= 0) return empty;
 
-  // ordinal -> accumulated idf mass. Same score as before: the fraction of the query's mass
-  // a card covers. A card carrying none of the tokens scored 0 and could never win, which is
-  // why skipping it entirely changes nothing (verified: identical picks on every probe).
+  // ordinal -> accumulated idf mass: what each card covers, which the denominator above turns
+  // into the fraction of the query it covers. Only cards carrying a token are accumulated — one
+  // carrying none scored 0 and could never win, so skipping it changes nothing (verified:
+  // identical picks on every probe). Unknown tokens are in the denominator only, by definition:
+  // no card can cover a word no card contains.
   const acc = new Map<number, number>();
   for (const r of rows) {
     const w = idf(r.df);
@@ -561,6 +576,136 @@ export function cardTitle(fact: CardFact, language: Language): string {
   return '';
 }
 
+/**
+ * Function words that stay lower-case inside a title, so a title-cased topic reads like a
+ * catalogue heading and not like a ransom note. English and Tagalog/Cebuano particles
+ * together, deliberately: a topic is a mixed-language string ("Windpipe ng Python") and
+ * capitalising the "ng" is exactly the tell that a machine did it.
+ *
+ * NOT a translation table and never to be grown into one — `topicLabel` re-cases what is
+ * already there and adds nothing.
+ */
+const TITLE_MINOR = new Set(
+  (
+    'a an and as at but by for from in into of off on onto or over per the to up via vs ' +
+    'with within without ' +
+    // Tagalog / Cebuano particles and linkers
+    'ang ay ba kay mga na ng nga ni sa si ug'
+  ).split(' ')
+);
+
+/**
+ * Words a truncated label must not END on, over and above the minor words above.
+ *
+ * A determiner promises a noun ("…DIFFERS FROM ITS…"), so stopping on one reads as a sentence
+ * that was cut off rather than as a heading. They are still CAPITALISED mid-title — title case
+ * lowercases articles and short prepositions, not determiners — which is why this is a second
+ * set and not more entries in the first.
+ */
+const TITLE_DANGLING = new Set([
+  ...TITLE_MINOR,
+  ...(
+    'its his her their our your my this that these those ' +
+    // Tagalog / Cebuano demonstratives
+    'ito iyon kini kana'
+  ).split(' '),
+]);
+
+/** Ellipsis, as ONE character — the band is budgeted in characters, so this must not be '...'. */
+const ELLIPSIS = '…';
+
+/**
+ * The longest band label that fits, in characters.
+ *
+ * Measured against the band the label actually sits in: Patua One at 11.5/1.4 tracking,
+ * uppercased, flexing between the card's padding and the 26dp cat stamp. 34 characters is
+ * what the device truncated a 41-character topic to ("BONDED COMPOUND DIFFERS FROM ITS E…"),
+ * so it is the observed capacity rather than an estimate — and because `topicLabel` cuts on a
+ * word boundary the result lands short of it far more often than on it.
+ */
+const BAND_LABEL_MAX = 34;
+
+/** Capitalise one word, leaving anything that already carries a capital alone (DNA, pH). */
+function capitalise(word: string): string {
+  if (/[A-Z]/.test(word)) return word;
+  const i = word.search(/[a-z0-9ñ]/i);
+  return i < 0 ? word : word.slice(0, i) + word[i]!.toUpperCase() + word.slice(i + 1);
+}
+
+/**
+ * Cut a label to the band, on a WORD boundary.
+ *
+ * The band is one line of tracked caps with `ellipsizeMode="tail"`, so anything that overruns
+ * is guillotined wherever the glyph run happens to stop — mid-word, which is what made a
+ * perfectly good label read as a bug ("BONDED COMPOUND DIFFERS FROM ITS E…"). Cutting here
+ * instead means the band only ever shows whole words, and the trailing particle goes too: a
+ * label that stops on "FROM ITS" promises a noun it will never deliver.
+ *
+ * A single word longer than the band is the one case with no word boundary to use, so it is
+ * cut where it has to be — a hard cut on one word beats an empty band.
+ */
+function fitLabel(words: readonly string[], max: number): string {
+  const full = words.join(' ');
+  if (full.length <= max) return full;
+  const budget = max - ELLIPSIS.length;
+  const kept: string[] = [];
+  let len = 0;
+  for (const w of words) {
+    const next = len === 0 ? w.length : len + 1 + w.length;
+    if (next > budget) break;
+    kept.push(w);
+    len = next;
+  }
+  while (kept.length > 1 && TITLE_DANGLING.has(kept[kept.length - 1]!.toLowerCase())) kept.pop();
+  if (!kept.length) return words[0]!.slice(0, budget) + ELLIPSIS;
+  return kept.join(' ') + ELLIPSIS;
+}
+
+/**
+ * A card's internal `topic`, made presentable.
+ *
+ * `topic` is a retrieval key, not copy: 42% of the deck (19,566 of 46,421 cards) has no
+ * authored title, and for those the index band was printing the raw key — a lower-case English
+ * sentence fragment ("lungs take in oxygen"), uppercased by the band's own styling and then cut
+ * mid-word. Both halves of that read as a bug rather than as a label.
+ *
+ * So: title-case it, and cut it on a word boundary. Nothing is translated and nothing is
+ * invented — a mixed-language title is fine here (the authored ones read "Metamorphosis
+ * Yugto", "Windpipe ng Python"), and writing the 19,566 missing titles is a data job, not a
+ * rendering one.
+ */
+export function topicLabel(topic: string, max = BAND_LABEL_MAX): string {
+  const words = topic.trim().split(/\s+/).filter(Boolean);
+  if (!words.length) return '';
+  const cased = words.map((w, i) =>
+    i > 0 && i < words.length - 1 && TITLE_MINOR.has(w.toLowerCase())
+      ? w.toLowerCase()
+      : capitalise(w)
+  );
+  return fitLabel(cased, max);
+}
+
+/**
+ * What the index band prints.
+ *
+ * The authored title when the card has one — re-cased NOT AT ALL, because it is already copy
+ * ("Windpipe ng Python") and title-casing it would only ever damage it. Otherwise the card's
+ * topic, made presentable. Either way it is cut to the band on a word boundary: 1.4% of the
+ * authored titles are longer than the band too, and there is no reason for those to be the
+ * only labels in the deck that still stop mid-word.
+ *
+ * Callers pass the already-resolved title so the band never re-reads the row. The "has a
+ * title" test is on the TRIMMED value, not the raw one: a title that is only whitespace is
+ * truthy but has no words, and taking the authored branch on it would print an EMPTY band
+ * rather than falling back to the topic. `cardTitle` already trims, so this is the guard for
+ * every other caller — the recap in cardStore reads its rows straight out of the view log.
+ */
+export function bandLabel(title: string, topic: string, max = BAND_LABEL_MAX): string {
+  const t = title.trim();
+  if (!t) return topicLabel(topic, max);
+  return fitLabel(t.split(/\s+/).filter(Boolean), max);
+}
+
 /** The emphasis spans for this card in the reader's language, if it has been warmed. */
 export function cardEmphasis(fact: CardFact, language: Language): string[] | undefined {
   const k = language === 'english' ? 'en' : language === 'cebuano' ? 'bis' : 'tl';
@@ -570,6 +715,22 @@ export function cardEmphasis(fact: CardFact, language: Language): string[] | und
 /** Whether this card reads better as a poster than with a picture (editorial judgement). */
 export function cardIsPoster(fact: CardFact): boolean {
   return textOf(fact.id)?.poster === true;
+}
+
+/**
+ * Whether this card's illustration is ON THIS DEVICE — the feed's first-class art predicate.
+ *
+ * NOT a servability test. A card whose art is absent is fully servable: it renders through
+ * posterFor() as a typographic card, which is a deliberate printing of the same card and not a
+ * card missing its picture (see CardPage). Nothing in this module may drop a card for failing
+ * this, or the deck would shrink to the illustrated head of the bundle — the exact opposite of
+ * what a half-bundled art pack is supposed to cost the reader.
+ *
+ * What it IS for: rules that only make sense about a picture a child can actually see. The
+ * illustration cooldown is the one that exists today (see cooldownSlugs).
+ */
+export function cardHasArt(fact: CardFact): boolean {
+  return hasArt(fact.slug);
 }
 
 export function poolSize(): number {
@@ -990,18 +1151,25 @@ export interface NextStepOpts {
 /**
  * Illustrations that would read as a repeat right now: the current card's + the trail's.
  *
+ * Only pictures the reader CAN SEE belong here. The cooldown exists to stop the deck showing
+ * the same engraving twice in six pages; a slug whose file is not on this device drew nothing,
+ * so holding it back suppresses variety to avoid repeating an image nobody saw. With a
+ * ~140 MB head-of-list art pack that is not a corner case — it is most of the bank — so
+ * presence is checked, not assumed. As backfill lands shards this set naturally fills back in.
+ *
  * An empty slug is NOT an illustration and must never enter this set. A card without a
  * picture renders as a typographic card (see CardPage), and thousands of them share the
  * empty string — pooled into the cooldown they would all block each other, so one imageless
  * card in the trail would make every other imageless card unservable and the feed would
- * narrow to the illustrated bank alone.
+ * narrow to the illustrated bank alone. `hasArt('')` is false, which is that same guard: the
+ * absent-art case is exactly the imageless case, one level down.
  */
 function cooldownSlugs(cur: CardFact, recentIds?: readonly string[]): Set<string> {
   const slugs = new Set<string>();
-  if (cur.slug) slugs.add(cur.slug);
+  if (hasArt(cur.slug)) slugs.add(cur.slug);
   for (const id of (recentIds ?? []).slice(-SLUG_COOLDOWN)) {
     const f = BY_ID.get(id);
-    if (f?.slug) slugs.add(f.slug);
+    if (f && hasArt(f.slug)) slugs.add(f.slug);
   }
   return slugs;
 }
@@ -1048,10 +1216,23 @@ export function nextChoices(
   const curTopicKey = topicKey(cur);
 
   const unseen = (f: CardFact) => f.id !== currentId && !seen.has(f.id);
-  // Servable next to THIS card: unseen, a different picture from the last few pages, and
-  // not the same fact reworded under the same topic wording (those exist across grades).
+  /**
+   * Servable next to THIS card: unseen, not a picture the reader just saw, and not the same
+   * fact reworded under the same topic wording (those exist across grades).
+   *
+   * The picture clause needs no presence test of its own, and that is worth stating because it
+   * looks like an omission. `blockedSlugs` only ever contains slugs whose art IS on this device
+   * (cooldownSlugs gates on hasArt), so membership already implies presence — a candidate that
+   * matches one of them is by definition a card whose picture the reader can see. It also
+   * cannot contain the empty slug, which is why the old `f.slug &&` truthiness guard is gone
+   * rather than merely moved: it was covering the same case this set no longer admits.
+   *
+   * Doing it this way is also the whole perf story. Presence costs at most SLUG_COOLDOWN + 1
+   * lookups per page turn, up here, instead of one per candidate in a loop that visits tens of
+   * thousands of cards.
+   */
   const servable = (f: CardFact) =>
-    unseen(f) && !(f.slug && blockedSlugs.has(f.slug)) && topicKey(f) !== curTopicKey;
+    unseen(f) && !blockedSlugs.has(f.slug) && topicKey(f) !== curTopicKey;
 
   // deep: candidates sharing any term, ranked by idf-weighted overlap, but only those whose
   // shared terms are specific enough to be a real thread (see LINK_MASS_FLOOR) and not so

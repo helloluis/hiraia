@@ -24,14 +24,14 @@ export interface SemanticBlob {
   count: number;
   /** language order within `data` (lang-major layout). */
   langs: LangKey[];
-  /** lang-major int8: [lang0 count*dims][lang1 ...]… ; fact order == SCIENCE_FACTS. */
+  /** lang-major int8: [lang0 count*dims][lang1 ...]… ; fact order == bank file order. */
   data: Int8Array;
 }
 
 const LANG_KEY: Record<Language, LangKey> = { english: 'en', tagalog: 'tl', cebuano: 'bis' };
 
 export interface SemHit {
-  /** fact index — aligns with RagStore's doc order (SCIENCE_FACTS order). */
+  /** fact ORDINAL — line N of rag/bank/science-facts.jsonl, which is also `fact.ord`. */
   index: number;
   /** true cosine similarity in [-1, 1]. */
   cosine: number;

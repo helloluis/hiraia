@@ -3,6 +3,7 @@ import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
+import { type ArtSource } from '../data/artSource';
 import { colors, fonts } from '../theme';
 
 /**
@@ -19,7 +20,7 @@ export function Lightbox({
 }: {
   visible: boolean;
   desc: string;
-  source: number | null;
+  source: ArtSource;
   onClose: () => void;
 }) {
   const scale = useSharedValue(1);

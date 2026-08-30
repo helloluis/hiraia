@@ -40,14 +40,9 @@ import { runOnJS } from 'react-native-reanimated';
 import type { Language } from '@hiraia/shared';
 
 import { uiStrings } from '../../config/strings';
-import {
-  cardEmphasis,
-  cardText,
-  cardTitle,
-  type CardChoice,
-  type CardFact,
-} from '../../data/cards';
-import { resolveImage } from '../../generated/imageMap';
+import { bandLabel, type CardChoice, type CardFact } from '../../data/cards';
+import { useCardCopy } from '../../data/cardTextSource';
+import { useLatchedArtSource } from '../../data/artSource';
 import {
   posterFor,
   displayScale,
@@ -329,9 +324,33 @@ function inlineOnly(text: string, spans: readonly string[] | undefined, id: stri
 
 export function CardPage({ fact, choices, language, onChoose, instant = false }: CardPageProps) {
   const t = uiStrings(language);
-  const text = cardText(fact, language);
+  /**
+   * The card's printed content — and a SUBSCRIPTION to it, not a one-shot read.
+   *
+   * The prose lives in a 133 MB database that is copied out of the APK on first run, so a page
+   * can be mounted before its row exists (the first card of a first launch races that copy;
+   * the reroll navigates without warming ahead). `text` is then '', which is not a visible
+   * loading state — the typewriter completes instantly on it and the illustration and tickets
+   * fade in on cue, leaving a card that looks finished with nothing printed on it. Reading
+   * through this hook means the row landing re-renders THIS page and the text simply appears.
+   * Once the deck is warm — every launch after the first — the row is already resident, the
+   * snapshot never changes and this is the same synchronous read it always was.
+   */
+  const { text, emphasis, title } = useCardCopy(fact, language);
   const { ask, body } = splitQA(text);
-  const art = resolveImage(fact.slug);
+  /**
+   * The illustration, IF this device has it. With the art pack bundling the head of the list
+   * and backfill supplying the tail, `null` here is an ordinary state, not a failure: the card
+   * then sets itself as a poster below (`art == null`), which is a deliberate printing of the
+   * same card.
+   *
+   * LATCHED to this page, not merely subscribed. `art == null` selects the whole layout —
+   * poster spec and `fitType` sizing versus caption spec and `tierFor` — so adopting a shard
+   * that lands mid-read would re-typeset the sentence the child is reading, under the
+   * typewriter. The picture arrives on the next turn of this card instead, which is the first
+   * moment it can appear without moving type that is already being read.
+   */
+  const art = useLatchedArtSource(fact.slug, fact.id);
   /**
    * The type plate's own box, measured. Seeded from the window so the very first card is
    * already close (a wrong seed would resize the type one frame in, mid-typewriter); every
@@ -347,7 +366,6 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
    * `overflow: hidden`, and unreadable is worse than scrollable.
    */
   const [overflowing, setOverflowing] = useState(false);
-  const emphasis = cardEmphasis(fact, language);
   // The body's layout is settled BEFORE the type is sized: a lifted display line changes how
   // much room the rest of the sentence has.
   const bodySpec =
@@ -363,9 +381,23 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
   const [zoom, setZoom] = useState(false);
   const extrasOpacity = useRef(new Animated.Value(instant ? 1 : 0)).current;
 
-  // typewriter (starts shortly after mount, i.e. as the page flip settles)
+  /**
+   * Typewriter — starts shortly after mount, i.e. as the page flip settles.
+   *
+   * Keyed on the TEXT as well as the card, which is what makes a late row recoverable. A page
+   * mounted before its row landed ran this against '': the first tick found `prev >= 0`, left
+   * `shown` at 0 and stopped, so nothing was ever going to type even after the text arrived.
+   * With `text` in the dependencies the run is simply re-armed on the string it is actually
+   * revealing. On the warm path the string never changes, so this is unchanged — one run per
+   * page, exactly as before.
+   */
   useEffect(() => {
-    if (instant) return;
+    // An instantly-drawn page (the preview sheet, the outgoing peel, a card the reader had
+    // already read underneath) shows all of its text — including text that only just got here.
+    if (instant) {
+      setShown(text.length);
+      return;
+    }
     let i = 0;
     let cancelled = false;
     const tick = () => {
@@ -380,7 +412,7 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
       clearTimeout(start);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fact.id, instant]);
+  }, [fact.id, instant, text]);
 
   // illustration + choices fade in once the text lands
   useEffect(() => {
@@ -533,6 +565,16 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
     [done, art]
   );
 
+  /**
+   * The card's name, in the two lengths the page needs.
+   *
+   * `band` is cut to the index band's one line of tracked caps. `spoken` is the same label
+   * UNCUT — a screen reader and the lightbox caption have no width to run out of, and an
+   * ellipsis is only ever a loss to either.
+   */
+  const band = bandLabel(title, fact.topic);
+  const spoken = bandLabel(title, fact.topic, Number.MAX_SAFE_INTEGER);
+
   return (
     <GestureDetector gesture={skipTap}>
       <View style={cardFrame.content}>
@@ -540,10 +582,15 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
           card's own furniture favours neither branch */}
         <CardPrint keyline={branching ? 'graphite' : 'sage'} />
 
-        {/* index band: catalogue number, topic in tracked gothic caps, cat stamp */}
+        {/* Index band: the card's title in tracked caps, and the cat stamp.
+          The label is the authored title when the card has one, and otherwise its `topic` made
+          presentable. `topic` is a retrieval key, and 42% of the deck has no title yet —
+          printing the key raw put a lower-case English fragment in the band, uppercased by the
+          band's own styling and then cut mid-word by the tail ellipsis. See topicLabel:
+          title-cased, and cut on a word boundary instead. */}
         <IndexBand
           tone={branching ? 'graphite' : 'ink'}
-          label={cardTitle(fact, language) || fact.topic}
+          label={band}
           stamp={<Image source={CAT} style={cardFrame.stampImage} resizeMode="contain" />}
         />
 
@@ -562,7 +609,7 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
                 style={styles.window}
                 accessible
                 accessibilityRole="imagebutton"
-                accessibilityLabel={`Larawan: ${fact.topic}. I-tap para palakihin.`}
+                accessibilityLabel={`Larawan: ${spoken}. I-tap para palakihin.`}
               >
                 <Image source={art} style={styles.art} resizeMode="contain" />
               </View>
@@ -667,7 +714,7 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
         </Animated.View>
 
         {art != null ? (
-          <Lightbox visible={zoom} desc={fact.topic} source={art} onClose={() => setZoom(false)} />
+          <Lightbox visible={zoom} desc={spoken} source={art} onClose={() => setZoom(false)} />
         ) : null}
       </View>
     </GestureDetector>
