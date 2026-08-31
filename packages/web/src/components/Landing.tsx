@@ -211,19 +211,20 @@ export function Landing() {
       </section>
 
       <footer className="border-t-[3px] border-[var(--ink)] px-5 py-10 sm:px-12 md:px-16 lg:px-24">
-        <div className="mx-auto flex max-w-5xl flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <p>
-            <span className="font-slab text-2xl tracking-wide text-[var(--stock)]">
-              HIRAIA<span className="text-[var(--gold)]">.</span>
-            </span>
-            <span className="mt-1 block max-w-md font-zilla text-sm font-medium text-[var(--sage)]">
-              Not-for-profit. Built on{' '}
-              <a href="https://qvac.tether.io" className="underline decoration-[var(--sage)] underline-offset-2 hover:text-[var(--stock)]">
-                QVAC
-              </a>
-              .
-            </span>
-          </p>
+        <div className="mx-auto flex max-w-5xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <a
+            href="https://qvac.tether.io"
+            className="inline-block opacity-90 transition-opacity hover:opacity-100"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/built-with-qvac-sdk.png"
+              alt="Built with QVAC SDK"
+              width={675}
+              height={200}
+              className="h-10 w-auto sm:h-12"
+            />
+          </a>
           <p className="mc-label text-[10px] text-[var(--sage)]">hiraia.org</p>
         </div>
       </footer>
