@@ -8,7 +8,7 @@
  * `grade` in useDemoStore for exactly how far that reaches in the browser demo today.
  *
  * Typed locally rather than imported from `@hiraia/shared`: that package resolves into
- * @qvac/sdk's bare-runtime shims, which is why RemoteEngine deliberately keeps it off the
+ * @qvac/sdk's bare-runtime shims, which is why the web demo deliberately keeps it off the
  * client. This is eight numbers — cheaper to restate than to drag a runtime in for.
  */
 export type GradeLevel = 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;

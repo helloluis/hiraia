@@ -1,8 +1,16 @@
 import { type NextRequest } from 'next/server';
 
-import { buildCardPrompt, sanitizeCardAnswer, CARD_TEMP } from '@hiraia/shared';
+import {
+  attributeCardToFact,
+  buildCardPrompt,
+  sanitizeCardAnswer,
+  CARD_TEMP,
+  CARD_STOP,
+  CARD_REASONING_BUDGET,
+} from '@hiraia/shared';
 
 import { loraScalesFor, MODEL_INFO, type LanguageKey } from '@/config/model';
+import { resolveCardImage, warmImages } from '@/server/images';
 import { retrieveForCard, warmRag } from '@/server/rag';
 import { callerKey, Semaphore, TokenBucket } from '@/server/throttle';
 
@@ -84,14 +92,32 @@ const ASK_BUCKET = new TokenBucket({ burst: 6, perMinute: 10 });
 const GEN_SLOTS = new Semaphore(2);
 
 // Warm the RAG store (load the int8 blob into RAM) at module init so the first visitor's
-// query isn't slowed by the one-time blob read. Idempotent with /api/demo/chat's warm — it is
-// the same module singleton.
+// query isn't slowed by the one-time blob read. Idempotent — both are module singletons. The
+// image catalog is warmed alongside for the same reason: a few MB read once, not on a visitor.
 warmRag();
+warmImages();
 
 export interface CardAnswer {
   kind: 'generated' | 'abstain' | 'offdomain';
   /** The printed card, on `generated` only. */
   text: string | null;
+  /**
+   * The card's ILLUSTRATION as a catalog slug, resolved SERVER-side from the grounded fact the
+   * printed card is ABOUT — an ID LOOKUP, never a similarity search (server/images.ts →
+   * shared resolveIllustrationSlug: the card-index binding first, then the curated map, then
+   * null, each step presence-gated on what this site publishes). `generated` only, and null
+   * far more often than not — the browser then prints the card as plain type, which is the
+   * shape the page is laid out for.
+   *
+   * A slug returned here is guaranteed to be published under `public/demo/cards`: an
+   * unpublished winner is dropped, not substituted. The client can render
+   * `/demo/cards/<slug>.png` without a fallback dance.
+   *
+   * The MODEL never chooses it. It writes the sentence; the picture is retrieval's job. (It
+   * does still emit `[image: …]` tags out of retired chat-SFT habit — `sanitizeCardAnswer`
+   * strips them, and the fix for the emission is training-side, not a prompt patch.)
+   */
+  slug: string | null;
 }
 
 export async function POST(req: NextRequest) {
@@ -108,6 +134,20 @@ export async function POST(req: NextRequest) {
       ? (rawLang as LanguageKey)
       : 'tagalog';
 
+  // CLASSIFY-ONLY: the browser found a WEAK local match (searchCards' weak band — matched on
+  // shared vocabulary, not subject) and asks one question before serving it: is this query
+  // off-domain? Model-free and cheap (one embed + the in-RAM scan), and judged by the SAME
+  // calibrated gate the miss path runs — `retrieveForCard`'s `isOffDomain(topCos,
+  // unreachable)`, the OOV arm gated on real lexical unreachability — NOT with the arm forced
+  // on. Forcing it was measured (2026-09-01, live probes) to refuse in-domain phrasings like
+  // "para saan ang ating puso" (topCos 0.537–0.586, overlapping the junk band 0.479–0.545);
+  // no cosine separates those classes, so the consult refuses only what the miss path itself
+  // would. The phone's LocalEngine.weakHitOffDomain makes the identical call. `kind:
+  // 'offdomain'` tells the client to show the science-tutor card; ANY other answer (including
+  // this route being down — the client's catch) tells it to serve its match, which is the
+  // safe degradation.
+  const classifyOnly = (body as { classifyOnly?: unknown }).classifyOnly === true;
+
   // The grade comes from onboarding and is what the card is pitched at. Clamped rather than
   // rejected: a bad value should print a slightly mis-pitched card, never a 400.
   const rawGrade = Number((body as { grade?: unknown }).grade);
@@ -123,25 +163,37 @@ export async function POST(req: NextRequest) {
     // Retrieval itself is down (no bank, no store). The honest gap card is the only shape we
     // can still stand behind: we cannot claim a query is off-domain without having looked.
     console.warn('[demo/card] retrieval failed — gap card:', e);
-    return json<CardAnswer>({ kind: 'abstain', text: null }, 200);
+    return json<CardAnswer>({ kind: 'abstain', text: null, slug: null }, 200);
   }
 
-  if (retrieval.outcome === 'offdomain') return json<CardAnswer>({ kind: 'offdomain', text: null }, 200);
-  if (retrieval.outcome === 'gap') return json<CardAnswer>({ kind: 'abstain', text: null }, 200);
+  // The classify-only answer (see `classifyOnly` above). `retrieveForCard` already ran the
+  // calibrated off-domain gate (its `offdomain` outcome requires `semantic` — an
+  // embedder-down state cannot reach it and answers 'abstain', which the client reads as
+  // "serve your match").
+  if (classifyOnly) {
+    const off = retrieval.outcome === 'offdomain';
+    return json<CardAnswer>({ kind: off ? 'offdomain' : 'abstain', text: null, slug: null }, 200);
+  }
+
+  // A miss is not ABOUT anything, so there is nothing to illustrate — both shapes are
+  // model-free AND picture-free.
+  if (retrieval.outcome === 'offdomain')
+    return json<CardAnswer>({ kind: 'offdomain', text: null, slug: null }, 200);
+  if (retrieval.outcome === 'gap')
+    return json<CardAnswer>({ kind: 'abstain', text: null, slug: null }, 200);
 
   // ---- 2. print the card (the ONLY outcome that touches the model) ----
   // Throttled here rather than at the top of the handler: retrieval is cheap and local, and the
   // two model-free outcomes above are answers a throttled visitor should still get.
-  if (!ASK_BUCKET.take(callerKey(req))) return json<CardAnswer>({ kind: 'abstain', text: null }, 200);
+  if (!ASK_BUCKET.take(callerKey(req)))
+    return json<CardAnswer>({ kind: 'abstain', text: null, slug: null }, 200);
 
   // The SAME prompt the phone sends (@hiraia/shared prompts/cards.ts), so a card printed here
   // and a card printed in the APK are the same card.
-  const instruction = buildCardPrompt({
-    query,
-    facts: retrieval.hits.map((h) => h.content),
-    grade,
-    language,
-  });
+  // The retrieved bodies in the card's language, hoisted: they are what the model is given to
+  // write from AND what the printed card is attributed back to below.
+  const factTexts = retrieval.hits.map((h) => h.content);
+  const instruction = buildCardPrompt({ query, facts: factTexts, grade, language });
 
   let text: string | null = null;
   try {
@@ -156,17 +208,20 @@ export async function POST(req: NextRequest) {
           temperature: CARD_TEMP,
           max_tokens: MAX_TOKENS,
           lora: loraScalesFor(language),
-          // A card is ONE paragraph. Measured against the CPT'd Qwen3.5-2B (the model this
-          // is moving to): without a stop it writes the correct card, then keeps going into
-          // repeated "**Pansin:** ... **Paliwanag:** ..." meta-commentary until it hits the
-          // token cap. With the stop it returns 36 tokens, finish_reason 'stop', 20 words.
-          stop: ['\n\n'],
+          // A card is ONE paragraph. Both knobs are shared constants (@hiraia/shared
+          // prompts/cards.ts) rather than literals, because the phone has to reach the SAME
+          // two decisions through different transports (QVAC `reverse_prompt` +
+          // `reasoning_budget`) and it was silently reaching neither. Measured against the
+          // CPT'd Qwen3.5-2B: without a stop it writes the correct card, then keeps going
+          // into repeated "**Pansin:** ... **Paliwanag:** ..." until the token cap; with it,
+          // 36 tokens, finish_reason 'stop', 20 words.
+          stop: [...CARD_STOP],
           // Qwen3.5 is a thinking model: unless thinking is disabled it puts the answer in
           // `reasoning_content` and leaves `content` EMPTY, so every card would come back
           // blank and fall through to the gap card — a total failure that looks like a
           // retrieval miss. llama-server ignores unknown kwargs, so this is safe against a
           // non-thinking server too (Sailor2 was unaffected by it).
-          chat_template_kwargs: { enable_thinking: false },
+          chat_template_kwargs: { enable_thinking: CARD_REASONING_BUDGET !== 0 },
         }),
         signal: AbortSignal.timeout(GEN_TIMEOUT_MS),
       })
@@ -202,8 +257,31 @@ export async function POST(req: NextRequest) {
   // Generation unavailable or unprintable → the honest gap card, exactly as the phone falls
   // back when answerQuery throws. Never a 5xx: the feed has a card to show either way, and a
   // failed fetch on the client would look like a broken demo rather than an honest miss.
-  if (!text) return json<CardAnswer>({ kind: 'abstain', text: null }, 200);
-  return json<CardAnswer>({ kind: 'generated', text }, 200);
+  if (!text) return json<CardAnswer>({ kind: 'abstain', text: null, slug: null }, 200);
+
+  /**
+   * THE PICTURE, resolved after the card is written and from the fact the card is ABOUT.
+   *
+   * It used to be resolved CONCURRENTLY with the generation, from `retrieval.facts[0]`. The
+   * concurrency was free here (the VPS has a separate embedding server, unlike the phone) but
+   * the anchor was wrong on both surfaces: the prompt lets the model print any of the four
+   * retrieved facts, so the best hit for the QUERY is not reliably the fact on the card —
+   * "ano ang lindol"-shaped queries retrieve a near-miss first and the card states another one.
+   * `attributeCardToFact` reads the printed sentence and says which of the four it restates;
+   * ties and no-overlap keep the first, so this only ever CORRECTS a demonstrable mismatch.
+   * The cost is one embed and a 4,228-row scan after a generation that took seconds.
+   *
+   * Best-effort by construction: `resolveCardImage` degrades to null on any failure, so a card
+   * can lose its engraving but never fail because of one.
+   */
+  const chosen = retrieval.facts[attributeCardToFact(text, factTexts)];
+  const slug = chosen
+    ? await resolveCardImage(chosen).catch((e) => {
+        console.warn('[demo/card] image resolve failed — printing without one:', e);
+        return null;
+      })
+    : null;
+  return json<CardAnswer>({ kind: 'generated', text, slug }, 200);
 }
 
 function json<T>(payload: T, status: number): Response {

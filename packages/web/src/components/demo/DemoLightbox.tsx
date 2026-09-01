@@ -24,8 +24,7 @@ const CardFeedDemo = dynamic(() => loadCardFeed().then((m) => m.CardFeedDemo), {
 /**
  * The "Try the web demo" lightbox: a fixed-overlay modal that runs the whole setup flow —
  * onboarding (language → grade → tutorial) → cold-start loader → the question-cards feed —
- * mirroring the mobile app's first launch. On reopen it briefly restores this browser's
- * prior demo session (keyed by an anonymous localStorage session id).
+ * mirroring the mobile app's first launch.
  *
  * Onboarding runs once per browser (see ONBOARDING_KEY in useDemoStore); the loader runs every
  * time, because on device it is the model actually loading. The loader's "change the language"
@@ -35,7 +34,6 @@ const CardFeedDemo = dynamic(() => loadCardFeed().then((m) => m.CardFeedDemo), {
  */
 export function DemoLightbox() {
   const isOpen = useDemoStore((s) => s.isOpen);
-  const restoring = useDemoStore((s) => s.restoring);
   const phase = useDemoStore((s) => s.phase);
   const language = useDemoStore((s) => s.language);
   const grade = useDemoStore((s) => s.grade);
@@ -107,36 +105,28 @@ export function DemoLightbox() {
           </svg>
         </button>
 
-        {restoring ? (
-          <div className="flex h-full w-full items-center justify-center bg-[#fdfdf6]">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary-600/30 border-t-primary-600" />
-          </div>
-        ) : (
+        {phase === 'onboarding' && (
+          <OnboardingCarousel
+            initialLanguage={language}
+            initialGrade={grade}
+            onPickLanguage={pickLanguage}
+            onPickGrade={pickGrade}
+            onFinish={finishOnboarding}
+          />
+        )}
+        {phase === 'loading' && (
           <>
-            {phase === 'onboarding' && (
-              <OnboardingCarousel
-                initialLanguage={language}
-                initialGrade={grade}
-                onPickLanguage={pickLanguage}
-                onPickGrade={pickGrade}
-                onFinish={finishOnboarding}
-              />
-            )}
-            {phase === 'loading' && (
-              <>
-                <DemoLoader />
-                <button
-                  type="button"
-                  onClick={restartOnboarding}
-                  className="absolute left-3 top-3 z-10 rounded-full bg-black/25 px-3 py-1.5 font-hand text-[13px] text-white backdrop-blur transition-colors hover:bg-black/40"
-                >
-                  {LANG_CHANGE[language ?? 'tagalog']}
-                </button>
-              </>
-            )}
-            {phase === 'cards' && <CardFeedDemo />}
+            <DemoLoader />
+            <button
+              type="button"
+              onClick={restartOnboarding}
+              className="absolute left-3 top-3 z-10 rounded-full bg-black/25 px-3 py-1.5 font-hand text-[13px] text-white backdrop-blur transition-colors hover:bg-black/40"
+            >
+              {LANG_CHANGE[language ?? 'tagalog']}
+            </button>
           </>
         )}
+        {phase === 'cards' && <CardFeedDemo />}
       </div>
     </div>
   );

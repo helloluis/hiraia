@@ -66,8 +66,20 @@ const CARD_DB_STUB = `
   const loadQuestions = async (_f: readonly string[]) => {};
   const searchTokenRows = async (tokens: readonly string[]) => {
     if (!tokens.length) return [];
-    const st = __db.prepare('SELECT token, df, ords FROM search_token WHERE token IN (' + tokens.map(() => '?').join(',') + ')');
-    return st.all(...(tokens as string[])) as Array<{ token: string; df: number; ords: string }>;
+    const st = __db.prepare('SELECT token, df, ords, ranks, widths FROM search_token WHERE token IN (' + tokens.map(() => '?').join(',') + ')');
+    return (st.all(...(tokens as string[])) as any[]).map((r) => ({
+      token: r.token as string,
+      df: r.df as number,
+      ords: r.ords as string,
+      // node:sqlite hands a BLOB back as a Buffer/Uint8Array; expo-sqlite hands a Uint8Array.
+      ranks: r.ranks ? new Uint8Array(r.ranks.buffer, r.ranks.byteOffset, r.ranks.byteLength) : null,
+      widths: r.widths ? new Uint8Array(r.widths.buffer, r.widths.byteOffset, r.widths.byteLength) : null,
+    }));
+  };
+  const cardHeadSizes = async () => {
+    const r: any = __db.prepare("SELECT value FROM search_meta WHERE key = 'head_sizes'").get();
+    if (!r?.value) return null;
+    return new Uint8Array(r.value.buffer, r.value.byteOffset, r.value.byteLength);
   };
   const __tokBuf = (await import('node:fs')).readFileSync(${JSON.stringify(TOKENS)});
   const __n = __tokBuf.readInt32LE(0);

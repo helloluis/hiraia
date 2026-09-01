@@ -63,6 +63,14 @@ const RECENT_WINDOW = 5;
  * downgrades an abort to the gap card, so a timeout needs no branch of its own.
  */
 const ASK_TIMEOUT_MS = 12_000;
+
+/**
+ * Ceiling on the WEAK-HIT classify round-trip (`ask`, classifyOnly). Server-side it is one
+ * embed + an in-RAM scan — a few hundred ms — so 4 s is generous; and the failure mode is the
+ * OPPOSITE of the generation's: on timeout we already HAVE a card (the weak local match) and
+ * serve it, so a slow or dead route costs a child nothing but this wait.
+ */
+const CLASSIFY_TIMEOUT_MS = 4_000;
 const VIEWLOG_CAP = 40; // session view-log for the reward recap (topic + timestamp)
 const REWARD_MIN_TOPICS = 3; // don't reward until there's something to celebrate
 
@@ -84,6 +92,15 @@ export interface FeedResponse {
   text: string | null; // the printed card — set on 'generated' only
   /** Localized label of the nearest DEMO-SUBSET card; never set on 'offdomain'. */
   suggestion: string | null;
+  /**
+   * The card's ILLUSTRATION as a slug under /demo/cards — 'generated' only, and null far more
+   * often than not. The SERVER picked it by retrieval from the fact the card states (the curated
+   * fact→slug map, then LaBSE over the image catalog above a measured floor) and only ever
+   * returns art this site actually publishes, so it renders without a fallback. The model was
+   * never asked what to draw. Null prints the card as plain type — the ordinary outcome, and
+   * the shape DemoResponseCard is laid out for.
+   */
+  slug: string | null;
 }
 
 interface CardDemoState {
@@ -288,10 +305,63 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
     // Retrieval-first: a confident local match navigates straight to that card (instant,
     // zero-model), with a "you asked" banner. The card becomes the new feed anchor. This is
     // the common case and it never leaves the browser.
-    const res = searchCards(q, s.current?.id ?? null);
+    // The session's curriculum weights break ties between cards that are equally about the
+    // query — the same weigher the draws use, so a tie resolves toward this visitor's grade.
+    const res = searchCards(q, s.current?.id ?? null, s.weights ?? undefined);
     logDemoMessage('user', q, language);
     if (res.best) {
-      navigateTo(res.best, set, get, language, q);
+      // STRONG hit (the common case): the card is genuinely ABOUT a word the visitor typed —
+      // serve it instantly, zero-model, never leaving the browser, exactly as before.
+      if (!res.weak) {
+        navigateTo(res.best, set, get, language, q);
+        return;
+      }
+      // WEAK hit (searchCards' weak band): no card is really ABOUT the words typed — junk
+      // lands here, but so do in-domain phrasings diluted by function words. Ask the server
+      // ONE model-free question before serving: is this query off-domain, by the SAME
+      // calibrated gate the miss path runs? (classifyOnly: one embed + an in-RAM scan, no
+      // generation.) Mirror of packages/mobile/src/store/cardStore.ts `ask` — keep in sync.
+      //
+      // SAFE DEGRADATION: any non-offdomain answer — including a down route, a timeout, or a
+      // server whose embedder is cold — serves the match, today's behaviour. The consult can
+      // only ever swap a junk serve for the honest science-tutor card, never a card for
+      // silence.
+      const fromPage = s.pageKey;
+      set({ asking: true });
+      let off = false;
+      try {
+        const r = await fetch('/api/demo/card', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: q, language, classifyOnly: true }),
+          signal: AbortSignal.timeout(CLASSIFY_TIMEOUT_MS),
+        });
+        if (r.ok) off = ((await r.json()) as { kind?: string }).kind === 'offdomain';
+      } catch {
+        // Route down/slow → serve the match we already have.
+      }
+      // Same staleness guard as the generation path below: the visitor may have moved on.
+      const cur = get();
+      if (!cur.asking || cur.pageKey !== fromPage) {
+        set({ asking: false });
+        return;
+      }
+      set({ asking: false });
+      if (!off) {
+        navigateTo(res.best, set, get, language, q);
+        return;
+      }
+      // Weak hit AND off-domain: the matched card would have been a wrong answer to a
+      // non-science query. Same card as the miss-path off-domain outcome below — no
+      // suggestion and no anchor, for the reason spelled out there.
+      set({
+        question: null,
+        reward: null,
+        queryBanner: null,
+        response: { query: q, kind: 'offdomain', text: null, slug: null, suggestion: null },
+        responseAnchorId: null,
+        pageKey: cur.pageKey + 1,
+      });
       return;
     }
 
@@ -304,6 +374,7 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
 
     let kind: FeedResponse['kind'] = 'abstain';
     let text: string | null = null;
+    let slug: string | null = null;
     try {
       const r = await fetch('/api/demo/card', {
         method: 'POST',
@@ -312,10 +383,15 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
         signal: AbortSignal.timeout(ASK_TIMEOUT_MS),
       });
       if (r.ok) {
-        const data = (await r.json()) as { kind?: string; text?: string | null };
+        const data = (await r.json()) as {
+          kind?: string;
+          text?: string | null;
+          slug?: string | null;
+        };
         if (data.kind === 'generated' && data.text) {
           kind = 'generated';
           text = data.text;
+          slug = data.slug ?? null;
         } else if (data.kind === 'offdomain') {
           kind = 'offdomain';
         }
@@ -347,6 +423,9 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
         query: q,
         kind,
         text,
+        // Retrieval's pick, above the measured floor and known to be published here — or null,
+        // which prints the card without a picture rather than with a wrong one.
+        slug,
         // `topic` is the card's untranslated English slug-phrase — printing it raw ended every
         // Tagalog gap card on an English fragment ("Pero subukan natin ito: how geckos blend
         // in"). choiceLabel is the localizer every other choice in the feed already goes

@@ -18,39 +18,6 @@ export type Language = 'english' | 'tagalog' | 'cebuano';
 export type GradeLevel = 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 /**
- * Represents a single message in a conversation.
- */
-export interface Message {
-  /** Stable unique id (used to key the SQLite store + per-message compactions). */
-  id?: string;
-  role: 'system' | 'user' | 'assistant';
-  content: string;
-  timestamp?: Date;
-  metadata?: MessageMetadata;
-  /** Slug of a bundled illustration to show with this answer (retrieval-driven:
-   *  the concept the answer was grounded on). Resolved via the mobile IMAGE_MAP. */
-  imageSlug?: string;
-}
-
-/**
- * Metadata attached to messages for tracking and analytics.
- */
-export interface MessageMetadata {
-  language?: Language;
-  gradeLevel?: GradeLevel;
-  topicContext?: string[];
-  visualPromptGenerated?: boolean;
-  /**
-   * Non-conversational message kind. `factoid` = a pre-written "Alam mo ba na…?"
-   * card dropped into the thread on cold start to give the reader something to
-   * look at while the model warms up. `quiz` = a recap of a finished Quiz-mode
-   * round, materialized into the thread on exit so the session is retained. Both
-   * are kept out of the context sent to the model.
-   */
-  kind?: 'factoid' | 'quiz';
-}
-
-/**
  * Result from visual/image generation.
  */
 export interface ImageResult {

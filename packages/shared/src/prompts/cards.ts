@@ -84,18 +84,81 @@ export function buildCardPrompt({ query, facts, grade, language }: CardPromptInp
 /** Temperature for the card generation: low, so the card stays faithful to the retrieved facts. */
 export const CARD_TEMP = 0.3;
 
+/**
+ * STOP SEQUENCE for a card. A card is ONE paragraph, so the first blank line ends it.
+ *
+ * Measured on the CPT'd Qwen3.5-2B (`Cryptopop/hiraia-sft-flagship-2b`, the shipping model):
+ * with no stop it writes the correct card and then degenerates into repeated
+ * "**Pansin:** … **Paliwanag:** …" until the token cap; with this stop it returns 36 tokens,
+ * finish_reason 'stop', 20 words.
+ *
+ * It lives HERE, beside the prompt it terminates, because three callers have to send it and
+ * they were not all sending it: the web route (`stop`), the gate (`stop`), and the phone
+ * (llama.cpp has no per-request `stop` through QVAC — LocalEngine passes `CARD_STOP[0]` as the
+ * load-time `reverse_prompt`). A copy that drifts on any one of them is a path the gate
+ * certifies without testing.
+ */
+export const CARD_STOP: readonly string[] = ['\n\n'];
+
+/**
+ * REASONING BUDGET for a card: 0 = the reasoning channel is OFF.
+ *
+ * The shipping model is a THINKING model. Left on, it strands the answer in
+ * `reasoning_content` and returns an EMPTY `content`, so every card reads as a generation
+ * failure and falls through to the gap card. Servers take this as
+ * `chat_template_kwargs: { enable_thinking: false }`; QVAC takes the same decision as the
+ * numeric `reasoning_budget` (`-1` = on, `0` = off) in `generationParams`. Same switch, two
+ * transports — named once so neither transport can quietly stop flipping it.
+ */
+export const CARD_REASONING_BUDGET = 0;
+
 /** Hard ceiling on a printed card, in characters (ResponseCard's last font tier). */
 export const CARD_MAX_CHARS = 320;
 
 /**
- * Clean a generated card: strip the trailing cue the prompt ends on (the model sometimes
- * echoes it), collapse whitespace, reject a stub, and cap the length the response card is laid
- * out for. Returns null when there is no printable card — the caller then falls through to the
- * honest gap shape rather than printing a fragment.
+ * Clean a generated card: drop the model's own control markup, strip the trailing cue the
+ * prompt ends on (the model sometimes echoes it), collapse whitespace, reject a stub, and cap
+ * the length the response card is laid out for. Returns null when there is no printable card —
+ * the caller then falls through to the honest gap shape rather than printing a fragment.
+ *
+ * TWO kinds of markup are removed, both MEASURED on the shipping model, both of which the app
+ * would otherwise print as literal text (`ResponseCard` renders the string in a plain
+ * `<Text>`; the chat surface's `RichText` was deleted with the rest of chat):
+ *
+ *  1. REASONING TAGS. Even with the reasoning channel disabled the model leaks a bare
+ *     `</think>` at the end of an otherwise-correct card ("… the oxygen we breathe.
+ *     </think>"). A complete `<think>…</think>` block is reasoning and is dropped whole; an
+ *     unterminated `<think>` swallows the rest (it ran to the token cap); a lone `</think>` is
+ *     just a stray tag, so the prose around it is KEPT and only the tag goes.
+ *  2. IMAGE TAGS. The model still emits `[image: …]` (a habit of the retired chat SFT). The
+ *     illustration is retrieval's job on the card path — the picture is resolved from the
+ *     GROUNDED FACT THE CARD STATES (LocalEngine.resolveFactImage / web server/images.ts,
+ *     selected by `attributeCardToFact`), and nothing
+ *     anywhere resolves the tag — so on the card it is junk, and printing it would put a
+ *     stray bracket in a child's sentence.
+ *
+ *     THE FIX FOR THE EMISSION IS TRAINING-SIDE, NOT HERE AND NOT IN THE PROMPT: drop the
+ *     image-tag rows from the SFT mix and the habit goes with them. This strip stays either
+ *     way — it is the product's defence, and it costs one regex — but it is a bandage over a
+ *     dataset, and telling the prompt "do not emit [image:]" would spend tokens teaching the
+ *     model a token it should never have been taught.
+ *
+ * Sanitising them here is the PRODUCT's defence, and it deliberately hides nothing from the
+ * gate: `rawGenerationDefects` (finetuning/eval/cardshape.mts) asserts on the RAW `content`,
+ * before this runs, so the model regressing into either habit is still a red gate.
  */
 export function sanitizeCardAnswer(raw: string): string | null {
   let t = (raw ?? '').trim();
   if (!t) return null;
+  t = t
+    // reasoning channel — complete block, then an unterminated one, then a stray closer
+    .replace(/<think>[\s\S]*?<\/think>/gi, ' ')
+    .replace(/<think>[\s\S]*$/i, ' ')
+    .replace(/<\/think>/gi, ' ')
+    // image control token (closed, then one truncated by the token cap)
+    .replace(/\[image:[^\]]*\]/gi, ' ')
+    .replace(/\[image:[^\]]*$/i, ' ')
+    .trim();
   t = t
     .replace(/^(sagot|answer|tubag)\s*:\s*/i, '')
     .replace(/\s+/g, ' ')

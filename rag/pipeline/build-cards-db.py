@@ -107,22 +107,94 @@ def main():
     # threshold that took a sweep to tune.
     _src = open(os.path.join(ROOT, 'packages/mobile/src/data/cards.ts')).read()
     _i = _src.index('const SEARCH_STOP = new Set([')
-    STOP = set(_re.findall(r"'([^']+)'", _src[_i:_src.index('])', _i)]))
+    _block = _src[_i:_src.index('])', _i)]
+    # Strip the // comments FIRST. One apostrophe in a comment ("the query's idf mass") re-pairs
+    # every quote after it, so the extractor silently returns 74 entries of prose instead of the
+    # word list — the index then ships with a stop list the app does not have, which is the exact
+    # desynchronisation build-apk.sh guards against. Caught in the act while adding the particles.
+    _block = _re.sub(r'//[^\n]*', '', _block)
+    STOP = set(_re.findall(r"'([^']+)'", _block))
+    # A stop word is one lower-case word. Anything else means the parse slipped, and a silently
+    # wrong stop list is far more expensive than a failed build.
+    _bad = sorted(w for w in STOP if not _re.fullmatch(r'[a-z0-9ñ-]+', w))
+    if _bad:
+        raise SystemExit(f'build-cards-db: SEARCH_STOP parse produced non-words: {_bad[:5]}')
+
+    # ...and the same TOKEN PATTERN, parsed out of searchTokens() for the same reason. It used
+    # to be restated here as `[a-z0-9]+` while the app matches `[a-z0-9ñ]+`, so no word
+    # containing an ñ was ever indexed: `pinatubo` reached ffct-33873 and `piñatubo` reached
+    # nothing, and `el niño` / `la niña` — MATATAG weather content — were permanently out of
+    # vocabulary. Two tokenisers that must agree exactly are one declaration, not two.
+    _j = _src.index('function searchTokens(')
+    _pat = _re.search(r'\.match\(/([^/]+)/[a-z]*\)', _src[_j:_src.index('\n}', _j)]).group(1)
+    _TOK = _re.compile(_pat)
+    print(f'  tokeniser: /{_pat}/ (parsed from searchTokens), {len(STOP)} stop words')
 
     def toks(x):
-        return [t for t in _re.findall(r'[a-z0-9]+', (x or '').lower())
+        return [t for t in _TOK.findall((x or '').lower())
                 if len(t) > 2 and t not in STOP]
 
+    # SALIENCE, alongside the postings. A posting used to say only "this card contains this
+    # token", which is field-blind: topic, terms and all three prose languages were unioned into
+    # one bag. That is exactly the evidence searchCards was missing — with no card-side signal it
+    # could only measure how much of the QUERY a card covers, so every card containing a
+    # one-word query tied at 1.000 and the first one scanned won (see searchCards' ABOUTNESS
+    # SHARE). Rank is a property of the (token, card) PAIR, i.e. of a posting, so it is computed
+    # here and shipped beside `ords` rather than rebuilt on the phone: an eager head index over
+    # all the cards is the 427 ms boot cost this file exists to have deleted.
+    #
+    #   rank 0     the token is in the card's `topic`
+    #   rank i+1   the token is in `terms[i]` — `terms` is salience-ordered by the bank, subject
+    #              first, so position IS centrality and it is the only such signal that works in
+    #              all three languages (`topic` is English-only for all but 58 of the cards)
+    #   255        the token occurs only in the prose (PROSE_RANK in cards.ts)
+    # One byte per posting, parallel to `ords`. Exact — no quantisation.
+    PROSE_BYTE = 255
     inv = collections.defaultdict(list)
+    head_rank = collections.defaultdict(dict)  # token -> {card ordinal: rank}
+    # WIDTH, alongside the rank: how many content words the slot that gave a token its rank is
+    # made of. A slot carries 1/(1+rank) of salience and that salience is SHARED by the words
+    # that name it, so `lightning` is all of the topic "what lightning is" and half of the topic
+    # "Volcanic Lightning". Without it every rank-0 match ties and the tie fell through to the
+    # card-size divisor H(|head|), which is not language-neutral: an ffct card carries its
+    # Tagalog and Cebuano synonyms in `terms` (mean head 16.0) where an English-only DepEd card
+    # carries none (mean head 7.6), so the least-annotated card won and "lightning" answered
+    # with *Volcanic Lightning*, "water" with *Subsoil Water*, "araw" with *Sikat ng Araw at
+    # Biodiversity*. Width is a property of the (token, card) PAIR, like rank, so it ships as a
+    # second byte beside `ranks`.
+    head_width = collections.defaultdict(dict)  # token -> {card ordinal: slot width}
+    # Distinct head tokens per card, so cards.ts can normalise by the card's OWN salience mass
+    # H(|head|). A card with a small focused head whose subject IS the query token must beat a
+    # card with twenty terms that mentions it fifth; without this divisor it cannot.
+    head_size = bytearray(len(cards))
+    widest = 0
     for i, c in enumerate(cards):
         f = c.get('fact') or {}
-        t = set(toks(c.get('topic')))
-        for x in (c.get('terms') or []):
-            t.update(toks(x))
+        rank = {}
+        width = {}
+        _topic = set(toks(c.get('topic')))
+        for tok in _topic:
+            if tok not in rank:
+                rank[tok] = 0
+                width[tok] = len(_topic)
+        for j, x in enumerate(c.get('terms') or []):
+            _slot = set(toks(x))
+            for tok in _slot:
+                if rank.get(tok, 1 << 30) > j + 1:
+                    rank[tok] = j + 1
+                    width[tok] = len(_slot)
+        t = set(rank)
         for k in ('en', 'tl', 'bis'):
             t.update(toks(f.get(k)))
         for tok in t:
             inv[tok].append(i)
+        for tok, r in rank.items():
+            head_rank[tok][i] = r
+            head_width[tok][i] = width[tok]
+        widest = max(widest, len(rank))
+        # 255 heads is far past anything in this corpus (the widest is printed below); the cap
+        # is here so the array stays one byte per card and can never overflow silently.
+        head_size[i] = min(len(rank), 255)
     # ---------- the token index, as a flat binary ----------
     # textJaccard compares two cards' whole vocabularies to catch the bank holding the same
     # fact twice in different words ("abaca-fiber-stripping" vs "abaca-fiber-bundle"). It runs
@@ -153,10 +225,29 @@ def main():
         fh.write(buf)
     print(f'  tokens.bin: {len(flat):,} slots, {(len(buf)+4)/1e6:.1f} MB')
 
-    db.execute('CREATE TABLE search_token(token TEXT PRIMARY KEY, df INTEGER, ords TEXT)')
-    db.executemany('INSERT INTO search_token VALUES(?,?,?)',
-                   [(tok, len(ords), ','.join(map(str, ords))) for tok, ords in inv.items()])
-    print(f'  search_token: {len(inv):,} tokens')
+    db.execute('CREATE TABLE search_token('
+               'token TEXT PRIMARY KEY, df INTEGER, ords TEXT, ranks BLOB, widths BLOB)')
+    st_rows = []
+    postings = 0
+    widest_slot = 0
+    for tok, ords in inv.items():
+        hr = head_rank.get(tok) or {}
+        hw = head_width.get(tok) or {}
+        # 254 is the deepest expressible head rank; 255 means "prose only" and must stay
+        # reserved, so a head rank that somehow reached it is clamped rather than aliased.
+        # A width is a DIVISOR, so the prose postings that never read it carry 1, not 0.
+        st_rows.append((tok, len(ords), ','.join(map(str, ords)),
+                        bytes(min(hr[o], 254) if o in hr else PROSE_BYTE for o in ords),
+                        bytes(min(max(hw.get(o, 1), 1), 255) for o in ords)))
+        postings += len(ords)
+        widest_slot = max([widest_slot] + list(hw.values()))
+    db.executemany('INSERT INTO search_token VALUES(?,?,?,?,?)', st_rows)
+    # One row, one blob: |head| per card, addressed by pool ordinal exactly like `ords`.
+    db.execute('CREATE TABLE search_meta(key TEXT PRIMARY KEY, value BLOB)')
+    db.execute('INSERT INTO search_meta VALUES(?,?)', ('head_sizes', bytes(head_size)))
+    print(f'  search_token: {len(inv):,} tokens, {postings:,} postings '
+          f'(+{2*postings/1e6:.1f} MB of salience ranks + slot widths, widest slot {widest_slot})')
+    print(f'  search_meta:  head sizes for {len(cards):,} cards, widest head {widest} tokens')
 
     # ---------- the MCQ bank, keyed the way the interject asks for it ----------
     # questionForFact(factId) is a point lookup, so the table is keyed by factId and only the

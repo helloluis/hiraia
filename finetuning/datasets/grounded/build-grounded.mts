@@ -36,8 +36,10 @@ interface SeedExample {
   assistant: string;
 }
 
-// Auto-compacter instruction — MUST stay byte-identical to LocalEngine.summarize()
-// and finetuning/eval/harness/probe-compaction.mts so train/serve/test all match.
+// Auto-compacter instruction. HISTORICAL: auto-compaction was a CHAT feature (summarize an
+// older assistant turn so it costs fewer tokens in a long thread). Chat is gone, and with it
+// LocalEngine.summarize() and probe-compaction.mts — nothing on device runs this prompt any
+// more. Kept only so a rebuild of this dataset reproduces the rows it already contains.
 const SUMMARIZE_INSTRUCTION =
   'Ibuod ang sumusunod na sagot ng science tutor sa ISA o DALAWANG napakaikling pangungusap, ' +
   'para magamit bilang maikling alaala (memory) sa susunod na usapan. Panatilihin LANG ang ' +

@@ -51,7 +51,7 @@ import {
   type EmphasisStyle,
 } from './posterLayout';
 import { card, fonts } from '../../theme';
-import { Lightbox } from '../Lightbox';
+import { CardPlate, plateStyles } from './CardPlate';
 import { TapTarget, Arrow, CardPrint, Divider, IndexBand, Ticket, cardFrame } from './CardFrame';
 
 // The mascot stamp in the index band (and stepping forward at a fork) is the SAME asset
@@ -378,7 +378,6 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
   const branching = choices.length > 1;
   const [shown, setShown] = useState(instant ? text.length : 0);
   const done = shown >= text.length;
-  const [zoom, setZoom] = useState(false);
   const extrasOpacity = useRef(new Animated.Value(instant ? 1 : 0)).current;
 
   /**
@@ -553,18 +552,6 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
     [done, skip]
   );
 
-  /** Same reasoning for the illustration, which covers a large share of the card. */
-  const zoomTap = useMemo(
-    () =>
-      Gesture.Tap()
-        .maxDistance(DRAG_SLOP)
-        .enabled(done && art != null)
-        .onEnd((_e, ok) => {
-          if (ok) runOnJS(setZoom)(true);
-        }),
-    [done, art]
-  );
-
   /**
    * The card's name, in the two lengths the page needs.
    *
@@ -595,26 +582,18 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
         />
 
         {/*
-        The engraving, matted. The art is greyscale line work on an opaque WHITE bed, so it
-        sits on a white plate inside a peach mat — the mat is what makes it read as a
-        mounted print rather than a pasted-in label. (Printing it straight onto the cream
-        stock needs mix-blend-mode:multiply per card, or a white-knockout pass over the
-        whole 18.8k-image bank; that is the funded pipeline job, not this restyle.)
-        Tap → the same pinch-zoom Lightbox the illustration always had.
+        The engraving, matted — the deck's one way of printing a picture (CardPlate), shared
+        with the generated response card so the two read as cards of the same deck. It fades
+        in with the other extras once the typewriter lands, and the zoom is armed only then:
+        a tap during the reveal means "finish typing".
       */}
         {art != null ? (
-          <Animated.View style={[styles.plate, { opacity: extrasOpacity }]}>
-            <GestureDetector gesture={zoomTap}>
-              <View
-                style={styles.window}
-                accessible
-                accessibilityRole="imagebutton"
-                accessibilityLabel={`Larawan: ${spoken}. I-tap para palakihin.`}
-              >
-                <Image source={art} style={styles.art} resizeMode="contain" />
-              </View>
-            </GestureDetector>
-          </Animated.View>
+          <CardPlate
+            source={art}
+            label={spoken}
+            enabled={done}
+            style={{ opacity: extrasOpacity }}
+          />
         ) : null}
 
         {/* The factoid itself: a printed question/answer pair, or one plain block.
@@ -712,59 +691,20 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
             />
           ) : null}
         </Animated.View>
-
-        {art != null ? (
-          <Lightbox visible={zoom} desc={spoken} source={art} onClose={() => setZoom(false)} />
-        ) : null}
       </View>
     </GestureDetector>
   );
 }
 
 const styles = StyleSheet.create({
-  // ---- the printed illustration: peach mat over a white plate ----
-  plate: {
-    flex: 1,
-    minHeight: 136, // the floor the type ramp is tuned never to breach
-    marginTop: 10,
-    backgroundColor: card.peach,
-    borderWidth: 3,
-    borderColor: card.ink,
-    borderRadius: 7,
-    padding: 6,
-  },
-  window: {
-    flex: 1,
-    // The mockup fills this window with card stock and knocks the art's white bed out with
-    // mix-blend-mode:multiply. RN has no blend modes, so the window is plate white instead
-    // and the art's own white bed continues it seamlessly. (The alternative — a
-    // white-knockout pass over all 18.8k images — is the funded pipeline job, not a
-    // restyle.)
-    backgroundColor: card.plate,
-    borderRadius: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-  },
-  art: { width: '100%', height: '100%' },
-
   // ---- factoid type (sizes come from the tier, inline; family + colour live here) ----
   body: { marginTop: 12 },
 
   // ---- the type plate: what a card with no illustration prints instead ----
-  // Deliberately the SAME mat as the art plate above, at the same size and in the same
-  // place. That is the whole idea: the reader sees a card of the deck, printed differently,
-  // not a card whose picture failed to arrive.
-  typePlate: {
-    flex: 1,
-    minHeight: 136,
-    marginTop: 10,
-    backgroundColor: card.peach,
-    borderWidth: 3,
-    borderColor: card.ink,
-    borderRadius: 7,
-    padding: 6,
-  },
+  // Literally the SAME mat the engraving sits in (plateStyles.mat, shared with CardPlate), at
+  // the same size and in the same place. That is the whole idea: the reader sees a card of the
+  // deck, printed differently, not a card whose picture failed to arrive.
+  typePlate: plateStyles.mat,
   typeInner: {
     flex: 1,
     // Card STOCK, not the plate white the art sits on: type belongs on the card's own paper,

@@ -1,5 +1,12 @@
 # Probing findings — talking to the tutor as a Filipino 5th grader
 
+> **HISTORICAL — the driver described here no longer exists.** `chat-tutor.mts` and
+> `chat-serve.sh` were deleted with the chat surface (the model is a single-turn card writer
+> now). The retrieval findings below are still live: they are codified in
+> `rag/pipeline/hybrid-stress.cases.json` and in `normalizeQuery`/`SEMANTIC_FLOOR`, and the
+> card path routes on exactly those. Boot a standalone embedder with `embed-serve.sh`.
+
+
 **Method:** `chat-tutor.mts` (device-equivalent: base Sailor2-3B + the bundled grounded
 LoRA via `llama-server`, **full hybrid LaBSE retrieval**, **temp 0.8**). Phone not
 connected. ~24 single-turn probes + a few follow-ups, natural kid phrasing (po, txt-speak,

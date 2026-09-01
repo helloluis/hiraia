@@ -1,0 +1,1277 @@
+{
+  "_readme": [
+    "QUERY-ARBITRATION GATE — cases. See README.md in this directory.",
+    "",
+    "Every case asserts BOTH halves: what the arbitration did AND what it did not do.",
+    "  expect=served-existing : search served a card AND that card is in the accept set.",
+    "                           Serving a DIFFERENT card is `served-wrong` — a FAIL, not a pass.",
+    "  expect=generated       : search DECLINED (best === null) AND the model-free route says",
+    "                           `grounded`, i.e. the query reaches generation.",
+    "  expect=gap             : search declined AND the route says gap — and NOT offdomain.",
+    "  expect=offdomain       : search declined AND the route says offdomain — and NOT gap.",
+    "",
+    "Accept sets are pinned THREE ways, all reproducible from packages/mobile/assets/data/cards.db:",
+    "  acceptIds  — an explicit id list, used where the answer is narrow.",
+    "  acceptRule — {topic: <regex>, domain?: <DOMAIN>} matched against the card's own `topic`",
+    "               and `title_en`, materialised into an id list at run time. The runner prints",
+    "               the resulting count so an accept set that silently empties is visible.",
+    "  acceptProse — {lang, all: [<regex>...]} matched against the CARD'S OWN BODY TEXT — for answers",
+    "               that live only in the prose (ffct-35303's text IS 'How hot is a single bolt of",
+    "               lightning?' while its topic is just 'Weather/Lightning').",
+    "`accept=N` in the notes below is the count that materialised on the r2 baseline run (2026-08-31);",
+    "the runner prints the live count next to every result, so drift is visible rather than assumed.",
+    "",
+    "`why` is the corpus evidence, never intuition: each one names the card or the fact that",
+    "settles the expectation. `no card` was established by BOTH a topic/terms probe AND a LIKE",
+    "over card prose in en+tl+bis; generated-vs-gap was then decided by the 50,279-row fact bank.",
+    "",
+    "r2 additions:",
+    "  configLang   — the APP's configured language (default 'tagalog'). LocalEngine.answerQuery takes its retrieval",
+    "                 language from config.language, NOT from the query, so `lang` alone modelled a setting that only",
+    "                 exists if the child switched the app. Three verdicts move on this.",
+    "  acceptProse  — accept set materialised from the CARD'S OWN PROSE (all regexes must match card_text.<lang>), for",
+    "                 answers that live in the body text and never in the topic/title (how hot lightning is).",
+    "  aspirational — the expectation is right for the PRODUCT but unreachable for the current machinery (it would need a",
+    "                 concept-level coverage check). Reported separately and EXCLUDED from the green condition, so the",
+    "                 gate cannot silently demand an unbuilt feature.",
+    "  searchDuplicateOf — this sentence reduces to the same token set as that term case, so the two are the SAME test",
+    "                 for the search half. Excluded from the by-form table; still earns its place on the model-free half.",
+    "  buckets `chitchat` (decline politely OR teach the science the child named — never a random card) and",
+    "  `tokenisation` (a compound split or joined, which is not a spelling error and must not be filed as one).",
+    "",
+    "Accept regexes carry their own anchors. Unanchored, /rock/ matched 38 ROCKET cards, /nail/ matched 130 SNAIL",
+    "cards, /mayon/ matched mayonnaise and /pulse/ matched nerve impulses — a wrong card would have scored PASS, the",
+    "exact failure this gate exists to make visible. A LEADING \\b is added only where the stem has a false friend:",
+    "\\bvolcan would throw away nine legitimate stratovolcano cards and \\bgravity\\b throws away gravity_tool."
+  ],
+  "meta": {
+    "corpus": "packages/mobile/assets/data/cards.db — 46,421 cards / 50,279 facts",
+    "pool": "packages/mobile/src/generated/cardsIndex.generated.json",
+    "designed": "2026-08-31",
+    "expectedVerdict": "RED. The suite was designed before the fix; a red baseline is the deliverable.",
+    "revised": "2026-08-31 (r2 — review corrections applied to the SUITE, not to the routing strategy)",
+    "configLangDefault": "tagalog — LocalEngine.answerQuery routes on config.language (DEFAULT_LANGUAGE), not on the query's language. `lang` documents the QUERY; `configLang` overrides the app setting.",
+    "holdout": "cases-holdout.json — sealed second half, same buckets, different strings. The gate is green only when BOTH halves are."
+  },
+  "cases": [
+    {
+      "id": "has-term-bulkan",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "bulkan",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "volcan|bulkan",
+        "domain": "EARTH_SPACE"
+      },
+      "why": "46 EARTH_SPACE cards whose subject IS volcanoes — ffct-28861 'types of volcanoes', ffct-05647 'active dormant and extinct volcanoes', ffct-33105. accept=375"
+    },
+    {
+      "id": "has-term-lindol",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "lindol",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "earthquake|seismic|fault line|\\bmagnitude\\b",
+        "domain": "EARTH_SPACE"
+      },
+      "why": "ffct-30554 topic is literally 'what an earthquake is'; the whole EARTH_SPACE quake cluster carries Tagalog 'lindol' in its tl prose. accept=245"
+    },
+    {
+      "id": "has-term-earthquake",
+      "bucket": "has-card",
+      "lang": "english",
+      "form": "term",
+      "query": "earthquake",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "earthquake|seismic|fault line|\\bmagnitude\\b",
+        "domain": "EARTH_SPACE"
+      },
+      "why": "English surface form of the same cluster — same accept set as `lindol`, so the two forms are directly comparable. accept=245"
+    },
+    {
+      "id": "has-term-linog",
+      "bucket": "has-card",
+      "lang": "cebuano",
+      "form": "term",
+      "query": "linog",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "earthquake|seismic|fault line|\\bmagnitude\\b",
+        "domain": "EARTH_SPACE"
+      },
+      "why": "Cebuano for earthquake (genuinely Cebuano, not respelled Tagalog); bis prose verified on ffct-24088 and ffct-29263. accept=245"
+    },
+    {
+      "id": "has-term-tsunami",
+      "bucket": "has-card",
+      "lang": "english",
+      "form": "term",
+      "query": "tsunami",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\btsunami",
+        "domain": "EARTH_SPACE"
+      },
+      "why": "27 EARTH_SPACE tsunami cards including ffct-29270, whose topic is 'what a tsunami is'. accept=97"
+    },
+    {
+      "id": "has-term-photosynthesis",
+      "bucket": "has-card",
+      "lang": "english",
+      "form": "term",
+      "query": "photosynthesis",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "photosynthes|plants make (their )?(own )?food|chlorophyll|plants take in carbon dioxide"
+      },
+      "why": "ffct-11099 has topic 'photosynthesis' and gives the full definition; ffct-03870, ffct-00575. accept=116"
+    },
+    {
+      "id": "has-term-bagyo",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "bagyo",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\btyphoon|tropical cyclone|storm surge",
+        "domain": "EARTH_SPACE"
+      },
+      "why": "ffct-30573 'what a typhoon is', ffct-29325 'how typhoons form'; the typhoon cluster is Tagalog-tagged. accept=252"
+    },
+    {
+      "id": "has-term-kidlat",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "kidlat",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "^(lightning|thunder)|\\blightning is\\b|\\bthunder is\\b|lightning rod|how hot is lightning|lightning bolt|hotter than the sun"
+      },
+      "why": "ffct-22608 'lightning is a giant electric spark', ffct-22237. accept=144"
+    },
+    {
+      "id": "has-term-kilat",
+      "bucket": "has-card",
+      "lang": "cebuano",
+      "form": "term",
+      "query": "kilat",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "^(lightning|thunder)|\\blightning is\\b|\\bthunder is\\b|lightning rod|how hot is lightning|lightning bolt|hotter than the sun"
+      },
+      "why": "Cebuano for lightning; same cluster, same accept set as `kidlat`. accept=144"
+    },
+    {
+      "id": "has-term-puso",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "puso",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\bhearts?\\b(?!\\s+of\\s+palm)|heartbeat|pacemaker|pulse rate",
+        "domain": "LIVING_THINGS"
+      },
+      "why": "ffct-00263 'Human Heart Function', ffct-00037 pacemaker. REGRESSION PROTECTION: this one is correct today. accept=156 Accept rule word-bounded and `heart of palm` excluded (ubod/coconut cards used to qualify)."
+    },
+    {
+      "id": "has-term-kasingkasing",
+      "bucket": "has-card",
+      "lang": "cebuano",
+      "form": "term",
+      "query": "kasingkasing",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\bhearts?\\b(?!\\s+of\\s+palm)|heartbeat|pacemaker|pulse rate",
+        "domain": "LIVING_THINGS"
+      },
+      "why": "Cebuano for heart; the heart cluster carries bis 'kasingkasing'. REGRESSION PROTECTION. accept=156"
+    },
+    {
+      "id": "has-term-bituon",
+      "bucket": "has-card",
+      "lang": "cebuano",
+      "form": "term",
+      "query": "bituon",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "^(a |the )?stars?\\b|stars are|star colors|constellation|shooting stars",
+        "domain": "EARTH_SPACE"
+      },
+      "why": "Cebuano for star: ffct-29506 'stars are giant balls of hot gas', ffct-29461. POLYSEMY TRAP — 'bituon sa dagat' is a starfish and shares the token. accept=233"
+    },
+    {
+      "id": "has-term-dinosaur",
+      "bucket": "has-card",
+      "lang": "english",
+      "form": "term",
+      "query": "dinosaur",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\bdinosaur",
+        "domain": "LIVING_THINGS"
+      },
+      "why": "ffct-00261, ffct-11427 'when dinosaurs lived', ffct-05132. REGRESSION PROTECTION. accept=63"
+    },
+    {
+      "id": "has-term-dinosauro",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "dinosauro",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\bdinosaur",
+        "domain": "LIVING_THINGS"
+      },
+      "why": "SAME topic and SAME accept set as `dinosaur`, different surface form — the pair exists to expose a form-dependent outcome. accept=63"
+    },
+    {
+      "id": "has-term-bahaghari",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "bahaghari",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\brainbow"
+      },
+      "why": "ffct-27950 'how a rainbow forms', ffct-18867 'how many colors in a rainbow'. accept=71"
+    },
+    {
+      "id": "has-term-pangolin",
+      "bucket": "has-card",
+      "lang": "english",
+      "form": "term",
+      "query": "pangolin",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\bpangolin|\\bbalintong",
+        "domain": "LIVING_THINGS"
+      },
+      "why": "ffct-00076, ffct-00100, ffct-00337. REGRESSION PROTECTION. accept=48"
+    },
+    {
+      "id": "has-term-balintong",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "balintong",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\bpangolin|\\bbalintong",
+        "domain": "LIVING_THINGS"
+      },
+      "why": "Tagalog name for pangolin, same cluster. REGRESSION PROTECTION — the Tagalog form resolves correctly here, unlike `dinosauro`. accept=48"
+    },
+    {
+      "id": "has-term-pluto",
+      "bucket": "has-card",
+      "lang": "english",
+      "form": "term",
+      "query": "pluto",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\bpluto\\b|dwarf planet",
+        "domain": "EARTH_SPACE"
+      },
+      "why": "ffct-28859 'why Pluto is not a planet', ffct-29295. accept=41"
+    },
+    {
+      "id": "has-term-bakuna",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "bakuna",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\bvaccin|\\bimmun|\\bantibod",
+        "domain": "LIVING_THINGS"
+      },
+      "why": "ffct-01018 'Vaccines train the body', ffct-13803. REGRESSION PROTECTION. accept=189"
+    },
+    {
+      "id": "has-term-mayon",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "mayon",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\bmayon\\b"
+      },
+      "why": "ffct-30618 'Mayon as most active Philippine volcano', ffct-19778. SOFT: the card the baseline serves (ffct-05647) does NAME Mayon and Taal in its prose, so a gate author may legitimately widen this accept set. accept=36 Rule word-bounded: unanchored `mayon` also matched two MAYONNAISE cards."
+    },
+    {
+      "id": "has-term-gravity",
+      "bucket": "has-card",
+      "lang": "english",
+      "form": "term",
+      "query": "gravity",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "gravity|gravitational",
+        "domain": "FORCE_MOTION_ENERGY"
+      },
+      "why": "ffct-21860's topic is literally 'gravity' ('Gravity is the force that pulls objects toward Earth's center'); ffct-22408, ffct-22423, ffct-22434. accept=328"
+    },
+    {
+      "id": "has-term-grabidad",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "grabidad",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "gravity|gravitational",
+        "domain": "FORCE_MOTION_ENERGY"
+      },
+      "why": "Same cluster, Tagalog surface form. accept=328"
+    },
+    {
+      "id": "has-term-araw",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "araw",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "^(the )?suns?\\b|\\bsun is (a|the)\\b|why the sun|how the sun|solar system|day and night|daytime|sunrise|sunset|sun'?s (surface|core|energy)"
+      },
+      "why": "POLYSEMY (sun/day): BOTH senses are stocked, so a card ABOUT the Sun or about day-and-night is correct. Rule narrowed from any card that merely MENTIONS the sun (920, incl. 'mud protects carabao skin from the sun') to cards whose subject IS the sun / the solar system / the day-night cycle — otherwise a random tie-winner would score PASS and hide the very bug this gate exists for. accept=409"
+    },
+    {
+      "id": "has-term-bato",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "bato",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "^(the )?rocks?\\b|rock cycle|\\brocks? (are|is|form)\\b|igneous|sedimentary|metamorphic|^minerals?\\b|what minerals|^kidneys?\\b|kidneys? (are|is|filter|work)|kidney stone"
+      },
+      "why": "POLYSEMY (rock/kidney): both senses stocked (ffct-00254 kidney; the rock-cycle cluster). Rule word-bounded and subject-anchored: the unanchored version admitted 38 ROCKET cards ('rock' in 'rocket'), stonefish and gallstones, and 4 of those were reachable on the token `bato` — ffct-11782 'stonefish camouflage' (tl 'kamukha ng bato') is exactly the false-similarity card this gate exists to catch. accept=363"
+    },
+    {
+      "id": "has-sent-what-is-gravity",
+      "bucket": "has-card",
+      "lang": "english",
+      "form": "sentence",
+      "query": "what is gravity",
+      "searchDuplicateOf": "has-term-gravity",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "gravity|gravitational",
+        "domain": "FORCE_MOTION_ENERGY"
+      },
+      "why": "MEASURED FAILURE (served mangroves on the web subset). ffct-21860 answers it verbatim. accept=328"
+    },
+    {
+      "id": "has-sent-ano-ang-grabidad",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "ano ang grabidad",
+      "searchDuplicateOf": "has-term-grabidad",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "gravity|gravitational",
+        "domain": "FORCE_MOTION_ENERGY"
+      },
+      "why": "Same, Tagalog. accept=328"
+    },
+    {
+      "id": "has-sent-what-is-a-tsunami",
+      "bucket": "has-card",
+      "lang": "english",
+      "form": "sentence",
+      "query": "what is a tsunami",
+      "searchDuplicateOf": "has-term-tsunami",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\btsunami",
+        "domain": "EARTH_SPACE"
+      },
+      "why": "MEASURED FAILURE (served mangroves). ffct-29270's topic is 'what a tsunami is'. accept=97"
+    },
+    {
+      "id": "has-sent-ano-ang-tsunami",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "ano ang tsunami",
+      "searchDuplicateOf": "has-term-tsunami",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\btsunami",
+        "domain": "EARTH_SPACE"
+      },
+      "why": "Same, Tagalog. accept=97"
+    },
+    {
+      "id": "has-sent-how-hot-is-lightning",
+      "bucket": "has-card",
+      "lang": "english",
+      "form": "sentence",
+      "query": "how hot is lightning",
+      "expect": "served-existing",
+      "acceptProse": {
+        "lang": "en",
+        "all": [
+          "\\blightning\\b",
+          "30,?000|50,?000|hotter than the\\b[^.]{0,40}\\bsun"
+        ]
+      },
+      "why": "MEASURED FAILURE (0.802 on 'fireflies are beetles' on the web subset). ffct-22623's text is literally 'How hot is lightning, and what can it do?'. Accept set is MATERIALISED FROM PROSE (en text matches /lightning/ AND a temperature claim), which is how the set was found in the first place: the hand-typed 12-id list omitted ffct-35303 ('How hot is a single bolt of lightning?'), ffct-29825 and ffct-31541, so a correct fix that broke the 1.000 tie toward the card whose text IS the query would have been scored served-wrong. accept=15"
+    },
+    {
+      "id": "has-sent-gaano-kainit-ang-kidlat",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "gaano kainit ang kidlat",
+      "expect": "served-existing",
+      "acceptProse": {
+        "lang": "en",
+        "all": [
+          "\\blightning\\b",
+          "30,?000|50,?000|hotter than the\\b[^.]{0,40}\\bsun"
+        ]
+      },
+      "why": "Same prose-derived accept set, Tagalog phrasing — which SUCCEEDS where the English phrasing fails. The pair is the evidence that the outcome is phrasing-dependent, not knowledge-dependent. accept=15"
+    },
+    {
+      "id": "has-sent-why-is-the-sky-blue",
+      "bucket": "has-card",
+      "lang": "english",
+      "form": "sentence",
+      "query": "why is the sky blue",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "sky is blue|sky blue|blue light scatter|rayleigh|sky colou?r|why the sky"
+      },
+      "why": "ffct-30565, ffct-31273, ffct-29849, ffct-25296 — the Rayleigh-scattering cluster. accept=20"
+    },
+    {
+      "id": "has-sent-bakit-asul-ang-langit",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "bakit asul ang langit",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "sky is blue|sky blue|blue light scatter|rayleigh|sky colou?r|why the sky"
+      },
+      "why": "Same, Tagalog. accept=20"
+    },
+    {
+      "id": "has-sent-ngano-asul-ang-langit",
+      "bucket": "has-card",
+      "lang": "cebuano",
+      "form": "sentence",
+      "query": "ngano nga asul ang langit",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "sky is blue|sky blue|blue light scatter|rayleigh|sky colou?r|why the sky"
+      },
+      "why": "Same, Cebuano. accept=20"
+    },
+    {
+      "id": "has-sent-unsa-ang-bulkan",
+      "bucket": "has-card",
+      "lang": "cebuano",
+      "form": "sentence",
+      "query": "unsa ang bulkan",
+      "searchDuplicateOf": "has-term-bulkan",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "volcan|bulkan",
+        "domain": "EARTH_SPACE"
+      },
+      "why": "Cebuano; the volcano cluster carries bis prose. accept=375"
+    },
+    {
+      "id": "has-sent-ano-ang-lindol",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "ano ang lindol",
+      "searchDuplicateOf": "has-term-lindol",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "earthquake|seismic|fault line",
+        "domain": "EARTH_SPACE"
+      },
+      "why": "ffct-30554 'what an earthquake is'. accept=213"
+    },
+    {
+      "id": "has-sent-ngano-adunay-linog",
+      "bucket": "has-card",
+      "lang": "cebuano",
+      "form": "sentence",
+      "query": "ngano nga adunay linog",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "earthquake|seismic|\\bfault|plate boundar"
+      },
+      "why": "Cebuano 'why are there earthquakes'; ffct-29751 'Earthquakes happen at plate boundaries'. accept=352"
+    },
+    {
+      "id": "has-sent-paano-pagkain-halaman",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "paano gumagawa ng pagkain ang halaman",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "photosynthes|plants make (their )?(own )?food|chlorophyll|plants take in carbon dioxide"
+      },
+      "why": "ffct-00575's topic is 'plants make their own food'. accept=116"
+    },
+    {
+      "id": "has-sent-how-do-plants-make-food",
+      "bucket": "has-card",
+      "lang": "english",
+      "form": "sentence",
+      "query": "how do plants make their own food",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "photosynthes|plants make (their )?(own )?food|chlorophyll|plants take in carbon dioxide"
+      },
+      "why": "Same, English. accept=116"
+    },
+    {
+      "id": "has-sent-why-pluto-not-planet",
+      "bucket": "has-card",
+      "lang": "english",
+      "form": "sentence",
+      "query": "why is pluto not a planet",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\bpluto\\b|dwarf planet",
+        "domain": "EARTH_SPACE"
+      },
+      "why": "ffct-28859's topic IS 'why Pluto is not a planet'. REGRESSION PROTECTION. accept=41"
+    },
+    {
+      "id": "has-sent-what-makes-heart-beat",
+      "bucket": "has-card",
+      "lang": "english",
+      "form": "sentence",
+      "query": "what makes your heart beat",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\bhearts?\\b(?!\\s+of\\s+palm)|heartbeat|pacemaker|\\bpulse\\b",
+        "domain": "LIVING_THINGS"
+      },
+      "why": "ffct-00037 'Heart's own electrical pacemaker keeps it beating'. REGRESSION PROTECTION. accept=160"
+    },
+    {
+      "id": "has-sent-how-do-typhoons-form",
+      "bucket": "has-card",
+      "lang": "english",
+      "form": "sentence",
+      "query": "how do typhoons form",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\btyphoon|tropical cyclone",
+        "domain": "EARTH_SPACE"
+      },
+      "why": "ffct-29325's topic IS 'how typhoons form'. accept=230"
+    },
+    {
+      "id": "has-sent-paano-nabubuo-bahaghari",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "paano nabubuo ang bahaghari",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\brainbow"
+      },
+      "why": "ffct-27950 'how a rainbow forms'. REGRESSION PROTECTION. accept=71"
+    },
+    {
+      "id": "has-sent-how-tall-is-everest",
+      "bucket": "has-card",
+      "lang": "english",
+      "form": "sentence",
+      "query": "how tall is mount everest",
+      "expect": "served-existing",
+      "acceptIds": [
+        "ffct-33760",
+        "ffct-34670",
+        "ffct-31472",
+        "ffct-30036"
+      ],
+      "why": "ffct-33760 and ffct-34670 both state 8,849 m. Found ONLY by a prose search — the topic and terms fields never carry the height, which is why an id list and not a topic rule."
+    },
+    {
+      "id": "has-sent-ano-ginagawa-bakuna",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "ano ang ginagawa ng bakuna",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\bvaccin|\\bimmun|\\bantibod",
+        "domain": "LIVING_THINGS"
+      },
+      "why": "ffct-01018 'Vaccines train the body'. REGRESSION PROTECTION. accept=189"
+    },
+    {
+      "id": "has-sent-rice-first-aid-pilay",
+      "bucket": "has-card",
+      "lang": "cebuano",
+      "form": "sentence",
+      "query": "unsa ang RICE first aid para sa pilay",
+      "expect": "served-existing",
+      "acceptIds": [
+        "ffct-24083"
+      ],
+      "why": "RECLASSIFIED from borderline during design: the topic-word probe said absent, but the PROSE probe found ffct-24083, a RICE/sprain card carrying the Cebuano terms pilay/kapilay. ffct-01848 was DROPPED from the accept set on re-check: it defines a sprain and never mentions RICE, so accepting it would let a card that does not answer the question pass. Kept as a documented method caveat — a topic probe alone produces false absences."
+    },
+    {
+      "id": "has-sent-bakit-hindi-masakit-gupit",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "bakit hindi masakit ang gupit ng buhok",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\bhairs?\\b|haircut|\\bnails?\\b|fingernail|toenail",
+        "domain": "LIVING_THINGS"
+      },
+      "why": "RECLASSIFIED from borderline during design: ffct-02110 'Cutting hair and nails does not hurt' answers it exactly. Rule word-bounded — unanchored /hair|nail/ admitted 130 SNAIL and maidenhair-fern cards, so a snail card scored PASS. accept=81"
+    },
+    {
+      "id": "has-sent-lightning-before-thunder",
+      "bucket": "has-card",
+      "lang": "english",
+      "form": "sentence",
+      "query": "why do we see lightning before we hear thunder",
+      "expect": "served-existing",
+      "why": "FIVE content tokens after SEARCH_STOP {see, lightning, before, hear, thunder} — the denominator effect the one-token sentences cannot measure. Accept set materialised FROM PROSE: ffct-22610's text is 'Why do we see lightning before hearing thunder?' and ffct-21949's is the query almost verbatim ('Light is the fastest thing in the universe, which is why we see lightning before we hear the thunder') — yet ffct-21949's TOPIC is 'light is the fastest thing', so a topic rule would have scored the right card as served-wrong. accept=52",
+      "acceptProse": {
+        "lang": "en",
+        "all": [
+          "\\blightning\\b",
+          "\\bthunder\\b",
+          "\\bsee\\b|\\bhear\\b|before|after|faster|slower|speed"
+        ]
+      }
+    },
+    {
+      "id": "has-sent-bakit-nagbabago-hugis-buwan",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "bakit nagbabago ang hugis ng buwan",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "moon phases?|phases of the moon|why the moon changes|moon changes shape|lunar phase",
+        "domain": "EARTH_SPACE"
+      },
+      "why": "Three content tokens {nagbabago, hugis, buwan}. ffct-30569's topic is literally 'why the moon changes shape'; ffct-28854 'phases of the moon'. accept=34"
+    },
+    {
+      "id": "has-sent-paano-huminga-isda",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "paano huminga ang isda sa ilalim ng tubig",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "fish breathe|breathe (through|with) gills|gills (extract|filter|take)",
+        "domain": "LIVING_THINGS"
+      },
+      "why": "Four content tokens {huminga, isda, ilalim, tubig}, two of them ('tubig', 'isda') among the densest in the deck — the exact shape that lets a card carrying the common word outrank the topic cards. ffct-00005 'fish breathe through gills'. accept=17"
+    },
+    {
+      "id": "has-sent-ngano-pula-ang-dugo",
+      "bucket": "has-card",
+      "lang": "cebuano",
+      "form": "sentence",
+      "query": "ngano nga pula ang atong dugo",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "hemoglobin|why blood is red",
+        "domain": "LIVING_THINGS"
+      },
+      "why": "Cebuano, three content tokens {pula, atong, dugo} — 'atong' (our) is a content token to the tokeniser and joins the idf denominator. ffct-05199 'hemoglobin and why blood is red', ffct-14486. A deliberately TIGHT accept set (5) against a 46,421-card pool. accept=5"
+    },
+    {
+      "id": "has-sent-how-does-water-cycle-work",
+      "bucket": "has-card",
+      "lang": "english",
+      "form": "sentence",
+      "query": "how does the water cycle work",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\bwater cycle\\b",
+        "domain": "MATTER|EARTH_SPACE"
+      },
+      "why": "Three content tokens {water, cycle, work}, all three dense. ffct-14954 'water cycle link', ffct-16236 'evaporation and condensation drive the water cycle'. accept=122"
+    },
+    {
+      "id": "has-sent-sanhi-ng-lindol-pilipinas",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "ano ang nagiging sanhi ng lindol sa pilipinas",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "earthquake|seismic|\\bfault|plate boundar"
+      },
+      "why": "Four content tokens {nagiging, sanhi, lindol, pilipinas}; 'pilipinas' is one of the densest tokens in the deck, so the topic word is a minority of the query's idf mass. ffct-29751 'Earthquakes happen at plate boundaries'. accept=352"
+    },
+    {
+      "id": "has-sent-ngano-adunay-bagyo-pilipinas",
+      "bucket": "has-card",
+      "lang": "cebuano",
+      "form": "sentence",
+      "query": "ngano nga adunay bagyo sa pilipinas",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\btyphoon|tropical cyclone|storm surge",
+        "domain": "EARTH_SPACE"
+      },
+      "why": "Cebuano, three content tokens {adunay, bagyo, pilipinas}. ffct-29325 'how typhoons form', ffct-30573 'what a typhoon is'; the typhoon cluster carries bis prose. accept=252"
+    },
+    {
+      "id": "xlang-en-query-tl-config-volcano",
+      "bucket": "has-card",
+      "lang": "english",
+      "configLang": "tagalog",
+      "form": "sentence",
+      "query": "what is a volcano",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "volcan|bulkan",
+        "domain": "EARTH_SPACE"
+      },
+      "why": "CROSS-CONFIG control: search is language-BLIND (one index over tl+en+bis), so an English question in a Tagalog app must still reach the volcano cluster. ffct-28861 'types of volcanoes'. accept=375"
+    },
+    {
+      "id": "bord-gap-antimatter",
+      "bucket": "borderline",
+      "lang": "english",
+      "form": "term",
+      "query": "antimatter",
+      "expect": "gap",
+      "why": "0 hits in 46,421 cards AND 0 in 50,279 facts; atoms / particles / plasma cards are dense adjacency, so the cosine will not be trivially low."
+    },
+    {
+      "id": "bord-gap-ano-ang-antimatter",
+      "bucket": "borderline",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "ano ang antimatter",
+      "searchDuplicateOf": "bord-gap-antimatter",
+      "expect": "gap",
+      "why": "Same topic in sentence form. Paired with the term deliberately: the wrapper words change what the off-domain arm sees even though the content word is identical."
+    },
+    {
+      "id": "bord-gap-narwhal",
+      "bucket": "borderline",
+      "lang": "english",
+      "form": "term",
+      "query": "narwhal",
+      "expect": "gap",
+      "why": "0 cards / 0 facts, but whale + dolphin + tusk cards are dense adjacency. Named in the RagStore source as exactly the word a cosine-free classifier would mislabel."
+    },
+    {
+      "id": "bord-gap-unsa-ang-narwhal",
+      "bucket": "borderline",
+      "lang": "cebuano",
+      "form": "sentence",
+      "query": "unsa ang narwhal",
+      "searchDuplicateOf": "bord-gap-narwhal",
+      "expect": "gap",
+      "why": "Same, Cebuano sentence form."
+    },
+    {
+      "id": "bord-gap-capybara",
+      "bucket": "borderline",
+      "lang": "english",
+      "form": "term",
+      "query": "capybara",
+      "expect": "gap",
+      "why": "0 cards / 0 facts; rodent / mammal adjacency."
+    },
+    {
+      "id": "bord-gap-quantum-computer",
+      "bucket": "borderline",
+      "lang": "english",
+      "form": "term",
+      "query": "quantum computer",
+      "expect": "gap",
+      "aspirational": true,
+      "why": "ASPIRATIONAL (not gating). 'quantum comput' as a phrase is 0 cards / 0 facts, but `quantum` alone is 15 cards / 3 facts and `computer` 70 facts, so lexEmpty is false and `gap` is unreachable without concept-level coverage. Baseline serves the photoelectric effect at 0.806."
+    },
+    {
+      "id": "bord-gap-string-theory",
+      "bucket": "borderline",
+      "lang": "english",
+      "form": "term",
+      "query": "string theory",
+      "expect": "gap",
+      "aspirational": true,
+      "why": "ASPIRATIONAL (not gating). 0 cards for the phrase, but both head tokens are dense (`string` 135, `theory` 82 in the card index), so the route returns `generated`. Baseline serves 'who proved the germ theory of disease' at 0.622 — on the token 'theory' alone."
+    },
+    {
+      "id": "bord-gap-solar-sail",
+      "bucket": "borderline",
+      "lang": "english",
+      "form": "term",
+      "query": "solar sail",
+      "expect": "gap",
+      "aspirational": true,
+      "why": "ASPIRATIONAL (not gating). 0 cards / 0 facts for the phrase; BOTH tokens are dense in the deck (`solar` 566, `sail` 21) — a pure token-overlap trap — so lexEmpty is false and `gap` is unreachable. Measured: generated under both tl and en config."
+    },
+    {
+      "id": "bord-gap-hurricane-katrina",
+      "bucket": "borderline",
+      "lang": "english",
+      "form": "term",
+      "query": "hurricane katrina",
+      "expect": "gap",
+      "aspirational": true,
+      "why": "ASPIRATIONAL (not gating). The head token IS in the bank — 30 cards and 30 facts mention hurricanes (df 32 in the card index) — so `lexEmpty` is false and the model-free route can only ever answer `generated`. Reaching `gap` needs a CONCEPT-level coverage check that does not exist; the earlier note '0 cards / 0 facts' was wrong for the head token and is corrected here. Only `katrina` is absent (0/0)."
+    },
+    {
+      "id": "bord-gen-sigarilyas",
+      "bucket": "borderline",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "sigarilyas",
+      "expect": "generated",
+      "why": "0 hits in card prose; uncarded fact sigarilyas-winged-bean-g5 grounds it. Baseline serves ffct-10860 'garden vegetables we eat', which merely LISTS sigarilyas among Bahay Kubo vegetables — it does not say what one is."
+    },
+    {
+      "id": "bord-gen-sineguelas",
+      "bucket": "borderline",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "sineguelas",
+      "expect": "generated",
+      "why": "0 cards; uncarded fact sineguelas-spanish-plum-g5."
+    },
+    {
+      "id": "bord-gen-aratiles",
+      "bucket": "borderline",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "aratiles",
+      "expect": "generated",
+      "why": "0 cards; uncarded fact aratiles-fruit-g4."
+    },
+    {
+      "id": "bord-gen-barracuda",
+      "bucket": "borderline",
+      "lang": "english",
+      "form": "term",
+      "query": "barracuda",
+      "expect": "generated",
+      "why": "0 cards; uncarded fact barracuda-rumpe-g6; reef-fish adjacency is dense."
+    },
+    {
+      "id": "bord-gen-crispr",
+      "bucket": "borderline",
+      "lang": "english",
+      "form": "term",
+      "query": "crispr",
+      "expect": "generated",
+      "why": "0 cards; EXACTLY ONE uncarded fact genetics-crispr-basics-g9, with heavy DNA/gene adjacency. The thinnest legitimate grounding in the suite."
+    },
+    {
+      "id": "bord-gen-deciduous-tree",
+      "bucket": "borderline",
+      "lang": "english",
+      "form": "sentence",
+      "query": "what is a deciduous tree",
+      "expect": "generated",
+      "why": "0 cards carry 'deciduous'; uncarded fact deciduous-trees-lose-leaves-g5. Baseline serves ffct-02466 'talisay sheds red leaves to save water' — the concept exists under a LOCAL name but nothing defines the word."
+    },
+    {
+      "id": "bord-gen-pangulo-ng-pilipinas",
+      "bucket": "borderline",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "sino ang pangulo ng pilipinas",
+      "expect": "generated",
+      "why": "PH_CIVICS is 2,849 facts with ZERO cards — the card/fact id spaces are disjoint there. ph-executive-president-g5 grounds it. Baseline serves a clownfish card at 0.999."
+    },
+    {
+      "id": "bord-gen-ilang-rehiyon",
+      "bucket": "borderline",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "ilang rehiyon ang pilipinas",
+      "expect": "generated",
+      "why": "Uncarded fact ph-regions-18-g6. Baseline serves 'monitor lizards have many local names in the Philippines'."
+    },
+    {
+      "id": "bord-gen-kabisera-ilocos-norte",
+      "bucket": "borderline",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "ano ang kabisera ng ilocos norte",
+      "expect": "generated",
+      "why": "'kabisera' has 0 hits in cards; uncarded capital-ilocos-norte-laoag-g6 (PH_GEOGRAPHY = 3,019 uncarded facts)."
+    },
+    {
+      "id": "bord-gen-kulay-ng-watawat",
+      "bucket": "borderline",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "ano ang ibig sabihin ng kulay ng watawat",
+      "expect": "generated",
+      "why": "Uncarded ph-symbol-flag-meaning-g4. All 13 cards mentioning flag/watawat were read: EVERY one is about PULLEYS on a flagpole. The textbook borderline — shared vocabulary, wrong subject. Baseline serves ffct-36726 at 0.948."
+    },
+    {
+      "id": "xlang-en-query-tl-config-pterodactyl",
+      "bucket": "borderline",
+      "lang": "english",
+      "configLang": "tagalog",
+      "form": "term",
+      "query": "pterodactyl",
+      "expect": "gap",
+      "why": "CROSS-CONFIG: an English word typed into an app configured in Tagalog (the shipped default) — the common real-world state, and the one LocalEngine.answerQuery actually runs, since it takes its retrieval language from `config.language` and not from the query. 0 cards / 0 facts, named in the RagStore source as science the OOV arm must not reject."
+    },
+    {
+      "id": "xlang-bis-query-tl-config-aratiles",
+      "bucket": "borderline",
+      "lang": "cebuano",
+      "configLang": "tagalog",
+      "form": "sentence",
+      "query": "unsa ang aratiles",
+      "searchDuplicateOf": "bord-gen-aratiles",
+      "expect": "generated",
+      "why": "CROSS-CONFIG: Cebuano query, Tagalog app. Same grounding as bord-gen-aratiles (0 cards; uncarded fact aratiles-fruit-g4) and the same single search token, so the ONLY difference from its twin is the language the model-free arm runs in."
+    },
+    {
+      "id": "xlang-tl-query-en-config-narwhal",
+      "bucket": "borderline",
+      "lang": "tagalog",
+      "configLang": "english",
+      "form": "sentence",
+      "query": "ano ang narwhal",
+      "expect": "gap",
+      "why": "CROSS-CONFIG the other way: Tagalog query in an English-configured app. 0 cards / 0 facts. Measured to be floor-sensitive — the same string routes differently under tl and ceb config, which is precisely why the configured language is now an explicit field instead of being inferred from the query."
+    },
+    {
+      "id": "oos-term-spiderman",
+      "bucket": "out-of-scope",
+      "lang": "english",
+      "form": "term",
+      "query": "spiderman",
+      "expect": "offdomain",
+      "why": "Measured cosine 0.710 — ABOVE real science like `puso` at 0.619; spiders are densely stocked. Lexically OOV, so the OOV arm of isOffDomain is what has to carry it."
+    },
+    {
+      "id": "oos-term-jollibee-chickenjoy",
+      "bucket": "out-of-scope",
+      "lang": "english",
+      "form": "term",
+      "query": "jollibee chickenjoy",
+      "expect": "offdomain",
+      "why": "Measured cosine 0.685; bees, chicken and food cards are all stocked."
+    },
+    {
+      "id": "oos-term-mobile-legends",
+      "bucket": "out-of-scope",
+      "lang": "english",
+      "form": "term",
+      "query": "mobile legends",
+      "expect": "offdomain",
+      "why": "'mobile' and 'legends' both live in science prose. Baseline serves ffct-00071 'dugong is a real animal not a mermaid' at 0.800."
+    },
+    {
+      "id": "oos-term-roblox",
+      "bucket": "out-of-scope",
+      "lang": "english",
+      "form": "term",
+      "query": "roblox",
+      "expect": "offdomain",
+      "why": "OOV token — exercises the OOV arm rather than the cosine arm. Named in the RagStore source as the case the gap/offdomain split exists for."
+    },
+    {
+      "id": "oos-sent-taylor-swift",
+      "bucket": "out-of-scope",
+      "lang": "english",
+      "form": "term",
+      "query": "taylor swift",
+      "expect": "offdomain",
+      "why": "THE documented past failure: 'swift' navigated to a swift-nest card at score 1.00. The UNKNOWN_TOKEN_IDF fix demoted it to 0.067 — this case is the regression guard for that fix."
+    },
+    {
+      "id": "oos-sent-sino-si-darna",
+      "bucket": "out-of-scope",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "sino si darna",
+      "expect": "offdomain",
+      "why": "Filipino comics character in Tagalog question form."
+    },
+    {
+      "id": "oos-sent-kumusta-ka",
+      "bucket": "out-of-scope",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "kumusta ka",
+      "expect": "offdomain",
+      "why": "A plain greeting. Baseline answers it with ffct-18650 'who discovered oxygen' at 1.000."
+    },
+    {
+      "id": "oos-sent-unsa-imong-ngalan",
+      "bucket": "out-of-scope",
+      "lang": "cebuano",
+      "form": "sentence",
+      "query": "unsa imong ngalan",
+      "expect": "offdomain",
+      "why": "Cebuano 'what is your name'. Baseline serves ffct-00961 'brain stores memory' at 1.000."
+    },
+    {
+      "id": "oos-sent-boring-na-ako",
+      "bucket": "out-of-scope",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "boring na ako",
+      "expect": "offdomain",
+      "why": "Affective non-question. Baseline serves ffct-00727 'tamilok refers to several species in family Teredinidae' at 1.000."
+    },
+    {
+      "id": "oos-sent-mahal-kita",
+      "bucket": "out-of-scope",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "mahal kita",
+      "expect": "offdomain",
+      "why": "Affective non-question; 'mahal' also means expensive. Baseline serves ffct-00194 'fresh tuna exported for sashimi' at 0.849."
+    },
+    {
+      "id": "oos-term-asdfghjkl",
+      "bucket": "out-of-scope",
+      "lang": "english",
+      "configLang": "english",
+      "langNeutral": true,
+      "form": "term",
+      "query": "asdfghjkl",
+      "expect": "offdomain",
+      "why": "Pure keyboard-mash control. Language-neutral: run under `english` because that is the strictest setting (no cross-language en-field bridge in lexicalEmpty). configLang english is set EXPLICITLY here (the suite default is the shipped 'tagalog') because english is the strictest setting for this probe."
+    },
+    {
+      "id": "chit-sent-gusto-ice-cream",
+      "bucket": "chitchat",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "gusto ko ng ice cream",
+      "expect": "offdomain",
+      "expectAny": [
+        "offdomain",
+        "served-existing"
+      ],
+      "acceptRule": {
+        "topic": "ice ?cream|sorbetes|brain freeze"
+      },
+      "why": "Affective non-question about a topic the deck DOES teach: ffct-16736/ffct-18081 'ice cream melts from solid to liquid', ffct-19576 sorbetes, ffct-03052 brain freeze. Either outcome is right — decline politely, OR teach the science of the thing the child mentioned — but serving an UNRELATED card (baseline: 'agar carrageenan thickens everyday foods' at 1.000) is not. accept=9"
+    },
+    {
+      "id": "chit-sent-paborito-adobo",
+      "bucket": "chitchat",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "paborito kong pagkain ay adobo",
+      "expect": "offdomain",
+      "expectAny": [
+        "offdomain",
+        "served-existing"
+      ],
+      "acceptRule": {
+        "topic": "\\badobo\\b",
+        "domain": "MATTER|LIVING_THINGS"
+      },
+      "why": "Affective non-question whose food IS carded science: ffct-11908 'Adobo Preservation', ffct-18027 'adobo vinegar and salt preserve meat', ffct-18104 adobo sauce as a solution. Decline OR teach; the baseline's 'Rocks and Minerals' at 0.562 is neither. The EARTH_SPACE 'Adobo Soil' card (adobe clay, a different word) is excluded by the domain constraint. accept=10"
+    },
+    {
+      "id": "miss-term-bulkano",
+      "bucket": "misspelling",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "bulkano",
+      "expect": "served-existing",
+      "expectAny": [
+        "served-existing",
+        "generated"
+      ],
+      "forbid": [
+        "offdomain"
+      ],
+      "acceptRule": {
+        "topic": "volcan|bulkan"
+      },
+      "why": "bulkan + a stray o; 46 volcano-subject cards exist. accept=415"
+    },
+    {
+      "id": "miss-term-erthquake",
+      "bucket": "misspelling",
+      "lang": "english",
+      "form": "term",
+      "query": "erthquake",
+      "expect": "served-existing",
+      "expectAny": [
+        "served-existing",
+        "generated"
+      ],
+      "forbid": [
+        "offdomain"
+      ],
+      "acceptRule": {
+        "topic": "earthquake|seismic"
+      },
+      "why": "This EXACT spelling is named in the RagStore source comment as a real Grade-5 spelling. accept=220"
+    },
+    {
+      "id": "miss-term-dinosawr",
+      "bucket": "misspelling",
+      "lang": "english",
+      "form": "term",
+      "query": "dinosawr",
+      "expect": "served-existing",
+      "expectAny": [
+        "served-existing",
+        "generated"
+      ],
+      "forbid": [
+        "offdomain"
+      ],
+      "acceptRule": {
+        "topic": "\\bdinosaur"
+      },
+      "why": "Phonetic spelling; the dinosaur cluster is stocked. accept=84"
+    },
+    {
+      "id": "miss-term-gravitiy",
+      "bucket": "misspelling",
+      "lang": "english",
+      "form": "term",
+      "query": "gravitiy",
+      "expect": "served-existing",
+      "expectAny": [
+        "served-existing",
+        "generated"
+      ],
+      "forbid": [
+        "offdomain"
+      ],
+      "acceptRule": {
+        "topic": "gravity|gravitational"
+      },
+      "why": "Transposition of gravity. accept=392"
+    },
+    {
+      "id": "miss-term-kidlaat",
+      "bucket": "misspelling",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "kidlaat",
+      "expect": "served-existing",
+      "expectAny": [
+        "served-existing",
+        "generated"
+      ],
+      "forbid": [
+        "offdomain"
+      ],
+      "acceptRule": {
+        "topic": "lightning|thunder"
+      },
+      "why": "Doubled vowel on kidlat. accept=224"
+    },
+    {
+      "id": "miss-sent-bakit-asol-ang-langit",
+      "bucket": "misspelling",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "bakit asol ang langit",
+      "expect": "served-existing",
+      "expectAny": [
+        "served-existing",
+        "generated"
+      ],
+      "forbid": [
+        "offdomain"
+      ],
+      "acceptRule": {
+        "topic": "sky is blue|blue light scatter|why the sky|sky colou?r"
+      },
+      "why": "ONE bad token inside an otherwise well-formed sentence — tests that a single misspelling does not sink the whole query. accept=11"
+    },
+    {
+      "id": "miss-term-photosinthesis",
+      "bucket": "misspelling",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "photosinthesis",
+      "expect": "served-existing",
+      "expectAny": [
+        "served-existing",
+        "generated"
+      ],
+      "forbid": [
+        "offdomain"
+      ],
+      "acceptRule": {
+        "topic": "photosynthes|plants make (their )?(own )?food|chlorophyll|plants take in carbon dioxide"
+      },
+      "why": "Child spelling NAMED IN THE RagStore SOURCE ('photosinthesis .589-.601') and genuinely out of vocabulary (df 0), which is the point: it replaces `fotosintesis`, whose df is 1 in the card index — that string is a one-card token, so search served it at 1.000 by construction and the case could never fail. HARD RULE: offdomain here is telling a child their science question is not science. accept=116"
+    },
+    {
+      "id": "tok-sent-earth-quake",
+      "bucket": "tokenisation",
+      "lang": "english",
+      "form": "sentence",
+      "query": "earth quake",
+      "expect": "served-existing",
+      "expectAny": [
+        "served-existing",
+        "generated"
+      ],
+      "forbid": [
+        "offdomain"
+      ],
+      "acceptRule": {
+        "topic": "earthquake|seismic"
+      },
+      "why": "A compound typed as two words — both halves ARE in the vocabulary, unlike the Cebuano case, so the query stays reachable. REGRESSION PROTECTION: correct today (serves a Seismic Waves card at 1.000) and a tightening that starts demanding whole-compound matches would break it. accept=220"
+    },
+    {
+      "id": "tok-sent-unsa-ang-kasing-kasing",
+      "bucket": "tokenisation",
+      "lang": "cebuano",
+      "form": "sentence",
+      "query": "unsa ang kasing kasing",
+      "expect": "served-existing",
+      "expectAny": [
+        "served-existing",
+        "generated"
+      ],
+      "forbid": [
+        "offdomain"
+      ],
+      "acceptRule": {
+        "topic": "\\bhearts?\\b(?!\\s+of\\s+palm)|heartbeat|pacemaker|\\bpulse\\b",
+        "domain": "LIVING_THINGS"
+      },
+      "why": "A Cebuano compound split in two. RE-FILED out of `misspelling`: the failure mechanism is not orthography but a HIGH-FREQUENCY FUNCTION WORD — the surviving token `kasing` is also the Cebuano comparative particle (kasing-bug-at = 'as heavy as') with df 130, which is why search answers with 'how heavy is a blue whale tongue' at 1.000. Nothing about spelling can fix this one. accept=160"
+    }
+  ]
+}

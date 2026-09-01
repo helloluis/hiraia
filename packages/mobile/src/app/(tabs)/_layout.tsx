@@ -4,8 +4,6 @@ export default function TabLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" options={{ title: 'Cards' }} />
-      {/* Chat is shelved on the question-cards branch but stays routable at /chat. */}
-      <Stack.Screen name="chat" options={{ title: 'Chat' }} />
       <Stack.Screen
         name="sidebar"
         options={{

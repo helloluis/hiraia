@@ -94,24 +94,31 @@ SRC=(
 # cards.ts is NOT in SRC. It is a CONSUMER of cards.db, not an input to it, so mtime-ing the
 # whole file failed every time anyone edited the feed's logic — which is most days — and a
 # guard that cries wolf on every edit is one people learn to bypass. The real dependency is
-# narrow and exact: build-cards-db.py:108-110 reads ONE declaration out of this file,
-# `const SEARCH_STOP = new Set([...])`, and excludes those words from the token index. Change
-# that list and the search index desynchronises from the app querying it. So hash exactly
-# that block and compare it to the hash recorded when the database was built.
+# narrow and exact: build-cards-db.py reads TWO declarations out of this file — the stop list
+# `const SEARCH_STOP = new Set([...])` and the token pattern inside `function searchTokens` —
+# and builds the index with them. Change either and the index desynchronises from the app
+# querying it, which shows up as words that cannot be searched. (The pattern is in here because
+# it silently drifted once already: the builder matched `[a-z0-9]+` while the app matched
+# `[a-z0-9ñ]+`, so `piñatubo`, `el niño` and `la niña` were permanently unsearchable.) So hash
+# exactly those two blocks and compare against the hash recorded when the database was built.
 STOPSIG="$MOBILE/assets/data/.search-stop.sha256"
-STOPNOW="$(sed -n '/const SEARCH_STOP = new Set(\[/,/\]);/p' "$MOBILE/src/data/cards.ts" | shasum -a 256 | cut -d' ' -f1)"
-if [ -z "$STOPNOW" ]; then
-  echo "!! could not find \`const SEARCH_STOP = new Set([\` in cards.ts — the guard cannot check"
-  echo "   the token index against it. If the declaration was renamed, update this check AND"
-  echo "   rag/pipeline/build-cards-db.py:108, which parses it by that exact text."
+STOPBLOCK="$(sed -n '/const SEARCH_STOP = new Set(\[/,/\]);/p' "$MOBILE/src/data/cards.ts")"
+TOKBLOCK="$(sed -n '/^function searchTokens(/,/^}/p' "$MOBILE/src/data/cards.ts")"
+STOPNOW="$(printf '%s\n%s\n' "$STOPBLOCK" "$TOKBLOCK" | shasum -a 256 | cut -d' ' -f1)"
+if [ -z "$STOPBLOCK" ] || [ -z "$TOKBLOCK" ]; then
+  echo "!! could not find \`const SEARCH_STOP = new Set([\` and/or \`function searchTokens(\` in"
+  echo "   cards.ts — the guard cannot check the token index against them. If a declaration was"
+  echo "   renamed, update this check AND rag/pipeline/build-cards-db.py, which parses both by"
+  echo "   that exact text."
   exit 1
 elif [ ! -f "$STOPSIG" ]; then
-  echo "!! no $(basename "$STOPSIG") — cannot tell whether the token index matches the stop list."
+  echo "!! no $(basename "$STOPSIG") — cannot tell whether the token index matches the tokeniser."
   echo "   If the database is current: printf '%s' \"$STOPNOW\" > \"$STOPSIG\""
   exit 1
 elif [ "$STOPNOW" != "$(cat "$STOPSIG")" ]; then
-  echo "!! SEARCH_STOP in cards.ts has changed since cards.db was built — the token index and"
-  echo "   the app's tokeniser now disagree, which shows up as words that cannot be searched."
+  echo "!! SEARCH_STOP / searchTokens in cards.ts have changed since cards.db was built — the"
+  echo "   token index and the app's tokeniser now disagree, which shows up as words that"
+  echo "   cannot be searched."
   echo "   Rebuild: python3 rag/pipeline/build-cards-db.py   (then refresh $(basename "$STOPSIG"))"
   exit 1
 fi

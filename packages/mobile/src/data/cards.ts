@@ -40,6 +40,7 @@ import curriculumTagsJson from '../generated/curriculumTags.generated.json';
 
 import { hasArt } from './artPresence';
 import {
+  cardHeadSizes,
   loadQuestions,
   loadText,
   questionOf,
@@ -434,6 +435,33 @@ const SEARCH_STOP = new Set([
   'ngano',
   'giunsa',
   'hibaw',
+  // Discourse particles — how a child actually types, and the one class of word `idf = 1/df`
+  // scores backwards. They are RARE in the bank (formal register: `yung` occurs in 36 cards)
+  // so they carry almost the whole idf mass of a query, and being in the vocabulary they also
+  // count toward MIN_MATCHED_TOKENS, which no card can then satisfy. Measured before this:
+  // `kidlat` reached "what lightning is" but `ano yung kidlat` — the commonest phrasing there
+  // is — DECLINED, and its "did you mean" was a hornbill. Only words with no content sense in
+  // any of the three languages are here: `raw`, `man` and `pala` are deliberately absent
+  // (raw materials, man, and pala = shovel/turbine blade are all real card subjects).
+  'yung',
+  'naman',
+  'daw',
+  'talaga',
+  'kasi',
+  'lang',
+  'lamang',
+  'din',
+  'rin',
+  'sana',
+  'lagi',
+  'ganun',
+  'ganoon',
+  'nalang',
+  'pud',
+  'gyud',
+  'jud',
+  'kaayo',
+  'usab',
 ]);
 
 function searchTokens(s: string): string[] {
@@ -452,8 +480,25 @@ function searchTokens(s: string): string[] {
 export interface SearchResult {
   /** Best card at/above the confidence floor, else null (→ caller abstains or generates). */
   best: CardFact | null;
-  /** Fraction (0..1) of the query's idf mass the top card covers. */
+  /**
+   * Fraction (0..1) of the query's idf mass the SERVED card covers — or, when nothing was
+   * served, the coverage of `suggestion`. It is the confidence figure the gate prints; it is
+   * not a ranking key on its own (see searchCards: coverage saturates).
+   */
   score: number;
+  /**
+   * Aboutness share (0..1) of the same card `score` describes — how much of the CARD's own
+   * salience mass the query occupies (see searchCards, direction 2). Diagnostic alongside
+   * `score`; the serve/consult split reads `weak`, not this raw number.
+   */
+  about: number;
+  /**
+   * True when `best` was served on THIN evidence — see WEAK_ABOUT below. A weak hit is still
+   * a hit (`best` is set and serving it is always safe), but the caller should consult the
+   * off-domain gate (`isOffDomain`, when an embedder is available) before serving it, because
+   * this band is where junk queries land when they match a card on shared vocabulary alone.
+   */
+  weak: boolean;
   /** Top card regardless of floor — a "did you mean" anchor for the abstention path. */
   suggestion: CardFact | null;
 }
@@ -468,18 +513,194 @@ export const SEARCH_FLOOR = 0.34;
 const UNKNOWN_TOKEN_IDF = 1;
 
 /**
- * Retrieval for the search box: score every pool card by the idf-weighted overlap of the
- * query's tokens with the card's tokens, return the best (with its normalized score) plus
- * the top card as an abstention suggestion. Excludes the current card.
+ * How many of the query's content words the answering card has to actually contain — two,
+ * unless the child typed only one, in which case one is all there is.
+ *
+ * COVERAGE IS NOT CONFIDENCE. `frac` below is a share of the query's idf mass and idf = 1/df
+ * decays so fast that one rare word carries almost the whole denominator, so a card matching
+ * only that word is served as if it had answered the question. Unknown tokens count TOWARD the
+ * requirement and can never satisfy it, which is what stops "taylor swift" being answered out
+ * of the half of it we happen to recognise.
  */
-export async function searchCards(query: string, currentId: string | null): Promise<SearchResult> {
-  const empty: SearchResult = { best: null, score: 0, suggestion: null };
+const MIN_MATCHED_TOKENS = 2;
+
+/** Float slack when comparing two scores computed from the same idf values. */
+const SCORE_EPSILON = 1e-12;
+
+/**
+ * The WEAK BAND: a served hit whose aboutness share is under this is served on thin evidence —
+ * no card is really ABOUT the words the child typed; something merely mentions them — and the
+ * caller should consult the off-domain gate before serving it (LocalEngine.weakHitOffDomain:
+ * the SAME calibrated `isOffDomain(topCos, unreachable)` the miss path runs, NOT the OOV arm
+ * forced on. The band does NOT mean "no lexical evidence the corpus knows this as a subject" —
+ * measured 2026-09-01, ordinary in-domain phrasings land here too, their aboutness diluted by
+ * function words: "para saan ang ating puso", "unsay gamit sa atong mata" score 0.015–0.037
+ * on the very cards that answer them). A strong hit is served immediately, zero-model, and
+ * never pays an embedding round-trip.
+ *
+ * This is NOT a serving floor (contrast SEARCH_FLOOR): a weak hit is still served whenever the
+ * gate says in-domain, whenever the embedder is unavailable (never refuse a child a card
+ * because a model was missing), and whenever the gate errs. Weakness only decides who pays the
+ * one extra embed. So a false WEAK costs milliseconds and a false STRONG costs exactly today's
+ * behaviour — both degradations are safe, which is what lets a single absolute value work
+ * where an absolute aboutness SERVING floor could not (winning aboutness is language-skewed:
+ * en 0.28–0.48, tl 0.09–0.39, ceb 0.09–0.17).
+ *
+ * 0.04 is derived from the arbitration gate's measured tuning distribution (2026-09-01,
+ * finetuning/eval/routing/arbitration): every junk-query serve — queries whose ground truth is
+ * off-domain but which matched SOME card on shared vocabulary ("kumusta ka" → a hand-wave
+ * card, "boring na ako" → the coconut rhinoceros BORER beetle) — scored aboutness
+ * 0.017–0.031, while the suite's right-card serves start at 0.038. 0.04 sits above the junk
+ * band with ~30% margin; 7 of the gate's 122 queries fall in the band (5.7% of typed queries
+ * pay the embed). It is NOT a junk detector — in-domain functional phrasings score as low as
+ * 0.015 (see the WEAK BAND note above) — it only decides who pays the one extra embed for
+ * the calibrated consult.
+ */
+export const WEAK_ABOUT = 0.04;
+
+/**
+ * The salience rank of a token that appears only in a card's PROSE.
+ *
+ * `search_token.ranks` (rag/pipeline/build-cards-db.py) stores 255 for exactly that case; this
+ * is what it means as a rank. The widest head in the corpus is 44 tokens, so 32 is not a tuned
+ * constant but a structural one: a prose mention is ALWAYS weaker than any head mention, and no
+ * head rank can ever reach it. (Measured flat anyway — 8, 24, 32 and 64 give identical
+ * verdicts on the arbitration gate.)
+ */
+const PROSE_RANK = 32;
+/** The byte `ranks` uses for "prose only" — reserved, never a real rank. */
+const PROSE_BYTE = 255;
+
+/**
+ * The width of a head slot when the database predates the `widths` column: 1, i.e. "the token
+ * is the whole slot", which is the value that makes the salience identical to what it was
+ * before widths existed. Never 0 — it is a divisor.
+ */
+const DEFAULT_SLOT_WIDTH = 1;
+
+/**
+ * Harmonic numbers H(n) = Σ 1/i, i.e. the total salience a card's own head carries when its
+ * i-th head token is worth 1/(1+i). Indexed by head size (one byte, so 0..255).
+ *
+ * H(0) is 1 rather than 0: a card with no head at all (no topic, no terms) can only ever be
+ * matched in its prose, and dividing its aboutness by zero would hand it +Infinity.
+ */
+const HEAD_MASS = (() => {
+  const h = new Float64Array(256);
+  h[0] = 1;
+  let sum = 0;
+  for (let i = 1; i < 256; i += 1) {
+    sum += 1 / i;
+    h[i] = sum;
+  }
+  return h;
+})();
+
+/**
+ * Per-query accumulators, indexed by POOL ORDINAL, plus the list of ordinals actually touched.
+ *
+ * The same shape as EFFECTIVE/SCRATCH above and for the same reason: a Map keyed by ordinal
+ * allocates an entry per candidate and `araw` touches 3,129 of them. Allocated on the first
+ * search rather than at module load — the feed's boot cost is load-bearing here (see the note
+ * on the deleted 427 ms index) and a reader who never opens the search box should not pay it.
+ *
+ * ONE search at a time. Every await in searchCards happens BEFORE the scan and the scan itself
+ * is synchronous, so two overlapping searches cannot interleave inside it; the buffers are
+ * cleared through the touch list on the way out, so nothing carries into the next query.
+ */
+interface SearchScratch {
+  mass: Float64Array; // idf mass of the query tokens this card contains
+  sal: Float64Array; // the same mass, weighted by how central each token is to the card
+  matched: Uint16Array; // how many DISTINCT query tokens it contains
+  head: Uint8Array; // 1 = at least one of them is in its topic/terms, not just its prose
+  touched: Int32Array;
+}
+let SEARCH_SCRATCH: SearchScratch | null = null;
+function searchScratch(): SearchScratch {
+  if (!SEARCH_SCRATCH)
+    SEARCH_SCRATCH = {
+      mass: new Float64Array(POOL.length),
+      sal: new Float64Array(POOL.length),
+      matched: new Uint16Array(POOL.length),
+      head: new Uint8Array(POOL.length),
+      touched: new Int32Array(POOL.length),
+    };
+  return SEARCH_SCRATCH;
+}
+
+/**
+ * Retrieval for the search box.
+ *
+ * TWO DIRECTIONS, ranked lexicographically. The old score had only one — `frac`, the share of
+ * the QUERY's idf mass a card covers — and one direction cannot rank cards that all contain the
+ * query. When every typed word is in the vocabulary the numerator equals the denominator, so
+ * every card carrying those words scored exactly 1.0000 and `frac > bestScore` kept the first
+ * one scanned, i.e. the lowest pool ordinal: "gravity" answered with plant tropism, "tsunami"
+ * with mangroves, "araw" with the first of 3,129 tied cards. It is a scoring degeneracy, not a
+ * threshold: raising SEARCH_FLOOR cannot touch scores that are already at the maximum.
+ *
+ *   1. COVERAGE  frac = Σ idf(t) over matched t / mass — how much of the QUESTION the card
+ *      answers. Unchanged, still the confidence quantity, still gated at SEARCH_FLOOR.
+ *   2. ABOUTNESS how much of the CARD the question explains: the same matched mass weighted by
+ *      each token's SALIENCE in that card — 1/(1+rank), rank 0 = the card's topic, rank i+1 =
+ *      its i-th term (`terms` is salience-ordered by the bank, subject first), PROSE_RANK for a
+ *      passing mention — SHARED among the words of the slot it was found in, and divided by the
+ *      card's own head mass H(|head|). A card with a small focused head whose subject IS the
+ *      query word beats a card with twenty terms that mentions it fifth. That is what breaks
+ *      the ties.
+ *
+ *      The slot share is what keeps H(|head|) honest. Head size counts a card's topic and terms
+ *      TOKENS, and an ffct card carries its Tagalog and Cebuano synonyms in `terms` (mean head
+ *      16.0) where an English-only DepEd card carries none (mean head 7.6) — so between two
+ *      cards that both have the query as their topic, the divisor alone handed it to the
+ *      LEAST-annotated one and `lightning` answered with *Volcanic Lightning*, `water` with
+ *      *Subsoil Water*, `araw` with *Sikat ng Araw at Biodiversity*. Dividing a slot's salience
+ *      among the words that name it says the same thing without reference to language:
+ *      `lightning` is all of "what lightning is" and half of "Volcanic Lightning". (Measured on
+ *      the arbitration gate, tuning half, all with the slot share in place: H(|head|) 61/94,
+ *      head sizes scoped to the language of the match 60/94, an H(min(|head|, 8)) cap 55/94,
+ *      no card-side divisor at all 54/94. So the divisor earns its keep and the language
+ *      scoping does not — the slot share is what removes the family bias.)
+ *
+ * Salience is POSITION and never the topic STRING, because `topic` is English-only (58 of the
+ * 46,421 pool topics are written in tl/bis), so any score built out of it silently ranks the
+ * two DEFAULT languages at random. Position works in all three.
+ *
+ * THREE tests, all of which a confident answer must pass:
+ *   a. it covers SEARCH_FLOOR of the query's idf mass;
+ *   b. it contains at least `needed` of the query's distinct content words;
+ *   c. at least one of them is HEAD-level — the card is about a word the child typed, rather
+ *      than merely mentioning it. Binary, so it needs no threshold; an absolute aboutness floor
+ *      would need one and could not have a language-neutral value (measured: winning aboutness
+ *      runs 0.28–0.48 in English, 0.09–0.39 in Tagalog, 0.09–0.17 in Cebuano).
+ *
+ * `suggestion` is the top card with (b), (c) and the floor removed — and ranked ABOUTNESS
+ * first, coverage second, which is the reverse of `best`. It is shown only once the app has
+ * already said it has no page for this query, so the useful question is no longer "how much of
+ * the query did this card cover" (leading on that hands the page to whichever token was rarest)
+ * but "which card is most about a word the child actually typed".
+ *
+ * Ties that survive BOTH directions are broken on what the product cares about, in order: the
+ * feed's own curriculum weight when a context is given (closest to this child's grade and
+ * quarter), then whether the card is furnished with an illustration, then pool ordinal as a
+ * stable last resort. The curriculum weight is `ensureWeightTable`, NOT `weigher` — the seen
+ * decay is deliberately excluded, so a typed question is answered the same way however much of
+ * the feed the child has read. Never `cardHasArt` either: art presence is a property of the
+ * INSTALLATION and changes mid-session as shards land, so the same query would answer
+ * differently after a download.
+ */
+export async function searchCards(
+  query: string,
+  currentId: string | null,
+  ctx?: FeedContext
+): Promise<SearchResult> {
+  const empty: SearchResult = { best: null, score: 0, about: 0, weak: false, suggestion: null };
   const qtoks = [...new Set(searchTokens(query))];
   if (!qtoks.length) return empty;
 
   // Only the query's own tokens are fetched, and only the cards carrying one of them are
   // scored. The old version walked the whole pool because its index ran the wrong way.
-  const rows = await searchTokenRows(qtoks);
+  const [rows, headSizes] = await Promise.all([searchTokenRows(qtoks), cardHeadSizes()]);
   if (!rows.length) return empty;
 
   const idf = (df: number) => 1 / (df || POOL.length);
@@ -493,32 +714,136 @@ export async function searchCards(query: string, currentId: string | null): Prom
     rows.reduce((s, r) => s + idf(r.df), 0) + (qtoks.length - rows.length) * UNKNOWN_TOKEN_IDF;
   if (mass <= 0) return empty;
 
-  // ordinal -> accumulated idf mass: what each card covers, which the denominator above turns
-  // into the fraction of the query it covers. Only cards carrying a token are accumulated — one
-  // carrying none scored 0 and could never win, so skipping it changes nothing (verified:
-  // identical picks on every probe). Unknown tokens are in the denominator only, by definition:
-  // no card can cover a word no card contains.
-  const acc = new Map<number, number>();
+  // Accumulate both directions in one pass over the postings. Unknown tokens are in the
+  // denominator only, by definition: no card can cover a word no card contains.
+  const sc = searchScratch();
+  let touchedCount = 0;
   for (const r of rows) {
     const w = idf(r.df);
-    for (const part of r.ords.split(',')) {
-      const o = +part;
-      acc.set(o, (acc.get(o) ?? 0) + w);
+    const ords = r.ords.split(',');
+    const ranks = r.ranks;
+    const widths = r.widths;
+    for (let k = 0; k < ords.length; k += 1) {
+      const o = +ords[k]!;
+      if (sc.matched[o] === 0) sc.touched[touchedCount++] = o;
+      sc.matched[o]! += 1;
+      sc.mass[o]! += w;
+      // A database written before the salience column exists has no ranks; every posting then
+      // reads as a prose mention, which switches test (c) off and leaves coverage intact.
+      const b = ranks ? ranks[k]! : PROSE_BYTE;
+      if (b === PROSE_BYTE) {
+        sc.sal[o]! += w / (1 + PROSE_RANK);
+      } else {
+        // The slot's salience 1/(1+rank) is SHARED by the words that name it, so a token is
+        // worth all of a one-word slot and half of a two-word one. See the note on WIDTH above.
+        sc.sal[o]! += w / ((1 + b) * (widths ? widths[k]! : DEFAULT_SLOT_WIDTH));
+        sc.head[o] = 1;
+      }
     }
   }
 
+  const needed = Math.min(MIN_MATCHED_TOKENS, qtoks.length);
+  // The CURRICULUM half of the feed's weighting — grade x quarter x recency — and deliberately
+  // not `weigher(ctx)`, which multiplies in the seen decay on top of it. That decay exists to
+  // vary a DRAW in a doomscroll feed; applied to a typed question it makes the answer depend on
+  // what the child has already read, and the card it suppresses is the one this ranking just
+  // judged best. Measured through this module: marking only the card search had returned as
+  // seen changed the answer for 10% of answerable queries, and recordCardSeen persists it, so
+  // asking "lindol" again tomorrow was answered with a different card. Search is MEMORYLESS.
+  // (ensureWeightTable hands back a shared buffer; the scan below is synchronous, so nothing
+  // can rebuild it underneath us.)
+  const weights = ctx ? ensureWeightTable(ctx) : null;
+
   let best: CardFact | null = null;
-  let bestScore = 0;
-  for (const [ord, s] of acc) {
-    const f = POOL[ord];
-    if (!f || f.id === currentId) continue;
-    const frac = s / mass;
-    if (frac > bestScore) {
-      bestScore = frac;
-      best = f;
+  let bestFrac = 0;
+  let bestAbout = -1;
+  let bestWeight = -1;
+  let bestRich = -1;
+  let bestOrd = -1;
+  let top: CardFact | null = null;
+  let topFrac = 0;
+  let topAbout = -1;
+  let topWeight = -1;
+  let topRich = -1;
+  let topOrd = -1;
+
+  try {
+    for (let n = 0; n < touchedCount; n += 1) {
+      const o = sc.touched[n]!;
+      const f = POOL[o];
+      if (!f || f.id === currentId) continue;
+      const frac = sc.mass[o]! / mass;
+      const about = sc.sal[o]! / (mass * HEAD_MASS[headSizes ? headSizes[o]! : 0]!);
+      const cw = weights ? weights[o]! : 1;
+      // Furnished with a picture, as a property of the CARD (the slug it was authored with) and
+      // not of this installation — see cardHasArt, which must never be consulted here.
+      const rich = f.slug ? 1 : 0;
+
+      // ABOUTNESS FIRST for the suggestion, and that is the whole difference between the two
+      // rankings. `best` leads on coverage because coverage is the CONFIDENCE quantity and a
+      // served card has to have answered the question; `suggestion` is offered only after the
+      // app has already said it has no page for this, so the question it answers is "which card
+      // is most about a word the child typed" — and leading on coverage there hands the page to
+      // whichever token was rarest. Measured before this: `ano yung tsunami` suggested "The red
+      // casque helmet on top of the bill", a hornbill card whose only merit was containing
+      // `yung`.
+      if (
+        about > topAbout + SCORE_EPSILON ||
+        (about > topAbout - SCORE_EPSILON &&
+          (frac > topFrac + SCORE_EPSILON ||
+            (frac > topFrac - SCORE_EPSILON &&
+              (cw > topWeight + SCORE_EPSILON ||
+                (cw > topWeight - SCORE_EPSILON &&
+                  (rich > topRich || (rich === topRich && (topOrd < 0 || o < topOrd))))))))
+      ) {
+        top = f;
+        topFrac = frac;
+        topAbout = about;
+        topWeight = cw;
+        topRich = rich;
+        topOrd = o;
+      }
+
+      if (sc.matched[o]! < needed || !sc.head[o] || frac < SEARCH_FLOOR) continue;
+      if (
+        frac > bestFrac + SCORE_EPSILON ||
+        (frac > bestFrac - SCORE_EPSILON &&
+          (about > bestAbout + SCORE_EPSILON ||
+            (about > bestAbout - SCORE_EPSILON &&
+              (cw > bestWeight + SCORE_EPSILON ||
+                (cw > bestWeight - SCORE_EPSILON &&
+                  (rich > bestRich || (rich === bestRich && (bestOrd < 0 || o < bestOrd))))))))
+      ) {
+        best = f;
+        bestFrac = frac;
+        bestAbout = about;
+        bestWeight = cw;
+        bestRich = rich;
+        bestOrd = o;
+      }
+    }
+  } finally {
+    // Clear only what was touched, so the next query starts from zeroes without a 46,421-slot
+    // fill — and clear it on the way OUT of a throw too. These are module-level buffers, so a
+    // scan that died half-way would otherwise leave non-zero mass behind and every later query
+    // in the session would score the previous query's cards on top of its own.
+    for (let n = 0; n < touchedCount; n += 1) {
+      const o = sc.touched[n]!;
+      sc.mass[o] = 0;
+      sc.sal[o] = 0;
+      sc.matched[o] = 0;
+      sc.head[o] = 0;
     }
   }
-  return { best: bestScore >= SEARCH_FLOOR ? best : null, score: bestScore, suggestion: best };
+
+  const about = Math.max(best ? bestAbout : topAbout, 0);
+  return {
+    best,
+    score: best ? bestFrac : topFrac,
+    about,
+    weak: !!best && bestAbout < WEAK_ABOUT,
+    suggestion: top,
+  };
 }
 
 const FALLBACK: Record<Language, Array<'tl' | 'en' | 'bis'>> = {

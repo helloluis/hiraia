@@ -1,5 +1,4 @@
 import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -10,8 +9,6 @@ import { LANGUAGE_OPTIONS } from '../../config/languages';
 import { ACTIVE_MODEL, VECTORS_META } from '../../config/model';
 import { uiStrings } from '../../config/strings';
 import { HIRAIAPEDIA_VERSION, ADAPTER_VERSION } from '../../config/version';
-import { listConversations, type Conversation } from '../../db/repo';
-import { useChatStore } from '../../store/chatStore';
 import { useEngineStore } from '../../store/engineStore';
 import { colors, fonts } from '../../theme';
 
@@ -22,30 +19,9 @@ export default function SidebarScreen() {
   const grade = useEngineStore((s) => s.grade);
   const changeGrade = useEngineStore((s) => s.changeGrade);
   const setOnboardingActive = useEngineStore((s) => s.setOnboardingActive);
-  const clearMessages = useChatStore((s) => s.clearMessages);
-  const switchConversation = useChatStore((s) => s.switchConversation);
-  const activeConvId = useChatStore((s) => s.conversationId);
-
-  // Past conversations for the history list. Loaded each time the sidebar opens; only
-  // titled ones show (an untitled, just-created "new chat" stays hidden until first use).
-  const [conversations, setConversations] = useState<Conversation[]>([]);
-  useEffect(() => {
-    void listConversations().then(setConversations).catch(() => undefined);
-  }, []);
-  const pastChats = conversations.filter((c) => c.title);
-
-  const openConversation = (id: string) => {
-    void switchConversation(id);
-    router.back();
-  };
 
   const showTutorial = () => {
     setOnboardingActive(true);
-    router.back();
-  };
-
-  const newConversation = () => {
-    void clearMessages(); // fresh thread — avoids the model echoing a prior turn's context
     router.back();
   };
 
@@ -55,7 +31,7 @@ export default function SidebarScreen() {
 
   const onPickLanguage = (lang: Language) => {
     if (lang === language) return;
-    // Reloads the model (adapter swap, ~20-30s). Return to chat to watch it load.
+    // Reloads the model (adapter swap, ~20-30s); the feed's search field shows the progress.
     void changeLanguage(lang);
     router.back();
   };
@@ -117,27 +93,6 @@ export default function SidebarScreen() {
           })}
         </View>
 
-        <Text style={styles.sectionTitle}>{t.sectionConversations}</Text>
-        {pastChats.length === 0 ? (
-          <Text style={styles.placeholder}>{t.noConversations}</Text>
-        ) : (
-          pastChats.map((c) => (
-            <TouchableOpacity
-              key={c.id}
-              style={[styles.convRow, c.id === activeConvId && styles.convRowActive]}
-              onPress={() => openConversation(c.id)}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.convTitle} numberOfLines={1}>
-                {c.title}
-              </Text>
-              <Text style={styles.convDate}>
-                {new Date(c.updated_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-              </Text>
-            </TouchableOpacity>
-          ))
-        )}
-
         <Text style={styles.sectionTitle}>{t.sectionNotes}</Text>
         <Text style={styles.placeholder}>{t.noNotes}</Text>
 
@@ -166,10 +121,6 @@ export default function SidebarScreen() {
           <Text style={styles.tutorialButtonText}>{t.showTutorial}</Text>
         </TouchableOpacity>
       </ScrollView>
-
-      <TouchableOpacity style={styles.newChatButton} onPress={newConversation} activeOpacity={0.85}>
-        <Text style={styles.newChatText}>{t.newConversation}</Text>
-      </TouchableOpacity>
       </SafeAreaView>
       {/* dimmed page peeking out beside the notebook cover; tap to close */}
       <Pressable style={styles.backdrop} onPress={() => router.back()} />
@@ -220,32 +171,6 @@ const styles = StyleSheet.create({
   contentInner: {
     padding: 16,
     paddingBottom: 24,
-  },
-  convRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: 12,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    borderRadius: 12,
-    backgroundColor: colors.white,
-    marginBottom: 8,
-  },
-  convRowActive: {
-    borderWidth: 2,
-    borderColor: colors.primary,
-  },
-  convTitle: {
-    flex: 1,
-    fontFamily: fonts.body,
-    fontSize: 16,
-    color: colors.ink,
-  },
-  convDate: {
-    fontFamily: fonts.body,
-    fontSize: 13,
-    color: colors.inkMuted,
   },
   sectionTitle: {
     fontFamily: fonts.display,
@@ -346,17 +271,5 @@ const styles = StyleSheet.create({
     fontFamily: fonts.display,
     fontSize: 18,
     color: colors.ink,
-  },
-  newChatButton: {
-    backgroundColor: colors.primary,
-    padding: 16,
-    alignItems: 'center',
-    margin: 16,
-    borderRadius: 12,
-  },
-  newChatText: {
-    fontFamily: fonts.body,
-    color: colors.white,
-    fontSize: 18,
   },
 });

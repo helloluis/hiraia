@@ -1,7 +1,11 @@
 // SQLite is the app's durable store (replaces the zustand→AsyncStorage blob).
-// One DB, versioned migrations via PRAGMA user_version. Tables: conversations
-// (thread names), messages, compactions (auto-compacter), notes, settings,
-// card_seen + competency_seen (feed seen-store).
+// One DB, versioned migrations via PRAGMA user_version. LIVE tables: settings,
+// card_seen + competency_seen (feed seen-store), notes (UI still pending).
+//
+// LEGACY, still created but never read or written: conversations, messages, compactions.
+// They belonged to the chat surface, which has been removed. The migration is deliberately
+// left intact — user_version is append-only history, and dropping a step would change what
+// a fresh install builds while installed databases (already at v3) keep the tables anyway.
 import * as SQLite from 'expo-sqlite';
 
 const DB_NAME = 'hiraia.db';

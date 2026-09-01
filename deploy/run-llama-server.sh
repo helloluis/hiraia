@@ -12,8 +12,8 @@ exec /root/hiraia/deploy/llama.cpp/build/bin/llama-server \
 #
 # ⚠️ Qwen3.5 is a THINKING model. A caller that does not send
 #   `chat_template_kwargs: {enable_thinking: false}` gets an EMPTY `content` with the answer
-#   stranded in `reasoning_content` — every generation silently reads as a failure. Both web
-#   routes (api/demo/card, api/demo/chat) send it; anything new that talks to :8080 must too.
+#   stranded in `reasoning_content` — every generation silently reads as a failure. The web
+#   route (api/demo/card) sends it; anything new that talks to :8080 must too.
 #   Measured locally: without it, content='' and finish_reason='stop'.
 #
 # Sailor2-3B-Chat.Q4_K_M.gguf stays on disk and is still served over /models/ for the APK —

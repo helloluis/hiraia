@@ -8,9 +8,9 @@ import { colors, notebook } from '../theme';
  * cream fill, blue horizontal rules every 32px, and a pink vertical margin rule.
  * Drawn with plain Views (no react-native-svg) to avoid a native dependency.
  *
- * Pass `height` to size the lined sheet (ChatThread makes a sheet as tall as the
- * scroll content, then translates it so the paper scrolls WITH the messages). With
- * no height it fills the parent (static backdrop).
+ * Pass `height` to size the lined sheet as tall as a scroll content, so the paper can be
+ * translated to scroll WITH the content. With no height it fills the parent (static
+ * backdrop) — which is how its one remaining caller, LanguagePicker, uses it.
  */
 export function NotebookBackground({ height }: { height?: number }) {
   const h = height ?? Dimensions.get('window').height * 1.5;

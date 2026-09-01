@@ -224,10 +224,14 @@ examples beat generic ones.
 4. Every factoid has non-empty `hook` and `body` in `tl` **or** `ceb`.
 5. `count` equals `factoids.length`; `builtAt` updated.
 6. **Leave a one-line note** for the maintainer (in your final message, not in the file):
-   how many you added, the per-subject breakdown, and how many got images. Mention that the
-   mobile app reads a **snapshot copy** at `packages/mobile/src/data/factoids.json`, so a
-   maintainer must re-copy the bank there for your work to ship — you don't need to do that
-   copy yourself.
+   how many you added, the per-subject breakdown, and how many got images.
+
+> **No app snapshot any more.** The mobile app and the web demo used to carry a snapshot copy
+> of this bank (`packages/mobile/src/data/factoids.json`, `packages/web/src/data/factoids.json`)
+> and show one factoid as a "cold-start card" while the model warmed up in CHAT. Chat is gone,
+> both snapshots are deleted, and nothing in either app reads this bank today — the card feed
+> draws from `rag/bank/factoids.jsonl` via `cards.db`, which is a different pipeline. Authoring
+> here is still fine; just don't promise a maintainer that a re-copy will ship it.
 
 Do **not** run `pnpm build`, the verify pipeline, git, or any deploy. Authoring only.
 

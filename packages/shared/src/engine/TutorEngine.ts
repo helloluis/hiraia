@@ -1,14 +1,13 @@
-import type { ImageResult, Message, RagResult, TutorConfig } from '../types/index.js';
+import type { ImageResult, RagResult, TutorConfig } from '../types/index.js';
 
 /**
  * Core interface for the AI tutor engine.
  *
- * This abstraction allows us to have different implementations:
- * - LocalEngine: Runs QVAC SDK directly on-device (mobile)
- * - RemoteEngine: Calls QVAC HTTP server (web demo)
- *
- * Both implementations must conform to this interface, ensuring consistent
- * behavior across platforms.
+ * SINGLE-TURN ONLY. There is no `chat(messages)` here any more: the product has no
+ * conversational surface, and the model's whole job is to print ONE card for one typed
+ * topic (`answerQuery`) plus the feed's one-line reward (`generateReward`). Both send a
+ * single user message and take no history, so an engine implementation needs no notion of
+ * a conversation, a turn window, or a per-thread KV cache.
  */
 export interface TutorEngine {
   /**
@@ -16,15 +15,6 @@ export interface TutorEngine {
    * This should load models and prepare for inference.
    */
   initialize(config: TutorConfig, onProgress?: (progress: number) => void): Promise<void>;
-
-  /**
-   * Generate a streaming response to a conversation.
-   * Yields tokens as they are generated for real-time display.
-   * `kvCacheKey` (optional) enables QVAC's on-device KV cache for this conversation:
-   * the static system prompt is cached and reused across turns so only the new turn
-   * re-prefills (the TTFT fix). Use a stable per-conversation id.
-   */
-  chat(messages: Message[], kvCacheKey?: string): AsyncIterable<string>;
 
   /**
    * Generate a visual/image based on a prompt.
@@ -38,10 +28,9 @@ export interface TutorEngine {
   embed(text: string): Promise<number[]>;
 
   /**
-   * Search the RAG knowledge base for relevant context. `context` (recent
-   * conversation turns) is an optional low-weight signal that tips ambiguous
-   * follow-up queries toward the conversation's topic without overriding a fresh
-   * question.
+   * Search the RAG knowledge base for relevant context. `context` is an optional
+   * low-weight signal that tips an ambiguous query toward a topic without overriding a
+   * fresh question; with the chat surface gone the only caller passes none.
    */
   ragSearch(
     query: string,
@@ -49,13 +38,6 @@ export interface TutorEngine {
     context?: string,
     seenIds?: ReadonlySet<string>
   ): Promise<RagResult[]>;
-
-  /**
-   * Compress a (usually long) assistant answer into a short factual recap, used
-   * by the auto-compacter so older turns cost far fewer tokens in context.
-   * Optional — callers should feature-detect.
-   */
-  summarize?(text: string): Promise<string>;
 
   /**
    * Generate ONE short, warm encouragement sentence for a question-cards "reward"
@@ -76,23 +58,49 @@ export interface TutorEngine {
    * in the bank shares a single word with it AND it is semantically far from everything), so
    * the caller should say we are only a science tutor instead of offering a science topic.
    * Absent/false = an in-domain gap. Optional — callers should feature-detect both.
+   *
+   * `slug` is the card's ILLUSTRATION — a catalog slug the ENGINE resolved from the top
+   * grounded fact (curated map, then LaBSE over the image catalog; see @hiraia/shared
+   * rag/images.ts). The model is never asked what to draw. Null is the ordinary answer at the
+   * measured floor and means the card prints text-only through the poster layout; it is only
+   * ever non-null on the grounded outcome. Absent = the engine resolves no pictures at all.
    */
   answerQuery?(
     query: string,
     language: string
-  ): Promise<{ text: string; grounded: boolean; offDomain?: boolean }>;
+  ): Promise<{ text: string; grounded: boolean; offDomain?: boolean; slug?: string | null }>;
+
+  /**
+   * Is this query OFF-DOMAIN, judged for a WEAK search hit — one the local card search matched
+   * on shared vocabulary rather than subject (see `searchCards`' weak band)? Model-FREE: one
+   * embed plus the in-RAM retrieval scan, no generation and no model lock, so it is cheap
+   * enough to sit between a weak hit and its serve. Judged on the shared `isOffDomain` gate's
+   * OOV arm, because a weak hit IS a query with no lexical evidence that the corpus knows it
+   * as a subject.
+   *
+   * Returns null when it cannot judge (embedder still downloading/warming/failed) — the caller
+   * must then SERVE the hit, exactly as it would have before this method existed: never refuse
+   * a child a card because a model was missing. Optional — callers feature-detect.
+   */
+  weakHitOffDomain?(query: string): Promise<boolean | null>;
 
   /**
    * Resolve a text description to a bundled illustration slug via embedding
-   * retrieval over the image catalog. Used two ways: (1) the tutor's own
-   * `[image: <english desc>]` control token, and (2) RETRIEVAL-DRIVEN — the top
-   * grounded fact's text, so a picture shows even when the (quant-fragile) model
-   * emits no tag. `minCosine` overrides the default confidence floor (the fact path
-   * is cross-lingual and wants a lower bar than the English tags). `domain` scopes the
-   * candidate images to the grounded fact's science domain so the match can't drift
-   * off-topic on a shared word (e.g. earthquake→pangolin). Returns null when nothing
-   * matches confidently (better no picture than a wrong one). Optional — callers should
-   * feature-detect.
+   * retrieval over the image catalog. Two intended inputs: (1) an `[image: <english
+   * desc>]` control token the model emits, and (2) RETRIEVAL-DRIVEN — the top grounded
+   * fact's text, so a picture shows even when the (quant-fragile) model emits no tag.
+   * `minCosine` overrides the default confidence floor (the fact path is cross-lingual
+   * and wants a lower bar than the English tags). `domain` scopes the candidate images to
+   * the grounded fact's science domain so the match can't drift off-topic on a shared word
+   * (e.g. earthquake→pangolin). Returns null when nothing matches confidently (better no
+   * picture than a wrong one). Optional — callers should feature-detect.
+   *
+   * KEPT WITH NO CALLER, still deliberately. Illustrating a generated card is BUILT now, but
+   * it does not come through here: the card path resolves from the grounded FACT the card
+   * states
+   * (`answerQuery`'s `slug`), because the settled architecture is that the model does not pick
+   * illustrations. This entry point is for the model-supplied description it is shaped for,
+   * should one ever be wanted again. See LocalEngine.resolveImageTag.
    */
   resolveImageTag?(
     desc: string,

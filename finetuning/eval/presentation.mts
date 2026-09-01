@@ -7,9 +7,11 @@
  *
  *   1. Illustration restraint — the tutor self-tags `[image: <english desc>]` so retrieval
  *      shows a picture (the tag is stripped before display). The INVARIANTS: a tag must be
- *      well-formed (non-empty description), at most ONE per reply, and not repeated within a
- *      conversation (v3 over-eager-illustration fix). Malformed / multiple / repeated tags are
- *      always wrong → the gate hard-fails them; the benchmark reports the rates.
+ *      well-formed (non-empty description) and at most ONE per reply. Malformed / multiple
+ *      tags are always wrong → the gate hard-fails them; the benchmark reports the rates.
+ *      (The third invariant, "don't re-show the same picture later in the conversation", is
+ *      gone with the chat surface: there is no conversation. `repeatedImagesAcrossTurns` and
+ *      the dialogue probes that fed it were removed with it.)
  *   2. Engagement — warm, kid-facing replies carry a few emoji (the system prompt says ~1–3)
  *      and use **bold** for key terms. OBJECTIVE part: count emoji + detect spam (> SPAM_MAX)
  *      and detect bold. The *quality* of engagement stays a judge call (naturalness/pedagogy).
@@ -99,23 +101,4 @@ export function presentationViolations(rawReply: string, lang?: string): string[
 export function filPersonaLeak(reply: string): string[] {
   const words = new Set((reply.toLowerCase().match(/[a-zñ']+/g) ?? []));
   return FIL_PERSONA_MARKERS.filter((m) => words.has(m));
-}
-
-/**
- * Cross-turn invariant for multi-turn dialogues: the SAME image (by normalized description)
- * must not be shown twice in one conversation (v3 "don't repeat a picture" fix). Pass the
- * list of per-turn raw tutor replies in order; returns the repeated descriptions (empty = clean).
- */
-export function repeatedImagesAcrossTurns(turns: string[]): string[] {
-  const seen = new Set<string>();
-  const repeated: string[] = [];
-  for (const t of turns) {
-    for (const m of (t ?? '').matchAll(IMAGE_TAG_RE)) {
-      const key = (m[1] ?? '').trim().toLowerCase().replace(/\s+/g, ' ');
-      if (!key) continue;
-      if (seen.has(key)) repeated.push(key);
-      else seen.add(key);
-    }
-  }
-  return repeated;
 }

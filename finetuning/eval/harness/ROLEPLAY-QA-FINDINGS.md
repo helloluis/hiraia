@@ -1,5 +1,11 @@
 # Role-play edge-QA findings — cat (v10) + kitten (v7), 2026-06-19
 
+> **HISTORICAL — the tooling described here no longer exists.** `roleplay-run.mts`,
+> `roleplay.sh` and `roleplay-analyze.py` were deleted when the chat surface was removed:
+> the product is a single-turn card writer, so there is no multi-turn role-play to QA and
+> the "standard pre-flight role-play" step is retired. Kept as the record of what the
+> conversational tutor did, not as a runnable procedure.
+
 **Method.** Device-faithful multi-turn role-play at the device temp (`CHAT_TEMP=0.5`).
 102 scripted 3–4 turn dialogues (50 tagalog / 52 english) across 16 edge categories,
 run through `roleplay-run.mts` (real R1/R2 retrieval + `seenIds` + the model's REAL

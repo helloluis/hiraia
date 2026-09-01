@@ -4,7 +4,7 @@
 // the method that built the corpus blob, 0.99999 vs QVAC's GGUF).
 //
 // Regenerate when the bank, the embedder, or query-normalization changes:
-//   1) boot the embedder:  EMBED_BACKEND=transformers finetuning/eval/harness/chat-serve.sh
+//   1) boot the embedder:  EMBED_BACKEND=transformers finetuning/eval/harness/embed-serve.sh
 //      (or: finetuning/.convert-venv/bin/python finetuning/eval/harness/labse-embed-service.py 8090)
 //   2) node_modules/.bin/tsx rag/pipeline/gen-hybrid-fixtures.mts
 import { readFileSync, writeFileSync } from 'node:fs';

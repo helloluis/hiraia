@@ -57,6 +57,10 @@ import { useEngineStore } from './engineStore';
 // interjects) and the illustration cooldown in nextChoices (don't reuse a recent picture).
 const RECENT_WINDOW = 5;
 const VIEWLOG_CAP = 40; // session view-log for the reward recap (topic + timestamp)
+// The weak-hit off-domain consult's deadline: past this, serve the match (never let a wedged
+// embedder swallow a child's question into a void). Same budget as the web mirror's
+// CLASSIFY_TIMEOUT_MS (packages/web/src/store/useCardDemoStore.ts) — keep the two in sync.
+const WEAK_CONSULT_TIMEOUT_MS = 4_000;
 const REWARD_PREFETCH_AT = 5; // start generating the reward text N cards before it's due
 const REWARD_MIN_TOPICS = 3; // don't reward until there's something to celebrate
 
@@ -75,6 +79,14 @@ export interface FeedResponse {
   kind: 'generated' | 'abstain' | 'offdomain';
   text: string | null; // generated answer (already localized)
   suggestion: string | null; // topic label of the nearest card — the abstain path only
+  /**
+   * The card's ILLUSTRATION, as a catalog slug — the `generated` shape only, and null far more
+   * often than not. RETRIEVAL picked it (engine.answerQuery → resolveFactImage on the grounded
+   * fact the card states); the model was never asked what to draw. Null is an ordinary outcome, not a
+   * failure: ResponseCard then prints the card as a poster, exactly as a factoid card without
+   * art does, rather than reaching for a picture that would be wrong.
+   */
+  slug: string | null;
 }
 
 interface CardState {
@@ -362,9 +374,68 @@ export const useCardStore = create<CardState>()((set, get) => ({
 
     // Retrieval-first: a confident local match navigates straight to that card (instant,
     // zero-model), with a "you asked" banner. The card becomes the new feed anchor.
-    const res = await searchCards(q, s.current?.id ?? null);
+    // The feed context is passed so that cards which are EQUALLY about the query — same
+    // coverage, same aboutness share — are separated by the same curriculum weight every draw
+    // uses, rather than by pool ordinal. It never gates a result; see searchCards.
+    const res = await searchCards(q, s.current?.id ?? null, feedContext());
     if (res.best) {
-      navigateTo(res.best, set, get, q);
+      // STRONG hit (the common case): the card is genuinely ABOUT a word the child typed, so it
+      // is self-evidently in-domain — serve it instantly, zero-model, exactly as before.
+      //
+      // WEAK hit (searchCards' weak band, ~6% of gate queries): no card is really ABOUT the
+      // words typed. Junk lands here ("kumusta ka" → a hand-wave card) but so do ordinary
+      // in-domain phrasings whose aboutness is diluted by function words ("para saan ang
+      // ating puso" → the rib-cage card that answers it) — see WEAK_ABOUT in data/cards.ts.
+      // So consult the CALIBRATED off-domain gate BEFORE serving (the same judgement the miss
+      // path makes, one embed + the in-RAM retrieval scan, no generation, no model lock).
+      // Only weak hits pay this round-trip.
+      //
+      // SAFE DEGRADATION: when the gate cannot judge (embedder still downloading/warming/
+      // failed → null), the probe throws, OR it fails to settle within the same ~4s budget
+      // the web mirror gives its consult (useCardDemoStore CLASSIFY_TIMEOUT_MS — QVAC embed
+      // stalls are a known failure mode and LocalEngine.embed has no internal deadline),
+      // SERVE the match — today's behaviour. A missing model must never cost a child a card;
+      // the gate can only ever swap a junk serve for the honest "I'm only a science tutor"
+      // card, never swap a card for silence.
+      //
+      // `asking` is held for the duration of the consult so a second tap re-entering `ask`
+      // (the guard above) cannot race a consult that is still in flight.
+      let weakOff: boolean | null = null;
+      if (res.weak) {
+        const probe = useEngineStore.getState().engine;
+        if (probe?.weakHitOffDomain) {
+          set({ asking: true });
+          let timer: ReturnType<typeof setTimeout> | undefined;
+          try {
+            weakOff = await Promise.race([
+              probe.weakHitOffDomain(q),
+              new Promise<null>((resolve) => {
+                timer = setTimeout(() => resolve(null), WEAK_CONSULT_TIMEOUT_MS);
+              }),
+            ]);
+          } catch (e) {
+            console.warn('[cards] weak-hit off-domain probe failed; serving the match', e);
+          } finally {
+            clearTimeout(timer);
+            set({ asking: false });
+          }
+        }
+      }
+      if (weakOff !== true) {
+        navigateTo(res.best, set, get, q);
+        return;
+      }
+      // Weak hit AND off-domain: the matched card would have been a wrong answer to a
+      // non-science query. Same card as the miss-path off-domain outcome below — no suggestion
+      // and no anchor, for the same reason spelled out there.
+      set({
+        question: null,
+        reward: null,
+        queryBanner: null,
+        response: { query: q, kind: 'offdomain', text: null, suggestion: null, slug: null },
+        responseAnchorId: null,
+        pageKey: get().pageKey + 1,
+      });
       return;
     }
 
@@ -390,7 +461,15 @@ export const useCardStore = create<CardState>()((set, get) => ({
             question: null,
             reward: null,
             queryBanner: null,
-            response: { query: q, kind: 'generated', text: clean, suggestion: null },
+            response: {
+              query: q,
+              kind: 'generated',
+              text: clean,
+              suggestion: null,
+              // Retrieval's pick, above the measured floor, already checked to be art this
+              // device can actually draw — or null, which prints the poster.
+              slug: ans.slug ?? null,
+            },
             responseAnchorId: suggestion?.id ?? null,
             pageKey: get().pageKey + 1,
           });
@@ -421,6 +500,9 @@ export const useCardStore = create<CardState>()((set, get) => ({
         kind: offDomain ? 'offdomain' : 'abstain',
         text: null,
         suggestion: offDomain ? null : nearest,
+        // A miss is not ABOUT anything, so there is nothing to illustrate. The disc-centred
+        // layout is the whole card.
+        slug: null,
       },
       responseAnchorId: offDomain ? null : (suggestion?.id ?? null),
       pageKey: get().pageKey + 1,

@@ -279,11 +279,49 @@ for (const f of POOL) {
   HEAD_RANK.set(f.id, rank);
 }
 
+/**
+ * The salience rank of a token that appears only in a card's PROSE. The widest head in the
+ * full corpus is 45 tokens, so a prose mention is always weaker than any head mention — this
+ * is a structural constant, not a tuned one. Mirrors PROSE_RANK in the app's cards.ts.
+ */
+const PROSE_RANK = 32;
+
+/**
+ * Harmonic numbers H(n) = Σ 1/i: the total salience a card's OWN head carries when its i-th
+ * head token is worth 1/(1+i). This is the divisor that turns a matched salience sum into a
+ * SHARE of the card — without it a card with twenty terms that mentions the query word fifth
+ * ranks alongside a card whose entire subject is that word.
+ *
+ * H(0) = 1 rather than 0: a headless card can only be matched in its prose, and dividing by
+ * zero would hand it +Infinity.
+ */
+const HEAD_MASS: number[] = (() => {
+  let widest = 1;
+  for (const rank of HEAD_RANK.values()) widest = Math.max(widest, rank.size);
+  const h = [1];
+  let sum = 0;
+  for (let i = 1; i <= widest; i += 1) {
+    sum += 1 / i;
+    h.push(sum);
+  }
+  return h;
+})();
+
 export interface SearchResult {
   /** Best card that clears every confidence test below, else null (→ caller generates). */
   best: CardFact | null;
   /** Fraction (0..1) of the query's idf mass the top card covers. Diagnostic. */
   score: number;
+  /** Aboutness share of the same card `score` describes. Diagnostic; the split reads `weak`. */
+  about: number;
+  /**
+   * True when `best` was served on THIN evidence (aboutness under WEAK_ABOUT): no card is
+   * really ABOUT the words typed, something merely mentions them. A weak hit is still a hit —
+   * serving it is always safe — but the caller should consult the off-domain gate first
+   * (useCardDemoStore.ask → /api/demo/card classifyOnly), because this band is where junk
+   * queries land when they match a card on shared vocabulary alone.
+   */
+  weak: boolean;
   /** Top card regardless of the tests — a "did you mean" anchor for the abstention path. */
   suggestion: CardFact | null;
 }
@@ -323,31 +361,73 @@ const SCORE_EPSILON = 1e-12;
 const UNKNOWN_TOKEN_IDF = 1;
 
 /**
- * Retrieval for the search box: score every pool card by the idf-weighted overlap of the
- * query's tokens with the card's tokens, return the best (with its normalized score) plus
- * the top card as an abstention suggestion. Excludes the current card.
+ * The WEAK BAND threshold — aboutness under this marks a served hit as `weak` (see
+ * SearchResult.weak). NOT a serving floor: weakness only decides which hits consult the
+ * off-domain gate before serving, and every degradation (gate unreachable, gate says
+ * in-domain) serves the match. Value + derivation live with the app's copy
+ * (packages/mobile/src/data/cards.ts, WEAK_ABOUT). Keep the two in sync.
  *
- * THREE tests, all of which a confident answer must pass, because coverage alone is not
- * confidence (see MIN_MATCHED_TOKENS for what that cost, measured):
- *   1. it covers SEARCH_FLOOR of the query's idf mass;
- *   2. it contains at least `needed` of the query's distinct content words;
- *   3. it is ABOUT the query's key word — the rarest one the vocabulary knows — meaning that
- *      word is in the card's topic or terms, not only in the prose of the fact.
- * Ties on (1) are resolved by how central the key word is to the card (HEAD_RANK), never by
- * position in demo-cards.json. `suggestion` is the top card by the same ranking with none of
- * the tests applied: the abstention page still needs somewhere to land.
- *
- * Tokens the vocabulary has never seen are still part of what the child asked, and they are
- * the RAREST part of it — so they belong in the DENOMINATOR. Counting only the words we
- * happened to recognise is what let "taylor swift" navigate to a swift-nest card with a
- * confident score of 1.00: `taylor` was not in the vocabulary, so it was not in the query
- * either, and a card covering the one word we knew covered "all" of it. That failure matters
- * more here than on the phone, because this demo carries 5% of the deck: nearly every query
- * has out-of-subset words in it, and a false hit is a query that never reaches the server's
- * real answer (see useCardDemoStore.ask). Mirrors mobile's UNKNOWN_TOKEN_IDF fix.
+ * THE VALUE IS THE APP'S BUT THE METRIC HERE IS NOT: this file computes salience as
+ * `w/(1+rank)` with no slot-width divisor (the app divides by the head slot's token width)
+ * over the demo subset, so the app's band derivation does not transfer by analogy. Measured
+ * through THIS implementation (2026-09-01, the arbitration gate's junk + weak rows plus five
+ * functional phrasings): all four junk queries MISS this pool outright (nothing served, the
+ * server's calibrated gate decides them), the in-domain weak rows land weak (0.010–0.032)
+ * or legitimately strong ("ngano nga pula ang atong dugo" 0.049), and NO junk query is
+ * served strong — so the analogy holds on every probed query, with the calibrated consult
+ * bounding whatever residual skew remains (a weak serve here gets the same judgement a miss
+ * would). Re-measure through this file if the demo pool or the formula changes.
  */
-export function searchCards(query: string, currentId: string | null): SearchResult {
-  const empty: SearchResult = { best: null, score: 0, suggestion: null };
+export const WEAK_ABOUT = 0.04;
+
+/**
+ * Retrieval for the search box. THE SAME CONTRACT the app runs (packages/mobile/src/data/
+ * cards.ts, `searchCards`) — keep the two in sync; they have drifted once already, and the
+ * drift is what served 90% junk.
+ *
+ * TWO DIRECTIONS, ranked lexicographically, because one cannot rank cards that all contain
+ * the query:
+ *   1. COVERAGE  frac = matched idf mass / the query's total — how much of the QUESTION the
+ *      card answers. The confidence quantity, gated at SEARCH_FLOOR. On its own it SATURATES:
+ *      when every typed word is in the vocabulary the numerator equals the denominator, so
+ *      every card carrying those words scores exactly 1.000 (42 tied for "gravity" here, 3,129
+ *      for "araw" in the full deck) and a strict `>` keeps whichever the scan reached first.
+ *   2. ABOUTNESS how much of the CARD the question explains: the same matched mass weighted by
+ *      each token's SALIENCE in that card — 1/(1+rank), rank 0 = its topic, rank i+1 = its
+ *      i-th term, PROSE_RANK for a passing mention — over the card's own head mass H(|head|).
+ *
+ * Salience is POSITION and never the topic STRING: `topic` is English-only, so any score built
+ * out of it silently ranks the demo's two DEFAULT languages at random. Position works in all
+ * three. (The other obvious alternative — the match's share of the card's total IDF — was
+ * measured and rejected: it rewards a card for listing few rare terms.)
+ *
+ * THREE tests, all of which a confident answer must pass:
+ *   a. it covers SEARCH_FLOOR of the query's idf mass;
+ *   b. it contains at least `needed` of the query's distinct content words (MIN_MATCHED_TOKENS);
+ *   c. at least one of them is HEAD-level — the card is ABOUT a word the visitor typed rather
+ *      than merely mentioning it. Binary, so it needs no threshold, and unlike an absolute
+ *      aboutness floor it has the same meaning in all three languages.
+ *
+ * `suggestion` is the top card by the same ranking with (b), (c) and the floor removed: the
+ * abstention page still needs somewhere to land, and it inherits the same fix.
+ *
+ * Ties that survive both directions are broken on the curriculum weight when the caller has one
+ * (the same `feedWeigher` the draws use), then on whether the card is furnished with an
+ * illustration, then on pool position as a stable last resort.
+ *
+ * Tokens the vocabulary has never seen are still part of what the visitor asked, and they are
+ * the RAREST part of it — so they belong in the DENOMINATOR. Counting only the words we
+ * happened to recognise is what let "taylor swift" navigate to a swift-nest card at a confident
+ * 1.00. That failure matters more here than on the phone, because this demo carries 5% of the
+ * deck: nearly every query has out-of-subset words in it, and a false hit is a query that never
+ * reaches the server's real answer (see useCardDemoStore.ask).
+ */
+export function searchCards(
+  query: string,
+  currentId: string | null,
+  weights?: FeedWeigher
+): SearchResult {
+  const empty: SearchResult = { best: null, score: 0, about: 0, weak: false, suggestion: null };
   const qtoks = [...new Set(searchTokens(query))];
   if (!qtoks.length) return empty;
   const known = qtoks.filter((t) => TOKEN_DF[t] !== undefined);
@@ -358,57 +438,91 @@ export function searchCards(query: string, currentId: string | null): SearchResu
     known.reduce((s, t) => s + idf(t), 0) + (qtoks.length - known.length) * UNKNOWN_TOKEN_IDF;
   if (mass <= 0) return empty;
 
-  // The query's KEY word: the rarest one the vocabulary knows, i.e. the one carrying most of
-  // what makes this question this question. An answering card has to be ABOUT that word —
-  // carry it in its topic or its terms — not merely mention it somewhere in its prose.
-  let key = known[0]!;
-  for (const t of known) if (idf(t) > idf(key)) key = t;
-
   // Unknown words count toward the requirement but can never satisfy it, so a query with an
   // out-of-vocabulary word in it ("taylor swift") can no longer be answered from one half.
   const needed = Math.min(MIN_MATCHED_TOKENS, qtoks.length);
 
   let best: CardFact | null = null;
   let bestFrac = 0;
-  let bestRank = Infinity;
+  let bestAbout = -1;
+  let bestWeight = -1;
+  let bestRich = -1;
   let top: CardFact | null = null; // the suggestion: top card whether or not it qualifies
   let topFrac = 0;
-  let topRank = Infinity;
+  let topAbout = -1;
+  let topWeight = -1;
+  let topRich = -1;
 
+  // POOL is walked in pool order, so the strict `>` comparisons below keep the FIRST card at
+  // any fully-tied score — position in demo-cards.json, which is the stable last resort the app
+  // spells out explicitly (it accumulates into a touch list and cannot rely on scan order).
   for (const f of POOL) {
     if (f.id === currentId) continue;
     const toks = FACT_TOKENS.get(f.id)!;
     const head = HEAD_RANK.get(f.id)!;
     let matchedMass = 0;
+    let salience = 0;
     let matched = 0;
+    let headLevel = false;
     for (const t of known) {
       if (!toks.has(t)) continue;
       matched += 1;
-      matchedMass += idf(t);
+      const w = idf(t);
+      matchedMass += w;
+      const rank = head.get(t);
+      if (rank === undefined) {
+        salience += w / (1 + PROSE_RANK);
+      } else {
+        salience += w / (1 + rank);
+        headLevel = true;
+      }
     }
     if (!matched) continue;
     const frac = matchedMass / mass;
-    // Ties on coverage are the NORM, not the exception — a one-word query gives every card
-    // carrying that word the same 1.000 — so how central the key word is to the card is what
-    // actually decides between them. Rank Infinity = the card only mentions it in passing.
-    const keyRank = head.get(key) ?? Infinity;
+    const about = salience / (mass * (HEAD_MASS[head.size] ?? 1));
+    const cw = weights ? weights.of(f) : 1;
+    // Furnished with a picture, as a property of the CARD rather than of what this browser has
+    // finished downloading.
+    const rich = f.slug ? 1 : 0;
 
-    if (frac > topFrac + SCORE_EPSILON || (frac > topFrac - SCORE_EPSILON && keyRank < topRank)) {
-      topFrac = frac;
-      topRank = keyRank;
+    if (
+      frac > topFrac + SCORE_EPSILON ||
+      (frac > topFrac - SCORE_EPSILON &&
+        (about > topAbout + SCORE_EPSILON ||
+          (about > topAbout - SCORE_EPSILON &&
+            (cw > topWeight + SCORE_EPSILON ||
+              (cw > topWeight - SCORE_EPSILON && rich > topRich)))))
+    ) {
       top = f;
+      topFrac = frac;
+      topAbout = about;
+      topWeight = cw;
+      topRich = rich;
     }
-    // A confident answer has to cover enough of the question (SEARCH_FLOOR), out of enough of
-    // its distinct words (`needed`), and be ABOUT its key word rather than mention it.
-    if (matched < needed || keyRank === Infinity || frac < SEARCH_FLOOR) continue;
-    if (frac > bestFrac + SCORE_EPSILON || (frac > bestFrac - SCORE_EPSILON && keyRank < bestRank)) {
-      bestFrac = frac;
-      bestRank = keyRank;
+    if (matched < needed || !headLevel || frac < SEARCH_FLOOR) continue;
+    if (
+      frac > bestFrac + SCORE_EPSILON ||
+      (frac > bestFrac - SCORE_EPSILON &&
+        (about > bestAbout + SCORE_EPSILON ||
+          (about > bestAbout - SCORE_EPSILON &&
+            (cw > bestWeight + SCORE_EPSILON ||
+              (cw > bestWeight - SCORE_EPSILON && rich > bestRich)))))
+    ) {
       best = f;
+      bestFrac = frac;
+      bestAbout = about;
+      bestWeight = cw;
+      bestRich = rich;
     }
   }
 
-  return { best, score: best ? bestFrac : topFrac, suggestion: top };
+  return {
+    best,
+    score: best ? bestFrac : topFrac,
+    about: Math.max(best ? bestAbout : topAbout, 0),
+    weak: !!best && bestAbout < WEAK_ABOUT,
+    suggestion: top,
+  };
 }
 
 const FALLBACK: Record<LanguageKey, Array<keyof CardFact['fact']>> = {

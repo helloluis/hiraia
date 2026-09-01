@@ -210,7 +210,7 @@ function checkContract(
  * The transfer currently running for each filename.
  *
  * Two callers CAN ask for the same asset at once — `engineStore.changeLanguage`
- * is reachable from onboarding, the sidebar, the feed's search field and /chat,
+ * is reachable from onboarding, the sidebar and the feed's search field,
  * and English and Tagalog share ONE adapter file — and two transfers of one file
  * is not merely wasteful. Both compute the same `.part` path, the second stats it
  * mid-flight and passes that length as a resume offset, and native then opens a

@@ -12,6 +12,20 @@ export {
 export { tokenize } from './tokenize.js';
 export { SemanticIndex } from './SemanticIndex.js';
 export type { SemanticBlob, LangKey, SemHit } from './SemanticIndex.js';
+// Picking the ILLUSTRATION for a card: the measured card-index-then-curated id-lookup
+// precedence both surfaces run (no runtime cosine any more), plus the catalog scan + domain
+// scoping kept for the retired tag path and offline candidate proposal.
+export {
+  ImageIndex,
+  DOMAIN_IMAGE_CATEGORIES,
+  imageDomainScope,
+  acceptImageMatch,
+  attributeCardToFact,
+  buildFactCardSlugMap,
+  resolveIllustrationSlug,
+  CARD_BINDING_DENY,
+} from './images.js';
+export type { ImageCatalogBlob, ImageMatch, IndexedCard } from './images.js';
 // Where the bank comes from. There is deliberately NO bundled `SCIENCE_FACTS` array here any
 // more: it was 43.5 MB of TypeScript that Metro could not tree-shake, so importing this
 // barrel anywhere in the app dragged the whole fact bank into the JS bundle. The phone reads

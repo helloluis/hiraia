@@ -180,7 +180,8 @@ export const ACTIVE_MODEL: OnDeviceModel = {
   // The grounded adapter trains at seq 2048, but the tag-aware grounded system
   // prompt alone is ~1.2k tokens — at ctx 2048 even a few turns overflowed and
   // threw exceed_context_size_error. 4096 gives headroom (base Qwen2.5 supports
-  // it; LoRA is context-length-agnostic); chatStore also windows history.
+  // it; LoRA is context-length-agnostic). Now that every generation is single-turn
+  // (one card prompt, no history) the ceiling is far less pressed than it was.
   ctxSize: 4096,
   runtime: { gpuLayers: 99 }, // full GPU/Vulkan offload
   modelType: 'llm',

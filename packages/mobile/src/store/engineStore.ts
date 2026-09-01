@@ -7,7 +7,6 @@ import { LANGUAGE_OPTIONS, DEFAULT_LANGUAGE } from '../config/languages';
 import { ACTIVE_MODEL } from '../config/model';
 import { getSetting, setSetting } from '../db/repo';
 import { LocalEngine } from '../engine/LocalEngine';
-import { useChatStore } from './chatStore';
 
 export type LoadingPhase = 'idle' | 'downloading' | 'warming' | 'ready';
 
@@ -67,9 +66,9 @@ function buildConfig(language: Language, gradeLevel: GradeLevel): TutorConfig {
 /**
  * ONE ENGINE LOAD AT A TIME, AND THE LAST PICK WINS.
  *
- * `changeLanguage` is reachable from four places — onboarding slide 1, the sidebar
- * language picker, the feed's search field (cardStore.warmModel) and /chat's lazy kick —
- * and its guards only ever caught a second load of the SAME language. Picking a DIFFERENT
+ * `changeLanguage` is reachable from three places — onboarding slide 1, the sidebar
+ * language picker and the feed's search field (cardStore.warmModel) — and its guards only
+ * ever caught a second load of the SAME language. Picking a DIFFERENT
  * language while one was loading therefore passed every check and started a SECOND
  * `LocalEngine.initialize` alongside the first, with nothing cancelling either. That is not
  * merely wasteful:
@@ -110,11 +109,6 @@ async function loadEngineFor(language: Language): Promise<void> {
     // Persist AFTER arming the guard — a crash in this window just loses the preference,
     // whereas persisting first re-opened the race.
     await setSetting('language', language);
-    // Re-roll the cold-start "Alam mo ba na…?" factoid in the NEW language. The composed
-    // text is locked at roll time, so the one currently on screen stays Tagalog forever
-    // (it lives in the TTL cache for ~1h) — clear + re-roll keeps the language consistent.
-    // Best-effort, fire-and-forget; the new factoid renders the moment it's set.
-    void useChatStore.getState().refreshFactoidForNewLanguage();
     if (prev) {
       try {
         await prev.shutdown();
@@ -193,28 +187,21 @@ async function loadEngineFor(language: Language): Promise<void> {
         if (p >= 100) downloadDone = true; // complete, or (instant 100) already cached
       });
 
-      // The system-prompt prefill is EXPLICIT — initialize() no longer warms up — and runs
-      // exactly ONCE, for the grade the child has actually settled on. That prefill is the
-      // slow tail of a cold start (~78s on the target device) and the KV cache it primes is
-      // keyed on the grade, which is still in flux while the model loads: onboarding's grade
-      // slide lands seconds after the language pick that kicked this load off, and Settings
-      // stays reachable. Warming inside initialize() therefore primed the load-START grade
-      // and made this reconcile throw it away and pay a SECOND ~78s prefill for every grade
-      // but the default 5.
-      // changeGrade() skips the engine while isReady is false, so a change landing DURING a
-      // prime is only caught by re-checking after each one — loop until they agree. Kept
-      // inside the try so the loader bar keeps easing through the warm-up tail (the ramp is
-      // cleared in the finally, once the engine is genuinely primed).
-      // primeSystemPrompt (unlike setGrade) does NOT take the shared model lock: this engine
-      // has no generation of its own to race, and the module-wide lock can still be held by a
-      // stale completion from the engine we just shut down — coupling readiness to that would
-      // delay isReady, or strand it forever if the completion never settles.
-      let primed = get().grade;
-      await engine.primeSystemPrompt(primed);
-      while (get().grade !== primed) {
-        primed = get().grade;
-        await engine.primeSystemPrompt(primed);
-      }
+      // The warm-up is EXPLICIT — initialize() does not warm up — and runs exactly ONCE, here,
+      // where the loader bar can cover its cold-start tail (the ramp is cleared in the finally,
+      // once the engine is genuinely warm).
+      //
+      // It used to have to chase the grade: the prefill was the chat system prompt, which is
+      // grade-bearing, so a grade change landing mid-prime meant paying a second ~78s prefill.
+      // The warm-up no longer prefills anything grade-keyed (LocalEngine.warmUp), so one call
+      // with the current grade is enough — changeGrade() applies any later change straight to
+      // the engine config with no generation at all.
+      //
+      // prime() deliberately does NOT take the shared model lock: this engine has no generation
+      // of its own to race, and the module-wide lock can still be held by a stale completion
+      // from the engine we just shut down — coupling readiness to that would delay isReady, or
+      // strand it forever if the completion never settles.
+      await engine.prime(get().grade);
     } finally {
       ready = true;
       clearInterval(ramp);
@@ -285,7 +272,6 @@ export const useEngineStore = create<EngineState>((set, get) => ({
     //
     // The engine is now loaded only when something actually needs it:
     //   - the feed's search field, on tap (cardStore.warmModel)
-    //   - /chat, which kicks its own load and shows a factoid while it waits
     //   - onboarding slide-1, where picking a language IS the request to set up
     // A reward card that comes due before the engine is ready falls back to its
     // deterministic template, which is the existing contract.
@@ -293,8 +279,8 @@ export const useEngineStore = create<EngineState>((set, get) => ({
   },
 
   changeLanguage: async (language: Language) => {
-    // Cheap synchronous fast path so the feed's search field and /chat's kick do not
-    // queue anything at all once the tutor is up. It is only a fast path: the same test
+    // Cheap synchronous fast path so the feed's search field does not queue anything at
+    // all once the tutor is up. It is only a fast path: the same test
     // is repeated inside the queue, which is where it is authoritative.
     if (get().engine && get().language === language && get().isReady) return;
     // NOTE the guard that used to sit here — `loadingPhase !== 'idle' && language ===
@@ -329,15 +315,14 @@ export const useEngineStore = create<EngineState>((set, get) => ({
     set({ grade });
     if (!changed) return;
     // Unlike a language change this needs NO model reload — the LoRA adapter is per-language,
-    // not per-grade. What DOES change is the STATIC system prompt ("grade-N students"), which
-    // is exactly what QVAC's KV cache is keyed on: the cache LocalEngine.primeSystemPrompt()
-    // primed at the end of the load would now miss on the first real turn (a full cold
-    // prefill — the TTFT we hide).
-    // So a READY engine re-primes in place (LocalEngine.setGrade → warmUp again; a few
-    // seconds, non-fatal, serialized against rapid taps). An engine still LOADING picks the
-    // new grade up at the end of changeLanguage(); no engine at all (the feed is zero-model
-    // until the search field is tapped) has nothing to prime — buildConfig reads the grade
-    // when the load eventually starts.
+    // not per-grade — and, since the deleted chat surface took the grade-bearing system prompt
+    // with it, no re-prefill either. The grade now reaches the model only through the card
+    // prompt `answerQuery` builds per query, so LocalEngine.setGrade is a config write: no
+    // completion, no model lock, nothing for a rapid tap to queue behind. (It used to re-run
+    // the ~78s warm-up prefill on every tap, to refresh a KV cache nothing could hit.)
+    // An engine still LOADING picks the new grade up at the end of changeLanguage(); no engine
+    // at all (the feed is zero-model until the search field is tapped) has nothing to do —
+    // buildConfig reads the grade when the load eventually starts.
     const { engine, isReady } = get();
     if (isReady && engine instanceof LocalEngine) await engine.setGrade(grade);
   },

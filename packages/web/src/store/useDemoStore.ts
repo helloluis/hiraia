@@ -1,42 +1,31 @@
 import { create } from 'zustand';
 import { DEFAULT_GRADE, toGradeLevel, type GradeLevel } from '@/config/grades';
 import type { LanguageKey } from '@/config/model';
-import { pickFactoidText } from '@/data/factoids';
 
 /**
  * Store for the in-browser "Try the web demo" lightbox.
  *
  * Mirrors the mobile app's first-launch flow (onboarding → cold-start loader → the
  * question-cards feed). The feed itself lives in useCardDemoStore; this store owns the
- * lightbox shell state (phase, language, grade, transcript logging).
+ * lightbox shell state (phase, language, grade) and the transcript logger.
  *
  * ONBOARDING runs ONCE per browser, like the app's runs once per install: the three
  * answers it collects are written to localStorage under ONBOARDING_KEY and a returning
  * visitor lands straight on the cold-start loader. The loader still plays every time,
  * because on device it is the model actually loading — it is not part of onboarding.
  *
- * Persistence: typed queries (and any legacy chat messages) are logged to
- * `demo_messages` via /api/demo/messages, keyed by an anonymous session id kept in
- * localStorage. That id survives reloads on the same browser but not across
- * browsers. We keep these transcripts for product insight, not as per-user
- * history — there are no accounts here.
+ * Persistence: the queries a visitor types into the feed are logged to `demo_messages`
+ * via POST /api/demo/messages (see `persist`, called from useCardDemoStore), keyed by an
+ * anonymous session id kept in localStorage. That id survives reloads on the same browser
+ * but not across browsers. We keep these transcripts for product insight, not as per-user
+ * history — there are no accounts here, and nothing reads them back: with the chat surface
+ * removed there is no thread to restore.
  */
 
-export type DemoPhase = 'onboarding' | 'loading' | 'cards' | 'chat';
-
-export interface DemoMessage {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-  kind?: 'factoid';
-  /** true while the text is still streaming in (drives the typing affordance). */
-  streaming?: boolean;
-}
+export type DemoPhase = 'onboarding' | 'loading' | 'cards';
 
 interface DemoState {
   isOpen: boolean;
-  /** true while we fetch any prior transcript for this browser's session. */
-  restoring: boolean;
   phase: DemoPhase;
   language: LanguageKey | null;
   /**
@@ -53,10 +42,6 @@ interface DemoState {
    * demo resets on reload. The session's own `seen` set still blocks repeats.
    */
   grade: GradeLevel;
-  messages: DemoMessage[];
-  isResponding: boolean;
-  /** ids of factoids shown this session, so the opener doesn't repeat itself. */
-  shownFactoidIds: string[];
 
   openDemo: () => void;
   closeDemo: () => void;
@@ -75,12 +60,7 @@ interface DemoState {
   /** Show onboarding again from the top (Settings-style "watch it again"). */
   restartOnboarding: () => void;
   finishLoading: () => void;
-  showColdStartFactoid: () => void;
-  sendMessage: (text: string) => void;
 }
-
-let idCounter = 0;
-const nextId = () => `demo-${Date.now()}-${idCounter++}`;
 
 const DEMO_SESSION_KEY = 'hiraia_demo_session';
 
@@ -167,151 +147,35 @@ export function persist(
   }).catch(() => {});
 }
 
-/** Stream `fullText` into the message with `id`, char-batches on a ~20ms tick. */
-function streamInto(
-  set: (fn: (state: DemoState) => Partial<DemoState>) => void,
-  get: () => DemoState,
-  id: string,
-  fullText: string,
-  onDone?: () => void
-) {
-  const speed = 18; // ms per tick
-  const charsPerTick = 3;
-  let index = 0;
-
-  const tick = () => {
-    // Bail out if the lightbox was closed (or this message dropped) mid-stream.
-    if (!get().isOpen || !get().messages.some((m) => m.id === id)) return;
-
-    index = Math.min(index + charsPerTick, fullText.length);
-    const slice = fullText.slice(0, index);
-    const done = index >= fullText.length;
-
-    set((state) => ({
-      messages: state.messages.map((m) =>
-        m.id === id ? { ...m, content: slice, streaming: !done } : m
-      ),
-    }));
-
-    if (done) {
-      onDone?.();
-      return;
-    }
-    setTimeout(tick, speed);
-  };
-
-  setTimeout(tick, speed);
-}
-
-/** The intent-distilled model reasons in a leading <think>…</think> block, and may end a
- *  reply with an `[image: …]` control token (the phone resolves it to a bundled
- *  illustration — the web demo has no picture retrieval, so we strip it). Show only the
- *  final answer text in the demo (empty while still thinking → the bubble shows its dots). */
-function stripThink(s: string): string {
-  // 1) drop the reasoning block — show only what follows </think>
-  const close = s.indexOf('</think>');
-  let out: string;
-  if (close >= 0) out = s.slice(close + '</think>'.length).replace(/<think>/g, '');
-  else if (s.includes('<think>')) return '';
-  else out = s;
-  // 2) strip completed [image: …] tokens, then any trailing partial one still streaming
-  //    in (so "…[image: a ca" never flashes before its closing bracket arrives)
-  out = out.replace(/\[image:[^\]]*\]/gi, '').replace(/\[image:[^\]]*$/i, '');
-  return out.replace(/^\s+/, '').replace(/[ \t]+$/, '');
-}
-
-/** Fallback preview reply per language, used only if the model backend is unreachable. */
-const CANNED_REPLY: Record<LanguageKey, string> = {
-  tagalog:
-    'Magandang tanong! 🌟 Sa totoong Hiraia app, sasagutin ko ito gamit ang on-device ' +
-    'na AI na tumatakbo nang offline mismo sa iyong telepono. Ang web demo na ito ay ' +
-    'preview lang ng karanasan — i-download ang app para sa buong tutor na kasama mo ' +
-    'kahit walang internet!',
-  english:
-    "Great question! 🌟 In the real Hiraia app, I'd answer this using the on-device AI " +
-    'that runs fully offline right on your phone. This web demo is just a preview of the ' +
-    'experience — download the app to get the full tutor, even without internet!',
-  cebuano:
-    'Maayong pangutana! 🌟 Sa tinuod nga Hiraia app, tubagon nako kini gamit ang on-device ' +
-    'nga AI nga modagan offline mismo sa imong telepono. Kini nga web demo usa lang ka ' +
-    'preview sa kasinatian — i-download ang app para sa kompleto nga tutor, bisan walay internet!',
-};
-
-interface DemoRow {
-  id: number;
-  role: 'user' | 'assistant';
-  content: string;
-  kind?: string | null;
-  language?: string | null;
-}
-
 export const useDemoStore = create<DemoState>((set, get) => ({
   isOpen: false,
-  restoring: false,
   phase: 'onboarding',
   language: null,
   grade: DEFAULT_GRADE,
-  messages: [],
-  isResponding: false,
-  shownFactoidIds: [],
 
-  openDemo: async () => {
+  // Opening the demo is now SYNCHRONOUS. It used to await GET /api/demo/messages to restore
+  // this browser's prior chat thread, holding the lightbox on a spinner (`restoring`) while
+  // it did. There is no thread to restore any more, so the visitor lands on onboarding or
+  // the loader immediately.
+  openDemo: () => {
     // Onboarding is first-visit-only. A saved record is this browser's own answers, so the
     // visitor goes straight to the loader with the language and grade they picked.
     const saved = readOnboarding();
     set({
       isOpen: true,
-      restoring: true,
       phase: saved ? 'loading' : 'onboarding',
       language: saved?.language ?? null,
       grade: saved?.grade ?? DEFAULT_GRADE,
-      messages: [],
-      isResponding: false,
     });
-
-    // Restore this browser's prior transcript, if any: jump straight into the
-    // chat with the saved language so a returning visitor sees their old thread.
-    try {
-      const sessionId = getDemoSessionId();
-      const res = await fetch(`/api/demo/messages?sessionId=${encodeURIComponent(sessionId)}`);
-      const data = await res.json().catch(() => ({}));
-      const rows = (data.messages ?? []) as DemoRow[];
-      if (!get().isOpen) return; // closed while fetching
-
-      // Keep the prior transcript visible. The phase and the language are NOT re-derived
-      // from these rows: they are a transcript, not a preference. The old code re-asked for
-      // the language on every open precisely because guessing it from old rows hard-
-      // defaulted returning visitors to Tagalog; the onboarding record read above is that
-      // missing preference, stated by the visitor, so it is the only thing consulted here.
-      if (rows.length > 0) {
-        set({
-          restoring: false,
-          messages: rows.map((r) => ({
-            id: `db-${r.id}`,
-            role: r.role,
-            content: r.content,
-            kind: r.kind === 'factoid' ? 'factoid' : undefined,
-            streaming: false,
-          })),
-        });
-        return;
-      }
-    } catch {
-      /* best-effort restore — fall through to a fresh setup flow */
-    }
-    set({ restoring: false });
   },
 
   closeDemo: () =>
     set({
       isOpen: false,
-      restoring: false,
       // Reset to the unonboarded shape; the next openDemo re-reads the saved record and
       // decides again, so a visitor who finished onboarding never sees it twice.
       phase: 'onboarding',
       language: null,
-      messages: [],
-      isResponding: false,
     }),
 
   pickLanguage: (language) => set({ language }),
@@ -342,120 +206,7 @@ export const useDemoStore = create<DemoState>((set, get) => ({
   },
 
   finishLoading: () => {
-    // The loader hands off to the question-cards feed (the gamified home screen),
-    // replacing the old canned-chat phase.
+    // The loader hands off to the question-cards feed — the demo's only content surface.
     set({ phase: 'cards' });
-  },
-
-  showColdStartFactoid: () => {
-    const language = get().language ?? 'tagalog';
-    const picked = pickFactoidText(language, get().shownFactoidIds);
-    if (!picked) return;
-
-    const id = nextId();
-    set((state) => ({
-      messages: [
-        ...state.messages,
-        { id, role: 'assistant', content: '', kind: 'factoid', streaming: true },
-      ],
-      shownFactoidIds: [...state.shownFactoidIds, picked.id].slice(-15),
-    }));
-    streamInto(set, get, id, picked.text, () =>
-      persist('assistant', picked.text, language, 'factoid')
-    );
-  },
-
-  sendMessage: (text) => {
-    const trimmed = text.trim();
-    if (!trimmed || get().isResponding) return;
-
-    const userId = nextId();
-    const assistantId = nextId();
-    const language = get().language ?? 'tagalog';
-
-    // Short context window of prior real turns (skip the opening factoid + any streaming row).
-    const history = get()
-      .messages.filter((m) => !m.streaming && m.kind !== 'factoid' && (m.role === 'user' || m.role === 'assistant'))
-      .slice(-6)
-      .map((m) => ({ role: m.role, content: m.content }));
-
-    set((state) => ({
-      isResponding: true,
-      messages: [
-        ...state.messages,
-        { id: userId, role: 'user', content: trimmed },
-        { id: assistantId, role: 'assistant', content: '', streaming: true },
-      ],
-    }));
-    persist('user', trimmed, language);
-
-    const finishCanned = () => {
-      const reply = CANNED_REPLY[language];
-      streamInto(set, get, assistantId, reply, () => {
-        set({ isResponding: false });
-        persist('assistant', reply, language);
-      });
-    };
-
-    // Stream the REAL on-device model via the server-side proxy. Falls back to the canned
-    // preview if the model backend is unreachable, so the demo never looks broken.
-    void (async () => {
-      let raw = '';
-      try {
-        const res = await fetch('/api/demo/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: trimmed, language, history }),
-        });
-        if (!res.ok || !res.body) throw new Error('model unavailable');
-
-        const reader = res.body.getReader();
-        const decoder = new TextDecoder();
-        let buffer = '';
-        for (;;) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          if (!get().isOpen) {
-            void reader.cancel();
-            return;
-          }
-          buffer += decoder.decode(value, { stream: true });
-          const lines = buffer.split('\n');
-          buffer = lines.pop() ?? '';
-          for (const line of lines) {
-            const t = line.trim();
-            if (!t.startsWith('data:')) continue;
-            const data = t.slice(5).trim();
-            if (!data || data === '[DONE]') continue;
-            try {
-              const delta = JSON.parse(data)?.choices?.[0]?.delta?.content;
-              if (typeof delta === 'string' && delta) {
-                raw += delta;
-                const visible = stripThink(raw);
-                set((state) => ({
-                  messages: state.messages.map((m) =>
-                    m.id === assistantId ? { ...m, content: visible } : m
-                  ),
-                }));
-              }
-            } catch {
-              /* ignore partial/non-JSON SSE lines */
-            }
-          }
-        }
-
-        const finalText = stripThink(raw).trim();
-        if (!finalText) throw new Error('empty reply');
-        set((state) => ({
-          isResponding: false,
-          messages: state.messages.map((m) =>
-            m.id === assistantId ? { ...m, content: finalText, streaming: false } : m
-          ),
-        }));
-        persist('assistant', finalText, language);
-      } catch {
-        finishCanned();
-      }
-    })();
   },
 }));

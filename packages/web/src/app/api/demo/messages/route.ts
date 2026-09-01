@@ -4,31 +4,19 @@ import { getDb } from '@/lib/db';
 /**
  * Anonymous transcript log for the public "Try the web demo" lightbox.
  *
- * No auth: the demo has no accounts. Rows are keyed only by a client-generated
- * session id (kept in the visitor's localStorage), so a returning visitor on the
- * same browser can pick their thread back up, but switching browsers starts
- * fresh. We persist everything — visitor questions, our canned replies, and the
- * opening factoid — for product insight into what people actually try.
+ * WRITE-ONLY. Rows are keyed only by a client-generated session id (kept in the visitor's
+ * localStorage) and no auth is involved, because the demo has no accounts. We persist what
+ * visitors type for product insight into what people actually try.
+ *
+ * The matching GET (restore this session's transcript, oldest first) is GONE along with the
+ * demo chat: its one caller was useDemoStore.openDemo re-rendering a prior thread, and there
+ * is no thread surface any more. It is not left behind as a convenience — an unauthenticated
+ * read of anyone's transcript by session id is not something to keep around with no reader.
  */
 
 const LANGUAGES = new Set(['tagalog', 'english', 'cebuano']);
 const MAX_SESSION_ID = 100;
 const MAX_CONTENT = 8000;
-
-// GET /api/demo/messages?sessionId=… — restore a session's transcript (oldest first).
-export async function GET(req: NextRequest) {
-  const sessionId = req.nextUrl.searchParams.get('sessionId');
-  if (!sessionId || sessionId.length > MAX_SESSION_ID) {
-    return NextResponse.json({ messages: [] });
-  }
-  const messages = getDb()
-    .prepare(
-      `SELECT id, role, content, kind, language, created_at
-         FROM demo_messages WHERE session_id = ? ORDER BY id ASC`
-    )
-    .all(sessionId);
-  return NextResponse.json({ messages });
-}
 
 // POST /api/demo/messages — append one demo message; returns the stored row.
 export async function POST(req: NextRequest) {

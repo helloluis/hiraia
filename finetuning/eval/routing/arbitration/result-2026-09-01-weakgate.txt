@@ -1,0 +1,292 @@
+>> embedder already serving on :8090 — reusing it ("model_path":"/Users/luis/Code/hiraia/deploy/models/labse.Q4_K_M.gguf")
+(node:43882) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+>> bank:  50279 facts x tl/bis/en (hash af171fe8a9f9)
+>> cards: 46421 pool cards · SEARCH_FLOOR 0.34
+
+>> provenance: HEAD d39c0a8bec7e (unified) · worktree DIRTY 99 files / 3de9ff38dab1
+>>             cards.ts 36e6beb37971 · cards.db 45cf6762f5bc · pool addba7fe9445
+>>             embedder ../hiraia/deploy/models/labse.Q4_K_M.gguf
+
+################################################################################################################
+#  TUNING SET  (98 cases)
+################################################################################################################
+
+================================================================================================================
+  HAS-CARD  (54 cases)
+================================================================================================================
+FAIL  tag/tag term     bulkan                                   served-existing          -> served-wrong    dcard-01100 "Volcanoes as Natural Sources" @1.000 [art ttl emp ----]  [accept 375: ffct-28849 ffct-28861 ffct-29122 ffct-29300]
+PASS  tag/tag term     lindol                                   served-existing          -> served-existing ffct-30554 "what an earthquake is" @1.000 [art ttl emp quiz]  [accept 245: ffct-28849 ffct-29251 ffct-29256 ffct-29257]
+PASS  eng/tag term     earthquake                               served-existing          -> served-existing ffct-30554 "what an earthquake is" @1.000 [art ttl emp quiz]  [accept 245: ffct-28849 ffct-29251 ffct-29256 ffct-29257]
+PASS  ceb/tag term     linog                                    served-existing          -> served-existing ffct-30554 "what an earthquake is" @1.000 [art ttl emp quiz]  [accept 245: ffct-28849 ffct-29251 ffct-29256 ffct-29257]
+PASS  eng/tag term     tsunami                                  served-existing          -> served-existing ffct-29270 "what a tsunami is" @1.000 [art --- --- quiz]  [accept 97: ffct-28863 ffct-29270 ffct-29271 ffct-29272]
+PASS  eng/tag term     photosynthesis                           served-existing          -> served-existing ffct-03870 "Photosynthesis" @1.000 [art ttl emp quiz]  [accept 116: ffct-00179 ffct-00308 ffct-00403 ffct-00483]
+PASS  tag/tag term     bagyo                                    served-existing          -> served-existing dcard-04720 "Pagsubaybay sa Bagyo" @1.000 [art ttl emp ----]  [accept 252: ffct-28928 ffct-29324 ffct-29325 ffct-29326]
+PASS  tag/tag term     kidlat                                   served-existing          -> served-existing ffct-27947 "what lightning is" @1.000 [art --- --- quiz]  [accept 144: ffct-01751 ffct-03293 ffct-03506 ffct-03963]
+PASS  ceb/tag term     kilat                                    served-existing          -> served-existing ffct-30097 "lightning tends to strike the tallest ob" @1.000 [art ttl emp quiz]  [accept 144: ffct-01751 ffct-03293 ffct-03506 ffct-03963]
+PASS  tag/tag term     puso                                     served-existing          -> served-existing ffct-04100 "heart is the size of a fist" @1.000 [art --- --- quiz]  [accept 156: ffct-00037 ffct-00178 ffct-00244 ffct-00263]
+PASS  ceb/tag term     kasingkasing                             served-existing          -> served-existing ffct-05054 "heart is a muscle that never tires easil" @1.000 [art --- --- quiz]  [accept 156: ffct-00037 ffct-00178 ffct-00244 ffct-00263]
+FAIL  ceb/tag term     bituon                                   served-existing          -> served-wrong    ffct-33184 "why we don't see stars in daytime" @1.000 [art --- --- ----]  [accept 233: ffct-28856 ffct-29195 ffct-29197 ffct-29198]
+PASS  eng/tag term     dinosaur                                 served-existing          -> served-existing ffct-09828 "did dinosaurs lay eggs" @1.000 [art ttl emp quiz]  [accept 63: ffct-00261 ffct-00368 ffct-00377 ffct-00860]
+FAIL  tag/tag term     dinosauro                                served-existing          -> served-wrong    ffct-34612 "what likely ended the dinosaurs" @1.000 [art --- --- quiz]  [accept 63: ffct-00261 ffct-00368 ffct-00377 ffct-00860]
+PASS  tag/tag term     bahaghari                                served-existing          -> served-existing ffct-27951 "the colors of a rainbow" @1.000 [art --- --- quiz]  [accept 71: ffct-18867 ffct-18868 ffct-22020 ffct-22137]
+PASS  eng/tag term     pangolin                                 served-existing          -> served-existing ffct-01854 "pangolin endangered" @1.000 [art --- --- quiz]  [accept 48: ffct-00076 ffct-00100 ffct-00337 ffct-00361]
+PASS  tag/tag term     balintong                                served-existing          -> served-existing ffct-00361 "Philippine pangolin is native to Palawan" @1.000 [art ttl emp quiz]  [accept 48: ffct-00076 ffct-00100 ffct-00337 ffct-00361]
+PASS  eng/tag term     pluto                                    served-existing          -> served-existing ffct-34202 "who discovered Pluto" @1.000 [art --- --- ----]  [accept 41: ffct-28859 ffct-29295 ffct-29483 ffct-30978]
+PASS  tag/tag term     bakuna                                   served-existing          -> served-existing ffct-03371 "typhoid vaccine" @1.000 [art ttl emp ----]  [accept 189: ffct-00043 ffct-00081 ffct-00088 ffct-00197]
+PASS  tag/tag term     mayon                                    served-existing          -> served-existing ffct-20440 "Mayon Condensation" @1.000 [art ttl emp ----]  [accept 36: ffct-19778 ffct-20401 ffct-20440 ffct-20644]
+PASS  eng/tag term     gravity                                  served-existing          -> served-existing dcard-00027 "Gravity" @1.000 [art ttl emp ----]  [accept 328: ffct-21860 ffct-21886 ffct-21920 ffct-21930]
+PASS  tag/tag term     grabidad                                 served-existing          -> served-existing ffct-22434 "gravity is a pull" @1.000 [--- ttl emp quiz]  [accept 328: ffct-21860 ffct-21886 ffct-21920 ffct-21930]
+FAIL  tag/tag term     araw                                     served-existing          -> served-wrong    ffct-33383 "what is the Sun" @1.000 [art --- --- quiz]  [accept 409: ffct-00166 ffct-01585 ffct-01964 ffct-01990]
+PASS  tag/tag term     bato                                     served-existing          -> served-existing ffct-09542 "kidneys filter blood" @1.000 [art ttl emp ----]  [accept 363: ffct-00338 ffct-00388 ffct-00879 ffct-01570]
+PASS  eng/tag sentence what is gravity                          served-existing          -> served-existing dcard-00027 "Gravity" @1.000 [art ttl emp ----]  [accept 328: ffct-21860 ffct-21886 ffct-21920 ffct-21930]  (search-dup of has-term-gravity)
+PASS  tag/tag sentence ano ang grabidad                         served-existing          -> served-existing ffct-22434 "gravity is a pull" @1.000 [--- ttl emp quiz]  [accept 328: ffct-21860 ffct-21886 ffct-21920 ffct-21930]  (search-dup of has-term-grabidad)
+PASS  eng/tag sentence what is a tsunami                        served-existing          -> served-existing ffct-29270 "what a tsunami is" @1.000 [art --- --- quiz]  [accept 97: ffct-28863 ffct-29270 ffct-29271 ffct-29272]  (search-dup of has-term-tsunami)
+PASS  tag/tag sentence ano ang tsunami                          served-existing          -> served-existing ffct-29270 "what a tsunami is" @1.000 [art --- --- quiz]  [accept 97: ffct-28863 ffct-29270 ffct-29271 ffct-29272]  (search-dup of has-term-tsunami)
+PASS  eng/tag sentence how hot is lightning                     served-existing          -> served-existing ffct-35303 "Weather/Lightning" @1.000 [art ttl emp quiz]  [accept 15: ffct-22623 ffct-25032 ffct-26516 ffct-26517]
+PASS  tag/tag sentence gaano kainit ang kidlat                  served-existing          -> served-existing ffct-22623 "lightning is extremely hot" @1.000 [art --- --- quiz]  [accept 15: ffct-22623 ffct-25032 ffct-26516 ffct-26517]
+PASS  eng/tag sentence why is the sky blue                      served-existing          -> served-existing ffct-26046 "why is the sky blue" @1.000 [art --- --- quiz]  [accept 20: ffct-22157 ffct-22798 ffct-22803 ffct-22809]
+PASS  tag/tag sentence bakit asul ang langit                    served-existing          -> served-existing ffct-25296 "Rayleigh scattering makes the sky blue" @1.000 [art --- --- quiz]  [accept 20: ffct-22157 ffct-22798 ffct-22803 ffct-22809]
+PASS  ceb/tag sentence ngano nga asul ang langit                served-existing          -> served-existing ffct-25296 "Rayleigh scattering makes the sky blue" @1.000 [art --- --- quiz]  [accept 20: ffct-22157 ffct-22798 ffct-22803 ffct-22809]
+FAIL  ceb/tag sentence unsa ang bulkan                          served-existing          -> served-wrong    dcard-01100 "Volcanoes as Natural Sources" @1.000 [art ttl emp ----]  [accept 375: ffct-28849 ffct-28861 ffct-29122 ffct-29300]  (search-dup of has-term-bulkan)
+PASS  tag/tag sentence ano ang lindol                           served-existing          -> served-existing ffct-30554 "what an earthquake is" @1.000 [art ttl emp quiz]  [accept 213: ffct-28849 ffct-29251 ffct-29257 ffct-29263]  (search-dup of has-term-lindol)
+FAIL  ceb/tag sentence ngano nga adunay linog                   served-existing          -> served-wrong    ffct-30584 "check for fire hazards after a quake" @1.000 [--- ttl emp quiz]  [accept 352: ffct-09425 ffct-21979 ffct-22354 ffct-23655]
+FAIL  tag/tag sentence paano gumagawa ng pagkain ang halaman    served-existing          -> served-wrong    ffct-05546 "green plants feed other living things" @1.000 [art ttl emp quiz]  [accept 116: ffct-00179 ffct-00308 ffct-00403 ffct-00483]
+PASS  eng/tag sentence how do plants make their own food        served-existing          -> served-existing ffct-04110 "plants make their own food" @1.000 [art --- --- quiz]  [accept 116: ffct-00179 ffct-00308 ffct-00403 ffct-00483]
+PASS  eng/tag sentence why is pluto not a planet                served-existing          -> served-existing ffct-33802 "what is Pluto classified as" @1.000 [art ttl emp ----]  [accept 41: ffct-28859 ffct-29295 ffct-29483 ffct-30978]
+PASS  eng/tag sentence what makes your heart beat               served-existing          -> served-existing ffct-04422 "exercise makes heart beat faster" @1.000 [art --- --- quiz]  [accept 160: ffct-00037 ffct-00178 ffct-00244 ffct-00263]
+PASS  eng/tag sentence how do typhoons form                     served-existing          -> served-existing ffct-35141 "Typhoons" @1.000 [art --- --- quiz]  [accept 230: ffct-28928 ffct-29324 ffct-29325 ffct-29326]
+PASS  tag/tag sentence paano nabubuo ang bahaghari              served-existing          -> served-existing ffct-25338 "rainbow forms by refraction reflection i" @1.000 [art --- --- ----]  [accept 71: ffct-18867 ffct-18868 ffct-22020 ffct-22137]
+FAIL  eng/tag sentence how tall is mount everest                served-existing          -> served-wrong    ffct-30255 "Philippine Trench is deeper than Everest" @1.000 [art --- --- ----]  [accept 4: ffct-33760 ffct-34670 ffct-31472 ffct-30036]
+PASS  tag/tag sentence ano ang ginagawa ng bakuna               served-existing          -> served-existing ffct-01018 "Vaccines train the body" @1.000 [art --- --- ----]  [accept 189: ffct-00043 ffct-00081 ffct-00088 ffct-00197]
+PASS  ceb/tag sentence unsa ang RICE first aid para sa pilay    served-existing          -> served-existing ffct-24083 "first aid for sprain RICE rest ice compr" @1.000 [art ttl emp quiz]  [accept 1: ffct-24083]
+PASS  tag/tag sentence bakit hindi masakit ang gupit ng buhok   served-existing          -> served-existing ffct-02110 "Cutting hair and nails does not hurt" @1.000 [art ttl emp quiz]  [accept 81: ffct-00030 ffct-00055 ffct-00079 ffct-00253]
+PASS  eng/tag sentence why do we see lightning before we hear t served-existing          -> served-existing ffct-34721 "light travels faster than sound" @1.000 [art ttl emp quiz]  [accept 52: ffct-15998 ffct-21949 ffct-22163 ffct-22401]
+PASS  tag/tag sentence bakit nagbabago ang hugis ng buwan       served-existing          -> served-existing ffct-30704 "Moon phases are the changing shapes" @1.000 [art ttl emp quiz]  [accept 34: ffct-28854 ffct-29128 ffct-30569 ffct-30704]
+PASS  tag/tag sentence paano huminga ang isda sa ilalim ng tubi served-existing          -> served-existing ffct-07408 "seahorses breathe with gills like other " @1.000 [art --- --- quiz] (weak, consulted: topCos 0.727 margin +0.107)  [accept 17: ffct-00005 ffct-00382 ffct-00498 ffct-00667]
+FAIL  ceb/tag sentence ngano nga pula ang atong dugo            served-existing          -> served-wrong    ffct-17511 "Iron in our blood carries oxygen" @1.000 [art --- --- ----] (weak, consulted: topCos 0.767 margin +0.147)  [accept 5: ffct-04692 ffct-05199 ffct-08529 ffct-11580]
+PASS  eng/tag sentence how does the water cycle work            served-existing          -> served-existing ffct-30497 "the water cycle" @1.000 [art ttl emp quiz]  [accept 122: ffct-14954 ffct-15618 ffct-16236 ffct-17600]
+PASS  tag/tag sentence ano ang nagiging sanhi ng lindol sa pili served-existing          -> served-existing ffct-29773 "earthquakes can trigger landslides" @0.865 [art --- --- ----]  [accept 352: ffct-09425 ffct-21979 ffct-22354 ffct-23655]
+PASS  ceb/tag sentence ngano nga adunay bagyo sa pilipinas      served-existing          -> served-existing ffct-30575 "typhoons in the Philippines" @1.000 [art --- --- ----]  [accept 252: ffct-28928 ffct-29324 ffct-29325 ffct-29326]
+PASS  eng/tag sentence what is a volcano                        served-existing          -> served-existing dcard-02238 "Taal Volcano" @1.000 [art ttl emp ----]  [accept 375: ffct-28849 ffct-28861 ffct-29122 ffct-29300]
+
+================================================================================================================
+  BORDERLINE  (22 cases)
+================================================================================================================
+PASS  eng/tag term     antimatter                               gap                      -> gap             search declined @0.000 · topCos 0.659 · lexEmpty true · unreach true · margin +0.039
+FAIL  tag/tag sentence ano ang antimatter                       gap                      -> offdomain       search declined @0.000 · topCos 0.615 · lexEmpty true · unreach true · margin -0.005 UNSTABLE  (search-dup of bord-gap-antimatter)
+FAIL  eng/tag term     narwhal                                  gap                      -> offdomain       search declined @0.000 · topCos 0.596 · lexEmpty true · unreach true · margin -0.024
+PASS  ceb/tag sentence unsa ang narwhal                         gap                      -> gap             search declined @0.000 · topCos 0.621 · lexEmpty true · unreach true · margin +0.001 UNSTABLE  (search-dup of bord-gap-narwhal)
+FAIL  eng/tag term     capybara                                 gap                      -> offdomain       search declined @0.000 · topCos 0.561 · lexEmpty true · unreach true · margin -0.059
+asp.  eng/tag term     quantum computer                         gap                      -> generated       search declined @0.806 · topCos 0.622 · lexEmpty false · unreach false · margin +0.222
+asp.  eng/tag term     string theory                            gap                      -> generated       search declined @0.622 · topCos 0.653 · lexEmpty false · unreach false · margin +0.253
+asp.  eng/tag term     solar sail                               gap                      -> generated       search declined @0.964 · topCos 0.682 · lexEmpty false · unreach false · margin +0.282
+asp.  eng/tag term     hurricane katrina                        gap                      -> generated       search declined @0.030 · topCos 0.715 · lexEmpty false · unreach false · margin +0.315
+FAIL  tag/tag term     sigarilyas                               generated                -> served-existing ffct-10860 "garden vegetables we eat" @1.000 [art ttl emp quiz] (weak, consulted: topCos 0.639 margin +0.019 UNSTABLE)
+PASS  tag/tag term     sineguelas                               generated                -> generated       search declined @0.000 · topCos 0.655 · lexEmpty false · unreach false · margin +0.255
+PASS  tag/tag term     aratiles                                 generated                -> generated       search declined @0.000 · topCos 0.628 · lexEmpty false · unreach false · margin +0.228
+PASS  eng/tag term     barracuda                                generated                -> generated       search declined @0.000 · topCos 0.7 · lexEmpty false · unreach false · margin +0.3
+PASS  eng/tag term     crispr                                   generated                -> generated       search declined @0.000 · topCos 0.613 · lexEmpty false · unreach false · margin +0.213
+FAIL  eng/tag sentence what is a deciduous tree                 generated                -> served-existing ffct-10864 "talisay is a shade tree with tiered bran" @1.000 [art ttl emp quiz]
+PASS  tag/tag sentence sino ang pangulo ng pilipinas            generated                -> generated       search declined @0.999 · topCos 0.661 · lexEmpty false · unreach false · margin +0.261
+FAIL  tag/tag sentence ilang rehiyon ang pilipinas              generated                -> served-existing ffct-30089 "Rainfall differs across parts of the Phi" @1.000 [art --- --- quiz]
+PASS  tag/tag sentence ano ang kabisera ng ilocos norte         generated                -> generated       search declined @0.037 · topCos 0.68 · lexEmpty false · unreach false · margin +0.28
+FAIL  tag/tag sentence ano ang ibig sabihin ng kulay ng watawat generated                -> served-existing ffct-36726 "flag up or down" @0.948 [art --- --- quiz]
+PASS  eng/tag term     pterodactyl                              gap                      -> gap             search declined @0.000 · topCos 0.644 · lexEmpty true · unreach true · margin +0.024
+PASS  ceb/tag sentence unsa ang aratiles                        generated                -> generated       search declined @0.000 · topCos 0.6 · lexEmpty false · unreach false · margin +0.2  (search-dup of bord-gen-aratiles)
+FAIL  tag/eng sentence ano ang narwhal                          gap                      -> offdomain       search declined @0.000 · topCos 0.618 · lexEmpty true · unreach true · margin -0.002 UNSTABLE
+
+================================================================================================================
+  OUT-OF-SCOPE  (11 cases)
+================================================================================================================
+FAIL  eng/tag term     spiderman                                offdomain                -> gap             search declined @0.000 · topCos 0.694 · lexEmpty true · unreach true · margin +0.074
+FAIL  eng/tag term     jollibee chickenjoy                      offdomain                -> gap             search declined @0.000 · topCos 0.682 · lexEmpty true · unreach true · margin +0.062
+FAIL  eng/tag term     mobile legends                           offdomain                -> generated       search declined @0.800 · topCos 0.697 · lexEmpty false · unreach false · margin +0.297
+PASS  eng/tag term     roblox                                   offdomain                -> offdomain       search declined @0.000 · topCos 0.584 · lexEmpty true · unreach true · margin -0.036
+FAIL  eng/tag term     taylor swift                             offdomain                -> generated       search declined @0.067 · topCos 0.689 · lexEmpty false · unreach false · margin +0.289
+FAIL  tag/tag sentence sino si darna                            offdomain                -> gap             search declined @0.000 · topCos 0.638 · lexEmpty true · unreach false · margin +0.238
+PASS  tag/tag sentence kumusta ka                               offdomain                -> offdomain       weak hit @1.000 REFUSED by the off-domain gate · topCos 0.54 · margin -0.08
+PASS  ceb/tag sentence unsa imong ngalan                        offdomain                -> offdomain       weak hit @1.000 REFUSED by the off-domain gate · topCos 0.521 · margin -0.099
+PASS  tag/tag sentence boring na ako                            offdomain                -> offdomain       weak hit @1.000 REFUSED by the off-domain gate · topCos 0.479 · margin -0.141
+FAIL  tag/tag sentence mahal kita                               offdomain                -> gap             search declined @0.849 · topCos 0.409 · lexEmpty false · unreach false · margin +0.009 UNSTABLE
+PASS  eng/eng term     asdfghjkl                                offdomain                -> offdomain       search declined @0.000 · topCos 0.345 · lexEmpty true · unreach true · margin -0.275
+
+================================================================================================================
+  CHITCHAT  (2 cases)
+================================================================================================================
+PASS  tag/tag sentence gusto ko ng ice cream                    offdomain|served-existin -> served-existing ffct-19313 "why ice cream melts" @1.000 [--- ttl emp quiz]  [accept 9: ffct-03052 ffct-16736 ffct-18081 ffct-18791]
+PASS  tag/tag sentence paborito kong pagkain ay adobo           offdomain|served-existin -> offdomain       weak hit @0.562 REFUSED by the off-domain gate · topCos 0.545 · margin -0.075  [accept 10: ffct-11908 ffct-16969 ffct-18027 ffct-18104]
+
+================================================================================================================
+  MISSPELLING  (7 cases)
+================================================================================================================
+PASS  tag/tag term     bulkano                                  served-existing|generate -> generated       search declined @0.000 · topCos 0.596 · lexEmpty false · unreach false · margin +0.196  [accept 415: ffct-02558 ffct-03120 ffct-05647 ffct-08926]
+FAIL  eng/tag term     erthquake                                served-existing|generate -> gap             search declined @0.000 · topCos 0.523 · lexEmpty true · unreach false · margin +0.123  [accept 220: ffct-21979 ffct-22354 ffct-23655 ffct-24088]
+FAIL  eng/tag term     dinosawr                                 served-existing|generate -> gap             search declined @0.000 · topCos 0.711 · lexEmpty true · unreach false · margin +0.311  [accept 84: ffct-00261 ffct-00368 ffct-00377 ffct-00860]
+FAIL  eng/tag term     gravitiy                                 served-existing|generate -> gap             search declined @0.000 · topCos 0.68 · lexEmpty true · unreach false · margin +0.28  [accept 392: ffct-01980 ffct-02034 ffct-02394 ffct-03557]
+FAIL  tag/tag term     kidlaat                                  served-existing|generate -> gap             search declined @0.000 · topCos 0.543 · lexEmpty true · unreach false · margin +0.143  [accept 224: ffct-00632 ffct-00803 ffct-01751 ffct-03293]
+PASS  tag/tag sentence bakit asol ang langit                    served-existing|generate -> generated       search declined @0.002 · topCos 0.69 · lexEmpty false · unreach false · margin +0.29  [accept 11: ffct-22157 ffct-22798 ffct-22809 ffct-26047]
+FAIL  tag/tag term     photosinthesis                           served-existing|generate -> gap             search declined @0.000 · topCos 0.589 · lexEmpty true · unreach false · margin +0.189  [accept 116: ffct-00179 ffct-00308 ffct-00403 ffct-00483]
+
+================================================================================================================
+  TOKENISATION  (2 cases)
+================================================================================================================
+PASS  eng/tag sentence earth quake                              served-existing|generate -> generated       search declined @0.983 · topCos 0.707 · lexEmpty false · unreach false · margin +0.307  [accept 220: ffct-21979 ffct-22354 ffct-23655 ffct-24088]
+FAIL  ceb/tag sentence unsa ang kasing kasing                   served-existing|generate -> served-wrong    ffct-09663 "dragonfly vs damselfly eyes" @1.000 [--- ttl emp quiz]  [accept 160: ffct-00037 ffct-00178 ffct-00244 ffct-00263]
+
+================================================================================================================
+  PER-BUCKET — tuning
+================================================================================================================
+bucket            pass  fail  total    rate
+has-card            45     9     54     83%
+borderline          10     8     18     56%
+out-of-scope         5     6     11     45%
+chitchat             2     0      2    100%
+misspelling          2     5      7     29%
+tokenisation         1     1      2     50%
+TOTAL               65    29     94     69%
+
+form              pass  fail  total    rate   (excludes 9 search-duplicate sentences)
+term                29    16     45     64%
+sentence            29    11     40     73%
+
+================================================================================================================
+  CONFUSION MATRIX — expected (rows) x actual (cols) — tuning
+================================================================================================================
+expected \ actual           served-existing     served-wrong        generated              gap        offdomain
+served-existing                       45 ok             9 XX                .                .                .
+gap                                       .                .                .             3 ok             4 XX
+generated                              4 XX                .             7 ok                .                .
+offdomain                                 .                .             2 XX             4 XX             5 ok
+offdomain|served-existing              1 ok                .                .                .             1 ok
+served-existing|generated                 .             1 XX             3 ok             5 XX                .
+(all)                                    50               10               12               12               10
+
+################################################################################################################
+#  HOLDOUT SET  (24 cases)
+################################################################################################################
+
+================================================================================================================
+  HAS-CARD  (8 cases)
+================================================================================================================
+PASS  tag/tag term     alitaptap                                served-existing          -> served-existing ffct-13832 "firefly is a beetle" @1.000 [art ttl emp quiz]  [accept 57: ffct-00268 ffct-00364 ffct-00517 ffct-01285]
+PASS  eng/tag sentence how do fireflies make light at night     served-existing          -> served-existing ffct-14116 "fireflies" @1.000 [art ttl emp quiz]  [accept 57: ffct-00268 ffct-00364 ffct-00517 ffct-01285]
+PASS  tag/tag term     pawikan                                  served-existing          -> served-existing ffct-06416 "Pawikan" @1.000 [art ttl emp ----]  [accept 132: ffct-00036 ffct-00054 ffct-00086 ffct-00170]
+PASS  tag/tag term     kometa                                   served-existing          -> served-existing ffct-29173 "what a comet is" @1.000 [art ttl emp quiz]  [accept 72: ffct-29173 ffct-29180 ffct-29182 ffct-29183]
+PASS  ceb/tag sentence unsa ang kometa                          served-existing          -> served-existing ffct-29173 "what a comet is" @1.000 [art ttl emp quiz]  [accept 72: ffct-29173 ffct-29180 ffct-29182 ffct-29183]  (search-dup of h-has-term-kometa)
+PASS  tag/tag sentence ano ang pambansang bulaklak              served-existing          -> served-existing ffct-08463 "sampaguita is the national flower" @1.000 [art ttl emp quiz]  [accept 33: ffct-00887 ffct-01132 ffct-03603 ffct-03613]
+PASS  tag/tag term     ulap                                     served-existing          -> served-existing dcard-03139 "Clouds in Day and Night" @1.000 [art ttl emp ----]  [accept 162: ffct-28968 ffct-28969 ffct-28970 ffct-28971]
+FAIL  tag/tag sentence paano umiinom ng tubig ang halaman       served-existing          -> served-wrong    ffct-09468 "How it gets water without drinking" @1.000 [art ttl emp quiz]  [accept 27: ffct-00015 ffct-00083 ffct-00182 ffct-00191]
+
+================================================================================================================
+  BORDERLINE  (6 cases)
+================================================================================================================
+FAIL  eng/tag term     quokka                                   gap                      -> offdomain       search declined @0.000 · topCos 0.608 · lexEmpty true · unreach true · margin -0.012 UNSTABLE
+PASS  eng/tag term     walrus                                   gap                      -> gap             search declined @0.000 · topCos 0.633 · lexEmpty true · unreach true · margin +0.013 UNSTABLE
+PASS  tag/tag sentence ano ang brontosaurus                     gap                      -> gap             search declined @0.000 · topCos 0.682 · lexEmpty true · unreach true · margin +0.062
+PASS  tag/tag sentence sino ang pambansang bayani               generated                -> generated       search declined @0.881 · topCos 0.662 · lexEmpty false · unreach false · margin +0.262
+FAIL  tag/tag sentence ilan ang isla sa pilipinas               generated                -> served-existing ffct-02980 "Different islands have their own pig kin" @1.000 [art --- --- quiz]
+PASS  tag/tag sentence ano ang pambansang awit                  generated                -> generated       search declined @0.673 · topCos 0.73 · lexEmpty false · unreach false · margin +0.33
+
+================================================================================================================
+  OUT-OF-SCOPE  (5 cases)
+================================================================================================================
+PASS  eng/tag term     blackpink                                offdomain                -> offdomain       search declined @0.000 · topCos 0.582 · lexEmpty true · unreach true · margin -0.038
+FAIL  eng/tag term     minecraft                                offdomain                -> gap             search declined @0.000 · topCos 0.642 · lexEmpty true · unreach true · margin +0.022
+FAIL  eng/tag term     pokemon                                  offdomain                -> gap             search declined @0.000 · topCos 0.67 · lexEmpty true · unreach true · margin +0.05
+FAIL  tag/tag sentence sino si superman                         offdomain                -> gap             search declined @0.000 · topCos 0.669 · lexEmpty true · unreach true · margin +0.049
+FAIL  tag/tag sentence salamat po                               offdomain                -> gap             search declined @1.000 · topCos 0.523 · lexEmpty false · unreach false · margin +0.123
+
+================================================================================================================
+  CHITCHAT  (1 cases)
+================================================================================================================
+PASS  tag/tag sentence ayaw ko ng gulay                         offdomain|served-existin -> served-existing ffct-03465 "Calcium from green leafy vegetables" @1.000 [art --- --- quiz]  [accept 48: ffct-00804 ffct-01236 ffct-01405 ffct-01672]
+
+================================================================================================================
+  MISSPELLING  (3 cases)
+================================================================================================================
+PASS  eng/tag term     volcanoe                                 served-existing|generate -> generated       search declined @0.000 · topCos 0.726 · lexEmpty false · unreach false · margin +0.326  [accept 415: ffct-02558 ffct-03120 ffct-05647 ffct-08926]
+FAIL  tag/tag term     amiba                                    served-existing|generate -> gap             search declined @0.000 · topCos 0.524 · lexEmpty true · unreach false · margin +0.124  [accept 6: ffct-00618 ffct-07249 ffct-08912 ffct-10783]
+FAIL  eng/tag term     lightening                               served-existing|generate -> gap             search declined @0.000 · topCos 0.652 · lexEmpty true · unreach false · margin +0.252  [accept 224: ffct-00632 ffct-00803 ffct-01751 ffct-03293]
+
+================================================================================================================
+  TOKENISATION  (1 cases)
+================================================================================================================
+PASS  eng/tag sentence photo synthesis                          served-existing|generate -> generated       search declined @0.523 · topCos 0.595 · lexEmpty false · unreach false · margin +0.195  [accept 112: ffct-00179 ffct-00308 ffct-00403 ffct-00483]
+
+================================================================================================================
+  PER-BUCKET — holdout
+================================================================================================================
+bucket            pass  fail  total    rate
+has-card             7     1      8     88%
+borderline           4     2      6     67%
+out-of-scope         1     4      5     20%
+chitchat             1     0      1    100%
+misspelling          1     2      3     33%
+tokenisation         1     0      1    100%
+TOTAL               15     9     24     63%
+
+form              pass  fail  total    rate   (excludes 1 search-duplicate sentences)
+term                 7     5     12     58%
+sentence             7     4     11     64%
+
+================================================================================================================
+  CONFUSION MATRIX — expected (rows) x actual (cols) — holdout
+================================================================================================================
+expected \ actual           served-existing     served-wrong        generated              gap        offdomain
+served-existing                        7 ok             1 XX                .                .                .
+gap                                       .                .                .             2 ok             1 XX
+generated                              1 XX                .             2 ok                .                .
+offdomain                                 .                .                .             4 XX             1 ok
+offdomain|served-existing              1 ok                .                .                .                .
+served-existing|generated                 .                .             2 ok             2 XX                .
+(all)                                     9                1                4                8                2
+
+================================================================================================================
+  ASPIRATIONAL (reported, NOT part of the verdict)
+================================================================================================================
+      bord-gap-quantum-computer          quantum computer     want gap        got generated       would fail
+      bord-gap-string-theory             string theory        want gap        got generated       would fail
+      bord-gap-solar-sail                solar sail           want gap        got generated       would fail
+      bord-gap-hurricane-katrina         hurricane katrina    want gap        got generated       would fail
+  Each needs a CONCEPT-level coverage check that does not exist: the head token IS in the bank, so lexEmpty
+  is false and the route can only ever answer 'generated'. Kept visible so the gate cannot silently demand an
+  unbuilt feature — and so nobody quietly deletes the requirement either.
+
+================================================================================================================
+  HARD ASSERTIONS
+================================================================================================================
+wrong card served (the mangrove bug) .................. 11
+in-domain query told it is off-domain ................. 5
+  of which a child's SPELLING or SPACING .............. 0   [must be 0]
+off-domain query answered with a confident card ....... 0
+ungrounded query sent to generation anyway ............ 0
+
+----------------------------------------------------------------------------------------------------------------
+  SOFT — what the CORRECT cards actually carried
+----------------------------------------------------------------------------------------------------------------
+right card served with NO illustration ................ 3
+right card served with NO title band ................. 22
+  Card art and typography are DISJOINT populations in this corpus (a poster card has title+emphasis and no
+  picture; an illustrated card has no title), so a green gate is compatible with a feed that quietly stopped
+  showing pictures for typed queries. Advisory — never part of the verdict.
+
+weak hits (paid the one-embed off-domain consult) ..... 7   (refused: 4)
+
+verdicts decided within 0.02 of their floor (coin flips) . 7
+      bord-gap-ano-ang-antimatter              topCos 0.615 · margin -0.005
+      bord-gap-unsa-ang-narwhal                topCos 0.621 · margin +0.001
+      bord-gen-sigarilyas                      topCos 0.639 · margin +0.019
+      xlang-tl-query-en-config-narwhal         topCos 0.618 · margin -0.002
+      oos-sent-mahal-kita                      topCos 0.409 · margin +0.009
+      h-bord-gap-quokka                        topCos 0.608 · margin -0.012
+      h-bord-gap-walrus                        topCos 0.633 · margin +0.013
+
+>> embedder: http://localhost:8090
+>> tuning   65/94
+>> holdout  15/24
+>> aspirational (not gating): 0/4
+>> ARBITRATION GATE RED — 80/118 gating cases  (green requires BOTH halves)
+
+>> wrote result-2026-09-01-weakgate.json
+>> (embedder was pre-existing; left running)

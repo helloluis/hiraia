@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 // Generates: src/generated/imageMap.ts  (slug -> require(png), Metro bundles these)
 //        and src/generated/factImage.ts (factId -> best image slug; pure strings,
-//        importable anywhere — chatStore uses it for retrieval-driven display).
+//        importable anywhere). NOTE: factImage.ts currently has NO importer — its consumer
+//        was the deleted chatStore. It is the curated half of the card-illustration
+//        substrate (see LocalEngine.resolveImageTag), kept for when cards get pictures.
 import { readdirSync, statSync, writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
 import { join, relative, dirname, basename } from 'node:path';
 

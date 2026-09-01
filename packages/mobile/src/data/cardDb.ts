@@ -295,13 +295,91 @@ export function isWarm(id: string): boolean {
  */
 export async function searchTokenRows(
   tokens: readonly string[]
-): Promise<Array<{ token: string; df: number; ords: string }>> {
+): Promise<
+  Array<{
+    token: string;
+    df: number;
+    ords: string;
+    /** Salience rank of this token in each card, parallel to `ords`; 255 = prose only. */
+    ranks: Uint8Array | null;
+    /** Content-word count of the slot that gave that rank, parallel to `ords`; a divisor. */
+    widths: Uint8Array | null;
+  }>
+> {
   await ensureDb();
   if (!db || !tokens.length) return [];
-  return db.getAllAsync<{ token: string; df: number; ords: string }>(
-    `SELECT token, df, ords FROM search_token WHERE token IN (${tokens.map(() => '?').join(',')})`,
-    tokens as string[]
-  );
+  try {
+    return await db.getAllAsync<{
+      token: string;
+      df: number;
+      ords: string;
+      ranks: Uint8Array | null;
+      widths: Uint8Array | null;
+    }>(
+      `SELECT token, df, ords, ranks, widths FROM search_token WHERE token IN (${tokens.map(() => '?').join(',')})`,
+      tokens as string[]
+    );
+  } catch (e) {
+    // Same degradation as loadText, and it must NOT reject: cardStore.ask awaits this on the
+    // way to the search box, so a throw here takes the whole ask down instead of declining.
+    // No postings reads as "nothing matched", which falls to the model path — the safe way to
+    // be wrong. (`ranks` and `widths` are why this guard is here: a database written before
+    // those columns exist would fail the SELECT, and the version stamp is what normally
+    // prevents it.)
+    console.warn('[cardDb] searchTokenRows failed:', e);
+    return [];
+  }
+}
+
+/**
+ * How many distinct HEAD tokens each card has — its topic plus its terms, by pool ordinal.
+ *
+ * This is the divisor in searchCards' aboutness share: the query's salience-weighted match has
+ * to be measured against the card's OWN salience mass, or a card with twenty terms that mentions
+ * the query word fifth scores the same as a card whose entire subject is that word. 46,421 bytes
+ * in one row, decoded once per launch — it is per-CARD data, so it cannot ride on the postings.
+ *
+ * Returns null when the database could not be opened or predates the column, which searchCards
+ * reads as "no card-side normalisation": a worse ranking, never a wrong one.
+ */
+let HEAD_SIZES: Uint8Array | null = null;
+let headSizesLoad: Promise<Uint8Array | null> | null = null;
+
+async function readHeadSizes(): Promise<Uint8Array | null> {
+  await ensureDb();
+  if (!db) return null;
+  try {
+    const row = await db.getFirstAsync<{ value: Uint8Array }>(
+      "SELECT value FROM search_meta WHERE key = 'head_sizes'"
+    );
+    const v = row?.value;
+    if (!v || v.length < 1) return null;
+    // One byte per POOL ORDINAL, so a blob of any other length is not addressable by ordinal.
+    // The check is not paranoia: searchCards reads `headSizes[o]` for every candidate, and a
+    // short blob returns `undefined` there rather than throwing — HEAD_MASS[undefined] is
+    // undefined, the aboutness becomes NaN, every NaN comparison is false, and the ranking
+    // silently degrades to first-card-scanned, which is the exact bug aboutness exists to fix.
+    // Refusing the blob degrades to a uniform H = 1 instead: a worse ranking, but a consistent
+    // one, and it says so.
+    const want = (cardsIndex as { cards: unknown[] }).cards.length;
+    if (v.length !== want) {
+      console.warn(
+        `[cardDb] head sizes are ${v.length} bytes for ${want} cards — search ranks without them`
+      );
+      return null;
+    }
+    HEAD_SIZES = v instanceof Uint8Array ? v : new Uint8Array(v);
+    return HEAD_SIZES;
+  } catch (e) {
+    console.warn('[cardDb] head sizes unavailable — search ranks without them:', e);
+    return null;
+  }
+}
+
+export function cardHeadSizes(): Promise<Uint8Array | null> {
+  if (HEAD_SIZES) return Promise.resolve(HEAD_SIZES);
+  if (!headSizesLoad) headSizesLoad = readHeadSizes();
+  return headSizesLoad;
 }
 
 /**

@@ -2,7 +2,10 @@
  * Response interject page of the question-cards feed — shown when the kid TYPED a query and
  * the local card search found no confident match. Three shapes:
  *   - generated : a short grounded fact card from the (background-warmed) model, prefixed with
- *     the kid's question so it reads like a card printed in answer to them.
+ *     the kid's question so it reads like a card printed in answer to them — matted in the
+ *     deck's own engraving plate when RETRIEVAL found a picture it is confident about, and
+ *     printed as plain type when it did not, which is the common case (see the illustration
+ *     note on the render below).
  *   - abstain   : an in-domain GAP — science, but no page for it yet — offering the nearest
  *     topic as a soft landing.
  *   - offdomain : the query wasn't science at all. States what the DECK holds and offers
@@ -32,8 +35,10 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import type { Language } from '@hiraia/shared';
 
 import { uiStrings } from '../../config/strings';
+import { useArtSource } from '../../data/artSource';
 import type { FeedResponse } from '../../store/cardStore';
 import { card, fonts } from '../../theme';
+import { CardPlate } from './CardPlate';
 import { CardPrint, Divider, IndexBand, Ticket, cardFrame } from './CardFrame';
 
 /** The mascot — the same alpha-cut PNG the chat avatar and every other card use. */
@@ -53,6 +58,28 @@ function answerTier(text: string): { fontSize: number; lineHeight: number } {
   return { fontSize: 13, lineHeight: 18.5 };
 }
 
+/**
+ * Longest answer that still leaves room for a picture. A card is ONE fixed page and it has to
+ * hold the child's question (up to four lines), the answer in full, and the continue ticket;
+ * the plate's own floor is 136px. Past this the two cannot both fit, and the SENTENCE is the
+ * payload — so the picture yields rather than the type being squeezed or the ticket pushed off
+ * the page. The prompt caps a card at 30 words and the deck's median printed card is 19, so
+ * this only ever bites on the long tail. `sanitizeCardAnswer`'s own ceiling is 320.
+ * (The web demo applies the same rule for the same reason — DemoResponseCard.)
+ */
+const ART_MAX_CHARS = 220;
+
+/**
+ * One step down when the card is ILLUSTRATED, mirroring the factoid card's own two shapes: the
+ * plate takes the height, so the answer under it is a CAPTION rather than the body of the
+ * page. Without the step a long card and a 136px plate compete for the same box and the type
+ * wins by squeezing the picture to its floor.
+ */
+function captionTier(text: string): { fontSize: number; lineHeight: number } {
+  const t = answerTier(text);
+  return { fontSize: t.fontSize - 1.5, lineHeight: t.lineHeight - 2 };
+}
+
 export function ResponseCard({
   response,
   language,
@@ -66,6 +93,25 @@ export function ResponseCard({
   const offDomain = response.kind === 'offdomain';
   // Both misses print the disc and one centred sentence; only `generated` prints an answer.
   const miss = response.kind !== 'generated';
+  /**
+   * THE ILLUSTRATION. `response.slug` was chosen by RETRIEVAL from the fact the card states — the
+   * curated fact→slug map first, then LaBSE over the image catalog above a measured floor (see
+   * @hiraia/shared rag/images.ts). The model was never asked what to draw; it wrote the
+   * sentence, and it still emits `[image: …]` tags that `sanitizeCardAnswer` throws away.
+   *
+   * `null` is the ORDINARY answer, not a failure — at the shipped floor most dynamic cards get
+   * no confident picture, and the card then prints exactly as it did before this existed. That
+   * asymmetry is the whole design: a wrong engraving under a true sentence teaches the wrong
+   * thing, so the bar is set where a picture is worth trusting and the card is laid out to
+   * look complete without one.
+   *
+   * Resolved through `useArtSource` even though the engine already presence-checked the slug:
+   * that check answered for the device at RESOLVE time, this one answers for the device NOW
+   * (backfilled art can land mid-session), and it is the same function, so the two cannot
+   * disagree about what "present" means. A null here simply prints the picture-less card.
+   */
+  const roomForArt = (response.text?.length ?? 0) <= ART_MAX_CHARS;
+  const art = useArtSource(miss || !roomForArt ? null : response.slug);
 
   return (
     <View style={cardFrame.content}>
@@ -95,7 +141,16 @@ export function ResponseCard({
       {/* the printed rule + gold diamond that introduces an answer everywhere in the deck */}
       <Divider style={styles.divider} />
 
-      <View style={[styles.answerWrap, miss ? styles.answerWrapAbstain : styles.answerWrapAnswer]}>
+      <View
+        style={[
+          styles.answerWrap,
+          miss
+            ? styles.answerWrapAbstain
+            : art != null
+              ? styles.answerWrapArt
+              : styles.answerWrapAnswer,
+        ]}
+      >
         {miss ? (
           <>
             {/* .qcat one size down — the peach-matted disc with the 3px ink edge, in place
@@ -123,6 +178,18 @@ export function ResponseCard({
                 </Text>
               )
             )}
+          </>
+        ) : art != null ? (
+          /* Illustrated: the deck's own matted engraving (the SAME CardPlate a factoid card
+             prints, so a generated card reads as a card of this deck and not as a chat
+             bubble with a thumbnail), with the answer set under it as a caption. The
+             lightbox is captioned with the child's own question — the page has no catalogue
+             title, and their words are what this picture is an answer to. */
+          <>
+            <CardPlate source={art} label={response.query} />
+            <Text style={[styles.answer, styles.caption, captionTier(response.text ?? '')]}>
+              {response.text}
+            </Text>
           </>
         ) : (
           <Text style={[styles.answer, answerTier(response.text ?? '')]}>{response.text}</Text>
@@ -157,7 +224,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
+  // An unillustrated answer is centred in the box it has; an illustrated one starts at the top
+  // because the plate below it stretches (flex: 1) to fill whatever the caption leaves.
   answerWrapAnswer: { alignItems: 'flex-start' },
+  answerWrapArt: { alignItems: 'stretch', justifyContent: 'flex-start' },
   // the abstention centres on its disc, the way the quiz frame centres on .qcat
   answerWrapAbstain: { alignItems: 'center', paddingHorizontal: 4 },
   answer: {
@@ -166,6 +236,8 @@ const styles = StyleSheet.create({
     fontFamily: fonts.cardBody,
     color: card.ink,
   },
+  // The caption under an engraving, same gap the factoid card leaves under its own plate.
+  caption: { marginTop: 12 },
   disc: {
     width: 72,
     height: 72,

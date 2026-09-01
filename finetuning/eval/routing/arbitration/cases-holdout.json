@@ -1,0 +1,324 @@
+{
+  "_readme": [
+    "QUERY-ARBITRATION GATE — SEALED HOLDOUT. Same buckets and the same derivation method as cases.json, different strings.",
+    "",
+    "WHY IT EXISTS: the gap/offdomain split is decided by ONE LaBSE cosine whose two expected classes are provably NOT",
+    "separable — measured on the tuning set, gap-expected cases span 0.565-0.720 and offdomain-expected 0.345-0.730, with",
+    "the off-domain items on average HIGHER. So the cheapest way to turn the tuning half green is a proper-noun denylist",
+    "(spiderman, jollibee, roblox, taylor, darna...), i.e. exactly the heuristic intent-detection CLAUDE.md forbids, and a",
+    "suite whose every string is in the repo cannot tell that apart from a real fix.",
+    "",
+    "RULE: the gate is green only when BOTH halves are. A change that passes cases.json and fails this file is a",
+    "MEMORISED fix, not a fix. Do not tune against this file; if you find yourself editing it to make a change pass, the",
+    "change is what is wrong.",
+    "",
+    "Every expectation is derived from the corpus the same way (a card-prose probe in en+tl+bis, then the fact bank for",
+    "generated-vs-gap), and the `why` names the evidence."
+  ],
+  "meta": {
+    "corpus": "packages/mobile/assets/data/cards.db — 46,421 cards / 50,279 facts",
+    "pool": "packages/mobile/src/generated/cardsIndex.generated.json",
+    "designed": "2026-08-31",
+    "tuningSet": "cases.json",
+    "expectedVerdict": "RED, like the tuning half. Designed before the fix."
+  },
+  "cases": [
+    {
+      "id": "h-has-term-alitaptap",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "alitaptap",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "firefl|alitaptap",
+        "domain": "LIVING_THINGS"
+      },
+      "why": "ffct-00364 'firefly light is cold light', ffct-02076 'where the firefly gets energy to glow'; the alitaptap cluster carries tl prose. accept=57"
+    },
+    {
+      "id": "h-has-sent-fireflies-make-light",
+      "bucket": "has-card",
+      "lang": "english",
+      "form": "sentence",
+      "query": "how do fireflies make light at night",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "firefl|alitaptap",
+        "domain": "LIVING_THINGS"
+      },
+      "why": "Four content tokens {fireflies, make, light, night}, and 'light' is one of the densest tokens in the deck. Same cluster as h-has-term-alitaptap, so term vs long sentence is directly comparable here. accept=57"
+    },
+    {
+      "id": "h-has-term-pawikan",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "pawikan",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\bturtles?\\b|tortoise|pawikan|pagong",
+        "domain": "LIVING_THINGS"
+      },
+      "why": "ffct-00054 'Turtle Islands in Tawi-Tawi is a major nesting site', ffct-00267 'sea turtles are an ancient animal group'; 140 cards carry 'pawikan' in prose. accept=132"
+    },
+    {
+      "id": "h-has-term-kometa",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "kometa",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\bcomets?\\b",
+        "domain": "EARTH_SPACE"
+      },
+      "why": "ffct-29173's topic is 'what a comet is'; ffct-29183 'asteroid vs comet difference'. 65 cards carry 'kometa'. accept=72"
+    },
+    {
+      "id": "h-has-sent-unsa-ang-kometa",
+      "bucket": "has-card",
+      "lang": "cebuano",
+      "form": "sentence",
+      "query": "unsa ang kometa",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\bcomets?\\b",
+        "domain": "EARTH_SPACE"
+      },
+      "searchDuplicateOf": "h-has-term-kometa",
+      "why": "Same single search token as its term twin (unsa/ang are stopped) — kept because the model-free half is not the same test, and because Cebuano is the language the fewest instruments cover. accept=72"
+    },
+    {
+      "id": "h-has-sent-pambansang-bulaklak",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "ano ang pambansang bulaklak",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "sampaguita|national flower"
+      },
+      "why": "A CIVICS-sounding question the science deck really does answer: ffct-06370 'What is the Philippines' national flower? It's the sampaguita', ffct-09086, ffct-08463. The counterpart of the uncarded PH_CIVICS cases — the vocabulary is civics, the card exists. accept=33"
+    },
+    {
+      "id": "h-has-term-ulap",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "ulap",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "\\bclouds?\\b",
+        "domain": "EARTH_SPACE"
+      },
+      "why": "A DENSE token (df 469 in the card index) unlike the rare holdout terms — the tie-break condition the whole gate is about. ffct-28969 'why cumulus clouds have flat bottoms', ffct-28970 'cirrus clouds are made of ice'. accept=162"
+    },
+    {
+      "id": "h-has-sent-paano-umiinom-halaman",
+      "bucket": "has-card",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "paano umiinom ng tubig ang halaman",
+      "expect": "served-existing",
+      "acceptRule": {
+        "topic": "roots absorb|how (plants|roots) (drink|take up|absorb)|water travels up|transpiration",
+        "domain": "LIVING_THINGS"
+      },
+      "why": "Four content tokens {umiinom, tubig, halaman, paano→stopped}: 'tubig' is one of the densest tokens in the deck (df 6,255 for its English twin), so the topic words are a minority of the query's idf mass. ffct-00083 'transpiration pulls water up from roots'. accept=27"
+    },
+    {
+      "id": "h-bord-gap-quokka",
+      "bucket": "borderline",
+      "lang": "english",
+      "form": "term",
+      "query": "quokka",
+      "expect": "gap",
+      "why": "0 cards / 0 facts; marsupial/kangaroo adjacency is stocked (19 kangaroo cards), so the cosine will not be trivially low."
+    },
+    {
+      "id": "h-bord-gap-walrus",
+      "bucket": "borderline",
+      "lang": "english",
+      "form": "term",
+      "query": "walrus",
+      "expect": "gap",
+      "why": "0 cards / 0 facts; the marine-mammal cluster (whale, dolphin, seal, tusk) is dense — the same trap as narwhal, a different word."
+    },
+    {
+      "id": "h-bord-gap-ano-ang-brontosaurus",
+      "bucket": "borderline",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "ano ang brontosaurus",
+      "expect": "gap",
+      "why": "0 cards / 0 facts, while the dinosaur cluster is 63 cards — real science the deck simply does not stock. Named in the RagStore source alongside pterodactyl."
+    },
+    {
+      "id": "h-bord-gen-pambansang-bayani",
+      "bucket": "borderline",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "sino ang pambansang bayani",
+      "expect": "generated",
+      "why": "No card ANSWERS it: all 14 cards naming Rizal are about his silkworms, his lemon-juice ink or the oxidation of his statue. Uncarded fact ph-symbol-hero (PH_CIVICS, 2,849 facts with zero cards) grounds it."
+    },
+    {
+      "id": "h-bord-gen-ilan-isla-pilipinas",
+      "bucket": "borderline",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "ilan ang isla sa pilipinas",
+      "expect": "generated",
+      "why": "0 cards contain '7,641' — the island count is nowhere in the deck. Uncarded facts ph-number-of-islands and philippines-archipelago-7641-islands-g5 ground it."
+    },
+    {
+      "id": "h-bord-gen-pambansang-awit",
+      "bucket": "borderline",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "ano ang pambansang awit",
+      "expect": "generated",
+      "why": "'anthem' and 'hinirang' are 0 cards each (56 and 40 facts), so nothing in the deck answers it; uncarded ph-anthem-lupang-hinirang grounds it. Both query tokens ARE in the card index (pambansang 74, awit 36), which is what makes it a trap."
+    },
+    {
+      "id": "h-oos-term-blackpink",
+      "bucket": "out-of-scope",
+      "lang": "english",
+      "form": "term",
+      "query": "blackpink",
+      "expect": "offdomain",
+      "why": "0 cards / 0 facts and lexically OOV — the OOV arm has to carry it, exactly as for roblox. 'black' and 'pink' are both dense science words, so a tokeniser change could resurrect it."
+    },
+    {
+      "id": "h-oos-term-minecraft",
+      "bucket": "out-of-scope",
+      "lang": "english",
+      "form": "term",
+      "query": "minecraft",
+      "expect": "offdomain",
+      "why": "0 cards / 0 facts; 'mine' and 'craft' are science-adjacent (mining, mineral) if the token were ever split."
+    },
+    {
+      "id": "h-oos-term-pokemon",
+      "bucket": "out-of-scope",
+      "lang": "english",
+      "form": "term",
+      "query": "pokemon",
+      "expect": "offdomain",
+      "why": "0 cards / 0 facts. A franchise about creatures, so the LaBSE cosine against a deck full of animals is the adversarial part."
+    },
+    {
+      "id": "h-oos-sent-sino-si-superman",
+      "bucket": "out-of-scope",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "sino si superman",
+      "expect": "offdomain",
+      "why": "0 cards / 0 facts. The Tagalog question frame of the darna case with a different character — sino/si are stopped, so the whole query is one OOV token."
+    },
+    {
+      "id": "h-oos-sent-salamat-po",
+      "bucket": "out-of-scope",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "salamat po",
+      "expect": "offdomain",
+      "why": "A thank-you. 'salamat' IS in the card index (df 8) so search can answer it with a science card; no card is a defensible answer to being thanked."
+    },
+    {
+      "id": "h-chit-sent-ayaw-gulay",
+      "bucket": "chitchat",
+      "lang": "tagalog",
+      "form": "sentence",
+      "query": "ayaw ko ng gulay",
+      "expect": "offdomain",
+      "expectAny": [
+        "offdomain",
+        "served-existing"
+      ],
+      "acceptRule": {
+        "topic": "\\bgulay\\b|vegetable",
+        "domain": "LIVING_THINGS|MATTER"
+      },
+      "why": "Affective non-question about food the deck teaches: ffct-01236 'carrots and root vegetables are edible roots', ffct-01672 kangkong. Decline politely OR teach the science of the thing named — never a random card. accept=48"
+    },
+    {
+      "id": "h-miss-term-volcanoe",
+      "bucket": "misspelling",
+      "lang": "english",
+      "form": "term",
+      "query": "volcanoe",
+      "expect": "served-existing",
+      "expectAny": [
+        "served-existing",
+        "generated"
+      ],
+      "forbid": [
+        "offdomain"
+      ],
+      "acceptRule": {
+        "topic": "volcan|bulkan"
+      },
+      "why": "A real child spelling: 232 cards match it as a SUBSTRING ('volcanoes') yet its df in the tokenised index is 0, so it is genuinely out of vocabulary. accept=415"
+    },
+    {
+      "id": "h-miss-term-amiba",
+      "bucket": "misspelling",
+      "lang": "tagalog",
+      "form": "term",
+      "query": "amiba",
+      "expect": "served-existing",
+      "expectAny": [
+        "served-existing",
+        "generated"
+      ],
+      "forbid": [
+        "offdomain"
+      ],
+      "acceptRule": {
+        "topic": "amoeba|ameba",
+        "domain": "LIVING_THINGS"
+      },
+      "why": "Named in the RagStore source as a real spelling ('amiba'); 0 cards / 0 facts carry it while amoeba/ameba are stocked (6 cards). accept=6"
+    },
+    {
+      "id": "h-miss-term-lightening",
+      "bucket": "misspelling",
+      "lang": "english",
+      "form": "term",
+      "query": "lightening",
+      "expect": "served-existing",
+      "expectAny": [
+        "served-existing",
+        "generated"
+      ],
+      "forbid": [
+        "offdomain"
+      ],
+      "acceptRule": {
+        "topic": "\\blightning|\\bthunder"
+      },
+      "why": "The commonest English misspelling of 'lightning' — 0 cards / 0 facts, against a 224-card lightning cluster. accept=224"
+    },
+    {
+      "id": "h-tok-sent-photo-synthesis",
+      "bucket": "tokenisation",
+      "lang": "english",
+      "form": "sentence",
+      "query": "photo synthesis",
+      "expect": "served-existing",
+      "expectAny": [
+        "served-existing",
+        "generated"
+      ],
+      "forbid": [
+        "offdomain"
+      ],
+      "acceptRule": {
+        "topic": "\\bphotosynthesis\\b|plants make (their )?(own )?food|\\bchlorophyll\\b|plants take in carbon dioxide"
+      },
+      "why": "A compound typed as two words. BOTH halves are in the vocabulary on their own (photo 23, synthesis 21) but they point at different cards than 'photosynthesis' (280) does — the join, not the spelling, is what breaks. accept=112"
+    }
+  ]
+}

@@ -2,8 +2,8 @@ import type { Language } from '@hiraia/shared';
 
 /**
  * UI chrome strings that must follow the active TUTOR language (the model output is
- * already localized by the adapter; this is the app's own text — welcome note, input
- * placeholder, sidebar, status/error messages). Tagalog is the default/fallback.
+ * already localized by the adapter; this is the app's own text — the sidebar, the loader,
+ * and the card feed's own chrome). Tagalog is the default/fallback.
  * Cebuano is "coming soon" but kept native so a beta switch reads correctly.
  *
  * Add new user-facing strings HERE (never inline) so English/Cebuano modes stay fully
@@ -36,26 +36,6 @@ interface QuizStrings {
 }
 
 interface UIStrings {
-  // chat screen
-  welcomeTitle: string;
-  welcomeSubtitle: string;
-  inputPlaceholder: string;
-  inputPreparing: string;
-  /**
-   * Shown in the chat input when the model load FAILED (most often: the LoRA
-   * adapter could not be fetched, so the tutor would have had to run as the raw
-   * base model, which fabricates — see LocalEngine.resolveAdapterPath). Tapping
-   * the bar retries, so like `cards.searchUnavailable` this must read as
-   * recoverable, not fatal.
-   */
-  inputUnavailable: string;
-  waitPreparing: string;
-  errorGeneric: string;
-  // per-turn "thinking" narration (cosmetic; shown before the first token, never sent to the model)
-  thinkingSearching: string;
-  thinkingReadingAbout: string; // followed by the retrieved topic, e.g. "… dinosaur"
-  thinkingReading: string; // fallback when the topic isn't clean enough to show
-  thinkingWorking: string;
   // sidebar
   close: string;
   sectionLanguage: string;
@@ -63,8 +43,6 @@ interface UIStrings {
   sectionGrade: string; // the student's grade level (chips 3–10)
   beta: string;
   comingSoon: string;
-  sectionConversations: string;
-  noConversations: string;
   sectionNotes: string;
   noNotes: string;
   sectionVersion: string;
@@ -72,7 +50,6 @@ interface UIStrings {
   facts: string;
   tutorial: string;
   showTutorial: string;
-  newConversation: string;
   // loader
   bootingUp: string;
   // quiz mode
@@ -106,26 +83,12 @@ interface UIStrings {
 
 const UI_STRINGS: Record<Language, UIStrings> = {
   tagalog: {
-    welcomeTitle: 'Maligayang Pagdating sa Hiraia!',
-    welcomeSubtitle:
-      'Magtanong ka ng kahit ano tungkol sa agham. Nandito ako para tulungan kang matuto.',
-    inputPlaceholder: 'Magtanong tungkol sa agham...',
-    inputPreparing: 'Inihahanda ang AI...',
-    inputUnavailable: 'Hindi handa si Hiraia—pindutin para subukan ulit',
-    waitPreparing: 'Sandali lang—inihahanda ko pa ang AI. Pakisubukang muli sa ilang segundo. 🐱',
-    errorGeneric: 'Paumanhin, may naganap na error. Pakisubukang muli. 🐱',
-    thinkingSearching: 'Naghahanap ng sagot',
-    thinkingReadingAbout: 'Binabasa ang tungkol sa',
-    thinkingReading: 'Binabasa ang nahanap',
-    thinkingWorking: 'Iniisip ang sagot',
     close: '← Isara',
     sectionLanguage: 'Wika',
     langRestartNote: 'Sandali itong magri-restart kapag pinalitan.',
     sectionGrade: 'Baitang',
     beta: 'beta',
     comingSoon: 'malapit na!',
-    sectionConversations: 'Mga Usapan',
-    noConversations: 'Wala pang usapan',
     sectionNotes: 'Mga Tala',
     noNotes: 'Wala pang tala',
     sectionVersion: 'Bersyon',
@@ -133,12 +96,11 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     facts: 'datos',
     tutorial: 'Tutorial',
     showTutorial: 'Ipakita ang tutorial',
-    newConversation: '+ Bagong Usapan',
     bootingUp: 'nag-boot up pa...',
     quiz: {
       button: 'QUIZ!',
       confirmTitle: 'Magsimula ng pagsusulit?',
-      confirmBody: 'Lilinisin natin ang usapan at magsisimula ng bagong laro.',
+      confirmBody: 'Magsisimula tayo ng bagong laro.',
       confirmStart: 'Sige!',
       confirmCancel: 'Hindi muna',
       topicPrompt: 'Anong paksa ang gusto mong i-quiz?',
@@ -178,25 +140,12 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     },
   },
   english: {
-    welcomeTitle: 'Welcome to Hiraia!',
-    welcomeSubtitle: "Ask me anything about science. I'm here to help you learn.",
-    inputPlaceholder: 'Ask about science...',
-    inputPreparing: 'Preparing the AI...',
-    inputUnavailable: "Hiraia isn't ready—tap to try again",
-    waitPreparing: "One moment—I'm still preparing the AI. Please try again in a few seconds. 🐱",
-    errorGeneric: 'Sorry, something went wrong. Please try again. 🐱',
-    thinkingSearching: 'Looking for the answer',
-    thinkingReadingAbout: 'Reading about',
-    thinkingReading: 'Reading what I found',
-    thinkingWorking: 'Thinking it through',
     close: '← Close',
     sectionLanguage: 'Language',
     langRestartNote: 'It restarts briefly when you switch.',
     sectionGrade: 'Grade',
     beta: 'beta',
     comingSoon: 'coming soon',
-    sectionConversations: 'Conversations',
-    noConversations: 'No conversations yet',
     sectionNotes: 'Notes',
     noNotes: 'No notes yet',
     sectionVersion: 'Version',
@@ -204,12 +153,11 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     facts: 'facts',
     tutorial: 'Tutorial',
     showTutorial: 'Show the tutorial',
-    newConversation: '+ New Conversation',
     bootingUp: 'still booting up...',
     quiz: {
       button: 'QUIZ!',
       confirmTitle: 'Start a quiz?',
-      confirmBody: "We'll clear the chat and start a fresh game.",
+      confirmBody: "We'll start a fresh game.",
       confirmStart: "Let's go!",
       confirmCancel: 'Not now',
       topicPrompt: 'What topic do you want to be quizzed on?',
@@ -248,27 +196,12 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     },
   },
   cebuano: {
-    welcomeTitle: 'Maayong Pag-abot sa Hiraia!',
-    welcomeSubtitle:
-      'Pangutana bisan unsa bahin sa siyensya. Ania ko aron motabang nimo nga makakat-on.',
-    inputPlaceholder: 'Pangutana bahin sa siyensya...',
-    inputPreparing: 'Giandam ang AI...',
-    inputUnavailable: 'Dili pa andam si Hiraia—i-tap para sulayan pag-usab',
-    waitPreparing:
-      'Kadiyot lang—giandam pa nako ang AI. Palihug sulayi pag-usab sa pipila ka segundo. 🐱',
-    errorGeneric: 'Pasayloa, naay sayop nga nahitabo. Palihug sulayi pag-usab. 🐱',
-    thinkingSearching: 'Nangita og tubag',
-    thinkingReadingAbout: 'Gibasa ang bahin sa',
-    thinkingReading: 'Gibasa ang nakit-an',
-    thinkingWorking: 'Gihunahuna ang tubag',
     close: '← Sirado',
     sectionLanguage: 'Pinulongan',
     langRestartNote: 'Mag-restart kini dali kung mag-usab ka.',
     sectionGrade: 'Grado',
     beta: 'beta',
     comingSoon: 'hapit na!',
-    sectionConversations: 'Mga Panag-istorya',
-    noConversations: 'Wala pay panag-istorya',
     sectionNotes: 'Mga Nota',
     noNotes: 'Wala pay nota',
     sectionVersion: 'Bersyon',
@@ -276,12 +209,11 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     facts: 'datos',
     tutorial: 'Tutorial',
     showTutorial: 'Ipakita ang tutorial',
-    newConversation: '+ Bag-ong Panag-istorya',
     bootingUp: 'nag-boot up pa...',
     quiz: {
       button: 'QUIZ!',
       confirmTitle: 'Magsugod og pagsulay?',
-      confirmBody: 'Limpyohan nato ang panag-istorya ug magsugod og bag-ong dula.',
+      confirmBody: 'Magsugod ta og bag-ong dula.',
       confirmStart: 'Sige!',
       confirmCancel: 'Dili sa',
       topicPrompt: 'Unsa nga hilisgutan ang gusto nimong sulayan?',

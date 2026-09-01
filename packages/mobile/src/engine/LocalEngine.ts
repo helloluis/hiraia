@@ -10,38 +10,48 @@ import {
   IMAGE_VECTORS_META,
 } from '../config/model';
 import { DEFAULT_GRADE } from '../config/grades';
-import { CHAT_TEMP, SUMMARY_TEMP, CHAT_MAX_TOKENS } from '../config/inference';
+import { WARMUP_TEMP, WARMUP_QUERY, WARMUP_FACT } from '../config/inference';
 import { IMAGE_CATEGORY } from '../generated/imageCategory.generated';
+import { FACT_IMAGE } from '../generated/factImage';
+import { artSourceFor } from '../data/artSource';
 import { openFactSource } from '../data/cardDb';
+import { cardSlugForFact } from '../data/factCardSlug';
 import { ensureRemoteAsset } from './modelDownload';
 import { withModelLock } from './modelLock';
 import type { AdapterLanguage } from '../config/model';
 import type {
   TutorEngine,
-  Message,
   ImageResult,
   RagResult,
   TutorConfig,
   Language,
   GradeLevel,
+  ScienceFact,
   SqlFactSource,
 } from '@hiraia/shared';
 import {
   RagStore,
   SemanticIndex,
+  ImageIndex,
   normalizeQuery,
   buildContextualQuery,
   CONTEXT_FALLBACK_FLOOR,
   isOffDomain,
-  generateSystemPrompt,
   buildCardPrompt,
+  sanitizeCardAnswer,
+  imageDomainScope,
+  acceptImageMatch,
+  attributeCardToFact,
+  resolveIllustrationSlug,
   CARD_TEMP,
+  CARD_STOP,
+  CARD_REASONING_BUDGET,
 } from '@hiraia/shared';
 
-// Minimum cosine for an [image:] description to resolve to a bundled illustration.
-// Calibrated offline against the SFT tag descriptions (rag/scripts/
-// validate-image-vectors.py): true matches median 0.79; every out-of-catalog decoy
-// AND every observed cross-topic mismatch lands ≤0.693.
+// Minimum cosine for an [image:] description to resolve to a bundled illustration — the
+// RETIRED tag path (`resolveImageTag`), not the card path. Calibrated offline against the SFT
+// tag descriptions (rag/scripts/validate-image-vectors.py): true matches median 0.79; every
+// out-of-catalog decoy AND every observed cross-topic mismatch lands ≤0.693.
 // History: 0.70 → 0.75 (2026-06-17, alongside making FACT_IMAGE the curated baseline
 // and the model tag an OVERRIDE) — but that OVER-CORRECTED. A re-calibration (2026-06-20,
 // 533 real tags) put the true-positive p25 at 0.746, so 0.75 was silently rejecting ~25%
@@ -49,27 +59,17 @@ import {
 // planets of the solar system"→solar-system (0.715), photosynthesis (0.714). Reverted to
 // 0.70: it sits just above the empirical decoy/cross-topic ceiling (≤0.693) so genuine
 // no-match cases still abstain, and the WITHIN-science cluster-bias class (gravity→atomic-
-// model, earthquake→pangolin) is now caught independently by DOMAIN_IMAGE_CATEGORIES
-// scoping below — not the floor — so the floor no longer needs to over-tighten for it.
+// model, earthquake→pangolin) is caught independently by DOMAIN_IMAGE_CATEGORIES scoping
+// (@hiraia/shared rag/images.ts) — not the floor — so the floor need not over-tighten for it.
+//
+// The CARD path does not use this number — it no longer uses ANY cosine: it is an id lookup
+// (resolveFactImage → resolveIllustrationSlug). This floor exists only for the tag path.
 const IMAGE_TAG_FLOOR = 0.7;
 
-// DOMAIN SCOPING for image retrieval. The embedding match alone does naive word-association
-// across topics — an EARTH_SPACE earthquake fact matched a "philippine-pangolin" (biology) image
-// on the shared word "Philippine" (cos 0.59); a FORCE_MOTION_ENERGY gravity fact matched an
-// atomic-model (chemistry) diagram. So we constrain candidate images to the catalog categories
-// that belong to the grounded fact's science domain — a geology question can never surface an
-// animal, an animal question can never surface a reaction diagram. 'general' (topic-agnostic
-// filler) is allowed everywhere; 'flagged' never. An unknown/absent domain → no scoping (the
-// strict cosine floor still applies). Maps the 7 fact domains to the 5 image catalog folders.
-const DOMAIN_IMAGE_CATEGORIES: Record<string, ReadonlySet<string>> = {
-  LIVING_THINGS: new Set(['biology', 'general']),
-  EARTH_SPACE: new Set(['earth-science', 'physics', 'general']), // weather/geology + astronomy
-  FORCE_MOTION_ENERGY: new Set(['physics', 'general']),
-  MATTER: new Set(['chemistry', 'physics', 'general']),
-  PH_GEOGRAPHY: new Set(['earth-science', 'general']),
-  PH_CIVICS: new Set(['general']),
-  ABOUT_HIRAIA: new Set(['general']),
-};
+// DOMAIN_IMAGE_CATEGORIES moved to @hiraia/shared (rag/images.ts) with the rest of the
+// illustration-selection contract: the web demo resolves the same picture for the same fact
+// through server/images.ts, and a second copy of the scoping table is exactly the kind of
+// divergence that makes hiraia.org stop being a demo of the app.
 
 /**
  * LocalEngine implementation using QVAC SDK.
@@ -80,17 +80,18 @@ export class LocalEngine implements TutorEngine {
   private modelId: string | null = null;
   private isReadyFlag = false;
   private config: TutorConfig | null = null;
-  // Grade whose system prompt is currently primed in QVAC's KV cache (see warmUp/setGrade).
-  private primedGrade: GradeLevel | null = null;
+  // Has the model been warmed for this session (graph compiled, kernels hot)? See warmUp().
+  // NOT keyed on the grade any more: the warm-up no longer prefills a grade-bearing prompt.
+  private warmed = false;
   // In-memory grounding bank. Built at init; no native deps, so it works offline.
   private rag: RagStore | null = null;
   // Semantic embedder (LaBSE via QVAC) for the hybrid retriever. Loaded in the
   // BACKGROUND after the LLM (lexical-first); until ready, retrieval is lexical.
   private embedModelId: string | null = null;
   private semanticReady = false;
-  // Image-tag retrieval blob (one vector per bundled PNG); loaded with the
-  // semantic init. Null → resolveImageTag returns null (no picture, never wrong).
-  private imageVectors: Int8Array | null = null;
+  // Illustration catalog (one LaBSE vector per bundled clip-art PNG); loaded with the
+  // semantic init. Null → no picture is ever resolved (no picture, never wrong).
+  private imageIndex: ImageIndex | null = null;
 
   /**
    * Resolve the LoRA adapter GGUF for a language to an absolute on-device file
@@ -139,9 +140,11 @@ export class LocalEngine implements TutorEngine {
     // (grounding adherence, abstention, brevity) transfers across languages,
     // while raw Sailor2 fabricates. No separate English LoRA needed.
     const adapterLang: AdapterLanguage | null =
-      language === 'tagalog' || language === 'cebuano' ? language
-      : language === 'english' ? 'tagalog'
-      : null;
+      language === 'tagalog' || language === 'cebuano'
+        ? language
+        : language === 'english'
+          ? 'tagalog'
+          : null;
     if (!adapterLang) return undefined;
     const spec = ACTIVE_MODEL.loraRemote[adapterLang];
     if (!spec) {
@@ -225,6 +228,17 @@ export class LocalEngine implements TutorEngine {
             // gpuLayers 99. Prefill dominates TTFT and the GPU wins prefill on the
             // target Adreno, so libqvac-ggml-vulkan.so must stay in the APK.
             gpu_layers: ACTIVE_MODEL.runtime.gpuLayers,
+            // STOP SEQUENCE. A card is one paragraph, and the shipping model does not stop
+            // on its own: with nothing to stop it, it writes the correct card and then
+            // degenerates into repeated "**Pansin:** … **Paliwanag:** …" until the token
+            // cap. The server paths send this per-request as `stop`; QVAC has no per-request
+            // stop, so it is set once here for the model — `stop_sequences` is the SDK's
+            // field name for it (the llamacpp plugin renames it to the addon's
+            // `reverse_prompt`; passing THAT name straight through would be silently dropped
+            // by the load-model schema). Same shared constant the web route and the gate
+            // send (@hiraia/shared CARD_STOP) — the phone was the one path sending neither
+            // this nor the thinking-disable.
+            stop_sequences: [...CARD_STOP],
             ...(loraPath ? { lora: loraPath } : {}),
           },
           onProgress: (p) => {
@@ -280,14 +294,13 @@ export class LocalEngine implements TutorEngine {
       // usable on lexical retrieval immediately; the hybrid upgrades in when ready.
       void this.initSemantic();
 
-      // NO warm-up here — see primeSystemPrompt(). The system-prompt prefill is the slow
-      // tail of a cold start (measured `warm-up complete (77835ms)` on the target Redmi) and
-      // it is keyed on the GRADE, which the child is still choosing while this load runs:
-      // onboarding's grade slide lands seconds after the language pick that kicked the load
-      // off. Warming in here would prime the grade captured at load START and then have to
-      // throw that away and prefill again for the grade actually picked — two ~78s prefills
-      // for 7 of the 8 grades. The caller (engineStore.changeLanguage) instead primes ONCE,
-      // explicitly, with the settled grade, before it flips isReady.
+      // NO warm-up here — see prime(). It stays the CALLER's call (engineStore.changeLanguage,
+      // once, just before it flips isReady) so readiness owns when the cold start is paid.
+      // Historically it also had to wait for the grade to settle, because the warm-up prefilled
+      // a grade-bearing chat system prompt (~78 s on the target Redmi, measured `warm-up
+      // complete (77835ms)`) and a grade change meant paying it twice. The warm-up is
+      // grade-independent now, so that constraint is gone; what remains is that a cold prefill
+      // should happen where the loader bar can cover it, not inside the model load.
       this.isReadyFlag = true;
 
       console.log(`${ACTIVE_MODEL.displayName} model loaded successfully`);
@@ -300,204 +313,104 @@ export class LocalEngine implements TutorEngine {
   }
 
   /**
-   * Run a single throwaway completion to warm the model (driven by primeSystemPrompt /
-   * setGrade — never by initialize() itself; see there). The
-   * history is just the STATIC system prompt + a trivial user turn, with predict:1
-   * (we discard the token) and kvCache:true. This must mirror EXACTLY the static
-   * system prompt chatStore sends — generateSystemPrompt(lang, grade, true) — so the
-   * KV cache primed here is the same one the first real turn looks up. Non-fatal:
-   * a failure just means the first real message pays the normal cold TTFT.
+   * Run a single throwaway completion to warm the model — compile the graph and heat the
+   * kernels — so the child's first real card does not pay a cold start. Driven by `prime()`,
+   * never by initialize() itself (see there). Non-fatal: a failure just means the first real
+   * generation is the slow one.
+   *
+   * IT NO LONGER PREFILLS THE CHAT SYSTEM PROMPT. That ~1.2-1.5k-token prompt existed to
+   * prime a KV cache every chat turn re-hit, and that reuse WAS the TTFT fix — but the chat
+   * surface is gone and both surviving generations (`answerQuery`, `generateReward`) send ONE
+   * user message with no system prompt, so they missed the cache by construction. Priming it
+   * was measured at ~78 s of prefill on the target Redmi, paid at init and AGAIN on every
+   * grade change, for a cache nothing could hit. What is warmed now is a short user-only turn
+   * of the shape the card writer actually sends, which is grade-independent — so the whole
+   * grade-keyed re-prime machinery (primedGrade, setGrade → warmUp) goes with it.
    */
   private async warmUp(): Promise<void> {
-    if (!this.modelId || !this.config) return;
+    if (!this.modelId) return;
     try {
       const t0 = Date.now();
-      // language + grade (both from the engineStore-built config; chatStore reads the same
-      // store) + imageTags=true => byte-for-byte match with chatStore's system prompt.
-      const grade = this.config.gradeLevel;
-      const systemPrompt = generateSystemPrompt(this.config.language, grade, true);
       // predict:1 (not 0): generating a single throwaway token guarantees the prompt is fully
-      // prefilled and the KV cache persisted. QVAC 0.13 has no public `prefill: true` completion
-      // flag (only an internal VLA path), and predict:0 risks short-circuiting before the eval that
-      // primes the cache — so the 1-token warm-up stays the reliable prime. The token is discarded.
+      // prefilled. QVAC 0.13 has no public `prefill: true` completion flag (only an internal
+      // VLA path), and predict:0 risks short-circuiting before the eval — so the 1-token
+      // warm-up stays the reliable one. The token is discarded.
+      // Warm the shape the card writer actually sends: a real `buildCardPrompt`, in the
+      // reader's language, over one short throwaway fact. Kept tiny on purpose — the point is
+      // to compile the graph and heat the kernels, not to prefill anything reusable.
+      const warmPrompt = buildCardPrompt({
+        query: WARMUP_QUERY,
+        facts: [WARMUP_FACT],
+        grade: this.config?.gradeLevel ?? DEFAULT_GRADE,
+        language: this.config?.language ?? 'tagalog',
+      });
       const run = completion({
         modelId: this.modelId,
-        history: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: 'Hello' },
-        ],
+        history: [{ role: 'user', content: warmPrompt }],
         stream: true,
-        generationParams: { temp: CHAT_TEMP, predict: 1 },
-        kvCache: true, // prime the system-prompt KV cache the first real turn will hit
+        generationParams: {
+          temp: WARMUP_TEMP,
+          predict: 1,
+          // Same switch the real card generation flips — a warm-up that ran with the
+          // reasoning channel on would be heating a different code path than the product's.
+          reasoning_budget: CARD_REASONING_BUDGET,
+        },
       });
       // Drain and discard — we only care about the prefill side effect.
       for await (const _event of run.events) {
         // no-op
       }
-      // Cold-prefill telemetry: how long the unwarmed system-prompt prefill took + its token count.
-      // The first real turn should then report cacheTokens ≈ promptTokens here (cache hit).
+      // Cold-prefill telemetry: how long the unwarmed prefill took + its token count.
       let warmStat = '';
       try {
         const s = await run.stats;
-        if (s) warmStat = ` · prefill ${s.timeToFirstToken ?? '?'}ms · ${s.promptTokens ?? '?'} prompt tok · ${s.backendDevice ?? '?'}`;
+        if (s)
+          warmStat = ` · prefill ${s.timeToFirstToken ?? '?'}ms · ${s.promptTokens ?? '?'} prompt tok · ${s.backendDevice ?? '?'}`;
       } catch {
         /* best-effort */
       }
       console.log(`[LocalEngine] warm-up complete (${Date.now() - t0}ms)${warmStat}`);
-      this.primedGrade = grade;
+      this.warmed = true;
     } catch (e) {
       console.warn('[LocalEngine] warm-up failed (non-fatal):', e);
     }
   }
 
   /**
-   * Prefill the STATIC system prompt for `grade`. This is the init-time warm-up, made
-   * EXPLICIT so the caller owns when it runs and which grade it runs for (initialize() no
-   * longer warms up). Compiles the graph, heats the kernels, and primes QVAC's
-   * system-prompt KV cache so the student's first real turn skips the full prefill.
+   * Warm the model for `grade`. This is the init-time warm-up, made EXPLICIT so the caller
+   * owns when it runs (initialize() does not warm up). It compiles the graph and heats the
+   * kernels so the child's first real card is not the cold one.
    *
-   * Deliberately does NOT take the shared model lock. It only ever runs on an engine that
-   * is not ready yet, so nothing can be generating on it — while the lock is module-wide
-   * and may still be held by a stale completion belonging to the engine we just shut down
-   * (a feed reward prefetch holds it for a whole generation, tens of seconds on this
-   * device). Taking it here would make readiness wait on that unrelated generation, and a
-   * completion on an unloaded model that never settles would strand isReady for the whole
-   * session. Steady-state re-priming (setGrade, below) still takes the lock, because there
-   * it genuinely can collide with a live chat / feed turn.
+   * `grade` is applied to the config (the card prompt is pitched at it) but is no longer
+   * baked into the warm-up prompt: the prefill this used to prime — the chat system prompt —
+   * fed a KV cache nothing reads any more. So this is now idempotent for the whole session,
+   * and calling it again for a different grade costs nothing. It was `primeSystemPrompt`;
+   * the name would be a lie.
+   *
+   * Deliberately does NOT take the shared model lock. It only ever runs on an engine that is
+   * not ready yet, so nothing can be generating on it — while the lock is module-wide and may
+   * still be held by a stale completion belonging to the engine we just shut down (a feed
+   * reward prefetch holds it for a whole generation, tens of seconds on this device). Taking
+   * it here would make readiness wait on that unrelated generation, and a completion on an
+   * unloaded model that never settles would strand isReady for the whole session.
    */
-  async primeSystemPrompt(grade: GradeLevel): Promise<void> {
+  async prime(grade: GradeLevel): Promise<void> {
     if (!this.config) return;
     this.config = { ...this.config, gradeLevel: grade };
-    if (this.primedGrade === grade) return;
+    if (this.warmed) return;
     await this.warmUp();
   }
 
   /**
-   * Apply a new student grade to a READY engine WITHOUT reloading the model — the LoRA
-   * adapter is per-language; the grade only changes the static system prompt ("grade-N
-   * students") and the feed's grounded-answer prompt. Since QVAC's KV cache is keyed on the
-   * prompt text, the cache primeSystemPrompt() primed at the end of the load would MISS on
-   * the next real turn, so we re-run the warm-up prefill in place (non-fatal). Use
-   * primeSystemPrompt() instead while the engine is still coming up — this path is the
-   * steady-state one. The re-prime is a real completion on the
-   * single-instance model, so it runs under the shared model lock: it can never overlap an
-   * in-flight chat / feed generation, and rapid taps queue behind each other — a queued one
-   * is skipped once it is stale (superseded by a later tap) or already primed.
+   * Apply a new student grade to a READY engine. No model reload (the LoRA adapter is
+   * per-language, not per-grade) and — since the grade-keyed system-prompt prefill is gone —
+   * NO generation either: the grade is read straight out of `config` by `answerQuery` when it
+   * builds the card prompt. This used to re-run a ~78 s prefill under the model lock on every
+   * tap of the grade setting, to refresh a KV cache no surviving code path could hit.
    */
   async setGrade(grade: GradeLevel): Promise<void> {
     if (!this.config) return;
     this.config = { ...this.config, gradeLevel: grade };
-    await withModelLock(async () => {
-      if (this.config?.gradeLevel !== grade || this.primedGrade === grade) return;
-      await this.warmUp();
-    });
-  }
-
-  async *chat(messages: Message[], kvCacheKey?: string): AsyncIterable<string> {
-    if (!this.modelId || !this.isReadyFlag) {
-      throw new Error('Engine not initialized. Call initialize() first.');
-    }
-
-    try {
-      // Convert our Message format to QVAC's expected format
-      const history = messages.map((msg) => ({
-        role: msg.role,
-        content: msg.content,
-      }));
-
-      // Get streaming completion from QVAC. Temp 0.5 (not the ~0.8 llama.cpp
-      // default) — see CHAT_TEMP: lower temp reduces factual wandering.
-      // kvCache:true turns ON QVAC's AUTO KV cache (keyed by a hash of the static system
-      // prompt). It caches/reuses the prefix of the EXACT history we send — which
-      // buildContext() has already WINDOWED to the last few turns — so the static system
-      // prefix is reused across turns (the TTFT win) while the prefilled context stays
-      // bounded.
-      //
-      // Do NOT use a custom string key (kvCache: convId): that mode slices by message
-      // COUNT and keeps appending every turn to the on-disk KV, ignoring our windowing —
-      // so a long chat's cached context grows past ctx_size and EVERY later prompt fails
-      // with "context overflow at prefill" (confirmed on-device 2026-06-08, 4266 > 4096).
-      // `kvCacheKey` is still just the on/off signal from the caller.
-      const run = completion({
-        modelId: this.modelId,
-        history,
-        stream: true,
-        generationParams: { temp: CHAT_TEMP, predict: CHAT_MAX_TOKENS },
-        ...(kvCacheKey ? { kvCache: true } : {}),
-      });
-
-      // [perf] split the latency: TTFT (prompt prefill) vs decode (tok/s), so we
-      // can tell whether the cost is the prompt size or the per-token generation.
-      const t0 = Date.now();
-      let firstAt = 0;
-      let toks = 0;
-      for await (const event of run.events) {
-        if (event.type === 'contentDelta' && event.text) {
-          if (!firstAt) firstAt = Date.now();
-          toks++;
-          yield event.text;
-        }
-      }
-      const total = Date.now() - t0;
-      const ttft = firstAt ? firstAt - t0 : total;
-      const decodeMs = Math.max(1, total - ttft);
-      const tps = toks > 1 ? (((toks - 1) * 1000) / decodeMs).toFixed(1) : '?';
-      console.log(
-        `[perf] chat: prefill/TTFT ${ttft}ms · decode ${decodeMs}ms · ${toks} chunks · ${tps} tok/s · total ${total}ms`
-      );
-      // SDK-precise on-device metrics (QVAC ≥0.13): exact prefill TTFT + prompt-processing
-      // throughput (ppTPS = promptTokens / TTFT), the KV-cache hit size — which CONFIRMS the
-      // static-system-prompt cache is being reused across turns (the TTFT win) — and whether
-      // the run landed on cpu/gpu. Best-effort; never breaks chat if stats are absent.
-      try {
-        const s = await run.stats;
-        if (s) {
-          const ppTps =
-            s.timeToFirstToken && s.promptTokens
-              ? ((s.promptTokens * 1000) / s.timeToFirstToken).toFixed(0)
-              : '?';
-          console.log(
-            `[perf] chat(sdk): TTFT ${s.timeToFirstToken ?? '?'}ms · prompt ${s.promptTokens ?? '?'} tok ` +
-              `(${s.cacheTokens ?? 0} from KV cache) · ppTPS ${ppTps} · decode ${s.tokensPerSecond?.toFixed(1) ?? '?'} tok/s · ${s.backendDevice ?? '?'}`
-          );
-        }
-      } catch {
-        /* stats are best-effort telemetry */
-      }
-    } catch (error) {
-      console.error('Error during chat completion:', error);
-      throw new Error(
-        `Chat inference failed: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
-    }
-  }
-
-  /**
-   * Compress an assistant answer into a 1-2 sentence factual recap (the
-   * auto-compacter's memory). Single-turn utility completion — no grounding,
-   * no tutor system prompt. Greedy via the model's default sampling.
-   */
-  async summarize(text: string): Promise<string> {
-    if (!this.modelId || !this.isReadyFlag) {
-      throw new Error('Engine not initialized. Call initialize() first.');
-    }
-    const instruction =
-      'Ibuod ang sumusunod na sagot ng science tutor sa ISA o DALAWANG napakaikling pangungusap, ' +
-      'para magamit bilang maikling alaala (memory) sa susunod na usapan. Panatilihin LANG ang ' +
-      'mahalagang science fact at termino. Alisin ang pagbati, mga halimbawa, at ang tanong sa dulo. ' +
-      'Sumagot ng buod lamang, walang ibang sasabihin.\n\nSAGOT:\n' +
-      text;
-    const run = completion({
-      modelId: this.modelId,
-      history: [{ role: 'user', content: instruction }],
-      stream: true,
-      generationParams: { temp: SUMMARY_TEMP }, // greedy: faithful, deterministic recap
-    });
-    let out = '';
-    for await (const event of run.events) {
-      if (event.type === 'contentDelta' && event.text) out += event.text;
-    }
-    return out.trim();
   }
 
   /**
@@ -535,7 +448,10 @@ export class LocalEngine implements TutorEngine {
       modelId: this.modelId,
       history: [{ role: 'user', content: instruction }],
       stream: true,
-      generationParams: { temp: 0.7 }, // warmth/variety — this is prose, not a fact
+      generationParams: {
+        temp: 0.7, // warmth/variety — this is prose, not a fact
+        reasoning_budget: CARD_REASONING_BUDGET, // same thinking-model trap as the card path
+      },
     });
     let out = '';
     for await (const event of run.events) {
@@ -555,11 +471,24 @@ export class LocalEngine implements TutorEngine {
    *   !grounded+offDomain → not science at all ("roblox") → "I'm only a science tutor".
    * The last two are model-FREE: nothing is generated, so nothing can be hallucinated.
    * Optional — callers feature-detect.
+   *
+   * `slug` is the card's ILLUSTRATION, resolved here rather than in the store because this is
+   * where the grounded facts exist as whole facts. It comes from retrieval alone — the model is
+   * never asked what to draw — and is `null` far more often than not (the measured floor leaves
+   * ~88% of dynamic cards unillustrated, which the poster layout prints as an ordinary card).
+   * Only the grounded outcome can carry one: the two miss shapes are not about anything in
+   * particular, so there is nothing to illustrate.
+   *
+   * It is resolved AFTER the generation, from the fact the printed card is actually about
+   * (`attributeCardToFact`) rather than from `hits[0]` — the prompt lets the model print any of
+   * the four retrieved facts, and illustrating the one it did not print is how a carabao card
+   * ended up under a tamaraw. Resolving after also takes the embed off the path to the first
+   * painted card, which it was on for every question including the ~88% that carry no picture.
    */
   async answerQuery(
     query: string,
     language: string
-  ): Promise<{ text: string; grounded: boolean; offDomain: boolean }> {
+  ): Promise<{ text: string; grounded: boolean; offDomain: boolean; slug: string | null }> {
     if (!this.modelId || !this.isReadyFlag) {
       throw new Error('Engine not initialized. Call initialize() first.');
     }
@@ -581,17 +510,18 @@ export class LocalEngine implements TutorEngine {
     const unreachable =
       r.semantic && r.lexEmpty && !!this.rag && this.rag.lexicallyUnreachable(query, ragLang);
     if (r.semantic && isOffDomain(r.topCos, unreachable)) {
-      return { text: '', grounded: false, offDomain: true };
+      return { text: '', grounded: false, offDomain: true, slug: null };
     }
     // IN-DOMAIN GAP, form 1: no word of the query exists anywhere in the bank. Semantic
     // retrieval will still hand back its nearest neighbours (that is what a nearest-neighbour
     // search does), but they are about something else — "roblox" fused onto a mangrove-roots
     // fact and the model dutifully wrote a card about mangrove roots. Grounding we know is
     // unrelated to the question is not grounding, so no card gets written.
-    if (r.semantic && r.lexEmpty) return { text: '', grounded: false, offDomain: false };
+    if (r.semantic && r.lexEmpty)
+      return { text: '', grounded: false, offDomain: false, slug: null };
     const hits = r.hits;
     // Form 2: retrieval abstained outright (top cosine under the bank's own floor).
-    if (!hits.length) return { text: '', grounded: false, offDomain: false };
+    if (!hits.length) return { text: '', grounded: false, offDomain: false, slug: null };
     // Pitched at the student's grade (engineStore → config; kept current by setGrade).
     const grade = this.config?.gradeLevel ?? DEFAULT_GRADE;
     // The instruction ITSELF lives in @hiraia/shared (prompts/cards.ts), not here, because the
@@ -600,12 +530,10 @@ export class LocalEngine implements TutorEngine {
     // is calibrated (the deleted hedge, the "print the nearest FACT whole" escape, the 30-word
     // cap and the SAGOT:/ANSWER:/TUBAG: cue sanitizeCardAnswer strips) — see the notes there —
     // so a second copy of it would silently lose that calibration.
-    const instruction = buildCardPrompt({
-      query,
-      facts: hits.map((h) => h.content),
-      grade,
-      language,
-    });
+    // The retrieved bodies in the card's language, hoisted: they are what the model is given
+    // to write from AND what the printed card is attributed back to below.
+    const factTexts = hits.map((h) => h.content);
+    const instruction = buildCardPrompt({ query, facts: factTexts, grade, language });
     // ONLY the generation is serialized on the single-instance model. The three model-free
     // outcomes above return before this point and take no lock at all, so "I'm only a science
     // tutor" prints immediately instead of queueing behind an in-flight reward line or chat
@@ -615,7 +543,15 @@ export class LocalEngine implements TutorEngine {
         modelId: this.modelId!,
         history: [{ role: 'user', content: instruction }],
         stream: true,
-        generationParams: { temp: CARD_TEMP }, // low temp: faithful to the retrieved facts
+        generationParams: {
+          temp: CARD_TEMP, // low temp: faithful to the retrieved facts
+          // The shipping model is a THINKING model. Left on, the answer lands in the
+          // reasoning channel and `content` comes back EMPTY — every card would read as a
+          // generation failure. The server paths flip the same switch as
+          // `chat_template_kwargs: { enable_thinking: false }`; QVAC's transport for it is
+          // this numeric budget (0 = off). Shared constant so the two cannot drift.
+          reasoning_budget: CARD_REASONING_BUDGET,
+        },
       });
       let acc = '';
       for await (const event of run.events) {
@@ -623,7 +559,69 @@ export class LocalEngine implements TutorEngine {
       }
       return acc;
     });
-    return { text: out.trim(), grounded: true, offDomain: false };
+    const text = out.trim();
+
+    // THE PICTURE, resolved after the card is written and from the fact the card is ABOUT.
+    //
+    // The prompt permits the model to print any of the four retrieved facts ("isulat na lang
+    // nang buo ang pinakamalapit na FACT"), so `hits[0]` — the best hit for the QUERY — is not
+    // reliably the fact on the card: "ano ang carabao" retrieves the tamaraw/carabao contrast
+    // first and the card that comes back states the carabao. `attributeCardToFact` reads the
+    // printed sentence and says which of the four it restates; ties and no-overlap keep
+    // `hits[0]`, so this only ever CORRECTS a demonstrable mismatch.
+    //
+    // Attributed on the SANITIZED text, because the raw generation still carries the retired
+    // `[image: …]` habit and a stray `</think>`, and those tokens are not evidence about which
+    // fact was printed.
+    //
+    // Running here rather than before the generation also keeps the embedder and the LLM
+    // strictly sequential on a device that runs one model at a time — the reason it used to run
+    // first — while taking its LaBSE forward pass off the path to the first painted card.
+    // Best-effort: a failed resolve is a card without a picture, never a failed card.
+    let slug: string | null = null;
+    if (r.facts.length) {
+      const printed = sanitizeCardAnswer(text) ?? text;
+      const chosen = r.facts[attributeCardToFact(printed, factTexts)]!;
+      slug = await this.resolveFactImage(chosen).catch(() => null);
+    }
+    return { text, grounded: true, offDomain: false, slug };
+  }
+
+  /**
+   * Off-domain judgement for a WEAK card-search hit (TutorEngine.weakHitOffDomain).
+   *
+   * EXACTLY the model-free gate `answerQuery` opens with — embed the normalized query,
+   * retrieve, then `isOffDomain(topCos, unreachable)` with the OOV arm gated on real lexical
+   * UNREACHABILITY — just consulted BEFORE a weak hit is served rather than after a miss.
+   *
+   * The OOV arm is NOT forced on, and that is a measured correction (2026-09-01, live
+   * pipeline probes). An earlier version read the weak band as "no lexical evidence the
+   * corpus knows this as a subject" and forced the arm; but ordinary body-function phrasings
+   * — "para saan ang ating puso" (tl), "unsay gamit sa atong mata" (ceb) — land in the SAME
+   * band (aboutness 0.015–0.037, diluted by function words) at topCos 0.537–0.586, which
+   * OVERLAPS the junk band (0.479–0.545): the forced arm refused five canonical grade-school
+   * science questions that were previously served the topically right card. No cosine floor
+   * separates the two classes, and no cheap lexical rescue does either (head-anywhere,
+   * head-on-served-card and df-of-head were all probed: kumusta/boring/adobo are HEAD tokens
+   * on their junk cards too). So the consult now refuses only what the calibrated miss-path
+   * gate itself would refuse — a query whose every word is unreachable in the bank (rare for
+   * a weak HIT, whose words by construction matched a card) or one under the HARD floor
+   * (0.40) — accepting that shared-vocabulary junk ("kumusta ka" → the hand-wave card) is
+   * served again. That asymmetry is the product's own doctrine: a false serve costs a wry
+   * card, a false refusal tells a child their science question is not science.
+   *
+   * Deliberately NOT gated on `isReady()`: this needs the embedder + the RAG store, not the
+   * LLM. No model lock either — nothing is generated. Null (cannot judge: embedder still
+   * downloading/warming/failed) tells the caller to serve the hit, today's behaviour.
+   */
+  async weakHitOffDomain(query: string): Promise<boolean | null> {
+    const r = await this.ragSearchDiag(query, 4);
+    if (!r.semantic) return null;
+    // Same conjunctive arm as answerQuery: the spelling probe runs only behind lexEmpty, and
+    // in the CONFIG language — the one retrieval itself just used.
+    const ragLang: Language = this.config?.language ?? 'english';
+    const unreachable = r.lexEmpty && !!this.rag && this.rag.lexicallyUnreachable(query, ragLang);
+    return isOffDomain(r.topCos, unreachable);
   }
 
   async generateVisual(prompt: string): Promise<ImageResult> {
@@ -680,7 +678,7 @@ export class LocalEngine implements TutorEngine {
       );
       this.semanticReady = true;
       // Warm the embed graph so the FIRST real ragSearch doesn't eat the cold
-      // build/alloc spike (the chat model has warmUp(); the embedder had none, and the
+      // build/alloc spike (the LLM has warmUp(); the embedder had none, and the
       // LaBSE forward pass is a real share of the per-query retrieval cost).
       // Throwaway + best-effort: never block readiness on it.
       try {
@@ -695,8 +693,9 @@ export class LocalEngine implements TutorEngine {
       console.warn('[LocalEngine] semantic init failed — staying lexical-only:', e);
       this.semanticReady = false;
     }
-    // Image-tag blob (~3MB): independent of the fact-bank blob — its failure only
-    // disables [image:] resolution, never retrieval.
+    // Image catalog blob (~3MB): substrate of the retired tag path (`resolveImageTag`) and
+    // nothing else now — the card path is an id lookup. Independent of the fact-bank blob;
+    // its failure costs nothing the product currently exercises, never retrieval.
     try {
       const asset = Asset.fromModule(IMAGE_VECTORS_BLOB_ASSET);
       await asset.downloadAsync();
@@ -706,60 +705,112 @@ export class LocalEngine implements TutorEngine {
       if (bytes.byteLength !== expected) {
         throw new Error(`stale image blob: ${bytes.byteLength} bytes, expected ${expected}`);
       }
-      this.imageVectors = new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength);
-      console.log(`[LocalEngine] image-tag index ready (${IMAGE_VECTORS_META.count} slugs)`);
+      this.imageIndex = new ImageIndex({
+        dims: IMAGE_VECTORS_META.dims,
+        scale: IMAGE_VECTORS_META.scale,
+        count: IMAGE_VECTORS_META.count,
+        slugs: IMAGE_VECTORS_META.slugs,
+        data: new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength),
+      });
+      console.log(`[LocalEngine] image index ready (${IMAGE_VECTORS_META.count} slugs)`);
     } catch (e) {
-      console.warn('[LocalEngine] image-tag index failed — [image:] tags will not resolve:', e);
-      this.imageVectors = null;
+      console.warn('[LocalEngine] image index failed — the tag path is off (card art is id-mapped):', e);
+      this.imageIndex = null;
     }
   }
 
   /**
-   * Resolve the tutor's `[image: <english desc>]` description to a bundled
-   * illustration slug: embed the desc with the (already warm) LaBSE embedder and
-   * brute-force cosine over the per-image catalog vectors. Returns null below the
-   * confidence floor — better no picture than a mismatched one (same principle as
-   * the FACT_IMAGE top-fact rule). The floor is calibrated offline against the
-   * SFT tag descriptions (see rag/scripts/build-image-vectors.py validation).
+   * THE ONE SCAN — now serving ONLY the retired tag path (`resolveImageTag`); the card path
+   * is an id lookup and never embeds. Embed `text` with the (already warm) LaBSE embedder and
+   * take the nearest illustration in the bundled catalog.
+   *
+   * `accept` is the shared `imageDomainScope` predicate — the fact's domain scope, and ONLY
+   * that. Art PRESENCE is deliberately not in it: filtering the scan by what this install can
+   * draw would make the ranking a property of the device, so two devices would resolve the
+   * same tag differently. Presence is asked of the WINNER instead, by `acceptImageMatch` in
+   * the caller.
+   *
+   * No floor here on purpose: the caller applies its own measured one (IMAGE_TAG_FLOOR), and
+   * the near miss is logged either way.
+   */
+  private async nearestImage(
+    text: string,
+    accept: (slug: string) => boolean,
+    label: string
+  ): Promise<{ slug: string; cosine: number } | null> {
+    if (!this.imageIndex || !this.semanticReady || !this.embedModelId) return null;
+    try {
+      const t0 = Date.now();
+      const q = Float32Array.from(await this.embed(text)); // CLS + L2 (embdNormalize:2)
+      const hit = this.imageIndex.best(q, accept);
+      console.log(
+        `[LocalEngine] ${label} "${text.slice(0, 60)}" → ${hit?.slug ?? '(none)'} ` +
+          `(cos ${hit ? hit.cosine.toFixed(3) : '-'}, ${Date.now() - t0}ms)`
+      );
+      return hit;
+    } catch (e) {
+      console.warn(`[LocalEngine] ${label} failed:`, e);
+      return null;
+    }
+  }
+
+  /**
+   * THE CARD'S ILLUSTRATION — the picture for a GENERATED card, resolved from the GROUNDED
+   * FACT the card states. This is the product path; `resolveImageTag` below is the retired one.
+   *
+   * An ID LOOKUP, not a similarity search. The precedence, its measured basis and the reason
+   * the runtime LaBSE scan was deleted (27% right / 52% clearly wrong unfloored; no floor
+   * rescues it) live in @hiraia/shared (rag/images.ts, `resolveIllustrationSlug`):
+   *
+   *   1. CARD INDEX — factId → the feed card bound to this fact → its authored slug
+   *      (`cardSlugForFact`); 66% of the bank, most of it engravings drawn FOR the fact.
+   *   2. FACT_IMAGE — the curated fact_id → slug map (~10% of the bank, 82% right).
+   *   3. null — the poster layout, still an ordinary outcome, never a cosine guess.
+   *
+   * Async only to keep the signature stable for its callers — nothing here embeds or awaits.
+   * The model is not consulted at any point. It writes the card; the picture is retrieval's.
+   */
+  async resolveFactImage(fact: ScienceFact): Promise<string | null> {
+    // PRESENCE is the renderer's own question, so ask it the renderer's way: `artSourceFor`
+    // is what ResponseCard resolves the slug through, and it answers for both halves of the
+    // art library (bundled in the APK, or backfilled to disk since install). A slug this
+    // install cannot draw yields to the next path — both paths are high-precision id
+    // lookups, so the fallback is the second-best answer, never noise.
+    return resolveIllustrationSlug({
+      factId: fact.id,
+      cardSlugOf: cardSlugForFact,
+      curatedSlugOf: (id) => FACT_IMAGE[id],
+      isPresent: (slug) => artSourceFor(slug) != null,
+    });
+  }
+
+  /**
+   * Resolve a MODEL-SUPPLIED `[image: …]` description to a bundled illustration slug. Returns
+   * null below the confidence floor — better no picture than a mismatched one.
+   *
+   * STILL NOTHING CALLS THIS, AND THAT IS STILL ON PURPOSE — DO NOT DELETE IT AS DEAD CODE.
+   * Its only caller was chatStore, gone with the chat surface. The card path deliberately does
+   * NOT come through here: `desc` is a description the MODEL chose, and the settled
+   * architecture is that the model does not pick illustrations — so the card asks
+   * `resolveFactImage` on the grounded fact the card states, instead of pretending a fact's
+   * text is a tag.
+   * This is kept for the one input it is actually shaped for, should a tag ever be wanted
+   * again; the model does still EMIT tags (retired SFT habit), but they are stripped in
+   * `sanitizeCardAnswer` and the real fix for the emission is training-side — drop the
+   * image-tag rows from the SFT mix — not a prompt patch and not a resolver.
    */
   async resolveImageTag(
     desc: string,
     minCosine: number = IMAGE_TAG_FLOOR,
-    domain?: string
+    domain?: ScienceFact['domain']
   ): Promise<{ slug: string; cosine: number } | null> {
-    if (!this.imageVectors || !this.semanticReady || !this.embedModelId) return null;
-    try {
-      const t0 = Date.now();
-      const q = Float32Array.from(await this.embed(desc)); // CLS + L2 (embdNormalize:2)
-      const { dims, scale, count, slugs } = IMAGE_VECTORS_META;
-      const vecs = this.imageVectors;
-      // Scope candidates to the grounded fact's science domain so the cosine can't pick an
-      // off-topic image on a shared word (see DOMAIN_IMAGE_CATEGORIES). Unknown domain → no scope.
-      const allowed = domain ? DOMAIN_IMAGE_CATEGORIES[domain] : undefined;
-      let best = -1;
-      let bestDot = -Infinity;
-      for (let i = 0; i < count; i++) {
-        if (allowed && !allowed.has(IMAGE_CATEGORY[slugs[i]!] ?? 'general')) continue;
-        let dot = 0;
-        const off = i * dims;
-        for (let d = 0; d < dims; d++) dot += q[d]! * vecs[off + d]!;
-        if (dot > bestDot) {
-          bestDot = dot;
-          best = i;
-        }
-      }
-      if (best < 0) return null; // domain scoping left no candidate
-      const cosine = bestDot * scale; // corpus rows were unit-norm before int8 quant
-      console.log(
-        `[LocalEngine] resolveImageTag "${desc.slice(0, 60)}" → ${slugs[best]} ` +
-          `(cos ${cosine.toFixed(3)}, cat ${IMAGE_CATEGORY[slugs[best]!] ?? '-'}, dom ${domain ?? '-'}, ${Date.now() - t0}ms)`
-      );
-      if (cosine < minCosine) return null;
-      return { slug: slugs[best]!, cosine };
-    } catch (e) {
-      console.warn('[LocalEngine] resolveImageTag failed:', e);
-      return null;
-    }
+    const scope = imageDomainScope({ domain, categoryOf: (slug) => IMAGE_CATEGORY[slug] });
+    if (!scope) return null;
+    const hit = await this.nearestImage(desc, scope, 'resolveImageTag');
+    return acceptImageMatch(hit, {
+      floor: minCosine,
+      isPresent: (slug) => artSourceFor(slug) != null,
+    });
   }
 
   async embed(text: string): Promise<number[]> {
@@ -785,14 +836,26 @@ export class LocalEngine implements TutorEngine {
    * `lexEmpty` (no word of the query appears anywhere in the bank). Both are computed inside
    * retrieval anyway, so this costs nothing. `semantic` reports whether the embedder actually
    * ran — when it did not, topCos is 0 and NEITHER signal may be used to classify.
+   *
+   * `facts` are the hits as WHOLE facts, parallel to `hits`, not the display-language strings
+   * `hits` carries. ALL of them, not just the best one: the card may be written from any of the
+   * four (see `attributeCardToFact`), and illustrating the chosen one needs its id for the
+   * curated map, its domain for scoping and its ENGLISH body to embed — RagResult keeps none
+   * of the three.
    */
   private async ragSearchDiag(
     query: string,
     topK: number,
     context = '',
     seenIds?: ReadonlySet<string>
-  ): Promise<{ hits: RagResult[]; topCos: number; lexEmpty: boolean; semantic: boolean }> {
-    if (!this.rag) return { hits: [], topCos: 0, lexEmpty: true, semantic: false };
+  ): Promise<{
+    hits: RagResult[];
+    facts: ScienceFact[];
+    topCos: number;
+    lexEmpty: boolean;
+    semantic: boolean;
+  }> {
+    if (!this.rag) return { hits: [], facts: [], topCos: 0, lexEmpty: true, semantic: false };
     const language: Language = this.config?.language ?? 'english';
     // Hybrid when the embedder is warm; lexical-first while it loads (or if it
     // failed). Only confidently-relevant hits — a small model is misled by noise.
@@ -854,6 +917,7 @@ export class LocalEngine implements TutorEngine {
         score: h.score,
         metadata: { id: h.fact.id, topic: h.fact.topic, domain: h.fact.domain },
       })),
+      facts: hits.map((h) => h.fact),
       topCos,
       lexEmpty,
       semantic,

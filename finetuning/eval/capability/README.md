@@ -86,17 +86,25 @@ must never enter ANY Claude context. The pipeline:
    accepts multiple result files (workflow result + local-judge result) and writes the
    `[{probe, answer, score}]` archive. Exits non-zero listing any still-unjudged ids.
 
-Multi-turn baselines are archived as `scores.mt-baseline.<tag>.json` — do **not** name ad-hoc
-archives `capability-scores.*.json` (PHASE=report merges those).
+Do **not** name ad-hoc archives `capability-scores.*.json` (PHASE=report merges those).
 
 ## Tiers (what each exposes)
 
-**143 probes** total (129 answerable, 14 abstain-correct), sized so no single probe's
+> **SINGLE-TURN ONLY (probe set v4).** The `multi-turn` tier — 14 scripted 3-turn dialogues
+> at weight 2.5, plus the `pres-mt-no-repeat-leaf-tl` cross-turn image check — is DELETED,
+> along with the dialogue runner in `run-capability.mts` and
+> `presentation.mts:repeatedImagesAcrossTurns`. The product has no chat surface: the model is
+> a single-turn card writer, so a dialogue score measured behavior that no longer ships. The
+> repetition/state-tracking failures those probes exposed are not "fixed" — they are out of
+> scope. Old `capability-scores.*.json` archives still contain `mt-*` rows; PHASE=report
+> merges by probe id and will score them at the fallback tier weight of 1, so re-collect
+> answers rather than diffing a v3 archive against a v4 run.
+
+**128 probes** total (118 answerable, 10 abstain-correct), sized so no single probe's
 stochastic pass/fail moves the score and every tier holds many *distinct* science topics — a
 parrot can't fluke a whole category. Counts below; run weight is `tier_weights` in `probes.json`.
 
 - `helpfulness-floor` (24, **w 3.0**) — direct content Qs that MUST be answered (exposes over-abstention). **Heaviest weight.**
-- `multi-turn` (14, **w 2.5**) — scripted 3-turn dialogues (10 TL, 4 BIS); the runner plays the student turns sequentially with device-faithful per-turn retrieval (rag context from prior turns, seen-fact dedup, R2 re-embed) and the judge scores the whole transcript. Exposes the **repetition / re-asking-answered-questions** failure (gravity conversation, 2026-06): hard caps in the rubric — near-verbatim repetition caps pedagogy at 1, re-asking an answered question caps helpfulness at 1. Includes the weightlessness trap (astronauts float from free fall, not "no gravity").
 - `reasoning` (14, w 2.0) — multi-step / counter-intuitive (exposes the depth distillation targets).
 - `synthesis` (12, w 2.0) — needs 2–3 facts combined (exposes shallow single-fact lookup).
 - `codeswitch` (10, w 1.5) — natural Taglish input (exposes brittleness to real kid speech).
@@ -108,12 +116,12 @@ parrot can't fluke a whole category. Counts below; run weight is `tier_weights` 
   English uses the base model on-device. Exists because hackathon judges who don't speak Filipino will
   pick English from the language selector — this is the path they experience. The runner gives it its own
   pass: `run-capability.sh` boots the base GGUF with no `--lora` and sets `USE_LORA=0`.
-- `presentation` (9, w 1.5) — **v3 targets**: illustration use vs restraint (a picture when one helps,
+- `presentation` (8, w 1.5) — **v3 targets**: illustration use vs restraint (a picture when one helps,
   none on chit-chat/definitions), natural non-forced endings (incl. an English no-persona-leak probe),
   and engagement (a few emoji + bold, never spam). The judge scores these under naturalness/pedagogy
   (see rubric.md "Presentation probes"); ALONGSIDE, `run-capability.mts` reports **objective** metrics
-  from `../presentation.mts` — image-tag emission + well-formed rate, multi-turn image-repeat rate,
-  emoji present/spam, bold rate — with a baseline diff, so v3's behavior is locked in and can't
+  from `../presentation.mts` — image-tag emission + well-formed rate, emoji present/spam,
+  bold rate — with a baseline diff, so v3's behavior is locked in and can't
   silently regress. The same `presentation.mts` invariants hard-fail in the regression gate.
 
 Run the same probe set against every candidate (current Sailor2-3B, SFT-rebalanced,

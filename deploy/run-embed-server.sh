@@ -2,7 +2,7 @@
 #
 # LaBSE embedding server for the VPS web demo's server-side RAG.
 #
-# The grounded web path (packages/web/src/app/api/demo/chat + server/rag.ts) needs to
+# The grounded web path (packages/web/src/app/api/demo/card + server/rag.ts) needs to
 # embed each visitor query in the SAME space as the bundled corpus vectors so the
 # hybrid retriever + abstain floor behave exactly like the phone. That means the SAME
 # model + pooling the on-device embedder uses:

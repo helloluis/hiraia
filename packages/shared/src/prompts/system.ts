@@ -157,8 +157,12 @@ const SHORT_LANGUAGE_LINE: Record<Language, string> = {
  * when grounded/settled vs. abstain-without-confabulation when truly unknown). Validated by
  * role-play at device temp 0.5; the full PROMPT_TEMPLATE above is retained for reference / a
  * fast revert. The TTFT payoff: smaller cold prefill + warm-up + ~1000 freed context tokens.
- * `imageTags` is now ignored — illustrations come from the retrieval-driven path
- * (LocalEngine.resolveImageTag on the top grounded fact), not a model-emitted tag.
+ * `imageTags` is ignored, permanently — illustrations come from the retrieval-driven path
+ * (LocalEngine.resolveFactImage on the grounded fact the card states), never from a
+ * model-emitted tag.
+ * The model still EMITS `[image: …]` out of retired chat-SFT habit; that is stripped in
+ * prompts/cards.ts and the real fix is TRAINING-side (drop the image-tag rows from the SFT
+ * mix), not a prompt patch — asking the prompt to stop it would only add tokens.
  */
 export function generateSystemPrompt(
   language: Language,

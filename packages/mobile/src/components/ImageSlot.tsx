@@ -16,6 +16,18 @@ const MAX_SIDE = 320;
  * if there's no match (e.g. a model [image:] description rather than a slug) it
  * falls back to a placeholder so the flow still renders.
  *
+ * NOTHING RENDERS THIS, AND ITS STATED REASON TO EXIST IS NOW SPENT. It used to be kept as
+ * the RENDER half of the app's image path, against the day a generated card got a picture.
+ * That day came, and the picture did NOT land here: a card of this deck prints its engraving
+ * in a peach mat with an inner window (cards/CardPlate.tsx, shared by CardPage and
+ * ResponseCard), not as a dashed square thumbnail, which is a chat idiom for a surface that no
+ * longer exists. The SELECT half is live too — LocalEngine.resolveFactImage, the card-index
+ * then curated FACT_IMAGE id lookups (no runtime cosine any more).
+ *
+ * So this is now genuinely unreferenced with nothing pending behind it: a delete candidate,
+ * left in place only because removing it is a separate decision from building the card's
+ * illustration path. If you are reading this because you are pruning dead code — yes.
+ *
  * Square is enforced by measuring the available width (onLayout) and setting an
  * EXPLICIT width===height — not `aspectRatio: 1` + `width: '100%'`, which on Android
  * can derive height from the unclamped width and render a tall rectangle on wide

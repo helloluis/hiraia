@@ -4,10 +4,15 @@ Two processes run on the VPS:
 
 1. **Model server** — `llama.cpp` serving Sailor2-3B-Chat (Q4_K_M) + the Tagalog &
    Bisaya LoRA adapters over an OpenAI-compatible API (port `8080`).
-2. **Web app** — the Next.js chat UI with login + SQLite persistence (port `3000`).
+2. **Web app** — the Next.js site: landing page + the "Try the demo" card-feed lightbox,
+   with SQLite persistence (port `3000`).
 
-The browser talks **directly** to the model server (the chat client runs client-side),
-so the model server must be reachable from the user's browser, not just localhost.
+> **The chat UI is gone.** The authenticated thread client (`ChatInterface`, `/api/chats/*`,
+> the browser-direct client-side model calls described below) and the demo chat route were
+> deleted: the model is a single-turn card writer, not a conversational tutor. Everything
+> model-backed now goes through the server-side `/api/demo/card` route in §5, and the browser
+> never talks to :8080 directly. The `/v1/` nginx location and the "in-app server URL" note
+> at the bottom are historical — nothing in the app sets one any more.
 
 ---
 
@@ -71,16 +76,13 @@ The model server (`pm2: hiraia-llm`) is left running; restart it with
 
 ## 5. Grounded web demo (server-side RAG) — the public "Try the demo" lightbox
 
-The public demo (`/`, the lightbox — distinct from the authed browser-direct chat above)
-is a **faithful replica of the shipped APK's grounded path**, served entirely server-side:
+The public demo (`/`, the lightbox) is a **faithful replica of the shipped APK's grounded
+path**, served entirely server-side. There is exactly ONE model-backed route now:
+`/api/demo/card`. The conversational `/api/demo/chat` route has been DELETED along with the
+whole chat surface (browser demo chat, the authed thread UI, and the phone's /chat screen) —
+the model is a single-turn card writer, so a card is the only thing it is asked for.
 
 ```
-visitor → /api/demo/chat (Next route, server-side)          — the conversational demo
-            ├─ server/rag.ts  → embed query (LaBSE :8090) → retrieve over the bundled
-            │                    int8 vectors → grounding block (same bank as the phone)
-            ├─ build prompt: generateSystemPrompt (static) + grounding in the USER turn
-            └─ → llama-server :8080 (v2a adapter)  → stream SSE back to the browser
-
 visitor → /api/demo/card (Next route, server-side)          — the FEED's ask box
             ├─ the browser searched the bundled ~5% card subset FIRST and missed; this is
             │    the miss path, and it is the phone's LocalEngine.answerQuery
@@ -139,8 +141,11 @@ The web demo's model + bank should track the shipped APK exactly:
 - **Adapter selection is automatic**: the language dropdown picks the adapter
   (Tagalog → id 0, Bisaya → id 1, English → base). The request sends explicit
   `lora` scales so adapters never stack.
-- **Persistence**: users/chats/messages/feedback are stored in SQLite at
-  `HIRAIA_DB_PATH` (default `<repo>/data/hiraia.db`, kept out of git).
+- **Persistence**: SQLite at `HIRAIA_DB_PATH` (default `<repo>/data/hiraia.db`, kept out of
+  git). Live table: `demo_messages` (anonymous demo queries, write-only). The `users` /
+  `sessions` / `chats` / `messages` tables and the `/api/auth/*` routes still exist but have
+  no UI reaching them since the chat client was removed — see the open question in the app
+  notes before deciding to drop them.
 - **HTTPS / mixed content**: if you serve the web app over HTTPS, the model server
   must also be HTTPS (browsers block https→http). Simplest is to reverse-proxy both
   under one origin with nginx:

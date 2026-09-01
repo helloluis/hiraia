@@ -11,5 +11,7 @@ export {
   sanitizeCardAnswer,
   CARD_TEMP,
   CARD_MAX_CHARS,
+  CARD_STOP,
+  CARD_REASONING_BUDGET,
 } from './cards.js';
 export type { CardPromptInput, CardPromptLanguage } from './cards.js';

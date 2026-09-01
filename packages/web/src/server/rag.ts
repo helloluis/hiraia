@@ -1,7 +1,7 @@
 /**
  * Server-side RAG for the public web demo — the same grounded retrieval the
- * shipped APK runs on-device, mirrored on the VPS so the web demo is a faithful
- * replica (not a weaker, ungrounded chat).
+ * shipped APK runs on-device, mirrored on the VPS so a card printed on hiraia.org is the
+ * card the APK would print.
  *
  * Parity with mobile (packages/mobile/src/engine/LocalEngine.ts):
  *   1. Build a RagStore over the SAME bank (rag/bank/science-facts.jsonl, the source of
@@ -10,8 +10,11 @@
  *   3. Embed the query with the SAME model (LaBSE raw-CLS + L2) — here via a
  *      co-located llama-server (`--embedding --pooling cls`, localhost:8090)
  *      instead of QVAC's on-device embedder.
- *   4. retrieveForGroundingHybrid() with the SAME abstain floor + R2 contextual
- *      re-embed for topic-blind follow-ups.
+ *   4. retrieveForGroundingHybrid() with the SAME abstain floor.
+ *
+ * ONE ENTRY POINT, `retrieveForCard`. The conversational `retrieveGrounding` (context-folding
+ * R2 re-embed for topic-blind follow-ups, cross-turn `seenIds`) went with the demo chat route
+ * that was its only caller: a card query is standalone, so there is no prior turn to fold in.
  *
  * Built ONCE per server process (module singleton). The 80MB int8 blob lives in
  * RAM for the process lifetime — same footprint the phone carries, trivial on the
@@ -30,11 +33,10 @@ import {
   RagStore,
   SemanticIndex,
   normalizeQuery,
-  buildContextualQuery,
   isOffDomain,
-  CONTEXT_FALLBACK_FLOOR,
   type Language,
   type RagResult,
+  type ScienceFact,
 } from '@hiraia/shared';
 
 /** Where to embed a query. A second llama-server runs the LaBSE GGUF in embedding
@@ -101,8 +103,13 @@ function getStore(): Promise<RagStore> {
  * Float32Array (the abstain floor + int8 dot-product both assume a unit query —
  * matches the on-device `embdNormalize:2`). Returns undefined on any failure so
  * callers fall back to lexical grounding.
+ *
+ * EXPORTED because the card's ILLUSTRATION runs through the same embedder against the image
+ * catalog (server/images.ts) — the phone reaches both through one `LocalEngine.embed`, and a
+ * second copy of this fetch is a second place for the URL, the timeout or the normalization to
+ * drift. Server-only, like the rest of this module.
  */
-async function embed(text: string): Promise<Float32Array | undefined> {
+export async function embedText(text: string): Promise<Float32Array | undefined> {
   try {
     const res = await fetch(`${EMBED_URL}/v1/embeddings`, {
       method: 'POST',
@@ -128,52 +135,6 @@ async function embed(text: string): Promise<Float32Array | undefined> {
 }
 
 /**
- * Retrieve grounding facts for a query, mirroring the on-device path:
- *   - embed the NORMALIZED query (strip filler so covered topics clear the floor)
- *   - hybrid retrieve (semantic + lexical RRF) with the off-topic abstain floor
- *   - R2: if it abstains and we have conversation context, retry once with the
- *     topic folded into the embedding (rescues bare follow-ups)
- *
- * Returns RagResult[] shaped exactly like TutorEngine.retrieve(), ready for
- * formatGroundingBlock(). Empty array = abstain (off-topic) → ungrounded answer.
- */
-export async function retrieveGrounding(
-  query: string,
-  language: Language,
-  context = '',
-  seenIds?: ReadonlySet<string>,
-  topK = 3
-): Promise<RagResult[]> {
-  const store = await getStore();
-  let queryVec: Float32Array | undefined;
-  if (store.hasSemantic) {
-    queryVec = await embed(normalizeQuery(query));
-  }
-
-  // CONTEXT-GATING (R1): retrieve CONTEXT-FREE — a confident, self-sufficient question carries its
-  // own topic; folding the prior turn in only pollutes it (the "solar system"→solar-panel collision).
-  const r1 = store.retrieveForGroundingHybridDiag(query, queryVec, language, topK, 0.5, '', seenIds);
-  let hits = r1.hits;
-
-  // R2 — bare query is WEAK (empty OR low-confidence topCos) → a topic-blind follow-up that needs
-  // the conversation topic folded in.
-  if ((hits.length === 0 || r1.topCos < CONTEXT_FALLBACK_FLOOR) && queryVec && context.trim()) {
-    const foldedVec = await embed(buildContextualQuery(query, context));
-    if (foldedVec) {
-      const r2 = store.retrieveForGroundingHybridDiag(query, foldedVec, language, topK, 0.5, context, seenIds);
-      if (r2.hits.length) hits = r2.hits;
-    }
-  }
-
-  return hits.map((h) => ({
-    content: h.text,
-    source: h.fact.source,
-    score: h.score,
-    metadata: { id: h.fact.id, topic: h.fact.topic, domain: h.fact.domain },
-  }));
-}
-
-/**
  * The three-way outcome of a FEED CARD query, decided before any model runs.
  * Mirrors LocalEngine.answerQuery's classification on the phone.
  */
@@ -188,6 +149,15 @@ export type CardOutcome =
 export interface CardRetrieval {
   outcome: CardOutcome;
   hits: RagResult[];
+  /**
+   * The hits as WHOLE facts, PARALLEL to `hits`, not the display-language strings `hits`
+   * carries. All of them, not just the best one: the printed card may restate any of the four
+   * (the prompt permits it), so the route attributes the card to one of them before resolving
+   * the illustration from it — and that needs the fact's id for the curated map, its domain
+   * for scoping and its ENGLISH body to embed, none of which RagResult keeps. Mirrors
+   * LocalEngine.ragSearchDiag's `facts`.
+   */
+  facts: ScienceFact[];
   /** Diagnostics, for the route log — the numbers the outcome was decided on. */
   topCos: number;
   lexEmpty: boolean;
@@ -200,9 +170,9 @@ export interface CardRetrieval {
  * LocalEngine.answerQuery, with the same floors, so a query typed into hiraia.org lands on
  * the same one of three cards it would land on in the APK.
  *
- * Deliberately CONTEXT-FREE (no R2 fold, unlike `retrieveGrounding` above): a card query is a
- * standalone question typed into the feed's ask box, not a follow-up in a conversation, and
- * folding an earlier topic in would answer a question the child did not ask.
+ * Deliberately CONTEXT-FREE (no R2 context fold): a card query is a standalone question typed
+ * into the feed's ask box, not a follow-up in a conversation, and folding an earlier topic in
+ * would answer a question the child did not ask.
  *
  * The order of the gates is load-bearing:
  *   1. OFF-DOMAIN — only classifiable when the embedder ran. Without it topCos is 0 and every
@@ -223,7 +193,7 @@ export async function retrieveForCard(
 ): Promise<CardRetrieval> {
   const store = await getStore();
   let queryVec: Float32Array | undefined;
-  if (store.hasSemantic) queryVec = await embed(normalizeQuery(query));
+  if (store.hasSemantic) queryVec = await embedText(normalizeQuery(query));
 
   const r = store.retrieveForGroundingHybridDiag(query, queryVec, language, topK, 0.5, '');
   const semantic = !!queryVec && store.hasSemantic;
@@ -235,16 +205,22 @@ export async function retrieveForCard(
   }));
 
   // `lexicallyUnreachable` runs the spelling probe, so it is asked HERE, behind `lexEmpty`,
-  // rather than being returned by retrieval: the chat path shares that retrieval and never
-  // reads it. Retrieval used this language, so the probe must too.
-  const unreachable =
-    semantic && r.lexEmpty && store.lexicallyUnreachable(query, language);
+  // rather than being returned by retrieval — it is a card-routing question, not a retrieval
+  // result. Retrieval used this language, so the probe must too.
+  const unreachable = semantic && r.lexEmpty && store.lexicallyUnreachable(query, language);
   let outcome: CardOutcome = 'grounded';
   if (semantic && isOffDomain(r.topCos, unreachable)) outcome = 'offdomain';
   else if (semantic && r.lexEmpty) outcome = 'gap';
   else if (!hits.length) outcome = 'gap';
 
-  return { outcome, hits, topCos: r.topCos, lexEmpty: r.lexEmpty, semantic };
+  return {
+    outcome,
+    hits,
+    facts: r.hits.map((h) => h.fact),
+    topCos: r.topCos,
+    lexEmpty: r.lexEmpty,
+    semantic,
+  };
 }
 
 /** Eagerly warm the store (blob load) at server start so the first query isn't slow. */
