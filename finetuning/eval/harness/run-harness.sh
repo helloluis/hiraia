@@ -42,7 +42,7 @@ find_model() {  # $1 = filename; prefer this checkout, fall back to the primary 
 # what hiraia.org serves. It is a FULL-PARAMETER SFT — there is no adapter — so ADAPTER is
 # optional and empty by default. (--lora with no adapter file is what used to make this script
 # impossible to run against the new model at all.)
-MODEL="${MODEL:-$(find_model hiraia-sft-2b-Q4_K_M.gguf || true)}"
+MODEL="${MODEL:-$(find_model hiraia-sft-2b-v2.Q4_K_M.gguf || true)}"
 ADAPTER="${ADAPTER:-}"
 PORT="${PORT:-8088}"
 NGL="${NGL:-99}"
@@ -69,7 +69,7 @@ EMBED_MODEL="${EMBED_MODEL:-$(find_model labse.Q4_K_M.gguf || true)}"
 
 [ -x "$BIN" ] || { echo "ERR: llama-server not at $BIN (set BIN=)"; exit 2; }
 if [ -z "$MODEL" ] || [ ! -f "$MODEL" ]; then
-  echo "ERR: model GGUF not found (set MODEL=). Looked for hiraia-sft-2b-Q4_K_M.gguf under"
+  echo "ERR: model GGUF not found (set MODEL=). Looked for hiraia-sft-2b-v2.Q4_K_M.gguf under"
   echo "     $ROOT/deploy/models and $MAIN_ROOT/deploy/models"
   exit 2
 fi

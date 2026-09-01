@@ -57,7 +57,7 @@ const MODELS_BASE_URL = 'https://hiraia.b11.dev/models';
  *     curl -sO https://hiraia.b11.dev/models/<name>
  *     stat -f%z <name>; md5 -q <name>; shasum -a 256 <name>
  *
- *  hiraia-sft-2b-v1.Q4_K_M.gguf  1274396000 B
+ *  hiraia-sft-2b-v2.Q4_K_M.gguf  1274396160 B
  *      sha256 b13e66678be6718252c692cb765bbe1d6bafd69c11772a1d1e9c23ee6ce0cd89
  *  labse.Q4_K_M.gguf              383762048 B
  *      sha256 3869330197b5a583afc572104bf93393e384c72473a15c2dae43cab43e194b3e
@@ -75,10 +75,10 @@ const MODELS_BASE_URL = 'https://hiraia.b11.dev/models';
 export const REMOTE_ASSETS = {
   /** The base GGUF — the ~1.27 GB first-run download. FULL-parameter SFT (no LoRA). */
   base: {
-    url: `${MODELS_BASE_URL}/hiraia-sft-2b-v1.Q4_K_M.gguf`,
-    filename: 'hiraia-sft-2b-v1.Q4_K_M.gguf',
-    bytes: 1274396000,
-    md5: 'd6b3c97851be49b912fa25d0d6962133',
+    url: `${MODELS_BASE_URL}/hiraia-sft-2b-v2.Q4_K_M.gguf`,
+    filename: 'hiraia-sft-2b-v2.Q4_K_M.gguf',
+    bytes: 1274396160,
+    md5: 'fe2d0ab2ad856f2a42c5add5872c4234',
     label: 'Hiraia-2B base',
   },
   /** LaBSE embedder for the hybrid retriever (background download). */
@@ -170,7 +170,7 @@ export const ACTIVE_MODEL: OnDeviceModel = {
   // published on the mirror as hiraia-sft-2b-v1.
   params: '~2B',
   quant: 'Q4_K_M',
-  sizeGB: 1.27, // hiraia-sft-2b-v1.Q4_K_M.gguf, 1,274,396,000 B
+  sizeGB: 1.27, // hiraia-sft-2b-v2.Q4_K_M.gguf, 1,274,396,000 B
   ramGB: 1.4, // ~1.27 GB weights mmap'd + KV cache at ctx 4096
   minRamGB: 6,
   // 4096: the card prompt is ~500 tokens and every generation is single-turn

@@ -1,0 +1,68 @@
+{
+  "rows": 5893,
+  "perBucket": {
+    "safety-myth": 217,
+    "thin-escape": 231,
+    "abstain-name": 231,
+    "ceb-quality": 265,
+    "compress": 194,
+    "en-topup": 150,
+    "card-core": 4605
+  },
+  "perLang": {
+    "tagalog": 3025,
+    "english": 301,
+    "cebuano": 2567
+  },
+  "perGrade": {
+    "3": 504,
+    "4": 749,
+    "5": 1079,
+    "6": 1072,
+    "7": 945,
+    "8": 685,
+    "9": 524,
+    "10": 335
+  },
+  "lengthWords": {
+    "median": 19,
+    "p90": 24,
+    "p99": 28,
+    "max": 30,
+    "over28": 25,
+    "over30": 0
+  },
+  "safetyPolarity": {
+    "harmful-yes": 56,
+    "myth-no": 55,
+    "safe-no": 51,
+    "true-yes": 55,
+    "abstain:abstain": 161,
+    "abstain:name": 70,
+    "affirmCells": 111,
+    "denyCells": 106,
+    "perLanguage": {
+      "tagalog": {
+        "affirm": 55,
+        "deny": 50
+      },
+      "english": {
+        "affirm": 20,
+        "deny": 20
+      },
+      "cebuano": {
+        "affirm": 36,
+        "deny": 36
+      }
+    },
+    "note": "affirmCells vs denyCells must stay ~balanced PER LANGUAGE, not just in aggregate (the DPO one-sided-collapse guard; measured skew: ceb 19 affirm vs 32 deny before the per-(cell,lang) caps)"
+  },
+  "dupCards": {
+    "groupsOver1": 297,
+    "rowsInGroups": 642,
+    "maxCount": 3,
+    "cap": 3
+  },
+  "hardViolations": 0,
+  "violations": []
+}

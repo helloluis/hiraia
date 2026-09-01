@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 export LD_LIBRARY_PATH="/root/hiraia/deploy/llama.cpp/build/bin:${LD_LIBRARY_PATH:-}"
 exec /root/hiraia/deploy/llama.cpp/build/bin/llama-server \
-  -m /root/hiraia/deploy/models/hiraia-sft-2b-Q4_K_M.gguf \
+  -m /root/hiraia/deploy/models/hiraia-sft-2b-v2.Q4_K_M.gguf \
   --host 127.0.0.1 --port 8080 -c 4096 -ngl 0 -t 4 \
   -np 1 --cache-reuse 256
 # Model: the CPT'd + SFT'd Qwen3.5-2B (Cryptopop/hiraia-sft-flagship-2b, gguf/), which
