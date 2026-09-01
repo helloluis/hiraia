@@ -12,6 +12,7 @@ export {
   CARD_TEMP,
   CARD_MAX_CHARS,
   CARD_STOP,
+  CARD_MAX_TOKENS,
   CARD_REASONING_BUDGET,
 } from './cards.js';
 export type { CardPromptInput, CardPromptLanguage } from './cards.js';

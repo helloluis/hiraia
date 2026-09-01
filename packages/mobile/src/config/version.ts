@@ -2,10 +2,10 @@ import type { Language } from '@hiraia/shared';
 
 /**
  * Component versions surfaced in Settings. Each part of Hiraia ships and updates
- * INDEPENDENTLY — the on-device base model, the per-language fine-tuned adapters,
- * and the "Hiraiapedia" science databank — so we version them separately. This is
- * what lets us push piecemeal over-the-air updates later (e.g. a databank-only
- * refresh, or new adapters, without re-shipping the whole 3GB model). Bump the
+ * INDEPENDENTLY — the on-device base model and the "Hiraiapedia" science
+ * databank — so we version them separately. This is what lets us push piecemeal
+ * over-the-air updates later (e.g. a databank-only refresh, or a new model
+ * revision via a versioned filename, without re-shipping the APK). Bump the
  * relevant constant whenever that component changes.
  */
 
@@ -18,17 +18,21 @@ import type { Language } from '@hiraia/shared';
 export const HIRAIAPEDIA_VERSION = '1.1.0';
 
 /**
- * The per-language LoRA build applied on top of the base model. English runs through
- * the Tagalog adapter (no separate English LoRA). Bump when a new adapter ships.
+ * Per-language fine-tune, as shown in the Settings "Adapter" row. The shipping
+ * Hiraia-2B (hiraia-sft-2b-v1) is a FULL-PARAMETER SFT: Tagalog, Cebuano and
+ * English all live in the one set of weights, so there is no separate adapter
+ * artifact for any language — the row states that honestly instead of a LoRA
+ * version.
+ *
+ * History (Sailor2 line, retired 2026-09-01 — "we're not launching with
+ * Sailor2"): tagalog ran distill-sailor-3b-v11 ('v11 · intent + grounded +
+ * English-clean', md5 9730e560), cebuano 'v3 · beta', english rode the Tagalog
+ * adapter. Those v11 adapter files do not apply to the full-parameter 2B.
  */
-// distill-sailor-3b-v11 (r32, f16, md5 9730e560): v9plus + a 363-row English bucket that
-// fixes the English→Tagalog leak on chitchat/identity/off-topic + Taglish-contaminated
-// input (role-play QA 6→0 leaks); keeps v10's intent + grounding + multi-turn; gate green.
-// NOTE: [image:] emission still evaporates on the GGUF path (needs a conversion fix, not data).
-const TAGALOG_ADAPTER = 'v11 · intent + grounded + English-clean';
+const BUILT_IN = 'built-in · full-parameter SFT (hiraia-sft-2b v1)';
 
 export const ADAPTER_VERSION: Record<Language, string> = {
-  tagalog: TAGALOG_ADAPTER,
-  cebuano: 'v3 · beta',
-  english: '— (via Tagalog adapter)',
+  tagalog: BUILT_IN,
+  cebuano: BUILT_IN,
+  english: BUILT_IN,
 };

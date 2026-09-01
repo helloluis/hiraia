@@ -6,6 +6,7 @@ import {
   sanitizeCardAnswer,
   CARD_TEMP,
   CARD_STOP,
+  CARD_MAX_TOKENS,
   CARD_REASONING_BUDGET,
 } from '@hiraia/shared';
 
@@ -63,10 +64,11 @@ const MAX_GRADE = 10;
 const MAX_QUERY_CHARS = 300;
 
 /**
- * Ceiling on the generation. A card is capped at 30 words by the prompt and at
- * CARD_MAX_CHARS by the sanitizer, so this only bounds a runaway.
+ * Ceiling on the generation — @hiraia/shared CARD_MAX_TOKENS, the same runaway backstop the
+ * gate sends. A card is capped at 30 words by the prompt and at CARD_MAX_CHARS by the
+ * sanitizer, so this only bounds what a runaway can cost.
  */
-const MAX_TOKENS = 160;
+const MAX_TOKENS = CARD_MAX_TOKENS;
 
 /**
  * How long the visitor waits before we give them the honest gap card instead. The feed is
@@ -207,6 +209,10 @@ export async function POST(req: NextRequest) {
           stream: false,
           temperature: CARD_TEMP,
           max_tokens: MAX_TOKENS,
+          // undefined for the deployed adapter-free Hiraia-2B — JSON.stringify then OMITS
+          // the field, so the request never addresses adapter ids the server didn't load
+          // (a validating llama.cpp build 400s unknown ids, and a non-ok upstream here is
+          // a silent abstain). Returns a real scale array only for an adapter-ful model.
           lora: loraScalesFor(language),
           // A card is ONE paragraph. Both knobs are shared constants (@hiraia/shared
           // prompts/cards.ts) rather than literals, because the phone has to reach the SAME

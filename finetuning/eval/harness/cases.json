@@ -1,5 +1,5 @@
 {
- "_note": "BEHAVIORAL GATE for the SINGLE-TURN CARD WRITER. Every case runs the real card path: retrieveForCard-equivalent routing (context-free hybrid retrieval, topK 4, isOffDomain) -> buildCardPrompt (@hiraia/shared prompts/cards.ts) -> llama-server at CARD_TEMP with stop ['\\n\\n'] and chat_template_kwargs {enable_thinking:false} -> sanitizeCardAnswer. ZERO TOLERANCE: there is no 'pending' flag. A case is blocking or it is deleted.",
+ "_note": "BEHAVIORAL GATE for the SINGLE-TURN CARD WRITER. Every case runs the real card path: retrieveForCard-equivalent routing (context-free hybrid retrieval, topK 4, isOffDomain) -> buildCardPrompt (@hiraia/shared prompts/cards.ts) -> llama-server at CARD_TEMP with the shared CARD_STOP sequences and chat_template_kwargs {enable_thinking:false} -> sanitizeCardAnswer. ZERO TOLERANCE: there is no 'pending' flag. A case is blocking or it is deleted.",
  "_fields": {
   "id": "stable case id (also the CASES= substring filter)",
   "tier": "reporting group only",

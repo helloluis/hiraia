@@ -1,7 +1,7 @@
 /**
- * Download + VERIFY the large remote assets (the ~3.23 GB base GGUF, the 384 MB
- * LaBSE embedder, the two ~102 MB LoRA adapters) to local storage, so we can hand
- * QVAC a LOCAL path instead of a URL.
+ * Download + VERIFY the large remote assets (the ~1.27 GB base GGUF and the
+ * 384 MB LaBSE embedder — plus any per-language LoRA adapters a future model
+ * declares) to local storage, so we can hand QVAC a LOCAL path instead of a URL.
  *
  * WHY THIS FILE IS NOT JUST `fetch`
  * ---------------------------------
@@ -12,11 +12,11 @@
  *      page. A transparent proxy can truncate a response mid-stream. Both look
  *      like success to an HTTP client. The previous version of this file promoted
  *      any `status < 400` straight to the final path, so a 1 KB login page could
- *      be cached FOREVER as `Sailor2-3B-Chat.Q4_K_M.gguf` — a permanently bricked
+ *      be cached FOREVER as the base-model GGUF — a permanently bricked
  *      install whose only cure is an uninstall (release builds have no run-as).
  *      => Every byte we keep is now checked against a DECLARED size + MD5.
  *
- *   2. Re-downloading 3.23 GB because the bus went through a tunnel is real money
+ *   2. Re-downloading 1.27 GB because the bus went through a tunnel is real money
  *      to a family on prepaid data.
  *      => Transfers resume across app launches, from the exact byte they stopped,
  *         a failure that is not going to clear is never retried into another full
@@ -31,7 +31,7 @@
  *   • WRITE path (once per asset, ever): full size + MD5 over the freshly written
  *     `.part` before it is promoted. MD5 is computed NATIVELY and STREAMING
  *     (expo-file-system's `md5: true` -> DigestUtils.md5 over a FileInputStream),
- *     so a 3.23 GB file costs one disk read and constant memory — no 3 GB
+ *     so a 1.27 GB file costs one disk read and constant memory — no giant
  *     ArrayBuffer on the JS heap, which is why MD5 and not a JS SHA-256.
  *
  *   • READ path (every cold start): size only — a stat, ~0 ms.
@@ -73,7 +73,7 @@
  *   • DETERMINISTIC (a COMPLETE, correct-length body whose MD5 is wrong: the
  *     mirror's bytes are not the bytes we pinned) — repeating the identical
  *     request returns the identical bytes, so retrying it just spends another
- *     3.23 GB of a child's prepaid balance to fail again. Give up immediately.
+ *     1.27 GB of a child's prepaid balance to fail again. Give up immediately.
  *
  * ONE TRANSFER PER FILE
  * ---------------------
@@ -102,7 +102,7 @@ export interface RemoteAssetSpec {
   /** Remote URL — must serve the file directly (no redirects we need to chase). */
   url: string;
   /**
-   * Stable local filename. Version this (e.g. `-v11`) whenever the CONTENT
+   * Stable local filename. Version this (e.g. `-v1` → `-v2`) whenever the CONTENT
    * changes: the local cache keys on filename, so a new name is what pushes a
    * new revision to an already-installed app.
    */
@@ -144,11 +144,11 @@ const mb = (n: number) => `${(n / 1e6).toFixed(0)}MB`;
  * A COMPLETE transfer whose content does not match the pinned digest. Flagged so
  * the retry loop can tell it apart from a dropped socket: no number of identical
  * requests will turn the mirror's bytes into the bytes we pinned, so this must
- * not burn the retry budget (5 x 3.23 GB) on a child's prepaid data.
+ * not burn the retry budget (5 x 1.27 GB) on a child's prepaid data.
  *
  * A `fatal` PROPERTY rather than `instanceof`: subclassed Errors do not survive
  * every transpile/engine combination reliably, and a mis-detected fatal here
- * would silently restore the 16 GB behaviour.
+ * would silently restore the full-retry-budget (~6 GB) behaviour.
  */
 class IntegrityError extends Error {
   readonly fatal = true;
@@ -291,7 +291,7 @@ async function fetchAndVerify(
   // The `.part` is cleared ONLY alongside a rejected final file (a poisoned pair
   // usually arrives together). When there is no final file at all — the ordinary
   // first-run path — the `.part` is the cross-launch resume state and must
-  // survive, or an interrupted 3.23 GB transfer restarts from byte 0.
+  // survive, or an interrupted 1.27 GB transfer restarts from byte 0.
   // ---------------------------------------------------------------------------
   const existing = await statSize(finalUri);
   if (existing !== null) {
@@ -346,7 +346,7 @@ async function fetchAndVerify(
       // -----------------------------------------------------------------------
       onProgress?.(99);
       const size = await localSize(partUri);
-      // Size first: it is a stat, and hashing 3.23 GB costs a full disk read
+      // Size first: it is a stat, and hashing 1.27 GB costs a full disk read
       // (~20 s on the target device). Never pay that to reject a login page.
       const t0 = Date.now();
       const md5 = size === spec.bytes && spec.md5 ? await localMd5(partUri) : undefined;
@@ -362,7 +362,7 @@ async function fetchAndVerify(
         // declared matched `spec.bytes`) and then closed the body early — which
         // is precisely what a transparent proxy on school Wi-Fi does, and it
         // resolves as a clean 200 rather than throwing. Keeping those bytes is
-        // the difference between resuming the last 10% and re-spending 3.23 GB
+        // the difference between resuming the last 10% and re-spending 1.27 GB
         // on the metered link this file exists to protect.
         //
         // EVERYTHING else is deleted: a login page, a body of some other length,
@@ -387,7 +387,7 @@ async function fetchAndVerify(
         //
         // A COMPLETE body at exactly the declared length whose MD5 is wrong is
         // not a network glitch — the same request returns the same bytes, so
-        // the remaining attempts would spend 4 more full downloads (~13 GB for
+        // the remaining attempts would spend 4 more full downloads (~5 GB for
         // the base model) to fail identically. Stop now and say why.
         //
         // The single exception is a mismatch on a RESUMED transfer: there the

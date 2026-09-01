@@ -10,6 +10,12 @@ exec /root/hiraia/deploy/llama.cpp/build/bin/llama-server \
 #   would be meaningless at best. It is also 1.27 GB against 3.23 GB and a 2B rather than a
 #   3B, which matters on this box: -ngl 0, everything on CPU.
 #
+# packages/web/src/config/model.ts (MODEL_INFO / LANGUAGES / loraScalesFor) DESCRIBES this
+#   deployment — the demo route sends MODEL_INFO.serverModelId and omits `lora` because
+#   hasAdapters is false there. Change the model or add --lora lines here and that file must
+#   change in the SAME change-set, or the route starts addressing adapters that don't exist
+#   (they drifted once: d39c0a8be moved the VPS to the 2B while the web config kept Sailor2).
+#
 # ⚠️ Qwen3.5 is a THINKING model. A caller that does not send
 #   `chat_template_kwargs: {enable_thinking: false}` gets an EMPTY `content` with the answer
 #   stranded in `reasoning_content` — every generation silently reads as a failure. The web

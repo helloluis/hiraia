@@ -1,76 +1,69 @@
 /**
- * Single source of truth for the deployed model + adapters.
- * Drives the status bar (display stats) and the inference wiring
- * (server model id + per-language LoRA selection + system prompts).
+ * Single source of truth for the DEPLOYED model — what the VPS llama-server actually runs.
+ *
+ * KEEP IN LOCKSTEP WITH `deploy/run-llama-server.sh`: that script is the deployment this
+ * file describes, and the two must change in the same change-set. (They drifted once: the
+ * VPS moved to the adapter-free Hiraia-2B in d39c0a8be while this file kept describing
+ * Sailor2-3B and the route kept sending a `lora` array for adapters the server no longer
+ * loaded — harmless against llama.cpp b9430, which ignores unknown adapter ids, but a
+ * validating build would 400 every request and the route reads any non-ok upstream as a
+ * silent abstain.)
  */
 
 export const MODEL_INFO = {
-  /** Friendly name shown in the status bar. */
-  displayName: 'Sailor2-3B',
-  /** What the model has been adapted for (status bar subtitle). */
-  tagline: 'Fine-tuned with Filipino adapters · Bisaya coming soon',
+  /** Friendly display name. */
+  displayName: 'Hiraia-2B',
+  /** What the model is (subtitle). */
+  tagline: 'CPT + full-parameter SFT Qwen3.5-2B · Tagalog · Bisaya · English',
   /** Underlying base architecture. */
-  arch: 'Qwen2 / SEA-grounded',
-  /** Approx parameter count (Sailor2-3B is an expanded ~3.6B; f16 GGUF is 6.67 GiB). */
-  params: '~3.6B',
-  /** Deployment quantization (mradermacher build). */
+  arch: 'Qwen3.5 (CPT’d Filipino)',
+  /** Approx parameter count. */
+  params: '~2B',
+  /** Deployment quantization. */
   quant: 'Q4_K_M',
-  /** Base size on disk (GiB) — measured: 3.01 GiB file (~2.2 GB RAM at runtime, mmap'd). */
-  baseSizeGB: 3.0,
-  /** Each LoRA adapter size (MB) — measured: 101.8 MiB. */
-  adapterSizeMB: 102,
+  /** Base size on disk (GB) — measured: 1,274,396,000 bytes (hiraia-sft-2b-Q4_K_M.gguf). */
+  baseSizeGB: 1.27,
   /**
-   * Model id sent to the QVAC/llama.cpp server in the `model` field.
-   * Match this to however your server advertises the model (often the
-   * gguf filename stem). Most llama.cpp servers ignore/echo this, so the
-   * value that actually changes behavior is the per-request `lora` below.
+   * Model id sent to the llama.cpp server in the `model` field. Most llama.cpp servers
+   * ignore/echo this; kept truthful so logs read right.
    */
-  serverModelId: 'sailor2-3b-chat',
+  serverModelId: 'hiraia-sft-2b',
+  /**
+   * The Hiraia-2B is a FULL-PARAMETER SFT: no LoRA adapters exist for it (the v11
+   * Tagalog/Bisaya adapters belong to the retired Sailor2 line) and run-llama-server.sh
+   * loads none. `loraScalesFor` keys off this so the route omits the `lora` field entirely
+   * rather than addressing adapter ids the server never loaded.
+   */
+  hasAdapters: false,
 } as const;
 
 export type LanguageKey = 'english' | 'tagalog' | 'cebuano';
 
 /**
- * Per-language config. `loraId` is the index of the adapter as loaded by the
- * server, e.g. launching with:
- *   llama-server -m sailor2-3b-chat.gguf \
- *     --lora adapter-tagalog.gguf \   # -> id 0 (v2a: Tagalog + English)
- *     --lora adapter-bisaya.gguf      # -> id 1 (Bisaya)
- * English has no separate adapter — it RIDES the Tagalog (v2a) adapter, exactly as
- * the shipped APK does (measured better than the bare base; see mobile config/model.ts
- * "English rides the TAGALOG adapter"). So english.loraId = 0, not null.
+ * Per-language config. `loraId` is the index of the adapter as loaded by the server
+ * (`--lora` order). The deployed Hiraia-2B is adapter-free — every loraId is null, and the
+ * language lives in the CARD PROMPT (@hiraia/shared buildCardPrompt), not in routing to an
+ * adapter. The structure stays for any future adapter-ful deployment.
  */
 export const LANGUAGES: Record<LanguageKey, {
   label: string;
   adapterLabel: string;
   loraId: number | null;
-  system: string;
 }> = {
   english: {
     label: 'English',
-    adapterLabel: 'Tagalog (v2a) adapter',
-    loraId: 0,
-    system:
-      'You are Hiraia, a friendly science tutor for Filipino students (grades 3-10). ' +
-      'Explain concepts simply and correctly for the age, use the Socratic method, and ' +
-      'keep answers short (a few sentences). End with one guiding follow-up question.',
+    adapterLabel: 'full-parameter SFT (no adapter)',
+    loraId: null,
   },
   tagalog: {
     label: 'Tagalog',
-    adapterLabel: 'Tagalog adapter',
-    loraId: 0,
-    // Exact system prompt used during fine-tuning / eval.
-    system:
-      'Ikaw si Hiraia, isang AI tutor na tumutulong sa mga estudyanteng Pilipino na ' +
-      'matuto ng Science. Gumagamit ka ng Socratic method at natural na Tagalog.',
+    adapterLabel: 'full-parameter SFT (no adapter)',
+    loraId: null,
   },
   cebuano: {
     label: 'Cebuano (Bisaya)',
-    adapterLabel: 'Bisaya adapter (coming soon)',
-    loraId: 1,
-    system:
-      'Ikaw si Hiraia, usa ka AI tutor nga nagtabang sa mga estudyanteng Pilipino nga ' +
-      'makat-on og Science. Naggamit ka og Socratic method ug natural nga Bisaya.',
+    adapterLabel: 'full-parameter SFT (no adapter)',
+    loraId: null,
   },
 };
 
@@ -91,9 +84,15 @@ export const ALL_LORA_IDS: number[] = Object.values(LANGUAGES)
  * Build the full per-request `lora` scale array for a language: the selected
  * adapter at scale 1.0, every other loaded adapter explicitly at 0.0 (so a
  * server that loaded all adapters at default scale 1.0 doesn't stack them).
- * English (loraId null) yields all-zero -> base model.
+ *
+ * UNDEFINED — omit the field from the request entirely — when the deployed model declares
+ * no adapters (the full-parameter Hiraia-2B; `JSON.stringify` drops an undefined property).
+ * Addressing adapter ids the server never loaded is at best ignored (llama.cpp b9430,
+ * measured 200-with-a-normal-card) and at worst a 400 on a build that validates per-request
+ * ids — which the card route would read as a silent abstain on EVERY ask.
  */
-export function loraScalesFor(language: LanguageKey): Array<{ id: number; scale: number }> {
+export function loraScalesFor(language: LanguageKey): Array<{ id: number; scale: number }> | undefined {
+  if (!MODEL_INFO.hasAdapters || !ALL_LORA_IDS.length) return undefined;
   const active = LANGUAGES[language]?.loraId ?? null;
   return ALL_LORA_IDS.map((id) => ({ id, scale: id === active ? 1.0 : 0.0 }));
 }
@@ -155,7 +154,7 @@ export function detectLanguage(text: string, fallback: LanguageKey = 'tagalog'):
   return fallback;
 }
 
-/** Short, truthful stats string for the status bar. */
+/** Short, truthful stats string. */
 export const MODEL_STATS_LINE =
   `${MODEL_INFO.params} params · ${MODEL_INFO.quant} · ` +
-  `${MODEL_INFO.baseSizeGB} GB model + ${MODEL_INFO.adapterSizeMB} MB adapter`;
+  `${MODEL_INFO.baseSizeGB} GB model · full-parameter SFT (no adapters)`;

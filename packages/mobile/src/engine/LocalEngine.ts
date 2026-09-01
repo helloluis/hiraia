@@ -1,5 +1,6 @@
 import { loadModel, completion, unloadModel, embed, QWEN3_1_7B_INST_Q4 } from '@qvac/sdk';
 import { Asset } from 'expo-asset';
+import Constants from 'expo-constants';
 import { File } from 'expo-file-system';
 import {
   ACTIVE_MODEL,
@@ -16,6 +17,7 @@ import { FACT_IMAGE } from '../generated/factImage';
 import { artSourceFor } from '../data/artSource';
 import { openFactSource } from '../data/cardDb';
 import { cardSlugForFact } from '../data/factCardSlug';
+import { getSetting, setSetting } from '../db/repo';
 import { ensureRemoteAsset } from './modelDownload';
 import { withModelLock } from './modelLock';
 import type { AdapterLanguage } from '../config/model';
@@ -45,6 +47,7 @@ import {
   resolveIllustrationSlug,
   CARD_TEMP,
   CARD_STOP,
+  CARD_MAX_TOKENS,
   CARD_REASONING_BUDGET,
 } from '@hiraia/shared';
 
@@ -66,6 +69,109 @@ import {
 // (resolveFactImage → resolveIllustrationSlug). This floor exists only for the tag path.
 const IMAGE_TAG_FLOOR = 0.7;
 
+/**
+ * Runaway backstop for the one-shot reward line (generateReward) — phone-only, so it lives
+ * here rather than in @hiraia/shared: unlike the card request (three callers, one constant)
+ * nothing else sends this generation. The prompt asks for ≤20 words; at the worst measured
+ * ratio (2.33 tokens/word, gate draws 2026-09-01) that is ~47 tokens, so 80 binds only on a
+ * degenerate draw. Without it QVAC's effectivePredict is undefined = unlimited, and a
+ * runaway holds withModelLock at ~7 t/s on the SD685.
+ */
+const REWARD_MAX_TOKENS = 80;
+
+// ============================================================================
+// GPU→CPU LOAD FALLBACK — the Adreno-610 trap.
+// ============================================================================
+// ACTIVE_MODEL asks for full GPU/Vulkan offload (gpuLayers 99) because a working
+// GPU wins prefill, and prefill dominates TTFT. But on the Filipino budget
+// mainstream (measured 2026-09-01: Xiaomi SM6225 / Adreno 610, 7.8 GB RAM —
+// passes minRamGB 6) ggml-vulkan initialises and then the load dies with
+// MODEL_LOAD_FAILED (52200). Left alone, that device has a working zero-model
+// feed and a PERMANENTLY dead ask box.
+//
+// So the engine PROBES: try the configured GPU placement once; on a load failure,
+// retry ONCE with the CPU config (`device: 'cpu', gpu_layers: 0` — the exact
+// placement the retired kitten tier shipped with, so QVAC provably accepts it).
+// Deliberately probe-and-fall-back rather than pre-gating on GPU model strings:
+// allowlists rot, the probe is ground truth on the device in hand.
+//
+// WHAT CPU COSTS, PLAINLY: on SD685-class hardware a ~2B Q4_K_M runs ~11 t/s
+// prefill / ~7 t/s decode (measured on the Redmi), so a ~500-token card prompt
+// means TENS OF SECONDS of TTFT. That is the honest floor: a slow card beats a
+// dead ask box, and the feed (the home screen) never depends on the model at all.
+//
+// The verdict is PERSISTED (same settings table engineStore uses for language/
+// grade) so every later launch goes straight to CPU instead of failing the GPU
+// probe first. But a verdict is EVIDENCE, not a life sentence — the catch that
+// records it matches ANY load error, not just the measured 52200-after-vulkan-
+// init, so one TRANSIENT failure (momentary GPU memory pressure from a game, a
+// QVAC hiccup) on a Vulkan-capable phone must not pin it to tens-of-seconds
+// TTFT forever. So the verdict EXPIRES two ways:
+//   • APP VERSION: an app update (how a QVAC upgrade that fixes Vulkan would
+//     arrive) invalidates it and re-probes the GPU once.
+//   • AGE: after CPU_VERDICT_TTL_MS the GPU is re-probed regardless — an
+//     offline-first rural install may never see another APK, and if
+//     `Constants.expoConfig?.version` resolves null APP_VERSION is a stable
+//     'unknown' that no update ever changes, so version-keying alone could pin
+//     a device for its lifetime. The re-probe costs a genuinely CPU-only
+//     device one failed load every TTL; an eternal false pin costs every card.
+const CPU_FALLBACK_KEY = 'llmCpuFallback';
+const APP_VERSION: string = Constants.expoConfig?.version ?? 'unknown';
+/** How long a persisted CPU verdict is trusted before the GPU is probed again. */
+const CPU_VERDICT_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+/**
+ * True when this device has a LIVE CPU verdict: recorded by THIS app version, younger than
+ * the TTL. Anything else — no verdict, another version's, an expired one, a clock that went
+ * backwards past it, an unreadable value (including the legacy bare-version format, which
+ * carries no timestamp) — probes the GPU, the honest default.
+ */
+async function readCpuFallbackVerdict(): Promise<boolean> {
+  try {
+    const v = await getSetting(CPU_FALLBACK_KEY);
+    if (!v) return false;
+    let version = '';
+    let at = 0;
+    try {
+      const parsed = JSON.parse(v) as { version?: unknown; at?: unknown };
+      version = typeof parsed.version === 'string' ? parsed.version : '';
+      at = typeof parsed.at === 'number' ? parsed.at : 0;
+    } catch {
+      // Legacy format: the bare app-version string, no timestamp → age unknowable → expired.
+      version = v;
+    }
+    if (version !== APP_VERSION) {
+      console.log(
+        `[LocalEngine] CPU-fallback verdict was recorded by app ${version || '?'}, now ${APP_VERSION} — ` +
+          `re-probing the GPU (a QVAC/driver upgrade may have fixed Vulkan).`
+      );
+      return false;
+    }
+    const age = Date.now() - at;
+    if (age < 0 || age >= CPU_VERDICT_TTL_MS) {
+      console.log(
+        `[LocalEngine] CPU-fallback verdict is ${age < 0 ? 'from the future (clock reset)' : `${Math.round(age / 86_400_000)}d old`} — ` +
+          `re-probing the GPU (one failed load beats an eternal CPU pin from a transient failure).`
+      );
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.warn('[LocalEngine] could not read CPU-fallback verdict:', e);
+    return false; // no verdict → probe the GPU, the honest default
+  }
+}
+
+/** Record that on this app version, today, the model only loads on CPU. */
+async function persistCpuFallbackVerdict(): Promise<void> {
+  try {
+    await setSetting(CPU_FALLBACK_KEY, JSON.stringify({ version: APP_VERSION, at: Date.now() }));
+  } catch (e) {
+    // Non-fatal: the next launch just pays one failed GPU probe again.
+    console.warn('[LocalEngine] could not persist CPU-fallback verdict:', e);
+  }
+}
+
 // DOMAIN_IMAGE_CATEGORIES moved to @hiraia/shared (rag/images.ts) with the rest of the
 // illustration-selection contract: the web demo resolves the same picture for the same fact
 // through server/images.ts, and a second copy of the scoping table is exactly the kind of
@@ -73,8 +179,9 @@ const IMAGE_TAG_FLOOR = 0.7;
 
 /**
  * LocalEngine implementation using QVAC SDK.
- * Runs the configured Hiraia model (ACTIVE_MODEL — Sailor2-3B by default)
- * locally on-device for privacy and offline capability.
+ * Runs the configured Hiraia model (ACTIVE_MODEL — the Hiraia-2B, our CPT'd +
+ * full-parameter-SFT'd Qwen3.5-2B) locally on-device for privacy and offline
+ * capability.
  */
 export class LocalEngine implements TutorEngine {
   private modelId: string | null = null;
@@ -100,8 +207,15 @@ export class LocalEngine implements TutorEngine {
    * REMOTE_ASSETS) by the same gate as the base model — QVAC cannot fetch it for
    * us, `modelConfig.lora` is a bare string the llama.cpp plugin never resolves.
    *
-   * THE ADAPTER IS REQUIRED. A download or verification failure THROWS; it does
-   * not quietly return undefined.
+   * ABSENCE-BY-DESIGN vs DOWNLOAD FAILURE — two different things:
+   *
+   *   • `loraRemote` EMPTY (the shipping Hiraia-2B): the model is a
+   *     full-parameter SFT with no adapters AT ALL. Loading adapter-free is the
+   *     designed, correct path — return undefined quietly, no warning.
+   *   • A spec IS declared for the language but cannot be fetched/verified:
+   *     THE ADAPTER IS REQUIRED. A download or verification failure THROWS; it
+   *     does not quietly return undefined. (This is the Sailor2-line contract,
+   *     kept live for any future adapter-ful model.)
    *
    * That used to be a fallback: log a warning, load the base model anyway, "a
    * working tutor beats no tutor". It is the wrong trade here, for three reasons.
@@ -113,9 +227,9 @@ export class LocalEngine implements TutorEngine {
    *      A tutor that is confidently wrong in fluent Tagalog is a worse product
    *      than a tutor that is honestly unavailable.
    *   2. Failing HERE is nearly free, and failing later is not. This resolves
-   *      BEFORE the 3.23 GB base download starts (see initialize), so a missing
-   *      adapter costs a child on prepaid data ~0 MB instead of 3.23 GB spent on
-   *      a load we already know produces the degraded tutor.
+   *      BEFORE the multi-GB base download starts (see initialize), so a missing
+   *      adapter costs a child on prepaid data ~0 MB instead of the whole base
+   *      model spent on a load we already know produces the degraded tutor.
    *   3. It cannot be shipped by accident. A silent fallback looks like a working
    *      build on a device check; a thrown error does not.
    *
@@ -134,6 +248,15 @@ export class LocalEngine implements TutorEngine {
     onProgress?: (pct: number) => void,
     signal?: AbortSignal
   ): Promise<string | undefined> {
+    // ABSENCE BY DESIGN: a model that declares NO adapters at all (the
+    // full-parameter Hiraia-2B) loads adapter-free without complaint — this is
+    // its designed shape, not a degraded fallback, so no warning either.
+    if (Object.keys(ACTIVE_MODEL.loraRemote).length === 0) {
+      console.log(
+        `[LocalEngine] ${ACTIVE_MODEL.displayName} is a full-parameter fine-tune — no adapter, by design`
+      );
+      return undefined;
+    }
     // English routes through the TAGALOG adapter, not the base model: the
     // capability A/B (2026-06-11) scored the English probes 3.75/5 through the
     // tagalog adapter vs 1.78/5 on the raw base path — the SFT'd tutor behavior
@@ -177,24 +300,26 @@ export class LocalEngine implements TutorEngine {
       this.config = config;
       console.log(`Loading ${ACTIVE_MODEL.displayName} model...`);
 
-      // Two files have to land before the model can load: the ~102 MB adapter and
-      // the ~3.23 GB base GGUF. Both go through the verifying downloader. They
-      // share ONE 0–100 progress signal, split by their true relative size, so the
-      // bar never stalls at 0 during the adapter nor jumps backwards afterwards.
+      // Everything that must land before the model can load goes through the
+      // verifying downloader, sharing ONE 0–100 progress signal split by true
+      // relative size, so the bar never stalls at 0 nor jumps backwards.
       // (engineStore consumes this unchanged: >=100 still means "download done".)
-      const ADAPTER_BAND = 4; // ~102 MB of ~3.33 GB total ≈ 3%
+      // For the shipping Hiraia-2B that is ONE file — the ~1.27 GB base GGUF; the
+      // adapter band collapses to 0 because `loraRemote` is empty by design.
+      const ADAPTER_BAND = Object.keys(ACTIVE_MODEL.loraRemote).length ? 4 : 0;
       const band = (from: number, to: number) => (pct: number) =>
         onProgress?.(Math.round(from + ((to - from) * pct) / 100));
 
-      // Resolve the LoRA adapter for the active language (Filipino fine-tune;
-      // English rides the Tagalog adapter).
+      // Resolve the LoRA adapter for the active language — undefined (quietly)
+      // for the adapter-free Hiraia-2B.
       //
-      // ORDER IS LOAD-BEARING: the ~102 MB adapter is fetched and verified BEFORE
-      // the 3.23 GB base GGUF, and a failure throws (resolveAdapterPath). The
-      // adapter is what makes this a tutor rather than a fabulist, so a run that
-      // cannot have one is abandoned while it has cost the child ~102 MB of
-      // prepaid data instead of 3.33 GB. Do not "optimise" this by starting the
-      // base download first or in parallel.
+      // ORDER IS LOAD-BEARING for any adapter-ful model: the small adapter is
+      // fetched and verified BEFORE the base GGUF, and a failure throws
+      // (resolveAdapterPath). The adapter is what makes such a model a tutor
+      // rather than a fabulist, so a run that cannot have one is abandoned while
+      // it has cost the child ~100 MB of prepaid data instead of the full
+      // download. Do not "optimise" this by starting the base download first or
+      // in parallel.
       const loraPath = await this.resolveAdapterPath(config.language, band(0, ADAPTER_BAND));
 
       if (ACTIVE_MODEL.modelSrc) {
@@ -214,39 +339,74 @@ export class LocalEngine implements TutorEngine {
             ? await ensureRemoteAsset(ACTIVE_MODEL.remote, band(ADAPTER_BAND, 100))
             : ACTIVE_MODEL.modelSrc;
 
-        // Load the configured GGUF. `lora` applies the downloaded + verified
-        // Tagalog/Bisaya fine-tune. It is absent only when config/model.ts
-        // declares no adapter for this language at all — a failed adapter has
-        // already thrown above rather than reaching this point.
-        this.modelId = await loadModel({
-          modelSrc: src,
-          modelType: ACTIVE_MODEL.modelType,
-          modelConfig: {
-            ctx_size: ACTIVE_MODEL.ctxSize,
-            // Runtime placement lives with the model it was measured for
-            // (config/model.ts ACTIVE_MODEL.runtime): full GPU/Vulkan offload,
-            // gpuLayers 99. Prefill dominates TTFT and the GPU wins prefill on the
-            // target Adreno, so libqvac-ggml-vulkan.so must stay in the APK.
-            gpu_layers: ACTIVE_MODEL.runtime.gpuLayers,
-            // STOP SEQUENCE. A card is one paragraph, and the shipping model does not stop
-            // on its own: with nothing to stop it, it writes the correct card and then
-            // degenerates into repeated "**Pansin:** … **Paliwanag:** …" until the token
-            // cap. The server paths send this per-request as `stop`; QVAC has no per-request
-            // stop, so it is set once here for the model — `stop_sequences` is the SDK's
-            // field name for it (the llamacpp plugin renames it to the addon's
-            // `reverse_prompt`; passing THAT name straight through would be silently dropped
-            // by the load-model schema). Same shared constant the web route and the gate
-            // send (@hiraia/shared CARD_STOP) — the phone was the one path sending neither
-            // this nor the thinking-disable.
-            stop_sequences: [...CARD_STOP],
-            ...(loraPath ? { lora: loraPath } : {}),
-          },
-          onProgress: (p) => {
-            // Local-file load — no network. Log only; the bar already finished its
-            // download band via ensureRemoteAsset above.
-            console.log(`[LocalEngine] ${ACTIVE_MODEL.displayName} loading: ${Math.round(p.percentage ?? 0)}%`);
-          },
-        });
+        // Load the configured GGUF. `lora` applies a downloaded + verified
+        // adapter when the model declares one — absent for the full-parameter
+        // Hiraia-2B (absence-by-design); a failed adapter download has already
+        // thrown above rather than reaching this point.
+        //
+        // Placement is PROBE-AND-FALL-BACK (see the CPU-fallback block at the top
+        // of this file): GPU as configured, then ONE CPU retry on a load failure,
+        // with the verdict persisted per app version.
+        const loadWith = (placement: { gpu_layers: number; device?: 'cpu' }) =>
+          loadModel({
+            modelSrc: src,
+            modelType: ACTIVE_MODEL.modelType,
+            modelConfig: {
+              ctx_size: ACTIVE_MODEL.ctxSize,
+              ...placement,
+              // STOP SEQUENCE. A card is one paragraph, and the shipping model does not stop
+              // on its own: with nothing to stop it, it writes the correct card and then
+              // degenerates into repeated "**Pansin:** … **Paliwanag:** …" until the token
+              // cap. The server paths send this per-request as `stop`; QVAC has no per-request
+              // stop, so it is set once here for the model — `stop_sequences` is the SDK's
+              // field name for it (the llamacpp plugin renames it to the addon's
+              // `reverse_prompt`; passing THAT name straight through would be silently dropped
+              // by the load-model schema). Same shared constant the web route and the gate
+              // send (@hiraia/shared CARD_STOP) — the phone was the one path sending neither
+              // this nor the thinking-disable.
+              stop_sequences: [...CARD_STOP],
+              ...(loraPath ? { lora: loraPath } : {}),
+            },
+            onProgress: (p) => {
+              // Local-file load — no network. Log only; the bar already finished its
+              // download band via ensureRemoteAsset above.
+              console.log(`[LocalEngine] ${ACTIVE_MODEL.displayName} loading: ${Math.round(p.percentage ?? 0)}%`);
+            },
+          });
+
+        const cpuVerdict = await readCpuFallbackVerdict();
+        const gpuLayers = cpuVerdict ? 0 : ACTIVE_MODEL.runtime.gpuLayers;
+        if (cpuVerdict) {
+          console.log(
+            `[LocalEngine] persisted CPU-fallback verdict (app ${APP_VERSION}) — ` +
+              `loading on CPU directly, skipping the GPU probe this device already failed`
+          );
+        }
+        try {
+          this.modelId = await loadWith(
+            cpuVerdict ? { gpu_layers: 0, device: 'cpu' } : { gpu_layers: gpuLayers }
+          );
+        } catch (e) {
+          // THE ADRENO-610 TRAP. gpuLayers>0 asked for the GPU and the load died
+          // (MODEL_LOAD_FAILED 52200 on the measured SM6225). Retry ONCE on CPU —
+          // slow (tens of seconds of TTFT on SD685-class hardware) but ALIVE,
+          // which beats a permanently dead ask box. A load that fails for a
+          // non-GPU reason fails the CPU retry too and surfaces as before.
+          if (cpuVerdict || gpuLayers <= 0) throw e;
+          console.error(
+            `[LocalEngine] GPU LOAD FAILED (gpu_layers ${gpuLayers}) — ` +
+              `${e instanceof Error ? e.message : String(e)}. ` +
+              `RETRYING ONCE on CPU (device:'cpu', gpu_layers:0).`
+          );
+          this.modelId = await loadWith({ gpu_layers: 0, device: 'cpu' });
+          console.error(
+            `[LocalEngine] CPU FALLBACK SUCCEEDED — this device cannot run the GPU path. ` +
+              `Persisting the verdict for app ${APP_VERSION}; later launches load straight ` +
+              `on CPU (an app update or the ${Math.round(CPU_VERDICT_TTL_MS / 86_400_000)}-day ` +
+              `TTL re-probes the GPU once).`
+          );
+          await persistCpuFallbackVerdict();
+        }
       } else {
         // No source configured — load a stock SDK model as a placeholder so the
         // app still runs.
@@ -451,6 +611,12 @@ export class LocalEngine implements TutorEngine {
       generationParams: {
         temp: 0.7, // warmth/variety — this is prose, not a fact
         reasoning_budget: CARD_REASONING_BUDGET, // same thinking-model trap as the card path
+        // Runaway backstop. QVAC's effectivePredict is `generationParams.predict ??
+        // modelCfg.predict` and the model config sets none — without this a degenerate draw
+        // decodes UNBOUNDED at ~7 t/s on the SD685, holding the model lock. The line is
+        // asked for ≤20 words (worst measured ratio 2.33 tok/word → ~47 tokens), so 80
+        // bounds only a failure, never a legitimate reward line.
+        predict: REWARD_MAX_TOKENS,
       },
     });
     let out = '';
@@ -551,6 +717,14 @@ export class LocalEngine implements TutorEngine {
           // `chat_template_kwargs: { enable_thinking: false }`; QVAC's transport for it is
           // this numeric budget (0 = off). Shared constant so the two cannot drift.
           reasoning_budget: CARD_REASONING_BUDGET,
+          // The RUNAWAY BACKSTOP (@hiraia/shared CARD_MAX_TOKENS) — the same cap the web
+          // route and the gate send. The phone is the SLOWEST transport (~7 t/s decode on
+          // the SD685) and was the only caller not sending it: QVAC's effectivePredict is
+          // `generationParams.predict ?? modelCfg.predict`, both undefined, i.e. UNLIMITED —
+          // a draw that never hits a CARD_STOP entry would decode until the 4096 context
+          // filled (~8 minutes under withModelLock, a frozen ask box). CARD_STOP ends every
+          // measured degeneration class; this bounds the unmeasured one.
+          predict: CARD_MAX_TOKENS,
         },
       });
       let acc = '';

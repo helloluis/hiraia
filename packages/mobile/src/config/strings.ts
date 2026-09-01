@@ -2,7 +2,7 @@ import type { Language } from '@hiraia/shared';
 
 /**
  * UI chrome strings that must follow the active TUTOR language (the model output is
- * already localized by the adapter; this is the app's own text — the sidebar, the loader,
+ * already localized by the model itself — one full-parameter fine-tune serves all three languages; this is the app's own text — the sidebar, the loader,
  * and the card feed's own chrome). Tagalog is the default/fallback.
  * Cebuano is "coming soon" but kept native so a beta switch reads correctly.
  *

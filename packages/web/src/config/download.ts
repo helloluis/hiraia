@@ -1,7 +1,8 @@
 /**
  * Hiraia Android APK — single source of truth for the landing-page download.
  *
- * One APK, one on-device model (Sailor2-3B), one device target: Android 12+ with
+ * One APK, one on-device model (Hiraia-2B — the CPT'd + full-parameter-SFT'd
+ * Qwen3.5-2B, hiraia-sft-2b-v1), one device target: Android 12+ with
  * 6 GB+ RAM. There is no lighter build — the 1B/4 GB "kitten" tier is retired, so the
  * requirement below is a REQUIREMENT, not a recommendation.
  *
@@ -17,8 +18,12 @@
  */
 
 export const DOWNLOAD = {
-  /** Flip to true once the APK URL + sha256 are real. */
-  released: true,
+  /**
+   * FALSE by decision (Luis, 2026-09-01): "we're not launching with Sailor2" — the download
+   * stays 'coming soon' until the CPT'd Qwen3.5-2B APK passes its gates. Do not flip this for
+   * the June v0.1 build; when the new APK ships, update url/fileSizeMB/sha256 together.
+   */
+  released: false,
 
   version: '0.1',
 
@@ -37,10 +42,12 @@ export const DOWNLOAD = {
   minRamGB: 6,
   /**
    * First-run download, in GB: the base model plus the semantic embedder. Both are
-   * fetched from the mirror on first launch (nothing else is — adapters and art are in
-   * the APK). Keep in step with packages/mobile/src/config/model.ts:
-   * ACTIVE_MODEL.sizeGB (3.23, Sailor2-3B Q4_K_M) + EMBEDDER labse.Q4_K_M.gguf (~0.38).
-   * A user on a capped mobile plan budgets against this number, so round UP, never down.
+   * fetched from the mirror on first launch (nothing else is — art is in the APK, and
+   * the full-parameter Hiraia-2B has no adapters). Keep in step with
+   * packages/mobile/src/config/model.ts:
+   * ACTIVE_MODEL.sizeGB (1.27, hiraia-sft-2b-v1 Q4_K_M) + EMBEDDER labse.Q4_K_M.gguf
+   * (~0.38). A user on a capped mobile plan budgets against this number, so round UP,
+   * never down.
    */
-  modelDownloadGB: 3.6,
+  modelDownloadGB: 1.7,
 } as const;

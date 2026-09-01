@@ -29,7 +29,7 @@
 //     node_modules/.bin/tsx run-eval.mts
 //
 // Env: SAMPLES (default 3), TEMP (default CARD_TEMP), CASES (substring id filter),
-//      MAX_TOKENS (default 160, the web route's), LORA_SCALE (send a `lora` array),
+//      MAX_TOKENS (default CARD_MAX_TOKENS, the web route's), LORA_SCALE (send a `lora` array),
 //      JSON_OUT (dump the full run for a diff against the next one).
 // ============================================================================
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
@@ -48,6 +48,7 @@ import {
   sanitizeCardAnswer,
   CARD_TEMP,
   CARD_STOP,
+  CARD_MAX_TOKENS,
   CARD_REASONING_BUDGET,
 } from '../../../packages/shared/src/prompts/cards.ts';
 import {
@@ -66,8 +67,9 @@ const ENDPOINT = process.env.ENDPOINT ?? 'http://localhost:8088';
 const EMBED_ENDPOINT = process.env.EMBED_ENDPOINT ?? 'http://localhost:8090';
 const TEMP = Number(process.env.TEMP ?? String(CARD_TEMP));
 const SAMPLES = Math.max(1, Number(process.env.SAMPLES ?? '3'));
-/** The web route's ceiling. It only bounds a runaway — the prompt caps the card at 30 words. */
-const MAX_TOKENS = Number(process.env.MAX_TOKENS ?? '160');
+/** The product's runaway backstop (@hiraia/shared CARD_MAX_TOKENS — the web route sends the
+ * same constant). It only bounds a runaway — the prompt caps the card at 30 words. */
+const MAX_TOKENS = Number(process.env.MAX_TOKENS ?? String(CARD_MAX_TOKENS));
 /** Retrieval width for a card. LocalEngine.answerQuery and retrieveForCard both use 4. */
 const CARD_TOPK = 4;
 const CASE_FILTER = (process.env.CASES ?? '').split(',').map((s) => s.trim()).filter(Boolean);
@@ -308,6 +310,14 @@ interface Report {
   cards: (string | null)[];
   distinct: number;
   words: number[];
+  /**
+   * Word count of each RAW `content`, before `sanitizeCardAnswer`'s trim. The printed ceiling
+   * is enforced by the product trim now, so `words` alone can no longer see the model
+   * over-writing — a model that drifts from ~40-word to ~60-word raw draws prints identical
+   * cards while burning the difference in tokens on a ~7 t/s phone. Reported, not asserted:
+   * CARD_MAX_TOKENS is the runaway bound, this is the drift dial to watch.
+   */
+  rawWords: number[];
   fails: string[];
 }
 
@@ -366,6 +376,7 @@ for (const c of cases) {
   //    which is the whole reason they cannot hallucinate.
   const cards: (string | null)[] = [];
   const words: number[] = [];
+  const rawWords: number[] = [];
   const nSamples = c.samples ?? SAMPLES;
   if (expectOutcome === 'grounded' && r.outcome === 'grounded' && !c.skipGeneration) {
     const instruction = buildCardPrompt({ query: c.query, facts: r.facts, grade: c.grade, language: c.lang });
@@ -373,6 +384,7 @@ for (const c of cases) {
       const draw = await printCard(instruction);
       cards.push(draw.card);
       if (draw.card) words.push(wordCount(draw.card));
+      if (draw.content.trim()) rawWords.push(wordCount(draw.content));
       const f = assertCard(c, draw, c.grade, r.facts);
       // Report a failing draw once, tagged with which sample it was — a case that fails 1 of 3
       // is a case a child hits one time in three.
@@ -387,6 +399,7 @@ for (const c of cases) {
       );
       cards.push(pairDraw.card);
       if (pairDraw.card) words.push(wordCount(pairDraw.card));
+      if (pairDraw.content.trim()) rawWords.push(wordCount(pairDraw.content));
       fails.push(...assertCard(c, pairDraw, other, r.facts));
       const base = cards[0];
       if (base && pairDraw.card) {
@@ -412,7 +425,7 @@ for (const c of cases) {
   reports.push({
     id: c.id, tier: c.tier, lang: c.lang, outcome: r.outcome, expectOutcome,
     topCos: r.topCos, lexEmpty: r.lexEmpty, unreachable: r.unreachable,
-    retrieved: r.ids, cards, distinct, words, fails,
+    retrieved: r.ids, cards, distinct, words, rawWords, fails,
   });
 
   const shape = expectOutcome === 'grounded' ? '' : `  → ${r.outcome} card (model-free)`;
@@ -440,6 +453,21 @@ if (allWords.length) {
     `cards: ${allWords.length} drawn, median ${median} words, max ${sorted[sorted.length - 1]}, ` +
       `${over} over the 30-word ceiling`
   );
+  // The RAW draw lengths, before the product trim. The printed ceiling above is enforced by
+  // `sanitizeCardAnswer`, so it can no longer reveal the MODEL over-writing — this line is
+  // the release-over-release drift dial for that (every raw word is ~2.3 tokens ≈ 150 ms of
+  // veil on the phone). Reported, not asserted: verbose-but-well-formed draws are cards the
+  // trim saves by design (see CARD_MAX_TOKENS's note rejecting the tighter 96 cap).
+  const allRaw = grounded.flatMap((r) => r.rawWords);
+  if (allRaw.length) {
+    const rSorted = [...allRaw].sort((a, b) => a - b);
+    const rMedian = rSorted[Math.floor(rSorted.length / 2)];
+    const rOver = allRaw.filter((w) => w > 30).length;
+    console.log(
+      `raw draws (pre-trim): median ${rMedian} words, max ${rSorted[rSorted.length - 1]}, ` +
+        `${rOver}/${allRaw.length} over 30 — the trim, not the model, holds the printed ceiling`
+    );
+  }
   const varied = grounded.filter((r) => r.distinct > 1).length;
   console.log(
     `variance @ temp ${TEMP}: ${varied}/${grounded.length} cases printed a different card across draws ` +

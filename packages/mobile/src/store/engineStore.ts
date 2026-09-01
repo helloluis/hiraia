@@ -26,9 +26,9 @@ interface EngineState {
   /** Model warm-up progress 0–100, driven into the LoaderOverlay. */
   loadingProgress: number;
   /** Which init phase the bar is currently reflecting, so the loader can show
-   *  honest copy: 'downloading' = the one-time 3 GB base-model fetch (first run
-   *  only); 'warming' = load-into-RAM + the warm-up prefill (every cold start);
-   *  'ready' = done; 'idle' = not loading. */
+   *  honest copy: 'downloading' = the one-time ~1.27 GB base-model fetch (first
+   *  run only); 'warming' = load-into-RAM + the warm-up prefill (every cold
+   *  start); 'ready' = done; 'idle' = not loading. */
   loadingPhase: LoadingPhase;
   /** Whether the onboarding carousel is showing. True on first launch (no saved
    *  language) and whenever Settings → "show tutorial" re-triggers it. */
@@ -37,19 +37,22 @@ interface EngineState {
   /** Read the saved language and, if present, load the engine for it. */
   bootstrap: () => Promise<void>;
   /** Persist + (re)load the engine for a language. Used by the first-launch
-   *  picker and the Settings selector. Reloads the model (adapter swap). */
+   *  picker and the Settings selector. Reloads the engine (one model serves every
+   *  language — no adapter swap — but the RAG scope + prompts re-key on it). */
   changeLanguage: (language: Language) => Promise<void>;
-  /** Persist + apply a grade. Cheap — no model reload (the adapter is per-language, not
-   *  per-grade); a ready engine just re-primes its system-prompt KV cache in place. */
+  /** Persist + apply a grade. Cheap — no model reload (grade only pitches the
+   *  card prompt); a ready engine just takes the config write in place. */
   changeGrade: (grade: GradeLevel) => Promise<void>;
   shutdown: () => Promise<void>;
 }
 
 function buildConfig(language: Language, gradeLevel: GradeLevel): TutorConfig {
   return {
-    // Selects the downloaded LoRA adapter (TL, or BIS; EN rides the TL one) and scopes RAG.
-    // The adapter is REQUIRED — if it cannot be fetched and verified LocalEngine throws
-    // rather than quietly running the raw base model, and that surfaces as `error` below.
+    // Scopes RAG + the card prompts. The shipping Hiraia-2B is a FULL-PARAMETER
+    // SFT (loraRemote empty by design): all three languages live in one set of
+    // weights and no adapter is fetched. For a future adapter-ful model the old
+    // contract still holds — a declared adapter that cannot be fetched and
+    // verified makes LocalEngine throw, surfacing as `error` below.
     language,
     gradeLevel, // the student's grade — LocalEngine pitches its prompts at it (see warmUp)
     modelConfig: {
@@ -73,12 +76,12 @@ function buildConfig(language: Language, gradeLevel: GradeLevel): TutorConfig {
  * `LocalEngine.initialize` alongside the first, with nothing cancelling either. That is not
  * merely wasteful:
  *
- *   • Both fetch the same files. English rides the TAGALOG adapter, so an English pick
- *     during a Tagalog load resolves to the IDENTICAL `.part` path, and two append-mode
- *     writers on one file interleave into bytes that fail the MD5 gate — up to ~1 GB of a
- *     prepaid balance spent to end with no tutor. (`ensureRemoteAsset` now refuses to run
- *     two transfers of one file, which contains that damage; the second engine is still
- *     pointless work.)
+ *   • Both fetch the same files. Every language loads the SAME base GGUF (one model, no
+ *     per-language adapters), so two racing loads resolve to the IDENTICAL `.part` path,
+ *     and two append-mode writers on one file interleave into bytes that fail the MD5
+ *     gate — up to ~1 GB of a prepaid balance spent to end with no tutor.
+ *     (`ensureRemoteAsset` now refuses to run two transfers of one file, which contains
+ *     that damage; the second engine is still pointless work.)
  *   • Whichever `loadModel` loses is rejected by SDK 0.17.1 with MODEL_LOAD_FAILED (52200)
  *     "Model with ID … is already registered", which leaves the engine uninitialised and
  *     the tutor dead for the WHOLE session.
@@ -121,9 +124,9 @@ async function loadEngineFor(language: Language): Promise<void> {
     // Progress is NOT one linear signal — init has two very differently-sized phases,
     // and only the first is observable:
     //   • DOWNLOAD (first run only): loadModel's onProgress streams 1→99 as QVAC fetches
-    //     the ~3 GB base GGUF over the network — minutes, and directly observable. On a
+    //     the ~1.27 GB base GGUF over the network — minutes, and directly observable. On a
     //     cached run there are no bytes to fetch, so onProgress jumps straight to 100.
-    //   • WARM-UP tail (every cold start): loading ~2 GB into RAM + the warm-up prefill.
+    //   • WARM-UP tail (every cold start): loading ~1.3 GB into RAM + the warm-up prefill.
     //     Tens of seconds, and emits NO granular signal — only a time estimate.
     // (The LaBSE embedder downloads in the background via initSemantic() and is NOT
     //  awaited, so it's correctly excluded from this bar.)
@@ -138,7 +141,7 @@ async function loadEngineFor(language: Language): Promise<void> {
     // Correctness is still guaranteed by gating the loader's final dismiss on isReady
     // (LoaderOverlay holds the last exit frame if the warm-up estimate runs short).
     const EXPECTED_WARMUP_MS = 45000; // load-into-RAM + warm-up prefill on the target device
-    const DL_CEIL = 90; // a streaming 3 GB download fills the bar up to here
+    const DL_CEIL = 90; // a streaming ~1.3 GB download fills the bar up to here
     const WAKE_AT = 97; // matches the LoaderOverlay wake gate
     const TAIL_CEIL = WAKE_AT - 1; // 96 — approach but never reach the wake gate on the timer
     const startedAt = Date.now();
@@ -155,7 +158,7 @@ async function loadEngineFor(language: Language): Promise<void> {
       let phase: LoadingPhase;
       if (!downloadDone) {
         // Still fetching (or waiting to learn the phase). CRUCIAL: never run the warm-up
-        // TIME estimate here — that's what used to race ahead of a slow 3 GB download.
+        // TIME estimate here — that's what used to race ahead of a slow multi-GB download.
         // Track real bytes once we have a signal; before the first signal, just creep so
         // the bar can't get ahead of an unknown download.
         phase = 'downloading';
@@ -268,7 +271,7 @@ export const useEngineStore = create<EngineState>((set, get) => ({
     // covering the app for ~98s of warm-up was dead air) — but removing the COVER without
     // removing the LOAD just hid the cost: the load still ran at boot and still contended
     // for the JS thread, so swipes stalled for seconds while the app looked idle and
-    // usable. Loading ~2 GB on four budget cores is not "background" on this device.
+    // usable. Loading ~1.3 GB on four budget cores is not "background" on this device.
     //
     // The engine is now loaded only when something actually needs it:
     //   - the feed's search field, on tap (cardStore.warmModel)
@@ -314,8 +317,8 @@ export const useEngineStore = create<EngineState>((set, get) => ({
     const changed = get().grade !== grade;
     set({ grade });
     if (!changed) return;
-    // Unlike a language change this needs NO model reload — the LoRA adapter is per-language,
-    // not per-grade — and, since the deleted chat surface took the grade-bearing system prompt
+    // Unlike a language change this needs NO model reload — the grade never touches the
+    // weights — and, since the deleted chat surface took the grade-bearing system prompt
     // with it, no re-prefill either. The grade now reaches the model only through the card
     // prompt `answerQuery` builds per query, so LocalEngine.setGrade is a config write: no
     // completion, no model lock, nothing for a rapid tap to queue behind. (It used to re-run

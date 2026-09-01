@@ -232,11 +232,14 @@ export function languageLeaks(text: string, lang: CardLanguage): string[] {
 /* ------------------------------------------------------------------------------------------
  * RAW-GENERATION DEFECTS — asserted on the model's `content` BEFORE `sanitizeCardAnswer`.
  *
- * The product sanitizer now removes two habits of the shipping model that used to print as
- * literal text on the card: a leaked reasoning tag (`</think>`) and an `[image: …]` control
- * token. Defending the child is right, but a sanitizer that silently absorbs a regression is a
- * gate that goes green on a model that got worse. So these are asserted on the RAW string —
- * the sanitizer's job is the card, this function's job is the MODEL.
+ * The product sanitizer now removes three habits of the shipping model that used to print as
+ * literal text on the card: a leaked reasoning tag (`</think>`), an `[image: …]` control
+ * token, and inline markdown (bold/backticks, unwrapped in place). Defending the child is
+ * right, but a sanitizer that silently absorbs a regression is a gate that goes green on a
+ * model that got worse. So these are asserted on the RAW string — the sanitizer's job is the
+ * card, this function's job is the MODEL. (Before the sanitizer unwrapped markdown, inline
+ * `**` was 3 of the baseline's 7 scaffolding failures; without the check here that entire
+ * defect class — and its wasted tokens on a ~7 t/s phone — would ship invisibly.)
  * ---------------------------------------------------------------------------------------- */
 export function rawGenerationDefects(raw: string): string[] {
   const v: string[] = [];
@@ -250,6 +253,12 @@ export function rawGenerationDefects(raw: string): string[] {
     v.push(
       'generation: [image:] control token emitted — illustration is retrieval’s job on the ' +
         'card path, nothing resolves the tag (sanitizeCardAnswer strips it)'
+    );
+  // One backtick covers a fence run too; `**` covers bold pairs and orphans alike.
+  if (/\*\*|`/.test(t))
+    v.push(
+      'generation: inline markdown (bold/backticks) emitted — ResponseCard renders a plain ' +
+        '<Text>, markup is never legitimate card text (sanitizeCardAnswer unwraps it)'
     );
   return v;
 }

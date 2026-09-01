@@ -1,32 +1,36 @@
 /**
  * On-device model configuration (single source of truth for the mobile build).
  *
- * ONE device target (2026-08-29): the **Sailor2-3B**, full GPU/Vulkan offload,
- * on a phone with **6 GB+ RAM** — the norm on a 2025-class budget handset, even
- * sub-₱10k. The second "kitten" tier (Sailor2-1B, CPU-only, 4 GB devices) has
- * been RETIRED: it needed its own adapter, its own native-library configuration
- * and its own APK, and the 1B could not carry the safety/myth behaviour the
- * tutor has to get right (see `finetuning/eval/` and the kitten findings — the
- * experiment is kept there as a record, it just no longer ships).
+ * ONE device target (2026-09-01): **Hiraia-2B** — our CPT'd + SFT'd Qwen3.5-2B
+ * ("we're not launching with Sailor2", Luis 2026-09-01) — on a phone with
+ * **6 GB+ RAM**, the norm on a 2025-class budget handset, even sub-₱10k. It is a
+ * FULL-PARAMETER SFT: there are NO LoRA adapters in this line — Tagalog, Cebuano
+ * and English all live in the one set of weights. (The Sailor2-3B + v11-adapter
+ * line, and before it the "kitten" Sailor2-1B tier, are retired — kept in
+ * `finetuning/eval/` and git history as a record, they just no longer ship.)
+ *
+ * Qwen3.5 is a THINKING model: generation MUST send the shared
+ * CARD_REASONING_BUDGET (0 = channel off) and CARD_STOP, or content comes back
+ * empty / runs away — see @hiraia/shared prompts/cards.ts and LocalEngine.
  *
  * The model leans on the on-device RAG bank for the specifics no model can know
  * (exact values, PH/DepEd curriculum framing, Hiraia self-knowledge).
  *
- * Mirrors the web demo's MODEL_INFO (packages/web/src/config/model.ts), which
- * already runs Sailor2-3B + the Tagalog/Bisaya LoRA adapters server-side.
+ * The web demo's MODEL_INFO (packages/web/src/config/model.ts) still describes
+ * the VPS demo deployment (Sailor2-3B + adapters, server-side) — it is a
+ * separate deployment and does not gate this build.
  */
 
 import type { RemoteAssetSpec } from '../engine/modelDownload';
 
-// SELF-HOSTED MODEL MIRROR. HuggingFace migrated large GGUFs to its "Xet" CDN
-// (302 → cas-bridge.xethub.hf.co), which QVAC's downloader can't finish — it
-// reproducibly dies at ~85%. So instead of downloading from HF, we serve the GGUFs
-// from our own nginx (a plain static file with byte-range support, which QVAC
-// downloads + caches on first run, then loads from cache offline). It is a
-// VERIFIABLE MIRROR of the PUBLIC base model — inference stays 100% on-device, so
-// the privacy story is intact. Files live at /var/www/hiraia-models on the VPS,
-// served at https://hiraia.b11.dev/models/. Recheck HF/Xet ~2026-06-21 (if fixed,
-// switch back to the HF URL and retire the mirror — see hiraia-hf-xet-recheck).
+// SELF-HOSTED MODEL HOST. Originally a workaround (HuggingFace's "Xet" CDN broke
+// QVAC's downloader at ~85% — see hiraia-hf-xet-recheck), now simply where our
+// OWN model lives: the Hiraia-2B GGUF is our fine-tune, published on our nginx
+// (a plain static file with byte-range support + Accept-Ranges, downloaded +
+// verified + cached on first run, then loaded from cache offline). Inference
+// stays 100% on-device, so the privacy story is intact. Files live at
+// /var/www/hiraia-models on the VPS, served at https://hiraia.b11.dev/models/.
+// The LaBSE embedder row is still a verifiable mirror of the public model.
 const MODELS_BASE_URL = 'https://hiraia.b11.dev/models';
 
 /**
@@ -41,38 +45,41 @@ const MODELS_BASE_URL = 'https://hiraia.b11.dev/models';
  * fixed by uninstalling the app.
  *
  * MD5, not SHA-256, for one concrete reason: expo-file-system computes MD5
- * NATIVELY and STREAMING (DigestUtils over a FileInputStream), so hashing 3.23 GB
- * costs one disk read and constant memory. There is no streaming SHA-256 reachable
- * from the JS thread — `expo-crypto` is not installed and its API takes a string,
- * which a 3.23 GB file cannot be. SHA-256 is recorded alongside anyway so the
- * values can be re-verified off-device.
+ * NATIVELY and STREAMING (DigestUtils over a FileInputStream), so hashing a
+ * multi-GB file costs one disk read and constant memory. There is no streaming
+ * SHA-256 reachable from the JS thread — `expo-crypto` is not installed and its
+ * API takes a string, which a 1.27 GB file cannot be. SHA-256 is recorded
+ * alongside anyway so the values can be re-verified off-device.
  *
  * The SHA-256 column below is the same digest published for these files; MD5 was
- * measured from the exact bytes the mirror serves. To re-derive any row:
+ * measured from the exact bytes the mirror serves (and matches the server-side
+ * md5sum byte-for-byte). To re-derive any row:
  *     curl -sO https://hiraia.b11.dev/models/<name>
  *     stat -f%z <name>; md5 -q <name>; shasum -a 256 <name>
  *
- *  Sailor2-3B-Chat.Q4_K_M.gguf  3227563808 B
- *      sha256 5dd6d16a367424e5e0056536efca2a2d30c3f9deab26810e417426f5422b8c62
- *  labse.Q4_K_M.gguf             383762048 B
+ *  hiraia-sft-2b-v1.Q4_K_M.gguf  1274396000 B
+ *      sha256 b13e66678be6718252c692cb765bbe1d6bafd69c11772a1d1e9c23ee6ce0cd89
+ *  labse.Q4_K_M.gguf              383762048 B
  *      sha256 3869330197b5a583afc572104bf93393e384c72473a15c2dae43cab43e194b3e
- *  adapter-tagalog-v11.gguf      106772928 B
- *      sha256 4dd919fad41092514401e09b51abf64b4c3a4c43262542dcb17e8fec1bc01651
- *  adapter-bisaya-v11.gguf       106772928 B
- *      sha256 2fdb08ee26394c722a79bb728a48f5679a5de0ba46c9df8962c8603ef074cd0e
+ *
+ * (Retired rows, for the record: Sailor2-3B-Chat.Q4_K_M.gguf 3227563808 B md5
+ *  a7b8f147b7ca995bb64fa59216740457; adapter-tagalog-v11.gguf / adapter-
+ *  bisaya-v11.gguf 106772928 B each. They belonged to the Sailor2 line; nothing
+ *  fetches them any more, so they are history, not config.)
  *
  * VERSIONING: the on-device cache keys on FILENAME only. Changing an asset's
- * CONTENT therefore requires a new filename (`-v11` → `-v12`) or existing installs
- * keep the old file forever. Bump the filename AND the digests together.
+ * CONTENT therefore requires a new filename (`-v1` → `-v2`) or existing installs
+ * keep the old file forever. Bump the filename AND the digests together —
+ * `hiraia-sft-2b-v1` is versioned in the filename for exactly this reason.
  */
 export const REMOTE_ASSETS = {
-  /** The base GGUF — the ~3.23 GB first-run download. */
+  /** The base GGUF — the ~1.27 GB first-run download. FULL-parameter SFT (no LoRA). */
   base: {
-    url: `${MODELS_BASE_URL}/Sailor2-3B-Chat.Q4_K_M.gguf`,
-    filename: 'Sailor2-3B-Chat.Q4_K_M.gguf',
-    bytes: 3227563808,
-    md5: 'a7b8f147b7ca995bb64fa59216740457',
-    label: 'Sailor2-3B base',
+    url: `${MODELS_BASE_URL}/hiraia-sft-2b-v1.Q4_K_M.gguf`,
+    filename: 'hiraia-sft-2b-v1.Q4_K_M.gguf',
+    bytes: 1274396000,
+    md5: 'd6b3c97851be49b912fa25d0d6962133',
+    label: 'Hiraia-2B base',
   },
   /** LaBSE embedder for the hybrid retriever (background download). */
   embedder: {
@@ -82,31 +89,16 @@ export const REMOTE_ASSETS = {
     md5: '2667f69edfbcb68acf617187fe817fae',
     label: 'LaBSE embedder',
   },
-  /** Tagalog LoRA (also serves English — see LocalEngine.resolveAdapterPath). */
-  adapterTagalog: {
-    url: `${MODELS_BASE_URL}/adapter-tagalog-v11.gguf`,
-    filename: 'adapter-tagalog-v11.gguf',
-    bytes: 106772928,
-    md5: '9730e560faf56e8936e6cd5ef2d6038d',
-    label: 'Tagalog adapter v11',
-  },
-  /** Bisaya/Cebuano LoRA. */
-  adapterBisaya: {
-    url: `${MODELS_BASE_URL}/adapter-bisaya-v11.gguf`,
-    filename: 'adapter-bisaya-v11.gguf',
-    bytes: 106772928,
-    md5: 'da082f56e84c173cb1c124c4923fe7dc',
-    label: 'Bisaya adapter v11',
-  },
 } satisfies Record<string, RemoteAssetSpec>;
 
 /** Identifier for the shipping on-device model. One tier, one member. */
-export type OnDeviceModelKey = 'sailor2-3b';
+export type OnDeviceModelKey = 'hiraia-2b';
 
 /**
- * Languages that have their OWN fine-tuned adapter. English has no separate
- * LoRA — LocalEngine routes it through the tagalog adapter (measured better
- * than the base model on the English capability probes, 3.75 vs 1.78 / 5).
+ * Languages that can have their OWN fine-tuned adapter. The type survives the
+ * move to the full-parameter Hiraia-2B (whose `loraRemote` is empty BY DESIGN —
+ * all three languages live in the one set of weights) so that a future
+ * adapter-ful model slots back in without re-plumbing LocalEngine.
  */
 export type AdapterLanguage = 'tagalog' | 'cebuano';
 
@@ -122,17 +114,20 @@ export interface OnDeviceModel {
   ramGB: number;
   /** Device-RAM floor. The app targets 6 GB+ phones and nothing below. */
   minRamGB: number;
-  /** Per-language LoRA adapter size (MiB). */
-  adapterSizeMB: number;
   /** Inference context window. */
   ctxSize: number;
   /**
    * Runtime placement, kept here rather than hard-coded in the engine so the
-   * placement travels with the model it was measured for. Full GPU/Vulkan
-   * offload (gpuLayers 99): the 2026-06-15 CPU-vs-GPU A/B on the target Adreno
-   * had the GPU win PREFILL decisively (~24s vs ~40–50s), and prefill dominates
-   * TTFT. libqvac-ggml-vulkan.so is therefore load-bearing — do not strip the
-   * Vulkan/OpenCL backends out of the APK.
+   * placement travels with the model it was measured for. gpuLayers 99 = ask for
+   * full GPU/Vulkan offload (the 2026-06-15 CPU-vs-GPU A/B on a working Adreno
+   * had the GPU win PREFILL decisively, and prefill dominates TTFT), so
+   * libqvac-ggml-vulkan.so stays load-bearing — do not strip the Vulkan/OpenCL
+   * backends out of the APK. BUT this is a REQUEST, not a guarantee: on the
+   * Filipino budget mainstream (measured 2026-09-01, Xiaomi SM6225 / Adreno 610,
+   * 7.8 GB RAM) ggml-vulkan initialises and then MODEL_LOAD_FAILED (52200) — the
+   * device passes minRamGB and still cannot run the GPU path. LocalEngine
+   * probes GPU first and falls back ONCE to CPU (device:'cpu', gpuLayers:0),
+   * then persists the verdict. See LocalEngine.initialize.
    */
   runtime: { gpuLayers: number };
   /** QVAC model type — 'llm' for all our chat models. */
@@ -151,17 +146,17 @@ export interface OnDeviceModel {
    */
   remote: RemoteAssetSpec | null;
   /**
-   * Per-language fine-tuned LoRA adapters, DOWNLOADED from the mirror (v11) and
-   * verified against the integrity table above, exactly like the base model. The
-   * engine resolves the one matching the active language and passes its local path
-   * as `modelConfig.lora`. English rides the TAGALOG adapter (see
-   * LocalEngine.resolveAdapterPath). Empty = no adapters yet.
+   * Per-language fine-tuned LoRA adapters, downloaded from the mirror and
+   * verified against the integrity table above, exactly like the base model.
+   * When non-empty, the engine resolves the one matching the active language and
+   * passes its local path as `modelConfig.lora` (QVAC's own loader cannot fetch
+   * it: `modelConfig.lora` is a bare string the llama.cpp plugin never resolves).
    *
-   * These used to be Metro-bundled assets inside the APK. They are remote now, so
-   * they get the same verification as every other downloaded byte — QVAC's own
-   * loader CANNOT do this for us: `modelConfig.lora` is a bare string that the
-   * llama.cpp plugin never resolves (it only resolves `projectionModelSrc`), so an
-   * https value there is handed straight to the addon and fails to open.
+   * EMPTY ({}) = the model ships with NO adapters BY DESIGN — the Hiraia-2B is a
+   * full-parameter SFT, so the engine loads it adapter-free without complaint.
+   * That absence-by-design is distinct from a download failure: a language whose
+   * spec IS declared here but cannot be fetched/verified still THROWS (see
+   * LocalEngine.resolveAdapterPath).
    */
   loraRemote: Partial<Record<AdapterLanguage, RemoteAssetSpec>>;
   note: string;
@@ -169,26 +164,27 @@ export interface OnDeviceModel {
 
 /** The model the on-device build loads. */
 export const ACTIVE_MODEL: OnDeviceModel = {
-  key: 'sailor2-3b',
-  displayName: 'Sailor2-3B',
-  params: '~3.6B',
+  key: 'hiraia-2b',
+  displayName: 'Hiraia-2B',
+  // CPT'd (Filipino corpus) + full-parameter SFT'd Qwen3.5-2B — our own build,
+  // published on the mirror as hiraia-sft-2b-v1.
+  params: '~2B',
   quant: 'Q4_K_M',
-  sizeGB: 3.23, // mradermacher Sailor2-3B-Chat.Q4_K_M.gguf (~2.2 GB resident, mmap'd)
-  ramGB: 2.2,
+  sizeGB: 1.27, // hiraia-sft-2b-v1.Q4_K_M.gguf, 1,274,396,000 B
+  ramGB: 1.4, // ~1.27 GB weights mmap'd + KV cache at ctx 4096
   minRamGB: 6,
-  adapterSizeMB: 102,
-  // The grounded adapter trains at seq 2048, but the tag-aware grounded system
-  // prompt alone is ~1.2k tokens — at ctx 2048 even a few turns overflowed and
-  // threw exceed_context_size_error. 4096 gives headroom (base Qwen2.5 supports
-  // it; LoRA is context-length-agnostic). Now that every generation is single-turn
-  // (one card prompt, no history) the ceiling is far less pressed than it was.
+  // 4096: the card prompt is ~500 tokens and every generation is single-turn
+  // (one card prompt, no history), so the ceiling is barely pressed; 4096 keeps
+  // headroom without inflating the KV cache.
   ctxSize: 4096,
-  runtime: { gpuLayers: 99 }, // full GPU/Vulkan offload
+  runtime: { gpuLayers: 99 }, // ASK for full GPU offload; LocalEngine falls back to CPU (see interface note)
   modelType: 'llm',
-  // self-hosted mirror (see MODELS_BASE_URL note) — was the HF Xet URL
+  // self-hosted mirror (see MODELS_BASE_URL note)
   modelSrc: REMOTE_ASSETS.base.url,
   remote: REMOTE_ASSETS.base,
-  loraRemote: { tagalog: REMOTE_ASSETS.adapterTagalog, cebuano: REMOTE_ASSETS.adapterBisaya },
+  // FULL-PARAMETER SFT — no adapters exist for this model, by design. The v11
+  // Tagalog/Bisaya adapters belong to the retired Sailor2 line and do NOT apply.
+  loraRemote: {},
   note: 'Needs a 6GB+ phone (2025 budget norm).',
 };
 
