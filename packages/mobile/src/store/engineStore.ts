@@ -8,7 +8,74 @@ import { ACTIVE_MODEL } from '../config/model';
 import { getSetting, setSetting } from '../db/repo';
 import { LocalEngine } from '../engine/LocalEngine';
 
+import type { EngineProgressEvent } from '../engine/LocalEngine';
+
 export type LoadingPhase = 'idle' | 'downloading' | 'warming' | 'ready';
+
+/**
+ * Which stage of the real load pipeline the readiness bar is reflecting. The search
+ * field's status messages are keyed on THIS, so they can only ever describe work that
+ * is genuinely in flight (see EngineProgressEvent in LocalEngine for the stage feed).
+ *
+ *   idle      — no load running (the field is the tap-to-wake invitation)
+ *   connect   — load requested, no byte seen yet
+ *   download  — the ~1.27 GB base GGUF streaming in (real pct)
+ *   verify    — MD5 of the whole file (~15 s on device, no pct exists)
+ *   load      — loadModel reading the verified GGUF into RAM (real pct)
+ *   cpu-retry — GPU load died, restarting on CPU: the bar HOLDS, the message says
+ *               "taking longer" (sticky until ready — the CPU path stays the slow truth)
+ *   warm      — prime(): the one throwaway completion ("waking up Hiraia" is literal)
+ *   semantic  — engine READY + interactive; the background LaBSE (384 MB) still landing
+ *   done      — everything green
+ */
+export type ReadyStage =
+  | 'idle'
+  | 'connect'
+  | 'download'
+  | 'verify'
+  | 'load'
+  | 'cpu-retry'
+  | 'warm'
+  | 'semantic'
+  | 'done';
+
+// ============================================================================
+// STAGE WEIGHTS — the composed 0–1 readiness number.
+// ============================================================================
+// One number, four views (field opacity, bar width, bar colour, message pool).
+// Cumulative band edges, weighted by FIRST-RUN wall-clock on the target device
+// (SM6225, school Wi-Fi) but deliberately compressed at the ends:
+//
+//   0.00–0.03  base       the card DB is already open — a load can only ever be
+//                         started from a browsable feed, so the bar honestly
+//                         never starts at zero
+//   0.03–0.55  download   1.27 GB over the network (real bytes). Minutes-to-tens-
+//                         of-minutes — the dominant cost — but NOT given a
+//                         proportional 90% of the bar: after the download the
+//                         device still owes ~60–90 s of verify+load+warm, and a
+//                         bar that sits at 9x% for a minute and a half reads as
+//                         broken to a child. 52% keeps every later stage visibly
+//                         moving. On a cached run the download band completes
+//                         instantly (fast-forward is honest; backwards never is).
+//   0.55–0.62  verify     streaming MD5 of the 1.27 GB (~15 s measured band; no
+//                         pct exists → time-eased toward the edge, capped)
+//   0.62–0.78  load       loadModel into RAM (real pct from QVAC)
+//   0.78–0.90  warm       prime()'s throwaway completion (~45 s expected;
+//                         time-eased, capped — only real readiness crosses 0.90)
+//   0.90       READY      isReady snaps here; the ask box goes INTERACTIVE now
+//   0.90–1.00  semantic   the background LaBSE download+load (real pct). The
+//                         field is already usable on lexical retrieval — a child
+//                         on a slow connection must not wait out another 384 MB
+//                         for a retrieval-precision upgrade — so the bar keeps
+//                         crawling to green while the box already answers.
+// ============================================================================
+const W_BASE = 0.03;
+const W_DOWNLOAD_END = 0.55;
+const W_VERIFY_END = 0.62;
+const W_LOAD_END = 0.78;
+const W_READY = 0.9;
+/** The verify stage's time-ease horizon (measured ~15 s hash on the SM6225). */
+const VERIFY_EXPECTED_MS = 20_000;
 
 interface EngineState {
   engine: TutorEngine | null;
@@ -28,8 +95,18 @@ interface EngineState {
   /** Which init phase the bar is currently reflecting, so the loader can show
    *  honest copy: 'downloading' = the one-time ~1.27 GB base-model fetch (first
    *  run only); 'warming' = load-into-RAM + the warm-up prefill (every cold
-   *  start); 'ready' = done; 'idle' = not loading. */
+   *  start); 'ready' = done; 'idle' = not loading. (Coarse legacy view — the
+   *  search field's readiness UI reads `readiness`/`readyStage` instead.) */
   loadingPhase: LoadingPhase;
+  /**
+   * THE composed readiness number, 0–1, across the weighted stages above. The search
+   * field's opacity, the bar's width, the bar's colour and the status-message pool are
+   * all views of this ONE number. Monotonic within a load (a CPU-fallback retry holds
+   * it, never rewinds it); resets only when a new load begins or a load fails.
+   */
+  readiness: number;
+  /** The stage tag matching `readiness` — drives the truthful status messages. */
+  readyStage: ReadyStage;
   /** Whether the onboarding carousel is showing. True on first launch (no saved
    *  language) and whenever Settings → "show tutorial" re-triggers it. */
   onboardingActive: boolean;
@@ -94,6 +171,13 @@ function buildConfig(language: Language, gradeLevel: GradeLevel): TutorConfig {
  */
 let loadQueue: Promise<void> = Promise.resolve();
 let requestedLanguage: Language | null = null;
+/**
+ * Which load "owns" the readiness state. The LaBSE semantic band keeps reporting in
+ * the BACKGROUND after a load completes — and a language switch can start a NEW load
+ * while the old engine's semantic init is still emitting. Without this token a stale
+ * event could bump the fresh load's bar. Bumped at the start of every load.
+ */
+let loadSeq = 0;
 
 /**
  * Load (or reload) the engine for `language`. Called ONLY from the queue in
@@ -107,7 +191,16 @@ async function loadEngineFor(language: Language): Promise<void> {
   // left to lose — but the state still has to be armed before the first await so the
   // loader UI reflects the new language from the moment the load actually begins.
   const prev = get().engine;
-  set({ language, isReady: false, error: null, loadingProgress: 0, loadingPhase: 'warming' });
+  const seq = ++loadSeq;
+  set({
+    language,
+    isReady: false,
+    error: null,
+    loadingProgress: Math.round(W_BASE * 100),
+    loadingPhase: 'downloading',
+    readiness: W_BASE,
+    readyStage: 'connect',
+  });
   try {
     // Persist AFTER arming the guard — a crash in this window just loses the preference,
     // whereas persisting first re-opened the race.
@@ -121,78 +214,147 @@ async function loadEngineFor(language: Language): Promise<void> {
     }
     const engine = new LocalEngine();
 
-    // Progress is NOT one linear signal — init has two very differently-sized phases,
-    // and only the first is observable:
-    //   • DOWNLOAD (first run only): loadModel's onProgress streams 1→99 as QVAC fetches
-    //     the ~1.27 GB base GGUF over the network — minutes, and directly observable. On a
-    //     cached run there are no bytes to fetch, so onProgress jumps straight to 100.
-    //   • WARM-UP tail (every cold start): loading ~1.3 GB into RAM + the warm-up prefill.
-    //     Tens of seconds, and emits NO granular signal — only a time estimate.
-    // (The LaBSE embedder downloads in the background via initSemantic() and is NOT
-    //  awaited, so it's correctly excluded from this bar.)
-    //
-    // We therefore allocate the bar by phase rather than on one fixed clock:
-    //   - while a real download streams → map the REAL bytes onto 0→DL_CEIL (honest;
-    //     never races ahead of the network);
-    //   - once the download finishes (or immediately, if cached) → ease the warm-up tail
-    //     up toward TAIL_CEIL on the time estimate.
-    // The bar never crosses the WAKE gate (97) on the timer — only the real isReady
-    // snap-to-100 below does — so the cat never "wakes" while real work remains.
-    // Correctness is still guaranteed by gating the loader's final dismiss on isReady
-    // (LoaderOverlay holds the last exit frame if the warm-up estimate runs short).
-    const EXPECTED_WARMUP_MS = 45000; // load-into-RAM + warm-up prefill on the target device
-    const DL_CEIL = 90; // a streaming ~1.3 GB download fills the bar up to here
-    const WAKE_AT = 97; // matches the LoaderOverlay wake gate
-    const TAIL_CEIL = WAKE_AT - 1; // 96 — approach but never reach the wake gate on the timer
+    // ------------------------------------------------------------------------
+    // COMPOSED READINESS. LocalEngine reports structured stage events (download /
+    // verify / load / cpu-retry / semantic); this maps them onto the weighted
+    // bands documented at W_* above, into ONE monotonic 0–1 number plus a stage
+    // tag. The two stages with no observable signal (verify, warm) are time-eased
+    // toward their band edge and CAPPED — only real events cross a band boundary,
+    // and only the real isReady snap reaches W_READY. Monotonicity is structural
+    // (`shown = max(shown, target)`), which is also what makes the CPU-fallback
+    // retry a HOLD instead of a rewind: the restarted load's pct climbs back up
+    // underneath the bar until it catches where the bar already was.
+    // ------------------------------------------------------------------------
+    const EXPECTED_WARMUP_MS = 45_000; // prime()'s throwaway completion on the target device
     const startedAt = Date.now();
+    let tag: ReadyStage = 'connect';
     let downloadPct = 0;
-    let sawSignal = false; // received at least one progress callback from init
-    let sawRealBytes = false; // observed a genuine in-progress download (1 < pct < 99)
-    let downloadDone = false; // pct reached 100 — download complete OR already cached
-    let tailStartedAt = 0; // set when the warm-up tail begins
-    let shown = 0; // last value shown — the bar is monotonic (never ticks backwards)
+    let loadPct = 0;
+    let semanticPct = 0;
+    let retried = false; // the GPU→CPU fallback fired — "taking longer" is the honest copy
+    let verifyAt = 0; // when the MD5 stage began
+    let warmAt = 0; // when prime() began
+    let shown = W_BASE; // monotonic — the bar NEVER ticks backwards
     let ready = false;
+
+    const easeOut = (f: number) => 1 - (1 - f) * (1 - f);
+    const publish = () => {
+      if (seq !== loadSeq) return;
+      set({
+        readiness: shown,
+        readyStage: tag,
+        loadingProgress: Math.round(shown * 100),
+        loadingPhase: tag === 'connect' || tag === 'download' ? 'downloading' : 'warming',
+      });
+    };
+
     const ramp = setInterval(() => {
       if (ready) return;
-      let pct: number;
-      let phase: LoadingPhase;
-      if (!downloadDone) {
-        // Still fetching (or waiting to learn the phase). CRUCIAL: never run the warm-up
-        // TIME estimate here — that's what used to race ahead of a slow multi-GB download.
-        // Track real bytes once we have a signal; before the first signal, just creep so
-        // the bar can't get ahead of an unknown download.
-        phase = 'downloading';
-        if (sawSignal) {
-          pct = (downloadPct / 100) * DL_CEIL;
-        } else {
-          pct = Math.min(6, ((Date.now() - startedAt) / 12000) * 6); // ≤6% while connecting
+      let target = shown;
+      switch (tag) {
+        case 'connect':
+          // No byte seen yet — creep a little so the field visibly reacts to the tap,
+          // but never get ahead of an unknown download (≤ 0.06 while connecting).
+          target = W_BASE + Math.min(1, (Date.now() - startedAt) / 12_000) * (0.06 - W_BASE);
+          break;
+        case 'download':
+          target = W_BASE + ((W_DOWNLOAD_END - W_BASE) * downloadPct) / 100;
+          break;
+        case 'verify': {
+          // Real work, no signal: ease across the verify band on the measured hash
+          // time, capped a hair under the edge — only the first 'load' event crosses it.
+          const f = Math.min(1, (Date.now() - verifyAt) / VERIFY_EXPECTED_MS);
+          target = W_DOWNLOAD_END + (W_VERIFY_END - 0.005 - W_DOWNLOAD_END) * easeOut(f);
+          break;
         }
-      } else {
-        // Download complete (or cached) → NOW ease the short warm-up tail on a time
-        // estimate. Cached → tail spans 0→TAIL_CEIL; after a real download → from DL_CEIL.
-        phase = 'warming';
-        if (tailStartedAt === 0) tailStartedAt = Date.now();
-        const base = sawRealBytes ? DL_CEIL : 0;
-        const span = TAIL_CEIL - base;
-        const frac = Math.min(1, (Date.now() - tailStartedAt) / EXPECTED_WARMUP_MS);
-        pct = base + span * (1 - (1 - frac) * (1 - frac)); // ease-out → TAIL_CEIL at expected time
+        case 'load':
+          target = W_VERIFY_END + ((W_LOAD_END - W_VERIFY_END) * loadPct) / 100;
+          break;
+        case 'cpu-retry':
+          // While the RESTARTED LOAD runs, keep the load-band maths: it re-reports
+          // pct from 0, max() holds the bar, and the tag keeps the honest message
+          // up. But once prime() begins (warmAt set) this path owes the SLOWEST
+          // warm-up of any device (~78 s measured on the SD685) — switch to the
+          // warm band's time-ease, or the bar stands motionless at W_LOAD_END for
+          // over a minute: exactly the parked-bar-reads-as-broken failure the
+          // STAGE WEIGHTS block exists to avoid. The tag (and the "taking longer"
+          // message) is unchanged; only the crawl resumes.
+          target =
+            warmAt > 0
+              ? W_LOAD_END +
+                (W_READY - 0.005 - W_LOAD_END) *
+                  easeOut(Math.min(1, (Date.now() - warmAt) / EXPECTED_WARMUP_MS))
+              : W_VERIFY_END + ((W_LOAD_END - W_VERIFY_END) * loadPct) / 100;
+          break;
+        case 'warm': {
+          const f = Math.min(1, (Date.now() - warmAt) / EXPECTED_WARMUP_MS);
+          target = W_LOAD_END + (W_READY - 0.005 - W_LOAD_END) * easeOut(f);
+          break;
+        }
+        default:
+          break;
       }
-      shown = Math.max(shown, Math.round(pct)); // monotonic
-      set({ loadingProgress: shown, loadingPhase: phase });
-    }, 200);
+      shown = Math.max(shown, target);
+      publish();
+    }, 250);
+
+    // Post-ready view of the semantic band (the ramp is gone by then).
+    const applySemantic = () => {
+      if (seq !== loadSeq) return;
+      const cur = useEngineStore.getState();
+      if (!cur.isReady) return; // pre-ready, the ramp + main bands own the bar
+      const target = W_READY + ((1 - W_READY) * semanticPct) / 100;
+      set({
+        readiness: Math.max(cur.readiness, target),
+        readyStage: semanticPct >= 100 ? 'done' : 'semantic',
+      });
+    };
+
+    const onEvent = (ev: EngineProgressEvent) => {
+      if (seq !== loadSeq) return; // a stale engine's background reporter — ignore
+      switch (ev.stage) {
+        case 'download':
+          downloadPct = Math.max(downloadPct, ev.pct);
+          // 'verify' can go BACK to 'download': a failed contract check (a proxy-
+          // truncated body, a bad MD5 after a resume) sends the downloader back to
+          // the network, and the honest message for that multi-minute stretch is
+          // "downloading" — not "checking the download". verifyAt is re-armed so a
+          // SECOND verify pass re-eases across its band; the bar itself still
+          // cannot rewind (shown = max(shown, target)).
+          if (tag === 'connect' || tag === 'verify') {
+            tag = 'download';
+            verifyAt = 0;
+          }
+          break;
+        case 'verify':
+          if (verifyAt === 0) verifyAt = Date.now();
+          tag = 'verify';
+          break;
+        case 'load':
+          loadPct = Math.max(loadPct, ev.pct);
+          // After a CPU retry the stage stays 'cpu-retry' — the message must keep
+          // saying it is taking longer, not pretend the first attempt never died.
+          tag = retried ? 'cpu-retry' : 'load';
+          break;
+        case 'cpu-retry':
+          retried = true;
+          loadPct = 0; // the restarted load re-reports from 0 — max() holds the bar
+          tag = 'cpu-retry';
+          break;
+        case 'semantic':
+          semanticPct = Math.max(semanticPct, ev.pct);
+          applySemantic();
+          break;
+      }
+    };
 
     const config = buildConfig(language, get().grade);
     try {
-      await engine.initialize(config, (p) => {
-        sawSignal = true;
-        downloadPct = p;
-        if (p > 1 && p < 99) sawRealBytes = true; // a genuine streaming download
-        if (p >= 100) downloadDone = true; // complete, or (instant 100) already cached
-      });
+      await engine.initialize(config, undefined, onEvent);
 
       // The warm-up is EXPLICIT — initialize() does not warm up — and runs exactly ONCE, here,
-      // where the loader bar can cover its cold-start tail (the ramp is cleared in the finally,
-      // once the engine is genuinely warm).
+      // where the readiness bar can cover its cold-start tail (the ramp is cleared in the
+      // finally, once the engine is genuinely warm).
       //
       // It used to have to chase the grade: the prefill was the chat system prompt, which is
       // grade-bearing, so a grade change landing mid-prime meant paying a second ~78s prefill.
@@ -204,16 +366,27 @@ async function loadEngineFor(language: Language): Promise<void> {
       // of its own to race, and the module-wide lock can still be held by a stale completion
       // from the engine we just shut down — coupling readiness to that would delay isReady, or
       // strand it forever if the completion never settles.
+      warmAt = Date.now();
+      // (`retried`, not `tag`: TS cannot see the closure mutations of `tag` from here.)
+      if (!retried) tag = 'warm'; // a CPU-retried load keeps its "taking longer" story warm-through
       await engine.prime(get().grade);
     } finally {
       ready = true;
       clearInterval(ramp);
     }
 
-    // Model is genuinely ready: snap to 100 so the loader crosses the 97 wake gate and
-    // plays the (shortened) wake→exit, then dismisses. This is the ONLY thing that
-    // crosses 97 — so the cat wakes exactly when the model is actually ready.
-    set({ engine, isReady: true, loadingProgress: 100, loadingPhase: 'ready' });
+    // Model is genuinely ready: snap to W_READY — the ONLY thing that crosses it — and
+    // open the ask box. The semantic band (LaBSE) may already be partly (or fully) done:
+    // credit whatever it has banked, then let applySemantic() walk the bar to green.
+    const semanticNow = W_READY + ((1 - W_READY) * semanticPct) / 100;
+    set({
+      engine,
+      isReady: true,
+      readiness: Math.max(shown, semanticNow),
+      readyStage: semanticPct >= 100 ? 'done' : 'semantic',
+      loadingProgress: 100,
+      loadingPhase: 'ready',
+    });
     console.log(`QVAC engine ready (${language})`);
   } catch (error) {
     set({
@@ -221,6 +394,8 @@ async function loadEngineFor(language: Language): Promise<void> {
       isReady: false,
       loadingProgress: 0,
       loadingPhase: 'idle',
+      readiness: 0,
+      readyStage: 'idle',
     });
     console.error('Failed to (re)initialize QVAC engine:', error);
   }
@@ -235,6 +410,8 @@ export const useEngineStore = create<EngineState>((set, get) => ({
   bootstrapped: false,
   loadingProgress: 0,
   loadingPhase: 'idle',
+  readiness: 0,
+  readyStage: 'idle',
   onboardingActive: false,
 
   setOnboardingActive: (active: boolean) => set({ onboardingActive: active }),

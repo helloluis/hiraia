@@ -28,13 +28,19 @@
  *
  *   npx tsx scripts/art-presence-check.mts
  */
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
+
+import { curriculumMultiplier, type CurriculumTag } from '../../shared/src/curriculum/feedWeighting.ts';
 
 import { loadCards } from './load-cards-node.mts';
 
 const MOBILE = new URL('..', import.meta.url).pathname;
-/** Share of card art the shipping 140 MB pack covers (docs: 57.1–58.5% per grade). */
+/** The tail of the art order — shard manifests the packer (scripts/build-art-pack.mts) emitted.
+ *  When they exist, the REAL pack (IMAGE_MAP, which is the keep-list) plays the partial
+ *  manifest below, and bundled ∪ shards is the full corpus. */
+const SHARDS_DIR = join(MOBILE, '../../rag/pipeline/art-shards');
+/** Fallback share for a checkout with no pack cut yet (docs: 57.1–58.5% per grade). */
 const BUNDLED_SHARE = 0.571;
 
 // ---------------------------------------------------------------- helpers
@@ -96,9 +102,36 @@ const MAPPED = new Set(
 );
 const CARD_SLUGS = cardsIndex.cards.map((c) => c.slug);
 const NON_EMPTY = CARD_SLUGS.filter(Boolean);
-const FULL = new Set(MAPPED);
-/** A 57% pack: the head of the list, modelled as a stable pseudo-random subset of card art. */
-const PARTIAL = new Set([...MAPPED].filter((s) => hash32(s) / 2 ** 32 < BUNDLED_SHARE));
+/** Tail slugs from the shard manifests, [] when the packer has not run in this checkout. */
+const TAIL: string[] = existsSync(join(SHARDS_DIR, 'index.json'))
+  ? readdirSync(SHARDS_DIR)
+      .filter((f) => f.endsWith('.json') && f !== 'index.json')
+      .flatMap(
+        (f) =>
+          (JSON.parse(readFileSync(join(SHARDS_DIR, f), 'utf8')) as { images: { slug: string }[] }).images
+      )
+      .map((i) => i.slug)
+  : [];
+/** Everything that can EVER be on the device: the bundled pack plus every backfill shard. */
+const FULL = new Set([...MAPPED, ...TAIL]);
+/** The partial pack under test: the REAL 140 MB head (IMAGE_MAP is the keep-list) when the
+ *  packer has run; otherwise the old model — a stable pseudo-random 57% subset. */
+const PARTIAL = TAIL.length
+  ? new Set(MAPPED)
+  : new Set([...MAPPED].filter((s) => hash32(s) / 2 ** 32 < BUNDLED_SHARE));
+/**
+ * A pack built to make old-vs-new DIVERGE quickly, for the non-vacuousness probe in [1] only.
+ * The REAL pack is a poor probe: it was optimised so that absent art is rare exactly where the
+ * weighted walk goes, so a 400-page walk can legitimately never hit a divergence site. A
+ * pseudo-random half-pack scatters absences across the whole graph, which is what that check
+ * needs — it is testing the harness's eyes, not the shipping pack.
+ */
+const PROBE = new Set([...FULL].filter((s) => hash32(s) / 2 ** 32 < BUNDLED_SHARE));
+console.log(
+  TAIL.length
+    ? `art pack: REAL — ${MAPPED.size} bundled + ${TAIL.length} shard images (${new Set(TAIL).size} distinct)`
+    : 'art pack: none cut yet — modelling a 57% pseudo-random pack'
+);
 
 const CTX = {
   studentGrade: 5,
@@ -188,11 +221,17 @@ function firstDiff(a: string[], b: string[]): string {
 
 // ---------------------------------------------------------------- 0. premise
 console.log('\n=============== ART-PRESENCE CHECK ===============\n');
-console.log(`pool ${CARD_SLUGS.length} cards | ${NON_EMPTY.length} with a slug | IMAGE_MAP ${MAPPED.size} slugs`);
+console.log(
+  `pool ${CARD_SLUGS.length} cards | ${NON_EMPTY.length} with a slug | IMAGE_MAP ${MAPPED.size} slugs | corpus ${FULL.size}`
+);
 const unmapped = NON_EMPTY.filter((s) => !FULL.has(s) && !FULL.has(s.replace(/-g\d+$/, '').toLowerCase()));
-console.log('\n[0] PREMISE — with the full map installed, hasArt(slug) === (slug !== "")');
+console.log('\n[0] PREMISE — with the full corpus installed, hasArt(slug) === (slug !== "")');
 presence.installBundledArt(FULL);
-check(unmapped.length === 0, 'every non-empty card slug resolves in IMAGE_MAP', `${unmapped.length} unmapped`);
+check(
+  unmapped.length === 0,
+  'every non-empty card slug resolves in the corpus (bundled ∪ shards)',
+  `${unmapped.length} unmapped`
+);
 check(
   CARD_SLUGS.every((s) => presence.hasArt(s) === (s !== '')),
   'full manifest ⇒ presence is exactly slug-non-emptiness'
@@ -232,7 +271,7 @@ for (const weighted of [false, true]) {
     firstDiff(oldBlind.trace, newBlind.trace)
   );
   // The comparison is only worth anything if the two modules CAN differ. Prove they do.
-  presence.installBundledArt(PARTIAL);
+  presence.installBundledArt(PROBE);
   const oldPartial = walkOf(OLD, 4242, 400, weighted);
   const newPartial = walkOf(C, 4242, 400, weighted);
   check(
@@ -243,16 +282,47 @@ for (const weighted of [false, true]) {
 }
 
 // ---------------------------------------------------------------- 2/3. partial pack
-console.log(`\n[2] NO SHRINK / [3] COOLDOWN — ${pct(PARTIAL.size, MAPPED.size)} of the art on device`);
+console.log(`\n[2] NO SHRINK / [3] COOLDOWN — ${pct(PARTIAL.size, FULL.size)} of the art on device`);
 presence.installBundledArt(PARTIAL);
 const absentInPool = CARD_SLUGS.filter((s) => !presence.hasArt(s)).length;
+/**
+ * Expected poster rate for THIS walk. The walk draws with a FeedContext (grade 5, Q2) and the
+ * REAL pack was optimised for exactly that draw weight, so absent-art cards are no longer a
+ * random sample of the pool: the uniform pool rate over-counts them. The honest baseline is
+ * the DRAW-WEIGHTED absent share under the same context — with a synthetic random pack the
+ * two baselines coincide, so this is a strict generalisation of the old check.
+ */
+const tagRows = JSON.parse(
+  readFileSync(join(MOBILE, 'src/generated/curriculumTags.generated.json'), 'utf8')
+) as Record<string, [string, number, number, number, [number, number, number, number][]?, string[]?]>;
+function tagOf(id: string): CurriculumTag | null {
+  const r = tagRows[id];
+  if (!r) return null;
+  const [competency, grade, quarter, confidence, cells, codes] = r;
+  return {
+    competency,
+    grade,
+    quarter,
+    confidence,
+    cells: cells?.map(([g, q, st, n]) => ({ grade: g, quarter: q, strength: st === 2 ? 2 : 1, norm: n })),
+    codes,
+  };
+}
+let wAbsent = 0;
+let wTotal = 0;
+for (const card of cardsIndex.cards) {
+  const w = curriculumMultiplier(tagOf(card.id), CTX.studentGrade as 5, CTX.currentQuarter as 2);
+  wTotal += w;
+  if (!presence.hasArt(card.slug)) wAbsent += w;
+}
+const expectedPoster = wAbsent / wTotal;
 const partial = walk(4242, 1200, true);
 check(partial.deadEnds === 0, 'no dead ends: every page offered a next card', `${partial.deadEnds}`);
 check(partial.pages === 1200, 'the walk ran to length', `${partial.pages} pages`);
 check(
-  Math.abs(partial.posterPages / partial.pages - absentInPool / CARD_SLUGS.length) < 0.06,
-  'text-only cards served at ~their pool rate (feed did not narrow to illustrated cards)',
-  `served ${pct(partial.posterPages, partial.pages)} vs pool ${pct(absentInPool, CARD_SLUGS.length)}`
+  Math.abs(partial.posterPages / partial.pages - expectedPoster) < 0.06,
+  'text-only cards served at ~their draw-weighted rate (feed did not narrow to illustrated cards)',
+  `served ${pct(partial.posterPages, partial.pages)} vs weighted ${(100 * expectedPoster).toFixed(1)}% (uniform pool ${pct(absentInPool, CARD_SLUGS.length)})`
 );
 check(
   partial.visibleRepeat === 0,
@@ -405,7 +475,7 @@ function bench(label: string, weighted: boolean) {
 for (const [name, install] of [
   ['no manifest (pre-presence path)', () => presence.resetArtPresence()],
   ['full manifest (today’s APK)', () => presence.installBundledArt(FULL)],
-  [`partial manifest (${pct(PARTIAL.size, MAPPED.size)} on device)`, () => presence.installBundledArt(PARTIAL)],
+  [`partial manifest (${pct(PARTIAL.size, FULL.size)} on device)`, () => presence.installBundledArt(PARTIAL)],
 ] as [string, () => void][]) {
   install();
   bench(`--- ${name} · uniform ---`, false);

@@ -26,7 +26,7 @@
  * (the earlier hang).
  */
 import { useRouter } from 'expo-router';
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Animated,
@@ -48,6 +48,8 @@ import Reanimated, {
 } from 'react-native-reanimated';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import type { Language } from '@hiraia/shared';
+
 import { GRADE_WORD } from '../../config/grades';
 import { uiStrings } from '../../config/strings';
 import {
@@ -58,8 +60,10 @@ import {
 } from '../../data/cards';
 import type { RewardContent } from '../../data/reward';
 import { previewChoices, useCardStore, type FeedResponse } from '../../store/cardStore';
-import { useEngineStore } from '../../store/engineStore';
+import { useEngineStore, type ReadyStage } from '../../store/engineStore';
 import { card, cardAlpha, fonts } from '../../theme';
+import { useTypewriter } from '../onboarding/useTypewriter';
+import { barColor, fieldSurface, useReadinessMessage } from './searchReadiness';
 import { CARD_EDGE, CARD_RADIUS } from './CardFrame';
 import { CardPage } from './CardPage';
 import { QuestionPage } from './QuestionPage';
@@ -290,6 +294,52 @@ function DieFace() {
   );
 }
 
+/** How long the finished (full-width, sage) readiness bar lingers before unmounting —
+ *  the child gets to SEE the walk complete to green, the spec's payoff moment. */
+const DONE_LINGER_MS = 800;
+
+/**
+ * The warming field's status line, in its own memoized leaf ON PURPOSE: the typewriter
+ * setStates ~33×/s while a line types in, and hosted at CardFeedScreen's level every one
+ * of those ticks reconciled the ENTIRE deck tree — defeating the 2% readiness
+ * quantisation (see the selector below) whose whole job is capping the parent at ~50
+ * re-renders per load. Here a tick re-renders two Texts. The ~10 s message rotation
+ * (useReadinessMessage) lives here too, so it stops re-rendering the parent as well.
+ */
+const SearchStatusLine = memo(function SearchStatusLine({
+  stage,
+  language,
+  color,
+}: {
+  stage: ReadyStage;
+  language: Language;
+  color: string;
+}) {
+  // Only rendered while a load is in flight (the parent's warming branch), so the hook
+  // is unconditionally enabled; unmounting resets its rotation state.
+  const message = useReadinessMessage(true, stage, language);
+  const typed = useTypewriter(message, { stepMs: 30, playKey: message });
+  return (
+    <>
+      {/* The animated line is HIDDEN from screen readers: a live region on text that
+          changes every 30 ms queues one TalkBack announcement PER CHARACTER
+          ("D", "Do", "Dow", …) — stutter spam for the whole multi-minute load. */}
+      <Text
+        style={[styles.searchStatus, { color }]}
+        numberOfLines={1}
+        importantForAccessibility="no"
+      >
+        {typed}
+      </Text>
+      {/* Invisible sibling carrying the FULL message, so TalkBack gets ONE clean
+          polite announcement per ~10 s rotation. */}
+      <Text style={styles.srOnly} accessibilityLiveRegion="polite">
+        {message}
+      </Text>
+    </>
+  );
+});
+
 export function CardFeedScreen() {
   const router = useRouter();
   const language = useEngineStore((s) => s.language) ?? 'tagalog';
@@ -324,6 +374,34 @@ export function CardFeedScreen() {
   // what the reader taps to start the load.
   const loadingPhase = useEngineStore((s) => s.loadingPhase);
   const warming = loadingPhase === 'downloading' || loadingPhase === 'warming';
+  // The composed readiness number (see engineStore's STAGE WEIGHTS). Quantised to 2%
+  // in the SELECTOR so the store's 250 ms ramp ticks re-render this (big) component at
+  // most fifty times per load, not four times a second — the bar still visibly crawls
+  // (2% of the row is ~7 dp a step) and the deck stays smooth on the SM6225. FLOOR,
+  // not round: rounding overstated the width by up to 1% — including painting a
+  // finished-looking bar at raw 0.99 while LaBSE was still landing.
+  const readiness = useEngineStore((s) => Math.floor(s.readiness * 50) / 50);
+  const readyStage = useEngineStore((s) => s.readyStage);
+  // The four views of that one number: field surface (opacity step + measured text
+  // colour), bar width, bar colour, message pool. See searchReadiness.ts.
+  const surface = fieldSurface(readiness, engineReady);
+  // Bar visibility is gated on the STAGE, not the number: the old `readiness < 1`
+  // check unmounted the bar the instant the quantised number hit 1.0, so the sage
+  // finish (barColor at readiness 1) was unreachable on every path. Instead, when
+  // 'done' lands the full-width sage bar LINGERS for a beat before unmounting — the
+  // walk to green visibly completes.
+  const [doneLinger, setDoneLinger] = useState(false);
+  const prevStageRef = useRef(readyStage);
+  useEffect(() => {
+    const was = prevStageRef.current;
+    prevStageRef.current = readyStage;
+    if (readyStage === 'done' && was !== 'done' && was !== 'idle') {
+      setDoneLinger(true);
+      const t = setTimeout(() => setDoneLinger(false), DONE_LINGER_MS);
+      return () => clearTimeout(t);
+    }
+  }, [readyStage]);
+  const barVisible = (readyStage !== 'idle' && readyStage !== 'done') || doneLinger;
   const queryBanner = useCardStore((s) => s.queryBanner);
   const pageKey = useCardStore((s) => s.pageKey);
   const pagesRead = useCardStore((s) => s.pagesRead);
@@ -794,46 +872,61 @@ export function CardFeedScreen() {
           Tapping the field WAKES the model.
           The reader reaches for the ask box, and that is the moment the engine is actually
           wanted — so it is the moment the load starts, rather than at launch where it stole
-          the JS thread from the feed. The placeholder already tells them what is happening
-          ("Ginigising si Hiraia…"), and the same one-tap retry existed for a failed warm-up.
+          the JS thread from the feed. From that tap the field becomes its own readiness
+          bar: stage-truthful status lines typewrite in the placeholder slot ("Sinusuri ang
+          na-download…", "Ginigising si Hiraia…"), and the one-tap retry still covers a
+          failed warm-up.
         */}
         <Pressable
-          style={styles.searchField}
+          // The field IS the readiness bar: its surface starts as a ~30%-opacity ghost of
+          // the cream stock and steps toward fully printed as the composed readiness
+          // climbs (fieldSurface — stepped on MEASURED contrast, the text colour crossing
+          // white→ink with it; the 0.38–0.60 alpha band is skipped because nothing stays
+          // legible on it). Fully live → the plain stock field, exactly as before.
+          style={[styles.searchField, !engineReady && { backgroundColor: surface.backgroundColor }]}
           onPress={warmModel}
           disabled={engineReady || warming}
           accessibilityLabel={t.cards.searchPlaceholder}
         >
           <View style={styles.searchDiamond} />
-          <TextInput
-            // Until the engine can answer, the input must not swallow the touch — the
-            // parent Pressable is the wake target, and `editable={false}` alone is not a
-            // reliable guarantee that the tap reaches it.
-            pointerEvents={engineReady ? 'auto' : 'none'}
-            style={[styles.searchInput, !engineReady && styles.searchInputIdle]}
-            value={queryText}
-            onChangeText={setQueryText}
-            onSubmitEditing={submitQuery}
-            placeholder={
-              warming
-                ? t.cards.searchWarming
-                : engineError
-                  ? t.cards.searchUnavailable
-                  : t.cards.searchPlaceholder
-            }
-            placeholderTextColor={card.olive}
-            returnKeyType="search"
-            // Non-interactive until the engine can actually answer. A kid tapping in and
-            // getting a dead keyboard is worse than the field plainly looking not-yet-ready.
-            editable={!asking && engineReady}
-            selectionColor={card.sage}
-          />
+          {warming && !engineReady ? (
+            // A load is in flight: the placeholder becomes the live status line —
+            // stage-truthful messages typewritten in, rotated ~10 s (useReadinessMessage).
+            // A Text, not a TextInput placeholder: placeholders cannot animate. Its
+            // hooks live in a memoized leaf so the 30 ms ticks never reconcile the deck.
+            <SearchStatusLine stage={readyStage} language={language} color={surface.textColor} />
+          ) : (
+            <TextInput
+              // Until the engine can answer, the input must not swallow the touch — the
+              // parent Pressable is the wake target, and `editable={false}` alone is not a
+              // reliable guarantee that the tap reaches it.
+              pointerEvents={engineReady ? 'auto' : 'none'}
+              style={[styles.searchInput, !engineReady && { color: surface.textColor }]}
+              value={queryText}
+              onChangeText={setQueryText}
+              onSubmitEditing={submitQuery}
+              placeholder={engineError ? t.cards.searchUnavailable : t.cards.searchPlaceholder}
+              // On the ghost surface only plate-white measures ≥4.5:1; on the live stock
+              // field the usual olive does (4.79:1). surface.textColor knows which is which.
+              placeholderTextColor={engineReady ? card.olive : surface.textColor}
+              returnKeyType="search"
+              // Non-interactive until the engine can actually answer. A kid tapping in and
+              // getting a dead keyboard is worse than the field plainly looking not-yet-ready.
+              // Deliberately at ENGINE-ready, not full-green: the LaBSE download that runs
+              // the bar's last band only sharpens retrieval — lexical answers already work,
+              // and a child on slow Wi-Fi should not wait out 384 MB more for that.
+              editable={!asking && engineReady}
+              selectionColor={card.sage}
+            />
+          )}
           {/* While an answer is being generated the submit button becomes a progress
               circle, so the kid knows the app is working and they should wait. */}
           {warming ? (
-            // Deliberately the small olive spinner, not the ink one used for `asking`: this is
-            // "not ready yet", a passive state, and must not compete with the card for
-            // attention the way an active in-flight request should.
-            <ActivityIndicator size="small" color={card.olive} style={styles.searchSpinner} />
+            // Deliberately the small passive spinner, not the ink one used for `asking`:
+            // this is "not ready yet" and must not compete with the card for attention the
+            // way an active in-flight request should. Its colour follows the field's
+            // measured text colour — olive is invisible (1.02:1) on the ghost surface.
+            <ActivityIndicator size="small" color={surface.textColor} style={styles.searchSpinner} />
           ) : engineError ? (
             // Warm-up failed. Never spin forever — offer the retry that warmModel() already
             // implements, so a transient failure is one tap from recovery.
@@ -866,6 +959,24 @@ export function CardFeedScreen() {
         >
           <DieFace />
         </Pressable>
+        {/* The 4 px readiness bar, crawling the full page width under the field. Width
+            and colour are the SAME composed number the field's opacity shows — the
+            colour walks the palette red→orange→yellow→green in four deliberate steps
+            (barColor: measured ≥3:1 on the board; raw oxblood/olive fail and are
+            blended toward peach/sage — see searchReadiness.ts). It never rewinds: the
+            store's readiness is monotonic through even the GPU→CPU retry. It outlives
+            engine-ready on purpose, finishing green only when the background LaBSE
+            band lands (or gives up — either way the loading story ends). */}
+        {barVisible ? (
+          <View pointerEvents="none" style={styles.readyBarTrack}>
+            <View
+              style={[
+                styles.readyBarFill,
+                { width: `${Math.round(readiness * 100)}%`, backgroundColor: barColor(readiness) },
+              ]}
+            />
+          </View>
+        ) : null}
       </View>
 
       {/* "you asked" ribbon when a search navigated straight to a found card. It rides on
@@ -1142,12 +1253,39 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
     borderLeftColor: card.gold,
   },
-  searchInputIdle: {
-    // Dimmed while the engine warms so the field reads as not-yet-available at a glance,
-    // without changing its size and reflowing the row when it becomes live.
-    opacity: 0.55,
+  // The status line that stands in for the input while a load is in flight (same
+  // metrics as searchInput so the swap never reflows the row). Colour comes from
+  // fieldSurface — the only one measured legible on the current surface step.
+  // (Replaces the old `searchInputIdle` opacity dim: the field's readiness surface
+  // IS the not-yet-available look now.)
+  searchStatus: {
+    flex: 1,
+    fontFamily: fonts.cardBody,
+    fontSize: 15,
+  },
+  // Screen-reader-only: the polite live region announcing the FULL status message
+  // (the visible typewriter Text is hidden from accessibility — see SearchStatusLine).
+  // Absolute + 1×1 + transparent so it never affects the row's layout or paint.
+  srOnly: {
+    position: 'absolute',
+    width: 1,
+    height: 1,
+    opacity: 0,
   },
   searchSpinner: { width: 32 },
+  // ---- readiness bar (under the field, full page width) ----
+  readyBarTrack: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 4,
+  },
+  readyBarFill: {
+    height: 4,
+    borderTopRightRadius: 2,
+    borderBottomRightRadius: 2,
+  },
   reroll: {
     width: 44,
     height: 44,

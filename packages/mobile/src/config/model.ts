@@ -82,6 +82,20 @@ export const REMOTE_ASSETS = {
     label: 'Hiraia-2B base',
   },
   /** LaBSE embedder for the hybrid retriever (background download). */
+  /**
+   * The fact-bank semantic vectors (int8 LaBSE, 50,279 × 768). DOWNLOADED, not bundled —
+   * 78.6 MB of APK for a blob that is inert until the 384 MB embedder lands anyway (the
+   * same argument that moved the adapters out). The filename embeds the BANK HASH
+   * (md5(science-facts.jsonl)[:12]) so a rebuilt bank can never silently pair with a stale
+   * blob: attachSemantic hard-fails on hash mismatch, and the URL itself must change.
+   */
+  vectors: {
+    url: `${MODELS_BASE_URL}/vectors-labse-af171fe8a9f9.i8.bin`,
+    filename: 'vectors-labse-af171fe8a9f9.i8.bin',
+    bytes: 115842816,
+    md5: '4f80d21b0526db1aeadb7033b5aa8998',
+    label: 'Hiraiapedia vectors',
+  },
   embedder: {
     url: `${MODELS_BASE_URL}/labse.Q4_K_M.gguf`,
     filename: 'labse.Q4_K_M.gguf',
@@ -196,7 +210,7 @@ export const MODEL_STATS_LINE =
 // The bundled int8 semantic-vectors blob + its meta (built by
 // rag/scripts/build-vectors.py from the SAME bank version). Cross-package assets
 // under the workspace root; Metro packages the .bin, expo-asset reads its bytes.
-import vectorsBlobAsset from '../../assets/rag/vectors-labse.i8.bin';
+// vectors-labse.i8.bin is NO LONGER BUNDLED — see REMOTE_ASSETS.vectors above.
 import vectorsMeta from '../../assets/rag/vectors-labse.meta.json';
 
 /**
@@ -224,7 +238,6 @@ export const EMBEDDER = {
 } as const;
 
 /** The bundled semantic-vectors blob asset (int8) + its build metadata. */
-export const VECTORS_BLOB_ASSET: number = vectorsBlobAsset;
 export const VECTORS_META = vectorsMeta as {
   model: string;
   dims: number;

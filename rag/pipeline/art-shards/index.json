@@ -1,0 +1,488 @@
+{
+ "generatedBy": "packages/mobile/scripts/build-art-pack.mts",
+ "note": "Tail of the bundled-art order, grouped by owner grade×quarter cell for the backfill downloader. Image files live under packages/images/.",
+ "pack": {
+  "budgetBytes": 140000000,
+  "bytes": 139978122,
+  "images": 12218,
+  "keepList": "packages/mobile/src/generated/artPack.keep.json"
+ },
+ "corpus": {
+  "images": 30062,
+  "bytes": 461807754,
+  "cards": 46421,
+  "cardsWithArt": 42975,
+  "cardUnreachableImages": 1377,
+  "perGradeWeightedIllustratedPct": {
+   "pack": {
+    "g3": 57.5,
+    "g4": 57.5,
+    "g5": 57.8,
+    "g6": 57.9,
+    "g7": 58.1,
+    "g8": 57.9,
+    "g9": 58.1,
+    "g10": 57.8
+   },
+   "full": {
+    "g3": 92.1,
+    "g4": 92.1,
+    "g5": 92.1,
+    "g6": 92.2,
+    "g7": 92.7,
+    "g8": 92.6,
+    "g9": 92.7,
+    "g10": 92.5
+   }
+  },
+  "packFloor": {
+   "matatag": {
+    "nComps": 322,
+    "minPct": 27.6,
+    "minComp": "G6-E-3",
+    "below60": 35,
+    "met": 258
+   },
+   "deped": {
+    "nComps": 1015,
+    "minPct": 0,
+    "minComp": "deped:1-f35Ip58lbnXGBLLKKflfcH3xVkNIJdX",
+    "below60": 452,
+    "met": 513
+   },
+   "offCurriculumPct": 23.6
+  },
+  "floorT": 0.65
+ },
+ "tail": {
+  "images": 17844,
+  "bytes": 321829632,
+  "shards": 53
+ },
+ "shards": [
+  {
+   "id": "common-01",
+   "cell": "common",
+   "file": "common-01.json",
+   "images": 710,
+   "bytes": 7986152,
+   "md5": "2b3e6506a2f0909366e8c10b5a45b944"
+  },
+  {
+   "id": "common-02",
+   "cell": "common",
+   "file": "common-02.json",
+   "images": 446,
+   "bytes": 7980133,
+   "md5": "d51dfcc445a01a01a8886d1d08f96898"
+  },
+  {
+   "id": "common-03",
+   "cell": "common",
+   "file": "common-03.json",
+   "images": 411,
+   "bytes": 7995462,
+   "md5": "4bfb9f675e504ba0093f3c207ec4fd23"
+  },
+  {
+   "id": "common-04",
+   "cell": "common",
+   "file": "common-04.json",
+   "images": 512,
+   "bytes": 7994878,
+   "md5": "54187a2013b7d0968b7e72381cc64830"
+  },
+  {
+   "id": "common-05",
+   "cell": "common",
+   "file": "common-05.json",
+   "images": 506,
+   "bytes": 7986902,
+   "md5": "c27c466139385f170f6b7a205675ca2d"
+  },
+  {
+   "id": "common-06",
+   "cell": "common",
+   "file": "common-06.json",
+   "images": 124,
+   "bytes": 2036591,
+   "md5": "9cfb2f3e6472588b00b9001d68469b03"
+  },
+  {
+   "id": "g10-q1-01",
+   "cell": "g10-q1",
+   "file": "g10-q1-01.json",
+   "images": 297,
+   "bytes": 5961057,
+   "md5": "3efbed7dc3a78ec1198272301d716276"
+  },
+  {
+   "id": "g10-q2-01",
+   "cell": "g10-q2",
+   "file": "g10-q2-01.json",
+   "images": 230,
+   "bytes": 3958248,
+   "md5": "302a3bb1b3ac12c941a640a762c5efb5"
+  },
+  {
+   "id": "g10-q3-01",
+   "cell": "g10-q3",
+   "file": "g10-q3-01.json",
+   "images": 270,
+   "bytes": 4811242,
+   "md5": "f7e4f161d9da8b9227797f254f0c7e59"
+  },
+  {
+   "id": "g10-q4-01",
+   "cell": "g10-q4",
+   "file": "g10-q4-01.json",
+   "images": 279,
+   "bytes": 5402316,
+   "md5": "a800b87a92e83f95d62f886d0afbd1b8"
+  },
+  {
+   "id": "g3-q1-01",
+   "cell": "g3-q1",
+   "file": "g3-q1-01.json",
+   "images": 440,
+   "bytes": 7988952,
+   "md5": "26886fc86d338eb2c82988267181c7a7"
+  },
+  {
+   "id": "g3-q1-02",
+   "cell": "g3-q1",
+   "file": "g3-q1-02.json",
+   "images": 74,
+   "bytes": 2053316,
+   "md5": "a0298d42195a548f6b31d1de6c6e12c9"
+  },
+  {
+   "id": "g3-q2-01",
+   "cell": "g3-q2",
+   "file": "g3-q2-01.json",
+   "images": 548,
+   "bytes": 7997426,
+   "md5": "ca5b238891a848ccb272671dbe38dd8a"
+  },
+  {
+   "id": "g3-q2-02",
+   "cell": "g3-q2",
+   "file": "g3-q2-02.json",
+   "images": 427,
+   "bytes": 7999354,
+   "md5": "c38916b4d7a467f104fac218070f37ca"
+  },
+  {
+   "id": "g3-q2-03",
+   "cell": "g3-q2",
+   "file": "g3-q2-03.json",
+   "images": 346,
+   "bytes": 7980110,
+   "md5": "91672d271c3e9181af65ec212347f01e"
+  },
+  {
+   "id": "g3-q2-04",
+   "cell": "g3-q2",
+   "file": "g3-q2-04.json",
+   "images": 67,
+   "bytes": 2147679,
+   "md5": "4a89c84f15a4ea34841a41d3094977db"
+  },
+  {
+   "id": "g3-q3-01",
+   "cell": "g3-q3",
+   "file": "g3-q3-01.json",
+   "images": 466,
+   "bytes": 7981297,
+   "md5": "1172260ec16ef89d52cc59cad02d5472"
+  },
+  {
+   "id": "g3-q3-02",
+   "cell": "g3-q3",
+   "file": "g3-q3-02.json",
+   "images": 6,
+   "bytes": 186943,
+   "md5": "7b7e7b83dd9ec34dbb35231554e41dd3"
+  },
+  {
+   "id": "g3-q4-01",
+   "cell": "g3-q4",
+   "file": "g3-q4-01.json",
+   "images": 290,
+   "bytes": 5595803,
+   "md5": "901e8b9826af77bb3467dd7e3d2d2038"
+  },
+  {
+   "id": "g4-q1-01",
+   "cell": "g4-q1",
+   "file": "g4-q1-01.json",
+   "images": 468,
+   "bytes": 7992755,
+   "md5": "effc71d5db74b1245ca5b7e3ff08ad7a"
+  },
+  {
+   "id": "g4-q1-02",
+   "cell": "g4-q1",
+   "file": "g4-q1-02.json",
+   "images": 352,
+   "bytes": 7984917,
+   "md5": "408a4814cf4adc9a6b7516aecf3de96e"
+  },
+  {
+   "id": "g4-q1-03",
+   "cell": "g4-q1",
+   "file": "g4-q1-03.json",
+   "images": 47,
+   "bytes": 1362344,
+   "md5": "8cfc23ae320ed8642f62981d0a2b057f"
+  },
+  {
+   "id": "g4-q2-01",
+   "cell": "g4-q2",
+   "file": "g4-q2-01.json",
+   "images": 502,
+   "bytes": 7993590,
+   "md5": "0be7c58d9545029adc487abe8ed8a0ce"
+  },
+  {
+   "id": "g4-q2-02",
+   "cell": "g4-q2",
+   "file": "g4-q2-02.json",
+   "images": 223,
+   "bytes": 5162739,
+   "md5": "b1a322af65d3f4f1f58948eb42686096"
+  },
+  {
+   "id": "g4-q3-01",
+   "cell": "g4-q3",
+   "file": "g4-q3-01.json",
+   "images": 375,
+   "bytes": 6234961,
+   "md5": "5b2dc424f5ca3acb443423b9d33e3ab1"
+  },
+  {
+   "id": "g4-q4-01",
+   "cell": "g4-q4",
+   "file": "g4-q4-01.json",
+   "images": 397,
+   "bytes": 7470605,
+   "md5": "5f6cddc1075a5af5ff3911c8cccc9662"
+  },
+  {
+   "id": "g5-q1-01",
+   "cell": "g5-q1",
+   "file": "g5-q1-01.json",
+   "images": 408,
+   "bytes": 7224572,
+   "md5": "faf411ac72cc215c38dce1efc3a6422e"
+  },
+  {
+   "id": "g5-q2-01",
+   "cell": "g5-q2",
+   "file": "g5-q2-01.json",
+   "images": 508,
+   "bytes": 7996044,
+   "md5": "8ace283173b9c7943a94b6212ea72642"
+  },
+  {
+   "id": "g5-q2-02",
+   "cell": "g5-q2",
+   "file": "g5-q2-02.json",
+   "images": 407,
+   "bytes": 7989855,
+   "md5": "1d3decfe3191ed895d53a10ac667f567"
+  },
+  {
+   "id": "g5-q2-03",
+   "cell": "g5-q2",
+   "file": "g5-q2-03.json",
+   "images": 220,
+   "bytes": 5449465,
+   "md5": "99b0f597e08fa1fd4046a9a6bb1682e1"
+  },
+  {
+   "id": "g5-q3-01",
+   "cell": "g5-q3",
+   "file": "g5-q3-01.json",
+   "images": 451,
+   "bytes": 7682138,
+   "md5": "8f3fda3dc7e68ff5076fac5ef39640d3"
+  },
+  {
+   "id": "g5-q4-01",
+   "cell": "g5-q4",
+   "file": "g5-q4-01.json",
+   "images": 484,
+   "bytes": 7996320,
+   "md5": "48eb58c926bbcad00bd45dfccc1fa0b4"
+  },
+  {
+   "id": "g5-q4-02",
+   "cell": "g5-q4",
+   "file": "g5-q4-02.json",
+   "images": 357,
+   "bytes": 7990210,
+   "md5": "4978b394c694a45b11562ad50aa654e7"
+  },
+  {
+   "id": "g5-q4-03",
+   "cell": "g5-q4",
+   "file": "g5-q4-03.json",
+   "images": 55,
+   "bytes": 1640694,
+   "md5": "85446fdb6d503c0fa878267a4c8b2965"
+  },
+  {
+   "id": "g6-q1-01",
+   "cell": "g6-q1",
+   "file": "g6-q1-01.json",
+   "images": 518,
+   "bytes": 7989120,
+   "md5": "1874a2debaf5fba9ad861a602845fd6d"
+  },
+  {
+   "id": "g6-q1-02",
+   "cell": "g6-q1",
+   "file": "g6-q1-02.json",
+   "images": 261,
+   "bytes": 5795179,
+   "md5": "bba85c9c1662dbf276b1d0312096890e"
+  },
+  {
+   "id": "g6-q2-01",
+   "cell": "g6-q2",
+   "file": "g6-q2-01.json",
+   "images": 464,
+   "bytes": 7980738,
+   "md5": "049e4cf93936ceb48cc68952af646879"
+  },
+  {
+   "id": "g6-q2-02",
+   "cell": "g6-q2",
+   "file": "g6-q2-02.json",
+   "images": 195,
+   "bytes": 4684429,
+   "md5": "cebadcfd2dd90061fdf9e073ba46a2db"
+  },
+  {
+   "id": "g6-q3-01",
+   "cell": "g6-q3",
+   "file": "g6-q3-01.json",
+   "images": 432,
+   "bytes": 7133771,
+   "md5": "3bab143c89a8f9e856286ea9454882ec"
+  },
+  {
+   "id": "g6-q4-01",
+   "cell": "g6-q4",
+   "file": "g6-q4-01.json",
+   "images": 380,
+   "bytes": 7385780,
+   "md5": "f888c935d547d8c758de827e4ec3fafc"
+  },
+  {
+   "id": "g7-q1-01",
+   "cell": "g7-q1",
+   "file": "g7-q1-01.json",
+   "images": 456,
+   "bytes": 7998392,
+   "md5": "7d9a725efe90c8d12e29e8ecf0b77edf"
+  },
+  {
+   "id": "g7-q1-02",
+   "cell": "g7-q1",
+   "file": "g7-q1-02.json",
+   "images": 5,
+   "bytes": 139267,
+   "md5": "295a86d7951f2dcdf24cc8a66f335af7"
+  },
+  {
+   "id": "g7-q2-01",
+   "cell": "g7-q2",
+   "file": "g7-q2-01.json",
+   "images": 302,
+   "bytes": 5687593,
+   "md5": "062784db7abd468522e87a3ac5910ab9"
+  },
+  {
+   "id": "g7-q3-01",
+   "cell": "g7-q3",
+   "file": "g7-q3-01.json",
+   "images": 293,
+   "bytes": 4881429,
+   "md5": "975b05ef80300bbc8464095b4bf31a0c"
+  },
+  {
+   "id": "g7-q4-01",
+   "cell": "g7-q4",
+   "file": "g7-q4-01.json",
+   "images": 343,
+   "bytes": 6349013,
+   "md5": "d66b679b6389418ca839ae76d3f25aab"
+  },
+  {
+   "id": "g8-q1-01",
+   "cell": "g8-q1",
+   "file": "g8-q1-01.json",
+   "images": 407,
+   "bytes": 7778747,
+   "md5": "13398d16c093b75d70a5e42a3fd04471"
+  },
+  {
+   "id": "g8-q2-01",
+   "cell": "g8-q2",
+   "file": "g8-q2-01.json",
+   "images": 301,
+   "bytes": 5199246,
+   "md5": "69f96860712d193ee7c86a0a514aad90"
+  },
+  {
+   "id": "g8-q3-01",
+   "cell": "g8-q3",
+   "file": "g8-q3-01.json",
+   "images": 205,
+   "bytes": 4057482,
+   "md5": "a508a566ebaefe260e70a2a473aa6ed5"
+  },
+  {
+   "id": "g8-q4-01",
+   "cell": "g8-q4",
+   "file": "g8-q4-01.json",
+   "images": 302,
+   "bytes": 4964998,
+   "md5": "19da90a99217cc653dee4c3f514f363a"
+  },
+  {
+   "id": "g9-q1-01",
+   "cell": "g9-q1",
+   "file": "g9-q1-01.json",
+   "images": 398,
+   "bytes": 6690695,
+   "md5": "81a24993f083ffc1c85d6734109ad6d4"
+  },
+  {
+   "id": "g9-q2-01",
+   "cell": "g9-q2",
+   "file": "g9-q2-01.json",
+   "images": 290,
+   "bytes": 5635861,
+   "md5": "74d872cd0eac7d5325e0e8d3b178cbbb"
+  },
+  {
+   "id": "g9-q3-01",
+   "cell": "g9-q3",
+   "file": "g9-q3-01.json",
+   "images": 352,
+   "bytes": 7160795,
+   "md5": "828b28296ec0bc1bce0bbb8ce98ceb50"
+  },
+  {
+   "id": "g9-q4-01",
+   "cell": "g9-q4",
+   "file": "g9-q4-01.json",
+   "images": 237,
+   "bytes": 4102027,
+   "md5": "9c768861560fd900fc00f9090e4d8c70"
+  }
+ ]
+}

@@ -226,6 +226,15 @@ function checkContract(
 const inFlight = new Map<string, Promise<string>>();
 
 /**
+ * Progress callback for `ensureRemoteAsset`. `pct` is 0–100. `phase` distinguishes
+ * the two very different things "99%" can mean: `'transfer'` (bytes still arriving)
+ * vs `'verify'` (every byte is on disk and the streaming MD5 of the whole file is
+ * running — ~15 s of silence for the 1.27 GB base GGUF on the target device). The
+ * loader UI uses it to say "checking the download" instead of appearing stuck.
+ */
+export type DownloadProgressFn = (pct: number, phase?: 'transfer' | 'verify') => void;
+
+/**
  * Ensure `spec` is present locally AND matches its declared contract, downloading
  * it if not. `onProgress` receives 0–100 (it stays at 99 during verification and
  * only reaches 100 once the file is verified and promoted, so callers that treat
@@ -236,7 +245,7 @@ const inFlight = new Map<string, Promise<string>>();
  */
 export async function ensureRemoteAsset(
   spec: RemoteAssetSpec,
-  onProgress?: (pct: number) => void,
+  onProgress?: DownloadProgressFn,
   signal?: AbortSignal
 ): Promise<string> {
   const running = inFlight.get(spec.filename);
@@ -266,7 +275,7 @@ export async function ensureRemoteAsset(
 /** The real work. Serialised per filename by `ensureRemoteAsset` above. */
 async function fetchAndVerify(
   spec: RemoteAssetSpec,
-  onProgress?: (pct: number) => void,
+  onProgress?: DownloadProgressFn,
   signal?: AbortSignal
 ): Promise<string> {
   await ensureDir();
@@ -343,8 +352,9 @@ async function fetchAndVerify(
       // WRITE-path gate. Nothing below this line is reached by unverified bytes.
       // MD5 is recomputed from DISK (not from the download result) so it covers
       // resumed transfers end to end, including bytes written by an earlier launch.
+      // `'verify'` tells the caller these are hashing seconds, not network seconds.
       // -----------------------------------------------------------------------
-      onProgress?.(99);
+      onProgress?.(99, 'verify');
       const size = await localSize(partUri);
       // Size first: it is a stat, and hashing 1.27 GB costs a full disk read
       // (~20 s on the target device). Never pay that to reject a login page.
@@ -445,7 +455,7 @@ async function runTransfer(
   spec: RemoteAssetSpec,
   partUri: string,
   startOffset: number,
-  onProgress: ((pct: number) => void) | undefined,
+  onProgress: DownloadProgressFn | undefined,
   signal: AbortSignal | undefined
 ): Promise<number | null> {
   LOG(

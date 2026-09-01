@@ -5,10 +5,10 @@ import { File } from 'expo-file-system';
 import {
   ACTIVE_MODEL,
   EMBEDDER,
-  VECTORS_BLOB_ASSET,
   VECTORS_META,
   IMAGE_VECTORS_BLOB_ASSET,
   IMAGE_VECTORS_META,
+  REMOTE_ASSETS,
 } from '../config/model';
 import { DEFAULT_GRADE } from '../config/grades';
 import { WARMUP_TEMP, WARMUP_QUERY, WARMUP_FACT } from '../config/inference';
@@ -178,6 +178,34 @@ async function persistCpuFallbackVerdict(): Promise<void> {
 // divergence that makes hiraia.org stop being a demo of the app.
 
 /**
+ * Structured load-progress events — the truthful stage feed for the search field's
+ * readiness bar (engineStore composes them into ONE weighted 0–1 number).
+ *
+ * The numeric `onProgress` in the TutorEngine interface can only say "N% of the
+ * download band", which forces the UI to guess what is actually happening — and the
+ * two long silent phases (the ~15 s MD5 of 1.27 GB, the load-into-RAM) look identical
+ * to a stall. Each event names the real work in flight:
+ *
+ *   • download  — bytes of the base GGUF arriving (real pct from the verifying
+ *                 downloader; instant 100 on a cached run)
+ *   • verify    — every byte on disk, streaming MD5 running (no pct exists)
+ *   • load      — loadModel reading the verified file into RAM (real pct from QVAC)
+ *   • cpu-retry — the GPU placement died and the load is RESTARTING on CPU (the
+ *                 honest message is "taking longer", never a percent that goes
+ *                 backwards — the store's monotonic bar holds through the restart)
+ *   • semantic  — the BACKGROUND LaBSE init (384 MB download + load + attach),
+ *                 which continues AFTER the engine is ready; pct 100 also fires on
+ *                 failure, because either way the loading story is over (the app
+ *                 stays lexical-only — a working tutor, not an error).
+ */
+export type EngineProgressEvent =
+  | { stage: 'download'; pct: number }
+  | { stage: 'verify' }
+  | { stage: 'load'; pct: number }
+  | { stage: 'cpu-retry' }
+  | { stage: 'semantic'; pct: number };
+
+/**
  * LocalEngine implementation using QVAC SDK.
  * Runs the configured Hiraia model (ACTIVE_MODEL — the Hiraia-2B, our CPT'd +
  * full-parameter-SFT'd Qwen3.5-2B) locally on-device for privacy and offline
@@ -196,6 +224,10 @@ export class LocalEngine implements TutorEngine {
   // BACKGROUND after the LLM (lexical-first); until ready, retrieval is lexical.
   private embedModelId: string | null = null;
   private semanticReady = false;
+  // Structured load-stage channel (see EngineProgressEvent). Set by initialize();
+  // kept on the instance so the BACKGROUND initSemantic() can keep reporting the
+  // LaBSE band long after initialize() has resolved.
+  private onEvent: ((ev: EngineProgressEvent) => void) | null = null;
   // Illustration catalog (one LaBSE vector per bundled clip-art PNG); loaded with the
   // semantic init. Null → no picture is ever resolved (no picture, never wrong).
   private imageIndex: ImageIndex | null = null;
@@ -295,9 +327,17 @@ export class LocalEngine implements TutorEngine {
     }
   }
 
-  async initialize(config: TutorConfig, onProgress?: (p: number) => void): Promise<void> {
+  async initialize(
+    config: TutorConfig,
+    onProgress?: (p: number) => void,
+    // Structured stage feed for the readiness UI — see EngineProgressEvent. The numeric
+    // `onProgress` stays for TutorEngine interface compatibility; the app's store
+    // listens to THIS.
+    onEvent?: (ev: EngineProgressEvent) => void
+  ): Promise<void> {
     try {
       this.config = config;
+      this.onEvent = onEvent ?? null;
       console.log(`Loading ${ACTIVE_MODEL.displayName} model...`);
 
       // Everything that must land before the model can load goes through the
@@ -336,7 +376,13 @@ export class LocalEngine implements TutorEngine {
         // onProgress just snaps to 100.
         const src =
           ACTIVE_MODEL.remote
-            ? await ensureRemoteAsset(ACTIVE_MODEL.remote, band(ADAPTER_BAND, 100))
+            ? await ensureRemoteAsset(ACTIVE_MODEL.remote, (pct, phase) => {
+                band(ADAPTER_BAND, 100)(pct);
+                // The downloader tells us when its 99 means "hashing 1.27 GB" rather
+                // than "still fetching" — a real ~15 s stage that deserves its own
+                // honest message instead of a bar that looks stuck.
+                onEvent?.(phase === 'verify' ? { stage: 'verify' } : { stage: 'download', pct });
+              })
             : ACTIVE_MODEL.modelSrc;
 
         // Load the configured GGUF. `lora` applies a downloaded + verified
@@ -368,9 +414,12 @@ export class LocalEngine implements TutorEngine {
               ...(loraPath ? { lora: loraPath } : {}),
             },
             onProgress: (p) => {
-              // Local-file load — no network. Log only; the bar already finished its
-              // download band via ensureRemoteAsset above.
-              console.log(`[LocalEngine] ${ACTIVE_MODEL.displayName} loading: ${Math.round(p.percentage ?? 0)}%`);
+              // Local-file load — no network. The numeric channel already finished its
+              // download band via ensureRemoteAsset above; the STRUCTURED channel gets
+              // the real into-RAM percentage (its own weighted band on the readiness bar).
+              const pct = Math.round(p.percentage ?? 0);
+              console.log(`[LocalEngine] ${ACTIVE_MODEL.displayName} loading: ${pct}%`);
+              onEvent?.({ stage: 'load', pct });
             },
           });
 
@@ -398,6 +447,9 @@ export class LocalEngine implements TutorEngine {
               `${e instanceof Error ? e.message : String(e)}. ` +
               `RETRYING ONCE on CPU (device:'cpu', gpu_layers:0).`
           );
+          // Tell the readiness UI the truth: the load is restarting, so it should HOLD
+          // the bar and switch to a "taking longer" message — never tick backwards.
+          onEvent?.({ stage: 'cpu-retry' });
           this.modelId = await loadWith({ gpu_layers: 0, device: 'cpu' });
           console.error(
             `[LocalEngine] CPU FALLBACK SUCCEEDED — this device cannot run the GPU path. ` +
@@ -810,30 +862,49 @@ export class LocalEngine implements TutorEngine {
    * background; any failure leaves the app on lexical-only retrieval.
    */
   private async initSemantic(): Promise<void> {
+    // The semantic band of the readiness bar. TWO downloads share it now, split by their
+    // real byte weights (LaBSE 384 MB ≈ 0–69, the fact-vectors blob 116 MB ≈ 69–90 — the
+    // blob moved out of the APK, see REMOTE_ASSETS.vectors); the into-RAM load takes
+    // 90–99 and attach/warm snaps 100. pct 100 ALWAYS fires (success, failure, or no-RAG
+    // early return) — the bar must finish its walk to green either way, because "loading
+    // is over" is true in every one of those cases.
+    const emit = (pct: number) => this.onEvent?.({ stage: 'semantic', pct });
     try {
-      if (!this.rag) return;
+      if (!this.rag) {
+        emit(100);
+        return;
+      }
       const t0 = Date.now();
       // 1) embedder (LaBSE GGUF via the QVAC llamacpp-embedding plugin). Same
       // resilient local download as the base model (retry/resume/background) — it's
-      // another remote file in the "lots of files" first-run set. Background phase,
-      // so its progress is logged, not surfaced on the loader bar.
+      // another remote file in the "lots of files" first-run set. Background phase:
+      // it reports through the semantic band of the readiness bar, never gating the
+      // engine's own readiness.
       const embedSrc = EMBEDDER.remote
-        ? await ensureRemoteAsset(EMBEDDER.remote, (pct) =>
-            console.log(`[LocalEngine] LaBSE downloading: ${pct}%`)
-          )
+        ? await ensureRemoteAsset(EMBEDDER.remote, (pct) => {
+            console.log(`[LocalEngine] LaBSE downloading: ${pct}%`);
+            emit(Math.round(pct * 0.69));
+          })
         : EMBEDDER.modelSrc;
       this.embedModelId = await loadModel({
         modelSrc: embedSrc,
         modelType: EMBEDDER.modelType,
         modelConfig: EMBEDDER.modelConfig,
-        onProgress: (p) =>
-          console.log(`[LocalEngine] LaBSE loading: ${Math.round(p.percentage ?? 0)}%`),
+        onProgress: (p) => {
+          const pct = Math.round(p.percentage ?? 0);
+          console.log(`[LocalEngine] LaBSE loading: ${pct}%`);
+          emit(90 + Math.round(pct * 0.09));
+        },
       });
-      // 2) bundled vectors blob → Int8Array
-      const asset = Asset.fromModule(VECTORS_BLOB_ASSET);
-      await asset.downloadAsync();
-      const uri = asset.localUri ?? asset.uri;
-      const bytes = await new File(uri).bytes(); // Uint8Array
+      // 2) fact-vectors blob — DOWNLOADED through the same verified gate as every other
+      // remote asset (declared bytes + streaming MD5, byte-exact resume, self-healing
+      // cache). It used to be a 78.6 MB bundled Metro asset; it is inert without the
+      // embedder above, so it rides the same background phase and costs the APK nothing.
+      const vectorsPath = await ensureRemoteAsset(REMOTE_ASSETS.vectors, (pct) => {
+        console.log(`[LocalEngine] vectors downloading: ${pct}%`);
+        emit(69 + Math.round(pct * 0.21));
+      });
+      const bytes = await new File('file://' + vectorsPath).bytes(); // Uint8Array
       const data = new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength);
       // 3) attach. The guard inside attachSemantic catches a stale blob two ways: the count
       // must equal the bank's row count, and — since an edit that rewrites facts without
@@ -863,9 +934,12 @@ export class LocalEngine implements TutorEngine {
         /* non-fatal — first real query just pays the cold cost */
       }
       console.log(`[LocalEngine] semantic hybrid ready (${Date.now() - t0}ms)`);
+      emit(100);
     } catch (e) {
       console.warn('[LocalEngine] semantic init failed — staying lexical-only:', e);
       this.semanticReady = false;
+      // Lexical-only is a WORKING tutor; the loading story is still over. Finish the bar.
+      emit(100);
     }
     // Image catalog blob (~3MB): substrate of the retired tag path (`resolveImageTag`) and
     // nothing else now — the card path is an id lookup. Independent of the fact-bank blob;

@@ -64,8 +64,6 @@ interface UIStrings {
     /** Banner announcing a two-way split in the thread (mid-century card). */
     fork: string;
     searchPlaceholder: string;
-    /** Shown in the search field while the model is still warming (the feed itself needs none). */
-    searchWarming: string;
     /** Shown if warm-up failed — tapping the field retries, so this must not read as fatal. */
     searchUnavailable: string;
     yourQuestion: string;
@@ -78,7 +76,38 @@ interface UIStrings {
     offdomain: string;
     /** Static examples under the off-domain line (by definition there is no retrieved topic). */
     offdomainHint: string;
+    /**
+     * The ask box's readiness status library. STAGE-TRUTHFUL lines only ever show while
+     * their stage is genuinely in flight (engineStore.readyStage keys the pool); the
+     * evergreen fillers are honest in any stage. `pctDone` interpolates the REAL composed
+     * readiness percent ({pct}). Rotated ~10 s with a typewriter — see CardFeedScreen.
+     */
+    loading: LoadingStrings;
   };
+}
+
+/** Status-message library for the search field's readiness bar (see cards.loading). */
+interface LoadingStrings {
+  /** Load requested, nothing observed yet. */
+  connect: string[];
+  /** The ~1.27 GB base model streaming in (real percent available). */
+  download: string[];
+  /** MD5 of the finished download (~15 s of real, silent work). */
+  verify: string[];
+  /** loadModel reading the verified file into RAM. */
+  load: string[];
+  /** The GPU load failed and the load restarted on CPU — honestly "taking longer". */
+  cpuRetry: string[];
+  /** prime() — the throwaway warm-up completion. "Waking up Hiraia" is literal here. */
+  warm: string[];
+  // No `semantic` entry ON PURPOSE: the LaBSE band only runs after the engine is
+  // ready, when the field is the live TextInput showing the real searchPlaceholder —
+  // the crawling bar alone tells that story. See the STAGE_KEY note in
+  // components/cards/searchReadiness.ts.
+  /** True at any stage ("still working", "this takes a few minutes"). */
+  evergreen: string[];
+  /** "{pct}% done" — only offered while a stage with a REAL signal is running. */
+  pctDone: string;
 }
 
 const UI_STRINGS: Record<Language, UIStrings> = {
@@ -129,7 +158,6 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       nextCard: 'Sunod na kard',
       fork: 'Sangandaan',
       searchPlaceholder: 'Anong gusto mong malaman?',
-      searchWarming: 'Ginigising si Hiraia…',
       searchUnavailable: 'Pindutin para subukan ulit',
       yourQuestion: 'Ang tanong mo',
       thinking: 'Iniisip ko pa',
@@ -137,6 +165,18 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       abstainSuggest: 'Pero subukan natin ito',
       offdomain: 'Tutor ako sa agham, kaya agham lang ang laman ng mga kard ko.',
       offdomainHint: 'Subukan mo: hayop, panahon, katawan, o kalawakan.',
+      loading: {
+        connect: ['Kumokonekta…', 'Inihahanda ang pag-download…'],
+        download: ['Dina-download ang utak ni Hiraia…', 'Malaki-laki ito — konting tiis!'],
+        verify: ['Sinusuri ang na-download…', 'Tinitingnan kung buo ang file…'],
+        load: ['Binubuksan ang modelo…', 'Inilalagay sa memorya…'],
+        cpuRetry: ['Medyo natatagalan — sandali pa…'],
+        warm: ['Ginigising si Hiraia…', 'Nag-uunat pa si Hiraia…'],
+        evergreen: ['Gumagana pa rin…', 'Aabutin ito nang ilang minuto.', 'Salamat sa paghihintay!'],
+        // NOTE for native review: "{pct}% na ang tapos" may read more naturally as
+        // "{pct}% na ang natapos" — flagged, not self-corrected.
+        pctDone: '{pct}% na ang tapos',
+      },
     },
   },
   english: {
@@ -185,7 +225,6 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       nextCard: 'Next card',
       fork: 'Crossroads',
       searchPlaceholder: 'What do you want to learn about?',
-      searchWarming: 'Waking Hiraia up…',
       searchUnavailable: 'Tap to try again',
       yourQuestion: 'You asked',
       thinking: "I'm thinking",
@@ -193,6 +232,16 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       abstainSuggest: "But let's try this",
       offdomain: "I'm a science tutor, so all my cards are about science.",
       offdomainHint: 'Try: animals, weather, your body, or space.',
+      loading: {
+        connect: ['Connecting…', 'Getting the download ready…'],
+        download: ["Downloading Hiraia's brain…", "It's a big file — hang tight!"],
+        verify: ['Checking the download…', 'Making sure every byte arrived…'],
+        load: ['Opening the model…', 'Loading it into memory…'],
+        cpuRetry: ['Taking a little longer — hang on…'],
+        warm: ['Waking Hiraia up…', 'Hiraia is stretching…'],
+        evergreen: ['Still working…', 'This will take a few minutes.', 'Thanks for waiting!'],
+        pctDone: '{pct}% done',
+      },
     },
   },
   cebuano: {
@@ -242,7 +291,6 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       nextCard: 'Sunod nga kard',
       fork: 'Sangang-dalan',
       searchPlaceholder: 'Unsa ang gusto nimong hibaw-an?',
-      searchWarming: 'Ginapukaw si Hiraia…',
       searchUnavailable: 'I-tap para sulayan pag-usab',
       yourQuestion: 'Ang pangutana nimo',
       thinking: 'Naghunahuna pa ko',
@@ -250,6 +298,27 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       abstainSuggest: 'Pero sulayan nato ni',
       offdomain: 'Tutor ko sa siyensya, mao nga siyensya ra ang sulod sa akong mga kard.',
       offdomainHint: 'Sulayi: mananap, panahon, lawas, o kawanangan.',
+      // NOTE for native review: drafted to match the Tagalog set — do NOT ship to
+      // Cebuano-mode testers unchecked. Specific flags (flagged, not self-corrected):
+      //   • "Gida-download" — not a standard Cebuano progressive; likely
+      //     "Gina-download" or "Gi-download pa" (it reads like Tagalog "dina-download"
+      //     transposed).
+      //   • "Moabot kini og pipila ka minuto" — "moabot" is "will arrive"; for a
+      //     duration a speaker would say "Molungtad kini og pipila ka minuto".
+      //   • gi- vs gina- aspect on "Gisusi" / "Gitan-aw" / "Giablihan" / "Gibutang":
+      //     the gi- forms carry completed aspect and can read as already-done rather
+      //     than in-progress (compare the correctly progressive "Ginapukaw").
+      //   • "Nag-inat pa si Hiraia" — check idiomatic register.
+      loading: {
+        connect: ['Nagkonektar…', 'Giandam ang download…'],
+        download: ['Gida-download ang utok ni Hiraia…', 'Dako-dako kini — pailub lang!'],
+        verify: ['Gisusi ang na-download…', 'Gitan-aw kung kompleto ang file…'],
+        load: ['Giablihan ang modelo…', 'Gibutang sa memorya…'],
+        cpuRetry: ['Medyo nadugay — kadiyot na lang…'],
+        warm: ['Ginapukaw si Hiraia…', 'Nag-inat pa si Hiraia…'],
+        evergreen: ['Nagtrabaho pa gihapon…', 'Moabot kini og pipila ka minuto.', 'Salamat sa paghulat!'],
+        pctDone: '{pct}% na ang nahuman',
+      },
     },
   },
 };
