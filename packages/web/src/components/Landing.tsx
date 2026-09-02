@@ -2,6 +2,7 @@
 
 import { type ReactNode } from 'react';
 import { AppDownload } from '@/components/AppDownload';
+import { FeedbackBreaker } from '@/components/FeedbackBreaker';
 import { YouTubeEmbed } from '@/components/YouTubeEmbed';
 import { DemoLightbox } from '@/components/demo/DemoLightbox';
 import { useDemoStore } from '@/store/useDemoStore';
@@ -195,6 +196,9 @@ export function Landing() {
           </div>
         </div>
       </section>
+
+      {/* BREAKER — full-bleed white band with the feedback line + its modal. */}
+      <FeedbackBreaker />
 
       <section className="px-5 py-16 sm:px-12 sm:py-20 md:px-16 lg:px-24">
         <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">

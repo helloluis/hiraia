@@ -19,6 +19,11 @@ import fs from 'node:fs';
  * has no accounts, so its transcripts are keyed only by a client-generated
  * session id (localStorage) — no user_id, no FK. We keep them for product
  * insight into what visitors actually try, not as per-user history.
+ *
+ * `feedback` is also account-free and write-only from the web: rows come from the
+ * landing page's feedback form. Unlike demo transcripts, `name`/`contact` here are
+ * contact details the visitor volunteered on purpose so we can reply — treat them
+ * as personal data (don't export, don't join against anything).
  */
 
 const DB_PATH =
@@ -69,6 +74,15 @@ CREATE TABLE IF NOT EXISTS demo_messages (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX IF NOT EXISTS idx_demo_messages_session ON demo_messages(session_id);
+
+CREATE TABLE IF NOT EXISTS feedback (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  name       TEXT NOT NULL,                      -- visitor-typed display name
+  contact    TEXT NOT NULL,                      -- email / mobile / Twitter — VOLUNTEERED so we can reply
+  body       TEXT NOT NULL,                      -- raw text as typed (markup kept as-is, rendered nowhere)
+  user_agent TEXT,                               -- coarse bot/browser triage only
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
 `;
 
 let _db: Database.Database | null = null;
