@@ -30,6 +30,7 @@ import {
   choiceLabel,
   competencyKeys,
   getCard,
+  hasServableMagnet,
   jumpCard,
   nextChoices,
   questionForFact,
@@ -71,8 +72,8 @@ const REWARD_MIN_TOPICS = 3; // don't reward until there's something to celebrat
  *   offdomain — not science at all ("roblox"): we say we are only a science tutor, and
  *               deliberately offer NO topic (suggesting a science card to a child who asked
  *               about a game is the behaviour this split exists to remove).
- * (A retrieval HIT navigates directly to the found card with a `queryBanner` instead — no
- * FeedResponse needed.)
+ * (A retrieval HIT navigates directly to the found card with an ActiveMagnet instead — its
+ * query is the "you asked" ribbon — no FeedResponse needed.)
  */
 export interface FeedResponse {
   query: string;
@@ -87,6 +88,26 @@ export interface FeedResponse {
    * art does, rather than reaching for a picture that would be wrong.
    */
   slug: string | null;
+}
+
+/**
+ * The ACTIVE asked-topic magnet — "You asked 'dinosaur'", holding while the feed lines the
+ * topic up (see MagnetPull in data/cards.ts for the pull itself).
+ *
+ *   query  — what the child typed; it IS the banner copy (the banner lives exactly as long
+ *            as the magnet, which is what makes the [x] and the auto-release honest).
+ *   idSet  — the magnet set, computed ONCE at ask time from the search's own scoring
+ *            (SearchResult.magnet). Per page-turn it is only ever LOOKED UP, never re-scored.
+ *   served — how many magnet cards have been served since the ask; the pull's decay clock.
+ *
+ * Cleared by: the [x] (dismissQuery), auto-release (no unseen servable member left — checked
+ * on each ordinary page-turn), a new ask (replaced), and the reroll (an explicit "surprise
+ * me"). Quiz/reward interjects never touch it — they are interruptions, not topic changes.
+ */
+export interface ActiveMagnet {
+  query: string;
+  idSet: ReadonlySet<string>;
+  served: number;
 }
 
 interface CardState {
@@ -108,8 +129,11 @@ interface CardState {
   asking: boolean;
   /** Card to land on when the kid continues past a generated/abstain response page. */
   responseAnchorId: string | null;
-  /** "Ang tanong mo: X" ribbon shown when a search navigated straight to a found card. */
-  queryBanner: string | null;
+  /**
+   * The asked-topic magnet. Its `query` is also the "Ang tanong mo: X" ribbon — the ribbon
+   * shows exactly while a magnet is active, so dismissing one dismisses the other.
+   */
+  magnet: ActiveMagnet | null;
   /** Monotonic page number — keys the flip + typewriter remounts. */
   pageKey: number;
   pagesRead: number;
@@ -139,6 +163,8 @@ interface CardState {
   continueAfterReward: () => void;
   /** Kid typed a query: retrieval-first → found card, else warm-model answer, else abstain. */
   ask: (query: string) => Promise<void>;
+  /** The banner's [x]: drop the asked-topic magnet (and with it the ribbon); the feed keeps going. */
+  dismissQuery: () => void;
   continueAfterResponse: () => void;
   /** Kick a background model warm-up so reward text can be generated (non-blocking). */
   warmModel: () => void;
@@ -176,15 +202,43 @@ const seenStore: { cards: Map<string, SeenRecord>; competencies: Map<string, See
   competencies: new Map(),
 };
 
-/** Fresh weighting context for one draw: grade + clock are re-read every time. */
-function feedContext(): FeedContext {
+/**
+ * Fresh weighting context for one draw: grade + clock are re-read every time. The magnet rides
+ * along as an O(set) overlay in the weigher. Callers mid-transition pass the magnet they are
+ * ABOUT to commit (get() would hand back the previous page's); the default reads the store.
+ */
+function feedContext(magnet: ActiveMagnet | null = useCardStore.getState().magnet): FeedContext {
   return {
     studentGrade: useEngineStore.getState().grade,
     currentQuarter: inferCurriculumQuarter(new Date()).quarter,
     now: Date.now(),
     cardSeen: seenStore.cards,
     competencySeen: seenStore.competencies,
+    magnet: magnet ? { ids: magnet.idSet, served: magnet.served } : undefined,
   };
+}
+
+/** A magnet for this ask, or null when the search head-matched nothing (no set, no pull). */
+function formMagnet(query: string, ids: readonly string[]): ActiveMagnet | null {
+  return ids.length ? { query, idSet: new Set(ids), served: 0 } : null;
+}
+
+/**
+ * The magnet after `fact` becomes current on an ORDINARY page-turn: serving one of its own
+ * cards advances the decay clock, and exhaustion — no unseen member servable from the new
+ * page under nextChoices' own gates — releases it (auto-release, silent). `seen`/`recent`
+ * are the post-turn values, i.e. they already include `fact`.
+ */
+function magnetAfter(
+  m: ActiveMagnet | null,
+  fact: CardFact,
+  seen: ReadonlySet<string>,
+  recent: readonly string[]
+): ActiveMagnet | null {
+  if (!m) return null;
+  const served = m.idSet.has(fact.id) ? m.served + 1 : m.served;
+  if (!hasServableMagnet(fact.id, m.idSet, seen, recent)) return null;
+  return served === m.served ? m : { ...m, served };
 }
 
 function bump(map: Map<string, SeenRecord>, key: string, now: number) {
@@ -216,7 +270,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
   response: null,
   asking: false,
   responseAnchorId: null,
-  queryBanner: null,
+  magnet: null,
   pageKey: 0,
   pagesRead: 0,
   correctCount: 0,
@@ -422,16 +476,20 @@ export const useCardStore = create<CardState>()((set, get) => ({
         }
       }
       if (weakOff !== true) {
-        navigateTo(res.best, set, get, q);
+        // On-topic landing: form the magnet — the query, its aboutness-ranked set (already
+        // computed by the search we just paid for), decay clock at zero. It REPLACES any
+        // previous magnet: a new ask is a topic change by definition.
+        navigateTo(res.best, set, get, formMagnet(q, res.magnet));
         return;
       }
       // Weak hit AND off-domain: the matched card would have been a wrong answer to a
       // non-science query. Same card as the miss-path off-domain outcome below — no suggestion
-      // and no anchor, for the same reason spelled out there.
+      // and no anchor, for the same reason spelled out there. No magnet either (and any old
+      // one is dropped): off-domain is not a topic the feed can line up.
       set({
         question: null,
         reward: null,
-        queryBanner: null,
+        magnet: null,
         response: { query: q, kind: 'offdomain', text: null, suggestion: null, slug: null },
         responseAnchorId: null,
         pageKey: get().pageKey + 1,
@@ -460,7 +518,10 @@ export const useCardStore = create<CardState>()((set, get) => ({
             asking: false,
             question: null,
             reward: null,
-            queryBanner: null,
+            // A GROUNDED generated card is an on-topic landing too, so it forms the magnet
+            // (from the same ask-time search scoring). Often empty — a true gap head-matches
+            // nothing — and then there is no magnet and no ribbon, just the response card.
+            magnet: formMagnet(q, res.magnet),
             response: {
               query: q,
               kind: 'generated',
@@ -494,7 +555,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
     set({
       question: null,
       reward: null,
-      queryBanner: null,
+      magnet: null, // a gap/offdomain outcome forms no magnet, and retires any previous one
       response: {
         query: q,
         kind: offDomain ? 'offdomain' : 'abstain',
@@ -507,6 +568,13 @@ export const useCardStore = create<CardState>()((set, get) => ({
       responseAnchorId: offDomain ? null : (suggestion?.id ?? null),
       pageKey: get().pageKey + 1,
     });
+  },
+
+  dismissQuery: () => {
+    // The banner's [x]: the topic is boring them. Magnet + ribbon go together; the feed
+    // continues from wherever it is — the current page and its choices stand, and the next
+    // page-turn simply draws unmagnetized.
+    if (get().magnet) set({ magnet: null });
   },
 
   continueAfterResponse: () => {
@@ -533,7 +601,9 @@ export const useCardStore = create<CardState>()((set, get) => ({
   jumpToRandom: () => {
     const s = get();
     const lang = useEngineStore.getState().language ?? 'tagalog';
-    const ctx = feedContext();
+    // The reroll is an explicit "surprise me", so the magnet is dropped BEFORE the draw —
+    // the jump itself must not be pulled back toward the topic being escaped.
+    const ctx = feedContext(null);
     const dest = jumpCard(s.current?.id ?? null, s.seen, ctx);
     const seen = new Set(s.seen);
     seen.add(dest.id);
@@ -547,7 +617,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
       pending: null,
       questionAnswered: false,
       response: null,
-      queryBanner: null,
+      magnet: null, // 🎲 = "surprise me": the asked topic is released, ribbon and all
       seen,
       recent: [dest.id], // fresh trail — the jump is a hard topic switch
       pagesRead,
@@ -578,10 +648,14 @@ export function previewChoices(language: Language): CardChoice[] {
   if (!choice || !next) return [];
   const seen = new Set(s.seen);
   seen.add(next.id);
+  const recent = [...s.recent, next.id].slice(-RECENT_WINDOW);
+  // The same magnet transition advance() will make — including the auto-release. Previewing
+  // with the CURRENT magnet instead would name a different deep card on the page where the
+  // magnet expires, and the sheet beneath would swap labels the instant the swipe completed.
   return nextChoices(next.id, seen, language, {
     threadDepth: choice.kind === 'lateral' ? 0 : s.threadDepth + 1,
-    recentIds: [...s.recent, next.id].slice(-RECENT_WINDOW),
-    ctx: feedContext(),
+    recentIds: recent,
+    ctx: feedContext(magnetAfter(s.magnet, next, seen, recent)),
   });
 }
 
@@ -590,8 +664,9 @@ type Get_ = () => CardState;
 
 /**
  * Navigate to an explicit card (from a search hit or a response-continue). Records it like a
- * normal page turn, sets an optional "you asked" banner, and resets the interject counter so
- * a question/reward doesn't fire on the very page after a topic jump.
+ * normal page turn, commits the ask's magnet when one was just formed (its query is the
+ * "you asked" ribbon), and resets the interject counter so a question/reward doesn't fire on
+ * the very page after a topic jump.
  */
 /**
  * Warm the page that was just committed and the ones it leads to.
@@ -612,14 +687,21 @@ function warmAfter(get: Get_) {
   void warmPage([s.current?.id, ...s.choices.map((c) => c.factId)], recentFactIds);
 }
 
-function navigateTo(fact: CardFact, set: Set_, get: Get_, banner?: string) {
+function navigateTo(fact: CardFact, set: Set_, get: Get_, magnetOverride?: ActiveMagnet | null) {
   const s = get();
   const lang = useEngineStore.getState().language ?? 'tagalog';
-  const ctx = feedContext();
   const seen = new Set(s.seen);
   seen.add(fact.id);
-  markSeen(fact, ctx.now);
   const recent = [...s.recent, fact.id].slice(-RECENT_WINDOW);
+  // `magnetOverride` is the just-formed magnet of an ask (undefined = keep the store's, as a
+  // response-continue does). Landing on one of its own cards advances the decay clock, but
+  // the exhaustion check deliberately does NOT run here: a just-asked one-card topic still
+  // gets its "You asked" ribbon on the very page that answered it. The release fires on the
+  // next ordinary turn (advance), where an exhausted set has no pull anyway.
+  const base = magnetOverride === undefined ? s.magnet : magnetOverride;
+  const magnet = base && base.idSet.has(fact.id) ? { ...base, served: base.served + 1 } : base;
+  const ctx = feedContext(magnet);
+  markSeen(fact, ctx.now);
   const viewLog = [
     ...s.viewLog,
     { factId: fact.id, topic: cardTitle(fact, lang) || fact.topic, ts: ctx.now },
@@ -638,7 +720,7 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, banner?: string) {
     response: null,
     pending: null,
     questionAnswered: false,
-    queryBanner: banner ?? null,
+    magnet,
     untilQuestion: nextGap(), // don't interject right after a search / topic jump
     untilReward: s.untilReward - 1,
     pageKey: s.pageKey + 1,
@@ -653,12 +735,17 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
   const nextFact = getCard(choice.factId);
   if (!nextFact) return;
   const lang = useEngineStore.getState().language ?? 'tagalog';
-  const ctx = feedContext();
 
   const seen = new Set(s.seen);
   seen.add(nextFact.id);
-  markSeen(nextFact, ctx.now);
   const recent = [...s.recent, nextFact.id].slice(-RECENT_WINDOW);
+  // The magnet after this turn: decay clock advanced if a magnet card was just served,
+  // AUTO-RELEASED (null, ribbon gone, silently) once no unseen member is servable from here.
+  // The choices below are drawn with the post-turn magnet, so the pull and the release both
+  // take effect on the page where they happened.
+  const magnet = magnetAfter(s.magnet, nextFact, seen, recent);
+  const ctx = feedContext(magnet);
+  markSeen(nextFact, ctx.now);
   const viewLog = [
     ...s.viewLog,
     { factId: nextFact.id, topic: cardTitle(nextFact, lang) || nextFact.topic, ts: ctx.now },
@@ -681,7 +768,7 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
     pagesRead,
     untilQuestion: s.untilQuestion - 1,
     untilReward,
-    queryBanner: null, // a normal page-turn clears any lingering search banner
+    magnet, // persists across ordinary turns until [x] / auto-release / new ask / reroll
     pageKey: s.pageKey + 1,
   });
   persist({ pagesRead, correctCount: s.correctCount });

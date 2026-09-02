@@ -25,7 +25,15 @@ import { useCallback, useEffect, useMemo, useSyncExternalStore } from 'react';
 import type { Language } from '@hiraia/shared';
 
 import { requestText, subscribeCardText, textOf, type CardTextRow } from './cardDb';
-import { cardEmphasis, cardText, cardTitle, type CardFact } from './cards';
+import {
+  bandLabel,
+  cardEmphasis,
+  cardText,
+  cardTitle,
+  getCard,
+  type CardChoice,
+  type CardFact,
+} from './cards';
 
 /**
  * The warmed row for a card, re-rendering the caller when it lands — and asking for it if it
@@ -38,15 +46,15 @@ import { cardEmphasis, cardText, cardTitle, type CardFact } from './cards';
  * wakes the store's listeners but re-renders only the pages whose own text arrived — which,
  * once the deck is warm, is none of them.
  */
-export function useCardTextRow(id: string): CardTextRow | undefined {
-  const snapshot = useCallback(() => textOf(id), [id]);
+export function useCardTextRow(id: string | null): CardTextRow | undefined {
+  const snapshot = useCallback(() => (id ? textOf(id) : undefined), [id]);
   const row = useSyncExternalStore(subscribeCardText, snapshot, snapshot);
   // Demand-side repair, in an effect so a render never starts a query. Runs once per cold
   // card: when the row lands `row` changes, the effect re-runs and `requestText` returns on
   // its first line. A row that does not exist in the database leaves this quiet rather than
   // looping — the version only moves when rows actually land.
   useEffect(() => {
-    if (!row) requestText(id);
+    if (id && !row) requestText(id);
   }, [id, row]);
   return row;
 }
@@ -81,5 +89,46 @@ export function useCardCopy(fact: CardFact, language: Language): CardCopy {
     // so the language fallback chain stays in one place (cards.ts).
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [fact, language, row]
+  );
+}
+
+/**
+ * The labels a page PRINTS on its choice tickets, resolved at display time against the
+ * destination cards' OWN authored titles — the same copy the index band prints, arrived at
+ * by the same subscription.
+ *
+ * Why here and not in nextChoices: the choice is drawn a page ahead, and at draw time the
+ * destination's text row is still cold, so any title read there is '' — the old label path
+ * scraped terms from that same cold row and could never match, quietly falling back to a
+ * two-word topic fragment on every ticket ("when did", "snails use"). By the time the reader
+ * can tap, warmAfter has landed the rows; resolving here means the ticket prints "Fossil ng
+ * Dinosaur" and the row's arrival re-renders it in the sub-second it may take.
+ *
+ * A shelf label ("iba pang mga hayop-dagat") is authored draw-copy that names a direction,
+ * not the destination — it is passed through untouched, and so is an already-resolved title
+ * (title === baked label) to keep the snapshot cheap.
+ */
+export function useChoiceLabels(choices: readonly CardChoice[], language: Language): string[] {
+  // The row subscription per choice, deduped by position: a fork's two branches are always
+  // distinct cards, so the hook count is stable for a given page shape (1 single-path, 2 at
+  // a fork) and the Rules of Hooks hold. The snapshot consumers care about is the resolved
+  // LABEL LIST itself, produced below; the row hooks exist so a landing row re-renders us.
+  // eslint-disable-next-line react-hooks/rules-of-hooks -- fixed count: 0..2 choices by page shape
+  const rows = choices.map((c) => useCardTextRow(c.shelf ? null : c.factId));
+  return useMemo(
+    () =>
+      choices.map((c, i) => {
+        if (c.shelf) return c.label;
+        const fact = getCard(c.factId);
+        const title = fact ? cardTitle(fact, language) : '';
+        // The authored title as-is, fitted on a word boundary exactly like the band prints
+        // it. Falls back to the drawn label while the row is still cold (a sub-second on
+        // the warm-ahead path) and for the 42% of the deck with no authored title.
+        void rows; // rows only drive re-render (see comment above)
+        return title ? bandLabel(title, fact!.topic) : c.label;
+      }),
+    // `rows` is the freshness token: reading the rows is what re-resolves the titles.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [choices, language, rows]
   );
 }

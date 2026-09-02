@@ -67,6 +67,8 @@ interface UIStrings {
     /** Shown if warm-up failed — tapping the field retries, so this must not read as fatal. */
     searchUnavailable: string;
     yourQuestion: string;
+    /** a11y label on the ask-ribbon's ✕ — dismisses the asked topic (clears the magnet). */
+    dismissAsk: string;
     thinking: string;
     /** In-domain GAP: it is science, we just have no page for it yet. */
     abstain: string;
@@ -160,6 +162,7 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       searchPlaceholder: 'Anong gusto mong malaman?',
       searchUnavailable: 'Pindutin para subukan ulit',
       yourQuestion: 'Ang tanong mo',
+      dismissAsk: 'Alisin ang tanong',
       thinking: 'Iniisip ko pa',
       abstain: 'Hmm, wala pa akong pahina tungkol diyan.',
       abstainSuggest: 'Pero subukan natin ito',
@@ -237,6 +240,7 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       searchPlaceholder: 'What do you want to learn about?',
       searchUnavailable: 'Tap to try again',
       yourQuestion: 'You asked',
+      dismissAsk: 'Dismiss your question',
       thinking: "I'm thinking",
       abstain: "Hmm, I don't have a page about that yet.",
       abstainSuggest: "But let's try this",
@@ -310,6 +314,7 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       searchPlaceholder: 'Unsa ang gusto nimong hibaw-an?',
       searchUnavailable: 'I-tap para sulayan pag-usab',
       yourQuestion: 'Ang pangutana nimo',
+      dismissAsk: 'Kuhaa ang pangutana',
       thinking: 'Naghunahuna pa ko',
       abstain: 'Hmm, wala pa koy panid mahitungod ana.',
       abstainSuggest: 'Pero sulayan nato ni',

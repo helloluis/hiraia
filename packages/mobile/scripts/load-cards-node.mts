@@ -114,8 +114,8 @@ export const PRE_PRESENCE_PATCH: readonly (readonly [string, string])[] = [
   ['if (hasArt(cur.slug)) slugs.add(cur.slug);', 'if (cur.slug) slugs.add(cur.slug);'],
   ['if (f && hasArt(f.slug)) slugs.add(f.slug);', 'if (f?.slug) slugs.add(f.slug);'],
   [
-    'unseen(f) && !blockedSlugs.has(f.slug) && topicKey(f) !== curTopicKey;',
-    'unseen(f) && !(f.slug && blockedSlugs.has(f.slug)) && topicKey(f) !== curTopicKey;',
+    'unseen(f) && !blockedSlugs.has(f.slug) && topicKeyOf(f) !== curTopicKey;',
+    'unseen(f) && !(f.slug && blockedSlugs.has(f.slug)) && topicKeyOf(f) !== curTopicKey;',
   ],
 ];
 

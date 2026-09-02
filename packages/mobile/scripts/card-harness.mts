@@ -6,7 +6,9 @@
  * It loads cards.ts through scripts/load-cards-node.mts, which shims the four app-only
  * imports (@hiraia/shared, the resident index, the curriculum tags, and cardDb — replaced
  * by a node:sqlite reader over the SAME cards.db + tokens.bin the APK ships).
- * Draws run WITHOUT a FeedContext (uniform), exactly like cards.ts without one.
+ * Draws run WITHOUT a FeedContext (uniform), exactly like cards.ts without one — except the
+ * MAGNET WALK at the end, which needs the weighted path (the magnet IS a weight) and drives
+ * it with a fixed grade-5/Q2 context. Its assertions are hard: a failure exits non-zero.
  *
  *   npx tsx scripts/card-harness.mts                 # default: 6 runs × 40 cards, all policies
  *   RUNS=10 CARDS=60 npx tsx scripts/card-harness.mts
@@ -282,10 +284,161 @@ async function main() {
     for (const e of examples) lines.push(`     • ${e}`);
   }
 
+  // ==================== MAGNET WALK ====================
+  // The asked-topic magnet (cardStore.ask → SearchResult.magnet → FeedContext.magnet),
+  // walked the way the store walks it: a deep-first reader, advancing served/auto-release
+  // exactly as cardStore.advance does. Assertions are HARD (exit non-zero): the pull must
+  // line a big topic up, the auto-release must fire at exhaustion, and the [x] path (a
+  // context without the magnet) must leave no residual pull.
+  const failures: string[] = [];
+  const assertThat = (ok: boolean, what: string) => {
+    if (!ok) failures.push(what);
+    lines.push(`  ${ok ? 'PASS' : 'FAIL'}  ${what}`);
+  };
+  const ctxFor = (magnet?: { ids: ReadonlySet<string>; served: number }) => ({
+    studentGrade: 5,
+    currentQuarter: 2,
+    now: Date.now(),
+    cardSeen: new Map(),
+    competencySeen: new Map(),
+    magnet,
+  });
+
+  /** Simulate cardStore's ask→advance walk (deep-first reader) for one query. */
+  async function magnetWalk(query: string, pages: number, withMagnet: boolean) {
+    const res = await C.searchCards(query, null);
+    if (!res.best) throw new Error(`magnet walk: no card served for "${query}"`);
+    const ids: string[] = res.magnet;
+    const idSet = new Set(ids);
+    const seen = new Set<string>([res.best.id]);
+    const recent: string[] = [res.best.id];
+    let cur = res.best;
+    let served = 1; // the landing card itself (navigateTo advances the clock)
+    let magnetOn = withMagnet && ids.length > 0;
+    let threadDepth = 0;
+    let onTopic = 0;
+    let walked = 0;
+    let releasedAt: number | null = null;
+    let unseenAtRelease = -1;
+    for (let i = 0; i < pages; i++) {
+      const ctx = ctxFor(magnetOn ? { ids: idSet, served } : undefined);
+      const depth = threadDepth + 1;
+      const choices = C.nextChoices(cur.id, seen, lang, {
+        threadDepth: depth,
+        recentIds: [...recent],
+        ctx,
+      });
+      threadDepth = choices.length > 1 ? 0 : depth;
+      const pick = choices[0];
+      if (!pick) break;
+      if (pick.kind === 'lateral') threadDepth = 0;
+      const next = C.getCard(pick.factId);
+      if (!next) break;
+      walked++;
+      if (idSet.has(next.id)) {
+        onTopic++;
+        if (magnetOn) served++;
+      }
+      seen.add(next.id);
+      recent.push(next.id);
+      if (recent.length > RECENT_WINDOW) recent.shift();
+      cur = next;
+      // the auto-release, exactly as cardStore.advance runs it after landing
+      if (magnetOn && releasedAt === null && !C.hasServableMagnet(cur.id, idSet, seen, recent)) {
+        releasedAt = walked;
+        unseenAtRelease = ids.filter((id: string) => !seen.has(id)).length;
+        magnetOn = false;
+      }
+    }
+    return { best: res.best, setSize: ids.length, ids, idSet, onTopic, walked, served, releasedAt, unseenAtRelease };
+  }
+
+  const mean = (a: number[]) => a.reduce((x, y) => x + y, 0) / Math.max(a.length, 1);
+  lines.push('');
+  lines.push('==================== MAGNET WALK ====================');
+
+  // 1) a BIG topic must line up: on-topic share of the next 10 draws, magnet on vs off.
+  const BIG = 'dinosaur';
+  const MAGNET_RUNS = 12;
+  const onShares: number[] = [];
+  const offShares: number[] = [];
+  let bigSet = 0;
+  for (let r = 0; r < MAGNET_RUNS; r++) {
+    const on = await magnetWalk(BIG, 10, true);
+    const off = await magnetWalk(BIG, 10, false);
+    bigSet = on.setSize;
+    onShares.push(on.onTopic / Math.max(on.walked, 1));
+    offShares.push(off.onTopic / Math.max(off.walked, 1));
+  }
+  lines.push(
+    `  "${BIG}": magnet set = ${bigSet} cards | on-topic share of next 10 draws: ` +
+      `magnet ON ${(100 * mean(onShares)).toFixed(0)}% vs OFF ${(100 * mean(offShares)).toFixed(0)}% ` +
+      `(${MAGNET_RUNS} runs, deep-first reader)`
+  );
+  assertThat(bigSet >= 20, `"${BIG}" is a big topic (magnet set ${bigSet} >= 20 cards)`);
+  assertThat(
+    mean(onShares) >= 0.7,
+    `magnet ON keeps the next 10 draws predominantly on-topic (${(100 * mean(onShares)).toFixed(0)}% >= 70%)`
+  );
+  assertThat(
+    mean(onShares) >= mean(offShares) + 0.3,
+    `the pull is the cause (ON ${(100 * mean(onShares)).toFixed(0)}% vs OFF ${(100 * mean(offShares)).toFixed(0)}%, +30pt floor)`
+  );
+
+  // 2) a SMALL topic must auto-release at exhaustion — no unseen servable member left.
+  const SMALL = 'geyser';
+  const small = await magnetWalk(SMALL, 60, true);
+  lines.push(
+    `  "${SMALL}": magnet set = ${small.setSize} cards | auto-release after ${small.releasedAt} draws ` +
+      `(${small.served} magnet cards served, ${small.unseenAtRelease} unseen members left — unservable under the gates)`
+  );
+  assertThat(small.setSize > 0 && small.setSize <= 20, `"${SMALL}" is a small topic (set ${small.setSize} in 1..20)`);
+  assertThat(small.releasedAt !== null, `auto-release fired at exhaustion (draw ${small.releasedAt})`);
+  assertThat(
+    small.releasedAt !== null && small.releasedAt <= small.setSize + BRANCH_SLACK,
+    `release came promptly (draw ${small.releasedAt} <= set ${small.setSize} + ${BRANCH_SLACK} slack)`
+  );
+
+  // 3) the [x] path: dismissing = a context WITHOUT the magnet. The boosted weight must be
+  //    exactly magnetMultiplier(served) while held, and exactly the base weight after.
+  {
+    const res = await C.searchCards(BIG, null);
+    const probeId = (res.magnet as string[]).find((id: string) => id !== res.best!.id) ?? res.best!.id;
+    const probe = C.getCard(probeId)!;
+    const idSet = new Set(res.magnet as string[]);
+    const held = C.weightOf(probe, ctxFor({ ids: idSet, served: 0 }));
+    const dismissed = C.weightOf(probe, ctxFor(undefined));
+    const ratio = held / dismissed;
+    lines.push(
+      `  [x] path: magnet member weight ×${ratio.toFixed(2)} while held (magnetMultiplier(0) = ${C.magnetMultiplier(0)}), ` +
+        `×${(dismissed / dismissed).toFixed(2)} after dismissal`
+    );
+    assertThat(
+      Math.abs(ratio - C.magnetMultiplier(0)) < 1e-9,
+      `held pull equals magnetMultiplier(0) (×${C.magnetMultiplier(0)})`
+    );
+    assertThat(
+      C.magnetMultiplier(0) > 1 && Math.abs(C.weightOf(probe, ctxFor(undefined)) - dismissed) < 1e-12,
+      'dismissed context carries no residual pull (weight = base weight)'
+    );
+    // decay shape: halves every 4 served, floors at 1 (never below neutral)
+    assertThat(
+      Math.abs(C.magnetMultiplier(4) - C.magnetMultiplier(0) / 2) < 1e-9 && C.magnetMultiplier(1000) === 1,
+      'decay schedule: halves per 4 served, floors at ×1'
+    );
+  }
+
+  lines.push(failures.length ? `  MAGNET WALK: ${failures.length} FAILURE(S)` : '  MAGNET WALK: all assertions pass');
+  if (failures.length) process.exitCode = 1;
+
   const report = lines.join('\n');
   console.log(report);
   writeFileSync(join(MOBILE, 'scripts/card-harness-report.txt'), report);
 }
+
+/** How many extra draws past the set size the small-topic release may take: the reader can be
+ * pulled off-topic by a fork/cooldown for a few pages before the last members are reached. */
+const BRANCH_SLACK = 12;
 
 main().catch((e) => {
   console.error(e);

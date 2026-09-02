@@ -402,7 +402,10 @@ export function CardFeedScreen() {
     }
   }, [readyStage]);
   const barVisible = (readyStage !== 'idle' && readyStage !== 'done') || doneLinger;
-  const queryBanner = useCardStore((s) => s.queryBanner);
+  // The ribbon IS the magnet: it shows exactly while an asked topic is pulling the feed, so
+  // the [x] below and the store's auto-release both retire copy and pull in the same commit.
+  const queryBanner = useCardStore((s) => s.magnet?.query ?? null);
+  const dismissQuery = useCardStore((s) => s.dismissQuery);
   const pageKey = useCardStore((s) => s.pageKey);
   const pagesRead = useCardStore((s) => s.pagesRead);
   const correctCount = useCardStore((s) => s.correctCount);
@@ -983,13 +986,25 @@ export function CardFeedScreen() {
           the BOARD, directly under the box it echoes — not on the card: the top of a card
           is its punched holes and index band, and a ribbon would print straight over them. */}
       {queryBanner && !response && !reward && !question ? (
-        <View style={styles.banner} pointerEvents="none">
+        <View style={styles.banner}>
           <Text style={styles.bannerLabel} numberOfLines={1}>
             {t.cards.yourQuestion}
           </Text>
           <Text style={styles.bannerText} numberOfLines={1}>
             “{queryBanner}”
           </Text>
+          {/* The [x]: "this topic is starting to bore me". Ink-ribbon grammar — a stock ✕ in
+              a hairline stock ring, the ribbon's own colours. Clearing the magnet unmounts
+              the whole ribbon (the query IS the magnet), and the feed continues as it is. */}
+          <Pressable
+            onPress={dismissQuery}
+            hitSlop={10}
+            accessibilityRole="button"
+            accessibilityLabel={t.cards.dismissAsk}
+            style={styles.bannerDismiss}
+          >
+            <Text style={styles.bannerDismissGlyph}>✕</Text>
+          </Pressable>
         </View>
       ) : null}
 
@@ -1410,6 +1425,23 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: fonts.cardBody,
     fontSize: 13,
+    color: card.stock,
+  },
+  // the ribbon's [x] chip: stock ✕ in a hairline stock ring, on the ink ribbon. 20dp visual
+  // (the tap target is grown by hitSlop to ~40dp, comfortably past the 24dp a11y floor).
+  bannerDismiss: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: cardAlpha(card.stock, 0.45),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bannerDismissGlyph: {
+    fontFamily: fonts.gothic,
+    fontSize: 10,
+    lineHeight: 12,
     color: card.stock,
   },
   thinking: {
