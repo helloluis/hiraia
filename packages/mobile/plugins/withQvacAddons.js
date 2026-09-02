@@ -79,6 +79,26 @@ module.exports = function withQvacAddons(config) {
         count++;
       }
       console.log(`[withQvacAddons] linked ${count} native addon(s) into app/src/main/jniLibs`);
+
+      // BASELINE CPU BACKEND ONLY — the on-device fix for "no backends loaded" (measured
+      // 2026-09-02 on the SM6225 test phone, CPU part 0x801, Features = fp asimd … crc32:
+      // a plain armv8.0 core, no dotprod/i8mm/fp16). ggml auto-picks the HIGHEST-ISA CPU
+      // backend present in the APK; on an armv8.0 core the armv8.2+/armv9 variants cannot
+      // execute, the backend registry comes up EMPTY, and BOTH the Vulkan attempt and the
+      // CPU-fallback retry die as MODEL_LOAD_FAILED 52200 with no native detail. This is
+      // the kitten-era lesson, resolved for ONE apk by the pivot's own architecture:
+      // CPU is only ever the FALLBACK now (flagships ride Vulkan at gpuLayers 99), so the
+      // universal armv8.0 backend is the only CPU variant worth shipping — a flagship that
+      // ever falls back loses some prefill speed, a budget phone gains a working tutor.
+      // Vulkan and OpenCL stay; do NOT reintroduce gradle jniLibs excludes for this
+      // (post-prebuild hard-fails on those — this filter is the sanctioned mechanism).
+      const CPU_VARIANT = /^libqvac-ggml-cpu-android_armv(?!8\.0_)/;
+      let dropped = 0;
+      const abiDir = path.join(jniLibs, 'arm64-v8a');
+      for (const f of fs.readdirSync(abiDir)) {
+        if (CPU_VARIANT.test(f)) { fs.rmSync(path.join(abiDir, f)); dropped++; }
+      }
+      if (dropped) console.log(`[withQvacAddons] dropped ${dropped} non-baseline CPU backend variant(s) — armv8.0 is the universal fallback`);
       return cfg;
     },
   ]);

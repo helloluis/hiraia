@@ -172,7 +172,17 @@ const UI_STRINGS: Record<Language, UIStrings> = {
         load: ['Binubuksan ang modelo…', 'Inilalagay sa memorya…'],
         cpuRetry: ['Medyo natatagalan — sandali pa…'],
         warm: ['Ginigising si Hiraia…', 'Nag-uunat pa si Hiraia…'],
-        evergreen: ['Gumagana pa rin…', 'Aabutin ito nang ilang minuto.', 'Salamat sa paghihintay!'],
+        evergreen: [
+        'Gumagana pa rin…',
+        'Aabutin ito nang ilang minuto.',
+        'Salamat sa paghihintay!',
+        // Non-blocking reassurance (Luis, 2026-09-02): the deck works during the whole
+        // download, and the child should be TOLD so — the point of the background design
+        // is lost if they sit and watch the bar.
+        'Pwede ka nang magbasa ng cards habang nagda-download!',
+        'Nagda-download lang ng dagdag na content — tuloy lang sa pagbabasa.',
+        'Hindi mo kailangang maghintay — i-swipe ang mga card!',
+      ],
         // NOTE for native review: "{pct}% na ang tapos" may read more naturally as
         // "{pct}% na ang natapos" — flagged, not self-corrected.
         pctDone: '{pct}% na ang tapos',
@@ -239,7 +249,14 @@ const UI_STRINGS: Record<Language, UIStrings> = {
         load: ['Opening the model…', 'Loading it into memory…'],
         cpuRetry: ['Taking a little longer — hang on…'],
         warm: ['Waking Hiraia up…', 'Hiraia is stretching…'],
-        evergreen: ['Still working…', 'This will take a few minutes.', 'Thanks for waiting!'],
+        evergreen: [
+        'Still working…',
+        'This will take a few minutes.',
+        'Thanks for waiting!',
+        'You can read cards while we download!',
+        'Downloading extra content — keep reading.',
+        'No need to wait — swipe through the cards!',
+      ],
         pctDone: '{pct}% done',
       },
     },
@@ -316,7 +333,15 @@ const UI_STRINGS: Record<Language, UIStrings> = {
         load: ['Giablihan ang modelo…', 'Gibutang sa memorya…'],
         cpuRetry: ['Medyo nadugay — kadiyot na lang…'],
         warm: ['Ginapukaw si Hiraia…', 'Nag-inat pa si Hiraia…'],
-        evergreen: ['Nagtrabaho pa gihapon…', 'Moabot kini og pipila ka minuto.', 'Salamat sa paghulat!'],
+        evergreen: [
+        'Nagtrabaho pa gihapon…',
+        'Moabot kini og pipila ka minuto.',
+        'Salamat sa paghulat!',
+        // FLAGGED for native review with the other ceb loading lines.
+        'Pwede ka magbasa og cards samtang nag-download!',
+        'Nag-download og dugang content — padayon lang sa pagbasa.',
+        'Dili na kinahanglan maghulat — i-swipe ang mga card!',
+      ],
         pctDone: '{pct}% na ang nahuman',
       },
     },

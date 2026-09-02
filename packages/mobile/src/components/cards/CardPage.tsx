@@ -366,14 +366,38 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
    * `overflow: hidden`, and unreadable is worse than scrollable.
    */
   const [overflowing, setOverflowing] = useState(false);
+  /**
+   * MEASURE-CORRECT SHRINK — the fix for the cropped "Frog" card (Luis, on device,
+   * 2026-09-02). `fitType` PREDICTS a size from the cached plate box, but the cache is
+   * shared across page SHAPES: a page with the query banner and a fork foot has a shorter
+   * plate than the card that seeded the cache, so the prediction can run long and the old
+   * code clipped mid-glyph (the overflow gate compared content against the same stale
+   * height, so it neither refit nor scrolled). A card is a printed thing — it should never
+   * need scrolling — so when the CONTENT MEASUREMENT says the type overran the plate, step
+   * the whole tier down 8% and re-set; converge on reality in a render or two. Scrolling
+   * survives only as the terminal fallback once the floor is reached.
+   */
+  const [shrink, setShrink] = useState(0);
+  useEffect(() => setShrink(0), [fact.id]);
   // The body's layout is settled BEFORE the type is sized: a lifted display line changes how
   // much room the rest of the sentence has.
   const bodySpec =
     art == null ? posterFor(body, emphasis, fact.id) : inlineOnly(body, emphasis, fact.id);
-  const tier =
+  const fitted =
     art != null
       ? tierFor(text)
       : fitType(text, plateBox.w, plateBox.h, layoutAllowance(bodySpec, ask != null, plateBox.w));
+  // Apply the measured shrink (poster pages only — the caption path has no plate to overrun).
+  const factor = art == null && shrink > 0 ? Math.pow(0.92, shrink) : 1;
+  const tier =
+    factor === 1
+      ? fitted
+      : {
+          fontSize: Math.max(MIN_SIZE, Math.round(fitted.fontSize * factor * 10) / 10),
+          lineHeight: Math.max(MIN_SIZE * 1.3, Math.round(fitted.lineHeight * factor * 10) / 10),
+          askSize: Math.max(MIN_SIZE, Math.round(fitted.askSize * factor * 10) / 10),
+          askLineHeight: Math.max(MIN_SIZE * 1.3, Math.round(fitted.askLineHeight * factor * 10) / 10),
+        };
   // Two choices == this page forks. nextChoices returns a single choice on a normal page.
   const branching = choices.length > 1;
   const [shown, setShown] = useState(instant ? text.length : 0);
@@ -527,6 +551,12 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
    */
   const onContentSize = (_w: number, h: number) => {
     const over = h > plateBox.h + 2;
+    // Overrun + type still above the floor → step the tier down and re-measure (see
+    // `shrink`). Only when the floor is reached does the overflow become a scroll.
+    if (over && tier.fontSize > MIN_SIZE && shrink < 6) {
+      setShrink((v) => v + 1);
+      return;
+    }
     if (over !== overflowing) setOverflowing(over);
   };
 

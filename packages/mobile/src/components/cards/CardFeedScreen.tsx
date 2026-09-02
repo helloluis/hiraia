@@ -326,7 +326,7 @@ const SearchStatusLine = memo(function SearchStatusLine({
           ("D", "Do", "Dow", …) — stutter spam for the whole multi-minute load. */}
       <Text
         style={[styles.searchStatus, { color }]}
-        numberOfLines={1}
+        numberOfLines={2}
         importantForAccessibility="no"
       >
         {typed}
@@ -932,7 +932,7 @@ export function CardFeedScreen() {
             // implements, so a transient failure is one tap from recovery.
             <Pressable onPress={warmModel} hitSlop={8}>
               <View style={[styles.sendChip, styles.sendChipOff]}>
-                <View style={styles.sendArrow} />
+                <View style={[styles.sendArrow, styles.sendArrowOff]} />
               </View>
             </Pressable>
           ) : asking ? (
@@ -942,7 +942,7 @@ export function CardFeedScreen() {
               <View style={[styles.sendChip, !canSend && styles.sendChipOff]}>
                 {/* the mockup's ▶ as a border triangle: the glyph itself risks Android's
                     emoji presentation (a blue play button), which is off-palette. */}
-                <View style={styles.sendArrow} />
+                <View style={[styles.sendArrow, !canSend && styles.sendArrowOff]} />
               </View>
             </Pressable>
           )}
@@ -1240,7 +1240,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  sendChipOff: { opacity: 0.3 },
+  /**
+   * Idle/disabled send: NOT the old `opacity: 0.3` fade — dimming the whole ink chip made
+   * a "transparent gray box" whose gold arrow measured near-invisible on device (Luis,
+   * 2026-09-02). Instead the chip goes quiet (transparent fill) and the ARROW carries the
+   * state in forest ink at full strength — visibly present, visibly not-lit.
+   */
+  sendChipOff: { backgroundColor: 'transparent' },
+  sendArrowOff: { borderLeftColor: card.ink },
   sendArrow: {
     width: 0,
     height: 0,
@@ -1261,7 +1268,12 @@ const styles = StyleSheet.create({
   searchStatus: {
     flex: 1,
     fontFamily: fonts.cardBody,
-    fontSize: 15,
+    // Hints, not content: italic (Android synthesizes oblique for custom fonts) at a size
+    // where the LONGEST library phrase fits two lines untruncated (Luis, 2026-09-02:
+    // "let's not truncate our download phrases, and italicize them").
+    fontStyle: 'italic',
+    fontSize: 13.5,
+    lineHeight: 17,
   },
   // Screen-reader-only: the polite live region announcing the FULL status message
   // (the visible typewriter Text is hidden from accessibility — see SearchStatusLine).
