@@ -62,11 +62,57 @@ export interface CardPromptInput {
  * card). Measured A/B on the gate, 2026-09-01: original wording + trim 17/21, shortened
  * wording + trim 13/21.
  */
+/**
+ * The grade's REGISTER instruction, by band — one short sentence, or nothing.
+ *
+ * Without it the grade was a bare number the model ignored: measured on the gate
+ * (grade-register-photosynthesis, 2026-09-02), the Grade-3 and Grade-10 cards came back
+ * IDENTICAL, so the user-visible grade setting was inert. The middle band (4-6) is
+ * deliberately EMPTY: it keeps the prompt byte-identical to the calibrated wording every
+ * other measurement was made on (the app defaults to Grade 5), so only the edges of the
+ * range — where the register actually has to move — pay the extra tokens.
+ */
+function registerClause(grade: number, language: CardPromptLanguage): string {
+  if (grade <= 3) {
+    return {
+      tagalog:
+        'Gumamit LAMANG ng maiikli at pang-araw-araw na salita na alam ng maliit na bata; ' +
+        'huwag gumamit ng teknikal na terminong pang-agham, at huwag itong isulat bilang ' +
+        'pormal na depinisyon. ',
+      english:
+        'Use only short, everyday words a young child knows; do not use technical science ' +
+        'terms, and do not write it as a formal definition. ',
+      cebuano:
+        'Gamita LANG ang mugbo ug inadlaw-adlaw nga mga pulong nga masabtan sa gamay nga bata; ' +
+        'ayaw gamita ang teknikal nga mga termino, ug ayaw kini isulata isip pormal nga depinisyon. ',
+    }[language];
+  }
+  if (grade >= 7) {
+    return {
+      tagalog:
+        'Isulat ito bilang pormal na depinisyon na nagsisimula sa pangalan ng paksa ' +
+        '("Ang … ay …"), gamit ang eksaktong mga terminong pang-agham, at ISAMA ang isang ' +
+        'karagdagang teknikal na detalye mula sa mga FACT (hal. eksaktong pangalan o proseso). ',
+      english:
+        'Write it as a formal definition of the topic ("The … is …"), use the precise ' +
+        'scientific terms, and INCLUDE one extra technical detail from the FACTS ' +
+        '(e.g. an exact name or process). ',
+      cebuano:
+        'Isulat kini isip pormal nga depinisyon sa topiko ("Ang … mao ang …"), gamita ang ' +
+        'tukma nga mga terminong pang-agham, ug ILAKIP ang usa ka dugang teknikal nga detalye ' +
+        'gikan sa mga FACT (pananglitan usa ka eksaktong ngalan o proseso). ',
+    }[language];
+  }
+  return '';
+}
+
 export function buildCardPrompt({ query, facts, grade, language }: CardPromptInput): string {
   const context = facts.map((f) => `- ${f}`).join('\n');
   const byLang: Record<CardPromptLanguage, string> = {
     tagalog:
-      `Sumulat ng ISANG maikling fact card para sa batang Grade ${grade}. Gamit LAMANG ang mga FACT sa ibaba, ` +
+      `Sumulat ng ISANG maikling fact card para sa batang Grade ${grade}. ` +
+      registerClause(grade, 'tagalog') +
+      `Gamit LAMANG ang mga FACT sa ibaba, ` +
       `ilahad ang sagot sa TANONG sa 1-2 payak na pangungusap sa Tagalog, hindi hihigit sa 30 salita. ` +
       `Nakalimbag na kard ito, hindi usapan: walang pagbati, walang panimula, at walang tanong sa dulo — ` +
       `ang fact lang. HUWAG mag-imbento ng impormasyong wala sa mga FACT. ` +
@@ -74,14 +120,18 @@ export function buildCardPrompt({ query, facts, grade, language }: CardPromptInp
       `huwag pilitin ang koneksyon.` +
       `\n\nMGA FACT:\n${context}\n\nTANONG: ${query}\n\nSAGOT:`,
     english:
-      `Write ONE short fact card for a Grade ${grade} child. Using ONLY the FACTS below, state the answer to ` +
+      `Write ONE short fact card for a Grade ${grade} child. ` +
+      registerClause(grade, 'english') +
+      `Using ONLY the FACTS below, state the answer to ` +
       `the QUESTION in 1-2 plain English sentences, no more than 30 words. This is a printed card, not a ` +
       `conversation: no greeting, no preamble, no closing question — just the fact. Do NOT invent anything ` +
       `that is not in the FACTS. If no FACT answers the QUESTION, simply state the closest FACT in full — ` +
       `do not force a connection.` +
       `\n\nFACTS:\n${context}\n\nQUESTION: ${query}\n\nANSWER (in English):`,
     cebuano:
-      `Pagsulat og USA ka mubo nga fact card para sa batang Grade ${grade}. Gamit LANG ang mga FACT sa ubos, ` +
+      `Pagsulat og USA ka mubo nga fact card para sa batang Grade ${grade}. ` +
+      registerClause(grade, 'cebuano') +
+      `Gamit LANG ang mga FACT sa ubos, ` +
       `ipahayag ang tubag sa PANGUTANA sa 1-2 yano nga tudling-pulong sa Binisaya, dili molapas sa 30 ka pulong. ` +
       `Giimprinta nga kard kini, dili panag-istorya: ayaw pagkumusta, ayaw pagpasiuna, ug ayaw pangutan-a ang ` +
       `bata sa katapusan — ang fact lang. AYAW pag-imbento og impormasyon nga wala sa mga FACT. ` +

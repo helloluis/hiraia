@@ -118,6 +118,7 @@
    "grade": 6,
    "query": "ilang buwan po meron ang planetang Jupiter?",
    "_note": "Was an abstain case; the bank has accurate Jupiter-moon facts, so this is a coverage test.",
+   "_note_2026_09_02": "FIXED retrieval-side: 'planetang Jupiter' added to jupiter-many-moons-g6 terms puts the one fact carrying BOTH the >90 count and the four Galilean names at lexical #1 (fused #3), so the grounding now contains the specifics this case asserts; measured 6/6 draws green.",
    "mustContain": [
     "[Gg]alile|[Gg]anymede|[Ee]uropa|apat na malalak"
    ]
@@ -273,6 +274,7 @@
    "grade": 5,
    "query": "totoo po bang patag ang mundo?",
    "_was_pending": "'patag' is semantically opposite to round-earth facts (cos 0.49) so retrieval abstained and the model had nothing to affirm from. BLOCKING now.",
+   "_note_2026_09_02": "FIXED retrieval-side: 'patag' added to earth-shape-oblate-spheroid-g7 terms (its tl body literally says 'halos bilog ... patag sa magkabilang dulo'), so the query now grounds on the real shape fact (lex #1, fused #1). allowUngrounded kept as the safety net for the razor-thin cosine (0.532 vs floor 0.53).",
    "allowUngrounded": true,
    "_why_allowUngrounded": "The ONLY case exempt from the universal groundedness check, and it is exempt because its mustContain demands the opposite. Measured: this query retrieves fe-del-mundo-incubator-g6, earth-has-one-moon-g4, fe-del-mundo-pediatrician-g5 — nothing about the shape of the Earth, because 'patag' embeds AWAY from every round-earth fact. The card the case requires ('Hindi totoo na patag ang mundo — ito ay bilog') therefore shares almost no vocabulary with what was retrieved and would be flagged as parametric invention. It IS parametric, and here that is correct: telling a child the Earth might be flat because the retriever missed is worse than an ungrounded card. Do not copy this flag onto a case that is merely failing.",
    "mustContain": [
@@ -402,6 +404,7 @@
    "grade": 5,
    "query": "unsa man ang photosynthesis?",
    "_note": "Cebuano hybrid fusion is noisy here (semantic top-1 0.65 but the fused top-3 drifts); assert the substance, not a slug.",
+   "_note_2026_09_02": "FIXED query-side: the Cebuano particle 'man' added to QUERY_STOP (RagStore.ts) — it was matching English 'man' in ~10 fact TOPICS (man-made detergent/fibres, Tabon Man, first-man-in-space) at topic weight 8 and hijacking every short 'unsa man' query; living-photosynthesis-g5 is now lex #1 / fused #1.",
    "mustContain": [
     "kahayag|adlaw|tubig"
    ]
@@ -441,6 +444,7 @@
    "lang": "cebuano",
    "grade": 5,
    "query": "unsa ang gibuhat sa kasingkasing sa lawas?",
+   "_note_2026_09_02": "FIXED retrieval-side: removed the generic 'lawas' from cooling-down-after-exercise-g5 terms; the query's two content tokens (kasingkasing+lawas) tie ~18 facts at the terms-weight ceiling and ties break by ordinal, so that removal makes heart-blood-loop-body-g6 lexical #1 (fused #3). Measured 8/8 draws say 'dugo'.",
    "mustRetrieveIdIncludes": [
     "heart",
     "circulat",
@@ -456,6 +460,7 @@
    "lang": "cebuano",
    "grade": 6,
    "query": "ngano nga mobuto ang bulkan?",
+   "_note_2026_09_02": "FIXED retrieval-side: 'bulkan' added to faq-why-volcano-erupts terms — it had only 'mobuto', while tsunami-volcano-landslide-cause-g7 carried both query tokens in terms and out-scored it; with both tokens it joins the tie and wins on ordinal (120), fused #1. Measured 6/6 draws green.",
    "mustRetrieveIdIncludes": [
     "volcano",
     "erupt",
@@ -614,6 +619,7 @@
    "gradePairWith": 10,
    "query": "ano ang photosynthesis?",
    "_why": "Grade is a user-visible setting interpolated straight into the card prompt, and NOTHING asserted it changed anything. Runs the same query at Grade 3 and Grade 10 and requires (a) both are valid cards, (b) they DIFFER — an inert grade is a silent broken setting — and (c) the register does not INVERT (the Grade-3 card is not the wordier, longer-worded one).",
+   "_note_2026_09_02": "FIXED prompt-side: buildCardPrompt now carries a band-dependent registerClause (<=3 everyday-words / no formal definition; >=7 formal definition + one technical detail; 4-6 byte-identical to the old prompt so the other 43 cases are untouched). Measured 10-11/12 pairings distinct; residual ~10-15% identical-draw flake is the 2B's instruction-following ceiling at temp 0.3 — the durable fix is register rows in the next SFT.",
    "mustContain": [
     "liwanag|araw",
     "tubig"
