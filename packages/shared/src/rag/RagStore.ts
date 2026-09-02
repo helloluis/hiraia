@@ -62,12 +62,18 @@ const QUERY_STOP = new Set(
   // to SEE X — the content is X, but unstripped "picture/larawan" hijacks to facts ABOUT
   // pictures (screen pixels, pictograph, the eye's inverted image). Strip the request
   // words so the topic (dinosaur) drives; the illustration still rides the top fact.
+  // `man` is the Cebuano interrogative particle ("unsa MAN ang photosynthesis", "ngano MAN") —
+  // topic-less, same class as naman/lang/ba. Unstripped it is a measured junk attractor:
+  // ~10 facts carry English "man" in their TOPIC (man-made detergents/fibres, Tabon Man,
+  // first-man-in-space), so every short "unsa man …" query put detergent-made-from-petroleum
+  // at lexical #1 (8×idf) and garbled the Cebuano card (gate: ceb-photosynthesis). English
+  // queries survive the strip: "first man on the moon" still ranks on first/moon/armstrong.
   `bakit paano ano anong kung saan kailan sino sinong alin para kaya
    ngano nganong unsa unsay asa kinsa giunsa pila naunsa
    ito iyan iyon nito niyan kini kana kanang
    ang mga yung nga kang iya niya nila ila
    may mayroon meron adunay naa
-   bang ba kaya nga daw raw pala naman lang lamang
+   bang ba kaya nga daw raw pala naman lang lamang man
    totoo totoong tutoo tutuo tinuod tuod
    picture pic larawan litrato hulagway drawing pakita ipakita
    oo opo oho oonga sige gusto payag game pwede mao sure

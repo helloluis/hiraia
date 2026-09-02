@@ -91,6 +91,13 @@ export interface CardChoice {
   factId: string;
   label: string;
   kind: 'deep' | 'lateral';
+  /**
+   * True when `label` is an authored CATEGORY promise ("iba pang mga hayop-dagat") rather
+   * than a name for the destination card. Shelf labels are drawn copy, not something to
+   * resolve against a row — the display-time title pass (see useChoiceLabels) must leave
+   * them exactly as drawn.
+   */
+  shelf?: boolean;
 }
 
 // ---- interject questions (exact quiz MCQs keyed by factId; 75% of the pool) ----
@@ -176,7 +183,94 @@ export interface FeedContext {
   now: number; // epoch ms
   cardSeen: ReadonlyMap<string, SeenRecord>;
   competencySeen: ReadonlyMap<string, SeenRecord>;
+  /** The asked-topic pull, while one is active (cardStore.ask forms it; see MagnetPull). */
+  magnet?: MagnetPull;
 }
+
+/**
+ * THE MAGNET — "when the student says 'dinosaur', line the dinosaur cards up."
+ *
+ * Formed by cardStore.ask when a typed query lands on-topic (a served card or a grounded
+ * generated card): the magnet set is searchCards' aboutness-ranked head matches for that
+ * query, computed ONCE at ask time (the scoring is already paid for by the search) and
+ * carried here as a set. While active, membership multiplies a card's weight in every
+ * weighted surface — the deep ranking, the fork branches, the pool draws — so the asked
+ * topic lines up through the deck's own grammar rather than through a special mode.
+ *
+ * It is a WEIGHT, never a filter (the feed's standing doctrine): nothing is blocked, the
+ * lateral fork still drifts away (on-topic near-twins are structurally excluded from the
+ * "fresh" lateral pool by the overlap test, so the exit stays open), and the pull decays as
+ * it feeds.
+ */
+export interface MagnetPull {
+  /**
+   * Magnet-set membership. INSERTION-ORDERED BY ABOUTNESS (build it from
+   * SearchResult.magnet, which is ranked best-first): nextChoices serves members in this
+   * order, which is what makes the lined-up cards walk from most to least on-topic.
+   */
+  ids: ReadonlySet<string>;
+  /** How many magnet cards have been SERVED since the ask — the decay clock. */
+  served: number;
+}
+
+/**
+ * The pull's strength: MAGNET_BASE × 2^(-served / MAGNET_HALVES_EVERY), floored at ×1.
+ *
+ * Derived from the measured weight landscape rather than invented:
+ *   - the curriculum factor spans ×0.4 (off-curriculum) to ×6 (same grade, current quarter)
+ *     — a 15× spread. The base must clear it, or an off-curriculum dinosaur card loses to
+ *     any on-quarter card and the topic never lines up. 24 = 15 × 1.6 margin; equivalently,
+ *     the ×6 top band with two card-seen halvings (×4) of headroom on top.
+ *   - it HALVES every 4 magnet cards served, mirroring the seen-decay's own halving grammar:
+ *     ×24 fresh → ×12 after 4 → ×6 (parity with the top curriculum band) after 8 → ×4.2
+ *     after 10 — a magnet that has fed 10 cards is audibly loosening its grip, exactly the
+ *     boredom point the [x] exists for — and reaches ×1 (inert) after ~18 served, so a huge
+ *     topic expires on its own even before exhaustion.
+ *   - never below ×1: the magnet only ever ADDS interest; it cannot penalise its own topic.
+ */
+export const MAGNET_BASE = 24;
+export const MAGNET_HALVES_EVERY = 4;
+export function magnetMultiplier(served: number): number {
+  return Math.max(1, MAGNET_BASE * Math.pow(2, -Math.max(0, served) / MAGNET_HALVES_EVERY));
+}
+
+/**
+ * How often the DEEP slot follows the magnet rather than the card graph: 1 - 1/multiplier.
+ *
+ * The weight overlay alone cannot line a broad topic up, and that is a property of the graph,
+ * not a tuning miss: two dinosaur cards that share only the word "dinosaur" (df 143, idf
+ * 0.007) sit BELOW LINK_MASS_FLOOR (0.02) — deliberately, that floor is what killed the
+ * "both mention water" non-sequiturs — so magnet members are simply not deep CANDIDATES and
+ * no multiplier can rank in a card the gates never see. (Measured: weight-only magnet held
+ * the next-10 on-topic share at 10%.) So while a magnet holds, the deep successor is drawn
+ * from the magnet set itself with this probability, and from the ordinary graph otherwise:
+ * fresh ≈ 0.95, ×6 (8 served) ≈ 0.83, ×4.2 (10 served) ≈ 0.76, reaching 0 exactly where the
+ * multiplier floors at ×1 — one decay clock governing both the pull and its own release.
+ */
+export function magnetDeepShare(served: number): number {
+  return 1 - 1 / magnetMultiplier(served);
+}
+
+/**
+ * The magnet coin, DETERMINISTIC in (card, served): a page's fork/no-fork successor must be
+ * reproducible from its inputs because previewChoices re-derives the next page to print the
+ * sheet beneath the current one — Math.random() here would make the printed preview name a
+ * different deep card than the swipe lands on. FNV-1a over the pair, mapped to [0,1); the
+ * pair never repeats within a session (a served card is in `seen` and cannot recur).
+ */
+function magnetCoin(cardId: string, served: number): number {
+  const s = `${cardId}|${served}`;
+  let h = 2166136261 >>> 0;
+  for (let i = 0; i < s.length; i += 1) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return (h >>> 0) / 4294967296;
+}
+
+/** How many cards a magnet set may hold. Bounds the per-draw O(set) overlay in `weigher` and
+ * the exhaustion scan; big topics ("dinosaur" head-matches ~60 cards) fit comfortably. */
+const MAGNET_MAX = 128;
 
 /**
  * Session weight table. The curriculum factor depends only on (grade, inferred quarter, tags), so
@@ -264,6 +358,19 @@ export function weigher(ctx: FeedContext): Weigher {
     const i = ORD.get(id);
     if (i !== undefined) EFFECTIVE[i] = EFFECTIVE[i]! * seenCardMultiplier(rec, ctx.now);
   }
+  // The asked-topic magnet, applied LAST so it multiplies the fully-resolved weight: an
+  // O(set) overlay (≤ MAGNET_MAX ids), same sparse-overlay pattern as the seen decay above.
+  // Deliberately after the seen decay — a magnet card the reader just saw is still damped,
+  // which is part of how the pull loosens as it feeds.
+  if (ctx.magnet) {
+    const m = magnetMultiplier(ctx.magnet.served);
+    if (m > 1) {
+      for (const id of ctx.magnet.ids) {
+        const i = ORD.get(id);
+        if (i !== undefined) EFFECTIVE[i] = EFFECTIVE[i]! * m;
+      }
+    }
+  }
   return {
     at: (i) => EFFECTIVE[i] ?? 0,
     // cards outside the pool are unsupported by the feed: lightest band, no overlays
@@ -274,7 +381,7 @@ export function weigher(ctx: FeedContext): Weigher {
   };
 }
 
-/** w = curriculum × recency × seenCard × seenCompetency — always > 0, never a blocklist. */
+/** w = curriculum × recency × seenCard × seenCompetency × magnet — always > 0, never a blocklist. */
 export function weightOf(card: CardFact, ctx: FeedContext): number {
   return weigher(ctx).of(card);
 }
@@ -501,6 +608,16 @@ export interface SearchResult {
   weak: boolean;
   /** Top card regardless of floor — a "did you mean" anchor for the abstention path. */
   suggestion: CardFact | null;
+  /**
+   * THE MAGNET SET: every card the query names at HEAD level — test (c), the one binary,
+   * language-neutral aboutness bar this module has (an absolute aboutness floor cannot have a
+   * language-neutral value; see the ranking notes on searchCards) — ranked by aboutness share,
+   * best first, capped at MAGNET_MAX. Computed in the same scan the search already pays for,
+   * so forming a magnet costs one sort of the qualifying ords and nothing per page-turn.
+   * Always present; empty when nothing head-matches. The caller decides whether an outcome
+   * FORMS a magnet (cardStore.ask: served or grounded-generated yes; gap/offdomain no).
+   */
+  magnet: string[];
 }
 
 // A card must cover at least this fraction of the query's information (idf mass) to be
@@ -694,7 +811,14 @@ export async function searchCards(
   currentId: string | null,
   ctx?: FeedContext
 ): Promise<SearchResult> {
-  const empty: SearchResult = { best: null, score: 0, about: 0, weak: false, suggestion: null };
+  const empty: SearchResult = {
+    best: null,
+    score: 0,
+    about: 0,
+    weak: false,
+    suggestion: null,
+    magnet: [],
+  };
   const qtoks = [...new Set(searchTokens(query))];
   if (!qtoks.length) return empty;
 
@@ -766,6 +890,10 @@ export async function searchCards(
   let topWeight = -1;
   let topRich = -1;
   let topOrd = -1;
+  // Magnet-set accumulator: the head-matched ords and their aboutness, sorted once after the
+  // scan. Ordinary arrays, per query — the qualifying band is small (head matches only).
+  const magOrds: number[] = [];
+  const magAbout: number[] = [];
 
   try {
     for (let n = 0; n < touchedCount; n += 1) {
@@ -778,6 +906,14 @@ export async function searchCards(
       // Furnished with a picture, as a property of the CARD (the slug it was authored with) and
       // not of this installation — see cardHasArt, which must never be consulted here.
       const rich = f.slug ? 1 : 0;
+
+      // Magnet membership is test (c) alone: the card is ABOUT a word the child typed (its
+      // head, not merely its prose). Coverage/needed are confidence tests for SERVING one
+      // card; a magnet member only has to be on the topic, not to answer the question.
+      if (sc.head[o]) {
+        magOrds.push(o);
+        magAbout.push(about);
+      }
 
       // ABOUTNESS FIRST for the suggestion, and that is the whole difference between the two
       // rankings. `best` leads on coverage because coverage is the CONFIDENCE quantity and a
@@ -836,6 +972,10 @@ export async function searchCards(
     }
   }
 
+  // Rank the magnet set by aboutness, best first; the cap bounds every later O(set) pass.
+  const order = magOrds.map((_, k) => k).sort((a, b) => magAbout[b]! - magAbout[a]!);
+  const magnet = order.slice(0, MAGNET_MAX).map((k) => POOL[magOrds[k]!]!.id);
+
   const about = Math.max(best ? bestAbout : topAbout, 0);
   return {
     best,
@@ -843,6 +983,7 @@ export async function searchCards(
     about,
     weak: !!best && bestAbout < WEAK_ABOUT,
     suggestion: top,
+    magnet,
   };
 }
 
@@ -1499,6 +1640,58 @@ function cooldownSlugs(cur: CardFact, recentIds?: readonly string[]): Set<string
   return slugs;
 }
 
+/** The same-fact-reworded key nextChoices gates successors on (topic words, order-blind). */
+function topicKeyOf(f: CardFact): string {
+  return f.topic
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((w) => w.length > 3)
+    .sort()
+    .join(' ');
+}
+
+/**
+ * AUTO-RELEASE test: does the magnet set still hold a card the feed could actually serve
+ * from here — unseen, not a picture the reader just saw, not the current fact reworded?
+ * These are exactly nextChoices' servability gates, so "the magnet has run out" means the
+ * same thing as "no magnet card can be the next page". When it returns false the store
+ * clears the magnet (and its banner) silently and the feed drifts on.
+ *
+ * A member gated only by the slug cooldown counts as run-out too — deliberate: the gates
+ * are respected as they stand this page-turn, and an early release is the safe failure
+ * (the feed drifts; the child can always ask again).
+ *
+ * O(set) lookups per call (set ≤ MAGNET_MAX), no scoring — the per-page-turn budget stands.
+ */
+export function hasServableMagnet(
+  currentId: string | null,
+  ids: ReadonlySet<string>,
+  seen: ReadonlySet<string>,
+  recentIds?: readonly string[]
+): boolean {
+  const cur = currentId ? BY_ID.get(currentId) : undefined;
+  const blocked = cur
+    ? cooldownSlugs(cur, recentIds)
+    : (() => {
+        const s = new Set<string>();
+        for (const id of (recentIds ?? []).slice(-SLUG_COOLDOWN)) {
+          const f = BY_ID.get(id);
+          if (f && hasArt(f.slug)) s.add(f.slug);
+        }
+        return s;
+      })();
+  const curKey = cur ? topicKeyOf(cur) : null;
+  for (const id of ids) {
+    if (id === currentId || seen.has(id)) continue;
+    const f = BY_ID.get(id);
+    if (!f) continue;
+    if (blocked.has(f.slug)) continue;
+    if (curKey !== null && topicKeyOf(f) === curKey) continue;
+    return true;
+  }
+  return false;
+}
+
 /**
  * The "turn the page" choice(s) for the current card.
  *
@@ -1516,6 +1709,11 @@ function cooldownSlugs(cur: CardFact, recentIds?: readonly string[]): Set<string
  * card weight): the drift still follows the card graph — every gate below is unchanged —
  * but leans toward this quarter's competencies and away from what has been seen.
  * Falls back gracefully as the unseen pool thins; last resort allows seen cards.
+ *
+ * With an ACTIVE MAGNET (ctx.magnet) the deep slot additionally serves the asked topic's own
+ * next card most of the time (see the magnet successor below and magnetDeepShare); the
+ * lateral surfaces feel the magnet only through the weight overlay, so the fork remains the
+ * natural drift-away exit.
  */
 export function nextChoices(
   currentId: string,
@@ -1531,14 +1729,7 @@ export function nextChoices(
   const weight = (f: CardFact) => (w ? w.of(f) : 1);
 
   const blockedSlugs = cooldownSlugs(cur, opts.recentIds);
-  const topicKey = (f: CardFact) =>
-    f.topic
-      .toLowerCase()
-      .split(/\s+/)
-      .filter((w) => w.length > 3)
-      .sort()
-      .join(' ');
-  const curTopicKey = topicKey(cur);
+  const curTopicKey = topicKeyOf(cur);
 
   const unseen = (f: CardFact) => f.id !== currentId && !seen.has(f.id);
   /**
@@ -1557,7 +1748,7 @@ export function nextChoices(
    * thousands of cards.
    */
   const servable = (f: CardFact) =>
-    unseen(f) && !blockedSlugs.has(f.slug) && topicKey(f) !== curTopicKey;
+    unseen(f) && !blockedSlugs.has(f.slug) && topicKeyOf(f) !== curTopicKey;
 
   // deep: candidates sharing any term, ranked by idf-weighted overlap, but only those whose
   // shared terms are specific enough to be a real thread (see LINK_MASS_FLOOR) and not so
@@ -1584,6 +1775,26 @@ export function nextChoices(
     if (textJaccard(cur, f) > TEXT_DUP_JACCARD) continue; // same fact, different words
     deepScore = ranked;
     deep = f;
+  }
+
+  // THE MAGNET SUCCESSOR. While an asked topic holds and the coin lands on it (see
+  // magnetDeepShare — decaying with cards served), the deep slot serves the best-ranked
+  // servable magnet member instead of the graph edge: members are walked in ask-time
+  // aboutness order, so a big topic lines up from most to least on-topic. The near-duplicate
+  // gates still stand — a member that is this card restated is skipped, exactly as a graph
+  // candidate would be — and everything else in the page (the lateral, the fork cadence, the
+  // labels) is the deck's ordinary grammar. When the coin lands graph-side, or no member is
+  // servable, the page is what it would have been without the magnet.
+  const pull = opts.ctx?.magnet;
+  if (pull && magnetCoin(currentId, pull.served) < magnetDeepShare(pull.served)) {
+    for (const id of pull.ids) {
+      const f = BY_ID.get(id);
+      if (!f || !servable(f)) continue;
+      if (linkOf(cur, f).mass > selfScore * DEEP_DUP_CAP) continue; // current card restated
+      if (textJaccard(cur, f) > TEXT_DUP_JACCARD) continue; // same fact, different words
+      deep = f;
+      break;
+    }
   }
 
   // A card with no ASSOCIATED follow-on left is a dead end. Anything served next is an
@@ -1645,6 +1856,7 @@ export function nextChoices(
       factId: lateral.id,
       label: catLabel || choiceLabel(lateral, language),
       kind: 'lateral',
+      shelf: !!catLabel,
     });
   }
 
@@ -1669,6 +1881,7 @@ export function nextChoices(
   if (out.length === 2 && out[0]!.label === out[1]!.label) {
     const f = BY_ID.get(out[1]!.factId)!;
     out[1]!.label = f.topic.split(/\s+/).slice(0, 2).join(' ');
+    out[1]!.shelf = false;
   }
   return out;
 }

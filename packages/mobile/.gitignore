@@ -6,3 +6,11 @@
 # under android/app/build/outputs/ — see scripts/build-apk.sh)
 apk-out/
 scripts/card-harness-report.txt
+
+# release-signing key material fetched from EAS by `eas credentials -p android`
+# (consumed by scripts/sign-apk.sh) — NEVER commit
+credentials.json
+keystores/
+*.jks
+*.keystore
+!android/app/debug.keystore

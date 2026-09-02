@@ -22,7 +22,7 @@
  * which cannot be offset downward.
  */
 import { useMemo, useState, type ReactNode } from 'react';
-import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
+import { Animated, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
 
@@ -96,6 +96,7 @@ export function IndexBand({
   tone = 'ink',
   chip,
   chipSymbol = false,
+  chipStyle,
   label,
   stamp,
 }: {
@@ -116,6 +117,13 @@ export function IndexBand({
    * Android's fallback chain find the symbol; this lets the chip do the same.
    */
   chipSymbol?: boolean;
+  /**
+   * An animated style for the chip, so the page that owns a celebration can pop the
+   * verdict mark IN the band without painting a second band over this one (the quiz's
+   * correct-answer tick). Native-driver-safe styles only (transform/opacity) — the chip is
+   * plain layout otherwise and the band itself never animates.
+   */
+  chipStyle?: Animated.WithAnimatedValue<StyleProp<ViewStyle>>;
   label: string;
   stamp: ReactNode;
 }) {
@@ -123,7 +131,7 @@ export function IndexBand({
   return (
     <View style={[cardFrame.band, { backgroundColor: ink.band }]}>
       {chip ? (
-        <View style={[cardFrame.chip, { backgroundColor: ink.chip }]}>
+        <Animated.View style={[cardFrame.chip, { backgroundColor: ink.chip }, chipStyle]}>
           <Text
             style={[
               cardFrame.chipText,
@@ -134,7 +142,7 @@ export function IndexBand({
           >
             {chip}
           </Text>
-        </View>
+        </Animated.View>
       ) : null}
       <Text
         style={[cardFrame.bandLabel, { color: ink.label }]}

@@ -41,7 +41,7 @@ import type { Language } from '@hiraia/shared';
 
 import { uiStrings } from '../../config/strings';
 import { bandLabel, type CardChoice, type CardFact } from '../../data/cards';
-import { useCardCopy } from '../../data/cardTextSource';
+import { useCardCopy, useChoiceLabels } from '../../data/cardTextSource';
 import { useLatchedArtSource } from '../../data/artSource';
 import {
   posterFor,
@@ -337,6 +337,11 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
    * snapshot never changes and this is the same synchronous read it always was.
    */
   const { text, emphasis, title } = useCardCopy(fact, language);
+  /**
+   * The tickets' labels, resolved against the destinations' authored titles at display time
+   * (see useChoiceLabels) — the drawn `label` is a cold-row fragment and never had the title.
+   */
+  const choiceLabels = useChoiceLabels(choices, language);
   const { ask, body } = splitQA(text);
   /**
    * The illustration, IF this device has it. With the art pack bundling the head of the list
@@ -685,13 +690,13 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
                   <TapTarget
                     style={(pressed) => [styles.pick, styles.pickA, pressed && cardFrame.pressed]}
                     onPress={() => onChoose(choices[0]!)}
-                    accessibilityLabel={choices[0].label}
+                    accessibilityLabel={choiceLabels[0]}
                   >
                     <View style={styles.key}>
                       <Text style={styles.keyText}>A</Text>
                     </View>
                     <Text style={styles.pickWord} numberOfLines={1} ellipsizeMode="tail">
-                      {choices[0].label}
+                      {choiceLabels[0]}
                     </Text>
                     <Arrow color={card.stock} />
                   </TapTarget>
@@ -700,13 +705,13 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
                   <TapTarget
                     style={(pressed) => [styles.pick, styles.pickB, pressed && cardFrame.pressed]}
                     onPress={() => onChoose(choices[1]!)}
-                    accessibilityLabel={choices[1].label}
+                    accessibilityLabel={choiceLabels[1]}
                   >
                     <View style={styles.key}>
                       <Text style={styles.keyText}>B</Text>
                     </View>
                     <Text style={styles.pickWord} numberOfLines={1} ellipsizeMode="tail">
-                      {choices[1].label}
+                      {choiceLabels[1]}
                     </Text>
                     <Arrow color={card.stock} />
                   </TapTarget>
@@ -716,7 +721,7 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
           ) : choices[0] ? (
             <Ticket
               eyebrow={t.cards.nextCard}
-              label={choices[0].label}
+              label={choiceLabels[0] ?? choices[0].label}
               onPress={() => onChoose(choices[0]!)}
             />
           ) : null}

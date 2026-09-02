@@ -19,8 +19,11 @@
  * bottom padding ("the ledge"), never shadow props, which RN on Android ignores except
  * for `elevation`.
  */
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
+  AccessibilityInfo,
+  Animated,
+  Easing,
   Image,
   Pressable,
   StyleSheet,
@@ -115,6 +118,164 @@ function shuffled(n: number): number[] {
   return a;
 }
 
+// ---- the correct-answer celebration ---------------------------------------------------
+//
+// Three decorations fire together when the reader's own pick is the right one: a confetti
+// burst over the card, a pop on the star the correct row already prints, and a pop on the
+// verdict tick in the index band. All of it decorates the reveal — the reveal itself (rows
+// recolouring, explanation, ticket) commits synchronously with the tap exactly as before,
+// nothing waits for an animation, and a wrong answer gets none of this.
+
+/**
+ * Confetti inks — the celebratory/neutral family only: gold (the quiz's own accent), stock
+ * and peach (the deck's paper and mat), sage and olive (the printed greens), and the
+ * oxblood accent. Deliberately NOT here: teal (quiz stock — a fill, and invisible on
+ * itself), forkA/forkB (those hues mean "choose a branch"; confetti must never read as a
+ * fork signal), ink/board/graphite (structural press furniture, not celebration) and
+ * plate (the engraving bed; stock already covers "paper").
+ */
+const CONFETTI_INKS = [card.gold, card.stock, card.peach, card.sage, card.olive, card.accent];
+const CONFETTI_COUNT = 24;
+/** One piece's flight time; with the stagger the whole burst is done inside ~1.2s. */
+const CONFETTI_MS = 950;
+const CONFETTI_STAGGER_MS = 250;
+
+interface ConfettiPiece {
+  color: string;
+  w: number;
+  h: number;
+  /** Horizontal jitter at the burst origin, dp. */
+  x0: number;
+  /** Sideways drift, rise apex and fall floor, all dp relative to the origin. */
+  dx: number;
+  apex: number;
+  fall: number;
+  spin: string;
+  delay: number;
+}
+
+function makeConfetti(): ConfettiPiece[] {
+  return Array.from({ length: CONFETTI_COUNT }, (_, i) => {
+    // Cycle the palette rather than sampling it, so every burst carries all six inks.
+    const color = CONFETTI_INKS[i % CONFETTI_INKS.length]!;
+    const side = Math.random() < 0.5 ? -1 : 1;
+    return {
+      color,
+      w: 5 + Math.random() * 4,
+      h: 8 + Math.random() * 6,
+      x0: side * Math.random() * 24,
+      dx: side * (30 + Math.random() * 130),
+      apex: -(24 + Math.random() * 66),
+      fall: 230 + Math.random() * 190,
+      spin: `${(Math.random() < 0.5 ? -1 : 1) * Math.round(180 + Math.random() * 360)}deg`,
+      delay: Math.random() * CONFETTI_STAGGER_MS,
+    };
+  });
+}
+
+/**
+ * A self-built particle burst: ~24 absolutely-positioned paper rects that pop from just
+ * under the index band, drift outward, fall and fade. One linear timing driver per piece
+ * (native driver, transform/opacity only) with the arc shaped by interpolation keyframes —
+ * rise to apex over the first 30%, fall for the rest — so after `start()` nothing touches
+ * the JS thread until the completion callback. The layer takes no touches, is hidden from
+ * accessibility, and the parent unmounts it via `onDone` so nothing lingers in the tree.
+ */
+function Confetti({ onDone }: { onDone: () => void }) {
+  const pieces = useMemo(makeConfetti, []);
+  const drivers = useRef(pieces.map(() => new Animated.Value(0))).current;
+
+  useEffect(() => {
+    let cancelled = false;
+    const burst = Animated.parallel(
+      pieces.map((p, i) =>
+        Animated.timing(drivers[i]!, {
+          toValue: 1,
+          duration: CONFETTI_MS,
+          delay: p.delay,
+          easing: Easing.linear,
+          useNativeDriver: true,
+        })
+      )
+    );
+    // `cancelled` gates the callback so a page turn mid-burst can never set state on an
+    // unmounted parent.
+    burst.start(() => {
+      if (!cancelled) onDone();
+    });
+    return () => {
+      cancelled = true;
+      burst.stop();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- one burst per mount
+  }, []);
+
+  return (
+    <View
+      style={StyleSheet.absoluteFill}
+      pointerEvents="none"
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
+    >
+      {pieces.map((p, i) => {
+        const t = drivers[i]!;
+        return (
+          <Animated.View
+            key={i}
+            style={[
+              styles.confettiPiece,
+              {
+                backgroundColor: p.color,
+                width: p.w,
+                height: p.h,
+                // Invisible through its stagger delay (driver still at 0), then in, then
+                // fading over the last quarter of the fall.
+                opacity: t.interpolate({
+                  inputRange: [0, 0.02, 0.75, 1],
+                  outputRange: [0, 1, 1, 0],
+                }),
+                transform: [
+                  { translateX: t.interpolate({ inputRange: [0, 1], outputRange: [p.x0, p.dx] }) },
+                  {
+                    translateY: t.interpolate({
+                      inputRange: [0, 0.3, 1],
+                      outputRange: [0, p.apex, p.fall],
+                    }),
+                  },
+                  { rotate: t.interpolate({ inputRange: [0, 1], outputRange: ['0deg', p.spin] }) },
+                ],
+              },
+            ]}
+          />
+        );
+      })}
+    </View>
+  );
+}
+
+/**
+ * One cheap read of the platform's reduce-motion flag at mount. No subscription: a quiz
+ * page lives for seconds, so a reader who flips the system setting mid-quiz simply gets
+ * the new behaviour on the next card.
+ */
+function useReduceMotion(): boolean {
+  const [reduce, setReduce] = useState(false);
+  useEffect(() => {
+    let cancelled = false;
+    AccessibilityInfo.isReduceMotionEnabled()
+      .then((v) => {
+        if (!cancelled && v) setReduce(true);
+      })
+      .catch(() => {
+        /* treat an unqueryable platform as motion-ok */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  return reduce;
+}
+
 interface QuestionPageProps {
   question: CardQuestion;
   language: Language;
@@ -130,6 +291,67 @@ export function QuestionPage({ question, language, onAnswer, onContinue }: Quest
   const revealed = selected !== null;
   const correctDisplay = order.indexOf(question.a);
   const gotIt = revealed && selected === correctDisplay;
+
+  // ---- celebration (correct answers only — see the block comment above Confetti) ----
+  //
+  // The reveal has no timing nuance to wait for: `pickOption` sets `selected` and the whole
+  // answered layout (gold row, verdict chip, explanation, ticket) commits in that same
+  // render. This effect runs right after that commit paints, so the pops start from scale 0
+  // on marks that already exist in the settled layout — they ride the reveal's reflow (the
+  // rows unpin from the bottom edge) instead of racing it.
+  const reduceMotion = useReduceMotion();
+  const [confetti, setConfetti] = useState(false);
+  const starPop = useRef(new Animated.Value(0)).current;
+  const chipPop = useRef(new Animated.Value(0)).current;
+  /**
+   * `null` until the celebration fires, then a snapshot of the path it took. The flag
+   * above arrives from an async read, so it can resolve (or the reader can flip the
+   * system setting) while the pops are mid-flight; the mark styles below branch on this
+   * snapshot, never the live flag, so a running pop can't switch from the transform
+   * branch to the opacity branch and snap the star to full size.
+   */
+  const celebration = useRef<'pop' | 'fade' | null>(null);
+
+  useEffect(() => {
+    if (!gotIt || celebration.current) return;
+    celebration.current = reduceMotion ? 'fade' : 'pop';
+    if (reduceMotion) {
+      // Reduced motion: no confetti, and the star + band tick fade in rather than pop.
+      Animated.parallel([
+        Animated.timing(starPop, { toValue: 1, duration: 200, useNativeDriver: true }),
+        Animated.timing(chipPop, { toValue: 1, duration: 200, useNativeDriver: true }),
+      ]).start();
+      return;
+    }
+    setConfetti(true);
+    Animated.parallel([
+      // The star springs from 0 with ~15% overshoot, riding in on a small counter-rotation.
+      Animated.spring(starPop, { toValue: 1, tension: 220, friction: 5.5, useNativeDriver: true }),
+      // The band tick pops a beat later, so the eye travels row -> band, not both at once.
+      Animated.sequence([
+        Animated.delay(120),
+        Animated.spring(chipPop, { toValue: 1, tension: 300, friction: 6, useNativeDriver: true }),
+      ]),
+    ]).start();
+  }, [gotIt, reduceMotion, starPop, chipPop]);
+
+  // Under reduced motion the pops become fades: the same drivers, mapped to opacity
+  // instead of transform, so both paths share one timeline and one completion state.
+  // Branch on the snapshot once one exists, the live flag until then — both marks are
+  // invisible pre-celebration either way (scale 0 and opacity 0 alike), so the fallback
+  // can never paint a wrong frame.
+  const fadeMarks = celebration.current !== null ? celebration.current === 'fade' : reduceMotion;
+  const starStyle: Animated.WithAnimatedObject<TextStyle> = fadeMarks
+    ? { opacity: starPop }
+    : {
+        transform: [
+          { scale: starPop },
+          { rotate: starPop.interpolate({ inputRange: [0, 1], outputRange: ['-40deg', '0deg'] }) },
+        ],
+      };
+  const chipStyle: Animated.WithAnimatedObject<ViewStyle> = fadeMarks
+    ? { opacity: chipPop }
+    : { transform: [{ scale: chipPop }] };
 
   const pickOption = (displayIdx: number) => {
     if (revealed) return;
@@ -162,6 +384,7 @@ export function QuestionPage({ question, language, onAnswer, onContinue }: Quest
         tone="gold"
         chip={revealed ? (gotIt ? '✓' : '✗') : '?'}
         chipSymbol={revealed}
+        chipStyle={gotIt ? chipStyle : undefined}
         label={labels.band}
         stamp={<Image source={CAT} style={cardFrame.stampImage} resizeMode="contain" />}
       />
@@ -252,11 +475,17 @@ export function QuestionPage({ question, language, onAnswer, onContinue }: Quest
                   {text}
                 </Text>
                 {!!mark && (
-                  <Text
-                    style={[styles.mark, state === 'correct' ? styles.markInk : styles.markStock]}
+                  <Animated.Text
+                    style={[
+                      styles.mark,
+                      state === 'correct' ? styles.markInk : styles.markStock,
+                      // The pop is for the reader's OWN star only — the consolation tick
+                      // on a missed answer and the cross still print statically.
+                      state === 'correct' && gotIt ? starStyle : null,
+                    ]}
                   >
                     {mark}
-                  </Text>
+                  </Animated.Text>
                 )}
               </Pressable>
             </View>
@@ -285,6 +514,10 @@ export function QuestionPage({ question, language, onAnswer, onContinue }: Quest
       ) : (
         <Text style={styles.hint}>{labels.hint}</Text>
       )}
+
+      {/* The celebration overlay paints above everything on the card, takes no touches,
+          and is unmounted the moment the burst completes. */}
+      {confetti ? <Confetti onDone={() => setConfetti(false)} /> : null}
     </View>
   );
 }
@@ -409,4 +642,12 @@ const styles = StyleSheet.create({
     color: card.stock,
   },
   ticketGap: { marginTop: 12 },
+
+  // ---- confetti ----
+  confettiPiece: {
+    position: 'absolute',
+    left: '50%', // burst origin: centre of the card, just under the index band
+    top: 58, // content paddingTop 24 + the 34px band, i.e. the band's bottom edge
+    borderRadius: 1,
+  },
 });
