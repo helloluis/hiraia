@@ -51,8 +51,8 @@ export function GradeSlide({
         />
 
         {/* Fixed height, matching page 1's, so the grid never jumps as the question types. */}
-        <div className="flex h-[76px] items-center justify-center">
-          <p className="text-center font-display text-[24px] leading-[32px] text-[#0c343d]">
+        <div className="flex min-h-[4.5rem] items-center justify-center">
+          <p className="text-center font-zilla text-[1.15rem] font-bold leading-snug text-[var(--ink)]">
             {typed}
             <Caret />
           </p>
@@ -68,13 +68,13 @@ export function GradeSlide({
               type="button"
               aria-pressed={isSelected}
               onClick={() => onPick(g)}
-              className={`rounded-2xl border-2 border-[#0c343d] px-3 py-2.5 transition-colors ${
-                isSelected ? 'bg-[#0c343d]' : 'bg-white hover:bg-[rgba(12,52,61,0.05)]'
+              className={`rounded-[13px] border-[3px] border-[var(--ink)] px-3 py-2.5 ${
+                isSelected ? 'bg-[var(--ink)]' : 'bg-[var(--stock)]'
               }`}
             >
               <span
-                className={`block truncate font-display text-[21px] ${
-                  isSelected ? 'text-[#fdfdf6]' : 'text-[#0c343d]'
+                className={`block truncate font-zilla text-[17px] font-bold ${
+                  isSelected ? 'text-[var(--stock)]' : 'text-[var(--ink)]'
                 }`}
               >
                 {GRADE_WORD[language]} {g}
@@ -84,7 +84,7 @@ export function GradeSlide({
         })}
       </div>
 
-      <p className="mt-3 text-center font-hand text-sm text-[rgba(12,52,61,0.6)]">
+      <p className="mt-3 text-center font-zilla text-sm font-medium text-[var(--olive)]">
         {GRADE_NOTE[language]}
       </p>
     </SlideBody>

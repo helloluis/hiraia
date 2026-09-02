@@ -163,7 +163,7 @@ export function OnboardingCarousel({
   }, [goTo, index, showBack, showNext]);
 
   return (
-    <div className="flex h-full w-full flex-col bg-[#fdfdf6]">
+    <div className="flex h-full min-h-0 w-full flex-1 flex-col bg-[var(--board)]">
       <div
         ref={pager}
         onScroll={(e) => {
@@ -185,7 +185,11 @@ export function OnboardingCarousel({
           chosen ? 'overflow-x-auto' : 'overflow-x-hidden'
         }`}
       >
-        <div className="notebook-paper w-full shrink-0 snap-center">
+        <div className="w-full shrink-0 snap-center p-3">
+          <div className="mc-card flex h-full flex-col overflow-hidden">
+            <div className="mc-keyline" aria-hidden />
+            <div className="mc-hole mc-hole-a" aria-hidden />
+            <div className="mc-hole mc-hole-b" aria-hidden />
           <LanguageSlide
             active={index === 0}
             picked={chosen ? lang : null}
@@ -193,30 +197,38 @@ export function OnboardingCarousel({
             onCycle={() => setCycle((c) => c + 1)}
             onPick={handlePickLanguage}
           />
+          </div>
         </div>
-        <div className="notebook-paper w-full shrink-0 snap-center">
+        <div className="w-full shrink-0 snap-center p-3">
+          <div className="mc-card flex h-full flex-col overflow-hidden">
+            <div className="mc-keyline" aria-hidden />
+            <div className="mc-hole mc-hole-a" aria-hidden />
+            <div className="mc-hole mc-hole-b" aria-hidden />
           <GradeSlide
             language={lang}
             selected={grade}
             active={index === 1}
             onPick={handlePickGrade}
           />
+          </div>
         </div>
-        <div className="notebook-paper w-full shrink-0 snap-center">
+        <div className="w-full shrink-0 snap-center p-3">
+          <div className="mc-card flex h-full flex-col overflow-hidden">
+            <div className="mc-keyline" aria-hidden />
+            <div className="mc-hole mc-hole-a" aria-hidden />
+            <div className="mc-hole mc-hole-b" aria-hidden />
           <TutorialSlide language={lang} active={index === 2} onStart={onFinish} />
+          </div>
         </div>
       </div>
 
-      {/* The nav bar sits UNDER the pad, not over it: a page has a hard edge and cannot be
-          overlapped by chrome without looking broken (the same call the app made when it
-          dropped GradeSlide's 80dp clearance hack). */}
-      <div className="flex items-center justify-between border-t border-[rgba(12,52,61,0.14)] px-4 py-2.5">
+      <div className="flex items-center justify-between px-4 py-2.5">
         <div className="w-[100px]">
           {showBack && (
             <button
               type="button"
               onClick={() => goTo(index - 1)}
-              className="flex h-11 w-full items-center justify-center gap-1.5 rounded-xl border-2 border-[#0c343d] bg-white font-hand text-[15px] tracking-[0.06em] text-[#0c343d] transition-colors hover:bg-[rgba(12,52,61,0.05)]"
+              className="flex h-11 w-full items-center justify-center gap-1.5 rounded-xl border-2 border-[var(--ink)] bg-[var(--stock)] font-zilla text-[14px] font-bold tracking-[0.06em] text-[var(--ink)]"
             >
               <span aria-hidden>◀</span>
               {NAV_BACK}
@@ -230,7 +242,7 @@ export function OnboardingCarousel({
             <span
               key={i}
               className={`h-[8px] rounded-full transition-all ${
-                i === index ? 'w-[22px] bg-[#f3a228]' : 'w-[8px] bg-[rgba(12,52,61,0.22)]'
+                i === index ? 'w-[22px] bg-[var(--gold)]' : 'w-[8px] bg-[var(--stock)]/25'
               }`}
             />
           ))}
@@ -241,7 +253,7 @@ export function OnboardingCarousel({
             <button
               type="button"
               onClick={() => goTo(index + 1)}
-              className="flex h-11 w-full items-center justify-center gap-1.5 rounded-xl border-2 border-[#0c343d] bg-[#f3a228] font-hand text-[15px] tracking-[0.06em] text-[#0c343d] transition-[filter] hover:brightness-105"
+              className="flex h-11 w-full items-center justify-center gap-1.5 rounded-xl border-2 border-[var(--ink)] bg-[var(--gold)] font-zilla text-[14px] font-bold tracking-[0.06em] text-[var(--ink)]"
             >
               {NAV_NEXT}
               <span aria-hidden>▶</span>

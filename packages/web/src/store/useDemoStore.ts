@@ -26,6 +26,7 @@ export type DemoPhase = 'onboarding' | 'loading' | 'cards';
 
 interface DemoState {
   isOpen: boolean;
+  restoring: boolean;
   phase: DemoPhase;
   language: LanguageKey | null;
   /**
@@ -149,6 +150,7 @@ export function persist(
 
 export const useDemoStore = create<DemoState>((set, get) => ({
   isOpen: false,
+  restoring: false,
   phase: 'onboarding',
   language: null,
   grade: DEFAULT_GRADE,

@@ -2,7 +2,7 @@
  * Hiraia Android APK — single source of truth for the landing-page download.
  *
  * One APK, one on-device model (Hiraia-2B — the CPT'd + full-parameter-SFT'd
- * Qwen3.5-2B, hiraia-sft-2b-v1), one device target: Android 12+ with
+ * Qwen3.5-2B, hiraia-sft-2b-v2), one device target: Android 12+ with
  * 6 GB+ RAM. There is no lighter build — the 1B/4 GB "kitten" tier is retired, so the
  * requirement below is a REQUIREMENT, not a recommendation.
  *
@@ -19,19 +19,21 @@
 
 export const DOWNLOAD = {
   /**
-   * FALSE by decision (Luis, 2026-09-01): "we're not launching with Sailor2" — the download
-   * stays 'coming soon' until the CPT'd Qwen3.5-2B APK passes its gates. Do not flip this for
-   * the June v0.1 build; when the new APK ships, update url/fileSizeMB/sha256 together.
+   * TRUE for the Sept 2026 v0.1 release: the CPT'd Qwen3.5-2B build, regression gate 45/45
+   * green, signed with the pinned release cert. The UI additionally requires `apk.sha256` to
+   * be non-empty before it renders a live link, so a deploy with an empty hash falls back to
+   * 'coming soon' instead of linking an unverified file. Update url/fileSizeMB/sha256
+   * together, always measured from the SIGNED APK.
    */
-  released: false,
+  released: true,
 
   version: '0.1',
 
   apk: {
     url: 'https://hiraia.org/models/hiraia.apk',
     /** Omit from the UI when 0 (file not measured yet). */
-    fileSizeMB: 0,
-    sha256: '',
+    fileSizeMB: 296,
+    sha256: '3822a29f74e2daddb8efe9a42a0240ea2ea009e4a6bef3821475ad141f14a64b',
   },
 
   /** SHA-256 of the signing cert. Stays the same across releases. */
@@ -45,7 +47,7 @@ export const DOWNLOAD = {
    * fetched from the mirror on first launch (nothing else is — art is in the APK, and
    * the full-parameter Hiraia-2B has no adapters). Keep in step with
    * packages/mobile/src/config/model.ts:
-   * ACTIVE_MODEL.sizeGB (1.27, hiraia-sft-2b-v1 Q4_K_M) + EMBEDDER labse.Q4_K_M.gguf
+   * ACTIVE_MODEL.sizeGB (1.27, hiraia-sft-2b-v2 Q4_K_M) + EMBEDDER labse.Q4_K_M.gguf
    * (~0.38). A user on a capped mobile plan budgets against this number, so round UP,
    * never down.
    */

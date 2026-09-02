@@ -126,6 +126,140 @@ strong, b, h1, h2, h3, h4, h5, h6 {
 }
 .mc a { color: inherit; }
 
+.mc-pullquote {
+  position: relative;
+  margin: 1.35rem 0 0;
+  max-width: 36rem;
+  padding: 0.85rem 0 0.85rem 1.2rem;
+  border-left: 4px solid var(--gold);
+  color: var(--stock);
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-weight: 500;
+  font-size: 1.125rem;
+  line-height: 1.45;
+}
+.mc-pullquote p { margin: 0; }
+@media (min-width: 640px) {
+  .mc-pullquote { font-size: 1.2rem; line-height: 1.5; }
+}
+
+/* Matches the Pears classroom diagram so the drawing sits on the page, not in a frame.
+   Color is ink, not the board's cream --stock, or the body vanishes on this ground. */
+.mc-pears {
+  background: #fdfdfd;
+  color: var(--ink);
+}
+
+/* Corner banner — oxblood, the same accent used to mark a taught term.
+   The label is centered on the visible diagonal (midpoint of the clipped strip),
+   not in the unclipped bar, so the tracking doesn't read as left-aligned. */
+.mc-alpha {
+  --alpha-s: 8.5rem;
+  --alpha-i: 7.15rem;
+  position: fixed;
+  top: -20px;
+  right: -20px;
+  z-index: 40;
+  width: var(--alpha-s);
+  height: var(--alpha-s);
+  overflow: hidden;
+  pointer-events: none;
+}
+.mc-alpha span {
+  position: absolute;
+  top: calc(var(--alpha-i) / 2);
+  left: calc(var(--alpha-s) - var(--alpha-i) / 2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--alpha-i) * 1.4142);
+  height: 1.7rem;
+  padding-left: 0.12em;
+  background: var(--accent);
+  color: var(--stock);
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translate(-50%, -50%) rotate(45deg);
+  box-shadow: 0 2px 0 rgba(28, 59, 46, 0.28);
+}
+@media (min-width: 640px) {
+  .mc-alpha {
+    --alpha-s: 10rem;
+    --alpha-i: 8.3rem;
+  }
+  .mc-alpha span {
+    height: 1.85rem;
+    font-size: 0.7rem;
+  }
+}
+
+/* Hero: pixelated dissolve from the photo into the board (~96px, 8px cells). */
+.mc-hero {
+  --hero-fade: 96px;
+  --hero-px: 8;
+  background: var(--board);
+}
+.mc-hero-photo {
+  position: absolute;
+  inset: 0;
+}
+.mc-hero-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.mc-hero-pixels {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #0000 calc(100% - var(--hero-fade)), #000 calc(100% - var(--hero-fade)));
+  mask-image: linear-gradient(to bottom, #0000 calc(100% - var(--hero-fade)), #000 calc(100% - var(--hero-fade)));
+}
+.mc-hero-pixels img {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: calc(100% / var(--hero-px));
+  height: calc(100% / var(--hero-px));
+  object-fit: cover;
+  object-position: center;
+  image-rendering: pixelated;
+  transform: scale(var(--hero-px));
+  transform-origin: bottom left;
+}
+.mc-hero-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  height: var(--hero-fade);
+  pointer-events: none;
+  background-color: var(--board);
+  -webkit-mask-image: url('/hero-fade-mask.png');
+  mask-image: url('/hero-fade-mask.png');
+  -webkit-mask-size: 256px var(--hero-fade);
+  mask-size: 256px var(--hero-fade);
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+  -webkit-mask-position: bottom left;
+  mask-position: bottom left;
+}
+@media (min-width: 640px) {
+  .mc-hero-photo img,
+  .mc-hero-pixels img {
+    object-position: center 40%;
+  }
+}
+
 .mc-label {
   font-family: 'Archivo Black', sans-serif;
   font-weight: 400;
@@ -206,6 +340,20 @@ strong, b, h1, h2, h3, h4, h5, h6 {
   overflow: hidden;
   flex: 0 0 26px;
 }
+.mc-stamp img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.mc-band-gold {
+  background: var(--gold);
+}
+.mc-band-gold .mc-topic { color: var(--ink); }
+.mc-band-gold .mc-chip {
+  background: var(--ink);
+  color: var(--gold);
+}
+.mc-band-olive { background: var(--olive); }
 
 .mc-plate {
   background: var(--peach);
@@ -280,6 +428,14 @@ strong, b, h1, h2, h3, h4, h5, h6 {
 .mc-ticket-ghost {
   background: var(--stock);
 }
+.mc-ticket-a {
+  background: var(--fork-a);
+  color: var(--stock);
+}
+.mc-ticket-b {
+  background: var(--fork-b);
+  color: var(--stock);
+}
 .mc-arrow {
   width: 38px;
   height: 38px;
@@ -316,11 +472,27 @@ strong, b, h1, h2, h3, h4, h5, h6 {
   stroke-linejoin: miter;
 }
 
-.mc-fan:nth-child(3n + 1) { transform: rotate(-1.4deg); }
-.mc-fan:nth-child(3n + 2) { transform: rotate(1.2deg); }
-.mc-fan:nth-child(3n) { transform: rotate(-0.5deg); }
-.mc-fan:hover { transform: rotate(0deg) translateY(-4px); }
 @media (prefers-reduced-motion: reduce) {
-  .mc-fan:nth-child(n), .mc-fan:hover { transform: none; }
   .mc-ticket:active { transform: none; }
 }
+
+/* Markdown rendered in chat bubbles (no typography plugin, so style the basics). */
+.chat-md p { margin: 0 0 0.5rem; }
+.chat-md p:last-child { margin-bottom: 0; }
+.chat-md strong { font-family: var(--font-display); font-weight: 400; }
+.chat-md h1, .chat-md h2, .chat-md h3, .chat-md h4 {
+  font-family: var(--font-display); font-weight: 400; line-height: 1.15;
+  margin: 0.6rem 0 0.3rem;
+}
+.chat-md h1 { font-size: 1.45rem; }
+.chat-md h2 { font-size: 1.3rem; }
+.chat-md h3 { font-size: 1.15rem; }
+.chat-md ul, .chat-md ol { margin: 0.25rem 0 0.6rem; padding-left: 1.25rem; }
+.chat-md ul { list-style: disc; }
+.chat-md ol { list-style: decimal; }
+.chat-md li { margin: 0.15rem 0; }
+.chat-md code {
+  font-family: ui-monospace, monospace; font-size: 0.85em;
+  background: rgba(12, 52, 61, 0.07); padding: 0.05em 0.3em; border-radius: 4px;
+}
+.chat-md a { color: #0f4a56; text-decoration: underline; }

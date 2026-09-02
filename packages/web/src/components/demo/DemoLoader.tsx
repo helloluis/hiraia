@@ -54,7 +54,7 @@ export function DemoLoader() {
     >
       <div className="px-8 text-center">
         <h2
-          className="font-display text-3xl text-[#fdfdf6] sm:text-4xl"
+          className="font-slab text-3xl text-[#fdfdf6] sm:text-4xl"
           style={{ textShadow: '1px 2px 3px rgba(0,0,0,0.15)' }}
         >
           {welcomeMessage(language)}

@@ -3,18 +3,13 @@
 /**
  * Furniture shared by the three onboarding pages.
  *
- * The pages are printed on the SAME lined pad the feed's cards are (`.notebook-paper` +
- * the 58px left gutter that clears the red margin rule), because onboarding and the feed
- * are one product. That is why none of this is the app's mid-century flash-card die-cut:
- * the browser demo's pages are notebook pages, and a cream deck card dealt in front of a
- * ruled pad would be two products in one lightbox. The vocabulary borrowed from the deck
- * is the one thing that survives the change of stock — GOLD means "the ordinary way
- * onward", which is what the Ticket is.
+ * The pages are printed on the same laminated flash-card stock as the feed, so
+ * onboarding and the deck read as one product. Gold still means "the ordinary way
+ * onward" — it appears once, on the Ticket that starts the demo.
  */
 import type { ReactNode } from 'react';
 
-/** Content starts to the RIGHT of the red margin rule (44-46px in .notebook-paper). */
-export const GUTTER_LEFT = 58;
+export const GUTTER_LEFT = 16;
 
 /**
  * The page's header: the cat stamp, a small-caps label naming what KIND of page this is,
@@ -24,18 +19,10 @@ export const GUTTER_LEFT = 58;
 export function PageHeader({ label }: { label: string }) {
   return (
     // `pr-8` keeps the rule (and the label) clear of the lightbox's floating close button.
-    <div className="mb-2 flex items-center gap-2.5 border-b border-[rgba(12,52,61,0.14)] pb-2 pr-8">
+    <div className="mc-band mb-3 pr-8">
+      <span className="mc-topic">{label}</span>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/hiraia-profile.png"
-        alt=""
-        width={26}
-        height={26}
-        className="h-[26px] w-[26px] shrink-0 rounded-full ring-1 ring-[rgba(12,52,61,0.15)]"
-      />
-      <span className="truncate font-hand text-[13px] uppercase tracking-[0.16em] text-[#5a7178]">
-        {label}
-      </span>
+      <img src="/hiraia-profile.png" alt="" width={26} height={26} className="mc-stamp" />
     </div>
   );
 }
@@ -66,24 +53,19 @@ export function Ticket({
   className?: string;
 }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`group flex w-full items-center justify-center gap-2.5 rounded-2xl border-2 border-[#0c343d] bg-[#f3a228] px-5 py-3.5 shadow-[0_4px_0_rgba(12,52,61,0.35)] transition-transform active:translate-y-[3px] active:shadow-[0_1px_0_rgba(12,52,61,0.35)] motion-reduce:active:translate-y-0 ${className}`}
-    >
-      <span className="font-display text-[26px] leading-none text-[#0c343d]">{label}</span>
-      <span className="text-[18px] leading-none text-[#0c343d]">⤴</span>
-    </button>
+    <div className={`mc-ledge ${className}`}>
+      <button type="button" onClick={onClick} className="mc-ticket">
+        <span className="flex-1">{label}</span>
+        <span className="mc-arrow" aria-hidden />
+      </button>
+    </div>
   );
 }
 
 /** A page of the pad: the gutter + the vertical rhythm every slide shares. */
 export function SlideBody({ children }: { children: ReactNode }) {
   return (
-    <div
-      className="flex h-full flex-col overflow-y-auto pb-4 pr-[26px] pt-2.5"
-      style={{ paddingLeft: GUTTER_LEFT }}
-    >
+    <div className="flex h-full flex-col overflow-y-auto p-1">
       {children}
     </div>
   );

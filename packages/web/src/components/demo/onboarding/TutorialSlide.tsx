@@ -141,15 +141,18 @@ export function TutorialSlide({
     <SlideBody>
       <PageHeader label={SLIDE_BAND[language].demo} />
 
-      <p className="mb-2 text-center font-display text-[21px] leading-7 text-[#0c343d]">
+      <p className="mb-2 text-center font-zilla text-[1.05rem] font-bold leading-snug text-[var(--ink)]">
         {DEMO_CAPTION[language]}
       </p>
 
-      {/* The mock's frame: the pad, seen from outside. Clipped, so the lifting page leaves
-          it the way a page leaves the lightbox. */}
-      <div className="relative min-h-[190px] flex-1 overflow-hidden rounded-2xl border-2 border-[#0c343d] bg-[#e8eceb]">
-        {/* the page already underneath — what the peel reveals */}
-        <div className="notebook-paper absolute inset-0 origin-top scale-[0.985]">
+      <div className="relative min-h-[220px] flex-1 overflow-hidden rounded-[18px] bg-[var(--board)] p-2.5">
+        <div
+          className="pointer-events-none absolute inset-x-5 bottom-2 top-5 rounded-[16px] border-[3px] border-[var(--ink)] bg-[var(--stock)] opacity-40"
+          style={{ transform: 'rotate(-2deg)' }}
+          aria-hidden
+        />
+        {/* the card already underneath */}
+        <div className="absolute inset-2 origin-top">
           <MiniPage
             mini={mini}
             fork={isFork(under)}
@@ -159,16 +162,15 @@ export function TutorialSlide({
           />
         </div>
 
-        {/* the page being turned */}
         <div
-          className="notebook-paper absolute inset-0"
+          className="absolute inset-2"
           style={{
             transformOrigin: note.side === 'left' ? 'left bottom' : 'right bottom',
             transform: lifting
-              ? `translate(${drift}%, -112%) rotate(${tilt}deg)`
+              ? `translate(${drift}%, -118%) rotate(${tilt}deg)`
               : 'translate(0, 0) rotate(0deg)',
             opacity: lifting ? 0 : 1,
-            boxShadow: lifting ? '0 8px 14px rgba(0,0,0,0.25)' : 'none',
+            boxShadow: lifting ? '0 10px 18px rgba(28, 59, 46, 0.35)' : 'none',
             transition:
               phase === 'swap'
                 ? 'none'
@@ -184,19 +186,14 @@ export function TutorialSlide({
           />
         </div>
 
-        {/*
-          The pointer cue. A ring, not a hand glyph: every hand in this range renders as a
-          colour emoji on Android and would be the only full-colour object on the pad.
-          It sinks as the note is pressed and is gone before the page is.
-        */}
         {!reduced && (
           <div
             aria-hidden
-            className="pointer-events-none absolute h-[26px] w-[26px] rounded-full border-2 border-[#0c343d] bg-[rgba(253,253,246,0.72)]"
+            className="pointer-events-none absolute h-[26px] w-[26px] rounded-full border-2 border-[var(--gold)] bg-[var(--stock)]/80"
             style={{
               left: `calc(${note.x}% - 13px)`,
-              bottom: 12,
-              opacity: phase === 'rest' ? 0.45 : phase === 'press' ? 1 : 0,
+              bottom: 18,
+              opacity: phase === 'rest' ? 0.55 : phase === 'press' ? 1 : 0,
               transform: phase === 'press' ? 'scale(0.82)' : 'scale(1)',
               transition: 'opacity 160ms ease-out, transform 160ms ease-out',
             }}
@@ -204,9 +201,7 @@ export function TutorialSlide({
         )}
       </div>
 
-      {/* The line naming the beat on screen. Fixed height: it changes three times a loop and
-          a reflow under the mock would make the whole page twitch. */}
-      <p className="mt-2 flex h-[44px] items-center justify-center text-center font-hand text-[15px] leading-[21px] text-[#5a7178]">
+      <p className="mt-2 flex h-[44px] items-center justify-center text-center font-zilla text-[14px] font-medium leading-snug text-[var(--olive)]">
         {hint[current]}
       </p>
 
@@ -236,66 +231,63 @@ function MiniPage({
   onArtError: () => void;
 }) {
   return (
-    <div className="flex h-full flex-col pb-2 pl-[26px] pr-3 pt-2">
-      <div className="truncate font-hand text-[10px] uppercase tracking-[0.16em] text-[#5a7178]">
-        {mini.band}
+    <div className="flex h-full flex-col overflow-hidden rounded-[14px] border-[3px] border-[var(--ink)] bg-[var(--stock)] p-2">
+      <div className="mb-1.5 flex h-6 items-center rounded-md bg-[var(--ink)] px-1.5">
+        <span className="min-w-0 flex-1 truncate font-band text-[8px] uppercase tracking-[0.12em] text-[var(--stock)]">
+          {mini.band}
+        </span>
       </div>
 
-      <div className="flex flex-1 items-center justify-center py-1">
+      <div className="flex min-h-0 flex-1 items-center justify-center">
         {artFailed ? (
-          <div className="aspect-square h-full max-h-[86px] rounded-[10px] border border-dashed border-[rgba(12,52,61,0.12)] bg-white" />
+          <div className="aspect-square h-full max-h-[96px] rounded-[6px] border-2 border-[var(--ink)] bg-[var(--peach)]" />
         ) : (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={DEMO_IMAGE_SRC}
             alt=""
             onError={onArtError}
-            className="aspect-square h-full max-h-[86px] rounded-[10px] border border-dashed border-[rgba(12,52,61,0.12)] bg-white object-cover"
+            className="aspect-square h-full max-h-[96px] rounded-[6px] border-2 border-[var(--ink)] bg-[var(--peach)] object-contain mix-blend-multiply"
           />
         )}
       </div>
 
-      {/* Fixed height, bottom-aligned: a fork's foot is the same height as a single note's,
-          so the engraving above never resizes between beats. */}
-      <div className="flex h-[26px] items-end justify-between gap-2">
+      <div className="mt-1.5 flex h-[28px] items-end gap-1">
         {fork ? (
           <>
-            <MiniNote label={mini.pickA} pick="A" tilt={-2} down={pressed === 'left'} />
-            <MiniNote label={mini.pickB} pick="B" tilt={1.5} down={pressed === 'right'} />
+            <MiniNote label={mini.pickA} tone="a" down={pressed === 'left'} />
+            <MiniNote label={mini.pickB} tone="b" down={pressed === 'right'} />
           </>
         ) : (
-          <div className="flex w-full justify-center">
-            <MiniNote label={mini.next} pick={null} tilt={-1} down={pressed === 'next'} />
-          </div>
+          <MiniNote label={mini.next} tone="gold" down={pressed === 'next'} />
         )}
       </div>
     </div>
   );
 }
 
-/** One teacher's-note choice at mini scale — blue ink, underlined, with the feed's `⤴`. */
 function MiniNote({
   label,
-  pick,
-  tilt,
+  tone,
   down,
 }: {
   label: string;
-  pick: 'A' | 'B' | null;
-  tilt: number;
+  tone: 'gold' | 'a' | 'b';
   down: boolean;
 }) {
+  const fill =
+    tone === 'gold' ? 'bg-[var(--gold)]' : tone === 'a' ? 'bg-[var(--fork-a)]' : 'bg-[var(--fork-b)]';
+  const ink = tone === 'gold' ? 'text-[var(--ink)]' : 'text-[var(--stock)]';
   return (
     <span
-      className="inline-flex max-w-[46%] shrink-0 items-baseline gap-1 whitespace-nowrap border-b-[1.5px] border-[#2743a6] pb-px font-display text-[13px] text-[#2743a6]"
+      className={`flex min-w-0 flex-1 items-center justify-between rounded-md border-2 border-[var(--ink)] px-1.5 py-0.5 font-zilla text-[10px] font-bold leading-none ${fill} ${ink}`}
       style={{
-        transform: `rotate(${tilt}deg) translateY(${down ? 2 : 0}px)`,
+        transform: `translateY(${down ? 2 : 0}px)`,
         transition: 'transform 150ms ease-out',
       }}
     >
-      {pick && <span className="text-[10px] opacity-70">{pick}</span>}
       <span className="truncate">{label}</span>
-      <span className="text-[10px]">⤴</span>
+      <span aria-hidden className="ml-1">▶</span>
     </span>
   );
 }

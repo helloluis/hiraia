@@ -85,12 +85,10 @@ export function LanguageSlide({
           alt="Hiraia"
           className="h-[76px] w-[76px] rounded-full ring-1 ring-[rgba(12,52,61,0.12)]"
         />
-        <h2 className="mt-2 font-title text-[34px] leading-none text-[#0c343d]">Hiraia</h2>
+        <h2 className="mt-2 font-slab text-[32px] leading-none tracking-wide text-[var(--ink)]">HIRAIA</h2>
 
-        {/* Fixed height so the plates below never jump as the question retypes: two lines of
-            the 24px display face, which is what the longest of the three wraps to. */}
-        <div className="flex h-[76px] items-center justify-center">
-          <p className="text-center font-display text-[24px] leading-[32px] text-[#0c343d]">
+        <div className="flex min-h-[4.5rem] items-center justify-center">
+          <p className="text-center font-zilla text-[1.15rem] font-bold leading-snug text-[var(--ink)]">
             {typed}
             <Caret />
           </p>
@@ -103,35 +101,33 @@ export function LanguageSlide({
             key={opt.lang}
             type="button"
             onClick={() => onPick(opt.lang)}
-            className={`flex items-center gap-2.5 rounded-2xl border-2 border-[#0c343d] px-4 py-3 text-left transition-colors ${
-              picked === opt.lang ? 'bg-[#0c343d]' : 'bg-white hover:bg-[rgba(12,52,61,0.05)]'
+            className={`flex items-center gap-2.5 rounded-[13px] border-[3px] border-[var(--ink)] px-4 py-3 text-left ${
+              picked === opt.lang ? 'bg-[var(--ink)]' : 'bg-[var(--stock)]'
             }`}
           >
             <span
-              className={`min-w-0 flex-1 truncate font-display text-[21px] ${
-                picked === opt.lang ? 'text-[#fdfdf6]' : 'text-[#0c343d]'
+              className={`min-w-0 flex-1 truncate font-zilla text-[18px] font-bold ${
+                picked === opt.lang ? 'text-[var(--stock)]' : 'text-[var(--ink)]'
               }`}
             >
               {LANG_BUTTON[opt.lang]}
             </span>
             {opt.beta && (
-              <span className="shrink-0 rounded-lg bg-[#f3a228] px-2 py-0.5 font-hand text-xs text-[#0c343d]">
-                beta
-              </span>
+              <span className="mc-chip !h-5 shrink-0 !text-[9px]">beta</span>
             )}
             <span
-              className={`shrink-0 text-[17px] ${
-                picked === opt.lang ? 'text-[#f3a228]' : 'text-[#2743a6]'
+              className={`shrink-0 font-slab text-[14px] ${
+                picked === opt.lang ? 'text-[var(--gold)]' : 'text-[var(--ink)]'
               }`}
               aria-hidden
             >
-              ⤴
+              ▶
             </span>
           </button>
         ))}
       </div>
 
-      <p className="mt-3 text-center font-hand text-sm text-[rgba(12,52,61,0.6)]">
+      <p className="mt-3 text-center font-zilla text-sm font-medium text-[var(--olive)]">
         {LANG_REASSURE[picked ?? lang]}
       </p>
     </SlideBody>

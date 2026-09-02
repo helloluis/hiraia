@@ -556,6 +556,9 @@ export function getCard(id: string): CardFact | undefined {
   return BY_ID.get(id);
 }
 
+/** Overlay no-op: quiz bank is already in the feed chunk on this tree. */
+export function warmQuestions(): void {}
+
 export function questionForFact(id: string): CardQuestion | undefined {
   // Cards are keyed by factoid id; the MCQ bank is keyed by the underlying source-fact id.
   const factId = BY_ID.get(id)?.factId ?? id;
