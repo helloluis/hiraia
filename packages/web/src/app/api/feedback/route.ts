@@ -88,7 +88,7 @@ async function sendEmail(row: { id: number; name: string; contact: string; body:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Hiraia <onboarding@resend.dev>',
+        from: 'Hiraia <feedback@hiraia.org>',
         to,
         subject: `Hiraia feedback from ${row.name}`,
         text: [
