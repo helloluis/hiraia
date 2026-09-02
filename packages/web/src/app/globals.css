@@ -126,6 +126,77 @@ strong, b, h1, h2, h3, h4, h5, h6 {
 }
 .mc a { color: inherit; }
 
+.mc-pullquote {
+  position: relative;
+  margin: 1.35rem 0 0;
+  max-width: 36rem;
+  padding: 0.85rem 0 0.85rem 1.2rem;
+  border-left: 4px solid var(--gold);
+  color: var(--stock);
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-weight: 500;
+  font-size: 1.125rem;
+  line-height: 1.45;
+}
+.mc-pullquote p { margin: 0; }
+@media (min-width: 640px) {
+  .mc-pullquote { font-size: 1.2rem; line-height: 1.5; }
+}
+
+/* Matches the Pears classroom diagram so the drawing sits on the page, not in a frame.
+   Color is ink, not the board's cream --stock, or the body vanishes on this ground. */
+.mc-pears {
+  background: #fdfdfd;
+  color: var(--ink);
+}
+
+/* Corner banner — oxblood, the same accent used to mark a taught term.
+   The label is centered on the visible diagonal (midpoint of the clipped strip),
+   not in the unclipped bar, so the tracking doesn't read as left-aligned. */
+.mc-alpha {
+  --alpha-s: 8.5rem;
+  --alpha-i: 7.15rem;
+  position: fixed;
+  top: -20px;
+  right: -20px;
+  z-index: 40;
+  width: var(--alpha-s);
+  height: var(--alpha-s);
+  overflow: hidden;
+  pointer-events: none;
+}
+.mc-alpha span {
+  position: absolute;
+  top: calc(var(--alpha-i) / 2);
+  left: calc(var(--alpha-s) - var(--alpha-i) / 2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--alpha-i) * 1.4142);
+  height: 1.7rem;
+  padding-left: 0.12em;
+  background: var(--accent);
+  color: var(--stock);
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translate(-50%, -50%) rotate(45deg);
+  box-shadow: 0 2px 0 rgba(28, 59, 46, 0.28);
+}
+@media (min-width: 640px) {
+  .mc-alpha {
+    --alpha-s: 10rem;
+    --alpha-i: 8.3rem;
+  }
+  .mc-alpha span {
+    height: 1.85rem;
+    font-size: 0.7rem;
+  }
+}
+
 /* Hero: pixelated dissolve from the photo into the board (~96px, 8px cells). */
 .mc-hero {
   --hero-fade: 96px;
@@ -269,6 +340,41 @@ strong, b, h1, h2, h3, h4, h5, h6 {
   overflow: hidden;
   flex: 0 0 26px;
 }
+.mc-stamp img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.mc-band-gold {
+  background: var(--gold);
+}
+.mc-band-gold .mc-topic { color: var(--ink); }
+.mc-band-gold .mc-chip {
+  background: var(--ink);
+  color: var(--gold);
+}
+.mc-band-olive { background: var(--olive); }
+
+.mc-plate {
+  background: var(--peach);
+  border: 3px solid var(--ink);
+  border-radius: 7px;
+  padding: 6px;
+}
+.mc-window {
+  background: var(--stock);
+  border-radius: 2px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mc-window img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
 
 .mc-divider {
   display: flex;
@@ -321,6 +427,14 @@ strong, b, h1, h2, h3, h4, h5, h6 {
 }
 .mc-ticket-ghost {
   background: var(--stock);
+}
+.mc-ticket-a {
+  background: var(--fork-a);
+  color: var(--stock);
+}
+.mc-ticket-b {
+  background: var(--fork-b);
+  color: var(--stock);
 }
 .mc-arrow {
   width: 38px;

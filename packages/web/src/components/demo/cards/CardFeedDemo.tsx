@@ -2,21 +2,28 @@
 
 /**
  * The question-cards feed — WEB DEMO shell, ported from the mobile app's home screen
- * (packages/mobile/src/components/cards/CardFeedScreen.tsx — keep in sync). A notebook
- * pad on lined paper: one fact per page, typewriter entry, and the outgoing page
- * lifting up and off the pad on navigation. Every 4-5 pages the flip is intercepted
+ * (packages/mobile/src/components/cards/CardFeedScreen.tsx — keep in sync). A laminated
+ * mid-century flash card on the dark board: one fact per card, typewriter entry, and
+ * the outgoing card peeling up on navigation. Every 4-5 pages the flip is intercepted
  * by one MCQ about a recently-read fact; every 6-10 by a reward recap.
  *
- * The "ask anything" box is retrieval-only here: a confident match navigates straight
- * to the found card (with a "you asked" banner); a miss shows the submit button's
- * spinner + a thinking veil for a beat, then the honest abstention card.
+ * The "ask anything" box is the visitor's agency, and it answers for REAL. A confident match
+ * in the bundled subset navigates straight to the found card (instant, zero-model, with a
+ * "you asked" banner). A miss goes to /api/demo/card, which retrieves from the WHOLE fact bank
+ * on the server and comes back with one of three cards — a printed fact card, an honest
+ * in-domain gap, or "I'm only a science tutor" — the same three the phone prints on-device.
+ * The submit button becomes a progress circle and a thinking veil covers the pad while that is
+ * in flight, so it is clear the app is working and the visitor should wait.
  */
 import { useEffect, useRef, useState } from 'react';
 
-import type { CardChoice, CardFact, CardQuestion } from '@/data/cards';
+import type { LanguageKey } from '@/config/model';
+import { warmQuestions, type CardChoice, type CardFact, type CardQuestion } from '@/data/cards';
 import type { RewardContent } from '@/data/reward';
 import { useCardDemoStore, type FeedResponse } from '@/store/useCardDemoStore';
 import { useDemoStore } from '@/store/useDemoStore';
+
+import { LANGUAGE_OPTIONS } from '../onboarding/copy';
 
 import { DemoCardPage } from './DemoCardPage';
 import { DemoQuestionPage } from './DemoQuestionPage';
@@ -25,6 +32,20 @@ import { DemoRewardCard } from './DemoRewardCard';
 import { cardStrings } from './strings';
 
 const FLIP_MS = 360;
+
+/** Grade a card is pitched at if onboarding somehow did not set one (the project default). */
+const DEMO_DEFAULT_GRADE = 5;
+
+/**
+ * Two-or-three letters standing in for each language on the header pill. Short because the
+ * header is already carrying a page counter, the spine holes, the reroll and the score — and
+ * unambiguous because each is the language's own first syllable.
+ */
+const LANG_BADGE: Record<LanguageKey, string> = {
+  tagalog: 'TL',
+  english: 'EN',
+  cebuano: 'BIS',
+};
 
 /** What was on the pad for the page being peeled away. */
 interface PageSnap {
@@ -38,7 +59,15 @@ interface PageSnap {
 
 export function CardFeedDemo() {
   const language = useDemoStore((s) => s.language) ?? 'tagalog';
+  // Onboarding page 2's answer, via useDemoStore. It does two things: it pitches a GENERATED
+  // card through /api/demo/card (which clamps it), and it weights the WALK — the store builds
+  // a curriculum weigher from it in `hydrate` and every unforced draw goes through it. The
+  // inventory is what makes that meaningful: the subset is quota'd by (domain, grade) cell in
+  // full-pool proportion, so there is real material at every grade to weight toward.
+  const grade = useDemoStore((s) => s.grade) ?? DEMO_DEFAULT_GRADE;
+  const setLanguage = useDemoStore((s) => s.setLanguage);
   const t = cardStrings(language);
+  const [langOpen, setLangOpen] = useState(false);
 
   const hydrated = useCardDemoStore((s) => s.hydrated);
   const hydrate = useCardDemoStore((s) => s.hydrate);
@@ -60,18 +89,20 @@ export function CardFeedDemo() {
   const continueAfterResponse = useCardDemoStore((s) => s.continueAfterResponse);
   const ask = useCardDemoStore((s) => s.ask);
   const jumpToRandom = useCardDemoStore((s) => s.jumpToRandom);
+  const untilQuestion = useCardDemoStore((s) => s.untilQuestion);
 
   const [queryText, setQueryText] = useState('');
   const submitQuery = () => {
     const q = queryText.trim();
     if (!q) return;
     setQueryText('');
-    ask(q, language);
+    void ask(q, language, grade);
   };
 
   useEffect(() => {
-    hydrate(language);
-  }, [hydrate, language]);
+    hydrate(language, grade);
+    warmQuestions();
+  }, [hydrate, language, grade]);
 
   // Choice labels are baked in the picked language — re-bake them if the visitor
   // closes the demo and reopens it in a different language.
@@ -105,28 +136,77 @@ export function CardFeedDemo() {
 
   if (!hydrated || !current) {
     return (
-      <div className="notebook-paper flex h-full w-full items-center justify-center">
-        <span className="font-display text-[30px] text-[#5a7178]">…</span>
+      <div className="flex h-full w-full items-center justify-center bg-[var(--board)]">
+        <span className="font-slab text-[28px] text-[var(--gold)]">…</span>
       </div>
     );
   }
 
+  const litTicks = Math.max(0, Math.min(5, 5 - untilQuestion));
+
   return (
-    <div className="flex h-full w-full flex-col bg-[#fdfdf6]">
-      {/* counters + spine holes (right padding clears the lightbox close button) */}
-      <div className="flex items-center justify-between pb-1 pl-[22px] pr-14 pt-1.5">
-        <span className="min-w-[72px] font-hand text-[15px] text-[#5a7178]">
+    <div className="flex h-full min-h-0 w-full flex-1 flex-col bg-[var(--board)] text-[var(--stock)]">
+      {/* counters + meter (right padding clears the lightbox close button) */}
+      <div className="flex items-center justify-between pb-1 pl-4 pr-14 pt-2">
+        <span className="min-w-[104px] font-zilla text-[13px] font-medium uppercase tracking-wider text-[var(--stock)]/70">
           {t.readLabel} {pagesRead}
         </span>
-        <div className="flex gap-4">
+        <div className="flex gap-1.5">
           {Array.from({ length: 5 }, (_, i) => (
             <div
               key={i}
-              className="h-[9px] w-[9px] rounded-full border-[1.5px] border-[rgba(12,52,61,0.25)] bg-white"
+              className={`h-2 w-3 rounded-[1px] ${
+                i < litTicks ? 'bg-[var(--gold)]' : 'bg-[var(--stock)]/20'
+              }`}
             />
           ))}
         </div>
-        <div className="flex min-w-[72px] items-center justify-end gap-2.5">
+        <div className="flex min-w-[104px] items-center justify-end gap-2">
+          {/* The language switch onboarding promised ("Mababago mo ito mamaya."). It used to
+              live ONLY on the cold-start loader, which auto-advances after ~6.9 seconds — so
+              the promise expired before a child could read it, and there was no way back
+              except closing the demo and reopening it. `relocale` already exists to re-bake
+              the choice labels, so the whole cost here is the plate. */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setLangOpen((v) => !v)}
+              aria-label={t.languageLabel}
+              aria-expanded={langOpen}
+              className="rounded-full border-2 border-[var(--ink)] bg-[var(--stock)] px-2 py-[3px] font-zilla text-[11px] font-bold leading-none tracking-[0.08em] text-[var(--ink)]"
+            >
+              {LANG_BADGE[language]}
+            </button>
+            {langOpen && (
+              <>
+                {/* full-screen catcher so a tap anywhere dismisses the plate */}
+                <button
+                  type="button"
+                  aria-hidden
+                  tabIndex={-1}
+                  onClick={() => setLangOpen(false)}
+                  className="fixed inset-0 z-20 cursor-default"
+                />
+                <div className="absolute right-0 top-[26px] z-30 w-[124px] overflow-hidden rounded-xl border-2 border-[var(--ink)] bg-[var(--stock)] shadow-lg">
+                  {LANGUAGE_OPTIONS.map((o) => (
+                    <button
+                      key={o.lang}
+                      type="button"
+                      onClick={() => {
+                        setLangOpen(false);
+                        if (o.lang !== language) setLanguage(o.lang);
+                      }}
+                      className={`block w-full px-3 py-2 text-left font-zilla text-[14px] font-medium text-[var(--ink)] ${
+                        o.lang === language ? 'bg-[var(--gold)]' : 'hover:bg-[var(--ink)]/5'
+                      }`}
+                    >
+                      {o.label}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
           <button
             type="button"
             onClick={() => jumpToRandom(language)}
@@ -135,7 +215,7 @@ export function CardFeedDemo() {
           >
             🎲
           </button>
-          <span className="font-display text-[19px] text-[#2743a6]">✓ {correctCount}</span>
+          <span className="font-slab text-[16px] text-[var(--gold)]">✓ {correctCount}</span>
         </div>
       </div>
 
@@ -143,40 +223,43 @@ export function CardFeedDemo() {
           While an answer is being worked on the submit button becomes a progress
           circle, so it's clear the app is working and they should wait. */}
       <form
-        className="mx-4 mb-1.5 flex h-10 items-center rounded-full border-[1.5px] border-[rgba(12,52,61,0.18)] bg-white px-3"
+        className="mx-4 mb-2 flex h-10 items-center rounded-full border-2 border-[var(--ink)] bg-[var(--stock)] px-3"
         onSubmit={(e) => {
           e.preventDefault();
           submitQuery();
         }}
       >
-        <span className="mr-2 text-[15px] opacity-70">🔍</span>
+        <span className="mr-2 text-[15px] text-[var(--gold)]">◆</span>
         <input
           type="text"
           value={queryText}
           onChange={(e) => setQueryText(e.target.value)}
           placeholder={t.searchPlaceholder}
           disabled={asking}
-          className="min-w-0 flex-1 bg-transparent font-hand text-[16px] text-[#0c343d] outline-none placeholder:text-[#5a7178]"
+          className="min-w-0 flex-1 bg-transparent font-zilla text-[15px] font-medium text-[var(--ink)] outline-none placeholder:text-[var(--olive)]"
         />
         {asking ? (
-          <div className="ml-2 h-4 w-4 animate-spin rounded-full border-2 border-[#2743a6]/30 border-t-[#2743a6]" />
+          <div className="ml-2 h-4 w-4 animate-spin rounded-full border-2 border-[var(--gold)]/30 border-t-[var(--gold)]" />
         ) : (
           <button
             type="submit"
             disabled={!queryText.trim()}
             aria-label="Ask"
-            className="ml-2 text-[15px] text-[#2743a6] disabled:opacity-30"
+            className="ml-2 font-slab text-[14px] text-[var(--ink)] disabled:opacity-30"
           >
             ➤
           </button>
         )}
       </form>
 
-      {/* the pad */}
-      <div className="relative flex-1 overflow-hidden border-t-2 border-[rgba(12,52,61,0.18)]">
-        {/* incoming page — lined paper, blank content that types itself in. NEVER
-            transformed, so it's always visible + clickable. */}
-        <div key={pageKey} className="notebook-paper absolute inset-0">
+      {/* the deck — same 16px inset as the search bar, no fan (it read as a gray smear) */}
+      <div className="relative min-h-0 flex-1 px-4 pb-4">
+        <div className="mc-card flex h-full min-h-0 flex-col overflow-hidden !p-3 !shadow-none">
+          <div className="mc-keyline" aria-hidden />
+          <div className="mc-hole mc-hole-a" aria-hidden />
+          <div className="mc-hole mc-hole-b" aria-hidden />
+        {/* incoming page — NEVER transformed, so it's always visible + clickable. */}
+        <div key={pageKey} className="relative z-[1] min-h-0 flex-1 overflow-hidden">
           {response ? (
             <DemoResponseCard
               response={response}
@@ -207,17 +290,16 @@ export function CardFeedDemo() {
 
           {/* "you asked" ribbon when a search navigated straight to a found card */}
           {queryBanner && !response && !reward && !question ? (
-            <div className="pointer-events-none absolute inset-x-0 top-0 border-b border-[rgba(12,52,61,0.12)] bg-[rgba(240,246,247,0.92)] px-5 py-1.5">
-              <span className="block truncate font-hand text-[13px] italic text-[#2743a6]">
+            <div className="pointer-events-none absolute inset-x-0 top-0 z-[2] bg-[var(--gold)] px-3 py-1.5">
+              <span className="block truncate font-zilla text-[12px] font-bold italic text-[var(--ink)]">
                 {t.yourQuestion}: “{queryBanner}”
               </span>
             </div>
           ) : null}
         </div>
 
-        {/* outgoing page lifting up and off the pad */}
         {outgoing && (
-          <div className="notebook-paper demo-page-peel pointer-events-none absolute inset-0">
+          <div className="demo-page-peel pointer-events-none absolute inset-0 z-[2] bg-[var(--stock)]">
             {outgoing.fact && !outgoing.question && !outgoing.reward && !outgoing.response ? (
               <DemoCardPage
                 fact={outgoing.fact}
@@ -230,12 +312,12 @@ export function CardFeedDemo() {
           </div>
         )}
 
-        {/* thinking veil while the (simulated) answer beat is in flight */}
         {asking ? (
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-[rgba(247,244,236,0.72)]">
-            <span className="font-display text-[22px] text-[#5a7178]">{t.thinking}…</span>
+          <div className="pointer-events-none absolute inset-0 z-[3] flex items-center justify-center bg-[var(--stock)]/80">
+            <span className="font-zilla text-[20px] font-bold text-[var(--ink)]">{t.thinking}…</span>
           </div>
         ) : null}
+        </div>
       </div>
     </div>
   );

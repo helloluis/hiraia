@@ -1,60 +1,33 @@
 'use client';
 
 /**
- * One notebook page of the question-cards feed — WEB DEMO port of the mobile
- * packages/mobile/src/components/cards/CardPage.tsx (keep in sync): illustration + the
- * fact, typewritered onto a blank page, with the two blue-ink "teacher's note" choices
- * at the bottom corners. Click anywhere while typing → complete instantly.
- *
- * Typography reacts to content length: short facts go BIG in felt marker (centered),
- * long facts settle into smaller handwriting (top-left). The typewriter renders the
- * full text invisibly to reserve layout, revealing a prefix — so centered text never
- * re-wraps/jumps as it types.
+ * One laminated flash card of the question-cards feed — WEB DEMO port of the mobile
+ * packages/mobile/src/components/cards/CardPage.tsx: index band, peach-matted engraving,
+ * typewritten fact, and a mustard ticket (or a pair of fork tickets) for the next card.
  */
 import { useEffect, useState } from 'react';
 
 import type { LanguageKey } from '@/config/model';
 import { cardText, type CardChoice, type CardFact } from '@/data/cards';
 
-// Content starts to the RIGHT of the red margin rule (44-46px in .notebook-paper).
-const GUTTER_LEFT = 58;
-
 const CHARS_PER_TICK = 5;
-const TICK_MS = 24; // ≈ 210 chars/s — a card lands in ~1s; click to finish instantly
-
-interface Tier {
-  fontClass: string;
-  fontSize: number;
-  lineHeight: number;
-  textAlign: 'center' | 'left';
-  centered: boolean; // vertical centering + image size
-}
-
-function tierFor(text: string): Tier {
-  const n = text.length;
-  if (n <= 70) return { fontClass: 'font-display', fontSize: 30, lineHeight: 44, textAlign: 'center', centered: true };
-  if (n <= 150) return { fontClass: 'font-display', fontSize: 27, lineHeight: 38, textAlign: 'center', centered: true };
-  if (n <= 260) return { fontClass: 'font-hand', fontSize: 20, lineHeight: 30, textAlign: 'left', centered: false };
-  return { fontClass: 'font-hand', fontSize: 17, lineHeight: 26, textAlign: 'left', centered: false };
-}
+const TICK_MS = 24;
 
 interface DemoCardPageProps {
   fact: CardFact;
   choices: CardChoice[];
   language: LanguageKey;
   onChoose: (choice: CardChoice) => void;
-  /** Render fully typed with no animation (the outgoing page during the flip). */
   instant?: boolean;
 }
 
 export function DemoCardPage({ fact, choices, language, onChoose, instant = false }: DemoCardPageProps) {
   const text = cardText(fact, language);
-  const tier = tierFor(text);
+  const branching = choices.length > 1;
   const [shown, setShown] = useState(instant ? text.length : 0);
   const [imgFailed, setImgFailed] = useState(false);
   const done = shown >= text.length;
 
-  // typewriter (starts shortly after mount, i.e. as the page flip settles)
   useEffect(() => {
     if (instant) {
       setShown(text.length);
@@ -91,68 +64,59 @@ export function DemoCardPage({ fact, choices, language, onChoose, instant = fals
 
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-    <div
-      className="relative flex h-full flex-col pb-[78px] pr-[26px] pt-2"
-      style={{ paddingLeft: GUTTER_LEFT }}
-      onClick={skip}
-    >
-      <div
-        className={
-          tier.centered
-            ? 'flex flex-1 flex-col items-center justify-center'
-            : 'flex flex-1 flex-col items-start pt-2'
-        }
-      >
-        {!imgFailed && (
-          <div className="mx-auto" style={{ ...extras, width: tier.centered ? 250 : 190 }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={`/demo/cards/${fact.slug}.png`}
-              alt={fact.topic}
-              onError={() => setImgFailed(true)}
-              className="aspect-square w-full rounded-[14px] border border-dashed border-[rgba(12,52,61,0.12)] bg-white object-cover"
-            />
+    <div className="relative z-[1] flex h-full flex-col" onClick={skip}>
+      <div className={`mc-band mb-3 ${branching ? 'mc-band-olive' : ''}`}>
+        <span className="mc-topic">{fact.topic}</span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/hiraia-profile.png" alt="" width={26} height={26} className="mc-stamp" />
+      </div>
+
+      <div className="flex min-h-0 flex-1 flex-col">
+        {!imgFailed && fact.slug ? (
+          <div className="mc-plate mx-auto mb-3 w-full max-w-[min(100%,18rem)]" style={extras}>
+            <div className="mc-window aspect-square max-h-[42svh]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`/demo/cards/${fact.slug}.png`}
+                alt=""
+                onError={() => setImgFailed(true)}
+              />
+            </div>
           </div>
-        )}
-        <p
-          className={`${tier.fontClass} mt-3.5 text-[#0c343d]`}
-          style={{
-            fontSize: tier.fontSize,
-            lineHeight: `${tier.lineHeight}px`,
-            textAlign: tier.textAlign,
-          }}
-        >
+        ) : null}
+        <p className="relative z-[1] font-zilla text-[15px] font-medium leading-snug text-[var(--ink)] sm:text-[16px]">
           {visible}
           <span className="opacity-0">{hidden}</span>
         </p>
       </div>
 
-      {/* the two teacher's-note choices, blue ink, bottom corners */}
       <div
-        className="absolute bottom-3 right-[22px] flex items-end justify-between"
-        style={{ ...extras, left: GUTTER_LEFT, pointerEvents: done ? 'auto' : 'none' }}
+        className={`relative z-[1] mt-3 flex gap-2 ${branching ? '' : ''}`}
+        style={{ ...extras, pointerEvents: done ? 'auto' : 'none' }}
       >
         {choices[0] && (
-          <button
-            type="button"
-            onClick={() => onChoose(choices[0]!)}
-            className="max-w-[46%] -rotate-2 border-b-[1.5px] border-[#2743a6] pb-px text-left"
-          >
-            <span className="block truncate whitespace-nowrap font-display text-[23px] text-[#2743a6]">
-              {choices[0].label} <span className="text-[16px]">⤴</span>
-            </span>
-          </button>
+          <div className="mc-ledge min-w-0 flex-1">
+            <button
+              type="button"
+              onClick={() => onChoose(choices[0]!)}
+              className={`mc-ticket ${branching ? 'mc-ticket-a' : ''}`}
+            >
+              <span className="flex-1 truncate">{choices[0].label}</span>
+              <span className="mc-arrow" aria-hidden />
+            </button>
+          </div>
         )}
-        {choices[1] && (
-          <button
-            type="button"
-            onClick={() => onChoose(choices[1]!)}
-            className="max-w-[46%] rotate-[1.5deg] border-b-[1.5px] border-[#2743a6] pb-px text-right"
-          >
-            <span className="block truncate whitespace-nowrap font-display text-[23px] text-[#2743a6]">
-              {choices[1].label} <span className="text-[16px]">⤴</span>
-            </span>
-          </button>
+        {branching && choices[1] && (
+          <div className="mc-ledge min-w-0 flex-1">
+            <button
+              type="button"
+              onClick={() => onChoose(choices[1]!)}
+              className="mc-ticket mc-ticket-b"
+            >
+              <span className="flex-1 truncate">{choices[1].label}</span>
+              <span className="mc-arrow" aria-hidden />
+            </button>
+          </div>
         )}
       </div>
     </div>

@@ -34,6 +34,9 @@ export function Landing() {
 
   return (
     <div className="mc min-h-screen w-full overflow-x-hidden">
+      <div className="mc-alpha" role="status">
+        <span>Early Alpha</span>
+      </div>
       {/* HERO — photograph stays; overlay is a laminated classroom card. */}
       <section
         className="mc-hero relative flex min-h-[100svh] w-full items-start justify-start"
@@ -92,14 +95,14 @@ export function Landing() {
       <section className="px-5 py-16 sm:px-12 sm:py-20 md:px-16 lg:px-24">
         <div className="mx-auto max-w-5xl">
           <h2 className="max-w-3xl text-3xl leading-none text-[var(--stock)] sm:text-4xl md:text-[2.75rem]">
-            Science on your phone
+            Personal science tutor on your phone
           </h2>
           <p className="mt-5 max-w-2xl font-zilla text-lg font-medium leading-relaxed text-[var(--stock)]/90 sm:text-xl">
-            Hiraia is an AI tutor for Filipino students that infers what is being
-            focused on at school, and reinforces them at home. After a one-time
-            download, it works (forever!) without an internet connection. No account
-            registration is required, no information is collected, and no personal
-            data ever leaves the device.
+            Hiraia is a FREE AI tutor for Filipino students that knows what&apos;s
+            being focused on at school, and reinforces those lessons at home. After
+            a one-time download, it works without an internet connection &hellip;
+            forever! No account registration is required, no information is
+            collected, and no personal data ever leaves the device.
           </p>
 
           <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-10">
@@ -153,7 +156,7 @@ export function Landing() {
               },
               {
                 src: '/screens/search.jpg',
-                alt: 'A generated card about why the Philippines has no winter',
+                alt: 'A generated card about why the Philippines has no winter, after searching for winter',
                 caption: "A dynamic card can be generated based on the student's desired topic.",
               },
             ].map((s) => (
@@ -201,31 +204,95 @@ export function Landing() {
             <h2 className="mt-2 text-3xl leading-none text-[var(--stock)] sm:text-4xl">
               Why we built hiraia
             </h2>
-            <p className="mt-4 max-w-xl font-zilla text-lg font-medium leading-relaxed text-[var(--stock)]/85">
-              Creator Luis Buenaventura on science education in the Philippines, and
-              the importance of an on-device AI tutor when 2/3 of all households
-              don&apos;t have a fixed internet connection.
+            <blockquote className="mc-pullquote">
+              <p>
+                &ldquo;The average 15-year-old Filipino student has the same math
+                and science aptitude as a 10-year-old Singaporean. Our children
+                are up to 5 whole school years behind children from other
+                countries.&rdquo;
+              </p>
+            </blockquote>
+            <p className="mt-5 max-w-xl font-zilla text-lg font-medium leading-relaxed text-[var(--stock)]/85">
+              Creator{' '}
+              <a
+                href="https://x.com/helloluis"
+                className="underline decoration-[var(--gold)] underline-offset-2 hover:text-[var(--gold)]"
+              >
+                Luis Buenaventura
+              </a>{' '}
+              believes AI can help reinforce science education in the
+              Philippines, but an on-device inference model is the only viable
+              solution when 2/3 of all households don&apos;t have a fixed
+              internet connection.
             </p>
           </div>
         </div>
       </section>
 
+      <section className="mc-pears px-5 py-16 sm:px-12 sm:py-20 md:px-16 lg:px-24">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-6">
+          <div>
+            <p className="mc-label text-[10px] text-[var(--gold)]">School or Municipal Wifi</p>
+            <h2 className="mt-2 text-3xl leading-none text-[var(--ink)] sm:text-4xl">
+              Deploying Hiraia at Scale
+            </h2>
+            <p className="mt-5 max-w-xl font-zilla text-lg font-medium leading-relaxed text-[var(--ink)]">
+              The tutoring model is a one-time download of about two gigabytes.
+              Fetching that over cellular data, once for every student in a
+              class, is more than most families can spend.
+            </p>
+            <p className="mt-4 max-w-xl font-zilla text-lg font-medium leading-relaxed text-[var(--ink)]">
+              Hiraia uses{' '}
+              <a
+                href="https://pears.com"
+                className="underline decoration-[var(--gold)] underline-offset-2 hover:text-[var(--gold)]"
+              >
+                Pears</a>, a peer-to-peer filesharing protocol, so the download only has
+              to happen once. As long as one student on the classroom Wi-Fi
+              holds a complete copy, the rest of the class can take it from
+              that phone — and from one another — without another trip to the
+              internet, and without a central server.
+            </p>
+          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/pears-classroom.webp"
+            alt="Students on a classroom Wi-Fi share the Hiraia model with one another in a mesh: the school seeds one phone, then every phone can copy from any other."
+            width={1448}
+            height={1086}
+            className="w-full max-w-xl justify-self-center lg:max-w-none"
+          />
+        </div>
+      </section>
+
       <footer className="border-t-[3px] border-[var(--ink)] px-5 py-10 sm:px-12 md:px-16 lg:px-24">
-        <div className="mx-auto flex max-w-5xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <a
-            href="https://qvac.tether.io"
-            className="inline-block opacity-90 transition-opacity hover:opacity-100"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/built-with-qvac-sdk.png"
-              alt="Built with QVAC SDK"
-              width={675}
-              height={200}
-              className="h-10 w-auto sm:h-12"
-            />
-          </a>
-          <p className="mc-label text-[10px] text-[var(--sage)]">hiraia.org</p>
+        <div className="mx-auto max-w-5xl">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <a
+              href="https://qvac.tether.io"
+              className="inline-block opacity-90 transition-opacity hover:opacity-100"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/built-with-qvac-sdk.png"
+                alt="Built with QVAC SDK"
+                width={675}
+                height={200}
+                className="h-10 w-auto sm:h-12"
+              />
+            </a>
+            <p className="mc-label text-[10px] text-[var(--sage)]">hiraia.org</p>
+          </div>
+          <p className="mt-8 max-w-3xl font-zilla text-[11px] font-medium leading-relaxed text-[var(--sage)]/80 sm:text-xs">
+            Hiraia is not affiliated with or endorsed by the Philippine
+            Department of Education. Its alignment with MATATAG curriculum is
+            based on information and content in the public domain, and is not
+            guaranteed to be accurate, and has not been reviewed by the
+            Department of Education or other public academic institutions.
+            Although its originator has endeavoured to provide the most accurate
+            synthesis possible of the current public school science curriculum,
+            usage of Hiraia should be carried out at your own risk.
+          </p>
         </div>
       </footer>
 
