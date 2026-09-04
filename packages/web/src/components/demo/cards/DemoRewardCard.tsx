@@ -12,8 +12,6 @@ import type { RewardContent } from '@/data/reward';
 
 import { cardStrings } from './strings';
 
-const GUTTER_LEFT = 58;
-
 export function DemoRewardCard({
   reward,
   language,
@@ -26,13 +24,15 @@ export function DemoRewardCard({
   const t = cardStrings(language);
 
   return (
-    <div
-      className="relative flex h-full flex-col pb-[78px] pr-[26px] pt-2.5"
-      style={{ paddingLeft: GUTTER_LEFT }}
-    >
+    <div className="relative z-[1] flex h-full flex-col">
+      <div className="mc-band mc-band-gold mb-3">
+        <span className="mc-topic">{t.readLabel}</span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/hiraia-profile.png" alt="" width={26} height={26} className="mc-stamp" />
+      </div>
       <div className="flex flex-1 flex-col items-center justify-center">
-        <div className="demo-star-pop mb-3.5 text-[72px] leading-none">🌟</div>
-        <p className="text-center font-display text-[28px] leading-[38px] text-[#0c343d]">
+        <div className="demo-star-pop mb-3 text-[56px] leading-none">★</div>
+        <p className="text-center font-zilla text-[20px] font-bold leading-snug text-[var(--ink)]">
           {reward.text}
         </p>
         {reward.topics.length > 0 && (
@@ -40,7 +40,7 @@ export function DemoRewardCard({
             {reward.topics.map((tp) => (
               <span
                 key={tp}
-                className="max-w-[80%] truncate rounded-2xl border border-[rgba(12,52,61,0.12)] bg-[#e8f1f2] px-3 py-1.5 font-hand text-[15px] text-[#165a69]"
+                className="max-w-[80%] truncate rounded-full border-2 border-[var(--ink)] bg-[var(--stock)] px-3 py-1 font-zilla text-[13px] font-bold text-[var(--ink)]"
               >
                 {tp}
               </span>
@@ -49,15 +49,12 @@ export function DemoRewardCard({
         )}
       </div>
 
-      <button
-        type="button"
-        onClick={onContinue}
-        className="absolute bottom-3.5 right-6 rotate-[1.5deg] border-b-[1.5px] border-[#2743a6] pb-px"
-      >
-        <span className="font-display text-[23px] text-[#2743a6]">
-          {t.continueNote} <span className="text-[16px]">⤴</span>
-        </span>
-      </button>
+      <div className="mc-ledge mt-3">
+        <button type="button" onClick={onContinue} className="mc-ticket">
+          <span className="flex-1">{t.continueNote}</span>
+          <span className="mc-arrow" aria-hidden />
+        </button>
+      </div>
     </div>
   );
 }

@@ -14,7 +14,7 @@ import { localize, type CardQuestion } from '@/data/cards';
 
 import { cardStrings } from './strings';
 
-const GUTTER_LEFT = 58; // stay right of the red margin rule
+const LETTERS = ['A', 'B', 'C', 'D'];
 
 function shuffled(n: number): number[] {
   const a = Array.from({ length: n }, (_, i) => i);
@@ -49,34 +49,31 @@ export function DemoQuestionPage({ question, language, onAnswer, onContinue }: D
   };
 
   return (
-    <div
-      className="relative flex h-full flex-col overflow-y-auto pb-[78px] pr-[26px] pt-2.5"
-      style={{ paddingLeft: GUTTER_LEFT }}
-    >
-      <div className="mb-2.5 -rotate-[1.5deg] font-display text-[24px] text-[#2743a6]">
-        {t.questionHeader}
+    <div className="relative z-[1] flex h-full flex-col overflow-y-auto">
+      <div className="mc-band mc-band-gold mb-3">
+        <span className="mc-chip">?</span>
+        <span className="mc-topic">{t.questionHeader}</span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/hiraia-profile.png" alt="" width={26} height={26} className="mc-stamp" />
       </div>
-      <p className="mb-4 font-hand text-[20px] leading-[29px] text-[#0c343d]">
+      <p className="mb-4 font-zilla text-[17px] font-bold leading-snug text-[var(--ink)]">
         {localize(question.q, language)}
       </p>
 
       {order.map((optIdx, displayIdx) => {
         const isCorrect = displayIdx === correctDisplay;
         const isChosen = displayIdx === selected;
-        let cls = 'border-[rgba(12,52,61,0.12)] bg-white';
+        let cls = 'border-[var(--ink)] bg-[var(--stock)]';
         let mark = '';
-        let markCls = '';
         if (revealed) {
           if (isCorrect) {
-            cls = 'border-[#1a7d4b] bg-[#e7f6ec]';
+            cls = 'border-[var(--ink)] bg-[var(--gold)]';
             mark = '✓';
-            markCls = 'text-[#1a7d4b]';
           } else if (isChosen) {
-            cls = 'border-[#c0392b] bg-[#fdecea]';
+            cls = 'border-[var(--accent)] bg-[var(--stock)] opacity-70';
             mark = '✗';
-            markCls = 'text-[#c0392b]';
           } else {
-            cls = 'border-[rgba(12,52,61,0.12)] bg-white opacity-45';
+            cls = 'border-[var(--ink)]/40 bg-[var(--stock)] opacity-45';
           }
         }
         return (
@@ -85,12 +82,15 @@ export function DemoQuestionPage({ question, language, onAnswer, onContinue }: D
             type="button"
             onClick={() => pickOption(displayIdx)}
             disabled={revealed}
-            className={`mb-2.5 flex w-full items-center justify-between rounded-[14px] border-[1.5px] px-3.5 py-3 text-left ${cls}`}
+            className={`mb-2 flex w-full items-center gap-3 rounded-[13px] border-[3px] px-3 py-2.5 text-left ${cls}`}
           >
-            <span className="font-hand text-[17px] leading-[23px] text-[#0c343d]">
+            <span className="flex h-7 w-7 flex-none items-center justify-center rounded-md bg-[var(--ink)] font-slab text-[12px] text-[var(--stock)]">
+              {LETTERS[displayIdx] ?? displayIdx + 1}
+            </span>
+            <span className="flex-1 font-zilla text-[15px] font-medium leading-snug text-[var(--ink)]">
               {localize(question.o[optIdx], language)}
             </span>
-            {!!mark && <span className={`ml-2 text-[19px] font-bold ${markCls}`}>{mark}</span>}
+            {!!mark && <span className="font-slab text-[16px] text-[var(--ink)]">{mark}</span>}
           </button>
         );
       })}
@@ -98,24 +98,21 @@ export function DemoQuestionPage({ question, language, onAnswer, onContinue }: D
       {revealed && (
         <div className="mt-1">
           {gotIt && (
-            <div className="mb-1 font-display text-[22px] text-[#1a7d4b]">{t.correct}</div>
+            <div className="mb-1 font-zilla text-[18px] font-bold text-[var(--ink)]">{t.correct}</div>
           )}
-          <p className="font-hand text-[15px] leading-[21px] text-[#5a7178]">
+          <p className="font-zilla text-[14px] font-medium leading-snug text-[var(--olive)]">
             {localize(question.e, language)}
           </p>
         </div>
       )}
 
       {revealed && (
-        <button
-          type="button"
-          onClick={onContinue}
-          className="absolute bottom-3.5 right-6 rotate-[1.5deg] border-b-[1.5px] border-[#2743a6] pb-px"
-        >
-          <span className="font-display text-[23px] text-[#2743a6]">
-            {t.continueNote} <span className="text-[16px]">⤴</span>
-          </span>
-        </button>
+        <div className="mc-ledge mt-4">
+          <button type="button" onClick={onContinue} className="mc-ticket">
+            <span className="flex-1">{t.continueNote}</span>
+            <span className="mc-arrow" aria-hidden />
+          </button>
+        </div>
       )}
     </div>
   );
