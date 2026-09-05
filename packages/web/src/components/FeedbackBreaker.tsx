@@ -123,26 +123,30 @@ export function FeedbackBreaker() {
     <>
       {/* Breaker band — full page width, white, one centered line. */}
       <section
-        aria-label="Feedback"
+        aria-label="Questions and feedback"
         className="w-full bg-white px-5 py-6 sm:px-12 md:px-16 lg:px-24"
       >
         <p className="mx-auto max-w-5xl text-center font-zilla text-base font-medium leading-relaxed text-[var(--ink)] sm:text-lg">
-          Questions? Feedback? Bugs? Please send them to{' '}
+          Questions? Check out our{' '}
+          <a href="/faq" className="underline decoration-[var(--gold)] underline-offset-2 hover:text-[var(--gold)]">
+            FAQs
+          </a>{' '}
+          or send feedback directly to{' '}
           <a
             href="https://x.com/helloluis"
             target="_blank"
             rel="noopener noreferrer"
             className="underline decoration-[var(--gold)] underline-offset-2 hover:text-[var(--gold)]"
           >
-            @helloluis on X
-          </a>{' '}
-          or{' '}
+            helloluis on X
+          </a>
+          , or via our{' '}
           <button
             type="button"
             onClick={openModal}
             className="font-zilla font-medium underline decoration-[var(--gold)] underline-offset-2 hover:text-[var(--gold)]"
           >
-            fill out our feedback form
+            feedback form
           </button>
           .
         </p>
