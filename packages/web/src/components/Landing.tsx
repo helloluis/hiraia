@@ -2,6 +2,8 @@
 
 import { type ReactNode } from 'react';
 import { AppDownload } from '@/components/AppDownload';
+import { FeedbackBreaker } from '@/components/FeedbackBreaker';
+import { SiteFooter } from '@/components/SiteFooter';
 import { YouTubeEmbed } from '@/components/YouTubeEmbed';
 import { DemoLightbox } from '@/components/demo/DemoLightbox';
 import { useDemoStore } from '@/store/useDemoStore';
@@ -196,6 +198,8 @@ export function Landing() {
         </div>
       </section>
 
+      <FeedbackBreaker />
+
       <section className="px-5 py-16 sm:px-12 sm:py-20 md:px-16 lg:px-24">
         <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <YouTubeEmbed id="nmoIvZcPmEE" title="Why we built Hiraia" poster="/landing.jpeg" />
@@ -265,36 +269,7 @@ export function Landing() {
         </div>
       </section>
 
-      <footer className="border-t-[3px] border-[var(--ink)] px-5 py-10 sm:px-12 md:px-16 lg:px-24">
-        <div className="mx-auto max-w-5xl">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <a
-              href="https://qvac.tether.io"
-              className="inline-block opacity-90 transition-opacity hover:opacity-100"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/built-with-qvac-sdk.png"
-                alt="Built with QVAC SDK"
-                width={675}
-                height={200}
-                className="h-10 w-auto sm:h-12"
-              />
-            </a>
-            <p className="mc-label text-[10px] text-[var(--sage)]">hiraia.org</p>
-          </div>
-          <p className="mt-8 max-w-3xl font-zilla text-[11px] font-medium leading-relaxed text-[var(--sage)]/80 sm:text-xs">
-            Hiraia is not affiliated with or endorsed by the Philippine
-            Department of Education. Its alignment with MATATAG curriculum is
-            based on information and content in the public domain, and is not
-            guaranteed to be accurate, and has not been reviewed by the
-            Department of Education or other public academic institutions.
-            Although its originator has endeavoured to provide the most accurate
-            synthesis possible of the current public school science curriculum,
-            usage of Hiraia should be carried out at your own risk.
-          </p>
-        </div>
-      </footer>
+      <SiteFooter />
 
       <DemoLightbox />
     </div>
