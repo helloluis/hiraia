@@ -53,6 +53,8 @@ import {
 import { card, fonts } from '../../theme';
 import { CardPlate, plateStyles } from './CardPlate';
 import { TapTarget, Arrow, CardPrint, Divider, IndexBand, Ticket, cardFrame } from './CardFrame';
+import { GuidedText, useReadingGuide, type ReadingGuide } from './readingGuide';
+import { useReduceMotion } from './useReduceMotion';
 
 // The mascot stamp in the index band (and stepping forward at a fork) is the SAME asset
 // the chat avatar uses — one cat, one file, no new art path.
@@ -205,22 +207,31 @@ function Seg({
 /**
  * A block of the factoid mid-reveal: the revealed prefix, followed by the rest at opacity 0
  * so the block keeps its final height and never re-wraps while typing.
+ *
+ * Every block is a top-level Text of the card, so every block is a `slot` of the reading
+ * guide (readingGuide.tsx): the guide sweeps its lines once the typewriter is done.
  */
 function Typed({
   text,
   shown,
   style,
+  guide,
+  slot,
+  silent,
 }: {
   text: string;
   shown: number;
   style: StyleProp<TextStyle>;
+  guide: ReadingGuide;
+  slot: string;
+  silent?: boolean;
 }) {
   const cut = Math.max(0, Math.min(shown, text.length));
   return (
-    <Text style={style}>
+    <GuidedText style={style} guide={guide} slot={slot} silent={silent}>
       {text.slice(0, cut)}
       <Text style={styles.unrevealed}>{text.slice(cut)}</Text>
-    </Text>
+    </GuidedText>
   );
 }
 
@@ -231,6 +242,13 @@ interface CardPageProps {
   onChoose: (choice: CardChoice) => void;
   /** Render fully typed with no animation (the outgoing page during the flip). */
   instant?: boolean;
+  /**
+   * Run the reading guide — the gold marker stroke that sweeps the text line by line once
+   * the typewriter lands. TRUE ONLY FOR THE LIVE CARD; the preview sheet, the outgoing peel
+   * and any snapshot copy pass false. Independent of `instant`: a card the reader already saw
+   * under the sheet is drawn instantly and is still the card they are now reading.
+   */
+  guide?: boolean;
 }
 
 /**
@@ -272,25 +290,42 @@ function DisplayTerm({
   shown,
   styleName,
   size,
+  guide,
 }: {
   text: string;
   shown: number;
   styleName: EmphasisStyle;
   size: { fontSize: number; lineHeight: number };
+  guide: ReadingGuide;
 }) {
   if (styleName === 'knockout' || styleName === 'outline') {
     const box = styleName === 'knockout' ? styles.dKnockBox : styles.dOutlineBox;
     const type = styleName === 'knockout' ? styles.dKnockText : styles.dOutlineText;
     return (
       <View style={box}>
-        <Typed text={text} shown={shown} style={[type, size]} />
+        {/* the knockout is stock reversed out of ink — a marker has nothing to show on it, so
+            the guide dwells on the chip for its reading time without drawing (see `silent`) */}
+        <Typed
+          text={text}
+          shown={shown}
+          style={[type, size]}
+          guide={guide}
+          slot={TERM_SLOT}
+          silent={styleName === 'knockout'}
+        />
       </View>
     );
   }
   if (styleName === 'rule') {
     return (
       <View style={styles.dRuleWrap}>
-        <Typed text={text} shown={shown} style={[styles.dRuleText, size]} />
+        <Typed
+          text={text}
+          shown={shown}
+          style={[styles.dRuleText, size]}
+          guide={guide}
+          slot={TERM_SLOT}
+        />
         <View style={styles.dRuleBar} />
       </View>
     );
@@ -300,8 +335,31 @@ function DisplayTerm({
       text={text}
       shown={shown}
       style={[styleName === 'figure' ? styles.numeral : styles.lead, size]}
+      guide={guide}
+      slot={TERM_SLOT}
     />
   );
+}
+
+/**
+ * The reading guide's slot names — one per top-level Text the card can print — and the
+ * READING ORDER they run in: the hook first, then the body; on a poster layout the words
+ * before the lifted term, the term, then the rest. That is also their visual order top to
+ * bottom, so the finger never jumps.
+ */
+const ASK_SLOT = 'ask';
+const BODY_SLOT = 'body';
+const BEFORE_SLOT = 'before';
+const TERM_SLOT = 'term';
+const AFTER_SLOT = 'after';
+
+function readingOrder(hasAsk: boolean, spec: PosterSpec): string[] {
+  const order = hasAsk ? [ASK_SLOT] : [];
+  if (spec.kind === 'plain' || spec.kind === 'inline') return [...order, BODY_SLOT];
+  if (spec.before.trim()) order.push(BEFORE_SLOT);
+  order.push(TERM_SLOT);
+  if (spec.after.trim()) order.push(AFTER_SLOT);
+  return order;
 }
 
 /**
@@ -322,7 +380,14 @@ function inlineOnly(text: string, spans: readonly string[] | undefined, id: stri
   };
 }
 
-export function CardPage({ fact, choices, language, onChoose, instant = false }: CardPageProps) {
+export function CardPage({
+  fact,
+  choices,
+  language,
+  onChoose,
+  instant = false,
+  guide = false,
+}: CardPageProps) {
   const t = uiStrings(language);
   /**
    * The card's printed content — and a SUBSCRIPTION to it, not a one-shot read.
@@ -453,6 +518,17 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
     if (!done) setShown(text.length);
   };
 
+  /**
+   * The reading guide (readingGuide.tsx). Armed on `done`, so it and the typewriter never
+   * fight: the sweep begins a beat after the last character lands (a tap-to-skip lands them
+   * all at once and the guide simply starts from there). Live card only, and never under
+   * reduced motion. Its line boxes come from the Texts below through GuidedText; the shrink
+   * loop re-setting the type mid-run re-measures them and the guide re-arms on the new boxes.
+   */
+  const reduceMotion = useReduceMotion();
+  const order = readingOrder(ask != null, bodySpec);
+  const rg = useReadingGuide({ enabled: guide && !reduceMotion, armed: done, text, order });
+
   // The answer half starts revealing where the question (plus its separator) ended.
   const bodyShown = ask == null ? shown : shown - ask.length - QA_SEPARATOR.length;
 
@@ -466,12 +542,21 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
   const renderFact = (text: string, spec: PosterSpec, from: number) => {
     const bodyType = { fontSize: tier.fontSize, lineHeight: tier.lineHeight };
     if (spec.kind === 'plain') {
-      return <Typed text={text} shown={from} style={[styles.fact, bodyType]} />;
+      return (
+        <Typed
+          text={text}
+          shown={from}
+          style={[styles.fact, bodyType]}
+          guide={rg}
+          slot={BODY_SLOT}
+        />
+      );
     }
     if (spec.kind === 'inline') {
-      // one paragraph — the runs nest so the line keeps flowing through the accent
+      // one paragraph — the runs nest so the line keeps flowing through the accent (and the
+      // guide's stroke, measured on the outer Text, passes under the accent unchanged)
       return (
-        <Text style={[styles.fact, bodyType]}>
+        <GuidedText style={[styles.fact, bodyType]} guide={rg} slot={BODY_SLOT}>
           <Seg text={spec.before} shown={from} />
           <Seg
             text={spec.term}
@@ -479,7 +564,7 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
             style={inlineEmphasis(spec.style)}
           />
           <Seg text={spec.after} shown={from - spec.before.length - spec.term.length} />
-        </Text>
+        </GuidedText>
       );
     }
     const size = Math.round(tier.fontSize * displayScale(spec.kind) * 10) / 10;
@@ -494,6 +579,8 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
             text={spec.before.trim()}
             shown={from}
             style={[styles.fact, styles.preLead, bodyType]}
+            guide={rg}
+            slot={BEFORE_SLOT}
           />
         ) : null}
         <DisplayTerm
@@ -501,12 +588,15 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
           shown={from - spec.before.length}
           styleName={spec.style}
           size={display}
+          guide={rg}
         />
         {spec.after.trim() ? (
           <Typed
             text={spec.after.replace(/^\s+/, '')}
             shown={from - spec.before.length - spec.term.length}
             style={[styles.fact, bodyType]}
+            guide={rg}
+            slot={AFTER_SLOT}
           />
         ) : null}
       </>
@@ -524,13 +614,13 @@ export function CardPage({ fact, choices, language, onChoose, instant = false }:
             const q = inlineOnly(ask, emphasis, fact.id);
             const qs = [styles.ask, { fontSize: tier.askSize, lineHeight: tier.askLineHeight }];
             return q.kind === 'plain' ? (
-              <Typed text={ask} shown={shown} style={qs} />
+              <Typed text={ask} shown={shown} style={qs} guide={rg} slot={ASK_SLOT} />
             ) : (
-              <Text style={qs}>
+              <GuidedText style={qs} guide={rg} slot={ASK_SLOT}>
                 <Seg text={q.before} shown={shown} />
                 <Seg text={q.term} shown={shown - q.before.length} style={styles.em} />
                 <Seg text={q.after} shown={shown - q.before.length - q.term.length} />
-              </Text>
+              </GuidedText>
             );
           })()}
           {/* hairline + gold lozenge, the printed rule between a question and its answer */}

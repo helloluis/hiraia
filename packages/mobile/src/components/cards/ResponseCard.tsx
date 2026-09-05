@@ -40,6 +40,8 @@ import type { FeedResponse } from '../../store/cardStore';
 import { card, fonts } from '../../theme';
 import { CardPlate } from './CardPlate';
 import { CardPrint, Divider, IndexBand, Ticket, cardFrame } from './CardFrame';
+import { GuidedText, useReadingGuide } from './readingGuide';
+import { useReduceMotion } from './useReduceMotion';
 
 /** The mascot — the same alpha-cut PNG the chat avatar and every other card use. */
 const CAT = require('../../../assets/hiraia-profile.png');
@@ -80,6 +82,10 @@ function captionTier(text: string): { fontSize: number; lineHeight: number } {
   return { fontSize: t.fontSize - 1.5, lineHeight: t.lineHeight - 2 };
 }
 
+/** The one Text the reading guide sweeps on this page. */
+const ANSWER_SLOT = 'answer';
+const ANSWER_ORDER = [ANSWER_SLOT];
+
 export function ResponseCard({
   response,
   language,
@@ -112,6 +118,21 @@ export function ResponseCard({
    */
   const roomForArt = (response.text?.length ?? 0) <= ART_MAX_CHARS;
   const art = useArtSource(miss || !roomForArt ? null : response.slug);
+  /**
+   * The reading guide (readingGuide.tsx) over the ANSWER — the same gold marker stroke a
+   * factoid card gets, so a card written for the child reads with the same help as one drawn
+   * from the deck. There is no typewriter here, so it is armed at mount; this page is only
+   * ever the live card (the peel snapshot excludes responses), so there is no copy to keep
+   * it off. The quoted query is the kid's own words and the two miss shapes are one short
+   * centred sentence, so only the generated answer is swept.
+   */
+  const reduceMotion = useReduceMotion();
+  const rg = useReadingGuide({
+    enabled: !miss && !reduceMotion,
+    armed: true,
+    text: response.text ?? '',
+    order: ANSWER_ORDER,
+  });
 
   return (
     <View style={cardFrame.content}>
@@ -187,12 +208,22 @@ export function ResponseCard({
              title, and their words are what this picture is an answer to. */
           <>
             <CardPlate source={art} label={response.query} />
-            <Text style={[styles.answer, styles.caption, captionTier(response.text ?? '')]}>
+            <GuidedText
+              style={[styles.answer, styles.caption, captionTier(response.text ?? '')]}
+              guide={rg}
+              slot={ANSWER_SLOT}
+            >
               {response.text}
-            </Text>
+            </GuidedText>
           </>
         ) : (
-          <Text style={[styles.answer, answerTier(response.text ?? '')]}>{response.text}</Text>
+          <GuidedText
+            style={[styles.answer, answerTier(response.text ?? '')]}
+            guide={rg}
+            slot={ANSWER_SLOT}
+          >
+            {response.text}
+          </GuidedText>
         )}
       </View>
 

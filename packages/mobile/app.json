@@ -8,12 +8,13 @@
     "userInterfaceStyle": "automatic",
     "scheme": "hiraia",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#20342C"
+      "backgroundColor": "#1C3B2E"
     },
     "androidStatusBar": {
-      "backgroundColor": "#20342C"
+      "backgroundColor": "#1C3B2E",
+      "barStyle": "light-content"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -27,7 +28,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1C3B2E"
       },
-      "package": "com.hiraia.app"
+      "package": "com.hiraia.app",
+      "versionCode": 2
     },
     "plugins": [
       "./plugins/withGradleProps.js",
@@ -44,7 +46,18 @@
       "@qvac/sdk/expo-plugin",
       "expo-asset",
       "expo-video",
-      "./plugins/withTelemetryBackup.js"
+      "./plugins/withTelemetryBackup.js",
+      [
+        "expo-splash-screen",
+        {
+          "android": {
+            "image": "./assets/icon.png",
+            "imageWidth": 200,
+            "resizeMode": "contain",
+            "backgroundColor": "#1C3B2E"
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
