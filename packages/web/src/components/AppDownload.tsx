@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DOWNLOAD } from '@/config/download';
 
 /**
@@ -34,9 +34,42 @@ function Checksum({ label, value, hint }: { label: string; value: string; hint: 
   );
 }
 
+function trackApkDownload(onCount?: (n: number) => void) {
+  window.gtag?.('event', 'apk_download', {
+    file_name: 'hiraia.apk',
+    file_extension: 'apk',
+    link_url: DOWNLOAD.apk.url,
+    app_version: DOWNLOAD.version,
+  });
+  void fetch('/api/metrics/apk-download', { method: 'POST', keepalive: true })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((data: { count?: number } | null) => {
+      if (typeof data?.count === 'number') onCount?.(data.count);
+    })
+    .catch(() => {
+      /* GA already has the click; the public count can lag */
+    });
+}
+
 export function AppDownload() {
   const live = DOWNLOAD.released && !!DOWNLOAD.apk.url && !!DOWNLOAD.apk.sha256;
   const [showVerify, setShowVerify] = useState(false);
+  const [downloads, setDownloads] = useState<number | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    void fetch('/api/metrics/apk-download')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data: { count?: number } | null) => {
+        if (!cancelled && typeof data?.count === 'number') setDownloads(data.count);
+      })
+      .catch(() => {
+        /* count is optional chrome — a failed fetch just hides it */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <div>
@@ -49,12 +82,19 @@ export function AppDownload() {
               <span className="mc-chip text-[10px]">v{DOWNLOAD.version}</span>
             </div>
             <p className="relative z-[1] font-zilla text-sm font-medium leading-relaxed text-[var(--ink)]">
-              Requires Android {DOWNLOAD.minAndroid}+ and a phone with {DOWNLOAD.minRamGB}GB+ of memory.
+              Requires Android {DOWNLOAD.minAndroid}+ and a phone with {DOWNLOAD.minRamGB}GB+ of
+              memory. Android may ask you to allow this one install — that&apos;s normal, since
+              Hiraia isn&apos;t on the Play Store.
             </p>
 
             <div className="relative z-[1] mt-auto pt-5">
               <div className="mc-ledge">
-                <a href={DOWNLOAD.apk.url} download className="mc-ticket">
+                <a
+                  href={DOWNLOAD.apk.url}
+                  download
+                  className="mc-ticket"
+                  onClick={() => trackApkDownload(setDownloads)}
+                >
                   <span className="flex-1">Download Hiraia for Android</span>
                   {DOWNLOAD.apk.fileSizeMB > 0 ? (
                     <span className="shrink-0 rounded-md bg-[var(--ink)] px-2 py-1 font-gothic text-[9px] uppercase tracking-[0.14em] text-[var(--stock)]">
@@ -70,6 +110,11 @@ export function AppDownload() {
                   </span>
                 </a>
               </div>
+              {downloads != null && downloads > 0 ? (
+                <p className="relative z-[1] mt-3 font-zilla text-xs font-medium text-[var(--ink)]/55">
+                  {downloads.toLocaleString()} {downloads === 1 ? 'download' : 'downloads'} from hiraia.org
+                </p>
+              ) : null}
             </div>
           </div>
 
@@ -116,7 +161,9 @@ export function AppDownload() {
               <span className="mc-chip text-[10px]">v{DOWNLOAD.version}</span>
             </div>
             <p className="relative z-[1] font-zilla text-sm font-medium leading-relaxed text-[var(--ink)]">
-              Requires Android {DOWNLOAD.minAndroid}+ and a phone with {DOWNLOAD.minRamGB}GB+ of memory.
+              Requires Android {DOWNLOAD.minAndroid}+ and a phone with {DOWNLOAD.minRamGB}GB+ of
+              memory. Android may ask you to allow this one install — that&apos;s normal, since
+              Hiraia isn&apos;t on the Play Store.
             </p>
 
             <div className="relative z-[1] mt-auto pt-5">

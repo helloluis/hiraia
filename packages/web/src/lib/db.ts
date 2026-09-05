@@ -24,6 +24,10 @@ import fs from 'node:fs';
  * landing page's feedback form. Unlike demo transcripts, `name`/`contact` here are
  * contact details the visitor volunteered on purpose so we can reply — treat them
  * as personal data (don't export, don't join against anything).
+ *
+ * `apk_download_hits` counts homepage APK-button clicks (one row per IP-hash per UTC
+ * day). No raw IP. This is the number we can put on the page; GA has the geo. Pears
+ * copies and direct /models/hiraia.apk hits are NOT in this table.
  */
 
 const DB_PATH =
@@ -82,6 +86,15 @@ CREATE TABLE IF NOT EXISTS feedback (
   body       TEXT NOT NULL,                      -- raw text as typed (markup kept as-is, rendered nowhere)
   user_agent TEXT,                               -- coarse bot/browser triage only
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS apk_download_hits (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  day        TEXT NOT NULL,                      -- UTC YYYY-MM-DD
+  ip_hash    TEXT NOT NULL,                      -- sha256(ip + salt), not the IP
+  country    TEXT,                               -- ISO country if the proxy sent one, else NULL
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  UNIQUE(day, ip_hash)
 );
 `;
 
