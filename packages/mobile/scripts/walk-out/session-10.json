@@ -1,0 +1,595 @@
+{
+ "session": 10,
+ "policy": "wanderer",
+ "grade": 5,
+ "quarter": 3,
+ "asks": [
+  {
+   "query": "dinosaur",
+   "landedOn": "Itlog ng Dinosaur",
+   "magnetSetSize": 101,
+   "releasedAfter": null
+  },
+  {
+   "query": "geyser",
+   "landedOn": "Geyser",
+   "magnetSetSize": 10,
+   "releasedAfter": 9
+  }
+ ],
+ "pages": [
+  {
+   "n": 0,
+   "id": "ffct-31017",
+   "band": "Pagbuo ng Fossil sa Bato",
+   "bandWasFallback": false,
+   "text": "Nabubuo ang fossil kapag ang patay na halaman o hayop ay mabilis na natatabunan ng putik o buhangin, at sa paglipas ng panahon, pinapalitan ng mineral ang mga bahagi nito sa loob ng sedimentary rock!",
+   "art": "packages/images/cards-png/ffct-31017.png",
+   "tickets": [
+    {
+     "label": "Delikado ang Landslide",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null
+  },
+  {
+   "n": 1,
+   "id": "ffct-29777",
+   "band": "Delikado ang Landslide",
+   "bandWasFallback": false,
+   "text": "Bakit napakadelikado ng mga landslide?\n\nNapakabilis at mabigat ng landslide! Kayang-kaya nitong tabunan ang mga bahay at baryo sa loob lang ng ilang segundo, kaya mahalagang lumayo sa madaling guho na lugar.",
+   "art": null,
+   "tickets": [
+    {
+     "label": "Landslide sa Pilipinas",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null
+  },
+  {
+   "n": 2,
+   "id": "ffct-29770",
+   "band": "Landslide sa Pilipinas",
+   "bandWasFallback": false,
+   "text": "Bakit madalas magkaroon ng landslide sa Pilipinas?\n\nAng Pilipinas ay mabundok at madalas tamaan ng malalakas na bagyo! Ang pinagsamang matarik na lupa at sobrang ulan ay nagiging sanhi ng maraming landslide, lalo na sa Cordillera, Bicol, at Eastern Visayas.",
+   "art": null,
+   "tickets": [
+    {
+     "label": "Kabundukan sa Gitna ng Pulo",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null
+  },
+  {
+   "n": 3,
+   "id": "ffct-30030",
+   "band": "Kabundukan sa Gitna ng Pulo",
+   "bandWasFallback": false,
+   "text": "Karamihan sa malalaking isla ng Pilipinas ay may kabundukan sa gitna! Kaya naman tinaguriang mabundok na bansa ang ating Pilipinas.",
+   "art": "packages/images/cards-png/ffct-30030.png",
+   "tickets": [
+    {
+     "label": "Landslide sa Leyte",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null,
+   "quiz": {
+    "q": "Bakit madalas makaranas ng landslide ang Pilipinas?",
+    "options": [
+     "It is mountainous and hit by many strong typhoons, so steep land plus heavy rain causes slides",
+     "It has very loose sandy soil everywhere that washes away easily in any rain",
+     "It sits on soft volcanic rock that cracks and slides during earthquakes only"
+    ],
+    "answer": "It is mountainous and hit by many strong typhoons, so steep land plus heavy rain causes slides"
+   }
+  },
+  {
+   "n": 4,
+   "id": "ffct-35728",
+   "band": "Landslide sa Leyte",
+   "bandWasFallback": false,
+   "text": "Bakit madaling mag-landslide ang lalawigan ng Leyte?\n\nAng mabundok na lupain ng Leyte ay may matatarik na burol na madaling ma-trigger ng landslide at mudflow kapag malakas ang ulan ng habagat!",
+   "art": null,
+   "tickets": [
+    {
+     "label": "Kiskisan",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null
+  },
+  {
+   "n": 5,
+   "id": "ffct-28762",
+   "band": "Kiskisan",
+   "bandWasFallback": false,
+   "text": "Kapag nagliligid pababa sa matarik na abo ng Bulkang Mayon sa Albay, mas nararamdaman ng mga hikers ang friction kapag suot ang sapatos na may malalim na rubber treads!",
+   "art": null,
+   "tickets": [
+    {
+     "label": "Grabidad at Ilog",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null
+  },
+  {
+   "n": 6,
+   "id": "ffct-28206",
+   "band": "Grabidad at Ilog",
+   "bandWasFallback": false,
+   "text": "Paano nabubuo ang mga ilog sa matarik na bangin ng Mount Mayon?\n\nHinahatak ng Earth's gravity ang rainwater pababa sa matarik na slopes! Ang dumadaloy na tubig ay humuhulma ng mga ilog sa bato.",
+   "art": "packages/images/cards-png/ffct-27705.png",
+   "tickets": [
+    {
+     "label": "Grabidad",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null
+  },
+  {
+   "n": 7,
+   "id": "ffct-27840",
+   "band": "Grabidad",
+   "bandWasFallback": false,
+   "text": "Bakit diretso pababa ang bagsak ng durian?\n\nHinahatak ng gravity ng Earth ang mga hinog na durian pababa sa lupa, kahit na mabigat at may matulis na balahibo ito!",
+   "art": "packages/images/assets-png/biology/durian-fruit.png",
+   "tickets": [
+    {
+     "label": "Malayang Pagkahulog",
+     "kind": "deep",
+     "shelf": false
+    },
+    {
+     "label": "iba pang grabidad",
+     "kind": "lateral",
+     "shelf": true
+    }
+   ],
+   "magnet": null,
+   "quiz": {
+    "q": "Anong puwersa ang humihila ng mabigat na durian pababa sa lupa?",
+    "options": [
+     "Gravity",
+     "Magnetismo",
+     "Solar energy"
+    ],
+    "answer": "Gravity"
+   }
+  },
+  {
+   "n": 8,
+   "id": "ffct-27407",
+   "band": "Kinetikong Enerhiya",
+   "bandWasFallback": false,
+   "text": "Habang bumabagsak ang niyog, tumataas ang kinetic energy nito dahil pinapabilis ito ng gravity papunta sa lupa!",
+   "art": null,
+   "tickets": [
+    {
+     "label": "Grabidad at Orbit",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null
+  },
+  {
+   "n": 9,
+   "id": "ffct-27286",
+   "band": "Grabidad at Orbit",
+   "bandWasFallback": false,
+   "text": "Hinahatak ng gravity ng Earth ang Moon papunta sa gitna nito, pero ang pag-usad nito pasulong ay nagpapanatili ng curved orbit imbes na bumagsak!",
+   "art": "packages/images/assets-png/physics/moon-orbiting-earth.png",
+   "tickets": [
+    {
+     "label": "Grabidad",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null
+  },
+  {
+   "n": 10,
+   "id": "ffct-09828",
+   "band": "Itlog ng Dinosaur",
+   "bandWasFallback": false,
+   "text": "Nangingitlog ba ang mga dinosaur?\n\nOo — ang mga dinosaur ay nangingitlog, tulad ng mga ibon at reptilya ngayon, sa halip na direktang manganak ng buhay na anak.",
+   "art": "packages/images/assets-png/biology/feathered-dinosaur.png",
+   "tickets": [
+    {
+     "label": "Paglaho ng mga Dinosaur",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "dinosaur",
+    "served": 1
+   }
+  },
+  {
+   "n": 11,
+   "id": "ffct-05132",
+   "band": "Paglaho ng mga Dinosaur",
+   "bandWasFallback": false,
+   "text": "Bakit naglaho ang karamihan sa mga dinosaur?\n\nKaramihan sa mga dinosaur ay naglaho mga 66 milyong taon na ang nakalipas nang tumama ang isang napakalaking asteroid sa Earth — pero ang mga ibon ngayon ay itinuturing na inapo ng maliliit na dinosaur!",
+   "art": "packages/images/cards-png/ffct-05132.png",
+   "tickets": [
+    {
+     "label": "Pagkawala ng mga Dinosaur",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "dinosaur",
+    "served": 2
+   }
+  },
+  {
+   "n": 12,
+   "id": "ffct-04393",
+   "band": "Pagkawala ng mga Dinosaur",
+   "bandWasFallback": false,
+   "text": "Ang mga dinosaur ay nawala mga 66 milyong taon na ang nakalipas!",
+   "art": "packages/images/cards-png/ffct-04393.png",
+   "tickets": [
+    {
+     "label": "Pagkalipol",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "dinosaur",
+    "served": 3
+   }
+  },
+  {
+   "n": 13,
+   "id": "ffct-06725",
+   "band": "Pagkalipol",
+   "bandWasFallback": false,
+   "text": "Ano ang ibig sabihin ng pagkalipol?\n\nNangyayari ang pagkalipol kapag namatay na ang lahat ng miyembro ng isang uri ng hayop o halaman, kaya wala na itong matitira sa mundo magpakailanman.",
+   "art": "packages/images/assets-png/biology/extinction-timeline.png",
+   "tickets": [
+    {
+     "label": "Dinosaur na Sinaunang Reptilya",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "dinosaur",
+    "served": 4
+   }
+  },
+  {
+   "n": 14,
+   "id": "ffct-13133",
+   "band": "Dinosaur na Sinaunang Reptilya",
+   "bandWasFallback": false,
+   "text": "Ano ba talaga ang mga dinosaur?\n\nAng mga dinosaur ay sinaunang reptilya na namuhay sa Earth mga 230 hanggang 66 milyong taon na ang nakalipas — hindi sila mammal, kundi kamag-anak ng mga reptilya at ibon ngayon, mula maliit hanggang napakalaki.",
+   "art": "packages/images/cards-png/ffct-13133.png",
+   "tickets": [
+    {
+     "label": "Pagkaubos ng Dino",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "dinosaur",
+    "served": 5
+   }
+  },
+  {
+   "n": 15,
+   "id": "ffct-07267",
+   "band": "Pagkaubos ng Dino",
+   "bandWasFallback": false,
+   "text": "Talaga bang lahat ng dinosaur ay wala na?\n\nHindi lahat! Namatay na ang mga non-avian na dinosaur milyong taon na ang nakalipas, pero ang mga ibon ay buhay na inapo ng dinosaur — kaya sila ay dinosaur din!",
+   "art": null,
+   "tickets": [
+    {
+     "label": "Dinosauryo na Matagal Nang Wala",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "dinosaur",
+    "served": 6
+   }
+  },
+  {
+   "n": 16,
+   "id": "ffct-08952",
+   "band": "Dinosauryo na Matagal Nang Wala",
+   "bandWasFallback": false,
+   "text": "Ang mga dinosaur ay namuhay sa Daigdig milyon-milyong taon na ang nakalipas, at wala na sila ngayon dahil na-extinct na sila.",
+   "art": "packages/images/cards-png/ffct-08952.png",
+   "tickets": [
+    {
+     "label": "Mga Reptilyang Dinosaur",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "dinosaur",
+    "served": 7
+   }
+  },
+  {
+   "n": 17,
+   "id": "ffct-00984",
+   "band": "Mga Reptilyang Dinosaur",
+   "bandWasFallback": false,
+   "text": "Ang mga dinosaur ay grupo ng reptilyang gumala sa Earth milyon-milyong taon na ang nakaraan — pero wala na sa kanila ngayon.",
+   "art": "packages/images/cards-png/ffct-00984.png",
+   "tickets": [
+    {
+     "label": "Herbivore at Carnivore Dinosaur",
+     "kind": "deep",
+     "shelf": false
+    },
+    {
+     "label": "Agila ng Pilipinas",
+     "kind": "lateral",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "dinosaur",
+    "served": 8
+   }
+  },
+  {
+   "n": 18,
+   "id": "ffct-10383",
+   "band": "Agila ng Pilipinas",
+   "bandWasFallback": false,
+   "text": "Karaniwang isang sisiw lang ang pinapalaki ng mag-asawang Philippine eagle kada ilang taon — kaya napakabagal dumami at madaling manganib ang kanilang bilang.",
+   "art": "packages/images/assets-png/biology/philippine-eagle-nesting-scene.png",
+   "tickets": [
+    {
+     "label": "Herbivore at Carnivore Dinosaur",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "dinosaur",
+    "served": 8
+   }
+  },
+  {
+   "n": 19,
+   "id": "ffct-02406",
+   "band": "Herbivore at Carnivore Dinosaur",
+   "bandWasFallback": false,
+   "text": "Ano ang pagkakaiba ng herbivore at carnivore dinosaur?\n\nMay dalawang pangunahing uri ng dinosaur: ang herbivore na kumakain ng halaman, at ang carnivore na kumakain ng karne ng ibang hayop.",
+   "art": "packages/images/cards-png/ffct-02406.png",
+   "tickets": [
+    {
+     "label": "Sungay at Kalasag ni Triceratops",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "dinosaur",
+    "served": 9
+   }
+  },
+  {
+   "n": 20,
+   "id": "ffct-29968",
+   "band": "Geyser",
+   "bandWasFallback": false,
+   "text": "Ano ang isang geyser?\n\nAng geyser ay isang hot spring na pana-panahong bumubuga ng mainit na tubig at singaw pataas. Nag-iipon muna ng presyon bago ito sumabog!",
+   "art": "packages/images/assets-png/earth-science/erupting-geyser-jet.png",
+   "tickets": [
+    {
+     "label": "Pagsabog ng Geyser",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 1
+   }
+  },
+  {
+   "n": 21,
+   "id": "ffct-28895",
+   "band": "Pagsabog ng Geyser",
+   "bandWasFallback": false,
+   "text": "May mga geyser na sumisirit sa halos parehong oras! Ang sikat na 'Old Faithful' sa Amerika ay pumuputok nang paulit-ulit dahil paulit-ulit kumukulo ang tubig sa ilalim.",
+   "art": "packages/images/assets-png/earth-science/old-faithful-geyser.png",
+   "tickets": [
+    {
+     "label": "Pagbuga ng Geyser",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 2
+   }
+  },
+  {
+   "n": 22,
+   "id": "ffct-29969",
+   "band": "Pagbuga ng Geyser",
+   "bandWasFallback": false,
+   "text": "Sumasabog ang geyser kapag ang tubig sa makitid na daanan sa ilalim ng lupa ay uminit at naging singaw. Pinipilit ng presyon ng singaw ang tubig pataas kaya bumubuga ito!",
+   "art": null,
+   "tickets": [
+    {
+     "label": "Conventional Geothermal System",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 3
+   }
+  },
+  {
+   "n": 23,
+   "id": "dcard-02783",
+   "band": "Conventional Geothermal System",
+   "bandWasFallback": false,
+   "text": "Ang conventional geothermal system ay gumagamit ng steam mula sa natural na pinagmumulan tulad ng geysers o kumukuha ng tubig mula sa mainit at high-pressure na kailaliman ng Earth.",
+   "art": "packages/images/cards-png/ffct-27906.png",
+   "tickets": [
+    {
+     "label": "Saan Itinatayo ang mga Plant",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 4
+   }
+  },
+  {
+   "n": 24,
+   "id": "dcard-02786",
+   "band": "Saan Itinatayo ang mga Plant",
+   "bandWasFallback": false,
+   "text": "Saan itinatayo ang mga geothermal power plant?\n\nItinatayo ang mga ito sa mga lugar na partikular na mainit sa ilalim lamang ng surface, kadalasan malapit sa mga geyser, hot spring, o volcanic activity.",
+   "art": "packages/images/cards-png/ffct-22374.png",
+   "tickets": [
+    {
+     "label": "Mga Bukal at Geyser",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 5
+   }
+  },
+  {
+   "n": 25,
+   "id": "ffct-33518",
+   "band": "Mga Bukal at Geyser",
+   "bandWasFallback": false,
+   "text": "Paano nabubuo ang mainit na bukal at geyser?\n\nLumalabas sila kapag ang tubig sa ilalim ng lupa ay napainit ng mainit na bato malapit sa magma! Umaakyat itong mainit o pumupulandit bilang singaw at tubig.",
+   "art": "packages/images/assets-png/earth-science/hot-spring-geyser.png",
+   "tickets": [
+    {
+     "label": "Mga Geyser",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 6
+   }
+  },
+  {
+   "n": 26,
+   "id": "ffct-33427",
+   "band": "Mga Geyser",
+   "bandWasFallback": false,
+   "text": "Alam mo ba kung bakit sumasabog ang geyser paitaas?\n\nAng geyser ay isang bukal na paulit-ulit bumubuga ng mainit na tubig at singaw paitaas, dahil pinapakulo ng init ng Earth ang tubig sa ilalim hanggang sumabog!",
+   "art": "packages/images/assets-png/earth-science/erupting-geyser-jet.png",
+   "tickets": [
+    {
+     "label": "Enceladus",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 7
+   }
+  },
+  {
+   "n": 27,
+   "id": "ffct-29206",
+   "band": "Enceladus",
+   "bandWasFallback": false,
+   "text": "Ano ang bumubuga sa buwan ng Saturn na Enceladus?\n\nAng Enceladus ay bumubuga ng jets ng tubig at yelo mula sa nakatagong dagat sa ilalim ng yelong ibabaw nito!",
+   "art": "packages/images/assets-png/earth-science/enceladus-moon.png",
+   "tickets": [
+    {
+     "label": "Init",
+     "kind": "deep",
+     "shelf": false
+    },
+    {
+     "label": "iba pang sistemang solar",
+     "kind": "lateral",
+     "shelf": true
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 8
+   }
+  },
+  {
+   "n": 28,
+   "id": "ffct-33779",
+   "band": "Kometa",
+   "bandWasFallback": false,
+   "text": "Ano ang kometa?\n\nAng kometa ay isang bagay sa kalawakan na gawa sa yelo, bato, at alikabok na umiikot sa Araw!",
+   "art": "packages/images/assets-png/earth-science/comet-orbit-around-sun.png",
+   "tickets": [
+    {
+     "label": "Init",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 8
+   }
+  },
+  {
+   "n": 29,
+   "id": "ffct-27251",
+   "band": "Init",
+   "bandWasFallback": false,
+   "text": "Ano ang nagpapabuga sa sikat na Old Faithful na geyser?\n\nSumasabog ito kapag ang init sa ilalim ng lupa ay nagko-convert ng water sa steam!",
+   "art": "packages/images/assets-png/earth-science/old-faithful-geyser.png",
+   "tickets": [
+    {
+     "label": "Bihira ang Tunay na Geysers",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 9
+   }
+  }
+ ]
+}

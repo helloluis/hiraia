@@ -295,13 +295,18 @@ async function main() {
     if (!ok) failures.push(what);
     lines.push(`  ${ok ? 'PASS' : 'FAIL'}  ${what}`);
   };
-  const ctxFor = (magnet?: { ids: ReadonlySet<string>; served: number }) => ({
+  const ctxFor = (
+    magnet?: { ids: ReadonlySet<string>; served: number },
+    curriculum?: { idSet: ReadonlySet<string> } | null
+  ) => ({
     studentGrade: 5,
     currentQuarter: 2,
     now: Date.now(),
     cardSeen: new Map(),
     competencySeen: new Map(),
     magnet,
+    // the store's feedContext maps the cursor to the restriction the same way
+    curriculum: curriculum ? { ids: curriculum.idSet } : undefined,
   });
 
   /** Simulate cardStore's ask→advance walk (deep-first reader) for one query. */
@@ -429,6 +434,211 @@ async function main() {
   }
 
   lines.push(failures.length ? `  MAGNET WALK: ${failures.length} FAILURE(S)` : '  MAGNET WALK: all assertions pass');
+  const magnetFailures = failures.length;
+
+  // ==================== CURRICULUM WALK ====================
+  // CALENDAR MODE (cardStore.enterCurriculum → FeedContext.curriculum → advanceCurriculum),
+  // walked the way the store walks it: enter a topic by jumpCard confined to its set, then a
+  // deep-first reader whose every page-turn runs the SAME cursor rule the store runs
+  // (advanceCurriculum, from data/cards.ts — one implementation, not a mirror). Assertions are
+  // HARD: every draw is in-set until the topic is exhausted, the cursor then moves to the
+  // chronologically next competency, the [x] leaves no residual restriction, the end of the
+  // outline releases, and an ask mid-mode forms no magnet and the walk resumes.
+  lines.push('');
+  lines.push('==================== CURRICULUM WALK ====================');
+  const GRADE = 5;
+  interface Row { code: string; quarter: number; text: string }
+  interface Cursor { grade: number; code: string; idSet: ReadonlySet<string>; index: number }
+  const outline: Row[] = C.curriculumOutline(GRADE);
+  const sizeOf = (code: string): number => C.cardsForCompetency(code).size;
+  assertThat(outline.length > 0, `grade ${GRADE} outline lists competencies with cards (${outline.length} rows)`);
+  assertThat(
+    outline.every((r, i) => i === 0 || r.quarter >= outline[i - 1]!.quarter) && outline.every((r) => sizeOf(r.code) > 0),
+    'outline rows are in CG order (quarters non-decreasing) and every row has cards'
+  );
+
+  interface Move { at: number; from: Cursor; to: Cursor; unseenLeft: number; curId: string; leftIds: string[] }
+  /** cardStore.enterCurriculum + advance, deep-first, until the cursor releases or `maxPages`. */
+  function curriculumWalk(startCode: string, maxPages: number, seed: Iterable<string> = []) {
+    const entered: Cursor | null = C.curriculumCursor(GRADE, startCode);
+    if (!entered) throw new Error(`curriculum walk: ${startCode} is not on the grade ${GRADE} outline`);
+    const seen = new Set<string>(seed);
+    const recent: string[] = [];
+    // ENTER: the landing card is jumpCard confined to the set (enterCurriculum), and the
+    // navigateTo commit runs the cursor's exhaustion check on it.
+    let cur = C.jumpCard(null, seen, ctxFor(undefined, entered));
+    const landedInSet = entered.idSet.has(cur.id);
+    seen.add(cur.id);
+    recent.push(cur.id);
+    let cursor: Cursor | null = C.advanceCurriculum(entered, cur.id, seen);
+    let threadDepth = 0;
+    const moves: Move[] = [];
+    let offSet = 0; // choices offered from OUTSIDE the held set (must stay 0)
+    let walked = 0;
+    let releasedAt: number | null = null;
+    let unseenAtRelease = -1;
+    let leftAtRelease: string[] = [];
+    let curAtRelease = '';
+    while (cursor && walked < maxPages) {
+      const held: Cursor = cursor;
+      const depth = threadDepth + 1;
+      const choices = C.nextChoices(cur.id, seen, lang, {
+        threadDepth: depth,
+        recentIds: [...recent],
+        ctx: ctxFor(undefined, held),
+      }) as Array<{ factId: string; kind: string }>;
+      threadDepth = choices.length > 1 ? 0 : depth;
+      for (const ch of choices) if (!held.idSet.has(ch.factId)) offSet++;
+      const pick = choices[0];
+      if (!pick) break;
+      if (pick.kind === 'lateral') threadDepth = 0;
+      const next = C.getCard(pick.factId);
+      if (!next) break;
+      walked++;
+      seen.add(next.id);
+      recent.push(next.id);
+      if (recent.length > RECENT_WINDOW) recent.shift();
+      cur = next;
+      // the cursor after this turn, exactly as cardStore.advance runs it
+      const after: Cursor | null = C.advanceCurriculum(held, cur.id, seen);
+      if (after !== held) {
+        const leftIds = [...held.idSet].filter((id) => !seen.has(id));
+        const unseenLeft = leftIds.length;
+        if (after) moves.push({ at: walked, from: held, to: after, unseenLeft, curId: cur.id, leftIds });
+        else {
+          releasedAt = walked;
+          unseenAtRelease = unseenLeft;
+          leftAtRelease = leftIds;
+          curAtRelease = cur.id;
+        }
+      }
+      cursor = after;
+    }
+    return { entered, landedInSet, moves, offSet, walked, releasedAt, unseenAtRelease, leftAtRelease, curAtRelease, seen, recent, cur, cursor };
+  }
+
+  // 1) a MID-SIZE topic: every draw in-set until it is exhausted, then the cursor advances to
+  //    the chronologically next competency (the outline is already filtered to rows with
+  //    cards, and this session has read none of them, so that is simply the next row).
+  const mid = outline.find((r) => sizeOf(r.code) >= 40 && sizeOf(r.code) <= 120);
+  assertThat(!!mid, 'the grade has a mid-size topic (40..120 cards) to walk');
+  if (mid) {
+    const size = sizeOf(mid.code);
+    const w = curriculumWalk(mid.code, size + 40);
+    const first = w.moves[0];
+    lines.push(
+      `  ${mid.code} (${size} cards): landed in-set=${w.landedInSet} | ${w.walked} pages walked, ` +
+        `${w.offSet} off-set choices | cursor moved at page ${first?.at ?? 'never'}` +
+        (first ? ` → ${first.to.code} (${first.unseenLeft} unseen members left unservable under the gates)` : '')
+    );
+    assertThat(w.landedInSet, 'entering lands on a card of the chosen topic');
+    assertThat(w.offSet === 0, `every choice offered while held is in the held set (${w.offSet} off-set)`);
+    assertThat(!!first, `the topic is exhausted within ${size + 40} pages and the cursor moves on`);
+    if (first) {
+      assertThat(
+        first.from.code === mid.code && first.to.index === first.from.index + 1 && first.to.code === outline[first.from.index + 1]!.code,
+        `the cursor advances to the chronologically next competency (${first.from.code} → ${first.to.code}, row ${first.from.index} → ${first.to.index})`
+      );
+      // The ONLY thing that may be left behind is the current fact reworded (the deck never
+      // serves a restatement back-to-back). A member gated merely by the picture cooldown is
+      // NOT exhaustion — the cooldown is transient, the cursor never comes back — and a
+      // topic's cards often share one picture, so that gate alone used to abandon up to a
+      // fifth of a topic (measured: 8 of G8-E-4's 40, all on the Mayon Volcano cone).
+      assertThat(
+        first.leftIds.every((id) => C.restatesTopic(first.curId, id)),
+        `exhaustion is genuine: every member left behind restates the current card (${first.unseenLeft} of ${size} left)`
+      );
+      assertThat(
+        first.at >= size - first.unseenLeft - 1,
+        `the topic was walked through before the move (page ${first.at} >= ${size} - ${first.unseenLeft} - 1)`
+      );
+    }
+
+    // 2) the [x]: dismissing = a context WITHOUT the cursor. The restriction is a filter, not
+    //    a weight, so weights are identical held vs not, and an unrestricted draw leaves the set.
+    const outside = [...C.cardsForCompetency(outline[outline.length - 1]!.code)].map((id: string) => C.getCard(id)).find((f: { id: string }) => !w.entered.idSet.has(f.id));
+    if (outside) {
+      const held = C.weightOf(outside, ctxFor(undefined, w.entered));
+      const plain = C.weightOf(outside, ctxFor(undefined));
+      assertThat(Math.abs(held - plain) < 1e-12, `the restriction is a filter, never a weight (outside card ×${(held / plain).toFixed(2)} held vs plain)`);
+    }
+    let left = 0;
+    const JUMPS = 12;
+    for (let i = 0; i < JUMPS; i++) if (!w.entered.idSet.has(C.jumpCard(w.cur.id, w.seen, ctxFor(undefined)).id)) left++;
+    lines.push(`  [x] path: ${left}/${JUMPS} unrestricted jumps leave the set (set ${size} of ${C.poolSize()} cards)`);
+    assertThat(left >= JUMPS - 2, `after the [x] the feed is unrestricted (${left}/${JUMPS} jumps left the set)`);
+
+    // 4) an ASK mid-mode: the found card is served as a ONE-OFF — no magnet forms — and the
+    //    next page-turn from it draws from the held topic again.
+    {
+      const walk = curriculumWalk(mid.code, 3);
+      const cursor = walk.cursor!;
+      let found: { id: string } | null = null;
+      for (const q of ['dinosaur', 'volcano', 'geyser', 'planet']) {
+        const res = await C.searchCards(q, walk.cur.id);
+        if (res.best && !cursor.idSet.has(res.best.id)) {
+          found = res.best;
+          // cardStore.ask forms a magnet only when no cursor is held — the guard is source
+          // text, so it is checked as such (a tripwire, alongside the behavioural test below).
+          break;
+        }
+      }
+      assertThat(!!found, 'an off-topic ask finds a card outside the held set');
+      const storeSrc = (await import('node:fs')).readFileSync(join(MOBILE, 'src/store/cardStore.ts'), 'utf8');
+      const guards = storeSrc.split('get().curriculum ? null : formMagnet(').length - 1;
+      assertThat(guards === 2, `cardStore.ask forms NO magnet while a cursor is held (guard on both landing paths: ${guards}/2)`);
+      if (found) {
+        const seen = new Set(walk.seen);
+        seen.add(found.id);
+        const recent = [...walk.recent, found.id].slice(-RECENT_WINDOW);
+        const after = C.advanceCurriculum(cursor, found.id, seen);
+        assertThat(after === cursor, 'the one-off landing leaves the cursor where it was');
+        const choices = C.nextChoices(found.id, seen, lang, { threadDepth: 1, recentIds: recent, ctx: ctxFor(undefined, after) }) as Array<{ factId: string }>;
+        assertThat(
+          choices.length > 0 && choices.every((c) => cursor.idSet.has(c.factId)),
+          `the curriculum resumes on the next page-turn (${choices.length} choice(s) from the found card, all in the held set)`
+        );
+      }
+    }
+  }
+
+  // 3) the END of the outline releases: hold the LAST competency with all but a few of its
+  //    cards already read; exhausting those must return null (no later row), never wrap.
+  {
+    const last = outline[outline.length - 1]!;
+    const ids = [...C.cardsForCompetency(last.code)] as string[];
+    const KEEP = 5;
+    const w = curriculumWalk(last.code, KEEP + 20, ids.slice(KEEP));
+    lines.push(
+      `  end of outline: ${last.code} (Q${last.quarter}, row ${outline.length - 1}) with ${KEEP} unread of ${ids.length} → ` +
+        `released after ${w.releasedAt ?? 'never'} pages (${w.unseenAtRelease} unseen left), ${w.moves.length} later move(s)`
+    );
+    assertThat(w.releasedAt !== null && w.cursor === null, `past the last competency calendar mode releases (after ${w.releasedAt} pages)`);
+    assertThat(w.moves.length === 0, 'the cursor never wraps or moves backward from the last row');
+    assertThat(w.offSet === 0, `every choice until the release was in the held set (${w.offSet} off-set)`);
+    assertThat(
+      w.unseenAtRelease >= 0 && w.leftAtRelease.every((id) => C.restatesTopic(w.curAtRelease, id)),
+      `release fired only once nothing servable was left (${w.unseenAtRelease} unseen, each a restatement of the current card)`
+    );
+  }
+
+  // 5) ENTERING a topic already read out this session: the sheet's row is tappable ("0 / n"),
+  //    and the store enters the walk at the next competency with something left — the same
+  //    pre-check the die runs — never at a re-read card under a ribbon naming another topic.
+  if (mid) {
+    const picked = C.curriculumCursor(GRADE, mid.code)!;
+    const seen = new Set<string>(picked.idSet);
+    const hop = C.advanceCurriculum(picked, null, seen) ?? picked;
+    assertThat(
+      hop.index === picked.index + 1 && hop.code === outline[picked.index + 1]!.code,
+      `a fully-read topic is entered at the next competency (${mid.code} → ${hop.code})`
+    );
+    const landing = C.jumpCard(null, seen, ctxFor(undefined, hop));
+    assertThat(hop.idSet.has(landing.id) && !seen.has(landing.id), 'and lands on an unread card of that competency');
+  }
+
+  const curriculumFailures = failures.length - magnetFailures;
+  lines.push(curriculumFailures ? `  CURRICULUM WALK: ${curriculumFailures} FAILURE(S)` : '  CURRICULUM WALK: all assertions pass');
   if (failures.length) process.exitCode = 1;
 
   const report = lines.join('\n');

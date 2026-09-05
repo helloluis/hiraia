@@ -1,0 +1,595 @@
+{
+ "session": 3,
+ "policy": "random",
+ "grade": 5,
+ "quarter": 3,
+ "asks": [
+  {
+   "query": "geyser",
+   "landedOn": "Geyser",
+   "magnetSetSize": 10,
+   "releasedAfter": 9
+  },
+  {
+   "query": "photosynthesis",
+   "landedOn": "Chlorophyll sa Solar Energy",
+   "magnetSetSize": 128,
+   "releasedAfter": null
+  }
+ ],
+ "pages": [
+  {
+   "n": 0,
+   "id": "dcard-07058",
+   "band": "Soil Profile",
+   "bandWasFallback": false,
+   "text": "Ang soil profile ay ang patayong bahagi ng lupa na nakikita sa isang hukay, na nagpapakita ng iba't ibang patong o horizons nito.",
+   "art": null,
+   "tickets": [
+    {
+     "label": "Mga Layer ng Lupa",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null
+  },
+  {
+   "n": 1,
+   "id": "dcard-07462",
+   "band": "Mga Layer ng Lupa",
+   "bandWasFallback": false,
+   "text": "Ang soil profile ay binubuo ng tatlong layer: topsoil sa itaas, subsoil sa gitna, at bedrock sa pinakailalim.",
+   "art": null,
+   "tickets": [
+    {
+     "label": "Tubig sa Subsoil",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null
+  },
+  {
+   "n": 2,
+   "id": "dcard-07063",
+   "band": "Tubig sa Subsoil",
+   "bandWasFallback": false,
+   "text": "Ang subsoil ay nakakahawak ng mas maraming tubig kaysa topsoil at mas mapusyaw na kayumanggi dahil mayroon itong mas maraming clay.",
+   "art": "packages/images/cards-png/ffct-29389.png",
+   "tickets": [
+    {
+     "label": "Soil Erosion",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null
+  },
+  {
+   "n": 3,
+   "id": "dcard-00735",
+   "band": "Soil Erosion",
+   "bandWasFallback": false,
+   "text": "Ang soil erosion ay nangyayari kapag tinatangay ng hangin o tubig ang pang-ibabaw na lupa, at nababawasan nito ang kakayahan ng lupa na magpatubo ng halaman at suportahan ang agrikultura.",
+   "art": "packages/images/cards-png/ffct-29774.png",
+   "tickets": [
+    {
+     "label": "Pagguho ng Ilog",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null
+  },
+  {
+   "n": 4,
+   "id": "ffct-34882",
+   "band": "Pagguho ng Ilog",
+   "bandWasFallback": false,
+   "text": "Paano binabago ng ilog ang lupa sa paligid nito?\n\nAng mabilis na agos ng ilog ay kumukuha ng loose topsoil mula sa riverbanks, dahan-dahang ine-erode ang lupa at binabago ang hugis ng ilog!",
+   "art": "packages/images/assets-png/earth-science/erosion-soil-slope-water.png",
+   "tickets": [
+    {
+     "label": "Pagdeposito",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null,
+   "quiz": {
+    "q": "Ano ang ginagawa ng mabilis na agos ng ilog sa mga pampang sa paglipas ng panahon?",
+    "options": [
+     "nagtatayo ng bagong bundok",
+     "kinukuha at dinadala ang maluwag na topsoil",
+     "ginagawang bato ang lupa"
+    ],
+    "answer": "kinukuha at dinadala ang maluwag na topsoil"
+   }
+  },
+  {
+   "n": 5,
+   "id": "ffct-21320",
+   "band": "Pagdeposito",
+   "bandWasFallback": false,
+   "text": "Sa rock cycle, nangyayari ang sedimentation kapag dinadala ng dumadaloy na tubig ang buhangin at graba para lumapag sa ilalim ng ilog!",
+   "art": "packages/images/cards-png/ffct-32881.png",
+   "tickets": [
+    {
+     "label": "Pagbabago ng Bato",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null
+  },
+  {
+   "n": 6,
+   "id": "ffct-28439",
+   "band": "Pagbabago ng Bato",
+   "bandWasFallback": false,
+   "text": "Sa weathering stage ng rock cycle, ang gravity at friction mula sa dumadaloy na tubig ay nagbubuwag ng malalaking boulders sa mas maliliit na sediment!",
+   "art": null,
+   "tickets": [
+    {
+     "label": "iba pang mga bato",
+     "kind": "lateral",
+     "shelf": true
+    },
+    {
+     "label": "Goma at Elastiko",
+     "kind": "lateral",
+     "shelf": false
+    }
+   ],
+   "magnet": null
+  },
+  {
+   "n": 7,
+   "id": "ffct-15103",
+   "band": "Goma at Elastiko",
+   "bandWasFallback": false,
+   "text": "Kapag binanat mo ang lastiko, may elastic force na humihilang pabalik para bumalik ito sa dati nitong size!",
+   "art": "packages/images/cards-png/ffct-16420.png",
+   "tickets": [
+    {
+     "label": "Tension sa Lubid",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null
+  },
+  {
+   "n": 8,
+   "id": "ffct-22558",
+   "band": "Tension sa Lubid",
+   "bandWasFallback": false,
+   "text": "Ang tension ay ang pulling force sa isang banat na lubid o kable! Mararamdaman mo ito sa laro ng tug-of-war.",
+   "art": "packages/images/cards-png/ffct-22558.png",
+   "tickets": [
+    {
+     "label": "Orbita ng Komet sa Araw",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null,
+   "quiz": {
+    "q": "Ano ang tension sa lubid kapag naglalaro ng habulan?",
+    "options": [
+     "Puwersang humihila na dumadaloy sa lubid kapag ito ay binabanat sa magkabilang dulo",
+     "Puwersang nagtutulak na pinipiga ang lubid mula sa magkabilang panig",
+     "Puwersang umiikot na nagiging sanhi ng pag-ikot ng lubid sa gitna"
+    ],
+    "answer": "Puwersang humihila na dumadaloy sa lubid kapag ito ay binabanat sa magkabilang dulo"
+   }
+  },
+  {
+   "n": 9,
+   "id": "ffct-30507",
+   "band": "Orbita ng Komet sa Araw",
+   "bandWasFallback": false,
+   "text": "Ang mga kometa ay sumusunod sa napakahaba at pahabang orbita — pero hawak pa rin ng grabidad ng Araw, kaya bumabalik sila paminsan-minsan!",
+   "art": "packages/images/cards-png/ffct-30507.png",
+   "tickets": [
+    {
+     "label": "Spaghettification sa Grabidad",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null
+  },
+  {
+   "n": 10,
+   "id": "ffct-29968",
+   "band": "Geyser",
+   "bandWasFallback": false,
+   "text": "Ano ang isang geyser?\n\nAng geyser ay isang hot spring na pana-panahong bumubuga ng mainit na tubig at singaw pataas. Nag-iipon muna ng presyon bago ito sumabog!",
+   "art": "packages/images/assets-png/earth-science/erupting-geyser-jet.png",
+   "tickets": [
+    {
+     "label": "Pagsabog ng Geyser",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 1
+   }
+  },
+  {
+   "n": 11,
+   "id": "ffct-28895",
+   "band": "Pagsabog ng Geyser",
+   "bandWasFallback": false,
+   "text": "May mga geyser na sumisirit sa halos parehong oras! Ang sikat na 'Old Faithful' sa Amerika ay pumuputok nang paulit-ulit dahil paulit-ulit kumukulo ang tubig sa ilalim.",
+   "art": "packages/images/assets-png/earth-science/old-faithful-geyser.png",
+   "tickets": [
+    {
+     "label": "Pagbuga ng Geyser",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 2
+   }
+  },
+  {
+   "n": 12,
+   "id": "ffct-29969",
+   "band": "Pagbuga ng Geyser",
+   "bandWasFallback": false,
+   "text": "Sumasabog ang geyser kapag ang tubig sa makitid na daanan sa ilalim ng lupa ay uminit at naging singaw. Pinipilit ng presyon ng singaw ang tubig pataas kaya bumubuga ito!",
+   "art": null,
+   "tickets": [
+    {
+     "label": "Conventional Geothermal System",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 3
+   }
+  },
+  {
+   "n": 13,
+   "id": "dcard-02783",
+   "band": "Conventional Geothermal System",
+   "bandWasFallback": false,
+   "text": "Ang conventional geothermal system ay gumagamit ng steam mula sa natural na pinagmumulan tulad ng geysers o kumukuha ng tubig mula sa mainit at high-pressure na kailaliman ng Earth.",
+   "art": "packages/images/cards-png/ffct-27906.png",
+   "tickets": [
+    {
+     "label": "Saan Itinatayo ang mga Plant",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 4
+   }
+  },
+  {
+   "n": 14,
+   "id": "dcard-02786",
+   "band": "Saan Itinatayo ang mga Plant",
+   "bandWasFallback": false,
+   "text": "Saan itinatayo ang mga geothermal power plant?\n\nItinatayo ang mga ito sa mga lugar na partikular na mainit sa ilalim lamang ng surface, kadalasan malapit sa mga geyser, hot spring, o volcanic activity.",
+   "art": "packages/images/cards-png/ffct-22374.png",
+   "tickets": [
+    {
+     "label": "Mga Bukal at Geyser",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 5
+   }
+  },
+  {
+   "n": 15,
+   "id": "ffct-33518",
+   "band": "Mga Bukal at Geyser",
+   "bandWasFallback": false,
+   "text": "Paano nabubuo ang mainit na bukal at geyser?\n\nLumalabas sila kapag ang tubig sa ilalim ng lupa ay napainit ng mainit na bato malapit sa magma! Umaakyat itong mainit o pumupulandit bilang singaw at tubig.",
+   "art": "packages/images/assets-png/earth-science/hot-spring-geyser.png",
+   "tickets": [
+    {
+     "label": "Mga Geyser",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 6
+   }
+  },
+  {
+   "n": 16,
+   "id": "ffct-33427",
+   "band": "Mga Geyser",
+   "bandWasFallback": false,
+   "text": "Alam mo ba kung bakit sumasabog ang geyser paitaas?\n\nAng geyser ay isang bukal na paulit-ulit bumubuga ng mainit na tubig at singaw paitaas, dahil pinapakulo ng init ng Earth ang tubig sa ilalim hanggang sumabog!",
+   "art": "packages/images/assets-png/earth-science/erupting-geyser-jet.png",
+   "tickets": [
+    {
+     "label": "Enceladus",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 7
+   }
+  },
+  {
+   "n": 17,
+   "id": "ffct-29206",
+   "band": "Enceladus",
+   "bandWasFallback": false,
+   "text": "Ano ang bumubuga sa buwan ng Saturn na Enceladus?\n\nAng Enceladus ay bumubuga ng jets ng tubig at yelo mula sa nakatagong dagat sa ilalim ng yelong ibabaw nito!",
+   "art": "packages/images/assets-png/earth-science/enceladus-moon.png",
+   "tickets": [
+    {
+     "label": "Init",
+     "kind": "deep",
+     "shelf": false
+    },
+    {
+     "label": "iba pang kalawakan",
+     "kind": "lateral",
+     "shelf": true
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 8
+   }
+  },
+  {
+   "n": 18,
+   "id": "ffct-34618",
+   "band": "Mga Yugto ng Buwan",
+   "bandWasFallback": false,
+   "text": "May 8 pangunahing yugto ang Buwan: new, waxing crescent, first quarter, waxing gibbous, full, waning gibbous, last quarter, at waning crescent!",
+   "art": "packages/images/assets-png/earth-science/phases-of-the-moon-calendar.png",
+   "tickets": [
+    {
+     "label": "Init",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 8
+   }
+  },
+  {
+   "n": 19,
+   "id": "ffct-27251",
+   "band": "Init",
+   "bandWasFallback": false,
+   "text": "Ano ang nagpapabuga sa sikat na Old Faithful na geyser?\n\nSumasabog ito kapag ang init sa ilalim ng lupa ay nagko-convert ng water sa steam!",
+   "art": "packages/images/assets-png/earth-science/old-faithful-geyser.png",
+   "tickets": [
+    {
+     "label": "Bihira ang Tunay na Geysers",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "geyser",
+    "served": 9
+   }
+  },
+  {
+   "n": 20,
+   "id": "ffct-28754",
+   "band": "Chlorophyll sa Solar Energy",
+   "bandWasFallback": false,
+   "text": "Sa light-dependent stage ng photosynthesis, sumisipsip ang chlorophyll ng solar energy para hatiin ang water molecules at maglabas ng oxygen gas!",
+   "art": "packages/images/cards-png/ffct-28754.png",
+   "tickets": [
+    {
+     "label": "Equation ng Photosynthesis",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "photosynthesis",
+    "served": 1
+   }
+  },
+  {
+   "n": 21,
+   "id": "dcard-08002",
+   "band": "Equation ng Photosynthesis",
+   "bandWasFallback": false,
+   "text": "Ang kabuuang equation ng photosynthesis ay anim na carbon dioxide molecules plus anim na water molecules, gamit ang light energy, para makagawa ng isang glucose molecule at anim na oxygen molecules.",
+   "art": "packages/images/cards-png/dcard-08002.png",
+   "tickets": [
+    {
+     "label": "Potosintesis",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "photosynthesis",
+    "served": 2
+   }
+  },
+  {
+   "n": 22,
+   "id": "ffct-03870",
+   "band": "Potosintesis",
+   "bandWasFallback": false,
+   "text": "Paano gumagawa ng pagkain ang halaman?\n\nKapag sumisipsip ng sikat ng araw ang dahon, ang chlorophyll ay ginagawang glucose ang tubig at carbon dioxide — enerhiyang pagkain ng halaman.",
+   "art": "packages/images/assets-png/biology/plant-bending-toward-sun.png",
+   "tickets": [
+    {
+     "label": "Photosynthesis sa Chloroplast",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "photosynthesis",
+    "served": 3
+   }
+  },
+  {
+   "n": 23,
+   "id": "ffct-02751",
+   "band": "Photosynthesis sa Chloroplast",
+   "bandWasFallback": false,
+   "text": "Saan nagaganap ang photosynthesis?\n\nKaraniwang nagaganap ang photosynthesis sa mga dahon ng halaman, sa loob ng maliliit na bahagi ng selula na tinatawag na chloroplast.",
+   "art": null,
+   "tickets": [
+    {
+     "label": "Stomata papunta sa Chloroplast",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "photosynthesis",
+    "served": 4
+   }
+  },
+  {
+   "n": 24,
+   "id": "ffct-05756",
+   "band": "Stomata papunta sa Chloroplast",
+   "bandWasFallback": false,
+   "text": "Kapag bumubukas ang stomata ng dahon, pumapasok ang carbon dioxide at dumarating sa chloroplasts — ginagamit ito kasama ng sikat ng araw para gumawa ng glucose at oxygen!",
+   "art": null,
+   "tickets": [
+    {
+     "label": "Absorption ni Chlorophyll",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "photosynthesis",
+    "served": 5
+   }
+  },
+  {
+   "n": 25,
+   "id": "ffct-28293",
+   "band": "Absorption ni Chlorophyll",
+   "bandWasFallback": false,
+   "text": "Ang absorption ay unang yugto ng photosynthesis kung saan kinukuha ng chlorophyll ng halaman ang light energy para makagawa ng pagkain!",
+   "art": null,
+   "tickets": [
+    {
+     "label": "Imbak ng Enerhiya ng Halaman",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "photosynthesis",
+    "served": 6
+   }
+  },
+  {
+   "n": 26,
+   "id": "ffct-27766",
+   "band": "Imbak ng Enerhiya ng Halaman",
+   "bandWasFallback": false,
+   "text": "Paano nag-iimbak ng enerhiya ang mga halaman mula sa araw?\n\nSa photosynthesis, sumisipsip sila ng sikat ng araw at kinokonvert ang light energy sa chemical energy na nasa glucose molecules!",
+   "art": null,
+   "tickets": [
+    {
+     "label": "CO2 na Pumapasok sa Stomata",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "photosynthesis",
+    "served": 7
+   }
+  },
+  {
+   "n": 27,
+   "id": "ffct-02575",
+   "band": "CO2 na Pumapasok sa Stomata",
+   "bandWasFallback": false,
+   "text": "Nagbubukas ang stomata para makapasok ang carbon dioxide sa dahon. Ginagamit ito ng halaman kasama ng sikat ng araw para gumawa ng glucose, ang kanyang pagkaing enerhiya.",
+   "art": null,
+   "tickets": [
+    {
+     "label": "Photosynthesis ng Halaman",
+     "kind": "deep",
+     "shelf": false
+    },
+    {
+     "label": "Calcium para sa Lumalaking Buto",
+     "kind": "lateral",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "photosynthesis",
+    "served": 8
+   }
+  },
+  {
+   "n": 28,
+   "id": "ffct-01732",
+   "band": "Calcium para sa Lumalaking Buto",
+   "bandWasFallback": false,
+   "text": "Bakit kailangan ng mga bata ang calcium?\n\nDahil lumalaki at humahaba pa ang iyong mga buto. Ang pagkabata ang pinakamagandang panahon para magtayo ng malalakas na buto na gagamitin mo habambuhay.",
+   "art": "packages/images/cards-png/ffct-01732.png",
+   "tickets": [
+    {
+     "label": "Photosynthesis ng Halaman",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "photosynthesis",
+    "served": 8
+   }
+  },
+  {
+   "n": 29,
+   "id": "ffct-11099",
+   "band": "Photosynthesis ng Halaman",
+   "bandWasFallback": false,
+   "text": "Sa photosynthesis, ginagamit ng halaman ang sikat ng araw, tubig, at carbon dioxide para gumawa ng sarili nitong pagkaing sugar, habang naglalabas ito ng oxygen na nilalanghap natin. Ang berdeng chlorophyll sa dahon ang humuhuli sa liwanag.",
+   "art": null,
+   "tickets": [
+    {
+     "label": "Chlorophyll at Light Energy",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": {
+    "query": "photosynthesis",
+    "served": 9
+   }
+  }
+ ]
+}

@@ -119,6 +119,27 @@ export const PRE_PRESENCE_PATCH: readonly (readonly [string, string])[] = [
   ],
 ];
 
+/**
+ * slug -> actual art file on disk (repo-relative), parsed once from the generated
+ * imageMap — the app resolves art through Metro require()s there, so that map IS the
+ * source of truth for where a slug's picture lives (assets-png/<domain>/ or cards-png/).
+ * Harnesses use this so a judge views exactly the file the device would render.
+ */
+const IMAGE_MAP_PATH = join(MOBILE, 'src/generated/imageMap.ts');
+const ART_PATHS: Map<string, string> = (() => {
+  const src = readFileSync(IMAGE_MAP_PATH, 'utf8');
+  const out = new Map<string, string>();
+  for (const m of src.matchAll(/"([a-z0-9-]+)": require\("([^"]+)"\)/g)) {
+    // ../../../images/... -> packages/images/... (repo-relative from the repo root)
+    out.set(m[1]!, m[2]!.replace(/^\.\.(\/\.\.)*/, 'packages'));
+  }
+  return out;
+})();
+
+export function artPathOf(slug: string | undefined): string | null {
+  return slug ? ART_PATHS.get(slug) ?? null : null;
+}
+
 export interface LoadCardsOpts {
   /**
    * Reverse-apply PRE_PRESENCE_PATCH, i.e. load the feed as it behaved BEFORE art presence
@@ -158,6 +179,10 @@ export function loadCards(opts: LoadCardsOpts = {}): Promise<any> {
     .replace(
       "import curriculumTagsJson from '../generated/curriculumTags.generated.json';",
       `import curriculumTagsJson from '${join(MOBILE, 'src/generated/curriculumTags.generated.json')}' with { type: 'json' };`
+    )
+    .replace(
+      "import curriculumOutlineJson from '../generated/curriculumOutline.generated.json';",
+      `import curriculumOutlineJson from '${join(MOBILE, 'src/generated/curriculumOutline.generated.json')}' with { type: 'json' };`
     )
     .replace(
       "import { hasArt } from './artPresence';",
