@@ -32,8 +32,8 @@ export const DOWNLOAD = {
   apk: {
     url: 'https://hiraia.org/models/hiraia.apk',
     /** Omit from the UI when 0 (file not measured yet). */
-    fileSizeMB: 296,
-    sha256: '3822a29f74e2daddb8efe9a42a0240ea2ea009e4a6bef3821475ad141f14a64b',
+    fileSizeMB: 297,
+    sha256: '3d4092ab00377526be0fb00e043c2a63758fbad0afaf0e2c1db2469d98219cc9',
   },
 
   /** SHA-256 of the signing cert. Stays the same across releases. */
