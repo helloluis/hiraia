@@ -1,4 +1,4 @@
-import { TelemetrySettings } from '../../telemetry/TelemetrySettings';
+import { ActivityTable } from '../../telemetry/ActivityTable';
 import { useRouter } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,9 +9,9 @@ import { GRADE_OPTIONS } from '../../config/grades';
 import { LANGUAGE_OPTIONS } from '../../config/languages';
 import { ACTIVE_MODEL, VECTORS_META } from '../../config/model';
 import { uiStrings } from '../../config/strings';
-import { HIRAIAPEDIA_VERSION, ADAPTER_VERSION } from '../../config/version';
+import { HIRAIAPEDIA_VERSION } from '../../config/version';
 import { useEngineStore } from '../../store/engineStore';
-import { colors, fonts } from '../../theme';
+import { card, fonts } from '../../theme';
 
 export default function SidebarScreen() {
   const router = useRouter();
@@ -27,12 +27,10 @@ export default function SidebarScreen() {
   };
 
   const t = uiStrings(language);
-  const langLabel = LANGUAGE_OPTIONS.find((o) => o.lang === language)?.label ?? '—';
-  const adapterInfo = language ? ADAPTER_VERSION[language] : '—';
 
   const onPickLanguage = (lang: Language) => {
     if (lang === language) return;
-    // Reloads the model (adapter swap, ~20-30s); the feed's search field shows the progress.
+    // Reload the multilingual model with the chosen language prompt and retrieval bank.
     void changeLanguage(lang);
     router.back();
   };
@@ -75,7 +73,6 @@ export default function SidebarScreen() {
         </View>
         <Text style={styles.langNote}>{t.langRestartNote}</Text>
 
-        <TelemetrySettings language={language || 'english'} />
         <Text style={styles.sectionTitle}>{t.sectionGrade}</Text>
         <View style={styles.langRow}>
           {GRADE_OPTIONS.map((g) => {
@@ -95,8 +92,7 @@ export default function SidebarScreen() {
           })}
         </View>
 
-        <Text style={styles.sectionTitle}>{t.sectionNotes}</Text>
-        <Text style={styles.placeholder}>{t.noNotes}</Text>
+        <ActivityTable />
 
         <Text style={styles.sectionTitle}>{t.sectionVersion}</Text>
         <View style={styles.versionBlock}>
@@ -105,10 +101,6 @@ export default function SidebarScreen() {
             <Text style={styles.versionValue}>
               {ACTIVE_MODEL.displayName} · {ACTIVE_MODEL.quant}
             </Text>
-          </View>
-          <View style={styles.versionRow}>
-            <Text style={styles.versionLabel}>Adapter ({langLabel})</Text>
-            <Text style={styles.versionValue}>{adapterInfo}</Text>
           </View>
           <View style={styles.versionRow}>
             <Text style={styles.versionLabel}>Hiraiapedia</Text>
@@ -124,7 +116,7 @@ export default function SidebarScreen() {
         </TouchableOpacity>
       </ScrollView>
       </SafeAreaView>
-      {/* dimmed page peeking out beside the notebook cover; tap to close */}
+      {/* dimmed feed beside the settings panel; tap to close */}
       <Pressable style={styles.backdrop} onPress={() => router.back()} />
     </View>
   );
@@ -136,9 +128,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   panel: {
-    width: '80%',
-    backgroundColor: colors.cover,
-    // drop shadow along the right edge — looks like the cover of a notebook
+    width: '92%',
+    maxWidth: 480,
+    backgroundColor: card.stock,
+    // Match the card feed’s cream stock and forest ink.
     shadowColor: '#000',
     shadowOffset: { width: 4, height: 0 },
     shadowOpacity: 0.28,
@@ -147,7 +140,7 @@ const styles = StyleSheet.create({
   },
   backdrop: {
     flex: 1,
-    backgroundColor: 'rgba(12, 52, 61, 0.28)',
+    backgroundColor: 'rgba(28, 59, 46, 0.45)',
   },
   header: {
     flexDirection: 'row',
@@ -155,17 +148,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: colors.hairline,
+    borderBottomColor: card.sage,
   },
   title: {
-    fontFamily: fonts.title,
+    fontFamily: fonts.slab,
     fontSize: 28,
-    color: colors.ink,
+    color: card.ink,
   },
   closeButton: {
-    fontFamily: fonts.body,
+    fontFamily: fonts.cardBody,
     fontSize: 18,
-    color: colors.primary,
+    color: card.ink,
   },
   content: {
     flex: 1,
@@ -175,16 +168,16 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
   },
   sectionTitle: {
-    fontFamily: fonts.display,
-    fontSize: 22,
-    color: colors.ink,
-    marginTop: 24,
+    fontFamily: fonts.cardBodyBold,
+    fontSize: 20,
+    color: card.ink,
+    marginTop: 18,
     marginBottom: 8,
   },
   placeholder: {
-    fontFamily: fonts.body,
+    fontFamily: fonts.cardBody,
     fontSize: 16,
-    color: colors.inkMuted,
+    color: card.olive,
   },
   versionBlock: {
     gap: 6,
@@ -196,14 +189,14 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   versionLabel: {
-    fontFamily: fonts.body,
+    fontFamily: fonts.cardBody,
     fontSize: 15,
-    color: colors.inkMuted,
+    color: card.olive,
   },
   versionValue: {
-    fontFamily: fonts.body,
+    fontFamily: fonts.cardBody,
     fontSize: 15,
-    color: colors.ink,
+    color: card.ink,
     flexShrink: 1,
     textAlign: 'right',
   },
@@ -217,13 +210,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 8,
     paddingHorizontal: 16,
-    borderRadius: 18,
+    borderRadius: 6,
     borderWidth: 2,
-    borderColor: colors.primary,
-    backgroundColor: colors.white,
+    borderColor: card.ink,
+    backgroundColor: card.stock,
   },
   langChipActive: {
-    backgroundColor: colors.primary,
+    backgroundColor: card.ink,
   },
   // A grade chip holds one or two digits, not a word: narrower side padding and a fixed
   // minimum keep "3" and "10" the same size so the row reads as a row of buttons.
@@ -233,45 +226,45 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   langChipText: {
-    fontFamily: fonts.display,
+    fontFamily: fonts.cardBodyBold,
     fontSize: 19,
-    color: colors.ink,
+    color: card.ink,
   },
   langChipTextActive: {
-    color: colors.white,
+    color: card.stock,
   },
   langBeta: {
-    fontFamily: fonts.body,
+    fontFamily: fonts.cardBody,
     fontSize: 12,
-    color: colors.accent,
+    color: card.forkB,
   },
   langChipComingSoon: {
     opacity: 0.45,
-    borderColor: colors.inkMuted,
+    borderColor: card.olive,
   },
   langSoon: {
-    fontFamily: fonts.body,
+    fontFamily: fonts.cardBody,
     fontSize: 12,
-    color: colors.inkMuted,
+    color: card.olive,
   },
   langNote: {
-    fontFamily: fonts.body,
+    fontFamily: fonts.cardBody,
     fontSize: 14,
-    color: colors.inkMuted,
+    color: card.olive,
     marginTop: 10,
   },
   tutorialButton: {
     alignSelf: 'flex-start',
     paddingVertical: 10,
     paddingHorizontal: 18,
-    borderRadius: 18,
+    borderRadius: 6,
     borderWidth: 2,
-    borderColor: colors.primary,
-    backgroundColor: colors.white,
+    borderColor: card.ink,
+    backgroundColor: card.stock,
   },
   tutorialButtonText: {
-    fontFamily: fonts.display,
+    fontFamily: fonts.cardBodyBold,
     fontSize: 18,
-    color: colors.ink,
+    color: card.ink,
   },
 });

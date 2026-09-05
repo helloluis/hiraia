@@ -1,9 +1,11 @@
 import * as SQLite from 'expo-sqlite';
+import { activityWindows, type ActivityCounts, type ActivitySummary } from './activity';
 import { newId, type Event, type Repository } from './core';
 
 const MAX_EVENTS = 10000;
 const MAX_AGE = 90 * 86400000;
 export interface TelemetryRepository extends Repository {
+  activity(now?: number): Promise<ActivitySummary>;
   isEnabled(): Promise<boolean>;
   setEnabled(value: boolean): Promise<void>;
 }
@@ -13,7 +15,30 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
   await db.execAsync(`PRAGMA journal_mode=WAL; PRAGMA busy_timeout=2000;
     CREATE TABLE IF NOT EXISTS meta(key TEXT PRIMARY KEY,value TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS outbox(seq INTEGER PRIMARY KEY AUTOINCREMENT,id TEXT UNIQUE NOT NULL,
-      queued_at INTEGER NOT NULL,event TEXT NOT NULL);`);
+      queued_at INTEGER NOT NULL,event TEXT NOT NULL);
+    CREATE TABLE IF NOT EXISTS activity(id TEXT PRIMARY KEY,occurred_at INTEGER NOT NULL,
+      name TEXT NOT NULL,source TEXT,correct INTEGER NOT NULL);
+    CREATE INDEX IF NOT EXISTS activity_time ON activity(occurred_at);`);
+  const recordActivity = async (tx: Pick<SQLite.SQLiteDatabase, 'runAsync'>, e: Event) => {
+    if (e.name !== 'card_viewed' && e.name !== 'quiz_graded') return;
+    await tx.runAsync('INSERT OR IGNORE INTO activity VALUES(?,?,?,?,?)',
+      e.id, e.occurred_at, e.name, String(e.props.source || ''), e.props.correct === true ? 1 : 0);
+  };
+  // Backfill only pending records: acknowledged historic events no longer exist locally.
+  await db.withExclusiveTransactionAsync(async (tx) => {
+    const migrated = await tx.getFirstAsync("SELECT value FROM meta WHERE key='activity_since'");
+    if (!migrated) {
+      await tx.runAsync("INSERT INTO meta VALUES('activity_since',?)", String(Date.now()));
+      const pending = await tx.getAllAsync<{event: string}>('SELECT event FROM outbox');
+      for (const row of pending) {
+        try {
+          const e = JSON.parse(row.event) as Event;
+          if (typeof e.id === 'string' && Number.isSafeInteger(e.occurred_at) && e.props)
+            await recordActivity(tx, e);
+        } catch { /* Malformed queued records are handled by list(). */ }
+      }
+    }
+  });
   let installationId = '';
   // One connection and exclusive transactions: appends/acks/initialization cannot mingle.
   await db.withExclusiveTransactionAsync(async (tx) => {
@@ -45,6 +70,20 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
   });
   return {
     installationId,
+    async activity(now = Date.now()) {
+      const counts: ActivityCounts[] = [];
+      for (const start of activityWindows(now)) {
+        const row = await db.getFirstAsync<ActivityCounts>(`
+          SELECT COALESCE(SUM(name='card_viewed'),0) AS cards,
+            COALESCE(SUM(name='card_viewed' AND source='generated'),0) AS dynamic,
+            COALESCE(SUM(name='quiz_graded'),0) AS quizzes,
+            COALESCE(SUM(name='quiz_graded' AND correct=1),0) AS correct
+          FROM activity WHERE occurred_at >= ? AND occurred_at <= ?`, start, now);
+        counts.push(row!);
+      }
+      const row = await db.getFirstAsync<{value:string}>("SELECT value FROM meta WHERE key='activity_since'");
+      return { counts, since: Number(row!.value), asOf: now };
+    },
     async isEnabled() {
       const row = await db.getFirstAsync<{ value: string }>(
         "SELECT value FROM meta WHERE key='enabled'"
@@ -63,13 +102,18 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
           "SELECT value FROM meta WHERE key='enabled'"
         );
         if (preference?.value === 'false') return;
-        for (const e of events.filter((e) => e.name !== 'queue_dropped'))
+        for (const e of events.filter((e) => e.name !== 'queue_dropped')) {
+          await recordActivity(tx, e);
           await tx.runAsync(
             'INSERT OR IGNORE INTO outbox(id,queued_at,event) VALUES(?,?,?)',
             e.id,
             Date.now(),
             JSON.stringify(e)
           );
+        }
+        // Independent of upload acknowledgments and the bounded delivery queue.
+        // 100 days covers every calendar quarter plus clock/DST margin.
+        await tx.runAsync('DELETE FROM activity WHERE occurred_at < ?', Date.now() - 100 * 86400000);
         const old = await tx.runAsync(
           'DELETE FROM outbox WHERE queued_at < ?',
           Date.now() - MAX_AGE

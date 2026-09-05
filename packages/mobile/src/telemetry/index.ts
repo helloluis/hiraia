@@ -147,3 +147,9 @@ export async function setTelemetryEnabled(value: boolean): Promise<void> {
     void queue.flush();
   }
 }
+
+/** Settings reads durable counters after all pending event writes have completed. */
+export async function activitySummary() {
+  await queue.drainWrites();
+  return (await getRepository()).activity();
+}

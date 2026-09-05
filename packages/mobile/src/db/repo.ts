@@ -7,37 +7,6 @@ import type { SeenRecord } from '@hiraia/shared';
 
 import { getDb } from './index';
 
-// ------------------------------------------------------------ notes (UI pending)
-export interface Note {
-  id: string;
-  conversation_id: string | null;
-  title: string | null;
-  body: string | null;
-  created_at: number;
-  updated_at: number;
-}
-
-export async function upsertNote(n: { id: string; conversationId?: string | null; title?: string | null; body?: string | null }): Promise<void> {
-  const db = await getDb();
-  const now = Date.now();
-  await db.runAsync(
-    `INSERT INTO notes (id, conversation_id, title, body, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)
-     ON CONFLICT(id) DO UPDATE SET title = excluded.title, body = excluded.body,
-       conversation_id = excluded.conversation_id, updated_at = excluded.updated_at`,
-    n.id, n.conversationId ?? null, n.title ?? null, n.body ?? null, now, now
-  );
-}
-
-export async function listNotes(): Promise<Note[]> {
-  const db = await getDb();
-  return db.getAllAsync<Note>('SELECT * FROM notes ORDER BY updated_at DESC');
-}
-
-export async function deleteNote(id: string): Promise<void> {
-  const db = await getDb();
-  await db.runAsync('DELETE FROM notes WHERE id = ?', id);
-}
-
 // ----------------------------------------------- settings (backs settings page)
 export async function getSetting(key: string): Promise<string | null> {
   const db = await getDb();
