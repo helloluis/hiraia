@@ -1,9 +1,35 @@
 /**
  * Public FAQ — the source of truth for /faq and, later, the on-page assistant.
- * Keep answers concrete and in the landing's voice. Do not invent device
- * support, store listings, or curriculum endorsement that the product page
- * does not already state.
+ *
+ * HOW TO UPDATE WHEN SOMETHING SHIPS
+ *  1. Numbers and flags (released?, Android version, RAM, APK URL) are NOT restated
+ *     here. Read them from `@/config/download` and `@/config/grades`.
+ *  2. Prepend a line to FAQ_SHIPPED for anything a visitor would notice, and point
+ *     `faqIds` at the items you added or rewrote.
+ *  3. Do that in the same change that ships the feature — landing copy and FAQ
+ *     answers must not disagree.
+ *  4. Do not invent device support, store listings, or DepEd endorsement.
  */
+
+import { DOWNLOAD } from '@/config/download';
+import { DEFAULT_GRADE, GRADE_OPTIONS } from '@/config/grades';
+
+const APK_LIVE = DOWNLOAD.released && !!DOWNLOAD.apk.url;
+const GRADE_SPAN = `Grades ${GRADE_OPTIONS[0]} through ${GRADE_OPTIONS[GRADE_OPTIONS.length - 1]}`;
+
+/** Newest first. The "What's new?" item and the assistant read this. */
+export const FAQ_SHIPPED: readonly { date: string; title: string; faqIds: readonly string[] }[] = [
+  {
+    date: '2026-09',
+    title: `Android APK v${DOWNLOAD.version} is public — download it from the homepage, not the Play Store.`,
+    faqIds: ['usage-now', 'devices-sideload', 'trouble-download'],
+  },
+  {
+    date: '2026-09',
+    title: 'A class can copy the 2GB model over school or municipal Wi-Fi with Pears, once one phone has a complete copy.',
+    faqIds: ['usage-class', 'devices-data'],
+  },
+];
 
 export type FaqSectionId = 'usage' | 'devices' | 'content' | 'troubleshooting';
 
@@ -59,10 +85,21 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     id: 'usage-now',
     section: 'usage',
     q: 'Can I use it today?',
-    a: [
-      'The Android app is in early alpha and the public download is marked Coming soon. You can try the tutor in the browser from the homepage: open “Try the demo,” pick a language and a grade, and walk a stack of science cards.',
-      'The web demo is a preview. The full tutor — the on-device model, the illustrations, and the fact bank — ships in the Android app when v0.1 is released.',
-    ],
+    a: APK_LIVE
+      ? [
+          `Yes. The Android app is on the homepage as “Download Hiraia for Android” (v${DOWNLOAD.version}). It is an APK from hiraia.org, not the Play Store. You can also try the cards in the browser with “Try the demo” before you install.`,
+          'The first time you open the app it fetches about 2GB — the model and the illustrations. After that it runs offline. The project is still early alpha, so expect rough edges.',
+        ]
+      : [
+          'The Android app is in early alpha and the public download is marked Coming soon. You can try the tutor in the browser from the homepage: open “Try the demo,” pick a language and a grade, and walk a stack of science cards.',
+          'The web demo is a preview. The full tutor — the on-device model, the illustrations, and the fact bank — ships in the Android app when v0.1 is released.',
+        ],
+  },
+  {
+    id: 'usage-whats-new',
+    section: 'usage',
+    q: "What's new?",
+    a: FAQ_SHIPPED.map((s) => `${s.date} — ${s.title}`),
   },
   {
     id: 'usage-session',
@@ -87,7 +124,9 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'usage',
     q: 'Do I need an account or a payment?',
     a: [
-      'No. There is no registration, no subscription, and no in-app purchase. Download it (when the APK is released), share it with classmates, and use it.',
+      APK_LIVE
+        ? 'No. There is no registration, no subscription, and no in-app purchase. Download it from the homepage, share it with classmates, and use it.'
+        : 'No. There is no registration, no subscription, and no in-app purchase. Download it (when the APK is released), share it with classmates, and use it.',
     ],
   },
   {
@@ -122,8 +161,10 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'devices',
     q: 'Which phones does it run on?',
     a: [
-      'Android 12 or newer. Phones with 6GB of memory or more are recommended. Hiraia is built for entry-level Android handsets, not for a flagship-only audience.',
-      'There is no iPhone build, and it is not listed on the Play Store. When v0.1 ships it will be a single APK from hiraia.org.',
+      `Android ${DOWNLOAD.minAndroid} or newer. Phones with ${DOWNLOAD.minRamGB}GB of memory or more are recommended. Hiraia is built for entry-level Android handsets, not for a flagship-only audience.`,
+      APK_LIVE
+        ? 'There is no iPhone build, and it is not listed on the Play Store. Download the APK from the homepage on hiraia.org.'
+        : 'There is no iPhone build, and it is not listed on the Play Store. When v0.1 ships it will be a single APK from hiraia.org.',
     ],
   },
   {
@@ -157,7 +198,9 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     q: 'Why isn’t it on the Play Store?',
     a: [
       'Hiraia is distributed as its own APK, outside the Play Store, so a school or a household can copy it without a Google account. Android will ask you to allow installs from the browser or from Files; that prompt is expected.',
-      'The download is not open yet — the button on the homepage still reads Coming soon. Do not install an APK that did not come from hiraia.org.',
+      APK_LIVE
+        ? 'Download it only from the button on hiraia.org. Do not install an APK that arrived as a random file or a third-party mirror.'
+        : 'The download is not open yet — the button on the homepage still reads Coming soon. Do not install an APK that did not come from hiraia.org.',
     ],
   },
   {
@@ -209,7 +252,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'content',
     q: 'Which grades are covered?',
     a: [
-      'Grades 3 through 10. The default pitch is Grade 5, because many students are behind the year printed on their ID. Changing the grade reweights which cards are drawn; it does not hide the rest of the bank.',
+      `${GRADE_SPAN}. The default pitch is Grade ${DEFAULT_GRADE}, because many students are behind the year printed on their ID. Changing the grade reweights which cards are drawn; it does not hide the rest of the bank.`,
     ],
   },
   {
@@ -240,12 +283,16 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
 
   // ── troubleshooting ────────────────────────────────────────────────────
   {
-    id: 'trouble-coming-soon',
+    id: 'trouble-download',
     section: 'troubleshooting',
-    q: 'The Download button says Coming soon. Is the app broken?',
-    a: [
-      'No. The public APK is not released yet. Use “Try the demo” on the homepage until v0.1 is posted on hiraia.org. When the download opens, it will be the same page — there is no Play Store listing to wait for.',
-    ],
+    q: 'Where do I get the APK? Is it on the Play Store?',
+    a: APK_LIVE
+      ? [
+          `No Play Store listing. Use “Download Hiraia for Android” on the homepage. The file is ${DOWNLOAD.apk.url}. Android will warn because the app is sideloaded; that is expected. Play Protect may scan it.`,
+        ]
+      : [
+          'No. The public APK is not released yet. Use “Try the demo” on the homepage until it is posted on hiraia.org. There is no Play Store listing to wait for.',
+        ],
   },
   {
     id: 'trouble-install',
