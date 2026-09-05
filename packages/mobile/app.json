@@ -43,7 +43,8 @@
       "./plugins/withQvacAddons.js",
       "@qvac/sdk/expo-plugin",
       "expo-asset",
-      "expo-video"
+      "expo-video",
+      "./plugins/withTelemetryBackup.js"
     ],
     "experiments": {
       "typedRoutes": true

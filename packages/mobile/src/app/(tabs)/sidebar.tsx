@@ -1,3 +1,4 @@
+import { TelemetrySettings } from '../../telemetry/TelemetrySettings';
 import { useRouter } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -74,6 +75,7 @@ export default function SidebarScreen() {
         </View>
         <Text style={styles.langNote}>{t.langRestartNote}</Text>
 
+        <TelemetrySettings language={language || 'english'} />
         <Text style={styles.sectionTitle}>{t.sectionGrade}</Text>
         <View style={styles.langRow}>
           {GRADE_OPTIONS.map((g) => {

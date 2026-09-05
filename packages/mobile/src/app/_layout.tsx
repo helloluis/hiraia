@@ -1,3 +1,4 @@
+import { startTelemetry } from '../telemetry';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -10,6 +11,7 @@ import { useEngineStore } from '../store/engineStore';
 import { colors, fontAssets } from '../theme';
 
 export default function RootLayout() {
+  useEffect(() => startTelemetry(), []);
   const bootstrap = useEngineStore((s) => s.bootstrap);
   const changeLanguage = useEngineStore((s) => s.changeLanguage);
   const bootstrapped = useEngineStore((s) => s.bootstrapped);

@@ -81,6 +81,8 @@
  * initialisations racing each other must never open two append-mode streams onto
  * the same `.part`.
  */
+import { beginDownload } from '../telemetry/download';
+import { track } from '../telemetry';
 import {
   documentDirectory,
   getInfoAsync,
@@ -305,6 +307,7 @@ async function fetchAndVerify(
   const existing = await statSize(finalUri);
   if (existing !== null) {
     if (existing === spec.bytes) {
+      track('asset_available', { asset: spec.filename, bytes: existing });
       onProgress?.(100);
       return stripScheme(finalUri);
     }
@@ -317,6 +320,7 @@ async function fetchAndVerify(
     await deleteAsync(partUri, { idempotent: true });
   }
 
+  const assetKind = /adapter|lora/i.test(spec.filename) ? 'adapter' : /vector/i.test(spec.filename) ? 'vectors' : /\.(zip|tar|webp)$/i.test(spec.filename) ? 'images' : 'model';
   let lastError: unknown = null;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     if (signal?.aborted) throw new Error('model download aborted');
@@ -332,6 +336,7 @@ async function fetchAndVerify(
       startOffset = 0;
     }
 
+    const telemetry = beginDownload(spec.filename, assetKind, spec.bytes, startOffset, attempt);
     try {
       // What the server declared it was sending on this attempt, as reported by
       // native. Null when we never ran a transfer (or never saw a progress event).
@@ -417,10 +422,12 @@ async function fetchAndVerify(
       }
 
       await moveAsync({ from: partUri, to: finalUri });
+      telemetry.installed(size);
       LOG(`${spec.label}: verified + installed (${mb(size)})`);
       onProgress?.(100);
       return stripScheme(finalUri);
     } catch (e) {
+      telemetry.failed(signal?.aborted ? new Error('cancelled') : e);
       if (signal?.aborted) throw new Error('model download aborted');
       // Deterministic content failure: do not spend the rest of the budget on it.
       if (isFatal(e)) {

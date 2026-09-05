@@ -1,3 +1,4 @@
+import { track, newId, errorCategory } from '../telemetry';
 import { loadModel, completion, unloadModel, embed, QWEN3_1_7B_INST_Q4 } from '@qvac/sdk';
 import { Asset } from 'expo-asset';
 import Constants from 'expo-constants';
@@ -335,6 +336,10 @@ export class LocalEngine implements TutorEngine {
     // listens to THIS.
     onEvent?: (ev: EngineProgressEvent) => void
   ): Promise<void> {
+    const telemetryStart = Date.now();
+    const telemetryProps = { model: ACTIVE_MODEL.key, attempt_id: newId(), language: config.language };
+    let telemetryBackend: 'cpu' | 'unknown' = 'unknown';
+    track('model_load_started', telemetryProps);
     try {
       this.config = config;
       this.onEvent = onEvent ?? null;
@@ -425,6 +430,7 @@ export class LocalEngine implements TutorEngine {
 
         const cpuVerdict = await readCpuFallbackVerdict();
         const gpuLayers = cpuVerdict ? 0 : ACTIVE_MODEL.runtime.gpuLayers;
+        if (gpuLayers === 0) telemetryBackend = 'cpu';
         if (cpuVerdict) {
           console.log(
             `[LocalEngine] persisted CPU-fallback verdict (app ${APP_VERSION}) — ` +
@@ -451,6 +457,7 @@ export class LocalEngine implements TutorEngine {
           // the bar and switch to a "taking longer" message — never tick backwards.
           onEvent?.({ stage: 'cpu-retry' });
           this.modelId = await loadWith({ gpu_layers: 0, device: 'cpu' });
+          telemetryBackend = 'cpu';
           console.error(
             `[LocalEngine] CPU FALLBACK SUCCEEDED — this device cannot run the GPU path. ` +
               `Persisting the verdict for app ${APP_VERSION}; later launches load straight ` +
@@ -515,8 +522,10 @@ export class LocalEngine implements TutorEngine {
       // should happen where the loader bar can cover it, not inside the model load.
       this.isReadyFlag = true;
 
+      track('model_ready', { ...telemetryProps, backend: telemetryBackend, duration_ms: Math.max(0, Date.now() - telemetryStart) });
       console.log(`${ACTIVE_MODEL.displayName} model loaded successfully`);
     } catch (error) {
+      track('model_load_failed', { ...telemetryProps, error: errorCategory(error), duration_ms: Math.max(0, Date.now() - telemetryStart) });
       console.error('Failed to load model:', error);
       throw new Error(
         `Failed to initialize LocalEngine: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -756,6 +765,9 @@ export class LocalEngine implements TutorEngine {
     // outcomes above return before this point and take no lock at all, so "I'm only a science
     // tutor" prints immediately instead of queueing behind an in-flight reward line or chat
     // stream to display a fixed sentence.
+    const generationStart = Date.now();
+    const generationProps = { model: ACTIVE_MODEL.key, attempt_id: newId(), language };
+    track('generation_started', generationProps);
     const out = await withModelLock(async () => {
       const run = completion({
         modelId: this.modelId!,
@@ -784,6 +796,13 @@ export class LocalEngine implements TutorEngine {
         if (event.type === 'contentDelta' && event.text) acc += event.text;
       }
       return acc;
+    }).catch(error => {
+      track('generation_failed', { ...generationProps, error: errorCategory(error), duration_ms: Math.max(0, Date.now() - generationStart) });
+      throw error;
+    });
+    track(out.trim() ? 'generation_completed' : 'generation_failed', {
+      ...generationProps, duration_ms: Math.max(0, Date.now() - generationStart),
+      ...(out.trim() ? {} : { error: 'runtime' }),
     });
     const text = out.trim();
 

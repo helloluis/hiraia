@@ -12,6 +12,7 @@
  * Every draw is weighted by a FeedContext (rag/pipeline/FEED-WEIGHTING.md): the student's
  * grade, the inferred curriculum quarter, and the SQLite seen-store (card + competency).
  */
+import { gradeQuiz } from '../telemetry/views';
 import { create } from 'zustand';
 // `sanitizeCardAnswer` is the guard that trims a model-generated card, strips the prompt's
 // own SAGOT:/ANSWER:/TUBAG: cue if it is echoed, and caps the card at the length
@@ -436,6 +437,8 @@ export const useCardStore = create<CardState>()((set, get) => ({
 
   answerQuestion: (correct) => {
     const s = get();
+    if (!s.question || s.questionAnswered) return;
+    gradeQuiz(s.pageKey, s.question.f, useEngineStore.getState().language || 'english', correct);
     const correctCount = s.correctCount + (correct ? 1 : 0);
     set({ correctCount, questionAnswered: true }); // enables the corner-swipe-to-continue fallback
     persist({ pagesRead: s.pagesRead, correctCount });

@@ -31,6 +31,7 @@
  * clears it even if the animation callback is dropped, so a transition can never strand a
  * layer over the screen (the earlier hang).
  */
+import { useFeedTelemetry } from '../../telemetry/useFeedTelemetry';
 import { useRouter } from 'expo-router';
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -678,6 +679,7 @@ export function CardFeedScreen() {
   // Stable handle for the memoized footer (see Caption below the styles).
   const openSettings = useCallback(() => router.push('/sidebar'), [router]);
 
+  useFeedTelemetry();
   const hydrated = useCardStore((s) => s.hydrated);
   const hydrate = useCardStore((s) => s.hydrate);
   const current = useCardStore((s) => s.current);
