@@ -1,0 +1,12 @@
+{
+  "extends": "../../packages/web/tsconfig.json",
+  "compilerOptions": {
+    "incremental": false
+  },
+  "include": [
+    "../../packages/web/src/lib/telemetry/**/*.ts",
+    "../../packages/web/src/app/api/telemetry/**/*.ts",
+    "../../packages/web/scripts/telemetry-server.ts"
+  ],
+  "exclude": ["node_modules"]
+}

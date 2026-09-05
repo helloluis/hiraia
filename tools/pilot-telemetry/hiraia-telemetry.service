@@ -1,0 +1,26 @@
+# Review these paths/user against the deployment host before installing.
+[Unit]
+Description=Hiraia offline app telemetry
+After=network.target
+
+[Service]
+Type=simple
+User=hiraia
+Group=hiraia
+WorkingDirectory=/opt/hiraia/packages/web
+Environment=NODE_ENV=production
+Environment=TELEMETRY_PORT=8136
+Environment=HIRAIA_TELEMETRY_DB_PATH=/var/lib/hiraia-telemetry/telemetry.db
+ExecStart=/usr/bin/node /opt/hiraia/packages/web/.telemetry/server.cjs
+Restart=on-failure
+RestartSec=5
+UMask=0027
+StateDirectory=hiraia-telemetry
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/hiraia-telemetry
+
+[Install]
+WantedBy=multi-user.target
