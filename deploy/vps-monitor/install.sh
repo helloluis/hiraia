@@ -3,7 +3,7 @@
 # install.sh — deploy hiraia-monitor + mission control to the Vultr VPS.
 #
 # Installs, on hiraia.b11.dev:
-#   * /opt/hiraia-monitor/{monitor.py,admin_app.py,config.json}
+#   * /opt/hiraia-monitor/{monitor.py,admin_app.py,pilot_analytics.py,config.json}
 #   * systemd: hiraia-monitor.timer (guard, every 5 min) + hiraia-admin.service
 #   * nginx: `location /admin` -> 127.0.0.1:8135 in the existing 443 block
 #
@@ -55,7 +55,7 @@ PY
 
 echo ">> [1/4] files ..."
 ssh $SSH "$V" 'mkdir -p /opt/hiraia-monitor /var/lib/hiraia-monitor'
-scp $SSH "$HERE/monitor.py" "$HERE/admin_app.py" "$V:/opt/hiraia-monitor/"
+scp $SSH "$HERE/monitor.py" "$HERE/admin_app.py" "$HERE/pilot_analytics.py" "$V:/opt/hiraia-monitor/"
 scp $SSH "$TMP/config.json" "$V:/opt/hiraia-monitor/config.json"
 ssh $SSH "$V" 'chmod 600 /opt/hiraia-monitor/config.json; chmod 755 /opt/hiraia-monitor/*.py
   touch /var/log/hiraia-monitor.log; chmod 640 /var/log/hiraia-monitor.log'

@@ -19,6 +19,7 @@ rate limiting, CSRF token on every state-changing POST.
 """
 import hashlib, hmac, html, json, os, re, secrets, subprocess, time, urllib.parse, urllib.request
 from datetime import datetime, timezone
+import pilot_analytics
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from http.cookies import SimpleCookie
 
@@ -706,7 +707,7 @@ HEAD = """<!doctype html><html lang="en"><head><meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>__CSS__</style></head><body data-mount="__MOUNT__">"""
+<style>__CSS__</style></head><body data-mount="__MOUNT__"><a href="__MOUNT__/telemetry" style="display:block;padding:12px 24px">Pilot analytics →</a>"""
 
 JS = r"""
 const $ = s => document.querySelector(s);
@@ -1178,6 +1179,16 @@ class Handler(BaseHTTPRequestHandler):
             if path.startswith("/api/"):
                 return self._json(401, {"error": "unauthenticated"})
             return self._redirect(f"{MOUNT}/login")
+        if path == "/telemetry":
+            return self._send(200, pilot_analytics.page(MOUNT))
+        if path == "/api/telemetry":
+            try:
+                days = int(q.get("days", ["30"])[0])
+                if days not in (7, 30, 90):
+                    return self._json(400, {"error": "invalid_days"})
+                return self._json(200, pilot_analytics.report(days))
+            except (ValueError, OSError, pilot_analytics.sqlite3.Error):
+                return self._json(503, {"error": "telemetry_unavailable"})
         if path == "/":
             return self._send(200, page_dashboard(self._csrf()))
         if path == "/api/export":
