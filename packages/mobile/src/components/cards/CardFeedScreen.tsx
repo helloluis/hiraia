@@ -33,6 +33,7 @@
  */
 import { useFeedTelemetry } from '../../telemetry/useFeedTelemetry';
 import { useRouter } from 'expo-router';
+import Svg, { Circle, Polygon } from 'react-native-svg';
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
@@ -66,8 +67,9 @@ import type { Language } from '@hiraia/shared';
 import { GRADE_WORD } from '../../config/grades';
 import { uiStrings } from '../../config/strings';
 import {
-  curriculumOutline,
+  cursorTopic,
   getCard,
+  topicTitle,
   type CardChoice,
   type CardFact,
   type CardQuestion,
@@ -411,6 +413,54 @@ type Face = 'die' | 'calendar';
  * Reduced motion: no crossfade, the faces swap instantly (the loop itself stays — it is what
  * advertises the calendar exists — at the same 2 s cadence).
  */
+/**
+ * "New Random Topic!" — pops over the ask box the moment the die is tapped and fades a beat
+ * later, so a kid who just hit a mystery button learns what it did. `tick` is a counter, not
+ * a boolean: every tap re-pops it, even mid-fade. Native-driver opacity+scale only, never
+ * intercepts touches, announced politely to TalkBack. Reduced motion keeps the fade and
+ * drops the scale pop.
+ */
+const TOAST_POP_MS = 160;
+const TOAST_HOLD_MS = 900;
+const TOAST_FADE_MS = 320;
+
+const RerollToast = memo(function RerollToast({ tick, text }: { tick: number; text: string }) {
+  const reduceMotion = useReduceMotion();
+  const opacity = useRef(new Animated.Value(0)).current;
+  const scale = useRef(new Animated.Value(0.85)).current;
+  useEffect(() => {
+    if (tick === 0) return;
+    opacity.stopAnimation();
+    scale.stopAnimation();
+    scale.setValue(reduceMotion ? 1 : 0.85);
+    const pop = reduceMotion
+      ? Animated.timing(opacity, { toValue: 1, duration: TOAST_POP_MS, useNativeDriver: true })
+      : Animated.parallel([
+          Animated.timing(opacity, { toValue: 1, duration: TOAST_POP_MS, useNativeDriver: true }),
+          Animated.spring(scale, { toValue: 1, tension: 220, friction: 7, useNativeDriver: true }),
+        ]);
+    const run = Animated.sequence([
+      pop,
+      Animated.delay(TOAST_HOLD_MS),
+      Animated.timing(opacity, { toValue: 0, duration: TOAST_FADE_MS, useNativeDriver: true }),
+    ]);
+    run.start();
+    return () => run.stop();
+  }, [tick, reduceMotion, opacity, scale]);
+  if (tick === 0) return null;
+  return (
+    <Animated.View
+      pointerEvents="none"
+      accessibilityLiveRegion="polite"
+      style={[styles.rerollToast, { opacity, transform: [{ scale }] }]}
+    >
+      <Text style={styles.rerollToastText} numberOfLines={1}>
+        {text}
+      </Text>
+    </Animated.View>
+  );
+});
+
 const CycleButton = memo(function CycleButton({
   language,
   frozen,
@@ -645,17 +695,18 @@ const Caption = memo(function Caption({
   const t = uiStrings(language);
   return (
     <View style={[styles.caption, { paddingBottom: bottomPad }]}>
-      <View style={styles.captionSide} />
       <Pressable
         style={({ pressed }) => [styles.captionTap, pressed && styles.captionTapPressed]}
         onPress={onOpenSettings}
         hitSlop={10}
-        // No accessibilityLabel: the rendered "Grade 5 · pahina 8" IS the label, and it is
-        // already localised — a hand-written one would only repeat it in one language.
+        accessibilityLabel={language === 'english' ? 'Settings' : language === 'cebuano' ? 'Mga setting' : 'Mga setting'}
         accessibilityRole="button"
       >
+        <Svg width={20} height={20} viewBox="0 0 24 24" accessible={false}>
+          <Polygon points="23.00,12.00 22.79,14.15 19.85,15.25 19.07,16.72 19.78,19.78 18.11,21.15 15.25,19.85 13.66,20.34 12.00,23.00 9.85,22.79 8.75,19.85 7.28,19.07 4.22,19.78 2.85,18.11 4.15,15.25 3.66,13.66 1.00,12.00 1.21,9.85 4.15,8.75 4.93,7.28 4.22,4.22 5.89,2.85 8.75,4.15 10.34,3.66 12.00,1.00 14.15,1.21 15.25,4.15 16.72,4.93 19.78,4.22 21.15,5.89 19.85,8.75 20.34,10.34" fill={card.gold} />
+          <Circle cx="12" cy="12" r="4" fill={card.board} />
+        </Svg>
         <Text style={styles.captionText} numberOfLines={1}>
-          <Text style={styles.captionMenuGlyph}>☰</Text>{'  '}
           {GRADE_WORD[language]} {grade} · {t.cards.readLabel} {pagesRead}
         </Text>
       </Pressable>
@@ -738,9 +789,9 @@ export function CardFeedScreen() {
   const magnet = useCardStore((s) => s.magnet);
   const dismissQuery = useCardStore((s) => s.dismissQuery);
   // CALENDAR MODE: the cursor OBJECT (the under-sheet effect keys on it exactly like the
-  // magnet), the row it names (its quarter + CG text print on the ribbon), and the sheet.
+  // magnet), the topic it names (its quarter + DepEd title print on the ribbon), and the sheet.
   const curriculum = useCardStore((s) => s.curriculum);
-  const curriculumRow = curriculum ? curriculumOutline(curriculum.grade)[curriculum.index] : undefined;
+  const curriculumTopic = curriculum ? cursorTopic(curriculum) : undefined;
   const enterCurriculum = useCardStore((s) => s.enterCurriculum);
   const exitCurriculum = useCardStore((s) => s.exitCurriculum);
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -758,6 +809,8 @@ export function CardFeedScreen() {
   const ask = useCardStore((s) => s.ask);
   const warmModel = useCardStore((s) => s.warmModel);
   const jumpToRandom = useCardStore((s) => s.jumpToRandom);
+  // Counter, not boolean: every die tap must re-pop the toast even mid-fade (see RerollToast).
+  const [rerollTick, setRerollTick] = useState(0);
 
   const [queryText, setQueryText] = useState('');
   const submitQuery = () => {
@@ -797,10 +850,10 @@ export function CardFeedScreen() {
   // A row tap on the outline sheet: enter the topic, close the sheet. The landing peels from
   // a random corner, the way the reroll does — it is a topic jump, not a page turn.
   const pickTopic = useCallback(
-    (code: string) => {
+    (key: string) => {
       sideRef.current = Math.random() < 0.5 ? 'left' : 'right';
       setSheetOpen(false);
-      enterCurriculum(code);
+      enterCurriculum(key);
     },
     [enterCurriculum]
   );
@@ -1472,8 +1525,13 @@ export function CardFeedScreen() {
           onDie={() => {
             sideRef.current = Math.random() < 0.5 ? 'left' : 'right';
             jumpToRandom();
+            setRerollTick((n) => n + 1);
           }}
           onCalendar={openSheet}
+        />
+        <RerollToast
+          tick={rerollTick}
+          text={curriculum ? t.cards.rerollToastTopic : t.cards.rerollToast}
         />
         {/* The 4 px readiness bar, crawling the full page width under the field. Width
             and colour are the SAME composed number the field's opacity shows — the
@@ -1521,19 +1579,20 @@ export function CardFeedScreen() {
         </View>
       ) : null}
 
-      {/* CALENDAR MODE's ribbon — the same ribbon grammar, under the same box: the label names
-          the mode and the quarter ("KURIKULUM · Q2"), the body is the held competency's CG
-          wording, the ✕ leaves the mode. Mutually exclusive with the ask ribbon by construction
-          (entering either clears the other in the store). It names the topic the feed is
-          DRAWING FROM: on the page where a topic runs out the cursor has already moved on, so
-          the ribbon already reads the next topic the swipe will serve. */}
-      {curriculum && curriculumRow && !response && !reward && !question ? (
+      {/* CALENDAR MODE's ribbon — the same ribbon grammar, under the same box, one line:
+          "KURIKULUM · Q2 · <title>" — the label names the mode and the quarter, the body is the
+          held topic's DepEd title in the tutor language, the ✕ leaves the mode. Mutually
+          exclusive with the ask ribbon by construction (entering either clears the other in the
+          store). It names the topic the feed is DRAWING FROM: on the page where a topic runs out
+          the cursor has already moved on, so the ribbon already reads the next topic the swipe
+          will serve. */}
+      {curriculum && curriculumTopic && !response && !reward && !question ? (
         <View style={styles.banner}>
           <Text style={styles.bannerLabel} numberOfLines={1}>
-            {t.cards.curriculum} · Q{curriculumRow.quarter}
+            {t.cards.curriculum} · Q{curriculumTopic.quarter} ·
           </Text>
           <Text style={styles.bannerText} numberOfLines={1}>
-            {curriculumRow.text}
+            {topicTitle(curriculumTopic, language)}
           </Text>
           <Pressable
             onPress={exitCurriculum}
@@ -1617,6 +1676,10 @@ export function CardFeedScreen() {
                   choices={choices}
                   language={language}
                   instant={cameFromPreview}
+                  // the reading guide runs on the LIVE card only — the preview sheet and the
+                  // outgoing peel are copies, and a card that came from the preview is still
+                  // the one being read now (guide is independent of `instant`)
+                  guide
                   onChoose={(c) => tapNav(() => chooseFrom(c, choices[0] === c ? 'left' : 'right'))}
                 />
               )}
@@ -1722,7 +1785,7 @@ export function CardFeedScreen() {
         visible={sheetOpen}
         grade={grade}
         language={language}
-        activeCode={curriculum?.code ?? null}
+        activeKey={curriculum?.key ?? null}
         onPick={pickTopic}
         onClose={closeSheet}
       />
@@ -1983,6 +2046,30 @@ const styles = StyleSheet.create({
     backgroundColor: card.ink,
   },
 
+  // The reroll toast lies OVER the ask box — absolute inside the search row, so no sibling
+  // can clip it — in the ribbon's own ink-and-stock grammar.
+  rerollToast: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 5,
+  },
+  rerollToastText: {
+    fontFamily: fonts.gothic,
+    fontSize: 11,
+    letterSpacing: 1.6,
+    textTransform: 'uppercase',
+    color: card.stock,
+    backgroundColor: card.ink,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
   // ---- board-level ribbon + the on-card veil ----
   banner: {
     flexDirection: 'row',
@@ -2056,13 +2143,14 @@ const styles = StyleSheet.create({
   // The tap target, not the type: it takes the row's growth so the label stays optically
   // centred between the two 46dp gutters, and gives the whole strip a comfortable target
   // (the 9.5px caps alone would be a ~14dp-tall one) rather than only the glyphs.
-  captionTap: { flex: 1, paddingVertical: 4 },
+  captionTap: { flex: 1, minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 4 },
   captionTapPressed: { opacity: 0.55 },
   // The affordance. Gold (the wordmark's accent) against the sage caption, and a size up from
   // the 9.5px caps, so the row announces itself as a control instead of a label.
   captionMenuGlyph: { fontSize: 12, color: card.gold },
   captionText: {
-    textAlign: 'center',
+    textAlign: 'left',
+    flexShrink: 1,
     fontFamily: fonts.gothic,
     fontSize: 9.5,
     letterSpacing: 1.8,

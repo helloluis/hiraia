@@ -438,30 +438,60 @@ async function main() {
 
   // ==================== CURRICULUM WALK ====================
   // CALENDAR MODE (cardStore.enterCurriculum → FeedContext.curriculum → advanceCurriculum),
-  // walked the way the store walks it: enter a topic by jumpCard confined to its set, then a
-  // deep-first reader whose every page-turn runs the SAME cursor rule the store runs
-  // (advanceCurriculum, from data/cards.ts — one implementation, not a mirror). Assertions are
-  // HARD: every draw is in-set until the topic is exhausted, the cursor then moves to the
-  // chronologically next competency, the [x] leaves no residual restriction, the end of the
-  // outline releases, and an ask mid-mode forms no magnet and the walk resumes.
+  // walked the way the store walks it: enter a TOPIC (a CG Content title; its cards are the
+  // union of its competencies' sets) by jumpCard confined to that set, then a deep-first
+  // reader whose every page-turn runs the SAME cursor rule the store runs (advanceCurriculum,
+  // from data/cards.ts — one implementation, not a mirror). Assertions are HARD: every draw is
+  // in-set until the topic is exhausted, the cursor then moves to the chronologically next
+  // topic, the [x] leaves no residual restriction, the end of the outline releases, and an ask
+  // mid-mode forms no magnet and the walk resumes.
   lines.push('');
   lines.push('==================== CURRICULUM WALK ====================');
   const GRADE = 5;
-  interface Row { code: string; quarter: number; text: string }
-  interface Cursor { grade: number; code: string; idSet: ReadonlySet<string>; index: number }
-  const outline: Row[] = C.curriculumOutline(GRADE);
-  const sizeOf = (code: string): number => C.cardsForCompetency(code).size;
-  assertThat(outline.length > 0, `grade ${GRADE} outline lists competencies with cards (${outline.length} rows)`);
+  interface Topic { key: string; quarter: number; contentIndex: number; title: { en: string; tl: string; bis: string }; codes: readonly string[] }
+  interface Cursor { grade: number; key: string; idSet: ReadonlySet<string>; index: number }
+  const outline: Topic[] = C.curriculumOutline(GRADE);
+  const sizeOf = (t: Topic): number => C.cardsForTopic(t).size;
+  assertThat(outline.length > 0, `grade ${GRADE} outline lists topics with cards (${outline.length} rows)`);
   assertThat(
-    outline.every((r, i) => i === 0 || r.quarter >= outline[i - 1]!.quarter) && outline.every((r) => sizeOf(r.code) > 0),
-    'outline rows are in CG order (quarters non-decreasing) and every row has cards'
+    outline.every((t, i) => i === 0 || t.quarter > outline[i - 1]!.quarter || (t.quarter === outline[i - 1]!.quarter && t.contentIndex > outline[i - 1]!.contentIndex)) &&
+      outline.every((t) => sizeOf(t) > 0),
+    'outline rows are in CG order (quarter, then Content order) and every row has cards'
+  );
+  // The topic model itself: a topic's set is exactly the union of its codes' sets (the same
+  // inverse index the seen-store groups by), and every row prints as a short DepEd title in
+  // all three tutor languages. The en title is the CG's verbatim wording (it runs to 7 words
+  // and carries colons at G7/G8 — "Motion: displacement and velocity"); the AUTHORED tl/bis
+  // copy is what the sheet prints for a child and is held to <=6 words, no colon/semicolon.
+  // Checked over EVERY grade's outline, not just the walked one.
+  assertThat(
+    outline.every((t) => {
+      const u = new Set<string>();
+      for (const c of t.codes) for (const id of C.cardsForCompetency(c)) u.add(id);
+      const s = C.cardsForTopic(t);
+      return u.size === s.size && [...u].every((id) => s.has(id));
+    }),
+    'each topic\'s card set is the union of its competencies\' sets'
+  );
+  const ALL_GRADES = [3, 4, 5, 6, 7, 8, 9, 10];
+  const everyTopic: Topic[] = ALL_GRADES.flatMap((g) => C.curriculumOutline(g) as Topic[]);
+  assertThat(
+    everyTopic.every((t) => t.title.en.trim().length > 0 && (['tl', 'bis'] as const).every((l) => t.title[l] && words(t.title[l]) <= 6 && !/[:;]/.test(t.title[l]))),
+    `every topic (all grades, ${everyTopic.length} rows) has an en title and a 1-6 word tl/bis title without colons`
+  );
+  assertThat(
+    ALL_GRADES.every((g) => {
+      const rows = C.curriculumOutline(g) as Topic[];
+      return new Set(rows.map((t) => t.key)).size === rows.length && rows.every((t) => t.key === `Q${t.quarter}.${t.contentIndex}`);
+    }),
+    'topic keys are unique within each grade and derived from (quarter, contentIndex)'
   );
 
   interface Move { at: number; from: Cursor; to: Cursor; unseenLeft: number; curId: string; leftIds: string[] }
   /** cardStore.enterCurriculum + advance, deep-first, until the cursor releases or `maxPages`. */
-  function curriculumWalk(startCode: string, maxPages: number, seed: Iterable<string> = []) {
-    const entered: Cursor | null = C.curriculumCursor(GRADE, startCode);
-    if (!entered) throw new Error(`curriculum walk: ${startCode} is not on the grade ${GRADE} outline`);
+  function curriculumWalk(startKey: string, maxPages: number, seed: Iterable<string> = []) {
+    const entered: Cursor | null = C.curriculumCursor(GRADE, startKey);
+    if (!entered) throw new Error(`curriculum walk: ${startKey} is not on the grade ${GRADE} outline`);
     const seen = new Set<string>(seed);
     const recent: string[] = [];
     // ENTER: the landing card is jumpCard confined to the set (enterCurriculum), and the
@@ -518,26 +548,28 @@ async function main() {
   }
 
   // 1) a MID-SIZE topic: every draw in-set until it is exhausted, then the cursor advances to
-  //    the chronologically next competency (the outline is already filtered to rows with
-  //    cards, and this session has read none of them, so that is simply the next row).
-  const mid = outline.find((r) => sizeOf(r.code) >= 40 && sizeOf(r.code) <= 120);
-  assertThat(!!mid, 'the grade has a mid-size topic (40..120 cards) to walk');
+  //    the chronologically next topic (the outline is already filtered to rows with cards, and
+  //    this session has read none of them, so that is simply the next row). Topics pool several
+  //    competencies, so the band is wider than the old per-competency 40..120.
+  const mid = outline.find((t) => sizeOf(t) >= 40 && sizeOf(t) <= 200);
+  assertThat(!!mid, 'the grade has a mid-size topic (40..200 cards) to walk');
   if (mid) {
-    const size = sizeOf(mid.code);
-    const w = curriculumWalk(mid.code, size + 40);
+    const size = sizeOf(mid);
+    const w = curriculumWalk(mid.key, size + 40);
     const first = w.moves[0];
+    const nameOf = (c: Cursor) => `${c.key} "${outline[c.index]!.title.en}"`;
     lines.push(
-      `  ${mid.code} (${size} cards): landed in-set=${w.landedInSet} | ${w.walked} pages walked, ` +
+      `  ${nameOf(w.entered)} [${mid.codes.join(' ')}] (${size} cards): landed in-set=${w.landedInSet} | ${w.walked} pages walked, ` +
         `${w.offSet} off-set choices | cursor moved at page ${first?.at ?? 'never'}` +
-        (first ? ` → ${first.to.code} (${first.unseenLeft} unseen members left unservable under the gates)` : '')
+        (first ? ` → ${nameOf(first.to)} (${first.unseenLeft} unseen members left unservable under the gates)` : '')
     );
     assertThat(w.landedInSet, 'entering lands on a card of the chosen topic');
     assertThat(w.offSet === 0, `every choice offered while held is in the held set (${w.offSet} off-set)`);
     assertThat(!!first, `the topic is exhausted within ${size + 40} pages and the cursor moves on`);
     if (first) {
       assertThat(
-        first.from.code === mid.code && first.to.index === first.from.index + 1 && first.to.code === outline[first.from.index + 1]!.code,
-        `the cursor advances to the chronologically next competency (${first.from.code} → ${first.to.code}, row ${first.from.index} → ${first.to.index})`
+        first.from.key === mid.key && first.to.index === first.from.index + 1 && first.to.key === outline[first.from.index + 1]!.key,
+        `the cursor advances to the chronologically next topic (${first.from.key} → ${first.to.key}, row ${first.from.index} → ${first.to.index})`
       );
       // The ONLY thing that may be left behind is the current fact reworded (the deck never
       // serves a restatement back-to-back). A member gated merely by the picture cooldown is
@@ -556,7 +588,7 @@ async function main() {
 
     // 2) the [x]: dismissing = a context WITHOUT the cursor. The restriction is a filter, not
     //    a weight, so weights are identical held vs not, and an unrestricted draw leaves the set.
-    const outside = [...C.cardsForCompetency(outline[outline.length - 1]!.code)].map((id: string) => C.getCard(id)).find((f: { id: string }) => !w.entered.idSet.has(f.id));
+    const outside = [...C.cardsForTopic(outline[outline.length - 1]!)].map((id: string) => C.getCard(id)).find((f: { id: string }) => !w.entered.idSet.has(f.id));
     if (outside) {
       const held = C.weightOf(outside, ctxFor(undefined, w.entered));
       const plain = C.weightOf(outside, ctxFor(undefined));
@@ -571,7 +603,7 @@ async function main() {
     // 4) an ASK mid-mode: the found card is served as a ONE-OFF — no magnet forms — and the
     //    next page-turn from it draws from the held topic again.
     {
-      const walk = curriculumWalk(mid.code, 3);
+      const walk = curriculumWalk(mid.key, 3);
       const cursor = walk.cursor!;
       let found: { id: string } | null = null;
       for (const q of ['dinosaur', 'volcano', 'geyser', 'planet']) {
@@ -602,18 +634,18 @@ async function main() {
     }
   }
 
-  // 3) the END of the outline releases: hold the LAST competency with all but a few of its
-  //    cards already read; exhausting those must return null (no later row), never wrap.
+  // 3) the END of the outline releases: hold the LAST topic with all but a few of its cards
+  //    already read; exhausting those must return null (no later row), never wrap.
   {
     const last = outline[outline.length - 1]!;
-    const ids = [...C.cardsForCompetency(last.code)] as string[];
+    const ids = [...C.cardsForTopic(last)] as string[];
     const KEEP = 5;
-    const w = curriculumWalk(last.code, KEEP + 20, ids.slice(KEEP));
+    const w = curriculumWalk(last.key, KEEP + 20, ids.slice(KEEP));
     lines.push(
-      `  end of outline: ${last.code} (Q${last.quarter}, row ${outline.length - 1}) with ${KEEP} unread of ${ids.length} → ` +
+      `  end of outline: ${last.key} "${last.title.en}" (Q${last.quarter}, row ${outline.length - 1}) with ${KEEP} unread of ${ids.length} → ` +
         `released after ${w.releasedAt ?? 'never'} pages (${w.unseenAtRelease} unseen left), ${w.moves.length} later move(s)`
     );
-    assertThat(w.releasedAt !== null && w.cursor === null, `past the last competency calendar mode releases (after ${w.releasedAt} pages)`);
+    assertThat(w.releasedAt !== null && w.cursor === null, `past the last topic calendar mode releases (after ${w.releasedAt} pages)`);
     assertThat(w.moves.length === 0, 'the cursor never wraps or moves backward from the last row');
     assertThat(w.offSet === 0, `every choice until the release was in the held set (${w.offSet} off-set)`);
     assertThat(
@@ -623,18 +655,82 @@ async function main() {
   }
 
   // 5) ENTERING a topic already read out this session: the sheet's row is tappable ("0 / n"),
-  //    and the store enters the walk at the next competency with something left — the same
+  //    and the store enters the walk at the next topic with something left — the same
   //    pre-check the die runs — never at a re-read card under a ribbon naming another topic.
   if (mid) {
-    const picked = C.curriculumCursor(GRADE, mid.code)!;
+    const picked = C.curriculumCursor(GRADE, mid.key)!;
     const seen = new Set<string>(picked.idSet);
     const hop = C.advanceCurriculum(picked, null, seen) ?? picked;
     assertThat(
-      hop.index === picked.index + 1 && hop.code === outline[picked.index + 1]!.code,
-      `a fully-read topic is entered at the next competency (${mid.code} → ${hop.code})`
+      hop.index === picked.index + 1 && hop.key === outline[picked.index + 1]!.key,
+      `a fully-read topic is entered at the next topic (${mid.key} → ${hop.key})`
     );
     const landing = C.jumpCard(null, seen, ctxFor(undefined, hop));
-    assertThat(hop.idSet.has(landing.id) && !seen.has(landing.id), 'and lands on an unread card of that competency');
+    assertThat(hop.idSet.has(landing.id) && !seen.has(landing.id), 'and lands on an unread card of that topic');
+  }
+
+  // 6) The GENERATED outline against the CG extraction files, ASSERTED (the generator checks
+  //    this when it runs, but the committed JSON can go stale under a CG edit): every
+  //    competency of every grade sits in exactly one topic of its own grade and quarter, the
+  //    topics of a grade are the CG's Content titles in CG order (quarter, then Content list),
+  //    and a topic's codes are in CG order. Then COVERAGE for the report (not asserted — which
+  //    topics hold cards is a property of the pool): per-grade topic counts, CG topics vs
+  //    topics with cards, and every topic that has NO card at its grade.
+  {
+    const fs = await import('node:fs');
+    const src = JSON.parse(fs.readFileSync(join(MOBILE, 'src/generated/curriculumOutline.generated.json'), 'utf8')) as Record<string, Topic[]>;
+    const CG_DIR = join(MOBILE, '../../rag/sources/curriculum-guides');
+    interface CgQuarter { grade: number; quarter: number; content: string | string[]; competencies: { code: string }[] }
+    const cgQuarters: CgQuarter[] = fs
+      .readdirSync(CG_DIR)
+      .filter((n) => /^matatag-.*-competencies\.json$/.test(n))
+      .sort()
+      .flatMap((n) => (JSON.parse(fs.readFileSync(join(CG_DIR, n), 'utf8')) as { quarters: CgQuarter[] }).quarters);
+    const contentOf = (q: CgQuarter): string[] => (Array.isArray(q.content) ? q.content : String(q.content).split(' | ')).map((s) => s.trim());
+    const cgCodes = new Map<string, { grade: number; quarter: number }>();
+    for (const q of cgQuarters) for (const c of q.competencies) cgCodes.set(c.code, { grade: q.grade, quarter: q.quarter });
+    const placed = new Map<string, number>();
+    let misplaced = 0;
+    for (const [g, topics] of Object.entries(src)) {
+      for (const t of topics) {
+        for (const code of t.codes) {
+          placed.set(code, (placed.get(code) ?? 0) + 1);
+          const cg = cgCodes.get(code);
+          if (!cg || cg.grade !== Number(g) || cg.quarter !== t.quarter) misplaced += 1;
+        }
+      }
+    }
+    const onceEach = [...cgCodes.keys()].every((code) => placed.get(code) === 1) && placed.size === cgCodes.size;
+    assertThat(
+      onceEach && misplaced === 0,
+      `every CG competency (${cgCodes.size}) appears in exactly one topic of its own grade and quarter (${placed.size} placed, ${misplaced} misplaced)`
+    );
+    const orderOk = Object.entries(src).every(([g, topics]) => {
+      const qs = cgQuarters.filter((q) => q.grade === Number(g)).sort((a, b) => a.quarter - b.quarter);
+      const expected = qs.flatMap((q) => contentOf(q).map((en, ci) => ({ quarter: q.quarter, ci, en })));
+      const cgOrder = qs.flatMap((q) => q.competencies.map((c) => c.code));
+      return (
+        expected.length === topics.length &&
+        expected.every((x, k) => topics[k]!.quarter === x.quarter && topics[k]!.contentIndex === x.ci && topics[k]!.title.en === x.en) &&
+        topics.every((t) => t.codes.every((c, k) => k === 0 || cgOrder.indexOf(c) > cgOrder.indexOf(t.codes[k - 1]!)))
+      );
+    });
+    assertThat(
+      orderOk && Object.keys(src).length === new Set(cgQuarters.map((q) => q.grade)).size,
+      'the generated outline lists every grade\'s CG Content titles in CG order (quarter, then Content list), codes in CG order'
+    );
+    const parts: string[] = [];
+    const zero: string[] = [];
+    for (const g of Object.keys(src).map(Number).sort((a, b) => a - b)) {
+      const all = src[String(g)]!;
+      const withCards = C.curriculumOutline(g) as Topic[];
+      parts.push(`G${g} ${withCards.length}/${all.length}`);
+      const have = new Set(withCards.map((t) => t.key));
+      for (const t of all) if (!have.has(`Q${t.quarter}.${t.contentIndex}`)) zero.push(`G${g} Q${t.quarter} "${t.title.en}" [${t.codes.join(' ') || 'no competency'}] ${C.cardsForTopic(t as never).size} card(s)`);
+    }
+    lines.push(`  coverage (topics shown, ≥${C.TOPIC_MIN_CARDS} cards / CG topics): ${parts.join(' · ')}`);
+    lines.push(zero.length ? `  topics hidden (<${C.TOPIC_MIN_CARDS} cards at their grade) (${zero.length}):` : `  topics hidden (<${C.TOPIC_MIN_CARDS} cards at their grade): none`);
+    for (const z of zero) lines.push(`     • ${z}`);
   }
 
   const curriculumFailures = failures.length - magnetFailures;

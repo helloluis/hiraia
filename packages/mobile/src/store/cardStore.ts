@@ -116,14 +116,15 @@ export interface ActiveMagnet {
 
 /**
  * CALENDAR MODE — "walk the MATATAG outline for my grade, topic by topic, exhausting each".
- * The cursor (data/cards.ts CurriculumCursor): the grade the outline was opened for, the
- * competency currently held, that competency's card set, and its row index. Held as the store's
- * `curriculum`, and the ribbon under the ask box shows exactly while it is non-null.
+ * The cursor (data/cards.ts CurriculumCursor): the grade the outline was opened for, the TOPIC
+ * currently held (a CG Content title, by key), the union of its competencies' card sets, and
+ * its row index. Held as the store's `curriculum`, and the ribbon under the ask box shows
+ * exactly while it is non-null.
  *
  * Unlike the magnet it is a FILTER, not a pull: while held, every draw is confined to `idSet`
  * (FeedContext.curriculum). Advances on each page-turn through `advanceCurriculum` — the same
- * object while the topic still has a servable card, the next non-empty row in CG order once it
- * is exhausted, null past the end of Q4 (release). Cleared by: the ribbon's [x]
+ * object while the topic still has a servable card, the next non-empty topic in CG order once
+ * it is exhausted, null past the end of Q4 (release). Cleared by: the ribbon's [x]
  * (exitCurriculum), that end-of-outline release, and nothing else — an ask serves its card as a
  * one-off and the walk resumes, a reroll jumps within the topic, interjects never touch it.
  * The magnet and the cursor are mutually exclusive by construction: entering either clears the
@@ -189,11 +190,11 @@ interface CardState {
   /** The banner's [x]: drop the asked-topic magnet (and with it the ribbon); the feed keeps going. */
   dismissQuery: () => void;
   /**
-   * Enter calendar mode at a competency of the CURRENT grade's outline (the sheet's row tap):
-   * clears any magnet, holds the topic, and lands on its best next unseen card. A code the
-   * outline does not list (no cards at this grade) is ignored.
+   * Enter calendar mode at a TOPIC of the CURRENT grade's outline (the sheet's row tap, by
+   * OutlineTopic.key): clears any magnet, holds the topic, and lands on its best next unseen
+   * card. A key the outline does not list (no cards at this grade) is ignored.
    */
-  enterCurriculum: (code: string) => void;
+  enterCurriculum: (key: string) => void;
   /** The curriculum ribbon's [x]: leave calendar mode; the feed continues where it is. */
   exitCurriculum: () => void;
   continueAfterResponse: () => void;
@@ -620,13 +621,13 @@ export const useCardStore = create<CardState>()((set, get) => ({
     if (get().magnet) set({ magnet: null });
   },
 
-  enterCurriculum: (code) => {
+  enterCurriculum: (key) => {
     const s = get();
     const grade = useEngineStore.getState().grade;
-    const picked = curriculumCursor(grade, code);
+    const picked = curriculumCursor(grade, key);
     if (!picked) return; // not on this grade's outline (no cards) — the sheet never offers it
     // A topic already read out this session (the sheet's chip said "0 / n") is entered the
-    // way the walk would leave it: at the next competency with something left — the same
+    // way the walk would leave it: at the next topic with something left — the same
     // pre-check the die runs — rather than re-serving one of its cards under a ribbon that
     // already names the next topic. Past the end of the outline it is held as tapped; the
     // landing then releases the mode (navigateTo's exhaustion check), ribbon and all.

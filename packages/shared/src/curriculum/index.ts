@@ -100,7 +100,9 @@ export const GRADE_DOMAIN_MAP: Record<GradeLevel, Record<Quarter, ScienceDomain>
 export const DOMAIN_NAMES: Record<ScienceDomain, Record<'english' | 'tagalog' | 'cebuano', string>> = {
   matter: {
     english: 'Matter',
-    tagalog: 'Materia',
+    // "Matter" in all three: DepEd's Filipino and Cebuano science materials keep the English
+    // term (the Cebuano bank: matter 373 vs materya 26). Luis, 2026-09-05.
+    tagalog: 'Matter',
     cebuano: 'Matter',
   },
   living_things: {

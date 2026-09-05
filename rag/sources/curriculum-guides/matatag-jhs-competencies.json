@@ -1,0 +1,2604 @@
+{
+ "source": "FINAL-MATATAG-Science-CG-2023-Grades-3-10.pdf (DepEd, August 2023)",
+ "scope": "Junior High School (Grades 7-10). One domain per quarter; the domain ORDER rotates per grade from Grade 8 (CG p.27). Extracted per grade by an LLM agent and adversarially verified against the PDF by a second agent (2026-08-27).",
+ "domain_map": {
+  "materials": "MATTER",
+  "living_things": "LIVING_THINGS",
+  "force_motion_energy": "FORCE_MOTION_ENERGY",
+  "earth_space": "EARTH_SPACE"
+ },
+ "verification": {
+  "10": {
+   "verdict": "corrected",
+   "changes": [
+    "VERIFIED CLEAN (no change): all 45 competency texts match `pdftotext -raw` pp61/63/65/67 (/tmp/cg.txt:2169-2200, 2225-2262, 2283-2320, 2338-2374) verbatim after trailing ';'/'; and'/'.' strip and curly-apostrophe straightening; only delta is the hyphen line-break rejoin 'non-\\nrenewable' -> 'non-renewable' in G10-F-13 (correct). Counts Q1 12 / Q2 13 / Q3 9 / Q4 11 = 45 = PDF printed last item numbers; nothing missing, hallucinated, merged or split. Codes unique, all match G10-[EFML]-<n>, n = PDF item number. Quarter->domain rotation matches p28 (/tmp/cg.txt:953-975: G10 Q1 Earth and Space Science, Q2 Force/Motion/Energy, Q3 Science of Materials, Q4 Life Science); titles match JHS domain names p19 (/tmp/cg.txt:618-622). Content columns match PDF (Q3 trailing periods on items 2/4 and bleed numerals stripped as documented).",
+    "ANCHOR FIX G10-E-10: 'ENSO' -> 'El Nino Southern Oscillation'. tag-curriculum.py norm()+substring matching (rag/pipeline/tag-curriculum.py:16,36-49) makes 'enso' hit 'sensor'/'sensors'/'sensory'/'stephenson' — 96 factoid cards matched, only 44 genuine ENSO mentions; would hijack sense-organ/sensor cards into G10.",
+    "ANCHOR FIX G10-E-7: 'Andes' -> 'Andes mountains'. Substring 'andes' hits 'incandescent' (56), 'pandesal' (34), 'andesite' (19); only 3 genuine 'andes' tokens in 36 matched cards — incandescent-bulb and pandesal cards would be tagged to mountain formation.",
+    "ANCHOR FIX G10-F-13: 'coal' -> 'coal-fired'. 151 matched cards, 106 of them via 'charcoal' (elementary burning-materials cards); 'coal power plant' and 'fossil fuels' remain as the genuine carriers.",
+    "ANCHOR FIX G10-L-3: 'evolution' -> 'biological evolution'. Substring hits 'revolution'/'revolutions' (22 tokens; Earth-revolution cards belong to elementary EARTH_SPACE); 'natural selection', 'Darwin', 'evolutionary change' remain.",
+    "ANCHOR FIX G10-M-1: 'bubbles' -> 'gas bubbles'. Bare catch-all noun, 92 factoid cards (soap bubbles, boiling, carbonated drinks, fish) — same failure class as the G3-L-6 'basic needs' trap documented in tag-curriculum.py; 'gas release' and 'precipitate' remain specific.",
+    "NOTES-ONLY discrepancies (no data change): extraction notes claim 322 anchors, actual total is 320 (now still 320 after 1:1 replacements); 'subduction zone' is repeated across G10-E-2 and G10-E-6 but is not listed among the notes' intentional cross-competency repeats (IDF downweights it, kept); 'combustion' (G10-M-4) also collides with elementary G4-M-4 anchor and is not listed in the notes' cross-grade repeat list (kept, IDF handles). Anchor 'El Nino' caveat in notes is confirmed: corpus 'El Niño' normalizes to 'el ni o' so only ASCII-spelled rows (43 cards) match; 'La Nina' (35) and 'southern oscillation' carry the rest."
+   ]
+  },
+  "8": {
+   "verdict": "clean",
+   "changes": [
+    "No changes. Programmatic diff of every competency against the LC column of /tmp/cg.txt (Q1 :1801-1826 p51, Q2 :1839-1866 p52, Q3 :1878-1911 p53, Q4 :1922-1949 p54) after stripping trailing ';' / '; and' / '.' and straightening curly apostrophes: 44/44 texts identical (11/10/12/11); the only raw diff was 'characteristic s' at /tmp/cg.txt:1809, a column-split artifact of 'living things' from the Content Standards column, not PDF text.",
+    "Verified 'dominant/ recessive' (G8-L-4, space) vs 'dominant/recessive' (G8-L-5, no space) with pdftotext -raw on p51 (raw lines 36 and 39): both as printed.",
+    "Verified G8-E-1 'Earth's' is straight in the PDF (/tmp/cg.txt:1882) while G8-E-4/G8-E-6 apostrophes are curly and were straightened per elementary convention.",
+    "Verified G8-E-3 has no punctuation between sub-items a/b/c in the PDF (/tmp/cg.txt:1884-1887); left verbatim.",
+    "Nothing missing, hallucinated, merged, or split: every numbered item 1..N in each table maps 1:1 to a code; numbering contiguous.",
+    "Quarter/domain/title/content match the PDF headers: Q1 LIFE SCIENCE->LIVING_THINGS, Q2 SCIENCE OF MATERIALS->MATTER, Q3 EARTH AND SPACE SCIENCE->EARTH_SPACE, Q4 FORCE, MOTION, AND ENERGY->FORCE_MOTION_ENERGY; content topics verbatim from the Content column.",
+    "Codes: 44 unique, all match G8-[LMEF]-<n>; anchors: 297 total, 5-9 per competency, ASCII with only space/hyphen, no intra-competency duplicates.",
+    "Anchor specificity checked against the shipping feed pool (packages/mobile/src/generated/cardsPool.generated.json, 16,948 cards, tag-curriculum.py norm() substring match): highest-hitting anchors are 'kinetic energy' 198, 'water cycle' 141, 'potential energy' 109, 'tides' 86, 'photosynthesis' 83, 'electron' 76, all on-topic and two orders of magnitude below the G3-L-6 catch-all failure mode (5,720); every competency has at least 3 multi-word specific phrases, so no anchor set is generic-only and none was rewritten."
+   ]
+  },
+  "9": {
+   "verdict": "corrected",
+   "changes": [
+    "VERIFIED (no change): all 46 competency texts are byte-for-byte verbatim against /tmp/cg.txt:1964-1994 (p55), :2026-2048 (p57), :2084-2106 (p59), :2127-2152 (p60) after rejoining wrapped lines and stripping ';' / '; and' / '.', with the curly apostrophe in G9-E-8 straightened; a programmatic diff (/tmp/g9_verify.py) reported 0 differences; rendered PDF pages /tmp/g9pg-55.png, -57.png, -59.png, -60.png confirm the dump (no hidden text boxes, the only glyph loss is the subscripts in MgCl2/H2O/CO2/NH3 on p60, kept as ASCII per the extraction note). Counts 13+11+11+11=46 match the last printed number of each table; nothing missing, nothing hallucinated/merged/split; quarter/domain/title/content columns match the PDF headings at /tmp/cg.txt:1963, :2025, :2083, :2126 and the Grades 7-10 domain names at /tmp/cg.txt:620-623; codes unique and all match G9-[FELM]-n.",
+    "G9-F-1 anchors: 'Newton first law' -> \"Newton's first law\". The extraction note's claim that possessives cannot match is wrong: rag/pipeline/tag-curriculum.py:16 norm() is applied to the ANCHOR too (rag/pipeline/tag-curriculum.py:31), so \"Newton's first law\" -> 'newton s first law' matches corpus text after the same norm. Measured: 'newton first law' = 0 feed / 3 bank hits, \"Newton's first law\" = 19 feed / 20 bank hits.",
+    "G9-F-3 anchors: 'Newton second law' -> \"Newton's second law\" (0/9 -> 8/8 hits; same norm() reasoning).",
+    "G9-F-4 anchors: 'Newton third law' -> \"Newton's third law\" (2/5 -> 16/17 hits).",
+    "G9-F-7 anchors: added \"Ohm's law\" (26 feed / 28 bank hits, highly specific); the note omitted it on the same mistaken assumption about norm().",
+    "G9-M-11 anchors: 'hardness' -> 'brittle'. Bare 'hardness' (101 feed / 109 bank hits) is dominated by Mohs mineral-hardness cards (75 'mohs' hits) that belong to Earth science, not chemical bonding; 'brittle' (26/34) is the ionic-vs-covalent-vs-metallic property term.",
+    "G9-L-11 anchors: 0 of the 7 original anchors occur anywhere in rag/bank/factoids.jsonl (36,384 rows) or rag/bank/science-facts.jsonl (49,556 rows), so the competency could never be assigned; added corpus-present specific phrases 'waste segregation' (6/13), 'reforestation' (8/36), 'tree planting' (2/12), 'coastal cleanup' (2/1). None collide with elementary anchors.",
+    "Plural -> singular for prefix-safe anchors so singular mentions also match (singular is a substring of the plural, strict superset, zero risk): G9-F-10 'electromagnetic waves'->'electromagnetic wave', 'charged particles'->'charged particle'; G9-E-3 'tectonic plates'->'tectonic plate'; G9-E-4 'index fossils'->'index fossil', 'rock layers'->'rock layer', 'sediment layers'->'sediment layer'; G9-E-7 'seismic waves'->'seismic wave'; G9-E-10 'shooting stars'->'shooting star' (9->22 feed hits); G9-L-1 'base pairs'->'base pair'; G9-L-3 'infectious agents'->'infectious agent', 'chemical mutagens'->'chemical mutagen'; G9-L-8 'protected areas'->'protected area' (17->27); G9-M-7 'shared electrons'->'shared electron'; G9-M-10 'delocalized electrons'->'delocalized electron'.",
+    "Anchor audit otherwise clean: no G9 anchor hits >1% of the feed corpus (no catch-all trap like G3-L-6), no duplicate anchors within G9, only 2 overlaps with the elementary file ('chemical change' G6-M-3, 'environmental survey' G4-M-7 - IDF-weighted, kept), 'NaCl' (4 chars, 92 hits) kept as specific. Residual known-safe overlaps unchanged ('mantle'/'dismantle', 'Pluto'/'plutonium', 'extinct'/'extinction')."
+   ]
+  },
+  "7": {
+   "verdict": "corrected",
+   "changes": [
+    "VERIFIED (no change): all 45 competency texts match the PDF LC column verbatim after the stated conventions (curly quotes->straight, trailing ';' / '; and' / '.' stripped, sub-items flattened, arrows kept); programmatic diff of /tmp/cg.txt pages 46-49 (LC column cut at header offset) vs extraction = 0 text diffs; the only raw diff was the p49 -layout bleed 'slip; p' on G7-E-1, confirmed as bleed by plain pdftotext of p49 (LC#1 ends 'direction of slip;', LC#2 is one item ending 'and explain why;').",
+    "VERIFIED (no change): counts Q1=12 (/tmp/cg.txt:1621 block), Q2=10 (:1664), Q3=11 (:1707), Q4=12 (:1747) = 45; item numbering contiguous; nothing missing, hallucinated, merged, or split; p50 is Suggested Performance Tasks only.",
+    "VERIFIED (no change): quarter/domain/title/content assignments match the PDF headings (Q1 SCIENCE OF MATERIALS->MATTER, Q2 LIFE SCIENCE->LIVING_THINGS, Q3 FORCE, MOTION, AND ENERGY->FORCE_MOTION_ENERGY, Q4 EARTH AND SPACE SCIENCE->EARTH_SPACE); Content-column topics verbatim (Q1 4, Q2 5, Q3 5, Q4 3), only 'Sun's' apostrophe straightened.",
+    "VERIFIED (no change): 45 codes unique, all of the form G7-<M|L|F|E>-<n> with n = printed item number.",
+    "ANCHOR FIX G7-E-12: removed 'amihan' (985 corpus hits, 583 of them the Tagalog word 'karamihan', 163 'amihanan'/Cebuano north, 45 'amihanang') and 'habagat' (324 hits, 152 of them Cebuano 'habagatan'/'habagatang' = south); the substring matcher in rag/pipeline/tag-curriculum.py:16 cannot word-bound them; replaced with 'hanging habagat', 'hanging amihan' (Filipino monsoon names as phrases; 'northeast monsoon' not added to stay within the 10-anchor cap).",
+    "ANCHOR FIX G7-M-8: removed bare 'solute' (216 blobs, but 235 embedded hits are 'absolute'/'absolutely' - most matches are not the chemistry term) and bare 'solution' (571 blobs incl. 221 'solutions', 22 'dissolution', 22 'resolution'; catch-all single noun like the G3-L-6 'basic needs' trap); replaced with 'the solute', 'universal solvent', 'homogeneous mixture', 'sugar dissolves'.",
+    "ANCHOR FIX G7-L-3: removed bare 'bacteria' (1,706 blobs incl. 'bacterial', 'cyanobacteria', 'antibacterial'; would make the unicellular competency absorb every germ/disease/decomposer fact); replaced with 'one-celled', 'single-celled'.",
+    "ANCHOR FIX G7-F-8: removed bare 'temperature' (1,855 blobs - largest catch-all in the set; the phrase 'heat and temperature' already carries the headline) and 'thermal energy' (339 blobs, 290 of them 'geothermal energy', which belongs to G7-F-11); replaced with 'how hot or cold', 'total thermal energy'.",
+    "ANCHOR FIX G7-F-1: 'newton' -> 'newtons' ('newton' had 297 blobs, ~64 'newton s' = Newton's laws + 8 'newtonian'; the plural unit form only hits force-measurement facts, 18-93 blobs).",
+    "ANCHOR FIX G7-F-6: removed bare 'vector' (corpus contexts are disease vectors: 'vector control', 'mga vector tulad', 'by vectors like'); replaced with 'speed and direction'.",
+    "ANCHOR FIX G7-F-11: 'power plant' -> 'thermal power plant' (146 blobs incl. hydroelectric/nuclear/hydropower plants that are not heat-to-electric devices).",
+    "NOT CHANGED (flagged, accepted): 'nucleus' (366 blobs, cell contexts dominate, paired with 'cell nucleus'), 'seasons' (cross-grade with G6-E-6, IDF halves), 'melting' (520 blobs, cross-grade with G6-M-1), 'evacuation' (90 blobs, mixed fire/flood/quake), 'concentration' (83 blobs, chemistry contexts), 'renewable energy' (107 blobs incl. 30 'nonrenewable energy', still on-topic for F-11).",
+    "No files modified; extraction, verification and fix scripts live only in /tmp (/tmp/g7_extract.json, /tmp/g7_verify.py, /tmp/g7_embed.py, /tmp/g7_fix.py, /tmp/g7_corrected.json)."
+   ]
+  }
+ },
+ "quarters": [
+  {
+   "grade": 7,
+   "quarter": 1,
+   "title": "Science of Materials",
+   "domain": "MATTER",
+   "content": "Use of models | The Particle model and changes of state | Planning, following, and recording scientific investigations | Solutions, solubility, and concentration",
+   "competencies": [
+    {
+     "code": "G7-M-1",
+     "text": "recognize that scientists use models to explain phenomena that cannot be easily seen or detected",
+     "anchors": [
+      "scientific model",
+      "scientists use models",
+      "use of models",
+      "models explain phenomena",
+      "cannot be easily seen"
+     ]
+    },
+    {
+     "code": "G7-M-2",
+     "text": "describe the Particle Model of Matter as 'All matter is made up of tiny particles with each pure substance having its own kind of particles.'",
+     "anchors": [
+      "particle model of matter",
+      "particle model",
+      "tiny particles",
+      "made up of particles",
+      "pure substance",
+      "atoms and molecules"
+     ]
+    },
+    {
+     "code": "G7-M-3",
+     "text": "describe that particles are constantly in motion, have spaces between them, attract each other, and move faster as the temperature increases (or with the addition of heat)",
+     "anchors": [
+      "particles in motion",
+      "particles constantly moving",
+      "spaces between particles",
+      "particles attract each other",
+      "move faster when heated",
+      "kinetic theory",
+      "particle motion"
+     ]
+    },
+    {
+     "code": "G7-M-4",
+     "text": "use diagrams and illustrations to describe the arrangement, spacing, and relative motion of the particles in each of the three states (phases) of matter",
+     "anchors": [
+      "arrangement of particles",
+      "particle arrangement",
+      "three states of matter",
+      "particle spacing",
+      "states of matter diagram",
+      "particles in a solid",
+      "particles in a gas"
+     ]
+    },
+    {
+     "code": "G7-M-5",
+     "text": "explain the changes of state in terms of particle arrangement and energy changes: a. solid → liquid → vapor, and b. vapor → liquid → solid",
+     "anchors": [
+      "changes of state",
+      "change of state",
+      "melting",
+      "evaporation",
+      "condensation",
+      "freezing",
+      "solid to liquid to gas",
+      "phase change",
+      "vaporization"
+     ]
+    },
+    {
+     "code": "G7-M-6",
+     "text": "follow appropriate steps of a scientific investigation which includes: a. Aim or problem, b. Materials and equipment, c. Method or procedures, d. Results including data, and e. Conclusion",
+     "anchors": [
+      "steps of a scientific investigation",
+      "scientific investigation",
+      "aim or problem",
+      "materials and equipment",
+      "method or procedure",
+      "results and conclusion",
+      "scientific method",
+      "hypothesis"
+     ]
+    },
+    {
+     "code": "G7-M-7",
+     "text": "make accurate measurements using standard units for physical quantities and organize the collected data when carrying out a scientific investigation",
+     "anchors": [
+      "accurate measurement",
+      "standard units",
+      "physical quantities",
+      "organize data",
+      "data table",
+      "SI units",
+      "measuring instruments",
+      "recording data"
+     ]
+    },
+    {
+     "code": "G7-M-8",
+     "text": "identify the role of the solute and solvent in a solution",
+     "anchors": [
+      "solute and solvent",
+      "solvent",
+      "dissolving",
+      "dissolved in water",
+      "the solute",
+      "universal solvent",
+      "homogeneous mixture",
+      "sugar dissolves"
+     ]
+    },
+    {
+     "code": "G7-M-9",
+     "text": "express quantitatively the amount of solute present in a given volume of solvent",
+     "anchors": [
+      "concentration",
+      "amount of solute",
+      "concentration of a solution",
+      "percent by volume",
+      "percent by mass",
+      "dilute solution",
+      "concentrated solution"
+     ]
+    },
+    {
+     "code": "G7-M-10",
+     "text": "demonstrate how different factors affect the solubility of a solute in a given solvent, such as heat",
+     "anchors": [
+      "solubility",
+      "factors affecting solubility",
+      "solubility and temperature",
+      "stirring",
+      "dissolves faster",
+      "saturated solution",
+      "hot water dissolves"
+     ]
+    },
+    {
+     "code": "G7-M-11",
+     "text": "identify solutions, which can be found at home and in school and that react with litmus indicator, as acids, bases, and salts",
+     "anchors": [
+      "litmus",
+      "litmus paper",
+      "acids and bases",
+      "acidic",
+      "acid base indicator",
+      "vinegar",
+      "baking soda",
+      "household chemicals",
+      "acids bases and salts"
+     ]
+    },
+    {
+     "code": "G7-M-12",
+     "text": "demonstrate proper use and handling of science equipment",
+     "anchors": [
+      "science equipment",
+      "laboratory equipment",
+      "laboratory safety",
+      "handling equipment",
+      "beaker",
+      "test tube",
+      "bunsen burner",
+      "laboratory apparatus"
+     ]
+    }
+   ]
+  },
+  {
+   "grade": 7,
+   "quarter": 2,
+   "title": "Life Science",
+   "domain": "LIVING_THINGS",
+   "content": "Science equipment: the compound microscope | Plant and animal cells | Cellular reproduction | Levels of biological organization | Trophic levels and the transfer of energy",
+   "competencies": [
+    {
+     "code": "G7-L-1",
+     "text": "identify the parts and functions, and demonstrate proper handling and storing of a compound microscope",
+     "anchors": [
+      "compound microscope",
+      "microscope",
+      "parts of the microscope",
+      "objective lens",
+      "eyepiece",
+      "magnification",
+      "handling a microscope"
+     ]
+    },
+    {
+     "code": "G7-L-2",
+     "text": "use proper techniques in observing and identifying the parts of a cell with a microscope such as the cell membrane, nucleus, cytoplasm, mitochondria, and chloroplasts",
+     "anchors": [
+      "parts of a cell",
+      "cell membrane",
+      "cell nucleus",
+      "nucleus",
+      "cytoplasm",
+      "mitochondria",
+      "chloroplast",
+      "organelle"
+     ]
+    },
+    {
+     "code": "G7-L-3",
+     "text": "recognize that some organisms consist of a single cell (unicellular) like in bacteria and some consist of many cells (multicellular) like in a human",
+     "anchors": [
+      "unicellular",
+      "multicellular",
+      "single cell",
+      "single-celled organism",
+      "many cells",
+      "amoeba",
+      "paramecium",
+      "one-celled",
+      "single-celled"
+     ]
+    },
+    {
+     "code": "G7-L-4",
+     "text": "differentiate plant and animal cells based on their organelles",
+     "anchors": [
+      "plant and animal cells",
+      "plant cell",
+      "animal cell",
+      "cell wall",
+      "vacuole",
+      "organelles",
+      "differences between plant and animal cells"
+     ]
+    },
+    {
+     "code": "G7-L-5",
+     "text": "recognize that cells reproduce through two types of cell division, mitosis and meiosis, and describe mitosis as cell division for growth and repair",
+     "anchors": [
+      "cell division",
+      "mitosis",
+      "meiosis",
+      "growth and repair",
+      "cells divide",
+      "daughter cells",
+      "chromosomes"
+     ]
+    },
+    {
+     "code": "G7-L-6",
+     "text": "explain that genetic information is passed on to offspring from both parents by the process of meiosis and fertilization",
+     "anchors": [
+      "fertilization",
+      "genetic information",
+      "meiosis and fertilization",
+      "sperm and egg",
+      "gametes",
+      "heredity",
+      "inherited traits",
+      "sex cells",
+      "zygote"
+     ]
+    },
+    {
+     "code": "G7-L-7",
+     "text": "differentiate sexual from asexual reproduction in terms of: a) number of parents involved, and b) similarities of offspring to parents",
+     "anchors": [
+      "sexual reproduction",
+      "asexual reproduction",
+      "sexual and asexual",
+      "budding",
+      "binary fission",
+      "number of parents",
+      "identical offspring",
+      "vegetative reproduction"
+     ]
+    },
+    {
+     "code": "G7-L-8",
+     "text": "use a labelled diagram to describe the connections between the levels of biological organization to one another from cells to the biosphere",
+     "anchors": [
+      "levels of biological organization",
+      "levels of organization",
+      "cells tissues organs",
+      "tissues and organs",
+      "organ system",
+      "population community ecosystem",
+      "biosphere"
+     ]
+    },
+    {
+     "code": "G7-L-9",
+     "text": "describe the trophic levels of an organism as levels of energy in a food pyramid",
+     "anchors": [
+      "trophic level",
+      "food pyramid",
+      "energy pyramid",
+      "ecological pyramid",
+      "primary consumer",
+      "secondary consumer",
+      "levels of energy",
+      "producers and consumers"
+     ]
+    },
+    {
+     "code": "G7-L-10",
+     "text": "use examples of food pyramids to describe the transfer of energy between organisms from one trophic level to another",
+     "anchors": [
+      "transfer of energy",
+      "energy transfer between organisms",
+      "food pyramid",
+      "trophic level",
+      "ten percent rule",
+      "energy flow",
+      "top predator",
+      "apex predator"
+     ]
+    }
+   ]
+  },
+  {
+   "grade": 7,
+   "quarter": 3,
+   "title": "Force, Motion, and Energy",
+   "domain": "FORCE_MOTION_ENERGY",
+   "content": "Balanced and unbalanced forces | Motion: displacement and velocity | Distance-Time graphs | Identifying and controlling variables | Heat transfer",
+   "competencies": [
+    {
+     "code": "G7-F-1",
+     "text": "identify that forces act between objects and can be measured",
+     "anchors": [
+      "forces can be measured",
+      "measuring force",
+      "spring balance",
+      "spring scale",
+      "unit of force",
+      "forces act between objects",
+      "force meter",
+      "newtons"
+     ]
+    },
+    {
+     "code": "G7-F-2",
+     "text": "identify and describe everyday situations that demonstrate: a. balanced forces such as a box resting on an inclined plane, a man standing still, or an object moving with constant velocity; b. unbalanced forces, such as freely falling fruit or an accelerating car",
+     "anchors": [
+      "balanced forces",
+      "unbalanced forces",
+      "balanced and unbalanced",
+      "net force",
+      "constant velocity",
+      "standing still",
+      "accelerating car",
+      "freely falling",
+      "equilibrium"
+     ]
+    },
+    {
+     "code": "G7-F-3",
+     "text": "draw a free-body diagram to represent the relative magnitude and direction of the forces involving balanced and unbalanced forces",
+     "anchors": [
+      "free-body diagram",
+      "force diagram",
+      "magnitude and direction",
+      "force arrows",
+      "vector diagram",
+      "direction of forces"
+     ]
+    },
+    {
+     "code": "G7-F-4",
+     "text": "identify that when forces are not balanced, they can cause changes in the object's speed or direction of motion",
+     "anchors": [
+      "unbalanced forces",
+      "change in speed",
+      "change in direction",
+      "acceleration",
+      "forces cause motion",
+      "net force causes acceleration",
+      "second law of motion",
+      "speed up or slow down"
+     ]
+    },
+    {
+     "code": "G7-F-5",
+     "text": "explain the difference between distance and displacement in everyday situations in relation to a reference point",
+     "anchors": [
+      "distance and displacement",
+      "displacement",
+      "reference point",
+      "distance traveled",
+      "straight-line distance",
+      "scalar and vector"
+     ]
+    },
+    {
+     "code": "G7-F-6",
+     "text": "distinguish between speed and velocity using the concept of vectors",
+     "anchors": [
+      "speed and velocity",
+      "velocity",
+      "scalar quantity",
+      "vector quantity",
+      "speed with direction",
+      "average speed",
+      "speed and direction"
+     ]
+    },
+    {
+     "code": "G7-F-7",
+     "text": "describe uniform velocity and represent it using distance-time graphs",
+     "anchors": [
+      "uniform velocity",
+      "distance-time graph",
+      "constant speed",
+      "uniform motion",
+      "slope of the graph",
+      "motion graph",
+      "graphing motion"
+     ]
+    },
+    {
+     "code": "G7-F-8",
+     "text": "explain the difference between heat and temperature",
+     "anchors": [
+      "heat and temperature",
+      "difference between heat and temperature",
+      "heat energy",
+      "thermometer",
+      "degrees celsius",
+      "average kinetic energy",
+      "how hot or cold",
+      "total thermal energy"
+     ]
+    },
+    {
+     "code": "G7-F-9",
+     "text": "identify advantageous and disadvantageous examples of conduction, convection, and radiation",
+     "anchors": [
+      "heat transfer",
+      "conduction",
+      "convection",
+      "thermal radiation",
+      "conduction convection and radiation",
+      "heat conductor",
+      "heat insulator",
+      "infrared"
+     ]
+    },
+    {
+     "code": "G7-F-10",
+     "text": "explain in terms of the particle model the processes underlying convection and conduction of heat energy",
+     "anchors": [
+      "convection current",
+      "conduction of heat",
+      "particle model heat",
+      "vibrating particles",
+      "hot air rises",
+      "heat flows from hot to cold",
+      "particles transfer heat",
+      "convection in liquids and gases"
+     ]
+    },
+    {
+     "code": "G7-F-11",
+     "text": "gather information from secondary sources to identify and describe examples of innovative devices that can be used to transform heat energy into electrical energy",
+     "anchors": [
+      "heat into electricity",
+      "heat energy to electrical energy",
+      "thermoelectric",
+      "geothermal",
+      "geothermal power",
+      "solar thermal",
+      "steam turbine",
+      "renewable energy",
+      "energy conversion",
+      "thermal power plant"
+     ]
+    }
+   ]
+  },
+  {
+   "grade": 7,
+   "quarter": 4,
+   "title": "Earth and Space Science",
+   "domain": "EARTH_SPACE",
+   "content": "System models | Earthquakes | The Sun's influence on Earth",
+   "competencies": [
+    {
+     "code": "G7-E-1",
+     "text": "classify geological faults according to the angle of the fault plane and direction of slip",
+     "anchors": [
+      "geological fault",
+      "types of faults",
+      "normal fault",
+      "reverse fault",
+      "strike-slip fault",
+      "fault plane",
+      "fault line",
+      "hanging wall",
+      "footwall",
+      "direction of slip"
+     ]
+    },
+    {
+     "code": "G7-E-2",
+     "text": "use models or illustrations to explain how movements along faults generate earthquakes and identify and explain which types of faults are most likely to occur in the Philippines and explain why",
+     "anchors": [
+      "movement along faults",
+      "faults generate earthquakes",
+      "cause of earthquakes",
+      "Philippine Fault",
+      "West Valley Fault",
+      "tectonic plates",
+      "plate boundary",
+      "subduction",
+      "Philippine trench",
+      "earthquake models"
+     ]
+    },
+    {
+     "code": "G7-E-3",
+     "text": "describe how the effects of earthquakes on communities depend on their magnitude",
+     "anchors": [
+      "earthquake magnitude",
+      "Richter scale",
+      "magnitude scale",
+      "effects of earthquakes",
+      "earthquake damage",
+      "moment magnitude",
+      "strong earthquake",
+      "seismograph"
+     ]
+    },
+    {
+     "code": "G7-E-4",
+     "text": "use the PHIVOLCS FaultFinder or other reliable information source to identify where the nearest fault system is located from their community and assess the risk of earthquakes to their local community",
+     "anchors": [
+      "PHIVOLCS",
+      "FaultFinder",
+      "nearest fault",
+      "fault system",
+      "earthquake risk",
+      "earthquake hazard map",
+      "active fault",
+      "hazard assessment"
+     ]
+    },
+    {
+     "code": "G7-E-5",
+     "text": "make models of fault scenarios to illustrate: a. the epicenter of an earthquake from its focus, b. the intensity of an earthquake from its magnitude, and c. how underwater earthquakes may or may not generate tsunamis",
+     "anchors": [
+      "epicenter",
+      "focus of an earthquake",
+      "hypocenter",
+      "focus and epicenter",
+      "intensity and magnitude",
+      "earthquake intensity",
+      "intensity scale",
+      "underwater earthquake",
+      "seismic waves",
+      "generate tsunami"
+     ]
+    },
+    {
+     "code": "G7-E-6",
+     "text": "refer to the local disaster readiness plans to demonstrate what to do during and after an earthquake",
+     "anchors": [
+      "earthquake safety",
+      "during an earthquake",
+      "after an earthquake",
+      "duck cover and hold",
+      "earthquake drill",
+      "disaster preparedness",
+      "disaster readiness plan",
+      "emergency kit",
+      "evacuation"
+     ]
+    },
+    {
+     "code": "G7-E-7",
+     "text": "explain how earthquakes result in tsunamis that devastate shoreline communities",
+     "anchors": [
+      "tsunami",
+      "tsunami waves",
+      "giant waves",
+      "shoreline communities",
+      "coastal communities",
+      "earthquake under the sea",
+      "sea floor displacement",
+      "tidal wave"
+     ]
+    },
+    {
+     "code": "G7-E-8",
+     "text": "describe procedures that the authorities have in place to alert communities of pending tsunamis and what procedures can be implemented should a tsunami impact a community",
+     "anchors": [
+      "tsunami warning",
+      "tsunami alert",
+      "tsunami evacuation",
+      "tsunami safety",
+      "early warning system",
+      "warning siren",
+      "move to higher ground",
+      "higher ground",
+      "tsunami drill"
+     ]
+    },
+    {
+     "code": "G7-E-9",
+     "text": "explain how energy from the Sun interacts with the atmosphere",
+     "anchors": [
+      "energy from the Sun",
+      "solar energy",
+      "solar radiation",
+      "atmosphere absorbs",
+      "greenhouse effect",
+      "sunlight and the atmosphere",
+      "ozone layer",
+      "insolation",
+      "heating of the atmosphere",
+      "reflected sunlight"
+     ]
+    },
+    {
+     "code": "G7-E-10",
+     "text": "make a physical model or use drawings to demonstrate how the tilt of the Earth relative to its orbit around the Sun affects the intensity of sunlight absorbed by different areas of Earth over a year",
+     "anchors": [
+      "tilt of the Earth",
+      "axial tilt",
+      "tilted axis",
+      "orbit around the Sun",
+      "intensity of sunlight",
+      "angle of sunlight",
+      "seasons",
+      "revolution of the Earth",
+      "direct sunlight"
+     ]
+    },
+    {
+     "code": "G7-E-11",
+     "text": "explain, using models, how the tilt of the Earth affects the changes in the length of daytime at different times of the year",
+     "anchors": [
+      "length of daytime",
+      "length of day",
+      "longer days",
+      "shorter days",
+      "solstice",
+      "equinox",
+      "summer solstice",
+      "winter solstice",
+      "hours of daylight",
+      "tilt of the Earth"
+     ]
+    },
+    {
+     "code": "G7-E-12",
+     "text": "explain how solar energy contributes to the occurrence of land and sea breezes, monsoons, and the Intertropical Convergence Zone (ITCZ)",
+     "anchors": [
+      "land and sea breezes",
+      "sea breeze",
+      "land breeze",
+      "monsoon",
+      "southwest monsoon",
+      "Intertropical Convergence Zone",
+      "ITCZ",
+      "uneven heating",
+      "hanging habagat",
+      "hanging amihan"
+     ]
+    }
+   ]
+  },
+  {
+   "grade": 8,
+   "quarter": 1,
+   "title": "Life Science",
+   "domain": "LIVING_THINGS",
+   "content": "Organ systems working together | Heredity | Taxonomic classification | Photosynthesis, respiration and cycles in nature",
+   "competencies": [
+    {
+     "code": "G8-L-1",
+     "text": "using a labeled diagram, trace how food travels through the digestive tract and explain how different digestive processes work, including mechanical processing, secretion, digestion, absorption, and elimination",
+     "anchors": [
+      "digestive tract",
+      "digestive processes",
+      "mechanical digestion",
+      "secretion",
+      "absorption",
+      "elimination",
+      "path of food"
+     ]
+    },
+    {
+     "code": "G8-L-2",
+     "text": "use models, flow charts, diagrams, and simulations to explain how body systems work together, such as digestion and excretion",
+     "anchors": [
+      "body systems work together",
+      "digestion and excretion",
+      "excretory system",
+      "organ systems",
+      "kidney",
+      "urinary system"
+     ]
+    },
+    {
+     "code": "G8-L-3",
+     "text": "describe how plant organs (leaf, stem, roots) work together as the transport system",
+     "anchors": [
+      "plant transport system",
+      "xylem",
+      "phloem",
+      "plant organs",
+      "leaf stem roots",
+      "water transport in plants"
+     ]
+    },
+    {
+     "code": "G8-L-4",
+     "text": "represent patterns of inheritance of a simple dominant/ recessive characteristic through generations of a family",
+     "anchors": [
+      "patterns of inheritance",
+      "dominant trait",
+      "recessive trait",
+      "pedigree",
+      "inherited traits",
+      "heredity",
+      "generations of a family"
+     ]
+    },
+    {
+     "code": "G8-L-5",
+     "text": "predict simple ratios of offspring genotypes and phenotypes in crosses involving dominant/recessive gene pairs",
+     "anchors": [
+      "genotype",
+      "phenotype",
+      "punnett square",
+      "monohybrid cross",
+      "offspring ratio",
+      "dominant recessive",
+      "gene pairs"
+     ]
+    },
+    {
+     "code": "G8-L-6",
+     "text": "describe the importance of the six-kingdom system and the three-domain system of classification of living things",
+     "anchors": [
+      "six kingdoms",
+      "three domains",
+      "kingdom system",
+      "domain system",
+      "classification of living things",
+      "archaea",
+      "eubacteria",
+      "protista"
+     ]
+    },
+    {
+     "code": "G8-L-7",
+     "text": "explain why humans are classified under Class Mammalia and the Order Primates",
+     "anchors": [
+      "Class Mammalia",
+      "Order Primates",
+      "primates",
+      "human classification",
+      "homo sapiens",
+      "taxonomy of humans"
+     ]
+    },
+    {
+     "code": "G8-L-8",
+     "text": "using flow charts and labeled diagrams explain the role of plants and animals in the cycles of nature, such as the carbon, oxygen, and water cycles",
+     "anchors": [
+      "carbon cycle",
+      "oxygen cycle",
+      "water cycle",
+      "cycles of nature",
+      "carbon dioxide oxygen cycle",
+      "biogeochemical cycle"
+     ]
+    },
+    {
+     "code": "G8-L-9",
+     "text": "describe the process of photosynthesis and respiration, and identify its raw materials needed and products",
+     "anchors": [
+      "photosynthesis",
+      "cellular respiration",
+      "raw materials of photosynthesis",
+      "products of photosynthesis",
+      "glucose",
+      "chlorophyll",
+      "sunlight carbon dioxide water"
+     ]
+    },
+    {
+     "code": "G8-L-10",
+     "text": "using information from secondary sources identify the different parts of the cell where photosynthesis and respiration occur",
+     "anchors": [
+      "chloroplast",
+      "mitochondria",
+      "mitochondrion",
+      "cell organelles",
+      "site of photosynthesis",
+      "site of respiration"
+     ]
+    },
+    {
+     "code": "G8-L-11",
+     "text": "plan a scientific investigation to verify the raw materials needed for photosynthesis",
+     "anchors": [
+      "photosynthesis experiment",
+      "starch test",
+      "iodine test",
+      "raw materials for photosynthesis",
+      "plant investigation",
+      "light and carbon dioxide"
+     ]
+    }
+   ]
+  },
+  {
+   "grade": 8,
+   "quarter": 2,
+   "title": "Science of Materials",
+   "domain": "MATTER",
+   "content": "Use of timelines and charts | The Atomic Model | Subatomic particles | Elements and compounds | The Periodic table",
+   "competencies": [
+    {
+     "code": "G8-M-1",
+     "text": "develop a timeline for the historical background of the development of the current Atomic Model that identifies tiny particles as atoms",
+     "anchors": [
+      "atomic model timeline",
+      "history of the atom",
+      "Dalton",
+      "Thomson",
+      "Rutherford",
+      "Bohr",
+      "atomic theory",
+      "plum pudding model"
+     ]
+    },
+    {
+     "code": "G8-M-2",
+     "text": "draw the structure of an atom in terms of the nucleus and electron shells",
+     "anchors": [
+      "structure of an atom",
+      "atomic nucleus",
+      "electron shells",
+      "energy levels",
+      "atomic structure",
+      "bohr model",
+      "nucleus and electron shells"
+     ]
+    },
+    {
+     "code": "G8-M-3",
+     "text": "differentiate the subatomic particles protons, neutrons, and electrons in terms of their symbol, mass, charge, and location within an atom",
+     "anchors": [
+      "subatomic particles",
+      "proton",
+      "neutron",
+      "electron",
+      "charge of proton",
+      "mass of electron",
+      "protons neutrons and electrons"
+     ]
+    },
+    {
+     "code": "G8-M-4",
+     "text": "describe the properties of pure substances as: a. having fixed chemical composition, examples of which are elements and compounds, and b. that all the atoms of an element have a unique number of protons",
+     "anchors": [
+      "pure substance",
+      "fixed chemical composition",
+      "elements and compounds",
+      "unique number of protons",
+      "element vs compound",
+      "chemical composition"
+     ]
+    },
+    {
+     "code": "G8-M-5",
+     "text": "discuss the significant contributions of early scientists in the development of the periodic table",
+     "anchors": [
+      "Mendeleev",
+      "development of the periodic table",
+      "history of the periodic table",
+      "Dobereiner",
+      "Newlands",
+      "Moseley",
+      "triads",
+      "law of octaves"
+     ]
+    },
+    {
+     "code": "G8-M-6",
+     "text": "identify the names and symbols of the first 20 or several common elements of the periodic table",
+     "anchors": [
+      "chemical symbols",
+      "element symbols",
+      "first 20 elements",
+      "names of elements",
+      "hydrogen helium lithium",
+      "element names and symbols"
+     ]
+    },
+    {
+     "code": "G8-M-7",
+     "text": "explain that the arrangement of elements in the periodic table as 7 periods and 18 groups is based on their atomic structure and chemical properties, such as reactivity",
+     "anchors": [
+      "periods and groups",
+      "periodic table arrangement",
+      "18 groups",
+      "7 periods",
+      "reactivity",
+      "alkali metals",
+      "noble gases",
+      "halogens"
+     ]
+    },
+    {
+     "code": "G8-M-8",
+     "text": "explain that the electron structure of an atom determines its position on the periodic table",
+     "anchors": [
+      "electron configuration",
+      "electron structure",
+      "position on the periodic table",
+      "electron arrangement",
+      "outer shell electrons"
+     ]
+    },
+    {
+     "code": "G8-M-9",
+     "text": "calculate the number of protons, neutrons, and electrons in the atom of several elements, such as aluminum",
+     "anchors": [
+      "mass number",
+      "atomic number",
+      "number of neutrons",
+      "aluminum atom",
+      "calculate protons neutrons electrons",
+      "isotope"
+     ]
+    },
+    {
+     "code": "G8-M-10",
+     "text": "explain that the elements within a group in the periodic table have the same number of valence electrons",
+     "anchors": [
+      "valence electrons",
+      "group number",
+      "same group",
+      "outermost electrons",
+      "periodic table group",
+      "valence shell"
+     ]
+    }
+   ]
+  },
+  {
+   "grade": 8,
+   "quarter": 3,
+   "title": "Earth and Space Science",
+   "domain": "EARTH_SPACE",
+   "content": "Distribution of the continents | Crustal features and interactions | Typhoons | Tides",
+   "competencies": [
+    {
+     "code": "G8-E-1",
+     "text": "identify what proportion of the Earth's surface is covered with water as opposed to land",
+     "anchors": [
+      "covered with water",
+      "water and land",
+      "blue planet",
+      "oceans cover",
+      "hydrosphere",
+      "Earth surface water",
+      "proportion of water"
+     ]
+    },
+    {
+     "code": "G8-E-2",
+     "text": "gather information from secondary sources to name and describe the upper crustal layers of the solid earth",
+     "anchors": [
+      "upper crustal layers",
+      "layers of the earth",
+      "Earth crust",
+      "lithosphere",
+      "solid earth",
+      "crust mantle core"
+     ]
+    },
+    {
+     "code": "G8-E-3",
+     "text": "describe the different types of volcanoes found around the world according to their: a. activity b. type of eruption c. location in the crust",
+     "anchors": [
+      "types of volcanoes",
+      "active dormant extinct",
+      "shield volcano",
+      "composite volcano",
+      "cinder cone",
+      "type of eruption",
+      "volcanic activity",
+      "explosive eruption"
+     ]
+    },
+    {
+     "code": "G8-E-4",
+     "text": "relate the shape of a volcano's cone to its composition",
+     "anchors": [
+      "volcano cone shape",
+      "stratovolcano",
+      "lava viscosity",
+      "magma composition",
+      "volcanic cone",
+      "silica content",
+      "steep cone"
+     ]
+    },
+    {
+     "code": "G8-E-5",
+     "text": "relate the location and distribution of active volcanoes, earthquake epicenters, and major mountain belts to the distribution of oceanic crust and continental crust",
+     "anchors": [
+      "ring of fire",
+      "earthquake epicenters",
+      "mountain belts",
+      "distribution of volcanoes",
+      "plate boundaries",
+      "active volcanoes",
+      "pacific ring of fire"
+     ]
+    },
+    {
+     "code": "G8-E-6",
+     "text": "identify how oceanic crust and continental crust is associated with the Earth's lithospheric plates",
+     "anchors": [
+      "lithospheric plates",
+      "oceanic crust",
+      "continental crust",
+      "tectonic plates",
+      "plate tectonics",
+      "philippine plate",
+      "crustal plates"
+     ]
+    },
+    {
+     "code": "G8-E-7",
+     "text": "gather information from secondary sources to explain: a. how typhoons develop, and b. why the Philippines is prone to typhoons",
+     "anchors": [
+      "how typhoons develop",
+      "typhoon formation",
+      "tropical cyclone",
+      "prone to typhoons",
+      "warm ocean water",
+      "low pressure area",
+      "typhoon belt"
+     ]
+    },
+    {
+     "code": "G8-E-8",
+     "text": "use a map and a record of tracking data to trace the path of typhoons that enter the Philippine Area of Responsibility (PAR)",
+     "anchors": [
+      "Philippine Area of Responsibility",
+      "typhoon path",
+      "typhoon track",
+      "tracking typhoons",
+      "typhoon map",
+      "tracking data"
+     ]
+    },
+    {
+     "code": "G8-E-9",
+     "text": "discuss how bodies of water and landforms affect typhoons",
+     "anchors": [
+      "landforms affect typhoons",
+      "typhoon weakens over land",
+      "sierra madre",
+      "mountain ranges and typhoons",
+      "landfall",
+      "typhoon and landforms"
+     ]
+    },
+    {
+     "code": "G8-E-10",
+     "text": "gather information from the Department of Science and Technology (DOST) and other reliable websites to identify how authorities support communities affected by typhoons",
+     "anchors": [
+      "DOST",
+      "typhoon response",
+      "disaster response",
+      "communities affected by typhoons",
+      "typhoon relief",
+      "evacuation",
+      "NDRRMC",
+      "project NOAH"
+     ]
+    },
+    {
+     "code": "G8-E-11",
+     "text": "relate the relative movements of the Earth, Moon, and Sun with the occurrence of tides",
+     "anchors": [
+      "tides",
+      "high tide",
+      "low tide",
+      "spring tide",
+      "neap tide",
+      "moon gravity",
+      "occurrence of tides",
+      "tidal bulge"
+     ]
+    },
+    {
+     "code": "G8-E-12",
+     "text": "draw on information from secondary sources to identify situations where tidal difference could be exploited to generate renewable energy",
+     "anchors": [
+      "tidal energy",
+      "tidal power",
+      "tidal difference",
+      "renewable energy from tides",
+      "tidal barrage",
+      "tidal turbine"
+     ]
+    }
+   ]
+  },
+  {
+   "grade": 8,
+   "quarter": 4,
+   "title": "Force, Motion, and Energy",
+   "domain": "FORCE_MOTION_ENERGY",
+   "content": "Acceleration | Distance-time and Velocity-time graphs | Kinetic and Potential energy | Work and energy | Renewable energy | Properties of light",
+   "competencies": [
+    {
+     "code": "G8-F-1",
+     "text": "identify that forces cause objects to accelerate, and that acceleration of an object is its rate of change of velocity",
+     "anchors": [
+      "acceleration",
+      "rate of change of velocity",
+      "forces cause acceleration",
+      "change in velocity",
+      "newton second law",
+      "net force"
+     ]
+    },
+    {
+     "code": "G8-F-2",
+     "text": "observe and describe examples of accelerating objects at school and in the local community, including objects that show uniform circular motion",
+     "anchors": [
+      "uniform circular motion",
+      "accelerating objects",
+      "circular motion",
+      "centripetal",
+      "examples of acceleration",
+      "speeding up slowing down"
+     ]
+    },
+    {
+     "code": "G8-F-3",
+     "text": "construct and annotate distance-time graphs and velocity-time graphs to represent uniform and non-uniform acceleration",
+     "anchors": [
+      "distance-time graph",
+      "velocity-time graph",
+      "motion graphs",
+      "uniform acceleration",
+      "non-uniform acceleration",
+      "slope of graph"
+     ]
+    },
+    {
+     "code": "G8-F-4",
+     "text": "describe kinetic energy as the movement of objects or particles, and potential energy as energy stored due to the position of objects or particles",
+     "anchors": [
+      "kinetic energy",
+      "potential energy",
+      "energy of movement",
+      "stored energy",
+      "gravitational potential energy",
+      "energy due to position"
+     ]
+    },
+    {
+     "code": "G8-F-5",
+     "text": "identify examples of everyday situations that demonstrate: a. kinetic energy being transformed to potential energy, and b. potential energy being transformed to kinetic energy",
+     "anchors": [
+      "energy transformation",
+      "kinetic to potential",
+      "potential to kinetic",
+      "roller coaster",
+      "pendulum",
+      "bouncing ball",
+      "transformed to kinetic energy"
+     ]
+    },
+    {
+     "code": "G8-F-6",
+     "text": "recognize that work is done when a force causes the displacement of an object",
+     "anchors": [
+      "work is done",
+      "work done",
+      "force and displacement",
+      "displacement",
+      "force times distance",
+      "joule"
+     ]
+    },
+    {
+     "code": "G8-F-7",
+     "text": "recognize that power is the rate of doing work",
+     "anchors": [
+      "rate of doing work",
+      "watt",
+      "power is the rate",
+      "work per unit time",
+      "horsepower",
+      "power output"
+     ]
+    },
+    {
+     "code": "G8-F-8",
+     "text": "explain that the mechanical energy of an object is the sum of the kinetic energy and the potential energy available to do work",
+     "anchors": [
+      "mechanical energy",
+      "sum of kinetic and potential",
+      "total mechanical energy",
+      "energy available to do work",
+      "kinetic plus potential"
+     ]
+    },
+    {
+     "code": "G8-F-9",
+     "text": "describe conservation of energy in everyday situations involving gravity, such as when objects fall",
+     "anchors": [
+      "conservation of energy",
+      "falling objects",
+      "energy is conserved",
+      "law of conservation of energy",
+      "free fall energy",
+      "gravity and energy"
+     ]
+    },
+    {
+     "code": "G8-F-10",
+     "text": "gather information from secondary sources to explain how potential energy stored in lakes and dams in the Philippines is used to produce kinetic energy to generate electricity for use in homes, communities, and industry",
+     "anchors": [
+      "hydroelectric",
+      "hydroelectric power",
+      "hydroelectric dam",
+      "hydropower",
+      "generate electricity",
+      "Ambuklao",
+      "Magat dam",
+      "Agus river",
+      "water turbine"
+     ]
+    },
+    {
+     "code": "G8-F-11",
+     "text": "carry out guided investigations to describe and illustrate the reflection of light using plane and curved mirrors and the refraction of light using transparent blocks, lenses, and prisms with examples from everyday applications",
+     "anchors": [
+      "reflection of light",
+      "refraction of light",
+      "plane mirror",
+      "curved mirror",
+      "concave convex",
+      "lenses",
+      "prism",
+      "bending of light"
+     ]
+    }
+   ]
+  },
+  {
+   "grade": 9,
+   "quarter": 1,
+   "title": "Force, Motion, and Energy",
+   "domain": "FORCE_MOTION_ENERGY",
+   "content": "Newton's Laws | Force and energy | Electric current | Electrical circuits | Interpreting patterns in data | Electromagnetic waves",
+   "competencies": [
+    {
+     "code": "G9-F-1",
+     "text": "identify inertia as the tendency for an object to stay at rest or in motion unless acted on by an unbalanced net force",
+     "anchors": [
+      "inertia",
+      "law of inertia",
+      "Newton's first law",
+      "unbalanced force",
+      "object at rest",
+      "balanced and unbalanced forces"
+     ]
+    },
+    {
+     "code": "G9-F-2",
+     "text": "demonstrate in practical situations and describe that acceleration is a change in speed and/or direction as the result of a net force",
+     "anchors": [
+      "acceleration",
+      "change in speed",
+      "change in direction",
+      "net force",
+      "speeding up",
+      "slowing down"
+     ]
+    },
+    {
+     "code": "G9-F-3",
+     "text": "investigate the relationship among force, acceleration, and mass",
+     "anchors": [
+      "Newton's second law",
+      "force acceleration mass",
+      "force and acceleration",
+      "mass and acceleration",
+      "force equals mass times acceleration",
+      "mass times acceleration"
+     ]
+    },
+    {
+     "code": "G9-F-4",
+     "text": "explain that when any two objects interact, there are equal but opposite forces exerted between them, which is evident in many practical situations and applications",
+     "anchors": [
+      "Newton's third law",
+      "action and reaction",
+      "equal and opposite",
+      "opposite forces",
+      "interacting objects",
+      "third law of motion"
+     ]
+    },
+    {
+     "code": "G9-F-5",
+     "text": "observe and identify action-reaction pairs in everyday situations such as stepping off a boat, or a book on a table, and draw force diagrams to explain how the pairs affect the motion of objects",
+     "anchors": [
+      "action reaction pair",
+      "force diagram",
+      "free body diagram",
+      "stepping off a boat",
+      "book on a table",
+      "normal force",
+      "recoil"
+     ]
+    },
+    {
+     "code": "G9-F-6",
+     "text": "identify that electricity is a flow of electrons and show appreciation for the need to observe safe measures in handling electricity",
+     "anchors": [
+      "flow of electrons",
+      "electric current",
+      "electrical safety",
+      "electron flow",
+      "electric shock",
+      "handling electricity"
+     ]
+    },
+    {
+     "code": "G9-F-7",
+     "text": "participate in guided investigations to infer the relationship among current, voltage, and resistance in assembled series and parallel circuits with varying number of loads and battery",
+     "anchors": [
+      "current voltage resistance",
+      "Ohm's law",
+      "series circuit",
+      "parallel circuit",
+      "voltage",
+      "electrical resistance",
+      "resistor"
+     ]
+    },
+    {
+     "code": "G9-F-8",
+     "text": "draw diagrams of and assemble series and parallel circuits, showing switch, battery, loads/resistors, ammeter, and voltmeter",
+     "anchors": [
+      "circuit diagram",
+      "series and parallel circuits",
+      "ammeter",
+      "voltmeter",
+      "switch and battery",
+      "assemble a circuit",
+      "circuit symbols"
+     ]
+    },
+    {
+     "code": "G9-F-9",
+     "text": "collaborate in a class discussion to recognize the advantages and limitations of using series or parallel circuits",
+     "anchors": [
+      "series vs parallel",
+      "advantages of parallel circuit",
+      "limitations of series circuit",
+      "household wiring",
+      "Christmas lights",
+      "bulb burns out"
+     ]
+    },
+    {
+     "code": "G9-F-10",
+     "text": "describe electromagnetic radiation (EMR) as energy that is created by the vibrations of electrically charged particles which allows it to travel through materials or space as transverse waves",
+     "anchors": [
+      "electromagnetic radiation",
+      "electromagnetic wave",
+      "charged particle",
+      "transverse wave",
+      "travels through space",
+      "vibrating charges",
+      "electromagnetic energy"
+     ]
+    },
+    {
+     "code": "G9-F-11",
+     "text": "compare the relative wavelengths and frequencies of different types of electromagnetic waves, including radio waves, microwaves, infrared, visible light, ultra-violet, x-rays, and gamma radiation",
+     "anchors": [
+      "electromagnetic spectrum",
+      "radio wave",
+      "microwave",
+      "infrared",
+      "visible light",
+      "ultraviolet",
+      "x-ray",
+      "gamma ray",
+      "wavelength and frequency"
+     ]
+    },
+    {
+     "code": "G9-F-12",
+     "text": "identify practical applications of electromagnetic radiation, such as radio waves used in telecommunications, and x-rays and gamma rays in medicine",
+     "anchors": [
+      "uses of electromagnetic waves",
+      "telecommunications",
+      "x-ray imaging",
+      "medical x-ray",
+      "gamma ray therapy",
+      "radio communication",
+      "microwave oven",
+      "radiation in medicine"
+     ]
+    },
+    {
+     "code": "G9-F-13",
+     "text": "gather information from secondary sources to explain the harmful effects that EMR can have on living things",
+     "anchors": [
+      "harmful effects of radiation",
+      "sunburn",
+      "skin cancer",
+      "radiation exposure",
+      "ionizing radiation",
+      "radiation sickness",
+      "too much sun"
+     ]
+    }
+   ]
+  },
+  {
+   "grade": 9,
+   "quarter": 2,
+   "title": "Earth and Space Science",
+   "domain": "EARTH_SPACE",
+   "content": "Scale, proportion and quantity | Plate boundaries | Structure of the Earth | Geologic time | Origin of the Solar System | Space Technologies",
+   "competencies": [
+    {
+     "code": "G9-E-1",
+     "text": "identify and explain evidence that current continents are separate parts of what was a single continent millions of years ago",
+     "anchors": [
+      "continental drift",
+      "Pangaea",
+      "supercontinent",
+      "single continent",
+      "jigsaw coastlines",
+      "matching fossils",
+      "Alfred Wegener"
+     ]
+    },
+    {
+     "code": "G9-E-2",
+     "text": "participate in a collaborative group or class task to examine and describe the topographical and geological evidence for plate boundaries occurring in the area where the Philippines is located",
+     "anchors": [
+      "Philippine sea plate",
+      "Philippine trench",
+      "Manila trench",
+      "ring of fire",
+      "Philippine fault",
+      "tectonic setting",
+      "earthquake belt"
+     ]
+    },
+    {
+     "code": "G9-E-3",
+     "text": "describe the types of plate boundaries found around the Earth",
+     "anchors": [
+      "types of plate boundaries",
+      "convergent boundary",
+      "divergent boundary",
+      "transform boundary",
+      "subduction",
+      "plate tectonics",
+      "tectonic plate"
+     ]
+    },
+    {
+     "code": "G9-E-4",
+     "text": "describe how fossils can be used for dating the age of rocks and sediments",
+     "anchors": [
+      "fossil dating",
+      "index fossil",
+      "age of rocks",
+      "rock layer",
+      "sediment layer",
+      "fossil record",
+      "strata"
+     ]
+    },
+    {
+     "code": "G9-E-5",
+     "text": "describe how relative and absolute dating techniques are used to determine the subdivisions of geologic time",
+     "anchors": [
+      "relative dating",
+      "absolute dating",
+      "radiometric dating",
+      "carbon dating",
+      "half-life",
+      "geologic time",
+      "law of superposition"
+     ]
+    },
+    {
+     "code": "G9-E-6",
+     "text": "explain how the geologic time scale helps to recount the history of the Earth",
+     "anchors": [
+      "geologic time scale",
+      "history of the Earth",
+      "eras and periods",
+      "Precambrian",
+      "Mesozoic",
+      "Cenozoic",
+      "geologic eras"
+     ]
+    },
+    {
+     "code": "G9-E-7",
+     "text": "describe how seismic wave data has been used to develop a model for the internal structure and composition of the Earth",
+     "anchors": [
+      "seismic wave",
+      "primary wave",
+      "secondary wave",
+      "P and S waves",
+      "internal structure of the Earth",
+      "seismic data",
+      "seismograph",
+      "shadow zone"
+     ]
+    },
+    {
+     "code": "G9-E-8",
+     "text": "create a scale drawing to represent relative thicknesses of the layers of Earth's interior, including the crust, lithosphere, asthenosphere, mantle, outer core, and inner core",
+     "anchors": [
+      "layers of the Earth",
+      "continental crust",
+      "oceanic crust",
+      "lithosphere",
+      "asthenosphere",
+      "mantle",
+      "outer core",
+      "inner core",
+      "scale drawing"
+     ]
+    },
+    {
+     "code": "G9-E-9",
+     "text": "distinguish among comets, meteoroids, asteroids, and dwarf planets, and describe how they help us to understand the nature and formation of the Earth and the Solar System",
+     "anchors": [
+      "comet",
+      "meteoroid",
+      "asteroid",
+      "dwarf planet",
+      "Pluto",
+      "asteroid belt",
+      "formation of the solar system",
+      "Kuiper belt"
+     ]
+    },
+    {
+     "code": "G9-E-10",
+     "text": "gather information from secondary sources to discuss the regular occurrence of meteor showers",
+     "anchors": [
+      "meteor shower",
+      "shooting star",
+      "falling star",
+      "Perseids",
+      "Geminids",
+      "comet debris"
+     ]
+    },
+    {
+     "code": "G9-E-11",
+     "text": "explain how modern research about celestial objects uses new space technologies including telescopes and space probes",
+     "anchors": [
+      "space technologies",
+      "telescope",
+      "space probe",
+      "Hubble",
+      "James Webb",
+      "Voyager",
+      "space exploration",
+      "satellite"
+     ]
+    }
+   ]
+  },
+  {
+   "grade": 9,
+   "quarter": 3,
+   "title": "Life Science",
+   "domain": "LIVING_THINGS",
+   "content": "DNA replication and mutations | Biodiversity and endangered species | Types of ecosystems in the Philippines",
+   "competencies": [
+    {
+     "code": "G9-L-1",
+     "text": "use models and labeled diagrams to represent the double helix structure of DNA (deoxyribonucleic acid)",
+     "anchors": [
+      "double helix",
+      "DNA structure",
+      "deoxyribonucleic acid",
+      "nucleotide",
+      "base pair",
+      "DNA model",
+      "Watson and Crick"
+     ]
+    },
+    {
+     "code": "G9-L-2",
+     "text": "explain the role of DNA, genes, and chromosomes in the transmission of traits",
+     "anchors": [
+      "genes and chromosomes",
+      "transmission of traits",
+      "heredity",
+      "inherited traits",
+      "chromosome",
+      "genetic material",
+      "genetics"
+     ]
+    },
+    {
+     "code": "G9-L-3",
+     "text": "describe mutations as changes in DNA or chromosomes and discuss some of the factors that cause mutations, such as infectious agents, radiation, and chemicals",
+     "anchors": [
+      "mutation",
+      "changes in DNA",
+      "causes of mutation",
+      "mutagen",
+      "radiation damage",
+      "chemical mutagen",
+      "infectious agent"
+     ]
+    },
+    {
+     "code": "G9-L-4",
+     "text": "use information from secondary sources to explain the beneficial, harmful, and neutral effects of mutations",
+     "anchors": [
+      "effects of mutations",
+      "beneficial mutation",
+      "harmful mutation",
+      "neutral mutation",
+      "genetic disorder",
+      "sickle cell",
+      "genetic variation"
+     ]
+    },
+    {
+     "code": "G9-L-5",
+     "text": "explain the advantage of high biodiversity in maintaining the stability of an ecosystem during difficult conditions, such as food shortages, disease, and climate change",
+     "anchors": [
+      "high biodiversity",
+      "ecosystem stability",
+      "biodiversity and stability",
+      "food shortage",
+      "species diversity",
+      "resilient ecosystem",
+      "climate change resilience"
+     ]
+    },
+    {
+     "code": "G9-L-6",
+     "text": "use information from secondary resources to classify animals and plants of the Philippines as critically endangered, endangered, or vulnerable species",
+     "anchors": [
+      "critically endangered",
+      "endangered species",
+      "vulnerable species",
+      "Philippine eagle",
+      "tamaraw",
+      "IUCN red list",
+      "endangered Philippine animals",
+      "Philippine tarsier"
+     ]
+    },
+    {
+     "code": "G9-L-7",
+     "text": "discuss as a class how threats to biodiversity can lead to species extinction",
+     "anchors": [
+      "threats to biodiversity",
+      "species extinction",
+      "extinct",
+      "habitat loss",
+      "poaching",
+      "overhunting",
+      "habitat destruction"
+     ]
+    },
+    {
+     "code": "G9-L-8",
+     "text": "use information from secondary sources to research how to protect and conserve endangered and/or economically important species in the local community",
+     "anchors": [
+      "protect endangered species",
+      "wildlife conservation",
+      "species conservation",
+      "protected area",
+      "captive breeding",
+      "economically important species",
+      "wildlife sanctuary"
+     ]
+    },
+    {
+     "code": "G9-L-9",
+     "text": "describe using labeled diagrams the biotic and abiotic features of tropical rainforests, swamps, estuaries, mangrove forests, and coral reefs",
+     "anchors": [
+      "tropical rainforest",
+      "swamp",
+      "estuary",
+      "mangrove forest",
+      "coral reef",
+      "Philippine ecosystems",
+      "biotic and abiotic",
+      "ecosystem features"
+     ]
+    },
+    {
+     "code": "G9-L-10",
+     "text": "use information from secondary sources to describe the possible effects of human activities, such as deforestation, pollution, and introduction of invasive species, on living things in an ecosystem",
+     "anchors": [
+      "deforestation",
+      "invasive species",
+      "human impact on ecosystems",
+      "pollution effects",
+      "illegal logging",
+      "slash and burn",
+      "habitat degradation",
+      "introduced species"
+     ]
+    },
+    {
+     "code": "G9-L-11",
+     "text": "plan to conduct a survey to explore the possibilities for minimizing the negative impacts of human activities on an ecosystem",
+     "anchors": [
+      "environmental survey",
+      "minimize human impact",
+      "reduce negative impacts",
+      "community survey",
+      "environmental action",
+      "ecosystem protection",
+      "sustainable practices",
+      "waste segregation",
+      "reforestation",
+      "tree planting",
+      "coastal cleanup"
+     ]
+    }
+   ]
+  },
+  {
+   "grade": 9,
+   "quarter": 4,
+   "title": "Science of Materials",
+   "domain": "MATTER",
+   "content": "Valid and reliable investigations | Chemical bonding | Ionic compounds | Covalent compounds | Metallic bonds | Chemical formula",
+   "competencies": [
+    {
+     "code": "G9-M-1",
+     "text": "carry out a valid and reliable scientific investigation to show the formation of a new substance, such as formation of a carbonate (carbon dioxide in limewater), or formation of a precipitate (from silver nitrate solution)",
+     "anchors": [
+      "formation of a new substance",
+      "limewater test",
+      "carbon dioxide in limewater",
+      "precipitate",
+      "silver nitrate",
+      "precipitation reaction",
+      "valid and reliable investigation",
+      "evidence of chemical reaction"
+     ]
+    },
+    {
+     "code": "G9-M-2",
+     "text": "explain that the formation of new bonds or the breaking of existing bonds constitutes a chemical change and the formation of a new substance",
+     "anchors": [
+      "chemical bonds",
+      "breaking bonds",
+      "forming bonds",
+      "chemical change",
+      "chemical reaction",
+      "new substance formed",
+      "bond formation"
+     ]
+    },
+    {
+     "code": "G9-M-3",
+     "text": "describe a valence electron as an electron in the outer shell of an atom that can take part in formation of bonds",
+     "anchors": [
+      "valence electron",
+      "outer shell",
+      "outermost shell",
+      "electron shell",
+      "bonding electrons",
+      "valence shell"
+     ]
+    },
+    {
+     "code": "G9-M-4",
+     "text": "identify the number of valence electrons of oxygen based on its position in the periodic table",
+     "anchors": [
+      "valence electrons of oxygen",
+      "periodic table position",
+      "group number",
+      "oxygen valence",
+      "periodic table groups",
+      "six valence electrons"
+     ]
+    },
+    {
+     "code": "G9-M-5",
+     "text": "explain the formation of ions as either the loss or gain of electrons to produce ionic bonds, using examples, such as the formation of sodium chloride",
+     "anchors": [
+      "ionic bond",
+      "formation of ions",
+      "loss or gain of electrons",
+      "cations and anions",
+      "sodium chloride formation",
+      "electron transfer",
+      "table salt",
+      "ionic bonding"
+     ]
+    },
+    {
+     "code": "G9-M-6",
+     "text": "write the chemical formula and chemical names of some common ionic compounds, including sodium chloride (NaCl), magnesium oxide (MgO), potassium chloride (KCl) and magnesium chloride (MgCl2)",
+     "anchors": [
+      "ionic compound",
+      "chemical formula",
+      "sodium chloride",
+      "NaCl",
+      "magnesium oxide",
+      "potassium chloride",
+      "magnesium chloride",
+      "naming ionic compounds"
+     ]
+    },
+    {
+     "code": "G9-M-7",
+     "text": "explain the formation of covalent bonds using a molecule of water and a molecule of carbon dioxide",
+     "anchors": [
+      "covalent bond",
+      "shared electron",
+      "electron sharing",
+      "water molecule",
+      "carbon dioxide molecule",
+      "molecular bond",
+      "sharing of electrons"
+     ]
+    },
+    {
+     "code": "G9-M-8",
+     "text": "write the chemical formula and chemical name of some common covalent compounds, including water (H2O), carbon dioxide (CO2), and ammonia (NH3)",
+     "anchors": [
+      "covalent compound",
+      "chemical name",
+      "ammonia",
+      "molecular formula",
+      "naming covalent compounds",
+      "water formula",
+      "carbon dioxide formula",
+      "molecular compound"
+     ]
+    },
+    {
+     "code": "G9-M-9",
+     "text": "show by using models that ionic compounds form crystalline structures whereas covalent compounds form individual molecules",
+     "anchors": [
+      "crystalline structure",
+      "crystal lattice",
+      "ionic lattice",
+      "individual molecules",
+      "salt crystal",
+      "molecular structure",
+      "ionic vs covalent structure"
+     ]
+    },
+    {
+     "code": "G9-M-10",
+     "text": "explain properties of metals in terms of their structure and metallic bonding (sea of electrons model)",
+     "anchors": [
+      "metallic bonding",
+      "sea of electrons",
+      "properties of metals",
+      "delocalized electron",
+      "malleable",
+      "ductile",
+      "metal conductivity"
+     ]
+    },
+    {
+     "code": "G9-M-11",
+     "text": "investigate the properties of ionic, covalent, and metallic substances, such as melting point, hardness, electrical and thermal conductivity",
+     "anchors": [
+      "melting point",
+      "brittle",
+      "electrical conductivity",
+      "thermal conductivity",
+      "properties of ionic compounds",
+      "properties of covalent compounds",
+      "metallic substances",
+      "conductivity test"
+     ]
+    }
+   ]
+  },
+  {
+   "grade": 10,
+   "quarter": 1,
+   "title": "Earth and Space Science",
+   "domain": "EARTH_SPACE",
+   "content": "Plate Tectonics | Global climate | Global interactions | Global and local Sustainability",
+   "competencies": [
+    {
+     "code": "G10-E-1",
+     "text": "identify modern scientific processes used to detect and measure the displacement of tectonic plates",
+     "anchors": [
+      "tectonic plates",
+      "plate displacement",
+      "plate movement",
+      "GPS satellite",
+      "seismograph",
+      "satellite geodesy",
+      "plate tectonics"
+     ]
+    },
+    {
+     "code": "G10-E-2",
+     "text": "describe the structures, movements and events that occur at each type of plate boundary",
+     "anchors": [
+      "plate boundary",
+      "convergent boundary",
+      "divergent boundary",
+      "transform boundary",
+      "subduction zone",
+      "mid-ocean ridge",
+      "transform fault"
+     ]
+    },
+    {
+     "code": "G10-E-3",
+     "text": "identify the locations of major mountains, faults, volcanos, and ocean trenches using a map of the Philippine Archipelago, and interpret the features in relation to plate tectonics",
+     "anchors": [
+      "Philippine archipelago",
+      "Philippine fault",
+      "Philippine trench",
+      "Manila trench",
+      "ocean trench",
+      "Philippine volcanoes",
+      "Sierra Madre",
+      "mountain ranges"
+     ]
+    },
+    {
+     "code": "G10-E-4",
+     "text": "predict the position and shape of the Philippine Archipelago in 50 million years, based on the current velocity of the Philippine Plate",
+     "anchors": [
+      "Philippine plate",
+      "Philippine Sea plate",
+      "plate velocity",
+      "continental drift",
+      "plate motion",
+      "archipelago formation"
+     ]
+    },
+    {
+     "code": "G10-E-5",
+     "text": "gather information from secondary sources to describe and explain what mechanisms that drive the movement of tectonic plates including the role of the asthenosphere",
+     "anchors": [
+      "asthenosphere",
+      "mantle convection",
+      "convection current",
+      "slab pull",
+      "ridge push",
+      "lithosphere",
+      "plate tectonics mechanism"
+     ]
+    },
+    {
+     "code": "G10-E-6",
+     "text": "explain how the subduction of an oceanic plate impacts on the plate above it",
+     "anchors": [
+      "subduction",
+      "oceanic plate",
+      "subduction zone",
+      "volcanic arc",
+      "overriding plate",
+      "oceanic crust",
+      "megathrust earthquake"
+     ]
+    },
+    {
+     "code": "G10-E-7",
+     "text": "explain how plate tectonics can be used to explain the formation of the largest mountain ranges on Earth including the Himalayas and the Andes mountains",
+     "anchors": [
+      "Himalayas",
+      "Andes mountains",
+      "mountain formation",
+      "continental collision",
+      "Mount Everest",
+      "fold mountains",
+      "orogeny"
+     ]
+    },
+    {
+     "code": "G10-E-8",
+     "text": "identify evidence of global warming and climate change",
+     "anchors": [
+      "global warming",
+      "climate change",
+      "rising sea level",
+      "melting glaciers",
+      "global temperature",
+      "polar ice caps",
+      "climate evidence"
+     ]
+    },
+    {
+     "code": "G10-E-9",
+     "text": "identify the role of greenhouse gases in enhanced global warming and climate change",
+     "anchors": [
+      "greenhouse gases",
+      "greenhouse effect",
+      "carbon dioxide emissions",
+      "carbon emissions",
+      "methane",
+      "fossil fuel emissions",
+      "enhanced greenhouse"
+     ]
+    },
+    {
+     "code": "G10-E-10",
+     "text": "describe how global climatic phenomena, such as the El Niño Southern Oscillation, may impact weather systems",
+     "anchors": [
+      "El Nino",
+      "La Nina",
+      "southern oscillation",
+      "El Nino Southern Oscillation",
+      "drought",
+      "climate phenomena",
+      "Pacific ocean temperature"
+     ]
+    },
+    {
+     "code": "G10-E-11",
+     "text": "identify local impacts of global climate change and suggest ways that individuals can do to reduce the impact of global warming",
+     "anchors": [
+      "climate change impacts",
+      "reduce carbon footprint",
+      "climate action",
+      "stronger typhoons",
+      "sea level rise",
+      "climate adaptation",
+      "climate mitigation"
+     ]
+    },
+    {
+     "code": "G10-E-12",
+     "text": "explain how increased societal uses of renewable energies could mitigate the effects of global climate change, including how the Philippines could make better use of its plentiful natural resources",
+     "anchors": [
+      "renewable energy",
+      "solar power",
+      "wind power",
+      "geothermal energy",
+      "hydropower",
+      "natural resources",
+      "clean energy",
+      "sustainable development"
+     ]
+    }
+   ]
+  },
+  {
+   "grade": 10,
+   "quarter": 2,
+   "title": "Force, Motion, and Energy",
+   "domain": "FORCE_MOTION_ENERGY",
+   "content": "Projectile motion | Momentum and Collisions | Large-scale generation and distribution of electricity | Renewable and non-renewable energy",
+   "competencies": [
+    {
+     "code": "G10-F-1",
+     "text": "investigate and describe the relationship among the projectile variables including the angle and velocity of release, and projectile height and range, using everyday activities such as shooting basketballs or kicking footballs",
+     "anchors": [
+      "projectile motion",
+      "projectile",
+      "launch angle",
+      "range of projectile",
+      "trajectory",
+      "parabolic path",
+      "shooting basketball",
+      "maximum height"
+     ]
+    },
+    {
+     "code": "G10-F-2",
+     "text": "describe different types of collisions as elastic or inelastic by providing some examples",
+     "anchors": [
+      "elastic collision",
+      "inelastic collision",
+      "types of collisions",
+      "billiard balls",
+      "car crash",
+      "bouncing ball"
+     ]
+    },
+    {
+     "code": "G10-F-3",
+     "text": "use models to investigate elastic or inelastic collisions and describe the forces involved and their effects",
+     "anchors": [
+      "collision forces",
+      "collision model",
+      "impact force",
+      "elastic collision",
+      "inelastic collision",
+      "kinetic energy loss"
+     ]
+    },
+    {
+     "code": "G10-F-4",
+     "text": "explain that momentum depends on the mass and the velocity of a moving object that can be used to predict the impact the object will have if it hits another object",
+     "anchors": [
+      "momentum",
+      "mass times velocity",
+      "mass and velocity",
+      "linear momentum",
+      "impact prediction",
+      "momentum formula"
+     ]
+    },
+    {
+     "code": "G10-F-5",
+     "text": "carry out guided investigations using different objects to describe momentum-related relationships, such as the more momentum an object has, the harder for it to stop",
+     "anchors": [
+      "momentum",
+      "stopping distance",
+      "harder to stop",
+      "momentum investigation",
+      "stopping force",
+      "momentum relationships",
+      "rolling ball"
+     ]
+    },
+    {
+     "code": "G10-F-6",
+     "text": "identify and explain that to change the momentum of an object, it is necessary to apply a force on the object over a period of time",
+     "anchors": [
+      "impulse",
+      "change in momentum",
+      "force over time",
+      "impulse momentum",
+      "force and time",
+      "impulse-momentum theorem"
+     ]
+    },
+    {
+     "code": "G10-F-7",
+     "text": "gather information from secondary sources to identify ways to reduce the impact of collisions such as seatbelts, airbags, and crumple zones in vehicles",
+     "anchors": [
+      "seatbelt",
+      "airbag",
+      "crumple zone",
+      "vehicle safety",
+      "car safety",
+      "reduce impact",
+      "road safety"
+     ]
+    },
+    {
+     "code": "G10-F-8",
+     "text": "identify that momentum is conserved before and after the collision of objects",
+     "anchors": [
+      "conservation of momentum",
+      "momentum conserved",
+      "total momentum",
+      "before and after collision",
+      "momentum conservation",
+      "closed system"
+     ]
+    },
+    {
+     "code": "G10-F-9",
+     "text": "describe how high voltage electricity from power plants is generated and safely distributed to industries, businesses, and homes, including the role of substations (grid stations), and electric meters",
+     "anchors": [
+      "power plant",
+      "high voltage",
+      "substation",
+      "electric meter",
+      "power grid",
+      "transmission lines",
+      "electricity distribution",
+      "power transmission"
+     ]
+    },
+    {
+     "code": "G10-F-10",
+     "text": "describe and explain the need for safety precautions in handling household electrical devices",
+     "anchors": [
+      "electrical safety",
+      "electric shock",
+      "household appliances",
+      "electrical hazards",
+      "short circuit",
+      "overloaded outlet",
+      "faulty wiring"
+     ]
+    },
+    {
+     "code": "G10-F-11",
+     "text": "describe the similarities and differences between electric motors and electric generators",
+     "anchors": [
+      "electric motor",
+      "electric generator",
+      "generator",
+      "electromagnetic induction",
+      "motor vs generator",
+      "dynamo",
+      "Faraday"
+     ]
+    },
+    {
+     "code": "G10-F-12",
+     "text": "collaborate in a class discussion to identify ways to reduce the use of electrical energy in Filipino houses and communities and explain what local and global benefits can be achieved",
+     "anchors": [
+      "save electricity",
+      "energy saving",
+      "reduce electricity use",
+      "energy efficient appliances",
+      "electricity bill",
+      "LED bulbs",
+      "energy conservation"
+     ]
+    },
+    {
+     "code": "G10-F-13",
+     "text": "gather information from secondary sources to evaluate how renewable and non-renewable generation of electricity in the Philippines impacts human activities and the environment",
+     "anchors": [
+      "non-renewable energy",
+      "fossil fuels",
+      "coal power plant",
+      "renewable vs non-renewable",
+      "geothermal power",
+      "coal-fired",
+      "energy sources Philippines",
+      "power generation"
+     ]
+    }
+   ]
+  },
+  {
+   "grade": 10,
+   "quarter": 3,
+   "title": "Science of Materials",
+   "domain": "MATTER",
+   "content": "Chemical reactions | Acids, bases, and salts | Types of chemical reactions | Chemical reactions in the environment | Chemical equations | Rates of reactions",
+   "competencies": [
+    {
+     "code": "G10-M-1",
+     "text": "describe the indicators for a chemical reaction as color change, the formation of a precipitate, the release of gas, and or odor, or a change in temperature",
+     "anchors": [
+      "chemical reaction",
+      "signs of chemical reaction",
+      "precipitate",
+      "color change",
+      "gas release",
+      "temperature change",
+      "evidence of chemical change",
+      "gas bubbles"
+     ]
+    },
+    {
+     "code": "G10-M-2",
+     "text": "identify common acids, bases, and salts (e.g., hydrochloric acid, sodium hydroxide, and saline solution) using different indicators",
+     "anchors": [
+      "acids and bases",
+      "hydrochloric acid",
+      "sodium hydroxide",
+      "litmus paper",
+      "pH indicator",
+      "pH scale",
+      "acidic",
+      "alkaline",
+      "neutralization"
+     ]
+    },
+    {
+     "code": "G10-M-3",
+     "text": "describe important types of chemical reactions (combination, decomposition, single replacement, double replacement)",
+     "anchors": [
+      "types of chemical reactions",
+      "combination reaction",
+      "decomposition reaction",
+      "single replacement",
+      "double replacement",
+      "synthesis reaction",
+      "displacement reaction"
+     ]
+    },
+    {
+     "code": "G10-M-4",
+     "text": "explain how important types of chemical reactions, such as combustion, acids on metals, acids on carbonates, photosynthesis, and respiration, relate to or impact the natural and built environments using information from secondary sources",
+     "anchors": [
+      "combustion",
+      "acid on metal",
+      "acid on carbonate",
+      "acid rain",
+      "corrosion of metals",
+      "photosynthesis reaction",
+      "cellular respiration",
+      "burning fuel"
+     ]
+    },
+    {
+     "code": "G10-M-5",
+     "text": "recognize that scientists: a. use chemical equations to describe chemical reactions, and b. write equations in word form and using formula for common chemical reactions",
+     "anchors": [
+      "chemical equation",
+      "word equation",
+      "chemical formula",
+      "reactant",
+      "reactants and products",
+      "chemical symbols"
+     ]
+    },
+    {
+     "code": "G10-M-6",
+     "text": "explain that chemical equations demonstrate a rearrangement of atoms but the total mass of the system remains the same during a chemical reaction",
+     "anchors": [
+      "conservation of mass",
+      "rearrangement of atoms",
+      "total mass",
+      "law of conservation of mass",
+      "mass is conserved",
+      "atoms rearrange",
+      "Lavoisier"
+     ]
+    },
+    {
+     "code": "G10-M-7",
+     "text": "apply the principles of conservation of mass to balance chemical equations",
+     "anchors": [
+      "balancing chemical equations",
+      "balanced equation",
+      "balance equation",
+      "coefficients",
+      "conservation of mass",
+      "balanced chemical equation"
+     ]
+    },
+    {
+     "code": "G10-M-8",
+     "text": "explain the factors affecting the rates of chemical reactions as applied in food preservation and materials production, control of fire, pollution, and corrosion",
+     "anchors": [
+      "rate of reaction",
+      "reaction rate",
+      "catalyst",
+      "food preservation",
+      "rusting",
+      "corrosion",
+      "collision theory",
+      "reaction speed"
+     ]
+    },
+    {
+     "code": "G10-M-9",
+     "text": "identify that chemical reactions may be exothermic or endothermic",
+     "anchors": [
+      "exothermic",
+      "endothermic",
+      "heat released",
+      "heat absorbed",
+      "exothermic reaction",
+      "endothermic reaction",
+      "energy in reactions"
+     ]
+    }
+   ]
+  },
+  {
+   "grade": 10,
+   "quarter": 4,
+   "title": "Life Science",
+   "domain": "LIVING_THINGS",
+   "content": "Homeostasis | Mechanisms of evolution | Biotechnology | Ecosystem's carrying capacity and population growth",
+   "competencies": [
+    {
+     "code": "G10-L-1",
+     "text": "describe homeostasis as a state of balance among all the body systems in humans that needs to be maintained for survival and proper functioning; its indicators include body temperature, glucose level, and blood pressure",
+     "anchors": [
+      "homeostasis",
+      "body temperature",
+      "blood pressure",
+      "blood glucose",
+      "glucose level",
+      "internal balance",
+      "body systems balance",
+      "thermoregulation"
+     ]
+    },
+    {
+     "code": "G10-L-2",
+     "text": "explain how homeostasis is maintained through various feedback mechanisms, both positive and negative",
+     "anchors": [
+      "feedback mechanism",
+      "negative feedback",
+      "positive feedback",
+      "homeostasis",
+      "sweating",
+      "shivering",
+      "insulin",
+      "hormone regulation"
+     ]
+    },
+    {
+     "code": "G10-L-3",
+     "text": "use information from secondary sources to describe natural selection as the primary mechanism driving evolutionary change",
+     "anchors": [
+      "natural selection",
+      "biological evolution",
+      "Darwin",
+      "survival of the fittest",
+      "evolutionary change",
+      "Galapagos finches"
+     ]
+    },
+    {
+     "code": "G10-L-4",
+     "text": "discuss in small groups important concepts in the theories of evolution, such as variation, heredity, isolation, selection, and adaptation",
+     "anchors": [
+      "theory of evolution",
+      "genetic variation",
+      "heredity",
+      "isolation",
+      "evolutionary adaptation",
+      "speciation",
+      "reproductive isolation",
+      "selection pressure"
+     ]
+    },
+    {
+     "code": "G10-L-5",
+     "text": "use information from secondary sources to explain how lines of evidence, such as fossils, biogeography, and comparative morphology, support the occurrence of evolution",
+     "anchors": [
+      "fossil evidence",
+      "fossil record",
+      "biogeography",
+      "comparative morphology",
+      "homologous structures",
+      "evidence of evolution",
+      "vestigial structures",
+      "embryology"
+     ]
+    },
+    {
+     "code": "G10-L-6",
+     "text": "explain the term biotechnology and provide examples",
+     "anchors": [
+      "biotechnology",
+      "genetic engineering",
+      "uses of biotechnology",
+      "biotechnology examples",
+      "recombinant DNA"
+     ]
+    },
+    {
+     "code": "G10-L-7",
+     "text": "use information from secondary sources to identify the products of traditional biotechnology through fermentation (e.g. cheese, soy sauce, vinegar, nata de coco)",
+     "anchors": [
+      "fermentation",
+      "traditional biotechnology",
+      "nata de coco",
+      "soy sauce",
+      "cheese making",
+      "yeast",
+      "yogurt",
+      "fermented food",
+      "bread rising"
+     ]
+    },
+    {
+     "code": "G10-L-8",
+     "text": "use information from secondary sources to identify examples of modern biotechnology, such as genetically modified organisms and processes (e.g. in vitro fertilization)",
+     "anchors": [
+      "genetically modified",
+      "in vitro fertilization",
+      "modern biotechnology",
+      "gene editing",
+      "cloning",
+      "golden rice",
+      "test tube baby"
+     ]
+    },
+    {
+     "code": "G10-L-9",
+     "text": "participate in a class debate on the societal, environmental, and ethical implications of using biotechnological products and methods",
+     "anchors": [
+      "biotechnology ethics",
+      "ethical implications",
+      "GMO debate",
+      "biotechnology risks",
+      "bioethics",
+      "genetically modified food",
+      "biotechnology impact"
+     ]
+    },
+    {
+     "code": "G10-L-10",
+     "text": "discuss the factors that limit the ecosystem's carrying capacity, such as adequate food, shelter, water, and mates",
+     "anchors": [
+      "carrying capacity",
+      "limiting factors",
+      "population limit",
+      "ecosystem capacity",
+      "competition for resources",
+      "overpopulation",
+      "resource availability"
+     ]
+    },
+    {
+     "code": "G10-L-11",
+     "text": "explain that the ecosystem's population growth slows down as it gets closer to the carrying capacity",
+     "anchors": [
+      "population growth",
+      "carrying capacity",
+      "logistic growth",
+      "population size",
+      "growth curve",
+      "population density",
+      "exponential growth"
+     ]
+    }
+   ]
+  }
+ ]
+}

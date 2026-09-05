@@ -1754,19 +1754,44 @@ function hasServable(
 
 // ---- CALENDAR MODE: the curriculum outline and its cursor ------------------------------------
 
-/** One competency of the outline: DepEd's code, its quarter, and the CG's own (English) wording. */
-export interface OutlineRow {
-  code: string;
+/**
+ * One TOPIC of the outline: a Content-column title of the MATATAG CG (the unit DepEd teaches
+ * by, 3-6 words), its quarter and position in that quarter's Content list, the title in the
+ * three tutor languages, and the competency codes the reviewed mapping files under it
+ * (rag/sources/curriculum-guides/competency-content-map.json, CG order). The calendar is cut
+ * on topics, not competencies: a row is a title the reader can recognise from class, and the
+ * competency sentences never reach the screen.
+ */
+export interface OutlineTopic {
+  /** Stable key within a grade: "Q<quarter>.<contentIndex>" — what the cursor and the sheet name a topic by. */
+  key: string;
   quarter: Quarter;
-  text: string;
+  contentIndex: number;
+  title: { en: string; tl: string; bis: string };
+  codes: readonly string[];
 }
 
-type OutlineJson = Record<string, [string, number, string][]>;
-const OUTLINE_ALL = new Map<number, OutlineRow[]>();
-for (const [g, rows] of Object.entries(curriculumOutlineJson as unknown as OutlineJson)) {
+/** The topic title in the tutor language (the CG is English; tl/bis are the reviewed renderings). */
+export function topicTitle(topic: OutlineTopic, language: Language): string {
+  const t = topic.title;
+  return (language === 'tagalog' ? t.tl : language === 'cebuano' ? t.bis : t.en) || t.en;
+}
+
+type OutlineJson = Record<
+  string,
+  { quarter: number; contentIndex: number; title: { en: string; tl: string; bis: string }; codes: string[] }[]
+>;
+const OUTLINE_ALL = new Map<number, OutlineTopic[]>();
+for (const [g, topics] of Object.entries(curriculumOutlineJson as unknown as OutlineJson)) {
   OUTLINE_ALL.set(
     Number(g),
-    rows.map(([code, quarter, text]) => ({ code, quarter: quarter as Quarter, text }))
+    topics.map((t) => ({
+      key: `Q${t.quarter}.${t.contentIndex}`,
+      quarter: t.quarter as Quarter,
+      contentIndex: t.contentIndex,
+      title: t.title,
+      codes: t.codes,
+    }))
   );
 }
 
@@ -1808,40 +1833,108 @@ export function cardsForCompetency(code: string): ReadonlySet<string> {
 }
 
 /**
- * The outline the calendar prints for a grade: every competency in CG order that has at least
- * one card in the pool. Rows without cards are dropped rather than greyed — a heading the
- * reader cannot tap is a broken promise on a child's screen — and the cursor skips them for
- * the same reason. Computed on demand (the inverse index is lazy), cached per grade.
+ * A TOPIC's cards — the UNION of its competencies' sets from the inverse index, so membership
+ * is the same confidence floor the seen-store and the weight table use, and a card tagged with
+ * two competencies of one topic (spiral tagging) is counted once. Built on first use, frozen,
+ * shared by reference: a cursor holds it as its `idSet` and never copies it. Keyed on the
+ * topic OBJECT (the outline's are module singletons), so the map is at most 140 entries.
  */
-const OUTLINE_WITH_CARDS = new Map<number, OutlineRow[]>();
-export function curriculumOutline(grade: GradeLevel): OutlineRow[] {
+const TOPIC_CARDS = new Map<OutlineTopic, ReadonlySet<string>>();
+export function cardsForTopic(topic: OutlineTopic): ReadonlySet<string> {
+  let s = TOPIC_CARDS.get(topic);
+  if (!s) {
+    if (topic.codes.length === 1) s = cardsForCompetency(topic.codes[0]!);
+    else {
+      const u = new Set<string>();
+      for (const code of topic.codes) for (const id of cardsForCompetency(code)) u.add(id);
+      s = u;
+    }
+    TOPIC_CARDS.set(topic, s);
+  }
+  return s;
+}
+
+/**
+ * SEAM — sub-topic PILLS (follow-up; NOT rendered yet). A topic's cards grouped by taxonomy
+ * leaf (`cats`, rag/pipeline/card-taxonomy.json), labelled in the reader's language, largest
+ * shelf first. When the category backfill completes the outline sheet can print these under a
+ * topic row as tappable pills, and a pill tap becomes a cursor whose `idSet` is the shelf's
+ * `ids` (a strict subset of the topic's — advanceCurriculum then walks on to the next TOPIC
+ * exactly as it does today, because the cursor's `index` is still the topic's). Cards with no
+ * category yet are not listed; the topic row itself remains the "everything" entry. The store
+ * and the sheet take no dependency on this until then — it is data, safe to leave unused.
+ */
+export interface TopicShelf {
+  cat: string;
+  label: string;
+  ids: ReadonlySet<string>;
+}
+export function topicShelves(topic: OutlineTopic, language: Language): TopicShelf[] {
+  const groups = new Map<string, Set<string>>();
+  for (const id of cardsForTopic(topic)) {
+    for (const c of BY_ID.get(id)?.cats ?? []) {
+      let g = groups.get(c);
+      if (!g) groups.set(c, (g = new Set()));
+      g.add(id);
+    }
+  }
+  return [...groups.entries()]
+    .map(([cat, ids]) => ({ cat, label: leafLabel(cat, language) || cat, ids }))
+    .sort((a, b) => b.ids.size - a.ids.size);
+}
+
+/**
+ * A topic needs this many cards at its grade to be printed on the calendar — or to be a stop
+ * on the cursor's walk, which reads the same list. Below it the row is a heading over one or
+ * two cards (G5 "Using models" had exactly 1 once its method cards were retired), which reads
+ * as a mistake, not a topic. Luis, 2026-09-05: "hide if there are less than 3".
+ */
+export const TOPIC_MIN_CARDS = 3;
+
+/**
+ * The outline the calendar prints for a grade: every TOPIC in CG order (quarter, then the
+ * quarter's Content list) that has at least TOPIC_MIN_CARDS cards in the pool. Thinner rows are
+ * dropped rather than greyed — a heading the reader cannot usefully tap is a broken promise on
+ * a child's screen — and the cursor skips them for the same reason. Computed on demand (the
+ * inverse index is lazy), cached per grade. `deped:<module>` rows (see byCode) are indexed but
+ * no topic names them, so they stay unreachable from the calendar — accepted.
+ */
+const OUTLINE_WITH_CARDS = new Map<number, OutlineTopic[]>();
+export function curriculumOutline(grade: GradeLevel): OutlineTopic[] {
   let rows = OUTLINE_WITH_CARDS.get(grade);
   if (!rows) {
-    rows = (OUTLINE_ALL.get(grade) ?? []).filter((r) => cardsForCompetency(r.code).size > 0);
+    rows = (OUTLINE_ALL.get(grade) ?? []).filter((t) => cardsForTopic(t).size >= TOPIC_MIN_CARDS);
     OUTLINE_WITH_CARDS.set(grade, rows);
   }
   return rows;
 }
 
 /**
- * Where calendar mode IS: a grade, a competency of its outline, that competency's cards, and
+ * Where calendar mode IS: a grade, a topic of its outline (by `key`), that topic's cards, and
  * the row's position (`index` into curriculumOutline(grade)). The store keeps one of these as
  * `curriculum`; its `idSet` doubles as the FeedContext restriction (see CurriculumHold).
  */
 export interface CurriculumCursor {
   grade: GradeLevel;
-  code: string;
-  /** The competency's cards — the frozen set from the inverse index, shared, never copied. */
+  /** OutlineTopic.key of the held topic ("Q2.1"). */
+  key: string;
+  /** The topic's cards — the frozen union from cardsForTopic, shared, never copied. */
   idSet: ReadonlySet<string>;
   index: number;
 }
 
-/** Enter the outline at a competency, or null if the grade's outline does not list it (no cards). */
-export function curriculumCursor(grade: GradeLevel, code: string): CurriculumCursor | null {
+/** The outline row a cursor names (its title prints on the ribbon), or undefined if the grade's outline moved under it. */
+export function cursorTopic(c: CurriculumCursor): OutlineTopic | undefined {
+  const t = curriculumOutline(c.grade)[c.index];
+  return t && t.key === c.key ? t : undefined;
+}
+
+/** Enter the outline at a topic, or null if the grade's outline does not list it (no cards). */
+export function curriculumCursor(grade: GradeLevel, key: string): CurriculumCursor | null {
   const rows = curriculumOutline(grade);
-  const index = rows.findIndex((r) => r.code === code);
+  const index = rows.findIndex((t) => t.key === key);
   if (index < 0) return null;
-  return { grade, code, idSet: cardsForCompetency(code), index };
+  return { grade, key, idSet: cardsForTopic(rows[index]!), index };
 }
 
 /**
@@ -1853,8 +1946,8 @@ export function curriculumCursor(grade: GradeLevel, code: string): CurriculumCur
  *     NOT count, see there) → the cursor stays. Returned as the SAME object, so anything
  *     keyed on it (the preview cache) stays valid.
  *   - it is EXHAUSTED → the cursor moves FORWARD through the outline, in CG order, to the
- *     first later competency that has such a card, skipping ones that do not (empty for this
- *     pool, or already read out this session). Chronological, never backward.
+ *     first later topic that has such a card, skipping ones that do not (empty for this pool,
+ *     or already read out this session). Chronological, never backward.
  *   - nothing left to the end of Q4 → null: calendar mode releases and the feed drifts on.
  *
  * `seen` is the post-turn value (it already includes `currentId`).
@@ -1867,9 +1960,9 @@ export function advanceCurriculum(
   if (hasServableCurriculum(currentId, c.idSet, seen)) return c;
   const rows = curriculumOutline(c.grade);
   for (let i = c.index + 1; i < rows.length; i += 1) {
-    const idSet = cardsForCompetency(rows[i]!.code);
+    const idSet = cardsForTopic(rows[i]!);
     if (idSet.size && hasServableCurriculum(currentId, idSet, seen)) {
-      return { grade: c.grade, code: rows[i]!.code, idSet, index: i };
+      return { grade: c.grade, key: rows[i]!.key, idSet, index: i };
     }
   }
   return null;

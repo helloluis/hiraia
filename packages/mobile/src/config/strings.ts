@@ -43,8 +43,6 @@ interface UIStrings {
   sectionGrade: string; // the student's grade level (chips 3–10)
   beta: string;
   comingSoon: string;
-  sectionNotes: string;
-  noNotes: string;
   sectionVersion: string;
   labelModel: string;
   facts: string;
@@ -73,9 +71,18 @@ interface UIStrings {
     reroll: string;
     /** a11y label of the same button while it shows the CALENDAR (opens the outline sheet). */
     openCurriculum: string;
-    /** "Curriculum" — the outline sheet's title and the calendar ribbon's label ("KURIKULUM · Q2"). */
+    /** Pops over the ask box for a moment after the die is tapped, so the kid knows what happened. */
+    rerollToast: string;
+    /** The same pop while calendar mode holds a topic — the die then draws WITHIN that topic. */
+    rerollToastTopic: string;
+    /**
+     * "Curriculum" — the outline sheet's eyebrow and the calendar ribbon's label
+     * ("KURIKULUM · Q2 · <topic title>"). The topic titles themselves are NOT here: they are
+     * DepEd's CG Content titles, localized in rag/sources/curriculum-guides/content-titles.i18n.json
+     * and carried by the generated outline (data/cards.ts topicTitle).
+     */
     curriculum: string;
-    /** One line under the sheet's title saying what a topic tap does. */
+    /** One line under the sheet's title saying what a topic-row tap does. */
     curriculumHint: string;
     /** The four quarter headings of the outline, Q1..Q4 in order. */
     quarters: [string, string, string, string];
@@ -132,12 +139,10 @@ const UI_STRINGS: Record<Language, UIStrings> = {
   tagalog: {
     close: '← Isara',
     sectionLanguage: 'Wika',
-    langRestartNote: 'Sandali itong magri-restart kapag pinalitan.',
+    langRestartNote: 'Magre-restart ang Hiraia kapag nagpalit ka ng wika.',
     sectionGrade: 'Baitang',
     beta: 'beta',
     comingSoon: 'malapit na!',
-    sectionNotes: 'Mga Tala',
-    noNotes: 'Wala pang tala',
     sectionVersion: 'Bersyon',
     labelModel: 'Modelo',
     facts: 'datos',
@@ -181,6 +186,8 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       dismissAsk: 'Alisin ang tanong',
       reroll: 'Ibang paksa',
       openCurriculum: 'Buksan ang kurikulum',
+      rerollToast: 'Bagong random na paksa!',
+      rerollToastTopic: 'Random na card sa paksang ito!',
       curriculum: 'Kurikulum',
       curriculumHint: 'Pumili ng paksa — tatapusin natin ang lahat ng kard nito.',
       quarters: ['Unang Markahan', 'Ikalawang Markahan', 'Ikatlong Markahan', 'Ikaapat na Markahan'],
@@ -219,12 +226,10 @@ const UI_STRINGS: Record<Language, UIStrings> = {
   english: {
     close: '← Close',
     sectionLanguage: 'Language',
-    langRestartNote: 'It restarts briefly when you switch.',
+    langRestartNote: 'Hiraia will restart when you switch languages.',
     sectionGrade: 'Grade',
     beta: 'beta',
     comingSoon: 'coming soon',
-    sectionNotes: 'Notes',
-    noNotes: 'No notes yet',
     sectionVersion: 'Version',
     labelModel: 'Model',
     facts: 'facts',
@@ -267,6 +272,8 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       dismissAsk: 'Dismiss your question',
       reroll: 'Surprise me',
       openCurriculum: 'Open the curriculum',
+      rerollToast: 'New Random Topic!',
+      rerollToastTopic: 'Random card from this topic!',
       curriculum: 'Curriculum',
       curriculumHint: "Pick a topic — we'll go through all of its cards.",
       quarters: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4'],
@@ -298,14 +305,12 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     },
   },
   cebuano: {
-    close: '← Sirado',
+    close: '← Isira',
     sectionLanguage: 'Pinulongan',
-    langRestartNote: 'Mag-restart kini dali kung mag-usab ka.',
+    langRestartNote: 'Mag-restart ang Hiraia kung mag-ilis ka og pinulongan.',
     sectionGrade: 'Grado',
     beta: 'beta',
     comingSoon: 'hapit na!',
-    sectionNotes: 'Mga Nota',
-    noNotes: 'Wala pay nota',
     sectionVersion: 'Bersyon',
     labelModel: 'Modelo',
     facts: 'datos',
@@ -354,10 +359,14 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       //   • "humanon nato" for "we'll finish/go through" — check register.
       reroll: 'Laing hilisgutan',
       openCurriculum: 'Ablihi ang kurikulum',
+      //   • "random" is borrowed as in the Tagalog line; check whether "sapalaran" / "bisan
+      //     unsa" reads more naturally to a Cebuano child.
+      rerollToast: 'Bag-ong random nga hilisgutan!',
+      rerollToastTopic: 'Random nga card gikan niini nga hilisgutan!',
       curriculum: 'Kurikulum',
       curriculumHint: 'Pilia ang hilisgutan — humanon nato ang tanan niyang kard.',
       quarters: ['Unang Kwarter', 'Ikaduhang Kwarter', 'Ikatulong Kwarter', 'Ikaupat nga Kwarter'],
-      closeCurriculum: 'Sirado ang kurikulum',
+      closeCurriculum: 'Isira ang kurikulum',
       exitCurriculum: 'Gawas sa kurikulum',
       curriculumEmpty: 'Wala pay kard para niini nga grado.',
       thinking: 'Naghunahuna pa ko',

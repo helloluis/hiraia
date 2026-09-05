@@ -2,6 +2,13 @@
 # docs at the top of sources/ (e.g. GROUNDING.md — our strategy notes).
 sources/*
 !sources/*.md
+# ...and the curriculum-guide extractions + their derived mapping/i18n files: small JSON that
+# packages/mobile/scripts/gen-curriculum-outline.mjs and gen-curriculum-tags.mjs build from.
+# (`sources/*` excludes the directory itself, so the `!*.json` below could not reach inside it.)
+# Only the JSON is tracked: a CG PDF dropped next to them stays ignored like the rest of sources/.
+!sources/curriculum-guides/
+sources/curriculum-guides/*
+!sources/curriculum-guides/*.json
 
 # Keep config and scripts
 !config.js

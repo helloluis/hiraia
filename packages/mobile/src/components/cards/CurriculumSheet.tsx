@@ -1,20 +1,28 @@
 /**
  * The CALENDAR — the MATATAG outline for the reader's grade, as a sheet over the deck.
  *
- * Opened from the cycling die/calendar button; lists every competency of the grade that has
- * at least one card in the pool, in DepEd's own order, quarter by quarter (the outline is
- * `curriculumOutline` in data/cards.ts — the generated CG order filtered by card presence).
- * Tapping a row enters calendar mode at that competency (cardStore.enterCurriculum): the
- * feed then serves that topic's cards until they run out and walks on to the next row.
+ * Opened from the cycling die/calendar button; lists every TOPIC of the grade that has at
+ * least one card in the pool, in DepEd's own order, quarter by quarter (the outline is
+ * `curriculumOutline` in data/cards.ts — the generated CG order filtered by card presence). A
+ * topic is a Content-column title of the CG ("Mga Uri ng Lupa", "Ang Siklo ng Tubig"): the
+ * 3-6-word heading a child recognises from class. The competency sentences under it are the
+ * data model, never the copy. Tapping a row enters calendar mode at that topic
+ * (cardStore.enterCurriculum): the feed then serves the topic's cards — the union of its
+ * competencies' sets — until they run out and walks on to the next row.
  *
  * Printed in the deck's own language: a sheet of cream stock with an ink edge over the
  * darkened board, ink type, olive small caps for the quarter headings, and the gold marker
  * — the deck's "continue" colour — on the row currently held. No emoji, no glyph icons:
  * the close affordance is the same ✕-in-a-ring the ribbons use.
  *
- * The competency TEXT is DepEd's English CG wording for v1 (the CG is authored in English;
- * localized glosses are a separate translation job). Everything else on the sheet — title,
- * hint, quarter headings, domain names, a11y labels — follows the tutor language.
+ * Titles follow the tutor language (tl / bis renderings reviewed against DepEd classroom
+ * usage; English is the CG's own wording and the fallback). Everything else on the sheet —
+ * eyebrow, hint, quarter headings, domain names, a11y labels — is uiStrings.
+ *
+ * SEAM — sub-topic PILLS (follow-up, once the category backfill completes): each row will
+ * grow a wrap of small pills under its title, one per `topicShelves(topic, language)` entry
+ * (data/cards.ts), and a pill tap will call `onPick(topic.key, shelf.cat)`. Nothing renders
+ * yet; see `PILLS_SLOT` below for where they mount.
  */
 import { memo, useMemo } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -24,7 +32,7 @@ import { DOMAIN_NAMES, GRADE_DOMAIN_MAP, type GradeLevel, type Language, type Qu
 
 import { GRADE_WORD } from '../../config/grades';
 import { uiStrings } from '../../config/strings';
-import { cardsForCompetency, curriculumOutline, type OutlineRow } from '../../data/cards';
+import { cardsForTopic, curriculumOutline, topicTitle, type OutlineTopic } from '../../data/cards';
 import { useCardStore } from '../../store/cardStore';
 import { card, cardAlpha, fonts } from '../../theme';
 import { CARD_EDGE, CARD_RADIUS } from './CardFrame';
@@ -32,7 +40,16 @@ import { CARD_EDGE, CARD_RADIUS } from './CardFrame';
 /** How much of the screen the sheet may take; the board stays visible above it. */
 const SHEET_MAX_HEIGHT = 0.82;
 
-interface RowView extends OutlineRow {
+/**
+ * Where a row's sub-topic pills mount when they land (see the header note). Kept as an
+ * explicit, empty slot rather than nothing at all so the follow-up is a one-place change and
+ * the row's layout (title + chip on one line, pills wrapping beneath) is already decided.
+ */
+const PILLS_SLOT = null;
+
+interface RowView {
+  topic: OutlineTopic;
+  title: string;
   unseen: number;
   total: number;
 }
@@ -47,16 +64,16 @@ interface QuarterGroup {
  * session's seen set. Cheap (a Set lookup per card of the grade, ~15k) and only computed while
  * the sheet is visible — the memo keys on `visible` so a hidden sheet does no work per turn.
  */
-function groupOutline(grade: GradeLevel, seen: ReadonlySet<string>): QuarterGroup[] {
+function groupOutline(grade: GradeLevel, language: Language, seen: ReadonlySet<string>): QuarterGroup[] {
   const groups: QuarterGroup[] = [];
-  for (const row of curriculumOutline(grade)) {
-    const ids = cardsForCompetency(row.code);
+  for (const topic of curriculumOutline(grade)) {
+    const ids = cardsForTopic(topic);
     let unseen = 0;
     for (const id of ids) if (!seen.has(id)) unseen += 1;
-    const view: RowView = { ...row, unseen, total: ids.size };
+    const view: RowView = { topic, title: topicTitle(topic, language), unseen, total: ids.size };
     const last = groups[groups.length - 1];
-    if (last && last.quarter === row.quarter) last.rows.push(view);
-    else groups.push({ quarter: row.quarter, rows: [view] });
+    if (last && last.quarter === topic.quarter) last.rows.push(view);
+    else groups.push({ quarter: topic.quarter, rows: [view] });
   }
   return groups;
 }
@@ -65,16 +82,17 @@ export const CurriculumSheet = memo(function CurriculumSheet({
   visible,
   grade,
   language,
-  activeCode,
+  activeKey,
   onPick,
   onClose,
 }: {
   visible: boolean;
   grade: GradeLevel;
   language: Language;
-  /** The competency currently held (calendar mode), marked in gold; null when not in the mode. */
-  activeCode: string | null;
-  onPick: (code: string) => void;
+  /** The topic currently held (calendar mode), by OutlineTopic.key, marked in gold; null when not in the mode. */
+  activeKey: string | null;
+  /** A row tap: enter the topic by key. (Pills will add an optional second argument, the shelf's `cat`.) */
+  onPick: (key: string) => void;
   onClose: () => void;
 }) {
   const t = uiStrings(language);
@@ -83,8 +101,8 @@ export const CurriculumSheet = memo(function CurriculumSheet({
   // memo below refreshes each time the sheet is opened onto a new page.
   const seen = useCardStore((s) => s.seen);
   const groups = useMemo(
-    () => (visible ? groupOutline(grade, seen) : []),
-    [visible, grade, seen]
+    () => (visible ? groupOutline(grade, language, seen) : []),
+    [visible, grade, language, seen]
   );
 
   return (
@@ -142,23 +160,29 @@ export const CurriculumSheet = memo(function CurriculumSheet({
                     </Text>
                   </View>
                   {g.rows.map((row) => {
-                    const active = row.code === activeCode;
+                    const active = row.topic.key === activeKey;
                     return (
                       <Pressable
-                        key={row.code}
-                        onPress={() => onPick(row.code)}
+                        key={row.topic.key}
+                        onPress={() => onPick(row.topic.key)}
                         accessibilityRole="button"
                         accessibilityState={{ selected: active }}
                         style={({ pressed }) => [styles.row, active && styles.rowActive, pressed && styles.rowPressed]}
                       >
                         <View style={[styles.marker, active && styles.markerActive]} />
-                        <Text style={[styles.rowText, active && styles.rowTextActive]} numberOfLines={3}>
-                          {row.text}
-                        </Text>
-                        <View style={[styles.chip, active && styles.chipActive]}>
-                          <Text style={[styles.chipText, active && styles.chipTextActive]} numberOfLines={1}>
-                            {row.unseen} / {row.total}
-                          </Text>
+                        <View style={styles.rowBody}>
+                          <View style={styles.rowLine}>
+                            <Text style={[styles.rowText, active && styles.rowTextActive]} numberOfLines={2}>
+                              {row.title}
+                            </Text>
+                            <View style={[styles.chip, active && styles.chipActive]}>
+                              <Text style={[styles.chipText, active && styles.chipTextActive]} numberOfLines={1}>
+                                {row.unseen} / {row.total}
+                              </Text>
+                            </View>
+                          </View>
+                          {/* sub-topic pills mount here (follow-up) — see PILLS_SLOT */}
+                          {PILLS_SLOT}
                         </View>
                       </Pressable>
                     );
@@ -259,7 +283,11 @@ const styles = StyleSheet.create({
   // the gold marker: a 4dp bar in the gutter, transparent until the row is the held topic
   marker: { width: 4, alignSelf: 'stretch', borderRadius: 2, backgroundColor: 'transparent' },
   markerActive: { backgroundColor: card.gold },
-  rowText: { flex: 1, fontFamily: fonts.cardBody, fontSize: 14, lineHeight: 18, color: card.ink },
+  // title + chip on one line; the pills (when they land) wrap beneath inside rowBody
+  rowBody: { flex: 1 },
+  rowLine: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  // a DepEd title is a heading, not a sentence: one size up from the old competency text
+  rowText: { flex: 1, fontFamily: fonts.cardBody, fontSize: 15, lineHeight: 19, color: card.ink },
   rowTextActive: { fontFamily: fonts.cardBodyBold },
   chip: {
     minWidth: 52,
