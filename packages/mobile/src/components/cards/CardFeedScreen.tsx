@@ -19,11 +19,17 @@
  * past it. DOWN is tracked but never commits: there is no previous card to go back to.
  * Every 4-5 pages the flip is intercepted by a single MCQ about a recently-read fact.
  *
- * ROBUSTNESS: the incoming page carries the live drag and nothing else — and the drag
- * always ends at rest, whether the swipe committed or sprang back — the outgoing (peeling)
- * page always animates fully off-screen, and a safety timer clears it even if the
- * animation callback is dropped, so a transition can never strand a layer over the screen
- * (the earlier hang).
+ * RESPONSIVENESS: a committed swipe starts its exit ON THE UI THREAD in the same frame the
+ * finger lifts (the fly values + `handoff` — see the pan's onEnd). The store advance and
+ * the React commit of the next page happen on JS BEHIND a card already in flight, so the
+ * SD685's ~hundreds of ms of advance+commit are invisible instead of a frozen card. When
+ * the next page commits, the outgoing snapshot adopts the same fly values mid-flight and
+ * the live layer drops back to rest under it.
+ *
+ * ROBUSTNESS: the live drag always ends at rest, whether the swipe committed or sprang
+ * back; the outgoing (peeling) page always animates fully off-screen, and a safety timer
+ * clears it even if the animation callback is dropped, so a transition can never strand a
+ * layer over the screen (the earlier hang).
  */
 import { useRouter } from 'expo-router';
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
@@ -31,6 +37,7 @@ import {
   ActivityIndicator,
   Animated,
   Easing,
+  InteractionManager,
   Keyboard,
   Pressable,
   StyleSheet,
@@ -41,10 +48,15 @@ import {
 } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Reanimated, {
+  cancelAnimation,
+  Easing as ReEasing,
+  interpolate,
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
+  withTiming,
+  type SharedValue,
 } from 'react-native-reanimated';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -53,6 +65,7 @@ import type { Language } from '@hiraia/shared';
 import { GRADE_WORD } from '../../config/grades';
 import { uiStrings } from '../../config/strings';
 import {
+  curriculumOutline,
   getCard,
   type CardChoice,
   type CardFact,
@@ -66,9 +79,11 @@ import { useTypewriter } from '../onboarding/useTypewriter';
 import { barColor, fieldSurface, useReadinessMessage } from './searchReadiness';
 import { CARD_EDGE, CARD_RADIUS } from './CardFrame';
 import { CardPage } from './CardPage';
+import { CurriculumSheet } from './CurriculumSheet';
 import { QuestionPage } from './QuestionPage';
 import { ResponseCard } from './ResponseCard';
 import { RewardCard } from './RewardCard';
+import { useReduceMotion } from './useReduceMotion';
 
 const FLIP_MS = 380;
 
@@ -233,6 +248,48 @@ const TOSS_CARRY = 2.2;
 /** How long after a drag an on-card tap is ignored (see `dragging`). */
 const TAP_GUARD_MS = 180;
 
+/** How far the peel tilts as it hinges off its corner (degrees at full progress). */
+const PEEL_TILT_DEG = 10;
+
+/** How long the fan's fork/single crossfade runs (see DeckUnderlay). */
+const FORK_FADE_MS = 160;
+
+/**
+ * The corner-hinge transform sandwich — translate to the pivot corner, rotate, translate
+ * back — as ONE worklet shared by the LIVE card layer (which now starts flying the moment
+ * the finger commits, inside the pan's onEnd) and the outgoing snapshot that takes the
+ * flight over once the next page has committed. One function, so the mid-flight hand-off
+ * between the two layers is pixel-identical by construction.
+ *
+ *   x, y  — the flight's translation (fly values: from the release offset to off-screen)
+ *   peel  — flight progress 0→1; only the tilt reads it (translation is animated directly)
+ *   side  — 0 = hinge on the left edge, 1 = right (the corner the swipe named)
+ *   down  — 1 = thrown downward: the hinge flips to the TOP corner (see the Peel type)
+ */
+function peelTransform(
+  x: number,
+  y: number,
+  peel: number,
+  side: number,
+  down: number,
+  w: number,
+  h: number
+) {
+  'worklet';
+  const cx = side === 0 ? -w / 2 : w / 2;
+  const cy = down === 1 ? -h / 2 : h / 2;
+  const deg = (side === 0 ? PEEL_TILT_DEG : -PEEL_TILT_DEG) * (down === 1 ? -1 : 1) * peel;
+  return [
+    { translateX: x },
+    { translateY: y },
+    { translateX: -cx },
+    { translateY: -cy },
+    { rotate: `${deg}deg` },
+    { translateX: cx },
+    { translateY: cy },
+  ];
+}
+
 type Side = 'left' | 'right';
 
 /**
@@ -294,6 +351,146 @@ function DieFace() {
   );
 }
 
+/**
+ * A wall calendar, drawn as Views for the same reason the die is: an ink header band with
+ * two hanging rings, and a page of day-cells below. Same 22dp footprint as the die so the
+ * crossfade between the two faces never shifts the button's optical centre.
+ */
+const CAL_ROWS: boolean[][] = [
+  [true, true, true, true],
+  [true, true, true, false],
+];
+
+function CalendarFace() {
+  return (
+    <View style={styles.cal}>
+      <View style={styles.calRings}>
+        <View style={styles.calRing} />
+        <View style={styles.calRing} />
+      </View>
+      <View style={styles.calPage}>
+        <View style={styles.calHead} />
+        <View style={styles.calGrid}>
+          {CAL_ROWS.map((row, r) => (
+            <View key={r} style={styles.calRow}>
+              {row.map((day, c) => (
+                <View key={c} style={[styles.calCell, day && styles.calDay]} />
+              ))}
+            </View>
+          ))}
+        </View>
+      </View>
+    </View>
+  );
+}
+
+/** How long each face of the cycling button shows before it swaps to the other. */
+const FACE_CYCLE_MS = 2000;
+/** The crossfade between the two faces (plain Animated, native driver). */
+const FACE_FADE_MS = 250;
+
+type Face = 'die' | 'calendar';
+
+/**
+ * The top-right button: a die and a calendar, alternating every FACE_CYCLE_MS on a loop with a
+ * crossfade. Its action follows the face SHOWING AT TOUCH-DOWN, and the cycle FREEZES while
+ * the finger is down and while the outline sheet is open (`frozen`), so a swap can never steal
+ * a tap between touch-down and release.
+ *
+ * How the freeze works: the interval keeps ticking, but each tick reads two refs
+ * synchronously and does nothing while either is set — `pressed` (onPressIn → onPressOut) and
+ * `frozen` (mirrored from the prop). onPressIn also snapshots the showing face into `touched`,
+ * and onPress dispatches on THAT snapshot, never on the current state: even if a tick had been
+ * queued for the same frame, the action is bound to what the finger landed on. The showing
+ * face flips at the crossfade's MIDPOINT — the instant the incoming face becomes the more
+ * visible of the two — so a tap during the fade follows whichever face the eye actually sees
+ * (flipping at the fade's start would bind its first 125 ms to a face still ~96% transparent).
+ * The accessibility label and the action switch together at that same instant.
+ *
+ * Reduced motion: no crossfade, the faces swap instantly (the loop itself stays — it is what
+ * advertises the calendar exists — at the same 2 s cadence).
+ */
+const CycleButton = memo(function CycleButton({
+  language,
+  frozen,
+  onDie,
+  onCalendar,
+}: {
+  language: Language;
+  frozen: boolean;
+  onDie: () => void;
+  onCalendar: () => void;
+}) {
+  const t = uiStrings(language);
+  const reduceMotion = useReduceMotion();
+  const [face, setFace] = useState<Face>('die');
+  const faceRef = useRef<Face>('die');
+  const touched = useRef<Face>('die');
+  const pressed = useRef(false);
+  const frozenRef = useRef(frozen);
+  useEffect(() => {
+    frozenRef.current = frozen;
+  }, [frozen]);
+  // 0 = the die shows, 1 = the calendar shows; the die's opacity is the complement.
+  const cal = useRef(new Animated.Value(0)).current;
+  const dieOpacity = useRef(cal.interpolate({ inputRange: [0, 1], outputRange: [1, 0] })).current;
+
+  useEffect(() => {
+    let flipAt: ReturnType<typeof setTimeout> | null = null;
+    const id = setInterval(() => {
+      if (pressed.current || frozenRef.current) return;
+      const next: Face = faceRef.current === 'die' ? 'calendar' : 'die';
+      const show = () => {
+        flipAt = null;
+        faceRef.current = next;
+        setFace(next);
+      };
+      const to = next === 'calendar' ? 1 : 0;
+      if (reduceMotion) {
+        cal.setValue(to);
+        show();
+      } else {
+        Animated.timing(cal, {
+          toValue: to,
+          duration: FACE_FADE_MS,
+          easing: Easing.inOut(Easing.quad),
+          useNativeDriver: true,
+        }).start();
+        // the showing face flips when the incoming one becomes the more visible (see above)
+        flipAt = setTimeout(show, FACE_FADE_MS / 2);
+      }
+    }, FACE_CYCLE_MS);
+    return () => {
+      clearInterval(id);
+      if (flipAt) clearTimeout(flipAt);
+    };
+  }, [cal, reduceMotion]);
+
+  return (
+    <Pressable
+      onPressIn={() => {
+        pressed.current = true;
+        touched.current = faceRef.current;
+      }}
+      onPressOut={() => {
+        pressed.current = false;
+      }}
+      onPress={() => (touched.current === 'die' ? onDie() : onCalendar())}
+      hitSlop={8}
+      accessibilityRole="button"
+      accessibilityLabel={face === 'die' ? t.cards.reroll : t.cards.openCurriculum}
+      style={styles.reroll}
+    >
+      <Animated.View style={[styles.face, { opacity: dieOpacity }]} pointerEvents="none">
+        <DieFace />
+      </Animated.View>
+      <Animated.View style={[styles.face, { opacity: cal }]} pointerEvents="none">
+        <CalendarFace />
+      </Animated.View>
+    </Pressable>
+  );
+});
+
 /** How long the finished (full-width, sage) readiness bar lingers before unmounting —
  *  the child gets to SEE the walk complete to green, the spec's payoff moment. */
 const DONE_LINGER_MS = 800;
@@ -340,6 +537,134 @@ const SearchStatusLine = memo(function SearchStatusLine({
   );
 });
 
+/** Referentially-stable no-ops for the under-stack's preview page (memo props). */
+const NOOP = () => undefined;
+const EMPTY_CHOICES: CardChoice[] = [];
+
+/**
+ * The decorative deck — the PERSISTENT under-stack. The deck is infinite, so the sheets
+ * behind the top card must ALWAYS be there: this subtree is memoized so neither of a swipe's
+ * two commits (the page change, then the outgoing snapshot mounting) ever reconciles it
+ * unless the sheet's own content actually changed — and the sheet's content is deliberately
+ * updated AFTER the transition (see the `under` state), during reading time.
+ *
+ * Fork vs single is not a mount/unmount swap any more: BOTH states are always mounted and
+ * `forkGate` crossfades their opacity on the UI thread (a swap used to unmount the whole
+ * preview subtree and mount two blank Views in the swipe's critical commit — a blank frame
+ * behind the departing card). The gate itself stays a crisp 0/1 for the pan's middle-band
+ * worklet; only the opacity eases.
+ */
+const DeckUnderlay = memo(function DeckUnderlay({
+  fact,
+  choices,
+  language,
+  forkGate,
+}: {
+  fact: CardFact | null;
+  choices: CardChoice[];
+  language: Language;
+  forkGate: SharedValue<number>;
+}) {
+  const branchFade = useAnimatedStyle(() => ({
+    opacity: withTiming(forkGate.value, { duration: FORK_FADE_MS }),
+  }));
+  const singleFade = useAnimatedStyle(() => ({
+    opacity: withTiming(1 - forkGate.value, { duration: FORK_FADE_MS }),
+  }));
+  return (
+    <>
+      {/* fanned cards behind — on a fork these are the two branches, blue on the left
+          and ochre on the right, matching the A/B order of the tickets. */}
+      <Reanimated.View
+        style={[styles.fan, styles.fanBranch, styles.fanA, branchFade]}
+        pointerEvents="none"
+      />
+      <Reanimated.View
+        style={[styles.fan, styles.fanBranch, styles.fanB, branchFade]}
+        pointerEvents="none"
+      />
+      <Reanimated.View style={[styles.fan, styles.fanSingle, singleFade]} pointerEvents="none">
+        {fact ? (
+          <CardPage
+            key={fact.id}
+            fact={fact}
+            choices={choices}
+            language={language}
+            onChoose={NOOP}
+            instant
+          />
+        ) : null}
+      </Reanimated.View>
+    </>
+  );
+});
+
+/**
+ * The top chrome, in a memoized leaf so a swipe's two commits reconcile it only when the
+ * meter actually moved (once per page, never on the snapshot-mount commit).
+ */
+const ChromeBar = memo(function ChromeBar({
+  ticksOn,
+  pagesRead,
+}: {
+  ticksOn: number;
+  pagesRead: number;
+}) {
+  return (
+    <View style={styles.chrome}>
+      <Text style={styles.wordmark}>
+        HIRAIA<Text style={styles.wordmarkDot}>.</Text>
+      </Text>
+      <View style={styles.meter}>
+        {Array.from({ length: METER_TICKS }, (_, i) => (
+          <View key={i} style={[styles.tick, i < ticksOn && styles.tickOn]} />
+        ))}
+        <Text style={styles.meterCount}>{pagesRead}</Text>
+      </View>
+    </View>
+  );
+});
+
+/** The footer caption/settings strip, memoized for the same reason as ChromeBar. */
+const Caption = memo(function Caption({
+  language,
+  grade,
+  pagesRead,
+  correctCount,
+  bottomPad,
+  onOpenSettings,
+}: {
+  language: Language;
+  grade: number;
+  pagesRead: number;
+  correctCount: number;
+  bottomPad: number;
+  onOpenSettings: () => void;
+}) {
+  const t = uiStrings(language);
+  return (
+    <View style={[styles.caption, { paddingBottom: bottomPad }]}>
+      <View style={styles.captionSide} />
+      <Pressable
+        style={({ pressed }) => [styles.captionTap, pressed && styles.captionTapPressed]}
+        onPress={onOpenSettings}
+        hitSlop={10}
+        // No accessibilityLabel: the rendered "Grade 5 · pahina 8" IS the label, and it is
+        // already localised — a hand-written one would only repeat it in one language.
+        accessibilityRole="button"
+      >
+        <Text style={styles.captionText} numberOfLines={1}>
+          <Text style={styles.captionMenuGlyph}>☰</Text>{'  '}
+          {GRADE_WORD[language]} {grade} · {t.cards.readLabel} {pagesRead}
+        </Text>
+      </Pressable>
+      <Text style={[styles.captionScore, styles.captionSide]} numberOfLines={1}>
+        ✓ {correctCount}
+      </Text>
+    </View>
+  );
+});
+
 export function CardFeedScreen() {
   const router = useRouter();
   const language = useEngineStore((s) => s.language) ?? 'tagalog';
@@ -348,8 +673,10 @@ export function CardFeedScreen() {
   const grade = useEngineStore((s) => s.grade);
   const onboardingActive = useEngineStore((s) => s.onboardingActive);
   const t = uiStrings(language);
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
   const insets = useSafeAreaInsets();
+  // Stable handle for the memoized footer (see Caption below the styles).
+  const openSettings = useCallback(() => router.push('/sidebar'), [router]);
 
   const hydrated = useCardStore((s) => s.hydrated);
   const hydrate = useCardStore((s) => s.hydrate);
@@ -405,7 +732,18 @@ export function CardFeedScreen() {
   // The ribbon IS the magnet: it shows exactly while an asked topic is pulling the feed, so
   // the [x] below and the store's auto-release both retire copy and pull in the same commit.
   const queryBanner = useCardStore((s) => s.magnet?.query ?? null);
+  // The magnet OBJECT, not just its query: the under-sheet effect keys on it (see `under`).
+  const magnet = useCardStore((s) => s.magnet);
   const dismissQuery = useCardStore((s) => s.dismissQuery);
+  // CALENDAR MODE: the cursor OBJECT (the under-sheet effect keys on it exactly like the
+  // magnet), the row it names (its quarter + CG text print on the ribbon), and the sheet.
+  const curriculum = useCardStore((s) => s.curriculum);
+  const curriculumRow = curriculum ? curriculumOutline(curriculum.grade)[curriculum.index] : undefined;
+  const enterCurriculum = useCardStore((s) => s.enterCurriculum);
+  const exitCurriculum = useCardStore((s) => s.exitCurriculum);
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const openSheet = useCallback(() => setSheetOpen(true), []);
+  const closeSheet = useCallback(() => setSheetOpen(false), []);
   const pageKey = useCardStore((s) => s.pageKey);
   const pagesRead = useCardStore((s) => s.pagesRead);
   const correctCount = useCardStore((s) => s.correctCount);
@@ -454,6 +792,16 @@ export function CardFeedScreen() {
   // swiping the card leftwards → 'left'; right → 'right'.
   const sideRef = useRef<Side>('right');
   const downRef = useRef(false);
+  // A row tap on the outline sheet: enter the topic, close the sheet. The landing peels from
+  // a random corner, the way the reroll does — it is a topic jump, not a page turn.
+  const pickTopic = useCallback(
+    (code: string) => {
+      sideRef.current = Math.random() < 0.5 ? 'left' : 'right';
+      setSheetOpen(false);
+      enterCurriculum(code);
+    },
+    [enterCurriculum]
+  );
   // Where the finger let go, when the navigation came from a swipe (null = it came from a
   // tap). Read once by the peel below, so the outgoing page can carry on from where the
   // card actually is instead of restarting from the middle of the deck.
@@ -474,6 +822,10 @@ export function CardFeedScreen() {
   const [pageSize, setPageSize] = useState({ w: 0, h: 0 });
   const lastSnap = useRef<PageSnap | null>(null);
   const clearTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Permanent instrumentation (visible as ReactNativeJS in release logcat): when commitSwipe
+  // finished the store advance, so the layout effect can report how long the page-change
+  // React commit took on top of it. 0 = the change did not come from a swipe.
+  const advanceDoneTs = useRef(0);
 
   // ---- the live card's drag offset ----
   // Shared values, so the card is moved by the UI thread on every frame with no JS round
@@ -484,6 +836,26 @@ export function CardFeedScreen() {
   const dragY = useSharedValue(0);
   // Screen x the finger went down at; the corner mapping for a swipe UP needs it.
   const originX = useSharedValue(0);
+  // ---- the committed swipe's FLIGHT ----
+  // A committed swipe no longer waits for the store/React: the pan's onEnd starts the peel
+  // on the UI thread THE SAME FRAME the finger lifts (fly values + `handoff`), and the store
+  // advance happens on JS behind a card already in motion. When the next page commits, the
+  // outgoing snapshot takes these very values over (see the layout effect + peelTransform),
+  // so the hand-off is invisible. Separate from dragX/dragY on purpose: the layout effect
+  // zeroes the drag for the incoming page while the flight must keep going.
+  const flyX = useSharedValue(0);
+  const flyY = useSharedValue(0);
+  const flyPeel = useSharedValue(0); // flight progress 0→1; drives the corner tilt + shade
+  const flySide = useSharedValue(1); // 0 = left hinge, 1 = right (decided at release)
+  const flyDown = useSharedValue(0); // 1 = thrown downward (hinge flips to the top corner)
+  // 1 while the LIVE layer is the flying peel: between finger-up and the next page's commit
+  // it is the only card layer on screen, so it carries the flight; the layout effect then
+  // mounts the snapshot on the same fly values and releases the live layer back to the drag.
+  const handoff = useSharedValue(0);
+  // The card rect as shared values — the worklet needs the pivot corner and the exit
+  // distance at release time (mirrors the pageSize state, written in the same onLayout).
+  const pageW = useSharedValue(0);
+  const pageH = useSharedValue(0);
   // 1 while the page must not be swiped away — an interject question that has not been
   // answered. The card still moves, but barely (LOCKED_GRIP), so the gate is FELT as
   // "this one is holding on" rather than read as a dead screen.
@@ -513,21 +885,36 @@ export function CardFeedScreen() {
    * they are the two branches, and printing either one's content behind the card would say
    * the choice has already been made.
    */
-  const beneath = useMemo(() => {
-    if (forking || question || reward || response) return null;
-    const nextId = choices[0]?.factId;
-    return nextId ? (getCard(nextId) ?? null) : null;
-  }, [forking, question, reward, response, choices]);
-
-  /**
-   * Its choice tickets are PRINTED on that sheet, so they have to be the ones the store will
-   * actually offer — the store draws them from its own state (seen set, trail, thread depth,
-   * weighting context), which is why this asks the store rather than re-deriving them here.
-   */
-  const beneathChoices = useMemo(
-    () => (beneath ? previewChoices(language) : []),
-    [beneath, language]
-  );
+  const [under, setUnder] = useState<{ fact: CardFact; choices: CardChoice[] } | null>(null);
+  useEffect(() => {
+    if (forking || question || reward || response || !choices[0]) {
+      setUnder(null);
+      return;
+    }
+    const nextId = choices[0].factId;
+    // DEFERRED on purpose — this is the advance's single biggest hidden cost moved off the
+    // swipe's critical path. Deriving the sheet here used to happen inside the page-change
+    // commit (a full CardPage text layout PLUS previewChoices' nextChoices walk, in the
+    // render phase), so the under-stack visibly swapped while the old card was still frozen
+    // on top. Now the stack keeps the PREVIOUS sheet through the transition — which shows
+    // the very card the swipe is landing on, i.e. exactly what an infinite deck should show
+    // — and the new sheet is printed a moment later, behind the settled card, with seconds
+    // of reading time to spare. Its choice tickets come from previewChoices, so they are the
+    // ones the store will actually offer (same seen set, trail, thread depth and weighting
+    // context — and advance() now ADOPTS this exact draw, see cardStore's preview cache).
+    const task = InteractionManager.runAfterInteractions(() => {
+      const fact = getCard(nextId) ?? null;
+      setUnder(fact ? { fact, choices: previewChoices(language) } : null);
+    });
+    return () => task.cancel();
+    // `magnet` is read INSIDE previewChoices (off the store), not here — it is a dep because
+    // the [x] (dismissQuery) is the one mutation that changes the draw context WITHOUT
+    // turning a page: the sheet must re-print unmagnetized tickets, and re-running
+    // previewChoices re-keys the store's preview cache so the next swipe adopts the draw
+    // that is actually printed. Every other context change bumps pageKey → new `choices`.
+    // `curriculum` is a dep for exactly the same reason: exitCurriculum nulls the cursor
+    // without turning a page, and the sheet beneath must re-print unrestricted tickets.
+  }, [forking, question, reward, response, choices, language, magnet, curriculum]);
   /**
    * Did this card just arrive from the preview underneath?
    *
@@ -547,7 +934,7 @@ export function CardFeedScreen() {
   const prevBeneathId = useRef<string | null>(null);
   const cameFromPreview = !!current && prevBeneathId.current === current.id;
   useEffect(() => {
-    prevBeneathId.current = beneath?.id ?? null;
+    prevBeneathId.current = under?.fact.id ?? null;
   });
 
   const forkGate = useSharedValue(0);
@@ -557,11 +944,36 @@ export function CardFeedScreen() {
 
   // Same body twice on purpose: Reanimated wants one animated style per view, and the
   // printed ledge is the card's own drop shadow — it has to travel with the card.
+  // While `handoff` is up (finger just committed, next page not yet committed) both follow
+  // the FLIGHT instead: the live layer — still printed with the old card — is the peel for
+  // those first frames, and the ledge rides under it exactly as it rode under the drag.
   const cardDrag = useAnimatedStyle(() => ({
-    transform: [{ translateX: dragX.value }, { translateY: dragY.value }],
+    transform:
+      handoff.value === 1
+        ? peelTransform(
+            flyX.value,
+            flyY.value,
+            flyPeel.value,
+            flySide.value,
+            flyDown.value,
+            pageW.value || width,
+            pageH.value || height
+          )
+        : [{ translateX: dragX.value }, { translateY: dragY.value }],
   }));
   const ledgeDrag = useAnimatedStyle(() => ({
-    transform: [{ translateX: dragX.value }, { translateY: dragY.value }],
+    transform:
+      handoff.value === 1
+        ? peelTransform(
+            flyX.value,
+            flyY.value,
+            flyPeel.value,
+            flySide.value,
+            flyDown.value,
+            pageW.value || width,
+            pageH.value || height
+          )
+        : [{ translateX: dragX.value }, { translateY: dragY.value }],
   }));
 
   // ---- tap vs drag ----
@@ -604,28 +1016,51 @@ export function CardFeedScreen() {
         fromY: from?.y ?? 0,
         via: from ? 'swipe' : 'tap',
       });
-      // The outgoing snapshot has just taken the swipe's offset over, so the live layer —
-      // which is already showing the NEXT card — drops back to rest in the same commit.
-      // That is why this is a LAYOUT effect: as a passive effect it would let the incoming
-      // card paint one frame at the old finger offset first, which reads as a jump.
+      // The outgoing snapshot has just taken the peel over, so the live layer — which is
+      // already showing the NEXT card — drops back to rest in the same commit. That is why
+      // this is a LAYOUT effect: as a passive effect it would let the incoming card paint
+      // one frame at the old finger offset first, which reads as a jump.
       dragX.value = 0;
       dragY.value = 0;
-      flip.setValue(0);
-      Animated.timing(flip, {
-        toValue: 1,
-        duration: FLIP_MS,
-        easing: Easing.in(Easing.cubic),
-        useNativeDriver: true,
-      }).start(({ finished }) => {
-        if (finished) setOutgoing(null);
-      });
+      if (from) {
+        // SWIPE: the flight has been running on the UI thread since finger-up (see onEnd).
+        // The snapshot mounted above reads the SAME fly values through the same transform,
+        // so releasing the live layer back to the drag here is pixel-invisible — the two
+        // layers swap identity mid-flight. No animation to start: it is already flying.
+        // A still-running TAP flip is stopped, though — its completion callback would fire
+        // finished=true mid-flight and clear THIS snapshot out of the air. (The tap branch
+        // never needed the guard: restarting `flip` stops the old run with finished=false,
+        // and the fly completion checks `via` before clearing.)
+        flip.stopAnimation();
+        handoff.value = 0;
+        const t = Date.now();
+        if (advanceDoneTs.current) {
+          console.log(`[swipe] commit→effect ${t - advanceDoneTs.current}ms`);
+          advanceDoneTs.current = 0;
+          // The first frame after this commit ≈ when the incoming page actually painted.
+          requestAnimationFrame(() => console.log(`[swipe] effect→frame ${Date.now() - t}ms`));
+        }
+      } else {
+        // TAP: the peel starts from rest, exactly as before — the pause complaint was never
+        // about taps, and the plain-Animated flip path is left alone.
+        flip.setValue(0);
+        Animated.timing(flip, {
+          toValue: 1,
+          duration: FLIP_MS,
+          easing: Easing.in(Easing.cubic),
+          useNativeDriver: true,
+        }).start(({ finished }) => {
+          if (finished) setOutgoing(null);
+        });
+      }
       // Safety net: always clear the peeling layer even if the animation callback is
-      // dropped (interrupted/backgrounded) — so it can never strand over the screen.
+      // dropped (interrupted/backgrounded) — so it can never strand over the screen. For a
+      // swipe the flight clock started at finger-up, so this (from commit) always outlives it.
       if (clearTimer.current) clearTimeout(clearTimer.current);
       clearTimer.current = setTimeout(() => setOutgoing(null), FLIP_MS + 400);
     }
     lastSnap.current = { pageKey, fact: current, choices, question, reward, response };
-  }, [pageKey, current, choices, question, reward, response, flip, dragX, dragY]);
+  }, [pageKey, current, choices, question, reward, response, flip, dragX, dragY, handoff]);
 
   useEffect(
     () => () => {
@@ -656,7 +1091,8 @@ export function CardFeedScreen() {
    * — the pan refuses it). On a single-path card every direction simply means "next".
    */
   const commitSwipe = useCallback(
-    (dir: SwipeDir, releaseX: number, releaseY: number, downX: number) => {
+    (dir: SwipeDir, releaseX: number, releaseY: number, downX: number, releaseTs: number) => {
+      const tCommit = Date.now();
       const s = useCardStore.getState();
       const before = s.pageKey;
       // Hand the peel the exact offset the finger let go at, before anything navigates.
@@ -699,17 +1135,42 @@ export function CardFeedScreen() {
         chooseFrom(s.choices[0], side);
       }
 
-      // Nothing navigated — the ambiguous middle of a fork, an unanswered question, an
-      // empty choice list. The card is sitting where the finger left it, so put it back.
-      // Checking the page number rather than each branch's preconditions means a store
-      // action that declines for its own reasons can never strand the card off-centre.
+      // Permanent timing marks (ReactNativeJS in release logcat). Logged AFTER the store
+      // work so the log call itself never delays the advance; the fling has been running on
+      // the UI thread since `releaseTs`, so release→commit is pure JS-dispatch latency.
+      const tDone = Date.now();
+      advanceDoneTs.current = tDone;
+      console.log(`[swipe] release→commit ${tCommit - releaseTs}ms | advance ${tDone - tCommit}ms`);
+
+      // Nothing navigated — an empty choice list, or a store action that declined for its
+      // own reasons. The fling already began on the UI thread at release, so reclaim the
+      // card: hand the flight's current offset back to the drag values and spring home.
+      // Checking the page number rather than each branch's preconditions means a decline
+      // can never strand the card off-centre (or off-screen, now that it flies first).
       if (useCardStore.getState().pageKey === before) {
         release.current = null;
+        advanceDoneTs.current = 0;
+        cancelAnimation(flyX);
+        cancelAnimation(flyY);
+        cancelAnimation(flyPeel);
+        dragX.value = flyX.value;
+        dragY.value = flyY.value;
+        handoff.value = 0;
         settle();
       }
     },
-    [width, chooseFrom, settle]
+    [width, chooseFrom, settle, dragX, dragY, flyX, flyY, flyPeel, handoff]
   );
+
+  /**
+   * The flight finished on the UI thread: retire the snapshot. Guarded to SWIPE snapshots —
+   * a completion always fires FLIP_MS after ITS release (a newer swipe's withTiming replaces
+   * the old one, whose callback then reports unfinished and does nothing), but a tap peel
+   * started in the meantime owns the layer and must not be cleared from under its own flip.
+   */
+  const clearFlownOutgoing = useCallback(() => {
+    setOutgoing((o) => (o && o.via === 'swipe' ? null : o));
+  }, []);
 
   /**
    * One pan for the whole pad. It tracks the card on the UI thread and only crosses to JS
@@ -753,6 +1214,7 @@ export function CardFeedScreen() {
             return;
           }
           // Decided now, from the whole gesture: the axis the finger actually travelled on.
+          let dir: SwipeDir | null = null;
           if (Math.abs(e.translationX) > Math.abs(e.translationY)) {
             const tx = e.translationX;
             // The velocity escape hatch only counts when it AGREES with where the card
@@ -762,16 +1224,7 @@ export function CardFeedScreen() {
               Math.abs(e.velocityX) > COMMIT_VELOCITY &&
               e.velocityX * tx > 0 &&
               Math.abs(tx) > width * FLICK_MIN_FRACTION;
-            if (Math.abs(tx) > width * COMMIT_FRACTION || flicked) {
-              runOnJS(commitSwipe)(
-                tx < 0 ? 'left' : 'right',
-                dragX.value,
-                dragY.value,
-                originX.value
-              );
-            } else {
-              settleBack();
-            }
+            if (Math.abs(tx) > width * COMMIT_FRACTION || flicked) dir = tx < 0 ? 'left' : 'right';
           } else {
             const ty = e.translationY;
             // Same rule as the horizontal axis: velocity only rescues a throw that AGREES
@@ -780,22 +1233,85 @@ export function CardFeedScreen() {
               Math.abs(e.velocityY) > COMMIT_VELOCITY &&
               e.velocityY * ty > 0 &&
               Math.abs(ty) > FLICK_MIN_UP_PX;
-            if (Math.abs(ty) > COMMIT_UP_PX || flicked) {
-              runOnJS(commitSwipe)(ty < 0 ? 'up' : 'down', dragX.value, dragY.value, originX.value);
-            } else {
-              settleBack();
-            }
+            if (Math.abs(ty) > COMMIT_UP_PX || flicked) dir = ty < 0 ? 'up' : 'down';
           }
+          if (dir === null) {
+            settleBack();
+            return;
+          }
+          const vertical = dir === 'up' || dir === 'down';
+          // A vertical throw from the ambiguous middle of a fork names neither branch, so it
+          // is refused HERE — the card must never start flying and then be argued back by
+          // the store (forkMiddleUp was written for exactly this seat and finally sits in it).
+          if (vertical && forkMiddleUp(forkGate.value, originX.value, width)) {
+            settleBack();
+            return;
+          }
+          // EXIT MOTION FIRST. The peel starts on the UI thread THIS FRAME — before any JS
+          // work — so the card answers the finger instantly; the store advance and the React
+          // commit of the next page all happen behind a card already in flight. Side/corner
+          // semantics are the same ones commitSwipe derives (a sideways swipe names its own
+          // side; a vertical one hinges on the half of the card the finger came from).
+          flySide.value = vertical ? (originX.value < width / 2 ? 0 : 1) : dir === 'left' ? 0 : 1;
+          flyDown.value = dir === 'down' ? 1 : 0;
+          flyX.value = dragX.value;
+          flyY.value = dragY.value;
+          flyPeel.value = 0;
+          handoff.value = 1;
+          const h = pageH.value || height;
+          // Same trajectory the plain-Animated peel drew — carry on past the release offset
+          // sideways (TOSS_CARRY) while lifting off the top or dropping off the bottom by
+          // 1.12 card-heights — but NOT its curve. The tap flip's ease-IN starts a card from
+          // rest on the deck; a thrown card arrives here already MOVING, and ease-in braked
+          // it to zero then crept through the slow head of the curve — from a deep drag that
+          // read as a half-second stall before the card "decided" to leave. So: cubic
+          // ease-OUT (fast head, tail hidden off-screen), with the duration chosen so the
+          // exit's initial speed matches the finger's release speed (cubic-out v(0) = 3D/T
+          // → T = 3D/v), clamped between a flick's snap and the old full flight time. A
+          // slow, distance-committed release clamps to FLIP_MS but still MOVES immediately.
+          const targetX = dragX.value * TOSS_CARRY;
+          const targetY = dir === 'down' ? h * 1.12 : -(h * 1.12);
+          const dist = Math.hypot(targetX - dragX.value, targetY - dragY.value);
+          const speed = Math.max(Math.hypot(e.velocityX, e.velocityY), 1);
+          const flyMs = Math.min(Math.max((3 * dist * 1000) / speed, 140), FLIP_MS);
+          const timing = { duration: flyMs, easing: ReEasing.out(ReEasing.cubic) };
+          flyX.value = withTiming(targetX, timing);
+          flyY.value = withTiming(targetY, timing);
+          flyPeel.value = withTiming(1, timing, (finished) => {
+            if (finished) runOnJS(clearFlownOutgoing)();
+          });
+          runOnJS(commitSwipe)(dir, dragX.value, dragY.value, originX.value, Date.now());
         })
         .onFinalize(() => {
           runOnJS(markDragEnd)();
         }),
-    [width, commitSwipe, markDragStart, markDragEnd, dragX, dragY, locked, originX]
+    [
+      width,
+      height,
+      commitSwipe,
+      clearFlownOutgoing,
+      markDragStart,
+      markDragEnd,
+      dragX,
+      dragY,
+      locked,
+      originX,
+      forkGate,
+      flyX,
+      flyY,
+      flyPeel,
+      flySide,
+      flyDown,
+      handoff,
+      pageH,
+    ]
   );
 
-  // Peel transform: card hinges up from the swiped corner, slides off the top.
+  // TAP peel transform: card hinges up from the tapped choice's corner, slides off the top.
   // 2D (no 3D perspective → no foreshorten/recede), corner-anchored via a translate
-  // sandwich, with a small tilt so it reads as peeling from that corner.
+  // sandwich, with a small tilt so it reads as peeling from that corner. A tap always peels
+  // from rest (0,0). SWIPED peels no longer use these interpolations at all — their motion
+  // lives in the fly values, started at finger-up (see flyStyle below and the pan's onEnd).
   const side = outgoing?.side ?? 'right';
   const thrownDown = outgoing?.down ?? false;
   const cardW = pageSize.w || width; // fall back to the screen until the deck has measured
@@ -804,39 +1320,39 @@ export function CardFeedScreen() {
   // the top one as it drops off the bottom. Peeling a downward throw from the bottom corner
   // would swing the card up into the screen before it left, which reads as a bounce.
   const cy = thrownDown ? -pageSize.h / 2 : pageSize.h / 2;
-  // Where the peel STARTS: the middle of the deck for a tap, or exactly where the finger
-  // let the card go for a swipe. That hand-off is what makes a swiped page turn read as
-  // one motion instead of a snap back to centre followed by an animation.
-  const fromX = outgoing?.fromX ?? 0;
-  const fromY = outgoing?.fromY ?? 0;
-  // ...and where it ENDS. A tapped page swings the way its hinge takes it; a swiped page
-  // carries on the way it was thrown, because reversing a card the kid has just pushed
-  // left would read as the app arguing with them.
-  const exitX =
-    outgoing?.via === 'swipe'
-      ? fromX * TOSS_CARRY
-      : side === 'left'
-        ? cardW * TAP_DRIFT
-        : -cardW * TAP_DRIFT;
+  // Where the peel ENDS: a tapped page swings the way its hinge takes it.
+  const exitX = side === 'left' ? cardW * TAP_DRIFT : -cardW * TAP_DRIFT;
   const lift = flip.interpolate({
     inputRange: [0, 1],
-    outputRange: [fromY, thrownDown ? pageSize.h * 1.12 : -(pageSize.h * 1.12)],
+    outputRange: [0, thrownDown ? pageSize.h * 1.12 : -(pageSize.h * 1.12)],
   });
   // The tilt follows the hinge, so it reverses with it — a downward peel that kept the
   // upward rotation would look like the card twisting against its own exit.
-  const tiltDeg = (side === 'left' ? 10 : -10) * (thrownDown ? -1 : 1);
+  const tiltDeg = (side === 'left' ? PEEL_TILT_DEG : -PEEL_TILT_DEG) * (thrownDown ? -1 : 1);
   const tilt = flip.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', `${tiltDeg}deg`],
   });
-  const drift = flip.interpolate({ inputRange: [0, 1], outputRange: [fromX, exitX] });
+  const drift = flip.interpolate({ inputRange: [0, 1], outputRange: [0, exitX] });
   const shadeOpacity = flip.interpolate({ inputRange: [0, 0.5, 1], outputRange: [0, 0.22, 0] });
 
-  const wordmark = (
-    <Text style={styles.wordmark}>
-      HIRAIA<Text style={styles.wordmarkDot}>.</Text>
-    </Text>
-  );
+  // The SWIPED peel: the same corner-hinge sandwich, but driven by the fly values that have
+  // been animating since the finger lifted. The outgoing snapshot adopts them mid-flight so
+  // the live→snapshot hand-off is pixel-identical (same worklet as cardDrag's handoff branch).
+  const flyStyle = useAnimatedStyle(() => ({
+    transform: peelTransform(
+      flyX.value,
+      flyY.value,
+      flyPeel.value,
+      flySide.value,
+      flyDown.value,
+      pageW.value || width,
+      pageH.value || height
+    ),
+  }));
+  const flyShade = useAnimatedStyle(() => ({
+    opacity: interpolate(flyPeel.value, [0, 0.5, 1], [0, 0.22, 0]),
+  }));
 
   if (!hydrated || !current) {
     return (
@@ -856,16 +1372,10 @@ export function CardFeedScreen() {
 
   return (
     <SafeAreaView style={styles.screen} edges={['top']}>
-      {/* app chrome — lives on the BOARD, never on the card (mockup `.chrome`) */}
-      <View style={styles.chrome}>
-        {wordmark}
-        <View style={styles.meter}>
-          {Array.from({ length: METER_TICKS }, (_, i) => (
-            <View key={i} style={[styles.tick, i < ticksOn && styles.tickOn]} />
-          ))}
-          <Text style={styles.meterCount}>{pagesRead}</Text>
-        </View>
-      </View>
+      {/* app chrome — lives on the BOARD, never on the card (mockup `.chrome`). Memoized
+          leaf: a swipe commits twice (page change + outgoing snapshot) and only the first
+          has new meter values. */}
+      <ChromeBar ticksOn={ticksOn} pagesRead={pagesRead} />
 
       {/* persistent "ask anything" box — the kid's agency: type a topic or a question and
           RAG decides (found card → response card → honest abstention). Printed as a cream
@@ -950,18 +1460,19 @@ export function CardFeedScreen() {
             </Pressable>
           )}
         </Pressable>
-        {/* "Reroll" — jump to an unrelated fresh topic. Placeholder trigger; a
-            shake gesture (expo-sensors) is the intended trigger, TBD. */}
-        <Pressable
-          onPress={() => {
+        {/* The cycling button: DIE = "reroll" (jump to a fresh topic — or, in calendar mode,
+            another card of the held topic); CALENDAR = open the grade's MATATAG outline. The
+            two faces alternate every 2 s; the cycle freezes while pressed and while the sheet
+            is open (see CycleButton). */}
+        <CycleButton
+          language={language}
+          frozen={sheetOpen}
+          onDie={() => {
             sideRef.current = Math.random() < 0.5 ? 'left' : 'right';
             jumpToRandom();
           }}
-          hitSlop={8}
-          style={styles.reroll}
-        >
-          <DieFace />
-        </Pressable>
+          onCalendar={openSheet}
+        />
         {/* The 4 px readiness bar, crawling the full page width under the field. Width
             and colour are the SAME composed number the field's opacity shows — the
             colour walks the palette red→orange→yellow→green in four deliberate steps
@@ -1008,6 +1519,32 @@ export function CardFeedScreen() {
         </View>
       ) : null}
 
+      {/* CALENDAR MODE's ribbon — the same ribbon grammar, under the same box: the label names
+          the mode and the quarter ("KURIKULUM · Q2"), the body is the held competency's CG
+          wording, the ✕ leaves the mode. Mutually exclusive with the ask ribbon by construction
+          (entering either clears the other in the store). It names the topic the feed is
+          DRAWING FROM: on the page where a topic runs out the cursor has already moved on, so
+          the ribbon already reads the next topic the swipe will serve. */}
+      {curriculum && curriculumRow && !response && !reward && !question ? (
+        <View style={styles.banner}>
+          <Text style={styles.bannerLabel} numberOfLines={1}>
+            {t.cards.curriculum} · Q{curriculumRow.quarter}
+          </Text>
+          <Text style={styles.bannerText} numberOfLines={1}>
+            {curriculumRow.text}
+          </Text>
+          <Pressable
+            onPress={exitCurriculum}
+            hitSlop={10}
+            accessibilityRole="button"
+            accessibilityLabel={t.cards.exitCurriculum}
+            style={styles.bannerDismiss}
+          >
+            <Text style={styles.bannerDismissGlyph}>✕</Text>
+          </Pressable>
+        </View>
+      ) : null}
+
       {/* The deck: board behind, card on top. `pad` clips the peel to the board area and
           is also the swipe's catchment, so a drag that starts on the margin around the
           card counts; `deck` deliberately does NOT clip, so the fanned branch cards can
@@ -1018,37 +1555,31 @@ export function CardFeedScreen() {
             style={styles.deck}
             onLayout={(e) => {
               const { width: w, height: h } = e.nativeEvent.layout;
+              // Mirrored into shared values: the pan's onEnd worklet needs the card rect at
+              // release time to aim the fling (pivot corner + exit distance).
+              pageW.value = w;
+              pageH.value = h;
               setPageSize((prev) => (prev.w === w && prev.h === h ? prev : { w, h }));
             }}
           >
-            {/* fanned cards behind — on a fork these are the two branches, blue on the left
-                and ochre on the right, matching the A/B order of the tickets. */}
-            {forking ? (
-              <>
-                <View style={[styles.fan, styles.fanBranch, styles.fanA]} pointerEvents="none" />
-                <View style={[styles.fan, styles.fanBranch, styles.fanB]} pointerEvents="none" />
-              </>
-            ) : (
-              <View style={[styles.fan, styles.fanSingle]} pointerEvents="none">
-                {beneath ? (
-                  <CardPage
-                    fact={beneath}
-                    choices={beneathChoices}
-                    language={language}
-                    onChoose={() => undefined}
-                    instant
-                  />
-                ) : null}
-              </View>
-            )}
+            {/* the persistent under-stack: always there, never repainted by an advance —
+                see DeckUnderlay. The sheet's content updates AFTER the transition. */}
+            <DeckUnderlay
+              fact={under?.fact ?? null}
+              choices={under?.choices ?? EMPTY_CHOICES}
+              language={language}
+              forkGate={forkGate}
+            />
 
             {/* the card's ledge: a darker slab peeking 4px below the card. NOT a shadow —
                 Android honours only `elevation`, which can't be offset downward. It is the
                 card's own printed drop shadow, so it rides along with the drag. */}
             <Reanimated.View style={[styles.cardLedge, ledgeDrag]} pointerEvents="none" />
 
-            {/* Incoming card. It carries the DRAG and nothing else — never the peel — so it
-                is always visible + tappable (hang-proof). The layer itself is deliberately
+            {/* Incoming card. It carries the DRAG — plus, for the brief window between a
+                committed release and the next page's commit, the FLIGHT (`handoff`), during
+                which it is still printed with the old card and is the peel itself. It is
+                always visible + tappable at rest (hang-proof). The layer is deliberately
                 NOT keyed: it has to survive a page change so that the reset to rest and the
                 new page land in the same commit (see the layout effect). The PAGE inside it
                 is what's keyed. The layer IS the card surface: stock, ink edge, rounded. */}
@@ -1095,8 +1626,32 @@ export function CardFeedScreen() {
               ) : null}
             </Reanimated.View>
 
-            {/* outgoing card peeling up from the swiped corner */}
-            {outgoing && pageSize.h > 0 && (
+            {/* outgoing card peeling up from the swiped corner. A SWIPED peel rides the fly
+                values that have been animating on the UI thread since finger-up — mounting
+                this snapshot merely swaps which layer carries them (see the layout effect);
+                a TAPPED peel starts from rest on the plain-Animated flip, as it always did. */}
+            {outgoing && pageSize.h > 0 && outgoing.via === 'swipe' ? (
+              <Reanimated.View
+                style={[
+                  styles.cardLayer,
+                  styles.outgoing,
+                  { backgroundColor: stockFor(outgoing.question) },
+                  flyStyle,
+                ]}
+                pointerEvents="none"
+              >
+                {outgoing.fact && !outgoing.question && !outgoing.reward && !outgoing.response ? (
+                  <CardPage
+                    fact={outgoing.fact}
+                    choices={outgoing.choices}
+                    language={language}
+                    onChoose={NOOP}
+                    instant
+                  />
+                ) : null}
+                <Reanimated.View style={[StyleSheet.absoluteFill, styles.shade, flyShade]} />
+              </Reanimated.View>
+            ) : outgoing && pageSize.h > 0 ? (
               <Animated.View
                 style={[
                   styles.cardLayer,
@@ -1121,7 +1676,7 @@ export function CardFeedScreen() {
                     fact={outgoing.fact}
                     choices={outgoing.choices}
                     language={language}
-                    onChoose={() => undefined}
+                    onChoose={NOOP}
                     instant
                   />
                 ) : null}
@@ -1129,7 +1684,7 @@ export function CardFeedScreen() {
                   style={[StyleSheet.absoluteFill, styles.shade, { opacity: shadeOpacity }]}
                 />
               </Animated.View>
-            )}
+            ) : null}
           </View>
         </View>
       </GestureDetector>
@@ -1148,26 +1703,27 @@ export function CardFeedScreen() {
           replaced, so it reads as a caption and never gets tapped — and an EXISTING install
           has a saved language, so bootstrap() leaves onboardingActive false and the grade
           slide never shows it that Settings exists. Language, grade and chat history would
-          then be unreachable for exactly the users who already have the app. */}
-      <View style={[styles.caption, { paddingBottom: Math.max(insets.bottom, 10) }]}>
-        <View style={styles.captionSide} />
-        <Pressable
-          style={({ pressed }) => [styles.captionTap, pressed && styles.captionTapPressed]}
-          onPress={() => router.push('/sidebar')}
-          hitSlop={10}
-          // No accessibilityLabel: the rendered "Grade 5 · pahina 8" IS the label, and it is
-          // already localised — a hand-written one would only repeat it in one language.
-          accessibilityRole="button"
-        >
-          <Text style={styles.captionText} numberOfLines={1}>
-            <Text style={styles.captionMenuGlyph}>☰</Text>{'  '}
-            {GRADE_WORD[language]} {grade} · {t.cards.readLabel} {pagesRead}
-          </Text>
-        </Pressable>
-        <Text style={[styles.captionScore, styles.captionSide]} numberOfLines={1}>
-          ✓ {correctCount}
-        </Text>
-      </View>
+          then be unreachable for exactly the users who already have the app.
+          Memoized leaf (see Caption) so a swipe's two commits reconcile it once, not twice. */}
+      <Caption
+        language={language}
+        grade={grade}
+        pagesRead={pagesRead}
+        correctCount={correctCount}
+        bottomPad={Math.max(insets.bottom, 10)}
+        onOpenSettings={openSettings}
+      />
+
+      {/* The outline sheet, for the CURRENT grade (the cursor keeps the grade it was entered
+          at; a grade change mid-mode shows the new grade's outline on the next open). */}
+      <CurriculumSheet
+        visible={sheetOpen}
+        grade={grade}
+        language={language}
+        activeCode={curriculum?.code ?? null}
+        onPick={pickTopic}
+        onClose={closeSheet}
+      />
     </SafeAreaView>
   );
 }
@@ -1325,10 +1881,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  // the two faces of the cycling button, stacked on the same 22dp square and crossfaded
+  face: { ...StyleSheet.absoluteFillObject, alignItems: 'center', justifyContent: 'center' },
   die: { width: 22, height: 22, justifyContent: 'space-between' },
   dieRow: { flexDirection: 'row', justifyContent: 'space-between' },
   diePipCell: { width: 6, height: 6, borderRadius: 3 },
   diePip: { backgroundColor: card.ink },
+  // the calendar face: two hanging rings, an ink header band, a page of day-cells
+  cal: { width: 22, height: 22, alignItems: 'center' },
+  calRings: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: 12,
+    height: 4,
+    marginBottom: -1, // the rings sink into the header band
+    zIndex: 1,
+  },
+  calRing: { width: 2, height: 4, borderRadius: 1, backgroundColor: card.ink },
+  calPage: {
+    width: 22,
+    height: 19,
+    borderRadius: 3,
+    borderWidth: 1.5,
+    borderColor: card.ink,
+    overflow: 'hidden',
+  },
+  calHead: { height: 5, backgroundColor: card.ink },
+  calGrid: { flex: 1, paddingHorizontal: 2, paddingVertical: 2, justifyContent: 'space-between' },
+  calRow: { flexDirection: 'row', justifyContent: 'space-between' },
+  calCell: { width: 3, height: 3, borderRadius: 1 },
+  calDay: { backgroundColor: card.ink },
 
   // ---- deck ----
   pad: {

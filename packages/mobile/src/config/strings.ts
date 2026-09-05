@@ -69,6 +69,22 @@ interface UIStrings {
     yourQuestion: string;
     /** a11y label on the ask-ribbon's ✕ — dismisses the asked topic (clears the magnet). */
     dismissAsk: string;
+    /** a11y label of the top-right button while it shows the DIE (jump to a fresh topic). */
+    reroll: string;
+    /** a11y label of the same button while it shows the CALENDAR (opens the outline sheet). */
+    openCurriculum: string;
+    /** "Curriculum" — the outline sheet's title and the calendar ribbon's label ("KURIKULUM · Q2"). */
+    curriculum: string;
+    /** One line under the sheet's title saying what a topic tap does. */
+    curriculumHint: string;
+    /** The four quarter headings of the outline, Q1..Q4 in order. */
+    quarters: [string, string, string, string];
+    /** a11y label of the outline sheet's close affordance. */
+    closeCurriculum: string;
+    /** a11y label of the calendar ribbon's ✕ — leaves calendar mode (clears the cursor). */
+    exitCurriculum: string;
+    /** The outline sheet when the grade has no topics with cards (a guard; should not happen). */
+    curriculumEmpty: string;
     thinking: string;
     /** In-domain GAP: it is science, we just have no page for it yet. */
     abstain: string;
@@ -163,6 +179,14 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       searchUnavailable: 'Pindutin para subukan ulit',
       yourQuestion: 'Ang tanong mo',
       dismissAsk: 'Alisin ang tanong',
+      reroll: 'Ibang paksa',
+      openCurriculum: 'Buksan ang kurikulum',
+      curriculum: 'Kurikulum',
+      curriculumHint: 'Pumili ng paksa — tatapusin natin ang lahat ng kard nito.',
+      quarters: ['Unang Markahan', 'Ikalawang Markahan', 'Ikatlong Markahan', 'Ikaapat na Markahan'],
+      closeCurriculum: 'Isara ang kurikulum',
+      exitCurriculum: 'Lumabas sa kurikulum',
+      curriculumEmpty: 'Wala pang kard para sa baitang na ito.',
       thinking: 'Iniisip ko pa',
       abstain: 'Hmm, wala pa akong pahina tungkol diyan.',
       abstainSuggest: 'Pero subukan natin ito',
@@ -241,6 +265,14 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       searchUnavailable: 'Tap to try again',
       yourQuestion: 'You asked',
       dismissAsk: 'Dismiss your question',
+      reroll: 'Surprise me',
+      openCurriculum: 'Open the curriculum',
+      curriculum: 'Curriculum',
+      curriculumHint: "Pick a topic — we'll go through all of its cards.",
+      quarters: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4'],
+      closeCurriculum: 'Close the curriculum',
+      exitCurriculum: 'Leave the curriculum',
+      curriculumEmpty: 'No cards for this grade yet.',
       thinking: "I'm thinking",
       abstain: "Hmm, I don't have a page about that yet.",
       abstainSuggest: "But let's try this",
@@ -315,6 +347,19 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       searchUnavailable: 'I-tap para sulayan pag-usab',
       yourQuestion: 'Ang pangutana nimo',
       dismissAsk: 'Kuhaa ang pangutana',
+      // NOTE for native review (calendar mode, drafted 2026-09-05, flagged not self-corrected):
+      //   • "Kwarter" for a school quarter — DepEd Cebuano materials also use "Markahan";
+      //     confirm which reads naturally to a Grade 5 reader.
+      //   • ordinals "Ikaduhang / Ikatulong / Ikaupat nga" — check the linker forms.
+      //   • "humanon nato" for "we'll finish/go through" — check register.
+      reroll: 'Laing hilisgutan',
+      openCurriculum: 'Ablihi ang kurikulum',
+      curriculum: 'Kurikulum',
+      curriculumHint: 'Pilia ang hilisgutan — humanon nato ang tanan niyang kard.',
+      quarters: ['Unang Kwarter', 'Ikaduhang Kwarter', 'Ikatulong Kwarter', 'Ikaupat nga Kwarter'],
+      closeCurriculum: 'Sirado ang kurikulum',
+      exitCurriculum: 'Gawas sa kurikulum',
+      curriculumEmpty: 'Wala pay kard para niini nga grado.',
       thinking: 'Naghunahuna pa ko',
       abstain: 'Hmm, wala pa koy panid mahitungod ana.',
       abstainSuggest: 'Pero sulayan nato ni',

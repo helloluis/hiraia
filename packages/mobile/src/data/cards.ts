@@ -37,6 +37,9 @@ import cardsIndex from '../generated/cardsIndex.generated.json';
 // [competency, grade, quarter, confidence, cells[[grade, quarter, strength, norm]], codes] — a card
 // serves up to three competencies (spiral curriculum), each cell carries its own strength and norm.
 import curriculumTagsJson from '../generated/curriculumTags.generated.json';
+// curriculumOutline.generated.json (scripts/gen-curriculum-outline.mjs): per grade, every MATATAG
+// competency as [code, quarter, CG text] in DepEd's own order — the calendar mode's spine.
+import curriculumOutlineJson from '../generated/curriculumOutline.generated.json';
 
 import { hasArt } from './artPresence';
 import {
@@ -185,6 +188,19 @@ export interface FeedContext {
   competencySeen: ReadonlyMap<string, SeenRecord>;
   /** The asked-topic pull, while one is active (cardStore.ask forms it; see MagnetPull). */
   magnet?: MagnetPull;
+  /**
+   * CALENDAR MODE's restriction, while a curriculum topic is held (cardStore.curriculum; see
+   * CurriculumCursor). Unlike the magnet this IS a filter: every draw — deep, lateral, fork,
+   * jump — is confined to `ids`, because the mode's promise is "attempt to exhaust this
+   * topic", not "lean toward it". Weights are untouched (seen-decay and the curriculum band
+   * still order the cards inside the set); only membership gates.
+   */
+  curriculum?: CurriculumHold;
+}
+
+/** The set a calendar-mode draw may serve from. Deliberately shape-compatible with the cursor. */
+export interface CurriculumHold {
+  ids: ReadonlySet<string>;
 }
 
 /**
@@ -1280,11 +1296,18 @@ export function startCard(seen: ReadonlySet<string>, ctx?: FeedContext): CardFac
  */
 export function jumpCard(currentId: string | null, seen: ReadonlySet<string>, ctx?: FeedContext): CardFact {
   const cur = currentId ? BY_ID.get(currentId) : undefined;
-  const usable = (f: CardFact) => f.id !== currentId && !seen.has(f.id);
+  // In calendar mode the "unrelated" jump stays INSIDE the held topic: the die then means
+  // "another card of this topic", and the cross-domain preference below simply finds nothing
+  // (a competency's cards share a domain) and falls through to any unseen member.
+  const only = ctx?.curriculum?.ids;
+  const inSet = (f: CardFact) => !only || only.has(f.id);
+  const usable = (f: CardFact) => f.id !== currentId && !seen.has(f.id) && inSet(f);
   const w = ctx ? weigher(ctx) : undefined;
   return (
     drawFrom((f) => usable(f) && (!cur || f.domain !== cur.domain), w) ??
     drawFrom(usable, w) ??
+    drawFrom((f) => f.id !== currentId && inSet(f), w) ??
+    // a held topic whose only card IS the current one: any card, as the plain feed would
     drawFrom((f) => f.id !== currentId, w) ??
     POOL[0]
   ) as CardFact;
@@ -1669,17 +1692,54 @@ export function hasServableMagnet(
   seen: ReadonlySet<string>,
   recentIds?: readonly string[]
 ): boolean {
+  return hasServable(currentId, ids, seen, recentIds, true);
+}
+
+/**
+ * CALENDAR MODE's exhaustion test — the magnet's, minus the picture cooldown. The cooldown is
+ * TRANSIENT (five pages) while the cursor only ever moves forward, so counting a member as
+ * run-out merely because its illustration was just shown would abandon it for good: measured
+ * on the real pool, every card a topic left unread at its cursor move was exactly such a card
+ * (a topic's cards often share one picture — eight Mayon Volcano cards on one cone), up to a
+ * fifth of the topic. "Attempt to exhaust" means those are served (nextChoices' curriculum
+ * successor relaxes the cooldown for them, as the feed's thinning fallback already does);
+ * only the current fact reworded stays gated, the way it does everywhere in the deck.
+ */
+export function hasServableCurriculum(
+  currentId: string | null,
+  ids: ReadonlySet<string>,
+  seen: ReadonlySet<string>
+): boolean {
+  return hasServable(currentId, ids, seen, undefined, false);
+}
+
+/** Is this card the current one restated (same topic wording, order-blind)? Harness-facing. */
+export function restatesTopic(currentId: string | null, id: string): boolean {
   const cur = currentId ? BY_ID.get(currentId) : undefined;
-  const blocked = cur
-    ? cooldownSlugs(cur, recentIds)
-    : (() => {
-        const s = new Set<string>();
-        for (const id of (recentIds ?? []).slice(-SLUG_COOLDOWN)) {
-          const f = BY_ID.get(id);
-          if (f && hasArt(f.slug)) s.add(f.slug);
-        }
-        return s;
-      })();
+  const f = BY_ID.get(id);
+  return !!cur && !!f && topicKeyOf(f) === topicKeyOf(cur);
+}
+
+function hasServable(
+  currentId: string | null,
+  ids: ReadonlySet<string>,
+  seen: ReadonlySet<string>,
+  recentIds: readonly string[] | undefined,
+  pictureCooldown: boolean
+): boolean {
+  const cur = currentId ? BY_ID.get(currentId) : undefined;
+  const blocked = !pictureCooldown
+    ? new Set<string>()
+    : cur
+      ? cooldownSlugs(cur, recentIds)
+      : (() => {
+          const s = new Set<string>();
+          for (const id of (recentIds ?? []).slice(-SLUG_COOLDOWN)) {
+            const f = BY_ID.get(id);
+            if (f && hasArt(f.slug)) s.add(f.slug);
+          }
+          return s;
+        })();
   const curKey = cur ? topicKeyOf(cur) : null;
   for (const id of ids) {
     if (id === currentId || seen.has(id)) continue;
@@ -1690,6 +1750,129 @@ export function hasServableMagnet(
     return true;
   }
   return false;
+}
+
+// ---- CALENDAR MODE: the curriculum outline and its cursor ------------------------------------
+
+/** One competency of the outline: DepEd's code, its quarter, and the CG's own (English) wording. */
+export interface OutlineRow {
+  code: string;
+  quarter: Quarter;
+  text: string;
+}
+
+type OutlineJson = Record<string, [string, number, string][]>;
+const OUTLINE_ALL = new Map<number, OutlineRow[]>();
+for (const [g, rows] of Object.entries(curriculumOutlineJson as unknown as OutlineJson)) {
+  OUTLINE_ALL.set(
+    Number(g),
+    rows.map(([code, quarter, text]) => ({ code, quarter: quarter as Quarter, text }))
+  );
+}
+
+/**
+ * THE INVERSE INDEX — competency code → the pool cards that serve it — built lazily, once.
+ *
+ * TAGS runs card → codes (that is what the weigher reads, per card, per draw); the outline
+ * needs the other direction, and only once a reader opens the calendar, so it is not paid at
+ * module init. Membership is exactly `competencyKeys` — the same confidence floor the
+ * seen-store and the weight table use — so "the cards of G5-L-4" here is the same set the
+ * competency_seen decay groups. Sets are frozen on creation and shared by reference: a
+ * cursor holds one as its `idSet` and never copies it.
+ *
+ * `deped:<module>` rows (cards tagged only by DepEd module provenance, ~12% of the pool) are
+ * indexed too, but no outline row names them, so they are simply not reachable from the
+ * calendar — accepted for v1.
+ */
+let BY_CODE: Map<string, ReadonlySet<string>> | null = null;
+function byCode(): Map<string, ReadonlySet<string>> {
+  if (BY_CODE) return BY_CODE;
+  const build = new Map<string, Set<string>>();
+  for (const f of POOL) {
+    for (const code of competencyKeys(f.id)) {
+      if (code === 'off') continue;
+      let s = build.get(code);
+      if (!s) build.set(code, (s = new Set()));
+      s.add(f.id);
+    }
+  }
+  BY_CODE = build;
+  return BY_CODE;
+}
+
+const NO_CARDS: ReadonlySet<string> = new Set();
+
+/** The pool cards tagged with this competency code (pool order), or an empty set. */
+export function cardsForCompetency(code: string): ReadonlySet<string> {
+  return byCode().get(code) ?? NO_CARDS;
+}
+
+/**
+ * The outline the calendar prints for a grade: every competency in CG order that has at least
+ * one card in the pool. Rows without cards are dropped rather than greyed — a heading the
+ * reader cannot tap is a broken promise on a child's screen — and the cursor skips them for
+ * the same reason. Computed on demand (the inverse index is lazy), cached per grade.
+ */
+const OUTLINE_WITH_CARDS = new Map<number, OutlineRow[]>();
+export function curriculumOutline(grade: GradeLevel): OutlineRow[] {
+  let rows = OUTLINE_WITH_CARDS.get(grade);
+  if (!rows) {
+    rows = (OUTLINE_ALL.get(grade) ?? []).filter((r) => cardsForCompetency(r.code).size > 0);
+    OUTLINE_WITH_CARDS.set(grade, rows);
+  }
+  return rows;
+}
+
+/**
+ * Where calendar mode IS: a grade, a competency of its outline, that competency's cards, and
+ * the row's position (`index` into curriculumOutline(grade)). The store keeps one of these as
+ * `curriculum`; its `idSet` doubles as the FeedContext restriction (see CurriculumHold).
+ */
+export interface CurriculumCursor {
+  grade: GradeLevel;
+  code: string;
+  /** The competency's cards — the frozen set from the inverse index, shared, never copied. */
+  idSet: ReadonlySet<string>;
+  index: number;
+}
+
+/** Enter the outline at a competency, or null if the grade's outline does not list it (no cards). */
+export function curriculumCursor(grade: GradeLevel, code: string): CurriculumCursor | null {
+  const rows = curriculumOutline(grade);
+  const index = rows.findIndex((r) => r.code === code);
+  if (index < 0) return null;
+  return { grade, code, idSet: cardsForCompetency(code), index };
+}
+
+/**
+ * THE CURSOR AFTER A PAGE-TURN — the calendar's whole walking rule, in one place so the store
+ * and the harness run the same one:
+ *
+ *   - the held topic still has a card the feed could serve from here (unseen, not the current
+ *     fact reworded — hasServableCurriculum; the transient picture cooldown deliberately does
+ *     NOT count, see there) → the cursor stays. Returned as the SAME object, so anything
+ *     keyed on it (the preview cache) stays valid.
+ *   - it is EXHAUSTED → the cursor moves FORWARD through the outline, in CG order, to the
+ *     first later competency that has such a card, skipping ones that do not (empty for this
+ *     pool, or already read out this session). Chronological, never backward.
+ *   - nothing left to the end of Q4 → null: calendar mode releases and the feed drifts on.
+ *
+ * `seen` is the post-turn value (it already includes `currentId`).
+ */
+export function advanceCurriculum(
+  c: CurriculumCursor,
+  currentId: string | null,
+  seen: ReadonlySet<string>
+): CurriculumCursor | null {
+  if (hasServableCurriculum(currentId, c.idSet, seen)) return c;
+  const rows = curriculumOutline(c.grade);
+  for (let i = c.index + 1; i < rows.length; i += 1) {
+    const idSet = cardsForCompetency(rows[i]!.code);
+    if (idSet.size && hasServableCurriculum(currentId, idSet, seen)) {
+      return { grade: c.grade, code: rows[i]!.code, idSet, index: i };
+    }
+  }
+  return null;
 }
 
 /**
@@ -1714,6 +1897,13 @@ export function hasServableMagnet(
  * next card most of the time (see the magnet successor below and magnetDeepShare); the
  * lateral surfaces feel the magnet only through the weight overlay, so the fork remains the
  * natural drift-away exit.
+ *
+ * In CALENDAR MODE (ctx.curriculum) every slot is CONFINED to the held competency's cards —
+ * a filter folded into `unseen`, so the deep ranking, both lateral pools, the category shelf,
+ * the dead-end escape and every thinning fallback all read from the set and nothing else.
+ * When the graph has no in-set follow-on (the usual case: a competency's cards are linked by
+ * curriculum, not by shared terms), the deep slot is PROMOTED from the set by the ordinary
+ * weigher instead of declaring a dead end, so the walk keeps its single-path grammar.
  */
 export function nextChoices(
   currentId: string,
@@ -1731,7 +1921,11 @@ export function nextChoices(
   const blockedSlugs = cooldownSlugs(cur, opts.recentIds);
   const curTopicKey = topicKeyOf(cur);
 
-  const unseen = (f: CardFact) => f.id !== currentId && !seen.has(f.id);
+  // Calendar mode's restriction, folded into the ONE predicate every path below reads: with a
+  // held topic, "unseen" means "unseen AND in the topic". Nothing else needs to know.
+  const only = opts.ctx?.curriculum?.ids;
+  const unseen = (f: CardFact) =>
+    f.id !== currentId && !seen.has(f.id) && (!only || only.has(f.id));
   /**
    * Servable next to THIS card: unseen, not a picture the reader just saw, and not the same
    * fact reworded under the same topic wording (those exist across grades).
@@ -1797,6 +1991,33 @@ export function nextChoices(
     }
   }
 
+  // THE CURRICULUM SUCCESSOR. A held topic's cards are related by the competency they teach,
+  // not by shared vocabulary, so the graph edge above usually finds no in-set candidate. That
+  // is not a dead end — the topic still has cards — so the deep slot is drawn from the set by
+  // the ordinary weigher (grade band, seen-decay), under the same restatement gates a graph
+  // candidate faces. As the topic thins, the picture cooldown is RELAXED before giving up —
+  // the feed's own thinning rule ("a repeated illustration beats an empty page"), and here a
+  // repeated illustration beats abandoning the members that share it: the cursor only ever
+  // moves forward, and a topic's cards often share one picture (hasServableCurriculum).
+  // Only when the set has NOTHING left does the page fall through to the dead-end fork
+  // below, and the store's cursor has already moved on by then (advanceCurriculum runs
+  // before the choices are drawn), so that fork is drawn from the NEXT topic's cards.
+  if (only && !deep) {
+    const members = (relaxPicture: boolean) => {
+      const pool: CardFact[] = [];
+      for (const id of only) {
+        const f = BY_ID.get(id);
+        if (!f || !unseen(f) || topicKeyOf(f) === curTopicKey) continue;
+        if (!relaxPicture && blockedSlugs.has(f.slug)) continue;
+        if (linkOf(cur, f).mass > selfScore * DEEP_DUP_CAP) continue;
+        if (textJaccard(cur, f) > TEXT_DUP_JACCARD) continue;
+        pool.push(f);
+      }
+      return pool;
+    };
+    deep = draw(members(false), w) ?? draw(members(true), w);
+  }
+
   // A card with no ASSOCIATED follow-on left is a dead end. Anything served next is an
   // unrelated jump anyway, so the reader picks it rather than having it picked for them —
   // and we label both options for what they are (lateral), instead of dressing a random
@@ -1838,7 +2059,11 @@ export function nextChoices(
   // illustration beats an empty page), then allow any unseen card, then any card at all.
   if (!lateral) {
     lateral =
-      drawFrom((f) => unseen(f) && f.id !== deep?.id, w) ?? drawFrom((f) => f.id !== currentId, w);
+      drawFrom((f) => unseen(f) && f.id !== deep?.id, w) ??
+      // "any card at all" — except in calendar mode, where a held topic with no unseen
+      // member left is a SINGLE-PATH page (the deep slot alone), never a repeat and never a
+      // card from outside the topic; the store's cursor decides when the topic is over.
+      (only ? undefined : drawFrom((f) => f.id !== currentId, w));
   }
 
   const out: CardChoice[] = [];

@@ -25,10 +25,12 @@ import {
 } from '@hiraia/shared';
 
 import {
+  advanceCurriculum,
   cardTitle,
   cardTitleById,
   choiceLabel,
   competencyKeys,
+  curriculumCursor,
   getCard,
   hasServableMagnet,
   jumpCard,
@@ -40,6 +42,7 @@ import {
   type CardChoice,
   type CardFact,
   type CardQuestion,
+  type CurriculumCursor,
   type FeedContext,
 } from '../data/cards';
 import { loadTokenIndex } from '../data/cardDb';
@@ -110,6 +113,23 @@ export interface ActiveMagnet {
   served: number;
 }
 
+/**
+ * CALENDAR MODE — "walk the MATATAG outline for my grade, topic by topic, exhausting each".
+ * The cursor (data/cards.ts CurriculumCursor): the grade the outline was opened for, the
+ * competency currently held, that competency's card set, and its row index. Held as the store's
+ * `curriculum`, and the ribbon under the ask box shows exactly while it is non-null.
+ *
+ * Unlike the magnet it is a FILTER, not a pull: while held, every draw is confined to `idSet`
+ * (FeedContext.curriculum). Advances on each page-turn through `advanceCurriculum` — the same
+ * object while the topic still has a servable card, the next non-empty row in CG order once it
+ * is exhausted, null past the end of Q4 (release). Cleared by: the ribbon's [x]
+ * (exitCurriculum), that end-of-outline release, and nothing else — an ask serves its card as a
+ * one-off and the walk resumes, a reroll jumps within the topic, interjects never touch it.
+ * The magnet and the cursor are mutually exclusive by construction: entering either clears the
+ * other, and an ask made in calendar mode forms no magnet. Session-only (v1): not persisted.
+ */
+export type ActiveCurriculum = CurriculumCursor;
+
 interface CardState {
   hydrated: boolean;
   /** Current card on the pad (null until hydrate). */
@@ -134,6 +154,8 @@ interface CardState {
    * shows exactly while a magnet is active, so dismissing one dismisses the other.
    */
   magnet: ActiveMagnet | null;
+  /** Calendar mode's cursor (see ActiveCurriculum); the curriculum ribbon shows while non-null. */
+  curriculum: ActiveCurriculum | null;
   /** Monotonic page number — keys the flip + typewriter remounts. */
   pageKey: number;
   pagesRead: number;
@@ -165,6 +187,14 @@ interface CardState {
   ask: (query: string) => Promise<void>;
   /** The banner's [x]: drop the asked-topic magnet (and with it the ribbon); the feed keeps going. */
   dismissQuery: () => void;
+  /**
+   * Enter calendar mode at a competency of the CURRENT grade's outline (the sheet's row tap):
+   * clears any magnet, holds the topic, and lands on its best next unseen card. A code the
+   * outline does not list (no cards at this grade) is ignored.
+   */
+  enterCurriculum: (code: string) => void;
+  /** The curriculum ribbon's [x]: leave calendar mode; the feed continues where it is. */
+  exitCurriculum: () => void;
   continueAfterResponse: () => void;
   /** Kick a background model warm-up so reward text can be generated (non-blocking). */
   warmModel: () => void;
@@ -204,10 +234,14 @@ const seenStore: { cards: Map<string, SeenRecord>; competencies: Map<string, See
 
 /**
  * Fresh weighting context for one draw: grade + clock are re-read every time. The magnet rides
- * along as an O(set) overlay in the weigher. Callers mid-transition pass the magnet they are
- * ABOUT to commit (get() would hand back the previous page's); the default reads the store.
+ * along as an O(set) overlay in the weigher; the curriculum cursor as the draw's restriction.
+ * Callers mid-transition pass the magnet/cursor they are ABOUT to commit (get() would hand
+ * back the previous page's); the defaults read the store.
  */
-function feedContext(magnet: ActiveMagnet | null = useCardStore.getState().magnet): FeedContext {
+function feedContext(
+  magnet: ActiveMagnet | null = useCardStore.getState().magnet,
+  curriculum: ActiveCurriculum | null = useCardStore.getState().curriculum
+): FeedContext {
   return {
     studentGrade: useEngineStore.getState().grade,
     currentQuarter: inferCurriculumQuarter(new Date()).quarter,
@@ -215,6 +249,7 @@ function feedContext(magnet: ActiveMagnet | null = useCardStore.getState().magne
     cardSeen: seenStore.cards,
     competencySeen: seenStore.competencies,
     magnet: magnet ? { ids: magnet.idSet, served: magnet.served } : undefined,
+    curriculum: curriculum ? { ids: curriculum.idSet } : undefined,
   };
 }
 
@@ -271,6 +306,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
   asking: false,
   responseAnchorId: null,
   magnet: null,
+  curriculum: null,
   pageKey: 0,
   pagesRead: 0,
   correctCount: 0,
@@ -479,7 +515,10 @@ export const useCardStore = create<CardState>()((set, get) => ({
         // On-topic landing: form the magnet — the query, its aboutness-ranked set (already
         // computed by the search we just paid for), decay clock at zero. It REPLACES any
         // previous magnet: a new ask is a topic change by definition.
-        navigateTo(res.best, set, get, formMagnet(q, res.magnet));
+        // In CALENDAR MODE no magnet forms: the found card is served as a one-off and the
+        // curriculum walk resumes on the next page-turn (navigateTo draws the landing card's
+        // choices under the held topic).
+        navigateTo(res.best, set, get, { magnet: get().curriculum ? null : formMagnet(q, res.magnet) });
         return;
       }
       // Weak hit AND off-domain: the matched card would have been a wrong answer to a
@@ -521,7 +560,8 @@ export const useCardStore = create<CardState>()((set, get) => ({
             // A GROUNDED generated card is an on-topic landing too, so it forms the magnet
             // (from the same ask-time search scoring). Often empty — a true gap head-matches
             // nothing — and then there is no magnet and no ribbon, just the response card.
-            magnet: formMagnet(q, res.magnet),
+            // Never in calendar mode: the answer is a one-off there (see the hit path above).
+            magnet: get().curriculum ? null : formMagnet(q, res.magnet),
             response: {
               query: q,
               kind: 'generated',
@@ -577,6 +617,30 @@ export const useCardStore = create<CardState>()((set, get) => ({
     if (get().magnet) set({ magnet: null });
   },
 
+  enterCurriculum: (code) => {
+    const s = get();
+    const grade = useEngineStore.getState().grade;
+    const picked = curriculumCursor(grade, code);
+    if (!picked) return; // not on this grade's outline (no cards) — the sheet never offers it
+    // A topic already read out this session (the sheet's chip said "0 / n") is entered the
+    // way the walk would leave it: at the next competency with something left — the same
+    // pre-check the die runs — rather than re-serving one of its cards under a ribbon that
+    // already names the next topic. Past the end of the outline it is held as tapped; the
+    // landing then releases the mode (navigateTo's exhaustion check), ribbon and all.
+    const cursor = advanceCurriculum(picked, s.current?.id ?? null, s.seen) ?? picked;
+    // The landing card: the topic's best next unseen card under the ordinary weigher (grade
+    // band, seen-decay) — jumpCard confined to the set.
+    const dest = jumpCard(s.current?.id ?? null, s.seen, feedContext(null, cursor));
+    // Entering clears the magnet (mutually exclusive) and commits the cursor in the same turn.
+    navigateTo(dest, set, get, { magnet: null, curriculum: cursor });
+  },
+
+  exitCurriculum: () => {
+    // The curriculum ribbon's [x]: the cursor and the ribbon go together; the current page and
+    // its choices stand, and the next page-turn draws unrestricted.
+    if (get().curriculum) set({ curriculum: null });
+  },
+
   continueAfterResponse: () => {
     const s = get();
     const dest = (s.responseAnchorId && getCard(s.responseAnchorId)) || null;
@@ -603,21 +667,30 @@ export const useCardStore = create<CardState>()((set, get) => ({
     const lang = useEngineStore.getState().language ?? 'tagalog';
     // The reroll is an explicit "surprise me", so the magnet is dropped BEFORE the draw —
     // the jump itself must not be pulled back toward the topic being escaped.
-    const ctx = feedContext(null);
+    // In CALENDAR MODE it is "another card of this topic" instead: the cursor is kept, and
+    // the jump is confined to the held set. If the topic has nothing servable left from the
+    // current page, the cursor is moved on FIRST so the die never lands on a repeat.
+    const held = s.curriculum && advanceCurriculum(s.curriculum, s.current?.id ?? null, s.seen);
+    const ctx = feedContext(null, held);
     const dest = jumpCard(s.current?.id ?? null, s.seen, ctx);
     const seen = new Set(s.seen);
     seen.add(dest.id);
     markSeen(dest, ctx.now);
+    // ...and the post-landing exhaustion check, exactly as an ordinary turn runs it, so the
+    // choices below come from the topic that will actually be held.
+    const curriculum = held && advanceCurriculum(held, dest.id, seen);
+    const after = curriculum === held ? ctx : feedContext(null, curriculum);
     const pagesRead = s.pagesRead + 1;
     set({
       current: dest,
-      choices: nextChoices(dest.id, seen, lang, { threadDepth: 0, recentIds: [dest.id], ctx }),
+      choices: nextChoices(dest.id, seen, lang, { threadDepth: 0, recentIds: [dest.id], ctx: after }),
       threadDepth: 0, // the reroll already switched topic — start the new thread fresh
       question: null,
       pending: null,
       questionAnswered: false,
       response: null,
       magnet: null, // 🎲 = "surprise me": the asked topic is released, ribbon and all
+      curriculum,
       seen,
       recent: [dest.id], // fresh trail — the jump is a hard topic switch
       pagesRead,
@@ -652,12 +725,51 @@ export function previewChoices(language: Language): CardChoice[] {
   // The same magnet transition advance() will make — including the auto-release. Previewing
   // with the CURRENT magnet instead would name a different deep card on the page where the
   // magnet expires, and the sheet beneath would swap labels the instant the swipe completed.
-  return nextChoices(next.id, seen, language, {
+  // The curriculum cursor likewise: the sheet on the page where a topic runs out must already
+  // be printed from the NEXT topic's cards, because that is what the swipe will serve.
+  const choices = nextChoices(next.id, seen, language, {
     threadDepth: choice.kind === 'lateral' ? 0 : s.threadDepth + 1,
     recentIds: recent,
-    ctx: feedContext(magnetAfter(s.magnet, next, seen, recent)),
+    ctx: feedContext(
+      magnetAfter(s.magnet, next, seen, recent),
+      s.curriculum && advanceCurriculum(s.curriculum, next.id, seen)
+    ),
   });
+  // Remember the draw so advance() can ADOPT it instead of paying nextChoices (~21ms of
+  // TERM_INDEX walking) again inside the swipe's critical commit — and warm the previewed
+  // targets now, during reading time, so the next turn's warmAfter is a cache hit. Adoption
+  // also makes the printed preview EXACTLY what the swipe serves: the deep slot was always
+  // deterministic (magnetCoin), but the lateral is a weighted random draw, and recomputing
+  // it in advance() could legitimately name a different card than the sheet beneath showed.
+  previewCache = {
+    pageKey: s.pageKey,
+    factId: next.id,
+    language,
+    magnet: s.magnet,
+    curriculum: s.curriculum,
+    choices,
+  };
+  void warmPage(choices.map((c) => c.factId));
+  return choices;
 }
+
+/**
+ * The last preview, keyed on everything that could invalidate it: the page it was drawn on
+ * (pageKey — every navigation bumps it, so seen/recent/threadDepth are covered), the card it
+ * was drawn FOR, the language, and the magnet OBJECT (dismissQuery can null the magnet without
+ * turning a page, and a preview drawn under the pull must not be served after the [x]) — and
+ * the curriculum cursor OBJECT for the same reason (exitCurriculum nulls it without a turn).
+ * Module-scope on purpose: it is a memo of a pure derivation, not state, and the store's
+ * public API is unchanged.
+ */
+let previewCache: {
+  pageKey: number;
+  factId: string;
+  language: Language;
+  magnet: ActiveMagnet | null;
+  curriculum: ActiveCurriculum | null;
+  choices: CardChoice[];
+} | null = null;
 
 type Set_ = (partial: Partial<CardState>) => void;
 type Get_ = () => CardState;
@@ -687,20 +799,37 @@ function warmAfter(get: Get_) {
   void warmPage([s.current?.id, ...s.choices.map((c) => c.factId)], recentFactIds);
 }
 
-function navigateTo(fact: CardFact, set: Set_, get: Get_, magnetOverride?: ActiveMagnet | null) {
+/**
+ * What a navigation commits alongside the card. `magnet` is the just-formed magnet of an ask
+ * (absent = keep the store's, as a response-continue does); `curriculum` is the cursor being
+ * entered (absent = keep the store's).
+ */
+interface NavigateOpts {
+  magnet?: ActiveMagnet | null;
+  curriculum?: ActiveCurriculum | null;
+}
+
+function navigateTo(fact: CardFact, set: Set_, get: Get_, opts: NavigateOpts = {}) {
   const s = get();
   const lang = useEngineStore.getState().language ?? 'tagalog';
   const seen = new Set(s.seen);
   seen.add(fact.id);
   const recent = [...s.recent, fact.id].slice(-RECENT_WINDOW);
-  // `magnetOverride` is the just-formed magnet of an ask (undefined = keep the store's, as a
-  // response-continue does). Landing on one of its own cards advances the decay clock, but
+  // The magnet override is the just-formed magnet of an ask (undefined = keep the store's, as
+  // a response-continue does). Landing on one of its own cards advances the decay clock, but
   // the exhaustion check deliberately does NOT run here: a just-asked one-card topic still
   // gets its "You asked" ribbon on the very page that answered it. The release fires on the
   // next ordinary turn (advance), where an exhausted set has no pull anyway.
-  const base = magnetOverride === undefined ? s.magnet : magnetOverride;
+  const base = opts.magnet === undefined ? s.magnet : opts.magnet;
   const magnet = base && base.idSet.has(fact.id) ? { ...base, served: base.served + 1 } : base;
-  const ctx = feedContext(magnet);
+  // The curriculum cursor DOES run its exhaustion check here, unlike the magnet: a topic
+  // entered from the sheet whose only servable card is the one just landed on has been
+  // exhausted by that landing, and "attempt to exhaust, then move on" means the ribbon should
+  // already name the next topic the swipe will serve. An ask's one-off landing (off-set) leaves
+  // the cursor where it was unless the held topic has genuinely nothing left from here.
+  const held = opts.curriculum === undefined ? s.curriculum : opts.curriculum;
+  const curriculum = held && advanceCurriculum(held, fact.id, seen);
+  const ctx = feedContext(magnet, curriculum);
   markSeen(fact, ctx.now);
   const viewLog = [
     ...s.viewLog,
@@ -721,6 +850,7 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, magnetOverride?: Activ
     pending: null,
     questionAnswered: false,
     magnet,
+    curriculum,
     untilQuestion: nextGap(), // don't interject right after a search / topic jump
     untilReward: s.untilReward - 1,
     pageKey: s.pageKey + 1,
@@ -744,7 +874,11 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
   // The choices below are drawn with the post-turn magnet, so the pull and the release both
   // take effect on the page where they happened.
   const magnet = magnetAfter(s.magnet, nextFact, seen, recent);
-  const ctx = feedContext(magnet);
+  // The curriculum cursor after this turn: the same object while the held topic still has a
+  // servable card from here, the next non-empty competency in CG order once it is exhausted,
+  // null (released, ribbon gone) past the end of the outline — see advanceCurriculum.
+  const curriculum = s.curriculum && advanceCurriculum(s.curriculum, nextFact.id, seen);
+  const ctx = feedContext(magnet, curriculum);
   markSeen(nextFact, ctx.now);
   const viewLog = [
     ...s.viewLog,
@@ -756,7 +890,20 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
   // Taking the lateral fork is itself a topic switch, so it restarts the thread; otherwise
   // the counter walks up until nextChoices forks, then resets on the page that offered it.
   const depth = choice.kind === 'lateral' ? 0 : s.threadDepth + 1;
-  const choices = nextChoices(nextFact.id, seen, lang, { threadDepth: depth, recentIds: recent, ctx });
+  // Adopt the preview's draw when it is provably this exact turn (see previewCache): the
+  // sheet beneath already printed those tickets, and this is the single biggest cost inside
+  // the swipe commit. Fork picks, interject resumes, rerolls and asks all miss the key and
+  // pay the ordinary compute path.
+  const cached = previewCache;
+  const choices =
+    cached &&
+    cached.pageKey === s.pageKey &&
+    cached.factId === nextFact.id &&
+    cached.language === lang &&
+    cached.magnet === s.magnet &&
+    cached.curriculum === s.curriculum
+      ? cached.choices
+      : nextChoices(nextFact.id, seen, lang, { threadDepth: depth, recentIds: recent, ctx });
 
   set({
     current: nextFact,
@@ -769,6 +916,7 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
     untilQuestion: s.untilQuestion - 1,
     untilReward,
     magnet, // persists across ordinary turns until [x] / auto-release / new ask / reroll
+    curriculum, // persists across ordinary turns until [x] / end-of-outline release
     pageKey: s.pageKey + 1,
   });
   persist({ pagesRead, correctCount: s.correctCount });
