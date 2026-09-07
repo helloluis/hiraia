@@ -388,3 +388,35 @@ was cancelled; it is not in the ledger. `batch-submit-all.py _req` now prints Op
 Phase C starts when every batch reaches `completed`: `append.py --stages fetch` (repeat until all downloaded) → wire webp
 into the pool (never gen-cards-pool.py) → gen-curriculum-tags → titles/cats (§8.5) → build-cards-db (§8.6) → card-harness →
 run-harness.sh → recount ≥ 20 per code → merge depth-fill-facts into unified.
+
+## 7. Phase C — fetch → wire → tags → titles/cats → cards.db → harness (2026-09-07 23:56 – 2026-09-08 03:56)
+
+| step | result |
+|---|---|
+| fetch (`append.py --stages fetch`) | 24/24 batches completed: 2,726 webp staged (mean 33 KB, 91 MB), **5 declined** by image moderation → `out/image-declined.jsonl` (+ qwen fallback worklist, not run) |
+| wire (`depth-fill/wire-pool.py`, NEW, append-only) | **2,724 cards** appended to `cardsPool.app.json` AND `cardsPool.merged.json` (46,421 → 49,145): 2,719 illustrated (slug = own id) + 5 posters (slug '' for the declined, the art-QA convention); **7 pages over the 48-word display budget held back** (ffct-37177, 37201, 37945, 37981, 37983, 38874, 39128 — candidates for fw-compress-factoids); every pre-existing card verified unchanged. Why not the stock scripts: `gen-cards-pool.py` drops the 9,889 dcards; `wire-app-pool.py` rebuilds from the merged bank and would erase the 2,853 art-QA `qa-*` slugs that exist only in the app pool. |
+| card PNGs + art pack + image map | `to-card-png.mjs`: 2,719 converted (32.7 → 14.8 KB each). `build-art-pack.mts` had to be re-run (gen-image-map's guard refuses images that are in neither the bundled head nor the shard manifests): head 12,337 images / 139.9 MB, tail 23,297 images / 410 MB in 73 shards; all 318 MATATAG competencies meet the 0.65 illustrated floor. `gen-image-map.mjs`: 12,337 bundled of 35,634 mapped. The 2,853 `qa-*.png` had to be copied in from unified's UNTRACKED working tree (keep-list referenced them). |
+| runtime tags (`gen-curriculum-tags.mjs`) | 25,225 / 49,145 pool cards tagged; **2,714 / 2,724 new cards tagged**; all 22,511 pre-existing rows keep code, grade, quarter, confidence and code lists (only alternate-cell confidences re-normalised). **10 new cards untagged** because their minted factIds (grassland-habitat-g4, combustion-of-methane-g10, life-cycle-repeats-g4, reading-a-thermometer-g5, lowering-the-coverslip-g7, joule-unit-g8, conclusion-and-hypothesis-g7, law-of-segregation-g8, solar-system-model-g7, frequency-and-energy-g9) appear in `curriculumTagExclusions.json` — the audit judged facts with those ids at 04:xx, before these were minted (see §8 collision note). |
+| recount (runtime tags) | **117 / 131 in-scope codes ≥ 20 cards.** 14 short: G7-M-4 12, G8-L-1 15, G9-L-9 15, G8-E-5 15, G8-E-3 15, G7-F-8 16, G7-E-1 17, G9-M-7 18, G9-E-1 18, G10-E-3 18, G9-E-3 18, G8-L-10 19, G10-E-7 19, G8-M-3 19 — the same codes that lost >50 % of candidates to near-existing dedup (§3); a targeted second write is the parent's call. |
+| titles + cats (§8.5) | **2,724 / 2,724 new cards have trilingual `title` + 1–2 ladder `cats`**; 0 invalid cats, 0 uncategorised, 0 titles > 32 chars; 422 titles equal the (already short, ≤ 20-char) topic — acceptable. Applied with `depth-fill/apply-new-titles.py` (new-ids-only fold; the stock `assemble-card-titles.py` would have overwritten 26.6k polished titles — see cost note). |
+| `build-cards-db.py` | cards.db 144.8 MB (49,145 cards; fact 53,010 rows, bankHash 13ff876529fa), tokens.bin 8.1 MB, cardsIndex 16.7 MB, dbVersion b06b9fe15705 |
+| `card-harness.mts` | **exit 0 — feed report, quiz interjects, MAGNET WALK and CURRICULUM WALK all pass**; coverage (topics shown ≥3 cards / CG topics): G3 13/13 · G4 15/15 · G5 19/19 · G6 18/18 · G7 16/17 · G8 19/19 · G9 21/21 · G10 18/18 (the one hidden G7 topic has no competency) |
+| `run-harness.sh` (gate) | see §9 |
+
+**Cost note (titles):** `FW_MISSING=1 fw-gen-card-titles.py` decides "untitled" from the shard files in `rag/pipeline/card-titles/`, which are untracked; the worktree had only the 698 shards copied from unified, so the first gap run re-titled **29,337** cards (85 min, ≈ $9.68) instead of 2,724, and every re-run rewrote the same `titles-gap*` namespace. Recovery: rows for the new ids were accumulated into `out/new-titles.jsonl`; the last 80 stubborn cards (batches that never parsed at 40/call) were titled by `fw-gen-new-titles.py` (a copy pointed at `out/pool-new-missing.json`) at 10 and 2 per call. Total titles spend ≈ $11.0; nothing from the over-run was folded into the pool.
+
+## 8. Merge notes (for the parent)
+
+- **A parallel depth-fill run exists in `hiraia-unified`'s working tree (uncommitted):** 2,711 `generator: depth-fill` bank rows appended 20:11, voice + tags done 20:31, images blocked at 20:32 by the same OpenAI billing limit (never submitted/fetched/wired). **359 of this branch's minted factIds collide with it (287 identical English).** Merging both would double-fill the same competencies; decide which run survives before merging. If this branch survives, discard those uncommitted bank/factoids/curriculum-tags changes on unified first.
+- 10 new factIds sit in `curriculumTagExclusions.json` (above); if they stay excluded the 10 cards ship untagged (feed OK, calendar pills absent).
+- Prep carry-over (`curriculumTags.generated.json`, `gen-curriculum-tags.mjs`, `curriculumTagOverrides/Exclusions.json`, `tools/curriculum-tag-audit/`) is still uncommitted on both trees; the 2,853 `qa-*.png` and `to-webp.py` were untracked in the primary checkouts (to-webp.py is now committed here).
+- Not done, by design: the qwen fallback for the 5 declined images; `fw-compress-factoids` for the 7 over-budget pages; editorial `emphasis`/`poster` (§8.7 optional); no APK.
+
+## 9. Gate — `run-harness.sh` (2026-09-08 03:56–03:58)
+
+**GATE GREEN (exit 0): "ALL PASS — the card writer is safe to put in front of a child."** Device-equivalent engine
+(hiraia-sft-2b-v2 Q4_K_M, no adapter) + LaBSE gguf embedder, against this worktree's bank/vectors/cards.db.
+Case tallies seen in the log: 56/59, 14/14, 45/45, 24/35
+No APK was built (by instruction). Acceptance (§9 of the brief): every shipped fact trilingual with terms ✓; every NEW
+card titled + 1–2 ladder cats ✓; build-cards-db ran ✓; card-harness green ✓; no gpt-oss anywhere ✓; pre-existing ids
+unchanged ✓; audit overrides/exclusions intact ✓; run-harness green ✓; 14 codes < 20 named with reasons (§7) ✓.
