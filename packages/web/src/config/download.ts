@@ -2,9 +2,9 @@
  * Hiraia Android APK — single source of truth for the landing-page download.
  *
  * One APK, one on-device model (Hiraia-2B — the CPT'd + full-parameter-SFT'd
- * Qwen3.5-2B, hiraia-sft-2b-v2), one device target: Android 12+ with
- * 6 GB+ RAM. There is no lighter build — the 1B/4 GB "kitten" tier is retired, so the
- * requirement below is a REQUIREMENT, not a recommendation.
+ * Qwen3.5-2B, hiraia-sft-2b-v2), one OS target: Android 10+. The built-in card
+ * library works without loading that model; 6 GB+ RAM is recommended for local
+ * model-generated cards.
  *
  * Distributed outside the Play Store, so legitimacy rests on two published,
  * user-checkable values:
@@ -39,8 +39,8 @@ export const DOWNLOAD = {
   /** SHA-256 of the signing cert. Stays the same across releases. */
   signingCertSha256: '40d750d5576cb59c311c7ba713403e065b934967d7a7d1bc80652e1167a20c35',
 
-  minAndroid: 12,
-  /** Device-RAM floor. Matches ACTIVE_MODEL.minRamGB in packages/mobile/src/config/model.ts. */
+  minAndroid: 10,
+  /** Local-model RAM recommendation. Matches ACTIVE_MODEL.minRamGB in the mobile app. */
   minRamGB: 6,
   /**
    * First-run download, in GB: the base model plus the semantic embedder. Both are

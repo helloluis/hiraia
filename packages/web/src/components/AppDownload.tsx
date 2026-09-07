@@ -82,9 +82,10 @@ export function AppDownload() {
               <span className="mc-chip text-[10px]">v{DOWNLOAD.version}</span>
             </div>
             <p className="relative z-[1] font-zilla text-sm font-medium leading-relaxed text-[var(--ink)]">
-              Requires Android {DOWNLOAD.minAndroid}+ and a phone with {DOWNLOAD.minRamGB}GB+ of
-              memory. Android may ask you to allow this one install — that&apos;s normal, since
-              Hiraia isn&apos;t on the Play Store.
+              Requires Android {DOWNLOAD.minAndroid} or newer. {DOWNLOAD.minRamGB}GB+ of memory is
+              recommended for model-generated cards; the built-in flash-card library works without
+              the model. Android may ask you to allow this one install — that&apos;s normal, since Hiraia
+              isn&apos;t on the Play Store.
             </p>
 
             <div className="relative z-[1] mt-auto pt-5">
@@ -161,9 +162,10 @@ export function AppDownload() {
               <span className="mc-chip text-[10px]">v{DOWNLOAD.version}</span>
             </div>
             <p className="relative z-[1] font-zilla text-sm font-medium leading-relaxed text-[var(--ink)]">
-              Requires Android {DOWNLOAD.minAndroid}+ and a phone with {DOWNLOAD.minRamGB}GB+ of
-              memory. Android may ask you to allow this one install — that&apos;s normal, since
-              Hiraia isn&apos;t on the Play Store.
+              Requires Android {DOWNLOAD.minAndroid} or newer. {DOWNLOAD.minRamGB}GB+ of memory is
+              recommended for model-generated cards; the built-in flash-card library works without
+              the model. Android may ask you to allow this one install — that&apos;s normal, since Hiraia
+              isn&apos;t on the Play Store.
             </p>
 
             <div className="relative z-[1] mt-auto pt-5">

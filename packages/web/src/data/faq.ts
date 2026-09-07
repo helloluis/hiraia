@@ -21,6 +21,11 @@ const GRADE_SPAN = `Grades ${GRADE_OPTIONS[0]} through ${GRADE_OPTIONS[GRADE_OPT
 export const FAQ_SHIPPED: readonly { date: string; title: string; faqIds: readonly string[] }[] = [
   {
     date: '2026-09',
+    title: `Android ${DOWNLOAD.minAndroid} and newer are now supported.`,
+    faqIds: ['devices-android', 'devices-tablet', 'trouble-install'],
+  },
+  {
+    date: '2026-09',
     title: `Android APK v${DOWNLOAD.version} is public — download it from the homepage, not the Play Store.`,
     faqIds: ['usage-now', 'devices-sideload', 'trouble-download'],
   },
@@ -161,7 +166,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'devices',
     q: 'Which phones does it run on?',
     a: [
-      `Android ${DOWNLOAD.minAndroid} or newer. Phones with ${DOWNLOAD.minRamGB}GB of memory or more are recommended. Hiraia is built for entry-level Android handsets, not for a flagship-only audience.`,
+      `Android ${DOWNLOAD.minAndroid} or newer. Phones with ${DOWNLOAD.minRamGB}GB of memory or more are recommended for model-generated cards. The built-in flash-card library works without the model. Hiraia is built for entry-level Android handsets, not for a flagship-only audience.`,
       APK_LIVE
         ? 'There is no iPhone build, and it is not listed on the Play Store. Download the APK from the homepage on hiraia.org.'
         : 'There is no iPhone build, and it is not listed on the Play Store. When v0.1 ships it will be a single APK from hiraia.org.',
@@ -208,7 +213,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'devices',
     q: 'Will it run on a tablet or a cheap Android?',
     a: [
-      'Any device that is Android 12+ with enough free storage can try. Memory is the usual limit: 6GB RAM is the recommendation because the 2B on-device model has to sit in RAM while it runs. A phone that constantly kills the app is usually short on memory, not “too old.”',
+      `Any device running Android ${DOWNLOAD.minAndroid} or newer with enough free storage can try. Memory is the usual limit: ${DOWNLOAD.minRamGB}GB RAM is recommended for model-generated cards because the 2B on-device model has to sit in memory while it runs. The built-in flash-card library remains available without generating new cards.`,
       'If you are unsure, try the web demo first. It will not prove performance on your handset, but it will show you the cards and the quizzes.',
     ],
   },
@@ -300,7 +305,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     q: 'Android blocked the install.',
     a: [
       'Sideloaded APKs trigger a system warning. Open the prompt, allow installs from the browser or from Files for this one file, and install only an APK that came from https://hiraia.org. Play Protect may scan it; that is normal for an app that is not in the Play Store.',
-      'If the phone still refuses, confirm it is Android 12 or newer. Older system versions are not supported.',
+      `If the phone still refuses, confirm it is Android ${DOWNLOAD.minAndroid} or newer. Older system versions are not supported.`,
     ],
   },
   {
