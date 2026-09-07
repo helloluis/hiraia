@@ -1,0 +1,12 @@
+{"id": "straight-line-rule-g7", "verdict": "ok", "reason": "Straight-line displacement magnitude never exceeds path distance.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "45d1f7099d612c43"}
+{"id": "jeepney-route-example-g7", "verdict": "ok", "reason": "Correct: winding path distance exceeds straight displacement.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "af90c5d3e7f1b2b0"}
+{"id": "farmer-field-example-g7", "verdict": "wrong", "reason": "Full perimeter walk returns to start; displacement is zero.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "f1564746410c546e"}
+{"id": "basketball-court-example-g7", "verdict": "ok", "reason": "Returns to start, so displacement is zero.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "33a044f5efedaf45"}
+{"id": "map-and-ruler-method-g7", "verdict": "ok", "reason": "Correct method: straight arrow for displacement, trace path for distance.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "1c09803c9a14ec40"}
+{"id": "return-to-start-meaning-g7", "verdict": "ok", "reason": "Closed trip has zero displacement regardless of path.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "4766d0bbff7c71fc"}
+{"id": "long-winding-road-example-g7", "verdict": "wrong", "reason": "Displacement is straight-line start-to-finish, not just height gained.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "22ade319431b4e66"}
+{"id": "school-to-home-example-g7", "verdict": "ok", "reason": "Correct: extra path distance, straight-line displacement.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "d526f15a6f8ac8c7"}
+{"id": "displacement-equals-distance-g7", "verdict": "ok", "reason": "Only straight one-way motion makes them equal.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "8a683f4472ad36d5"}
+{"id": "plane-flight-example-g7", "verdict": "ok", "reason": "Curved route distance exceeds straight displacement.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "29a5da55a466c142"}
+{"id": "speed-vs-velocity-link-g7", "verdict": "ok", "reason": "Speed is scalar; velocity is vector from displacement.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "ba155656da78ebd5"}
+{"id": "ecosystem-stability-meaning-g9", "verdict": "suspect", "reason": "Stability is maintaining ecosystem structure/function, not just providing services.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "0df9183260ed2914"}

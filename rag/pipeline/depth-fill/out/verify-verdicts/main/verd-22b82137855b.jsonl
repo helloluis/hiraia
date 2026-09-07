@@ -1,0 +1,12 @@
+{"id": "air-composition-percentages-g3", "verdict": "ok", "reason": "Air composition is accurate.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "2705f33b3b1f328f"}
+{"id": "fair-test-lever-setup-g6", "verdict": "ok", "reason": "Controls variables; changes only effort distance.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "b93e9514391dd807"}
+{"id": "measuring-force-with-spring-scale-g6", "verdict": "wrong", "reason": "Scale should attach at effort point, not load.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "d06a123090a10877"}
+{"id": "changing-effort-distance-g6", "verdict": "ok", "reason": "Changes effort distance; load weight constant.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "63082a44f9c8afeb"}
+{"id": "changing-load-distance-g6", "verdict": "ok", "reason": "Changes load distance; hand position constant.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "7a28ad5b68e65d9d"}
+{"id": "recording-data-table-g6", "verdict": "ok", "reason": "Table includes needed variables and force.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "fdb0eeca36a205ad"}
+{"id": "repeating-trials-g6", "verdict": "ok", "reason": "Repeats and averages reduce error.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "5827ae9270f120a2"}
+{"id": "graphing-results-g6", "verdict": "ok", "reason": "Longer effort distance lowers effort force.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "1f919e9d1133037b"}
+{"id": "direction-change-testing-g6", "verdict": "ok", "reason": "First-class lever moves load opposite effort.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "5df6b5fc8ffebffc"}
+{"id": "controlling-lever-weight-g6", "verdict": "ok", "reason": "Same lever controls weight variable.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "e857ebb67b4cfc40"}
+{"id": "marking-fulcrum-g6", "verdict": "ok", "reason": "Marking fulcrum ensures consistent distance measurement.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "26a6759966e87893"}
+{"id": "measuring-distances-g6", "verdict": "ok", "reason": "Meter stick measures both distances correctly.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "47e151f1e691e53c"}

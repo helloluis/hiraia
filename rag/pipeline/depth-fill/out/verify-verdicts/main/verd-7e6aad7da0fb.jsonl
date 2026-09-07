@@ -1,0 +1,12 @@
+{"id": "labeling-force-arrows-g7", "verdict": "ok", "reason": "Clear labels help identify forces; notation is accurate.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "5a2f0f9327fa308a"}
+{"id": "direction-of-gravity-g7", "verdict": "ok", "reason": "Gravity acts toward Earth's center regardless of tilt.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "e4667a902ad4a99a"}
+{"id": "normal-force-direction-g7", "verdict": "ok", "reason": "Normal force is perpendicular to surface.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "8176bd8f41fb89fd"}
+{"id": "direction-of-friction-g7", "verdict": "ok", "reason": "Friction opposes motion or attempted motion.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "9c660da8b6d88bb7"}
+{"id": "direction-of-tension-g7", "verdict": "ok", "reason": "Tension pulls along rope away from object.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "04ad2145d0e28e31"}
+{"id": "using-a-ruler-g7", "verdict": "ok", "reason": "Equal forces need equal arrow lengths.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "48af1317a42a640e"}
+{"id": "comparing-opposite-arrows-g7", "verdict": "suspect", "reason": "Only works for opposite forces; angled forces need vector sum.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "31640babd6d86cf2"}
+{"id": "unbalanced-arrow-length-g7", "verdict": "ok", "reason": "Opposite unequal forces produce net force and acceleration.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "fe43929ddb550d34"}
+{"id": "net-force-arrow-g7", "verdict": "suspect", "reason": "Net force is vector sum, not just longer arrows' direction.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "e024c851451bed61"}
+{"id": "scale-on-graph-paper-g7", "verdict": "ok", "reason": "Scale relates arrow length to force size.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "05e4dd159f56c6b7"}
+{"id": "checking-the-diagram-g7", "verdict": "suspect", "reason": "Balanced forces can also mean constant motion, not just still.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "ff1b4d0c63b1e1d0"}
+{"id": "center-of-paper-g7", "verdict": "ok", "reason": "Centering dot leaves room for arrows.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "0ece37ce255f279c"}

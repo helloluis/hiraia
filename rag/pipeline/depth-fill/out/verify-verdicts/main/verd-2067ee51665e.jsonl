@@ -1,0 +1,12 @@
+{"id": "data-logger-recording-g10", "verdict": "ok", "reason": "Automated recording reduces human error and improves accuracy.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "7eec034ad4807c2d"}
+{"id": "meter-stick-for-ramp-height-g10", "verdict": "ok", "reason": "Ramp height affects the cart's speed at the bottom.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "921918ac244de45c"}
+{"id": "level-track-with-incline-g10", "verdict": "suspect", "reason": "Level and incline conflict; incline direction matters.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "acc839271ecbd9f6"}
+{"id": "video-analysis-app-g10", "verdict": "suspect", "reason": "Momentum needs mass; app must know it.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "8ba6f98532aa2f42"}
+{"id": "collision-with-stationary-cart-g10", "verdict": "suspect", "reason": "Distance depends on friction, not directly momentum.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "682634758aa0e26f"}
+{"id": "spring-scale-pull-up-ramp-g10", "verdict": "suspect", "reason": "Force alone doesn't show momentum; needs time or velocity.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "67a1683661dc78ab"}
+{"id": "spring-loaded-launcher-g10", "verdict": "ok", "reason": "A calibrated launcher gives a repeatable starting speed.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "b028f2c6bba4eede"}
+{"id": "drawing-ammeter-and-voltmeter-g9", "verdict": "ok", "reason": "Ammeters go in series; voltmeters go across loads.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "5913ef2e77de4150"}
+{"id": "checking-wire-continuity-g9", "verdict": "ok", "reason": "Zero ohms means a continuous, unbroken wire.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "cc29981fcb4a8d05"}
+{"id": "keeping-voltage-constant-g9", "verdict": "ok", "reason": "Battery eliminators supply steady voltage as batteries drain.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "016e6459ec7c9934"}
+{"id": "recording-bulb-brightness-g9", "verdict": "ok", "reason": "Brightness is qualitative; descriptive categories work.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "229c91b26d5242f2"}
+{"id": "switch-in-parallel-branch-g9", "verdict": "ok", "reason": "A branch switch stops current only in that branch.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "580e755afd597fba"}

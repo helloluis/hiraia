@@ -1,0 +1,12 @@
+{"id": "angle-of-incidence-g7", "verdict": "ok", "reason": "Angle from vertical; zero when Sun is directly overhead.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "b2b1fb3c0974b67d"}
+{"id": "total-solar-energy-g7", "verdict": "ok", "reason": "Sun angle and daylight hours both affect total energy.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "a5cbdaa7418cdfcb"}
+{"id": "tilt-and-tropics-latitude-g7", "verdict": "ok", "reason": "Earth's tilt and tropics latitude are both about 23.5 degrees.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "b5f6f1005ec4c80e"}
+{"id": "morning-evening-slant-g7", "verdict": "ok", "reason": "Slanted rays spread energy, so ground warms less.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "b276e54560a1cee6"}
+{"id": "shadow-length-seasons-g7", "verdict": "ok", "reason": "Tilt changes noon Sun height, making shadows shorter in summer.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "415359a9be4d4c20"}
+{"id": "shadow-estimates-angle-g7", "verdict": "ok", "reason": "Longer shadow means lower Sun and less intense rays.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "b7f0f1462372c02f"}
+{"id": "north-pole-daylight-g7", "verdict": "ok", "reason": "Tilt causes about six months of daylight and darkness.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "82b7dca8260684c6"}
+{"id": "overhead-sun-dates-g7", "verdict": "wrong", "reason": "Closer to equator, overhead dates are farther apart, not closer.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "b6dcc3a5e8bdcc66"}
+{"id": "hemisphere-energy-difference-g7", "verdict": "ok", "reason": "Tilt gives steeper rays in summer, shallower in winter.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "563cbd2c71d0bcc3"}
+{"id": "sun-output-constant-g7", "verdict": "ok", "reason": "Tilt concentrates rays in summer; Sun's output is unchanged.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "29f377002052d3f2"}
+{"id": "competition-for-mates-g10", "verdict": "wrong", "reason": "Crowding makes mates easier to find; growth slows from resource limits.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "c89d3faa36d48634"}
+{"id": "waste-buildup-slows-growth-g10", "verdict": "ok", "reason": "Waste buildup can poison environment and slow population growth.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "afad8c95fd652a02"}

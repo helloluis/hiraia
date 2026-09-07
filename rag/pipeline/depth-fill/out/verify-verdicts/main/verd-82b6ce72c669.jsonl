@@ -1,0 +1,12 @@
+{"id": "balanced-forces-no-acceleration-g9", "verdict": "suspect", "reason": "Only if initially at rest; otherwise it keeps moving.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "f61c3360644d0361"}
+{"id": "rocket-acceleration-g9", "verdict": "ok", "reason": "Thrust exceeding gravity gives net upward force.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "505d7db5f7d7d222"}
+{"id": "pedaling-increases-acceleration-g9", "verdict": "ok", "reason": "More forward force increases acceleration.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "1b3f935f33eb62dd"}
+{"id": "bus-turning-left-g9", "verdict": "ok", "reason": "Friction provides leftward centripetal force.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "f7e5c07d56431700"}
+{"id": "pendulum-at-end-of-swing-g9", "verdict": "wrong", "reason": "Gravity's tangential pull, not string tension, accelerates it at end.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "903d896e5071c9a3"}
+{"id": "car-acceleration-from-rest-g9", "verdict": "ok", "reason": "60 km/h divided by 10 s is 6 km/h/s.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "ef49472c67fcfb23"}
+{"id": "kite-acceleration-g9", "verdict": "ok", "reason": "Net upward force causes upward acceleration.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "e90f829e7fe95983"}
+{"id": "basketball-curved-path-g9", "verdict": "ok", "reason": "Gravity changes vertical motion, curving the path.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "8119b2048c1425a1"}
+{"id": "period-number-and-shells-g8", "verdict": "ok", "reason": "Period number equals number of electron shells.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "4c85fd1888684409"}
+{"id": "carbon-electron-shells-g8", "verdict": "ok", "reason": "Carbon has two first-shell and four second-shell electrons.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "3552f082392c1779"}
+{"id": "shell-labels-k-l-m-n-g8", "verdict": "ok", "reason": "K, L, M, N label shells from innermost outward.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "22685adff91cf334"}
+{"id": "third-shell-capacity-g8", "verdict": "ok", "reason": "Third shell holds 18; first 18 elements fill 8.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "f6436c8acb960c76"}

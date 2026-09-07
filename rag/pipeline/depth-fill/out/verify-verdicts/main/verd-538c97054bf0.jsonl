@@ -1,0 +1,12 @@
+{"id": "maximum-height-from-speed-g10", "verdict": "ok", "reason": "Correct ideal physics; v²=2gh gives 20 m.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "727515e622460f38"}
+{"id": "air-resistance-lowers-peak-g10", "verdict": "ok", "reason": "Air resistance reduces height.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "22663b5199cf1e96"}
+{"id": "release-height-effect-on-angle-g10", "verdict": "ok", "reason": "Higher release allows flatter angle.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "e5c2bdbe25617976"}
+{"id": "speed-increases-flight-time-g10", "verdict": "ok", "reason": "Greater speed increases height and time.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "d1b094489e38b719"}
+{"id": "half-range-at-peak-g10", "verdict": "ok", "reason": "True for ideal level-ground projectile.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "73572c028ed622d8"}
+{"id": "vertical-speed-decrease-example-g10", "verdict": "ok", "reason": "Correct; gravity slows it 10 m/s each second.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "5ac32fc15c301af3"}
+{"id": "free-throw-optimal-angle-g10", "verdict": "ok", "reason": "About 50 degrees is common for free throws.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "b1812662e281987c"}
+{"id": "angle-affects-speed-components-g10", "verdict": "wrong", "reason": "At 60°, upward component is about 87%, not half.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "a5124740547136e2"}
+{"id": "gravity-rate-independent-of-mass-g10", "verdict": "ok", "reason": "Gravity acceleration is mass-independent.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "26212a58a5d5a27b"}
+{"id": "forest-fragmentation-effect-g9", "verdict": "suspect", "reason": "Overstates: not all animals are trapped or unable to survive.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "ae3687f6ec43aa94"}
+{"id": "overfishing-empties-oceans-g9", "verdict": "ok", "reason": "Overfishing can deplete species.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "b4af4d5b643cb28b"}
+{"id": "pollution-kills-species-g9", "verdict": "ok", "reason": "Chemical pollution can poison aquatic life.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "0d6de08e2f2f4f01"}

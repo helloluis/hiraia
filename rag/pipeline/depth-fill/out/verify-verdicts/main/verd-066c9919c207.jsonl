@@ -1,0 +1,12 @@
+{"id": "eye-position-g8", "verdict": "ok", "reason": "Eye is the calm center; forecasters plot its location.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "5400dda98f4c7d96"}
+{"id": "wind-arrows-g8", "verdict": "wrong", "reason": "Arrows show storm movement, not wind direction.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "db356b653545f824"}
+{"id": "pagasa-bulletin-g8", "verdict": "ok", "reason": "PAGASA bulletins include coordinates and wind speed.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "e82ab6e2eaa487fd"}
+{"id": "track-extrapolation-g8", "verdict": "suspect", "reason": "Real forecasts use models, not just straight-line extrapolation.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "8b827473ad652147"}
+{"id": "map-grid-g8", "verdict": "ok", "reason": "Latitude-longitude grid gives unique coordinates.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "300578b7877e763a"}
+{"id": "comparing-tracks-g8", "verdict": "ok", "reason": "Comparing tracks verifies forecast accuracy.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "e0fc3ebb8fdd6bc8"}
+{"id": "plotting-tools-g8", "verdict": "suspect", "reason": "Compass isn't needed for plotting positions or track line.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "697130d01b1c9b7c"}
+{"id": "recording-wind-speed-g8", "verdict": "ok", "reason": "Maximum wind speed tracks storm strength.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "f3276a97b0d943de"}
+{"id": "track-interpretation-g8", "verdict": "ok", "reason": "Straight track steady; curved track turning.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "c896f27f1303b93c"}
+{"id": "updating-the-map-g8", "verdict": "ok", "reason": "New data extends track and revises forecast.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "67e9a16a91544e7b"}
+{"id": "terrestrial-word-origin-g4", "verdict": "ok", "reason": "Terra means land; terrestrial means land-dwelling.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "ec915c6867796542"}
+{"id": "sea-turtle-aquatic-g4", "verdict": "ok", "reason": "Sea turtle lives in ocean; aquatic is accurate.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "6f0c9d52503a86f0"}

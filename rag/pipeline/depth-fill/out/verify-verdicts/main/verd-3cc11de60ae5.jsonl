@@ -1,0 +1,12 @@
+{"id": "aligning-ruler-zero-mark-g3", "verdict": "ok", "reason": "Correct ruler use for accurate measurement.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "ab8857f18cf134e0"}
+{"id": "choosing-the-right-unit-g3", "verdict": "ok", "reason": "Millimeters for tiny, meters for room length.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "a0077b0274e80e95"}
+{"id": "recording-measurements-with-units-g3", "verdict": "ok", "reason": "Units are essential for clear measurements.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "560aabfa2a06416e"}
+{"id": "daytime-length-definition-g7", "verdict": "ok", "reason": "Daytime defined sunrise to sunset; tilt changes it.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "d4d625f9d80c6836"}
+{"id": "tilt-direction-and-seasons-g7", "verdict": "ok", "reason": "Northern Hemisphere tilts toward June, away December.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "67a6e68181c9e7d4"}
+{"id": "circle-of-illumination-g7", "verdict": "suspect", "reason": "Boundary is a circle, not straight; tilt changes orientation.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "30c7006b53e47818"}
+{"id": "rate-of-daylight-change-g7", "verdict": "ok", "reason": "Daylight change rate peaks at equinoxes, slows at solstices.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "c1b95f9445f4654d"}
+{"id": "45-degrees-latitude-example-g7", "verdict": "ok", "reason": "45°N longest ~15h, shortest ~9h is accurate.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "dde2eeb7ed3bc306"}
+{"id": "solstice-tilt-orientation-g7", "verdict": "ok", "reason": "Solstices mark maximum tilt toward/away.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "a61d1fcbb7874957"}
+{"id": "northern-hemisphere-day-length-g7", "verdict": "ok", "reason": "Northern summer >12h, winter <12h.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "a22604c590d67440"}
+{"id": "tilt-orientation-change-g7", "verdict": "ok", "reason": "Tilt direction relative to Sun changes during orbit.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "0e327f9a9bb17fef"}
+{"id": "sunrise-and-sunset-times-g7", "verdict": "ok", "reason": "Summer tilt causes earlier sunrise, later sunset.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "b31ba291bf7075c4"}

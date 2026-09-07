@@ -1,0 +1,12 @@
+{"id": "train-example-g7", "verdict": "ok", "reason": "Constant speed and direction means uniform velocity.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "d72f11f9fc4a2acd"}
+{"id": "ball-rolling-example-g7", "verdict": "ok", "reason": "Steady speed in one direction gives straight graph.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "c13d014538a24670"}
+{"id": "constant-slope-from-any-points-g7", "verdict": "ok", "reason": "Straight-line slope is constant, so speed is constant.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "d32a30fd825c3e82"}
+{"id": "uniform-velocity-vs-uniform-speed-g7", "verdict": "ok", "reason": "Velocity requires constant direction; constant speed graphs straight.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "6b870c7406ddfec2"}
+{"id": "speed-units-from-graph-g7", "verdict": "suspect", "reason": "Units depend on axes; m/s only for meter-second axes.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "c0d2169e7203f846"}
+{"id": "y-intercept-not-through-origin-g7", "verdict": "ok", "reason": "Y-intercept shows initial distance from reference.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "db72019d85441320"}
+{"id": "predicting-future-position-g7", "verdict": "ok", "reason": "Extending straight line predicts future position.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "17bb9ec5ed67bbe8"}
+{"id": "speedometer-reading-constant-g7", "verdict": "ok", "reason": "Constant speed means same slope throughout.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "28727654e04f9c90"}
+{"id": "drawing-uniform-velocity-graph-g7", "verdict": "ok", "reason": "Equal distance per time gives straight line.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "ea5021307fc2c78c"}
+{"id": "linear-relationship-g7", "verdict": "ok", "reason": "Distance traveled increases linearly at constant speed.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "bb477c313c35eb23"}
+{"id": "no-curves-in-uniform-velocity-g7", "verdict": "ok", "reason": "Curved distance-time graph means changing speed.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "4740a48c48094b5a"}
+{"id": "y-intercept-shows-starting-distance-g7", "verdict": "ok", "reason": "Y-intercept is starting distance from reference.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "9582c5e6ebd11997"}

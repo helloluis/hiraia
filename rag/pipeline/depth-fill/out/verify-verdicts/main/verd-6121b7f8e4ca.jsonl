@@ -1,0 +1,12 @@
+{"id": "fair-liquid-comparison-g5", "verdict": "ok", "reason": "Same volume makes comparisons fair.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "3f77c5f5ea0f9d76"}
+{"id": "temperature-and-volume-g5", "verdict": "suspect", "reason": "Fairness needs same temperature, not just simultaneous measurement.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "0d5a4783dd5072c9"}
+{"id": "reading-a-thermometer-g5", "verdict": "ok", "reason": "Reading after liquid settles gives accurate temperature.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "8eaacb9fc58e768d"}
+{"id": "starting-with-a-question-g5", "verdict": "ok", "reason": "Clear questions guide planning and measuring.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "e0689778327c5cd9"}
+{"id": "sharing-investigation-findings-g5", "verdict": "ok", "reason": "Data tables and graphs let others check work.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "edf383855c5eb937"}
+{"id": "learning-from-wrong-predictions-g5", "verdict": "ok", "reason": "Wrong predictions reveal surprising results to learn from.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "b8dca0d9e8e56c39"}
+{"id": "repeating-measurement-checks-g5", "verdict": "ok", "reason": "Repeated matching results build confidence.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "2c3f98fac905628c"}
+{"id": "labeling-graph-axes-g5", "verdict": "ok", "reason": "Axes show changed and measured variables clearly.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "00cee0b240583ce7"}
+{"id": "gastric-juice-and-pepsin-g8", "verdict": "ok", "reason": "Gastric juice contains acid and protein-cutting pepsin.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "34e368473d2f0a07"}
+{"id": "small-intestine-main-site-g8", "verdict": "ok", "reason": "Small intestine is longest and main digestion site.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "8a60b042d1edcf11"}
+{"id": "mechanical-vs-chemical-digestion-g8", "verdict": "ok", "reason": "Mechanical breaks pieces; chemical uses enzymes on molecules.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "d8175b52d3122ba7"}
+{"id": "digestion-starts-in-mouth-g8", "verdict": "ok", "reason": "Chewing and saliva begin digestion before swallowing.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "4dfcdff95b31fdca"}

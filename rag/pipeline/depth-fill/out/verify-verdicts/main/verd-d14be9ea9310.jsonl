@@ -1,0 +1,12 @@
+{"id": "assembling-parallel-circuit-g9", "verdict": "ok", "reason": "Parallel loads share same two battery points; current splits.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "f52443dd513c451d"}
+{"id": "checking-connections-before-closing-switch-g9", "verdict": "ok", "reason": "Tight terminals and no bare-wire contact prevent short circuits.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "fc0e736721590ac1"}
+{"id": "inserting-ammeter-in-series-g9", "verdict": "ok", "reason": "Ammeter in series; current same throughout series circuit.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "f7521b617d3c27e5"}
+{"id": "interpreting-zero-voltmeter-reading-g9", "verdict": "suspect", "reason": "Open load itself would read source voltage, not zero.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "99966639d869fdd5"}
+{"id": "parallel-branch-voltage-same-g9", "verdict": "ok", "reason": "Parallel branches have equal voltage equal to battery.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "57edeb133aae20d9"}
+{"id": "parallel-total-current-sum-g9", "verdict": "ok", "reason": "Branch currents sum to total battery current.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "af4f36c764f50c23"}
+{"id": "switch-symbol-in-diagram-g9", "verdict": "ok", "reason": "Open switch breaks path, so no current flows.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "15129bd0f21e6bef"}
+{"id": "labeling-circuit-diagram-g9", "verdict": "ok", "reason": "Labels and values make diagrams readable.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "f38b2cd6091c4658"}
+{"id": "closing-switch-last-g9", "verdict": "ok", "reason": "Keep switch open until connections checked.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "6b8671182b01e0be"}
+{"id": "avoiding-wire-crossings-in-diagram-g9", "verdict": "ok", "reason": "Avoid crossing wires to reduce confusion.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "3ad991901ed6da2a"}
+{"id": "verifying-series-circuit-works-g9", "verdict": "ok", "reason": "Nonzero ammeter and lit bulb confirm working circuit.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "e55b55d687547e06"}
+{"id": "removing-one-load-in-parallel-g9", "verdict": "ok", "reason": "Removing one parallel branch leaves others powered.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "7283af6cfe95b089"}

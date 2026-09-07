@@ -1,0 +1,12 @@
+{"id": "scalar-definition-g7", "verdict": "ok", "reason": "Speed has magnitude only; scalar definition is correct.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "752f391a56cbc655"}
+{"id": "drawing-velocity-arrow-g7", "verdict": "ok", "reason": "Arrow length shows magnitude, direction shows velocity direction.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "6b335c1808c32cc0"}
+{"id": "jeepney-turning-corner-g7", "verdict": "ok", "reason": "Direction change means velocity changes even if speed constant.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "d5e7d6b1a891b719"}
+{"id": "airplane-tailwind-velocity-g7", "verdict": "suspect", "reason": "Should be vector sum of velocities; speeds add only when aligned.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "3f1067656fea1b6d"}
+{"id": "misconception-bigger-speed-g7", "verdict": "ok", "reason": "Velocity includes direction, not just larger speed.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "039c26e879c6d8cd"}
+{"id": "straight-path-constant-velocity-g7", "verdict": "ok", "reason": "Constant speed and straight path mean constant velocity.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "52ef2c96b58d9dab"}
+{"id": "measuring-velocity-tools-g7", "verdict": "ok", "reason": "Speedometer gives magnitude; compass/map gives direction.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "de4bbcdb51ccde06"}
+{"id": "velocities-canceling-out-g7", "verdict": "ok", "reason": "Equal opposite velocities can cancel to zero.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "d011ccc03c9000c7"}
+{"id": "velocity-uses-displacement-g7", "verdict": "ok", "reason": "Velocity uses displacement; speed uses total distance.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "8565b1b11f2bbab1"}
+{"id": "ball-thrown-up-velocity-g7", "verdict": "ok", "reason": "Direction changes at top; speed decreases then increases.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "df8653ce8d78eb2b"}
+{"id": "edsa-bus-direction-velocity-g7", "verdict": "ok", "reason": "Same speed opposite directions are different velocities.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "8a7625fd9f0a9f15"}
+{"id": "unit-of-velocity-g7", "verdict": "ok", "reason": "Velocity units match speed units plus direction.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "dfb6f7adc8b6e2f3"}

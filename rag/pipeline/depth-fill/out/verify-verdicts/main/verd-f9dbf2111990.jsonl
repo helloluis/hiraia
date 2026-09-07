@@ -1,0 +1,12 @@
+{"id": "time-series-not-one-reading-g10", "verdict": "ok", "reason": "Single readings cannot isolate slow plate motion.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "9b24cc963af2a47d"}
+{"id": "reference-frame-g10", "verdict": "ok", "reason": "Global reference frame enables consistent plate comparisons.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "970ef860c23f87bf"}
+{"id": "strain-from-many-stations-g10", "verdict": "ok", "reason": "Strain uses many stations to show regional deformation.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "b9fc49349abd6dea"}
+{"id": "repeat-ship-soundings-plus-gps-g10", "verdict": "ok", "reason": "Repeat bathymetry with GPS can reveal seafloor displacement.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "13da377a6f8d3fe5"}
+{"id": "corner-reflectors-for-insar-g10", "verdict": "ok", "reason": "Corner reflectors provide stable InSAR targets in vegetation.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "3390bb596e2c2b91"}
+{"id": "combine-gnss-and-insar-g10", "verdict": "ok", "reason": "Combining GNSS and InSAR gives point and spatial motion.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "0f23d7bcde77bc5d"}
+{"id": "not-a-seismograph-velocity-g10", "verdict": "ok", "reason": "Seismographs record shaking, not slow plate motion.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "632833d83ba2b6c4"}
+{"id": "campaign-gps-reoccupation-g10", "verdict": "ok", "reason": "Reoccupying benchmarks measures coordinate change over years.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "1457c6c36e5084df"}
+{"id": "error-bars-on-velocity-g10", "verdict": "ok", "reason": "Velocity estimates include measurement uncertainty.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "ffc4462b39c57eeb"}
+{"id": "name-the-process-g10", "verdict": "ok", "reason": "Competency requires naming geodetic techniques, not just motion.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "12ede79add3e4afb"}
+{"id": "measure-today-s-velocity-first-g10", "verdict": "ok", "reason": "Measure current velocity, then project with models.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "3629c8285aecbf22"}
+{"id": "velocity-times-time-g10", "verdict": "ok", "reason": "Multiplying rate by time gives future displacement.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "22acc47969fa9f4d"}

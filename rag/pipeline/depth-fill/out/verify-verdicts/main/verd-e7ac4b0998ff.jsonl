@@ -1,0 +1,12 @@
+{"id": "collision-transfers-mechanical-energy-g8", "verdict": "ok", "reason": "Moving marble transfers kinetic energy to resting marble.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "45da58c5ce66d511"}
+{"id": "mass-and-speed-determine-kinetic-energy-g8", "verdict": "ok", "reason": "KE depends on mass and speed squared.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "9f9f3c85583a15b3"}
+{"id": "moon-gravity-and-potential-energy-g8", "verdict": "ok", "reason": "Weaker gravity means less gravitational potential energy at same height.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "3413e351b5d42811"}
+{"id": "pendulum-midpoint-has-both-energies-g8", "verdict": "suspect", "reason": "Potential energy depends on reference; at lowest point often zero.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "da2e67689e79b36f"}
+{"id": "force-versus-mechanical-energy-g8", "verdict": "ok", "reason": "Force is push/pull; energy can do work.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "91c13ace0b018e26"}
+{"id": "ceiling-fan-moves-air-g8", "verdict": "ok", "reason": "Spinning blades have kinetic energy and move air.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "dcef773cadb31eff"}
+{"id": "kinetic-energy-never-negative-g8", "verdict": "ok", "reason": "Speed squared makes kinetic energy nonnegative.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "3a446b7e19595e40"}
+{"id": "negative-potential-energy-in-a-hole-g8", "verdict": "ok", "reason": "Below chosen zero reference gives negative potential energy.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "bd289bd1f53e51b9"}
+{"id": "mechanical-energy-of-a-train-system-g8", "verdict": "ok", "reason": "Total mechanical energy sums all parts' kinetic and potential energy.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "daa1ab5a583a93ba"}
+{"id": "why-scale-drawing-g9", "verdict": "suspect", "reason": "Crust isn't thousands of km thick; only deeper layers are.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "202ce57853cc9aec"}
+{"id": "scale-ratio-meaning-g9", "verdict": "ok", "reason": "10 million cm equals 100 km.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "3a4bd12519ddfa74"}
+{"id": "example-scale-1cm-1000km-g9", "verdict": "ok", "reason": "Calculations correct; crust would be 0.03 cm.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "e56d1e2f98282557"}

@@ -1,0 +1,12 @@
+{"id": "complete-metamorphosis-comparison-g4", "verdict": "suspect", "reason": "Chicken egg, chick, adult aren't all similar-looking.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "0565c8d03a6fe637"}
+{"id": "life-cycle-repeats-g4", "verdict": "ok", "reason": "Life cycle repeats through offspring.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "08a39acd2bfb0ab3"}
+{"id": "plotting-typhoon-positions-g8", "verdict": "ok", "reason": "Track maps mark center and connect in time order.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "3583bd3ed98efdf0"}
+{"id": "tracking-data-record-g8", "verdict": "ok", "reason": "Tracking records include date, time, latitude, longitude.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "99faa989feda6290"}
+{"id": "coordinate-reading-g8", "verdict": "ok", "reason": "Latitude runs east-west, longitude north-south; crossing locates point.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "bb49d1205afa4d7a"}
+{"id": "connecting-plotted-points-g8", "verdict": "ok", "reason": "Solid line past, dashed forecast is standard.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "7f32a36ff5cca75e"}
+{"id": "six-hour-plotting-g8", "verdict": "ok", "reason": "Six-hour plots show track direction and speed.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "62cff4b0c99f71bf"}
+{"id": "direction-of-movement-g8", "verdict": "ok", "reason": "Compass direction from track line is correct.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "f662542fb5196560"}
+{"id": "speed-from-track-g8", "verdict": "ok", "reason": "Distance divided by time gives speed.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "8e73b61a4045b0d4"}
+{"id": "par-boundary-g8", "verdict": "wrong", "reason": "PAR is a polygon, not a rectangle.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "ff55ab34d8ed7b7c"}
+{"id": "map-scale-g8", "verdict": "ok", "reason": "Map scale measures real distance.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "8c59a95649fe7ff2"}
+{"id": "forecast-vs-actual-g8", "verdict": "ok", "reason": "Forecast line ahead; compare with new data.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "d297300915596015"}

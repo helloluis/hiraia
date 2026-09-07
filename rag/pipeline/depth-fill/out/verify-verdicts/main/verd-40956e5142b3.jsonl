@@ -1,0 +1,12 @@
+{"id": "drawing-current-direction-arrows-g9", "verdict": "ok", "reason": "Conventional current flows positive to negative.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "ee65d9739b05f8f4"}
+{"id": "measuring-total-parallel-current-g9", "verdict": "ok", "reason": "Ammeter in main line measures total current.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "92ecb172678db479"}
+{"id": "fair-test-of-momentum-g10", "verdict": "ok", "reason": "Only mass changes; cart and ramp controlled.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "d8a045c44ccc4c1a"}
+{"id": "measuring-stopping-distance-g10", "verdict": "ok", "reason": "Distance from ramp foot to stop is correct.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "df02ef602ab3e084"}
+{"id": "changing-speed-with-ramp-height-g10", "verdict": "ok", "reason": "Higher release increases speed, mass unchanged.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "74f0f9affc6de679"}
+{"id": "keeping-friction-the-same-g10", "verdict": "suspect", "reason": "Added mass changes friction; surface/wheels alone don't equalize it.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "1b31f3defd15b8df"}
+{"id": "measuring-force-with-spring-scale-g10", "verdict": "ok", "reason": "Spring scale can measure holding force.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "31d5b7d4ea68af15"}
+{"id": "repeating-trials-g10", "verdict": "ok", "reason": "Averaging repeated trials improves reliability.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "e904034e69df79b4"}
+{"id": "data-table-for-momentum-g10", "verdict": "ok", "reason": "Data table includes needed variables and units.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "b7363f5004f79808"}
+{"id": "graph-of-stopping-distance-vs-mass-g10", "verdict": "suspect", "reason": "Friction also increases with mass; stopping distance may not rise.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "0c6d78dcca2feeb9"}
+{"id": "same-speed-for-different-masses-g10", "verdict": "ok", "reason": "Same height gives same speed; time roughly equal.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "0ec99b38a2305f21"}
+{"id": "adding-weights-to-a-cart-g10", "verdict": "ok", "reason": "Adding weights changes mass without altering cart shape.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "55d37b1c9999e9cb"}

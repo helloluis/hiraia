@@ -1,0 +1,12 @@
+{"id": "two-carrier-parents-g8", "verdict": "ok", "reason": "Autosomal recessive carrier cross gives 25% affected.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "9df8cc7c9324e2d8"}
+{"id": "both-parents-show-recessive-g8", "verdict": "ok", "reason": "Both homozygous recessive parents pass only recessive alleles.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "864a1d42ee38d346"}
+{"id": "homozygous-dominant-parent-g8", "verdict": "ok", "reason": "Dominant allele from one parent masks recessive.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "1df595f543c965c3"}
+{"id": "independent-chance-per-child-g8", "verdict": "ok", "reason": "Each fertilization is independent; odds reset.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "cde5b939f42eb122"}
+{"id": "dominant-not-common-g8", "verdict": "ok", "reason": "Allele frequency, not dominance, determines commonness.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "1fe4c553b8ba7a1d"}
+{"id": "siblings-differ-g8", "verdict": "ok", "reason": "Meiosis shuffles alleles, so siblings vary.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "afdd065cee55fa0c"}
+{"id": "same-look-two-genotypes-g8", "verdict": "ok", "reason": "Dominant phenotype can be homozygous or heterozygous.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "4130ce4e1bf5da66"}
+{"id": "heterozygous-cross-ratio-g8", "verdict": "ok", "reason": "Expected genotypic ratio is 1:2:1.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "2299d88aca315456"}
+{"id": "both-parents-always-contribute-g8", "verdict": "ok", "reason": "Each parent contributes one allele per simple trait.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "7031885177844e64"}
+{"id": "plate-displacement-vector-g10", "verdict": "ok", "reason": "Vector includes magnitude and direction.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "8d5234eb816cf23c"}
+{"id": "gps-millimeter-accuracy-g10", "verdict": "ok", "reason": "High-precision GPS can reach millimeter accuracy.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "c16eba601b3428f7"}
+{"id": "seafloor-sound-waves-g10", "verdict": "ok", "reason": "Sound waves work where GPS radio waves cannot.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "741f7708525133af"}

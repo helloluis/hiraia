@@ -1,0 +1,12 @@
+{"id": "control-variables-g5", "verdict": "ok", "reason": "Controlled variables are kept same; only heat changes.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "a0ded1eeaefd0709"}
+{"id": "measuring-temperature-g5", "verdict": "ok", "reason": "Thermometer inside records temperature; water level observed.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "42743512718bbff0"}
+{"id": "model-limitation-g5", "verdict": "ok", "reason": "Model simplifies water cycle; omits oceans and clouds.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "dac82285dcccb4b9"}
+{"id": "pagasa-rain-gauge-g5", "verdict": "ok", "reason": "PAGASA uses rain gauges; model analogy is apt.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "2cd520b577bfb07d"}
+{"id": "water-conservation-g5", "verdict": "ok", "reason": "Sealed model conserves water; Earth's supply roughly constant.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "7cd04bf8a46874e8"}
+{"id": "comparing-materials-g5", "verdict": "ok", "reason": "Fair test changes one variable: clear vs dark bag.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "e189c4fec5cbcd58"}
+{"id": "non-contact-collision-g10", "verdict": "wrong", "reason": "Collisions require touching; magnets repel without contact, not a collision.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "644e54589b342c91"}
+{"id": "volcano-risk-and-population-g6", "verdict": "suspect", "reason": "Risk combines hazard and exposure; distance matters, so statement misleads.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "59a311fbf9843a31"}
+{"id": "lahar-river-distance-g6", "verdict": "ok", "reason": "Lahars travel far down river valleys, endangering riverside towns.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "d5fd0987ef684eb9"}
+{"id": "hazard-maps-for-building-g6", "verdict": "ok", "reason": "Hazard maps guide safe placement of schools and hospitals.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "2e107e0926a4f6a2"}
+{"id": "hazard-map-colors-g6", "verdict": "ok", "reason": "PHIVOLCS maps use red, orange, yellow for hazard zones.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "31bd417d125639ed"}
+{"id": "hazard-map-update-with-growth-g6", "verdict": "ok", "reason": "Maps update as exposure grows, raising risk.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "085fcd3d70a27aab"}

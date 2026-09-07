@@ -1,0 +1,12 @@
+{"id": "motion-sensor-recording-g10", "verdict": "ok", "reason": "Motion sensors commonly use sound pulses; position data yields speed graph.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "45c2809a2c3ffaa2"}
+{"id": "video-camera-analysis-g10", "verdict": "ok", "reason": "Frame-by-frame video allows speed and distance measurement.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "142aa7894c8fe2a2"}
+{"id": "protractor-for-ramp-angle-g10", "verdict": "suspect", "reason": "Angle alone doesn't set speed; release position/height also matters.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "8d0fdbbb3a6ef800"}
+{"id": "bubble-level-check-g10", "verdict": "ok", "reason": "Bubble level checks flatness, improving repeatability.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "8e447d8c61b7f6d1"}
+{"id": "ruler-for-release-height-g10", "verdict": "ok", "reason": "Release height controls speed if ramp angle is fixed.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "411a37a654af3286"}
+{"id": "stop-block-measurement-g10", "verdict": "suspect", "reason": "Sliding distance reflects energy, not momentum directly.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "70e9a6eacc087051"}
+{"id": "force-sensor-reading-g10", "verdict": "ok", "reason": "Force sensor peak shows maximum stopping force.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "c995462cf98d2320"}
+{"id": "force-time-graph-area-g10", "verdict": "ok", "reason": "Area under force-time graph equals impulse/momentum change.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "cc0e7f72c8722caa"}
+{"id": "hanging-ball-target-g10", "verdict": "suspect", "reason": "Height shows energy transfer, not momentum directly.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "6f95df8aa20eb68b"}
+{"id": "sand-filled-box-dent-g10", "verdict": "suspect", "reason": "Dent depth reflects energy, not momentum directly.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "fc7171e846e67e0a"}
+{"id": "dent-depth-measurement-g10", "verdict": "suspect", "reason": "Dent depth compares impact energy, not momentum directly.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "cfd76721c3e46d5a"}
+{"id": "stopwatch-for-roll-time-g10", "verdict": "suspect", "reason": "Time alone doesn't give speed; distance is also needed.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "a64fe1005ed03bd6"}

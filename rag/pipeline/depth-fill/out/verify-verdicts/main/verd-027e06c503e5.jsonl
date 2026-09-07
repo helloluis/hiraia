@@ -1,0 +1,12 @@
+{"id": "long-jump-takeoff-angle-g10", "verdict": "suspect", "reason": "Angle correct; steeper isn't always wasteful—45° maximizes range at same speed.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "e64a29acf9f12e38"}
+{"id": "volcano-ejecta-as-projectiles-g10", "verdict": "ok", "reason": "Correct; ejecta paths depend on launch speed and angle.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "15c708e3be974574"}
+{"id": "range-definition-g10", "verdict": "ok", "reason": "Correct definition of horizontal projectile range.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "941f9ea217ee2a33"}
+{"id": "very-steep-launch-angle-g10", "verdict": "ok", "reason": "Correct; steep launch lands near launch point.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "9ff0866018082da1"}
+{"id": "doubling-speed-quadruples-range-g10", "verdict": "ok", "reason": "Correct; range scales with speed squared.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "e4a2723ccc4aa5ff"}
+{"id": "weight-does-not-affect-path-g10", "verdict": "ok", "reason": "Correct for ideal projectile motion.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "0b97e6a21316bb91"}
+{"id": "straight-up-launch-timing-g10", "verdict": "ok", "reason": "Correct; 20 m/s gives about 2s up, 4s total.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "668e4aad328c212e"}
+{"id": "water-fountain-nozzle-angle-g10", "verdict": "ok", "reason": "Correct; nozzle angle controls stream height and distance.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "0997e9429e21c2d8"}
+{"id": "circuit-tester-test-gap-g5", "verdict": "ok", "reason": "Correct; material bridges gap to complete circuit.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "67b55217a2d40580"}
+{"id": "material-completes-circuit-loop-g5", "verdict": "ok", "reason": "Correct; conductor completes loop, insulator breaks it.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "f8a144166c24d0ed"}
+{"id": "charcoal-conducts-electricity-g5", "verdict": "suspect", "reason": "Charcoal conducts poorly; may not light a typical bulb.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "056a9ab541e75ea0"}
+{"id": "bamboo-stick-insulator-g5", "verdict": "ok", "reason": "Correct; dry bamboo insulates, metal nail conducts.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "0ac2f962be80bdbb"}

@@ -1,0 +1,12 @@
+{"id": "inferring-steering-winds-from-arrows-g8", "verdict": "ok", "reason": "Wind arrows show wind direction, helping infer steering winds.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "4e0e83f26f17e00b"}
+{"id": "converting-times-to-one-zone-g8", "verdict": "ok", "reason": "Standardizing time zones is correct before plotting.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "af182ef31a0af6f0"}
+{"id": "classifying-typhoon-strength-g8", "verdict": "ok", "reason": "Wind speed determines storm category.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "af1fa5ffa18cfc46"}
+{"id": "measuring-map-distance-with-ruler-g8", "verdict": "ok", "reason": "Ruler measures map distance between points.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "b1b0a4ec2f82f45b"}
+{"id": "estimating-position-between-grid-lines-g8", "verdict": "suspect", "reason": "Estimates are approximate, not exact; interpolation gives approximate position.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "381a2159d7ad9631"}
+{"id": "drawing-arrow-for-motion-g8", "verdict": "ok", "reason": "Arrow points from older to newer position.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "8dd5f139c0c29136"}
+{"id": "verifying-data-from-bulletins-g8", "verdict": "ok", "reason": "Cross-checking bulletins verifies plotted data.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "18cca92790e9e489"}
+{"id": "checking-units-of-data-g8", "verdict": "ok", "reason": "Checking units prevents measurement errors.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "286d37b34ee383e0"}
+{"id": "measuring-angle-with-protractor-g8", "verdict": "ok", "reason": "Protractor measures bearing from north.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "7f9257c23eccf454"}
+{"id": "drawing-rainband-circle-g8", "verdict": "wrong", "reason": "Rainbands are spiral, not a circle around the eye.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "0e4be3a09df3851b"}
+{"id": "reading-coordinates-from-map-edges-g8", "verdict": "ok", "reason": "Latitude and longitude are read from map edges.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "87a1abc1c673ab13"}
+{"id": "reading-map-legend-g8", "verdict": "ok", "reason": "Legend explains map symbols.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "11cd41dcc44fbe0d"}

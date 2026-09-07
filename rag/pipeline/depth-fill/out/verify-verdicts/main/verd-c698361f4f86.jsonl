@@ -1,0 +1,12 @@
+{"id": "draw-a-vector-on-a-map-g10", "verdict": "suspect", "reason": "Assumes constant rate/direction for 50 Ma; needs uncertainty caveat.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "6a4e8055a281d14a"}
+{"id": "use-a-plate-motion-model-g10", "verdict": "ok", "reason": "Published models give consistent plate velocities.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "8e5a2e150dcff18f"}
+{"id": "neighbor-plates-matter-g10", "verdict": "ok", "reason": "Multiple plates affect the Philippines' future shape.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "6e2ad751a7403db5"}
+{"id": "subduction-can-delete-crust-g10", "verdict": "ok", "reason": "Subduction recycles crust at trenches.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "9d0cd7274266b7fb"}
+{"id": "velocity-can-change-g10", "verdict": "ok", "reason": "Plate motion changes; model is not certain.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "e3e0a20befd886aa"}
+{"id": "split-the-time-into-steps-g10", "verdict": "ok", "reason": "Stepping redraws moving trenches more accurately.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "e1d39fe6764351ea"}
+{"id": "keep-islands-as-blocks-g10", "verdict": "ok", "reason": "Island blocks can rotate and slide differently.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "8eecc707e90d6688"}
+{"id": "do-not-invent-kilometers-g10", "verdict": "ok", "reason": "Avoid made-up distances; state rate-based direction.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "dbe37f8902b26344"}
+{"id": "compare-with-past-reconstructions-g10", "verdict": "ok", "reason": "Past reconstructions check forward-model consistency.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "bd9bb660fe4c3db8"}
+{"id": "software-plate-calculators-g10", "verdict": "ok", "reason": "Calculator plots constant-rate prediction.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "1a6e71f01b178b47"}
+{"id": "shape-versus-position-g10", "verdict": "ok", "reason": "Shape and position both change.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "38a0dfb1ca445a06"}
+{"id": "philippine-trench-motion-g10", "verdict": "ok", "reason": "Philippine Trench consumes seafloor, not rigid sliding.", "model": "accounts/fireworks/models/deepseek-v4-pro-0813", "sha": "f206a670b1f72e69"}
