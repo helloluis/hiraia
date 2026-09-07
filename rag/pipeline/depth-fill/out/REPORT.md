@@ -376,3 +376,15 @@ set -a; . /Users/luis/Code/hiraia/.env.local; set +a
 #     for the 14 short codes (+ the 7 sitting exactly at need if images declined there)
 # C6  bash finetuning/eval/harness/run-harness.sh  → must be green. Do not build an APK.
 ```
+
+### 6.1 Images SUBMITTED (2026-09-07 23:21:48–23:22:26)
+
+Luis added credit to the OpenAI organisation; `append.py --stages images` re-ran and submitted all **24 batches
+(23 main ≈ 119 each + 1 body of 2) = 2,731 requests, est. $8.74** (gpt-image-2 low 1024, 24 h window) —
+ledger `out/image-batches.json` (batch ids, input file ids, ids per batch). Batch ids: batch_6a9ed68f3d3081908be5aff32ff73ef5, batch_6a9ed6919a8c8190abf23e961a569173, batch_6a9ed692f53c819095619ac161b9c307, batch_6a9ed694108c8190bff8e220c35c3559, batch_6a9ed695a4548190ae96ca8ea1d3e159, batch_6a9ed696fb108190b888e709403788ad, batch_6a9ed697fbd48190b408bcf6ce5d75cd, batch_6a9ed69946d481908ceb1f30043c0dd3, batch_6a9ed69a733c8190aa75a490dad3fb3d, batch_6a9ed69b87a481909137676c773b0f02, batch_6a9ed69d44788190a9c08ebe9d98acb1, batch_6a9ed69e8d008190a8c3db2a0443c725, batch_6a9ed69fecf48190bfb8bc0ed4148a60, batch_6a9ed6a116ec8190b9d20e1d8eab3635, batch_6a9ed6a281dc8190a20da77d4678fc3b, batch_6a9ed6a387cc8190ad01843b195cf01d, batch_6a9ed6a4b0d4819082f9e85aae083052, batch_6a9ed6a5d0dc8190b8393a7fc74e53e1, batch_6a9ed6a743f08190a723c623057827b6, batch_6a9ed6a86bcc8190934ae9612d9bcb02, batch_6a9ed6a9c7c88190bdd8ec9dde2980ba, batch_6a9ed6ab058c8190921b95988cfb0e36, batch_6a9ed6ac4e5c81908973c57fdc898a55, batch_6a9ed6ad37108190a003bd3ae01b6d55.
+A placeholder batch created by a diagnostic probe with a nonexistent input file (batch_6a9ed669306881908f0c6b6c2a7da7e0)
+was cancelled; it is not in the ledger. `batch-submit-all.py _req` now prints OpenAI's error body on non-retryable HTTP errors.
+
+Phase C starts when every batch reaches `completed`: `append.py --stages fetch` (repeat until all downloaded) → wire webp
+into the pool (never gen-cards-pool.py) → gen-curriculum-tags → titles/cats (§8.5) → build-cards-db (§8.6) → card-harness →
+run-harness.sh → recount ≥ 20 per code → merge depth-fill-facts into unified.

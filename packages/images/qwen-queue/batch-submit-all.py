@@ -11,7 +11,7 @@ batches-to-download.json = [{batch_id, output_file_id, filename, n}] for tomorro
   set -a; source ./.env.local; set +a
   CHUNK=7000 python3 packages/images/qwen-queue/batch-submit-all.py
 """
-import os, json, time, urllib.request, urllib.error, re
+import os, sys, json, time, urllib.request, urllib.error, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 KEY = os.environ['OPENAI_API_KEY']
@@ -54,6 +54,11 @@ def _req(url, data=None, method=None, headers=None, tries=6):
         except urllib.error.HTTPError as e:
             if e.code in (429, 500, 502, 503, 504) and a < tries - 1:
                 time.sleep(min(60, 2 ** (a + 1))); continue
+            try:                                      # surface OpenAI's error body (e.g. billing_hard_limit_reached)
+                detail = e.read().decode('utf-8', 'replace')[:400]
+            except Exception:
+                detail = ''
+            print(f'[openai] HTTP {e.code} {method or "GET"} {url}: {detail}', file=sys.stderr, flush=True)
             raise
         except (urllib.error.URLError, TimeoutError, ConnectionError):
             if a < tries - 1: time.sleep(min(60, 2 ** (a + 1))); continue
