@@ -16,8 +16,11 @@ Stages — every one is idempotent and resumable, and refuses to apply the same 
   gen       fw-gen-factoids.py (SRC=… TAG=depth-fill, default qwen3p7-plus voice — never gpt-oss): FW_LIMIT=1 smoke call, then the full run (resumable per gen file);
             factoid-qa.py report (AUP-redacted) + the same mechanical rules in-process; rows that fail are regenerated
             ALONE, per stream, in place (bad rows removed from their gen file, fixed rows in gen-depth-fill-fix<k>-<stream>-*.jsonl)
-  assemble  assemble-factoids.py --check (six DEFAULT_PAIRS + the depth-fill pair; registry rows are kept verbatim so depth-fill's rows survive without their gen dir) → write → --check; new ids start at the
-            registry's next free id (ffct-36384 for the 36,384-row bank); every pre-existing row byte-identical to git HEAD
+  assemble  assemble-factoids.py --check → write → --check; new ids start at the registry's next free id (ffct-37107 for the
+            37,107-row bank); every pre-existing row byte-identical to git HEAD. `--assemble-pairs default` re-reads the six
+            DEFAULT_PAIRS + the depth-fill pair (Lane A's path; needs every earlier lane's gitignored gen dir + src file in this
+            tree); `--assemble-pairs registry-only` passes ONLY the depth-fill pair so every banked row is carried over verbatim
+            from the registry ("banked but no longer in the inputs") — the mode for a worktree without those inputs
   tags      re-key the fragment to the NEW ffct ids → curriculum-tags.json `factoids` (v2 entry incl. `models`, cells_strong =
             cells, score/confidence 1.0; never overwrites another labeller's entry); the `bank` section is left as found
             ({} by design — bank-fact coverage is derived from factoids via factId; the fragment stays in out/depth-tags.json);
@@ -532,23 +535,44 @@ def assemble(args):
     return rc, text
 
 
-def stage_assemble(st):
-    pairs = assembler_pairs()
-    if len(pairs) != 6:
-        raise SystemExit(f'assemble: expected the six DEFAULT_PAIRS, found {len(pairs)}')
+def stage_assemble(st, pairs_mode='default'):
+    """pairs_mode 'default': re-assemble the six DEFAULT_PAIRS + the depth-fill pair (Lane A's path; needs the gitignored
+    gen dirs + src files of every earlier lane in this tree). 'registry-only': pass ONLY the depth-fill pair, so every
+    banked row is carried over verbatim from the registry (assemble-factoids.py: "banked but no longer in the inputs")
+    and the pre-existing prefix is byte-identical by construction — the right mode for a worktree that has none of the
+    earlier lanes' gitignored inputs. Both modes end with the same post-write proofs."""
     lane = {r['id'] for _, r in lane_rows()}
     reg = read_jsonl(FACTOIDS)
     banked = {r['factId'] for r in reg}
     already = lane & banked
     head_ids = [json.loads(l)['id'] for l in subprocess.run(['git', 'show', 'HEAD:rag/bank/factoids.jsonl'], cwd=ROOT,
                                                             capture_output=True, text=True, check=True).stdout.splitlines() if l.strip()]
+    if pairs_mode == 'registry-only':
+        pairs = []
+    else:
+        pairs = assembler_pairs()
+        if len(pairs) != 6:
+            raise SystemExit(f'assemble: expected the six DEFAULT_PAIRS, found {len(pairs)}')
+        unresolved = [p for p in pairs if not (os.path.isdir(os.path.join(ROOT, p.split(':', 1)[0]))
+                                               and os.path.exists(os.path.join(ROOT, p.split(':', 1)[1])))]
+        if unresolved:
+            raise SystemExit(f'assemble: {len(unresolved)} DEFAULT_PAIRS do not resolve in this tree (gitignored gen dirs / src '
+                             f'files of earlier lanes), e.g. {unresolved[0]!r} — rerun with --assemble-pairs registry-only')
     if not already:
-        log('assemble: --check with the six DEFAULT_PAIRS only (must be byte-identical + append-only OK):')
-        rc, text = assemble(['--check'] + pairs)
-        if rc != 0 or 'byte-identical to current bank: YES' not in text:
-            raise SystemExit('assemble: pre-check with DEFAULT_PAIRS failed')
-        log('assemble: --check with DEFAULT_PAIRS + depth-fill pair (dry run of the append):')
+        if pairs:
+            log('assemble: --check with the six DEFAULT_PAIRS only (must be byte-identical + append-only OK):')
+            rc, text = assemble(['--check'] + pairs)
+            if rc != 0 or 'byte-identical to current bank: YES' not in text:
+                raise SystemExit('assemble: pre-check with DEFAULT_PAIRS failed')
+            log('assemble: --check with DEFAULT_PAIRS + depth-fill pair (dry run of the append):')
+        else:
+            log('assemble: registry-only mode — --check with the depth-fill pair alone (every banked row carried over verbatim):')
         rc, text = assemble(['--check'] + pairs + [PAIR])
+        if not pairs:
+            c = re.search(r'carried over \(not in inputs\) (\d+)', text)
+            if not c or int(c.group(1)) != len(reg) or 'content changed under an existing id: 0' not in text \
+                    or 'append-only id check: OK' not in text:
+                raise SystemExit('assemble: registry-only dry run must carry over every banked row verbatim with 0 content changes')
         m = re.search(r'new (\d+) \((ffct-\d+)\.\.(ffct-\d+)\)', text)
         if rc != 0 or not m:
             raise SystemExit('assemble: dry run of the append failed')
@@ -877,6 +901,9 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--stages', default=','.join(STAGES), help=f'comma list, pipeline order enforced; default all: {",".join(STAGES)}')
     ap.add_argument('--chunk', type=int, default=int(os.environ.get('CHUNK', '120')), help='image requests per batch (≈120 → API-downloadable output)')
+    ap.add_argument('--assemble-pairs', choices=['default', 'registry-only'], default='default',
+                    help="assemble stage: 'default' re-reads the six DEFAULT_PAIRS (needs their gitignored gen dirs + src files in "
+                         "this tree); 'registry-only' passes only the depth-fill pair so every banked row is carried over verbatim")
     ap.add_argument('--status', action='store_true')
     a = ap.parse_args()
     os.makedirs(OUT, exist_ok=True)
@@ -891,7 +918,12 @@ def main():
     rc = 0
     for s in want:
         log(f'\n===== stage {s} ({now()}) =====')
-        r = globals()[f'stage_{s}'](st, a.chunk) if s == 'images' else globals()[f'stage_{s}'](st)
+        if s == 'images':
+            r = stage_images(st, a.chunk)
+        elif s == 'assemble':
+            r = stage_assemble(st, a.assemble_pairs)
+        else:
+            r = globals()[f'stage_{s}'](st)
         if s == 'gate':
             rc = r
     return rc

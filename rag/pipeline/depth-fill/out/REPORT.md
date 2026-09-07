@@ -144,12 +144,235 @@ Not yet spent: factoid voice (`qwen3p7-plus`, append stage) and images (~$0.0032
 
 Authoritative numbers: `out/write-ledger.json` (writer), `out/ingest-summary.run1.json` + `out/ingest-summary.json` (Pro run 1 / resume run 2), later `out/append-state.json` (factoid voice, images).
 
-## 5. Next (append stage — not started)
+## 5. Append — bank → src → factoid voice → assemble → tags → vectors (2026-09-07 22:34–23:03, DONE)
+
+`append.py` (logs `out/append.run1.log`, `out/append.run2.log`; state + ledger `out/append-state.json`). Input = the post-prune emit
+(2,729 main + 2 body = **2,731** rows). Every stage is idempotent; the bank is append-only; every pre-existing row is byte-identical.
+
+| stage | result |
+|---|---|
+| bank | backups `rag/bank/.backup-2026-09-07/{science-facts,factoids,curriculum-tags}.jsonl/json` (sha256 = live at backup time); `science-facts.jsonl` **50,279 → 53,010** (+2,731: main 2,729, body 2), ids unique, `generator=depth-fill`, `reviewed=false`; `brief_code`/`card_form` stripped to `out/depth-bank-meta.json` |
+| src | `rag/pipeline/factoids-depth-fill-src.jsonl` 2,731 rows, `has_image=false`, main first / body last (no 8-row call mixes streams); gitignored by repo rule (`factoids-*-src.jsonl`) |
+| gen | `fw-gen-factoids.py` default voice **`accounts/fireworks/models/qwen3p7-plus`** (hard-coded in that script; `FW_MODEL` was unset for this run): smoke 1 call (8/8 rows, prompts well-formed) → full 341 calls, 0 failed, 2,699 rows → `factoid-qa.py` round 0 found 24 `missing-row` (model returned 7 of 8 in 24 calls; no other rule tripped) → regen round 1 (3 calls, 24 rows, 0 failed) → round 1 QA: **0 issues**. 2,731 rows for 2,731 src rows, dups 0, formats straight 1,547 / qa 1,184. Gen dir `rag/pipeline/factoids-gen-depth-fill/` (343 files) is gitignored by repo rule (`factoids-gen-*/`), as Lane A's was |
+| assemble | **`--assemble-pairs registry-only`** (new flag, see below): `assemble-factoids.py --check` with the depth-fill pair alone → carried over 37,107 verbatim, content changed under an existing id 0, append-only OK → WRITE → post-write `--check`: byte-identical YES, append-only OK. `factoids.jsonl` **37,107 → 39,838**; new ids **`ffct-37107`..`ffct-39837`** (contiguous); pre-existing 37,107 rows byte-identical to git HEAD **and** to the backup; image prompt 2,731 / slug 0; trilingual 2,731; by domain EARTH_SPACE 923, LIVING_THINGS 688, FORCE_MOTION_ENERGY 602, MATTER 518 |
+| tags | `out/depth-tags.json` re-keyed to the new ffct ids → `curriculum-tags.json` `factoids` section **+2,731 → 48,527** entries (v2 entry: codes `[brief_code]`, score/confidence 1.0, cells_strong = cells, models 1); 45,796 pre-existing entries unchanged vs loaded file and vs backup; `bank` section left as found (0). `gen-curriculum-tags.mjs` re-run: `curriculumTags.generated.json` **UNCHANGED** (22,511/46,421 pool cards tagged, 0 unknown-code) — expected, the new factoids have no illustration yet so they are not pool cards |
+| vectors | `build-vectors.py` (LaBSE, main-checkout venv): `vectors-labse.i8.bin` 122 MB, meta count **53,010**, bankHash **13ff876529fa** = bank; `build-facts-db.py` → `cards.db` fact tables (139.1 → 142.1 MB; `cards.db` is gitignored — it was seeded from unified's copy so the db is whole, and Phase C's `build-cards-db.py` recreates it anyway) with `fact_meta` count/hash = bank; `cardsIndex.generated.json` `dbVersion` restamped 39328b634e19 → 1edb5e1397e5 (only key that changed) |
+
+**Why `--assemble-pairs registry-only`.** Lane A's assemble pre-check re-reads the six `DEFAULT_PAIRS` gen dirs + src files and demands byte-identity. Those inputs are gitignored and exist only in the stale `question-cards` checkout, not on `unified` or in this worktree (run 1 stopped at `pair does not resolve`, rc 1, bank/src/gen already applied and left intact). Copying 70 MB of another branch's gen dirs in and hoping they still reproduce this tree's registry is the fragile option; `assemble-factoids.py` already carries every banked row over **verbatim** when it is "banked but no longer in the inputs", so passing only the depth-fill pair makes the pre-existing prefix identical by construction. `append.py` grew the explicit flag (default mode unchanged; default mode now names the unresolved pair and points at the flag), and the registry-only dry run must carry over exactly `len(registry)` rows with 0 content changes before it writes. Same post-write proofs as Lane A (prefix vs HEAD, prefix vs backup, contiguous ids).
+
+## 6. Images — SUBMIT BLOCKED by the OpenAI billing hard limit (2026-09-07 23:07)
+
+`append.py --stages images` (log `out/append.run3-images.log`) built the worklists — `out/image-worklist.main.jsonl` **2,729**, `out/image-worklist.body.jsonl` **2** (AUP prompts stay on disk) — and the first request file `out/image-req-01.main.jsonl` (119 requests; gpt-image-2, quality low, 1024×1024, `batch-submit-all.py` STYLE suffix, max prompt 801 chars). The file upload succeeded (`file-HHRM3tt9qatBBNkv3JnUbH`, purpose batch, processed) but `POST /v1/batches` returned **HTTP 400 `billing_hard_limit_reached`** ("Billing hard limit has been reached"). Reproduced with curl on the same file id. The account had no active batches at the time (17 completed / 3 failed in the recent list); two uploads named `image-req-01.main.jsonl` / `r.jsonl` from ~2.6 h earlier suggest another run hit the same wall.
+
+**Not a pipeline problem — a billing action for Luis:** raise the monthly hard limit on the OpenAI organisation (or wait for the cycle to reset), then re-run `append.py --stages images`. The stage is resumable and nothing was booked: `out/image-batches.json` does not exist, `append-state.json` has no `images` entry, and a re-run re-uploads (the orphaned `file-HHRM3tt9qatBBNkv3JnUbH` can be deleted or ignored). Expected: 23 main batches (~119 each) + 1 body batch (2) = **24 batches, 2,731 requests, ≈ $8.74** at $0.0032/image.
+
+**Batches submitted: 0. Images submitted: 0.**
+
+## 7. Per-code funnel — candidates → dedup → verified → emitted (post-prune) → banked → factoids minted
+
+Generated by `report-per-code.py` (also `out/per-code-funnel.md` / `.json`). `have` = pool cards before this run; `short` = need − banked.
+Totals: 131 codes, need 1,434, target 3,837 → candidates 3,956 (454 Lane B) → dedup kept 3,178 → verified ok 2,862 → emitted after the four prune rounds 2,731 → **banked 2,731** → **factoids minted 2,731**. **117 codes at or above need; 14 below (46 short)** — the same 14 as after verify (§3): the prune rounds never touched a code at or below need. Seven codes sit exactly at need (G9-L-4, G7-L-6, G10-F-7, G8-E-4, G7-L-9, G9-M-5, G8-F-7) — any image decline there drops the code below 20; the Phase C recount decides whether a targeted second write for these 21 codes is worth it.
+
+Skipped by design (BRIEF §2, `fact_able ≤ 1`, never briefed): G3-M-2, G3-L-1, G3-F-3, G4-M-7, G4-F-2, G4-F-4, G5-M-5, G6-M-8, G6-L-3, G7-M-7, G8-F-3, G9-L-11.
+
+
+
+## 3.5 Pre-append prune (2026-09-07 22:0x–22:3x) — sample-review holds released
+
+The adversarial 72-row sample held twice (6.9 % at seed 20260907, 5.6 % at seed 20260908). Both holds were dominated by one
+systematic writer artifact that Pro-verify cannot catch because nothing in it is false: a **source-literacy / self-instruction
+register** ("In one sentence:", "Sources note…", "cite that page rather than a forwarded text", "The competency asks…"),
+concentrated in the seven Lane-B "gather information from secondary sources" codes — G8-E-10, G8-E-12, G9-E-10, G9-L-4,
+G9-M-4, G10-E-4, G10-F-7 — all of which were over their oversampled target, so pruning there never touches `need`.
+
+`prune-emitted.py` removed rows from `out/depth-ingest-ready.jsonl` + `out/depth-tags.json` in three rounds (bank untouched;
+the pre-prune file is commit 9268471e7; cumulative log `out/prune-drops.cumulative.jsonl`, ids + reasons only):
+
+| round | source of the drop list | rows |
+|---|---|---:|
+| 1 | reviewer's 27 explicit ids stream-wide + register regex inside the seven codes | 58 |
+| 2 | reviewer 2's stream-wide sweep (41) + 1 misleading mechanism + 1 Cebuano inversion | 42 |
+| 3 | 32-agent judge workflow (judge → keep-skeptic per 30-row chunk over all 357 rows in the seven codes + 88 attribution-flavoured rows elsewhere): 45 proposed, 12 rescued by the skeptic, 20 new after de-dup with round 2 | 20 |
+| 3 | 400-row tl/bis translation audit (8 agents, clear meaning errors only): 4 errors in 398 checked (1.0 %; 2 tl, 2 bis) — rows dropped | 4 |
+| 4 | append agent's hold list (2026-09-07 22:33, `out/prune-extra.round4.jsonl`): 1 TL meaning error (G8-F-2, "accelerating" rendered as *bumibilis* next to *pantay na bilis*), 1 second-person misconception drill (G9-M-4), 3 "secondary sources" meta-register residues (G8-E-10, G8-E-12 ×2), 1 attribution-flavoured residue (G9-L-4) | 6 |
+| **total** | 2,859 → **2,729** main (body 2 unchanged) | **130** |
+
+Per code (rounds 1–3): G8-E-10 −34 (→28/need 17), G8-E-12 −18 (→37/16), G9-L-4 −17 (→16/15), G10-E-4 −16 (→28/17), G9-M-4 −11 (→75/16),
+G10-F-7 −10 (→8/8), G9-E-10 −8 (→19/14), G10-F-3 −2, singletons in G10-E-1, G5-F-2, G8-L-4, G9-M-9, G3-E-1, G7-E-8, G8-M-8,
+G8-F-7 (→2/need 2). Round 4: G8-E-10 → 27/17, G8-E-12 → 35/16, G8-F-2 → 8/6, G9-L-4 → 15/15 (exactly need), G9-M-4 → 74/16.
+No code fell below `need` in any round.
+
+Recurrence guard for the next run: add a register criterion to the ingest verify prompt (advice / meta / self-instruction ⇒
+`suspect`) and treat Lane-B "gather information" competencies as advice-prone at write time. Translation error rate measured
+at ~1 % (meaning-level) — acceptable under the brief's 5 % sample rule; a full Pro back-check pass is optional follow-up.
+### 7.1 Full per-code funnel (sorted by shortfall, then code)
+
+| code | have | need | target | candidates | laneB | dedup kept | verified ok | emitted | banked | factoids | short |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| G7-M-4 | 5 | 15 | 24 | 24 | 0 | 9 | 7 | 7 | 7 | 7 | 8 |
+| G8-E-3 | 13 | 7 | 12 | 12 | 0 | 2 | 2 | 2 | 2 | 2 | 5 |
+| G8-E-5 | 5 | 15 | 24 | 24 | 0 | 11 | 10 | 10 | 10 | 10 | 5 |
+| G8-L-1 | 4 | 16 | 26 | 26 | 0 | 12 | 11 | 11 | 11 | 11 | 5 |
+| G9-L-9 | 4 | 16 | 26 | 26 | 0 | 12 | 11 | 11 | 11 | 11 | 5 |
+| G7-F-8 | 11 | 9 | 15 | 15 | 0 | 7 | 5 | 5 | 5 | 5 | 4 |
+| G7-E-1 | 7 | 13 | 21 | 21 | 4 | 10 | 10 | 10 | 10 | 10 | 3 |
+| G10-E-3 | 11 | 9 | 27 | 27 | 0 | 8 | 7 | 7 | 7 | 7 | 2 |
+| G9-E-1 | 8 | 12 | 20 | 20 | 0 | 10 | 10 | 10 | 10 | 10 | 2 |
+| G9-E-3 | 12 | 8 | 13 | 13 | 0 | 6 | 6 | 6 | 6 | 6 | 2 |
+| G9-M-7 | 6 | 14 | 23 | 23 | 0 | 16 | 12 | 12 | 12 | 12 | 2 |
+| G10-E-7 | 15 | 5 | 8 | 8 | 0 | 4 | 4 | 4 | 4 | 4 | 1 |
+| G8-L-10 | 13 | 7 | 12 | 12 | 0 | 7 | 6 | 6 | 6 | 6 | 1 |
+| G8-M-3 | 16 | 4 | 7 | 7 | 0 | 3 | 3 | 3 | 3 | 3 | 1 |
+| G10-E-1 | 4 | 16 | 26 | 26 | 18 | 24 | 24 | 23 | 23 | 23 |  |
+| G10-E-12 | 18 | 2 | 4 | 4 | 0 | 4 | 4 | 4 | 4 | 4 |  |
+| G10-E-4 | 3 | 17 | 51 | 51 | 36 | 49 | 44 | 28 | 28 | 28 |  |
+| G10-E-6 | 17 | 3 | 5 | 5 | 0 | 4 | 4 | 4 | 4 | 4 |  |
+| G10-F-1 | 10 | 10 | 30 | 30 | 0 | 26 | 20 | 20 | 20 | 20 |  |
+| G10-F-11 | 3 | 17 | 28 | 28 | 0 | 19 | 18 | 18 | 18 | 18 |  |
+| G10-F-2 | 8 | 12 | 20 | 20 | 0 | 15 | 14 | 14 | 14 | 14 |  |
+| G10-F-3 | 5 | 15 | 45 | 45 | 24 | 42 | 39 | 37 | 37 | 37 |  |
+| G10-F-5 | 4 | 16 | 48 | 48 | 0 | 47 | 33 | 33 | 33 | 33 |  |
+| G10-F-6 | 15 | 5 | 15 | 15 | 6 | 15 | 11 | 11 | 11 | 11 |  |
+| G10-F-7 | 12 | 8 | 13 | 21 | 21 | 21 | 18 | 8 | 8 | 8 |  |
+| G10-F-8 | 13 | 7 | 21 | 21 | 0 | 18 | 15 | 15 | 15 | 15 |  |
+| G10-F-9 | 14 | 6 | 10 | 10 | 0 | 8 | 8 | 8 | 8 | 8 |  |
+| G10-L-10 | 18 | 2 | 4 | 4 | 0 | 3 | 3 | 3 | 3 | 3 |  |
+| G10-L-11 | 3 | 17 | 51 | 51 | 0 | 47 | 45 | 45 | 45 | 45 |  |
+| G10-L-9 | 5 | 15 | 45 | 45 | 0 | 45 | 43 | 43 | 43 | 43 |  |
+| G10-M-3 | 13 | 7 | 21 | 21 | 0 | 16 | 14 | 14 | 14 | 14 |  |
+| G10-M-5 | 4 | 16 | 48 | 48 | 12 | 42 | 38 | 38 | 38 | 38 |  |
+| G10-M-7 | 4 | 16 | 48 | 48 | 0 | 44 | 42 | 42 | 42 | 42 |  |
+| G3-E-1 | 8 | 12 | 36 | 36 | 0 | 21 | 17 | 16 | 16 | 16 |  |
+| G3-E-4 | 7 | 13 | 39 | 39 | 0 | 31 | 30 | 30 | 30 | 30 |  |
+| G3-E-7 | 15 | 5 | 15 | 15 | 0 | 13 | 12 | 12 | 12 | 12 |  |
+| G3-L-2 | 13 | 7 | 21 | 21 | 0 | 19 | 17 | 17 | 17 | 17 |  |
+| G3-M-4 | 18 | 2 | 6 | 6 | 0 | 5 | 5 | 5 | 5 | 5 |  |
+| G4-E-1 | 6 | 14 | 42 | 42 | 0 | 34 | 33 | 33 | 33 | 33 |  |
+| G4-E-3 | 6 | 14 | 42 | 42 | 0 | 40 | 38 | 38 | 38 | 38 |  |
+| G4-E-8 | 18 | 2 | 6 | 6 | 0 | 6 | 5 | 5 | 5 | 5 |  |
+| G4-F-1 | 3 | 17 | 51 | 51 | 0 | 49 | 41 | 41 | 41 | 41 |  |
+| G4-L-3 | 4 | 16 | 48 | 48 | 0 | 27 | 24 | 24 | 24 | 24 |  |
+| G4-L-4 | 4 | 16 | 48 | 48 | 0 | 34 | 30 | 30 | 30 | 30 |  |
+| G4-L-5 | 4 | 16 | 48 | 48 | 0 | 39 | 34 | 34 | 34 | 34 |  |
+| G4-L-7 | 3 | 17 | 51 | 51 | 0 | 33 | 28 | 28 | 28 | 28 |  |
+| G5-E-12 | 5 | 15 | 45 | 45 | 0 | 29 | 25 | 25 | 25 | 25 |  |
+| G5-E-2 | 9 | 11 | 33 | 33 | 0 | 29 | 24 | 24 | 24 | 24 |  |
+| G5-E-3 | 5 | 15 | 45 | 45 | 0 | 42 | 35 | 35 | 35 | 35 |  |
+| G5-E-7 | 5 | 15 | 45 | 45 | 0 | 45 | 38 | 38 | 38 | 38 |  |
+| G5-F-1 | 15 | 5 | 15 | 15 | 0 | 13 | 13 | 13 | 13 | 13 |  |
+| G5-F-10 | 17 | 3 | 9 | 9 | 0 | 8 | 7 | 7 | 7 | 7 |  |
+| G5-F-2 | 3 | 17 | 51 | 51 | 0 | 51 | 50 | 49 | 49 | 49 |  |
+| G5-F-8 | 8 | 12 | 36 | 36 | 0 | 32 | 32 | 32 | 32 | 32 |  |
+| G5-F-9 | 9 | 11 | 33 | 33 | 0 | 23 | 20 | 20 | 20 | 20 |  |
+| G5-L-4 | 6 | 14 | 42 | 42 | 0 | 25 | 22 | 22 | 22 | 22 |  |
+| G5-L-6 | 14 | 6 | 18 | 18 | 0 | 15 | 11 | 11 | 11 | 11 |  |
+| G5-M-9 | 4 | 16 | 48 | 48 | 0 | 45 | 40 | 40 | 40 | 40 |  |
+| G6-E-2 | 4 | 16 | 48 | 48 | 0 | 30 | 27 | 27 | 27 | 27 |  |
+| G6-E-3 | 19 | 1 | 3 | 3 | 0 | 2 | 2 | 2 | 2 | 2 |  |
+| G6-F-3 | 8 | 12 | 36 | 36 | 0 | 30 | 26 | 26 | 26 | 26 |  |
+| G6-F-8 | 3 | 17 | 51 | 51 | 0 | 42 | 40 | 40 | 40 | 40 |  |
+| G7-E-10 | 3 | 17 | 51 | 51 | 0 | 42 | 40 | 40 | 40 | 40 |  |
+| G7-E-11 | 7 | 13 | 39 | 39 | 0 | 29 | 24 | 24 | 24 | 24 |  |
+| G7-E-2 | 17 | 3 | 9 | 9 | 0 | 6 | 6 | 6 | 6 | 6 |  |
+| G7-E-4 | 7 | 13 | 39 | 39 | 0 | 39 | 36 | 36 | 36 | 36 |  |
+| G7-E-5 | 3 | 17 | 51 | 51 | 0 | 21 | 20 | 20 | 20 | 20 |  |
+| G7-E-6 | 8 | 12 | 36 | 36 | 0 | 32 | 31 | 31 | 31 | 31 |  |
+| G7-E-8 | 8 | 12 | 36 | 36 | 0 | 25 | 24 | 23 | 23 | 23 |  |
+| G7-F-11 | 18 | 2 | 6 | 6 | 0 | 6 | 6 | 6 | 6 | 6 |  |
+| G7-F-3 | 6 | 14 | 42 | 42 | 0 | 41 | 35 | 35 | 35 | 35 |  |
+| G7-F-5 | 11 | 9 | 15 | 15 | 0 | 15 | 13 | 13 | 13 | 13 |  |
+| G7-F-6 | 10 | 10 | 30 | 30 | 0 | 27 | 24 | 24 | 24 | 24 |  |
+| G7-F-7 | 13 | 7 | 21 | 21 | 0 | 21 | 19 | 19 | 19 | 19 |  |
+| G7-L-10 | 13 | 7 | 12 | 12 | 0 | 8 | 8 | 8 | 8 | 8 |  |
+| G7-L-2 | 5 | 15 | 45 | 45 | 0 | 31 | 26 | 26 | 26 | 26 |  |
+| G7-L-4 | 11 | 9 | 15 | 15 | 0 | 12 | 12 | 12 | 12 | 12 |  |
+| G7-L-6 | 10 | 10 | 16 | 16 | 0 | 11 | 10 | 10 | 10 | 10 |  |
+| G7-L-8 | 6 | 14 | 23 | 23 | 0 | 20 | 18 | 18 | 18 | 18 |  |
+| G7-L-9 | 16 | 4 | 7 | 7 | 0 | 5 | 4 | 4 | 4 | 4 |  |
+| G7-M-1 | 13 | 7 | 21 | 21 | 0 | 19 | 17 | 17 | 17 | 17 |  |
+| G7-M-12 | 7 | 13 | 39 | 39 | 0 | 31 | 30 | 30 | 30 | 30 |  |
+| G7-M-6 | 6 | 14 | 42 | 42 | 0 | 35 | 33 | 33 | 33 | 33 |  |
+| G8-E-1 | 12 | 8 | 13 | 13 | 4 | 11 | 11 | 11 | 11 | 11 |  |
+| G8-E-10 | 3 | 17 | 51 | 69 | 69 | 65 | 62 | 27 | 27 | 27 |  |
+| G8-E-12 | 4 | 16 | 48 | 60 | 60 | 59 | 55 | 35 | 35 | 35 |  |
+| G8-E-2 | 3 | 17 | 51 | 51 | 0 | 38 | 35 | 35 | 35 | 35 |  |
+| G8-E-4 | 12 | 8 | 13 | 13 | 0 | 10 | 8 | 8 | 8 | 8 |  |
+| G8-E-6 | 3 | 17 | 51 | 51 | 0 | 36 | 29 | 29 | 29 | 29 |  |
+| G8-E-8 | 4 | 16 | 48 | 48 | 0 | 47 | 40 | 40 | 40 | 40 |  |
+| G8-E-9 | 11 | 9 | 15 | 15 | 0 | 14 | 13 | 13 | 13 | 13 |  |
+| G8-F-2 | 14 | 6 | 18 | 18 | 0 | 12 | 9 | 8 | 8 | 8 |  |
+| G8-F-7 | 18 | 2 | 4 | 4 | 0 | 3 | 3 | 2 | 2 | 2 |  |
+| G8-F-8 | 5 | 15 | 45 | 45 | 3 | 28 | 27 | 27 | 27 | 27 |  |
+| G8-L-11 | 3 | 17 | 51 | 51 | 0 | 51 | 46 | 46 | 46 | 46 |  |
+| G8-L-2 | 5 | 15 | 45 | 45 | 0 | 33 | 30 | 30 | 30 | 30 |  |
+| G8-L-4 | 3 | 17 | 51 | 51 | 0 | 45 | 40 | 39 | 39 | 39 |  |
+| G8-L-5 | 7 | 13 | 39 | 39 | 0 | 32 | 29 | 29 | 29 | 29 |  |
+| G8-L-6 | 8 | 12 | 36 | 36 | 0 | 35 | 31 | 31 | 31 | 31 |  |
+| G8-L-7 | 7 | 13 | 21 | 40 | 40 | 40 | 40 | 40 | 40 | 40 |  |
+| G8-L-8 | 5 | 15 | 45 | 45 | 0 | 26 | 23 | 23 | 23 | 23 |  |
+| G8-M-1 | 13 | 7 | 21 | 21 | 0 | 13 | 12 | 12 | 12 | 12 |  |
+| G8-M-10 | 11 | 9 | 27 | 27 | 0 | 25 | 20 | 20 | 20 | 20 |  |
+| G8-M-2 | 12 | 8 | 24 | 24 | 0 | 19 | 17 | 17 | 17 | 17 |  |
+| G8-M-5 | 10 | 10 | 30 | 30 | 0 | 25 | 21 | 21 | 21 | 21 |  |
+| G8-M-7 | 16 | 4 | 12 | 12 | 0 | 9 | 7 | 7 | 7 | 7 |  |
+| G8-M-8 | 7 | 13 | 39 | 39 | 0 | 35 | 29 | 28 | 28 | 28 |  |
+| G8-M-9 | 18 | 2 | 6 | 6 | 0 | 3 | 3 | 3 | 3 | 3 |  |
+| G9-E-10 | 6 | 14 | 23 | 28 | 28 | 27 | 27 | 19 | 19 | 19 |  |
+| G9-E-2 | 4 | 16 | 48 | 48 | 0 | 25 | 22 | 22 | 22 | 22 |  |
+| G9-E-4 | 12 | 8 | 13 | 13 | 0 | 11 | 9 | 9 | 9 | 9 |  |
+| G9-E-5 | 14 | 6 | 18 | 18 | 0 | 15 | 14 | 14 | 14 | 14 |  |
+| G9-E-6 | 6 | 14 | 42 | 42 | 0 | 39 | 37 | 36 | 36 | 36 |  |
+| G9-E-7 | 11 | 9 | 27 | 27 | 0 | 19 | 18 | 18 | 18 | 18 |  |
+| G9-E-8 | 5 | 15 | 45 | 45 | 0 | 33 | 28 | 28 | 28 | 28 |  |
+| G9-E-9 | 15 | 5 | 15 | 15 | 0 | 7 | 6 | 6 | 6 | 6 |  |
+| G9-F-10 | 13 | 7 | 21 | 21 | 0 | 9 | 8 | 8 | 8 | 8 |  |
+| G9-F-2 | 14 | 6 | 18 | 18 | 0 | 12 | 10 | 10 | 10 | 10 |  |
+| G9-F-8 | 3 | 17 | 51 | 51 | 0 | 48 | 46 | 46 | 46 | 46 |  |
+| G9-F-9 | 17 | 3 | 9 | 9 | 0 | 7 | 7 | 7 | 7 | 7 |  |
+| G9-L-1 | 6 | 14 | 42 | 42 | 0 | 30 | 28 | 28 | 28 | 28 |  |
+| G9-L-3 | 17 | 3 | 5 | 5 | 0 | 4 | 4 | 4 | 4 | 4 |  |
+| G9-L-4 | 5 | 15 | 24 | 39 | 39 | 38 | 33 | 15 | 15 | 15 |  |
+| G9-L-5 | 10 | 10 | 30 | 30 | 0 | 29 | 22 | 22 | 22 | 22 |  |
+| G9-L-7 | 10 | 10 | 30 | 30 | 0 | 20 | 18 | 18 | 18 | 18 |  |
+| G9-M-1 | 3 | 17 | 51 | 51 | 0 | 47 | 43 | 43 | 43 | 43 |  |
+| G9-M-3 | 17 | 3 | 9 | 9 | 0 | 8 | 8 | 8 | 8 | 8 |  |
+| G9-M-4 | 4 | 16 | 48 | 90 | 90 | 89 | 86 | 74 | 74 | 74 |  |
+| G9-M-5 | 16 | 4 | 7 | 7 | 0 | 5 | 4 | 4 | 4 | 4 |  |
+| G9-M-6 | 14 | 6 | 18 | 18 | 0 | 13 | 12 | 12 | 12 | 12 |  |
+| G9-M-9 | 6 | 14 | 42 | 42 | 0 | 35 | 29 | 28 | 28 | 28 |  |
+| **total** | | **1434** | **3837** | **3956** | **454** | **3178** | **2862** | **2731** | **2731** | **2731** | **46** |
+
+## 8. Spend ledger — models actually used (no gpt-oss anywhere; tokens authoritative, USD estimated)
+
+| stage | model | calls | tokens in | tokens out | est USD | price basis / ledger |
+|---|---|---:|---:|---:|---:|---|
+| write (3 runs) | `accounts/fireworks/models/deepseek-v4-flash-0731` | 269 | 487,703 | 2,893,413 | 0.878 | $0.14 / $0.28 per M — `out/write-ledger.json` |
+| verify + translate (run 1 + resume) | `accounts/fireworks/models/deepseek-v4-pro-0813` | 558 | 443,904 | 1,452,886 | 2.276 | ingest.py default $1.20 / $1.20 per M (no Pro list price in-repo; re-price from the Fireworks invoice) — `out/ingest-summary*.json` |
+| factoid voice (smoke + full + regen1) | `accounts/fireworks/models/qwen3p7-plus` | 345 (0 failed) | 606,615 | 2,059,480 | 1.95 | fw-gen-factoids.py's own estimate — `out/append-state.json` `fireworks` |
+| **Fireworks total** | | **1,172** | **1,538,222** | **6,405,779** | **≈ 5.10** | |
+| images (gpt-image-2 low 1024, OpenAI Batch) | `gpt-image-2` | 0 batches / 0 requests submitted | | | **0.00** (≈ 8.74 pending: 2,731 × $0.0032) | blocked by `billing_hard_limit_reached`, §6 |
+
+## 9. Phase C — what remains, in order (nothing below has been started)
+
+Preconditions: (1) Luis raises the OpenAI hard limit; (2) the PREP carry-over is committed (still uncommitted here and on `unified`: `packages/mobile/src/generated/curriculumTags.generated.json`, `packages/mobile/scripts/gen-curriculum-tags.mjs`, `packages/mobile/src/data/curriculumTagOverrides.json`, `curriculumTagExclusions.json`, `tools/curriculum-tag-audit/`) — Phase C's `gen-curriculum-tags.mjs` and `card-harness.mts` run against the wrong tags without them.
 
 ```bash
-python3 rag/pipeline/depth-fill/append.py --stages bank,src,gen,assemble,tags,vectors
-python3 rag/pipeline/depth-fill/append.py --stages images   # submit
-python3 rag/pipeline/depth-fill/append.py --stages fetch
-```
-Then Phase C: wire webp → pool append → `gen-curriculum-tags.mjs` → titles/cats (`FW_MISSING=1 fw-gen-card-titles.py`, `assemble-card-titles.py`) → `build-cards-db.py` → `card-harness.mts` → recount → `run-harness.sh`. The audit inputs copied in during prep (§0) are still uncommitted here and on `unified`.
+cd /Users/luis/Code/hiraia-depth-fill
+set -a; . /Users/luis/Code/hiraia/.env.local; set +a
 
+# C0  submit (resumable; writes out/image-batches.json with the batch ids) — then wait for the batches to complete
+/opt/homebrew/bin/python3 rag/pipeline/depth-fill/append.py --stages images
+# C1  fetch every completed batch → rag/pipeline/imagegen/webp/<ffct>.webp (declined ids → out/image-declined.jsonl +
+#     out/image-fallback-worklist.jsonl for the qwen-image fallback: WORKLIST=<that file> LIMIT=0 python3 packages/images/qwen-queue/gen-images.py)
+/opt/homebrew/bin/python3 rag/pipeline/depth-fill/append.py --stages fetch
+# C2  wire (BRIEF §8.1–8.4): copy rag/pipeline/imagegen/webp/ffct-371*..ffct-398*.webp → packages/images/factoid-webp/;
+#     to-card-png.mjs / gen-image-map.mjs as the card-ui path does; APPEND the illustrated factoids onto rag/pipeline/cardsPool.app.json
+#     (never gen-cards-pool.py; pre-existing card ids byte-identical); node packages/mobile/scripts/gen-curriculum-tags.mjs
+# C3  titles + cats (BRIEF §8.5, required): FW_MISSING=1 python3 rag/pipeline/fw-gen-card-titles.py → python3 rag/pipeline/assemble-card-titles.py
+#     validate: every new card has non-empty title.tl/en/bis, 1–2 ladder cats, ≤32-char Title Case, title != topic
+# C4  python3 rag/pipeline/build-cards-db.py   (cards.db + tokens.bin + cardsIndex.generated.json; re-runs build-facts-db.py)
+#     then packages/mobile/scripts/card-harness.mts green; curriculumOutline counts show the deepened codes
+# C5  recount every in-scope code ≥ 20 (report-per-code.py + curriculumTags.generated.json); decide on a targeted second write
+#     for the 14 short codes (+ the 7 sitting exactly at need if images declined there)
+# C6  bash finetuning/eval/harness/run-harness.sh  → must be green. Do not build an APK.
+```

@@ -1,0 +1,101 @@
+{
+ "stages": {
+  "bank": {
+   "done_at": "2026-09-07T22:34:25+08:00",
+   "appended": 2731,
+   "by_stream": {
+    "main": 2729,
+    "body": 2
+   },
+   "bank_before": 50279,
+   "bank_after": 53010,
+   "bank_sha256": "646ffe82043fcb07175cddfa4b976725d25f888744e34ae246cc67adb624f755"
+  },
+  "src": {
+   "done_at": "2026-09-07T22:34:25+08:00",
+   "rows": 2731,
+   "main": 2729,
+   "aup": 2
+  },
+  "gen": {
+   "done_at": "2026-09-07T22:55:46+08:00",
+   "rows": 2731,
+   "src_rows": 2731,
+   "formats": {
+    "straight": 1547,
+    "qa": 1184
+   },
+   "regen_rounds": 1,
+   "files": 342
+  },
+  "assemble": {
+   "done_at": "2026-09-07T22:58:18+08:00",
+   "bank_before": 37107,
+   "bank_after": 39838,
+   "new": 2731,
+   "first_id": "ffct-37107",
+   "last_id": "ffct-39837",
+   "prefix_identical_to_head": true,
+   "by_domain": {
+    "EARTH_SPACE": 923,
+    "LIVING_THINGS": 688,
+    "FORCE_MOTION_ENERGY": 602,
+    "MATTER": 518
+   }
+  },
+  "tags": {
+   "done_at": "2026-09-07T22:58:20+08:00",
+   "added": 2731,
+   "kept": 0,
+   "factoids_entries": 48527,
+   "bank_entries": 0,
+   "unchanged_vs_loaded": 45796,
+   "unchanged_vs_backup": 45796,
+   "backup": "rag/bank/.backup-2026-09-07/curriculum-tags.json",
+   "generated_unchanged": true
+  },
+  "vectors": {
+   "done_at": "2026-09-07T23:07:22+08:00",
+   "count": 53010,
+   "bankHash": "13ff876529fa",
+   "export": 53010
+  }
+ },
+ "fireworks": {
+  "calls": 345,
+  "tokens_in": 606615,
+  "tokens_out": 2059480,
+  "est_usd": 1.95,
+  "runs": [
+   {
+    "label": "smoke",
+    "when": "2026-09-07T22:34:40+08:00",
+    "tokens_in": 1768,
+    "tokens_out": 5347,
+    "est_usd": 0.01,
+    "calls": 1,
+    "failed": 0
+   },
+   {
+    "label": "full-1",
+    "when": "2026-09-07T22:55:23+08:00",
+    "tokens_in": 599642,
+    "tokens_out": 2036294,
+    "est_usd": 1.92,
+    "calls": 341,
+    "failed": 0
+   },
+   {
+    "label": "regen1-main",
+    "when": "2026-09-07T22:55:46+08:00",
+    "tokens_in": 5205,
+    "tokens_out": 17839,
+    "est_usd": 0.02,
+    "calls": 3,
+    "failed": 0
+   }
+  ]
+ },
+ "backup_date": "2026-09-07",
+ "backup_dir": "rag/bank/.backup-2026-09-07"
+}

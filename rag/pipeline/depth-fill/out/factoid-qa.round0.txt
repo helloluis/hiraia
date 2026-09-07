@@ -1,0 +1,45 @@
+==================== FACTOID QA ====================
+factoids: 2707 (malformed lines 0) | dup factIds: 0
+format: qa 1173 (43%) / straight 1534 (56%)
+reading load: median 23 tagalog words | image prompts written: 2707
+issues: NONE
+
+--- QA samples (question / body / SOURCE fact — check faithfulness) ---
+  Q: Ano ang espesyal sa thrust fault?
+  A: Ang thrust fault ay isang reverse fault na may banayad na dip! Dito, umaakyat ang hanging-wall rocks sa mababaw na plane imbes na matarik.
+  src: A thrust fault is a reverse fault with a gentle dip, so hanging-wall rocks ride up a low-angle plane instead o
+
+  Q: Bakit tayo nasa Class Mammalia?
+  A: Nanganganak tayo ng buhay na sanggol na lumalaki sa loob ng ina! Ito ang karaniwang mammalian pattern kaya tayo nasa Class Mammalia.
+  src: Humans give birth to live young that develop inside the mother, matching the typical mammalian pattern used to
+
+  Q: Ano ang espesyal sa lower jaw natin?
+  A: Tulad ng mga mammal, ang lower jaw natin ay gawa sa isang buto sa bawat gilid! Ito ay isa pang dahilan na tayo ay mammal.
+  src: Mammals have a lower jaw made of one bone on each side; humans show that jaw plan, another reason we are class
+
+  Q: Paano ipinapakita ng kamay natin na primates tayo?
+  A: May grasping hands tayo na may mobile thumb! Ginagamit natin ang primate trait na ito para humawak ng sanga o tools, kaya tayo sa Order Primates.
+  src: Humans have grasping hands with a mobile thumb, a primate trait used to hold branches or tools and to place us
+
+  Q: Paano gumagawa ng kuryente ang La Rance plant ng France?
+  A: Sa loob ng maraming dekada, ginamit nito ang tidal difference! Ito ay isang klasikong halimbawa ng barrage sa secondary sources sa estuary.
+  src: France's La Rance plant has generated electricity from tidal difference for decades, a classic secondary-sourc
+
+  Q: Anong lalim ang kailangan ng tidal-stream turbines?
+  A: Kailangan nila ng sapat na lalim para manatiling nakalubog sa low tide! Ginagamit ito ng resource maps bilang site filter, bukod sa current speed.
+  src: Tidal-stream turbines need enough depth to stay submerged at low tide, a site filter that resource maps use be
+
+--- STRAIGHT samples (body / SOURCE) ---
+  • Ini-uuri ng mga geologist ang faults gamit ang dip! Ito yung anggulo ng fault plane, mula sa matarik na bitak hanggang sa mababaw na slide.
+    src: Geologists classify faults partly by dip, the angle the fault plane makes with the horizontal, from steep near
+  • Kapag ang galaw ay paakyat o pababa sa sloping plane, dip-slip fault iyan! Pero kung patagilid ang galaw, strike-slip fault naman iyan.
+    src: If the slip is mostly up or down the sloping plane, the fault is dip-slip; if the slip is mostly sideways, it 
+  • Sa dipping fault, pinapangalanan natin ang slip base sa ginawa ng hanging wall! Bumababa ito para sa normal, at umaakyat para sa reverse.
+    src: On a dipping fault, you name the slip by what the hanging wall did: down for normal, up for reverse, matching 
+  • Ang mga tao ay kabilang sa Class Mammalia! Tulad ng ibang mammals, may mammary glands tayo na gumagawa ng gatas para sa mga anak.
+    src: Humans are placed in Class Mammalia because, like other mammals, they have mammary glands that can produce mil
+
+--- image prompt samples (style check) ---
+  • A simple diagram showing a cross-section of the earth with two fault planes, one steep and near-vertical, and one low-angle, with an angle labeled dip. hand-drawn line art, black and white, clean sing
+  • Two simple block diagrams of faults. The first shows blocks moving up and down a sloping plane. The second shows blocks sliding sideways past each other. hand-drawn line art, black and white, clean si
+  • A cross-section of a thrust fault showing hanging-wall rocks riding up a gentle, low-angle fault plane over the footwall, with arrows indicating the upward movement. hand-drawn line art, black and whi
