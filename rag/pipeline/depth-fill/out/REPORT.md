@@ -420,3 +420,15 @@ Case tallies seen in the log: 56/59, 14/14, 45/45, 24/35
 No APK was built (by instruction). Acceptance (§9 of the brief): every shipped fact trilingual with terms ✓; every NEW
 card titled + 1–2 ladder cats ✓; build-cards-db ran ✓; card-harness green ✓; no gpt-oss anywhere ✓; pre-existing ids
 unchanged ✓; audit overrides/exclusions intact ✓; run-harness green ✓; 14 codes < 20 named with reasons (§7) ✓.
+
+### 7.1 Did the 26k accidentally re-titled old cards improve? (blind A/B, 2026-09-08 04:1x)
+
+296 differing pairs (stratified by source × domain), each judged blind in both A/B orders (20 agents; raw A 288 / B 271 —
+no position bias). Unanimous verdicts: **current title better 56 %, regenerated better 31 %**, tie/lean/split 13 %.
+By source: original cards 52 % current / 39 % regen; DepEd cards 59 % / 23 %. Tagalog+Cebuano only: 42 % current / 37 %
+regen. Cats: ties 39 %, current 30 %, regen 20 % (DepEd cards keep the more specific deped-style leaves 49 % of the time).
+Mechanically the regenerated set is more generic (17,871 of 26,212 have ≤ 2 EN words vs 3,571 now; 2,777 single-word vs
+143; more untranslated TL, more BIS copied from TL) but never over 32 chars (752 current titles are). The regen wins cluster
+where the CURRENT TL/BIS is telegraphic word salad ("Ahas Init Pit Dilim", "3 R Sunod", "Ampere SI Base Electrical").
+Verdict: NOT folded — wholesale replacement would make ~56 % of cards worse. The rows stay in card-titles/titles-gap*.jsonl
+and out/title-ab/verdicts.json as candidates for a targeted mop-up of the word-salad class (detector + pairwise judge).
