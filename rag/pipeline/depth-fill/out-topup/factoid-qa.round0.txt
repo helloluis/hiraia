@@ -1,0 +1,45 @@
+==================== FACTOID QA ====================
+factoids: 11 (malformed lines 0) | dup factIds: 0
+format: qa 7 (63%) / straight 4 (36%)
+reading load: median 19 tagalog words | image prompts written: 11
+issues: NONE
+
+--- QA samples (question / body / SOURCE fact — check faithfulness) ---
+  Q: Bakit mabagal bumuhos ang honey?
+  A: Mas malakas ang pagkakaakit ng mga particle nito kaysa sa tubig, kaya ito ay malapot o viscous!
+  src: Honey pours slowly because its particles attract each other more strongly than water particles, making it thic
+
+  Q: Paano nagbabago ang state ng matter?
+  A: Nakukuha o nawawalan ang particle ng sapat na energy para malampasan o mabuo ang pwersang nagtataglay sa kanila!
+  src: Matter changes state when particles gain or lose enough energy to overcome or form the forces holding them tog
+
+  Q: Hula lang ba ang particle model?
+  A: Hindi, ito ay subok na scientific theory dahil matagumpay nitong naipapaliwanag ang maraming obserbasyon tungkol sa matter!
+  src: The particle model is a well-tested scientific theory, not just a guess, because it successfully explains many
+
+  Q: Bakit kaya mong itulak ang kamay mo sa hangin pero hindi sa mesa?
+  A: Ang gas particle ay may malalaking pagitan, habang ang solid particle ay dikit-dikit, kaya hindi mo ito matutulak!
+  src: You can push your hand through air but not through a table because gas particles have huge gaps while solid pa
+
+  Q: Maaari bang maging solid, liquid, o gas ang parehong particle?
+  A: Oo! Ang yelo, liquid water, at steam ay gawa lahat sa parehong water particles.
+  src: The same particles can exist as solid, liquid, or gas; ice, liquid water, and steam are all made of the same w
+
+  Q: Bakit may matitigas na bagay habang ang iba ay umaagos o lumalawak nang malaya?
+  A: Nasa mga particle yan! Ang pagkakaayos, pagitan, at paggalaw nila ang nagtatakda kung ang substance ay matigas, umaagos, o malayang lumalawak.
+  src: The arrangement, spacing, and motion of particles determine whether a substance is hard, flowing, or freely ex
+
+--- STRAIGHT samples (body / SOURCE) ---
+  • Ang particle model ay isang scientific model na gumagamit ng napakaliit at hindi nakikitang particle para ipaliwanag kung paano kumikilos ang matter!
+    src: The particle model is a scientific model that uses tiny invisible particles to explain and predict how matter 
+  • Madaling i-compress ang gas, bahagyang na-compress ang liquid, at halos hindi ang solid dahil sa mga pagitan ng particle!
+    src: Gases are easy to compress, liquids are slightly compressible, and solids are almost not at all, because of th
+  • Ipinapaliwanag ng particle model ang water cycle: ang init nagpapalaya sa water particle bilang vapor, na lumalamig at nagiging clouds at ulan!
+    src: The particle model explains the water cycle: heat makes water particles escape as vapor, which later cools and
+  • Kapag pinainitan ang balloon, ipinapaliwanag ng particle model kung bakit lumalaki ito! Ang mas mabilis na particle ay tumatama nang mas malakas sa loob at itinutulak ang dingding palabas.
+    src: The particle model explains why a balloon expands when heated: faster-moving particles hit the inside walls ha
+
+--- image prompt samples (style check) ---
+  • A simple illustration of tiny dots representing particles moving around a solid block, hand-drawn line art, black and white, clean single-weight ink outlines, no shading and no color, simple and frien
+  • A jar of honey pouring slowly next to a jar of water, hand-drawn line art, black and white, clean single-weight ink outlines, no shading and no color, simple and friendly for children, centered on a p
+  • Three boxes showing particles with large gaps for gas, small gaps for liquid, and no gaps for solid, hand-drawn line art, black and white, clean single-weight ink outlines, no shading and no color, si

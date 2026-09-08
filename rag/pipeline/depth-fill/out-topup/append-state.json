@@ -1,0 +1,111 @@
+{
+ "stages": {
+  "bank": {
+   "done_at": "2026-09-08T09:16:11+08:00",
+   "appended": 11,
+   "by_stream": {
+    "main": 11,
+    "body": 0
+   },
+   "bank_before": 53010,
+   "bank_after": 53021,
+   "bank_sha256": "3896890278687e863cf1e584088b919702022cc0ec7c7bfc0acaaf511283d8c5"
+  },
+  "src": {
+   "done_at": "2026-09-08T09:16:11+08:00",
+   "rows": 11,
+   "main": 11,
+   "aup": 0
+  },
+  "gen": {
+   "done_at": "2026-09-08T09:16:35+08:00",
+   "rows": 11,
+   "src_rows": 11,
+   "formats": {
+    "straight": 4,
+    "qa": 7
+   },
+   "regen_rounds": 0,
+   "files": 2
+  },
+  "assemble": {
+   "done_at": "2026-09-08T09:16:41+08:00",
+   "bank_before": 39838,
+   "bank_after": 39849,
+   "new": 11,
+   "first_id": "ffct-39838",
+   "last_id": "ffct-39848",
+   "prefix_identical_to_head": true,
+   "by_domain": {
+    "MATTER": 11
+   }
+  },
+  "tags": {
+   "done_at": "2026-09-08T09:16:43+08:00",
+   "added": 11,
+   "kept": 0,
+   "factoids_entries": 48538,
+   "bank_entries": 0,
+   "unchanged_vs_loaded": 48527,
+   "unchanged_vs_backup": 48527,
+   "backup": "rag/bank/.backup-2026-09-08/curriculum-tags.json",
+   "generated_unchanged": true
+  },
+  "vectors": {
+   "done_at": "2026-09-08T09:25:10+08:00",
+   "count": 53021,
+   "bankHash": "bd911d7fb2d4",
+   "export": 53021
+  },
+  "images": {
+   "done_at": "2026-09-08T09:25:14+08:00",
+   "submitted_this_run": 11,
+   "batches": 1,
+   "images": 11,
+   "est_usd": 0.0352
+  },
+  "fetch": {
+   "done_at": "2026-09-08T09:28:17+08:00",
+   "by_status": {
+    "completed": 1
+   },
+   "request_counts": {
+    "total": 11,
+    "completed": 11,
+    "failed": 0
+   },
+   "webp_staged_this_run": 11,
+   "webp_staged": 11,
+   "declined": 0,
+   "declined_ids": []
+  }
+ },
+ "fireworks": {
+  "calls": 2,
+  "tokens_in": 2644,
+  "tokens_out": 10418,
+  "est_usd": 0.01,
+  "runs": [
+   {
+    "label": "smoke",
+    "when": "2026-09-08T09:16:27+08:00",
+    "tokens_in": 1696,
+    "tokens_out": 7079,
+    "est_usd": 0.01,
+    "calls": 1,
+    "failed": 0
+   },
+   {
+    "label": "full-1",
+    "when": "2026-09-08T09:16:35+08:00",
+    "tokens_in": 948,
+    "tokens_out": 3339,
+    "est_usd": 0.0,
+    "calls": 1,
+    "failed": 0
+   }
+  ]
+ },
+ "backup_date": "2026-09-08",
+ "backup_dir": "rag/bank/.backup-2026-09-08"
+}

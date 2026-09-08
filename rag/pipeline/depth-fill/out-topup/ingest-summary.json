@@ -1,0 +1,68 @@
+{
+ "when": "2026-09-08T09:14:49",
+ "out": "/Users/luis/Code/hiraia-depth-fill/rag/pipeline/depth-fill/out-topup",
+ "dry_run": false,
+ "writer": "deepseek-v4-flash",
+ "stages": [
+  "validate",
+  "dedup",
+  "mint",
+  "verify",
+  "translate",
+  "emit"
+ ],
+ "verify_model": "accounts/fireworks/models/deepseek-v4-pro-0813",
+ "translate_model": "accounts/fireworks/models/deepseek-v4-pro-0813",
+ "thresholds": {
+  "t_exist": 0.86,
+  "t_cand": 0.9,
+  "en_words": [
+   15,
+   35
+  ],
+  "min_terms": 6
+ },
+ "counts": {
+  "validate": {
+   "main": 20,
+   "body": 0
+  },
+  "dedup": {
+   "main": 12,
+   "body": 0
+  },
+  "mint": {
+   "main": 12,
+   "body": 0
+  },
+  "verify": {
+   "main": 11,
+   "body": 0
+  },
+  "translate": {
+   "main": 11,
+   "body": 0
+  }
+ },
+ "rejects": 0,
+ "dedup_drops": {
+  "near-existing": 8
+ },
+ "verify_drops": {
+  "suspect": 1
+ },
+ "translate_pending": 0,
+ "ready": {
+  "main": 11,
+  "body": 0
+ },
+ "fireworks": {
+  "calls": {
+   "verify": 2,
+   "translate": 2
+  },
+  "tokens_in": 2006,
+  "tokens_out": 3941,
+  "est_usd": 0.0071
+ }
+}

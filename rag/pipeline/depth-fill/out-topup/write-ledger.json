@@ -1,0 +1,41 @@
+{
+ "scheme": "depth-fill writer ledger: tokens per model (authoritative), USD estimate at FW_PRICE_IN/OUT, per-code counts",
+ "models": {
+  "accounts/fireworks/models/deepseek-v4-flash-0731": {
+   "calls": 1,
+   "failed": 0,
+   "tokens_in": 2176,
+   "tokens_out": 18823,
+   "est_usd": 0.0056
+  }
+ },
+ "per_code": {
+  "G7-M-4": {
+   "target": 20,
+   "have": 20,
+   "body": 0,
+   "calls": 1,
+   "rounds": 1,
+   "short": 0,
+   "when": "2026-09-08T09:08:13"
+  }
+ },
+ "rejects": {},
+ "runs": [
+  {
+   "started": "2026-09-08T09:05:59",
+   "model": "accounts/fireworks/models/deepseek-v4-flash-0731",
+   "codes": [
+    "G7-M-4"
+   ],
+   "limit": 0,
+   "per_call": 20,
+   "thinking": true,
+   "finished": "2026-09-08T09:08:13",
+   "seconds": 134,
+   "short": [],
+   "tokens_in_total": 2176,
+   "tokens_out_total": 18823
+  }
+ ]
+}

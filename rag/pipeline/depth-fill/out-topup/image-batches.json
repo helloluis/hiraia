@@ -1,0 +1,54 @@
+{
+ "batches": [
+  {
+   "batch_id": "batch_6a9f63f99df08190854a13ef15f9fa28",
+   "input_file_id": "file-7rAX5M6jWnJXiptLAq1Skb",
+   "stream": "main",
+   "chunk": 1,
+   "n": 11,
+   "ids": [
+    "ffct-39838",
+    "ffct-39839",
+    "ffct-39840",
+    "ffct-39841",
+    "ffct-39842",
+    "ffct-39843",
+    "ffct-39844",
+    "ffct-39845",
+    "ffct-39846",
+    "ffct-39847",
+    "ffct-39848"
+   ],
+   "request_file": "rag/pipeline/depth-fill/out-topup/image-req-01.main.jsonl",
+   "submitted_at": "2026-09-08T09:25:14+08:00",
+   "submitted_at_utc": "2026-09-08T01:25:13+00:00",
+   "status_at_submit": "validating",
+   "model": "gpt-image-2",
+   "quality": "low",
+   "size": "1024x1024",
+   "est_usd": 0.0352,
+   "status": "completed",
+   "request_counts": {
+    "total": 11,
+    "completed": 11,
+    "failed": 0
+   },
+   "output_file_id": "file-Q3gZn5ztM99ZcspaxiTj88",
+   "error_file_id": null,
+   "fetched_at": "2026-09-08T09:28:09+08:00",
+   "declined": [],
+   "downloaded_at": "2026-09-08T09:28:17+08:00",
+   "webp": 11
+  }
+ ],
+ "scheme": "depth-fill illustration batches (gpt-image-2 low, batch-submit-all.py request body, CHUNK\u2248120 so each output file is API-downloadable). SUBMIT ONLY \u2014 nothing waited for or downloaded. The fetch stage of append.py books status/request_counts at fetch time, downloads completed batches (declined ids \u2192 out/image-declined.jsonl + out/image-fallback-worklist.jsonl for the qwen-image fallback: WORKLIST=<that file> LIMIT=0 python3 packages/images/qwen-queue/gen-images.py) and stages WebPs in rag/pipeline/imagegen/webp/. Wiring: copy to packages/images/factoid-webp/, to-card-png.mjs, gen-image-map.mjs, gen-cards-pool.py, gen-curriculum-tags.mjs, gen-cards-questions.py.",
+ "summary": {
+  "batches": 1,
+  "images": 11,
+  "est_usd": 0.0352,
+  "completed_batches": 1,
+  "declined": 0,
+  "webp_staged": 11,
+  "fetched_at": "2026-09-08T09:28:17+08:00"
+ }
+}

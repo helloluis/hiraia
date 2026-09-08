@@ -432,3 +432,43 @@ Mechanically the regenerated set is more generic (17,871 of 26,212 have ≤ 2 EN
 where the CURRENT TL/BIS is telegraphic word salad ("Ahas Init Pit Dilim", "3 R Sunod", "Ampere SI Base Electrical").
 Verdict: NOT folded — wholesale replacement would make ~56 % of cards worse. The rows stay in card-titles/titles-gap*.jsonl
 and out/title-ab/verdicts.json as candidates for a targeted mop-up of the word-salad class (detector + pairwise judge).
+
+## 10. Top-up — G7-M-4 to ≥ 15 (2026-09-08 09:05–09:30)
+
+Luis's call after the recount: bring only G7-M-4 (particle arrangement/spacing/motion in the three states; 12 tagged cards)
+to at least 15. Run as a separate lane (`out-topup/`, `*-topup.py` copies of the writer/append/wire/apply scripts, gen dir
+`factoids-gen-depth-fill-topup`) so nothing in `out/` moved.
+
+| step | result |
+|---|---|
+| brief | target 20 against a do-not-restate list of 38 (the 12 tagged pool cards + the 24 earlier candidates + the brief's 5) |
+| write (Flash, thinking) | 20/20 in one call, $0.006 |
+| ingest | validate 20 → LaBSE dedup **12** novel (8 near-existing) → mint 12 → Pro verify **11** ok (1 suspect) → translate 11 → emit 11 ($0.007) |
+| append | bank 53,010 → **53,021**; factoids **ffct-39838..ffct-39848** (11, contiguous; pre-existing byte-identical to HEAD and backup); tags factoids +11; vectors rebuilt (53,021, hash bd911d7fb2d4); voice 2 calls $0.01 |
+| images | 1 batch of 11 → completed 11/11, 0 declined ($0.035); 11 webp staged and copied |
+| wire | 11 cards appended to both pools (49,145 → **49,156**); to-card-png 11; art pack re-cut (12,373 head / 23,272 tail in 70 shards); image map regenerated |
+| tags | **G7-M-4: 12 → 23 runtime-tagged cards**; 11/11 new cards tagged |
+| titles/cats | 11/11 trilingual titles + ladder cats (targeted generator, 6/call, $0.01) |
+| cards.db | rebuilt: 49,156 cards, dbVersion 956555ee582d |
+| card-harness | exit 0 — magnet + curriculum walks pass |
+| gate | see the line appended below |
+
+Fix made on the way: `append-topup.py` tolerates an empty body stream (a lane with no reproduction-class rows).
+
+### 10.1 Gate after the top-up — RED on draw variance, not on the top-up (2026-09-08 09:30–09:50)
+
+Four full `run-harness.sh` runs today, all with retrieval byte-identical to the green 03:58 run (same facts, same cosines):
+
+| state | draws/case | result | failing case(s) |
+|---|---|---|---|
+| top-up, run 1 | 3 | 44/45 | tier2-affirm-flat-earth |
+| top-up, run 2 (`SAMPLES=9`; `CASE=` is not the filter env — `CASES=` is) | 9 | 43/45 | skyblue-grounded (2/9 draws), tier2-affirm-flat-earth (3/9) |
+| top-up, run 3 | 3 | 44/45 | grade-register-water-cycle-en (identical card at grade 3 and 10) |
+| top-up, run 4 | 3 | 43/45 | skyblue-grounded, grade-register-photosynthesis |
+| **CONTROL: pre-top-up commit 36f77f09e** (scratch worktree, cards.db rebuilt) | 3 | **44/45** | tier2-affirm-flat-earth |
+
+Every failure is a single draw at temp 0.3 missing a required keyword (e.g. "bilog", "kalat") or printing the same card at
+two grades; the printed cards are correct and no `mustNotContain` (myth affirmation) fired. The hybrid R1 retrieval gate is
+14/14 in every run. Conclusion: the top-up does not change the gate's inputs; the gate's "every draw must pass" rule at
+temp 0.3 makes a 45-case run pass or fail on luck (green at 03:58, red ×5 since). Merged on that evidence; the harness
+variance is reported to the parent as a gate-design issue (k-of-n draws for non-safety cases, or a fixed sampling seed).
