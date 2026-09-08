@@ -78,9 +78,12 @@ green gate is not by itself proof of the device path — an on-device smoke test
   rows and Cebuano is a first-class card language, so it carries real coverage here (9 of 45
   cases), not the 3-of-42 token presence it used to.
 - **Grade register** — grade is a user-visible setting spliced straight into the prompt and
-  nothing asserted it changed anything. `gradePairWith` prints the same query at two grades and
-  requires both to be valid cards, to DIFFER (an inert grade is a silently broken setting), and
-  not to invert (the Grade-3 card is not the longer-worded one).
+  nothing asserted it changed anything. `gradePairWith` prints the same query at two grades,
+  once per sample, and requires every draw at both grades to be a valid card. The DIFFER and
+  not-inverted checks (an inert grade is a silently broken setting; the Grade-3 card is not the
+  longer-worded one) are judged draw-for-draw and fail on a MAJORITY of pairs, not on one —
+  at CARD_TEMP the register is a steer, and one identical pair in three was failing the whole
+  gate on luck (2026-09-08: five red runs with retrieval byte-identical to a green one).
 - **Confabulation / retrieval regressions** — as before: `mustContain` / `mustNotContain` on
   the printed card, `expectRetrieves` / `mustRetrieveIdIncludes` on the retrieved ids.
 

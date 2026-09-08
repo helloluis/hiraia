@@ -392,30 +392,45 @@ for (const c of cases) {
     }
 
     // 4) GRADE REGISTER — grade is a user-visible setting spliced straight into the prompt.
+    //    MAJORITY rule (2026-09-08): the register clause is a soft steer, and at CARD_TEMP the model
+    //    prints the same card for two grades on some draws even when the setting works on most —
+    //    one identical pair in n was failing the whole gate on luck (5 red runs, retrieval byte-
+    //    identical to a green one). So the pair is drawn once per sample, compared draw-for-draw
+    //    with the base grade's draw, and the case fails only when a MAJORITY of pairs are identical
+    //    (or a majority put the harder words at the lower grade). The per-draw card assertions
+    //    (mustContain, shape, safety) stay strict on EVERY draw of both grades; myth-safety cases
+    //    carry no gradePairWith and are untouched.
     if (c.gradePairWith != null) {
       const other = c.gradePairWith;
-      const pairDraw = await printCard(
-        buildCardPrompt({ query: c.query, facts: r.facts, grade: other, language: c.lang })
-      );
-      cards.push(pairDraw.card);
-      if (pairDraw.card) words.push(wordCount(pairDraw.card));
-      if (pairDraw.content.trim()) rawWords.push(wordCount(pairDraw.content));
-      fails.push(...assertCard(c, pairDraw, other, r.facts));
-      const base = cards[0];
-      if (base && pairDraw.card) {
-        const lowGrade = Math.min(c.grade, other);
+      const lowGrade = Math.min(c.grade, other);
+      let pairs = 0;
+      let identical = 0;
+      let harder = 0;
+      for (let i = 0; i < nSamples; i++) {
+        const pairDraw = await printCard(
+          buildCardPrompt({ query: c.query, facts: r.facts, grade: other, language: c.lang })
+        );
+        cards.push(pairDraw.card);
+        if (pairDraw.card) words.push(wordCount(pairDraw.card));
+        if (pairDraw.content.trim()) rawWords.push(wordCount(pairDraw.content));
+        for (const x of assertCard(c, pairDraw, other, r.facts)) // assertCard already tags [grade N]
+          fails.push(nSamples > 1 ? `pair sample ${i + 1}/${nSamples}: ${x}` : x);
+        const base = cards[i]; // the i-th draw at the case's own grade (pushed above, in order)
+        if (!base || !pairDraw.card) continue;
+        pairs++;
         const low = c.grade === lowGrade ? base : pairDraw.card;
         const high = c.grade === lowGrade ? pairDraw.card : base;
-        if (norm(low) === norm(high))
-          fails.push(`grade-register: identical card at grade ${c.grade} and grade ${other} — the setting is inert`);
-        const dLow = meanWordLength(low);
-        const dHigh = meanWordLength(high);
-        if (dLow > dHigh + 0.5)
-          fails.push(
-            `grade-register: the lower-grade card is the harder one ` +
-              `(mean word length ${dLow.toFixed(2)} at grade ${lowGrade} vs ${dHigh.toFixed(2)} at the higher grade)`
-          );
+        if (norm(low) === norm(high)) identical++;
+        if (meanWordLength(low) > meanWordLength(high) + 0.5) harder++;
       }
+      if (pairs && identical * 2 > pairs)
+        fails.push(
+          `grade-register: identical card at grade ${c.grade} and grade ${other} in ${identical}/${pairs} pairs — the setting is inert`
+        );
+      if (pairs && harder * 2 > pairs)
+        fails.push(
+          `grade-register: the lower-grade card (grade ${lowGrade}) has the longer words in ${harder}/${pairs} pairs`
+        );
     }
   }
 

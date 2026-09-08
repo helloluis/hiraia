@@ -472,3 +472,17 @@ two grades; the printed cards are correct and no `mustNotContain` (myth affirmat
 14/14 in every run. Conclusion: the top-up does not change the gate's inputs; the gate's "every draw must pass" rule at
 temp 0.3 makes a 45-case run pass or fail on luck (green at 03:58, red ×5 since). Merged on that evidence; the harness
 variance is reported to the parent as a gate-design issue (k-of-n draws for non-safety cases, or a fixed sampling seed).
+
+## 11. Gate fixes (2026-09-08 10:0x–10:3x) — green ×2 (45/45, 45/45)
+
+Luis asked for all three suggestions from §10.1, then a hold before any build.
+
+| fix | where | what |
+|---|---|---|
+| sky-blue keyword | `finetuning/eval/harness/cases.json` | `mustContain` gains `kumalat` (the -um- infix form; "kalat" is not a substring of it). Assertion bug, every draw was correct. |
+| grade-register majority | `finetuning/eval/harness/run-eval.mts` (+ README) | the paired grade is drawn once per sample and compared draw-for-draw; the DIFFER / not-inverted checks fail on a MAJORITY of pairs instead of one. Per-draw card assertions stay strict on every draw of both grades; myth-safety cases untouched. |
+| flat-earth grounding | `rag/bank/science-facts.jsonl` (+ vectors, cards.db) | diagnosis (`finetuning/eval/retrieval-diag-one.mts`): the one-moon fact was semantic #1 (0.532) while the shape fact was semantic #3, so it survived the 0.5 fused floor at x0.51 and rode into the prompt; one draw in nine then answered about the moon. Added the curated bank fact **earth-not-flat-myth-g5** (en/tl/bis; reviewer dropped my `globo` term — Cebuano for balloon). Now: semantic #1 (0.576), lexical #1, grounding set = {earth-not-flat-myth-g5, earth-shape-oblate-spheroid-g7}, moon fact pruned at x0.495 — deterministic. Bank 53,022; vectors rebuilt (hash for 53,022); cards.db dbVersion 597a9689ae20. |
+
+Independent review of the three diffs (read-only agent): harness change correct for n = 1/3/9 and does not touch safety tiers; regex compiled verbatim; the only defect was the `globo` term, fixed before the vectors were built.
+
+Gate after the fixes: **run 1 45/45, run 2 45/45** (hybrid R1 14/14 both). HOLD: no APK built.

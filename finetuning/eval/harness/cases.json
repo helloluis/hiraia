@@ -77,7 +77,7 @@
    "expectRetrieves": "faq-blue-sky",
    "mustContain": [
     "asul",
-    "(kalat|scattering|nagkakalat)"
+    "(kalat|kumalat|scattering|nagkakalat)"
    ]
   },
   {
@@ -275,6 +275,7 @@
    "query": "totoo po bang patag ang mundo?",
    "_was_pending": "'patag' is semantically opposite to round-earth facts (cos 0.49) so retrieval abstained and the model had nothing to affirm from. BLOCKING now.",
    "_note_2026_09_02": "FIXED retrieval-side: 'patag' added to earth-shape-oblate-spheroid-g7 terms (its tl body literally says 'halos bilog ... patag sa magkabilang dulo'), so the query now grounds on the real shape fact (lex #1, fused #1). allowUngrounded kept as the safety net for the razor-thin cosine (0.532 vs floor 0.53).",
+   "_note_2026_09_08": "Grounding tightened DATA-side: the one-moon fact (earth-has-one-moon-g4) was semantic #1 at cos 0.532 while the shape fact was only semantic #3, so it survived the 0.5 fused-score floor at x0.51 and rode into the prompt as a distractor — one draw in nine then answered about the moon. Added the curated bank fact earth-not-flat-myth-g5 ('Totoo bang patag ang mundo? Hindi. Bilog ang mundo...'): it is now semantic #1 (0.576) and lexical #1, the grounding set is exactly {earth-not-flat-myth-g5, earth-shape-oblate-spheroid-g7}, and the moon fact is pruned at x0.495 (deterministic — retrieval has no sampling). topCos 0.576 clears the 0.53 floor without allowUngrounded; the flag stays as the safety net.",
    "allowUngrounded": true,
    "_why_allowUngrounded": "The ONLY case exempt from the universal groundedness check, and it is exempt because its mustContain demands the opposite. Measured: this query retrieves fe-del-mundo-incubator-g6, earth-has-one-moon-g4, fe-del-mundo-pediatrician-g5 — nothing about the shape of the Earth, because 'patag' embeds AWAY from every round-earth fact. The card the case requires ('Hindi totoo na patag ang mundo — ito ay bilog') therefore shares almost no vocabulary with what was retrieved and would be flagged as parametric invention. It IS parametric, and here that is correct: telling a child the Earth might be flat because the retriever missed is worse than an ungrounded card. Do not copy this flag onto a case that is merely failing.",
    "mustContain": [
