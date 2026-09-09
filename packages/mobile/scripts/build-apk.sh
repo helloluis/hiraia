@@ -21,6 +21,15 @@ set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 MOBILE="$(cd "$HERE/.." && pwd)"
 REPO="$(cd "$MOBILE/../.." && pwd)"
+# Refuse to ship a stale or structurally incomplete required Grade 5 lesson manifest.
+python3 "$REPO/rag/pipeline/compile-lessons.py" --grade 3 --check
+python3 "$REPO/rag/pipeline/compile-lessons.py" --grade 4 --check
+python3 "$REPO/rag/pipeline/compile-lessons.py" --grade 6 --check
+python3 "$REPO/rag/pipeline/compile-lessons.py" --grade 7 --check
+python3 "$REPO/rag/pipeline/compile-lessons.py" --grade 8 --check
+python3 "$REPO/rag/pipeline/compile-lessons.py" --grade 9 --check
+python3 "$REPO/rag/pipeline/compile-lessons.py" --grade 10 --check
+python3 "$REPO/rag/pipeline/compile-lessons.py" --grade 5 --check
 AND="$MOBILE/android"
 APK="$AND/app/build/outputs/apk/release/app-release.apk"
 

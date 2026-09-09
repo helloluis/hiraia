@@ -13,7 +13,8 @@
 //       here is by construction a code the tags can carry.
 //     competency-content-map.json — code → {grade, quarter, contentIndex, title}: which Content
 //       title each competency belongs to (the CG does not say; this is the reviewed mapping).
-//     content-titles.i18n.json — en title → {tl, bis}: the row copy in the tutor language.
+//     content-titles.i18n.json — source title → {en?, tl, bis}: app display labels.
+//       Optional en clarifies a heading without altering the verbatim curriculum mapping.
 //   A topic with NO code (the CG lists a title no competency fits — G7 Q3 "Identifying and
 //   controlling variables") is still emitted with codes: [] so the outline mirrors the CG; the
 //   runtime drops rows without cards anyway (data/cards.ts curriculumOutline).
@@ -46,7 +47,7 @@ for (const f of readdirSync(CG).filter((n) => /^matatag-.*-competencies\.json$/.
     const topics = content.map((en, contentIndex) => {
       const t = I18N[en];
       if (!t) throw new Error(`gen-curriculum-outline: no translation for content title ${JSON.stringify(en)} (G${q.grade} Q${q.quarter})`);
-      return { quarter: q.quarter, contentIndex, title: { en, tl: t.tl, bis: t.bis }, codes: [] };
+      return { quarter: q.quarter, contentIndex, title: { en: t.en ?? en, tl: t.tl, bis: t.bis }, codes: [] };
     });
     for (const c of q.competencies) {
       if (seen.has(c.code)) throw new Error(`gen-curriculum-outline: duplicate competency code ${c.code}`);

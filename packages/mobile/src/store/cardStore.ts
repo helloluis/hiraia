@@ -1,3 +1,13 @@
+import { reviewDue } from '../reviews/logic';
+import {
+  initializeReviews,
+  interceptReview,
+  prepareReview,
+  reviewPrepared,
+  useReviewStore,
+  acknowledgeReinforcement,
+  type CompletedReviewAttempt,
+} from '../reviews/store';
 /**
  * Question-cards feed state (v1). App-orchestrated, zero-model, same doctrine as quiz
  * mode: every card/question is pre-verified bundled data; the store is a deterministic
@@ -13,6 +23,7 @@
  * grade, the inferred curriculum quarter, and the SQLite seen-store (card + competency).
  */
 import { gradeQuiz } from '../telemetry/views';
+import { AppState } from 'react-native';
 import { create } from 'zustand';
 // `sanitizeCardAnswer` is the guard that trims a model-generated card, strips the prompt's
 // own SAGOT:/ANSWER:/TUBAG: cue if it is echoed, and caps the card at the length
@@ -32,8 +43,12 @@ import {
   choiceLabel,
   competencyKeys,
   curriculumCursor,
+  cursorTopic,
+  topicTitle,
+  estimatedCurriculumCursor,
   getCard,
   hasServableMagnet,
+  hasServableCurriculum,
   jumpCard,
   nextChoices,
   questionForFact,
@@ -66,7 +81,36 @@ const VIEWLOG_CAP = 40; // session view-log for the reward recap (topic + timest
 // embedder swallow a child's question into a void). Same budget as the web mirror's
 // CLASSIFY_TIMEOUT_MS (packages/web/src/store/useCardDemoStore.ts) — keep the two in sync.
 const WEAK_CONSULT_TIMEOUT_MS = 4_000;
-const REWARD_PREFETCH_AT = 5; // start generating the reward text N cards before it's due
+/**
+ * The REWARD-LINE PREFETCH window and its gate. The LLM reward line may be generated once
+ * the reward is within REWARD_PREFETCH_AT cards of being due — but only DURING A DWELL: the
+ * reader has been on the current page for REWARD_PREFETCH_DWELL_MS with no finger on the
+ * card, no ask pending, no reward page already up (a quiz or response page is a dwell like
+ * any other). It is ABORTED the instant a drag starts, a page turns, an ask begins, the app
+ * leaves the foreground or the engine is swapped, and re-armed on the next qualifying dwell,
+ * until the reward is due; if it is due with no line, templateReward serves.
+ *
+ * REWARD_PREFETCH_MAX_ABORTS bounds the retry storm. A reader who swipes every ~3 s would
+ * otherwise start a generation on EVERY page (dwell fires at 2.5 s, drag aborts it at 3 s):
+ * each attempt costs a prompt prefill on all cores until the cancel lands, so unbounded
+ * retries would reproduce the stall on a page-by-page basis. After this many aborted
+ * attempts in one reward cycle the store stops trying and the template serves; the counter
+ * resets when the reward page is served (untilReward jumps back up).
+ *
+ * WHY (measured on device, 2026-09-06): this generation is the only model work the reader
+ * did not initiate, and it ran under ~5 of every 6–10 pages with llama.cpp on all 8 cores
+ * (~7.3 busy) — exactly the swipes whose incoming page took 380–1110 ms to paint, while
+ * swipes with <1 core busy painted in 35–100 ms. The card's flight runs on the UI thread,
+ * which those threads starved. The line is praise-only (the prompt forbids topics and
+ * facts), so losing an attempt costs nothing a template does not cover.
+ *
+ * 2500 ms: longer than the whole swipe (release → commit → first paint → the 380 ms
+ * flight) with margin, and shorter than a child's typical read of a card — so a reader who
+ * is actually reading still gets the generated line before the reward page.
+ */
+const REWARD_PREFETCH_AT = 5;
+const REWARD_PREFETCH_DWELL_MS = 2_500;
+const REWARD_PREFETCH_MAX_ABORTS = 2;
 const REWARD_MIN_TOPICS = 3; // don't reward until there's something to celebrate
 
 /**
@@ -124,11 +168,11 @@ export interface ActiveMagnet {
  * Unlike the magnet it is a FILTER, not a pull: while held, every draw is confined to `idSet`
  * (FeedContext.curriculum). Advances on each page-turn through `advanceCurriculum` — the same
  * object while the topic still has a servable card, the next non-empty topic in CG order once
- * it is exhausted, null past the end of Q4 (release). Cleared by: the ribbon's [x]
+ * it is exhausted, a review pass after Q4. Cleared by: the ribbon's [x]
  * (exitCurriculum), that end-of-outline release, and nothing else — an ask serves its card as a
- * one-off and the walk resumes, a reroll jumps within the topic, interjects never touch it.
+ * one-off and the walk resumes, Randomize leaves curriculum for the keyword feed, interjects never touch it.
  * The magnet and the cursor are mutually exclusive by construction: entering either clears the
- * other, and an ask made in calendar mode forms no magnet. Session-only (v1): not persisted.
+ * other, and an ask made in calendar mode forms no magnet. The topic key is persisted separately per grade in the active profile database.
  */
 export type ActiveCurriculum = CurriculumCursor;
 
@@ -158,13 +202,13 @@ interface CardState {
   magnet: ActiveMagnet | null;
   /** Calendar mode's cursor (see ActiveCurriculum); the curriculum ribbon shows while non-null. */
   curriculum: ActiveCurriculum | null;
+  currentTopic: ActiveCurriculum | null;
   /** Monotonic page number — keys the flip + typewriter remounts. */
   pageKey: number;
   pagesRead: number;
   correctCount: number;
   questionsAsked: number;
-  /** Cards shown THIS SESSION — the hard "don't repeat this sitting" filter. Deliberately not
-   *  persisted: across restarts the SQLite seen-store only LOWERS a card's weight (never zero). */
+  /** Curriculum uses saved coverage plus this session; Randomize starts a fresh session trail. */
   seen: Set<string>;
   recent: string[]; // last few card ids (question sourcing + nextChoices' picture cooldown)
   viewLog: ViewLogEntry[]; // {factId, topic, ts} for the reward recap window
@@ -177,11 +221,27 @@ interface CardState {
   threadDepth: number;
   untilReward: number; // pages left until the next reward card (jittered)
   askedFacts: Set<string>; // don't re-ask the same fact this session
+  /** Missed quiz-source cards waiting for one deliberate repeat in the ordinary feed. */
+  reinforcementQueue: string[];
+  /** Earlier-grade cards in the active silent subcategory remediation run. */
+  remediationQueue: string[];
   rewardPrefetch: RewardContent | null; // pre-generated reward text, ready to show
-  rewardPrefetching: boolean; // a generation is in flight
+  /** A reward generation is in flight (dwell-gated + abortable — see REWARD_PREFETCH_AT). */
+  rewardPrefetching: boolean;
 
   hydrate: () => Promise<void>;
+  /**
+   * The finger is on the card (the pan's onStart). Aborts any reward generation in flight
+   * and holds the dwell clock: nothing speculative runs while the reader is moving a page.
+   */
+  markDragStart: () => void;
+  /** The finger left the card (the pan's onFinalize, committed or sprung back): re-arm the dwell. */
+  markDragEnd: () => void;
   choose: (choice: CardChoice) => void;
+  prepareReview: () => void;
+  chooseWithoutReview: (choice: CardChoice) => void;
+  continueAfterReview: (choice: CardChoice | null) => void;
+  recordReviewGrade: (result: CompletedReviewAttempt) => void;
   answerQuestion: (correct: boolean) => void;
   continueAfterQuestion: () => void;
   continueAfterReward: () => void;
@@ -194,7 +254,7 @@ interface CardState {
    * OutlineTopic.key): clears any magnet, holds the topic, and lands on its best next unseen
    * card. A key the outline does not list (no cards at this grade) is ignored.
    */
-  enterCurriculum: (key: string) => void;
+  enterCurriculum: (key: string, savedRun?: unknown) => void;
   /** The curriculum ribbon's [x]: leave calendar mode; the feed continues where it is. */
   exitCurriculum: () => void;
   continueAfterResponse: () => void;
@@ -204,11 +264,12 @@ interface CardState {
   jumpToRandom: () => void;
 }
 
-const nextGap = () => 4 + Math.floor(Math.random() * 2); // question: every 4-5 pages
+const nextGap = () => 5; // standalone quiz cadence is owned by reviews/logic.ts
 // reward: jittered 15-25 pages so it lands as a dopamine hit, never on a fixed beat.
-// TODO(testing): temporarily 6-10 so the reward is reachable in a short play session —
-// restore to `15 + rand(0..10)` before ship.
-const nextRewardGap = () => 6 + Math.floor(Math.random() * 5);
+// (Was a 6-10 TESTING value through the Sept 2/5 public builds — restored 2026-09-06. Besides
+// being the intended cadence, it shrinks the window in which the reward line is being
+// generated under the reader's swipes — see prefetchReward.)
+const nextRewardGap = () => 15 + Math.floor(Math.random() * 11);
 
 function persist(s: { pagesRead: number; correctCount: number }) {
   void setSetting('cards.pages', String(s.pagesRead));
@@ -220,7 +281,9 @@ function persist(s: { pagesRead: number; correctCount: number }) {
  * may have been written before the row was warm) and falling back to whatever was logged.
  */
 function recapTopics(log: ViewLogEntry[], language: Language): string[] {
-  return recentTopics(log.map((e) => ({ ...e, topic: cardTitleById(e.factId, language) || e.topic })));
+  return recentTopics(
+    log.map((e) => ({ ...e, topic: cardTitleById(e.factId, language) || e.topic }))
+  );
 }
 
 /**
@@ -260,6 +323,36 @@ function formMagnet(query: string, ids: readonly string[]): ActiveMagnet | null 
   return ids.length ? { query, idSet: new Set(ids), served: 0 } : null;
 }
 
+function remediationQueueFromReview() {
+  const active = useReviewStore.getState().data?.remediation;
+  if (!active) return [];
+  const viewed = new Set(active.viewed.map((card) => card.id));
+  return active.cardIds.filter((id) => !viewed.has(id));
+}
+
+function reviewFeedQueue(remediation: readonly string[], reinforcement: readonly string[]) {
+  return [...remediation, ...reinforcement.filter((id) => !remediation.includes(id))];
+}
+
+function withoutCard(queue: readonly string[], cardId: string) {
+  return queue.filter((id) => id !== cardId);
+}
+
+/** Put the oldest scheduled learning card at the front of the next visible branch. */
+function withReinforcement(
+  choices: CardChoice[],
+  queue: readonly string[],
+  currentId: string,
+  language: Language
+): CardChoice[] {
+  const id = queue.find((candidate) => candidate !== currentId && !!getCard(candidate));
+  if (!id) return choices;
+  const fact = getCard(id)!;
+  const forced: CardChoice = { factId: id, label: choiceLabel(fact, language), kind: 'deep' };
+  const rest = choices.filter((choice) => choice.factId !== id);
+  return [forced, ...rest].slice(0, Math.max(1, choices.length));
+}
+
 /**
  * The magnet after `fact` becomes current on an ORDINARY page-turn: serving one of its own
  * cards advances the decay clock, and exhaustion — no unseen member servable from the new
@@ -288,9 +381,13 @@ function markSeen(card: CardFact, now: number) {
   const codes = competencyKeys(card.id);
   bump(seenStore.cards, card.id, now);
   for (const code of codes) if (code !== 'off') bump(seenStore.competencies, code, now); // untagged cards are not a group
-  recordCardSeen(card.id, codes[0] ?? 'off', now).catch((e) => console.warn('[cards] recordCardSeen failed', e));
+  recordCardSeen(card.id, codes[0] ?? 'off', now).catch((e) =>
+    console.warn('[cards] recordCardSeen failed', e)
+  );
   for (const code of codes.slice(1)) {
-    recordCompetencySeen(code, now).catch((e) => console.warn('[cards] recordCompetencySeen failed', e));
+    recordCompetencySeen(code, now).catch((e) =>
+      console.warn('[cards] recordCompetencySeen failed', e)
+    );
   }
 }
 
@@ -309,6 +406,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
   responseAnchorId: null,
   magnet: null,
   curriculum: null,
+  currentTopic: null,
   pageKey: 0,
   pagesRead: 0,
   correctCount: 0,
@@ -320,6 +418,8 @@ export const useCardStore = create<CardState>()((set, get) => ({
   untilReward: nextRewardGap(),
   threadDepth: 0,
   askedFacts: new Set<string>(),
+  reinforcementQueue: [],
+  remediationQueue: [],
   rewardPrefetch: null,
   rewardPrefetching: false,
 
@@ -329,12 +429,11 @@ export const useCardStore = create<CardState>()((set, get) => ({
     hydrating = (async () => {
       let pagesRead = 0;
       let correctCount = 0;
-      const seen = new Set<string>(); // session-only (see CardState.seen)
+      const seen = new Set<string>();
       try {
         pagesRead = Number((await getSetting('cards.pages')) ?? 0) || 0;
         correctCount = Number((await getSetting('cards.correct')) ?? 0) || 0;
-        // Cross-session seen-ness is a WEIGHT, not a filter: loadSeen only makes a card (and
-        // the competencies it serves) less likely to come up again — see FEED-WEIGHTING.md.
+        // Saved coverage advances the curriculum; the random feed uses it only as a weight.
         const stored = await loadSeen();
         seenStore.cards = stored.cards;
         seenStore.competencies = stored.competencies;
@@ -342,8 +441,48 @@ export const useCardStore = create<CardState>()((set, get) => ({
         console.warn('[cards] hydrate failed, starting fresh', e);
       }
       const lang = useEngineStore.getState().language ?? 'tagalog';
-      const ctx = feedContext();
-      const first = startCard(seen, ctx);
+      const grade = useEngineStore.getState().grade;
+      await initializeReviews(grade);
+      const reinforcementQueue =
+        useReviewStore.getState().data?.reinforcement.map((card) => card.id) ?? [];
+      const remediationQueue = remediationQueueFromReview();
+      const savedKey = await getSetting(`cards.curriculum.${grade}`).catch(() => null);
+      const estimated = estimatedCurriculumCursor(
+        grade,
+        inferCurriculumQuarter(new Date()).fraction
+      );
+      const rawRun = await getSetting(`cards.lessonRun.${grade}`).catch(() => null);
+      let savedRun: unknown;
+      try {
+        savedRun = rawRun ? JSON.parse(rawRun) : undefined;
+      } catch {
+        /* rebuild an invalid plan */
+      }
+      const resumeKey =
+        (grade === 3 ||
+          grade === 4 ||
+          grade === 5 ||
+          grade === 6 ||
+          grade === 7 ||
+          grade === 8 ||
+          grade === 9 ||
+          grade === 10) &&
+        typeof (savedRun as { key?: unknown })?.key === 'string'
+          ? (savedRun as { key: string }).key
+          : savedKey;
+      const saved = resumeKey
+        ? curriculumCursor(grade, resumeKey, new Set(seenStore.cards.keys()), savedRun)
+        : null;
+      // Profile databases isolate this history; only curriculum mode uses lifetime coverage.
+      for (const id of seenStore.cards.keys()) seen.add(id);
+      const initial = saved ?? estimated;
+      let curriculum = initial && advanceCurriculum(initial, null, seen);
+      let ctx = feedContext(null, curriculum);
+      const currentTopic = curriculum;
+      const first = curriculum ? jumpCard(null, seen, ctx) : startCard(seen, ctx);
+      const consumedReinforcement = reinforcementQueue.includes(first.id);
+      const initialReinforcement = withoutCard(reinforcementQueue, first.id);
+      const initialRemediation = withoutCard(remediationQueue, first.id);
       seen.add(first.id);
       markSeen(first, ctx.now);
       // Token index first — it is what the duplicate check reads, so the choices have to be
@@ -351,15 +490,22 @@ export const useCardStore = create<CardState>()((set, get) => ({
       // Best-effort: a database that will not open must NOT stop the feed from rendering. The
       // first build of this let the rejection escape and the app never left its splash screen.
       await loadTokenIndex().catch(() => undefined);
+      curriculum = curriculum && advanceCurriculum(curriculum, first.id, seen);
+      ctx = feedContext(null, curriculum);
       // Draw the choices HERE, then warm exactly them. They are what the reader can tap, so
       // they are what must be warm; re-deriving them inside warmPage would pick different
       // cards (the draw is weighted, and the weights move between calls) and the page the
       // reader actually turned to would paint with no body text.
-      const choices = nextChoices(first.id, seen, lang, {
-        threadDepth: 0,
-        recentIds: [first.id],
-        ctx,
-      });
+      const choices = withReinforcement(
+        nextChoices(first.id, seen, lang, {
+          threadDepth: 0,
+          recentIds: [first.id],
+          ctx,
+        }),
+        reviewFeedQueue(initialRemediation, initialReinforcement),
+        first.id,
+        lang
+      );
       // The card's prose lives in the database now, so it has to be here before the page
       // paints — this is the ONE await the feed has, and it covers the first card and the
       // pages it can turn to.
@@ -372,19 +518,107 @@ export const useCardStore = create<CardState>()((set, get) => ({
         correctCount,
         seen,
         current: first,
+        currentTopic,
+        curriculum,
         choices,
+        reinforcementQueue: initialReinforcement,
+        remediationQueue: initialRemediation,
         threadDepth: 0,
         recent: [first.id],
         viewLog: [{ factId: first.id, topic: cardTitle(first, lang) || first.topic, ts: ctx.now }],
         pageKey: 1,
       });
+      if (consumedReinforcement) void acknowledgeReinforcement(first.id);
     })().finally(() => {
       hydrating = null;
     });
     return hydrating;
   },
 
+  markDragStart: () => {
+    rewardJob.dragging = true;
+    abortRewardPrefetch('drag started');
+  },
+
+  markDragEnd: () => {
+    if (!rewardJob.dragging) return;
+    rewardJob.dragging = false;
+    // A sprung-back card is the same page — the dwell starts over from the moment the finger
+    // left it. A committed swipe has already turned the page (the page-turn hook armed and
+    // saw `dragging`, so this is the arm that actually counts for it).
+    armRewardDwell();
+  },
+
+  prepareReview: () => {
+    const s = get();
+    if (!s.current || s.question || s.reward || s.response || !s.choices[0]) return;
+    const topic = s.currentTopic && cursorTopic(s.currentTopic);
+    prepareReview({
+      pageKey: s.pageKey,
+      cardId: s.current.id,
+      topic: s.currentTopic?.key ?? null,
+      title: topic ? topicTitle(topic, useEngineStore.getState().language ?? 'english') : '',
+      endsTopic: !!s.currentTopic && s.currentTopic.key !== s.curriculum?.key,
+      topicCardCount: s.currentTopic?.idSet.size,
+      grade: useEngineStore.getState().grade,
+      choice: s.choices[0],
+    });
+  },
   choose: (choice) => {
+    const s = get();
+    if (
+      !s.current ||
+      s.question ||
+      s.reward ||
+      s.response ||
+      useReviewStore.getState().busy ||
+      useReviewStore.getState().open
+    )
+      return;
+    const grade = useEngineStore.getState().grade;
+    const review = useReviewStore.getState().data;
+    if (reviewPrepared(grade, s.pageKey) && review && !reviewDue(review)) {
+      get().chooseWithoutReview(choice);
+      return;
+    }
+    const topic = s.currentTopic && cursorTopic(s.currentTopic);
+    void interceptReview({
+      pageKey: s.pageKey,
+      cardId: s.current.id,
+      topic: s.currentTopic?.key ?? null,
+      title: topic ? topicTitle(topic, useEngineStore.getState().language ?? 'english') : '',
+      endsTopic: !!s.currentTopic && s.currentTopic.key !== s.curriculum?.key,
+      topicCardCount: s.currentTopic?.idSet.size,
+      grade,
+      choice,
+    }).then((blocked) => {
+      if (!blocked && get().pageKey === s.pageKey && useEngineStore.getState().grade === grade)
+        get().chooseWithoutReview(choice);
+    });
+  },
+  continueAfterReview: (choice) => {
+    const data = useReviewStore.getState().data;
+    set({
+      reinforcementQueue: data?.reinforcement.map((card) => card.id) ?? [],
+      remediationQueue: remediationQueueFromReview(),
+    });
+    if (choice) advance(choice, set, get);
+  },
+  recordReviewGrade: (result) => {
+    const s = get();
+    const correctCount = s.correctCount + (result.correct ? 1 : 0);
+    const reinforcementQueue =
+      useReviewStore.getState().data?.reinforcement.map((card) => card.id) ?? s.reinforcementQueue;
+    const remediationQueue = remediationQueueFromReview();
+    set({
+      correctCount,
+      reinforcementQueue,
+      remediationQueue,
+      questionsAsked: s.questionsAsked + 1,
+    });
+    persist({ pagesRead: s.pagesRead, correctCount });
+  },
+  chooseWithoutReview: (choice) => {
     const s = get();
     if (s.question || s.reward || s.response) return; // an interject page is up — resolve it first
 
@@ -409,30 +643,6 @@ export const useCardStore = create<CardState>()((set, get) => ({
       return;
     }
 
-    // Interject QUESTION due? Ask about a RECENTLY-READ fact (not the one we're heading
-    // to) that has an exact MCQ and wasn't asked this session. If nothing qualifies,
-    // defer and retry next page.
-    if (s.untilQuestion <= 1) {
-      const candidates = s.recent
-        .filter((id) => id !== choice.factId && !s.askedFacts.has(id))
-        .map((id) => questionForFact(id))
-        .filter((q): q is CardQuestion => !!q);
-      const picked = candidates.length
-        ? candidates[Math.floor(Math.random() * candidates.length)]!
-        : null;
-      if (picked) {
-        set({
-          question: picked,
-          pending: choice,
-          questionAnswered: false,
-          untilQuestion: nextGap(),
-          askedFacts: new Set(s.askedFacts).add(picked.f),
-          questionsAsked: s.questionsAsked + 1,
-          pageKey: s.pageKey + 1,
-        });
-        return;
-      }
-    }
     advance(choice, set, get);
   },
 
@@ -464,6 +674,10 @@ export const useCardStore = create<CardState>()((set, get) => ({
     const q = query.trim();
     const s = get();
     if (!q || s.asking) return;
+    // The child asked: the speculative reward line yields NOW, before the search's embedding
+    // (which is not under the model lock and would otherwise share the CPU with it). The
+    // `asking` edge in the page-turn hook below is the backstop for the generation itself.
+    abortRewardPrefetch('ask started');
     const lang = useEngineStore.getState().language ?? 'tagalog';
 
     // Retrieval-first: a confident local match navigates straight to that card (instant,
@@ -522,7 +736,9 @@ export const useCardStore = create<CardState>()((set, get) => ({
         // In CALENDAR MODE no magnet forms: the found card is served as a one-off and the
         // curriculum walk resumes on the next page-turn (navigateTo draws the landing card's
         // choices under the held topic).
-        navigateTo(res.best, set, get, { magnet: get().curriculum ? null : formMagnet(q, res.magnet) });
+        navigateTo(res.best, set, get, {
+          magnet: get().curriculum ? null : formMagnet(q, res.magnet),
+        });
         return;
       }
       // Weak hit AND off-domain: the matched card would have been a wrong answer to a
@@ -595,7 +811,9 @@ export const useCardStore = create<CardState>()((set, get) => ({
     // fragment ("Pero subukan natin ito: how geckos blend in with pale color"). The curated
     // title first, then the same label the feed's own choices use. Mirrored in the web demo
     // (packages/web/src/store/useCardDemoStore.ts) — keep the two in sync.
-    const nearest = suggestion ? cardTitle(suggestion, lang) || choiceLabel(suggestion, lang) : null;
+    const nearest = suggestion
+      ? cardTitle(suggestion, lang) || choiceLabel(suggestion, lang)
+      : null;
     set({
       question: null,
       reward: null,
@@ -621,20 +839,28 @@ export const useCardStore = create<CardState>()((set, get) => ({
     if (get().magnet) set({ magnet: null });
   },
 
-  enterCurriculum: (key) => {
+  enterCurriculum: (key, savedRun) => {
     const s = get();
     const grade = useEngineStore.getState().grade;
-    const picked = curriculumCursor(grade, key);
+    const picked = curriculumCursor(
+      grade,
+      key,
+      new Set([...seenStore.cards.keys(), ...s.seen]),
+      savedRun
+    );
     if (!picked) return; // not on this grade's outline (no cards) — the sheet never offers it
-    // A topic already read out this session (the sheet's chip said "0 / n") is entered the
-    // way the walk would leave it: at the next topic with something left — the same
-    // pre-check the die runs — rather than re-serving one of its cards under a ribbon that
-    // already names the next topic. Past the end of the outline it is held as tapped; the
-    // landing then releases the mode (navigateTo's exhaustion check), ribbon and all.
-    const cursor = advanceCurriculum(picked, s.current?.id ?? null, s.seen) ?? picked;
+    // A Calendar tap is an explicit destination, even when the topic was already read.
+    // Start a review pass when nothing remains servable in that topic. Only reset the
+    // feed's exclusion set: persistent card views, quiz results and awards stay intact.
+    const coverage = new Set([...seenStore.cards.keys(), ...s.seen]);
+    const cursor = savedRun ? (advanceCurriculum(picked, null, coverage) ?? picked) : picked;
+    if (!hasServableCurriculum(s.current?.id ?? null, cursor.idSet, coverage)) {
+      for (const id of cursor.idSet) coverage.delete(id);
+    }
+    set({ seen: coverage });
     // The landing card: the topic's best next unseen card under the ordinary weigher (grade
     // band, seen-decay) — jumpCard confined to the set.
-    const dest = jumpCard(s.current?.id ?? null, s.seen, feedContext(null, cursor));
+    const dest = jumpCard(s.current?.id ?? null, coverage, feedContext(null, cursor));
     // Entering clears the magnet (mutually exclusive) and commits the cursor in the same turn.
     navigateTo(dest, set, get, { magnet: null, curriculum: cursor });
   },
@@ -642,7 +868,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
   exitCurriculum: () => {
     // The curriculum ribbon's [x]: the cursor and the ribbon go together; the current page and
     // its choices stand, and the next page-turn draws unrestricted.
-    if (get().curriculum) set({ curriculum: null });
+    // Curriculum mode is left explicitly with Randomize; the topic sheet changes its topic.
   },
 
   continueAfterResponse: () => {
@@ -669,25 +895,31 @@ export const useCardStore = create<CardState>()((set, get) => ({
   jumpToRandom: () => {
     const s = get();
     const lang = useEngineStore.getState().language ?? 'tagalog';
-    // The reroll is an explicit "surprise me", so the magnet is dropped BEFORE the draw —
-    // the jump itself must not be pulled back toward the topic being escaped.
-    // In CALENDAR MODE it is "another card of this topic" instead: the cursor is kept, and
-    // the jump is confined to the held set. If the topic has nothing servable left from the
-    // current page, the cursor is moved on FIRST so the die never lands on a repeat.
-    const held = s.curriculum && advanceCurriculum(s.curriculum, s.current?.id ?? null, s.seen);
-    const ctx = feedContext(null, held);
-    const dest = jumpCard(s.current?.id ?? null, s.seen, ctx);
-    const seen = new Set(s.seen);
+    // Randomize alone opts into the keyword-associated feed for this session.
+    const ctx = feedContext(null, null);
+    const seen = new Set(s.recent);
+    const dest = jumpCard(s.current?.id ?? null, seen, ctx);
+    const consumedReinforcement = s.reinforcementQueue.includes(dest.id);
+    const reinforcementQueue = withoutCard(s.reinforcementQueue, dest.id);
+    const remediationQueue = withoutCard(s.remediationQueue, dest.id);
     seen.add(dest.id);
     markSeen(dest, ctx.now);
-    // ...and the post-landing exhaustion check, exactly as an ordinary turn runs it, so the
-    // choices below come from the topic that will actually be held.
-    const curriculum = held && advanceCurriculum(held, dest.id, seen);
-    const after = curriculum === held ? ctx : feedContext(null, curriculum);
+    const curriculum = null;
+    const after = ctx;
     const pagesRead = s.pagesRead + 1;
+    const choices = withReinforcement(
+      nextChoices(dest.id, seen, lang, {
+        threadDepth: 0,
+        recentIds: [dest.id],
+        ctx: after,
+      }),
+      reviewFeedQueue(remediationQueue, reinforcementQueue),
+      dest.id,
+      lang
+    );
     set({
       current: dest,
-      choices: nextChoices(dest.id, seen, lang, { threadDepth: 0, recentIds: [dest.id], ctx: after }),
+      choices,
       threadDepth: 0, // the reroll already switched topic — start the new thread fresh
       question: null,
       pending: null,
@@ -695,12 +927,16 @@ export const useCardStore = create<CardState>()((set, get) => ({
       response: null,
       magnet: null, // 🎲 = "surprise me": the asked topic is released, ribbon and all
       curriculum,
+      currentTopic: null,
+      reinforcementQueue,
+      remediationQueue,
       seen,
       recent: [dest.id], // fresh trail — the jump is a hard topic switch
       pagesRead,
       untilQuestion: nextGap(), // don't interject right after a jump
       pageKey: s.pageKey + 1,
     });
+    if (consumedReinforcement) void acknowledgeReinforcement(dest.id);
     persist({ pagesRead, correctCount: s.correctCount });
   },
 }));
@@ -726,19 +962,26 @@ export function previewChoices(language: Language): CardChoice[] {
   const seen = new Set(s.seen);
   seen.add(next.id);
   const recent = [...s.recent, next.id].slice(-RECENT_WINDOW);
+  const reinforcementQueue = withoutCard(s.reinforcementQueue, next.id);
+  const remediationQueue = withoutCard(s.remediationQueue, next.id);
   // The same magnet transition advance() will make — including the auto-release. Previewing
   // with the CURRENT magnet instead would name a different deep card on the page where the
   // magnet expires, and the sheet beneath would swap labels the instant the swipe completed.
   // The curriculum cursor likewise: the sheet on the page where a topic runs out must already
   // be printed from the NEXT topic's cards, because that is what the swipe will serve.
-  const choices = nextChoices(next.id, seen, language, {
-    threadDepth: choice.kind === 'lateral' ? 0 : s.threadDepth + 1,
-    recentIds: recent,
-    ctx: feedContext(
-      magnetAfter(s.magnet, next, seen, recent),
-      s.curriculum && advanceCurriculum(s.curriculum, next.id, seen)
-    ),
-  });
+  const choices = withReinforcement(
+    nextChoices(next.id, seen, language, {
+      threadDepth: choice.kind === 'lateral' ? 0 : s.threadDepth + 1,
+      recentIds: recent,
+      ctx: feedContext(
+        magnetAfter(s.magnet, next, seen, recent),
+        s.curriculum && advanceCurriculum(s.curriculum, next.id, seen)
+      ),
+    }),
+    reviewFeedQueue(remediationQueue, reinforcementQueue),
+    next.id,
+    language
+  );
   // Remember the draw so advance() can ADOPT it instead of paying nextChoices (~21ms of
   // TERM_INDEX walking) again inside the swipe's critical commit — and warm the previewed
   // targets now, during reading time, so the next turn's warmAfter is a cache hit. Adoption
@@ -840,14 +1083,26 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, opts: NavigateOpts = {
     { factId: fact.id, topic: cardTitle(fact, lang) || fact.topic, ts: ctx.now },
   ].slice(-VIEWLOG_CAP);
   const pagesRead = s.pagesRead + 1;
+  const consumedReinforcement = s.reinforcementQueue.includes(fact.id);
+  const reinforcementQueue = withoutCard(s.reinforcementQueue, fact.id);
+  const remediationQueue = withoutCard(s.remediationQueue, fact.id);
+  const choices = withReinforcement(
+    nextChoices(fact.id, seen, lang, { threadDepth: 0, recentIds: recent, ctx }),
+    reviewFeedQueue(remediationQueue, reinforcementQueue),
+    fact.id,
+    lang
+  );
   set({
     current: fact,
-    choices: nextChoices(fact.id, seen, lang, { threadDepth: 0, recentIds: recent, ctx }),
+    currentTopic: held?.idSet.has(fact.id) ? held : null,
+    choices,
     threadDepth: 0, // a search/topic jump starts a new thread
     seen,
     recent,
     viewLog,
     pagesRead,
+    reinforcementQueue,
+    remediationQueue,
     question: null,
     reward: null,
     response: null,
@@ -860,6 +1115,7 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, opts: NavigateOpts = {
     pageKey: s.pageKey + 1,
   });
   persist({ pagesRead, correctCount: s.correctCount });
+  if (consumedReinforcement) void acknowledgeReinforcement(fact.id);
   warmAfter(get);
 }
 
@@ -890,6 +1146,9 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
   ].slice(-VIEWLOG_CAP);
   const pagesRead = s.pagesRead + 1;
   const untilReward = s.untilReward - 1;
+  const consumedReinforcement = s.reinforcementQueue.includes(nextFact.id);
+  const reinforcementQueue = withoutCard(s.reinforcementQueue, nextFact.id);
+  const remediationQueue = withoutCard(s.remediationQueue, nextFact.id);
 
   // Taking the lateral fork is itself a topic switch, so it restarts the thread; otherwise
   // the counter walks up until nextChoices forks, then resets on the page that offered it.
@@ -899,7 +1158,7 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
   // the swipe commit. Fork picks, interject resumes, rerolls and asks all miss the key and
   // pay the ordinary compute path.
   const cached = previewCache;
-  const choices =
+  const naturalChoices =
     cached &&
     cached.pageKey === s.pageKey &&
     cached.factId === nextFact.id &&
@@ -908,9 +1167,18 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
     cached.curriculum === s.curriculum
       ? cached.choices
       : nextChoices(nextFact.id, seen, lang, { threadDepth: depth, recentIds: recent, ctx });
+  const choices = withReinforcement(
+    naturalChoices,
+    reviewFeedQueue(remediationQueue, reinforcementQueue),
+    nextFact.id,
+    lang
+  );
 
   set({
     current: nextFact,
+    // Reinforcement may briefly revisit a missed card from an earlier topic. Keep the
+    // calendar cursor moving underneath, but do not mislabel that refresher as the held row.
+    currentTopic: s.curriculum?.idSet.has(nextFact.id) ? s.curriculum : null,
     choices,
     threadDepth: choices.length > 1 ? 0 : depth,
     seen,
@@ -919,25 +1187,121 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
     pagesRead,
     untilQuestion: s.untilQuestion - 1,
     untilReward,
+    reinforcementQueue,
+    remediationQueue,
     magnet, // persists across ordinary turns until [x] / auto-release / new ask / reroll
     curriculum, // persists across ordinary turns until [x] / end-of-outline release
     pageKey: s.pageKey + 1,
   });
   persist({ pagesRead, correctCount: s.correctCount });
+  if (consumedReinforcement) void acknowledgeReinforcement(nextFact.id);
 
-  // Prefetch the LLM reward line a few cards ahead so it's fully rendered before it's due
-  // (hides the on-device generation latency behind dwell time).
-  if (untilReward <= REWARD_PREFETCH_AT) void prefetchReward(get, set);
+  // The reward-line prefetch is NOT kicked from here any more. It used to start on this
+  // page-turn whenever the reward was within REWARD_PREFETCH_AT cards — i.e. a full
+  // llama.cpp completion began exactly as the next page was painting and the card was in
+  // flight, and that was the measured stall. It is now DWELL-GATED: the page-turn hook
+  // (the pageKey subscription below the store) aborts any generation in flight and arms a
+  // dwell timer; the generation starts only once the reader has sat on this page for
+  // REWARD_PREFETCH_DWELL_MS with no finger on it. See REWARD_PREFETCH_AT.
   warmAfter(get);
 }
 
+// ---------------------------------------------------------------------------------------
+// REWARD-LINE PREFETCH SCHEDULER (see REWARD_PREFETCH_AT for the contract and the measurement).
+// Module-scope, not store state: it is bookkeeping for one speculative background job — a
+// dwell timer, a "finger is down" flag, the AbortController of the generation in flight, and
+// the count of attempts this reward cycle has already lost — none of which a component renders.
+// ---------------------------------------------------------------------------------------
+const rewardJob: {
+  dwell: ReturnType<typeof setTimeout> | null;
+  dragging: boolean;
+  inflight: { ctrl: AbortController; t0: number } | null;
+  aborts: number;
+} = { dwell: null, dragging: false, inflight: null, aborts: 0 };
+
 /**
- * Generate the reward line in the background (once) if the model is warm. Grounded on the
- * kid's real recent topics; sanitized + fell back to a template by the caller on any doubt.
+ * True when a generated line is still wanted this cycle: the reward is near, none is held or
+ * showing, and the cycle has not burned its attempt budget. This is the ARM-time predicate —
+ * it deliberately ignores `rewardPrefetching`, because right after an abort the cancelled run
+ * is still winding down (the flag stays up until its stream ends), and a dwell armed for the
+ * NEW page must not be refused for that; prefetchReward re-checks the flag at fire time.
  */
-async function prefetchReward(get: Get_, set: Set_) {
-  const s = get();
-  if (s.rewardPrefetch || s.rewardPrefetching) return;
+function rewardNear(s: CardState): boolean {
+  return (
+    s.untilReward <= REWARD_PREFETCH_AT &&
+    !s.rewardPrefetch &&
+    !s.reward &&
+    rewardJob.aborts < REWARD_PREFETCH_MAX_ABORTS
+  );
+}
+
+/** The FIRE-time predicate: rewardNear, and no generation (even a cancelling one) in flight. */
+function rewardWanted(s: CardState): boolean {
+  return rewardNear(s) && !s.rewardPrefetching;
+}
+
+/**
+ * Stop the speculative generation NOW (finger down, page turned, ask started) and drop any
+ * armed dwell. The abort travels: AbortController → LocalEngine.generateReward's listener →
+ * SDK `cancel({ requestId })` → the worker's hard model cancel → the stream ends `cancelled`
+ * → generateReward rejects → withModelLock's slot settles → the lock is free. A cancel that
+ * never lands only means the run finishes on its own within its `predict` cap, exactly as
+ * before this gate existed; the caller's own signal is already `aborted` either way, so the
+ * attempt is treated as lost and the next qualifying dwell retries.
+ */
+function abortRewardPrefetch(reason: string) {
+  if (rewardJob.dwell) {
+    clearTimeout(rewardJob.dwell);
+    rewardJob.dwell = null;
+  }
+  const job = rewardJob.inflight;
+  if (!job) return;
+  rewardJob.inflight = null;
+  rewardJob.aborts += 1;
+  job.ctrl.abort();
+  console.log(
+    `[reward] prefetch aborted ${Date.now() - job.t0}ms · ${reason} · ` +
+      `attempt ${rewardJob.aborts}/${REWARD_PREFETCH_MAX_ABORTS}`
+  );
+}
+
+/**
+ * (Re)start the dwell clock for the CURRENT page. Fires prefetchReward after
+ * REWARD_PREFETCH_DWELL_MS of stillness; every call restarts it (a page turn, a finger
+ * lifting), and it is refused outright while a finger is down — markDragEnd arms it then.
+ * Cheap pre-check so the common case (reward far off) costs no timer at all.
+ */
+function armRewardDwell() {
+  if (rewardJob.dwell) {
+    clearTimeout(rewardJob.dwell);
+    rewardJob.dwell = null;
+  }
+  if (rewardJob.dragging || !rewardNear(useCardStore.getState())) return;
+  rewardJob.dwell = setTimeout(() => {
+    rewardJob.dwell = null;
+    void prefetchReward();
+  }, REWARD_PREFETCH_DWELL_MS);
+}
+
+/**
+ * Generate the reward line in the background — ONE attempt, at the end of a qualifying
+ * dwell. Praise-only (LocalEngine.generateReward's prompt names no topic and no fact);
+ * sanitized here and covered by templateReward on any doubt, so an aborted, failed or empty
+ * attempt never costs the child anything but the LLM's phrasing.
+ *
+ * Every gate is re-read at fire time, not arm time: the reward still near and unheld, no
+ * finger down, NO ASK PENDING (a child's own question outranks a speculative line, and the
+ * two would otherwise queue on the same model lock), the engine actually ready. Anything
+ * failing simply skips this dwell; the next page turn or finger-lift arms another.
+ */
+async function prefetchReward() {
+  const s = useCardStore.getState();
+  if (!rewardWanted(s) || rewardJob.dragging || s.asking || rewardJob.inflight) return;
+  // Never in the background. Android pauses JS timers while the app is backgrounded and
+  // fires the overdue ones on resume — possibly BEFORE the AppState 'active' event has
+  // re-armed the dwell — so the fire-time check is what keeps a resume from starting a
+  // generation under the reader's first swipe. The foreground hook then arms a fresh dwell.
+  if (AppState.currentState === 'background') return;
   const es = useEngineStore.getState();
   const engine = es.engine;
   if (!engine?.isReady() || !engine.generateReward) return;
@@ -946,25 +1310,148 @@ async function prefetchReward(get: Get_, set: Set_) {
   if (topics.length < REWARD_MIN_TOPICS) return;
   const minutes = Math.max(1, Math.round((Date.now() - (s.viewLog[0]?.ts ?? Date.now())) / 60000));
 
-  set({ rewardPrefetching: true });
+  const ctrl = new AbortController();
+  const t0 = Date.now();
+  rewardJob.inflight = { ctrl, t0 };
+  useCardStore.setState({ rewardPrefetching: true });
+  // Logged because this generation is the measured cause of mid-swipe stalls (2026-09-06:
+  // the app burned ~7 of 8 cores during every stalled swipe and <1 during smooth ones) — the
+  // marks let a logcat line up a stall with the generation that was running under it. With
+  // the dwell gate in place, a '[reward] prefetch start' should never sit inside a '[swipe]'
+  // pair; an 'aborted' should follow every drag that interrupts one.
+  console.log(`[reward] prefetch start · ${topics.length} topics · ${s.pagesRead} pages`);
   try {
-    const raw = await withModelLock(() => engine.generateReward!(topics, get().pagesRead, lang));
+    // withModelLock semantics are unchanged: the generation is serialized with the ask.
+    // If the abort lands while this is still QUEUED behind the lock, nothing is generated —
+    // the slot settles at once and the lock passes on.
+    const raw = await withModelLock<string | null>(() =>
+      ctrl.signal.aborted
+        ? Promise.resolve(null)
+        : engine.generateReward!(topics, useCardStore.getState().pagesRead, lang, ctrl.signal)
+    );
+    // Whatever happens from here, the job is over: a late abort has nothing to cancel.
+    if (rewardJob.inflight?.ctrl === ctrl) rewardJob.inflight = null;
+    if (raw === null) return; // aborted before it started — already logged by the abort
+    console.log(`[reward] prefetch generated in ${Date.now() - t0}ms`);
     const clean = sanitizeReward(raw);
     // Only accept if still un-shown and valid; otherwise the template covers it.
-    if (clean && !get().reward) {
-      set({
+    if (clean && !useCardStore.getState().reward) {
+      useCardStore.setState({
         rewardPrefetch: {
           text: clean,
           topics: topics.slice(0, 3),
-          count: get().pagesRead,
+          count: useCardStore.getState().pagesRead,
           source: 'llm',
           minutes,
         },
       });
     }
   } catch (e) {
-    console.warn('[cards] reward prefetch failed; template will be used', e);
+    // An aborted attempt is the designed outcome of a drag, not a failure — it was logged
+    // by abortRewardPrefetch; only a genuine failure is worth a warning.
+    if (!ctrl.signal.aborted)
+      console.warn('[cards] reward prefetch failed; template will be used', e);
   } finally {
-    set({ rewardPrefetching: false });
+    if (rewardJob.inflight?.ctrl === ctrl) rewardJob.inflight = null;
+    // The flag is cleared even on abort, so isReady/asking are never held hostage by this
+    // job and the next qualifying dwell can start a fresh attempt.
+    useCardStore.setState({ rewardPrefetching: false });
+    // An ABORTED attempt re-arms the dwell for the page the reader is on NOW (unless one is
+    // already armed): the page-turn that aborted this run arms nothing itself once a cancel
+    // is winding down, and a finger still on the card is refused by armRewardDwell. Bounded
+    // by REWARD_PREFETCH_MAX_ABORTS through rewardNear, so this cannot loop. A generation
+    // that FAILED or was sanitised away is not re-armed here — it keeps the once-per-page
+    // cadence (the next page turn), never a retry every dwell.
+    if (ctrl.signal.aborted && !rewardJob.dwell) armRewardDwell();
   }
 }
+
+/**
+ * THE PAGE-TURN HOOK. Every navigation in this store bumps `pageKey` (advance, navigateTo,
+ * jumpToRandom, every interject and response page), so one subscription is the single place
+ * that says "the reader moved": abort whatever was generating and start a fresh dwell on the
+ * new page. `asking` flipping on is the other trigger — the child's own question must not
+ * queue behind a speculative line on the model lock (the ask itself ends in a page turn on
+ * every path, which re-arms). Deliberately a subscription rather than a call at each site:
+ * the contract is "a page turned", not "advance() ran".
+ */
+useCardStore.subscribe((s, prev) => {
+  if (s.asking && !prev.asking) abortRewardPrefetch('ask started');
+  // untilReward only ever counts DOWN, except when the reward page is served and the next
+  // gap is drawn — that jump is the start of a new cycle, and the attempt budget renews.
+  if (s.untilReward > prev.untilReward) rewardJob.aborts = 0;
+  if (s.pageKey === prev.pageKey) return;
+  abortRewardPrefetch('page turned');
+  armRewardDwell();
+});
+
+/**
+ * THE ENGINE HOOK. A language change shuts the old engine down (engineStore.changeLanguage →
+ * prev.shutdown() → unloadModel) — a reward generation still running on it must be cancelled
+ * first, not left for the unload to find. The engine object swapping or readiness dropping is
+ * that moment. Readiness RISING is the mirror case: a dwell that fired while the model was
+ * cold skipped (prefetchReward's isReady gate) and nothing else re-arms until the next page
+ * turn, so the warm-up completing arms one for the page the reader is on.
+ */
+useCardStore.subscribe((s, prev) => {
+  if (s.curriculum && s.curriculum !== prev.curriculum) {
+    if (s.curriculum.lessonRun)
+      void setSetting(
+        `cards.lessonRun.${s.curriculum.grade}`,
+        JSON.stringify(s.curriculum.lessonRun)
+      ).catch((e) => console.warn('[cards] saving lesson failed', e));
+    void setSetting(`cards.curriculum.${s.curriculum.grade}`, s.curriculum.key).catch((e) =>
+      console.warn('[cards] saving curriculum failed', e)
+    );
+  }
+});
+
+useEngineStore.subscribe((s, prev) => {
+  if (s.grade !== prev.grade && useCardStore.getState().hydrated) {
+    const cursor = estimatedCurriculumCursor(s.grade, inferCurriculumQuarter(new Date()).fraction);
+    void Promise.all([
+      getSetting(`cards.curriculum.${s.grade}`),
+      getSetting(`cards.lessonRun.${s.grade}`),
+    ])
+      .catch(() => [null, null])
+      .then(([key, rawRun]) => {
+        if (useEngineStore.getState().grade !== s.grade) return;
+        const saved = key && curriculumCursor(s.grade, key);
+        const next = saved || cursor;
+        let savedRun: unknown;
+        try {
+          savedRun = rawRun ? JSON.parse(rawRun) : undefined;
+        } catch {
+          /* replan */
+        }
+        const resumeKey =
+          (s.grade === 3 ||
+            s.grade === 4 ||
+            s.grade === 5 ||
+            s.grade === 6 ||
+            s.grade === 7 ||
+            s.grade === 8 ||
+            s.grade === 9 ||
+            s.grade === 10) &&
+          typeof (savedRun as { key?: unknown })?.key === 'string'
+            ? (savedRun as { key: string }).key
+            : next?.key;
+        if (resumeKey) useCardStore.getState().enterCurriculum(resumeKey, savedRun);
+      });
+  }
+  if (s.engine !== prev.engine || (prev.isReady && !s.isReady))
+    abortRewardPrefetch('engine changed');
+  if (s.isReady && !prev.isReady) armRewardDwell();
+});
+
+/**
+ * THE FOREGROUND HOOK. Backgrounded, the reader is not reading: a running generation is
+ * cancelled (no point heating the phone for a line nobody is walking toward) and the dwell is
+ * dropped — Android pauses JS timers in the background anyway, so an armed dwell would
+ * otherwise fire the moment the app resumed, i.e. exactly as the reader's first swipe lands.
+ * Returning to the foreground starts a fresh dwell on the current page instead.
+ */
+AppState.addEventListener('change', (state) => {
+  if (state === 'active') armRewardDwell();
+  else abortRewardPrefetch(`app ${state}`);
+});

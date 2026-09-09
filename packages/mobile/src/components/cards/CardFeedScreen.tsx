@@ -1,3 +1,7 @@
+import { ReviewSeries } from '../../reviews/ReviewSeries';
+import { overallStars } from '../../reviews/logic';
+import { useReviewStore, type CompletedReviewAttempt } from '../../reviews/store';
+import { useProfiles, activeProfile, requestProfileChoice } from '../../profiles';
 /**
  * The question-cards feed — the app's home screen on this branch. The visual direction is
  * "mid-century classroom card" (design/mockups/midcentury.html): every fact is a laminated
@@ -16,8 +20,8 @@
  * and a drag locks to an axis the moment it has a direction, so it can never mean two
  * things at once. The card tracks the finger on the UI thread, springs back if it is let
  * go under the commit threshold ("let me read that again") and carries on off the deck
- * past it. DOWN is tracked but never commits: there is no previous card to go back to.
- * Every 4-5 pages the flip is intercepted by a single MCQ about a recently-read fact.
+ * past it. DOWN walks backward through the last 30 displayed cards and answered quiz
+ * results; the other directions return toward live content while browsing history.
  *
  * RESPONSIVENESS: a committed swipe starts its exit ON THE UI THREAD in the same frame the
  * finger lifts (the fly values + `handoff` — see the pan's onEnd). The store advance and
@@ -31,9 +35,10 @@
  * clears it even if the animation callback is dropped, so a transition can never strand a
  * layer over the screen (the earlier hang).
  */
+import { MemoryNotice } from './MemoryNotice';
 import { useFeedTelemetry } from '../../telemetry/useFeedTelemetry';
 import { useRouter } from 'expo-router';
-import Svg, { Circle, Polygon } from 'react-native-svg';
+import Svg, { Circle, Path, Polygon } from 'react-native-svg';
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
@@ -77,6 +82,7 @@ import {
 import type { RewardContent } from '../../data/reward';
 import { previewChoices, useCardStore, type FeedResponse } from '../../store/cardStore';
 import { useEngineStore, type ReadyStage } from '../../store/engineStore';
+import { describeUpdate, useUpdateStore } from '../../store/updateStore';
 import { card, cardAlpha, fonts } from '../../theme';
 import { useTypewriter } from '../onboarding/useTypewriter';
 import { barColor, fieldSurface, useReadinessMessage } from './searchReadiness';
@@ -206,18 +212,8 @@ const FORK_EDGE = 0.4;
  */
 const LOCKED_GRIP = 0.12;
 /**
- * A card leaves in whatever direction it was thrown — up, down, left or right.
- *
- * Down used to be the one direction that did nothing: it read as "go back", and there is no
- * previous card to go back TO (no history, and synthesising one would mean restoring the
- * choices, the quiz state and the interject counter with it). So it was tracked at a quarter
- * of the finger and sprung home.
- *
- * That was the wrong reading of the gesture. Flicking a sheet off a deck is not navigation
- * backwards; it is the same "away" the other three directions mean. Making one direction
- * behave differently only taught the reader that the card sometimes refuses them. Down now
- * commits like the rest, and the peel hinges on the TOP corner so the card leaves the way it
- * was pushed.
+ * A card leaves in whatever direction it was thrown. Down is the distinct back gesture and
+ * hinges on the top corner; left, right and up keep their ordinary forward meanings.
  */
 
 /**
@@ -310,6 +306,25 @@ interface PageSnap {
   reward: RewardContent | null;
   response: FeedResponse | null;
 }
+
+type HistoryEntry =
+  | {
+      kind: 'fact';
+      key: number;
+      fact: CardFact;
+      choices: CardChoice[];
+      pagesRead: number;
+    }
+  | {
+      kind: 'quiz';
+      key: number;
+      question: CardQuestion;
+      order: number[];
+      selected: number;
+      pagesRead: number;
+    };
+
+const HISTORY_LIMIT = 30;
 
 /** A page on its way off the deck: what was printed on it, and how it left. */
 interface Peel extends PageSnap {
@@ -654,24 +669,48 @@ const DeckUnderlay = memo(function DeckUnderlay({
  * The top chrome, in a memoized leaf so a swipe's two commits reconcile it only when the
  * meter actually moved (once per page, never on the snapshot-mount commit).
  */
-const ChromeBar = memo(function ChromeBar({
-  ticksOn,
-  pagesRead,
-}: {
-  ticksOn: number;
-  pagesRead: number;
-}) {
+const ChromeBar = memo(function ChromeBar() {
+  useProfiles();
+  const student = activeProfile();
   return (
     <View style={styles.chrome}>
-      <Text style={styles.wordmark}>
-        HIRAIA<Text style={styles.wordmarkDot}>.</Text>
-      </Text>
-      <View style={styles.meter}>
-        {Array.from({ length: METER_TICKS }, (_, i) => (
-          <View key={i} style={[styles.tick, i < ticksOn && styles.tickOn]} />
-        ))}
-        <Text style={styles.meterCount}>{pagesRead}</Text>
-      </View>
+      <Text style={styles.wordmark}>HIRAIA<Text style={styles.wordmarkDot}>.</Text></Text>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`Switch student: ${student?.name ?? 'Guest'}`}
+        onPress={() => { useEngineStore.getState().setOnboardingActive(true); requestProfileChoice(); }}
+        style={({ pressed }) => [styles.profilePill, pressed && { opacity: 0.75 }]}
+      >
+        <Text numberOfLines={1} style={styles.profileName}>{student?.name ?? 'Guest'}</Text>
+        <Svg width={30} height={24} viewBox="0 0 30 24" accessible={false}>
+          {/* The next profile sits behind; the current student is larger and in front. */}
+          <Circle cx={20} cy={5} r={3.1} fill={card.sage} />
+          <Path
+            d="M14.8 13.2c.7-3 2.5-4.6 5.2-4.6s4.5 1.6 5.2 4.6"
+            fill="none"
+            stroke={card.sage}
+            strokeWidth={2.2}
+            strokeLinecap="round"
+          />
+          <Circle cx={9.3} cy={9} r={3.7} fill={card.gold} />
+          <Path
+            d="M3.3 20c.8-4.1 2.8-6.1 6-6.1s5.2 2 6 6.1"
+            fill="none"
+            stroke={card.gold}
+            strokeWidth={2.6}
+            strokeLinecap="round"
+          />
+          {/* A rising handoff arrow points from the current student to the profile behind. */}
+          <Path
+            d="M13.8 20.2c4.8.5 8.2-1.5 9.1-5.5m-3.2 1.5 3.5-2.7 2.1 3.8"
+            fill="none"
+            stroke={card.stock}
+            strokeWidth={1.8}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </Svg>
+      </Pressable>
     </View>
   );
 });
@@ -680,23 +719,27 @@ const ChromeBar = memo(function ChromeBar({
 const Caption = memo(function Caption({
   language,
   grade,
-  pagesRead,
   correctCount,
+  stars,
+  remediationActive,
   bottomPad,
   onOpenSettings,
 }: {
   language: Language;
   grade: number;
-  pagesRead: number;
   correctCount: number;
+  stars: number;
+  remediationActive: boolean;
   bottomPad: number;
   onOpenSettings: () => void;
 }) {
-  const t = uiStrings(language);
   return (
     <View style={[styles.caption, { paddingBottom: bottomPad }]}>
+      {/* Three regions, two equal 46dp gutters: the cog alone on the left IS the way into
+          Settings; the grade/pages label sits centred between the gutters and is just a
+          label; the score keeps the right gutter. (Luis, 2026-09-05.) */}
       <Pressable
-        style={({ pressed }) => [styles.captionTap, pressed && styles.captionTapPressed]}
+        style={({ pressed }) => [styles.captionTap, styles.captionSide, pressed && styles.captionTapPressed]}
         onPress={onOpenSettings}
         hitSlop={10}
         accessibilityLabel={language === 'english' ? 'Settings' : language === 'cebuano' ? 'Mga setting' : 'Mga setting'}
@@ -706,10 +749,10 @@ const Caption = memo(function Caption({
           <Polygon points="23.00,12.00 22.79,14.15 19.85,15.25 19.07,16.72 19.78,19.78 18.11,21.15 15.25,19.85 13.66,20.34 12.00,23.00 9.85,22.79 8.75,19.85 7.28,19.07 4.22,19.78 2.85,18.11 4.15,15.25 3.66,13.66 1.00,12.00 1.21,9.85 4.15,8.75 4.93,7.28 4.22,4.22 5.89,2.85 8.75,4.15 10.34,3.66 12.00,1.00 14.15,1.21 15.25,4.15 16.72,4.93 19.78,4.22 21.15,5.89 19.85,8.75 20.34,10.34" fill={card.gold} />
           <Circle cx="12" cy="12" r="4" fill={card.board} />
         </Svg>
-        <Text style={styles.captionText} numberOfLines={1}>
-          {GRADE_WORD[language]} {grade} · {t.cards.readLabel} {pagesRead}
-        </Text>
       </Pressable>
+      <Text style={styles.captionText} numberOfLines={1}>
+        {GRADE_WORD[language]} {grade}{remediationActive ? '*' : ''}{stars > 0 ? ` · ${'★'.repeat(stars)}` : ''}
+      </Text>
       <Text style={[styles.captionScore, styles.captionSide]} numberOfLines={1}>
         ✓ {correctCount}
       </Text>
@@ -791,9 +834,38 @@ export function CardFeedScreen() {
   // CALENDAR MODE: the cursor OBJECT (the under-sheet effect keys on it exactly like the
   // magnet), the topic it names (its quarter + DepEd title print on the ribbon), and the sheet.
   const curriculum = useCardStore((s) => s.curriculum);
-  const curriculumTopic = curriculum ? cursorTopic(curriculum) : undefined;
+  const currentTopic = useCardStore(s=>s.currentTopic);
+  const curriculumTopic = currentTopic ? cursorTopic(currentTopic) : undefined;
+  const reviewReadCount = useReviewStore(s=>s.data?.recent.length??0);
+  const achievementStars = useReviewStore((s) =>
+    s.data?.grade === grade ? overallStars(s.data) : 0
+  );
+  const remediationActive = useReviewStore(
+    (s) => s.data?.grade === grade && !!s.data.remediation
+  );
   const enterCurriculum = useCardStore((s) => s.enterCurriculum);
-  const exitCurriculum = useCardStore((s) => s.exitCurriculum);
+  // THE UPDATE RIBBON (store/updateStore.ts). Shown from 'available' through 'failed'; idle,
+  // checking and snoozed render nothing. It takes the ribbon slot ahead of the ask/calendar
+  // ribbons: unlike those two it is actionable AND dismissable (✕ = 24 h snooze), so it can
+  // never hold the slot for longer than one tap, whereas a mode ribbon can hold it for a
+  // whole session — and a reader who never leaves calendar mode must still hear about it.
+  const updateStatus = useUpdateStore((s) => s.status);
+  const updateManifest = useUpdateStore((s) => s.manifest);
+  const updatePct = useUpdateStore((s) => s.pct);
+  const updateForced = useUpdateStore((s) => s.forced);
+  const updateBar =
+    !!updateManifest &&
+    (updateStatus === 'available' ||
+      updateStatus === 'downloading' ||
+      updateStatus === 'ready' ||
+      updateStatus === 'failed');
+  const onUpdateAction = useCallback(() => {
+    const u = useUpdateStore.getState();
+    if (u.status === 'available') void u.startDownload();
+    else if (u.status === 'ready') void u.install();
+    else if (u.status === 'failed') void u.retry();
+  }, []);
+  const onUpdateSnooze = useCallback(() => void useUpdateStore.getState().snooze(), []);
   const [sheetOpen, setSheetOpen] = useState(false);
   const openSheet = useCallback(() => setSheetOpen(true), []);
   const closeSheet = useCallback(() => setSheetOpen(false), []);
@@ -809,6 +881,50 @@ export function CardFeedScreen() {
   const ask = useCardStore((s) => s.ask);
   const warmModel = useCardStore((s) => s.warmModel);
   const jumpToRandom = useCardStore((s) => s.jumpToRandom);
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [historyOffset, setHistoryOffset] = useState(0);
+  const historyKey = useRef(-1);
+  const historyRef = useRef({ entries: history, offset: historyOffset });
+  historyRef.current = { entries: history, offset: historyOffset };
+  const appendHistory = useCallback((entry: HistoryEntry) => {
+    setHistory((old) => {
+      if (old[old.length - 1]?.key === entry.key) return old;
+      return [...old, entry].slice(-HISTORY_LIMIT);
+    });
+    setHistoryOffset(0);
+  }, []);
+  useEffect(() => {
+    if (!current || question || reward || response) return;
+    appendHistory({ kind: 'fact', key: pageKey, fact: current, choices, pagesRead });
+  }, [appendHistory, pageKey, current, choices, pagesRead, question, reward, response]);
+  const onReviewGraded = useCallback(
+    (result: CompletedReviewAttempt) => {
+      useCardStore.getState().recordReviewGrade(result);
+      appendHistory({
+        kind: 'quiz',
+        key: historyKey.current--,
+        question: result.attempt.question,
+        order: result.attempt.order,
+        selected: result.attempt.selected!,
+        pagesRead: useCardStore.getState().pagesRead,
+      });
+    },
+    [appendHistory]
+  );
+  const historyEntry =
+    historyOffset > 0 ? history[history.length - 1 - historyOffset] ?? null : null;
+  const browsingHistory = historyEntry !== null;
+  const historicalQuiz = historyEntry?.kind === 'quiz';
+  const shownFact = historyEntry?.kind === 'fact' ? historyEntry.fact : browsingHistory ? null : current;
+  const shownChoices =
+    historyEntry?.kind === 'fact' ? historyEntry.choices : browsingHistory ? EMPTY_CHOICES : choices;
+  const shownQuestion = historyEntry?.kind === 'quiz' ? historyEntry.question : browsingHistory ? null : question;
+  const shownPageKey = historyEntry?.key ?? pageKey;
+  const shownPagesRead = historyEntry?.pagesRead ?? pagesRead;
+  const historyForward = useCallback(
+    () => setHistoryOffset((offset) => Math.max(0, offset - 1)),
+    []
+  );
   // Counter, not boolean: every die tap must re-pop the toast even mid-fade (see RerollToast).
   const [rerollTick, setRerollTick] = useState(0);
 
@@ -841,6 +957,12 @@ export function CardFeedScreen() {
     // prefetchReward already returns early when the engine is cold so the reward falls back
     // to its template. So the warm-up now starts when the reader reaches for it — see the
     // search field, which wakes the model on a tap.
+    //
+    // Once the model IS warm, the reward line is the one generation the reader never asked
+    // for, and it was the measured cause of the mid-swipe stalls (2026-09-06). It is now
+    // DWELL-GATED and ABORTABLE (cardStore REWARD_PREFETCH_AT): it starts only after the
+    // reader has been still on a page for a while, and the pan's onStart / onFinalize feed
+    // the store's markDragStart / markDragEnd so a finger on the card cancels it at once.
   }, [hydrate, onboardingActive]);
 
   // Which way the last navigation went (drives the peel origin). Taking the left choice /
@@ -918,6 +1040,10 @@ export function CardFeedScreen() {
   useEffect(() => {
     locked.value = question && !questionAnswered ? 1 : 0;
   }, [question, questionAnswered, locked]);
+  const historyCanBack = useSharedValue(0);
+  useEffect(() => {
+    historyCanBack.value = historyOffset < history.length - 1 ? 1 : 0;
+  }, [historyOffset, history.length, historyCanBack]);
 
   /**
    * Two choices == this card FORKS. The deck visibly splits (the fan behind becomes the two
@@ -926,7 +1052,8 @@ export function CardFeedScreen() {
    * tickets — the fan and the swipe just echo it. Declared up here, above the loading
    * return, because the pan needs it as a shared value (see forkMiddleUp).
    */
-  const forking = choices.length > 1 && !question && !reward && !response;
+  const forking =
+    !browsingHistory && choices.length > 1 && !question && !reward && !response;
 
   /**
    * The card underneath — what a swipe is about to reveal, printed on the sheet behind.
@@ -942,7 +1069,7 @@ export function CardFeedScreen() {
    */
   const [under, setUnder] = useState<{ fact: CardFact; choices: CardChoice[] } | null>(null);
   useEffect(() => {
-    if (forking || question || reward || response || !choices[0]) {
+    if (browsingHistory || forking || question || reward || response || !choices[0]) {
       setUnder(null);
       return;
     }
@@ -969,7 +1096,7 @@ export function CardFeedScreen() {
     // that is actually printed. Every other context change bumps pageKey → new `choices`.
     // `curriculum` is a dep for exactly the same reason: exitCurriculum nulls the cursor
     // without turning a page, and the sheet beneath must re-print unrestricted tickets.
-  }, [forking, question, reward, response, choices, language, magnet, curriculum]);
+  }, [browsingHistory, forking, question, reward, response, choices, language, magnet, curriculum]);
   /**
    * Did this card just arrive from the preview underneath?
    *
@@ -987,7 +1114,7 @@ export function CardFeedScreen() {
    * so while rendering the new page it still describes what was underneath during the swipe.
    */
   const prevBeneathId = useRef<string | null>(null);
-  const cameFromPreview = !!current && prevBeneathId.current === current.id;
+  const cameFromPreview = !browsingHistory && !!current && prevBeneathId.current === current.id;
   useEffect(() => {
     prevBeneathId.current = under?.fact.id ?? null;
   });
@@ -1045,9 +1172,17 @@ export function CardFeedScreen() {
   const markDragStart = useCallback(() => {
     if (dragRelease.current) clearTimeout(dragRelease.current);
     dragging.current = true;
+    // The store's reward-line prefetch is aborted the instant a drag begins (it was the
+    // measured cause of the mid-swipe stalls — see cardStore REWARD_PREFETCH_AT), so the
+    // finger-down signal is forwarded before anything else happens on this gesture.
+    useCardStore.getState().markDragStart();
   }, []);
   const markDragEnd = useCallback(() => {
     if (!dragging.current) return;
+    // Immediate, not behind the TAP_GUARD_MS timer below: that timer exists to swallow a
+    // trailing Pressable tap, while the store only needs to know the finger is off the card
+    // so it can start the dwell clock for the reward prefetch.
+    useCardStore.getState().markDragEnd();
     if (dragRelease.current) clearTimeout(dragRelease.current);
     dragRelease.current = setTimeout(() => {
       dragging.current = false;
@@ -1060,7 +1195,7 @@ export function CardFeedScreen() {
 
   useLayoutEffect(() => {
     const prev = lastSnap.current;
-    if (prev && prev.pageKey !== pageKey) {
+    if (prev && prev.pageKey !== shownPageKey) {
       const from = release.current;
       release.current = null;
       setOutgoing({
@@ -1092,8 +1227,12 @@ export function CardFeedScreen() {
         if (advanceDoneTs.current) {
           console.log(`[swipe] commit→effect ${t - advanceDoneTs.current}ms`);
           advanceDoneTs.current = 0;
-          // The first frame after this commit ≈ when the incoming page actually painted.
-          requestAnimationFrame(() => console.log(`[swipe] effect→frame ${Date.now() - t}ms`));
+          // The first frame after this commit ≈ when the incoming page actually painted. The
+          // card's identity rides along so a slow frame can be tied to what it was drawing
+          // (measured 2026-09-05: 48–106 ms on some cards, 376–1069 ms on others — the
+          // suspect is the incoming page's first paint, which also stalls the UI-thread flight).
+          const incoming = shownFact ? `${shownFact.id} art=${shownFact.slug ? 'y' : 'n'}` : 'quiz';
+          requestAnimationFrame(() => console.log(`[swipe] effect→frame ${Date.now() - t}ms (${incoming})`));
         }
       } else {
         // TAP: the peel starts from rest, exactly as before — the pause complaint was never
@@ -1114,8 +1253,15 @@ export function CardFeedScreen() {
       if (clearTimer.current) clearTimeout(clearTimer.current);
       clearTimer.current = setTimeout(() => setOutgoing(null), FLIP_MS + 400);
     }
-    lastSnap.current = { pageKey, fact: current, choices, question, reward, response };
-  }, [pageKey, current, choices, question, reward, response, flip, dragX, dragY, handoff]);
+    lastSnap.current = {
+      pageKey: shownPageKey,
+      fact: shownFact,
+      choices: shownChoices,
+      question: shownQuestion,
+      reward: browsingHistory ? null : reward,
+      response: browsingHistory ? null : response,
+    };
+  }, [shownPageKey, shownFact, shownChoices, shownQuestion, browsingHistory, reward, response, flip, dragX, dragY, handoff]);
 
   useEffect(
     () => () => {
@@ -1148,15 +1294,47 @@ export function CardFeedScreen() {
   const commitSwipe = useCallback(
     (dir: SwipeDir, releaseX: number, releaseY: number, downX: number, releaseTs: number) => {
       const tCommit = Date.now();
+      const h = historyRef.current;
+      // DOWN walks toward older pages; any other throw walks toward the live feed again.
+      // Answered quiz results are ordinary history entries, while an active quiz owns a
+      // full-screen overlay and never reaches this gesture. These cursor moves never touch
+      // feed state, counters, telemetry or grading.
+      if (dir === 'down') {
+        if (h.offset >= h.entries.length - 1) {
+          release.current = null;
+          cancelAnimation(flyX);
+          cancelAnimation(flyY);
+          cancelAnimation(flyPeel);
+          dragX.value = flyX.value;
+          dragY.value = flyY.value;
+          handoff.value = 0;
+          settle();
+          return;
+        }
+        release.current = { x: releaseX, y: releaseY };
+        downRef.current = true;
+        sideRef.current = downX < width / 2 ? 'left' : 'right';
+        advanceDoneTs.current = Date.now();
+        setHistoryOffset((offset) => Math.min(offset + 1, h.entries.length - 1));
+        return;
+      }
+      if (h.offset > 0) {
+        release.current = { x: releaseX, y: releaseY };
+        downRef.current = false;
+        sideRef.current = dir === 'left' ? 'left' : 'right';
+        advanceDoneTs.current = Date.now();
+        setHistoryOffset((offset) => Math.max(0, offset - 1));
+        return;
+      }
       const s = useCardStore.getState();
       const before = s.pageKey;
       // Hand the peel the exact offset the finger let go at, before anything navigates.
       release.current = { x: releaseX, y: releaseY };
       // A sideways swipe names its own side. A VERTICAL one doesn't, so the peel hinges on
       // the half of the card the finger came from — the corner peel this gesture always had.
-      const vertical = dir === 'up' || dir === 'down';
+      const vertical = dir === 'up';
       const side: Side = vertical ? (downX < width / 2 ? 'left' : 'right') : dir;
-      downRef.current = dir === 'down';
+      downRef.current = false;
 
       if (s.response) {
         sideRef.current = side;
@@ -1294,11 +1472,17 @@ export function CardFeedScreen() {
             settleBack();
             return;
           }
+          // Down is the back gesture. The oldest retained page holds onto the deck and never
+          // begins an exit animation it would later have to undo.
+          if (dir === 'down' && historyCanBack.value === 0) {
+            settleBack();
+            return;
+          }
           const vertical = dir === 'up' || dir === 'down';
           // A vertical throw from the ambiguous middle of a fork names neither branch, so it
           // is refused HERE — the card must never start flying and then be argued back by
           // the store (forkMiddleUp was written for exactly this seat and finally sits in it).
-          if (vertical && forkMiddleUp(forkGate.value, originX.value, width)) {
+          if (dir === 'up' && forkMiddleUp(forkGate.value, originX.value, width)) {
             settleBack();
             return;
           }
@@ -1350,6 +1534,7 @@ export function CardFeedScreen() {
       dragX,
       dragY,
       locked,
+      historyCanBack,
       originX,
       forkGate,
       flyX,
@@ -1422,20 +1607,23 @@ export function CardFeedScreen() {
     );
   }
 
-  const ticksOn = Math.max(0, Math.min(METER_TICKS, METER_TICKS - untilQuestion));
+  const ticksOn = Math.max(0, Math.min(METER_TICKS, Math.floor(reviewReadCount / 20 * METER_TICKS)));
   const canSend = queryText.trim().length > 0;
 
   return (
     <SafeAreaView style={styles.screen} edges={['top']}>
+      <MemoryNotice />
       {/* app chrome — lives on the BOARD, never on the card (mockup `.chrome`). Memoized
           leaf: a swipe commits twice (page change + outgoing snapshot) and only the first
           has new meter values. */}
-      <ChromeBar ticksOn={ticksOn} pagesRead={pagesRead} />
+      <View style={historicalQuiz && styles.historyChromeHidden}>
+        <ChromeBar />
+      </View>
 
       {/* persistent "ask anything" box — the kid's agency: type a topic or a question and
           RAG decides (found card → response card → honest abstention). Printed as a cream
           index-card field on the board; the gold diamond is the mockup's divider mark. */}
-      <View style={styles.searchRow}>
+      <View style={[styles.searchRow, historicalQuiz && styles.historyChromeHidden]}>
         {/*
           Tapping the field WAKES the model.
           The reader reaches for the ask box, and that is the moment the engine is actually
@@ -1553,10 +1741,58 @@ export function CardFeedScreen() {
         ) : null}
       </View>
 
+      {/* "UPDATE AVAILABLE!" — the same ink ribbon, in the same slot, hidden on the same pages
+          (reward / question / response) as the two mode ribbons below, and ahead of them in
+          the slot (see `updateBar`). Body = "v<name> · <MB> MB"; the chip on the right is the
+          one action the status allows: download → <pct>% (inert) → install → try again. The ✕
+          snoozes it for a day; it is withheld when the release is below the mirror's
+          minSupportedVersionCode (`forced`). No animation: reduced-motion-neutral. */}
+      {!historicalQuiz && updateBar && updateManifest && !response && !reward && !question ? (
+        <View style={styles.banner} accessibilityLiveRegion="polite">
+          <Text style={styles.bannerLabel} numberOfLines={1}>
+            {t.cards.update.label}
+          </Text>
+          <Text style={styles.bannerText} numberOfLines={1}>
+            {describeUpdate(updateManifest)}
+          </Text>
+          {updateStatus === 'downloading' ? (
+            <View style={styles.bannerChip} accessibilityRole="progressbar">
+              <Text style={styles.bannerChipText}>{updatePct}%</Text>
+            </View>
+          ) : (
+            <Pressable
+              onPress={onUpdateAction}
+              hitSlop={8}
+              accessibilityRole="button"
+              style={({ pressed }) => [styles.bannerChip, styles.bannerChipTap, pressed && styles.bannerChipPressed]}
+            >
+              <Text style={styles.bannerChipText} numberOfLines={1}>
+                {updateStatus === 'ready'
+                  ? t.cards.update.install
+                  : updateStatus === 'failed'
+                    ? t.cards.update.retry
+                    : t.cards.update.download}
+              </Text>
+            </Pressable>
+          )}
+          {!updateForced && updateStatus !== 'downloading' ? (
+            <Pressable
+              onPress={onUpdateSnooze}
+              hitSlop={10}
+              accessibilityRole="button"
+              accessibilityLabel={t.cards.update.snooze}
+              style={styles.bannerDismiss}
+            >
+              <Text style={styles.bannerDismissGlyph}>✕</Text>
+            </Pressable>
+          ) : null}
+        </View>
+      ) : null}
+
       {/* "you asked" ribbon when a search navigated straight to a found card. It rides on
           the BOARD, directly under the box it echoes — not on the card: the top of a card
           is its punched holes and index band, and a ribbon would print straight over them. */}
-      {queryBanner && !response && !reward && !question ? (
+      {!historicalQuiz && queryBanner && !updateBar && !response && !reward && !question ? (
         <View style={styles.banner}>
           <Text style={styles.bannerLabel} numberOfLines={1}>
             {t.cards.yourQuestion}
@@ -1581,12 +1817,12 @@ export function CardFeedScreen() {
 
       {/* CALENDAR MODE's ribbon — the same ribbon grammar, under the same box, one line:
           "KURIKULUM · Q2 · <title>" — the label names the mode and the quarter, the body is the
-          held topic's DepEd title in the tutor language, the ✕ leaves the mode. Mutually
+          held topic's DepEd title in the tutor language. Randomize leaves the mode. Mutually
           exclusive with the ask ribbon by construction (entering either clears the other in the
           store). It names the topic the feed is DRAWING FROM: on the page where a topic runs out
           the cursor has already moved on, so the ribbon already reads the next topic the swipe
           will serve. */}
-      {curriculum && curriculumTopic && !response && !reward && !question ? (
+      {!historicalQuiz && curriculum && curriculumTopic && !updateBar && !response && !reward && !question ? (
         <View style={styles.banner}>
           <Text style={styles.bannerLabel} numberOfLines={1}>
             {t.cards.curriculum} · Q{curriculumTopic.quarter} ·
@@ -1594,15 +1830,7 @@ export function CardFeedScreen() {
           <Text style={styles.bannerText} numberOfLines={1}>
             {topicTitle(curriculumTopic, language)}
           </Text>
-          <Pressable
-            onPress={exitCurriculum}
-            hitSlop={10}
-            accessibilityRole="button"
-            accessibilityLabel={t.cards.exitCurriculum}
-            style={styles.bannerDismiss}
-          >
-            <Text style={styles.bannerDismissGlyph}>✕</Text>
-          </Pressable>
+
         </View>
       ) : null}
 
@@ -1645,44 +1873,63 @@ export function CardFeedScreen() {
                 new page land in the same commit (see the layout effect). The PAGE inside it
                 is what's keyed. The layer IS the card surface: stock, ink edge, rounded. */}
             <Reanimated.View
-              style={[styles.cardLayer, { backgroundColor: stockFor(question) }, cardDrag]}
+              style={[styles.cardLayer, { backgroundColor: stockFor(shownQuestion) }, cardDrag]}
             >
-              {response ? (
+              {!browsingHistory && response ? (
                 <ResponseCard
                   key={pageKey}
                   response={response}
                   language={language}
                   onContinue={() => tapNav(continueAfterResponse)}
                 />
-              ) : reward ? (
+              ) : !browsingHistory && reward ? (
                 <RewardCard
                   key={pageKey}
                   reward={reward}
                   language={language}
                   onContinue={() => tapNav(continueAfterReward)}
                 />
-              ) : question ? (
+              ) : shownQuestion ? (
                 <QuestionPage
-                  key={pageKey}
-                  question={question}
+                  key={shownPageKey}
+                  question={shownQuestion}
                   language={language}
-                  onAnswer={answerQuestion}
-                  onContinue={() => tapNav(continueAfterQuestion)}
+                  displayOrder={historyEntry?.kind === 'quiz' ? historyEntry.order : undefined}
+                  selectedOption={historyEntry?.kind === 'quiz' ? historyEntry.selected : undefined}
+                  disabled={historyEntry?.kind === 'quiz'}
+                  celebrate={historyEntry?.kind !== 'quiz'}
+                  onSelect={historyEntry?.kind === 'quiz' ? () => {} : undefined}
+                  onAnswer={browsingHistory ? () => {} : answerQuestion}
+                  onContinue={() =>
+                    tapNav(browsingHistory ? historyForward : continueAfterQuestion)
+                  }
                 />
               ) : (
                 <CardPage
-                  key={pageKey}
-                  fact={current}
-                  choices={choices}
+                  key={shownPageKey}
+                  fact={shownFact!}
+                  choices={shownChoices}
                   language={language}
-                  instant={cameFromPreview}
+                  instant={browsingHistory || cameFromPreview}
                   // the reading guide runs on the LIVE card only — the preview sheet and the
                   // outgoing peel are copies, and a card that came from the preview is still
                   // the one being read now (guide is independent of `instant`)
-                  guide
-                  onChoose={(c) => tapNav(() => chooseFrom(c, choices[0] === c ? 'left' : 'right'))}
+                  guide={!browsingHistory}
+                  onChoose={(c) =>
+                    tapNav(
+                      browsingHistory
+                        ? historyForward
+                        : () => chooseFrom(c, choices[0] === c ? 'left' : 'right')
+                    )
+                  }
                 />
               )}
+              <View pointerEvents="none" style={styles.cardProgress}>
+                {Array.from({ length: METER_TICKS }, (_, i) => (
+                  <View key={i} style={[styles.smallTick, i < ticksOn && styles.smallTickOn]} />
+                ))}
+                <Text style={styles.cardProgressText}>{shownPagesRead}</Text>
+              </View>
               {/* thinking veil while the fallback generation is in flight */}
               {asking ? (
                 <View style={styles.thinking} pointerEvents="none">
@@ -1773,14 +2020,20 @@ export function CardFeedScreen() {
       <Caption
         language={language}
         grade={grade}
-        pagesRead={pagesRead}
         correctCount={correctCount}
+        stars={achievementStars}
+        remediationActive={remediationActive}
         bottomPad={Math.max(insets.bottom, 10)}
         onOpenSettings={openSettings}
       />
 
       {/* The outline sheet, for the CURRENT grade (the cursor keeps the grade it was entered
           at; a grade change mid-mode shows the new grade's outline on the next open). */}
+      <ReviewSeries
+        language={language}
+        onExit={useCardStore.getState().continueAfterReview}
+        onGraded={onReviewGraded}
+      />
       <CurriculumSheet
         visible={sheetOpen}
         grade={grade}
@@ -1802,34 +2055,24 @@ const styles = StyleSheet.create({
   loading: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   loadingMark: { fontFamily: fonts.slab, fontSize: 26, color: card.stock, letterSpacing: 0.6 },
   loadingDots: { fontFamily: fonts.slab, fontSize: 26, color: card.sage, marginTop: 10 },
+  historyChromeHidden: { display: 'none' },
 
   // ---- chrome ----
   chrome: {
-    height: 42,
+    minHeight: 48,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
   },
+  profilePill: { flexDirection: 'row', alignItems: 'center', gap: 8, maxWidth: '65%', minHeight: 44, paddingHorizontal: 12, borderRadius: 24, borderWidth: 2, borderColor: card.sage, backgroundColor: card.ink },
+  profileName: { flexShrink: 1, color: card.stock, fontFamily: fonts.cardBodyBold, fontSize: 16 },
+  cardProgress: { height: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 3, marginBottom: 7 },
+  smallTick: { width: 4, height: 8, borderRadius: 1, backgroundColor: card.sage },
+  smallTickOn: { backgroundColor: card.ink },
+  cardProgressText: { fontFamily: fonts.gothic, fontSize: 10, color: card.ink, marginLeft: 4 },
   wordmark: { fontFamily: fonts.slab, fontSize: 16, color: card.stock, letterSpacing: 0.5 },
   wordmarkDot: { color: card.gold },
-  meter: { flexDirection: 'row', alignItems: 'center', gap: 5 },
-  tick: {
-    width: 6,
-    height: 15,
-    borderRadius: 2,
-    // sage at 34%: an unlit tick has to be legible on the dark board yet clearly OFF —
-    // full-strength sage is bright enough there to read as lit.
-    backgroundColor: cardAlpha(card.sage, 0.34),
-  },
-  tickOn: { backgroundColor: card.gold },
-  meterCount: {
-    fontFamily: fonts.gothic,
-    fontSize: 12,
-    color: card.stock,
-    marginLeft: 5,
-    letterSpacing: 0.3,
-  },
 
   // ---- search + reroll ----
   searchRow: {
@@ -2115,6 +2358,33 @@ const styles = StyleSheet.create({
     lineHeight: 12,
     color: card.stock,
   },
+  // The update ribbon's action chip: the ✕ chip's grammar (stock hairline ring on ink)
+  // stretched to a word — gothic caps in stock, so it reads as a button and not a label.
+  // 20dp tall like the ✕ so the ribbon's height never changes as the chip's text cycles.
+  bannerChip: {
+    height: 20,
+    minWidth: 44,
+    paddingHorizontal: 8,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: cardAlpha(card.stock, 0.45),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bannerChipTap: {
+    borderColor: card.gold,
+  },
+  bannerChipPressed: {
+    backgroundColor: cardAlpha(card.gold, 0.18),
+  },
+  bannerChipText: {
+    fontFamily: fonts.gothic,
+    fontSize: 8.5,
+    letterSpacing: 1.2,
+    lineHeight: 12,
+    textTransform: 'uppercase',
+    color: card.stock,
+  },
   thinking: {
     position: 'absolute',
     top: 0,
@@ -2139,17 +2409,17 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     // paddingBottom applied inline (bottom safe-area inset) to clear the Android nav bar
   },
-  captionSide: { width: 46 }, // equal gutters keep the counter optically centred
-  // The tap target, not the type: it takes the row's growth so the label stays optically
-  // centred between the two 46dp gutters, and gives the whole strip a comfortable target
-  // (the 9.5px caps alone would be a ~14dp-tall one) rather than only the glyphs.
-  captionTap: { flex: 1, minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 4 },
+  captionSide: { width: 46 }, // equal gutters keep the label optically centred
+  // The Settings tap target: the cog alone in the left gutter, tall enough (44dp) to be a
+  // comfortable target although the glyph is 20dp.
+  captionTap: { minHeight: 44, justifyContent: 'center', alignItems: 'flex-start', paddingVertical: 4 },
   captionTapPressed: { opacity: 0.55 },
   // The affordance. Gold (the wordmark's accent) against the sage caption, and a size up from
   // the 9.5px caps, so the row announces itself as a control instead of a label.
   captionMenuGlyph: { fontSize: 12, color: card.gold },
   captionText: {
-    textAlign: 'left',
+    flex: 1,
+    textAlign: 'center',
     flexShrink: 1,
     fontFamily: fonts.gothic,
     fontSize: 9.5,

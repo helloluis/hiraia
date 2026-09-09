@@ -1,0 +1,1416 @@
+{
+  "version": 1,
+  "grade": 7,
+  "reference": "MATATAG Science Grades 3–10, August 2023; verified junior-high curriculum extract",
+  "lessons": [
+    {
+      "key": "g7:scientific-models",
+      "quarter": 1,
+      "title": {
+        "en": "Why Scientists Use Models",
+        "tl": "Bakit Gumagamit ng Modelo",
+        "bis": "Nganong Mogamit og Modelo"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-M-1:unseen",
+          "competency": "G7-M-1",
+          "focus": "unseen",
+          "pattern": "model.*(unseen|invisible|small|large|see|detect)|(unseen|invisible).*model"
+        },
+        {
+          "id": "G7-M-1:limits",
+          "competency": "G7-M-1",
+          "focus": "limits",
+          "pattern": "limit|simplif|not.*(exact|perfect|scale)"
+        }
+      ]
+    },
+    {
+      "key": "g7:particle-model",
+      "quarter": 1,
+      "title": {
+        "en": "Matter Is Made of Particles",
+        "tl": "Mga Partikulo ng Materya",
+        "bis": "Mga Partikulo sa Materya"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-M-2:particles",
+          "competency": "G7-M-2",
+          "focus": "particles",
+          "pattern": "particle|atom|molecule"
+        },
+        {
+          "id": "G7-M-2:pure-substance",
+          "competency": "G7-M-2",
+          "focus": "pure substance",
+          "pattern": "pure substance|own kind|same.*particle"
+        }
+      ]
+    },
+    {
+      "key": "g7:particle-motion",
+      "quarter": 1,
+      "title": {
+        "en": "How Particles Behave",
+        "tl": "Paggalaw ng Partikulo",
+        "bis": "Paglihok sa Partikulo"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-M-3:motion",
+          "competency": "G7-M-3",
+          "focus": "motion",
+          "pattern": "motion|mov|vibrat"
+        },
+        {
+          "id": "G7-M-3:spaces",
+          "competency": "G7-M-3",
+          "focus": "spaces",
+          "pattern": "space|gap"
+        },
+        {
+          "id": "G7-M-3:attraction",
+          "competency": "G7-M-3",
+          "focus": "attraction",
+          "pattern": "attract"
+        },
+        {
+          "id": "G7-M-3:temperature",
+          "competency": "G7-M-3",
+          "focus": "temperature",
+          "pattern": "temperature|heat"
+        }
+      ]
+    },
+    {
+      "key": "g7:particle-diagrams",
+      "quarter": 1,
+      "title": {
+        "en": "Draw Three States of Matter",
+        "tl": "Iguhit ang Tatlong Estado",
+        "bis": "Idrowing ang Tulo ka Estado"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-M-4:solid",
+          "competency": "G7-M-4",
+          "focus": "solid",
+          "pattern": "solid"
+        },
+        {
+          "id": "G7-M-4:liquid",
+          "competency": "G7-M-4",
+          "focus": "liquid",
+          "pattern": "liquid"
+        },
+        {
+          "id": "G7-M-4:gas",
+          "competency": "G7-M-4",
+          "focus": "gas",
+          "pattern": "\\bgas\\b|gaseous"
+        },
+        {
+          "id": "G7-M-4:diagram",
+          "competency": "G7-M-4",
+          "focus": "diagram",
+          "pattern": "diagram|draw|dot|illustrat"
+        }
+      ]
+    },
+    {
+      "key": "g7:particle-state-changes",
+      "quarter": 1,
+      "title": {
+        "en": "Particles During Changes of State",
+        "tl": "Partikulo sa Pagbabago ng Estado",
+        "bis": "Partikulo sa Kausaban sa Estado"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-M-5:heating",
+          "competency": "G7-M-5",
+          "focus": "heating",
+          "pattern": "melt|evaporat|boil"
+        },
+        {
+          "id": "G7-M-5:cooling",
+          "competency": "G7-M-5",
+          "focus": "cooling",
+          "pattern": "condens|freez"
+        },
+        {
+          "id": "G7-M-5:arrangement-energy",
+          "competency": "G7-M-5",
+          "focus": "arrangement energy",
+          "pattern": "particle.*arrangement|arrangement.*particle"
+        }
+      ]
+    },
+    {
+      "key": "g7:investigation-steps",
+      "quarter": 1,
+      "title": {
+        "en": "Plan and Report an Investigation",
+        "tl": "Magplano at Mag-ulat ng Pagsisiyasat",
+        "bis": "Pagplano ug Pagreport sa Pagsusi"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-M-6:aim",
+          "competency": "G7-M-6",
+          "focus": "aim",
+          "pattern": "aim|problem|question"
+        },
+        {
+          "id": "G7-M-6:materials",
+          "competency": "G7-M-6",
+          "focus": "materials",
+          "pattern": "material|equipment"
+        },
+        {
+          "id": "G7-M-6:method",
+          "competency": "G7-M-6",
+          "focus": "method",
+          "pattern": "method|procedure"
+        },
+        {
+          "id": "G7-M-6:results",
+          "competency": "G7-M-6",
+          "focus": "results",
+          "pattern": "\\bdata\\b|result"
+        },
+        {
+          "id": "G7-M-6:conclusion",
+          "competency": "G7-M-6",
+          "focus": "conclusion",
+          "pattern": "conclu"
+        }
+      ]
+    },
+    {
+      "key": "g7:measure-record",
+      "quarter": 1,
+      "title": {
+        "en": "Measure and Organize Data",
+        "tl": "Sukatin at Ayusin ang Datos",
+        "bis": "Sukda ug Han-aya ang Datos"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-M-7:units",
+          "competency": "G7-M-7",
+          "focus": "units",
+          "pattern": "unit|meter|gram|second|liter|litre"
+        },
+        {
+          "id": "G7-M-7:accuracy",
+          "competency": "G7-M-7",
+          "focus": "accuracy",
+          "pattern": "accurat|accuracy|eye.level|meniscus|calibrat"
+        },
+        {
+          "id": "G7-M-7:organize",
+          "competency": "G7-M-7",
+          "focus": "organize",
+          "pattern": "table|graph|record|organiz"
+        }
+      ]
+    },
+    {
+      "key": "g7:solute-solvent",
+      "quarter": 1,
+      "title": {
+        "en": "Solute and Solvent",
+        "tl": "Solute at Solvent",
+        "bis": "Solute ug Solvent"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-M-8:solute",
+          "competency": "G7-M-8",
+          "focus": "solute",
+          "pattern": "solute"
+        },
+        {
+          "id": "G7-M-8:solvent",
+          "competency": "G7-M-8",
+          "focus": "solvent",
+          "pattern": "solvent"
+        }
+      ]
+    },
+    {
+      "key": "g7:concentration",
+      "quarter": 1,
+      "title": {
+        "en": "How Much Solute?",
+        "tl": "Gaano Karaming Solute?",
+        "bis": "Pila ka Solute?"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-M-9:quantity",
+          "competency": "G7-M-9",
+          "focus": "quantity",
+          "pattern": "gram|milliliter|millilitre|\\bmg\\b|\\bmL\\b"
+        },
+        {
+          "id": "G7-M-9:calculation",
+          "competency": "G7-M-9",
+          "focus": "calculation",
+          "pattern": "\\d.*(÷|divided).*\\d"
+        },
+        {
+          "id": "G7-M-9:solvent-volume",
+          "competency": "G7-M-9",
+          "focus": "solvent volume",
+          "pattern": "volume of (the )?solvent|mL of water|milliliters? of water"
+        }
+      ]
+    },
+    {
+      "key": "g7:solubility",
+      "quarter": 1,
+      "title": {
+        "en": "Investigate Solubility",
+        "tl": "Siyasatin ang Solubility",
+        "bis": "Susihon ang Solubility"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-M-10:temperature",
+          "competency": "G7-M-10",
+          "focus": "temperature",
+          "pattern": "(temperature|heat|hot|warm).*(amount|maximum|solubility)|(amount|maximum|solubility).*(temperature|heat|hot|warm)"
+        },
+        {
+          "id": "G7-M-10:saturation",
+          "competency": "G7-M-10",
+          "focus": "saturation",
+          "pattern": "saturat|maximum|limit"
+        },
+        {
+          "id": "G7-M-10:test",
+          "competency": "G7-M-10",
+          "focus": "test",
+          "pattern": "test|investigat|same|control|measur"
+        }
+      ]
+    },
+    {
+      "key": "g7:litmus",
+      "quarter": 1,
+      "title": {
+        "en": "Acids, Bases, and Litmus",
+        "tl": "Asido, Base, at Litmus",
+        "bis": "Asido, Base, ug Litmus"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-M-11:acid",
+          "competency": "G7-M-11",
+          "focus": "acid",
+          "pattern": "acid"
+        },
+        {
+          "id": "G7-M-11:base",
+          "competency": "G7-M-11",
+          "focus": "base",
+          "pattern": "\\bbase|alkali"
+        },
+        {
+          "id": "G7-M-11:salt",
+          "competency": "G7-M-11",
+          "focus": "salt",
+          "pattern": "\\bsalt"
+        },
+        {
+          "id": "G7-M-11:indicator",
+          "competency": "G7-M-11",
+          "focus": "indicator",
+          "pattern": "litmus"
+        },
+        {
+          "id": "G7-M-11:indicator-limits",
+          "competency": "G7-M-11",
+          "focus": "litmus does not identify every salt",
+          "pattern": "cannot prove"
+        }
+      ]
+    },
+    {
+      "key": "g7:equipment-safety",
+      "quarter": 1,
+      "title": {
+        "en": "Handle Science Equipment Safely",
+        "tl": "Ligtas na Paggamit ng Kagamitang Pang-agham",
+        "bis": "Luwas nga Paggamit sa Galamiton"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-M-12:handling",
+          "competency": "G7-M-12",
+          "focus": "handling",
+          "pattern": "hold|handl|use|carry"
+        },
+        {
+          "id": "G7-M-12:safety",
+          "competency": "G7-M-12",
+          "focus": "safety",
+          "pattern": "safe|protect|goggle|teacher|hot|broken"
+        }
+      ]
+    },
+    {
+      "key": "g7:microscope",
+      "quarter": 2,
+      "title": {
+        "en": "Meet the Compound Microscope",
+        "tl": "Kilalanin ang Compound Microscope",
+        "bis": "Ilha ang Compound Microscope"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-L-1:parts",
+          "competency": "G7-L-1",
+          "focus": "parts",
+          "pattern": "eyepiece|objective|stage|diaphragm"
+        },
+        {
+          "id": "G7-L-1:functions",
+          "competency": "G7-L-1",
+          "focus": "functions",
+          "pattern": "magnif|focus|light"
+        },
+        {
+          "id": "G7-L-1:handling",
+          "competency": "G7-L-1",
+          "focus": "handling",
+          "pattern": "carry|hand|lens paper"
+        },
+        {
+          "id": "G7-L-1:storage",
+          "competency": "G7-L-1",
+          "focus": "storage",
+          "pattern": "\\bstor|\\bcover\\b|\\bdry\\b|unplug"
+        }
+      ]
+    },
+    {
+      "key": "g7:cell-observation",
+      "quarter": 2,
+      "title": {
+        "en": "Observe Cells",
+        "tl": "Obserbahan ang mga Selula",
+        "bis": "Obserbahi ang mga Selula"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-L-2:technique",
+          "competency": "G7-L-2",
+          "focus": "technique",
+          "pattern": "slide|focus|low.power|microscope"
+        },
+        {
+          "id": "G7-L-2:membrane",
+          "competency": "G7-L-2",
+          "focus": "membrane",
+          "pattern": "membrane"
+        },
+        {
+          "id": "G7-L-2:nucleus",
+          "competency": "G7-L-2",
+          "focus": "nucleus",
+          "pattern": "nucleus"
+        },
+        {
+          "id": "G7-L-2:cytoplasm",
+          "competency": "G7-L-2",
+          "focus": "cytoplasm",
+          "pattern": "cytoplasm"
+        },
+        {
+          "id": "G7-L-2:mitochondria",
+          "competency": "G7-L-2",
+          "focus": "mitochondria",
+          "pattern": "mitochondri"
+        },
+        {
+          "id": "G7-L-2:chloroplasts",
+          "competency": "G7-L-2",
+          "focus": "chloroplasts",
+          "pattern": "chloroplast"
+        },
+        {
+          "id": "G7-L-2:observation-limits",
+          "competency": "G7-L-2",
+          "focus": "observed versus reference structures",
+          "pattern": "actually observe"
+        }
+      ]
+    },
+    {
+      "key": "g7:one-many-cells",
+      "quarter": 2,
+      "title": {
+        "en": "One Cell or Many?",
+        "tl": "Isa o Maraming Selula?",
+        "bis": "Usa o Daghang Selula?"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-L-3:unicellular",
+          "competency": "G7-L-3",
+          "focus": "unicellular",
+          "pattern": "unicellular|single.cell|one cell"
+        },
+        {
+          "id": "G7-L-3:multicellular",
+          "competency": "G7-L-3",
+          "focus": "multicellular",
+          "pattern": "multicellular|many cell"
+        }
+      ]
+    },
+    {
+      "key": "g7:plant-animal-cells",
+      "quarter": 2,
+      "title": {
+        "en": "Compare Plant and Animal Cells",
+        "tl": "Ihambing ang Selulang Halaman at Hayop",
+        "bis": "Itandi ang Selula sa Tanom ug Hayop"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-L-4:shared",
+          "competency": "G7-L-4",
+          "focus": "shared",
+          "pattern": "both|share|nucleus|membrane"
+        },
+        {
+          "id": "G7-L-4:wall",
+          "competency": "G7-L-4",
+          "focus": "wall",
+          "pattern": "cell wall"
+        },
+        {
+          "id": "G7-L-4:chloroplast",
+          "competency": "G7-L-4",
+          "focus": "chloroplast",
+          "pattern": "chloroplast"
+        },
+        {
+          "id": "G7-L-4:vacuole",
+          "competency": "G7-L-4",
+          "focus": "vacuole",
+          "pattern": "vacuole"
+        }
+      ]
+    },
+    {
+      "key": "g7:cell-division",
+      "quarter": 2,
+      "title": {
+        "en": "Mitosis and Meiosis",
+        "tl": "Mitosis at Meiosis",
+        "bis": "Mitosis ug Meiosis"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-L-5:mitosis",
+          "competency": "G7-L-5",
+          "focus": "mitosis",
+          "pattern": "mitosis"
+        },
+        {
+          "id": "G7-L-5:growth-repair",
+          "competency": "G7-L-5",
+          "focus": "growth repair",
+          "pattern": "growth|grow|repair"
+        },
+        {
+          "id": "G7-L-5:meiosis",
+          "competency": "G7-L-5",
+          "focus": "meiosis",
+          "pattern": "meiosis"
+        }
+      ]
+    },
+    {
+      "key": "g7:inherited-information",
+      "quarter": 2,
+      "title": {
+        "en": "Information From Both Parents",
+        "tl": "Impormasyon Mula sa Magulang",
+        "bis": "Impormasyon Gikan sa Ginikanan"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-L-6:meiosis",
+          "competency": "G7-L-6",
+          "focus": "meiosis",
+          "pattern": "meiosis|half.*chromosome"
+        },
+        {
+          "id": "G7-L-6:fertilization",
+          "competency": "G7-L-6",
+          "focus": "fertilization",
+          "pattern": "fertiliz|egg.*sperm|sperm.*egg"
+        },
+        {
+          "id": "G7-L-6:both-parents",
+          "competency": "G7-L-6",
+          "focus": "both parents",
+          "pattern": "both parent|mother.*father|maternal|paternal"
+        }
+      ]
+    },
+    {
+      "key": "g7:reproduction-types",
+      "quarter": 2,
+      "title": {
+        "en": "Sexual and Asexual Reproduction",
+        "tl": "Seksuwal at Aseksuwal na Pagpaparami",
+        "bis": "Seksuwal ug Aseksuwal nga Pagpadaghan"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-L-7:parents",
+          "competency": "G7-L-7",
+          "focus": "parents",
+          "pattern": "parent|sexual|asexual"
+        },
+        {
+          "id": "G7-L-7:similarity",
+          "competency": "G7-L-7",
+          "focus": "similarity",
+          "pattern": "identical|clone|differ|variation|similar"
+        }
+      ]
+    },
+    {
+      "key": "g7:biological-levels",
+      "quarter": 2,
+      "title": {
+        "en": "From Cells to the Biosphere",
+        "tl": "Mula Selula Hanggang Biosphere",
+        "bis": "Gikan sa Selula Hangtod Biosphere"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-L-8:cell-to-organism",
+          "competency": "G7-L-8",
+          "focus": "cell to organism",
+          "pattern": "cell.*tissue|organ.*system"
+        },
+        {
+          "id": "G7-L-8:organism-to-biosphere",
+          "competency": "G7-L-8",
+          "focus": "organism to biosphere",
+          "pattern": "population|community|ecosystem|biosphere"
+        },
+        {
+          "id": "G7-L-8:diagram",
+          "competency": "G7-L-8",
+          "focus": "diagram",
+          "pattern": "diagram|label|→"
+        }
+      ]
+    },
+    {
+      "key": "g7:trophic-levels",
+      "quarter": 2,
+      "title": {
+        "en": "Levels in an Energy Pyramid",
+        "tl": "Antas sa Piramide ng Enerhiya",
+        "bis": "Ang-ang sa Piramide sa Enerhiya"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-L-9:producers",
+          "competency": "G7-L-9",
+          "focus": "producers",
+          "pattern": "producer"
+        },
+        {
+          "id": "G7-L-9:consumers",
+          "competency": "G7-L-9",
+          "focus": "consumers",
+          "pattern": "consumer"
+        },
+        {
+          "id": "G7-L-9:pyramid",
+          "competency": "G7-L-9",
+          "focus": "pyramid",
+          "pattern": "pyramid|trophic"
+        }
+      ]
+    },
+    {
+      "key": "g7:energy-transfer",
+      "quarter": 2,
+      "title": {
+        "en": "Energy Between Trophic Levels",
+        "tl": "Enerhiya sa Pagitan ng mga Antas",
+        "bis": "Enerhiya Tali sa mga Ang-ang"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-L-10:transfer",
+          "competency": "G7-L-10",
+          "focus": "transfer",
+          "pattern": "transfer|pass|flow"
+        },
+        {
+          "id": "G7-L-10:less-energy",
+          "competency": "G7-L-10",
+          "focus": "less energy",
+          "pattern": "less|lost|loss|heat|10 percent|10%"
+        },
+        {
+          "id": "G7-L-10:example",
+          "competency": "G7-L-10",
+          "focus": "example",
+          "pattern": "grass|plant|rice|algae|plankton"
+        }
+      ]
+    },
+    {
+      "key": "g7:measuring-forces",
+      "quarter": 3,
+      "title": {
+        "en": "Forces Can Be Measured",
+        "tl": "Nasusukat ang Puwersa",
+        "bis": "Masukod ang Puwersa"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-F-1:interaction",
+          "competency": "G7-F-1",
+          "focus": "interaction",
+          "pattern": "push|pull|interact|between"
+        },
+        {
+          "id": "G7-F-1:measurement",
+          "competency": "G7-F-1",
+          "focus": "measurement",
+          "pattern": "newton|spring balance|force meter"
+        }
+      ]
+    },
+    {
+      "key": "g7:balanced-unbalanced",
+      "quarter": 3,
+      "title": {
+        "en": "Balanced or Unbalanced?",
+        "tl": "Balanse o Di-balanse?",
+        "bis": "Balanse o Dili Balanse?"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-F-2:rest",
+          "competency": "G7-F-2",
+          "focus": "rest",
+          "pattern": "rest|still|inclined"
+        },
+        {
+          "id": "G7-F-2:constant-velocity",
+          "competency": "G7-F-2",
+          "focus": "constant velocity",
+          "pattern": "constant.*(velocity|speed)|uniform"
+        },
+        {
+          "id": "G7-F-2:accelerating",
+          "competency": "G7-F-2",
+          "focus": "accelerating",
+          "pattern": "accelerat|fall|unbalanced"
+        }
+      ]
+    },
+    {
+      "key": "g7:force-diagrams",
+      "quarter": 3,
+      "title": {
+        "en": "Draw Force Arrows",
+        "tl": "Iguhit ang Palaso ng Puwersa",
+        "bis": "Idrowing ang Pana sa Puwersa"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-F-3:free-body",
+          "competency": "G7-F-3",
+          "focus": "free body",
+          "pattern": "free.body|diagram"
+        },
+        {
+          "id": "G7-F-3:magnitude",
+          "competency": "G7-F-3",
+          "focus": "magnitude",
+          "pattern": "length|longer|size|magnitude"
+        },
+        {
+          "id": "G7-F-3:direction",
+          "competency": "G7-F-3",
+          "focus": "direction",
+          "pattern": "direction|arrow"
+        },
+        {
+          "id": "G7-F-3:balanced",
+          "competency": "G7-F-3",
+          "focus": "balanced",
+          "pattern": "\\bbalanced\\b"
+        },
+        {
+          "id": "G7-F-3:unbalanced",
+          "competency": "G7-F-3",
+          "focus": "unbalanced force diagram",
+          "pattern": "\\bunbalanced\\b|net horizontal force"
+        }
+      ]
+    },
+    {
+      "key": "g7:net-force",
+      "quarter": 3,
+      "title": {
+        "en": "When Motion Changes",
+        "tl": "Kapag Nagbago ang Galaw",
+        "bis": "Kon Mausab ang Lihok"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-F-4:speed",
+          "competency": "G7-F-4",
+          "focus": "speed",
+          "pattern": "speed|accelerat"
+        },
+        {
+          "id": "G7-F-4:direction",
+          "competency": "G7-F-4",
+          "focus": "direction",
+          "pattern": "direction|turn|curv"
+        }
+      ]
+    },
+    {
+      "key": "g7:distance-displacement",
+      "quarter": 3,
+      "title": {
+        "en": "Distance and Displacement",
+        "tl": "Distansiya at Displacement",
+        "bis": "Distansiya ug Displacement"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-F-5:path",
+          "competency": "G7-F-5",
+          "focus": "path",
+          "pattern": "distance|path"
+        },
+        {
+          "id": "G7-F-5:start-end",
+          "competency": "G7-F-5",
+          "focus": "start end",
+          "pattern": "displacement|start.*end|reference"
+        },
+        {
+          "id": "G7-F-5:round-trip",
+          "competency": "G7-F-5",
+          "focus": "round trip",
+          "pattern": "return|back.*start|zero"
+        }
+      ]
+    },
+    {
+      "key": "g7:speed-velocity",
+      "quarter": 3,
+      "title": {
+        "en": "Speed and Velocity",
+        "tl": "Bilis at Velocity",
+        "bis": "Katulin ug Velocity"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-F-6:speed",
+          "competency": "G7-F-6",
+          "focus": "speed",
+          "pattern": "\\bspeed\\b"
+        },
+        {
+          "id": "G7-F-6:vector",
+          "competency": "G7-F-6",
+          "focus": "vector",
+          "pattern": "direction|vector"
+        },
+        {
+          "id": "G7-F-6:comparison",
+          "competency": "G7-F-6",
+          "focus": "comparison",
+          "pattern": "speed.*velocity|velocity.*speed"
+        }
+      ]
+    },
+    {
+      "key": "g7:motion-graphs",
+      "quarter": 3,
+      "title": {
+        "en": "Graph Uniform Motion",
+        "tl": "Grap ng Pantay na Galaw",
+        "bis": "Grap sa Kanunay nga Lihok"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-F-7:uniform",
+          "competency": "G7-F-7",
+          "focus": "uniform",
+          "pattern": "uniform|constant"
+        },
+        {
+          "id": "G7-F-7:distance-time",
+          "competency": "G7-F-7",
+          "focus": "distance time",
+          "pattern": "distance.time"
+        },
+        {
+          "id": "G7-F-7:graph",
+          "competency": "G7-F-7",
+          "focus": "graph",
+          "pattern": "graph|plot|axis|axes|slope"
+        },
+        {
+          "id": "G7-F-7:direction-evidence",
+          "competency": "G7-F-7",
+          "focus": "graph alone does not show direction",
+          "pattern": "graph alone does not show direction"
+        }
+      ]
+    },
+    {
+      "key": "g7:heat-temperature",
+      "quarter": 3,
+      "title": {
+        "en": "Heat Is Not Temperature",
+        "tl": "Init at Temperatura",
+        "bis": "Kainit ug Temperatura"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-F-8:heat-transfer",
+          "competency": "G7-F-8",
+          "focus": "heat transfer",
+          "pattern": "heat.*(transfer|flow)|transfer.*energy"
+        },
+        {
+          "id": "G7-F-8:temperature",
+          "competency": "G7-F-8",
+          "focus": "temperature",
+          "pattern": "temperature.*(average|kinetic|particle)|(average|kinetic).*temperature"
+        }
+      ]
+    },
+    {
+      "key": "g7:heat-transfer-uses",
+      "quarter": 3,
+      "title": {
+        "en": "When Heat Transfer Helps or Hurts",
+        "tl": "Pakinabang at Pinsala ng Paglipat ng Init",
+        "bis": "Kaayohan ug Kadaot sa Pagbalhin sa Kainit"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-F-9:conduction",
+          "competency": "G7-F-9",
+          "focus": "conduction",
+          "pattern": "conduction"
+        },
+        {
+          "id": "G7-F-9:convection",
+          "competency": "G7-F-9",
+          "focus": "convection",
+          "pattern": "convection"
+        },
+        {
+          "id": "G7-F-9:radiation",
+          "competency": "G7-F-9",
+          "focus": "radiation",
+          "pattern": "radiation"
+        },
+        {
+          "id": "G7-F-9:advantage",
+          "competency": "G7-F-9",
+          "focus": "advantage",
+          "pattern": "useful|help|benefit|cook|warm"
+        },
+        {
+          "id": "G7-F-9:disadvantage",
+          "competency": "G7-F-9",
+          "focus": "disadvantage",
+          "pattern": "burn|overheat|unwanted|harm|danger"
+        }
+      ]
+    },
+    {
+      "key": "g7:heat-particles",
+      "quarter": 3,
+      "title": {
+        "en": "Particles Transfer Heat",
+        "tl": "Paglipat ng Init sa Partikulo",
+        "bis": "Pagbalhin sa Kainit sa Partikulo"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-F-10:conduction",
+          "competency": "G7-F-10",
+          "focus": "conduction",
+          "pattern": "conduction|collision|collid"
+        },
+        {
+          "id": "G7-F-10:convection",
+          "competency": "G7-F-10",
+          "focus": "convection",
+          "pattern": "convection|bulk|rise|sink"
+        }
+      ]
+    },
+    {
+      "key": "g7:heat-electricity",
+      "quarter": 3,
+      "title": {
+        "en": "Turning Heat Into Electricity",
+        "tl": "Mula Init Tungo sa Kuryente",
+        "bis": "Gikan sa Kainit Ngadto sa Elektrisidad"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-F-11:device",
+          "competency": "G7-F-11",
+          "focus": "device",
+          "pattern": "thermoelectric|Seebeck|heat.*electric|electric.*heat"
+        },
+        {
+          "id": "G7-F-11:secondary-source",
+          "competency": "G7-F-11",
+          "focus": "secondary source",
+          "pattern": "reliable.*(article|book)|research.*(device|thermoelectric)"
+        }
+      ]
+    },
+    {
+      "key": "g7:fault-types",
+      "quarter": 4,
+      "title": {
+        "en": "Classify Faults",
+        "tl": "Uriin ang Fault",
+        "bis": "Iklasipikar ang Fault"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-E-1:normal",
+          "competency": "G7-E-1",
+          "focus": "normal",
+          "pattern": "normal fault"
+        },
+        {
+          "id": "G7-E-1:reverse",
+          "competency": "G7-E-1",
+          "focus": "reverse",
+          "pattern": "reverse|thrust"
+        },
+        {
+          "id": "G7-E-1:strike-slip",
+          "competency": "G7-E-1",
+          "focus": "strike slip",
+          "pattern": "strike.slip"
+        },
+        {
+          "id": "G7-E-1:angle",
+          "competency": "G7-E-1",
+          "focus": "angle",
+          "pattern": "angle|dip|steep|plane"
+        }
+      ]
+    },
+    {
+      "key": "g7:fault-models",
+      "quarter": 4,
+      "title": {
+        "en": "Model Fault Movement",
+        "tl": "Modelo ng Galaw ng Fault",
+        "bis": "Modelo sa Lihok sa Fault"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-E-2:slip-earthquake",
+          "competency": "G7-E-2",
+          "focus": "slip earthquake",
+          "pattern": "slip|release|stick"
+        },
+        {
+          "id": "G7-E-2:model",
+          "competency": "G7-E-2",
+          "focus": "model",
+          "pattern": "model|illustrat"
+        },
+        {
+          "id": "G7-E-2:philippine-context",
+          "competency": "G7-E-2",
+          "focus": "philippine context",
+          "pattern": "Philippin|Valley Fault|subduct|converg"
+        }
+      ]
+    },
+    {
+      "key": "g7:earthquake-effects",
+      "quarter": 4,
+      "title": {
+        "en": "What Shapes Earthquake Damage?",
+        "tl": "Ano ang Nakaaapekto sa Pinsala ng Lindol?",
+        "bis": "Unsay Makaapekto sa Kadaot sa Linog?"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-E-3:magnitude",
+          "competency": "G7-E-3",
+          "focus": "magnitude",
+          "pattern": "magnitude"
+        },
+        {
+          "id": "G7-E-3:community-effects",
+          "competency": "G7-E-3",
+          "focus": "community effects",
+          "pattern": "damage|building|communit"
+        },
+        {
+          "id": "G7-E-3:other-factors",
+          "competency": "G7-E-3",
+          "focus": "other factors",
+          "pattern": "(damage|intensity|shaking).*(distance|depth|soil|building)|(distance|depth|soil|building).*(damage|intensity|shaking)"
+        }
+      ]
+    },
+    {
+      "key": "g7:local-faults",
+      "quarter": 4,
+      "title": {
+        "en": "Find Local Fault Information",
+        "tl": "Hanapin ang Lokal na Fault",
+        "bis": "Pangitaa ang Lokal nga Fault"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-E-4:official-map",
+          "competency": "G7-E-4",
+          "focus": "official map",
+          "pattern": "FaultFinder|HazardHunter|PHIVOLCS|hazard map"
+        },
+        {
+          "id": "G7-E-4:risk",
+          "competency": "G7-E-4",
+          "focus": "risk",
+          "pattern": "risk|hazard|distance"
+        }
+      ]
+    },
+    {
+      "key": "g7:earthquake-models",
+      "quarter": 4,
+      "title": {
+        "en": "Model an Earthquake",
+        "tl": "Modelo ng Lindol",
+        "bis": "Modelo sa Linog"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-E-5:focus-epicenter",
+          "competency": "G7-E-5",
+          "focus": "focus epicenter",
+          "pattern": "focus|epicenter"
+        },
+        {
+          "id": "G7-E-5:intensity-magnitude",
+          "competency": "G7-E-5",
+          "focus": "intensity magnitude",
+          "pattern": "intensit.*magnitude|magnitude.*intensit"
+        },
+        {
+          "id": "G7-E-5:tsunami-conditions",
+          "competency": "G7-E-5",
+          "focus": "tsunami conditions",
+          "pattern": "tsunami"
+        },
+        {
+          "id": "G7-E-5:model",
+          "competency": "G7-E-5",
+          "focus": "model",
+          "pattern": "model|tray|draw"
+        }
+      ]
+    },
+    {
+      "key": "g7:earthquake-plan",
+      "quarter": 4,
+      "title": {
+        "en": "Practice the Local Earthquake Plan",
+        "tl": "Isagawa ang Lokal na Plano sa Lindol",
+        "bis": "Praktisa ang Lokal nga Plano sa Linog"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-E-6:during",
+          "competency": "G7-E-6",
+          "focus": "during",
+          "pattern": "\\bduck\\b|\\bdrop\\b|\\bcover\\b|\\bhold\\b"
+        },
+        {
+          "id": "G7-E-6:after",
+          "competency": "G7-E-6",
+          "focus": "after",
+          "pattern": "after|evacuat"
+        },
+        {
+          "id": "G7-E-6:local-plan",
+          "competency": "G7-E-6",
+          "focus": "local plan",
+          "pattern": "local|school.*plan|drill|barangay"
+        }
+      ]
+    },
+    {
+      "key": "g7:tsunami-generation",
+      "quarter": 4,
+      "title": {
+        "en": "How Tsunamis Form",
+        "tl": "Pagbuo ng Tsunami",
+        "bis": "Pagkaporma sa Tsunami"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-E-7:displacement",
+          "competency": "G7-E-7",
+          "focus": "displacement",
+          "pattern": "seafloor|seabed|displac"
+        },
+        {
+          "id": "G7-E-7:coastal-impact",
+          "competency": "G7-E-7",
+          "focus": "coastal impact",
+          "pattern": "coast|shore|shallow|inundat"
+        }
+      ]
+    },
+    {
+      "key": "g7:tsunami-alerts",
+      "quarter": 4,
+      "title": {
+        "en": "Tsunami Alerts and Action",
+        "tl": "Babala at Aksiyon sa Tsunami",
+        "bis": "Pasidaan ug Aksiyon sa Tsunami"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-E-8:official-warning",
+          "competency": "G7-E-8",
+          "focus": "official warning",
+          "pattern": "PHIVOLCS|warning|siren|alert"
+        },
+        {
+          "id": "G7-E-8:natural-signs",
+          "competency": "G7-E-8",
+          "focus": "natural signs",
+          "pattern": "natural (sign|warning)|sea.*(rise|fall|roar)|ocean roar"
+        },
+        {
+          "id": "G7-E-8:evacuation",
+          "competency": "G7-E-8",
+          "focus": "evacuation",
+          "pattern": "high ground|higher ground|inland|evacuat"
+        },
+        {
+          "id": "G7-E-8:return",
+          "competency": "G7-E-8",
+          "focus": "return",
+          "pattern": "all.clear|return|several.*wave|first wave"
+        }
+      ]
+    },
+    {
+      "key": "g7:sun-atmosphere",
+      "quarter": 4,
+      "title": {
+        "en": "Sunlight Meets the Atmosphere",
+        "tl": "Sikat ng Araw at Atmospera",
+        "bis": "Kahayag sa Adlaw ug Atmospera"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-E-9:absorb",
+          "competency": "G7-E-9",
+          "focus": "absorb",
+          "pattern": "absorb"
+        },
+        {
+          "id": "G7-E-9:reflect-scatter",
+          "competency": "G7-E-9",
+          "focus": "reflect scatter",
+          "pattern": "reflect|scatter"
+        },
+        {
+          "id": "G7-E-9:warming",
+          "competency": "G7-E-9",
+          "focus": "warming",
+          "pattern": "warm|heat|greenhouse"
+        }
+      ]
+    },
+    {
+      "key": "g7:sunlight-angle",
+      "quarter": 4,
+      "title": {
+        "en": "Model Sunlight Through the Year",
+        "tl": "Modelo ng Sikat ng Araw sa Buong Taon",
+        "bis": "Modelo sa Kahayag sa Tibuok Tuig"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-E-10:tilt-orbit",
+          "competency": "G7-E-10",
+          "focus": "tilt orbit",
+          "pattern": "tilt|orbit"
+        },
+        {
+          "id": "G7-E-10:intensity",
+          "competency": "G7-E-10",
+          "focus": "intensity",
+          "pattern": "angle|spread|intens|slanted.*(ground|light)"
+        },
+        {
+          "id": "G7-E-10:model",
+          "competency": "G7-E-10",
+          "focus": "model",
+          "pattern": "model|globe|flashlight|torch|lamp"
+        }
+      ]
+    },
+    {
+      "key": "g7:day-length",
+      "quarter": 4,
+      "title": {
+        "en": "Why Day Length Changes",
+        "tl": "Pagbabago ng Haba ng Araw",
+        "bis": "Nganong Mausab ang Gitas-on sa Adlaw"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G7-E-11:day-length",
+          "competency": "G7-E-11",
+          "focus": "day length",
+          "pattern": "daylight|day length|longer day|shorter day|length.*day"
+        },
+        {
+          "id": "G7-E-11:tilt-model",
+          "competency": "G7-E-11",
+          "focus": "tilt model",
+          "pattern": "(model|globe|lamp).*tilt|tilt.*(model|globe|lamp)"
+        }
+      ]
+    },
+    {
+      "key": "g7:solar-winds",
+      "quarter": 4,
+      "title": {
+        "en": "Sunlight Drives Wind Patterns",
+        "tl": "Sikat ng Araw at Padron ng Hangin",
+        "bis": "Kahayag sa Adlaw ug Padron sa Hangin"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G7-E-12:land-sea-breeze",
+          "competency": "G7-E-12",
+          "focus": "land sea breeze",
+          "pattern": "land breeze|sea breeze"
+        },
+        {
+          "id": "G7-E-12:monsoon",
+          "competency": "G7-E-12",
+          "focus": "monsoon",
+          "pattern": "monsoon|amihan|habagat"
+        },
+        {
+          "id": "G7-E-12:itcz",
+          "competency": "G7-E-12",
+          "focus": "itcz",
+          "pattern": "ITCZ|intertropical"
+        },
+        {
+          "id": "G7-E-12:solar-heating",
+          "competency": "G7-E-12",
+          "focus": "solar heating",
+          "pattern": "heat|solar|Sun"
+        }
+      ]
+    }
+  ],
+  "excludedCardIds": [
+    "ffct-16922",
+    "ffct-20587",
+    "ffct-20190",
+    "ffct-01611",
+    "ffct-02138",
+    "ffct-23889",
+    "ffct-27778",
+    "ffct-23635",
+    "ffct-32918",
+    "ffct-30584",
+    "ffct-37195",
+    "ffct-37199",
+    "ffct-37978",
+    "ffct-21905",
+    "dcard-09481"
+  ]
+}

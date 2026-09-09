@@ -2,7 +2,7 @@ import { errorCategory, newId, track } from './index';
 /** Call only for a real transfer attempt; cache hits use asset_available instead. */
 export function beginDownload(
   asset: string,
-  assetKind: 'model' | 'images' | 'vectors' | 'adapter',
+  assetKind: 'model' | 'images' | 'vectors' | 'adapter' | 'apk',
   expectedBytes: number,
   offset = 0,
   attempt = 1

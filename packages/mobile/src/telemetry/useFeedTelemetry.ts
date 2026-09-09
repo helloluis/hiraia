@@ -1,3 +1,5 @@
+import { useReviewStore } from '../reviews/store';
+import { useProfiles } from '../profiles';
 import { useFocusEffect } from 'expo-router';
 import { useCallback } from 'react';
 import { AppState } from 'react-native';
@@ -6,6 +8,8 @@ import { useEngineStore } from '../store/engineStore';
 import { showQuiz, viewCard } from './views';
 
 export function useFeedTelemetry() {
+  const profiles = useProfiles();
+  const reviewing = useReviewStore(s=>s.open||s.busy||!!s.error);
   const pageKey = useCardStore((s) => s.pageKey);
   const current = useCardStore((s) => s.current);
   const question = useCardStore((s) => s.question);
@@ -19,12 +23,23 @@ export function useFeedTelemetry() {
       let timer: ReturnType<typeof setTimeout> | undefined;
       const schedule = () => {
         clearTimeout(timer);
-        if (AppState.currentState !== 'active' || !hydrated || onboarding || reward) return;
+        if (
+          AppState.currentState !== 'active' ||
+          !hydrated ||
+          onboarding ||
+          profiles.choosing ||
+          !profiles.ready ||
+          reward || reviewing
+        )
+          return;
         // Committed, focused page visible for 500 ms; no preloads or outgoing animation copies.
         timer = setTimeout(() => {
           if (question) showQuiz(pageKey, question.f, language);
           else if (response?.kind === 'generated') viewCard(pageKey, 'generated', language);
-          else if (!response && current) viewCard(pageKey, 'curated', language, current.id);
+          else if (!response && current) {
+            viewCard(pageKey, 'curated', language, current.id);
+            useCardStore.getState().prepareReview();
+          }
         }, 500);
       };
       schedule();
@@ -33,6 +48,18 @@ export function useFeedTelemetry() {
         clearTimeout(timer);
         sub.remove();
       };
-    }, [pageKey, current, question, response, reward, hydrated, onboarding, language])
+    }, [
+      reviewing,
+      pageKey,
+      current,
+      question,
+      response,
+      reward,
+      hydrated,
+      onboarding,
+      language,
+      profiles.choosing,
+      profiles.ready,
+    ])
   );
 }

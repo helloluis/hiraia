@@ -1,0 +1,954 @@
+{
+  "version": 1,
+  "grade": 3,
+  "reference": "MATATAG Science Grades 3–10, August 2023; numbered objectives in local curriculum extract",
+  "lessons": [
+    {
+      "key": "g3:everyday-science",
+      "quarter": 1,
+      "title": {
+        "en": "Science Around Us",
+        "tl": "Agham sa Paligid",
+        "bis": "Siyensya sa Palibot"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G3-M-1:local-examples",
+          "competency": "G3-M-1",
+          "focus": "local examples",
+          "pattern": "rain|cook|shadow|melt|plant|dry"
+        }
+      ]
+    },
+    {
+      "key": "g3:exploring",
+      "quarter": 1,
+      "title": {
+        "en": "Ask and Try",
+        "tl": "Magtanong at Sumubok",
+        "bis": "Mangutana ug Sulayi"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G3-M-2:questions",
+          "competency": "G3-M-2",
+          "focus": "questions",
+          "pattern": "question|ask"
+        },
+        {
+          "id": "G3-M-2:guided-tinkering",
+          "competency": "G3-M-2",
+          "focus": "guided tinkering",
+          "pattern": "(?=.*(teacher|guided|try|test))(?=.*(material|paper|clay|balloon|object))"
+        }
+      ]
+    },
+    {
+      "key": "g3:science-tools",
+      "quarter": 1,
+      "title": {
+        "en": "Our Science Tools",
+        "tl": "Mga Gamit sa Agham",
+        "bis": "Mga Gamit sa Siyensya"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G3-M-3:ruler",
+          "competency": "G3-M-3",
+          "focus": "ruler",
+          "pattern": "ruler.*(measure|length)|measure.*ruler"
+        },
+        {
+          "id": "G3-M-3:hand-lens",
+          "competency": "G3-M-3",
+          "focus": "hand lens",
+          "pattern": "(lens|magnif).*(larger|bigger|small|detail)"
+        },
+        {
+          "id": "G3-M-3:scissors",
+          "competency": "G3-M-3",
+          "focus": "scissors",
+          "pattern": "scissor.*cut"
+        },
+        {
+          "id": "G3-M-3:balloons",
+          "competency": "G3-M-3",
+          "focus": "balloons",
+          "pattern": "balloon"
+        },
+        {
+          "id": "G3-M-3:clay",
+          "competency": "G3-M-3",
+          "focus": "clay",
+          "pattern": "clay"
+        },
+        {
+          "id": "G3-M-3:cardboard",
+          "competency": "G3-M-3",
+          "focus": "cardboard",
+          "pattern": "cardboard.*(join|model|build|tape)|join.*cardboard"
+        }
+      ]
+    },
+    {
+      "key": "g3:science-skills",
+      "quarter": 1,
+      "title": {
+        "en": "Observe, Predict, Measure",
+        "tl": "Magmasid, Maghula, Magsukat",
+        "bis": "Obserbahi, Tagnaa, Sukda"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G3-M-4:observing",
+          "competency": "G3-M-4",
+          "focus": "observing",
+          "pattern": "observ"
+        },
+        {
+          "id": "G3-M-4:predicting",
+          "competency": "G3-M-4",
+          "focus": "predicting",
+          "pattern": "predict"
+        },
+        {
+          "id": "G3-M-4:millimeters",
+          "competency": "G3-M-4",
+          "focus": "millimeters",
+          "pattern": "millimet"
+        },
+        {
+          "id": "G3-M-4:centimeters",
+          "competency": "G3-M-4",
+          "focus": "centimeters",
+          "pattern": "centimet"
+        },
+        {
+          "id": "G3-M-4:meters",
+          "competency": "G3-M-4",
+          "focus": "meters",
+          "pattern": "\\bmet(er|re)s?\\b"
+        }
+      ]
+    },
+    {
+      "key": "g3:solid-properties",
+      "quarter": 1,
+      "title": {
+        "en": "Properties of Solids",
+        "tl": "Katangian ng Solid",
+        "bis": "Kinaiya sa Solid"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G3-M-5:hardness",
+          "competency": "G3-M-5",
+          "focus": "hardness",
+          "pattern": "hard.*(press|scratch|shape)|soft"
+        },
+        {
+          "id": "G3-M-5:shine",
+          "competency": "G3-M-5",
+          "focus": "shine",
+          "pattern": "shiny|shine|luster|lustre"
+        },
+        {
+          "id": "G3-M-5:stretch",
+          "competency": "G3-M-5",
+          "focus": "stretch",
+          "pattern": "stretch|elastic"
+        }
+      ]
+    },
+    {
+      "key": "g3:harmful-changes",
+      "quarter": 1,
+      "title": {
+        "en": "Harmful Material Changes",
+        "tl": "Mapaminsalang Pagbabago",
+        "bis": "Makadaot nga Kausaban"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G3-M-6:burning",
+          "competency": "G3-M-6",
+          "focus": "burning",
+          "pattern": "burn.*(smoke|harm|toxic|air)"
+        },
+        {
+          "id": "G3-M-6:trash",
+          "competency": "G3-M-6",
+          "focus": "trash",
+          "pattern": "trash|garbage|waste|litter"
+        }
+      ]
+    },
+    {
+      "key": "g3:safe-materials",
+      "quarter": 1,
+      "title": {
+        "en": "Use and Dispose Safely",
+        "tl": "Ligtas na Paggamit at Pagtatapon",
+        "bis": "Luwas nga Paggamit ug Paglabay"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G3-M-7:reuse",
+          "competency": "G3-M-7",
+          "focus": "reuse",
+          "pattern": "reuse|re.use"
+        },
+        {
+          "id": "G3-M-7:oil",
+          "competency": "G3-M-7",
+          "focus": "oil",
+          "pattern": "\\boil\\b"
+        },
+        {
+          "id": "G3-M-7:recycle",
+          "competency": "G3-M-7",
+          "focus": "recycle",
+          "pattern": "recycl"
+        },
+        {
+          "id": "G3-M-7:handling",
+          "competency": "G3-M-7",
+          "focus": "handling",
+          "pattern": "sharp|broken glass|glove|handle|handling"
+        }
+      ]
+    },
+    {
+      "key": "g3:useful-changes",
+      "quarter": 1,
+      "title": {
+        "en": "Making Solids Useful",
+        "tl": "Pagpapakinabang sa Solid",
+        "bis": "Paghimong Mapuslanon sa Solid"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G3-M-8:shaping",
+          "competency": "G3-M-8",
+          "focus": "shaping",
+          "pattern": "shap"
+        },
+        {
+          "id": "G3-M-8:pressing",
+          "competency": "G3-M-8",
+          "focus": "pressing",
+          "pattern": "press"
+        },
+        {
+          "id": "G3-M-8:hammering",
+          "competency": "G3-M-8",
+          "focus": "hammering",
+          "pattern": "hammer"
+        },
+        {
+          "id": "G3-M-8:joining",
+          "competency": "G3-M-8",
+          "focus": "joining",
+          "pattern": "\\bjoin(ing|ed)?\\b"
+        },
+        {
+          "id": "G3-M-8:cutting",
+          "competency": "G3-M-8",
+          "focus": "cutting",
+          "pattern": "cut"
+        }
+      ]
+    },
+    {
+      "key": "g3:community-metals",
+      "quarter": 1,
+      "title": {
+        "en": "Metals We Use",
+        "tl": "Mga Metal na Ginagamit",
+        "bis": "Mga Metal nga Gigamit"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G3-M-9:iron",
+          "competency": "G3-M-9",
+          "focus": "iron",
+          "pattern": "iron"
+        },
+        {
+          "id": "G3-M-9:gold",
+          "competency": "G3-M-9",
+          "focus": "gold",
+          "pattern": "gold"
+        },
+        {
+          "id": "G3-M-9:silver",
+          "competency": "G3-M-9",
+          "focus": "silver",
+          "pattern": "silver"
+        },
+        {
+          "id": "G3-M-9:copper",
+          "competency": "G3-M-9",
+          "focus": "copper",
+          "pattern": "copper"
+        }
+      ]
+    },
+    {
+      "key": "g3:living-things-investigation",
+      "quarter": 2,
+      "title": {
+        "en": "Investigate Living Things",
+        "tl": "Pagsisiyasat sa Buhay na Bagay",
+        "bis": "Pagsusi sa Buhing Butang"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G3-L-1:observe",
+          "competency": "G3-L-1",
+          "focus": "observe",
+          "pattern": "observ"
+        },
+        {
+          "id": "G3-L-1:predict",
+          "competency": "G3-L-1",
+          "focus": "predict",
+          "pattern": "predict"
+        },
+        {
+          "id": "G3-L-1:measure",
+          "competency": "G3-L-1",
+          "focus": "measure",
+          "pattern": "measur"
+        },
+        {
+          "id": "G3-L-1:guided-activity",
+          "competency": "G3-L-1",
+          "focus": "Guided observation prediction and measurement",
+          "pattern": "(?=.*(teacher|guided))(?=.*observ)(?=.*predict)(?=.*measur)"
+        }
+      ]
+    },
+    {
+      "key": "g3:living-or-not",
+      "quarter": 2,
+      "title": {
+        "en": "Living and Non-living",
+        "tl": "Buhay at Di-buhay",
+        "bis": "Buhi ug Dili-buhi"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G3-L-2:comparison",
+          "competency": "G3-L-2",
+          "focus": "comparison",
+          "pattern": "living.*non.living|non.living.*living"
+        },
+        {
+          "id": "G3-L-2:local-examples",
+          "competency": "G3-L-2",
+          "focus": "local examples",
+          "pattern": "plant|dog|cat|rock|chair|tree"
+        }
+      ]
+    },
+    {
+      "key": "g3:signs-of-life",
+      "quarter": 2,
+      "title": {
+        "en": "Signs of Life",
+        "tl": "Palatandaan ng Buhay",
+        "bis": "Mga Timailhan sa Kinabuhi"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G3-L-3:grow",
+          "competency": "G3-L-3",
+          "focus": "grow",
+          "pattern": "grow"
+        },
+        {
+          "id": "G3-L-3:respond",
+          "competency": "G3-L-3",
+          "focus": "respond",
+          "pattern": "respond|response|react"
+        },
+        {
+          "id": "G3-L-3:reproduce",
+          "competency": "G3-L-3",
+          "focus": "reproduce",
+          "pattern": "reproduc|offspring|babies|young"
+        }
+      ]
+    },
+    {
+      "key": "g3:animal-parts",
+      "quarter": 2,
+      "title": {
+        "en": "Animal Parts and Their Jobs",
+        "tl": "Bahagi ng Hayop at Gawain Nito",
+        "bis": "Bahin sa Hayop ug Buluhaton Niini"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G3-L-4:legs",
+          "competency": "G3-L-4",
+          "focus": "legs",
+          "pattern": "leg.*(walk|run|jump|move)"
+        },
+        {
+          "id": "G3-L-4:wings",
+          "competency": "G3-L-4",
+          "focus": "wings",
+          "pattern": "wing.*(fly|flight|move)"
+        },
+        {
+          "id": "G3-L-4:feeding",
+          "competency": "G3-L-4",
+          "focus": "feeding",
+          "pattern": "beak|mouth|teeth|tongue"
+        },
+        {
+          "id": "G3-L-4:other-movement",
+          "competency": "G3-L-4",
+          "focus": "other movement",
+          "pattern": "fin|tail|flipper"
+        }
+      ]
+    },
+    {
+      "key": "g3:plant-parts",
+      "quarter": 2,
+      "title": {
+        "en": "Plant Parts and Their Jobs",
+        "tl": "Bahagi ng Halaman at Gawain Nito",
+        "bis": "Bahin sa Tanom ug Buluhaton Niini"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G3-L-5:roots",
+          "competency": "G3-L-5",
+          "focus": "roots",
+          "pattern": "root.*(water|nutrient|absorb)"
+        },
+        {
+          "id": "G3-L-5:stems",
+          "competency": "G3-L-5",
+          "focus": "stems",
+          "pattern": "stem.*(water|support|carry|transport)"
+        },
+        {
+          "id": "G3-L-5:leaves",
+          "competency": "G3-L-5",
+          "focus": "leaves",
+          "pattern": "lea(f|ves).*(food|sunlight|light)"
+        }
+      ]
+    },
+    {
+      "key": "g3:basic-needs",
+      "quarter": 2,
+      "title": {
+        "en": "What Living Things Need",
+        "tl": "Kailangan ng Buhay na Bagay",
+        "bis": "Gikinahanglan sa Buhing Butang"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G3-L-6:air",
+          "competency": "G3-L-6",
+          "focus": "air",
+          "pattern": "air|oxygen"
+        },
+        {
+          "id": "G3-L-6:food",
+          "competency": "G3-L-6",
+          "focus": "food",
+          "pattern": "food"
+        },
+        {
+          "id": "G3-L-6:water",
+          "competency": "G3-L-6",
+          "focus": "water",
+          "pattern": "water"
+        },
+        {
+          "id": "G3-L-6:shelter",
+          "competency": "G3-L-6",
+          "focus": "shelter",
+          "pattern": "shelter|home|protect"
+        }
+      ]
+    },
+    {
+      "key": "g3:depending-on-nature",
+      "quarter": 2,
+      "title": {
+        "en": "Living Things Depend on Each Other",
+        "tl": "Pag-asa ng Buhay na Bagay sa Isa’t Isa",
+        "bis": "Pagsalig sa Buhing Butang sa Usag Usa"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G3-L-7:food-and-shelter",
+          "competency": "G3-L-7",
+          "focus": "food and shelter",
+          "pattern": "food|eat|shelter"
+        },
+        {
+          "id": "G3-L-7:environment",
+          "competency": "G3-L-7",
+          "focus": "environment",
+          "pattern": "water|soil|air|sun"
+        }
+      ]
+    },
+    {
+      "key": "g3:protecting-nature",
+      "quarter": 2,
+      "title": {
+        "en": "Protect Our Environment",
+        "tl": "Pangalagaan ang Kapaligiran",
+        "bis": "Panalipdi ang Kalikupan"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G3-L-8:protect-habitats",
+          "competency": "G3-L-8",
+          "focus": "protect habitats",
+          "pattern": "habitat|home|tree|forest"
+        },
+        {
+          "id": "G3-L-8:care-actions",
+          "competency": "G3-L-8",
+          "focus": "care actions",
+          "pattern": "plant|clean|protect|conserv|recycl"
+        }
+      ]
+    },
+    {
+      "key": "g3:moving-things",
+      "quarter": 3,
+      "title": {
+        "en": "Ways to Move Things",
+        "tl": "Mga Paraan ng Pagpapagalaw",
+        "bis": "Mga Paagi sa Pagpalihok"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G3-F-1:wind",
+          "competency": "G3-F-1",
+          "focus": "wind",
+          "pattern": "wind"
+        },
+        {
+          "id": "G3-F-1:water",
+          "competency": "G3-F-1",
+          "focus": "water",
+          "pattern": "water"
+        },
+        {
+          "id": "G3-F-1:push",
+          "competency": "G3-F-1",
+          "focus": "push",
+          "pattern": "push"
+        },
+        {
+          "id": "G3-F-1:pull",
+          "competency": "G3-F-1",
+          "focus": "pull",
+          "pattern": "pull"
+        },
+        {
+          "id": "G3-F-1:roll",
+          "competency": "G3-F-1",
+          "focus": "roll",
+          "pattern": "roll"
+        },
+        {
+          "id": "G3-F-1:carry",
+          "competency": "G3-F-1",
+          "focus": "carry",
+          "pattern": "carry.*(bag|box|book)|(person|people|you).*carry"
+        }
+      ]
+    },
+    {
+      "key": "g3:movement-factors",
+      "quarter": 3,
+      "title": {
+        "en": "What Changes Movement?",
+        "tl": "Ano ang Nakaaapekto sa Galaw?",
+        "bis": "Unsay Makaapekto sa Lihok?"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G3-F-2:size",
+          "competency": "G3-F-2",
+          "focus": "size",
+          "pattern": "(?=.*(ball|box|object|toy))(?=.*(big|small|size))"
+        },
+        {
+          "id": "G3-F-2:shape",
+          "competency": "G3-F-2",
+          "focus": "shape",
+          "pattern": "\\bshape\\b|\\bround\\b|\\bflat\\b"
+        },
+        {
+          "id": "G3-F-2:weight",
+          "competency": "G3-F-2",
+          "focus": "weight",
+          "pattern": "(?=.*(heavy|heavier|weight))(?=.*(push|pull|roll|move))"
+        },
+        {
+          "id": "G3-F-2:material",
+          "competency": "G3-F-2",
+          "focus": "material",
+          "pattern": "(?=.*(rubber|wood|metal|material))(?=.*(bounce|roll|slide|move))"
+        },
+        {
+          "id": "G3-F-2:surface",
+          "competency": "G3-F-2",
+          "focus": "surface",
+          "pattern": "(?=.*(rough|smooth|surface))(?=.*(slide|roll|move))"
+        }
+      ]
+    },
+    {
+      "key": "g3:position",
+      "quarter": 3,
+      "title": {
+        "en": "Where Did It Move?",
+        "tl": "Saan Ito Gumalaw?",
+        "bis": "Asa Kini Milihok?"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G3-F-3:near-far",
+          "competency": "G3-F-3",
+          "focus": "near far",
+          "pattern": "closer|farther|nearer"
+        },
+        {
+          "id": "G3-F-3:left-right",
+          "competency": "G3-F-3",
+          "focus": "left right",
+          "pattern": "left|right"
+        },
+        {
+          "id": "G3-F-3:measure-change",
+          "competency": "G3-F-3",
+          "focus": "measure change",
+          "pattern": "measur|centimet|meter|metre"
+        }
+      ]
+    },
+    {
+      "key": "g3:sound",
+      "quarter": 3,
+      "title": {
+        "en": "Making and Hearing Sound",
+        "tl": "Paglikha at Pagdinig ng Tunog",
+        "bis": "Paghimo ug Pagkadungog sa Tingog"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G3-F-4:vibration",
+          "competency": "G3-F-4",
+          "focus": "vibration",
+          "pattern": "vibrat"
+        },
+        {
+          "id": "G3-F-4:transfer",
+          "competency": "G3-F-4",
+          "focus": "transfer",
+          "pattern": "travel|air|reach|transfer"
+        }
+      ]
+    },
+    {
+      "key": "g3:light",
+      "quarter": 3,
+      "title": {
+        "en": "Light Around Us",
+        "tl": "Liwanag sa Paligid",
+        "bis": "Kahayag sa Palibot"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G3-F-5:sources",
+          "competency": "G3-F-5",
+          "focus": "sources",
+          "pattern": "sun|lamp|torch|flashlight|candle"
+        },
+        {
+          "id": "G3-F-5:uses",
+          "competency": "G3-F-5",
+          "focus": "uses",
+          "pattern": "\\bsee\\b|\\bread\\b|light.*room"
+        },
+        {
+          "id": "G3-F-6:guided-exploration",
+          "competency": "G3-F-6",
+          "focus": "guided exploration",
+          "pattern": "investigat|experiment|try|test|flashlight"
+        },
+        {
+          "id": "G3-F-6:behavior",
+          "competency": "G3-F-6",
+          "focus": "behavior",
+          "pattern": "shadow|reflect|block|through"
+        }
+      ]
+    },
+    {
+      "key": "g3:light-and-sound-safety",
+      "quarter": 3,
+      "title": {
+        "en": "Protect Eyes and Ears",
+        "tl": "Protektahan ang Mata at Tainga",
+        "bis": "Panalipdi ang Mata ug Dalunggan"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G3-F-7:loud-sound",
+          "competency": "G3-F-7",
+          "focus": "loud sound",
+          "pattern": "loud|noise|ear"
+        },
+        {
+          "id": "G3-F-7:bright-light",
+          "competency": "G3-F-7",
+          "focus": "bright light",
+          "pattern": "bright|sun|eye"
+        }
+      ]
+    },
+    {
+      "key": "g3:sending-messages",
+      "quarter": 3,
+      "title": {
+        "en": "Send a Message",
+        "tl": "Magpadala ng Mensahe",
+        "bis": "Pagpadala og Mensahe"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G3-F-8:movement",
+          "competency": "G3-F-8",
+          "focus": "movement",
+          "pattern": "wave|hand|gesture|movement"
+        },
+        {
+          "id": "G3-F-8:sound",
+          "competency": "G3-F-8",
+          "focus": "sound",
+          "pattern": "sound|clap|bell|whistle"
+        },
+        {
+          "id": "G3-F-8:light",
+          "competency": "G3-F-8",
+          "focus": "light",
+          "pattern": "light|flash"
+        }
+      ]
+    },
+    {
+      "key": "g3:earth-materials",
+      "quarter": 4,
+      "title": {
+        "en": "Earth Materials Around Us",
+        "tl": "Materyales ng Daigdig sa Paligid",
+        "bis": "Mga Materyal sa Yuta sa Palibot"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G3-E-1:guided-observation",
+          "competency": "G3-E-1",
+          "focus": "guided observation",
+          "pattern": "school|teacher|guided"
+        },
+        {
+          "id": "G3-E-1:examples",
+          "competency": "G3-E-1",
+          "focus": "examples",
+          "pattern": "rock|soil|water|air|metal|cloud|rain|sun"
+        },
+        {
+          "id": "G3-E-2:human-made-objects",
+          "competency": "G3-E-2",
+          "focus": "human made objects",
+          "pattern": "made|make|build|clay|wood|metal"
+        },
+        {
+          "id": "G3-E-3:earth-materials",
+          "competency": "G3-E-3",
+          "focus": "earth materials",
+          "pattern": "earth material|non.living"
+        }
+      ]
+    },
+    {
+      "key": "g3:weather",
+      "quarter": 4,
+      "title": {
+        "en": "Watch the Weather",
+        "tl": "Pagmasdan ang Panahon",
+        "bis": "Obserbahi ang Panahon"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G3-E-4:record",
+          "competency": "G3-E-4",
+          "focus": "record",
+          "pattern": "record|chart|diary|table"
+        },
+        {
+          "id": "G3-E-4:patterns",
+          "competency": "G3-E-4",
+          "focus": "patterns",
+          "pattern": "pattern|change|day|sunny|rainy"
+        },
+        {
+          "id": "G3-E-5:activities",
+          "competency": "G3-E-5",
+          "focus": "activities",
+          "pattern": "activity|activities|play|dry|clothes|farm"
+        },
+        {
+          "id": "G3-E-5:danger",
+          "competency": "G3-E-5",
+          "focus": "danger",
+          "pattern": "danger|storm|flood|lightning"
+        }
+      ]
+    },
+    {
+      "key": "g3:watching-the-sky",
+      "quarter": 4,
+      "title": {
+        "en": "Watch the Sky",
+        "tl": "Pagmasdan ang Langit",
+        "bis": "Obserbahi ang Langit"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G3-E-6:day-night",
+          "competency": "G3-E-6",
+          "focus": "day night",
+          "pattern": "day.*night|night.*day"
+        },
+        {
+          "id": "G3-E-6:moon",
+          "competency": "G3-E-6",
+          "focus": "moon",
+          "pattern": "moon"
+        },
+        {
+          "id": "G3-E-6:planets",
+          "competency": "G3-E-6",
+          "focus": "planets",
+          "pattern": "planet"
+        },
+        {
+          "id": "G3-E-6:stars",
+          "competency": "G3-E-6",
+          "focus": "stars",
+          "pattern": "star"
+        },
+        {
+          "id": "G3-E-7:record-motion",
+          "competency": "G3-E-7",
+          "focus": "record motion",
+          "pattern": "record|sketch|chart|track|draw.*(time|hour|position)"
+        },
+        {
+          "id": "G3-E-7:apparent-motion",
+          "competency": "G3-E-7",
+          "focus": "apparent motion",
+          "pattern": "move|motion|rise|set"
+        }
+      ]
+    },
+    {
+      "key": "g3:sky-and-our-day",
+      "quarter": 4,
+      "title": {
+        "en": "The Sky and Our Activities",
+        "tl": "Langit at Ating mga Gawain",
+        "bis": "Langit ug Atong mga Kalihokan"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G3-E-8:daytime",
+          "competency": "G3-E-8",
+          "focus": "daytime",
+          "pattern": "day|sun"
+        },
+        {
+          "id": "G3-E-8:nighttime",
+          "competency": "G3-E-8",
+          "focus": "nighttime",
+          "pattern": "night|moon|star"
+        }
+      ]
+    },
+    {
+      "key": "g3:sun-safety",
+      "quarter": 4,
+      "title": {
+        "en": "Stay Safe in the Sun",
+        "tl": "Kaligtasan sa Araw",
+        "bis": "Kaluwasan sa Adlaw"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G3-E-9:shade-and-clothing",
+          "competency": "G3-E-9",
+          "focus": "shade and clothing",
+          "pattern": "shade|hat|cloth"
+        },
+        {
+          "id": "G3-E-9:eye-protection",
+          "competency": "G3-E-9",
+          "focus": "eye protection",
+          "pattern": "eye|look|stare"
+        }
+      ]
+    }
+  ],
+  "excludedCardIds": [
+    "ffct-38884",
+    "ffct-26029",
+    "ffct-26275"
+  ]
+}

@@ -27,6 +27,16 @@ const OUT = join(MOBILE, 'src/generated/curriculumTags.generated.json');
 
 const { factoids, scheme = '' } = JSON.parse(readFileSync(TAGS, 'utf8'));
 const { cards } = JSON.parse(readFileSync(POOL, 'utf8'));
+// Reviewed exclusions use stable fact IDs, so regenerated ordinal card IDs cannot undo them.
+const exclusions = JSON.parse(readFileSync(join(MOBILE, 'src/data/curriculumTagExclusions.json'), 'utf8'));
+const OVERRIDES_PATH = join(MOBILE, 'src/data/curriculumTagOverrides.json');
+let overrideFactoids = {};
+try {
+  overrideFactoids = JSON.parse(readFileSync(OVERRIDES_PATH, 'utf8')).factoids ?? {};
+} catch (e) {
+  if (e.code !== 'ENOENT') throw e;
+}
+const eligibleCards = cards.filter((c) => !Object.hasOwn(exclusions, c.factId));
 const cellOfCode = new Map(); // code -> [grade, quarter]
 for (const f of readdirSync(CG).filter((n) => /^matatag-.*-competencies\.json$/.test(n))) {
   for (const q of JSON.parse(readFileSync(join(CG, f), 'utf8')).quarters) {
@@ -34,7 +44,17 @@ for (const f of readdirSync(CG).filter((n) => /^matatag-.*-competencies\.json$/.
   }
 }
 const v2 = scheme.startsWith('v2');
-const tagged = cards.map((c) => [c.id, factoids[c.id]]).filter(([, t]) => t);
+const tagOf = (c) => {
+  const ov = overrideFactoids[c.factId];
+  if (ov && Array.isArray(ov.codes) && ov.codes.length) {
+    const codes = ov.codes.filter((code) => cellOfCode.has(code));
+    if (!codes.length) return null;
+    const [g, q] = cellOfCode.get(codes[0]);
+    return { competency: codes[0], codes, grade: g, quarter: q, confidence: 1, cells_strong: [`G${g}-Q${q}`] };
+  }
+  return factoids[c.id] ?? null;
+};
+const tagged = eligibleCards.map((c) => [c.id, tagOf(c)]).filter(([, t]) => t);
 const nCode = new Map();
 for (const [, t] of tagged) for (const code of t.codes ?? [t.competency]) nCode.set(code, (nCode.get(code) ?? 0) + 1);
 const counts = [...nCode.values()].sort((a, b) => a - b);
@@ -79,7 +99,9 @@ for (const [id, t] of tagged) {
 //     the adjacent-quarter level. "Somewhere in Grade 5" is worth saying; it is not worth saying
 //     loudly.
 const MODULE_CONFIDENCE = 0.5; // provenance, not a label: above minConfidence, below a confident tag
-const synth = cards.filter((c) => !factoids[c.id] && Number.isFinite(c.grade) && c.source_module);
+const synth = eligibleCards.filter(
+  (c) => !tagOf(c) && !factoids[c.id] && Number.isFinite(c.grade) && c.source_module,
+);
 const cellsOf = (c) =>
   Number.isFinite(c.quarter) ? [[c.grade, c.quarter, 2]] : [1, 2, 3, 4].map((q) => [c.grade, q, 1]);
 const nCell = new Map();

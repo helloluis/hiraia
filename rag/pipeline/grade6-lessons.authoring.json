@@ -1,0 +1,1233 @@
+{
+  "version": 1,
+  "grade": 6,
+  "reference": "MATATAG Science Grades 3–10, August 2023; numbered objectives in local curriculum extract",
+  "lessons": [
+    {
+      "key": "g6:state-changes",
+      "quarter": 1,
+      "title": {
+        "en": "Mapping Changes of State",
+        "tl": "Pagmamapa ng Pagbabago ng Estado",
+        "bis": "Pagmapa sa Kausaban sa Estado"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G6-M-1:melting",
+          "competency": "G6-M-1",
+          "focus": "melting",
+          "pattern": "melt"
+        },
+        {
+          "id": "G6-M-1:evaporation",
+          "competency": "G6-M-1",
+          "focus": "evaporation",
+          "pattern": "evaporat"
+        },
+        {
+          "id": "G6-M-1:freezing",
+          "competency": "G6-M-1",
+          "focus": "freezing",
+          "pattern": "freez"
+        },
+        {
+          "id": "G6-M-1:condensation",
+          "competency": "G6-M-1",
+          "focus": "condensation",
+          "pattern": "condens"
+        },
+        {
+          "id": "G6-M-1:diagram",
+          "competency": "G6-M-1",
+          "focus": "diagram",
+          "pattern": "diagram|flowchart|solid.*→"
+        }
+      ]
+    },
+    {
+      "key": "g6:heat-and-state",
+      "quarter": 1,
+      "title": {
+        "en": "Heat and Changes of State",
+        "tl": "Init at Pagbabago ng Estado",
+        "bis": "Kainit ug Kausaban sa Estado"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-M-2:heating",
+          "competency": "G6-M-2",
+          "focus": "heating",
+          "pattern": "heat.*(melt|evaporat)|absorb.*(heat|energy)"
+        },
+        {
+          "id": "G6-M-2:cooling",
+          "competency": "G6-M-2",
+          "focus": "cooling",
+          "pattern": "cool|releas.*(heat|energy)"
+        }
+      ]
+    },
+    {
+      "key": "g6:physical-chemical",
+      "quarter": 1,
+      "title": {
+        "en": "Physical and Chemical Changes",
+        "tl": "Pisikal at Kemikal na Pagbabago",
+        "bis": "Pisikal ug Kemikal nga Kausaban"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-M-3:identity",
+          "competency": "G6-M-3",
+          "focus": "identity",
+          "pattern": "physical.*(substance|identity)|no new substance"
+        },
+        {
+          "id": "G6-M-3:new-substance",
+          "competency": "G6-M-3",
+          "focus": "new substance",
+          "pattern": "chemical.*(new|substance)|new substance"
+        },
+        {
+          "id": "G6-M-3:reversing",
+          "competency": "G6-M-3",
+          "focus": "reversing",
+          "pattern": "revers|undo"
+        },
+        {
+          "id": "G6-M-3:reversibility-caveat",
+          "competency": "G6-M-3",
+          "focus": "reversibility is a clue, not the definition",
+          "pattern": "clue, not a rule"
+        }
+      ]
+    },
+    {
+      "key": "g6:useful-mixtures",
+      "quarter": 1,
+      "title": {
+        "en": "Useful Mixtures",
+        "tl": "Kapaki-pakinabang na Halo",
+        "bis": "Mapuslanong Sagol"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G6-M-4:solutions",
+          "competency": "G6-M-4",
+          "focus": "solutions",
+          "pattern": "solution|homogeneous"
+        },
+        {
+          "id": "G6-M-4:suspensions",
+          "competency": "G6-M-4",
+          "focus": "suspensions",
+          "pattern": "suspension|heterogeneous"
+        },
+        {
+          "id": "G6-M-4:uses",
+          "competency": "G6-M-4",
+          "focus": "uses",
+          "pattern": "\\buse|food|drink|medicin|paint"
+        }
+      ]
+    },
+    {
+      "key": "g6:air-mixture",
+      "quarter": 1,
+      "title": {
+        "en": "What Is in Air?",
+        "tl": "Ano ang Nasa Hangin?",
+        "bis": "Unsay Anaa sa Hangin?"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-M-5:nitrogen",
+          "competency": "G6-M-5",
+          "focus": "nitrogen",
+          "pattern": "nitrogen"
+        },
+        {
+          "id": "G6-M-5:oxygen",
+          "competency": "G6-M-5",
+          "focus": "oxygen",
+          "pattern": "oxygen"
+        },
+        {
+          "id": "G6-M-5:carbon-dioxide",
+          "competency": "G6-M-5",
+          "focus": "carbon dioxide",
+          "pattern": "carbon dioxide"
+        },
+        {
+          "id": "G6-M-5:water-vapor",
+          "competency": "G6-M-5",
+          "focus": "water vapor",
+          "pattern": "water vapou?r"
+        }
+      ]
+    },
+    {
+      "key": "g6:separation-methods",
+      "quarter": 1,
+      "title": {
+        "en": "Separating Mixtures",
+        "tl": "Paghihiwalay ng Halo",
+        "bis": "Pagbulag sa Sagol"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G6-M-6:decantation",
+          "competency": "G6-M-6",
+          "focus": "decantation",
+          "pattern": "decant"
+        },
+        {
+          "id": "G6-M-6:winnowing",
+          "competency": "G6-M-6",
+          "focus": "winnowing",
+          "pattern": "winnow"
+        },
+        {
+          "id": "G6-M-6:scooping",
+          "competency": "G6-M-6",
+          "focus": "scooping",
+          "pattern": "scoop"
+        },
+        {
+          "id": "G6-M-6:picking",
+          "competency": "G6-M-6",
+          "focus": "picking",
+          "pattern": "hand.?pick|picking"
+        },
+        {
+          "id": "G6-M-6:evaporation",
+          "competency": "G6-M-6",
+          "focus": "evaporation",
+          "pattern": "evaporat"
+        },
+        {
+          "id": "G6-M-6:filtering",
+          "competency": "G6-M-6",
+          "focus": "filtering",
+          "pattern": "filter"
+        },
+        {
+          "id": "G6-M-6:sieving",
+          "competency": "G6-M-6",
+          "focus": "sieving",
+          "pattern": "siev"
+        },
+        {
+          "id": "G6-M-6:magnets",
+          "competency": "G6-M-6",
+          "focus": "magnets",
+          "pattern": "magnet"
+        }
+      ]
+    },
+    {
+      "key": "g6:separation-products",
+      "quarter": 1,
+      "title": {
+        "en": "Choosing a Separation Method",
+        "tl": "Pagpili ng Paraan ng Paghihiwalay",
+        "bis": "Pagpili sa Paagi sa Pagbulag"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-M-7:benefits",
+          "competency": "G6-M-7",
+          "focus": "benefits",
+          "pattern": "use|benefit|recover|separat"
+        },
+        {
+          "id": "G6-M-7:products",
+          "competency": "G6-M-7",
+          "focus": "products",
+          "pattern": "\\bsalt\\b|\\bgrain\\b|\\brice\\b|\\bwater\\b|\\biron\\b|\\bsand\\b"
+        }
+      ]
+    },
+    {
+      "key": "g6:fair-tests",
+      "quarter": 1,
+      "title": {
+        "en": "Design a Fair Test",
+        "tl": "Magplano ng Patas na Pagsubok",
+        "bis": "Pagplano og Patas nga Pagsulay"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-M-8:change-one",
+          "competency": "G6-M-8",
+          "focus": "change one",
+          "pattern": "independent|change.*one|one.*variable"
+        },
+        {
+          "id": "G6-M-8:measure",
+          "competency": "G6-M-8",
+          "focus": "measure",
+          "pattern": "dependent|measure.*(time|result|effect)"
+        },
+        {
+          "id": "G6-M-8:control",
+          "competency": "G6-M-8",
+          "focus": "control",
+          "pattern": "keep.*same|constant|control"
+        }
+      ]
+    },
+    {
+      "key": "g6:repeat-record",
+      "quarter": 1,
+      "title": {
+        "en": "Repeat, Measure, Record",
+        "tl": "Ulitin, Sukatin, Itala",
+        "bis": "Usba, Sukda, Itala"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-M-9:three-trials",
+          "competency": "G6-M-9",
+          "focus": "three trials",
+          "pattern": "three.*trial|3.*trial|replicat"
+        },
+        {
+          "id": "G6-M-9:accurate-records",
+          "competency": "G6-M-9",
+          "focus": "accurate records",
+          "pattern": "accurat|record|table"
+        }
+      ]
+    },
+    {
+      "key": "g6:circulation",
+      "quarter": 2,
+      "title": {
+        "en": "Heart, Blood, and Vessels",
+        "tl": "Puso, Dugo, at Daluyan",
+        "bis": "Kasingkasing, Dugo, ug Ugat"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G6-L-1:heart",
+          "competency": "G6-L-1",
+          "focus": "heart",
+          "pattern": "heart"
+        },
+        {
+          "id": "G6-L-1:blood",
+          "competency": "G6-L-1",
+          "focus": "blood",
+          "pattern": "blood.*(carr|transport)|red blood"
+        },
+        {
+          "id": "G6-L-1:vessels",
+          "competency": "G6-L-1",
+          "focus": "vessels",
+          "pattern": "arter|vein|capillar"
+        },
+        {
+          "id": "G6-L-1:diagram",
+          "competency": "G6-L-1",
+          "focus": "diagram",
+          "pattern": "diagram|label|→"
+        }
+      ]
+    },
+    {
+      "key": "g6:plant-reproduction",
+      "quarter": 2,
+      "title": {
+        "en": "How Plants Reproduce",
+        "tl": "Pagpaparami ng Halaman",
+        "bis": "Pagpadaghan sa Tanom"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G6-L-2:pollination",
+          "competency": "G6-L-2",
+          "focus": "pollination",
+          "pattern": "pollinat"
+        },
+        {
+          "id": "G6-L-2:seeds",
+          "competency": "G6-L-2",
+          "focus": "seeds",
+          "pattern": "seed"
+        },
+        {
+          "id": "G6-L-2:propagation",
+          "competency": "G6-L-2",
+          "focus": "propagation",
+          "pattern": "propagat|cutting|graft|layering|budding"
+        }
+      ]
+    },
+    {
+      "key": "g6:propagation-tests",
+      "quarter": 2,
+      "title": {
+        "en": "Compare Plant Propagation",
+        "tl": "Ihambing ang Pagpaparami ng Halaman",
+        "bis": "Itandi ang Pagpadaghan sa Tanom"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G6-L-3:cuttings",
+          "competency": "G6-L-3",
+          "focus": "cuttings",
+          "pattern": "cutting.*(stem|root)|stem.*cutting"
+        },
+        {
+          "id": "G6-L-3:budding",
+          "competency": "G6-L-3",
+          "focus": "budding",
+          "pattern": "budding.*(bud|bark)|bud.*budding"
+        },
+        {
+          "id": "G6-L-3:layering",
+          "competency": "G6-L-3",
+          "focus": "layering",
+          "pattern": "layering.*(branch|root)|branch.*layering"
+        },
+        {
+          "id": "G6-L-3:grafting",
+          "competency": "G6-L-3",
+          "focus": "grafting",
+          "pattern": "grafting.*(join|shoot)|join.*grafting"
+        },
+        {
+          "id": "G6-L-3:fair-replicated-test",
+          "competency": "G6-L-3",
+          "focus": "fair replicated test",
+          "pattern": "(fair|same|control).*(trial|replicat|cutting|propagat)|(trial|replicat).*(same|fair)"
+        }
+      ]
+    },
+    {
+      "key": "g6:animal-groups",
+      "quarter": 2,
+      "title": {
+        "en": "Animals With and Without Backbones",
+        "tl": "Hayop na May Gulugod at Wala",
+        "bis": "Hayop nga May Bukobuko ug Wala"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-L-4:vertebrates",
+          "competency": "G6-L-4",
+          "focus": "vertebrates",
+          "pattern": "\\bvertebrate|backbone"
+        },
+        {
+          "id": "G6-L-4:invertebrates",
+          "competency": "G6-L-4",
+          "focus": "invertebrates",
+          "pattern": "invertebrate|without.*backbone"
+        },
+        {
+          "id": "G6-L-4:local",
+          "competency": "G6-L-4",
+          "focus": "local",
+          "pattern": "Philippin|carabao|tilapia|tarsier|crab|butterfl"
+        }
+      ]
+    },
+    {
+      "key": "g6:food-webs",
+      "quarter": 2,
+      "title": {
+        "en": "Roles in a Food Web",
+        "tl": "Gampanin sa Food Web",
+        "bis": "Papel sa Food Web"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G6-L-5:producers",
+          "competency": "G6-L-5",
+          "focus": "producers",
+          "pattern": "producer"
+        },
+        {
+          "id": "G6-L-5:consumers",
+          "competency": "G6-L-5",
+          "focus": "consumers",
+          "pattern": "consumer"
+        },
+        {
+          "id": "G6-L-5:scavengers",
+          "competency": "G6-L-5",
+          "focus": "scavengers",
+          "pattern": "scaveng"
+        },
+        {
+          "id": "G6-L-5:decomposers",
+          "competency": "G6-L-5",
+          "focus": "decomposers",
+          "pattern": "decompos"
+        },
+        {
+          "id": "G6-L-5:web",
+          "competency": "G6-L-5",
+          "focus": "web",
+          "pattern": "food web|interconnect"
+        }
+      ]
+    },
+    {
+      "key": "g6:competition-predation",
+      "quarter": 2,
+      "title": {
+        "en": "Competition and Predation",
+        "tl": "Kompetisyon at Predasyon",
+        "bis": "Kompetisyon ug Predasyon"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-L-6:competition",
+          "competency": "G6-L-6",
+          "focus": "competition",
+          "pattern": "compet"
+        },
+        {
+          "id": "G6-L-6:predation",
+          "competency": "G6-L-6",
+          "focus": "predation",
+          "pattern": "predat|prey"
+        },
+        {
+          "id": "G6-L-6:sources",
+          "competency": "G6-L-6",
+          "focus": "sources",
+          "pattern": "\\bsource\\b|reliable|\\bbook\\b|research summary"
+        }
+      ]
+    },
+    {
+      "key": "g6:ecosystem-factors",
+      "quarter": 2,
+      "title": {
+        "en": "Living and Nonliving Factors",
+        "tl": "Buhay at Di-buhay na Salik",
+        "bis": "Buhi ug Dili-buhi nga mga Hinungdan"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G6-L-7:biotic",
+          "competency": "G6-L-7",
+          "focus": "biotic",
+          "pattern": "biotic|living"
+        },
+        {
+          "id": "G6-L-7:light",
+          "competency": "G6-L-7",
+          "focus": "light",
+          "pattern": "light|sun"
+        },
+        {
+          "id": "G6-L-7:water",
+          "competency": "G6-L-7",
+          "focus": "water",
+          "pattern": "water"
+        },
+        {
+          "id": "G6-L-7:temperature",
+          "competency": "G6-L-7",
+          "focus": "temperature",
+          "pattern": "temperature"
+        },
+        {
+          "id": "G6-L-7:soil",
+          "competency": "G6-L-7",
+          "focus": "soil",
+          "pattern": "soil"
+        }
+      ]
+    },
+    {
+      "key": "g6:ecosystem-effects",
+      "quarter": 2,
+      "title": {
+        "en": "How Interactions Help or Harm",
+        "tl": "Pakinabang at Pinsala ng Ugnayan",
+        "bis": "Kaayohan ug Kadaot sa Relasyon"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-L-8:living-interactions",
+          "competency": "G6-L-8",
+          "focus": "living interactions",
+          "pattern": "mutual|parasit|predat|compet|symbio"
+        },
+        {
+          "id": "G6-L-8:nonliving-interactions",
+          "competency": "G6-L-8",
+          "focus": "nonliving interactions",
+          "pattern": "water|soil|temperature|light|drought|flood"
+        }
+      ]
+    },
+    {
+      "key": "g6:simple-machines",
+      "quarter": 3,
+      "title": {
+        "en": "Simple Machines Around Us",
+        "tl": "Simpleng Makina sa Paligid",
+        "bis": "Yano nga Makina sa Palibot"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-F-1:machines",
+          "competency": "G6-F-1",
+          "focus": "machines",
+          "pattern": "lever|pulley|inclined|wedge|screw|wheel"
+        },
+        {
+          "id": "G6-F-1:everyday",
+          "competency": "G6-F-1",
+          "focus": "everyday",
+          "pattern": "home|school|community|bottle|door|ramp|scissor|wheelbarrow"
+        }
+      ]
+    },
+    {
+      "key": "g6:machine-investigation",
+      "quarter": 3,
+      "title": {
+        "en": "Investigate Simple Machines",
+        "tl": "Siyasatin ang Simpleng Makina",
+        "bis": "Susihon ang Yano nga Makina"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G6-F-2:inclined-planes",
+          "competency": "G6-F-2",
+          "focus": "inclined planes",
+          "pattern": "inclined|ramp"
+        },
+        {
+          "id": "G6-F-2:wedges",
+          "competency": "G6-F-2",
+          "focus": "wedges",
+          "pattern": "wedge"
+        },
+        {
+          "id": "G6-F-2:levers",
+          "competency": "G6-F-2",
+          "focus": "levers",
+          "pattern": "lever"
+        },
+        {
+          "id": "G6-F-2:pulleys",
+          "competency": "G6-F-2",
+          "focus": "pulleys",
+          "pattern": "pulley"
+        },
+        {
+          "id": "G6-F-2:limits",
+          "competency": "G6-F-2",
+          "focus": "limits",
+          "pattern": "friction|limitation|trade.off|longer distance|cannot.*(energy|work)"
+        }
+      ]
+    },
+    {
+      "key": "g6:lever-tests",
+      "quarter": 3,
+      "title": {
+        "en": "A Fair Test of Levers",
+        "tl": "Patas na Pagsubok sa Pingga",
+        "bis": "Patas nga Pagsulay sa Lever"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-F-3:force-size",
+          "competency": "G6-F-3",
+          "focus": "force size",
+          "pattern": "force|effort"
+        },
+        {
+          "id": "G6-F-3:direction",
+          "competency": "G6-F-3",
+          "focus": "direction",
+          "pattern": "direction"
+        },
+        {
+          "id": "G6-F-3:test",
+          "competency": "G6-F-3",
+          "focus": "test",
+          "pattern": "\\bfair\\b|\\btest\\b|\\bmeasure"
+        }
+      ]
+    },
+    {
+      "key": "g6:wave-energy",
+      "quarter": 3,
+      "title": {
+        "en": "Waves Carry Energy",
+        "tl": "Dala ng Alon ang Enerhiya",
+        "bis": "Ang Balod Nagdala og Enerhiya"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-F-4:transfer",
+          "competency": "G6-F-4",
+          "focus": "transfer",
+          "pattern": "energy"
+        },
+        {
+          "id": "G6-F-4:source-receiver",
+          "competency": "G6-F-4",
+          "focus": "source receiver",
+          "pattern": "source|receiver|receiv"
+        }
+      ]
+    },
+    {
+      "key": "g6:water-waves",
+      "quarter": 3,
+      "title": {
+        "en": "Explore Water Waves",
+        "tl": "Siyasatin ang Alon sa Tubig",
+        "bis": "Susihon ang Balod sa Tubig"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G6-F-5:crests-troughs",
+          "competency": "G6-F-5",
+          "focus": "crests troughs",
+          "pattern": "crest|trough"
+        },
+        {
+          "id": "G6-F-5:width-height",
+          "competency": "G6-F-5",
+          "focus": "width height",
+          "pattern": "height|width|amplitude|wavelength"
+        },
+        {
+          "id": "G6-F-5:bending",
+          "competency": "G6-F-5",
+          "focus": "bending",
+          "pattern": "diffract|refract|bend"
+        },
+        {
+          "id": "G6-F-5:reflection",
+          "competency": "G6-F-5",
+          "focus": "reflection",
+          "pattern": "reflect"
+        },
+        {
+          "id": "G6-F-5:tank",
+          "competency": "G6-F-5",
+          "focus": "tank",
+          "pattern": "ripple tank|tray|shallow.*water"
+        }
+      ]
+    },
+    {
+      "key": "g6:wave-properties",
+      "quarter": 3,
+      "title": {
+        "en": "Describing a Wave",
+        "tl": "Paglalarawan ng Alon",
+        "bis": "Paghulagway sa Balod"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G6-F-6:amplitude",
+          "competency": "G6-F-6",
+          "focus": "amplitude",
+          "pattern": "amplitude"
+        },
+        {
+          "id": "G6-F-6:frequency",
+          "competency": "G6-F-6",
+          "focus": "frequency",
+          "pattern": "frequency"
+        },
+        {
+          "id": "G6-F-6:wavelength",
+          "competency": "G6-F-6",
+          "focus": "wavelength",
+          "pattern": "wavelength"
+        },
+        {
+          "id": "G6-F-6:velocity",
+          "competency": "G6-F-6",
+          "focus": "velocity",
+          "pattern": "velocity|speed"
+        },
+        {
+          "id": "G6-F-6:sources",
+          "competency": "G6-F-6",
+          "focus": "sources",
+          "pattern": "textbook|source title|reference book"
+        }
+      ]
+    },
+    {
+      "key": "g6:wave-types",
+      "quarter": 3,
+      "title": {
+        "en": "Longitudinal and Transverse Waves",
+        "tl": "Longitudinal at Transverse na Alon",
+        "bis": "Longitudinal ug Transverse nga Balod"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-F-7:longitudinal",
+          "competency": "G6-F-7",
+          "focus": "longitudinal",
+          "pattern": "longitudinal"
+        },
+        {
+          "id": "G6-F-7:transverse",
+          "competency": "G6-F-7",
+          "focus": "transverse",
+          "pattern": "transverse"
+        },
+        {
+          "id": "G6-F-7:comparison",
+          "competency": "G6-F-7",
+          "focus": "comparison",
+          "pattern": "perpendicular|parallel|same direction|right angle"
+        }
+      ]
+    },
+    {
+      "key": "g6:wave-models",
+      "quarter": 3,
+      "title": {
+        "en": "Model Moving Energy",
+        "tl": "Modelo ng Paglipat ng Enerhiya",
+        "bis": "Modelo sa Naglihok nga Enerhiya"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-F-8:longitudinal-model",
+          "competency": "G6-F-8",
+          "focus": "longitudinal model",
+          "pattern": "spring|slinky|compression"
+        },
+        {
+          "id": "G6-F-8:transverse-model",
+          "competency": "G6-F-8",
+          "focus": "transverse model",
+          "pattern": "rope|string|transverse"
+        },
+        {
+          "id": "G6-F-8:energy",
+          "competency": "G6-F-8",
+          "focus": "energy",
+          "pattern": "energy"
+        }
+      ]
+    },
+    {
+      "key": "g6:wave-examples",
+      "quarter": 3,
+      "title": {
+        "en": "Waves in Daily Life",
+        "tl": "Alon sa Araw-araw",
+        "bis": "Balod sa Adlaw-adlaw"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-F-9:longitudinal",
+          "competency": "G6-F-9",
+          "focus": "longitudinal",
+          "pattern": "sound|longitudinal"
+        },
+        {
+          "id": "G6-F-9:transverse",
+          "competency": "G6-F-9",
+          "focus": "transverse",
+          "pattern": "light|rope|transverse|seismic"
+        }
+      ]
+    },
+    {
+      "key": "g6:moving-sound",
+      "quarter": 3,
+      "title": {
+        "en": "Sound From a Moving Source",
+        "tl": "Tunog Mula sa Gumagalaw",
+        "bis": "Tingog Gikan sa Naglihok"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-F-10:approaching",
+          "competency": "G6-F-10",
+          "focus": "approaching",
+          "pattern": "approach|toward|closer"
+        },
+        {
+          "id": "G6-F-10:receding",
+          "competency": "G6-F-10",
+          "focus": "receding",
+          "pattern": "away|reced"
+        },
+        {
+          "id": "G6-F-10:observer",
+          "competency": "G6-F-10",
+          "focus": "observer",
+          "pattern": "observer|receiver|listener"
+        }
+      ]
+    },
+    {
+      "key": "g6:volcano-formation",
+      "quarter": 4,
+      "title": {
+        "en": "How Volcanoes Form",
+        "tl": "Pagbuo ng Bulkan",
+        "bis": "Pagkaporma sa Bulkan"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-E-1:magma",
+          "competency": "G6-E-1",
+          "focus": "magma",
+          "pattern": "magma"
+        },
+        {
+          "id": "G6-E-1:formation",
+          "competency": "G6-E-1",
+          "focus": "formation",
+          "pattern": "form|plate|crust|build"
+        }
+      ]
+    },
+    {
+      "key": "g6:local-volcano-risk",
+      "quarter": 4,
+      "title": {
+        "en": "Know Your Local Volcano Risk",
+        "tl": "Alamin ang Panganib ng Bulkan",
+        "bis": "Hibaloa ang Lokal nga Peligro sa Bulkan"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-E-2:active-inactive",
+          "competency": "G6-E-2",
+          "focus": "active inactive",
+          "pattern": "active|inactive"
+        },
+        {
+          "id": "G6-E-2:local-map",
+          "competency": "G6-E-2",
+          "focus": "local map",
+          "pattern": "hazard map|nearest"
+        }
+      ]
+    },
+    {
+      "key": "g6:eruption-history",
+      "quarter": 4,
+      "title": {
+        "en": "Reading Eruption History",
+        "tl": "Pagbasa ng Kasaysayan ng Pagputok",
+        "bis": "Pagbasa sa Kasaysayan sa Pagbuto"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-E-3:philippine-history",
+          "competency": "G6-E-3",
+          "focus": "philippine history",
+          "pattern": "Philippin|Mayon|Taal|Pinatubo|Kanlaon"
+        },
+        {
+          "id": "G6-E-3:patterns-limits",
+          "competency": "G6-E-3",
+          "focus": "patterns limits",
+          "pattern": "predict|pattern|record|history|historical"
+        },
+        {
+          "id": "G6-E-3:community",
+          "competency": "G6-E-3",
+          "focus": "community",
+          "pattern": "communit|famil|evacuat"
+        }
+      ]
+    },
+    {
+      "key": "g6:volcanic-materials",
+      "quarter": 4,
+      "title": {
+        "en": "What Volcanoes Release",
+        "tl": "Mga Inilalabas ng Bulkan",
+        "bis": "Mga Gipagawas sa Bulkan"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-E-4:lava",
+          "competency": "G6-E-4",
+          "focus": "lava",
+          "pattern": "lava"
+        },
+        {
+          "id": "G6-E-4:ash",
+          "competency": "G6-E-4",
+          "focus": "ash",
+          "pattern": "ash"
+        },
+        {
+          "id": "G6-E-4:gases",
+          "competency": "G6-E-4",
+          "focus": "gases",
+          "pattern": "gas"
+        },
+        {
+          "id": "G6-E-4:fragments",
+          "competency": "G6-E-4",
+          "focus": "fragments",
+          "pattern": "fragment|bomb|block|tephra|pyroclast"
+        }
+      ]
+    },
+    {
+      "key": "g6:volcano-alerts",
+      "quarter": 4,
+      "title": {
+        "en": "Read Alerts and Act Safely",
+        "tl": "Unawain ang Babala ng Bulkan",
+        "bis": "Sabta ang Pasidaan sa Bulkan"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G6-E-5:bulletin",
+          "competency": "G6-E-5",
+          "focus": "bulletin",
+          "pattern": "PHIVOLCS.*(alert|bulletin)|(alert|bulletin).*PHIVOLCS"
+        },
+        {
+          "id": "G6-E-5:before",
+          "competency": "G6-E-5",
+          "focus": "before",
+          "pattern": "plan|prepare|before|evacuat"
+        },
+        {
+          "id": "G6-E-5:during",
+          "competency": "G6-E-5",
+          "focus": "during",
+          "pattern": "during|ashfall|ash fall"
+        },
+        {
+          "id": "G6-E-5:after",
+          "competency": "G6-E-5",
+          "focus": "after",
+          "pattern": "after|return|all.clear"
+        }
+      ]
+    },
+    {
+      "key": "g6:philippine-seasons",
+      "quarter": 4,
+      "title": {
+        "en": "Seasons Where We Live",
+        "tl": "Panahon sa Ating Lugar",
+        "bis": "Panahon sa Atong Lugar"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-E-6:wet-dry",
+          "competency": "G6-E-6",
+          "focus": "wet dry",
+          "pattern": "rainy|wet season|dry season"
+        },
+        {
+          "id": "G6-E-6:activities",
+          "competency": "G6-E-6",
+          "focus": "activities",
+          "pattern": "plant|harvest|activit|travel|farm"
+        },
+        {
+          "id": "G6-E-6:regional",
+          "competency": "G6-E-6",
+          "focus": "regional",
+          "pattern": "\\bregion|climate type|no (distinct|definite|clear) dry|\\bvary\\b|\\bvaries\\b"
+        }
+      ]
+    },
+    {
+      "key": "g6:day-night",
+      "quarter": 4,
+      "title": {
+        "en": "A Globe Model of Day and Night",
+        "tl": "Modelo ng Araw at Gabi",
+        "bis": "Modelo sa Adlaw ug Gabii"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-E-7:rotation",
+          "competency": "G6-E-7",
+          "focus": "rotation",
+          "pattern": "rotat"
+        },
+        {
+          "id": "G6-E-7:model",
+          "competency": "G6-E-7",
+          "focus": "model",
+          "pattern": "globe|lamp|model"
+        }
+      ]
+    },
+    {
+      "key": "g6:sun-earth-moon",
+      "quarter": 4,
+      "title": {
+        "en": "Model the Sun, Earth, and Moon",
+        "tl": "Modelo ng Araw, Daigdig, at Buwan",
+        "bis": "Modelo sa Adlaw, Yuta, ug Bulan"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G6-E-8:seasons-tilt",
+          "competency": "G6-E-8",
+          "focus": "seasons tilt",
+          "pattern": "tilt"
+        },
+        {
+          "id": "G6-E-8:constellations-year",
+          "competency": "G6-E-8",
+          "focus": "constellations year",
+          "pattern": "constellation|different.*star"
+        },
+        {
+          "id": "G6-E-8:solar-eclipse",
+          "competency": "G6-E-8",
+          "focus": "solar eclipse",
+          "pattern": "solar eclipse"
+        },
+        {
+          "id": "G6-E-8:lunar-eclipse",
+          "competency": "G6-E-8",
+          "focus": "lunar eclipse",
+          "pattern": "lunar eclipse"
+        },
+        {
+          "id": "G6-E-8:eclipse-model",
+          "competency": "G6-E-8",
+          "focus": "eclipse model",
+          "pattern": "(ball|model|flashlight).*eclipse|eclipse.*(ball|model|flashlight)"
+        },
+        {
+          "id": "G6-E-8:orbit-model",
+          "competency": "G6-E-8",
+          "focus": "orbit model",
+          "pattern": "(globe|model).*(axis|tilt)"
+        }
+      ]
+    },
+    {
+      "key": "g6:sky-navigation",
+      "quarter": 4,
+      "title": {
+        "en": "Stars, Navigation, and Seasons",
+        "tl": "Bituin, Paglalayag, at Panahon",
+        "bis": "Bituon, Paglayag, ug Panahon"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-E-9:navigation",
+          "competency": "G6-E-9",
+          "focus": "navigation",
+          "pattern": "navigat|direction|Polaris"
+        },
+        {
+          "id": "G6-E-9:seasons",
+          "competency": "G6-E-9",
+          "focus": "seasons",
+          "pattern": "season|plant|harvest|calendar"
+        }
+      ]
+    },
+    {
+      "key": "g6:community-sky-knowledge",
+      "quarter": 4,
+      "title": {
+        "en": "Learning About Community Sky Knowledge",
+        "tl": "Kaalaman ng Komunidad sa Kalangitan",
+        "bis": "Kahibalo sa Komunidad bahin sa Langit"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G6-E-10:attributed-sources",
+          "competency": "G6-E-10",
+          "focus": "attributed sources",
+          "pattern": "community|communities|interview|source|document"
+        },
+        {
+          "id": "G6-E-10:eclipses",
+          "competency": "G6-E-10",
+          "focus": "eclipses",
+          "pattern": "eclipse"
+        },
+        {
+          "id": "G6-E-10:patterns-time",
+          "competency": "G6-E-10",
+          "focus": "patterns time",
+          "pattern": "time|calendar|constellation|season"
+        }
+      ]
+    }
+  ],
+  "excludedCardIds": [
+    "ffct-15602",
+    "ffct-15460",
+    "ffct-16539",
+    "ffct-17165",
+    "ffct-13297",
+    "ffct-36415",
+    "ffct-39417",
+    "ffct-39420",
+    "ffct-36396",
+    "ffct-36741",
+    "ffct-37600",
+    "ffct-35027",
+    "ffct-35086",
+    "ffct-36715",
+    "ffct-16545",
+    "ffct-16090",
+    "ffct-37601",
+    "ffct-36337"
+  ]
+}

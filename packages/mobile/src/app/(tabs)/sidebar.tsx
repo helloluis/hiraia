@@ -1,3 +1,4 @@
+import { ImageDownloads } from '../../images/ImageDownloads';
 import { ActivityTable } from '../../telemetry/ActivityTable';
 import { useRouter } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -92,7 +93,11 @@ export default function SidebarScreen() {
           })}
         </View>
 
+        <ImageDownloads />
         <ActivityTable />
+        <TouchableOpacity accessibilityRole="button" style={[styles.tutorialButton, { marginTop: 12 }]} onPress={() => router.push('/activity')}>
+          <Text style={styles.tutorialButtonText}>View detailed activity →</Text>
+        </TouchableOpacity>
 
         <Text style={styles.sectionTitle}>{t.sectionVersion}</Text>
         <View style={styles.versionBlock}>

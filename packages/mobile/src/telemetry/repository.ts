@@ -1,11 +1,18 @@
 import * as SQLite from 'expo-sqlite';
-import { activityWindows, type ActivityCounts, type ActivitySummary } from './activity';
+import {
+  activityWindows,
+  type ActivityCounts,
+  type ActivitySummary,
+  type ActivityDetailRow,
+  type ActivityReport,
+} from './activity';
 import { newId, type Event, type Repository } from './core';
 
 const MAX_EVENTS = 10000;
 const MAX_AGE = 90 * 86400000;
 export interface TelemetryRepository extends Repository {
-  activity(now?: number): Promise<ActivitySummary>;
+  activity(now?: number, profileId?: string): Promise<ActivitySummary>;
+  activityReport(start: number, end: number, profileId?: string): Promise<ActivityReport>;
   isEnabled(): Promise<boolean>;
   setEnabled(value: boolean): Promise<void>;
 }
@@ -18,24 +25,75 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
       queued_at INTEGER NOT NULL,event TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS activity(id TEXT PRIMARY KEY,occurred_at INTEGER NOT NULL,
       name TEXT NOT NULL,source TEXT,correct INTEGER NOT NULL);
-    CREATE INDEX IF NOT EXISTS activity_time ON activity(occurred_at);`);
+    CREATE INDEX IF NOT EXISTS activity_time ON activity(occurred_at);
+    CREATE TABLE IF NOT EXISTS activity_details(id TEXT PRIMARY KEY,grade INTEGER,language TEXT,card_id TEXT);
+    CREATE INDEX IF NOT EXISTS activity_details_grade ON activity_details(grade);`);
+  await db.withExclusiveTransactionAsync(async (tx) => {
+    const columns = await tx.getAllAsync<{ name: string }>('PRAGMA table_info(activity_details)');
+    if (!columns.some((c) => c.name === 'profile_id'))
+      await tx.runAsync(
+        "ALTER TABLE activity_details ADD COLUMN profile_id TEXT NOT NULL DEFAULT 'guest'"
+      );
+    await tx.runAsync(
+      'CREATE INDEX IF NOT EXISTS activity_details_profile ON activity_details(profile_id)'
+    );
+  });
   const recordActivity = async (tx: Pick<SQLite.SQLiteDatabase, 'runAsync'>, e: Event) => {
     if (e.name !== 'card_viewed' && e.name !== 'quiz_graded') return;
-    await tx.runAsync('INSERT OR IGNORE INTO activity VALUES(?,?,?,?,?)',
-      e.id, e.occurred_at, e.name, String(e.props.source || ''), e.props.correct === true ? 1 : 0);
+    await tx.runAsync(
+      'INSERT OR IGNORE INTO activity VALUES(?,?,?,?,?)',
+      e.id,
+      e.occurred_at,
+      e.name,
+      String(e.props.source || ''),
+      e.props.correct === true ? 1 : 0
+    );
+    const grade = Number(e.props.grade);
+    await tx.runAsync(
+      'INSERT OR IGNORE INTO activity_details(id,grade,language,card_id,profile_id) VALUES(?,?,?,?,?)',
+      e.id,
+      Number.isInteger(grade) && grade >= 3 && grade <= 10 ? grade : null,
+      typeof e.props.language === 'string' ? e.props.language : null,
+      typeof e.props.card_id === 'string'
+        ? e.props.card_id
+        : typeof e.props.question_id === 'string'
+          ? e.props.question_id
+          : null,
+      typeof e.props.profile_id === 'string' && /^[a-zA-Z0-9_-]{16,80}$/.test(e.props.profile_id)
+        ? e.props.profile_id
+        : 'guest'
+    );
   };
   // Backfill only pending records: acknowledged historic events no longer exist locally.
   await db.withExclusiveTransactionAsync(async (tx) => {
     const migrated = await tx.getFirstAsync("SELECT value FROM meta WHERE key='activity_since'");
     if (!migrated) {
       await tx.runAsync("INSERT INTO meta VALUES('activity_since',?)", String(Date.now()));
-      const pending = await tx.getAllAsync<{event: string}>('SELECT event FROM outbox');
+      const pending = await tx.getAllAsync<{ event: string }>('SELECT event FROM outbox');
       for (const row of pending) {
         try {
           const e = JSON.parse(row.event) as Event;
           if (typeof e.id === 'string' && Number.isSafeInteger(e.occurred_at) && e.props)
             await recordActivity(tx, e);
-        } catch { /* Malformed queued records are handled by list(). */ }
+        } catch {
+          /* Malformed queued records are handled by list(). */
+        }
+      }
+    }
+  });
+  // Upgrade once using metadata that still exists in the delivery queue. Never infer a
+  // historic grade from today's persona. Acknowledged old rows remain unattributed.
+  await db.withExclusiveTransactionAsync(async (tx) => {
+    if (await tx.getFirstAsync("SELECT value FROM meta WHERE key='activity_details_since'")) return;
+    await tx.runAsync("INSERT INTO meta VALUES('activity_details_since',?)", String(Date.now()));
+    const pending = await tx.getAllAsync<{ event: string }>('SELECT event FROM outbox');
+    for (const row of pending) {
+      try {
+        const e = JSON.parse(row.event) as Event;
+        if (typeof e.id === 'string' && Number.isSafeInteger(e.occurred_at) && e.props)
+          await recordActivity(tx, e);
+      } catch {
+        /* Preserve legacy counters if a queued event cannot be read. */
       }
     }
   });
@@ -70,19 +128,61 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
   });
   return {
     installationId,
-    async activity(now = Date.now()) {
+    async activity(now = Date.now(), profileId?: string) {
       const counts: ActivityCounts[] = [];
       for (const start of activityWindows(now)) {
-        const row = await db.getFirstAsync<ActivityCounts>(`
+        const row = await db.getFirstAsync<ActivityCounts>(
+          `
           SELECT COALESCE(SUM(name='card_viewed'),0) AS cards,
             COALESCE(SUM(name='card_viewed' AND source='generated'),0) AS dynamic,
             COALESCE(SUM(name='quiz_graded'),0) AS quizzes,
             COALESCE(SUM(name='quiz_graded' AND correct=1),0) AS correct
-          FROM activity WHERE occurred_at >= ? AND occurred_at <= ?`, start, now);
+          FROM activity a LEFT JOIN activity_details d ON a.id=d.id WHERE occurred_at >= ? AND occurred_at <= ? AND (? IS NULL OR COALESCE(d.profile_id,'guest')=?)`,
+          start,
+          now,
+          profileId ?? null,
+          profileId ?? null
+        );
         counts.push(row!);
       }
-      const row = await db.getFirstAsync<{value:string}>("SELECT value FROM meta WHERE key='activity_since'");
+      const row = await db.getFirstAsync<{ value: string }>(
+        "SELECT value FROM meta WHERE key='activity_since'"
+      );
       return { counts, since: Number(row!.value), asOf: now };
+    },
+    async activityReport(start, end, profileId) {
+      if (!Number.isFinite(start) || !Number.isFinite(end) || start > end)
+        throw new Error('Invalid activity range');
+      const rows = await db.getAllAsync<ActivityDetailRow>(
+        `
+        SELECT d.grade, d.language, d.card_id AS cardId, a.source,
+          SUM(a.name='card_viewed') AS cards,
+          SUM(a.name='card_viewed' AND a.source='generated') AS dynamic,
+          SUM(a.name='quiz_graded') AS quizzes,
+          SUM(a.name='quiz_graded' AND a.correct=1) AS correct,
+          MAX(a.occurred_at) AS lastSeen
+        FROM activity a LEFT JOIN activity_details d ON a.id=d.id
+        WHERE a.occurred_at >= ? AND a.occurred_at <= ? AND (? IS NULL OR COALESCE(d.profile_id,'guest')=?)
+        GROUP BY d.grade,d.language,d.card_id,a.source`,
+        start,
+        end,
+        profileId ?? null,
+        profileId ?? null
+      );
+      const days = await db.getAllAsync<{ grade: number | null; days: number }>(
+        `
+        SELECT d.grade, COUNT(DISTINCT date(a.occurred_at/1000,'unixepoch','localtime')) AS days
+        FROM activity a LEFT JOIN activity_details d ON a.id=d.id
+        WHERE a.occurred_at >= ? AND a.occurred_at <= ? AND (? IS NULL OR COALESCE(d.profile_id,'guest')=?) GROUP BY d.grade`,
+        start,
+        end,
+        profileId ?? null,
+        profileId ?? null
+      );
+      const since = await db.getFirstAsync<{ value: string }>(
+        "SELECT value FROM meta WHERE key='activity_details_since'"
+      );
+      return { rows, days, since: Number(since!.value), asOf: Date.now(), start, end };
     },
     async isEnabled() {
       const row = await db.getFirstAsync<{ value: string }>(
@@ -112,8 +212,7 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
           );
         }
         // Independent of upload acknowledgments and the bounded delivery queue.
-        // 100 days covers every calendar quarter plus clock/DST margin.
-        await tx.runAsync('DELETE FROM activity WHERE occurred_at < ?', Date.now() - 100 * 86400000);
+        // Learning history is retained across semesters; only the delivery queue expires.
         const old = await tx.runAsync(
           'DELETE FROM outbox WHERE queued_at < ?',
           Date.now() - MAX_AGE

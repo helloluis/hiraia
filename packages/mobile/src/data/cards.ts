@@ -41,7 +41,15 @@ import curriculumTagsJson from '../generated/curriculumTags.generated.json';
 // competency as [code, quarter, CG text] in DepEd's own order — the calendar mode's spine.
 import curriculumOutlineJson from '../generated/curriculumOutline.generated.json';
 
+import { supplement } from './lessonSupplement';
 import { hasArt } from './artPresence';
+import {
+  auditedGrades,
+  lessonsForGrade,
+  lessonByKey,
+  planLesson,
+  type LessonRun,
+} from './lessonPlan';
 import {
   cardHeadSizes,
   loadQuestions,
@@ -122,15 +130,20 @@ export interface CardQuestion {
  * ids against 15.6 MB of questions. The question itself is fetched when one is actually
  * asked (see questionForFact).
  */
-const HAS_QUESTION = new Set<string>(
-  (cardsIndex as { questionFactIds?: string[] }).questionFactIds ?? []
-);
+const HAS_QUESTION = new Set<string>([
+  ...((cardsIndex as { questionFactIds?: string[] }).questionFactIds ?? []),
+  ...Object.keys(supplement.questions),
+]);
 
 // ---- pool: image-backed facts only ----
 // The card pool is the bundled-illustration subset of the 36k curriculum factoid bank
 // (~17k cards across all four MATATAG elementary domains). Text is the feed-voice factoid
 // (Q&A question baked in); `terms` come from the underlying source fact for retrieval.
-const POOL: CardFact[] = (cardsIndex as { cards: CardFact[] }).cards;
+const POOL: CardFact[] = [...(cardsIndex as { cards: CardFact[] }).cards, ...supplement.cards];
+const supplementalText = new Map(
+  supplement.cards.map((c) => [c.id, { fact: c.fact, title: c.title, poster: true }])
+);
+const cardRow = (id: string): ReturnType<typeof textOf> => supplementalText.get(id) ?? textOf(id);
 
 /** Card id -> its ordinal in the pool, which is how the binary token index is addressed. */
 const ORD = new Map<string, number>(POOL.map((f, i) => [f.id, i]));
@@ -157,13 +170,38 @@ for (const [id, [competency, grade, quarter, confidence, cells, codes]] of Objec
     grade,
     quarter,
     confidence,
-    cells: cells?.map(([g, q, s, n]) => ({ grade: g, quarter: q, strength: s === 2 ? 2 : 1, norm: n })),
+    cells: cells?.map(([g, q, s, n]) => ({
+      grade: g,
+      quarter: q,
+      strength: s === 2 ? 2 : 1,
+      norm: n,
+    })),
+    codes,
+  });
+}
+
+// Junior-high domains rotate across quarters; use the authored curriculum, not a fixed domain order.
+const quarterByCompetency = new Map(
+  Object.values(curriculumOutlineJson).flatMap((rows) =>
+    rows.flatMap((row) => row.codes.map((code) => [code, row.quarter] as const))
+  )
+);
+for (const [id, codes] of Object.entries(supplement.competencies)) {
+  const quarter = quarterByCompetency.get(codes[0]!)!;
+  if (!quarter) throw new Error(`Missing curriculum quarter for ${codes[0]}`);
+  TAGS.set(id, {
+    competency: codes[0]!,
+    grade: Number(codes[0]!.split('-')[0]!.slice(1)),
+    quarter,
+    confidence: 1,
     codes,
   });
 }
 
 /** Every competency code a card serves (best first), or ['off'] — for competency_seen bumps. */
 export function competencyKeys(id: string): string[] {
+  const extra = (supplement.competencies as Record<string, string[]>)[id];
+  if (extra) return extra;
   const tag = TAGS.get(id);
   if (!tag || tag.confidence < DEFAULT_CURRICULUM_WEIGHTS.minConfidence) return ['off'];
   return tag.codes?.length ? [...tag.codes] : [tag.competency];
@@ -1018,7 +1056,7 @@ const FALLBACK: Record<Language, Array<'tl' | 'en' | 'bis'>> = {
  * in practice this is only reachable for one frame on a cold start.
  */
 export function cardText(fact: CardFact, language: Language): string {
-  const row = textOf(fact.id);
+  const row = cardRow(fact.id);
   if (!row) return '';
   for (const k of FALLBACK[language] ?? FALLBACK.tagalog) {
     const v = row.fact[k];
@@ -1039,7 +1077,7 @@ export function cardText(fact: CardFact, language: Language): string {
  * raw English slugs ("ants farm aphids for honeydew") into a Tagalog list.
  */
 export function cardTitleById(id: string, language: Language): string {
-  const row = textOf(id);
+  const row = cardRow(id);
   if (!row?.title) return '';
   for (const k of FALLBACK[language] ?? FALLBACK.tagalog) {
     const v = row.title[k];
@@ -1049,7 +1087,7 @@ export function cardTitleById(id: string, language: Language): string {
 }
 
 export function cardTitle(fact: CardFact, language: Language): string {
-  const row = textOf(fact.id);
+  const row = cardRow(fact.id);
   if (!row?.title) return '';
   for (const k of FALLBACK[language] ?? FALLBACK.tagalog) {
     const v = row.title[k];
@@ -1191,12 +1229,12 @@ export function bandLabel(title: string, topic: string, max = BAND_LABEL_MAX): s
 /** The emphasis spans for this card in the reader's language, if it has been warmed. */
 export function cardEmphasis(fact: CardFact, language: Language): string[] | undefined {
   const k = language === 'english' ? 'en' : language === 'cebuano' ? 'bis' : 'tl';
-  return textOf(fact.id)?.emphasis?.[k];
+  return cardRow(fact.id)?.emphasis?.[k];
 }
 
 /** Whether this card reads better as a poster than with a picture (editorial judgement). */
 export function cardIsPoster(fact: CardFact): boolean {
-  return textOf(fact.id)?.poster === true;
+  return cardRow(fact.id)?.poster === true;
 }
 
 /**
@@ -1226,6 +1264,8 @@ export function getCard(id: string): CardFact | undefined {
 export function questionForFact(id: string): CardQuestion | undefined {
   const factId = BY_ID.get(id)?.factId ?? id;
   if (!HAS_QUESTION.has(factId)) return undefined;
+  const extra = (supplement.questions as Record<string, CardQuestion>)[factId];
+  if (extra) return extra;
   return (questionOf(factId) as CardQuestion | null) ?? undefined;
 }
 
@@ -1294,23 +1334,29 @@ export function startCard(seen: ReadonlySet<string>, ctx?: FeedContext): CardFac
  * a DIFFERENT domain than the current one (so the kid escapes a thread that's gone too
  * deep / stale). Falls back across domains then the whole pool as the unseen set thins.
  */
-export function jumpCard(currentId: string | null, seen: ReadonlySet<string>, ctx?: FeedContext): CardFact {
+export function jumpCard(
+  currentId: string | null,
+  seen: ReadonlySet<string>,
+  ctx?: FeedContext
+): CardFact {
   const cur = currentId ? BY_ID.get(currentId) : undefined;
   // In calendar mode the "unrelated" jump stays INSIDE the held topic: the die then means
   // "another card of this topic", and the cross-domain preference below simply finds nothing
   // (a competency's cards share a domain) and falls through to any unseen member.
   const only = ctx?.curriculum?.ids;
+  if (only && PLANNED_RUNS.has(only)) {
+    const next = plannedNext(only, currentId);
+    if (next) return next;
+  }
   const inSet = (f: CardFact) => !only || only.has(f.id);
   const usable = (f: CardFact) => f.id !== currentId && !seen.has(f.id) && inSet(f);
   const w = ctx ? weigher(ctx) : undefined;
-  return (
-    drawFrom((f) => usable(f) && (!cur || f.domain !== cur.domain), w) ??
+  return (drawFrom((f) => usable(f) && (!cur || f.domain !== cur.domain), w) ??
     drawFrom(usable, w) ??
     drawFrom((f) => f.id !== currentId && inSet(f), w) ??
     // a held topic whose only card IS the current one: any card, as the plain feed would
     drawFrom((f) => f.id !== currentId, w) ??
-    POOL[0]
-  ) as CardFact;
+    POOL[0]) as CardFact;
 }
 
 /**
@@ -1614,6 +1660,8 @@ const TEXT_DUP_JACCARD = 0.35;
 
 /** Fraction of the two cards' combined vocabulary (topic + terms + tl/en/bis) they share. */
 function textJaccard(a: CardFact, b: CardFact): number {
+  // Supplemental cards are appended after the bundled token ordinals.
+  if (supplementalText.has(a.id) || supplementalText.has(b.id)) return 0;
   return tokenJaccard(ORD.get(a.id) ?? -1, ORD.get(b.id) ?? -1);
 }
 
@@ -1710,6 +1758,7 @@ export function hasServableCurriculum(
   ids: ReadonlySet<string>,
   seen: ReadonlySet<string>
 ): boolean {
+  if (PLANNED_RUNS.has(ids)) return !!plannedNext(ids, currentId);
   return hasServable(currentId, ids, seen, undefined, false);
 }
 
@@ -1779,7 +1828,12 @@ export function topicTitle(topic: OutlineTopic, language: Language): string {
 
 type OutlineJson = Record<
   string,
-  { quarter: number; contentIndex: number; title: { en: string; tl: string; bis: string }; codes: string[] }[]
+  {
+    quarter: number;
+    contentIndex: number;
+    title: { en: string; tl: string; bis: string };
+    codes: string[];
+  }[]
 >;
 const OUTLINE_ALL = new Map<number, OutlineTopic[]>();
 for (const [g, topics] of Object.entries(curriculumOutlineJson as unknown as OutlineJson)) {
@@ -1793,6 +1847,28 @@ for (const [g, topics] of Object.entries(curriculumOutlineJson as unknown as Out
       codes: t.codes,
     }))
   );
+}
+
+const LEGACY_OUTLINES = new Map<number, OutlineTopic[]>();
+for (const grade of auditedGrades) {
+  LEGACY_OUTLINES.set(grade, OUTLINE_ALL.get(grade) ?? []);
+  OUTLINE_ALL.set(
+    grade,
+    lessonsForGrade(grade).map((l, i) => ({
+      key: l.key,
+      quarter: l.quarter as Quarter,
+      contentIndex: i + 1,
+      title: l.title,
+      codes: l.codes,
+    }))
+  );
+}
+const PLANNED_RUNS = new WeakMap<ReadonlySet<string>, LessonRun>();
+function plannedNext(ids: ReadonlySet<string>, current: string | null): CardFact | undefined {
+  const run = PLANNED_RUNS.get(ids);
+  return run?.cards
+    .map((id) => BY_ID.get(id))
+    .find((f) => f && f.id !== current && !run.completed.includes(f.id));
 }
 
 /**
@@ -1841,6 +1917,8 @@ export function cardsForCompetency(code: string): ReadonlySet<string> {
  */
 const TOPIC_CARDS = new Map<OutlineTopic, ReadonlySet<string>>();
 export function cardsForTopic(topic: OutlineTopic): ReadonlySet<string> {
+  const lesson = lessonByKey(topic.key);
+  if (lesson) return new Set(lesson.cardIds);
   let s = TOPIC_CARDS.get(topic);
   if (!s) {
     if (topic.codes.length === 1) s = cardsForCompetency(topic.codes[0]!);
@@ -1921,6 +1999,7 @@ export interface CurriculumCursor {
   /** The topic's cards — the frozen union from cardsForTopic, shared, never copied. */
   idSet: ReadonlySet<string>;
   index: number;
+  lessonRun?: LessonRun;
 }
 
 /** The outline row a cursor names (its title prints on the ribbon), or undefined if the grade's outline moved under it. */
@@ -1930,11 +2009,44 @@ export function cursorTopic(c: CurriculumCursor): OutlineTopic | undefined {
 }
 
 /** Enter the outline at a topic, or null if the grade's outline does not list it (no cards). */
-export function curriculumCursor(grade: GradeLevel, key: string): CurriculumCursor | null {
+export function curriculumCursor(
+  grade: GradeLevel,
+  key: string,
+  seen: ReadonlySet<string> = new Set(),
+  saved?: unknown
+): CurriculumCursor | null {
   const rows = curriculumOutline(grade);
+  if (lessonsForGrade(grade).length && !lessonByKey(key)) {
+    const old = (LEGACY_OUTLINES.get(grade) ?? []).find((t) => t.key === key);
+    key = rows.find((t) => t.codes.some((code) => old?.codes.includes(code)))?.key ?? key;
+  }
   const index = rows.findIndex((t) => t.key === key);
   if (index < 0) return null;
-  return { grade, key, idSet: cardsForTopic(rows[index]!), index };
+  const lesson = lessonsForGrade(grade).find((l) => l.key === key);
+  if (!lesson) return { grade, key, idSet: cardsForTopic(rows[index]!), index };
+  const lessonRun = planLesson(lesson, seen, saved);
+  const idSet = new Set(lessonRun.cards);
+  PLANNED_RUNS.set(idSet, lessonRun);
+  return { grade, key, index, idSet, lessonRun };
+}
+
+/** Estimate a new learner's topic from progress through the school year.
+ * Topics are evenly spaced within each quarter; teachers can override in the outline.
+ */
+export function estimatedCurriculumCursor(
+  grade: GradeLevel,
+  fraction: number
+): CurriculumCursor | null {
+  const rows = curriculumOutline(grade);
+  if (!rows.length) return null;
+  const progress = Math.max(0, Math.min(0.999999, fraction));
+  const quarter = Math.floor(progress * 4) + 1;
+  const inQuarter = rows.filter((t) => t.quarter === quarter);
+  const topic =
+    inQuarter[Math.floor(((progress * 4) % 1) * inQuarter.length)] ??
+    rows.find((t) => t.quarter > quarter) ??
+    rows[0]!;
+  return curriculumCursor(grade, topic.key);
 }
 
 /**
@@ -1947,8 +2059,8 @@ export function curriculumCursor(grade: GradeLevel, key: string): CurriculumCurs
  *     keyed on it (the preview cache) stays valid.
  *   - it is EXHAUSTED → the cursor moves FORWARD through the outline, in CG order, to the
  *     first later topic that has such a card, skipping ones that do not (empty for this pool,
- *     or already read out this session). Chronological, never backward.
- *   - nothing left to the end of Q4 → null: calendar mode releases and the feed drifts on.
+ *     or already read). Forward until the end, then a new review pass.
+ *   - nothing left to the end of Q4 → begin a review pass in outline order.
  *
  * `seen` is the post-turn value (it already includes `currentId`).
  */
@@ -1957,6 +2069,16 @@ export function advanceCurriculum(
   currentId: string | null,
   seen: ReadonlySet<string>
 ): CurriculumCursor | null {
+  if (c.lessonRun) {
+    const completed = [...c.lessonRun.completed];
+    if (currentId && c.lessonRun.cards.includes(currentId) && !completed.includes(currentId))
+      completed.push(currentId);
+    const run = { ...c.lessonRun, completed };
+    if (run.cards.some((id) => !completed.includes(id)))
+      return curriculumCursor(c.grade, c.key, seen, run);
+    const rows = curriculumOutline(c.grade);
+    return curriculumCursor(c.grade, rows[(c.index + 1) % rows.length]!.key, seen);
+  }
   if (hasServableCurriculum(currentId, c.idSet, seen)) return c;
   const rows = curriculumOutline(c.grade);
   for (let i = c.index + 1; i < rows.length; i += 1) {
@@ -1965,7 +2087,13 @@ export function advanceCurriculum(
       return { grade: c.grade, key: rows[i]!.key, idSet, index: i };
     }
   }
-  return null;
+  // All remaining topics exhausted: review in outline order, keeping curriculum mode.
+  for (let offset = 1; offset <= rows.length; offset += 1) {
+    const index = (c.index + offset) % rows.length;
+    const idSet = cardsForTopic(rows[index]!);
+    if (idSet.size) return { grade: c.grade, key: rows[index]!.key, idSet, index };
+  }
+  return c;
 }
 
 /**
@@ -1991,12 +2119,8 @@ export function advanceCurriculum(
  * lateral surfaces feel the magnet only through the weight overlay, so the fork remains the
  * natural drift-away exit.
  *
- * In CALENDAR MODE (ctx.curriculum) every slot is CONFINED to the held competency's cards —
- * a filter folded into `unseen`, so the deep ranking, both lateral pools, the category shelf,
- * the dead-end escape and every thinning fallback all read from the set and nothing else.
- * When the graph has no in-set follow-on (the usual case: a competency's cards are linked by
- * curriculum, not by shared terms), the deep slot is PROMOTED from the set by the ordinary
- * weigher instead of declaring a dead end, so the walk keeps its single-path grammar.
+ * In curriculum mode, return one successor from the held topic, selected without keyword
+ * association or forks. The store advances the topic before asking for its next choice.
  */
 export function nextChoices(
   currentId: string,
@@ -2036,6 +2160,20 @@ export function nextChoices(
    */
   const servable = (f: CardFact) =>
     unseen(f) && !blockedSlugs.has(f.slug) && topicKeyOf(f) !== curTopicKey;
+
+  // Curriculum mode is a single topic-bound path, independent of keyword edges/forks.
+  if (only && PLANNED_RUNS.has(only)) {
+    const next = plannedNext(only, currentId);
+    return next ? [{ factId: next.id, label: choiceLabel(next, language), kind: 'deep' }] : [];
+  }
+  if (only) {
+    const members = [...only]
+      .map((id) => BY_ID.get(id))
+      .filter((f): f is CardFact => !!f && f.id !== currentId);
+    const fresh = members.filter((f) => unseen(f));
+    const next = draw(fresh.filter(servable), w) ?? draw(fresh, w) ?? draw(members, w);
+    return next ? [{ factId: next.id, label: choiceLabel(next, language), kind: 'deep' }] : [];
+  }
 
   // deep: candidates sharing any term, ranked by idf-weighted overlap, but only those whose
   // shared terms are specific enough to be a real thread (see LINK_MASS_FLOOR) and not so
@@ -2082,33 +2220,6 @@ export function nextChoices(
       deep = f;
       break;
     }
-  }
-
-  // THE CURRICULUM SUCCESSOR. A held topic's cards are related by the competency they teach,
-  // not by shared vocabulary, so the graph edge above usually finds no in-set candidate. That
-  // is not a dead end — the topic still has cards — so the deep slot is drawn from the set by
-  // the ordinary weigher (grade band, seen-decay), under the same restatement gates a graph
-  // candidate faces. As the topic thins, the picture cooldown is RELAXED before giving up —
-  // the feed's own thinning rule ("a repeated illustration beats an empty page"), and here a
-  // repeated illustration beats abandoning the members that share it: the cursor only ever
-  // moves forward, and a topic's cards often share one picture (hasServableCurriculum).
-  // Only when the set has NOTHING left does the page fall through to the dead-end fork
-  // below, and the store's cursor has already moved on by then (advanceCurriculum runs
-  // before the choices are drawn), so that fork is drawn from the NEXT topic's cards.
-  if (only && !deep) {
-    const members = (relaxPicture: boolean) => {
-      const pool: CardFact[] = [];
-      for (const id of only) {
-        const f = BY_ID.get(id);
-        if (!f || !unseen(f) || topicKeyOf(f) === curTopicKey) continue;
-        if (!relaxPicture && blockedSlugs.has(f.slug)) continue;
-        if (linkOf(cur, f).mass > selfScore * DEEP_DUP_CAP) continue;
-        if (textJaccard(cur, f) > TEXT_DUP_JACCARD) continue;
-        pool.push(f);
-      }
-      return pool;
-    };
-    deep = draw(members(false), w) ?? draw(members(true), w);
   }
 
   // A card with no ASSOCIATED follow-on left is a dead end. Anything served next is an

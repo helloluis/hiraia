@@ -1,0 +1,1360 @@
+{
+  "version": 1,
+  "grade": 8,
+  "reference": "MATATAG Science Grades 3–10, August 2023; verified junior-high curriculum extract",
+  "lessons": [
+    {
+      "key": "g8:digestion",
+      "quarter": 1,
+      "title": {
+        "en": "Trace Food’s Journey",
+        "tl": "Sundan ang Paglalakbay ng Pagkain",
+        "bis": "Sunda ang Biyahe sa Pagkaon"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G8-L-1:route",
+          "competency": "G8-L-1",
+          "focus": "route",
+          "pattern": "mouth.*(stomach|intestine)|diagram|tract"
+        },
+        {
+          "id": "G8-L-1:mechanical",
+          "competency": "G8-L-1",
+          "focus": "mechanical",
+          "pattern": "chew|mechanical"
+        },
+        {
+          "id": "G8-L-1:secretion",
+          "competency": "G8-L-1",
+          "focus": "secretion",
+          "pattern": "secre|saliva|enzyme"
+        },
+        {
+          "id": "G8-L-1:absorption",
+          "competency": "G8-L-1",
+          "focus": "absorption",
+          "pattern": "absorb|absorption"
+        },
+        {
+          "id": "G8-L-1:elimination",
+          "competency": "G8-L-1",
+          "focus": "elimination",
+          "pattern": "eliminat|feces|\\banus\\b"
+        }
+      ]
+    },
+    {
+      "key": "g8:body-systems",
+      "quarter": 1,
+      "title": {
+        "en": "Body Systems Work Together",
+        "tl": "Pagtutulungan ng Sistema ng Katawan",
+        "bis": "Pagtinabangay sa Sistema sa Lawas"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-L-2:digestion-excretion",
+          "competency": "G8-L-2",
+          "focus": "digestion excretion",
+          "pattern": "(digest|nutrient).*(excret|kidney|urine)|(kidney|excret).*(digest|nutrient)"
+        },
+        {
+          "id": "G8-L-2:model",
+          "competency": "G8-L-2",
+          "focus": "model",
+          "pattern": "model|flow.?chart|diagram|→"
+        }
+      ]
+    },
+    {
+      "key": "g8:plant-transport",
+      "quarter": 1,
+      "title": {
+        "en": "Roots, Stems, and Leaves",
+        "tl": "Ugat, Tangkay, at Dahon",
+        "bis": "Gamot, Tukog, ug Dahon"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-L-3:roots",
+          "competency": "G8-L-3",
+          "focus": "roots",
+          "pattern": "root"
+        },
+        {
+          "id": "G8-L-3:stem",
+          "competency": "G8-L-3",
+          "focus": "stem",
+          "pattern": "stem|xylem|phloem"
+        },
+        {
+          "id": "G8-L-3:leaves",
+          "competency": "G8-L-3",
+          "focus": "leaves",
+          "pattern": "lea(f|ves)|transpir"
+        }
+      ]
+    },
+    {
+      "key": "g8:inheritance-patterns",
+      "quarter": 1,
+      "title": {
+        "en": "Track an Inherited Trait",
+        "tl": "Sundan ang Namamanang Katangian",
+        "bis": "Sunda ang Napanunod nga Kinaiya"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-L-4:dominance",
+          "competency": "G8-L-4",
+          "focus": "dominance",
+          "pattern": "dominant|recessive"
+        },
+        {
+          "id": "G8-L-4:generations",
+          "competency": "G8-L-4",
+          "focus": "generations",
+          "pattern": "generation|pedigree|family"
+        }
+      ]
+    },
+    {
+      "key": "g8:inheritance-ratios",
+      "quarter": 1,
+      "title": {
+        "en": "Predict Inheritance Ratios",
+        "tl": "Hulaan ang Ratio ng Pagmamana",
+        "bis": "Tagnaa ang Ratio sa Pagpanunod"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G8-L-5:cross",
+          "competency": "G8-L-5",
+          "focus": "cross",
+          "pattern": "Punnett|cross|Aa"
+        },
+        {
+          "id": "G8-L-5:genotype",
+          "competency": "G8-L-5",
+          "focus": "genotype",
+          "pattern": "genotype"
+        },
+        {
+          "id": "G8-L-5:phenotype",
+          "competency": "G8-L-5",
+          "focus": "phenotype",
+          "pattern": "phenotype"
+        },
+        {
+          "id": "G8-L-5:ratio",
+          "competency": "G8-L-5",
+          "focus": "ratio",
+          "pattern": "ratio|1:2:1|3:1"
+        }
+      ]
+    },
+    {
+      "key": "g8:classification",
+      "quarter": 1,
+      "title": {
+        "en": "Kingdoms and Domains",
+        "tl": "Kingdom at Domain",
+        "bis": "Kingdom ug Domain"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G8-L-6:six-kingdoms",
+          "competency": "G8-L-6",
+          "focus": "six kingdoms",
+          "pattern": "six.kingdom|6 kingdom|Archaebacteria|Eubacteria"
+        },
+        {
+          "id": "G8-L-6:three-domains",
+          "competency": "G8-L-6",
+          "focus": "three domains",
+          "pattern": "three.domain|Bacteria.*Archaea|Archaea.*Bacteria"
+        },
+        {
+          "id": "G8-L-6:purpose",
+          "competency": "G8-L-6",
+          "focus": "purpose",
+          "pattern": "classif|relationship|group"
+        }
+      ]
+    },
+    {
+      "key": "g8:humans-primates",
+      "quarter": 1,
+      "title": {
+        "en": "Humans, Mammals, and Primates",
+        "tl": "Tao, Mammal, at Primate",
+        "bis": "Tawo, Mammal, ug Primate"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-L-7:mammals",
+          "competency": "G8-L-7",
+          "focus": "mammals",
+          "pattern": "mammal|milk|hair"
+        },
+        {
+          "id": "G8-L-7:primates",
+          "competency": "G8-L-7",
+          "focus": "primates",
+          "pattern": "primate|thumb|forward.facing"
+        }
+      ]
+    },
+    {
+      "key": "g8:nature-cycles",
+      "quarter": 1,
+      "title": {
+        "en": "Trace Nature’s Cycles",
+        "tl": "Sundan ang Siklo ng Kalikasan",
+        "bis": "Sunda ang Siklo sa Kinaiyahan"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G8-L-8:carbon",
+          "competency": "G8-L-8",
+          "focus": "carbon",
+          "pattern": "carbon"
+        },
+        {
+          "id": "G8-L-8:oxygen",
+          "competency": "G8-L-8",
+          "focus": "oxygen",
+          "pattern": "oxygen"
+        },
+        {
+          "id": "G8-L-8:water",
+          "competency": "G8-L-8",
+          "focus": "water",
+          "pattern": "water|transpir"
+        },
+        {
+          "id": "G8-L-8:diagram",
+          "competency": "G8-L-8",
+          "focus": "diagram",
+          "pattern": "diagram|flow.?chart|draw|→"
+        }
+      ]
+    },
+    {
+      "key": "g8:photosynthesis-respiration",
+      "quarter": 1,
+      "title": {
+        "en": "Photosynthesis and Respiration",
+        "tl": "Photosynthesis at Respiration",
+        "bis": "Photosynthesis ug Respiration"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G8-L-9:photosynthesis-inputs",
+          "competency": "G8-L-9",
+          "focus": "photosynthesis inputs",
+          "pattern": "photosynthesis.*(water|carbon dioxide)|(water|carbon dioxide).*photosynthesis"
+        },
+        {
+          "id": "G8-L-9:photosynthesis-products",
+          "competency": "G8-L-9",
+          "focus": "photosynthesis products",
+          "pattern": "photosynthesis.*(glucose|sugar|oxygen)|(glucose|sugar|oxygen).*photosynthesis"
+        },
+        {
+          "id": "G8-L-9:respiration",
+          "competency": "G8-L-9",
+          "focus": "respiration",
+          "pattern": "respiration"
+        },
+        {
+          "id": "G8-L-9:respiration-products",
+          "competency": "G8-L-9",
+          "focus": "respiration products",
+          "pattern": "respiration.*(carbon dioxide|water|ATP)|(carbon dioxide|water|ATP).*respiration"
+        }
+      ]
+    },
+    {
+      "key": "g8:cell-energy-sites",
+      "quarter": 1,
+      "title": {
+        "en": "Where Cell Processes Happen",
+        "tl": "Saan Nagaganap ang Proseso ng Selula",
+        "bis": "Asa Mahitabo ang Proseso sa Selula"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-L-10:chloroplast",
+          "competency": "G8-L-10",
+          "focus": "chloroplast",
+          "pattern": "chloroplast"
+        },
+        {
+          "id": "G8-L-10:respiration-sites",
+          "competency": "G8-L-10",
+          "focus": "respiration sites",
+          "pattern": "mitochondri|cytoplasm"
+        },
+        {
+          "id": "G8-L-10:sources",
+          "competency": "G8-L-10",
+          "focus": "sources",
+          "pattern": "reliable|textbook|reference|\\barticle\\b"
+        }
+      ]
+    },
+    {
+      "key": "g8:photosynthesis-test",
+      "quarter": 1,
+      "title": {
+        "en": "Plan a Photosynthesis Test",
+        "tl": "Magplano ng Pagsubok sa Photosynthesis",
+        "bis": "Pagplano og Pagsulay sa Photosynthesis"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-L-11:raw-material",
+          "competency": "G8-L-11",
+          "focus": "raw material",
+          "pattern": "carbon dioxide|water"
+        },
+        {
+          "id": "G8-L-11:fair-test",
+          "competency": "G8-L-11",
+          "focus": "fair test",
+          "pattern": "control|same|fair|variable"
+        },
+        {
+          "id": "G8-L-11:evidence",
+          "competency": "G8-L-11",
+          "focus": "evidence",
+          "pattern": "measure|record|evidence|starch|oxygen"
+        }
+      ]
+    },
+    {
+      "key": "g8:atomic-timeline",
+      "quarter": 2,
+      "title": {
+        "en": "How Atomic Models Changed",
+        "tl": "Pagbabago ng Modelo ng Atom",
+        "bis": "Kausaban sa Modelo sa Atom"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G8-M-1:early",
+          "competency": "G8-M-1",
+          "focus": "early",
+          "pattern": "Dalton|Democritus"
+        },
+        {
+          "id": "G8-M-1:nucleus",
+          "competency": "G8-M-1",
+          "focus": "nucleus",
+          "pattern": "Thomson|Rutherford"
+        },
+        {
+          "id": "G8-M-1:modern",
+          "competency": "G8-M-1",
+          "focus": "modern",
+          "pattern": "quantum|Schr"
+        },
+        {
+          "id": "G8-M-1:timeline",
+          "competency": "G8-M-1",
+          "focus": "timeline",
+          "pattern": "timeline|chronolog|sequence"
+        },
+        {
+          "id": "G8-M-1:current-model",
+          "competency": "G8-M-1",
+          "focus": "current quantum model",
+          "pattern": "quantum"
+        }
+      ]
+    },
+    {
+      "key": "g8:draw-atom",
+      "quarter": 2,
+      "title": {
+        "en": "Draw an Atom Model",
+        "tl": "Iguhit ang Modelo ng Atom",
+        "bis": "Idrowing ang Modelo sa Atom"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-M-2:nucleus",
+          "competency": "G8-M-2",
+          "focus": "nucleus",
+          "pattern": "nucleus"
+        },
+        {
+          "id": "G8-M-2:shells",
+          "competency": "G8-M-2",
+          "focus": "shells",
+          "pattern": "shell|energy level"
+        },
+        {
+          "id": "G8-M-2:drawing",
+          "competency": "G8-M-2",
+          "focus": "drawing",
+          "pattern": "draw|diagram|model"
+        },
+        {
+          "id": "G8-M-2:model-limits",
+          "competency": "G8-M-2",
+          "focus": "shells are not exact electron paths",
+          "pattern": "not exact electron paths"
+        }
+      ]
+    },
+    {
+      "key": "g8:subatomic-particles",
+      "quarter": 2,
+      "title": {
+        "en": "Compare Subatomic Particles",
+        "tl": "Ihambing ang Partikulo ng Atom",
+        "bis": "Itandi ang Partikulo sa Atom"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G8-M-3:proton",
+          "competency": "G8-M-3",
+          "focus": "proton",
+          "pattern": "proton"
+        },
+        {
+          "id": "G8-M-3:neutron",
+          "competency": "G8-M-3",
+          "focus": "neutron",
+          "pattern": "neutron"
+        },
+        {
+          "id": "G8-M-3:electron",
+          "competency": "G8-M-3",
+          "focus": "electron",
+          "pattern": "electron"
+        },
+        {
+          "id": "G8-M-3:mass",
+          "competency": "G8-M-3",
+          "focus": "mass",
+          "pattern": "mass"
+        },
+        {
+          "id": "G8-M-3:charge",
+          "competency": "G8-M-3",
+          "focus": "charge",
+          "pattern": "charge"
+        },
+        {
+          "id": "G8-M-3:symbols",
+          "competency": "G8-M-3",
+          "focus": "symbols",
+          "pattern": "symbol|p\\+|n0|e−|e-"
+        }
+      ]
+    },
+    {
+      "key": "g8:pure-substances",
+      "quarter": 2,
+      "title": {
+        "en": "What Defines an Element?",
+        "tl": "Ano ang Batayan ng Elemento?",
+        "bis": "Unsay Basihan sa Elemento?"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-M-4:composition",
+          "competency": "G8-M-4",
+          "focus": "composition",
+          "pattern": "fixed|composition|pure substance"
+        },
+        {
+          "id": "G8-M-4:proton-number",
+          "competency": "G8-M-4",
+          "focus": "proton number",
+          "pattern": "proton|atomic number"
+        }
+      ]
+    },
+    {
+      "key": "g8:periodic-history",
+      "quarter": 2,
+      "title": {
+        "en": "Building the Periodic Table",
+        "tl": "Pagbuo ng Periodic Table",
+        "bis": "Pagporma sa Periodic Table"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-M-5:early-scientists",
+          "competency": "G8-M-5",
+          "focus": "early scientists",
+          "pattern": "Mendeleev|Newlands|Dobereiner|Döbereiner"
+        },
+        {
+          "id": "G8-M-5:contribution",
+          "competency": "G8-M-5",
+          "focus": "contribution",
+          "pattern": "predict|arrang|gap|atomic number|Moseley"
+        }
+      ]
+    },
+    {
+      "key": "g8:element-names",
+      "quarter": 2,
+      "title": {
+        "en": "Element Names and Symbols",
+        "tl": "Pangalan at Simbolo ng Elemento",
+        "bis": "Ngalan ug Simbolo sa Elemento"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G8-M-6:first-ten",
+          "competency": "G8-M-6",
+          "focus": "first ten",
+          "pattern": "hydrogen|helium|lithium|beryllium|boron|carbon|nitrogen|oxygen|fluorine|neon"
+        },
+        {
+          "id": "G8-M-6:next-ten",
+          "competency": "G8-M-6",
+          "focus": "next ten",
+          "pattern": "sodium|magnesium|alumin|silicon|phosphorus|sulfur|chlorine|argon|potassium|calcium"
+        },
+        {
+          "id": "G8-M-6:symbols",
+          "competency": "G8-M-6",
+          "focus": "symbols",
+          "pattern": "symbol"
+        }
+      ]
+    },
+    {
+      "key": "g8:periods-groups",
+      "quarter": 2,
+      "title": {
+        "en": "Read Groups and Periods",
+        "tl": "Basahin ang Grupo at Period",
+        "bis": "Basaha ang Grupo ug Period"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-M-7:rows-columns",
+          "competency": "G8-M-7",
+          "focus": "rows columns",
+          "pattern": "period|group"
+        },
+        {
+          "id": "G8-M-7:counts",
+          "competency": "G8-M-7",
+          "focus": "counts",
+          "pattern": "seven periods|7 periods|18 groups|eighteen groups"
+        },
+        {
+          "id": "G8-M-7:properties",
+          "competency": "G8-M-7",
+          "focus": "properties",
+          "pattern": "reactiv|propert|electron"
+        }
+      ]
+    },
+    {
+      "key": "g8:electron-position",
+      "quarter": 2,
+      "title": {
+        "en": "Electrons and Table Position",
+        "tl": "Electron at Posisyon sa Talahanayan",
+        "bis": "Electron ug Posisyon sa Talaan"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-M-8:shell-period",
+          "competency": "G8-M-8",
+          "focus": "shell period",
+          "pattern": "shell|period|energy level"
+        },
+        {
+          "id": "G8-M-8:valence-group",
+          "competency": "G8-M-8",
+          "focus": "valence group",
+          "pattern": "valence|group"
+        }
+      ]
+    },
+    {
+      "key": "g8:count-particles",
+      "quarter": 2,
+      "title": {
+        "en": "Count Protons, Neutrons, Electrons",
+        "tl": "Bilangin ang Partikulo ng Atom",
+        "bis": "Ihapa ang Partikulo sa Atom"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G8-M-9:protons",
+          "competency": "G8-M-9",
+          "focus": "protons",
+          "pattern": "proton|atomic number"
+        },
+        {
+          "id": "G8-M-9:neutrons",
+          "competency": "G8-M-9",
+          "focus": "neutrons",
+          "pattern": "neutron|mass number"
+        },
+        {
+          "id": "G8-M-9:electrons",
+          "competency": "G8-M-9",
+          "focus": "electrons",
+          "pattern": "electron"
+        },
+        {
+          "id": "G8-M-9:worked-example",
+          "competency": "G8-M-9",
+          "focus": "worked example",
+          "pattern": "alumin|27|subtract|−|minus"
+        }
+      ]
+    },
+    {
+      "key": "g8:group-valence",
+      "quarter": 2,
+      "title": {
+        "en": "Valence Electrons in a Group",
+        "tl": "Valence Electron sa Grupo",
+        "bis": "Valence Electron sa Grupo"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-M-10:shared-valence",
+          "competency": "G8-M-10",
+          "focus": "shared valence",
+          "pattern": "valence|outer"
+        },
+        {
+          "id": "G8-M-10:exceptions",
+          "competency": "G8-M-10",
+          "focus": "exceptions",
+          "pattern": "helium.*(two|2).*electron|transition"
+        }
+      ]
+    },
+    {
+      "key": "g8:land-water",
+      "quarter": 3,
+      "title": {
+        "en": "Earth’s Land and Water",
+        "tl": "Lupa at Tubig ng Daigdig",
+        "bis": "Yuta ug Tubig sa Kalibotan"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-E-1:water",
+          "competency": "G8-E-1",
+          "focus": "water",
+          "pattern": "71|seventy.one"
+        },
+        {
+          "id": "G8-E-1:land",
+          "competency": "G8-E-1",
+          "focus": "land",
+          "pattern": "29|twenty.nine"
+        }
+      ]
+    },
+    {
+      "key": "g8:crust-sources",
+      "quarter": 3,
+      "title": {
+        "en": "Investigate Earth’s Crust",
+        "tl": "Siyasatin ang Crust ng Daigdig",
+        "bis": "Susihon ang Crust sa Yuta"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-E-2:continental",
+          "competency": "G8-E-2",
+          "focus": "continental",
+          "pattern": "continental"
+        },
+        {
+          "id": "G8-E-2:oceanic",
+          "competency": "G8-E-2",
+          "focus": "oceanic",
+          "pattern": "oceanic"
+        },
+        {
+          "id": "G8-E-2:source",
+          "competency": "G8-E-2",
+          "focus": "source",
+          "pattern": "reliable|textbook|reference|article"
+        }
+      ]
+    },
+    {
+      "key": "g8:volcano-types",
+      "quarter": 3,
+      "title": {
+        "en": "Compare Volcano Types",
+        "tl": "Ihambing ang Uri ng Bulkan",
+        "bis": "Itandi ang Matang sa Bulkan"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G8-E-3:activity",
+          "competency": "G8-E-3",
+          "focus": "activity",
+          "pattern": "active|dormant|extinct|inactive"
+        },
+        {
+          "id": "G8-E-3:eruption",
+          "competency": "G8-E-3",
+          "focus": "eruption",
+          "pattern": "effusive|explosive|phreatic"
+        },
+        {
+          "id": "G8-E-3:location",
+          "competency": "G8-E-3",
+          "focus": "location",
+          "pattern": "subduct|rift|hot.?spot|boundary"
+        }
+      ]
+    },
+    {
+      "key": "g8:volcano-shape",
+      "quarter": 3,
+      "title": {
+        "en": "Why Volcano Shapes Differ",
+        "tl": "Bakit Iba-iba ang Hugis ng Bulkan",
+        "bis": "Nganong Lahi ang Porma sa Bulkan"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-E-4:composition",
+          "competency": "G8-E-4",
+          "focus": "composition",
+          "pattern": "silica|viscos|sticky|basalt"
+        },
+        {
+          "id": "G8-E-4:cone-shape",
+          "competency": "G8-E-4",
+          "focus": "cone shape",
+          "pattern": "shield|steep|cone|slope"
+        }
+      ]
+    },
+    {
+      "key": "g8:global-patterns",
+      "quarter": 3,
+      "title": {
+        "en": "Map Earth’s Active Belts",
+        "tl": "Imapa ang Aktibong Rehiyon",
+        "bis": "Imapa ang Aktibong mga Rehiyon"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G8-E-5:volcanoes",
+          "competency": "G8-E-5",
+          "focus": "volcanoes",
+          "pattern": "volcano"
+        },
+        {
+          "id": "G8-E-5:earthquakes",
+          "competency": "G8-E-5",
+          "focus": "earthquakes",
+          "pattern": "earthquake|epicenter"
+        },
+        {
+          "id": "G8-E-5:mountains",
+          "competency": "G8-E-5",
+          "focus": "mountains",
+          "pattern": "mountain"
+        },
+        {
+          "id": "G8-E-5:crust",
+          "competency": "G8-E-5",
+          "focus": "crust",
+          "pattern": "oceanic|continental|boundary|boundaries"
+        }
+      ]
+    },
+    {
+      "key": "g8:plates-crust",
+      "quarter": 3,
+      "title": {
+        "en": "Crust and Lithospheric Plates",
+        "tl": "Crust at Lithospheric Plate",
+        "bis": "Crust ug Lithospheric Plate"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-E-6:plate-composition",
+          "competency": "G8-E-6",
+          "focus": "plate composition",
+          "pattern": "lithospher|crust.*(uppermost|rigid).*mantle"
+        },
+        {
+          "id": "G8-E-6:crust-types",
+          "competency": "G8-E-6",
+          "focus": "crust types",
+          "pattern": "oceanic.*continental|continental.*oceanic"
+        }
+      ]
+    },
+    {
+      "key": "g8:typhoon-formation",
+      "quarter": 3,
+      "title": {
+        "en": "Why Typhoons Form",
+        "tl": "Bakit Nabubuo ang Bagyo",
+        "bis": "Nganong Maporma ang Bagyo"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G8-E-7:conditions",
+          "competency": "G8-E-7",
+          "focus": "conditions",
+          "pattern": "warm|moist|Coriolis|low pressure"
+        },
+        {
+          "id": "G8-E-7:philippines",
+          "competency": "G8-E-7",
+          "focus": "philippines",
+          "pattern": "Philippin|western.*Pacific"
+        },
+        {
+          "id": "G8-E-7:source",
+          "competency": "G8-E-7",
+          "focus": "source",
+          "pattern": "PAGASA|reliable|reference|article"
+        }
+      ]
+    },
+    {
+      "key": "g8:typhoon-track",
+      "quarter": 3,
+      "title": {
+        "en": "Plot a Typhoon Track",
+        "tl": "Iguhit ang Daan ng Bagyo",
+        "bis": "Idrowing ang Agianan sa Bagyo"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-E-8:coordinates",
+          "competency": "G8-E-8",
+          "focus": "coordinates",
+          "pattern": "latitude|longitude|coordinate"
+        },
+        {
+          "id": "G8-E-8:tracking",
+          "competency": "G8-E-8",
+          "focus": "tracking",
+          "pattern": "plot|track|time"
+        },
+        {
+          "id": "G8-E-8:par",
+          "competency": "G8-E-8",
+          "focus": "par",
+          "pattern": "\\bPAR\\b|Area of Responsibility"
+        }
+      ]
+    },
+    {
+      "key": "g8:land-sea-storms",
+      "quarter": 3,
+      "title": {
+        "en": "Land, Sea, and Typhoon Strength",
+        "tl": "Lupa, Dagat, at Lakas ng Bagyo",
+        "bis": "Yuta, Dagat, ug Kusog sa Bagyo"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-E-9:water",
+          "competency": "G8-E-9",
+          "focus": "water",
+          "pattern": "warm.*water|ocean|sea"
+        },
+        {
+          "id": "G8-E-9:landforms",
+          "competency": "G8-E-9",
+          "focus": "landforms",
+          "pattern": "mountain|landfall|landmass|terrain"
+        },
+        {
+          "id": "G8-E-9:terrain-limits",
+          "competency": "G8-E-9",
+          "focus": "landfall does not end hazards",
+          "pattern": "not a guarantee"
+        }
+      ]
+    },
+    {
+      "key": "g8:community-support",
+      "quarter": 3,
+      "title": {
+        "en": "How Authorities Help",
+        "tl": "Paano Tumutulong ang Awtoridad",
+        "bis": "Giunsa Pagtabang sa Awtoridad"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-E-10:official-sources",
+          "competency": "G8-E-10",
+          "focus": "official sources",
+          "pattern": "DOST|PAGASA|official|reliable"
+        },
+        {
+          "id": "G8-E-10:support",
+          "competency": "G8-E-10",
+          "focus": "support",
+          "pattern": "evacuat|relief|shelter|warning|rescue|assistance"
+        }
+      ]
+    },
+    {
+      "key": "g8:tide-motions",
+      "quarter": 3,
+      "title": {
+        "en": "Sun, Moon, and Tides",
+        "tl": "Araw, Buwan, at Tide",
+        "bis": "Adlaw, Bulan, ug Taob"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G8-E-11:gravity",
+          "competency": "G8-E-11",
+          "focus": "gravity",
+          "pattern": "gravit"
+        },
+        {
+          "id": "G8-E-11:spring",
+          "competency": "G8-E-11",
+          "focus": "spring",
+          "pattern": "spring tide|align"
+        },
+        {
+          "id": "G8-E-11:neap",
+          "competency": "G8-E-11",
+          "focus": "neap",
+          "pattern": "neap|right angle"
+        }
+      ]
+    },
+    {
+      "key": "g8:tidal-energy",
+      "quarter": 3,
+      "title": {
+        "en": "Can Tides Generate Electricity?",
+        "tl": "Maaari Bang Lumikha ng Kuryente ang Tide?",
+        "bis": "Makahimo ba og Elektrisidad ang Taob?"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-E-12:range",
+          "competency": "G8-E-12",
+          "focus": "range",
+          "pattern": "tidal range|height difference|difference.*(tide|level)|barrage"
+        },
+        {
+          "id": "G8-E-12:generation",
+          "competency": "G8-E-12",
+          "focus": "generation",
+          "pattern": "turbine|electric|generator"
+        },
+        {
+          "id": "G8-E-12:sources",
+          "competency": "G8-E-12",
+          "focus": "sources",
+          "pattern": "reliable.*report|reference|secondary source"
+        }
+      ]
+    },
+    {
+      "key": "g8:acceleration",
+      "quarter": 4,
+      "title": {
+        "en": "Acceleration Changes Velocity",
+        "tl": "Pagbabago ng Velocity",
+        "bis": "Kausaban sa Velocity"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-F-1:rate",
+          "competency": "G8-F-1",
+          "focus": "rate",
+          "pattern": "rate|per second|change.*velocity|velocity.*change"
+        },
+        {
+          "id": "G8-F-1:net-force",
+          "competency": "G8-F-1",
+          "focus": "net force",
+          "pattern": "net force|unbalanced|force"
+        }
+      ]
+    },
+    {
+      "key": "g8:local-motion",
+      "quarter": 4,
+      "title": {
+        "en": "Find Acceleration Around You",
+        "tl": "Hanapin ang Acceleration sa Paligid",
+        "bis": "Pangitaa ang Acceleration sa Palibot"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-F-2:everyday",
+          "competency": "G8-F-2",
+          "focus": "everyday",
+          "pattern": "school|car|bike|ball|bus|jeep"
+        },
+        {
+          "id": "G8-F-2:circular",
+          "competency": "G8-F-2",
+          "focus": "circular",
+          "pattern": "circular|circle|centripetal"
+        }
+      ]
+    },
+    {
+      "key": "g8:acceleration-graphs",
+      "quarter": 4,
+      "title": {
+        "en": "Draw Motion Graphs",
+        "tl": "Iguhit ang Grap ng Galaw",
+        "bis": "Idrowing ang Grap sa Lihok"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G8-F-3:distance-time",
+          "competency": "G8-F-3",
+          "focus": "distance time",
+          "pattern": "distance.time"
+        },
+        {
+          "id": "G8-F-3:velocity-time",
+          "competency": "G8-F-3",
+          "focus": "velocity time",
+          "pattern": "velocity.time"
+        },
+        {
+          "id": "G8-F-3:uniform",
+          "competency": "G8-F-3",
+          "focus": "uniform",
+          "pattern": "uniform|constant"
+        },
+        {
+          "id": "G8-F-3:nonuniform",
+          "competency": "G8-F-3",
+          "focus": "nonuniform",
+          "pattern": "non.uniform|changing.*acceleration|curved"
+        },
+        {
+          "id": "G8-F-3:annotate",
+          "competency": "G8-F-3",
+          "focus": "annotate",
+          "pattern": "label|axis|axes|annotat|plot"
+        }
+      ]
+    },
+    {
+      "key": "g8:kinetic-potential",
+      "quarter": 4,
+      "title": {
+        "en": "Moving and Stored Energy",
+        "tl": "Enerhiyang Gumagalaw at Nakaimbak",
+        "bis": "Naglihok ug Natipig nga Enerhiya"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-F-4:kinetic",
+          "competency": "G8-F-4",
+          "focus": "kinetic",
+          "pattern": "kinetic"
+        },
+        {
+          "id": "G8-F-4:potential",
+          "competency": "G8-F-4",
+          "focus": "potential",
+          "pattern": "potential"
+        }
+      ]
+    },
+    {
+      "key": "g8:energy-exchange",
+      "quarter": 4,
+      "title": {
+        "en": "Energy Changes Form",
+        "tl": "Nagbabagong Anyo ng Enerhiya",
+        "bis": "Nag-usab nga Porma sa Enerhiya"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-F-5:kinetic-to-potential",
+          "competency": "G8-F-5",
+          "focus": "kinetic to potential",
+          "pattern": "upward|uphill|rise|rises|highest|up.*potential"
+        },
+        {
+          "id": "G8-F-5:potential-to-kinetic",
+          "competency": "G8-F-5",
+          "focus": "potential to kinetic",
+          "pattern": "fall|downhill|downward|drop"
+        }
+      ]
+    },
+    {
+      "key": "g8:work",
+      "quarter": 4,
+      "title": {
+        "en": "When Is Work Done?",
+        "tl": "Kailan Nagagawa ang Work?",
+        "bis": "Kanus-a Adunay Work?"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-F-6:force-displacement",
+          "competency": "G8-F-6",
+          "focus": "force displacement",
+          "pattern": "force.*(displacement|distance)|displacement.*force"
+        },
+        {
+          "id": "G8-F-6:direction",
+          "competency": "G8-F-6",
+          "focus": "direction",
+          "pattern": "direction|perpendicular|parallel"
+        }
+      ]
+    },
+    {
+      "key": "g8:power",
+      "quarter": 4,
+      "title": {
+        "en": "How Quickly Work Is Done",
+        "tl": "Gaano Kabilis ang Work",
+        "bis": "Unsa ka Paspas ang Work"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-F-7:rate",
+          "competency": "G8-F-7",
+          "focus": "rate",
+          "pattern": "time|rate|per second"
+        },
+        {
+          "id": "G8-F-7:units",
+          "competency": "G8-F-7",
+          "focus": "units",
+          "pattern": "watt|joule"
+        }
+      ]
+    },
+    {
+      "key": "g8:mechanical-energy",
+      "quarter": 4,
+      "title": {
+        "en": "Add Mechanical Energy",
+        "tl": "Pagsamahin ang Mechanical Energy",
+        "bis": "Isuma ang Mechanical Energy"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-F-8:sum",
+          "competency": "G8-F-8",
+          "focus": "sum",
+          "pattern": "sum|total|kinetic.*potential"
+        },
+        {
+          "id": "G8-F-8:work",
+          "competency": "G8-F-8",
+          "focus": "work",
+          "pattern": "work"
+        }
+      ]
+    },
+    {
+      "key": "g8:falling-energy",
+      "quarter": 4,
+      "title": {
+        "en": "Follow Energy in a Fall",
+        "tl": "Sundan ang Enerhiya sa Pagbagsak",
+        "bis": "Sunda ang Enerhiya sa Pagkahulog"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-F-9:gravity",
+          "competency": "G8-F-9",
+          "focus": "gravity",
+          "pattern": "gravit|fall"
+        },
+        {
+          "id": "G8-F-9:conservation",
+          "competency": "G8-F-9",
+          "focus": "conservation",
+          "pattern": "conserv|total|constant"
+        },
+        {
+          "id": "G8-F-9:losses",
+          "competency": "G8-F-9",
+          "focus": "losses",
+          "pattern": "friction|air resistance|heat|thermal"
+        }
+      ]
+    },
+    {
+      "key": "g8:hydropower",
+      "quarter": 4,
+      "title": {
+        "en": "Water Power in the Philippines",
+        "tl": "Lakas ng Tubig sa Pilipinas",
+        "bis": "Kusog sa Tubig sa Pilipinas"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G8-F-10:stored-to-motion",
+          "competency": "G8-F-10",
+          "focus": "stored to motion",
+          "pattern": "potential|stored|fall"
+        },
+        {
+          "id": "G8-F-10:generation",
+          "competency": "G8-F-10",
+          "focus": "generation",
+          "pattern": "turbine|generator|electric"
+        },
+        {
+          "id": "G8-F-10:philippine-source",
+          "competency": "G8-F-10",
+          "focus": "philippine source",
+          "pattern": "Philippin|Agus|Magat|Ambuklao|Angat|Binga"
+        },
+        {
+          "id": "G8-F-10:source",
+          "competency": "G8-F-10",
+          "focus": "source",
+          "pattern": "reliable.*report|reference|\\bDOE\\b"
+        }
+      ]
+    },
+    {
+      "key": "g8:light-investigations",
+      "quarter": 4,
+      "title": {
+        "en": "Investigate Mirrors and Refraction",
+        "tl": "Siyasatin ang Salamin at Repraksiyon",
+        "bis": "Susihon ang Salamin ug Repraksiyon"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G8-F-11:plane-mirror",
+          "competency": "G8-F-11",
+          "focus": "plane mirror",
+          "pattern": "plane mirror"
+        },
+        {
+          "id": "G8-F-11:curved-mirror",
+          "competency": "G8-F-11",
+          "focus": "curved mirror",
+          "pattern": "concave|convex|curved mirror"
+        },
+        {
+          "id": "G8-F-11:block",
+          "competency": "G8-F-11",
+          "focus": "block",
+          "pattern": "glass block|transparent block"
+        },
+        {
+          "id": "G8-F-11:lens",
+          "competency": "G8-F-11",
+          "focus": "lens",
+          "pattern": "lens"
+        },
+        {
+          "id": "G8-F-11:prism",
+          "competency": "G8-F-11",
+          "focus": "prism",
+          "pattern": "prism"
+        },
+        {
+          "id": "G8-F-11:investigation",
+          "competency": "G8-F-11",
+          "focus": "investigation",
+          "pattern": "investigat|trace|ray.*draw|draw.*ray|measure.*angle"
+        }
+      ]
+    }
+  ],
+  "excludedCardIds": [
+    "dcard-07290",
+    "ffct-21901",
+    "ffct-34841",
+    "ffct-29960",
+    "ffct-35275",
+    "ffct-16251",
+    "ffct-39151",
+    "ffct-37132",
+    "ffct-37136",
+    "ffct-39586",
+    "ffct-39589",
+    "ffct-39590",
+    "ffct-39597",
+    "ffct-39812",
+    "ffct-14431",
+    "ffct-21992",
+    "dcard-10097",
+    "ffct-37747",
+    "ffct-37688",
+    "dcard-04720",
+    "ffct-30034",
+    "ffct-32196",
+    "ffct-32944",
+    "ffct-36043",
+    "ffct-38794"
+  ]
+}

@@ -23,15 +23,9 @@
 
 import type { RemoteAssetSpec } from '../engine/modelDownload';
 
-// SELF-HOSTED MODEL HOST. Originally a workaround (HuggingFace's "Xet" CDN broke
-// QVAC's downloader at ~85% — see hiraia-hf-xet-recheck), now simply where our
-// OWN model lives: the Hiraia-2B GGUF is our fine-tune, published on our nginx
-// (a plain static file with byte-range support + Accept-Ranges, downloaded +
-// verified + cached on first run, then loaded from cache offline). Inference
-// stays 100% on-device, so the privacy story is intact. Files live at
-// /var/www/hiraia-models on the VPS, served at https://hiraia.b11.dev/models/.
-// The LaBSE embedder row is still a verifiable mirror of the public model.
-const MODELS_BASE_URL = 'https://hiraia.b11.dev/models';
+// HTTPS is the canonical pilot delivery path. CDN and VPS serve the same
+// immutable files; downloads always pass through our resume + integrity gate.
+import { remoteAssetUrl } from './assetDelivery';
 
 /**
  * ============================================================================
@@ -75,7 +69,7 @@ const MODELS_BASE_URL = 'https://hiraia.b11.dev/models';
 export const REMOTE_ASSETS = {
   /** The base GGUF — the ~1.27 GB first-run download. FULL-parameter SFT (no LoRA). */
   base: {
-    url: `${MODELS_BASE_URL}/hiraia-sft-2b-v2.Q4_K_M.gguf`,
+    url: remoteAssetUrl('hiraia-sft-2b-v2.Q4_K_M.gguf'),
     filename: 'hiraia-sft-2b-v2.Q4_K_M.gguf',
     bytes: 1274396160,
     md5: 'fe2d0ab2ad856f2a42c5add5872c4234',
@@ -90,20 +84,56 @@ export const REMOTE_ASSETS = {
    * blob: attachSemantic hard-fails on hash mismatch, and the URL itself must change.
    */
   vectors: {
-    url: `${MODELS_BASE_URL}/vectors-labse-af171fe8a9f9.i8.bin`,
+    url: remoteAssetUrl('vectors-labse-af171fe8a9f9.i8.bin'),
     filename: 'vectors-labse-af171fe8a9f9.i8.bin',
     bytes: 115842816,
     md5: '4f80d21b0526db1aeadb7033b5aa8998',
     label: 'Hiraiapedia vectors',
   },
   embedder: {
-    url: `${MODELS_BASE_URL}/labse.Q4_K_M.gguf`,
+    url: remoteAssetUrl('labse.Q4_K_M.gguf'),
     filename: 'labse.Q4_K_M.gguf',
     bytes: 383762048,
     md5: '2667f69edfbcb68acf617187fe817fae',
     label: 'LaBSE embedder',
   },
 } satisfies Record<string, RemoteAssetSpec>;
+
+/**
+ * ============================================================================
+ * LLM_THREADS — the WANTED CPU thread cap (2026-09-06). Logged, NOT sent: SDK 0.17.1
+ * has no lever for it. Kept so the number and its reasoning travel with the model.
+ * ============================================================================
+ * The measured cause of the feed's mid-swipe stalls: while the model decodes on the CPU
+ * (the Adreno-610 class falls back to CPU — see LocalEngine's GPU→CPU block), llama.cpp
+ * runs with its default thread count = ALL cores, and per-swipe CPU sampling showed the
+ * app burning ~7.3 of the SD685's 8 cores under every stalled swipe. The UI thread, which
+ * runs the card's flight animation, was starved.
+ *
+ * The SD685 is 4 big A73 + 4 little A53. Capping the model at 4 threads = the big cluster,
+ * so every generation — a child's own ask included — would leave the little cores to the
+ * UI. (Decode on a 2B Q4_K_M is memory-bound; the A53s add little throughput anyway.)
+ *
+ * WHY IT IS NOT SENT (verified against node_modules/@qvac/sdk/dist, 2026-09-06, by running
+ * the SDK's own schema over our exact load config): `loadModel` validates its options on
+ * the CLIENT with `loadBuiltinToRequestSchema`, whose LLM branch is
+ * `modelConfig: llmConfigBaseSchema.strict()` (schemas/load-model.js). `.strict()` REJECTS
+ * unknown keys — adding `n_threads: 4` yields `unrecognized_keys modelConfig n_threads`,
+ * i.e. `RequestValidationFailedError` thrown before any RPC, on the GPU attempt and the
+ * CPU retry alike: the model would never load. (The `n_threads?: number` in the SDK's
+ * request types belongs to the whisper/BCI plugins.) The android-arm64 llm-llamacpp addon
+ * binary also exposes no thread key of its own — its only thread strings are llama.cpp
+ * internals (`llama_set_n_threads`, the `n_threads = %d, n_threads_batch = %d` load line).
+ * So there is NO modelConfig lever for threads in this SDK; capping them needs an SDK/plugin
+ * change (or the worker honouring llama.cpp's LLAMA_ARG_THREADS env, which the bare worker
+ * gives us no way to set from RN today).
+ *
+ * GROUND TRUTH on device is llama.cpp's own load line in logcat,
+ * `n_threads = N, n_threads_batch = N` — expected 8 (all cores) until an SDK lever exists;
+ * the cores-busy sample during a generation should agree (~7+). LocalEngine logs this
+ * wanted value at load so the two lines can be read together.
+ */
+export const LLM_THREADS = 4;
 
 /** Identifier for the shipping on-device model. One tier, one member. */
 export type OnDeviceModelKey = 'hiraia-2b';
@@ -142,6 +172,9 @@ export interface OnDeviceModel {
    * device passes minRamGB and still cannot run the GPU path. LocalEngine
    * probes GPU first and falls back ONCE to CPU (device:'cpu', gpuLayers:0),
    * then persists the verdict. See LocalEngine.initialize.
+   *
+   * There is deliberately NO thread field here: the wanted CPU cap (LLM_THREADS above) has
+   * no modelConfig lever in this SDK and sending one breaks the load — read that note.
    */
   runtime: { gpuLayers: number };
   /** QVAC model type — 'llm' for all our chat models. */
@@ -186,26 +219,28 @@ export const ACTIVE_MODEL: OnDeviceModel = {
   quant: 'Q4_K_M',
   sizeGB: 1.27, // hiraia-sft-2b-v2.Q4_K_M.gguf, 1,274,396,000 B
   ramGB: 1.4, // ~1.27 GB weights mmap'd + KV cache at ctx 4096
-  minRamGB: 6,
+  minRamGB: 4,
   // 4096: the card prompt is ~500 tokens and every generation is single-turn
   // (one card prompt, no history), so the ceiling is barely pressed; 4096 keeps
   // headroom without inflating the KV cache.
   ctxSize: 4096,
-  runtime: { gpuLayers: 99 }, // ASK for full GPU offload; LocalEngine falls back to CPU (see interface note)
+  // ASK for full GPU offload; LocalEngine falls back to CPU (see interface note). No thread
+  // cap: LLM_THREADS is logged, not sent (see its note — the SDK rejects the key).
+  runtime: { gpuLayers: 99 },
   modelType: 'llm',
-  // self-hosted mirror (see MODELS_BASE_URL note)
+  // Canonical HTTPS asset route (see assetDelivery.ts).
   modelSrc: REMOTE_ASSETS.base.url,
   remote: REMOTE_ASSETS.base,
   // FULL-PARAMETER SFT — no adapters exist for this model, by design. The v11
   // Tagalog/Bisaya adapters belong to the retired Sailor2 line and do NOT apply.
   loraRemote: {},
-  note: 'Needs a 6GB+ phone (2025 budget norm).',
+  note: 'Local inference: 4GB+ with sufficient available memory; curated cards work without a model.',
 };
 
 /** Short, truthful stats line for a status/about display. */
 export const MODEL_STATS_LINE =
   `${ACTIVE_MODEL.displayName} · ${ACTIVE_MODEL.params} · ${ACTIVE_MODEL.quant} · ` +
-  `${ACTIVE_MODEL.sizeGB} GB · needs ${ACTIVE_MODEL.minRamGB}GB+ RAM`;
+  `${ACTIVE_MODEL.sizeGB} GB · ${ACTIVE_MODEL.minRamGB}GB+ RAM, subject to available memory`;
 
 // The bundled int8 semantic-vectors blob + its meta (built by
 // rag/scripts/build-vectors.py from the SAME bank version). Cross-package assets
@@ -225,7 +260,7 @@ import vectorsMeta from '../../assets/rag/vectors-labse.meta.json';
  * the model/pooling REQUIRES rebuilding the blob with the matching embedder.
  */
 export const EMBEDDER = {
-  // self-hosted mirror (same as the LLM — see MODELS_BASE_URL)
+  // Same canonical HTTPS asset host as the generation model.
   modelSrc: REMOTE_ASSETS.embedder.url,
   /** Integrity contract for the download (see the table above). */
   remote: REMOTE_ASSETS.embedder as RemoteAssetSpec,

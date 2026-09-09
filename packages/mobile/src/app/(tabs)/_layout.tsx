@@ -3,6 +3,7 @@ import { Stack } from 'expo-router';
 export default function TabLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="activity" options={{ title: 'Device Activity' }} />
       <Stack.Screen name="index" options={{ title: 'Cards' }} />
       <Stack.Screen
         name="sidebar"

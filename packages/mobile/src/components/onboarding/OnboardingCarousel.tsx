@@ -32,7 +32,7 @@
  * overlapped by chrome without looking broken, so the bar now sits below the card and that
  * clearance hack is gone.
  */
-import { useRef, useState, type ReactNode } from 'react';
+import { useRef, useState } from 'react';
 import {
   NativeSyntheticEvent,
   ScrollView,
@@ -49,7 +49,8 @@ import type { GradeLevel, Language } from '@hiraia/shared';
 
 import { useEngineStore } from '../../store/engineStore';
 import { card, cardAlpha, fonts } from '../../theme';
-import { Arrow, CARD_EDGE, CARD_RADIUS } from '../cards/CardFrame';
+import { Arrow, CARD_EDGE } from '../cards/CardFrame';
+import { SlideCard } from './SlideCard';
 import { DemoSlide } from './DemoSlide';
 import { GradeSlide } from './GradeSlide';
 import { LanguageSlide } from './LanguageSlide';
@@ -61,14 +62,6 @@ const SLIDES = 3;
  * same 3px ink edge and the same cream stock, so an onboarding card and a factoid card are
  * physically the same object. (Teal stock is quiz-only, so these stay cream.)
  */
-function SlideCard({ children }: { children: ReactNode }) {
-  return (
-    <View style={styles.deck}>
-      <View style={styles.cardLedge} pointerEvents="none" />
-      <View style={styles.cardLayer}>{children}</View>
-    </View>
-  );
-}
 
 export function OnboardingCarousel({
   onPickLanguage,
@@ -210,24 +203,6 @@ const styles = StyleSheet.create({
   pager: { flex: 1 },
 
   // ---- the card surface (CardFeedScreen's .deck / .cardLedge / .cardLayer) ----
-  deck: { flex: 1, marginHorizontal: 16, marginTop: 2, marginBottom: 14 },
-  cardLedge: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: -4,
-    borderRadius: CARD_RADIUS + 1,
-    backgroundColor: cardAlpha(card.ink, 0.55), // ink at 55% — the printed drop under a card
-  },
-  cardLayer: {
-    ...StyleSheet.absoluteFillObject,
-    borderRadius: CARD_RADIUS,
-    borderWidth: CARD_EDGE,
-    borderColor: card.ink,
-    backgroundColor: card.stock,
-    overflow: 'hidden', // slide content is clipped to the card's rounded corners
-  },
 
   // ---- nav bar ----
   navBar: {

@@ -45,6 +45,7 @@ import { useCardCopy, useChoiceLabels } from '../../data/cardTextSource';
 import { useLatchedArtSource } from '../../data/artSource';
 import {
   posterFor,
+  withoutKeywordPunctuation,
   displayScale,
   emphasisStyleFor,
   type PosterSpec,
@@ -376,7 +377,7 @@ function inlineOnly(text: string, spans: readonly string[] | undefined, id: stri
     style: emphasisStyleFor(id, 'inline'),
     before: text.slice(0, i),
     term,
-    after: text.slice(i + term.length),
+    after: withoutKeywordPunctuation(text.slice(i + term.length)),
   };
 }
 
@@ -449,6 +450,15 @@ export function CardPage({
    */
   const [shrink, setShrink] = useState(0);
   useEffect(() => setShrink(0), [fact.id]);
+  // Diagnostics for the post-commit stall measured 2026-09-05 (a swipe's incoming page took
+  // 380–1070 ms to paint on some cards, ~50 ms on others): each shrink pass is a full
+  // re-layout of the card, and this names the cards that needed several. Logged once per card.
+  const mountedAt = useRef(Date.now());
+  const shrinkLogged = useRef(false);
+  useEffect(() => {
+    mountedAt.current = Date.now();
+    shrinkLogged.current = false;
+  }, [fact.id]);
   // The body's layout is settled BEFORE the type is sized: a lifted display line changes how
   // much room the rest of the sentence has.
   const bodySpec =
@@ -651,6 +661,11 @@ export function CardPage({
     if (over && tier.fontSize > MIN_SIZE && shrink < 6) {
       setShrink((v) => v + 1);
       return;
+    }
+    if (!shrinkLogged.current && !instant) {
+      shrinkLogged.current = true;
+      if (shrink > 0)
+        console.log(`[card] ${fact.id} settled after ${shrink} shrink pass(es) in ${Date.now() - mountedAt.current}ms art=${art ? 'y' : 'n'}`);
     }
     if (over !== overflowing) setOverflowing(over);
   };

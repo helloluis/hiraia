@@ -279,15 +279,23 @@ function useReduceMotion(): boolean {
 interface QuestionPageProps {
   question: CardQuestion;
   language: Language;
+  displayOrder?: number[];
+  selectedOption?: number | null;
+  disabled?: boolean;
+  /** False for a read-only history result: print the marks without replaying confetti. */
+  celebrate?: boolean;
+  onSelect?: (index: number) => void;
   onAnswer: (correct: boolean) => void;
   onContinue: () => void;
 }
 
-export function QuestionPage({ question, language, onAnswer, onContinue }: QuestionPageProps) {
+export function QuestionPage({ question, language, onAnswer, onContinue, displayOrder, selectedOption, disabled, celebrate = true, onSelect }: QuestionPageProps) {
   const t = uiStrings(language);
   const labels = LABELS[language];
-  const order = useMemo(() => shuffled(question.o.length), [question.f, question.o.length]);
-  const [selected, setSelected] = useState<number | null>(null);
+  const shuffledOrder = useMemo(() => shuffled(question.o.length), [question.f, question.o.length]);
+  const order = displayOrder ?? shuffledOrder;
+  const [localSelected, setSelected] = useState<number | null>(null);
+  const selected = selectedOption === undefined ? localSelected : selectedOption;
   const revealed = selected !== null;
   const correctDisplay = order.indexOf(question.a);
   const gotIt = revealed && selected === correctDisplay;
@@ -301,8 +309,8 @@ export function QuestionPage({ question, language, onAnswer, onContinue }: Quest
   // rows unpin from the bottom edge) instead of racing it.
   const reduceMotion = useReduceMotion();
   const [confetti, setConfetti] = useState(false);
-  const starPop = useRef(new Animated.Value(0)).current;
-  const chipPop = useRef(new Animated.Value(0)).current;
+  const starPop = useRef(new Animated.Value(celebrate ? 0 : 1)).current;
+  const chipPop = useRef(new Animated.Value(celebrate ? 0 : 1)).current;
   /**
    * `null` until the celebration fires, then a snapshot of the path it took. The flag
    * above arrives from an async read, so it can resolve (or the reader can flip the
@@ -310,10 +318,10 @@ export function QuestionPage({ question, language, onAnswer, onContinue }: Quest
    * snapshot, never the live flag, so a running pop can't switch from the transform
    * branch to the opacity branch and snap the star to full size.
    */
-  const celebration = useRef<'pop' | 'fade' | null>(null);
+  const celebration = useRef<'pop' | 'fade' | null>(celebrate ? null : 'fade');
 
   useEffect(() => {
-    if (!gotIt || celebration.current) return;
+    if (!celebrate || !gotIt || celebration.current) return;
     celebration.current = reduceMotion ? 'fade' : 'pop';
     if (reduceMotion) {
       // Reduced motion: no confetti, and the star + band tick fade in rather than pop.
@@ -333,7 +341,7 @@ export function QuestionPage({ question, language, onAnswer, onContinue }: Quest
         Animated.spring(chipPop, { toValue: 1, tension: 300, friction: 6, useNativeDriver: true }),
       ]),
     ]).start();
-  }, [gotIt, reduceMotion, starPop, chipPop]);
+  }, [celebrate, gotIt, reduceMotion, starPop, chipPop]);
 
   // Under reduced motion the pops become fades: the same drivers, mapped to opacity
   // instead of transform, so both paths share one timeline and one completion state.
@@ -354,8 +362,9 @@ export function QuestionPage({ question, language, onAnswer, onContinue }: Quest
     : { transform: [{ scale: chipPop }] };
 
   const pickOption = (displayIdx: number) => {
-    if (revealed) return;
+    if (revealed || disabled) return;
     setSelected(displayIdx);
+    onSelect?.(displayIdx);
     onAnswer(displayIdx === correctDisplay);
   };
 

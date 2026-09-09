@@ -89,6 +89,11 @@ const LEAD_MAX_CHARS = 28;
 /** A term after this point in the sentence is too late to lift without breaking the read. */
 const LEAD_MAX_POSITION = 0.35;
 
+/** Drop punctuation attached to an emphasized term, so it cannot become an orphan line. */
+export function withoutKeywordPunctuation(after: string): string {
+  return after.replace(/^[\p{P}]+/u, '');
+}
+
 export function posterFor(
   text: string,
   spans: readonly string[] | undefined,
@@ -106,7 +111,7 @@ export function posterFor(
   if (i < 0) return plain;
 
   const before = text.slice(0, i);
-  let after = text.slice(i + term.length);
+  const after = withoutKeywordPunctuation(text.slice(i + term.length));
 
   const isNumeral =
     /\d/.test(term) &&
@@ -118,16 +123,8 @@ export function posterFor(
     return { kind: 'inline', style: emphasisStyleFor(id, 'inline'), before, term, after };
   }
 
-  // A display line followed by nothing but "." or "!" strands that punctuation on its own
-  // line; hang it off the term instead.
-  const tail = after.trim();
-  let display = term;
-  if (tail.length > 0 && tail.length <= 2 && !/\w/.test(tail)) {
-    display = term + tail;
-    after = '';
-  }
   const kind: PosterKind = isNumeral ? 'numeral' : 'lead';
-  return { kind, style: emphasisStyleFor(id, kind), before, term: display, after };
+  return { kind, style: emphasisStyleFor(id, kind), before, term, after };
 }
 
 /** Multiplier on the body size for the display line. */

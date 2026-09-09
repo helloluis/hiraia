@@ -1,3 +1,4 @@
+import { initializeProfiles, profileSnapshot } from '../profiles';
 // SQLite is the app's durable store (replaces the zustand→AsyncStorage blob).
 // One DB, versioned migrations via PRAGMA user_version. LIVE tables: settings,
 // card_seen + competency_seen (feed seen-store), notes (UI still pending).
@@ -8,7 +9,10 @@
 // a fresh install builds while installed databases (already at v3) keep the tables anyway.
 import * as SQLite from 'expo-sqlite';
 
-const DB_NAME = 'hiraia.db';
+function databaseName() {
+  const id = profileSnapshot().activeId;
+  return id === 'guest' ? 'hiraia.db' : `hiraia-profile-${id}.db`;
+}
 let dbPromise: Promise<SQLite.SQLiteDatabase> | null = null;
 
 const SCHEMA_V1 = `
@@ -86,10 +90,13 @@ async function migrate(db: SQLite.SQLiteDatabase): Promise<void> {
 export async function getDb(): Promise<SQLite.SQLiteDatabase> {
   if (!dbPromise) {
     dbPromise = (async () => {
-      const db = await SQLite.openDatabaseAsync(DB_NAME);
+      const db = await initializeProfiles().then(() => SQLite.openDatabaseAsync(databaseName()));
       await migrate(db);
       return db;
-    })();
+    })().catch((error) => {
+      dbPromise = null;
+      throw error;
+    });
   }
   return dbPromise;
 }

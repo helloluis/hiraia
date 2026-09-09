@@ -75,6 +75,7 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
+import memoryPlugin from '../plugins/withHiraiaMemory.js';
 import MANAGED_PROPS from './gradle-props.cjs';
 import { applyAbiFilters, ABI } from '../plugins/withGradleProps.js';
 
@@ -408,4 +409,17 @@ patchGradle();
 patchStyles();
 patchGradleProps();
 patchColors();
+// QVAC's plugin declares the vendor GPU loader without required=false. That defaults
+// to mandatory and blocks installation even for the offline curated library.
+const manifestPath = path.join(ANDROID, 'app/src/main/AndroidManifest.xml');
+if (existsSync(manifestPath)) {
+  const before = readFileSync(manifestPath, 'utf8');
+  const after = before.replace(/<uses-native-library\b[^>]*android:name="libOpenCL\.so"[^>]*\/>/g,
+    tag => tag.replace(/\s+android:required="[^"]*"/g, '').replace('/>', ' android:required="false"/>'));
+  if (after !== before) writeFileSync(manifestPath, after);
+  log('AndroidManifest ← optional vendor OpenCL loader');
+}
 log('done');
+
+// Also runs for local builds whose native tree already exists.
+memoryPlugin.installMemoryModule(MOBILE);

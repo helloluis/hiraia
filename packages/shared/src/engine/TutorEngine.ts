@@ -44,8 +44,19 @@ export interface TutorEngine {
    * card, naming a few of the topics the child just read. GROUNDED on the provided
    * topic labels — the model writes only the celebratory framing and must NOT add new
    * facts (the caller guards + falls back to a template). Optional — feature-detect.
+   *
+   * `signal` — an ABORT signal. This generation is speculative (a prefetch, never something
+   * the child asked for), so the caller aborts it the instant the reader interacts (a drag
+   * starts, a page turns, an ask begins) and the implementation must stop decoding as fast
+   * as its runtime allows and reject. The caller treats an aborted attempt as "no line yet"
+   * and retries later or falls back to its template.
    */
-  generateReward?(topics: string[], count: number, language: string): Promise<string>;
+  generateReward?(
+    topics: string[],
+    count: number,
+    language: string,
+    signal?: AbortSignal
+  ): Promise<string>;
 
   /**
    * Grounded one-shot FACT CARD for a kid's typed query in the question-cards feed, used as the

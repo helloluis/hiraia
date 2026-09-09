@@ -21,7 +21,7 @@
  * Without it the APK carries four ABIs of every vendor library. It had been surviving as
  * an unmanaged hand-edit in the gitignored tree, which a clean prebuild silently drops.
  */
-const { withGradleProperties, withAppBuildGradle } = require('@expo/config-plugins');
+const { withGradleProperties, withAppBuildGradle, withAndroidManifest } = require('@expo/config-plugins');
 
 const MANAGED_PROPS = require('../scripts/gradle-props.cjs');
 
@@ -109,7 +109,17 @@ function applyAbiFilters(src) {
  * @type {import('@expo/config-plugins').ConfigPlugin}
  */
 module.exports = function withGradleProps(config) {
-  const withProps = withGradleProperties(config, (cfg) => {
+  const optionalOpenCL = withAndroidManifest(config, (cfg) => {
+    const app = cfg.modResults.manifest.application?.[0];
+    if (app) {
+      const libraries = app['uses-native-library'] ??= [];
+      let lib = libraries.find(item => item.$['android:name'] === 'libOpenCL.so');
+      if (!lib) libraries.push(lib = { $: { 'android:name': 'libOpenCL.so' } });
+      lib.$['android:required'] = 'false';
+    }
+    return cfg;
+  });
+  const withProps = withGradleProperties(optionalOpenCL, (cfg) => {
     cfg.modResults = applyManagedProps(cfg.modResults);
     return cfg;
   });

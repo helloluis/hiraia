@@ -54,8 +54,44 @@ if [ "$GOT" != "$PINNED" ]; then
   echo "!! cert mismatch: got $GOT, pinned $PINNED — wrong keystore? NOT shipping this."
   exit 1
 fi
+BYTES="$(stat -f%z "$APK_OUT")"
+SHA256="$(shasum -a 256 "$APK_OUT" | awk '{print $1}')"
+MD5="$(md5 -q "$APK_OUT")"
+# The versionCode the installed app will compare against the manifest's. Read from the
+# SIGNED APK itself (aapt) so it is the number actually baked into the build, and cross-
+# checked against app.json — the two must agree or the manifest lies to installed phones.
+APP_JSON_VC="$(python3 -c 'import json; print(json.load(open("app.json"))["expo"]["android"]["versionCode"])')"
+APP_JSON_VN="$(python3 -c 'import json; print(json.load(open("app.json"))["expo"]["version"])')"
+AAPT="$(ls "$HOME"/Library/Android/sdk/build-tools/*/aapt 2>/dev/null | tail -1)"
+APK_VC="$APP_JSON_VC"
+if [ -x "$AAPT" ]; then
+  APK_VC="$("$AAPT" dump badging "$APK_OUT" 2>/dev/null | sed -n "s/.*versionCode='\([0-9]*\)'.*/\1/p" | head -1)"
+  if [ -z "$APK_VC" ]; then APK_VC="$APP_JSON_VC"; fi
+  if [ "$APK_VC" != "$APP_JSON_VC" ]; then
+    echo "!! versionCode mismatch: APK says $APK_VC, app.json says $APP_JSON_VC — rebuild after prebuild, NOT shipping this."
+    exit 1
+  fi
+fi
+MB="$(python3 -c "print(round($BYTES / 1048576))")"
+
 echo "== cert matches the pinned anchor ($PINNED)"
-echo "== signed APK: $APK_OUT"
-echo "== size bytes: $(stat -f%z "$APK_OUT")"
-echo "== sha256:     $(shasum -a 256 "$APK_OUT" | awk '{print $1}')"
-echo "Next: paste the sha256 + size into packages/web/src/config/download.ts (fileSizeMB, sha256)."
+echo "== signed APK:  $APK_OUT"
+echo "== versionCode: $APK_VC (app.json version $APP_JSON_VN)"
+echo "== size bytes:  $BYTES"
+echo "== sha256:      $SHA256"
+echo "== md5:         $MD5"
+echo
+echo "Next: PUBLISH TO R2 — the phones and the website read Cloudflare R2 (assets.hiraia.org);"
+echo "copying into /var/www on the VPS publishes nothing any more. From the repo root:"
+echo
+echo "  ~/.venvs/hiraia-publish/bin/python deploy/publish-release-assets.py \\"
+echo "      --env-file /private/path/.env.cloudflare.local --apk packages/mobile/$APK_OUT"
+echo
+echo "It uploads models/hiraia-v${APK_VC}.apk (immutable) + the hiraia.apk alias, verifies the"
+echo "bytes by reading them back and via a public HEAD, and prints the download.ts block"
+echo "(versionCode/publishedAt/url/fileSizeMB/bytes/sha256/md5) that feeds BOTH the landing"
+echo "page and /api/app/manifest. Expected values, for cross-checking its output:"
+echo "  versionCode $APK_VC · bytes $BYTES · fileSizeMB $MB"
+echo "  sha256 $SHA256"
+echo "  md5    $MD5"
+echo "Then paste the block, push main, and run deploy/update.sh on the VPS."

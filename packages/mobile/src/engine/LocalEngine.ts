@@ -1,18 +1,21 @@
+import { MemoryBlockedError, requireModelMemory, readMemory } from './memory';
+import { canLoadSemantic } from './memoryPolicy';
 import { track, newId, errorCategory } from '../telemetry';
-import { loadModel, completion, unloadModel, embed, QWEN3_1_7B_INST_Q4 } from '@qvac/sdk';
+import { loadModel, completion, unloadModel, embed, cancel, QWEN3_1_7B_INST_Q4 } from '@qvac/sdk';
 import { Asset } from 'expo-asset';
 import Constants from 'expo-constants';
 import { File } from 'expo-file-system';
 import {
   ACTIVE_MODEL,
   EMBEDDER,
+  LLM_THREADS,
   VECTORS_META,
   IMAGE_VECTORS_BLOB_ASSET,
   IMAGE_VECTORS_META,
   REMOTE_ASSETS,
 } from '../config/model';
 import { DEFAULT_GRADE } from '../config/grades';
-import { WARMUP_TEMP, WARMUP_QUERY, WARMUP_FACT } from '../config/inference';
+import { WARMUP_TEMP, WARMUP_PROMPT } from '../config/inference';
 import { IMAGE_CATEGORY } from '../generated/imageCategory.generated';
 import { FACT_IMAGE } from '../generated/factImage';
 import { artSourceFor } from '../data/artSource';
@@ -216,6 +219,8 @@ export class LocalEngine implements TutorEngine {
   private modelId: string | null = null;
   private isReadyFlag = false;
   private config: TutorConfig | null = null;
+  /** Cards written this session — only so the prefill log can name the first one. */
+  private cardsWritten = 0;
   // Has the model been warmed for this session (graph compiled, kernels hot)? See warmUp().
   // NOT keyed on the grade any more: the warm-up no longer prefills a grade-bearing prompt.
   private warmed = false;
@@ -341,6 +346,7 @@ export class LocalEngine implements TutorEngine {
     let telemetryBackend: 'cpu' | 'unknown' = 'unknown';
     track('model_load_started', telemetryProps);
     try {
+      await requireModelMemory(true); // Before any model/adapter network request.
       this.config = config;
       this.onEvent = onEvent ?? null;
       console.log(`Loading ${ACTIVE_MODEL.displayName} model...`);
@@ -390,6 +396,8 @@ export class LocalEngine implements TutorEngine {
               })
             : ACTIVE_MODEL.modelSrc;
 
+        await requireModelMemory(); // Downloads can take minutes; recheck before allocation.
+
         // Load the configured GGUF. `lora` applies a downloaded + verified
         // adapter when the model declares one — absent for the full-parameter
         // Hiraia-2B (absence-by-design); a failed adapter download has already
@@ -398,6 +406,22 @@ export class LocalEngine implements TutorEngine {
         // Placement is PROBE-AND-FALL-BACK (see the CPU-fallback block at the top
         // of this file): GPU as configured, then ONE CPU retry on a load failure,
         // with the verdict persisted per app version.
+        //
+        // THREAD CAP — NOT SENT (2026-09-06, config/model.ts LLM_THREADS — read that note).
+        // The intended probe was `modelConfig.n_threads`, and it is provably fatal in SDK
+        // 0.17.1: the CLIENT validates loadModel's options with
+        // `llmConfigBaseSchema.strict()` (schemas/load-model.js → parseClientInput), and
+        // running that schema over this exact config with the key added yields
+        // `unrecognized_keys modelConfig n_threads` — loadModel would throw
+        // RequestValidationFailedError before any RPC, on the GPU attempt AND the CPU retry,
+        // and the model would never load. Nothing in modelConfig reaches llama.cpp's thread
+        // count (the android-arm64 addon binary exposes no such key either), so the
+        // placement probe below runs exactly as before. The line is logged so a device
+        // session can put the WANTED cap beside llama.cpp's own `n_threads = N` load line.
+        console.log(
+          `[LocalEngine] thread cap: wanted n_threads=${LLM_THREADS} (big cluster) — no SDK ` +
+            `lever in modelConfig; llama.cpp's default applies, read its "n_threads = N" line`
+        );
         const loadWith = (placement: { gpu_layers: number; device?: 'cpu' }) =>
           loadModel({
             modelSrc: src,
@@ -511,7 +535,12 @@ export class LocalEngine implements TutorEngine {
 
       // Load the semantic embedder + vectors blob in the BACKGROUND — the app is
       // usable on lexical retrieval immediately; the hybrid upgrades in when ready.
-      void this.initSemantic();
+      if (canLoadSemantic(await readMemory())) {
+        void this.initSemantic();
+      } else {
+        console.log('[memory] skipping semantic downloads and embedder; lexical retrieval active');
+        this.onEvent?.({ stage: 'semantic', pct: 100 });
+      }
 
       // NO warm-up here — see prime(). It stays the CALLER's call (engineStore.changeLanguage,
       // once, just before it flips isReady) so readiness owns when the cold start is paid.
@@ -527,6 +556,7 @@ export class LocalEngine implements TutorEngine {
     } catch (error) {
       track('model_load_failed', { ...telemetryProps, error: errorCategory(error), duration_ms: Math.max(0, Date.now() - telemetryStart) });
       console.error('Failed to load model:', error);
+      if (error instanceof MemoryBlockedError) throw error;
       throw new Error(
         `Failed to initialize LocalEngine: ${error instanceof Error ? error.message : 'Unknown error'}`
       );
@@ -556,18 +586,12 @@ export class LocalEngine implements TutorEngine {
       // prefilled. QVAC 0.13 has no public `prefill: true` completion flag (only an internal
       // VLA path), and predict:0 risks short-circuiting before the eval — so the 1-token
       // warm-up stays the reliable one. The token is discarded.
-      // Warm the shape the card writer actually sends: a real `buildCardPrompt`, in the
-      // reader's language, over one short throwaway fact. Kept tiny on purpose — the point is
-      // to compile the graph and heat the kernels, not to prefill anything reusable.
-      const warmPrompt = buildCardPrompt({
-        query: WARMUP_QUERY,
-        facts: [WARMUP_FACT],
-        grade: this.config?.gradeLevel ?? DEFAULT_GRADE,
-        language: this.config?.language ?? 'tagalog',
-      });
+      // A ~10-token prompt (see WARMUP_PROMPT): compiling the graph and heating the kernels
+      // does not depend on prompt length, and on this device's CPU every prefilled token is
+      // ~180 ms the child waits for. The old full card prompt cost 24 s here.
       const run = completion({
         modelId: this.modelId,
-        history: [{ role: 'user', content: warmPrompt }],
+        history: [{ role: 'user', content: WARMUP_PROMPT }],
         stream: true,
         generationParams: {
           temp: WARMUP_TEMP,
@@ -639,11 +663,31 @@ export class LocalEngine implements TutorEngine {
    * the topic labels the child actually read — the model writes ONLY the celebration and
    * is told not to add facts. The caller (cardStore) guards the output and falls back to
    * a deterministic template, so a hallucinated or empty result never reaches a child.
+   *
+   * ABORTABLE (`signal`). This is the ONE generation nobody asked for, and it was the
+   * measured cause of the feed's mid-swipe stalls (2026-09-06: ~7 of 8 cores busy under
+   * every stalled swipe), so the store aborts it the instant the reader moves. The SDK has
+   * no `signal` field on `completion()`; its cancel path is `cancel({ requestId })` with the
+   * run's own id, which the worker turns into a HARD cancel on the model (`addon.cancel()`,
+   * scope 'model') and the stream then ends with `stopReason: 'cancelled'`. So the JS
+   * signal is BRIDGED: abort → `cancel({ requestId: run.requestId })`. On cancel the
+   * `events` iterable ends normally (the SDK's documented contract — `run.final`/`stats`
+   * reject, but nothing here awaits those), so the loop below exits and the cancelled
+   * done-event is what tells us to throw rather than return a half line.
+   *
+   * If the abort arrives before the completion is even created (the store fired it while
+   * this call was still queued behind the model lock), nothing is started at all.
    */
-  async generateReward(topics: string[], count: number, language: string): Promise<string> {
+  async generateReward(
+    topics: string[],
+    count: number,
+    language: string,
+    signal?: AbortSignal
+  ): Promise<string> {
     if (!this.modelId || !this.isReadyFlag) {
       throw new Error('Engine not initialized. Call initialize() first.');
     }
+    if (signal?.aborted) throw new Error('reward generation aborted before it started');
     // The topic names are printed as chips under this line, in the reader's language; a card's
     // stored label is often an English phrase, so asking the model to name topics mixes languages
     // mid-sentence. It gets the COUNT only, and is told not to name anything.
@@ -680,10 +724,28 @@ export class LocalEngine implements TutorEngine {
         predict: REWARD_MAX_TOKENS,
       },
     });
+    // The JS→SDK abort bridge. `cancel` is an RPC to the worker; it is fire-and-forget here
+    // because the caller's own signal is the truth it acts on — a cancel that fails to land
+    // just means this run decodes to its `predict` cap exactly as before, then releases.
+    const onAbort = () => {
+      cancel({ requestId: run.requestId }).catch((e) =>
+        console.warn('[LocalEngine] reward cancel did not land; the run will finish on its own', e)
+      );
+    };
+    signal?.addEventListener('abort', onAbort, { once: true });
     let out = '';
-    for await (const event of run.events) {
-      if (event.type === 'contentDelta' && event.text) out += event.text;
+    let cancelled = false;
+    try {
+      for await (const event of run.events) {
+        if (event.type === 'contentDelta' && event.text) out += event.text;
+        else if (event.type === 'completionDone' && event.stopReason === 'cancelled') cancelled = true;
+      }
+    } finally {
+      signal?.removeEventListener('abort', onAbort);
     }
+    // A cancelled stream is not a short reward line — it is no line. (An abort whose cancel
+    // never reached the worker lets the run complete; that text is real and is returned.)
+    if (cancelled) throw new Error('reward generation cancelled');
     return out.trim();
   }
 
@@ -795,6 +857,19 @@ export class LocalEngine implements TutorEngine {
       for await (const event of run.events) {
         if (event.type === 'contentDelta' && event.text) acc += event.text;
       }
+      // Prefill telemetry for the REAL card, to set beside the warm-up's: the warm-up prompt
+      // was cut from 136 to ~10 tokens (WARMUP_PROMPT), and this line is how the next device
+      // session checks that the first real card did not get colder for it.
+      try {
+        const s = await run.stats;
+        if (s) {
+          const nth = this.cardsWritten === 0 ? 'first' : `#${this.cardsWritten + 1}`;
+          console.log(`[LocalEngine] card prefill (${nth}) ${s.timeToFirstToken ?? '?'}ms · ${s.promptTokens ?? '?'} prompt tok`);
+        }
+      } catch {
+        /* best-effort */
+      }
+      this.cardsWritten += 1;
       return acc;
     }).catch(error => {
       track('generation_failed', { ...generationProps, error: errorCategory(error), duration_ms: Math.max(0, Date.now() - generationStart) });
@@ -957,6 +1032,11 @@ export class LocalEngine implements TutorEngine {
     } catch (e) {
       console.warn('[LocalEngine] semantic init failed — staying lexical-only:', e);
       this.semanticReady = false;
+      // A failed vector read must not leave an unused embedder resident.
+      if (this.embedModelId) {
+        try { await unloadModel({ modelId: this.embedModelId }); } catch {}
+        this.embedModelId = null;
+      }
       // Lexical-only is a WORKING tutor; the loading story is still over. Finish the bar.
       emit(100);
     }

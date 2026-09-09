@@ -1,3 +1,7 @@
+import { initializeProfiles, useProfiles, finishProfileOnboarding } from '../profiles';
+import { ProfilePicker } from '../profiles/ProfilePicker';
+import { Text, Pressable } from 'react-native';
+import { startImageDownloads } from '../images/installer';
 import { startTelemetry } from '../telemetry';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
@@ -10,6 +14,7 @@ import { OnboardingCarousel } from '../components/onboarding/OnboardingCarousel'
 import { TITLE_EXIT_MS, TitleScreen } from '../components/TitleScreen';
 import { useCardStore } from '../store/cardStore';
 import { useEngineStore } from '../store/engineStore';
+import { startUpdateChecks } from '../store/updateStore';
 import { colors, fontAssets } from '../theme';
 
 // Hold the native splash (the icon on ink, see the expo-splash-screen plugin in app.json)
@@ -48,7 +53,16 @@ const TITLE_MAX_MS = 15000;
 type TitlePhase = 'shown' | 'exiting' | 'gone';
 
 export default function RootLayout() {
+  const profiles = useProfiles();
+  const [profileError, setProfileError] = useState(false);
+  useEffect(() => { void initializeProfiles().catch(() => setProfileError(true)); }, []);
   useEffect(() => startTelemetry(), []);
+  useEffect(() => {
+    let alive = true;
+    let stop: (() => void) | undefined;
+    void initializeProfiles().then(() => { if (alive) stop = startImageDownloads(); }).catch(() => {});
+    return () => { alive = false; stop?.(); };
+  }, []);
   const bootstrap = useEngineStore((s) => s.bootstrap);
   const changeLanguage = useEngineStore((s) => s.changeLanguage);
   const bootstrapped = useEngineStore((s) => s.bootstrapped);
@@ -103,8 +117,8 @@ export default function RootLayout() {
   //     the first draw), so waiting on `hydrated` would strand the title.
   // The LLM is not part of readiness — the feed is zero-model; the search field carries its
   // own progress bar.
-  const shellReady = fontsLoaded && bootstrapped;
-  const appReady = shellReady && (onboardingActive || hydrated);
+  const shellReady = fontsLoaded && bootstrapped && profiles.ready;
+  const appReady = shellReady && (onboardingActive || profiles.choosing || hydrated);
   const [title, setTitle] = useState<TitlePhase>('shown');
   const titleShownAt = useRef(Date.now());
 
@@ -133,6 +147,15 @@ export default function RootLayout() {
 
   const onTitleGone = useCallback(() => setTitle('gone'), []);
 
+  // In-app update check (the feed's "Update available!" ribbon): starts ONLY once the feed
+  // is hydrated AND the title sheet is gone, so the manifest fetch can never sit in front of
+  // the first paint. The store defers it further behind InteractionManager and keeps the
+  // 6-hourly foreground cadence itself — see store/updateStore.ts for the full gating.
+  useEffect(() => {
+    if (title !== 'gone' || !hydrated) return;
+    return startUpdateChecks();
+  }, [title, hydrated]);
+
   return (
     <GestureHandlerRootView style={styles.root}>
       {/* Light content over the title's ink; the app's own dark-on-paper style after. */}
@@ -151,13 +174,16 @@ export default function RootLayout() {
       {/* First launch (no language yet) OR Settings → "show tutorial": the onboarding
           carousel. Slide-1 pick calls changeLanguage() — which loads the engine / starts
           the model download — so the wait overlaps the rest of the tutorial. */}
-      {shellReady && onboardingActive && (
+      {shellReady && onboardingActive && !profiles.choosing && (
         <OnboardingCarousel
           initialLanguage={language}
           onPickLanguage={changeLanguage}
-          onFinish={() => setOnboardingActive(false)}
+          onFinish={() => { void finishProfileOnboarding().then(() => { setProfileError(false); setOnboardingActive(false); }).catch(() => setProfileError(true)); }}
         />
       )}
+
+      {profiles.ready && profiles.choosing && <ProfilePicker onCancel={() => setOnboardingActive(false)} />}
+      {profileError && <Pressable style={{ position: 'absolute', bottom: 30, left: 16, right: 16, padding: 16, backgroundColor: '#f4ead5' }} onPress={() => { void initializeProfiles().then(() => { setProfileError(false); void bootstrap(); }).catch(() => setProfileError(true)); }}><Text>Could not save or load profiles. Tap to retry, or try Start again.</Text></Pressable>}
 
       {/* The title sheet, last in the tree so it sits over everything until it is thrown. */}
       {title !== 'gone' && <TitleScreen exiting={title === 'exiting'} onGone={onTitleGone} />}

@@ -1,0 +1,1002 @@
+{
+  "version": 1,
+  "grade": 5,
+  "reference": "MATATAG Science Grades 3–10, August 2023; numbered objectives in local curriculum extract",
+  "lessons": [
+    {
+      "key": "g5:matter",
+      "quarter": 1,
+      "title": {
+        "en": "Matter: mass and space",
+        "tl": "Materya: masa at espasyo",
+        "bis": "Materya: masa ug luna"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G5-M-1:mass-and-space",
+          "competency": "G5-M-1",
+          "focus": "mass-and-space",
+          "pattern": "mass.*(space|volume)|(space|volume).*mass"
+        }
+      ]
+    },
+    {
+      "key": "g5:states-of-matter",
+      "quarter": 1,
+      "title": {
+        "en": "Solids, liquids and gases",
+        "tl": "Solido, likido at gas",
+        "bis": "Solido, likido ug gas"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G5-M-2:three-states",
+          "competency": "G5-M-2",
+          "focus": "three-states",
+          "pattern": "solid.*liquid.*gas"
+        },
+        {
+          "id": "G5-M-3:solid-properties",
+          "competency": "G5-M-3",
+          "focus": "solid-properties",
+          "pattern": "(?=.*solid)(?=.*shape)(?=.*volume)"
+        },
+        {
+          "id": "G5-M-3:liquid-properties",
+          "competency": "G5-M-3",
+          "focus": "liquid-properties",
+          "pattern": "(?=.*liquid)(?=.*shape)(?=.*volume)"
+        },
+        {
+          "id": "G5-M-3:gas-properties",
+          "competency": "G5-M-3",
+          "focus": "gas-properties",
+          "pattern": "(?=.*gas)(?=.*(fill|expand|volume))(?=.*(container|shape))"
+        },
+        {
+          "id": "G5-M-4:everyday-examples",
+          "competency": "G5-M-4",
+          "focus": "everyday-examples",
+          "pattern": "(ice|water|air|juice|milk|stone|chair|table).*(solid|liquid|gas)|(solid|liquid|gas).*(ice|water|air|juice|milk|stone|chair|table)"
+        }
+      ]
+    },
+    {
+      "key": "g5:volume",
+      "quarter": 1,
+      "title": {
+        "en": "Measuring volume",
+        "tl": "Pagsukat ng volume",
+        "bis": "Pagsukod sa volume"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G5-M-5:measuring-container",
+          "competency": "G5-M-5",
+          "focus": "measuring-container",
+          "pattern": "cylinder|beaker"
+        },
+        {
+          "id": "G5-M-5:volume-units",
+          "competency": "G5-M-5",
+          "focus": "volume-units",
+          "pattern": "millilit|\\bm[lL]\\b|liters|litres"
+        },
+        {
+          "id": "G5-M-5:reading-volume",
+          "competency": "G5-M-5",
+          "focus": "reading-volume",
+          "pattern": "meniscus|eye level"
+        }
+      ]
+    },
+    {
+      "key": "g5:heat-and-state",
+      "quarter": 1,
+      "title": {
+        "en": "Heat and changes of state",
+        "tl": "Init at pagbabago ng anyo",
+        "bis": "Init ug pagbag-o sa estado"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G5-M-6:melting",
+          "competency": "G5-M-6",
+          "focus": "melting",
+          "pattern": "melt"
+        },
+        {
+          "id": "G5-M-6:freezing",
+          "competency": "G5-M-6",
+          "focus": "freezing",
+          "pattern": "freez"
+        },
+        {
+          "id": "G5-M-6:evaporation",
+          "competency": "G5-M-6",
+          "focus": "evaporation",
+          "pattern": "evaporat"
+        },
+        {
+          "id": "G5-M-6:condensation",
+          "competency": "G5-M-6",
+          "focus": "condensation",
+          "pattern": "condens"
+        }
+      ]
+    },
+    {
+      "key": "g5:investigations",
+      "quarter": 1,
+      "title": {
+        "en": "Planning a science investigation",
+        "tl": "Pagpaplano ng pagsisiyasat",
+        "bis": "Pagplano og pagsusi"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G5-M-7:investigation-steps",
+          "competency": "G5-M-7",
+          "focus": "investigation-steps",
+          "pattern": "(?=.*(question|problem))(?=.*material)(?=.*(step|procedure))(?=.*(found|findings|learn|result))"
+        },
+        {
+          "id": "G5-M-8:mass-units",
+          "competency": "G5-M-8",
+          "focus": "mass-units",
+          "pattern": "milligram|kilogram|\\bgrams\\b"
+        },
+        {
+          "id": "G5-M-8:temperature-units",
+          "competency": "G5-M-8",
+          "focus": "temperature-units",
+          "pattern": "celsius|centigrade"
+        },
+        {
+          "id": "G5-M-9:mass-investigation",
+          "competency": "G5-M-9",
+          "focus": "mass-investigation",
+          "pattern": "(air|gas|liquid|water).*(mass|weigh|balance)|(mass|weigh|balance).*(air|gas|liquid|water)"
+        },
+        {
+          "id": "G5-M-9:equipment",
+          "competency": "G5-M-9",
+          "focus": "equipment",
+          "pattern": "balance|thermometer"
+        }
+      ]
+    },
+    {
+      "key": "g5:digestion",
+      "quarter": 2,
+      "title": {
+        "en": "The digestive system",
+        "tl": "Sistemang pantunaw",
+        "bis": "Sistema sa paghilis"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G5-L-1:mouth",
+          "competency": "G5-L-1",
+          "focus": "mouth",
+          "pattern": "mouth.*(teeth|saliva|chew)"
+        },
+        {
+          "id": "G5-L-1:gullet",
+          "competency": "G5-L-1",
+          "focus": "gullet",
+          "pattern": "(esophagus|gullet|oesophagus).*(carr|push|move|transport)"
+        },
+        {
+          "id": "G5-L-1:stomach",
+          "competency": "G5-L-1",
+          "focus": "stomach",
+          "pattern": "stomach"
+        },
+        {
+          "id": "G5-L-1:intestines",
+          "competency": "G5-L-1",
+          "focus": "intestines",
+          "pattern": "small intestine.*(absorb|nutrient)"
+        },
+        {
+          "id": "G5-L-1:large-intestine",
+          "competency": "G5-L-1",
+          "focus": "Large intestine absorbs water and forms waste",
+          "pattern": "large intestine.*(water|waste)"
+        }
+      ]
+    },
+    {
+      "key": "g5:breathing",
+      "quarter": 2,
+      "title": {
+        "en": "The respiratory system",
+        "tl": "Sistemang respiratoryo",
+        "bis": "Sistema sa pagginhawa"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G5-L-2:nose",
+          "competency": "G5-L-2",
+          "focus": "nose",
+          "pattern": "nose|nostril"
+        },
+        {
+          "id": "G5-L-2:windpipe",
+          "competency": "G5-L-2",
+          "focus": "windpipe",
+          "pattern": "windpipe|trachea"
+        },
+        {
+          "id": "G5-L-2:lungs",
+          "competency": "G5-L-2",
+          "focus": "lungs",
+          "pattern": "(?=.*lung)(?=.*oxygen)(?=.*(blood|carbon dioxide))"
+        }
+      ]
+    },
+    {
+      "key": "g5:human-reproduction",
+      "quarter": 2,
+      "title": {
+        "en": "Human reproductive organs",
+        "tl": "Mga organong reproduktibo ng tao",
+        "bis": "Mga organo sa reproduksiyon sa tawo"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G5-L-3:ovaries",
+          "competency": "G5-L-3",
+          "focus": "ovaries",
+          "pattern": "(egg.*made.*ovar|ovar.*(make|produc|release).*egg)"
+        },
+        {
+          "id": "G5-L-3:uterus",
+          "competency": "G5-L-3",
+          "focus": "uterus",
+          "pattern": "uterus.*(grow|develop|protect)"
+        },
+        {
+          "id": "G5-L-3:vagina",
+          "competency": "G5-L-3",
+          "focus": "vagina",
+          "pattern": "vagina.*(tube|birth|passage)"
+        },
+        {
+          "id": "G5-L-3:prostate",
+          "competency": "G5-L-3",
+          "focus": "prostate",
+          "pattern": "prostate.*(produces|makes|adds).*fluid"
+        },
+        {
+          "id": "G5-L-3:testes",
+          "competency": "G5-L-3",
+          "focus": "testes",
+          "pattern": "testis|testes|testicle"
+        },
+        {
+          "id": "G5-L-3:penis",
+          "competency": "G5-L-3",
+          "focus": "penis",
+          "pattern": "penis.*(pathway|carry|carr|leave|sperm)"
+        }
+      ]
+    },
+    {
+      "key": "g5:classification",
+      "quarter": 2,
+      "title": {
+        "en": "Classifying living things",
+        "tl": "Pag-uuri ng mga buhay na bagay",
+        "bis": "Pagklasipikar sa mga buhing butang"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G5-L-4:classification-table",
+          "competency": "G5-L-4",
+          "focus": "classification-table",
+          "pattern": "table|column|row|chart"
+        },
+        {
+          "id": "G5-L-4:flowering-plants",
+          "competency": "G5-L-4",
+          "focus": "flowering plants",
+          "pattern": "flower.*(seed|fruit)"
+        },
+        {
+          "id": "G5-L-4:nonflowering-plants",
+          "competency": "G5-L-4",
+          "focus": "nonflowering plants",
+          "pattern": "fern|moss|conifer"
+        },
+        {
+          "id": "G5-L-4:mammals",
+          "competency": "G5-L-4",
+          "focus": "mammals",
+          "pattern": "mammal"
+        },
+        {
+          "id": "G5-L-4:reptiles",
+          "competency": "G5-L-4",
+          "focus": "reptiles",
+          "pattern": "reptile"
+        },
+        {
+          "id": "G5-L-4:insects",
+          "competency": "G5-L-4",
+          "focus": "insects",
+          "pattern": "insect"
+        },
+        {
+          "id": "G5-L-4:birds",
+          "competency": "G5-L-4",
+          "focus": "birds",
+          "pattern": "feather"
+        },
+        {
+          "id": "G5-L-4:fish",
+          "competency": "G5-L-4",
+          "focus": "fish",
+          "pattern": "fish.*(gill|fin|scale)"
+        },
+        {
+          "id": "G5-L-4:amphibians",
+          "competency": "G5-L-4",
+          "focus": "amphibians",
+          "pattern": "amphibian|frog"
+        },
+        {
+          "id": "G5-L-4:fungi",
+          "competency": "G5-L-4",
+          "focus": "fungi",
+          "pattern": "yeast"
+        },
+        {
+          "id": "G5-L-4:bacteria",
+          "competency": "G5-L-4",
+          "focus": "bacteria",
+          "pattern": "bacter"
+        }
+      ]
+    },
+    {
+      "key": "g5:animal-reproduction",
+      "quarter": 2,
+      "title": {
+        "en": "Live young and eggs",
+        "tl": "Pagsilang at pangingitlog",
+        "bis": "Pag-anak ug pagpangitlog"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G5-L-5:live-young",
+          "competency": "G5-L-5",
+          "focus": "live-young",
+          "pattern": "live young|live birth|give birth|gives birth|mammal"
+        },
+        {
+          "id": "G5-L-5:egg-laying",
+          "competency": "G5-L-5",
+          "focus": "egg-laying",
+          "pattern": "egg.*(bird|reptile)|(bird|reptile).*egg"
+        }
+      ]
+    },
+    {
+      "key": "g5:life-cycles",
+      "quarter": 2,
+      "title": {
+        "en": "Animal and plant life cycles",
+        "tl": "Siklo ng buhay ng hayop at halaman",
+        "bis": "Siklo sa kinabuhi sa mananap ug tanom"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G5-L-6:mammals",
+          "competency": "G5-L-6",
+          "focus": "mammals",
+          "pattern": "mammal|calf|carabao|puppy"
+        },
+        {
+          "id": "G5-L-6:birds",
+          "competency": "G5-L-6",
+          "focus": "birds",
+          "pattern": "bird|chick"
+        },
+        {
+          "id": "G5-L-6:plants",
+          "competency": "G5-L-6",
+          "focus": "plants",
+          "pattern": "(?=.*\\bseed\\b)(?=.*(mature|seedling|young plant))"
+        },
+        {
+          "id": "G5-L-6:comparison",
+          "competency": "G5-L-6",
+          "focus": "comparison",
+          "pattern": "unlike|compare|every life cycle"
+        }
+      ]
+    },
+    {
+      "key": "g5:plant-structures",
+      "quarter": 2,
+      "title": {
+        "en": "Specialized plant structures",
+        "tl": "Natatanging bahagi ng halaman",
+        "bis": "Espesyal nga bahin sa tanom"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G5-L-7:rhizomes",
+          "competency": "G5-L-7",
+          "focus": "rhizomes",
+          "pattern": "rhizome"
+        },
+        {
+          "id": "G5-L-7:tubers",
+          "competency": "G5-L-7",
+          "focus": "tubers",
+          "pattern": "(?=.*potato)(?=.*tuber)(?!.*sweet potato)"
+        },
+        {
+          "id": "G5-L-7:thorns",
+          "competency": "G5-L-7",
+          "focus": "thorns",
+          "pattern": "thorn"
+        },
+        {
+          "id": "G5-L-7:bulbs",
+          "competency": "G5-L-7",
+          "focus": "bulbs",
+          "pattern": "bulb"
+        },
+        {
+          "id": "G5-L-7:aerial-roots",
+          "competency": "G5-L-7",
+          "focus": "aerial-roots",
+          "pattern": "aerial root"
+        }
+      ]
+    },
+    {
+      "key": "g5:adaptations",
+      "quarter": 2,
+      "title": {
+        "en": "Plant and animal adaptations",
+        "tl": "Pag-angkop ng halaman at hayop",
+        "bis": "Pagpahiangay sa tanom ug mananap"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G5-L-8:dry-conditions",
+          "competency": "G5-L-8",
+          "focus": "dry-conditions",
+          "pattern": "drought|dry|desert|lack of water"
+        },
+        {
+          "id": "G5-L-8:flooded-conditions",
+          "competency": "G5-L-8",
+          "focus": "flooded-conditions",
+          "pattern": "flood|waterlog|mangrove"
+        },
+        {
+          "id": "G5-L-9:camouflage",
+          "competency": "G5-L-9",
+          "focus": "camouflage",
+          "pattern": "camouflage"
+        },
+        {
+          "id": "G5-L-9:mimicry",
+          "competency": "G5-L-9",
+          "focus": "mimicry",
+          "pattern": "mimic"
+        }
+      ]
+    },
+    {
+      "key": "g5:contact-forces",
+      "quarter": 3,
+      "title": {
+        "en": "Contact forces and motion",
+        "tl": "Puwersang kontak at paggalaw",
+        "bis": "Puwersang kontak ug paglihok"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G5-F-1:direction",
+          "competency": "G5-F-1",
+          "focus": "direction",
+          "pattern": "direction"
+        },
+        {
+          "id": "G5-F-1:investigation",
+          "competency": "G5-F-1",
+          "focus": "investigation",
+          "pattern": "investigat|experiment"
+        }
+      ]
+    },
+    {
+      "key": "g5:friction",
+      "quarter": 3,
+      "title": {
+        "en": "Investigating friction",
+        "tl": "Pagsisiyasat sa friction",
+        "bis": "Pagsusi sa friction"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G5-F-2:surfaces",
+          "competency": "G5-F-2",
+          "focus": "surfaces",
+          "pattern": "surface|rough|smooth"
+        },
+        {
+          "id": "G5-F-2:fair-comparison",
+          "competency": "G5-F-2",
+          "focus": "fair-comparison",
+          "pattern": "same|fair|variable|control"
+        },
+        {
+          "id": "G5-F-3:heat",
+          "competency": "G5-F-3",
+          "focus": "heat",
+          "pattern": "heat|warm"
+        },
+        {
+          "id": "G5-F-3:reducing-friction",
+          "competency": "G5-F-3",
+          "focus": "reducing-friction",
+          "pattern": "reduc|oil|lubricat"
+        },
+        {
+          "id": "G5-F-3:increasing-friction",
+          "competency": "G5-F-3",
+          "focus": "increasing-friction",
+          "pattern": "increas|grip|tread"
+        }
+      ]
+    },
+    {
+      "key": "g5:gravity",
+      "quarter": 3,
+      "title": {
+        "en": "Gravity and falling objects",
+        "tl": "Grabidad at pagbagsak ng bagay",
+        "bis": "Grabidad ug pagkahulog sa butang"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G5-F-4:non-contact",
+          "competency": "G5-F-4",
+          "focus": "non-contact",
+          "pattern": "non.contact|without touch|without.*contact"
+        },
+        {
+          "id": "G5-F-5:heavy-and-light",
+          "competency": "G5-F-5",
+          "focus": "heavy-and-light",
+          "pattern": "heav|light|same rate|same time"
+        },
+        {
+          "id": "G5-F-6:motion",
+          "competency": "G5-F-6",
+          "focus": "motion",
+          "pattern": "fall|down|throw|motion"
+        }
+      ]
+    },
+    {
+      "key": "g5:static-electricity",
+      "quarter": 3,
+      "title": {
+        "en": "Static electricity",
+        "tl": "Static na kuryente",
+        "bis": "Static nga kuryente"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G5-F-7:common-materials",
+          "competency": "G5-F-7",
+          "focus": "common-materials",
+          "pattern": "comb|balloon|rod"
+        },
+        {
+          "id": "G5-F-7:observation",
+          "competency": "G5-F-7",
+          "focus": "observation",
+          "pattern": "rub|attract|repel"
+        }
+      ]
+    },
+    {
+      "key": "g5:simple-circuits",
+      "quarter": 3,
+      "title": {
+        "en": "Building and drawing circuits",
+        "tl": "Pagbuo at pagguhit ng sirkito",
+        "bis": "Paghimo ug pagdrowing og sirkito"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G5-F-8:components",
+          "competency": "G5-F-8",
+          "focus": "components",
+          "pattern": "battery|batteries"
+        },
+        {
+          "id": "G5-F-8:switch",
+          "competency": "G5-F-8",
+          "focus": "switch",
+          "pattern": "switch"
+        },
+        {
+          "id": "G5-F-8:complete-loop",
+          "competency": "G5-F-8",
+          "focus": "complete-loop",
+          "pattern": "loop|closed|complete circuit"
+        },
+        {
+          "id": "G5-F-8:diagram",
+          "competency": "G5-F-8",
+          "focus": "diagram",
+          "pattern": "symbol|diagram"
+        }
+      ]
+    },
+    {
+      "key": "g5:conductors",
+      "quarter": 3,
+      "title": {
+        "en": "Testing conductors and insulators",
+        "tl": "Pagsubok sa konduktor at insulador",
+        "bis": "Pagsulay sa konduktor ug insulador"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G5-F-9:conductors",
+          "competency": "G5-F-9",
+          "focus": "conductors",
+          "pattern": "conduct"
+        },
+        {
+          "id": "G5-F-9:insulators",
+          "competency": "G5-F-9",
+          "focus": "insulators",
+          "pattern": "insulat"
+        },
+        {
+          "id": "G5-F-9:circuit-test",
+          "competency": "G5-F-9",
+          "focus": "circuit-test",
+          "pattern": "circuit|bulb"
+        }
+      ]
+    },
+    {
+      "key": "g5:electromagnets",
+      "quarter": 3,
+      "title": {
+        "en": "Making an electromagnet",
+        "tl": "Paggawa ng electromagnet",
+        "bis": "Paghimo og electromagnet"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G5-F-10:construction",
+          "competency": "G5-F-10",
+          "focus": "construction",
+          "pattern": "nail|coil|wind.*wire"
+        },
+        {
+          "id": "G5-F-10:observations",
+          "competency": "G5-F-10",
+          "focus": "observations",
+          "pattern": "current|switch|strong|turn.*off"
+        }
+      ]
+    },
+    {
+      "key": "g5:landforms",
+      "quarter": 4,
+      "title": {
+        "en": "Landforms and bodies of water",
+        "tl": "Anyong lupa at anyong tubig",
+        "bis": "Mga anyong yuta ug tubig"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G5-E-1:environmental-effects",
+          "competency": "G5-E-1",
+          "focus": "environmental-effects",
+          "pattern": "plant|animal|habitat|soil|flood|rain"
+        },
+        {
+          "id": "G5-E-1:mountain",
+          "competency": "G5-E-1",
+          "focus": "Local mountain examples",
+          "pattern": "mountain"
+        },
+        {
+          "id": "G5-E-1:valley",
+          "competency": "G5-E-1",
+          "focus": "Local valley examples",
+          "pattern": "valley"
+        },
+        {
+          "id": "G5-E-1:river",
+          "competency": "G5-E-1",
+          "focus": "Local river examples",
+          "pattern": "river"
+        },
+        {
+          "id": "G5-E-1:coast",
+          "competency": "G5-E-1",
+          "focus": "Local coast examples",
+          "pattern": "coast"
+        }
+      ]
+    },
+    {
+      "key": "g5:rock-observation",
+      "quarter": 4,
+      "title": {
+        "en": "Observing rocks",
+        "tl": "Pagmamasid sa mga bato",
+        "bis": "Pag-obserbar sa mga bato"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G5-E-2:observable-features",
+          "competency": "G5-E-2",
+          "focus": "observable-features",
+          "pattern": "texture|grain|color|colour"
+        },
+        {
+          "id": "G5-E-2:comparison",
+          "competency": "G5-E-2",
+          "focus": "comparison",
+          "pattern": "compar|different|similar|sort|collect"
+        }
+      ]
+    },
+    {
+      "key": "g5:rock-classification",
+      "quarter": 4,
+      "title": {
+        "en": "Classifying rocks",
+        "tl": "Pag-uuri ng mga bato",
+        "bis": "Pagklasipikar sa mga bato"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G5-E-3:rock-key",
+          "competency": "G5-E-3",
+          "focus": "rock-key",
+          "pattern": "(rock.*key|key.*rock)"
+        },
+        {
+          "id": "G5-E-3:classification-record",
+          "competency": "G5-E-3",
+          "focus": "classification-record",
+          "pattern": "record|table|label|write"
+        }
+      ]
+    },
+    {
+      "key": "g5:soil-formation",
+      "quarter": 4,
+      "title": {
+        "en": "How soil forms",
+        "tl": "Paano nabubuo ang lupa",
+        "bis": "Giunsa pagporma ang yuta"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G5-E-4:rock-breakdown",
+          "competency": "G5-E-4",
+          "focus": "rock-breakdown",
+          "pattern": "rock.*(soil|break)|(soil|break).*rock"
+        },
+        {
+          "id": "G5-E-4:minerals",
+          "competency": "G5-E-4",
+          "focus": "minerals",
+          "pattern": "mineral"
+        }
+      ]
+    },
+    {
+      "key": "g5:erosion",
+      "quarter": 4,
+      "title": {
+        "en": "Erosion and transported materials",
+        "tl": "Erosyon at paglipat ng lupa",
+        "bis": "Erosion ug pagbalhin sa yuta"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G5-E-5:transport",
+          "competency": "G5-E-5",
+          "focus": "transport",
+          "pattern": "carry|carries|transport|move"
+        },
+        {
+          "id": "G5-E-5:demonstration",
+          "competency": "G5-E-5",
+          "focus": "demonstration",
+          "pattern": "tray|pour|model|demonstrat|experiment"
+        }
+      ]
+    },
+    {
+      "key": "g5:water-cycle",
+      "quarter": 4,
+      "title": {
+        "en": "The water cycle and its model",
+        "tl": "Siklo ng tubig at modelo nito",
+        "bis": "Siklo sa tubig ug modelo niini"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G5-E-6:processes",
+          "competency": "G5-E-6",
+          "focus": "processes",
+          "pattern": "evapora.*condens|condens.*precip"
+        },
+        {
+          "id": "G5-E-6:environment",
+          "competency": "G5-E-6",
+          "focus": "environment",
+          "pattern": "plant|animal|fresh|rain|environment"
+        },
+        {
+          "id": "G5-E-7:model",
+          "competency": "G5-E-7",
+          "focus": "model",
+          "pattern": "bag|model|experiment"
+        }
+      ]
+    },
+    {
+      "key": "g5:weather-disturbances",
+      "quarter": 4,
+      "title": {
+        "en": "Typhoons and weather warnings",
+        "tl": "Bagyo at mga babala sa panahon",
+        "bis": "Bagyo ug mga pasidaan sa panahon"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G5-E-8:impacts",
+          "competency": "G5-E-8",
+          "focus": "impacts",
+          "pattern": "flood|damage|landslide"
+        },
+        {
+          "id": "G5-E-9:warning-signals",
+          "competency": "G5-E-9",
+          "focus": "warning-signals",
+          "pattern": "signal"
+        },
+        {
+          "id": "G5-E-10:before-during-after",
+          "competency": "G5-E-10",
+          "focus": "before-during-after",
+          "pattern": "after"
+        },
+        {
+          "id": "G5-E-10:before",
+          "competency": "G5-E-10",
+          "focus": "Weather before a cyclone",
+          "pattern": "before"
+        },
+        {
+          "id": "G5-E-10:during",
+          "competency": "G5-E-10",
+          "focus": "Weather during a cyclone",
+          "pattern": "during"
+        }
+      ]
+    },
+    {
+      "key": "g5:solar-system",
+      "quarter": 4,
+      "title": {
+        "en": "Exploring the solar system",
+        "tl": "Pagkilala sa sistemang solar",
+        "bis": "Pag-ila sa sistema solar"
+      },
+      "target": 30,
+      "units": [
+        {
+          "id": "G5-E-11:structure",
+          "competency": "G5-E-11",
+          "focus": "structure",
+          "pattern": "sun.*(center|centre)|(center|centre).*sun"
+        },
+        {
+          "id": "G5-E-11:objects",
+          "competency": "G5-E-11",
+          "focus": "objects",
+          "pattern": "asteroid|comet"
+        },
+        {
+          "id": "G5-E-11:features",
+          "competency": "G5-E-11",
+          "focus": "features",
+          "pattern": "rocky|gas giant|ice giant"
+        }
+      ]
+    },
+    {
+      "key": "g5:moon-phases",
+      "quarter": 4,
+      "title": {
+        "en": "The Moon’s changing appearance",
+        "tl": "Mga yugto ng Buwan",
+        "bis": "Mga hugna sa Bulan"
+      },
+      "target": 20,
+      "units": [
+        {
+          "id": "G5-E-12:relative-motion",
+          "competency": "G5-E-12",
+          "focus": "relative-motion",
+          "pattern": "(?=.*sun)(?=.*earth)(?=.*moon)"
+        },
+        {
+          "id": "G5-E-12:model",
+          "competency": "G5-E-12",
+          "focus": "model",
+          "pattern": "model|ball|lamp|draw|flashlight"
+        }
+      ]
+    }
+  ],
+  "excludedCardIds": [
+    "ffct-15213",
+    "ffct-37917",
+    "ffct-37933",
+    "ffct-35313",
+    "ffct-35452",
+    "ffct-32445",
+    "ffct-32446",
+    "ffct-32447",
+    "ffct-32448",
+    "ffct-35912",
+    "ffct-29331"
+  ],
+  "exclusionNotes": {
+    "PAGASA": "Old wind-speed ranges excluded from this required pass. Official TCWS checked 2026-09-09: https://www.pagasa.dost.gov.ph/learning-tools/tropical-cyclone-wind-signal",
+    "body": "Organ function must be taught, not merely a mention of an organ in a diagram label."
+  }
+}

@@ -92,6 +92,22 @@ interface UIStrings {
     exitCurriculum: string;
     /** The outline sheet when the grade has no topics with cards (a guard; should not happen). */
     curriculumEmpty: string;
+    /**
+     * The "Update available!" ribbon — same slot and grammar as the ask/calendar ribbons.
+     * `label` is the gold eyebrow; the body is "v<versionName> · <MB> MB" (not a string);
+     * the chip cycles download → (pct) → install → retry with the store's status.
+     */
+    update: {
+      label: string;
+      /** Chip while the APK is only announced — tap starts the download. */
+      download: string;
+      /** Chip once the APK is verified on disk — tap opens Android's installer. */
+      install: string;
+      /** Chip after a failed download or a refused installer — tap tries again. */
+      retry: string;
+      /** a11y label on the ribbon's ✕ — hides the ribbon for a day. */
+      snooze: string;
+    };
     thinking: string;
     /** In-domain GAP: it is science, we just have no page for it yet. */
     abstain: string;
@@ -131,6 +147,13 @@ interface LoadingStrings {
   // components/cards/searchReadiness.ts.
   /** True at any stage ("still working", "this takes a few minutes"). */
   evergreen: string[];
+  /**
+   * True ONLY while bytes are arriving (connect/download): the non-blocking reassurance
+   * that the deck works during the transfer. Kept apart from `evergreen` because on a
+   * returning user's device nothing downloads — the wait is verify/load/warm — and "you
+   * can read while we download" there is a phantom download.
+   */
+  downloadEvergreen: string[];
   /** "{pct}% done" — only offered while a stage with a REAL signal is running. */
   pctDone: string;
 }
@@ -194,13 +217,22 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       closeCurriculum: 'Isara ang kurikulum',
       exitCurriculum: 'Lumabas sa kurikulum',
       curriculumEmpty: 'Wala pang kard para sa baitang na ito.',
+      update: {
+        label: 'May bagong update!',
+        download: 'I-download',
+        install: 'I-install',
+        retry: 'Subukan ulit',
+        snooze: 'Mamaya na lang',
+      },
       thinking: 'Iniisip ko pa',
       abstain: 'Hmm, wala pa akong pahina tungkol diyan.',
       abstainSuggest: 'Pero subukan natin ito',
       offdomain: 'Tutor ako sa agham, kaya agham lang ang laman ng mga kard ko.',
       offdomainHint: 'Subukan mo: hayop, panahon, katawan, o kalawakan.',
       loading: {
-        connect: ['Kumokonekta…', 'Inihahanda ang pag-download…'],
+        // 'connect' also covers a returning user whose files are all on the phone (the
+        // cache check takes a moment) — so it must not promise a download. (Luis, 2026-09-05)
+        connect: ['Sinisimulan…', 'Inihahanda ang lahat…'],
         download: ['Dina-download ang utak ni Hiraia…', 'Malaki-laki ito — konting tiis!'],
         verify: ['Sinusuri ang na-download…', 'Tinitingnan kung buo ang file…'],
         load: ['Binubuksan ang modelo…', 'Inilalagay sa memorya…'],
@@ -210,12 +242,14 @@ const UI_STRINGS: Record<Language, UIStrings> = {
         'Gumagana pa rin…',
         'Aabutin ito nang ilang minuto.',
         'Salamat sa paghihintay!',
+        'Hindi mo kailangang maghintay — i-swipe ang mga card!',
+      ],
         // Non-blocking reassurance (Luis, 2026-09-02): the deck works during the whole
         // download, and the child should be TOLD so — the point of the background design
-        // is lost if they sit and watch the bar.
+        // is lost if they sit and watch the bar. Offered only while bytes actually arrive.
+        downloadEvergreen: [
         'Pwede ka nang magbasa ng cards habang nagda-download!',
         'Nagda-download lang ng dagdag na content — tuloy lang sa pagbabasa.',
-        'Hindi mo kailangang maghintay — i-swipe ang mga card!',
       ],
         // NOTE for native review: "{pct}% na ang tapos" may read more naturally as
         // "{pct}% na ang natapos" — flagged, not self-corrected.
@@ -280,13 +314,20 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       closeCurriculum: 'Close the curriculum',
       exitCurriculum: 'Leave the curriculum',
       curriculumEmpty: 'No cards for this grade yet.',
+      update: {
+        label: 'Update available!',
+        download: 'Download',
+        install: 'Install',
+        retry: 'Try again',
+        snooze: 'Remind me later',
+      },
       thinking: "I'm thinking",
       abstain: "Hmm, I don't have a page about that yet.",
       abstainSuggest: "But let's try this",
       offdomain: "I'm a science tutor, so all my cards are about science.",
       offdomainHint: 'Try: animals, weather, your body, or space.',
       loading: {
-        connect: ['Connecting…', 'Getting the download ready…'],
+        connect: ['Starting up…', 'Getting things ready…'],
         download: ["Downloading Hiraia's brain…", "It's a big file — hang tight!"],
         verify: ['Checking the download…', 'Making sure every byte arrived…'],
         load: ['Opening the model…', 'Loading it into memory…'],
@@ -296,9 +337,11 @@ const UI_STRINGS: Record<Language, UIStrings> = {
         'Still working…',
         'This will take a few minutes.',
         'Thanks for waiting!',
+        'No need to wait — swipe through the cards!',
+      ],
+        downloadEvergreen: [
         'You can read cards while we download!',
         'Downloading extra content — keep reading.',
-        'No need to wait — swipe through the cards!',
       ],
         pctDone: '{pct}% done',
       },
@@ -369,6 +412,19 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       closeCurriculum: 'Isira ang kurikulum',
       exitCurriculum: 'Gawas sa kurikulum',
       curriculumEmpty: 'Wala pay kard para niini nga grado.',
+      // NOTE for native review (update ribbon, drafted 2026-09-06, flagged not self-corrected):
+      //   • "Naay bag-ong update!" — "naay" (naa + y) is colloquial; "Adunay" is the formal
+      //     form. Confirm which a Grade 5 reader expects on a button-sized ribbon.
+      //   • "I-download" / "I-install" borrow the Tagalog i- imperative on an English loan,
+      //     as the app's other Cebuano chrome does; confirm.
+      //   • "Unya na lang" for "later" — check register.
+      update: {
+        label: 'Naay bag-ong update!',
+        download: 'I-download',
+        install: 'I-install',
+        retry: 'Sulayi pag-usab',
+        snooze: 'Unya na lang',
+      },
       thinking: 'Naghunahuna pa ko',
       abstain: 'Hmm, wala pa koy panid mahitungod ana.',
       abstainSuggest: 'Pero sulayan nato ni',
@@ -386,7 +442,8 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       //     than in-progress (compare the correctly progressive "Ginapukaw").
       //   • "Nag-inat pa si Hiraia" — check idiomatic register.
       loading: {
-        connect: ['Nagkonektar…', 'Giandam ang download…'],
+        // FLAGGED for native review with the other ceb loading lines.
+        connect: ['Nagsugod…', 'Giandam ang tanan…'],
         download: ['Gida-download ang utok ni Hiraia…', 'Dako-dako kini — pailub lang!'],
         verify: ['Gisusi ang na-download…', 'Gitan-aw kung kompleto ang file…'],
         load: ['Giablihan ang modelo…', 'Gibutang sa memorya…'],
@@ -397,9 +454,11 @@ const UI_STRINGS: Record<Language, UIStrings> = {
         'Moabot kini og pipila ka minuto.',
         'Salamat sa paghulat!',
         // FLAGGED for native review with the other ceb loading lines.
+        'Dili na kinahanglan maghulat — i-swipe ang mga card!',
+      ],
+        downloadEvergreen: [
         'Pwede ka magbasa og cards samtang nag-download!',
         'Nag-download og dugang content — padayon lang sa pagbasa.',
-        'Dili na kinahanglan maghulat — i-swipe ang mga card!',
       ],
         pctDone: '{pct}% na ang nahuman',
       },

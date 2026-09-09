@@ -34,6 +34,8 @@ import { GRADE_WORD } from '../../config/grades';
 import { uiStrings } from '../../config/strings';
 import { cardsForTopic, curriculumOutline, topicTitle, type OutlineTopic } from '../../data/cards';
 import { useCardStore } from '../../store/cardStore';
+import { awardStars, type TopicAward } from '../../reviews/logic';
+import { useReviewStore } from '../../reviews/store';
 import { card, cardAlpha, fonts } from '../../theme';
 import { CARD_EDGE, CARD_RADIUS } from './CardFrame';
 
@@ -52,6 +54,7 @@ interface RowView {
   title: string;
   unseen: number;
   total: number;
+  stars: number;
 }
 
 interface QuarterGroup {
@@ -64,13 +67,24 @@ interface QuarterGroup {
  * session's seen set. Cheap (a Set lookup per card of the grade, ~15k) and only computed while
  * the sheet is visible — the memo keys on `visible` so a hidden sheet does no work per turn.
  */
-function groupOutline(grade: GradeLevel, language: Language, seen: ReadonlySet<string>): QuarterGroup[] {
+function groupOutline(
+  grade: GradeLevel,
+  language: Language,
+  seen: ReadonlySet<string>,
+  awards: Readonly<Record<string, TopicAward>>
+): QuarterGroup[] {
   const groups: QuarterGroup[] = [];
   for (const topic of curriculumOutline(grade)) {
     const ids = cardsForTopic(topic);
     let unseen = 0;
     for (const id of ids) if (!seen.has(id)) unseen += 1;
-    const view: RowView = { topic, title: topicTitle(topic, language), unseen, total: ids.size };
+    const view: RowView = {
+      topic,
+      title: topicTitle(topic, language),
+      unseen,
+      total: ids.size,
+      stars: awardStars(awards[topic.key]),
+    };
     const last = groups[groups.length - 1];
     if (last && last.quarter === topic.quarter) last.rows.push(view);
     else groups.push({ quarter: topic.quarter, rows: [view] });
@@ -100,9 +114,12 @@ export const CurriculumSheet = memo(function CurriculumSheet({
   // The session seen set, for the count chips. Replaced by the store on every turn, so the
   // memo below refreshes each time the sheet is opened onto a new page.
   const seen = useCardStore((s) => s.seen);
+  const awards = useReviewStore((s) =>
+    s.data?.grade === grade ? s.data.awards : EMPTY_AWARDS
+  );
   const groups = useMemo(
-    () => (visible ? groupOutline(grade, language, seen) : []),
-    [visible, grade, language, seen]
+    () => (visible ? groupOutline(grade, language, seen, awards) : []),
+    [visible, grade, language, seen, awards]
   );
 
   return (
@@ -175,6 +192,14 @@ export const CurriculumSheet = memo(function CurriculumSheet({
                             <Text style={[styles.rowText, active && styles.rowTextActive]} numberOfLines={2}>
                               {row.title}
                             </Text>
+                            {row.stars > 0 ? (
+                              <Text
+                                style={styles.stars}
+                                accessibilityLabel={`${row.stars} ${row.stars === 1 ? 'star' : 'stars'}`}
+                              >
+                                {'★'.repeat(row.stars)}
+                              </Text>
+                            ) : null}
                             <View style={[styles.chip, active && styles.chipActive]}>
                               <Text style={[styles.chipText, active && styles.chipTextActive]} numberOfLines={1}>
                                 {row.unseen} / {row.total}
@@ -196,6 +221,8 @@ export const CurriculumSheet = memo(function CurriculumSheet({
     </Modal>
   );
 });
+
+const EMPTY_AWARDS: Readonly<Record<string, TopicAward>> = {};
 
 const styles = StyleSheet.create({
   root: { flex: 1, justifyContent: 'flex-end' },
@@ -289,6 +316,7 @@ const styles = StyleSheet.create({
   // a DepEd title is a heading, not a sentence: one size up from the old competency text
   rowText: { flex: 1, fontFamily: fonts.cardBody, fontSize: 15, lineHeight: 19, color: card.ink },
   rowTextActive: { fontFamily: fonts.cardBodyBold },
+  stars: { fontFamily: fonts.gothic, fontSize: 11, letterSpacing: 1, color: card.gold },
   chip: {
     minWidth: 52,
     paddingHorizontal: 7,

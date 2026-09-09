@@ -1,3 +1,7 @@
+import { readMemory, MemoryBlockedError } from '../engine/memory';
+import { memoryBlock, type MemoryBlock } from '../engine/memoryPolicy';
+import { needsProfileOnboarding } from '../profiles';
+import { setTelemetryPersona } from '../telemetry';
 import { create } from 'zustand';
 
 import type { TutorEngine, TutorConfig, Language, GradeLevel } from '@hiraia/shared';
@@ -78,6 +82,9 @@ const W_READY = 0.9;
 const VERIFY_EXPECTED_MS = 20_000;
 
 interface EngineState {
+  memoryNotice: MemoryBlock | null;
+  launchMemoryBlock: MemoryBlock | null;
+  dismissMemoryNotice: () => void;
   engine: TutorEngine | null;
   isReady: boolean;
   error: string | null;
@@ -190,10 +197,12 @@ async function loadEngineFor(language: Language): Promise<void> {
   // Claim the load. Serialised by the queue above, so there is no check-then-act race
   // left to lose — but the state still has to be armed before the first await so the
   // loader UI reflects the new language from the moment the load actually begins.
+  setTelemetryPersona(language, get().grade);
   const prev = get().engine;
   const seq = ++loadSeq;
   set({
     language,
+    memoryNotice: null,
     isReady: false,
     error: null,
     loadingProgress: Math.round(W_BASE * 100),
@@ -313,8 +322,14 @@ async function loadEngineFor(language: Language): Promise<void> {
     const onEvent = (ev: EngineProgressEvent) => {
       if (seq !== loadSeq) return; // a stale engine's background reporter — ignore
       switch (ev.stage) {
-        case 'download':
+        case 'download': {
+          // A CACHE HIT arrives as one event at 100% before any byte was ever reported
+          // (modelDownload's size-matched read path) — nothing is downloading, so the
+          // stage must not say so: stay in 'connect' and let 'load' take over a moment
+          // later. Only a transfer that was seen in progress earns the download copy.
+          const cacheHit = tag === 'connect' && downloadPct === 0 && ev.pct >= 100;
           downloadPct = Math.max(downloadPct, ev.pct);
+          if (cacheHit) break;
           // 'verify' can go BACK to 'download': a failed contract check (a proxy-
           // truncated body, a bad MD5 after a resume) sends the downloader back to
           // the network, and the honest message for that multi-minute stretch is
@@ -326,6 +341,7 @@ async function loadEngineFor(language: Language): Promise<void> {
             verifyAt = 0;
           }
           break;
+        }
         case 'verify':
           if (verifyAt === 0) verifyAt = Date.now();
           tag = 'verify';
@@ -390,7 +406,8 @@ async function loadEngineFor(language: Language): Promise<void> {
     console.log(`QVAC engine ready (${language})`);
   } catch (error) {
     set({
-      error: error instanceof Error ? error.message : 'Failed to initialize engine',
+      memoryNotice: error instanceof MemoryBlockedError ? error.reason : null,
+      error: error instanceof MemoryBlockedError ? null : error instanceof Error ? error.message : 'Failed to initialize engine',
       isReady: false,
       loadingProgress: 0,
       loadingPhase: 'idle',
@@ -402,6 +419,9 @@ async function loadEngineFor(language: Language): Promise<void> {
 }
 
 export const useEngineStore = create<EngineState>((set, get) => ({
+  memoryNotice: null,
+  launchMemoryBlock: null,
+  dismissMemoryNotice: () => set({ memoryNotice: null }),
   engine: null,
   isReady: false,
   error: null,
@@ -417,6 +437,8 @@ export const useEngineStore = create<EngineState>((set, get) => ({
   setOnboardingActive: (active: boolean) => set({ onboardingActive: active }),
 
   bootstrap: async () => {
+    // Every process launch; this does not start downloads or show an unsolicited dialog.
+    set({ launchMemoryBlock: memoryBlock(await readMemory()) });
     let saved: Language | null = null;
     let grade: GradeLevel = DEFAULT_GRADE;
     try {
@@ -439,6 +461,7 @@ export const useEngineStore = create<EngineState>((set, get) => ({
     // used to re-persist it as a side effect of the eager warm-up; with that gone, persist
     // it here or the same fallback runs again on every launch.
     if (saved && saved !== rawSaved) void setSetting('language', saved);
+    setTelemetryPersona(saved, grade);
 
     // First launch (no saved language) → show the onboarding carousel; its slide-1
     // pick calls changeLanguage() which starts the model download in the background.
@@ -455,7 +478,7 @@ export const useEngineStore = create<EngineState>((set, get) => ({
     //   - onboarding slide-1, where picking a language IS the request to set up
     // A reward card that comes due before the engine is ready falls back to its
     // deterministic template, which is the existing contract.
-    set({ language: saved, grade, bootstrapped: true, onboardingActive: !saved });
+    set({ language: saved, grade, bootstrapped: true, onboardingActive: !saved || needsProfileOnboarding() });
   },
 
   changeLanguage: async (language: Language) => {
@@ -493,6 +516,7 @@ export const useEngineStore = create<EngineState>((set, get) => ({
     }
     const changed = get().grade !== grade;
     set({ grade });
+    setTelemetryPersona(get().language, grade);
     if (!changed) return;
     // Unlike a language change this needs NO model reload — the grade never touches the
     // weights — and, since the deleted chat surface took the grade-bearing system prompt

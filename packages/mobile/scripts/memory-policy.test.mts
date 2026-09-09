@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import { GiB, memoryBlock, canLoadSemantic } from '../src/engine/memoryPolicy';
+const eligible = { totalBytes: 3.83 * GiB, availableBytes: 2 * GiB, thresholdBytes: 0.2 * GiB, freeStorageBytes: 3 * GiB, lowMemory: false, lowRamDevice: false };
+assert.equal(memoryBlock(eligible, true), null, 'marketed 4 GB is eligible');
+assert.equal(memoryBlock({ ...eligible, totalBytes: 2.91 * GiB }), 'unsupported');
+assert.equal(memoryBlock({ ...eligible, lowRamDevice: true }), 'unsupported');
+assert.equal(memoryBlock({ ...eligible, availableBytes: GiB }), 'pressure');
+assert.equal(memoryBlock({ ...eligible, lowMemory: true }), 'pressure');
+assert.equal(memoryBlock({ ...eligible, freeStorageBytes: GiB }, true), 'storage');
+assert.equal(memoryBlock({ ...eligible, freeStorageBytes: GiB }, false), null, 'cached model needs no download headroom');
+assert.equal(memoryBlock(null), 'unknown');
+assert.equal(memoryBlock({ ...eligible, availableBytes: NaN }), 'unknown');
+assert.equal(memoryBlock({ ...eligible, thresholdBytes: 1.8 * GiB }), 'pressure');
+assert.equal(canLoadSemantic(eligible), false, '4 GB skips LaBSE');
+assert.equal(canLoadSemantic({ ...eligible, totalBytes: 7.8 * GiB }), true);
+assert.equal(canLoadSemantic({ ...eligible, totalBytes: 7.8 * GiB, lowMemory: true }), false);
+// Eligibility is not cached: available memory can fall during the download and recover later.
+assert.equal(memoryBlock(eligible), null);
+assert.equal(memoryBlock({ ...eligible, availableBytes: 0.7 * GiB }), 'pressure');
+assert.equal(memoryBlock(eligible), null);
+console.log('Memory policy: 16 assertions passed');

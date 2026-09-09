@@ -404,7 +404,7 @@ async function main() {
     `release came promptly (draw ${small.releasedAt} <= set ${small.setSize} + ${BRANCH_SLACK} slack)`
   );
 
-  // 3) the [x] path: dismissing = a context WITHOUT the magnet. The boosted weight must be
+  // 3) the Randomize path: dismissing = a context WITHOUT the magnet. The boosted weight must be
   //    exactly magnetMultiplier(served) while held, and exactly the base weight after.
   {
     const res = await C.searchCards(BIG, null);
@@ -415,7 +415,7 @@ async function main() {
     const dismissed = C.weightOf(probe, ctxFor(undefined));
     const ratio = held / dismissed;
     lines.push(
-      `  [x] path: magnet member weight ×${ratio.toFixed(2)} while held (magnetMultiplier(0) = ${C.magnetMultiplier(0)}), ` +
+      `  Randomize path: magnet member weight ×${ratio.toFixed(2)} while held (magnetMultiplier(0) = ${C.magnetMultiplier(0)}), ` +
         `×${(dismissed / dismissed).toFixed(2)} after dismissal`
     );
     assertThat(
@@ -597,8 +597,8 @@ async function main() {
     let left = 0;
     const JUMPS = 12;
     for (let i = 0; i < JUMPS; i++) if (!w.entered.idSet.has(C.jumpCard(w.cur.id, w.seen, ctxFor(undefined)).id)) left++;
-    lines.push(`  [x] path: ${left}/${JUMPS} unrestricted jumps leave the set (set ${size} of ${C.poolSize()} cards)`);
-    assertThat(left >= JUMPS - 2, `after the [x] the feed is unrestricted (${left}/${JUMPS} jumps left the set)`);
+    lines.push(`  Randomize path: ${left}/${JUMPS} unrestricted jumps leave the set (set ${size} of ${C.poolSize()} cards)`);
+    assertThat(left >= JUMPS - 2, `after Randomize the feed is unrestricted (${left}/${JUMPS} jumps left the set)`);
 
     // 4) an ASK mid-mode: the found card is served as a ONE-OFF — no magnet forms — and the
     //    next page-turn from it draws from the held topic again.
@@ -634,24 +634,15 @@ async function main() {
     }
   }
 
-  // 3) the END of the outline releases: hold the LAST topic with all but a few of its cards
-  //    already read; exhausting those must return null (no later row), never wrap.
+  // The end begins an outline review; only Randomize releases the restriction.
   {
     const last = outline[outline.length - 1]!;
-    const ids = [...C.cardsForTopic(last)] as string[];
-    const KEEP = 5;
-    const w = curriculumWalk(last.key, KEEP + 20, ids.slice(KEEP));
-    lines.push(
-      `  end of outline: ${last.key} "${last.title.en}" (Q${last.quarter}, row ${outline.length - 1}) with ${KEEP} unread of ${ids.length} → ` +
-        `released after ${w.releasedAt ?? 'never'} pages (${w.unseenAtRelease} unseen left), ${w.moves.length} later move(s)`
-    );
-    assertThat(w.releasedAt !== null && w.cursor === null, `past the last topic calendar mode releases (after ${w.releasedAt} pages)`);
-    assertThat(w.moves.length === 0, 'the cursor never wraps or moves backward from the last row');
-    assertThat(w.offSet === 0, `every choice until the release was in the held set (${w.offSet} off-set)`);
-    assertThat(
-      w.unseenAtRelease >= 0 && w.leftAtRelease.every((id) => C.restatesTopic(w.curAtRelease, id)),
-      `release fired only once nothing servable was left (${w.unseenAtRelease} unseen, each a restatement of the current card)`
-    );
+    const cursor = C.curriculumCursor(GRADE, last.key)!;
+    const seen = new Set<string>(C.cardsForTopic(last));
+    const after = C.advanceCurriculum(cursor, null, seen);
+    assertThat(!!after && after.key === outline[0]!.key, 'end of outline wraps into curriculum review');
+    const landing = C.jumpCard(null, seen, ctxFor(undefined, after));
+    assertThat(after.idSet.has(landing.id), 'review landing stays in its curriculum topic');
   }
 
   // 5) ENTERING a topic already read out this session: the sheet's row is tappable ("0 / n"),

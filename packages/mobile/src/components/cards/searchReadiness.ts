@@ -146,6 +146,11 @@ export function useReadinessMessage(enabled: boolean, stage: ReadyStage, languag
         pool = stageMsgs;
       } else {
         pool = [...stageMsgs, ...t.evergreen];
+        // The "you can read while we download" reassurances are only TRUE while bytes are
+        // actually arriving. A returning user with everything on the device spends this
+        // whole wait in verify/load/warm, and those lines read as a phantom download there
+        // (Luis, 2026-09-05) — so they join the pool only in the transfer stages.
+        if (stage === 'connect' || stage === 'download') pool.push(...t.downloadEvergreen);
         if (REAL_SIGNAL_STAGES.includes(stage)) {
           const pct = Math.round(useEngineStore.getState().readiness * 100);
           pool.push(t.pctDone.replace('{pct}', String(pct)));

@@ -15,7 +15,16 @@
     "qa:art": "npx tsx scripts/art-presence-check.mts",
     "qa:adjacency": "RUNS=${RUNS:-30} CARDS=${CARDS:-60} SAMPLE=${SAMPLE:-300} npx tsx scripts/card-adjacency-qa.mts",
     "type-check": "tsc --noEmit",
-    "clean": "rm -rf .expo .expo-shared dist"
+    "clean": "rm -rf .expo .expo-shared dist",
+    "qa:grade5": "python3 ../../rag/pipeline/compile-grade5-lessons.py --check && tsx --test scripts/grade5-lessons.test.mts scripts/calendar-selection.test.mts scripts/curriculum-default.test.mts scripts/review-series.test.mts",
+    "qa:content-reach": "tsx scripts/audit-content-reach.mts",
+    "qa:grade3": "python3 ../../rag/pipeline/compile-lessons.py --grade 3 --check && tsx --test scripts/grade3-lessons.test.mts scripts/calendar-selection.test.mts scripts/curriculum-default.test.mts scripts/review-series.test.mts",
+    "qa:grade4": "python3 ../../rag/pipeline/compile-lessons.py --grade 4 --check && tsx --test scripts/grade4-lessons.test.mts scripts/calendar-selection.test.mts scripts/curriculum-default.test.mts scripts/review-series.test.mts",
+    "qa:grade6": "python3 ../../rag/pipeline/compile-lessons.py --grade 6 --check && tsx --test scripts/grade6-lessons.test.mts scripts/calendar-selection.test.mts scripts/curriculum-default.test.mts scripts/review-series.test.mts",
+    "qa:grade7": "python3 ../../rag/pipeline/compile-lessons.py --grade 7 --check && tsx --test scripts/grade7-lessons.test.mts scripts/calendar-selection.test.mts scripts/curriculum-default.test.mts scripts/review-series.test.mts",
+    "qa:grade8": "python3 ../../rag/pipeline/compile-lessons.py --grade 8 --check && tsx --test scripts/grade8-lessons.test.mts scripts/calendar-selection.test.mts scripts/curriculum-default.test.mts scripts/review-series.test.mts",
+    "qa:grade9": "python3 ../../rag/pipeline/compile-lessons.py --grade 9 --check && tsx --test scripts/grade9-lessons.test.mts scripts/calendar-selection.test.mts scripts/curriculum-default.test.mts scripts/review-series.test.mts",
+    "qa:grade10": "python3 ../../rag/pipeline/compile-lessons.py --grade 10 --check && tsx --test scripts/grade10-lessons.test.mts scripts/calendar-selection.test.mts scripts/curriculum-default.test.mts scripts/review-series.test.mts"
   },
   "dependencies": {
     "@hiraia/shared": "workspace:*",
@@ -29,6 +38,7 @@
     "expo-device": "~8.0.0",
     "expo-file-system": "~19.0.0",
     "expo-font": "14.0.12",
+    "expo-intent-launcher": "~13.0.8",
     "expo-linking": "~8.0.0",
     "expo-router": "~6.0.0",
     "expo-splash-screen": "~31.0.13",

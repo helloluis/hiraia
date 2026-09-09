@@ -119,6 +119,13 @@ export interface RemoteAssetSpec {
   md5: string | null;
   /** Human label for logs. */
   label: string;
+  /**
+   * Where the verified file lands: a `file://` directory URI with a trailing slash.
+   * Defaults to the models directory under `documentDirectory`. The in-app APK updater
+   * (store/updateStore.ts) points this at the CACHE directory instead — an installer
+   * hand-off is the file's whole life, and the OS is welcome to reclaim it after.
+   */
+  dir?: string;
 }
 
 /** Restart the whole transfer up to this many times before giving up on a launch. */
@@ -158,9 +165,9 @@ class IntegrityError extends Error {
 const isFatal = (e: unknown): boolean =>
   typeof e === 'object' && e !== null && (e as { fatal?: unknown }).fatal === true;
 
-async function ensureDir(): Promise<void> {
-  const info = await getInfoAsync(MODELS_DIR);
-  if (!info.exists) await makeDirectoryAsync(MODELS_DIR, { intermediates: true });
+async function ensureDir(dir: string): Promise<void> {
+  const info = await getInfoAsync(dir);
+  if (!info.exists) await makeDirectoryAsync(dir, { intermediates: true });
 }
 
 /**
@@ -280,8 +287,9 @@ async function fetchAndVerify(
   onProgress?: DownloadProgressFn,
   signal?: AbortSignal
 ): Promise<string> {
-  await ensureDir();
-  const finalUri = `${MODELS_DIR}${spec.filename}`;
+  const dir = spec.dir ?? MODELS_DIR;
+  await ensureDir(dir);
+  const finalUri = `${dir}${spec.filename}`;
   const partUri = `${finalUri}.part`;
 
   // ---------------------------------------------------------------------------
@@ -320,7 +328,7 @@ async function fetchAndVerify(
     await deleteAsync(partUri, { idempotent: true });
   }
 
-  const assetKind = /adapter|lora/i.test(spec.filename) ? 'adapter' : /vector/i.test(spec.filename) ? 'vectors' : /\.(zip|tar|webp)$/i.test(spec.filename) ? 'images' : 'model';
+  const assetKind = /\.apk$/i.test(spec.filename) ? 'apk' : /adapter|lora/i.test(spec.filename) ? 'adapter' : /vector/i.test(spec.filename) ? 'vectors' : /\.(zip|tar|webp|hpak)$/i.test(spec.filename) ? 'images' : 'model';
   let lastError: unknown = null;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     if (signal?.aborted) throw new Error('model download aborted');

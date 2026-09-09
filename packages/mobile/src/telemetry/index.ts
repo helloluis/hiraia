@@ -1,3 +1,4 @@
+import { initializeProfiles, profileTelemetry, profileSnapshot } from '../profiles';
 import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import { AppState, Platform } from 'react-native';
@@ -21,6 +22,7 @@ const context: Props = {
   abi: clean(Device.supportedCpuArchitectures?.[0]),
   ram_gb: Device.totalMemory ? Math.ceil(Device.totalMemory / 1073741824) : 0,
 };
+let persona: Props = {};
 let sessionId = newId();
 let sessionEvent = event('session_started');
 let repository: Promise<TelemetryRepository> | undefined;
@@ -28,10 +30,14 @@ let activeRequest: AbortController | undefined;
 let enabled = true;
 function getRepository(): Promise<TelemetryRepository> {
   if (!repository)
-    repository = openRepository(sessionEvent).catch((error) => {
-      repository = undefined;
-      throw error;
-    });
+    repository = initializeProfiles()
+      .then(() =>
+        openRepository({ ...sessionEvent, props: { ...sessionEvent.props, ...profileTelemetry() } })
+      )
+      .catch((error) => {
+        repository = undefined;
+        throw error;
+      });
   return repository;
 }
 function event(name: string, props: Props = {}, id = newId()): Event {
@@ -40,7 +46,7 @@ function event(name: string, props: Props = {}, id = newId()): Event {
     name,
     occurred_at: Date.now(),
     session_id: sessionId,
-    props: { ...context, ...props },
+    props: { ...context, ...profileTelemetry(), ...persona, ...props },
   };
 }
 function retryAfter(value: string | null) {
@@ -151,5 +157,29 @@ export async function setTelemetryEnabled(value: boolean): Promise<void> {
 /** Settings reads durable counters after all pending event writes have completed. */
 export async function activitySummary() {
   await queue.drainWrites();
-  return (await getRepository()).activity();
+  return (await getRepository()).activity(Date.now(), profileSnapshot().activeId);
+}
+
+/** Record only chosen grade/language; never infer identity from a shared device. */
+export function setTelemetryPersona(language: string | null, grade: number): void {
+  const next: Props = { grade, ...(language ? { language } : {}) };
+  if (persona.grade === next.grade && persona.language === next.language) return;
+  persona = next;
+  track('profile_updated');
+}
+
+export async function detailedActivity(
+  start: number,
+  end: number,
+  profileId = profileSnapshot().activeId
+) {
+  await queue.drainWrites();
+  return (await getRepository()).activityReport(start, end, profileId);
+}
+export function telemetryPersona(): Props {
+  return { ...profileTelemetry(), ...persona };
+}
+
+export async function drainTelemetryWrites() {
+  await queue.drainWrites();
 }
