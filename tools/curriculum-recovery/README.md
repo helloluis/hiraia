@@ -1,0 +1,18 @@
+# Manual core-content recovery
+
+Baseline checkpoint: `1a9539f5a`. See `../../docs/EXCLUDED-CARD-RECOVERY.md` and `checkpoint.json` for actual progress and limits. Screening is not editorial approval.
+
+1. Preserve the original `screening.jsonl` (21,677 facts) and its summary. To screen a later inventory, run `python3 tools/curriculum-recovery/screen.py --out /tmp/hiraia-recovery-new-snapshot` with a fresh directory.
+2. Export a manageable packet: `python3 tools/curriculum-recovery/batch.py --limit 24 --out tools/curriculum-recovery/batch-005.packet.json`. Optional `--grade 3` through `10` and `--offset` are supported. The exporter skips already decided facts and IDs reserved in any existing packet, and honors current exclusions. Resume unfinished packets rather than exporting replacements. Use offset 0 after completing each batch so newly shrinking queues do not skip work.
+3. Read exact competency wording, full English text and the proposed translations. Match substantive teaching content, not incidental keywords. A teaching component can belong to core without fulfilling an entire chart, survey or experiment requirement. Do not assign it the activity facet unless it actually teaches that activity. Hold factual/translation uncertainty and record the specific reason.
+4. Write one JSONL decision per packet fact in the existing review schema. Preserve fact ID, current card ID, text hash and original exclusion. Approved decisions need explicit codes and actual core-unit evidence. No paid model calls or blanket retagging are used by these scripts.
+5. Validate with `python3 tools/curriculum-recovery/apply.py tools/curriculum-recovery/batch-005.review.jsonl`; add `--apply` only after reviewing the proposed corrections. It rejects changed text/exclusions, invalid or non-core mappings, and grade-scoped exclusions. It writes prior values for rollback and does not silently reapply a batch.
+6. Run the tag generator, all eight lesson compilers, content-reach audit and the grade/recovery tests. Check every approved fact is in an actual core unit and previously reachable material remains available. Record before/after distinct fact counts and unfinished IDs separately from screening counts.
+
+Batches 001–004 were reviewed by the parent agent; batches 005 onward use three parallel reviewers with parent-only integration. No independent human editorial sign-off is claimed. The original packets preserve the prior automated findings, while the decision evidence references the corrected live core filters.
+
+## Parallel heartbeat window
+
+The user authorized three simultaneous reviewers on September 10. See `heartbeat-window.json` for the original deadline, baseline and current assignments. Only the parent exports numbered packets and applies changes. Reviewers own only their assigned review JSONL and optional notes, write complete decisions atomically, and run dry-run validation. Existing packets reserve their IDs so reviewers cannot duplicate work. Parent validates and integrates completed batches sequentially, then updates checkpoint and reports. Unapplied reviews are pending decisions, not validated recoveries. Reuse idle reviewers; never duplicate an active assignment.
+
+Integration guard: a stable fact ID may have multiple card IDs with different text. Overrides affect every variant and the compiler may select a different variant from the packet. Review all selected variants and translations before approving; otherwise hold the fact. Batches 011/012 contain two parent-reversed proposals documenting this case. Rollback snapshots retain original attempted applications even when a review is subsequently held; checkpoints count final dispositions.

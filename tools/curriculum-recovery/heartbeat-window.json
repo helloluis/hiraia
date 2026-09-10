@@ -1,0 +1,633 @@
+{
+  "heartbeatId": "d0d1ef89",
+  "startsAt": "2026-09-10T02:28:45.160Z",
+  "expiresAt": "2026-09-10T14:28:45.158Z",
+  "timezone": "Asia/Manila",
+  "cron": "*/15 * * * *",
+  "maxRuns": 48,
+  "targetBatchSize": 96,
+  "priorityCandidatesOriginal": 9429,
+  "priorityRemainingAtStart": 9093,
+  "baseline": {
+    "baselineCommit": "1a9539f5a",
+    "screened": 21677,
+    "manuallyReviewed": 339,
+    "recoveredCoreFacts": 103,
+    "held": 236,
+    "notManuallyReviewed": 21338,
+    "reachableBefore": 20186,
+    "reachableAfter": 20289,
+    "recoveredByGrade": {
+      "3": 9,
+      "4": 16,
+      "5": 14,
+      "6": 8,
+      "7": 14,
+      "8": 12,
+      "9": 15,
+      "10": 15
+    },
+    "completedBatches": [
+      "batch-001",
+      "batch-002",
+      "batch-003",
+      "batch-004"
+    ],
+    "nextCommand": "python3 tools/curriculum-recovery/batch.py --limit 48 --out tools/curriculum-recovery/batch-005.packet.json",
+    "status": "Whole-inventory screening complete; manual recovery is partial, with a resumable remaining queue",
+    "updatedAt": "2026-09-10"
+  },
+  "instructions": "User authorized parallel reviewers. Parent exports reserved disjoint packets and integrates centrally. Reuse three collaboration agents; only parent applies/compiles/updates checkpoint. Original hard deadline 2026-09-10 22:28 Asia/Manila unchanged. See assignments for ownership.",
+  "previousHeartbeatId": "3783f7a3",
+  "maxConcurrentReviewers": 3,
+  "assignments": [],
+  "assignmentHistory": [
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-005",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-006",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-007",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-008",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-009",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-010",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-011",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-012",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-013",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-014",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-015",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-016",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-017",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-018",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-019",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-020",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-021",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-022",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-023",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-024",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-025",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-026",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-027",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-028",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-029",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-030",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-031",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-032",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-033",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-034",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-035",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-036",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-037",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-038",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-039",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-040",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-041",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-042",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-043",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-044",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-045",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-046",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-047",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-048",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-049",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-050",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-051",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-052",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-053",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-054",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-055",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-056",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-057",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-058",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-059",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-060",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-061",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-062",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-063",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-064",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-065",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-066",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-067",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-068",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-069",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-070",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-071",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-072",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-073",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-074",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-075",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-076",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-077",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-078",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-079",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-080",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-082",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-083",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-081",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-084",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-085",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-086",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-087",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-088",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-089",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-090",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-091",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-092",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-093",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-094",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-095",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-096",
+      "status": "integrated_validated",
+      "cards": 96
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-097",
+      "status": "integrated_validated",
+      "cards": 87
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-098",
+      "status": "integrated_validated",
+      "cards": 87
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-099",
+      "status": "integrated_validated",
+      "cards": 87
+    }
+  ],
+  "lastValidatedAt": "2026-09-10T10:32:44.281066+00:00",
+  "windowProgress": {
+    "reviewed": 9093,
+    "recovered": 4096,
+    "held": 4997,
+    "priorityRemaining": 0
+  },
+  "status": "priority_complete",
+  "completedAt": "2026-09-10T10:32:44.281066+00:00",
+  "priorityCompletion": {
+    "priorityReviewed": 9429,
+    "priorityRecovered": 4197,
+    "priorityHeld": 5232,
+    "otherPreviouslyReviewed": 3
+  },
+  "heartbeatStoppedAt": "2026-09-10T10:33:20.084074+00:00",
+  "heartbeatStopReason": "Original priority queue fully reviewed and validated"
+}

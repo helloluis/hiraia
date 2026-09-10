@@ -305,7 +305,7 @@
           "id": "G5-L-4:classification-table",
           "competency": "G5-L-4",
           "focus": "classification-table",
-          "pattern": "table|column|row|chart"
+          "pattern": "\\b(?:table|column|row|chart)s?\\b"
         },
         {
           "id": "G5-L-4:flowering-plants",
@@ -359,7 +359,7 @@
           "id": "G5-L-4:fungi",
           "competency": "G5-L-4",
           "focus": "fungi",
-          "pattern": "yeast"
+          "pattern": "\\byeast\\b|\\bfung(?:us|i)\\b|\\bmold\\b"
         },
         {
           "id": "G5-L-4:bacteria",
