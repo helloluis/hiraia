@@ -1,0 +1,31 @@
+{
+  "batch": 30001,
+  "factId": "gas-exchange-g6",
+  "proposedReview": {
+    "factId": "gas-exchange-g6",
+    "id": "dcard-01514",
+    "textHash": "3dfd0571897ad0c92fd98c58407039636fce41b59ea99980ca09bccd2769dc29",
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:03:12Z disp=exclude",
+    "reviewedAt": "2026-09-10T15:48:46.923222Z",
+    "reviewer": "codex-manual-core-recovery",
+    "disposition": "recover_core",
+    "codes": [
+      "G4-L-1"
+    ],
+    "evidence": [
+      {
+        "lesson": "g4:body-systems",
+        "unit": "G4-L-1:respiratory",
+        "quote": "The respiratory system is responsible for the exchange of gases such as carbon dioxide and oxygen in the bloodstream."
+      }
+    ],
+    "translationsChecked": true,
+    "reason": "Full EN/TL/BIS in both app and merged pools reviewed; the same dcard-01514 and identical language copies occur in both, with no alternate stable-fact ID. Describing respiratory-system exchange of oxygen and carbon dioxide involving the bloodstream directly teaches the simple human respiratory-system function in G4-L-1. Only its respiratory facet matches. In the bloodstream is broad elementary wording for gases entering/leaving blood, not a claim that gas exchange is a reaction wholly inside blood; it does not reverse either gas direction. TL pagpapalitan ... daloy ng dugo and BIS pagbayloay ... agos sa dugo preserve that meaning. NHLBI confirms oxygen enters blood while CO2 leaves it through lung gas exchange: https://www.nhlbi.nih.gov/health/lungs/respiratory-system . No credit to plant stem (substring in system), air composition, nature cycles, chemistry respiration or earthquake codes; none is substantively taught. G5-L-2 organ-specific facets do not match this general system wording."
+  },
+  "checkedAt": "2026-09-10T15:48:46.923222Z",
+  "notes": [
+    "One actual new substantive review of a previously unreviewed placeholder; parent counts only on integration.",
+    "Original external row says Pending detailed review (fact23:gas-exchange-g6) despite translationsChecked=true. That flag was not accepted as proof; all full copies were independently read here. Original external file is preserved unchanged.",
+    "Packet identity/hash/prior exclusion, grade-scoped exclusions, enrichment and every matching G4-L-1 facet checked read-only. No apply, compilation, commit or shared mutation."
+  ]
+}

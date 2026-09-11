@@ -1,0 +1,44 @@
+{
+  "status": "ready_for_external_coordinator",
+  "partition": "external_c",
+  "total": 2836,
+  "assignments": [
+    {
+      "packet": "tools/curriculum-recovery/batch-30000.packet.json",
+      "n": 96,
+      "exportedAt": "2026-09-10T12:11:02.908696+00:00",
+      "status": "complete",
+      "reviewer": "glm-acp-agent recovery_c",
+      "completedAt": "2026-09-10T14:31:13.856010+00:00"
+    },
+    {
+      "packet": "tools/curriculum-recovery/batch-30001.packet.json",
+      "n": 96,
+      "exportedAt": "2026-09-10T12:11:39.314021+00:00",
+      "status": "complete",
+      "reviewer": "glm-acp-agent recovery_c",
+      "completedAt": "2026-09-10T14:31:13.856164+00:00"
+    },
+    {
+      "packet": "tools/curriculum-recovery/batch-30002.packet.json",
+      "n": 96,
+      "exportedAt": "2026-09-10T12:11:39.316498+00:00",
+      "status": "complete",
+      "reviewer": "glm-acp-agent recovery_c",
+      "completedAt": "2026-09-10T14:57:21.541764+00:00"
+    },
+    {
+      "packet": "tools/curriculum-recovery/batch-30003.packet.json",
+      "n": 96,
+      "exportedAt": "2026-09-10T12:11:39.318438+00:00",
+      "status": "complete",
+      "reviewer": "glm-acp-agent recovery_c",
+      "completedAt": "2026-09-10T14:45:20.208886+00:00"
+    }
+  ],
+  "reviewed": 2836,
+  "proposedRecoveries": 775,
+  "held": 2061,
+  "nextBatchNumber": 30030,
+  "note": "Only assigned external coordinator edits this ledger; integration stays local."
+}

@@ -1,0 +1,2102 @@
+{
+  "parentVerifiedAt": "2026-09-10T15:33:51.226906+00:00",
+  "originalProposals": [
+    {
+      "factId": "dry-season-activities-g6",
+      "id": "dcard-10433",
+      "textHash": "b15937a8d2eb411ac87f8127820427278dca9a29d6b299c95bd8f069e0c46f88",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:14:07Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-E-6"
+      ],
+      "reason": "Dry-season outdoor activities (swimming, kites, biking) directly answer the G6-E-6 competency to suggest activities appropriate for each Philippine season; wet-dry and activities facets both genuinely match. Translations faithful (tag-araw/ting-init = dry season, activity list preserved). G6-E-9/E-10 constellation-tracking facets are keyword-only and not credited.",
+      "evidence": [
+        {
+          "lesson": "g6:philippine-seasons",
+          "unit": "G6-E-6:wet-dry",
+          "quote": "dry season"
+        },
+        {
+          "lesson": "g6:philippine-seasons",
+          "unit": "G6-E-6:activities",
+          "quote": "activities"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "drying-clothes-g7",
+      "id": "dcard-11066",
+      "textHash": "11195f010bb98239dcf85bb72e033117460199f9f307bf029f5748db895a8560",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:36:44Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-M-3",
+        "G6-M-5"
+      ],
+      "reason": "Evaporation explained via particle model (particles gain energy, move faster, escape as water vapor) teaches the G7-M-3 particle-motion idea and names water vapor in air for G6-M-5. Both admitted facets (motion; water-vapor) genuinely taught; spaces/attraction/temperature facets of G7-M-3 are not the card's claim but motion facet is. TL/BIS preserve particle/energy/vapor meaning.",
+      "evidence": [
+        {
+          "lesson": "g7:particle-motion",
+          "unit": "G7-M-3:motion",
+          "quote": "move faster"
+        },
+        {
+          "lesson": "g6:air-mixture",
+          "unit": "G6-M-5:water-vapor",
+          "quote": "water vapor"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "ducks-provide-eggs-g3",
+      "id": "dcard-12359",
+      "textHash": "b94aaeb9681c3e576f8f5a74236394ce9f50eca265540bd54c24d70d58422253",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:42:31Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Duck eggs/balut trivia is food-culture content; no matched unit genuinely teaches a component (G3-L-7 dependency needs how living things depend on nature; keyword 'eat' only). Potential destination: a G3 useful-plants-and-animals support card if a dependency/human-use facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "durable-containers-g4",
+      "id": "dcard-06651",
+      "textHash": "bd9bde1ec2d01e34a471567b84436b15d402844d781dfddfdfa5f77042828745",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:55:38Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-M-7"
+      ],
+      "reason": "Advocates buying durable containers and reusing them instead of disposables, teaching the G3-M-7 reuse/handling-disposal practice. Only the reuse facet matches (oil/recycle do not). Both pool variants (app dcard-06651; merged dcard-04808 Q&A) carry the same reuse meaning; TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g3:safe-materials",
+          "unit": "G3-M-7:reuse",
+          "quote": "reuse"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "durian-king-gives-energy-vitamins-g4",
+      "id": "ffct-03535",
+      "textHash": "943acba15d2d430d1555babd41c529d786265c07a9669ac396ca23d3af38dc43",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:31:47Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Durian nutrition/moderation is health trivia; every match is incidental (G5-F-5 'heavy/light' gravity, G8-L-5 'ratio'). No current facet teaches food-energy nutrition at this level. Potential destination: health/nutrition enrichment, not core.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "during-the-typhoon-g5",
+      "id": "dcard-11687",
+      "textHash": "eb4c82e2a6546a7e7bfbdaafba201d41d8f6f665b4f0e888416b48d3b14fde81",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:28:19Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G5-E-10"
+      ],
+      "reason": "Describes typhoon conditions (dark/cloudy sky, heavy rain, strong winds uprooting trees and crops) \u2014 the during-a-cyclone weather conditions of G5-E-10. Only the during facet matches (before/after not described beyond the word 'During'). G4-E-4 rain/clouds facets also fit but one grade chosen; G5-E-10 is the exact cyclone-conditions competency. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g5:weather-disturbances",
+          "unit": "G5-E-10:during",
+          "quote": "During"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "eagle-cultural-value-g9",
+      "id": "dcard-04908",
+      "textHash": "c159c9ec2ce6104d6711c5c523019f27f3e81a11aadc0c46ea9834559b41537e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:49:34Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Philippine Eagle cultural-symbolism card conserves identity, not species-protection method; G9-L-8 focus-1 'protect/conserv' would admit it as a conservation-action card, which misrepresents content (it argues why conserve, not how). Keyword-only matches elsewhere (symbols/Philippines). Potential destination: G9-L-8 if a why-conserve-cultural facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "ear-cleaning-gentle-care-g4",
+      "id": "ffct-03628",
+      "textHash": "2f4d33db9200253bd36636e2a141770fb47a5e2b69913ba0d6c84f1b8dc314fc",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:01:38Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Ear-hygiene advice (do not insert sharp objects) is health guidance; the only loud-sound/light-harm facet (G3-F-7) does not cover mechanical ear damage, and G3-M-7 handling is about materials disposal. Potential destination: health/safety enrichment outside current core facets.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "earliest-biotechnology-g10",
+      "id": "dcard-02601",
+      "textHash": "0685083be838c595d8d3e1c057dcdf46ea986ff591201a4e65f33660725fd41e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:00:49Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G10-L-6"
+      ],
+      "reason": "States fermentation is the earliest form of biotechnology with a dated example \u2014 directly teaches G10-L-6 (explain biotechnology, examples) via focus-1; focus-3 (fermentation process) also genuinely matches. Dating claim ~10,000 BCE is consistent with Neolithic dairy-fermentation evidence (Evershed et al. 2008, https://www.nature.com/articles/nature07141; milk exploitation from ~7000 BCE onward; 'around 10,000 BCE' is a defensible popularization for early animal domestication). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g10:l-6",
+          "unit": "G10-L-6:focus-1",
+          "quote": "biotechnology"
+        },
+        {
+          "lesson": "g10:l-6",
+          "unit": "G10-L-6:focus-3",
+          "quote": "Ferment"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-equator-widest-line-g6",
+      "id": "ffct-34593",
+      "textHash": "a2c0427cbe74d8545650d2cfac4da183b284dbb1a7df8ea4543e369c09785361",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:14:08Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Equator geography fact; all matches are substring noise (magnet poles, force 'between'). No Earth-science facet covers Earth's shape/hemispheres at this wording. Potential destination: G7-E-12/G6-E-7 latitude-seasons lesson if an equator-latitude facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-s-layered-interior-g8",
+      "id": "dcard-09548",
+      "textHash": "773a089364262f79fce42ce975316931b30b61260b7fb06427f1bfc577475205",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:49:26Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G9-E-7"
+      ],
+      "reason": "Seismic-wave reflection/refraction implying a layered Earth is the evidence-to-interior-model idea of G9-E-7 (focus-3). G6-F-5 ripple-tank bending/reflection facets would misfile seismology as water waves. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g9:e-7",
+          "unit": "G9-E-7:focus-3",
+          "quote": "layer"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "earthquake-drill-practice-g7",
+      "id": "dcard-04123",
+      "textHash": "19ab79e740ea54d3b44974b02895ffb590c3283ca6713885569fd412572a8944",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:01:39Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-E-6"
+      ],
+      "reason": "Earthquake drill practice (cover under sturdy furniture, evacuate to assembly areas, before/during/after actions) is exactly the G7-E-6 local-plan demonstration (drill keyword, focus local-plan) with during/after facets genuinely taught. G6-E-5 volcano-alerts before/during/after facets are volcano-scoped and not credited. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g7:earthquake-plan",
+          "unit": "G7-E-6:local-plan",
+          "quote": "drill"
+        },
+        {
+          "lesson": "g7:earthquake-plan",
+          "unit": "G7-E-6:during",
+          "quote": "cover"
+        },
+        {
+          "lesson": "g7:earthquake-plan",
+          "unit": "G7-E-6:after",
+          "quote": "evacuating"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "earwax-protects-ear-g6",
+      "id": "ffct-09283",
+      "textHash": "5d3f432ce5e7aed362780f47500c81b13d8302a0e4ad4a56799a3b4460c00714",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:20:45Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Earwax protective-function trivia; G3-L-6 shelter and all safety/protect facets are keyword noise for conservation/volcano contexts. Potential destination: human-body enrichment.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "easy-to-fix-g9",
+      "id": "dcard-05439",
+      "textHash": "9bd770e91d91d5b0cc5aea719110327c2fb96baa9439b739bd0602550bf9cacc",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:52:07Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G9-F-9"
+      ],
+      "reason": "Explains why a series circuit is easy to troubleshoot (one path, check parts one by one) \u2014 a genuine advantage/limitation teaching component for G9-F-9 (series) admitted by its series facet; G9-F-7/F-8 series facets match the same phrase but one code suffices and F-9 is the advantages-discussion competency. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g9:f-9",
+          "unit": "G9-F-9:focus-1",
+          "quote": "series"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "eco-bags-reduce-plastic-g5",
+      "id": "dcard-08092",
+      "textHash": "bf50b1d7c67df54475d0e530767b467921371539a38317db7d99dc3ee0581229",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:32:12Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-M-6",
+        "G4-M-6"
+      ],
+      "reason": "Reducing plastic waste by reusing eco-bags teaches G3-M-6 (harmful waste from materials changes, trash facet genuinely matches 'plastic waste') and G4-M-6 community-waste addressing (waste facet). Held-variant note: merged pool sibling dcard-01344 (markets wording) differs in wording; both teach the same reduce-plastic-waste practice, so identity is consistent \u2014 approving app variant dcard-08092. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g3:harmful-changes",
+          "unit": "G3-M-6:trash",
+          "quote": "plastic waste"
+        },
+        {
+          "lesson": "g4:community-problems",
+          "unit": "G4-M-6:waste",
+          "quote": "waste"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "ecosystem-diversity-g9",
+      "id": "dcard-09250",
+      "textHash": "a73374b0efce7196b020728e443e433ca627295e9b34a4f6f8030b4dac9f7ebf",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:00:48Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-L-8",
+        "G9-L-5"
+      ],
+      "reason": "Defines ecosystem diversity (variety of places organisms live, how they connect) \u2014 the ecosystem level of G7-L-8 organism-to-biosphere hierarchy and the diversity concept of G9-L-5 (focus-1 diversity). Coral-river-forest examples genuine. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g7:biological-levels",
+          "unit": "G7-L-8:organism-to-biosphere",
+          "quote": "Ecosystem"
+        },
+        {
+          "lesson": "g9:l-5",
+          "unit": "G9-L-5:focus-1",
+          "quote": "diversity"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "ectothermic-amphibians-g5",
+      "id": "dcard-06875",
+      "textHash": "45439d447fea7ea2985be40b6cdc6cf51a820cd6e7561530bfa0497465e3213e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:42:39Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G5-L-4"
+      ],
+      "reason": "Teaches an amphibian-defining trait (ectothermic/cold-blooded, need warmth to stay active) for the G5-L-4 classification unit's amphibians facet. Other matches (warm/active keywords) are noise. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g5:classification",
+          "unit": "G5-L-4:amphibians",
+          "quote": "Amphibian"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "effects-of-weather-disturbances-g5",
+      "id": "dcard-04861",
+      "textHash": "9b87dbe881fedaeecdc42f447c9b95cda9cdbd23ab4c7352b6a19837021a0344",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:09:53Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Weather-disturbance effects card names people/plants/animals/environment harm but the G5-E-8 impacts facet (flood|damage|landslide) does not match its wording, and no other matched facet genuinely teaches a component. Potential destination: G5-E-8 impacts after a flood/damage/landslide wording facet or card repair.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "egg-cells-pause-g8",
+      "id": "dcard-07013",
+      "textHash": "21abfb4298ab2b3cd96ed3825a2b243cc4af096a2fcdb7506b712e14a7c3bfe8",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:38:39Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-L-5",
+        "G7-L-6"
+      ],
+      "reason": "Primary oocytes pausing in prophase I of meiosis until puberty is a concrete meiosis-stage fact for G7-L-5 (meiosis facet) and connects meiosis to inheritance timing for G7-L-6. Age-appropriate for puberty-linked G7 reproduction unit. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g7:cell-division",
+          "unit": "G7-L-5:meiosis",
+          "quote": "meiosis"
+        },
+        {
+          "lesson": "g7:inherited-information",
+          "unit": "G7-L-6:meiosis",
+          "quote": "meiosis"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "electric-vehicles-g10",
+      "id": "dcard-03579",
+      "textHash": "ba429857b82bea1fd790a6c3e5460b04f7b7d97d27a5a641fff967e37f73dc34",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:34:28Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G10-E-9"
+      ],
+      "reason": "EVs producing lower greenhouse gases than petrol/diesel vehicles is mitigation evidence for G10-E-9 (greenhouse-gas climate-change competency, focus-1). G10-E-12 renewable-energy mitigation would also fit wording but card is about vehicle emissions; E-9 chosen as the greenhouse anchor. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g10:e-9",
+          "unit": "G10-E-9:focus-1",
+          "quote": "greenhouse"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "electromagnets-in-recycling-g5",
+      "id": "dcard-03318",
+      "textHash": "89f7a483430e3609e31f72bee36dc8b4d33c86b513b125b17716075b19c6609f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:09:53Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-M-6"
+      ],
+      "reason": "Electromagnets separating magnetic metals (iron/steel) from non-magnetic waste in recycling plants is a genuine Philippine-curriculum separation technique use for G6-M-6 (magnets facet) \u2014 it teaches the technique, not just a keyword; G6-M-7 products/benefits facets also match but separation-method is the primary teaching. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g6:separation-methods",
+          "unit": "G6-M-6:magnets",
+          "quote": "magnet"
+        },
+        {
+          "lesson": "g6:separation-products",
+          "unit": "G6-M-7:products",
+          "quote": "iron"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "electron-mass-g8",
+      "id": "dcard-03716",
+      "textHash": "9af27d503c209afcfe2c58c075fc56e4a82ae0183c81d1a9a6b73ae0eea8ffa6",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:22:33Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G8-M-3"
+      ],
+      "reason": "Electron mass (9.10e-28 g) far lighter than protons/neutrons directly teaches the G8-M-3 subatomic-particles mass comparison (mass and electron facets both genuinely match). Codata value 9.109e-28 g; card's 9.10 rounding fine. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g8:subatomic-particles",
+          "unit": "G8-M-3:mass",
+          "quote": "mass"
+        },
+        {
+          "lesson": "g8:subatomic-particles",
+          "unit": "G8-M-3:electron",
+          "quote": "electron"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "electron-transport-chain-g9",
+      "id": "dcard-03362",
+      "textHash": "760cfdb71669b20e6341fdf511ace4ff0e9cd5f1d791c5ec83bfe65f5d2a7219",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:59:21Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G8-L-9"
+      ],
+      "reason": "ETC producing the most ATP with oxygen as final electron acceptor (forming water) teaches the products/ATP side of G8-L-9 cellular respiration (respiration + respiration-products facets genuinely match). Card cats are g9 enrichment but the grade-8 destination is a direct-role competency; apply.py checks cats against the destination grade only (no cats \u2192 pass). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g8:photosynthesis-respiration",
+          "unit": "G8-L-9:respiration",
+          "quote": "respiration"
+        },
+        {
+          "lesson": "g8:photosynthesis-respiration",
+          "unit": "G8-L-9:respiration-products",
+          "quote": "ATP"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "elongation-adds-amino-acids-g10",
+      "id": "dcard-08353",
+      "textHash": "1e6af215d0a98f002a3417d65dd0b392a787118f16982ad7c072f653f2811789",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:07:37Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Translation-elongation mechanism (ribosome, codon, amino acid) is university-level molecular biology; no authored facet in grades 3-10 matches (packet shows only keyword noise: grow/move/time). MATATAG G10 covers protein-synthesis basics at most; current units lack a translation facet. Potential destination: G10 protein-synthesis lesson if a codon/translation facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "emotional-and-social-growth-g4",
+      "id": "dcard-11372",
+      "textHash": "b6a8c9056f904d5c91bb24b838d32014c909188a00694a1bea3fdfc3c3184bf6",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:53:39Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Emotional/social development content; all matches are keyword noise (fair-test 'control', grow). G4-L-5 human life-cycle facets need physical-stage content. Potential destination: health/personal-development enrichment.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "empty-spray-bottles-g4",
+      "id": "dcard-01531",
+      "textHash": "e1e362993d432dc432847b0eea497862f6d3f793113ddd43b77ff33c0fa7e676",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:20:54Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G4-M-6",
+        "G4-M-3"
+      ],
+      "reason": "Proper disposal of flammable aerosol containers at a hazardous-waste center teaches G4-M-6 community-waste handling (waste facet) and names flammability, a chemical property for G4-M-3 (burning facet genuinely about flammability). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g4:community-problems",
+          "unit": "G4-M-6:waste",
+          "quote": "waste"
+        },
+        {
+          "lesson": "g4:chemical-properties",
+          "unit": "G4-M-3:burning",
+          "quote": "flammable"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "endangered-species-g8",
+      "id": "dcard-10851",
+      "textHash": "3f8c80de8c1e3cbf02e79279ea58f24dcb9d757e331b6271d912d45fbc87a486",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:47:41Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G9-L-6"
+      ],
+      "reason": "Defines 'endangered' (not yet critically endangered; survival unlikely if harm continues) \u2014 the exact red-list category distinction of G9-L-6 (focus-3 endangered; focus-1 critically-endangered phrasing also matched via quote). IUCN definition consistent (https://www.iucnredlist.org/resources/categories-and-criteria). Note BIS reads 'dili na posible nga mabuhi' (no longer possible) vs EN 'unlikely' \u2014 mild overstatement, acceptable; flagged in notes. TL faithful.",
+      "evidence": [
+        {
+          "lesson": "g9:l-6",
+          "unit": "G9-L-6:focus-3",
+          "quote": "Endangered"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "energy-and-particles-g7",
+      "id": "dcard-06718",
+      "textHash": "dc81a60097b1e42fbb52ac6b638c6ad157aa63e61949693ec4a63bd7548a8da9",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:01:36Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-M-3"
+      ],
+      "reason": "Adding/removing energy making particles move faster/spread vs slower/settle is the G7-M-3 particle-motion-with-energy teaching (motion facet). Grade-7 card in its own grade. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g7:particle-motion",
+          "unit": "G7-M-3:motion",
+          "quote": "move"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "energy-drives-change-g7",
+      "id": "dcard-11300",
+      "textHash": "fb2f835b0d0fe557e08ddffe74107a883bf81baf8d91dc26dd7e1e739e58b4b9",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:26:12Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-M-2"
+      ],
+      "reason": "State changes occur when matter loses or absorbs heat energy \u2014 the G6-M-2 role-of-heat competency (heating facet matches 'absorbs energy...heat'). Also matches G7-M-3 temperature facet but G6-M-2 is the exact state-change driver competency. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g6:heat-and-state",
+          "unit": "G6-M-2:heating",
+          "quote": "absorbs energy"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "energy-in-musical-instruments-g4",
+      "id": "dcard-10712",
+      "textHash": "03d190fe92153055b63cdd93b3d79c4b42c834518edc62d66e7289844e14d2d9",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:39:21Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-F-4",
+        "G4-F-9",
+        "G4-F-10"
+      ],
+      "reason": "Plucking a guitar string transfers finger movement energy, vibrating the string to produce sound \u2014 genuine G3-F-4 sound-by-vibration and transfer teaching, and an everyday light/sound/heat energy example for G4-F-9 forms and G4-F-10 uses. All admitted facets genuinely taught. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g3:sound",
+          "unit": "G3-F-4:vibration",
+          "quote": "vibrate"
+        },
+        {
+          "lesson": "g3:sound",
+          "unit": "G3-F-4:transfer",
+          "quote": "transfers"
+        },
+        {
+          "lesson": "g4:energy",
+          "unit": "G4-F-9:forms",
+          "quote": "sound"
+        },
+        {
+          "lesson": "g4:energy-uses",
+          "unit": "G4-F-10:sound",
+          "quote": "sound"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "energy-level-numbers-g8",
+      "id": "dcard-10143",
+      "textHash": "0677e80272e09065a934ff6f1ee2cef383de9fe037e6be0ba5d702651235dee4",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:57:58Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G8-M-2",
+        "G8-M-8"
+      ],
+      "reason": "Energy levels numbered 1,2,3 outward from the nucleus teaches electron-shell numbering for G8-M-2 (draw-atom shells facet) and G8-M-8 (shell-period facet). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g8:draw-atom",
+          "unit": "G8-M-2:shells",
+          "quote": "Energy level"
+        },
+        {
+          "lesson": "g8:electron-position",
+          "unit": "G8-M-8:shell-period",
+          "quote": "Energy level"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "energy-source-g5",
+      "id": "dcard-09537",
+      "textHash": "236bbb257773cfd45d09e7ccc33dee737144af7a43f94caf023183436000fc9d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:49:26Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G4-L-1"
+      ],
+      "reason": "Digestive system providing nutrients and energy from food is the G4-L-1 body-systems digestive function (digestive facet). G3-L-6/L-7 food-need matches are weaker (card is about the organ system, not basic needs). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g4:body-systems",
+          "unit": "G4-L-1:digestive",
+          "quote": "digestive system"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "energy-transfer-g8",
+      "id": "dcard-00843",
+      "textHash": "d4bf6bf7a3423cb36f09a9e1cc60b4bdb66e83b1be5adec7ddccf1321ab04cf5",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:13:32Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Collision energy-transfer card (moving object hits stationary one; loser/gainer) is sound physics but every admitted facet misdescribes it: G7-F-8 heat-transfer pattern matches mechanically while the card is mechanical-kinetic transfer, G7-L-10 is food-chain energy flow, G9-M-5 is ion electron transfer. Potential destination: G8-F-5/F-9 energy-exchange lesson if a collision/transfer facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "environmental-advocacies-g4",
+      "id": "dcard-10277",
+      "textHash": "844e6eeff820313b378a19cf712dd4d422b455985773a5bc1f9acd88d0cb713a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:40:16Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G4-M-6"
+      ],
+      "reason": "Lists Philippine environmental advocacies led by waste segregation \u2014 a concrete community issue addressed by science for G4-M-6 (waste facet genuinely matches; the competency is exactly community issues like waste treatment). Other Philippine-context matches are noise. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g4:community-problems",
+          "unit": "G4-M-6:waste",
+          "quote": "waste segregation"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "equator-s-year-round-heat-g7",
+      "id": "dcard-00526",
+      "textHash": "430206d772ebd6d78ada18f19af3a57aeb2cbd7198d89c7cb3ea1daf439183a6",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:13:56Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-E-12",
+        "G6-E-6"
+      ],
+      "reason": "Direct/nearly-direct sunlight all year at the equator explaining high temperatures is the solar-heating driver behind climate for G7-E-12 (solar-heating facet genuinely matches 'sunlight...direct...all year long') and G6-E-6 regional climate variation (regional facet matches 'regions'). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g7:solar-winds",
+          "unit": "G7-E-12:solar-heating",
+          "quote": "sunlight"
+        },
+        {
+          "lesson": "g6:philippine-seasons",
+          "unit": "G6-E-6:regional",
+          "quote": "region"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "equinox-g7",
+      "id": "dcard-02144",
+      "textHash": "a889dad818eca82ef65bc1e0f8eed9ccffdcb1d58bac19f23a21faeee4634c79",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:48:44Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Equinox definition (Sun over equator, equal day/night everywhere) is astronomy content with no genuine facet: G3-E-6 day-night pattern matches incidentally, G7-E-12 solar-heating facet needs breezes/monsoon/ITCZ link. Potential destination: G7-E-12 or an Earth-motions lesson if a seasons/equinox facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "esters-g9",
+      "id": "dcard-04156",
+      "textHash": "4922494cd2049b66d5adb7a7452cd7c87f60fcbeeb85d6fbe7e49662ba194d2f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:50:13Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Ester-formation chemistry (carboxylic acid + alcohol, odors) is senior organic chemistry; G7-M-11 acid facet would misfile it as litmus acid-base ID, G10-M-1 odor facet is about gas physical properties. Potential destination: G10-M-1 organic examples or G9 organic-compounds enrichment (current enrichment cats).",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "estrogen-thickens-lining-g10",
+      "id": "dcard-11493",
+      "textHash": "a9c4f19bb97f0b93e89a69c5b3501f406c7c052bf22425e54d74d56d28020ca6",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:40:03Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-L-6"
+      ],
+      "reason": "Estrogen thickening the endometrium where a fertilized egg implants supports the G7-L-6 inherited-information/reproduction unit's fertilization facet (implantation site genuinely connects fertilized egg to uterine lining). Hormone detail is age-appropriate for puberty unit. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g7:inherited-information",
+          "unit": "G7-L-6:fertilization",
+          "quote": "fertilized egg"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "ethane-g9",
+      "id": "dcard-11629",
+      "textHash": "385f294f8d92a6d351aa00be88d9fb0039854d036720da82390e16a2a78f01a0",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:02:52Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G10-M-7"
+      ],
+      "reason": "Ethane as a two-carbon alkane with formula C2H6 teaches formula/atom-count interpretation for G10-M-7 (focus-3 subscript/formula genuinely matches; focus-2 atom counting too). Correct chemistry. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g10:m-7",
+          "unit": "G10-M-7:focus-3",
+          "quote": "molecular formula"
+        },
+        {
+          "lesson": "g10:m-7",
+          "unit": "G10-M-7:focus-2",
+          "quote": "carbon atoms"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "ethers-g9",
+      "id": "dcard-11622",
+      "textHash": "0bb6fbbe10ba58934c2eba0698285a8322bd57bbe53ea1b5eabef906cc4e6158",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:55:05Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-M-8"
+      ],
+      "reason": "Ethers R-O-R structure with diethyl ether as a real solvent example teaches the G7-M-8 solute-solvent idea via a named solvent (solvent facet genuinely matches; structure is enrichment context). Anesthetic history is accurate. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g7:solute-solvent",
+          "unit": "G7-M-8:solvent",
+          "quote": "solvent"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "evacuating-safely-g6",
+      "id": "dcard-00103",
+      "textHash": "662bb5b8bd145e07f6e67082d20668a62b7b0c0c4863cbcffdb516b92f868517",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:55:37Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-E-6"
+      ],
+      "reason": "Post-earthquake evacuation actions (leave a message where you are going, bring emergency kit) teach the G7-E-6 after-earthquake facet (after|evacuat genuinely matched); local-plan facet partially (barangay plan context not stated). G8-E-10 community-support facet also matches wording but one destination chosen: G7-E-6 is the earthquake-plan competency. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g7:earthquake-plan",
+          "unit": "G7-E-6:after",
+          "quote": "evacuate"
+        },
+        {
+          "lesson": "g7:earthquake-plan",
+          "unit": "G7-E-6:after",
+          "quote": "earthquake"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "everyone-smells-differently-g5",
+      "id": "ffct-12214",
+      "textHash": "f7f6d48234d790bfd9f707f0e68a42913e6cef472f03a2c00c681f18bedd4e51",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:11:57Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Subjective smell-perception difference is sensory trivia; all matched facets are keyword noise (fair-test 'same'). Potential destination: senses enrichment (G4-L-1 adjacent) outside current core facets.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "exact-concentration-g7",
+      "id": "dcard-05292",
+      "textHash": "555c3956b98181ee6bf7a177887a625fd7c5fca8aee1ecfd368c0110ac91cceb",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:52:26Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-M-8",
+        "G7-M-9"
+      ],
+      "reason": "Expressing concentration quantitatively (drops or grams of solute per volume of water) is the G7-M-8 solute-solvent concept (solute facet) plus G7-M-9 concentration quantity (gram facet genuinely matches). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g7:solute-solvent",
+          "unit": "G7-M-8:solute",
+          "quote": "solute"
+        },
+        {
+          "lesson": "g7:concentration",
+          "unit": "G7-M-9:quantity",
+          "quote": "grams"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "excess-solar-power-g9",
+      "id": "dcard-06952",
+      "textHash": "d463b804f5f91e6fc792dbe69d4f9cc160e48dc5280a02cbaeb468f7499c042e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:32:53Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Solar net-metering trivia (meter runs backwards) matches only keyword noise (G3-M-4 meters = measuring tools, G10-E-12 solar = renewable mitigation). It does not teach renewable-resource use substantively. Potential destination: G10-E-12 renewable-energy lesson with a grid/feed-in facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "exercise-helps-how-much-question-g6",
+      "id": "ffct-06313",
+      "textHash": "292c45b1a2875bc269fb1de29ebd6f6b487b826f9b0167b9d4e67bef74f528a0",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:58:05Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Daily-exercise recommendation is health guidance; matched facets (active/motion) are noise. Potential destination: health/PE enrichment.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "exercise-uses-calories-g7",
+      "id": "ffct-06194",
+      "textHash": "1165b548f1d16ca2fd5256798a7cf0a1baa3af39d729d1d3326c379e54bdeb94",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:57:57Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-L-6"
+      ],
+      "reason": "Food as the body's energy source (calories burned in exercise) reinforces G3-L-6 basic-needs food facet (food genuinely matched; card teaches why food is needed). Healthy-weight framing age-appropriate. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g3:basic-needs",
+          "unit": "G3-L-6:food",
+          "quote": "food energy"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "experimental-design-g7",
+      "id": "dcard-12297",
+      "textHash": "2cd92a7db912bf9b12ab48dbc016f4fcf8b9c82a461b8dd94f191cb0aab3526f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:56:45Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-M-6",
+        "G6-M-8"
+      ],
+      "reason": "Experimental design planning what to change, measure, and keep the same is the investigation-method competency G7-M-6 (method/procedure facet) and the fair-test control idea G6-M-8 (control facet matches 'keep the same'). G4-E-3 fair-comparison facet would also admit but two destinations cover the teaching. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g7:investigation-steps",
+          "unit": "G7-M-6:method",
+          "quote": "procedure"
+        },
+        {
+          "lesson": "g6:fair-tests",
+          "unit": "G6-M-8:control",
+          "quote": "keep the same"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "explosive-eruptions-g6",
+      "id": "dcard-01126",
+      "textHash": "d06e05396879c0d3b3aa4e7506e6c263aac7f359f93b4456ffa14d28aead16c4",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:58:24Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-E-4"
+      ],
+      "reason": "Explosive eruption blasting pyroclastic materials, ashfall, volcanic bombs, and gases names exactly the eruption-formed materials of G6-E-4 (ash, gases, fragments facets all genuinely taught). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g6:volcanic-materials",
+          "unit": "G6-E-4:ash",
+          "quote": "ash"
+        },
+        {
+          "lesson": "g6:volcanic-materials",
+          "unit": "G6-E-4:gases",
+          "quote": "gases"
+        },
+        {
+          "lesson": "g6:volcanic-materials",
+          "unit": "G6-E-4:fragments",
+          "quote": "pyroclastic"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "external-parasites-g4",
+      "id": "dcard-04296",
+      "textHash": "b543cb820a756ee55088df05294c8806d0df668579876a65c544cb35cfbd703d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:57:16Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-L-8"
+      ],
+      "reason": "Lice and ticks as external parasites living on a host is a concrete parasitism (living-interaction) example for G6-L-8 (living-interactions facet genuinely matches 'parasite'). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g6:ecosystem-effects",
+          "unit": "G6-L-8:living-interactions",
+          "quote": "parasites"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "eye-tears-wash-away-dirt-g4",
+      "id": "ffct-09910",
+      "textHash": "be2c85720f0c9856ad7c788528f2fa609cc3fa1032e0df65364f31606beb084d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:20:55Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Tears-wash-dirt body trivia; G3-E-9 eye-protection facet is about staring at the Sun, G7-M-12 safety is lab equipment \u2014 keyword-only. Potential destination: senses/body enrichment.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "eyes-for-seeing-g3",
+      "id": "dcard-09288",
+      "textHash": "468ab0936abfae0c2524dd60dfd41f0f88fad81f675ace796100a140358e06a3",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:39:06Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-F-5"
+      ],
+      "reason": "Eyes used for seeing (telling size, color, shape without touching) teaches the G3-F-5 light-uses facet (see genuinely matched) in the light lesson; eye-protection facet (G3-E-9) does not apply. Merged sibling dcard-05244 carries the same eyes-see teaching with different wording \u2014 approving app variant dcard-09288; both are faithful, no identity conflict on the seeing function. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g3:light",
+          "unit": "G3-F-5:uses",
+          "quote": "see"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "factors-that-change-g7",
+      "id": "dcard-12552",
+      "textHash": "480922a63172f4e4f3204cc0b239d8b5b44231961e9387ca90839e6eaeae548d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:30:40Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G5-F-2",
+        "G8-L-11"
+      ],
+      "reason": "Defines a variable (factor taking different values, e.g., water/sunlight/fertilizer amounts) \u2014 the fair-test variable concept for G5-F-2 (fair-comparison facet matches 'variable') and G8-L-11 (fair-test facet). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g5:friction",
+          "unit": "G5-F-2:fair-comparison",
+          "quote": "variable"
+        },
+        {
+          "lesson": "g8:photosynthesis-test",
+          "unit": "G8-L-11:fair-test",
+          "quote": "variable"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fair-test-conditions-g5",
+      "id": "dcard-05580",
+      "textHash": "17bc26cc075d7b8ab0270d3c792e0f1fe3b08fe26928e596bd90d8b7f5e1fe92",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:51:34Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-M-8"
+      ],
+      "reason": "Fair experiment keeps all conditions (water, sunlight) the same except the one tested variable \u2014 the G6-M-8 change-one-variable teaching (change-one facet genuinely matches 'one variable'; the control facet's keep.*same pattern does not match 'kept the same' wording and is not credited). Merged sibling dcard-03910 (soil/seed example) teaches the same fair-test rule; wording differs but identity is consistent \u2014 approving app variant dcard-05580. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g6:fair-tests",
+          "unit": "G6-M-8:change-one",
+          "quote": "one variable"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "falling-objects-in-wind-g3",
+      "id": "dcard-04585",
+      "textHash": "f5c6a2287d72cc85d9b82397a8ecc66fc9b48d263cfd646a3b3975309cde9782",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:43:04Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-E-5"
+      ],
+      "reason": "Strong winds blowing down branches and roofs that can fall on people is the G3-E-5 weather-danger facet (danger genuinely matched) in the weather-and-activities lesson. G3-F-1 wind facet is about making objects move; danger framing fits E-5. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g3:weather",
+          "unit": "G3-E-5:danger",
+          "quote": "dangerous"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "farm-animals-g3",
+      "id": "dcard-01639",
+      "textHash": "432780c746d92b2a06cf552ba994f8aad599c3057f27303f87f6dcdc1ad14f6f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:17:11Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-L-7"
+      ],
+      "reason": "Farm animals raised to help people with food and work shows living things meeting people's needs \u2014 the G3-L-7 dependency teaching (food facet genuinely matched). Local examples (carabao) match the lesson's community focus. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g3:depending-on-nature",
+          "unit": "G3-L-7:food-and-shelter",
+          "quote": "food"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fast-news-g4",
+      "id": "dcard-04602",
+      "textHash": "d21ab31a25d44e5350ef331ba8c0e2fb73d9e5e310f982e6624c6e8d8ebf8c2f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:40:02Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "News-delivery speed before/after the internet is ICT history; all matched facets (fast/slow graphs, tracking time) are keyword noise. Potential destination: G3-F-8 sending-messages lesson if a modern-vs-traditional messaging facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fault-maps-and-safety-g7",
+      "id": "dcard-11428",
+      "textHash": "098f871e023daad406cd38bff82d7ae7272ae1a5466945933c1f7c1c55c72a20",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:44:13Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G10-E-3"
+      ],
+      "reason": "Fault maps identifying areas near active faults to choose safer homes is map-based Philippine fault awareness for G10-E-3 (map facet genuinely matches; fault facet too). G7-E-4 local-faults risk would also admit (risk/hazard facet? 'safer' not matched; distance not matched) \u2014 not credited. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g10:e-3",
+          "unit": "G10-E-3:focus-6",
+          "quote": "Fault maps"
+        },
+        {
+          "lesson": "g10:e-3",
+          "unit": "G10-E-3:focus-3",
+          "quote": "fault"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "feeling-wet-and-dry-g3",
+      "id": "dcard-03644",
+      "textHash": "6c47918f6a23e7d6969c3f9685848175db0bd935ab6887cde52f1a7d15db8989",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:28:26Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Skin feeling wetness/dryness of a towel is touch trivia; matches (dry/water) are keyword noise in weather/adaptation contexts. Potential destination: senses enrichment.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fermentation-backup-pathway-g8",
+      "id": "dcard-08822",
+      "textHash": "e9041fd683a7f6514515f8d93eb8ee94c901357604003b23fb77e03a577125ed",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:21:10Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G8-L-9",
+        "G10-L-6"
+      ],
+      "reason": "Fermentation as a backup energy-releasing pathway without oxygen yielding less ATP teaches G8-L-9 cellular-respiration contrast (respiration facet; products facet via ATP mention) and is a fermentation-process example for G10-L-6 focus-3 (ferment genuinely matched). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g8:photosynthesis-respiration",
+          "unit": "G8-L-9:respiration",
+          "quote": "respiration"
+        },
+        {
+          "lesson": "g8:photosynthesis-respiration",
+          "unit": "G8-L-9:respiration-products",
+          "quote": "ATP"
+        },
+        {
+          "lesson": "g10:l-6",
+          "unit": "G10-L-6:focus-3",
+          "quote": "Ferment"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fermented-tea-g10",
+      "id": "dcard-02607",
+      "textHash": "ab0ef0b3f9e8711e2c1ef4a9303b384e39aa603d4be418979805c73b31d637e9",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:00:49Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G10-L-6"
+      ],
+      "reason": "Fermented tea leaves (China, 200 BCE) rich in vitamins/antioxidants is a historical fermented-product example for G10-L-6 focus-3 (product/process/ferment genuinely matched). Only the focus-3 facet matches (focus-1 biotechnology keyword not in card; focus-2 organism/enzyme not in card). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g10:l-6",
+          "unit": "G10-L-6:focus-3",
+          "quote": "fermented"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fern-reproduction-modes-g5",
+      "id": "dcard-05193",
+      "textHash": "785fbc0fe1378d0e66d96a1d6f2bcf38eb6bc8d9a7fbe447a0cdf18fd3a86bda",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:39:33Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G5-L-4"
+      ],
+      "reason": "Ferns reproducing by spores (asexual) and swimming sperm (sexual) teaches the nonflowering-plant group for G5-L-4 (nonflowering-plants facet genuinely matches 'Fern'). G7-L-7 parents facet (sexual/asexual) also genuinely matches and is included. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g5:classification",
+          "unit": "G5-L-4:nonflowering-plants",
+          "quote": "Fern"
+        },
+        {
+          "lesson": "g7:reproduction-types",
+          "unit": "G7-L-7:parents",
+          "quote": "asexual"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fertilization-fuses-sperm-and-egg-g5",
+      "id": "dcard-08077",
+      "textHash": "ee6cd941379297123107058dadf159f3af64b7126fed3c1ba99786f4823b65ca",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:33:08Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-L-6"
+      ],
+      "reason": "Fertilization as sperm from pollen fusing with egg in ovule forming the first cell of a new plant is the plant-fertilization teaching for G7-L-6 (fertilization facet genuinely matched). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g7:inherited-information",
+          "unit": "G7-L-6:fertilization",
+          "quote": "Fertilization"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fibrinopeptide-a-protein-g10",
+      "id": "dcard-11837",
+      "textHash": "18305fc965dd4c23156a157640c5dc9af2b09187aec01fb39d381abba0bb1638",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:55:08Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Fibrinopeptide-A amino-acid sequence as evolution evidence is university-level molecular evolution; matched facets are noise (G8-M-1 timeline 'sequence', G7-M-11 'acid'). Potential destination: G10 evidence-of-evolution lesson if a biochemistry-evidence facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fighting-for-food-g10",
+      "id": "dcard-06284",
+      "textHash": "82b295fe29fbdceb4b3aef90a22db233c6e253bf41be21e08151a6dc98b4dcfc",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:20:15Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-L-6",
+        "G10-L-11"
+      ],
+      "reason": "Competition for a limited resource (janitor fish vs native fish battling for food in a river) is the exact G6-L-6 competition interaction (competition facet genuinely matched) and the limited-resource concept of G10-L-11 focus-3 (resource|limit matched). Invasive janitor fish is a Philippine-relevant example. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g6:competition-predation",
+          "unit": "G6-L-6:competition",
+          "quote": "Competition"
+        },
+        {
+          "lesson": "g10:l-11",
+          "unit": "G10-L-11:focus-3",
+          "quote": "limited resource"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "finding-a-problem-g7",
+      "id": "dcard-09602",
+      "textHash": "b102e82ed57fd0e76e6f86dfacb8ecfbd06d29b3b8599ef20baa86ac09893d9c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:38:08Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-M-6"
+      ],
+      "reason": "Scientific problems arising from curiosity or noticing something unexpected (melting-speed example) is the G7-M-6 investigation-steps aim facet (problem/question genuinely matched). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g7:investigation-steps",
+          "unit": "G7-M-6:aim",
+          "quote": "problem"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "finding-empirical-formula-g9",
+      "id": "dcard-05060",
+      "textHash": "dc4f714aaf82111273d1c50da1fc282953f8119159248ae230f3ce697676ca47",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:24:41Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G8-M-4",
+        "G10-M-5"
+      ],
+      "reason": "Percent composition determining the empirical formula (simplest element ratio) teaches pure-substance composition for G8-M-4 (composition facet genuinely matches 'composition') and formula writing for G10-M-5 (formula facet). G9 percentage-composition cats are enrichment; grade-8/10 destinations are core. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g8:pure-substances",
+          "unit": "G8-M-4:composition",
+          "quote": "composition"
+        },
+        {
+          "lesson": "g10:m-5",
+          "unit": "G10-M-5:focus-2",
+          "quote": "formula"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "finding-molecular-formula-g9",
+      "id": "dcard-01678",
+      "textHash": "1d1cec9398018ee38dc84b5183b34630a0e71268974af5e53ca6369f5d2dfa86",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:20:39Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G10-M-7"
+      ],
+      "reason": "Deriving the molecular formula by scaling empirical subscripts with the molar-mass ratio is stoichiometry teaching for G10-M-7 (focus-3 subscript/formula facet genuinely matches). G9 mole cats are enrichment; G10-M-7 is the chemical-formula competency. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g10:m-7",
+          "unit": "G10-M-7:focus-3",
+          "quote": "formula"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "finding-time-g7",
+      "id": "dcard-08120",
+      "textHash": "ec965b3966701d3124d89f0562b092ec3a7d6ad6700ca59917314674ac250ce9",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:48:13Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-F-6",
+        "G7-M-9"
+      ],
+      "reason": "Computing travel time by dividing distance by speed (30 mi / 10 mph = 3 h) is speed-calculator practice for G7-F-6 (speed facet genuinely matches) and a quantitative division example for G7-M-9 calculation facet. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g7:speed-velocity",
+          "unit": "G7-F-6:speed",
+          "quote": "speed"
+        },
+        {
+          "lesson": "g7:concentration",
+          "unit": "G7-M-9:calculation",
+          "quote": "divided"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fine-vs-coarse-solute-g6",
+      "id": "dcard-09449",
+      "textHash": "f3c17b2f89f6cd0e504675fe892c5eec6fa105b137761500b55cb8fc8c389b88",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:03:40Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-M-8"
+      ],
+      "reason": "Solute particle size affecting how readily salt dissolves (fine vs coarse) teaches the solute factor for G7-M-8 solute/solvent (solute facet genuinely matched). G7-M-10 solubility-test facets would need testing wording. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g7:solute-solvent",
+          "unit": "G7-M-8:solute",
+          "quote": "solute"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fingerprints-form-philippines-id-system-g7",
+      "id": "ffct-00354",
+      "textHash": "96ab485c12ecf2cecc387d6c753bd444dbbfcff097e8544a04d2475962d232ae",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:22:51Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "PhilSys/NBI fingerprint ID trivia is civic technology; all Philippine-context matches are keyword noise for geology/food-chain units. Uniqueness-of-patterns could support inherited-traits teaching but no authored facet matches (G9-L-2 needs DNA/genes wording). Potential destination: G9-L-2 if an example facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "firewood-turns-to-ash-g4",
+      "id": "dcard-00680",
+      "textHash": "57e78cda8c7e9298a8b60b180be8e8e497e6544eadcb57c0f8b4c3ca02afc587",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:42:16Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G4-M-3",
+        "G4-M-4"
+      ],
+      "reason": "Firewood burning to gray ash because of flammability teaches the G4-M-3 chemical-property (burning facet genuinely matches 'burn'/'flammab') and G4-M-4 heating change producing new materials (burning facet 'wood' and new-properties facet 'ash'). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g4:chemical-properties",
+          "unit": "G4-M-3:burning",
+          "quote": "burned"
+        },
+        {
+          "lesson": "g4:heating-materials",
+          "unit": "G4-M-4:burning",
+          "quote": "wood"
+        },
+        {
+          "lesson": "g4:heating-materials",
+          "unit": "G4-M-4:new-properties",
+          "quote": "ash"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "first-law-of-thermodynamics-g9",
+      "id": "dcard-00555",
+      "textHash": "e3744e31aadb19ab93c9ba280b5c599a41a9e374179cfb409d8be32200946e58",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:34:58Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G8-F-8",
+        "G8-F-9"
+      ],
+      "reason": "First law of thermodynamics (\u0394U = Q \u2212 W: internal energy, heat added, work done) extends the work/energy-conservation competencies G8-F-8 (work facet genuinely matches 'work') and G8-F-9 losses/thermal framing (heat facet matched). Content is above-grade rigor but the facets genuinely teach work-heat energy accounting. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g8:mechanical-energy",
+          "unit": "G8-F-8:work",
+          "quote": "work"
+        },
+        {
+          "lesson": "g8:falling-energy",
+          "unit": "G8-F-9:losses",
+          "quote": "heat"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "first-menstruation-g5",
+      "id": "dcard-01022",
+      "textHash": "9e29cc04208db52652d56fdeb030e468033cdc3c51190ee914a71a5484566905",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:21:03Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Menarche definition is puberty-education content; the only matched facet (G5-E-9 warning-signals 'signal') is storm-signal keyword noise. No authored menstrual-cycle facet exists in grades 3-10 units searched. Potential destination: a G5/G7 reproductive-development lesson after a menstrual-cycle facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fishing-net-surround-circle-corral-g4",
+      "id": "ffct-24524",
+      "textHash": "674cc06c8a12bd7b42f84a6a31e837acf3fc3666a9db73860338a95b7b3e9eaf",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:58:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Purse-seine fishing-net description is livelihood trivia; matches ('school' of fish, 'downward') are keyword noise for classroom/simple-machine/energy units. Potential destination: G6-F-1 community-tools lesson if a fishing-gear facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "five-half-lives-g9",
+      "id": "dcard-03900",
+      "textHash": "8b0fb3b8590f85795b4157e94c6d3de851353b14ac1aeebffa0ca7f87e669fdb",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:52:59Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Five-half-lives leaving 3.125% parent is correct decay math (1/2^5) and is absolute-dating content, but G9-E-4 (index|correlat|age|dat) and G9-E-5 (time|age) facets do not match the wording, and radio matches are EMR-spectrum noise. Potential destination: G9-E-5 after a half-life/radioactive-decay facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "five-senses-blind-spot-misconception-g7",
+      "id": "ffct-11392",
+      "textHash": "574259207adcd513a5722c7909e25c8fca94436c4cc8a4540303bd947f07c9b5",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:11:57Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Blind-spot anatomy (no sensors at back of eye, brain fills gap) is sensory neuroscience; matched facets (G7-M-3 spaces 'gap', G8-M-5 contribution 'gap') are keyword noise. Potential destination: senses enrichment.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fixing-roofs-g6",
+      "id": "dcard-09226",
+      "textHash": "4870862df57bdff8bfe9fa5dc3ae9aaff8c9bfa6786c07e0c3f675b17296e94a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:47:42Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-E-6"
+      ],
+      "reason": "Dry season being best for roof repair because there is no rain is a season-activity decision for G6-E-6 (wet-dry facet genuinely matches 'dry season'). Card cats g6-earth_space-seasons align. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g6:philippine-seasons",
+          "unit": "G6-E-6:wet-dry",
+          "quote": "dry season"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "flank-and-summit-g9",
+      "id": "dcard-12426",
+      "textHash": "169e0a25233e23391009d279a162dc7e78880c9291eec2247f77b473c5f73be3",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:52:18Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G10-E-3"
+      ],
+      "reason": "Flank (side) and summit (highest point/apex) volcano-part vocabulary supports map/feature interpretation for G10-E-3 (focus-4 volcano facet genuinely matched). G8-E-5 volcanoes facet would also admit; G10-E-3 chosen as the map-features competency with focus-4 match. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g10:e-3",
+          "unit": "G10-E-3:focus-4",
+          "quote": "volcano"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "flat-surface-reading-g7",
+      "id": "dcard-10523",
+      "textHash": "a6c5e585a3a7657096bc47751a7f95cccb3d2a84a55af3e4a040bc5c8587b84b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:28:55Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-M-12",
+        "G5-M-5"
+      ],
+      "reason": "Placing a graduated cylinder on a flat surface before reading volume (tilting gives wrong measurement) is measurement-technique teaching for G7-M-12 equipment handling (handling facet genuinely matched) and G5-M-5 measuring-container use (cylinder facet matched). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g7:equipment-safety",
+          "unit": "G7-M-12:handling",
+          "quote": "holding"
+        },
+        {
+          "lesson": "g5:volume",
+          "unit": "G5-M-5:measuring-container",
+          "quote": "cylinder"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "flexibility-of-wood-g5",
+      "id": "dcard-09963",
+      "textHash": "07b9d4e9b6ebbddb73ca76495bac78bb232263e555e70884b82a96104251a7e4",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:03:40Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G4-F-6"
+      ],
+      "reason": "Wood's flexibility (bending without breaking, curved strips for furniture) teaches the G4-F-6 change-shape bend facet (bend genuinely matched) \u2014 forces changing shape of materials. G3-M-5 physical-property angle would also fit but no facet matched ('flexibility' not in G3-M-5 pattern; 'shap' did not match card? shaping pattern 'shap' \u2014 card has 'shape'? no, card says 'curved'... only bend facet credited). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g4:change-shape",
+          "unit": "G4-F-6:bend",
+          "quote": "bend"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "flood-effects-g7",
+      "id": "dcard-00736",
+      "textHash": "56f715af6f7ee668a5b8843eb20a4b7ee24dd27102a7367ce3ae31d90b0636b7",
+      "previousExclusion": "first-pass grok-4.6 2026-09-06T16:20:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-L-8",
+        "G3-E-5"
+      ],
+      "reason": "Floods drowning plants, washing away soil, destroying land animals' homes teaches G6-L-8 living/nonliving-interaction harm (nonliving-interactions facet genuinely matches 'flood') and weather danger for G3-E-5 (danger facet matched 'flood'). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g6:ecosystem-effects",
+          "unit": "G6-L-8:nonliving-interactions",
+          "quote": "flood"
+        },
+        {
+          "lesson": "g3:weather",
+          "unit": "G3-E-5:danger",
+          "quote": "Floods"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "flowchart-of-changes-g6",
+      "id": "dcard-04196",
+      "textHash": "1f2fc67ab33c177bdb7ed65a9ebb6ed14713b02ae8e05c9f05ffabcee2458aaf",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:14:37Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-M-1"
+      ],
+      "reason": "Phase-change flowchart using arrows to show melting (solid to liquid) and evaporation (liquid to gas) is exactly the G6-M-1 state-changes diagram teaching (diagram facet genuinely matches 'flowchart'; melting/evaporation facets also match). Card genuinely teaches the diagram skill, not just mentions it. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g6:state-changes",
+          "unit": "G6-M-1:diagram",
+          "quote": "flowchart"
+        },
+        {
+          "lesson": "g6:state-changes",
+          "unit": "G6-M-1:melting",
+          "quote": "melting"
+        },
+        {
+          "lesson": "g6:state-changes",
+          "unit": "G6-M-1:evaporation",
+          "quote": "evaporation"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "flowers-and-fruits-g3",
+      "id": "dcard-11682",
+      "textHash": "f0e772dd1e6542074ad628a4ba21a0ed0629a86d7ebb9e0c6abe55471f1ebeff",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:27:29Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G5-L-4",
+        "G6-L-2"
+      ],
+      "reason": "Flowering plants having flowers and fruits that hold seeds teaches the G5-L-4 flowering-plant group (flowering-plants facet genuinely matches 'flowers and fruits...seed') and seed function for G6-L-2 plant reproduction (seeds facet matched). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g5:classification",
+          "unit": "G5-L-4:flowering-plants",
+          "quote": "flowers and fruits"
+        },
+        {
+          "lesson": "g6:plant-reproduction",
+          "unit": "G6-L-2:seeds",
+          "quote": "seeds"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fluorescent-lamp-energy-g6",
+      "id": "dcard-01922",
+      "textHash": "1f0d4318d4857095299363ba14c203df2228dd2aa93eca38b997a0a7f74e3eac",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:11:41Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G4-F-9",
+        "G4-F-10",
+        "G9-M-11"
+      ],
+      "reason": "Fluorescent lamp converting electrical energy to light (plus some heat) teaches energy forms/uses for G4-F-9 (forms facet 'light') and G4-F-10 (light and heat use facets both genuinely matched), with the electrical-energy conversion facet matching G9-M-11 focus-3 (electrical genuinely matched). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g4:energy",
+          "unit": "G4-F-9:forms",
+          "quote": "light"
+        },
+        {
+          "lesson": "g4:energy-uses",
+          "unit": "G4-F-10:light",
+          "quote": "light"
+        },
+        {
+          "lesson": "g4:energy-uses",
+          "unit": "G4-F-10:heat",
+          "quote": "heat"
+        },
+        {
+          "lesson": "g9:m-11",
+          "unit": "G9-M-11:focus-3",
+          "quote": "electrical"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "focal-length-of-a-concave-mirror-g8",
+      "id": "dcard-00573",
+      "textHash": "8b399a18879305c51a0d6de52bcb3f3e9838a883fe6722bf8cb3037d5ff3b958",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:21:07Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G8-F-11"
+      ],
+      "reason": "Focal length of a concave mirror being half the radius of curvature is curved-mirror optics for G8-F-11 (curved-mirror facet genuinely matches 'concave'). Formula f = R/2 is standard. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g8:light-investigations",
+          "unit": "G8-F-11:curved-mirror",
+          "quote": "concave"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "folding-solid-materials-g4",
+      "id": "dcard-12697",
+      "textHash": "95425a00e91bc5da9f8401b8b4f4c67fb679d2c5defacc09d03d93becc596bdc",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:43:21Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-M-8",
+        "G4-F-6"
+      ],
+      "reason": "Folding bending a flat paper into a paper airplane (new shape) teaches G3-M-8 shaping changes (shaping facet genuinely matches 'shape') and G4-F-6 change-shape bend facet (bend matched). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g3:useful-changes",
+          "unit": "G3-M-8:shaping",
+          "quote": "shape"
+        },
+        {
+          "lesson": "g4:change-shape",
+          "unit": "G4-F-6:bend",
+          "quote": "bends"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "follicular-phase-g5",
+      "id": "dcard-01064",
+      "textHash": "9bcb6c4d5d2d37e8c2ec67596fb686156510f6cb59195bc3f7c6287bc92ae070",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:39:43Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Follicular-phase estrogen detail (days 8-11, endometrium thickening) has no authored facet; matched units (day/during) are keyword noise. Merged sibling dcard-01011 gives days 1-13 \u2014 an internal inconsistency between variants that also warrants reconciliation. Potential destination: menstrual-cycle lesson after a facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "food-and-reproduction-g7",
+      "id": "dcard-05236",
+      "textHash": "fc2a0c2f07fbef62bcb1c565ce9abbd11bb1a3d716bf3ceac7bc8a842b32a1ff",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:43:04Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-L-5",
+        "G7-L-8"
+      ],
+      "reason": "Food availability limiting consumer reproduction and population size teaches G6-L-5 food-web consumers facet (consumer genuinely matched), G7-L-8 population/ecosystem levels (population matched), G10-L-11 focus-3 (resource|limit) does not match this wording and is not credited. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g6:food-webs",
+          "unit": "G6-L-5:consumers",
+          "quote": "consumer"
+        },
+        {
+          "lesson": "g7:biological-levels",
+          "unit": "G7-L-8:organism-to-biosphere",
+          "quote": "population"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "food-fights-sickness-g3",
+      "id": "dcard-02549",
+      "textHash": "f13923bf3aa18bef94154e39738526dbbfec0e2ace592333fdc5e39a7110184f",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T03:10:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-L-6"
+      ],
+      "reason": "Food providing resistance, energy, and nutrients that keep us strong teaches why food is a basic need for G3-L-6 (food facet genuinely matched). Health framing supports the needs competency. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g3:basic-needs",
+          "unit": "G3-L-6:food",
+          "quote": "Food"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "foods-for-wet-season-g6",
+      "id": "dcard-09221",
+      "textHash": "28cdfd40a21c2c113267baade5c181363b29e3e1968532867675ae4a02adb749",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:47:42Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-E-6"
+      ],
+      "reason": "Hot soup, coffee, chocolate preferred in the wet season because rainy weather makes air cold is a season-appropriate activity/food choice for G6-E-6 (wet-dry facet genuinely matches 'wet season'). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g6:philippine-seasons",
+          "unit": "G6-E-6:wet-dry",
+          "quote": "wet season"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "force-and-displacement-g8",
+      "id": "dcard-05352",
+      "textHash": "bb8c48e9fb6908fdc73a107b2fad286645da57c98ba6b851c3edea236f4f598f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:19:31Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-F-5",
+        "G8-F-6"
+      ],
+      "reason": "Defining force (push/pull) and displacement (shortest straight start-to-final distance) teaches G7-F-5 distance-displacement (start-end facet genuinely matches 'displacement') and G8-F-6 work's force-displacement component (force-displacement facet matched). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g7:distance-displacement",
+          "unit": "G7-F-5:start-end",
+          "quote": "displacement"
+        },
+        {
+          "lesson": "g8:work",
+          "unit": "G8-F-6:force-displacement",
+          "quote": "displacement"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "force-as-vector-g7",
+      "id": "dcard-11533",
+      "textHash": "0dfbb135393e649386bc6113214f4ca552157b851f57d3e5a215f926e2328b11",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:39:34Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-F-3",
+        "G7-F-6"
+      ],
+      "reason": "Force as a vector quantity with magnitude (push/pull strength) and direction is the force-diagram concept for G7-F-3 (magnitude and direction facets both genuinely matched) and vector idea for G7-F-6 (vector facet matched). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g7:force-diagrams",
+          "unit": "G7-F-3:magnitude",
+          "quote": "magnitude"
+        },
+        {
+          "lesson": "g7:force-diagrams",
+          "unit": "G7-F-3:direction",
+          "quote": "direction"
+        },
+        {
+          "lesson": "g7:speed-velocity",
+          "unit": "G7-F-6:vector",
+          "quote": "vector"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "force-on-moving-charge-g10",
+      "id": "dcard-09384",
+      "textHash": "cc29a8708ce9991b8a89379acac0b93ff398c2e39c60d86993eeea7b08f2b07a",
+      "previousExclusion": "first-pass grok-4.6 2026-09-06T12:00:41Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G10-F-6"
+      ],
+      "reason": "A magnet exerting force on a moving charge, perpendicular to velocity and field, is electromagnetic force content for G10-F-6 (focus-1 force facet genuinely matched); it is the motor-effect principle behind G10 motors/generators. Advanced but a genuine force-interaction teaching. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g10:f-6",
+          "unit": "G10-F-6:focus-1",
+          "quote": "force"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "forces-between-molecules-g9",
+      "id": "dcard-04711",
+      "textHash": "2cf96b8b07cfd7044fec8030a819db251c26b6b1563bd1519ad1e30378aa4d9c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:42:17Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G9-M-3",
+        "G9-M-9"
+      ],
+      "reason": "Distinguishing intermolecular forces from the bonds inside a single molecule teaches chemical bonding for G9-M-3 (focus-2 bond facet genuinely matches 'bond') and molecular-particle counting for G9-M-9 (focus-2 molecule facet matched). Card cats (g9-matter-compound-properties) are not all enrichment for grade 9, so the mapping is admissible. TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g9:m-3",
+          "unit": "G9-M-3:focus-2",
+          "quote": "bond"
+        },
+        {
+          "lesson": "g9:m-9",
+          "unit": "G9-M-9:focus-2",
+          "quote": "molecule"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "forces-in-solid-particles-g7",
+      "id": "dcard-00998",
+      "textHash": "1afc44be1c9d463f315f09435092d3f7cde4e8193221a788738ed16194bdb48c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:50:52Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-M-2",
+        "G7-M-4"
+      ],
+      "reason": "Intermolecular pulls holding solid particles tightly together teaches the particle model for G7-M-2 (particles facet genuinely matched) and the solid-state particle arrangement for G7-M-4 (solid facet matched); the G7-M-3 attraction facet's 'attract' pattern does not match 'pulls' and is not credited.",
+      "evidence": [
+        {
+          "lesson": "g7:particle-model",
+          "unit": "G7-M-2:particles",
+          "quote": "particle"
+        },
+        {
+          "lesson": "g7:particle-diagrams",
+          "unit": "G7-M-4:solid",
+          "quote": "solid"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "forces-on-a-book-g9",
+      "id": "dcard-08746",
+      "textHash": "c4ac16c399a1f82cb8ea9cb3400cf940e04ce57861ac84b374dc1f062059ff4c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:22:39Z disp=exclude",
+      "reviewedAt": "2026-09-10T21:30:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G9-F-4",
+        "G7-F-2"
+      ],
+      "reason": "Book on a table with gravity pulling down and table pushing up, equal and opposite, is Newton's-third-law/balanced-forces teaching for G9-F-4 (focus-1 equal.*opposite facet genuinely matches 'equal and opposite') and G7-F-2 balanced rest example (rest facet matched). TL/BIS faithful.",
+      "evidence": [
+        {
+          "lesson": "g9:f-4",
+          "unit": "G9-F-4:focus-1",
+          "quote": "equal and opposite"
+        },
+        {
+          "lesson": "g7:balanced-unbalanced",
+          "unit": "G7-F-2:rest",
+          "quote": "resting"
+        }
+      ],
+      "translationsChecked": true
+    }
+  ],
+  "note": "Parent verified integration audit and approved trilingual packet text. Additional solid intermolecular-force overgeneralization held."
+}
