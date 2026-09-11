@@ -112,8 +112,7 @@ export function Landing() {
               <p className="mc-label text-[10px] text-[var(--gold)]">On-device and Offline</p>
               <p className="mt-2 font-zilla text-base font-medium leading-relaxed text-[var(--stock)]/85 sm:text-lg">
                 The AI model, the illustrations, and our science fact bank all live
-                on the phone, and can optionally connect to a public P2P network for
-                curriculum updates.
+                on the phone. After the first download, no internet is required.
               </p>
             </div>
             <div>
@@ -246,7 +245,7 @@ export function Landing() {
               class, is more than most families can spend.
             </p>
             <p className="mt-4 max-w-xl font-zilla text-lg font-medium leading-relaxed text-[var(--ink)]">
-              Hiraia uses{' '}
+              The plan is{' '}
               <a
                 href="https://pears.com"
                 className="underline decoration-[var(--gold)] underline-offset-2 hover:text-[var(--gold)]"
@@ -255,17 +254,36 @@ export function Landing() {
               to happen once. As long as one student on the classroom Wi-Fi
               holds a complete copy, the rest of the class can take it from
               that phone — and from one another — without another trip to the
-              internet, and without a central server.
+              internet, and without a central server. That classroom sharing
+              is not shipping yet.
             </p>
           </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/pears-classroom.webp"
-            alt="Students on a classroom Wi-Fi share the Hiraia model with one another in a mesh: the school seeds one phone, then every phone can copy from any other."
-            width={1448}
-            height={1086}
-            className="w-full max-w-xl justify-self-center lg:max-w-none"
-          />
+          <div className="mc-pears-art relative w-full max-w-xl justify-self-center lg:max-w-none">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/pears-classroom.webp"
+              alt="Students on a classroom Wi-Fi share the Hiraia model with one another in a mesh: the school seeds one phone, then every phone can copy from any other."
+              width={1448}
+              height={1086}
+              className="w-full"
+            />
+            <div className="mc-soon" role="status">
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <polygon
+                  fill="var(--gold)"
+                  stroke="var(--accent)"
+                  strokeWidth="1.4"
+                  strokeLinejoin="round"
+                  points="50,2 57.4,22.6 78.1,9.5 70.7,30.1 93.3,30.1 74.3,42.3 90.5,57.8 68.4,54.4 74.3,75.7 57.4,61.2 50,81.5 42.6,61.2 25.7,75.7 31.6,54.4 9.5,57.8 25.7,42.3 6.7,30.1 29.3,30.1 21.9,9.5 42.6,22.6"
+                />
+              </svg>
+              <span>
+                Coming
+                <br />
+                soon!
+              </span>
+            </div>
+          </div>
         </div>
       </section>
 

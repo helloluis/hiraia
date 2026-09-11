@@ -26,8 +26,11 @@ import fs from 'node:fs';
  * as personal data (don't export, don't join against anything).
  *
  * `apk_download_hits` counts homepage APK-button clicks (one row per IP-hash per UTC
- * day). No raw IP. This is the number we can put on the page; GA has the geo. Pears
+ * day). No raw IP. Country/city come from nginx GeoIP headers when present. Pears
  * copies and direct /models/hiraia.apk hits are NOT in this table.
+ *
+ * `web_sessions` counts public page loads the same way (one row per IP-hash per UTC
+ * day). That is the website-session breakdown on /admin/telemetry.
  */
 
 const DB_PATH =
@@ -93,6 +96,17 @@ CREATE TABLE IF NOT EXISTS apk_download_hits (
   day        TEXT NOT NULL,                      -- UTC YYYY-MM-DD
   ip_hash    TEXT NOT NULL,                      -- sha256(ip + salt), not the IP
   country    TEXT,                               -- ISO country if the proxy sent one, else NULL
+  city       TEXT,                               -- city name if the proxy sent one, else NULL
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  UNIQUE(day, ip_hash)
+);
+
+CREATE TABLE IF NOT EXISTS web_sessions (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  day        TEXT NOT NULL,                      -- UTC YYYY-MM-DD
+  ip_hash    TEXT NOT NULL,                      -- sha256(ip + salt), not the IP
+  country    TEXT,
+  city       TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   UNIQUE(day, ip_hash)
 );
@@ -107,6 +121,14 @@ export function getDb(): Database.Database {
   db.pragma('journal_mode = WAL');
   db.pragma('foreign_keys = ON');
   db.exec(SCHEMA);
+  migrate(db);
   _db = db;
   return db;
+}
+
+function migrate(db: Database.Database) {
+  const apkCols = db.prepare('PRAGMA table_info(apk_download_hits)').all() as { name: string }[];
+  if (apkCols.length && !apkCols.some((c) => c.name === 'city')) {
+    db.exec('ALTER TABLE apk_download_hits ADD COLUMN city TEXT');
+  }
 }

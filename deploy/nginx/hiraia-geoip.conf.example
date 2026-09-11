@@ -1,0 +1,15 @@
+# Enable city/country for website sessions and origin /models/ fetches.
+# Requires: apt install libnginx-mod-http-geoip2
+# and a City MMDB. GeoLite2 needs a MaxMind license; DB-IP city lite
+# (CC BY 4.0) is what the VPS uses:
+#   curl -fL -o /usr/share/GeoIP/dbip-city-lite.mmdb.gz \
+#     https://download.db-ip.com/free/dbip-city-lite-YYYY-MM.mmdb.gz
+#   gunzip -f /usr/share/GeoIP/dbip-city-lite.mmdb.gz
+#
+# Copy to /etc/nginx/hiraia-geoip.conf, then nginx -t && systemctl reload nginx.
+
+geoip2 /usr/share/GeoIP/dbip-city-lite.mmdb {
+    auto_reload 6h;
+    $geoip2_country_code country iso_code;
+    $geoip2_city_name    city names en;
+}

@@ -123,9 +123,9 @@ export function AppDownload() {
             <p className="relative z-[1] font-zilla text-sm font-medium leading-relaxed text-[var(--ink)]">
               The app itself is a small download. The first time you open the app, it fetches
               about 2Gb of files, including the customized AI model and its library of
-              illustrations, from Hiraia&apos;s own servers or any filesharing peers it finds
-              nearby. After that it runs fully offline — no internet, no account, and nothing
-              you type ever leaves the phone.
+              illustrations, from Hiraia&apos;s own servers. After that it runs fully offline —
+              no internet, no account, and nothing you type ever leaves the phone. Sharing
+              that fetch across classroom Wi-Fi is coming soon.
             </p>
 
             <button
@@ -194,9 +194,9 @@ export function AppDownload() {
             <p className="relative z-[1] font-zilla text-sm font-medium leading-relaxed text-[var(--ink)]">
               The app itself is a small download. The first time you open the app, it fetches
               about 2Gb of files, including the customized AI model and its library of
-              illustrations, from Hiraia&apos;s own servers or any filesharing peers it finds
-              nearby. After that it runs fully offline — no internet, no account, and nothing
-              you type ever leaves the phone.
+              illustrations, from Hiraia&apos;s own servers. After that it runs fully offline —
+              no internet, no account, and nothing you type ever leaves the phone. Sharing
+              that fetch across classroom Wi-Fi is coming soon.
             </p>
           </div>
         </div>

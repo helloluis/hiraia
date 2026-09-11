@@ -1,40 +1,15 @@
-import { createHash } from 'node:crypto';
 import { NextResponse, type NextRequest } from 'next/server';
 import { getDb } from '@/lib/db';
+import { clientIp, geoFrom, ipHash } from '@/lib/geo';
 
 /**
  * Homepage APK-button hits. POST records one (day, ip-hash); GET returns the count
  * for the landing-page confidence line. This is origin-button traffic only — not
- * Pears copies, not wget of /models/hiraia.apk. Geo lives in GA (`apk_download`).
+ * Pears copies, not wget of /models/hiraia.apk.
  *
  * Unique per IP per UTC day so a double-click does not inflate the public number.
- * Hash is not stored as IP. Country is taken only from a proxy header if present.
+ * Hash is not stored as IP. Country/city come from nginx GeoIP headers when present.
  */
-
-const SALT = process.env.HIT_SALT || 'hiraia-apk-hit';
-
-function clientIp(req: NextRequest): string {
-  const forwarded = req.headers.get('x-forwarded-for');
-  if (forwarded) {
-    const hops = forwarded.split(',').map((s) => s.trim()).filter(Boolean);
-    return hops[hops.length - 1] ?? 'unknown';
-  }
-  return req.headers.get('x-real-ip') ?? 'unknown';
-}
-
-function ipHash(ip: string): string {
-  return createHash('sha256').update(`${SALT}:${ip}`).digest('hex').slice(0, 32);
-}
-
-function countryCode(req: NextRequest): string | null {
-  const raw =
-    req.headers.get('cf-ipcountry') ??
-    req.headers.get('x-country-code') ??
-    req.headers.get('x-geo-country');
-  if (!raw) return null;
-  const code = raw.trim().toUpperCase();
-  return /^[A-Z]{2}$/.test(code) && code !== 'XX' ? code : null;
-}
 
 export async function GET() {
   const row = getDb().prepare('SELECT COUNT(*) AS n FROM apk_download_hits').get() as { n: number };
@@ -47,12 +22,15 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   const day = new Date().toISOString().slice(0, 10);
   const hash = ipHash(clientIp(req));
-  const country = countryCode(req);
+  const { country, city } = geoFrom(req);
   getDb()
     .prepare(
-      'INSERT OR IGNORE INTO apk_download_hits (day, ip_hash, country) VALUES (?, ?, ?)',
+      `INSERT INTO apk_download_hits (day, ip_hash, country, city) VALUES (?, ?, ?, ?)
+       ON CONFLICT(day, ip_hash) DO UPDATE SET
+         country = COALESCE(excluded.country, apk_download_hits.country),
+         city = COALESCE(excluded.city, apk_download_hits.city)`,
     )
-    .run(day, hash, country);
+    .run(day, hash, country, city);
   const row = getDb().prepare('SELECT COUNT(*) AS n FROM apk_download_hits').get() as { n: number };
   return NextResponse.json({ ok: true, count: row.n });
 }

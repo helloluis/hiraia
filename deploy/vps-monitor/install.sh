@@ -3,7 +3,7 @@
 # install.sh — deploy hiraia-monitor + mission control to the Vultr VPS.
 #
 # Installs, on hiraia.b11.dev:
-#   * /opt/hiraia-monitor/{monitor.py,admin_app.py,config.json}
+#   * /opt/hiraia-monitor/{monitor.py,admin_app.py,pilot_analytics.py,config.json}
 #   * systemd: hiraia-monitor.timer (guard, every 5 min) + hiraia-admin.service
 #   * nginx: `location /admin` -> 127.0.0.1:8135 in the existing 443 block
 #
@@ -55,7 +55,7 @@ PY
 
 echo ">> [1/4] files ..."
 ssh $SSH "$V" 'mkdir -p /opt/hiraia-monitor /var/lib/hiraia-monitor'
-scp $SSH "$HERE/monitor.py" "$HERE/admin_app.py" "$V:/opt/hiraia-monitor/"
+scp $SSH "$HERE/monitor.py" "$HERE/admin_app.py" "$HERE/pilot_analytics.py" "$V:/opt/hiraia-monitor/"
 scp $SSH "$TMP/config.json" "$V:/opt/hiraia-monitor/config.json"
 ssh $SSH "$V" 'chmod 600 /opt/hiraia-monitor/config.json; chmod 755 /opt/hiraia-monitor/*.py
   touch /var/log/hiraia-monitor.log; chmod 640 /var/log/hiraia-monitor.log'
@@ -71,7 +71,11 @@ printf '%s\n' '[Unit]' 'Description=hiraia guard every 5 minutes' '[Timer]' \
   'OnBootSec=2min' 'OnUnitActiveSec=5min' 'AccuracySec=30s' 'Persistent=true' \
   '[Install]' 'WantedBy=timers.target' > /etc/systemd/system/hiraia-monitor.timer
 printf '%s\n' '[Unit]' 'Description=hiraia mission control (admin panel)' \
-  'After=network-online.target' '[Service]' 'Environment=ADMIN_PORT=8135' \
+  'After=network-online.target' '[Service]' \
+  'Environment=ADMIN_PORT=8135' \
+  'Environment=HIRAIA_DB_PATH=/var/lib/hiraia/hiraia.db' \
+  'Environment=HIRAIA_TELEMETRY_DB_PATH=/var/lib/hiraia-telemetry/telemetry.db' \
+  'Environment=HIRAIA_MODEL_GEO_LOG=/var/log/nginx/hiraia-model-geo.log' \
   'ExecStart=/usr/bin/python3 /opt/hiraia-monitor/admin_app.py' 'Restart=always' \
   'RestartSec=5' '[Install]' 'WantedBy=multi-user.target' \
   > /etc/systemd/system/hiraia-admin.service

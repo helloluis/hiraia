@@ -19,6 +19,7 @@ rate limiting, CSRF token on every state-changing POST.
 """
 import hashlib, hmac, html, json, os, re, secrets, subprocess, time, urllib.parse, urllib.request
 from datetime import datetime, timezone
+import pilot_analytics
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from http.cookies import SimpleCookie
 
@@ -36,6 +37,11 @@ SYNTH_DIR = os.environ.get("SYNTH_CEB_DIR", "/var/lib/synth-ceb")
 SYNTH_HIST = os.path.join(SYNTH_DIR, "history.jsonl")
 GROK_DOCS = os.path.join(SYNTH_DIR, "docs_ceb_grok.jsonl")
 GROK_AUDIT = os.path.join(SYNTH_DIR, "docs_ceb_grok_all.jsonl")
+FW_DOCS = os.path.join(SYNTH_DIR, "docs_ceb_fw.jsonl")
+FW_AUDIT = os.path.join(SYNTH_DIR, "docs_ceb_fw_all.jsonl")
+FW_STATE = os.path.join(SYNTH_DIR, "fw-state.json")
+K3_DOCS = os.path.join(SYNTH_DIR, "docs_ceb_k3.jsonl")
+K3_AUDIT = os.path.join(SYNTH_DIR, "docs_ceb_k3_all.jsonl")
 TOK_PER_BYTE = 0.35   # measured Qwen3.5 ratio for Cebuano text (pool_ceb_v3)
 _synth_cache = {"sig": None, "v": None, "hist_t": 0}
 REST, GQL = "https://rest.runpod.io/v1", "https://api.runpod.io/graphql"
@@ -207,7 +213,8 @@ def synth_stats():
         return None
     try:
         sig = tuple((os.path.getsize(f), int(os.path.getmtime(f)))
-                    for f in (docs, audit, queue, GROK_DOCS) if os.path.exists(f))
+                    for f in (docs, audit, queue, GROK_DOCS, FW_DOCS, K3_DOCS)
+                    if os.path.exists(f))
     except OSError:
         return None
     if _synth_cache["sig"] == sig and _synth_cache["v"]:
@@ -235,19 +242,26 @@ def synth_stats():
                         tok_or += tb
         except OSError:
             pass
-        lane_grok, tok_grok = 0, 0
-        try:
-            with open(GROK_DOCS, encoding="utf-8", errors="replace") as f:
-                for line in f:
-                    if not line.strip():
-                        continue
-                    lane_grok += 1
-                    try:
-                        tok_grok += len(json.loads(line).get("text", "").encode("utf-8", "replace"))
-                    except json.JSONDecodeError:
-                        pass
-        except OSError:
-            pass
+        def _sidecar_counts(path):
+            n, tok = 0, 0
+            try:
+                with open(path, encoding="utf-8", errors="replace") as f:
+                    for line in f:
+                        if not line.strip():
+                            continue
+                        n += 1
+                        try:
+                            tok += len(json.loads(line).get("text", "").encode(
+                                "utf-8", "replace"))
+                        except json.JSONDecodeError:
+                            pass
+            except OSError:
+                pass
+            return n, round(tok * TOK_PER_BYTE)
+
+        lane_grok, tok_grok = _sidecar_counts(GROK_DOCS)
+        lane_fw, tok_fw = _sidecar_counts(FW_DOCS)
+        lane_k3, tok_k3 = _sidecar_counts(K3_DOCS)
         verdicts = {}
         n_all = 0
         try:
@@ -271,9 +285,12 @@ def synth_stats():
             pass
         out = {"kept": n_kept, "attempted": n_all, "verdicts": verdicts,
                "lane_oc": lane_oc, "lane_or": lane_or, "lane_grok": lane_grok,
+               "lane_fw": lane_fw, "lane_k3": lane_k3,
                "tok_oc": round(tok_oc * TOK_PER_BYTE),
                "tok_or": round(tok_or * TOK_PER_BYTE),
-               "tok_grok": round(tok_grok * TOK_PER_BYTE),
+               "tok_grok": tok_grok,
+               "tok_fw": tok_fw,
+               "tok_k3": tok_k3,
                "queue_total": q_total,
                "keep_pct": round(100 * n_kept / n_all, 1) if n_all else None}
         _synth_cache.update(sig=sig, v=dict(out))
@@ -287,15 +304,36 @@ def synth_stats():
         out["gen_seq"] = st.get("gen_seq")
     except (OSError, json.JSONDecodeError, ValueError):
         out["caps"] = None
+    day = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    try:
+        fst = json.load(open(FW_STATE))
+        out["fw_spend"] = round(float((fst.get("spend") or {}).get(day, 0.0)), 4)
+        out["fw_calls"] = int((fst.get("calls") or {}).get(day, 0))
+        out["fw_seq"] = fst.get("seq")
+        out["fw_budget"] = float(os.environ.get("FW_BUDGET_USD", "10"))
+    except (OSError, json.JSONDecodeError, ValueError, TypeError):
+        out.setdefault("fw_spend", 0)
+        out.setdefault("fw_calls", 0)
+        out.setdefault("fw_seq", None)
+        out.setdefault("fw_budget", 10)
     try:
         out["service"] = subprocess.run(["systemctl", "is-active", "synth-ceb"],
                                         capture_output=True, timeout=8).stdout.decode().strip()
     except Exception:
         out["service"] = "unknown"
     try:
-        out["last_doc_age_s"] = round(time.time() - os.path.getmtime(docs))
-    except OSError:
-        out["last_doc_age_s"] = None
+        out["service_fw"] = subprocess.run(["systemctl", "is-active", "synth-ceb-fw"],
+                                           capture_output=True, timeout=8).stdout.decode().strip()
+    except Exception:
+        out["service_fw"] = "unknown"
+    # newest write across OC/OR + Grok sidecar + Flash sidecar + K3 sidecar
+    mtimes = []
+    for p in (docs, GROK_DOCS, FW_DOCS, K3_DOCS):
+        try:
+            mtimes.append(os.path.getmtime(p))
+        except OSError:
+            pass
+    out["last_doc_age_s"] = round(time.time() - max(mtimes)) if mtimes else None
     # rolling production history: one sample per >=5 min, for the rate + curve
     now = time.time()
     if now - _synth_cache["hist_t"] > 300:
@@ -304,18 +342,35 @@ def synth_stats():
                 f.write(json.dumps({"ts": now, "kept": out["kept"],
                                     "tok_oc": out["tok_oc"], "tok_or": out["tok_or"],
                                     "tok_grok": out["tok_grok"],
-                                    "lane_grok": out["lane_grok"]}) + "\n")
+                                    "tok_fw": out.get("tok_fw", 0),
+                                    "tok_k3": out.get("tok_k3", 0),
+                                    "lane_grok": out["lane_grok"],
+                                    "lane_fw": out.get("lane_fw", 0),
+                                    "lane_k3": out.get("lane_k3", 0)}) + "\n")
             _synth_cache["hist_t"] = now
         except OSError:
             pass
     hist = tail_jsonl(SYNTH_HIST, 400)
     out["history"] = [{"ts": h.get("ts", 0), "kept": h.get("kept", 0),
                        "tok_oc": h.get("tok_oc"), "tok_or": h.get("tok_or"),
-                       "tok_grok": h.get("tok_grok")} for h in hist]
+                       "tok_grok": h.get("tok_grok"),
+                       "tok_fw": h.get("tok_fw"),
+                       "tok_k3": h.get("tok_k3")} for h in hist]
     rate = None
     if len(hist) >= 2:
-        span = hist[-1].get("ts", 0) - hist[0].get("ts", 0)
-        grew = hist[-1].get("kept", 0) - hist[0].get("kept", 0)
+        t1 = hist[-1].get("ts", 0)
+        h0 = hist[0]
+        for h in hist:
+            if h.get("ts", 0) >= t1 - 3600:
+                h0 = h
+                break
+        def _tot(h):
+            return ((h.get("kept") or 0)
+                    + (h.get("lane_grok") or 0)
+                    + (h.get("lane_fw") or 0)
+                    + (h.get("lane_k3") or 0))
+        span = t1 - h0.get("ts", 0)
+        grew = _tot(hist[-1]) - _tot(h0)
         if span > 600:
             rate = round(grew / (span / 3600), 1)
     out["docs_per_hr"] = rate
@@ -706,7 +761,7 @@ HEAD = """<!doctype html><html lang="en"><head><meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>__CSS__</style></head><body data-mount="__MOUNT__">"""
+<style>__CSS__</style></head><body data-mount="__MOUNT__"><a href="__MOUNT__/telemetry" style="display:block;padding:12px 24px">Pilot analytics →</a>"""
 
 JS = r"""
 const $ = s => document.querySelector(s);
@@ -905,14 +960,19 @@ function renderSynth(s){
     `<span style="color:var(--ink-3);letter-spacing:.06em;text-transform:none">as of ${asOf(s.ts)}</span>`;
   const stale = x.last_doc_age_s!==null && x.last_doc_age_s > 3600;
   const up = (x.service||'').startsWith('active');
+  const fwup = (x.service_fw||'').startsWith('active');
+  const banked = (x.kept||0)+(x.lane_grok||0)+(x.lane_fw||0)+(x.lane_k3||0);
   $('#synth-tiles').innerHTML = [
-    tile('Banked', x.kept, `${x.attempted} attempted`, 'good'),
+    tile('Banked', banked,
+         `OC/OR ${x.kept||0} · Grok ${x.lane_grok||0} · Flash ${x.lane_fw||0} · K3 ${x.lane_k3||0}`, 'good'),
     tile('Rate', x.docs_per_hr!==null&&x.docs_per_hr!==undefined?`${x.docs_per_hr}<small>/hr</small>`:'--',
          x.last_doc_age_s!==null?`last doc ${x.last_doc_age_s<3600?Math.round(x.last_doc_age_s/60)+'m':(x.last_doc_age_s/3600).toFixed(1)+'h'} ago`:'',
          stale?'hot':''),
     tile('QC keep', x.keep_pct!==null?`${x.keep_pct}<small>%</small>`:'--',
          Object.entries(x.verdicts||{}).filter(([k])=>k!=='ok').map(([k,v])=>`${k} ${v}`).join(' · ')||'no rejects'),
-    tile('Generator', up?'RUNNING':(x.service||'?').toUpperCase(), up?'supervisor alive':'not running', up?'good':'hot'),
+    tile('OC/OR', up?'RUNNING':(x.service||'?').toUpperCase(), up?'supervisor alive':'not running', up?'good':'hot'),
+    tile('Flash', fwup?'RUNNING':(x.service_fw||'?').toUpperCase(),
+         `$${(x.fw_spend||0).toFixed(2)} / $${x.fw_budget||10} today`, fwup?'good':'hot'),
   ].join('');
   const caps = x.caps||{};
   const capBar = (lbl,used,max) => {
@@ -920,25 +980,30 @@ function renderSynth(s){
     return `<div style="margin:9px 0"><div class="mono-dim">${lbl} &nbsp;${used}/${max} calls today</div>
       <div class="bar"><span class="${pct>90?'hot':''}" style="width:${pct.toFixed(0)}%"></span></div></div>`;
   };
-  // cumulative production curve from the rolling history
-  let curve = '<div class="empty">Production curve appears after ~10 minutes of samples.</div>';
-  const h = (x.history||[]).filter(p=>p.kept>0);
-  if(h.length>1){
-    const W=1000,H=140,ml=52,mr=14,mt=12,mb=24;
-    const t0=h[0].ts,t1=Math.max(h[h.length-1].ts,t0+1);
-    let y0=Math.min(...h.map(p=>p.kept)), y1=Math.max(...h.map(p=>p.kept));
-    if(y1===y0){y1=y0+1;}
-    const X=v=>ml+(v-t0)/(t1-t0)*(W-ml-mr), Y=v=>mt+(1-(v-y0)/(y1-y0))*(H-mt-mb);
-    const d=h.map((p,i)=>`${i?'L':'M'}${X(p.ts).toFixed(1)},${Y(p.kept).toFixed(1)}`).join('');
-    let g='';
-    for(let i=0;i<=2;i++){ const v=y0+(y1-y0)*i/2, y=Y(v).toFixed(1);
-      g+=`<line class="grid" x1="${ml}" y1="${y}" x2="${W-mr}" y2="${y}"/>`+
-         `<text x="${ml-8}" y="${(+y+3.5).toFixed(1)}" text-anchor="end">${Math.round(v)}</text>`;}
-    const hrs=((t1-t0)/3600).toFixed(1);
-    curve=`<svg class="chart" style="height:140px" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"
-      role="img" aria-label="Cebuano documents banked over time">${g}<path class="ln" d="${d}"/></svg>
-      <div class="mono-dim">documents banked · last ${hrs}h · <strong>as of ${asOf(s.ts)}</strong></div>`;
+  // token summary: today (UTC) / total / per-lane contribution ratios
+  const LANS=[['oc','#5eb1ef','OC gen'],['or','#a78bfa','OR xlate'],['grok','#34d399','Grok'],['fw','#f59e0b','Flash'],['k3','#f472b6','K3']];
+  const tLane={oc:x.tok_oc||0, or:x.tok_or||0, grok:x.tok_grok||0, fw:x.tok_fw||0, k3:x.tok_k3||0};
+  const tAll=tLane.oc+tLane.or+tLane.grok+tLane.fw+tLane.k3;
+  let tokToday=null;
+  const hs=(x.history||[]).filter(p=>p.tok_oc!=null);
+  if(hs.length){
+    const dayISO=ts=>new Date(ts*1000).toISOString().slice(0,10), todayKey=dayISO(Date.now()/1000);
+    const firstToday=hs.find(p=>dayISO(p.ts)===todayKey);
+    if(firstToday) tokToday=Math.max(0,tAll-((firstToday.tok_oc||0)+(firstToday.tok_or||0)+(firstToday.tok_grok||0)+(firstToday.tok_fw||0)+(firstToday.tok_k3||0)));
   }
+  const ratio=LANS.map(([k,c,l])=>({k,c,l,pct:tAll?100*tLane[k]/tAll:0}));
+  const summary=`
+    <div style="display:flex;gap:34px;flex-wrap:wrap;margin-bottom:13px">
+      <div><div class="mono-dim">EST. TOKENS TODAY (UTC)</div>
+        <div style="font-size:24px"><strong>${tokToday!==null?tokToday.toLocaleString():'--'}</strong></div></div>
+      <div><div class="mono-dim">EST. TOKENS TOTAL</div>
+        <div style="font-size:24px"><strong>${tAll.toLocaleString()}</strong></div></div>
+      <div style="flex:1;min-width:260px"><div class="mono-dim">CONTRIBUTION</div>
+        <div style="display:flex;height:10px;border-radius:2px;overflow:hidden;margin:8px 0 6px;background:var(--panel-2)">
+          ${ratio.map(r=>`<div style="width:${r.pct.toFixed(1)}%;background:${r.c}"></div>`).join('')}
+        </div>
+        <div class="mono-dim">${ratio.map(r=>`<span style="color:${r.c}">■</span> ${r.l} ${r.pct.toFixed(1)}%`).join(' &nbsp;·&nbsp; ')}</div></div>
+    </div>`;
   // daily contributions, stacked by lane, in estimated tokens (history deltas)
   let bars = '';
   const hh = (x.history||[]).filter(p=>p.tok_oc!=null);
@@ -953,11 +1018,12 @@ function renderSynth(s){
     const rows = buckets.map(b=>({k:b.k,
       oc:Math.max(0,(b.end.tok_oc||0)-(b.start.tok_oc||0)),
       or:Math.max(0,(b.end.tok_or||0)-(b.start.tok_or||0)),
-      grok:Math.max(0,(b.end.tok_grok||0)-(b.start.tok_grok||0))}));
+      grok:Math.max(0,(b.end.tok_grok||0)-(b.start.tok_grok||0)),
+      fw:Math.max(0,(b.end.tok_fw||0)-(b.start.tok_fw||0)),
+      k3:Math.max(0,(b.end.tok_k3||0)-(b.start.tok_k3||0))}));
     const W=1000,H=170,ml=52,mr=14,mt=12,mb=26;
-    const maxV = Math.max(1,...rows.map(r=>r.oc+r.or+r.grok));
+    const maxV = Math.max(1,...rows.map(r=>r.oc+r.or+r.grok+r.fw+r.k3));
     const bw = Math.min(90,(W-ml-mr)/rows.length*0.6), step=(W-ml-mr)/rows.length;
-    const LANS=[['oc','#5eb1ef','OC gen'],['or','#a78bfa','OR xlate'],['grok','#34d399','Grok']];
     let g='';
     for(let i=0;i<=2;i++){ const v=maxV*i/2, y=(mt+(1-i/2)*(H-mt-mb)).toFixed(1);
       g+=`<line class="grid" x1="${ml}" y1="${y}" x2="${W-mr}" y2="${y}"/>`+
@@ -978,11 +1044,14 @@ function renderSynth(s){
         role="img" aria-label="Estimated tokens produced per day by lane">${g}</svg></div>`;
   }
   $('#synth-body').innerHTML = `
+    ${summary}
     <div style="display:flex;gap:26px;flex-wrap:wrap;margin-bottom:11px">
       <div><div class="mono-dim">LANE SPLIT (docs · est. tokens)</div>
         <div style="font-size:15px">OC gen <strong>${x.lane_oc}</strong> · ${(x.tok_oc||0).toLocaleString()} tok
           &nbsp;·&nbsp; OR xlate <strong>${x.lane_or}</strong> · ${(x.tok_or||0).toLocaleString()} tok
-          &nbsp;·&nbsp; Grok <strong>${x.lane_grok||0}</strong> · ${(x.tok_grok||0).toLocaleString()} tok</div></div>
+          &nbsp;·&nbsp; Grok <strong>${x.lane_grok||0}</strong> · ${(x.tok_grok||0).toLocaleString()} tok
+          &nbsp;·&nbsp; Flash <strong>${x.lane_fw||0}</strong> · ${(x.tok_fw||0).toLocaleString()} tok
+          &nbsp;·&nbsp; K3 <strong>${x.lane_k3||0}</strong> · ${(x.tok_k3||0).toLocaleString()} tok</div></div>
       <div><div class="mono-dim">QUEUE</div>
         <div style="font-size:15px"><strong>${x.queue_total}</strong> chunks</div></div>
       <div><div class="mono-dim">GEN SEQ</div>
@@ -990,7 +1059,12 @@ function renderSynth(s){
     </div>
     ${capBar('OpenCode (generation)', caps.oc||0, caps.oc_max||2000)}
     ${capBar('OpenRouter (translation)', caps['or']||0, caps.or_max||950)}
-    <div style="margin-top:13px">${curve}</div>${bars}`;
+    ${(() => {
+      const used=x.fw_spend||0, max=x.fw_budget||10, pct=max?Math.min(100,100*used/max):0;
+      return `<div style="margin:9px 0"><div class="mono-dim">Fireworks Flash &nbsp;$${used.toFixed(2)}/$${max} today &nbsp;·&nbsp; ${x.fw_calls||0} calls &nbsp;·&nbsp; seq ${x.fw_seq||0}</div>
+        <div class="bar"><span class="${pct>90?'hot':''}" style="width:${pct.toFixed(0)}%;background:#f59e0b"></span></div></div>`;
+    })()}
+    ${bars}`;
 }
 
 async function armGreenlight(id){
@@ -1178,6 +1252,16 @@ class Handler(BaseHTTPRequestHandler):
             if path.startswith("/api/"):
                 return self._json(401, {"error": "unauthenticated"})
             return self._redirect(f"{MOUNT}/login")
+        if path == "/telemetry":
+            return self._send(200, pilot_analytics.page(MOUNT))
+        if path == "/api/telemetry":
+            try:
+                days = int(q.get("days", ["30"])[0])
+                if days not in (7, 30, 90):
+                    return self._json(400, {"error": "invalid_days"})
+                return self._json(200, pilot_analytics.report(days))
+            except (ValueError, OSError, pilot_analytics.sqlite3.Error):
+                return self._json(503, {"error": "telemetry_unavailable"})
         if path == "/":
             return self._send(200, page_dashboard(self._csrf()))
         if path == "/api/export":
@@ -1213,7 +1297,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         path, _ = self._path()
-        cap = 4 * 1024 * 1024 if path == "/api/synth-grok" else 65536
+        cap = 4 * 1024 * 1024 if path.startswith("/api/synth-") else 65536
         n = min(int(self.headers.get("Content-Length", 0) or 0), cap)
         raw = self.rfile.read(n).decode() if n else ""
 
@@ -1250,6 +1334,31 @@ class Handler(BaseHTTPRequestHandler):
                     f.write(json.dumps({"text": d["text"], "src": "grokgen",
                                         "src_id": d["src_id"]}, ensure_ascii=False) + "\n")
             with open(GROK_AUDIT, "a", encoding="utf-8") as f:
+                for d in audit:
+                    if isinstance(d, dict):
+                        f.write(json.dumps(d, ensure_ascii=False) + "\n")
+            _synth_cache["sig"] = None             # force re-parse next status call
+            return self._json(200, {"ok": True, "kept": len(kept), "audit": len(audit)})
+
+        if path == "/api/synth-k3":                 # K3 sidecar posts doc batches
+            if self.headers.get("X-Token") != cfg().get("hb_token", "\0"):
+                return self._json(403, {"error": "bad token"})
+            try:
+                data = json.loads(raw)
+                kept = data.get("kept") or []
+                audit = data.get("audit") or []
+                assert isinstance(kept, list) and isinstance(audit, list)
+                for d in kept:
+                    assert isinstance(d, dict) and isinstance(d.get("text"), str) \
+                        and d.get("src") == "k3gen" and str(d.get("src_id", "")).startswith("k3gen:")
+            except (json.JSONDecodeError, AssertionError):
+                return self._json(400, {"error": "bad payload"})
+            os.makedirs(SYNTH_DIR, exist_ok=True)
+            with open(K3_DOCS, "a", encoding="utf-8") as f:
+                for d in kept:
+                    f.write(json.dumps({"text": d["text"], "src": "k3gen",
+                                        "src_id": d["src_id"]}, ensure_ascii=False) + "\n")
+            with open(K3_AUDIT, "a", encoding="utf-8") as f:
                 for d in audit:
                     if isinstance(d, dict):
                         f.write(json.dumps(d, ensure_ascii=False) + "\n")
