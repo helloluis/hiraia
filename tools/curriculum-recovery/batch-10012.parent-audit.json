@@ -1,0 +1,26 @@
+{
+  "originalProposals": [
+    {
+      "factId": "safe-decibel-levels-g3",
+      "id": "dcard-09348",
+      "textHash": "58e0f86a66157a13d6b9fea080f6cc989e6343def3173ba0f9f212a81079002e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:33:28Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:37:49.795Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-F-7"
+      ],
+      "reason": "Sounds below 85 dB as safe for hearing is the loud-sound safety threshold of current G3-F-7 (NIOSH 85 dBA REL). Only loud-sound is admitted; G4-E-6 weather safety, G7-M-7 units, and G7-M-12 lab safety are not taught. Full EN/TL/BIS and both pools inspected; single identical card ID. https://www.cdc.gov/niosh/docs/98-126/",
+      "evidence": [
+        {
+          "lesson": "g3:light-and-sound-safety",
+          "unit": "G3-F-7:loud-sound",
+          "quote": "Sounds below 85 decibels - the unit used to measure loudness - are considered safe for our hearing"
+        }
+      ],
+      "translationsChecked": true
+    }
+  ],
+  "reason": "Parent semantic validation before application"
+}

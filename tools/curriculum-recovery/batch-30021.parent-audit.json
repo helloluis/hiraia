@@ -1,0 +1,1258 @@
+{
+  "parentVerifiedAt": "2026-09-11T08:01:13.185612+00:00",
+  "originalProposals": [
+    {
+      "factId": "mucus-color-meaning-g6",
+      "id": "ffct-06779",
+      "textHash": "09c6a7a10e2defce8d7c5c07f46e4420df9998f514dc6884e038937070c7e149",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:27:11Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Mucus color change during illness is health trivia; only G3-E-4 'pattern|change' weather keywords match and no matched unit genuinely teaches weather observation. Potential destination: human-body/health supplementary pool.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "mudskipper-eats-grabs-prey-quickly-g6",
+      "id": "ffct-07296",
+      "textHash": "88521d7e567118923653be91ad25192b250b9cfc3730c0db2fc98a655d69798d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:23:27Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Mudskipper predation anecdote matches no current core facet pattern at all. Potential destination: fish/animal-behavior enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "mudskipper-eats-worms-and-snails-g5",
+      "id": "ffct-05519",
+      "textHash": "684e5901bf17487ea6a6b57aa9191caf4bf7351942c86506dfac97b2aa2d1b53",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T08:05:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Mudskipper diet trivia matches no current core facet pattern at all. Potential destination: fish enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "muscles-pull-smooth-inside-g7",
+      "id": "ffct-03342",
+      "textHash": "c2673b8e422843887e41e8678462eaaa41a82fc90dada9bb76198c00ef2e593a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:26:47Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Peristalsis genuinely teaches digestive-system function but no current core facet pattern admits it (G4-F-6 'squeez' and G8-F-8 'work' are keyword-only matches about forces on objects and mechanical energy). Potential destination: G5-L-1 how-digestive-parts-work support if its pattern is broadened.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "muskmelon-melon-g4",
+      "id": "ffct-03309",
+      "textHash": "3c3c9cb28bd99ab774ebe8f112d8f972c31361596f399338fde200c0e837ec9d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:29:12Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Muskmelon fruit description matches no current core facet pattern; plant-structure competencies (G4-L-2 shoots/roots pattern) do not match. Potential destination: plants/fruits enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "mutation-passed-to-offspring-g9",
+      "id": "ffct-12684",
+      "textHash": "62872cfbb64b9586c0602111ab8568fb05723789a72da58eaabd81f5f2362c3d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:34:28Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G9-L-2"
+      ],
+      "reason": "Card teaches that mutations in reproductive cells are transmitted to offspring while body-cell mutations are not \u2014 a genuine component of the G9-L-2 competency on the role of DNA/genes/chromosomes in transmission of traits (heredity through reproductive cells). Unit pattern matches 'inherited'. TL/BIS faithful (selulang pang-reproduksyon / selula sa pagpadabbage, namamana/mapanunod preserved).",
+      "translationsChecked": true,
+      "evidence": [
+        {
+          "lesson": "g9:l-2",
+          "unit": "G9-L-2:focus-4",
+          "quote": "isn't inherited"
+        }
+      ]
+    },
+    {
+      "factId": "mutualism-both-benefit-g4",
+      "id": "dcard-04293",
+      "textHash": "8e55359dc7b1584c9c4a463dc1bc28883097dc0326f8809f0909c49970c18052",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:36:45Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Mutualism genuinely teaches ecological interaction but no current core facet pattern matches the text (G9-F-4 'each other' is a physics action-reaction keyword match; G8-L-6 classification and G6-L-8 'water|soil' do not match). Both pool variants identical. Potential destination: G6-L-8 living-interactions support if pattern admits 'mutualis|benefit'.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "nail-bed-hurts-g4",
+      "id": "ffct-11982",
+      "textHash": "5303f7d2ca157eec4a3dea6d400b32f99ccef4d10f9eab40e0d19e522930fc5e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:59:10Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Nail-bed nerves explains pain, not how cutting makes solid materials useful; G3-M-8 'cut' is keyword-only. Potential destination: senses/nervous supplementary.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "namesake-faraday-capacitance-g9",
+      "id": "ffct-26674",
+      "textHash": "433209e62db901048494e9aae87c73d4fba8597ae7df8ff9f0274f8314e14c4f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:06:34Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Faraday/farad namesake is history-of-science trivia; G6-M-6 'magnet' and G6-E-5 'after' are keyword-only. Potential destination: electricity enrichment or G8-M-5-style scientist-contribution facet (chemistry-specific, does not fit).",
+      "translationsChecked": true
+    },
+    {
+      "factId": "narra-hardwood-meaning-g4",
+      "id": "ffct-11889",
+      "textHash": "13e8e8d923b4258d10254a4681c8d8f44fc7e615dd7405dddf392b093c509e2c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:40:47Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Hardwood definition with narra example teaches material provenance but no item made from it is described; G3-E-2 'strong trees' and G3-L-2 'tree' are keyword-only for human-made objects and living/non-living classification. Potential destination: G3-E-2/G4-M-2 useful-materials support if reworded to name a wood product.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "narra-yellow-flowers-g4",
+      "id": "ffct-08461",
+      "textHash": "2df9d61a4f05511241d9bada9d16751f0701bff21b08f021e9b6175feab4ea9c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:29:39Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Narra flower description is plant trivia; G3-L-2 'tree' keyword-only for living/non-living classification. Potential destination: plants enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "nata-de-cut-into-cubes-g6",
+      "id": "ffct-01333",
+      "textHash": "a376778463dc10e02d58956cb9671c5782a8d6bc1c4250ee07b96bdb0749c79d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:45:45Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-M-8"
+      ],
+      "reason": "Nata is lifted as a thick mat, then cut into the small cubes served in dessert \u2014 a genuine everyday example of the G3-M-8 competency that changes like cutting make solid materials useful. Both pool variants identical; TL/BIS preserve the washing/cutting/serving sequence (hiniwa/putlon sa kwadrado).",
+      "translationsChecked": true,
+      "evidence": [
+        {
+          "lesson": "g3:useful-changes",
+          "unit": "G3-M-8:cutting",
+          "quote": "cut into the little cubes"
+        }
+      ]
+    },
+    {
+      "factId": "native-pig-no-sweat-wallow-g5",
+      "id": "ffct-05723",
+      "textHash": "fae127eed93d30d876c55a331c6d7b41d389de4b33cde3d3f7e21aecc26bbfbd",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:14:59Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Pig wallowing teaches animal thermoregulation behavior; G6-M-2 'cool' (state-change heat) and G3-L-7 'sun' are keyword-only and no adaptations facet pattern matches. Potential destination: G5 adaptations lesson support if pattern admits wallowing/cooling.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "native-pig-warthog-vs-native-g6",
+      "id": "ffct-03117",
+      "textHash": "60975ee4874548194cccfcccece06effd5850ae1ec91d0b48aae19130f53f8b8",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:23:33Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Philippine wild pig vs warthog comparison is animal trivia; G6-L-4/G7-E-2 'Philippin' keywords target vertebrate classification and fault contexts. Potential destination: G6-L-4 local-examples support if reworded around vertebrate classification.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "natural-fibers-cotton-from-seed-g4",
+      "id": "ffct-17761",
+      "textHash": "2ff9d3b66a039a78d0d863e91e8041d5348da1a626e13f5d27ddb6888318679b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:29:15Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Cotton plant as source of fiber for clothes genuinely teaches natural-material use but no matched facet is on-topic (G5-E-6/G6-E-9/G7-L-10 'plant' keywords target water cycle, constellations, food pyramids; G3-E-2 pattern 'made|make' does not match the text). Potential destination: G3-E-2/G4-M-2 useful-materials support.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "natural-rubber-latex-tree-g6",
+      "id": "ffct-17969",
+      "textHash": "bdf12a52fba991cb638cbc578daa8e7bd6966eccd235764fd6dfb0099bcd8032",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:47:56Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Rubber from latex teaches plant-product use; matched G6-L-4/G7-E-2 'Philippin' units are vertebrate/fault competencies and G5-F-7 'rub' is static electricity \u2014 all keyword-only. Potential destination: useful-plants/materials enrichment or G3-E-2 support.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "nautilus-shell-chambered-g6",
+      "id": "ffct-02925",
+      "textHash": "2495650bd258f212b2e419fc715b95a39ec64c2f06e501fe3d25c0846ac59975",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:23:36Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Nautilus chambered-shell buoyancy is mollusk adaptation trivia; G7-F-10 'rise|sink' targets convection in the particle model and G5-M-4/G6-M-7 are mixture patterns \u2014 keyword-only. Potential destination: marine-animals enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "navigation-multiple-cues-backup-g8",
+      "id": "ffct-10356",
+      "textHash": "46a83c2b0c696b6f2438227e92a5ec7f1ff73333a770b44623fa060050952a88",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:39:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Multi-cue animal navigation teaches behavior; G3-E-6/G3-E-8 'star' and G10-M-1 'smell' keyword matches target sky observation and chemical-reaction indicators. Potential destination: animal-behavior enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "nearsighted-far-objects-blurry-g5",
+      "id": "ffct-04733",
+      "textHash": "0e710d7793a13566eb01e7984d28ebe6238e7241fefdd6e0978506c9fb991de9",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:19:22Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Myopia definition teaches an eye defect; G3-E-9 'eye' targets Sun-light safety and no optics competency matches. Potential destination: health/eye enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "nephron-tiny-filters-g7",
+      "id": "ffct-02441",
+      "textHash": "6b6e66961ac623033a58bd67364c64e3900cdb4e37f38a6cd615faae23a74ee0",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:22:17Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Nephron blood-filtering teaches the excretory system, which has no current competency; G4-M-6 'filter' targets community waste treatment and G8-F-8 'work' targets mechanical energy \u2014 keyword-only. Potential destination: human-body enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "neptune-last-planet-discovered-g7",
+      "id": "ffct-34220",
+      "textHash": "3dcc1df75096c9b7327066bd13cd4a6b3c74551f5ccc4bc0a9adeaa1d93db652",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:15:07Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Neptune-discovery trivia; the only pattern hits are spurious substrings (G3-L-4 'fin' inside 'finally', G7-E-1 'plane' inside 'planet'). Potential destination: solar-system enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "neptune-strongest-winds-g6",
+      "id": "ffct-33058",
+      "textHash": "d2d8845cfef6fce01b55fb6da9ef8a65b31359b715f5e58679b345a10ac3c27f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:15:12Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Neptune wind-speed trivia; matches are spurious substrings ('metre' inside 'kilometres', 'plane' inside 'planet'). Potential destination: solar-system enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "nerve-cell-signal-path-g8",
+      "id": "ffct-01500",
+      "textHash": "5c5b405b7b448100eb03dbd91205123c81ebd5c436ef34f34e5da46f9d4f5112",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:13:02Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Neuron signal path genuinely teaches the nervous system but no current competency covers it; matched patterns are spurious (G10-E-10 'rain' inside 'brain', G5-E-9 'signal' targets storm-warning signals). Potential destination: human-body/nervous enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "nerves-network-whole-body-g6",
+      "id": "ffct-00278",
+      "textHash": "83e2275db15dfb4b9b1fbdedaa31fcd6cb169f0400e89f77f56b68680d3303e9",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:59:10Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Nerve-network coverage of the body teaches the nervous system, absent from current competencies; G3-F-4 'reach' (sound transfer) and G4-E-2 'body' (water as need) are keyword-only. Potential destination: human-body enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "nesting-habitat-importance-g4",
+      "id": "ffct-05606",
+      "textHash": "8fed7d8c7aaf0c63dcf0692a82069a77dce20a75a4e0cd4dd82940f468b53da5",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:33:15Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Nesting habitat loss affecting reproduction teaches ecosystem dependence but G3-L-8 'plant|protect' and G3-L-3 'young' are keyword-only for conservation actions and life characteristics. Potential destination: ecosystems/habitat enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "neuron-g6",
+      "id": "ffct-04769",
+      "textHash": "ac60bc39a1c11a9610d3952c97cd6b9fa73bd65f7c80ebddeefcf44541f4c305",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:14:58Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Neuron definition teaches the nervous system, which no current competency covers; matches are spurious ('brain' contains 'rain', 'signal' targets storm warnings). Potential destination: human-body enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "neurons-nerve-cells-g7",
+      "id": "ffct-11962",
+      "textHash": "a109e94169c80378c63e9e05ab2d339f7648ec6f01a05f4d2e3e2ec037d7d1bb",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:13:01Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Neuron messaging teaches the nervous system, absent from current competencies; matched patterns ('light' in electrical contexts, G4-M-4 'new') are keyword-only. Potential destination: human-body enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "neutralization-acid-bee-sting-vinegar-g8",
+      "id": "ffct-17423",
+      "textHash": "b2d75eacb4884d1b32a92ec085f924b3bd073f271fec1bf24d4f58a6084cd947",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:46:32Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-M-11"
+      ],
+      "reason": "Everyday sting treatment card genuinely teaches acid/base identification at home: some stings are acidic and baking soda is a mild base that neutralizes them \u2014 a real component of G7-M-11 (home solutions as acids and bases), including the caution that not all stings are the same. TL/BIS faithful (acidic, neutralize preserved).",
+      "translationsChecked": true,
+      "evidence": [
+        {
+          "lesson": "g7:litmus",
+          "unit": "G7-M-11:acid",
+          "quote": "acidic"
+        },
+        {
+          "lesson": "g7:litmus",
+          "unit": "G7-M-11:base",
+          "quote": "mild base"
+        }
+      ]
+    },
+    {
+      "factId": "neutralization-acid-vs-dilution-g9",
+      "id": "ffct-17425",
+      "textHash": "1429bfd508614ec8b9c82f8198aa565ca196f1ccaa8d3e03438c8ca3f3d8218e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:57:51Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-M-11"
+      ],
+      "reason": "Card genuinely teaches acid/base/salt distinctions: neutralization adds a base to change acid into salt and water, unlike dilution which only weakens \u2014 a core component of G7-M-11 (acids, bases, salts). TL/BIS faithful (asin at tubig / asin ug tubig).",
+      "translationsChecked": true,
+      "evidence": [
+        {
+          "lesson": "g7:litmus",
+          "unit": "G7-M-11:base",
+          "quote": "adds a base"
+        },
+        {
+          "lesson": "g7:litmus",
+          "unit": "G7-M-11:salt",
+          "quote": "salt and water"
+        }
+      ]
+    },
+    {
+      "factId": "new-horizons-pluto-probe-g6",
+      "id": "ffct-33974",
+      "textHash": "030dd61c13c14ca6445fcbfa67de73172d0c45f6818dd88a4a34e6e69e808109",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:15:10Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G9-E-11"
+      ],
+      "reason": "New Horizons as the probe that explored Pluto with pictures is a genuine example for G9-E-11 (modern celestial research uses telescopes and space probes). Age-appropriate, factually accurate. TL/BIS preserve 'probe' and the exploration claim.",
+      "translationsChecked": true,
+      "evidence": [
+        {
+          "lesson": "g9:e-11",
+          "unit": "G9-E-11:focus-2",
+          "quote": "probe"
+        }
+      ]
+    },
+    {
+      "factId": "newton-laws-year-1687-g8",
+      "id": "ffct-25693",
+      "textHash": "6bc7a22cdf4881a8fd6974aac94f2b93b2478687b24c986514f9471c618f04f3",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:06:36Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Publication year/book of Newton's laws is history-of-science trivia; no matched facet teaches motion content (G5-F-6 'motion' keyword-only). Potential destination: motion enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "newton-nationality-g8",
+      "id": "ffct-26686",
+      "textHash": "e9d11d9218798506741533791265507c3a290b0479cff817886f85d71b8518bd",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:06:37Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Newton nationality trivia teaches no competency component; G4-F-1/G4-F-5 'try' substring inside 'country' is a spurious match. Potential destination: gravity enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "newton-three-laws-motion-g7",
+      "id": "ffct-26680",
+      "textHash": "4b95c4cd35be07425219a7b5d8ff50ce56f78ff8817cd3119022cd37600d92a0",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:06:38Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Names Newton as author of the three laws but teaches no law's content; G5-F-6 'motion' and G7-F-1 measurement patterns are keyword-only. Potential destination: forces-and-motion enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "nipa-fruit-edible-jelly-g5",
+      "id": "ffct-07438",
+      "textHash": "4f0cdc23fb6b79b613f1ae746de3a07cb30bf1de05d1cad406662eaef08c090e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:29:17Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Nipa young seeds as snack is edible-plant trivia; G3-L-3 matches 'young' (seeds) not reproduction, G4-M-6 matches 'treat' (snack) not waste treatment \u2014 keyword-only. Potential destination: useful-plants enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "nipa-palm-bahay-kubo-g5",
+      "id": "ffct-18120",
+      "textHash": "f755b5fd7eb8c1e59f65b6da87c17f7a2ce0f2ccffeda8e4a6fbe82a62d3dfb7",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:47:50Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Nipa thatch roofing genuinely teaches natural-material use but no matched facet is on-topic: G6-M-2 'cool' is state-change heat, G6-M-7/G6-L-8 'water' targets mixture products and living/non-living interactions. Potential destination: G3-E-2 useful-things-from-materials support if pattern broadened.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "nipa-walls-cigarette-wrappers-g6",
+      "id": "ffct-04917",
+      "textHash": "54801219f6d4f5b16d7a5a78212e639f9f33e2dd059753f60ac9857dac0791e3",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:29:18Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Nipa walls/wrappers teaches plant-material uses; G6-M-4 'use' facet is about mixtures and G8-L-3 'leaves' targets plant transport \u2014 keyword-only. Potential destination: useful-plants enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "nitrogen-cycle-g8",
+      "id": "dcard-02020",
+      "textHash": "e4b9d7587b4758e3d5ab3deb0edcdcf8d3ccd08e474a9be50a4e6c22d94f191f",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T10:10:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Nitrogen-cycle processes are core biology content but no current competency covers biogeochemical cycles; G10-L-6 'process' targets biotechnology and G3-L-2 is spurious. Potential destination: g8 biogeochemical-cycles enrichment or a future nitrogen-cycle facet.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "niyog-niyogan-g5",
+      "id": "ffct-00092",
+      "textHash": "9861f2fb788ef2a614fe814b0182e205f3b1ece9e3656dd6a4a9d343ac973514",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:14:57Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Niyog-niyogan flower color change trivia; only G3-E-4 'change' matches, targeting weather patterns \u2014 keyword-only. App/merged variants differ trivially (app drops leading 'The niyog-niyogan is'; same intent, app-pool wording reviewed). Potential destination: plants/flowers enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "no-fertilization-needed-g5",
+      "id": "dcard-06483",
+      "textHash": "986b5d5eee85586004e42ff9b445f3095b53b6f784ccbe0e3ad1f3932aa8bbef",
+      "previousExclusion": "first-pass grok-4.6 2026-09-06T13:51:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-L-7"
+      ],
+      "reason": "Card directly teaches a defining feature of asexual reproduction for G7-L-7: no fertilization and no gamete formation (versus sexual reproduction). TL/BIS faithful (walang fertilization at walang gamete formation preserved).",
+      "translationsChecked": true,
+      "evidence": [
+        {
+          "lesson": "g7:reproduction-types",
+          "unit": "G7-L-7:parents",
+          "quote": "asexual"
+        }
+      ]
+    },
+    {
+      "factId": "noble-gases-helium-neon-g9",
+      "id": "ffct-18818",
+      "textHash": "c0f78c636528d3b675efbb505c9c9541f3c4f5413ee8511d9d82b7a4d40dc650",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:27:03Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Noble gases' low reactivity is genuine chemistry but no current facet pattern matches the wording ('rarely react' misses G8-M-7 'reactiv'); G3-E-2 match is spurious. Potential destination: G8-M-7 periodic-trends support if pattern admits 'rarely react|noble'.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "nocturnal-rods-vision-g6",
+      "id": "ffct-08996",
+      "textHash": "d295c1ad46478ecce2096c8c50708d9110f2f56d290b4d591f1910e91a8c3e67",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:38:58Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Rod cells for night vision teaches animal adaptation; no adaptations competency exists and matches (G3-E-8 'night', G6-F-9 'light') are keyword-only. Potential destination: animal-adaptations enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "normal-conversation-decibel-g7",
+      "id": "ffct-26172",
+      "textHash": "52453ff0f658d5cbef21495a67cd75555842b93ff202bb4ca27fe6631dbb6715",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:54:32Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Decibel level of conversation matches no current core facet pattern at all. Potential destination: sound enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "nuclear-energy-source-g8",
+      "id": "ffct-26006",
+      "textHash": "eaf675c0d216a9f2a426a9f6ba135e77fcf615d9188d72a729c079b95bc5628d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:41:52Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Nuclear fission as electricity source; G10-M-9 'release' targets exothermic chemical reactions and fission is not a chemical reaction \u2014 keyword-only; G4-F-9/F-10 keywords don't teach the energy-source competency. Potential destination: energy enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "numbered-steps-g5",
+      "id": "ffct-36461",
+      "textHash": "7291ca9d7c3d9f8a87c2cc0660978895b50aa2b7aed23a48b6d3bc469554b15a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:45:10Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Numbering procedure steps is a generic process skill; G8-M-8 'group' targets valence groups and G9-M-4 is spurious. Potential destination: science-processes enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "nymph-looks-like-small-adult-g5",
+      "id": "ffct-08177",
+      "textHash": "8d65293231a2f79525ea889f5f2458ca82cbc784c48a6c6ccf82563a0fe20bfa",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:04:03Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Nymph appearance in incomplete metamorphosis genuinely teaches insect life cycles but the G5 life-cycle facet patterns do not match the text; G3-E-9 is spurious. Potential destination: g5 life-cycles support if pattern admits 'nymph|metamorphosis'.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "ocean-blue-related-sky-g7",
+      "id": "ffct-22810",
+      "textHash": "9838844ee473fa0d1da6fa3e513fb5983b307392f651167ba83c9abde4230bbe",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:08:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Ocean color from selective light absorption teaches light behavior; G10-M-9 'absorb' targets exo/endothermic reactions and G6-F-9 'light' targets wave types \u2014 keyword-only. Potential destination: light/oceans enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "ocean-largest-habitat-g6",
+      "id": "ffct-12346",
+      "textHash": "32b4056a5f9485aa049bd88e49b0a3b31785ab994bc512f9a02301e771fc30f3",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:01:47Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Ocean as largest habitat is ecosystem trivia; sole match G7-E-1 is 'plane' inside 'planet' \u2014 spurious. Potential destination: oceans/ecosystems enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "ocean-tides-boats-ships-harbor-g6",
+      "id": "ffct-31773",
+      "textHash": "073bc9d4ddca870d19a6cfbb9c12957ba02fadf3ba8d9922fe2fffed08ad52a9",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:16:55Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Tides easing harbor navigation teaches tide effects but no tides competency exists; G6-M-7/G6-L-8 'water' and G6-E-10 'time' are keyword-only. Potential destination: tides enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "ocean-tides-twice-daily-g6",
+      "id": "ffct-30836",
+      "textHash": "4462267db4bf10965092477c53c47b5488529c46facd9cda02ec0bd97dfe4ae9",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:16:57Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Two high/low tides daily with fishermen prediction teaches tidal patterns but no tides competency exists; G6-E-10 'time' targets indigenous sky-tracking and G3-E-4 'day|change' is keyword-only weather. Potential destination: tides enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "octanoic-acid-g9",
+      "id": "dcard-11637",
+      "textHash": "7e7e231c6409f8dceab20c6f39ddc02614d5681a9221ce81412173beeb635437",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:55:55Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Octanoic acid in coconut oil/soap is organic-chemistry specificity; G9 has no organic-compounds facet in live authoring (only 'group|16' G9-M-4 spurious). Potential destination: g9-matter organic-compounds enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "octopus-ink-defense-g4",
+      "id": "ffct-13611",
+      "textHash": "2ccea8bad4ee5c05284efae0155729d3c2c080f9a2791b43bdd6f3e1ace1841c",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T14:25:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Octopus ink defense teaches animal adaptation; no adaptations competency exists and matches (G6-L-8 'water', G4-E-4 'cloud' in 'cloudy water') are keyword-only. Potential destination: animal-adaptations enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "octopus-squid-cephalopod-g6",
+      "id": "ffct-03391",
+      "textHash": "0edc1918c5a1be0109ffdee740e25b4ab7c003e4d25d5861bc4ccb4385dc8000",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T03:50:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Cephalopod grouping teaches classification-by-shared-traits but no classification facet pattern matches ('common' misses G8-L-6 'classif|relationship|group'; G9-M-4 'group 16' spurious). Potential destination: G8-L-6 support if pattern admits 'group called|cephalopod'.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "oersted-unit-magnetic-g8",
+      "id": "ffct-25893",
+      "textHash": "6cbe3bdaad9ffd8259e1acf74fef9b2b2e28424eb1acfab7757ac325e9481012",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:06:40Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Oersted unit namesake is history-of-science trivia; G6-M-6 'magnet' targets magnetic mixture separation and G7-M-7 'units' targets measurement organization \u2014 keyword-only. Potential destination: magnetism enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "ohms-law-led-protection-g10",
+      "id": "ffct-24663",
+      "textHash": "c5547ab60a5d086eb07acdb038adddf317101f70120bdf4cb9d0ce0b450ee069",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:33:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Resistor protecting LEDs via Ohm's law is genuine circuits content but grade-10 competencies (projectile, energy reduction) do not cover circuits; all pattern hits are 'light' in LED \u2014 keyword-only. Potential destination: G9-F-7 current/voltage/resistance support if pattern admits 'resistor|Ohm'.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "oil-floats-vs-ice-floats-g6",
+      "id": "ffct-16974",
+      "textHash": "6a0cb07f423b54be7467c927ca2af895e4c329fe16a521ec65bc218d38271a6c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:44:19Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Oil vs ice floating teaches density/buoyancy; G5-F-5 'heav|light' targets gravity free-fall and G6-M-7 is mixture products \u2014 keyword-only. Potential destination: buoyancy enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "oil-spill-floats-sea-g6",
+      "id": "ffct-15577",
+      "textHash": "fe9d1e2ed9540275dd86e4abe91bfab9ed9657f7c47c5a5af7fa7a882d207e83",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:59:22Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Oil-spill density explanation teaches buoyancy, not a current competency; G6-L-8 'water' keyword-only. App/merged variants differ only in phrasing (same intent, app-pool wording reviewed and approved). Potential destination: buoyancy enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "okoy-stack-g4",
+      "id": "ffct-18611",
+      "textHash": "f6c71c534ce3ca573e2d0baff6342d14a0ee287d469200cf2cc1707d22bf0f23",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:44:19Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-M-1"
+      ],
+      "reason": "Okoy fritter cooked in very hot oil that dries its outside crisp is a genuine everyday local example of cooking as a science-explainable event, directly matching the G3-M-1 facet on objects/activities in the local environment explained by science ('cook', 'dry'). TL/BIS preserve the hot-oil/drying explanation.",
+      "translationsChecked": true,
+      "evidence": [
+        {
+          "lesson": "g3:everyday-science",
+          "unit": "G3-M-1:local-examples",
+          "quote": "cooked in very hot oil"
+        }
+      ]
+    },
+    {
+      "factId": "old-leaves-fall-yearround-g4",
+      "id": "ffct-13873",
+      "textHash": "45e35a28829a92e7c5ba96e265467ee344ed5c84e632bf4211fd55dae51a56d6",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:15:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Year-round leaf replacement teaches plant seasonality but no season/season facet matches in live authoring ('Philippines' only hits G6-L-4/G7-E-2 irrelevant facets); G8-L-3 'leaves' targets plant transport. Potential destination: plants/trees enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "oldest-tortoise-ever-tuimalila-g6",
+      "id": "ffct-05374",
+      "textHash": "c4cc78d2e6afd999f25e737949db20c2e6cbf700574be3dfde19b1986e263cec",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:14:54Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Oldest-tortoise record is animal trivia; G4-E-5/G5-E-3 'record' targets weather recording and rock classification keys \u2014 keyword-only. Potential destination: reptiles enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "oldest-tree-methuselah-g5",
+      "id": "ffct-02428",
+      "textHash": "bf9df8d42191767bd2a797c257e57586433248d7fa64601d7e6b6c592801b2a5",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:14:57Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Methuselah oldest-tree record is trivia; G9-E-4 'age|dat' targets fossil dating of rocks \u2014 keyword-only. Potential destination: trees enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "only-female-kangaroo-has-pouch-g4",
+      "id": "ffct-02855",
+      "textHash": "dca22af1f95bdc35cd4267c13779b46813a73e4a89accac1232aab6fad4e1aaa",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:23:45Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Female-only kangaroo pouch teaches mammal reproduction trivia; G3-L-3 matches 'babies' not reproduction characteristics and G9-F-2 is spurious. Potential destination: mammals enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "opening-fridge-is-pull-g4",
+      "id": "dcard-11966",
+      "textHash": "51f442cb7100c41170d8794f9dd65fc3757df5e15df13978a3928614567fb432",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:06:29Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-F-1"
+      ],
+      "reason": "Opening a fridge door is a textbook pull example: hand applies force moving the door toward the body \u2014 a genuine everyday example for the G3-F-1 facet on pushing and pulling objects ('pull'). TL/BIS faithful (pull/puwersa toward body preserved).",
+      "translationsChecked": true,
+      "evidence": [
+        {
+          "lesson": "g3:moving-things",
+          "unit": "G3-F-1:pull",
+          "quote": "a pull"
+        }
+      ]
+    },
+    {
+      "factId": "orbits-are-ellipses-g9",
+      "id": "ffct-30501",
+      "textHash": "5ab18a76552dc49d0c33785136937d345df5827fc49570a267bf2a3e7a6972d3",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:50:58Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Elliptical orbits teach planetary motion, but no current facet covers orbital shapes (G7-E-1 'plane' inside 'planet' spurious; G9 facets are dating/probes). Potential destination: solar-system enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "orchid-needs-warm-humid-g5",
+      "id": "ffct-11313",
+      "textHash": "07863e37c2ef2118fc1e333234af8fb1f5a5e8244ef7a555e8f9043533f1ecd8",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:45:09Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Orchid tropical climate preference teaches plant habitat needs; G6-L-4/G7-E-2 'Philippin' facets target vertebrate examples and fault contexts and G10-E-12 'climate' targets renewable energy \u2014 keyword-only. Potential destination: plants enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "ore-rock-how-formed-underground-g7",
+      "id": "ffct-31812",
+      "textHash": "76ae141683c783eff14ed1dbd8949da340f27739946d788af1f5698bfc489e70",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:17:46Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Ore formation from metal-rich hot water/magma filling rock cracks teaches mineral-deposit geology, not volcano formation; the G6-E-1 'magma' link is a keyword lead only (card never mentions volcanoes). Potential destination: geology/minerals enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "organ-system-nervous-g6",
+      "id": "ffct-07459",
+      "textHash": "baa94aef5d2c797095b49e81b6295ffdaf3a958d88913909ee0478212c593ef1",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:14:58Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Nervous-system overview teaches the nervous system, absent from current competencies; all matches are spurious ('movements' G3-E-7, 'rain' inside 'brain'). Potential destination: human-body enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "ors-mix-fresh-clean-g6",
+      "id": "ffct-12091",
+      "textHash": "fc872a2abf39e87e20e6505329dc84eccbae7f1c35429edd8ceeb72bc0613d62",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:16:20Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "ORS mixing instructions teach health practice, not mixture-separation science; G6-M-7/G6-L-8 'water' and G6-L-1 diagram keywords are off-topic. Potential destination: health enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "ors-treats-signs-of-dehydration-g8",
+      "id": "ffct-08160",
+      "textHash": "852e3a3dfb254b9d6fc63c2e70a555b5f1f110693e787ee4dce8c298e6ab4810",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:33:25Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Dehydration signs and ORS use teach health practice with no matching competency; G5-E-9 'signal' targets storm-warning signals \u2014 keyword-only. Potential destination: health enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "oscillation-repeating-motion-g7",
+      "id": "ffct-23580",
+      "textHash": "546e6c27c5761323aa199f169ac5019da08312394ac90b1f0cf76d4b85bc3609",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:53:42Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Oscillation as repeating back-and-forth motion defines periodic motion; no current facet genuinely teaches it (G5-F-6 'motion' targets gravity effects on falling objects; G7-M-3 targets particle motion). Potential destination: motion/waves enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "osteoporosis-bone-density-g7",
+      "id": "ffct-14500",
+      "textHash": "8a892c03cb672c7b1cd9f28d5dd3b795b6b08e3b575af85af3ad4689eabf12fc",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:59:24Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Osteoporosis bone-density loss and fracture risk is disease content with no matching competency; G7-E-4 targets earthquake fault risk via PHIVOLCS FaultFinder, not health risk. Potential destination: diseases/human-body enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "ostrich-largest-bird-g3",
+      "id": "ffct-03432",
+      "textHash": "055ddf89984172114512f2f34113d799e89192b3b8c3f1e159afdb42bf7ed36b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:29:30Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Ostrich largest-bird superlative is animal trivia matching no facet pattern at all. Potential destination: birds enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "outdoor-quake-safety-g10",
+      "id": "dcard-11889",
+      "textHash": "53b97e7f62c0f8d713a8b49c45971a9415782c309f66fb97f58c220faa616f56",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:03:11Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Outdoor earthquake safety teaches a real safety practice but no live competency facet matches (G5-E-10 'during' is cyclone-specific; G6-E-5 'during' is volcanic). Cats are an enrichment-style label. Potential destination: earthquake-safety enrichment or G7-E-4 hazard-risk support if pattern broadened.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "ovary-size-location-g5",
+      "id": "ffct-37028",
+      "textHash": "086dd45c8d24f9e62cd9f26e651ecdefdabdbc6c3f8571475801a1c80e2e3ddc",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:27:37Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Ovary size/location is reproductive-anatomy trivia; G5-L-3 diagram facets do not match the text and G4-E-2 'body' targets water as a basic need \u2014 keyword-only. Potential destination: human-body enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "owl-ears-uneven-g5",
+      "id": "ffct-08387",
+      "textHash": "8020f11dc96b9525a00fd3a0615a750b1075cb1d97f3b4106a8b27d9b4197984",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:23:49Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Owl uneven ears for sound localization teaches animal adaptation; G4-F-8 'sound' targets objects affecting others without contact \u2014 keyword-only. Potential destination: birds/senses enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "owl-night-hunter-g3",
+      "id": "ffct-02779",
+      "textHash": "9b6eafeab3d7acc16d5951dddef3508a8ab6831370091b9bd366ad6f121a5a35",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:39:02Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Owl nocturnal hunting teaches animal behavior; G3-E-8 'night' targets how sky objects affect people's activities \u2014 keyword-only. Potential destination: birds enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "owl-philippine-eagle-owl-g4",
+      "id": "ffct-10267",
+      "textHash": "7dbeb6411f42a0a5fdcc2e2a7a5b315b73250b1047c616c276e1cbbd98c6a843",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:01:48Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Philippine eagle-owl endemism is bird trivia; G6-L-4 'Philippin' targets vertebrate/invertebrate differences with local examples and the card teaches no classification component \u2014 keyword-only. Potential destination: G6-L-4 local-example support if reworded as vertebrate example.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "oxalate-also-in-other-plants-g7",
+      "id": "ffct-11397",
+      "textHash": "e27775f71f7369ee34185af405c53eeed53cbe881c8ed62c8514402844167cec",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:29:41Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Calcium-oxalate crystals across plants is plant-trivia; G4-L-2 'shoot|stem.*lea' facet targets root/shoot systems and G3-L-2 is spurious. Potential destination: plants enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "oxygen-lavoisier-g8",
+      "id": "ffct-19621",
+      "textHash": "77633936fb42fc16cd0abd0dc2be1d66bd5aefe5e020684457561e8b837b7d3a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:06:40Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Lavoisier/Priestley naming trivia; G8-L-11 'oxygen' targets planning a photosynthesis investigation \u2014 keyword-only. Potential destination: gases/chemistry-history enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "oxygen-s-role-in-respiration-g9",
+      "id": "dcard-10573",
+      "textHash": "d25df2fa0a08b59a09dd04a7bd5f362b35a6bfd2c5b2aaf138c665d5ff1ae4bc",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T01:50:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Oxygen as final electron acceptor teaches cellular respiration biochemistry; G8-L-11 'oxygen' targets photosynthesis raw materials and no G9 facet matches \u2014 keyword-only. Potential destination: g9 respiratory-systems enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "oyster-pearl-formation-nacre-g6",
+      "id": "ffct-09427",
+      "textHash": "84ce1a83ea00a727f535ae1aecdd558c0ffb3529781bd49d5bb1f1b2f908fbb5",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:14:57Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Pearl formation from nacre layers teaches mollusk biology; G6-M-7 'sand' targets mixture-separation products \u2014 keyword-only. Potential destination: mollusks enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "ozone-blocks-vs-atmosphere-air-g7",
+      "id": "ffct-31856",
+      "textHash": "46574cd0de6e4bfe668acfbd49f8888c81bfab61c081dd19f120a7475bf2a188",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:00:30Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Ozone thinness vs atmosphere teaches atmospheric composition; G6-E-4 'block' targets volcanic eruption materials and G6-E-4/G9-E-7 matches are keyword-only. Potential destination: atmosphere enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "ozone-layer-stratosphere-location-g6",
+      "id": "ffct-29857",
+      "textHash": "20af90811b8d4746f369066fa072792247e5aa434acab56cb0b7f02c526b9a46",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:05:02Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Ozone-layer stratosphere location teaches atmosphere layers, absent from current competencies; G6-E-6 '\\bregion' targets Philippine climate types \u2014 keyword-only. Potential destination: atmosphere enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "pagasa-history-g6",
+      "id": "ffct-32602",
+      "textHash": "fca7a01645057c1a4cf8d43cb5032ad8826d4eaaa8603fbf9c66923a288bb542",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:50:38Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "PAGASA 1972 founding is institutional history trivia; G8-E-10 'warning' facet genuinely covers authority support but the card's teaching payload is the creation date, not how warnings support communities. Potential destination: G8-E-10 support if reworded around warning services.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "pagasa-role-g5",
+      "id": "ffct-30576",
+      "textHash": "f4969c1833639849de15a17976a4b461a45d41fe126f81f2e2200a0029380267",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:21:10Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G8-E-10"
+      ],
+      "reason": "PAGASA as the government agency that monitors weather and issues typhoon warnings is a genuine component of G8-E-10 (how authorities support communities affected by typhoons \u2014 warnings protect communities). Factual and age-appropriate; TL/BIS faithful (babala/pasidaan preserved).",
+      "translationsChecked": true,
+      "evidence": [
+        {
+          "lesson": "g8:community-support",
+          "unit": "G8-E-10:support",
+          "quote": "warnings"
+        }
+      ]
+    },
+    {
+      "factId": "pagasa-super-typhoon-threshold-g8",
+      "id": "ffct-34021",
+      "textHash": "6246d8abeee7fe5003b09274fa14a5ffc705c4cd895b9b3a4eb5016bf2e510b4",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:13:35Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G8-E-7"
+      ],
+      "reason": "PAGASA classification threshold (super typhoon at 185 km/h or more) genuinely teaches typhoon intensity categories, a component of G8-E-7 (using reliable sources like PAGASA to explain typhoons). Factually matches PAGASA's current classification. TL/BIS preserve the 185 km/h threshold.",
+      "translationsChecked": true,
+      "evidence": [
+        {
+          "lesson": "g8:typhoon-formation",
+          "unit": "G8-E-7:source",
+          "quote": "PAGASA"
+        }
+      ]
+    },
+    {
+      "factId": "pagasa-tropical-depression-wind-g6",
+      "id": "ffct-33550",
+      "textHash": "7660d79d1ab1775d3d3ab3153f6fbff0cc0b639fcbdf5fd1adab51d658a8ad8d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:21:14Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Tropical-depression wind range (39-61 km/h) teaches cyclone categories but no live facet matches the text (G5-F-10 'strong' is electromagnets, G3-L-2 spurious). Potential destination: G8-E-7/G5-E-9 support if pattern admits cyclone categories.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "pako-iron-vitamin-nutrition-g6",
+      "id": "ffct-09254",
+      "textHash": "8bc2ac5cb48e1483eb72b083871540c49209258e73de2490f88af54819e30363",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:33:25Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Pako fern nutrition (iron, vitamins) is nutrition trivia; G6-M-7 'iron' targets mixture-separation products \u2014 keyword-only. Potential destination: nutrition enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "palawan-many-endemic-species-g6",
+      "id": "ffct-10478",
+      "textHash": "2d9551e0db066a7cfcd38a1160bc3292b654ecf018324d65f3242b8f41c216d7",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:03:03Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Palawan endemism richness is biodiversity trivia; G6-E-9 'plant' targets constellations and G4-E-2 targets water as need \u2014 keyword-only. Potential destination: ecosystems/conservation enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "palawan-peacock-tourism-pride-g6",
+      "id": "ffct-05090",
+      "textHash": "c50ccadb0f111c8cbf90daa8516c0bba935193417d834d4790b311017676aab2",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:03:02Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Tandikan tourism/pride card matches no facet pattern at all and is tourism trivia. Potential destination: birds/Philippine-wildlife enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "palawan-wallace-line-divide-g7",
+      "id": "ffct-01774",
+      "textHash": "1921f83b7422eb3601818d2fd50a8b5c4068248656c789ca541579b5a776a205",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:27:30Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Palawan-Borneo land bridge explaining shared fauna teaches biogeography; G9-E-1 pattern ('Pang|continent') does not match and all listed matches are keyword-only. Potential destination: G9-E-1 continental-drift support if pattern admits 'land bridge|connected'.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "pancit-luglug-bowl-g4",
+      "id": "ffct-01914",
+      "textHash": "4b321ca4bc0c4a18720cf3d9a9964a0ff58d333731286f7f40cb85d9ee6613be",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:33:23Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Pancit luglug carbohydrate-energy note is nutrition trivia; G6-M-7 'rice' targets mixture products and G7-L-10 'rice' targets food-pyramid energy transfer \u2014 keyword-only. Potential destination: nutrition enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "pancreas-glucagon-not-felt-g8",
+      "id": "ffct-14731",
+      "textHash": "9b5df34510f84e8dee9d5a849a5e94888e737e966ea177528f49801ff6703737",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:43:52Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Glucagon working imperceptibly teaches endocrine function, absent from current competencies; G8-F-8 'work' targets mechanical energy \u2014 keyword-only. Potential destination: human-body enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "pancreas-insulin-how-it-works-key-lock-g8",
+      "id": "ffct-14119",
+      "textHash": "ff4ef1c73a3244300e44b553756a60d6e14e880cb5fd835a9fa2416191a61b29",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:43:53Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Insulin key-lock mechanism teaches endocrine function, absent from current competencies; G6-F-8 'energy' targets wave energy \u2014 keyword-only. Potential destination: human-body enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "pancreas-insulin-why-feel-tired-g8",
+      "id": "ffct-13095",
+      "textHash": "1b7233aea131cc5bceb665e5eebc0da58c611b64242f77074ced120fb50019aa",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:43:55Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Insulin deficiency causing fatigue teaches endocrine function, absent from current competencies; G6-F-8 'energy' targets wave energy \u2014 keyword-only. Potential destination: human-body/health enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "pangolin-defense-easy-to-catch-g7",
+      "id": "ffct-07101",
+      "textHash": "a0954d15fa170f5c4c7c9cfb373533e68e37fed8496364394022cede8c12242a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:39:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Pangolin ball defense failing against humans is adaptation trivia; G9-L-11 'protect' targets planning surveys on minimizing human impacts \u2014 keyword-only. Potential destination: animal-adaptations enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "pangolin-rolls-into-ball-defense-g4",
+      "id": "ffct-04748",
+      "textHash": "a75ee3f50482a9e33624dabceb15d38b56f2dec16b57cc7c0ee4486ace4a17b5",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:15:05Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Pangolin rolling into a ball with hard scales is adaptation trivia; G3-M-5 'hardness' targets properties of common materials and G3-L-6 'shelter' targets basic needs \u2014 keyword-only. Potential destination: animal-adaptations enrichment.",
+      "translationsChecked": true
+    }
+  ],
+  "note": "User-requested final consolidation; complete independent proposal verification assessed by parent. Original timestamps preserved as provenance."
+}

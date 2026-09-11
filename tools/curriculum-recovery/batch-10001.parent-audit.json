@@ -1,0 +1,26 @@
+{
+  "originalProposals": [
+    {
+      "factId": "evening-orion-position-g3",
+      "id": "dcard-02209",
+      "textHash": "b02b7282ab7b69ad84258157b0e85435fa46721f819e4ca062349b93a4678d33",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:48:44Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:25:46.599Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-E-6"
+      ],
+      "reason": "Describes a named star group and its evening sky position; G3-E-6 admits only the stars facet (day-night/moon/planets do not match). TL/BIS keep Orion as a star group near the eastern horizon.",
+      "evidence": [
+        {
+          "lesson": "g3:watching-the-sky",
+          "unit": "G3-E-6:stars",
+          "quote": "the star group Orion"
+        }
+      ],
+      "translationsChecked": true
+    }
+  ],
+  "reason": "Parent semantic/identity validation before application"
+}

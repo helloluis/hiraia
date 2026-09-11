@@ -1,0 +1,563 @@
+{
+  "parentVerifiedAt": "2026-09-10T15:00:51.878423+00:00",
+  "originalProposals": [
+    {
+      "factId": "mixture-two-or-more-g6",
+      "id": "ffct-15816",
+      "textHash": "112cce4211b97142e52b7f5cdebe4e4f7135a8126193f58198ac418fe2edffc8",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:59:22Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Defines a mixture as two or more substances mixed together, but G6-M-4 (uniform and non-uniform mixtures such as solutions and suspensions) is not admitted (needs solution|homogeneous, suspension|heterogeneous, or use|food|drink|medicin|paint). G3-E-2 made is human-made objects from earth materials. G5-E-2 different is rock comparison. G7-L-7 differ is sexual vs asexual. TL/BIS keep mixture/sangkap/gisagol. Potential G6-M-4 after a mixture-definition facet.",
+      "evidence": []
+    },
+    {
+      "factId": "model-t-affordable-henry-ford-g6",
+      "id": "ffct-26616",
+      "textHash": "130872660d1f41d4383cf58cbcbcfd2d81d8787b02bedfc2b13e7a6d47507a67",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:07:45Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Model T assembly-line affordability is historically sound, but G4-M-1 (invent|develop|creat) is not admitted and G4-M-2 requires a home or local-community invention. G3-E-2 made is useful things from clay/wood/metal. All model|draw hits are activity filters (G5-E-5/7/12, G6-E-7, G7-E-2/5/10). TL/BIS assembly line/Model T OK. Potential G4-M-1 after a Ford/assembly-line invention matcher.",
+      "evidence": []
+    },
+    {
+      "factId": "mohs-5-apatite-g7",
+      "id": "ffct-19039",
+      "textHash": "4cf66412d164304e773a0c70e291092f992eebf57f3ee3c016e2be390f07f0f4",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:40:36Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Apatite is Mohs 5 on the standard scale. G3-M-5 hardness (hard.*(press|scratch|shape)|soft) is not admitted. G5-E-4 minerals is soil formed from rocks. G9-M-11 hardness is an investigation of ionic/covalent/metallic substances. G9-E-8 scale is an Earth-layer drawing. TL/BIS keep apatite/Mohs. Potential G3-M-5 or G5-E-3 after a mineral-hardness/Mohs facet.",
+      "evidence": []
+    },
+    {
+      "factId": "mohs-hardness-g7",
+      "id": "ffct-31102",
+      "textHash": "200b89ed71fb44a0ed4161d2e028983d8d580e91e947e79c846bba6bfd5da0ee",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:17:39Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Scratch ranking 1 talc to 10 diamond is the Mohs method, but G3-M-5 is qualitative hard/shiny/stretchable of classroom solids; matching via soft/scratch would swallow a mineral scale. G5-E-4 is soil from minerals. G9-M-11 hardness is a bonding-type investigation. Measure/test hits are activity filters. TL/BIS keep Mohs/talc/diamond. Potential G3-M-5 after a scratch-test mineral example, or G5-E-3 after Mohs.",
+      "evidence": []
+    },
+    {
+      "factId": "mohs-scale-range-g7",
+      "id": "ffct-33827",
+      "textHash": "505a73d35f4e61075fc0055aad0a8df4f35411e7c1c34e67056dbc85e35ec6c8",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:17:41Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Mohs 1–10 range without the scratch test. G3-M-5 matches only via 'softest', a keyword swallow. Same destination gap as mohs-hardness-g7. TL/BIS OK. Potential G3-M-5/G5-E-3 after Mohs.",
+      "evidence": []
+    },
+    {
+      "factId": "molars-grind-enamel-hardest-g5",
+      "id": "ffct-11703",
+      "textHash": "1c4bb444b5db8dff57be0d480040386b713d716a91da7323e9697879a5a6c517",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:59:03Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Tooth enamel is the hardest tissue in the human body. G3-L-4 feeding needs beak|mouth|teeth|tongue (molars/enamel not admitted). G4-L-1 digestive needs digest|break.*food; skeletal needs bone.*(support|protect). G9-M-11 hard is bonding investigation. TL bagang / BIS bag-ang OK. Potential G3-L-4 after teeth/molar, or G4-L-1 after chewing/enamel.",
+      "evidence": []
+    },
+    {
+      "factId": "molave-termite-resistant-g6",
+      "id": "ffct-05018",
+      "textHash": "81b8f494825c42bcde2f760d87257d8e23d23738d393e6b0490fba6441b59baf",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:09:44Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Molave (Vitex parviflora) is a durable Philippine timber, termite- and rot-resistant. G3-E-2 is identifying useful things people made from non-living materials, not why the wood lasts. G4-M-4 wood is burning. G4-F-7 wood is a magnetic-materials investigation. TL anay/mabulok and BIS anay/madunot OK. Potential G3-E-2 after a molave-product example, or G4-M-3 degradable.",
+      "evidence": []
+    },
+    {
+      "factId": "mollusk-soft-body-shell-g6",
+      "id": "ffct-03901",
+      "textHash": "b1b81eda60c0b39918058d545293cd9ec0f2f2240eb0e14f1ee27ac0707d375c",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T03:50:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Soft body plus protective shell is sound mollusk anatomy. G6-L-4 vertebrate/invertebrate difference is not taught (local examples need Philippin|carabao|…). G3-L-3 grow is a grow-a-shell keyword. G3-L-6 protect is shelter-as-basic-need, not armor (same hold as crab-exoskeleton). G8-M-2 shell is electron shells. TL kabibe / BIS kabhang OK. Potential G6-L-4 after a mollusk invertebrate example, or G3-L-4 after a protective-covering facet.",
+      "evidence": []
+    },
+    {
+      "factId": "momentum-mass-followup-can-it-be-negative-g9",
+      "id": "ffct-24103",
+      "textHash": "dd9f79230c8a67ea5da356c0e2a58239cddc5b02836bcb9b4dbff7cfcd0d3636",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:42:35Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Signed 1D momentum as direction is sound. G10-F-6 is changing momentum with force over time, not the sign. G10-F-4 mass×velocity/impact is not admitted (needs impact|collision|stop). G7-F-6 speed vs velocity vectors is not taught. G10-L-2 negative is homeostasis. G7-F-5 zero is displacement. TL/BIS direksyon OK. Potential G10-F-4 after a signed-momentum/vector facet.",
+      "evidence": []
+    },
+    {
+      "factId": "monitor-lizard-endemic-species-ph-g7",
+      "id": "ffct-05352",
+      "textHash": "8e15d472d200e057642b3f274d0cd99c4d4ac6bdbc8e29c2893b9a61f6a9ac8f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:34:46Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Several Philippine monitor lizards are endemic (e.g. Varanus bitatawa, V. olivaceus). G6-L-4 local matches Philippin but the competency is backbone vs no backbone, not endemism. G9-L-8 community/Philippin is research on protecting endangered/economically important species, not taught. G9-L-5/L-6 biodiversity not admitted. TL/BIS bayawak OK. Potential G9-L-6 after an endemic-species facet, or G6-L-4 after a vertebrate example.",
+      "evidence": []
+    },
+    {
+      "factId": "monkey-lives-in-groups-g4",
+      "id": "ffct-09774",
+      "textHash": "862cc7a473ded32161b61c07a2ca95d820a61068da65753b5e089cb5d1f18119",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:42:24Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Group living for mutual watch is real primate behavior. G3-L-7 food|eat|shelter is not admitted. G3-E-5 danger is weather danger. G4-M-7 group is environmental-survey classifying. G8-M-7 group is the periodic table. TL/BIS OK. Potential G3-L-7 after social-group interdependence, or G6-L-8.",
+      "evidence": []
+    },
+    {
+      "factId": "monsoon-name-origin-local-g5",
+      "id": "ffct-29361",
+      "textHash": "0d9d78111cf07c496231e876e11ca3bba16de342d487b4a00c4a7ec28c099516",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:50:08Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Habagat and amihan are local names for the two Philippine seasonal winds. G7-E-12:monsoon is admitted, but the competency is how solar energy causes land/sea breezes, monsoons, and the ITCZ — etymology is not that mechanism. G6-E-6 wet/dry seasons is not admitted. G6-E-9/E-10 season is constellations/indigenous sky time. G3-F-1 wind is moving objects. TL katutubong pangalan / BIS lumad nga ngalan OK. Potential G7-E-12 after local monsoon-name examples, or G6-E-6.",
+      "evidence": []
+    },
+    {
+      "factId": "moon-anorthosite-geology-separate-from-earth-g7",
+      "id": "ffct-33249",
+      "textHash": "8a0fab3a40cf588750d61136b755dd2442f8e744299fe064854317ac3556b2ce",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:15:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Giant-impact oxygen-isotope similarity and a smaller lunar iron core are standard (NASA). G3-E-6 is guided observation of the Moon in the sky. G5-E-11 solar-system structure is not admitted (sun-center/asteroid/rocky-gas-ice). G9-E-7 core is Earth's interior from seismic waves. G3-E-1 rock is schoolyard non-living. G6-M-5 oxygen is air mixture. TL/BIS keep giant impact/isotope/silicate. Potential G5-E-11 after a Moon-composition/origin facet, or G9-E-9.",
+      "evidence": []
+    },
+    {
+      "factId": "moon-crescent-g4",
+      "id": "ffct-33773",
+      "textHash": "ef41f1d5323cbddb63ba26a9f044fdfaa5dbf401b30af5e41260792559d0024b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:16:23Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G3-E-6"
+      ],
+      "reason": "Describing a crescent as the thin sunlit sliver of the Moon commonly seen in the sky is a current G3-E-6:moon observation. Only the moon facet of G3-E-6 is admitted. G5-E-12 relative-motion needs sun+earth+moon together and is not admitted; G5-E-12:model is a drawing activity (not credited). G3-F-5 sun-as-light-source is everyday uses, not lunar illumination. G3-E-8 day/night is sky objects affecting people's activities, not taught. TL/BIS crescent/kurba/nipis OK. Full EN/TL/BIS and both pools inspected; single identical card ID.",
+      "evidence": [
+        {
+          "lesson": "g3:watching-the-sky",
+          "unit": "G3-E-6:moon",
+          "quote": "That's a crescent moon! We see it when only a small part of the Moon facing us is lit up by the Sun."
+        }
+      ]
+    },
+    {
+      "factId": "moon-cycle-about-month-g5",
+      "id": "ffct-30707",
+      "textHash": "e9575fde3c639b10ac890b62b7f1f9c1f3eb19b55a61aa573766b72efd3e3086",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:55:30Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Synodic month ~29 days is sound. G5-E-12 is a drawing/model of Earth-Moon-Sun motion to explain phases, not the period (activity filter; relative-motion needs all three names). G3-E-6 is describing sky objects, not cycle length. G8-E-1 '29' is land/water proportion. TL/BIS OK. Potential G5-E-12 after a phase-period facet.",
+      "evidence": []
+    },
+    {
+      "factId": "moon-europa-ocean-g7",
+      "id": "ffct-34578",
+      "textHash": "ce91836ed25acb1f07f0313925d4c70af14c2b81570d22d92d48cce663496f13",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:15:02Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Europa's subsurface ocean is a supported NASA/Galileo inference. G5-E-11 is not admitted. G3-E-6:moon is Earth's Moon in the sky. G3-L-6/G4-E-2 water-as-need are Earth organisms. G9-E-8 crust is Earth's layers. Same hold as europa-subsurface-ocean-g7. TL/BIS keep Europa/ocean. Potential G5-E-11 after a moons-of-planets/features facet.",
+      "evidence": []
+    },
+    {
+      "factId": "moon-footprints-stay-no-wind-g5",
+      "id": "ffct-29911",
+      "textHash": "706fe4276e286d76f203ca2bc2709f1b8744317eaa7ed66b99fd08283098586b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:15:04Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "No atmosphere so no wind/rain to erase footprints is sound. G3-E-6 is sky appearance, not surface conditions. G3-F-1 wind is moving objects on Earth. G3-M-1 rain is local events. G5-E-11 not admitted. TL/BIS OK. Potential G5-E-11 after a Moon-surface/atmosphere facet.",
+      "evidence": []
+    },
+    {
+      "factId": "moon-gravity-1-6-ms2-g6",
+      "id": "ffct-26526",
+      "textHash": "e17d1cc74baba120a5dcdafd6ca59243abe9b30aa4d70cde8e8997807580f9de",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:15:02Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "~1.62 m/s² vs Earth's 9.8 m/s² is standard (NASA moon factsheet: https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html). G5-F-4 non-contact gravity on Earth is not admitted (needs non.contact|without touch). G8-E-11 gravit is tides. G8-F-9 gravit is energy conservation in falls. G3-E-6 is sky observation. Same hold as fwg-gravity-1296. TL/BIS keep 1.6/9.8. Potential G5-F-4 after a weaker-gravity/weight facet.",
+      "evidence": []
+    },
+    {
+      "factId": "moon-jellyfish-philippine-bays-g5",
+      "id": "ffct-01693",
+      "textHash": "860af602551f6d24ae292a51e10dbbb3aed12b9b2603e8e191b8d852417c9793",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:23:22Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Aurelia ('moon jellyfish') with four central gonads is common in Philippine bays. G6-L-4 local matches Philippin but does not teach vertebrate vs invertebrate. G3-E-6:moon is Earth's Moon (name trap). G4-L-3 diagram-habitat is an activity filter. G8-F-2 circle is circular motion. TL/BIS keep moon jellyfish / look. Potential G6-L-4 after an invertebrate/jellyfish example.",
+      "evidence": []
+    },
+    {
+      "factId": "moon-one-face-tidal-locking-g6",
+      "id": "ffct-34222",
+      "textHash": "8432c3077fca46b8568a646a2673eb7c2577375c3502368d5e6c2249777b4d0d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:16:25Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Synchronous rotation/tidal locking is why we see one lunar face. G3-E-6 is describing the Moon as seen, not the spin-orbit mechanism. G5-E-12 model/relative-motion not admitted. G6-E-8 Sun-Earth-Moon seasons/eclipses not admitted (needs tilt|constellation|eclipse). G7-E-10 orbit is an Earth-tilt model (activity). TL/BIS tidal locking OK. Potential G5-E-12 after Earth-Moon motion (not just model), or G6-E-8.",
+      "evidence": []
+    },
+    {
+      "factId": "moon-orbital-speed-g8",
+      "id": "ffct-34527",
+      "textHash": "e3d72fa4bd76da46a8e6c5359bbf660a6b032f37033aa09e67180af1f4113355",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:52:18Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Mean lunar orbital speed ~1.02 km/s is sound. G3-E-6 is sky observation. G4-F-2 measure distance/time with equipment is an activity. G4-F-4 fast is speed graphs. G8-F-1/F-7 per second is acceleration/power. G7-E-10 orbit is a tilt model. TL/BIS OK. Potential G5-E-12 after orbital-motion, or G4-F-3 speed.",
+      "evidence": []
+    },
+    {
+      "factId": "moon-phase-cycle-29-days-g6",
+      "id": "ffct-34229",
+      "textHash": "72fbebcb3c447d232b273d23ac12c235ad9b0f498f09889f0737870063810d55",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:16:24Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "29.5-day synodic month (new moon to new moon) is sound. Same G5-E-12 activity/model gap as moon-cycle-about-month-g5. G8-E-1 29 is land proportion. TL/BIS OK. Potential G5-E-12 after a phase-period facet.",
+      "evidence": []
+    },
+    {
+      "factId": "moon-phases-predictable-g5",
+      "id": "ffct-30714",
+      "textHash": "be07fe8d80c7258b06eaee23f533a32aadb3af948c106e07b279e7463ea1a60e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:16:24Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Repeating phases let us predict a full moon. G5-E-12 is a drawing/model activity, not admitted. G3-M-4/G3-L-1 predict are science-process-skill descriptions in simple activities, not lunar prediction. G3-E-4 pattern is weather. G6-E-3 predict is volcano history. TL/BIS OK. Potential G5-E-12 after a predictable-phases facet.",
+      "evidence": []
+    },
+    {
+      "factId": "moon-same-face-earth-g6",
+      "id": "ffct-30718",
+      "textHash": "35a485b27f2c09fa482d7e06d4f32be39403d4b217d60803a8f07082f6076fc8",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:51:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Same face because one spin per orbit (tidal locking without the name). Same gap as moon-one-face-tidal-locking-g6. G3-E-6 is appearance not mechanism. TL/BIS OK. Potential G5-E-12/G6-E-8 after Earth-Moon rotation.",
+      "evidence": []
+    },
+    {
+      "factId": "moon-synchronous-rotation-g6",
+      "id": "ffct-29135",
+      "textHash": "f53bd84f2454ce1cde0ded6b459d53cfaea8b818e979ed83d54f8f5311ae311f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:55:28Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Same teaching as moon-same-face-earth-g6 / tidal locking. G4-F-4/G7-F-7/G8-F-3 axis are graph axes. G7-E-10 orbit is a tilt model. TL/BIS OK. Potential G5-E-12 after synchronous-rotation.",
+      "evidence": []
+    },
+    {
+      "factId": "moon-time-to-fly-3-days-g7",
+      "id": "ffct-34236",
+      "textHash": "d24541c41f70fa9035373fda631e5448d2725845b44884ef90549ec550b321c4",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:15:04Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Apollo trans-lunar coast ~3 days is sound. G3-E-6 is observing the Moon. G3-F-4 travel is sound transfer. G6-E-6 travel is seasonal activities. G9-F-10 space is EMR through vacuum. G9-E-11 telescopes/space probes not admitted. TL/BIS Apollo/spaceship OK. Potential G9-E-11 after a spaceflight facet.",
+      "evidence": []
+    },
+    {
+      "factId": "moon-weight-100n-example-g8",
+      "id": "ffct-26852",
+      "textHash": "024c9ac132ffc1df69d41c01c7ff52ec63e0c30bf6bed149abeff8ad437f294b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:24:02Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Weight ~1/6 on the Moon (60 kg-equivalent feels like 10 kg-equivalent) is the standard elementary ratio; mixes mass/weight language. G5-F-4 is not admitted. G8-F-5 drop is PE↔KE. G9-M-4 six is oxygen valence. G3-E-6 is sky observation. BIS 'kung 60 ka sa Earth' drops kg; meaning still 1/6. Potential G5-F-4 after a lunar-weight facet.",
+      "evidence": []
+    },
+    {
+      "factId": "mordant-fixing-dye-g7",
+      "id": "ffct-16128",
+      "textHash": "8d12fc8bfc97e9d6eb78a6a30fc7d01f7e102800cd52eb185afea91d09690dbb",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:09:44Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Salt, vinegar, and mineral mordants do help bind natural dyes. G4-M-3 chemical properties (burn/react/degradable) is not admitted. G6-M-4 \\buse is useful mixtures (solutions/suspensions), not dye chemistry. G7-M-8 is solute/solvent. G7-M-11 salt is acids/bases/salts with litmus. G10-M-1 color is reaction indicators. G10-L-7 vinegar is fermentation products. G3-E-9 cloth is sun-safety. TL/BIS mordant/asin/suka OK. Potential G4-M-3 after a dye-reaction example.",
+      "evidence": []
+    },
+    {
+      "factId": "more-load-sinks-deeper-g5",
+      "id": "ffct-14979",
+      "textHash": "1e6753f86e4d9e084232ebaa1f5acd2d0432f3dc2f76da88e9f714c5463d7dbc",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:00:01Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "More cargo makes a boat sit deeper; overload can sink (Archimedes). No density/buoyancy core (same gap as cuttlebone). G9-F-5 boat is action-reaction when stepping off a boat. G3-F-1 water is moving objects. G5-E-5 carry is erosion transport. G7-F-10 sink is convection. TL/BIS bangka/karga OK. Potential new density/buoyancy facet.",
+      "evidence": []
+    },
+    {
+      "factId": "morning-evening-star-venus-g6",
+      "id": "ffct-34563",
+      "textHash": "a19c88e73d821c136826aaa5e39b74ebc1b3fdfa8742de3d3f16ac374407c009",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:15:06Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G3-E-6"
+      ],
+      "reason": "Spotting the brightest morning 'star' as Venus, the brightest planet commonly seen in the sky, is a current G3-E-6 observation. Admitted G3-E-6 facets are planets and stars — both are the sky-object teaching (Venus is a planet often called a star). G3-E-8 nighttime is sky objects affecting people's activities, not taught. G3-F-7 bright is harmful light. G5-E-11 is not admitted. TL Tala / BIS Bitoon sa Kabuntagon are the local morning-star names. Full EN/TL/BIS and both pools inspected; single identical card ID.",
+      "evidence": [
+        {
+          "lesson": "g3:watching-the-sky",
+          "unit": "G3-E-6:planets",
+          "quote": "It's the brightest planet in our sky"
+        },
+        {
+          "lesson": "g3:watching-the-sky",
+          "unit": "G3-E-6:stars",
+          "quote": "the brightest 'star' glowing in the morning sky"
+        }
+      ]
+    },
+    {
+      "factId": "mosquito-fast-life-cycle-warm-g6",
+      "id": "ffct-11226",
+      "textHash": "57bfd02a648204aaaf8eeca86bbfb3a6c9fbdc8f92f6bf315f3e4e9e3d507036",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:03:59Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Aedes-type cycle in 1–2 weeks in tropical heat is sound (CDC ~7–14 days). G4-L-5 flow-chart life cycles is butterfly/frog/chicken/human only (and an activity). G3-L-3 grow is a grow-into-adult keyword. G6-L-4 local is backbone difference, not taught. G5-L-6 is mammal/bird/plant cycles. TL 'matandang lamok' = old rather than adult (BIS hamtong is closer). Potential G4-L-5 after an insect/mosquito pattern.",
+      "evidence": []
+    },
+    {
+      "factId": "mosquito-larva-eggs-before-g4",
+      "id": "ffct-02055",
+      "textHash": "0129676373bc77d6741c972b5a621fb8c21dfdeb41d104ca6ee698f31fa9ba09",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:14:52Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Eggs on water (rafts) hatching to larvae is real. G3-L-3 reproduce (reproduc|offspring|babies|young) is not admitted. G5-L-5 egg-laying needs bird|reptile. G4-L-5 flow-chart is butterfly/frog/chicken/human plus an activity filter. G4-L-3 water is a habitat diagram. TL/BIS larva/balsa/gakit OK. Potential G4-L-5 after mosquito/insect stages, or G5-L-5 after insect egg-laying.",
+      "evidence": []
+    },
+    {
+      "factId": "mosquito-pupa-air-bubble-buoyancy-g6",
+      "id": "ffct-02700",
+      "textHash": "ef47d842f82a7f0e8d2d5af33ce019a348a619d4bf366bafdbfd8a6297f85721",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:23:29Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Pupa air sacs near breathing trumpets provide buoyancy (true). No density/buoyancy core. G3-L-6 air is a basic need of all living things, not a float bladder. G5-F-5 light is heavier vs lighter falling. G4-F-8/F-9/F-10 light are energy. TL/BIS tubo-paghinga/pangginhawa OK. Potential new buoyancy facet, or G3-L-6 after breathing-air for aquatic insects.",
+      "evidence": []
+    },
+    {
+      "factId": "mosquito-pupa-emerge-from-back-g6",
+      "id": "ffct-01824",
+      "textHash": "e8ea87c5918c11c99d976ca2580a3101f94987e6044c7637928862e4b3b1d387",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:14:50Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Adult emerging through a split in the pupal skin at the surface is real metamorphosis. G4-L-5 needs butterfly|caterpillar and is a flow-chart activity. G3-L-3 grow/reproduce not admitted. TL/BIS OK. Potential G4-L-5 after mosquito/complete-metamorphosis stages.",
+      "evidence": []
+    },
+    {
+      "factId": "mosquito-pupa-stagnant-water-ph-g5",
+      "id": "ffct-11904",
+      "textHash": "2e7116e6c69950a4632546a2793568949f5e8495a27d54aa86e593086ed36a56",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:04:01Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G3-M-1"
+      ],
+      "reason": "Covering old tires, cans, flower pots, and puddled rainwater because mosquito pupae live there is a local Philippine activity explained by science, the only G3-M-1 facet (rain/plant). G4-L-5/G5-L-6 life cycles are not admitted. G6-L-4 local is backbone difference, not taught. G4-L-3 water is a habitat diagram (not credited). G6-L-8 water good/harm is not explicit (disease not named). G7-L-1/G7-E-6 cover are microscope storage / earthquake duck-cover. TL/BIS nakatigil/nagtigi nga tubig OK. Full EN/TL/BIS and both pools inspected; single identical card ID.",
+      "evidence": [
+        {
+          "lesson": "g3:everyday-science",
+          "unit": "G3-M-1:local-examples",
+          "quote": "mosquito pupae live in stagnant water — like old tires, cans, flower pots, and puddled rainwater — that's why we cover these up."
+        }
+      ]
+    },
+    {
+      "factId": "most-broken-bone-arm-wrist-g6",
+      "id": "ffct-09707",
+      "textHash": "1c546677954bdb06f742ce1c55b7178da8310bb703756fdcb81e9e4958fcb878",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:23:24Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Pediatric arm/wrist fractures from an outstretched hand are the most common. G4-L-1 skeletal needs bone.*(support|protect). G3-L-4 feeding is teeth. G5-F-6 fall is gravity's effect on motion, not which bones break. G8-F-9 fall is energy conservation. TL 'humawak' = hold vs EN reach-out; BIS pagsalo = catch. Potential G4-L-1 after a skeletal-protection/fall facet.",
+      "evidence": []
+    },
+    {
+      "factId": "most-moons-saturn-g6",
+      "id": "ffct-33649",
+      "textHash": "73db4f857bc5678722b70672d10767efbf31e56a5ba0ae9bca972a14e7b84ac8",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:15:05Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Saturn currently has the most known moons (IAU March 2025: 274 vs Jupiter 95; https://www.skyatnightmagazine.com/space-science/which-planet-has-most-moons). G5-E-11 is not admitted (sun-center/asteroid/rocky-gas-ice). G3-E-6 moon/planets is commonly seen sky objects, not a moon-count encyclopedia fact. 'undisputed champion' will stale if counts flip again. TL/BIS OK. Potential G5-E-11 after a planet-moons/features facet.",
+      "evidence": []
+    },
+    {
+      "factId": "moth-camouflage-night-active-g4",
+      "id": "ffct-02908",
+      "textHash": "ebb01a9cbc1871f8050d2f6d7114e7c513ac95949e02f96d2eede30823e68cd3",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T14:25:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G3-L-7"
+      ],
+      "reason": "Moth-eating birds by day and moths flying at night in darkness is a current G3-L-7 food-and-shelter example of living things depending on one another (birds eat moths) and on the environment (darkness) to meet needs. Only that G3-L-7 facet is admitted. G5-L-9 camouflage/mimicry is not admitted (needs those words). G6-L-6 predat|prey is not admitted. G3-E-8 day/night is sky objects affecting people's activities. G4-L-3 fly is a habitat diagram. BIS langgam = bird in Cebuano (not Tagalog ant). Full EN/TL/BIS and both pools inspected; single identical card ID.",
+      "evidence": [
+        {
+          "lesson": "g3:depending-on-nature",
+          "unit": "G3-L-7:food-and-shelter",
+          "quote": "moth-eating birds are active in the daytime, so moths fly at night when the birds are asleep"
+        }
+      ]
+    },
+    {
+      "factId": "moth-pheromone-long-distance-g6",
+      "id": "ffct-06509",
+      "textHash": "e02ae787b89cb9eb0d9a7581b0b0869f86fd501d33b2c931ef775b25cb41a6b3",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:23:25Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Female moth pheromones detected kilometers away by feathery antennae is real. G3-L-7 matches only via 'eat' inside 'feathery' (keyword trap). G5-L-4 feather is a classification table. G5-L-9 camouflage not admitted. G3-L-4 outer parts for movement/feeding is not admitted (no legs/wings/beak). G5-E-9 signal is PAGASA storm signals. TL moth/antenyo kept; BIS bulabulahon nga antenyo OK. Potential G3-L-4 after antennae-as-sensing, or G7-L-7 after a mating-signal facet.",
+      "evidence": []
+    },
+    {
+      "factId": "mothballs-sublime-g6",
+      "id": "ffct-16263",
+      "textHash": "b7e8943502603e89068ec1f5b127152e4a4ed82be5fcd243856b8ed546c6cca4",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:44:19Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Naphthalene/PDB mothballs sublimate solid→gas (true). G6-M-1 lists melting, evaporation, freezing, condensation only — sublimation is not a current facet (diagram facet needs diagram|flowchart|solid.*→). G5-M-6 same four changes. G7-M-4 solid/gas is particle-arrangement diagrams (not credited). G10-M-1 gas/odor is chemical-reaction indicators, not a physical change. G6-E-4 gas is volcanic. TL/BIS sublimate/solid/gas OK. Potential G6-M-1 after a sublimation facet.",
+      "evidence": []
+    }
+  ],
+  "note": "Original review timestamps preserved as unverified provenance; actual parent verification recorded separately. See integration-check report."
+}

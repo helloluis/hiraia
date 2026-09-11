@@ -1,0 +1,5153 @@
+[
+  {
+    "factId": "kinetic-molecular-theory-g10",
+    "id": "dcard-10755",
+    "textHash": "b0c6aa40353b92090738732ee0fd4308a2d9916fe6a05a3f2fbcee1861cca07b",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:31:45Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G8-E-5",
+        "verdict": "wrong",
+        "card_evidence": "Kinetic Molecular Theory explains that gas molecules exert pressure on the walls of their container by constantly colliding with them.",
+        "competency_evidence": "relate the location and distribution of active volcanoes, earthquake epicenters, and major mountain belts to the distribution of oceanic crust and continental crust",
+        "reason": "The card discusses kinetic molecular theory and gas pressure, which is a physics/chemistry topic. G8-E-5 concerns the distribution of volcanoes, earthquake epicenters, and mountain belts relative to crustal types. There is no overlap in subject matter."
+      },
+      {
+        "code": "G5-E-1",
+        "verdict": "wrong",
+        "card_evidence": "Kinetic Molecular Theory explains that gas molecules exert pressure on the walls of their container by constantly colliding with them.",
+        "competency_evidence": "identify local examples of natural landforms and bodies of water such as mountains, valleys, rivers, and coastlines, and describe how they influence non-living and living components of the environment",
+        "reason": "The card is about gas behavior and kinetic molecular theory, not about landforms, bodies of water, or their influence on the environment. G5-E-1 is an earth science competency unrelated to this content."
+      },
+      {
+        "code": "G9-F-4",
+        "verdict": "wrong",
+        "card_evidence": "The kinetic molecular theory explains the big, visible properties of gases - like pressure and temperature - by describing what the tiny, invisible particles are doing.",
+        "competency_evidence": "explain that when any two objects interact, there are equal but opposite forces exerted between them, which is evident in many practical situations and applications",
+        "reason": "The card is about kinetic molecular theory and gas properties, not about equal and opposite forces between interacting objects (Newton's third law). No instructional support for the competency."
+      },
+      {
+        "code": "G9-F-5",
+        "verdict": "wrong",
+        "card_evidence": "The kinetic molecular theory explains the big, visible properties of gases - like pressure and temperature - by describing what the tiny, invisible particles are doing.",
+        "competency_evidence": "observe and identify action-reaction pairs in everyday situations such as stepping off a boat, or a book on a table, and draw force diagrams to explain how the pairs affect the motion of objects",
+        "reason": "The card does not address action-reaction pairs in everyday situations or force diagrams. It is unrelated to the competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-8",
+        "lesson": "g3:useful-changes",
+        "unit": "G3-M-8:pressing",
+        "pattern": "press"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G4-E-4",
+        "lesson": "g4:weather-elements",
+        "unit": "G4-E-4:temperature",
+        "pattern": "temperature"
+      },
+      {
+        "code": "G4-E-4",
+        "lesson": "g4:weather-elements",
+        "unit": "G4-E-4:pressure",
+        "pattern": "pressure"
+      },
+      {
+        "code": "G6-L-7",
+        "lesson": "g6:ecosystem-factors",
+        "unit": "G6-L-7:temperature",
+        "pattern": "temperature"
+      },
+      {
+        "code": "G6-L-8",
+        "lesson": "g6:ecosystem-effects",
+        "unit": "G6-L-8:nonliving-interactions",
+        "pattern": "water|soil|temperature|light|drought|flood"
+      },
+      {
+        "code": "G6-F-8",
+        "lesson": "g6:wave-models",
+        "unit": "G6-F-8:transverse-model",
+        "pattern": "rope|string|transverse"
+      },
+      {
+        "code": "G6-F-9",
+        "lesson": "g6:wave-examples",
+        "unit": "G6-F-9:transverse",
+        "pattern": "light|rope|transverse|seismic"
+      },
+      {
+        "code": "G6-E-4",
+        "lesson": "g6:volcanic-materials",
+        "unit": "G6-E-4:gases",
+        "pattern": "gas"
+      },
+      {
+        "code": "G7-M-2",
+        "lesson": "g7:particle-model",
+        "unit": "G7-M-2:particles",
+        "pattern": "particle|atom|molecule"
+      },
+      {
+        "code": "G7-M-3",
+        "lesson": "g7:particle-motion",
+        "unit": "G7-M-3:temperature",
+        "pattern": "temperature|heat"
+      },
+      {
+        "code": "G7-F-8",
+        "lesson": "g7:heat-temperature",
+        "unit": "G7-F-8:temperature",
+        "pattern": "temperature.*(average|kinetic|particle)|(average|kinetic).*temperature"
+      },
+      {
+        "code": "G8-M-7",
+        "lesson": "g8:periods-groups",
+        "unit": "G8-M-7:properties",
+        "pattern": "reactiv|propert|electron"
+      },
+      {
+        "code": "G8-E-2",
+        "lesson": "g8:crust-sources",
+        "unit": "G8-E-2:source",
+        "pattern": "reliable|textbook|reference|article"
+      },
+      {
+        "code": "G8-E-7",
+        "lesson": "g8:typhoon-formation",
+        "unit": "G8-E-7:source",
+        "pattern": "PAGASA|reliable|reference|article"
+      },
+      {
+        "code": "G8-F-4",
+        "lesson": "g8:kinetic-potential",
+        "unit": "G8-F-4:kinetic",
+        "pattern": "kinetic"
+      },
+      {
+        "code": "G9-F-11",
+        "lesson": "g9:f-11",
+        "unit": "G9-F-11:focus-4",
+        "pattern": "visible"
+      },
+      {
+        "code": "G9-E-6",
+        "lesson": "g9:e-6",
+        "unit": "G9-E-6:focus-1",
+        "pattern": "eon|era|period"
+      },
+      {
+        "code": "G9-M-9",
+        "lesson": "g9:m-9",
+        "unit": "G9-M-9:focus-2",
+        "pattern": "molecul"
+      },
+      {
+        "code": "G10-E-8",
+        "lesson": "g10:e-8",
+        "unit": "G10-E-8:focus-1",
+        "pattern": "temperature"
+      },
+      {
+        "code": "G10-F-2",
+        "lesson": "g10:f-2",
+        "unit": "G10-F-2:focus-3",
+        "pattern": "kinetic"
+      },
+      {
+        "code": "G10-M-1",
+        "lesson": "g10:m-1",
+        "unit": "G10-M-1:focus-3",
+        "pattern": "gas"
+      },
+      {
+        "code": "G10-M-1",
+        "lesson": "g10:m-1",
+        "unit": "G10-M-1:focus-4",
+        "pattern": "temperature|heat"
+      },
+      {
+        "code": "G10-L-1",
+        "lesson": "g10:l-1",
+        "unit": "G10-L-1:focus-1",
+        "pattern": "temperature"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "The kinetic molecular theory explains the big, visible properties of gases - like pressure and temperature - by describing what the tiny, invisible particles are doing.",
+      "tl": "Ipinapaliwanag ng kinetic molecular theory ang malalaki at nakikitang katangian ng mga gas - tulad ng pressure at temperature - sa pamamagitan ng paglalarawan sa ginagawa ng maliliit at hindi nakikitang mga particle.",
+      "bis": "Ang kinetic molecular theory nagpasabot sa dagko ug makita nga mga kinaiya sa mga gas - sama sa pressure ug temperature - pinaagi sa paghulagway sa ginabuhat sa gagmay ug dili makita nga mga particle."
+    },
+    "exportedAt": "2026-09-10T12:10:52.127654+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "know-your-exits-g6",
+    "id": "dcard-10775",
+    "textHash": "1804fde0a31c55c8a9fc3bf800723bac02be9f405476e0cb87c7c29bf58cdda0",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:02:47Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G7-E-12",
+        "verdict": "wrong",
+        "card_evidence": "Know the safe exits and evacuation areas in your school and house before an earthquake happens.",
+        "competency_evidence": "explain how solar energy contributes to the occurrence of land and sea breezes, monsoons, and the Intertropical Convergence Zone (ITCZ)",
+        "reason": "The card is about earthquake preparedness (identifying safe exits and evacuation areas). It contains no information about solar energy, land/sea breezes, monsoons, or the ITCZ, which are the subjects of G7-E-12."
+      },
+      {
+        "code": "G7-E-9",
+        "verdict": "wrong",
+        "card_evidence": "Know the safe exits and evacuation areas in your school and house before an earthquake happens.",
+        "competency_evidence": "explain how energy from the Sun interacts with the atmosphere",
+        "reason": "The card is about earthquake preparedness, not about how energy from the Sun interacts with the atmosphere. It provides no instructional support for G7-E-9."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-F-7",
+        "lesson": "g3:light-and-sound-safety",
+        "unit": "G3-F-7:loud-sound",
+        "pattern": "loud|noise|ear"
+      },
+      {
+        "code": "G3-E-1",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-1:guided-observation",
+        "pattern": "school|teacher|guided"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:community",
+        "pattern": "home|community|school|farm|local"
+      },
+      {
+        "code": "G4-E-6",
+        "lesson": "g4:weather-chart-safety",
+        "unit": "G4-E-6:safety",
+        "pattern": "safety|safe|shelter|flood|lightning"
+      },
+      {
+        "code": "G5-E-10",
+        "lesson": "g5:weather-disturbances",
+        "unit": "G5-E-10:before",
+        "pattern": "before"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:benefits",
+        "pattern": "use|benefit|recover|separat"
+      },
+      {
+        "code": "G6-F-1",
+        "lesson": "g6:simple-machines",
+        "unit": "G6-F-1:everyday",
+        "pattern": "home|school|community|bottle|door|ramp|scissor|wheelbarrow"
+      },
+      {
+        "code": "G6-E-3",
+        "lesson": "g6:eruption-history",
+        "unit": "G6-E-3:community",
+        "pattern": "communit|famil|evacuat"
+      },
+      {
+        "code": "G6-E-5",
+        "lesson": "g6:volcano-alerts",
+        "unit": "G6-E-5:before",
+        "pattern": "plan|prepare|before|evacuat"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:safety",
+        "pattern": "safe|protect|goggle|teacher|hot|broken"
+      },
+      {
+        "code": "G7-E-6",
+        "lesson": "g7:earthquake-plan",
+        "unit": "G7-E-6:after",
+        "pattern": "after|evacuat"
+      },
+      {
+        "code": "G7-E-8",
+        "lesson": "g7:tsunami-alerts",
+        "unit": "G7-E-8:evacuation",
+        "pattern": "high ground|higher ground|inland|evacuat"
+      },
+      {
+        "code": "G8-E-5",
+        "lesson": "g8:global-patterns",
+        "unit": "G8-E-5:earthquakes",
+        "pattern": "earthquake|epicenter"
+      },
+      {
+        "code": "G8-E-10",
+        "lesson": "g8:community-support",
+        "unit": "G8-E-10:support",
+        "pattern": "evacuat|relief|shelter|warning|rescue|assistance"
+      },
+      {
+        "code": "G8-F-2",
+        "lesson": "g8:local-motion",
+        "unit": "G8-F-2:everyday",
+        "pattern": "school|car|bike|ball|bus|jeep"
+      },
+      {
+        "code": "G9-F-6",
+        "lesson": "g9:f-6",
+        "unit": "G9-F-6:focus-2",
+        "pattern": "safe|shock|insulat"
+      },
+      {
+        "code": "G10-E-6",
+        "lesson": "g10:e-6",
+        "unit": "G10-E-6:focus-2",
+        "pattern": "earthquake"
+      },
+      {
+        "code": "G10-F-12",
+        "lesson": "g10:f-12",
+        "unit": "G10-F-12:focus-2",
+        "pattern": "home|house|community|Filipin"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Know the safe exits and evacuation areas in your school and house before an earthquake happens.",
+      "tl": "Alamin ang mga ligtas na labasan at evacuation area sa paaralan at bahay bago pa man dumating ang lindol.",
+      "bis": "Hibaloi ang mga luwas nga agianan ug evacuation area sa eskwelahan ug balay sa dili pa moabot ang linog."
+    },
+    "exportedAt": "2026-09-10T12:10:52.166458+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "komodo-venom-myth-bacteria-g8",
+    "id": "ffct-10442",
+    "textHash": "d55047a728a85963170453f6d6dbbd75854e4e6a1452b1ba7fd9171430b21823",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:04:42Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G4-L-6",
+        "verdict": "wrong",
+        "card_evidence": "People once believed only germs in the Komodo dragon's dirty mouth killed its prey — but scientists proved it actually has real venom, not just bacteria.",
+        "competency_evidence": "use information from secondary sources to group animals according to the food they eat: plant eaters (herbivores), meat eaters (carnivores), and plant and meat-eaters (omnivores)",
+        "reason": "The card discusses a myth about Komodo dragon venom versus bacteria. It does not group animals by diet (herbivore/carnivore/omnivore) or use secondary sources to classify feeding types. No direct or prerequisite support for G4-L-6."
+      },
+      {
+        "code": "G5-L-9",
+        "verdict": "wrong",
+        "card_evidence": "People once believed only germs in the Komodo dragon's dirty mouth killed its prey — but scientists proved it actually has real venom, not just bacteria.",
+        "competency_evidence": "use information from secondary sources to describe examples of how some animals have changed to better suit their environment, such as mimicry or camouflage",
+        "reason": "The card is about venom and a historical misconception, not about how animals have changed to better suit their environment (e.g., mimicry or camouflage). Venom is not presented as an adaptive change, and the card does not describe any environmental adaptation. No direct support for G5-L-9."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-4",
+        "lesson": "g3:animal-parts",
+        "unit": "G3-L-4:feeding",
+        "pattern": "beak|mouth|teeth|tongue"
+      },
+      {
+        "code": "G5-L-4",
+        "lesson": "g5:classification",
+        "unit": "G5-L-4:bacteria",
+        "pattern": "bacter"
+      },
+      {
+        "code": "G6-L-6",
+        "lesson": "g6:competition-predation",
+        "unit": "G6-L-6:predation",
+        "pattern": "predat|prey"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Do dirty germs kill a Komodo's prey?\n\nPeople once believed only germs in the Komodo dragon's dirty mouth killed its prey — but scientists proved it actually has real venom, not just bacteria.",
+      "tl": "Mikrobyo ba ang pumapatay sa biktima ng Komodo?\n\nAkala noon ng mga tao mikrobyo lang sa maruming bibig ng Komodo ang pumapatay sa biktima nito — pero napatunayan ng mga siyentista na may totoong kamandag ito, hindi lang mikrobyo.",
+      "bis": "Mikrobyo ba ang mopatay sa biktima sa Komodo?\n\nKaniadto gituohan nga mikrobyo ra sa hugaw nga baba sa Komodo ang mopatay sa iyang biktima — apan gipamatud-an sa siyentista nga aduna kini tinuod nga hilo, dili lang mikrobyo."
+    },
+    "exportedAt": "2026-09-10T12:10:52.211096+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "krebs-cycle-process-g9",
+    "id": "dcard-05399",
+    "textHash": "f1bc46dff7dfc656aff5d1f9100f06de025921af380a353ae4e9b06f02293a32",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:37:49Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G9-M-5",
+        "verdict": "wrong",
+        "card_evidence": "In the Krebs cycle, pyruvate is changed into acetyl-CoA",
+        "competency_evidence": "explain the formation of ions as either the loss or gain of electrons to produce ionic bonds, using examples, such as the formation of sodium chloride",
+        "reason": "The card describes the Krebs cycle (cellular respiration), a biochemistry topic. G9-M-5 requires explaining ion formation via electron loss/gain to produce ionic bonds, e.g., sodium chloride. The card provides no information about ions, electron transfer, or ionic bonding, and is unrelated to the competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-E-4",
+        "lesson": "g3:weather",
+        "unit": "G3-E-4:patterns",
+        "pattern": "pattern|change|day|sunny|rainy"
+      },
+      {
+        "code": "G4-F-9",
+        "lesson": "g4:energy",
+        "unit": "G4-F-9:change",
+        "pattern": "change|cause"
+      },
+      {
+        "code": "G6-M-2",
+        "lesson": "g6:heat-and-state",
+        "unit": "G6-M-2:cooling",
+        "pattern": "cool|releas.*(heat|energy)"
+      },
+      {
+        "code": "G6-M-5",
+        "lesson": "g6:air-mixture",
+        "unit": "G6-M-5:carbon-dioxide",
+        "pattern": "carbon dioxide"
+      },
+      {
+        "code": "G6-F-4",
+        "lesson": "g6:wave-energy",
+        "unit": "G6-F-4:transfer",
+        "pattern": "energy"
+      },
+      {
+        "code": "G6-F-8",
+        "lesson": "g6:wave-models",
+        "unit": "G6-F-8:energy",
+        "pattern": "energy"
+      },
+      {
+        "code": "G8-L-8",
+        "lesson": "g8:nature-cycles",
+        "unit": "G8-L-8:carbon",
+        "pattern": "carbon"
+      },
+      {
+        "code": "G8-L-11",
+        "lesson": "g8:photosynthesis-test",
+        "unit": "G8-L-11:raw-material",
+        "pattern": "carbon dioxide|water"
+      },
+      {
+        "code": "G8-M-6",
+        "lesson": "g8:element-names",
+        "unit": "G8-M-6:first-ten",
+        "pattern": "hydrogen|helium|lithium|beryllium|boron|carbon|nitrogen|oxygen|fluorine|neon"
+      },
+      {
+        "code": "G8-F-2",
+        "lesson": "g8:local-motion",
+        "unit": "G8-F-2:everyday",
+        "pattern": "school|car|bike|ball|bus|jeep"
+      },
+      {
+        "code": "G9-F-2",
+        "lesson": "g9:f-2",
+        "unit": "G9-F-2:focus-3",
+        "pattern": "practical|ball|car|bike|bus"
+      },
+      {
+        "code": "G9-M-7",
+        "lesson": "g9:m-7",
+        "unit": "G9-M-7:focus-2",
+        "pattern": "carbon dioxide|CO2|CO₂"
+      },
+      {
+        "code": "G9-M-8",
+        "lesson": "g9:m-8",
+        "unit": "G9-M-8:focus-2",
+        "pattern": "carbon dioxide|CO2|CO₂"
+      },
+      {
+        "code": "G10-E-9",
+        "lesson": "g10:e-9",
+        "unit": "G10-E-9:focus-2",
+        "pattern": "carbon dioxide|methane"
+      },
+      {
+        "code": "G10-E-11",
+        "lesson": "g10:e-11",
+        "unit": "G10-E-11:focus-3",
+        "pattern": "mitigat|emission|carbon"
+      },
+      {
+        "code": "G10-E-12",
+        "lesson": "g10:e-12",
+        "unit": "G10-E-12:focus-5",
+        "pattern": "emission|carbon|climate"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "In the Krebs cycle, pyruvate is changed into acetyl-CoA, which is then oxidized to carbon dioxide, releasing energy captured as ATP, NADH, and FADH2.",
+      "tl": "Sa Krebs cycle, ang pyruvate ay ginagawang acetyl-CoA, na pagkatapos ay ino-oxidize sa carbon dioxide, naglalabas ng enerhiya na nakukuha bilang ATP, NADH, at FADH2.",
+      "bis": "Sa Krebs cycle, ang pyruvate himuon nga acetyl-CoA, nga dayon gi-oxidize ngadto sa carbon dioxide, nagpagawas ug enerhiya nga makuha isip ATP, NADH, ug FADH2."
+    },
+    "exportedAt": "2026-09-10T12:10:52.253483+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "lab-made-organics-g9",
+    "id": "dcard-08248",
+    "textHash": "95572709253b6bcaf989f41b560a88d7f2dd676cd92520b1fad68350e8b5f439",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:03:20Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-F-4",
+        "verdict": "wrong",
+        "card_evidence": "Some organic compounds found in nature can be synthesized, or made artificially, in laboratories to produce useful materials like plastics and medicines.",
+        "competency_evidence": "explore and describe how sound is made and transferred in everyday situations, such as the ringing of a bell or the hearing of noises",
+        "reason": "The card discusses laboratory synthesis of organic compounds to make plastics and medicines, which is a chemistry/materials topic. It has no connection to sound production or transfer, the subject of G3-F-4."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-E-2",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-2:human-made-objects",
+        "pattern": "made|make|build|clay|wood|metal"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G4-F-7",
+        "lesson": "g4:magnets",
+        "unit": "G4-F-7:materials",
+        "pattern": "iron|steel|plastic|wood"
+      },
+      {
+        "code": "G4-E-7",
+        "lesson": "g4:sun",
+        "unit": "G4-E-7:size",
+        "pattern": "size|diameter|larger|million"
+      },
+      {
+        "code": "G5-F-7",
+        "lesson": "g5:static-electricity",
+        "unit": "G5-F-7:common-materials",
+        "pattern": "comb|balloon|rod"
+      },
+      {
+        "code": "G6-M-4",
+        "lesson": "g6:useful-mixtures",
+        "unit": "G6-M-4:uses",
+        "pattern": "\\buse|food|drink|medicin|paint"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:benefits",
+        "pattern": "use|benefit|recover|separat"
+      },
+      {
+        "code": "G7-M-6",
+        "lesson": "g7:investigation-steps",
+        "unit": "G7-M-6:materials",
+        "pattern": "material|equipment"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G7-F-3",
+        "lesson": "g7:force-diagrams",
+        "unit": "G7-F-3:magnitude",
+        "pattern": "length|longer|size|magnitude"
+      },
+      {
+        "code": "G7-F-9",
+        "lesson": "g7:heat-transfer-uses",
+        "unit": "G7-F-9:advantage",
+        "pattern": "useful|help|benefit|cook|warm"
+      },
+      {
+        "code": "G10-M-8",
+        "lesson": "g10:m-8",
+        "unit": "G10-M-8:focus-2",
+        "pattern": "material|manufactur|production"
+      },
+      {
+        "code": "G10-L-10",
+        "lesson": "g10:l-10",
+        "unit": "G10-L-10:focus-4",
+        "pattern": "mate"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Some organic compounds found in nature can be synthesized, or made artificially, in laboratories to produce useful materials like plastics and medicines.",
+      "tl": "Ang ilang organic compounds na matatagpuan sa kalikasan ay maaaring i-synthesize, o gawing artipisyal, sa mga laboratoryo upang makagawa ng mga kapaki-pakinabang na materyales tulad ng plastics at gamot.",
+      "bis": "Ang uban nga organic compounds nga makita sa kinaiyahan mahimong i-synthesize, o himoon nga artipisyal, sa mga laboratoryo aron makahimo og mapuslanon nga mga materyales sama sa plastics ug tambal."
+    },
+    "exportedAt": "2026-09-10T12:10:52.296269+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "laboratory-equipment-groups-g7",
+    "id": "dcard-10501",
+    "textHash": "4aedad9eede6704e58c12cd1f37208573aca76ec865256a81dcbbad6b700f734",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:28:54Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G9-E-5",
+        "verdict": "wrong",
+        "card_evidence": "Laboratory equipment is grouped into glassware, measuring equipment, and heating equipment",
+        "competency_evidence": "describe how relative and absolute dating techniques are used to determine the subdivisions of geologic time",
+        "reason": "The card describes categories of laboratory equipment, which is unrelated to relative and absolute dating techniques used to determine subdivisions of geologic time. No instructional support for the competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-1",
+        "lesson": "g3:living-things-investigation",
+        "unit": "G3-L-1:measure",
+        "pattern": "measur"
+      },
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:food-and-shelter",
+        "pattern": "food|eat|shelter"
+      },
+      {
+        "code": "G3-F-3",
+        "lesson": "g3:position",
+        "unit": "G3-F-3:measure-change",
+        "pattern": "measur|centimet|meter|metre"
+      },
+      {
+        "code": "G3-F-6",
+        "lesson": "g3:light",
+        "unit": "G3-F-6:guided-exploration",
+        "pattern": "investigat|experiment|try|test|flashlight"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G4-M-7",
+        "lesson": "g4:environment-survey",
+        "unit": "G4-M-7:classify",
+        "pattern": "group|classif|sort"
+      },
+      {
+        "code": "G4-F-1",
+        "lesson": "g4:rigid-soft",
+        "unit": "G4-F-1:guided",
+        "pattern": "teacher|activity|test|try|experiment"
+      },
+      {
+        "code": "G4-F-5",
+        "lesson": "g4:change-motion",
+        "unit": "G4-F-5:guided",
+        "pattern": "teacher|try|activity|test|experiment"
+      },
+      {
+        "code": "G4-F-7",
+        "lesson": "g4:magnets",
+        "unit": "G4-F-7:investigation",
+        "pattern": "test|teacher|experiment|investigat"
+      },
+      {
+        "code": "G4-F-9",
+        "lesson": "g4:energy",
+        "unit": "G4-F-9:forms",
+        "pattern": "light|sound|heat"
+      },
+      {
+        "code": "G4-F-10",
+        "lesson": "g4:energy-uses",
+        "unit": "G4-F-10:heat",
+        "pattern": "heat"
+      },
+      {
+        "code": "G4-E-1",
+        "lesson": "g4:soil",
+        "unit": "G4-E-1:investigation",
+        "pattern": "test|experiment|teacher|pour"
+      },
+      {
+        "code": "G4-E-3",
+        "lesson": "g4:soil-and-growth",
+        "unit": "G4-E-3:investigation",
+        "pattern": "test|experiment|investigat|teacher"
+      },
+      {
+        "code": "G4-E-6",
+        "lesson": "g4:weather-chart-safety",
+        "unit": "G4-E-6:safety",
+        "pattern": "safety|safe|shelter|flood|lightning"
+      },
+      {
+        "code": "G4-E-7",
+        "lesson": "g4:sun",
+        "unit": "G4-E-7:energy",
+        "pattern": "light|heat"
+      },
+      {
+        "code": "G5-F-1",
+        "lesson": "g5:contact-forces",
+        "unit": "G5-F-1:investigation",
+        "pattern": "investigat|experiment"
+      },
+      {
+        "code": "G5-F-3",
+        "lesson": "g5:friction",
+        "unit": "G5-F-3:heat",
+        "pattern": "heat|warm"
+      },
+      {
+        "code": "G5-E-5",
+        "lesson": "g5:erosion",
+        "unit": "G5-E-5:demonstration",
+        "pattern": "tray|pour|model|demonstrat|experiment"
+      },
+      {
+        "code": "G5-E-7",
+        "lesson": "g5:water-cycle",
+        "unit": "G5-E-7:model",
+        "pattern": "bag|model|experiment"
+      },
+      {
+        "code": "G7-M-3",
+        "lesson": "g7:particle-motion",
+        "unit": "G7-M-3:temperature",
+        "pattern": "temperature|heat"
+      },
+      {
+        "code": "G7-M-6",
+        "lesson": "g7:investigation-steps",
+        "unit": "G7-M-6:materials",
+        "pattern": "material|equipment"
+      },
+      {
+        "code": "G7-M-10",
+        "lesson": "g7:solubility",
+        "unit": "G7-M-10:test",
+        "pattern": "test|investigat|same|control|measur"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:safety",
+        "pattern": "safe|protect|goggle|teacher|hot|broken"
+      },
+      {
+        "code": "G7-L-10",
+        "lesson": "g7:energy-transfer",
+        "unit": "G7-L-10:less-energy",
+        "pattern": "less|lost|loss|heat|10 percent|10%"
+      },
+      {
+        "code": "G7-F-9",
+        "lesson": "g7:heat-transfer-uses",
+        "unit": "G7-F-9:advantage",
+        "pattern": "useful|help|benefit|cook|warm"
+      },
+      {
+        "code": "G7-E-9",
+        "lesson": "g7:sun-atmosphere",
+        "unit": "G7-E-9:warming",
+        "pattern": "warm|heat|greenhouse"
+      },
+      {
+        "code": "G7-E-12",
+        "lesson": "g7:solar-winds",
+        "unit": "G7-E-12:solar-heating",
+        "pattern": "heat|solar|Sun"
+      },
+      {
+        "code": "G8-L-6",
+        "lesson": "g8:classification",
+        "unit": "G8-L-6:purpose",
+        "pattern": "classif|relationship|group"
+      },
+      {
+        "code": "G8-M-7",
+        "lesson": "g8:periods-groups",
+        "unit": "G8-M-7:rows-columns",
+        "pattern": "period|group"
+      },
+      {
+        "code": "G8-M-8",
+        "lesson": "g8:electron-position",
+        "unit": "G8-M-8:valence-group",
+        "pattern": "valence|group"
+      },
+      {
+        "code": "G8-F-9",
+        "lesson": "g8:falling-energy",
+        "unit": "G8-F-9:losses",
+        "pattern": "friction|air resistance|heat|thermal"
+      },
+      {
+        "code": "G9-F-6",
+        "lesson": "g9:f-6",
+        "unit": "G9-F-6:focus-2",
+        "pattern": "safe|shock|insulat"
+      },
+      {
+        "code": "G9-M-4",
+        "lesson": "g9:m-4",
+        "unit": "G9-M-4:focus-3",
+        "pattern": "group|16"
+      },
+      {
+        "code": "G9-M-11",
+        "lesson": "g9:m-11",
+        "unit": "G9-M-11:focus-4",
+        "pattern": "thermal|heat"
+      },
+      {
+        "code": "G10-E-11",
+        "lesson": "g10:e-11",
+        "unit": "G10-E-11:focus-1",
+        "pattern": "impact|flood|sea level|heat"
+      },
+      {
+        "code": "G10-M-1",
+        "lesson": "g10:m-1",
+        "unit": "G10-M-1:focus-4",
+        "pattern": "temperature|heat"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Laboratory equipment is grouped into glassware, measuring equipment, and heating equipment, each with a special job to help you do experiments safely.",
+      "tl": "Ang mga gamit sa laboratoryo ay pinapangkat sa glassware, measuring equipment, at heating equipment, at bawat isa ay may espesyal na trabaho para maging ligtas ang iyong eksperimento.",
+      "bis": "Ang mga gamit sa laboratoryo gigrupo ngadto sa glassware, measuring equipment, ug heating equipment, ug ang matag usa adunay espesyal nga trabaho aron luwas ang imong eksperimento."
+    },
+    "exportedAt": "2026-09-10T12:10:52.338209+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "lamarck-s-theory-of-need-g10",
+    "id": "dcard-08661",
+    "textHash": "59ffa54dd2ce5bfbe8c4220dc3f8b77ded454dedebcc07ea46ce593a5c854404",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:50:52Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G6-E-8",
+        "verdict": "wrong",
+        "card_evidence": "Lamarck's Theory of Need says that organisms develop new body parts because they need them to survive in their environment.",
+        "competency_evidence": "make a Sun-Earth-Moon system model to demonstrate and explain the observable effects of predictable patterns and events including changes in seasons, changes observed in the patterns of visible star over a year, and solar and lunar eclipses",
+        "reason": "The competency G6-E-8 requires making a Sun-Earth-Moon system model to explain seasons, star patterns, and eclipses. The card discusses Lamarck's evolutionary theory of need, which is entirely unrelated to Earth-Sun-Moon motions or astronomy."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-9",
+        "lesson": "g3:community-metals",
+        "unit": "G3-M-9:iron",
+        "pattern": "iron"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G4-M-1",
+        "lesson": "g4:scientists",
+        "unit": "G4-M-1:invention",
+        "pattern": "invent|develop|creat"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G4-F-7",
+        "lesson": "g4:magnets",
+        "unit": "G4-F-7:materials",
+        "pattern": "iron|steel|plastic|wood"
+      },
+      {
+        "code": "G4-F-9",
+        "lesson": "g4:energy",
+        "unit": "G4-F-9:change",
+        "pattern": "change|cause"
+      },
+      {
+        "code": "G4-E-2",
+        "lesson": "g4:water-for-life",
+        "unit": "G4-E-2:animals",
+        "pattern": "animal|human|body"
+      },
+      {
+        "code": "G5-E-6",
+        "lesson": "g5:water-cycle",
+        "unit": "G5-E-6:environment",
+        "pattern": "plant|animal|fresh|rain|environment"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:benefits",
+        "pattern": "use|benefit|recover|separat"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G10-L-6",
+        "lesson": "g10:l-6",
+        "unit": "G10-L-6:focus-2",
+        "pattern": "organism|cell|enzyme|microb"
+      },
+      {
+        "code": "G10-L-9",
+        "lesson": "g10:l-9",
+        "unit": "G10-L-9:focus-2",
+        "pattern": "environment"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Lamarck's Theory of Need says that organisms develop new body parts because they need them to survive in their environment.",
+      "tl": "Ang Theory of Need ni Lamarck ay nagsasabing nagkakaroon ng mga bagong bahagi ng katawan ang mga organismo dahil kailangan nila ito para mabuhay sa kanilang kapaligiran.",
+      "bis": "Ang Theory of Need ni Lamarck nag-ingon nga ang mga organismo makaugmad ug bag-ong mga parte sa lawas tungod kay gikinahanglan nila kini aron mabuhi sa ilang palibot."
+    },
+    "exportedAt": "2026-09-10T12:10:52.378692+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "large-molecules-of-life-g7",
+    "id": "dcard-09844",
+    "textHash": "40816c36f310e1e181831a684fe2a839014051378853dc3f07c4983b6f2910a5",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:18:07Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G8-E-7",
+        "verdict": "wrong",
+        "card_evidence": "Macromolecules are very large molecules made by joining many smaller molecules together",
+        "competency_evidence": "gather information from secondary sources to explain: a. how typhoons develop, and b. why the Philippines is prone to typhoons",
+        "reason": "The card explains what macromolecules are and their role in living cells. The assigned competency G8-E-7 is about typhoon development and why the Philippines is prone to typhoons. There is no overlap in subject matter; the card provides no information about typhoons."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-8",
+        "lesson": "g3:useful-changes",
+        "unit": "G3-M-8:joining",
+        "pattern": "\\bjoin(ing|ed)?\\b"
+      },
+      {
+        "code": "G3-E-2",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-2:human-made-objects",
+        "pattern": "made|make|build|clay|wood|metal"
+      },
+      {
+        "code": "G6-L-7",
+        "lesson": "g6:ecosystem-factors",
+        "unit": "G6-L-7:biotic",
+        "pattern": "biotic|living"
+      },
+      {
+        "code": "G6-E-1",
+        "lesson": "g6:volcano-formation",
+        "unit": "G6-E-1:formation",
+        "pattern": "form|plate|crust|build"
+      },
+      {
+        "code": "G7-M-2",
+        "lesson": "g7:particle-model",
+        "unit": "G7-M-2:particles",
+        "pattern": "particle|atom|molecule"
+      },
+      {
+        "code": "G9-L-9",
+        "lesson": "g9:l-9",
+        "unit": "G9-L-9:focus-6",
+        "pattern": "\\bbiotic\\b|\\bliving\\b"
+      },
+      {
+        "code": "G9-M-9",
+        "lesson": "g9:m-9",
+        "unit": "G9-M-9:focus-2",
+        "pattern": "molecul"
+      },
+      {
+        "code": "G10-L-6",
+        "lesson": "g10:l-6",
+        "unit": "G10-L-6:focus-2",
+        "pattern": "organism|cell|enzyme|microb"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Macromolecules are very large molecules made by joining many smaller molecules together, and they build important parts of living cells.",
+      "tl": "Ang macromolecules ay napakalalaking molecules na nabubuo sa pagsasama-sama ng maraming maliliit na molecules, at sila ang bumubuo sa mahahalagang bahagi ng mga buhay na cell.",
+      "bis": "Ang macromolecules kay dagko kaayo nga mga molecules nga maporma pinaagi sa paghiusa sa daghang gagmay nga molecules, ug kini ang nagtukod sa importanteng mga parte sa buhing mga cell."
+    },
+    "exportedAt": "2026-09-10T12:10:52.419946+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "largest-brain-part-g6",
+    "id": "dcard-12504",
+    "textHash": "469aebc57553d5904bc0bc543d1b30b3c1d5a40a233a7bb4c115b685df89ad91",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:49:48Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-E-4",
+        "verdict": "wrong",
+        "card_evidence": "The cerebrum is the largest part of the brain",
+        "competency_evidence": "observe and record changes in the weather during a day or over some days and describe the different types and patterns of weather in the local area",
+        "reason": "The card describes the cerebrum and neurons, which is brain anatomy, not weather observation or patterns. It provides no support for observing/recording weather changes."
+      },
+      {
+        "code": "G4-E-6",
+        "verdict": "wrong",
+        "card_evidence": "The cerebrum is the largest part of the brain",
+        "competency_evidence": "examine a local weather chart to make simple interpretations about the local weather and describe and practice safety precautions to use during poor or extreme weather conditions",
+        "reason": "The card is about the cerebrum, not local weather charts, interpretations, or safety precautions for extreme weather. Completely unrelated to the competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-1",
+        "lesson": "g3:everyday-science",
+        "unit": "G3-M-1:local-examples",
+        "pattern": "rain|cook|shadow|melt|plant|dry"
+      },
+      {
+        "code": "G3-E-1",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-1:examples",
+        "pattern": "rock|soil|water|air|metal|cloud|rain|sun"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G4-E-4",
+        "lesson": "g4:weather-elements",
+        "unit": "G4-E-4:rain",
+        "pattern": "rain"
+      },
+      {
+        "code": "G5-E-1",
+        "lesson": "g5:landforms",
+        "unit": "G5-E-1:environmental-effects",
+        "pattern": "plant|animal|habitat|soil|flood|rain"
+      },
+      {
+        "code": "G5-E-6",
+        "lesson": "g5:water-cycle",
+        "unit": "G5-E-6:environment",
+        "pattern": "plant|animal|fresh|rain|environment"
+      },
+      {
+        "code": "G6-F-4",
+        "lesson": "g6:wave-energy",
+        "unit": "G6-F-4:source-receiver",
+        "pattern": "source|receiver|receiv"
+      },
+      {
+        "code": "G6-E-1",
+        "lesson": "g6:volcano-formation",
+        "unit": "G6-E-1:formation",
+        "pattern": "form|plate|crust|build"
+      },
+      {
+        "code": "G7-L-1",
+        "lesson": "g7:microscope",
+        "unit": "G7-L-1:storage",
+        "pattern": "\\bstor|\\bcover\\b|\\bdry\\b|unplug"
+      },
+      {
+        "code": "G9-E-9",
+        "lesson": "g9:e-9",
+        "unit": "G9-E-9:focus-5",
+        "pattern": "formation|early|leftover|remnant"
+      },
+      {
+        "code": "G10-E-10",
+        "lesson": "g10:e-10",
+        "unit": "G10-E-10:focus-3",
+        "pattern": "Pacific|rain|drought"
+      },
+      {
+        "code": "G10-F-12",
+        "lesson": "g10:f-12",
+        "unit": "G10-F-12:focus-3",
+        "pattern": "benefit|emission|bill|cost"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "The cerebrum is the largest part of the brain and contains about 10 billion neurons that receive, store, and recall information.",
+      "tl": "Ang cerebrum ang pinakamalaking bahagi ng brain at naglalaman ng mga 10 bilyong neuron na tumatanggap, nag-iimbak, at nag-aalala ng impormasyon.",
+      "bis": "Ang cerebrum mao ang kinadak-ang parte sa brain ug adunay mga 10 bilyon ka neuron nga modawat, magtipig, ug mohinumdom sa impormasyon."
+    },
+    "exportedAt": "2026-09-10T12:10:52.460332+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "larynx-voice-box-g9",
+    "id": "dcard-02402",
+    "textHash": "489678b665164ab35d24c5eb6c26c86a32c087e4d76cf4c467b5141ba5784292",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:52:14Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G4-F-3",
+        "verdict": "wrong",
+        "card_evidence": "The larynx is a rigid, box-like structure that protects the vocal cords and lets air pass from the pharynx to the trachea.",
+        "competency_evidence": "identify that how far an object moves in a given time is called speed",
+        "reason": "The card describes the anatomy and function of the larynx, which is unrelated to the competency about defining speed as distance over time. No instructional support for the physics concept."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-6",
+        "lesson": "g3:basic-needs",
+        "unit": "G3-L-6:air",
+        "pattern": "\\bair\\b|oxygen"
+      },
+      {
+        "code": "G3-L-6",
+        "lesson": "g3:basic-needs",
+        "unit": "G3-L-6:shelter",
+        "pattern": "shelter|home|protect"
+      },
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:environment",
+        "pattern": "water|soil|air|sun"
+      },
+      {
+        "code": "G3-L-8",
+        "lesson": "g3:protecting-nature",
+        "unit": "G3-L-8:care-actions",
+        "pattern": "plant|clean|protect|conserv|recycl"
+      },
+      {
+        "code": "G3-F-4",
+        "lesson": "g3:sound",
+        "unit": "G3-F-4:transfer",
+        "pattern": "travel|air|reach|transfer"
+      },
+      {
+        "code": "G3-E-1",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-1:examples",
+        "pattern": "rock|soil|water|air|metal|cloud|rain|sun"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G4-F-1",
+        "lesson": "g4:rigid-soft",
+        "unit": "G4-F-1:rigid",
+        "pattern": "rigid|hard"
+      },
+      {
+        "code": "G5-L-2",
+        "lesson": "g5:breathing",
+        "unit": "G5-L-2:windpipe",
+        "pattern": "windpipe|trachea"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:safety",
+        "pattern": "safe|protect|goggle|teacher|hot|broken"
+      },
+      {
+        "code": "G7-L-10",
+        "lesson": "g7:energy-transfer",
+        "unit": "G7-L-10:transfer",
+        "pattern": "transfer|pass|flow"
+      },
+      {
+        "code": "G9-L-8",
+        "lesson": "g9:l-8",
+        "unit": "G9-L-8:focus-1",
+        "pattern": "protect|conserv"
+      },
+      {
+        "code": "G9-L-11",
+        "lesson": "g9:l-11",
+        "unit": "G9-L-11:focus-3",
+        "pattern": "minimi|reduce|protect"
+      },
+      {
+        "code": "G9-M-9",
+        "lesson": "g9:m-9",
+        "unit": "G9-M-9:focus-3",
+        "pattern": "model|structure"
+      },
+      {
+        "code": "G10-E-11",
+        "lesson": "g10:e-11",
+        "unit": "G10-E-11:focus-2",
+        "pattern": "adapt|protect"
+      },
+      {
+        "code": "G10-M-2",
+        "lesson": "g10:m-2",
+        "unit": "G10-M-2:focus-1",
+        "pattern": "indicator|litmus|pH"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "The larynx is a rigid, box-like structure that protects the vocal cords and lets air pass from the pharynx to the trachea.",
+      "tl": "Ang larynx ay isang matigas, parang kahon na structure na nagpoprotekta sa vocal cords at nagpapadaan ng hangin mula sa pharynx papunta sa trachea.",
+      "bis": "Ang larynx usa ka gahi, morag kahon nga structure nga nagprotektar sa vocal cords ug nagpaagi sa hangin gikan sa pharynx ngadto sa trachea."
+    },
+    "exportedAt": "2026-09-10T12:10:52.501025+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "lava-fountaining-g6",
+    "id": "dcard-01774",
+    "textHash": "8d006992f87b0ea96a0e6faa5aba4e332d4994f54245b851973f7ab7ea36baf7",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:24:05Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G8-E-11",
+        "verdict": "wrong",
+        "card_evidence": "lava fountaining",
+        "competency_evidence": "relate the relative movements of the Earth, Moon, and Sun with the occurrence of tides",
+        "reason": "The card describes lava fountaining during an effusive eruption, which is volcanic activity. The competency concerns the relative movements of the Earth, Moon, and Sun and the occurrence of tides. There is no connection to tides or celestial motions."
+      },
+      {
+        "code": "G5-F-4",
+        "verdict": "wrong",
+        "card_evidence": "lava fountaining",
+        "competency_evidence": "identify gravity as a non-contact force that affects the behaviors of materials and objects on Earth in predictable ways",
+        "reason": "The card explains lava fountaining driven by gas pushing molten rock upward. The competency is about gravity as a non-contact force affecting objects on Earth. The card does not address gravity or any non-contact force; it is about volcanic eruption processes."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-2",
+        "lesson": "g3:living-or-not",
+        "unit": "G3-L-2:local-examples",
+        "pattern": "plant|dog|cat|rock|chair|tree"
+      },
+      {
+        "code": "G3-L-6",
+        "lesson": "g3:basic-needs",
+        "unit": "G3-L-6:air",
+        "pattern": "\\bair\\b|oxygen"
+      },
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:food-and-shelter",
+        "pattern": "food|eat|shelter"
+      },
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:environment",
+        "pattern": "water|soil|air|sun"
+      },
+      {
+        "code": "G3-F-1",
+        "lesson": "g3:moving-things",
+        "unit": "G3-F-1:push",
+        "pattern": "push"
+      },
+      {
+        "code": "G3-F-4",
+        "lesson": "g3:sound",
+        "unit": "G3-F-4:transfer",
+        "pattern": "travel|air|reach|transfer"
+      },
+      {
+        "code": "G3-E-1",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-1:examples",
+        "pattern": "rock|soil|water|air|metal|cloud|rain|sun"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G4-M-1",
+        "lesson": "g4:scientists",
+        "unit": "G4-M-1:invention",
+        "pattern": "invent|develop|creat"
+      },
+      {
+        "code": "G5-M-4",
+        "lesson": "g5:states-of-matter",
+        "unit": "G5-M-4:everyday-examples",
+        "pattern": "(ice|water|air|juice|milk|stone|chair|table).*(solid|liquid|gas)|(solid|liquid|gas).*(ice|water|air|juice|milk|stone|chair|table)"
+      },
+      {
+        "code": "G5-E-10",
+        "lesson": "g5:weather-disturbances",
+        "unit": "G5-E-10:during",
+        "pattern": "during"
+      },
+      {
+        "code": "G6-E-4",
+        "lesson": "g6:volcanic-materials",
+        "unit": "G6-E-4:lava",
+        "pattern": "lava"
+      },
+      {
+        "code": "G6-E-4",
+        "lesson": "g6:volcanic-materials",
+        "unit": "G6-E-4:gases",
+        "pattern": "gas"
+      },
+      {
+        "code": "G6-E-5",
+        "lesson": "g6:volcano-alerts",
+        "unit": "G6-E-5:during",
+        "pattern": "during|ashfall|ash fall"
+      },
+      {
+        "code": "G7-M-4",
+        "lesson": "g7:particle-diagrams",
+        "unit": "G7-M-4:gas",
+        "pattern": "\\bgas\\b|gaseous"
+      },
+      {
+        "code": "G7-F-1",
+        "lesson": "g7:measuring-forces",
+        "unit": "G7-F-1:interaction",
+        "pattern": "push|pull|interact|between"
+      },
+      {
+        "code": "G8-E-3",
+        "lesson": "g8:volcano-types",
+        "unit": "G8-E-3:eruption",
+        "pattern": "effusive|explosive|phreatic"
+      },
+      {
+        "code": "G8-F-5",
+        "lesson": "g8:energy-exchange",
+        "unit": "G8-F-5:kinetic-to-potential",
+        "pattern": "upward|uphill|rise|rises|highest|up.*potential"
+      },
+      {
+        "code": "G9-E-1",
+        "lesson": "g9:e-1",
+        "unit": "G9-E-1:focus-2",
+        "pattern": "fit|coast|rock|mountain"
+      },
+      {
+        "code": "G10-M-1",
+        "lesson": "g10:m-1",
+        "unit": "G10-M-1:focus-3",
+        "pattern": "gas"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "During an effusive eruption, lava fountaining can happen when gas pushes molten rock upward, creating a glowing fountain of lava that sprays into the air.",
+      "tl": "Sa panahon ng effusive eruption, maaaring mangyari ang lava fountaining kapag itinulak ng gas ang molten rock pataas, na lumilikha ng kumikinang na fountain ng lava na pumapaimbulog sa hangin.",
+      "bis": "Panahon sa effusive eruption, mahitabo ang lava fountaining kon itulak sa gas ang molten rock pataas, nga maghimo ug nagdan-ag nga fountain sa lava nga magsabwag sa hangin."
+    },
+    "exportedAt": "2026-09-10T12:10:52.543919+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "law-of-acceleration-g8",
+    "id": "dcard-10488",
+    "textHash": "1fe99211359a1160994541e7813849f1e4fa7b2bdf6e87a71a540535a74e0116",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:10:42Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G7-L-3",
+        "verdict": "wrong",
+        "card_evidence": "Newton's second law is also called the law of acceleration because it explains how the acceleration of an object changes when the force on it or its mass changes.",
+        "competency_evidence": "recognize that some organisms consist of a single cell (unicellular) like in bacteria and some consist of many cells (multicellular) like in a human",
+        "reason": "The card explains Newton's second law (law of acceleration), a physics concept about force, mass, and acceleration. G7-L-3 is about recognizing unicellular vs multicellular organisms (bacteria vs humans). There is no connection to living things, cells, or organisms."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-E-4",
+        "lesson": "g3:weather",
+        "unit": "G3-E-4:patterns",
+        "pattern": "pattern|change|day|sunny|rainy"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G4-F-2",
+        "lesson": "g4:distance-time",
+        "unit": "G4-F-2:time",
+        "pattern": "stopwatch|timer|second"
+      },
+      {
+        "code": "G4-F-9",
+        "lesson": "g4:energy",
+        "unit": "G4-F-9:change",
+        "pattern": "change|cause"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:benefits",
+        "pattern": "use|benefit|recover|separat"
+      },
+      {
+        "code": "G6-F-3",
+        "lesson": "g6:lever-tests",
+        "unit": "G6-F-3:force-size",
+        "pattern": "force|effort"
+      },
+      {
+        "code": "G7-M-7",
+        "lesson": "g7:measure-record",
+        "unit": "G7-M-7:units",
+        "pattern": "unit|meter|gram|second|liter|litre"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G7-F-1",
+        "lesson": "g7:measuring-forces",
+        "unit": "G7-F-1:measurement",
+        "pattern": "newton|spring balance|force meter"
+      },
+      {
+        "code": "G7-F-2",
+        "lesson": "g7:balanced-unbalanced",
+        "unit": "G7-F-2:accelerating",
+        "pattern": "accelerat|fall|unbalanced"
+      },
+      {
+        "code": "G7-F-4",
+        "lesson": "g7:net-force",
+        "unit": "G7-F-4:speed",
+        "pattern": "speed|accelerat"
+      },
+      {
+        "code": "G8-L-5",
+        "lesson": "g8:inheritance-ratios",
+        "unit": "G8-L-5:ratio",
+        "pattern": "ratio|1:2:1|3:1"
+      },
+      {
+        "code": "G8-M-3",
+        "lesson": "g8:subatomic-particles",
+        "unit": "G8-M-3:mass",
+        "pattern": "mass"
+      },
+      {
+        "code": "G8-F-1",
+        "lesson": "g8:acceleration",
+        "unit": "G8-F-1:net-force",
+        "pattern": "net force|unbalanced|force"
+      },
+      {
+        "code": "G9-F-3",
+        "lesson": "g9:f-3",
+        "unit": "G9-F-3:focus-1",
+        "pattern": "force"
+      },
+      {
+        "code": "G9-F-3",
+        "lesson": "g9:f-3",
+        "unit": "G9-F-3:focus-2",
+        "pattern": "mass"
+      },
+      {
+        "code": "G9-E-6",
+        "lesson": "g9:e-6",
+        "unit": "G9-E-6:focus-1",
+        "pattern": "eon|era|period"
+      },
+      {
+        "code": "G10-F-3",
+        "lesson": "g10:f-3",
+        "unit": "G10-F-3:focus-2",
+        "pattern": "force"
+      },
+      {
+        "code": "G10-F-4",
+        "lesson": "g10:f-4",
+        "unit": "G10-F-4:focus-1",
+        "pattern": "mass"
+      },
+      {
+        "code": "G10-F-5",
+        "lesson": "g10:f-5",
+        "unit": "G10-F-5:focus-2",
+        "pattern": "mass"
+      },
+      {
+        "code": "G10-F-6",
+        "lesson": "g10:f-6",
+        "unit": "G10-F-6:focus-1",
+        "pattern": "force"
+      },
+      {
+        "code": "G10-M-6",
+        "lesson": "g10:m-6",
+        "unit": "G10-M-6:focus-2",
+        "pattern": "mass"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Newton's second law is also called the law of acceleration because it explains how the acceleration of an object changes when the force on it or its mass changes.",
+      "tl": "Ang Newton's second law ay tinatawag ding law of acceleration dahil ipinapaliwanag nito kung paano nagbabago ang acceleration ng isang bagay kapag nagbago ang puwersa dito o ang mass nito.",
+      "bis": "Ang Newton's second law gitawag usab nga law of acceleration tungod kay kini nagpasabot kung giunsa pag-usab ang acceleration sa usa ka butang kung mausab ang puwersa niini o ang mass niini."
+    },
+    "exportedAt": "2026-09-10T12:10:52.586871+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "layers-of-the-sun-g4",
+    "id": "dcard-07188",
+    "textHash": "a977f97d0a61fde06a4e5dbcf92c281eda67adb9298a3df78109ed372c9cfb40",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:22:15Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G8-L-2",
+        "verdict": "wrong",
+        "card_evidence": "The Sun has inner and outer layers, with the core at the center and the photosphere as the visible surface we can see from Earth.",
+        "competency_evidence": "use models, flow charts, diagrams, and simulations to explain how body systems work together, such as digestion and excretion",
+        "reason": "The card describes the layers of the Sun, an astronomy topic. G8-L-2 requires using models, flow charts, diagrams, or simulations to explain how body systems work together (e.g., digestion and excretion). The card provides no information about body systems or their interactions, so it does not support the competency at all."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:environment",
+        "pattern": "water|soil|air|sun"
+      },
+      {
+        "code": "G3-F-5",
+        "lesson": "g3:light",
+        "unit": "G3-F-5:sources",
+        "pattern": "sun|lamp|torch|flashlight|candle"
+      },
+      {
+        "code": "G3-F-5",
+        "lesson": "g3:light",
+        "unit": "G3-F-5:uses",
+        "pattern": "\\bsee\\b|\\bread\\b|light.*room"
+      },
+      {
+        "code": "G3-F-7",
+        "lesson": "g3:light-and-sound-safety",
+        "unit": "G3-F-7:loud-sound",
+        "pattern": "loud|noise|ear"
+      },
+      {
+        "code": "G3-F-7",
+        "lesson": "g3:light-and-sound-safety",
+        "unit": "G3-F-7:bright-light",
+        "pattern": "bright|sun|eye"
+      },
+      {
+        "code": "G3-E-1",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-1:examples",
+        "pattern": "rock|soil|water|air|metal|cloud|rain|sun"
+      },
+      {
+        "code": "G3-E-8",
+        "lesson": "g3:sky-and-our-day",
+        "unit": "G3-E-8:daytime",
+        "pattern": "day|sun"
+      },
+      {
+        "code": "G4-F-8",
+        "lesson": "g4:effects-at-distance",
+        "unit": "G4-F-8:light",
+        "pattern": "sun|light"
+      },
+      {
+        "code": "G5-F-2",
+        "lesson": "g5:friction",
+        "unit": "G5-F-2:surfaces",
+        "pattern": "surface|rough|smooth"
+      },
+      {
+        "code": "G5-E-11",
+        "lesson": "g5:solar-system",
+        "unit": "G5-E-11:structure",
+        "pattern": "sun.*(center|centre)|(center|centre).*sun"
+      },
+      {
+        "code": "G6-L-7",
+        "lesson": "g6:ecosystem-factors",
+        "unit": "G6-L-7:light",
+        "pattern": "light|sun"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:safety",
+        "pattern": "safe|protect|goggle|teacher|hot|broken"
+      },
+      {
+        "code": "G7-E-12",
+        "lesson": "g7:solar-winds",
+        "unit": "G7-E-12:solar-heating",
+        "pattern": "heat|solar|Sun"
+      },
+      {
+        "code": "G8-M-10",
+        "lesson": "g8:group-valence",
+        "unit": "G8-M-10:shared-valence",
+        "pattern": "valence|outer"
+      },
+      {
+        "code": "G9-F-11",
+        "lesson": "g9:f-11",
+        "unit": "G9-F-11:focus-4",
+        "pattern": "visible"
+      },
+      {
+        "code": "G9-E-7",
+        "lesson": "g9:e-7",
+        "unit": "G9-E-7:focus-3",
+        "pattern": "core|interior|layer"
+      },
+      {
+        "code": "G9-M-3",
+        "lesson": "g9:m-3",
+        "unit": "G9-M-3:focus-1",
+        "pattern": "outer|valence"
+      },
+      {
+        "code": "G10-M-2",
+        "lesson": "g10:m-2",
+        "unit": "G10-M-2:focus-1",
+        "pattern": "indicator|litmus|pH"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "The Sun has inner and outer layers, with the core at the center and the photosphere as the visible surface we can see from Earth.",
+      "tl": "Ang Araw ay may inner at outer layers, kung saan ang core ang nasa pinakagitna at ang photosphere ang nakikitang surface na ating namamasdan mula sa Earth.",
+      "bis": "Ang Adlaw adunay inner ug outer layers, diin ang core ang naa sa tunga-tunga ug ang photosphere ang makita nga surface nga atong makita gikan sa Earth."
+    },
+    "exportedAt": "2026-09-10T12:10:52.627840+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "lead-shielding-g10",
+    "id": "dcard-05025",
+    "textHash": "f60e26a30876db0d334e39b707c01c88b890f289c2188aaa9403c016505b77a1",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:56:16Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G6-M-2",
+        "verdict": "wrong",
+        "card_evidence": "Lead is used as a shield to provide protection from penetrating X-rays and gamma rays",
+        "competency_evidence": "explain the role of heat energy in change of state processes",
+        "reason": "The card discusses lead shielding against X-rays and gamma rays, which is unrelated to the role of heat energy in change of state processes."
+      },
+      {
+        "code": "G6-M-1",
+        "verdict": "wrong",
+        "card_evidence": "Lead is used as a shield to provide protection from penetrating X-rays and gamma rays",
+        "competency_evidence": "describe changes of state for solids, liquids, and gases as melting, evaporation, freezing, condensation using diagrams and flowcharts",
+        "reason": "The card does not describe changes of state (melting, evaporation, freezing, condensation) for solids, liquids, and gases; it is about radiation shielding."
+      },
+      {
+        "code": "G7-M-5",
+        "verdict": "wrong",
+        "card_evidence": "Lead is used as a shield to provide protection from penetrating X-rays and gamma rays",
+        "competency_evidence": "explain the changes of state in terms of particle arrangement and energy changes: a. solid → liquid → vapor, and b. vapor → liquid → solid",
+        "reason": "The card does not explain changes of state in terms of particle arrangement and energy changes; it is about lead shielding from radiation."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-6",
+        "lesson": "g3:basic-needs",
+        "unit": "G3-L-6:shelter",
+        "pattern": "shelter|home|protect"
+      },
+      {
+        "code": "G3-L-8",
+        "lesson": "g3:protecting-nature",
+        "unit": "G3-L-8:care-actions",
+        "pattern": "plant|clean|protect|conserv|recycl"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G6-M-4",
+        "lesson": "g6:useful-mixtures",
+        "unit": "G6-M-4:uses",
+        "pattern": "\\buse|food|drink|medicin|paint"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:benefits",
+        "pattern": "use|benefit|recover|separat"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:safety",
+        "pattern": "safe|protect|goggle|teacher|hot|broken"
+      },
+      {
+        "code": "G8-E-4",
+        "lesson": "g8:volcano-shape",
+        "unit": "G8-E-4:cone-shape",
+        "pattern": "shield|steep|cone|slope"
+      },
+      {
+        "code": "G9-F-11",
+        "lesson": "g9:f-11",
+        "unit": "G9-F-11:focus-6",
+        "pattern": "[xX].ray"
+      },
+      {
+        "code": "G9-F-11",
+        "lesson": "g9:f-11",
+        "unit": "G9-F-11:focus-7",
+        "pattern": "gamma"
+      },
+      {
+        "code": "G9-F-12",
+        "lesson": "g9:f-12",
+        "unit": "G9-F-12:focus-2",
+        "pattern": "[xX].ray"
+      },
+      {
+        "code": "G9-F-12",
+        "lesson": "g9:f-12",
+        "unit": "G9-F-12:focus-3",
+        "pattern": "gamma"
+      },
+      {
+        "code": "G9-L-8",
+        "lesson": "g9:l-8",
+        "unit": "G9-L-8:focus-1",
+        "pattern": "protect|conserv"
+      },
+      {
+        "code": "G9-L-11",
+        "lesson": "g9:l-11",
+        "unit": "G9-L-11:focus-3",
+        "pattern": "minimi|reduce|protect"
+      },
+      {
+        "code": "G10-E-11",
+        "lesson": "g10:e-11",
+        "unit": "G10-E-11:focus-2",
+        "pattern": "adapt|protect"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Lead is used as a shield to provide protection from penetrating X-rays and gamma rays, like the lead blanket dentists place on patients.",
+      "tl": "Ang lead ay ginagamit bilang shield para magbigay ng proteksyon laban sa tumatagos na X-rays at gamma rays, tulad ng lead blanket na inilalagay ng mga dentista sa mga pasyente.",
+      "bis": "Ang lead gigamit isip shield aron maghatag ug proteksyon batok sa motuhop nga X-rays ug gamma rays, sama sa lead blanket nga gibutang sa mga dentista sa mga pasyente."
+    },
+    "exportedAt": "2026-09-10T12:10:52.669585+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "leaf-hidden-yellow-orange-pigments-g5",
+    "id": "ffct-06173",
+    "textHash": "645e5edb499224fb0a30a2eb99a0bcab2a367c17b4a29ed53acd979de1b1c163",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:28:47Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-L-5",
+        "verdict": "wrong",
+        "card_evidence": "Yellow and orange colors hide underneath, covered up by the green chlorophyll all year.",
+        "competency_evidence": "observe the outer parts of plants, such as leaves, roots, and stems and identify their role to get water and nutrients from the soil",
+        "reason": "The card discusses hidden leaf pigments (yellow/orange under chlorophyll), which is unrelated to observing outer plant parts (leaves, roots, stems) and identifying their role in obtaining water and nutrients from the soil. No instructional support for the competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:food-and-shelter",
+        "pattern": "food|eat|shelter"
+      },
+      {
+        "code": "G3-F-7",
+        "lesson": "g3:light-and-sound-safety",
+        "unit": "G3-F-7:loud-sound",
+        "pattern": "loud|noise|ear"
+      },
+      {
+        "code": "G5-E-2",
+        "lesson": "g5:rock-observation",
+        "unit": "G5-E-2:observable-features",
+        "pattern": "texture|grain|color|colour"
+      },
+      {
+        "code": "G8-L-3",
+        "lesson": "g8:plant-transport",
+        "unit": "G8-L-3:leaves",
+        "pattern": "lea(f|ves)|transpir"
+      },
+      {
+        "code": "G10-F-1",
+        "lesson": "g10:f-1",
+        "unit": "G10-F-1:focus-4",
+        "pattern": "range"
+      },
+      {
+        "code": "G10-M-1",
+        "lesson": "g10:m-1",
+        "unit": "G10-M-1:focus-1",
+        "pattern": "color|colour"
+      },
+      {
+        "code": "G10-M-2",
+        "lesson": "g10:m-2",
+        "unit": "G10-M-2:focus-1",
+        "pattern": "indicator|litmus|pH"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Do leaves have hidden colors?\n\nYes! Yellow and orange colors hide underneath, covered up by the green chlorophyll all year.",
+      "tl": "May nakatagong kulay ba ang mga dahon?\n\nOo! May nakatagong dilaw at kahel na kulay sa loob, natatakpan lang ng luntiang chlorophyll.",
+      "bis": "Adunay tinagong kolor ba ang dahon?\n\nOo! Adunay tinagong dalag ug kahel nga kolor sa sulod, gitabonan lang sa berdeng chlorophyll."
+    },
+    "exportedAt": "2026-09-10T12:10:52.709723+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "leaf-texture-g3",
+    "id": "dcard-09121",
+    "textHash": "e8dc9ac2f8d98626eee0f075a9001b3aeb9e9327b3062ee540d336e8da5d58f3",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:31:03Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G9-F-12",
+        "verdict": "wrong",
+        "card_evidence": "Leaves have texture",
+        "competency_evidence": "identify practical applications of electromagnetic radiation, such as radio waves used in telecommunications, and x-rays and gamma rays in medicine",
+        "reason": "The card describes leaf texture, a plant surface property, and provides no information about electromagnetic radiation or its practical applications. The assigned competency G9-F-12 concerns identifying applications of EM radiation (radio waves, x-rays, gamma rays), which is entirely unrelated to the card's content."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G5-F-2",
+        "lesson": "g5:friction",
+        "unit": "G5-F-2:surfaces",
+        "pattern": "surface|rough|smooth"
+      },
+      {
+        "code": "G5-E-2",
+        "lesson": "g5:rock-observation",
+        "unit": "G5-E-2:observable-features",
+        "pattern": "texture|grain|color|colour"
+      },
+      {
+        "code": "G5-E-2",
+        "lesson": "g5:rock-observation",
+        "unit": "G5-E-2:comparison",
+        "pattern": "compar|different|similar|sort|collect"
+      },
+      {
+        "code": "G7-L-7",
+        "lesson": "g7:reproduction-types",
+        "unit": "G7-L-7:similarity",
+        "pattern": "identical|clone|differ|variation|similar"
+      },
+      {
+        "code": "G7-E-2",
+        "lesson": "g7:fault-models",
+        "unit": "G7-E-2:slip-earthquake",
+        "pattern": "slip|release|stick"
+      },
+      {
+        "code": "G8-L-3",
+        "lesson": "g8:plant-transport",
+        "unit": "G8-L-3:leaves",
+        "pattern": "lea(f|ves)|transpir"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Why do some leaves feel different when you touch them?\n\nLeaves have texture, which is how their surface feels. Some are smooth and slippery, while others are rough and bumpy.",
+      "tl": "Bakit magkaiba ang pakiramdam ng mga dahon kapag hinawakan mo?\n\nMay texture ang mga dahon, ibig sabihin kung paano ang pakiramdam ng surface nito. Ang iba ay makinis at madulas, habang ang iba naman ay magaspang at malubak-lubak.",
+      "bis": "Ngano lain-lain man ang bation sa mga dahon kon hikapon nimo?\n\nAng mga dahon adunay texture, buot ipasabot kon unsa ang bation sa ilang surface. Ang uban hamis ug danlog, samtang ang uban gaspang ug bako-bako."
+    },
+    "exportedAt": "2026-09-10T12:10:52.752936+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "learned-behaviors-g10",
+    "id": "dcard-04247",
+    "textHash": "bafc831671f0ab68fac1d228a41af4386d6e12b80e9bf5107dd9cc60723c4f97",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:29:07Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G5-L-4",
+        "verdict": "wrong",
+        "card_evidence": "Some adaptations are learned behaviors, like swimming or hunting skills, that animals acquire by interacting with their environment and cannot be passed on through genes.",
+        "competency_evidence": "use a table to show how living things can be classified into groups based on similar characteristics (plants including flowering and non-flowering; animals including mammals, reptiles, insects, birds, fish, amphibians; microorganisms including fungi and bacteria)",
+        "reason": "The card discusses learned behaviors as adaptations, not classification of living things into groups using a table. It provides no support for the classification skill or the named groups."
+      },
+      {
+        "code": "G5-L-5",
+        "verdict": "wrong",
+        "card_evidence": "Some adaptations are learned behaviors, like swimming or hunting skills, that animals acquire by interacting with their environment and cannot be passed on through genes.",
+        "competency_evidence": "identify which groups of animals reproduce by giving birth to live young, such as mammals, and which reproduce by laying eggs, such as birds and reptiles",
+        "reason": "The card is about learned behaviors, not about which animal groups give birth to live young versus laying eggs. No relevant information for reproduction modes."
+      },
+      {
+        "code": "G5-L-6",
+        "verdict": "wrong",
+        "card_evidence": "Some adaptations are learned behaviors, like swimming or hunting skills, that animals acquire by interacting with their environment and cannot be passed on through genes.",
+        "competency_evidence": "compare the life cycles of mammals from birth to adulthood, birds from egg to a mature organism, and plants from seed to a young plant, and then to a mature plant",
+        "reason": "The card does not compare life cycles of mammals, birds, or plants. It addresses learned behaviors, which is unrelated to life-cycle comparison."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-9",
+        "lesson": "g3:community-metals",
+        "unit": "G3-M-9:iron",
+        "pattern": "iron"
+      },
+      {
+        "code": "G3-F-6",
+        "lesson": "g3:light",
+        "unit": "G3-F-6:behavior",
+        "pattern": "shadow|reflect|block|through"
+      },
+      {
+        "code": "G3-F-7",
+        "lesson": "g3:light-and-sound-safety",
+        "unit": "G3-F-7:loud-sound",
+        "pattern": "loud|noise|ear"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G4-F-7",
+        "lesson": "g4:magnets",
+        "unit": "G4-F-7:materials",
+        "pattern": "iron|steel|plastic|wood"
+      },
+      {
+        "code": "G4-E-2",
+        "lesson": "g4:water-for-life",
+        "unit": "G4-E-2:animals",
+        "pattern": "animal|human|body"
+      },
+      {
+        "code": "G5-F-2",
+        "lesson": "g5:friction",
+        "unit": "G5-F-2:surfaces",
+        "pattern": "surface|rough|smooth"
+      },
+      {
+        "code": "G5-E-1",
+        "lesson": "g5:landforms",
+        "unit": "G5-E-1:environmental-effects",
+        "pattern": "plant|animal|habitat|soil|flood|rain"
+      },
+      {
+        "code": "G5-E-6",
+        "lesson": "g5:water-cycle",
+        "unit": "G5-E-6:environment",
+        "pattern": "plant|animal|fresh|rain|environment"
+      },
+      {
+        "code": "G7-L-10",
+        "lesson": "g7:energy-transfer",
+        "unit": "G7-L-10:transfer",
+        "pattern": "transfer|pass|flow"
+      },
+      {
+        "code": "G7-F-1",
+        "lesson": "g7:measuring-forces",
+        "unit": "G7-F-1:interaction",
+        "pattern": "push|pull|interact|between"
+      },
+      {
+        "code": "G9-E-6",
+        "lesson": "g9:e-6",
+        "unit": "G9-E-6:focus-1",
+        "pattern": "eon|era|period"
+      },
+      {
+        "code": "G9-L-2",
+        "lesson": "g9:l-2",
+        "unit": "G9-L-2:focus-2",
+        "pattern": "gene"
+      },
+      {
+        "code": "G9-L-7",
+        "lesson": "g9:l-7",
+        "unit": "G9-L-7:focus-1",
+        "pattern": "habitat|pollut|hunt|poach"
+      },
+      {
+        "code": "G10-E-11",
+        "lesson": "g10:e-11",
+        "unit": "G10-E-11:focus-2",
+        "pattern": "adapt|protect"
+      },
+      {
+        "code": "G10-L-4",
+        "lesson": "g10:l-4",
+        "unit": "G10-L-4:focus-5",
+        "pattern": "adaptation"
+      },
+      {
+        "code": "G10-L-9",
+        "lesson": "g10:l-9",
+        "unit": "G10-L-9:focus-2",
+        "pattern": "environment"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Some adaptations are learned behaviors, like swimming or hunting skills, that animals acquire by interacting with their environment and cannot be passed on through genes.",
+      "tl": "Ang ilang adaptation ay learned behaviors, tulad ng paglangoy o pangangaso, na natututunan ng mga hayop sa pakikipag-ugnayan sa kapaligiran at hindi naipapasa sa pamamagitan ng genes.",
+      "bis": "Ang uban nga adaptation mao ang learned behaviors, sama sa paglangoy o pagpangayam, nga nakat-unan sa mga mananap pinaagi sa pagpakig-uban sa palibot ug dili mapasa pinaagi sa genes."
+    },
+    "exportedAt": "2026-09-10T12:10:52.795535+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "learning-to-move-g5",
+    "id": "dcard-12492",
+    "textHash": "fc5bbbd957e58fa036d7ca10742f0363d33df83e3c4936b39e0c7d180dd683f7",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:23:44Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G8-L-8",
+        "verdict": "wrong",
+        "card_evidence": "In the epididymis, a coiled tube where they are stored and gain the ability to move",
+        "competency_evidence": "using flow charts and labeled diagrams explain the role of plants and animals in the cycles of nature, such as the carbon, oxygen, and water cycles",
+        "reason": "The card explains sperm maturation in the epididymis, a reproductive system topic. G8-L-8 requires using flow charts and labeled diagrams to explain the role of plants and animals in nature's cycles (carbon, oxygen, water). The card provides no information about these cycles, plants, animals, or any cycle of nature, and does not use the required format."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-F-7",
+        "lesson": "g3:light-and-sound-safety",
+        "unit": "G3-F-7:loud-sound",
+        "pattern": "loud|noise|ear"
+      },
+      {
+        "code": "G3-E-7",
+        "lesson": "g3:watching-the-sky",
+        "unit": "G3-E-7:apparent-motion",
+        "pattern": "move|motion|rise|set"
+      },
+      {
+        "code": "G5-F-3",
+        "lesson": "g5:friction",
+        "unit": "G5-F-3:reducing-friction",
+        "pattern": "reduc|oil|lubricat"
+      },
+      {
+        "code": "G5-F-10",
+        "lesson": "g5:electromagnets",
+        "unit": "G5-F-10:construction",
+        "pattern": "nail|coil|wind.*wire"
+      },
+      {
+        "code": "G5-E-5",
+        "lesson": "g5:erosion",
+        "unit": "G5-E-5:transport",
+        "pattern": "carry|carries|transport|move"
+      },
+      {
+        "code": "G7-M-3",
+        "lesson": "g7:particle-motion",
+        "unit": "G7-M-3:motion",
+        "pattern": "motion|mov|vibrat"
+      },
+      {
+        "code": "G7-L-1",
+        "lesson": "g7:microscope",
+        "unit": "G7-L-1:storage",
+        "pattern": "\\bstor|\\bcover\\b|\\bdry\\b|unplug"
+      },
+      {
+        "code": "G7-L-6",
+        "lesson": "g7:inherited-information",
+        "unit": "G7-L-6:fertilization",
+        "pattern": "fertiliz|egg.*sperm|sperm.*egg"
+      },
+      {
+        "code": "G8-F-10",
+        "lesson": "g8:hydropower",
+        "unit": "G8-F-10:stored-to-motion",
+        "pattern": "potential|stored|fall"
+      },
+      {
+        "code": "G9-M-5",
+        "lesson": "g9:m-5",
+        "unit": "G9-M-5:focus-1",
+        "pattern": "lose|loss|gain|transfer"
+      },
+      {
+        "code": "G10-L-6",
+        "lesson": "g10:l-6",
+        "unit": "G10-L-6:focus-2",
+        "pattern": "organism|cell|enzyme|microb"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Where do sperm cells learn to move?\n\nIn the epididymis, a coiled tube where they are stored and gain the ability to move, which is needed for fertilization.",
+      "tl": "Saan natututong gumalaw ang sperm cells?\n\nSa epididymis, isang nakapulupot na tubo kung saan sila iniimbak at nagkakaroon ng kakayahang gumalaw, na kailangan para sa fertilization.",
+      "bis": "Asa makakat-on sa paglihok ang sperm cells?\n\nSa epididymis, usa ka naglikoliko nga tubo diin sila gitipigan ug nakaangkon ug abilidad sa paglihok, nga gikinahanglan alang sa fertilization."
+    },
+    "exportedAt": "2026-09-10T12:10:52.837896+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "leaving-the-body-g5",
+    "id": "dcard-09536",
+    "textHash": "ed22c2cb2c59221621aa9f596b1887da028287453a5c4b3077bf792bbbf2c50e",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:49:46Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G4-E-4",
+        "verdict": "wrong",
+        "card_evidence": "Undigested food materials become waste and leave the body through the anus.",
+        "competency_evidence": "identify some of the basic characteristics used to describe the weather, such as air temperature, air pressure, wind speed, wind direction, humidity, rain, and cloud cover",
+        "reason": "The card is about digestive waste removal, not weather characteristics such as air temperature, air pressure, wind speed, humidity, rain, or cloud cover."
+      },
+      {
+        "code": "G3-E-4",
+        "verdict": "wrong",
+        "card_evidence": "Undigested food materials become waste and leave the body through the anus.",
+        "competency_evidence": "observe and record changes in the weather during a day or over some days and describe the different types and patterns of weather in the local area",
+        "reason": "The card describes waste leaving the body, not observing or recording weather changes or weather patterns."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-6",
+        "lesson": "g3:harmful-changes",
+        "unit": "G3-M-6:trash",
+        "pattern": "trash|garbage|waste|litter"
+      },
+      {
+        "code": "G3-L-6",
+        "lesson": "g3:basic-needs",
+        "unit": "G3-L-6:food",
+        "pattern": "food"
+      },
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:food-and-shelter",
+        "pattern": "food|eat|shelter"
+      },
+      {
+        "code": "G3-F-6",
+        "lesson": "g3:light",
+        "unit": "G3-F-6:behavior",
+        "pattern": "shadow|reflect|block|through"
+      },
+      {
+        "code": "G4-M-6",
+        "lesson": "g4:community-problems",
+        "unit": "G4-M-6:waste",
+        "pattern": "waste|trash|garbage"
+      },
+      {
+        "code": "G4-L-1",
+        "lesson": "g4:body-systems",
+        "unit": "G4-L-1:digestive",
+        "pattern": "digest|break.*food"
+      },
+      {
+        "code": "G4-E-2",
+        "lesson": "g4:water-for-life",
+        "unit": "G4-E-2:animals",
+        "pattern": "animal|human|body"
+      },
+      {
+        "code": "G4-E-9",
+        "lesson": "g4:sun-and-life",
+        "unit": "G4-E-9:importance",
+        "pattern": "plant|food|warm|water"
+      },
+      {
+        "code": "G5-F-2",
+        "lesson": "g5:friction",
+        "unit": "G5-F-2:surfaces",
+        "pattern": "surface|rough|smooth"
+      },
+      {
+        "code": "G6-M-4",
+        "lesson": "g6:useful-mixtures",
+        "unit": "G6-M-4:uses",
+        "pattern": "\\buse|food|drink|medicin|paint"
+      },
+      {
+        "code": "G7-M-6",
+        "lesson": "g7:investigation-steps",
+        "unit": "G7-M-6:materials",
+        "pattern": "material|equipment"
+      },
+      {
+        "code": "G8-L-1",
+        "lesson": "g8:digestion",
+        "unit": "G8-L-1:elimination",
+        "pattern": "eliminat|feces|\\banus\\b"
+      },
+      {
+        "code": "G10-M-8",
+        "lesson": "g10:m-8",
+        "unit": "G10-M-8:focus-1",
+        "pattern": "food|preserv"
+      },
+      {
+        "code": "G10-M-8",
+        "lesson": "g10:m-8",
+        "unit": "G10-M-8:focus-2",
+        "pattern": "material|manufactur|production"
+      },
+      {
+        "code": "G10-L-10",
+        "lesson": "g10:l-10",
+        "unit": "G10-L-10:focus-1",
+        "pattern": "food"
+      },
+      {
+        "code": "G10-L-10",
+        "lesson": "g10:l-10",
+        "unit": "G10-L-10:focus-4",
+        "pattern": "mate"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Undigested food materials become waste and leave the body through the anus.",
+      "tl": "Ang mga hindi natunaw na pagkain ay nagiging dumi at lumalabas sa katawan sa pamamagitan ng anus.",
+      "bis": "Ang mga wala matunaw nga pagkaon mahimong hugaw ug mogawas sa lawas pinaagi sa anus."
+    },
+    "exportedAt": "2026-09-10T12:10:52.876278+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "length-mass-volume-g7",
+    "id": "dcard-05364",
+    "textHash": "2e0b9dbad3a0c692cf484cb60c76744c47476110e2c3862880bf53515df6c28b",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:41:26Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G10-F-11",
+        "verdict": "wrong",
+        "card_evidence": "Length is how long or wide an object is, mass is how heavy or light it is, and volume is how much space it takes up.",
+        "competency_evidence": "describe the similarities and differences between electric motors and electric generators",
+        "reason": "The card defines length, mass, and volume. G10-F-11 requires describing similarities and differences between electric motors and electric generators. There is no connection to motors, generators, or electricity."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-F-8",
+        "lesson": "g3:sending-messages",
+        "unit": "G3-F-8:light",
+        "pattern": "light|flash"
+      },
+      {
+        "code": "G4-F-8",
+        "lesson": "g4:effects-at-distance",
+        "unit": "G4-F-8:light",
+        "pattern": "sun|light"
+      },
+      {
+        "code": "G4-F-9",
+        "lesson": "g4:energy",
+        "unit": "G4-F-9:forms",
+        "pattern": "light|sound|heat"
+      },
+      {
+        "code": "G4-F-10",
+        "lesson": "g4:energy-uses",
+        "unit": "G4-F-10:light",
+        "pattern": "light"
+      },
+      {
+        "code": "G4-E-7",
+        "lesson": "g4:sun",
+        "unit": "G4-E-7:energy",
+        "pattern": "light|heat"
+      },
+      {
+        "code": "G4-E-8",
+        "lesson": "g4:shadows",
+        "unit": "G4-E-8:length",
+        "pattern": "long|short|length"
+      },
+      {
+        "code": "G5-M-1",
+        "lesson": "g5:matter",
+        "unit": "G5-M-1:mass-and-space",
+        "pattern": "mass.*(space|volume)|(space|volume).*mass"
+      },
+      {
+        "code": "G5-F-5",
+        "lesson": "g5:gravity",
+        "unit": "G5-F-5:heavy-and-light",
+        "pattern": "heav|light|same rate|same time"
+      },
+      {
+        "code": "G6-L-7",
+        "lesson": "g6:ecosystem-factors",
+        "unit": "G6-L-7:light",
+        "pattern": "light|sun"
+      },
+      {
+        "code": "G6-L-8",
+        "lesson": "g6:ecosystem-effects",
+        "unit": "G6-L-8:nonliving-interactions",
+        "pattern": "water|soil|temperature|light|drought|flood"
+      },
+      {
+        "code": "G6-F-9",
+        "lesson": "g6:wave-examples",
+        "unit": "G6-F-9:transverse",
+        "pattern": "light|rope|transverse|seismic"
+      },
+      {
+        "code": "G7-M-3",
+        "lesson": "g7:particle-motion",
+        "unit": "G7-M-3:spaces",
+        "pattern": "space|gap"
+      },
+      {
+        "code": "G7-L-1",
+        "lesson": "g7:microscope",
+        "unit": "G7-L-1:functions",
+        "pattern": "magnif|focus|light"
+      },
+      {
+        "code": "G7-F-3",
+        "lesson": "g7:force-diagrams",
+        "unit": "G7-F-3:magnitude",
+        "pattern": "length|longer|size|magnitude"
+      },
+      {
+        "code": "G8-M-3",
+        "lesson": "g8:subatomic-particles",
+        "unit": "G8-M-3:mass",
+        "pattern": "mass"
+      },
+      {
+        "code": "G9-F-3",
+        "lesson": "g9:f-3",
+        "unit": "G9-F-3:focus-2",
+        "pattern": "mass"
+      },
+      {
+        "code": "G9-F-10",
+        "lesson": "g9:f-10",
+        "unit": "G9-F-10:focus-3",
+        "pattern": "space|vacuum"
+      },
+      {
+        "code": "G10-F-4",
+        "lesson": "g10:f-4",
+        "unit": "G10-F-4:focus-1",
+        "pattern": "mass"
+      },
+      {
+        "code": "G10-F-5",
+        "lesson": "g10:f-5",
+        "unit": "G10-F-5:focus-2",
+        "pattern": "mass"
+      },
+      {
+        "code": "G10-M-6",
+        "lesson": "g10:m-6",
+        "unit": "G10-M-6:focus-2",
+        "pattern": "mass"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Length is how long or wide an object is, mass is how heavy or light it is, and volume is how much space it takes up.",
+      "tl": "Ang length ay kung gaano kahaba o kalawak ang isang bagay, ang mass ay kung gaano ito kabigat o kagaan, at ang volume ay kung gaano karaming space ang nasasakop nito.",
+      "bis": "Ang length mao kung unsa ka taas o ka lapad ang usa ka butang, ang mass mao kung unsa ka bug-at o ka gaan kini, ug ang volume mao kung unsa ka dako ang space nga gi-okupar sa butang."
+    },
+    "exportedAt": "2026-09-10T12:10:52.917062+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "lens-count-g7",
+    "id": "dcard-06890",
+    "textHash": "c8bb64dda8492713782b569beb10d617695e88516839e66f5355b9c0c7684c3c",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:52:06Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G6-F-2",
+        "verdict": "wrong",
+        "card_evidence": "It has more lenses! A simple microscope has only one lens, while a compound microscope has three to five lenses working together.",
+        "competency_evidence": "demonstrate through guided investigation the advantages and limitations of simple machines, such as inclined planes, wedges, levers, and pulleys",
+        "reason": "The card discusses microscope lenses, not simple machines (inclined planes, wedges, levers, pulleys) or their advantages/limitations."
+      },
+      {
+        "code": "G6-F-3",
+        "verdict": "wrong",
+        "card_evidence": "It has more lenses! A simple microscope has only one lens, while a compound microscope has three to five lenses working together.",
+        "competency_evidence": "carry out fair tests to show how levers can be used to change the magnitude and direction of a force",
+        "reason": "The card is about microscope magnification, not levers or fair tests of force magnitude/direction."
+      },
+      {
+        "code": "G6-F-1",
+        "verdict": "wrong",
+        "card_evidence": "It has more lenses! A simple microscope has only one lens, while a compound microscope has three to five lenses working together.",
+        "competency_evidence": "observe and describe examples and uses of simple machines found at home, at school, and in the community",
+        "reason": "The card does not describe simple machines found at home, school, or community; it describes microscope lens counts."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G7-L-1",
+        "lesson": "g7:microscope",
+        "unit": "G7-L-1:functions",
+        "pattern": "magnif|focus|light"
+      },
+      {
+        "code": "G7-L-2",
+        "lesson": "g7:cell-observation",
+        "unit": "G7-L-2:technique",
+        "pattern": "slide|focus|low.power|microscope"
+      },
+      {
+        "code": "G8-F-8",
+        "lesson": "g8:mechanical-energy",
+        "unit": "G8-F-8:work",
+        "pattern": "work"
+      },
+      {
+        "code": "G8-F-11",
+        "lesson": "g8:light-investigations",
+        "unit": "G8-F-11:lens",
+        "pattern": "lens"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Why does a compound microscope magnify more than a simple one?\n\nIt has more lenses! A simple microscope has only one lens, while a compound microscope has three to five lenses working together.",
+      "tl": "Bakit mas malakas mag-magnify ang compound microscope kaysa simple microscope?\n\nMas marami kasi itong lens! Ang simple microscope ay may isang lens lang, samantalang ang compound microscope ay may tatlo hanggang limang lens na nagtutulungan.",
+      "bis": "Ngano mas kusog mopadako ang compound microscope kaysa simple microscope?\n\nMas daghan kini ug lens! Ang simple microscope adunay usa ra ka lens, samtang ang compound microscope adunay tulo hangtod lima ka lens nga nagtinabangay."
+    },
+    "exportedAt": "2026-09-10T12:10:52.961929+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "lewis-structure-of-chlorine-g9",
+    "id": "dcard-02911",
+    "textHash": "50a3805f8bd7d3cbbac96d76a0f5e8315a76ecaa75afe6e5216c527256578341",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:47:45Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G6-E-1",
+        "verdict": "wrong",
+        "card_evidence": "chlorine has seven valence electrons",
+        "competency_evidence": "explain what volcanoes are and how they are formed",
+        "reason": "The card teaches the Lewis electron dot structure of chlorine, a chemistry topic about valence electrons. G6-E-1 requires explaining what volcanoes are and how they are formed, which is an Earth and space science topic. There is no instructional support for volcanoes."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G4-F-9",
+        "lesson": "g4:energy",
+        "unit": "G4-F-9:change",
+        "pattern": "change|cause"
+      },
+      {
+        "code": "G5-F-8",
+        "lesson": "g5:simple-circuits",
+        "unit": "G5-F-8:diagram",
+        "pattern": "symbol|diagram"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:benefits",
+        "pattern": "use|benefit|recover|separat"
+      },
+      {
+        "code": "G7-M-4",
+        "lesson": "g7:particle-diagrams",
+        "unit": "G7-M-4:diagram",
+        "pattern": "diagram|draw|dot|illustrat"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G8-M-3",
+        "lesson": "g8:subatomic-particles",
+        "unit": "G8-M-3:electron",
+        "pattern": "electron"
+      },
+      {
+        "code": "G8-M-3",
+        "lesson": "g8:subatomic-particles",
+        "unit": "G8-M-3:symbols",
+        "pattern": "symbol|p\\+|n0|e−|e-"
+      },
+      {
+        "code": "G8-M-6",
+        "lesson": "g8:element-names",
+        "unit": "G8-M-6:next-ten",
+        "pattern": "sodium|magnesium|alumin|silicon|phosphorus|sulfur|chlorine|argon|potassium|calcium"
+      },
+      {
+        "code": "G8-M-6",
+        "lesson": "g8:element-names",
+        "unit": "G8-M-6:symbols",
+        "pattern": "symbol"
+      },
+      {
+        "code": "G8-M-7",
+        "lesson": "g8:periods-groups",
+        "unit": "G8-M-7:properties",
+        "pattern": "reactiv|propert|electron"
+      },
+      {
+        "code": "G8-M-8",
+        "lesson": "g8:electron-position",
+        "unit": "G8-M-8:valence-group",
+        "pattern": "valence|group"
+      },
+      {
+        "code": "G8-M-9",
+        "lesson": "g8:count-particles",
+        "unit": "G8-M-9:electrons",
+        "pattern": "electron"
+      },
+      {
+        "code": "G8-M-10",
+        "lesson": "g8:group-valence",
+        "unit": "G8-M-10:shared-valence",
+        "pattern": "valence|outer"
+      },
+      {
+        "code": "G9-F-6",
+        "lesson": "g9:f-6",
+        "unit": "G9-F-6:focus-1",
+        "pattern": "electron"
+      },
+      {
+        "code": "G9-F-8",
+        "lesson": "g9:f-8",
+        "unit": "G9-F-8:focus-1",
+        "pattern": "diagram|draw|symbol"
+      },
+      {
+        "code": "G9-F-10",
+        "lesson": "g9:f-10",
+        "unit": "G9-F-10:focus-1",
+        "pattern": "charg|electron"
+      },
+      {
+        "code": "G9-M-3",
+        "lesson": "g9:m-3",
+        "unit": "G9-M-3:focus-1",
+        "pattern": "outer|valence"
+      },
+      {
+        "code": "G9-M-5",
+        "lesson": "g9:m-5",
+        "unit": "G9-M-5:focus-2",
+        "pattern": "sodium|chlorine|chloride"
+      },
+      {
+        "code": "G9-M-9",
+        "lesson": "g9:m-9",
+        "unit": "G9-M-9:focus-3",
+        "pattern": "model|structure"
+      },
+      {
+        "code": "G10-M-5",
+        "lesson": "g10:m-5",
+        "unit": "G10-M-5:focus-2",
+        "pattern": "formula|symbol"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "The Lewis Electron Dot Structure of chlorine shows the symbol Cl with seven dots, because chlorine has seven valence electrons.",
+      "tl": "Ang Lewis Electron Dot Structure ng chlorine ay nagpapakita ng simbolong Cl na may pitong tuldok, dahil may pitong valence electron ang chlorine.",
+      "bis": "Ang Lewis Electron Dot Structure sa chlorine nagpakita sa simbolo nga Cl nga adunay pito ka tuldok, tungod kay adunay pito ka valence electron ang chlorine."
+    },
+    "exportedAt": "2026-09-10T12:10:53.002693+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "life-cycle-differences-g5",
+    "id": "dcard-05638",
+    "textHash": "124c2dba996717bfc0e93842c3b55ee0ab8699639252f49fbeed9e17319c19bd",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:33:28Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G9-L-1",
+        "verdict": "wrong",
+        "card_evidence": "Chickens develop inside an egg laid by the mother, while dogs and humans develop inside the mother's body.",
+        "competency_evidence": "use models and labeled diagrams to represent the double helix structure of DNA (deoxyribonucleic acid)",
+        "reason": "The card describes differences in animal development (egg-laying vs. live birth), which is unrelated to the competency about using models and labeled diagrams to represent the double helix structure of DNA. No DNA content is present."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-2",
+        "lesson": "g3:living-or-not",
+        "unit": "G3-L-2:local-examples",
+        "pattern": "plant|dog|cat|rock|chair|tree"
+      },
+      {
+        "code": "G4-M-1",
+        "lesson": "g4:scientists",
+        "unit": "G4-M-1:invention",
+        "pattern": "invent|develop|creat"
+      },
+      {
+        "code": "G4-L-5",
+        "lesson": "g4:life-cycles",
+        "unit": "G4-L-5:chicken",
+        "pattern": "chicken|chick"
+      },
+      {
+        "code": "G4-E-2",
+        "lesson": "g4:water-for-life",
+        "unit": "G4-E-2:animals",
+        "pattern": "animal|human|body"
+      },
+      {
+        "code": "G5-L-6",
+        "lesson": "g5:life-cycles",
+        "unit": "G5-L-6:birds",
+        "pattern": "bird|chick"
+      },
+      {
+        "code": "G10-E-9",
+        "lesson": "g10:e-9",
+        "unit": "G10-E-9:focus-3",
+        "pattern": "human|fossil|emission"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Chickens develop inside an egg laid by the mother, while dogs and humans develop inside the mother's body.",
+      "tl": "Ang mga sisiw ay lumalaki sa loob ng itlog na inilabas ng ina, habang ang mga aso at tao ay lumalaki sa loob ng katawan ng ina.",
+      "bis": "Ang mga piso motubo sa sulud sa itlog nga gipagawas sa inahan, samtang ang mga iro ug mga tao motubo sa lawas sa inahan."
+    },
+    "exportedAt": "2026-09-10T12:10:53.042427+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "life-starts-with-a-cell-g7",
+    "id": "dcard-04637",
+    "textHash": "ee600798c9a4538ea1222033e8418ba08af75e660046ead077cf85046a3f6068",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:42:43Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-M-7",
+        "verdict": "wrong",
+        "card_evidence": "Life begins with a cell, and when cells group together they form tissues, then organs, and finally organ systems.",
+        "competency_evidence": "demonstrate proper handling and disposal of materials according to their properties, such as reusing objects, disposing of excess oil into garbage, and recycling paper, plastic or glass",
+        "reason": "The card describes the hierarchical organization of life (cells to tissues to organs to organ systems), which is a biology topic. G3-M-7 requires demonstrating proper handling and disposal of materials according to their properties (reusing, recycling, etc.). There is no overlap in content or skill; the tag is unrelated."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-4",
+        "lesson": "g3:animal-parts",
+        "unit": "G3-L-4:other-movement",
+        "pattern": "fin|tail|flipper"
+      },
+      {
+        "code": "G4-M-7",
+        "lesson": "g4:environment-survey",
+        "unit": "G4-M-7:classify",
+        "pattern": "group|classif|sort"
+      },
+      {
+        "code": "G6-E-1",
+        "lesson": "g6:volcano-formation",
+        "unit": "G6-E-1:formation",
+        "pattern": "form|plate|crust|build"
+      },
+      {
+        "code": "G7-L-8",
+        "lesson": "g7:biological-levels",
+        "unit": "G7-L-8:cell-to-organism",
+        "pattern": "cell.*tissue|organ.*system"
+      },
+      {
+        "code": "G8-L-3",
+        "lesson": "g8:plant-transport",
+        "unit": "G8-L-3:stem",
+        "pattern": "stem|xylem|phloem"
+      },
+      {
+        "code": "G8-L-6",
+        "lesson": "g8:classification",
+        "unit": "G8-L-6:purpose",
+        "pattern": "classif|relationship|group"
+      },
+      {
+        "code": "G8-M-7",
+        "lesson": "g8:periods-groups",
+        "unit": "G8-M-7:rows-columns",
+        "pattern": "period|group"
+      },
+      {
+        "code": "G8-M-8",
+        "lesson": "g8:electron-position",
+        "unit": "G8-M-8:valence-group",
+        "pattern": "valence|group"
+      },
+      {
+        "code": "G9-M-4",
+        "lesson": "g9:m-4",
+        "unit": "G9-M-4:focus-3",
+        "pattern": "group|16"
+      },
+      {
+        "code": "G10-L-6",
+        "lesson": "g10:l-6",
+        "unit": "G10-L-6:focus-2",
+        "pattern": "organism|cell|enzyme|microb"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Life begins with a cell, and when cells group together they form tissues, then organs, and finally organ systems.",
+      "tl": "Nagsisimula ang buhay sa isang cell, at kapag nagsama-sama ang mga cell, bumubuo sila ng tissues, pagkatapos organs, at sa huli organ systems.",
+      "bis": "Ang kinabuhi nagsugod sa usa ka cell, ug kung magtapok ang mga cell, sila naghimo ug tissues, dayon organs, ug sa katapusan organ systems."
+    },
+    "exportedAt": "2026-09-10T12:10:53.081605+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "light-and-sound-g8",
+    "id": "dcard-04029",
+    "textHash": "3620dede9181e3ec585a158842e894c6a40cfd8a15c034a605fd000852d2ca28",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:59:10Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G7-M-8",
+        "verdict": "wrong",
+        "card_evidence": "Light and sound are not matter because they do not occupy space and do not have mass.",
+        "competency_evidence": "identify the role of the solute and solvent in a solution",
+        "reason": "The card states that light and sound are not matter because they lack mass and volume. G7-M-8 requires identifying the role of solute and solvent in a solution. The card provides no information about solutions, solutes, or solvents, so it does not support this competency."
+      },
+      {
+        "code": "G6-M-4",
+        "verdict": "wrong",
+        "card_evidence": "Light and sound are not matter because they do not occupy space and do not have mass.",
+        "competency_evidence": "describe useful everyday examples of uniform and non-uniform mixtures, such as solutions and suspensions",
+        "reason": "G6-M-4 requires describing useful everyday examples of uniform and non-uniform mixtures such as solutions and suspensions. The card discusses light and sound as non-matter and contains nothing about mixtures, solutions, or suspensions."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-F-8",
+        "lesson": "g3:sending-messages",
+        "unit": "G3-F-8:sound",
+        "pattern": "sound|clap|bell|whistle"
+      },
+      {
+        "code": "G3-F-8",
+        "lesson": "g3:sending-messages",
+        "unit": "G3-F-8:light",
+        "pattern": "light|flash"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G4-F-8",
+        "lesson": "g4:effects-at-distance",
+        "unit": "G4-F-8:light",
+        "pattern": "sun|light"
+      },
+      {
+        "code": "G4-F-8",
+        "lesson": "g4:effects-at-distance",
+        "unit": "G4-F-8:sound",
+        "pattern": "sound|noise"
+      },
+      {
+        "code": "G4-F-9",
+        "lesson": "g4:energy",
+        "unit": "G4-F-9:change",
+        "pattern": "change|cause"
+      },
+      {
+        "code": "G4-F-9",
+        "lesson": "g4:energy",
+        "unit": "G4-F-9:forms",
+        "pattern": "light|sound|heat"
+      },
+      {
+        "code": "G4-F-10",
+        "lesson": "g4:energy-uses",
+        "unit": "G4-F-10:light",
+        "pattern": "light"
+      },
+      {
+        "code": "G4-F-10",
+        "lesson": "g4:energy-uses",
+        "unit": "G4-F-10:sound",
+        "pattern": "sound"
+      },
+      {
+        "code": "G4-E-7",
+        "lesson": "g4:sun",
+        "unit": "G4-E-7:energy",
+        "pattern": "light|heat"
+      },
+      {
+        "code": "G5-M-1",
+        "lesson": "g5:matter",
+        "unit": "G5-M-1:mass-and-space",
+        "pattern": "mass.*(space|volume)|(space|volume).*mass"
+      },
+      {
+        "code": "G5-F-5",
+        "lesson": "g5:gravity",
+        "unit": "G5-F-5:heavy-and-light",
+        "pattern": "heav|light|same rate|same time"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:benefits",
+        "pattern": "use|benefit|recover|separat"
+      },
+      {
+        "code": "G6-L-7",
+        "lesson": "g6:ecosystem-factors",
+        "unit": "G6-L-7:light",
+        "pattern": "light|sun"
+      },
+      {
+        "code": "G6-L-8",
+        "lesson": "g6:ecosystem-effects",
+        "unit": "G6-L-8:nonliving-interactions",
+        "pattern": "water|soil|temperature|light|drought|flood"
+      },
+      {
+        "code": "G6-F-9",
+        "lesson": "g6:wave-examples",
+        "unit": "G6-F-9:longitudinal",
+        "pattern": "sound|longitudinal"
+      },
+      {
+        "code": "G6-F-9",
+        "lesson": "g6:wave-examples",
+        "unit": "G6-F-9:transverse",
+        "pattern": "light|rope|transverse|seismic"
+      },
+      {
+        "code": "G7-M-3",
+        "lesson": "g7:particle-motion",
+        "unit": "G7-M-3:spaces",
+        "pattern": "space|gap"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G7-L-1",
+        "lesson": "g7:microscope",
+        "unit": "G7-L-1:functions",
+        "pattern": "magnif|focus|light"
+      },
+      {
+        "code": "G8-M-3",
+        "lesson": "g8:subatomic-particles",
+        "unit": "G8-M-3:mass",
+        "pattern": "mass"
+      },
+      {
+        "code": "G9-F-3",
+        "lesson": "g9:f-3",
+        "unit": "G9-F-3:focus-2",
+        "pattern": "mass"
+      },
+      {
+        "code": "G9-F-10",
+        "lesson": "g9:f-10",
+        "unit": "G9-F-10:focus-3",
+        "pattern": "space|vacuum"
+      },
+      {
+        "code": "G10-F-4",
+        "lesson": "g10:f-4",
+        "unit": "G10-F-4:focus-1",
+        "pattern": "mass"
+      },
+      {
+        "code": "G10-F-5",
+        "lesson": "g10:f-5",
+        "unit": "G10-F-5:focus-2",
+        "pattern": "mass"
+      },
+      {
+        "code": "G10-M-6",
+        "lesson": "g10:m-6",
+        "unit": "G10-M-6:focus-2",
+        "pattern": "mass"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Light and sound are not matter because they do not occupy space and do not have mass.",
+      "tl": "Ang liwanag at tunog ay hindi matter dahil hindi sila sumasakop ng space at walang mass.",
+      "bis": "Ang kahayag ug tingog dili matter tungod kay wala sila mo-okupar og space ug walay mass."
+    },
+    "exportedAt": "2026-09-10T12:10:53.120032+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "light-meets-matter-g10",
+    "id": "dcard-02249",
+    "textHash": "de7b22136f77c2c9dfc6ec1fdc11e2bbed5535d7e93087494a6bcb5d97ea501e",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:01:11Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G6-M-6",
+        "verdict": "wrong",
+        "card_evidence": "When light strikes matter, it can be absorbed, transmitted through, reflected, or scattered in many directions.",
+        "competency_evidence": "demonstrate various techniques in separating mixtures, such as decantation, winnowing, scooping, picking, evaporation, filtering, sieving, and using magnets",
+        "reason": "The card describes the behavior of light when it strikes matter (absorption, transmission, reflection, scattering). G6-M-6 requires demonstrating techniques for separating mixtures (decantation, winnowing, filtering, etc.). There is no overlap in content or skill; the card does not support the competency in any way."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-2",
+        "lesson": "g3:living-or-not",
+        "unit": "G3-L-2:local-examples",
+        "pattern": "plant|dog|cat|rock|chair|tree"
+      },
+      {
+        "code": "G3-F-6",
+        "lesson": "g3:light",
+        "unit": "G3-F-6:behavior",
+        "pattern": "shadow|reflect|block|through"
+      },
+      {
+        "code": "G3-F-8",
+        "lesson": "g3:sending-messages",
+        "unit": "G3-F-8:light",
+        "pattern": "light|flash"
+      },
+      {
+        "code": "G4-F-5",
+        "lesson": "g4:change-motion",
+        "unit": "G4-F-5:turn",
+        "pattern": "direction|turn"
+      },
+      {
+        "code": "G4-F-8",
+        "lesson": "g4:effects-at-distance",
+        "unit": "G4-F-8:light",
+        "pattern": "sun|light"
+      },
+      {
+        "code": "G4-F-9",
+        "lesson": "g4:energy",
+        "unit": "G4-F-9:forms",
+        "pattern": "light|sound|heat"
+      },
+      {
+        "code": "G4-F-10",
+        "lesson": "g4:energy-uses",
+        "unit": "G4-F-10:light",
+        "pattern": "light"
+      },
+      {
+        "code": "G4-E-7",
+        "lesson": "g4:sun",
+        "unit": "G4-E-7:energy",
+        "pattern": "light|heat"
+      },
+      {
+        "code": "G4-E-8",
+        "lesson": "g4:shadows",
+        "unit": "G4-E-8:direction",
+        "pattern": "east|west|direction"
+      },
+      {
+        "code": "G5-F-1",
+        "lesson": "g5:contact-forces",
+        "unit": "G5-F-1:direction",
+        "pattern": "direction"
+      },
+      {
+        "code": "G5-F-2",
+        "lesson": "g5:friction",
+        "unit": "G5-F-2:surfaces",
+        "pattern": "surface|rough|smooth"
+      },
+      {
+        "code": "G5-F-5",
+        "lesson": "g5:gravity",
+        "unit": "G5-F-5:heavy-and-light",
+        "pattern": "heav|light|same rate|same time"
+      },
+      {
+        "code": "G6-L-7",
+        "lesson": "g6:ecosystem-factors",
+        "unit": "G6-L-7:light",
+        "pattern": "light|sun"
+      },
+      {
+        "code": "G6-L-8",
+        "lesson": "g6:ecosystem-effects",
+        "unit": "G6-L-8:nonliving-interactions",
+        "pattern": "water|soil|temperature|light|drought|flood"
+      },
+      {
+        "code": "G6-F-3",
+        "lesson": "g6:lever-tests",
+        "unit": "G6-F-3:direction",
+        "pattern": "direction"
+      },
+      {
+        "code": "G6-F-5",
+        "lesson": "g6:water-waves",
+        "unit": "G6-F-5:reflection",
+        "pattern": "reflect"
+      },
+      {
+        "code": "G6-F-9",
+        "lesson": "g6:wave-examples",
+        "unit": "G6-F-9:transverse",
+        "pattern": "light|rope|transverse|seismic"
+      },
+      {
+        "code": "G6-E-9",
+        "lesson": "g6:sky-navigation",
+        "unit": "G6-E-9:navigation",
+        "pattern": "navigat|direction|Polaris"
+      },
+      {
+        "code": "G7-L-1",
+        "lesson": "g7:microscope",
+        "unit": "G7-L-1:functions",
+        "pattern": "magnif|focus|light"
+      },
+      {
+        "code": "G7-F-3",
+        "lesson": "g7:force-diagrams",
+        "unit": "G7-F-3:direction",
+        "pattern": "direction|arrow"
+      },
+      {
+        "code": "G7-F-4",
+        "lesson": "g7:net-force",
+        "unit": "G7-F-4:direction",
+        "pattern": "direction|turn|curv"
+      },
+      {
+        "code": "G7-F-6",
+        "lesson": "g7:speed-velocity",
+        "unit": "G7-F-6:vector",
+        "pattern": "direction|vector"
+      },
+      {
+        "code": "G7-E-9",
+        "lesson": "g7:sun-atmosphere",
+        "unit": "G7-E-9:absorb",
+        "pattern": "absorb"
+      },
+      {
+        "code": "G7-E-9",
+        "lesson": "g7:sun-atmosphere",
+        "unit": "G7-E-9:reflect-scatter",
+        "pattern": "reflect|scatter"
+      },
+      {
+        "code": "G8-L-1",
+        "lesson": "g8:digestion",
+        "unit": "G8-L-1:absorption",
+        "pattern": "absorb|absorption"
+      },
+      {
+        "code": "G8-F-6",
+        "lesson": "g8:work",
+        "unit": "G8-F-6:direction",
+        "pattern": "direction|perpendicular|parallel"
+      },
+      {
+        "code": "G9-F-2",
+        "lesson": "g9:f-2",
+        "unit": "G9-F-2:focus-2",
+        "pattern": "direction|turn"
+      },
+      {
+        "code": "G10-M-9",
+        "lesson": "g10:m-9",
+        "unit": "G10-M-9:focus-3",
+        "pattern": "surrounding|transfer|absorb|release"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "When light strikes matter, it can be absorbed, transmitted through, reflected, or scattered in many directions.",
+      "tl": "Kapag tumama ang liwanag sa materyal, maaari itong ma-absorb, dumaan o ma-transmit, ma-reflect, o mag-scatter sa iba't ibang direksyon.",
+      "bis": "Kung motugpa ang kahayag sa materyal, mahimo kining ma-absorb, moagi o ma-transmit, ma-reflect, o mag-scatter sa lain-laing direksyon."
+    },
+    "exportedAt": "2026-09-10T12:10:53.159928+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "light-waves-from-a-lamp-g6",
+    "id": "dcard-02174",
+    "textHash": "fc45c0f4b4edf9543efb0530ada8b4b7746d4797da5f4839f8d8919468668e58",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:16:32Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G7-M-9",
+        "verdict": "wrong",
+        "card_evidence": "light waves travel into the room, carrying energy from the lamp",
+        "competency_evidence": "express quantitatively the amount of solute present in a given volume of solvent",
+        "reason": "The card describes light waves carrying energy, which is a physics/waves concept. G7-M-9 requires expressing quantitatively the amount of solute in a given volume of solvent (concentration). There is no connection to solutions, solutes, solvents, or quantitative concentration."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-F-4",
+        "lesson": "g3:sound",
+        "unit": "G3-F-4:transfer",
+        "pattern": "travel|air|reach|transfer"
+      },
+      {
+        "code": "G3-F-5",
+        "lesson": "g3:light",
+        "unit": "G3-F-5:sources",
+        "pattern": "sun|lamp|torch|flashlight|candle"
+      },
+      {
+        "code": "G3-F-5",
+        "lesson": "g3:light",
+        "unit": "G3-F-5:uses",
+        "pattern": "\\bsee\\b|\\bread\\b|light.*room"
+      },
+      {
+        "code": "G3-F-8",
+        "lesson": "g3:sending-messages",
+        "unit": "G3-F-8:movement",
+        "pattern": "wave|hand|gesture|movement"
+      },
+      {
+        "code": "G3-F-8",
+        "lesson": "g3:sending-messages",
+        "unit": "G3-F-8:light",
+        "pattern": "light|flash"
+      },
+      {
+        "code": "G4-F-8",
+        "lesson": "g4:effects-at-distance",
+        "unit": "G4-F-8:light",
+        "pattern": "sun|light"
+      },
+      {
+        "code": "G4-F-9",
+        "lesson": "g4:energy",
+        "unit": "G4-F-9:forms",
+        "pattern": "light|sound|heat"
+      },
+      {
+        "code": "G4-F-10",
+        "lesson": "g4:energy-uses",
+        "unit": "G4-F-10:light",
+        "pattern": "light"
+      },
+      {
+        "code": "G4-E-7",
+        "lesson": "g4:sun",
+        "unit": "G4-E-7:energy",
+        "pattern": "light|heat"
+      },
+      {
+        "code": "G5-F-5",
+        "lesson": "g5:gravity",
+        "unit": "G5-F-5:heavy-and-light",
+        "pattern": "heav|light|same rate|same time"
+      },
+      {
+        "code": "G5-F-8",
+        "lesson": "g5:simple-circuits",
+        "unit": "G5-F-8:switch",
+        "pattern": "switch"
+      },
+      {
+        "code": "G5-F-10",
+        "lesson": "g5:electromagnets",
+        "unit": "G5-F-10:observations",
+        "pattern": "current|switch|strong|turn.*off"
+      },
+      {
+        "code": "G5-E-5",
+        "lesson": "g5:erosion",
+        "unit": "G5-E-5:transport",
+        "pattern": "carry|carries|transport|move"
+      },
+      {
+        "code": "G5-E-12",
+        "lesson": "g5:moon-phases",
+        "unit": "G5-E-12:model",
+        "pattern": "model|ball|lamp|draw|flashlight"
+      },
+      {
+        "code": "G6-L-7",
+        "lesson": "g6:ecosystem-factors",
+        "unit": "G6-L-7:light",
+        "pattern": "light|sun"
+      },
+      {
+        "code": "G6-L-8",
+        "lesson": "g6:ecosystem-effects",
+        "unit": "G6-L-8:nonliving-interactions",
+        "pattern": "water|soil|temperature|light|drought|flood"
+      },
+      {
+        "code": "G6-F-4",
+        "lesson": "g6:wave-energy",
+        "unit": "G6-F-4:transfer",
+        "pattern": "energy"
+      },
+      {
+        "code": "G6-F-8",
+        "lesson": "g6:wave-models",
+        "unit": "G6-F-8:energy",
+        "pattern": "energy"
+      },
+      {
+        "code": "G6-F-9",
+        "lesson": "g6:wave-examples",
+        "unit": "G6-F-9:transverse",
+        "pattern": "light|rope|transverse|seismic"
+      },
+      {
+        "code": "G6-E-6",
+        "lesson": "g6:philippine-seasons",
+        "unit": "G6-E-6:activities",
+        "pattern": "plant|harvest|activit|travel|farm"
+      },
+      {
+        "code": "G6-E-7",
+        "lesson": "g6:day-night",
+        "unit": "G6-E-7:model",
+        "pattern": "globe|lamp|model"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G7-L-1",
+        "lesson": "g7:microscope",
+        "unit": "G7-L-1:functions",
+        "pattern": "magnif|focus|light"
+      },
+      {
+        "code": "G7-L-1",
+        "lesson": "g7:microscope",
+        "unit": "G7-L-1:handling",
+        "pattern": "carry|hand|lens paper"
+      },
+      {
+        "code": "G7-E-10",
+        "lesson": "g7:sunlight-angle",
+        "unit": "G7-E-10:model",
+        "pattern": "model|globe|flashlight|torch|lamp"
+      },
+      {
+        "code": "G8-F-2",
+        "lesson": "g8:local-motion",
+        "unit": "G8-F-2:everyday",
+        "pattern": "school|car|bike|ball|bus|jeep"
+      },
+      {
+        "code": "G9-F-2",
+        "lesson": "g9:f-2",
+        "unit": "G9-F-2:focus-3",
+        "pattern": "practical|ball|car|bike|bus"
+      },
+      {
+        "code": "G9-F-8",
+        "lesson": "g9:f-8",
+        "unit": "G9-F-8:focus-4",
+        "pattern": "switch"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "When a lamp is switched on, light waves travel into the room, carrying energy from the lamp to everything they reach.",
+      "tl": "Kapag binuksan ang lampara, naglalakbay ang light waves sa kuwarto, nagdadala ng energy mula sa lampara papunta sa lahat ng naaabot nito.",
+      "bis": "Kon pasigaon ang lampara, mobiyahe ang light waves sa kwarto, nagdala og energy gikan sa lampara ngadto sa tanang maabot niana."
+    },
+    "exportedAt": "2026-09-10T12:10:53.200029+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "linked-mountain-ranges-g10",
+    "id": "dcard-02747",
+    "textHash": "ec5e58c004ac32a717d45f9fd465681ddf7f4f3c1b3cb93552ba9af91d95a735",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:02:29Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G7-E-10",
+        "verdict": "wrong",
+        "card_evidence": "The Appalachian Mountains of eastern North America link with the Scottish Highlands",
+        "competency_evidence": "make a physical model or use drawings to demonstrate how the tilt of the Earth relative to its orbit around the Sun affects the intensity of sunlight absorbed by different areas of Earth over a year",
+        "reason": "The card discusses geological linkage of mountain ranges across continents, which is evidence for continental drift. It does not address Earth's tilt, orbit, or intensity of sunlight absorbed by different areas over a year."
+      },
+      {
+        "code": "G7-E-11",
+        "verdict": "wrong",
+        "card_evidence": "The Appalachian Mountains of eastern North America link with the Scottish Highlands",
+        "competency_evidence": "explain, using models, how the tilt of the Earth affects the changes in the length of daytime at different times of the year",
+        "reason": "The card is about mountain range continuity between continents, not about Earth's tilt affecting length of daytime. No support for this competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G4-L-3",
+        "lesson": "g4:habitat-groups",
+        "unit": "G4-L-3:land",
+        "pattern": "terrestrial|land"
+      },
+      {
+        "code": "G4-E-8",
+        "lesson": "g4:shadows",
+        "unit": "G4-E-8:direction",
+        "pattern": "east|west|direction"
+      },
+      {
+        "code": "G5-E-1",
+        "lesson": "g5:landforms",
+        "unit": "G5-E-1:mountain",
+        "pattern": "mountain"
+      },
+      {
+        "code": "G8-E-5",
+        "lesson": "g8:global-patterns",
+        "unit": "G8-E-5:mountains",
+        "pattern": "mountain"
+      },
+      {
+        "code": "G8-E-9",
+        "lesson": "g8:land-sea-storms",
+        "unit": "G8-E-9:landforms",
+        "pattern": "mountain|landfall|landmass|terrain"
+      },
+      {
+        "code": "G9-E-1",
+        "lesson": "g9:e-1",
+        "unit": "G9-E-1:focus-2",
+        "pattern": "fit|coast|rock|mountain"
+      },
+      {
+        "code": "G10-E-3",
+        "lesson": "g10:e-3",
+        "unit": "G10-E-3:focus-2",
+        "pattern": "mountain"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "The Appalachian Mountains of eastern North America link with the Scottish Highlands, showing these lands were once connected.",
+      "tl": "Ang Appalachian Mountains ng silangang North America ay konektado sa Scottish Highlands, na nagpapakitang dating magkadikit ang mga lupaing ito.",
+      "bis": "Ang Appalachian Mountains sa sidlakang North America konektado sa Scottish Highlands, nga nagpakita nga kaniadto nagkahiusa kining mga yutaa."
+    },
+    "exportedAt": "2026-09-10T12:10:53.241047+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "liquid-particle-motion-g7",
+    "id": "dcard-09065",
+    "textHash": "6177de2692f5586b823b1025d28ae5a566dc25c263c6cd660c8f0269708ea19d",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:01:39Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G4-L-3",
+        "verdict": "wrong",
+        "card_evidence": "Liquid particles can slide past one another, rotate, and move within their volume",
+        "competency_evidence": "use a drawing or diagram to classify some Philippine animals and plants, based on their habitat: some live on land (terrestrial), live in water (aquatic) or fly in the air (aerial)",
+        "reason": "The card describes particle motion in liquids, which is a matter/particle-model concept. It has no relation to classifying Philippine animals and plants by habitat, and does not use a drawing or diagram as required."
+      },
+      {
+        "code": "G5-L-8",
+        "verdict": "wrong",
+        "card_evidence": "Liquid particles can slide past one another, rotate, and move within their volume",
+        "competency_evidence": "explain how some plants have adapted to unfavorable conditions in the environment, such as lack of rain or floods",
+        "reason": "The card is about liquid particle behavior, not about plant adaptations to unfavorable conditions such as lack of rain or floods. It provides no instructional support for this competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-E-7",
+        "lesson": "g3:watching-the-sky",
+        "unit": "G3-E-7:apparent-motion",
+        "pattern": "move|motion|rise|set"
+      },
+      {
+        "code": "G5-E-5",
+        "lesson": "g5:erosion",
+        "unit": "G5-E-5:transport",
+        "pattern": "carry|carries|transport|move"
+      },
+      {
+        "code": "G6-E-7",
+        "lesson": "g6:day-night",
+        "unit": "G6-E-7:rotation",
+        "pattern": "rotat"
+      },
+      {
+        "code": "G7-M-2",
+        "lesson": "g7:particle-model",
+        "unit": "G7-M-2:particles",
+        "pattern": "particle|atom|molecule"
+      },
+      {
+        "code": "G7-M-3",
+        "lesson": "g7:particle-motion",
+        "unit": "G7-M-3:motion",
+        "pattern": "motion|mov|vibrat"
+      },
+      {
+        "code": "G7-M-4",
+        "lesson": "g7:particle-diagrams",
+        "unit": "G7-M-4:solid",
+        "pattern": "solid"
+      },
+      {
+        "code": "G7-M-4",
+        "lesson": "g7:particle-diagrams",
+        "unit": "G7-M-4:liquid",
+        "pattern": "liquid"
+      },
+      {
+        "code": "G7-L-2",
+        "lesson": "g7:cell-observation",
+        "unit": "G7-L-2:technique",
+        "pattern": "slide|focus|low.power|microscope"
+      },
+      {
+        "code": "G8-E-2",
+        "lesson": "g8:crust-sources",
+        "unit": "G8-E-2:source",
+        "pattern": "reliable|textbook|reference|article"
+      },
+      {
+        "code": "G8-E-7",
+        "lesson": "g8:typhoon-formation",
+        "unit": "G8-E-7:source",
+        "pattern": "PAGASA|reliable|reference|article"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Liquid particles can slide past one another, rotate, and move within their volume, giving them more freedom than solid particles.",
+      "tl": "Ang mga particle ng liquid ay kayang dumausdos, umikot, at gumalaw sa loob ng volume nito, kaya mas malaya sila kaysa sa solid.",
+      "bis": "Ang mga particle sa liquid maka-slide, maka-rotate, ug makalihok sa ilang volume, mao nga mas gawasnon sila kaysa sa solid."
+    },
+    "exportedAt": "2026-09-10T12:10:53.281351+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "liquids-in-school-g5",
+    "id": "dcard-09693",
+    "textHash": "34755c54d7d6f9c00212ec4a62d234f9cb0c10c08f8429a85d3ba71aca5244c6",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:36:39Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G9-L-11",
+        "verdict": "wrong",
+        "card_evidence": "In the school clinic and canteen, liquids include alcohol, betadine, syrup medicine, drinks, and sauce.",
+        "competency_evidence": "plan to conduct a survey to explore the possibilities for minimizing the negative impacts of human activities on an ecosystem",
+        "reason": "The card only lists common liquids found in a school clinic and canteen. It contains no content about planning a survey, human activities, ecosystem impacts, or minimizing negative impacts, so it does not support this competency."
+      },
+      {
+        "code": "G3-L-8",
+        "verdict": "wrong",
+        "card_evidence": "In the school clinic and canteen, liquids include alcohol, betadine, syrup medicine, drinks, and sauce.",
+        "competency_evidence": "recognize that there is a need to protect and conserve the environment for living things to survive",
+        "reason": "The card lists examples of liquids but says nothing about protecting or conserving the environment or the survival needs of living things. It is unrelated to this competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-E-1",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-1:guided-observation",
+        "pattern": "school|teacher|guided"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:community",
+        "pattern": "home|community|school|farm|local"
+      },
+      {
+        "code": "G6-M-4",
+        "lesson": "g6:useful-mixtures",
+        "unit": "G6-M-4:uses",
+        "pattern": "\\buse|food|drink|medicin|paint"
+      },
+      {
+        "code": "G6-F-1",
+        "lesson": "g6:simple-machines",
+        "unit": "G6-F-1:everyday",
+        "pattern": "home|school|community|bottle|door|ramp|scissor|wheelbarrow"
+      },
+      {
+        "code": "G7-M-4",
+        "lesson": "g7:particle-diagrams",
+        "unit": "G7-M-4:liquid",
+        "pattern": "liquid"
+      },
+      {
+        "code": "G8-F-2",
+        "lesson": "g8:local-motion",
+        "unit": "G8-F-2:everyday",
+        "pattern": "school|car|bike|ball|bus|jeep"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "In the school clinic and canteen, liquids include alcohol, betadine, syrup medicine, drinks, and sauce.",
+      "tl": "Sa school clinic at canteen, ang mga liquid ay alcohol, betadine, syrup na gamot, inumin, at sarsa.",
+      "bis": "Sa school clinic ug canteen, ang mga liquid mao ang alcohol, betadine, syrup nga tambal, ilimnon, ug sarsa."
+    },
+    "exportedAt": "2026-09-10T12:10:53.320699+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "liter-unit-g5",
+    "id": "dcard-06760",
+    "textHash": "65c466da78a80e83e3957f5a1af59b4e50e4b19c1318013efffe07242371cf42",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:53:01Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G5-F-2",
+        "verdict": "wrong",
+        "card_evidence": "A liter is a larger unit of volume",
+        "competency_evidence": "plan and carry out a scientific investigation to determine the effect of different surfaces on the size of frictional forces",
+        "reason": "The card defines the liter as a unit of volume. G5-F-2 requires planning and carrying out an investigation on how different surfaces affect frictional forces. Volume measurement is unrelated to friction or force investigations."
+      },
+      {
+        "code": "G4-F-5",
+        "verdict": "wrong",
+        "card_evidence": "A liter is a larger unit of volume",
+        "competency_evidence": "participate in guided activities to demonstrate that pushes and pulls can be used to change the speed and direction of an object including making it go faster, turn it to a different direction, slow it down, and stop it",
+        "reason": "The card is about the liter unit of volume. G4-F-5 requires demonstrating that pushes and pulls change an object's speed and direction. The card provides no information about forces, motion, or pushes/pulls."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-5",
+        "lesson": "g3:solid-properties",
+        "unit": "G3-M-5:hardness",
+        "pattern": "hard.*(press|scratch|shape)|soft"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G4-F-1",
+        "lesson": "g4:rigid-soft",
+        "unit": "G4-F-1:soft",
+        "pattern": "soft"
+      },
+      {
+        "code": "G4-E-7",
+        "lesson": "g4:sun",
+        "unit": "G4-E-7:size",
+        "pattern": "size|diameter|larger|million"
+      },
+      {
+        "code": "G6-M-4",
+        "lesson": "g6:useful-mixtures",
+        "unit": "G6-M-4:uses",
+        "pattern": "\\buse|food|drink|medicin|paint"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:benefits",
+        "pattern": "use|benefit|recover|separat"
+      },
+      {
+        "code": "G6-F-1",
+        "lesson": "g6:simple-machines",
+        "unit": "G6-F-1:everyday",
+        "pattern": "home|school|community|bottle|door|ramp|scissor|wheelbarrow"
+      },
+      {
+        "code": "G7-M-7",
+        "lesson": "g7:measure-record",
+        "unit": "G7-M-7:units",
+        "pattern": "unit|meter|gram|second|liter|litre"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "A liter is a larger unit of volume, abbreviated L, and it is used for bigger amounts like a bottle of soft drink.",
+      "tl": "Ang liter ay mas malaking unit ng volume, dinadaglat bilang L, at ginagamit ito para sa mas malalaking dami tulad ng isang bote ng soft drink.",
+      "bis": "Ang liter kay mas dako nga unit sa volume, gipamubo isip L, ug gigamit kini para sa mas dagko nga gidaghanon sama sa usa ka botelya sa soft drink."
+    },
+    "exportedAt": "2026-09-10T12:10:53.360245+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "long-coiled-tube-g4",
+    "id": "dcard-07648",
+    "textHash": "c0fece2209af3ecc4788367775fb4eed7a4d69bd1491c18f46f1a1456be04e49",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:56:18Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G6-M-1",
+        "verdict": "wrong",
+        "card_evidence": "The small intestine is a long coiled tube where most digestion and absorption of nutrients happens.",
+        "competency_evidence": "describe changes of state for solids, liquids, and gases as melting, evaporation, freezing, condensation using diagrams and flowcharts",
+        "reason": "The card describes the small intestine and its role in digestion and absorption. It contains no information about changes of state (melting, evaporation, freezing, condensation) or diagrams/flowcharts of these processes."
+      },
+      {
+        "code": "G7-M-5",
+        "verdict": "wrong",
+        "card_evidence": "The small intestine is a long coiled tube where most digestion and absorption of nutrients happens.",
+        "competency_evidence": "explain the changes of state in terms of particle arrangement and energy changes: a. solid → liquid → vapor, and b. vapor → liquid → solid",
+        "reason": "The card is about the small intestine, not about particle arrangement or energy changes during state changes. No support for the competency."
+      },
+      {
+        "code": "G6-M-2",
+        "verdict": "wrong",
+        "card_evidence": "The small intestine is a long coiled tube where most digestion and absorption of nutrients happens.",
+        "competency_evidence": "explain the role of heat energy in change of state processes",
+        "reason": "The card does not discuss heat energy or change of state processes; it is about the digestive function of the small intestine."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-F-6",
+        "lesson": "g3:light",
+        "unit": "G3-F-6:guided-exploration",
+        "pattern": "investigat|experiment|try|test|flashlight"
+      },
+      {
+        "code": "G4-L-1",
+        "lesson": "g4:body-systems",
+        "unit": "G4-L-1:digestive",
+        "pattern": "digest|break.*food"
+      },
+      {
+        "code": "G4-F-1",
+        "lesson": "g4:rigid-soft",
+        "unit": "G4-F-1:guided",
+        "pattern": "teacher|activity|test|try|experiment"
+      },
+      {
+        "code": "G4-F-5",
+        "lesson": "g4:change-motion",
+        "unit": "G4-F-5:guided",
+        "pattern": "teacher|try|activity|test|experiment"
+      },
+      {
+        "code": "G4-F-7",
+        "lesson": "g4:magnets",
+        "unit": "G4-F-7:investigation",
+        "pattern": "test|teacher|experiment|investigat"
+      },
+      {
+        "code": "G4-E-1",
+        "lesson": "g4:soil",
+        "unit": "G4-E-1:investigation",
+        "pattern": "test|experiment|teacher|pour"
+      },
+      {
+        "code": "G4-E-3",
+        "lesson": "g4:soil-and-growth",
+        "unit": "G4-E-3:investigation",
+        "pattern": "test|experiment|investigat|teacher"
+      },
+      {
+        "code": "G4-E-8",
+        "lesson": "g4:shadows",
+        "unit": "G4-E-8:length",
+        "pattern": "long|short|length"
+      },
+      {
+        "code": "G5-L-1",
+        "lesson": "g5:digestion",
+        "unit": "G5-L-1:intestines",
+        "pattern": "small intestine.*(absorb|nutrient)"
+      },
+      {
+        "code": "G5-F-3",
+        "lesson": "g5:friction",
+        "unit": "G5-F-3:reducing-friction",
+        "pattern": "reduc|oil|lubricat"
+      },
+      {
+        "code": "G5-F-10",
+        "lesson": "g5:electromagnets",
+        "unit": "G5-F-10:construction",
+        "pattern": "nail|coil|wind.*wire"
+      },
+      {
+        "code": "G7-M-10",
+        "lesson": "g7:solubility",
+        "unit": "G7-M-10:test",
+        "pattern": "test|investigat|same|control|measur"
+      },
+      {
+        "code": "G8-L-1",
+        "lesson": "g8:digestion",
+        "unit": "G8-L-1:absorption",
+        "pattern": "absorb|absorption"
+      },
+      {
+        "code": "G9-M-11",
+        "lesson": "g9:m-11",
+        "unit": "G9-M-11:focus-5",
+        "pattern": "investigat|measure|test|compare"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "The small intestine is a long coiled tube where most digestion and absorption of nutrients happens.",
+      "tl": "Ang small intestine ay isang mahabang nakapilipit na tubo kung saan nangyayari ang karamihan ng digestion at pagsipsip ng nutrients.",
+      "bis": "Ang small intestine usa ka taas nga naglikoliko nga tubo diin mahitabo ang kadaghanan sa digestion ug pagsuyop sa nutrients."
+    },
+    "exportedAt": "2026-09-10T12:10:53.399537+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "longer-blades-for-precision-g6",
+    "id": "dcard-09278",
+    "textHash": "f7625d4c1b6bb15d03286ed644d760921b9c03d3621010703c1aa68a9709727b",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:40:52Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G10-E-9",
+        "verdict": "wrong",
+        "card_evidence": "Scissors with longer blades and shorter handles give better precision and control for fine cutting tasks",
+        "competency_evidence": "identify the role of greenhouse gases in enhanced global warming and climate change",
+        "reason": "The card discusses the mechanical design of scissors (blade and handle lengths) for cutting precision. G10-E-9 requires identifying the role of greenhouse gases in enhanced global warming and climate change. There is no connection to greenhouse gases, global warming, or climate change. The topic is entirely unrelated to the assigned Earth/Space competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-2",
+        "lesson": "g3:exploring",
+        "unit": "G3-M-2:questions",
+        "pattern": "question|ask"
+      },
+      {
+        "code": "G3-M-3",
+        "lesson": "g3:science-tools",
+        "unit": "G3-M-3:scissors",
+        "pattern": "scissor.*cut"
+      },
+      {
+        "code": "G3-M-7",
+        "lesson": "g3:safe-materials",
+        "unit": "G3-M-7:handling",
+        "pattern": "sharp|broken glass|glove|handle|handling"
+      },
+      {
+        "code": "G3-M-8",
+        "lesson": "g3:useful-changes",
+        "unit": "G3-M-8:cutting",
+        "pattern": "cut"
+      },
+      {
+        "code": "G3-L-4",
+        "lesson": "g3:animal-parts",
+        "unit": "G3-L-4:other-movement",
+        "pattern": "fin|tail|flipper"
+      },
+      {
+        "code": "G3-F-8",
+        "lesson": "g3:sending-messages",
+        "unit": "G3-F-8:movement",
+        "pattern": "wave|hand|gesture|movement"
+      },
+      {
+        "code": "G4-E-3",
+        "lesson": "g4:soil-and-growth",
+        "unit": "G4-E-3:fair-comparison",
+        "pattern": "same|equal|control|fair"
+      },
+      {
+        "code": "G4-E-8",
+        "lesson": "g4:shadows",
+        "unit": "G4-E-8:length",
+        "pattern": "long|short|length"
+      },
+      {
+        "code": "G5-F-2",
+        "lesson": "g5:friction",
+        "unit": "G5-F-2:fair-comparison",
+        "pattern": "same|fair|variable|control"
+      },
+      {
+        "code": "G6-M-8",
+        "lesson": "g6:fair-tests",
+        "unit": "G6-M-8:control",
+        "pattern": "keep.*same|constant|control"
+      },
+      {
+        "code": "G6-L-2",
+        "lesson": "g6:plant-reproduction",
+        "unit": "G6-L-2:propagation",
+        "pattern": "propagat|cutting|graft|layering|budding"
+      },
+      {
+        "code": "G6-L-3",
+        "lesson": "g6:propagation-tests",
+        "unit": "G6-L-3:fair-replicated-test",
+        "pattern": "(fair|same|control).*(trial|replicat|cutting|propagat)|(trial|replicat).*(same|fair)"
+      },
+      {
+        "code": "G6-F-1",
+        "lesson": "g6:simple-machines",
+        "unit": "G6-F-1:everyday",
+        "pattern": "home|school|community|bottle|door|ramp|scissor|wheelbarrow"
+      },
+      {
+        "code": "G7-M-6",
+        "lesson": "g7:investigation-steps",
+        "unit": "G7-M-6:materials",
+        "pattern": "material|equipment"
+      },
+      {
+        "code": "G7-M-10",
+        "lesson": "g7:solubility",
+        "unit": "G7-M-10:test",
+        "pattern": "test|investigat|same|control|measur"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G7-L-1",
+        "lesson": "g7:microscope",
+        "unit": "G7-L-1:handling",
+        "pattern": "carry|hand|lens paper"
+      },
+      {
+        "code": "G7-F-3",
+        "lesson": "g7:force-diagrams",
+        "unit": "G7-F-3:magnitude",
+        "pattern": "length|longer|size|magnitude"
+      },
+      {
+        "code": "G8-L-11",
+        "lesson": "g8:photosynthesis-test",
+        "unit": "G8-L-11:fair-test",
+        "pattern": "control|same|fair|variable"
+      },
+      {
+        "code": "G9-F-3",
+        "lesson": "g9:f-3",
+        "unit": "G9-F-3:focus-3",
+        "pattern": "investigat|same|control|measure"
+      },
+      {
+        "code": "G9-M-1",
+        "lesson": "g9:m-1",
+        "unit": "G9-M-1:focus-2",
+        "pattern": "control|repeat|reliable"
+      },
+      {
+        "code": "G10-F-1",
+        "lesson": "g10:f-1",
+        "unit": "G10-F-1:focus-5",
+        "pattern": "investigat|same|control|measure"
+      },
+      {
+        "code": "G10-F-5",
+        "lesson": "g10:f-5",
+        "unit": "G10-F-5:focus-1",
+        "pattern": "investigat|measure|same|control"
+      },
+      {
+        "code": "G10-M-8",
+        "lesson": "g10:m-8",
+        "unit": "G10-M-8:focus-2",
+        "pattern": "material|manufactur|production"
+      },
+      {
+        "code": "G10-L-10",
+        "lesson": "g10:l-10",
+        "unit": "G10-L-10:focus-4",
+        "pattern": "mate"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Scissors with longer blades and shorter handles give better precision and control for fine cutting tasks, while shorter blades with longer handles cut tougher materials.",
+      "tl": "Ang gunting na may mas mahabang talim at mas maikling hawakan ay nagbibigay ng mas mahusay na precision at kontrol para sa pinong paggupit, habang ang mas maikling talim na may mas mahabang hawakan ay pumuputol ng mas matitigas na materyales.",
+      "bis": "Ang gunting nga adunay mas taas nga sulab ug mas mubo nga kuptanan naghatag ug mas maayo nga precision ug kontrol alang sa pinong pagputol, samtang ang mas mubo nga sulab nga adunay mas taas nga kuptanan moputol sa mas gahi nga mga materyales."
+    },
+    "exportedAt": "2026-09-10T12:10:53.442378+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "look-before-you-go-g6",
+    "id": "dcard-03690",
+    "textHash": "bf53b5558de730b3358cd2e2c32a9595e722527c0fc6d78202e5f390b1efe824",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:23:40Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G8-L-8",
+        "verdict": "wrong",
+        "card_evidence": "When the green light is on, look first to the left and right",
+        "competency_evidence": "using flow charts and labeled diagrams explain the role of plants and animals in the cycles of nature, such as the carbon, oxygen, and water cycles",
+        "reason": "The card teaches pedestrian road-crossing safety (looking both ways at a green light). It has no content about plants, animals, or the carbon, oxygen, or water cycles, and does not use flow charts or labeled diagrams as required by the competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-F-3",
+        "lesson": "g3:position",
+        "unit": "G3-F-3:left-right",
+        "pattern": "left|right"
+      },
+      {
+        "code": "G3-F-8",
+        "lesson": "g3:sending-messages",
+        "unit": "G3-F-8:light",
+        "pattern": "light|flash"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:eye-protection",
+        "pattern": "eye|look|stare"
+      },
+      {
+        "code": "G4-F-8",
+        "lesson": "g4:effects-at-distance",
+        "unit": "G4-F-8:light",
+        "pattern": "sun|light"
+      },
+      {
+        "code": "G4-F-9",
+        "lesson": "g4:energy",
+        "unit": "G4-F-9:forms",
+        "pattern": "light|sound|heat"
+      },
+      {
+        "code": "G4-F-10",
+        "lesson": "g4:energy-uses",
+        "unit": "G4-F-10:light",
+        "pattern": "light"
+      },
+      {
+        "code": "G4-E-7",
+        "lesson": "g4:sun",
+        "unit": "G4-E-7:energy",
+        "pattern": "light|heat"
+      },
+      {
+        "code": "G5-F-5",
+        "lesson": "g5:gravity",
+        "unit": "G5-F-5:heavy-and-light",
+        "pattern": "heav|light|same rate|same time"
+      },
+      {
+        "code": "G5-E-10",
+        "lesson": "g5:weather-disturbances",
+        "unit": "G5-E-10:before",
+        "pattern": "before"
+      },
+      {
+        "code": "G6-L-7",
+        "lesson": "g6:ecosystem-factors",
+        "unit": "G6-L-7:light",
+        "pattern": "light|sun"
+      },
+      {
+        "code": "G6-L-8",
+        "lesson": "g6:ecosystem-effects",
+        "unit": "G6-L-8:nonliving-interactions",
+        "pattern": "water|soil|temperature|light|drought|flood"
+      },
+      {
+        "code": "G6-F-9",
+        "lesson": "g6:wave-examples",
+        "unit": "G6-F-9:transverse",
+        "pattern": "light|rope|transverse|seismic"
+      },
+      {
+        "code": "G6-E-5",
+        "lesson": "g6:volcano-alerts",
+        "unit": "G6-E-5:before",
+        "pattern": "plan|prepare|before|evacuat"
+      },
+      {
+        "code": "G7-L-1",
+        "lesson": "g7:microscope",
+        "unit": "G7-L-1:functions",
+        "pattern": "magnif|focus|light"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "When the green light is on, look first to the left and right to ensure no vehicles are coming before you go.",
+      "tl": "Kapag nakabukas ang berdeng ilaw, tumingin muna sa kaliwa at kanan upang matiyak na walang sasakyang paparating bago ka umandar.",
+      "bis": "Kon ang berde nga suga nag-on, tan-aw una sa wala ug tuo aron masiguro nga walay sakyanan nga moabot sa dili ka molihok."
+    },
+    "exportedAt": "2026-09-10T12:10:53.482252+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "low-angle-short-range-g10",
+    "id": "dcard-04747",
+    "textHash": "e945b9065f2e90b8b78b735dc755d96621fe1daaeae756f7602e95890729a6d3",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:37:49Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G9-M-5",
+        "verdict": "wrong",
+        "card_evidence": "When the launch angle is less than 45 degrees",
+        "competency_evidence": "explain the formation of ions as either the loss or gain of electrons to produce ionic bonds, using examples, such as the formation of sodium chloride",
+        "reason": "The card discusses projectile motion and launch angles, which is physics. G9-M-5 concerns ion formation and ionic bonds in chemistry. No instructional support for the competency."
+      },
+      {
+        "code": "G9-M-6",
+        "verdict": "wrong",
+        "card_evidence": "When the launch angle is less than 45 degrees",
+        "competency_evidence": "write the chemical formula and chemical names of some common ionic compounds, including sodium chloride (NaCl), magnesium oxide (MgO), potassium chloride (KCl) and magnesium chloride (MgCl2)",
+        "reason": "The card discusses projectile range and launch angle, unrelated to writing chemical formulas or naming ionic compounds. No instructional support for the competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G4-F-4",
+        "lesson": "g4:speed-graphs",
+        "unit": "G4-F-4:stationary",
+        "pattern": "stationary|horizontal|flat line"
+      },
+      {
+        "code": "G4-E-8",
+        "lesson": "g4:shadows",
+        "unit": "G4-E-8:length",
+        "pattern": "long|short|length"
+      },
+      {
+        "code": "G7-L-10",
+        "lesson": "g7:energy-transfer",
+        "unit": "G7-L-10:less-energy",
+        "pattern": "less|lost|loss|heat|10 percent|10%"
+      },
+      {
+        "code": "G7-E-1",
+        "lesson": "g7:fault-types",
+        "unit": "G7-E-1:angle",
+        "pattern": "angle|dip|steep|plane"
+      },
+      {
+        "code": "G7-E-10",
+        "lesson": "g7:sunlight-angle",
+        "unit": "G7-E-10:intensity",
+        "pattern": "angle|spread|intens|slanted.*(ground|light)"
+      },
+      {
+        "code": "G10-F-1",
+        "lesson": "g10:f-1",
+        "unit": "G10-F-1:focus-1",
+        "pattern": "angle"
+      },
+      {
+        "code": "G10-F-1",
+        "lesson": "g10:f-1",
+        "unit": "G10-F-1:focus-4",
+        "pattern": "range"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "When the launch angle is less than 45 degrees, the projectile stays low and its horizontal range is shorter than at 45 degrees.",
+      "tl": "Kapag ang launch angle ay mas maliit sa 45 degrees, nananatiling mababa ang projectile at mas maikli ang horizontal range nito kaysa sa 45 degrees.",
+      "bis": "Kung ang launch angle mas gamay sa 45 degrees, magpabilin nga ubos ang projectile ug mas mubo ang horizontal range kaysa sa 45 degrees."
+    },
+    "exportedAt": "2026-09-10T12:10:53.523072+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "low-melting-point-g9",
+    "id": "dcard-02069",
+    "textHash": "bc110df0c5838d53de79b81271a0dfe7cca8e635ac629b89d6f49dd0cadce25e",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:38:57Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G10-E-10",
+        "verdict": "wrong",
+        "card_evidence": "Covalent compounds often have low melting points because their molecules are held together by weak attractions that need little heat to break.",
+        "competency_evidence": "describe how global climatic phenomena, such as the El Niño Southern Oscillation, may impact weather systems",
+        "reason": "The card explains why covalent compounds have low melting points, a chemistry concept. G10-E-10 requires describing how global climatic phenomena such as El Niño Southern Oscillation impact weather systems. There is no connection to climate, weather, or El Niño; the card is unrelated to the competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-1",
+        "lesson": "g3:everyday-science",
+        "unit": "G3-M-1:local-examples",
+        "pattern": "rain|cook|shadow|melt|plant|dry"
+      },
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:food-and-shelter",
+        "pattern": "food|eat|shelter"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G4-F-9",
+        "lesson": "g4:energy",
+        "unit": "G4-F-9:change",
+        "pattern": "change|cause"
+      },
+      {
+        "code": "G4-F-9",
+        "lesson": "g4:energy",
+        "unit": "G4-F-9:forms",
+        "pattern": "light|sound|heat"
+      },
+      {
+        "code": "G4-F-10",
+        "lesson": "g4:energy-uses",
+        "unit": "G4-F-10:heat",
+        "pattern": "heat"
+      },
+      {
+        "code": "G4-E-7",
+        "lesson": "g4:sun",
+        "unit": "G4-E-7:energy",
+        "pattern": "light|heat"
+      },
+      {
+        "code": "G5-M-6",
+        "lesson": "g5:heat-and-state",
+        "unit": "G5-M-6:melting",
+        "pattern": "melt"
+      },
+      {
+        "code": "G5-F-3",
+        "lesson": "g5:friction",
+        "unit": "G5-F-3:heat",
+        "pattern": "heat|warm"
+      },
+      {
+        "code": "G5-F-7",
+        "lesson": "g5:static-electricity",
+        "unit": "G5-F-7:observation",
+        "pattern": "rub|attract|repel"
+      },
+      {
+        "code": "G6-M-1",
+        "lesson": "g6:state-changes",
+        "unit": "G6-M-1:melting",
+        "pattern": "melt"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:benefits",
+        "pattern": "use|benefit|recover|separat"
+      },
+      {
+        "code": "G7-M-2",
+        "lesson": "g7:particle-model",
+        "unit": "G7-M-2:particles",
+        "pattern": "particle|atom|molecule"
+      },
+      {
+        "code": "G7-M-3",
+        "lesson": "g7:particle-motion",
+        "unit": "G7-M-3:attraction",
+        "pattern": "attract"
+      },
+      {
+        "code": "G7-M-3",
+        "lesson": "g7:particle-motion",
+        "unit": "G7-M-3:temperature",
+        "pattern": "temperature|heat"
+      },
+      {
+        "code": "G7-M-5",
+        "lesson": "g7:particle-state-changes",
+        "unit": "G7-M-5:heating",
+        "pattern": "melt|evaporat|boil"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G7-L-10",
+        "lesson": "g7:energy-transfer",
+        "unit": "G7-L-10:less-energy",
+        "pattern": "less|lost|loss|heat|10 percent|10%"
+      },
+      {
+        "code": "G7-E-9",
+        "lesson": "g7:sun-atmosphere",
+        "unit": "G7-E-9:warming",
+        "pattern": "warm|heat|greenhouse"
+      },
+      {
+        "code": "G7-E-12",
+        "lesson": "g7:solar-winds",
+        "unit": "G7-E-12:solar-heating",
+        "pattern": "heat|solar|Sun"
+      },
+      {
+        "code": "G8-L-1",
+        "lesson": "g8:digestion",
+        "unit": "G8-L-1:route",
+        "pattern": "mouth.*(stomach|intestine)|diagram|tract"
+      },
+      {
+        "code": "G8-F-9",
+        "lesson": "g8:falling-energy",
+        "unit": "G8-F-9:losses",
+        "pattern": "friction|air resistance|heat|thermal"
+      },
+      {
+        "code": "G9-F-9",
+        "lesson": "g9:f-9",
+        "unit": "G9-F-9:focus-3",
+        "pattern": "advantage|disadvantage|fail|break|independent"
+      },
+      {
+        "code": "G9-M-5",
+        "lesson": "g9:m-5",
+        "unit": "G9-M-5:focus-3",
+        "pattern": "attract|opposit"
+      },
+      {
+        "code": "G9-M-9",
+        "lesson": "g9:m-9",
+        "unit": "G9-M-9:focus-2",
+        "pattern": "molecul"
+      },
+      {
+        "code": "G9-M-11",
+        "lesson": "g9:m-11",
+        "unit": "G9-M-11:focus-1",
+        "pattern": "melting"
+      },
+      {
+        "code": "G9-M-11",
+        "lesson": "g9:m-11",
+        "unit": "G9-M-11:focus-4",
+        "pattern": "thermal|heat"
+      },
+      {
+        "code": "G10-E-11",
+        "lesson": "g10:e-11",
+        "unit": "G10-E-11:focus-1",
+        "pattern": "impact|flood|sea level|heat"
+      },
+      {
+        "code": "G10-M-1",
+        "lesson": "g10:m-1",
+        "unit": "G10-M-1:focus-4",
+        "pattern": "temperature|heat"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Covalent compounds often have low melting points because their molecules are held together by weak attractions that need little heat to break.",
+      "tl": "Ang mga covalent compound ay kadalasang may mababang melting point dahil ang kanilang mga molecule ay pinagdirikit ng mahihinang atraksyon na kaunting init lang ang kailangan para masira.",
+      "bis": "Ang mga covalent compound kasagarang adunay ubos nga melting point tungod kay ang ilang mga molecule gikuptan sa huyang nga atraksyon nga gamay nga init lang ang gikinahanglan aron mabuak."
+    },
+    "exportedAt": "2026-09-10T12:10:53.564508+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "low-temperature-storage-g4",
+    "id": "dcard-10882",
+    "textHash": "1ee4b87c4e8ee6f7515aeb17b49116159a2a8f80cb843839d369575c5c61d24b",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:21:55Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G5-F-10",
+        "verdict": "wrong",
+        "card_evidence": "Some medicines need to be kept at low temperatures",
+        "competency_evidence": "make a simple electromagnet and observe and record its properties",
+        "reason": "Card is about medicine storage temperature, not electromagnets or their properties."
+      },
+      {
+        "code": "G5-F-9",
+        "verdict": "wrong",
+        "card_evidence": "Some medicines need to be kept at low temperatures",
+        "competency_evidence": "design and construct a simple electrical circuit to identify what materials will conduct electricity and use it to identify materials from the environment that will and will not conduct electricity",
+        "reason": "Card does not address electrical circuits, conductors, or insulators."
+      },
+      {
+        "code": "G5-F-8",
+        "verdict": "wrong",
+        "card_evidence": "Some medicines need to be kept at low temperatures",
+        "competency_evidence": "assemble and draw a simple circuit using batteries, wires, switch, and bulb and/or toy motor or buzzer",
+        "reason": "Card does not involve assembling or drawing a simple circuit."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-F-5",
+        "lesson": "g3:light",
+        "unit": "G3-F-5:uses",
+        "pattern": "\\bsee\\b|\\bread\\b|light.*room"
+      },
+      {
+        "code": "G4-F-4",
+        "lesson": "g4:speed-graphs",
+        "unit": "G4-F-4:axes",
+        "pattern": "axis|axes|label"
+      },
+      {
+        "code": "G4-E-4",
+        "lesson": "g4:weather-elements",
+        "unit": "G4-E-4:temperature",
+        "pattern": "temperature"
+      },
+      {
+        "code": "G4-E-8",
+        "lesson": "g4:shadows",
+        "unit": "G4-E-8:length",
+        "pattern": "long|short|length"
+      },
+      {
+        "code": "G5-E-3",
+        "lesson": "g5:rock-classification",
+        "unit": "G5-E-3:classification-record",
+        "pattern": "record|table|label|write"
+      },
+      {
+        "code": "G6-M-4",
+        "lesson": "g6:useful-mixtures",
+        "unit": "G6-M-4:uses",
+        "pattern": "\\buse|food|drink|medicin|paint"
+      },
+      {
+        "code": "G6-L-1",
+        "lesson": "g6:circulation",
+        "unit": "G6-L-1:diagram",
+        "pattern": "diagram|label|→"
+      },
+      {
+        "code": "G6-L-7",
+        "lesson": "g6:ecosystem-factors",
+        "unit": "G6-L-7:temperature",
+        "pattern": "temperature"
+      },
+      {
+        "code": "G6-L-8",
+        "lesson": "g6:ecosystem-effects",
+        "unit": "G6-L-8:nonliving-interactions",
+        "pattern": "water|soil|temperature|light|drought|flood"
+      },
+      {
+        "code": "G7-M-3",
+        "lesson": "g7:particle-motion",
+        "unit": "G7-M-3:temperature",
+        "pattern": "temperature|heat"
+      },
+      {
+        "code": "G7-L-8",
+        "lesson": "g7:biological-levels",
+        "unit": "G7-L-8:diagram",
+        "pattern": "diagram|label|→"
+      },
+      {
+        "code": "G8-F-3",
+        "lesson": "g8:acceleration-graphs",
+        "unit": "G8-F-3:annotate",
+        "pattern": "label|axis|axes|annotat|plot"
+      },
+      {
+        "code": "G9-E-6",
+        "lesson": "g9:e-6",
+        "unit": "G9-E-6:focus-1",
+        "pattern": "eon|era|period"
+      },
+      {
+        "code": "G9-L-1",
+        "lesson": "g9:l-1",
+        "unit": "G9-L-1:focus-3",
+        "pattern": "label|model|diagram"
+      },
+      {
+        "code": "G9-L-9",
+        "lesson": "g9:l-9",
+        "unit": "G9-L-9:focus-8",
+        "pattern": "diagram|label"
+      },
+      {
+        "code": "G10-E-8",
+        "lesson": "g10:e-8",
+        "unit": "G10-E-8:focus-1",
+        "pattern": "temperature"
+      },
+      {
+        "code": "G10-M-1",
+        "lesson": "g10:m-1",
+        "unit": "G10-M-1:focus-4",
+        "pattern": "temperature|heat"
+      },
+      {
+        "code": "G10-L-1",
+        "lesson": "g10:l-1",
+        "unit": "G10-L-1:focus-1",
+        "pattern": "temperature"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Some medicines need to be kept at low temperatures, so always check the label to see if yours belongs in the refrigerator.",
+      "tl": "Ang ilang gamot ay kailangang itago sa mababang temperatura, kaya laging tingnan ang label para malaman kung dapat bang ilagay sa refrigerator ang gamot mo.",
+      "bis": "Ang pipila ka tambal kinahanglang tipigan sa ubos nga temperatura, busa kanunay nga susiha ang label aron mahibaloan kon angay bang ibutang sa refrigerator ang imong tambal."
+    },
+    "exportedAt": "2026-09-10T12:10:53.604749+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "lungs-two-jobs-g5",
+    "id": "dcard-01906",
+    "textHash": "ef1338965aadfc80fc5850815058d7b5eef0e43425ee71c434a0454377a44ed1",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass grok-4.6 2026-09-06T13:17:00Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G6-L-2",
+        "verdict": "wrong",
+        "card_evidence": "The lungs do two important jobs: they bring oxygen into the body for the cells to use, and they remove the waste gas carbon dioxide from the body.",
+        "competency_evidence": "describe the different ways that plants reproduce, such as pollination, seed production, and plant propagation",
+        "reason": "Lung gas exchange is human physiology, not plant reproduction."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-6",
+        "lesson": "g3:harmful-changes",
+        "unit": "G3-M-6:trash",
+        "pattern": "trash|garbage|waste|litter"
+      },
+      {
+        "code": "G3-L-6",
+        "lesson": "g3:basic-needs",
+        "unit": "G3-L-6:air",
+        "pattern": "\\bair\\b|oxygen"
+      },
+      {
+        "code": "G3-E-7",
+        "lesson": "g3:watching-the-sky",
+        "unit": "G3-E-7:apparent-motion",
+        "pattern": "move|motion|rise|set"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G4-M-6",
+        "lesson": "g4:community-problems",
+        "unit": "G4-M-6:waste",
+        "pattern": "waste|trash|garbage"
+      },
+      {
+        "code": "G4-L-1",
+        "lesson": "g4:body-systems",
+        "unit": "G4-L-1:respiratory",
+        "pattern": "lung.*(oxygen|gas)|respirat"
+      },
+      {
+        "code": "G4-E-2",
+        "lesson": "g4:water-for-life",
+        "unit": "G4-E-2:animals",
+        "pattern": "animal|human|body"
+      },
+      {
+        "code": "G5-L-2",
+        "lesson": "g5:breathing",
+        "unit": "G5-L-2:lungs",
+        "pattern": "(?=.*lung)(?=.*oxygen)(?=.*(blood|carbon dioxide))"
+      },
+      {
+        "code": "G5-E-5",
+        "lesson": "g5:erosion",
+        "unit": "G5-E-5:transport",
+        "pattern": "carry|carries|transport|move"
+      },
+      {
+        "code": "G6-M-4",
+        "lesson": "g6:useful-mixtures",
+        "unit": "G6-M-4:uses",
+        "pattern": "\\buse|food|drink|medicin|paint"
+      },
+      {
+        "code": "G6-M-5",
+        "lesson": "g6:air-mixture",
+        "unit": "G6-M-5:oxygen",
+        "pattern": "oxygen"
+      },
+      {
+        "code": "G6-M-5",
+        "lesson": "g6:air-mixture",
+        "unit": "G6-M-5:carbon-dioxide",
+        "pattern": "carbon dioxide"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:benefits",
+        "pattern": "use|benefit|recover|separat"
+      },
+      {
+        "code": "G6-E-4",
+        "lesson": "g6:volcanic-materials",
+        "unit": "G6-E-4:gases",
+        "pattern": "gas"
+      },
+      {
+        "code": "G7-M-3",
+        "lesson": "g7:particle-motion",
+        "unit": "G7-M-3:motion",
+        "pattern": "motion|mov|vibrat"
+      },
+      {
+        "code": "G7-M-4",
+        "lesson": "g7:particle-diagrams",
+        "unit": "G7-M-4:gas",
+        "pattern": "\\bgas\\b|gaseous"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G8-L-8",
+        "lesson": "g8:nature-cycles",
+        "unit": "G8-L-8:carbon",
+        "pattern": "carbon"
+      },
+      {
+        "code": "G8-L-8",
+        "lesson": "g8:nature-cycles",
+        "unit": "G8-L-8:oxygen",
+        "pattern": "oxygen"
+      },
+      {
+        "code": "G8-L-11",
+        "lesson": "g8:photosynthesis-test",
+        "unit": "G8-L-11:raw-material",
+        "pattern": "carbon dioxide|water"
+      },
+      {
+        "code": "G8-L-11",
+        "lesson": "g8:photosynthesis-test",
+        "unit": "G8-L-11:evidence",
+        "pattern": "measure|record|evidence|starch|oxygen"
+      },
+      {
+        "code": "G8-M-6",
+        "lesson": "g8:element-names",
+        "unit": "G8-M-6:first-ten",
+        "pattern": "hydrogen|helium|lithium|beryllium|boron|carbon|nitrogen|oxygen|fluorine|neon"
+      },
+      {
+        "code": "G8-F-2",
+        "lesson": "g8:local-motion",
+        "unit": "G8-F-2:everyday",
+        "pattern": "school|car|bike|ball|bus|jeep"
+      },
+      {
+        "code": "G9-F-2",
+        "lesson": "g9:f-2",
+        "unit": "G9-F-2:focus-3",
+        "pattern": "practical|ball|car|bike|bus"
+      },
+      {
+        "code": "G9-M-4",
+        "lesson": "g9:m-4",
+        "unit": "G9-M-4:focus-1",
+        "pattern": "oxygen"
+      },
+      {
+        "code": "G9-M-7",
+        "lesson": "g9:m-7",
+        "unit": "G9-M-7:focus-2",
+        "pattern": "carbon dioxide|CO2|CO₂"
+      },
+      {
+        "code": "G9-M-8",
+        "lesson": "g9:m-8",
+        "unit": "G9-M-8:focus-2",
+        "pattern": "carbon dioxide|CO2|CO₂"
+      },
+      {
+        "code": "G10-E-9",
+        "lesson": "g10:e-9",
+        "unit": "G10-E-9:focus-2",
+        "pattern": "carbon dioxide|methane"
+      },
+      {
+        "code": "G10-E-11",
+        "lesson": "g10:e-11",
+        "unit": "G10-E-11:focus-3",
+        "pattern": "mitigat|emission|carbon"
+      },
+      {
+        "code": "G10-E-12",
+        "lesson": "g10:e-12",
+        "unit": "G10-E-12:focus-5",
+        "pattern": "emission|carbon|climate"
+      },
+      {
+        "code": "G10-M-1",
+        "lesson": "g10:m-1",
+        "unit": "G10-M-1:focus-3",
+        "pattern": "gas"
+      },
+      {
+        "code": "G10-L-6",
+        "lesson": "g10:l-6",
+        "unit": "G10-L-6:focus-2",
+        "pattern": "organism|cell|enzyme|microb"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "The lungs do two important jobs: they bring oxygen into the body for the cells to use, and they remove the waste gas carbon dioxide from the body.",
+      "tl": "Ang baga ay may dalawang mahalagang trabaho: nagdadala ito ng oxygen sa katawan para magamit ng mga selula, at inaalis nito ang duming gas na carbon dioxide mula sa katawan.",
+      "bis": "Ang baga adunay duha ka importante nga trabaho: nagdala kini sa oxygen ngadto sa lawas aron magamit sa mga selula, ug gikuha niini ang hugaw nga gas nga carbon dioxide gikan sa lawas."
+    },
+    "exportedAt": "2026-09-10T12:10:53.646618+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "luzon-volcanic-arc-g9",
+    "id": "dcard-04288",
+    "textHash": "b3a87d60afabf3a796089850c807d0aecccf16fd1f764c04a023a6c8208d24bc",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass grok-4.6 2026-09-07T08:05:00Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G6-L-5",
+        "verdict": "wrong",
+        "card_evidence": "Most active volcanoes in the Philippines line up along the eastern side of the country in a chain called the Luzon Volcanic Arc",
+        "competency_evidence": "describe the roles of producers, consumers, scavengers, and decomposers in a food web",
+        "reason": "A volcanic arc is unrelated to producers, consumers, scavengers, and decomposers in a food web."
+      },
+      {
+        "code": "G4-M-6",
+        "verdict": "wrong",
+        "card_evidence": "Most active volcanoes in the Philippines line up along the eastern side of the country in a chain called the Luzon Volcanic Arc",
+        "competency_evidence": "identify issues and concerns in the local community and how they could be addressed by science, such as the treatment of waste",
+        "reason": "A volcanic arc is unrelated to local community waste issues addressed by science."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-F-6",
+        "lesson": "g3:light",
+        "unit": "G3-F-6:guided-exploration",
+        "pattern": "investigat|experiment|try|test|flashlight"
+      },
+      {
+        "code": "G4-L-7",
+        "lesson": "g4:food-chains",
+        "unit": "G4-L-7:local-chain",
+        "pattern": "rice|grass|frog|snake|Philippin"
+      },
+      {
+        "code": "G4-F-1",
+        "lesson": "g4:rigid-soft",
+        "unit": "G4-F-1:guided",
+        "pattern": "teacher|activity|test|try|experiment"
+      },
+      {
+        "code": "G4-F-5",
+        "lesson": "g4:change-motion",
+        "unit": "G4-F-5:guided",
+        "pattern": "teacher|try|activity|test|experiment"
+      },
+      {
+        "code": "G4-E-8",
+        "lesson": "g4:shadows",
+        "unit": "G4-E-8:length",
+        "pattern": "long|short|length"
+      },
+      {
+        "code": "G4-E-8",
+        "lesson": "g4:shadows",
+        "unit": "G4-E-8:direction",
+        "pattern": "east|west|direction"
+      },
+      {
+        "code": "G6-L-4",
+        "lesson": "g6:animal-groups",
+        "unit": "G6-L-4:local",
+        "pattern": "Philippin|carabao|tilapia|tarsier|crab|butterfl"
+      },
+      {
+        "code": "G6-E-2",
+        "lesson": "g6:local-volcano-risk",
+        "unit": "G6-E-2:active-inactive",
+        "pattern": "active|inactive"
+      },
+      {
+        "code": "G6-E-3",
+        "lesson": "g6:eruption-history",
+        "unit": "G6-E-3:philippine-history",
+        "pattern": "Philippin|Mayon|Taal|Pinatubo|Kanlaon"
+      },
+      {
+        "code": "G7-E-2",
+        "lesson": "g7:fault-models",
+        "unit": "G7-E-2:philippine-context",
+        "pattern": "Philippin|Valley Fault|subduct|converg"
+      },
+      {
+        "code": "G8-E-3",
+        "lesson": "g8:volcano-types",
+        "unit": "G8-E-3:activity",
+        "pattern": "active|dormant|extinct|inactive"
+      },
+      {
+        "code": "G8-E-5",
+        "lesson": "g8:global-patterns",
+        "unit": "G8-E-5:volcanoes",
+        "pattern": "volcano"
+      },
+      {
+        "code": "G8-E-7",
+        "lesson": "g8:typhoon-formation",
+        "unit": "G8-E-7:philippines",
+        "pattern": "Philippin|western.*Pacific"
+      },
+      {
+        "code": "G8-F-10",
+        "lesson": "g8:hydropower",
+        "unit": "G8-F-10:philippine-source",
+        "pattern": "Philippin|Agus|Magat|Ambuklao|Angat|Binga"
+      },
+      {
+        "code": "G9-E-2",
+        "lesson": "g9:e-2",
+        "unit": "G9-E-2:focus-1",
+        "pattern": "Philippin|Manila"
+      },
+      {
+        "code": "G9-E-2",
+        "lesson": "g9:e-2",
+        "unit": "G9-E-2:focus-3",
+        "pattern": "trench|fault|volcano"
+      },
+      {
+        "code": "G9-L-8",
+        "lesson": "g9:l-8",
+        "unit": "G9-L-8:focus-2",
+        "pattern": "community|local|Philippin"
+      },
+      {
+        "code": "G10-E-3",
+        "lesson": "g10:e-3",
+        "unit": "G10-E-3:focus-1",
+        "pattern": "Philippin|Manila"
+      },
+      {
+        "code": "G10-E-3",
+        "lesson": "g10:e-3",
+        "unit": "G10-E-3:focus-4",
+        "pattern": "volcano"
+      },
+      {
+        "code": "G10-E-6",
+        "lesson": "g10:e-6",
+        "unit": "G10-E-6:focus-3",
+        "pattern": "volcan|magma"
+      },
+      {
+        "code": "G10-M-2",
+        "lesson": "g10:m-2",
+        "unit": "G10-M-2:focus-1",
+        "pattern": "indicator|litmus|pH"
+      },
+      {
+        "code": "G10-M-7",
+        "lesson": "g10:m-7",
+        "unit": "G10-M-7:focus-2",
+        "pattern": "atom|count"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Most active volcanoes in the Philippines line up along the eastern side of the country in a chain called the Luzon Volcanic Arc.",
+      "tl": "Karamihan ng mga aktibong bulkan sa Pilipinas ay nakahilera sa silangang bahagi ng bansa sa isang hanay na tinatawag na Luzon Volcanic Arc.",
+      "bis": "Kadaghanan sa mga aktibong bulkan sa Pilipinas naglinya sa sidlakang bahin sa nasud sa usa ka laray nga gitawag ug Luzon Volcanic Arc."
+    },
+    "exportedAt": "2026-09-10T12:10:53.687394+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "lymph-nodes-bumps-on-a-road-compare-g7",
+    "id": "ffct-00011",
+    "textHash": "1211a10cfda70957b4e538b6b5112ebdcd823f84dab260af3b15ca107352d34e",
+    "screen": "no_current_core_match",
+    "flags": [
+      "grade_mismatch"
+    ],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:58:58Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G4-L-1",
+        "verdict": "wrong",
+        "card_evidence": "Think of lymph vessels as roads and lymph nodes as checkpoints",
+        "competency_evidence": "describe in simple terms how the following human body systems work: muscular, skeletal, digestive, circulatory, and respiratory",
+        "reason": "The card describes the lymphatic system (lymph vessels and lymph nodes), which is not one of the systems listed in G4-L-1 (muscular, skeletal, digestive, circulatory, respiratory). It does not support describing any of those five systems."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-F-6",
+        "lesson": "g3:light",
+        "unit": "G3-F-6:behavior",
+        "pattern": "shadow|reflect|block|through"
+      },
+      {
+        "code": "G5-F-2",
+        "lesson": "g5:friction",
+        "unit": "G5-F-2:surfaces",
+        "pattern": "surface|rough|smooth"
+      },
+      {
+        "code": "G5-E-10",
+        "lesson": "g5:weather-disturbances",
+        "unit": "G5-E-10:before",
+        "pattern": "before"
+      },
+      {
+        "code": "G6-E-5",
+        "lesson": "g6:volcano-alerts",
+        "unit": "G6-E-5:before",
+        "pattern": "plan|prepare|before|evacuat"
+      },
+      {
+        "code": "G7-L-10",
+        "lesson": "g7:energy-transfer",
+        "unit": "G7-L-10:transfer",
+        "pattern": "transfer|pass|flow"
+      },
+      {
+        "code": "G7-E-6",
+        "lesson": "g7:earthquake-plan",
+        "unit": "G7-E-6:during",
+        "pattern": "\\bduck\\b|\\bdrop\\b|\\bcover\\b|\\bhold\\b"
+      },
+      {
+        "code": "G8-F-5",
+        "lesson": "g8:energy-exchange",
+        "unit": "G8-F-5:potential-to-kinetic",
+        "pattern": "fall|downhill|downward|drop"
+      },
+      {
+        "code": "G10-M-2",
+        "lesson": "g10:m-2",
+        "unit": "G10-M-2:focus-1",
+        "pattern": "indicator|litmus|pH"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Think of lymph vessels as roads and lymph nodes as checkpoints—every drop of lymph passing through gets inspected by guards before it can continue.",
+      "tl": "Isipin mo ang lymph vessels na parang kalsada at ang mga kulani na parang checkpoint—bawat limpang dumadaan ay sinusuri muna ng mga bantay bago payagang magpatuloy.",
+      "bis": "Hunahunaa ang lymph vessels nga sama sa kalsada ug ang mga kulani nga sama sa checkpoint—ang matag limpa nga moagi susihon una sa mga guwardiya sa dili pa tugutan nga mopadayon."
+    },
+    "exportedAt": "2026-09-10T12:10:53.729234+00:00",
+    "reviewPass": 2
+  }
+]

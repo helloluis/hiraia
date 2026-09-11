@@ -1,0 +1,105 @@
+{
+  "originalProposals": [
+    {
+      "factId": "speeding-up-g9",
+      "id": "dcard-11209",
+      "textHash": "dcf20f8698b251d522cca516adb38d85e6300461cdf874f60313ce31fe7b6531",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:25:39Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:39:18.322Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G8-F-2",
+        "G9-F-2"
+      ],
+      "reason": "Defines acceleration as a change in speed over time and gives a car 0-to-60 example. That is a current G9-F-2 speed-change/practical-car facet and a G8-F-2 local accelerating-object example. Net-force and G8-F-1 rate-of-change-of-velocity are not admitted (no force/velocity/rate wording) and are not credited. Graph units are not admitted. TL/BIS keep the definition.",
+      "evidence": [
+        {
+          "lesson": "g9:f-2",
+          "unit": "G9-F-2:focus-1",
+          "quote": "Acceleration is a change in speed over time, so a car that goes from 0 to 60 kilometers per hour in 5 seconds is accelerating."
+        },
+        {
+          "lesson": "g9:f-2",
+          "unit": "G9-F-2:focus-3",
+          "quote": "a car that goes from 0 to 60 kilometers per hour in 5 seconds is accelerating."
+        },
+        {
+          "lesson": "g8:local-motion",
+          "unit": "G8-F-2:everyday",
+          "quote": "a car that goes from 0 to 60 kilometers per hour in 5 seconds is accelerating."
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "steeper-angle-higher-peak-g10",
+      "id": "dcard-04741",
+      "textHash": "20cf16e0306ac1330de2215e96cea8828cd2141a79b390fe43e288184f6581d1",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:46:46Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:39:18.322Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G10-F-1"
+      ],
+      "reason": "A steeper launch angle raises projectile maximum height, a current G10-F-1 angle/height relationship. The investigation facet (focus-5) is not admitted and is not credited. Fault-angle and wave-height hits are unrelated. TL/BIS match.",
+      "evidence": [
+        {
+          "lesson": "g10:f-1",
+          "unit": "G10-F-1:focus-1",
+          "quote": "A larger launch angle sends the projectile higher, so the maximum height increases as the angle of release becomes steeper."
+        },
+        {
+          "lesson": "g10:f-1",
+          "unit": "G10-F-1:focus-3",
+          "quote": "the maximum height increases as the angle of release becomes steeper."
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "strong-houses-in-storms-g5",
+      "id": "dcard-03423",
+      "textHash": "f086c8b0a5cd8d9f2f8f80d1bc2a1131a5f675b09f43464efe9e8a3f5c084fa6",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:10:09Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:39:18.322Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G5-E-8"
+      ],
+      "reason": "Reinforced-concrete houses take only minor roof damage at Signal 3 but major damage at Signal 5, a current G5-E-8 weather-disturbance impact. G5-E-9 is PAGASA weather conditions for each signal, not building performance, so it is not recovered. TL/BIS match.",
+      "evidence": [
+        {
+          "lesson": "g5:weather-disturbances",
+          "unit": "G5-E-8:impacts",
+          "quote": "Well-constructed houses made of reinforced concrete can survive Signal 3 with only minor roof damage, but may suffer major damage at Signal 5."
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "subduction-recycles-seafloor-g10",
+      "id": "dcard-08586",
+      "textHash": "d6690e5cf8755468a5083ec7bafc770f013acac015c4547140c3bd1a47ed746b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:55:30Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:39:18.322Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G9-E-3"
+      ],
+      "reason": "Old dense oceanic crust sinking into the mantle and melting is the subduction process at convergent boundaries, a current G9-E-3 subduction facet. G10-E-7 Himalaya/Andes and G8-E-5 volcano/earthquake distribution are not taught. G8-E-2 names crustal layers, not the recycling process. App/merged share dcard-08586; merged only inserts \"the process where\". TL/BIS match.",
+      "evidence": [
+        {
+          "lesson": "g9:e-3",
+          "unit": "G9-E-3:focus-2",
+          "quote": "Subduction is when old, dense oceanic crust sinks into the mantle and melts, recycling the seafloor back into Earth's interior."
+        }
+      ],
+      "translationsChecked": true
+    }
+  ],
+  "reason": "Parent semantic validation before application"
+}

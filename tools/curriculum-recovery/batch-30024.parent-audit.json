@@ -1,0 +1,1387 @@
+{
+  "parentVerifiedAt": "2026-09-11T08:01:13.185612+00:00",
+  "originalProposals": [
+    {
+      "factId": "rice-energy-carbohydrate-g5",
+      "id": "ffct-06412",
+      "textHash": "92a0114ea1d7bd88f0b2d8c1057f554887e080b9d91ec7a7344449857bb07730",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:33:39Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Rice-carbohydrate energy is nutrition trivia; assigned reviews themselves found only related_only matches (G3-L-6 needs basic-needs framing, card lacks the word 'food' and teaches nutrient energy, not needs identification). G6-F-4/G6-F-8 'energy' matches are wave-energy keyword noise. Potential destination: health/nutrition enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "rice-grain-fills-and-ripens-g4",
+      "id": "ffct-07606",
+      "textHash": "3ba2695d979d0efdc265cb51f514cdf2bf638e4bbdf07980321c8813d27aa9fa",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:15:20Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Ripening grain turning golden and bending the panicle teaches a plant-maturity sign; G4-F-6 'bend' is incidental wording (gravity on a stalk, not forces-changing-materials teaching) and G5-E-2 grain/color facets are rock-observation scoped. Potential destination: plant life-cycle/harvest enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "rice-growing-stages-paddy-g5",
+      "id": "ffct-08026",
+      "textHash": "2b143333d7f720a24cd2363b29caebf7d4f2b7861d40e21681076591207ec96c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:36:12Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Rice cultivation stages (seedling, transplant to flooded paddy, harvest) is farming practice; the only substantive facet G4-L-4:rice-field admits via 'paddy' but its competency is describing organisms living in a rice-field habitat, which the card does not teach. Potential destination: G4-L-4 if an organisms-in-paddy facet is authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "rice-harvest-misconception-cut-roots-g4",
+      "id": "ffct-04950",
+      "textHash": "563b82de315fcfadfdd2e66c02978fc9d77cee76ffe13f4222f2bdb8f72b7d8e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:29:55Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Harvest-misconception correction (stalk cut, roots stay) teaches farming practice; G3-M-8 'cutting' facet is about making solid materials useful, and G3-F-1 'pull' is keyword noise for a farming question. Potential destination: plant-life-cycle/harvest enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "rice-husk-bran-grain-layers-g6",
+      "id": "ffct-14288",
+      "textHash": "facff6cbd0896b190e4994ff2d3dc164ade23dd445f7a38f5da46b140b4b25da",
+      "previousExclusion": "first-pass grok-4.6 2026-09-06T14:21:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Rice grain husk/bran layer structure is plant-morphology trivia; G6-M-7 'rice/grain' products facet is about useful products of separation techniques and the card teaches no separation. Potential destination: useful-plants enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "rice-scientific-name-oryza-g5",
+      "id": "ffct-02596",
+      "textHash": "ac94062b720ee4d740bda15fa253e0554ace6c83b5c324d6489debf197fbddd9",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:29:41Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Oryza sativa scientific-name trivia (same family as acacia-compound-leaves hold in batch-30007); G7-L-10 'rice/grass' example facet is energy-transfer scoped and G8-L-4 'family' is genetics-scoped keyword noise. Potential destination: plant-classification enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "richter-scale-energy-tnt-analogy-g9",
+      "id": "ffct-31186",
+      "textHash": "00490e1099653400d0b0f528cb748e740fc623cac55a08a570c132f94d6ff108",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:03:35Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "TNT-equivalent earthquake-energy analogy has no authored facet: G6-E-4 'bomb' fragment facet is volcanic-fragment scoped, G6-F-4 'energy' transfer is wave-energy keyword noise, G7-E-2 slip facet needs fault-slip language. Factually loose (unquantified 'far more than many large bombs'). Potential destination: earthquake-energy lesson if a magnitude/energy facet is authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "richter-scale-what-is-g7",
+      "id": "ffct-30586",
+      "textHash": "2b68cbda87c28c345b4a983abeffc86e723c70f74bb92f10a8764748612eff86",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:03:37Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Richter-scale definition teaches earthquake-strength measurement, but G8-E-5 earthquakes facet competencies are global distribution/mapping relative to plate boundaries and every measurement-code match (G3-L-1, G7-M-10, G9-M-1...) is lab-investigation keyword noise. Potential destination: earthquake lesson if a magnitude-measurement facet is authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "ringed-planets-count-g6",
+      "id": "ffct-33650",
+      "textHash": "f69eb6775bda371916e2744599707dd006be46f118fefc79609bcfc4b18cb0b1",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:15:21Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-E-6"
+      ],
+      "evidence": [
+        {
+          "lesson": "g3:watching-the-sky",
+          "unit": "G3-E-6:planets",
+          "quote": "planets"
+        }
+      ],
+      "reason": "Four planets (Jupiter, Saturn, Uranus, Neptune) having rings genuinely teaches planet content for the G3-E-6 watch-the-sky planets facet (factually correct: all four giant planets are ringed). TL/BIS faithful; code-mixed 'exactly' in TL/BIS is a minor register artifact, meaning preserved.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "ringworm-prevention-sharing-g5",
+      "id": "ffct-08774",
+      "textHash": "14d78d0d31e405cad94d63bf48b6fcec8b659c5eda1e02d35f0290d6d5e12a45",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:42:57Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Ringworm prevention via not sharing combs/towels is hygiene guidance; G9-L-3 focus-4 would admit via the word 'infections' but that competency concerns mutations/mutagens (consistent with the virus-spread-contact hold in batch-30007), and dry/clean matches elsewhere are noise. Potential destination: health/hygiene enrichment or a fungal-disease facet.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "rock-cleavage-fracture-minerals-g7",
+      "id": "ffct-33021",
+      "textHash": "ea0181db5d81700667fbbf247eba2821deb1ad5f611e028bfae5aa8e1a687eb0",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:41:09Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Cleavage/fracture mineral breakage is mineral-identification content; the only geology facet G5-E-4:minerals belongs to the how-soil-forms lesson and the card teaches breakage properties, not soil formation. Correct mineralogy. Potential destination: mineral-properties lesson if authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "rock-cycle-complete-g6",
+      "id": "ffct-32913",
+      "textHash": "8452a8832fd5c8da35e9233c444db93a867a3fc4563b683f72c2cecbe7efd3b3",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:17:45Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Full igneous-sedimentary-metamorphic cycle has no authored rock-cycle unit; G6-E-1 'magma' would misfile the cycle's melting step as volcano formation and G5-M-6/G6-M-1 melting facets are state-change-of-matter scoped keyword matches. Factually fine. Potential destination: rock-cycle lesson if authored (it is the canonical teaching card for one).",
+      "translationsChecked": true
+    },
+    {
+      "factId": "rock-cycle-g8",
+      "id": "ffct-33848",
+      "textHash": "a51f3ff017d2d007b808d7d785bec9dde39bd6b50b35d1f264e4e15ed1cd388c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:17:51Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Rock-cycle overview (three types interconvert) has no authored unit; G9-E-1 'rock' is continental-drift keyword noise and G6-E-1 formation facet needs volcano-formation content. Potential destination: rock-cycle lesson if authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "rock-cycle-no-start-end-g7",
+      "id": "ffct-29422",
+      "textHash": "ac08badcdf4c946ffea81220e31dda171fdd34c14a7031c8e956ee474f658b51",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:17:48Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Rock cycle having no start/end is cycle-concept trivia with no authored unit; only G3-L-2/G3-E-1 'rock' earth-material matches, which are lesson-scoped keywords. Potential destination: rock-cycle lesson if authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "rock-folding-g10",
+      "id": "dcard-12750",
+      "textHash": "a56a1993d51da613ee51aa14496652e6c053e6ed9c60015bf69c06b584df3186",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:48:34Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Geologic folding of warm flexible rocks is plate-tectonics content; G4-F-6 bend/squeeze facets are for everyday materials and forces-changing-shape teaching, and card cats are its own grade's plate-boundary lesson with no authored fold facet. Potential destination: G10/G8 plate-boundary lesson if a folding facet is authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "rock-layers-strata-and-bedding-planes-g7",
+      "id": "ffct-31240",
+      "textHash": "dc57b81e471310b4dffffc1098675cb557a1e5f6148b7f804980acc56299d85d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:28:55Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Stratum/strata/bedding-plane vocabulary is stratigraphy content; G9-E-7 'layer' facet is Earth's interior and G7-E-1 'plane' is fault-angle scoped keyword noise. Potential destination: rock-layers/relative-dating lesson if authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "rocky-sea-stack-g6",
+      "id": "ffct-34032",
+      "textHash": "71782cd5b4b21574484341c9b2a6cf8113dc3ba2f340c36a55cd6f4ae9c5d81a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:13:02Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Sea-stack wave erosion landform genuinely belongs with erosion but the G5-E-5 transport facet pattern (carry|carries|transport|move) does not match 'wore away' wording, and remaining matches (rock, coast) are drift keyword noise \u2014 same pattern as the effects-of-weather-disturbances hold in batch-30000. Potential destination: G5-E-5 after an erosion-landform/wearing-away facet or card repair.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "rooster-cockfight-handler-g4",
+      "id": "ffct-03200",
+      "textHash": "bd1268d3d2aeb6ef2da205c128fdc03ae9b7f8d1c953b12edfbd407dd040dbc1",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:24:48Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Rooster definition (male chicken, comb, crow) is animal trivia; G4-L-5 chicken facet is about the chicken life cycle and G3-F-7 'loud' is sound-safety keyword noise. Potential destination: farm-animals enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "root-crops-grow-in-poor-soil-g6",
+      "id": "ffct-07462",
+      "textHash": "483351755c9166eab25e2df77b5d41a02e9feb436c66a5b7f62f4372e2915345",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:46:09Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-L-8"
+      ],
+      "evidence": [
+        {
+          "lesson": "g6:ecosystem-effects",
+          "unit": "G6-L-8:nonliving-interactions",
+          "quote": "soil"
+        }
+      ],
+      "reason": "Root crops (kamote, cassava) growing even in unfertile soil teaches soil as a nonliving factor affecting living things \u2014 the G6-L-8 nonliving-interactions facet (Philippine examples; competency is exactly how abiotic factors affect organisms). G3-L-7 environment facet also fits but one destination covers it. TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "roots-rice-fibrous-ph-g5",
+      "id": "ffct-11534",
+      "textHash": "0336243c6daa4c94757a2fa302e507ea0de555fd8934bd9723a969e705ff8160",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:30:03Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Rice having fibrous roots is root-morphology trivia; G8-L-3 roots facet belongs to the plant-transport lesson and the card teaches no absorption/transport function, only root arrangement. Potential destination: G8-L-3 if a root-structure/function facet is authored, or plant-parts enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "rubber-electrical-insulator-g6",
+      "id": "ffct-15102",
+      "textHash": "511a353e99237183947b90ee3ff3e6ebc08e33c7bed51f98084a8e3a5495ef72",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:26:16Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G9-F-6"
+      ],
+      "evidence": [
+        {
+          "lesson": "g9:f-6",
+          "unit": "G9-F-6:focus-2",
+          "quote": "safe"
+        }
+      ],
+      "reason": "Rubber not letting electricity flow and insulating wire coverings keeping us safe from shocks genuinely teaches electrical insulation for shock prevention \u2014 the G9-F-6 electron-flow-and-safety focus-2 facet (safe|shock|insulat all genuinely matched). TL/BIS faithful (goma/koryente preserved).",
+      "translationsChecked": true
+    },
+    {
+      "factId": "rubber-grows-tropics-g6",
+      "id": "ffct-16418",
+      "textHash": "4fde807056c71f03cd47c00a0af249b7161f07e8283078cd1ff3a56242c8297b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:45:21Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Rubber trees growing in hot rainy tropical climate is crop-geography trivia, same family as the abaca-grows-rainy-tropics hold in batch-30007; G3-L-3 'grow' is signs-of-life scoped and all heat/rain matches are weather keyword noise. Potential destination: useful-plants enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "rubber-philippines-mindanao-g6",
+      "id": "ffct-16419",
+      "textHash": "008725125323071217eb388e611ef3c82ba6ad0205160b58e7e7cf0ed3d8597a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:02:02Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Rubber production geography (Mindanao, Zamboanga, Cotabato) is production trivia; every Philippine-context match (fault models, typhoon basin, hydropower) is keyword noise \u2014 consistent with the abaca-philippines-top-producer hold. Potential destination: economic-botany enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "rubber-tree-tropics-g6",
+      "id": "ffct-15122",
+      "textHash": "4246d85d51be0304513cbf0270da751665cd6d2f71789c9368916d5861a6cd0e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:45:22Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Rubber trees in tropical Philippines/SEA is crop-geography trivia duplicating fact 21's teaching; G3-L-3 grow and G3-L-8 tree/forest matches are keyword noise. Potential destination: useful-plants enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "ruby-mineral-corundum-g7",
+      "id": "ffct-19064",
+      "textHash": "057e2d8e1a38d39f88f144d99ae0fdc0e221b250e605f9f4084b941ca1cd12c2",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:41:05Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Ruby as red corundum variety is gem trivia; the only mineral facet G5-E-4:minerals belongs to the how-soil-forms lesson and the card teaches gem classification, not soil formation. Factually correct. Potential destination: mineral-properties lesson if authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "ruler-makes-sound-g3",
+      "id": "dcard-01440",
+      "textHash": "019052fd68161bdbf70a9bb5d964315680bc2853badc007bb9c517432dbdb489",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:13:19Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-F-4"
+      ],
+      "evidence": [
+        {
+          "lesson": "g3:sound",
+          "unit": "G3-F-4:vibration",
+          "quote": "vibrates"
+        }
+      ],
+      "reason": "Pushing down and releasing a ruler over a table edge so it vibrates and makes a sound is exactly the G3-F-4 sound-produced-by-vibration teaching (vibration facet genuinely matched and demonstrated). G3-F-1 push facet is a lead only (the push is instrumental, not the teaching). TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sabertooth-not-tiger-g5",
+      "id": "ffct-05324",
+      "textHash": "77bf23b85eec90df28e46623f06704d7fc3682404d78645ee1386a1b454dfc86",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:29:40Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Saber-tooth not-a-tiger correction is paleontology trivia; G3-L-2 'cat' is local-examples keyword noise and G7-L-7 similarity facet is genetics-scoped. Potential destination: fossils/extinct-animals enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "saffir-simpson-cat1-g7",
+      "id": "ffct-34010",
+      "textHash": "deff2332fe5cc035a28c8701db9ec65d633107f64fe261c26fb29da9ce31306b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:13:36Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Saffir-Simpson Category 1 wind thresholds (119-153 km/h, values correct) teach the US hurricane scale; the G3-F-1 wind facet competency is wind moving objects and G5-E-9 signal-scoped wording does not match ('signal' absent). The Philippine framework is PAGASA wind signals. Potential destination: G5-E-9 if reworded to PSWS signal categories.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "saffir-simpson-categories-g7",
+      "id": "ffct-34009",
+      "textHash": "9d6b7ae0d40bca0513aa56203b6c0ddb9c108fc0e2c674d69e74a9351e66ea02",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:13:37Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Saffir-Simpson 5-category structure based on sustained winds is scale trivia with no genuine facet (same family as fact 27; G3-F-1 wind and G9-E-8 'scale' are keyword noise). Potential destination: G5-E-9 with PAGASA-signal wording.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sago-palm-g6",
+      "id": "ffct-08773",
+      "textHash": "253038aa80bee8f9c30939a30b0d27afd00f22b4f92ba965364e3d687d66e640",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:30:03Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Sago-palm starch product trivia; G8-L-1 'chew' and G8-L-11 'starch' are digestion/photosynthesis keyword noise. Potential destination: useful-plants enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sailfin-lizard-not-same-as-iguana-g7",
+      "id": "ffct-00068",
+      "textHash": "0072572b632038ab4e1ec2a2865b6d65353a5593ba225c9c594191e20551ca5c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:29:50Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Sailfin-lizard vs iguana family distinction is taxonomy trivia; G7-L-7 similarity facet is asexual/sexual reproduction scoped and G3-L-4 'fin' keyword noise. Potential destination: animal-diversity enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "salmon-smell-home-river-g7",
+      "id": "ffct-10440",
+      "textHash": "a20cdacb3923a193bb8a6dfbf8fbfcafc447f7bc05d12defd21fffa561d34441",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:15:20Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Salmon homing by river smell is animal-behavior trivia; all matches (home, river, sea) are keyword noise across habitats/food lessons. Potential destination: animal-behavior enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "salt-body-baby-need-less-g6",
+      "id": "ffct-17324",
+      "textHash": "61818de58ce775153efbea3b98da11667565634c67fc71b64e998bca99d6baea",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:36:11Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Babies needing less salt due to immature kidneys is pediatric health guidance; G7-M-11 salt facet is about litmus/neutralization salt products and every other match is keyword noise. Factually sound advice. Potential destination: health enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "salt-body-needs-it-g4",
+      "id": "ffct-16348",
+      "textHash": "e1c5b44b27d73078da24cce8a56631f37a568ef6a19af4c65b1d6ba63d65cb73",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:33:40Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Body needing a little salt is nutrition trivia; G7-M-11/G6-M-7 salt matches are solution-chemistry scoped keyword noise. Potential destination: health enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "salt-dissolves-in-water-g4",
+      "id": "ffct-15184",
+      "textHash": "9c23a4570c819985f1746f4cc04d82aad5d0bc290eb60e7407b2cae963ac7119",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:59:41Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Salt dissolving and spreading through water genuinely teaches the mixture/dissolving concept, but the authored solution facets (G7-M-8 solute/solvent) require those role words and none match the wording; TL/BIS also use natunaw/matunaw (melts) for dissolving, a conflation worth repairing. Potential destination: G7-M-8 after wording/translation repair.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "salt-rock-salt-mines-g6",
+      "id": "ffct-15183",
+      "textHash": "258e396fb228370d885c57944292ea59b6a0b7c8654ac6bb77e93e5a4d68c2aa",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:56:24Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Rock salt from dried ancient seas is mining trivia; G6-M-7 products facet is about separation-technique products and 'sea/rock' matches elsewhere are noise. Factually correct evaporite origin. Potential destination: minerals/earth-materials enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "salt-water-boils-higher-g7",
+      "id": "ffct-18923",
+      "textHash": "c0e8b61f8bb0232ac48fd23c0b5d1d04f47d88ac96c1a58214585e6898ed1005",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:44:28Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Boiling-point elevation from dissolved salt (correct) is a colligative property with no authored facet: G7-M-10 temperature facet requires solubility wording and heat/water matches are state-change keyword noise. Potential destination: solutions lesson if a boiling-point facet is authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "salt-water-is-mixture-g6",
+      "id": "ffct-15818",
+      "textHash": "c5b9979710b4155cadf6d22e733b251d7d31bb969a9bc77bcb958657200867ee",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:59:46Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-M-2"
+      ],
+      "evidence": [
+        {
+          "lesson": "g7:particle-model",
+          "unit": "G7-M-2:pure-substance",
+          "quote": "not a pure substance"
+        }
+      ],
+      "reason": "Dissolving salt in water making a mixture, not a pure substance, genuinely teaches the G7-M-2 pure-substance distinction (pure-substance facet matched by the exact phrase; the mixture-vs-pure classification is the teaching). TL/BIS preserve the contrast (purong sangkap).",
+      "translationsChecked": true
+    },
+    {
+      "factId": "salt-what-it-is-g4",
+      "id": "ffct-15179",
+      "textHash": "2f48bd4fc619cd6f14539105df3d98d73dcf1f79200d21f41493407db7011ac3",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:41:05Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Salt described as a white salty mineral is food-material trivia; the only mineral facet G5-E-4:minerals is soil-formation scoped and G3-L-6 food facet teaches basic needs, not mineral identity. Potential destination: minerals enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "saltwater-conducts-better-g7",
+      "id": "ffct-30209",
+      "textHash": "5b0f531fb4de8626c9ec3bfd7dd0a3fb5265f94058b9655063f3e38d593ab522",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:26:18Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G9-M-11"
+      ],
+      "evidence": [
+        {
+          "lesson": "g9:m-11",
+          "unit": "G9-M-11:focus-3",
+          "quote": "Electricity"
+        }
+      ],
+      "reason": "Electricity flowing more easily through salt water than fresh water because of dissolved salts genuinely teaches electrical conductivity of materials \u2014 the G9-M-11 focus-3 facet (electrical|electricity matched; the dissolved-salt conduction mechanism is the teaching). TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "saltwater-crocodile-temperature-sex-g6",
+      "id": "ffct-12772",
+      "textHash": "31625500f9e9d07b06b3fc807c10b73cf9492a22a223b34358ddef757918cddf",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:15:20Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-L-8"
+      ],
+      "evidence": [
+        {
+          "lesson": "g6:ecosystem-effects",
+          "unit": "G6-L-8:nonliving-interactions",
+          "quote": "temperature"
+        }
+      ],
+      "reason": "Nest temperature (not genes) deciding crocodile sex is a genuine, striking example of a nonliving factor affecting living things \u2014 the G6-L-8 nonliving-interactions facet (temperature genuinely matched and the effect is the content). Correct biology (temperature-dependent sex determination). TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sambong-kidney-stone-g5",
+      "id": "ffct-03093",
+      "textHash": "afe17f83e0ce3a04dd50f282faa33a8e202240482c07c335df60aa4241e71413",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:30:04Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Sambong as DOH-approved herbal diuretic is traditional-medicine content (claim itself accurate) with no science competency facet; all Philippine-context matches are geology keyword noise. Potential destination: medicinal-plants/health enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "same-energy-idea-different-sensors-g6",
+      "id": "ffct-36639",
+      "textHash": "b7602b19977c89296e3c5a6e37e20a202d9aa7c71ecb8634491a2632c91810fa",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:55:01Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G4-F-9"
+      ],
+      "evidence": [
+        {
+          "lesson": "g4:energy",
+          "unit": "G4-F-9:forms",
+          "quote": "sound"
+        },
+        {
+          "lesson": "g4:energy",
+          "unit": "G4-F-9:forms",
+          "quote": "light"
+        }
+      ],
+      "reason": "Sound and light both carrying energy but being sensed by different sensors (ears/drum skin vs eyes/solar cell) genuinely teaches sound and light as forms of energy for G4-F-9 (forms facet matched by both words; the energy-carried-by-both contrast is the teaching). TL/BIS faithful though code-mixed.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "same-size-different-weight-density-g5",
+      "id": "ffct-16756",
+      "textHash": "135906c1ac43af338d072b0d0a1035f21e581fab95f9b2d79cb1c30ad05fe280",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:40:22Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Same-size objects weighing differently because of density is a density concept; the G5-F-5 heavy-and-light facet is about falling-object rates and would misfile it, and fair-test matches are keyword noise. Potential destination: density lesson if authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "same-water-depth-trials-g6",
+      "id": "ffct-36681",
+      "textHash": "4c920c1fd8f93561f85f88c519e2864ccd1d8af94b75ef3d20224abc2f4509fa",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:54:03Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-M-8"
+      ],
+      "evidence": [
+        {
+          "lesson": "g6:fair-tests",
+          "unit": "G6-M-8:control",
+          "quote": "keep water depth the same"
+        }
+      ],
+      "reason": "Keeping water depth the same when comparing wave patterns so a hidden variable does not change with the barrier shape is exactly the G6-M-8 fair-test control-variables teaching (control facet pattern keep.*same genuinely matched and the hidden-variable reasoning is the content). TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sampaguita-flower-garland-g3",
+      "id": "ffct-08451",
+      "textHash": "d374f6b7ef96c54ef3d10bd7687e73c599e92b921137434a9890abf711bf1dab",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:00:49Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Sampaguita garlands are cultural trivia; the two candidate matches (land, transfer) are unrelated keyword noise. Potential destination: culture/plants enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sampaguita-scientific-name-g7",
+      "id": "ffct-06244",
+      "textHash": "6c0f7851ceb73e76f879a8c5ad6b5610690ee0fd443ef77649131499600d6458",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:29:40Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Jasminum sambac scientific-name trivia; all Philippine-context matches are geology/energy keyword noise, same family as the rice scientific-name hold. Potential destination: plant-classification enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sampaguita-white-flower-g3",
+      "id": "ffct-14549",
+      "textHash": "455221392f806abf11d6953b1ebf0c1da286f2ca3ac692fcae78c4cf14860458",
+      "previousExclusion": "first-pass grok-4.6 2026-09-06T14:22:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Sampaguita star-shaped white flower description is plant trivia; G3-E-6 'star' is sky-object keyword noise. Potential destination: plants enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sand-gravel-aggregate-g5",
+      "id": "ffct-15445",
+      "textHash": "3df55a36eecf30f7847a20935ecbbfd3cf53e7a558d2968831df192e7680aa5f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:59:42Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G4-E-1"
+      ],
+      "evidence": [
+        {
+          "lesson": "g4:soil",
+          "unit": "G4-E-1:sand",
+          "quote": "sand"
+        }
+      ],
+      "reason": "Sand and gravel as concrete filler is a genuine everyday use of sand as an earth/soil component for the G4-E-1 soil-lesson sand facet (competency is describing soil components including sand; concrete use is a relatable anchor). TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "santol-kechapi-g5",
+      "id": "ffct-08267",
+      "textHash": "322fcde07918c7fc38c2cbd3b2ef16135e382eee21658343fba83543df5c0542",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:30:08Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Santol fruit description with medicinal leaves/bark is fruit trivia; G6-L-2 seeds facet is plant-reproduction scoped (no seed dispersal/germination teaching) and medicine/use matches are noise. Potential destination: useful-plants enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sapin-sapin-layers-mixture-g4",
+      "id": "ffct-20371",
+      "textHash": "03c51a7b676a0ffe693a88cd2cf77a0e110af79412d9e79ec7c140548f081e8e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:44:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Sapin-sapin layered rice-cake making is food-culture content; G6-M-7 rice product facet is about separation-technique products and layer/color matches elsewhere are noise. Potential destination: food/mixtures-context enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "satellite-galaxies-magellanic-g8",
+      "id": "ffct-29247",
+      "textHash": "4c5986513910e2f7a8e1629a971e535c15af54341bdf4af8804456b0a4338021",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:54:19Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Magellanic Clouds orbiting the Milky Way is deep-sky trivia; G9-E-10 debris/orbit facet is space-debris scoped and G4-E-4 cloud is weather keyword noise. Factually correct. Potential destination: astronomy enrichment or solar-system lesson if a galaxies facet is authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "saturn-moons-82-diverse-g6",
+      "id": "ffct-33300",
+      "textHash": "d8d30cd7d63b40bf5dd7d754404c145d2c26da4dae38ebcc8bf0202d71caff5b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:15:44Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Saturn's 80+ diverse moons is planetary trivia; G3-E-6 moon facet teaches the Moon in day/night sky context and all water/star matches are noise. Potential destination: solar-system enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "saturn-year-29-years-g7",
+      "id": "ffct-34568",
+      "textHash": "c9f9db379e2f6f4df5a2fe298f80fafe47907918c681c6f70159b3ebe17f7c7c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:15:43Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Saturn's 29-year orbit is planetary trivia; G7-E-10 tilt-orbit facet is about Earth's tilt/seasons and G8-E-1 '29' is a digit-substring false match. Factually correct. Potential destination: solar-system lesson if an orbital-period facet is authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sayote-chayote-g5",
+      "id": "ffct-12261",
+      "textHash": "03d2b1074b40561c7b15579ce2c319eb2447ec05d78dd1c8a7203fdae72aafae",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:30:07Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Sayote vine vegetable description is crop trivia; G3-L-3 grow facet is signs-of-life scoped and all record/table matches are noise. Potential destination: useful-plants enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "scabies-tiny-mite-g5",
+      "id": "ffct-06328",
+      "textHash": "eb84ca187d02cf4f2c2ad9a4c55fab009ce71663f605ba884061e0a05867409f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:09:22Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Scabies caused by a microscopic mite is disease trivia; G7-L-2 microscope technique facet is about using microscopes and G9-L-5 focus-2 stability facet needs ecosystem-stress wording. Potential destination: health/disease enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "scallop-swimming-jet-eyes-g6",
+      "id": "ffct-14305",
+      "textHash": "9ab04f51db88c34bc4aa1b70775d8623ed5bce084c682a14f7abbe1d54a72610",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:15:21Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-L-6"
+      ],
+      "evidence": [
+        {
+          "lesson": "g6:competition-predation",
+          "unit": "G6-L-6:predation",
+          "quote": "predators"
+        }
+      ],
+      "reason": "Scallops escaping predators by clapping shells and jetting away is a genuine predation-avoidance example for the G6-L-6 predation facet (predator-prey interaction is the framing; dozens-of-eyes is supporting trivia). TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "schistosomiasis-endemic-provinces-ph-g7",
+      "id": "ffct-09842",
+      "textHash": "d1d3b769f1dc2daeb8688fd4ddf204dde0e59ee3384284070c18754d0b67b250",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T15:15:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Schistosomiasis endemic provinces content is disease-geography trivia; G9-L-3 focus-4 needs infect/virus wording (absent) and every Philippine-context match is geology/energy keyword noise. Factually consistent with known endemic areas. Potential destination: health/disease enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "scientific-name-genus-species-meaning-g7",
+      "id": "ffct-09940",
+      "textHash": "21c6227a5dc3181e9020787536d3b5898b813b7e6da99e899fb38534b2e6b0f3",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:29:42Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Latin scientific-name meanings (alba=white) is taxonomy trivia with no authored facet; color/plant matches are noise. Potential destination: classification/binomial-nomenclature enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "scorpion-many-eyes-poor-sight-g7",
+      "id": "ffct-01555",
+      "textHash": "4b6c6a8709089477fd72666f5453327744414ed1f14d4911870e6a5307f0782f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:24:55Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Scorpion many-eyes-poor-vision content is arachnid trivia; eye/movement matches are sun-safety and motion keyword noise. Notable defect: the EN begins with untranslated Tagalog ('Malinaw ba ang paningin ng alakdan?') \u2014 an English-persona/translation repair item. Potential destination: animal-senses enrichment after text repair.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sea-cucumber-breathes-through-bottom-g7",
+      "id": "ffct-01815",
+      "textHash": "2d3334ca6accc16705fec8090487f92b3ba0bc3e8fc3e7099a5c09672611a8ed",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T04:20:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Sea cucumber breathing through its rear opening is invertebrate trivia; all water/pull matches are basic-needs and forces keyword noise. Potential destination: marine-invertebrate enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sea-cucumber-recycles-nutrients-g7",
+      "id": "ffct-13553",
+      "textHash": "e6828b795530a8356b33e7130a60a916de650bfb5ee59b93d2e45ca962de1f96",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T10:40:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Sea cucumber recycling nutrients keeping sand healthy is a decomposer/ecosystem-service fact; G3-M-7/G3-L-8 recycle facets are about materials recycling and nature-care actions \u2014 keyword-only matches that would misfile. Potential destination: G6-L-8 or a decomposers lesson if a nutrient-cycling facet is authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sea-otter-tool-use-shellfish-g6",
+      "id": "ffct-12512",
+      "textHash": "f789e53d51fe6685235d53cfa259b531110bc7d457ef71d783643bebcb3b08ad",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:24:56Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G8-L-7"
+      ],
+      "evidence": [
+        {
+          "lesson": "g8:humans-primates",
+          "unit": "G8-L-7:primates",
+          "quote": "primates"
+        }
+      ],
+      "reason": "Sea otters using rocks as tools, noted as one of the few non-primate tool users, directly supports the G8-L-7 humans-primates lesson's primate facet (tool use as the primate-characteristic comparison; correct zoology). TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sea-snake-mistaken-eel-g6",
+      "id": "ffct-13333",
+      "textHash": "eafbc3539f29cb874485da2bc428f0f843ca19223b713bb9fba747f567705bfe",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:24:58Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Sea snake vs eel distinction (scales/lungs vs gills) is species-comparison trivia; G5-L-4 would need the classification wording and G5-F-2 smooth-surfaces is friction noise. Potential destination: animal-classification enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sea-spider-organs-in-legs-g7",
+      "id": "ffct-09791",
+      "textHash": "fdf21a633fbcc7c9e6539ad04fd77928ff2aeff03efe60a9ff2b620849a5a294",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:24:59Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Sea spider gut in its legs is invertebrate trivia; all matches (reach, long, sea) are keyword noise. Potential destination: marine-invertebrate enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sea-turtle-salt-gland-tears-g6",
+      "id": "ffct-14744",
+      "textHash": "d9878d83ef60f26c35b5bbe748769f14a470ed61c278a99f78c3982c5e34c783",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:25:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Sea turtle salt glands explaining 'tears' is reptile-adaptation trivia; G7-M-11 salt facet is litmus-chemistry scoped and eye/land matches are noise. Factually correct. Potential destination: animal-adaptations enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "seafood-natural-iodine-g6",
+      "id": "ffct-01390",
+      "textHash": "3093234fbff8355f46288fb67313f2a4b7f82c5a719c441e522afb7012beab7c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:33:50Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Seafood/seaweed as natural iodine sources is nutrition trivia; every source/sea match is reference-citation keyword noise. Potential destination: health enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "seahorse-importance-seagrass-health-g5",
+      "id": "ffct-03754",
+      "textHash": "b4def3c25cc5ba5132db510324d9ad73563ce83132fbcd5b207cfa780656c53e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:42:57Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Seahorse abundance indicating healthy seagrass is marine-indicator trivia; grass/clean matches are food-chain and nature-care keyword noise. Potential destination: ecosystem-health enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "seahorse-pairs-stay-together-g5",
+      "id": "ffct-02581",
+      "textHash": "c17673ff939f183795cbcf73dbf2584327d9ba1ef0ebf14c2fe7cf163040209b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:15:22Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Seahorse long-term pair bonding is animal-behavior trivia; same/pair/time matches are fair-test and DNA-base-pair keyword noise. Potential destination: animal-behavior enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "second-largest-moon-titan-g6",
+      "id": "ffct-33405",
+      "textHash": "7f5c0db76d13b35d7c8eb54e3a819d2d437c0c50f28f84cd2ab7681e4a1296d5",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:15:43Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Titan as second-largest moon is planetary trivia; no genuine facet (turn/solar/continent matches are pure noise). Notable: the EN field contains Tagalog text ('Kilala ninyo si Titan...') \u2014 an untranslated-EN defect requiring repair before any future recovery. Fact itself is correct. Potential destination: solar-system enrichment after text repair.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "secondary-source-not-a-vote-g4",
+      "id": "ffct-36866",
+      "textHash": "9ac2ff588dea2b550bd3fcc13cd2087b96ea18562be7b0a884f701cc85828a7b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:49:39Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-E-10"
+      ],
+      "evidence": [
+        {
+          "lesson": "g6:community-sky-knowledge",
+          "unit": "G6-E-10:attributed-sources",
+          "quote": "secondary"
+        }
+      ],
+      "reason": "A class vote that the Moon heats the day being corrected by a secondary science source (daytime heat from the Sun) genuinely teaches consulting secondary sources over voting for the G6-E-10 attributed-sources facet; the Sun-as-daytime-heat-source also substantively fits G3-E-8 daytime but the card's teaching is source authority, so one destination chosen. TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sedimentary-bands-stripes-g5",
+      "id": "ffct-29423",
+      "textHash": "c696054b41aacee686731a6991a9bf6b54a2521c7154664c80365c25fddc6fb6",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:17:50Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Sedimentary stripes revealing slow buildup is rock trivia with no authored stratigraphy facet; G9-E-7 layer facet is Earth's interior and slow/time matches are motion keyword noise. Potential destination: rock-layers/relative-dating lesson if authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sedimentary-examples-g6",
+      "id": "ffct-29411",
+      "textHash": "815df29e020fc15dc618a4791851f9ffc1a4e018fd14eb65e2b5a84597af2e35",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:17:55Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Sedimentary rock examples (limestone/sandstone/shale, Philippine coral limestone) have no authored rock unit; G9-L-9 coral facet is Philippine-ecosystem labeling and G6-E-1 formation facet is volcano formation \u2014 keyword-only. Factually correct. Potential destination: rock-cycle lesson if authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sedimentary-rock-g6",
+      "id": "ffct-31011",
+      "textHash": "33412e62a08b3e9dc7360b02e202b004c275bc0abca9e2316faf3f0364153094",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:17:51Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Sedimentary formation (sediment piles up, buries, cements) has no authored rock-cycle/stratigraphy unit; G4-E-1 sand facet is a soil-components lesson keyword match. Potential destination: rock-cycle lesson if authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "seed-light-not-needed-g4",
+      "id": "ffct-11567",
+      "textHash": "1ae0c885ef11750fc6d3827c978bad579e2e696dc21f73aa43505cd23907ccc6",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:33:45Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Seeds sprouting without sunlight is germination content; G3-L-7 environment facet teaches basic needs (the card instead denies a need) and no germination facet is authored. Factually sound (most seeds germinate in darkness). Potential destination: plant-growth/germination facet if authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "seismograph-g6",
+      "id": "ffct-34632",
+      "textHash": "dd80d54cdfe81f0d0af7053778c7093c36a3e287cd92a1a29e87cda3a972d535",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:03:39Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Seismograph measuring/recording ground shaking has no authored instrument facet; G8-E-5 earthquakes facet is global-distribution mapping and record/measure matches are data-logging keyword noise (consistent with the richter-scale holds). Potential destination: G7-E-5 earthquake-models lesson if a seismograph facet is authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "seismograph-measures-how-mass-stays-still-g8",
+      "id": "ffct-32354",
+      "textHash": "835440c0ec0c94fbb7088316e816b14caf7761b4443f88365f897ebe71528c81",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:03:16Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Seismograph inertia principle (hanging mass stays still while ground shakes) is physics-of-inertia content; G7-F-2 'still' facet is balanced-forces scoped and would misfile, G8-M-3 mass is subatomic. Factually correct. Potential destination: forces/inertia lesson if authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "seismograph-measures-time-stamp-clock-g8",
+      "id": "ffct-32367",
+      "textHash": "41a855544dbb318ca57909ad86b9ce9fb22e97d2ab89d9130bda0103e1151b3f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:04:04Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Seismograph arrival-time triangulation locating where an earthquake began genuinely supports epicenter location, but the G7-E-5 focus-epicenter facet pattern (focus|epicenter) does not match the wording (the sibling why-three-stations card recovered in batch-30007 contained 'epicenter'), and G8-E-5 was explicitly rejected for triangulation content there. Potential destination: G7-E-5 after epicenter-wording repair.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "seismograph-records-quakes-g7",
+      "id": "ffct-34679",
+      "textHash": "91ef7be57a7f69f537c7a8163595f7e6f4a842a336eccf4eed4337f8d1a828ad",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:03:36Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Seismograph-records-quakes is an instrument-definition duplicate of fact 75's teaching with no authored instrument facet; earthquake keyword matches are distribution-mapping noise. Potential destination: G7-E-5 if a seismograph facet is authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "senses-5-g5",
+      "id": "ffct-05285",
+      "textHash": "2241a47f6869c6745ee8a67e80de57b6c63432e330cd790e68c9c771c21773f9",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:15:24Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Five-senses enumeration is sensory trivia with no authored senses unit (consistent with the senses holds in batch-30000). Potential destination: senses enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "senses-mapped-in-brain-g7",
+      "id": "ffct-05445",
+      "textHash": "3ca1719c25db56491259f15a386debd8582e74dbbe62976d691adb028c226b51",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:59:41Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Brain-part specialization is neuroscience trivia; no nervous-system unit is authored (same family as the wrinkled-folds hold in batch-30007). Potential destination: nervous-system lesson if authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "september-equinox-date-g6",
+      "id": "ffct-33987",
+      "textHash": "265e0b82cbf9a578d141b7ffce7ee80f6238a7d9e1371addc3f1364ecde3beba",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:51:03Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "September equinox date is astronomy trivia with exactly one keyword-noise candidate; consistent with the equinox/vernal-equinox holds in batches 30000/30007. Potential destination: seasons/Earth-motions lesson if an equinox facet is authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "serpentinite-hydrothermal-metamorphic-g8",
+      "id": "ffct-32779",
+      "textHash": "c6348d0109a39ca348a9ae0e202cd7948be5b5a64e2ddf687e2b53ca5f42809c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:48:24Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Serpentinite hydrothermal metamorphism and Philippine nickel is advanced petrology; G6-E-1 formation facet is volcano formation and every Philippine-context match is geology keyword noise. Factually plausible (PH nickel laterite/serpentinite link). Potential destination: metamorphic-rock/mineral-resources lesson if authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "shale-becomes-slate-g7",
+      "id": "ffct-34094",
+      "textHash": "7987dbaa917785f3bec1bbfe593fc4b839cdf9814e02e9a6897f66b27b389b77",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:17:53Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Shale-to-slate heat/pressure metamorphism has no authored metamorphic-rock unit; G3-M-8 pressing facet is making-solid-materials-useful scoped. Factually correct. Potential destination: rock-cycle lesson if authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sharing-results-g7",
+      "id": "dcard-10212",
+      "textHash": "f254014504096022c141834a94df6a058ed5be622163fc1c62a7807befa37d6d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:35:32Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-M-6"
+      ],
+      "evidence": [
+        {
+          "lesson": "g7:investigation-steps",
+          "unit": "G7-M-6:results",
+          "quote": "Results"
+        }
+      ],
+      "reason": "Results should be communicated to share knowledge from an experiment is exactly the report/communicate-results component of the G7-M-6 plan-and-report-an-investigation competency (results facet genuinely matched; communicating results is the teaching). Reconciliation note: merged-pool sibling dcard-07110 (report/poster/presentation wording) carries the same communicate-results intent; approving app-pool variant dcard-10212 whose trilingual texts were fully checked. TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "shark-cartilage-not-bone-g5",
+      "id": "ffct-12624",
+      "textHash": "429f03ef5bb738a50bf34c0a179226558bb20c7fadd3ed4958345c10e0750be9",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T04:20:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Shark cartilage skeleton is zoology trivia; 'bendy' bend-facet matches are forces keyword noise and no fish-classification facet matches the wording. Factually correct. Potential destination: animal-classification (vertebrates) enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "shark-old-animal-group-g6",
+      "id": "ffct-11855",
+      "textHash": "eeda33008784767a8d9a7360a97e54660908084fe13fd1932f427487e3bae39a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:29:08Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Sharks predating dinosaurs is natural-history trivia; G4-E-7 'million' is Sun-size keyword noise. Potential destination: fossils/evolution enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "shark-skin-inspired-swimsuits-g6",
+      "id": "ffct-05936",
+      "textHash": "42ac07f711a5f0b1bf50281fe94a25fb28f8ca234a10d0e009ffdc6fa00aebd5",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:25:05Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Denticle-inspired swimsuit biomimicry is technology trivia; G4-M-1 invention facet belongs to the Scientists-and-Inventions lesson and the card describes a design example without teaching about scientists or invention processes substantively. Potential destination: G4-M-1 as an invention example if integrated with the lesson's focus.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "shark-skin-rough-g6",
+      "id": "ffct-12686",
+      "textHash": "33b7b006b4375d6042978fa90eed50241c6ea5ca7a36b9333023644aaa4d3e43",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:25:07Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Shark-skin roughness from denticles is zoology trivia; G5-F-2 surfaces facet is friction-investigation scoped and would misfile texture description. Potential destination: animal-adaptations enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "shato-stick-game-energy-g5",
+      "id": "ffct-25498",
+      "textHash": "531bfa511bf40e703a21cb6e61a71287c71923640eb96d37cd160706df813f20",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:58:47Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Shato stick force transferring energy and making the stick fly is mechanical energy transfer; G6-F-4 transfer facet is wave-energy scoped (consistent with the energy-transfer-g8 hold) and G3-F-4 transfer is sound-reach scoped. Nice Philippine-game context. Potential destination: energy-transfer lesson if a mechanical-transfer facet is authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "sheep-wool-coat-g3",
+      "id": "ffct-04698",
+      "textHash": "19256b4c2362b3a4ae35c8b5384aaf5f915ab0ab191dceee488b3c7b963a8c0d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:25:10Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Sheep wool-as-hair-coat description is farm-animal trivia; G8-L-7 mammals 'hair' would admit an example but the card teaches naming wool, not mammal characteristics. Potential destination: mammals lesson if a characteristics facet is authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "shellfish-filter-feeders-g4",
+      "id": "ffct-13510",
+      "textHash": "086f501b38940ca4c82ca375385e06ff382842664905eee7fc6b0af00a333a65",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:25:11Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Clams/oysters/mussels filter-feeding is feeding-strategy trivia; food/water matches are basic-needs keyword noise. Potential destination: mollusk/aquatic enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "shellfish-filter-warm-water-bloom-g8",
+      "id": "ffct-04776",
+      "textHash": "4e5ef359c3ddebd4dc65ed27503ec113be81486b1e8b906cbe50ff59648547d2",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T10:55:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-L-8"
+      ],
+      "evidence": [
+        {
+          "lesson": "g6:ecosystem-effects",
+          "unit": "G6-L-8:nonliving-interactions",
+          "quote": "water"
+        }
+      ],
+      "reason": "Warm nutrient-rich water making plankton multiply and giving filter-feeding shellfish seasons of abundant food is a genuine nonliving(abiotic)-factor effect on living things \u2014 the G6-L-8 nonliving-interactions facet (water/temperature conditions affecting organisms is the content; a helping interaction). TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "shellfish-no-head-g5",
+      "id": "ffct-12637",
+      "textHash": "9147cbb7aa3aa2f7cd704d479a2742d8999275e4ff23098ea33132c0841384da",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T04:20:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Clams/oysters having no head or eyes is mollusk trivia; 'soft' hardness and eye matches are materials/sun-safety keyword noise. Factually correct. Potential destination: invertebrate enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "shells-broken-into-sand-g6",
+      "id": "ffct-30311",
+      "textHash": "91c8b07b4828e54c1e8050a5c3d4271b39faa3dc06efe5d95eea3536c9f9434a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:18:29Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Waves breaking shells into sand is shoreline erosion content; the G4-L-4 seashore facet is about organisms living in seashore habitats (keyword 'shore' only) and G5-E-5 wording does not match ('become tiny grains' not carry/move). Potential destination: G5-E-5 after wording repair or a weathering facet.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "shivering-makes-heat-g7",
+      "id": "ffct-02593",
+      "textHash": "31cb191f7586a2062470ad1d9c816a0a98d90a59b384b720d4be6a1834a167fb",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:43:55Z disp=exclude",
+      "reviewedAt": "2026-09-11T00:00:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G4-L-1"
+      ],
+      "evidence": [
+        {
+          "lesson": "g4:body-systems",
+          "unit": "G4-L-1:muscular",
+          "quote": "muscle movement"
+        }
+      ],
+      "reason": "Shivering \u2014 fast muscle movement itself making heat to warm the body \u2014 genuinely teaches a muscular-system function (muscles produce heat when contracting) for the G4-L-1 body-systems muscular facet; pattern muscle.*(move|contract) matched by the actual teaching. Correct physiology, age-appropriate. TL/BIS faithful.",
+      "translationsChecked": true
+    }
+  ],
+  "note": "User-requested final consolidation; complete independent proposal verification assessed by parent. Original timestamps preserved as provenance."
+}

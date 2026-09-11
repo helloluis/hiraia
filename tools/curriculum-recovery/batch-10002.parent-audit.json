@@ -1,0 +1,47 @@
+{
+  "originalProposals": [
+    {
+      "factId": "force-changes-speed-g4",
+      "id": "dcard-07931",
+      "textHash": "921d9eb3a414ff03015ec1d92ea870f33008027b7f7a2f2900459391fd6d6005",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:12:49Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:25:13.657Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G4-F-5"
+      ],
+      "evidence": [
+        {
+          "lesson": "g4:change-motion",
+          "unit": "G4-F-5:faster",
+          "quote": "add more force and the ball moves faster"
+        }
+      ],
+      "reason": "Extra push on a rolling ball making it faster is a concrete teaching component of pushes changing speed. Alternate ffct-23362 also teaches speed-up/slow-down for the same code; both pool variants and EN/TL/BIS inspected."
+    },
+    {
+      "factId": "fuel-from-coconuts-g4",
+      "id": "dcard-09460",
+      "textHash": "90de3a82f7a663f755a14612a5245ea46a6f6276a0edca3c12389c793c1b9c68",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:16:19Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:25:13.657Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G4-M-2"
+      ],
+      "evidence": [
+        {
+          "lesson": "g4:local-inventions",
+          "unit": "G4-M-2:uses",
+          "quote": "used as a source of fuel"
+        }
+      ],
+      "reason": "Julian Banzon's coconut-oil fuel process is a Filipino science invention with everyday fuel use. Verified: https://www.flipscience.ph/features/national-scientist-julian-banzon/ and NAST 1983 coconut-as-liquid-fuel paper. Only the uses facet is admitted."
+    }
+  ],
+  "reason": "Parent semantic/identity validation before application"
+}

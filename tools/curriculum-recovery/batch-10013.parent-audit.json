@@ -1,0 +1,26 @@
+{
+  "originalProposals": [
+    {
+      "factId": "shortest-path-g7",
+      "id": "dcard-00336",
+      "textHash": "763d8feb694d6a67869c5e494bf328df33dedffec10f204f6267d64530c09119",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:13:01Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:38:38.026734Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G7-F-5"
+      ],
+      "reason": "Defines displacement as the shortest start-to-end straight-line distance, the exact distance-versus-displacement facet. Path and start-end units both admit. Investigation, tsunami-seafloor displacement, and plate-displacement hits are not the teaching point. Full EN/TL/BIS and both pools inspected; single identical card ID.",
+      "evidence": [
+        {
+          "lesson": "g7:distance-displacement",
+          "unit": "G7-F-5:start-end",
+          "quote": "Displacement is the shortest distance from the initial to the final position of an object"
+        }
+      ]
+    }
+  ],
+  "reason": "Parent semantic validation before application"
+}

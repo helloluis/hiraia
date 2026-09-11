@@ -1,0 +1,1606 @@
+{
+  "status": "complete",
+  "createdAt": "2026-09-10T11:30:47.905024+00:00",
+  "inventory": "second-pass-inventory.json",
+  "total": 12245,
+  "baseline": {
+    "baselineCommit": "1a9539f5a",
+    "screened": 21677,
+    "manuallyReviewed": 9432,
+    "recoveredCoreFacts": 4199,
+    "held": 5233,
+    "notManuallyReviewed": 12245,
+    "reachableBefore": 20186,
+    "reachableAfter": 24385,
+    "recoveredByGrade": {
+      "3": 895,
+      "4": 591,
+      "5": 628,
+      "6": 583,
+      "7": 455,
+      "8": 361,
+      "9": 407,
+      "10": 279
+    },
+    "completedBatches": [
+      "batch-001",
+      "batch-002",
+      "batch-003",
+      "batch-004",
+      "batch-005",
+      "batch-006",
+      "batch-007",
+      "batch-008",
+      "batch-009",
+      "batch-010",
+      "batch-011",
+      "batch-012",
+      "batch-013",
+      "batch-014",
+      "batch-015",
+      "batch-016",
+      "batch-017",
+      "batch-018",
+      "batch-019",
+      "batch-020",
+      "batch-021",
+      "batch-022",
+      "batch-023",
+      "batch-024",
+      "batch-025",
+      "batch-026",
+      "batch-027",
+      "batch-028",
+      "batch-029",
+      "batch-030",
+      "batch-031",
+      "batch-032",
+      "batch-033",
+      "batch-034",
+      "batch-035",
+      "batch-036",
+      "batch-037",
+      "batch-038",
+      "batch-039",
+      "batch-040",
+      "batch-041",
+      "batch-042",
+      "batch-043",
+      "batch-044",
+      "batch-045",
+      "batch-046",
+      "batch-047",
+      "batch-048",
+      "batch-049",
+      "batch-050",
+      "batch-051",
+      "batch-052",
+      "batch-053",
+      "batch-054",
+      "batch-055",
+      "batch-056",
+      "batch-057",
+      "batch-058",
+      "batch-059",
+      "batch-060",
+      "batch-061",
+      "batch-062",
+      "batch-063",
+      "batch-064",
+      "batch-065",
+      "batch-066",
+      "batch-067",
+      "batch-068",
+      "batch-069",
+      "batch-070",
+      "batch-071",
+      "batch-072",
+      "batch-073",
+      "batch-074",
+      "batch-075",
+      "batch-076",
+      "batch-077",
+      "batch-078",
+      "batch-079",
+      "batch-080",
+      "batch-081",
+      "batch-082",
+      "batch-083",
+      "batch-084",
+      "batch-085",
+      "batch-086",
+      "batch-087",
+      "batch-088",
+      "batch-089",
+      "batch-090",
+      "batch-091",
+      "batch-092",
+      "batch-093",
+      "batch-094",
+      "batch-095",
+      "batch-096",
+      "batch-097",
+      "batch-098",
+      "batch-099"
+    ],
+    "nextCommand": "Priority review complete. Held repairs and no-current-core-match candidates require a separate workstream.",
+    "status": "Batches 001\u2013099 integrated and validated; all 9429 original priority candidates reviewed",
+    "updatedAt": "2026-09-10T10:32:44.281066+00:00",
+    "priorityRemainingAfterIntegratedReviews": 0,
+    "validation": {
+      "testsPassed": 70,
+      "typeCheck": "passed",
+      "priorReachLost": 0,
+      "batches": "097\u2013099"
+    },
+    "priorityCompletion": {
+      "priorityReviewed": 9429,
+      "priorityRecovered": 4197,
+      "priorityHeld": 5232,
+      "otherPreviouslyReviewed": 3
+    },
+    "completedAt": "2026-09-10T10:32:44.281066+00:00"
+  },
+  "reviewed": 12245,
+  "recovered": 2307,
+  "held": 9938,
+  "remaining": 0,
+  "assignments": [],
+  "assignmentHistory": [
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-100",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-101",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-102",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root",
+      "batch": "batch-103",
+      "cards": 12,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-104",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-105",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-106",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root",
+      "batch": "batch-107",
+      "cards": 12,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-108",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-109",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-110",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root",
+      "batch": "batch-111",
+      "cards": 12,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-112",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-113",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-114",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root",
+      "batch": "batch-115",
+      "cards": 12,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-116",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-117",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-118",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root",
+      "batch": "batch-119",
+      "cards": 12,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-120",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-121",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-122",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root",
+      "batch": "batch-123",
+      "cards": 12,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-124",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-125",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-126",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root",
+      "batch": "batch-127",
+      "cards": 12,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-128",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-129",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-130",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root",
+      "batch": "batch-131",
+      "cards": 12,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_a",
+      "batch": "batch-132",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_b",
+      "batch": "batch-133",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root/recovery_c",
+      "batch": "batch-134",
+      "cards": 96,
+      "status": "integrated_validated"
+    },
+    {
+      "agent": "/root",
+      "batch": "batch-135",
+      "cards": 12,
+      "status": "integrated_validated"
+    },
+    {
+      "batch": "batch-136",
+      "owner": "/root/recovery_a",
+      "count": 96,
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T13:51:41.403796+00:00"
+    },
+    {
+      "batch": "batch-137",
+      "owner": "/root/recovery_b",
+      "count": 96,
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T13:51:41.403796+00:00"
+    },
+    {
+      "batch": "batch-138",
+      "owner": "/root/recovery_c",
+      "count": 96,
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T13:51:41.403796+00:00"
+    },
+    {
+      "batch": "batch-139",
+      "owner": "/root",
+      "count": 12,
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T13:51:41.403796+00:00"
+    },
+    {
+      "batch": "batch-140",
+      "owner": "/root/recovery_a",
+      "count": 96,
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T14:03:20.346287+00:00"
+    },
+    {
+      "batch": "batch-141",
+      "owner": "/root/recovery_b",
+      "count": 96,
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T14:03:20.346287+00:00"
+    },
+    {
+      "batch": "batch-142",
+      "owner": "/root/recovery_c",
+      "count": 96,
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T14:03:20.346287+00:00"
+    },
+    {
+      "batch": "batch-143",
+      "owner": "/root",
+      "count": 12,
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T14:03:20.346287+00:00"
+    },
+    {
+      "batch": "batch-144",
+      "owner": "/root/recovery_a",
+      "count": 96,
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T14:17:14.405242+00:00"
+    },
+    {
+      "batch": "batch-145",
+      "owner": "/root/recovery_b",
+      "count": 96,
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T14:17:14.405242+00:00"
+    },
+    {
+      "batch": "batch-146",
+      "owner": "/root/recovery_c",
+      "count": 96,
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T14:17:14.405242+00:00"
+    },
+    {
+      "batch": "batch-147",
+      "owner": "/root",
+      "count": 12,
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T14:17:14.405242+00:00"
+    },
+    {
+      "batch": "batch-148",
+      "owner": "/root/recovery_a",
+      "count": 42,
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T14:32:41.197636+00:00"
+    },
+    {
+      "batch": "batch-149",
+      "owner": "/root/recovery_b",
+      "count": 42,
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T14:32:41.197636+00:00"
+    },
+    {
+      "batch": "batch-150",
+      "owner": "/root/recovery_c",
+      "count": 41,
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T14:32:41.197636+00:00"
+    },
+    {
+      "batch": "batch-151",
+      "owner": "/root",
+      "count": 12,
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T14:32:41.197636+00:00"
+    }
+  ],
+  "heartbeatId": "c655e6b3",
+  "expiresAt": "2026-09-10T21:57:55.518Z",
+  "maxConcurrentAgents": 4,
+  "pendingReviewed": 0,
+  "pendingProposedRecoveries": 0,
+  "pendingHeld": 0,
+  "lastValidatedAt": "2026-09-11T08:05:28.862155+00:00",
+  "previousHeartbeatId": "b3d758a2",
+  "userAuthorizedWindowHours": 10,
+  "partitionsFile": "second-pass-partitions.json",
+  "localInventoryTotal": 3737,
+  "externalInventoryTotal": 8508,
+  "externalIntegration": "Integrate completed external batches10000\u201339999 centrally; never dispatch external partitions locally. External ledgers belong to their coordinators.",
+  "partitionTotals": {
+    "local": 3737,
+    "external_a": 2836,
+    "external_b": 2836,
+    "external_c": 2836
+  },
+  "externalIntegrationLedger": {
+    "batch-10007": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 12,
+      "validatedAt": "2026-09-10T12:51:57.975900+00:00"
+    },
+    "batch-10000": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 14,
+      "validatedAt": "2026-09-10T12:51:57.975900+00:00"
+    },
+    "batch-10001": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 17,
+      "validatedAt": "2026-09-10T12:51:57.975900+00:00"
+    },
+    "batch-10006": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 13,
+      "validatedAt": "2026-09-10T12:51:57.975900+00:00"
+    },
+    "batch-10008": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 15,
+      "validatedAt": "2026-09-10T12:51:57.975900+00:00"
+    },
+    "batch-10009": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 16,
+      "validatedAt": "2026-09-10T12:51:57.975900+00:00"
+    },
+    "batch-10004": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 17,
+      "validatedAt": "2026-09-10T12:51:57.975900+00:00"
+    },
+    "batch-10003": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 15,
+      "validatedAt": "2026-09-10T12:51:57.975900+00:00"
+    },
+    "batch-10002": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 14,
+      "validatedAt": "2026-09-10T12:51:57.975900+00:00"
+    },
+    "batch-10005": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 12,
+      "validatedAt": "2026-09-10T12:51:57.975900+00:00"
+    },
+    "batch-10015": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 11,
+      "validatedAt": "2026-09-10T13:21:06.784372+00:00"
+    },
+    "batch-10012": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 15,
+      "validatedAt": "2026-09-10T13:21:06.784372+00:00"
+    },
+    "batch-10013": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 15,
+      "validatedAt": "2026-09-10T13:21:06.784372+00:00"
+    },
+    "batch-10014": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 12,
+      "validatedAt": "2026-09-10T13:21:06.784372+00:00"
+    },
+    "batch-10018": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 13,
+      "validatedAt": "2026-09-10T13:21:06.784372+00:00"
+    },
+    "batch-10016": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 13,
+      "validatedAt": "2026-09-10T13:21:06.784372+00:00"
+    },
+    "batch-10011": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 14,
+      "validatedAt": "2026-09-10T13:21:06.784372+00:00"
+    },
+    "batch-10010": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 14,
+      "validatedAt": "2026-09-10T13:21:06.784372+00:00"
+    },
+    "batch-10017": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 15,
+      "validatedAt": "2026-09-10T13:21:06.784372+00:00"
+    },
+    "batch-10024": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 8,
+      "validatedAt": "2026-09-10T13:35:34.060705+00:00"
+    },
+    "batch-10023": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 6,
+      "validatedAt": "2026-09-10T13:35:34.060705+00:00"
+    },
+    "batch-10022": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 4,
+      "validatedAt": "2026-09-10T13:35:34.060705+00:00"
+    },
+    "batch-10025": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 5,
+      "validatedAt": "2026-09-10T14:05:55.459232+00:00"
+    },
+    "batch-10019": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 9,
+      "validatedAt": "2026-09-10T13:21:06.784372+00:00"
+    },
+    "batch-10027": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 9,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10020": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 10,
+      "validatedAt": "2026-09-10T13:35:34.060705+00:00"
+    },
+    "batch-10021": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 5,
+      "validatedAt": "2026-09-10T13:35:34.060705+00:00"
+    },
+    "batch-10026": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 7,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10036": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 1,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10031": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 3,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10030": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 2,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10037": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 4,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10028": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 3,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10029": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 1,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10035": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 3,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10032": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 2,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10033": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 2,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10034": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 1,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10040": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 3,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10047": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 2,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10046": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 4,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10041": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 1,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10039": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 3,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10038": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 4,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10043": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 0,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10044": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 1,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10045": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 0,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10042": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 2,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10052": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 2,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10055": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 8,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10054": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 2,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10053": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 4,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10048": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 1,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10049": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 2,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10051": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 5,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10056": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 4,
+      "validatedAt": "2026-09-10T15:19:15.516910+00:00"
+    },
+    "batch-10057": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 5,
+      "validatedAt": "2026-09-10T15:19:15.516910+00:00"
+    },
+    "batch-10050": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 4,
+      "validatedAt": "2026-09-10T15:04:30.368235+00:00"
+    },
+    "batch-10063": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 4,
+      "validatedAt": "2026-09-10T15:19:15.516910+00:00"
+    },
+    "batch-10064": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 0,
+      "validatedAt": "2026-09-10T15:19:15.516910+00:00"
+    },
+    "batch-10065": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 2,
+      "validatedAt": "2026-09-10T15:19:15.516910+00:00"
+    },
+    "batch-10062": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 9,
+      "validatedAt": "2026-09-10T15:19:15.516910+00:00"
+    },
+    "batch-10059": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 2,
+      "validatedAt": "2026-09-10T15:19:15.516910+00:00"
+    },
+    "batch-10058": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 3,
+      "validatedAt": "2026-09-10T15:19:15.516910+00:00"
+    },
+    "batch-10060": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 1,
+      "validatedAt": "2026-09-10T15:19:15.516910+00:00"
+    },
+    "batch-10067": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 0,
+      "validatedAt": "2026-09-10T15:19:15.516910+00:00"
+    },
+    "batch-10066": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 2,
+      "validatedAt": "2026-09-10T15:19:15.516910+00:00"
+    },
+    "batch-10061": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 1,
+      "validatedAt": "2026-09-10T15:19:15.516910+00:00"
+    },
+    "batch-10070": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 36,
+      "recoveries": 5,
+      "validatedAt": "2026-09-10T15:19:15.516910+00:00"
+    },
+    "batch-10068": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 1,
+      "validatedAt": "2026-09-10T15:19:15.516910+00:00"
+    },
+    "batch-10069": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 40,
+      "recoveries": 3,
+      "validatedAt": "2026-09-10T15:19:15.516910+00:00"
+    },
+    "batch-30000": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 38,
+      "validatedAt": "2026-09-10T15:37:14.414875+00:00"
+    },
+    "batch-30001": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 27,
+      "validatedAt": "2026-09-10T16:49:00.171717+00:00"
+    },
+    "batch-30003": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 27,
+      "validatedAt": "2026-09-10T16:03:03.618987+00:00"
+    },
+    "batch-30004": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 44,
+      "validatedAt": "2026-09-10T17:32:58.357188+00:00"
+    },
+    "batch-30002": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 36,
+      "validatedAt": "2026-09-10T15:48:18.680368+00:00"
+    },
+    "batch-30005": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 34,
+      "validatedAt": "2026-09-10T17:47:43.347242+00:00"
+    },
+    "batch-30007": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 41,
+      "validatedAt": "2026-09-10T18:18:06.780754+00:00"
+    },
+    "batch-30006": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 31,
+      "validatedAt": "2026-09-10T18:03:22.395794+00:00"
+    },
+    "batch-30008": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 11,
+      "validatedAt": "2026-09-10T17:02:46.513266+00:00"
+    },
+    "batch-30009": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 8,
+      "validatedAt": "2026-09-10T17:18:19.591977+00:00"
+    },
+    "batch-30011": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 8,
+      "validatedAt": "2026-09-10T16:32:43.586052+00:00"
+    },
+    "batch-30010": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 3,
+      "validatedAt": "2026-09-10T16:18:08.259272+00:00"
+    },
+    "batch-20000": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 28,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20001": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 19,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20002": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 26,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20003": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 17,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20004": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 26,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20005": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 21,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20006": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 16,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20007": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 16,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20008": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 2,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20009": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 3,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20010": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 3,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20011": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 4,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20012": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 4,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20013": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 2,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20014": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 5,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20015": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 3,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20016": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 2,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20017": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 4,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20018": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 2,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20019": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 3,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20020": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 3,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20021": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 3,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20022": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 3,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20023": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 4,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20024": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 3,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20025": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 2,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20026": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 2,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20027": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 1,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20028": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 2,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-20029": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 52,
+      "recoveries": 2,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-30012": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 6,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-30013": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 1,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-30014": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 15,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-30015": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 13,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-30016": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 4,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-30017": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 0,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-30018": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 6,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-30019": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 11,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-30020": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 11,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-30021": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 5,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-30022": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 9,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-30023": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 2,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-30024": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 7,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-30025": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 8,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-30026": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 8,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-30027": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 8,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-30028": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 96,
+      "recoveries": 6,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    },
+    "batch-30029": {
+      "status": "integrated_validated",
+      "reviewedDecisions": 52,
+      "recoveries": 5,
+      "validatedAt": "2026-09-11T08:05:28.862155+00:00"
+    }
+  },
+  "note": "User-requested consolidation after original heartbeat expiry. Counts reflect validated final decisions; original inventory, provenance and expiry retained.",
+  "externalPendingReviewed": 0,
+  "validatedByPartition": {
+    "local": {
+      "reviewed": 3737,
+      "recovered": 1201,
+      "held": 2536,
+      "remaining": 0
+    },
+    "external_a": {
+      "reviewed": 2836,
+      "recovered": 442,
+      "held": 2394,
+      "remaining": 0
+    },
+    "external_b": {
+      "reviewed": 2836,
+      "recovered": 231,
+      "held": 2605,
+      "remaining": 0
+    },
+    "external_c": {
+      "reviewed": 2836,
+      "recovered": 433,
+      "held": 2403,
+      "remaining": 0
+    }
+  },
+  "integrationReviewAssignments": [],
+  "integrationReviewHistory": [
+    {
+      "owner": "/root/recovery_a",
+      "batches": [
+        "batch-10026",
+        "batch-10027",
+        "batch-10028",
+        "batch-10029",
+        "batch-10030",
+        "batch-10031",
+        "batch-10032",
+        "batch-10033",
+        "batch-10034",
+        "batch-10035"
+      ],
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T14:50:37.763703+00:00",
+      "noteFile": "batch-10026.integration-check.json"
+    },
+    {
+      "owner": "/root/recovery_b",
+      "batches": [
+        "batch-10036",
+        "batch-10037",
+        "batch-10038",
+        "batch-10039",
+        "batch-10040",
+        "batch-10041",
+        "batch-10042",
+        "batch-10043",
+        "batch-10044",
+        "batch-10045"
+      ],
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T14:50:37.763703+00:00",
+      "noteFile": "batch-10036.integration-check.json"
+    },
+    {
+      "owner": "/root/recovery_c",
+      "batches": [
+        "batch-10046",
+        "batch-10047",
+        "batch-10048",
+        "batch-10049",
+        "batch-10050",
+        "batch-10051",
+        "batch-10052",
+        "batch-10053",
+        "batch-10054",
+        "batch-10055"
+      ],
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T14:50:37.763703+00:00",
+      "noteFile": "batch-10046.integration-check.json"
+    },
+    {
+      "owner": "/root/recovery_a",
+      "batches": [
+        "batch-10056",
+        "batch-10057",
+        "batch-10058",
+        "batch-10059",
+        "batch-10060"
+      ],
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T15:02:17.602985+00:00",
+      "noteFile": "batch-10056.integration-check.json"
+    },
+    {
+      "owner": "/root/recovery_b",
+      "batches": [
+        "batch-10061",
+        "batch-10062",
+        "batch-10063",
+        "batch-10064",
+        "batch-10065"
+      ],
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T15:02:17.602985+00:00",
+      "noteFile": "batch-10061.integration-check.json"
+    },
+    {
+      "owner": "/root/recovery_c",
+      "batches": [
+        "batch-10066",
+        "batch-10067",
+        "batch-10068",
+        "batch-10069",
+        "batch-10070"
+      ],
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T15:02:17.602985+00:00",
+      "noteFile": "batch-10066.integration-check.json"
+    },
+    {
+      "owner": "/root/recovery_a",
+      "batches": [
+        "batch-30000",
+        "batch-30001"
+      ],
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T15:16:59.026936+00:00",
+      "noteFile": "batch-30000.integration-check.json"
+    },
+    {
+      "owner": "/root/recovery_b",
+      "batches": [
+        "batch-30002",
+        "batch-30003"
+      ],
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T15:16:59.026936+00:00",
+      "noteFile": "batch-30002.integration-check.json"
+    },
+    {
+      "owner": "/root/recovery_c",
+      "batches": [
+        "batch-30004",
+        "batch-30005"
+      ],
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T15:16:59.026936+00:00",
+      "noteFile": "batch-30004.integration-check.json"
+    },
+    {
+      "owner": "/root/recovery_a",
+      "batches": [
+        "batch-30006"
+      ],
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T15:34:33.341720+00:00",
+      "noteFile": "batch-30006.integration-check.json"
+    },
+    {
+      "owner": "/root/recovery_b",
+      "batches": [
+        "batch-30007"
+      ],
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T15:34:33.341720+00:00",
+      "noteFile": "batch-30007.integration-check.json"
+    },
+    {
+      "owner": "/root/recovery_c",
+      "batches": [
+        "batch-30008",
+        "batch-30009"
+      ],
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T15:34:33.341720+00:00",
+      "noteFile": "batch-30008.integration-check.json"
+    },
+    {
+      "owner": "/root/recovery_a",
+      "batches": [
+        "batch-30010"
+      ],
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T15:46:58.354690+00:00",
+      "noteFile": "batch-30010.integration-check.json"
+    },
+    {
+      "owner": "/root/recovery_b",
+      "batches": [
+        "batch-30011"
+      ],
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T15:46:58.354690+00:00",
+      "noteFile": "batch-30011.integration-check.json"
+    },
+    {
+      "owner": "/root/recovery_c",
+      "batches": [
+        "batch-30001"
+      ],
+      "factIds": [
+        "gas-exchange-g6"
+      ],
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-10T15:47:34.898636+00:00",
+      "noteFile": "batch-30001.placeholder-check.json"
+    },
+    {
+      "owner": "/root/recovery_a",
+      "batches": [
+        "batch-20000",
+        "batch-20001",
+        "batch-20002",
+        "batch-20003",
+        "batch-20004",
+        "batch-20005",
+        "batch-20006",
+        "batch-20007"
+      ],
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-11T07:17:18.795630+00:00",
+      "noteFile": "consolidation-b20000-20007.integration-check.json"
+    },
+    {
+      "owner": "/root/recovery_b",
+      "batches": [
+        "batch-20008",
+        "batch-20009",
+        "batch-20010",
+        "batch-20011",
+        "batch-20012",
+        "batch-20013",
+        "batch-20014",
+        "batch-20015",
+        "batch-20016",
+        "batch-20017",
+        "batch-20018",
+        "batch-20019",
+        "batch-20020",
+        "batch-20021",
+        "batch-20022",
+        "batch-20023",
+        "batch-20024",
+        "batch-20025",
+        "batch-20026",
+        "batch-20027",
+        "batch-20028",
+        "batch-20029"
+      ],
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-11T07:17:18.795630+00:00",
+      "noteFile": "consolidation-b20008-20029.integration-check.json"
+    },
+    {
+      "owner": "/root/recovery_c",
+      "batches": [
+        "batch-30012",
+        "batch-30013",
+        "batch-30014",
+        "batch-30015",
+        "batch-30016",
+        "batch-30017",
+        "batch-30018",
+        "batch-30019"
+      ],
+      "status": "integrated_validated",
+      "assignedAt": "2026-09-11T07:17:18.795630+00:00",
+      "noteFile": "consolidation-c30012-30019.integration-check.json"
+    },
+    {
+      "owner": "/root/recovery_b",
+      "batches": [
+        "batch-30020",
+        "batch-30021",
+        "batch-30022",
+        "batch-30023",
+        "batch-30024",
+        "batch-30025",
+        "batch-30026",
+        "batch-30027",
+        "batch-30028",
+        "batch-30029"
+      ],
+      "status": "integrated_validated",
+      "noteFile": "consolidation-c30020-30029.integration-check.json"
+    }
+  ],
+  "incompleteExternalDecisions": [],
+  "lastWakeAt": "2026-09-10T21:45:47.191456+00:00",
+  "lastQueueCheck": {
+    "checkedAt": "2026-09-10T21:45:47.191456+00:00",
+    "newCompleteReviews": 0,
+    "pendingIntegration": 0,
+    "remainingExternalB": 2836,
+    "remainingExternalC": 1684
+  },
+  "finalScheduledCheckpoint": {
+    "checkedAt": "2026-09-10T21:45:47.191456+00:00",
+    "expiresAt": "2026-09-10T21:57:55.518Z",
+    "reviewed": 7725,
+    "recovered": 1951,
+    "held": 5774,
+    "remaining": 4520,
+    "pendingIntegration": 0,
+    "report": "docs/SECOND-PASS-WINDOW-SUMMARY.md"
+  },
+  "consolidation": {
+    "status": "complete",
+    "authorizedBy": "User requested consolidation after all agent runs completed",
+    "startedAt": "2026-09-11T07:17:18.795630+00:00",
+    "pendingDecisions": 4520,
+    "proposedRecoveries": 579,
+    "originalWindowExpiresAt": "2026-09-10T21:57:55.518Z",
+    "lastValidatedAt": "2026-09-11T08:05:28.862155+00:00",
+    "remaining": 0
+  }
+}

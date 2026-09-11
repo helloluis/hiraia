@@ -1,0 +1,26 @@
+{
+  "originalProposals": [
+    {
+      "factId": "wood-and-rock-g5",
+      "id": "dcard-06204",
+      "textHash": "41030696d83d70eaac086003766d6c007485b8110ad405ec8c48e7a4f9623a6e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:21:56Z disp=exclude",
+      "reviewedAt": "2026-09-10T14:32:11.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G5-F-9"
+      ],
+      "reason": "Identifies wood and rocks as environmental materials that will not conduct electricity, a current G5-F-9 insulators facet. Circuit-test investigation unit not credited; conductors unit not admitted. G9-F-6 is electron flow plus electrical safety, not insulator examples; G7-F-9 conduction/radiation example units not admitted. Full EN/TL/BIS and both pools inspected; single card ID.",
+      "evidence": [
+        {
+          "lesson": "g5:conductors",
+          "unit": "G5-F-9:insulators",
+          "quote": "Wood and rocks are insulators, meaning they do not allow heat and electricity to flow through them easily"
+        }
+      ],
+      "translationsChecked": true
+    }
+  ],
+  "reason": "Parent semantic validation before application"
+}

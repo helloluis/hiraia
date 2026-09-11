@@ -1,0 +1,74 @@
+{
+  "originalProposals": [
+    {
+      "factId": "lens-count-g7",
+      "id": "dcard-06890",
+      "textHash": "c8bb64dda8492713782b569beb10d617695e88516839e66f5355b9c0c7684c3c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:52:06Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:24:32.454Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G7-L-1"
+      ],
+      "reason": "Explains compound-microscope magnification as a function of multiple lenses working together versus a simple microscope. Full EN/TL/BIS and both pools inspected; single identical card ID.",
+      "evidence": [
+        {
+          "lesson": "g7:microscope",
+          "unit": "G7-L-1:functions",
+          "quote": "compound microscope magnify more"
+        }
+      ]
+    },
+    {
+      "factId": "longer-blades-for-precision-g6",
+      "id": "dcard-09278",
+      "textHash": "f7625d4c1b6bb15d03286ed644d760921b9c03d3621010703c1aa68a9709727b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:40:52Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:24:32.454Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G6-F-1",
+        "G3-M-3"
+      ],
+      "reason": "Describes everyday scissors uses: long blades for precision cutting versus long handles for tougher materials. Lever-investigation facets not admitted. Full EN/TL/BIS and both pools inspected; single identical card ID.",
+      "evidence": [
+        {
+          "lesson": "g6:simple-machines",
+          "unit": "G6-F-1:everyday",
+          "quote": "Scissors with longer blades"
+        },
+        {
+          "lesson": "g3:science-tools",
+          "unit": "G3-M-3:scissors",
+          "quote": "cut tougher materials"
+        }
+      ]
+    },
+    {
+      "factId": "low-angle-short-range-g10",
+      "id": "dcard-04747",
+      "textHash": "e945b9065f2e90b8b78b735dc755d96621fe1daaeae756f7602e95890729a6d3",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:37:49Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:24:32.454Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G10-F-1"
+      ],
+      "reason": "Describes the angle-range relationship: launch below 45\u00b0 keeps the projectile low with shorter horizontal range. Investigation facet not admitted. Full EN/TL/BIS and both pools inspected; single identical card ID.",
+      "evidence": [
+        {
+          "lesson": "g10:f-1",
+          "unit": "G10-F-1:focus-1",
+          "quote": "launch angle is less than 45 degrees"
+        }
+      ]
+    }
+  ],
+  "reason": "Parent semantic/identity validation before application"
+}

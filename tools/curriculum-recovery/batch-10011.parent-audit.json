@@ -1,0 +1,47 @@
+{
+  "originalProposals": [
+    {
+      "factId": "ray-diagram-intersection-g8",
+      "id": "dcard-02727",
+      "textHash": "4295b6fd85202e41607ed359f0cc6af8f49db766ce0d3baad1c93880afbcd9f3",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:42:52Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:40:32.360Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G8-F-11"
+      ],
+      "reason": "Teaches locating a lens image by drawing refracted rays to their intersection, a current G8-F-11 lens illustration facet. Investigation unit is also admitted via draw.*ray; evidence uses the lens unit. Other diagram units (circuits, cycles, free-body) are unrelated. Full EN/TL/BIS and both pools inspected; single identical card ID.",
+      "evidence": [
+        {
+          "lesson": "g8:light-investigations",
+          "unit": "G8-F-11:lens",
+          "quote": "You draw at least two refracted rays, and the place where they intersect is the tip of the image!"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "ridge-push-force-g10",
+      "id": "dcard-08578",
+      "textHash": "c79ec654e743c873493429b0d9cf1a5e2ac8ae7fdf3efb638f27f42238d80866",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:50:32Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:40:32.360Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G10-E-5"
+      ],
+      "reason": "Defines ridge push as new seafloor at a mid-ocean ridge pushing older, cooler seafloor away, exact G10-E-5 ridge-push facet. G3-F-1 people-push is unrelated. https://en.wikipedia.org/wiki/Ridge_push Full EN/TL/BIS and both pools inspected; single identical card ID.",
+      "evidence": [
+        {
+          "lesson": "g10:e-5",
+          "unit": "G10-E-5:focus-2",
+          "quote": "Ridge push is a force that moves plates when new seafloor forms at a mid-ocean ridge and pushes the older, cooler seafloor away from the ridge."
+        }
+      ],
+      "translationsChecked": true
+    }
+  ],
+  "reason": "Parent semantic validation before application"
+}

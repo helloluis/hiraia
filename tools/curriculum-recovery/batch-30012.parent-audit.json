@@ -1,0 +1,1358 @@
+{
+  "parentVerifiedAt": "2026-09-11T08:01:13.185612+00:00",
+  "originalProposals": [
+    {
+      "factId": "diarrhea-watery-stool-g4",
+      "id": "ffct-14713",
+      "textHash": "dff0a79c796e125526f21cdfd1d532ddfa0fa4102b7946568d91cb01088eb5c7",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:21:32Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Diarrhea definition card (digestive symptom) has no genuine core facet: all candidate matches (G3/G4/G6/G8 water, G7 energy transfer, G9 covalent formulas) are keyword noise; the assigned G4-L-1/G5-L-1 reviews correctly found it teaches no body-system function. Potential destination: health/disease enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "dichotomous-key-g8",
+      "id": "ffct-14543",
+      "textHash": "c3b121f055c4c7587d1fe55a9ed33cff42199059e089c34bd6ff7422f777f821",
+      "previousExclusion": "Grade 5 lesson audit 2026-09-09: organism identification does not teach the assigned G5-E-3 rock classification objective; keep card in general discovery.",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Dichotomous-key identification guide is a science-process/classification tool; matched competencies (G3 asking questions, G7 equipment handling, G9 DNA models, G10 biotechnology) are keyword noise and none teach classification keys. Potential destination: biodiversity/classification enrichment or a G7 investigation-aim facet if reworded.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "diffusion-dye-water-spread-g5",
+      "id": "ffct-17212",
+      "textHash": "6d0c87c02bf028c468623a4db61e3908807b18cb5880ea269cfdb2df0e29f562",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:15:02Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-M-2"
+      ],
+      "evidence": [
+        {
+          "lesson": "g7:particle-model",
+          "unit": "G7-M-2:particles",
+          "quote": "dye particles spread on their own"
+        }
+      ],
+      "reason": "Dye particles spreading from crowded to sparse regions until evenly mixed genuinely teaches the particle model component of G7-M-2 (particles of a substance moving/spreading in matter). Reconciliation note: card teaches diffusion as particle behavior, not the G3/G4 water-keyword facets which are noise. TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "diffusion-tea-bag-water-g6",
+      "id": "ffct-16766",
+      "textHash": "d2f96496d7ef66471679f701c3938a3b4fbffd9e46235db3a3be4a0eb2139962",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:15:02Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Tea-bag diffusion card teaches the same particle-spreading idea as diffusion-dye-water-spread-g5 but its English text never says \"particle\", so the G7-M-2 core pattern does not match and every other candidate unit is keyword noise. Potential destination: G7-M-2 particle-model facet if the card is reworded or the pattern widened to diffusion.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "dilis-anchovy-small-fish-g4",
+      "id": "ffct-07559",
+      "textHash": "3debe1bc10954a3f1200d26d80d311910c3146da2827881f4fd161da0f13e570",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:01:16Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G5-L-4"
+      ],
+      "evidence": [
+        {
+          "lesson": "g5:classification",
+          "unit": "G5-L-4:fish",
+          "quote": "very small fish"
+        }
+      ],
+      "reason": "Teaching that the dilis (a Philippine everyday animal) is a fish is a genuine classification component of G5-L-4 (classifying living things by similar characteristics, animals group); it is not awarded the table/diagram activity facet. TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "dinosaurs-66-million-years-g7",
+      "id": "ffct-34613",
+      "textHash": "7bece5a9ea580c8525d1165adf4fed54bb0f39c490e2deed051316b691891889",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:28:31Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Dinosaur extinction timing (66 Mya) matches only keyword-noise units (G3 loud sound, G4 Sun size, G9 valence electrons); no core facet teaches extinction timing at elementary level. Potential destination: fossils/geologic-time enrichment or G9-E-5 dating facet when age-appropriate.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "dinosaurs-footprints-tell-story-g5",
+      "id": "ffct-00991",
+      "textHash": "ce5c449365177f01fc4f561e35fcd80b6ef3d9ff641c6d9559e14a71e63f6b59",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:28:31Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Fossil footprints revealing dinosaur movement matches only motion-keyword noise (G3 sky motion, G4 pushes/pulls, G7 net force); the card teaches paleontological inference from trace fossils, not any matched competency. Potential destination: fossils enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "dinosaurs-mesozoic-age-g6",
+      "id": "ffct-03997",
+      "textHash": "c30e2dd0a8ac53b65cf50864a836732e1536042259dc47afa89b8613b8b11cb5",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:28:31Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Dinosaur dominance duration (150+ My) matches only size/length/magnitude keyword noise; no matched competency covers geologic-time spans at this level. Potential destination: geologic-time/fossils enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "dinosaurs-rebuild-skeleton-g6",
+      "id": "ffct-14313",
+      "textHash": "53ac1e6bb6da25da8ff95325eb2db13f3f57377bb3ae639c8c4b65aee47c19c3",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:45:07Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Reconstructing dinosaur appearance from assembled bones matched to living animals teaches fossil inference; matched units (G5 rock comparison, G6 biotic factors, G9 rainforest diagrams) are keyword noise and crediting them would falsely award diagram/comparison activity facets. Potential destination: fossils enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "disappearing-stream-sinks-g8",
+      "id": "ffct-29721",
+      "textHash": "6f3d30893298ea603a5db8f1fe350f9f00f5131999615480d7fa6be7f4adff30",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:12:20Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Karst streams sinking underground teaches groundwater/karst processes; all matches (G3-G8 water keywords, G7 convection, G9 formulas) are noise and none cover groundwater movement. Potential destination: earth-materials/groundwater enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "dishwashing-liquid-emulsify-g7",
+      "id": "ffct-18063",
+      "textHash": "088cff6117a07a8e4fce8afca5cbed693b77e85c8b40ebdab49df8dcc0aaee3c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:58:17Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Surfactant emulsification of grease teaches colloid/mixture chemistry, but the only mixture-related matches are G6-M-7 (separation-technique benefits \u2014 emulsification is not a separation technique) and pure keyword noise; G6-M-4 useful-mixtures does not match. Potential destination: G6-M-4 useful-mixtures facet if pattern/authored to include emulsifiers.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "dissolving-coffee-g4",
+      "id": "dcard-04027",
+      "textHash": "9f507167823dc95185a2b24a533ce297017d74e18fabbea4d07ee4934aaf2f5b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:58:18Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Coffee dissolving in hot water matches only water-keyword noise; the temperature-dependent dissolving competencies (G4 heating effects, G7-M-10 solubility) do not match this text. Potential destination: G4-M/G7-M-10 if the card is reworded to name heat or solubility.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "dissolving-salt-mass-unchanged-g7",
+      "id": "ffct-16501",
+      "textHash": "3e1e59f0a6324e3b101ab0cb200429c5aa20ad070acaf8a4ca7983742ea11fdb",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:58:18Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-M-10"
+      ],
+      "evidence": [
+        {
+          "lesson": "g7:solubility",
+          "unit": "G7-M-10:test",
+          "quote": "disappears from sight but not from the weight"
+        }
+      ],
+      "reason": "Salt dissolving while conserving total mass genuinely teaches the dissolution concept underlying G7-M-10 (solute remains in the solvent), a substantive component rather than the investigation activity itself. G5-M-9 mass-investigation match noted but not credited to avoid awarding the investigation facet. TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "distance-slows-spread-g5",
+      "id": "ffct-09399",
+      "textHash": "8174a858db661744aa7532de873cb4993fd12698880148aec78d9a01d351b819",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:39:38Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Droplet-distance explanation of disease spread is health content; all matches (G3 sound transfer, G4 energy change, G6 receding sound, G8 energy exchange) are keyword noise. Potential destination: health/disease-prevention enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "distilled-water-double-distilled-purer-g8",
+      "id": "ffct-17397",
+      "textHash": "505afdc5c10c957b29431d522be908d9703a953b2a0b430442477a084660c2ec",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:55:37Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-M-7"
+      ],
+      "evidence": [
+        {
+          "lesson": "g6:separation-products",
+          "unit": "G6-M-7:products",
+          "quote": "extra pure"
+        }
+      ],
+      "reason": "Double distillation producing extra-pure water genuinely teaches a benefit and use of the distillation separation technique in preparing useful products (G6-M-7). G6-M-7:benefits also matches; same code. TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "distilled-water-tastes-flat-g7",
+      "id": "ffct-17392",
+      "textHash": "af7713476817b432105a29840e6bc00eadd44ec8a3cffd05aaf6f9449a56bc9a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:00:47Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-M-7"
+      ],
+      "evidence": [
+        {
+          "lesson": "g6:separation-products",
+          "unit": "G6-M-7:products",
+          "quote": "removed during distillation"
+        }
+      ],
+      "reason": "Distillation removing dissolved minerals and gases (hence flat taste) genuinely teaches what the separation technique removes and its effect on the product (G6-M-7). TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "dizzy-spinning-ear-fluid-g5",
+      "id": "ffct-14818",
+      "textHash": "dcde14c8d781adfd90a4a7b9cc29492906a7cf66020d2e36b2299750e28f02f1",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:57:23Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Inner-ear fluid causing post-spin dizziness teaches the vestibular sense; matched units are keyword noise (G4 slow/stop motion, G7 particle motion, G10 momentum). Potential destination: human-body/senses enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "dna-double-two-strands-pair-g8",
+      "id": "ffct-14267",
+      "textHash": "ca206b5c1e60eafd2b6dcd5be8b3f3813a19f9d3255abbb192b9923f24c65601",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:33:26Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G9-L-2"
+      ],
+      "evidence": [
+        {
+          "lesson": "g9:l-2",
+          "unit": "G9-L-2:focus-1",
+          "quote": "two long strands twisted together"
+        }
+      ],
+      "reason": "DNA as two twisted strands with base-pair rungs genuinely teaches the structural component of G9-L-2 (role of DNA in trait transmission \u2014 structure underpins the function); grade-9 appropriate. G9-L-3 mutation match not credited. TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "dna-photo51-franklin-g8",
+      "id": "ffct-12255",
+      "textHash": "b02076eacee3f7f8889d27659e3e35bb95eb4ea069c90bed631292a0d2cc79db",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:33:27Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Photo 51 attribution card is history-of-science content about DNA imaging; matched G9-L-2/L-3 units cover trait transmission and mutations, not the discovery story, and G9-F-11/F-12 are X-ray keyword noise. Potential destination: science-history enrichment or G9-L-1 structure facet if reworded.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "do-not-disturb-hibernators-g5",
+      "id": "ffct-04033",
+      "textHash": "51a157683fc2fdbbe00bf99dba80bc2b896a6ccebf8b68c146631c24da9c3ccf",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:31:42Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Waking hibernators wastes stored energy \u2014 animal-behavior/energy-storage content; matched units (G4-E-2 water needs, G6 wave energy, G8-F-10 hydropower) are keyword noise. Potential destination: animal-behavior enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "do-not-say-better-wave-g6",
+      "id": "ffct-36655",
+      "textHash": "f2c691af3fbd1ce27a962b4d056c3c7d73f68347f58d77b0cda752d493536845",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:55:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Comparing wave types without a \"better\" one is a compare/contrast metacognition card; no matched competency (G3 message sending, G5 rock comparison, G7 reproduction) teaches wave-type comparison. Potential destination: waves enrichment or G6 wave lessons if reworded.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "dodo-related-to-pigeon-g6",
+      "id": "ffct-08288",
+      "textHash": "7670f9c837f243951e7a4f332c12cc0ed02b0abb7abe563f461c443b41fad714",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:28:25Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Dodo-pigeon relatedness teaches evolutionary kinship; matched units (G5 life cycles, G5 gravity heavy/light, G9 dating/ion formation) are keyword noise. Potential destination: evolution/birds enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "dog-ears-each-ear-separate-g4",
+      "id": "ffct-01625",
+      "textHash": "36ed5260722ca9bf12f1bd9ea7ab4036af80df3c2d014a888488a8407fb6efd3",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:01:39Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Independent ear movement letting a dog hear two sounds teaches animal directional hearing; matched units (G3/G4 sound-message and sound-energy keywords, G6 longitudinal waves) are noise. Potential destination: animal-senses enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "dog-ears-wax-protects-g4",
+      "id": "ffct-07437",
+      "textHash": "0dcf163804da163f9666a8e363e7459e89b54c371926fbdc9f844718f2b3e9de",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:20:31Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Earwax and hairs protecting a dog's ear teaches animal anatomy; G3-F-4 sound transfer, G8-L-7 mammal classification matches are keyword noise. Potential destination: animal-anatomy enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "dog-hearing-range-g7",
+      "id": "ffct-26167",
+      "textHash": "b386b6475fe7efbb7d38a2e37ba10758dabc04f7377adb2fb44b98c5f9ed9c55",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:01:38Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Dog hearing upper limit (45,000 Hz) is sensory trivia; G6-F-9 longitudinal facet matches 'sound' only and does not teach longitudinal-vs-transverse wave examples, and G3-F-4 needs how sound is made/transferred. Potential destination: G6-F-9 if a frequency/hearing-range facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "dog-lifespan-g3",
+      "id": "ffct-00420",
+      "textHash": "0340f5a01fe80dba79cb0941cbdd2f967860a647b81e737d2eab1683cd5ad877",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:11:51Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Dog lifespan figure (10-13 yr) is animal trivia; G3-L-3 characteristics (grow/respond/reproduce) and life-cycle competencies need stage content, G3-L-2 'dog' is a local-example keyword only. Potential destination: G4-L-5/G5-L-6 if a lifespan/life-stage facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "dog-sense-of-smell-strong-g3",
+      "id": "ffct-12797",
+      "textHash": "afda2ec882a66b84f6c06991f78cf86e086ee055377f79deb69606518ab285d4",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:20:34Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Dog olfaction superiority trivia; G3-L-4 needs outer body parts and their roles in moving/gathering food, G5-L-9 needs adaptations like mimicry/camouflage. Keyword matches only. Potential destination: senses enrichment.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "doing-follows-the-plan-g5",
+      "id": "ffct-36465",
+      "textHash": "d4e671c84637ed7e50c05561c2c66078cb625d6c82940a30b46227d1f13cec65",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:45:08Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Advice to finish a written plan and save new ideas for a new investigation; it neither describes investigation steps (G5-M-7) nor teaches identifying an aim/problem (G7-M-6:aim matches 'problem' incidentally while the card's point is plan discipline). Potential destination: science-practices enrichment or G7-M-6 method facet after authored wording.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "dollarbird-philippines-roller-g6",
+      "id": "ffct-02181",
+      "textHash": "fe3ce10fdb0ca0d56aba89dadf457bba435d6c04887127b730f535b3a1ba1022",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:01:26Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Single-bird natural-history trivia (aerial insect catching at dusk); G6-L-4:local 'Philippin' match does not teach vertebrate/invertebrate grouping and G4-L-6/G4-L-3 diet/habitat classification require grouping activity. Keyword only. Potential destination: G6-L-4 local-examples facet only if example-list membership is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "dolphin-live-in-pods-g4",
+      "id": "ffct-08938",
+      "textHash": "727c9253452fd852eb170f9bc7c7e9eb439db91c3c3dc8c48f6642e8996f5b32",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T12:25:00Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Dolphin pod grouping trivia; matched facets (classify/group keywords in G4-M-7, G8-L-6, G8-M-7/8 periodic-table rows) are substring noise unrelated to dolphin social structure. Potential destination: animal-behavior enrichment.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "doorbell-button-press-circuit-g5",
+      "id": "ffct-26459",
+      "textHash": "ffa919384561ca3bd33a7cbb68532902113e93f111a69996ff96c3edaef42b78",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:25:45Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Switch-closes-circuit explanation is circuit background but G5-F-9 circuit-test facet is for conductor testing, G5-F-8/G9-F-8 require assembling/drawing circuits, and G3-M-8:pressing is about pressing changing materials. No facet genuinely taught. Potential destination: G5-F-8 switch component facet if authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "double-rainbow-everyone-sees-own-g7",
+      "id": "ffct-23959",
+      "textHash": "c4c07265971f5df3aba739051abf55fe32517b0e23957195a99dc548724b2693",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:07:02Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Observer-dependent rainbow optics trivia; G3-F-6 light-behavior exploration and all other matches are keyword noise (rain/move/base). Card does not teach light sources, behavior change, or uses. Potential destination: light-behavior enrichment.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "double-rainbow-spray-fountains-g6",
+      "id": "ffct-23960",
+      "textHash": "dc47afaaf5da6a7bf870ef10b085c58ab6c09088a242d3d3b6493815e16d4257",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:07:02Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Rainbows in mist/fountain spray; G3-F-5 sources facet matches 'sun(light)' incidentally while the card teaches where rainbows form, not light sources or uses. Keyword only. Potential destination: G3-F-6 if a dispersion/refraction facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "draco-glide-distance-g6",
+      "id": "ffct-01188",
+      "textHash": "ea227187fcf23d9953a8d3e2952c42f2801d1044c03117b1080c9595a7aba232",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:20:36Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Draco glide-distance trivia; G3-M-4/G4-F-2 meter matches are measurement-tool keywords, G3-L-4 needs body parts and roles. Keyword only. Potential destination: G5-L-9 adaptations if a gliding-adaptation facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "dragonfly-nymph-water-g6",
+      "id": "ffct-09128",
+      "textHash": "e8e58a076190072bcc9e42e593e7e363ff5e44c56d566544cbcb750ce1b42cb4",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:03:34Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Genuine incomplete-metamorphosis teaching, but no authored facet admits it: G4-L-5 facets (butterfly/frog/chicken/human/flow-chart) do not match the wording and G4-L-3 water/air habitat facets require drawing-based habitat classification. Potential destination: G4-L-5 if an incomplete-metamorphosis facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "draw-the-setup-g5",
+      "id": "ffct-36436",
+      "textHash": "d1e12ecf9ff54ac7ee4c6d8a3d3ffd6a6b9265dba448dd4ba718cfcb18709120",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:45:08Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Generic advice to draw the setup when planning; every matched diagram facet (G7-M-4 particle diagrams, G8-M-2 atom drawing, G8-L-8 flowcharts, G9-F-5/8 circuit/ray diagrams) is a specific representational skill the card does not teach. G5-M-7 steps not described. Potential destination: science-practices enrichment.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "drink-water-poop-constipation-g6",
+      "id": "ffct-10342",
+      "textHash": "a9c6e1c836f5c03233c13fc0d1c598cfebe7766846dc986a747ca50d196aec35",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:57:30Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Water/constipation health guidance; G4-L-1/G5-L-1/G8-L-1 digestive-system competencies need parts identification or process description, and all water/soft keyword matches are noise. Potential destination: health/human-body enrichment.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "dropper-pipette-pressure-g5",
+      "id": "ffct-18083",
+      "textHash": "0b74ec851ee82b697d7821013acfdecdb6f76a473ed47ff0ad9e34b41d5cd06e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:58:02Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Dropper air-pressure mechanism; G4-F-6 squeeze facet is about forces changing material shape (teaching point here is air pressure, not shape change) and G4-E-4:pressure is a weather-element facet. G5-M-2/M-1 matter-state matches are noise. Potential destination: G5-F-9 or an air-pressure facet if authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "drought-cracked-curling-g6",
+      "id": "ffct-32212",
+      "textHash": "c89c9ac829e18f20afeafb134731ac47d14ff6573d83ed67c3c8b96332beffec",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:39:32Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Drying-mud curling observation; G4-E-1 requires comparing soil types' water retention with equipment, G3-M-5 needs listed physical properties. Descriptive physics of differential shrinkage, no facet. Potential destination: G5-E-4 soil-formation if a cracking/weathering facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "drought-cracked-mechanism-g5",
+      "id": "ffct-32204",
+      "textHash": "6901e83499f112ffb3318721a3e78c162a64dcfb7f5ea24abb5c32884e1d1a11",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:39:33Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Mud shrink-split mechanism; G4-E-1 soil comparison, G5-E-4 soil formation from rocks/minerals, G3-M-5 property descriptions all unrelated to the crack mechanism taught. Potential destination: G5-E-4 physical-weathering facet if authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "drought-cracked-vs-frozen-g7",
+      "id": "ffct-32210",
+      "textHash": "77584d88c0fb327e12dce1b08045a862d1590b4516d1e0e159605cb93c7ff151",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:45:12Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Contrast of drought vs earthquake crack causes; G7-E-2 requires explaining fault movement generating earthquakes (card only mentions 'earthquake crack is sudden'), G5-E-8 needs weather-disturbance effects. Keyword matches only. Potential destination: G7-E-2 or G5-E-5 erosion facets after authored wording.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "drowning-water-fills-lungs-g4",
+      "id": "ffct-13194",
+      "textHash": "014c508840f524a3d2ec4f342d11ea0f49b68f8189526772c2f61c62c219d821",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:57:27Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Drowning mechanism (water blocking airway/lungs); G5-L-2/G4-L-1 respiratory competencies need parts identification or system-function description, water matches are noise. Potential destination: water-safety enrichment.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "dry-ice-keeps-food-cold-g6",
+      "id": "ffct-16268",
+      "textHash": "417c7a799456ec3de89b82c4643f9012c0d7e75a6c262e5215b119074d18f0a2",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:42:55Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Dry-ice sublimation keeping food cold; G10-M-8 is about factors affecting rates of chemical reactions in food preservation \u2014 a physical cooling use, not reaction-rate factors; G6-M-1/G5-M-6 list melting/evaporation/freezing/condensation, not sublimation. Keyword matches only. Potential destination: G6-M-1 if a sublimation facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "drying-makes-food-lighter-g5",
+      "id": "ffct-15766",
+      "textHash": "2eda2f7b8c4e15da338d11a0e49a478f0c6fcd53418b7e36859f4f8b2081d650",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:40:02Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Dried food loses water becoming lighter/smaller; G6-M-1/G5-M-6 require the named state-change processes and G5-M-1 needs matter-has-mass teaching \u2014 the card states a result without teaching any competency component. Potential destination: G6-M-1 evaporation-example facet if authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "duck-egg-vs-chicken-egg-g4",
+      "id": "ffct-01596",
+      "textHash": "f5595a9f77c73c36ea957edfadf51357e3c19d38eb0707a356db128d0057f541",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:30:24Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Egg-size comparison trivia; G4-L-5 chicken facet matches 'chicken' while the card teaches no life-cycle stage, and G5-L-6 requires comparing mammal/bird/plant life cycles. Keyword only. Potential destination: none current; bird/egg enrichment.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "dugong-long-lived-g6",
+      "id": "ffct-02346",
+      "textHash": "4a58c6cd5d0bb2f6e70de6717cf3708ccc16ecdec85afccf62375a3a07d7b4f5",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:11:47Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Dugong longevity trivia; G3-L-3 characteristics and G5-L-6 life-cycle comparison need growth/response/reproduction or stage content; G10-E-8 'decade' is climate-trend keyword noise. Potential destination: G5-L-6 if a longevity/life-stage facet is authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "dugong-related-to-manatee-g6",
+      "id": "ffct-00717",
+      "textHash": "c23c8a21532a3a51802d539faeab718999ec1e5f89451e71b9a074ae6ff90947",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:28:23Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Dugong-manatee relatedness trivia naming Sirenia; G5-L-4 requires table-based classification into the named groups and G8-L-6 'group/relationship' matches are generic classification-purpose keywords the card does not exercise. Potential destination: G8-L-6 example facet if authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "dugong-slow-palawan-watching-g6",
+      "id": "ffct-04379",
+      "textHash": "a375d2e0f766ab723b10d38ee2fc220f50cba935a53fd75415b097c7b6818bed",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:04:28Z disp=exclude",
+      "reviewedAt": "2026-09-11T02:08:53Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Palawan dugong-watching tourism trivia; 'grass' in 'seagrass' and 'slow' matches are food-chain/speed keyword noise, and G4-L-6 requires grouping animals by diet. Potential destination: G6-L-4 local examples or ecotourism enrichment if authored.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "durian-king-of-fruits-g3",
+      "id": "ffct-02050",
+      "textHash": "3687646806a990a16937665d952e152021bb770520b935917b7a32afb7c9ac35",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:39:32Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Durian \"king of fruits\" nickname card is fruit trivia; all matches (G3 sound safety, G4 Sun size, G10 reaction indicators) are keyword noise. Potential destination: plants/fruits enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "durian-strong-smell-g4",
+      "id": "ffct-09706",
+      "textHash": "f5a78124a0c0369e2919c7ebceab9ed463499b629e254eef68836e49d0e7bb5e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:02:43Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Durian description (spiky forest fruit from Davao/Mindanao) is local-fruit trivia; matched units are keyword noise and G3-L-3 signs-of-life does not fit. Potential destination: plants/local-fruits enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "dye-from-flowers-g4",
+      "id": "ffct-16120",
+      "textHash": "947a2e5e14bb772417e58c905c39eea46e3171ea8b8452c870240a83b5490880",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:27:55Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Flower-dye extraction teaches a useful plant-product process, but no matched competency covers plant uses or dyes (G3-E-2 human-made objects, diagram units are noise) and crediting G4-L-3:diagram would falsely award the diagram activity facet. Potential destination: plant-uses enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "ear-bones-three-g7",
+      "id": "ffct-03841",
+      "textHash": "c47ff2474a44f79294b0f0abfc014f2dcf8b7c88fb62ef1fae6aa4eb4f748f6a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:57:26Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Three ear ossicles including the stapes teaches detailed human anatomy; only match is G3 sound-safety keyword noise. Potential destination: human-body/senses enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "ears-2-g5",
+      "id": "ffct-02864",
+      "textHash": "6cd6e96c47d44f5f4a181bbc4fa8672e62bad9e5925b0ec056328fbd78b631d1",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:20:42Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "\"Every human has two ears\" is body-awareness trivia below the substantive threshold; G4-L-5 human life-cycle and other matches are keyword noise. Potential destination: human-body enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-age-4-5-billion-g7",
+      "id": "ffct-34434",
+      "textHash": "da86bd4f137cb67349e0695a5ad4a455c71b2df049c405a58747d6b86443d8b7",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:28:51Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Earth age 4.5 billion years matches only keyword noise (G3 basic needs/shelter, sky observation); no matched facet teaches deep time (G9-E-5 dating does not match). Potential destination: geologic-time enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-atmosphere-g6",
+      "id": "dcard-06156",
+      "textHash": "26bbbeb1b18cbf33c1b3795acd59913e4bf2c88ccfd2adb4e4c14b477467f3d7",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:57:25Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-M-5"
+      ],
+      "evidence": [
+        {
+          "lesson": "g6:air-mixture",
+          "unit": "G6-M-5:oxygen",
+          "quote": "oxygen and other gases"
+        }
+      ],
+      "reason": "Earth's atmosphere containing oxygen and other gases living things need genuinely teaches the air-as-mixture component of G6-M-5 (air contains oxygen and other gases). Reconciliation note: card's cats (g6-earth_space_planets) are supporting, not enrichment, in the G6 crosswalk so the G6 codes are admissible. TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-circumference-40075-km-g7",
+      "id": "ffct-33514",
+      "textHash": "992604acc7804666c0bf60a06b3b4020d109bdf1c04fc26a1520cc600dd01d38",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:50:29Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Earth equatorial circumference fact teaches planetary scale, but matched measurement competencies (G3/G4 position/distance, G7-M-7 standard units) concern measuring objects, not knowing Earth's size; keyword-only. Potential destination: earth/space enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-craters-erode-g7",
+      "id": "ffct-31087",
+      "textHash": "f0f4594ad2531d517244d593ba4dc0e254cdc5d0d8d4cde27040963ba66d03b6",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:18:49Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Terrestrial craters erased by water, wind, and plants teaches weathering/erosion of impact structures; matched units are water/wind keyword noise and crediting G5-E-5 would falsely award the erosion-transport facet for a space-science card. Potential destination: erosion/space enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-day-length-24-hours-g6",
+      "id": "ffct-34427",
+      "textHash": "af236ec41f6e989ccc4977d21f808016014ae83d26008a9872dd73328487bdb3",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:50:28Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-E-11"
+      ],
+      "evidence": [
+        {
+          "lesson": "g7:day-length",
+          "unit": "G7-E-11:day-length",
+          "quote": "spins exactly once in about 24 hours"
+        }
+      ],
+      "reason": "Earth rotating once in ~24 hours defining day length genuinely teaches the rotation component underlying G7-E-11 (tilt effects on daytime length \u2014 rotation sets the day cycle); reconciliation note: card teaches the day-length basis, not the tilt variation. TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-gravity-9-8-g7",
+      "id": "ffct-26795",
+      "textHash": "21edcadeba8c4092585f09d6063381bf1dc2c61fffc6552db132b0e51eecaa2c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:23:09Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Numerical value of g (9.8 m/s2) teaches gravitational acceleration quantitatively; matched units (G4/G7 measuring, G8-F-9 gravity-energy conservation) do not match this text and no elementary competency covers g. Potential destination: gravity enrichment for older grades.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-internal-heat-sources-g10",
+      "id": "ffct-35851",
+      "textHash": "5c9beab53da020eb1ab9e85dbb2e8f06e228aa27dfce8fe8c70461a6fe271229",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:29:17Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Primordial plus radiogenic internal heat teaches planetary interiors; matched units are keyword noise (G4 heat energy uses, G5 rock breakdown) and no matched facet covers Earth's interior heat despite the G10 tag. Potential destination: geology/plate-tectonics enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-lightning-flashes-per-second-g7",
+      "id": "ffct-26522",
+      "textHash": "48d34c9c89f39a9576305db33decc8d6b68f847694e7a33914a47f624db69929",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:49:26Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Global lightning-rate statistic teaches weather electrification trivia; matched units are light/energy keyword noise. Potential destination: weather/electricity enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-mantle-solid-but-flows-misconception-g8",
+      "id": "ffct-31435",
+      "textHash": "61394ff6f37f78bcd42203e55e7e1c7b8f142589663e7d17e8282407d388b2cf",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:29:18Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Mantle is solid but flows slowly is an important misconception-buster, but no matched competency covers Earth's interior layers (G9-E-8 thickness drawing does not match) and crediting particle-model units would be false. Potential destination: geology enrichment or G9-E-8 facet if authored to match.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-moon-fifth-largest-g7",
+      "id": "ffct-33407",
+      "textHash": "ce0c954b76732f00cd21bfb29e65bc044efb4bd5734f7b98c707acee7c5f8483",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:14:08Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Moon being fifth-largest in the Solar System teaches scale trivia; G3-E-6 moon-observation match is keyword-only (observing the Moon in the sky, not comparative size). Potential destination: space enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-one-moon-g4",
+      "id": "ffct-29479",
+      "textHash": "9fe7d5392f6cf9b0204bd5f83bdb70ee77cb9e339f2b30882b57df874b5e0861",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:14:09Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Earth having one moon versus Jupiter/Saturn many teaches planet-moon counts; matches are turn/direction keyword noise and G3-E-6 does not cover moon counts. Potential destination: solar-system enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-orbit-nearly-circle-g8",
+      "id": "ffct-32219",
+      "textHash": "e5532806f07f5235ad6438e1b0cb21f405b2a99a6babfd3bbfb01446396e6016",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:50:50Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Correcting the distance-causes-seasons misconception teaches that Earth's orbit is nearly circular; matched units are noise and the seasons competencies (G7-E-10 tilt/orbit) do not match this text. Potential destination: seasons/space enrichment or G7-E-10 facet if pattern includes orbit shape.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-orbit-speed-30-km-s-g7",
+      "id": "ffct-34598",
+      "textHash": "433a4f10bd47426e529db57db0eeadd2ba7059ad66559b47cfc2815bf8ca93b2",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:14:09Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Earth's orbital speed (30 km/s) is scale trivia; matched measuring/motion units (G4-F-2, G8-F-1 rate) are keyword-only about Earth, not taught measurements. Potential destination: space enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-ph-day-night-rotation-g4",
+      "id": "ffct-31562",
+      "textHash": "9ccdbc10c8c57c60fec3babd0db6914d551ca9c69223fc6e6364c64356e421c3",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:50:30Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Day/night from 24-hour rotation is core astronomy, but no matched unit genuinely teaches rotation-causes-day-night (G3-E-6/8 are observe-sky keywords; G7-E-11 does not match this text). Potential destination: earth-motions facet if authored; currently space enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-revolution-orbit-g5",
+      "id": "ffct-30944",
+      "textHash": "1e6a8797c1f4a24031f957dca0656f04ed01c6ec5ddf72c6f92cb9c18b35f231",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:50:50Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Revolution around the Sun taking ~365 days defining a year is core astronomy; matched units are all keyword noise and no current facet teaches revolution. Potential destination: earth-motions enrichment or new facet.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-rotation-speed-equator-g7",
+      "id": "ffct-34597",
+      "textHash": "c42982481352024a6dcf414ef1592396a6ddedded554a7fd95eb34d2246377a6",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:14:12Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Equatorial rotation speed (1,670 km/h) is scale trivia; matched measurement units are keyword-only. Potential destination: space enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-spins-24-hours-g5",
+      "id": "ffct-29492",
+      "textHash": "06f182f9429bcf951cd65d4519b1a7013f138518b6253753b393480b3ea33170",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:50:30Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "24-hour spin defining a day duplicates earth-day-length-24-hours-g6; no matched unit genuinely teaches it here (G3/G4 keyword noise). Potential destination: earth-motions facet if authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-stars-sun-distance-safe-g5",
+      "id": "ffct-31523",
+      "textHash": "606f803a41e8c96b505d60e0339608f0b9d8c94166a00e985336f3bfac9848ba",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:48:48Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Sun-habitable-zone distance explanation teaches astrobiology; matches (G3 light sources, G4 burning, G7-F-5 path) are keyword noise. Potential destination: space enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-tilt-not-precession-seasons-g8",
+      "id": "ffct-33245",
+      "textHash": "f7aaf15ca9ae017e24432fdf1e1ff57a4505a78a42e5046dce3ab5fb310e21cf",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:50:52Z disp=exclude",
+      "reviewedAt": "2026-09-10T22:40:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Axial precession over 26,000 years changing the north star teaches advanced astronomy beyond all matched elementary units (keyword noise). Potential destination: space enrichment for older grades.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-water-planet-g5",
+      "id": "ffct-34139",
+      "textHash": "30694093240c64b7a7ef1225e2668688d3e1e40e238391dacb7729b6998a1591",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:45:52Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Earth as the only planet with surface liquid water teaches astrobiology/planetary habitability; matches are water/basic-needs keyword noise. Potential destination: solar-system enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earth-year-length-g6",
+      "id": "ffct-34391",
+      "textHash": "498eb0f4335bf82679264a7cc501b8b11c74925d05377f94a14c785aa2395472",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:14:14Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "365.25-day orbit and leap years teaches calendar astronomy; matched units are keyword noise (G6-L-1 vessels via \"year\"?) and no facet teaches orbital period. Potential destination: earth-motions enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earthquake-fire-g6",
+      "id": "dcard-10256",
+      "textHash": "7ea3d0a4330dff0d2c8c402ca80383cf7cac39690979565be6479f4b8657c2da",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:08:17Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Earthquakes indirectly causing fires via broken gas lines teaches secondary earthquake hazards, important safety content, but matched units are keyword noise (G8-E-5 distribution patterns) and G6/G7 earthquake-preparedness facets do not match. Potential destination: earthquake-safety enrichment or G7-E-6 facet if authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earthquake-preparedness-go-bag-g5",
+      "id": "ffct-32822",
+      "textHash": "3a09f4f9e98b741f40be97d817767314f8a7d42f64f5feb440e0c258317c5f46",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:04:15Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Go-bag packing list is disaster-preparedness content; matches are food/water/shelter keyword noise against basic-needs competencies. Potential destination: disaster-preparedness enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earthquake-strength-richter-scale-g7",
+      "id": "ffct-33905",
+      "textHash": "e06f661218000620a0c7bae34c7a923f77b2c33515ea258b61732958af40cb15",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:04:01Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-E-3"
+      ],
+      "evidence": [
+        {
+          "lesson": "g7:earthquake-effects",
+          "unit": "G7-E-3:magnitude",
+          "quote": "strength (magnitude) of an earthquake"
+        }
+      ],
+      "reason": "Card teaches what earthquake magnitude means and that it is measured on the Richter scale \u2014 a genuine component of G7-E-3 (community effects depend on magnitude: the concept of magnitude itself). Reconciliation note: not crediting G7-F-3 force-diagram magnitude or G8-E-5 keyword matches. TL \"dating sinusukat\" faithfully renders \"traditionally measured\". TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "earthworm-digs-by-pushing-eating-soil-g4",
+      "id": "ffct-04741",
+      "textHash": "0e94bb9a0bdde4eeb00c65ff30b3d7bae9749870285721970521b61d33a41fd9",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:20:46Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Earthworm burrowing by pushing and eating soil teaches animal behavior; matches are push/soil keyword noise. Potential destination: soil/animal-behavior enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "echinoderm-five-part-body-g5",
+      "id": "ffct-08806",
+      "textHash": "4a435e4d2fc48a7e34b4fc5842d12755d2dea6623eb6033f28abb51ee766428b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:20:45Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Five-part radial body of echinoderms teaches invertebrate classification; matches are stars-in-sky keyword noise. Potential destination: invertebrates enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "echinoderm-slow-movers-g5",
+      "id": "ffct-13138",
+      "textHash": "f50cb75395fa29155479825ee299da82ba06d3f1ae645b2d27fa37c0b01ac8b2",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:20:45Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Echinoderms moving slowly teaches animal movement; matches are stars/slow keyword noise. Potential destination: marine-animals enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "echo-minimum-distance-g8",
+      "id": "ffct-26163",
+      "textHash": "21e9b8cfa5fd2e6198d750afe7772dc01fdf22d010ec53fea4fcea0d34ecb77a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:01:40Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Minimum echo distance teaches sound reflection; matches are distance/measurement keyword noise and no acoustics facet is authored. Potential destination: sound enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "eclipse-not-bad-omen-g6",
+      "id": "ffct-30735",
+      "textHash": "8fee0c4aa7abe2cb9c895bf56574778bfeee49d14068f7b8055e8819c0f7d81d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:50:56Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-E-10"
+      ],
+      "evidence": [
+        {
+          "lesson": "g6:community-sky-knowledge",
+          "unit": "G6-E-10:eclipses",
+          "quote": "bad luck"
+        }
+      ],
+      "reason": "Correcting the traditional belief that eclipses bring bad luck genuinely teaches the sky-beliefs component of G6-E-10 (how eclipses were understood/communicated traditionally versus scientifically). TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "eel-snake-like-body-g5",
+      "id": "ffct-03896",
+      "textHash": "db7b03df5293b0a6ecd968f47caf676bb9dc4597bf454ef088ee0626da25d585",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:20:47Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Eel's snake-like body teaches fish morphology; matches are food-chain/length keyword noise. Potential destination: fish enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "egg-protects-baby-inside-g4",
+      "id": "ffct-09864",
+      "textHash": "a4e1047c8fe7efe2729c4f1d2957cbd097f6fe64c4ce4d0efd9cc893706022f8",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:30:29Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Egg protecting the developing animal teaches reproduction; matched basic-needs/shelter units are keyword noise. Potential destination: animal-adaptations enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "egg-spoon-balance-g4",
+      "id": "ffct-24707",
+      "textHash": "ebc34aaa8e780d28f093167178db6341ecf356ff46179dd1d65eb4043d30eb52",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:23:15Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Egg-and-spoon balance game card teaches gameplay balance, not balanced forces; G7-F-3 force-diagram match is keyword-only. Potential destination: forces enrichment if reworded.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "einstein-nobel-photoelectric-g9",
+      "id": "ffct-18781",
+      "textHash": "b72e82b6e1671391faa4a53b0c1718e76abe5082f9ffc4b3ce62ed71cfa0db65",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:05:45Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Einstein's Nobel Prize for the photoelectric effect is history-of-science content; matches are equipment-safety/energy-generation keyword noise. Potential destination: science-history enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "electric-circuit-loop-g5",
+      "id": "dcard-09866",
+      "textHash": "039ac78ef79a72ba198aab3ead5a483c02ffdf8e6c04f16268dc8dab9d414d88",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:32:52Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G5-F-8"
+      ],
+      "evidence": [
+        {
+          "lesson": "g5:simple-circuits",
+          "unit": "G5-F-8:complete-loop",
+          "quote": "closed loop that gives electric current a complete return path"
+        }
+      ],
+      "reason": "A circuit being a closed loop giving current a complete return path genuinely teaches the core concept of G5-F-8 (assembling/drawing simple circuits). Cats role for series-and-parallel-circuits is supporting, not enrichment, so G5 codes are admissible. TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "electric-eel-detect-prey-hidden-g6",
+      "id": "ffct-09420",
+      "textHash": "e6da235cc202e81eb60eadeec244cb22ec16784ac6c80480debcfc9a56015f6a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:55:02Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Electric eel detecting hidden prey via electricity teaches electrosensory adaptation; matches (G6 moving sound, G9/G10 electrical safety) are keyword noise. Potential destination: animal-adaptations enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "electric-eel-not-true-eel-g7",
+      "id": "ffct-10897",
+      "textHash": "49bf2eee8079532a373214f59713440bd2946f7a10c532a3f906ccf8fd3d8577",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:28:29Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Electric eel not being a true eel teaches taxonomy trivia; matches (G5 rock comparison, G7 reproduction similarity) are keyword noise. Potential destination: fish enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "electric-eel-special-cells-g6",
+      "id": "ffct-12282",
+      "textHash": "7c51e871ec29e1ce0242cb72355ddffe689de84fb1feb5a5c1cac25c2b47522b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:38:11Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Electric eel's battery-like cells teach bioelectric animal physiology; the G5-F-8 components match is a battery keyword coincidence, not circuit teaching. Potential destination: animal-adaptations/electricity enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "electric-jeepney-charging-g6",
+      "id": "ffct-28129",
+      "textHash": "aa0cd536f9f35829b6524421b23315ac31eea92ad807cfadef4dac42f15cf094",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:50:10Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Electric jeepney running on a charged battery teaches EV energy storage; matches (G8-F-10 generation, G8-M-3 charge) are keyword noise. Potential destination: energy/technology enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "electric-shock-electric-ray-flat-g6",
+      "id": "ffct-06527",
+      "textHash": "899d19e10f72e92619c1066a40f734ee654d92b49e924796dea80caa1f7f42a9",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:38:13Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Electric ray shocking defensively teaches animal adaptation; matches are shape/water keyword noise. Potential destination: marine-animals enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "electric-shock-ph-catfish-g5",
+      "id": "ffct-04498",
+      "textHash": "5d4f2614df8b3c47c2316bf30ca52e95fe9a9b9457ccad510a7012f1d59c9108",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:20:50Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Philippine electric catfish teaches local biodiversity; matches (G4 food chain, G8 hydropower Philippine-source) are keyword noise. Potential destination: PH-biodiversity enrichment.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "electrical-safety-tell-adult-shock-g3",
+      "id": "ffct-23712",
+      "textHash": "0f1790ca7506435bc03be93471686949da2666611b6c752b8fb56b14bd7d3686",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:32:16Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "hold",
+      "codes": [],
+      "evidence": [],
+      "reason": "Shock rescue procedure (do not touch, switch off breaker, call an adult) teaches electrical first-aid safety; the G5-F-8 switch match is keyword-only and no matched facet covers electrical safety. Potential destination: safety enrichment or a G9-F-6/G10-F-10 safety facet if pattern authored.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "electrolyte-solutions-g10",
+      "id": "dcard-04812",
+      "textHash": "1d9bc426cbd266886c96fa05421d2f91d485d18852ee40b16730a9fce8cc7b96",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:42:58Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G10-M-2"
+      ],
+      "evidence": [
+        {
+          "lesson": "g10:m-2",
+          "unit": "G10-M-2:focus-4",
+          "quote": "break into ions that can carry electricity"
+        }
+      ],
+      "reason": "Acids, bases, and salts dissolving into current-carrying ions (electrolyte solutions) genuinely teaches the chemical-identification component of G10-M-2 (common acids, bases, salts and their behavior); cats role is direct. TL/BIS faithful.",
+      "translationsChecked": true
+    },
+    {
+      "factId": "electromagnet-needs-power-source-g7",
+      "id": "ffct-22575",
+      "textHash": "77fcafd0791ce82c7ce8959be0f0a287e213d06c357399df6f793ed42fec99e7",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:21:48Z disp=exclude",
+      "reviewedAt": "2026-09-10T23:05:00Z",
+      "reviewer": "glm-recovery-c",
+      "disposition": "recover_core",
+      "codes": [
+        "G5-F-8"
+      ],
+      "evidence": [
+        {
+          "lesson": "g5:simple-circuits",
+          "unit": "G5-F-8:components",
+          "quote": "A battery or another source of electricity"
+        }
+      ],
+      "reason": "Electromagnet needing a battery/electricity source genuinely teaches the components concept of G5-F-8 (batteries, wires, switch in a circuit) and complements G5-F-10 electromagnets. Reconciliation note: merged-pool variant adds only \"It needs\" \u2014 same intent, approved on the app-pool variant which is the shipping text. TL/BIS faithful.",
+      "translationsChecked": true
+    }
+  ],
+  "note": "User-requested final consolidation; complete independent proposal verification assessed by parent. Original timestamps preserved as provenance."
+}

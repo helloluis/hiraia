@@ -1,0 +1,149 @@
+{
+  "reviewedAt": "2026-09-10T14:02:14.655321+00:00",
+  "originalProposals": [
+    {
+      "factId": "carbohydrates-energy-brain-fuel-g6",
+      "id": "ffct-14266",
+      "textHash": "29fa3657525835b6d313b085d30d53ae4f32ea255028fd1b3dab7652be11557f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:57:10Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:57:46.252Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G3-L-6",
+        "G3-L-7"
+      ],
+      "reason": "Brain relying on glucose from carbohydrates, and breakfast supplying that food, is a sound teaching component of food as a basic need (G3-L-6:food) and of depending on the environment for food (G3-L-7:food-and-shelter). TL/BIS (utak/utok, almusal/pamahaw) OK. G10-L-1 glucose is homeostasis indicators, not brain fuel; G6-M-4 'food' would swallow nutrition into mixtures.",
+      "evidence": [
+        {
+          "lesson": "g3:basic-needs",
+          "unit": "G3-L-6:food",
+          "quote": "What food does your brain need most?"
+        },
+        {
+          "lesson": "g3:depending-on-nature",
+          "unit": "G3-L-7:food-and-shelter",
+          "quote": "Your brain is the hungriest for glucose from carbohydrates"
+        }
+      ]
+    },
+    {
+      "factId": "carbohydrates-energy-misconception-not-bad-g6",
+      "id": "ffct-04155",
+      "textHash": "0e8206bc30f4074527bb3766bb238062d5f9546e94984b6648442dec11d13a40",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:31:32Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:57:46.252Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G3-L-7"
+      ],
+      "reason": "Bodies needing carbohydrates for energy, with harm only from eating far too much, is a sound example of depending on food from the environment to meet needs (G3-L-7:food-and-shelter). TL/BIS (enerhiya/kusog; sobra-sobra/sobra ra kaayo) OK. G6-F-4/F-8 'energy' are wave energy; G3-L-6 is not admitted (no 'food'). Potential dedicated nutrition/macronutrient facet beyond G3 interdependence.",
+      "evidence": [
+        {
+          "lesson": "g3:depending-on-nature",
+          "unit": "G3-L-7:food-and-shelter",
+          "quote": "our bodies actually need them for energy. The only problem is eating far too much."
+        }
+      ]
+    },
+    {
+      "factId": "carbon-diamond-heat-pressure-g7",
+      "id": "ffct-17142",
+      "textHash": "68077f8fa2a86c7c6fb24aef7f845c9dbe370eb0c0f2d45c7ce41551988cf853",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:16:41Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:57:46.252Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G4-F-9"
+      ],
+      "reason": "Mantle heat and pressure converting carbon to diamond is a sound example of heat energy causing change (G4-F-9:forms). TL/BIS leave 'Extreme heat', 'crushing pressure', and 'millions of years' in English but the causal meaning is intact. G3-M-8/G4-F-6 would swallow geology into kid-scale pressing/squeezing shape-change; G8-M-6 'carbon' does not teach element names/symbols; G6-E-1 is volcano formation.",
+      "evidence": [
+        {
+          "lesson": "g4:energy",
+          "unit": "G4-F-9:forms",
+          "quote": "Extreme heat and crushing pressure squeeze carbon together"
+        }
+      ]
+    },
+    {
+      "factId": "carbon-diamond-sparkle-light-g6",
+      "id": "ffct-17144",
+      "textHash": "88a08a0e8f7eba1a7ea36df4c05af8d1c522321d71f570769fa4f185fe6307f7",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:19:08Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:57:46.252Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G4-F-9"
+      ],
+      "reason": "Internal bending/bouncing of light that flashes and splits into colors is a sound example of light energy causing change (G4-F-9:forms). TL binabaluktot/ibinabalik ang liwanag and BIS gibaliko/gipabalik ang kahayag match. G4-F-9:change is only a because⊃cause trap — evidenced on :forms. G6-F-5 is ripple-tank investigation (not credited); G6-F-9 does not teach that light is a transverse wave; G3-F-8 'flash' is sending messages.",
+      "evidence": [
+        {
+          "lesson": "g4:energy",
+          "unit": "G4-F-9:forms",
+          "quote": "they bend and bounce light inside, making it flash and split into colors"
+        }
+      ]
+    },
+    {
+      "factId": "cat-night-vision-g4",
+      "id": "ffct-11520",
+      "textHash": "5b39bcb82af89c9f8bcd9ef05f9698098e1ff881059e01c7b969eff2e58baf78",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:19:30Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:57:46.252Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G3-F-5",
+        "G4-F-10"
+      ],
+      "reason": "Seeing well in dim light so the cat can move at night is a sound everyday use of light (G3-F-5:uses; G4-F-10:light at home/community). TL/BIS (mata ng pusa / mata sa iring; madilim/ngitngit) OK. Only the uses/light facets are admitted (not G3-F-5 sources). G4-F-8 at-a-distance and G6-L-8 abiotic light would swallow a senses card into magnets/ecosystem-effects; G3-E-8 is sky objects affecting people.",
+      "evidence": [
+        {
+          "lesson": "g3:light",
+          "unit": "G3-F-5:uses",
+          "quote": "A cat's eyes can see well even in dim light"
+        },
+        {
+          "lesson": "g4:energy-uses",
+          "unit": "G4-F-10:light",
+          "quote": "A cat's eyes can see well even in dim light, letting it move around easily at night."
+        }
+      ]
+    },
+    {
+      "factId": "center-gravity-toy-wobble-roly-poly-g4",
+      "id": "ffct-24826",
+      "textHash": "4b9d4719f050807d5c5ab8931599d761d11709981d2b90af56f5a98d6ad9a47b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:52:52Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:57:46.252Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G5-F-6",
+        "G3-F-1"
+      ],
+      "reason": "A low CoG pulling a roly-poly back upright after it is pushed down is a sound effect of gravity on motion (G5-F-6:motion) and a push-by-people / pull-by-gravity way objects move (G3-F-1). TL/BIS (bumabalik sa tuwid / nagbalik sa tuwid) OK. G8-F-9 would swallow stability into falling-energy conservation; G7-F-1 does not teach measuring forces.",
+      "evidence": [
+        {
+          "lesson": "g5:gravity",
+          "unit": "G5-F-6:motion",
+          "quote": "Its very low center of gravity pulls it back upright every time you push it down!"
+        },
+        {
+          "lesson": "g3:moving-things",
+          "unit": "G3-F-1:pull",
+          "quote": "Its very low center of gravity pulls it back upright"
+        }
+      ]
+    }
+  ]
+}

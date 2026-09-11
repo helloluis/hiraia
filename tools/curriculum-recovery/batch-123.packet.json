@@ -1,0 +1,1447 @@
+[
+  {
+    "factId": "banana-fiber-natural-g6",
+    "id": "ffct-18047",
+    "textHash": "df672f4ad54a40e67176d20fe67cdc0368db7787f0057c1ab4e7c28383b3cd84",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:27:26Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-L-5",
+        "verdict": "related_only",
+        "card_evidence": "gives strong fibers from its stalks",
+        "competency_evidence": "observe the outer parts of plants, such as leaves, roots, and stems and identify their role to get water and nutrients from the soil",
+        "reason": "The card mentions stalks (a plant part) but does not describe their role in getting water and nutrients from the soil. It focuses on fiber production and uses, not the function of plant parts for water/nutrient uptake."
+      },
+      {
+        "code": "G3-M-5",
+        "verdict": "related_only",
+        "card_evidence": "strong natural fibers",
+        "competency_evidence": "describe the physical properties of solid materials, such as hard, shiny, or stretchable",
+        "reason": "The card mentions 'strong' as a property of the fiber, but the competency is about describing physical properties of solid materials such as hard, shiny, or stretchable. The card does not teach how to describe or identify such properties; it only states that fibers are strong and used for products."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-1",
+        "lesson": "g3:everyday-science",
+        "unit": "G3-M-1:local-examples",
+        "pattern": "rain|cook|shadow|melt|plant|dry"
+      },
+      {
+        "code": "G3-M-7",
+        "lesson": "g3:safe-materials",
+        "unit": "G3-M-7:reuse",
+        "pattern": "reuse|re.use"
+      },
+      {
+        "code": "G3-L-2",
+        "lesson": "g3:living-or-not",
+        "unit": "G3-L-2:local-examples",
+        "pattern": "plant|dog|cat|rock|chair|tree"
+      },
+      {
+        "code": "G3-L-8",
+        "lesson": "g3:protecting-nature",
+        "unit": "G3-L-8:care-actions",
+        "pattern": "plant|clean|protect|conserv|recycl"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G4-E-2",
+        "lesson": "g4:water-for-life",
+        "unit": "G4-E-2:plants",
+        "pattern": "plant"
+      },
+      {
+        "code": "G4-E-9",
+        "lesson": "g4:sun-and-life",
+        "unit": "G4-E-9:importance",
+        "pattern": "plant|food|warm|water"
+      },
+      {
+        "code": "G5-F-10",
+        "lesson": "g5:electromagnets",
+        "unit": "G5-F-10:observations",
+        "pattern": "current|switch|strong|turn.*off"
+      },
+      {
+        "code": "G5-E-1",
+        "lesson": "g5:landforms",
+        "unit": "G5-E-1:environmental-effects",
+        "pattern": "plant|animal|habitat|soil|flood|rain"
+      },
+      {
+        "code": "G5-E-6",
+        "lesson": "g5:water-cycle",
+        "unit": "G5-E-6:environment",
+        "pattern": "plant|animal|fresh|rain|environment"
+      },
+      {
+        "code": "G5-E-7",
+        "lesson": "g5:water-cycle",
+        "unit": "G5-E-7:model",
+        "pattern": "bag|model|experiment"
+      },
+      {
+        "code": "G6-M-4",
+        "lesson": "g6:useful-mixtures",
+        "unit": "G6-M-4:uses",
+        "pattern": "\\buse|food|drink|medicin|paint"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:benefits",
+        "pattern": "use|benefit|recover|separat"
+      },
+      {
+        "code": "G6-F-8",
+        "lesson": "g6:wave-models",
+        "unit": "G6-F-8:transverse-model",
+        "pattern": "rope|string|transverse"
+      },
+      {
+        "code": "G6-F-9",
+        "lesson": "g6:wave-examples",
+        "unit": "G6-F-9:transverse",
+        "pattern": "light|rope|transverse|seismic"
+      },
+      {
+        "code": "G6-E-3",
+        "lesson": "g6:eruption-history",
+        "unit": "G6-E-3:community",
+        "pattern": "communit|famil|evacuat"
+      },
+      {
+        "code": "G6-E-5",
+        "lesson": "g6:volcano-alerts",
+        "unit": "G6-E-5:before",
+        "pattern": "plan|prepare|before|evacuat"
+      },
+      {
+        "code": "G6-E-6",
+        "lesson": "g6:philippine-seasons",
+        "unit": "G6-E-6:activities",
+        "pattern": "plant|harvest|activit|travel|farm"
+      },
+      {
+        "code": "G6-E-9",
+        "lesson": "g6:sky-navigation",
+        "unit": "G6-E-9:seasons",
+        "pattern": "season|plant|harvest|calendar"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G7-L-10",
+        "lesson": "g7:energy-transfer",
+        "unit": "G7-L-10:example",
+        "pattern": "grass|plant|rice|algae|plankton"
+      },
+      {
+        "code": "G8-L-4",
+        "lesson": "g8:inheritance-patterns",
+        "unit": "G8-L-4:generations",
+        "pattern": "generation|pedigree|family"
+      },
+      {
+        "code": "G9-E-5",
+        "lesson": "g9:e-5",
+        "unit": "G9-E-5:focus-1",
+        "pattern": "relative|superposition"
+      },
+      {
+        "code": "G9-M-5",
+        "lesson": "g9:m-5",
+        "unit": "G9-M-5:focus-1",
+        "pattern": "lose|loss|gain|transfer"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Did you know the banana plant family gives us strong natural fibers?\n\nYes! Abaca, a close relative of the banana, gives strong fibers from its stalks. These are used for ropes, bags, and textiles in Mindanao!",
+      "tl": "Alam mo ba na ang pamilya ng puno ng saging ay nagbibigay ng matibay na natural na fiber?\n\nOo! Ang abaca, isang kamag-anak ng saging, ay nagbibigay ng matibay na fibers mula sa tangkay nito. Ginagamit ito para sa mga lubid, bag, at tela sa Mindanao!",
+      "bis": "Nahibaw-an ba nimo nga ang pamilya sa puno sa saging naghatag og lig-on nga natural nga fiber?\n\nOo! Ang abaca, usa ka duol nga kadugo sa saging, naghatag og lig-on nga fibers gikan sa tangkay. Gigamit kini alang sa mga lubid, bag, ug tela sa Mindanao!"
+    },
+    "exportedAt": "2026-09-10T12:50:35.600813+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "banana-not-tree-herb-g5",
+    "id": "ffct-05822",
+    "textHash": "2cc7edfec4b27975f92dba709ed3648fe952daa1cdc5cd401e3fd2e65b313b4d",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:27:36Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G5-L-4",
+        "verdict": "related_only",
+        "card_evidence": "the banana plant is not a real tree but a giant herb",
+        "competency_evidence": "use a table to show how living things can be classified into groups based on similar characteristics (plants including flowering and non-flowering; animals including mammals, reptiles, insects, birds, fish, amphibians; microorganisms including fungi and bacteria)",
+        "reason": "The card mentions that a banana is a herb, but it does not use a table to classify living things into the named groups (flowering/non-flowering plants, animal groups, microorganisms). It provides no classification scheme or table, so it does not directly support the competency."
+      },
+      {
+        "code": "G3-L-5",
+        "verdict": "related_only",
+        "card_evidence": "its 'trunk' is made of tightly rolled leaf stalks",
+        "competency_evidence": "observe the outer parts of plants, such as leaves, roots, and stems and identify their role to get water and nutrients from the soil",
+        "reason": "The card mentions leaf stalks but does not describe the outer parts of plants (leaves, roots, stems) or their role in getting water and nutrients from the soil. It only notes that the trunk is made of leaf stalks, which is not the focus of the competency."
+      },
+      {
+        "code": "G5-L-7",
+        "verdict": "related_only",
+        "card_evidence": "the banana plant is not a real tree but a giant herb",
+        "competency_evidence": "describe the purpose of specialized structures in plants, such as rhizomes, tubers, thorns, bulbs, and aerial roots",
+        "reason": "The card states that a banana is a giant herb, but it does not describe the purpose of specialized structures such as rhizomes, tubers, thorns, bulbs, or aerial roots. The leaf-stalk trunk is not one of the listed specialized structures, and no purpose is explained."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-1",
+        "lesson": "g3:everyday-science",
+        "unit": "G3-M-1:local-examples",
+        "pattern": "rain|cook|shadow|melt|plant|dry"
+      },
+      {
+        "code": "G3-L-2",
+        "lesson": "g3:living-or-not",
+        "unit": "G3-L-2:local-examples",
+        "pattern": "plant|dog|cat|rock|chair|tree"
+      },
+      {
+        "code": "G3-L-8",
+        "lesson": "g3:protecting-nature",
+        "unit": "G3-L-8:protect-habitats",
+        "pattern": "habitat|home|tree|forest"
+      },
+      {
+        "code": "G3-L-8",
+        "lesson": "g3:protecting-nature",
+        "unit": "G3-L-8:care-actions",
+        "pattern": "plant|clean|protect|conserv|recycl"
+      },
+      {
+        "code": "G3-F-1",
+        "lesson": "g3:moving-things",
+        "unit": "G3-F-1:roll",
+        "pattern": "roll"
+      },
+      {
+        "code": "G3-E-2",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-2:human-made-objects",
+        "pattern": "made|make|build|clay|wood|metal"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:eye-protection",
+        "pattern": "eye|look|stare"
+      },
+      {
+        "code": "G4-E-2",
+        "lesson": "g4:water-for-life",
+        "unit": "G4-E-2:plants",
+        "pattern": "plant"
+      },
+      {
+        "code": "G4-E-9",
+        "lesson": "g4:sun-and-life",
+        "unit": "G4-E-9:importance",
+        "pattern": "plant|food|warm|water"
+      },
+      {
+        "code": "G5-E-1",
+        "lesson": "g5:landforms",
+        "unit": "G5-E-1:environmental-effects",
+        "pattern": "plant|animal|habitat|soil|flood|rain"
+      },
+      {
+        "code": "G5-E-6",
+        "lesson": "g5:water-cycle",
+        "unit": "G5-E-6:environment",
+        "pattern": "plant|animal|fresh|rain|environment"
+      },
+      {
+        "code": "G6-E-5",
+        "lesson": "g6:volcano-alerts",
+        "unit": "G6-E-5:before",
+        "pattern": "plan|prepare|before|evacuat"
+      },
+      {
+        "code": "G6-E-6",
+        "lesson": "g6:philippine-seasons",
+        "unit": "G6-E-6:activities",
+        "pattern": "plant|harvest|activit|travel|farm"
+      },
+      {
+        "code": "G6-E-9",
+        "lesson": "g6:sky-navigation",
+        "unit": "G6-E-9:seasons",
+        "pattern": "season|plant|harvest|calendar"
+      },
+      {
+        "code": "G7-L-10",
+        "lesson": "g7:energy-transfer",
+        "unit": "G7-L-10:example",
+        "pattern": "grass|plant|rice|algae|plankton"
+      },
+      {
+        "code": "G8-L-3",
+        "lesson": "g8:plant-transport",
+        "unit": "G8-L-3:leaves",
+        "pattern": "lea(f|ves)|transpir"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Is a banana plant really a tree?\n\nEven though it looks like a tree, the banana plant is not a real tree but a giant herb — its 'trunk' is made of tightly rolled leaf stalks.",
+      "tl": "Puno ba talaga ang saging?\n\nKahit mukhang puno, ang saging ay hindi tunay na kahoy kundi napakalaking halamang-damo — ang 'puno' nito ay gawa sa magkakapatong na tangkay ng dahon.",
+      "bis": "Kahoy ba gyud ang saging?\n\nBisan og morag kahoy, ang saging dili tinuod nga kahoy kondili dako kaayo nga tanom-balili — ang 'punoan' niini hinimo sa nagtapok nga tangkay sa dahon."
+    },
+    "exportedAt": "2026-09-10T12:50:35.628944+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "banana-ripe-yellow-green-g3",
+    "id": "ffct-00270",
+    "textHash": "8cf925006d5bf1c59d34f8bdbba26379e788f2ff6069ad59a764435e1637b6ae",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:10:34Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-L-3",
+        "verdict": "related_only",
+        "card_evidence": "A banana starts out green and turns yellow once it's ripe.",
+        "competency_evidence": "describe the characteristics of living things: they grow, respond, and reproduce",
+        "reason": "The card describes a color change during ripening, but does not address the characteristics of living things (grow, respond, reproduce). It is only tangentially about a living thing."
+      },
+      {
+        "code": "G5-L-6",
+        "verdict": "related_only",
+        "card_evidence": "A banana starts out green and turns yellow once it's ripe.",
+        "competency_evidence": "compare the life cycles of mammals from birth to adulthood, birds from egg to a mature organism, and plants from seed to a young plant, and then to a mature plant",
+        "reason": "The card mentions a single stage of a plant's development (ripening) but does not compare life cycles of mammals, birds, or plants from seed to mature plant. It does not support the comparative or multi-stage requirement of the competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-E-6",
+        "lesson": "g3:watching-the-sky",
+        "unit": "G3-E-6:stars",
+        "pattern": "star"
+      },
+      {
+        "code": "G3-E-8",
+        "lesson": "g3:sky-and-our-day",
+        "unit": "G3-E-8:nighttime",
+        "pattern": "night|moon|star"
+      },
+      {
+        "code": "G4-F-5",
+        "lesson": "g4:change-motion",
+        "unit": "G4-F-5:turn",
+        "pattern": "direction|turn"
+      },
+      {
+        "code": "G7-F-4",
+        "lesson": "g7:net-force",
+        "unit": "G7-F-4:direction",
+        "pattern": "direction|turn|curv"
+      },
+      {
+        "code": "G9-F-2",
+        "lesson": "g9:f-2",
+        "unit": "G9-F-2:focus-2",
+        "pattern": "direction|turn"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "A banana starts out green and turns yellow once it's ripe.",
+      "tl": "Berde muna ang saging bago ito maging dilaw kapag hinog na.",
+      "bis": "Lunhaw una ang saging sa dili pa kini modalag kung hinog na."
+    },
+    "exportedAt": "2026-09-10T12:50:35.651042+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "banca-balancing-stand-g5",
+    "id": "ffct-26119",
+    "textHash": "86051eed5894aafff635c6934a0955b92ea3e6ad5aabfc56823daf9fee3d1480",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:59:21Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G4-F-2",
+        "verdict": "wrong",
+        "card_evidence": "The outrigger on the side widens the banca's base on water, keeping it steady even in waves!",
+        "competency_evidence": "measure accurately the distance and time when things move using simple equipment",
+        "reason": "The card explains stability from an outrigger widening the base; it contains no measurement of distance or time, no simple equipment use, and no movement measurement. It does not support the competency."
+      },
+      {
+        "code": "G3-F-2",
+        "verdict": "related_only",
+        "card_evidence": "The outrigger on the side widens the banca's base on water, keeping it steady even in waves!",
+        "competency_evidence": "explore and describe things that affect the movement of objects, including size, shape, heaviness, material, and surface texture",
+        "reason": "The card is about stability in water, not about movement of objects or factors like size, shape, heaviness, material, or surface texture affecting movement. It shares the broad force/motion domain but does not directly teach this competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-6",
+        "lesson": "g3:basic-needs",
+        "unit": "G3-L-6:water",
+        "pattern": "water"
+      },
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:environment",
+        "pattern": "water|soil|air|sun"
+      },
+      {
+        "code": "G3-F-1",
+        "lesson": "g3:moving-things",
+        "unit": "G3-F-1:water",
+        "pattern": "water"
+      },
+      {
+        "code": "G3-F-8",
+        "lesson": "g3:sending-messages",
+        "unit": "G3-F-8:movement",
+        "pattern": "wave|hand|gesture|movement"
+      },
+      {
+        "code": "G3-E-1",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-1:examples",
+        "pattern": "rock|soil|water|air|metal|cloud|rain|sun"
+      },
+      {
+        "code": "G4-L-3",
+        "lesson": "g4:habitat-groups",
+        "unit": "G4-L-3:water",
+        "pattern": "aquatic|water"
+      },
+      {
+        "code": "G4-E-9",
+        "lesson": "g4:sun-and-life",
+        "unit": "G4-E-9:importance",
+        "pattern": "plant|food|warm|water"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:products",
+        "pattern": "\\bsalt\\b|\\bgrain\\b|\\brice\\b|\\bwater\\b|\\biron\\b|\\bsand\\b"
+      },
+      {
+        "code": "G6-L-7",
+        "lesson": "g6:ecosystem-factors",
+        "unit": "G6-L-7:water",
+        "pattern": "water"
+      },
+      {
+        "code": "G6-L-8",
+        "lesson": "g6:ecosystem-effects",
+        "unit": "G6-L-8:nonliving-interactions",
+        "pattern": "water|soil|temperature|light|drought|flood"
+      },
+      {
+        "code": "G7-M-11",
+        "lesson": "g7:litmus",
+        "unit": "G7-M-11:base",
+        "pattern": "\\bbase|alkali"
+      },
+      {
+        "code": "G8-L-8",
+        "lesson": "g8:nature-cycles",
+        "unit": "G8-L-8:water",
+        "pattern": "water|transpir"
+      },
+      {
+        "code": "G8-L-11",
+        "lesson": "g8:photosynthesis-test",
+        "unit": "G8-L-11:raw-material",
+        "pattern": "carbon dioxide|water"
+      },
+      {
+        "code": "G9-M-7",
+        "lesson": "g9:m-7",
+        "unit": "G9-M-7:focus-1",
+        "pattern": "water|H2O|H₂O"
+      },
+      {
+        "code": "G9-M-8",
+        "lesson": "g9:m-8",
+        "unit": "G9-M-8:focus-1",
+        "pattern": "water|H2O|H₂O"
+      },
+      {
+        "code": "G10-L-10",
+        "lesson": "g10:l-10",
+        "unit": "G10-L-10:focus-2",
+        "pattern": "water"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Why doesn't a banca tip over easily in waves?\n\nThe outrigger on the side widens the banca's base on water, keeping it steady even in waves!",
+      "tl": "Bakit hindi madaling tumaob ang bangka kahit may alon?\n\nAng katig sa gilid ay nagpapalawak ng base ng bangka sa tubig, kaya hindi ito madaling tumaob kahit may alon!",
+      "bis": "Nganong dili dali matumba ang bangka bisan adunay balod?\n\nAng katig sa kilid magpalapad sa sukaranan sa bangka sa tubig, busa dili kini dali matumba bisan adunay balod!"
+    },
+    "exportedAt": "2026-09-10T12:50:35.676530+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "banca-paddle-energy-source-g6",
+    "id": "ffct-24369",
+    "textHash": "b04c67626e8e382f535a9ebfef656bacc6f50a9f694c178ea088b80981d24596",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:49:59Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G4-F-9",
+        "verdict": "related_only",
+        "card_evidence": "This energy comes from the food you ate",
+        "competency_evidence": "identify that energy is something that can cause change including light, sound, and heat energy",
+        "reason": "The card discusses energy from food powering muscles, but the competency specifically requires identifying energy as light, sound, and heat energy. The card does not address any of these forms, so it only shares the broad concept of energy."
+      },
+      {
+        "code": "G4-F-10",
+        "verdict": "related_only",
+        "card_evidence": "Your muscles—arms, back, and shoulders—move the paddle!",
+        "competency_evidence": "observe and identify sources and uses of light, sound, and heat energy at school, at home and in the local community",
+        "reason": "The competency requires observing and identifying sources and uses of light, sound, and heat energy. The card is about muscular energy from food, not light, sound, or heat, so it does not directly support this competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-6",
+        "lesson": "g3:basic-needs",
+        "unit": "G3-L-6:food",
+        "pattern": "food"
+      },
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:food-and-shelter",
+        "pattern": "food|eat|shelter"
+      },
+      {
+        "code": "G3-E-7",
+        "lesson": "g3:watching-the-sky",
+        "unit": "G3-E-7:apparent-motion",
+        "pattern": "move|motion|rise|set"
+      },
+      {
+        "code": "G4-L-1",
+        "lesson": "g4:body-systems",
+        "unit": "G4-L-1:muscular",
+        "pattern": "muscle.*(move|contract)|muscular"
+      },
+      {
+        "code": "G4-E-8",
+        "lesson": "g4:shadows",
+        "unit": "G4-E-8:length",
+        "pattern": "long|short|length"
+      },
+      {
+        "code": "G4-E-9",
+        "lesson": "g4:sun-and-life",
+        "unit": "G4-E-9:importance",
+        "pattern": "plant|food|warm|water"
+      },
+      {
+        "code": "G5-E-5",
+        "lesson": "g5:erosion",
+        "unit": "G5-E-5:transport",
+        "pattern": "carry|carries|transport|move"
+      },
+      {
+        "code": "G5-E-10",
+        "lesson": "g5:weather-disturbances",
+        "unit": "G5-E-10:before-during-after",
+        "pattern": "after"
+      },
+      {
+        "code": "G6-M-4",
+        "lesson": "g6:useful-mixtures",
+        "unit": "G6-M-4:uses",
+        "pattern": "\\buse|food|drink|medicin|paint"
+      },
+      {
+        "code": "G6-F-4",
+        "lesson": "g6:wave-energy",
+        "unit": "G6-F-4:transfer",
+        "pattern": "energy"
+      },
+      {
+        "code": "G6-F-8",
+        "lesson": "g6:wave-models",
+        "unit": "G6-F-8:energy",
+        "pattern": "energy"
+      },
+      {
+        "code": "G6-E-5",
+        "lesson": "g6:volcano-alerts",
+        "unit": "G6-E-5:after",
+        "pattern": "after|return|all.clear"
+      },
+      {
+        "code": "G6-E-10",
+        "lesson": "g6:community-sky-knowledge",
+        "unit": "G6-E-10:patterns-time",
+        "pattern": "time|calendar|constellation|season"
+      },
+      {
+        "code": "G7-M-3",
+        "lesson": "g7:particle-motion",
+        "unit": "G7-M-3:motion",
+        "pattern": "motion|mov|vibrat"
+      },
+      {
+        "code": "G7-E-6",
+        "lesson": "g7:earthquake-plan",
+        "unit": "G7-E-6:after",
+        "pattern": "after|evacuat"
+      },
+      {
+        "code": "G8-E-8",
+        "lesson": "g8:typhoon-track",
+        "unit": "G8-E-8:tracking",
+        "pattern": "plot|track|time"
+      },
+      {
+        "code": "G8-F-7",
+        "lesson": "g8:power",
+        "unit": "G8-F-7:rate",
+        "pattern": "time|rate|per second"
+      },
+      {
+        "code": "G9-E-5",
+        "lesson": "g9:e-5",
+        "unit": "G9-E-5:focus-3",
+        "pattern": "time|age"
+      },
+      {
+        "code": "G10-F-6",
+        "lesson": "g10:f-6",
+        "unit": "G10-F-6:focus-2",
+        "pattern": "time"
+      },
+      {
+        "code": "G10-M-8",
+        "lesson": "g10:m-8",
+        "unit": "G10-M-8:focus-1",
+        "pattern": "food|preserv"
+      },
+      {
+        "code": "G10-L-10",
+        "lesson": "g10:l-10",
+        "unit": "G10-L-10:focus-1",
+        "pattern": "food"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Where does your paddling power come from?\n\nYour muscles—arms, back, and shoulders—move the paddle! This energy comes from the food you ate, which is why you get tired after a long time.",
+      "tl": "Saan galing ang lakas mo sa pagsagwan?\n\nAng iyong muscles—braso, likod, at balikat—ang gumagalaw! Galing sa pagkain ang enerhiyang ito, kaya napapagod ka kapag matagal na nagsasagwan.",
+      "bis": "Asa gikan ang imong kusog sa pagbugsay?\n\nAng imong muscles—bukton, likod, ug abaga—ang molihok! Gikan sa pagkaon kining enerhiya, mao nga kapuyon ka kung dugay na magbugsay."
+    },
+    "exportedAt": "2026-09-10T12:50:35.704565+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "bangui-windmills-ilocos-g7",
+    "id": "ffct-26239",
+    "textHash": "2b85ffa58788d47aa111661a3fe3fe1fbdaf8f93610b161379a9226e9daf1fc4",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:41:52Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G10-F-13",
+        "verdict": "related_only",
+        "card_evidence": "The famous row of windmills that make electricity from the wind is located in Bangui, Ilocos Norte!",
+        "competency_evidence": "gather information from secondary sources to evaluate how renewable and non-renewable generation of electricity in the Philippines impacts human activities and the environment",
+        "reason": "The card only states the location of windmills that generate electricity from wind. It does not gather information from secondary sources, nor does it evaluate how renewable generation impacts human activities and the environment. The content is merely a factual mention of a renewable energy installation, providing no direct instructional support for the competency's evaluation skill."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-2",
+        "lesson": "g3:living-or-not",
+        "unit": "G3-L-2:local-examples",
+        "pattern": "plant|dog|cat|rock|chair|tree"
+      },
+      {
+        "code": "G3-F-1",
+        "lesson": "g3:moving-things",
+        "unit": "G3-F-1:wind",
+        "pattern": "wind"
+      },
+      {
+        "code": "G3-E-2",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-2:human-made-objects",
+        "pattern": "made|make|build|clay|wood|metal"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G5-L-4",
+        "lesson": "g5:classification",
+        "unit": "G5-L-4:classification-table",
+        "pattern": "\\b(?:table|column|row|chart)s?\\b"
+      },
+      {
+        "code": "G8-E-12",
+        "lesson": "g8:tidal-energy",
+        "unit": "G8-E-12:generation",
+        "pattern": "turbine|electric|generator"
+      },
+      {
+        "code": "G8-F-10",
+        "lesson": "g8:hydropower",
+        "unit": "G8-F-10:generation",
+        "pattern": "turbine|generator|electric"
+      },
+      {
+        "code": "G9-M-11",
+        "lesson": "g9:m-11",
+        "unit": "G9-M-11:focus-3",
+        "pattern": "electrical|electricity"
+      },
+      {
+        "code": "G10-E-12",
+        "lesson": "g10:e-12",
+        "unit": "G10-E-12:focus-2",
+        "pattern": "wind"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "The famous row of windmills that make electricity from the wind is located in Bangui, Ilocos Norte!",
+      "tl": "Ang sikat na hanay ng windmill na gumagawa ng kuryente mula sa hangin ay nasa Bangui, Ilocos Norte!",
+      "bis": "Ang bantog nga han-ay sa windmill nga naghimo ug kuryente gikan sa hangin naa sa Bangui, Ilocos Norte!"
+    },
+    "exportedAt": "2026-09-10T12:50:35.728504+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "bangus-milkfish-pond-g4",
+    "id": "ffct-01441",
+    "textHash": "5d52250699e4ef085271b4f568eb218b1820268c3cc4cb035c7a3da59ec99be5",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:01:08Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G4-L-3",
+        "verdict": "related_only",
+        "card_evidence": "it's usually raised right in fishponds",
+        "competency_evidence": "use a drawing or diagram to classify some Philippine animals and plants, based on their habitat: some live on land (terrestrial), live in water (aquatic) or fly in the air (aerial)",
+        "reason": "The card mentions a Philippine animal (milkfish) and a habitat (fishponds), but it does not use a drawing or diagram to classify animals/plants by habitat (terrestrial/aquatic/aerial). No classification is performed."
+      },
+      {
+        "code": "G4-L-4",
+        "verdict": "related_only",
+        "card_evidence": "it's usually raised right in fishponds",
+        "competency_evidence": "make a list or draw up a table with examples of animals and plants in a particular habitat, such as a garden, rice field, seashore, and mangrove swamp",
+        "reason": "The card names a single animal in a fishpond habitat, but it does not make a list or table of animals and plants in a particular habitat. It provides no examples beyond the milkfish itself."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-F-3",
+        "lesson": "g3:position",
+        "unit": "G3-F-3:left-right",
+        "pattern": "left|right"
+      },
+      {
+        "code": "G4-L-7",
+        "lesson": "g4:food-chains",
+        "unit": "G4-L-7:local-chain",
+        "pattern": "rice|grass|frog|snake|Philippin"
+      },
+      {
+        "code": "G6-L-4",
+        "lesson": "g6:animal-groups",
+        "unit": "G6-L-4:local",
+        "pattern": "Philippin|carabao|tilapia|tarsier|crab|butterfl"
+      },
+      {
+        "code": "G6-E-3",
+        "lesson": "g6:eruption-history",
+        "unit": "G6-E-3:philippine-history",
+        "pattern": "Philippin|Mayon|Taal|Pinatubo|Kanlaon"
+      },
+      {
+        "code": "G7-E-2",
+        "lesson": "g7:fault-models",
+        "unit": "G7-E-2:philippine-context",
+        "pattern": "Philippin|Valley Fault|subduct|converg"
+      },
+      {
+        "code": "G8-L-7",
+        "lesson": "g8:humans-primates",
+        "unit": "G8-L-7:mammals",
+        "pattern": "mammal|milk|hair"
+      },
+      {
+        "code": "G8-E-7",
+        "lesson": "g8:typhoon-formation",
+        "unit": "G8-E-7:philippines",
+        "pattern": "Philippin|western.*Pacific"
+      },
+      {
+        "code": "G8-F-10",
+        "lesson": "g8:hydropower",
+        "unit": "G8-F-10:philippine-source",
+        "pattern": "Philippin|Agus|Magat|Ambuklao|Angat|Binga"
+      },
+      {
+        "code": "G9-E-2",
+        "lesson": "g9:e-2",
+        "unit": "G9-E-2:focus-1",
+        "pattern": "Philippin|Manila"
+      },
+      {
+        "code": "G9-L-8",
+        "lesson": "g9:l-8",
+        "unit": "G9-L-8:focus-2",
+        "pattern": "community|local|Philippin"
+      },
+      {
+        "code": "G10-E-3",
+        "lesson": "g10:e-3",
+        "unit": "G10-E-3:focus-1",
+        "pattern": "Philippin|Manila"
+      },
+      {
+        "code": "G10-M-2",
+        "lesson": "g10:m-2",
+        "unit": "G10-M-2:focus-1",
+        "pattern": "indicator|litmus|pH"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Bangus, the milkfish, is the Philippines' national fish — and it's usually raised right in fishponds!",
+      "tl": "Ang bangus ang pambansang isda ng Pilipinas — at karaniwang inaalagaan ito sa palaisdaan!",
+      "bis": "Ang bangus mao ang nasudnong isda sa Pilipinas — ug kasagaran gialiman kini sa palaisdaan!"
+    },
+    "exportedAt": "2026-09-10T12:50:35.752948+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "barako-coffee-batangas-g6",
+    "id": "ffct-14854",
+    "textHash": "d484cef52390202b2d1f1c7ace21539e17213b44f1ecf9f871b959a5591cc5ae",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:28:03Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G5-L-4",
+        "verdict": "related_only",
+        "card_evidence": "Barako coffee is a special kind of coffee called Liberica",
+        "competency_evidence": "use a table to show how living things can be classified into groups based on similar characteristics (plants including flowering and non-flowering; animals including mammals, reptiles, insects, birds, fish, amphibians; microorganisms including fungi and bacteria)",
+        "reason": "The card only states a fact about a specific coffee variety (Liberica). It does not classify living things into groups, does not use a table, and does not address flowering/non-flowering plants or any of the named animal or microorganism groups. The content is merely about a plant, not about classification."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G4-L-7",
+        "lesson": "g4:food-chains",
+        "unit": "G4-L-7:local-chain",
+        "pattern": "rice|grass|frog|snake|Philippin"
+      },
+      {
+        "code": "G6-L-4",
+        "lesson": "g6:animal-groups",
+        "unit": "G6-L-4:local",
+        "pattern": "Philippin|carabao|tilapia|tarsier|crab|butterfl"
+      },
+      {
+        "code": "G6-E-3",
+        "lesson": "g6:eruption-history",
+        "unit": "G6-E-3:philippine-history",
+        "pattern": "Philippin|Mayon|Taal|Pinatubo|Kanlaon"
+      },
+      {
+        "code": "G6-E-4",
+        "lesson": "g6:volcanic-materials",
+        "unit": "G6-E-4:gases",
+        "pattern": "gas"
+      },
+      {
+        "code": "G7-E-2",
+        "lesson": "g7:fault-models",
+        "unit": "G7-E-2:philippine-context",
+        "pattern": "Philippin|Valley Fault|subduct|converg"
+      },
+      {
+        "code": "G8-E-7",
+        "lesson": "g8:typhoon-formation",
+        "unit": "G8-E-7:philippines",
+        "pattern": "Philippin|western.*Pacific"
+      },
+      {
+        "code": "G8-F-10",
+        "lesson": "g8:hydropower",
+        "unit": "G8-F-10:philippine-source",
+        "pattern": "Philippin|Agus|Magat|Ambuklao|Angat|Binga"
+      },
+      {
+        "code": "G9-E-2",
+        "lesson": "g9:e-2",
+        "unit": "G9-E-2:focus-1",
+        "pattern": "Philippin|Manila"
+      },
+      {
+        "code": "G9-L-8",
+        "lesson": "g9:l-8",
+        "unit": "G9-L-8:focus-2",
+        "pattern": "community|local|Philippin"
+      },
+      {
+        "code": "G10-E-3",
+        "lesson": "g10:e-3",
+        "unit": "G10-E-3:focus-1",
+        "pattern": "Philippin|Manila"
+      },
+      {
+        "code": "G10-M-1",
+        "lesson": "g10:m-1",
+        "unit": "G10-M-1:focus-3",
+        "pattern": "gas"
+      },
+      {
+        "code": "G10-M-2",
+        "lesson": "g10:m-2",
+        "unit": "G10-M-2:focus-1",
+        "pattern": "indicator|litmus|pH"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Barako coffee is a special kind of coffee called Liberica, famous in Batangas and Cavite here in the Philippines.",
+      "tl": "Ang Kapeng Barako ay isang espesyal na uri ng kape na tinatawag na Liberica, kilala sa Batangas at Cavite sa Pilipinas.",
+      "bis": "Ang Kapeng Barako usa ka espesyal nga klase sa kape nga gitawag Liberica, bantog sa Batangas ug Cavite sa Pilipinas."
+    },
+    "exportedAt": "2026-09-10T12:50:35.777687+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "bark-is-dead-outer-layer-g6",
+    "id": "ffct-03498",
+    "textHash": "2b3d8fd9cc230457e1a97a6f46178a4810328a5db631961668cf8ed822ec1770",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:27:35Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-L-5",
+        "verdict": "related_only",
+        "card_evidence": "the outer bark is made of dead cells that shield the living parts of the tree inside",
+        "competency_evidence": "observe the outer parts of plants, such as leaves, roots, and stems and identify their role to get water and nutrients from the soil",
+        "reason": "The card describes the outer bark as dead protective cells, but G3-L-5 focuses on observing leaves, roots, and stems and their role in obtaining water and nutrients. This is only tangentially about plant outer parts."
+      },
+      {
+        "code": "G7-L-3",
+        "verdict": "related_only",
+        "card_evidence": "the outer bark is made of dead cells that shield the living parts of the tree inside",
+        "competency_evidence": "recognize that some organisms consist of a single cell (unicellular) like in bacteria and some consist of many cells (multicellular) like in a human",
+        "reason": "The card mentions cells but does not address unicellular versus multicellular organisms, which is the core of G7-L-3."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-2",
+        "lesson": "g3:living-or-not",
+        "unit": "G3-L-2:local-examples",
+        "pattern": "plant|dog|cat|rock|chair|tree"
+      },
+      {
+        "code": "G3-L-8",
+        "lesson": "g3:protecting-nature",
+        "unit": "G3-L-8:protect-habitats",
+        "pattern": "habitat|home|tree|forest"
+      },
+      {
+        "code": "G3-E-2",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-2:human-made-objects",
+        "pattern": "made|make|build|clay|wood|metal"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G6-L-7",
+        "lesson": "g6:ecosystem-factors",
+        "unit": "G6-L-7:biotic",
+        "pattern": "biotic|living"
+      },
+      {
+        "code": "G8-M-10",
+        "lesson": "g8:group-valence",
+        "unit": "G8-M-10:shared-valence",
+        "pattern": "valence|outer"
+      },
+      {
+        "code": "G8-E-4",
+        "lesson": "g8:volcano-shape",
+        "unit": "G8-E-4:cone-shape",
+        "pattern": "shield|steep|cone|slope"
+      },
+      {
+        "code": "G9-L-9",
+        "lesson": "g9:l-9",
+        "unit": "G9-L-9:focus-6",
+        "pattern": "\\bbiotic\\b|\\bliving\\b"
+      },
+      {
+        "code": "G9-M-3",
+        "lesson": "g9:m-3",
+        "unit": "G9-M-3:focus-1",
+        "pattern": "outer|valence"
+      },
+      {
+        "code": "G10-L-6",
+        "lesson": "g10:l-6",
+        "unit": "G10-L-6:focus-2",
+        "pattern": "organism|cell|enzyme|microb"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Is the outer bark of a tree alive?\n\nNo — the outer bark is made of dead cells that shield the living parts of the tree inside!",
+      "tl": "Buhay ba ang panlabas na balat ng puno?\n\nHindi — gawa sa patay na selula ang panlabas na balat ng puno para protektahan ang buhay na bahagi sa loob!",
+      "bis": "Buhi ba ang gawas nga panit sa kahoy?\n\nDili — hinimo sa patay nga selula ang gawas nga panit sa kahoy aron panalipdan ang buhi nga bahin sa sulod!"
+    },
+    "exportedAt": "2026-09-10T12:50:35.802954+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "bark-outer-narra-philippines-g5",
+    "id": "ffct-14644",
+    "textHash": "8bc2522019a94c03c1616c89823aaaf2efba32e23e4e54b9319e989ecfed02a4",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:36:25Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G5-L-8",
+        "verdict": "related_only",
+        "card_evidence": "wear thick bark that protects them in the hot, rainy tropics",
+        "competency_evidence": "explain how some plants have adapted to unfavorable conditions in the environment, such as lack of rain or floods",
+        "reason": "The card mentions thick bark as a protective feature in a hot, rainy tropical climate, but the competency specifically targets adaptation to unfavorable conditions such as lack of rain or floods. The card does not explain an adaptation to drought or flooding, nor does it frame the tropical climate as unfavorable. It only states a general protective function, so it does not directly support the competency."
+      },
+      {
+        "code": "G5-L-7",
+        "verdict": "related_only",
+        "card_evidence": "wear thick bark that protects them",
+        "competency_evidence": "describe the purpose of specialized structures in plants, such as rhizomes, tubers, thorns, bulbs, and aerial roots",
+        "reason": "Thick bark is a specialized plant structure, but the competency lists specific examples (rhizomes, tubers, thorns, bulbs, aerial roots) and asks to describe the purpose of such structures. The card does not describe the purpose of bark in the sense of those specialized structures, nor does it explain how bark functions as a specialized structure. It merely states that bark protects, without the depth or connection to the listed structures."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-1",
+        "lesson": "g3:everyday-science",
+        "unit": "G3-M-1:local-examples",
+        "pattern": "rain|cook|shadow|melt|plant|dry"
+      },
+      {
+        "code": "G3-L-2",
+        "lesson": "g3:living-or-not",
+        "unit": "G3-L-2:local-examples",
+        "pattern": "plant|dog|cat|rock|chair|tree"
+      },
+      {
+        "code": "G3-L-6",
+        "lesson": "g3:basic-needs",
+        "unit": "G3-L-6:shelter",
+        "pattern": "shelter|home|protect"
+      },
+      {
+        "code": "G3-L-8",
+        "lesson": "g3:protecting-nature",
+        "unit": "G3-L-8:protect-habitats",
+        "pattern": "habitat|home|tree|forest"
+      },
+      {
+        "code": "G3-L-8",
+        "lesson": "g3:protecting-nature",
+        "unit": "G3-L-8:care-actions",
+        "pattern": "plant|clean|protect|conserv|recycl"
+      },
+      {
+        "code": "G3-F-7",
+        "lesson": "g3:light-and-sound-safety",
+        "unit": "G3-F-7:loud-sound",
+        "pattern": "loud|noise|ear"
+      },
+      {
+        "code": "G3-E-1",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-1:examples",
+        "pattern": "rock|soil|water|air|metal|cloud|rain|sun"
+      },
+      {
+        "code": "G3-E-4",
+        "lesson": "g3:weather",
+        "unit": "G3-E-4:patterns",
+        "pattern": "pattern|change|day|sunny|rainy"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G4-L-7",
+        "lesson": "g4:food-chains",
+        "unit": "G4-L-7:local-chain",
+        "pattern": "rice|grass|frog|snake|Philippin"
+      },
+      {
+        "code": "G4-E-4",
+        "lesson": "g4:weather-elements",
+        "unit": "G4-E-4:rain",
+        "pattern": "rain"
+      },
+      {
+        "code": "G5-E-1",
+        "lesson": "g5:landforms",
+        "unit": "G5-E-1:environmental-effects",
+        "pattern": "plant|animal|habitat|soil|flood|rain"
+      },
+      {
+        "code": "G5-E-6",
+        "lesson": "g5:water-cycle",
+        "unit": "G5-E-6:environment",
+        "pattern": "plant|animal|fresh|rain|environment"
+      },
+      {
+        "code": "G6-L-4",
+        "lesson": "g6:animal-groups",
+        "unit": "G6-L-4:local",
+        "pattern": "Philippin|carabao|tilapia|tarsier|crab|butterfl"
+      },
+      {
+        "code": "G6-E-3",
+        "lesson": "g6:eruption-history",
+        "unit": "G6-E-3:philippine-history",
+        "pattern": "Philippin|Mayon|Taal|Pinatubo|Kanlaon"
+      },
+      {
+        "code": "G6-E-6",
+        "lesson": "g6:philippine-seasons",
+        "unit": "G6-E-6:wet-dry",
+        "pattern": "rainy|wet season|dry season"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:safety",
+        "pattern": "safe|protect|goggle|teacher|hot|broken"
+      },
+      {
+        "code": "G7-E-2",
+        "lesson": "g7:fault-models",
+        "unit": "G7-E-2:philippine-context",
+        "pattern": "Philippin|Valley Fault|subduct|converg"
+      },
+      {
+        "code": "G8-E-7",
+        "lesson": "g8:typhoon-formation",
+        "unit": "G8-E-7:philippines",
+        "pattern": "Philippin|western.*Pacific"
+      },
+      {
+        "code": "G8-F-10",
+        "lesson": "g8:hydropower",
+        "unit": "G8-F-10:philippine-source",
+        "pattern": "Philippin|Agus|Magat|Ambuklao|Angat|Binga"
+      },
+      {
+        "code": "G9-E-2",
+        "lesson": "g9:e-2",
+        "unit": "G9-E-2:focus-1",
+        "pattern": "Philippin|Manila"
+      },
+      {
+        "code": "G9-L-8",
+        "lesson": "g9:l-8",
+        "unit": "G9-L-8:focus-1",
+        "pattern": "protect|conserv"
+      },
+      {
+        "code": "G9-L-8",
+        "lesson": "g9:l-8",
+        "unit": "G9-L-8:focus-2",
+        "pattern": "community|local|Philippin"
+      },
+      {
+        "code": "G9-L-11",
+        "lesson": "g9:l-11",
+        "unit": "G9-L-11:focus-3",
+        "pattern": "minimi|reduce|protect"
+      },
+      {
+        "code": "G10-E-3",
+        "lesson": "g10:e-3",
+        "unit": "G10-E-3:focus-1",
+        "pattern": "Philippin|Manila"
+      },
+      {
+        "code": "G10-E-10",
+        "lesson": "g10:e-10",
+        "unit": "G10-E-10:focus-3",
+        "pattern": "Pacific|rain|drought"
+      },
+      {
+        "code": "G10-E-11",
+        "lesson": "g10:e-11",
+        "unit": "G10-E-11:focus-2",
+        "pattern": "adapt|protect"
+      },
+      {
+        "code": "G10-M-2",
+        "lesson": "g10:m-2",
+        "unit": "G10-M-2:focus-1",
+        "pattern": "indicator|litmus|pH"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Many Philippine trees, like the narra — our national tree — and mahogany, wear thick bark that protects them in the hot, rainy tropics.",
+      "tl": "Maraming punong Pilipino, tulad ng narra — ang pambansang puno — at mahogany, ay may makapal na balat na nagtatanggol sa kanila sa mainit at maulan na tropiko.",
+      "bis": "Daghang kahoy sa Pilipinas, sama sa narra — ang nasodnong kahoy — ug mahogany, adunay baga nga panit nga nanalipod kanila sa init ug ulanon nga tropiko."
+    },
+    "exportedAt": "2026-09-10T12:50:35.829720+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "bark-used-for-paper-tannin-g4",
+    "id": "ffct-11571",
+    "textHash": "02f646672286325c1e60e7ae091aac95aca2b85b3dc2bd571fd0140deba65f14",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:27:27Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-L-5",
+        "verdict": "related_only",
+        "card_evidence": "Tree bark isn't just for the tree — it's also used to make rope, paper, and other useful things.",
+        "competency_evidence": "observe the outer parts of plants, such as leaves, roots, and stems and identify their role to get water and nutrients from the soil",
+        "reason": "The card mentions bark, an outer part of a plant, but does not address the role of outer parts in getting water and nutrients from the soil. It only describes a human use of bark, so it does not directly support the competency."
+      },
+      {
+        "code": "G4-L-2",
+        "verdict": "related_only",
+        "card_evidence": "Tree bark isn't just for the tree — it's also used to make rope, paper, and other useful things.",
+        "competency_evidence": "observe the root and shoot system in plants and describe why they are important",
+        "reason": "Bark is part of the shoot system, but the card does not describe the root and shoot system or why they are important. It only states that bark is used to make products, which is not the focus of the competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-2",
+        "lesson": "g3:living-or-not",
+        "unit": "G3-L-2:local-examples",
+        "pattern": "plant|dog|cat|rock|chair|tree"
+      },
+      {
+        "code": "G3-L-8",
+        "lesson": "g3:protecting-nature",
+        "unit": "G3-L-8:protect-habitats",
+        "pattern": "habitat|home|tree|forest"
+      },
+      {
+        "code": "G3-E-2",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-2:human-made-objects",
+        "pattern": "made|make|build|clay|wood|metal"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G6-M-4",
+        "lesson": "g6:useful-mixtures",
+        "unit": "G6-M-4:uses",
+        "pattern": "\\buse|food|drink|medicin|paint"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:benefits",
+        "pattern": "use|benefit|recover|separat"
+      },
+      {
+        "code": "G6-F-8",
+        "lesson": "g6:wave-models",
+        "unit": "G6-F-8:transverse-model",
+        "pattern": "rope|string|transverse"
+      },
+      {
+        "code": "G6-F-9",
+        "lesson": "g6:wave-examples",
+        "unit": "G6-F-9:transverse",
+        "pattern": "light|rope|transverse|seismic"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G7-F-9",
+        "lesson": "g7:heat-transfer-uses",
+        "unit": "G7-F-9:advantage",
+        "pattern": "useful|help|benefit|cook|warm"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Tree bark isn't just for the tree — it's also used to make rope, paper, and other useful things.",
+      "tl": "Hindi lang para sa puno ang balat nito — ginagawa rin itong lubid, papel, at iba pang kapaki-pakinabang na bagay.",
+      "bis": "Dili lang para sa kahoy ang panit niini — gihimo usab kini nga pisi, papel, ug uban pang mapuslanong butang."
+    },
+    "exportedAt": "2026-09-10T12:50:35.854084+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "barnacle-fouls-ship-hulls-g7",
+    "id": "ffct-11206",
+    "textHash": "33a358b94aaca45cc5766723a6ac3d16bd20f4f4b2ca6460a35f1cb8e427b5e8",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:38:13Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G6-L-8",
+        "verdict": "related_only",
+        "card_evidence": "the ship slows down and burns more fuel",
+        "competency_evidence": "explain how interaction between living things and interactions between living and non-living things may bring good or harm to the living things involved",
+        "reason": "The card describes barnacles (living) attaching to a ship's hull (non-living) and causing harm, but the harm is to the ship, not to a living thing. The competency requires explaining how interactions bring good or harm to the living things involved. The card does not address harm to any living organism, so it does not directly support the competency."
+      },
+      {
+        "code": "G3-L-7",
+        "verdict": "related_only",
+        "card_evidence": "barnacles cling to a ship's hull",
+        "competency_evidence": "observe examples and explain how living things depend on one another and on the environment to meet their basic needs",
+        "reason": "The card shows barnacles depending on a ship for attachment, but it does not explain how living things depend on one another or on the environment to meet basic needs. The ship is not a living thing or an environmental resource for meeting basic needs, and the card does not discuss needs like food, water, or shelter."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G4-M-3",
+        "lesson": "g4:chemical-properties",
+        "unit": "G4-M-3:burning",
+        "pattern": "burn|flammab"
+      },
+      {
+        "code": "G4-F-4",
+        "lesson": "g4:speed-graphs",
+        "unit": "G4-F-4:fast-slow",
+        "pattern": "steep|fast|slow"
+      },
+      {
+        "code": "G4-F-5",
+        "lesson": "g4:change-motion",
+        "unit": "G4-F-5:slow-stop",
+        "pattern": "slow|stop"
+      },
+      {
+        "code": "G5-F-6",
+        "lesson": "g5:gravity",
+        "unit": "G5-F-6:motion",
+        "pattern": "fall|down|throw|motion"
+      },
+      {
+        "code": "G7-M-3",
+        "lesson": "g7:particle-motion",
+        "unit": "G7-M-3:motion",
+        "pattern": "motion|mov|vibrat"
+      },
+      {
+        "code": "G7-F-9",
+        "lesson": "g7:heat-transfer-uses",
+        "unit": "G7-F-9:disadvantage",
+        "pattern": "burn|overheat|unwanted|harm|danger"
+      },
+      {
+        "code": "G9-F-2",
+        "lesson": "g9:f-2",
+        "unit": "G9-F-2:focus-1",
+        "pattern": "speed|slow"
+      },
+      {
+        "code": "G9-M-6",
+        "lesson": "g9:m-6",
+        "unit": "G9-M-6:focus-1",
+        "pattern": "sodium chloride|NaCl"
+      },
+      {
+        "code": "G10-M-4",
+        "lesson": "g10:m-4",
+        "unit": "G10-M-4:focus-1",
+        "pattern": "combustion|burn"
+      },
+      {
+        "code": "G10-L-11",
+        "lesson": "g10:l-11",
+        "unit": "G10-L-11:focus-1",
+        "pattern": "slow|logistic"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "When too many barnacles cling to a ship's hull, the ship slows down and burns more fuel to keep moving.",
+      "tl": "Kapag dumami ang barnacle sa ilalim ng barko, bumabagal ito at mas maraming gasolina ang nauubos.",
+      "bis": "Kon modaghan ang barnacle sa ilawom sa barko, mohinay kini ug modaghan ang gigamit nga gasolina aron molihok."
+    },
+    "exportedAt": "2026-09-10T12:50:35.877864+00:00",
+    "reviewPass": 2
+  }
+]

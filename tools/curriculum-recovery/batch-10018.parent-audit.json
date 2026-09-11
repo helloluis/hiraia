@@ -1,0 +1,117 @@
+{
+  "originalProposals": [
+    {
+      "factId": "water-waves-are-transverse-g6",
+      "id": "dcard-02161",
+      "textHash": "dab31ada40cbec3ec3cb4fb492867902c0db640a47e9664673b47c3ffdf9696d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:00:02Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:37:32.145Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-F-7",
+        "G6-F-9"
+      ],
+      "reason": "Identifies water waves as transverse because the surface oscillates up-down while the wave travels across, a current G6-F-7 transverse and G6-F-9 transverse-example facet. G6-F-8 model unit not credited (no rope/string model). G9-F-10 transverse is EMR, not water waves. Full EN/TL/BIS and both pools inspected; single card ID.",
+      "evidence": [
+        {
+          "lesson": "g6:wave-types",
+          "unit": "G6-F-7:transverse",
+          "quote": "Water waves are transverse waves, because the water surface moves up and down while the wave travels across the water."
+        },
+        {
+          "lesson": "g6:wave-examples",
+          "unit": "G6-F-9:transverse",
+          "quote": "Water waves are transverse waves"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "wavelength-depends-on-frequency-g6",
+      "id": "dcard-02164",
+      "textHash": "7d24da917cb29f756a79623c9106b92e4121268d5b14cf6c4abfb884aa4d6aa7",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:00:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:37:32.145Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-F-6"
+      ],
+      "reason": "Defines wavelength as distance between crests and ties it to frequency, current G6-F-6 wavelength/frequency term facets. G6-F-5 ripple-tank investigation (crests/width) not credited. G9-F-11 is comparing EM-spectrum types. Full EN/TL/BIS and both pools inspected; single card ID.",
+      "evidence": [
+        {
+          "lesson": "g6:wave-properties",
+          "unit": "G6-F-6:wavelength",
+          "quote": "The wavelength, or distance between wave crests, depends on the frequency of the disturbance"
+        },
+        {
+          "lesson": "g6:wave-properties",
+          "unit": "G6-F-6:frequency",
+          "quote": "depends on the frequency of the disturbance, which is how often the wave is made"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "what-inactive-means-g6",
+      "id": "dcard-07353",
+      "textHash": "f2bc017f160f19c4ff8d0e1c2de99badf4d9af8cfbe74032480f764fdd85d169",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:42:15Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:37:32.145Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-E-2",
+        "G8-E-3"
+      ],
+      "reason": "Defines inactive volcanoes as having no recorded eruptions, a current G6-E-2 active/inactive and G8-E-3 activity-classification facet. Map and record/chart units not credited. PHIVOLCS also requires weathered form and distinguishes potentially active (no historical record but young morphology); card is the G6 recorded-eruption clause. https://www.phivolcs.dost.gov.ph/volcanoes-of-the-philippines/ Full EN/TL/BIS and both pools inspected; single card ID.",
+      "evidence": [
+        {
+          "lesson": "g6:local-volcano-risk",
+          "unit": "G6-E-2:active-inactive",
+          "quote": "Inactive volcanoes have no recorded eruptions, so scientists have no written history of them ever exploding."
+        },
+        {
+          "lesson": "g8:volcano-types",
+          "unit": "G8-E-3:activity",
+          "quote": "Inactive volcanoes have no recorded eruptions"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "what-is-environment-g3",
+      "id": "dcard-06975",
+      "textHash": "7b5ec19cbd57980122e3a15e45b209da61e9ec3b77d7019aa48b6b6b28388db2",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:27:22Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:37:32.145Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-L-6",
+        "G3-L-7"
+      ],
+      "reason": "Teaches the environment as surroundings we depend on for air we breathe and water we drink, current G3-L-6 air/water basic-needs and G3-L-7 environment facets. G3-L-7:food-and-shelter admitted only because eat matches inside breathe \u2014 not evidenced. Full EN/TL/BIS and both pools inspected; single card ID.",
+      "evidence": [
+        {
+          "lesson": "g3:basic-needs",
+          "unit": "G3-L-6:air",
+          "quote": "the air we breathe, the water we drink"
+        },
+        {
+          "lesson": "g3:basic-needs",
+          "unit": "G3-L-6:water",
+          "quote": "the water we drink"
+        },
+        {
+          "lesson": "g3:depending-on-nature",
+          "unit": "G3-L-7:environment",
+          "quote": "the air we breathe, the water we drink, the plants, animals, people, land, and buildings"
+        }
+      ],
+      "translationsChecked": true
+    }
+  ],
+  "reason": "Parent semantic validation before application"
+}

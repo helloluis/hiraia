@@ -1,0 +1,47 @@
+{
+  "originalProposals": [
+    {
+      "factId": "moon-s-changing-color-g5",
+      "id": "dcard-04797",
+      "textHash": "92e304df601116adf62e75a8bed8a3f362b30ebd6eb4aa911f64aeb013d5f4f8",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:56:18Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:24:17.837518Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G3-E-6"
+      ],
+      "reason": "Describes the observed Moon\u2019s apparent color as a sky-object appearance. Atmospheric path length is the usual physical cause of horizon reddening; the card\u2019s sunlight-angle wording is a grade-appropriate simplification, not a phases lesson. Full EN/TL/BIS and both pools inspected; single identical card ID. NASA moon color/atmosphere: https://science.nasa.gov/moon/moon-phases/",
+      "evidence": [
+        {
+          "lesson": "g3:watching-the-sky",
+          "unit": "G3-E-6:moon",
+          "quote": "The Moon's apparent color can vary"
+        }
+      ]
+    },
+    {
+      "factId": "moss-reproduction-modes-g5",
+      "id": "dcard-05192",
+      "textHash": "f21d0e32d2e1a54c921f07ec24337aee6d6aecb7844850119676ab10ef8ad2f8",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:25:50Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:24:17.837518Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G7-L-7"
+      ],
+      "reason": "Contrasts sexual (sperm and egg) with asexual (spores) reproduction in mosses, a two-mode G7-L-7 component. Classification-table and meiosis/fertilization genetic-information facets are not taught. TL preserves magparami; BIS makasanay is awkward but sperm/egg and spore clauses keep the meaning. Full EN/TL/BIS and both pools inspected; single identical card ID.",
+      "evidence": [
+        {
+          "lesson": "g7:reproduction-types",
+          "unit": "G7-L-7:parents",
+          "quote": "Mosses can reproduce both sexually, when sperm and egg cells join, and asexually, when spores grow into new moss plants."
+        }
+      ]
+    }
+  ],
+  "reason": "Parent semantic/identity validation before application"
+}

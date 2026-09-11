@@ -1,0 +1,566 @@
+{
+  "parentVerifiedAt": "2026-09-10T15:00:51.878423+00:00",
+  "originalProposals": [
+    {
+      "factId": "fwg-rust-volume-change-2303",
+      "id": "ffct-20515",
+      "textHash": "c5cc30f2d61abca076a16565bd5b3988f74dde6e8dd33a10e493982d0551e96c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:57:37Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Rust occupying more volume than iron is real (expansion coefficients often ~2–4×; https://en.wikipedia.org/wiki/Rust). G10-M-8 is factors affecting reaction rates applied to corrosion, not rust-product volume. G3-M-9 is community metal properties/uses; G4-M-5 is minimizing harmful changes; G6-M-3 reversibility is not admitted. TL/BIS keep the expansion/crumble meaning. Potential: G10-M-8 after a rust-volume/corrosion-product facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-saturn-density-114",
+      "id": "ffct-35127",
+      "textHash": "9df5129121b5bb86a9df095c824c563c77469f7d39701011eb12ff5c5c2392f6",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:14:19Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Saturn's bulk density is below water (~0.69 g/cm³), so the bathtub-float thought experiment is sound. No density/buoyancy facet admits. G5-F-4 needs non-contact wording; G3-E-6 planets needs 'planet'; G5-M-1 mass-and-space is not admitted. TL/BIS keep low density/float. Potential: G5-F-4 or G5-M-1 after a density/buoyancy facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-soap-and-lipids-2251",
+      "id": "ffct-19827",
+      "textHash": "0b9835ca89a80e808f179e9ad32b647439f42e845cb3ed6594beee79fc9aedd0",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:08:41Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Soap molecules emulsifying oily dirt/germs via lipids is real. G3-M-7 is oil disposal; G7-M-2 is the particle model of matter; G5-F-3 is friction/lubricant oil. None is soap-as-mixture teaching. TL/BIS keep soap/lipids/oil. Potential: G6-M-4 after a soap/emulsion facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-soil-457",
+      "id": "ffct-34835",
+      "textHash": "f4fd4515f623dde5f3eda7dded263e365c47978523329d62731a0c2b64c8cc7e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:46:05Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G5-E-1"
+      ],
+      "reason": "Mount Bulusan volcanic soil supplying nutrients so abaca grows is a local landform influencing living components, the current G5-E-1 environmental-effects facet (mountain/valley/river/coast do not match). G6-L-7 soil would swallow it into abiotic-factor vocabulary the card never uses; G3-L-3 grow is a living-thing characteristic, not the soil cause. TL/BIS keep volcanic soil, nutrients, and abaca.",
+      "evidence": [
+        {
+          "lesson": "g5:landforms",
+          "unit": "G5-E-1:environmental-effects",
+          "quote": "The rich volcanic soil around it gives essential nutrients"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-soil-formation-116",
+      "id": "ffct-34950",
+      "textHash": "1532c011cd1e77d7e0fa791a318f8c6b46cabc92e3418421f3ed417d25d20e6e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:18:19Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "USDA NRCS states natural processes can take 500 years to form one inch of topsoil (https://bpi-tech.com/files/soil-fact-sheet.pdf). G5-E-4 soil-from-rocks is not admitted (needs rock/soil pairing); G6-L-7 soil is abiotic factor, not formation time; G6-E-1 is volcano formation. TL/BIS keep the timescale. Potential: G5-E-4 after a soil-formation-rate facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-solar-plasma-2336",
+      "id": "ffct-20607",
+      "textHash": "fe9e1991091678399da3b5053e1a0677b49f5c6543d8c7dfe57764c9a0c97700",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:40:56Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "The Sun is plasma; core temperature ~15 million °C/K is standard. G4-E-7 composition admits only hydrogen|helium; size matches 'million' as a false size hit; energy matches 'superheated'/heat but the card teaches plasma state, not radiated energy. Recovering G4-E-7 would swallow composition into size+energy. TL/BIS keep plasma/core. Potential: G4-E-7 after a plasma/composition facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-solar-system-666",
+      "id": "ffct-35069",
+      "textHash": "3855085da612763d561b6b8930ff6a0a5677afa1e4c60b31bccf2e79cb07185a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:23:21Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Solar gravity holding planets in elliptical orbits is sound. G8-E-11 is tides; G8-F-9 is falling-energy conservation; G5-F-4 non-contact is not admitted; G3-F-1 pull is people/wind/water; G3-E-6 planets is observing sky objects. TL/BIS keep gravity/orbit. Potential: G5-F-4 after an orbital-gravity facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-solid-mixtures-2411",
+      "id": "ffct-20055",
+      "textHash": "bd796cae9f4535c2695bf46b47b15b813b4202d8d92da45795bdb0a2810a00e4",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:40:51Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "South Sea pearl nacre is aragonite (CaCO3) plus conchiolin, a solid mixture. G6-M-4 solutions/suspensions do not admit; G7-M-4 is particle-arrangement diagrams; G3-E-2 is people-made objects (pearls are biogenic); G9-M-9 is ionic vs covalent crystal models. TL keeps 'mainly' in English but meaning is OK. Potential: G6-M-4 after a solid-mixture example facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-sound-intensity-1009",
+      "id": "ffct-27610",
+      "textHash": "c45e9b595729d0bc9073ad116a109e9c70060db121ee32778f238c7ef4daca84",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:54:25Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "30 dB vs 120 dB is a 10^9 intensity ratio (correct for sound intensity). G3-F-7 is harm/protection from loud sound, which the card never teaches; G6-F-6 amplitude/frequency/wavelength are not admitted; G7-E-10 is sunlight intensity. TL/BIS keep decibels/intensity. Potential: G6-F-6 after an intensity/decibel facet, or G3-F-7 after harmful-loud-sound.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-speed-of-light-1588",
+      "id": "ffct-27904",
+      "textHash": "6e25a233ff80df583cb1963aaa992ffcf09607a7a0a3830974c973e15f41d45d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:52:15Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "c ≈ 300,000 km/s and ~8 min sunlight travel time are grade-OK. G4-E-7 energy is the energy the Sun radiates, not travel time; G6-F-9 is light as a transverse wave; G3-F-5 sources is incidental. BIS 'miadto na sa adlaw' reads as went to the sun, not left the sun. Potential: G4-E-7/G6-F-9 after a light-travel-time facet (after BIS fix).",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-states-of-matter-gas-3142",
+      "id": "ffct-20695",
+      "textHash": "ab3892c43bac34faf2fe82ed44672e9303b1ccdb123fe03a5dd8eb1e0f326f52",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:40:57Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-E-4"
+      ],
+      "reason": "Mayon releasing sulfur dioxide gas during eruptions identifies a PH volcanic-eruption gas material, the current G6-E-4 gases facet (lava/ash/fragments do not match). G7-M-4 gas is particle-arrangement diagrams; G6-E-3 is eruption-history predictability; G8-M-6 sulfur-as-element is a keyword swallow. TL/BIS keep Mayon/SO2/gaseous state.",
+      "evidence": [
+        {
+          "lesson": "g6:volcanic-materials",
+          "unit": "G6-E-4:gases",
+          "quote": "It releases sulfur dioxide gas during eruptions!"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-static-electricity-1136",
+      "id": "ffct-27726",
+      "textHash": "dd3e58bce0d2a3d354740f3352040e70f40e7ebeb8e4ad720f8afa11361ed3f3",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:25:07Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Lightning as discharge between charged cloud regions is a fair simplification. G5-F-7 current facets are comb/balloon/rod and rub/attract/repel, not lightning. G3-E-5 danger and G4-E-6 lightning-safety do not teach the mechanism; G4-E-4 is cloud cover as weather. TL/BIS keep static electricity/lightning. Potential: G5-F-7 after a lightning/charge-separation facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-steel-alloy-3157",
+      "id": "ffct-20566",
+      "textHash": "67f48ef2f97dba900689d9aacb308481ab2706d897f5e3f64cc616ed9035b85c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:58:45Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Steel as iron with <2% carbon is correct. G3-M-9 is community properties/uses of iron, not alloy composition; G6-M-4 mixture examples are not admitted; G8-M-6 carbon/element is a keyword swallow. TL/BIS keep iron/carbon alloy. Potential: G6-M-4 after an alloy-mixture facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-taal-volcanic-gas-2278",
+      "id": "ffct-20141",
+      "textHash": "8074a887613dec86e96bb25628a12880a6a5c90a3404d81c879cf4a53516fc25",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:40:54Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-E-4"
+      ],
+      "reason": "Taal main-crater sulfur dioxide identifies a PH volcanic gas material, the current G6-E-4 gases facet (lava/ash/fragments do not match). G7-M-4 gas is particle diagrams; G6-E-3 is eruption-history patterns; G7-M-3 temperature is particle motion. TL/BIS keep Taal/SO2/invisible gas.",
+      "evidence": [
+        {
+          "lesson": "g6:volcanic-materials",
+          "unit": "G6-E-4:gases",
+          "quote": "Sulfur dioxide gas escapes from Taal Volcano's main crater!"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-the-moon-267",
+      "id": "ffct-34912",
+      "textHash": "f4204d6ae4114b4021ecf00ca526f78662c78f5e186024065504d7bab86797c9",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:14:20Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Apollo 11 Sea of Tranquility landing is historical fact. G3-E-6 is observing the Moon in the sky; G5-E-11 features admits only rocky|gas giant|ice giant; G3-E-8 nighttime is how sky objects affect daily activities. TL/BIS keep Apollo 11/Moon. Potential: G3-E-6 or G5-E-11 after a moon-exploration/lunar-feature facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-tides-347",
+      "id": "ffct-35486",
+      "textHash": "bebfb8fd2e7a3ec2b2549984175eab31c2bb61cc216cee1f0c8689672fc64aea",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:16:54Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Moon plus Sun cause tides, with the closer Moon ~2× the Sun's tidal effect. G8-E-11 is the right competency but current facets need gravit/spring tide/neap and do not admit this wording. G3-E-6 moon is sky observation; G3-E-8 is activities. TL/BIS keep Moon/Sun/tides. Potential: G8-E-11 after a moon-sun-tidal-force facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-typhoon-naming-498",
+      "id": "ffct-35038",
+      "textHash": "2a62c5c87133ab9ff5eb690bf021a684e074f85eba84ccb586120a7ac3ba5260",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:48:15Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "PAGASA uses rotating Filipino names (Yolanda, Rolly) so communities remember storms. G8-E-7 is how typhoons develop and why PH is prone; G8-E-10 is how authorities support affected communities (evacuat/relief/shelter); G5-E-9 warning-signal is not admitted. TL/BIS keep PAGASA/Filipino names. Potential: G8-E-10 or G5-E-9 after a PAGASA-naming facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-viscosity-2421",
+      "id": "ffct-20292",
+      "textHash": "b85dc96f5e2111685e488216d09e716a0ebc4a1b522a566c029a81a13a27ad2f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:41:41Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Honey vs water as viscosity/internal friction is sound. G8-E-4 viscosity is volcano-cone composition; G7-M-4 liquid is particle diagrams; G4-F-4 fast-slow is constructing speed graphs. TL/BIS keep honey/water/viscosity. Potential: G5-M-3 after a liquid-viscosity facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-viscosity-3082",
+      "id": "ffct-19857",
+      "textHash": "2671da0ef85d1b761209f8a13fce2327d86525468f01fa9ec3dce8682da54550",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:40:51Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Pitch looking solid but flowing (~one drop per decade) is the UQ pitch-drop experiment (https://en.wikipedia.org/wiki/Pitch_drop_experiment). G7-M-4 solid+liquid are diagram competencies; G5-M-2 three-states needs gas too; G5-F-6 fall is gravity-on-motion. TL/BIS keep viscous liquid/looks solid. Potential: G5-M-2/G5-M-3 after a viscous-liquid-looks-solid facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-volcanic-soil-187",
+      "id": "ffct-34965",
+      "textHash": "45c56d1163b4fc1a503922d9e7a6bbd8ca496e98180997eaa348cd274d3cd476",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:47:46Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G5-E-1"
+      ],
+      "reason": "Mayon eruptions enriching Bicol volcanic soil is a local landform influencing the non-living (soil) environment, the current G5-E-1 environmental-effects facet (mountain does not match 'Mount Mayon'). G6-L-7 soil never names living things/abiotic factors; G6-E-3 is eruption-history predictability; G6-E-6 regional is seasons. TL/BIS keep Bicol/Mayon/fertile volcanic soil.",
+      "evidence": [
+        {
+          "lesson": "g5:landforms",
+          "unit": "G5-E-1:environmental-effects",
+          "quote": "highly fertile volcanic soil that was enriched by past eruptions of Mount Mayon"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-water-cycle-589",
+      "id": "ffct-35299",
+      "textHash": "2f85c1539040601139700e6c93b328ed4d8c1d13db99f280f67270587ce431f6",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:16:40Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "≈97% of Earth's water is saline and most remaining freshwater is in ice (USGS water-cycle inventory). G8-E-1 is 71/29 surface coverage, not water inventory; G5-E-6 is the water cycle's environmental role; G10-E-8 glacier is climate-change evidence. TL/BIS keep salty/freshwater/glaciers. Potential: G8-E-1 or G5-E-6 after a water-inventory/reservoirs facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg-weather-567",
+      "id": "ffct-35156",
+      "textHash": "98742d1d05b237acf8769d09996bf45ed6d2aecb95d85f70330b12588a777787",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:13:33Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "A typhoon eye is calm, with the strongest winds in the eyewall. G3-E-5 danger does not teach eye structure; G5-E-10 before/during/after cyclone weather is not admitted; G3-F-1 wind is making objects move. TL/BIS keep eye/calm/violent winds. Potential: G5-E-10 after a typhoon-eye-structure facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg2-adobe-material-in-ilocos-sur-3055",
+      "id": "ffct-21145",
+      "textHash": "57cb3288b47e313f37d9b29791a4b91bbd027e7f3584497ed7c02d2cd7dc393d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:48:47Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Factual: Vigan bahay-na-bato ground floors are lime-plastered brick masonry, not adobe; adobe/volcanic tuff is the Intramuros substitute Vigan lacked (UNESCO Vigan preservation manual; https://unesdoc.unesco.org/ark:/48223/pf0000189976). G3-E-2 would otherwise match useful things from clay/ash. Potential: G3-E-2 after correcting to brick/clay.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg2-air-quality-2042",
+      "id": "ffct-04558",
+      "textHash": "dd06cc53c7a70c646256b5d9f47f976a2bacbb45bfb02e45e990560f9a234b01",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:58:09Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "N95 ≥95% filtration of airborne particles is the NIOSH specification. G6-M-6 filtering is lab mixture-separation technique; G4-M-6 is community waste treatment; G5-L-2 is respiratory-system diagrams; G7-M-2 is the particle model. TL/BIS keep N95/dust/smoke/lungs. Potential: G6-M-6 after an air-filtration/PPE facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg2-animal-speed-2032",
+      "id": "ffct-01687",
+      "textHash": "80c84298f01330f4f5a51b049e9cf2628fec53e2cacee5533b7d8613dce9bb56",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:21:34Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Cheetah ~112 km/h vs fastest human ~44 km/h is standard (Smithsonian/Guinness Bolt). G4-F-4 is constructing/labeling speed graphs, which the card never does; investigation/guided 'test' hits are false; G3-L-4 outer body parts is wrong. TL/BIS keep the two speeds. Potential: G4-F-4 after a compare-speeds-without-graph facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg2-balut-embryology-2203",
+      "id": "ffct-12052",
+      "textHash": "e3bc2e5cd89e14c7a6ad4e48963bd06766bcb9b26bc98bea954dd1f549400f0e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:12:05Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Balut as a fertilized duck egg with a partial embryo is correct. G7-L-6 fertilization is meiosis/genetic information from both parents; G5-L-5 egg-laying (bird|reptile+egg) is not admitted; G4-L-5 chicken is not duck. TL/BIS keep fertilized duck egg/embryo. Potential: G5-L-5 or G4-L-5 after a bird-egg-development facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg2-binoculars-2207",
+      "id": "ffct-01971",
+      "textHash": "838da211fa051e6afe3dfd54558d10a58d9cf86805af719cbe5a834eb80ae184",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:19:12Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Binoculars as a distant-observation tool is real. G8-F-11 is guided investigations of reflection/refraction with lenses; G4-M-2 is a home/community invention's everyday-life impact. Neither is taught. TL/BIS keep binoculars/watch animals without disturbing. Potential: G8-F-11 after a binoculars/lens-application facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg2-boiling-point-altitude-2467",
+      "id": "ffct-20974",
+      "textHash": "5f11d929200a44820cee8ea490a8eb2450f5a73c564a31621b1a364623a162bb",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:43:38Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Boiling point falls with altitude; Everest summit is ~70–72°C in primary sources (Wilderness Environ Med 2017 table ~72°C), so 68°C is a bit low. G7-M-5 boiling is particle arrangement/energy of state change, not pressure; G4-E-4 is weather air pressure; G5-M-6 named processes are not admitted. Potential: G7-M-5/G5-M-6 after a pressure-boiling-point facet (and a 70°C fix).",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg2-bone-composition-2831",
+      "id": "ffct-21671",
+      "textHash": "f720995e778a1a76a0d6f32ab334ae61d15b030f3875469d3a5a30176723e991",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:40:55Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Bone as a mineral (hydroxyapatite/calcium phosphate) plus collagen matrix is sound. G4-L-1 skeletal needs support/protect wording and is not admitted; G5-E-4 minerals is soil formed from rocks; G7-M-4 solid is particle diagrams. TL/BIS keep calcium phosphate/collagen. Potential: G4-L-1 after a bone-composition facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg2-buoyancy-and-gravity-1719",
+      "id": "ffct-28541",
+      "textHash": "fd9057a730d5a857134dd54473914c66727485fa8ad61243ec7d1ee83a719a7d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:59:42Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Shark liver oil lowering density for buoyancy is real. G5-F-4 non-contact and G5-F-6 motion are not admitted; G8-E-11 gravity is tides; G8-F-9 is falling-energy conservation; G3-M-7 is oil disposal. TL/BIS keep oil-filled liver/density/gravity. Potential: G5-F-4 after a density/buoyancy facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg2-camiguin-sulfur-deposition-2761",
+      "id": "ffct-21675",
+      "textHash": "5ba9c051dc59630794196480b513f167ae1405785dd88ed52b70d89dcf2f9776",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:43:37Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-E-4"
+      ],
+      "reason": "Camiguin volcanic vents emitting hot gases that deposit yellow elemental sulfur identifies PH volcanic-gas material (Hibok-Hibok crater sulfur was historically mined; https://volcano.oregonstate.edu/hibok-hibok). Only the G6-E-4 gases facet admits (lava/ash/fragments do not). G6-M-2 cooling is heat-in-state-change without teaching heat's role; G8-M-6 sulfur-as-element and G9-M-9 crystal models are keyword swallows. TL/BIS keep Camiguin/hot gases/yellow sulfur crystals.",
+      "evidence": [
+        {
+          "lesson": "g6:volcanic-materials",
+          "unit": "G6-E-4:gases",
+          "quote": "Volcanic vents on Camiguin island emit hot gases"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg2-chemical-changes-2654",
+      "id": "ffct-21502",
+      "textHash": "b6bea86ffa7587abe4df7e88edd0fd97413242e730adf35498b1d32884644d9b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:57:38Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Rizal practiced photography using silver-halide chemistry but did not invent it. G4-M-1 is a famous scientist and their invention/s; 'develop' is a keyword. G3-M-9 silver is community metal use; G6-M-3 new-substance is not admitted. TL/BIS keep Rizal/chemical changes/silver halide. Potential: G4-M-1 after a Rizal-as-scientist matcher, or G6-M-3 after a photo-chemical-change example.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg2-climate-149",
+      "id": "ffct-36279",
+      "textHash": "c9c92ac4433c19388dd75a37a51eb3e044fe693282119a2053864a248eae603d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:02:31Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Tropic of Cancer at 23.5°N as the northernmost overhead-sun latitude is correct. G7-E-10 tilt/orbit/intensity is not admitted; G8-E-8 latitude would swallow it into typhoon-track coordinates; G7-E-12 is land/sea breeze and ITCZ. BIS 'imahinasyon nga linya' is close to imaginary. Potential: G7-E-10 after a tropics/23.5-tilt facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg2-coconut-germination-2093",
+      "id": "ffct-00603",
+      "textHash": "069e0aa858ba9352fa32059b28805fa259ab4676ee3411b2f53ba96be106fa4e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:35:57Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Coconut endosperm feeding the sprout until leaves photosynthesize is sound. G3-L-5 exact text is parts' role getting water and nutrients from soil, not photosynthesis; G8-L-3 leaves is the transport system; G6-L-2 seed and G8-L-9 photosynthesis-inputs are not admitted. TL/BIS keep niyog/lubi, leaves, and photosynthesis. Potential: G3-L-5 after a leaf-photosynthesis-role facet, or G8-L-9 after seedling-endosperm.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg2-compaction-stage-2690",
+      "id": "ffct-21092",
+      "textHash": "bc9fa549df4187b1cd584ede6d6dd60fe8c3894ad21730756257ddc465dcce71",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:17:30Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Compaction squeezing water from sediment to make sedimentary rock (sandstone) is sound. G3-M-8 pressing is people shaping solids to make them useful; G4-F-6 squeeze is changing object shape; G5-E-4 rock-to-soil is the reverse; G5-E-2 rock comparison is not admitted. TL/BIS keep compaction/sediment/sandstone. Potential: G5-E-4 after a sedimentary-compaction facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg2-density-2559",
+      "id": "ffct-20969",
+      "textHash": "6507c95487ed1e827ed441db3f5e0a811c397eca837b46d626f3d56c472a2943",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:40:10Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "A mature buko floats because bulk density is less than water. No density/buoyancy facet admits. G5-M-1 is mass-and-space, not density. TL/BIS keep density/float. Potential: G5-M-1 or G5-F-4 after a density/buoyancy facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg2-density-and-buoyancy-2850",
+      "id": "ffct-21223",
+      "textHash": "b91988e72ac3c14ee1fb720f467b515242faa3c326299b44bc6271dbfb8feeeb",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:59:41Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Life-jacket foam less dense than water providing buoyancy is sound. G4-E-6 safety is weather precautions; G3-F-2 size/shape/heaviness is not admitted. TL/BIS render less dense as 'mas magaan' (lighter), a density vs weight slip. Potential: G5-F-4 after a density/buoyancy facet (after TL/BIS density wording).",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg2-deposition-3050",
+      "id": "ffct-21058",
+      "textHash": "3f2420b9b61a240c679f7f5db1457bb370dd6a26bc094845496cfbe286066130",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:43:41Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Frost as vapor depositing directly to ice (no liquid) is deposition. TL/BIS 'hamog' means dew, not frost — a meaning error (dew is condensation). G5-M-6/G6-M-1 named processes are melt/evaporate/freeze/condense, not deposition; G5-M-4 ice-as-solid is identity; G5-E-1 mountain is a landform swallow. Potential: G5-M-6 after a deposition gas-to-solid facet (and hamog→frost fix).",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg2-dissolving-vs-disappearing-2797",
+      "id": "ffct-20929",
+      "textHash": "0ff291f6a4e3c02acb2e61a405150091d9ce93a293c46240f7b6babc68667b61",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:58:53Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Salt dissolving into ions that remain mixed, not disappearing, is sound. G7-M-8 solute/solvent is not admitted; G6-M-4 solution/homogeneous is not admitted; G7-M-11 salt is litmus classification. TL/BIS keep dissolve/ions/not disappear. Potential: G7-M-8 or G6-M-4 after a dissolving-not-disappearing facet.",
+      "evidence": [],
+      "translationsChecked": true
+    },
+    {
+      "factId": "fwg2-earthquakes-524",
+      "id": "ffct-36241",
+      "textHash": "724e902c01d10330b7a16cfe572c5f6044b4a9af613d69b34e8106aebdfe50dc",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:03:09Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:14:08.000Z",
+      "reviewer": "grok-external-a",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Earthquakes from sudden tectonic-plate motion, not severe weather, is sound. G8-E-5 is distribution of epicenters vs crust, not cause; G7-E-2 needs slip/model/Philippine-fault wording and is not admitted; G10-E-6 is subduction impact. TL/BIS keep tectonic plates vs weather. Potential: G7-E-2 after a plate-movement cause facet.",
+      "evidence": [],
+      "translationsChecked": true
+    }
+  ],
+  "note": "Original review timestamps preserved as unverified provenance; actual parent verification recorded separately. See integration-check report."
+}

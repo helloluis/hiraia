@@ -1,0 +1,32 @@
+{
+  "originalProposals": [
+    {
+      "factId": "plants-give-us-air-g3",
+      "id": "dcard-10552",
+      "textHash": "e8fb22064db7814ab77b0466b7a9965708161f86c410a1c2a006bd81fc52de54",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:59:39Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:24:09.870Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-L-6",
+        "G3-L-7"
+      ],
+      "reason": "Plants releasing oxygen that humans and animals need to breathe identifies air as a basic need (G3-L-6 air) and living things depending on plants/environment for that need (G3-L-7 environment). G3-L-7 food-and-shelter is a spurious breathe/eat hit and is not used as evidence. G6-M-5 air-mixture composition and G8-L-8 diagram oxygen cycle are not taught. Full EN/TL/BIS and both pools inspected; single identical card ID.",
+      "evidence": [
+        {
+          "lesson": "g3:basic-needs",
+          "unit": "G3-L-6:air",
+          "quote": "Plants release oxygen into the air, and without them, humans and animals would have less fresh air to breathe."
+        },
+        {
+          "lesson": "g3:depending-on-nature",
+          "unit": "G3-L-7:environment",
+          "quote": "Plants release oxygen into the air, and without them, humans and animals would have less fresh air to breathe."
+        }
+      ],
+      "translationsChecked": true
+    }
+  ],
+  "reason": "Parent semantic/identity validation before application"
+}

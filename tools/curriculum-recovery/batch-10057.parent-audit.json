@@ -1,0 +1,586 @@
+{
+  "parentVerifiedAt": "2026-09-10T15:15:38.977630+00:00",
+  "originalProposals": [
+    {
+      "factId": "radioactivity-unit-becquerel-g9",
+      "id": "ffct-26671",
+      "textHash": "8c52c95fae500814f387df3ad6cfca2a155e682ad60c3dd44cf8ac0cf7b0478a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:06:54Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Bq is the SI unit of activity (BIPM; named for Henri Becquerel), and TL/BIS keep Bq/Becquerel, but no current core facet teaches radioactivity units. G7-M-7 admits only via 'unit' (investigation meter/gram/second/liter, not Bq). G9-F-11/G9-F-12 match only the 'radio' substring of radioactivity, swallowing a nuclear-unit card into radio waves. Potential G9-F-11/G7-M-7 after a radioactivity/becquerel facet.",
+      "evidence": []
+    },
+    {
+      "factId": "rafflesia-blooms-only-few-days-g5",
+      "id": "ffct-00510",
+      "textHash": "8b04d46cd706ff2776b1e287b0568b459ad699c9ac342a1d768590f833e22a65",
+      "previousExclusion": "first-pass grok-4.6 2026-09-06T14:07:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Short Rafflesia anthesis is real, and TL/BIS (malanta/malaya) are OK, but bloom duration is not pollination, seed production, or propagation (G6-L-2 needs those words), nor a mammal/bird/plant life-cycle comparison (G5-L-6). Other hits are weather/day keyword traps. Potential G6-L-2 after a flowering-timing/pollination-window facet.",
+      "evidence": []
+    },
+    {
+      "factId": "rafflesia-bud-warm-inside-g7",
+      "id": "ffct-12677",
+      "textHash": "5b15e0f1fb952dbe9be2f561ffa52822a2ef8a5a1884a5bab30030e40b4434c5",
+      "previousExclusion": "first-pass grok-4.6 2026-09-06T14:07:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Floral thermogenesis spreading scent to flies is real (pollination-adjacent) and TL/BIS preserve heat/amoy/langaw, but G6-L-2 never matches (no pollinat/seed/propagat). G4-F-9/G4-F-10 name heat as energy form/use at home, not floral heat. G7-F-8 heat-transfer is a false heat+flower ('flow') hit and is heat vs temperature. G7-F-9 advantage matches only 'help', not conduction/convection/radiation. Potential G6-L-2 after a scent/heat pollination facet.",
+      "evidence": []
+    },
+    {
+      "factId": "rafflesia-largest-flower-g6",
+      "id": "ffct-11265",
+      "textHash": "376692c92743ce53e4f0af8cf27eefcfab43f59ce2a9a73e35db2639ae6352a6",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:37:27Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G6-L-8"
+      ],
+      "reason": "Teaches Rafflesia as a parasite growing inside its host vine, the living-living interaction named by G6-L-8. Only the parasit facet matches; nonliving (water/soil/light) does not. Not recovered to G3-L-5/G4-L-2/G8-L-3 (absence of leaves/stems/roots is not their transport/nutrient roles) or G3-L-3 grow. App vs merged EN differ in the 'largest flower' restatement but share parasite/host/no-organs; apply.py hashes the app copy. TL/BIS add Tetrastigma (actual host genus) without changing meaning.",
+      "evidence": [
+        {
+          "lesson": "g6:ecosystem-effects",
+          "unit": "G6-L-8:living-interactions",
+          "quote": "it's a parasite that grows inside its host vine"
+        }
+      ]
+    },
+    {
+      "factId": "rafflesia-no-leaves-stems-roots-g6",
+      "id": "ffct-14476",
+      "textHash": "b7ce8185771040d2a26019bbb6b5a0ec50c2ba395c27bc66979c11de80bad6ff",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:36:47Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Accurate that the visible Rafflesia is essentially the flower without its own leaves/stems/roots, and TL/BIS match, but the card never names parasitism so G6-L-8 does not admit. G3-L-5/G4-L-2/G8-L-3 match organ words while teaching the absence of those organs, not their water/nutrient/transport roles. Potential G6-L-8 after copy that names the host-parasite interaction (sister card does).",
+      "evidence": []
+    },
+    {
+      "factId": "rafflesia-no-short-bloom-g7",
+      "id": "ffct-03201",
+      "textHash": "771538798ffd0ed5a20cf2bbabe006a725f88872a99268edc0d9d0a026137a1a",
+      "previousExclusion": "first-pass grok-4.6 2026-09-06T14:07:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Bud-long/open-short timing is sound and TL/BIS are OK, but it is flowering duration, not G6-L-2 reproduction methods or G5-L-6 life-cycle comparison. Grow/day/before/time hits are keyword traps (weather, volcano, power, geologic time). Potential G6-L-2 or G5-L-6 after a plant flowering-stage facet.",
+      "evidence": []
+    },
+    {
+      "factId": "rafflesia-vs-sunflower-comparison-g4",
+      "id": "ffct-13841",
+      "textHash": "d80af07d6ad8b89a000aeb7608e994afc316a6fb015ea296d0ca5f32faa2aea8",
+      "previousExclusion": "first-pass grok-4.6 2026-09-06T14:08:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Size/scent contrast is descriptive trivia, not leaves-roots-stems nutrient roles (G3-L-5), specialized structures (G5-L-7), or pollination methods (G6-L-2; no pollen). G10-M-1 odor/smell is chemical-reaction indicators. Sun/grow/car hits are traps. TL/BIS (mabaho/mobaho) OK. Potential G6-L-2 after a scent-pollination comparison facet.",
+      "evidence": []
+    },
+    {
+      "factId": "rainbow-color-order-g7",
+      "id": "ffct-26863",
+      "textHash": "fe5e31b25ddf6a857d6c65d085ffb4e73dad8c9eae9bd898ef3e88a8f1ea93c2",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:08:13Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "ROYGBIV order is conventional (Newton) and TL/BIS color names are OK, but G9-F-11 never admits (needs radio/visible/wavelength-frequency, not color names). G3-M-1/G4-E-4 hit only 'rain' inside rainbow, not weather or local-event identification with an explanation. G10-M-1 color is reaction indicators. Potential G9-F-11 after a visible-spectrum/ROYGBIV facet.",
+      "evidence": []
+    },
+    {
+      "factId": "rainbow-formation-refraction-reflection-g6",
+      "id": "ffct-25338",
+      "textHash": "fd258ea68a02acc5965d41e62ebd5b113d1006533836722d78130b7539f597c6",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:19:24Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G3-M-1",
+        "G3-F-6"
+      ],
+      "reason": "Explains a local natural event (rainbow) by light refracting into a raindrop and reflecting inside it, a sound G3-M-1 local-example and G3-F-6 behavior (reflect) component. G3-F-6 guided-exploration does not match. Not recovered to G3-F-5 (sunlight would swallow mechanism into light sources), G6-F-5 (ripple-tank water waves; investigation), G6-F-9 (light as transverse wave), or G8-F-11 (no prism/mirror/block/lens/investigation words). TL sumasalamin / BIS nagasalamin preserve reflection; 'refract' is kept as a loan. Rain/raindrop are rain-related, not accidental substrings.",
+      "evidence": [
+        {
+          "lesson": "g3:everyday-science",
+          "unit": "G3-M-1:local-examples",
+          "quote": "A rainbow forms when sunlight refracts into a raindrop"
+        },
+        {
+          "lesson": "g3:light",
+          "unit": "G3-F-6:behavior",
+          "quote": "reflects inside it"
+        }
+      ]
+    },
+    {
+      "factId": "rainbow-refraction-raindrops-g6",
+      "id": "ffct-26861",
+      "textHash": "d608430c65bdecd089c5ad74513fe00da3ce2c5d95a94820a75fea6f752c1d08",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:19:25Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G3-M-1"
+      ],
+      "reason": "Identifies and explains rainbows as a local natural event caused by sunlight refracting and splitting in raindrops, a sound G3-M-1 component. G3-F-6 behavior does not match (no reflect/shadow/through). Not recovered to G3-F-5 sources (sunlight swallow), G6-F-5 ripple-tank investigation, or G8-F-11 (no equipment/investigation). TL lumiliko / BIS mobawog keep the bending meaning. Raindrop/rainbow are rain-related leads.",
+      "evidence": [
+        {
+          "lesson": "g3:everyday-science",
+          "unit": "G3-M-1:local-examples",
+          "quote": "A rainbow forms when sunlight refracts and splits into beautiful colors inside raindrops"
+        }
+      ]
+    },
+    {
+      "factId": "rainbow-seven-colors-g6",
+      "id": "ffct-26862",
+      "textHash": "96c181942fd733572279e8e50cdd97870eab9b85dc4b62501484ceaf6a9869dc",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:08:19Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "'Exactly 7 colors' overstates a continuous spectrum (indigo is Newton's convention, not a discrete physical count). G9-F-11 does not admit. G3-M-1/G4-E-4 match only rain-in-rainbow without an explanation of the event. TL/BIS keep 7 kulay/kolor. Potential G9-F-11 after a continuous-visible-spectrum facet and copy repair.",
+      "evidence": []
+    },
+    {
+      "factId": "rainforest-canopy-animals-stay-g6",
+      "id": "ffct-14604",
+      "textHash": "0a74de9cddb839213211387fc5f069d4a0af2693bcaa64a40ff33866c5d253b7",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:02:03Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Canopy-dwelling monkeys/birds/bats is a real rainforest biotic feature, and TL/BIS (canopy/gubat/lasang) are OK, but G9-L-9 requires labeled diagrams of biotic/abiotic features; only the rainforest keyword facet matches, not diagram/biotic/abiotic. G4-L-3/G4-L-4 are drawing/table classification activities the card does not teach. G3-L-8 matches forest without teaching protect/conserve. Potential G9-L-9 after a non-diagram canopy-animals facet.",
+      "evidence": []
+    },
+    {
+      "factId": "rainforest-nutrient-recycling-g8",
+      "id": "ffct-11496",
+      "textHash": "35ed7f3aeafa1de47a61b80858402b98325bd8756723d7b0fdcf6b9d52f8cb63",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T10:25:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G3-L-5",
+        "G4-L-2"
+      ],
+      "reason": "Teaches that roots take up nutrients from the soil, the exact G3-L-5 roots and G4-L-2 roots role. Only those root facets match (stems/leaves/shoots do not). Not recovered to G9-L-9 (labeled-diagram rainforest features), G6-L-8 (soil keyword without good/harm), G6-L-5 (no decomposer named), or G8-L-8 (no C/O/water-cycle diagram). TL sinasalo ng mga ugat ang sustansya / BIS gisuyop sa mga gamot ang sustansya preserve the root-nutrient meaning. Rapid rainforest nutrient cycling and thin soils are standard (e.g. FAO tropical forest soils).",
+      "evidence": [
+        {
+          "lesson": "g3:plant-parts",
+          "unit": "G3-L-5:roots",
+          "quote": "roots quickly soak up the nutrients"
+        },
+        {
+          "lesson": "g4:plant-systems",
+          "unit": "G4-L-2:roots",
+          "quote": "roots quickly soak up the nutrients"
+        }
+      ]
+    },
+    {
+      "factId": "rambutan-hairy-skin-g3",
+      "id": "ffct-09455",
+      "textHash": "e392a8d858aee9eb61d9cab5fa4ea7ac4f7f19fd99193c1bf8d93eb3ff2feeae",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:36:49Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Hairy rambutan skin is real and TL/BIS (buhok/balahibo, tinik/tunok) are OK, but G5-L-7 never matches (no rhizome/tuber/thorn/bulb/aerial root) and does not state a purpose. G3-M-5/G4-F-1 match 'soft' as a materials/shape activity, not fruit morphology. G8-L-7 hair is mammal classification. Potential G5-L-7 after a spines/purpose facet, or G3-M-5 if fruit skins are intended as solid-property examples.",
+      "evidence": []
+    },
+    {
+      "factId": "raptor-light-bones-flight-g6",
+      "id": "ffct-07384",
+      "textHash": "249402cf98e7174824690594a1b235d49eda4f529a2041f294a4255c51588328",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:24:38Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Hollow/light bird bones aiding flight are standard anatomy, and TL/BIS (magaan/gaan, guwang) are OK, but G5-L-9 is evolutionary change with mimicry/camouflage (neither matches). G4-L-3 aerial/fly is diagram classification of Philippine habitats, which the card does not teach. G5-F-5/G4-F-9 'light' are gravity and energy-form traps. Potential G5-L-9 after a structural-adaptation (hollow bones) facet.",
+      "evidence": []
+    },
+    {
+      "factId": "rattan-grows-in-rainforest-g5",
+      "id": "ffct-06492",
+      "textHash": "08248dc0aaed60a1733763c2aa1ec15a839cad350633bd0ffc002f4338fb61aa",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:03:07Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Rattan in warm moist PH/SE-Asian rainforests is true (uway), and TL/BIS match, but G9-L-9 is labeled-diagram biotic/abiotic features (only rainforest keyword). G4-L-4 requires a list/table of habitat examples. G3-L-3 grow and G8-E-7 warm/moist (typhoon conditions) are swallows. Potential G9-L-9 after a rainforest-plant-example facet.",
+      "evidence": []
+    },
+    {
+      "factId": "rattan-uway-climbing-palm-g5",
+      "id": "ffct-03776",
+      "textHash": "f7d7d0a6a7bdb5ddadc89bb88da12265264440a4ab6bc735fce7f1e087686ff3",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:29:53Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Rattan as a climbing palm (uway/yantok) is accurate and TL/BIS (baging vs puno/kahoy) are OK, but G5-L-7 never names rhizomes/tubers/thorns/bulbs/aerial roots or their purpose. G3-L-5 is leaf/root/stem nutrient roles. G3-L-2 matches only 'tree' as a living example, not living vs non-living. Potential G5-L-7 after a climbing-palm/tendril facet.",
+      "evidence": []
+    },
+    {
+      "factId": "read-the-steps-aloud-g5",
+      "id": "ffct-36469",
+      "textHash": "2aa2313efbe6e09b1c6f59cd243ddab05f9207720c60228e0cbafb9fec60485b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:45:12Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Classroom-management tip about reading the procedure aloud, not a science teaching component. G5-M-7 requires problem+materials+procedure+findings together. G7-M-6 aim/method words do not match. Investigation/test hits are other labs. TL/BIS preserve the management meaning. Potential G5-M-7/G7-M-6 after a read-the-steps-aloud procedure facet.",
+      "evidence": []
+    },
+    {
+      "factId": "real-vs-virtual-image-g7",
+      "id": "ffct-22131",
+      "textHash": "94dd66f58ca04815df74d2efd3c0d38d03a34cb068c63b0ca77f756739e719b9",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:19:25Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Real vs virtual images (screen vs plane mirror) is standard optics, and TL/BIS keep real/virtual image, but G8-F-11 admits only plane/curved mirror, block, lens, prism, or ray-investigation wording; 'flat mirror' does not match 'plane mirror', and the card teaches no investigation. Potential G8-F-11 after a plane-mirror real/virtual-image facet.",
+      "evidence": []
+    },
+    {
+      "factId": "receptacle-flower-g5",
+      "id": "ffct-04739",
+      "textHash": "cc69d7f59d4d8a786ab05537674fdf73df9077953d6144faa8e36e8285b5c521",
+      "previousExclusion": "first-pass grok-4.6 2026-09-06T14:20:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Receptacle as the attachment tip for sepals/petals/stamens/pistils is sound floral morphology; TL/BIS keep the loanword with the same meaning. No current flower-parts facet: G6-L-2 needs pollinat/seed/propagat; G3-L-5 is leaves/roots/stems getting water and nutrients. Potential new G6-L-2/G3-L-5 floral-whorl/receptacle facet.",
+      "evidence": []
+    },
+    {
+      "factId": "red-cabbage-fading-over-time-g8",
+      "id": "ffct-17410",
+      "textHash": "5bd7ecf73b96cf6c07b67d88293fbdd61d7fad0e119d5e33f01bb23613beb601",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:57:53Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Anthocyanin degradation and microbial spoilage of cabbage indicator juice are real (fridge slows both), and TL/BIS (nasisira/maguba, mikrobyo) are OK, but G10-M-8 does not admit (no food/preserv/rate factor). G10-M-2 needs indicator/litmus/pH. G10-L-6 microb is biotechnology, not spoilage. G6-M-4 'use' is mixture examples. Potential G10-M-2/G10-M-8 after an indicator-stability facet.",
+      "evidence": []
+    },
+    {
+      "factId": "red-tide-economic-impact-fishers-g7",
+      "id": "ffct-08502",
+      "textHash": "739db6ead99080f07c2512db3f70941fd55d8327e21bdf00d4c390c59458a863",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:42:42Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "BFAR-style red-tide warnings do halt shellfish sales (true economic harm), and TL/BIS (babala/pasidaan, kabibe) are OK, but G6-L-8 never explains a living/non-living interaction or toxin mechanism. G4-M-6 names no science solution. G7-E-8/G8-E-10 match 'warning' as tsunami/typhoon procedures; G8-M-2 'shell' is electron shells. Potential G4-M-6 or G6-L-8 after a HAB/community-impact facet.",
+      "evidence": []
+    },
+    {
+      "factId": "red-tide-why-called-tide-g6",
+      "id": "ffct-06754",
+      "textHash": "6557f5b60d80285809a1f488093125488e860ad8bfecbbf64b56751e8fb20bb2",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:47:19Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Red tide is a harmful algal bloom, not a tide (NOAA/BFAR), and TL/BIS (taog/sulog vs plankton) are OK, but G7-L-10 matches only plankton as a food-pyramid energy-transfer example, swallowing HAB nomenclature. G5-L-4 is a classification table. G9-L-4 harmful is mutations. Potential new HAB/red-tide facet, or G7-L-10 if producer examples are widened on purpose.",
+      "evidence": []
+    },
+    {
+      "factId": "redtide-toxin-cannot-treat-with-medicine-g8",
+      "id": "ffct-08838",
+      "textHash": "e59334d72af9d1c3980dbf9ad0a8ea7dd995cdea08c8a9e57c703fa191b87699",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:37:03Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "No specific antidote for paralytic shellfish poisoning; care is supportive (CDC PSP). TL/BIS (gamot/tambal, makahinga/makaginhawa) are OK. G5-L-2 does not identify nose/windpipe/lungs. G3-L-8 is environmental conservation, not avoiding toxic shellfish. G6-M-4 medicin is useful mixtures. Potential new red-tide-safety/toxin facet.",
+      "evidence": []
+    },
+    {
+      "factId": "redtide-toxin-vs-allergy-g8",
+      "id": "ffct-10914",
+      "textHash": "ea288db3d2eabdd6c0d475891965989cf427d34da48abf5ec6bb9bc2037b8e21",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:42:57Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "PSP vs seafood allergy (anyone vs some; numbness/weakness vs itch) is a sound public-health distinction; TL/BIS (pamamanhid/pagkamanhod vs pangangati/katol) are OK. G3-L-3 matches only 'react', not grow/reproduce as living-thing characteristics. G6-L-8 does not explain the algal-toxin interaction. G4-L-1 is how body systems work. Potential new HAB-poisoning vs allergy facet.",
+      "evidence": []
+    },
+    {
+      "factId": "reef-fish-eyes-see-color-g6",
+      "id": "ffct-10648",
+      "textHash": "9d2d5699b30d2a26d4443a7a822822f5f5129ea2f182d42f2cff167d8ec167dc",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:39:14Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Reef-fish color vision and color as recognition/mating/warning signals are real, and TL/BIS (paningin/panan-aw, kapareha) are OK, but G5-L-9 is animals having changed (mimicry/camouflage), not current signaling. G5-L-4 fish is a table plus a fish.*fin trap via 'find'. G10-M-1 color is reaction indicators; G7-M-2 'own kind' is particles. Potential G5-L-9 after a color-signaling adaptation facet.",
+      "evidence": []
+    },
+    {
+      "factId": "reef-fish-mucus-coat-protect-g5",
+      "id": "ffct-00149",
+      "textHash": "a5e561a42afb5638cb14d8d36d90dc3afedcadc87d468334c8cc0e654510dcc9",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:24:42Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Fish mucus as a disease barrier and swimming aid is real, and TL/BIS (uhog, madulas/danlog) are OK, but G5-L-9 is evolutionary change with mimicry/camouflage. G3-L-4 is outer parts (head/legs/wings) for moving and gathering food, not skin mucus. G3-L-6 shelter matches only 'protect', not shelter as a basic need. Potential G5-L-9 after a mucus-coat structural-adaptation facet.",
+      "evidence": []
+    },
+    {
+      "factId": "reef-shark-vs-bony-fish-g6",
+      "id": "ffct-09476",
+      "textHash": "0b3e5c5c081e02edaab03609b96962e02c25f79a1be20dd4ad3e76a0d44c45ab",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T04:20:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Shark skeletons are cartilage (Chondrichthyes), lighter/more flexible than bone; TL/BIS (cartilage, ilong/tainga) are OK. G6-L-4 is vertebrate vs invertebrate, not cartilage vs bone in two fishes. G5-L-4 requires a classification table. G4-L-1 skeletal needs bone.*(support|protect) or skeleton.*support. G4-F-1/G4-F-6 hard/bendy are rigid-soft force activities. Potential G6-L-4/G5-L-4 after a cartilaginous-vs-bony-fish facet.",
+      "evidence": []
+    },
+    {
+      "factId": "reflex-actions-g6",
+      "id": "dcard-01528",
+      "textHash": "f33c3f30b8717c16ed29d53710026e1c933b9eef3a825d4009b007d5f514192b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:15:12Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Spinal-cord reflexes as fast protective movements are sound, and TL/BIS keep spinal cord/reflex action. No current nervous-system facet in G3-10. G3-L-3 is general living-thing respond, not reflex arcs. Sole cat g6-living_things-musculoskeletal-and-integumentary-systems is G6 enrichment, blocking G6 recoveries. Keyword protect/move hits are shelter, erosion, particle motion. Potential new reflex/nervous-system facet (not G4-L-1 muscular/skeletal).",
+      "evidence": []
+    },
+    {
+      "factId": "reflex-automatic-not-learned-misconception-g4",
+      "id": "ffct-12431",
+      "textHash": "bedb003e1c24fb2428a073c5a7ad433993e731b713758c35f8c53d17a319c319",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:15:12Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Innate vs learned reflexes is sound, and TL/BIS (likas/natural, ipinanganak/pagkatawo) are OK, but G3-L-3 does not admit (no respond/grow/reproduce). G3-F-5 matches 'read' as using light to read. No nervous-system competency. Potential new inborn-reflex facet.",
+      "evidence": []
+    },
+    {
+      "factId": "reflex-cannot-reflex-arc-parts-g7",
+      "id": "ffct-08759",
+      "textHash": "6bbfd2232d54229d891afd354ce00761954a6501dffadca1121add884d8b1dda",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:15:12Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Five-part reflex arc (receptor, sensory neuron, spinal cord, motor neuron, effector) is standard, and TL/BIS keep the terms. G8-L-2 requires models/flow charts/diagrams of body systems such as digestion/excretion (diagram facet not matched; card is not that pairing). G7-L-8 is labelled levels of organization. G10-F-11 motor is electric motors. Potential G8-L-2 after a reflex-arc model facet.",
+      "evidence": []
+    },
+    {
+      "factId": "reflex-sensory-motor-neurons-g7",
+      "id": "ffct-00518",
+      "textHash": "79d1ca613b81a456b8fe7df804ad54fbd078c140d7f6dad27fd92d3198aa9ea9",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:13:03Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Sensory neuron in / motor neuron out via spinal cord is sound; TL/BIS (senyas, gulugod/dugokan, kalamnan/kaunuran) are OK. G8-L-2/G7-L-8 are diagram/model competencies the card does not teach. G7-L-10 transfer is food-pyramid energy. G10-F-11 motor is generators. Potential G8-L-2 after a sensory/motor reflex-arc facet.",
+      "evidence": []
+    },
+    {
+      "factId": "reflex-shiver-involuntary-g7",
+      "id": "ffct-01523",
+      "textHash": "ef8013b2b2b831bbf09a20f130364c55142c770071aa4f312391b98d3e7de1fc",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:43:52Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "HOLD: EN question is Tagalog ('Bakit hindi mapigilan ang panginginig?') while the answer is English — unresolved EN identity. Shivering as involuntary is related to G10-L-1/G10-L-2 homeostasis/feedback but those facets (temperature/glucose/blood pressure/homeostasis/negative/positive/feedback) do not match. TL/BIS shivering meaning is OK. Potential G10-L-1 after copy repair and a shivering/body-temperature facet.",
+      "evidence": []
+    },
+    {
+      "factId": "reflex-swallow-prevents-choking-g7",
+      "id": "ffct-02906",
+      "textHash": "5a6d642b866ddc35bb374d7621d931cfae97ba63e2e5f9c1565a5f146d02c940",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:26:48Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Gag reflex protecting the airway is real; TL/BIS (mabulunan/mabara) are OK. G5-L-1/G5-L-2 require identifying digestive/respiratory parts from diagrams. G3-F-1 push is making objects move. G3-L-6 food is basic needs. Potential G5-L-1/G5-L-2 after a gag-reflex airway-protection facet.",
+      "evidence": []
+    },
+    {
+      "factId": "refraction-bending-at-boundary-g6",
+      "id": "ffct-25315",
+      "textHash": "80e51dfb6f0dfa6c147547dbf6500ebe1985ec5ec1c27209dac80e438ee6627a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:19:25Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Definition of refraction (bend at a material boundary, air into water) is physically sound; TL pagbaluktot / BIS pagbalog are OK. G8-F-11 needs guided investigations with blocks/lenses/prisms (none match). G6-F-5 bending is ripple-tank water waves (investigation; do not credit). G4-F-6 bend is forces changing object shape. G3-F-6 behavior needs shadow/reflect/block/through. Potential G8-F-11 after a refraction-definition/everyday-boundary facet.",
+      "evidence": []
+    },
+    {
+      "factId": "refraction-everyday-examples-g5",
+      "id": "ffct-23312",
+      "textHash": "af5db23a928c9ad0fadaf96d17441fc54b0e086c270022fae269ccf36dbfef5f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:19:25Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G3-M-1"
+      ],
+      "reason": "Identifies local objects and a natural event (bent straw, eyeglasses, cameras, rainbow) that science explains, a sound G3-M-1 local-example component. Not recovered to G3-F-5 uses ('see refraction' is not using light to see), G8-F-11 (no investigation/mirrors/blocks/lenses/prisms), or G6-F-5 ripple-tank investigation. TL/BIS (baluktot, salamin sa mata/antiyohos, bahaghari/balangaw) preserve the examples.",
+      "evidence": [
+        {
+          "lesson": "g3:everyday-science",
+          "unit": "G3-M-1:local-examples",
+          "quote": "a bent-looking straw in a glass, eyeglasses, cameras, and even a rainbow in the sky"
+        }
+      ]
+    },
+    {
+      "factId": "refraction-light-bends-water-g5",
+      "id": "ffct-23297",
+      "textHash": "1873e1aaf3b0d765b1f10041819ac0edc092b8a489dc7a544c8b5bbd5b19be69",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:19:27Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Air-to-water refraction is sound; TL nagbabaluktot / BIS mobawog are OK. G8-F-11 does not admit. G6-F-5 is ripple-tank investigation. G4-F-6/G4-F-5/G5-F-1 direction/bend are forces, not light. G3-F-6 behavior does not match. Potential G8-F-11 after an air-water refraction example facet.",
+      "evidence": []
+    },
+    {
+      "factId": "refraction-light-fish-spearing-ph-g6",
+      "id": "ffct-24421",
+      "textHash": "f8c5f9c0bd3bff645f2d3f028d7124006aaec057ab513776496b98c1d73075fd",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:19:26Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Apparent-depth / aim-low when spearing is a real refraction application, and TL/BIS (nanganga/mamana, mas mataas/mas taas) are OK. G8-F-11 requires investigations with specified apparatus, not this everyday example. G6-F-5 is water-wave tanks. G3-F-3 closer is measuring position change, not apparent position. G3-M-1 does not admit (no rain/cook/shadow/melt/plant/dry). Potential G8-F-11 after an everyday-application (spearing/apparent depth) facet.",
+      "evidence": []
+    },
+    {
+      "factId": "refraction-light-not-reflection-compare-g7",
+      "id": "ffct-24423",
+      "textHash": "30b72a8b6f32b760fd102c539f0af77e6d27625d99b23bd385ef8045ee5f3e4e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:19:28Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G3-F-6"
+      ],
+      "reason": "Teaches how light behaves: it bounces back in reflection versus passes through and bends in refraction, the G3-F-6 behavior facet (reflect/through). Guided-exploration does not match. Not recovered to G6-F-5 (ripple-tank investigation of water waves), G6-F-9 (light as a transverse wave), G4-F-6 (forces bending objects), G3-F-8 (sending messages with light), or G8-F-11 (no equipment/investigation). TL yumuyuko / BIS mubawog keep bend; BIS 'doon' is a Tagalog leftover but meaning is intact.",
+      "evidence": [
+        {
+          "lesson": "g3:light",
+          "unit": "G3-F-6:behavior",
+          "quote": "light passes through into another material and bends"
+        }
+      ]
+    },
+    {
+      "factId": "refraction-mirage-road-g8",
+      "id": "ffct-23310",
+      "textHash": "a0bc2c8d86073f3536022eb8bd25aa25b575369057b181959e13b87b0fb1b1d7",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:19:29Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:48:51.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Hot-road inferior mirage from refractive-index gradient is real, and TL/BIS (malikmata, binabaluktot/gibawog) are OK. G8-F-11 does not admit (no mirrors/blocks/lenses/prisms/investigation). G6-F-5 is ripple-tank waves. G3-F-6 behavior does not match. G4-F-9 heat/light are energy forms. Potential G8-F-11 after an everyday-mirage refraction facet.",
+      "evidence": []
+    }
+  ],
+  "note": "Original source timestamps are unverified provenance; actual verification recorded separately."
+}

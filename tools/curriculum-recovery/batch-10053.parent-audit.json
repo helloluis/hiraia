@@ -1,0 +1,566 @@
+{
+  "parentVerifiedAt": "2026-09-10T15:00:51.878423+00:00",
+  "originalProposals": [
+    {
+      "factId": "oxidation-reaction-with-oxygen-g6",
+      "id": "ffct-16053",
+      "textHash": "96c0a390c9f612ae9848c2c830c79f6c16d102924285f9a20f6ff4e38dc0362f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:46:45Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "School-level oxidation as combination with oxygen is sound (G6), but no current facet teaches that reaction. G4-M-3:react is chemical properties of materials (burn/react/degrade), not a named oxidation definition. G6-M-3 is reversibility of physical vs chemical change, not new-substance wording. G6-M-5 is air as a mixture. G10-M-3 combination/decomposition/replacement types are not admitted. TL nakikipagsama sa oksiheno / BIS makig-uban sa oksiheno OK. Potential G4-M-3 or G10-M-3 after an oxidation-with-oxygen/combination facet.",
+      "evidence": []
+    },
+    {
+      "factId": "oxygen-from-more-leaves-more-g5",
+      "id": "ffct-17834",
+      "textHash": "93e211c72ff32b7529e419fa757d41919cdb919270ea316a54737117467fb495",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:24:11Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Larger leaf area yielding more O2 is real photosynthesis scaling, but G8-L-9 (process, raw materials, products) is not admitted. G8-L-3 is leaf/stem/root transport, not O2 output. G8-L-8 oxygen cycle requires flow charts (not credited). G6-M-5 is air composition. G3-M-1 would swallow a photosynthesis-rate fact into generic local plants. TL/BIS keep more-leaves/more-oxygen. Potential G8-L-9 after a leaf-area/oxygen-product facet.",
+      "evidence": []
+    },
+    {
+      "factId": "oxygen-priestley-g8",
+      "id": "ffct-19622",
+      "textHash": "79ef1f98a6e8df9f03bc462f44aaebf837929091f6a9976de97aff07a2a679cf",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:06:40Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Priestley isolated O2 in 1774 (Scheele independently earlier; 'one of the very first' is fair). G4-M-1 needs a scientist and an invention from secondary sources — isolation is a discovery, and invent|develop|creat is not admitted. G8-M-6 first-ten is element names/symbols, not discovery history. G6-M-5 is air as a mixture. TL/BIS nakahiwalay/nakalain OK. Potential G4-M-1 after a named-discovery facet, or G8-M-6 after an oxygen-identity facet.",
+      "evidence": []
+    },
+    {
+      "factId": "oyster-cements-to-reef-g7",
+      "id": "ffct-02553",
+      "textHash": "c908b7230bf4b23c6035d23996e4e15606a3f89cf21a7ecf66bc56af3fc267f7",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:35:30Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Oysters cementing onto rock/each other to build reefs is real, but no current core facet teaches reef building or sessile attachment. G3-L-2 local living/non-living would swallow a reef-formation card. G3-E-1 rock is schoolyard non-living materials. G4-L-4 list/table of habitat examples is not admitted and would require a table (not credited). TL bahay-talaba / BIS pundok sa talaba OK. Potential G4-L-4 after a seashore/reef habitat-example facet without a table requirement.",
+      "evidence": []
+    },
+    {
+      "factId": "ozone-blocks-sunburn-on-cloudy-day-g7",
+      "id": "ffct-31864",
+      "textHash": "dcc500c544187b566de55ce0ac396a638e9be66a691f1c1c8997950abbe45676",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:56:35Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G9-F-13"
+      ],
+      "reason": "Teaches that UV still causes sunburn on cloudy days (ozone blocks much UV; some passes through clouds), a harmful-EMR component of G9-F-13 (anchors include sunburn). Only the ioniz/sunburn/ultraviolet facet matches; secondary-source does not. EPA: UV reaches the ground on cloudy days (https://www.epa.gov/sunsafety/uv-radiation). Not recovered to G3-E-9/G3-F-7 (no protection measures), G4-F-8 (generic non-contact sunlight), or G7-F-9 (thermal burn). TL 'tay' is a tayo typo but mapaso sa araw / BIS mapaso sa adlaw keep the sunburn meaning.",
+      "evidence": [
+        {
+          "lesson": "g9:f-13",
+          "unit": "G9-F-13:focus-1",
+          "quote": "You can still get burned if you stay outside for a long time"
+        }
+      ]
+    },
+    {
+      "factId": "ozone-hole-antarctica-g7",
+      "id": "ffct-29865",
+      "textHash": "4957bdb5d2fb9e4154c2d40184738ac573ba639e30b8f3cab1edfa977e221193",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:05:06Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "The Antarctic ozone hole is a real seasonal thinning of stratospheric ozone (NASA Ozone Watch). Only admitted facet is G9-E-7 Earth-interior layer, a keyword trap. G7-E-9 sun-atmosphere is not admitted. TL/BIS nanipis ang ozone layer OK. Potential G7-E-9 or G9-F-13 after an ozone-layer/UV-shield facet.",
+      "evidence": []
+    },
+    {
+      "factId": "ozone-vs-oxygen-atoms-g8",
+      "id": "ffct-19357",
+      "textHash": "1bd83d9de84d3f4a1ed81a6e103a5b3dcc2df63cb146852b8e38504cc73617be",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:25:51Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "O3 vs O2 atom counts are correct allotropes, but G8-M-4 fixed composition/elements-compounds is not admitted. G7-M-2 is the particle-model definition, not molecular formulas. G7-M-4 gas diagrams not credited. G8-M-6 first-ten is element names, not O2/O3. G6-M-5 is air as a mixture of O2. TL/BIS tatlong/tulo ka atomo OK. Potential G8-M-4 or G7-M-2 after an allotrope/molecular-formula facet.",
+      "evidence": []
+    },
+    {
+      "factId": "pagasa-cyclone-categories-count-g6",
+      "id": "ffct-33549",
+      "textHash": "376549787f15639897d934a136175b0102451591a6c4ae80d53e71d17109bdab",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:21:12Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "PAGASA's five classes (TD, TS, STS, TY, STY) match the 2022 scale (https://www.pagasa.dost.gov.ph/). G5-E-9 needs Public Storm Warning Signal numbers, not intensity names (pattern 'signal' not admitted). G8-E-7 is how typhoons develop / why PH is prone, not classification. G8-E-10 is DOST support to typhoon-affected communities. G3-E-5 storm-danger does not list categories. TL/BIS 5 kategorya OK. Potential G5-E-9 after a PAGASA intensity-category facet, or G8-E-7 after a classification facet.",
+      "evidence": []
+    },
+    {
+      "factId": "pagasa-radar-network-g6",
+      "id": "ffct-32606",
+      "textHash": "cf4f927e47025ccb257b208c1e21ce770fb9cab89628bdca808cbba05156e5f0",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:13:34Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "PAGASA Doppler radar for typhoon/rainfall monitoring is real, but G8-E-10 is how authorities support communities already affected by typhoons, not the monitoring network. G8-E-7 source/philippines does not explain typhoon development or PH exposure. G5-E-10 before/during/after cyclone weather is not this. G3-E-5 danger names weather as dangerous without conditions. TL/BIS Doppler radar / bagyo OK. Potential G8-E-10 after a PAGASA-monitoring-support facet.",
+      "evidence": []
+    },
+    {
+      "factId": "pagasa-seasonal-climate-outlook-g7",
+      "id": "ffct-32603",
+      "textHash": "a378dc51d98a1997265fa09fd27ef3e96d91ef646730efbda2ac48b7e454d619",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:48:32Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "PAGASA issues a quarterly seasonal climate outlook for farmers, but G8-E-10 is typhoon-community support, G8-E-7 is typhoon development, G6-E-6 is PH seasons/activities, and G4-E-6 is reading a local weather chart plus extreme-weather safety. G3-E-5:activities farm is a keyword trap. TL/BIS seasonal climate outlook / magplano/makaplanear OK. Potential G6-E-6 after a PAGASA seasonal-outlook facet, or G8-E-10 after non-typhoon official climate products.",
+      "evidence": []
+    },
+    {
+      "factId": "pagasa-thunderstorm-warning-g6",
+      "id": "ffct-30108",
+      "textHash": "3dac8461d8c99a15b1830fc7cf05381ef814b6753c3ea3bcf40c3e6962b60a89",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:48:25Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "PAGASA thunderstorm advisories exist, but G5-E-9 is PSWS weather conditions (pattern 'signal' not admitted), G8-E-10 is support for typhoon-affected communities, and G3-E-5 danger does not explain why thunderstorms are dangerous or how they change activities. G6-E-5:before is volcano alerts. TL thunderstorm advisories / BIS unos+advisories OK. Potential G3-E-5 or G4-E-6 after a thunderstorm-advisory/safety facet.",
+      "evidence": []
+    },
+    {
+      "factId": "pagasa-typhoon-threshold-g8",
+      "id": "ffct-34023",
+      "textHash": "b4209bb974cf0355ac4064c5d94bad1e0ab9cf357dd9726e5035310e8b1ba3b6",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:13:35Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "PAGASA typhoon band 118–184 km/h is the post-2022 scale (https://en.wikipedia.org/wiki/Tropical_Cyclone_Wind_Signals). G8-E-7 is how typhoons develop / why PH is prone, not the wind-speed label. G8-E-10 is community support. G5-E-10 cyclone weather conditions not admitted. G3-F-1 wind is how objects move. TL/BIS 118 hanggang/hangtod 184 km/h OK. Potential G8-E-7 or G5-E-9 after a PAGASA intensity-threshold facet.",
+      "evidence": []
+    },
+    {
+      "factId": "pagi-sting-first-aid-g5",
+      "id": "ffct-04836",
+      "textHash": "83c699eb8003d9a121e375a2ab5e393b64f754cfa791f6ccae2ca8522f3ca257",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T14:25:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Shuffle-step stingray avoidance is real first aid, but no current core facet teaches animal-sting safety. G4-L-3 aquatic classification requires a drawing (not credited). G6-L-8 nonliving water/sand is ecosystem good/harm, not stepping on a ray. G3-L-3 respond is not admitted. TL/BIS pagi / pagkiskis sa buhangin/balas OK. Potential new stingray/marine-safety facet; not G4-L-3/G6-L-6.",
+      "evidence": []
+    },
+    {
+      "factId": "paint-protects-and-decorates-g6",
+      "id": "dcard-07343",
+      "textHash": "e6d910e8859bbc6df612693e7d39d383846894b2ce7bd9805b6e2e9bedd97f6f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:44:20Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G6-M-4"
+      ],
+      "reason": "Paint as a useful everyday mixture (colloid) for protection and decoration is a G6-M-4 uses-facet teaching (pattern includes paint). Only uses matches; solution/homogeneous and suspension/heterogeneous do not. Cat g6-matter-kinds-of-mixtures is direct for G6-M-4, not enrichment. Not recovered to G6-M-3 (reversibility) or G3-L-6 shelter. TL pintura / colloid / proteksyon at dekorasyon and BIS pintura / colloid keep the mixture-use meaning.",
+      "evidence": [
+        {
+          "lesson": "g6:useful-mixtures",
+          "unit": "G6-M-4:uses",
+          "quote": "Paint is a colloid used for protection and decoration"
+        }
+      ]
+    },
+    {
+      "factId": "palawan-bearded-pig-endemic-g5",
+      "id": "ffct-00168",
+      "textHash": "5920a960317254dd3aebb594d26b32d3a6d263f66f7bb4db95cf49dae771a115",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:01:48Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Palawan bearded pig (Sus ahoenobarbus) is endemic to Palawan (IUCN). G6-L-4 local vertebrate examples would swallow endemism into backbone/no-backbone. G4-L-3/L-4 habitat classify/list require drawing or table (not credited) and are not admitted. G9-L-8 is protect/conserve endangered species, not range. TL/BIS matatagpuan/makit-an lamang sa Palawan OK. Potential G6-L-4 after an endemic-PH-mammal facet, or G9-L-8 after conservation wording.",
+      "evidence": []
+    },
+    {
+      "factId": "palawan-peacock-crest-head-g6",
+      "id": "ffct-00228",
+      "textHash": "dbab4fe32e1c85d49dbd52c8ea8f0c2a8864c6ad9cee8e759ad21b47411868e6",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:15:06Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Male tandikan (Polyplectron napoleonis) crest in courtship is real, but G3-L-4 needs outer parts whose role is moving or gathering food — crest/courtship is not admitted. G6-F-5 wave crests is a keyword trap. G3-L-3 reproduce is not admitted. TL/BIS palong sa ulo / nanliligaw/manguyab OK. Potential G3-L-4 after a display/courtship body-part facet, or G5-L-9 after a sexual-selection example.",
+      "evidence": []
+    },
+    {
+      "factId": "palawan-pig-males-tusks-g6",
+      "id": "ffct-14519",
+      "textHash": "7efa03629e320afa12735a11d1104c13d186753b97ac7058b046f85de2f3ebdc",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:23:51Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Male bearded-pig tusks for fighting/defense are real, but G3-L-4 (move/gather food) is not admitted. G5-L-9 mimicry/camouflage is not admitted. G3-M-7 sharp is handling hazardous materials. G6-M-4:uses is mixture uses. TL pangil / BIS tango OK. Potential G3-L-4 after a defense body-part facet, or G5-L-9 after a structural-adaptation example.",
+      "evidence": []
+    },
+    {
+      "factId": "palayok-game-blindfold-g4",
+      "id": "ffct-25234",
+      "textHash": "e2ad62f7340e097510e756d8df1d135c0d1590f0ebbd84f234dbe1e88b50472a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:03:47Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Blindfolded pukpok-palayok using hearing and touch is a local game, but G3-F-4 is how sound is made/transferred (not admitted). G4-F-10 sources/uses of sound energy is not admitted. G3-E-2 clay pot as a human-made object does not teach the natural material. G3-M-3 clay is science equipment. TL pandinig at pandama / BIS pandungog ug paghikap OK. Potential G3-F-4 or G4-F-10 after a hearing-in-play facet.",
+      "evidence": []
+    },
+    {
+      "factId": "panagbenga-flower-not-only-baguio-misconception-g5",
+      "id": "ffct-09418",
+      "textHash": "d3b39eee02adc7fef4d18d1aebd592d84cd26998a288c6c5b32b6413819cf46c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:03:02Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Gumamela and santan do grow in hot lowlands; Panagbenga is Baguio's flower festival. G3-L-3:grow is signs of life, not habitat range (grow = tumubo/motubo). G4-L-3 land classification requires a drawing (not credited) and does not name lowland flowers. G4-L-4 list/table is not admitted. TL/BIS gumamela at/ug santan OK. Potential G4-L-3/L-4 after a lowland-garden plant example without a diagram/table requirement.",
+      "evidence": []
+    },
+    {
+      "factId": "pancreas-glucagon-exercise-g9",
+      "id": "ffct-01376",
+      "textHash": "2471c6ae17c4dce67094d91b712184ab0949b797a1350b07d875a47cbdda4291",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:59:23Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Exercise raises glucagon so liver releases glucose; the card says 'sugar' so G10-L-1 (glucose/homeostasis/blood pressure/temperature) is not admitted. G4-L-1 listed body systems are not admitted. G4-M-3:burning is flammability. TL/BIS glucagon / asukal OK. Potential G10-L-1 after a sugar/glucagon glucose-regulation facet.",
+      "evidence": []
+    },
+    {
+      "factId": "pancreas-insulin-not-sugar-itself-misconception-g8",
+      "id": "ffct-00688",
+      "textHash": "fe1c40f99863a3a576bb0cf6193baa927420cf92fc6e725b0048bce605571724",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:43:53Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Insulin is a peptide hormone that regulates blood sugar, not a sugar. G10-L-1 needs glucose/homeostasis wording (not admitted). G4-L-1 named systems are not admitted. G4-E-2 animals is water-for-life. TL/BIS protina / pamahalaan/pagdumala sa asukal OK. Potential G10-L-1 after an insulin/glucose-indicator facet.",
+      "evidence": []
+    },
+    {
+      "factId": "pandesal-basket-g4",
+      "id": "ffct-01276",
+      "textHash": "ed8819f57c9cae69c12b20edf3348428c53ab4e47fcdeec5d89f62a224e90a4e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:43:52Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Pandesal from wheat flour, kneaded and baked, is a local food process, but G3-M-8 is shaping/pressing/hammering solids for usefulness, G6-M-3 is reversible vs irreversible change, and G4-M-4 is temperature property changes (wood/coal). G3-L-7:food-and-shelter is an eat⊂wheat trap. G3-M-1 cook/plant is a generic local-object swallow. G4-F-10 heat does not identify baking as a heat-energy use beyond the word. TL harina ng trigo / BIS harina sa trigo OK. Potential G3-M-1 after a food-processing facet, or G6-M-3 after baking as chemical change.",
+      "evidence": []
+    },
+    {
+      "factId": "papaya-big-lobed-leaves-g4",
+      "id": "ffct-14210",
+      "textHash": "13752f8e136d5f590a91816f062fa11bf102d9cfacbe8c5347fd066e5c337887",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:29:22Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Papaya palmate leaves clustered at the crown are real, but G3-L-5 (leaves get water/nutrients) is not admitted. G8-L-3 is transport among leaf/stem/root, not shape. G3-L-2 living vs non-living would swallow morphology. G3-F-8 hand is sending messages. TL hugis-kamay na dahon / BIS morag-kamot nga mga dahon OK. Potential G3-L-5 after a leaf-form facet without the soil-nutrient role, or G8-L-3 after a leaf-function facet.",
+      "evidence": []
+    },
+    {
+      "factId": "papaya-tropical-warm-climate-g4",
+      "id": "ffct-13320",
+      "textHash": "fa558f767ef6152cb35f6a0f4320563b32af9c2c08aef9fbaae704ef7d5b674e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:45:09Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Papaya is a tropical crop that thrives in PH warmth, but G6-L-7 abiotic temperature is not admitted. G4-E-9 is the Sun's importance (sun is not in the copy). G3-L-3:grow is signs of life, not climate preference. G3-L-7:food-and-shelter is an eat⊂weather trap. TL/BIS init / tropikong Pilipinas OK. Potential G6-L-7 after a temperature-as-abiotic-factor facet.",
+      "evidence": []
+    },
+    {
+      "factId": "paper-made-history-before-g6",
+      "id": "ffct-17744",
+      "textHash": "768d25ee198af4c54bbfbb6c3448c9abbada3cfa5790d34bba0da5f18f0e8674",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:07:48Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Paper as a writing invention is historical, but G4-M-1 requires a famous scientist and their invention from secondary sources — no scientist is named. G4-M-2 local-community invention impact is not admitted. G3-F-1:carry is how people move objects. G5-F-5 light is gravity heavy/light. TL/BIS naimbento ang ... papel OK. Potential G4-M-1 after a named inventor, or G4-M-2 after home/community paper-use.",
+      "evidence": []
+    },
+    {
+      "factId": "paper-wasp-nest-paper-g4",
+      "id": "ffct-06459",
+      "textHash": "06746b1472c9534f8a2c64f19ca1cfbc4a4a4f1826d530c6a490d96fed6e196f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:33:25Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Paper wasps chew wood+saliva into a hexagonal paper nest (true), but G3-L-6 shelter is identifying basic needs, not nest construction (shelter not in the English). G3-E-2 is useful things people made from non-living materials. G8-L-1 chew/saliva is human digestion (labeled diagram, not credited). TL pugad / BIS salag OK. Potential G3-L-6 after an animal-shelter construction facet.",
+      "evidence": []
+    },
+    {
+      "factId": "parrot-pairs-stay-together-g5",
+      "id": "ffct-05538",
+      "textHash": "54226dff69d05a60dfe38644aad3c5001d586f564c49b966b7ff73b83a94d907",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:15:10Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Katala/cockatoos and many parrots form long-term pairs, but G3-L-3 grow/respond/reproduce is not admitted. All hits are time/length keyword traps (G4-E-8, G8-F-7, G9-E-5). TL nagkakapares / BIS magtiayon OK. Potential G3-L-3 after a pair-bond/reproduction-behavior facet.",
+      "evidence": []
+    },
+    {
+      "factId": "parrots-loud-calls-flock-g4",
+      "id": "ffct-13272",
+      "textHash": "5b3270f47ed2bdd54fae0f1c6e1476320f3932d3b028af32db78d13277af6afc",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:09:51Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Parrots use loud contact calls in flocks, but G3-F-8 is sending information between two people. G3-F-7 loud-sound is harmful noise and ear protection, a swallow. G5-L-6 is bird life cycles. TL malakas na huni / BIS kusog nga tingog OK. Potential G3-F-8 after an animal-sound-communication facet, not G3-F-7.",
+      "evidence": []
+    },
+    {
+      "factId": "particle-model-density-g5",
+      "id": "ffct-18252",
+      "textHash": "18dee7896ab9626ae4b134085356659e4ad35e262a619f0a95b9ae14418f15c6",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:40:19Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Density as particle packing, with iron denser than wood, is standard KMT, but G7-M-2 is the 'own kind of particles' definition, not packing. G7-M-4 arrangement/spacing requires diagrams (not credited). G7-M-3 spaces/motion/attraction/temperature is not admitted as packing. G5-F-5 is whether heavier objects fall faster. G3-M-9 iron is community metal uses. Investigation/measure facets not credited. TL/BIS densidad / siksik / bakal vs kahoy OK. Potential G7-M-4/M-3 after a packing/density facet without a diagram requirement.",
+      "evidence": []
+    },
+    {
+      "factId": "passenger-jeepney-g5",
+      "id": "ffct-28556",
+      "textHash": "6f68157b78e42b809838814e1edec27eb45651e288f45cd4e32811fead659bf4",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:58:31Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Jeepney as a PH diesel passenger vehicle is real, but G8-F-2 is accelerating/circular-motion examples (jeep matches the everyday keyword, not the skill). G6-F-1 wheel is simple machines; the card is engine-and-route, not a wheel-as-machine. G4-M-2 local invention is not admitted. G4-F-5 turn is rotating wheels, not changing direction of motion. TL/BIS pampasaherong sasakyan/sakyanan OK. Potential G4-M-2 after jeepney-as-local-invention, or G8-F-2 after acceleration wording.",
+      "evidence": []
+    },
+    {
+      "factId": "pasteurization-safe-milk-g8",
+      "id": "ffct-01396",
+      "textHash": "9d2dac181108f6b0969b83ca1b7b8061da9b1e42000120fcddb86948d590fcae",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:10:58Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G4-F-10"
+      ],
+      "reason": "Gently heating milk to kill germs is a home/community use of heat energy, the G4-F-10 heat facet (light/sound do not match). FDA: pasteurization heats milk to kill harmful bacteria (https://www.fda.gov/food/milk-guidance-documents-regulatory-information/grade-milk-pasteurization). Not recovered to G10-M-8 (no reaction-rate factor), G8-L-7 (mammal milk/hair), G4-M-4 (wood/coal property change), or G7-M-12 lab safety. TL pasteurisasyon / pag-init / mikrobyo and BIS pasteurisasyon / pag-init / mikrobyo keep the heat-to-kill meaning.",
+      "evidence": [
+        {
+          "lesson": "g4:energy-uses",
+          "unit": "G4-F-10:heat",
+          "quote": "Pasteurization is gently heating milk to kill germs"
+        }
+      ]
+    },
+    {
+      "factId": "patola-loofah-g5",
+      "id": "ffct-04834",
+      "textHash": "964cc3a001c5f482df79d35708f2650353add172d873a66819cc82a335250304",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:48:22Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Young patola is cooked; ripe dried fibers are a loofah sponge (true). G3-E-2 is useful items from non-living materials (fibers are plant). G3-M-8 is shaping/pressing solids, not ripening/drying. G5-L-6 is comparing mammal/bird/plant life cycles. G3-M-1 cook/plant/dry is a generic local-object swallow without a science explanation. Chart/table facets not credited. TL panghilod / BIS panghugas OK. Potential G3-M-1 after a local-plant-use facet, or G3-E-2 if plant fibers were in scope.",
+      "evidence": []
+    },
+    {
+      "factId": "pawikan-few-many-years-to-mature-link-g5",
+      "id": "ffct-00758",
+      "textHash": "bee35307bf2f5bcced63aac0805686591b10c5d1c4f42f79ae4058fad1bf93f7",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:04:05Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Sea turtles mature slowly so populations recover slowly (true). G3-L-3:grow is the general characteristic of living things, not delayed maturity vs population recovery. G4-L-5 life-cycle flow charts not credited and not admitted. G9-L-7 biodiversity/extinction is not admitted. G6-M-7 recover is mixture-separation benefits. TL/BIS pawikan / tumanda/mahamtong OK. Potential G9-L-7 after a slow-life-history/extinction-risk facet, or G4-L-5 after a turtle life-cycle facet.",
+      "evidence": []
+    },
+    {
+      "factId": "pawikan-is-sea-turtle-g3",
+      "id": "ffct-14612",
+      "textHash": "66acebd4f7683728f6837d5d3c09e38d26b4ef4f6f31a4a9cfc33e9e7d41169a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:01:50Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Pawikan = sea turtle is correct vocabulary, but G4-L-3 aquatic classification requires a drawing (not credited) and aquatic|water is not admitted (ocean/sea only). G5-L-4 classification table not credited and not admitted. G8-E-9/G9-M-10 sea are typhoon-water and metallic bonding. TL pagong sa dagat / BIS bao sa dagat OK. Potential G4-L-3 after an aquatic-habitat example without a diagram requirement.",
+      "evidence": []
+    },
+    {
+      "factId": "pawikan-shell-protects-body-g3",
+      "id": "ffct-09584",
+      "textHash": "52ca6bce6de581fdd53ade019c1af168e50a8f6fd8ba98d1ad9d6d8eaa56d3dd",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:24:04Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "The turtle carapace protects the body, but G3-L-4 needs roles in moving or gathering food (not admitted). G3-L-6:shelter is basic-needs shelter/home, not an anatomical shield. G4-F-1 rigid/hard is moving/reshaping objects. G8-M-2/M-8 electron shells and G8-E-4 volcano shield are traps. TL kabibi / kalasag / BIS kabhang / taming OK. Potential G3-L-4 after a protection body-part facet.",
+      "evidence": []
+    },
+    {
+      "factId": "pearl-calcium-carbonate-g6",
+      "id": "ffct-19376",
+      "textHash": "40bbd93bb7922896cd698681dff4948e4e7fe5d59030a8a4430ca5abf9f61491",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:25:46Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Nacre is CaCO3, the same mineral as inner shell (true). G8-M-4 pure-substance composition is not admitted. G8-M-6 carbon/calcium is element names/symbols, a swallow. G8-L-8 carbon cycle requires flow charts (not credited). G3-E-2 is people-made objects. BIS 'Na-hanap' is find/search, not 'ever wonder', but CaCO3/nacre meaning is intact. Potential G8-M-4 after a compound-composition example, or G8-M-6 after calcium/carbon identity.",
+      "evidence": []
+    },
+    {
+      "factId": "pechay-bok-choy-g3",
+      "id": "ffct-09530",
+      "textHash": "3a168b786275538cc24e2f0502799e6e34ab20b95ead7690b9a7998d462a8f65",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:29:22Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G3-L-7"
+      ],
+      "reason": "Pechay leaves as food is a local example of living things depending on plants to meet the need for food, the G3-L-7 food-and-shelter facet. Environment (water/soil/air/sun) does not match. Not recovered to G3-L-5 (leaf role in getting soil water/nutrients, not admitted) or G8-L-3 (transport). Chart/table hits not credited. TL kinakain / BIS gikaon keep the food meaning.",
+      "evidence": [
+        {
+          "lesson": "g3:depending-on-nature",
+          "unit": "G3-L-7:food-and-shelter",
+          "quote": "wide, green leaves that we eat"
+        }
+      ]
+    },
+    {
+      "factId": "peis-intensity-vi-very-strong-g7",
+      "id": "ffct-29259",
+      "textHash": "0ad36c29f8267739fe1aba62eda78c76062acfefd1d60aa469f9eb8c36e512a0",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:03:32Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "PEIS VI (Very Strong): standing is difficult, heavy furniture may shift (PHIVOLCS PEIS). G7-E-3 needs magnitude or damage/building/community — intensity is not magnitude, and those patterns are not admitted. G8-E-5 is epicenter distribution. G5-E-10:during is cyclone weather. G7-E-10 sunlight intensity is a trap. TL/BIS PEIS Intensity VI / muwebles OK. Potential G7-E-3 after a PEIS intensity-effects facet.",
+      "evidence": []
+    },
+    {
+      "factId": "pendulum-clock-accuracy-g7",
+      "id": "ffct-26317",
+      "textHash": "7fce5a2258ca4bf86490d079e7435f3ad6035e7f11bfb34a36a3fa7f597795e5",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:51:49Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Huygens 1656 pendulum clock was the leading timekeeper into the 1930s (quartz). G4-M-1 scientist+invention is not admitted (no inventor named). G7-M-7/G6-M-9 accuracy is measurement in investigations, not historical clocks. G4-F-2 measuring time of moving objects is not admitted. TL/BIS relong/relo nga palawit / pinakatumpak/labing tukma OK. Potential G4-M-1 after naming Huygens, or G4-F-2 after measuring-time-with-a-pendulum.",
+      "evidence": []
+    },
+    {
+      "factId": "pendulum-equilibrium-rest-position-g7",
+      "id": "ffct-22339",
+      "textHash": "337d4174f33d52709c5d7a828bef5df00a56659d4a363079fc6074124722a30c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:00:54Z disp=exclude",
+      "reviewedAt": "2026-09-10T13:46:24.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G7-F-2"
+      ],
+      "reason": "A pendulum remaining at its lowest point when nothing pushes it is an everyday rest/balanced-force situation for G7-F-2 (box at rest / standing still). Only the rest facet matches; constant-velocity and accelerating do not. Not recovered to G9-F-1 (inertia unnamed), G7-F-1 (forces between objects/measurable), or G8-F-4 (KE/PE unnamed). TL 'humahatak' is pull vs EN/BIS push, but no-applied-force / rest position is intact.",
+      "evidence": [
+        {
+          "lesson": "g7:balanced-unbalanced",
+          "unit": "G7-F-2:rest",
+          "quote": "a pendulum rests at its lowest point, called the equilibrium or rest position"
+        }
+      ]
+    }
+  ],
+  "note": "Original review timestamps preserved as unverified provenance; actual parent verification recorded separately. See integration-check report."
+}

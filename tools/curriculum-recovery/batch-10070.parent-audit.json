@@ -1,0 +1,534 @@
+{
+  "parentVerifiedAt": "2026-09-10T15:15:38.977630+00:00",
+  "originalProposals": [
+    {
+      "factId": "why-bubbles-round-g3",
+      "id": "ffct-17552",
+      "textHash": "19015b49641a7f6c88a030d9e781b74376f399856ee58d198fcfecc6b5e3b0d3",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:42:15Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Surface tension pulling a soap film into a sphere (least surface area) is sound, and TL/BIS keep surface tension/sphere/hangin. G5-M-3 shape-and-volume of solids/liquids/gases is not admitted. G3-F-2:shape is how shape affects movement, not why a film is round. G3-F-1:pull is making objects move, not intermolecular pull. G3-M-8:shap is shaping solids to make them useful. G7-M-3 particle attraction is not admitted. Potential G5-M-3 or G7-M-3 after a surface-tension/minimum-area facet.",
+      "evidence": []
+    },
+    {
+      "factId": "why-fan-cools-you-g4",
+      "id": "ffct-25325",
+      "textHash": "5fc92a85e2cbd4c7b7097f90352304950b5efe6c813d67d99e47b23740313120",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:09:07Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Evaporative cooling (fan speeding sweat evaporation, carrying heat away) is sound (TL sumingaw/pawis; BIS mosingaw/singot). G5-M-6:evaporation is temperature causing state change, opposite causal direction (same bar as skin-protects-temperature-sweat). G6-M-1 requires diagrams/flowcharts (not credited). G6-M-2:cooling would swallow evaporation-absorbs-heat into cooling-causes-condensation/freezing. G4-F-10:heat is sources/uses of heat, not a fan moving air. G4-F-9:forms does not identify energy as causing change. G7-F-9 unnamed conduction/convection/radiation. Potential G6-M-2 after evaporative-cooling, or G5-M-6 after cooling-from-evaporation.",
+      "evidence": []
+    },
+    {
+      "factId": "why-glass-brittle-g5",
+      "id": "ffct-19317",
+      "textHash": "0701fa9d4036658df3d0bdf4ed9223dd0c228d77b7906f8338ec9a374a2223cb",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:15:49Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Glass shattering because particles are locked in a rigid pattern and cannot slide is a real solid-structure account (TL particle/makadausdos; BIS partikulo/makadalin-as). G7-M-4 requires diagrams/illustrations of all three states (not credited). G7-M-2 is the particle model of matter, not arrangement/brittleness. G4-F-1:rigid is a guided reshape activity (not credited). G3-M-7:handling is glass disposal, not why it shatters. Potential G7-M-4 after particle-arrangement without requiring diagrams, or G7-M-2 after rigid-solid packing.",
+      "evidence": []
+    },
+    {
+      "factId": "why-leap-year-earth-orbit-g5",
+      "id": "ffct-33592",
+      "textHash": "9b832a9c10ce74c569554d350ddb84b9d89aaecb3e7ff300d51cfa9beade5e1b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:51:07Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Earth's ~365.25-day orbit and a leap day every 4 years is the standard elementary approximation of the tropical year (IERS leap-year rule). TL/BIS keep 365.25 days/orbit/leap year. G6-E-8 is a Sun-Earth-Moon model of seasons, star patterns, and eclipses (not admitted). G7-E-10:tilt-orbit is a model of tilt vs sunlight intensity, not orbital period. G3-E-8:daytime is how sky objects affect daily activities. Potential G6-E-8/G7-E-10 after an orbital-period/leap-year facet.",
+      "evidence": []
+    },
+    {
+      "factId": "why-ph-no-four-seasons-g5",
+      "id": "ffct-32044",
+      "textHash": "e30055991d2101ebe19e1f5e7133541e3d51a375dcf78fde23285ea362fd1dcf",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:50:20Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "The Philippines is tropical/near-equator with no temperate winter; wet/dry rather than four seasons is sound (PAGASA climate). TL ekwador/taglamig; BIS ekwador/tingtugnaw. G6-E-6 wet-dry/activities/regional do not admit (no rainy|wet season|dry season|no distinct dry). G7-E-10 model of tilt vs intensity is not admitted. G7-E-9:warming is Sun-atmosphere interaction, not latitude/direct rays. Potential G6-E-6 after equatorial/no-four-seasons vs wet-dry, or G7-E-10 after latitude/direct-rays without a model.",
+      "evidence": []
+    },
+    {
+      "factId": "why-rubber-tires-grip-road-g6",
+      "id": "ffct-17263",
+      "textHash": "3bfbe5225a803489c576ca12dababaa5810386bb47898ebf2eefb33273c22c41",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:41:31Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Rubber tires gripping so a car will not slide, plus absorbing bumps, is a real increasing-friction use (TL kumakapit/madulas; BIS mokapyot/madakin-as). G5-F-3:increasing-friction admits grip but the competency is demonstrate-heat and investigate reducing/increasing (activity; same bar as bicycle-brakes). G5-F-2:surfaces matches smooth ride as a trap. G3-F-2:material (rubber/metal + slide) is sound movement-factor teaching, but :surface also matches via smooth ride and would swallow. G4-F-1:rigid is guided reshape. Potential G5-F-3 after conceptual grip/tread (not investigation), or G3-F-2 after surface no longer matches smooth.",
+      "evidence": []
+    },
+    {
+      "factId": "why-soda-fizzes-g4",
+      "id": "ffct-18438",
+      "textHash": "9b5ba1438c65653dbb66921968cf1176ad2d7ebd9e15b1f82e51bffcd07f9a15",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:00:02Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "CO2 dissolved under pressure escaping as bubbles when the bottle opens is sound. TL/BIS carbon-dioxide/presyon/bula. G7-M-8 solute/solvent roles are not admitted. G6-M-4 uniform vs non-uniform mixtures is not taught. G4-E-4:pressure is weather air pressure. G7-M-4 gas diagrams are not credited. G10-M-1 gas is a reaction indicator, not degassing. Potential G7-M-8 after dissolved-gas solute, or G6-M-4 after a carbonated-solution example.",
+      "evidence": []
+    },
+    {
+      "factId": "why-sunset-red-g6",
+      "id": "ffct-31274",
+      "textHash": "6be300215447f8e218215839f3627c5dd0224526307c018556f143e4de4e7e34",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:30:56Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G7-E-9"
+      ],
+      "reason": "More air at sunset scattering blue and leaving red is how solar energy interacts with the atmosphere by scattering, the G7-E-9:reflect-scatter facet (absorb and warming do not match). Inverse of space-sky-black (no molecules to scatter). G3-F-6 is a guided light-behavior activity (not credited). G4-F-8/F-10 and G3-F-5 are non-contact effects, uses, or sources of light, not atmospheric scattering. TL nakakalat ang asul / BIS nakatag ang asul keep scatter. Full EN/TL/BIS and both pools inspected; single identical card ID.",
+      "evidence": [
+        {
+          "lesson": "g7:sun-atmosphere",
+          "unit": "G7-E-9:reflect-scatter",
+          "quote": "scattering away the blue and leaving the red"
+        }
+      ]
+    },
+    {
+      "factId": "why-we-pass-gas-g4",
+      "id": "ffct-01546",
+      "textHash": "d29d26dd22b8e2908664f425f5db0a8531b7fa0c14fdb55eaac5a01388b1030f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:26:49Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Intestinal bacteria fermenting food and producing gas is real; EN opens with Tagalog Bakit tayo umuutot? while TL/BIS (umuutot/mokutkot; bituka/tinai) are OK. G4-L-1:digestive admits break.*food but the card is flatus as a byproduct, not how the digestive system works (mouth to intestine). G5-L-1 pictures/diagrams of named organs are not credited. G5-L-4:bacteria is a classification table. G6-E-4/G7-M-4 gas are volcanic/particle-diagram traps. Potential G4-L-1 after a large-intestine/gut-bacteria facet.",
+      "evidence": []
+    },
+    {
+      "factId": "why-wear-wool-cold-cotton-hot-g5",
+      "id": "ffct-15436",
+      "textHash": "3321959da77fe6a0b3bc98f14dec27b3f5455825af8bec8da7cc750c562594cc",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:41:32Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Choosing cotton when hot and wool when cold is a real fabric/thermal-comfort fact (TL presko/nakakapagpainit; BIS bugnaw/magpainit). G7-F-9 unnamed conduction/convection/radiation. G3-L-7:food-and-shelter matches eat⊂great. G6-M-2:cooling is state change, not fabric feel. G5-F-3:heat is friction heat. G3-M-5 hard/shiny/stretchable is not admitted. Potential G7-F-9 after named insulation/conduction, or G3-M-5 after thermal properties of fabrics.",
+      "evidence": []
+    },
+    {
+      "factId": "wild-greens-flowers-edible-g5",
+      "id": "ffct-04252",
+      "textHash": "7146b41d51df126c7d331b4402110090d7afda9653268b85028057f23d4d8b9c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:31:01Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G3-L-7"
+      ],
+      "reason": "Eating katuray flowers and sili leaves as vegetables is a local example of living things depending on plants for food, the G3-L-7:food-and-shelter facet (environment does not match). Same bar as pechay-bok-choy. G3-M-1 cook/plant would swallow a food-use card into generic local objects without a science mechanism. G3-L-2 living/non-living does not contrast. G8-L-3:leaves is transport. Chart/table hits are not credited. TL/BIS katuray/sili, kinakain/kan-on keep the food meaning. Full EN/TL/BIS and both pools inspected; single identical card ID.",
+      "evidence": [
+        {
+          "lesson": "g3:depending-on-nature",
+          "unit": "G3-L-7:food-and-shelter",
+          "quote": "katuray flowers and sili leaves are cooked as vegetables"
+        }
+      ]
+    },
+    {
+      "factId": "wild-pig-mud-wallow-g6",
+      "id": "ffct-00430",
+      "textHash": "1e56f3659365cc9ffe3b37455fffe39c9f89c12432b81452ee9e0002134150ca",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:18:10Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Wild pigs wallowing to cool and deter insects is a real behavioral thermoregulation (TL baboy-ramo/putik; BIS baboy ihalas/lapok). G5-L-9 is animals having changed (mimicry/camouflage), not behavior, and is not admitted. G3-L-3 respond is not admitted. G3-F-1:roll is making objects move. G5-L-4:insects is a classification table. G6-M-2:cooling is heat in state change. Potential G5-L-9 after a behavioral-adaptation facet, or G3-L-3 after respond-to-environment.",
+      "evidence": []
+    },
+    {
+      "factId": "wind-erosion-needs-dry-loose-land-g6",
+      "id": "ffct-31878",
+      "textHash": "4c99a798998da146bcb457b88b2add3b20bf12244589e919d9c640ce46e11031",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:19:13Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Wind erosion fastest on dry, loose, unvegetated ground (deserts/beaches) is sound (NRCS wind-erosion conditions). TL/BIS tuyo/uga, maluluwag/luag, disyerto. G5-E-5 transport/demonstration is not admitted (no carry|move|tray|model). G3-F-1:wind is making objects move, not erosion rate. G5-L-8:dry-conditions is plant drought adaptation. G7-M-2:particles is the particle model, not soil grains. G3-M-1 dry|plant is a local-object trap. Potential G5-E-5 after wind-erosion conditions/transport.",
+      "evidence": []
+    },
+    {
+      "factId": "wind-erosion-yardang-ridges-g7",
+      "id": "ffct-31887",
+      "textHash": "962af6323a91112886878a09559f97940e18d98933a9a87c43a32947039a3671",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:19:10Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Yardangs as wind-carved ridges parallel to the prevailing wind are real landforms (USGS). TL/BIS yardangs/tagaytay/direksyon. G5-E-5 is not admitted. G3-F-1:wind is making objects move. G4-E-4:wind-direction is a weather characteristic, not landforms. G5-L-8:dry-conditions is plant drought. Direction/vector hits are force-diagram traps. Potential G5-E-5 after wind-carved landforms, or G5-E-1 after a yardang landform example.",
+      "evidence": []
+    },
+    {
+      "factId": "wind-jet-stream-g8",
+      "id": "ffct-32575",
+      "textHash": "a892624c2f55755673447bb610b219f5398f80a5318124ca007f48e85f3c657b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:05:09Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "The jet stream as a fast upper-troposphere wind that can steer or speed typhoons is sound (NOAA). TL/BIS keep jet stream/troposphere/steer/track. G8-E-7 is how typhoons develop and why the Philippines is prone (assigned related_only). G8-E-8:tracking is using a map and tracking data, not a steering mechanism. G4-E-4:wind-speed is a weather element. G3-F-1:wind is making objects move. Potential G8-E-8 after jet-stream steering, or G8-E-7 after typhoon-track/steering.",
+      "evidence": []
+    },
+    {
+      "factId": "wind-power-needs-storage-g7",
+      "id": "ffct-23198",
+      "textHash": "b264fb49c539b484ccba4dacd190a1a6ea9c7728361686dd604b07629926e9c1",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:42:08Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Storing extra wind electricity in batteries for calm periods is real grid storage. TL/BIS kuryente/baterya. G10-E-12:wind is societal renewable use mitigating climate change, not storage (assigned related_only). G5-F-8:batteries is assembling a simple circuit. G8-F-10:stored is hydropower PE in dams. G7-L-1:storage is microscope storage. G3-F-1:wind is making objects move. Potential G10-E-12 after wind-plus-storage, or G5-F-8 after a battery-as-storage facet.",
+      "evidence": []
+    },
+    {
+      "factId": "windmill-blades-catch-push-g5",
+      "id": "ffct-23200",
+      "textHash": "709287aad40adfa3424bc370b5912e6cc6a8f45806b2b5bc0110e14ed895536c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:53:08Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G3-F-1"
+      ],
+      "reason": "Tilted turbine blades so wind can catch and push them is a current G3-F-1 wind-and-push example of making objects move by natural causes (wind) and by pushing. Only wind and push match; water/pull/roll/carry do not. G7-F-1 interaction does not teach measuring forces. G6-E-8:tilt is Earth tilt. G10-E-12:wind is climate-mitigation renewables. slightly⊃light traps G3-F-8/G4-F-8/F-9/F-10. TL aspas/maitulak; BIS blades/matulod keep wind-push. Full EN/TL/BIS and both pools inspected; single identical card ID.",
+      "evidence": [
+        {
+          "lesson": "g3:moving-things",
+          "unit": "G3-F-1:push",
+          "quote": "the wind can easily catch and push them"
+        }
+      ]
+    },
+    {
+      "factId": "wing-both-explanations-true-g9",
+      "id": "ffct-22969",
+      "textHash": "a626325cb16654f56c9e924abf56bf89344ea6585c746a6a7937f06fe4e4795d",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:07:09Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Bernoulli (pressure) and Newton (downwash) as complementary lift accounts is a standard aerodynamics point (NASA), but G9-F-4 equal-and-opposite forces is not taught and is not admitted. G7-F-1:measurement matches Newton as the newton unit trap; :interaction does not teach measuring forces. G3-F-1:push is making objects move. TL paghatak ng hangin pababa = pull, vs EN/BIS push/pagtulod — unresolved translation. Potential G9-F-4 after Newton-3rd-law lift, after TL hatak→tulak.",
+      "evidence": []
+    },
+    {
+      "factId": "wing-paper-airplane-demo-g7",
+      "id": "ffct-22972",
+      "textHash": "6f20ca74bce1548e103ad7eea7469c9b32138cb8e85e61ebb7b6656483234ce5",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:59:14Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Paper-airplane wings holding the plane up is a lift demo, but no current lift/force facet admits it. G3-F-1 wind/push/pull are not admitted. G5-F-1 contact-force investigation is not admitted and would be activity credit. G3-E-9:look and G7-E-6:hold are traps. TL/BIS lift/eroplanong papel/pakpak/pako. Potential G3-F-1 after flying/lift, or G5-F-1 after lift as a force without requiring an investigation.",
+      "evidence": []
+    },
+    {
+      "factId": "wood-floats-water-g6",
+      "id": "ffct-19677",
+      "textHash": "82db39e6f179053487a976d9c92c44470234ef98e58dbc60cd1dce075cafaf8e",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:41:33Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Ordinary wood density below water's 1 g/cm³ so it floats is the usual buoyancy account (some dense woods sink). TL/BIS density/g/cm³/lumulutang/mutaw. No current density/buoyancy facet (same gap as steel-ships holds). G3-F-1:water is making objects move. G3-M-5 hardness is not admitted. G5-M-8 units are mg/g/kg/°C, not g/cm³. Potential a density/buoyancy facet.",
+      "evidence": []
+    },
+    {
+      "factId": "woody-vs-soft-stems-g4",
+      "id": "ffct-01493",
+      "textHash": "e2f43e469795f20e5e3897a46ae1c79341928b4d33c2030f915bf07c12b1409b",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:30:59Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G3-M-5"
+      ],
+      "reason": "Soft tomato stems versus hard woody mango stems is a current G3-M-5 hardness/softness teaching component of solid materials (same bar as cotton-balls-are-soft). Only the hardness facet matches; shine/stretch do not. G4-F-1:rigid/soft is a guided reshape activity (not credited). G8-L-3:stem is xylem/phloem transport. G3-L-2 plant/tree does not contrast living/non-living. TL malambot/matigas na tangkay; BIS humok/gahi nga punoan keep hard vs soft. Full EN/TL/BIS and both pools inspected; single identical card ID.",
+      "evidence": [
+        {
+          "lesson": "g3:solid-properties",
+          "unit": "G3-M-5:hardness",
+          "quote": "Some plants have soft stems"
+        }
+      ]
+    },
+    {
+      "factId": "worker-ants-are-females-g4",
+      "id": "ffct-05219",
+      "textHash": "2ec0b368d8d673babe335a408714d87174ca1ca0637bf1dbd442ed71879ac160",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:30:12Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Worker ants are sterile females; foragers carrying food are female (true). TL babae/langgam; BIS baye/hulmigas. G5-L-4 is a classification table (not credited) and does not teach caste/sex. G3-L-7:food-and-shelter is carrying food, not basic-needs dependence. G5-E-5:carry is erosion transport. Potential G5-L-4 after an insect-caste facet without a table, or G6-L-4 after social insects.",
+      "evidence": []
+    },
+    {
+      "factId": "worker-ants-short-life-g5",
+      "id": "ffct-03394",
+      "textHash": "f1677aa9d192ef183a756eda51011c0c9634a4f159a3a2cf749ce5aec90a1ec9",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:18:10Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Workers living months versus queens living years is a real caste-lifespan contrast. TL/BIS worker ant/reyna/buwan/bulan. G3-L-3:reproduce is not admitted (no reproduc|offspring|babies|young) and the card does not describe grow/respond/reproduce as living-thing characteristics. G4-E-8:length is shadow length. Potential G3-L-3 after queen-reproduction/offspring wording.",
+      "evidence": []
+    },
+    {
+      "factId": "wound-healing-blood-not-bad-g4",
+      "id": "ffct-13108",
+      "textHash": "cb33d40abe5581671eefe5c8d77b6a9cc9b2b14ac47273c0ab4a28aa458f8eef",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T02:30:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "A little bleeding can flush dirt/germs, with help if it will not stop, is first-aid advice. TL/BIS pagdugo/germs/doktor. G6-L-1 pictures/diagrams of heart/blood/vessels are not credited. G4-L-1 five body systems are not admitted. G4-F-5:stop is slowing objects. Potential a first-aid/wound-care facet, or G6-L-1 after blood function.",
+      "evidence": []
+    },
+    {
+      "factId": "wound-healing-scab-protects-g4",
+      "id": "ffct-07985",
+      "textHash": "e94f90a8778400a6d114bb6552de5e1596d8d36cda97af75f05280dd9e36e17b",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T02:30:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "A scab as a natural bandage while new skin forms is sound integumentary healing (TL/BIS langib). G4-L-1 five systems, G6-L-1 circulatory diagrams, and G8-L-2 models of digestion/excretion are not the teaching. G3-L-6:shelter matches protect as a basic-need trap. Potential an integumentary/wound-healing facet.",
+      "evidence": []
+    },
+    {
+      "factId": "wound-itch-while-healing-g4",
+      "id": "ffct-00833",
+      "textHash": "7301656f905c4d50193818de333c60b86b4607d630cb06102a520f3af6635a18",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:18:09Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Itching during healing is a common normal process, but no current facet teaches it. G4-L-1 five systems is not admitted. G3-L-3 grow/respond/reproduce is not admitted. G4-E-2:body is water as a basic need. TL nangangati; BIS mangatol. Potential an integumentary/healing facet.",
+      "evidence": []
+    },
+    {
+      "factId": "wound-scar-after-healing-g4",
+      "id": "ffct-06230",
+      "textHash": "256fbec0bc35a274e563b58e4692d5cba42b2d42f919b996daf182e45a778024",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:12:22Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Deep wounds can leave scars after healing is observationally true (TL peklat; BIS piklat). G7-L-5 mitosis for growth/repair is not admitted. G5-E-10/G6-E-5/G7-E-6 after are cyclone/volcano/earthquake traps. Potential G7-L-5 after tissue-repair/scar, or an integumentary facet.",
+      "evidence": []
+    },
+    {
+      "factId": "wound-swelling-redness-healing-g5",
+      "id": "ffct-03873",
+      "textHash": "4adc64467fe684b0476a6391c1601ecd582aeebe05042f2fc4727618672f953c",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:18:10Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Mild redness and swelling as inflammation is a real healing response (TL namumula/namamaga; BIS mamula/mohubag). G4-L-1 five systems and G3-L-3 respond are not admitted. G3-E-9:look is sun-safety. G4-E-2:body is water as a need. Potential an integumentary/inflammation facet.",
+      "evidence": []
+    },
+    {
+      "factId": "wrong-blood-clumps-g7",
+      "id": "ffct-06443",
+      "textHash": "c7cffaa0cc657829ba2e9a82a5c527e18e30f87041b6d564cf09d5b03e8fd5be",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T02:30:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "ABO-incompatible transfusion causing agglutination is sound (TL nagkukumpol-kumpol; BIS magpundok-pundok). G6-L-1 circulatory parts-from-pictures and G4-L-1 five systems are not the teaching. G7-F-9:danger is heat-transfer disadvantage. G3-E-5:danger is weather danger. Potential G6-L-1 after blood types, or G8-L-5 after antigens.",
+      "evidence": []
+    },
+    {
+      "factId": "yakan-weaving-color-bands-g5",
+      "id": "ffct-19583",
+      "textHash": "13c1e2212dcdd07258e2a51406f8b42609a61a15becedc8f44bc0e6b00015606",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:44:01Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Yakan loom-weaving by interlacing threads is a real local craft (TL telar/sinulid; BIS habolanan/hilo). G3-E-2 requires naming the natural materials used to make the cloth (cotton/abaca unnamed). G3-M-8 joining/shaping solids is not explicit. G3-E-9:cloth is sun-safety. G4-M-2 is a science invention plus everyday impact. Potential G3-E-2 after naming fiber, or G3-M-8 after weaving as joining that makes cloth useful.",
+      "evidence": []
+    },
+    {
+      "factId": "yawn-often-tired-sleepy-g4",
+      "id": "ffct-10409",
+      "textHash": "7966a653308f25d7595710cad7dcb731ae066b5b30d31cbd6dd5f451519b1658",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:18:14Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Yawning when tired, sleepy, or bored is a familiar observation (TL humihikab; BIS mohuy-ab). No current core facet admits the card (ADMITTED 0). G3-L-3 respond is not admitted. Potential G3-L-3 after living-things-respond wording.",
+      "evidence": []
+    },
+    {
+      "factId": "yeast-budding-reproduction-g7",
+      "id": "ffct-13967",
+      "textHash": "ae002adf2b52d7879a1c5a013db55c4b128fd81d7ddc98fd9b107dbc8cd1573f",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:12:53Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Yeast multiplying by budding is real asexual reproduction (TL/BIS lebadura/pagsibol/pagturok). G7-L-7 sexual vs asexual (parents/similarity) is not admitted. G3-L-3:grow would swallow reproduction into living-things-grow. G6-L-2:budding is plant propagation (cuttings/grafts). G7-L-5:grow is mitosis for growth/repair. G5-L-4:fungi is a classification table. Potential G7-L-7 after asexual budding vs sexual, or G5-L-4 after yeast-as-fungus without a table.",
+      "evidence": []
+    },
+    {
+      "factId": "yeast-needs-cold-slows-g6",
+      "id": "ffct-05617",
+      "textHash": "e757249df383fbefb8deed124c5e818ffb18bcdbc9bc50667dc6515f73db2d76",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:46:28Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Cold slowing yeast so dough barely rises, hence warming dough, is sound baking science (TL umalsa; BIS moalsa). G6-L-7 biotic/abiotic ecosystem factors are not taught. G5-L-4:fungi is a classification table. G10-M-8 temperature as a reaction-rate factor is not admitted. G4-F-5:slow is pushes/pulls. G3-E-7:rise is sky motion. Potential G10-M-8 after temperature-rate, or G3-L-3 after respond-to-temperature.",
+      "evidence": []
+    },
+    {
+      "factId": "yema-custard-candy-g5",
+      "id": "ffct-19664",
+      "textHash": "6be40c5d54baee3b636df08885df7a9fb8182eb85838e90df9a2e19ff93fd77a",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:44:59Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G3-M-1",
+        "G4-F-9",
+        "G4-F-10"
+      ],
+      "reason": "Cooking milk, egg yolk, and sugar until yema thickens is a local activity explained by science (G3-M-1:local-examples; only that G3-M-1 facet) and a home use of heat energy (G4-F-10:heat; light/sound do not match). Heat changes this runny mixture into a chewy candy identifies heat energy as causing change (G4-F-9 change and forms both match that teaching). G7-F-9 unnamed conduction/convection/radiation. G5-F-3 is friction heat. G10-M-1 reaction indicators are not named. G8-L-7:milk is mammal classification. TL init nagbabago ng likidong timpla; BIS init mag-usab sa tubigon nga sagol keep heat-causing-change. Full EN/TL/BIS and both pools inspected; single identical card ID.",
+      "evidence": [
+        {
+          "lesson": "g3:everyday-science",
+          "unit": "G3-M-1:local-examples",
+          "quote": "Yema is made from milk, egg yolk, and sugar cooked until thick!"
+        },
+        {
+          "lesson": "g4:energy",
+          "unit": "G4-F-9:change",
+          "quote": "Heat changes this runny mixture into a chewy candy."
+        },
+        {
+          "lesson": "g4:energy-uses",
+          "unit": "G4-F-10:heat",
+          "quote": "Heat changes this runny mixture into a chewy candy."
+        }
+      ]
+    },
+    {
+      "factId": "young-resemble-parents-both-ways-g6",
+      "id": "ffct-04891",
+      "textHash": "36c66b9481d0e2d382af745f1c566a769549cce4ab2bec64e413cfe4d2bf3d88",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:35:36Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Young looking like parents whether hatched or born alive is a resemblance observation (TL kahawig; BIS kaamgid). G7-L-7:parents admits parent but the competency is differentiating sexual from asexual by parent number and offspring similarity; both modes here are sexual and :similarity (identical|clone|differ|variation|similar) does not match. G5-L-5 egg vs live-young groups is not taught (mammals/birds/reptiles unnamed). G3-L-3:reproduce does not describe grow/respond/reproduce as characteristics. Potential G7-L-7 after sexual vs asexual resemblance, or G5-L-5 after naming the animal groups.",
+      "evidence": []
+    },
+    {
+      "factId": "zinnia-flower-g4",
+      "id": "ffct-05438",
+      "textHash": "c40241934f77c942662c3baadd2618ab5d3fb013565bd276431f7b9549fcf2b6",
+      "previousExclusion": "first-pass grok-4.6 2026-09-06T15:14:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T16:45:00.000Z",
+      "reviewer": "grok-external-a",
+      "translationsChecked": true,
+      "disposition": "recover_core",
+      "codes": [
+        "G4-L-4"
+      ],
+      "reason": "Zinnia attracting butterflies and bees to the garden is a current G4-L-4 garden-habitat plant-and-animal example (same bar as garden-animals / maya-helps-control-insects). Only the garden facet matches; the table/list unit is not admitted and is not credited. G6-L-2 pollination is unnamed. G3-L-7 attracting insects is not framed as basic needs. G3-L-3:grow is easy-to-grow, not living-things-grow. G5-F-7:attract is static electricity. G6-L-4:butterfl is vertebrate/invertebrate. TL paru-paro/bubuyog/hardin; BIS alibangbang/putyukan/tanaman keep garden animals. Full EN/TL/BIS and both pools inspected; single identical card ID.",
+      "evidence": [
+        {
+          "lesson": "g4:habitat-examples",
+          "unit": "G4-L-4:garden",
+          "quote": "attracts butterflies and bees to the garden"
+        }
+      ]
+    }
+  ],
+  "note": "Original source timestamps are unverified provenance; actual verification recorded separately."
+}

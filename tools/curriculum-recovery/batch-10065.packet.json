@@ -1,0 +1,4262 @@
+[
+  {
+    "factId": "symptoms-help-doctor-g6",
+    "id": "ffct-06184",
+    "textHash": "40f90d3199a3f3dfeeb1c4075ffb2093318b0da43093a23cc4731d3402092e99",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:43:55Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G10-L-1",
+        "verdict": "related_only",
+        "card_evidence": "Symptoms are clues that help a doctor figure out what illness you might have.",
+        "competency_evidence": "describe homeostasis as a state of balance among all the body systems in humans that needs to be maintained for survival and proper functioning; its indicators include body temperature, glucose level, and blood pressure",
+        "reason": "The card discusses symptoms as diagnostic clues, which is a general health/medicine topic. It does not describe homeostasis as a state of balance among body systems, nor does it mention indicators such as body temperature, glucose level, or blood pressure. It provides no direct instructional support for the competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G7-F-9",
+        "lesson": "g7:heat-transfer-uses",
+        "unit": "G7-F-9:advantage",
+        "pattern": "useful|help|benefit|cook|warm"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Symptoms are clues that help a doctor figure out what illness you might have.",
+      "tl": "Ang mga sintomas ay pahiwatig na tumutulong sa doktor na malaman kung anong sakit ang mayroon ka.",
+      "bis": "Ang mga sintomas mga timailhan nga makatabang sa doktor aron mahibaw-an kung unsang sakit ang naa nimo."
+    },
+    "exportedAt": "2026-09-10T13:35:52.986760+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "synapse-gap-poison-blocks-g9",
+    "id": "ffct-00407",
+    "textHash": "c048daff8669952252ead9dd6be2d63f397db3ce38cbae697206e4de1dee175f",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:00:03Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G4-L-1",
+        "verdict": "related_only",
+        "card_evidence": "blocking messages so the brain can't send the command to breathe or move a muscle",
+        "competency_evidence": "describe in simple terms how the following human body systems work: muscular, skeletal, digestive, circulatory, and respiratory",
+        "reason": "The card mentions breathing and moving muscles, but it does not describe how the muscular, skeletal, digestive, circulatory, or respiratory systems work. It focuses on synaptic transmission and nerve signaling, which is not part of the G4-L-1 competency."
+      },
+      {
+        "code": "G8-L-2",
+        "verdict": "related_only",
+        "card_evidence": "blocking messages so the brain can't send the command to breathe or move a muscle",
+        "competency_evidence": "use models, flow charts, diagrams, and simulations to explain how body systems work together, such as digestion and excretion",
+        "reason": "The card touches on the nervous system's role in coordinating breathing and movement, but it does not use models, flow charts, diagrams, or simulations to explain how body systems work together. It also does not address digestion and excretion or any system interaction beyond a single synapse-blocking effect."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-1",
+        "lesson": "g3:everyday-science",
+        "unit": "G3-M-1:local-examples",
+        "pattern": "rain|cook|shadow|melt|plant|dry"
+      },
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:food-and-shelter",
+        "pattern": "food|eat|shelter"
+      },
+      {
+        "code": "G3-F-6",
+        "lesson": "g3:light",
+        "unit": "G3-F-6:behavior",
+        "pattern": "shadow|reflect|block|through"
+      },
+      {
+        "code": "G3-E-1",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-1:examples",
+        "pattern": "rock|soil|water|air|metal|cloud|rain|sun"
+      },
+      {
+        "code": "G3-E-7",
+        "lesson": "g3:watching-the-sky",
+        "unit": "G3-E-7:apparent-motion",
+        "pattern": "move|motion|rise|set"
+      },
+      {
+        "code": "G4-F-5",
+        "lesson": "g4:change-motion",
+        "unit": "G4-F-5:slow-stop",
+        "pattern": "slow|stop"
+      },
+      {
+        "code": "G4-E-4",
+        "lesson": "g4:weather-elements",
+        "unit": "G4-E-4:rain",
+        "pattern": "rain"
+      },
+      {
+        "code": "G5-E-1",
+        "lesson": "g5:landforms",
+        "unit": "G5-E-1:environmental-effects",
+        "pattern": "plant|animal|habitat|soil|flood|rain"
+      },
+      {
+        "code": "G5-E-5",
+        "lesson": "g5:erosion",
+        "unit": "G5-E-5:transport",
+        "pattern": "carry|carries|transport|move"
+      },
+      {
+        "code": "G5-E-6",
+        "lesson": "g5:water-cycle",
+        "unit": "G5-E-6:environment",
+        "pattern": "plant|animal|fresh|rain|environment"
+      },
+      {
+        "code": "G6-E-4",
+        "lesson": "g6:volcanic-materials",
+        "unit": "G6-E-4:fragments",
+        "pattern": "fragment|bomb|block|tephra|pyroclast"
+      },
+      {
+        "code": "G7-M-3",
+        "lesson": "g7:particle-motion",
+        "unit": "G7-M-3:motion",
+        "pattern": "motion|mov|vibrat"
+      },
+      {
+        "code": "G9-E-4",
+        "lesson": "g9:e-4",
+        "unit": "G9-E-4:focus-2",
+        "pattern": "index|correlat|age|dat"
+      },
+      {
+        "code": "G9-E-5",
+        "lesson": "g9:e-5",
+        "unit": "G9-E-5:focus-3",
+        "pattern": "time|age"
+      },
+      {
+        "code": "G10-E-10",
+        "lesson": "g10:e-10",
+        "unit": "G10-E-10:focus-3",
+        "pattern": "Pacific|rain|drought"
+      },
+      {
+        "code": "G10-F-4",
+        "lesson": "g10:f-4",
+        "unit": "G10-F-4:focus-3",
+        "pattern": "impact|collision|stop"
+      },
+      {
+        "code": "G10-F-5",
+        "lesson": "g10:f-5",
+        "unit": "G10-F-5:focus-4",
+        "pattern": "stop"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "How can poison stop you from breathing?\n\nSome poisons attack the synapse itself, blocking messages so the brain can't send the command to breathe or move a muscle.",
+      "tl": "Paano mapipigilan ng lason ang paghinga mo?\n\nMay mga lason na umaatake mismo sa synapse, hinaharang ang mensahe kaya hindi na maipasa ng utak ang utos na huminga o gumalaw ang kalamnan.",
+      "bis": "Unsaon pagpugong sa hilo sa imong pagginhawa?\n\nAdunay mga hilo nga moataki mismo sa synapse, mobabag sa mensahe mao nga dili na mapadala sa utok ang mando nga moginhawa o molihok ang unod."
+    },
+    "exportedAt": "2026-09-10T13:35:53.028293+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "taal-complex-volcano-g7",
+    "id": "ffct-34101",
+    "textHash": "dbc96ac1cabe56b35f18dd0e865dea8c18135f1ea1dd7b339de0cadb8f68baaf",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:17:27Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G8-E-3",
+        "verdict": "related_only",
+        "card_evidence": "Taal Volcano is a complex volcano made of many vents sitting inside a large lake!",
+        "competency_evidence": "describe the different types of volcanoes found around the world according to their: a. activity b. type of eruption c. location in the crust",
+        "reason": "The card only states that Taal is a complex volcano with many vents in a lake. It does not describe different types of volcanoes according to activity, type of eruption, or location in the crust, which is the focus of G8-E-3. The mention of 'complex volcano' is a type label but not the required classification criteria."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-E-2",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-2:human-made-objects",
+        "pattern": "made|make|build|clay|wood|metal"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G6-E-3",
+        "lesson": "g6:eruption-history",
+        "unit": "G6-E-3:philippine-history",
+        "pattern": "Philippin|Mayon|Taal|Pinatubo|Kanlaon"
+      },
+      {
+        "code": "G8-L-5",
+        "lesson": "g8:inheritance-ratios",
+        "unit": "G8-L-5:cross",
+        "pattern": "Punnett|cross|Aa"
+      },
+      {
+        "code": "G8-E-5",
+        "lesson": "g8:global-patterns",
+        "unit": "G8-E-5:volcanoes",
+        "pattern": "volcano"
+      },
+      {
+        "code": "G9-E-2",
+        "lesson": "g9:e-2",
+        "unit": "G9-E-2:focus-3",
+        "pattern": "trench|fault|volcano"
+      },
+      {
+        "code": "G10-E-3",
+        "lesson": "g10:e-3",
+        "unit": "G10-E-3:focus-4",
+        "pattern": "volcano"
+      },
+      {
+        "code": "G10-E-6",
+        "lesson": "g10:e-6",
+        "unit": "G10-E-6:focus-3",
+        "pattern": "volcan|magma"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "What makes Taal Volcano unique?\n\nTaal Volcano is a complex volcano made of many vents sitting inside a large lake!",
+      "tl": "Ano ang natatangi sa Bulkang Taal?\n\nAng Bulkang Taal ay isang complex volcano na may maraming bunganga sa loob ng isang malaking lawa!",
+      "bis": "Unsay talagsaon sa Bulkang Taal?\n\nAng Bulkang Taal usa ka complex volcano nga adunay daghan nga mga buho sulod sa dako nga lanaw!"
+    },
+    "exportedAt": "2026-09-10T13:35:53.066537+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "taal-location-g5",
+    "id": "ffct-34472",
+    "textHash": "c03f465734efb438a3599b03bee2cdf50d379522f4131c585ded3edd01458548",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:48:46Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G6-E-2",
+        "verdict": "related_only",
+        "card_evidence": "In the province of Batangas, located in Luzon, Philippines!",
+        "competency_evidence": "use local information or other reliable sources to identify where the nearest active and inactive volcanoes are located and assess the risk of impacts from eruptions to their local community",
+        "reason": "The card only states the location of Taal Volcano. It does not identify the nearest active/inactive volcanoes relative to a community, nor does it assess eruption risk, which are the core actions of G6-E-2. The location fact is background knowledge, not direct instructional support for the competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-2",
+        "lesson": "g3:living-or-not",
+        "unit": "G3-L-2:local-examples",
+        "pattern": "plant|dog|cat|rock|chair|tree"
+      },
+      {
+        "code": "G3-L-4",
+        "lesson": "g3:animal-parts",
+        "unit": "G3-L-4:other-movement",
+        "pattern": "fin|tail|flipper"
+      },
+      {
+        "code": "G4-L-7",
+        "lesson": "g4:food-chains",
+        "unit": "G4-L-7:local-chain",
+        "pattern": "rice|grass|frog|snake|Philippin"
+      },
+      {
+        "code": "G6-L-4",
+        "lesson": "g6:animal-groups",
+        "unit": "G6-L-4:local",
+        "pattern": "Philippin|carabao|tilapia|tarsier|crab|butterfl"
+      },
+      {
+        "code": "G6-E-3",
+        "lesson": "g6:eruption-history",
+        "unit": "G6-E-3:philippine-history",
+        "pattern": "Philippin|Mayon|Taal|Pinatubo|Kanlaon"
+      },
+      {
+        "code": "G6-E-4",
+        "lesson": "g6:volcanic-materials",
+        "unit": "G6-E-4:gases",
+        "pattern": "gas"
+      },
+      {
+        "code": "G7-E-2",
+        "lesson": "g7:fault-models",
+        "unit": "G7-E-2:philippine-context",
+        "pattern": "Philippin|Valley Fault|subduct|converg"
+      },
+      {
+        "code": "G8-L-5",
+        "lesson": "g8:inheritance-ratios",
+        "unit": "G8-L-5:cross",
+        "pattern": "Punnett|cross|Aa"
+      },
+      {
+        "code": "G8-E-5",
+        "lesson": "g8:global-patterns",
+        "unit": "G8-E-5:volcanoes",
+        "pattern": "volcano"
+      },
+      {
+        "code": "G8-E-7",
+        "lesson": "g8:typhoon-formation",
+        "unit": "G8-E-7:philippines",
+        "pattern": "Philippin|western.*Pacific"
+      },
+      {
+        "code": "G8-F-10",
+        "lesson": "g8:hydropower",
+        "unit": "G8-F-10:philippine-source",
+        "pattern": "Philippin|Agus|Magat|Ambuklao|Angat|Binga"
+      },
+      {
+        "code": "G9-E-2",
+        "lesson": "g9:e-2",
+        "unit": "G9-E-2:focus-1",
+        "pattern": "Philippin|Manila"
+      },
+      {
+        "code": "G9-E-2",
+        "lesson": "g9:e-2",
+        "unit": "G9-E-2:focus-3",
+        "pattern": "trench|fault|volcano"
+      },
+      {
+        "code": "G9-L-8",
+        "lesson": "g9:l-8",
+        "unit": "G9-L-8:focus-2",
+        "pattern": "community|local|Philippin"
+      },
+      {
+        "code": "G10-E-3",
+        "lesson": "g10:e-3",
+        "unit": "G10-E-3:focus-1",
+        "pattern": "Philippin|Manila"
+      },
+      {
+        "code": "G10-E-3",
+        "lesson": "g10:e-3",
+        "unit": "G10-E-3:focus-4",
+        "pattern": "volcano"
+      },
+      {
+        "code": "G10-E-6",
+        "lesson": "g10:e-6",
+        "unit": "G10-E-6:focus-3",
+        "pattern": "volcan|magma"
+      },
+      {
+        "code": "G10-M-1",
+        "lesson": "g10:m-1",
+        "unit": "G10-M-1:focus-3",
+        "pattern": "gas"
+      },
+      {
+        "code": "G10-M-2",
+        "lesson": "g10:m-2",
+        "unit": "G10-M-2:focus-1",
+        "pattern": "indicator|litmus|pH"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Where can you find Taal Volcano?\n\nIn the province of Batangas, located in Luzon, Philippines!",
+      "tl": "Saan matatagpuan ang Bulkang Taal?\n\nSa lalawigan ng Batangas, na nasa Luzon, Pilipinas!",
+      "bis": "Asa makita ang Bulkang Taal?\n\nSa probinsya sa Batangas, na naa sa Luzon, Pilipinas!"
+    },
+    "exportedAt": "2026-09-10T13:35:53.105008+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "taal-volcano-island-in-lake-g5",
+    "id": "ffct-34346",
+    "textHash": "005983df17690d63474a7af0d3b367c00d3087b7c7203313af03f72347eba609",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:13:11Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G8-E-3",
+        "verdict": "related_only",
+        "card_evidence": "Taal Volcano is super special because it sits on an island right inside Taal Lake!",
+        "competency_evidence": "describe the different types of volcanoes found around the world according to their: a. activity b. type of eruption c. location in the crust",
+        "reason": "The card only states a geographic fact about Taal Volcano's location. It does not describe volcano types by activity, eruption type, or crustal location, so it does not directly support G8-E-3."
+      },
+      {
+        "code": "G6-E-1",
+        "verdict": "related_only",
+        "card_evidence": "Taal Volcano is super special because it sits on an island right inside Taal Lake!",
+        "competency_evidence": "explain what volcanoes are and how they are formed",
+        "reason": "The card mentions a volcano but does not explain what volcanoes are or how they are formed. It provides no instructional support for G6-E-1."
+      },
+      {
+        "code": "G5-E-1",
+        "verdict": "related_only",
+        "card_evidence": "Taal Volcano is super special because it sits on an island right inside Taal Lake!",
+        "competency_evidence": "identify local examples of natural landforms and bodies of water such as mountains, valleys, rivers, and coastlines, and describe how they influence non-living and living components of the environment",
+        "reason": "The card identifies Taal Volcano as a landform and Taal Lake as a body of water, but it does not describe how they influence living and non-living components of the environment. Thus it only touches the vocabulary of G5-E-1."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-F-3",
+        "lesson": "g3:position",
+        "unit": "G3-F-3:left-right",
+        "pattern": "left|right"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G4-L-3",
+        "lesson": "g4:habitat-groups",
+        "unit": "G4-L-3:land",
+        "pattern": "terrestrial|land"
+      },
+      {
+        "code": "G4-F-9",
+        "lesson": "g4:energy",
+        "unit": "G4-F-9:change",
+        "pattern": "change|cause"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:benefits",
+        "pattern": "use|benefit|recover|separat"
+      },
+      {
+        "code": "G6-E-3",
+        "lesson": "g6:eruption-history",
+        "unit": "G6-E-3:philippine-history",
+        "pattern": "Philippin|Mayon|Taal|Pinatubo|Kanlaon"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G8-L-5",
+        "lesson": "g8:inheritance-ratios",
+        "unit": "G8-L-5:cross",
+        "pattern": "Punnett|cross|Aa"
+      },
+      {
+        "code": "G8-E-5",
+        "lesson": "g8:global-patterns",
+        "unit": "G8-E-5:volcanoes",
+        "pattern": "volcano"
+      },
+      {
+        "code": "G9-E-2",
+        "lesson": "g9:e-2",
+        "unit": "G9-E-2:focus-3",
+        "pattern": "trench|fault|volcano"
+      },
+      {
+        "code": "G10-E-3",
+        "lesson": "g10:e-3",
+        "unit": "G10-E-3:focus-4",
+        "pattern": "volcano"
+      },
+      {
+        "code": "G10-E-6",
+        "lesson": "g10:e-6",
+        "unit": "G10-E-6:focus-3",
+        "pattern": "volcan|magma"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Taal Volcano is super special because it sits on an island right inside Taal Lake!",
+      "tl": "Natatangi ang Bulkang Taal dahil matatagpuan ito sa isang isla sa loob ng Lawa ng Taal!",
+      "bis": "Talagsaon ang Bulkang Taal kay kini nahimutang sa usa ka isla sulod sa Lanaw sa Taal!"
+    },
+    "exportedAt": "2026-09-10T13:35:53.143598+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "table-salt-boiling-point-g10",
+    "id": "ffct-19096",
+    "textHash": "000ad4421ccc51301af95fd12d370f933e7168f6e3197b8048c174d6a9f98bd5",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:44:44Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G5-M-6",
+        "verdict": "related_only",
+        "card_evidence": "Table salt (sodium chloride) boils at a super high temperature of about 1465 degrees Celsius!",
+        "competency_evidence": "describe how changes in temperature cause matter to change in state, such as solid to liquid to gas",
+        "reason": "The card only states a boiling point for table salt. It does not describe how changes in temperature cause matter to change state, nor does it show a solid-to-liquid-to-gas progression. The fact is related to state change but does not directly teach the competency."
+      },
+      {
+        "code": "G6-M-1",
+        "verdict": "related_only",
+        "card_evidence": "Table salt (sodium chloride) boils at a super high temperature of about 1465 degrees Celsius!",
+        "competency_evidence": "describe changes of state for solids, liquids, and gases as melting, evaporation, freezing, condensation using diagrams and flowcharts",
+        "reason": "The card mentions boiling, a change of state, but does not describe melting, evaporation, freezing, or condensation, and does not use diagrams or flowcharts as required by the competency."
+      },
+      {
+        "code": "G6-M-2",
+        "verdict": "related_only",
+        "card_evidence": "Table salt (sodium chloride) boils at a super high temperature of about 1465 degrees Celsius!",
+        "competency_evidence": "explain the role of heat energy in change of state processes",
+        "reason": "The card gives a boiling point but does not explain the role of heat energy in change of state processes. It is only tangentially related to heat-driven state changes."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-E-4",
+        "lesson": "g3:weather",
+        "unit": "G3-E-4:record",
+        "pattern": "record|chart|diary|table"
+      },
+      {
+        "code": "G4-L-4",
+        "lesson": "g4:habitat-examples",
+        "unit": "G4-L-4:table",
+        "pattern": "table|list|record"
+      },
+      {
+        "code": "G4-E-4",
+        "lesson": "g4:weather-elements",
+        "unit": "G4-E-4:temperature",
+        "pattern": "temperature"
+      },
+      {
+        "code": "G4-E-5",
+        "lesson": "g4:weather-tools",
+        "unit": "G4-E-5:record",
+        "pattern": "record|chart|table"
+      },
+      {
+        "code": "G4-E-6",
+        "lesson": "g4:weather-chart-safety",
+        "unit": "G4-E-6:chart",
+        "pattern": "chart|table|interpret"
+      },
+      {
+        "code": "G5-M-8",
+        "lesson": "g5:investigations",
+        "unit": "G5-M-8:temperature-units",
+        "pattern": "celsius|centigrade"
+      },
+      {
+        "code": "G5-L-4",
+        "lesson": "g5:classification",
+        "unit": "G5-L-4:classification-table",
+        "pattern": "\\b(?:table|column|row|chart)s?\\b"
+      },
+      {
+        "code": "G5-F-3",
+        "lesson": "g5:friction",
+        "unit": "G5-F-3:reducing-friction",
+        "pattern": "reduc|oil|lubricat"
+      },
+      {
+        "code": "G5-E-3",
+        "lesson": "g5:rock-classification",
+        "unit": "G5-E-3:classification-record",
+        "pattern": "record|table|label|write"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:products",
+        "pattern": "\\bsalt\\b|\\bgrain\\b|\\brice\\b|\\bwater\\b|\\biron\\b|\\bsand\\b"
+      },
+      {
+        "code": "G6-M-9",
+        "lesson": "g6:repeat-record",
+        "unit": "G6-M-9:accurate-records",
+        "pattern": "accurat|record|table"
+      },
+      {
+        "code": "G6-L-7",
+        "lesson": "g6:ecosystem-factors",
+        "unit": "G6-L-7:temperature",
+        "pattern": "temperature"
+      },
+      {
+        "code": "G6-L-8",
+        "lesson": "g6:ecosystem-effects",
+        "unit": "G6-L-8:nonliving-interactions",
+        "pattern": "water|soil|temperature|light|drought|flood"
+      },
+      {
+        "code": "G7-M-3",
+        "lesson": "g7:particle-motion",
+        "unit": "G7-M-3:temperature",
+        "pattern": "temperature|heat"
+      },
+      {
+        "code": "G7-M-5",
+        "lesson": "g7:particle-state-changes",
+        "unit": "G7-M-5:heating",
+        "pattern": "melt|evaporat|boil"
+      },
+      {
+        "code": "G7-M-7",
+        "lesson": "g7:measure-record",
+        "unit": "G7-M-7:organize",
+        "pattern": "table|graph|record|organiz"
+      },
+      {
+        "code": "G7-M-11",
+        "lesson": "g7:litmus",
+        "unit": "G7-M-11:salt",
+        "pattern": "\\bsalt"
+      },
+      {
+        "code": "G8-M-6",
+        "lesson": "g8:element-names",
+        "unit": "G8-M-6:next-ten",
+        "pattern": "sodium|magnesium|alumin|silicon|phosphorus|sulfur|chlorine|argon|potassium|calcium"
+      },
+      {
+        "code": "G9-E-6",
+        "lesson": "g9:e-6",
+        "unit": "G9-E-6:focus-1",
+        "pattern": "eon|era|period"
+      },
+      {
+        "code": "G9-M-4",
+        "lesson": "g9:m-4",
+        "unit": "G9-M-4:focus-2",
+        "pattern": "six|6"
+      },
+      {
+        "code": "G9-M-5",
+        "lesson": "g9:m-5",
+        "unit": "G9-M-5:focus-2",
+        "pattern": "sodium|chlorine|chloride"
+      },
+      {
+        "code": "G9-M-6",
+        "lesson": "g9:m-6",
+        "unit": "G9-M-6:focus-1",
+        "pattern": "sodium chloride|NaCl"
+      },
+      {
+        "code": "G10-E-8",
+        "lesson": "g10:e-8",
+        "unit": "G10-E-8:focus-1",
+        "pattern": "temperature"
+      },
+      {
+        "code": "G10-M-1",
+        "lesson": "g10:m-1",
+        "unit": "G10-M-1:focus-4",
+        "pattern": "temperature|heat"
+      },
+      {
+        "code": "G10-M-2",
+        "lesson": "g10:m-2",
+        "unit": "G10-M-2:focus-4",
+        "pattern": "saline|salt"
+      },
+      {
+        "code": "G10-L-1",
+        "lesson": "g10:l-1",
+        "unit": "G10-L-1:focus-1",
+        "pattern": "temperature"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Did you know table salt can boil?\n\nTable salt (sodium chloride) boils at a super high temperature of about 1465 degrees Celsius!",
+      "tl": "Alam mo ba na kumukulo ang asin?\n\nAng asin (sodium chloride) ay kumukulo sa napakataas na temperatura na mga 1465 degrees Celsius!",
+      "bis": "Nahibaw-an ba ka nga mubukal ang asin?\n\nAng asin (sodium chloride) mubukal sa taas kaayo nga temperatura nga mga 1465 degrees Celsius!"
+    },
+    "exportedAt": "2026-09-10T13:35:53.182861+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tabon-eats-seeds-insects-g5",
+    "id": "ffct-12359",
+    "textHash": "35f2bf70362bc07e1ac9784f7fcb993f1282776fd51c6fc3c528d08d065e12b8",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:04:59Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G4-L-6",
+        "verdict": "related_only",
+        "card_evidence": "The tabon bird eats seeds, fruit, worms, and small insects that it finds on the ground.",
+        "competency_evidence": "use information from secondary sources to group animals according to the food they eat: plant eaters (herbivores), meat eaters (carnivores), and plant and meat-eaters (omnivores)",
+        "reason": "The card states the diet of the tabon bird but does not group animals into herbivores, carnivores, or omnivores, nor does it use secondary sources to classify. It provides food items but no classification, so it does not directly support the grouping skill."
+      },
+      {
+        "code": "G4-L-7",
+        "verdict": "related_only",
+        "card_evidence": "The tabon bird eats seeds, fruit, worms, and small insects that it finds on the ground.",
+        "competency_evidence": "draw a simple food chain using living things from the Philippines and label them as herbivores, carnivores, and omnivores",
+        "reason": "The card describes what the tabon eats but does not draw a food chain or label any organisms as herbivores, carnivores, or omnivores. The format-required drawn food chain is absent, so it cannot be direct."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-4",
+        "lesson": "g3:animal-parts",
+        "unit": "G3-L-4:other-movement",
+        "pattern": "fin|tail|flipper"
+      },
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:food-and-shelter",
+        "pattern": "food|eat|shelter"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G5-L-4",
+        "lesson": "g5:classification",
+        "unit": "G5-L-4:insects",
+        "pattern": "insect"
+      },
+      {
+        "code": "G5-L-6",
+        "lesson": "g5:life-cycles",
+        "unit": "G5-L-6:birds",
+        "pattern": "bird|chick"
+      },
+      {
+        "code": "G6-L-2",
+        "lesson": "g6:plant-reproduction",
+        "unit": "G6-L-2:seeds",
+        "pattern": "seed"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "The tabon bird eats seeds, fruit, worms, and small insects that it finds on the ground.",
+      "tl": "Kumakain ang tabon ng mga buto, prutas, uod, at maliliit na insekto na nakukuha nito sa lupa.",
+      "bis": "Ang tabon mokaon og mga binhi, prutas, ulod, ug gagmay nga insekto nga makit-an niini sa yuta."
+    },
+    "exportedAt": "2026-09-10T13:35:53.219892+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tagak-flies-neck-tucked-g5",
+    "id": "ffct-10520",
+    "textHash": "0b636e5712caeb588d0a0c729666d3caabb06895add6239569e1cbb5a761ce79",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:26:24Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-L-4",
+        "verdict": "related_only",
+        "card_evidence": "A heron tucks its neck back against its shoulders when flying",
+        "competency_evidence": "observe and describe the outer body parts of animals, such as head, legs or wings, and identify their role to move and to gather food",
+        "reason": "The card describes a specific flight posture of a heron involving the neck, but it does not describe the outer body part's role in movement or gathering food as required by the competency. It is only tangentially related to animal body parts."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-5",
+        "lesson": "g3:solid-properties",
+        "unit": "G3-M-5:stretch",
+        "pattern": "stretch|elastic"
+      },
+      {
+        "code": "G4-L-3",
+        "lesson": "g4:habitat-groups",
+        "unit": "G4-L-3:air",
+        "pattern": "aerial|fly"
+      },
+      {
+        "code": "G4-F-6",
+        "lesson": "g4:change-shape",
+        "unit": "G4-F-6:stretch",
+        "pattern": "stretch"
+      },
+      {
+        "code": "G9-M-5",
+        "lesson": "g9:m-5",
+        "unit": "G9-M-5:focus-1",
+        "pattern": "lose|loss|gain|transfer"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "A heron tucks its neck back against its shoulders when flying, instead of stretching it straight out.",
+      "tl": "Kapag lumilipad ang tagak, itinutupi nito ang leeg sa likod ng balikat, hindi ito iniunat.",
+      "bis": "Kon molupad ang tagak, gipilo niini ang liog balik sa abaga, dili kini gituy-od."
+    },
+    "exportedAt": "2026-09-10T13:35:53.258441+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "talahib-fast-growing-pioneer-g5",
+    "id": "ffct-12987",
+    "textHash": "455c3d394216d36fb25bdf6021db8d3f8731a02421d7e176134350f4a30e90bf",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:37:21Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G5-L-8",
+        "verdict": "related_only",
+        "card_evidence": "Talahib is one of the very first plants to grow back on damaged or freshly cleared land.",
+        "competency_evidence": "explain how some plants have adapted to unfavorable conditions in the environment, such as lack of rain or floods",
+        "reason": "The card states that talahib is a pioneer plant that grows on damaged or cleared land. This is a fact about plant colonization of disturbed areas, not an explanation of adaptation to unfavorable conditions such as lack of rain or floods. The competency specifically targets adaptations to drought or flood, which the card does not address. The card shares the broad topic of plant survival in challenging environments but provides no direct instructional support for the stated skill."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-1",
+        "lesson": "g3:everyday-science",
+        "unit": "G3-M-1:local-examples",
+        "pattern": "rain|cook|shadow|melt|plant|dry"
+      },
+      {
+        "code": "G3-L-2",
+        "lesson": "g3:living-or-not",
+        "unit": "G3-L-2:local-examples",
+        "pattern": "plant|dog|cat|rock|chair|tree"
+      },
+      {
+        "code": "G3-L-3",
+        "lesson": "g3:signs-of-life",
+        "unit": "G3-L-3:grow",
+        "pattern": "grow"
+      },
+      {
+        "code": "G3-L-8",
+        "lesson": "g3:protecting-nature",
+        "unit": "G3-L-8:care-actions",
+        "pattern": "plant|clean|protect|conserv|recycl"
+      },
+      {
+        "code": "G3-F-7",
+        "lesson": "g3:light-and-sound-safety",
+        "unit": "G3-F-7:loud-sound",
+        "pattern": "loud|noise|ear"
+      },
+      {
+        "code": "G4-L-3",
+        "lesson": "g4:habitat-groups",
+        "unit": "G4-L-3:land",
+        "pattern": "terrestrial|land"
+      },
+      {
+        "code": "G4-E-2",
+        "lesson": "g4:water-for-life",
+        "unit": "G4-E-2:plants",
+        "pattern": "plant"
+      },
+      {
+        "code": "G4-E-9",
+        "lesson": "g4:sun-and-life",
+        "unit": "G4-E-9:importance",
+        "pattern": "plant|food|warm|water"
+      },
+      {
+        "code": "G5-E-1",
+        "lesson": "g5:landforms",
+        "unit": "G5-E-1:environmental-effects",
+        "pattern": "plant|animal|habitat|soil|flood|rain"
+      },
+      {
+        "code": "G5-E-6",
+        "lesson": "g5:water-cycle",
+        "unit": "G5-E-6:environment",
+        "pattern": "plant|animal|fresh|rain|environment"
+      },
+      {
+        "code": "G5-E-8",
+        "lesson": "g5:weather-disturbances",
+        "unit": "G5-E-8:impacts",
+        "pattern": "flood|damage|landslide"
+      },
+      {
+        "code": "G6-E-5",
+        "lesson": "g6:volcano-alerts",
+        "unit": "G6-E-5:before",
+        "pattern": "plan|prepare|before|evacuat"
+      },
+      {
+        "code": "G6-E-6",
+        "lesson": "g6:philippine-seasons",
+        "unit": "G6-E-6:activities",
+        "pattern": "plant|harvest|activit|travel|farm"
+      },
+      {
+        "code": "G6-E-9",
+        "lesson": "g6:sky-navigation",
+        "unit": "G6-E-9:seasons",
+        "pattern": "season|plant|harvest|calendar"
+      },
+      {
+        "code": "G7-L-5",
+        "lesson": "g7:cell-division",
+        "unit": "G7-L-5:growth-repair",
+        "pattern": "growth|grow|repair"
+      },
+      {
+        "code": "G7-L-10",
+        "lesson": "g7:energy-transfer",
+        "unit": "G7-L-10:example",
+        "pattern": "grass|plant|rice|algae|plankton"
+      },
+      {
+        "code": "G7-E-3",
+        "lesson": "g7:earthquake-effects",
+        "unit": "G7-E-3:community-effects",
+        "pattern": "damage|building|communit"
+      },
+      {
+        "code": "G9-E-4",
+        "lesson": "g9:e-4",
+        "unit": "G9-E-4:focus-2",
+        "pattern": "index|correlat|age|dat"
+      },
+      {
+        "code": "G9-E-5",
+        "lesson": "g9:e-5",
+        "unit": "G9-E-5:focus-3",
+        "pattern": "time|age"
+      },
+      {
+        "code": "G10-F-10",
+        "lesson": "g10:f-10",
+        "unit": "G10-F-10:focus-2",
+        "pattern": "overload|damaged|fray|short circuit"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Talahib is one of the very first plants to grow back on damaged or freshly cleared land.",
+      "tl": "Ang talahib ay isa sa mga unang halamang tumutubo sa mga sirang o bagong nahawang lupa.",
+      "bis": "Ang talahib usa sa unang mga tanom nga motubo sa nadaot o bag-ong nahawan nga yuta."
+    },
+    "exportedAt": "2026-09-10T13:35:53.295597+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "talc-softest-real-tools-test-g6",
+    "id": "ffct-31739",
+    "textHash": "37b9988ab4b63fc5eb44f22eb81fa10a19c38717b214f559753082766cdb6c80",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:17:55Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G5-E-2",
+        "verdict": "related_only",
+        "card_evidence": "Geologists use everyday objects like a fingernail, coin, or nail to test mineral hardness outside the lab.",
+        "competency_evidence": "explore the school grounds or the local area to observe or collect different types of rocks, describing their similarities and differences in terms of features, such as texture, color, and grain crystal size",
+        "reason": "The card is about testing mineral hardness, not about observing or collecting rocks and describing texture, color, or grain crystal size as required by the competency."
+      },
+      {
+        "code": "G5-E-3",
+        "verdict": "related_only",
+        "card_evidence": "Geologists use everyday objects like a fingernail, coin, or nail to test mineral hardness outside the lab.",
+        "competency_evidence": "classify common rocks from provided samples using a simple rock classification system, such as a dichotomous key",
+        "reason": "Hardness testing is a property used in rock/mineral identification, but the card does not teach classification using a simple rock classification system such as a dichotomous key, nor does it involve classifying provided samples."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-2",
+        "lesson": "g3:exploring",
+        "unit": "G3-M-2:guided-tinkering",
+        "pattern": "(?=.*(teacher|guided|try|test))(?=.*(material|paper|clay|balloon|object))"
+      },
+      {
+        "code": "G3-M-5",
+        "lesson": "g3:solid-properties",
+        "unit": "G3-M-5:hardness",
+        "pattern": "hard.*(press|scratch|shape)|soft"
+      },
+      {
+        "code": "G3-L-4",
+        "lesson": "g3:animal-parts",
+        "unit": "G3-L-4:other-movement",
+        "pattern": "fin|tail|flipper"
+      },
+      {
+        "code": "G3-F-6",
+        "lesson": "g3:light",
+        "unit": "G3-F-6:guided-exploration",
+        "pattern": "investigat|experiment|try|test|flashlight"
+      },
+      {
+        "code": "G3-E-4",
+        "lesson": "g3:weather",
+        "unit": "G3-E-4:patterns",
+        "pattern": "pattern|change|day|sunny|rainy"
+      },
+      {
+        "code": "G3-E-8",
+        "lesson": "g3:sky-and-our-day",
+        "unit": "G3-E-8:daytime",
+        "pattern": "day|sun"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G4-F-1",
+        "lesson": "g4:rigid-soft",
+        "unit": "G4-F-1:rigid",
+        "pattern": "rigid|hard"
+      },
+      {
+        "code": "G4-F-1",
+        "lesson": "g4:rigid-soft",
+        "unit": "G4-F-1:guided",
+        "pattern": "teacher|activity|test|try|experiment"
+      },
+      {
+        "code": "G4-F-5",
+        "lesson": "g4:change-motion",
+        "unit": "G4-F-5:guided",
+        "pattern": "teacher|try|activity|test|experiment"
+      },
+      {
+        "code": "G4-F-7",
+        "lesson": "g4:magnets",
+        "unit": "G4-F-7:investigation",
+        "pattern": "test|teacher|experiment|investigat"
+      },
+      {
+        "code": "G4-E-1",
+        "lesson": "g4:soil",
+        "unit": "G4-E-1:investigation",
+        "pattern": "test|experiment|teacher|pour"
+      },
+      {
+        "code": "G4-E-3",
+        "lesson": "g4:soil-and-growth",
+        "unit": "G4-E-3:investigation",
+        "pattern": "test|experiment|investigat|teacher"
+      },
+      {
+        "code": "G5-F-10",
+        "lesson": "g5:electromagnets",
+        "unit": "G5-F-10:construction",
+        "pattern": "nail|coil|wind.*wire"
+      },
+      {
+        "code": "G5-E-4",
+        "lesson": "g5:soil-formation",
+        "unit": "G5-E-4:minerals",
+        "pattern": "mineral"
+      },
+      {
+        "code": "G6-M-4",
+        "lesson": "g6:useful-mixtures",
+        "unit": "G6-M-4:uses",
+        "pattern": "\\buse|food|drink|medicin|paint"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:benefits",
+        "pattern": "use|benefit|recover|separat"
+      },
+      {
+        "code": "G6-F-3",
+        "lesson": "g6:lever-tests",
+        "unit": "G6-F-3:test",
+        "pattern": "\\bfair\\b|\\btest\\b|\\bmeasure"
+      },
+      {
+        "code": "G7-M-10",
+        "lesson": "g7:solubility",
+        "unit": "G7-M-10:test",
+        "pattern": "test|investigat|same|control|measur"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G9-E-2",
+        "lesson": "g9:e-2",
+        "unit": "G9-E-2:focus-2",
+        "pattern": "map|topograph|geolog"
+      },
+      {
+        "code": "G9-E-6",
+        "lesson": "g9:e-6",
+        "unit": "G9-E-6:focus-1",
+        "pattern": "eon|era|period"
+      },
+      {
+        "code": "G9-M-11",
+        "lesson": "g9:m-11",
+        "unit": "G9-M-11:focus-2",
+        "pattern": "hard|brittle"
+      },
+      {
+        "code": "G9-M-11",
+        "lesson": "g9:m-11",
+        "unit": "G9-M-11:focus-5",
+        "pattern": "investigat|measure|test|compare"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Geologists use everyday objects like a fingernail, coin, or nail to test mineral hardness outside the lab. Talc scratches easily with any of these!",
+      "tl": "Gumagamit ang mga geologist ng kuko, barya, o pako para subukan ang tigas ng mineral. Madaling magasgasan ang Talc kahit ng alinman sa mga ito!",
+      "bis": "Mogamit ang mga geologist og kuko, sensilyo, o lansang aron sulayan ang katig-a sa mineral. Sayon ra makalmotan ang Talc bisan sa unsa niini!"
+    },
+    "exportedAt": "2026-09-10T13:35:53.335539+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tallest-animal-giraffe-g4",
+    "id": "ffct-00671",
+    "textHash": "e9014bc71898021e92a1abcbc295fc635bdfa96865a9082d58a761ec057c9ae1",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:26:21Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-L-4",
+        "verdict": "related_only",
+        "card_evidence": "all thanks to its very long neck",
+        "competency_evidence": "observe and describe the outer body parts of animals, such as head, legs or wings, and identify their role to move and to gather food",
+        "reason": "The card mentions a giraffe's long neck as an outer body part, but it does not describe the role of body parts in moving or gathering food, which is the core action of G3-L-4."
+      },
+      {
+        "code": "G5-L-4",
+        "verdict": "related_only",
+        "card_evidence": "The giraffe is the tallest animal in the world",
+        "competency_evidence": "use a table to show how living things can be classified into groups based on similar characteristics (plants including flowering and non-flowering; animals including mammals, reptiles, insects, birds, fish, amphibians; microorganisms including fungi and bacteria)",
+        "reason": "The card identifies a single animal fact but does not use a table or classify living things into the named groups, and the required table format is absent."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G4-E-2",
+        "lesson": "g4:water-for-life",
+        "unit": "G4-E-2:animals",
+        "pattern": "animal|human|body"
+      },
+      {
+        "code": "G4-E-8",
+        "lesson": "g4:shadows",
+        "unit": "G4-E-8:length",
+        "pattern": "long|short|length"
+      },
+      {
+        "code": "G5-E-1",
+        "lesson": "g5:landforms",
+        "unit": "G5-E-1:environmental-effects",
+        "pattern": "plant|animal|habitat|soil|flood|rain"
+      },
+      {
+        "code": "G5-E-6",
+        "lesson": "g5:water-cycle",
+        "unit": "G5-E-6:environment",
+        "pattern": "plant|animal|fresh|rain|environment"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "What is the tallest animal in the world?\n\nThe giraffe is the tallest animal in the world, all thanks to its very long neck.",
+      "tl": "Ano ang pinakamatangkad na hayop sa mundo?\n\nAng giraffe ang pinakamatangkad na hayop sa mundo, dahil sa napakahabang leeg nito.",
+      "bis": "Unsa ang pinakataas nga mananap sa kalibutan?\n\nAng giraffe mao ang pinakataas nga mananap sa kalibutan, tungod sa taas kaayo niyang liog."
+    },
+    "exportedAt": "2026-09-10T13:35:53.374946+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tamaraw-critically-vs-carabao-g5",
+    "id": "ffct-08262",
+    "textHash": "79c32c866ba0b3fe3f7f8348c2971dd81919fd0427c8744cc12cf38290de046a",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:26:23Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G5-L-4",
+        "verdict": "related_only",
+        "card_evidence": "the tamaraw is wild and can't be domesticated. It's smaller too, with V-shaped horns instead of curved ones!",
+        "competency_evidence": "use a table to show how living things can be classified into groups based on similar characteristics (plants including flowering and non-flowering; animals including mammals, reptiles, insects, birds, fish, amphibians; microorganisms including fungi and bacteria)",
+        "reason": "The card compares two specific animals (tamaraw and carabao) but does not use a table or classify living things into the named groups (mammals, reptiles, etc.). It only mentions differences between two animals, not classification by similar characteristics."
+      },
+      {
+        "code": "G3-L-4",
+        "verdict": "related_only",
+        "card_evidence": "with V-shaped horns instead of curved ones!",
+        "competency_evidence": "observe and describe the outer body parts of animals, such as head, legs or wings, and identify their role to move and to gather food",
+        "reason": "The card mentions horns (an outer body part) but does not describe the role of body parts in movement or gathering food, nor does it involve observing and describing multiple outer body parts as required. It is a comparison of two animals, not a lesson on body part functions."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-8",
+        "lesson": "g3:useful-changes",
+        "unit": "G3-M-8:shaping",
+        "pattern": "shap"
+      },
+      {
+        "code": "G3-L-2",
+        "lesson": "g3:living-or-not",
+        "unit": "G3-L-2:local-examples",
+        "pattern": "plant|dog|cat|rock|chair|tree"
+      },
+      {
+        "code": "G3-E-5",
+        "lesson": "g3:weather",
+        "unit": "G3-E-5:activities",
+        "pattern": "activity|activities|play|dry|clothes|farm"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:community",
+        "pattern": "home|community|school|farm|local"
+      },
+      {
+        "code": "G5-L-6",
+        "lesson": "g5:life-cycles",
+        "unit": "G5-L-6:mammals",
+        "pattern": "mammal|calf|carabao|puppy"
+      },
+      {
+        "code": "G5-L-6",
+        "lesson": "g5:life-cycles",
+        "unit": "G5-L-6:comparison",
+        "pattern": "unlike|compare|every life cycle"
+      },
+      {
+        "code": "G5-E-2",
+        "lesson": "g5:rock-observation",
+        "unit": "G5-E-2:comparison",
+        "pattern": "compar|different|similar|sort|collect"
+      },
+      {
+        "code": "G6-M-4",
+        "lesson": "g6:useful-mixtures",
+        "unit": "G6-M-4:uses",
+        "pattern": "\\buse|food|drink|medicin|paint"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:benefits",
+        "pattern": "use|benefit|recover|separat"
+      },
+      {
+        "code": "G6-L-4",
+        "lesson": "g6:animal-groups",
+        "unit": "G6-L-4:local",
+        "pattern": "Philippin|carabao|tilapia|tarsier|crab|butterfl"
+      },
+      {
+        "code": "G6-E-6",
+        "lesson": "g6:philippine-seasons",
+        "unit": "G6-E-6:activities",
+        "pattern": "plant|harvest|activit|travel|farm"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G7-L-7",
+        "lesson": "g7:reproduction-types",
+        "unit": "G7-L-7:similarity",
+        "pattern": "identical|clone|differ|variation|similar"
+      },
+      {
+        "code": "G7-F-4",
+        "lesson": "g7:net-force",
+        "unit": "G7-F-4:direction",
+        "pattern": "direction|turn|curv"
+      },
+      {
+        "code": "G8-F-2",
+        "lesson": "g8:local-motion",
+        "unit": "G8-F-2:everyday",
+        "pattern": "school|car|bike|ball|bus|jeep"
+      },
+      {
+        "code": "G8-F-3",
+        "lesson": "g8:acceleration-graphs",
+        "unit": "G8-F-3:nonuniform",
+        "pattern": "non.uniform|changing.*acceleration|curved"
+      },
+      {
+        "code": "G9-F-2",
+        "lesson": "g9:f-2",
+        "unit": "G9-F-2:focus-3",
+        "pattern": "practical|ball|car|bike|bus"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "How is a tamaraw different from a carabao?\n\nUnlike the tame carabao used on farms, the tamaraw is wild and can't be domesticated. It's smaller too, with V-shaped horns instead of curved ones!",
+      "tl": "Ano ang pagkaiba ng tamaraw sa kalabaw?\n\nHindi tulad ng maamong kalabaw na ginagamit sa bukid, ang tamaraw ay ligaw at hindi maaaring alagaan. Mas maliit din ito at ang sungay nito ay hugis-V, hindi pakurba!",
+      "bis": "Unsay kalainan sa tamaraw ug kalabaw?\n\nDili sama sa maamo nga kalabaw nga gigamit sa uma, ang tamaraw ihalas ug dili maamoon. Mas gamay usab kini ug ang sungay porma og V, dili kurba!"
+    },
+    "exportedAt": "2026-09-10T13:35:53.418197+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tamaraw-darker-than-carabao-g5",
+    "id": "ffct-02328",
+    "textHash": "ced7bd52ab96137da6ed226cd62e3b863432b2f94fb3ab9cfa78d7aafd4bcf9c",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:30:00Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G5-L-4",
+        "verdict": "related_only",
+        "card_evidence": "The tamaraw has darker skin and a stockier body than the ordinary carabao!",
+        "competency_evidence": "use a table to show how living things can be classified into groups based on similar characteristics (plants including flowering and non-flowering; animals including mammals, reptiles, insects, birds, fish, amphibians; microorganisms including fungi and bacteria)",
+        "reason": "The card only states a physical difference between two animals (tamaraw and carabao). It does not use a table, does not classify living things into the named groups (mammals, reptiles, etc.), and does not support the skill of classifying based on similar characteristics. The content is merely about two specific animals, so it is related to the topic of animals but not directly instructional for this competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G4-E-2",
+        "lesson": "g4:water-for-life",
+        "unit": "G4-E-2:animals",
+        "pattern": "animal|human|body"
+      },
+      {
+        "code": "G5-L-6",
+        "lesson": "g5:life-cycles",
+        "unit": "G5-L-6:mammals",
+        "pattern": "mammal|calf|carabao|puppy"
+      },
+      {
+        "code": "G6-L-4",
+        "lesson": "g6:animal-groups",
+        "unit": "G6-L-4:local",
+        "pattern": "Philippin|carabao|tilapia|tarsier|crab|butterfl"
+      },
+      {
+        "code": "G8-F-2",
+        "lesson": "g8:local-motion",
+        "unit": "G8-F-2:everyday",
+        "pattern": "school|car|bike|ball|bus|jeep"
+      },
+      {
+        "code": "G9-F-2",
+        "lesson": "g9:f-2",
+        "unit": "G9-F-2:focus-3",
+        "pattern": "practical|ball|car|bike|bus"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "The tamaraw has darker skin and a stockier body than the ordinary carabao!",
+      "tl": "Mas maitim ang kulay at mas matipuno ang katawan ng tamaraw kaysa sa karaniwang kalabaw!",
+      "bis": "Mas itom ang kolor ug mas baga ang lawas sa tamaraw kaysa sa naandang kalabaw!"
+    },
+    "exportedAt": "2026-09-10T13:35:53.454768+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tamaraw-endemic-mindoro-g8",
+    "id": "ffct-05997",
+    "textHash": "83d44a2f28fc88492312b435acfc6d1f27676ad85e62c3709506ff03288cb69d",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:10:17Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G4-L-4",
+        "verdict": "related_only",
+        "card_evidence": "The tamaraw is endemic to the island of Mindoro",
+        "competency_evidence": "make a list or draw up a table with examples of animals and plants in a particular habitat, such as a garden, rice field, seashore, and mangrove swamp",
+        "reason": "The card states a single animal and its location, but does not make a list or table of animals and plants in a named habitat, nor does it address the habitat types (garden, rice field, seashore, mangrove swamp) required by the competency."
+      },
+      {
+        "code": "G3-L-2",
+        "verdict": "related_only",
+        "card_evidence": "The tamaraw is endemic to the island of Mindoro",
+        "competency_evidence": "observe and describe the difference between living and non-living things and give examples of each that can be found in the local environment",
+        "reason": "The card mentions a living thing but does not contrast living vs non-living things or give examples of each, which is the core of the competency."
+      },
+      {
+        "code": "G9-L-6",
+        "verdict": "related_only",
+        "card_evidence": "The tamaraw is endemic to the island of Mindoro",
+        "competency_evidence": "use information from secondary resources to classify animals and plants of the Philippines as critically endangered, endangered, or vulnerable species",
+        "reason": "The card identifies the tamaraw as endemic but does not classify it as critically endangered, endangered, or vulnerable, nor does it use secondary sources to do so. Endemism alone does not support the classification skill."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G4-L-3",
+        "lesson": "g4:habitat-groups",
+        "unit": "G4-L-3:land",
+        "pattern": "terrestrial|land"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "The tamaraw is endemic to the island of Mindoro — meaning it's found nowhere else in the world.",
+      "tl": "Ang tamaraw ay endemiko sa isla ng Mindoro — ibig sabihin, dito lang ito matatagpuan sa buong mundo.",
+      "bis": "Ang tamaraw endemiko sa isla sa Mindoro — buot pasabot, dinhi ra kini makit-an sa tibuok kalibutan."
+    },
+    "exportedAt": "2026-09-10T13:35:53.492274+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tamaraw-scientific-name-g6",
+    "id": "ffct-13190",
+    "textHash": "2b2bf081b817a2cfae18a27f5e11c409f1f12b467162c93067dd507dbf0f9d37",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:30:00Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G5-L-4",
+        "verdict": "related_only",
+        "card_evidence": "The tamaraw's scientific name is Bubalus mindorensis",
+        "competency_evidence": "use a table to show how living things can be classified into groups based on similar characteristics (plants including flowering and non-flowering; animals including mammals, reptiles, insects, birds, fish, amphibians; microorganisms including fungi and bacteria)",
+        "reason": "The card gives a scientific name and notes relation to the water buffalo, but does not use a table or classify the tamaraw into any of the named groups (e.g., mammals). It does not directly support the required classification activity."
+      },
+      {
+        "code": "G8-L-6",
+        "verdict": "related_only",
+        "card_evidence": "The tamaraw's scientific name is Bubalus mindorensis",
+        "competency_evidence": "describe the importance of the six-kingdom system and the three-domain system of classification of living things",
+        "reason": "The card mentions a scientific name and relatedness, but does not describe the six-kingdom or three-domain systems of classification or their importance. It is only tangentially related to taxonomy."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-6",
+        "lesson": "g3:basic-needs",
+        "unit": "G3-L-6:water",
+        "pattern": "water"
+      },
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:environment",
+        "pattern": "water|soil|air|sun"
+      },
+      {
+        "code": "G3-F-1",
+        "lesson": "g3:moving-things",
+        "unit": "G3-F-1:water",
+        "pattern": "water"
+      },
+      {
+        "code": "G3-E-1",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-1:examples",
+        "pattern": "rock|soil|water|air|metal|cloud|rain|sun"
+      },
+      {
+        "code": "G4-L-3",
+        "lesson": "g4:habitat-groups",
+        "unit": "G4-L-3:water",
+        "pattern": "aquatic|water"
+      },
+      {
+        "code": "G4-E-9",
+        "lesson": "g4:sun-and-life",
+        "unit": "G4-E-9:importance",
+        "pattern": "plant|food|warm|water"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:products",
+        "pattern": "\\bsalt\\b|\\bgrain\\b|\\brice\\b|\\bwater\\b|\\biron\\b|\\bsand\\b"
+      },
+      {
+        "code": "G6-L-7",
+        "lesson": "g6:ecosystem-factors",
+        "unit": "G6-L-7:water",
+        "pattern": "water"
+      },
+      {
+        "code": "G6-L-8",
+        "lesson": "g6:ecosystem-effects",
+        "unit": "G6-L-8:nonliving-interactions",
+        "pattern": "water|soil|temperature|light|drought|flood"
+      },
+      {
+        "code": "G8-L-8",
+        "lesson": "g8:nature-cycles",
+        "unit": "G8-L-8:water",
+        "pattern": "water|transpir"
+      },
+      {
+        "code": "G8-L-11",
+        "lesson": "g8:photosynthesis-test",
+        "unit": "G8-L-11:raw-material",
+        "pattern": "carbon dioxide|water"
+      },
+      {
+        "code": "G9-M-7",
+        "lesson": "g9:m-7",
+        "unit": "G9-M-7:focus-1",
+        "pattern": "water|H2O|H₂O"
+      },
+      {
+        "code": "G9-M-8",
+        "lesson": "g9:m-8",
+        "unit": "G9-M-8:focus-1",
+        "pattern": "water|H2O|H₂O"
+      },
+      {
+        "code": "G10-L-10",
+        "lesson": "g10:l-10",
+        "unit": "G10-L-10:focus-2",
+        "pattern": "water"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "The tamaraw's scientific name is Bubalus mindorensis, which shows it's related to the water buffalo.",
+      "tl": "Ang siyentipikong pangalan ng tamaraw ay Bubalus mindorensis, na nagpapakita na kamag-anak ito ng kalabaw.",
+      "bis": "Ang siyentipikong ngalan sa tamaraw mao ang Bubalus mindorensis, nga nagpakita nga paryente kini sa kalabaw."
+    },
+    "exportedAt": "2026-09-10T13:35:53.531298+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tamaraw-solitary-senses-warn-g5",
+    "id": "ffct-08203",
+    "textHash": "5e2d90080714cdf5388046f9be7562076c4b0c8c35f2ef7bafc3e8270699adc8",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:39:41Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G5-L-9",
+        "verdict": "related_only",
+        "card_evidence": "it counts on its sharp sense of smell and hearing to sense danger early",
+        "competency_evidence": "use information from secondary sources to describe examples of how some animals have changed to better suit their environment, such as mimicry or camouflage",
+        "reason": "The card describes a current sensory ability of the tamaraw, but does not describe how the animal has changed over time to better suit its environment, nor does it mention mimicry, camouflage, or evolutionary adaptation. It is only tangentially related to the competency's focus on adaptive change."
+      },
+      {
+        "code": "G3-L-4",
+        "verdict": "related_only",
+        "card_evidence": "sharp sense of smell and hearing",
+        "competency_evidence": "observe and describe the outer body parts of animals, such as head, legs or wings, and identify their role to move and to gather food",
+        "reason": "The card mentions sense organs (smell and hearing) but does not describe outer body parts such as head, legs, or wings, nor their role in movement or gathering food. The role described is sensing danger, not moving or gathering food, so it does not directly support this competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-7",
+        "lesson": "g3:safe-materials",
+        "unit": "G3-M-7:handling",
+        "pattern": "sharp|broken glass|glove|handle|handling"
+      },
+      {
+        "code": "G3-F-7",
+        "lesson": "g3:light-and-sound-safety",
+        "unit": "G3-F-7:loud-sound",
+        "pattern": "loud|noise|ear"
+      },
+      {
+        "code": "G3-E-5",
+        "lesson": "g3:weather",
+        "unit": "G3-E-5:danger",
+        "pattern": "danger|storm|flood|lightning"
+      },
+      {
+        "code": "G7-F-9",
+        "lesson": "g7:heat-transfer-uses",
+        "unit": "G7-F-9:disadvantage",
+        "pattern": "burn|overheat|unwanted|harm|danger"
+      },
+      {
+        "code": "G9-E-9",
+        "lesson": "g9:e-9",
+        "unit": "G9-E-9:focus-5",
+        "pattern": "formation|early|leftover|remnant"
+      },
+      {
+        "code": "G9-M-7",
+        "lesson": "g9:m-7",
+        "unit": "G9-M-7:focus-3",
+        "pattern": "shar"
+      },
+      {
+        "code": "G10-M-1",
+        "lesson": "g10:m-1",
+        "unit": "G10-M-1:focus-5",
+        "pattern": "odor|smell"
+      },
+      {
+        "code": "G10-M-7",
+        "lesson": "g10:m-7",
+        "unit": "G10-M-7:focus-2",
+        "pattern": "atom|count"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "The tamaraw lives alone with no herd to keep watch, so it counts on its sharp sense of smell and hearing to sense danger early.",
+      "tl": "Nag-iisa ang tamaraw at walang kasamang bumabantay, kaya umaasa ito sa matalas nitong pang-amoy at pandinig para maagap na makaramdam ng panganib.",
+      "bis": "Nag-inusara ang tamaraw ug walay kauban nga mobantay, mao nga nagsalig kini sa hait niyang panimho ug pandungog aron sayo nga makamatikod sa kakuyaw."
+    },
+    "exportedAt": "2026-09-10T13:35:53.570434+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tamilok-is-a-clam-not-worm-g5",
+    "id": "ffct-12733",
+    "textHash": "e745ebc7e7c2dbc07938d7b50aeb49b793840e031aedcf1fda94833c70cce130",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass grok-4.6 2026-09-07T04:40:00Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G6-L-4",
+        "verdict": "related_only",
+        "card_evidence": "tamilok is actually a clam or mollusk — related to mussels and oysters",
+        "competency_evidence": "describe the differences between animals with a backbone (vertebrates) and animals without backbones (invertebrates) by using common local examples of each group",
+        "reason": "Clam versus worm is two invertebrate groups, not vertebrates versus invertebrates."
+      },
+      {
+        "code": "G5-L-4",
+        "verdict": "related_only",
+        "card_evidence": "tamilok is actually a clam or mollusk — related to mussels and oysters",
+        "competency_evidence": "use a table to show how living things can be classified into groups based on similar characteristics (plants including flowering and non-flowering; animals including mammals, reptiles, insects, birds, fish, amphibians; microorganisms including fungi and bacteria)",
+        "reason": "The card does not use a table to classify living things into the named groups."
+      }
+    ],
+    "candidateUnits": [],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Is tamilok really a worm?\n\nNo! Even though it's called a worm, tamilok is actually a clam or mollusk — related to mussels and oysters!",
+      "tl": "Uod ba talaga ang tamilok?\n\nHindi! Kahit tinatawag itong uod, ang tamilok ay talagang isang kabibe o molusko — kapamilya ng tahong at talaba!",
+      "bis": "Ulod ba gyud ang tamilok?\n\nDili! Bisan gitawag kini nga ulod, ang tamilok usa gyud ka kabibe o molusko — paryente sa tahong ug talaba!"
+    },
+    "exportedAt": "2026-09-10T13:35:53.609737+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tamilok-shell-is-a-drill-g6",
+    "id": "ffct-04663",
+    "textHash": "5a3ece1656c92cce4418def874c211a3d4c8a4690f540213cb00653f0ad30fa5",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:26:29Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-L-4",
+        "verdict": "related_only",
+        "card_evidence": "The tamilok has two tiny shells at the front of its body that it uses like a rasp to scrape and drill through wood.",
+        "competency_evidence": "observe and describe the outer body parts of animals, such as head, legs or wings, and identify their role to move and to gather food",
+        "reason": "The card describes an outer body part (tiny shells) and its role, but the role is to scrape and drill through wood, not to move or gather food as specified in the competency. It shares the topic of animal body parts but does not directly support the stated skill."
+      },
+      {
+        "code": "G5-L-9",
+        "verdict": "related_only",
+        "card_evidence": "The tamilok has two tiny shells at the front of its body that it uses like a rasp to scrape and drill through wood.",
+        "competency_evidence": "use information from secondary sources to describe examples of how some animals have changed to better suit their environment, such as mimicry or camouflage",
+        "reason": "The card describes a structural adaptation (shells used for drilling) but does not describe how the animal has changed to better suit its environment, nor does it mention mimicry, camouflage, or evolutionary change. It is only related to the broader topic of animal adaptations."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-F-6",
+        "lesson": "g3:light",
+        "unit": "G3-F-6:behavior",
+        "pattern": "shadow|reflect|block|through"
+      },
+      {
+        "code": "G3-E-2",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-2:human-made-objects",
+        "pattern": "made|make|build|clay|wood|metal"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G4-M-4",
+        "lesson": "g4:heating-materials",
+        "unit": "G4-M-4:burning",
+        "pattern": "wood|coal"
+      },
+      {
+        "code": "G4-F-7",
+        "lesson": "g4:magnets",
+        "unit": "G4-F-7:materials",
+        "pattern": "iron|steel|plastic|wood"
+      },
+      {
+        "code": "G4-E-2",
+        "lesson": "g4:water-for-life",
+        "unit": "G4-E-2:animals",
+        "pattern": "animal|human|body"
+      },
+      {
+        "code": "G5-F-2",
+        "lesson": "g5:friction",
+        "unit": "G5-F-2:surfaces",
+        "pattern": "surface|rough|smooth"
+      },
+      {
+        "code": "G6-M-4",
+        "lesson": "g6:useful-mixtures",
+        "unit": "G6-M-4:uses",
+        "pattern": "\\buse|food|drink|medicin|paint"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:benefits",
+        "pattern": "use|benefit|recover|separat"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G7-E-6",
+        "lesson": "g7:earthquake-plan",
+        "unit": "G7-E-6:local-plan",
+        "pattern": "local|school.*plan|drill|barangay"
+      },
+      {
+        "code": "G8-M-2",
+        "lesson": "g8:draw-atom",
+        "unit": "G8-M-2:shells",
+        "pattern": "shell|energy level"
+      },
+      {
+        "code": "G8-M-8",
+        "lesson": "g8:electron-position",
+        "unit": "G8-M-8:shell-period",
+        "pattern": "shell|period|energy level"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "The tamilok has two tiny shells at the front of its body that it uses like a rasp to scrape and drill through wood.",
+      "tl": "Ang tamilok ay may dalawang maliliit na talukab sa unahan ng katawan na ginagamit nitong parang kalaykay para kuskusin at butasin ang kahoy.",
+      "bis": "Ang tamilok adunay duha ka gagmay nga talukab sa unahan sa lawas nga gigamit sama sa kagis aron kuskuson ug bangagan ang kahoy."
+    },
+    "exportedAt": "2026-09-10T13:35:53.648087+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tapa-beef-meal-g6",
+    "id": "ffct-19050",
+    "textHash": "21363e0ea23d17cb250ca54d39cc727ffdafa5e23fe0484c2ea9fc2604419e0a",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:10:08Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G10-M-8",
+        "verdict": "related_only",
+        "card_evidence": "Removing water and adding salt stops spoiling bacteria, making the meat keep much longer.",
+        "competency_evidence": "explain the factors affecting the rates of chemical reactions as applied in food preservation and materials production, control of fire, pollution, and corrosion",
+        "reason": "The card describes food preservation by removing water and adding salt, but it does not explain any factor affecting the rate of a chemical reaction (e.g., temperature, concentration, surface area, catalyst). It focuses on preventing microbial spoilage, not on chemical reaction kinetics. Thus it only shares the broad topic of food preservation without directly supporting the competency."
+      },
+      {
+        "code": "G4-M-5",
+        "verdict": "related_only",
+        "card_evidence": "Removing water and adding salt stops spoiling bacteria, making the meat keep much longer.",
+        "competency_evidence": "demonstrate ways to minimize harmful changes in materials, such as restriction of burning of waste materials, and care in handling reactive materials",
+        "reason": "The competency is about demonstrating ways to minimize harmful changes in materials, such as restricting burning or handling reactive materials. The card describes a preservation technique (salting and drying) that prevents spoilage, which is a way to minimize a harmful change, but it does not demonstrate a method or address the specific examples (burning, reactive materials). It is only tangentially related to minimizing harmful changes."
+      },
+      {
+        "code": "G4-M-3",
+        "verdict": "related_only",
+        "card_evidence": "Tapa is salted and dried meat! Removing water and adding salt stops spoiling bacteria, making the meat keep much longer.",
+        "competency_evidence": "describe the chemical properties of materials, such as they can be burnt, react with other materials, or are degradable or biodegradable",
+        "reason": "The competency asks to describe chemical properties of materials such as being burnt, reacting with other materials, or being degradable/biodegradable. The card mentions spoiling bacteria and preservation, which relates to decomposition (a degradable process), but it does not describe a chemical property of the material itself. It is about preventing spoilage, not about the material's chemical properties like reactivity or degradability. Thus only related."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-6",
+        "lesson": "g3:basic-needs",
+        "unit": "G3-L-6:water",
+        "pattern": "water"
+      },
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:food-and-shelter",
+        "pattern": "food|eat|shelter"
+      },
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:environment",
+        "pattern": "water|soil|air|sun"
+      },
+      {
+        "code": "G3-F-1",
+        "lesson": "g3:moving-things",
+        "unit": "G3-F-1:water",
+        "pattern": "water"
+      },
+      {
+        "code": "G3-E-1",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-1:examples",
+        "pattern": "rock|soil|water|air|metal|cloud|rain|sun"
+      },
+      {
+        "code": "G4-L-3",
+        "lesson": "g4:habitat-groups",
+        "unit": "G4-L-3:water",
+        "pattern": "aquatic|water"
+      },
+      {
+        "code": "G4-F-5",
+        "lesson": "g4:change-motion",
+        "unit": "G4-F-5:slow-stop",
+        "pattern": "slow|stop"
+      },
+      {
+        "code": "G4-E-8",
+        "lesson": "g4:shadows",
+        "unit": "G4-E-8:length",
+        "pattern": "long|short|length"
+      },
+      {
+        "code": "G4-E-9",
+        "lesson": "g4:sun-and-life",
+        "unit": "G4-E-9:importance",
+        "pattern": "plant|food|warm|water"
+      },
+      {
+        "code": "G5-L-4",
+        "lesson": "g5:classification",
+        "unit": "G5-L-4:bacteria",
+        "pattern": "bacter"
+      },
+      {
+        "code": "G5-F-3",
+        "lesson": "g5:friction",
+        "unit": "G5-F-3:reducing-friction",
+        "pattern": "reduc|oil|lubricat"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:products",
+        "pattern": "\\bsalt\\b|\\bgrain\\b|\\brice\\b|\\bwater\\b|\\biron\\b|\\bsand\\b"
+      },
+      {
+        "code": "G6-L-7",
+        "lesson": "g6:ecosystem-factors",
+        "unit": "G6-L-7:water",
+        "pattern": "water"
+      },
+      {
+        "code": "G6-L-8",
+        "lesson": "g6:ecosystem-effects",
+        "unit": "G6-L-8:nonliving-interactions",
+        "pattern": "water|soil|temperature|light|drought|flood"
+      },
+      {
+        "code": "G7-M-3",
+        "lesson": "g7:particle-motion",
+        "unit": "G7-M-3:motion",
+        "pattern": "motion|mov|vibrat"
+      },
+      {
+        "code": "G7-M-11",
+        "lesson": "g7:litmus",
+        "unit": "G7-M-11:salt",
+        "pattern": "\\bsalt"
+      },
+      {
+        "code": "G7-F-3",
+        "lesson": "g7:force-diagrams",
+        "unit": "G7-F-3:magnitude",
+        "pattern": "length|longer|size|magnitude"
+      },
+      {
+        "code": "G8-L-8",
+        "lesson": "g8:nature-cycles",
+        "unit": "G8-L-8:water",
+        "pattern": "water|transpir"
+      },
+      {
+        "code": "G8-L-11",
+        "lesson": "g8:photosynthesis-test",
+        "unit": "G8-L-11:raw-material",
+        "pattern": "carbon dioxide|water"
+      },
+      {
+        "code": "G9-M-7",
+        "lesson": "g9:m-7",
+        "unit": "G9-M-7:focus-1",
+        "pattern": "water|H2O|H₂O"
+      },
+      {
+        "code": "G9-M-8",
+        "lesson": "g9:m-8",
+        "unit": "G9-M-8:focus-1",
+        "pattern": "water|H2O|H₂O"
+      },
+      {
+        "code": "G10-F-4",
+        "lesson": "g10:f-4",
+        "unit": "G10-F-4:focus-3",
+        "pattern": "impact|collision|stop"
+      },
+      {
+        "code": "G10-F-5",
+        "lesson": "g10:f-5",
+        "unit": "G10-F-5:focus-4",
+        "pattern": "stop"
+      },
+      {
+        "code": "G10-M-2",
+        "lesson": "g10:m-2",
+        "unit": "G10-M-2:focus-4",
+        "pattern": "saline|salt"
+      },
+      {
+        "code": "G10-L-10",
+        "lesson": "g10:l-10",
+        "unit": "G10-L-10:focus-2",
+        "pattern": "water"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Tapa is salted and dried meat! Removing water and adding salt stops spoiling bacteria, making the meat keep much longer.",
+      "tl": "Ang tapa ay karneng inasnan at pinatuyo! Ang pagtanggal ng tubig at pagdagdag ng asin ay pumipigil sa bakteryang nagpapabulok kaya tumatagal ito.",
+      "bis": "Ang tapa karne nga giasinan ug gipauga! Ang pagkuha sa tubig ug pagdugang og asin makapugong sa bakterya nga magpadunot busa molungtad kini."
+    },
+    "exportedAt": "2026-09-10T13:35:53.687047+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tapeworm-intestine-parasite-g7",
+    "id": "ffct-01162",
+    "textHash": "5b2bae36d9e624318470a4858fbda926f7ecd1f5c1df6dc4a545b95cb14059d6",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:00:04Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G5-L-1",
+        "verdict": "related_only",
+        "card_evidence": "A tapeworm is a worm that lives inside an animal's or person's intestine",
+        "competency_evidence": "identify from pictures and labeled diagrams the parts of the digestive system as mouth, gullet, stomach, small intestine, and large intestine, and describe how they work",
+        "reason": "The card mentions the intestine but does not identify or describe the parts of the digestive system (mouth, gullet, stomach, small/large intestine) or how they work. It only states that a tapeworm lives in the intestine and steals nutrients, which is about a parasite, not digestive system anatomy or function."
+      },
+      {
+        "code": "G4-L-1",
+        "verdict": "related_only",
+        "card_evidence": "A tapeworm is a worm that lives inside an animal's or person's intestine",
+        "competency_evidence": "describe in simple terms how the following human body systems work: muscular, skeletal, digestive, circulatory, and respiratory",
+        "reason": "The card does not describe how the digestive system or any human body system works. It only mentions the intestine as the tapeworm's habitat, providing no instructional support for describing body system functions."
+      },
+      {
+        "code": "G8-L-1",
+        "verdict": "related_only",
+        "card_evidence": "A tapeworm is a worm that lives inside an animal's or person's intestine",
+        "competency_evidence": "using a labeled diagram, trace how food travels through the digestive tract and explain how different digestive processes work, including mechanical processing, secretion, digestion, absorption, and elimination",
+        "reason": "The card lacks a labeled diagram and does not trace food through the digestive tract or explain digestive processes. It only references the intestine in the context of a parasite, not the digestive pathway or its processes."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-6",
+        "lesson": "g3:basic-needs",
+        "unit": "G3-L-6:food",
+        "pattern": "food"
+      },
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:food-and-shelter",
+        "pattern": "food|eat|shelter"
+      },
+      {
+        "code": "G3-F-6",
+        "lesson": "g3:light",
+        "unit": "G3-F-6:guided-exploration",
+        "pattern": "investigat|experiment|try|test|flashlight"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G4-F-1",
+        "lesson": "g4:rigid-soft",
+        "unit": "G4-F-1:guided",
+        "pattern": "teacher|activity|test|try|experiment"
+      },
+      {
+        "code": "G4-F-5",
+        "lesson": "g4:change-motion",
+        "unit": "G4-F-5:guided",
+        "pattern": "teacher|try|activity|test|experiment"
+      },
+      {
+        "code": "G4-F-7",
+        "lesson": "g4:magnets",
+        "unit": "G4-F-7:investigation",
+        "pattern": "test|teacher|experiment|investigat"
+      },
+      {
+        "code": "G4-E-1",
+        "lesson": "g4:soil",
+        "unit": "G4-E-1:investigation",
+        "pattern": "test|experiment|teacher|pour"
+      },
+      {
+        "code": "G4-E-2",
+        "lesson": "g4:water-for-life",
+        "unit": "G4-E-2:animals",
+        "pattern": "animal|human|body"
+      },
+      {
+        "code": "G4-E-3",
+        "lesson": "g4:soil-and-growth",
+        "unit": "G4-E-3:investigation",
+        "pattern": "test|experiment|investigat|teacher"
+      },
+      {
+        "code": "G4-E-9",
+        "lesson": "g4:sun-and-life",
+        "unit": "G4-E-9:importance",
+        "pattern": "plant|food|warm|water"
+      },
+      {
+        "code": "G5-E-1",
+        "lesson": "g5:landforms",
+        "unit": "G5-E-1:environmental-effects",
+        "pattern": "plant|animal|habitat|soil|flood|rain"
+      },
+      {
+        "code": "G5-E-6",
+        "lesson": "g5:water-cycle",
+        "unit": "G5-E-6:environment",
+        "pattern": "plant|animal|fresh|rain|environment"
+      },
+      {
+        "code": "G6-M-4",
+        "lesson": "g6:useful-mixtures",
+        "unit": "G6-M-4:uses",
+        "pattern": "\\buse|food|drink|medicin|paint"
+      },
+      {
+        "code": "G7-M-10",
+        "lesson": "g7:solubility",
+        "unit": "G7-M-10:test",
+        "pattern": "test|investigat|same|control|measur"
+      },
+      {
+        "code": "G9-M-11",
+        "lesson": "g9:m-11",
+        "unit": "G9-M-11:focus-5",
+        "pattern": "investigat|measure|test|compare"
+      },
+      {
+        "code": "G10-M-8",
+        "lesson": "g10:m-8",
+        "unit": "G10-M-8:focus-1",
+        "pattern": "food|preserv"
+      },
+      {
+        "code": "G10-L-10",
+        "lesson": "g10:l-10",
+        "unit": "G10-L-10:focus-1",
+        "pattern": "food"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "What is a tapeworm?\n\nA tapeworm is a worm that lives inside an animal's or person's intestine, stealing nutrients from their food and making them weak.",
+      "tl": "Ano ang tapeworm?\n\nAng tapeworm ay isang bulate na nakatira sa loob ng bituka ng tao o hayop, kumukuha ng sustansya mula sa kinakain nila kaya sila humihina.",
+      "bis": "Unsa ang tapeworm?\n\nAng tapeworm usa ka ulod nga nagpuyo sa sulod sa tinai sa tawo o hayop, nagakuha og sustansya gikan sa ilang gikaon mao nga sila maluya."
+    },
+    "exportedAt": "2026-09-10T13:35:53.728794+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tardigrade-not-immortal-g8",
+    "id": "ffct-01315",
+    "textHash": "84b6f5e90016a242b34a83e7ab5b5f492a35d8262106beb9ca3dc9152ea9d3a0",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:34:00Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-L-6",
+        "verdict": "related_only",
+        "card_evidence": "heat or hunger can still kill them",
+        "competency_evidence": "identify the basic needs of all living things, such as air, food, water, and shelter",
+        "reason": "The card mentions that heat or hunger can kill tardigrades, which touches on needs like food and suitable temperature, but it does not teach students to identify the basic needs of all living things (air, food, water, shelter). It is a fact about tardigrade resilience rather than direct instruction on basic needs."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:food-and-shelter",
+        "pattern": "food|eat|shelter"
+      },
+      {
+        "code": "G4-F-9",
+        "lesson": "g4:energy",
+        "unit": "G4-F-9:forms",
+        "pattern": "light|sound|heat"
+      },
+      {
+        "code": "G4-F-10",
+        "lesson": "g4:energy-uses",
+        "unit": "G4-F-10:heat",
+        "pattern": "heat"
+      },
+      {
+        "code": "G4-E-2",
+        "lesson": "g4:water-for-life",
+        "unit": "G4-E-2:animals",
+        "pattern": "animal|human|body"
+      },
+      {
+        "code": "G4-E-7",
+        "lesson": "g4:sun",
+        "unit": "G4-E-7:energy",
+        "pattern": "light|heat"
+      },
+      {
+        "code": "G5-F-3",
+        "lesson": "g5:friction",
+        "unit": "G5-F-3:heat",
+        "pattern": "heat|warm"
+      },
+      {
+        "code": "G5-E-1",
+        "lesson": "g5:landforms",
+        "unit": "G5-E-1:environmental-effects",
+        "pattern": "plant|animal|habitat|soil|flood|rain"
+      },
+      {
+        "code": "G5-E-6",
+        "lesson": "g5:water-cycle",
+        "unit": "G5-E-6:environment",
+        "pattern": "plant|animal|fresh|rain|environment"
+      },
+      {
+        "code": "G6-E-2",
+        "lesson": "g6:local-volcano-risk",
+        "unit": "G6-E-2:active-inactive",
+        "pattern": "active|inactive"
+      },
+      {
+        "code": "G7-M-3",
+        "lesson": "g7:particle-motion",
+        "unit": "G7-M-3:temperature",
+        "pattern": "temperature|heat"
+      },
+      {
+        "code": "G7-L-10",
+        "lesson": "g7:energy-transfer",
+        "unit": "G7-L-10:less-energy",
+        "pattern": "less|lost|loss|heat|10 percent|10%"
+      },
+      {
+        "code": "G7-F-2",
+        "lesson": "g7:balanced-unbalanced",
+        "unit": "G7-F-2:rest",
+        "pattern": "rest|still|inclined"
+      },
+      {
+        "code": "G7-E-9",
+        "lesson": "g7:sun-atmosphere",
+        "unit": "G7-E-9:warming",
+        "pattern": "warm|heat|greenhouse"
+      },
+      {
+        "code": "G7-E-12",
+        "lesson": "g7:solar-winds",
+        "unit": "G7-E-12:solar-heating",
+        "pattern": "heat|solar|Sun"
+      },
+      {
+        "code": "G8-E-3",
+        "lesson": "g8:volcano-types",
+        "unit": "G8-E-3:activity",
+        "pattern": "active|dormant|extinct|inactive"
+      },
+      {
+        "code": "G8-F-9",
+        "lesson": "g8:falling-energy",
+        "unit": "G8-F-9:losses",
+        "pattern": "friction|air resistance|heat|thermal"
+      },
+      {
+        "code": "G9-M-11",
+        "lesson": "g9:m-11",
+        "unit": "G9-M-11:focus-4",
+        "pattern": "thermal|heat"
+      },
+      {
+        "code": "G10-E-11",
+        "lesson": "g10:e-11",
+        "unit": "G10-E-11:focus-1",
+        "pattern": "impact|flood|sea level|heat"
+      },
+      {
+        "code": "G10-F-10",
+        "lesson": "g10:f-10",
+        "unit": "G10-F-10:focus-1",
+        "pattern": "shock|wet"
+      },
+      {
+        "code": "G10-M-1",
+        "lesson": "g10:m-1",
+        "unit": "G10-M-1:focus-4",
+        "pattern": "temperature|heat"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Are tardigrades immortal?\n\nNope! Tardigrades are super tough, but when active and wet, heat or hunger can still kill them like any other animal.",
+      "tl": "Imortal ba ang tardigrade?\n\nHindi pala! Matibay man ang tardigrade, kapag aktibo at basa ito, kayang patayin ito ng init o gutom tulad ng ibang hayop.",
+      "bis": "Imortal ba ang tardigrade?\n\nDili diay! Bisan lig-on kaayo ang tardigrade, kon aktibo ug basa kini, ang kainit o kagutom makapatay niini sama sa ubang mananap."
+    },
+    "exportedAt": "2026-09-10T13:35:53.768825+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tardigrade-survive-space-g6",
+    "id": "ffct-07555",
+    "textHash": "5266d328a73409abd0d1456db66ff4606ed23a5fecb7412b0bfef150261ef29d",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:39:41Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G5-L-9",
+        "verdict": "related_only",
+        "card_evidence": "The tardigrade is the first animal proven to survive the airless vacuum of outer space",
+        "competency_evidence": "use information from secondary sources to describe examples of how some animals have changed to better suit their environment, such as mimicry or camouflage",
+        "reason": "The card describes a survival feat in extreme conditions, not how animals have changed to better suit their environment (e.g., mimicry or camouflage). No adaptation or evolutionary change is taught."
+      },
+      {
+        "code": "G3-L-3",
+        "verdict": "related_only",
+        "card_evidence": "The tardigrade is the first animal proven to survive the airless vacuum of outer space",
+        "competency_evidence": "describe the characteristics of living things: they grow, respond, and reproduce",
+        "reason": "The card does not describe the characteristics of living things (grow, respond, reproduce). Surviving vacuum is not one of these characteristics; it is an extreme tolerance, not a general living-thing trait."
+      },
+      {
+        "code": "G5-L-4",
+        "verdict": "related_only",
+        "card_evidence": "The tardigrade is the first animal proven to survive the airless vacuum of outer space",
+        "competency_evidence": "use a table to show how living things can be classified into groups based on similar characteristics (plants including flowering and non-flowering; animals including mammals, reptiles, insects, birds, fish, amphibians; microorganisms including fungi and bacteria)",
+        "reason": "The card does not use a table or classify living things into the named groups (mammals, reptiles, insects, etc.). It only mentions one animal without classification."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:environment",
+        "pattern": "water|soil|air|sun"
+      },
+      {
+        "code": "G3-F-4",
+        "lesson": "g3:sound",
+        "unit": "G3-F-4:transfer",
+        "pattern": "travel|air|reach|transfer"
+      },
+      {
+        "code": "G3-F-6",
+        "lesson": "g3:light",
+        "unit": "G3-F-6:guided-exploration",
+        "pattern": "investigat|experiment|try|test|flashlight"
+      },
+      {
+        "code": "G3-E-1",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-1:examples",
+        "pattern": "rock|soil|water|air|metal|cloud|rain|sun"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G4-F-1",
+        "lesson": "g4:rigid-soft",
+        "unit": "G4-F-1:guided",
+        "pattern": "teacher|activity|test|try|experiment"
+      },
+      {
+        "code": "G4-F-5",
+        "lesson": "g4:change-motion",
+        "unit": "G4-F-5:guided",
+        "pattern": "teacher|try|activity|test|experiment"
+      },
+      {
+        "code": "G4-F-7",
+        "lesson": "g4:magnets",
+        "unit": "G4-F-7:investigation",
+        "pattern": "test|teacher|experiment|investigat"
+      },
+      {
+        "code": "G4-E-1",
+        "lesson": "g4:soil",
+        "unit": "G4-E-1:investigation",
+        "pattern": "test|experiment|teacher|pour"
+      },
+      {
+        "code": "G4-E-2",
+        "lesson": "g4:water-for-life",
+        "unit": "G4-E-2:animals",
+        "pattern": "animal|human|body"
+      },
+      {
+        "code": "G4-E-3",
+        "lesson": "g4:soil-and-growth",
+        "unit": "G4-E-3:investigation",
+        "pattern": "test|experiment|investigat|teacher"
+      },
+      {
+        "code": "G5-F-1",
+        "lesson": "g5:contact-forces",
+        "unit": "G5-F-1:investigation",
+        "pattern": "investigat|experiment"
+      },
+      {
+        "code": "G5-E-1",
+        "lesson": "g5:landforms",
+        "unit": "G5-E-1:environmental-effects",
+        "pattern": "plant|animal|habitat|soil|flood|rain"
+      },
+      {
+        "code": "G5-E-5",
+        "lesson": "g5:erosion",
+        "unit": "G5-E-5:demonstration",
+        "pattern": "tray|pour|model|demonstrat|experiment"
+      },
+      {
+        "code": "G5-E-6",
+        "lesson": "g5:water-cycle",
+        "unit": "G5-E-6:environment",
+        "pattern": "plant|animal|fresh|rain|environment"
+      },
+      {
+        "code": "G5-E-7",
+        "lesson": "g5:water-cycle",
+        "unit": "G5-E-7:model",
+        "pattern": "bag|model|experiment"
+      },
+      {
+        "code": "G7-M-3",
+        "lesson": "g7:particle-motion",
+        "unit": "G7-M-3:spaces",
+        "pattern": "space|gap"
+      },
+      {
+        "code": "G7-L-10",
+        "lesson": "g7:energy-transfer",
+        "unit": "G7-L-10:less-energy",
+        "pattern": "less|lost|loss|heat|10 percent|10%"
+      },
+      {
+        "code": "G8-M-10",
+        "lesson": "g8:group-valence",
+        "unit": "G8-M-10:shared-valence",
+        "pattern": "valence|outer"
+      },
+      {
+        "code": "G9-F-10",
+        "lesson": "g9:f-10",
+        "unit": "G9-F-10:focus-3",
+        "pattern": "space|vacuum"
+      },
+      {
+        "code": "G9-M-3",
+        "lesson": "g9:m-3",
+        "unit": "G9-M-3:focus-1",
+        "pattern": "outer|valence"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "What animal was the first to survive outer space?\n\nThe tardigrade is the first animal proven to survive the airless vacuum of outer space — in a 2007 experiment!",
+      "tl": "Anong hayop ang unang nakaligtas sa outer space?\n\nAng tardigrade ang unang hayop na napatunayang nakaligtas sa walang-hanging kalawakan noong 2007!",
+      "bis": "Unsang hayop ang una nga nakalahutay sa outer space?\n\nAng tardigrade mao ang unang hayop nga napamatud-an nga nakalahutay sa walay-hangin nga kawanangan niadtong 2007!"
+    },
+    "exportedAt": "2026-09-10T13:35:53.809752+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tarictic-hornbill-casque-hollow-g5",
+    "id": "ffct-11859",
+    "textHash": "2efb036aaf8514d0bdb1e585082c81c1b3374d2330fda5467590096296d0358f",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:26:47Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-L-4",
+        "verdict": "related_only",
+        "card_evidence": "The tarictic hornbill's casque is hollow inside — it's not a weapon at all, but helps make its calls sound louder.",
+        "competency_evidence": "observe and describe the outer body parts of animals, such as head, legs or wings, and identify their role to move and to gather food",
+        "reason": "The card describes an outer body part (casque) and its function, but the competency specifically requires identifying roles related to movement and gathering food. The casque's role in amplifying calls does not support that skill."
+      },
+      {
+        "code": "G4-F-4",
+        "verdict": "wrong",
+        "card_evidence": "The tarictic hornbill's casque is hollow inside — it's not a weapon at all, but helps make its calls sound louder.",
+        "competency_evidence": "construct and label simple graphs of different speeds including stationary and uniform speeds, both fast and slow",
+        "reason": "The card is about an animal body part and has no connection to constructing or labeling graphs of speeds. It is unrelated to the competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-F-7",
+        "lesson": "g3:light-and-sound-safety",
+        "unit": "G3-F-7:loud-sound",
+        "pattern": "loud|noise|ear"
+      },
+      {
+        "code": "G3-F-8",
+        "lesson": "g3:sending-messages",
+        "unit": "G3-F-8:sound",
+        "pattern": "sound|clap|bell|whistle"
+      },
+      {
+        "code": "G3-E-2",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-2:human-made-objects",
+        "pattern": "made|make|build|clay|wood|metal"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G4-F-8",
+        "lesson": "g4:effects-at-distance",
+        "unit": "G4-F-8:sound",
+        "pattern": "sound|noise"
+      },
+      {
+        "code": "G4-F-9",
+        "lesson": "g4:energy",
+        "unit": "G4-F-9:forms",
+        "pattern": "light|sound|heat"
+      },
+      {
+        "code": "G4-F-10",
+        "lesson": "g4:energy-uses",
+        "unit": "G4-F-10:sound",
+        "pattern": "sound"
+      },
+      {
+        "code": "G6-F-9",
+        "lesson": "g6:wave-examples",
+        "unit": "G6-F-9:longitudinal",
+        "pattern": "sound|longitudinal"
+      },
+      {
+        "code": "G7-F-9",
+        "lesson": "g7:heat-transfer-uses",
+        "unit": "G7-F-9:advantage",
+        "pattern": "useful|help|benefit|cook|warm"
+      },
+      {
+        "code": "G10-F-12",
+        "lesson": "g10:f-12",
+        "unit": "G10-F-12:focus-3",
+        "pattern": "benefit|emission|bill|cost"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Is a hornbill's casque a weapon?\n\nNo! The tarictic hornbill's casque is hollow inside — it's not a weapon at all, but helps make its calls sound louder.",
+      "tl": "Sandata ba ang casque ng hornbill?\n\nHindi! Guwang sa loob ang casque ng tarictic hornbill — hindi ito sandata kundi tumutulong para lumakas ang tunog ng tawag nito.",
+      "bis": "Armas ba ang casque sa hornbill?\n\nDili! Guwang sa sulod ang casque sa tarictic hornbill — dili kini armas kondili nagtabang aron mokusog ang tunog sa iyang tawag."
+    },
+    "exportedAt": "2026-09-10T13:35:53.850251+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tarsier-calls-high-pitch-g5",
+    "id": "ffct-05288",
+    "textHash": "caed8af0d0bf425bdb21e52452099e196d99007d9de40c6edcc8d7ed98175a82",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:05:06Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-F-4",
+        "verdict": "related_only",
+        "card_evidence": "The tarsier can make very high-pitched calls",
+        "competency_evidence": "explore and describe how sound is made and transferred in everyday situations, such as the ringing of a bell or the hearing of noises",
+        "reason": "The card mentions a sound (a high-pitched call) but does not explore or describe how sound is made or transferred, nor does it involve everyday situations like a bell or hearing noises. It is only a fact about an animal's call."
+      },
+      {
+        "code": "G6-F-6",
+        "verdict": "related_only",
+        "card_evidence": "very high-pitched calls",
+        "competency_evidence": "research using secondary sources to identify how the properties of waves are described using scientific terms such as amplitude, frequency, wavelength, and velocity",
+        "reason": "The card refers to a high-pitched (high-frequency) sound, which is a wave property, but it does not use scientific terms such as amplitude, frequency, wavelength, or velocity, nor does it involve research from secondary sources. It only states that the call is too high for humans to hear."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-F-7",
+        "lesson": "g3:light-and-sound-safety",
+        "unit": "G3-F-7:loud-sound",
+        "pattern": "loud|noise|ear"
+      },
+      {
+        "code": "G3-E-2",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-2:human-made-objects",
+        "pattern": "made|make|build|clay|wood|metal"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G6-L-4",
+        "lesson": "g6:animal-groups",
+        "unit": "G6-L-4:local",
+        "pattern": "Philippin|carabao|tilapia|tarsier|crab|butterfl"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "The tarsier can make very high-pitched calls — so high that people cannot even hear them.",
+      "tl": "Nakakagawa ang tarsier ng napakatinis na tunog — sobrang taas na hindi na ito naririnig ng tao.",
+      "bis": "Ang tarsier makahimo og hilabihan ka sigit nga tingog — taas kaayo nga dili na kini madungog sa tawo."
+    },
+    "exportedAt": "2026-09-10T13:35:53.887323+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tarsier-head-turn-g4",
+    "id": "ffct-03213",
+    "textHash": "e2f06eb467ae3930e3c8424318e353699022bdc34e612694fe4838ba00164baa",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:26:31Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-L-4",
+        "verdict": "related_only",
+        "card_evidence": "A tarsier can turn its head almost 180 degrees to each side",
+        "competency_evidence": "observe and describe the outer body parts of animals, such as head, legs or wings, and identify their role to move and to gather food",
+        "reason": "The card mentions the head, an outer body part, but only gives a trivia fact about its rotation range. It does not describe the head's role in movement or gathering food, nor does it guide observation of body parts as the competency requires."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G4-F-5",
+        "lesson": "g4:change-motion",
+        "unit": "G4-F-5:turn",
+        "pattern": "direction|turn"
+      },
+      {
+        "code": "G6-L-4",
+        "lesson": "g6:animal-groups",
+        "unit": "G6-L-4:local",
+        "pattern": "Philippin|carabao|tilapia|tarsier|crab|butterfl"
+      },
+      {
+        "code": "G7-F-4",
+        "lesson": "g7:net-force",
+        "unit": "G7-F-4:direction",
+        "pattern": "direction|turn|curv"
+      },
+      {
+        "code": "G9-F-2",
+        "lesson": "g9:f-2",
+        "unit": "G9-F-2:focus-2",
+        "pattern": "direction|turn"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "How far can a tarsier turn its head?\n\nA tarsier can turn its head almost 180 degrees to each side -- just like an owl!",
+      "tl": "Gaano kalayo umiikot ang ulo ng tarsier?\n\nKayang iikot ng tarsier ang ulo nito ng halos 180 degrees sa magkabilang gilid -- tulad ng kuwago!",
+      "bis": "Unsa kalayo ang tuyok sa ulo sa tarsier?\n\nMahimong tuyokon sa tarsier ang iyang ulo og halos 180 ka degrees sa matag kilid -- sama sa ngiwngiw!"
+    },
+    "exportedAt": "2026-09-10T13:35:53.925716+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tarsier-insect-listen-with-ears-g5",
+    "id": "ffct-12153",
+    "textHash": "a08465ad8ddbe2bfbdbd4cd5ad83cbc93d40b8959ee7003ed2fbb4e764f472fd",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:26:53Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-L-4",
+        "verdict": "related_only",
+        "card_evidence": "It can hear an insect crawling or flying, so it knows exactly where to grab it.",
+        "competency_evidence": "observe and describe the outer body parts of animals, such as head, legs or wings, and identify their role to move and to gather food",
+        "reason": "The card mentions hearing as a sense used to locate prey, but it does not describe an outer body part (like ears) or its role in movement or gathering food. The competency focuses on outer body parts such as head, legs, or wings; hearing is not presented as an outer body part here, and the card does not support observing or describing such parts."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-M-7",
+        "lesson": "g3:safe-materials",
+        "unit": "G3-M-7:handling",
+        "pattern": "sharp|broken glass|glove|handle|handling"
+      },
+      {
+        "code": "G3-F-7",
+        "lesson": "g3:light-and-sound-safety",
+        "unit": "G3-F-7:loud-sound",
+        "pattern": "loud|noise|ear"
+      },
+      {
+        "code": "G3-F-7",
+        "lesson": "g3:light-and-sound-safety",
+        "unit": "G3-F-7:bright-light",
+        "pattern": "bright|sun|eye"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:eye-protection",
+        "pattern": "eye|look|stare"
+      },
+      {
+        "code": "G4-L-3",
+        "lesson": "g4:habitat-groups",
+        "unit": "G4-L-3:air",
+        "pattern": "aerial|fly"
+      },
+      {
+        "code": "G5-L-4",
+        "lesson": "g5:classification",
+        "unit": "G5-L-4:insects",
+        "pattern": "insect"
+      },
+      {
+        "code": "G6-L-4",
+        "lesson": "g6:animal-groups",
+        "unit": "G6-L-4:local",
+        "pattern": "Philippin|carabao|tilapia|tarsier|crab|butterfl"
+      },
+      {
+        "code": "G9-M-7",
+        "lesson": "g9:m-7",
+        "unit": "G9-M-7:focus-3",
+        "pattern": "shar"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Besides its big eyes, the tarsier has sharp hearing too! It can hear an insect crawling or flying, so it knows exactly where to grab it.",
+      "tl": "Bukod sa malaking mata, matalas din ang pandinig ng tarsier! Naririnig nito ang ingay ng insektong gumagapang o lumilipad, kaya alam niya kung saan ito susunggaban.",
+      "bis": "Gawas sa dako nga mata, hait usab ang pandungog sa tarsier! Madunggan niini ang saba sa insekto nga nagakamang o naglupad, maong nahibalo kini asa kini dakpon."
+    },
+    "exportedAt": "2026-09-10T13:35:53.965136+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tarsier-night-vision-g4",
+    "id": "ffct-08832",
+    "textHash": "e6c7172342ec698db534b326491b000e04ad0f8e0b901974d1854cde6c7f49c3",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:26:34Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-L-4",
+        "verdict": "related_only",
+        "card_evidence": "its huge eyes help it see in the dark",
+        "competency_evidence": "observe and describe the outer body parts of animals, such as head, legs or wings, and identify their role to move and to gather food",
+        "reason": "The card mentions an outer body part (eyes) but its role is seeing, not moving or gathering food as required by the competency."
+      },
+      {
+        "code": "G5-L-9",
+        "verdict": "related_only",
+        "card_evidence": "The tarsier is active at night, and its huge eyes help it see in the dark.",
+        "competency_evidence": "use information from secondary sources to describe examples of how some animals have changed to better suit their environment, such as mimicry or camouflage",
+        "reason": "The card describes a nocturnal adaptation (large eyes for night vision) but does not explain how the animal changed to better suit its environment, nor does it use secondary sources or address mimicry/camouflage."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-F-5",
+        "lesson": "g3:light",
+        "unit": "G3-F-5:uses",
+        "pattern": "\\bsee\\b|\\bread\\b|light.*room"
+      },
+      {
+        "code": "G3-F-7",
+        "lesson": "g3:light-and-sound-safety",
+        "unit": "G3-F-7:bright-light",
+        "pattern": "bright|sun|eye"
+      },
+      {
+        "code": "G3-E-8",
+        "lesson": "g3:sky-and-our-day",
+        "unit": "G3-E-8:nighttime",
+        "pattern": "night|moon|star"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:eye-protection",
+        "pattern": "eye|look|stare"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G6-L-4",
+        "lesson": "g6:animal-groups",
+        "unit": "G6-L-4:local",
+        "pattern": "Philippin|carabao|tilapia|tarsier|crab|butterfl"
+      },
+      {
+        "code": "G6-E-2",
+        "lesson": "g6:local-volcano-risk",
+        "unit": "G6-E-2:active-inactive",
+        "pattern": "active|inactive"
+      },
+      {
+        "code": "G7-F-9",
+        "lesson": "g7:heat-transfer-uses",
+        "unit": "G7-F-9:advantage",
+        "pattern": "useful|help|benefit|cook|warm"
+      },
+      {
+        "code": "G8-E-3",
+        "lesson": "g8:volcano-types",
+        "unit": "G8-E-3:activity",
+        "pattern": "active|dormant|extinct|inactive"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "The tarsier is active at night, and its huge eyes help it see in the dark.",
+      "tl": "Aktibo ang tarsier kapag gabi, at ang malalaki nitong mata ay tumutulong para makakita sa dilim.",
+      "bis": "Ang tarsier aktibo kon gabii, ug ang dagko niyang mata makatabang aron makakita sa ngitngit."
+    },
+    "exportedAt": "2026-09-10T13:35:54.002545+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tarsier-scientific-name-ph-g6",
+    "id": "ffct-11438",
+    "textHash": "e86d9dfcbde1d32696cb7254c57e51dc9dd160e649f693b5e5f72c4270ee1e54",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:30:01Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G8-L-6",
+        "verdict": "related_only",
+        "card_evidence": "The Philippine tarsier's scientific name is Carlito syrichta",
+        "competency_evidence": "describe the importance of the six-kingdom system and the three-domain system of classification of living things",
+        "reason": "The card only gives a species' scientific name. It does not describe the six-kingdom or three-domain classification systems or their importance, so it does not directly support this competency."
+      },
+      {
+        "code": "G5-L-4",
+        "verdict": "related_only",
+        "card_evidence": "The Philippine tarsier's scientific name is Carlito syrichta",
+        "competency_evidence": "use a table to show how living things can be classified into groups based on similar characteristics (plants including flowering and non-flowering; animals including mammals, reptiles, insects, birds, fish, amphibians; microorganisms including fungi and bacteria)",
+        "reason": "The card mentions a species name but provides no table, no grouping by similar characteristics, and no classification into the named groups required by the competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G4-L-7",
+        "lesson": "g4:food-chains",
+        "unit": "G4-L-7:local-chain",
+        "pattern": "rice|grass|frog|snake|Philippin"
+      },
+      {
+        "code": "G4-E-3",
+        "lesson": "g4:soil-and-growth",
+        "unit": "G4-E-3:fair-comparison",
+        "pattern": "same|equal|control|fair"
+      },
+      {
+        "code": "G5-F-2",
+        "lesson": "g5:friction",
+        "unit": "G5-F-2:fair-comparison",
+        "pattern": "same|fair|variable|control"
+      },
+      {
+        "code": "G6-L-4",
+        "lesson": "g6:animal-groups",
+        "unit": "G6-L-4:local",
+        "pattern": "Philippin|carabao|tilapia|tarsier|crab|butterfl"
+      },
+      {
+        "code": "G6-E-3",
+        "lesson": "g6:eruption-history",
+        "unit": "G6-E-3:philippine-history",
+        "pattern": "Philippin|Mayon|Taal|Pinatubo|Kanlaon"
+      },
+      {
+        "code": "G7-M-10",
+        "lesson": "g7:solubility",
+        "unit": "G7-M-10:test",
+        "pattern": "test|investigat|same|control|measur"
+      },
+      {
+        "code": "G7-E-2",
+        "lesson": "g7:fault-models",
+        "unit": "G7-E-2:philippine-context",
+        "pattern": "Philippin|Valley Fault|subduct|converg"
+      },
+      {
+        "code": "G8-L-11",
+        "lesson": "g8:photosynthesis-test",
+        "unit": "G8-L-11:fair-test",
+        "pattern": "control|same|fair|variable"
+      },
+      {
+        "code": "G8-E-7",
+        "lesson": "g8:typhoon-formation",
+        "unit": "G8-E-7:philippines",
+        "pattern": "Philippin|western.*Pacific"
+      },
+      {
+        "code": "G8-F-2",
+        "lesson": "g8:local-motion",
+        "unit": "G8-F-2:everyday",
+        "pattern": "school|car|bike|ball|bus|jeep"
+      },
+      {
+        "code": "G8-F-10",
+        "lesson": "g8:hydropower",
+        "unit": "G8-F-10:philippine-source",
+        "pattern": "Philippin|Agus|Magat|Ambuklao|Angat|Binga"
+      },
+      {
+        "code": "G9-F-2",
+        "lesson": "g9:f-2",
+        "unit": "G9-F-2:focus-3",
+        "pattern": "practical|ball|car|bike|bus"
+      },
+      {
+        "code": "G9-F-3",
+        "lesson": "g9:f-3",
+        "unit": "G9-F-3:focus-3",
+        "pattern": "investigat|same|control|measure"
+      },
+      {
+        "code": "G9-E-2",
+        "lesson": "g9:e-2",
+        "unit": "G9-E-2:focus-1",
+        "pattern": "Philippin|Manila"
+      },
+      {
+        "code": "G9-L-8",
+        "lesson": "g9:l-8",
+        "unit": "G9-L-8:focus-2",
+        "pattern": "community|local|Philippin"
+      },
+      {
+        "code": "G10-E-3",
+        "lesson": "g10:e-3",
+        "unit": "G10-E-3:focus-1",
+        "pattern": "Philippin|Manila"
+      },
+      {
+        "code": "G10-F-1",
+        "lesson": "g10:f-1",
+        "unit": "G10-F-1:focus-5",
+        "pattern": "investigat|same|control|measure"
+      },
+      {
+        "code": "G10-F-5",
+        "lesson": "g10:f-5",
+        "unit": "G10-F-5:focus-1",
+        "pattern": "investigat|measure|same|control"
+      },
+      {
+        "code": "G10-M-2",
+        "lesson": "g10:m-2",
+        "unit": "G10-M-2:focus-1",
+        "pattern": "indicator|litmus|pH"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "The Philippine tarsier's scientific name is Carlito syrichta — so whether it's called maumag or mamag, it's all the same species.",
+      "tl": "Carlito syrichta ang pangalang siyentipiko ng Philippine tarsier — kaya kahit tawaging maumag o mamag sa iba't ibang lugar, iisa lang ang species.",
+      "bis": "Carlito syrichta ang siyentipikong ngalan sa tarsier sa Pilipinas — busa bisan tawgon og maumag o mamag sa lainlaing dapit, usa ra ka species kini."
+    },
+    "exportedAt": "2026-09-10T13:35:54.042769+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "taste-helps-eat-safe-g4",
+    "id": "ffct-07731",
+    "textHash": "356cca63b18c8dfb8119d9c2195ef14f6c0d25efa0d4bc8edc494a9f971f645a",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:17:37Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-L-3",
+        "verdict": "related_only",
+        "card_evidence": "Your sense of taste can warn you if food is spoiled or harmful",
+        "competency_evidence": "describe the characteristics of living things: they grow, respond, and reproduce",
+        "reason": "The card describes taste as a warning about food, which is a sensory response, but it does not teach the competency's core content: that living things grow, respond, and reproduce. It does not explicitly connect taste to the general characteristic of responding, nor does it mention growth or reproduction."
+      },
+      {
+        "code": "G4-L-1",
+        "verdict": "related_only",
+        "card_evidence": "Your sense of taste can warn you if food is spoiled or harmful",
+        "competency_evidence": "describe in simple terms how the following human body systems work: muscular, skeletal, digestive, circulatory, and respiratory",
+        "reason": "The card mentions a sense (taste) but does not describe any of the listed human body systems (muscular, skeletal, digestive, circulatory, respiratory) or how they work. Taste is not one of the systems in the competency, and the card gives no information about organ function or system operation."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-6",
+        "lesson": "g3:basic-needs",
+        "unit": "G3-L-6:food",
+        "pattern": "food"
+      },
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:food-and-shelter",
+        "pattern": "food|eat|shelter"
+      },
+      {
+        "code": "G4-E-9",
+        "lesson": "g4:sun-and-life",
+        "unit": "G4-E-9:importance",
+        "pattern": "plant|food|warm|water"
+      },
+      {
+        "code": "G5-F-3",
+        "lesson": "g5:friction",
+        "unit": "G5-F-3:reducing-friction",
+        "pattern": "reduc|oil|lubricat"
+      },
+      {
+        "code": "G5-E-10",
+        "lesson": "g5:weather-disturbances",
+        "unit": "G5-E-10:before",
+        "pattern": "before"
+      },
+      {
+        "code": "G6-M-4",
+        "lesson": "g6:useful-mixtures",
+        "unit": "G6-M-4:uses",
+        "pattern": "\\buse|food|drink|medicin|paint"
+      },
+      {
+        "code": "G6-E-5",
+        "lesson": "g6:volcano-alerts",
+        "unit": "G6-E-5:before",
+        "pattern": "plan|prepare|before|evacuat"
+      },
+      {
+        "code": "G7-F-9",
+        "lesson": "g7:heat-transfer-uses",
+        "unit": "G7-F-9:disadvantage",
+        "pattern": "burn|overheat|unwanted|harm|danger"
+      },
+      {
+        "code": "G9-L-4",
+        "lesson": "g9:l-4",
+        "unit": "G9-L-4:focus-2",
+        "pattern": "harmful"
+      },
+      {
+        "code": "G10-M-8",
+        "lesson": "g10:m-8",
+        "unit": "G10-M-8:focus-1",
+        "pattern": "food|preserv"
+      },
+      {
+        "code": "G10-L-10",
+        "lesson": "g10:l-10",
+        "unit": "G10-L-10:focus-1",
+        "pattern": "food"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Your sense of taste can warn you if food is spoiled or harmful — even before you swallow it.",
+      "tl": "Nakakatulong ang panlasa mo para malaman kung sira o mapanganib ang pagkain — kahit hindi mo pa ito nalulunok.",
+      "bis": "Ang imong panlasa makatabang nimo mahibal-an kung dunot o makadaot ang pagkaon — bisan wala pa nimo kini natulon."
+    },
+    "exportedAt": "2026-09-10T13:35:54.079920+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tb-attacks-lungs-g6",
+    "id": "ffct-13046",
+    "textHash": "f3a52f66a525163059012d0519654679d55041c211193b1da368f69bc174b585",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:27:22Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G5-L-2",
+        "verdict": "related_only",
+        "card_evidence": "Because TB usually attacks the lungs first",
+        "competency_evidence": "identify from pictures and diagrams the parts of the respiratory system as the nose, windpipe, and lungs, and describe how they work",
+        "reason": "The card only states that TB attacks the lungs first. It does not identify the parts of the respiratory system (nose, windpipe, lungs) or describe how they work, which is the focus of G5-L-2."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G4-M-7",
+        "lesson": "g4:environment-survey",
+        "unit": "G4-M-7:classify",
+        "pattern": "group|classif|sort"
+      },
+      {
+        "code": "G4-F-9",
+        "lesson": "g4:energy",
+        "unit": "G4-F-9:change",
+        "pattern": "change|cause"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:benefits",
+        "pattern": "use|benefit|recover|separat"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G8-L-6",
+        "lesson": "g8:classification",
+        "unit": "G8-L-6:purpose",
+        "pattern": "classif|relationship|group"
+      },
+      {
+        "code": "G8-E-9",
+        "lesson": "g8:land-sea-storms",
+        "unit": "G8-E-9:water",
+        "pattern": "warm.*water|ocean|sea"
+      },
+      {
+        "code": "G9-L-5",
+        "lesson": "g9:l-5",
+        "unit": "G9-L-5:focus-2",
+        "pattern": "stable|stability|resilien|stress|disease"
+      },
+      {
+        "code": "G9-M-10",
+        "lesson": "g9:m-10",
+        "unit": "G9-M-10:focus-1",
+        "pattern": "sea|delocalized|mobile electron"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Why is TB called a lung disease?\n\nBecause TB usually attacks the lungs first — that's exactly why doctors classify it as a disease of the lungs.",
+      "tl": "Bakit tinatawag na sakit sa baga ang TB?\n\nDahil kadalasan ang baga ang unang inaatake ng TB — kaya ito tinuturing na sakit sa baga.",
+      "bis": "Nganong gitawag nga sakit sa baga ang TB?\n\nKay kasagaran ang baga ang unang atakihon sa TB — mao nga giisip kini nga sakit sa baga."
+    },
+    "exportedAt": "2026-09-10T13:35:54.120446+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tb-curable-vs-common-cold-g6",
+    "id": "ffct-07050",
+    "textHash": "4179a14d76ae3a96bcc9fab37e3338960661a571481d302fd0008c00927f8c7f",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:43:12Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G6-L-8",
+        "verdict": "related_only",
+        "card_evidence": "TB does not simply disappear — it needs the right antibiotic medicine to be cured.",
+        "competency_evidence": "explain how interaction between living things and interactions between living and non-living things may bring good or harm to the living things involved",
+        "reason": "The card mentions that TB requires antibiotic treatment, implying a disease-causing interaction, but it does not explain how interactions between living things (e.g., pathogen and host) or between living and non-living things bring good or harm. It focuses on treatment rather than the interaction itself, so it does not directly support the competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-F-3",
+        "lesson": "g3:position",
+        "unit": "G3-F-3:left-right",
+        "pattern": "left|right"
+      },
+      {
+        "code": "G3-F-7",
+        "lesson": "g3:light-and-sound-safety",
+        "unit": "G3-F-7:loud-sound",
+        "pattern": "loud|noise|ear"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G5-L-6",
+        "lesson": "g5:life-cycles",
+        "unit": "G5-L-6:comparison",
+        "pattern": "unlike|compare|every life cycle"
+      },
+      {
+        "code": "G6-M-4",
+        "lesson": "g6:useful-mixtures",
+        "unit": "G6-M-4:uses",
+        "pattern": "\\buse|food|drink|medicin|paint"
+      },
+      {
+        "code": "G6-L-7",
+        "lesson": "g6:ecosystem-factors",
+        "unit": "G6-L-7:biotic",
+        "pattern": "biotic|living"
+      },
+      {
+        "code": "G6-F-10",
+        "lesson": "g6:moving-sound",
+        "unit": "G6-F-10:receding",
+        "pattern": "away|reced"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Unlike a cold that goes away on its own, TB does not simply disappear — it needs the right antibiotic medicine to be cured.",
+      "tl": "Hindi tulad ng sipon na gumagaling mag-isa, ang TB ay hindi basta nawawala — kailangan ng tamang antibiotic gamot para magamot ito.",
+      "bis": "Dili sama sa sip-on nga maayo ra sa kaugalingon, ang TB dili basta mawala — nagkinahanglan kini og husto nga antibiotic nga tambal aron maayo."
+    },
+    "exportedAt": "2026-09-10T13:35:54.159006+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "tb-latent-vs-active-g8",
+    "id": "ffct-08724",
+    "textHash": "82c4647521346fc2a0432b19b3ea53fca0aeb0237fee2d0090cc45c3f0a1881a",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:10:50Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G5-L-4",
+        "verdict": "related_only",
+        "card_evidence": "Some people carry sleeping (latent) TB",
+        "competency_evidence": "use a table to show how living things can be classified into groups based on similar characteristics (plants including flowering and non-flowering; animals including mammals, reptiles, insects, birds, fish, amphibians; microorganisms including fungi and bacteria)",
+        "reason": "The card discusses latent vs active TB, a disease state caused by bacteria, but does not classify living things into groups or use a table. It does not teach classification of microorganisms, plants, or animals."
+      },
+      {
+        "code": "G7-L-3",
+        "verdict": "related_only",
+        "card_evidence": "Some people carry sleeping (latent) TB",
+        "competency_evidence": "recognize that some organisms consist of a single cell (unicellular) like in bacteria and some consist of many cells (multicellular) like in a human",
+        "reason": "The card mentions TB (a bacterial disease) but does not address unicellular vs multicellular organisms. It provides no information about cell structure or the distinction between single-celled and multi-celled organisms."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-F-1",
+        "lesson": "g3:moving-things",
+        "unit": "G3-F-1:carry",
+        "pattern": "carry.*(bag|box|book)|(person|people|you).*carry"
+      },
+      {
+        "code": "G3-E-2",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-2:human-made-objects",
+        "pattern": "made|make|build|clay|wood|metal"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G5-E-5",
+        "lesson": "g5:erosion",
+        "unit": "G5-E-5:transport",
+        "pattern": "carry|carries|transport|move"
+      },
+      {
+        "code": "G6-E-2",
+        "lesson": "g6:local-volcano-risk",
+        "unit": "G6-E-2:active-inactive",
+        "pattern": "active|inactive"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G7-L-1",
+        "lesson": "g7:microscope",
+        "unit": "G7-L-1:handling",
+        "pattern": "carry|hand|lens paper"
+      },
+      {
+        "code": "G8-E-3",
+        "lesson": "g8:volcano-types",
+        "unit": "G8-E-3:activity",
+        "pattern": "active|dormant|extinct|inactive"
+      },
+      {
+        "code": "G8-F-2",
+        "lesson": "g8:local-motion",
+        "unit": "G8-F-2:everyday",
+        "pattern": "school|car|bike|ball|bus|jeep"
+      },
+      {
+        "code": "G9-F-2",
+        "lesson": "g9:f-2",
+        "unit": "G9-F-2:focus-3",
+        "pattern": "practical|ball|car|bike|bus"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Can TB \"sleep\" inside a person?\n\nYes! Some people carry sleeping (latent) TB — it doesn't make them sick or contagious until it wakes up and becomes active.",
+      "tl": "Puwede bang \"matulog\" ang TB?\n\nOo! May mga taong may natutulog na TB — hindi ito nakakasakit o nakakahawa hanggang gumising ito at maging aktibo.",
+      "bis": "Mahimo bang \"matulog\" ang TB?\n\nOo! Adunay tawo nga nagdala og natulog nga TB — dili kini makasakit o makatakod hangtod nga momata ug mahimong aktibo."
+    },
+    "exportedAt": "2026-09-10T13:35:54.200579+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "technetium-medical-imaging-g8",
+    "id": "dcard-08013",
+    "textHash": "39d8a2754ef9313318a140d95bf6b66b42a2426269a6cbac7c52dfa33b4bf938",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:26:00Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G8-M-4",
+        "verdict": "related_only",
+        "card_evidence": "Technetium is a human-made element that is not naturally abundant on Earth",
+        "competency_evidence": "describe the properties of pure substances as: a. having fixed chemical composition, examples of which are elements and compounds, and b. that all the atoms of an element have a unique number of protons",
+        "reason": "The card only mentions that technetium is an element. It does not describe properties of pure substances, fixed chemical composition, or unique number of protons, which are the core of G8-M-4."
+      },
+      {
+        "code": "G8-M-6",
+        "verdict": "related_only",
+        "card_evidence": "Technetium is a human-made element that is not naturally abundant on Earth",
+        "competency_evidence": "identify the names and symbols of the first 20 or several common elements of the periodic table",
+        "reason": "The card mentions an element name but does not identify its symbol or place it among the first 20 or common elements of the periodic table, so it does not directly support G8-M-6."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-4",
+        "lesson": "g3:animal-parts",
+        "unit": "G3-L-4:other-movement",
+        "pattern": "fin|tail|flipper"
+      },
+      {
+        "code": "G3-F-7",
+        "lesson": "g3:light-and-sound-safety",
+        "unit": "G3-F-7:loud-sound",
+        "pattern": "loud|noise|ear"
+      },
+      {
+        "code": "G3-E-2",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-2:human-made-objects",
+        "pattern": "made|make|build|clay|wood|metal"
+      },
+      {
+        "code": "G3-E-9",
+        "lesson": "g3:sun-safety",
+        "unit": "G3-E-9:shade-and-clothing",
+        "pattern": "shade|hat|cloth"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G4-L-5",
+        "lesson": "g4:life-cycles",
+        "unit": "G4-L-5:human",
+        "pattern": "\\bhuman\\b|baby teeth|adult teeth|mother.s uterus"
+      },
+      {
+        "code": "G4-E-2",
+        "lesson": "g4:water-for-life",
+        "unit": "G4-E-2:animals",
+        "pattern": "animal|human|body"
+      },
+      {
+        "code": "G6-M-4",
+        "lesson": "g6:useful-mixtures",
+        "unit": "G6-M-4:uses",
+        "pattern": "\\buse|food|drink|medicin|paint"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:benefits",
+        "pattern": "use|benefit|recover|separat"
+      },
+      {
+        "code": "G6-E-1",
+        "lesson": "g6:volcano-formation",
+        "unit": "G6-E-1:formation",
+        "pattern": "form|plate|crust|build"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G8-E-9",
+        "lesson": "g8:land-sea-storms",
+        "unit": "G8-E-9:water",
+        "pattern": "warm.*water|ocean|sea"
+      },
+      {
+        "code": "G9-L-5",
+        "lesson": "g9:l-5",
+        "unit": "G9-L-5:focus-2",
+        "pattern": "stable|stability|resilien|stress|disease"
+      },
+      {
+        "code": "G9-M-10",
+        "lesson": "g9:m-10",
+        "unit": "G9-M-10:focus-1",
+        "pattern": "sea|delocalized|mobile electron"
+      },
+      {
+        "code": "G10-E-9",
+        "lesson": "g10:e-9",
+        "unit": "G10-E-9:focus-3",
+        "pattern": "human|fossil|emission"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Technetium is a human-made element that is not naturally abundant on Earth, but doctors use a special form of it to take pictures inside the body and find diseases.",
+      "tl": "Ang technetium ay element na gawa ng tao na hindi natural na marami sa mundo, pero ginagamit ito ng mga doktor sa espesyal na anyo para kunan ng larawan ang loob ng katawan at hanapin ang mga sakit.",
+      "bis": "Ang technetium usa ka elemento nga hinimo sa tawo nga dili natural nga daghan sa kalibutan, apan gigamit kini sa mga doktor sa espesyal nga porma aron kuhaan og litrato ang sulod sa lawas ug pangitaon ang mga sakit."
+    },
+    "exportedAt": "2026-09-10T13:35:54.241746+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "teeth-chew-food-g3",
+    "id": "ffct-02083",
+    "textHash": "27e4d9bd6a3d2d6af5c4bef200959d42d481e8377d774d6155f890eb798b454b",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:00:07Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G8-L-1",
+        "verdict": "related_only",
+        "card_evidence": "We use our teeth to bite and grind food into small pieces before we swallow it.",
+        "competency_evidence": "using a labeled diagram, trace how food travels through the digestive tract and explain how different digestive processes work, including mechanical processing, secretion, digestion, absorption, and elimination",
+        "reason": "The card mentions only teeth biting/grinding (a small part of mechanical processing) but does not use a labeled diagram or trace food through the digestive tract, which the competency explicitly requires. It does not directly support the full skill."
+      },
+      {
+        "code": "G4-L-1",
+        "verdict": "related_only",
+        "card_evidence": "We use our teeth to bite and grind food into small pieces before we swallow it.",
+        "competency_evidence": "describe in simple terms how the following human body systems work: muscular, skeletal, digestive, circulatory, and respiratory",
+        "reason": "The card touches on a single digestive action (teeth breaking food) but does not describe how the digestive system works as a whole, nor any of the other body systems listed in the competency. It is only tangentially related."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-4",
+        "lesson": "g3:animal-parts",
+        "unit": "G3-L-4:feeding",
+        "pattern": "beak|mouth|teeth|tongue"
+      },
+      {
+        "code": "G3-L-6",
+        "lesson": "g3:basic-needs",
+        "unit": "G3-L-6:food",
+        "pattern": "food"
+      },
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:food-and-shelter",
+        "pattern": "food|eat|shelter"
+      },
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G4-E-9",
+        "lesson": "g4:sun-and-life",
+        "unit": "G4-E-9:importance",
+        "pattern": "plant|food|warm|water"
+      },
+      {
+        "code": "G5-E-10",
+        "lesson": "g5:weather-disturbances",
+        "unit": "G5-E-10:before",
+        "pattern": "before"
+      },
+      {
+        "code": "G6-M-4",
+        "lesson": "g6:useful-mixtures",
+        "unit": "G6-M-4:uses",
+        "pattern": "\\buse|food|drink|medicin|paint"
+      },
+      {
+        "code": "G6-M-7",
+        "lesson": "g6:separation-products",
+        "unit": "G6-M-7:benefits",
+        "pattern": "use|benefit|recover|separat"
+      },
+      {
+        "code": "G6-E-5",
+        "lesson": "g6:volcano-alerts",
+        "unit": "G6-E-5:before",
+        "pattern": "plan|prepare|before|evacuat"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G10-M-8",
+        "lesson": "g10:m-8",
+        "unit": "G10-M-8:focus-1",
+        "pattern": "food|preserv"
+      },
+      {
+        "code": "G10-L-10",
+        "lesson": "g10:l-10",
+        "unit": "G10-L-10:focus-1",
+        "pattern": "food"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "We use our teeth to bite and grind food into small pieces before we swallow it.",
+      "tl": "Ginagamit natin ang ating mga ngipin para ngatngatin at durugin ang pagkain bago ito lunukin.",
+      "bis": "Gigamit nato ang atong mga ngipon aron ngutngoton ug dugmokon ang pagkaon una nato tunlon."
+    },
+    "exportedAt": "2026-09-10T13:35:54.278406+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "teeth-roots-hold-gums-g5",
+    "id": "ffct-03283",
+    "textHash": "97be645d1da79f31240a965f74aa9347fa0cc21064a73b0e3f52d6c09ec1b4f5",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:00:08Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G4-L-1",
+        "verdict": "related_only",
+        "card_evidence": "Every tooth has a root buried deep in your gums and jawbone, holding it firmly in place so it won't fall out.",
+        "competency_evidence": "describe in simple terms how the following human body systems work: muscular, skeletal, digestive, circulatory, and respiratory",
+        "reason": "The card describes tooth roots anchoring in gums and jawbone. This is a fact about teeth, which are part of the digestive system (mouth) and relate to the skeletal system (jawbone), but it does not describe how any of the listed body systems (muscular, skeletal, digestive, circulatory, respiratory) work. It provides no functional explanation of a system, so it is only related to the broad topic of body structures."
+      },
+      {
+        "code": "G5-L-1",
+        "verdict": "related_only",
+        "card_evidence": "Every tooth has a root buried deep in your gums and jawbone, holding it firmly in place so it won't fall out.",
+        "competency_evidence": "identify from pictures and labeled diagrams the parts of the digestive system as mouth, gullet, stomach, small intestine, and large intestine, and describe how they work",
+        "reason": "The competency requires identifying parts of the digestive system (mouth, gullet, stomach, small intestine, large intestine) from pictures/diagrams and describing how they work. The card mentions teeth and gums, which are in the mouth, but does not identify any of the listed digestive organs or describe digestive processes. It is only tangentially related to the mouth as part of the digestive system."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G5-F-6",
+        "lesson": "g5:gravity",
+        "unit": "G5-F-6:motion",
+        "pattern": "fall|down|throw|motion"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G7-F-2",
+        "lesson": "g7:balanced-unbalanced",
+        "unit": "G7-F-2:accelerating",
+        "pattern": "accelerat|fall|unbalanced"
+      },
+      {
+        "code": "G8-L-3",
+        "lesson": "g8:plant-transport",
+        "unit": "G8-L-3:roots",
+        "pattern": "root"
+      },
+      {
+        "code": "G8-F-5",
+        "lesson": "g8:energy-exchange",
+        "unit": "G8-F-5:potential-to-kinetic",
+        "pattern": "fall|downhill|downward|drop"
+      },
+      {
+        "code": "G8-F-9",
+        "lesson": "g8:falling-energy",
+        "unit": "G8-F-9:gravity",
+        "pattern": "gravit|fall"
+      },
+      {
+        "code": "G8-F-10",
+        "lesson": "g8:hydropower",
+        "unit": "G8-F-10:stored-to-motion",
+        "pattern": "potential|stored|fall"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Every tooth has a root buried deep in your gums and jawbone, holding it firmly in place so it won't fall out.",
+      "tl": "May ugat ang bawat ngipin na nakabaon sa gilagid at buto ng panga, para hindi ito matanggal agad.",
+      "bis": "Ang matag ngipon adunay gamot nga nakatusok sa lagus ug bukog sa apapangig, aron dili kini dali mahulog."
+    },
+    "exportedAt": "2026-09-10T13:35:54.317575+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "temperature-and-energy-g7",
+    "id": "dcard-03771",
+    "textHash": "0c5f40d1d1c588ed8632011bc7fa42b027ef6741dee4066a8dab954fdce62151",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:44:46Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G5-M-6",
+        "verdict": "prerequisite_only",
+        "card_evidence": "Temperature measures how hot or cold something is, and it tells us how much energy the particles inside have.",
+        "competency_evidence": "describe how changes in temperature cause matter to change in state, such as solid to liquid to gas",
+        "reason": "The card defines temperature and links it to particle energy, which is background knowledge for understanding state changes, but it does not describe how temperature changes cause matter to change state (e.g., solid to liquid to gas)."
+      },
+      {
+        "code": "G6-M-1",
+        "verdict": "prerequisite_only",
+        "card_evidence": "Temperature measures how hot or cold something is, and it tells us how much energy the particles inside have.",
+        "competency_evidence": "describe changes of state for solids, liquids, and gases as melting, evaporation, freezing, condensation using diagrams and flowcharts",
+        "reason": "The card provides a foundational idea about temperature and particle energy, but it does not describe any specific changes of state (melting, evaporation, freezing, condensation) nor use diagrams or flowcharts as required by the competency."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-1",
+        "lesson": "g3:living-things-investigation",
+        "unit": "G3-L-1:measure",
+        "pattern": "measur"
+      },
+      {
+        "code": "G3-F-3",
+        "lesson": "g3:position",
+        "unit": "G3-F-3:measure-change",
+        "pattern": "measur|centimet|meter|metre"
+      },
+      {
+        "code": "G4-E-4",
+        "lesson": "g4:weather-elements",
+        "unit": "G4-E-4:temperature",
+        "pattern": "temperature"
+      },
+      {
+        "code": "G6-L-7",
+        "lesson": "g6:ecosystem-factors",
+        "unit": "G6-L-7:temperature",
+        "pattern": "temperature"
+      },
+      {
+        "code": "G6-L-8",
+        "lesson": "g6:ecosystem-effects",
+        "unit": "G6-L-8:nonliving-interactions",
+        "pattern": "water|soil|temperature|light|drought|flood"
+      },
+      {
+        "code": "G6-F-3",
+        "lesson": "g6:lever-tests",
+        "unit": "G6-F-3:test",
+        "pattern": "\\bfair\\b|\\btest\\b|\\bmeasure"
+      },
+      {
+        "code": "G6-F-4",
+        "lesson": "g6:wave-energy",
+        "unit": "G6-F-4:transfer",
+        "pattern": "energy"
+      },
+      {
+        "code": "G6-F-8",
+        "lesson": "g6:wave-models",
+        "unit": "G6-F-8:energy",
+        "pattern": "energy"
+      },
+      {
+        "code": "G7-M-2",
+        "lesson": "g7:particle-model",
+        "unit": "G7-M-2:particles",
+        "pattern": "particle|atom|molecule"
+      },
+      {
+        "code": "G7-M-3",
+        "lesson": "g7:particle-motion",
+        "unit": "G7-M-3:temperature",
+        "pattern": "temperature|heat"
+      },
+      {
+        "code": "G7-M-10",
+        "lesson": "g7:solubility",
+        "unit": "G7-M-10:test",
+        "pattern": "test|investigat|same|control|measur"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:safety",
+        "pattern": "safe|protect|goggle|teacher|hot|broken"
+      },
+      {
+        "code": "G7-F-8",
+        "lesson": "g7:heat-temperature",
+        "unit": "G7-F-8:temperature",
+        "pattern": "temperature.*(average|kinetic|particle)|(average|kinetic).*temperature"
+      },
+      {
+        "code": "G8-L-11",
+        "lesson": "g8:photosynthesis-test",
+        "unit": "G8-L-11:evidence",
+        "pattern": "measure|record|evidence|starch|oxygen"
+      },
+      {
+        "code": "G8-E-2",
+        "lesson": "g8:crust-sources",
+        "unit": "G8-E-2:source",
+        "pattern": "reliable|textbook|reference|article"
+      },
+      {
+        "code": "G8-E-7",
+        "lesson": "g8:typhoon-formation",
+        "unit": "G8-E-7:source",
+        "pattern": "PAGASA|reliable|reference|article"
+      },
+      {
+        "code": "G9-F-3",
+        "lesson": "g9:f-3",
+        "unit": "G9-F-3:focus-3",
+        "pattern": "investigat|same|control|measure"
+      },
+      {
+        "code": "G9-F-7",
+        "lesson": "g9:f-7",
+        "unit": "G9-F-7:focus-5",
+        "pattern": "investigat|measure|vary|battery"
+      },
+      {
+        "code": "G9-E-6",
+        "lesson": "g9:e-6",
+        "unit": "G9-E-6:focus-1",
+        "pattern": "eon|era|period"
+      },
+      {
+        "code": "G9-M-1",
+        "lesson": "g9:m-1",
+        "unit": "G9-M-1:focus-3",
+        "pattern": "investigat|measure|record"
+      },
+      {
+        "code": "G9-M-11",
+        "lesson": "g9:m-11",
+        "unit": "G9-M-11:focus-5",
+        "pattern": "investigat|measure|test|compare"
+      },
+      {
+        "code": "G10-E-1",
+        "lesson": "g10:e-1",
+        "unit": "G10-E-1:focus-2",
+        "pattern": "measure|displacement|position"
+      },
+      {
+        "code": "G10-E-8",
+        "lesson": "g10:e-8",
+        "unit": "G10-E-8:focus-1",
+        "pattern": "temperature"
+      },
+      {
+        "code": "G10-F-1",
+        "lesson": "g10:f-1",
+        "unit": "G10-F-1:focus-5",
+        "pattern": "investigat|same|control|measure"
+      },
+      {
+        "code": "G10-F-5",
+        "lesson": "g10:f-5",
+        "unit": "G10-F-5:focus-1",
+        "pattern": "investigat|measure|same|control"
+      },
+      {
+        "code": "G10-M-1",
+        "lesson": "g10:m-1",
+        "unit": "G10-M-1:focus-4",
+        "pattern": "temperature|heat"
+      },
+      {
+        "code": "G10-L-1",
+        "lesson": "g10:l-1",
+        "unit": "G10-L-1:focus-1",
+        "pattern": "temperature"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "Temperature measures how hot or cold something is, and it tells us how much energy the particles inside have.",
+      "tl": "Sinusukat ng temperature kung gaano kainit o kalamig ang isang bagay, at sinasabi nito kung gaano karaming energy ang taglay ng mga particle sa loob.",
+      "bis": "Ang temperature mosukod kung unsa kainit o kabugnaw ang usa ka butang, ug kini mosulti kanato kung unsa ka daghan ang energy sa mga particle sa sulod."
+    },
+    "exportedAt": "2026-09-10T13:35:54.356955+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "termite-castes-g6",
+    "id": "ffct-03721",
+    "textHash": "22d978e1036661ccb144d48eb7f99dc1cfb8c580f3700379f5f66b28b31fe67f",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass grok-4.6 2026-09-07T11:10:00Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-L-7",
+        "verdict": "related_only",
+        "card_evidence": "workers, soldiers, and a queen, each with its own important job to do",
+        "competency_evidence": "observe examples and explain how living things depend on one another and on the environment to meet their basic needs",
+        "reason": "Colony jobs are not how living things depend on one another to meet their basic needs."
+      },
+      {
+        "code": "G6-L-5",
+        "verdict": "related_only",
+        "card_evidence": "workers, soldiers, and a queen, each with its own important job to do",
+        "competency_evidence": "describe the roles of producers, consumers, scavengers, and decomposers in a food web",
+        "reason": "Termite castes are not the roles of producers, consumers, scavengers, and decomposers in a food web."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G8-F-8",
+        "lesson": "g8:mechanical-energy",
+        "unit": "G8-F-8:work",
+        "pattern": "work"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "A termite colony works like a tiny team — workers, soldiers, and a queen, each with its own important job to do!",
+      "tl": "Ang kolonya ng anay ay parang maliit na koponan — may manggagawa, sundalo, at reyna, bawat isa may sariling gawain!",
+      "bis": "Ang kolonya sa anay sama sa gamay nga team — adunay mamumuo, sundalo, ug reyna, matag-usa adunay kaugalingong buluhaton!"
+    },
+    "exportedAt": "2026-09-10T13:35:54.395964+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "termite-castes-soldiers-vs-workers-look-g5",
+    "id": "ffct-10295",
+    "textHash": "7da633e07d5ebe2aa3ddee12d4437092bab80eb338408d958cf06f8998b6270e",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:26:37Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-L-4",
+        "verdict": "related_only",
+        "card_evidence": "A soldier termite has a bigger, darker head with large jaws, while a worker is pale with no big jaws — matching their different jobs.",
+        "competency_evidence": "observe and describe the outer body parts of animals, such as head, legs or wings, and identify their role to move and to gather food",
+        "reason": "The card describes outer body parts (head, jaws) and links them to different jobs, but the competency specifically requires identifying the role of body parts to move and to gather food. The card does not address movement or food gathering; it focuses on caste differences (defense vs. work), so it does not directly support the stated skill."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G4-M-2",
+        "lesson": "g4:local-inventions",
+        "unit": "G4-M-2:uses",
+        "pattern": "use|help|make|work"
+      },
+      {
+        "code": "G5-E-2",
+        "lesson": "g5:rock-observation",
+        "unit": "G5-E-2:comparison",
+        "pattern": "compar|different|similar|sort|collect"
+      },
+      {
+        "code": "G7-L-7",
+        "lesson": "g7:reproduction-types",
+        "unit": "G7-L-7:similarity",
+        "pattern": "identical|clone|differ|variation|similar"
+      },
+      {
+        "code": "G8-F-8",
+        "lesson": "g8:mechanical-energy",
+        "unit": "G8-F-8:work",
+        "pattern": "work"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "How can you tell a soldier termite from a worker?\n\nA soldier termite has a bigger, darker head with large jaws, while a worker is pale with no big jaws — matching their different jobs.",
+      "tl": "Paano makilala ang sundalong anay sa manggagawang anay?\n\nAng sundalong anay ay may mas malaki at madilim na ulo at malalaking panga, habang ang manggagawa ay maputla at walang malalaking panga — akma sa kani-kanilang trabaho.",
+      "bis": "Unsaon pag-ila sa sundalo nga anay gikan sa trabahante?\n\nAng sundalo nga anay adunay mas dako ug itom nga ulo ug dagko nga apapangig, samtang ang trabahante maputla ug walay dagko nga apapangig — mohaom sa ilang lainlaing trabaho."
+    },
+    "exportedAt": "2026-09-10T13:35:54.440123+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "termite-hollow-bait-station-g6",
+    "id": "ffct-05626",
+    "textHash": "4caaeaa8cc170452a5481c33ab67018e25cee854e90d415d7d0499b38907116e",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:26:39Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-L-4",
+        "verdict": "related_only",
+        "card_evidence": "termites carry it back to the colony as food",
+        "competency_evidence": "observe and describe the outer body parts of animals, such as head, legs or wings, and identify their role to move and to gather food",
+        "reason": "The card mentions termites but does not describe any outer body parts (head, legs, wings) or their role in movement or gathering food. It only describes bait behavior, so it does not directly support this competency."
+      },
+      {
+        "code": "G4-M-5",
+        "verdict": "related_only",
+        "card_evidence": "To stop termites from hollowing out wood, people place bait nearby",
+        "competency_evidence": "demonstrate ways to minimize harmful changes in materials, such as restriction of burning of waste materials, and care in handling reactive materials",
+        "reason": "The card shows a way to prevent damage to wood (a material), which is loosely related to minimizing harmful changes in materials. However, the competency specifically targets burning waste and handling reactive materials; termite bait is not an example of those, so it does not directly teach the stated skill."
+      },
+      {
+        "code": "G3-M-6",
+        "verdict": "related_only",
+        "card_evidence": "To stop termites from hollowing out wood, people place bait nearby",
+        "competency_evidence": "explain that changes in materials can be harmful to living and non-living things in the environment, such as trash disposal, and burning household materials",
+        "reason": "The card involves a change in material (wood being hollowed) and a method to prevent it, but it does not explain how changes in materials can be harmful to living and non-living things, nor does it use the competency's examples (trash disposal, burning household materials). It is only tangentially related."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-6",
+        "lesson": "g3:basic-needs",
+        "unit": "G3-L-6:food",
+        "pattern": "food"
+      },
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:food-and-shelter",
+        "pattern": "food|eat|shelter"
+      },
+      {
+        "code": "G3-F-1",
+        "lesson": "g3:moving-things",
+        "unit": "G3-F-1:carry",
+        "pattern": "carry.*(bag|box|book)|(person|people|you).*carry"
+      },
+      {
+        "code": "G3-F-7",
+        "lesson": "g3:light-and-sound-safety",
+        "unit": "G3-F-7:loud-sound",
+        "pattern": "loud|noise|ear"
+      },
+      {
+        "code": "G3-E-2",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-2:human-made-objects",
+        "pattern": "made|make|build|clay|wood|metal"
+      },
+      {
+        "code": "G4-M-4",
+        "lesson": "g4:heating-materials",
+        "unit": "G4-M-4:burning",
+        "pattern": "wood|coal"
+      },
+      {
+        "code": "G4-M-7",
+        "lesson": "g4:environment-survey",
+        "unit": "G4-M-7:classify",
+        "pattern": "group|classif|sort"
+      },
+      {
+        "code": "G4-F-5",
+        "lesson": "g4:change-motion",
+        "unit": "G4-F-5:slow-stop",
+        "pattern": "slow|stop"
+      },
+      {
+        "code": "G4-F-7",
+        "lesson": "g4:magnets",
+        "unit": "G4-F-7:materials",
+        "pattern": "iron|steel|plastic|wood"
+      },
+      {
+        "code": "G4-E-9",
+        "lesson": "g4:sun-and-life",
+        "unit": "G4-E-9:importance",
+        "pattern": "plant|food|warm|water"
+      },
+      {
+        "code": "G5-E-5",
+        "lesson": "g5:erosion",
+        "unit": "G5-E-5:transport",
+        "pattern": "carry|carries|transport|move"
+      },
+      {
+        "code": "G6-M-4",
+        "lesson": "g6:useful-mixtures",
+        "unit": "G6-M-4:uses",
+        "pattern": "\\buse|food|drink|medicin|paint"
+      },
+      {
+        "code": "G7-M-12",
+        "lesson": "g7:equipment-safety",
+        "unit": "G7-M-12:handling",
+        "pattern": "hold|handl|use|carry"
+      },
+      {
+        "code": "G7-L-1",
+        "lesson": "g7:microscope",
+        "unit": "G7-L-1:handling",
+        "pattern": "carry|hand|lens paper"
+      },
+      {
+        "code": "G8-L-6",
+        "lesson": "g8:classification",
+        "unit": "G8-L-6:purpose",
+        "pattern": "classif|relationship|group"
+      },
+      {
+        "code": "G8-M-7",
+        "lesson": "g8:periods-groups",
+        "unit": "G8-M-7:rows-columns",
+        "pattern": "period|group"
+      },
+      {
+        "code": "G8-M-8",
+        "lesson": "g8:electron-position",
+        "unit": "G8-M-8:valence-group",
+        "pattern": "valence|group"
+      },
+      {
+        "code": "G8-F-2",
+        "lesson": "g8:local-motion",
+        "unit": "G8-F-2:everyday",
+        "pattern": "school|car|bike|ball|bus|jeep"
+      },
+      {
+        "code": "G9-F-2",
+        "lesson": "g9:f-2",
+        "unit": "G9-F-2:focus-3",
+        "pattern": "practical|ball|car|bike|bus"
+      },
+      {
+        "code": "G9-M-4",
+        "lesson": "g9:m-4",
+        "unit": "G9-M-4:focus-3",
+        "pattern": "group|16"
+      },
+      {
+        "code": "G10-F-4",
+        "lesson": "g10:f-4",
+        "unit": "G10-F-4:focus-3",
+        "pattern": "impact|collision|stop"
+      },
+      {
+        "code": "G10-F-5",
+        "lesson": "g10:f-5",
+        "unit": "G10-F-5:focus-4",
+        "pattern": "stop"
+      },
+      {
+        "code": "G10-M-8",
+        "lesson": "g10:m-8",
+        "unit": "G10-M-8:focus-1",
+        "pattern": "food|preserv"
+      },
+      {
+        "code": "G10-L-10",
+        "lesson": "g10:l-10",
+        "unit": "G10-L-10:focus-1",
+        "pattern": "food"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "To stop termites from hollowing out wood, people place bait nearby — termites carry it back to the colony as food, wiping out the whole group.",
+      "tl": "Para mapigilan ang anay sa pag-ubos ng kahoy, naglalagay ng pain malapit sa kanila — dinadala nila ito sa kolonya bilang pagkain, kaya napupuksa ang buong grupo.",
+      "bis": "Aron mapugngan ang anay sa pag-ubos sa kahoy, ibutang ang paon duol kanila — dad-on nila kini ngadto sa kolonya isip pagkaon, mao nga mapuo ang tibuok grupo."
+    },
+    "exportedAt": "2026-09-10T13:35:54.480510+00:00",
+    "reviewPass": 2
+  },
+  {
+    "factId": "termite-hollow-tap-test-g5",
+    "id": "ffct-03995",
+    "textHash": "52f104ac7f85609583848e4f27654e0cdd789988f620c2a0f13f55deb9c85336",
+    "screen": "no_current_core_match",
+    "flags": [],
+    "previousExclusion": "first-pass grok-4.6 2026-09-07T11:10:00Z disp=exclude",
+    "assignedReviews": [
+      {
+        "code": "G3-F-4",
+        "verdict": "related_only",
+        "card_evidence": "People sometimes tap on wood to check for termites: a hollow, empty sound means the inside may already be eaten out",
+        "competency_evidence": "explore and describe how sound is made and transferred in everyday situations, such as the ringing of a bell or the hearing of noises",
+        "reason": "Tapping wood to hear a hollow sound is not describing how sound is made and transferred."
+      },
+      {
+        "code": "G6-L-5",
+        "verdict": "related_only",
+        "card_evidence": "a hollow, empty sound means the inside may already be eaten out",
+        "competency_evidence": "describe the roles of producers, consumers, scavengers, and decomposers in a food web",
+        "reason": "Eating wood in houses or furniture is not the roles of producers, consumers, scavengers, and decomposers in a food web."
+      },
+      {
+        "code": "G4-L-6",
+        "verdict": "related_only",
+        "card_evidence": "the inside may already be eaten out",
+        "competency_evidence": "use information from secondary sources to group animals according to the food they eat: plant eaters (herbivores), meat eaters (carnivores), and plant and meat-eaters (omnivores)",
+        "reason": "A diet list is not grouping animals as herbivores, carnivores, or omnivores."
+      },
+      {
+        "code": "G6-L-8",
+        "verdict": "related_only",
+        "card_evidence": "a hollow, empty sound means the inside may already be eaten out",
+        "competency_evidence": "explain how interaction between living things and interactions between living and non-living things may bring good or harm to the living things involved",
+        "reason": "A tap test for hollow wood is not explaining how an interaction brings good or harm to living things."
+      }
+    ],
+    "candidateUnits": [
+      {
+        "code": "G3-L-7",
+        "lesson": "g3:depending-on-nature",
+        "unit": "G3-L-7:food-and-shelter",
+        "pattern": "food|eat|shelter"
+      },
+      {
+        "code": "G3-F-8",
+        "lesson": "g3:sending-messages",
+        "unit": "G3-F-8:sound",
+        "pattern": "sound|clap|bell|whistle"
+      },
+      {
+        "code": "G3-E-2",
+        "lesson": "g3:earth-materials",
+        "unit": "G3-E-2:human-made-objects",
+        "pattern": "made|make|build|clay|wood|metal"
+      },
+      {
+        "code": "G4-M-4",
+        "lesson": "g4:heating-materials",
+        "unit": "G4-M-4:burning",
+        "pattern": "wood|coal"
+      },
+      {
+        "code": "G4-F-7",
+        "lesson": "g4:magnets",
+        "unit": "G4-F-7:materials",
+        "pattern": "iron|steel|plastic|wood"
+      },
+      {
+        "code": "G4-F-8",
+        "lesson": "g4:effects-at-distance",
+        "unit": "G4-F-8:sound",
+        "pattern": "sound|noise"
+      },
+      {
+        "code": "G4-F-9",
+        "lesson": "g4:energy",
+        "unit": "G4-F-9:forms",
+        "pattern": "light|sound|heat"
+      },
+      {
+        "code": "G4-F-10",
+        "lesson": "g4:energy-uses",
+        "unit": "G4-F-10:sound",
+        "pattern": "sound"
+      },
+      {
+        "code": "G6-F-9",
+        "lesson": "g6:wave-examples",
+        "unit": "G6-F-9:longitudinal",
+        "pattern": "sound|longitudinal"
+      },
+      {
+        "code": "G6-E-10",
+        "lesson": "g6:community-sky-knowledge",
+        "unit": "G6-E-10:patterns-time",
+        "pattern": "time|calendar|constellation|season"
+      },
+      {
+        "code": "G8-E-8",
+        "lesson": "g8:typhoon-track",
+        "unit": "G8-E-8:tracking",
+        "pattern": "plot|track|time"
+      },
+      {
+        "code": "G8-F-7",
+        "lesson": "g8:power",
+        "unit": "G8-F-7:rate",
+        "pattern": "time|rate|per second"
+      },
+      {
+        "code": "G9-E-5",
+        "lesson": "g9:e-5",
+        "unit": "G9-E-5:focus-3",
+        "pattern": "time|age"
+      },
+      {
+        "code": "G10-F-6",
+        "lesson": "g10:f-6",
+        "unit": "G10-F-6:focus-2",
+        "pattern": "time"
+      }
+    ],
+    "originalCandidateUnits": [],
+    "copy": {
+      "en": "People sometimes tap on wood to check for termites: a hollow, empty sound means the inside may already be eaten out.",
+      "tl": "Minsan tinutuktok ang kahoy para malaman kung may anay: kung parang walang laman ang tunog, baka kinain na ng anay ang loob.",
+      "bis": "Usahay tuktokon ang kahoy aron mahibal-an kon adunay anay: kon morag walay sulod ang tingog, tingali gikaon na sa anay ang sulod."
+    },
+    "exportedAt": "2026-09-10T13:35:54.518612+00:00",
+    "reviewPass": 2
+  }
+]

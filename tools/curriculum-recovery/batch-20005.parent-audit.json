@@ -1,0 +1,1526 @@
+{
+  "parentVerifiedAt": "2026-09-11T08:01:13.185612+00:00",
+  "originalProposals": [
+    {
+      "factId": "seeing-with-light-g9",
+      "id": "dcard-06733",
+      "textHash": "47a72193f29bb22826571f157abec340e7d833bf5469a31eef396db315bce1b6",
+      "reviewedAt": "2026-09-11T01:13:08.982833+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card only states that visible light lets us see and that it is 'part of the electromagnetic spectrum' that makes rainbows; it never compares relative wavelengths/frequencies of EM wave types. The only candidate that targets EM-spectrum content is G9-F-11 ('compare the relative wavelengths and frequencies of different types of electromagnetic waves...'), whose sole admitted facet (focus-4, pattern 'visible') is triggered merely because the word 'visible' appears \u2014 needs facet repair: G9-F-11:focus-4 matches on 'visible' but the card does not compare wavelength/frequency across wave types, which is the actual competency content. G3-F-5's 'sources' facet is only triggered because 'sun' appears inside 'sunlight' in a rainbow context, not because the card teaches sources of light (facet repair). No candidate exactly teaches what this card states. Potential destination: G9-F-11, if a 'visible light basics' facet is added.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:59:42Z disp=exclude"
+    },
+    {
+      "factId": "seismic-stations-in-ph-g10",
+      "id": "dcard-10674",
+      "textHash": "1013f4698b9963fc20ae108c5b8adeffdaad224e75c69b3ea8ee8d01e7f723d5",
+      "reviewedAt": "2026-09-11T01:13:08.982999+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card is a pure infrastructure statistic (PHIVOLCS station counts by type) with no conceptual science content. G7-E-4's 'official map' facet (pattern PHIVOLCS|FaultFinder|HazardHunter|hazard map) is matched only because 'PHIVOLCS' appears, but the competency is about using PHIVOLCS's FaultFinder to locate one's nearest fault system \u2014 the card teaches nothing about that (facet repair). G7-E-8's 'official warning' facet is likewise matched only on 'PHIVOLCS', not on warning/alert procedures the card never describes (facet repair). G8-E-1's 'land' facet matches the literal digit '29' only by numeric coincidence (29 manned stations vs. 29% land coverage) \u2014 a clear facet-repair trap. No candidate genuinely teaches this station-count trivia. Potential destination: none at grades 3-10 for a bare monitoring-network statistic; would need a new 'PHIVOLCS network overview' facet under G7-E-4.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:47:27Z disp=exclude"
+    },
+    {
+      "factId": "seismic-waves-g8",
+      "id": "dcard-09538",
+      "textHash": "de1ce38bfd4e30f52406590a91a97fcc8009892bd09bd275326b89758a7dc8c9",
+      "reviewedAt": "2026-09-11T01:13:08.983003+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Held by keep-skeptic: Card never names a source (only that seismic waves are energy that travel and get recorded by seismographs); G6-F-4's admitted concept is specifically 'energy from a source to a receiver', so the match rides on the bare word 'energy' rather than the source\u2192receiver relationship actually being taught. Reviewer had proposed [\"G6-F-4\"]: The card states, using seismic waves as the concrete example, that waves are energy that travels (source\u2192transfer) and is recorded/detected by seismographs (the receiver) \u2014 this is exactly G6-F-4's single admitted concept, 'waves carry energy from a source to a receiver' (facet 'transfer', pattern 'energy'). No other admitted facet exists for this card under G6-F-4, so the single-facet check passes cleanly. Content is a standard, accurate textbook definition of seismic waves/seismographs; Tagalog and Cebuano are faithful, natural, direct translations of the English. No blocks apply, and the only variant is the same-text app/merged pair.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:47:26Z disp=exclude"
+    },
+    {
+      "factId": "sensor-and-switch-g10",
+      "id": "dcard-00148",
+      "textHash": "6e87627eff513b2909355913c0bef52d00cf03bbd685a40d3a0312b8bd9e3e71",
+      "reviewedAt": "2026-09-11T01:13:08.983006+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card is about biological homeostasis/feedback (receptor detects change, effector corrects it) \u2014 none of the candidate codes are Living Things competencies at all; every candidate (weather, inventions, energy, circuits, mechanical energy) is topically unrelated to receptor-effector feedback, and no facet in the candidate set even plausibly matches beyond incidental words like 'switch' (electric-circuit codes) which the card uses only as a metaphor, not as circuit content. No MATATAG competency in the candidate pool covers homeostasis/feedback mechanisms. Potential destination: a G10 Living Things 'homeostasis and feedback' competency, which is not present among the candidates supplied for this fact.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:43:58Z disp=exclude"
+    },
+    {
+      "factId": "separating-colors-g6",
+      "id": "dcard-11911",
+      "textHash": "b275803021436cfcba4e7232e4471e275b886116ef01ffba8d080f6b6198ab38",
+      "reviewedAt": "2026-09-11T01:13:08.983009+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card describes chromatography's mechanism (differential movement of dissolved colored substances across a material). G6-M-6 ('demonstrate various techniques in separating mixtures, such as decantation, winnowing, scooping, picking, evaporation, filtering, sieving, and using magnets') explicitly lists its techniques and chromatography is not among them, and G6-M-6 is not even present as a candidate for this card (its regex did not match this text). G6-M-7's 'benefits' facet (pattern 'use|benefit|recover|separat') is triggered only by the word 'separates', not because the card explains the benefit of chromatography in preparing a useful product \u2014 it only explains the mechanism (facet repair). No candidate genuinely teaches this card's content. Potential destination: none at grades 3-10 as currently scoped; chromatography would need to be added as an explicit G6-M-6/M-7 technique/benefit facet.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:04:19Z disp=exclude"
+    },
+    {
+      "factId": "separating-mixtures-physically-g6",
+      "id": "dcard-04835",
+      "textHash": "91451e1ee1c694f3291df27738a8ade3f03632e6cebc415d8ed0dac13e67a45f",
+      "reviewedAt": "2026-09-11T01:13:08.983017+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-M-6"
+      ],
+      "reason": "Card explicitly names filtering and sieving (and hand-picking) as physical mixture-separation methods that don't change the substances \u2014 both admitted facets for this card under G6-M-6 (filtering, sieving) are genuinely, directly taught, not just keyword-adjacent. Content is accurate (physical separation does not alter chemical identity of components), and Tagalog/Cebuano are faithful, natural translations of the English. Not blocked; only variant is the same-text app/merged pair.",
+      "evidence": [
+        {
+          "lesson": "g6:separation-methods",
+          "unit": "G6-M-6:filtering",
+          "quote": "a filter"
+        },
+        {
+          "lesson": "g6:separation-methods",
+          "unit": "G6-M-6:sieving",
+          "quote": "a sieve"
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:48:55Z disp=exclude"
+    },
+    {
+      "factId": "series-wiring-needs-g5",
+      "id": "dcard-09870",
+      "textHash": "ce1ef4965f58716ba610932a1021bdbd294d6c061cca1f18685eb98d9cc13d20",
+      "reviewedAt": "2026-09-11T01:13:08.983019+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Held by keep-skeptic: Content is pitched at the original grade-5 level (fewer wires; one pathway so every part must work) with no current/voltage/resistance reasoning, which is below what G9-F-9 presupposes in a quarter otherwise built on assembling/investigating circuits with ammeters and voltmeters (G9-F-7/F-8) \u2014 an under-grade fit for a 9th grader, not just a keyword hit on 'series'. Reviewer had proposed [\"G9-F-9\"]: G9-F-9 asks students to 'recognize the advantages and limitations of using series or parallel circuits'; this card states a genuine advantage (fewer wiring connections needed) and a genuine limitation (single current pathway means every component must work, so one failure stops the whole circuit) of series wiring specifically \u2014 the core substance of the competency, not a coincidental keyword hit. Only one facet is admitted for this card under G9-F-9 (focus-1, 'series'), and the whole card is squarely about series-circuit characteristics, so it is satisfied. No grade-3/4/5 series-circuit competency exists among the candidates (MATATAG doesn't scope series/parallel wiring below G9 in this set), so G9 is the correct destination despite the card's original grade-5 DepEd tagging. Content is accurate and standard; Tagalog/Cebuano are faithful translations. Not blocked.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:43:07Z disp=exclude"
+    },
+    {
+      "factId": "severe-tropical-storm-g5",
+      "id": "dcard-00934",
+      "textHash": "f6c70accc2b757ae48e00925e7381dae097709717a8f142fe2d512c8524d37b5",
+      "reviewedAt": "2026-09-11T01:13:08.983021+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card gives PAGASA-style wind-speed classification for a 'severe tropical storm' (89-117 km/h). No G5 typhoon/weather-disturbance competency (e.g., a 'describe typical weather conditions... during a tropical cyclone' code) appears among this card's candidates at all. G4-E-4's 'wind speed' facet (pattern 'wind.*speed') is matched, but the competency only asks students to 'identify... basic characteristics used to describe weather, such as... wind speed' as one of several general characteristics \u2014 this card instead teaches a specific storm-category wind-speed threshold system, a more advanced and different teaching point than G4-E-4's simple identification ask; recovering here would mis-scope the content downward. G3-E-5's 'danger' facet (pattern 'danger|storm|flood|lightning') is triggered only by the bare word 'storm', not because the card discusses weather's effect on daily activities or danger to people (facet repair). Potential destination: a G5 typhoon-category/weather-disturbance competency, not present in the supplied candidate set.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:59:43Z disp=exclude"
+    },
+    {
+      "factId": "sexual-plant-reproduction-g5",
+      "id": "dcard-05188",
+      "textHash": "57b85b855dadcc307f67b8c0fac2ca5dc172250cfc21c5ec11c7e126766f99e3",
+      "reviewedAt": "2026-09-11T01:13:08.983023+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card describes pollen-sperm/egg-ovule fertilization in flowering plants. G7-L-6's 'fertilization' facet (pattern 'fertiliz|egg.*sperm|sperm.*egg') is matched on the sperm/egg wording, but that competency's actual teaching point is that 'genetic information is passed on to offspring from both parents by the process of meiosis and fertilization' \u2014 the card never mentions genetic information, inheritance, or meiosis, only the mechanical gamete union (facet repair). G7-L-7's 'parents' facet (pattern 'parent|sexual|asexual') is matched only on the bare word 'sexually', but the competency requires differentiating sexual FROM asexual reproduction by number of parents and offspring similarity, which this card does not do at all (facet repair). G3-L-3's 'reproduce' facet is matched on the word 'reproduce', but recovering this technical pollen/ovule fertilization description into G3's basic 'living things grow, respond, and reproduce' characteristic would badly mismatch grade-level depth. No G5 plant-reproduction/pollination competency appears among the candidates. Potential destination: none cleanly in this candidate set; closest would be a widened G7-L-6 facet for 'plant-specific fertilization example' that doesn't require the genetic-information framing.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:37:49Z disp=exclude"
+    },
+    {
+      "factId": "shaking-at-epicenter-g8",
+      "id": "dcard-07607",
+      "textHash": "0efdcc6c4e7c19f4c4a4c09afdc5d78243eece4f939fd5b0c8398e09bc508e8e",
+      "reviewedAt": "2026-09-11T01:13:08.983029+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-E-5"
+      ],
+      "reason": "G7-E-5 (component a) asks students to illustrate 'the epicenter of an earthquake from its focus'; this card states exactly that relationship (epicenter = surface point directly above the focus) plus the accurate, standard teaching point that shaking is strongest there. The card need not perform the modeling activity itself, only teach the underlying concept, which it does. Only one facet is admitted for this card under G7-E-5 (focus-epicenter) and it is genuinely taught. Content is scientifically accurate (this is the standard S8ES-IIa-15 teaching point) and Tagalog/Cebuano are faithful translations. Not blocked; only variant is the same-text app/merged pair.",
+      "evidence": [
+        {
+          "lesson": "g7:earthquake-models",
+          "unit": "G7-E-5:focus-epicenter",
+          "quote": "the epicenter, the surface point directly above the focus"
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:43:12Z disp=exclude"
+    },
+    {
+      "factId": "shallow-focus-shaking-g7",
+      "id": "dcard-05000",
+      "textHash": "c0fe774c717bb92cb0767bfc87f0c16d44c7f05d14fbaa7e841036860b41ebc3",
+      "reviewedAt": "2026-09-11T01:13:08.983031+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Held by keep-skeptic: Pattern 'focus|epicenter' only matched because both words appear, but the card actually teaches a different fact (focus depth vs. shaking intensity), not the epicenter-from-focus spatial relationship G7-E-5(a) specifies \u2014 a keyword-adjacent, not a genuine, match to that exact competency component. Reviewer had proposed [\"G7-E-5\"]: G7-E-5 (component a) covers understanding 'the epicenter of an earthquake from its focus'; this card teaches the directly related, accurate concept that focus depth affects shaking intensity at the epicenter (shallow focus \u2192 stronger surface shaking), which is standard focus/epicenter content a model would illustrate. Only one facet is admitted for this card under G7-E-5 (focus-epicenter, pattern 'focus|epicenter') and both terms are genuinely, substantively used, not coincidental. Tagalog/Cebuano are faithful translations; content is scientifically accurate. Not blocked; only variant is the same-text app/merged pair.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:19:31Z disp=exclude"
+    },
+    {
+      "factId": "shape-of-the-solar-system-g9",
+      "id": "dcard-05699",
+      "textHash": "cc1bc43b7d82226c6480875cc04ea2a3610261440524e80aa5c22272d937cdd4",
+      "reviewedAt": "2026-09-11T01:13:08.983036+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G5-E-11"
+      ],
+      "reason": "G5-E-11 asks students to 'describe the general structure of the solar system, identifying the names of the major celestial objects, their main features, and general composition' \u2014 this card does exactly that, naming the Sun, eight planets, dwarf planets, moons, asteroids, comets, and meteors, and describing the overall disk shape. The single admitted facet ('objects', pattern 'asteroid|comet') is genuinely taught (both terms appear as named solar-system components, not coincidentally). Content is accurate (eight IAU-recognized planets, correct object categories, and 'disk-shaped' is a standard simplification of the ecliptic-plane structure); Tagalog/Cebuano are faithful, natural translations. Not blocked; only variant is the same-text app/merged pair.",
+      "evidence": [
+        {
+          "lesson": "g5:solar-system",
+          "unit": "G5-E-11:objects",
+          "quote": "asteroids, comets"
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:30:13Z disp=exclude"
+    },
+    {
+      "factId": "shaping-earth-s-surface-g10",
+      "id": "dcard-00524",
+      "textHash": "e72a93dd68271c616dde37a1df5d9bb8532487f08d40dc9f8e6514cd8a8297a2",
+      "reviewedAt": "2026-09-11T01:13:08.983038+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card is a generic worldwide definition of faulting and folding as surface-shaping processes; it never mentions the Philippines or a map. The only literal keyword hits among candidates are on the word 'fault' (G9-E-2:focus-3, G10-E-3:focus-3, G10-E-6:focus-3) but those competencies require Philippine-specific tasks \u2014 examining topographical/geological evidence for plate boundaries 'in the area where the Philippines is located' (G9-E-2), or identifying fault locations 'using a map of the Philippine Archipelago' (G10-E-3) \u2014 which this card does not teach. Needs facet repair: G10-E-3:focus-3 matches on 'fault' but the card teaches no map-reading of Philippine tectonic features. No candidate genuinely teaches a general definition of faulting/folding as rock-deformation processes. Potential destination: none in the candidate set; would need a distinct 'rock deformation/mountain building' competency not present here.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:13:37Z disp=exclude"
+    },
+    {
+      "factId": "sharing-recycling-ideas-g5",
+      "id": "dcard-10072",
+      "textHash": "6fd36e8ab7c11e4f6008593fef30bf4756299fdac089537d449255fd210f81ce",
+      "reviewedAt": "2026-09-11T01:13:08.983040+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card is civic-participation/promotional advice (share recycling interest with neighbors and barangay officials, consult DENR) rather than a taught science concept. G4-M-7's 'communicate' facet requires applying science process skills in a guided survey (grouping/classifying, communicating, open-mindedness) about environmental issues; the card is advice to talk to officials, not a survey activity. G4-M-6 requires identifying a local issue and how science could address it; the card contains neither an identified issue nor a science-based solution, just an exhortation to share and consult. This is civic/advocacy content, which is held out per policy (health/safety advice, trivia, promotional/opinion content). Potential destination: none of the candidates fit; would need a distinct civic-environmental-action competency, not present in the candidate set.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T10:55:00Z disp=exclude"
+    },
+    {
+      "factId": "shellfish-filter-toxin-cooking-g6",
+      "id": "ffct-01862",
+      "textHash": "e72b56122407ba5aaf52e778e6cb69d92c65e95c561af8f21b9c3f6c170cfc8d",
+      "reviewedAt": "2026-09-11T01:13:08.983042+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card is food-safety trivia stating cooking does not destroy red tide toxin in shellfish. The heat/temperature candidates (G7-M-3 particle motion and temperature, G4-F-9/G4-F-10 forms and uses of light/sound/heat energy) require teaching particle behavior or general energy sources/uses, not toxin resistance to cooking heat; this card teaches neither. This is health/food-safety advice ('never eat shellfish during a red tide warning'), which is held out regardless of any incidental thematic overlap with heat. No MATATAG competency among the candidates covers marine biotoxin food safety.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:10:58Z disp=exclude"
+    },
+    {
+      "factId": "shield-volcano-g9",
+      "id": "dcard-12428",
+      "textHash": "62f46415bbcf32ecee7b1f193253f91942c922adcfb67d48c95679b6e0ca7901",
+      "reviewedAt": "2026-09-11T01:13:08.983047+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G8-E-4"
+      ],
+      "reason": "Card describes the characteristic shape of shield volcanoes (broad, flat, rounded profile, low slopes, large craters/calderas) using the real-world example of Mauna Loa \u2014 this is exactly the 'cone shape' component of G8-E-4 ('relate the shape of a volcano's cone to its composition'). Content is factually accurate (Mauna Loa is a textbook shield-volcano example with a broad low profile and large summit caldera, consistent with low-silica basaltic magma). Tagalog and Cebuano are faithful, natural renderings of the English (technical term 'shield volcano' kept as a loanword, standard practice for this register). Only facet admitted for this code is 'cone-shape', and the card genuinely teaches it.",
+      "evidence": [
+        {
+          "lesson": "g8:volcano-shape",
+          "unit": "G8-E-4:cone-shape",
+          "quote": "a tall broad and flat rounded shape, low slopes, and large craters"
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:51:16Z disp=exclude"
+    },
+    {
+      "factId": "shoe-protection-g3",
+      "id": "dcard-12107",
+      "textHash": "caa3c06704dab57f68c01c769d36937960d6966c917e8a4a3274d6fcb4a0bc7e",
+      "reviewedAt": "2026-09-11T01:13:08.983049+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card explains that skin protects the body and that shoes prevent cuts/wounds on feet. G3-L-6's 'shelter' facet (pattern 'protect') and G3-M-8's 'cutting' facet (pattern 'cut') are keyword-only hits \u2014 the card does not teach shelter as a basic living-thing need, nor cutting as a material-change process; it is actually about skin as a protective organ and protective footwear, a topic not covered by any candidate here (cardMeta cats reference 'human-sense-organs' but no matching G3 skin/integument competency appears among candidates). Needs facet repair: G3-L-6:shelter matches on the word 'protect' but the card does not teach shelter as a need. Variants (dcard-12107 app vs merged pool) differ only in phrasing ('Why wear shoes outside?' vs 'Why should we wear shoes when walking outside?'); both convey the identical claim and neither changes this hold. Potential destination: none in the candidate set; would need a grade-3 skin/integumentary-system competency not present here.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:03:17Z disp=exclude"
+    },
+    {
+      "factId": "short-wavelength-x-rays-g10",
+      "id": "dcard-01214",
+      "textHash": "777dde46fad2bbc0e67f8a31d2b134624bcd5adbb71256a8f9bf2f0cdc226d53",
+      "reviewedAt": "2026-09-11T01:13:08.983052+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Held by keep-skeptic: Science is doubtful/oversimplified into error: luggage scanners work because X-rays pass through low-density contents while dense metals absorb them and show as opaque; the card's causal claim 'penetrate through metals, which is why they are used in airport security scanners' inverts the mechanism and contradicts the standard X-ray-in-medicine lesson (dense material blocks X-rays), so it should not be placed under G9-F-12 as-is. Reviewer had proposed [\"G9-F-12\"]: Card describes a practical application of X-rays (airport security scanners using X-ray penetration to reveal luggage contents), which is exactly the teaching component of G9-F-12 ('identify practical applications of electromagnetic radiation, such as radio waves used in telecommunications, and x-rays and gamma rays in medicine') \u2014 the medicine example is illustrative ('such as'), not exhaustive, and security screening is a standard, well-documented X-ray application. Verified via web search that airport X-ray scanners work by passing X-rays through luggage and detecting differential penetration/absorption by material density (metals appear as distinct blue/green regions), confirming X-rays do penetrate objects including thin metal items in luggage, which is the mechanism the card describes; the simplification is age-appropriate for grade 9. Tagalog/Cebuano are faithful direct translations. G9-F-11 (comparing wavelengths/frequencies across wave types) was considered but rejected \u2014 the card does not compare X-rays to other EM wave types.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:40:19Z disp=exclude"
+    },
+    {
+      "factId": "sickle-cell-mutation-g9",
+      "id": "dcard-02941",
+      "textHash": "f4a1e4e49cbf541860b76699f613ce950b630baed21e7963af12530b340d7931",
+      "reviewedAt": "2026-09-11T01:13:08.983057+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G9-L-3"
+      ],
+      "reason": "Card explains what a mutation is (a DNA base substitution) using the concrete, well-established example of sickle cell anemia, matching the 'describe mutations as changes in DNA or chromosomes' component of G9-L-3. Science is accurate and standard genetics content (HBB gene point mutation, single base substitution, altered amino acid in hemoglobin, altered red blood cell shape) \u2014 well-established textbook biology, confidently verified without need for external search. Tagalog and Cebuano are faithful, natural, grade-appropriate translations. Only admitted facet (focus-1, 'DNA|chromosome') is genuinely taught. Not a reproduction/puberty/sexual-health topic, so no AUP restriction applies to quoting it.",
+      "evidence": [
+        {
+          "lesson": "g9:l-3",
+          "unit": "G9-L-3:focus-1",
+          "quote": "Sickle cell anemia results from a substitution mutation that swaps one base"
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:27:39Z disp=exclude"
+    },
+    {
+      "factId": "signal-4-effects-g4",
+      "id": "dcard-08207",
+      "textHash": "f1febfc14618a0c600779c601a9de2f9e436be6d10d104fb46f7b4c9b7e912e3",
+      "reviewedAt": "2026-09-11T01:13:08.983062+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G5-E-9"
+      ],
+      "reason": "Card describes the expected conditions/effects specifically associated with PAGASA Public Storm Warning Signal No. 4, matching G5-E-9's 'warning-signals' facet ('describe the weather conditions according to a Public Storm Warning Signal issued by PAGASA'). Verified via web search: PAGASA's official Signal No. 4 description states winds over 185 kph, large trees uprooted, and residential/institutional buildings severely damaged \u2014 matching the card almost verbatim. Tagalog and Cebuano are faithful, natural translations at grade level. G5-E-8 (general 'effects of weather disturbances', not tied to a specific numbered signal) was considered but G5-E-9 is the more precise, scarcer match since the card explicitly ties its content to a specific signal number as the competency requires.",
+      "evidence": [
+        {
+          "lesson": "g5:weather-disturbances",
+          "unit": "G5-E-9:warning-signals",
+          "quote": "During Storm Signal No. 4, many large trees are uprooted, and residential buildings of mixed construction may be severely damaged."
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:43:10Z disp=exclude"
+    },
+    {
+      "factId": "signs-of-a-problem-g4",
+      "id": "dcard-03744",
+      "textHash": "25972671031f18ee160bee1e2fb29437bab6b50372032389cedaa8ff8f06c6b2",
+      "reviewedAt": "2026-09-11T01:13:08.983063+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card teaches that dull trees, litter, and dirty water are observable signs/indicators of an environmental problem. The closest candidate, G3-M-6 ('explain that changes in materials can be harmful ... such as trash disposal'), only shares the keyword 'litter' via its 'trash' facet pattern, but that competency requires explaining how material changes CAUSE harm, not listing diagnostic signs of an existing problem \u2014 needs facet repair: G3-M-6:trash matches on 'litter' but the card does not teach the harm-causing mechanism. No other candidate (e.g. G3-L-7:environment, G6-L-8:nonliving-interactions) teaches this concept either; they only share the incidental word 'water'. Potential destination: a grade-4 'environmental problems and solutions' competency matching cardMeta's own category (g4-matter-environmental-problems-and-solutions) is not present among the candidates generated for this card.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:27:20Z disp=exclude"
+    },
+    {
+      "factId": "silica-and-eruptions-g8",
+      "id": "dcard-05528",
+      "textHash": "9e7e1c432986ea28d3b0c63d3bcf4a19e47ff4ac08ecacfbdbd85a2a0007c1a0",
+      "reviewedAt": "2026-09-11T01:13:08.983065+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Held by keep-skeptic: Card relates silica content to eruption STYLE (quiet flows vs explosive blasts), never to cone shape, so it does not teach the 'relate the shape of a volcano's cone to its composition' competency; it is an eruption-type card (G8-E-3b territory, its own cats say volcanic-eruptions-and-hazards) and would sit under the volcano-shape lesson on a 'silica' keyword only. Reviewer had proposed [\"G8-E-4\"]: Card teaches that magma silica content (composition) determines eruption behavior \u2014 low silica producing fluid, quiet effusive flows, and high silica producing viscous, gas-trapping, explosive eruptions \u2014 which is the exact 'composition' teaching component of G8-E-4 ('relate the shape of a volcano's cone to its composition'); this silica-viscosity relationship is the same underlying mechanism that determines volcano shape (low-silica basaltic magma builds broad shield volcanoes; high-silica magma builds steep explosive stratovolcanoes), which is standard, accurate earth-science content well known independent of external search. Tagalog and Cebuano are faithful, natural translations. G8-E-3 ('describe different types of volcanoes ... by type of eruption') was considered but rejected as a second code \u2014 it requires classifying/naming volcano types, which this card does not do; only the composition-mechanism facet of G8-E-4 is exactly and genuinely served.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:15:39Z disp=exclude"
+    },
+    {
+      "factId": "similar-birds-different-species-g8",
+      "id": "dcard-08064",
+      "textHash": "6e4b493cdee2982f7f89f4bc0512ae72361a90c362cd06df15ec522e3141b00a",
+      "reviewedAt": "2026-09-11T01:13:08.983069+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G10-L-4"
+      ],
+      "reason": "G10-L-4 ('discuss ... important concepts in the theories of evolution, such as variation, heredity, isolation, selection, and adaptation') admits this card on the 'isolation' facet, and the card is a genuine, correct teaching example of that concept: the Eastern/Western meadowlark pair is a well-documented, widely-taught example of behavioral (reproductive) isolation maintaining species boundaries despite near-identical morphology (verified via web search \u2014 Quizlet Ch.18 biology study guide and multiple textbook-question sources confirm the meadowlark song-isolation example is standard biology curriculum content). This is not a stray keyword hit: the competency's 'isolation' concept IS reproductive/behavioral isolation as a speciation mechanism, exactly what the card teaches. Grade 10 (evolution unit) is age-appropriate for this abstraction, resolving the depedGrade-8 mismatch flag \u2014 the original DepEd code (S8LT-IVg-19) is from the pre-MATATAG curriculum; G10-L-4 is the correct current-curriculum home. Only one facet is admitted and it is genuinely taught. Tagalog/Cebuano are faithful, natural science-register translations (technical terms kept in English per project convention, consistent with other bio cards). Single card, no variants (variantTextsDiffer=false).",
+      "evidence": [
+        {
+          "lesson": "g10:l-4",
+          "unit": "G10-L-4:focus-3",
+          "quote": "behavioral isolation"
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:33:11Z disp=exclude"
+    },
+    {
+      "factId": "simple-circuit-parts-g5",
+      "id": "dcard-06435",
+      "textHash": "e482fb7bc0ffb4d77bdf01252782f81030ad1cdce84740ebf309217c9375b2dc",
+      "reviewedAt": "2026-09-11T01:13:08.983075+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G5-F-8"
+      ],
+      "reason": "G5-F-8 ('assemble and draw a simple circuit using batteries, wires, switch, and bulb and/or toy motor or buzzer') is an almost word-for-word match to the card's component list (battery, wires, switch, bulb/toy motor/buzzer). Both admitted facets for this code are genuinely taught by the card text, not keyword coincidences: the 'components' facet (battery as power source) and the 'switch' facet (switch explicitly explained as opening/closing the circuit path) are both directly and correctly described. This is foundational component-identification content that underlies the hands-on assemble/draw competency, and the compiler's own 'components' facet exists precisely to admit such cards. depedGrade (5) matches the code's grade (5), so the original 'grade_mismatch' flag was against the wrong prior candidates (G4-L-3, G3-L-6), not this one. The claim is scientifically accurate (correct roles for battery, wires, switch, output device). Tagalog/Cebuano are faithful and natural (technical terms kept in English per established project convention for science vocabulary, matching sibling cards). variantTextsDiffer=true: the variant (dcard-04621, 'a battery to push electric charge, wires to carry it, and a bulb to receive it') is a shorter, simplified restatement that omits the switch but contains no factual error for grade-5 level (battery-as-driver, wires-as-conductor, bulb-as-load is standard simplified circuit language) \u2014 reconciled as correct under the same code.",
+      "evidence": [
+        {
+          "lesson": "g5:simple-circuits",
+          "unit": "G5-F-8:components",
+          "quote": "a battery as the power source"
+        },
+        {
+          "lesson": "g5:simple-circuits",
+          "unit": "G5-F-8:switch",
+          "quote": "a switch to open or close the path"
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:33:50Z disp=exclude"
+    },
+    {
+      "factId": "simplified-scientific-models-g7",
+      "id": "dcard-10051",
+      "textHash": "e3a7693c537410311ecd0e3d43526ded9f724212234739bb7b1a9b44bc269abf",
+      "reviewedAt": "2026-09-11T01:13:08.983080+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-M-1"
+      ],
+      "reason": "Card defines a scientific model as a simplified version of something complicated that helps scientists predict/learn about the real thing. This directly teaches G7-M-1's only facet ('limits': scientists use models because real phenomena are complicated, and models are simplifications, not exact copies) \u2014 the facet's own pattern explicitly treats 'simplif' as evidence for this content, so the match is by design, not incidental. TL/BIS ('pinasimpleng bersyon'/'gipasimple nga bersyon') are faithful and natural. No other candidate (all of which are about specific model-building activities for water cycle, moon phases, day/night, faults, atoms, DNA, etc.) is implicated since the card names no specific model.",
+      "evidence": [
+        {
+          "lesson": "g7:scientific-models",
+          "unit": "G7-M-1:limits",
+          "quote": "A scientific model is a simplified version of something complicated"
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:38:09Z disp=exclude"
+    },
+    {
+      "factId": "sirius-distance-8-6-lightyears-g8",
+      "id": "ffct-33794",
+      "textHash": "6be6b72c0cd38ce28678f98a48749353acf4a9d8a8cd5ff560c0bc8e7620a15d",
+      "reviewedAt": "2026-09-11T01:13:08.983083+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Stand-alone astronomy trivia (Sirius's distance in light-years). Every candidate (G3-F-7, G3-F-8, G4-F-8/9/10, G4-E-7, G5-F-5, G6-L-7/8, G6-F-9/10, G7-L-1, G9-M-4) matches only on the generic word 'light', not on any teaching about stellar distance/light-years. Prior reviewer already rejected G5-E-11 (solar system structure) since Sirius is outside the solar system. No MATATAG competency at grades 3-10 in this candidate set covers star-distance facts; would need a dedicated 'stars beyond the solar system' competency, which is not present here.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:15:43Z disp=exclude"
+    },
+    {
+      "factId": "size-of-optical-fibers-g10",
+      "id": "dcard-07765",
+      "textHash": "faa9a3044dc5f20acd03c7060c1e0b271659c031e08ed27168197c329754145a",
+      "reviewedAt": "2026-09-11T01:13:08.983085+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card describes the physical size/composition of optical fiber strands (a technology fact), flagged grade_mismatch. None of the candidate competencies (measurement, sound, light-energy, gravity, ecosystem factors, waves, microscope, mammal classification, periodic table, greenhouse gases, projectiles) actually teach fiber-optic technology; every match is an incidental hit on a generic word ('light', 'measur', 'water'). No MATATAG competency at grades 3-10 in the candidate set covers optical-fiber/telecommunications technology; no clear destination identified.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:33:53Z disp=exclude"
+    },
+    {
+      "factId": "skepticism-and-acceptance-g9",
+      "id": "dcard-05716",
+      "textHash": "0a24466038441538a0119635a52f685afd24473b2b9fcd36520f56872cf18df1",
+      "reviewedAt": "2026-09-11T01:13:08.983086+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card recounts the history of scientific skepticism/acceptance of Wegener's continental-drift theory. G4-M-7's 'open-minded' facet only coincidentally matches on the word 'evidence'; that competency is about applying science-process attitudes during a grade-4 guided survey of local environmental issues, not a history-of-science vignette. G10-L-9's 'debate|evidence|claim' facet likewise only coincidentally matches 'evidence'; that competency is about debating the societal/ethical implications of biotechnology, not the history of plate-tectonics theory acceptance. No candidate competency's exact wording covers how scientific consensus changed for continental drift/Wegener. Potential destination: a grade-9 Earth-Space competency on the history/nature-of-science behind plate tectonics, not present in this candidate set.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:48:29Z disp=exclude"
+    },
+    {
+      "factId": "skin-helps-feel-pain-warning-g5",
+      "id": "ffct-00209",
+      "textHash": "9eb13a3c27680f18a704fac65697b11d33d77f03b053a675c88ac7e5ee2bb007",
+      "reviewedAt": "2026-09-11T01:13:08.983088+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card explains skin's pain-signal warning function for heat/sharp hazards \u2014 a sensory/nervous-system physiology fact. No candidate teaches this: G3-M-7 and G7-M-12 match only on 'sharp'/'handling' (safe handling of materials/equipment, not skin physiology); G3-E-9 (sun-safety clothing), G5-E-9/G7-E-8/G8-E-10 (weather/tsunami/typhoon official warning signals) match only on 'warning', unrelated to skin; G8-L-3 (plant transport) and G9-M-7 (covalent bonds) are unrelated. Prior reviewer already rejected G4-L-1 (muscular/skeletal/digestive/circulatory/respiratory systems) since skin/pain sensation isn't one of those systems. No MATATAG competency at grades 3-10 in this candidate set covers skin as a sense organ / pain-warning function; would need a dedicated senses/nervous-system facet not present here.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:59:44Z disp=exclude"
+    },
+    {
+      "factId": "slab-pull-force-g10",
+      "id": "dcard-08579",
+      "textHash": "846904f980f37d3fdcff3947e347c5e65e172015799dfc4e509a0a5ce4fd65bf",
+      "reviewedAt": "2026-09-11T01:13:08.983092+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G10-E-5"
+      ],
+      "reason": "Card explains slab pull \u2014 the dense, cold edge of a plate sinking into the mantle at a subduction zone and dragging the rest of the plate \u2014 which is exactly the 'slab pull' mechanism-of-plate-movement facet under G10-E-5 ('...describe and explain mechanisms that drive the movement of tectonic plates...'). This is standard, well-established plate-tectonics content. The variant (dcard-03141/merged: 'At a subduction zone... the colder, thicker edge of the old plate sinks into the mantle and pulls the rest of the plate with it, a force called slab pull.') describes the identical, geologically accurate mechanism, so both variants reconcile cleanly under this code. TL/BIS of both the reviewed card and the variant are faithful, natural translations.",
+      "evidence": [
+        {
+          "lesson": "g10:e-5",
+          "unit": "G10-E-5:focus-1",
+          "quote": "Slab pull happens when the dense, cold edge of a tectonic plate sinks into the mantle at a subduction zone, dragging the rest of the plate behind it."
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass grok-4.6 2026-09-06T14:57:00Z disp=exclude"
+    },
+    {
+      "factId": "sleep-avoid-heavy-food-caffeine-night-g5",
+      "id": "ffct-13609",
+      "textHash": "3c17536f14c8ebb705782e5276dd174203e6757cb69990f507732a6d15feb304",
+      "reviewedAt": "2026-09-11T01:13:08.983095+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card is sleep-hygiene health advice (avoid caffeine/heavy meals before bed). No candidate teaches this; all matches are keyword coincidences on unrelated content (G3-L-7 'food'/'shelter' meaning living-things' dependence on environment, G3-E-8 'night' meaning sky objects, G4-F-8/9/10 and G4-E-7 'light'/'energy', G5-F-5 'heavy/light' referring to object mass not meals, G5-E-10/G6-E-5 weather-before-a-cyclone, G6-L-7/8 abiotic-factor 'light', G6-F-9 wave examples, G7-L-1 microscope, G7-L-10 trophic-level energy loss, G7-F-2 balanced-forces-at-rest, G9-F-1 inertia-at-rest). This is health/lifestyle advice, off-curriculum for the MATATAG competencies in this set; no candidate competency at grades 3-10 covers diet/caffeine-and-sleep.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:59:53Z disp=exclude"
+    },
+    {
+      "factId": "sleep-tiredness-builds-while-awake-g5",
+      "id": "ffct-10018",
+      "textHash": "5d9e6633e10aa2f278131ade9fa547a1fee75386bffd2263ef7a1ebd1366af68",
+      "reviewedAt": "2026-09-11T01:13:08.983097+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card describes human sleep-pressure physiology (sleepiness accumulates while awake and resets with sleep). No candidate teaches this; matches are keyword coincidences (G3-E-7/G3-E-8/G4-E-8 'night'/apparent motion across the sky/shadow length, G6-E-1 volcano formation, G7-F-3 force-diagram magnitude, G7-F-5 'zero' from a distance/displacement round-trip \u2014 none relate to sleep biology). Card is flagged source_runtime_disagreement and was already reviewed 2026-09-06 confirming it is not plant reproduction (G6-L-2) and should stay held pending a correct classification. No MATATAG competency at grades 3-10 in this candidate set covers human sleep-pressure/circadian biology.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "Reviewed 2026-09-06: sleep pressure is not plant reproduction (G6-L-2). Keep available outside curriculum mode until correctly classified."
+    },
+    {
+      "factId": "slippery-rainy-ground-g3",
+      "id": "dcard-04584",
+      "textHash": "6bc6687519f60f292559bb241c2906c6dc037fc62c06ac66a2133f1aa1e9981f",
+      "reviewedAt": "2026-09-11T01:13:08.983099+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card is a weather-safety warning (rain makes ground slippery, causing falls/injuries), not a taught science explanation. The closest candidate, G3-M-1 ('identify objects, activities, or natural events...that can be explained by science'), matches only on the generic word 'rain' in its broad local-examples facet; the card gives no science explanation (e.g., reduced friction) and reads as safety-caution content, closer to the health/safety-advice exclusion category than a taught phenomenon. G4-E-4's 'rain' facet is about describing basic weather characteristics (temperature, pressure, humidity, rain, cloud cover), not slip-hazard safety; G3-E-4's 'patterns' facet is about observing/recording weather patterns over days, also not about safety. No candidate competency genuinely teaches this specific safety fact; a grade-3 rain-safety facet analogous to G3-E-9 (sun safety) would be the right destination but does not exist in this candidate set.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:56:23Z disp=exclude"
+    },
+    {
+      "factId": "smoking-causes-lung-diseases-g9",
+      "id": "dcard-12727",
+      "textHash": "ac3924e198bac6bc7b2ae213d67c6dd8bf267721715e7d5ae6c18521361a567d",
+      "reviewedAt": "2026-09-11T01:13:08.983100+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card states smoking causes respiratory diseases (asthma, cough, colds, TB, lung cancer) \u2014 a genuine grade-9 DepEd health/biology topic (cardMeta even carries the old-curriculum code S9LT-Ic-27) \u2014 but no candidate MATATAG competency's admitted facet actually teaches it: G4-L-1 ('describe...respiratory...work') is grade-4 body-systems-function content, not disease, and is grade-mismatched against this grade-9 card; G9-L-5 and G9-M-10 (weak keyword hits) are hard-blocked (blockedCatsAllEnrichment=true) so cannot be used regardless; G10-M-4's 'respirat' facet concerns the chemical-reaction concept of respiration in ecosystems/industry, not smoking-caused illness; G8-E-9, G6-M-7, G7-M-12, G4-M-2, G4-F-9 are unrelated keyword hits. No usable MATATAG competency in this candidate set covers smoking-caused respiratory disease; a dedicated grade-9 'effects of tobacco on health' facet would be the right destination but is not present here.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:38:52Z disp=exclude"
+    },
+    {
+      "factId": "smoking-pregnancy-baby-g8",
+      "id": "ffct-13562",
+      "textHash": "4508cb0b88ac4f4b3b0c4f399fca691903be382be00faa4f37cc0b12c0e3b8c3",
+      "reviewedAt": "2026-09-11T01:13:08.983102+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card (factId smoking-pregnancy-baby-g8) states smoking during pregnancy can harm the fetus. No candidate teaches this: G3-L-3's 'grow' facet and G7-L-5's 'growth-repair' facet only coincidentally match the English word 'growing' in 'the baby growing inside the mother's womb' \u2014 G3-L-3 is about living things' basic life characteristics (grow/respond/reproduce) in general, and G7-L-5 is about mitosis/meiosis cell division; neither is actually taught by this card. Prior reviewer already rejected G5-L-3 (labeling reproductive-system parts) since the card doesn't identify or describe reproductive organs. This is maternal-health advice, off-curriculum for the competencies in this set; no MATATAG competency at grades 3-10 here covers smoking-and-pregnancy harm specifically. AUP note: reproduction-adjacent topic; Tagalog/Cebuano text not quoted here.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:27:41Z disp=exclude"
+    },
+    {
+      "factId": "soap-is-surfactant-g7",
+      "id": "ffct-15144",
+      "textHash": "3ad845bb1eb6da9d9da76da7e650a83102537f9a7aec10588546886ef14ce738",
+      "reviewedAt": "2026-09-11T01:13:08.983104+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card explains soap/detergent are surfactants because they change how water's surface behaves (surface tension) \u2014 a specific chemistry concept no candidate teaches. G5-F-2's 'surfaces' facet concerns friction on rough/smooth surfaces (a different physics concept), not water surface tension; G6-M-7's mixture-separation facets, G8-L-8/G8-L-11 water-cycle/photosynthesis facets, G9-M-7/G9-M-8 covalent-water-formula facets, and the various 'water'-keyword hits (G3-L-6/7, G3-F-1, G4-L-3, G4-E-9, G6-L-7/8, G10-L-10) all match only on the word 'water', not on surfactant chemistry or surface tension. Prior reviewer already rejected G7-M-3 (particle model of matter: motion/spacing/attraction/temperature) since surface-tension change isn't that particle-kinetics content. No MATATAG competency at grades 3-10 in the candidate set covers surfactants/surface tension; would need a dedicated intermolecular-forces facet not present here.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:15:19Z disp=exclude"
+    },
+    {
+      "factId": "soap-needs-water-to-work-g5",
+      "id": "ffct-15158",
+      "textHash": "03bf286499ea4b47b6afe25f3669648921e028d1aa978a7ca8691458664f13f3",
+      "reviewedAt": "2026-09-11T01:13:08.983106+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card explains a cleaning mechanism (soap traps dirt/oil, water rinses it away) \u2014 no MATATAG competency among the 22 candidates genuinely teaches this. All matches are keyword hijacks: G5-E-5's 'transport' facet matches 'carries away' but the card is not about erosion transporting Earth materials; G3-M-7/G5-F-3 match 'oil' but the card is not about waste disposal or friction reduction; G3-L-6 matches 'water' but the card is not about living things' basic needs; G4-M-2 matches 'work' but the card explains a mechanism, not an invention's impact on daily life. No MATATAG competency at grades 3-10 covers this surfactant/hygiene fact.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:16:20Z disp=exclude"
+    },
+    {
+      "factId": "soap-tail-in-head-out-g7",
+      "id": "ffct-15142",
+      "textHash": "1d6d9601f53bb6ffd601e69a934bbffb30fd0871f4e7a0a64f9a4ba329b5179e",
+      "reviewedAt": "2026-09-11T01:13:08.983108+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card describes micelle structure (amphipathic soap molecules arranged tails-in/heads-out around a grease droplet), an advanced surfactant-chemistry concept. No candidate genuinely teaches this: G7-M-2's 'particles' facet matches the word 'molecules' but the card teaches micelle geometry, not the basic Particle Model of Matter (all matter made of tiny particles) \u2014 needs facet repair. G3-L-4 matches 'tail' but that unit is about animal body parts (fins/tails/flippers), not soap chemistry. G5-E-12/G10-F-3 match 'ball' but those units are about Moon-phase or collision models, not micelles. G5-F-3/G9-M-7/G9-M-8 match 'oil'/'water' but are about friction-reduction or water's covalent bonding, not micelle self-assembly. No MATATAG competency at grades 3-10 covers micelle/surfactant structure (consistent with the first pass's grade_mismatch flag).",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:15:47Z disp=exclude"
+    },
+    {
+      "factId": "sodium-hypochlorite-g9",
+      "id": "dcard-05067",
+      "textHash": "bb5258f1071d6b58f276b2d39d5e0ffd699e7534de71f81ae532e9ef513aa339",
+      "reviewedAt": "2026-09-11T01:13:08.983112+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G8-M-6"
+      ],
+      "reason": "The card pairs a real-world compound formula (NaOCl) with the plain-language names of the elements it is built from, in the same order (Na=sodium, O=oxygen, Cl=chlorine) \u2014 a legitimate, correct teaching instance of G8-M-6 'identify the names and symbols of the first 20 or several common elements of the periodic table.' Oxygen falls in the first-ten facet, sodium and chlorine in the next-ten facet; both are genuinely represented by name+symbol via the formula, not a bare keyword hit. The fact is chemically correct (household bleach's active ingredient is sodium hypochlorite, NaOCl). G9-M-4 and G9-M-5 (the more topically 'exact' Grade 9 candidates) are both blockedCatsAllEnrichment=true, so they are unavailable regardless. Tagalog/Cebuano are faithful, natural, and grade-appropriate (retain standard English chemistry terms as is conventional).",
+      "evidence": [
+        {
+          "lesson": "g8:element-names",
+          "unit": "G8-M-6:first-ten",
+          "quote": "Sodium hypochlorite (NaOCl) is a compound found in some bleaches, and it is made of the elements sodium, oxygen, and chlorine."
+        },
+        {
+          "lesson": "g8:element-names",
+          "unit": "G8-M-6:next-ten",
+          "quote": "Sodium hypochlorite (NaOCl) is a compound found in some bleaches, and it is made of the elements sodium, oxygen, and chlorine."
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:27:30Z disp=exclude"
+    },
+    {
+      "factId": "sodium-phosphorus-oxygen-g9",
+      "id": "dcard-01691",
+      "textHash": "78493e531ea826ec6d7bf12f962593f3bb81b50bfa3a37a87be9022fd06a1c80",
+      "reviewedAt": "2026-09-11T01:13:08.983114+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "The card's central teaching point is calculating an empirical formula from percent composition (42.07% Na, 18.89% P, 39.04% O -> Na3PO4), the Grade 9 quantitative skill tagged depedCompetency S9MT-IIj-20 \u2014 a distinct, more advanced skill from element-name memorization, and no candidate covers percent-composition/empirical-formula calculation (the topically exact codes G9-M-4 and G9-M-5 are both blockedCatsAllEnrichment=true). Recovering into G8-M-6 ('element names and symbols') would misrepresent an empirical-formula problem as basic name/symbol memorization: unlike the parallel sodium-hypochlorite card, here the element names are incidental data inside a percentage/formula-derivation exercise, not the card's teaching focus, so this is 'sharing nouns' rather than genuinely teaching G8-M-6. G6-E-1's 'formation' facet is a pure regex false-positive (matches 'form' inside 'formula'); G10-M-5/G10-M-7 match 'formula' but those units are about balancing/writing chemical-reaction equations, not empirical formulas from percent composition. Potential destination: a Grade 9 percent-composition/empirical-formula competency (S9MT-IIj-20) if one is added to the compiler's candidate set.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:36:11Z disp=exclude"
+    },
+    {
+      "factId": "soft-objects-g4",
+      "id": "dcard-06181",
+      "textHash": "34942a64500ceff41c555744071a2019a0f06d1b83d699fd601ab6b4defe9c97",
+      "reviewedAt": "2026-09-11T01:13:08.983117+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G4-F-1"
+      ],
+      "reason": "Card directly and correctly teaches the defining property of 'soft' objects (easily bent/deformed/compressed) with concrete everyday examples (sponge, bread, cloth) \u2014 exactly the teaching component of G4-F-1 'discover and predict how rigid and soft objects can be moved and/or changed in shape.' Grade-correct (depedGrade 4 matches G4-F-1's grade 4). The sole admitted facet ('soft') is genuinely taught, not a bare keyword hit. Preferred over the alternate keyword match G3-M-5 (a Grade 3 competency about a broader set of solid properties \u2014 hard, shiny, stretchable \u2014 that this card does not address) since G4-F-1 is the single best, grade-matched, scarce fit. Tagalog/Cebuano are faithful and natural (retaining standard English science vocabulary as in the source).",
+      "evidence": [
+        {
+          "lesson": "g4:rigid-soft",
+          "unit": "G4-F-1:soft",
+          "quote": "Soft objects can be easily bent, deformed, or compressed, like a sponge, bread, or cloth."
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:10:04Z disp=exclude"
+    },
+    {
+      "factId": "solar-devices-g4",
+      "id": "dcard-09908",
+      "textHash": "7114f7737275231a95e391eca403f575a599caf3d10f7bd3aeb6bb623ffb871a",
+      "reviewedAt": "2026-09-11T01:13:08.983122+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G4-M-2"
+      ],
+      "reason": "Card identifies a science invention (solar devices) and explains a concrete impact on everyday life (they work where electric wiring cannot reach) \u2014 the exact teaching component of G4-M-2 'identify a science invention and explain its impact on their everyday life.' Grade-correct (depedGrade 4 matches G4-M-2's grade 4; cardMeta.cats confirms 'g4-matter-scientists-and-inventions' origin). The single admitted facet ('uses') is genuinely taught, not merely a keyword hit. Excluded the weaker sun/light-keyword matches (G3-F-5, G4-F-8) since the card is not about light sources or non-contact forces but about an invention's practical benefit. Tagalog/Cebuano are faithful, natural, and grade-appropriate.",
+      "evidence": [
+        {
+          "lesson": "g4:local-inventions",
+          "unit": "G4-M-2:uses",
+          "quote": "Solar devices use energy from the sun, so they can work in places where electric wires cannot reach."
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:25:15Z disp=exclude"
+    },
+    {
+      "factId": "solar-power-g10",
+      "id": "dcard-03578",
+      "textHash": "e869d610d6c3925b416fba3acad4e82323bbcd6867217fea94b634d80fd92ea9",
+      "reviewedAt": "2026-09-11T01:13:08.983127+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G10-E-12"
+      ],
+      "reason": "Card correctly teaches that solar power (a renewable energy) avoids the greenhouse-gas emissions that drive climate change \u2014 directly a component of G10-E-12 'explain how increased societal uses of renewable energies could mitigate the effects of global climate change.' Both admitted facets (solar; emission/carbon/climate) are genuinely taught, not bare keyword hits: the card is squarely about solar energy's climate benefit. Grade-correct (depedGrade 10; cardMeta.cats confirms 'g10-earth_space-climate-adaptation-and-mitigation' origin). Preferred over G10-E-9 ('role of greenhouse gases in warming') since the card's focus is solar power's benefit, not a general exposition of greenhouse-gas mechanics. The claim that solar power generation itself does not release greenhouse gases is an accurate, standard educational simplification (operational solar-electricity generation is emission-free). Tagalog/Cebuano are faithful and natural for grade 10.",
+      "evidence": [
+        {
+          "lesson": "g10:e-12",
+          "unit": "G10-E-12:focus-1",
+          "quote": "Solar power produces energy in a way that does not release the greenhouse gases that cause climate change."
+        },
+        {
+          "lesson": "g10:e-12",
+          "unit": "G10-E-12:focus-5",
+          "quote": "Solar power produces energy in a way that does not release the greenhouse gases that cause climate change."
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:34:19Z disp=exclude"
+    },
+    {
+      "factId": "solar-system-model-g7",
+      "id": "ffct-38995",
+      "textHash": "44e33b7045c12fe6fba56b1550de3ca8c9acb44cc8fc8805ac1307996df9ef1c",
+      "reviewedAt": "2026-09-11T01:13:08.983129+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "No candidate genuinely teaches the card's content (a solar-system orrery-type model's usefulness for depicting planetary orbits/distances). All matches are keyword hijacks: G3-E-6 matches 'planets' but is about guided daytime/nighttime sky observation, not models; G8-M-2/G9-L-1/G10-F-3 match 'model'/'ball' but concern atom diagrams, DNA double helix, or collisions, not solar-system models; G7-E-10 is about Earth's axial tilt affecting sunlight intensity, unrelated to orbital-distance modeling. Additionally variantTextsDiffer=true and the two variants make substantively different, not-clearly-reconcilable claims: ffct-38995 (reviewed) says the model is useful precisely because real orbits are millions of km wide, while dcard-11070 says the model cannot show the real, enormous distances between planets (emphasizing a limitation rather than a use) \u2014 variants differ: dcard-11070, ffct-38995 \u2014 unresolved identity. No MATATAG competency among candidates covers solar-system-model content at grades 3-10.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:47:07Z disp=exclude"
+    },
+    {
+      "factId": "solid-liquid-mixtures-g6",
+      "id": "dcard-07243",
+      "textHash": "bf02fbd71a39b810109b0ac661857506579f6fe3100bc3766d1b429ed6abb59d",
+      "reviewedAt": "2026-09-11T01:13:08.983130+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card teaches that muddy water, sand+water, and sugared orange juice are solid-liquid mixtures \u2014 this squarely fits G6-M-4 ('uniform and non-uniform mixtures, such as solutions and suspensions'), but G6-M-4 is not among the matched candidates for this card (its facet regex, e.g. 'solution|homogeneous', did not fire on this text) and so is unavailable for placement. Among actual candidates, every match is a facet-repair case: needs facet repair \u2014 G6-M-7:products matches on 'water'/'sand' but the card is about identifying mixture composition, not the benefits of a separation technique; needs facet repair \u2014 G7-M-4:solid/G7-M-4:liquid match on the words 'solid'/'liquid' but the card does not teach particle arrangement, spacing, or motion; needs facet repair \u2014 G5-M-4:everyday-examples matches on 'juice'+'solid' but the card classifies a mixture of two substances, not a single object's state (solid/liquid/gas). Potential destination: G6-M-4 if its facet regex is widened to catch 'solid-liquid mixture' phrasing (no 'solution'/'suspension' keyword present in this card).",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:43:08Z disp=exclude"
+    },
+    {
+      "factId": "solids-in-school-g5",
+      "id": "dcard-09692",
+      "textHash": "102b3bc2f566a8055c9bf3f9af84e79ffd7b0034b404777b0f4af111babae6b6",
+      "reviewedAt": "2026-09-11T01:13:08.983143+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G5-M-4"
+      ],
+      "reason": "Card directly and correctly identifies classroom objects (erasers, chalk, books, paper, tables, chairs, blackboard) as solids \u2014 exactly the teaching component of G5-M-4 'identify objects at home and in the classroom as solid, liquid or gas.' Grade-correct (depedGrade 5 matches; cardMeta.cats confirms 'g5-matter-states-of-matter' origin). The single admitted facet is genuinely taught (a real classification example), not a bare keyword hit. Excluded several false-positive candidates that only match on the furniture words 'table'/'chair'/'school' but teach unrelated competencies: G6-M-9/G7-M-7 ('table' as data-table, not furniture), G4-L-4 ('table' as habitat chart), G3-L-2 ('chair' inside a living/non-living list), G3-E-1/G4-M-2/G6-F-1 ('school' keyword, unrelated topics) \u2014 all needs-facet-repair cases. Tagalog/Cebuano are faithful, natural, and grade-appropriate.",
+      "evidence": [
+        {
+          "lesson": "g5:states-of-matter",
+          "unit": "G5-M-4:everyday-examples",
+          "quote": "In school, solids include erasers, chalk, books, pad paper, tables, chairs, and the blackboard."
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:37:11Z disp=exclude"
+    },
+    {
+      "factId": "soluble-or-insoluble-g7",
+      "id": "dcard-02300",
+      "textHash": "f899f67d04e85608aac32f467ce73fc929be67dfef84d11cc2610db9b043b96b",
+      "reviewedAt": "2026-09-11T01:13:08.983145+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card teaches solubility classification (soluble vs. insoluble substances, e.g. salt dissolves, butter does not) but never uses the word 'solute' and does not assign roles to solute vs. solvent \u2014 it only names 'solvent' generically. This falls short of G7-M-8's exact wording, 'identify the role of the solute and solvent in a solution,' which requires distinguishing what is dissolved (solute) from what does the dissolving (solvent); needs facet repair \u2014 G7-M-8:solvent matches on the word 'solvent' but the card teaches solubility classification, not solute/solvent roles. G7-M-11's 'salt' facet is a keyword hijack (about litmus-indicator acid/base/salt testing, unrelated to solubility). variantTextsDiffer=true: the variant dcard-00268 ('Substances may be very soluble, slightly soluble, or insoluble...') reinforces that the card family's actual topic is degrees of solubility, not solute/solvent roles \u2014 it never mentions 'solvent' or 'solute' at all, further weakening the G7-M-8 fit. Potential destination: a Grade 7 solubility-specific facet/unit if one is added (distinct from the solute/solvent-roles unit).",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:31:13Z disp=exclude"
+    },
+    {
+      "factId": "solutions-in-any-phase-g6",
+      "id": "dcard-02961",
+      "textHash": "d1300f8e0bfd76699aa9f3ca81c047a498ea1f966c3fe383006ba1c69b3980b0",
+      "reviewedAt": "2026-09-11T01:13:08.983147+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card states a correct but abstract generalization (any two substances mixing evenly into a single phase may form a solution, regardless of whether they started as solid, liquid, or gas) with no concrete example substances and no discussion of usefulness. G6-M-4 requires 'useful everyday examples of uniform and non-uniform mixtures, such as solutions and suspensions' \u2014 needs facet repair: G6-M-4:solutions matches on the word 'solution' but the card teaches a general definitional rule, not an everyday example, and omits any discussion of usefulness. G5-M-2's 'three-states' facet and G7-M-4's solid/liquid/gas facets are keyword hijacks (matched on the words 'solid,' 'liquid,' 'gas' used to describe starting phases of a solution, not to teach that matter has three states or to describe particle arrangement/spacing/motion). Potential destination: G6-M-4 if paired with a concrete everyday example (e.g., a specific alloy or gas mixture) that demonstrates usefulness.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:13:04Z disp=exclude"
+    },
+    {
+      "factId": "solving-circuit-problems-g9",
+      "id": "dcard-08577",
+      "textHash": "b26b1cef08f2e64838c9444a2fef372d27fe2ecc548c51ba706db0255fb13926",
+      "reviewedAt": "2026-09-11T01:13:08.983153+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G9-F-7"
+      ],
+      "reason": "Card teaches the exact quantitative relationship among resistance, current, and voltage in a series circuit (total R = sum of R, I = Ohm's law, each V-drop = IR), which is the core content of G9-F-7's series-circuit investigation. All three admitted facets (current-voltage, resistance, series) are genuinely present, not just keyword hits. Physics is correct (standard series-circuit method). TL/BIS are faithful literal translations retaining the technical terms appropriately for G9 register.",
+      "evidence": [
+        {
+          "lesson": "g9:f-7",
+          "unit": "G9-F-7:focus-1",
+          "quote": "then use Ohm's law to find total current, and finally calculate each voltage drop with V=IR"
+        },
+        {
+          "lesson": "g9:f-7",
+          "unit": "G9-F-7:focus-2",
+          "quote": "first add all resistances to get total resistance"
+        },
+        {
+          "lesson": "g9:f-7",
+          "unit": "G9-F-7:focus-3",
+          "quote": "To solve a series circuit problem"
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:54:17Z disp=exclude"
+    },
+    {
+      "factId": "solving-for-voltage-g9",
+      "id": "dcard-09836",
+      "textHash": "277ad0fe83b64aa5b4411bdfd854de7591e45c9e50168f550cb86456d7a3c795",
+      "reviewedAt": "2026-09-11T01:13:08.983157+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G9-F-7"
+      ],
+      "reason": "Card states and applies Ohm's law (V=IR) with correct arithmetic (0.50 A x 1500 ohm = 750 V), which is the core current-voltage-resistance relationship G9-F-7 investigates. Only the two facets admitted for this card (current-voltage, resistance) were required, and both are genuinely taught by the worked example, not merely keyword hits. TL/BIS are faithful literal translations, numbers and units preserved correctly.",
+      "evidence": [
+        {
+          "lesson": "g9:f-7",
+          "unit": "G9-F-7:focus-1",
+          "quote": "To find voltage, multiply current by resistance"
+        },
+        {
+          "lesson": "g9:f-7",
+          "unit": "G9-F-7:focus-2",
+          "quote": "a 0.50-ampere current through a 1500-ohm resistor"
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:04:24Z disp=exclude"
+    },
+    {
+      "factId": "sorting-our-trash-g8",
+      "id": "dcard-00188",
+      "textHash": "090a5396a8086e46a8cc2bd58626b2f1524ea35d0ad79503da6f4084c8060a5a",
+      "reviewedAt": "2026-09-11T01:13:08.983159+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card defines waste segregation as a pollution-reducing conservation practice, but no candidate code teaches this as its own component -- all matches are keyword-only: G3-M-7's 'recycle' facet requires DEMONSTRATING proper handling/disposal (procedural), not stating a general definition; G3-L-8's 'care-actions' facet (protect/conserv/recycl) is about recognizing the broad NEED to conserve the environment, not itemizing a sorting practice; G9-L-10's 'pollut' facet requires describing EFFECTS of human activities on living things in an ecosystem, not describing a mitigation practice; G9-L-11's 'reduce' facet requires PLANNING A SURVEY, which the card does not do. The card's own DepEd code (S8LT-IVj-25, Grade 8) has no MATATAG equivalent among the candidates. Potential destination: a Grade 6-8 MATATAG competency on waste management/recycling practices, if one exists outside this candidate set -- needs facet repair or a new competency mapping, not a blanket recovery into any of the above.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:51:20Z disp=exclude"
+    },
+    {
+      "factId": "sound-energy-g6",
+      "id": "dcard-08445",
+      "textHash": "33a62d4c3dbd48e1a1e97cd9d61c0a2ed774abe656d1306abc46c7e624202371",
+      "reviewedAt": "2026-09-11T01:13:08.983163+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-F-4"
+      ],
+      "reason": "Card directly teaches that sound is made by vibrating objects, giving concrete everyday examples (guitar string, drum skin, radio speaker) -- exactly the 'vibration' facet of G3-F-4 ('explore and describe how sound is made ... in everyday situations'). Content is correct physics and simple/age-appropriate enough to serve this earlier-grade lesson even though the card was originally tagged G6. TL/BIS are faithful, natural translations of the same claim.",
+      "evidence": [
+        {
+          "lesson": "g3:sound",
+          "unit": "G3-F-4:vibration",
+          "quote": "Sound energy is produced by vibrating objects, like the strings of a guitar, the skin of a drum, or the speaker of a radio."
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:19:58Z disp=exclude"
+    },
+    {
+      "factId": "sound-in-gases-g4",
+      "id": "dcard-02272",
+      "textHash": "7f740f1a4620f834b67129c7eec2ff0abe0634524f057628c61b2bb52b0cdc9d",
+      "reviewedAt": "2026-09-11T01:13:08.983165+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card teaches a comparative, particle-spacing explanation for why sound is slowest through gases (a Grade 4 DepEd code S4FE-IIIf- topic), which is more advanced than any matched MATATAG facet: G3-F-4's 'transfer' facet (focus 'transfer', lesson 'Making and Hearing Sound') is scoped to simple everyday transfer scenarios (a bell ringing, hearing noises), not a particle-theory speed comparison across states of matter; its 'vibration' facet is about how sound is initially produced, not about relative propagation speed. G4-F-9/G4-F-10 only match on the bare word 'sound' (energy forms / sources-uses), not the propagation-speed content. G6-F-9's 'longitudinal' facet matches only the word 'sound', not wave-type identification. No MATATAG competency in the candidate set covers comparing sound speed through solids/liquids/gases. Potential destination: a Force/Energy competency (grades 4-7) specifically on sound speed in different media, if one exists outside this candidate set.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:26:35Z disp=exclude"
+    },
+    {
+      "factId": "sound-through-materials-g4",
+      "id": "dcard-02271",
+      "textHash": "31781ba7b227dbb0a3333c279a522da5d77d2c4625b88a64d1a6db5e59702450",
+      "reviewedAt": "2026-09-11T01:13:08.983167+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card teaches that sound propagates through solids, liquids, and gases because particles vibrate -- a Grade 4 particle-theory propagation concept (DepEd S4FE-IIIf-) that is more advanced than the G3-F-4 'transfer'/'vibration' facets it keyword-matches, which are scoped to simple everyday sound-transfer situations like a bell ringing or hearing noises, not a three-state propagation mechanism. G6-F-9's 'longitudinal' facet matches only the bare word 'sound', not identification of wave types. No candidate genuinely teaches sound's ability to pass through the three states of matter as its own component. Potential destination: a Grade 4-6 Force/Energy competency on how sound travels through different media, if one exists outside this candidate set.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:25:16Z disp=exclude"
+    },
+    {
+      "factId": "sounds-of-nature-g4",
+      "id": "dcard-00965",
+      "textHash": "5e72d976a79f0305f59d13ef5973088e8fd8292a8ae2f824d968bb19e03a4b80",
+      "reviewedAt": "2026-09-11T01:13:08.983171+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G4-F-10"
+      ],
+      "reason": "Card identifies natural sound sources a Grade 4 student would observe locally (thunder, waves, wind) -- exactly the 'sound' facet of G4-F-10 ('observe and identify sources ... of ... sound energy ... in the local community'). Only the single admitted facet (sound sources) is required here, and it is genuinely, not just keyword, taught. Content is factually accurate and age-appropriate. TL/BIS are faithful, natural translations.",
+      "evidence": [
+        {
+          "lesson": "g4:energy-uses",
+          "unit": "G4-F-10:sound",
+          "quote": "Nature makes many sounds, like thunder rumbling in a storm, waves crashing on a beach, and wind blowing through leaves."
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:11:46Z disp=exclude"
+    },
+    {
+      "factId": "sources-and-importance-of-water-g4",
+      "id": "dcard-10927",
+      "textHash": "ff5ea1c9002c5390577fd5a94898c1b599fa1074cc75fd1cab9c3efc03b017f8",
+      "reviewedAt": "2026-09-11T01:13:08.983173+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Held by keep-skeptic: The card is overwhelmingly about identifying water SOURCES (rivers/rain/pipes) which no candidate code covers; only a throwaway trailing clause ('all living things depend on it') touches G3-L-6's basic-needs competency, so this is the card merely mentioning the needs topic in passing rather than teaching it -- filing a water-sources card under a living-things'-basic-needs lesson misplaces it for a child. Reviewer had proposed [\"G3-L-6\"]: The card's closing clause states that all living things depend on water, which is exactly the 'water' facet of G3-L-6 ('identify the basic needs of all living things, such as air, food, water, and shelter'). No MATATAG Earth/Space code among the candidates covers 'water sources' specifically (G4-E-4/G4-E-9/G3-E-1 only keyword-match on 'rain'/'water' outside their true scope of weather characteristics, sun importance, or a broad non-living-things survey), so the water-as-basic-need component is the only genuinely served teaching component; it is correct and age-appropriate for G3. TL/BIS are faithful translations of the same claim.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:54:48Z disp=exclude"
+    },
+    {
+      "factId": "sources-of-sound-g3",
+      "id": "dcard-01439",
+      "textHash": "b5498850aea6153703cc69abe9439558bbccf16e9a423e3162c5e5ce5cef68af",
+      "reviewedAt": "2026-09-11T01:13:08.983177+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G4-F-10"
+      ],
+      "reason": "Card explicitly identifies everyday local sources of sound (bird, dog, tricycle -- school/home/community settings), which is exactly the 'sound' facet of G4-F-10 ('observe and identify sources ... of ... sound energy ... in the local community'). G3-F-8's 'sound' facet is a false match (that competency is about using sound to send information/signals, e.g. clapping or a whistle, not identifying ambient sound sources). Content is accurate and age-appropriate; TL/BIS are faithful translations.",
+      "evidence": [
+        {
+          "lesson": "g4:energy-uses",
+          "unit": "G4-F-10:sound",
+          "quote": "Every sound around you comes from a source, like a chirping bird, a barking dog, or a passing tricycle."
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:13:20Z disp=exclude"
+    },
+    {
+      "factId": "space-technology-in-science-g9",
+      "id": "dcard-09079",
+      "textHash": "c6b9dd699b2fb90927001248976def4d84a5fd63902f59b4c7f41bf7bebae529",
+      "reviewedAt": "2026-09-11T01:13:08.983179+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card is a tautological, curriculum-categorization statement ('space technology is part of Earth and space science because it helps us understand our own planet and everything beyond it') with no concrete space-technology content -- it names no instrument, mission, application, or effect. All candidate matches are keyword/substring artifacts: G3-E-6's 'planet' facet is never actually discussed by the card (it says 'planet' only generically, our own planet Earth, not the astronomical objects the competency covers); G3-F-7's 'ear' facet is a substring hit inside the word 'Earth', not the word 'ear'; G9-F-10's 'space' facet is about EMR traveling through a vacuum, not this card's meta-statement. No MATATAG competency is genuinely taught here. Potential destination: none as written -- the card needs to be rewritten with an actual space-technology fact (e.g. a specific satellite use) before it can be mapped to a G9-E space-technologies competency.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:03:18Z disp=exclude"
+    },
+    {
+      "factId": "spaces-in-liquid-particles-g7",
+      "id": "dcard-01000",
+      "textHash": "460dbfceddaffc2329e4c2ac34deb4088020116d0c67a1b072557eddd497127b",
+      "reviewedAt": "2026-09-11T01:13:08.983183+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-M-3"
+      ],
+      "reason": "Card directly and correctly teaches the 'spaces between them' component of G7-M-3 ('describe that particles ... have spaces between them ...') by comparing liquid vs. solid particle spacing -- accurate particle-model physics (solids most tightly packed, liquids more spaced, matching standard ordering). G7-M-4's 'solid'/'liquid' facets are a weaker fit since that competency calls for diagram-based arrangement-and-motion descriptions of all three states, which this plain-text spacing comparison does not provide. TL/BIS are faithful literal translations.",
+      "evidence": [
+        {
+          "lesson": "g7:particle-motion",
+          "unit": "G7-M-3:spaces",
+          "quote": "Liquid particles have small spaces between them, but these spaces are larger than the spaces in solids."
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:51:04Z disp=exclude"
+    },
+    {
+      "factId": "species-across-space-g10",
+      "id": "dcard-05161",
+      "textHash": "c2df3959dae47ec5d738376a07969d8a9495b576c0b118c2e654204b118553e5",
+      "reviewedAt": "2026-09-11T01:13:08.983187+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G10-L-5"
+      ],
+      "reason": "Card gives a correct, precise definition of biogeography and its use in understanding species dispersal/evolution, which is exactly the 'biogeograph' facet of G10-L-5 ('... lines of evidence, such as fossils, biogeography, and comparative morphology, support the occurrence of evolution'). This is a scarce, distinctive match (not a generic keyword hit) since the card is specifically about the biogeography line of evidence. Content is accurate (standard evolutionary-biology definition) and appropriate for G10 register; TL/BIS are faithful literal translations retaining technical vocabulary consistent with Grade 10 science usage.",
+      "evidence": [
+        {
+          "lesson": "g10:l-5",
+          "unit": "G10-L-5:focus-2",
+          "quote": "Biogeography studies the distribution of species in geographic space and through geological time"
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:47:50Z disp=exclude"
+    },
+    {
+      "factId": "specimen-on-a-slide-g7",
+      "id": "dcard-08976",
+      "textHash": "21cc5a2c653dffb471ccd55a7b654587dcee0679682b51f2aebc25b45de92938",
+      "reviewedAt": "2026-09-11T01:13:08.983189+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card only defines vocabulary ('a specimen is a small sample placed on a glass slide for viewing') \u2014 it does not teach any admitted facet. G7-L-2:technique (pattern 'slide|focus|low.power|microscope') is meant to capture proper technique in observing/identifying cell parts; this card never describes a technique or cell-part identification, only a term definition \u2014 a coincidental match on the word 'slide'. No other candidate (living-thing needs, sun safety, mixtures, ecosystems, covalent bonds, earthquakes, etc.) is topically related at all. Needs facet repair: G7-L-2:technique matches on 'slide' but the card does not teach the technique. Potential destination: G7-L-1 (microscope parts/functions) if a 'specimen/sample' vocabulary facet were added \u2014 not currently admitted.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:30:23Z disp=exclude"
+    },
+    {
+      "factId": "speed-of-flow-g3",
+      "id": "dcard-01292",
+      "textHash": "889ed69176d078538756b231cd2c4463ec7a6d9ca67afcc1fe7747262c4727ce",
+      "reviewedAt": "2026-09-11T01:13:08.983191+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card states a viscosity/flow-speed comparison between liquids (water vs honey). No candidate genuinely teaches this: G7-M-4:liquid (particle arrangement/spacing/motion in the three states of matter) is matched only on the word 'liquid', not on particle motion content; G5-M-4:everyday-examples (classify home/classroom objects as solid, liquid, or gas) is matched on 'water', not on solid/liquid/gas classification; G3-L-6/L-7 'water' facets concern living things' basic needs/environmental dependence, unrelated to liquid viscosity. No MATATAG competency among the candidates covers relative viscosity/flow-speed of liquids at grades 3\u201310; no clean destination identified.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:45:28Z disp=exclude"
+    },
+    {
+      "factId": "sperm-making-in-testes-g8",
+      "id": "dcard-07008",
+      "textHash": "4f0490f3033247a0e44a22caa96796c75c69ed5d8afbaf571b9896b0d5cffa53",
+      "reviewedAt": "2026-09-11T01:13:08.983193+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "AUP-sensitive human-reproduction card (referenced by factId only). The only topically relevant candidate, G5-L-3 (Grade 5: identify reproductive-system parts from labeled diagrams and 'describe how they work'), admits a 'testes' facet matched on the word 'testes'/'testis', but the card's actual content \u2014 spermatogenesis detail: meiotic production of four haploid sperm cells from one starting cell \u2014 is cell-division/genetics content exceeding the Grade 5 'identify parts, describe how they work' scope; the card's own depedCompetency (S8LT-IVe-17) tags it Grade 8. No Grade 7\u20139 candidate here genuinely covers it either: G7-L-5's mitosis/meiosis facet is scoped to 'growth and repair' via mitosis, not gametogenesis in the testes; G9-L-2's 'gene' facet concerns DNA/trait transmission, not gamete formation. Needs facet repair: G5-L-3:testes matches on 'testes' but the card teaches Grade-8-level meiotic detail, not Grade 5 organ identification. Potential destination: a Grade 8 meiosis/gametogenesis competency (matching depedCompetency S8LT-IVe-17) is not present among this fact's candidates.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:19:52Z disp=exclude"
+    },
+    {
+      "factId": "splitting-sugar-g8",
+      "id": "dcard-07592",
+      "textHash": "43ce80694e28759b07ed43ef481f11448a4d728e264748fdcb400d37d752a985",
+      "reviewedAt": "2026-09-11T01:13:08.983196+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G8-L-10"
+      ],
+      "reason": "Card teaches exactly the admitted facet: glycolysis, the first stage of cellular respiration, occurs in the cell's cytoplasm \u2014 directly serving G8-L-10's 'identify the different parts of the cell where...respiration occur[s]' competency (respiration-sites facet). G8-L-10 has only this one admitted facet for this card and it is genuinely taught, not coincidental. The remaining content (glucose splits into 2 pyruvate, net gain of 2 ATP) is accurate standard biochemistry. Grade (8) and domain (LIVING_THINGS, cellular-respiration cats bucket) match cardMeta exactly. Tagalog and Cebuano are faithful, natural, and grade-appropriate.",
+      "evidence": [
+        {
+          "lesson": "g8:cell-energy-sites",
+          "unit": "G8-L-10:respiration-sites",
+          "quote": "cuts one glucose molecule in half into two pyruvate molecules in the cell's cytoplasm"
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:04:55Z disp=exclude"
+    },
+    {
+      "factId": "spoiled-food-leftovers-g3",
+      "id": "dcard-09634",
+      "textHash": "2329ba196abc675850d2709c57ffb1c1f742a1f6d11896bacc6c2e98ad8f9f3b",
+      "reviewedAt": "2026-09-11T01:13:08.983198+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card describes food spoilage/mold growth \u2014 a 'harmful change in materials' (matches cardMeta's own cats bucket 'g3-matter-harmful-changes-in-materials'), but no MATTER-domain G3 candidate on this bucket is present among this fact's candidates. The only matches offered are LIVING_THINGS facets: G3-L-3:grow matched on the word 'grow' in 'bread can grow...molds', not on the taught characteristic that living things grow; G3-L-6/L-7 'food' facets matched on the word 'food' in 'food leftovers', not on food as a basic need or environmental dependence. All are coincidental keyword matches. Needs facet repair/build-out on a G3 MATTER competency for harmful/spoilage changes in materials, implied by the cats bucket but not represented among this fact's admitted candidates.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:04:09Z disp=exclude"
+    },
+    {
+      "factId": "spring-equinox-g6",
+      "id": "dcard-09853",
+      "textHash": "cc813e02319317276c37bf18e52572f512960de084b0e395ce15f6dd14ba23ad",
+      "reviewedAt": "2026-09-11T01:13:08.983200+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card describes a Northern-Hemisphere/temperate-zone concept (spring equinox around March 21, equal day/night length, deciduous trees leafing out) with no clean match among candidates. G6-E-6 requires describing seasons IN THE PHILIPPINES specifically; this card describes temperate-region seasonal change, not Philippine seasons, and no facet for G6-E-6 is even offered as a candidate here. The only nominally topical candidate, G3-E-6:day-night (pattern 'day.*night|night.*day'), is about observing the Sun/Moon/planets/stars in the daytime/nighttime sky, not equinox timing \u2014 a coincidental match on the words 'day'/'night'. No MATATAG competency among the candidates at grades 3\u201310 covers equinox/day-night-length equality or temperate-region seasonal change; no clean destination identified (a G7 axial-tilt/seasons-cause competency would be the natural fit but is not present among this fact's candidates).",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:33:11Z disp=exclude"
+    },
+    {
+      "factId": "squash-slide-g7",
+      "id": "dcard-12242",
+      "textHash": "1a3ef3837cc2439943a9c9d3bae3336e4ddfdc4c149fb8b4f3a671508eaf4856",
+      "reviewedAt": "2026-09-11T01:13:08.983204+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-L-2"
+      ],
+      "reason": "Card describes an actual specimen-preparation technique used before microscope observation (the squash-slide method: pressing the coverslip to flatten a soft specimen), directly serving G7-L-2's 'use proper techniques in observing and identifying...a cell with a microscope' competency, technique facet. The match is substantive, not coincidental (consistent with the card's own depedCompetency S7LT-IIb-2, a Grade 7 Quarter 2 microscope-technique competency). Only one facet is admitted for this code on this card and it is genuinely taught. Grade (7) and cats (g7-living_things-microscopes) match cardMeta. Tagalog/Cebuano are faithful and grade-appropriate; the technique is standard, accurate microscopy practice.",
+      "evidence": [
+        {
+          "lesson": "g7:cell-observation",
+          "unit": "G7-L-2:technique",
+          "quote": "a squash slide may be made by gently pressing down on the coverslip to flatten the specimen"
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:10:04Z disp=exclude"
+    },
+    {
+      "factId": "stage-clips-g7",
+      "id": "dcard-06907",
+      "textHash": "90227fc6caa00dd68e70597b681792f1acb1b1aa4fa213fa8778aa68ff1ffec4",
+      "reviewedAt": "2026-09-11T01:13:08.983208+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G7-L-1"
+      ],
+      "reason": "Card identifies a compound-microscope part (stage clips, located on the stage) and its function (holding the glass slide firmly in place while focusing) \u2014 directly and completely serving G7-L-1's 'identify the parts and functions...of a compound microscope' competency. Both admitted facets (parts, functions) are genuinely taught, not coincidental: 'stage' names the part's location and 'you focus' describes its functional context during use. Grade (7) and cats (g7-living_things-microscopes) match cardMeta. Tagalog/Cebuano are faithful and accurate.",
+      "evidence": [
+        {
+          "lesson": "g7:microscope",
+          "unit": "G7-L-1:parts",
+          "quote": "Stage clips are the small metal clips on the stage"
+        },
+        {
+          "lesson": "g7:microscope",
+          "unit": "G7-L-1:functions",
+          "quote": "that hold the glass slide firmly in place while you focus"
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:15:27Z disp=exclude"
+    },
+    {
+      "factId": "start-of-human-life-g4",
+      "id": "dcard-01802",
+      "textHash": "aa72e6cbb0d93814a74afeadc9e26814101f50ffa6c076083e6a542a1b7fa621",
+      "reviewedAt": "2026-09-11T01:13:08.983210+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "AUP-adjacent card touching human birth/reproduction (referenced by factId; not quoting Tagalog/Cebuano). Card claims the human life cycle 'begins at birth.' G4-L-5's flow-chart model compares human life-cycle stages to butterfly/frog/chicken, all of which conventionally begin at an egg/fertilized-egg stage, not a hatching/birth event; the biologically consistent starting point for a human life cycle is fertilization (formation of the zygote in the mother's uterus \u2014 notably, G4-L-5's own admitted pattern includes 'mother's uterus' as an expected keyword, which this card does not address). Presenting birth as when the human life cycle 'begins' is a scientific oversimplification inconsistent with the egg-based starting point used for the other three organisms in this competency, and risks teaching an inaccurate/contested claim about when human life begins. Potential destination: G4-L-5 if the card is corrected to root the human life cycle at fertilization/the uterus, or reframed as a fact specifically about 'birth' rather than 'the beginning of the life cycle.'",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:03:18Z disp=exclude"
+    },
+    {
+      "factId": "starting-high-flying-far-g10",
+      "id": "dcard-03833",
+      "textHash": "afcbfd5fa718f993f9c20d47e808d26837d0e94038c548445baca1e08127e021",
+      "reviewedAt": "2026-09-11T01:13:08.983212+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card describes how a projectile's INITIAL LAUNCH HEIGHT (e.g. launching from an elevated platform) affects its maximum height and range. G10-F-1's competency text names a different, specific pair of independent variables \u2014 'the angle and velocity of release' \u2014 as what drives the height/range relationship students investigate (the classic DepEd projectile-motion competency, e.g. basketball/football launched from the ground). Launch-platform height is a related but distinct physics scenario not named in this competency. The 'height' and 'range' facets are matched only because those two words appear, not because the card teaches the angle/velocity-driven relationship the competency is about \u2014 a coincidental facet match. Needs facet repair: G10-F-1:focus-3/focus-4 match on 'height'/'range' but the card teaches a different independent variable (launch height, not angle/velocity of release). Potential destination: G10-F-1 only if a distinct 'launch-height' facet were added, or a horizontal/elevated-launch projectile-motion sub-topic if one exists elsewhere in MATATAG.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:33:52Z disp=exclude"
+    },
+    {
+      "factId": "staying-safe-during-eruptions-g6",
+      "id": "dcard-00175",
+      "textHash": "2d135451289ca0eb782a5ddc07f6b8143b9eb685c31733f5ed855eff612e9177",
+      "reviewedAt": "2026-09-11T01:13:08.983214+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card describes only DURING-eruption safety actions (wearing masks against ash, staying indoors, following evacuation orders already in progress). G6-E-5 admits two facets for this card: 'during' (genuinely taught) and 'before' (matched only on the word 'evacuat' inside 'evacuation orders', which here describes an action taken DURING the eruption, not before-eruption planning/preparation via PHIVOLCS alert levels \u2014 the actual content of the 'before' facet). Since the 'before' facet is not genuinely taught, recovering under G6-E-5 would misfile the card into the before-eruption lesson too. Needs facet repair: G6-E-5:before matches on 'evacuat' but the card does not teach before-eruption alert-level interpretation or preparation. Potential destination: G6-E-5, restricted to its 'during' facet only, once the before-facet regex is narrowed to exclude this card.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:59:49Z disp=exclude"
+    },
+    {
+      "factId": "steeper-means-higher-g9",
+      "id": "dcard-03476",
+      "textHash": "9613b00ef079a41fdb875d349e3f3822a0d8680be4e17ce0cda09346d42a4f3b",
+      "reviewedAt": "2026-09-11T01:13:08.983216+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Held by keep-skeptic: G10-F-1's focus-5 investigation facet (pattern investigat|same|control|measure) is matched only on the incidental word 'same' in 'the same launch speed' \u2014 the card is a bare declarative physics statement, not a description of an actual guided investigation/procedure, so recovering this code admits a facet the card does not genuinely teach. Reviewer had proposed [\"G10-F-1\"]: Card is canonical content for G10-F-1's angle-of-release investigation: holding launch speed constant while varying the release angle shows that a steeper angle yields a greater maximum height, maximized at 90\u00b0 \u2014 precisely the angle-vs-height relationship (with velocity/speed as the controlled variable) the competency's 'investigate and describe the relationship among the projectile variables including angle and velocity of release...and projectile height' asks about (unlike the distinct launch-height scenario in the separate 'starting-high-flying-far-g10' card, this one matches the competency's own named variables). All four admitted facets are genuinely taught: angle, velocity/speed ('the same launch speed'), height, and the controlled-variable facet \u2014 'same launch speed' explicitly holds one variable constant to isolate the angle\u2192height relationship, which is the substantive content that facet checks for, not a coincidental word match. Physics verified: for fixed launch speed, maximum height is proportional to sin\u00b2(angle), maximized at 90\u00b0, consistent with the card. Card's cardMeta.depedGrade (9) reflects the pre-MATATAG grade placement of this projectile-motion topic, which MATATAG now places at Grade 10 (G10-F-1) \u2014 recovering to the current, correct competency. Tagalog/Cebuano are faithful and accurate.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:53:21Z disp=exclude"
+    },
+    {
+      "factId": "steps-to-empirical-formula-g9",
+      "id": "dcard-01676",
+      "textHash": "f9675d42d591ac23d8938e71039bc016e6aed58f13c37b41fad5efa955e78224",
+      "reviewedAt": "2026-09-11T01:13:08.983218+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card teaches the mole-ratio procedure for deriving an empirical formula from percent composition (G9 chemistry). No candidate genuinely teaches this: G5-M-8/G7-M-7/G7-M-9 only keyword-match 'grams' (basic unit usage or solute concentration, not empirical-formula math); G8-M-4 keyword-matches 'composition' but teaches fixed composition of pure substances, not this calculation; G10-M-5/G10-M-7 keyword-match 'formula' but teach writing/balancing reaction equations, not empirical formulas from percent composition. No MATATAG competency covering empirical-formula derivation from percent composition was offered as a candidate at grades 3-10.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:20:47Z disp=exclude"
+    },
+    {
+      "factId": "stiff-objects-g3",
+      "id": "dcard-02527",
+      "textHash": "b1498ed62517d9cc2b74e74748d0323dc7593133120837a000f4d7233afa7024",
+      "reviewedAt": "2026-09-11T01:13:08.983223+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-M-5"
+      ],
+      "reason": "Card teaches the physical property 'stretchable/not stretchable' of solid materials (pencil, wooden ruler as non-stretchable examples), which is exactly the G3-M-5 competency's listed property example. Single admitted facet (stretch) is genuinely taught, not just keyword-matched. TL/BIS are faithful and grade-appropriate. Claim is physically accurate (rigid materials do not elongate appreciably under tension).",
+      "evidence": [
+        {
+          "lesson": "g3:solid-properties",
+          "unit": "G3-M-5:stretch",
+          "quote": "are not stretchable, so they do not become longer when pulled"
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:06:10Z disp=exclude"
+    },
+    {
+      "factId": "stopping-tb-spread-g9",
+      "id": "dcard-10340",
+      "textHash": "9979a8e67701c001234f89ac9af3727af4949e9dffd0168062bf9f8644521b51",
+      "reviewedAt": "2026-09-11T01:13:08.983225+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card is health/disease-prevention advice (TB spread prevention via hygiene, ventilation, distancing) with no matching MATATAG science competency among candidates. G5-L-4's 'bacteria' facet matches only on the word 'Mycobacterium bacteria'; the card does not teach classification of living things into groups (the actual G5-L-4 teaching point), so recovering there would misplace health-safety content under a classification lesson. No other candidate (sound, forces, waves, sun intensity, momentum, acid/base indicators) has any genuine connection. No MATATAG competency at grades 3-10 covers TB transmission prevention specifically among the candidates offered.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:15:47Z disp=exclude"
+    },
+    {
+      "factId": "storing-water-on-land-g5",
+      "id": "dcard-02885",
+      "textHash": "35a8d5436bb2ab1c3c7ac981954fbf0fc5c89ec1f74f1895109d18f9aa5d11fd",
+      "reviewedAt": "2026-09-11T01:13:08.983227+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card describes the 'collection' stage of the water cycle (precipitation stored on land or returning to rivers/seas). No offered candidate genuinely teaches this: G8-L-8's 'water' facet requires explaining the role of plants and animals in the water cycle, but this card is a generic collection-stage definition with no plant/animal role content, so it would enter that facet on the word 'water' alone. All other candidates (basic needs, force/motion, landforms, rock observation, mixture separation, ecosystem factors, volcano alerts, microscope, tsunami, photosynthesis) match only on stray keywords like 'water' or 'river'. Potential destination: a Grade 5 water-cycle-process competency (e.g. G5-E-6 'explain the role of the water cycle in the environment') was not offered as a candidate here because its facet regex requires 'plant|animal|fresh|rain|environment', none of which appear in this card's text.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:43:11Z disp=exclude"
+    },
+    {
+      "factId": "straight-light-rays-g3",
+      "id": "dcard-06124",
+      "textHash": "462962ea82e86a676ce168fa098f6f4ffe05e134b2426298a305bc2b89d1ce44",
+      "reviewedAt": "2026-09-11T01:13:08.983229+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card teaches rectilinear propagation of light ('light travels in straight lines'). No candidate genuinely teaches this specific fact; all matches are keyword-only on the word 'light' or 'path/distance' (G3-F-8 sending messages with light, G4-F-8 effects without contact, G4-F-9/F-10 light as an energy form/source, G4-E-7 sun characteristics, G6-F-9 wave examples, G7-L-1 microscope functions, G7-F-5 distance vs displacement). None of these competencies is actually about light's straight-line travel path. No MATATAG competency covering the geometric property of light rays was offered as a candidate at grades 3-10.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:54:28Z disp=exclude"
+    },
+    {
+      "factId": "strengthening-roofs-g6",
+      "id": "dcard-10788",
+      "textHash": "b4f6daebe338e737a84c46865b99e36e4b5cf01ad51179f557d58c23c6f4e532",
+      "reviewedAt": "2026-09-11T01:13:08.983231+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Held by keep-skeptic: G6-E-5's actual competency is to interpret PHIVOLCS Alert Levels and demonstrate the corresponding before/during/after action; the card is generic 'strengthen roofs before an eruption' advice with no alert-level interpretation at all, so the 'before' facet match is only a keyword hit on the temporal word 'before,' not a genuine teaching of the competency's PHIVOLCS-alert component. Reviewer had proposed [\"G6-E-5\"]: Card teaches a genuine 'before a volcanic eruption' preparedness action (structurally reinforcing roofs/walls against ashfall and rockfall load), matching the 'before' facet of G6-E-5's demonstrate-what-to-do-before/during/after-an-eruption competency. TL/BIS faithful. Advice is factually sound (PHIVOLCS-recommended ashfall preparedness: roofs can collapse under wet ash load).",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:49:39Z disp=exclude"
+    },
+    {
+      "factId": "stretching-a-rubber-band-g4",
+      "id": "dcard-05165",
+      "textHash": "b32a3abe1f71fd311ea3c655cdf36756171ead0c8bfb5defc49571a5c7b4b3e8",
+      "reviewedAt": "2026-09-11T01:13:08.983235+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G4-F-6"
+      ],
+      "reason": "Card directly teaches that a pulling force applied to an object (rubber band) stretches it, changing its shape (longer, thinner) -- exactly the G4-F-6 'forces change shape... stretched' competency, at the correct grade (card is depedGrade 4). TL/BIS are faithful. Claim is physically accurate.",
+      "evidence": [
+        {
+          "lesson": "g4:change-shape",
+          "unit": "G4-F-6:stretch",
+          "quote": "applies a stretching force that makes the band longer and thinner"
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:17:44Z disp=exclude"
+    },
+    {
+      "factId": "strong-sigma-bonds-g9",
+      "id": "dcard-03065",
+      "textHash": "26b127138b8dfb4ae3d9291c60c850fe9b1d2256e0d4ef3fd5e4d85eaa5d7a4b",
+      "reviewedAt": "2026-09-11T01:13:08.983237+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card teaches sigma-bond orbital overlap theory for carbon-carbon single bonds -- college/advanced-HS-level bonding theory, not the MATATAG G9 organic-compounds scope. The two closest competencies, G9-M-2 (bond formation as chemical change) and G9-M-3 (valence electrons and bonding), are both hard-blocked (blockedCatsAllEnrichment=true) and thus cannot be used even if content matched. All remaining candidates (particle model, volcano formation, element symbols, carbon cycle, climate-change carbon emissions, chemical-equation atom counting) match only on stray keywords ('carbon', 'atom', 'bond'), not genuine teaching content. No MATATAG competency among the offered candidates covers sigma-bond orbital overlap.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:11:51Z disp=exclude"
+    },
+    {
+      "factId": "strongest-bite-saltwater-crocodile-g6",
+      "id": "ffct-11024",
+      "textHash": "43eb4c78ca304962dc9cc288aa787bf582b995cbb260f9910d850ae2b0afa2c4",
+      "reviewedAt": "2026-09-11T01:13:08.983239+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Trivia fact about which living animal has the strongest bite force; no depedCompetency assigned and no genuine MATATAG match among candidates. Every candidate is a false-positive keyword match: G7-M-11 and G10-M-2 matched only because 'saltwater' contains the substring 'salt' (nothing to do with litmus/acid-base chemistry); G6-L-7/G9-L-9 matched only on the word 'living'; G4-L-3/G5-E-6/G10-L-10 matched only on 'water' (inside 'saltwater'). None of these competencies is actually taught by a bite-force record fact. This is off-curriculum animal-record trivia with no MATATAG competency at grades 3-10 covering it.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:26:15Z disp=exclude"
+    },
+    {
+      "factId": "structural-formula-g9",
+      "id": "dcard-04144",
+      "textHash": "eaa6fdfa6dc366a880b412863fb229b93fbca383069916f22a9ea2b96eacfd1b",
+      "reviewedAt": "2026-09-11T01:13:08.983241+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card teaches how structural formulas represent bond order/type (single, double, triple) between atoms using lines -- an organic-chemistry notation concept. The two closest bond-related competencies, G9-M-2 and G9-M-3, are both hard-blocked (blockedCatsAllEnrichment=true). Remaining candidates match only on stray keywords: G7-M-2/G7-F-1 on 'atom'/'between'; G10-M-5/G10-M-6/G10-M-7 on 'formula'/'atom', but those competencies teach writing or balancing chemical reaction equations, not structural bond-line notation within a molecule. No unblocked MATATAG competency among the candidates genuinely teaches structural formulas.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:19:32Z disp=exclude"
+    },
+    {
+      "factId": "studying-the-sun-g4",
+      "id": "dcard-07234",
+      "textHash": "33fc2f28f531edce2b8fef309c1f3471419143ac1388781dac09a538367c8596",
+      "reviewedAt": "2026-09-11T01:13:08.983243+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card is a generic framing statement ('studying the Sun helps us understand its benefits and importance to life') with no concrete taught content (no specific benefit, mechanism, or fact stated). The one competency that would be a natural fit, G4-E-9 ('importance of the Sun to living things'), was not offered as a candidate here because its facet regex requires 'plant|food|warm|water', none of which appear in this card's text. Among the offered candidates, all matches are keyword-only on 'Sun' or 'help' (G3-F-5 light sources, G3-E-8 sky's effect on daily activities, G4-M-2 science inventions, G7-E-12 solar-driven wind patterns) and none genuinely teaches what this vague card states. Potential destination: G4-E-9, if its facet pattern is widened, or the card is rewritten with concrete content.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:36:34Z disp=exclude"
+    },
+    {
+      "factId": "subsoil-layer-g4",
+      "id": "dcard-07053",
+      "textHash": "06a7c34f190cbdae1e588ac7448d5254b44fd73cd246a6de4a0a6db094d8dcb1",
+      "reviewedAt": "2026-09-11T01:13:08.983245+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card describes subsoil's composition and hardness relative to topsoil (poor in humus, rich in minerals, harder/more compact). Closest candidate, G5-E-4 ('explain how soil is formed from rocks and minerals'), teaches the formation process, not comparative layer composition/hardness -- the card would enter its 'minerals' facet on the word 'minerals' alone without teaching how rocks become soil. Other candidates (G3-L-7/G3-E-1/G5-E-1/G6-L-7/G6-L-8) match only on the word 'soil' without teaching those competencies' actual content (interdependence, non-living-thing identification, landform influence, biotic/abiotic factors); G4-F-1/G9-M-11 match only on 'hard(er)'. Potential destination: a Grade 4 soil-layers competency (topsoil/subsoil/bedrock composition and characteristics, matching cardMeta's DepEd code S4ES-IVa-1) is not present among the current MATATAG candidates.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:14:14Z disp=exclude"
+    },
+    {
+      "factId": "substance-being-tested-g4",
+      "id": "dcard-03607",
+      "textHash": "fdceed40df7effc0b9406c8074b1dc350d61391c71c56fa24fe3e655ee6f7a69",
+      "reviewedAt": "2026-09-11T01:13:08.983246+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Card teaches identifying the independent variable (a genuine G6-M-8 'change-one' component), but G6-M-8's second admitted facet ('measure', dependent-variable) is admitted only because the regex 'dependent' is a literal substring of 'independent' in the card text \u2014 the card never discusses measuring an outcome/dependent variable. Placing it would misfile the card into a facet it doesn't teach (rule 2). Every other candidate (G3-F-6, G4-F-1/5/7, G4-E-1/3, G5-F-1/2, G7-M-10, G8-L-11, G8-F-11, G9-F-3/7/9, G9-M-1/11, G10-F-1/5, G10-M-1) shares only generic investigation/precipitate vocabulary ('test', 'investigat', 'precipitate') without teaching its specific subject (light behavior, magnets, soil, friction, solubility, photosynthesis, circuits, chemical-reaction indicators). Potential destination: G6-M-8's 'change-one' facet alone, once the 'measure' facet regex is word-bounded so it stops matching inside 'independent'.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:20:25Z disp=exclude"
+    },
+    {
+      "factId": "sugar-crystal-molecules-g9",
+      "id": "dcard-04715",
+      "textHash": "3bfd788c82d85beef776558adcaafa8fade56563064422908fd5d2202c7a914f",
+      "reviewedAt": "2026-09-11T01:13:08.983248+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Held by keep-skeptic: Card text ('sugar crystal') also fires G9-M-9's ionic-lattice facet (pattern lattice|crystal) on the bare word 'crystal', but the card is entirely about a covalent compound's individual molecules and never teaches that ionic compounds form crystalline lattices \u2014 a keyword-only facet hit, not genuine coverage of that half of the contrast. Reviewer had proposed [\"G9-M-9\"]: The card illustrates that sucrose, a covalent/molecular compound, forms a crystal made of discrete individual molecules (each hexagon = one molecule) rather than an ionic lattice \u2014 a correct, age-appropriate model-based instantiation of G9-M-9's 'covalent compounds form individual molecules' half of the ionic-vs-covalent contrast. Sucrose's formula C12H22O11 is correct. Grade (9), domain (MATTER), and cats (g9-matter-compound-properties) all align.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:42:38Z disp=exclude"
+    },
+    {
+      "factId": "sugar-s-elements-g9",
+      "id": "dcard-05063",
+      "textHash": "843b5776bb7fbe9c24acaf5f32869cc24f71d96a71643ff18bf758b2f5a5e0d9",
+      "reviewedAt": "2026-09-11T01:13:08.983250+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Factual error: the card states sucrose's molar mass as 342.1 g/mol; the correct, widely-cited value is 342.30 g/mol (verified via WebSearch against WebQC and Pearson chemistry sources). Independent of the numeric error, no candidate genuinely teaches the card's actual content (percent-composition-from-molar-mass calculation): G8-M-4's 'composition' facet matches only the bare word 'composition', but that competency teaches that pure substances have fixed composition/unique proton counts, not percent-by-mass calculation; G3-L-6, G4-E-7, G6-M-5, G8-L-8 match only via 'oxygen'/'hydrogen'/'carbon' appearing as sucrose's constituent elements; G8-M-3 matches 'mass' only via the substring inside 'molar mass'. Potential destination: a grade-9 percent-composition/molar-mass competency, absent from this candidate set, and only after the 342.1 value is corrected to 342.3 g/mol.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:24:57Z disp=exclude"
+    },
+    {
+      "factId": "summer-season-g6",
+      "id": "dcard-09855",
+      "textHash": "9cad6d72be02661ec8400b49c3e2bcc485a9ece2f4cb74a7eb29f8a2e93ff971",
+      "reviewedAt": "2026-09-11T01:13:08.983252+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "needs facet repair: G6-E-6:activities matches on 'plants' but the card describes plant phenology (thick leaves, fruiting, blooming) during summer, not 'activities appropriate for the season' that people do, which is the only admitted facet and what the competency requires. The card also frames 'summer' in temperate-climate terms (warmest season with fruiting/blooming plants) rather than the Philippine dry/wet season framing the G6 seasons standard addresses. Every other candidate is off-topic (weather/ecosystem/energy competencies matched by stray words like 'sun' or 'light'). No MATATAG competency in the candidate set covers plant behavior across seasons.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:33:10Z disp=exclude"
+    },
+    {
+      "factId": "sun-s-ultraviolet-rays-g4",
+      "id": "dcard-04733",
+      "textHash": "c71e69ff9ddf77b3565249f528aac6627e65712315755b65c4a860e39885ae9d",
+      "reviewedAt": "2026-09-11T01:13:08.983254+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Factual error: the card claims UV rays are 'why we feel warm when sunbathing,' but the warmth felt from sunlight comes primarily from infrared radiation (with some contribution from absorbed visible light), not UV \u2014 UV is responsible for sunburn/photodamage, not the sensation of warmth (verified via WebSearch). This also blocks recovery into G9-F-13 ('harmful effects of EMR'), since the card frames UV as a pleasant warming agent rather than harmful, and into G9-F-10/G9-F-11, whose facets ('space', 'ultraviolet') match only stray words without the card actually describing EMR generation or comparing EM-spectrum wavelengths.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:46:49Z disp=exclude"
+    },
+    {
+      "factId": "sunbird-tiny-light-body-g3",
+      "id": "ffct-04154",
+      "textHash": "b70289a27a807ac9f5b1e57a35e19499a722476e9f20e3be670b4ff594ab18f2",
+      "reviewedAt": "2026-09-11T01:13:08.983256+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "This is bird-size trivia (source 'original', no DepEd competency tag, depedGrade null) with no genuine MATATAG match. Every candidate is a spurious keyword hit: 'sun' inside the word 'sunbird' falsely triggers G3-L-7/G3-F-5/G3-F-7/G3-E-1/G3-E-8/G4-F-8/G6-L-7's sun/light patterns; 'light' meaning low body weight falsely triggers G3-F-8/G4-F-9/G4-F-10/G4-E-7/G5-F-5's light-energy or gravity-weight patterns; the bare word 'bird' (with zero life-cycle content) falsely triggers G5-L-6; 'thumb' used only as an everyday size reference falsely triggers G8-L-7's primate-anatomy facet. No MATATAG competency at grades 3-10 covers sunbird body size.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:38:49Z disp=exclude"
+    },
+    {
+      "factId": "sunlight-amount-g4",
+      "id": "dcard-04465",
+      "textHash": "3f3fc2acdecd70334d76e19ae2a9190bae1f4b30a679544724ac88e98dbc62bf",
+      "reviewedAt": "2026-09-11T01:13:08.983257+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Held by keep-skeptic: Card is originally sourced/tagged as Grade 4 weather-chart content (depedGrade 4, cats g4-earth_space-weather-charts-and-forecasting) and flagged grade_mismatch; recovering it to G3-E-4 relies on the generic word 'day' in the admitted-facet regex, while the card actually describes tracking a monotonic increase/decrease trend (season/day-length-like), not observing/describing 'types of weather' (sunny, rainy, etc.) that G3-E-4 targets. Reviewer had proposed [\"G3-E-4\"]: The card teaches the exact observational weather-tracking practice G3-E-4 targets: observing a weather-related quantity (sunlight amount) daily and comparing it across days to detect a pattern/trend \u2014 directly matching 'observe and record changes in the weather during a day or over some days ... describe the different types and patterns of weather.' Content is correct and age-appropriate; no other candidate in the set is a genuine (non-keyword-coincidental) match.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:44:26Z disp=exclude"
+    },
+    {
+      "factId": "sunlight-for-animals-g4",
+      "id": "dcard-04362",
+      "textHash": "2d06f868da62b24996b40c3de82a6fae23bd65d4d0212f9755cd826273bbda72",
+      "reviewedAt": "2026-09-11T01:13:08.983263+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G4-E-9"
+      ],
+      "reason": "The card states specifically why the Sun matters to living things (warmth for comfort/thermoregulation, light for vision, general health) \u2014 precisely the 'importance of the Sun to living things' content G4-E-9 is built around, and the more specific, scarce match versus the generic grade-3 'living things depend on environment' competency (G3-L-7), where the Sun is just one unlisted example among several basic needs. Grade (4) and content both align with G4-E-9 over G3-L-7.",
+      "evidence": [
+        {
+          "lesson": "g4:sun-and-life",
+          "unit": "G4-E-9:importance",
+          "quote": "Animals and humans depend on the Sun's warmth and light to stay comfortable, see their surroundings, and keep their bodies healthy"
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:00:03Z disp=exclude"
+    },
+    {
+      "factId": "sunrise-and-sunset-g3",
+      "id": "dcard-02850",
+      "textHash": "1e60f887f20ac19baa1f4e05d7c2f715f817cb2c8292d63a8f30986a9d7b9ab0",
+      "reviewedAt": "2026-09-11T01:13:08.983267+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-E-7"
+      ],
+      "reason": "The card describes the Sun's apparent daily motion across the sky (rising at the horizon in the morning, setting below it in the evening) \u2014 a correct, grade-3-appropriate, genuine teaching component of G3-E-7's 'explore and record how and when the Sun ... can be seen moving across the sky.'",
+      "evidence": [
+        {
+          "lesson": "g3:watching-the-sky",
+          "unit": "G3-E-7:apparent-motion",
+          "quote": "Sunrise happens when the Sun comes up from the horizon in the morning, and sunset happens when it goes down below the horizon in the evening"
+        }
+      ],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:26:50Z disp=exclude"
+    },
+    {
+      "factId": "supersaturated-solution-g7",
+      "id": "dcard-11316",
+      "textHash": "9a4b0ccc9811f74c9e42e85453477c0f7910abb85a3a0d16458af9b9931011e6",
+      "reviewedAt": "2026-09-11T01:13:08.983269+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "Held by keep-skeptic: variantTextsDiffer=true and the reconciliation is unsound: only the reviewed card (dcard-11316) mentions heat, which is what makes it match G7-M-10's 'temperature' facet, while sibling variant dcard-10494 claims 'adding more solute to a saturated solution can form a supersaturated solution' with no heating step \u2014 scientifically wrong/oversimplified (without added heat the excess solute would simply stay undissolved, not become supersaturated), so the fact as reconciled does not uniformly and correctly teach the heat-solubility factor. Reviewer had proposed [\"G7-M-10\"]: The card teaches two genuine components of G7-M-10 ('demonstrate how different factors affect the solubility of a solute in a given solvent, such as heat'): that a solution can hold more solute than its normal maximum (saturation/supersaturation), and that heat is the mechanism enabling the excess to dissolve. variantTextsDiffer=true: sibling variants dcard-01140 ('contains more dissolved solute than a saturated solution, making it unstable and ready to crystallize') and dcard-10494 ('adding more solute to a saturated solution can form a supersaturated solution, which holds more dissolved material than it normally could at that temperature') describe the same supersaturation concept consistently and correctly (definition, instability, and formation), so all variants are reconciled as the same correct fact.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:01:24Z disp=exclude"
+    },
+    {
+      "factId": "surface-area-and-solvent-contact-g7",
+      "id": "dcard-04061",
+      "textHash": "b56ad96783d1f84f20c2114d0cd5b97ed0f80bbee50b03670bd55fb2606c2d99",
+      "reviewedAt": "2026-09-11T01:13:08.983271+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "This is a genuine, correct chemistry fact (smaller solute particles -> larger surface area -> faster dissolution), but no candidate teaches it: G7-M-8's 'solute'/'solvent' facets match only because those two nouns appear, not because the card teaches 'the role of solute/solvent in a solution'; G7-M-2's 'particles' facet matches only because 'particles' appears, not because the card teaches the Particle-Model-of-Matter statement; G7-F-1's 'interaction' facet matches only because 'interaction' appears, not because the card teaches measurable push/pull forces between objects. Potential destination: G7-M-10 (solubility factors) \u2014 its competency text ('different factors affect solubility... such as heat') plausibly covers particle-size/surface-area as an additional factor, but no such facet exists in this candidate set; needs a facet added before this card can be placed there.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T04:48:50Z disp=exclude"
+    },
+    {
+      "factId": "surface-waves-g8",
+      "id": "dcard-11996",
+      "textHash": "88bd934505a076c34d90b33e9fbfa03a11f132f5e18af0595541aa241be2ebe8",
+      "reviewedAt": "2026-09-11T01:13:08.983273+00:00",
+      "reviewer": "external_b-claude-workflow",
+      "disposition": "hold",
+      "codes": [],
+      "reason": "No MATATAG competency in the candidate set covers earthquake surface vs. body waves (the card's actual topic, DepEd tag S8ES-IIc17). G6-F-9's 'transverse' facet matches only because the word 'seismic' appears in the card, not because the card classifies waves as longitudinal/transverse \u2014 surface waves (Rayleigh/Love waves) are a distinct seismological category the grade-6 wave-types competency doesn't address. All other candidates (sound transfer, light/sound safety, messaging, sun safety, shadows, friction surfaces, Philippine seasons) match only via the unrelated word 'surface'. Sibling variants (dcard-03434, dcard-09544) consistently and correctly describe surface waves as slow, near-surface, and most damaging, so this is a genuine no-match rather than a variant-identity problem. Potential destination: a grade-8 Earth Science seismic-wave-types competency (body vs. surface waves), not present among these candidates.",
+      "evidence": [],
+      "translationsChecked": true,
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:49:52Z disp=exclude"
+    }
+  ],
+  "note": "User-requested final consolidation; complete independent proposal verification assessed by parent. Original timestamps preserved as provenance."
+}

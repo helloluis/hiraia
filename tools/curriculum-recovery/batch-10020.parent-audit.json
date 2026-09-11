@@ -1,0 +1,89 @@
+{
+  "originalProposals": [
+    {
+      "factId": "alpine-treeline-g7",
+      "id": "ffct-05228",
+      "textHash": "c94a061009373c276f86cdff7a91d3db574423c1fae4dcd19dbd81fea0f503a1",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T02:44:17Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:52:05.886Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G5-E-1"
+      ],
+      "reason": "Explains that high mountains limit where trees can grow (treeline; only moss and grasses above), a current G5-E-1 mountain influence on living components. G5-L-8 plant-adaptation mechanisms and G6-L-7 biotic/abiotic labels are not taught. Table/classification moss unit not credited. Full EN/TL/BIS and both pools inspected; single card ID.",
+      "evidence": [
+        {
+          "lesson": "g5:landforms",
+          "unit": "G5-E-1:mountain",
+          "quote": "Why are there no trees on very high mountains?"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "ampalaya-bitter-gourd-g5",
+      "id": "ffct-00292",
+      "textHash": "7fa312d3e838adca942735b63b603c0435e9b032ccfc139012f51e0cc481e4d5",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T03:27:20Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:52:05.886Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G3-L-7"
+      ],
+      "reason": "Identifies ampalaya as a food plant people eat, a current G3-L-7 food-and-shelter dependence facet. G3-L-5 outer plant parts and G4-M-2 inventions are not taught. Table/record/control hits not credited. Blood-sugar belief is preserved in TL/BIS as believed/giingon, not overclaimed. Full EN/TL/BIS and both pools inspected; single card ID.",
+      "evidence": [
+        {
+          "lesson": "g3:depending-on-nature",
+          "unit": "G3-L-7:food-and-shelter",
+          "quote": "many eat it because it's believed to help control blood sugar"
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "antibiotics-do-not-relieve-pain-g8",
+      "id": "ffct-00113",
+      "textHash": "539bc499b4e0bfc75d26e9d0196058b35156361fb08e2d4b69179998327c5131",
+      "previousExclusion": "first-pass deepseek-v4-flash 2026-09-07T05:10:34Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:52:05.886Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G4-M-2"
+      ],
+      "reason": "Teaches everyday impact of antibiotics as a science invention: they are not painkillers/fever reducers and are used only for bacterial infection, a current G4-M-2 uses facet. G5-L-4 bacteria table, G7-L-3 unicellular, and G9-L-3 mutation/infection are not taught. Full EN/TL/BIS and both pools inspected; single card ID.",
+      "evidence": [
+        {
+          "lesson": "g4:local-inventions",
+          "unit": "G4-M-2:uses",
+          "quote": "They're only used when there's a bacterial infection."
+        }
+      ],
+      "translationsChecked": true
+    },
+    {
+      "factId": "apex-predator-tiger-comparison-g6",
+      "id": "ffct-03677",
+      "textHash": "aac03c45793438bcbb53d5de5318bb8ab7e1965fc09be9818922a4c9c763a087",
+      "previousExclusion": "first-pass grok-4.6 2026-09-07T05:05:00Z disp=exclude",
+      "reviewedAt": "2026-09-10T12:52:05.886Z",
+      "reviewer": "grok-external-a",
+      "disposition": "recover_core",
+      "codes": [
+        "G6-L-6"
+      ],
+      "reason": "Defines tigers and lions as apex predators / top hunters that other animals do not eat, a current G6-L-6 predation facet. G6-L-5 producer/consumer roles and G7-L-9 trophic energy levels are not taught. G4-L-3 land diagram and G3-L-2 cat living-example are keyword only. Full EN/TL/BIS and both pools inspected; single card ID.",
+      "evidence": [
+        {
+          "lesson": "g6:competition-predation",
+          "unit": "G6-L-6:predation",
+          "quote": "big cats like tigers and lions are apex predators \u2014 the top hunters in their habitat"
+        }
+      ],
+      "translationsChecked": true
+    }
+  ],
+  "reason": "Parent semantic validation before application"
+}

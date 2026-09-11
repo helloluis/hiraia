@@ -1,10 +1,12 @@
-# Excluded-card recovery — priority review complete
+# Excluded-card recovery — both passes complete
 
-Updated 2026-09-10, unified. The existing pilot/curriculum implementation was preserved first in commit **1a9539f5a**. That checkpoint includes the intertwined mobile runtime dependencies; it does not include website, VPS, or image-audit work.
+Updated 2026-09-11, unified. The existing pilot/curriculum implementation was preserved first in commit **1a9539f5a**. That checkpoint includes the intertwined mobile runtime dependencies; it does not include website, VPS, or image-audit work.
+
+Final results and all four review sets: [Second-pass consolidation](SECOND-PASS-CONSOLIDATION.md).
 
 ## Scope and results
 
-The original **9,429 priority candidates are fully reviewed**. The recurring heartbeat was stopped on completion, before the original deadline. Of those, **4197 were recovered and 5232 held**. Three earlier reviews outside the priority queue are included in the cumulative totals below. The held queue and remaining no-current-core-match inventory are not yet repaired or newly approved.
+The original **9,429 priority candidates are fully reviewed**. The recurring heartbeat was stopped on completion, before the original deadline. Of those, **4197 were recovered and 5232 held**. Three earlier reviews outside the priority queue and subsequent second-pass decisions are included in the cumulative totals below. The held queue and remaining no-current-core-match inventory are not yet repaired or newly approved.
 
 All **21,677 excluded bundled unique facts** were screened against their prior review evidence and current core teaching facets. This is not a fresh semantic review of every excluded fact.
 
@@ -16,20 +18,20 @@ All **21,677 excluded bundled unique facts** were screened against their prior r
 | flagged quality | 23 |
 | missing prior review | 1 |
 
-**9432 facts received manual English review; 4199 were accepted into core and 5233 held.** Proposed recoveries also received Tagalog/Cebuano meaning checks. 12,245 excluded facts remain without a new manual review. The 9,429 text/format candidates are leads, not certified recoveries or a corpus-wide error estimate. The first batch deliberately sampled short facts across eight grades, not a random population sample.
+**21677 facts received manual English review; 6506 were accepted into core and 15171 held.** Proposed recoveries also received Tagalog/Cebuano meaning checks. 0 excluded facts remain without a new manual review. The 9,429 text/format candidates are leads, not certified recoveries or a corpus-wide error estimate. The first batch deliberately sampled short facts across eight grades, not a random population sample.
 
 | Grade | Recovered existing core facts | Reachable before | Reachable after |
 |---|---:|---:|---:|
-| 3 | 895 | 4,741 | 5,636 |
-| 4 | 591 | 3,039 | 3,630 |
-| 5 | 628 | 3,787 | 4,415 |
-| 6 | 583 | 4,188 | 4,771 |
-| 7 | 455 | 1,616 | 2,071 |
-| 8 | 361 | 1,691 | 2,052 |
-| 9 | 407 | 1,628 | 2,035 |
-| 10 | 279 | 1,686 | 1,965 |
+| 3 | 1459 | 4,741 | 6,200 |
+| 4 | 950 | 3,039 | 3,989 |
+| 5 | 840 | 3,787 | 4,627 |
+| 6 | 891 | 4,188 | 5,079 |
+| 7 | 870 | 1,616 | 2,486 |
+| 8 | 561 | 1,691 | 2,252 |
+| 9 | 598 | 1,628 | 2,226 |
+| 10 | 421 | 1,686 | 2,107 |
 
-Across grades, the distinct chronological inventory grows from **20,186 to 24,385**. No new cards were written. Every approved fact occurs in at least one actual compiled core unit, not just a related shelf. Changes to stricter filters can move an existing core fact to related material; core-count growth therefore need not equal recovered-card count. A before/after comparison of all eight compiled manifests confirms that batches 003–099 removed no previously reachable cards.
+Across grades, the distinct chronological inventory grows from **20,186 to 26,692**. No new cards were written. Every approved fact occurs in at least one actual compiled core unit, not just a related shelf. Changes to stricter filters can move an existing core fact to related material; core-count growth therefore need not equal recovered-card count. A before/after comparison of all eight compiled manifests confirms that the completed consolidation removed no previously reachable cards.
 
 ## Why some exclusions were reversed
 
@@ -244,6 +246,114 @@ Recoveries include measurement, heat transfer, transpiration, tsunami preparedne
 Reviewed 261 facts: **128 recovered and 133 held**. Cumulative totals: **9,432 reviewed, 4,199 recovered, 5,233 held**, with **24,385 reachable facts**. There are 0 priority candidates remaining after integrated reviews. All 9,429 original priority candidates have now been reviewed; the cumulative total also includes three earlier reviews outside that queue.
 
 Recoveries include water needs, filtration, wave behavior, weather observations, wedges, and chemical equations. Holds cover factual inaccuracies, translation defects and incidental facet matches. Parent verified packet identity, exact compiled membership and preserved reach; all 70 tests and mobile type-check passed.
+
+## Second pass: first integration (100–103)
+
+Reviewed300 additional facts:119 recovered and181 held. Cross-competency matching recovered microscopy, energy, organism needs, ATP and indigenous-sky components. All70 tests and mobile type-check passed; no prior reachable cards lost. This run has11,945 unreviewed facts remaining; first-pass held decisions are outside this inventory.
+
+## Second pass: second integration (104–107)
+
+Reviewed300 additional facts:125 recovered and175 held. Cross-competency matching recovered circulation, mechanics, circuit diagrams, digestion and conservation components. All70 tests and mobile type-check passed; no prior reachable cards lost. This run has11,645 unreviewed facts remaining; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (108–111)
+
+Reviewed 300 additional facts: 138 recovered and 162 held. Cross-competency matching recovered experimental design, optics, particle models, ecology and electrical-safety components. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 11,345 unreviewed facts remaining; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (112–115)
+
+Reviewed 300 additional facts: 137 recovered and 163 held. Cross-competency matching recovered measurement, cell division, circuits, light and energy components. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 11,045 unreviewed facts remaining; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (116–119)
+
+Reviewed 700 additional facts across local116–119 and external A10000–10009: 276 recovered and 424 held. Cross-competency matching recovered measurement, cell division, circuits, light and energy components. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 10,345 unreviewed facts remaining; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (120–123)
+
+Reviewed 300 additional facts: 107 recovered and 193 held. Cross-competency matching recovered invention uses, plant and animal needs, microscope techniques and measurement components. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 10,045 unreviewed facts remaining; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (124–127)
+
+Reviewed 700 additional facts across local124–127 and external A10010–10019: 193 recovered and 507 held. Cross-competency matching recovered measurement, cell division, circuits, light and energy components. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 9,345 unreviewed facts remaining; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (128–131)
+
+Reviewed 500 additional facts across local128–131 and external A10020–10024: 101 recovered and 399 held. Cross-competency matching recovered measurement, cell division, circuits, light and energy components. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 8,845 unreviewed facts remaining; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (132–135)
+
+Reviewed 300 additional facts across local132–135: 62 recovered and 238 held. Cross-competency matching recovered measurement, forces, animal and plant structures, and planetary-description components. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 8,545 unreviewed facts remaining; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (136–139)
+
+Reviewed 340 additional facts across local136–139 and external A10025: 70 recovered and 270 held. Cross-competency matching recovered measurement, lunar observations, nutrition and environmental interaction components; six external proposals were held after parent audit. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 8,205 unreviewed facts remaining; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (140–143)
+
+Reviewed 300 additional facts across local140–143: 79 recovered and 221 held. Cross-competency matching recovered measurement, weather-information sources, plant functions, renewable-resource use and environmental interaction components. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 7,905 unreviewed facts remaining; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (144–147)
+
+Reviewed 300 additional facts across local144–147: 79 recovered and 221 held. Cross-competency matching recovered measurement, weather characteristics, particle models, feeding structures and environmental interaction components. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 7,605 unreviewed facts remaining; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (148–151)
+
+Reviewed 137 additional facts across local148–151: 29 recovered and 108 held. Cross-competency matching recovered measurement, measurement, microorganisms, useful technologies and environmental interaction components. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 7,468 unreviewed facts remaining; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (external A10026–10055)
+
+Validated 1200 additional externally reviewed decisions across A10026–10055: 86 recovered and 1114 held. Cross-competency matching recovered measurement, microorganisms, useful technologies and environmental interaction components. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 6,268 unreviewed facts remaining; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (external A10056–10070)
+
+Validated 596 additional externally reviewed decisions across A10056–10070: 42 recovered and 554 held. Cross-competency matching recovered measurement, microorganisms, useful technologies and environmental interaction components. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 5,672 unreviewed facts remaining; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (external C30000)
+
+Validated 96 additional externally reviewed decisions in C30000: 38 recovered and 58 held. Verification removed false competency matches and held unresolved factual, translation and identity issues. C30001 remains incomplete because one row is a placeholder. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 5,576 facts not yet validated; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (external C30002)
+
+Validated 96 additional externally reviewed decisions in C30002: 36 recovered and 60 held. Verification removed false competency matches and held unresolved factual, translation and identity issues. C30001 remains incomplete because one row is a placeholder. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 5,480 facts not yet validated; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (external C30003)
+
+Validated 96 additional externally reviewed decisions in C30003: 27 recovered and 69 held. Verification removed false competency matches and held unresolved factual, translation and identity issues. C30001 has a substantive replacement review ready for its placeholder, pending parent integration. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 5,384 facts not yet validated; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (external C30010)
+
+Validated 96 additional externally reviewed decisions in C30010: 3 recovered and 93 held. Verification removed false competency matches and held unresolved factual, translation and identity issues. C30001 has a substantive replacement review ready for its placeholder, pending parent integration. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 5,288 facts not yet validated; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (external C30011)
+
+Validated 96 additional externally reviewed decisions in C30011: 8 recovered and 88 held. Verification removed false competency matches and held unresolved factual, translation and identity issues. C30001 has a substantive replacement review ready for its placeholder, pending parent integration. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 5,192 facts not yet validated; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (external C30001)
+
+Validated 96 additional externally reviewed decisions in C30001: 27 recovered and 69 held. Verification removed false competency matches and held unresolved factual, translation and identity issues. The gas-exchange placeholder received a substantive review and is now integrated; its original is preserved in the parent audit. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 5,096 facts not yet validated; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (external C30008)
+
+Validated 96 additional externally reviewed decisions in C30008: 11 recovered and 85 held. Verification removed false competency matches and held unresolved factual, translation and identity issues. The phytoplankton card retains its oxygen-cycle code; the unsupported air-mixture code was removed. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 5,000 facts not yet validated; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (external C30009)
+
+Validated 96 additional externally reviewed decisions in C30009: 8 recovered and 88 held. Verification removed false competency matches and held unresolved factual, translation and identity issues. The altitude and rice-cooking card was reassigned to everyday science instead of weather. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 4,904 facts not yet validated; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (external C30004)
+
+Validated 96 additional externally reviewed decisions in C30004: 44 recovered and 52 held. Verification removed false competency matches and held unresolved factual, translation and identity issues. Parent verification corrected false code assignments and held an unqualified renewable-resource depletion claim. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 4,808 facts not yet validated; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (external C30005)
+
+Validated 96 additional externally reviewed decisions in C30005: 34 recovered and 62 held. Verification removed false competency matches and held unresolved factual, translation and identity issues. Verification removed false living-factor, force-investigation and muscular-system assignments while preserving appropriate teaching components. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 4,712 facts not yet validated; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (external C30006)
+
+Validated 96 additional externally reviewed decisions in C30006: 31 recovered and 65 held. Verification removed false competency matches and held unresolved factual, translation and identity issues. Verification removed wrong graph-type assignments and held stale hazard claims, duplicate identities and factual or translation issues. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 4,616 facts not yet validated; first-pass held decisions are outside this inventory.
+
+## Second pass: integration (external C30007)
+
+Validated 96 additional externally reviewed decisions in C30007: 41 recovered and 55 held. Verification removed false competency matches and held unresolved factual, translation and identity issues. Verification removed false competency assignments and held unresolved content, translation, identity and literal-escape rendering issues. All 70 tests and mobile type-check passed; no prior reachable cards lost. This run has 4,520 facts not yet validated; first-pass held decisions are outside this inventory.
 
 ## Validation
 
