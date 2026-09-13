@@ -1,3 +1,4 @@
+import { titleForCard, type TitleCardContent } from '@/data/titleCard';
 /**
  * Question-cards feed state — WEB DEMO port of packages/mobile/src/store/cardStore.ts
  * (keep the two in sync). Same deterministic, zero-model walk over the card graph:
@@ -30,6 +31,7 @@ import {
   feedWeigher,
   getCard,
   jumpCard,
+  loadGradeQ1,
   nextChoices,
   questionForFact,
   searchCards,
@@ -63,14 +65,6 @@ const RECENT_WINDOW = 5;
  * downgrades an abort to the gap card, so a timeout needs no branch of its own.
  */
 const ASK_TIMEOUT_MS = 12_000;
-
-/**
- * Ceiling on the WEAK-HIT classify round-trip (`ask`, classifyOnly). Server-side it is one
- * embed + an in-RAM scan — a few hundred ms — so 4 s is generous; and the failure mode is the
- * OPPOSITE of the generation's: on timeout we already HAVE a card (the weak local match) and
- * serve it, so a slow or dead route costs a child nothing but this wait.
- */
-const CLASSIFY_TIMEOUT_MS = 4_000;
 const VIEWLOG_CAP = 40; // session view-log for the reward recap (topic + timestamp)
 const REWARD_MIN_TOPICS = 3; // don't reward until there's something to celebrate
 
@@ -92,18 +86,12 @@ export interface FeedResponse {
   text: string | null; // the printed card — set on 'generated' only
   /** Localized label of the nearest DEMO-SUBSET card; never set on 'offdomain'. */
   suggestion: string | null;
-  /**
-   * The card's ILLUSTRATION as a slug under /demo/cards — 'generated' only, and null far more
-   * often than not. The SERVER picked it by retrieval from the fact the card states (the curated
-   * fact→slug map, then LaBSE over the image catalog above a measured floor) and only ever
-   * returns art this site actually publishes, so it renders without a fallback. The model was
-   * never asked what to draw. Null prints the card as plain type — the ordinary outcome, and
-   * the shape DemoResponseCard is laid out for.
-   */
-  slug: string | null;
 }
 
 interface CardDemoState {
+  titleCard: TitleCardContent | null;
+  introducedTopic: string | null;
+  continueAfterTitle: () => void;
   hydrated: boolean;
   /** Current card on the pad (null until hydrate). */
   current: CardFact | null;
@@ -164,7 +152,7 @@ interface CardDemoState {
   jumpToRandom: (language: LanguageKey) => void;
 }
 
-const nextGap = () => 4 + Math.floor(Math.random() * 2); // question: every 4-5 pages
+const nextGap = () => 5; // Only ordinary fact cards count toward the quiz.
 // reward: jittered so it lands as a dopamine hit, never on a fixed beat. Matches the
 // mobile store's current testing value (6-10 pages); ship value is 15-25.
 const nextRewardGap = () => 6 + Math.floor(Math.random() * 5);
@@ -172,6 +160,11 @@ const nextRewardGap = () => 6 + Math.floor(Math.random() * 5);
 export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
   hydrated: false,
   current: null,
+  titleCard: null,
+  introducedTopic: null,
+  continueAfterTitle: () => {
+    if (get().titleCard) set({ titleCard: null, untilQuestion: nextGap(), pageKey: get().pageKey + 1 });
+  },
   choices: [],
   question: null,
   pending: null,
@@ -197,14 +190,52 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
 
   hydrate: (language, grade = DEFAULT_GRADE) => {
     const prev = get();
+    void loadGradeQ1(grade);
+    const stepOpts = (id: string, seen: Set<string>, weights: FeedWeigher | null) => ({
+      threadDepth: 0,
+      recentIds: [id],
+      weights: weights ?? undefined,
+      grade,
+    });
     if (prev.hydrated) {
-      // Already walking. A visitor who reopened onboarding and picked a DIFFERENT grade gets
-      // the new weights from here on; the pages already read are not rewritten.
-      if (prev.grade !== grade) set({ grade, weights: feedWeigher(grade) });
+      if (prev.grade !== grade) {
+        const weights = feedWeigher(grade);
+        const first = startCard(new Set(), weights, grade);
+        const seen = new Set([first.id]);
+        set({
+          grade,
+          weights,
+          seen,
+          current: first,
+          ...introduce(first, grade, null),
+          untilQuestion: nextGap(),
+          choices: nextChoices(first.id, seen, language, stepOpts(first.id, seen, weights)),
+          threadDepth: 0,
+          recent: [first.id],
+          viewLog: [{ factId: first.id, topic: first.topic, ts: Date.now() }],
+          pagesRead: 0,
+          pageKey: prev.pageKey + 1,
+          question: null,
+          reward: null,
+          response: null,
+          pending: null,
+        });
+        return;
+      }
+      if (prev.current && prev.choices.length === 0) {
+        set({
+          choices: nextChoices(prev.current.id, prev.seen, language, {
+            threadDepth: prev.threadDepth,
+            recentIds: prev.recent,
+            weights: prev.weights ?? undefined,
+            grade,
+          }),
+        });
+      }
       return;
     }
     const weights = feedWeigher(grade);
-    const first = startCard(new Set(), weights);
+    const first = startCard(new Set(), weights, grade);
     const seen = new Set([first.id]);
     set({
       hydrated: true,
@@ -212,7 +243,8 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
       weights,
       seen,
       current: first,
-      choices: nextChoices(first.id, seen, language, { threadDepth: 0, recentIds: [first.id], weights }),
+      ...introduce(first, grade, null),
+      choices: nextChoices(first.id, seen, language, stepOpts(first.id, seen, weights)),
       threadDepth: 0,
       recent: [first.id],
       viewLog: [{ factId: first.id, topic: first.topic, ts: Date.now() }],
@@ -228,12 +260,14 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
         threadDepth: s.threadDepth,
         recentIds: s.recent,
         weights: s.weights ?? undefined,
+        grade: s.grade,
       }),
     });
   },
 
   choose: (choice, language) => {
     const s = get();
+    if (s.titleCard) { get().continueAfterTitle(); return; }
     if (s.question || s.reward || s.response || s.asking) return; // an interject/ask is up
 
     // REWARD due? (jittered, needs enough distinct topics.) Rarer than the quiz, so
@@ -288,6 +322,7 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
     const pending = s.pending;
     set({ question: null, pending: null, questionAnswered: false });
     advance(pending, set, get, language);
+    set({ untilQuestion: nextGap() });
   },
 
   continueAfterReward: (language) => {
@@ -301,67 +336,15 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
     const q = query.trim();
     const s = get();
     if (!q || s.asking) return;
+    set({ titleCard: null });
 
     // Retrieval-first: a confident local match navigates straight to that card (instant,
     // zero-model), with a "you asked" banner. The card becomes the new feed anchor. This is
     // the common case and it never leaves the browser.
-    // The session's curriculum weights break ties between cards that are equally about the
-    // query — the same weigher the draws use, so a tie resolves toward this visitor's grade.
-    const res = searchCards(q, s.current?.id ?? null, s.weights ?? undefined);
+    const res = searchCards(q, s.current?.id ?? null);
     logDemoMessage('user', q, language);
     if (res.best) {
-      // STRONG hit (the common case): the card is genuinely ABOUT a word the visitor typed —
-      // serve it instantly, zero-model, never leaving the browser, exactly as before.
-      if (!res.weak) {
-        navigateTo(res.best, set, get, language, q);
-        return;
-      }
-      // WEAK hit (searchCards' weak band): no card is really ABOUT the words typed — junk
-      // lands here, but so do in-domain phrasings diluted by function words. Ask the server
-      // ONE model-free question before serving: is this query off-domain, by the SAME
-      // calibrated gate the miss path runs? (classifyOnly: one embed + an in-RAM scan, no
-      // generation.) Mirror of packages/mobile/src/store/cardStore.ts `ask` — keep in sync.
-      //
-      // SAFE DEGRADATION: any non-offdomain answer — including a down route, a timeout, or a
-      // server whose embedder is cold — serves the match, today's behaviour. The consult can
-      // only ever swap a junk serve for the honest science-tutor card, never a card for
-      // silence.
-      const fromPage = s.pageKey;
-      set({ asking: true });
-      let off = false;
-      try {
-        const r = await fetch('/api/demo/card', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query: q, language, classifyOnly: true }),
-          signal: AbortSignal.timeout(CLASSIFY_TIMEOUT_MS),
-        });
-        if (r.ok) off = ((await r.json()) as { kind?: string }).kind === 'offdomain';
-      } catch {
-        // Route down/slow → serve the match we already have.
-      }
-      // Same staleness guard as the generation path below: the visitor may have moved on.
-      const cur = get();
-      if (!cur.asking || cur.pageKey !== fromPage) {
-        set({ asking: false });
-        return;
-      }
-      set({ asking: false });
-      if (!off) {
-        navigateTo(res.best, set, get, language, q);
-        return;
-      }
-      // Weak hit AND off-domain: the matched card would have been a wrong answer to a
-      // non-science query. Same card as the miss-path off-domain outcome below — no
-      // suggestion and no anchor, for the reason spelled out there.
-      set({
-        question: null,
-        reward: null,
-        queryBanner: null,
-        response: { query: q, kind: 'offdomain', text: null, slug: null, suggestion: null },
-        responseAnchorId: null,
-        pageKey: cur.pageKey + 1,
-      });
+      navigateTo(res.best, set, get, language, q);
       return;
     }
 
@@ -374,7 +357,6 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
 
     let kind: FeedResponse['kind'] = 'abstain';
     let text: string | null = null;
-    let slug: string | null = null;
     try {
       const r = await fetch('/api/demo/card', {
         method: 'POST',
@@ -383,15 +365,10 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
         signal: AbortSignal.timeout(ASK_TIMEOUT_MS),
       });
       if (r.ok) {
-        const data = (await r.json()) as {
-          kind?: string;
-          text?: string | null;
-          slug?: string | null;
-        };
+        const data = (await r.json()) as { kind?: string; text?: string | null };
         if (data.kind === 'generated' && data.text) {
           kind = 'generated';
           text = data.text;
-          slug = data.slug ?? null;
         } else if (data.kind === 'offdomain') {
           kind = 'offdomain';
         }
@@ -423,9 +400,6 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
         query: q,
         kind,
         text,
-        // Retrieval's pick, above the measured floor and known to be published here — or null,
-        // which prints the card without a picture rather than with a wrong one.
-        slug,
         // `topic` is the card's untranslated English slug-phrase — printing it raw ended every
         // Tagalog gap card on an English fragment ("Pero subukan natin ito: how geckos blend
         // in"). choiceLabel is the localizer every other choice in the feed already goes
@@ -444,7 +418,7 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
     if (dest) {
       navigateTo(dest, set, get, language);
     } else {
-      navigateTo(jumpCard(s.current?.id ?? null, s.seen, s.weights ?? undefined), set, get, language);
+      navigateTo(jumpCard(s.current?.id ?? null, s.seen, s.weights ?? undefined, s.grade), set, get, language);
     }
   },
 
@@ -454,15 +428,17 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
     // answer that was still in flight, leaving the thinking veil and the disabled input stuck
     // over a card the visitor never asked about.
     if (s.asking) return;
-    const dest = jumpCard(s.current?.id ?? null, s.seen, s.weights ?? undefined);
+    const dest = jumpCard(s.current?.id ?? null, s.seen, s.weights ?? undefined, s.grade);
     const seen = new Set(s.seen);
     seen.add(dest.id);
     set({
       current: dest,
+      ...introduce(dest, s.grade, s.introducedTopic),
       choices: nextChoices(dest.id, seen, language, {
         threadDepth: 0,
         recentIds: [dest.id],
         weights: s.weights ?? undefined,
+        grade: s.grade,
       }),
       threadDepth: 0, // the reroll already switched topic
       question: null,
@@ -495,10 +471,12 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, language: LanguageKey,
   const viewLog = [...s.viewLog, { factId: fact.id, topic: fact.topic, ts: Date.now() }].slice(-VIEWLOG_CAP);
   set({
     current: fact,
+    ...introduce(fact, s.grade, s.introducedTopic),
     choices: nextChoices(fact.id, seen, language, {
       threadDepth: 0,
       recentIds: recent,
       weights: s.weights ?? undefined,
+      grade: s.grade,
     }),
     threadDepth: 0, // a search/topic jump starts a new thread
     seen,
@@ -534,10 +512,12 @@ function advance(choice: CardChoice, set: Set_, get: Get_, language: LanguageKey
     threadDepth: depth,
     recentIds: recent,
     weights: s.weights ?? undefined,
+    grade: s.grade,
   });
 
   set({
     current: nextFact,
+    ...introduce(nextFact, s.grade, s.introducedTopic),
     choices,
     threadDepth: choices.length > 1 ? 0 : depth,
     seen,
@@ -549,4 +529,9 @@ function advance(choice: CardChoice, set: Set_, get: Get_, language: LanguageKey
     queryBanner: null, // a normal page-turn clears any lingering search banner
     pageKey: s.pageKey + 1,
   });
+}
+
+function introduce(fact: CardFact, grade: number, previous: string | null) {
+  const content = titleForCard(fact, grade, previous);
+  return { titleCard: content && content.key !== previous ? content : null, introducedTopic: content?.key ?? previous };
 }

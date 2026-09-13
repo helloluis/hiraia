@@ -62,6 +62,8 @@ export interface LessonRun {
   key: string;
   cards: string[];
   completed: string[];
+  shelfCat?: string;
+  manualSelection?: boolean;
 }
 export const lessonByKey = (key: string) => allLessons.find((l) => l.key === key);
 export function lessonObjectives(key: string | null, card: string): string[] {
@@ -84,7 +86,7 @@ export function planLesson(lesson: Lesson, seen: ReadonlySet<string>, saved?: un
     old.cards.every((id) => lesson.cardIds.includes(id)) &&
     Array.isArray(old.completed) &&
     old.completed.every((id) => old.cards.includes(id)) &&
-    lesson.units.every((u) => u.quizCardIds.some((id) => old.cards.includes(id)))
+    lesson.units.every((u) => (u.quizCardIds.length ? u.quizCardIds : u.cardIds).some((id) => old.cards.includes(id)))
   )
     return { ...old, revision: lesson.revision };
   const cards: string[] = [];

@@ -20,15 +20,20 @@
  "pages": [
   {
    "n": 0,
-   "id": "dcard-02007",
-   "band": "Kahalagahan ng Pollination",
+   "id": "dcard-01022",
+   "band": "Unang Regla",
    "bandWasFallback": false,
-   "text": "Bakit napakahalaga ng pollination sa paggawa ng buto?\n\nAng pollination ay ang paglipat ng pollen papunta sa ovule, at kung wala ang pagsasanib na ito, hindi makakabuo ng buto ang bulaklak para sa sexual propagation!",
-   "art": "packages/images/assets-png/biology/butterfly-on-flat-flower.png",
+   "text": "Ano ang tawag sa unang pagdurugo ng regla?\n\nIto ay tinatawag na menarche, at hudyat ito na kaya nang mabuntis ang katawan ng babae.",
+   "art": null,
    "tickets": [
     {
-     "label": "Polinasyon",
-     "kind": "deep",
+     "label": "iba pang mga siklo ng regla",
+     "kind": "lateral",
+     "shelf": true
+    },
+    {
+     "label": "Dahon Berde Chlorophyll Reflect",
+     "kind": "lateral",
      "shelf": false
     }
    ],
@@ -36,14 +41,14 @@
   },
   {
    "n": 1,
-   "id": "ffct-12005",
-   "band": "Polinasyon",
+   "id": "dcard-01070",
+   "band": "Hormones ng Corpus Luteum",
    "bandWasFallback": false,
-   "text": "Ano ang pollination?\n\nIto ay kapag ang pollen mula sa stamens ay napupunta sa stigma ng bulaklak. Ang mga pukyutan, hangin, at ibang insekto ang tumutulong magdala ng pollen mula bulaklak papuntang bulaklak.",
-   "art": "packages/images/assets-png/biology/bee-on-flower-pollinating.png",
+   "text": "Ang corpus luteum ay gumagawa ng estrogen at maraming progesterone, isang hormone na nagsesenyas sa matris na kumapal bilang paghahanda sa pagbubuntis.",
+   "art": "packages/images/cards-png/ffct-21276.png",
    "tickets": [
     {
-     "label": "Bahagi ng Bulaklak",
+     "label": "Matris na Tahanan ng Sanggol",
      "kind": "deep",
      "shelf": false
     }
@@ -52,14 +57,14 @@
   },
   {
    "n": 2,
-   "id": "ffct-08599",
-   "band": "Bahagi ng Bulaklak",
+   "id": "ffct-03839",
+   "band": "Matris na Tahanan ng Sanggol",
    "bandWasFallback": false,
-   "text": "May espesyal na bahagi ang bulaklak para makapagbunga: makukulay na talulot na umaakit ng insekto, ang stamen na gumagawa ng polen, at ang pistil na tumatanggap ng polen.",
-   "art": "packages/images/assets-png/biology/bee-gathering-pollen-on-flower.png",
+   "text": "Ang bagong buhay ay lumalaki sa loob ng matris o sinapupunan ng ina!",
+   "art": null,
    "tickets": [
     {
-     "label": "Kumpletong Bulaklak",
+     "label": "Supot ng Kangaroo",
      "kind": "deep",
      "shelf": false
     }
@@ -68,14 +73,39 @@
   },
   {
    "n": 3,
-   "id": "ffct-10491",
-   "band": "Kumpletong Bulaklak",
+   "id": "ffct-01123",
+   "band": "Supot ng Kangaroo",
    "bandWasFallback": false,
-   "text": "Ano ang complete flower?\n\nIto ang bulaklak na may lahat ng apat na parte: sepals, petals, stamen, at pistil. Kulang man isa, incomplete na ito; ang gumamela ay complete flower.",
-   "art": "packages/images/assets-png/biology/bee-on-gumamela.png",
+   "text": "Ano ang tawag sa sanggol ng kangaroo?\n\nAng kangaroo ay may bulsa sa tiyan kung saan nakatira at lumalaki ang sanggol nito, ang tinatawag na joey, habang sumususo ng gatas!",
+   "art": "packages/images/assets-png/biology/kangaroo-joey-pouch.png",
    "tickets": [
     {
-     "label": "Apat na Bahagi ng Bulaklak",
+     "label": "Sanggol na Kangaroo",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null,
+   "quiz": {
+    "q": "Ano ang tawag sa sanggol na kangaroo na nakatira at lumalaki sa bulsa ng kanyang ina?",
+    "options": [
+     "Joey",
+     "Cub",
+     "Pup"
+    ],
+    "answer": "Joey"
+   }
+  },
+  {
+   "n": 4,
+   "id": "ffct-10251",
+   "band": "Sanggol na Kangaroo",
+   "bandWasFallback": false,
+   "text": "Ang sanggol na kangaroo ay ipinapanganak na napakaliit at hindi pa lubos na hinog, kaya gumagapang ito papunta sa bulsa ng ina para doon magpatuloy lumaki.",
+   "art": "packages/images/assets-png/biology/marsupial-pouch-joey.png",
+   "tickets": [
+    {
+     "label": "Supot ng Echidna",
      "kind": "deep",
      "shelf": false
     }
@@ -83,40 +113,15 @@
    "magnet": null
   },
   {
-   "n": 4,
-   "id": "ffct-06137",
-   "band": "Apat na Bahagi ng Bulaklak",
-   "bandWasFallback": false,
-   "text": "Ang kumpletong bulaklak ay may apat na pangunahing bahagi: sepal, talulot (petal), stamen, at pistil.",
-   "art": null,
-   "tickets": [
-    {
-     "label": "Bulaklak at Bunga",
-     "kind": "deep",
-     "shelf": false
-    }
-   ],
-   "magnet": null,
-   "quiz": {
-    "q": "Ang isang kumpletong bulaklak ay may apat na pangunahing bahagi. Alin sa mga listahan ang tama?",
-    "options": [
-     "Ugat, tangkay, dahon, at talulot",
-     "Sepal, talulot (petal), stamen, at pistil",
-     "Pistil, pollen, buto, at prutas"
-    ],
-    "answer": "Sepal, talulot (petal), stamen, at pistil"
-   }
-  },
-  {
    "n": 5,
-   "id": "ffct-08791",
-   "band": "Bulaklak at Bunga",
+   "id": "ffct-03625",
+   "band": "Supot ng Echidna",
    "bandWasFallback": false,
-   "text": "Pagkatapos ng pollination, nalalanta at nalalagas ang mga talulot ng bulaklak habang lumalaki ang ovary nito na magiging prutas.",
-   "art": null,
+   "text": "Ang echidna ay nangingitlog ng isang itlog at inilalagay ito sa bulsa sa tiyan nito hanggang mapisa.",
+   "art": "packages/images/assets-png/biology/echidna-egg-in-pouch.png",
    "tickets": [
     {
-     "label": "Mga Kabute",
+     "label": "Sanggol na Echidna",
      "kind": "deep",
      "shelf": false
     }
@@ -125,14 +130,14 @@
   },
   {
    "n": 6,
-   "id": "ffct-04584",
-   "band": "Mga Kabute",
+   "id": "ffct-00592",
+   "band": "Sanggol na Echidna",
    "bandWasFallback": false,
-   "text": "Maraming kabute ang lumalabas, naglalabas ng spore, at nalalanta -- lahat sa loob lamang ng ilang araw.",
-   "art": "packages/images/assets-png/biology/mushroom-spore-release.png",
+   "text": "Ano ang tawag sa sanggol na echidna?\n\nAng bagong-silang na anak ng echidna ay tinatawag na puggle at napakaliit pa nito kapag napisa.",
+   "art": null,
    "tickets": [
     {
-     "label": "Buhay na Bulaklak ng Rafflesia",
+     "label": "Label Line Vagina Canal",
      "kind": "deep",
      "shelf": false
     }
@@ -141,60 +146,60 @@
   },
   {
    "n": 7,
-   "id": "ffct-12426",
-   "band": "Buhay na Bulaklak ng Rafflesia",
+   "id": "ffct-37047",
+   "band": "Label Line Vagina Canal",
    "bandWasFallback": false,
-   "text": "Gaano katagal namumulaklak ang Rafflesia?\n\nKahit matagal lumaki ang buko nito, tumatagal lang ng ilang araw ang bukas na bulaklak bago ito mangitim at malanta.",
-   "art": null,
+   "text": "Ano ang kadalasang pangalan sa label line na tumuturo sa canal sa ilalim ng matris?\n\nIto ay kadalasang tinatawag na vagina! Ang label line na ito ay tumuturo sa canal sa ilalim ng matris.",
+   "art": "packages/images/cards-png/ffct-37047.png",
    "tickets": [
     {
-     "label": "Bulaklak Rafflesia",
-     "kind": "deep",
-     "shelf": false
-    },
-    {
-     "label": "Pagpaparami ng Isda",
-     "kind": "lateral",
-     "shelf": false
-    }
-   ],
-   "magnet": null
-  },
-  {
-   "n": 8,
-   "id": "ffct-03630",
-   "band": "Bulaklak Rafflesia",
-   "bandWasFallback": false,
-   "text": "Gaano katagal namumukadkad ang bulaklak ng Rafflesia?\n\nKapag bumukadkad na ang buko, nabubuhay lamang ng ilang araw ang bulaklak ng Rafflesia bago ito mangitim at mabulok.",
-   "art": null,
-   "tickets": [
-    {
-     "label": "Switch ng Electric Circuit",
+     "label": "Label na Linya sa Ovary",
      "kind": "deep",
      "shelf": false
     }
    ],
    "magnet": null,
    "quiz": {
-    "q": "Gaano katagal ang bulaklak ng Rafflesia pagkatapos bukadkad ng buko nito?",
+    "q": "Paano tinatawag ang bagong pisang anak ng echidna?",
     "options": [
-     "Ilang araw lamang bago ito mangitim at mabulok",
-     "Humigit-kumulang isang buwan",
-     "Isang buong panahon ng pagtatanim"
+     "Puggle",
+     "Kit",
+     "Cub"
     ],
-    "answer": "Ilang araw lamang bago ito mangitim at mabulok"
+    "answer": "Puggle"
    }
   },
   {
-   "n": 9,
-   "id": "ffct-26963",
-   "band": "Switch ng Electric Circuit",
+   "n": 8,
+   "id": "ffct-37030",
+   "band": "Label na Linya sa Ovary",
    "bandWasFallback": false,
-   "text": "Ang switch ay hindi gumagawa ng kuryente! Binubuksan o sinasarado lang nito ang daan para dumaloy ang current sa circuit.",
-   "art": "packages/images/cards-png/ffct-26963.png",
+   "text": "Sa mga larawan sa textbook, may linya na may label na \"ovary\" na tumuturo sa maliit na hugis-itlog na organ sa kaliwa o kanan ng uterus!",
+   "art": "packages/images/cards-png/ffct-37030.png",
    "tickets": [
     {
-     "label": "Paglalarawan sa Doppler Effect",
+     "label": "Label Testis Testicle Linya Oval",
+     "kind": "deep",
+     "shelf": false
+    },
+    {
+     "label": "iba pang katawan ng tao",
+     "kind": "lateral",
+     "shelf": true
+    }
+   ],
+   "magnet": null
+  },
+  {
+   "n": 9,
+   "id": "ffct-37057",
+   "band": "Label Testis Testicle Linya Oval",
+   "bandWasFallback": false,
+   "text": "Sa mga larawan ng aklat, may linya na may label na testis o testicle na tumuturo sa isa sa dalawang hugis-ovalyong organ sa supot!",
+   "art": "packages/images/cards-png/qa-ffct-37057.png",
+   "tickets": [
+    {
+     "label": "Label ng Penis",
      "kind": "deep",
      "shelf": false
     }
@@ -210,7 +215,7 @@
    "art": "packages/images/assets-png/biology/feathered-dinosaur.png",
    "tickets": [
     {
-     "label": "Paglaho ng mga Dinosaur",
+     "label": "Dinosaur Asteroid Naglaho",
      "kind": "deep",
      "shelf": false
     }
@@ -223,13 +228,13 @@
   {
    "n": 11,
    "id": "ffct-05132",
-   "band": "Paglaho ng mga Dinosaur",
+   "band": "Dinosaur Asteroid Naglaho",
    "bandWasFallback": false,
    "text": "Bakit naglaho ang karamihan sa mga dinosaur?\n\nKaramihan sa mga dinosaur ay naglaho mga 66 milyong taon na ang nakalipas nang tumama ang isang napakalaking asteroid sa Earth — pero ang mga ibon ngayon ay itinuturing na inapo ng maliliit na dinosaur!",
    "art": "packages/images/cards-png/ffct-05132.png",
    "tickets": [
     {
-     "label": "Pagkawala ng mga Dinosaur",
+     "label": "Dinosaur noong 66 Milyon",
      "kind": "deep",
      "shelf": false
     }
@@ -242,10 +247,10 @@
   {
    "n": 12,
    "id": "ffct-04393",
-   "band": "Pagkawala ng mga Dinosaur",
+   "band": "Dinosaur noong 66 Milyon",
    "bandWasFallback": false,
    "text": "Ang mga dinosaur ay nawala mga 66 milyong taon na ang nakalipas!",
-   "art": "packages/images/cards-png/ffct-04393.png",
+   "art": "packages/images/cards-png/ffct-34612.png",
    "tickets": [
     {
      "label": "Pagkalipol",
@@ -348,9 +353,9 @@
      "shelf": false
     },
     {
-     "label": "Isda sa Kuweba",
+     "label": "iba pang mga reptilya",
      "kind": "lateral",
-     "shelf": false
+     "shelf": true
     }
    ],
    "magnet": {
@@ -364,7 +369,7 @@
    "band": "Herbivore at Carnivore Dinosaur",
    "bandWasFallback": false,
    "text": "Ano ang pagkakaiba ng herbivore at carnivore dinosaur?\n\nMay dalawang pangunahing uri ng dinosaur: ang herbivore na kumakain ng halaman, at ang carnivore na kumakain ng karne ng ibang hayop.",
-   "art": "packages/images/cards-png/ffct-02406.png",
+   "art": null,
    "tickets": [
     {
      "label": "Sungay at Kalasag ni Triceratops",
@@ -424,7 +429,7 @@
    "art": "packages/images/assets-png/earth-science/old-faithful-geyser.png",
    "tickets": [
     {
-     "label": "Pagbuga ng Geyser",
+     "label": "Geyser Steam Channel Pagsabog",
      "kind": "deep",
      "shelf": false
     }
@@ -437,7 +442,7 @@
   {
    "n": 22,
    "id": "ffct-29969",
-   "band": "Pagbuga ng Geyser",
+   "band": "Geyser Steam Channel Pagsabog",
    "bandWasFallback": false,
    "text": "Sumasabog ang geyser kapag ang tubig sa makitid na daanan sa ilalim ng lupa ay uminit at naging singaw. Pinipilit ng presyon ng singaw ang tubig pataas kaya bumubuga ito!",
    "art": null,
@@ -459,7 +464,7 @@
    "band": "Conventional Geothermal System",
    "bandWasFallback": false,
    "text": "Ang conventional geothermal system ay gumagamit ng steam mula sa natural na pinagmumulan tulad ng geysers o kumukuha ng tubig mula sa mainit at high-pressure na kailaliman ng Earth.",
-   "art": "packages/images/cards-png/ffct-27906.png",
+   "art": null,
    "tickets": [
     {
      "label": "Saan Itinatayo ang mga Plant",
@@ -543,7 +548,7 @@
      "shelf": false
     },
     {
-     "label": "iba pang kalawakan",
+     "label": "iba pang sistemang solar",
      "kind": "lateral",
      "shelf": true
     }

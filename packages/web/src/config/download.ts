@@ -2,9 +2,9 @@
  * Hiraia Android APK — single source of truth for the landing-page download.
  *
  * One APK, one on-device model (Hiraia-2B — the CPT'd + full-parameter-SFT'd
- * Qwen3.5-2B, hiraia-sft-2b-v2), one device target: Android 12+ with
- * 6 GB+ RAM. There is no lighter build — the 1B/4 GB "kitten" tier is retired, so the
- * requirement below is a REQUIREMENT, not a recommendation.
+ * Qwen3.5-2B, hiraia-sft-2b-v2), one OS target: Android 10+. The built-in card
+ * library works without loading that model; 4 GB+ RAM with sufficient available memory is required for local
+ * model-generated cards.
  *
  * Distributed outside the Play Store, so legitimacy rests on two published,
  * user-checkable values:
@@ -12,14 +12,30 @@
  *   2. `signingCertSha256` — SHA-256 of the signing cert. Android enforces this
  *      on install/update; it is the stable trust anchor across releases.
  *
- * Workflow: build the APK, push it to the mirror (same nginx as the model files —
- * `Accept-Ranges: bytes` so spotty connections can resume), update sha256 +
- * fileSizeMB below, deploy.
+ * Workflow: build → scripts/sign-apk.sh → deploy/publish-release-assets.py (uploads the
+ * signed APK to Cloudflare R2, the origin behind https://assets.hiraia.org — the VPS only
+ * keeps 307 redirects for the legacy hiraia.org/models/* URLs — as an IMMUTABLE versioned
+ * key plus the hiraia.apk alias, read-back-verified, and prints the block below) → paste →
+ * push main → deploy/update.sh. Point `apk.url` at the VERSIONED key the publisher prints:
+ * the alias sits behind a 4 h edge cache and could hand a phone the previous build.
+ *
+ * IN-APP UPDATES read this file too. `/api/app/manifest` (src/app/api/app/manifest/route.ts)
+ * serves it as JSON and the installed app polls that on launch to decide whether to show
+ * its "Update available!" bar, so THREE more fields are load-bearing at publish time:
+ *   • `versionCode` — MUST equal the built APK's android.versionCode
+ *     (packages/mobile/app.json `expo.android.versionCode`; the app compares this number
+ *     with its own and only offers a STRICTLY HIGHER one). Bump app.json, build, then copy
+ *     the same number here. A stale versionCode here = installed phones never see the update.
+ *   • `apk.bytes` + `apk.md5` — the app downloads the APK through the same resume + integrity
+ *     gate as the model files (engine/modelDownload.ts), which needs the EXACT byte count and
+ *     the MD5 (sha256 stays for the human-checkable landing page).
+ * All of them are printed by packages/mobile/scripts/sign-apk.sh as a ready-to-paste block —
+ * always measured from the SIGNED APK that actually goes to the mirror.
  */
 
 export const DOWNLOAD = {
   /**
-   * TRUE for the Sept 2026 v0.1 release: the CPT'd Qwen3.5-2B build, regression gate 45/45
+   * TRUE for the Sept 2026 pilot release: the CPT'd Qwen3.5-2B build, regression gate 45/45
    * green, signed with the pinned release cert. The UI additionally requires `apk.sha256` to
    * be non-empty before it renders a live link, so a deploy with an empty hash falls back to
    * 'coming soon' instead of linking an unverified file. Update url/fileSizeMB/sha256
@@ -27,21 +43,52 @@ export const DOWNLOAD = {
    */
   released: true,
 
-  version: '0.1',
+  // Public release label: v0.3.5 (mobile versionName 0.3.5).
+  // Android versionCode is a separate, monotonically increasing build number.
+  version: '0.3.5',
+
+  /**
+   * android.versionCode of the APK at `apk.url` — copied from packages/mobile/app.json at
+   * publish time (sign-apk.sh prints it). The installed app offers an update only when this
+   * is STRICTLY greater than its own; see the header.
+   *
+   * v0.3.5 / build 7: Fraunces SemiBold replaces the heavy slab display font.
+   */
+  versionCode: 8,
+  /**
+   * Oldest versionCode the current mirror content still supports. Below this the in-app
+   * update bar cannot be snoozed (the ✕ is hidden). Reserved for a release that breaks the
+   * on-device database or model layout; leave at 1 otherwise.
+   */
+  minSupportedVersionCode: 1,
+  /** ISO date the APK at `apk.url` went live on the mirror (for the manifest's publishedAt). */
+  publishedAt: '2026-09-12',
 
   apk: {
-    url: 'https://hiraia.org/models/hiraia.apk',
+    url: 'https://assets.hiraia.org/models/hiraia-v0p3p5.apk',
     /** Omit from the UI when 0 (file not measured yet). */
     fileSizeMB: 297,
-    sha256: '3d4092ab00377526be0fb00e043c2a63758fbad0afaf0e2c1db2469d98219cc9',
+    /**
+     * EXACT size in bytes of the signed APK — the in-app downloader's hard gate (a short
+     * body is a captive-portal page, not an APK). 0 = not measured; the manifest then
+     * offers nothing.
+     */
+    bytes: 311440690,
+    sha256: '5b70917e498896f700c25166f9c7fdddc1b3b7c5ab271a47244861aec2079e32',
+    /**
+     * MD5 of the same file, lowercase hex — the in-app downloader verifies MD5 (native,
+     * streaming; see engine/modelDownload.ts), the landing page shows sha256. Empty = not
+     * measured; the manifest then offers nothing.
+     */
+    md5: 'e1afb1db6440f37b797d2c5744ab10d6',
   },
 
   /** SHA-256 of the signing cert. Stays the same across releases. */
   signingCertSha256: '40d750d5576cb59c311c7ba713403e065b934967d7a7d1bc80652e1167a20c35',
 
-  minAndroid: 12,
-  /** Device-RAM floor. Matches ACTIVE_MODEL.minRamGB in packages/mobile/src/config/model.ts. */
-  minRamGB: 6,
+  minAndroid: 10,
+  /** Local-model RAM recommendation. Matches ACTIVE_MODEL.minRamGB in the mobile app. */
+  minRamGB: 4,
   /**
    * First-run download, in GB: the base model plus the semantic embedder. Both are
    * fetched from the mirror on first launch (nothing else is — art is in the APK, and

@@ -776,13 +776,20 @@ export class LocalEngine implements TutorEngine {
    */
   async answerQuery(
     query: string,
-    language: string
-  ): Promise<{ text: string; grounded: boolean; offDomain: boolean; slug: string | null }> {
+    language: string,
+    options?: { excludeFactIds?: readonly string[] }
+  ): Promise<{ text: string; grounded: boolean; offDomain: boolean; slug: string | null; sourceFactIds?: string[]; relatedQuery?: string }> {
     if (!this.modelId || !this.isReadyFlag) {
       throw new Error('Engine not initialized. Call initialize() first.');
     }
     // Retrieval applies its own confidence floor; the diagnostics come out of the same pass.
-    const r = await this.ragSearchDiag(query, 4);
+    const excluded = new Set(options?.excludeFactIds ?? []);
+    const r = await this.ragSearchDiag(query, 4, '', excluded);
+    // Retrieval may down-weight seen facts rather than exclude them. Follow-up cards
+    // must ground themselves in new evidence, so enforce exclusion before prompting.
+    const keep = r.facts.map((fact, i) => excluded.has(fact.id) ? -1 : i).filter(i => i >= 0);
+    r.hits = keep.map(i => r.hits[i]!);
+    r.facts = keep.map(i => r.facts[i]!);
     // OFF-DOMAIN. Only classifiable when the embedder ran: without it topCos is 0 and every
     // query would look off-domain, so a warming/failed embedder falls through to the ordinary
     // gap path below rather than telling a child their science question isn't science. It is
@@ -904,7 +911,8 @@ export class LocalEngine implements TutorEngine {
       const chosen = r.facts[attributeCardToFact(printed, factTexts)]!;
       slug = await this.resolveFactImage(chosen).catch(() => null);
     }
-    return { text, grounded: true, offDomain: false, slug };
+    return { text, grounded: true, offDomain: false, slug,
+      sourceFactIds: r.facts.map(fact => fact.id), relatedQuery: r.facts[0]?.topic };
   }
 
   /**

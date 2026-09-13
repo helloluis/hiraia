@@ -21,7 +21,9 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 PINNED="40d750d5576cb59c311c7ba713403e065b934967d7a7d1bc80652e1167a20c35"
 APK_IN="android/app/build/outputs/apk/release/app-release.apk"
-APK_OUT="android/app/build/outputs/apk/release/hiraia-signed.apk"
+VERSION_NAME="$(python3 -c 'import json; print(json.load(open("app.json"))["expo"]["version"])')"
+VERSION_FILE="$(python3 -c 'import re,sys; v=sys.argv[1]; assert re.fullmatch(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)",v), "Invalid release version"; print("hiraia-v"+v.replace(".","p")+".apk")' "$VERSION_NAME")"
+APK_OUT="android/app/build/outputs/apk/release/$VERSION_FILE"
 CREDS="credentials.json"
 
 export JAVA_HOME="${JAVA_HOME:-/opt/homebrew/opt/openjdk}"
@@ -74,6 +76,9 @@ if [ -x "$AAPT" ]; then
 fi
 MB="$(python3 -c "print(round($BYTES / 1048576))")"
 
+APK_VN="$("$AAPT" dump badging "$APK_OUT" 2>/dev/null | sed -n "s/.*versionName='\([^']*\)'.*/\1/p" | head -1)"
+[ "$APK_VN" = "$VERSION_NAME" ] || { echo "!! APK versionName does not match its filename"; exit 1; }
+
 echo "== cert matches the pinned anchor ($PINNED)"
 echo "== signed APK:  $APK_OUT"
 echo "== versionCode: $APK_VC (app.json version $APP_JSON_VN)"
@@ -87,7 +92,7 @@ echo
 echo "  ~/.venvs/hiraia-publish/bin/python deploy/publish-release-assets.py \\"
 echo "      --env-file /private/path/.env.cloudflare.local --apk packages/mobile/$APK_OUT"
 echo
-echo "It uploads models/hiraia-v${APK_VC}.apk (immutable) + the hiraia.apk alias, verifies the"
+echo "It uploads models/$VERSION_FILE (immutable) + the hiraia.apk alias, verifies the"
 echo "bytes by reading them back and via a public HEAD, and prints the download.ts block"
 echo "(versionCode/publishedAt/url/fileSizeMB/bytes/sha256/md5) that feeds BOTH the landing"
 echo "page and /api/app/manifest. Expected values, for cross-checking its output:"

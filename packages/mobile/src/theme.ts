@@ -13,8 +13,8 @@ export const fonts = {
   body: 'PatrickHand',
   /** Felt-tip marker — big, short card facts (question-cards feed). */
   marker: 'PermanentMarker',
-  /** Fat Clarendon slab — card numbers, fork banner, key chips (mid-century card). */
-  slab: 'AlfaSlabOne',
+  /** Fraunces SemiBold — compact display titles, card numbers, banners and key chips. */
+  slab: 'FrauncesSemiBold',
   /** Squared low-contrast slab — every Tagalog sentence on a card. */
   cardBody: 'ZillaSlab',
   cardBodyBold: 'ZillaSlabBold',
@@ -39,7 +39,7 @@ export const fontAssets = {
   PatrickHand: require('../assets/fonts/PatrickHand-Regular.ttf'),
   PermanentMarker: require('../assets/fonts/PermanentMarker-Regular.ttf'),
   // mid-century card feed (design/mockups/midcentury.html)
-  AlfaSlabOne: require('../assets/fonts/AlfaSlabOne-Regular.ttf'),
+  FrauncesSemiBold: require('../assets/fonts/Fraunces-SemiBold.ttf'),
   ZillaSlab: require('../assets/fonts/ZillaSlab-Regular.ttf'),
   ZillaSlabBold: require('../assets/fonts/ZillaSlab-Bold.ttf'),
   // Archivo Black stands in for the mockup's Chivo 900: Chivo ships only as a

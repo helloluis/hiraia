@@ -56,6 +56,7 @@ interface DemoState {
   setLanguage: (language: LanguageKey) => void;
   /** Onboarding page 2. */
   pickGrade: (grade: GradeLevel) => void;
+  setGrade: (grade: GradeLevel) => void;
   /** The gold Ticket on onboarding page 3: remember the answers and warm the demo up. */
   finishOnboarding: () => void;
   /** Show onboarding again from the top (Settings-style "watch it again"). */
@@ -187,7 +188,16 @@ export const useDemoStore = create<DemoState>((set, get) => ({
     writeOnboarding({ language, grade: get().grade });
   },
 
-  pickGrade: (grade) => set({ grade }),
+  pickGrade: (grade) => {
+    set({ grade });
+    void import('@/data/cards').then((m) => m.loadGradeQ1(grade)).catch(() => undefined);
+  },
+  setGrade: (grade) => {
+    set({ grade });
+    const language = get().language;
+    if (language) writeOnboarding({ language, grade });
+    void import('@/data/cards').then((m) => m.loadGradeQ1(grade)).catch(() => undefined);
+  },
 
   finishOnboarding: () => {
     const { language, grade } = get();

@@ -53,22 +53,19 @@ const CAT = require('../../../assets/hiraia-profile.png');
  * exist because this page is a quiz), not app copy that other screens share. They move to
  * the shared strings file if a second screen ever needs them.
  */
-const LABELS: Record<Language, { band: string; eyebrow: string; hint: string; answer: string }> = {
+const LABELS: Record<Language, { band: string; hint: string; answer: string }> = {
   tagalog: {
     band: 'Pagsusulit',
-    eyebrow: 'Sandali — tanong!',
     hint: 'Pumili ng isang sagot',
     answer: 'Ang tamang sagot',
   },
   english: {
     band: 'Quiz',
-    eyebrow: 'Wait — a question!',
     hint: 'Pick one answer',
     answer: 'The correct answer',
   },
   cebuano: {
     band: 'Pagsulay',
-    eyebrow: 'Kadiyot — pangutana!',
     hint: 'Pili ug usa ka tubag',
     answer: 'Ang husto nga tubag',
   },
@@ -279,6 +276,8 @@ function useReduceMotion(): boolean {
 interface QuestionPageProps {
   question: CardQuestion;
   language: Language;
+  reviewTitle?: string;
+  reviewProgress?: string;
   displayOrder?: number[];
   selectedOption?: number | null;
   disabled?: boolean;
@@ -289,7 +288,7 @@ interface QuestionPageProps {
   onContinue: () => void;
 }
 
-export function QuestionPage({ question, language, onAnswer, onContinue, displayOrder, selectedOption, disabled, celebrate = true, onSelect }: QuestionPageProps) {
+export function QuestionPage({ question, language, onAnswer, onContinue, reviewTitle, reviewProgress, displayOrder, selectedOption, disabled, celebrate = true, onSelect }: QuestionPageProps) {
   const t = uiStrings(language);
   const labels = LABELS[language];
   const shuffledOrder = useMemo(() => shuffled(question.o.length), [question.f, question.o.length]);
@@ -407,9 +406,11 @@ export function QuestionPage({ question, language, onAnswer, onContinue, display
           <View style={[styles.disc, styles.discHero, discSize(catSize)]}>
             <Image source={CAT} style={imageSize(catSize)} resizeMode="contain" />
           </View>
-          <Text style={styles.eyebrow}>{labels.eyebrow}</Text>
         </>
       )}
+
+      {reviewTitle && <Text style={styles.reviewTitle}>{reviewTitle}</Text>}
+      {reviewProgress && <Text style={styles.eyebrow}>{reviewProgress}</Text>}
 
       <Text
         style={[styles.question, { fontSize: qSize, lineHeight: qLine }]}
@@ -554,6 +555,13 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   discHero: { marginTop: 18 },
+  reviewTitle: {
+    marginTop: 11,
+    textAlign: 'center',
+    fontFamily: fonts.cardBodyBold,
+    fontSize: 16,
+    color: card.stock,
+  },
   eyebrow: {
     marginTop: 11,
     textAlign: 'center',

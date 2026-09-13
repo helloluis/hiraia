@@ -1,6 +1,8 @@
+import { titleForCard, type TitleCardContent } from '../data/titleCard';
 import { reviewDue } from '../reviews/logic';
 import {
   initializeReviews,
+  beginTitleSection,
   interceptReview,
   prepareReview,
   reviewPrepared,
@@ -47,7 +49,6 @@ import {
   topicTitle,
   estimatedCurriculumCursor,
   getCard,
-  hasServableMagnet,
   hasServableCurriculum,
   jumpCard,
   nextChoices,
@@ -148,14 +149,14 @@ export interface FeedResponse {
  *            (SearchResult.magnet). Per page-turn it is only ever LOOKED UP, never re-scored.
  *   served — how many magnet cards have been served since the ask; the pull's decay clock.
  *
- * Cleared by: the [x] (dismissQuery), auto-release (no unseen servable member left — checked
- * on each ordinary page-turn), a new ask (replaced), and the reroll (an explicit "surprise
- * me"). Quiz/reward interjects never touch it — they are interruptions, not topic changes.
+ * Cleared by the [x], another search, Calendar selection, or Randomize.
+ * Once direct matches run out, adjacent cards can follow while the keyword stays visible. Quiz/reward interjects never touch it — they are interruptions, not topic changes.
  */
 export interface ActiveMagnet {
   query: string;
   idSet: ReadonlySet<string>;
   served: number;
+  dynamic?: { attempts: number; sourceFactIds: string[]; texts: string[] };
 }
 
 /**
@@ -172,11 +173,14 @@ export interface ActiveMagnet {
  * (exitCurriculum), that end-of-outline release, and nothing else — an ask serves its card as a
  * one-off and the walk resumes, Randomize leaves curriculum for the keyword feed, interjects never touch it.
  * The magnet and the cursor are mutually exclusive by construction: entering either clears the
- * other, and an ask made in calendar mode forms no magnet. The topic key is persisted separately per grade in the active profile database.
+ * other on a Calendar selection; searching pauses the saved cursor while the magnet holds. The topic key is persisted separately per grade in the active profile database.
  */
 export type ActiveCurriculum = CurriculumCursor;
 
 interface CardState {
+  titleCard: TitleCardContent | null;
+  introducedTopic: string | null;
+  continueAfterTitle: () => void;
   hydrated: boolean;
   /** Current card on the pad (null until hydrate). */
   current: CardFact | null;
@@ -254,7 +258,7 @@ interface CardState {
    * OutlineTopic.key): clears any magnet, holds the topic, and lands on its best next unseen
    * card. A key the outline does not list (no cards at this grade) is ignored.
    */
-  enterCurriculum: (key: string, savedRun?: unknown) => void;
+  enterCurriculum: (key: string, savedRun?: unknown, shelfCat?: string) => void;
   /** The curriculum ribbon's [x]: leave calendar mode; the feed continues where it is. */
   exitCurriculum: () => void;
   continueAfterResponse: () => void;
@@ -314,7 +318,7 @@ function feedContext(
     cardSeen: seenStore.cards,
     competencySeen: seenStore.competencies,
     magnet: magnet ? { ids: magnet.idSet, served: magnet.served } : undefined,
-    curriculum: curriculum ? { ids: curriculum.idSet } : undefined,
+    curriculum: !magnet && curriculum ? { ids: curriculum.idSet } : undefined,
   };
 }
 
@@ -343,9 +347,15 @@ function withReinforcement(
   choices: CardChoice[],
   queue: readonly string[],
   currentId: string,
-  language: Language
+  language: Language,
+  cursor?: ActiveCurriculum | null,
+  magnet: ActiveMagnet | null = useCardStore.getState().magnet
 ): CardChoice[] {
-  const id = queue.find((candidate) => candidate !== currentId && !!getCard(candidate));
+  if (magnet) return choices;
+  // A manual Calendar destination takes precedence over older reinforcement/remediation.
+  // Keep off-topic entries queued for a later eligible run; do not consume them here.
+  const id = queue.find((candidate) => candidate !== currentId && !!getCard(candidate) &&
+    (!cursor?.manualSelection || cursor.idSet.has(candidate)));
   if (!id) return choices;
   const fact = getCard(id)!;
   const forced: CardChoice = { factId: id, label: choiceLabel(fact, language), kind: 'deep' };
@@ -367,7 +377,8 @@ function magnetAfter(
 ): ActiveMagnet | null {
   if (!m) return null;
   const served = m.idSet.has(fact.id) ? m.served + 1 : m.served;
-  if (!hasServableMagnet(fact.id, m.idSet, seen, recent)) return null;
+  // Keep the keyword and its dismiss control visible even when direct matches run out.
+  // The graph can then supply adjacent topics until the learner dismisses the magnet.
   return served === m.served ? m : { ...m, served };
 }
 
@@ -396,6 +407,13 @@ let hydrating: Promise<void> | null = null;
 export const useCardStore = create<CardState>()((set, get) => ({
   hydrated: false,
   current: null,
+  titleCard: null,
+  introducedTopic: null,
+  continueAfterTitle: () => {
+    if (!get().titleCard) return;
+    beginTitleSection();
+    set({ titleCard: null, pageKey: get().pageKey + 1 });
+  },
   choices: [],
   question: null,
   pending: null,
@@ -504,7 +522,8 @@ export const useCardStore = create<CardState>()((set, get) => ({
         }),
         reviewFeedQueue(initialRemediation, initialReinforcement),
         first.id,
-        lang
+        lang,
+        curriculum
       );
       // The card's prose lives in the database now, so it has to be here before the page
       // paints — this is the ONE await the feed has, and it covers the first card and the
@@ -518,6 +537,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
         correctCount,
         seen,
         current: first,
+        ...introduce(first, currentTopic, null),
         currentTopic,
         curriculum,
         choices,
@@ -551,7 +571,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
 
   prepareReview: () => {
     const s = get();
-    if (!s.current || s.question || s.reward || s.response || !s.choices[0]) return;
+    if (!s.current || s.titleCard || s.question || s.reward || s.response || !s.choices[0]) return;
     const topic = s.currentTopic && cursorTopic(s.currentTopic);
     prepareReview({
       pageKey: s.pageKey,
@@ -566,6 +586,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
   },
   choose: (choice) => {
     const s = get();
+    if (s.titleCard) { get().continueAfterTitle(); return; }
     if (
       !s.current ||
       s.question ||
@@ -602,7 +623,17 @@ export const useCardStore = create<CardState>()((set, get) => ({
       reinforcementQueue: data?.reinforcement.map((card) => card.id) ?? [],
       remediationQueue: remediationQueueFromReview(),
     });
-    if (choice) advance(choice, set, get);
+    if (!choice) return;
+    const s = get();
+    if (s.magnet && !s.magnet.idSet.has(choice.factId)) {
+      const next = nextChoices(s.current?.id ?? '', s.seen,
+        useEngineStore.getState().language ?? 'english', { ctx: feedContext(), recentIds: s.recent })[0];
+      if (next) advance(next, set, get);
+    } else if (!s.magnet && s.curriculum?.manualSelection && !s.curriculum.idSet.has(choice.factId)) {
+      // An older quiz can finish after a Calendar jump, but its saved destination is stale.
+      const next = jumpCard(s.current?.id ?? null, s.seen, feedContext(null, s.curriculum));
+      advance({ factId: next.id, label: '', kind: 'deep' }, set, get);
+    } else advance(choice, set, get);
   },
   recordReviewGrade: (result) => {
     const s = get();
@@ -674,6 +705,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
     const q = query.trim();
     const s = get();
     if (!q || s.asking) return;
+    set({ titleCard: null });
     // The child asked: the speculative reward line yields NOW, before the search's embedding
     // (which is not under the model lock and would otherwise share the CPU with it). The
     // `asking` edge in the page-turn hook below is the backstop for the generation itself.
@@ -685,7 +717,17 @@ export const useCardStore = create<CardState>()((set, get) => ({
     // The feed context is passed so that cards which are EQUALLY about the query — same
     // coverage, same aboutness share — are separated by the same curriculum weight every draw
     // uses, rather than by pool ordinal. It never gates a result; see searchCards.
-    const res = await searchCards(q, s.current?.id ?? null, feedContext());
+    const stillCurrent = () => get().pageKey === s.pageKey;
+    set({ asking: true });
+    let res: Awaited<ReturnType<typeof searchCards>>;
+    try {
+      res = await searchCards(q, s.current?.id ?? null, feedContext());
+    } catch (e) {
+      if (stillCurrent()) set({ asking: false });
+      console.warn('[cards] search failed', e);
+      return;
+    }
+    if (!stillCurrent()) return;
     if (res.best) {
       // STRONG hit (the common case): the card is genuinely ABOUT a word the child typed, so it
       // is self-evidently in-domain — serve it instantly, zero-model, exactly as before.
@@ -725,20 +767,23 @@ export const useCardStore = create<CardState>()((set, get) => ({
             console.warn('[cards] weak-hit off-domain probe failed; serving the match', e);
           } finally {
             clearTimeout(timer);
-            set({ asking: false });
+            if (stillCurrent()) set({ asking: false });
           }
         }
       }
+      if (!stillCurrent()) return;
       if (weakOff !== true) {
         // On-topic landing: form the magnet — the query, its aboutness-ranked set (already
         // computed by the search we just paid for), decay clock at zero. It REPLACES any
         // previous magnet: a new ask is a topic change by definition.
-        // In CALENDAR MODE no magnet forms: the found card is served as a one-off and the
-        // curriculum walk resumes on the next page-turn (navigateTo draws the landing card's
-        // choices under the held topic).
-        navigateTo(res.best, set, get, {
-          magnet: get().curriculum ? null : formMagnet(q, res.magnet),
-        });
+        // Search pauses the current curriculum run until the keyword is dismissed.
+        const ids = res.magnet.length ? res.magnet : [res.best.id];
+        const seen = new Set(get().seen);
+        if (ids.filter(id => !seen.has(id)).length < Math.min(5, ids.length)) {
+          for (const id of ids) seen.delete(id);
+          set({ seen }); // Permit an explicit revisit without erasing stored activity.
+        }
+        navigateTo(res.best, set, get, { magnet: formMagnet(q, ids) });
         return;
       }
       // Weak hit AND off-domain: the matched card would have been a wrong answer to a
@@ -749,6 +794,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
         question: null,
         reward: null,
         magnet: null,
+        asking: false,
         response: { query: q, kind: 'offdomain', text: null, suggestion: null, slug: null },
         responseAnchorId: null,
         pageKey: get().pageKey + 1,
@@ -770,9 +816,13 @@ export const useCardStore = create<CardState>()((set, get) => ({
         // nothing else. Retrieval and the off-domain judgement are model-free, and holding the
         // lock across them made a static sentence wait for whatever was already generating.
         const ans = await engine.answerQuery!(q, lang);
+        if (!stillCurrent()) return;
         offDomain = ans.offDomain === true;
         const clean = sanitizeCardAnswer(ans.text);
         if (ans.grounded && clean && !get().response) {
+          const adjacent = await searchCards(ans.relatedQuery || q, s.current?.id ?? null, feedContext(null, null));
+          const ids = res.magnet.length ? res.magnet : adjacent.magnet;
+          if (!stillCurrent()) return;
           set({
             asking: false,
             question: null,
@@ -780,8 +830,9 @@ export const useCardStore = create<CardState>()((set, get) => ({
             // A GROUNDED generated card is an on-topic landing too, so it forms the magnet
             // (from the same ask-time search scoring). Often empty — a true gap head-matches
             // nothing — and then there is no magnet and no ribbon, just the response card.
-            // Never in calendar mode: the answer is a one-off there (see the hit path above).
-            magnet: get().curriculum ? null : formMagnet(q, res.magnet),
+            // The curriculum run stays paused beneath this search.
+            magnet: { query: q, idSet: new Set(ids), served: 0,
+              dynamic: { attempts: 1, sourceFactIds: ans.sourceFactIds ?? [], texts: [clean] } },
             response: {
               query: q,
               kind: 'generated',
@@ -791,7 +842,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
               // device can actually draw — or null, which prints the poster.
               slug: ans.slug ?? null,
             },
-            responseAnchorId: suggestion?.id ?? null,
+            responseAnchorId: adjacent.best?.id ?? suggestion?.id ?? null,
             pageKey: get().pageKey + 1,
           });
           return;
@@ -799,8 +850,10 @@ export const useCardStore = create<CardState>()((set, get) => ({
       } catch (e) {
         console.warn('[cards] answerQuery failed; abstaining', e);
       }
+      if (!stillCurrent()) return;
       set({ asking: false });
     }
+    if (!stillCurrent()) return;
 
     // Honest miss. In-domain gap → "no page on that yet", offering the nearest topic as a soft
     // landing. Off-domain → "I'm only a science tutor", with NO nearest topic and no anchor:
@@ -817,6 +870,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
     set({
       question: null,
       reward: null,
+      asking: false,
       magnet: null, // a gap/offdomain outcome forms no magnet, and retires any previous one
       response: {
         query: q,
@@ -836,19 +890,28 @@ export const useCardStore = create<CardState>()((set, get) => ({
     // The banner's [x]: the topic is boring them. Magnet + ribbon go together; the feed
     // continues from wherever it is — the current page and its choices stand, and the next
     // page-turn simply draws unmagnetized.
-    if (get().magnet) set({ magnet: null });
+    const s = get();
+    if (!s.magnet) return;
+    set({ magnet: null, asking: false, responseAnchorId: null });
+    if (s.current && !s.response) set({ choices: nextChoices(s.current.id, s.seen,
+      useEngineStore.getState().language ?? 'english', { ctx: feedContext(null, s.curriculum), recentIds: s.recent }) });
   },
 
-  enterCurriculum: (key, savedRun) => {
+  enterCurriculum: (key, savedRun, shelfCat) => {
     const s = get();
     const grade = useEngineStore.getState().grade;
     const picked = curriculumCursor(
       grade,
       key,
       new Set([...seenStore.cards.keys(), ...s.seen]),
-      savedRun
+      savedRun,
+      shelfCat
     );
     if (!picked) return; // not on this grade's outline (no cards) — the sheet never offers it
+    if (!savedRun) {
+      picked.manualSelection = true;
+      if (picked.lessonRun) picked.lessonRun.manualSelection = true;
+    }
     // A Calendar tap is an explicit destination, even when the topic was already read.
     // Start a review pass when nothing remains servable in that topic. Only reset the
     // feed's exclusion set: persistent card views, quiz results and awards stay intact.
@@ -871,15 +934,40 @@ export const useCardStore = create<CardState>()((set, get) => ({
     // Curriculum mode is left explicitly with Randomize; the topic sheet changes its topic.
   },
 
-  continueAfterResponse: () => {
+  continueAfterResponse: async () => {
     const s = get();
-    const dest = (s.responseAnchorId && getCard(s.responseAnchorId)) || null;
-    set({ response: null, responseAnchorId: null });
-    if (dest) {
-      navigateTo(dest, set, get);
-    } else {
-      navigateTo(jumpCard(s.current?.id ?? null, s.seen, feedContext()), set, get);
+    if (s.asking) return;
+    const magnet = s.magnet;
+    const dynamic = magnet?.dynamic;
+    const engine = useEngineStore.getState().engine;
+    const lang = useEngineStore.getState().language ?? 'english';
+    if (s.response?.kind === 'generated' && magnet && dynamic && dynamic.attempts < 3 &&
+        dynamic.sourceFactIds.length && engine?.isReady() && engine.answerQuery) {
+      set({ asking: true });
+      try {
+        const ans = await engine.answerQuery(magnet.query, lang, { excludeFactIds: dynamic.sourceFactIds });
+        if (get().magnet !== magnet || get().response !== s.response) return;
+        const clean = sanitizeCardAnswer(ans.text);
+        const normalize = (text: string) => text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+        if (ans.grounded && clean && !dynamic.texts.some(text => normalize(text) === normalize(clean)) &&
+            ans.sourceFactIds?.length && ans.sourceFactIds.every(id => !dynamic.sourceFactIds.includes(id))) {
+          set({ asking: false, magnet: { ...magnet, dynamic: {
+            attempts: dynamic.attempts + 1,
+            sourceFactIds: [...dynamic.sourceFactIds, ...ans.sourceFactIds], texts: [...dynamic.texts, clean],
+          } }, response: { ...s.response, text: clean, slug: ans.slug ?? null }, pageKey: get().pageKey + 1 });
+          return;
+        }
+      } catch (e) {
+        console.warn('[cards] search follow-up unavailable; using existing cards', e);
+      } finally {
+        if (get().magnet === magnet) set({ asking: false });
+      }
     }
+    // A dismissed/replaced search must not navigate when its old generation settles.
+    if (get().magnet !== magnet || get().response !== s.response) return;
+    const dest = (s.responseAnchorId && getCard(s.responseAnchorId)) || null;
+    set({ response: null, responseAnchorId: null, asking: false });
+    navigateTo(dest ?? jumpCard(s.current?.id ?? null, s.seen, feedContext()), set, get);
   },
 
   warmModel: () => {
@@ -919,6 +1007,8 @@ export const useCardStore = create<CardState>()((set, get) => ({
     );
     set({
       current: dest,
+      ...introduce(dest, null, s.introducedTopic),
+      asking: false,
       choices,
       threadDepth: 0, // the reroll already switched topic — start the new thread fresh
       question: null,
@@ -975,12 +1065,13 @@ export function previewChoices(language: Language): CardChoice[] {
       recentIds: recent,
       ctx: feedContext(
         magnetAfter(s.magnet, next, seen, recent),
-        s.curriculum && advanceCurriculum(s.curriculum, next.id, seen)
+        s.curriculum && (s.magnet ? s.curriculum : advanceCurriculum(s.curriculum, next.id, seen))
       ),
     }),
     reviewFeedQueue(remediationQueue, reinforcementQueue),
     next.id,
-    language
+    language,
+    s.curriculum && (s.magnet ? s.curriculum : advanceCurriculum(s.curriculum, next.id, seen))
   );
   // Remember the draw so advance() can ADOPT it instead of paying nextChoices (~21ms of
   // TERM_INDEX walking) again inside the swipe's critical commit — and warm the previewed
@@ -1075,7 +1166,7 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, opts: NavigateOpts = {
   // already name the next topic the swipe will serve. An ask's one-off landing (off-set) leaves
   // the cursor where it was unless the held topic has genuinely nothing left from here.
   const held = opts.curriculum === undefined ? s.curriculum : opts.curriculum;
-  const curriculum = held && advanceCurriculum(held, fact.id, seen);
+  const curriculum = held && (magnet ? held : advanceCurriculum(held, fact.id, seen));
   const ctx = feedContext(magnet, curriculum);
   markSeen(fact, ctx.now);
   const viewLog = [
@@ -1090,11 +1181,15 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, opts: NavigateOpts = {
     nextChoices(fact.id, seen, lang, { threadDepth: 0, recentIds: recent, ctx }),
     reviewFeedQueue(remediationQueue, reinforcementQueue),
     fact.id,
-    lang
+    lang,
+    curriculum,
+    magnet
   );
   set({
     current: fact,
-    currentTopic: held?.idSet.has(fact.id) ? held : null,
+    ...introduce(fact, held, s.introducedTopic),
+    asking: false,
+    currentTopic: !magnet && held?.idSet.has(fact.id) ? held : null,
     choices,
     threadDepth: 0, // a search/topic jump starts a new thread
     seen,
@@ -1137,7 +1232,7 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
   // The curriculum cursor after this turn: the same object while the held topic still has a
   // servable card from here, the next non-empty competency in CG order once it is exhausted,
   // null (released, ribbon gone) past the end of the outline — see advanceCurriculum.
-  const curriculum = s.curriculum && advanceCurriculum(s.curriculum, nextFact.id, seen);
+  const curriculum = s.curriculum && (magnet ? s.curriculum : advanceCurriculum(s.curriculum, nextFact.id, seen));
   const ctx = feedContext(magnet, curriculum);
   markSeen(nextFact, ctx.now);
   const viewLog = [
@@ -1171,14 +1266,17 @@ function advance(choice: CardChoice, set: Set_, get: Get_) {
     naturalChoices,
     reviewFeedQueue(remediationQueue, reinforcementQueue),
     nextFact.id,
-    lang
+    lang,
+    curriculum,
+    magnet
   );
 
   set({
     current: nextFact,
+    ...introduce(nextFact, s.curriculum, s.introducedTopic),
     // Reinforcement may briefly revisit a missed card from an earlier topic. Keep the
     // calendar cursor moving underneath, but do not mislabel that refresher as the held row.
-    currentTopic: s.curriculum?.idSet.has(nextFact.id) ? s.curriculum : null,
+    currentTopic: !magnet && s.curriculum?.idSet.has(nextFact.id) ? s.curriculum : null,
     choices,
     threadDepth: choices.length > 1 ? 0 : depth,
     seen,
@@ -1229,6 +1327,7 @@ const rewardJob: {
 function rewardNear(s: CardState): boolean {
   return (
     s.untilReward <= REWARD_PREFETCH_AT &&
+    !s.titleCard &&
     !s.rewardPrefetch &&
     !s.reward &&
     rewardJob.aborts < REWARD_PREFETCH_MAX_ABORTS
@@ -1455,3 +1554,8 @@ AppState.addEventListener('change', (state) => {
   if (state === 'active') armRewardDwell();
   else abortRewardPrefetch(`app ${state}`);
 });
+
+function introduce(fact: CardFact, cursor: CurriculumCursor | null, previous: string | null) {
+  const content = titleForCard(fact, useEngineStore.getState().grade, cursor);
+  return { titleCard: content && content.key !== previous ? content : null, introducedTopic: content?.key ?? previous };
+}

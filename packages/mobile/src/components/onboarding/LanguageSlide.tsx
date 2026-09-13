@@ -1,3 +1,4 @@
+import { Wordmark } from '../brand/Wordmark';
 /**
  * Card 1 of the onboarding deck: "how do you want to use Hiraia?" typewriters on, cycling
  * Tagalog → English → (loop), each replacing the last; three language plates (each written
@@ -70,12 +71,7 @@ export function LanguageSlide({ onPick }: { onPick: (lang: Language) => void }) 
         <View style={styles.disc}>
           <Image source={CAT} style={styles.discImage} resizeMode="contain" />
         </View>
-        {/* Set in CAPS to match CardFeedScreen's wordmark exactly — the board this hands
-            off to prints `HIRAIA.`, and the brand should not change case between the first
-            screen a child sees and the second. Bigger here (28 vs 16), which is fine. */}
-        <Text style={styles.brand}>
-          HIRAIA<Text style={styles.brandDot}>.</Text>
-        </Text>
+        <View style={{ marginTop: 10 }}><Wordmark size={36} /></View>
 
         {/* fixed-height so the plates don't jump as the question retypes */}
         <View style={styles.questionBox}>
@@ -136,24 +132,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   discImage: { width: 65, height: 65 },
-  brand: {
-    // The fat Clarendon slab the feed sets its wordmark in, so the brand reads the same on
-    // the first screen as it does on the board afterwards.
-    fontFamily: fonts.slab,
-    fontSize: 28,
-    color: card.ink,
-    letterSpacing: 0.4,
-    marginTop: 10,
-  },
-  /**
-   * The feed's dot is gold, but gold measures 1.95:1 on cream stock and simply disappears,
-   * so on-card it has to be some other colour. Press graphite, NOT the oxblood accent:
-   * theme.ts reserves `card.accent` for the one mark that names the term a card is TEACHING,
-   * and a wordmark's full stop teaches nothing — spending the accent here would dilute the
-   * only semantic the palette gives it. Graphite is the deck's quiet ink and carries no
-   * instruction at all. 7.67:1 on stock.
-   */
-  brandDot: { color: card.graphite },
   /**
    * 76, matching GradeSlide's identical box: both questions wrap to 2 lines at this size in
    * every language they cycle through (the longest, 'Paano mo gustong gamitin ang Hiraia?',

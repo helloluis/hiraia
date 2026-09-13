@@ -123,16 +123,33 @@ count equals the bank's length, and its `bankHash` the bank's hash (else it thro
 lexical-only). So whenever the fact bank changes, rebuild the vectors blob in the SAME
 commit. A `git lfs pull` on deploy keeps the blob current.
 
-### Ship process when a new official APK goes out
-The web demo's model + bank should track the shipped APK exactly:
-1. The APK's adapter GGUFs already live at `packages/mobile/assets/models/adapter-{tagalog,bisaya}.gguf`
-   (git-lfs). `run-llama-server.sh` points there — so they ship to the VPS automatically.
-2. On the VPS: `deploy/update.sh` (rebuilds + restarts web), then
-   `git lfs pull && pm2 restart hiraia-llm` to load the new adapter, and — only if the
-   bank changed — the web reads `rag/bank/science-facts.jsonl` at boot, so a `git pull`
-   already gave it the new bank; only the blob needs the `git lfs pull`.
-3. Verify: `/qvac/lora-adapters` lists id 0 + 1; a science query returns a grounded
-   answer; an off-topic query abstains (no spurious facts).
+### Ship process when a new official APK goes out (R2 era, since 2026-09-06)
+The APK and the model files are served from **Cloudflare R2** (bucket `hiraia-assets`,
+custom domain `https://assets.hiraia.org`). The VPS keeps only 307 redirects for the legacy
+`hiraia.org/models/*` URLs (`deploy/nginx/hiraia.org.conf` is a verbatim copy of the live
+site file — keep it that way) — **copying a file into `/var/www/hiraia-models/` publishes
+nothing.** Cloudflare is part of every release:
+
+1. Gate green (`finetuning/eval/harness/run-harness.sh`), build, then
+   `packages/mobile/scripts/sign-apk.sh` (release cert, prints the expected hashes).
+2. Publish to R2: `~/.venvs/hiraia-publish/bin/python deploy/publish-release-assets.py
+   --env-file /private/path/.env.cloudflare.local --apk <signed apk>` (one-time:
+   `python3 -m venv ~/.venvs/hiraia-publish && ~/.venvs/hiraia-publish/bin/pip install boto3`;
+   the env file is the gitignored `.env.cloudflare.local` at the MAIN checkout's root
+   (`/Users/luis/Code/hiraia/.env.cloudflare.local`) with `R2_ENDPOINT`, `R2_ACCESS_KEY_ID`,
+   `R2_SECRET_ACCESS_KEY`, `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` (the token enables
+   the alias cache purge) — never in the repo; `--check` lists the bucket read-only). It uploads
+   an immutable `models/hiraia-v<versionCode>.apk`, refreshes the `hiraia.apk` alias, verifies
+   by read-back hash and public HEAD, and prints the `download.ts` block. New model/vector
+   files go the same way with `--asset` (versioned filenames, immutable — never reuse a name).
+3. Paste the block into `packages/web/src/config/download.ts` — `apk.url` must be the
+   **versioned** URL (the alias has a 4 h edge cache), `versionCode` must match the APK
+   (the in-app "Update available!" bar compares it) — push `main`, run `deploy/update.sh`
+   on the VPS. The site and `/api/app/manifest` go live together.
+4. Verify from outside: `curl -I` the versioned URL (200, exact bytes, `Accept-Ranges`),
+   the manifest JSON, and a fresh download's sha256 + `apksigner verify` cert.
+5. The web demo tracks the shipped model automatically (`run-llama-server.sh` serves the
+   same GGUF the phone downloads); only a bank change needs `pm2 restart hiraia-llm`.
 
 ---
 

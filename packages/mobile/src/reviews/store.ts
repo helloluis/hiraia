@@ -1,3 +1,4 @@
+import { afterTitleCard } from './logic';
 import { lessonObjectives } from '../data/lessonPlan';
 import { create } from 'zustand';
 import { getSetting, setSetting } from '../db/repo';
@@ -326,4 +327,9 @@ async function remediationPlan(
 }
 export function hideReviewError() {
   useReviewStore.setState({ error: '', busy: false, open: false, pending: null });
+}
+
+export function beginTitleSection() {
+  const data = useReviewStore.getState().data;
+  if (data) void save(afterTitleCard(data));
 }

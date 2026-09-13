@@ -406,3 +406,8 @@ export function remediationTarget(series: Series): string | null {
 export const deferReview = (s: ReviewState): ReviewState => ({ ...s, notBeforeTurn: s.turns + 5 });
 export const seriesScore = (s: Series) =>
   s.items.filter((a) => a.selected !== null && a.order[a.selected] === a.question.a).length;
+
+/** An introduction is not a read card. Keep pending reviews, but allow five ordinary cards first. */
+export const afterTitleCard = (s: ReviewState): ReviewState => ({
+  ...s, notBeforeTurn: Math.max(s.notBeforeTurn, s.turns + 5), nextSingleTurn: s.turns + 5,
+});

@@ -38,7 +38,7 @@ export interface LanguageOption {
 export const LANGUAGE_OPTIONS: LanguageOption[] = [
   { lang: 'tagalog', label: 'Tagalog', beta: false },
   { lang: 'english', label: 'English', beta: true },
-  { lang: 'cebuano', label: 'Bisaya', beta: true },
+  { lang: 'cebuano', label: 'Cebuano', beta: false },
 ];
 
 /** Order the slide-1 question cycles through (typewritered, each replacing the last). */

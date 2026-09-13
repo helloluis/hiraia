@@ -111,7 +111,7 @@ export function IndexBand({
   /**
    * Draw the chip in the SYSTEM font rather than the slab.
    *
-   * Alfa Slab One is a display face with 672 glyphs and none of the marks a verdict needs —
+   * The display face does not contain all the symbols a verdict needs —
    * checked directly: it has no U+2713, U+2717 or U+2605, so a tick set in it renders as a
    * tofu box. The option rows already dodge this by leaving fontFamily unset and letting
    * Android's fallback chain find the symbol; this lets the chip do the same.
@@ -372,7 +372,7 @@ export const cardFrame = StyleSheet.create({
   chipText: {
     fontFamily: fonts.slab,
     fontSize: 13,
-    includeFontPadding: false, // Alfa Slab's ascent would otherwise push the digits low
+    includeFontPadding: false, // keep the display numerals vertically centered
   },
   bandLabel: {
     flex: 1,

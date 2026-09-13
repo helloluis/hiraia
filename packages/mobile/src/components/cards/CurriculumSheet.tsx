@@ -19,10 +19,7 @@
  * usage; English is the CG's own wording and the fallback). Everything else on the sheet —
  * eyebrow, hint, quarter headings, domain names, a11y labels — is uiStrings.
  *
- * SEAM — sub-topic PILLS (follow-up, once the category backfill completes): each row will
- * grow a wrap of small pills under its title, one per `topicShelves(topic, language)` entry
- * (data/cards.ts), and a pill tap will call `onPick(topic.key, shelf.cat)`. Nothing renders
- * yet; see `PILLS_SLOT` below for where they mount.
+ * Subcategory pills use the intersection of taxonomy labels and this topic’s cards.
  */
 import { memo, useMemo } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -32,7 +29,7 @@ import { DOMAIN_NAMES, GRADE_DOMAIN_MAP, type GradeLevel, type Language, type Qu
 
 import { GRADE_WORD } from '../../config/grades';
 import { uiStrings } from '../../config/strings';
-import { cardsForTopic, curriculumOutline, topicTitle, type OutlineTopic } from '../../data/cards';
+import { cardsForTopic, curriculumOutline, topicShelves, topicTitle, type OutlineTopic, type TopicShelf } from '../../data/cards';
 import { useCardStore } from '../../store/cardStore';
 import { awardStars, type TopicAward } from '../../reviews/logic';
 import { useReviewStore } from '../../reviews/store';
@@ -42,19 +39,13 @@ import { CARD_EDGE, CARD_RADIUS } from './CardFrame';
 /** How much of the screen the sheet may take; the board stays visible above it. */
 const SHEET_MAX_HEIGHT = 0.82;
 
-/**
- * Where a row's sub-topic pills mount when they land (see the header note). Kept as an
- * explicit, empty slot rather than nothing at all so the follow-up is a one-place change and
- * the row's layout (title + chip on one line, pills wrapping beneath) is already decided.
- */
-const PILLS_SLOT = null;
-
 interface RowView {
   topic: OutlineTopic;
   title: string;
   unseen: number;
   total: number;
   stars: number;
+  shelves: TopicShelf[];
 }
 
 interface QuarterGroup {
@@ -84,6 +75,7 @@ function groupOutline(
       unseen,
       total: ids.size,
       stars: awardStars(awards[topic.key]),
+      shelves: topicShelves(topic, language),
     };
     const last = groups[groups.length - 1];
     if (last && last.quarter === topic.quarter) last.rows.push(view);
@@ -105,8 +97,8 @@ export const CurriculumSheet = memo(function CurriculumSheet({
   language: Language;
   /** The topic currently held (calendar mode), by OutlineTopic.key, marked in gold; null when not in the mode. */
   activeKey: string | null;
-  /** A row tap: enter the topic by key. (Pills will add an optional second argument, the shelf's `cat`.) */
-  onPick: (key: string) => void;
+  /** Enter the whole topic or a selected subcategory. */
+  onPick: (key: string, shelfCat?: string) => void;
   onClose: () => void;
 }) {
   const t = uiStrings(language);
@@ -114,6 +106,7 @@ export const CurriculumSheet = memo(function CurriculumSheet({
   // The session seen set, for the count chips. Replaced by the store on every turn, so the
   // memo below refreshes each time the sheet is opened onto a new page.
   const seen = useCardStore((s) => s.seen);
+  const activeCat = useCardStore((s) => s.curriculum?.lessonRun?.shelfCat);
   const awards = useReviewStore((s) =>
     s.data?.grade === grade ? s.data.awards : EMPTY_AWARDS
   );
@@ -179,16 +172,15 @@ export const CurriculumSheet = memo(function CurriculumSheet({
                   {g.rows.map((row) => {
                     const active = row.topic.key === activeKey;
                     return (
-                      <Pressable
-                        key={row.topic.key}
-                        onPress={() => onPick(row.topic.key)}
-                        accessibilityRole="button"
-                        accessibilityState={{ selected: active }}
-                        style={({ pressed }) => [styles.row, active && styles.rowActive, pressed && styles.rowPressed]}
-                      >
+                      <View key={row.topic.key} style={[styles.row, active && styles.rowActive]}>
                         <View style={[styles.marker, active && styles.markerActive]} />
                         <View style={styles.rowBody}>
-                          <View style={styles.rowLine}>
+                          <Pressable
+                            onPress={() => onPick(row.topic.key)}
+                            accessibilityRole="button"
+                            accessibilityState={{ selected: active }}
+                            style={({ pressed }) => [styles.rowLine, pressed && styles.rowPressed]}
+                          >
                             <Text style={[styles.rowText, active && styles.rowTextActive]} numberOfLines={2}>
                               {row.title}
                             </Text>
@@ -205,11 +197,23 @@ export const CurriculumSheet = memo(function CurriculumSheet({
                                 {row.unseen} / {row.total}
                               </Text>
                             </View>
+                          </Pressable>
+                          <View style={styles.pills}>
+                            {row.shelves.map((shelf) => (
+                              <Pressable
+                                key={shelf.cat}
+                                accessibilityRole="button"
+                                accessibilityLabel={`${row.title}: ${shelf.label}`}
+                                accessibilityState={{ selected: active && shelf.cat === activeCat }}
+                                onPress={() => onPick(row.topic.key, shelf.cat)}
+                                style={({ pressed }) => [styles.pill, active && shelf.cat === activeCat && styles.chipActive, pressed && styles.rowPressed]}
+                              >
+                                <Text style={styles.pillText}>{shelf.label}</Text>
+                              </Pressable>
+                            ))}
                           </View>
-                          {/* sub-topic pills mount here (follow-up) — see PILLS_SLOT */}
-                          {PILLS_SLOT}
                         </View>
-                      </Pressable>
+                      </View>
                     );
                   })}
                 </View>
@@ -312,6 +316,10 @@ const styles = StyleSheet.create({
   markerActive: { backgroundColor: card.gold },
   // title + chip on one line; the pills (when they land) wrap beneath inside rowBody
   rowBody: { flex: 1 },
+  pills: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 },
+  pill: { minHeight: 44, justifyContent: 'center', paddingHorizontal: 10, paddingVertical: 6,
+    borderRadius: 14, borderWidth: 1, borderColor: card.sage, backgroundColor: cardAlpha(card.sage, 0.18) },
+  pillText: { fontFamily: fonts.cardBody, fontSize: 12, color: card.ink },
   rowLine: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   // a DepEd title is a heading, not a sentence: one size up from the old competency text
   rowText: { flex: 1, fontFamily: fonts.cardBody, fontSize: 15, lineHeight: 19, color: card.ink },

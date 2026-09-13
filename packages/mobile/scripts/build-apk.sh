@@ -222,6 +222,8 @@ if [ "$VULKAN_SO_COUNT" -eq 0 ]; then
   exit 1
 fi
 
+python3 "$MOBILE/scripts/verify-bundled-art.py" "$APK"
+
 echo
 echo "APK: $APK"
 ls -lh "$APK" | awk '{print "     " $5}'
