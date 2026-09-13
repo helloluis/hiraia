@@ -1,5 +1,7 @@
 'use client';
 
+import { Wordmark } from '@/components/brand/Wordmark';
+
 import { useState } from 'react';
 import { useChatStore } from '@/store/useChatStore';
 import { AppDownload } from '@/components/AppDownload';
@@ -39,7 +41,7 @@ export function AuthScreen() {
           {/* Branding Headline aligned to the form */}
           <div className="select-none w-full">
             <h1 className="font-title text-5xl md:text-7xl text-[#0c343d] tracking-tight leading-none">
-              hiraia
+              <Wordmark />
             </h1>
             <p className="font-serif italic text-sm md:text-lg text-[#0c343d]/90 mt-2 md:mt-3">
               Decentralized AI tutoring for the global south

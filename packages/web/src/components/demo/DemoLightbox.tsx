@@ -1,38 +1,25 @@
 'use client';
 
+import './demo.css';
+
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 import { useDemoStore } from '@/store/useDemoStore';
 import { DemoLoader } from './DemoLoader';
-import { LANG_CHANGE } from './onboarding/copy';
+import { BrandLoadingScreen } from '@/components/brand/GrowingGlyph';
 import { OnboardingCarousel } from './onboarding/OnboardingCarousel';
 
 /** The dynamic chunk, named once so the warm-up below and the render agree on it. */
 const loadCardFeed = () => import('./cards/CardFeedDemo');
 
-// The card feed + its ~4.7 MB of bundled demo data (cards + MCQ bank + df table) load on
-// demand, client-only, so the landing page doesn't pay for a demo the visitor may never open.
+// Seed (5 Q1 cards × 8 grades) rides in this chunk. The rest of a grade's first quarter
+// is a separate JSON import after language + grade are known. Landing does not pay for it.
 const CardFeedDemo = dynamic(() => loadCardFeed().then((m) => m.CardFeedDemo), {
   ssr: false,
-  loading: () => (
-    <div className="flex h-full w-full items-center justify-center bg-[var(--board)]">
-      <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--gold)]/30 border-t-[var(--gold)]" />
-    </div>
-  ),
+  loading: () => <BrandLoadingScreen />,
 });
 
-/**
- * The "Try the web demo" lightbox: a fixed-overlay modal that runs the whole setup flow —
- * onboarding (language → grade → tutorial) → cold-start loader → the question-cards feed —
- * mirroring the mobile app's first launch. On reopen it briefly restores this browser's
- * prior demo session (keyed by an anonymous localStorage session id).
- *
- * Onboarding runs once per browser (see ONBOARDING_KEY in useDemoStore); the loader runs every
- * time, because on device it is the model actually loading. The loader's "change the language"
- * plate re-runs the whole flow; the feed carries its own language pill for the far commoner
- * case of just wanting a different language (the loader auto-advances in ~6.9 s, so a control
- * that lives only there is a control with an expiry date).
- */
+/** Phone-sized demo shell: restore → onboarding → branded loading → card feed. */
 export function DemoLightbox() {
   const isOpen = useDemoStore((s) => s.isOpen);
   const restoring = useDemoStore((s) => s.restoring);
@@ -43,21 +30,19 @@ export function DemoLightbox() {
   const pickLanguage = useDemoStore((s) => s.pickLanguage);
   const pickGrade = useDemoStore((s) => s.pickGrade);
   const finishOnboarding = useDemoStore((s) => s.finishOnboarding);
-  const restartOnboarding = useDemoStore((s) => s.restartOnboarding);
 
   /**
    * Warm the feed's chunk the moment the demo opens, rather than at the instant it is needed.
    *
    * `dynamic(..., { ssr: false })` on a component that is not in the initial render tree gets
-   * no preload link, so the 4.7 MB / 1.5 MB-gzipped chunk only began downloading when the
-   * cold-start loader handed off — putting a small generic spinner immediately after a
-   * six-second branded one on any slow connection, which is most Philippine mobile links. The
-   * onboarding and the loader are between 7 and 60 seconds of screen time that were being
-   * spent on nothing; this spends them on the download. Visitors who never open the demo still
+   * no preload link, so the seed chunk only began downloading when the cold-start loader
+   * handed off — putting a small generic spinner immediately after the branded one on a slow
+   * connection. Onboarding spends that time on the seed download. The rest of the chosen
+   * grade's Q1 pack starts after language + grade. Visitors who never open the demo still
    * pay nothing.
    */
   useEffect(() => {
-    if (isOpen) void loadCardFeed();
+    if (isOpen) void loadCardFeed().catch(() => undefined);
   }, [isOpen]);
 
   // Close on Escape and lock body scroll while open.
@@ -86,7 +71,7 @@ export function DemoLightbox() {
       onClick={closeDemo}
     >
       <div
-        className="relative flex h-[100dvh] w-full min-h-0 flex-col overflow-hidden bg-[var(--board)] shadow-2xl sm:h-[min(92dvh,56rem)] sm:w-[min(100%,28rem)] sm:rounded-3xl"
+        className="demo-app relative flex h-[100dvh] w-full min-h-0 flex-col overflow-hidden bg-[var(--board)] shadow-2xl sm:h-[min(92dvh,56rem)] sm:w-[min(100%,25rem)] sm:rounded-3xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button floats over every phase. */}
@@ -108,9 +93,7 @@ export function DemoLightbox() {
         </button>
 
         {restoring ? (
-          <div className="flex h-full w-full items-center justify-center bg-[var(--board)]">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--gold)]/30 border-t-[var(--gold)]" />
-          </div>
+          <BrandLoadingScreen />
         ) : (
           <div className="flex min-h-0 flex-1 flex-col">
             {phase === 'onboarding' && (
@@ -122,18 +105,7 @@ export function DemoLightbox() {
                 onFinish={finishOnboarding}
               />
             )}
-            {phase === 'loading' && (
-              <>
-                <DemoLoader />
-                <button
-                  type="button"
-                  onClick={restartOnboarding}
-                  className="absolute left-3 top-3 z-10 rounded-full bg-black/25 px-3 py-1.5 font-zilla text-[13px] font-bold text-white backdrop-blur transition-colors hover:bg-black/40"
-                >
-                  {LANG_CHANGE[language ?? 'tagalog']}
-                </button>
-              </>
-            )}
+            {phase === 'loading' && <DemoLoader />}
             {phase === 'cards' && <CardFeedDemo />}
           </div>
         )}

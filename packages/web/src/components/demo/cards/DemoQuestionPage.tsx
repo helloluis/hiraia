@@ -49,14 +49,16 @@ export function DemoQuestionPage({ question, language, onAnswer, onContinue }: D
   };
 
   return (
-    <div className="relative z-[1] flex h-full flex-col overflow-y-auto">
+    <div className="demo-quiz-page relative z-[1] flex h-full flex-col overflow-y-auto">
       <div className="mc-band mc-band-gold mb-3">
         <span className="mc-chip">?</span>
         <span className="mc-topic">{t.questionHeader}</span>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/hiraia-profile.png" alt="" width={26} height={26} className="mc-stamp" />
       </div>
-      <p className="mb-4 font-zilla text-[17px] font-bold leading-snug text-[var(--ink)]">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/hiraia-profile.png" alt="" className="demo-quiz-cat" />
+      <p className="mb-4 mt-3 text-center font-zilla text-[18px] font-bold leading-snug text-[var(--stock)]">
         {localize(question.q, language)}
       </p>
 
@@ -90,7 +92,7 @@ export function DemoQuestionPage({ question, language, onAnswer, onContinue }: D
             <span className="flex-1 font-zilla text-[15px] font-medium leading-snug text-[var(--ink)]">
               {localize(question.o[optIdx], language)}
             </span>
-            {!!mark && <span className="font-slab text-[16px] text-[var(--ink)]">{mark}</span>}
+            {!!mark && <span className="text-[16px] text-[var(--ink)]" style={{ fontFamily: 'system-ui' }}>{mark}</span>}
           </button>
         );
       })}
@@ -98,9 +100,9 @@ export function DemoQuestionPage({ question, language, onAnswer, onContinue }: D
       {revealed && (
         <div className="mt-1">
           {gotIt && (
-            <div className="mb-1 font-zilla text-[18px] font-bold text-[var(--ink)]">{t.correct}</div>
+            <div className="mb-1 font-zilla text-[18px] font-bold text-[var(--stock)]">{t.correct}</div>
           )}
-          <p className="font-zilla text-[14px] font-medium leading-snug text-[var(--olive)]">
+          <p className="font-zilla text-[14px] font-medium leading-snug text-[var(--stock)]">
             {localize(question.e, language)}
           </p>
         </div>
@@ -109,7 +111,10 @@ export function DemoQuestionPage({ question, language, onAnswer, onContinue }: D
       {revealed && (
         <div className="mc-ledge mt-4">
           <button type="button" onClick={onContinue} className="mc-ticket">
-            <span className="flex-1">{t.continueNote}</span>
+            <span className="min-w-0 flex-1 text-left">
+              <span className="mc-ticket-eyebrow">{t.nextCard}</span>
+              <span className="block truncate">{t.continueNote}</span>
+            </span>
             <span className="mc-arrow" aria-hidden />
           </button>
         </div>

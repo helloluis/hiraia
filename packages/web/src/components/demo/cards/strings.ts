@@ -33,6 +33,10 @@ export interface CardStrings {
   demoNote: string;
   /** Accessible name for the in-feed language switch (onboarding's "you can change this later"). */
   languageLabel: string;
+  nextCard: string;
+  fork: string;
+  curriculum: string;
+  settingsLabel: string;
 }
 
 const STRINGS: Record<LanguageKey, CardStrings> = {
@@ -50,6 +54,10 @@ const STRINGS: Record<LanguageKey, CardStrings> = {
     correct: 'Tama! 🎉',
     demoNote: 'Sa totoong app, ginagawa ito ni Hiraia on-device — kahit walang internet.',
     languageLabel: 'Palitan ang wika',
+    nextCard: 'Sunod na kard',
+    fork: 'Sangandaan',
+    curriculum: 'Kurikulum',
+    settingsLabel: 'Mga setting',
   },
   english: {
     questionHeader: 'Question! ✏️',
@@ -65,6 +73,10 @@ const STRINGS: Record<LanguageKey, CardStrings> = {
     correct: 'Correct! 🎉',
     demoNote: 'In the real app, Hiraia does this on-device — even offline.',
     languageLabel: 'Change the language',
+    nextCard: 'Next card',
+    fork: 'Crossroads',
+    curriculum: 'Curriculum',
+    settingsLabel: 'Settings',
   },
   cebuano: {
     questionHeader: 'Pangutana! ✏️',
@@ -80,6 +92,10 @@ const STRINGS: Record<LanguageKey, CardStrings> = {
     correct: 'Husto! 🎉',
     demoNote: 'Sa tinuod nga app, gihimo ni Hiraia on-device — bisan walay internet.',
     languageLabel: 'Ilisan ang pinulongan',
+    nextCard: 'Sunod nga kard',
+    fork: 'Sangang-dalan',
+    curriculum: 'Kurikulum',
+    settingsLabel: 'Mga setting',
   },
 };
 

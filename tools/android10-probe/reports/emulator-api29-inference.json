@@ -1,0 +1,1767 @@
+{
+  "provenance": {
+    "sourceBranch": "unified",
+    "sourceCommit": "3a25b4d3b66d742f919474de31618e6a562c9baf",
+    "sourceApkSha256": "1262ed4abd451a2d7c2dd3d31891dd7a30f517a20f8a9655048349f4e17837c2",
+    "workerSha256": "3794ba8d430a667b25688ecd829dfd51b57d78c68eb50d534336e4ec5097dbe3",
+    "versions": {
+      "@qvac/sdk": "0.17.1",
+      "@qvac/llm-llamacpp": "0.39.4",
+      "@qvac/embed-llamacpp": "0.30.1",
+      "react-native-bare-kit": "0.12.3",
+      "expo": "54.0.35",
+      "react-native": "0.81.5"
+    },
+    "nativeSha256": {
+      "libbare-abort.2.0.13.so": "8e35a151399e992959abc8c74e5e88abf1f14779ce68873d3989a266d4b72d71",
+      "libbare-buffer.3.6.0.so": "69d338c3f6e5200b6c9b23af411bb81379cb91ac20c03e18c256be8a9844da1c",
+      "libbare-cpu-info.0.1.1.so": "a91292ac352fa9a8b4e244c9c7711d85c9a774f479463717caf999586301d020",
+      "libbare-crypto.1.15.3.so": "53f22c2d5949b1b80fe43ac895d56d0e59625c217233cf4e193078633ad9044c",
+      "libbare-dns.2.1.4.so": "0735ee1dae8cb7ce2ef5f0685aa97a3e71629b4d613495c42091550500645d8d",
+      "libbare-fs.4.7.1.so": "9bbcded81067fbc1b5611a5e2289ef4c9c1697ca2dcc8f31f4210724b1cb77e6",
+      "libbare-gpu-info.0.1.1.so": "81edfe6d41bcb94e945101044f6ac34f9ab1ebe5998f91c7c7c0ebce53da6a8e",
+      "libbare-hrtime.2.1.1.so": "dd1d09663446eae036fa7eea6258848f2d33ef8ded0c278b88731fb1121dad92",
+      "libbare-inspect.3.1.4.so": "8ff5fa435d56339b86fbbf3a63e6cc7985c80f563d8abc8329cdc151abb2519e",
+      "libbare-os.3.9.1.so": "2c60bfb2c0a653d5f87f26cb33c56c15fdaea2a77b46046a7bced365ef21e52e",
+      "libbare-pipe.4.1.5.so": "9049d938983109b992a3bb5fa010e34163b6e8fa0a5599f3bf1b8053e3d03933",
+      "libbare-signals.4.2.0.so": "28f7998ace93f42836dc78d338611c70745e7e205fa2859993cb8911be1fd5f9",
+      "libbare-stdio.1.0.2.so": "d2c40e876fffd5933801a1f2360a9aedd044ba4c4030b27d677aa7db52116151",
+      "libbare-tcp.2.2.13.so": "e4ce75d27f6feeacf0011ca43be91d647102028cd5aa678169793cb34e901dc3",
+      "libbare-tls.3.1.5.so": "20f14e0f920d8f01e01de099d33ab26bce8f0bc629601559e387d2a4ab44a41d",
+      "libbare-tty.5.1.0.so": "5c084efa16fc8c61bb4efa341199e686000dfc48786029f6617c5255e0afe358",
+      "libbare-type.1.1.0.so": "cf9b2b87d87426ab831a9269f882df7631796f3bf1e436eda1ac76f735f1e1da",
+      "libbare-url.2.4.3.so": "e4869df6fbd84d84cfc92bf08c4e0d5b2cb94dd061f289ac1b6643e078e3de21",
+      "libbare-zlib.1.3.3.so": "af97f22c539dcbf6877fb9e5b332e01c767c4321b9c3f6693e4e189010ca1dfb",
+      "libfs-native-extensions.1.5.0.so": "f7ebd47bb35b785e778baf196424571171bcbc052962ad66d38abd400e5e256f",
+      "libquickbit-native.2.4.8.so": "1b0f9375a853d0e8a852c650d66890eeda3d9d59d77fc5329c677c7bbfd55ac9",
+      "libqvac-ggml-cpu-android_armv8.0_1.so": "89411e4d08920eecf2f4e8e40ad98599025d6562209362282231310715165ffe",
+      "libqvac-ggml-opencl.so": "4ae76fe7dc4fabc97fd63fa8a0c375c16d5891ec31fcb08a80f4bddcf688ed49",
+      "libqvac-ggml-vulkan.so": "363262a5e3f9f9ac9275de95d6eacbe9a1366bd96d0530229059d5b17b4ba7a0",
+      "libqvac__embed-llamacpp.0.30.1.so": "9128c707413465fb38289525587134eb35a75505647266d3cd33ebf28efcee38",
+      "libqvac__llm-llamacpp.0.39.4.so": "56134d0c49ebc8dac78a511e5f357569c1e642474d38df00711036e83b0b0ac9",
+      "librabin-native.2.0.0.so": "29cf5546077aae5f9a43416b1f24c55ab8536b875f3bc21faf214babe4334054",
+      "librocksdb-native.3.15.1.so": "ad6801863164d939fdb59faf6c583823483e8ceef49b3dc3508582ad3687183f",
+      "libsimdle-native.1.3.9.so": "21e0e852a05da3a6543703dc4e78d55af607539933031628a97c6fd5fdf43a52",
+      "libsodium-native.5.1.0.so": "c02155110c183dae56c9266fb4b77121b3bc8110dcafe8ed62343a6e271b276d",
+      "libudx-native.1.19.2.so": "c0f77e2de8df49b4cfd5b84c458aa6839ceda367aaf5d95036105f46c666c454"
+    },
+    "placement": "CPU only; baseline ARMv8.0; GPU libraries retained to expose loading dependencies",
+    "diagnostic": true
+  },
+  "startedAt": "2026-09-05T04:08:09.187Z",
+  "events": [
+    {
+      "at": "2026-09-05T04:08:09.209Z",
+      "stage": "app-state",
+      "status": "INFO",
+      "detail": "active"
+    },
+    {
+      "at": "2026-09-05T04:10:31.618Z",
+      "stage": "device",
+      "status": "INFO",
+      "detail": {
+        "freeStorageBytes": 7460581376,
+        "processPssKB": 101880,
+        "lowRamDevice": false,
+        "memoryClassMB": 48,
+        "availableRamBytes": 3111133184,
+        "api": 29,
+        "abis": "arm64-v8a",
+        "hardware": "ranchu",
+        "totalRamBytes": 4140232704,
+        "fingerprint": "google/sdk_gphone64_arm64/emulator64_arm64:10/QSR1.211112.011/13135432:userdebug/dev-keys",
+        "model": "Android SDK built for arm64",
+        "manufacturer": "Google",
+        "android": "10"
+      }
+    },
+    {
+      "at": "2026-09-05T04:10:31.619Z",
+      "stage": "worker-heartbeat",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:10:32.538Z",
+      "stage": "worker-heartbeat",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 918,
+        "result": {
+          "type": "heartbeat",
+          "number": 43.55176247656263
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:10:32.539Z",
+      "stage": "system-resources",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:10:32.609Z",
+      "stage": "system-resources",
+      "status": "WARN",
+      "detail": {
+        "elapsedMs": 70,
+        "result": {
+          "capabilities": {
+            "cpu": {
+              "status": "failed",
+              "reason": "CPU collector initialization failed"
+            },
+            "memory": {
+              "totalBytes": {
+                "status": "failed",
+                "reason": "CPU collector initialization failed"
+              }
+            },
+            "gpus": {
+              "status": "supported",
+              "value": [],
+              "provenance": {
+                "source": "bare-gpu-info"
+              }
+            }
+          },
+          "sample": {
+            "sampledAt": 1788581432599,
+            "cpu": {
+              "status": "failed",
+              "reason": "CPU collector is unavailable"
+            },
+            "memory": {
+              "usedBytes": {
+                "status": "failed",
+                "reason": "CPU collector is unavailable"
+              },
+              "totalBytes": {
+                "status": "failed",
+                "reason": "CPU collector is unavailable"
+              }
+            },
+            "gpus": {
+              "status": "supported",
+              "value": [],
+              "provenance": {
+                "source": "bare-gpu-info"
+              }
+            }
+          },
+          "probeWarning": "Resource collectors failed; RPC succeeded",
+          "failures": [
+            {
+              "path": "resources.capabilities.cpu",
+              "reason": "CPU collector initialization failed"
+            },
+            {
+              "path": "resources.capabilities.memory.totalBytes",
+              "reason": "CPU collector initialization failed"
+            },
+            {
+              "path": "resources.sample.cpu",
+              "reason": "CPU collector is unavailable"
+            },
+            {
+              "path": "resources.sample.memory.usedBytes",
+              "reason": "CPU collector is unavailable"
+            },
+            {
+              "path": "resources.sample.memory.totalBytes",
+              "reason": "CPU collector is unavailable"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:12:46.951Z",
+      "stage": "relaunch",
+      "status": "INFO",
+      "detail": {
+        "previous": {
+          "at": "2026-09-05T04:10:32.609Z",
+          "stage": "system-resources",
+          "status": "WARN",
+          "detail": {
+            "elapsedMs": 70,
+            "result": {
+              "capabilities": {
+                "cpu": {
+                  "status": "failed",
+                  "reason": "CPU collector initialization failed"
+                },
+                "memory": {
+                  "totalBytes": {
+                    "status": "failed",
+                    "reason": "CPU collector initialization failed"
+                  }
+                },
+                "gpus": {
+                  "status": "supported",
+                  "value": [],
+                  "provenance": {
+                    "source": "bare-gpu-info"
+                  }
+                }
+              },
+              "sample": {
+                "sampledAt": 1788581432599,
+                "cpu": {
+                  "status": "failed",
+                  "reason": "CPU collector is unavailable"
+                },
+                "memory": {
+                  "usedBytes": {
+                    "status": "failed",
+                    "reason": "CPU collector is unavailable"
+                  },
+                  "totalBytes": {
+                    "status": "failed",
+                    "reason": "CPU collector is unavailable"
+                  }
+                },
+                "gpus": {
+                  "status": "supported",
+                  "value": [],
+                  "provenance": {
+                    "source": "bare-gpu-info"
+                  }
+                }
+              },
+              "probeWarning": "Resource collectors failed; RPC succeeded",
+              "failures": [
+                {
+                  "path": "resources.capabilities.cpu",
+                  "reason": "CPU collector initialization failed"
+                },
+                {
+                  "path": "resources.capabilities.memory.totalBytes",
+                  "reason": "CPU collector initialization failed"
+                },
+                {
+                  "path": "resources.sample.cpu",
+                  "reason": "CPU collector is unavailable"
+                },
+                {
+                  "path": "resources.sample.memory.usedBytes",
+                  "reason": "CPU collector is unavailable"
+                },
+                {
+                  "path": "resources.sample.memory.totalBytes",
+                  "reason": "CPU collector is unavailable"
+                }
+              ]
+            }
+          }
+        },
+        "note": "A prior RUNNING stage without PASS/FAIL may mean process death or force-stop."
+      }
+    },
+    {
+      "at": "2026-09-05T04:12:46.989Z",
+      "stage": "app-state",
+      "status": "INFO",
+      "detail": "active"
+    },
+    {
+      "at": "2026-09-05T04:13:00.987Z",
+      "stage": "device",
+      "status": "INFO",
+      "detail": {
+        "freeStorageBytes": 7460986880,
+        "processPssKB": 99152,
+        "lowRamDevice": false,
+        "memoryClassMB": 48,
+        "availableRamBytes": 3102851072,
+        "api": 29,
+        "abis": "arm64-v8a",
+        "hardware": "ranchu",
+        "totalRamBytes": 4140232704,
+        "fingerprint": "google/sdk_gphone64_arm64/emulator64_arm64:10/QSR1.211112.011/13135432:userdebug/dev-keys",
+        "model": "Android SDK built for arm64",
+        "manufacturer": "Google",
+        "android": "10"
+      }
+    },
+    {
+      "at": "2026-09-05T04:13:00.990Z",
+      "stage": "verify:small",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:13:01.343Z",
+      "stage": "verify:small",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 352,
+        "result": "/data/user/0/com.hiraia.androidprobe/files/smollm2-360m-instruct-q8_0.gguf"
+      }
+    },
+    {
+      "at": "2026-09-05T04:13:01.343Z",
+      "stage": "worker-heartbeat",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:13:02.174Z",
+      "stage": "worker-heartbeat",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 829,
+        "result": {
+          "type": "heartbeat",
+          "number": 11.068016775951772
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:13:02.175Z",
+      "stage": "system-resources",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:13:02.243Z",
+      "stage": "system-resources",
+      "status": "WARN",
+      "detail": {
+        "elapsedMs": 67,
+        "result": {
+          "capabilities": {
+            "cpu": {
+              "status": "failed",
+              "reason": "CPU collector initialization failed"
+            },
+            "memory": {
+              "totalBytes": {
+                "status": "failed",
+                "reason": "CPU collector initialization failed"
+              }
+            },
+            "gpus": {
+              "status": "supported",
+              "value": [],
+              "provenance": {
+                "source": "bare-gpu-info"
+              }
+            }
+          },
+          "sample": {
+            "sampledAt": 1788581582235,
+            "cpu": {
+              "status": "failed",
+              "reason": "CPU collector is unavailable"
+            },
+            "memory": {
+              "usedBytes": {
+                "status": "failed",
+                "reason": "CPU collector is unavailable"
+              },
+              "totalBytes": {
+                "status": "failed",
+                "reason": "CPU collector is unavailable"
+              }
+            },
+            "gpus": {
+              "status": "supported",
+              "value": [],
+              "provenance": {
+                "source": "bare-gpu-info"
+              }
+            }
+          },
+          "probeWarning": "Resource collectors failed; RPC succeeded",
+          "failures": [
+            {
+              "path": "resources.capabilities.cpu",
+              "reason": "CPU collector initialization failed"
+            },
+            {
+              "path": "resources.capabilities.memory.totalBytes",
+              "reason": "CPU collector initialization failed"
+            },
+            {
+              "path": "resources.sample.cpu",
+              "reason": "CPU collector is unavailable"
+            },
+            {
+              "path": "resources.sample.memory.usedBytes",
+              "reason": "CPU collector is unavailable"
+            },
+            {
+              "path": "resources.sample.memory.totalBytes",
+              "reason": "CPU collector is unavailable"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:13:02.246Z",
+      "stage": "load-cpu:small",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:13:02.510Z",
+      "stage": "load-cpu:small",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 263,
+        "result": "329cc4c3850be880"
+      }
+    },
+    {
+      "at": "2026-09-05T04:13:02.512Z",
+      "stage": "generate-cold:small",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:13:02.512Z",
+      "stage": "completion-api-shape",
+      "status": "INFO",
+      "detail": {
+        "keys": [
+          "requestId",
+          "events",
+          "final",
+          "tokenStream",
+          "toolCallStream",
+          "text",
+          "stats",
+          "toolCalls"
+        ],
+        "then": "undefined",
+        "events": "object",
+        "next": "function",
+        "asyncIteratorSymbol": "Symbol(Symbol.asyncIterator)",
+        "iterator": "function",
+        "legacyIterator": "undefined",
+        "prototypeKeys": [
+          "constructor",
+          "next",
+          "throw",
+          "return"
+        ]
+      }
+    },
+    {
+      "at": "2026-09-05T04:13:03.326Z",
+      "stage": "generate-cold:small",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 814,
+        "result": {
+          "text": "\"Hello, I'm here to help you with your queries. What's on your mind?\"",
+          "firstTokenMs": 491,
+          "totalMs": 810,
+          "device": {
+            "freeStorageBytes": 7460974592,
+            "processPssKB": 760320,
+            "lowRamDevice": false,
+            "memoryClassMB": 48,
+            "availableRamBytes": 2871263232,
+            "api": 29,
+            "abis": "arm64-v8a",
+            "hardware": "ranchu",
+            "totalRamBytes": 4140232704,
+            "fingerprint": "google/sdk_gphone64_arm64/emulator64_arm64:10/QSR1.211112.011/13135432:userdebug/dev-keys",
+            "model": "Android SDK built for arm64",
+            "manufacturer": "Google",
+            "android": "10"
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:13:03.327Z",
+      "stage": "generate-warm:small",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:13:03.328Z",
+      "stage": "completion-api-shape",
+      "status": "INFO",
+      "detail": {
+        "keys": [
+          "requestId",
+          "events",
+          "final",
+          "tokenStream",
+          "toolCallStream",
+          "text",
+          "stats",
+          "toolCalls"
+        ],
+        "then": "undefined",
+        "events": "object",
+        "next": "function",
+        "asyncIteratorSymbol": "Symbol(Symbol.asyncIterator)",
+        "iterator": "function",
+        "legacyIterator": "undefined",
+        "prototypeKeys": [
+          "constructor",
+          "next",
+          "throw",
+          "return"
+        ]
+      }
+    },
+    {
+      "at": "2026-09-05T04:13:04.119Z",
+      "stage": "generate-warm:small",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 791,
+        "result": {
+          "text": "\"Hello, I'm here to help you with your queries. What's on your mind?\"",
+          "firstTokenMs": 483,
+          "totalMs": 788,
+          "device": {
+            "freeStorageBytes": 7460970496,
+            "processPssKB": 759892,
+            "lowRamDevice": false,
+            "memoryClassMB": 48,
+            "availableRamBytes": 2871431168,
+            "api": 29,
+            "abis": "arm64-v8a",
+            "hardware": "ranchu",
+            "totalRamBytes": 4140232704,
+            "fingerprint": "google/sdk_gphone64_arm64/emulator64_arm64:10/QSR1.211112.011/13135432:userdebug/dev-keys",
+            "model": "Android SDK built for arm64",
+            "manufacturer": "Google",
+            "android": "10"
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:13:04.120Z",
+      "stage": "unload:small",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:13:04.135Z",
+      "stage": "unload:small",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 14
+      }
+    },
+    {
+      "at": "2026-09-05T04:13:04.137Z",
+      "stage": "reload:small",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:13:05.059Z",
+      "stage": "reload:small",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 922,
+        "result": "329cc4c3850be880"
+      }
+    },
+    {
+      "at": "2026-09-05T04:13:05.061Z",
+      "stage": "generate-after-reload:small",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:13:05.062Z",
+      "stage": "completion-api-shape",
+      "status": "INFO",
+      "detail": {
+        "keys": [
+          "requestId",
+          "events",
+          "final",
+          "tokenStream",
+          "toolCallStream",
+          "text",
+          "stats",
+          "toolCalls"
+        ],
+        "then": "undefined",
+        "events": "object",
+        "next": "function",
+        "asyncIteratorSymbol": "Symbol(Symbol.asyncIterator)",
+        "iterator": "function",
+        "legacyIterator": "undefined",
+        "prototypeKeys": [
+          "constructor",
+          "next",
+          "throw",
+          "return"
+        ]
+      }
+    },
+    {
+      "at": "2026-09-05T04:13:05.851Z",
+      "stage": "generate-after-reload:small",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 789,
+        "result": {
+          "text": "\"Hello, I'm here to help you with your queries. What's on your mind?\"",
+          "firstTokenMs": 477,
+          "totalMs": 785,
+          "device": {
+            "freeStorageBytes": 7460970496,
+            "processPssKB": 768632,
+            "lowRamDevice": false,
+            "memoryClassMB": 48,
+            "availableRamBytes": 2862669824,
+            "api": 29,
+            "abis": "arm64-v8a",
+            "hardware": "ranchu",
+            "totalRamBytes": 4140232704,
+            "fingerprint": "google/sdk_gphone64_arm64/emulator64_arm64:10/QSR1.211112.011/13135432:userdebug/dev-keys",
+            "model": "Android SDK built for arm64",
+            "manufacturer": "Google",
+            "android": "10"
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:13:05.852Z",
+      "stage": "final-unload:small",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:13:05.868Z",
+      "stage": "final-unload:small",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 15
+      }
+    },
+    {
+      "at": "2026-09-05T04:13:05.870Z",
+      "stage": "suite:small",
+      "status": "PASS",
+      "detail": "Runtime smoke test only; output quality and broad device support are not certified."
+    },
+    {
+      "at": "2026-09-05T04:14:29.910Z",
+      "stage": "device",
+      "status": "INFO",
+      "detail": {
+        "freeStorageBytes": 5802876928,
+        "processPssKB": 305404,
+        "lowRamDevice": false,
+        "memoryClassMB": 48,
+        "availableRamBytes": 2953875456,
+        "api": 29,
+        "abis": "arm64-v8a",
+        "hardware": "ranchu",
+        "totalRamBytes": 4140232704,
+        "fingerprint": "google/sdk_gphone64_arm64/emulator64_arm64:10/QSR1.211112.011/13135432:userdebug/dev-keys",
+        "model": "Android SDK built for arm64",
+        "manufacturer": "Google",
+        "android": "10"
+      }
+    },
+    {
+      "at": "2026-09-05T04:14:29.912Z",
+      "stage": "verify:hiraia",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:14:31.812Z",
+      "stage": "verify:hiraia",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 1899,
+        "result": "/data/user/0/com.hiraia.androidprobe/files/hiraia-sft-2b-v2.Q4_K_M.gguf"
+      }
+    },
+    {
+      "at": "2026-09-05T04:14:31.813Z",
+      "stage": "worker-heartbeat",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:14:32.610Z",
+      "stage": "worker-heartbeat",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 796,
+        "result": {
+          "type": "heartbeat",
+          "number": 12.785671999600423
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:14:32.611Z",
+      "stage": "system-resources",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:14:32.627Z",
+      "stage": "system-resources",
+      "status": "WARN",
+      "detail": {
+        "elapsedMs": 15,
+        "result": {
+          "capabilities": {
+            "cpu": {
+              "status": "failed",
+              "reason": "CPU collector initialization failed"
+            },
+            "memory": {
+              "totalBytes": {
+                "status": "failed",
+                "reason": "CPU collector initialization failed"
+              }
+            },
+            "gpus": {
+              "status": "supported",
+              "value": [],
+              "provenance": {
+                "source": "bare-gpu-info"
+              }
+            }
+          },
+          "sample": {
+            "sampledAt": 1788581672625,
+            "cpu": {
+              "status": "failed",
+              "reason": "CPU collector is unavailable"
+            },
+            "memory": {
+              "usedBytes": {
+                "status": "failed",
+                "reason": "CPU collector is unavailable"
+              },
+              "totalBytes": {
+                "status": "failed",
+                "reason": "CPU collector is unavailable"
+              }
+            },
+            "gpus": {
+              "status": "supported",
+              "value": [],
+              "provenance": {
+                "source": "bare-gpu-info"
+              }
+            }
+          },
+          "probeWarning": "Resource collectors failed; RPC succeeded",
+          "failures": [
+            {
+              "path": "resources.capabilities.cpu",
+              "reason": "CPU collector initialization failed"
+            },
+            {
+              "path": "resources.capabilities.memory.totalBytes",
+              "reason": "CPU collector initialization failed"
+            },
+            {
+              "path": "resources.sample.cpu",
+              "reason": "CPU collector is unavailable"
+            },
+            {
+              "path": "resources.sample.memory.usedBytes",
+              "reason": "CPU collector is unavailable"
+            },
+            {
+              "path": "resources.sample.memory.totalBytes",
+              "reason": "CPU collector is unavailable"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:14:32.629Z",
+      "stage": "load-cpu:hiraia",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:14:33.764Z",
+      "stage": "load-cpu:hiraia",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 1134,
+        "result": "d19dbec52da36905"
+      }
+    },
+    {
+      "at": "2026-09-05T04:14:33.765Z",
+      "stage": "generate-cold:hiraia",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:14:33.766Z",
+      "stage": "completion-api-shape",
+      "status": "INFO",
+      "detail": {
+        "keys": [
+          "requestId",
+          "events",
+          "final",
+          "tokenStream",
+          "toolCallStream",
+          "text",
+          "stats",
+          "toolCalls"
+        ],
+        "then": "undefined",
+        "events": "object",
+        "next": "function",
+        "asyncIteratorSymbol": "Symbol(Symbol.asyncIterator)",
+        "iterator": "function",
+        "legacyIterator": "undefined",
+        "prototypeKeys": [
+          "constructor",
+          "next",
+          "throw",
+          "return"
+        ]
+      }
+    },
+    {
+      "at": "2026-09-05T04:14:40.098Z",
+      "stage": "generate-cold:hiraia",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 6332,
+        "result": {
+          "text": "Plants use sunlight, water, and carbon dioxide to make sugars through photosynthesis, releasing oxygen.",
+          "firstTokenMs": 4253,
+          "totalMs": 6325,
+          "device": {
+            "freeStorageBytes": 5802872832,
+            "processPssKB": 1731904,
+            "lowRamDevice": false,
+            "memoryClassMB": 48,
+            "availableRamBytes": 2803056640,
+            "api": 29,
+            "abis": "arm64-v8a",
+            "hardware": "ranchu",
+            "totalRamBytes": 4140232704,
+            "fingerprint": "google/sdk_gphone64_arm64/emulator64_arm64:10/QSR1.211112.011/13135432:userdebug/dev-keys",
+            "model": "Android SDK built for arm64",
+            "manufacturer": "Google",
+            "android": "10"
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:14:40.099Z",
+      "stage": "generate-warm:hiraia",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:14:40.100Z",
+      "stage": "completion-api-shape",
+      "status": "INFO",
+      "detail": {
+        "keys": [
+          "requestId",
+          "events",
+          "final",
+          "tokenStream",
+          "toolCallStream",
+          "text",
+          "stats",
+          "toolCalls"
+        ],
+        "then": "undefined",
+        "events": "object",
+        "next": "function",
+        "asyncIteratorSymbol": "Symbol(Symbol.asyncIterator)",
+        "iterator": "function",
+        "legacyIterator": "undefined",
+        "prototypeKeys": [
+          "constructor",
+          "next",
+          "throw",
+          "return"
+        ]
+      }
+    },
+    {
+      "at": "2026-09-05T04:14:46.280Z",
+      "stage": "generate-warm:hiraia",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 6180,
+        "result": {
+          "text": "Plants use sunlight, water, and carbon dioxide to make sugars through photosynthesis, releasing oxygen.",
+          "firstTokenMs": 4160,
+          "totalMs": 6173,
+          "device": {
+            "freeStorageBytes": 5802872832,
+            "processPssKB": 1730056,
+            "lowRamDevice": false,
+            "memoryClassMB": 48,
+            "availableRamBytes": 2804543488,
+            "api": 29,
+            "abis": "arm64-v8a",
+            "hardware": "ranchu",
+            "totalRamBytes": 4140232704,
+            "fingerprint": "google/sdk_gphone64_arm64/emulator64_arm64:10/QSR1.211112.011/13135432:userdebug/dev-keys",
+            "model": "Android SDK built for arm64",
+            "manufacturer": "Google",
+            "android": "10"
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:14:46.282Z",
+      "stage": "unload:hiraia",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:14:46.341Z",
+      "stage": "unload:hiraia",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 58
+      }
+    },
+    {
+      "at": "2026-09-05T04:14:46.342Z",
+      "stage": "reload:hiraia",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:14:47.998Z",
+      "stage": "reload:hiraia",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 1653,
+        "result": "d19dbec52da36905"
+      }
+    },
+    {
+      "at": "2026-09-05T04:14:47.999Z",
+      "stage": "generate-after-reload:hiraia",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:14:48.000Z",
+      "stage": "completion-api-shape",
+      "status": "INFO",
+      "detail": {
+        "keys": [
+          "requestId",
+          "events",
+          "final",
+          "tokenStream",
+          "toolCallStream",
+          "text",
+          "stats",
+          "toolCalls"
+        ],
+        "then": "undefined",
+        "events": "object",
+        "next": "function",
+        "asyncIteratorSymbol": "Symbol(Symbol.asyncIterator)",
+        "iterator": "function",
+        "legacyIterator": "undefined",
+        "prototypeKeys": [
+          "constructor",
+          "next",
+          "throw",
+          "return"
+        ]
+      }
+    },
+    {
+      "at": "2026-09-05T04:14:54.254Z",
+      "stage": "generate-after-reload:hiraia",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 6254,
+        "result": {
+          "text": "Plants use sunlight, water, and carbon dioxide to make sugars through photosynthesis, releasing oxygen.",
+          "firstTokenMs": 4237,
+          "totalMs": 6247,
+          "device": {
+            "freeStorageBytes": 5802868736,
+            "processPssKB": 1753544,
+            "lowRamDevice": false,
+            "memoryClassMB": 48,
+            "availableRamBytes": 2782441472,
+            "api": 29,
+            "abis": "arm64-v8a",
+            "hardware": "ranchu",
+            "totalRamBytes": 4140232704,
+            "fingerprint": "google/sdk_gphone64_arm64/emulator64_arm64:10/QSR1.211112.011/13135432:userdebug/dev-keys",
+            "model": "Android SDK built for arm64",
+            "manufacturer": "Google",
+            "android": "10"
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:14:54.256Z",
+      "stage": "final-unload:hiraia",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:14:54.317Z",
+      "stage": "final-unload:hiraia",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 60
+      }
+    },
+    {
+      "at": "2026-09-05T04:14:54.318Z",
+      "stage": "suite:hiraia",
+      "status": "PASS",
+      "detail": "Runtime smoke test only; output quality and broad device support are not certified."
+    },
+    {
+      "at": "2026-09-05T04:15:16.218Z",
+      "stage": "device",
+      "status": "INFO",
+      "detail": {
+        "freeStorageBytes": 5802868736,
+        "processPssKB": 367891,
+        "lowRamDevice": false,
+        "memoryClassMB": 48,
+        "availableRamBytes": 2907627520,
+        "api": 29,
+        "abis": "arm64-v8a",
+        "hardware": "ranchu",
+        "totalRamBytes": 4140232704,
+        "fingerprint": "google/sdk_gphone64_arm64/emulator64_arm64:10/QSR1.211112.011/13135432:userdebug/dev-keys",
+        "model": "Android SDK built for arm64",
+        "manufacturer": "Google",
+        "android": "10"
+      }
+    },
+    {
+      "at": "2026-09-05T04:15:16.219Z",
+      "stage": "verify:labse",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:15:16.882Z",
+      "stage": "verify:labse",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 662,
+        "result": "/data/user/0/com.hiraia.androidprobe/files/labse.Q4_K_M.gguf"
+      }
+    },
+    {
+      "at": "2026-09-05T04:15:16.883Z",
+      "stage": "worker-heartbeat",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:15:17.616Z",
+      "stage": "worker-heartbeat",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 733,
+        "result": {
+          "type": "heartbeat",
+          "number": 50.91370244826986
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:15:17.617Z",
+      "stage": "system-resources",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:15:17.632Z",
+      "stage": "system-resources",
+      "status": "WARN",
+      "detail": {
+        "elapsedMs": 14,
+        "result": {
+          "capabilities": {
+            "cpu": {
+              "status": "failed",
+              "reason": "CPU collector initialization failed"
+            },
+            "memory": {
+              "totalBytes": {
+                "status": "failed",
+                "reason": "CPU collector initialization failed"
+              }
+            },
+            "gpus": {
+              "status": "supported",
+              "value": [],
+              "provenance": {
+                "source": "bare-gpu-info"
+              }
+            }
+          },
+          "sample": {
+            "sampledAt": 1788581717630,
+            "cpu": {
+              "status": "failed",
+              "reason": "CPU collector is unavailable"
+            },
+            "memory": {
+              "usedBytes": {
+                "status": "failed",
+                "reason": "CPU collector is unavailable"
+              },
+              "totalBytes": {
+                "status": "failed",
+                "reason": "CPU collector is unavailable"
+              }
+            },
+            "gpus": {
+              "status": "supported",
+              "value": [],
+              "provenance": {
+                "source": "bare-gpu-info"
+              }
+            }
+          },
+          "probeWarning": "Resource collectors failed; RPC succeeded",
+          "failures": [
+            {
+              "path": "resources.capabilities.cpu",
+              "reason": "CPU collector initialization failed"
+            },
+            {
+              "path": "resources.capabilities.memory.totalBytes",
+              "reason": "CPU collector initialization failed"
+            },
+            {
+              "path": "resources.sample.cpu",
+              "reason": "CPU collector is unavailable"
+            },
+            {
+              "path": "resources.sample.memory.usedBytes",
+              "reason": "CPU collector is unavailable"
+            },
+            {
+              "path": "resources.sample.memory.totalBytes",
+              "reason": "CPU collector is unavailable"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:15:17.633Z",
+      "stage": "load-cpu:labse",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:15:19.301Z",
+      "stage": "load-cpu:labse",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 1667,
+        "result": "7e4bd34bbc9c2b08"
+      }
+    },
+    {
+      "at": "2026-09-05T04:15:19.302Z",
+      "stage": "embedding:Plants need sunlight.",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:15:19.367Z",
+      "stage": "embedding:Plants need sunlight.",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 64,
+        "result": {
+          "dimensions": 768,
+          "norm": 0.999999958376277
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:15:19.369Z",
+      "stage": "embedding:Kailangan ng halaman ang sikat ng araw.",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:15:19.450Z",
+      "stage": "embedding:Kailangan ng halaman ang sikat ng araw.",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 81,
+        "result": {
+          "dimensions": 768,
+          "norm": 0.9999999829972681
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:15:19.451Z",
+      "stage": "embedding:Ang tanom nagkinahanglan og kahayag sa adlaw.",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:15:19.508Z",
+      "stage": "embedding:Ang tanom nagkinahanglan og kahayag sa adlaw.",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 56,
+        "result": {
+          "dimensions": 768,
+          "norm": 1.000000010897257
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:15:19.509Z",
+      "stage": "unload:labse",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:15:19.527Z",
+      "stage": "unload:labse",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 16
+      }
+    },
+    {
+      "at": "2026-09-05T04:15:19.534Z",
+      "stage": "reload:labse",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:15:21.785Z",
+      "stage": "reload:labse",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 2242,
+        "result": "7e4bd34bbc9c2b08"
+      }
+    },
+    {
+      "at": "2026-09-05T04:15:21.786Z",
+      "stage": "embedding:after-reload",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:15:21.837Z",
+      "stage": "embedding:after-reload",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 50,
+        "result": {
+          "dimensions": 768,
+          "norm": 0.999999958376277
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:15:21.839Z",
+      "stage": "final-unload:labse",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:15:21.912Z",
+      "stage": "final-unload:labse",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 72
+      }
+    },
+    {
+      "at": "2026-09-05T04:15:21.913Z",
+      "stage": "suite:labse",
+      "status": "PASS",
+      "detail": "Runtime smoke test only; output quality and broad device support are not certified."
+    },
+    {
+      "at": "2026-09-05T04:16:06.768Z",
+      "stage": "device",
+      "status": "INFO",
+      "detail": {
+        "freeStorageBytes": 5802827776,
+        "processPssKB": 320826,
+        "lowRamDevice": false,
+        "memoryClassMB": 48,
+        "availableRamBytes": 2979815424,
+        "api": 29,
+        "abis": "arm64-v8a",
+        "hardware": "ranchu",
+        "totalRamBytes": 4140232704,
+        "fingerprint": "google/sdk_gphone64_arm64/emulator64_arm64:10/QSR1.211112.011/13135432:userdebug/dev-keys",
+        "model": "Android SDK built for arm64",
+        "manufacturer": "Google",
+        "android": "10"
+      }
+    },
+    {
+      "at": "2026-09-05T04:16:06.770Z",
+      "stage": "verify:hiraia",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:16:07.470Z",
+      "stage": "verify:hiraia",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 698,
+        "result": "/data/user/0/com.hiraia.androidprobe/files/hiraia-sft-2b-v2.Q4_K_M.gguf"
+      }
+    },
+    {
+      "at": "2026-09-05T04:16:07.471Z",
+      "stage": "verify:labse",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:16:07.689Z",
+      "stage": "verify:labse",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 217,
+        "result": "/data/user/0/com.hiraia.androidprobe/files/labse.Q4_K_M.gguf"
+      }
+    },
+    {
+      "at": "2026-09-05T04:16:07.690Z",
+      "stage": "worker-heartbeat",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:16:08.399Z",
+      "stage": "worker-heartbeat",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 708,
+        "result": {
+          "type": "heartbeat",
+          "number": 89.50934182081242
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:16:08.400Z",
+      "stage": "system-resources",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:16:08.419Z",
+      "stage": "system-resources",
+      "status": "WARN",
+      "detail": {
+        "elapsedMs": 18,
+        "result": {
+          "capabilities": {
+            "cpu": {
+              "status": "failed",
+              "reason": "CPU collector initialization failed"
+            },
+            "memory": {
+              "totalBytes": {
+                "status": "failed",
+                "reason": "CPU collector initialization failed"
+              }
+            },
+            "gpus": {
+              "status": "supported",
+              "value": [],
+              "provenance": {
+                "source": "bare-gpu-info"
+              }
+            }
+          },
+          "sample": {
+            "sampledAt": 1788581768417,
+            "cpu": {
+              "status": "failed",
+              "reason": "CPU collector is unavailable"
+            },
+            "memory": {
+              "usedBytes": {
+                "status": "failed",
+                "reason": "CPU collector is unavailable"
+              },
+              "totalBytes": {
+                "status": "failed",
+                "reason": "CPU collector is unavailable"
+              }
+            },
+            "gpus": {
+              "status": "supported",
+              "value": [],
+              "provenance": {
+                "source": "bare-gpu-info"
+              }
+            }
+          },
+          "probeWarning": "Resource collectors failed; RPC succeeded",
+          "failures": [
+            {
+              "path": "resources.capabilities.cpu",
+              "reason": "CPU collector initialization failed"
+            },
+            {
+              "path": "resources.capabilities.memory.totalBytes",
+              "reason": "CPU collector initialization failed"
+            },
+            {
+              "path": "resources.sample.cpu",
+              "reason": "CPU collector is unavailable"
+            },
+            {
+              "path": "resources.sample.memory.usedBytes",
+              "reason": "CPU collector is unavailable"
+            },
+            {
+              "path": "resources.sample.memory.totalBytes",
+              "reason": "CPU collector is unavailable"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:16:08.421Z",
+      "stage": "load-cpu:hiraia",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:16:09.507Z",
+      "stage": "load-cpu:hiraia",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 1085,
+        "result": "d19dbec52da36905"
+      }
+    },
+    {
+      "at": "2026-09-05T04:16:09.508Z",
+      "stage": "load-cpu:labse-alongside-hiraia",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:16:11.125Z",
+      "stage": "load-cpu:labse-alongside-hiraia",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 1616,
+        "result": "7e4bd34bbc9c2b08"
+      }
+    },
+    {
+      "at": "2026-09-05T04:16:11.126Z",
+      "stage": "embedding:alongside-hiraia",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:16:11.189Z",
+      "stage": "embedding:alongside-hiraia",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 61,
+        "result": {
+          "dimensions": 768,
+          "norm": 1.00000001514135
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:16:11.190Z",
+      "stage": "generate-cold:hiraia",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:16:11.191Z",
+      "stage": "completion-api-shape",
+      "status": "INFO",
+      "detail": {
+        "keys": [
+          "requestId",
+          "events",
+          "final",
+          "tokenStream",
+          "toolCallStream",
+          "text",
+          "stats",
+          "toolCalls"
+        ],
+        "then": "undefined",
+        "events": "object",
+        "next": "function",
+        "asyncIteratorSymbol": "Symbol(Symbol.asyncIterator)",
+        "iterator": "function",
+        "legacyIterator": "undefined",
+        "prototypeKeys": [
+          "constructor",
+          "next",
+          "throw",
+          "return"
+        ]
+      }
+    },
+    {
+      "at": "2026-09-05T04:16:17.466Z",
+      "stage": "generate-cold:hiraia",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 6275,
+        "result": {
+          "text": "Plants use sunlight, water, and carbon dioxide to make sugars through photosynthesis, releasing oxygen.",
+          "firstTokenMs": 4230,
+          "totalMs": 6267,
+          "device": {
+            "freeStorageBytes": 5802823680,
+            "processPssKB": 2227033,
+            "lowRamDevice": false,
+            "memoryClassMB": 48,
+            "availableRamBytes": 2706427904,
+            "api": 29,
+            "abis": "arm64-v8a",
+            "hardware": "ranchu",
+            "totalRamBytes": 4140232704,
+            "fingerprint": "google/sdk_gphone64_arm64/emulator64_arm64:10/QSR1.211112.011/13135432:userdebug/dev-keys",
+            "model": "Android SDK built for arm64",
+            "manufacturer": "Google",
+            "android": "10"
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:16:17.467Z",
+      "stage": "generate-warm:hiraia",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:16:17.468Z",
+      "stage": "completion-api-shape",
+      "status": "INFO",
+      "detail": {
+        "keys": [
+          "requestId",
+          "events",
+          "final",
+          "tokenStream",
+          "toolCallStream",
+          "text",
+          "stats",
+          "toolCalls"
+        ],
+        "then": "undefined",
+        "events": "object",
+        "next": "function",
+        "asyncIteratorSymbol": "Symbol(Symbol.asyncIterator)",
+        "iterator": "function",
+        "legacyIterator": "undefined",
+        "prototypeKeys": [
+          "constructor",
+          "next",
+          "throw",
+          "return"
+        ]
+      }
+    },
+    {
+      "at": "2026-09-05T04:16:23.632Z",
+      "stage": "generate-warm:hiraia",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 6164,
+        "result": {
+          "text": "Plants use sunlight, water, and carbon dioxide to make sugars through photosynthesis, releasing oxygen.",
+          "firstTokenMs": 4153,
+          "totalMs": 6155,
+          "device": {
+            "freeStorageBytes": 5802852352,
+            "processPssKB": 2226409,
+            "lowRamDevice": false,
+            "memoryClassMB": 48,
+            "availableRamBytes": 2706173952,
+            "api": 29,
+            "abis": "arm64-v8a",
+            "hardware": "ranchu",
+            "totalRamBytes": 4140232704,
+            "fingerprint": "google/sdk_gphone64_arm64/emulator64_arm64:10/QSR1.211112.011/13135432:userdebug/dev-keys",
+            "model": "Android SDK built for arm64",
+            "manufacturer": "Google",
+            "android": "10"
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:16:23.633Z",
+      "stage": "unload:labse",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:16:23.707Z",
+      "stage": "unload:labse",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 73
+      }
+    },
+    {
+      "at": "2026-09-05T04:16:23.709Z",
+      "stage": "unload:hiraia",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:16:23.766Z",
+      "stage": "unload:hiraia",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 56
+      }
+    },
+    {
+      "at": "2026-09-05T04:16:23.768Z",
+      "stage": "reload:hiraia",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:16:25.430Z",
+      "stage": "reload:hiraia",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 1658,
+        "result": "d19dbec52da36905"
+      }
+    },
+    {
+      "at": "2026-09-05T04:16:25.431Z",
+      "stage": "generate-after-reload:hiraia",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:16:25.432Z",
+      "stage": "completion-api-shape",
+      "status": "INFO",
+      "detail": {
+        "keys": [
+          "requestId",
+          "events",
+          "final",
+          "tokenStream",
+          "toolCallStream",
+          "text",
+          "stats",
+          "toolCalls"
+        ],
+        "then": "undefined",
+        "events": "object",
+        "next": "function",
+        "asyncIteratorSymbol": "Symbol(Symbol.asyncIterator)",
+        "iterator": "function",
+        "legacyIterator": "undefined",
+        "prototypeKeys": [
+          "constructor",
+          "next",
+          "throw",
+          "return"
+        ]
+      }
+    },
+    {
+      "at": "2026-09-05T04:16:31.511Z",
+      "stage": "generate-after-reload:hiraia",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 6079,
+        "result": {
+          "text": "Plants use sunlight, water, and carbon dioxide to make sugars through photosynthesis, releasing oxygen.",
+          "firstTokenMs": 4138,
+          "totalMs": 6071,
+          "device": {
+            "freeStorageBytes": 5802848256,
+            "processPssKB": 1773821,
+            "lowRamDevice": false,
+            "memoryClassMB": 48,
+            "availableRamBytes": 2805030912,
+            "api": 29,
+            "abis": "arm64-v8a",
+            "hardware": "ranchu",
+            "totalRamBytes": 4140232704,
+            "fingerprint": "google/sdk_gphone64_arm64/emulator64_arm64:10/QSR1.211112.011/13135432:userdebug/dev-keys",
+            "model": "Android SDK built for arm64",
+            "manufacturer": "Google",
+            "android": "10"
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T04:16:31.512Z",
+      "stage": "final-unload:hiraia",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T04:16:31.568Z",
+      "stage": "final-unload:hiraia",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 54
+      }
+    },
+    {
+      "at": "2026-09-05T04:16:31.571Z",
+      "stage": "suite:hiraia+labse",
+      "status": "PASS",
+      "detail": "Runtime smoke test only; output quality and broad device support are not certified."
+    }
+  ]
+}

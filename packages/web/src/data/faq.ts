@@ -21,6 +21,11 @@ const GRADE_SPAN = `Grades ${GRADE_OPTIONS[0]} through ${GRADE_OPTIONS[GRADE_OPT
 export const FAQ_SHIPPED: readonly { date: string; title: string; faqIds: readonly string[] }[] = [
   {
     date: '2026-09',
+    title: 'The homepage demo walks first-quarter cards for the grade you pick, with quizzes and recaps.',
+    faqIds: ['usage-session', 'usage-now'],
+  },
+  {
+    date: '2026-09',
     title: 'Classroom Pears sharing is coming soon — each phone still downloads the 2GB model itself for now.',
     faqIds: ['usage-class', 'usage-offline', 'devices-data', 'devices-first-run', 'trouble-download-stuck'],
   },
@@ -106,7 +111,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'usage',
     q: 'How does a session work?',
     a: [
-      'Hiraia is a stack of flash cards, not a chat window. Each card carries one science fact and one illustration. After a few cards, a short quiz checks whether the fact stuck; a recap card then gathers what was just read.',
+      'Hiraia is a stack of flash cards, not a chat window. Each card carries one science fact and one illustration. After a few cards, a short quiz checks whether the fact stuck; a recap card then gathers what was just read. The homepage demo walks that same loop: pick Tagalog, English, or Bisaya and a grade from 3 through 10, then the first-quarter cards for that grade in curriculum order.',
       'If a student asks for a topic that is not already in the deck, Hiraia can print a new card from its fact bank — in Tagalog, English, or Bisaya — instead of sending the question to the internet.',
     ],
   },

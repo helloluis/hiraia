@@ -1,3 +1,4 @@
+import { titleForCard, type TitleCardContent } from '@/data/titleCard';
 /**
  * Question-cards feed state — WEB DEMO port of packages/mobile/src/store/cardStore.ts
  * (keep the two in sync). Same deterministic, zero-model walk over the card graph:
@@ -30,6 +31,7 @@ import {
   feedWeigher,
   getCard,
   jumpCard,
+  loadGradeQ1,
   nextChoices,
   questionForFact,
   searchCards,
@@ -87,6 +89,9 @@ export interface FeedResponse {
 }
 
 interface CardDemoState {
+  titleCard: TitleCardContent | null;
+  introducedTopic: string | null;
+  continueAfterTitle: () => void;
   hydrated: boolean;
   /** Current card on the pad (null until hydrate). */
   current: CardFact | null;
@@ -147,7 +152,7 @@ interface CardDemoState {
   jumpToRandom: (language: LanguageKey) => void;
 }
 
-const nextGap = () => 4 + Math.floor(Math.random() * 2); // question: every 4-5 pages
+const nextGap = () => 5; // Only ordinary fact cards count toward the quiz.
 // reward: jittered so it lands as a dopamine hit, never on a fixed beat. Matches the
 // mobile store's current testing value (6-10 pages); ship value is 15-25.
 const nextRewardGap = () => 6 + Math.floor(Math.random() * 5);
@@ -155,6 +160,11 @@ const nextRewardGap = () => 6 + Math.floor(Math.random() * 5);
 export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
   hydrated: false,
   current: null,
+  titleCard: null,
+  introducedTopic: null,
+  continueAfterTitle: () => {
+    if (get().titleCard) set({ titleCard: null, untilQuestion: nextGap(), pageKey: get().pageKey + 1 });
+  },
   choices: [],
   question: null,
   pending: null,
@@ -180,14 +190,52 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
 
   hydrate: (language, grade = DEFAULT_GRADE) => {
     const prev = get();
+    void loadGradeQ1(grade);
+    const stepOpts = (id: string, seen: Set<string>, weights: FeedWeigher | null) => ({
+      threadDepth: 0,
+      recentIds: [id],
+      weights: weights ?? undefined,
+      grade,
+    });
     if (prev.hydrated) {
-      // Already walking. A visitor who reopened onboarding and picked a DIFFERENT grade gets
-      // the new weights from here on; the pages already read are not rewritten.
-      if (prev.grade !== grade) set({ grade, weights: feedWeigher(grade) });
+      if (prev.grade !== grade) {
+        const weights = feedWeigher(grade);
+        const first = startCard(new Set(), weights, grade);
+        const seen = new Set([first.id]);
+        set({
+          grade,
+          weights,
+          seen,
+          current: first,
+          ...introduce(first, grade, null),
+          untilQuestion: nextGap(),
+          choices: nextChoices(first.id, seen, language, stepOpts(first.id, seen, weights)),
+          threadDepth: 0,
+          recent: [first.id],
+          viewLog: [{ factId: first.id, topic: first.topic, ts: Date.now() }],
+          pagesRead: 0,
+          pageKey: prev.pageKey + 1,
+          question: null,
+          reward: null,
+          response: null,
+          pending: null,
+        });
+        return;
+      }
+      if (prev.current && prev.choices.length === 0) {
+        set({
+          choices: nextChoices(prev.current.id, prev.seen, language, {
+            threadDepth: prev.threadDepth,
+            recentIds: prev.recent,
+            weights: prev.weights ?? undefined,
+            grade,
+          }),
+        });
+      }
       return;
     }
     const weights = feedWeigher(grade);
-    const first = startCard(new Set(), weights);
+    const first = startCard(new Set(), weights, grade);
     const seen = new Set([first.id]);
     set({
       hydrated: true,
@@ -195,7 +243,8 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
       weights,
       seen,
       current: first,
-      choices: nextChoices(first.id, seen, language, { threadDepth: 0, recentIds: [first.id], weights }),
+      ...introduce(first, grade, null),
+      choices: nextChoices(first.id, seen, language, stepOpts(first.id, seen, weights)),
       threadDepth: 0,
       recent: [first.id],
       viewLog: [{ factId: first.id, topic: first.topic, ts: Date.now() }],
@@ -211,12 +260,14 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
         threadDepth: s.threadDepth,
         recentIds: s.recent,
         weights: s.weights ?? undefined,
+        grade: s.grade,
       }),
     });
   },
 
   choose: (choice, language) => {
     const s = get();
+    if (s.titleCard) { get().continueAfterTitle(); return; }
     if (s.question || s.reward || s.response || s.asking) return; // an interject/ask is up
 
     // REWARD due? (jittered, needs enough distinct topics.) Rarer than the quiz, so
@@ -271,6 +322,7 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
     const pending = s.pending;
     set({ question: null, pending: null, questionAnswered: false });
     advance(pending, set, get, language);
+    set({ untilQuestion: nextGap() });
   },
 
   continueAfterReward: (language) => {
@@ -284,6 +336,7 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
     const q = query.trim();
     const s = get();
     if (!q || s.asking) return;
+    set({ titleCard: null });
 
     // Retrieval-first: a confident local match navigates straight to that card (instant,
     // zero-model), with a "you asked" banner. The card becomes the new feed anchor. This is
@@ -365,7 +418,7 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
     if (dest) {
       navigateTo(dest, set, get, language);
     } else {
-      navigateTo(jumpCard(s.current?.id ?? null, s.seen, s.weights ?? undefined), set, get, language);
+      navigateTo(jumpCard(s.current?.id ?? null, s.seen, s.weights ?? undefined, s.grade), set, get, language);
     }
   },
 
@@ -375,15 +428,17 @@ export const useCardDemoStore = create<CardDemoState>()((set, get) => ({
     // answer that was still in flight, leaving the thinking veil and the disabled input stuck
     // over a card the visitor never asked about.
     if (s.asking) return;
-    const dest = jumpCard(s.current?.id ?? null, s.seen, s.weights ?? undefined);
+    const dest = jumpCard(s.current?.id ?? null, s.seen, s.weights ?? undefined, s.grade);
     const seen = new Set(s.seen);
     seen.add(dest.id);
     set({
       current: dest,
+      ...introduce(dest, s.grade, s.introducedTopic),
       choices: nextChoices(dest.id, seen, language, {
         threadDepth: 0,
         recentIds: [dest.id],
         weights: s.weights ?? undefined,
+        grade: s.grade,
       }),
       threadDepth: 0, // the reroll already switched topic
       question: null,
@@ -416,10 +471,12 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, language: LanguageKey,
   const viewLog = [...s.viewLog, { factId: fact.id, topic: fact.topic, ts: Date.now() }].slice(-VIEWLOG_CAP);
   set({
     current: fact,
+    ...introduce(fact, s.grade, s.introducedTopic),
     choices: nextChoices(fact.id, seen, language, {
       threadDepth: 0,
       recentIds: recent,
       weights: s.weights ?? undefined,
+      grade: s.grade,
     }),
     threadDepth: 0, // a search/topic jump starts a new thread
     seen,
@@ -455,10 +512,12 @@ function advance(choice: CardChoice, set: Set_, get: Get_, language: LanguageKey
     threadDepth: depth,
     recentIds: recent,
     weights: s.weights ?? undefined,
+    grade: s.grade,
   });
 
   set({
     current: nextFact,
+    ...introduce(nextFact, s.grade, s.introducedTopic),
     choices,
     threadDepth: choices.length > 1 ? 0 : depth,
     seen,
@@ -470,4 +529,9 @@ function advance(choice: CardChoice, set: Set_, get: Get_, language: LanguageKey
     queryBanner: null, // a normal page-turn clears any lingering search banner
     pageKey: s.pageKey + 1,
   });
+}
+
+function introduce(fact: CardFact, grade: number, previous: string | null) {
+  const content = titleForCard(fact, grade, previous);
+  return { titleCard: content && content.key !== previous ? content : null, introducedTopic: content?.key ?? previous };
 }

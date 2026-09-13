@@ -27,8 +27,8 @@ import {
 import type { GradeLevel } from '@/config/grades';
 import type { LanguageKey } from '@/config/model';
 
-import cardsPool from './demo-cards.json';
-import dfTable from './demo-df.json';
+import artSlugs from './demo-art-slugs.json';
+import seedPack from './demo-q1-seed.json';
 
 export interface CardFact {
   id: string; // factoid id (ffct-NNNNN)
@@ -62,31 +62,7 @@ export interface CardQuestion {
   e: Tri;
   d: number;
 }
-let QUESTIONS = new Map<string, CardQuestion>();
-let questionsLoading: Promise<void> | null = null;
 
-/** Quiz bank is ~2.3 MB — load after the first card so the feed chunk is half the size. */
-export function warmQuestions(): void {
-  if (QUESTIONS.size > 0 || questionsLoading) return;
-  questionsLoading = import('./demo-questions.json').then((mod) => {
-    const raw = (mod.default as { questions: CardQuestion[] }).questions;
-    QUESTIONS = new Map(raw.map((q) => [q.f, q]));
-  });
-}
-
-const POOL: CardFact[] = (cardsPool as { cards: CardFact[] }).cards;
-
-const BY_ID = new Map(POOL.map((f) => [f.id, f]));
-/** Card id -> its ordinal in the pool, which is how the weight table below is addressed. */
-const ORD = new Map<string, number>(POOL.map((f, i) => [f.id, i]));
-const BY_DOMAIN = new Map<string, CardFact[]>();
-for (const f of POOL) {
-  const arr = BY_DOMAIN.get(f.domain) ?? [];
-  arr.push(f);
-  BY_DOMAIN.set(f.domain, arr);
-}
-
-// ---- the taxonomy: the shelves the lateral fork ascends to ----
 interface TaxonomyLeaf {
   id: string;
   parent: string | null;
@@ -94,28 +70,181 @@ interface TaxonomyLeaf {
   label_tl: string;
   label_bis: string;
 }
-const TAXONOMY: TaxonomyLeaf[] = (cardsPool as { taxonomy?: TaxonomyLeaf[] }).taxonomy ?? [];
+type TagRow = [string, number, number, number, [number, number, number, number][]?];
+
+let QUESTIONS = new Map<string, CardQuestion>();
+
+/** Seed already carries its own MCQs. Grade packs add the rest when they land. */
+export function warmQuestions(): void {
+  /* no-op — questions arrive with the seed / grade pack */
+}
+
+type SeedDoc = {
+  cards: CardFact[];
+  tags?: Record<string, TagRow>;
+  taxonomy?: TaxonomyLeaf[];
+  questions?: CardQuestion[];
+};
+type GradePack = {
+  grade: number;
+  quarter: number;
+  cards: CardFact[];
+  tags?: Record<string, TagRow>;
+  questions?: CardQuestion[];
+};
+
+const seed = seedPack as unknown as SeedDoc;
+
+const RAW_POOL: CardFact[] = seed.cards;
+
+const TAXONOMY: TaxonomyLeaf[] = seed.taxonomy ?? [];
 const LEAF = new Map(TAXONOMY.map((l) => [l.id, l]));
 
-// ---- curriculum weighting: what the grade slide actually buys (FEED-WEIGHTING.md) ----
-/**
- * One MATATAG competency tag per card, for the ~94% of the subset that carries one
- * (`tags` in demo-cards.json, emitted by scripts/build-demo-subset.mjs out of the app's
- * curriculumTags.generated.json). The row is the app's TagRow minus `codes`, which only
- * exists for the phone's competency_seen decay — the browser demo has no seen-store.
- */
-type TagRow = [string, number, number, number, [number, number, number, number][]?];
 const TAGS = new Map<string, CurriculumTag>();
-for (const [id, [competency, grade, quarter, confidence, cells]] of Object.entries(
-  (cardsPool as unknown as { tags?: Record<string, TagRow> }).tags ?? {}
-)) {
-  TAGS.set(id, {
-    competency,
-    grade,
-    quarter,
-    confidence,
-    cells: cells?.map(([g, q, st, norm]) => ({ grade: g, quarter: q, strength: st === 2 ? 2 : 1, norm })),
+function ingestTags(rows: Record<string, TagRow> | undefined) {
+  if (!rows) return;
+  for (const [id, [competency, grade, quarter, confidence, cells]] of Object.entries(rows)) {
+    if (TAGS.has(id)) continue;
+    TAGS.set(id, {
+      competency,
+      grade,
+      quarter,
+      confidence,
+      cells: cells?.map(([g, q, st, norm]) => ({
+        grade: g,
+        quarter: q,
+        strength: st === 2 ? 2 : 1,
+        norm,
+      })),
+    });
+  }
+}
+ingestTags(seed.tags);
+for (const q of seed.questions ?? []) {
+  if (!QUESTIONS.has(q.f)) QUESTIONS.set(q.f, q);
+}
+
+const HAS_ART = new Set(artSlugs as string[]);
+
+/** Seed first; grade packs append Q1 of the chosen year. */
+let POOL: CardFact[] = [...RAW_POOL];
+const loadedGrades = new Set<number>();
+const gradeLoaders = new Map<number, Promise<void>>();
+
+/** Ribbon under the ask box — quarter + topic of the card on the pad. */
+export function hasDemoArt(slug: string | undefined): boolean {
+  return !!slug && HAS_ART.has(slug);
+}
+
+export function cardCurriculum(card: CardFact): { quarter: number; label: string } | null {
+  const tag = TAGS.get(card.id);
+  if (!tag) return card.topic ? { quarter: 0, label: card.topic } : null;
+  return { quarter: tag.quarter, label: card.topic };
+}
+
+let BY_ID = new Map(POOL.map((f) => [f.id, f]));
+/** Card id -> its ordinal in the pool, which is how the weight table below is addressed. */
+let ORD = new Map<string, number>(POOL.map((f, i) => [f.id, i]));
+let BY_DOMAIN = new Map<string, CardFact[]>();
+function reindexPool() {
+  BY_ID = new Map(POOL.map((f) => [f.id, f]));
+  ORD = new Map<string, number>(POOL.map((f, i) => [f.id, i]));
+  BY_DOMAIN = new Map();
+  for (const f of POOL) {
+    const arr = BY_DOMAIN.get(f.domain) ?? [];
+    arr.push(f);
+    BY_DOMAIN.set(f.domain, arr);
+  }
+}
+reindexPool();
+
+function ingestCards(cards: CardFact[], tags?: Record<string, TagRow>, questions?: CardQuestion[]) {
+  let added = 0;
+  for (const card of cards) {
+    if (BY_ID.has(card.id)) continue;
+    POOL.push(card);
+    added += 1;
+  }
+  ingestTags(tags);
+  for (const q of questions ?? []) {
+    if (!QUESTIONS.has(q.f)) QUESTIONS.set(q.f, q);
+  }
+  if (added) {
+    reindexPool();
+    rebuildSearchIndexes();
+  }
+}
+
+let rebuildSearchIndexes = () => {
+  /* filled in after token helpers exist */
+};
+
+const GRADE_PACK: Record<number, () => Promise<{ default: GradePack }>> = {
+  3: () => import('./demo-q1-g3.json').then((m) => ({ default: m.default as unknown as GradePack })),
+  4: () => import('./demo-q1-g4.json').then((m) => ({ default: m.default as unknown as GradePack })),
+  5: () => import('./demo-q1-g5.json').then((m) => ({ default: m.default as unknown as GradePack })),
+  6: () => import('./demo-q1-g6.json').then((m) => ({ default: m.default as unknown as GradePack })),
+  7: () => import('./demo-q1-g7.json').then((m) => ({ default: m.default as unknown as GradePack })),
+  8: () => import('./demo-q1-g8.json').then((m) => ({ default: m.default as unknown as GradePack })),
+  9: () => import('./demo-q1-g9.json').then((m) => ({ default: m.default as unknown as GradePack })),
+  10: () => import('./demo-q1-g10.json').then((m) => ({ default: m.default as unknown as GradePack })),
+};
+
+/** After language + grade are known, pull the rest of that grade's first-quarter deck. */
+export function loadGradeQ1(grade: GradeLevel): Promise<void> {
+  if (loadedGrades.has(grade)) return Promise.resolve();
+  const pending = gradeLoaders.get(grade);
+  if (pending) return pending;
+  const loader = GRADE_PACK[grade];
+  if (!loader) {
+    loadedGrades.add(grade);
+    return Promise.resolve();
+  }
+  const work = loader()
+    .then((mod) => {
+      const pack = mod.default;
+      ingestCards(pack.cards, pack.tags, pack.questions);
+      loadedGrades.add(grade);
+    })
+    .catch(() => {
+      gradeLoaders.delete(grade);
+    });
+  gradeLoaders.set(grade, work);
+  return work;
+}
+
+function compSortKey(code: string): [string, number] {
+  const m = /^(G\d+-[A-Z]+)-(\d+)$/.exec(code);
+  if (m) return [m[1]!, Number(m[2])];
+  return [code, 0];
+}
+
+/** First-quarter cards for a grade, in competency order. */
+export function q1Sequence(grade: GradeLevel): CardFact[] {
+  const rows: CardFact[] = [];
+  for (const card of POOL) {
+    const tag = TAGS.get(card.id);
+    if (tag && tag.grade === grade && tag.quarter === 1) rows.push(card);
+  }
+  rows.sort((a, b) => {
+    const ka = compSortKey(TAGS.get(a.id)?.competency ?? '');
+    const kb = compSortKey(TAGS.get(b.id)?.competency ?? '');
+    if (ka[0] !== kb[0]) return ka[0] < kb[0] ? -1 : 1;
+    if (ka[1] !== kb[1]) return ka[1] - kb[1];
+    return a.id < b.id ? -1 : 1;
   });
+  return rows;
+}
+
+function nextInQ1(currentId: string, grade: GradeLevel, seen: ReadonlySet<string>): CardFact | undefined {
+  const seq = q1Sequence(grade);
+  if (!seq.length) return undefined;
+  const i = Math.max(0, seq.findIndex((c) => c.id === currentId));
+  for (let k = 1; k <= seq.length; k += 1) {
+    const card = seq[(i + k) % seq.length];
+    if (card && !seen.has(card.id)) return card;
+  }
+  return seq[(i + 1) % seq.length] ?? seq[0];
 }
 
 /**
@@ -195,8 +324,8 @@ function freshCategory(cur: CardFact, recentIds?: readonly string[]): string | u
 }
 
 // ---- the frozen df tables (see the file header) ----
-const TERM_DF: Record<string, number> = (dfTable as { terms: Record<string, number> }).terms;
-const TOKEN_DF: Record<string, number> = (dfTable as { tokens: Record<string, number> }).tokens;
+const TERM_DF: Record<string, number> = {};
+const TOKEN_DF: Record<string, number> = {};
 
 /**
  * Document frequency of a term over the FULL 46,421-card pool. A term missing from the table
@@ -209,14 +338,7 @@ function termDf(term: string): number {
 
 // term -> ids of the SUBSET cards carrying it. This is a candidate index only: it answers
 // "which cards might be neighbours", never "how rare is this term" — that is termDf's job.
-const TERM_INDEX = new Map<string, string[]>();
-for (const f of POOL) {
-  for (const t of new Set(f.terms)) {
-    const arr = TERM_INDEX.get(t) ?? [];
-    arr.push(f.id);
-    TERM_INDEX.set(t, arr);
-  }
-}
+let TERM_INDEX = new Map<string, string[]>();
 
 // full-text token index for the SEARCH BOX. A kid's typed query is tokenized and matched
 // against each card's topic + terms + trilingual text, weighted by inverse document
@@ -240,19 +362,29 @@ function searchTokens(s: string): string[] {
 
 // Each card's whole vocabulary — used by the search box AND by textJaccard's duplicate check.
 // Only the SETS are built here; how rare each token is comes from the frozen table above.
-const FACT_TOKENS = new Map<string, Set<string>>();
-for (const f of POOL) {
-  FACT_TOKENS.set(
-    f.id,
-    new Set<string>([
-      ...searchTokens(f.topic),
-      ...f.terms.flatMap((t) => searchTokens(t)),
-      ...searchTokens(f.fact.en ?? ''),
-      ...searchTokens(f.fact.tl ?? ''),
-      ...searchTokens(f.fact.bis ?? ''),
-    ])
-  );
-}
+let FACT_TOKENS = new Map<string, Set<string>>();
+rebuildSearchIndexes = () => {
+  TERM_INDEX = new Map();
+  FACT_TOKENS = new Map();
+  for (const f of POOL) {
+    for (const t of new Set(f.terms)) {
+      const arr = TERM_INDEX.get(t) ?? [];
+      arr.push(f.id);
+      TERM_INDEX.set(t, arr);
+    }
+    FACT_TOKENS.set(
+      f.id,
+      new Set<string>([
+        ...searchTokens(f.topic),
+        ...f.terms.flatMap((t) => searchTokens(t)),
+        ...searchTokens(f.fact.en ?? ''),
+        ...searchTokens(f.fact.tl ?? ''),
+        ...searchTokens(f.fact.bis ?? ''),
+      ]),
+    );
+  }
+};
+rebuildSearchIndexes();
 
 /**
  * Each card's SUBJECT vocabulary — its topic and its retrieval terms, and NOT the prose of the
@@ -472,10 +604,12 @@ function pick(arr: CardFact[], w?: FeedWeigher): CardFact | undefined {
   return w ? weightedPick(arr, (f) => w.of(f)) : pickAny(arr);
 }
 
-/** Random entry card (session start). Prefers unseen; curriculum-weighted when asked. */
-export function startCard(seen: ReadonlySet<string>, w?: FeedWeigher): CardFact {
-  const unseen = POOL.filter((f) => !seen.has(f.id));
-  return (pick(unseen.length ? unseen : POOL, w) ?? POOL[0]) as CardFact;
+/** First Q1 card for this grade (session start). */
+export function startCard(seen: ReadonlySet<string>, w?: FeedWeigher, grade: GradeLevel = 5): CardFact {
+  const seq = q1Sequence(grade);
+  const pool = seq.length ? seq : POOL;
+  const unseen = pool.filter((f) => !seen.has(f.id));
+  return (unseen[0] ?? pool[0] ?? POOL[0]) as CardFact;
 }
 
 /**
@@ -483,14 +617,23 @@ export function startCard(seen: ReadonlySet<string>, w?: FeedWeigher): CardFact 
  * a DIFFERENT domain than the current one (so the kid escapes a thread that's gone too
  * deep / stale). Falls back across domains then the whole pool as the unseen set thins.
  */
-export function jumpCard(currentId: string | null, seen: ReadonlySet<string>, w?: FeedWeigher): CardFact {
-  const cur = currentId ? BY_ID.get(currentId) : undefined;
-  const usable = (f: CardFact) => f.id !== currentId && !seen.has(f.id);
-  const otherDomain = POOL.filter((f) => usable(f) && (!cur || f.domain !== cur.domain));
-  if (otherDomain.length) return pick(otherDomain, w)!;
-  const anyUnseen = POOL.filter(usable);
-  if (anyUnseen.length) return pick(anyUnseen, w)!;
-  return (pick(POOL.filter((f) => f.id !== currentId), w) ?? POOL[0]) as CardFact;
+export function jumpCard(
+  currentId: string | null,
+  seen: ReadonlySet<string>,
+  w?: FeedWeigher,
+  grade: GradeLevel = 5,
+): CardFact {
+  const seq = q1Sequence(grade);
+  if (!seq.length) return (POOL[0] ?? { id: currentId ?? '' }) as CardFact;
+  const i = Math.max(0, seq.findIndex((c) => c.id === currentId));
+  // Skip ahead to the next competency in Q1 so reroll still feels sequential, not random.
+  const curComp = TAGS.get(seq[i]?.id ?? '')?.competency;
+  for (let k = 1; k < seq.length; k += 1) {
+    const card = seq[(i + k) % seq.length]!;
+    if (seen.has(card.id)) continue;
+    if (TAGS.get(card.id)?.competency !== curComp) return card;
+  }
+  return nextInQ1(currentId ?? seq[0]!.id, grade, seen) ?? seq[0]!;
 }
 
 /**
@@ -738,6 +881,8 @@ export interface NextStepOpts {
    * them"), one step more conservative because the web fork has no seen-decay to soften it.
    */
   weights?: FeedWeigher;
+  /** Grade whose first-quarter sequence the NEXT CARD ticket follows. */
+  grade?: GradeLevel;
 }
 
 /** Illustrations that would read as a repeat right now: the current card's + the trail's. */
@@ -755,22 +900,9 @@ function cooldownSlugs(cur: CardFact, recentIds?: readonly string[]): Set<string
 }
 
 /**
- * The "turn the page" choice(s) for the current card.
- *
- * Returns ONE choice — the deep, associated next topic — on a normal page, and TWO when the
- * thread forks: either the BRANCH_EVERY cadence (deep + a lateral jump) or a dead end, where
- * this card has no genuinely associated follow-on left and the reader gets two fresh topics
- * instead of one silently-random "related" card. Callers can treat `choices.length > 1` as
- * "this page branches".
- *
- *   deep    — most-associated unseen fact: shared terms above LINK_MASS_FLOOR, below the
- *             near-duplicate cap, and NOT reusing a recently-shown illustration
- *   lateral — a fresh topic, preferring to go UP THE STACK: a taxonomy shelf ("iba pang mga
- *             insekto") names where the reader is going, where a term scraped out of the
- *             destination card names nothing and occasionally spoils the card they are still
- *             reading. Falls back to a same-domain card with ~no overlap.
- *
- * Falls back gracefully as the unseen pool thins; last resort allows seen cards.
+ * The "turn the page" choice for the current card: the next first-quarter card
+ * in competency order for `opts.grade`. One ticket, always; the demo walk is a
+ * curriculum sequence, not the association graph.
  */
 export function nextChoices(
   currentId: string,
@@ -781,112 +913,7 @@ export function nextChoices(
   const cur = BY_ID.get(currentId);
   if (!cur) return [];
 
-  const blockedSlugs = cooldownSlugs(cur, opts.recentIds);
-  const topicKey = (f: CardFact) =>
-    f.topic
-      .toLowerCase()
-      .split(/\s+/)
-      .filter((w) => w.length > 3)
-      .sort()
-      .join(' ');
-  const curTopicKey = topicKey(cur);
-
-  const unseen = (f: CardFact) => f.id !== currentId && !seen.has(f.id);
-  /**
-   * Servable next to THIS card: unseen, not a picture the reader just saw, and not the same
-   * fact reworded under the same topic wording (those exist across grades).
-   */
-  const servable = (f: CardFact) =>
-    unseen(f) && !blockedSlugs.has(f.slug) && topicKey(f) !== curTopicKey;
-
-  // deep: candidates sharing any term, ranked by idf-weighted overlap, but only those whose
-  // shared terms are specific enough to be a real thread (LINK_MASS_FLOOR / LINK_RARE_DF) and
-  // not so heavy that the candidate is this card restated (DEEP_DUP_CAP).
-  const selfScore = overlap(cur, cur);
-  const candIds = new Set<string>();
-  for (const t of cur.terms) for (const id of TERM_INDEX.get(t) ?? []) candIds.add(id);
-  let deep: CardFact | undefined;
-  let deepScore = 0;
-  for (const id of candIds) {
-    const f = BY_ID.get(id);
-    if (!f || !servable(f)) continue;
-    const link = linkOf(cur, f);
-    if (link.mass > selfScore * DEEP_DUP_CAP) continue; // near-duplicate of the current card
-    if (link.mass < LINK_MASS_FLOOR) continue; // only generic words in common
-    if (link.count < 2 && link.minDf > LINK_RARE_DF) continue; // one unremarkable word
-    if (link.mass <= deepScore) continue;
-    if (textJaccard(cur, f) > TEXT_DUP_JACCARD) continue; // same fact, different words
-    deepScore = link.mass;
-    deep = f;
-  }
-
-  // A card with no ASSOCIATED follow-on left is a dead end. Anything served next is an
-  // unrelated jump anyway, so the reader picks it rather than having it picked for them.
-  const deadEnd = !deep;
-
-  // lateral: fresh topic in the same domain — minimal term overlap so it reads as a real
-  // change of subject, with the servable filter keeping the picture and wording fresh too.
-  const domainPool = (BY_DOMAIN.get(cur.domain) ?? []).filter(
-    (f) => servable(f) && f.id !== deep?.id
-  );
-  const fresh = domainPool.filter((f) => overlap(cur, f) < selfScore * 0.35);
-  const lateralPool = fresh.length ? fresh : domainPool;
-  const w = opts.weights;
-  let lateral = pick(lateralPool, w);
-
-  // ...but prefer to go UP THE STACK rather than sideways by keyword. A CATEGORY names the
-  // shelf — "other marine animals" — and draws from a whole leaf instead of one card, so the
-  // reader is choosing a direction rather than a specific card they cannot see.
-  let lateralCat: string | undefined;
-  const cat = freshCategory(cur, opts.recentIds);
-  if (cat) {
-    const inCat = (BY_CAT.get(cat) ?? []).filter((f) => servable(f) && f.id !== deep?.id);
-    const chosen = pick(inCat, w);
-    if (chosen) {
-      lateral = chosen;
-      lateralCat = cat;
-    }
-  }
-
-  // fallbacks as the unseen pool thins: relax the picture cooldown first (a repeated
-  // illustration beats an empty page), then allow any card at all.
-  if (!lateral) {
-    lateral =
-      pick(POOL.filter((f) => unseen(f) && f.id !== deep?.id), w) ??
-      pick(POOL.filter((f) => f.id !== currentId), w);
-  }
-
-  const out: CardChoice[] = [];
-  if (deep) out.push({ factId: deep.id, label: choiceLabel(deep, language), kind: 'deep' });
-  if (lateral) {
-    const catLabel = lateralCat
-      ? `${OTHER_PREFIX[language] ?? OTHER_PREFIX.tagalog} ${leafLabel(lateralCat, language)}`.trim()
-      : '';
-    out.push({
-      factId: lateral.id,
-      label: catLabel || choiceLabel(lateral, language),
-      kind: 'lateral',
-    });
-  }
-
-  // Fork on the cadence, or immediately at a dead end. Otherwise the page is single-path.
-  if (!deadEnd && (opts.threadDepth ?? 0) < BRANCH_EVERY) return out.slice(0, 1);
-
-  // Dead end: the second option is another fresh topic, not a fake "related" card. Prefer one
-  // from a different domain so the two escapes are visibly different offers.
-  if (deadEnd && lateral) {
-    const second =
-      pick(POOL.filter((f) => servable(f) && f.domain !== cur.domain && f.id !== lateral!.id), w) ??
-      pick(lateralPool.filter((f) => f.id !== lateral!.id), w) ??
-      pick(POOL.filter((f) => unseen(f) && f.id !== lateral!.id), w);
-    if (second)
-      out.push({ factId: second.id, label: choiceLabel(second, language), kind: 'lateral' });
-  }
-
-  // never offer two identical labels — retitle the second from its topic
-  if (out.length === 2 && out[0]!.label === out[1]!.label) {
-    const f = BY_ID.get(out[1]!.factId)!;
-    out[1]!.label = f.topic.split(/\s+/).slice(0, 2).join(' ');
-  }
-  return out;
+  const next = nextInQ1(currentId, opts.grade ?? 5, seen);
+  if (!next) return [];
+  return [{ factId: next.id, label: choiceLabel(next, language), kind: 'deep' }];
 }
