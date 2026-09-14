@@ -42,6 +42,8 @@ import { type CardQuestion } from '../../data/cards';
 import { localize } from '../../data/tri';
 import { card, fonts } from '../../theme';
 import { CardPrint, Divider, IndexBand, Ticket, cardFrame } from './CardFrame';
+import { CardSpeaker } from './CardSpeaker';
+import { utterance } from '../../speech';
 
 /** The mascot — same alpha-cut PNG for the small band stamp and the big peach disc. */
 const CAT = require('../../../assets/hiraia-profile.png');
@@ -372,6 +374,13 @@ export function QuestionPage({ question, language, onAnswer, onContinue, display
   // Localised options in DISPLAY order (order[i] = which bank option is printed i-th), so
   // the row loop below indexes by display position exactly like the shuffle does.
   const optionTexts = order.map((optIdx) => localize(question.o[optIdx], language));
+  // Question then every option in the order they are shown, so listening alone is enough
+  // to answer. The explanation joins in only once it is on screen.
+  const spoken = utterance(
+    questionText,
+    ...optionTexts,
+    revealed ? localize(question.e, language) : undefined,
+  );
   const tier = tierFor(questionText.length, Math.max(...optionTexts.map((o) => o.length), 0));
   // Once answered the hero is gone entirely, so the disc only ever draws at full size; the
   // question — already read — steps down to give the explanation its room.
@@ -395,7 +404,7 @@ export function QuestionPage({ question, language, onAnswer, onContinue, display
         chipSymbol={revealed}
         chipStyle={gotIt ? chipStyle : undefined}
         label={labels.band}
-        stamp={<Image source={CAT} style={cardFrame.stampImage} resizeMode="contain" />}
+        stamp={<CardSpeaker text={spoken} language={language} variant="band" />}
       />
 
       {/* Before answering, the cat is the interruption: full-size disc and an eyebrow. After
@@ -521,7 +530,11 @@ export function QuestionPage({ question, language, onAnswer, onContinue, display
           />
         </>
       ) : (
-        <Text style={styles.hint}>{labels.hint}</Text>
+        <>
+          <Text style={styles.hint}>{labels.hint}</Text>
+          {/* Before the answer there is no ticket — but this is exactly when a kid who
+              can't read the question needs to hear it, so the speaker stands alone. */}
+        </>
       )}
 
       {/* The celebration overlay paints above everything on the card, takes no touches,
@@ -651,6 +664,7 @@ const styles = StyleSheet.create({
     color: card.stock,
   },
   ticketGap: { marginTop: 12 },
+  speakerAlone: { marginTop: 12 },
 
   // ---- confetti ----
   confettiPiece: {

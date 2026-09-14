@@ -46,6 +46,13 @@ interface UIStrings {
   sectionVersion: string;
   labelModel: string;
   facts: string;
+  /**
+   * Attribution for the bundled voices. Meta's MMS checkpoints are CC BY-NC 4.0: the
+   * non-commercial half is fine (Hiraia is not-for-profit), but the BY half obliges us to
+   * credit Meta AND state that we changed them — we fine-tuned both on our own corpus.
+   * The obligation travels with the APK, so it has to be in the app, not only in docs.
+   */
+  voiceCredit: string;
   tutorial: string;
   showTutorial: string;
   // loader
@@ -53,6 +60,14 @@ interface UIStrings {
   // quiz mode
   quiz: QuizStrings;
   // question-cards feed (home screen)
+  /** Read-aloud (on-device TTS). See src/speech.ts and docs/TTS.md. */
+  speech: {
+    listen: string;
+    stop: string;
+    failedTitle: string;
+    failedBody: string;
+    dismiss: string;
+  };
   cards: {
     questionHeader: string;
     continueNote: string;
@@ -169,6 +184,7 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     sectionVersion: 'Bersyon',
     labelModel: 'Modelo',
     facts: 'datos',
+    voiceCredit: 'Boses: Meta MMS, na-fine-tune para sa Hiraia · CC BY-NC 4.0',
     tutorial: 'Tutorial',
     showTutorial: 'Ipakita ang tutorial',
     bootingUp: 'nag-boot up pa...',
@@ -196,6 +212,13 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       praiseLow: 'Magandang simula! Subukan ulit. 🐱',
       playAgain: 'Ulitin?',
       end: 'Tapusin',
+    },
+    speech: {
+      listen: 'Pakinggan',
+      stop: 'Itigil',
+      failedTitle: 'Hindi mabasa nang malakas',
+      failedBody: 'May nangyaring mali sa boses. Subukan ulit mamaya.',
+      dismiss: 'Sige',
     },
     cards: {
       questionHeader: 'Tanong! ✏️',
@@ -267,6 +290,7 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     sectionVersion: 'Version',
     labelModel: 'Model',
     facts: 'facts',
+    voiceCredit: 'Voice: Meta MMS, fine-tuned for Hiraia · CC BY-NC 4.0',
     tutorial: 'Tutorial',
     showTutorial: 'Show the tutorial',
     bootingUp: 'still booting up...',
@@ -293,6 +317,13 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       praiseLow: 'Good start! Try again. 🐱',
       playAgain: 'Start again?',
       end: 'End quiz',
+    },
+    speech: {
+      listen: 'Listen',
+      stop: 'Stop',
+      failedTitle: "Couldn't read this aloud",
+      failedBody: 'Something went wrong with the voice. Try again in a moment.',
+      dismiss: 'OK',
     },
     cards: {
       questionHeader: 'Question! ✏️',
@@ -357,6 +388,7 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     sectionVersion: 'Bersyon',
     labelModel: 'Modelo',
     facts: 'datos',
+    voiceCredit: 'Tingog: Meta MMS, gi-fine-tune para sa Hiraia · CC BY-NC 4.0',
     tutorial: 'Tutorial',
     showTutorial: 'Ipakita ang tutorial',
     bootingUp: 'nag-boot up pa...',
@@ -384,6 +416,13 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       praiseLow: 'Maayong sugod! Sulayi pag-usab. 🐱',
       playAgain: 'Usba?',
       end: 'Tapuson',
+    },
+    speech: {
+      listen: 'Paminawa',
+      stop: 'Hunong',
+      failedTitle: 'Dili mabasa nga kusog',
+      failedBody: 'Adunay sayop sa tingog. Sulayi pag-usab unya.',
+      dismiss: 'Sige',
     },
     cards: {
       questionHeader: 'Pangutana! ✏️',

@@ -20,6 +20,11 @@ config.resolver.assetExts.push('bin');
 // somewhere SQLite is able to open — the APK entry is a compressed zip member, not a file, so
 // it has to be materialised once before it can be queried.
 config.resolver.assetExts.push('db');
+// The bundled TTS voices. Metro packages each model so expo-asset can resolve a path we
+// copy somewhere onnxruntime can open it — the APK entry is a compressed zip member, not
+// a file. Their vocabularies ride along as plain .json imports, which Metro already
+// handles, so there is no second asset type to register.
+config.resolver.assetExts.push('onnx');
 
 // 1. Watch all files in the workspace
 config.watchFolders = [workspaceRoot];

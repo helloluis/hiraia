@@ -192,7 +192,9 @@ async function fetchManifest(): Promise<AppManifest | null> {
       // `Cache-Control: no-store`, which is what OkHttp honours.
       headers: { Accept: 'application/json' },
       credentials: 'omit',
-      signal: controller.signal,
+      // Cast: onnxruntime's types drag @types/node into the program, and Node's
+      // AbortSignal is not structurally RN's. Same object at runtime either way.
+      signal: controller.signal as RequestInit['signal'],
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return parseManifest(await res.json());

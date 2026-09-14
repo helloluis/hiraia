@@ -113,6 +113,9 @@ export default function SidebarScreen() {
               v{HIRAIAPEDIA_VERSION} · {VECTORS_META.count.toLocaleString()} {t.facts}
             </Text>
           </View>
+          {/* Not decoration: the bundled voices are CC BY-NC 4.0, which obliges us to
+              credit Meta and say we modified them. It travels with the APK. */}
+          <Text style={styles.voiceCredit}>{t.voiceCredit}</Text>
         </View>
 
         <Text style={styles.sectionTitle}>{t.tutorial}</Text>
@@ -186,6 +189,12 @@ const styles = StyleSheet.create({
   },
   versionBlock: {
     gap: 6,
+  },
+  voiceCredit: {
+    fontFamily: fonts.cardBody,
+    fontSize: 13,
+    color: card.olive,
+    marginTop: 2,
   },
   versionRow: {
     flexDirection: 'row',

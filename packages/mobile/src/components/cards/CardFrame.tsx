@@ -266,15 +266,22 @@ export function Ticket({
   onPress,
   hitSlop,
   style,
+  trailing,
 }: {
   label: string;
   eyebrow?: string;
   onPress: () => void;
   hitSlop?: number;
   style?: StyleProp<ViewStyle>;
+  /**
+   * A square control printed to the RIGHT of the ticket on the same ledge line — the
+   * read-aloud speaker. A slot rather than baked in, so the ticket stays the
+   * single-path continuation and nothing else creeps onto the gold.
+   */
+  trailing?: ReactNode;
 }) {
-  return (
-    <View style={[cardFrame.ticketLedge, style]}>
+  const ticket = (
+    <View style={[cardFrame.ticketLedge, trailing ? cardFrame.grow : style]}>
       <TapTarget
         onPress={onPress}
         hitSlop={hitSlop}
@@ -293,6 +300,111 @@ export function Ticket({
         </View>
         <View style={cardFrame.arrow}>
           <Arrow />
+        </View>
+      </TapTarget>
+    </View>
+  );
+  if (!trailing) return ticket;
+  return (
+    <View style={[cardFrame.bottomRow, style]}>
+      {ticket}
+      {trailing}
+    </View>
+  );
+}
+
+/**
+ * The read-aloud control as it appears IN THE INDEX BAND, in the disc the cat stamp
+ * used to occupy. 26px is small, so the glyph is simplified to a cone plus a single
+ * arc — at this size the two-arc version turns to mush.
+ *
+ * The disc is cream on all four band tones, so one ink glyph reads on every one.
+ * Speaking inverts the disc (ink fill, cream stop square), which needs no extra colour.
+ *
+ * hitSlop is generous because the band sits at the top of the card where an upward
+ * swipe often begins, and TapTarget yields to that pan rather than swallowing it.
+ */
+export function BandSpeaker({
+  speaking,
+  onPress,
+  accessibilityLabel,
+}: {
+  speaking: boolean;
+  onPress: () => void;
+  accessibilityLabel: string;
+}) {
+  const ink = speaking ? card.stock : card.ink;
+  return (
+    <TapTarget
+      onPress={onPress}
+      hitSlop={14}
+      accessibilityLabel={accessibilityLabel}
+      style={(pressed) => [
+        cardFrame.stamp,
+        speaking && { backgroundColor: card.ink },
+        pressed && cardFrame.stampPressed,
+      ]}
+    >
+      <View style={cardFrame.bandGlyph}>
+        {speaking ? (
+          <View style={[cardFrame.bandStop, { backgroundColor: ink }]} />
+        ) : (
+          <>
+            <View style={[cardFrame.bandBody, { backgroundColor: ink }]} />
+            <View style={[cardFrame.bandCone, { borderRightColor: ink }]} />
+            <View style={[cardFrame.bandWave, { borderRightColor: ink }]} />
+          </>
+        )}
+      </View>
+    </TapTarget>
+  );
+}
+
+/**
+ * The read-aloud control: a square speaker printed to the right of the ticket, on the
+ * same ledge line and the same 56px height so the bottom edge reads as one row.
+ *
+ * Cream stock rather than gold — gold is reserved for the single-path continuation, and
+ * a second gold thing at the bottom edge would read as a second "keep going". While it
+ * is speaking the face fills with ink and the glyph becomes a stop square, which needs
+ * no reserved colour and no words.
+ *
+ * Presentational only: `useSpeech` and the missing-voice path live in CardSpeaker, so
+ * this file stays furniture.
+ */
+export function Speaker({
+  speaking,
+  onPress,
+  accessibilityLabel,
+}: {
+  speaking: boolean;
+  onPress: () => void;
+  accessibilityLabel: string;
+}) {
+  const ink = speaking ? card.stock : card.ink;
+  return (
+    <View style={cardFrame.speakerLedge}>
+      <TapTarget
+        onPress={onPress}
+        hitSlop={8}
+        accessibilityLabel={accessibilityLabel}
+        style={(pressed) => [
+          cardFrame.speaker,
+          speaking && cardFrame.speakerOn,
+          pressed && cardFrame.pressed,
+        ]}
+      >
+        <View style={cardFrame.glyph}>
+          {speaking ? (
+            <View style={[cardFrame.stopSquare, { backgroundColor: ink }]} />
+          ) : (
+            <>
+              <View style={[cardFrame.speakerBody, { backgroundColor: ink }]} />
+              <View style={[cardFrame.speakerCone, { borderRightColor: ink }]} />
+              <View style={[cardFrame.wave, cardFrame.waveInner, { borderRightColor: ink }]} />
+              <View style={[cardFrame.wave, cardFrame.waveOuter, { borderRightColor: ink }]} />
+            </>
+          )}
         </View>
       </TapTarget>
     </View>
@@ -395,6 +507,35 @@ export const cardFrame = StyleSheet.create({
   },
   /** The mascot inside the band stamp — same 26px on every page. */
   stampImage: { width: 26, height: 26 },
+  stampPressed: { opacity: 0.55 },
+
+  /* ---- speaker glyph at index-band scale (26px disc) ---- */
+  bandGlyph: { width: 16, height: 12, marginLeft: -1 },
+  bandBody: { position: 'absolute', left: 0, top: 4, width: 3, height: 5 },
+  bandCone: {
+    position: 'absolute',
+    left: 2,
+    top: 1,
+    width: 0,
+    height: 0,
+    borderTopWidth: 5,
+    borderBottomWidth: 5,
+    borderRightWidth: 4,
+    borderTopColor: 'transparent',
+    borderBottomColor: 'transparent',
+  },
+  /** One arc only: at 26px a second ring reads as noise. */
+  bandWave: {
+    position: 'absolute',
+    left: 7,
+    top: 1,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    borderWidth: 1.5,
+    borderColor: 'transparent',
+  },
+  bandStop: { width: 8, height: 8, borderRadius: 1.5 },
 
   // ---- printed rule ----
   divider: {
@@ -485,4 +626,57 @@ export const cardFrame = StyleSheet.create({
     borderRadius: 11,
     paddingBottom: 4,
   },
+
+  /* ---- read-aloud speaker, printed beside the ticket ---- */
+
+  /** Ticket + speaker share one line; the ticket takes the slack. */
+  bottomRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 8,
+  },
+  grow: { flex: 1 },
+  /**
+   * The speaker standing alone, for the two states with no ticket to ride beside: a
+   * forked card, and a quiz question before it is answered. Same bottom-right corner
+   * either way, so the control never moves on the kid.
+   */
+  speakerRow: { flexDirection: 'row', justifyContent: 'flex-end' },
+  speakerLedge: {
+    backgroundColor: card.ink,
+    borderRadius: 13,
+    paddingBottom: 5, // same ledge depth as the ticket, so both sit on one shelf
+  },
+  speaker: {
+    width: 56,
+    height: 56, // matches ticket minHeight — the bottom edge reads as a single row
+    backgroundColor: card.stock,
+    borderWidth: 3,
+    borderColor: card.ink,
+    borderRadius: 13,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  speakerOn: { backgroundColor: card.ink },
+  /** Optical centring: the arcs weight the glyph to the right of its box. */
+  glyph: { width: 26, height: 20, marginLeft: -3 },
+  speakerBody: { position: 'absolute', left: 0, top: 6, width: 5, height: 8 },
+  /** Triangle with its flat edge on the right → the cone flaring out of the body. */
+  speakerCone: {
+    position: 'absolute',
+    left: 4,
+    top: 2,
+    width: 0,
+    height: 0,
+    borderTopWidth: 8,
+    borderBottomWidth: 8,
+    borderRightWidth: 7,
+    borderTopColor: 'transparent',
+    borderBottomColor: 'transparent',
+  },
+  /** A circle with only its right border inked reads as a sound arc. */
+  wave: { position: 'absolute', borderWidth: 2, borderColor: 'transparent' },
+  waveInner: { left: 11, top: 5, width: 10, height: 10, borderRadius: 5 },
+  waveOuter: { left: 9, top: 1, width: 18, height: 18, borderRadius: 9 },
+  stopSquare: { width: 12, height: 12, borderRadius: 2 },
 });

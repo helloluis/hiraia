@@ -40,6 +40,8 @@ import type { FeedResponse } from '../../store/cardStore';
 import { card, fonts } from '../../theme';
 import { CardPlate } from './CardPlate';
 import { CardPrint, Divider, IndexBand, Ticket, cardFrame } from './CardFrame';
+import { CardSpeaker } from './CardSpeaker';
+import { utterance } from '../../speech';
 import { GuidedText, useReadingGuide } from './readingGuide';
 import { useReduceMotion } from './useReduceMotion';
 
@@ -99,6 +101,14 @@ export function ResponseCard({
   const offDomain = response.kind === 'offdomain';
   // Both misses print the disc and one centred sentence; only `generated` prints an answer.
   const miss = response.kind !== 'generated';
+  // The kid typed the question, so skip it — read them the answer. On a miss that is the
+  // honest "no page for that yet" line plus whichever topic we offered instead.
+  const spokenAnswer = miss
+    ? utterance(
+        offDomain ? t.cards.offdomain : t.cards.abstain,
+        response.suggestion ? `${t.cards.abstainSuggest}: ${response.suggestion}` : undefined,
+      )
+    : utterance(response.text);
   /**
    * THE ILLUSTRATION. `response.slug` was chosen by RETRIEVAL from the fact the card states — the
    * curated fact→slug map first, then LaBSE over the image catalog above a measured floor (see
@@ -150,7 +160,7 @@ export function ResponseCard({
         tone="olive"
         chip="?"
         label={t.cards.yourQuestion}
-        stamp={<Image source={CAT} style={cardFrame.stampImage} resizeMode="contain" />}
+        stamp={<CardSpeaker text={spokenAnswer} language={language} variant="band" />}
       />
 
       {/* .q — the question line of a factoid card, in the bold slab. The kid's own words,

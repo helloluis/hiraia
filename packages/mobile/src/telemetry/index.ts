@@ -67,12 +67,17 @@ const queue = new Outbox(getRepository, async (body) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-      signal: controller.signal,
+      // Cast: onnxruntime's types drag @types/node into the program, and Node's
+      // AbortSignal is not structurally RN's. Same object at runtime either way.
+      signal: controller.signal as RequestInit['signal'],
       credentials: 'omit',
     });
     if (!response.ok)
       return { ok: false, retryAfterMs: retryAfter(response.headers.get('retry-after')) };
-    const data = await response.json();
+    // `json()` is typed `unknown` under the stricter typings; the collector answers
+    // with these two counters, and a malformed body reads as undefined rather than
+    // throwing — the queue only uses them for logging.
+    const data = (await response.json()) as { acknowledged?: number; rejected?: number };
     return { ok: true, acknowledged: data.acknowledged, rejected: data.rejected };
   } finally {
     clearTimeout(timeout);

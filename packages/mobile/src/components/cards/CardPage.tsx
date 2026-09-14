@@ -54,6 +54,7 @@ import {
 import { card, fonts } from '../../theme';
 import { CardPlate, plateStyles } from './CardPlate';
 import { TapTarget, Arrow, CardPrint, Divider, IndexBand, Ticket, cardFrame } from './CardFrame';
+import { CardSpeaker } from './CardSpeaker';
 import { GuidedText, useReadingGuide, type ReadingGuide } from './readingGuide';
 import { useReduceMotion } from './useReduceMotion';
 
@@ -718,7 +719,7 @@ export function CardPage({
         <IndexBand
           tone={branching ? 'graphite' : 'ink'}
           label={band}
-          stamp={<Image source={CAT} style={cardFrame.stampImage} resizeMode="contain" />}
+          stamp={<CardSpeaker text={text} language={language} variant="band" />}
         />
 
         {/*
@@ -781,6 +782,7 @@ export function CardPage({
         >
           {branching && choices[0] && choices[1] ? (
             <>
+              {/* A fork has no ticket, so the speaker stands alone in the same corner. */}
               <View style={styles.forkHead}>
                 <View style={styles.forkCat}>
                   <Image source={CAT} style={styles.forkCatImage} resizeMode="contain" />
@@ -943,6 +945,7 @@ const styles = StyleSheet.create({
   },
 
   // ---- the foot: one gold ticket (single path), or the fork ----
+  speakerAlone: { marginBottom: 10 },
   foot: { marginTop: 12 },
 
   forkHead: {

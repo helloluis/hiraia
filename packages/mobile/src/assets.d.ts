@@ -21,3 +21,10 @@ declare module '*.db' {
   const asset: number;
   export default asset;
 }
+
+// A bundled TTS voice. Importing it yields the module id expo-asset resolves to a file we
+// copy out of the APK on first use, because onnxruntime needs a real path.
+declare module '*.onnx' {
+  const asset: number;
+  export default asset;
+}

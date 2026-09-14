@@ -27,6 +27,8 @@ import { uiStrings } from '../../config/strings';
 import type { RewardContent } from '../../data/reward';
 import { card, fonts } from '../../theme';
 import { CardPrint, Divider, IndexBand, Ticket, cardFrame } from './CardFrame';
+import { CardSpeaker } from './CardSpeaker';
+import { utterance } from '../../speech';
 
 /** The mascot — the same alpha-cut PNG the chat avatar and every other card use. */
 const CAT = require('../../../assets/hiraia-profile.png');
@@ -92,7 +94,7 @@ export function RewardCard({
         tone="gold"
         chip={String(reward.count)}
         label={BAND_LABEL[language]}
-        stamp={<Image source={CAT} style={cardFrame.stampImage} resizeMode="contain" />}
+        stamp={<CardSpeaker text={utterance(reward.text, ...reward.topics)} language={language} variant="band" />}
       />
 
       <View style={styles.center}>
