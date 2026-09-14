@@ -43,18 +43,18 @@ export const DOWNLOAD = {
    */
   released: true,
 
-  // Public release label: v0.3.5 (mobile versionName 0.3.5).
+  // Public release label: v0.4.0 (mobile versionName 0.4.0).
   // Android versionCode is a separate, monotonically increasing build number.
-  version: '0.3.5',
+  version: '0.4.0',
 
   /**
    * android.versionCode of the APK at `apk.url` — copied from packages/mobile/app.json at
    * publish time (sign-apk.sh prints it). The installed app offers an update only when this
    * is STRICTLY greater than its own; see the header.
    *
-   * v0.3.5 / build 7: Fraunces SemiBold replaces the heavy slab display font.
+   * v0.4.0 / build 9: refreshed Filipino and Cebuano card translations.
    */
-  versionCode: 8,
+  versionCode: 9,
   /**
    * Oldest versionCode the current mirror content still supports. Below this the in-app
    * update bar cannot be snoozed (the ✕ is hidden). Reserved for a release that breaks the
@@ -62,10 +62,10 @@ export const DOWNLOAD = {
    */
   minSupportedVersionCode: 1,
   /** ISO date the APK at `apk.url` went live on the mirror (for the manifest's publishedAt). */
-  publishedAt: '2026-09-12',
+  publishedAt: '2026-09-14',
 
   apk: {
-    url: 'https://assets.hiraia.org/models/hiraia-v0p3p5.apk',
+    url: 'https://assets.hiraia.org/models/hiraia-v0p4p0.apk',
     /** Omit from the UI when 0 (file not measured yet). */
     fileSizeMB: 297,
     /**
@@ -73,14 +73,14 @@ export const DOWNLOAD = {
      * body is a captive-portal page, not an APK). 0 = not measured; the manifest then
      * offers nothing.
      */
-    bytes: 311440690,
-    sha256: '5b70917e498896f700c25166f9c7fdddc1b3b7c5ab271a47244861aec2079e32',
+    bytes: 311854386,
+    sha256: '3502c0b6303e53928d78cc22ba3299ef1d5ad09a868a84843c81f0dd22789800',
     /**
      * MD5 of the same file, lowercase hex — the in-app downloader verifies MD5 (native,
      * streaming; see engine/modelDownload.ts), the landing page shows sha256. Empty = not
      * measured; the manifest then offers nothing.
      */
-    md5: 'e1afb1db6440f37b797d2c5744ab10d6',
+    md5: '4d7b341763bf66df3ec64dc49b839cbf',
   },
 
   /** SHA-256 of the signing cert. Stays the same across releases. */
