@@ -84,6 +84,20 @@ test('real review controller resumes attempts, isolates profile/grade, and retri
   await c.selectReviewOption(0, () => grades++);
   assert.equal(grades, 1);
   await c.continueReview();
+  const second = c.useReviewStore.getState().data.queue[0].items[1];
+  c = await launch();
+  await c.initializeReviews(6);
+  assert.equal(c.useReviewStore.getState().open, true);
+  assert.equal(c.useReviewStore.getState().data.queue[0].position, 1);
+  assert.deepEqual(c.useReviewStore.getState().data.queue[0].items[1], second);
+  await c.selectReviewOption(second.order.indexOf(1), () => grades++);
+  const answeredSecond = c.useReviewStore.getState().data.queue[0].items[1];
+  c = await launch();
+  await c.initializeReviews(6);
+  assert.equal(c.useReviewStore.getState().open, true);
+  assert.equal(c.useReviewStore.getState().data.queue[0].position, 1);
+  assert.deepEqual(c.useReviewStore.getState().data.queue[0].items[1], answeredSecond);
+  await c.continueReview();
   while ((s = c.useReviewStore.getState().data).queue[0].position < s.queue[0].items.length) {
     const a = s.queue[0].items[s.queue[0].position];
     await c.selectReviewOption(a.order.indexOf(1), () => grades++);

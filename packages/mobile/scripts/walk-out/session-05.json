@@ -14,20 +14,20 @@
    "query": "geyser",
    "landedOn": "Geyser",
    "magnetSetSize": 10,
-   "releasedAfter": 9
+   "releasedAfter": null
   }
  ],
  "pages": [
   {
    "n": 0,
-   "id": "ffct-03140",
-   "band": "Appendix na imbakan ng Bakterya",
+   "id": "dcard-06505",
+   "band": "Materyales na Corrosive",
    "bandWasFallback": false,
-   "text": "May silbi ba talaga ang apendiks?\n\nHindi pala walang silbi ang apendiks — pinaniniwalaang ito'y nagsisilbing ligtas na imbakan ng mabubuting bakterya na tumutulong sa bituka.",
-   "art": "packages/images/cards-png/ffct-03140.png",
+   "text": "Ang ilang materyales ay corrosive, ibig sabihin kaya nitong unti-unting kainin o sirain ang ibang materyales tulad ng metal o balat.",
+   "art": "packages/images/cards-png/ffct-15028.png",
    "tickets": [
     {
-     "label": "Epekto ng Antibiotiko sa Bituka",
+     "label": "Anay",
      "kind": "deep",
      "shelf": false
     }
@@ -36,27 +36,11 @@
   },
   {
    "n": 1,
-   "id": "ffct-05460",
-   "band": "Epekto ng Antibiotiko sa Bituka",
+   "id": "ffct-10552",
+   "band": "Anay",
    "bandWasFallback": false,
-   "text": "Masamang bakterya lang ba ang pinapatay ng antibiotiko?\n\nHindi pala — pinapatay rin nito ang mabubuting bakterya sa ating bituka, kaya minsan nagkakaroon ng pagtatae ang umiinom nito.",
-   "art": "packages/images/cards-png/ffct-05460.png",
-   "tickets": [
-    {
-     "label": "Mabubuting Bakterya sa Bituka",
-     "kind": "deep",
-     "shelf": false
-    }
-   ],
-   "magnet": null
-  },
-  {
-   "n": 2,
-   "id": "ffct-03220",
-   "band": "Mabubuting Bakterya sa Bituka",
-   "bandWasFallback": false,
-   "text": "Milyon-milyong mabubuting bacteria ang naninirahan sa loob ng iyong bituka! Tinutulungan ka nilang masira ang pagkaing hindi kaya ng sarili mong katawan, at gumagawa pa sila ng ilang bitamina para sa iyo.",
-   "art": "packages/images/cards-png/ffct-03220.png",
+   "text": "Bakit nakakasira ng bahay ang anay?\n\nDahil kinakain ng anay ang kahoy na bahagi ng bahay.",
+   "art": "packages/images/assets-png/biology/termite-anay.png",
    "tickets": [
     {
      "label": "Anay at Kahoy",
@@ -67,15 +51,31 @@
    "magnet": null
   },
   {
-   "n": 3,
-   "id": "ffct-02594",
+   "n": 2,
+   "id": "ffct-04729",
    "band": "Anay at Kahoy",
    "bandWasFallback": false,
-   "text": "Paano natutunaw ng anay ang kahoy?\n\nKinakain ng anay ang kahoy, pero hindi nila ito matutunaw mag-isa — may maliliit na mikrobyo sa tiyan nila na tumutulong dito.",
-   "art": "packages/images/assets-png/biology/termite-anay.png",
+   "text": "Bakit sinisira ng anay ang kahoy?\n\nKinakain ng anay ang kahoy dahil pagkain nila ang cellulose, ang matigas na hibla sa loob nito. Habang nginunguya nila, unti-unti itong naguguba mula sa loob.",
+   "art": null,
    "tickets": [
     {
-     "label": "Signal No. 5 na Babala",
+     "label": "Pagbubungkal ng Hayop",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null
+  },
+  {
+   "n": 3,
+   "id": "dcard-03389",
+   "band": "Pagbubungkal ng Hayop",
+   "bandWasFallback": false,
+   "text": "Ang mga burrowing na hayop tulad ng bulate, palaka, at anay ay naglalantad ng mga bato at nagpapabilis ng pagkasira nito.",
+   "art": "packages/images/assets-png/biology/pig-rooting-in-soil.png",
+   "tickets": [
+    {
+     "label": "Dila ng Pangolin",
      "kind": "deep",
      "shelf": false
     }
@@ -84,39 +84,39 @@
   },
   {
    "n": 4,
-   "id": "ffct-30659",
-   "band": "Signal No. 5 na Babala",
+   "id": "ffct-12429",
+   "band": "Dila ng Pangolin",
    "bandWasFallback": false,
-   "text": "Ano ang ibig sabihin ng Signal No. 5?\n\nIto ang pinakamataas na babala! Nangangahulugan ito ng napakalakas na hangin ng super typhoon na maaaring sumira ng maraming bahay.",
-   "art": "packages/images/cards-png/ffct-30659.png",
+   "text": "Ang pangolin ay may napakahaba at malagkit na dila na ginagamit nito para humuli ng langgam at termite sa ilalim ng lupa.",
+   "art": "packages/images/assets-png/biology/pangolin-digging-termite-mound.png",
    "tickets": [
     {
-     "label": "Hangin sa Signal No. 5",
+     "label": "Mahabang Dila ng Pangolin",
      "kind": "deep",
      "shelf": false
     }
    ],
    "magnet": null,
    "quiz": {
-    "q": "Ano ang ibig sabihin ng Storm Signal No. 5 sa sistema ng babala sa panahon ng Pilipinas?",
+    "q": "Paano humahanap ng mga langgam at termite ang pangolin sa ilalim ng lupa?",
     "options": [
-     "Napakamatinding hangin ng super‑typhoon na maaaring sumira ng maraming bahay",
-     "Katamtamang ulan at malakas na hangin mula sa malapit na tropical depression",
-     "Mababa hanggang katamtamang hangin na may ilang malalakas na pag-ihip"
+     "Ginagamit nito ang matalas na kuko para hukayin at kainin ang mga ito isa-isa.",
+     "Nagspray ito ng espesyal na likido mula sa ilong para maakit ang mga insekto.",
+     "Ginagamit nito ang napakahaba at malagkit na dila para mahuli sila."
     ],
-    "answer": "Napakamatinding hangin ng super‑typhoon na maaaring sumira ng maraming bahay"
+    "answer": "Ginagamit nito ang napakahaba at malagkit na dila para mahuli sila."
    }
   },
   {
    "n": 5,
-   "id": "ffct-33538",
-   "band": "Hangin sa Signal No. 5",
+   "id": "ffct-03127",
+   "band": "Mahabang Dila ng Pangolin",
    "bandWasFallback": false,
-   "text": "Sa Signal No. 5, ang lakas ng hangin ay 185 km/h o higit pa (super typhoon)!",
-   "art": null,
+   "text": "Gaano kahaba ang dila ng pangolin?\n\nAng dila ng pangolin ay maaaring mas mahaba pa sa buo nitong katawan — kaya naaabot nito ang langgam kahit malalim sa pugad!",
+   "art": "packages/images/cards-png/ffct-03127.png",
    "tickets": [
     {
-     "label": "Signal No. 5 na Babala",
+     "label": "Pangolin",
      "kind": "deep",
      "shelf": false
     }
@@ -125,14 +125,14 @@
   },
   {
    "n": 6,
-   "id": "ffct-34019",
-   "band": "Signal No. 5 na Babala",
+   "id": "ffct-10196",
+   "band": "Pangolin",
    "bandWasFallback": false,
-   "text": "Ang PAGASA Signal No. 5 ang pinakamataas na babala! Itinataas ito kapag umabot na ang hanging super typhoon sa 185 km/h o higit pa.",
-   "art": "packages/images/cards-png/ffct-34019.png",
+   "text": "Paano kumakain ang pangolin kahit walang ngipin?\n\nWalang ngipin ang pangolin — sa halip, nilulunok nito ang maliliit na bato na tumutulong dumurog ng insekto sa loob ng makapal nitong tiyan.",
+   "art": null,
    "tickets": [
     {
-     "label": "Super Typhoon na Kategorya",
+     "label": "Rolador ng Sinauna",
      "kind": "deep",
      "shelf": false
     }
@@ -141,70 +141,65 @@
   },
   {
    "n": 7,
-   "id": "ffct-33553",
-   "band": "Super Typhoon na Kategorya",
+   "id": "ffct-25015",
+   "band": "Rolador ng Sinauna",
    "bandWasFallback": false,
-   "text": "Ang super typhoon ang pinakamalakas na kategorya ng bagyo, may mabangis na hangin na umihip ng higit sa 185 km/h!",
+   "text": "Paano inilipat at inangat ng mga sinaunang builder ang mga mabibigat na bato?\n\nNaglagay sila ng mga log bilang rollers sa ilalim ng bato para bawasan ang friction, at gumamit ng ramps para iangat ang mga ito!",
    "art": null,
    "tickets": [
     {
-     "label": "Signal No. 5 sa Super Typhoon",
+     "label": "Quarrying ng Bato",
      "kind": "deep",
      "shelf": false
     },
     {
-     "label": "Makapal na Mantle",
+     "label": "iba pang mga puwersa",
      "kind": "lateral",
-     "shelf": false
+     "shelf": true
     }
    ],
    "magnet": null
   },
   {
    "n": 8,
-   "id": "dcard-08384",
-   "band": "Makapal na Mantle",
+   "id": "ffct-28391",
+   "band": "Lakas at Trabaho",
    "bandWasFallback": false,
-   "text": "Ang mantle ay isang makapal na layer ng silicate minerals na nasa ilalim ng crust at nasa itaas ng outer core.",
-   "art": "packages/images/cards-png/ffct-31463.png",
+   "text": "Kapag binubuhat ng kargador ang mabigat na sako, gumagamit ang kanyang mga kalamnan ng puwersa para labanan ang gravity na humihila pababa!",
+   "art": "packages/images/assets-png/physics/porter-carrying-sack.png",
    "tickets": [
     {
-     "label": "iba pang mga bahagi at pagkabuo",
-     "kind": "lateral",
-     "shelf": true
-    },
-    {
-     "label": "Pagtunaw",
-     "kind": "lateral",
-     "shelf": false
-    }
-   ],
-   "magnet": null
-  },
-  {
-   "n": 9,
-   "id": "ffct-20257",
-   "band": "Pagtunaw",
-   "bandWasFallback": false,
-   "text": "Ang solid virgin coconut oil ay nagiging malinaw na liquid dahil sa physical change kapag iniwan sa ilalim ng mainit na araw ng Pilipinas!",
-   "art": "packages/images/cards-png/ffct-20262.png",
-   "tickets": [
-    {
-     "label": "Natutunaw na Yelo",
+     "label": "Magneto sa Bakal",
      "kind": "deep",
      "shelf": false
     }
    ],
    "magnet": null,
    "quiz": {
-    "q": "Ano ang nangyayari sa solid na virgin coconut oil kapag iniwan sa ilalim ng mainit na araw ng Pilipinas?",
+    "q": "Kapag binubuhat ng isang kargador ang mabigat na sako, anong puwersa ang dapat labanan ng kanyang mga kalamnan?",
     "options": [
-     "Nagiging malinaw na likido ito",
-     "Nawawala ito sa hangin",
-     "Nagiging madilim na solid"
+     "Pag-igting ng sako sa lupa",
+     "Resistensya ng hangin na tumatama sa sako",
+     "Grabidad na humihila sa pababa sa sako"
     ],
-    "answer": "Nagiging malinaw na likido ito"
+    "answer": "Grabidad na humihila sa pababa sa sako"
    }
+  },
+  {
+   "n": 9,
+   "id": "ffct-22570",
+   "band": "Magneto sa Bakal",
+   "bandWasFallback": false,
+   "text": "Paano binubuhat at nililipat ng mga junkyard ang mabibigat na bakal?\n\nGumagamit sila ng malalakas na elektromagnet sa mga kreyn para buhatin at ilipat ang mabigat na bakal!",
+   "art": null,
+   "tickets": [
+    {
+     "label": "Elektromagnet",
+     "kind": "deep",
+     "shelf": false
+    }
+   ],
+   "magnet": null
   },
   {
    "n": 10,
@@ -215,7 +210,7 @@
    "art": "packages/images/assets-png/biology/feathered-dinosaur.png",
    "tickets": [
     {
-     "label": "Paglaho ng mga Dinosaur",
+     "label": "Dinosaur Asteroid Naglaho",
      "kind": "deep",
      "shelf": false
     }
@@ -228,13 +223,13 @@
   {
    "n": 11,
    "id": "ffct-05132",
-   "band": "Paglaho ng mga Dinosaur",
+   "band": "Dinosaur Asteroid Naglaho",
    "bandWasFallback": false,
    "text": "Bakit naglaho ang karamihan sa mga dinosaur?\n\nKaramihan sa mga dinosaur ay naglaho mga 66 milyong taon na ang nakalipas nang tumama ang isang napakalaking asteroid sa Earth — pero ang mga ibon ngayon ay itinuturing na inapo ng maliliit na dinosaur!",
    "art": "packages/images/cards-png/ffct-05132.png",
    "tickets": [
     {
-     "label": "Pagkawala ng mga Dinosaur",
+     "label": "Dinosaur noong 66 Milyon",
      "kind": "deep",
      "shelf": false
     }
@@ -247,10 +242,10 @@
   {
    "n": 12,
    "id": "ffct-04393",
-   "band": "Pagkawala ng mga Dinosaur",
+   "band": "Dinosaur noong 66 Milyon",
    "bandWasFallback": false,
    "text": "Ang mga dinosaur ay nawala mga 66 milyong taon na ang nakalipas!",
-   "art": "packages/images/cards-png/ffct-04393.png",
+   "art": "packages/images/cards-png/ffct-34612.png",
    "tickets": [
     {
      "label": "Pagkalipol",
@@ -353,9 +348,9 @@
      "shelf": false
     },
     {
-     "label": "Pag-aayos ng Data",
+     "label": "iba pang mga reptilya",
      "kind": "lateral",
-     "shelf": false
+     "shelf": true
     }
    ],
    "magnet": {
@@ -365,11 +360,11 @@
   },
   {
    "n": 18,
-   "id": "dcard-08725",
-   "band": "Pag-aayos ng Data",
+   "id": "ffct-10559",
+   "band": "Pawikan na Umaahon sa Hinga",
    "bandWasFallback": false,
-   "text": "Inaayos ng mga scientist ang data gamit ang tables, charts, at graphs para mas madaling ikumpara at suriin ang mga numero at obserbasyon.",
-   "art": "packages/images/cards-png/dcard-08725.png",
+   "text": "Nakakahinga ba ang pawikan sa ilalim ng tubig?\n\nHindi — kahit nasa ilalim ng dagat ito, kailangang umahon ang pawikan sa ibabaw para huminga ng hangin.",
+   "art": null,
    "tickets": [
     {
      "label": "Herbivore at Carnivore Dinosaur",
@@ -388,7 +383,7 @@
    "band": "Herbivore at Carnivore Dinosaur",
    "bandWasFallback": false,
    "text": "Ano ang pagkakaiba ng herbivore at carnivore dinosaur?\n\nMay dalawang pangunahing uri ng dinosaur: ang herbivore na kumakain ng halaman, at ang carnivore na kumakain ng karne ng ibang hayop.",
-   "art": "packages/images/cards-png/ffct-02406.png",
+   "art": null,
    "tickets": [
     {
      "label": "Sungay at Kalasag ni Triceratops",
@@ -429,7 +424,7 @@
    "art": "packages/images/assets-png/earth-science/old-faithful-geyser.png",
    "tickets": [
     {
-     "label": "Pagbuga ng Geyser",
+     "label": "Geyser Steam Channel Pagsabog",
      "kind": "deep",
      "shelf": false
     }
@@ -442,7 +437,7 @@
   {
    "n": 22,
    "id": "ffct-29969",
-   "band": "Pagbuga ng Geyser",
+   "band": "Geyser Steam Channel Pagsabog",
    "bandWasFallback": false,
    "text": "Sumasabog ang geyser kapag ang tubig sa makitid na daanan sa ilalim ng lupa ay uminit at naging singaw. Pinipilit ng presyon ng singaw ang tubig pataas kaya bumubuga ito!",
    "art": null,
@@ -464,7 +459,7 @@
    "band": "Conventional Geothermal System",
    "bandWasFallback": false,
    "text": "Ang conventional geothermal system ay gumagamit ng steam mula sa natural na pinagmumulan tulad ng geysers o kumukuha ng tubig mula sa mainit at high-pressure na kailaliman ng Earth.",
-   "art": "packages/images/cards-png/ffct-27906.png",
+   "art": null,
    "tickets": [
     {
      "label": "Saan Itinatayo ang mga Plant",
@@ -560,14 +555,14 @@
   },
   {
    "n": 28,
-   "id": "ffct-31690",
-   "band": "Temperatura: Planets",
+   "id": "ffct-34208",
+   "band": "Titan noong 1655",
    "bandWasFallback": false,
-   "text": "Mas mainit ang rocky inner planets dahil malapit sila sa Sun! Malayo ang gas at ice giants kaya napakalamig, at Neptune ang pinakamalamig na planeta.",
-   "art": "packages/images/assets-png/earth-science/inner-vs-outer-planets.png",
+   "text": "Kailan natuklasan ang buwan na Titan?\n\nAng buwan na Titan ay natuklasan noong taong 1655! Ito ay isang napakagandang buwan sa kalawakan.",
+   "art": null,
    "tickets": [
     {
-     "label": "Init",
+     "label": "Huygens sa Titan",
      "kind": "deep",
      "shelf": false
     }
@@ -579,21 +574,21 @@
   },
   {
    "n": 29,
-   "id": "ffct-27251",
-   "band": "Init",
+   "id": "ffct-33981",
+   "band": "Huygens sa Titan",
    "bandWasFallback": false,
-   "text": "Ano ang nagpapabuga sa sikat na Old Faithful na geyser?\n\nSumasabog ito kapag ang init sa ilalim ng lupa ay nagko-convert ng water sa steam!",
-   "art": "packages/images/assets-png/earth-science/old-faithful-geyser.png",
+   "text": "Saan lumapag ang Huygens lander?\n\nDala ng Cassini, ang Huygens lander ay lumapag sa Titan, ang pinakamalaking buwan ng Saturn!",
+   "art": "packages/images/assets-png/earth-science/titan-moon.png",
    "tickets": [
     {
-     "label": "Bihira ang Tunay na Geysers",
+     "label": "Init",
      "kind": "deep",
      "shelf": false
     }
    ],
    "magnet": {
     "query": "geyser",
-    "served": 9
+    "served": 8
    }
   }
  ]

@@ -76,6 +76,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 import memoryPlugin from '../plugins/withHiraiaMemory.js';
+import illustrationPlugin from '../plugins/withBundledIllustrations.js';
 import MANAGED_PROPS from './gradle-props.cjs';
 import { applyAbiFilters, ABI } from '../plugins/withGradleProps.js';
 
@@ -423,3 +424,6 @@ log('done');
 
 // Also runs for local builds whose native tree already exists.
 memoryPlugin.installMemoryModule(MOBILE);
+
+// Also register native illustration assets in long-lived local Android trees.
+illustrationPlugin.install(MOBILE);

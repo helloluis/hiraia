@@ -4,6 +4,7 @@ import path from 'node:path';
 
 export const EVENTS = [
   'first_open',
+  'profile_updated',
   'session_started',
   'card_viewed',
   'quiz_shown',
@@ -39,6 +40,7 @@ const strings = new Set([
   'card_id',
 ]);
 const enums: Record<string, string[]> = {
+  profile_kind: ['guest', 'student'],
   language: ['english', 'tagalog', 'cebuano'],
   source: ['curated', 'generated'],
   asset_kind: ['model', 'images', 'vectors', 'adapter'],
@@ -81,9 +83,13 @@ export function validEvent(value: unknown): value is Event {
   )
     return false;
   if (JSON.stringify(e).length > 1800) return false;
+  if (e.props.profile_kind === 'student' && (typeof e.props.profile_id !== 'string' || !id.test(e.props.profile_id))) return false;
+  if (e.props.profile_id !== undefined && e.props.profile_kind !== 'student') return false;
   return Object.entries(e.props).every(([k, v]) => {
+    if (k === 'profile_id') return typeof v === 'string' && id.test(v);
     if (strings.has(k)) return typeof v === 'string' && label.test(v);
     if (Object.hasOwn(enums, k)) return typeof v === 'string' && enums[k]!.includes(v);
+    if (k === 'grade') return typeof v === 'number' && Number.isInteger(v) && v >= 3 && v <= 10;
     if (numbers.has(k)) return typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= 1e12;
     return k === 'correct' && typeof v === 'boolean';
   });
@@ -92,6 +98,7 @@ export function openTelemetry(filename: string) {
   fs.mkdirSync(path.dirname(filename), { recursive: true });
   const db = new Database(filename);
   db.pragma('journal_mode = WAL');
+  db.pragma('synchronous = FULL');
   db.pragma('busy_timeout = 3000');
   db.exec(`CREATE TABLE IF NOT EXISTS telemetry_events (
     installation_id TEXT NOT NULL, id TEXT NOT NULL, name TEXT NOT NULL,
@@ -100,6 +107,7 @@ export function openTelemetry(filename: string) {
   );
   CREATE INDEX IF NOT EXISTS telemetry_time ON telemetry_events(occurred_at);
   CREATE INDEX IF NOT EXISTS telemetry_name_time ON telemetry_events(name, occurred_at);
+  CREATE INDEX IF NOT EXISTS telemetry_session ON telemetry_events(installation_id,session_id,occurred_at);
   CREATE INDEX IF NOT EXISTS telemetry_received ON telemetry_events(received_at);`);
   return db;
 }

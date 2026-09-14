@@ -1,25 +1,10 @@
-/**
- * TitleScreen — the boot title: the app icon's "hi" mark, big, on forest ink, with a pen
- * tracing its outline in a loop until the app is ready — and then the whole sheet PEELS OFF
- * TOWARD THE TOP-RIGHT the way a swiped flash card leaves the deck.
- *
- * Where it sits in the boot: the native splash (app.json → expo-splash-screen plugin: the
- * same icon on the same ink, NATIVE_SPLASH_IMAGE_DP wide) is held with
- * SplashScreen.preventAutoHideAsync() and released the frame after this screen has laid
- * out. The native frame draws the icon at a fixed dp size, not screen-relative, so this
- * screen starts its mark at THAT size and zooms it up to the big one — the hand-off is the
- * same picture on the same background that then grows, not a cut. The shell (_layout.tsx)
- * keeps it mounted OVER the app until the feed is hydrated (or, on first launch, until the
- * onboarding carousel is the next thing to show), then flips `exiting`.
- *
- * Everything that moves here runs on the UI thread (reanimated shared values → animated
- * props/style). That is not a nicety: the JS thread is BUSY for exactly the seconds this
- * screen is on show (SQLite copy, settings/seen-store reads, first-page warm), so a
- * JS-driven loop would stutter precisely when it was supposed to be reassuring.
+/** Boot cover: a seed dot grows into the book / signal / plant glyph on the UI thread.
+ * The native splash uses the same seed position, then the existing card-peel exit
+ * hands off as soon as content is ready. Reduced motion shows the complete mark.
  */
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback, useEffect, useRef } from 'react';
-import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 import Reanimated, {
   Easing,
   cancelAnimation,
@@ -31,42 +16,16 @@ import Reanimated, {
   withTiming,
   type SharedValue,
 } from 'react-native-reanimated';
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Circle, G, Path } from 'react-native-svg';
 
-import {
-  HI_MARK_BOX,
-  HI_MARK_PATHS,
-  HI_MARK_TOTAL_LENGTH,
-  type HiMarkPath,
-} from '../generated/hiMark.generated';
-import { card, cardAlpha } from '../theme';
+import geometry from './brand/brand.generated.json';
+import { card } from '../theme';
 import { useReduceMotion } from './cards/useReduceMotion';
 
-// ---------------------------------------------------------------------------- the trace ----
-
-/**
- * One pen cycle: draw the whole outline (h → i dot → i stem → triangle) and then wipe it
- * from the start so it reads as a trail following the pen, then start again. Ease-in-out
- * per cycle so the pen leaves and arrives softly instead of snapping between loops.
- */
-export const TRACE_CYCLE_MS = 2400;
-
-/**
- * The width, in dp, the native splash draws the icon at — expo-splash-screen's `imageWidth`
- * in app.json (its Android drawable is a 288 dp canvas with the image `imageWidth` wide in
- * the middle; on Android 12+ the system splash presents that same drawable). The mark is
- * shown at exactly this size on the first frame and zoomed up to the big one, so the
- * native→JS hand-off is continuous. Keep in step with app.json.
- */
-const NATIVE_SPLASH_IMAGE_DP = 200;
-/** How long the mark takes to grow from the native splash size to the title size. */
-const TITLE_ZOOM_MS = 360;
-
-/** Outline stroke in dp (round caps/joins). Converted to box units against the drawn side. */
-const TRACE_STROKE_DP = 2.75;
-
-/** The solid mark under the trace, at low alpha so the pen has something to "ink in". */
-const UNDERLAY_ALPHA = 0.14;
+export const GROW_CYCLE_MS = 2400;
+// 125dp SVG maps its seed to the 200dp native splash's seed (1024px asset).
+const GLYPH_SIDE = 125;
+const GLYPH_YELLOW = '#E9B949';
 
 // ------------------------------------------------------------------------- the exit peel ----
 
@@ -127,62 +86,26 @@ function peelTransform(
   ];
 }
 
-const AnimatedPath = Reanimated.createAnimatedComponent(Path);
+const AnimatedGroup = Reanimated.createAnimatedComponent(G);
 
-/**
- * strokeDashoffset for one outline given the pen's travel along the WHOLE mark.
- *
- * `pen` runs 0 → 2·total per cycle. The head is at `pen`; the wiping tail follows one full
- * mark-length behind, at `pen − total`. With strokeDasharray = [len, len] a single offset
- * can show any prefix (offset = len − head) or any suffix (offset = −tail), and because the
- * tail lags by ≥ len the two never need to be true at once — so their sum is exact:
- *   before the head arrives → len (hidden); head inside → len − head (drawing);
- *   between → 0 (fully drawn); tail inside → −tail (wiping); after → −len (hidden).
- */
-function dashOffsetFor(pen: number, start: number, len: number, total: number) {
-  'worklet';
-  const head = Math.min(Math.max(pen - start, 0), len);
-  const tail = Math.min(Math.max(pen - total - start, 0), len);
-  return len - head - tail;
+function GrowingLayer({ d, order, phase, reduced }: {
+  d: string; order: number; phase: SharedValue<number>; reduced: boolean;
+}) {
+  const props = useAnimatedProps(() => {
+    // Bottom pages sprout first; each pair expands upward from the seed.
+    const growth = reduced ? 1 : Math.min(1, Math.max(0, (phase.value - order * .16 - .08) / .28));
+    const fade = reduced ? 1 : Math.min(1, Math.max(0, (1 - phase.value) / .12));
+    const scale = .08 + .92 * growth;
+    return {
+      opacity: growth * fade,
+      matrix: [scale, 0, 0, scale, 20 * (1 - scale), 37 * (1 - scale)],
+    };
+  });
+  return <AnimatedGroup animatedProps={props}>
+    <Path d={d} fill="none" stroke={GLYPH_YELLOW} strokeWidth={3.4}
+      strokeLinecap="round" strokeLinejoin="round" />
+  </AnimatedGroup>;
 }
-
-interface TracePathProps {
-  path: HiMarkPath;
-  start: number;
-  pen: SharedValue<number>;
-  stroke: string;
-  strokeWidth: number;
-}
-
-function TracePath({ path, start, pen, stroke, strokeWidth }: TracePathProps) {
-  const animatedProps = useAnimatedProps(() => ({
-    strokeDashoffset: dashOffsetFor(pen.value, start, path.length, HI_MARK_TOTAL_LENGTH),
-  }));
-  return (
-    <AnimatedPath
-      d={path.d}
-      fill="none"
-      stroke={stroke}
-      strokeWidth={strokeWidth}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeDasharray={[path.length, path.length]}
-      animatedProps={animatedProps}
-    />
-  );
-}
-
-// Pen order and where each outline starts along the whole mark (module init, once).
-const TRACE_ORDER: { path: HiMarkPath; start: number }[] = [];
-{
-  let start = 0;
-  for (const path of HI_MARK_PATHS) {
-    TRACE_ORDER.push({ path, start });
-    start += path.length;
-  }
-}
-
-const inkFor = (p: HiMarkPath) => (p.colour === 'peach' ? card.peach : card.stock);
 
 // --------------------------------------------------------------------------- the screen ----
 
@@ -195,14 +118,9 @@ interface TitleScreenProps {
 export function TitleScreen({ exiting, onGone }: TitleScreenProps) {
   const { width, height } = useWindowDimensions();
   const reduceMotion = useReduceMotion();
-  // The mark box is the shorter screen side, centred, so the block comes out 36% of that
-  // side wide — exactly the icon's own layout (its block is 36% of the icon's width).
-  const side = Math.min(width, height);
-  const strokeWidth = (TRACE_STROKE_DP * HI_MARK_BOX) / side;
-
   // ---- native splash hand-off ----
   // Hide the native splash the frame AFTER this screen has laid out, so the OS frame (same
-  // icon, same ink) is only ever swapped for a painted copy of itself.
+  // seed, same ink) is only ever swapped for a painted copy of itself.
   const splashHidden = useRef(false);
   const onLayout = useCallback(() => {
     if (splashHidden.current) return;
@@ -212,35 +130,16 @@ export function TitleScreen({ exiting, onGone }: TitleScreenProps) {
     });
   }, []);
 
-  // ---- the zoom from the native splash's icon size (UI thread) ----
-  // The Svg is laid out at the full title size; the first frame scales it down to the size
-  // the native splash drew the icon at, then it grows. Reduced motion: shown at full size.
-  const zoom = useSharedValue(reduceMotion ? 1 : Math.min(1, NATIVE_SPLASH_IMAGE_DP / side));
+  const phase = useSharedValue(0);
   useEffect(() => {
-    if (reduceMotion) {
-      zoom.value = 1;
-      return;
-    }
-    zoom.value = withTiming(1, { duration: TITLE_ZOOM_MS, easing: Easing.out(Easing.cubic) });
-    return () => cancelAnimation(zoom);
-  }, [zoom, reduceMotion]);
-  const markStyle = useAnimatedStyle(() => ({ transform: [{ scale: zoom.value }] }));
-
-  // ---- the trace (UI thread) ----
-  const pen = useSharedValue(0);
-  useEffect(() => {
+    cancelAnimation(phase);
+    phase.value = 0;
     if (reduceMotion) return;
-    pen.value = 0;
-    pen.value = withRepeat(
-      withTiming(2 * HI_MARK_TOTAL_LENGTH, {
-        duration: TRACE_CYCLE_MS,
-        easing: Easing.inOut(Easing.quad),
-      }),
-      -1,
-      false
-    );
-    return () => cancelAnimation(pen);
-  }, [pen, reduceMotion]);
+    phase.value = withRepeat(withTiming(1, {
+      duration: GROW_CYCLE_MS, easing: Easing.linear,
+    }), -1, false);
+    return () => cancelAnimation(phase);
+  }, [phase, reduceMotion]);
 
   // ---- the exit (UI thread) ----
   const flyX = useSharedValue(0);
@@ -296,30 +195,11 @@ export function TitleScreen({ exiting, onGone }: TitleScreenProps) {
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
     >
-      <Reanimated.View style={markStyle}>
-        <Svg width={side} height={side} viewBox={`0 0 ${HI_MARK_BOX} ${HI_MARK_BOX}`}>
-          {reduceMotion ? (
-            // No trace: the mark, solid, as it is on the icon.
-            HI_MARK_PATHS.map((p) => <Path key={p.id} d={p.d} fill={inkFor(p)} />)
-          ) : (
-            <>
-              {HI_MARK_PATHS.map((p) => (
-                <Path key={`u-${p.id}`} d={p.d} fill={cardAlpha(inkFor(p), UNDERLAY_ALPHA)} />
-              ))}
-              {TRACE_ORDER.map(({ path: p, start }) => (
-                <TracePath
-                  key={`t-${p.id}`}
-                  path={p}
-                  start={start}
-                  pen={pen}
-                  stroke={inkFor(p)}
-                  strokeWidth={strokeWidth}
-                />
-              ))}
-            </>
-          )}
-        </Svg>
-      </Reanimated.View>
+      <Svg width={GLYPH_SIDE} height={GLYPH_SIDE} viewBox="0 0 40 40">
+        <Circle cx={20} cy={37} r={2} fill={GLYPH_YELLOW} />
+        {geometry.layers.map((d, i) => <GrowingLayer key={d} d={d} order={2 - i}
+          phase={phase} reduced={reduceMotion} />)}
+      </Svg>
     </Reanimated.View>
   );
 }

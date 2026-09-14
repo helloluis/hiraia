@@ -94,6 +94,18 @@ python3 "$ROOT/rag/pipeline/build-facts-db.py" --check || {
   exit 1;
 }
 
+# Quiz options that stayed English under a translated question. Model-free; fails the gate
+# the way translation_ok should have the first time. Bank first, then the shipping DB.
+echo ">> checking quiz option translations (bank + cards.db) ..."
+python3 "$ROOT/rag/pipeline/check-quiz-translation.py" || {
+  echo "ERR: quiz-bank.jsonl still has English sentence-length options under a translated question"
+  exit 1
+}
+python3 "$ROOT/rag/pipeline/check-quiz-translation.py" --db "$ROOT/packages/mobile/assets/data/cards.db" || {
+  echo "ERR: cards.db card_question still has English sentence-length options under a translated question"
+  exit 1
+}
+
 # Retrieval stress-tests — model-independent and fast, so they fail before a server boots.
 # Retrieval matters MORE to a card writer than it did to a chat tutor: two of the three card
 # shapes are decided here and never reach the model at all.

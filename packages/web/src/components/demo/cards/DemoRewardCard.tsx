@@ -51,7 +51,10 @@ export function DemoRewardCard({
 
       <div className="mc-ledge mt-3">
         <button type="button" onClick={onContinue} className="mc-ticket">
-          <span className="flex-1">{t.continueNote}</span>
+          <span className="min-w-0 flex-1 text-left">
+            <span className="mc-ticket-eyebrow">{t.nextCard}</span>
+            <span className="block truncate">{t.continueNote}</span>
+          </span>
           <span className="mc-arrow" aria-hidden />
         </button>
       </div>

@@ -2,13 +2,13 @@
   "expo": {
     "name": "Hiraia",
     "slug": "hiraia",
-    "version": "0.3.2",
+    "version": "0.4.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "scheme": "hiraia",
     "splash": {
-      "image": "./assets/icon.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#1C3B2E"
     },
@@ -29,7 +29,7 @@
         "backgroundColor": "#1C3B2E"
       },
       "package": "com.hiraia.app",
-      "versionCode": 5,
+      "versionCode": 9,
       "permissions": [
         "REQUEST_INSTALL_PACKAGES"
       ]
@@ -54,14 +54,15 @@
         "expo-splash-screen",
         {
           "android": {
-            "image": "./assets/icon.png",
+            "image": "./assets/splash.png",
             "imageWidth": 200,
             "resizeMode": "contain",
             "backgroundColor": "#1C3B2E"
           }
         }
       ],
-      "./plugins/withHiraiaMemory.js"
+      "./plugins/withHiraiaMemory.js",
+      "./plugins/withBundledIllustrations.js"
     ],
     "experiments": {
       "typedRoutes": true

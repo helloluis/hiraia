@@ -302,7 +302,7 @@ export function magnetMultiplier(served: number): number {
  * multiplier floors at ×1 — one decay clock governing both the pull and its own release.
  */
 export function magnetDeepShare(served: number): number {
-  return 1 - 1 / magnetMultiplier(served);
+  return served < 5 ? 1 : 1 - 1 / magnetMultiplier(served);
 }
 
 /**
@@ -1933,14 +1933,9 @@ export function cardsForTopic(topic: OutlineTopic): ReadonlySet<string> {
 }
 
 /**
- * SEAM — sub-topic PILLS (follow-up; NOT rendered yet). A topic's cards grouped by taxonomy
- * leaf (`cats`, rag/pipeline/card-taxonomy.json), labelled in the reader's language, largest
- * shelf first. When the category backfill completes the outline sheet can print these under a
- * topic row as tappable pills, and a pill tap becomes a cursor whose `idSet` is the shelf's
- * `ids` (a strict subset of the topic's — advanceCurriculum then walks on to the next TOPIC
- * exactly as it does today, because the cursor's `index` is still the topic's). Cards with no
- * category yet are not listed; the topic row itself remains the "everything" entry. The store
- * and the sheet take no dependency on this until then — it is data, safe to leave unused.
+ * Calendar subcategories: taxonomy leaves intersected with this topic's admitted cards.
+ * Labels follow the reader's language; selecting a shelf builds a bounded lesson run
+ * within that intersection and retains its category when the run is resumed.
  */
 export interface TopicShelf {
   cat: string;
@@ -2000,6 +1995,7 @@ export interface CurriculumCursor {
   idSet: ReadonlySet<string>;
   index: number;
   lessonRun?: LessonRun;
+  manualSelection?: boolean;
 }
 
 /** The outline row a cursor names (its title prints on the ribbon), or undefined if the grade's outline moved under it. */
@@ -2013,7 +2009,8 @@ export function curriculumCursor(
   grade: GradeLevel,
   key: string,
   seen: ReadonlySet<string> = new Set(),
-  saved?: unknown
+  saved?: unknown,
+  shelfCat?: string
 ): CurriculumCursor | null {
   const rows = curriculumOutline(grade);
   if (lessonsForGrade(grade).length && !lessonByKey(key)) {
@@ -2024,10 +2021,27 @@ export function curriculumCursor(
   if (index < 0) return null;
   const lesson = lessonsForGrade(grade).find((l) => l.key === key);
   if (!lesson) return { grade, key, idSet: cardsForTopic(rows[index]!), index };
-  const lessonRun = planLesson(lesson, seen, saved);
+  const selectedCat = shelfCat ?? (saved as LessonRun | undefined)?.shelfCat;
+  const shelf = selectedCat ? topicShelves(rows[index]!, 'english').find((s) => s.cat === selectedCat) : undefined;
+  if (selectedCat && !shelf) return null;
+  const scoped = shelf ? {
+    ...lesson,
+    cardIds: lesson.cardIds.filter((id) => shelf.ids.has(id)),
+    coreCardIds: lesson.coreCardIds.filter((id) => shelf.ids.has(id)),
+    relatedCardIds: lesson.relatedCardIds.filter((id) => shelf.ids.has(id)),
+    units: lesson.units.map((u) => ({ ...u,
+      cardIds: u.cardIds.filter((id) => shelf.ids.has(id)),
+      quizCardIds: u.quizCardIds.filter((id) => shelf.ids.has(id)),
+    })).filter((u) => u.cardIds.length > 0),
+    relatedGroups: lesson.relatedGroups.map((g) => ({ ...g,
+      cardIds: g.cardIds.filter((id) => shelf.ids.has(id)),
+    })).filter((g) => g.cardIds.length > 0),
+  } : lesson;
+  const manualSelection = (saved as LessonRun | undefined)?.manualSelection === true;
+  const lessonRun = { ...planLesson(scoped, seen, saved), ...(shelf ? { shelfCat: shelf.cat } : {}), manualSelection };
   const idSet = new Set(lessonRun.cards);
   PLANNED_RUNS.set(idSet, lessonRun);
-  return { grade, key, index, idSet, lessonRun };
+  return { grade, key, index, idSet, lessonRun, manualSelection };
 }
 
 /** Estimate a new learner's topic from progress through the school year.
@@ -2290,6 +2304,7 @@ export function nextChoices(
   }
 
   // Fork on the cadence, or immediately at a dead end. Otherwise the page is single-path.
+  if (deep && pull && pull.served < 5 && pull.ids.has(deep.id)) return out.slice(0, 1);
   if (!deadEnd && (opts.threadDepth ?? 0) < BRANCH_EVERY) return out.slice(0, 1);
 
   // Dead end: the second option is another fresh topic, not a fake "related" card. Prefer

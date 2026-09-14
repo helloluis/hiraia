@@ -82,9 +82,10 @@ export function AppDownload() {
               <span className="mc-chip text-[10px]">v{DOWNLOAD.version}</span>
             </div>
             <p className="relative z-[1] font-zilla text-sm font-medium leading-relaxed text-[var(--ink)]">
-              Requires Android {DOWNLOAD.minAndroid}+ and a phone with {DOWNLOAD.minRamGB}GB+ of
-              memory. Android may ask you to allow this one install — that&apos;s normal, since
-              Hiraia isn&apos;t on the Play Store.
+              Requires Android {DOWNLOAD.minAndroid} or newer. {DOWNLOAD.minRamGB}GB+ of memory is
+              recommended for model-generated cards; the built-in flash-card library works without
+              the model. Android may ask you to allow this one install — that&apos;s normal, since Hiraia
+              isn&apos;t on the Play Store.
             </p>
 
             <div className="relative z-[1] mt-auto pt-5">
@@ -95,7 +96,7 @@ export function AppDownload() {
                   className="mc-ticket"
                   onClick={() => trackApkDownload(setDownloads)}
                 >
-                  <span className="flex-1">Download Hiraia for Android</span>
+                  <span className="flex-1">Download Hiraia v{DOWNLOAD.version} for Android</span>
                   {DOWNLOAD.apk.fileSizeMB > 0 ? (
                     <span className="shrink-0 rounded-md bg-[var(--ink)] px-2 py-1 font-gothic text-[9px] uppercase tracking-[0.14em] text-[var(--stock)]">
                       {DOWNLOAD.apk.fileSizeMB} MB
@@ -110,6 +111,31 @@ export function AppDownload() {
                   </span>
                 </a>
               </div>
+              <details className="relative z-[1] mt-4 rounded-lg border border-[var(--olive)]/30 bg-[var(--plate)] px-3 py-2 text-[var(--ink)]">
+                <summary className="cursor-pointer rounded font-zilla text-sm font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ink)]">
+                  What&apos;s new · Changelog
+                </summary>
+                <div className="mt-3 space-y-4 font-zilla text-sm leading-relaxed">
+                  <section aria-label="Changes in version 0.3.1">
+                    <h3 className="font-bold">v0.3.1 · Clearer curriculum headings</h3>
+                    <p className="mt-1">
+                      Renamed the Grade 6 topic “Diagrams and flowcharts” to “Changes of State”
+                      in the Calendar and card heading, with matching Tagalog and Cebuano labels.
+                    </p>
+                  </section>
+                  <section aria-label="Changes in version 0.3">
+                    <h3 className="font-bold">v0.3 · Topic review and device support</h3>
+                    <ul className="mt-1 list-disc space-y-1 pl-5">
+                      <li>Reopen completed Calendar topics for review without losing progress.</li>
+                      <li>Updated card titles, categories, illustrations, and interface.</li>
+                      <li>
+                        Memory checks help determine whether the phone can run the local AI model.
+                        The curated library remains available on supported Android 10+ devices.
+                      </li>
+                    </ul>
+                  </section>
+                </div>
+              </details>
               {downloads != null && downloads > 0 ? (
                 <p className="relative z-[1] mt-3 font-zilla text-xs font-medium text-[var(--ink)]/55">
                   {downloads.toLocaleString()} {downloads === 1 ? 'download' : 'downloads'} from hiraia.org
@@ -121,11 +147,11 @@ export function AppDownload() {
           <div className="mc-card flex h-full flex-col p-4 sm:p-5">
             <p className="mc-label relative z-[1] mb-2 text-[9px] text-[var(--olive)]">How the download works</p>
             <p className="relative z-[1] font-zilla text-sm font-medium leading-relaxed text-[var(--ink)]">
-              The app itself is a small download. The first time you open the app, it fetches
-              about 2Gb of files, including the customized AI model and its library of
-              illustrations, from Hiraia&apos;s own servers or any filesharing peers it finds
-              nearby. After that it runs fully offline — no internet, no account, and nothing
-              you type ever leaves the phone.
+              The APK includes the curated flash-card library. On first launch, Hiraia
+              automatically downloads common illustrations and images for the selected grade
+              over HTTPS. It checks available memory before downloading or loading the optional
+              AI model. Downloaded content works offline; phones that cannot run the model can
+              still use the curated cards and quizzes.
             </p>
 
             <button
@@ -161,9 +187,10 @@ export function AppDownload() {
               <span className="mc-chip text-[10px]">v{DOWNLOAD.version}</span>
             </div>
             <p className="relative z-[1] font-zilla text-sm font-medium leading-relaxed text-[var(--ink)]">
-              Requires Android {DOWNLOAD.minAndroid}+ and a phone with {DOWNLOAD.minRamGB}GB+ of
-              memory. Android may ask you to allow this one install — that&apos;s normal, since
-              Hiraia isn&apos;t on the Play Store.
+              Requires Android {DOWNLOAD.minAndroid} or newer. {DOWNLOAD.minRamGB}GB+ of memory is
+              recommended for model-generated cards; the built-in flash-card library works without
+              the model. Android may ask you to allow this one install — that&apos;s normal, since Hiraia
+              isn&apos;t on the Play Store.
             </p>
 
             <div className="relative z-[1] mt-auto pt-5">
@@ -171,9 +198,9 @@ export function AppDownload() {
                 <div
                   className="mc-ticket cursor-default"
                   aria-disabled="true"
-                  aria-label="Download Hiraia for Android, coming soon"
+                  aria-label={`Download Hiraia v${DOWNLOAD.version} for Android, coming soon`}
                 >
-                  <span className="flex-1">Download Hiraia for Android</span>
+                  <span className="flex-1">Download Hiraia v{DOWNLOAD.version} for Android</span>
                   <span className="shrink-0 rounded-md bg-[var(--ink)] px-2 py-1 font-gothic text-[9px] uppercase tracking-[0.14em] text-[var(--stock)]">
                     Coming soon
                   </span>
@@ -192,11 +219,11 @@ export function AppDownload() {
           <div className="mc-card flex h-full flex-col p-4 sm:p-5">
             <p className="mc-label relative z-[1] mb-2 text-[9px] text-[var(--olive)]">How the download works</p>
             <p className="relative z-[1] font-zilla text-sm font-medium leading-relaxed text-[var(--ink)]">
-              The app itself is a small download. The first time you open the app, it fetches
-              about 2Gb of files, including the customized AI model and its library of
-              illustrations, from Hiraia&apos;s own servers or any filesharing peers it finds
-              nearby. After that it runs fully offline — no internet, no account, and nothing
-              you type ever leaves the phone.
+              The APK includes the curated flash-card library. On first launch, Hiraia
+              automatically downloads common illustrations and images for the selected grade
+              over HTTPS. It checks available memory before downloading or loading the optional
+              AI model. Downloaded content works offline; phones that cannot run the model can
+              still use the curated cards and quizzes.
             </p>
           </div>
         </div>

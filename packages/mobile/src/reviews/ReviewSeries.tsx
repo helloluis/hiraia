@@ -22,9 +22,6 @@ const copy = {
   english: {
     quick: 'Quick review',
     topic: 'Topic recap',
-    question: 'Question',
-    of: 'of',
-    later: 'Review later',
     done: 'Review complete',
     next: 'Continue learning',
     retry: 'Retry',
@@ -37,9 +34,6 @@ const copy = {
   tagalog: {
     quick: 'Maikling pagbabalik-aral',
     topic: 'Balik-aral sa paksa',
-    question: 'Tanong',
-    of: 'sa',
-    later: 'Balikan mamaya',
     done: 'Tapos na ang balik-aral',
     next: 'Magpatuloy sa pag-aaral',
     retry: 'Subukan muli',
@@ -52,9 +46,6 @@ const copy = {
   cebuano: {
     quick: 'Mubo nga pagrepaso',
     topic: 'Pagrepaso sa hilisgutan',
-    question: 'Pangutana',
-    of: 'sa',
-    later: 'Balikan unya',
     done: 'Nahuman ang pagrepaso',
     next: 'Padayon sa pagkat-on',
     retry: 'Sulayi pag-usab',
@@ -89,17 +80,6 @@ export function ReviewSeries({
   );
   return (
     <SafeAreaView style={styles.screen}>
-      <View style={styles.header}>
-        <Text style={styles.label}>
-          {series?.kind === 'topic' ? t.topic : t.quick}
-          {series?.title ? ` · ${series.title}` : ''}
-        </Text>
-        {series && a && (
-          <Text style={styles.label}>
-            {t.question} {series.position + 1} {t.of} {series.items.length}
-          </Text>
-        )}
-      </View>
       <SlideCard backgroundColor={a ? card.teal : card.stock}>
         {s.error ? (
           <View style={styles.message}>
@@ -115,6 +95,13 @@ export function ReviewSeries({
               key={a.id}
               question={a.question}
               language={language}
+              reviewTitle={`${series.kind === 'topic' ? t.topic : t.quick}${series.title ? ` · ${series.title}` : ''}`}
+              // One-question series needs no counter, and "Tanong 1 sa 1" reads as nonsense. For a real
+              // series the counter stays "Quiz n/total" in every language: the words translate badly and
+              // the numerals carry the meaning on their own.
+              reviewProgress={
+                series.items.length > 1 ? `Quiz ${series.position + 1}/${series.items.length}` : undefined
+              }
               displayOrder={a.order}
               selectedOption={a.selected}
               disabled={s.busy}
@@ -153,20 +140,14 @@ export function ReviewSeries({
           </View>
         )}
       </SlideCard>
-      {s.open && a && !s.error && (
-        <View style={styles.footer}>{button(t.later, () => void leaveReview(true, onExit))}</View>
-      )}
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
   screen: { ...StyleSheet.absoluteFillObject, zIndex: 200, backgroundColor: card.board },
-  header: { paddingHorizontal: 18, paddingVertical: 10, gap: 4 },
-  label: { fontFamily: fonts.cardBodyBold, fontSize: 16, color: card.stock },
   body: { fontFamily: fonts.cardBody, fontSize: 19, color: card.ink, textAlign: 'center' },
   score: { fontFamily: fonts.slab, fontSize: 42, color: card.ink },
   message: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, gap: 18 },
-  footer: { paddingHorizontal: 16, paddingBottom: 10 },
   button: {
     borderWidth: 3,
     borderColor: card.ink,

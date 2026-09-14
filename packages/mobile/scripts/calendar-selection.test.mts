@@ -7,7 +7,7 @@ const C = await loadCards();
 // Exercise the real store action without booting native model, SQLite or React Native.
 // Keep navigation as the observation boundary; all topic resolution and picking is real.
 const source = readFileSync(new URL('../src/store/cardStore.ts', import.meta.url), 'utf8');
-const start = source.indexOf('  enterCurriculum: (key, savedRun) => {');
+const start = source.indexOf('  enterCurriculum: (key, savedRun, shelfCat) => {');
 const end = source.indexOf('  exitCurriculum:', start);
 assert.ok(start >= 0 && end > start, 'Calendar action is available to the harness');
 const makeAction = new Function(
@@ -69,3 +69,79 @@ for (const scenario of ['fresh', 'completed-persisted', 'completed-session', 'on
     assert.ok(checked > 100, 'covers the full visible outline, not a few sample topics');
   });
 }
+
+for (const grade of [3, 4, 5, 6, 7, 8, 9, 10]) {
+  test(`Calendar subcategories stay scoped and resume correctly: Grade ${grade}`, () => {
+    let checked = 0;
+    for (const topic of C.curriculumOutline(grade)) {
+      for (const shelf of C.topicShelves(topic, 'english')) {
+        const cursor = C.curriculumCursor(grade, topic.key, new Set(), undefined, shelf.cat)!;
+        assert.ok(cursor.idSet.size > 0, shelf.cat);
+        assert.ok([...cursor.idSet].every(id => shelf.ids.has(id)), shelf.cat);
+        const first = [...cursor.idSet][0]!;
+        const seen = new Set([first]);
+        if (cursor.idSet.size > 1) {
+          const next = C.advanceCurriculum(cursor, first, seen)!;
+          assert.equal(next.lessonRun?.shelfCat, shelf.cat);
+          assert.deepEqual([...next.idSet], [...cursor.idSet]);
+          const resumed = C.curriculumCursor(grade, topic.key, seen, next.lessonRun)!;
+          assert.deepEqual([...resumed.idSet], [...cursor.idSet]);
+        }
+        if (checked === 0) {
+          let state: any = { seen: new Set(), current: null };
+          let landing: any;
+          const enter = makeAction(
+            () => state, (patch: any) => { state = { ...state, ...patch }; },
+            { getState: () => ({ grade }) }, C.curriculumCursor, C.advanceCurriculum,
+            C.hasServableCurriculum, { cards: new Map() }, C.jumpCard,
+            (_magnet: any, c: any) => ({ studentGrade: grade, currentQuarter: topic.quarter,
+              now: Date.now(), cardSeen: new Map(), competencySeen: new Map(), curriculum: { ids: c.idSet } }),
+            (fact: any, _set: any, _get: any, opts: any) => { landing = { fact, opts }; }
+          );
+          enter(topic.key, undefined, shelf.cat);
+          assert.ok(shelf.ids.has(landing.fact.id));
+          assert.equal(landing.opts.curriculum.lessonRun.shelfCat, shelf.cat);
+          assert.equal(landing.opts.curriculum.manualSelection, true);
+          const restored = C.curriculumCursor(grade, topic.key, new Set(), landing.opts.curriculum.lessonRun)!;
+          assert.equal(restored.manualSelection, true);
+        }
+        checked++;
+      }
+    }
+    assert.ok(checked > 0);
+  });
+}
+
+// Execute the production reinforcement selector and review exit action without native UI.
+test('manual Calendar selection defers old-topic reinforcement without dropping it', async () => {
+  const ts = await import('typescript');
+  const from = source.indexOf('function withReinforcement(');
+  const to = source.indexOf('\n/**', from);
+  const js = ts.transpileModule(source.slice(from, to), { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText;
+  const select = new Function('getCard', 'choiceLabel', 'useCardStore', `${js};return withReinforcement`)(
+    (id: string) => ({ id }), (card: any) => card.id, { getState: () => ({ magnet: null }) }
+  );
+  const choices = [{ factId: 'animal-next', label: 'Animal', kind: 'deep' }];
+  const queue = ['mixtures-repeat', 'animal-repeat'];
+  const cursor = { manualSelection: true, idSet: new Set(['animal-next', 'animal-repeat']) };
+  assert.equal(select(choices, queue, 'animal-current', 'english', cursor)[0].factId, 'animal-repeat');
+  assert.deepEqual(select(choices, ['mixtures-repeat'], 'animal-current', 'english', cursor), choices);
+  assert.deepEqual(queue, ['mixtures-repeat', 'animal-repeat']);
+  assert.equal(select(choices, queue, 'animal-current', 'english', null)[0].factId, 'mixtures-repeat');
+});
+
+test('an old quiz continuation respects the latest manual Calendar destination', () => {
+  const from = source.indexOf('  continueAfterReview: (choice) => {');
+  const to = source.indexOf('  recordReviewGrade:', from);
+  const factory = new Function('get', 'set', 'useReviewStore', 'remediationQueueFromReview',
+    'jumpCard', 'feedContext', 'advance', `return ({${source.slice(from, to)}}).continueAfterReview`);
+  const state = { current: { id: 'animal-first' }, seen: new Set(['animal-first']),
+    curriculum: { manualSelection: true, idSet: new Set(['animal-next']) } };
+  let landed: string | undefined;
+  const resume = factory(() => state, () => {}, { getState: () => ({ data: { reinforcement: [] } }) }, () => [],
+    () => ({ id: 'animal-next' }), () => ({}), (choice: any) => { landed = choice.factId; });
+  resume({ factId: 'mixtures-old', kind: 'deep', label: '' });
+  assert.equal(landed, 'animal-next');
+  resume({ factId: 'animal-next', kind: 'deep', label: '' });
+  assert.equal(landed, 'animal-next');
+});

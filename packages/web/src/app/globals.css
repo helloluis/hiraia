@@ -1,3 +1,4 @@
+@font-face { font-family: 'Fraunces'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/fraunces-semibold.woff2') format('woff2'); }
 /* Self-hosted fonts (bundled in /public/fonts so they work offline / in the APK).
    Regenerate with: node scripts/fetch-fonts.mjs */
 @font-face { font-family: 'Caveat Brush'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/caveat-brush-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
@@ -8,8 +9,6 @@
 @font-face { font-family: 'Patrick Hand'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/patrick-hand-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 
 /* Mid-century classroom card — design/mockups/midcentury.html / card-ui branch. */
-@font-face { font-family: 'Alfa Slab One'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/alfa-slab-one-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-@font-face { font-family: 'Alfa Slab One'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/alfa-slab-one-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 @font-face { font-family: 'Archivo Black'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/archivo-black-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
 @font-face { font-family: 'Archivo Black'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/archivo-black-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 @font-face { font-family: 'Patua One'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/patua-one-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
@@ -117,8 +116,8 @@ strong, b, h1, h2, h3, h4, h5, h6 {
   font-weight: 500;
 }
 .mc h1, .mc h2, .mc h3, .mc h4 {
-  font-family: 'Alfa Slab One', Georgia, serif;
-  font-weight: 400;
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
 }
 .mc strong, .mc b {
   font-family: 'Zilla Slab', Georgia, serif;
@@ -314,7 +313,8 @@ strong, b, h1, h2, h3, h4, h5, h6 {
   border-radius: 5px;
   background: var(--gold);
   color: var(--ink);
-  font-family: 'Alfa Slab One', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
   font-size: 13px;
   display: flex;
   align-items: center;
@@ -560,3 +560,6 @@ strong, b, h1, h2, h3, h4, h5, h6 {
   background: rgba(12, 52, 61, 0.07); padding: 0.05em 0.3em; border-radius: 4px;
 }
 .chat-md a { color: #0f4a56; text-decoration: underline; }
+
+/* The display utility uses the same static SemiBold face as native titles. */
+.font-slab { font-weight: 600; font-synthesis: none; }

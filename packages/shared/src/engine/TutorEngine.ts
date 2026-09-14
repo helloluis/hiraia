@@ -78,8 +78,9 @@ export interface TutorEngine {
    */
   answerQuery?(
     query: string,
-    language: string
-  ): Promise<{ text: string; grounded: boolean; offDomain?: boolean; slug?: string | null }>;
+    language: string,
+    options?: { excludeFactIds?: readonly string[] }
+  ): Promise<{ text: string; grounded: boolean; offDomain?: boolean; slug?: string | null; sourceFactIds?: string[]; relatedQuery?: string }>;
 
   /**
    * Is this query OFF-DOMAIN, judged for a WEAK search hit — one the local card search matched

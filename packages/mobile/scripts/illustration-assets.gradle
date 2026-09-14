@@ -1,0 +1,20 @@
+// A separate, incremental native asset task. No downloaded packs or cloud files are inputs.
+def mobileRoot = rootProject.projectDir.parentFile
+def prepareIllustrations = tasks.register('prepareBundledIllustrations', Exec) {
+    workingDir mobileRoot
+    commandLine 'node', 'scripts/stage-bundled-art.mjs'
+    inputs.file(new File(mobileRoot, 'scripts/stage-bundled-art.mjs'))
+    inputs.file(new File(mobileRoot, 'src/generated/imageMap.ts'))
+    inputs.files(fileTree(new File(mobileRoot, '../images/assets-png')) { include '**/*.png' })
+    inputs.files(fileTree(new File(mobileRoot, '../images/cards-png')) { include '**/*.png' })
+    outputs.dir(layout.buildDirectory.dir('generated/illustrationAssets'))
+    outputs.file(layout.buildDirectory.file('generated/illustrationAssets-manifest.json'))
+    outputs.file(new File(mobileRoot, 'src/generated/bundledArt.generated.json'))
+}
+android.sourceSets.main.assets.srcDir(layout.buildDirectory.dir('generated/illustrationAssets'))
+tasks.configureEach { task ->
+    if (task.name == 'preBuild' || task.name == 'generateCodegenSchemaFromJavaScript' ||
+        task.name.startsWith('createBundle') || task.name ==~ /merge.*Assets/) {
+        task.dependsOn(prepareIllustrations)
+    }
+}

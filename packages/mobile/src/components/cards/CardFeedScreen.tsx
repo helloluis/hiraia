@@ -1,3 +1,7 @@
+import { TitleCardPage } from './TitleCardPage';
+import type { TitleCardContent } from '../../data/titleCard';
+import { Wordmark } from '../brand/Wordmark';
+import { isHistoryPull, historyPullCommitted, historyPreviewStyle } from './historyGesture';
 import { ReviewSeries } from '../../reviews/ReviewSeries';
 import { overallStars } from '../../reviews/logic';
 import { useReviewStore, type CompletedReviewAttempt } from '../../reviews/store';
@@ -20,8 +24,8 @@ import { useProfiles, activeProfile, requestProfileChoice } from '../../profiles
  * and a drag locks to an axis the moment it has a direction, so it can never mean two
  * things at once. The card tracks the finger on the UI thread, springs back if it is let
  * go under the commit threshold ("let me read that again") and carries on off the deck
- * past it. DOWN walks backward through the last 30 displayed cards and answered quiz
- * results; the other directions return toward live content while browsing history.
+ * past it. Pull inward from the leftmost 20% past the screen midpoint to revisit up to
+ * 30 older cards. All ordinary swipes return toward live content while browsing history.
  *
  * RESPONSIVENESS: a committed swipe starts its exit ON THE UI THREAD in the same frame the
  * finger lifts (the fly values + `handoff` — see the pan's onEnd). The store advance and
@@ -295,10 +299,11 @@ type Side = 'left' | 'right';
  * Which way a committed swipe went. All three are first-class; 'up' is the one that does
  * not name a side by itself, so it borrows one from the half of the card it started on.
  */
-type SwipeDir = Side | 'up' | 'down';
+type SwipeDir = Side | 'up' | 'down' | 'back';
 
 /** What was on the pad for the page being peeled away. */
 interface PageSnap {
+  titleCard: TitleCardContent | null;
   pageKey: number;
   fact: CardFact | null;
   choices: CardChoice[];
@@ -308,6 +313,7 @@ interface PageSnap {
 }
 
 type HistoryEntry =
+  | { kind: 'title'; key: number; content: TitleCardContent; pagesRead: number }
   | {
       kind: 'fact';
       key: number;
@@ -324,7 +330,7 @@ type HistoryEntry =
       pagesRead: number;
     };
 
-const HISTORY_LIMIT = 30;
+const HISTORY_LIMIT = 31; // Current page plus up to 30 older pages.
 
 /** A page on its way off the deck: what was printed on it, and how it left. */
 interface Peel extends PageSnap {
@@ -674,7 +680,7 @@ const ChromeBar = memo(function ChromeBar() {
   const student = activeProfile();
   return (
     <View style={styles.chrome}>
-      <Text style={styles.wordmark}>HIRAIA<Text style={styles.wordmarkDot}>.</Text></Text>
+      <Wordmark size={26} color={card.stock} />
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={`Switch student: ${student?.name ?? 'Guest'}`}
@@ -778,6 +784,8 @@ export function CardFeedScreen() {
   const hydrate = useCardStore((s) => s.hydrate);
   const current = useCardStore((s) => s.current);
   const choices = useCardStore((s) => s.choices);
+  const titleCard = useCardStore((s) => s.titleCard);
+  const continueAfterTitle = useCardStore((s) => s.continueAfterTitle);
   const question = useCardStore((s) => s.question);
   const reward = useCardStore((s) => s.reward);
   const response = useCardStore((s) => s.response);
@@ -836,6 +844,7 @@ export function CardFeedScreen() {
   const curriculum = useCardStore((s) => s.curriculum);
   const currentTopic = useCardStore(s=>s.currentTopic);
   const curriculumTopic = currentTopic ? cursorTopic(currentTopic) : undefined;
+  const reviewActive = useReviewStore(s => s.open || s.busy || !!s.error);
   const reviewReadCount = useReviewStore(s=>s.data?.recent.length??0);
   const achievementStars = useReviewStore((s) =>
     s.data?.grade === grade ? overallStars(s.data) : 0
@@ -895,8 +904,9 @@ export function CardFeedScreen() {
   }, []);
   useEffect(() => {
     if (!current || question || reward || response) return;
-    appendHistory({ kind: 'fact', key: pageKey, fact: current, choices, pagesRead });
-  }, [appendHistory, pageKey, current, choices, pagesRead, question, reward, response]);
+    if (titleCard) appendHistory({ kind: 'title', key: pageKey, content: titleCard, pagesRead });
+    else appendHistory({ kind: 'fact', key: pageKey, fact: current, choices, pagesRead });
+  }, [appendHistory, pageKey, current, choices, pagesRead, question, reward, response, titleCard]);
   const onReviewGraded = useCallback(
     (result: CompletedReviewAttempt) => {
       useCardStore.getState().recordReviewGrade(result);
@@ -913,8 +923,10 @@ export function CardFeedScreen() {
   );
   const historyEntry =
     historyOffset > 0 ? history[history.length - 1 - historyOffset] ?? null : null;
+  const olderEntry = history[history.length - 2 - historyOffset] ?? null;
   const browsingHistory = historyEntry !== null;
   const historicalQuiz = historyEntry?.kind === 'quiz';
+  const shownTitle = historyEntry?.kind === 'title' ? historyEntry.content : browsingHistory ? null : titleCard;
   const shownFact = historyEntry?.kind === 'fact' ? historyEntry.fact : browsingHistory ? null : current;
   const shownChoices =
     historyEntry?.kind === 'fact' ? historyEntry.choices : browsingHistory ? EMPTY_CHOICES : choices;
@@ -972,10 +984,10 @@ export function CardFeedScreen() {
   // A row tap on the outline sheet: enter the topic, close the sheet. The landing peels from
   // a random corner, the way the reroll does — it is a topic jump, not a page turn.
   const pickTopic = useCallback(
-    (key: string) => {
+    (key: string, shelfCat?: string) => {
       sideRef.current = Math.random() < 0.5 ? 'left' : 'right';
       setSheetOpen(false);
-      enterCurriculum(key);
+      enterCurriculum(key, undefined, shelfCat);
     },
     [enterCurriculum]
   );
@@ -1009,6 +1021,13 @@ export function CardFeedScreen() {
   // trip. The target device is an SM6225: a transform that has to wait on the JS thread
   // visibly stutters there, and a card that lags the finger is the entire complaint this
   // gesture exists to answer.
+  const historyPull = useSharedValue(0);
+  const backGesture = useSharedValue(0);
+  const backCommitted = useSharedValue(0);
+  const returningHistory = useRef(false);
+  const historyPreviewDrag = useAnimatedStyle(() =>
+    historyPreviewStyle(historyPull.value, width)
+  );
   const dragX = useSharedValue(0);
   const dragY = useSharedValue(0);
   // Screen x the finger went down at; the corner mapping for a swipe UP needs it.
@@ -1042,8 +1061,8 @@ export function CardFeedScreen() {
   }, [question, questionAnswered, locked]);
   const historyCanBack = useSharedValue(0);
   useEffect(() => {
-    historyCanBack.value = historyOffset < history.length - 1 ? 1 : 0;
-  }, [historyOffset, history.length, historyCanBack]);
+    historyCanBack.value = !reviewActive && !question && historyOffset < history.length - 1 ? 1 : 0;
+  }, [historyOffset, history.length, historyCanBack, reviewActive, question]);
 
   /**
    * Two choices == this card FORKS. The deck visibly splits (the fan behind becomes the two
@@ -1053,7 +1072,7 @@ export function CardFeedScreen() {
    * return, because the pan needs it as a shared value (see forkMiddleUp).
    */
   const forking =
-    !browsingHistory && choices.length > 1 && !question && !reward && !response;
+    !browsingHistory && !titleCard && choices.length > 1 && !question && !reward && !response;
 
   /**
    * The card underneath — what a swipe is about to reveal, printed on the sheet behind.
@@ -1069,7 +1088,7 @@ export function CardFeedScreen() {
    */
   const [under, setUnder] = useState<{ fact: CardFact; choices: CardChoice[] } | null>(null);
   useEffect(() => {
-    if (browsingHistory || forking || question || reward || response || !choices[0]) {
+    if (titleCard || browsingHistory || forking || question || reward || response || !choices[0]) {
       setUnder(null);
       return;
     }
@@ -1096,7 +1115,7 @@ export function CardFeedScreen() {
     // that is actually printed. Every other context change bumps pageKey → new `choices`.
     // `curriculum` is a dep for exactly the same reason: exitCurriculum nulls the cursor
     // without turning a page, and the sheet beneath must re-print unrestricted tickets.
-  }, [browsingHistory, forking, question, reward, response, choices, language, magnet, curriculum]);
+  }, [titleCard, browsingHistory, forking, question, reward, response, choices, language, magnet, curriculum]);
   /**
    * Did this card just arrive from the preview underneath?
    *
@@ -1195,7 +1214,15 @@ export function CardFeedScreen() {
 
   useLayoutEffect(() => {
     const prev = lastSnap.current;
-    if (prev && prev.pageKey !== shownPageKey) {
+    if (returningHistory.current && prev?.pageKey !== shownPageKey) {
+      returningHistory.current = false;
+      historyPull.value = 0;
+      dragX.value = 0;
+      dragY.value = 0;
+      handoff.value = 0;
+      release.current = null;
+      setOutgoing(null);
+    } else if (prev && prev.pageKey !== shownPageKey) {
       const from = release.current;
       release.current = null;
       setOutgoing({
@@ -1255,13 +1282,14 @@ export function CardFeedScreen() {
     }
     lastSnap.current = {
       pageKey: shownPageKey,
+      titleCard: shownTitle,
       fact: shownFact,
       choices: shownChoices,
       question: shownQuestion,
       reward: browsingHistory ? null : reward,
       response: browsingHistory ? null : response,
     };
-  }, [shownPageKey, shownFact, shownChoices, shownQuestion, browsingHistory, reward, response, flip, dragX, dragY, handoff]);
+  }, [shownTitle, shownPageKey, shownFact, shownChoices, shownQuestion, browsingHistory, reward, response, flip, dragX, dragY, handoff, historyPull]);
 
   useEffect(
     () => () => {
@@ -1284,10 +1312,8 @@ export function CardFeedScreen() {
    * on-card button would have: the store contract is untouched, a swipe is just another
    * way to press.
    *
-   * A FORK has two destinations, so there the direction IS the choice — left takes pick A
-   * and right takes pick B, matching the two colour-coded cards fanned behind the deck
-   * (blue A leaning left, ochre B leaning right) and the corner each pick already peels
-   * from. A swipe UP has no side of its own, so on a fork it keeps the meaning it always
+   * Only the left-edge pull is reserved for history. On a fork, sideways swipes choose
+   * that side; vertical swipes choose the corner they started from. A swipe UP has no side of its own, so on a fork it keeps the meaning it always
    * had: the corner it started from (the ambiguous middle band never reaches this function
    * — the pan refuses it). On a single-path card every direction simply means "next".
    */
@@ -1295,12 +1321,13 @@ export function CardFeedScreen() {
     (dir: SwipeDir, releaseX: number, releaseY: number, downX: number, releaseTs: number) => {
       const tCommit = Date.now();
       const h = historyRef.current;
-      // DOWN walks toward older pages; any other throw walks toward the live feed again.
+      // Only the deliberate left-edge pull visits older pages; ordinary swipes advance.
       // Answered quiz results are ordinary history entries, while an active quiz owns a
       // full-screen overlay and never reaches this gesture. These cursor moves never touch
       // feed state, counters, telemetry or grading.
-      if (dir === 'down') {
-        if (h.offset >= h.entries.length - 1) {
+      if (dir === 'back') {
+        if (useCardStore.getState().question || useReviewStore.getState().open || h.offset >= h.entries.length - 1) {
+          historyPull.value = withSpring(0, SETTLE_SPRING);
           release.current = null;
           cancelAnimation(flyX);
           cancelAnimation(flyY);
@@ -1311,7 +1338,8 @@ export function CardFeedScreen() {
           settle();
           return;
         }
-        release.current = { x: releaseX, y: releaseY };
+        returningHistory.current = true;
+        release.current = null;
         downRef.current = true;
         sideRef.current = downX < width / 2 ? 'left' : 'right';
         advanceDoneTs.current = Date.now();
@@ -1332,11 +1360,14 @@ export function CardFeedScreen() {
       release.current = { x: releaseX, y: releaseY };
       // A sideways swipe names its own side. A VERTICAL one doesn't, so the peel hinges on
       // the half of the card the finger came from — the corner peel this gesture always had.
-      const vertical = dir === 'up';
+      const vertical = dir === 'up' || dir === 'down';
       const side: Side = vertical ? (downX < width / 2 ? 'left' : 'right') : dir;
-      downRef.current = false;
+      downRef.current = dir === 'down';
 
-      if (s.response) {
+      if (s.titleCard) {
+        sideRef.current = side;
+        s.continueAfterTitle();
+      } else if (s.response) {
         sideRef.current = side;
         s.continueAfterResponse();
       } else if (s.reward) {
@@ -1392,7 +1423,7 @@ export function CardFeedScreen() {
         settle();
       }
     },
-    [width, chooseFrom, settle, dragX, dragY, flyX, flyY, flyPeel, handoff]
+    [width, chooseFrom, settle, dragX, dragY, flyX, flyY, flyPeel, handoff, historyPull]
   );
 
   /**
@@ -1416,6 +1447,10 @@ export function CardFeedScreen() {
         .activeOffsetX([-DRAG_SLOP, DRAG_SLOP])
         .activeOffsetY([-DRAG_SLOP, DRAG_SLOP])
         .onBegin((e) => {
+          cancelAnimation(historyPull);
+          historyPull.value = 0;
+          backGesture.value = 0;
+          backCommitted.value = 0;
           originX.value = e.absoluteX;
         })
         .onStart(() => {
@@ -1431,6 +1466,20 @@ export function CardFeedScreen() {
           // felt like it was on rails. Which direction was MEANT is a question about the
           // whole gesture, so it is answered at the end (see onEnd) rather than guessed at
           // the start.
+          // Once an inward edge pull starts, it cannot become an accidental forward
+          // swipe if the finger turns or retreats before reaching the midpoint.
+          if (isHistoryPull(originX.value, e.translationX, e.translationY, width)) {
+            backGesture.value = 1;
+          }
+          if (backGesture.value === 1) {
+            dragX.value = 0;
+            dragY.value = 0;
+            if (locked.value === 0 && historyCanBack.value === 1) {
+              historyPull.value = Math.max(0, e.translationX);
+              if (historyPullCommitted(originX.value, e.translationX, width)) backCommitted.value = 1;
+            }
+            return;
+          }
           const grip = locked.value === 1 ? LOCKED_GRIP : 1;
           dragX.value = e.translationX * grip;
           dragY.value = e.translationY * grip;
@@ -1439,11 +1488,22 @@ export function CardFeedScreen() {
           // Carrying the finger's velocity into the spring is what makes walking the card
           // back feel like one continuous motion rather than a hand-off.
           const settleBack = () => {
+            historyPull.value = withSpring(0, SETTLE_SPRING);
             dragX.value = withSpring(0, { ...SETTLE_SPRING, velocity: e.velocityX });
             dragY.value = withSpring(0, { ...SETTLE_SPRING, velocity: e.velocityY });
           };
           if (!success || locked.value === 1) {
             settleBack();
+            return;
+          }
+          if (backGesture.value === 1) {
+            if (backCommitted.value === 0 || historyCanBack.value === 0) {
+              settleBack();
+              return;
+            }
+            historyPull.value = withTiming(width, { duration: 180 }, (finished) => {
+              if (finished) runOnJS(commitSwipe)('back', 0, 0, originX.value, Date.now());
+            });
             return;
           }
           // Decided now, from the whole gesture: the axis the finger actually travelled on.
@@ -1472,17 +1532,11 @@ export function CardFeedScreen() {
             settleBack();
             return;
           }
-          // Down is the back gesture. The oldest retained page holds onto the deck and never
-          // begins an exit animation it would later have to undo.
-          if (dir === 'down' && historyCanBack.value === 0) {
-            settleBack();
-            return;
-          }
           const vertical = dir === 'up' || dir === 'down';
           // A vertical throw from the ambiguous middle of a fork names neither branch, so it
           // is refused HERE — the card must never start flying and then be argued back by
           // the store (forkMiddleUp was written for exactly this seat and finally sits in it).
-          if (dir === 'up' && forkMiddleUp(forkGate.value, originX.value, width)) {
+          if (vertical && forkMiddleUp(forkGate.value, originX.value, width)) {
             settleBack();
             return;
           }
@@ -1535,6 +1589,9 @@ export function CardFeedScreen() {
       dragY,
       locked,
       historyCanBack,
+      historyPull,
+      backGesture,
+      backCommitted,
       originX,
       forkGate,
       flyX,
@@ -1598,9 +1655,7 @@ export function CardFeedScreen() {
     return (
       <SafeAreaView style={styles.screen} edges={['top']}>
         <View style={styles.loading}>
-          <Text style={styles.loadingMark}>
-            HIRAIA<Text style={styles.wordmarkDot}>.</Text>
-          </Text>
+          <Wordmark size={34} color={card.stock} />
           <Text style={styles.loadingDots}>…</Text>
         </View>
       </SafeAreaView>
@@ -1747,7 +1802,7 @@ export function CardFeedScreen() {
           one action the status allows: download → <pct>% (inert) → install → try again. The ✕
           snoozes it for a day; it is withheld when the release is below the mirror's
           minSupportedVersionCode (`forced`). No animation: reduced-motion-neutral. */}
-      {!historicalQuiz && updateBar && updateManifest && !response && !reward && !question ? (
+      {!historicalQuiz && !queryBanner && updateBar && updateManifest && !response && !reward && !question ? (
         <View style={styles.banner} accessibilityLiveRegion="polite">
           <Text style={styles.bannerLabel} numberOfLines={1}>
             {t.cards.update.label}
@@ -1792,7 +1847,7 @@ export function CardFeedScreen() {
       {/* "you asked" ribbon when a search navigated straight to a found card. It rides on
           the BOARD, directly under the box it echoes — not on the card: the top of a card
           is its punched holes and index band, and a ribbon would print straight over them. */}
-      {!historicalQuiz && queryBanner && !updateBar && !response && !reward && !question ? (
+      {!historicalQuiz && queryBanner && !reward && !question ? (
         <View style={styles.banner}>
           <Text style={styles.bannerLabel} numberOfLines={1}>
             {t.cards.yourQuestion}
@@ -1822,7 +1877,7 @@ export function CardFeedScreen() {
           store). It names the topic the feed is DRAWING FROM: on the page where a topic runs out
           the cursor has already moved on, so the ribbon already reads the next topic the swipe
           will serve. */}
-      {!historicalQuiz && curriculum && curriculumTopic && !updateBar && !response && !reward && !question ? (
+      {!historicalQuiz && !queryBanner && curriculum && curriculumTopic && !updateBar && !response && !reward && !question ? (
         <View style={styles.banner}>
           <Text style={styles.bannerLabel} numberOfLines={1}>
             {t.cards.curriculum} · Q{curriculumTopic.quarter} ·
@@ -1875,7 +1930,9 @@ export function CardFeedScreen() {
             <Reanimated.View
               style={[styles.cardLayer, { backgroundColor: stockFor(shownQuestion) }, cardDrag]}
             >
-              {!browsingHistory && response ? (
+              {shownTitle ? (
+                <TitleCardPage content={shownTitle} language={language} onContinue={() => tapNav(browsingHistory ? historyForward : continueAfterTitle)} />
+              ) : !browsingHistory && response ? (
                 <ResponseCard
                   key={pageKey}
                   response={response}
@@ -1938,6 +1995,25 @@ export function CardFeedScreen() {
               ) : null}
             </Reanimated.View>
 
+            {olderEntry && !question && (
+              <Reanimated.View
+                pointerEvents="none"
+                accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
+                style={[styles.cardLayer, { backgroundColor: stockFor(olderEntry.kind === 'quiz' ? olderEntry.question : null) }, historyPreviewDrag]}
+              >
+                {olderEntry.kind === 'title' ? (
+                  <TitleCardPage content={olderEntry.content} language={language} onContinue={NOOP} />
+                ) : olderEntry.kind === 'fact' ? (
+                  <CardPage fact={olderEntry.fact} choices={olderEntry.choices} language={language} onChoose={NOOP} instant />
+                ) : (
+                  <QuestionPage question={olderEntry.question} language={language}
+                    displayOrder={olderEntry.order} selectedOption={olderEntry.selected}
+                    disabled celebrate={false} onSelect={NOOP} onAnswer={NOOP} onContinue={NOOP} />
+                )}
+              </Reanimated.View>
+            )}
+
             {/* outgoing card peeling up from the swiped corner. A SWIPED peel rides the fly
                 values that have been animating on the UI thread since finger-up — mounting
                 this snapshot merely swaps which layer carries them (see the layout effect);
@@ -1952,7 +2028,7 @@ export function CardFeedScreen() {
                 ]}
                 pointerEvents="none"
               >
-                {outgoing.fact && !outgoing.question && !outgoing.reward && !outgoing.response ? (
+                {outgoing.titleCard ? <TitleCardPage content={outgoing.titleCard} language={language} onContinue={NOOP} /> : outgoing.fact && !outgoing.question && !outgoing.reward && !outgoing.response ? (
                   <CardPage
                     fact={outgoing.fact}
                     choices={outgoing.choices}
@@ -1983,7 +2059,7 @@ export function CardFeedScreen() {
                 ]}
                 pointerEvents="none"
               >
-                {outgoing.fact && !outgoing.question && !outgoing.reward && !outgoing.response ? (
+                {outgoing.titleCard ? <TitleCardPage content={outgoing.titleCard} language={language} onContinue={NOOP} /> : outgoing.fact && !outgoing.question && !outgoing.reward && !outgoing.response ? (
                   <CardPage
                     fact={outgoing.fact}
                     choices={outgoing.choices}
@@ -2053,7 +2129,6 @@ const styles = StyleSheet.create({
     backgroundColor: card.board,
   },
   loading: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  loadingMark: { fontFamily: fonts.slab, fontSize: 26, color: card.stock, letterSpacing: 0.6 },
   loadingDots: { fontFamily: fonts.slab, fontSize: 26, color: card.sage, marginTop: 10 },
   historyChromeHidden: { display: 'none' },
 
@@ -2071,8 +2146,6 @@ const styles = StyleSheet.create({
   smallTick: { width: 4, height: 8, borderRadius: 1, backgroundColor: card.sage },
   smallTickOn: { backgroundColor: card.ink },
   cardProgressText: { fontFamily: fonts.gothic, fontSize: 10, color: card.ink, marginLeft: 4 },
-  wordmark: { fontFamily: fonts.slab, fontSize: 16, color: card.stock, letterSpacing: 0.5 },
-  wordmarkDot: { color: card.gold },
 
   // ---- search + reroll ----
   searchRow: {

@@ -66,7 +66,7 @@ export function Landing() {
               <img src="/hiraia-profile.png" alt="" width={26} height={26} className="mc-stamp" />
             </div>
 
-            <h1 className="mt-5 font-slab text-[2.75rem] leading-none tracking-wide text-[var(--ink)] sm:text-6xl">
+            <h1 className="mt-5 font-slab text-[3.5rem] leading-none tracking-wide text-[var(--ink)] sm:text-7xl">
               HIRAIA
             </h1>
             <p className="mt-4 font-zilla text-[1.35rem] font-bold leading-snug text-[var(--ink)] text-balance sm:text-[1.55rem]">

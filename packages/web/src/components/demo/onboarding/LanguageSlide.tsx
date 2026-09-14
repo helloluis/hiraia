@@ -1,5 +1,7 @@
 'use client';
 
+import { Wordmark } from '@/components/brand/Wordmark';
+
 /**
  * Page 1 of the onboarding pad: "how do you want to use Hiraia?" typewriters on, cycling
  * Tagalog → English → Bisaya → (loop), each question replacing the last; three language
@@ -83,12 +85,12 @@ export function LanguageSlide({
         <img
           src="/hiraia-profile.png"
           alt="Hiraia"
-          className="h-[76px] w-[76px] rounded-full ring-1 ring-[rgba(12,52,61,0.12)]"
+          className="h-[76px] w-[76px] rounded-full border-[3px] border-[var(--ink)] bg-[var(--peach)] p-1"
         />
-        <h2 className="mt-2 font-slab text-[32px] leading-none tracking-wide text-[var(--ink)]">HIRAIA</h2>
+        <h2 className="mt-2 font-slab text-[36px] leading-none tracking-wide text-[var(--ink)]"><Wordmark /></h2>
 
         <div className="flex min-h-[4.5rem] items-center justify-center">
-          <p className="text-center font-zilla text-[1.15rem] font-bold leading-snug text-[var(--ink)]">
+          <p className="text-center font-zilla text-[21px] font-bold leading-[28px] text-[var(--ink)]">
             {typed}
             <Caret />
           </p>
@@ -102,7 +104,7 @@ export function LanguageSlide({
             type="button"
             onClick={() => onPick(opt.lang)}
             className={`flex items-center gap-2.5 rounded-[13px] border-[3px] border-[var(--ink)] px-4 py-3 text-left ${
-              picked === opt.lang ? 'bg-[var(--ink)]' : 'bg-[var(--stock)]'
+              picked === opt.lang ? 'bg-[var(--ink)]' : 'bg-[var(--peach)]'
             }`}
           >
             <span

@@ -1,3 +1,4 @@
+import { Wordmark } from '../components/brand/Wordmark';
 import { useState } from 'react';
 import { reloadAppAsync } from 'expo';
 import {
@@ -68,7 +69,7 @@ export function ProfilePicker({ onCancel }: { onCancel: () => void }) {
               style={styles.flex}
               contentContainerStyle={styles.content}
             >
-              <Text style={styles.brand}>HIRAIA.</Text>
+              <View style={{ alignItems: 'center' }}><Wordmark size={36} /></View>
               <Text style={styles.title}>Who’s learning today?</Text>
               <Text style={styles.text}>
                 You can use your first name to keep your activity separate on this phone. Your name
@@ -144,7 +145,6 @@ const styles = StyleSheet.create({
   screen: { ...StyleSheet.absoluteFillObject, backgroundColor: card.board },
   flex: { flex: 1 },
   content: { paddingHorizontal: 4, paddingTop: 18, gap: 14, paddingBottom: 20 },
-  brand: { fontFamily: fonts.slab, fontSize: 28, color: card.ink, textAlign: 'center' },
   title: {
     fontFamily: fonts.cardBodyBold,
     fontSize: 23,
