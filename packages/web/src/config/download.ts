@@ -27,13 +27,13 @@ export const DOWNLOAD = {
    */
   released: true,
 
-  version: '0.1',
+  version: '0.4.0',
 
   apk: {
-    url: 'https://hiraia.org/models/hiraia.apk',
+    url: 'https://assets.hiraia.org/models/hiraia-v0p4p0.apk',
     /** Omit from the UI when 0 (file not measured yet). */
     fileSizeMB: 297,
-    sha256: '3d4092ab00377526be0fb00e043c2a63758fbad0afaf0e2c1db2469d98219cc9',
+    sha256: '3502c0b6303e53928d78cc22ba3299ef1d5ad09a868a84843c81f0dd22789800',
   },
 
   /** SHA-256 of the signing cert. Stays the same across releases. */
@@ -41,7 +41,7 @@ export const DOWNLOAD = {
 
   minAndroid: 10,
   /** Local-model RAM recommendation. Matches ACTIVE_MODEL.minRamGB in the mobile app. */
-  minRamGB: 6,
+  minRamGB: 4,
   /**
    * First-run download, in GB: the base model plus the semantic embedder. Both are
    * fetched from the mirror on first launch (nothing else is — art is in the APK, and
