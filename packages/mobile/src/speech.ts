@@ -32,12 +32,21 @@ export function canSpeak(language: Language): boolean {
 export { preloadVoice };
 
 /**
- * Speak/stop with a `speaking` flag for the button's state, plus whether the last attempt
- * failed so the caller can say so. Speech stops on unmount, so pulling the ticket to the
- * next card never leaves audio running underneath the new one.
+ * The button's state is a PHASE, not a boolean, because on a slow phone the stretch
+ * between the tap and the first sound is seconds long and a control that looks inert for
+ * that long reads as broken to a child:
+ *
+ *   idle ──tap──▶ loading ──first audio──▶ speaking ──finished/stopped──▶ idle
+ *
+ * `loading` starts at the tap; `speaking` starts when sound actually comes out (the
+ * player's onStart), which is also the cue the reading guide keys its sweep to. Speech
+ * stops on unmount, so pulling the ticket to the next card never leaves audio running
+ * underneath the new one.
  */
+export type SpeechPhase = 'idle' | 'loading' | 'speaking';
+
 export function useSpeech() {
-  const [speaking, setSpeaking] = useState(false);
+  const [phase, setPhase] = useState<SpeechPhase>('idle');
   const alive = useRef(true);
 
   useEffect(() => {
@@ -50,36 +59,47 @@ export function useSpeech() {
 
   const stop = useCallback(() => {
     stopNow();
-    if (alive.current) setSpeaking(false);
+    if (alive.current) setPhase('idle');
   }, []);
 
   const speak = useCallback(
-    async (text: string, language: Language, onError?: () => void) => {
+    async (
+      text: string,
+      language: Language,
+      hooks?: { onStart?: () => void; onError?: () => void },
+    ) => {
       const body = text.trim();
       if (!body) return;
-      setSpeaking(true);
+      setPhase('loading');
       try {
-        await speakNow(body, language);
+        await speakNow(body, language, () => {
+          if (alive.current) setPhase('speaking');
+          hooks?.onStart?.();
+        });
       } catch (e) {
         console.warn('[speech] could not read this aloud:', e);
-        onError?.();
+        hooks?.onError?.();
       } finally {
-        if (alive.current) setSpeaking(false);
+        if (alive.current) setPhase('idle');
       }
     },
     [],
   );
 
   const toggle = useCallback(
-    (text: string, language: Language, onError?: () => void) => {
+    (
+      text: string,
+      language: Language,
+      hooks?: { onStart?: () => void; onError?: () => void },
+    ) => {
       // A second tap stops rather than queues — barge-in, the way a kid expects.
-      if (speaking) stop();
-      else void speak(text, language, onError);
+      if (phase !== 'idle') stop();
+      else void speak(text, language, hooks);
     },
-    [speaking, speak, stop],
+    [phase, speak, stop],
   );
 
-  return { speaking, speak, stop, toggle };
+  return { phase, speaking: phase !== 'idle', speak, stop, toggle };
 }
 
 /**

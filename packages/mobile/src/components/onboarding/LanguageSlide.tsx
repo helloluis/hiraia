@@ -1,8 +1,8 @@
 import { Wordmark } from '../brand/Wordmark';
 /**
  * Card 1 of the onboarding deck: "how do you want to use Hiraia?" typewriters on, cycling
- * Tagalog → English → (loop), each replacing the last; three language plates (each written
- * in its own language) below.
+ * Tagalog → English → (loop), each replacing the last; three language plates below, each
+ * printing its plain language name.
  *
  * PRINTED ON the card surface OnboardingCarousel owns — this component fills that surface's
  * content box (`cardFrame.content`) exactly as CardPage/QuestionPage/RewardCard do, and adds
@@ -20,7 +20,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import type { Language } from '@hiraia/shared';
 
-import { LANG_BUTTON, LANG_CYCLE, Q_HOW_USE, SLIDE_BAND } from '../../config/onboarding';
+import { LANG_CYCLE, Q_HOW_USE, SLIDE_BAND } from '../../config/onboarding';
 import { LANGUAGE_OPTIONS } from '../../config/languages';
 import { card, fonts } from '../../theme';
 import { Arrow, CardPrint, IndexBand, cardFrame } from '../cards/CardFrame';
@@ -71,7 +71,9 @@ export function LanguageSlide({ onPick }: { onPick: (lang: Language) => void }) 
         <View style={styles.disc}>
           <Image source={CAT} style={styles.discImage} resizeMode="contain" />
         </View>
-        <View style={{ marginTop: 10 }}><Wordmark size={36} /></View>
+        <View style={{ marginTop: 10 }}>
+          <Wordmark size={36} />
+        </View>
 
         {/* fixed-height so the plates don't jump as the question retypes */}
         <View style={styles.questionBox}>
@@ -82,6 +84,7 @@ export function LanguageSlide({ onPick }: { onPick: (lang: Language) => void }) 
         </View>
       </View>
 
+      {/* the plain language names — LANGUAGE_OPTIONS' own labels, shared with Settings */}
       <View style={styles.options}>
         {LANGUAGE_OPTIONS.map((opt) => (
           <View key={opt.lang} style={opt.comingSoon ? undefined : cardFrame.rowLedge}>
@@ -95,7 +98,7 @@ export function LanguageSlide({ onPick }: { onPick: (lang: Language) => void }) 
                 style={[styles.optionLabel, opt.comingSoon && styles.optionLabelComingSoon]}
                 numberOfLines={1}
               >
-                {LANG_BUTTON[opt.lang]}
+                {opt.label}
               </Text>
               {opt.beta && (
                 <View style={styles.betaPill}>

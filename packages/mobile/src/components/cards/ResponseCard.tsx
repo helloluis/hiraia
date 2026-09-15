@@ -30,6 +30,7 @@
  * CardPage. Every "shadow" is a ledge (a darker parent View with a few px of bottom
  * padding), because RN on Android ignores shadowOffset and honours only `elevation`.
  */
+import { useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
 import type { Language } from '@hiraia/shared';
@@ -137,11 +138,15 @@ export function ResponseCard({
    * centred sentence, so only the generated answer is swept.
    */
   const reduceMotion = useReduceMotion();
+  // The sweep runs ONLY when read-aloud audio starts — same rule as CardPage: a card
+  // that is never listened to is never swept.
+  const [speechEpoch, setSpeechEpoch] = useState(0);
   const rg = useReadingGuide({
     enabled: !miss && !reduceMotion,
-    armed: true,
+    armed: speechEpoch > 0,
     text: response.text ?? '',
     order: ANSWER_ORDER,
+    epoch: speechEpoch,
   });
 
   return (
@@ -160,7 +165,14 @@ export function ResponseCard({
         tone="olive"
         chip="?"
         label={t.cards.yourQuestion}
-        stamp={<CardSpeaker text={spokenAnswer} language={language} variant="band" />}
+        stamp={
+          <CardSpeaker
+            text={spokenAnswer}
+            language={language}
+            variant="band"
+            onAudioStart={() => setSpeechEpoch((e) => e + 1)}
+          />
+        }
       />
 
       {/* .q — the question line of a factoid card, in the bold slab. The kid's own words,

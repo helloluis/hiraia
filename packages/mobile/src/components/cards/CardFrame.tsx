@@ -21,10 +21,12 @@
  * because RN on Android ignores shadowOffset/shadowRadius and honours only `elevation`,
  * which cannot be offset downward.
  */
-import { useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Animated, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
+
+import Svg, { Path } from 'react-native-svg';
 
 import { card, fonts } from '../../theme';
 
@@ -324,16 +326,73 @@ export function Ticket({
  * hitSlop is generous because the band sits at the top of the card where an upward
  * swipe often begins, and TapTarget yields to that pan rather than swallowing it.
  */
+/** One arc of the speaker's sound waves, alone in its own Svg so opacity can animate. */
+function Wave({ d, color, size }: { d: string; color: string; size: number }) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" style={StyleSheet.absoluteFill}>
+      <Path d={d} stroke={color} strokeWidth={2.1} strokeLinecap="round" fill="none" />
+    </Svg>
+  );
+}
+
+const WAVE_NEAR = 'M15.5 9 a4.2 4.2 0 0 1 0 6';
+const WAVE_FAR = 'M18 6.6 a8 8 0 0 1 0 10.8';
+
 export function BandSpeaker({
-  speaking,
+  phase,
   onPress,
   accessibilityLabel,
 }: {
-  speaking: boolean;
+  /** idle → tap → loading (pulsing, "working on it") → speaking (waves animate). */
+  phase: 'idle' | 'loading' | 'speaking';
   onPress: () => void;
   accessibilityLabel: string;
 }) {
-  const ink = speaking ? card.stock : card.ink;
+  // Loading: the whole disc breathes. Speaking: the two arcs ripple outward in turn.
+  // Both are opacity-only on the native driver — nothing measured, nothing per-frame in JS.
+  const pulse = useRef(new Animated.Value(1)).current;
+  const near = useRef(new Animated.Value(1)).current;
+  const far = useRef(new Animated.Value(1)).current;
+  useEffect(() => {
+    if (phase === 'loading') {
+      const loop = Animated.loop(
+        Animated.sequence([
+          Animated.timing(pulse, { toValue: 0.35, duration: 450, useNativeDriver: true }),
+          Animated.timing(pulse, { toValue: 1, duration: 450, useNativeDriver: true }),
+        ]),
+      );
+      loop.start();
+      return () => {
+        loop.stop();
+        pulse.setValue(1);
+      };
+    }
+    if (phase === 'speaking') {
+      const ripple = (v: Animated.Value, delay: number) =>
+        Animated.loop(
+          Animated.sequence([
+            Animated.delay(delay),
+            Animated.timing(v, { toValue: 0.15, duration: 280, useNativeDriver: true }),
+            Animated.timing(v, { toValue: 1, duration: 280, useNativeDriver: true }),
+            Animated.delay(240 - delay),
+          ]),
+        );
+      const a = ripple(near, 0);
+      const b = ripple(far, 160);
+      a.start();
+      b.start();
+      return () => {
+        a.stop();
+        b.stop();
+        near.setValue(1);
+        far.setValue(1);
+      };
+    }
+    return undefined;
+  }, [phase, pulse, near, far]);
+
+  const on = phase === 'speaking';
+  const ink = on ? card.stock : card.ink;
   return (
     <TapTarget
       onPress={onPress}
@@ -341,21 +400,22 @@ export function BandSpeaker({
       accessibilityLabel={accessibilityLabel}
       style={(pressed) => [
         cardFrame.stamp,
-        speaking && { backgroundColor: card.ink },
+        cardFrame.speakerDisc,
+        on && { backgroundColor: card.ink },
         pressed && cardFrame.stampPressed,
       ]}
     >
-      <View style={cardFrame.bandGlyph}>
-        {speaking ? (
-          <View style={[cardFrame.bandStop, { backgroundColor: ink }]} />
-        ) : (
-          <>
-            <View style={[cardFrame.bandBody, { backgroundColor: ink }]} />
-            <View style={[cardFrame.bandCone, { borderRightColor: ink }]} />
-            <View style={[cardFrame.bandWave, { borderRightColor: ink }]} />
-          </>
-        )}
-      </View>
+      <Animated.View style={[cardFrame.speakerGlyph, phase === 'loading' && { opacity: pulse }]}>
+        <Svg width={20} height={20} viewBox="0 0 24 24">
+          <Path d="M3.5 9 v6 h4 l5.5 4.5 V4.5 L7.5 9 Z" fill={ink} />
+        </Svg>
+        <Animated.View style={[StyleSheet.absoluteFill, { opacity: near }]} pointerEvents="none">
+          <Wave d={WAVE_NEAR} color={ink} size={20} />
+        </Animated.View>
+        <Animated.View style={[StyleSheet.absoluteFill, { opacity: far }]} pointerEvents="none">
+          <Wave d={WAVE_FAR} color={ink} size={20} />
+        </Animated.View>
+      </Animated.View>
     </TapTarget>
   );
 }
@@ -509,33 +569,18 @@ export const cardFrame = StyleSheet.create({
   stampImage: { width: 26, height: 26 },
   stampPressed: { opacity: 0.55 },
 
-  /* ---- speaker glyph at index-band scale (26px disc) ---- */
-  bandGlyph: { width: 16, height: 12, marginLeft: -1 },
-  bandBody: { position: 'absolute', left: 0, top: 4, width: 3, height: 5 },
-  bandCone: {
-    position: 'absolute',
-    left: 2,
-    top: 1,
-    width: 0,
-    height: 0,
-    borderTopWidth: 5,
-    borderBottomWidth: 5,
-    borderRightWidth: 4,
-    borderTopColor: 'transparent',
-    borderBottomColor: 'transparent',
+  /* ---- the read-aloud disc at index-band scale ---- */
+  // 30px against the band's 34: the biggest disc that still sits inside the band, and a
+  // 2px ink ring so it reads as a BUTTON against the cream — the borderless 26px disc
+  // with a border-trick cone rendered badly and vanished on this stock.
+  speakerDisc: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    borderWidth: 2,
+    borderColor: card.ink,
   },
-  /** One arc only: at 26px a second ring reads as noise. */
-  bandWave: {
-    position: 'absolute',
-    left: 7,
-    top: 1,
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    borderWidth: 1.5,
-    borderColor: 'transparent',
-  },
-  bandStop: { width: 8, height: 8, borderRadius: 1.5 },
+  speakerGlyph: { width: 20, height: 20, marginLeft: -1 },
 
   // ---- printed rule ----
   divider: {

@@ -83,12 +83,16 @@ async function modelPath(voice: Voice): Promise<string> {
     fresh = false; // an unreadable stamp means re-copy, never means keep
   }
   if (!fresh) {
+    const t0 = Date.now();
     root.create({ intermediates: true, idempotent: true });
     if (file.exists) file.delete();
     const asset = Asset.fromModule(voice.asset);
     await asset.downloadAsync();
     new File(asset.localUri ?? asset.uri).copy(file);
     stamp.write(voice.meta.sha256);
+    // One-time per install (or per APK update). If this shows up before a tap in logcat,
+    // the boot preload did its job; if it shows up AFTER a tap, the kid paid for it.
+    console.log(`[voice] model ${voice.id}: copied out of the APK in ${Date.now() - t0}ms`);
   }
   return file.uri.replace(/^file:\/\//, '');
 }
@@ -102,6 +106,7 @@ function sessionFor(language: Language): Promise<InferenceSession> {
   if (existing) return existing;
   const voice = VOICES[language];
   if (!voice) return Promise.reject(new Error(`no bundled voice for ${language}`));
+  const t0 = Date.now();
   const opening = modelPath(voice).then((path) =>
     InferenceSession.create(path, {
       // CPU only, deliberately. NNAPI would be faster on paper, but the devices this
@@ -112,6 +117,10 @@ function sessionFor(language: Language): Promise<InferenceSession> {
       graphOptimizationLevel: 'all',
       intraOpNumThreads: 2,
     }),
+  );
+  void opening.then(
+    () => console.log(`[voice] session ${voice.id} ready in ${Date.now() - t0}ms`),
+    (e) => console.log(`[voice] session ${voice.id} FAILED: ${String(e).slice(0, 120)}`),
   );
   // A failed load must not be cached, or the button is dead for the rest of the session.
   opening.catch(() => sessions.delete(language));

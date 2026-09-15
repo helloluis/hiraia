@@ -18,14 +18,21 @@ export function CardSpeaker({
   text,
   language,
   variant = 'ticket',
+  onAudioStart,
 }: {
   text: string;
   language: Language;
   /** 'band' prints it in the index-band stamp disc; 'ticket' beside the gold ticket. */
   variant?: 'band' | 'ticket';
+  /**
+   * Fires when sound actually starts — seconds after the tap on a slow phone. CardPage
+   * keys the reading guide's sweep to it so the gold marker moves with the voice, not
+   * with the silence before it.
+   */
+  onAudioStart?: () => void;
 }) {
   const t = uiStrings(language);
-  const { speaking, toggle } = useSpeech();
+  const { phase, toggle } = useSpeech();
 
   // Warm the model while the card is being read rather than on the tap. The first load
   // also materialises the weights out of the APK, which is the slow part and happens
@@ -39,10 +46,14 @@ export function CardSpeaker({
   if (!canSpeak(language)) return null;
 
   const press = () =>
-    toggle(text, language, () =>
-      Alert.alert(t.speech.failedTitle, t.speech.failedBody, [{ text: t.speech.dismiss }]),
-    );
-  const label = speaking ? t.speech.stop : t.speech.listen;
-  const Ctl = variant === 'band' ? BandSpeaker : Speaker;
-  return <Ctl speaking={speaking} accessibilityLabel={label} onPress={press} />;
+    toggle(text, language, {
+      onStart: onAudioStart,
+      onError: () =>
+        Alert.alert(t.speech.failedTitle, t.speech.failedBody, [{ text: t.speech.dismiss }]),
+    });
+  const label = phase !== 'idle' ? t.speech.stop : t.speech.listen;
+  if (variant === 'band') {
+    return <BandSpeaker phase={phase} accessibilityLabel={label} onPress={press} />;
+  }
+  return <Speaker speaking={phase !== 'idle'} accessibilityLabel={label} onPress={press} />;
 }

@@ -43,7 +43,7 @@ model-cache/
 # Bundled neural TTS voices. `voice.json` IS tracked (tiny, and its hash records which
 # export the app expects); the weights are a build output, staged into the asset tree by
 # scripts/voice/package-voices.py from an ONNX export — same treatment as cards.db.
-packages/mobile/assets/voices/*/model.onnx
+packages/mobile/assets/voices/*/model*.onnx
 
 # LoRA training output
 finetuning/lora-output/

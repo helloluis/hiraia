@@ -1,6 +1,7 @@
 /**
- * Card 2 of the onboarding deck: "what grade are you in?" typewriters on in the language
- * just picked on card 1, above a 2×4 grid of grade plates (3–10). The current grade —
+ * Card 2 of the onboarding deck: "what's your grade level?" typewriters on in the language
+ * just picked on card 1, above a 2×4 grid of grade plates — the numbers 3 through 10,
+ * spelled out in that language (GRADE_NUMBER_WORD). The current grade —
  * Grade 5 by default, because our kids are behind academically and the tutor pitches low
  * unless told otherwise — is pre-highlighted; tapping any grade applies it and advances.
  *
@@ -15,8 +16,8 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import type { GradeLevel, Language } from '@hiraia/shared';
 
-import { GRADE_OPTIONS, GRADE_WORD } from '../../config/grades';
-import { Q_GRADE, SLIDE_BAND } from '../../config/onboarding';
+import { GRADE_OPTIONS } from '../../config/grades';
+import { GRADE_NUMBER_WORD, Q_GRADE, SLIDE_BAND } from '../../config/onboarding';
 import { card, fonts } from '../../theme';
 import { CardPrint, IndexBand, cardFrame } from '../cards/CardFrame';
 import { useTypewriter } from './useTypewriter';
@@ -87,7 +88,7 @@ export function GradeSlide({
                       style={[styles.optionLabel, isSelected && styles.optionLabelSelected]}
                       numberOfLines={1}
                     >
-                      {GRADE_WORD[language]} {g}
+                      {GRADE_NUMBER_WORD[language][g]}
                     </Text>
                   </TouchableOpacity>
                 </View>

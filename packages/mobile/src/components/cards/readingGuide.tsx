@@ -129,9 +129,16 @@ interface Options {
   text: string;
   /** Slot names in reading order. Every slot listed must report before the run starts. */
   order: readonly string[];
+  /**
+   * Bump to run (or re-run) the sweep. The read-aloud speaker bumps this when its audio
+   * actually starts, and that is the ONLY trigger — the guide no longer runs on its own
+   * after the typewriter, because a marker moving ahead of the voice a kid just asked for
+   * read as the card hurrying them. One listen, one sweep, every listen.
+   */
+  epoch?: number;
 }
 
-export function useReadingGuide({ enabled, armed, text, order }: Options): ReadingGuide {
+export function useReadingGuide({ enabled, armed, text, order, epoch = 0 }: Options): ReadingGuide {
   const [slots, setSlots] = useState<Record<string, Slot>>({});
   const textRef = useRef(text);
   textRef.current = text;
@@ -195,7 +202,8 @@ export function useReadingGuide({ enabled, armed, text, order }: Options): Readi
    * effect builds the sequence on the latest boxes.
    */
   useEffect(() => {
-    if (!enabled || !armed || sweptFor.current === text) return;
+    const sweepKey = `${epoch}:${text}`;
+    if (!enabled || !armed || sweptFor.current === sweepKey) return;
     const keys = orderKey ? orderKey.split('|') : [];
     const ready = keys.every((k) => slots[k]?.lines && slots[k]!.forText === text);
     if (!ready) return;
@@ -231,14 +239,14 @@ export function useReadingGuide({ enabled, armed, text, order }: Options): Readi
     );
     const run = Animated.sequence(steps);
     run.start(({ finished }) => {
-      if (finished) sweptFor.current = text;
+      if (finished) sweptFor.current = sweepKey;
     });
     return () => {
       run.stop();
       for (const vs of values.values()) for (const v of vs) v.setValue(0);
       fade.setValue(1);
     };
-  }, [enabled, armed, text, orderKey, slots, progress, fade, values]);
+  }, [enabled, armed, text, orderKey, epoch, slots, progress, fade, values]);
 
   return useMemo(
     () => ({ on: enabled, slots, text, fade, progress, onTextLayout, onLayout }),

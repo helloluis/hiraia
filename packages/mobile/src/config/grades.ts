@@ -18,15 +18,17 @@ export function toGradeLevel(value: string | number | null | undefined): GradeLe
 }
 
 /**
- * The word that precedes the number wherever a grade is SHOWN to a kid — the onboarding
- * buttons and the deck footer. English "Grade" in all three languages on purpose: Filipino
- * schools say "Grade 5" even when the rest of the sentence is Tagalog (DepEd's "Baitang" /
- * "Grado" read formal, and no kid says them out loud). Kept as a per-language map, and as
- * the SINGLE definition both surfaces read, so a native reviewer can change one language
- * without the two screens drifting apart.
+ * The word that precedes the number wherever a grade is SHOWN to a kid next to its digit —
+ * the deck footer and the curriculum sheet. English "Grade" in all three languages on
+ * purpose: Filipino schools say "Grade 5" even when the rest of the sentence is Tagalog
+ * (DepEd's "Baitang" / "Grado" read formal, and no kid says them out loud). Kept as a
+ * per-language map, and as the SINGLE definition both surfaces read, so a native reviewer
+ * can change one language without the two screens drifting apart.
  *
- * (The Settings section HEADING is different — that's chrome, not the label on a number,
- * so it is localised normally in strings.ts as `sectionGrade`.)
+ * (The onboarding grade BUTTONS used to print it too; they now spell out the bare number in
+ * the chosen language instead — GRADE_NUMBER_WORD in config/onboarding.ts. The Settings
+ * section HEADING is different again — that's chrome, not the label on a number, so it is
+ * localised normally in strings.ts as `sectionGrade`.)
  */
 export const GRADE_WORD: Record<Language, string> = {
   tagalog: 'Grade',

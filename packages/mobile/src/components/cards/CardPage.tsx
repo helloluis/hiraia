@@ -538,7 +538,22 @@ export function CardPage({
    */
   const reduceMotion = useReduceMotion();
   const order = readingOrder(ask != null, bodySpec);
-  const rg = useReadingGuide({ enabled: guide && !reduceMotion, armed: done, text, order });
+  /**
+   * The sweep belongs to the VOICE now, not the typewriter: it used to run on its own once
+   * the type landed, which read as the card hurrying ahead of the audio a kid had just
+   * asked for. So it only ever runs when the speaker's sound actually starts (the epoch
+   * bump), and a card that is never read aloud is never swept. Pace is not matched exactly
+   * — the guide reads at READING_CHARS_PER_SECOND, the voice at its own rate — and does
+   * not need to be: both lead the eye left-to-right through the same lines.
+   */
+  const [speechEpoch, setSpeechEpoch] = useState(0);
+  const rg = useReadingGuide({
+    enabled: guide && !reduceMotion,
+    armed: speechEpoch > 0,
+    text,
+    order,
+    epoch: speechEpoch,
+  });
 
   // The answer half starts revealing where the question (plus its separator) ended.
   const bodyShown = ask == null ? shown : shown - ask.length - QA_SEPARATOR.length;
@@ -719,7 +734,14 @@ export function CardPage({
         <IndexBand
           tone={branching ? 'graphite' : 'ink'}
           label={band}
-          stamp={<CardSpeaker text={text} language={language} variant="band" />}
+          stamp={
+            <CardSpeaker
+              text={text}
+              language={language}
+              variant="band"
+              onAudioStart={() => setSpeechEpoch((e) => e + 1)}
+            />
+          }
         />
 
         {/*

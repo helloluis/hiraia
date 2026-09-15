@@ -1,16 +1,26 @@
 /**
- * Reading a card aloud: chunk, synthesise, play, and prefetch the next chunk while the
- * current one is playing.
+ * Reading a card aloud: chunk, synthesise EAGERLY, and play the clips back to back.
  *
- * Chunking (see ./chunk) is not a nicety. A whole card is 10-20 seconds of speech, and
- * the model runs at roughly real time on a budget phone — synthesising it in one shot
- * would mean a ten-second silence after the tap. Per-sentence, the first sound arrives
- * after the first sentence, and every later one is already rendered when it is needed.
+ * Chunking (see ./chunk) is not a nicety. A whole card is 10-20 seconds of speech and the
+ * model is not fast on a budget phone, so synthesising a card in one pass would mean a long
+ * dead silence after the tap. Per-sentence, the first sound arrives after the first
+ * sentence alone.
  *
- * Only one read-aloud runs at a time. A second tap (or turning the page) cancels the one
- * in flight: `stop()` bumps a generation counter that every in-flight step checks, so a
- * synthesis that was already running finishes into the void instead of playing over the
- * next card.
+ * Synthesis runs EAGERLY down the whole card — chunk 2 starts rendering the moment chunk 1
+ * hands the CPU back, not when chunk 1 finishes PLAYING. On a phone where synthesis is
+ * near real-time, the lazy one-ahead version left a silence between every pair of
+ * sentences (audibly: a long gap between a question and its answer); eager synthesis gives
+ * later chunks the whole playback time of earlier ones as head start. Each rendered clip is
+ * also wrapped in its AudioPlayer AHEAD of time, so the hand-off between clips is a play()
+ * call, not a file load.
+ *
+ * Only one read-aloud runs at a time. A second tap (or turning the page) cancels the one in
+ * flight: `stop()` bumps a generation counter that every async step checks, so synthesis
+ * already on the CPU finishes into the void instead of playing over the next card.
+ *
+ * Every stage logs under the `[voice]` tag with timings — these lines are how on-device
+ * latency is measured over adb logcat (there is no other instrument on a release build),
+ * so they are deliberately terse, greppable, and always on.
  */
 import { createAudioPlayer, setAudioModeAsync, type AudioPlayer } from 'expo-audio';
 import { Directory, File, Paths } from 'expo-file-system';
@@ -23,20 +33,8 @@ import { normalizeForSpeech } from './normalize';
 import { hasSpeakableText } from './tokenizer';
 import { encodeWav } from './wav';
 
+const TAG = '[voice]';
 const dir = () => new Directory(Paths.cache, 'speech');
-
-/** Two slots, alternating: the one playing and the one being prefetched. */
-let slot = 0;
-function writeClip(samples: Float32Array, sampleRate: number): string {
-  const root = dir();
-  root.create({ intermediates: true, idempotent: true });
-  slot = (slot + 1) % 2;
-  const file = new File(root, `chunk-${slot}.wav`);
-  if (file.exists) file.delete();
-  file.create();
-  file.write(encodeWav(samples, sampleRate));
-  return file.uri;
-}
 
 let generation = 0;
 let player: AudioPlayer | null = null;
@@ -53,37 +51,72 @@ export function stop(): void {
   release();
 }
 
-function playFile(uri: string, mine: number): Promise<void> {
+/** A clip rendered and already wrapped in its (paused) player, waiting for its turn. */
+interface Prepared {
+  player: AudioPlayer;
+  seconds: number;
+}
+
+function prepare(samples: Float32Array, sampleRate: number, mine: number, i: number): Prepared {
+  const root = dir();
+  root.create({ intermediates: true, idempotent: true });
+  // Unique per (utterance, chunk): clips of one card coexist, and the previous
+  // utterance's files are swept when the next speak() starts, not reused in place.
+  const file = new File(root, `u${mine}-${i}.wav`);
+  if (file.exists) file.delete();
+  file.create();
+  file.write(encodeWav(samples, sampleRate));
+  return { player: createAudioPlayer({ uri: file.uri }), seconds: samples.length / sampleRate };
+}
+
+/** Sweep clips of finished utterances. Unlinking a file a stale player still holds is fine. */
+function sweep(mine: number) {
+  try {
+    for (const entry of dir().list()) {
+      if (entry instanceof File && !entry.name.startsWith(`u${mine}-`)) entry.delete();
+    }
+  } catch {
+    /* a missing dir on first run is not a problem */
+  }
+}
+
+function play(p: Prepared, mine: number): Promise<void> {
   return new Promise((resolve) => {
     if (mine !== generation) return resolve();
     release();
-    const p = createAudioPlayer({ uri });
-    player = p;
-    const sub = p.addListener('playbackStatusUpdate', (status) => {
+    player = p.player;
+    const sub = p.player.addListener('playbackStatusUpdate', (status) => {
       if (status.didJustFinish) {
         sub.remove();
         resolve();
       }
     });
-    p.play();
+    p.player.play();
   });
 }
 
 /**
- * Read `text` aloud in `language`. Resolves when the last chunk finishes, or immediately
- * if a newer call has superseded this one.
+ * Read `text` aloud in `language`. Resolves when the last chunk finishes, or immediately if
+ * a newer call has superseded this one. `onStart` fires when the FIRST clip actually starts
+ * sounding — the UI switches from "working" to "speaking" on it, and the reading guide
+ * takes it as its cue, so it must track real audio, not the tap.
  */
-export async function speak(text: string, language: Language): Promise<void> {
+export async function speak(
+  text: string,
+  language: Language,
+  onStart?: () => void,
+): Promise<void> {
   stop();
   const mine = generation;
+  const t0 = Date.now();
   const vocab = vocabFor(language);
   if (!vocab) return;
-  // Normalise BEFORE chunking: expansion changes the length the chunk cap is measuring,
-  // and a number must never be split across two utterances.
   const parts = chunk(normalizeForSpeech(text, language)).filter((p) =>
     hasSpeakableText(p, vocab),
   );
   if (!parts.length) return;
+  console.log(`${TAG} speak lang=${language} chunks=${parts.length} "${text.slice(0, 32)}…"`);
+  sweep(mine);
 
   if (!audioModeSet) {
     // Read-aloud is the point of the tap, so it should sound even with the ringer on
@@ -93,15 +126,46 @@ export async function speak(text: string, language: Language): Promise<void> {
   }
 
   const sampleRate = sampleRateFor(language);
-  let pending: Promise<Float32Array> | null = synthesize(parts[0]!, language);
-  for (let i = 0; i < parts.length; i += 1) {
-    const samples = await pending!;
-    if (mine !== generation) return;
-    // Kick off the next chunk BEFORE playing this one, so synthesis overlaps playback.
-    pending = i + 1 < parts.length ? synthesize(parts[i + 1]!, language) : null;
-    pending?.catch(() => {});
-    await playFile(writeClip(samples, sampleRate), mine);
-    if (mine !== generation) return;
+
+  // The synthesis line: strictly serial (the session shares two CPU threads; overlapping
+  // runs just fight each other), but launched for the WHOLE card up front. prepared[i]
+  // resolves when chunk i is rendered and its player is loaded.
+  let line: Promise<unknown> = Promise.resolve();
+  const prepared = parts.map((part, i) => {
+    const step = line.then(async () => {
+      if (mine !== generation) return null;
+      const s0 = Date.now();
+      const samples = await synthesize(part, language);
+      if (mine !== generation) return null;
+      const p = prepare(samples, sampleRate, mine, i);
+      console.log(
+        `${TAG} chunk ${i + 1}/${parts.length} synth ${Date.now() - s0}ms → ` +
+          `${p.seconds.toFixed(1)}s audio (RTF ${((Date.now() - s0) / 1000 / p.seconds).toFixed(2)})`,
+      );
+      return p;
+    });
+    line = step.catch(() => null);
+    return step;
+  });
+
+  try {
+    for (let i = 0; i < prepared.length; i += 1) {
+      const waited = Date.now();
+      const clip = await prepared[i]!;
+      if (!clip || mine !== generation) return;
+      if (i === 0) {
+        console.log(`${TAG} first sound in ${Date.now() - t0}ms`);
+        onStart?.();
+      } else if (Date.now() - waited > 60) {
+        // The audible symptom: playback caught up with synthesis and the card went quiet
+        // mid-thought. If these show up in logcat, the model is too slow for this device.
+        console.log(`${TAG} GAP before chunk ${i + 1}: ${Date.now() - waited}ms of silence`);
+      }
+      await play(clip, mine);
+      if (mine !== generation) return;
+    }
+    console.log(`${TAG} done in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
+  } finally {
+    if (mine === generation) release();
   }
-  release();
 }

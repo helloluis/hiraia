@@ -12,6 +12,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { OnboardingCarousel } from '../components/onboarding/OnboardingCarousel';
 import { TITLE_EXIT_MS, TitleScreen } from '../components/TitleScreen';
+import { preloadVoice } from '../speech';
+import { BENCH_ON_LAUNCH, runVoiceBench } from '../voice/bench';
 import { useCardStore } from '../store/cardStore';
 import { useEngineStore } from '../store/engineStore';
 import { startUpdateChecks } from '../store/updateStore';
@@ -67,6 +69,19 @@ export default function RootLayout() {
   const changeLanguage = useEngineStore((s) => s.changeLanguage);
   const bootstrapped = useEngineStore((s) => s.bootstrapped);
   const language = useEngineStore((s) => s.language);
+  // Warm the read-aloud voice the moment a language exists — at every launch, and during
+  // onboarding right after slide 1's pick, so the one-time copy-out-of-the-APK and the
+  // onnxruntime session load run while the kid is still choosing a grade instead of after
+  // their first tap on the speaker (measured cold: seconds of dead silence).
+  useEffect(() => {
+    // Diagnostic build only (see bench.ts): the matrix run replaces the ordinary preload,
+    // which would otherwise contend with it for the same cores and muddy every number.
+    if (BENCH_ON_LAUNCH) {
+      void runVoiceBench();
+      return;
+    }
+    if (language) preloadVoice(language);
+  }, [language]);
   const onboardingActive = useEngineStore((s) => s.onboardingActive);
   const setOnboardingActive = useEngineStore((s) => s.setOnboardingActive);
   const isReady = useEngineStore((s) => s.isReady);

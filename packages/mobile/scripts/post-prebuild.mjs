@@ -77,6 +77,7 @@ import path from 'node:path';
 
 import memoryPlugin from '../plugins/withHiraiaMemory.js';
 import illustrationPlugin from '../plugins/withBundledIllustrations.js';
+import onnxruntimePlugin from '../plugins/withOnnxruntime.js';
 import MANAGED_PROPS from './gradle-props.cjs';
 import { applyAbiFilters, ABI } from '../plugins/withGradleProps.js';
 
@@ -424,6 +425,11 @@ log('done');
 
 // Also runs for local builds whose native tree already exists.
 memoryPlugin.installMemoryModule(MOBILE);
+
+// onnxruntime-react-native's legacy unimodule.json makes SDK 54 autolinking package the
+// native .so but skip the Java registration, so NativeModules.Onnxruntime is null and the
+// TTS import crashes the app on launch. Register its ReactPackage by hand — see the plugin.
+onnxruntimePlugin.registerOnnxruntime(MOBILE);
 
 // Also register native illustration assets in long-lived local Android trees.
 illustrationPlugin.install(MOBILE);

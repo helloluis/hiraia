@@ -14,16 +14,16 @@
  * surface inside `cardFrame.content`. A slide that painted its own card would nest a
  * second card inside the first.
  *
- * THREE swipeable slides: language pick → grade pick → deck tutorial. Picking a language
+ * THREE swipeable slides: language pick → grade pick → start card. Picking a language
  * on slide 1 fires `onPickLanguage` (which starts the model download in the background) and
  * advances, the grade pick goes straight to engineStore, `onFinish` — the gold START ticket
- * on the tutorial card — dismisses it, and the user can swipe back at any time.
+ * that is the last card — dismisses it, and the user can swipe back at any time.
  *
  * There used to be a fourth card warning that a large one-time download was about to
  * happen. It was pure notice: it started nothing, touched no store, and only called
  * `onDone`. The download already begins the moment a language is picked on card 1 and runs
  * in the background, so the warning was telling a child to wait for something they were
- * never waiting for. It is gone, and `onFinish` moved onto the tutorial card's ticket.
+ * never waiting for. It is gone, and `onFinish` moved onto the last card's ticket.
  *
  * The one LAYOUT change: the BACK/dots/NEXT bar is a normal flex row under the pager
  * rather than an absolutely-positioned overlay. It used to float over the slides, which is
