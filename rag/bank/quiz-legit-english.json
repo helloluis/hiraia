@@ -1,0 +1,28 @@
+{
+  "_README": [
+    "Rows whose sentence-length options are byte-identical to English ON PURPOSE.",
+    "docs/QUIZ-RETRANSLATION.md: 'Do not fix those; forcing them into Tagalog makes the deck worse.'",
+    "The heuristic in quiz_xlate_rules.py already excludes proper nouns (capitalisation) and",
+    "number lists (digit ratio). It cannot see the classes below, so they are listed by hand,",
+    "each with the reason a reviewer accepted it. An id may only be added after looking at the",
+    "options — this file is the audit trail, not a mute-button.",
+    "Anything NOT listed here still fails check-quiz-translation.py, which is the point."
+  ],
+  "quiz-01884": "verbatim quotation — Armstrong's actual words are the answer; translating them makes the question wrong",
+  "quiz-19978": "verbatim quotations — 'Mary had a little lamb', 'To be or not to be'",
+  "quiz-23836": "verbatim quotations — the first telegraph/telephone/internet messages",
+  "quiz-08020": "mineral name — Corundum (aluminum oxide), Quartz, Feldspar",
+  "quiz-13851": "chemical names with formulas — Potassium nitrate (KNO3), Sodium chloride (NaCl)",
+  "quiz-15683": "chemical names with formulas",
+  "quiz-22040": "chemical name with formula — Potassium nitrate (KNO3)",
+  "quiz-25935": "chemical names with formulas — Silicon dioxide (SiO2), Calcium carbonate (CaCO3)",
+  "quiz-16595": "element plus atomic number — Uranium (atomic number 92)",
+  "quiz-14211": "anatomical term — Sinoatrial (SA) node",
+  "quiz-28455": "biochemical term — Glucose (blood sugar)",
+  "quiz-26702": "invented pseudo-scientific distractors; they must read as plausible English terminology",
+  "quiz-27099": "invented pseudo-scientific distractor — Dinitrogen amino acid",
+  "quiz-08472": "local species name already the head, English common name as the gloss — Tikling (Philippine rail)",
+  "quiz-09386": "local species name already the head — Galunggong (round scad)",
+  "quiz-18060": "local plant name already the head — Ampalaya (bitter gourd)",
+  "quiz-22396": "measurements — the '100 degrees Celsius' class named in QUIZ-RETRANSLATION.md"
+}
