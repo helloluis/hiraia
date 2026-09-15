@@ -43,18 +43,19 @@ export const DOWNLOAD = {
    */
   released: true,
 
-  // Public release label: v0.4.0 (mobile versionName 0.4.0).
+  // Public release label: v0.4.9 (mobile versionName 0.4.9).
   // Android versionCode is a separate, monotonically increasing build number.
-  version: '0.4.0',
+  version: '0.4.9',
 
   /**
    * android.versionCode of the APK at `apk.url` — copied from packages/mobile/app.json at
    * publish time (sign-apk.sh prints it). The installed app offers an update only when this
    * is STRICTLY greater than its own; see the header.
    *
-   * v0.4.0 / build 9: refreshed Filipino and Cebuano card translations.
+   * v0.4.9 / build 10: bundled Tagalog + English read-aloud voices, and the quiz
+   * retranslation (untranslated options 1,503 -> 0, with 17 reviewed-legit exemptions).
    */
-  versionCode: 9,
+  versionCode: 10,
   /**
    * Oldest versionCode the current mirror content still supports. Below this the in-app
    * update bar cannot be snoozed (the ✕ is hidden). Reserved for a release that breaks the
@@ -62,25 +63,25 @@ export const DOWNLOAD = {
    */
   minSupportedVersionCode: 1,
   /** ISO date the APK at `apk.url` went live on the mirror (for the manifest's publishedAt). */
-  publishedAt: '2026-09-14',
+  publishedAt: '2026-09-15',
 
   apk: {
-    url: 'https://assets.hiraia.org/models/hiraia-v0p4p0.apk',
+    url: 'https://assets.hiraia.org/models/hiraia-v0p4p9.apk',
     /** Omit from the UI when 0 (file not measured yet). */
-    fileSizeMB: 297,
+    fileSizeMB: 411,
     /**
      * EXACT size in bytes of the signed APK — the in-app downloader's hard gate (a short
      * body is a captive-portal page, not an APK). 0 = not measured; the manifest then
      * offers nothing.
      */
-    bytes: 311854386,
-    sha256: '3502c0b6303e53928d78cc22ba3299ef1d5ad09a868a84843c81f0dd22789800',
+    bytes: 430749633,
+    sha256: '580440e87e1381d1bd3e20497a06a952fca4cf3674389bda14436c85ca208c60',
     /**
      * MD5 of the same file, lowercase hex — the in-app downloader verifies MD5 (native,
      * streaming; see engine/modelDownload.ts), the landing page shows sha256. Empty = not
      * measured; the manifest then offers nothing.
      */
-    md5: '4d7b341763bf66df3ec64dc49b839cbf',
+    md5: '9cfaf1d9f8519ae2ee61365d1799fc68',
   },
 
   /** SHA-256 of the signing cert. Stays the same across releases. */
