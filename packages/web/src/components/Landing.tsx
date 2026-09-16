@@ -86,6 +86,14 @@ export function Landing() {
             </p>
 
             <div className="relative z-[1] mt-6 flex flex-col gap-3">
+              <a
+                href="/hiraia-whitepaper.pdf"
+                target="_blank"
+                rel="noopener"
+                className="self-start font-zilla text-[0.95rem] font-semibold tracking-wide text-[var(--ink)] underline decoration-[var(--gold)] decoration-2 underline-offset-4 transition-opacity hover:opacity-75"
+              >
+                Read the Whitepaper →
+              </a>
               <Ticket onClick={openDemo}>Try the demo</Ticket>
               <Ticket onClick={scrollToDownload} ghost>
                 Download for free
