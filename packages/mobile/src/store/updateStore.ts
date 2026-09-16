@@ -33,6 +33,7 @@
  * the feed carries on. Only the download / install steps surface a `failed` state, and
  * only because the reader asked for them.
  */
+import * as Application from 'expo-application';
 import Constants from 'expo-constants';
 import {
   cacheDirectory,
@@ -55,8 +56,9 @@ export const MANIFEST_URL =
 
 /** The manifest fetch's hard timeout — a captive portal or a dead link must not hang the store. */
 const FETCH_TIMEOUT_MS = 8_000;
-/** How long the ✕ hides the ribbon. Keyed to the versionCode it hid, so a NEWER release shows at once. */
-const SNOOZE_MS = 24 * 60 * 60 * 1000;
+/** How long the ✕ hides the banner: a WEEK — dismissing is a real answer, not a nag reset.
+ * Keyed to the versionCode it hid, so a NEWER release still shows at once. */
+const SNOOZE_MS = 7 * 24 * 60 * 60 * 1000;
 /** Minimum spacing between two checks while the app stays in use. */
 const RECHECK_MS = 6 * 60 * 60 * 1000;
 /**
@@ -125,13 +127,20 @@ interface UpdateState {
   forced: boolean;
 
   /** Ask the manifest. Silent on every failure. `reason` is for the log only. */
-  checkForUpdate: (reason: 'launch' | 'foreground' | 'tick' | 'deferred') => Promise<void>;
+  checkForUpdate: (reason: 'launch' | 'foreground' | 'tick' | 'deferred' | 'manual') => Promise<void>;
   /** 'available' | 'failed' → 'downloading' → 'ready' | 'failed'. */
   startDownload: () => Promise<void>;
   /** 'ready' → hands the APK to Android's installer (the user confirms there). */
   install: () => Promise<void>;
   /** 'failed' → whichever step failed. */
   retry: () => Promise<void>;
+  /**
+   * Settings → "Check for updates": the reader asked, so gates that exist for politeness
+   * (snooze, recheck spacing) do not apply. Resolves to what the row should say. 'busy'
+   * = a model/content transfer owns the network right now; 'error' = the manifest was
+   * unreachable (offline being the normal case).
+   */
+  manualCheck: () => Promise<'available' | 'uptodate' | 'busy' | 'error'>;
   /** The ✕: hide this versionCode for SNOOZE_MS. No-op when `forced`. */
   snooze: () => Promise<void>;
 }
@@ -141,12 +150,19 @@ interface UpdateState {
 // ---------------------------------------------------------------------------------------
 
 /**
- * The running build's android.versionCode. expo-constants embeds app.json into the build
- * (the `expoConfig` asset the telemetry `build` tag already reads), so in a release APK
- * this is the number app.json said at prebuild time. Null in a dev client / Expo Go, where
- * "update" has no meaning anyway.
+ * The running build's android.versionCode — from the INSTALLED PACKAGE
+ * (expo-application's `nativeBuildVersion`, real PackageInfo), not from the app.json copy
+ * that expo-constants freezes into the JS bundle — including `Constants.nativeBuildVersion`,
+ * which in the bare workflow is derived from that same embedded config, not the package. The two are normally identical, but they
+ * skew whenever build.gradle and app.json drift (found 2026-09-16: a build whose gradle
+ * said 10 while the bundle's expoConfig still said 11 judged itself "up to date" against
+ * a v11 manifest). The package number is what Android's installer actually compares, so
+ * it is the only correct side of the versionCode comparison. expoConfig stays as the
+ * fallback; null in a dev client / Expo Go, where "update" has no meaning anyway.
  */
 export function installedVersionCode(): number | null {
+  const native = Number(Application.nativeBuildVersion);
+  if (Number.isInteger(native) && native > 0) return native;
   const vc = Constants.expoConfig?.android?.versionCode;
   return typeof vc === 'number' && Number.isInteger(vc) && vc > 0 ? vc : null;
 }
@@ -446,6 +462,25 @@ export const useUpdateStore = create<UpdateState>((set, get) => ({
     }
   },
 
+  manualCheck: async () => {
+    if (Platform.OS !== 'android') return 'uptodate';
+    if (modelTransferInFlight()) return 'busy';
+    // An explicit ask forgets the ✕ — clearing BEFORE the check so a snoozed manifest
+    // resurfaces as 'available' rather than sliding back into 'snoozed'.
+    try {
+      await Promise.all([setSetting(KEY_SNOOZE_UNTIL, ''), setSetting(KEY_SNOOZE_VERSION, '')]);
+    } catch {
+      /* readSnooze treats unparseable as no snooze; proceed */
+    }
+    if (get().status === 'snoozed') set({ status: 'idle', manifest: null });
+    const before = get().lastCheckedAt;
+    await get().checkForUpdate('manual');
+    const after = get();
+    if (after.status === 'available' || after.status === 'downloading' || after.status === 'ready')
+      return 'available';
+    if (after.lastCheckedAt !== before) return 'uptodate';
+    return 'error';
+  },
   snooze: async () => {
     const { manifest, forced, status } = get();
     if (!manifest || forced) return;

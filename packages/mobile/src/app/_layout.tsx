@@ -17,6 +17,7 @@ import { BENCH_ON_LAUNCH, runVoiceBench } from '../voice/bench';
 import { useCardStore } from '../store/cardStore';
 import { useEngineStore } from '../store/engineStore';
 import { startUpdateChecks } from '../store/updateStore';
+import { UpdateBanner } from '../components/UpdateBanner';
 import { colors, fontAssets } from '../theme';
 
 // Hold the native splash (the icon on ink, see the expo-splash-screen plugin in app.json)
@@ -175,6 +176,11 @@ export default function RootLayout() {
     <GestureHandlerRootView style={styles.root}>
       {/* Light content over the title's ink; the app's own dark-on-paper style after. */}
       <StatusBar style={title === 'gone' ? 'dark' : 'light'} />
+
+      {/* The update bar sits ABOVE the navigator in the root column, so every screen —
+          feed, sidebar, activity — is pushed down under it while it shows. Suppressed
+          during onboarding: a first-launch reader has nothing older to update. */}
+      {shellReady && !onboardingActive && <UpdateBanner />}
 
       {/* The Stack mounts as soon as fonts + bootstrap are in — under the title — so the
           feed can start hydrating while the mark is still being traced. */}

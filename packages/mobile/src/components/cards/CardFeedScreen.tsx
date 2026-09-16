@@ -86,7 +86,6 @@ import {
 import type { RewardContent } from '../../data/reward';
 import { previewChoices, useCardStore, type FeedResponse } from '../../store/cardStore';
 import { useEngineStore, type ReadyStage } from '../../store/engineStore';
-import { describeUpdate, useUpdateStore } from '../../store/updateStore';
 import { card, cardAlpha, fonts } from '../../theme';
 import { useTypewriter } from '../onboarding/useTypewriter';
 import { barColor, fieldSurface, useReadinessMessage } from './searchReadiness';
@@ -853,28 +852,6 @@ export function CardFeedScreen() {
     (s) => s.data?.grade === grade && !!s.data.remediation
   );
   const enterCurriculum = useCardStore((s) => s.enterCurriculum);
-  // THE UPDATE RIBBON (store/updateStore.ts). Shown from 'available' through 'failed'; idle,
-  // checking and snoozed render nothing. It takes the ribbon slot ahead of the ask/calendar
-  // ribbons: unlike those two it is actionable AND dismissable (✕ = 24 h snooze), so it can
-  // never hold the slot for longer than one tap, whereas a mode ribbon can hold it for a
-  // whole session — and a reader who never leaves calendar mode must still hear about it.
-  const updateStatus = useUpdateStore((s) => s.status);
-  const updateManifest = useUpdateStore((s) => s.manifest);
-  const updatePct = useUpdateStore((s) => s.pct);
-  const updateForced = useUpdateStore((s) => s.forced);
-  const updateBar =
-    !!updateManifest &&
-    (updateStatus === 'available' ||
-      updateStatus === 'downloading' ||
-      updateStatus === 'ready' ||
-      updateStatus === 'failed');
-  const onUpdateAction = useCallback(() => {
-    const u = useUpdateStore.getState();
-    if (u.status === 'available') void u.startDownload();
-    else if (u.status === 'ready') void u.install();
-    else if (u.status === 'failed') void u.retry();
-  }, []);
-  const onUpdateSnooze = useCallback(() => void useUpdateStore.getState().snooze(), []);
   const [sheetOpen, setSheetOpen] = useState(false);
   const openSheet = useCallback(() => setSheetOpen(true), []);
   const closeSheet = useCallback(() => setSheetOpen(false), []);
@@ -1796,54 +1773,6 @@ export function CardFeedScreen() {
         ) : null}
       </View>
 
-      {/* "UPDATE AVAILABLE!" — the same ink ribbon, in the same slot, hidden on the same pages
-          (reward / question / response) as the two mode ribbons below, and ahead of them in
-          the slot (see `updateBar`). Body = "v<name> · <MB> MB"; the chip on the right is the
-          one action the status allows: download → <pct>% (inert) → install → try again. The ✕
-          snoozes it for a day; it is withheld when the release is below the mirror's
-          minSupportedVersionCode (`forced`). No animation: reduced-motion-neutral. */}
-      {!historicalQuiz && !queryBanner && updateBar && updateManifest && !response && !reward && !question ? (
-        <View style={styles.banner} accessibilityLiveRegion="polite">
-          <Text style={styles.bannerLabel} numberOfLines={1}>
-            {t.cards.update.label}
-          </Text>
-          <Text style={styles.bannerText} numberOfLines={1}>
-            {describeUpdate(updateManifest)}
-          </Text>
-          {updateStatus === 'downloading' ? (
-            <View style={styles.bannerChip} accessibilityRole="progressbar">
-              <Text style={styles.bannerChipText}>{updatePct}%</Text>
-            </View>
-          ) : (
-            <Pressable
-              onPress={onUpdateAction}
-              hitSlop={8}
-              accessibilityRole="button"
-              style={({ pressed }) => [styles.bannerChip, styles.bannerChipTap, pressed && styles.bannerChipPressed]}
-            >
-              <Text style={styles.bannerChipText} numberOfLines={1}>
-                {updateStatus === 'ready'
-                  ? t.cards.update.install
-                  : updateStatus === 'failed'
-                    ? t.cards.update.retry
-                    : t.cards.update.download}
-              </Text>
-            </Pressable>
-          )}
-          {!updateForced && updateStatus !== 'downloading' ? (
-            <Pressable
-              onPress={onUpdateSnooze}
-              hitSlop={10}
-              accessibilityRole="button"
-              accessibilityLabel={t.cards.update.snooze}
-              style={styles.bannerDismiss}
-            >
-              <Text style={styles.bannerDismissGlyph}>✕</Text>
-            </Pressable>
-          ) : null}
-        </View>
-      ) : null}
-
       {/* "you asked" ribbon when a search navigated straight to a found card. It rides on
           the BOARD, directly under the box it echoes — not on the card: the top of a card
           is its punched holes and index band, and a ribbon would print straight over them. */}
@@ -1877,7 +1806,7 @@ export function CardFeedScreen() {
           store). It names the topic the feed is DRAWING FROM: on the page where a topic runs out
           the cursor has already moved on, so the ribbon already reads the next topic the swipe
           will serve. */}
-      {!historicalQuiz && !queryBanner && curriculum && curriculumTopic && !updateBar && !response && !reward && !question ? (
+      {!historicalQuiz && !queryBanner && curriculum && curriculumTopic && !response && !reward && !question ? (
         <View style={styles.banner}>
           <Text style={styles.bannerLabel} numberOfLines={1}>
             {t.cards.curriculum} · Q{curriculumTopic.quarter} ·

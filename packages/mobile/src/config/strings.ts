@@ -44,6 +44,12 @@ interface UIStrings {
   beta: string;
   comingSoon: string;
   sectionVersion: string;
+  /** Settings row: manual update check (store/updateStore.ts manualCheck). */
+  updatesCheck: string;
+  updatesChecking: string;
+  updatesUptodate: string;
+  updatesBusy: string;
+  updatesError: string;
   labelModel: string;
   facts: string;
   /**
@@ -182,6 +188,11 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     beta: 'beta',
     comingSoon: 'malapit na!',
     sectionVersion: 'Bersyon',
+    updatesCheck: 'Tingnan kung may update',
+    updatesChecking: 'Tinitingnan…',
+    updatesUptodate: 'Pinakabago na ang Hiraia!',
+    updatesBusy: 'May kasalukuyang download — subukan mamaya',
+    updatesError: 'Hindi maabot ang server — kailangan ng internet',
     labelModel: 'Modelo',
     facts: 'datos',
     voiceCredit: 'Boses: Meta MMS, na-fine-tune para sa Hiraia · CC BY-NC 4.0',
@@ -288,6 +299,11 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     beta: 'beta',
     comingSoon: 'coming soon',
     sectionVersion: 'Version',
+    updatesCheck: 'Check for updates',
+    updatesChecking: 'Checking…',
+    updatesUptodate: 'Hiraia is up to date!',
+    updatesBusy: 'A download is in progress — try again later',
+    updatesError: 'Could not reach the server — internet needed',
     labelModel: 'Model',
     facts: 'facts',
     voiceCredit: 'Voice: Meta MMS, fine-tuned for Hiraia · CC BY-NC 4.0',
@@ -386,6 +402,11 @@ const UI_STRINGS: Record<Language, UIStrings> = {
     beta: 'beta',
     comingSoon: 'hapit na!',
     sectionVersion: 'Bersyon',
+    updatesCheck: 'Tan-awa kung naay update',
+    updatesChecking: 'Gitan-aw…',
+    updatesUptodate: 'Pinakabag-o na ang Hiraia!',
+    updatesBusy: 'Naay download karon — sulayi unya',
+    updatesError: 'Dili maabot ang server — kinahanglan og internet',
     labelModel: 'Modelo',
     facts: 'datos',
     voiceCredit: 'Tingog: Meta MMS, gi-fine-tune para sa Hiraia · CC BY-NC 4.0',

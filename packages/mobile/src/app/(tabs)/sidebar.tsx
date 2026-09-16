@@ -1,6 +1,7 @@
 import { ImageDownloads } from '../../images/ImageDownloads';
 import { ActivityTable } from '../../telemetry/ActivityTable';
 import { useRouter } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -12,7 +13,8 @@ import { ACTIVE_MODEL, VECTORS_META } from '../../config/model';
 import { uiStrings } from '../../config/strings';
 import { HIRAIAPEDIA_VERSION } from '../../config/version';
 import { useEngineStore } from '../../store/engineStore';
-import { card, fonts } from '../../theme';
+import { useUpdateStore } from '../../store/updateStore';
+import { card, fonts, cardAlpha } from '../../theme';
 
 export default function SidebarScreen() {
   const router = useRouter();
@@ -22,12 +24,53 @@ export default function SidebarScreen() {
   const changeGrade = useEngineStore((s) => s.changeGrade);
   const setOnboardingActive = useEngineStore((s) => s.setOnboardingActive);
 
+
   const showTutorial = () => {
     setOnboardingActive(true);
     router.back();
   };
 
   const t = uiStrings(language);
+  // Settings → "Check for updates" (Luis, 2026-09-16): the manual path to the same
+  // update pipeline the top banner drives. A tap checks, and a newer version starts
+  // downloading immediately — the banner above the UI carries the progress and the
+  // install step. Courteous outcomes (up to date / busy / offline) print inline here.
+  const updateStatus = useUpdateStore((u) => u.status);
+  const updatePct = useUpdateStore((u) => u.pct);
+  const [updChecking, setUpdChecking] = useState(false);
+  const [updVerdict, setUpdVerdict] = useState<null | 'uptodate' | 'busy' | 'error'>(null);
+  const onCheckUpdates = useCallback(() => {
+    const u = useUpdateStore.getState();
+    // If the pipeline already holds an actionable state, the button IS that action.
+    if (u.status === 'available') return void u.startDownload();
+    if (u.status === 'ready') return void u.install();
+    if (u.status === 'failed') return void u.retry();
+    if (u.status === 'downloading' || updChecking) return;
+    setUpdChecking(true);
+    setUpdVerdict(null);
+    void u.manualCheck().then((r) => {
+      setUpdChecking(false);
+      if (r === 'available') {
+        // The reader asked for the update — begin the download without a second tap.
+        const now = useUpdateStore.getState();
+        if (now.status === 'available') void now.startDownload();
+      } else {
+        setUpdVerdict(r);
+        setTimeout(() => setUpdVerdict(null), 6000);
+      }
+    });
+  }, [updChecking]);
+  const updLabel = updChecking
+    ? t.updatesChecking
+    : updateStatus === 'downloading'
+      ? `${updatePct}%`
+      : updateStatus === 'ready'
+        ? t.cards.update.install
+        : updateStatus === 'failed'
+          ? t.cards.update.retry
+          : updateStatus === 'available'
+            ? t.cards.update.download
+            : t.updatesCheck;
 
   const onPickLanguage = (lang: Language) => {
     if (lang === language) return;
@@ -116,6 +159,23 @@ export default function SidebarScreen() {
           {/* Not decoration: the bundled voices are CC BY-NC 4.0, which obliges us to
               credit Meta and say we modified them. It travels with the APK. */}
           <Text style={styles.voiceCredit}>{t.voiceCredit}</Text>
+          <TouchableOpacity
+            style={styles.updateButton}
+            onPress={onCheckUpdates}
+            activeOpacity={0.85}
+            disabled={updChecking}
+          >
+            <Text style={styles.updateButtonText}>{updLabel}</Text>
+          </TouchableOpacity>
+          {updVerdict ? (
+            <Text style={styles.updateVerdict}>
+              {updVerdict === 'uptodate'
+                ? t.updatesUptodate
+                : updVerdict === 'busy'
+                  ? t.updatesBusy
+                  : t.updatesError}
+            </Text>
+          ) : null}
         </View>
 
         <Text style={styles.sectionTitle}>{t.tutorial}</Text>
@@ -266,6 +326,28 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: card.olive,
     marginTop: 10,
+  },
+  // "Check for updates" — the tutorial button's shape, sized down to a utility row.
+  updateButton: {
+    alignSelf: 'flex-start',
+    marginTop: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: card.ink,
+    backgroundColor: card.stock,
+  },
+  updateButtonText: {
+    fontFamily: fonts.cardBodyBold,
+    fontSize: 15,
+    color: card.ink,
+  },
+  updateVerdict: {
+    marginTop: 6,
+    fontFamily: fonts.cardBody,
+    fontSize: 13,
+    color: cardAlpha(card.ink, 0.75),
   },
   tutorialButton: {
     alignSelf: 'flex-start',
