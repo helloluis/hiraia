@@ -1,4 +1,5 @@
 import { initializeProfiles, profileTelemetry, profileSnapshot } from '../profiles';
+import * as Application from 'expo-application';
 import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import { AppState, Platform } from 'react-native';
@@ -12,9 +13,15 @@ const clean = (value: unknown) =>
     .replace(/[^a-zA-Z0-9_.:-]/g, '_')
     .slice(0, 100) || 'unknown';
 const context: Props = {
-  app_version: clean(Constants.expoConfig?.version),
+  // The INSTALLED package's versionName/versionCode (expo-application = PackageInfo),
+  // not the app.json snapshot expo-constants freezes into the bundle at build time —
+  // the two drift (2026-09-16: the updater misjudged itself off the frozen copy), and
+  // fleet metrics must reflect what phones actually run. expoConfig stays as fallback
+  // for dev clients, where there is no meaningful package version.
+  app_version: clean(Application.nativeApplicationVersion ?? Constants.expoConfig?.version),
   build: clean(
     process.env.EXPO_PUBLIC_BUILD_ID ||
+      Application.nativeBuildVersion ||
       Constants.expoConfig?.android?.versionCode ||
       'pilot-telemetry-v1'
   ),
