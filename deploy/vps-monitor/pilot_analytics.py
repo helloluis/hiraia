@@ -78,6 +78,8 @@ def report(days=30, now=None):
             f'SELECT count(DISTINCT installation_id) FROM telemetry_events WHERE {scope} AND name IN (\'session_started\',\'card_viewed\',\'quiz_graded\')', args).fetchone()[0]
         counts['correct_answers'] = db.execute(
             f"SELECT count(*) FROM telemetry_events WHERE {scope} AND name='quiz_graded' AND json_extract(props,'$.correct')=1", args).fetchone()[0]
+        counts['unique_cards'] = db.execute(
+            f"SELECT count(DISTINCT json_extract(props,'$.card_id')) FROM telemetry_events WHERE {scope} AND name='card_viewed' AND json_extract(props,'$.card_id') IS NOT NULL AND json_extract(props,'$.card_id') != ''", args).fetchone()[0]
         counts['returning_installations'] = db.execute(
             f"SELECT count(*) FROM (SELECT installation_id FROM telemetry_events WHERE {scope} AND name='session_started' GROUP BY installation_id HAVING count(DISTINCT date(occurred_at/1000,'unixepoch'))>1)", args).fetchone()[0]
         counts['late_events'] = db.execute(
@@ -88,7 +90,9 @@ def report(days=30, now=None):
             'SELECT count(*) FROM telemetry_events WHERE received_at>=? AND (occurred_at>received_at+300000 OR occurred_at<1577836800000)', (since,)).fetchone()[0]
         daily = rows(f"""SELECT date(occurred_at/1000,'unixepoch') day,
           count(DISTINCT CASE WHEN name='session_started' THEN installation_id END) active,
-          sum(name='card_viewed') cards, sum(name='quiz_graded') graded
+          sum(name='card_viewed') card_views,
+          count(DISTINCT CASE WHEN name='card_viewed' THEN json_extract(props,'$.card_id') END) unique_cards,
+          sum(name='quiz_graded') graded
           FROM telemetry_events WHERE {scope} GROUP BY day ORDER BY day DESC""", args)
         builds = rows(f"""SELECT coalesce(json_extract(props,'$.app_version'),'unknown') version,
           coalesce(json_extract(props,'$.build'),'unknown') build,
@@ -102,9 +106,11 @@ def report(days=30, now=None):
           FROM telemetry_events WHERE {scope} AND name IN ('download_failed','model_load_failed','generation_failed')
           GROUP BY name,asset,error ORDER BY n DESC LIMIT 100""", args)
         usage = rows(f"""SELECT coalesce(json_extract(props,'$.language'),'unknown') language,
-          coalesce(json_extract(props,'$.source'),'unknown') source, count(*) cards
+          coalesce(json_extract(props,'$.source'),'unknown') source,
+          count(*) card_views,
+          count(DISTINCT json_extract(props,'$.card_id')) unique_cards
           FROM telemetry_events WHERE {scope} AND name='card_viewed'
-          GROUP BY language,source ORDER BY cards DESC""", args)
+          GROUP BY language,source ORDER BY card_views DESC""", args)
         downloads = rows(f"""SELECT coalesce(json_extract(props,'$.asset'),'unknown') asset,
           sum(name='download_started') attempts, sum(name='download_resumed') resumes,
           sum(name='download_installed') installed, sum(name='download_failed') failures,
@@ -172,6 +178,6 @@ const mount=''' + json.dumps(mount) + ''';
 const el=id=>document.getElementById(id);
 const date=v=>v?new Date(v).toISOString().replace('T',' ').slice(0,19)+' UTC':'—';
 function table(id,rows){const root=el(id);root.replaceChildren();if(!rows.length){root.textContent='No events received for this view yet.';return;}const t=document.createElement('table');const h=t.createTHead().insertRow();Object.keys(rows[0]).forEach(k=>{const c=document.createElement('th');c.textContent=k.replaceAll('_',' ');h.append(c)});const b=t.createTBody();rows.forEach(r=>{const tr=b.insertRow();Object.values(r).forEach(v=>{tr.insertCell().textContent=String(v??'—')})});root.append(t);}
-async function load(){el('status').textContent='Loading…';try{const r=await fetch(mount+'/api/telemetry?days='+el('days').value,{cache:'no-store'});if(r.status===401){location.href=mount+'/login';return;}if(!r.ok)throw Error('unavailable');const s=await r.json();if(!s.available){el('status').textContent='Telemetry database is not configured or has not received its first batch.';return;}el('status').textContent='Last upload: '+date(s.last_received)+' · Events arriving over 24h late: '+(s.counts.late_events||0)+' · Clock anomalies: '+(s.counts.clock_anomalies||0)+' · Reported queue drops: '+(s.counts.dropped_events_reported||0);el('tiles').replaceChildren();const cards=[['New installations',s.counts.first_open],['Active installations',s.counts.active_installations],['Returning installations',s.counts.returning_installations],['Cards viewed',s.counts.card_viewed],['Quizzes graded',s.counts.quiz_graded],['Correct answers',s.counts.correct_answers],['Downloads installed',s.counts.download_installed],['Website clicks · IP/day',s.website_clicks??'Unavailable']];cards.forEach(([k,v])=>{const d=document.createElement('div');d.className='tile';const n=document.createElement('div');n.className='value';n.textContent=v??0;const l=document.createElement('div');l.textContent=k;d.append(n,l);el('tiles').append(d)});table('daily',s.daily);table('usage',s.usage);table('downloads',s.downloads);table('models',s.models);table('events',Object.entries(s.counts).map(([event,count])=>({event,count})));table('builds',s.builds);table('failures',s.failures);table('web_countries',s.web_countries||[]);table('web_cities',s.web_cities||[]);table('model_geo',(s.model_geo&&s.model_geo.available)?(s.model_geo.cities&&s.model_geo.cities.length?s.model_geo.cities:s.model_geo.countries):[]);table('installs',s.installations.map(i=>({...i,first_received:date(i.first_received),last_received:date(i.last_received),last_event:date(i.last_event)})));}catch{el('status').textContent='Analytics temporarily unavailable. Refresh to retry.';}}
+async function load(){el('status').textContent='Loading…';try{const r=await fetch(mount+'/api/telemetry?days='+el('days').value,{cache:'no-store'});if(r.status===401){location.href=mount+'/login';return;}if(!r.ok)throw Error('unavailable');const s=await r.json();if(!s.available){el('status').textContent='Telemetry database is not configured or has not received its first batch.';return;}el('status').textContent='Last upload: '+date(s.last_received)+' · Events arriving over 24h late: '+(s.counts.late_events||0)+' · Clock anomalies: '+(s.counts.clock_anomalies||0)+' · Reported queue drops: '+(s.counts.dropped_events_reported||0);el('tiles').replaceChildren();const cards=[['New installations',s.counts.first_open],['Active installations',s.counts.active_installations],['Returning installations',s.counts.returning_installations],['Card views',s.counts.card_viewed],['Unique cards',s.counts.unique_cards],['Quizzes graded',s.counts.quiz_graded],['Correct answers',s.counts.correct_answers],['Downloads installed',s.counts.download_installed],['Website clicks · IP/day',s.website_clicks??'Unavailable']];cards.forEach(([k,v])=>{const d=document.createElement('div');d.className='tile';const n=document.createElement('div');n.className='value';n.textContent=v??0;const l=document.createElement('div');l.textContent=k;d.append(n,l);el('tiles').append(d)});table('daily',s.daily);table('usage',s.usage);table('downloads',s.downloads);table('models',s.models);table('events',Object.entries(s.counts).map(([event,count])=>({event,count})));table('builds',s.builds);table('failures',s.failures);table('web_countries',s.web_countries||[]);table('web_cities',s.web_cities||[]);table('model_geo',(s.model_geo&&s.model_geo.available)?(s.model_geo.cities&&s.model_geo.cities.length?s.model_geo.cities:s.model_geo.countries):[]);table('installs',s.installations.map(i=>({...i,first_received:date(i.first_received),last_received:date(i.last_received),last_event:date(i.last_event)})));}catch{el('status').textContent='Analytics temporarily unavailable. Refresh to retry.';}}
 el('refresh').onclick=load;el('days').onchange=load;load();
 </script></html>'''
