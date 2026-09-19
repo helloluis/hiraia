@@ -135,11 +135,10 @@ retry deduplication, and removes them afterwards. Python tests cover reporting a
    a single count per event, then opt out and confirm the local queue is cleared. A short
    airplane-mode test on a real budget phone remains valuable before distributing widely.
 
-Retention: schedule `python3 tools/pilot-telemetry/prune.py --db /absolute/telemetry.db`
-under the writer account, daily. Default is 180 days **since receipt**, so late offline
-activity is retained for a full period. It removes history and deduplication records;
-never set retention shorter than the client queue window. Use SQLite's backup API for
-live backups rather than copying only the main file while WAL writes are active.
+Retention: automatic pruning is disabled for the pilot so LTD totals and 1Y charts
+retain their history. The old prune command is now a no-op. Neon mirroring is append-only;
+local deletions are never propagated. See [PILOT-DASHBOARD.md](PILOT-DASHBOARD.md) for the
+new dashboard, mirror setup, verification, and restore procedure.
 
 ## Verified local build · 2026-09-05
 

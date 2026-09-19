@@ -1,0 +1,20 @@
+[Unit]
+Description=Mirror Hiraia telemetry to Neon
+After=network-online.target hiraia-telemetry.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=hiraia
+Group=hiraia
+EnvironmentFile=/etc/hiraia/telemetry-mirror.env
+Environment=HIRAIA_TELEMETRY_DB_PATH=/var/lib/hiraia-telemetry/telemetry.db
+Environment=HIRAIA_DB_PATH=/var/lib/hiraia/hiraia.db
+ExecStart=/opt/hiraia-analytics-venv/bin/python /opt/hiraia-monitor/neon_mirror.py
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/hiraia-telemetry
+TimeoutStartSec=300

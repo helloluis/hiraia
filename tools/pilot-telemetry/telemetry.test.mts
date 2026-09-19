@@ -204,3 +204,21 @@ test('permanent rejection removes only rejected records and reports the loss wit
   assert.equal(repo.saved.size, 0);
   assert.equal(loss, 1);
 });
+
+
+test('persona context is allowlisted and grade must be a supported integer', () => {
+  assert.equal(validEvent({ ...event(), name: 'profile_updated', props: { grade: 5, language: 'cebuano' } }), true);
+  for (const grade of [2, 11, 5.5, '5'])
+    assert.equal(validEvent({ ...event(), props: { grade } }), false);
+});
+
+test('anonymous profile IDs are accepted while student names and malformed identities are rejected', () => {
+  const profile = { profile_kind:'student', profile_id:'profile_1234567890123456' };
+  assert.equal(validEvent({...event(),props:profile}),true);
+  assert.equal(validEvent({...event(),props:{profile_kind:'guest'}}),true);
+  assert.equal(validEvent({...event(),props:{...profile,first_name:'Ana'}}),false);
+  assert.equal(validEvent({...event(),props:{...profile,name:'Ana'}}),false);
+  assert.equal(validEvent({...event(),props:{...profile,profile_id:'Ana'}}),false);
+  assert.equal(validEvent({...event(),props:{profile_kind:'student'}}),false);
+  assert.equal(validEvent({...event(),props:{...profile,profile_kind:'guest'}}),false);
+});

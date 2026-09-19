@@ -17,16 +17,8 @@ Auth: single account, PBKDF2-SHA256 password hash (never plaintext on disk),
 HMAC-signed session cookie (HttpOnly/Secure/SameSite=Strict), per-IP login
 rate limiting, CSRF token on every state-changing POST.
 """
-import hashlib, hmac, html, json, os, re, secrets, subprocess, threading, time, urllib.parse, urllib.request
+import hashlib, hmac, html, json, os, re, secrets, subprocess, time, urllib.parse, urllib.request
 from datetime import datetime, timezone
-import pilot_analytics
-import tala_reports
-try:
-    import pilot_dashboard
-    import ga_reporting
-    import neon_mirror
-except ImportError:
-    pilot_dashboard = None
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from http.cookies import SimpleCookie
 
@@ -57,7 +49,6 @@ SESSION_HOURS = 72
 _cfg_cache = {"t": 0, "v": {}}
 _rate = {}                        # ip -> [failed_count, first_fail_ts]
 _api_cache = {"t": 0, "v": None}  # throttle RunPod calls to <=1 per 10s
-_tala_upload_slots = threading.BoundedSemaphore(2)
 
 
 # ---------------------------------------------------------------- config/auth
@@ -769,7 +760,7 @@ HEAD = """<!doctype html><html lang="en"><head><meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>__CSS__</style></head><body data-mount="__MOUNT__"><nav style="display:flex;gap:18px;padding:12px 24px"><a href="__MOUNT__/">Mission control</a><a href="__MOUNT__/telemetry">Pilot analytics</a><a href="__MOUNT__/tala-reports">Tala reports</a></nav>"""
+<style>__CSS__</style></head><body data-mount="__MOUNT__">"""
 
 JS = r"""
 const $ = s => document.querySelector(s);
@@ -1260,57 +1251,8 @@ class Handler(BaseHTTPRequestHandler):
             if path.startswith("/api/"):
                 return self._json(401, {"error": "unauthenticated"})
             return self._redirect(f"{MOUNT}/login")
-        if path in ("/", "/telemetry") and pilot_dashboard is not None:
-            page = pilot_dashboard.page(MOUNT, self._csrf())
-            page = page.replace("<nav>", f'<nav><a href="{MOUNT}/tala-reports">Tala reports</a>', 1)
-            return self._send(200, page)
-        if path == "/archive/training" and pilot_dashboard is not None:
+        if path == "/":
             return self._send(200, page_dashboard(self._csrf()))
-        if path == "/archive/telemetry" and pilot_dashboard is not None:
-            return self._send(200, pilot_analytics.page(MOUNT))
-        if path.startswith("/api/pilot/") and pilot_dashboard is not None:
-            try:
-                if path == "/api/pilot/overview":
-                    return self._json(200, pilot_dashboard.overview())
-                if path == "/api/pilot/series":
-                    return self._json(200, pilot_dashboard.series(q.get("metric", [""])[0],
-                                                                   q.get("range", ["2W"])[0]))
-                if path == "/api/pilot/sessions":
-                    return self._json(200, pilot_dashboard.recent_sessions(int(q.get("offset", ["0"])[0])))
-                if path == "/api/pilot/events":
-                    return self._json(200, pilot_dashboard.session_events(q.get("installation", [""])[0],
-                        q.get("session", [""])[0], int(q.get("offset", ["0"])[0])))
-                if path == "/api/pilot/website":
-                    return self._json(200, ga_reporting.report(q.get("range", ["2W"])[0]))
-                if path == "/api/pilot/mirror":
-                    return self._json(200, neon_mirror.status())
-                return self._json(404, {"error": "not_found"})
-            except ValueError:
-                return self._json(400, {"error": "invalid_report_request"})
-            except (OSError, pilot_dashboard.sqlite3.Error):
-                return self._json(503, {"error": "report_unavailable"})
-        if path == "/telemetry":
-            return self._send(200, pilot_analytics.page(MOUNT))
-        if path == "/tala-reports":
-            head = HEAD.replace("__TITLE__", "Tala reports // Hiraia").replace("__CSS__", CSS)
-            head = head.replace("__MOUNT__", MOUNT)
-            return self._send(200, tala_reports.page(MOUNT, head, self._csrf()))
-        media_match = re.fullmatch(r"/tala-reports/media/([a-f0-9-]{36})/([a-f0-9-]{36})", path)
-        if media_match:
-            attachment = tala_reports.attachment(*media_match.groups())
-            if attachment is None:
-                return self._send(404, "not found", "text/plain")
-            mime, name, content = attachment
-            return self._send(200, content, mime,
-                              [("Content-Disposition", f'inline; filename="{name}"')])
-        if path == "/api/telemetry":
-            try:
-                days = int(q.get("days", ["30"])[0])
-                if days not in (7, 30, 90):
-                    return self._json(400, {"error": "invalid_days"})
-                return self._json(200, pilot_analytics.report(days))
-            except (ValueError, OSError, pilot_analytics.sqlite3.Error):
-                return self._json(503, {"error": "telemetry_unavailable"})
         if path == "/api/export":
             fmt = (q.get("format", ["md"])[0] or "md").lower()
             notes = tail_jsonl(NOTES, 10000)
@@ -1342,37 +1284,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(500, {"error": str(e)})
         self._send(404, "not found", "text/plain")
 
-    def _receive_tala_report(self):
-        allowed, wait = tala_reports.allow_request(self._ip())
-        if not allowed:
-            return self._json(429, {"error": "report_rate_limited"}, [("Retry-After", str(wait))])
-        try:
-            size = int(self.headers.get("Content-Length", "0"))
-        except ValueError:
-            size = 0
-        if size <= 0 or size > tala_reports.MAX_REQUEST:
-            return self._json(413, {"error": "invalid_report_size"})
-        if not self.headers.get("Content-Type", "").startswith("application/json"):
-            return self._json(415, {"error": "json_required"})
-        raw_report = self.rfile.read(size)
-        if len(raw_report) != size:
-            return self._json(400, {"error": "incomplete_report"})
-        try:
-            code, result = tala_reports.receive(raw_report, cfg(), self._ip())
-        except (OSError, tala_reports.sqlite3.Error):
-            return self._json(503, {"error": "temporarily_unavailable"})
-        headers = [("Retry-After", str(result.get("retry_after", 60)))] if code == 429 else None
-        return self._json(code, result, headers)
-
     def do_POST(self):
         path, _ = self._path()
-        if path == "/api/tala/reports":
-            if not _tala_upload_slots.acquire(blocking=False):
-                return self._json(503, {"error": "report_intake_busy"}, [("Retry-After", "30")])
-            try:
-                return self._receive_tala_report()
-            finally:
-                _tala_upload_slots.release()
         cap = 4 * 1024 * 1024 if path.startswith("/api/synth-") else 65536
         n = min(int(self.headers.get("Content-Length", 0) or 0), cap)
         raw = self.rfile.read(n).decode() if n else ""
@@ -1462,22 +1375,6 @@ class Handler(BaseHTTPRequestHandler):
 
         if not self._session_ok():
             return self._json(401, {"error": "unauthenticated"})
-
-        retry_match = re.fullmatch(r"/tala-reports/([a-f0-9-]{36})/retry", path)
-        if retry_match:
-            form = urllib.parse.parse_qs(raw)
-            if not hmac.compare_digest(form.get("csrf", [""])[0], self._csrf()):
-                return self._json(403, {"error": "bad csrf"})
-            tala_reports.notify(retry_match.group(1), cfg())
-            return self._redirect(f"{MOUNT}/tala-reports#{retry_match.group(1)}")
-
-        delete_match = re.fullmatch(r"/tala-reports/([a-f0-9-]{36})/delete", path)
-        if delete_match:
-            form = urllib.parse.parse_qs(raw)
-            if not hmac.compare_digest(form.get("csrf", [""])[0], self._csrf()):
-                return self._json(403, {"error": "bad csrf"})
-            tala_reports.delete_report(delete_match.group(1))
-            return self._redirect(f"{MOUNT}/tala-reports")
 
         if path == "/logout":
             return self._redirect(f"{MOUNT}/login", [("Set-Cookie",

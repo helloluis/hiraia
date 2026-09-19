@@ -7,11 +7,11 @@ After=network.target
 Type=simple
 User=hiraia
 Group=hiraia
-WorkingDirectory=/opt/hiraia/packages/web
+WorkingDirectory=/opt/hiraia-telemetry
 Environment=NODE_ENV=production
 Environment=TELEMETRY_PORT=8136
 Environment=HIRAIA_TELEMETRY_DB_PATH=/var/lib/hiraia-telemetry/telemetry.db
-ExecStart=/usr/bin/node /opt/hiraia/packages/web/.telemetry/server.cjs
+ExecStart=/usr/bin/node /opt/hiraia-telemetry/server.cjs
 Restart=on-failure
 RestartSec=5
 UMask=0027
