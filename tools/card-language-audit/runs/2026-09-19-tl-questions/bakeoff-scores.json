@@ -1,4 +1,109 @@
 {
+  "amazon/nova-micro-v1": {
+    "n": 59,
+    "unparsed": 0,
+    "accuracy": 0.458,
+    "broken_precision": 0.385,
+    "broken_recall": 1.0,
+    "tp": 20,
+    "fp": 32,
+    "fn": 0,
+    "tn": 7,
+    "per_pattern": {
+      "existential-may": "0/1",
+      "existential-mayroon": "1/2",
+      "governing-verb": "1/16",
+      "locative-nasa": "3/7",
+      "measure-equational": "1/6",
+      "part-possession": "20/20",
+      "pseudo-verb": "1/7"
+    },
+    "errors": 0
+  },
+  "anthropic/claude-haiku-4.5": {
+    "n": 59,
+    "unparsed": 0,
+    "accuracy": 0.932,
+    "broken_precision": 1.0,
+    "broken_recall": 0.8,
+    "tp": 16,
+    "fp": 0,
+    "fn": 4,
+    "tn": 39,
+    "per_pattern": {
+      "existential-may": "1/1",
+      "existential-mayroon": "2/2",
+      "governing-verb": "16/16",
+      "locative-nasa": "7/7",
+      "measure-equational": "6/6",
+      "part-possession": "16/20",
+      "pseudo-verb": "7/7"
+    },
+    "errors": 0
+  },
+  "deepseek/deepseek-v4-flash-0731": {
+    "n": 59,
+    "unparsed": 0,
+    "accuracy": 0.949,
+    "broken_precision": 0.905,
+    "broken_recall": 0.95,
+    "tp": 19,
+    "fp": 2,
+    "fn": 1,
+    "tn": 37,
+    "per_pattern": {
+      "existential-may": "0/1",
+      "existential-mayroon": "2/2",
+      "governing-verb": "15/16",
+      "locative-nasa": "7/7",
+      "measure-equational": "6/6",
+      "part-possession": "19/20",
+      "pseudo-verb": "7/7"
+    },
+    "errors": 0
+  },
+  "google/gemini-3.5-flash-lite": {
+    "n": 59,
+    "unparsed": 0,
+    "accuracy": 0.949,
+    "broken_precision": 0.905,
+    "broken_recall": 0.95,
+    "tp": 19,
+    "fp": 2,
+    "fn": 1,
+    "tn": 37,
+    "per_pattern": {
+      "existential-may": "1/1",
+      "existential-mayroon": "2/2",
+      "governing-verb": "15/16",
+      "locative-nasa": "7/7",
+      "measure-equational": "5/6",
+      "part-possession": "19/20",
+      "pseudo-verb": "7/7"
+    },
+    "errors": 0
+  },
+  "inclusionai/ling-3.0-flash": {
+    "n": 59,
+    "unparsed": 0,
+    "accuracy": 0.966,
+    "broken_precision": 0.95,
+    "broken_recall": 0.95,
+    "tp": 19,
+    "fp": 1,
+    "fn": 1,
+    "tn": 38,
+    "per_pattern": {
+      "existential-may": "0/1",
+      "existential-mayroon": "2/2",
+      "governing-verb": "16/16",
+      "locative-nasa": "7/7",
+      "measure-equational": "6/6",
+      "part-possession": "19/20",
+      "pseudo-verb": "7/7"
+    },
+    "errors": 0
+  },
   "mistralai/mistral-nemo": {
     "n": 59,
     "unparsed": 0,
@@ -17,6 +122,27 @@
       "measure-equational": "6/6",
       "part-possession": "5/20",
       "pseudo-verb": "6/7"
+    },
+    "errors": 0
+  },
+  "openai/gpt-5-nano": {
+    "n": 59,
+    "unparsed": 0,
+    "accuracy": 0.932,
+    "broken_precision": 0.9,
+    "broken_recall": 0.9,
+    "tp": 18,
+    "fp": 2,
+    "fn": 2,
+    "tn": 37,
+    "per_pattern": {
+      "existential-may": "1/1",
+      "existential-mayroon": "2/2",
+      "governing-verb": "15/16",
+      "locative-nasa": "7/7",
+      "measure-equational": "5/6",
+      "part-possession": "18/20",
+      "pseudo-verb": "7/7"
     },
     "errors": 0
   },

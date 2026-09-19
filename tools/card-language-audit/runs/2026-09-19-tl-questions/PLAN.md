@@ -22,22 +22,43 @@ treats a row with a non-null verdict as done, so a half-finished batch resumes c
 - [x] **S1** Bake-off round 1: `mistralai/mistral-nemo` (acc .695, BROKEN recall **.25** — unusable),
       `qwen/qwen3.7-flash` (acc .949, prec .905, recall .95). Fixed a 2000-token cap that made
       thinking models return empty content.
-- [~] **S2** IN PROGRESS (locked, pid running). 5 of 7 models scored; `deepseek-v4-flash`,
-      `nova-micro`, `claude-haiku-4.5` still to run. `google/gemini-3.0-flash-lite` does not
-      exist on OpenRouter — substituted `gemini-3.5-flash-lite`. Interim, by BROKEN recall:
-      ling-3.0-flash .966/.95/.95 · qwen3.7-flash .949/.905/.95 · gemini-3.5-flash-lite
-      .949/.905/.95 · gpt-5-nano .932/.90/.90 · mistral-nemo .695/.625/**.25**.
-      **No gold item is missed by all four good models**, and 3 of the 9 disagreements are
-      rows I marked `borderline` — so some of the measured error is label uncertainty, not
-      model error. Both facts argue for a 3-model majority vote in S3 rather than one judge,
-      and for native verification of the borderline rows.
-- [ ] **S2** Bake-off round 2. Add, in one call:
-      `google/gemini-3.0-flash-lite`, `openai/gpt-5-nano`, `inclusionai/ling-3.0-flash`,
-      `deepseek/deepseek-v4-flash-0731`, `amazon/nova-micro-v1`, plus one frontier baseline
-      (`anthropic/claude-haiku-4.5`) so the cheap tier is measured against a known-good ceiling.
-      Any model id that 404s: record it and move on, do not retry.
-- [ ] **S3** Pick the judge: highest BROKEN **recall** among models with BROKEN precision ≥ 0.85.
-      Record the choice and why in `REPORT.md`. Then judge the 32 T1 candidates with it.
+- [x] **S2** Bake-off round 2 DONE — 8 models x 59 gold items, 0 request errors, ~$0.02 total.
+      `google/gemini-3.0-flash-lite` does not exist on OpenRouter; substituted `gemini-3.5-flash-lite`.
+
+      | model | acc | BROKEN prec | BROKEN recall |
+      |---|---|---|---|
+      | inclusionai/ling-3.0-flash | **.966** | .95 | .95 |
+      | deepseek/deepseek-v4-flash-0731 | .949 | .905 | .95 |
+      | google/gemini-3.5-flash-lite | .949 | .905 | .95 |
+      | qwen/qwen3.7-flash | .949 | .905 | .95 |
+      | openai/gpt-5-nano | .932 | .90 | .90 |
+      | anthropic/claude-haiku-4.5 | .932 | **1.00** | .80 |
+      | mistralai/mistral-nemo | .695 | .625 | **.25** |
+      | amazon/nova-micro-v1 | .458 | .385 | **1.00** |
+
+      Two results worth carrying into the report:
+
+      **nova-micro's recall of 1.00 is degenerate, not good.** It answers BROKEN to almost
+      everything — 20/20 on part-possession but 1/16 on governing-verb, with 32 false
+      positives. Read alone, that 1.00 would have looked like the best model in the table.
+      This is why precision and recall are reported separately and never averaged.
+
+      **The frontier model was not the ceiling.** claude-haiku-4.5 is the most CONSERVATIVE
+      judge (precision 1.00, recall .80 — it never wrongly flags, but misses 4 defects),
+      and the cheapest model in the table beats it on accuracy. The cheap-vs-good framing
+      was wrong; the spread WITHIN the cheap tier (.966 to .458) dwarfs the gap to frontier.
+
+      **A 3-model majority vote beats every single judge: acc .983, precision 1.00, rec .95.**
+      Precision 1.00 is the property that matters, since it means no correct Tagalog gets
+      rewritten. Achievable entirely on cheap models — `gemini-3.5-flash-lite + gpt-5-nano +
+      ling-3.0-flash`. Including a weak member poisons it (combos with nova-micro/mistral-nemo
+      drop to ~.88), so the panel must be drawn from the strong tier.
+
+- [ ] **S3** Judge the 32 T1 candidates with the **3-model panel** chosen in S2
+      (`google/gemini-3.5-flash-lite`, `openai/gpt-5-nano`, `inclusionai/ling-3.0-flash`),
+      taking the majority verdict. Run `judge.py judge --targets t1` once per model, then
+      combine. Record each model's verdict per card so disagreements stay visible — a 2-1
+      split is exactly where a human should look first. Still PROPOSALS: do not write the pool.
 - [ ] **S4** Tier-2 draw: `judge.py sample --n 300`, then judge the first half.
 - [ ] **S5** Judge the second half of the Tier-2 sample.
 - [ ] **S6** Analyse Tier 2: defect rate per interrogative (`bakit`/`ano`/`paano`/`gaano`/…),
