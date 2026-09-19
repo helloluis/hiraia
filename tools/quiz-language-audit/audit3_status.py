@@ -133,6 +133,15 @@ def runner_module(config):
     if config['version'] == 3 and config.get('schema_encoding') == 'explicit_enum_string_type_strict_v3':
         import gemini_audit3_batch_v3
         return gemini_audit3_batch_v3
+    if config['version'] == 4 and config.get('schema_encoding') == 'explicit_enum_string_type_strict_option_underscore_v4':
+        import gemini_audit3_batch_v4
+        return gemini_audit3_batch_v4
+    if config['version'] == 5 and config.get('schema_encoding') == 'explicit_enum_string_type_strict_option_underscore_v4':
+        import gemini_audit3_batch_v5
+        return gemini_audit3_batch_v5
+    if config['version'] == 6 and config.get('schema_encoding') == 'explicit_enum_string_type_strict_option_underscore_v4':
+        import gemini_audit3_batch_v6
+        return gemini_audit3_batch_v6
     raise ValueError('Unsupported Audit-3 runner/schema version')
 
 

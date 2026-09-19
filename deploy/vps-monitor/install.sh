@@ -43,6 +43,7 @@ json.dump({
   "session_secret": secrets.token_hex(32),
   "hb_token": os.environ.get("HB_TOKEN") or secrets.token_urlsafe(24),
   "notify_email": os.environ.get("ADMIN_EMAIL"),
+  "resend_api_key": os.environ.get("RESEND_API_KEY", ""),
   "default_max_pod_hours": 6,
   "max_pod_hours": {"hiraia-probe-cpt": 14, "hiraia-full-cpt": 30,
                     "hiraia-probe-helper": 48, "hiraia-eval-*": 3, "hiraia-*inspect*": 1},
@@ -54,8 +55,10 @@ print("config built")
 PY
 
 echo ">> [1/4] files ..."
-ssh $SSH "$V" 'mkdir -p /opt/hiraia-monitor /var/lib/hiraia-monitor'
-scp $SSH "$HERE/monitor.py" "$HERE/admin_app.py" "$HERE/pilot_analytics.py" "$V:/opt/hiraia-monitor/"
+ssh $SSH "$V" 'mkdir -p /opt/hiraia-monitor /var/lib/hiraia-monitor
+  id -u hiraia-media >/dev/null 2>&1 || useradd --system --no-create-home --shell /usr/sbin/nologin hiraia-media
+  DEBIAN_FRONTEND=noninteractive apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -y -qq python3-pil ffmpeg util-linux >/dev/null'
+scp $SSH "$HERE/monitor.py" "$HERE/admin_app.py" "$HERE/pilot_analytics.py" "$HERE/tala_reports.py" "$HERE/tala_media.py" "$V:/opt/hiraia-monitor/"
 scp $SSH "$TMP/config.json" "$V:/opt/hiraia-monitor/config.json"
 ssh $SSH "$V" 'chmod 600 /opt/hiraia-monitor/config.json; chmod 755 /opt/hiraia-monitor/*.py
   touch /var/log/hiraia-monitor.log; chmod 640 /var/log/hiraia-monitor.log'
@@ -111,6 +114,27 @@ open(f, "w").write(s[:i] + block + s[i:])
 print("  inserted /admin")
 PY
 fi
+python3 - "$SITE" <<'PY'
+import sys
+path = sys.argv[1]
+text = open(path).read()
+if "location = /admin/api/tala/reports" not in text:
+    block = """    location = /admin/api/tala/reports {
+        client_max_body_size 16m;
+        client_body_timeout 120s;
+        proxy_pass http://127.0.0.1:8135;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 120s;
+    }
+
+"""
+    at = text.index("    location /admin {")
+    open(path, "w").write(text[:at] + block + text[at:])
+PY
 if nginx -t >/dev/null 2>&1; then systemctl reload nginx; echo "  nginx reloaded"
 else echo "  CONFIG TEST FAILED — restoring"; cp "$BK" "$SITE"; nginx -t; exit 1; fi
 REMOTE

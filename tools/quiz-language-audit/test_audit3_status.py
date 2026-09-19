@@ -245,5 +245,67 @@ class ThreeEpochMonitorTests(V3Case):
         self.assertTrue(any('Frozen predecessor artifact changed' in w for w in value['warnings']))
 
 
+class FourEpochMonitorTests(V3Case):
+    def setUp(self):
+        super().setUp()
+        import gemini_audit3_batch_v4 as V4
+        self.v4 = V4
+        directory = self.submit_canary()
+        accepted = V3.read(directory / 'accepted.json')
+        V3.write(directory / 'terminal.json', {**accepted, 'status': 'failed',
+            'request_counts': {'total': 2, 'completed': 0, 'failed': 2},
+            'usage': None, 'results': None, 'error': {'message': 'Input validation failed'}})
+        V3.block(self.out, 'Rejected v3 input; keep prior attempts quarantined')
+        V3.write(self.out / 'process.json', {'status': 'stopped', 'pid': 999997})
+        self.three_epoch_cost = V3.accounting(self.out)
+        self.v4_out = self.root / 'audit3-v4'
+        self.v4_out.mkdir()
+        V4.prepare(self.v4_out, self.jobsfile, self.manifest, 151.04344425, self.out)
+
+    def test_six_historical_failures_remain_separate_from_current_cloud_work(self):
+        value = S.inspect(self.v4_out)
+        self.assertEqual(value['runner_version'], 4)
+        self.assertEqual(value['selected'], 12)
+        self.assertEqual(value['eligible_selected'], 6)
+        self.assertEqual(value['counts']['prior_failed_requests'], 6)
+        self.assertEqual(value['counts']['prior_unresolved_requests'], 0)
+        self.assertEqual(value['counts']['local_unsubmitted'], 6)
+        self.assertEqual(sum(value['counts'].values()), 12)
+        self.assertEqual(value['outstanding_provider_batches'], 0)
+        self.assertEqual(value['historical_failed_requests'], 6)
+        self.assertEqual(value['observed_request_failures'], 0)
+        self.assertTrue(value['cost']['verified'])
+        for name in ('uncertain_charge_reserved_usd', 'budget_accounted_usd', 'combined_accounted_usd'):
+            self.assertEqual(value['cost'][name], self.three_epoch_cost[name])
+        self.assertEqual(value['cost']['current_accounting']['budget_accounted_usd'], 0)
+
+    def test_current_failed_batch_is_terminal_with_reserved_bill_and_no_cloud_eta(self):
+        config, jobs, plan = self.v4.frozen(self.v4_out)
+        keys = self.v4.next_keys(self.v4_out, jobs, plan)
+        self.assertTrue(set(keys).isdisjoint(config['excluded_keys']))
+        directory = self.v4.submit(self.v4_out, jobs, keys, network=self.network)
+        accepted = self.v4.read(directory / 'accepted.json')
+        reservation = self.v4.read(directory / 'manifest.json')['reserved_usd']
+        queued = S.inspect(self.v4_out)
+        self.assertEqual(queued['outstanding_provider_batches'], 1)
+        self.assertEqual(queued['counts']['cloud_queued'], 2)
+        self.assertEqual(queued['cost']['active_reserved_usd'], reservation)
+        self.v4.write(directory / 'terminal.json', {**accepted, 'status': 'failed',
+            'request_counts': {'total': 2, 'completed': 0, 'failed': 2},
+            'usage': None, 'results': None, 'error': {'message': 'Input validation failed'}})
+        value = S.inspect(self.v4_out)
+        self.assertEqual(value['outstanding_provider_batches'], 0)
+        self.assertEqual(value['awaiting_import_batches'], 0)
+        self.assertEqual(value['counts']['terminal_failed'], 2)
+        self.assertEqual(value['observed_request_failures'], 2)
+        self.assertEqual(value['historical_failed_requests'], 6)
+        self.assertEqual(value['completed'], 0)
+        self.assertEqual(value['cost']['active_reserved_usd'], 0)
+        self.assertEqual(value['cost']['received_cost_usd'], 0)
+        self.assertEqual(value['cost']['uncertain_charge_reserved_usd'],
+                         self.three_epoch_cost['uncertain_charge_reserved_usd'] + reservation)
+        self.assertIsNone(value['eta'])
+
+
 if __name__ == '__main__':
     unittest.main()
