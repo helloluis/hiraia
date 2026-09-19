@@ -8,7 +8,7 @@ import { ingest, openTelemetry, validEvent } from '../../packages/web/src/lib/te
 import { POST } from '../../packages/web/src/app/api/telemetry/batch/route.ts';
 const mobile =
   process.env.PILOT_MOBILE_PATH ||
-  path.resolve(import.meta.dirname, '../../../hiraia-unified/packages/mobile');
+  path.resolve(import.meta.dirname, '../../packages/mobile');
 const { Outbox } = await import(pathToFileURL(path.join(mobile, 'src/telemetry/core.ts')).href);
 const installation_id = 'installation_0123456789';
 const session_id = 'session_01234567890123';

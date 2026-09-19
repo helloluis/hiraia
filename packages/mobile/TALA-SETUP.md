@@ -4,10 +4,10 @@ Student-side classroom sync for the Calapacuan Grade 6 pilot. Teacher APK is
 `packages/tala/android/app/build/outputs/apk/debug/app-debug.apk` in the hiraia
 checkout (debug-signed). Protocol authority: Tala Kotlin.
 
-## What shipped
+## Integrated implementation
 
 - Settings: **Join Hiraia Tala / Scan teacher QR**, **Enter code instead**, disclosure (EN/TL/CEB), **Sync now / Retry**, **Leave class**.
-- Device-level binding to the **class** QR/`class_id` (Tala 0.3.0). No student group picker — the teacher assigns groups after enrollment. Re-scan same QR is a no-op. Different teacher asks confirmation and drops unsent old-teacher events.
+- Device-level binding to the **class** QR/`class_id`. The current teacher companion is in `packages/tala`; class selection replaces the older group assignment UI. Re-scan same QR is a no-op. Different teacher asks confirmation and drops unsent old-teacher events.
 - Typed 12-character code (`XXXX-XXXX-XXXX`) uses the HMAC-SHA256 `manual_enroll` / `manual_key` exchange, then the same validated QR payload.
 - Separate `teacher_outbox` in `hiraia-telemetry.db`. Mothership ACK does not delete it.
 - Native module `modules/hiraia-tala`: Nearby `com.hiraia.classroom.v1` / `P2P_STAR` / play-services-nearby 19.4.0, RSA-OAEP SHA-256 + MGF1-SHA1, AES-256-GCM.
@@ -22,6 +22,8 @@ From `packages/mobile` (JDK 17, Android SDK):
 
 ```sh
 pnpm install
+pnpm exec expo prebuild --platform android --no-install
+node scripts/post-prebuild.mjs
 pnpm apk
 ```
 
@@ -40,7 +42,7 @@ Covers QR validation, typed-code normalize/proof/AES-GCM roundtrip, ACK rules, e
 **Not verified in this pass** (no second phone / Redmi 14C on this machine):
 
 - Scan Tala QR or type the 12-character code on Redmi 14C while teacher collects
-- New students appear Unassigned; teacher group assign does not change the QR
+- New students appear in the selected class; switching classes selects that class’s QR
 - Two student phones + one teacher
 - Bluetooth-only (Wi-Fi off)
 - Disconnect before ACK, restart both apps, dedupe

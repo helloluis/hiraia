@@ -1,6 +1,6 @@
 # Pilot dashboard and Neon mirror
 
-Implementation is on `main` in the `hiraia-main-telemetry` worktree. The grade/language
+Implementation is integrated on `hiraia-unified` / `main`; the earlier separate worktree is preserved. The grade/language
 context change is in the `unified` mobile worktree. These changes are not committed.
 
 ## Dashboard

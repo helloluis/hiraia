@@ -298,6 +298,15 @@ def main():
     # written here rather than above because the stamp needs the finished file.
     index['dbVersion'] = db_version(OUT_DB)
     json.dump(index, open(OUT_IDX, 'w'), ensure_ascii=False, separators=(',', ':'))
+    # Match the release wrapper's two sed blocks, including their trailing newlines.
+    # A fresh checkout must not need a manually manufactured freshness marker.
+    stop_source = _re.search(r'^const SEARCH_STOP = new Set\(\[.*?^\]\);', _src, _re.M | _re.S)
+    token_source = _re.search(r'^function searchTokens\(.*?^\}', _src, _re.M | _re.S)
+    if not stop_source or not token_source:
+        raise SystemExit('Cannot record search tokenizer signature; declarations changed')
+    signature = hashlib.sha256((stop_source[0] + '\n' + token_source[0] + '\n').encode()).hexdigest()
+    with open(os.path.join(os.path.dirname(OUT_DB), '.search-stop.sha256'), 'w') as marker:
+        marker.write(signature + '\n')
     print(f'  dbVersion: {index["dbVersion"]}')
     gz = gzip.compress(raw, 9)  # reported only, to show what the APK will do with it
 

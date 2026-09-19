@@ -6,7 +6,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 const mobile =
   process.env.PILOT_MOBILE_PATH ||
-  path.resolve(import.meta.dirname, '../../../hiraia-unified/packages/mobile');
+  path.resolve(import.meta.dirname, '../../packages/mobile');
 const require = createRequire(import.meta.url);
 const modulePath = require.resolve(path.resolve(mobile, '../../node_modules/metro/src/Assets.js'));
 const original = require(modulePath);

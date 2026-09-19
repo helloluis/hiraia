@@ -1,7 +1,7 @@
 # Pilot telemetry
 
-Implementation: mobile in the **unified** worktree; ingestion, dashboard and deployment
-files in **main**. These commits are not a production deployment.
+Implementation: mobile, ingestion, dashboard and deployment sources are now together
+in **hiraia-unified / main**. Integration does not deploy them.
 The existing GA website integration is unchanged.
 
 Main includes the existing committed VPS admin/monitor baseline from question-cards

@@ -21,6 +21,7 @@ set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 MOBILE="$(cd "$HERE/.." && pwd)"
 REPO="$(cd "$MOBILE/../.." && pwd)"
+node "$HERE/verify-voices.mjs"
 # Refuse to ship a stale or structurally incomplete required Grade 5 lesson manifest.
 python3 "$REPO/rag/pipeline/compile-lessons.py" --grade 3 --check
 python3 "$REPO/rag/pipeline/compile-lessons.py" --grade 4 --check
@@ -183,8 +184,11 @@ cd "$AND"
 BEFORE=0
 [ -f "$APK" ] && BEFORE=$(stat -f %m "$APK")
 
+# Cache static asset directory indexes only for this release process and its Metro children.
+# Keep other caller Node flags, and quote the path for worktrees with spaces.
+METRO_NODE_OPTIONS="${NODE_OPTIONS:+$NODE_OPTIONS }--require=\"$HERE/metro-static-asset-cache.cjs\""
 set +e
-./gradlew --console=plain assembleRelease "$@" 2>&1 | tee /tmp/apk-build.log
+NODE_OPTIONS="$METRO_NODE_OPTIONS" ./gradlew --console=plain assembleRelease "$@" 2>&1 | tee /tmp/apk-build.log
 STATUS=${PIPESTATUS[0]}
 set -e
 grep -E "^> Task :app:(createBundle|package|assemble)|BUILD |FAILURE|error:" /tmp/apk-build.log | tail -12 || true

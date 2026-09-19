@@ -8,7 +8,7 @@ import Database from 'better-sqlite3';
 import { build } from 'esbuild';
 const mobile =
   process.env.PILOT_MOBILE_PATH ||
-  path.resolve(import.meta.dirname, '../../../hiraia-unified/packages/mobile');
+  path.resolve(import.meta.dirname, '../../packages/mobile');
 const temp = mkdtempSync(path.join(tmpdir(), 'hiraia-outbox-'));
 const bundle = path.join(temp, 'repository.cjs');
 await build({
@@ -86,6 +86,7 @@ test('activity survives upload, duplicate writes and restart, and uses correct d
     const included = entries.filter(e=>e.occurred_at>=start && e.occurred_at<=now && e.occurred_at>=Date.now()-100*day);
     assert.deepEqual(result.counts[i], {
       cards:included.filter(e=>e.name==='card_viewed').length,
+      unique_cards:0, // Legacy events in this fixture have no card_id; never count them as unique.
       dynamic:included.filter(e=>e.name==='card_viewed' && (e.props as any).source==='generated').length,
       quizzes:included.filter(e=>e.name==='quiz_graded').length,
       correct:included.filter(e=>e.name==='quiz_graded' && (e.props as any).correct===true).length,

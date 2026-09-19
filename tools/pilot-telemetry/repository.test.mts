@@ -8,7 +8,7 @@ import Database from 'better-sqlite3';
 import { build } from 'esbuild';
 const mobile =
   process.env.PILOT_MOBILE_PATH ||
-  path.resolve(import.meta.dirname, '../../../hiraia-unified/packages/mobile');
+  path.resolve(import.meta.dirname, '../../packages/mobile');
 const temp = mkdtempSync(path.join(tmpdir(), 'hiraia-outbox-'));
 const bundle = path.join(temp, 'repository.cjs');
 await build({

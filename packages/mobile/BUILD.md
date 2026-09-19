@@ -6,8 +6,9 @@ The mobile app runs the **Hiraia-2B** — our CPT'd + full-parameter-SFT'd Qwen3
 needs a native build with the QVAC config plugin, and per QVAC's docs it runs on a
 **physical Android 12+ device only** (not emulators).
 
-This doc covers producing a **shareable release APK** via EAS (cloud build — no local
-Android toolchain needed).
+The verified build path is a **local release APK** through `pnpm prebuild` and
+`pnpm apk`. The EAS configuration below is historical and is not a substitute for
+validating native plugins and ignored build inputs in a fresh checkout.
 
 ## The content is GENERATED — rebuild it before you build
 
@@ -217,7 +218,7 @@ actively deletes those excludes if it finds them in a long-lived tree.
 
 The APK itself is a few hundred MB (app + bare worker + native engines + the **bundled**
 card database and engraving art — the 12,374-illustration art pack ships in the APK).
-**No model weights are bundled.** On first launch the app downloads, from the mirror
+**No generation or embedding model weights are bundled.** The English and Filipino ONNX read-aloud voices **are** bundled. On first launch the app downloads, from the mirror
 (`https://hiraia.org/models/`, overridable at build time with
 `EXPO_PUBLIC_ASSETS_BASE_URL`), everything listed in `src/config/model.ts`
 `REMOTE_ASSETS`:
@@ -316,3 +317,28 @@ app" panel with both checksums and the commands above.
 > every build (EAS does this by default once credentials are created). That is also why
 > the local `sign-apk.sh` path exists: it keeps the published anchor valid for local
 > builds, so existing installs upgrade in place.
+
+## Unified worktree build inputs (2026-09-19)
+
+Build the student APK from `hiraia-unified` / `main`, using Node 22 and `pnpm apk`.
+This wrapper enables `scripts/metro-static-asset-cache.cjs` only for the release build,
+retains native Gradle caches, forces a fresh JS bundle, stages illustrations as native
+assets, and verifies APK contents. Do not enable the static cache for `pnpm dev`.
+
+On a fresh worktree, run `pnpm install --frozen-lockfile`, restore the two ignored
+`assets/voices/{en,tl}/model.onnx` files matching each tracked `voice.json` SHA-256,
+then run `python3 ../../rag/pipeline/build-cards-db.py`. The database builder records
+a new content hash in the resident index; keep that generated change with the build.
+The release wrapper rejects missing or mismatched voice weights before Gradle.
+The 2026-09-19 verified originals remain in the student-nearby worktree and in
+`/Users/luis/Code/hiraia-integration-backups/2026-09-19/voices/`. These local weights
+are not downloadable from a new Git clone alone. Do not use an older ONNX export
+with the current metadata. `scripts/voice/package-voices.py` is for intentionally
+packaging a newly selected export, not for bypassing an existing hash check.
+
+Run `pnpm exec expo prebuild --platform android --no-install` and
+`node scripts/post-prebuild.mjs` after changes to native plugins or dependencies.
+In particular, student Nearby requires the tracked `modules/hiraia-tala/android`
+module, camera permissions, and `withTalaNearby.js`; an old generated Android tree
+does not acquire those changes from `pnpm apk` alone. Do not run a clean prebuild
+over locally customized native files without preserving them first.

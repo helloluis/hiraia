@@ -227,3 +227,9 @@ rag/pipeline/imagegen/webp/
 card-cats/
 # Private Google Analytics service-account credential
 /hiraia-20e4d4d6f5d8.json
+
+# Local Expo module sources must survive a fresh worktree (root android/ is generated).
+!packages/mobile/modules/*/android/
+!packages/mobile/modules/*/android/**
+packages/mobile/modules/*/android/build/
+packages/mobile/modules/*/android/.gradle/

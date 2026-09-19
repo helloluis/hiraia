@@ -7,7 +7,7 @@ import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 const mobile =
   process.env.PILOT_MOBILE_PATH ||
-  path.resolve(import.meta.dirname, '../../../hiraia-unified/packages/mobile');
+  path.resolve(import.meta.dirname, '../../packages/mobile');
 const temp = mkdtempSync(path.join(tmpdir(), 'hiraia-hooks-'));
 process.on('exit', () => rmSync(temp, { recursive: true, force: true }));
 const load = async (entry: string) => {
