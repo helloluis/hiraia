@@ -138,14 +138,15 @@ export default function SidebarScreen() {
           })}
         </View>
 
-        <ImageDownloads />
+        {/* Classroom join/sync sits by grade selection; artwork management stays with app info. */}
+        <TalaSettings language={language ?? 'tagalog'} />
         <ActivityTable />
         <TelemetrySettings language={language ?? 'tagalog'} />
-        <TalaSettings language={language ?? 'tagalog'} />
         <TouchableOpacity accessibilityRole="button" style={[styles.tutorialButton, { marginTop: 12 }]} onPress={() => router.push('/activity')}>
           <Text style={styles.tutorialButtonText}>View detailed activity →</Text>
         </TouchableOpacity>
 
+        <ImageDownloads />
         <Text style={styles.sectionTitle}>{t.sectionVersion}</Text>
         <View style={styles.versionBlock}>
           <View style={styles.versionRow}>

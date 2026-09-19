@@ -204,14 +204,26 @@ test('multiple profiles stay distinct on the wire', () => {
   assert.ok(a && b && a.id !== b.id);
 });
 
-test('auto-sync is due every 15 minutes, immediately if never synced', async () => {
-  const { dueForSearch, restDelay, REST_MS } = await import('../src/tala/schedule.ts');
+test('auto-sync schedules a 10–15 minute retry, then backs off after three missed bursts', async () => {
+  const {
+    dueForSearch,
+    restDelay,
+    retryDelay,
+    RETRY_MIN_MS,
+    RETRY_MAX_MS,
+    BACKOFF_MS,
+    MISSES_BEFORE_BACKOFF,
+    REST_MS,
+  } = await import('../src/tala/schedule.ts');
   const now = 1_800_000_000_000;
   assert.equal(dueForSearch(0, now), true);
   assert.equal(dueForSearch(now - REST_MS, now), true);
   assert.equal(dueForSearch(now - 60_000, now), false);
   assert.equal(restDelay(now - 60_000, now), REST_MS - 60_000);
   assert.equal(restDelay(0, now), 0);
+  assert.equal(retryDelay(0, () => 0), RETRY_MIN_MS);
+  assert.equal(retryDelay(0, () => 1), RETRY_MAX_MS);
+  assert.equal(retryDelay(MISSES_BEFORE_BACKOFF), BACKOFF_MS);
 });
 
 test('typed class code normalizes and rejects ambiguous glyphs', async () => {

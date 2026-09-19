@@ -1,17 +1,11 @@
 import { useCameraPermissions, CameraView } from 'expo-camera';
 import { useRef, useSyncExternalStore, useState } from 'react';
 import { Alert, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 import type { Language } from '@hiraia/shared';
 import { talaCopy } from './copy';
 import { formatCode } from './manual';
-import {
-  enrollCode,
-  enrollQr,
-  leaveClass,
-  subscribeTalaUi,
-  syncNow,
-  talaSnapshot,
-} from './nearby';
+import { enrollCode, enrollQr, leaveClass, subscribeTalaUi, syncNow, talaSnapshot } from './nearby';
 
 export function TalaSettings({ language }: { language: Language }) {
   const t = talaCopy(language);
@@ -53,13 +47,16 @@ export function TalaSettings({ language }: { language: Language }) {
 
   return (
     <View style={styles.section}>
-      <Text style={styles.title}>{t.title}</Text>
-      <Text style={styles.body}>{t.disclose}</Text>
-      <Text style={styles.status}>{status}</Text>
       {!ui.bound ? (
         <>
-          <Pressable accessibilityRole="button" style={styles.button} onPress={openScanner}>
-            <Text style={styles.buttonText}>{t.join}</Text>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={t.scan}
+            style={styles.primaryAction}
+            onPress={openScanner}
+          >
+            <CameraIcon />
+            <Text style={styles.primaryActionText}>{t.scan}</Text>
           </Pressable>
           <Pressable
             accessibilityRole="button"
@@ -74,8 +71,14 @@ export function TalaSettings({ language }: { language: Language }) {
         </>
       ) : (
         <>
-          <Pressable accessibilityRole="button" style={styles.button} onPress={() => void syncNow()}>
-            <Text style={styles.buttonText}>{t.sync}</Text>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={t.sync}
+            style={styles.primaryAction}
+            onPress={() => void syncNow()}
+          >
+            <SyncIcon />
+            <Text style={styles.primaryActionText}>{t.sync}</Text>
           </Pressable>
           <Pressable
             accessibilityRole="button"
@@ -91,6 +94,9 @@ export function TalaSettings({ language }: { language: Language }) {
           </Pressable>
         </>
       )}
+      <Text style={styles.title}>{t.title}</Text>
+      <Text style={styles.body}>{t.disclose}</Text>
+      <Text style={styles.status}>{status}</Text>
       <Modal visible={scan} animationType="slide" onRequestClose={() => setScan(false)}>
         <View style={styles.scan}>
           <CameraView
@@ -100,13 +106,15 @@ export function TalaSettings({ language }: { language: Language }) {
               if (scanned.current) return;
               scanned.current = true;
               setScan(false);
-              void enrollQr(data, () =>
-                new Promise((resolve) => {
-                  Alert.alert(t.join, t.rebind, [
-                    { text: t.cancel, onPress: () => resolve(false) },
-                    { text: t.confirm, onPress: () => resolve(true) },
-                  ]);
-                })
+              void enrollQr(
+                data,
+                () =>
+                  new Promise((resolve) => {
+                    Alert.alert(t.join, t.rebind, [
+                      { text: t.cancel, onPress: () => resolve(false) },
+                      { text: t.confirm, onPress: () => resolve(true) },
+                    ]);
+                  })
               ).catch(() => Alert.alert(t.title, t.invalid));
             }}
           />
@@ -135,13 +143,15 @@ export function TalaSettings({ language }: { language: Language }) {
             onPress={() => {
               const typed = code;
               setCodeOpen(false);
-              void enrollCode(typed, () =>
-                new Promise((resolve) => {
-                  Alert.alert(t.join, t.rebind, [
-                    { text: t.cancel, onPress: () => resolve(false) },
-                    { text: t.confirm, onPress: () => resolve(true) },
-                  ]);
-                })
+              void enrollCode(
+                typed,
+                () =>
+                  new Promise((resolve) => {
+                    Alert.alert(t.join, t.rebind, [
+                      { text: t.cancel, onPress: () => resolve(false) },
+                      { text: t.confirm, onPress: () => resolve(true) },
+                    ]);
+                  })
               ).catch(() => Alert.alert(t.title, t.codeInvalid));
             }}
           >
@@ -153,6 +163,45 @@ export function TalaSettings({ language }: { language: Language }) {
         </View>
       </Modal>
     </View>
+  );
+}
+
+function CameraIcon() {
+  return (
+    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none" accessibilityElementsHidden>
+      <Path
+        d="M4 7.5h3l1.4-2h7.2l1.4 2h3A1.5 1.5 0 0 1 21.5 9v9A1.5 1.5 0 0 1 20 19.5H4A1.5 1.5 0 0 1 2.5 18V9A1.5 1.5 0 0 1 4 7.5Z"
+        stroke="#f4efe4"
+        strokeWidth={1.8}
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M15.5 13.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+        stroke="#f4efe4"
+        strokeWidth={1.8}
+      />
+    </Svg>
+  );
+}
+
+function SyncIcon() {
+  return (
+    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none" accessibilityElementsHidden>
+      <Path
+        d="M20 11a8 8 0 0 0-14-4.9L4 8"
+        stroke="#f4efe4"
+        strokeWidth={1.8}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M4 4v4h4M4 13a8 8 0 0 0 14 4.9l2-1.9M20 20v-4h-4"
+        stroke="#f4efe4"
+        strokeWidth={1.8}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
   );
 }
 
@@ -169,6 +218,18 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   buttonText: { color: '#f4efe4', fontWeight: '600' },
+  primaryAction: {
+    minHeight: 48,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 9,
+    backgroundColor: '#20342c',
+    paddingVertical: 11,
+    paddingHorizontal: 15,
+    borderRadius: 9,
+    alignSelf: 'flex-start',
+  },
+  primaryActionText: { color: '#f4efe4', fontWeight: '700', fontSize: 16 },
   secondary: { paddingVertical: 8, alignSelf: 'flex-start' },
   secondaryText: { color: '#20342c', textDecorationLine: 'underline' },
   scan: { flex: 1, backgroundColor: '#000' },

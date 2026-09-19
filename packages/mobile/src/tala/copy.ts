@@ -4,7 +4,7 @@ const copy = {
   english: {
     title: 'Hiraia Tala',
     join: 'Join Hiraia Tala / Scan teacher QR',
-    scan: 'Scan teacher QR',
+    scan: 'Scan QR',
     enterCode: 'Enter code instead',
     codeHint: 'Type the 12-character code on the teacher phone (XXXX-XXXX-XXXX).',
     codeInvalid: 'That code is not valid. Check the teacher phone and try again.',
@@ -16,7 +16,7 @@ const copy = {
       'This phone is already sharing with another teacher. Switch? Unsent activity for the previous teacher will be discarded.',
     disclose:
       'Scanning lets that teacher phone receive this phone’s learning activity and the student names saved on this phone. Hiraia’s online service still does not receive names.',
-    sync: 'Sync now / Retry',
+    sync: 'Sync now',
     searching: 'Searching for the teacher phone…',
     connected: 'Connected',
     sending: 'Sending activity…',
@@ -34,7 +34,7 @@ const copy = {
   tagalog: {
     title: 'Hiraia Tala',
     join: 'Sumali sa Hiraia Tala / I-scan ang QR ng guro',
-    scan: 'I-scan ang QR ng guro',
+    scan: 'I-scan ang QR',
     enterCode: 'Maglagay ng code',
     codeHint: 'I-type ang 12-titik na code sa telepono ng guro (XXXX-XXXX-XXXX).',
     codeInvalid: 'Hindi wasto ang code. Tingnan ang telepono ng guro at subukan muli.',
@@ -46,7 +46,7 @@ const copy = {
       'May ibang gurong nakakabit na sa teleponong ito. Palitan? Ang hindi pa naipadalang activity para sa dating guro ay mawawala.',
     disclose:
       'Kapag ni-scan, puwedeng matanggap ng telepono ng gurong iyon ang learning/activity telemetry ng teleponong ito at ang mga pangalang naka-save dito. Hindi pa rin tumatanggap ng pangalan ang online na serbisyo ng Hiraia.',
-    sync: 'I-sync ngayon / Subukang muli',
+    sync: 'I-sync ngayon',
     searching: 'Naghahanap ng telepono ng guro…',
     connected: 'Nakakonekta',
     sending: 'Ipinapadala ang activity…',
@@ -64,7 +64,7 @@ const copy = {
   cebuano: {
     title: 'Hiraia Tala',
     join: 'Apil sa Hiraia Tala / I-scan ang QR sa magtutudlo',
-    scan: 'I-scan ang QR sa magtutudlo',
+    scan: 'I-scan ang QR',
     enterCode: 'Ibutang ang code',
     codeHint: 'I-type ang 12-ka-karakter nga code sa telepono sa magtutudlo (XXXX-XXXX-XXXX).',
     codeInvalid: 'Dili sakto ang code. Tan-awa ang telepono sa magtutudlo ug sulayi pag-usab.',
@@ -76,7 +76,7 @@ const copy = {
       'Naa nay laing magtutudlo nga nakabit niining telepono. Ilisan? Ang wala pa mapadala nga activity sa karaang magtutudlo mawala.',
     disclose:
       'Inig-scan, ang telepono niadtong magtutudlo makadawat sa learning/activity telemetry niining telepono ug sa mga ngalan nga naka-save dinhi. Wala gihapon madawat nga ngalan ang online nga serbisyo sa Hiraia.',
-    sync: 'I-sync karon / Sulayi pag-usab',
+    sync: 'I-sync karon',
     searching: 'Nangita sa telepono sa magtutudlo…',
     connected: 'Nakakonektar',
     sending: 'Gipadala ang activity…',

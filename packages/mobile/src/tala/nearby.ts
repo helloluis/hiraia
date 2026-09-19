@@ -15,6 +15,7 @@ import {
 } from './protocol';
 import { TeacherQueue } from './queue';
 import { parseTeacherQr, sameBinding, QrError } from './qr';
+import { BURST_MS, retryDelay } from './schedule';
 
 import {
   b64urlDecode,
@@ -65,6 +66,10 @@ let enabled = true;
 let running = false;
 let unsubNative: (() => void) | undefined;
 let appSub: { remove(): void } | undefined;
+let retryTimer: ReturnType<typeof setTimeout> | undefined;
+let burstTimer: ReturnType<typeof setTimeout> | undefined;
+let missesWithoutTeacher = 0;
+let foundTeacherThisBurst = false;
 const connecting = new Set<string>();
 const sessions = new Map<
   string,
@@ -90,6 +95,26 @@ function setUi(partial: Partial<typeof ui>) {
   emit();
 }
 
+function clearTimers() {
+  if (retryTimer) clearTimeout(retryTimer);
+  if (burstTimer) clearTimeout(burstTimer);
+  retryTimer = undefined;
+  burstTimer = undefined;
+}
+
+function mayRetryAutomatically() {
+  return enabled && AppState.currentState === 'active' && !!queue && !pendingManual;
+}
+
+function scheduleRetry() {
+  if (!mayRetryAutomatically()) return;
+  if (retryTimer) clearTimeout(retryTimer);
+  retryTimer = setTimeout(() => {
+    retryTimer = undefined;
+    void startTalaSession();
+  }, retryDelay(missesWithoutTeacher));
+}
+
 function profiles(): TeacherProfile[] {
   const list = profileSnapshot().profiles.map((p) => ({ id: p.id, name: p.name }));
   const clean = list.map(sanitizeProfile).filter((p): p is TeacherProfile => !!p);
@@ -101,7 +126,11 @@ function ID_OK(id: string) {
   return /^[A-Za-z0-9_-]{16,80}$/.test(id);
 }
 
-async function inner(classId: string, challenge: string, events: TeacherEvent[]): Promise<InnerBatch> {
+async function inner(
+  classId: string,
+  challenge: string,
+  events: TeacherEvent[]
+): Promise<InnerBatch> {
   return {
     schema: SCHEMA,
     class_id: classId,
@@ -272,6 +301,9 @@ async function sendNextBatch(endpointId: string) {
     sessions.delete(endpointId);
     connecting.delete(endpointId);
     setUi({ state: 'synced', lastSync: Date.now(), detail: '' });
+    // A completed exchange is the natural end of this short radio burst. The scheduler
+    // starts another foreground look later, rather than leaving Nearby in a stale state.
+    await finishSearchBurst(true);
     return;
   }
   setUi({ state: 'sending', detail: '' });
@@ -287,6 +319,7 @@ function jitter(ms: number) {
 
 async function onFound(endpointId: string) {
   if (connecting.has(endpointId) || sessions.has(endpointId)) return;
+  foundTeacherThisBurst = true;
   connecting.add(endpointId);
   await new Promise((r) => setTimeout(r, jitter(2500)));
   if (!running) {
@@ -321,7 +354,34 @@ async function nearbyPermissions(): Promise<boolean> {
   return Object.values(result).every((v) => v === PermissionsAndroid.RESULTS.GRANTED);
 }
 
+/** Stop one bounded discovery burst and arrange the next automatic foreground look. */
+async function finishSearchBurst(synced = false): Promise<void> {
+  if (!running) return;
+  if (burstTimer) clearTimeout(burstTimer);
+  burstTimer = undefined;
+  running = false;
+  connecting.clear();
+  sessions.clear();
+  try {
+    await talaNative()?.stop();
+  } catch {
+    /* radios may already be down */
+  }
+  const bound = !!(await queue?.binding());
+  if (!synced && !foundTeacherThisBurst) missesWithoutTeacher += 1;
+  else if (foundTeacherThisBurst || synced) missesWithoutTeacher = 0;
+  if (!synced && ui.state !== 'error') setUi({ state: bound ? 'idle' : 'unbound', bound });
+  if (bound) scheduleRetry();
+}
+
 export async function startTalaSession(): Promise<void> {
+  // A discovery burst is already live. Native Nearby also treats startDiscovery as idempotent,
+  // but avoiding a second permission request makes app-focus changes harmless.
+  if (running) return;
+  if (retryTimer) {
+    clearTimeout(retryTimer);
+    retryTimer = undefined;
+  }
   const native = talaNative();
   if (!native) {
     setUi({ state: 'error', detail: 'play-services' });
@@ -342,16 +402,26 @@ export async function startTalaSession(): Promise<void> {
     return;
   }
   running = true;
+  foundTeacherThisBurst = false;
   setUi({ state: 'searching', detail: '' });
   try {
     await native.startDiscovery();
+    burstTimer = setTimeout(() => {
+      burstTimer = undefined;
+      void finishSearchBurst();
+    }, BURST_MS);
   } catch {
     running = false;
     setUi({ state: 'error', detail: 'nearby' });
+    if (!pendingManual) {
+      missesWithoutTeacher += 1;
+      scheduleRetry();
+    }
   }
 }
 
 export async function stopTalaSession(): Promise<void> {
+  clearTimers();
   running = false;
   connecting.clear();
   sessions.clear();
@@ -361,11 +431,12 @@ export async function stopTalaSession(): Promise<void> {
     /* radios may already be down */
   }
   const bound = !!(await queue?.binding());
-  if (ui.state !== 'synced')
-    setUi({ state: bound ? 'idle' : 'unbound' });
+  if (ui.state !== 'synced') setUi({ state: bound ? 'idle' : 'unbound' });
 }
 
 export async function syncNow(): Promise<void> {
+  // A student explicitly asking to sync is a fresh attempt, not a fourth missed look.
+  missesWithoutTeacher = 0;
   await stopTalaSession();
   await startTalaSession();
 }
