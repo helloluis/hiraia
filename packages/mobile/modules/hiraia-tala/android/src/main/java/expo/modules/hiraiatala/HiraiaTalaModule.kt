@@ -1,5 +1,12 @@
 package expo.modules.hiraiatala
 
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
+import android.content.Context
+import android.content.Intent
+import android.net.wifi.WifiManager
+import android.os.Build
+import android.provider.Settings
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import expo.modules.kotlin.Promise
@@ -28,6 +35,53 @@ class HiraiaTalaModule : Module() {
         Function("playServicesOk") {
             GoogleApiAvailability.getInstance()
                 .isGooglePlayServicesAvailable(activity) == ConnectionResult.SUCCESS
+        }
+
+        /**
+         * Nearby needs local radios, even when the phones have no internet connection.
+         * Report each radio separately so the React UI can give an actionable explanation
+         * instead of treating every startDiscovery failure as the same generic error.
+         */
+        Function("connectivityStatus") {
+            val bluetooth = activity.getSystemService(BluetoothManager::class.java)?.adapter
+            @Suppress("DEPRECATION")
+            val wifi = activity.applicationContext.getSystemService(Context.WIFI_SERVICE) as? WifiManager
+            mapOf(
+                "bluetoothSupported" to (bluetooth != null),
+                "bluetoothOn" to (bluetooth?.isEnabled == true),
+                "wifiSupported" to (wifi != null),
+                "wifiOn" to (wifi?.isWifiEnabled == true),
+            )
+        }
+
+        /** Android requires a visible system confirmation before an app can enable Bluetooth. */
+        Function("requestBluetoothEnable") {
+            val bluetooth = activity.getSystemService(BluetoothManager::class.java)?.adapter
+            if (bluetooth == null || bluetooth.isEnabled) {
+                false
+            } else {
+                try {
+                    activity.startActivity(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
+                    true
+                } catch (_: Exception) {
+                    false
+                }
+            }
+        }
+
+        /** Apps cannot silently enable Wi-Fi on modern Android, so show the system control. */
+        Function("openWifiSettings") {
+            try {
+                val action = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    Settings.Panel.ACTION_WIFI
+                } else {
+                    Settings.ACTION_WIFI_SETTINGS
+                }
+                activity.startActivity(Intent(action))
+                true
+            } catch (_: Exception) {
+                false
+            }
         }
 
         AsyncFunction("encryptRequest") { publicKey: String, challenge: String, plaintext: String ->

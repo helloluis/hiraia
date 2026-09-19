@@ -5,7 +5,15 @@ import Svg, { Path } from 'react-native-svg';
 import type { Language } from '@hiraia/shared';
 import { talaCopy } from './copy';
 import { formatCode } from './manual';
-import { enrollCode, enrollQr, leaveClass, subscribeTalaUi, syncNow, talaSnapshot } from './nearby';
+import {
+  enrollCode,
+  enrollQr,
+  fixTalaConnectivity,
+  leaveClass,
+  subscribeTalaUi,
+  syncNow,
+  talaSnapshot,
+} from './nearby';
 
 export function TalaSettings({ language }: { language: Language }) {
   const t = talaCopy(language);
@@ -15,6 +23,8 @@ export function TalaSettings({ language }: { language: Language }) {
   const [code, setCode] = useState('');
   const scanned = useRef(false);
   const [permission, requestPermission] = useCameraPermissions();
+  const needsConnectivityAction =
+    ui.detail === 'bluetooth-off' || ui.detail === 'wifi-off' || ui.detail === 'radios-off';
   const status =
     ui.state === 'searching'
       ? t.searching
@@ -29,6 +39,16 @@ export function TalaSettings({ language }: { language: Language }) {
                 ? t.playServices
                 : ui.detail === 'permission'
                   ? t.permission
+                  : ui.detail === 'bluetooth-off'
+                    ? t.bluetoothOff
+                    : ui.detail === 'wifi-off'
+                      ? t.wifiOff
+                      : ui.detail === 'radios-off'
+                        ? t.radiosOff
+                        : ui.detail === 'bluetooth-unavailable'
+                          ? t.bluetoothUnavailable
+                          : ui.detail === 'wifi-unavailable'
+                            ? t.wifiUnavailable
                   : ui.detail === 'code'
                     ? t.codeExpired
                     : t.nearby
@@ -97,6 +117,17 @@ export function TalaSettings({ language }: { language: Language }) {
       <Text style={styles.title}>{t.title}</Text>
       <Text style={styles.body}>{t.disclose}</Text>
       <Text style={styles.status}>{status}</Text>
+      {needsConnectivityAction ? (
+        <Pressable
+          accessibilityRole="button"
+          style={styles.secondary}
+          onPress={() => fixTalaConnectivity()}
+        >
+          <Text style={styles.secondaryText}>
+            {ui.detail === 'wifi-off' ? t.openWifiSettings : t.turnOnBluetooth}
+          </Text>
+        </Pressable>
+      ) : null}
       <Modal visible={scan} animationType="slide" onRequestClose={() => setScan(false)}>
         <View style={styles.scan}>
           <CameraView

@@ -2,6 +2,14 @@ import { requireNativeModule, type EventSubscription } from 'expo-modules-core';
 
 type Native = {
   playServicesOk(): boolean;
+  connectivityStatus(): {
+    bluetoothSupported: boolean;
+    bluetoothOn: boolean;
+    wifiSupported: boolean;
+    wifiOn: boolean;
+  };
+  requestBluetoothEnable(): boolean;
+  openWifiSettings(): boolean;
   requestPermissions(): Promise<boolean>;
   encryptRequest(
     publicKey: string,

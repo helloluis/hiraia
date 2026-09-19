@@ -401,6 +401,33 @@ export async function startTalaSession(): Promise<void> {
     setUi({ state: 'error', detail: 'permission' });
     return;
   }
+  const connectivity = native.connectivityStatus();
+  if (!connectivity.bluetoothSupported) {
+    setUi({ state: 'error', detail: 'bluetooth-unavailable' });
+    return;
+  }
+  if (!connectivity.bluetoothOn) {
+    setUi({ state: 'error', detail: connectivity.wifiOn ? 'bluetooth-off' : 'radios-off' });
+    // Keep the existing foreground retry cadence alive: a family may turn the radio
+    // back on after this explanation without reopening the app or pressing Sync again.
+    if (!pendingManual) {
+      missesWithoutTeacher += 1;
+      scheduleRetry();
+    }
+    return;
+  }
+  if (!connectivity.wifiSupported) {
+    setUi({ state: 'error', detail: 'wifi-unavailable' });
+    return;
+  }
+  if (!connectivity.wifiOn) {
+    setUi({ state: 'error', detail: 'wifi-off' });
+    if (!pendingManual) {
+      missesWithoutTeacher += 1;
+      scheduleRetry();
+    }
+    return;
+  }
   running = true;
   foundTeacherThisBurst = false;
   setUi({ state: 'searching', detail: '' });
@@ -439,6 +466,17 @@ export async function syncNow(): Promise<void> {
   missesWithoutTeacher = 0;
   await stopTalaSession();
   await startTalaSession();
+}
+
+/** Open Android's own control for the radio that is currently preventing Nearby sync. */
+export function fixTalaConnectivity(detail = ui.detail): void {
+  const native = talaNative();
+  if (!native) return;
+  if (detail === 'bluetooth-off' || detail === 'radios-off') {
+    native.requestBluetoothEnable();
+  } else if (detail === 'wifi-off') {
+    native.openWifiSettings();
+  }
 }
 
 export async function enrollQr(text: string, confirmRebind: () => Promise<boolean>): Promise<void> {

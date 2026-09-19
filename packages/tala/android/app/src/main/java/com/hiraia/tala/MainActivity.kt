@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.ClipData
 import android.content.Intent
+import android.net.wifi.WifiManager
 import android.net.Uri
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -16,6 +17,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.GestureDetector
 import android.view.Gravity
 import android.view.MotionEvent
@@ -48,6 +50,7 @@ class MainActivity : Activity(), NearbyCollector.Listener {
     private var studentDialog: Dialog? = null
     private var issuePickerCallback: ((List<Uri>) -> Unit)? = null
     private var collecting = false
+    private var retryAfterWifiSettings = false
     private var status = "Collection paused"
     private var nearbyCount = 0
     private var qrCollectionStatus: TextView? = null
@@ -112,7 +115,12 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         if (tutorialVisible) return
         render()
         if (database.pendingIssueCount() > 0) IssueUploader.schedule(this)
-        if (collecting && permissionsGranted()) collector?.start()
+        if (retryAfterWifiSettings) {
+            retryAfterWifiSettings = false
+            startCollection()
+        } else if (collecting && permissionsGranted() && localRadiosReady()) {
+            collector?.start()
+        }
     }
 
     override fun onPause() {
@@ -141,6 +149,7 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         status = message
         nearbyCount = 0
         qrCollectionStatus?.text = message
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         if (!tutorialVisible) render()
     }
 
@@ -272,12 +281,24 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         }
         val bluetooth = getSystemService(BluetoothManager::class.java).adapter
         if (bluetooth == null) {
-            showCollectionStatus("This phone does not support Bluetooth.")
+            showConnectivityHelp("This phone does not support Bluetooth, which is needed for classroom sync.")
             return
         }
         if (!bluetooth.isEnabled) {
             showCollectionStatus("Turn on Bluetooth to collect activity.")
             startActivityForResult(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), BLUETOOTH_REQUEST)
+            return
+        }
+        val wifi = applicationContext.getSystemService(Context.WIFI_SERVICE) as? WifiManager
+        if (wifi == null) {
+            showConnectivityHelp("This phone does not support Wi-Fi, which is needed for classroom sync.")
+            return
+        }
+        @Suppress("DEPRECATION")
+        if (!wifi.isWifiEnabled) {
+            showConnectivityHelp("Turn on Wi-Fi to collect classroom activity.")
+            retryAfterWifiSettings = true
+            openWifiSettings()
             return
         }
         collecting = true
@@ -300,7 +321,7 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == BLUETOOTH_REQUEST) {
             if (resultCode == RESULT_OK) startCollection()
-            else showCollectionStatus("Bluetooth is off. Turn it on, then retry collection.")
+            else showConnectivityHelp("Bluetooth is off. Turn it on, then retry monitoring.")
         }
         if (requestCode == ISSUE_MEDIA_REQUEST && resultCode == RESULT_OK) {
             val selected = mutableListOf<Uri>()
@@ -316,6 +337,31 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         status = message
         qrCollectionStatus?.text = message
         render()
+    }
+
+    private fun showConnectivityHelp(message: String) {
+        showCollectionStatus(message)
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun localRadiosReady(): Boolean {
+        val bluetooth = getSystemService(BluetoothManager::class.java).adapter ?: return false
+        val wifi = applicationContext.getSystemService(Context.WIFI_SERVICE) as? WifiManager ?: return false
+        @Suppress("DEPRECATION")
+        return bluetooth.isEnabled && wifi.isWifiEnabled
+    }
+
+    private fun openWifiSettings() {
+        val action = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Settings.Panel.ACTION_WIFI
+        } else {
+            Settings.ACTION_WIFI_SETTINGS
+        }
+        try {
+            startActivity(Intent(action))
+        } catch (_: Exception) {
+            showConnectivityHelp("Open Android Wi-Fi settings, turn Wi-Fi on, then retry monitoring.")
+        }
     }
 
     private fun permissionsGranted(): Boolean = requiredPermissions().all {
