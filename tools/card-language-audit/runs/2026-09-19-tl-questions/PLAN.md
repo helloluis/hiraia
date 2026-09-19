@@ -22,6 +22,15 @@ treats a row with a non-null verdict as done, so a half-finished batch resumes c
 - [x] **S1** Bake-off round 1: `mistralai/mistral-nemo` (acc .695, BROKEN recall **.25** — unusable),
       `qwen/qwen3.7-flash` (acc .949, prec .905, recall .95). Fixed a 2000-token cap that made
       thinking models return empty content.
+- [~] **S2** IN PROGRESS (locked, pid running). 5 of 7 models scored; `deepseek-v4-flash`,
+      `nova-micro`, `claude-haiku-4.5` still to run. `google/gemini-3.0-flash-lite` does not
+      exist on OpenRouter — substituted `gemini-3.5-flash-lite`. Interim, by BROKEN recall:
+      ling-3.0-flash .966/.95/.95 · qwen3.7-flash .949/.905/.95 · gemini-3.5-flash-lite
+      .949/.905/.95 · gpt-5-nano .932/.90/.90 · mistral-nemo .695/.625/**.25**.
+      **No gold item is missed by all four good models**, and 3 of the 9 disagreements are
+      rows I marked `borderline` — so some of the measured error is label uncertainty, not
+      model error. Both facts argue for a 3-model majority vote in S3 rather than one judge,
+      and for native verification of the borderline rows.
 - [ ] **S2** Bake-off round 2. Add, in one call:
       `google/gemini-3.0-flash-lite`, `openai/gpt-5-nano`, `inclusionai/ling-3.0-flash`,
       `deepseek/deepseek-v4-flash-0731`, `amazon/nova-micro-v1`, plus one frontier baseline
