@@ -80,7 +80,11 @@ def ask(model, question, key, timeout=90):
         'model': model,
         'messages': [{'role': 'user', 'content': PROMPT.format(q=question)}],
         'temperature': 0,
-        'max_tokens': 2000,
+        # Generous on purpose. Thinking models spend the whole budget on reasoning tokens and
+        # then return an EMPTY content field — qwen3.7-flash silently produced 12 blank answers
+        # at 2000, which scored as unparseable rather than wrong. Cost is irrelevant here
+        # (fractions of a cent per item), so buy the headroom.
+        'max_tokens': 8000,
     }).encode()
     req = urllib.request.Request(ENDPOINT, data=body, headers={
         'Authorization': f'Bearer {key}', 'Content-Type': 'application/json',
@@ -104,7 +108,10 @@ def load_done(path):
     for line in path.read_text(encoding='utf-8').splitlines():
         if line.strip():
             r = json.loads(line)
-            out[(r['model'], r['id'])] = r
+            # Only a RESOLVED row counts as done. Caching a None verdict would make a
+            # transient blank or a rate-limit permanent across heartbeat restarts.
+            if r.get('verdict') is not None:
+                out[(r['model'], r['id'])] = r
     return out
 
 

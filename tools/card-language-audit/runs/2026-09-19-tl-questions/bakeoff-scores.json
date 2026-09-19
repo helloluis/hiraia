@@ -1,0 +1,44 @@
+{
+  "mistralai/mistral-nemo": {
+    "n": 59,
+    "unparsed": 0,
+    "accuracy": 0.695,
+    "broken_precision": 0.625,
+    "broken_recall": 0.25,
+    "tp": 5,
+    "fp": 3,
+    "fn": 15,
+    "tn": 36,
+    "per_pattern": {
+      "existential-may": "1/1",
+      "existential-mayroon": "2/2",
+      "governing-verb": "14/16",
+      "locative-nasa": "7/7",
+      "measure-equational": "6/6",
+      "part-possession": "5/20",
+      "pseudo-verb": "6/7"
+    },
+    "errors": 0
+  },
+  "qwen/qwen3.7-flash": {
+    "n": 59,
+    "unparsed": 0,
+    "accuracy": 0.949,
+    "broken_precision": 0.905,
+    "broken_recall": 0.95,
+    "tp": 19,
+    "fp": 2,
+    "fn": 1,
+    "tn": 37,
+    "per_pattern": {
+      "existential-may": "1/1",
+      "existential-mayroon": "2/2",
+      "governing-verb": "15/16",
+      "locative-nasa": "7/7",
+      "measure-equational": "5/6",
+      "part-possession": "19/20",
+      "pseudo-verb": "7/7"
+    },
+    "errors": 0
+  }
+}
