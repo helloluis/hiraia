@@ -222,30 +222,54 @@ def cmd_judge(a, run):
 
 
 def cmd_sample(a, run):
-    """Tier-2 stratified draw: the broader question population, by interrogative."""
+    """Tier-2 stratified draw over the broader question population.
+
+    Stratifies on the INTERROGATIVE, not on the first token. An earlier version grouped by
+    `head.split()[0]`, which invented 40 "classes" — `ang`, `sa`, `mas`, `para`, `kung`,
+    `nakikita` are just first words of questions that do not open with a wh-word. It also
+    applied a per-class floor of 8, so 40 classes forced a 320-item floor and a request for
+    300 returned 500. Both are fixed here: a fixed wh-list, everything else pooled into
+    `other`, and proportional allocation that actually respects --n.
+    """
+    WH = ('bakit', 'ano', 'anong', 'paano', 'gaano', 'saan', 'nasaan', 'sino', 'kanino',
+          'kailan', 'alin', 'aling', 'ilan', 'ilang')
     d = json.loads(POOL.read_text(encoding='utf-8'))
     heads = []
     for c in d['cards']:
         tl = (c.get('fact') or {}).get('tl') or ''
         h = tl.split('\n')[0].strip()
         if h.endswith('?'):
-            heads.append((c['id'], h, h.split()[0].lower().strip('?') if h.split() else ''))
+            w = re.sub(r'[^\wñÑ]', '', h.split()[0].lower()) if h.split() else ''
+            heads.append((c['id'], h, w if w in WH else 'other'))
     by = collections.defaultdict(list)
     for cid, h, w in heads:
         by[w].append((cid, h))
     rng = random.Random(20260919)
     total = sum(len(v) for v in by.values())
+    # Largest-remainder allocation so the parts sum to exactly n, with a floor of 5 per class
+    # (enough to notice a class is bad, cheap enough not to distort the total).
+    raw = {w: a.n * len(v) / total for w, v in by.items()}
+    alloc = {w: max(5, int(x)) for w, x in raw.items()}
+    while sum(alloc.values()) > a.n:
+        w = max((w for w in alloc if alloc[w] > 5), key=lambda w: alloc[w] - raw[w], default=None)
+        if w is None:
+            break
+        alloc[w] -= 1
+    while sum(alloc.values()) < a.n:
+        w = max(alloc, key=lambda w: raw[w] - alloc[w])
+        alloc[w] += 1
     draw = []
-    for w, items in sorted(by.items(), key=lambda kv: -len(kv[1])):
-        if len(items) < 20:
-            continue
-        k = max(8, round(a.n * len(items) / total))
-        draw += [{'id': i, 'tl': t, 'interrogative': w} for i, t in rng.sample(items, min(k, len(items)))]
+    for w, k in sorted(alloc.items()):
+        items = by[w]
+        draw += [{'id': i, 'tl': t, 'interrogative': w}
+                 for i, t in rng.sample(items, min(k, len(items)))]
     (run / 'tier2-sample.json').write_text(
-        json.dumps({'population': total, 'drawn': len(draw), 'items': draw},
-                   ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
-    print(f'  population {total}, drew {len(draw)} across '
-          f'{len(set(x["interrogative"] for x in draw))} interrogatives')
+        json.dumps({'population': total, 'requested': a.n, 'drawn': len(draw),
+                    'by_class': {w: len(by[w]) for w in sorted(by)},
+                    'allocation': {w: alloc[w] for w in sorted(alloc)},
+                    'items': draw}, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+    print(f'  population {total}, requested {a.n}, drew {len(draw)} across {len(alloc)} classes')
+    print(f'  allocation: {dict(sorted(alloc.items(), key=lambda kv: -kv[1]))}')
 
 
 def cmd_report(a, run):
