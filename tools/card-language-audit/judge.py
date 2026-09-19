@@ -255,6 +255,46 @@ def cmd_report(a, run):
             print(f'--- {name} ---\n{p.read_text()}')
 
 
+class RunLock:
+    """One writer per run dir.
+
+    The heartbeat fires on a fixed cadence, but a stage can outlast its interval — a thinking
+    model at ~60 s/item takes well over an hour for six models. Without this, the next firing
+    starts a SECOND pass that appends to the same jsonl, duplicating paid requests and
+    interleaving lines. Stale locks are reclaimed by checking the recorded pid.
+    """
+
+    def __init__(self, run):
+        self.path = run / '.lock'
+
+    def __enter__(self):
+        if self.path.exists():
+            try:
+                pid = int(self.path.read_text().split()[0])
+            except (ValueError, IndexError):
+                pid = None
+            alive = False
+            if pid:
+                try:
+                    os.kill(pid, 0)          # signal 0 = existence check, sends nothing
+                    alive = True
+                except ProcessLookupError:
+                    alive = False            # holder is gone; the lock is stale
+                except PermissionError:
+                    alive = True             # exists, just not ours to signal
+            if alive:
+                sys.exit(f'!! another stage is running (pid {pid}); not starting a second')
+            print(f'  (reclaiming stale lock from pid {pid})')
+        self.path.write_text(f'{os.getpid()} {time.time()}\n')
+        return self
+
+    def __exit__(self, *exc):
+        try:
+            self.path.unlink()
+        except FileNotFoundError:
+            pass
+
+
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('cmd', choices=['bakeoff', 'judge', 'sample', 'report'])
@@ -266,4 +306,9 @@ if __name__ == '__main__':
     a = ap.parse_args()
     run = pathlib.Path(a.run)
     run.mkdir(parents=True, exist_ok=True)
-    {'bakeoff': cmd_bakeoff, 'judge': cmd_judge, 'sample': cmd_sample, 'report': cmd_report}[a.cmd](a, run)
+    fn = {'bakeoff': cmd_bakeoff, 'judge': cmd_judge, 'sample': cmd_sample, 'report': cmd_report}[a.cmd]
+    if a.cmd == 'report':          # read-only, never contends
+        fn(a, run)
+    else:
+        with RunLock(run):
+            fn(a, run)
