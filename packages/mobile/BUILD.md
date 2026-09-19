@@ -219,7 +219,7 @@ actively deletes those excludes if it finds them in a long-lived tree.
 The APK itself is a few hundred MB (app + bare worker + native engines + the **bundled**
 card database and engraving art — the 12,374-illustration art pack ships in the APK).
 **No generation or embedding model weights are bundled.** The English and Filipino ONNX read-aloud voices **are** bundled. On first launch the app downloads, from the mirror
-(`https://hiraia.org/models/`, overridable at build time with
+(`https://assets.hiraia.org/models/`, overridable at build time with
 `EXPO_PUBLIC_ASSETS_BASE_URL`), everything listed in `src/config/model.ts`
 `REMOTE_ASSETS`:
 
@@ -232,8 +232,8 @@ card database and engraving art — the 12,374-illustration art pack ships in th
 So a first run costs **~1.27 GB blocking** plus ~500 MB in the background (the fact
 vectors and the LaBSE embedder share the readiness bar's semantic band). Separately and
 **opt-out-able** (Settings, on by default), the reader's grade-cell art is backfilled
-from `https://assets.hiraia.org/models/images/` `.hpak` packs — common (~222 MB) plus the
-one grade cell (7–20 MB), ~230–240 MB total.
+from `https://assets.hiraia.org/models/images/` `.hpak` packs — common plus the selected
+grade packs, approximately 250–283 MB depending on grade after the September 19 coverage fix.
 
 There are **no LoRA adapters** any more. The shipping model is a FULL-PARAMETER SFT —
 Tagalog, Cebuano and English all live in the one set of weights (`loraRemote` in

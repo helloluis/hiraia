@@ -13,10 +13,10 @@ export function assetUrl(filename: string, base: string): string {
   return `${url.toString().replace(/\/+$/, '')}/${filename}`;
 }
 
-// The existing production VPS serves this prefix today. CDN activation is a
-// separate deployment; do not point builds at an unprovisioned hostname.
+// Verified production CDN. Use immutable assets directly rather than relying on
+// legacy VPS redirects, whose cached error responses can outlive a route fix.
 export const ASSETS_BASE_URL =
-  process.env.EXPO_PUBLIC_ASSETS_BASE_URL || 'https://hiraia.org/models';
+  process.env.EXPO_PUBLIC_ASSETS_BASE_URL || 'https://assets.hiraia.org/models';
 
 export function remoteAssetUrl(filename: string): string {
   return assetUrl(filename, ASSETS_BASE_URL);
