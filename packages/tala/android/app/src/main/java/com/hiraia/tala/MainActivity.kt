@@ -361,8 +361,13 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         page.addView(header)
         page.addView(label(greeting(schoolClass.teacherName), 26f, INK, true),
             LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(12) })
-        page.addView(label(schoolClass.name, 22f, INK, true),
+        page.addView(label("Active classroom", 12f, MUTED, true),
             LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(14) })
+        page.addView(label("${schoolClass.name} (${students.size})", 22f, INK, true).apply {
+            contentDescription = "Active classroom: ${schoolClass.name}, ${students.size} students"
+            setPadding(dp(12), dp(9), dp(12), dp(9))
+            background = rounded(PALE_YELLOW, dp(12))
+        }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(4) })
         page.addView(label("${shortLabel(schoolClass.schoolName, 18)} - " +
             "${schoolClass.schoolYear.replace('–', '-')} - Grade ${schoolClass.gradeLevel}",
             14f, MUTED, false), LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(3) })
