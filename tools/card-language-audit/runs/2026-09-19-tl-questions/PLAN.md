@@ -54,11 +54,20 @@ treats a row with a non-null verdict as done, so a half-finished batch resumes c
       ling-3.0-flash`. Including a weak member poisons it (combos with nova-micro/mistral-nemo
       drop to ~.88), so the panel must be drawn from the strong tier.
 
-- [ ] **S3** Judge the 32 T1 candidates with the **3-model panel** chosen in S2
-      (`google/gemini-3.5-flash-lite`, `openai/gpt-5-nano`, `inclusionai/ling-3.0-flash`),
-      taking the majority verdict. Run `judge.py judge --targets t1` once per model, then
-      combine. Record each model's verdict per card so disagreements stay visible — a 2-1
-      split is exactly where a human should look first. Still PROPOSALS: do not write the pool.
+- [x] **S3** DONE — 32 candidates x 3 models = 96 verdicts, 0 unresolved, ~$0.01.
+      **16 unanimous BROKEN** (incl. ffct-13212, the card that started this), **9 two-one
+      splits**, **7 unanimous CORRECT**. Written to `proposals-t1.md`; NOTHING applied.
+      So of the 32 regex candidates, half are confirmed defects — the filter's precision is
+      ~50-78% depending on how the splits resolve, which is why this class was never automated.
+
+      **Reliability caveat found here:** three T1 texts appear on more than one card (the
+      duplicate-lead class), which accidentally probes self-consistency. The panel failed it
+      once — "Ilang dulo ang may baterya?" scored 0/3 BROKEN on ffct-22124 and 2/3 on
+      ffct-23523, with gemini-3.5-flash-lite and ling-3.0-flash each flipping on
+      byte-identical input at temperature 0. So some 2-1 splits are sampling noise, not
+      difficulty, and the gold scores have a noise floor a single 59-item run cannot see.
+      Worth re-running the 9 splits at n=3 for a stable majority before a human reads them.
+
 - [ ] **S4** Tier-2 draw: `judge.py sample --n 300`, then judge the first half.
 - [ ] **S5** Judge the second half of the Tier-2 sample.
 - [ ] **S6** Analyse Tier 2: defect rate per interrogative (`bakit`/`ano`/`paano`/`gaano`/…),
