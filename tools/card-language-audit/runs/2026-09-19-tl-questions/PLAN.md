@@ -104,9 +104,13 @@ treats a row with a non-null verdict as done, so a half-finished batch resumes c
       One skeptic agent died on an AUP false positive (known issue — see the judging-classifier
       memory); 51 of 52 agents completed.
 
-- [ ] **S7** Write `REPORT.md`: what was fixed, what is proposed, the bake-off table, the
-      Tier-2 rate estimate, and a recommendation on whether a full sweep is worth funding.
-      Commit. Leave a one-paragraph summary for Luis.
+- [x] **S7** DONE — `REPORT.md` written. Also ran the free `gawa ng` enumeration while here:
+      32 leads contain it, **23 are material-sense errors** (EN says made of/from), and **11 of
+      those 23 carry an `emphasis.tl` span** — concrete confirmation of the bolding landmine.
+      Saved to `enum-gawa-ng.json`. Recommendation: land the free enumerations, spend ~$5 on the
+      one non-enumerable class, and put the teacher-hours into an ANSWER-quality sweep instead.
+
+ALL STAGES COMPLETE. Total OpenRouter spend ≈ $0.05 against a $5 ceiling.
 
 ## Known caveats to carry into the report
 
