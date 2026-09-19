@@ -68,11 +68,42 @@ treats a row with a non-null verdict as done, so a half-finished batch resumes c
       difficulty, and the gold scores have a noise floor a single 59-item run cannot see.
       Worth re-running the 9 splits at n=3 for a stable majority before a human reads them.
 
-- [ ] **S4** Tier-2 draw: `judge.py sample --n 300`, then judge the first half.
-- [ ] **S5** Judge the second half of the Tier-2 sample.
-- [ ] **S6** Analyse Tier 2: defect rate per interrogative (`bakit`/`ano`/`paano`/`gaano`/…),
-      with the caveat that the judge's prompt is tuned for counting questions — if it flags
-      `bakit`/`paano` items, hand-check a few before believing the rate.
+- [x] **S4/S5/S6 SUPERSEDED and DONE** — the planned work (judge 300 items with the existing
+      prompt, then compute a rate) was ill-posed: that prompt only adjudicates ang/ng licensing
+      in COUNTING questions, and the sample is 73 bakit / 58 ano / 57 paano. It would have
+      returned confident, meaningless verdicts. Also fixed two sampler bugs (stratified on the
+      first token, inventing 40 "interrogatives"; a per-class floor that turned n=300 into 500).
+
+      Replaced with a rubric-design workflow: 4 lenses over the real sample -> a skeptic per
+      claimed class -> synthesis. **46 defect classes proposed, 42 REFUTED** — mostly
+      prescriptivism a Filipino teacher would reject. Output in `TIER2-RUBRIC.md`.
+
+      **Measured rate** (Wilson CI): hard defects **3.7%** (2.1-6.5%) ≈ 710 cards; including
+      arbitrable cases **11.7%** (8.5-15.8%) ≈ 2,250. 88% of the sample ships unchanged.
+
+      **The budget is teacher-hours, not tokens.** A full 19,279 x 3-model pass is $4-8. The
+      same pass queues ~1,100 cards for a Filipino teacher at unanimity ≈ 14 h of arbitration
+      before any editing. Optimising the model price was the wrong axis all along.
+
+      **Operational landmine found:** 17.3% of question leads (3,326 of 19,279) carry an
+      `emphasis.tl` span inside the lead. Editing a lead without updating `emphasis.tl` in the
+      same change silently drops the card's bolding. Any fix pass must handle this.
+
+      **3 of the 4 surviving classes need no model at all** — `gawa ng` misuse (32 leads,
+      verified), singleton non-words (~1,900 candidates), and within-card English
+      self-contradiction (1,490 leads carry an English token their own title/terms translate).
+      Enumerate these for free before spending anything.
+
+      **Biggest finding is out of scope:** the highest-value defects are in ANSWERS, not leads —
+      ffct-36052 calls potters *alahero* (jewellers); ffct-21283 inverts batter->cake; ffct-09227
+      restates its premise instead of explaining; dcard-04970 asks which is the better buy and
+      never mentions price. Under the project's accuracy-over-fluency rule these outrank every
+      language defect here. Recommendation: fund the free enumerations + one ~$5 LLM pass for
+      language, and put the teacher-hours into an ANSWER-quality sweep instead.
+
+      One skeptic agent died on an AUP false positive (known issue — see the judging-classifier
+      memory); 51 of 52 agents completed.
+
 - [ ] **S7** Write `REPORT.md`: what was fixed, what is proposed, the bake-off table, the
       Tier-2 rate estimate, and a recommendation on whether a full sweep is worth funding.
       Commit. Leave a one-paragraph summary for Luis.
