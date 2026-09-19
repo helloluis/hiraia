@@ -270,9 +270,9 @@ class StudentCarousel(
     companion object {
         private const val SEVEN_DAYS = 7L * 24 * 60 * 60 * 1000
         private val PAPER = 0xFFF6F4EC.toInt()
-        private val INK = 0xFF203D38.toInt()
-        private val TEAL = 0xFF17695F.toInt()
-        private val PALE = 0xFFE0EEE8.toInt()
+        private val INK = 0xFF173F3D.toInt()
+        private val TEAL = 0xFF087A78.toInt()
+        private val PALE = 0xFFDDF0EE.toInt()
         private val MUTED = 0xFF667872.toInt()
     }
 }

@@ -32,6 +32,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.FileProvider
+import androidx.core.view.WindowCompat
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import java.util.Calendar
@@ -50,7 +51,6 @@ class MainActivity : Activity(), NearbyCollector.Listener {
     private var status = "Collection paused"
     private var nearbyCount = 0
     private var qrCollectionStatus: TextView? = null
-    private var lastTransferSummary: String? = null
     private var tutorialVisible = false
     private var tutorialPage = 0
     private val live = mutableMapOf<String, SyncState>()
@@ -89,8 +89,9 @@ class MainActivity : Activity(), NearbyCollector.Listener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.statusBarColor = INK
+        window.statusBarColor = TEAL
         window.navigationBarColor = PAPER
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = false
         database = TalaDatabase(this)
         val classes = database.classes()
         selectedClassId = preferences.getString("class_id", null)?.takeIf { id -> classes.any { it.id == id } }
@@ -155,7 +156,6 @@ class MainActivity : Activity(), NearbyCollector.Listener {
 
     override fun onSaved(installationId: String, accepted: Int, rejected: Int) {
         live[liveKey(installationId)] = SyncState.SYNCED
-        lastTransferSummary = "Last batch: $accepted accepted · $rejected rejected"
         if (!tutorialVisible) render()
     }
 
@@ -185,7 +185,6 @@ class MainActivity : Activity(), NearbyCollector.Listener {
             collector = null
             manualEnrollment.clear()
             live.clear()
-            lastTransferSummary = null
             status = "Collection paused"
             nearbyCount = 0
         }
@@ -220,7 +219,8 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(PAPER)
-            setPadding(dp(24), dp(22), dp(24), dp(28))
+            // Android 15 can draw edge-to-edge by default, so leave room for the status bar.
+            setPadding(dp(24), dp(42), dp(24), dp(28))
         }
         root.addView(label("HIRAIA  /  TALA", 14f, TEAL, true))
         root.addView(label("${tutorialPage + 1} of ${TUTORIAL_PAGES.size}", 13f, MUTED, false),
@@ -345,18 +345,37 @@ class MainActivity : Activity(), NearbyCollector.Listener {
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
         }.timeInMillis
+        val thisWeek = Calendar.getInstance().apply {
+            firstDayOfWeek = Calendar.MONDAY
+            set(Calendar.DAY_OF_WEEK, firstDayOfWeek)
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
         val syncedToday = students.count { it.lastSync >= today }
         val totalQuizzes = students.sumOf { it.quizzes }
         val totalCorrect = students.sumOf { it.correct }
         val scroll = ScrollView(this).apply { setBackgroundColor(PAPER); isFillViewport = true }
         val page = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(dp(18), dp(22), dp(18), dp(30))
+            // Keep dashboard content below the system status area on edge-to-edge Android.
+            setPadding(dp(18), dp(42), dp(18), dp(30))
         }
         scroll.addView(page)
 
         val header = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL }
-        header.addView(label("HIRAIA  /  TALA", 14f, TEAL, true), LinearLayout.LayoutParams(0, -2, 1f))
+        val brand = LinearLayout(this).apply { gravity = Gravity.CENTER_VERTICAL }
+        brand.addView(ImageView(this).apply {
+            setImageResource(R.drawable.hiraia_glyph)
+            contentDescription = "Hiraia family glyph"
+        }, LinearLayout.LayoutParams(dp(38), dp(38)).apply { rightMargin = dp(10) })
+        brand.addView(LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            addView(brandLabel("Tala", 30f, INK))
+            addView(label("HIRAIA CLASSROOM", 10f, TEAL, true))
+        })
+        header.addView(brand, LinearLayout.LayoutParams(0, -2, 1f))
         header.addView(button("☰ Settings", false) { showSettings() })
         page.addView(header)
         page.addView(label(greeting(schoolClass.teacherName), 26f, INK, true),
@@ -376,7 +395,7 @@ class MainActivity : Activity(), NearbyCollector.Listener {
             12f, MUTED, false), LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(4) })
 
         val controls = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
-        controls.addView(button(if (collecting) "Pause collection" else "Collect activity", true) {
+        controls.addView(button(if (collecting) "Stop monitoring" else "Start monitoring", true) {
             if (collecting) {
                 collecting = false
                 collector?.stop()
@@ -392,19 +411,16 @@ class MainActivity : Activity(), NearbyCollector.Listener {
             setPadding(dp(12), dp(10), dp(12), dp(10))
             background = rounded(PALE_YELLOW, dp(12))
         }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(12) })
-        page.addView(label(
-            "$status${if (collecting) " · $nearbyCount connected" else ""}", 13f, MUTED, false
-        ).apply { setPadding(0, dp(10), 0, dp(14)) })
-        lastTransferSummary?.let { page.addView(label(it, 13f, TEAL, true).apply {
-            setPadding(0, 0, 0, dp(12))
-        }) }
-
         val metrics = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
         metrics.addView(metric("Students", "${students.size}"), LinearLayout.LayoutParams(0, dp(92), 1f).apply { rightMargin = dp(7) })
         metrics.addView(metric("Synced today", "$syncedToday"), LinearLayout.LayoutParams(0, dp(92), 1f).apply { rightMargin = dp(7) })
         metrics.addView(metric("Quiz correct", if (totalQuizzes == 0) "—" else "$totalCorrect/$totalQuizzes"), LinearLayout.LayoutParams(0, dp(92), 1f))
         page.addView(metrics)
-        page.addView(label("${database.eventCount(schoolClass.id)} activity events stored", 13f, MUTED, false).apply {
+        page.addView(label(
+            "${database.eventCountSince(schoolClass.id, today)} activities today | " +
+                "${database.eventCountSince(schoolClass.id, thisWeek)} this week",
+            13f, MUTED, false
+        ).apply {
             setPadding(0, dp(10), 0, 0)
         })
 
@@ -815,6 +831,10 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         if (bold) typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
     }
 
+    private fun brandLabel(value: String, size: Float, color: Int): TextView = label(value, size, color, true).apply {
+        typeface = resources.getFont(R.font.fraunces_semibold)
+    }
+
     private fun button(value: String, filled: Boolean, action: () -> Unit): TextView = label(
         value, 14f, if (filled) Color.WHITE else TEAL, true
     ).apply {
@@ -846,11 +866,11 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         private const val ISSUE_MEDIA_REQUEST = 44
         private const val TUTORIAL_COMPLETE = "tutorial_complete"
         private val PAPER = 0xFFF6F4EC.toInt()
-        private val INK = 0xFF203D38.toInt()
-        private val TEAL = 0xFF17695F.toInt()
-        private val PALE = 0xFFE0EEE8.toInt()
+        private val INK = 0xFF173F3D.toInt()
+        private val TEAL = 0xFF087A78.toInt()
+        private val PALE = 0xFFDDF0EE.toInt()
         private val PALE_YELLOW = 0xFFFFF2C7.toInt()
-        private val MUTED = 0xFF667872.toInt()
+        private val MUTED = 0xFF5E7471.toInt()
         private val TUTORIAL_PAGES = listOf(
             TutorialPage(
                 R.drawable.tala_tutorial_monitor,

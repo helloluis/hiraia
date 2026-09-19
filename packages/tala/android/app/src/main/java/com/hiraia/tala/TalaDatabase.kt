@@ -570,6 +570,14 @@ class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hi
         it.getInt(0)
     }
 
+    /** Count activity by its learner-recorded time, rather than a later reconnection time. */
+    fun eventCountSince(classId: String, since: Long): Int = readableDatabase.rawQuery(
+        "SELECT COUNT(*) FROM events WHERE class_id=? AND occurred_at>=?",
+        arrayOf(classId, since.toString())).use {
+        it.moveToFirst()
+        it.getInt(0)
+    }
+
     fun eventBreakdown(student: StudentRow): List<Pair<String, Int>> {
         val rows = mutableListOf<Pair<String, Int>>()
         readableDatabase.rawQuery("""SELECT event_name,COUNT(*) FROM events
