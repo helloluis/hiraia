@@ -51,6 +51,8 @@ class MainActivity : Activity(), NearbyCollector.Listener {
     private var nearbyCount = 0
     private var qrCollectionStatus: TextView? = null
     private var lastTransferSummary: String? = null
+    private var tutorialVisible = false
+    private var tutorialPage = 0
     private val live = mutableMapOf<String, SyncState>()
     private val classSwipe by lazy {
         GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
@@ -68,6 +70,22 @@ class MainActivity : Activity(), NearbyCollector.Listener {
             }
         })
     }
+    private val tutorialSwipe by lazy {
+        GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onDown(event: MotionEvent): Boolean = true
+
+            override fun onFling(first: MotionEvent?, second: MotionEvent, velocityX: Float,
+                velocityY: Float): Boolean {
+                if (first == null) return false
+                val horizontal = second.x - first.x
+                val vertical = second.y - first.y
+                if (abs(horizontal) < dp(60) || abs(horizontal) < abs(vertical) * 1.5f ||
+                    abs(velocityX) < dp(250)) return false
+                moveTutorial(if (horizontal < 0) 1 else -1)
+                return true
+            }
+        })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,17 +95,20 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         val classes = database.classes()
         selectedClassId = preferences.getString("class_id", null)?.takeIf { id -> classes.any { it.id == id } }
             ?: classes.first().id
-        render()
+        tutorialVisible = !preferences.getBoolean(TUTORIAL_COMPLETE, false)
+        if (tutorialVisible) renderTutorial() else render()
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        if (settingsDialog?.isShowing != true && studentDialog?.isShowing != true)
+        if (tutorialVisible) tutorialSwipe.onTouchEvent(event)
+        else if (settingsDialog?.isShowing != true && studentDialog?.isShowing != true)
             classSwipe.onTouchEvent(event)
         return super.dispatchTouchEvent(event)
     }
 
     override fun onResume() {
         super.onResume()
+        if (tutorialVisible) return
         render()
         if (database.pendingIssueCount() > 0) IssueUploader.schedule(this)
         if (collecting && permissionsGranted()) collector?.start()
@@ -111,7 +132,7 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         status = message
         nearbyCount = connections
         qrCollectionStatus?.text = message
-        render()
+        if (!tutorialVisible) render()
     }
 
     override fun onAdvertisingFailed(message: String) {
@@ -119,23 +140,23 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         status = message
         nearbyCount = 0
         qrCollectionStatus?.text = message
-        render()
+        if (!tutorialVisible) render()
     }
 
     override fun onConnected(installationId: String) {
         live[liveKey(installationId)] = SyncState.CONNECTED
-        render()
+        if (!tutorialVisible) render()
     }
 
     override fun onTransfer(installationId: String) {
         live[liveKey(installationId)] = SyncState.TRANSFERRING
-        render()
+        if (!tutorialVisible) render()
     }
 
     override fun onSaved(installationId: String, accepted: Int, rejected: Int) {
         live[liveKey(installationId)] = SyncState.SYNCED
         lastTransferSummary = "Last batch: $accepted accepted · $rejected rejected"
-        render()
+        if (!tutorialVisible) render()
     }
 
     override fun onFailure(installationId: String?, duringTransfer: Boolean) {
@@ -144,14 +165,14 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         status = if (duringTransfer) "A transfer failed; the student can retry."
             else "A student could not connect; ask them to retry."
         qrCollectionStatus?.text = status
-        render()
+        if (!tutorialVisible) render()
     }
 
     override fun onDisconnected(installationId: String) {
         val key = liveKey(installationId)
         if (live[key] != SyncState.ERROR_CONNECTING && live[key] != SyncState.ERROR_TRANSFER)
             live.remove(key)
-        render()
+        if (!tutorialVisible) render()
     }
 
     private fun liveKey(installationId: String): String = "$selectedClassId:$installationId"
@@ -178,6 +199,58 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         val index = classes.indexOfFirst { it.id == selectedClassId }
         val next = index + direction
         if (next in classes.indices) selectClass(classes[next].id)
+    }
+
+    private fun moveTutorial(direction: Int) {
+        val next = (tutorialPage + direction).coerceIn(0, TUTORIAL_PAGES.lastIndex)
+        if (next != tutorialPage) {
+            tutorialPage = next
+            renderTutorial()
+        }
+    }
+
+    private fun completeTutorial() {
+        preferences.edit().putBoolean(TUTORIAL_COMPLETE, true).apply()
+        tutorialVisible = false
+        render()
+    }
+
+    private fun renderTutorial() {
+        val step = TUTORIAL_PAGES[tutorialPage]
+        val root = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setBackgroundColor(PAPER)
+            setPadding(dp(24), dp(22), dp(24), dp(28))
+        }
+        root.addView(label("HIRAIA  /  TALA", 14f, TEAL, true))
+        root.addView(label("${tutorialPage + 1} of ${TUTORIAL_PAGES.size}", 13f, MUTED, false),
+            LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(5) })
+
+        val illustration = ImageView(this).apply {
+            setImageResource(step.imageRes)
+            contentDescription = step.imageDescription
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            adjustViewBounds = true
+        }
+        root.addView(illustration, LinearLayout.LayoutParams(-1, 0, 1f).apply {
+            topMargin = dp(12)
+            bottomMargin = dp(14)
+        })
+        root.addView(label(step.title, 25f, INK, true))
+        root.addView(label(step.message, 15f, MUTED, false).apply {
+            setLineSpacing(dp(3).toFloat(), 1f)
+        }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(7) })
+        root.addView(label("Swipe to continue", 12f, MUTED, false),
+            LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(12) })
+
+        val controls = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
+        if (tutorialPage > 0) controls.addView(button("Back", false) { moveTutorial(-1) },
+            LinearLayout.LayoutParams(0, dp(50), 0.42f).apply { rightMargin = dp(8) })
+        controls.addView(button(if (tutorialPage == TUTORIAL_PAGES.lastIndex) "Get Started" else "Next", true) {
+            if (tutorialPage == TUTORIAL_PAGES.lastIndex) completeTutorial() else moveTutorial(1)
+        }, LinearLayout.LayoutParams(0, dp(50), if (tutorialPage > 0) 0.58f else 1f))
+        root.addView(controls, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(15) })
+        setContentView(root)
     }
 
     private fun startCollection() {
@@ -305,7 +378,7 @@ class MainActivity : Activity(), NearbyCollector.Listener {
                 render()
             } else startCollection()
         }, LinearLayout.LayoutParams(0, dp(50), 1f).apply { rightMargin = dp(8) })
-        controls.addView(button("Class QR", false) { showQr() }, LinearLayout.LayoutParams(0, dp(50), 0.68f))
+        controls.addView(button("Show QR Code", false) { showQr() }, LinearLayout.LayoutParams(0, dp(50), 0.68f))
         page.addView(controls, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(20) })
         page.addView(label(
             "For best results, please stay within the same room as your students when collecting their Hiraia activity.",
@@ -336,7 +409,7 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         classroomHeader.addView(button("↗ Share XLSX", false) { confirmShareClass(schoolClass) })
         page.addView(classroomHeader, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(20) })
         if (roster.isEmpty()) page.addView(label(
-            "No learner phones have connected yet. Open Class QR to invite them.", 14f, MUTED, false
+            "No learner phones have connected yet. Use Show QR Code to invite them.", 14f, MUTED, false
         ).apply { setPadding(dp(8), dp(16), dp(8), dp(25)) })
         for (rowIndex in 0 until (roster.size + 4) / 5) {
             val row = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
@@ -766,11 +839,39 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         private const val PERMISSION_REQUEST = 42
         private const val BLUETOOTH_REQUEST = 43
         private const val ISSUE_MEDIA_REQUEST = 44
+        private const val TUTORIAL_COMPLETE = "tutorial_complete"
         private val PAPER = 0xFFF6F4EC.toInt()
         private val INK = 0xFF203D38.toInt()
         private val TEAL = 0xFF17695F.toInt()
         private val PALE = 0xFFE0EEE8.toInt()
         private val PALE_YELLOW = 0xFFFFF2C7.toInt()
         private val MUTED = 0xFF667872.toInt()
+        private val TUTORIAL_PAGES = listOf(
+            TutorialPage(
+                R.drawable.tala_tutorial_monitor,
+                "A teacher and students using Hiraia Tala together in class",
+                "Meet Hiraia Tala",
+                "Tala is the classroom monitoring app for Hiraia, the free AI tutor for public school students."
+            ),
+            TutorialPage(
+                R.drawable.tala_tutorial_qr,
+                "A student scanning a teacher's QR code on a phone",
+                "Connect your class",
+                "Each student scans the QR code from your Tala app. This lets you monitor that student's Hiraia activity."
+            ),
+            TutorialPage(
+                R.drawable.tala_tutorial_nearby,
+                "A teacher and nearby students connected through their phones",
+                "Stay nearby",
+                "A connection is maintained while students are using Hiraia and their phones remain within about 15 ft of yours."
+            )
+        )
     }
+
+    private data class TutorialPage(
+        val imageRes: Int,
+        val imageDescription: String,
+        val title: String,
+        val message: String
+    )
 }

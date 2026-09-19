@@ -7,12 +7,15 @@ need an internet connection.
 
 ## Current teacher build
 
+- Shows a three-step, swipeable first-launch tutorial explaining Tala, student QR
+  enrollment, and nearby classroom monitoring. It ends at the dashboard and does not
+  reappear after the teacher selects **Get Started**.
 - Stores editable class, teacher, school, grade and school-year details. Settings opens
   as a full-screen panel with the classes on this phone and reusable teacher and school
   lists. Grade is selected from 1–12 when adding or editing a class. Tap a class to
   activate it, or swipe the dashboard horizontally.
   The active class has its own QR identity and roster. Enter its teacher name before
-  showing the QR.
+  showing the QR with **Show QR Code**.
 - Displays the selected class's branded QR code with Tala's public key, letting a student
   encrypt telemetry and locally saved profile names for this teacher phone.
   The small central Hiraia glyph uses high QR error correction; decoding is tested at
