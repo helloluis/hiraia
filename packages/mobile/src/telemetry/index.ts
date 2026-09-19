@@ -5,6 +5,7 @@ import * as Device from 'expo-device';
 import { AppState, Platform } from 'react-native';
 import { newId, Outbox, type Event, type Props } from './core';
 import { openRepository, type TelemetryRepository } from './repository';
+import { initTala, setTalaEnabled, teacherTrack } from '../tala';
 
 // Override at build time for staging. No secret is shipped in the APK.
 const ENDPOINT = process.env.EXPO_PUBLIC_TELEMETRY_URL || 'https://hiraia.org/api/telemetry/batch';
@@ -92,10 +93,16 @@ const queue = new Outbox(getRepository, async (body) => {
   }
 });
 export function track(name: string, props: Props = {}, id?: string): void {
-  if (enabled) queue.enqueue([event(name, props, id)]);
+  if (!enabled) return;
+  const row = event(name, props, id);
+  queue.enqueue([row]);
+  teacherTrack([row]);
 }
 export function trackMany(items: { name: string; props: Props; id?: string }[]): void {
-  if (enabled && items.length) queue.enqueue(items.map((i) => event(i.name, i.props, i.id)));
+  if (!enabled || !items.length) return;
+  const rows = items.map((i) => event(i.name, i.props, i.id));
+  queue.enqueue(rows);
+  teacherTrack(rows);
 }
 export { newId };
 export function errorCategory(error: unknown): string {
@@ -115,6 +122,7 @@ export function startTelemetry(): () => void {
       mounted--;
     };
   let backgroundAt = 0;
+  let stopTala: (() => void) | undefined;
   const flush = () => {
     if (enabled && AppState.currentState === 'active') void queue.flush();
   };
@@ -122,6 +130,12 @@ export function startTelemetry(): () => void {
   void getRepository()
     .then(async (repo) => {
       enabled = await repo.isEnabled();
+      stopTala = await initTala({
+        store: repo,
+        installationId: repo.installationId,
+        enabled,
+      });
+      if (enabled && (await repo.binding())) teacherTrack([sessionEvent]);
       flush();
     })
     .catch(() => {});
@@ -131,7 +145,10 @@ export function startTelemetry(): () => void {
       if (backgroundAt && Date.now() - backgroundAt >= 30 * 60000) {
         sessionId = newId();
         sessionEvent = event('session_started');
-        if (enabled) queue.enqueue([sessionEvent]);
+        if (enabled) {
+          queue.enqueue([sessionEvent]);
+          teacherTrack([sessionEvent]);
+        }
       }
       backgroundAt = 0;
       flush();
@@ -144,6 +161,7 @@ export function startTelemetry(): () => void {
     mounted--;
     clearInterval(timer);
     sub.remove();
+    stopTala?.();
     activeRequest?.abort();
   };
 }
@@ -159,6 +177,7 @@ export async function setTelemetryEnabled(value: boolean): Promise<void> {
   const repo = await getRepository();
   await repo.setEnabled(value);
   enabled = value;
+  await setTalaEnabled(value);
   if (value) {
     sessionId = newId();
     track('session_started');

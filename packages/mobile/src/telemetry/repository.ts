@@ -7,10 +7,17 @@ import {
   type ActivityReport,
 } from './activity';
 import { newId, type Event, type Repository } from './core';
+import {
+  TEACHER_QUEUE_AGE,
+  TEACHER_QUEUE_MAX,
+  type Binding,
+  type TeacherStore,
+} from '../tala/queue';
+import { sanitizeEvent, type TeacherEvent } from '../tala/protocol';
 
 const MAX_EVENTS = 10000;
 const MAX_AGE = 90 * 86400000;
-export interface TelemetryRepository extends Repository {
+export interface TelemetryRepository extends Repository, TeacherStore {
   activity(now?: number, profileId?: string): Promise<ActivitySummary>;
   activityReport(start: number, end: number, profileId?: string): Promise<ActivityReport>;
   isEnabled(): Promise<boolean>;
@@ -27,7 +34,11 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
       name TEXT NOT NULL,source TEXT,correct INTEGER NOT NULL);
     CREATE INDEX IF NOT EXISTS activity_time ON activity(occurred_at);
     CREATE TABLE IF NOT EXISTS activity_details(id TEXT PRIMARY KEY,grade INTEGER,language TEXT,card_id TEXT);
-    CREATE INDEX IF NOT EXISTS activity_details_grade ON activity_details(grade);`);
+    CREATE INDEX IF NOT EXISTS activity_details_grade ON activity_details(grade);
+    CREATE TABLE IF NOT EXISTS teacher_outbox(seq INTEGER PRIMARY KEY AUTOINCREMENT,id TEXT UNIQUE NOT NULL,
+      queued_at INTEGER NOT NULL,event TEXT NOT NULL);
+    CREATE TABLE IF NOT EXISTS teacher_sent(id TEXT PRIMARY KEY);
+    CREATE TABLE IF NOT EXISTS teacher_meta(key TEXT PRIMARY KEY,value TEXT NOT NULL);`);
   await db.withExclusiveTransactionAsync(async (tx) => {
     const columns = await tx.getAllAsync<{ name: string }>('PRAGMA table_info(activity_details)');
     if (!columns.some((c) => c.name === 'profile_id'))
@@ -133,11 +144,12 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
       for (const start of activityWindows(now)) {
         const row = await db.getFirstAsync<ActivityCounts>(
           `
-          SELECT COALESCE(SUM(name='card_viewed'),0) AS cards,
-            COALESCE(SUM(name='card_viewed' AND source='generated'),0) AS dynamic,
-            COALESCE(SUM(name='quiz_graded'),0) AS quizzes,
-            COALESCE(SUM(name='quiz_graded' AND correct=1),0) AS correct
-          FROM activity a LEFT JOIN activity_details d ON a.id=d.id WHERE occurred_at >= ? AND occurred_at <= ? AND (? IS NULL OR COALESCE(d.profile_id,'guest')=?)`,
+          SELECT COALESCE(SUM(a.name='card_viewed'),0) AS cards,
+            COALESCE(COUNT(DISTINCT CASE WHEN a.name='card_viewed' AND d.card_id IS NOT NULL AND d.card_id != '' THEN d.card_id END),0) AS unique_cards,
+            COALESCE(SUM(a.name='card_viewed' AND a.source='generated'),0) AS dynamic,
+            COALESCE(SUM(a.name='quiz_graded'),0) AS quizzes,
+            COALESCE(SUM(a.name='quiz_graded' AND a.correct=1),0) AS correct
+          FROM activity a LEFT JOIN activity_details d ON a.id=d.id WHERE a.occurred_at >= ? AND a.occurred_at <= ? AND (? IS NULL OR COALESCE(d.profile_id,'guest')=?)`,
           start,
           now,
           profileId ?? null,
@@ -157,6 +169,7 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
         `
         SELECT d.grade, d.language, d.card_id AS cardId, a.source,
           SUM(a.name='card_viewed') AS cards,
+          COUNT(DISTINCT CASE WHEN a.name='card_viewed' AND d.card_id IS NOT NULL AND d.card_id != '' THEN d.card_id END) AS unique_cards,
           SUM(a.name='card_viewed' AND a.source='generated') AS dynamic,
           SUM(a.name='quiz_graded') AS quizzes,
           SUM(a.name='quiz_graded' AND a.correct=1) AS correct,
@@ -193,8 +206,218 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
     async setEnabled(value) {
       await db.withExclusiveTransactionAsync(async (tx) => {
         await tx.runAsync("INSERT OR REPLACE INTO meta VALUES('enabled',?)", String(value));
-        if (!value) await tx.runAsync('DELETE FROM outbox');
+        if (!value) {
+          await tx.runAsync('DELETE FROM outbox');
+          await tx.runAsync('DELETE FROM teacher_outbox');
+        }
       });
+    },
+    async binding() {
+      const id = await db.getFirstAsync<{ value: string }>(
+        "SELECT value FROM teacher_meta WHERE key='class_id'"
+      );
+      const key = await db.getFirstAsync<{ value: string }>(
+        "SELECT value FROM teacher_meta WHERE key='public_key'"
+      );
+      const at = await db.getFirstAsync<{ value: string }>(
+        "SELECT value FROM teacher_meta WHERE key='bound_at'"
+      );
+      if (!id?.value || !key?.value) return null;
+      return { class_id: id.value, public_key: key.value, bound_at: Number(at?.value || 0) };
+    },
+    async bind(next: Binding) {
+      await db.withExclusiveTransactionAsync(async (tx) => {
+        await tx.runAsync(
+          "INSERT OR REPLACE INTO teacher_meta VALUES('class_id',?)",
+          next.class_id
+        );
+        await tx.runAsync(
+          "INSERT OR REPLACE INTO teacher_meta VALUES('public_key',?)",
+          next.public_key
+        );
+        await tx.runAsync(
+          "INSERT OR REPLACE INTO teacher_meta VALUES('bound_at',?)",
+          String(next.bound_at)
+        );
+        const since = Date.now() - 7 * 86400000;
+        const history = await tx.getAllAsync<{
+          id: string;
+          occurred_at: number;
+          name: string;
+          source: string;
+          correct: number;
+          card_id: string | null;
+          profile_id: string | null;
+          language: string | null;
+        }>(
+          `SELECT a.id,a.occurred_at,a.name,a.source,a.correct,d.card_id,d.profile_id,d.language
+           FROM activity a LEFT JOIN activity_details d ON a.id=d.id
+           WHERE a.occurred_at>=? AND a.name IN ('card_viewed','quiz_graded')`,
+          since
+        );
+        for (const row of history) {
+          if (await tx.getFirstAsync('SELECT 1 FROM teacher_sent WHERE id=?', row.id)) continue;
+          const props: Record<string, string | number | boolean> = {};
+          if (row.source === 'curated' || row.source === 'generated') props.source = row.source;
+          if (row.card_id) props.card_id = row.card_id;
+          if (row.language === 'english' || row.language === 'tagalog' || row.language === 'cebuano')
+            props.language = row.language;
+          if (row.profile_id && /^[A-Za-z0-9_-]{16,80}$/.test(row.profile_id)) {
+            props.profile_id = row.profile_id;
+            props.profile_kind = 'student';
+          }
+          if (row.name === 'quiz_graded') props.correct = row.correct === 1;
+          const event = sanitizeEvent({
+            id: row.id,
+            name: row.name,
+            occurred_at: row.occurred_at,
+            session_id: installationId,
+            props,
+          });
+          if (!event) continue;
+          await tx.runAsync(
+            'INSERT OR IGNORE INTO teacher_outbox(id,queued_at,event) VALUES(?,?,?)',
+            event.id,
+            Date.now(),
+            JSON.stringify(event)
+          );
+        }
+      });
+    },
+    async unbind() {
+      await db.withExclusiveTransactionAsync(async (tx) => {
+        await tx.runAsync('DELETE FROM teacher_outbox');
+        await tx.runAsync(
+          "DELETE FROM teacher_meta WHERE key IN ('class_id','public_key','bound_at')"
+        );
+        await tx.runAsync('DELETE FROM teacher_sent');
+      });
+    },
+    async teacherAppend(events: TeacherEvent[]) {
+      await db.withExclusiveTransactionAsync(async (tx) => {
+        const preference = await tx.getFirstAsync<{ value: string }>(
+          "SELECT value FROM meta WHERE key='enabled'"
+        );
+        if (preference?.value === 'false') return;
+        const bound = await tx.getFirstAsync<{ value: string }>(
+          "SELECT value FROM teacher_meta WHERE key='class_id'"
+        );
+        if (!bound?.value) return;
+        for (const e of events) {
+          const clean = sanitizeEvent(e);
+          if (!clean || clean.name === 'queue_dropped') continue;
+          if (await tx.getFirstAsync('SELECT 1 FROM teacher_sent WHERE id=?', clean.id)) continue;
+          await tx.runAsync(
+            'INSERT OR IGNORE INTO teacher_outbox(id,queued_at,event) VALUES(?,?,?)',
+            clean.id,
+            Date.now(),
+            JSON.stringify(clean)
+          );
+        }
+        const old = await tx.runAsync(
+          'DELETE FROM teacher_outbox WHERE queued_at < ?',
+          Date.now() - TEACHER_QUEUE_AGE
+        );
+        const extra = await tx.runAsync(
+          'DELETE FROM teacher_outbox WHERE seq IN (SELECT seq FROM teacher_outbox ORDER BY seq DESC LIMIT -1 OFFSET ?)',
+          TEACHER_QUEUE_MAX - 1
+        );
+        const dropped =
+          old.changes +
+          extra.changes +
+          events
+            .filter((e) => e.name === 'queue_dropped')
+            .reduce((n, e) => n + Number(e.props.count || 0), 0);
+        if (dropped) {
+          const row = await tx.getFirstAsync<{ value: string }>(
+            "SELECT value FROM teacher_meta WHERE key='dropped'"
+          );
+          const count = Number(row?.value || 0) + dropped;
+          await tx.runAsync("INSERT OR REPLACE INTO teacher_meta VALUES('dropped',?)", String(count));
+          if (events[0]) {
+            const report = {
+              ...events[0],
+              id: newId(),
+              name: 'queue_dropped',
+              occurred_at: Date.now(),
+              props: { count },
+            };
+            await tx.runAsync(
+              'INSERT INTO teacher_outbox(id,queued_at,event) VALUES(?,?,?)',
+              report.id,
+              Date.now(),
+              JSON.stringify(report)
+            );
+          }
+        }
+      });
+    },
+    async teacherList(limit: number) {
+      const preference = await db.getFirstAsync<{ value: string }>(
+        "SELECT value FROM meta WHERE key='enabled'"
+      );
+      if (preference?.value === 'false') return [];
+      const rows = await db.getAllAsync<{ id: string; event: string }>(
+        'SELECT id,event FROM teacher_outbox ORDER BY seq LIMIT ?',
+        limit
+      );
+      const valid: TeacherEvent[] = [];
+      for (const row of rows) {
+        try {
+          const e = JSON.parse(row.event) as TeacherEvent;
+          const clean = sanitizeEvent(e);
+          if (!clean || clean.id !== row.id) throw new Error('corrupt');
+          valid.push(clean);
+        } catch {
+          await db.runAsync('DELETE FROM teacher_outbox WHERE id=?', row.id);
+        }
+      }
+      return valid;
+    },
+    async teacherAcknowledge(ids: string[]) {
+      if (!ids.length) return;
+      await db.withExclusiveTransactionAsync(async (tx) => {
+        for (const id of ids)
+          await tx.runAsync('INSERT OR IGNORE INTO teacher_sent(id) VALUES(?)', id);
+        await tx.runAsync(
+          `DELETE FROM teacher_outbox WHERE id IN (${ids.map(() => '?').join(',')})`,
+          ...ids
+        );
+      });
+    },
+    async markLost(count: number) {
+      if (count <= 0) return;
+      const row = await db.getFirstAsync<{ value: string }>(
+        "SELECT value FROM teacher_meta WHERE key='dropped'"
+      );
+      await db.runAsync(
+        "INSERT OR REPLACE INTO teacher_meta VALUES('dropped',?)",
+        String(Number(row?.value || 0) + count)
+      );
+    },
+    async lost() {
+      const row = await db.getFirstAsync<{ value: string }>(
+        "SELECT value FROM teacher_meta WHERE key='dropped'"
+      );
+      return Number(row?.value || 0);
+    },
+    async lastSync() {
+      const row = await db.getFirstAsync<{ value: string }>(
+        "SELECT value FROM teacher_meta WHERE key='last_sync'"
+      );
+      return Number(row?.value || 0);
+    },
+    async setLastSync(time: number) {
+      await db.runAsync("INSERT OR REPLACE INTO teacher_meta VALUES('last_sync',?)", String(time));
+    },
+    async status() {
+      const row = await db.getFirstAsync<{ value: string }>(
+        "SELECT value FROM teacher_meta WHERE key='status'"
+      );
+      return row?.value || '';
+    },
+    async setStatus(value: string) {
+      await db.runAsync("INSERT OR REPLACE INTO teacher_meta VALUES('status',?)", value);
     },
     async append(events) {
       await db.withExclusiveTransactionAsync(async (tx) => {

@@ -7,7 +7,8 @@ import { activitySummary } from './index';
 import type { ActivitySummary } from './activity';
 
 const rows = [
-  ['Cards', 'cards'],
+  ['Card views', 'cards'],
+  ['Unique cards', 'unique_cards'],
   ['Dynamic Cards', 'dynamic'],
   ['Quizzes', 'quizzes'],
   ['Correct Quizzes', 'correct'],

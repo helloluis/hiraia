@@ -8,7 +8,10 @@ export function activityWindows(now: number) {
   return [now - 86400000, monday.getTime(), quarter.getTime()];
 }
 export interface ActivityCounts {
+  /** Absolute card_viewed events, including repeats of the same card. */
   cards: number;
+  /** Distinct card_id values among those views. Repeats are the gap vs `cards`. */
+  unique_cards: number;
   dynamic: number;
   quizzes: number;
   correct: number;
@@ -36,7 +39,7 @@ export interface ActivityReport {
   end: number;
 }
 export function totalActivity(rows: ActivityDetailRow[]) {
-  const total = { cards: 0, dynamic: 0, quizzes: 0, correct: 0 };
+  const total = { cards: 0, unique_cards: 0, dynamic: 0, quizzes: 0, correct: 0 };
   const distinct = new Set<string>();
   let lastSeen = 0;
   for (const row of rows) {
@@ -46,6 +49,7 @@ export function totalActivity(rows: ActivityDetailRow[]) {
   }
   return {
     ...total,
+    unique_cards: distinct.size,
     distinct: distinct.size,
     lastSeen,
     accuracy: total.quizzes ? Math.round((total.correct / total.quizzes) * 100) : null,

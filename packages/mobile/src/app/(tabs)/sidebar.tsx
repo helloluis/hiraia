@@ -1,5 +1,7 @@
 import { ImageDownloads } from '../../images/ImageDownloads';
 import { ActivityTable } from '../../telemetry/ActivityTable';
+import { TelemetrySettings } from '../../telemetry/TelemetrySettings';
+import { TalaSettings } from '../../tala';
 import { useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -138,6 +140,8 @@ export default function SidebarScreen() {
 
         <ImageDownloads />
         <ActivityTable />
+        <TelemetrySettings language={language ?? 'tagalog'} />
+        <TalaSettings language={language ?? 'tagalog'} />
         <TouchableOpacity accessibilityRole="button" style={[styles.tutorialButton, { marginTop: 12 }]} onPress={() => router.push('/activity')}>
           <Text style={styles.tutorialButtonText}>View detailed activity →</Text>
         </TouchableOpacity>

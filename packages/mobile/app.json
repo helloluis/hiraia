@@ -2,7 +2,7 @@
   "expo": {
     "name": "Hiraia",
     "slug": "hiraia",
-    "version": "0.4.12",
+    "version": "0.4.14",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -29,7 +29,7 @@
         "backgroundColor": "#1C3B2E"
       },
       "package": "com.hiraia.app",
-      "versionCode": 12,
+      "versionCode": 14,
       "permissions": [
         "REQUEST_INSTALL_PACKAGES"
       ]
@@ -63,7 +63,14 @@
       ],
       "./plugins/withHiraiaMemory.js",
       "./plugins/withOnnxruntime.js",
-      "./plugins/withBundledIllustrations.js"
+      "./plugins/withBundledIllustrations.js",
+      "./plugins/withTalaNearby.js",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Hiraia uses the camera to scan the teacher QR for classroom sync."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

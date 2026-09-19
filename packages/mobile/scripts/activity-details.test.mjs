@@ -116,8 +116,28 @@ test('upgrade preserves unknown history, backfills available grades, separates g
   const recent = await repo.activityReport(now - 86400000, now);
   assert.equal(totalActivity(recent.rows.filter((r) => r.grade === 5)).cards, 2);
   assert.equal((await repo.activity(now)).counts[0].cards, 5);
+  assert.ok((await repo.activity(now)).counts[0].unique_cards <= 5);
   assert.equal((await repo.activityReport(now + 1, now + 2)).rows.length, 0);
 });
+test('card views count repeats; unique_cards counts distinct card_id', async () => {
+  const repo = await openRepository({
+    id: 'session-unique-cards1',
+    name: 'session_started',
+    occurred_at: now,
+    session_id: 'session-test',
+    props: {},
+  });
+  const before = (await repo.activity(now)).counts[0];
+  await repo.append([
+    event('view-a1', 'card_viewed', 6, { card_id: 'ffct-unique-1' }),
+    event('view-a2', 'card_viewed', 6, { card_id: 'ffct-unique-1' }),
+    event('view-b1', 'card_viewed', 6, { card_id: 'ffct-unique-2' }),
+  ]);
+  const counts = (await repo.activity(now)).counts[0];
+  assert.equal(counts.cards, before.cards + 3);
+  assert.equal(counts.unique_cards, before.unique_cards + 2);
+});
+
 test('dates and windows use inclusive local days and reject invalid reporting ranges', () => {
   assert.equal(activityDateRange('2026-02-30', '2026-03-01'), null);
   assert.equal(activityDateRange('2026-09-05', '2026-09-04'), null);

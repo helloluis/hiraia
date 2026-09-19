@@ -25,7 +25,8 @@
     "qa:grade8": "python3 ../../rag/pipeline/compile-lessons.py --grade 8 --check && tsx --test scripts/grade8-lessons.test.mts scripts/calendar-selection.test.mts scripts/curriculum-default.test.mts scripts/review-series.test.mts",
     "qa:grade9": "python3 ../../rag/pipeline/compile-lessons.py --grade 9 --check && tsx --test scripts/grade9-lessons.test.mts scripts/calendar-selection.test.mts scripts/curriculum-default.test.mts scripts/review-series.test.mts",
     "qa:grade10": "python3 ../../rag/pipeline/compile-lessons.py --grade 10 --check && tsx --test scripts/grade10-lessons.test.mts scripts/calendar-selection.test.mts scripts/curriculum-default.test.mts scripts/review-series.test.mts",
-    "qa:voice": "tsx --test scripts/voice.test.mts"
+    "qa:voice": "tsx --test scripts/voice.test.mts",
+    "qa:tala": "tsx --test scripts/tala-nearby.test.mts"
   },
   "dependencies": {
     "@hiraia/shared": "workspace:*",
@@ -37,6 +38,8 @@
     "expo-asset": "~12.0.13",
     "expo-audio": "~1.0.16",
     "expo-build-properties": "~1.0.0",
+    "expo-camera": "~17.0.10",
+    "hiraia-tala": "file:./modules/hiraia-tala",
     "expo-constants": "~18.0.0",
     "expo-device": "~8.0.0",
     "expo-file-system": "~19.0.0",
