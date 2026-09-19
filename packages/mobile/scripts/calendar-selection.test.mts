@@ -145,3 +145,90 @@ test('an old quiz continuation respects the latest manual Calendar destination',
   resume({ factId: 'animal-next', kind: 'deep', label: '' });
   assert.equal(landed, 'animal-next');
 });
+
+/**
+ * The Calendar's pills are HEADINGS, sitting directly under an authored, properly-cased DepEd
+ * title — but their strings come from the generated taxonomy, which is authored lower-case for
+ * its other consumer, the mid-sentence fork ticket ("iba pang mga hayop-dagat"). So the casing
+ * happens at display time, and this pins it: every pill starts capitalised, no Tagalog/Cebuano
+ * linker gets capitalised mid-phrase (the tell that a machine did it), and nothing is
+ * truncated — pills wrap, so a band-style ellipsis here would be a copy regression.
+ */
+test('Calendar subcategory pills are title-cased, linkers intact, never truncated', () => {
+  let checked = 0;
+  for (const grade of [3, 4, 5, 6, 7, 8, 9, 10]) {
+    for (const topic of C.curriculumOutline(grade)) {
+      for (const language of ['tagalog', 'english', 'cebuano'] as const) {
+        for (const shelf of C.topicShelves(topic, language)) {
+          const where = `G${grade} ${topic.key} ${shelf.cat} [${language}]`;
+          assert.match(shelf.label, /^[A-ZÑ]/, `${where} starts capitalised: ${shelf.label}`);
+          assert.doesNotMatch(
+            shelf.label,
+            / (Ng|Sa|Mga|Ug|At|Nga|Na|Ni|Of|And|The) /,
+            `${where} keeps interior linkers lower-case: ${shelf.label}`
+          );
+          assert.ok(!shelf.label.includes('…'), `${where} is not truncated: ${shelf.label}`);
+          checked++;
+        }
+      }
+    }
+  }
+  assert.ok(checked > 3000, `checked ${checked} pill labels`);
+});
+
+/** The one casing rule, on the cases that actually occur in the taxonomy. */
+test('titleCase leaves the deck’s linkers alone', () => {
+  assert.equal(C.titleCase('estado ng bagay'), 'Estado ng Bagay');
+  assert.equal(C.titleCase('enerhiya sa kahayag'), 'Enerhiya sa Kahayag');
+  assert.equal(C.titleCase('mga yano nga makina'), 'Mga Yano nga Makina');
+  assert.equal(C.titleCase('mga asido at base'), 'Mga Asido at Base');
+  assert.equal(C.titleCase('states of matter'), 'States of Matter');
+  // an affix hyphen is not a word boundary in Filipino: Pag-recycle, never Pag-Recycle
+  assert.equal(C.titleCase('pag-recycle'), 'Pag-recycle');
+  assert.equal(C.titleCase('mga hayop-dagat'), 'Mga Hayop-dagat');
+  // a trailing linker is still capitalised — it is the last word, not an interior one
+  assert.equal(C.titleCase('halaman at'), 'Halaman At');
+  assert.equal(C.titleCase(''), '');
+});
+
+/**
+ * The sheet hides shelves below TOPIC_MIN_CARDS — the same floor the outline already applies
+ * to rows. This pins the two halves of that: the hiding is real (so the mount stays small),
+ * and it is PRESENTATION ONLY — a hidden shelf must still resolve, or a persisted lesson run
+ * whose shelf fell below the floor would restore into a dead tap.
+ */
+test('Thin subcategories are hidden from the sheet but still resolve', () => {
+  let hidden = 0;
+  for (const grade of [3, 4, 5, 6, 7, 8, 9, 10]) {
+    for (const topic of C.curriculumOutline(grade)) {
+      for (const shelf of C.topicShelves(topic, 'english')) {
+        if (shelf.ids.size >= C.TOPIC_MIN_CARDS) continue;
+        hidden++;
+        const cursor = C.curriculumCursor(grade, topic.key, new Set(), undefined, shelf.cat);
+        assert.ok(cursor, `hidden shelf ${shelf.cat} still resolves`);
+        assert.ok(cursor.idSet.size > 0, `hidden shelf ${shelf.cat} still has cards`);
+      }
+    }
+  }
+  assert.ok(hidden > 0, 'the floor actually hides something');
+});
+
+/**
+ * A ceiling on what one open can mount. The sheet is a plain list of rows and the taxonomy is
+ * regenerated upstream, so nothing else would notice a re-inflated pill count — which is the
+ * thing that made opening the Calendar feel broken in the first place.
+ */
+test('The Calendar mounts a bounded number of pills per grade', () => {
+  const budget: Record<number, number> = { 3: 520, 4: 440, 5: 360, 6: 420, 7: 300, 8: 260, 9: 300, 10: 310 };
+  for (const grade of [3, 4, 5, 6, 7, 8, 9, 10]) {
+    let shown = 0;
+    let worstRow = 0;
+    for (const topic of C.curriculumOutline(grade)) {
+      const vis = C.topicShelves(topic, 'tagalog').filter((s: any) => s.ids.size >= C.TOPIC_MIN_CARDS);
+      shown += vis.length;
+      worstRow = Math.max(worstRow, vis.length);
+    }
+    assert.ok(shown <= budget[grade]!, `G${grade} shows ${shown} pills (budget ${budget[grade]})`);
+    assert.ok(worstRow <= 45, `G${grade} worst row shows ${worstRow} pills`);
+  }
+});

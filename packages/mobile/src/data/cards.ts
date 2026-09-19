@@ -1195,14 +1195,33 @@ function fitLabel(words: readonly string[], max: number): string {
  * rendering one.
  */
 export function topicLabel(topic: string, max = BAND_LABEL_MAX): string {
-  const words = topic.trim().split(/\s+/).filter(Boolean);
+  const cased = titleCase(topic);
+  return cased ? fitLabel(cased.split(' '), max) : '';
+}
+
+/**
+ * Title Case with the linkers left alone — the deck's ONE casing rule.
+ *
+ * Split out of `topicLabel` so the calendar's shelf pills can share it without also inheriting
+ * that function's 34-character band cut, which pills have no need of (they wrap) and would be
+ * actively wrong for (39 of the 1,329 taxonomy labels are longer than the band, so a shared
+ * `topicLabel` call would trade the casing bug for a silent ellipsis on 3% of the pills).
+ *
+ * `capitalise` returns any word that already carries a capital untouched, so DNA and pH
+ * survive — on data that has them. The generated taxonomy is hard-lowercased upstream, which
+ * is why `dna` currently comes back as `Dna`; that is a data defect to fix in
+ * rag/pipeline/fw-derive-deped-taxonomy.py, not a case to special-case here.
+ */
+export function titleCase(s: string): string {
+  const words = s.trim().split(/\s+/).filter(Boolean);
   if (!words.length) return '';
-  const cased = words.map((w, i) =>
-    i > 0 && i < words.length - 1 && TITLE_MINOR.has(w.toLowerCase())
-      ? w.toLowerCase()
-      : capitalise(w)
-  );
-  return fitLabel(cased, max);
+  return words
+    .map((w, i) =>
+      i > 0 && i < words.length - 1 && TITLE_MINOR.has(w.toLowerCase())
+        ? w.toLowerCase()
+        : capitalise(w)
+    )
+    .join(' ');
 }
 
 /**
@@ -1711,14 +1730,29 @@ function cooldownSlugs(cur: CardFact, recentIds?: readonly string[]): Set<string
   return slugs;
 }
 
-/** The same-fact-reworded key nextChoices gates successors on (topic words, order-blind). */
+/**
+ * The same-fact-reworded key nextChoices gates successors on (topic words, order-blind).
+ *
+ * Memoized on `f.topic`, which is bundled data and never changes. It is called once per
+ * candidate in loops that visit tens of thousands of cards per page turn, and each raw call
+ * allocates five short-lived objects — ~130k allocations a tap, all for a value that is
+ * constant for the life of the process. Lazily, NOT as an eager POOL.map: warming all 49k up
+ * front costs ~22 ms on V8 (so plausibly 100-250 ms on a Helio G85) at cold start, on top of
+ * an already-heavy module init, and buys nothing the first domain scan doesn't.
+ */
+const TOPIC_KEY = new Map<string, string>();
 function topicKeyOf(f: CardFact): string {
-  return f.topic
-    .toLowerCase()
-    .split(/\s+/)
-    .filter((w) => w.length > 3)
-    .sort()
-    .join(' ');
+  let k = TOPIC_KEY.get(f.topic);
+  if (k === undefined) {
+    k = f.topic
+      .toLowerCase()
+      .split(/\s+/)
+      .filter((w) => w.length > 3)
+      .sort()
+      .join(' ');
+    TOPIC_KEY.set(f.topic, k);
+  }
+  return k;
 }
 
 /**
@@ -1913,15 +1947,20 @@ export function cardsForCompetency(code: string): ReadonlySet<string> {
  * is the same confidence floor the seen-store and the weight table use, and a card tagged with
  * two competencies of one topic (spiral tagging) is counted once. Built on first use, frozen,
  * shared by reference: a cursor holds it as its `idSet` and never copies it. Keyed on the
- * topic OBJECT (the outline's are module singletons), so the map is at most 140 entries.
+ * topic OBJECT (the outline's are module singletons), so the map is one entry per outline row.
+ *
+ * The lesson-backed branch used to sit ABOVE the cache and return a fresh Set every call,
+ * which made the sentence above false for every shipping grade (all of 3-10 are lesson-backed)
+ * on a value that is handed out as a cursor's `idSet`. Nothing mutates the returned Set; keep
+ * it that way now that callers really do share one.
  */
 const TOPIC_CARDS = new Map<OutlineTopic, ReadonlySet<string>>();
 export function cardsForTopic(topic: OutlineTopic): ReadonlySet<string> {
-  const lesson = lessonByKey(topic.key);
-  if (lesson) return new Set(lesson.cardIds);
   let s = TOPIC_CARDS.get(topic);
   if (!s) {
-    if (topic.codes.length === 1) s = cardsForCompetency(topic.codes[0]!);
+    const lesson = lessonByKey(topic.key);
+    if (lesson) s = new Set(lesson.cardIds);
+    else if (topic.codes.length === 1) s = cardsForCompetency(topic.codes[0]!);
     else {
       const u = new Set<string>();
       for (const code of topic.codes) for (const id of cardsForCompetency(code)) u.add(id);
@@ -1952,7 +1991,10 @@ export function topicShelves(topic: OutlineTopic, language: Language): TopicShel
     }
   }
   return [...groups.entries()]
-    .map(([cat, ids]) => ({ cat, label: leafLabel(cat, language) || cat, ids }))
+    // Title-cased HERE, not in the data: `leafLabel` must stay lower-case for its other
+    // caller, the mid-sentence fork ticket "iba pang mga hayop-dagat". A pill is a heading
+    // sitting directly under an authored, properly-cased DepEd title, so it is cased like one.
+    .map(([cat, ids]) => ({ cat, label: titleCase(leafLabel(cat, language) || cat), ids }))
     .sort((a, b) => b.ids.size - a.ids.size);
 }
 
@@ -2242,17 +2284,33 @@ export function nextChoices(
   // card up as the "related" one.
   const deadEnd = !deep;
 
-  // lateral: fresh topic in the same domain — minimal term overlap so it reads as a real
-  // change of subject, with the servable filter keeping the picture and wording fresh too.
-  const domainPool = (BY_DOMAIN.get(cur.domain) ?? []).filter(
-    (f) => servable(f) && f.id !== deep?.id
-  );
-  const fresh = domainPool.filter((f) => overlap(cur, f) < selfScore * 0.35);
-  const lateralPool = fresh.length ? fresh : domainPool;
-  let lateral = draw(lateralPool, w);
+  /**
+   * The lateral: a fresh topic in the same domain — minimal term overlap so it reads as a real
+   * change of subject, with the servable filter keeping the picture and wording fresh too.
+   *
+   * LAZY, and that is the single biggest cost on the reroll tap. A domain holds 9.7k-18.5k
+   * cards; filtering one through `servable` (which calls `topicKeyOf` on every card) and then
+   * re-walking the survivors through `overlap`/`linkOf` (two Set allocations each) cost ~13 ms
+   * of `nextChoices`' ~19 ms — and the category block immediately below DISCARDS the result on
+   * essentially every page, because every generated card carries at least one taxonomy leaf
+   * and `freshCategory` falls back to any of them. So it is only built if the category path
+   * finds nothing. Memoized rather than inlined twice: the dead-end escape below is its
+   * second consumer, and duplicating the block would just re-pay the 13 ms there.
+   */
+  let lateralPoolMemo: CardFact[] | undefined;
+  const lateralPool = (): CardFact[] => {
+    if (!lateralPoolMemo) {
+      const domainPool = (BY_DOMAIN.get(cur.domain) ?? []).filter(
+        (f) => servable(f) && f.id !== deep?.id
+      );
+      const fresh = domainPool.filter((f) => overlap(cur, f) < selfScore * 0.35);
+      lateralPoolMemo = fresh.length ? fresh : domainPool;
+    }
+    return lateralPoolMemo;
+  };
 
   /**
-   * ...but prefer to go UP THE STACK rather than sideways by keyword.
+   * ...because we prefer to go UP THE STACK rather than sideways by keyword.
    *
    * A random same-domain card is an unlabelled promise: the ticket can only name some term
    * scraped out of the destination, which is how a next-card button came to read "once". A
@@ -2261,7 +2319,12 @@ export function nextChoices(
    * That is also why this is the better answer to a dead end: with no associated follow-on
    * left, the honest offer is a subject, not a card picked at random and dressed up as
    * related.
+   *
+   * Tried FIRST now rather than second. The outcome is identical — this branch always won
+   * when it produced anything — but the domain-wide pool above is no longer built to be
+   * thrown away.
    */
+  let lateral: CardFact | undefined;
   let lateralCat: string | undefined;
   const cat = freshCategory(cur, opts.recentIds, new Set());
   if (cat) {
@@ -2272,6 +2335,7 @@ export function nextChoices(
       lateralCat = cat;
     }
   }
+  if (!lateral) lateral = draw(lateralPool(), w);
 
   // fallbacks as the unseen pool thins: relax the picture cooldown first (a repeated
   // illustration beats an empty page), then allow any unseen card, then any card at all.
@@ -2313,7 +2377,7 @@ export function nextChoices(
     const second =
       drawFrom((f) => servable(f) && f.domain !== cur.domain && f.id !== lateral!.id, w) ??
       draw(
-        lateralPool.filter((f) => f.id !== lateral!.id),
+        lateralPool().filter((f) => f.id !== lateral!.id),
         w
       ) ??
       drawFrom((f) => unseen(f) && f.id !== lateral!.id, w);

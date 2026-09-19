@@ -21,15 +21,23 @@
  *
  * Subcategory pills use the intersection of taxonomy labels and this topic’s cards.
  */
-import { memo, useMemo } from 'react';
-import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { FlatList, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { DOMAIN_NAMES, GRADE_DOMAIN_MAP, type GradeLevel, type Language, type Quarter } from '@hiraia/shared';
 
 import { GRADE_WORD } from '../../config/grades';
 import { uiStrings } from '../../config/strings';
-import { cardsForTopic, curriculumOutline, topicShelves, topicTitle, type OutlineTopic, type TopicShelf } from '../../data/cards';
+import {
+  TOPIC_MIN_CARDS,
+  cardsForTopic,
+  curriculumOutline,
+  topicShelves,
+  topicTitle,
+  type OutlineTopic,
+  type TopicShelf,
+} from '../../data/cards';
 import { useCardStore } from '../../store/cardStore';
 import { awardStars, type TopicAward } from '../../reviews/logic';
 import { useReviewStore } from '../../reviews/store';
@@ -53,6 +61,9 @@ interface QuarterGroup {
   rows: RowView[];
 }
 
+/** The flat, virtualizable form of the outline: headings and rows in one list. */
+type SheetItem = { kind: 'quarter'; quarter: Quarter } | { kind: 'row'; row: RowView };
+
 /**
  * The grade's outline, grouped by quarter, with each row's unseen/total count against the
  * session's seen set. Cheap (a Set lookup per card of the grade, ~15k) and only computed while
@@ -75,7 +86,13 @@ function groupOutline(
       unseen,
       total: ids.size,
       stars: awardStars(awards[topic.key]),
-      shelves: topicShelves(topic, language),
+      // A shelf below the floor is the same broken promise TOPIC_MIN_CARDS already rejects one
+      // level up ("hide if there are less than 3"), and tapping one builds a lesson run of a
+      // single card. Filtered HERE, at the presentation layer, never inside `topicShelves`:
+      // `curriculumCursor` re-derives shelves by id to restore a persisted run, so hiding one
+      // there would turn an already-saved run into a dead tap. Cuts G5 from 673 pills to 299
+      // (G3: 1008 -> 448) with nothing made unreachable — those cards still come from the row.
+      shelves: topicShelves(topic, language).filter((sh) => sh.ids.size >= TOPIC_MIN_CARDS),
     };
     const last = groups[groups.length - 1];
     if (last && last.quarter === topic.quarter) last.rows.push(view);
@@ -110,9 +127,60 @@ export const CurriculumSheet = memo(function CurriculumSheet({
   const awards = useReviewStore((s) =>
     s.data?.grade === grade ? s.data.awards : EMPTY_AWARDS
   );
-  const groups = useMemo(
-    () => (visible ? groupOutline(grade, language, seen, awards) : []),
-    [visible, grade, language, seen, awards]
+  /**
+   * The rows, built one frame AFTER the sheet is asked for — `null` while pending.
+   *
+   * Built in the render pass this used to be, `groupOutline` plus the whole row tree landed in
+   * the same commit that mounts the Modal, so nothing at all appeared on screen until every
+   * row and pill had been reconciled, laid out and measured. Deferring lets the sheet's own
+   * chrome — backdrop, header, hint, rule — paint immediately, which is the acknowledgement
+   * the tap was missing.
+   *
+   * `requestAnimationFrame`, not `InteractionManager`: the cycling button's face crossfade
+   * runs without `isInteraction: false`, so it holds an interaction handle for 250 ms and
+   * would make the fill arrive at an unpredictable time.
+   *
+   * `null` is NOT `[]` and the distinction is load-bearing — see the render below.
+   */
+  const [groups, setGroups] = useState<QuarterGroup[] | null>(null);
+  useEffect(() => {
+    if (!visible) {
+      setGroups(null);
+      return;
+    }
+    const id = requestAnimationFrame(() => setGroups(groupOutline(grade, language, seen, awards)));
+    return () => cancelAnimationFrame(id);
+    // `seen` and `awards` stay in here: the chips and the stars must keep tracking the store
+    // while the sheet is open, or grading a topic under it leaves stale counts on screen.
+  }, [visible, grade, language, seen, awards]);
+
+  /**
+   * Quarter headings and topic rows in one flat list, so the FlatList below virtualizes over
+   * ROWS. Virtualizing over the quarter groups instead would be pure overhead: there are
+   * exactly four of them, so any sane window renders all four and mounts every row anyway.
+   */
+  const items = useMemo<SheetItem[]>(
+    () =>
+      (groups ?? []).flatMap((g) => [
+        { kind: 'quarter' as const, quarter: g.quarter },
+        ...g.rows.map((row) => ({ kind: 'row' as const, row })),
+      ]),
+    [groups]
+  );
+
+  const renderItem = useCallback(
+    ({ item }: { item: SheetItem }) =>
+      item.kind === 'quarter' ? (
+        <QuarterHeading label={`${t.cards.quarters[item.quarter - 1]} \u00b7 ${DOMAIN_NAMES[GRADE_DOMAIN_MAP[grade][item.quarter]][language]}`} />
+      ) : (
+        <Row
+          row={item.row}
+          active={item.row.topic.key === activeKey}
+          activeCat={activeCat}
+          onPick={onPick}
+        />
+      ),
+    [t, grade, language, activeKey, activeCat, onPick]
   );
 
   return (
@@ -131,6 +199,11 @@ export const CurriculumSheet = memo(function CurriculumSheet({
           style={[
             styles.sheet,
             { maxHeight: `${Math.round(SHEET_MAX_HEIGHT * 100)}%`, paddingBottom: Math.max(insets.bottom, 12) },
+            // Hold the final height while the rows are still being built, so the sheet opens
+            // at its real size instead of popping up as a header-sized stub and then jumping.
+            // Safe to assume it is the max: every grade's outline is 29-46 rows, which
+            // overflows 82% of any phone screen many times over.
+            groups === null && { minHeight: `${Math.round(SHEET_MAX_HEIGHT * 100)}%` },
           ]}
         >
           <View style={styles.header}>
@@ -157,74 +230,107 @@ export const CurriculumSheet = memo(function CurriculumSheet({
           </Text>
           <View style={styles.rule} />
 
-          {groups.length === 0 ? (
+          {/* `null` = not built yet; `[]` = this grade genuinely has no cards. Collapsing the
+              two would print "Wala pang kard para sa baitang na ito" for one frame on every
+              open — telling a child something false, then contradicting it. */}
+          {groups === null ? null : groups.length === 0 ? (
             <Text style={styles.empty}>{t.cards.curriculumEmpty}</Text>
           ) : (
-            <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollBody}>
-              {groups.map((g) => (
-                <View key={g.quarter}>
-                  <View style={styles.quarter}>
-                    <View style={styles.quarterDiamond} />
-                    <Text style={styles.quarterText} numberOfLines={1}>
-                      {t.cards.quarters[g.quarter - 1]} · {DOMAIN_NAMES[GRADE_DOMAIN_MAP[grade][g.quarter]][language]}
-                    </Text>
-                  </View>
-                  {g.rows.map((row) => {
-                    const active = row.topic.key === activeKey;
-                    return (
-                      <View key={row.topic.key} style={[styles.row, active && styles.rowActive]}>
-                        <View style={[styles.marker, active && styles.markerActive]} />
-                        <View style={styles.rowBody}>
-                          <Pressable
-                            onPress={() => onPick(row.topic.key)}
-                            accessibilityRole="button"
-                            accessibilityState={{ selected: active }}
-                            style={({ pressed }) => [styles.rowLine, pressed && styles.rowPressed]}
-                          >
-                            <Text style={[styles.rowText, active && styles.rowTextActive]} numberOfLines={2}>
-                              {row.title}
-                            </Text>
-                            {row.stars > 0 ? (
-                              <Text
-                                style={styles.stars}
-                                accessibilityLabel={`${row.stars} ${row.stars === 1 ? 'star' : 'stars'}`}
-                              >
-                                {'★'.repeat(row.stars)}
-                              </Text>
-                            ) : null}
-                            <View style={[styles.chip, active && styles.chipActive]}>
-                              <Text style={[styles.chipText, active && styles.chipTextActive]} numberOfLines={1}>
-                                {row.unseen} / {row.total}
-                              </Text>
-                            </View>
-                          </Pressable>
-                          <View style={styles.pills}>
-                            {row.shelves.map((shelf) => (
-                              <Pressable
-                                key={shelf.cat}
-                                accessibilityRole="button"
-                                accessibilityLabel={`${row.title}: ${shelf.label}`}
-                                accessibilityState={{ selected: active && shelf.cat === activeCat }}
-                                onPress={() => onPick(row.topic.key, shelf.cat)}
-                                style={({ pressed }) => [styles.pill, active && shelf.cat === activeCat && styles.chipActive, pressed && styles.rowPressed]}
-                              >
-                                <Text style={styles.pillText}>{shelf.label}</Text>
-                              </Pressable>
-                            ))}
-                          </View>
-                        </View>
-                      </View>
-                    );
-                  })}
-                </View>
-              ))}
-            </ScrollView>
+            <FlatList
+              style={styles.scroll}
+              contentContainerStyle={styles.scrollBody}
+              data={items}
+              keyExtractor={keyOfItem}
+              renderItem={renderItem}
+              initialNumToRender={5}
+              windowSize={5}
+            />
           )}
         </View>
       </View>
     </Modal>
   );
 });
+
+/** One quarter's heading band — an olive small-caps rule with the gold diamond. */
+const QuarterHeading = memo(function QuarterHeading({ label }: { label: string }) {
+  return (
+    <View style={styles.quarter}>
+      <View style={styles.quarterDiamond} />
+      <Text style={styles.quarterText} numberOfLines={1}>
+        {label}
+      </Text>
+    </View>
+  );
+});
+
+/**
+ * One topic row: the DepEd title, its star award, an unseen/total chip, and the subcategory
+ * pills beneath. Its own memoized component so the FlatList can recycle rows without
+ * re-rendering the ones that did not change.
+ */
+const Row = memo(function Row({
+  row,
+  active,
+  activeCat,
+  onPick,
+}: {
+  row: RowView;
+  active: boolean;
+  activeCat: string | undefined;
+  onPick: (key: string, shelfCat?: string) => void;
+}) {
+  return (
+    <View style={[styles.row, active && styles.rowActive]}>
+      <View style={[styles.marker, active && styles.markerActive]} />
+      <View style={styles.rowBody}>
+        <Pressable
+          onPress={() => onPick(row.topic.key)}
+          accessibilityRole="button"
+          accessibilityState={{ selected: active }}
+          style={({ pressed }) => [styles.rowLine, pressed && styles.rowPressed]}
+        >
+          <Text style={[styles.rowText, active && styles.rowTextActive]} numberOfLines={2}>
+            {row.title}
+          </Text>
+          {row.stars > 0 ? (
+            <Text
+              style={styles.stars}
+              accessibilityLabel={`${row.stars} ${row.stars === 1 ? 'star' : 'stars'}`}
+            >
+              {'\u2605'.repeat(row.stars)}
+            </Text>
+          ) : null}
+          <View style={[styles.chip, active && styles.chipActive]}>
+            <Text style={[styles.chipText, active && styles.chipTextActive]} numberOfLines={1}>
+              {row.unseen} / {row.total}
+            </Text>
+          </View>
+        </Pressable>
+        <View style={styles.pills}>
+          {row.shelves.map((shelf) => (
+            <Pressable
+              key={shelf.cat}
+              accessibilityRole="button"
+              accessibilityLabel={`${row.title}: ${shelf.label}`}
+              accessibilityState={{ selected: active && shelf.cat === activeCat }}
+              onPress={() => onPick(row.topic.key, shelf.cat)}
+              style={({ pressed }) => [
+                styles.pill,
+                active && shelf.cat === activeCat && styles.chipActive,
+                pressed && styles.rowPressed,
+              ]}
+            >
+              <Text style={styles.pillText}>{shelf.label}</Text>
+            </Pressable>
+          ))}
+        </View>
+      </View>
+    </View>
+  );
+});
+
+const keyOfItem = (it: SheetItem) => (it.kind === 'quarter' ? `q${it.quarter}` : it.row.topic.key);
 
 const EMPTY_AWARDS: Readonly<Record<string, TopicAward>> = {};
 
@@ -276,7 +382,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingVertical: 28,
   },
-  scroll: { flexGrow: 0 },
+  // flexShrink lets the virtualized list derive a viewport from onLayout inside the
+  // sheet's `maxHeight` box; without it a VirtualizedList here collapses or overruns.
+  scroll: { flexGrow: 0, flexShrink: 1 },
   scrollBody: { paddingBottom: 6 },
   quarter: {
     flexDirection: 'row',

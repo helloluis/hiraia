@@ -550,7 +550,12 @@ const CycleButton = memo(function CycleButton({
       hitSlop={8}
       accessibilityRole="button"
       accessibilityLabel={face === 'die' ? t.cards.reroll : t.cards.openCurriculum}
-      style={styles.reroll}
+      // A FUNCTION style, not the plain object this used to be, and that IS the fix: Pressable
+      // only tracks a pressed state when `style` (or `children`) is a function, so the button
+      // had no acknowledgement of any kind. onPressIn writes two refs, which do not render.
+      // A tap that starts a few hundred ms of work therefore looked, to a child, like a tap
+      // that did nothing — the reported bug. Every neighbour on this screen already dims.
+      style={({ pressed }) => [styles.reroll, pressed && styles.rerollPressed]}
     >
       <Animated.View style={[styles.face, { opacity: dieOpacity }]} pointerEvents="none">
         <DieFace />
@@ -2191,6 +2196,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  // Touch-down acknowledgement. Sits on the PARENT, so the two crossfading faces keep their
+  // own native-driver opacity nodes untouched. 0.6 is the deck's pressed token (the calendar
+  // sheet's rows use exactly this).
+  rerollPressed: { opacity: 0.6 },
   // the two faces of the cycling button, stacked on the same 22dp square and crossfaded
   face: { ...StyleSheet.absoluteFillObject, alignItems: 'center', justifyContent: 'center' },
   die: { width: 22, height: 22, justifyContent: 'space-between' },
