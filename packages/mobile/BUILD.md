@@ -1,9 +1,10 @@
 # Building the Hiraia Android APK
 
-The mobile app runs the Sailor2 model **on-device** via the QVAC SDK (a bare-runtime
-worker embedded through `react-native-bare-kit`). That means **it cannot run in Expo
-Go or in a JS-only build** — it needs a native build with the QVAC config plugin, and
-per QVAC's docs it runs on a **physical Android 12+ device only** (not emulators).
+The mobile app runs the **Hiraia-2B** — our CPT'd + full-parameter-SFT'd Qwen3.5-2B —
+**on-device** via the QVAC SDK (a bare-runtime worker embedded through
+`react-native-bare-kit`). That means **it cannot run in Expo Go or in a JS-only build** — it
+needs a native build with the QVAC config plugin, and per QVAC's docs it runs on a
+**physical Android 12+ device only** (not emulators).
 
 This doc covers producing a **shareable release APK** via EAS (cloud build — no local
 Android toolchain needed).
@@ -15,9 +16,9 @@ artefacts are produced by `rag/pipeline/build-cards-db.py` and shipped as they a
 
 | file | what it is | ships as |
 |---|---|---|
-| `src/generated/cardsIndex.generated.json` | ids, terms, slug, cats, topic, domain — everything sequencing reads | bundled (15.2 MB) |
-| `assets/data/cards.db` | card text, titles, emphasis, MCQs, the search index, **and the 50,279-fact grounding bank** (`fact` / `fact_token` / `fact_meta`) | asset (133 MB on disk, ~43.5 MB deflated in the APK) |
-| `assets/data/tokens.bin` | each card's vocabulary as sorted int hashes, for `textJaccard` | asset (7.8 MB) |
+| `src/generated/cardsIndex.generated.json` | ids, terms, slug, cats, topic, domain — everything sequencing reads | bundled (16.7 MB) |
+| `assets/data/cards.db` | card text, titles, emphasis, MCQs, the search index, **and the 53,022-fact grounding bank** (`fact` / `fact_token` / `fact_meta`) | asset (144.8 MB on disk, ~47.4 MB deflated in the APK) |
+| `assets/data/tokens.bin` | each card's vocabulary as sorted int hashes, for `textJaccard` | asset (8.1 MB) |
 
 The fact bank moved here from `packages/shared/src/rag/facts.generated.ts`, which was a
 43.5 MB TypeScript array Metro could not tree-shake — 41.2 MB of Hermes bytecode, STORED
@@ -38,12 +39,21 @@ present in the feed.
 
 - `rag/pipeline/cardsPool.app.json` changed — i.e. after `rag/pipeline/wire-app-pool.py`,
   which is itself what applies the editorial pass and the illustration re-match
-- **`rag/bank/science-facts.jsonl` changed.** The database carries the grounding bank now, and
-  its `ord` column has to line up with `assets/rag/vectors-labse.i8.bin`, which is POSITIONAL
-  (vector i belongs to bank row i). Rebuild the vectors blob in the same breath — a bank edit
-  that touches neither makes the tutor retrieve one fact and embed another, with no symptom at
-  build time. `RagStore.attachSemantic` compares both the count and the `bankHash` the two
-  builders stamp independently, so a mismatch fails loudly at app start rather than silently.
+- **`rag/bank/science-facts.jsonl` changed.** The database carries the grounding bank now,
+  and its `ord` column has to line up with the fact-vectors blob, which is POSITIONAL
+  (vector i belongs to bank row i). The blob is a DOWNLOADED asset (see the pre-ship step
+  below), so a bank edit is three moves in one breath: rebuild the blob
+  (`rag/scripts/build-vectors.py`, which also rewrites `vectors-labse.meta.json` and stamps
+  the same `bankHash` into `cards.db`), upload it to the mirror under its new
+  hash-embedded filename, and repin `REMOTE_ASSETS.vectors` in `src/config/model.ts`.
+  Skip any of the three and the tutor retrieves one fact and embeds another — with NO
+  symptom at build time, because the runtime guards only compare what travels TOGETHER in
+  the repo (the meta's `bankHash` vs the bank stamped in `cards.db`); nothing compares the
+  downloaded blob's bytes. That gap is exactly why the blob's filename embeds the bank
+  hash and why the pin has to move with it. (`RagStore.attachSemantic` does compare the
+  meta's count + `bankHash` against `cards.db` and fails loudly at app start, so a
+  repo-internal mismatch — a rebuilt bank without a rebuilt meta — is caught; a stale
+  REMOTE blob behind a correct pin is the one that is not.)
 - `src/data/cards-questions.json` changed
 - **`src/data/cards.ts` changed.** Non-obvious and the easiest to miss: the builder reads the
   `SEARCH_STOP` list out of that file so the index is tokenised exactly the way
@@ -200,53 +210,68 @@ There is **one** native configuration and **one** APK. The app used to ship a se
 "kitten" build (Sailor2-1B, CPU-only, 4 GB phones) whose prebuild stripped the Vulkan and
 OpenCL backends out of the APK; that tier is retired. Do not re-add jniLibs excludes —
 `libqvac-ggml-vulkan.so` is what the shipping model offloads to, and removing it fails
-quietly (the APK builds, installs, and runs the 3B slowly on the CPU). post-prebuild
+quietly (the APK builds, installs, and runs the 2B slowly on the CPU). post-prebuild
 actively deletes those excludes if it finds them in a long-lived tree.
 
-## First run: the model download
+## First run: the downloads
 
-The APK itself is ~tens of MB (app + bare worker + native engines). **No model weights are
-bundled.** On first launch the app downloads, from the mirror
-(`https://hiraia.b11.dev/models/`), everything listed in `src/config/model.ts`
+The APK itself is a few hundred MB (app + bare worker + native engines + the **bundled**
+card database and engraving art — the 12,374-illustration art pack ships in the APK).
+**No model weights are bundled.** On first launch the app downloads, from the mirror
+(`https://hiraia.org/models/`, overridable at build time with
+`EXPO_PUBLIC_ASSETS_BASE_URL`), everything listed in `src/config/model.ts`
 `REMOTE_ASSETS`:
 
 | asset | size | when |
 |---|---|---|
-| `Sailor2-3B-Chat.Q4_K_M.gguf` | 3,227,563,808 B (~3.23 GB) | first run, blocking |
-| `adapter-tagalog-v11.gguf` **or** `adapter-bisaya-v11.gguf` | 106,772,928 B (~107 MB) each | first run, blocking — one per active language (English rides the Tagalog adapter) |
+| `hiraia-sft-2b-v2.Q4_K_M.gguf` | 1,274,396,160 B (~1.27 GB) | first run, blocking |
+| `vectors-labse-90318bad81dd.i8.bin` | 122,162,688 B (~122 MB) | background; retrieval is lexical-only until it lands |
 | `labse.Q4_K_M.gguf` | 383,762,048 B (~384 MB) | background; retrieval is lexical-only until it lands |
 
-So a first run costs **~3.33 GB blocking** plus ~384 MB in the background.
+So a first run costs **~1.27 GB blocking** plus ~500 MB in the background (the fact
+vectors and the LaBSE embedder share the readiness bar's semantic band). Separately and
+**opt-out-able** (Settings, on by default), the reader's grade-cell art is backfilled
+from `https://assets.hiraia.org/models/images/` `.hpak` packs — common (~222 MB) plus the
+one grade cell (7–20 MB), ~230–240 MB total.
 
-> For a demo where you can't wait on a 3.3 GB download, pre-seed the device once on Wi-Fi.
+There are **no LoRA adapters** any more. The shipping model is a FULL-PARAMETER SFT —
+Tagalog, Cebuano and English all live in the one set of weights (`loraRemote` in
+`config/model.ts` is empty BY DESIGN; the `LocalEngine.resolveAdapterPath` contract is
+kept for any future adapter-ful model). The old Sailor2-era `assets/models/*.gguf` files
+are still on disk only because they are the exact bytes once uploaded to the mirror —
+`assets/models/` is in `.easignore` and `metro.config.js` deliberately does NOT register
+`gguf` as an asset extension. Do not "restore" either.
 
-The fine-tuned Tagalog/Bisaya **LoRA adapters are DOWNLOADED** (`loraRemote` in
-`config/model.ts`), not bundled — `assets/models/` is in `.easignore` and `metro.config.js`
-deliberately does NOT register `gguf` as an asset extension. Do not "restore" either: it
-puts 213.5 MB back into every install and drops the adapters out of the integrity gate.
 Every downloaded byte is checked against a declared size + MD5 before it is installed
 (`src/engine/modelDownload.ts`); a captive-portal login page can no longer be cached
-forever as the model. The adapter is REQUIRED — `LocalEngine` refuses to load the raw base
-model without it. RAG grounding is active for every language.
+forever as the model. RAG grounding is active for every language.
 
-### ⚠️ Pre-ship step: the adapters must be live on the mirror FIRST
+> For a demo where you can't wait on a 1.3 GB download, pre-seed the device once on Wi-Fi.
 
-An APK built before the adapters are published is unusable — the tutor throws
-"adapter unavailable" on every launch, in every language. Upload
-`packages/mobile/assets/models/adapter-tagalog.gguf` and `adapter-bisaya.gguf` to the
-mirror **under their `-v11` names**, then confirm both before building:
+### ⚠️ Pre-ship step: the REMOTE_ASSETS must be live on the mirror FIRST
+
+An APK whose pinned downloads are missing or stale on the mirror is broken in one of two
+ways: a 404 on the base model bricks every launch ("model unavailable"), and a stale
+vectors blob behind a current pin makes retrieval silently wrong (the blob is positional;
+nothing compares its bytes against the bank at runtime — that is why its FILENAME embeds
+the bank hash, and why the pin and the uploaded file must move together). Before every
+ship, confirm each row of `REMOTE_ASSETS` against the mirror — name, size, and (for a new
+upload) MD5 — and remember the on-device cache keys on FILENAME: changing an asset's
+CONTENT requires a NEW filename or existing installs keep the old file forever.
 
 ```bash
-for f in adapter-tagalog-v11.gguf adapter-bisaya-v11.gguf; do
-  curl -sI "https://hiraia.b11.dev/models/$f" | head -1          # expect HTTP/… 200
-  curl -sI "https://hiraia.b11.dev/models/$f" | grep -i content-length   # expect 106772928
+# name + size (expect HTTP 200 and the exact `bytes` value from REMOTE_ASSETS):
+for f in hiraia-sft-2b-v2.Q4_K_M.gguf vectors-labse-90318bad81dd.i8.bin labse.Q4_K_M.gguf; do
+  curl -sIL "https://hiraia.org/models/$f" | grep -iE '^HTTP|content-length' | tail -2
 done
+# after uploading a NEW asset, derive its pin row from the exact bytes on the mirror:
+#   stat -f%z <file>; md5 -q <file>; shasum -a 256 <file>
 ```
 
-The digests the app enforces are pinned in `src/config/model.ts`; re-derive them with
-`md5 -q <file>` / `shasum -a 256 <file>` against the exact bytes you uploaded. Changing an
-adapter's CONTENT later requires a NEW filename (`-v12`) — the on-device cache keys on
-filename, so existing installs keep the old file forever otherwise.
+The digests the app enforces are pinned in `src/config/model.ts`. The vectors blob's
+filename embeds `md5(science-facts.jsonl)[:12]` — after ANY bank edit, rebuild the blob
+(`rag/scripts/build-vectors.py`), upload it under the NEW hash-embedded name, and repin
+the row, or the tutor silently retrieves one fact and embeds another.
 
 ## Why no emulator?
 
@@ -262,6 +287,10 @@ build and flip `released: true`.
 
 ```bash
 # Download the APK from the EAS build page (or `eas build:download`), name it hiraia.apk.
+# A LOCAL build is signed with the DEBUG keystore by default — re-sign it with the
+# release key first (one-time: `npx eas-cli credentials` → download credentials.json):
+#   packages/mobile/scripts/sign-apk.sh    # verifies against the pinned cert 40d750d5…
+# All values below must be measured from the SIGNED APK.
 
 # 1. APK file hash -> download.ts `sha256`
 shasum -a 256 hiraia.apk            # Linux: sha256sum hiraia.apk
@@ -276,11 +305,14 @@ npx eas-cli credentials   # Android > (keystore) > shows SHA-256 fingerprint
 du -m hiraia.apk
 ```
 
-Then **host** `hiraia.apk` somewhere durable (a GitHub Release asset, or the VPS) and set
+Then **host** `hiraia.apk` somewhere durable (a GitHub Release asset, or the VPS — the
+published URL is `https://hiraia.org/models/hiraia.apk`) and set
 `url` to that direct link. Set `version`, `fileSizeMB`, `sha256`, `signingCertSha256`, and
 `released: true`. The site then shows the Download button + a "Verify it's the official
 app" panel with both checksums and the commands above.
 
 > The **signing-cert** hash is the stronger anchor: Android rejects any update not signed
 > by the same key, and it doesn't change between releases — so reuse the same keystore for
-> every build (EAS does this by default once credentials are created).
+> every build (EAS does this by default once credentials are created). That is also why
+> the local `sign-apk.sh` path exists: it keeps the published anchor valid for local
+> builds, so existing installs upgrade in place.

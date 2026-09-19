@@ -55,6 +55,8 @@ import { remoteAssetUrl } from './assetDelivery';
  *      sha256 b13e66678be6718252c692cb765bbe1d6bafd69c11772a1d1e9c23ee6ce0cd89
  *  labse.Q4_K_M.gguf              383762048 B
  *      sha256 3869330197b5a583afc572104bf93393e384c72473a15c2dae43cab43e194b3e
+ *  vectors-labse-af171fe8a9f9.i8.bin  115842816 B  md5 4f80d21b0526db1aeadb7033b5aa8998
+ *      (the 50,279-fact bank — superseded by the 90318bad81dd bank, 2026-09-11)
  *
  * (Retired rows, for the record: Sailor2-3B-Chat.Q4_K_M.gguf 3227563808 B md5
  *  a7b8f147b7ca995bb64fa59216740457; adapter-tagalog-v11.gguf / adapter-
@@ -77,17 +79,17 @@ export const REMOTE_ASSETS = {
   },
   /** LaBSE embedder for the hybrid retriever (background download). */
   /**
-   * The fact-bank semantic vectors (int8 LaBSE, 50,279 × 768). DOWNLOADED, not bundled —
+   * The fact-bank semantic vectors (int8 LaBSE, 53,022 × 3 langs × 768). DOWNLOADED, not bundled —
    * 78.6 MB of APK for a blob that is inert until the 384 MB embedder lands anyway (the
    * same argument that moved the adapters out). The filename embeds the BANK HASH
    * (md5(science-facts.jsonl)[:12]) so a rebuilt bank can never silently pair with a stale
    * blob: attachSemantic hard-fails on hash mismatch, and the URL itself must change.
    */
   vectors: {
-    url: remoteAssetUrl('vectors-labse-af171fe8a9f9.i8.bin'),
-    filename: 'vectors-labse-af171fe8a9f9.i8.bin',
-    bytes: 115842816,
-    md5: '4f80d21b0526db1aeadb7033b5aa8998',
+    url: remoteAssetUrl('vectors-labse-90318bad81dd.i8.bin'),
+    filename: 'vectors-labse-90318bad81dd.i8.bin',
+    bytes: 122162688,
+    md5: '69d152b4c38b619d4f019e652384d9b6',
     label: 'Hiraiapedia vectors',
   },
   embedder: {

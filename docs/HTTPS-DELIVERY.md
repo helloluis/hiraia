@@ -9,14 +9,14 @@ EXPO_PUBLIC_ASSETS_BASE_URL to a provisioned HTTPS CDN prefix. This is a build-t
 setting, not remote configuration. Existing APKs keep their baked-in URLs, including
 older hiraia.b11.dev URLs; preserve those routes during migration.
 
-The optional generation assets currently total 1,774,001,024 bytes (~1.77 GB):
+The optional generation assets currently total 1,780,320,896 bytes (~1.78 GB):
 - hiraia-sft-2b-v2.Q4_K_M.gguf: 1,274,396,160 bytes
 - labse.Q4_K_M.gguf: 383,762,048 bytes
-- vectors-labse-af171fe8a9f9.i8.bin: 115,842,816 bytes
+- vectors-labse-90318bad81dd.i8.bin: 122,162,688 bytes
 
-That is approximately 1.77 TB for 1,000 complete fresh installs, plus APK delivery,
+That is approximately 1.78 TB for 1,000 complete fresh installs, plus APK delivery,
 retries and updates. Optional illustration packs add 323,225,817 bytes (~323 MB),
-for 2,097,226,841 bytes (~2.10 GB) with all generation assets. The curated library
+for 2,103,546,713 bytes (~2.10 GB) with all generation assets. The curated library
 remains bundled and usable without these downloads. See [IMAGE-PACKS.md](IMAGE-PACKS.md).
 
 The current downloader persists partial files, resumes via byte ranges, checks the
