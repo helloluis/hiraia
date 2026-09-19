@@ -55,7 +55,7 @@ PY
 
 echo ">> [1/4] files ..."
 ssh $SSH "$V" 'mkdir -p /opt/hiraia-monitor /var/lib/hiraia-monitor'
-scp $SSH "$HERE/monitor.py" "$HERE/admin_app.py" "$HERE/pilot_analytics.py" "$V:/opt/hiraia-monitor/"
+scp $SSH "$HERE/monitor.py" "$HERE/admin_app.py" "$HERE/pilot_analytics.py" "$HERE/pilot_dashboard.py" "$HERE/pilot_dashboard.html" "$HERE/ga_reporting.py" "$HERE/neon_mirror.py" "$V:/opt/hiraia-monitor/"
 scp $SSH "$TMP/config.json" "$V:/opt/hiraia-monitor/config.json"
 ssh $SSH "$V" 'chmod 600 /opt/hiraia-monitor/config.json; chmod 755 /opt/hiraia-monitor/*.py
   touch /var/log/hiraia-monitor.log; chmod 640 /var/log/hiraia-monitor.log'

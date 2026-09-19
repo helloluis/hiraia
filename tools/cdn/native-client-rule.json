@@ -1,0 +1,30 @@
+{
+  "description": "",
+  "id": "4e6772398ea94c2ca66b334fac2a7ba9",
+  "kind": "zone",
+  "last_updated": "2026-09-06T02:00:57.785342Z",
+  "name": "Hiraia native client compatibility",
+  "phase": "http_request_firewall_custom",
+  "rules": [
+    {
+      "action": "skip",
+      "action_parameters": {
+        "products": [
+          "bic"
+        ]
+      },
+      "description": "Hiraia native downloads and telemetry: skip browser-only integrity check",
+      "enabled": true,
+      "expression": "((http.host in {\"assets.hiraia.org\" \"hiraia.org\" \"www.hiraia.org\"} and starts_with(http.request.uri.path, \"/models/\") and http.request.method in {\"GET\" \"HEAD\"}) or (http.host in {\"hiraia.org\" \"www.hiraia.org\"} and http.request.uri.path eq \"/api/telemetry/batch\" and http.request.method eq \"POST\"))",
+      "id": "8ff6c9dc3fd04fa8a0d02312b87f57a0",
+      "last_updated": "2026-09-06T02:00:57.785342Z",
+      "logging": {
+        "enabled": true
+      },
+      "ref": "8ff6c9dc3fd04fa8a0d02312b87f57a0",
+      "version": "1"
+    }
+  ],
+  "source": "firewall_custom",
+  "version": "1"
+}

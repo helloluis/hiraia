@@ -11,3 +11,4 @@ export function trackMany(events: any[]) {
 export function errorCategory(error: Error) {
   return /cancel/.test(error.message) ? 'cancelled' : 'network';
 }
+export function telemetryPersona() { return { profile_kind: 'guest', grade: 5 }; }
