@@ -1,0 +1,91 @@
+[
+  {
+    "case": "default",
+    "model": "accounts/fireworks/models/deepseek-v4p1-flash",
+    "seconds": 31.62,
+    "finish_reason": "length",
+    "message_fields": [
+      "role",
+      "content",
+      "reasoning_content",
+      "tools"
+    ],
+    "content_chars": 0,
+    "reasoning_chars": 10265,
+    "usage": {
+      "prompt_tokens": 1048,
+      "total_tokens": 4048,
+      "completion_tokens": 3000,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3000
+      },
+      "output_tokens_details": {
+        "reasoning_tokens": 3000
+      }
+    },
+    "valid_audit_json": false,
+    "validation_error": "Expecting value: line 1 column 1 (char 0)"
+  },
+  {
+    "case": "no_reasoning",
+    "model": "accounts/fireworks/models/deepseek-v4p1-flash",
+    "seconds": 5.79,
+    "finish_reason": "stop",
+    "message_fields": [
+      "role",
+      "content",
+      "tools"
+    ],
+    "content_chars": 1164,
+    "reasoning_chars": 0,
+    "usage": {
+      "prompt_tokens": 1025,
+      "total_tokens": 1370,
+      "completion_tokens": 345,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      }
+    },
+    "valid_audit_json": true,
+    "validation_error": null
+  },
+  {
+    "case": "forced_truncation",
+    "model": "accounts/fireworks/models/deepseek-v4p1-flash",
+    "seconds": 1.25,
+    "finish_reason": "length",
+    "message_fields": [
+      "role",
+      "content",
+      "reasoning_content",
+      "tools"
+    ],
+    "content_chars": 0,
+    "reasoning_chars": 139,
+    "usage": {
+      "prompt_tokens": 1048,
+      "total_tokens": 1080,
+      "completion_tokens": 32,
+      "prompt_tokens_details": {
+        "cached_tokens": 918
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 32
+      },
+      "output_tokens_details": {
+        "reasoning_tokens": 32
+      }
+    },
+    "valid_audit_json": false,
+    "validation_error": "Expecting value: line 1 column 1 (char 0)"
+  }
+]

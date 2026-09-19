@@ -73,13 +73,8 @@ const singleLine = (s: string) =>
 async function sendEmail(row: { id: number; name: string; contact: string; body: string }) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return; // dev mode — row is stored, no email
-  const to = process.env.FEEDBACK_TO;
-  if (!to) {
-    // Misconfiguration (key set, recipient not): don't burn a guaranteed Resend 4xx per
-    // submission — the row is stored either way, so log once per attempt and move on.
-    console.error(`[feedback] FEEDBACK_TO unset — email skipped for row ${row.id}`);
-    return;
-  }
+  // Inbox only — never put this address in public copy. FEEDBACK_TO overrides.
+  const to = process.env.FEEDBACK_TO || 'lb@hiraia.org';
   try {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',

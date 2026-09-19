@@ -111,7 +111,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'usage',
     q: 'How does a session work?',
     a: [
-      'Hiraia is a stack of flash cards, not a chat window. Each card carries one science fact and one illustration. After a few cards, a short quiz checks whether the fact stuck; a recap card then gathers what was just read.',
+      'Hiraia is a stack of flash cards, not a chat window. Each card carries one science fact and one illustration. After a few cards, a short quiz checks whether the fact stuck; a recap card then gathers what was just read. The homepage demo walks that same loop: pick Tagalog, English, or Bisaya and a grade from 3 through 10, then the first-quarter cards for that grade in curriculum order.',
       'If a student asks for a topic that is not already in the deck, Hiraia can print a new card from its fact bank — in Tagalog, English, or Bisaya — instead of sending the question to the internet.',
     ],
   },
@@ -120,8 +120,8 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'usage',
     q: 'Does it need the internet?',
     a: [
-      'Only for the first fetch. The first time you open the app it downloads about 2GB — the customized AI model and the illustration library — from Hiraia’s servers, or from a nearby phone that already has a complete copy.',
-      'After that it runs fully offline. No account, no feed of student data, and nothing typed on the phone is sent anywhere. Curriculum updates, when you want them, can arrive over a public peer-to-peer network without a central server.',
+      'Only for the first fetch. The first time you open the app it downloads about 2GB — the customized AI model and the illustration library — from Hiraia’s servers. Prefer Wi-Fi; that transfer is large.',
+      'After that it runs fully offline. No account, no feed of student data, and nothing typed on the phone is sent anywhere. Sharing a finished copy across classroom Wi-Fi is coming soon; until then each phone still fetches the model itself.',
     ],
   },
   {
@@ -156,7 +156,8 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'usage',
     q: 'Can a whole class use it from one download?',
     a: [
-      'That is the intended classroom path. The model is about two gigabytes, which is expensive to pull over cellular data once per student. Hiraia uses Pears, a peer-to-peer filesharing protocol: as long as one phone on the school or municipal Wi-Fi holds a complete copy, the rest of the class can take it from that phone — and from one another — without another trip to the internet.',
+      'That classroom path is coming soon. The plan is Pears, a peer-to-peer filesharing protocol: once one phone on the school or municipal Wi-Fi holds a complete copy, the rest of the class can take it from that phone — and from one another — without another trip to the internet.',
+      'Until that ships, each phone still downloads the two-gigabyte model itself. Use Wi-Fi for that first fetch.',
     ],
   },
 
@@ -185,7 +186,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'devices',
     q: 'What happens the first time I open the app?',
     a: [
-      'Hiraia looks for the model and illustrations. If they are not on the phone yet, it downloads them from Hiraia’s own servers, or from any filesharing peer it finds nearby (another phone in the room that already finished). The transfer can resume if the connection drops.',
+      'Hiraia looks for the model and illustrations. If they are not on the phone yet, it downloads them from Hiraia’s own servers. The transfer can resume if the connection drops. Sharing a finished copy across classroom Wi-Fi is coming soon.',
       'When that finishes, the tutor is local. You can turn on airplane mode and keep studying.',
     ],
   },
@@ -194,7 +195,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'devices',
     q: 'Should I use mobile data for the first download?',
     a: [
-      'Prefer Wi-Fi. Two gigabytes on a cellular plan is a large bill for most families, which is why classroom sharing over school or municipal Wi-Fi exists. If one student already has a complete copy, the others should take it from that phone rather than from the internet.',
+      'Prefer Wi-Fi. Two gigabytes on a cellular plan is a large bill for most families. Classroom sharing over school or municipal Wi-Fi is coming soon; until then, each phone still fetches the model itself, so that first download should not ride a cellular plan.',
     ],
   },
   {
@@ -313,7 +314,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'troubleshooting',
     q: 'The first-run download is stuck or keeps restarting.',
     a: [
-      'Stay on Wi-Fi. Check that the phone has more than 2GB free. Leave the app open until the fetch finishes — switching away can pause some downloads. If another classmate already has a complete copy on the same network, stay near them so the phone can take the files from that peer instead of from the internet.',
+      'Stay on Wi-Fi. Check that the phone has more than 2GB free. Leave the app open until the fetch finishes — switching away can pause some downloads. Classroom sharing from a nearby phone is coming soon; until then the fetch is from Hiraia’s servers.',
       'The transfer is built to resume. Opening the app again should continue rather than start at zero. If it loops from the beginning, clear the incomplete files by force-stopping Hiraia and retrying on a more stable network.',
     ],
   },
@@ -372,7 +373,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'troubleshooting',
     q: 'None of this matches what I am seeing.',
     a: [
-      'Write down the phone model, Android version, and whether the first-run download finished. The project is early alpha; rough edges are expected. Luis Buenaventura, who built Hiraia, is at x.com/helloluis. An on-page assistant for this FAQ is next.',
+      'Write down the phone model, Android version, and whether the first-run download finished. The project is early alpha; rough edges are expected. Luis Buenaventura, who built Hiraia, is at x.com/helloluis. Use the feedback form on the homepage. An on-page assistant for this FAQ is next.',
     ],
   },
 ];

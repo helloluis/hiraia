@@ -20,8 +20,46 @@ arguments from anybody.
 |---|---|
 | `monitor.py` | The guard. systemd timer, every 5 min. Three rules (below). |
 | `admin_app.py` | Mission control at `/admin` — telemetry, loss curve, kill switch, run log. Also receives pod heartbeats. |
+| `tala_reports.py` | Private Tala issue-report intake, image/video storage, review page, and Resend notification. |
 
-Both are **stdlib-only Python** — no pip, no venv, nothing to rot. They read one config at
+## Tala issue reports
+
+Open `https://hiraia.org/admin/tala-reports` after signing in. The page lists
+reports and attachments. Teachers do not enter upload credentials. Tala stores drafts
+and attachments privately on-device, then retries over HTTPS when internet returns.
+`POST /admin/api/tala/reports` is a public, unauthenticated write endpoint: a
+request cannot prove it originated in Tala. Server-side request/IP/device limits,
+strict input validation, and media processing protect it, but cannot stop a
+determined sender from submitting believable false reports. Review reports before
+acting on them and watch intake volumes. Admin read access remains session-protected.
+
+Set `resend_api_key` in `/opt/hiraia-monitor/config.json` and keep
+`notify_email` set to the operator's inbox. Notifications use the Resend REST API
+and contain a link and metadata only; report details and media stay in the
+password-protected page. Failed notifications are visible there and can be retried.
+Reports and media can be permanently deleted from the page after triage; avoid
+uploading recognizable student faces or names unless needed for diagnosis.
+The `tala_notify_from` config value defaults to the already-used
+`Hiraia Tala <feedback@hiraia.org>` sender and must belong to a verified domain.
+Neither report delivery nor email delivery requires student devices to be online.
+
+Nginx must allow a 16 MB request body for the intake on both `hiraia.org` and
+`hiraia.b11.dev`. The intake limits requests to 14 MB, media to 10 MB,
+three attachments, 60 reports/hour globally, 20/hour per IP, 6/hour and 30-second
+spacing per device ID, and 1 GB stored media. Requests are also throttled before
+reading the body (5/minute, 30/hour per IP, 120/hour globally) and only two uploads
+may be processed simultaneously. Device IDs can be
+forged; IP/global limits are the backstop. Files are privately staged, images are
+decoded and rewritten without metadata, and MP4s are probed, fully decoded and
+remuxed without metadata in a resource-limited `hiraia-media` subprocess. Invalid
+attachments are discarded, not shown in the dashboard. MP4s must be at most 60
+seconds and 4096px per dimension. If Pillow, ffmpeg, or the sandbox is unavailable,
+media reports fail closed and remain queued on the phone. The VPS must have
+`python3-pil`, `ffmpeg`, `util-linux` and the `hiraia-media` system user installed.
+Accepted reports live under `/var/lib/hiraia-monitor/tala-media` with private permissions.
+
+The monitor and admin app use stdlib Python; issue media decoding uses system Pillow
+and ffmpeg. They read one config at
 `/opt/hiraia-monitor/config.json` (mode 600; holds the RunPod key and the password hash).
 
 ## The three guard rules

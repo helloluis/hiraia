@@ -50,6 +50,31 @@ class PilotReportTests(unittest.TestCase):
     def test_missing_database_has_honest_empty_state(self):
         self.path.unlink()
         self.assertFalse(pilot_analytics.report()['available'])
+    def test_website_geo_and_model_origin_fetches(self):
+        web = Path(self.temp.name) / 'hiraia.db'
+        previous = os.environ.get('HIRAIA_DB_PATH')
+        os.environ['HIRAIA_DB_PATH'] = str(web)
+        self.addCleanup(lambda: os.environ.pop('HIRAIA_DB_PATH', None) if previous is None else os.environ.__setitem__('HIRAIA_DB_PATH', previous))
+        with sqlite3.connect(web) as db:
+            db.execute('CREATE TABLE apk_download_hits(day TEXT, ip_hash TEXT, country TEXT, city TEXT)')
+            db.execute('CREATE TABLE web_sessions(day TEXT, ip_hash TEXT, country TEXT, city TEXT)')
+            db.execute("INSERT INTO web_sessions VALUES('2027-01-14','a','PH','Quezon City')")
+            db.execute("INSERT INTO web_sessions VALUES('2027-01-14','b','PH','Cebu City')")
+            db.execute("INSERT INTO web_sessions VALUES('2027-01-14','c','US','')")
+            db.execute("INSERT INTO apk_download_hits VALUES('2027-01-14','d','PH','Manila')")
+        log = Path(self.temp.name) / 'model-geo.log'
+        os.environ['HIRAIA_MODEL_GEO_LOG'] = str(log)
+        self.addCleanup(lambda: os.environ.pop('HIRAIA_MODEL_GEO_LOG', None))
+        log.write_text('2027-01-14T12:00:00+00:00\tPH\tQuezon City\t200\t100\n2027-01-14T12:01:00+00:00\tPH\tCebu City\t200\t100\n')
+        report = pilot_analytics.report(7, self.now)
+        self.assertEqual(report['website_clicks'], 1)
+        self.assertEqual(report['web_countries'][0]['country'], 'PH')
+        self.assertEqual(report['web_countries'][0]['sessions'], 2)
+        cities = {(r['country'], r['city']): r['sessions'] for r in report['web_cities']}
+        self.assertEqual(cities[('PH', 'Quezon City')], 1)
+        self.assertTrue(report['model_geo']['available'])
+        self.assertEqual(report['model_geo']['countries'][0]['country'], 'PH')
+        self.assertEqual(report['model_geo']['countries'][0]['fetches'], 2)
     def test_admin_telemetry_requires_existing_session(self):
         handler = object.__new__(admin_app.Handler)
         handler.headers = Message()

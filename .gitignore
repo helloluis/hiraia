@@ -9,6 +9,8 @@ build/
 # Expo
 .expo/
 android/
+!packages/tala/android/
+packages/tala/android/.gradle/
 ios/
 *.jks
 *.p8
@@ -223,3 +225,5 @@ rag/pipeline/imagegen/raw/
 # incomplete until all 3 batches land
 rag/pipeline/imagegen/webp/
 card-cats/
+# Private Google Analytics service-account credential
+/hiraia-20e4d4d6f5d8.json

@@ -1,0 +1,37 @@
+{
+  "apkSha256": "c37e70c7669bbbba63139568c6bebfe772e19cd06b7fc261679ef47e794c9c85",
+  "apkBytes": 116891245,
+  "copiedNativeLibrariesMatchingSource": 31,
+  "bareKitBinaryMatchesSource": true,
+  "android10PhysicalInference": "NOT RUN",
+  "connectedPhone": "Not accessed this turn; prior install rejected by Android",
+  "emulators": {
+    "api29": {
+      "image": "google_apis arm64-v8a API29 revision13",
+      "configuredRamMB": 4096,
+      "standaloneLaunch": "PASS",
+      "workerHeartbeat": "PASS",
+      "smallModelSuite": "PASS",
+      "hiraia2bSuite": "PASS",
+      "labseSuite": "PASS",
+      "hiraiaAndLabseSuite": "PASS",
+      "resourceCollectors": "WARN: CPU collector initialization failed"
+    },
+    "api34": {
+      "smallModelSuite": "PASS",
+      "resourceCollectors": "WARN: CPU collector initialization failed",
+      "hiraia2bSuite": "NOT RUN",
+      "labseSuite": "NOT RUN"
+    }
+  },
+  "probeFixes": [
+    "Parse file:/ and file:/// URIs correctly for hashing and model paths",
+    "Initialize Expo runtime before QVAC via registerRootComponent",
+    "Correct stale Hiraia v2 SHA-256 using bytes matching production size and MD5"
+  ],
+  "limits": [
+    "CPU only; no physical Android10 device tested",
+    "No mobile throughput, thermals or battery inference from host-backed emulation",
+    "Full Hiraia UI, RAG index and teaching quality not validated"
+  ]
+}

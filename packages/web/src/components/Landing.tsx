@@ -1,8 +1,11 @@
 'use client';
 
+import { Wordmark } from '@/components/brand/Wordmark';
+
 import { type ReactNode } from 'react';
 import { AppDownload } from '@/components/AppDownload';
 import { FeedbackBreaker } from '@/components/FeedbackBreaker';
+import { SiteFooter } from '@/components/SiteFooter';
 import { YouTubeEmbed } from '@/components/YouTubeEmbed';
 import { DemoLightbox } from '@/components/demo/DemoLightbox';
 import { useDemoStore } from '@/store/useDemoStore';
@@ -67,7 +70,7 @@ export function Landing() {
             </div>
 
             <h1 className="mt-5 font-slab text-[3.5rem] leading-none tracking-wide text-[var(--ink)] sm:text-7xl">
-              HIRAIA
+              <Wordmark />
             </h1>
             <p className="mt-4 font-zilla text-[1.35rem] font-bold leading-snug text-[var(--ink)] text-balance sm:text-[1.55rem]">
               An AI science tutor that runs entirely offline
@@ -83,6 +86,14 @@ export function Landing() {
             </p>
 
             <div className="relative z-[1] mt-6 flex flex-col gap-3">
+              <a
+                href="/hiraia-whitepaper.pdf"
+                target="_blank"
+                rel="noopener"
+                className="self-start font-zilla text-[0.95rem] font-semibold tracking-wide text-[var(--ink)] underline decoration-[var(--gold)] decoration-2 underline-offset-4 transition-opacity hover:opacity-75"
+              >
+                Read the Whitepaper →
+              </a>
               <Ticket onClick={openDemo}>Try the demo</Ticket>
               <Ticket onClick={scrollToDownload} ghost>
                 Download for free
@@ -111,8 +122,7 @@ export function Landing() {
               <p className="mc-label text-[10px] text-[var(--gold)]">On-device and Offline</p>
               <p className="mt-2 font-zilla text-base font-medium leading-relaxed text-[var(--stock)]/85 sm:text-lg">
                 The AI model, the illustrations, and our science fact bank all live
-                on the phone, and can optionally connect to a public P2P network for
-                curriculum updates.
+                on the phone. After the first download, no internet is required.
               </p>
             </div>
             <div>
@@ -197,7 +207,6 @@ export function Landing() {
         </div>
       </section>
 
-      {/* BREAKER — full-bleed white band with the feedback line + its modal. */}
       <FeedbackBreaker />
 
       <section className="px-5 py-16 sm:px-12 sm:py-20 md:px-16 lg:px-24">
@@ -230,6 +239,14 @@ export function Landing() {
               internet connection.
             </p>
           </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/pears-classroom.webp"
+            alt="Students on a classroom Wi-Fi share the Hiraia model with one another in a mesh: the school seeds one phone, then every phone can copy from any other."
+            width={1448}
+            height={1086}
+            className="w-full max-w-xl justify-self-center lg:max-w-none"
+          />
         </div>
       </section>
 
@@ -246,7 +263,7 @@ export function Landing() {
               class, is more than most families can spend.
             </p>
             <p className="mt-4 max-w-xl font-zilla text-lg font-medium leading-relaxed text-[var(--ink)]">
-              Hiraia uses{' '}
+              The plan is{' '}
               <a
                 href="https://pears.com"
                 className="underline decoration-[var(--gold)] underline-offset-2 hover:text-[var(--gold)]"
@@ -255,50 +272,40 @@ export function Landing() {
               to happen once. As long as one student on the classroom Wi-Fi
               holds a complete copy, the rest of the class can take it from
               that phone — and from one another — without another trip to the
-              internet, and without a central server.
+              internet, and without a central server. That classroom sharing
+              is not shipping yet.
             </p>
           </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/pears-classroom.webp"
-            alt="Students on a classroom Wi-Fi share the Hiraia model with one another in a mesh: the school seeds one phone, then every phone can copy from any other."
-            width={1448}
-            height={1086}
-            className="w-full max-w-xl justify-self-center lg:max-w-none"
-          />
+          <div className="mc-pears-art relative w-full max-w-xl justify-self-center lg:max-w-none">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/pears-classroom.webp"
+              alt="Students on a classroom Wi-Fi share the Hiraia model with one another in a mesh: the school seeds one phone, then every phone can copy from any other."
+              width={1448}
+              height={1086}
+              className="w-full"
+            />
+            <div className="mc-soon" role="status">
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <polygon
+                  fill="var(--gold)"
+                  stroke="var(--accent)"
+                  strokeWidth="1.4"
+                  strokeLinejoin="round"
+                  points="50,2 57.4,22.6 78.1,9.5 70.7,30.1 93.3,30.1 74.3,42.3 90.5,57.8 68.4,54.4 74.3,75.7 57.4,61.2 50,81.5 42.6,61.2 25.7,75.7 31.6,54.4 9.5,57.8 25.7,42.3 6.7,30.1 29.3,30.1 21.9,9.5 42.6,22.6"
+                />
+              </svg>
+              <span>
+                Coming
+                <br />
+                soon!
+              </span>
+            </div>
+          </div>
         </div>
       </section>
 
-      <footer className="border-t-[3px] border-[var(--ink)] px-5 py-10 sm:px-12 md:px-16 lg:px-24">
-        <div className="mx-auto max-w-5xl">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <a
-              href="https://qvac.tether.io"
-              className="inline-block opacity-90 transition-opacity hover:opacity-100"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/built-with-qvac-sdk.png"
-                alt="Built with QVAC SDK"
-                width={675}
-                height={200}
-                className="h-10 w-auto sm:h-12"
-              />
-            </a>
-            <p className="mc-label text-[10px] text-[var(--sage)]">hiraia.org</p>
-          </div>
-          <p className="mt-8 max-w-3xl font-zilla text-[11px] font-medium leading-relaxed text-[var(--sage)]/80 sm:text-xs">
-            Hiraia is not affiliated with or endorsed by the Philippine
-            Department of Education. Its alignment with MATATAG curriculum is
-            based on information and content in the public domain, and is not
-            guaranteed to be accurate, and has not been reviewed by the
-            Department of Education or other public academic institutions.
-            Although its originator has endeavoured to provide the most accurate
-            synthesis possible of the current public school science curriculum,
-            usage of Hiraia should be carried out at your own risk.
-          </p>
-        </div>
-      </footer>
+      <SiteFooter />
 
       <DemoLightbox />
     </div>

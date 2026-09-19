@@ -1,0 +1,14 @@
+[Unit]
+Description=hiraia synthetic Cebuano generator (DeepSeek V4 Flash / Fireworks)
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /opt/synth-ceb/scripts/run_ceb_fw.sh
+Restart=always
+RestartSec=30
+StandardOutput=append:/var/log/synth-ceb/fw-service.log
+StandardError=append:/var/log/synth-ceb/fw-service.log
+
+[Install]
+WantedBy=multi-user.target

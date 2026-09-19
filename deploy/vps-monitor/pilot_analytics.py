@@ -8,11 +8,59 @@ import time
 from pathlib import Path
 
 
+def model_geo(since_ms, now_ms):
+    """Origin /models/ full-file GETs, from nginx geo log. No IPs. Range follow-ups are not logged."""
+    path = os.environ.get('HIRAIA_MODEL_GEO_LOG', '/var/log/nginx/hiraia-model-geo.log')
+    empty = {'available': False, 'countries': [], 'cities': []}
+    if not path or not Path(path).is_file():
+        return empty
+    since = since_ms / 1000
+    countries, cities = {}, {}
+    try:
+        with open(path, 'rb') as f:
+            f.seek(0, 2)
+            size = f.tell()
+            start = max(0, size - 800_000)
+            f.seek(start)
+            blob = f.read().decode('utf-8', 'replace')
+        lines = blob.splitlines()
+        if start:
+            lines = lines[1:]
+        for line in lines:
+            parts = line.split('\t')
+            if len(parts) < 3:
+                continue
+            try:
+                ts = datetime_from_iso(parts[0])
+            except ValueError:
+                continue
+            if ts < since or ts > now_ms / 1000 + 300:
+                continue
+            country = (parts[1] or '').strip() or 'unknown'
+            city = (parts[2] or '').strip() or 'unknown'
+            countries[country] = countries.get(country, 0) + 1
+            key = (country, city)
+            cities[key] = cities.get(key, 0) + 1
+    except OSError:
+        return empty
+    country_rows = [{'country': k, 'fetches': v} for k, v in sorted(countries.items(), key=lambda x: -x[1])][:100]
+    city_rows = [{'country': c, 'city': y, 'fetches': n} for (c, y), n in sorted(cities.items(), key=lambda x: -x[1])][:100]
+    return {'available': True, 'countries': country_rows, 'cities': city_rows}
+
+
+def datetime_from_iso(value):
+    from datetime import datetime as dt
+    if value.endswith('Z'):
+        value = value[:-1] + '+00:00'
+    return dt.fromisoformat(value).timestamp()
+
+
 def report(days=30, now=None):
     now = int(time.time() * 1000) if now is None else now
     filename = os.environ.get('HIRAIA_TELEMETRY_DB_PATH', '')
     empty = {'available': False, 'days': days, 'counts': {}, 'daily': [], 'builds': [],
-             'failures': [], 'installations': [], 'last_received': None}
+             'failures': [], 'installations': [], 'last_received': None,
+             'web_countries': [], 'web_cities': [], 'model_geo': {'available': False, 'countries': [], 'cities': []}}
     if not filename or not Path(filename).is_file():
         return empty
     since = now - days * 86400000
@@ -80,16 +128,32 @@ def report(days=30, now=None):
           count(*) events FROM telemetry_events GROUP BY installation_id ORDER BY last_received DESC LIMIT 100''')
         last_received = db.execute('SELECT max(received_at) FROM telemetry_events').fetchone()[0]
     web_clicks = None
+    web_countries, web_cities = [], []
     webfile = os.environ.get('HIRAIA_DB_PATH', '')
     if webfile and Path(webfile).is_file():
         try:
             with closing(sqlite3.connect(Path(webfile).resolve().as_uri() + '?mode=ro', uri=True)) as db:
+                db.row_factory = sqlite3.Row
                 web_clicks = db.execute("SELECT count(*) FROM apk_download_hits WHERE day>=date(?/1000,'unixepoch')", (since,)).fetchone()[0]
+                try:
+                    web_countries = [dict(r) for r in db.execute(
+                        """SELECT coalesce(nullif(country,''),'unknown') country, count(*) sessions
+                           FROM web_sessions WHERE day>=date(?/1000,'unixepoch')
+                           GROUP BY 1 ORDER BY sessions DESC LIMIT 100""", (since,))]
+                    web_cities = [dict(r) for r in db.execute(
+                        """SELECT coalesce(nullif(country,''),'unknown') country,
+                                  coalesce(nullif(city,''),'unknown') city, count(*) sessions
+                           FROM web_sessions WHERE day>=date(?/1000,'unixepoch')
+                           GROUP BY 1,2 ORDER BY sessions DESC LIMIT 100""", (since,))]
+                except sqlite3.Error:
+                    pass
         except sqlite3.Error:
             pass
     return dict(available=True, days=days, counts=counts, daily=daily, builds=builds,
                 failures=failures, installations=installations, last_received=last_received,
-                website_clicks=web_clicks, usage=usage, downloads=downloads, models=models)
+                website_clicks=web_clicks, usage=usage, downloads=downloads, models=models,
+                web_countries=web_countries, web_cities=web_cities,
+                model_geo=model_geo(since, now))
 
 
 def page(mount='/admin'):
@@ -105,12 +169,15 @@ table{border-collapse:collapse;width:100%;font-size:14px}td,th{text-align:left;b
 <section><h2>Daily activity</h2><div id="daily"></div></section><section><h2>All event counts</h2><div id="events"></div></section>
 <section><h2>Card language and source</h2><div id="usage"></div></section><section><h2>Download attempts</h2><div id="downloads"></div></section><section><h2>Model runtime</h2><div id="models"></div></section>
 <section><h2>App and Android versions</h2><div id="builds"></div></section><section><h2>Failures</h2><div id="failures"></div></section>
+<section><h2>Website sessions · country</h2><p>Public page loads, one hashed IP per UTC day. Country/city come from nginx GeoIP (DB-IP City Lite; Cloudflare country is the fallback).</p><div id="web_countries"></div></section>
+<section><h2>Website sessions · city</h2><div id="web_cities"></div></section>
+<section><h2>Model origin fetches</h2><p>Full-file GETs of /models/ at the origin (APK and GGUF). Not unique phones: Range follow-ups are skipped, but retries still count. Pears copies and later offline use never appear here. Empty until the geo access log exists. <a href="https://db-ip.com">IP Geolocation by DB-IP</a></p><div id="model_geo"></div></section>
 <section><h2>Recent installation syncs · all time</h2><div id="installs"></div></section>
 <script>
 const mount=''' + json.dumps(mount) + ''';
 const el=id=>document.getElementById(id);
 const date=v=>v?new Date(v).toISOString().replace('T',' ').slice(0,19)+' UTC':'—';
 function table(id,rows){const root=el(id);root.replaceChildren();if(!rows.length){root.textContent='No events received for this view yet.';return;}const t=document.createElement('table');const h=t.createTHead().insertRow();Object.keys(rows[0]).forEach(k=>{const c=document.createElement('th');c.textContent=k.replaceAll('_',' ');h.append(c)});const b=t.createTBody();rows.forEach(r=>{const tr=b.insertRow();Object.values(r).forEach(v=>{tr.insertCell().textContent=String(v??'—')})});root.append(t);}
-async function load(){el('status').textContent='Loading…';try{const r=await fetch(mount+'/api/telemetry?days='+el('days').value,{cache:'no-store'});if(r.status===401){location.href=mount+'/login';return;}if(!r.ok)throw Error('unavailable');const s=await r.json();if(!s.available){el('status').textContent='Telemetry database is not configured or has not received its first batch.';return;}el('status').textContent='Last upload: '+date(s.last_received)+' · Events arriving over 24h late: '+(s.counts.late_events||0)+' · Clock anomalies: '+(s.counts.clock_anomalies||0)+' · Reported queue drops: '+(s.counts.dropped_events_reported||0);el('tiles').replaceChildren();const cards=[['New installations',s.counts.first_open],['Active installations',s.counts.active_installations],['Returning installations',s.counts.returning_installations],['Card views',s.counts.card_viewed],['Unique cards',s.counts.unique_cards],['Quizzes graded',s.counts.quiz_graded],['Correct answers',s.counts.correct_answers],['Downloads installed',s.counts.download_installed],['Website clicks · IP/day',s.website_clicks??'Unavailable']];cards.forEach(([k,v])=>{const d=document.createElement('div');d.className='tile';const n=document.createElement('div');n.className='value';n.textContent=v??0;const l=document.createElement('div');l.textContent=k;d.append(n,l);el('tiles').append(d)});table('daily',s.daily);table('usage',s.usage);table('downloads',s.downloads);table('models',s.models);table('events',Object.entries(s.counts).map(([event,count])=>({event,count})));table('builds',s.builds);table('failures',s.failures);table('installs',s.installations.map(i=>({...i,first_received:date(i.first_received),last_received:date(i.last_received),last_event:date(i.last_event)})));}catch{el('status').textContent='Analytics temporarily unavailable. Refresh to retry.';}}
+async function load(){el('status').textContent='Loading…';try{const r=await fetch(mount+'/api/telemetry?days='+el('days').value,{cache:'no-store'});if(r.status===401){location.href=mount+'/login';return;}if(!r.ok)throw Error('unavailable');const s=await r.json();if(!s.available){el('status').textContent='Telemetry database is not configured or has not received its first batch.';return;}el('status').textContent='Last upload: '+date(s.last_received)+' · Events arriving over 24h late: '+(s.counts.late_events||0)+' · Clock anomalies: '+(s.counts.clock_anomalies||0)+' · Reported queue drops: '+(s.counts.dropped_events_reported||0);el('tiles').replaceChildren();const cards=[['New installations',s.counts.first_open],['Active installations',s.counts.active_installations],['Returning installations',s.counts.returning_installations],['Card views',s.counts.card_viewed],['Unique cards',s.counts.unique_cards],['Quizzes graded',s.counts.quiz_graded],['Correct answers',s.counts.correct_answers],['Downloads installed',s.counts.download_installed],['Website clicks · IP/day',s.website_clicks??'Unavailable']];cards.forEach(([k,v])=>{const d=document.createElement('div');d.className='tile';const n=document.createElement('div');n.className='value';n.textContent=v??0;const l=document.createElement('div');l.textContent=k;d.append(n,l);el('tiles').append(d)});table('daily',s.daily);table('usage',s.usage);table('downloads',s.downloads);table('models',s.models);table('events',Object.entries(s.counts).map(([event,count])=>({event,count})));table('builds',s.builds);table('failures',s.failures);table('web_countries',s.web_countries||[]);table('web_cities',s.web_cities||[]);table('model_geo',(s.model_geo&&s.model_geo.available)?(s.model_geo.cities&&s.model_geo.cities.length?s.model_geo.cities:s.model_geo.countries):[]);table('installs',s.installations.map(i=>({...i,first_received:date(i.first_received),last_received:date(i.last_received),last_event:date(i.last_event)})));}catch{el('status').textContent='Analytics temporarily unavailable. Refresh to retry.';}}
 el('refresh').onclick=load;el('days').onchange=load;load();
 </script></html>'''

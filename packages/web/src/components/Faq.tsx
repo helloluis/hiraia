@@ -1,3 +1,5 @@
+
+import { Wordmark } from '@/components/brand/Wordmark';
 import { FAQ_SECTIONS, faqBySection } from '@/data/faq';
 import { SiteFooter } from '@/components/SiteFooter';
 
@@ -11,7 +13,7 @@ export function Faq() {
       <header className="px-5 pt-10 sm:px-12 sm:pt-12 md:px-16 lg:px-24">
         <div className="mx-auto flex max-w-3xl items-end justify-between gap-4">
           <a href="/" className="font-slab text-2xl tracking-wide text-[var(--stock)] sm:text-3xl">
-            HIRAIA
+            <Wordmark />
           </a>
           <a
             href="/"

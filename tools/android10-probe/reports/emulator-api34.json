@@ -1,0 +1,270 @@
+{
+  "provenance": {
+    "sourceBranch": "unified",
+    "sourceCommit": "3a25b4d3b66d742f919474de31618e6a562c9baf",
+    "sourceApkSha256": "1262ed4abd451a2d7c2dd3d31891dd7a30f517a20f8a9655048349f4e17837c2",
+    "workerSha256": "3794ba8d430a667b25688ecd829dfd51b57d78c68eb50d534336e4ec5097dbe3",
+    "versions": {
+      "@qvac/sdk": "0.17.1",
+      "@qvac/llm-llamacpp": "0.39.4",
+      "@qvac/embed-llamacpp": "0.30.1",
+      "react-native-bare-kit": "0.12.3",
+      "expo": "54.0.35",
+      "react-native": "0.81.5"
+    },
+    "nativeSha256": {
+      "libbare-abort.2.0.13.so": "8e35a151399e992959abc8c74e5e88abf1f14779ce68873d3989a266d4b72d71",
+      "libbare-buffer.3.6.0.so": "69d338c3f6e5200b6c9b23af411bb81379cb91ac20c03e18c256be8a9844da1c",
+      "libbare-cpu-info.0.1.1.so": "a91292ac352fa9a8b4e244c9c7711d85c9a774f479463717caf999586301d020",
+      "libbare-crypto.1.15.3.so": "53f22c2d5949b1b80fe43ac895d56d0e59625c217233cf4e193078633ad9044c",
+      "libbare-dns.2.1.4.so": "0735ee1dae8cb7ce2ef5f0685aa97a3e71629b4d613495c42091550500645d8d",
+      "libbare-fs.4.7.1.so": "9bbcded81067fbc1b5611a5e2289ef4c9c1697ca2dcc8f31f4210724b1cb77e6",
+      "libbare-gpu-info.0.1.1.so": "81edfe6d41bcb94e945101044f6ac34f9ab1ebe5998f91c7c7c0ebce53da6a8e",
+      "libbare-hrtime.2.1.1.so": "dd1d09663446eae036fa7eea6258848f2d33ef8ded0c278b88731fb1121dad92",
+      "libbare-inspect.3.1.4.so": "8ff5fa435d56339b86fbbf3a63e6cc7985c80f563d8abc8329cdc151abb2519e",
+      "libbare-os.3.9.1.so": "2c60bfb2c0a653d5f87f26cb33c56c15fdaea2a77b46046a7bced365ef21e52e",
+      "libbare-pipe.4.1.5.so": "9049d938983109b992a3bb5fa010e34163b6e8fa0a5599f3bf1b8053e3d03933",
+      "libbare-signals.4.2.0.so": "28f7998ace93f42836dc78d338611c70745e7e205fa2859993cb8911be1fd5f9",
+      "libbare-stdio.1.0.2.so": "d2c40e876fffd5933801a1f2360a9aedd044ba4c4030b27d677aa7db52116151",
+      "libbare-tcp.2.2.13.so": "e4ce75d27f6feeacf0011ca43be91d647102028cd5aa678169793cb34e901dc3",
+      "libbare-tls.3.1.5.so": "20f14e0f920d8f01e01de099d33ab26bce8f0bc629601559e387d2a4ab44a41d",
+      "libbare-tty.5.1.0.so": "5c084efa16fc8c61bb4efa341199e686000dfc48786029f6617c5255e0afe358",
+      "libbare-type.1.1.0.so": "cf9b2b87d87426ab831a9269f882df7631796f3bf1e436eda1ac76f735f1e1da",
+      "libbare-url.2.4.3.so": "e4869df6fbd84d84cfc92bf08c4e0d5b2cb94dd061f289ac1b6643e078e3de21",
+      "libbare-zlib.1.3.3.so": "af97f22c539dcbf6877fb9e5b332e01c767c4321b9c3f6693e4e189010ca1dfb",
+      "libfs-native-extensions.1.5.0.so": "f7ebd47bb35b785e778baf196424571171bcbc052962ad66d38abd400e5e256f",
+      "libquickbit-native.2.4.8.so": "1b0f9375a853d0e8a852c650d66890eeda3d9d59d77fc5329c677c7bbfd55ac9",
+      "libqvac-ggml-cpu-android_armv8.0_1.so": "89411e4d08920eecf2f4e8e40ad98599025d6562209362282231310715165ffe",
+      "libqvac-ggml-opencl.so": "4ae76fe7dc4fabc97fd63fa8a0c375c16d5891ec31fcb08a80f4bddcf688ed49",
+      "libqvac-ggml-vulkan.so": "363262a5e3f9f9ac9275de95d6eacbe9a1366bd96d0530229059d5b17b4ba7a0",
+      "libqvac__embed-llamacpp.0.30.1.so": "9128c707413465fb38289525587134eb35a75505647266d3cd33ebf28efcee38",
+      "libqvac__llm-llamacpp.0.39.4.so": "56134d0c49ebc8dac78a511e5f357569c1e642474d38df00711036e83b0b0ac9",
+      "librabin-native.2.0.0.so": "29cf5546077aae5f9a43416b1f24c55ab8536b875f3bc21faf214babe4334054",
+      "librocksdb-native.3.15.1.so": "ad6801863164d939fdb59faf6c583823483e8ceef49b3dc3508582ad3687183f",
+      "libsimdle-native.1.3.9.so": "21e0e852a05da3a6543703dc4e78d55af607539933031628a97c6fd5fdf43a52",
+      "libsodium-native.5.1.0.so": "c02155110c183dae56c9266fb4b77121b3bc8110dcafe8ed62343a6e271b276d",
+      "libudx-native.1.19.2.so": "c0f77e2de8df49b4cfd5b84c458aa6839ceda367aaf5d95036105f46c666c454"
+    },
+    "placement": "CPU only; baseline ARMv8.0; GPU libraries retained to expose loading dependencies",
+    "diagnostic": true
+  },
+  "startedAt": "2026-09-05T02:50:02.746Z",
+  "events": [
+    {
+      "at": "2026-09-05T02:50:02.769Z",
+      "stage": "app-state",
+      "status": "INFO",
+      "detail": "active"
+    },
+    {
+      "at": "2026-09-05T02:50:22.194Z",
+      "stage": "device",
+      "status": "INFO",
+      "detail": {
+        "freeStorageBytes": 1819484160,
+        "processPssKB": 101060,
+        "lowRamDevice": false,
+        "memoryClassMB": 192,
+        "availableRamBytes": 2527506432,
+        "api": 34,
+        "abis": "arm64-v8a",
+        "hardware": "ranchu",
+        "totalRamBytes": 4113219584,
+        "fingerprint": "google/sdk_gphone64_arm64/emu64a:14/UE1A.230829.050/12077443:userdebug/dev-keys",
+        "model": "sdk_gphone64_arm64",
+        "manufacturer": "Google",
+        "android": "14"
+      }
+    },
+    {
+      "at": "2026-09-05T02:50:22.196Z",
+      "stage": "worker-heartbeat",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T02:50:23.145Z",
+      "stage": "worker-heartbeat",
+      "status": "PASS",
+      "detail": {
+        "elapsedMs": 949,
+        "result": {
+          "type": "heartbeat",
+          "number": 16.84778528083998
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T02:50:23.147Z",
+      "stage": "system-resources",
+      "status": "RUNNING",
+      "detail": null
+    },
+    {
+      "at": "2026-09-05T02:50:23.209Z",
+      "stage": "system-resources",
+      "status": "WARN",
+      "detail": {
+        "elapsedMs": 60,
+        "result": {
+          "capabilities": {
+            "cpu": {
+              "status": "failed",
+              "reason": "CPU collector initialization failed"
+            },
+            "memory": {
+              "totalBytes": {
+                "status": "failed",
+                "reason": "CPU collector initialization failed"
+              }
+            },
+            "gpus": {
+              "status": "supported",
+              "value": [],
+              "provenance": {
+                "source": "bare-gpu-info"
+              }
+            }
+          },
+          "sample": {
+            "sampledAt": 1788576623203,
+            "cpu": {
+              "status": "failed",
+              "reason": "CPU collector is unavailable"
+            },
+            "memory": {
+              "usedBytes": {
+                "status": "failed",
+                "reason": "CPU collector is unavailable"
+              },
+              "totalBytes": {
+                "status": "failed",
+                "reason": "CPU collector is unavailable"
+              }
+            },
+            "gpus": {
+              "status": "supported",
+              "value": [],
+              "provenance": {
+                "source": "bare-gpu-info"
+              }
+            }
+          },
+          "probeWarning": "Resource collectors failed; RPC succeeded",
+          "failures": [
+            {
+              "path": "resources.capabilities.cpu",
+              "reason": "CPU collector initialization failed"
+            },
+            {
+              "path": "resources.capabilities.memory.totalBytes",
+              "reason": "CPU collector initialization failed"
+            },
+            {
+              "path": "resources.sample.cpu",
+              "reason": "CPU collector is unavailable"
+            },
+            {
+              "path": "resources.sample.memory.usedBytes",
+              "reason": "CPU collector is unavailable"
+            },
+            {
+              "path": "resources.sample.memory.totalBytes",
+              "reason": "CPU collector is unavailable"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": "2026-09-05T02:50:42.999Z",
+      "stage": "relaunch",
+      "status": "INFO",
+      "detail": {
+        "previous": {
+          "at": "2026-09-05T02:50:23.209Z",
+          "stage": "system-resources",
+          "status": "WARN",
+          "detail": {
+            "elapsedMs": 60,
+            "result": {
+              "capabilities": {
+                "cpu": {
+                  "status": "failed",
+                  "reason": "CPU collector initialization failed"
+                },
+                "memory": {
+                  "totalBytes": {
+                    "status": "failed",
+                    "reason": "CPU collector initialization failed"
+                  }
+                },
+                "gpus": {
+                  "status": "supported",
+                  "value": [],
+                  "provenance": {
+                    "source": "bare-gpu-info"
+                  }
+                }
+              },
+              "sample": {
+                "sampledAt": 1788576623203,
+                "cpu": {
+                  "status": "failed",
+                  "reason": "CPU collector is unavailable"
+                },
+                "memory": {
+                  "usedBytes": {
+                    "status": "failed",
+                    "reason": "CPU collector is unavailable"
+                  },
+                  "totalBytes": {
+                    "status": "failed",
+                    "reason": "CPU collector is unavailable"
+                  }
+                },
+                "gpus": {
+                  "status": "supported",
+                  "value": [],
+                  "provenance": {
+                    "source": "bare-gpu-info"
+                  }
+                }
+              },
+              "probeWarning": "Resource collectors failed; RPC succeeded",
+              "failures": [
+                {
+                  "path": "resources.capabilities.cpu",
+                  "reason": "CPU collector initialization failed"
+                },
+                {
+                  "path": "resources.capabilities.memory.totalBytes",
+                  "reason": "CPU collector initialization failed"
+                },
+                {
+                  "path": "resources.sample.cpu",
+                  "reason": "CPU collector is unavailable"
+                },
+                {
+                  "path": "resources.sample.memory.usedBytes",
+                  "reason": "CPU collector is unavailable"
+                },
+                {
+                  "path": "resources.sample.memory.totalBytes",
+                  "reason": "CPU collector is unavailable"
+                }
+              ]
+            }
+          }
+        },
+        "note": "A prior RUNNING stage without PASS/FAIL may mean process death or force-stop."
+      }
+    },
+    {
+      "at": "2026-09-05T02:50:43.016Z",
+      "stage": "app-state",
+      "status": "INFO",
+      "detail": "active"
+    }
+  ]
+}

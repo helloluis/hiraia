@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# pulls the compressed mix from the US-NE-1 source pod; the .zst may still be
+# compressing when the 8x node lands, so retry, then verify before decompressing.
+set -uo pipefail
+DEST=/workspace/fullmix/mix-v1
+mkdir -p "$DEST"
+for i in $(seq 1 60); do
+  if rsync -a --partial -e "ssh -o StrictHostKeyChecking=no -p @SPORT@ -i /root/.ssh/id_ed25519" \
+      "root@@SIP@:/workspace/fullmix/mix-v1/full-mix.jsonl.zst" "$DEST/"; then
+    echo "pull ok on attempt $i"; break
+  fi
+  echo "attempt $i failed - source may still be compressing; retry in 60s"
+  sleep 60
+done
+[ -s "$DEST/full-mix.jsonl.zst" ] || { echo "PULL FAILED - no archive"; exit 1; }
+zstd -t "$DEST/full-mix.jsonl.zst" || { echo "ARCHIVE CORRUPT"; exit 1; }
+zstd -d -T0 --rm "$DEST/full-mix.jsonl.zst" || { echo "DECOMPRESS FAILED"; exit 1; }
+touch /workspace/fullmix/MIX_READY
+echo "MIX READY: $(stat -c%s "$DEST/full-mix.jsonl") bytes"

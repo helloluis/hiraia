@@ -1,0 +1,87 @@
+{
+  "audit": {
+    "verdict": "fix",
+    "severity": "minor",
+    "issues": [
+      "options[2]: malformed verb — \"Para itina ang tela\" is not a valid Tagalog verb form; should be \"Para itina ang tela\" → \"Para itina ang tela\" (dye) as \"Para itin",
+      "options[2]: \"itina\" is not a recognized Tagalog verb for dyeing; natural form is \"Para itina\" → \"Para itina\" (kulayan) e.g. \"Para kulayan ang tela gamit ang mga",
+      "options[2]: missing actor/object focus consistency with other options; use \"Para kulayan ang tela gamit ang mga talulot nito\""
+    ],
+    "proposed": {
+      "q": "Para saan kadalasang ginagamit ang sampaguita sa mga tahanan at simbahan ng mga Pilipino?",
+      "options": [
+        "Para palamutian ang altar at mga relihiyosong imahe",
+        "Para pampalasa ng pagkain at inumin",
+        "Para kulayan ang tela gamit ang mga talulot nito"
+      ],
+      "explanation": "Ang sampaguita ay tradisyonal na ginagamit na palamuti sa altar at sa mga relihiyosong imahe sa Pilipinas."
+    }
+  },
+  "verification": {
+    "acceptable": true,
+    "correct_index": 0,
+    "issues": []
+  },
+  "requests": [
+    {
+      "stage": "audit",
+      "finish_reason": "length",
+      "reasoning_chars": 0,
+      "usage": {
+        "prompt_tokens": 1023,
+        "total_tokens": 4023,
+        "completion_tokens": 3000,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "valid_json": false
+    },
+    {
+      "stage": "audit",
+      "finish_reason": "stop",
+      "reasoning_chars": 0,
+      "usage": {
+        "prompt_tokens": 1158,
+        "total_tokens": 1435,
+        "completion_tokens": 277,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "valid_json": true
+    },
+    {
+      "stage": "verify",
+      "finish_reason": "stop",
+      "reasoning_chars": 0,
+      "usage": {
+        "prompt_tokens": 821,
+        "total_tokens": 839,
+        "completion_tokens": 18,
+        "prompt_tokens_details": {
+          "cached_tokens": 184
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "valid_json": true
+    }
+  ]
+}

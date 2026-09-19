@@ -3,7 +3,7 @@
  *
  * One APK, one on-device model (Hiraia-2B — the CPT'd + full-parameter-SFT'd
  * Qwen3.5-2B, hiraia-sft-2b-v2), one OS target: Android 10+. The built-in card
- * library works without loading that model; 4 GB+ RAM with sufficient available memory is required for local
+ * library works without loading that model; 6 GB+ RAM is recommended for local
  * model-generated cards.
  *
  * Distributed outside the Play Store, so legitimacy rests on two published,
@@ -35,7 +35,7 @@
 
 export const DOWNLOAD = {
   /**
-   * TRUE for the Sept 2026 pilot release: the CPT'd Qwen3.5-2B build, regression gate 45/45
+   * TRUE for the Sept 2026 v0.1 release: the CPT'd Qwen3.5-2B build, regression gate 45/45
    * green, signed with the pinned release cert. The UI additionally requires `apk.sha256` to
    * be non-empty before it renders a live link, so a deploy with an empty hash falls back to
    * 'coming soon' instead of linking an unverified file. Update url/fileSizeMB/sha256
@@ -43,45 +43,26 @@ export const DOWNLOAD = {
    */
   released: true,
 
-  // Public release label: v0.4.9 (mobile versionName 0.4.9).
-  // Android versionCode is a separate, monotonically increasing build number.
-  version: '0.4.9',
+  version: '0.4.14',
 
-  /**
-   * android.versionCode of the APK at `apk.url` — copied from packages/mobile/app.json at
-   * publish time (sign-apk.sh prints it). The installed app offers an update only when this
-   * is STRICTLY greater than its own; see the header.
-   *
-   * v0.4.9 / build 10: bundled Tagalog + English read-aloud voices, and the quiz
-   * retranslation (untranslated options 1,503 -> 0, with 17 reviewed-legit exemptions).
-   */
-  versionCode: 10,
-  /**
-   * Oldest versionCode the current mirror content still supports. Below this the in-app
-   * update bar cannot be snoozed (the ✕ is hidden). Reserved for a release that breaks the
-   * on-device database or model layout; leave at 1 otherwise.
-   */
+  /** Android's monotonic update number, embedded in the signed APK. */
+  versionCode: 14,
+
+  /** The oldest build which may dismiss the update prompt. */
   minSupportedVersionCode: 1,
-  /** ISO date the APK at `apk.url` went live on the mirror (for the manifest's publishedAt). */
-  publishedAt: '2026-09-15',
+
+  /** Date that the immutable APK URL was published. */
+  publishedAt: '2026-09-16',
 
   apk: {
-    url: 'https://assets.hiraia.org/models/hiraia-v0p4p9.apk',
+    url: 'https://assets.hiraia.org/models/hiraia-v0p4p14.apk',
     /** Omit from the UI when 0 (file not measured yet). */
-    fileSizeMB: 411,
-    /**
-     * EXACT size in bytes of the signed APK — the in-app downloader's hard gate (a short
-     * body is a captive-portal page, not an APK). 0 = not measured; the manifest then
-     * offers nothing.
-     */
-    bytes: 430749633,
-    sha256: '580440e87e1381d1bd3e20497a06a952fca4cf3674389bda14436c85ca208c60',
-    /**
-     * MD5 of the same file, lowercase hex — the in-app downloader verifies MD5 (native,
-     * streaming; see engine/modelDownload.ts), the landing page shows sha256. Empty = not
-     * measured; the manifest then offers nothing.
-     */
-    md5: '9cfaf1d9f8519ae2ee61365d1799fc68',
+    fileSizeMB: 413,
+    /** Exact signed APK size, required by the in-app downloader. */
+    bytes: 433302846,
+    sha256: 'b0ba8b17cc64af36dff50feb091de6ab475f25166067f8f0d463c53b45651724',
+    /** MD5 of the same signed APK, required by the in-app downloader. */
+    md5: '71b12038780af061800cdc85e7eb22d2',
   },
 
   /** SHA-256 of the signing cert. Stays the same across releases. */
