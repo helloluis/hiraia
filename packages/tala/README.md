@@ -111,7 +111,8 @@ Version `0.7.3` removes the teacher upload-key setup. Reports queue offline and
 upload when the phone reconnects; the server validates and rate-limits anonymous
 submissions and isolates image/video processing before allowing admin review.
 Version `0.7.4` rejects videos longer than a minute before adding them to a report,
-matching the server's media processing limit.
+matching the server's media processing limit. Version `0.7.5` adds the classroom
+tutorial and makes the selected classroom and its student count clearer on the dashboard.
 
 With an Android emulator or phone connected, run the encryption and storage checks with
 `../mobile/android/gradlew -p android connectedDebugAndroidTest` from `packages/tala`.
