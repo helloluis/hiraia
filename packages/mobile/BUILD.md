@@ -342,3 +342,22 @@ In particular, student Nearby requires the tracked `modules/hiraia-tala/android`
 module, camera permissions, and `withTalaNearby.js`; an old generated Android tree
 does not acquire those changes from `pnpm apk` alone. Do not run a clean prebuild
 over locally customized native files without preserving them first.
+
+## Image-pack coverage gate
+
+After changing card grade assignments, curriculum tags, bundled art or image shards, run:
+
+```sh
+# From packages/mobile; local scripts only, no model/API calls.
+python3 scripts/package-art.py
+pnpm qa:images
+```
+
+The packer audits the candidate before updating `imagePacks.generated.json`.
+`pnpm apk` also checks the actual pack hashes and complete Grade 3–10 coverage.
+A fresh worktree needs the `.hpak` files in `build/image-packs`; the command above
+rebuilds them deterministically from tracked images and shard inventories.
+If it changes manifest filenames, publish and verify those immutable packs with
+`scripts/publish-image-packs.py --env-file <private-R2-env-file>` before distributing
+an APK that references them. Old packs must remain for older installed versions.
+See `docs/IMAGE-PACK-COVERAGE-2026-09-19.md` at the repository root for this repair.

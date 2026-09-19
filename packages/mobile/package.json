@@ -26,7 +26,8 @@
     "qa:grade9": "python3 ../../rag/pipeline/compile-lessons.py --grade 9 --check && tsx --test scripts/grade9-lessons.test.mts scripts/calendar-selection.test.mts scripts/curriculum-default.test.mts scripts/review-series.test.mts",
     "qa:grade10": "python3 ../../rag/pipeline/compile-lessons.py --grade 10 --check && tsx --test scripts/grade10-lessons.test.mts scripts/calendar-selection.test.mts scripts/curriculum-default.test.mts scripts/review-series.test.mts",
     "qa:voice": "tsx --test scripts/voice.test.mts",
-    "qa:tala": "tsx --test scripts/tala-nearby.test.mts"
+    "qa:tala": "tsx --test scripts/tala-nearby.test.mts",
+    "qa:images": "python3 scripts/audit-image-packs.py --check && python3 -B -m unittest discover -s scripts -p test_image_pack_audit.py && tsx --test scripts/image-packs.test.mts scripts/image-installer.test.mjs"
   },
   "dependencies": {
     "@hiraia/shared": "workspace:*",

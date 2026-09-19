@@ -19,7 +19,14 @@ test('all release packs round-trip every image and contain no duplicate slugs',(
   }
   assert.equal(offset,b.length);
  }
- assert.equal(n,17844);assert.ok(manifest.packs.length>0);
+ const corpus=JSON.parse(fs.readFileSync(path.join(root,'../../rag/pipeline/art-shards/index.json'),'utf8'));
+ assert.equal(n,corpus.tail.images);assert.ok(manifest.packs.length>0);
+ const bundled=JSON.parse(fs.readFileSync(path.join(root,'src/generated/bundledArt.generated.json'),'utf8')).images;
+ for(const [slug] of bundled) assert(!seen.has(slug),`already bundled: ${slug}`);
+ for(const shard of corpus.shards){
+  const rows=JSON.parse(fs.readFileSync(path.join(root,'../../rag/pipeline/art-shards',shard.file),'utf8')).images;
+  for(const row of rows) assert(seen.has(row.slug),`not delivered: ${row.slug}`);
+ }
 });
 test('malformed headers, unsafe paths and duplicate entries are rejected',()=>{
  assert.throws(()=>headerLength(Buffer.alloc(12)));
@@ -45,6 +52,7 @@ test('automatic selection covers every grade image and excludes other single-gra
  }
  const tags=JSON.parse(fs.readFileSync(path.join(root,'src/generated/curriculumTags.generated.json'),'utf8'));
  const cards=JSON.parse(fs.readFileSync(path.join(root,'src/generated/cardsIndex.generated.json'),'utf8')).cards;
+ const bundled=new Set(JSON.parse(fs.readFileSync(path.join(root,'src/generated/bundledArt.generated.json'),'utf8')).images.map((r:any[])=>r[0]));
  assert.ok(requiredPacks(manifest.packs,null).every(p=>p.cell==='common'));
  for(let grade=3;grade<=10;grade++){
   const packs=requiredPacks(manifest.packs,grade);
@@ -55,7 +63,9 @@ test('automatic selection covers every grade image and excludes other single-gra
    const authored=suffix && (Number(suffix)<=10 ? Number(suffix)===grade : suffix.includes(String(grade)));
    const tag=tags[card.id];
    const tagged=tag && (tag[1]===grade || tag[4]?.some((cell:number[])=>cell[0]===grade));
-   if((!authored&&!tagged)||!bySlug.has(card.slug))continue;
+   if((!authored&&!tagged)||!card.slug)continue;
+   if(bundled.has(card.slug)||(/-g\d+$/.test(card.slug)&&bundled.has(card.slug.replace(/-g\d+$/,'').toLowerCase())))continue;
+   assert.ok(bySlug.has(card.slug),`${card.factId}: image absent from every pack: ${card.slug}`);
    assert.ok(ids.has(bySlug.get(card.slug)!),`${card.factId}: missing ${card.slug}`);
   }
  }

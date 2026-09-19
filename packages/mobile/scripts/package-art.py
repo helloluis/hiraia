@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Build deterministic HIRAIMG1 image packs from the existing grade/quarter shards."""
-import hashlib,json,struct,re
+import hashlib,json,struct,re,subprocess,sys
 from collections import defaultdict
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[3]
@@ -57,5 +57,8 @@ assert len(seen)==index['tail']['images']
 manifest['version']=hashlib.sha256(json.dumps(manifest,sort_keys=True).encode()).hexdigest()[:16]
 text=json.dumps(manifest,indent=2)+'\n'
 (OUT/'manifest.json').write_text(text)
+# Validate the complete corpus and all grade selections before changing app references.
+subprocess.run([sys.executable, str(ROOT/'packages/mobile/scripts/audit-image-packs.py'),
+ '--manifest', str(OUT/'manifest.json'), '--check'], check=True)
 (ROOT/'packages/mobile/src/generated/imagePacks.generated.json').write_text(text)
 print(json.dumps({'packs':len(manifest['packs']),'images':len(seen),'bytes':sum(x['bytes'] for x in manifest['packs']),'version':manifest['version']}))

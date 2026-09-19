@@ -22,6 +22,7 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 MOBILE="$(cd "$HERE/.." && pwd)"
 REPO="$(cd "$MOBILE/../.." && pwd)"
 node "$HERE/verify-voices.mjs"
+python3 "$HERE/audit-image-packs.py" --check
 # Refuse to ship a stale or structurally incomplete required Grade 5 lesson manifest.
 python3 "$REPO/rag/pipeline/compile-lessons.py" --grade 3 --check
 python3 "$REPO/rag/pipeline/compile-lessons.py" --grade 4 --check

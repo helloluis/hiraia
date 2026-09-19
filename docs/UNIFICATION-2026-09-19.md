@@ -70,6 +70,10 @@ Do not remove those directories as “cleanup” without reviewing their invento
 
 ## Validation and remaining release checks
 
+**Follow-up:** the image-pack coverage failure below was resolved after integration.
+See [the coverage repair](IMAGE-PACK-COVERAGE-2026-09-19.md) for the complete audit,
+corrected pack publication and passing regression tests.
+
 - Frozen offline dependency install succeeded with Node 22 / pnpm 9.15.9.
 - Mobile, web and shared TypeScript checks passed.
 - Website production build passed (all 16 pages/routes generated).
