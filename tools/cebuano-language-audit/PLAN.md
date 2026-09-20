@@ -197,6 +197,26 @@ So the cheap deterministic wins are already banked; what remains is semantic.
       opposite of "Copper Kills Germs"; and ffct-15401 carries a garbled non-word,
       "Asalinhagikan", where "Asa gikan" belongs. Judge returns a reusable
       `pattern` per flag. Stop early if pattern discovery saturates.
+- [x] **C3 CHUNK C** 60/60 batches, 8,400 cards, **207 flags = 2.46%** (highest yet; A 1.91%,
+      B 1.67%). Ran after the 22:30 session-limit reset and covered the stranded 170-199 range.
+
+      **Biggest single finding of the audit: `vibrate -> lingkod` (to SIT).** 12 cards whose
+      English says vibrate use the Cebuano word for sitting, and it runs straight through the
+      SOUND curriculum: eardrum, cochlea, kulintang gongs, bamboo flute, guitar resonance,
+      marimba, vocal cords, transverse waves. "The eardrum SITS like a drum skin"; "the air
+      SITS inside the tube"; "your voice is made by SEATED vocal cords"; and for a transverse
+      wave, "the particles SIT perpendicular" — the opposite of wave motion. In every case the
+      verb IS the fact the card exists to teach, and no card restores it. Corpus uses lingkod
+      correctly for sit/perch on 60 other cards, and the right words (mokurog, mag-vibrate,
+      mauyog) appear correctly on sibling cards, so these 12 are outliers.
+
+      More false friends confirmed at scale: `wool -> lana` (7 cards; lana is COCONUT OIL in
+      Cebuano — "oil is a great insulator used in clothing and roofing"), `straw -> dayami`
+      (6 cards; rice straw, so a child is told to put hay in a glass of water),
+      `spring -> bukal` (3 cards; bukal is TO BOIL — "boiling scale" for a spring balance),
+      `mix -> pagkat-on` (to LEARN), `scatter -> nagawagtang` (to DESTROY — the light destroys
+      the dust rather than bouncing off it).
+
 - [ ] **C4** Grep each discovered pattern corpus-wide, then TRIAGE every hit with its card in
       view. Expect most to be FINE. Report confirmed vs candidates separately.
 - [ ] **C5** Rewrite confirmed defects, each independently verified before applying, with the
