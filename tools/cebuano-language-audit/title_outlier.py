@@ -12,6 +12,27 @@ The filter fires only when all four hold:
   3. the Cebuano body or terms list contains the correct word,
   4. the suspect word is absent from the Cebuano body (so the title is the outlier).
 
+
+REFUTED ENTRIES -- do not put these back. Each was in the sweep prompt for chunks B-E and
+each is wrong; the spiked-control triage is what caught them:
+
+  bakal   NOT a false friend. All 39 Cebuano bodies containing it use it for iron/steel
+          ("Ang bakal usa sa labing daghang metal sa panit sa Yuta") and none for "to buy".
+          It is a naturalised loan sitting beside native puthaw.
+  lana    NOT a false friend. Spanish lana = WOOL is ordinary Cebuano, and the corpus glosses
+          it itself: ffct-04698 "balhibo nga gitawag og LANA O WOOL". It means both wool and
+          coconut oil. The chunk-C claim that 7 wool cards were "oil" was wrong.
+  bulok   NOT clean. The ROTTEN sense is attested in Cebuano bodies ("bulok nga itlog",
+          "bulok nga pagkaon", "Bulok ba ang durian"); the COLOUR sense takes the suffixed
+          form bulokon ("bulokon nga langgam"). Bare bulok for rotten is fine.
+  bukal   HALF wrong. bukal = a hot SPRING is attested 3x in Cebuano bodies ("init nga bukal
+          sa Pansol, Laguna"). Only a mechanical/coil spring is a defect -- hence coil-spring.
+  dayami  HALF wrong. dayami = RICE STRAW is correct and common. Only a DRINKING straw is a
+          defect (2 cards) -- hence drinking-straw.
+
+The lesson: a false friend must be verified against the corpus's own Cebuano BODIES before it
+enters a prompt, or it seeds false flags into every chunk that follows.
+
 Output feeds runs/batches-triage/*.json; every candidate is still read by a judge
 before anything is rewritten. Run:  python3 title_outlier.py [out.json]
 """
@@ -24,14 +45,11 @@ BATCHES = os.path.join(HERE, 'runs', 'batches-sweep', '*.json')
 PAIRS = [
     ('vibrate',  r'vibrat',                 r'lingkod',               r'kurog|uyog|vibrat'),
     ('ant',      r'\bants?\b',              r'langgam',               r'hulmigas|hantatalo'),
-    ('rotten',   r'rot|decay|spoil',        r'bulok',                 r'dunot|madunot|malata'),
     ('medicine', r'medicin|drug|remed',     r'\bgamot\b',             r'tambal|bulong'),
     ('thread',   r'thread|fib(er|re)|yarn', r'\bhilo\b',              r'tanod|hilo\w|lanot|sinulid'),
-    ('wool',     r'\bwool',                 r'\blana\b',              r'balhibo|delana|\bwool'),
-    ('straw',    r'\bstraw\b',              r'dayami',                r'\bstraw\b|tubo'),
-    ('iron',     r'\biron\b',               r'\bbakal\b',             r'puthaw'),
+    ('drinking-straw', r'(drinking |sipping |through a )straw|suck\w* (on|through)', r'dayami', r'\bstraw\b|tubo'),
     ('bone',     r'\bbones?\b',             r'\bbuto\b',              r'bukog'),
-    ('spring',   r'\bspring',               r'\bbukal\b',             r'tubod|\bspring'),
+    ('coil-spring', r'(coil|metal|mechanical|spring balance|spring scale)', r'\bbukal\b', r'\bspring|resorte'),
     ('blind',    r'blind',                  r'bulag',                 r'\bbuta\b'),
     ('rare',     r'\brare',                 r'bihag',                 r'talagsaon|panagsa'),
     ('soft',     r'\bsoft',                 r'\blumo[ts]\b',          r'humok|malumo'),

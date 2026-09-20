@@ -266,29 +266,52 @@ So the cheap deterministic wins are already banked; what remains is semantic.
 
 - [ ] **C3 CHUNK E (final)** batches 290-336, 47 batches, ~6,580 cards. Completes the corpus.
 
-- [~] **C4 IN PROGRESS.** Two deterministic detectors built; one kept, one killed.
+- [x] **C4 DONE — and it refuted five of my own false friends.**
 
-      **KILLED — singleton title words.** 1,095 title words that appear nowhere in any Cebuano
-      body and in no other title. Recall against the sweep's 739 known flags was **50 (6.8%)**
-      and the list is dominated by ordinary title-only Cebuano (Pag-ambus, Resipyente, Pepino,
-      Migrante). This is the Tagalog rarity lesson repeating: rarity is meaningless on an OPEN
-      class. Kept at `runs/2026-09-20-scope/title-singletons.json` as a negative result; do not
-      spend triage on it.
+      **KILLED — singleton title words.** 1,095 title words appearing in no Cebuano body and no
+      other title. Recall against the sweep's 740 known flags was **50 (6.8%)**, and the list is
+      ordinary title-only Cebuano (Pag-ambus, Resipyente, Pepino, Migrante). Rarity is meaningless
+      on an OPEN class — the Tagalog lesson, relearned. Kept as a negative result in
+      `runs/2026-09-20-scope/title-singletons.json`; spend no triage on it.
 
       **KEPT — the title-outlier detector** (`title_outlier.py`). Chunk D's signature made
-      deterministic: fire only when (1) title_bis has the suspect word, (2) the EN card really
-      is about the concept it mistranslates, (3) the Cebuano body or terms carries the CORRECT
-      word, and (4) the suspect word is ABSENT from the body. Condition 3+4 is what rules out
-      regional variation, and is why a bare grep is useless here.
+      deterministic: fire only when (1) title_bis has the suspect word, (2) the EN card really is
+      about the concept it mistranslates, (3) the Cebuano body or terms carries the CORRECT word,
+      and (4) the suspect word is ABSENT from the body. Conditions 3+4 rule out regional variation
+      and are why a bare grep fails here.
 
-      32 pairs → **162 candidates**, of which **76 were independently flagged by the LLM sweep**
-      and **86 are new**. That 47% agreement between a regex and a blind model pass is the
-      precision evidence the bare-grep approach never had. Biggest seams: iron→bakal 24,
-      soft→lumot/lumos 19, rotten→bulok 18, medicine→gamot 17, ant→langgam 16, bone→buto 10.
+      Triaged all candidates with the **76 sweep-flagged cards left in unlabelled as spiked
+      controls**. Triage recovered **66 of 76 controls (86.8%)**, so it is not too conservative
+      and the run is valid.
 
-      Triage running over all 162 — the 76 sweep-flagged cards are left in **as spiked controls**
-      and are not marked as such in the batches. If triage calls the controls FINE, the triage
-      prompt is too conservative and the run is void.
+      **THE CONTROLS EARNED THEIR KEEP — they exposed five bad entries in my own false-friend
+      table**, each of which had been seeding the sweep prompt since chunk B:
+
+        bakal   REFUTED. All **39** Cebuano bodies containing it mean iron/steel ("Ang bakal usa
+                sa labing daghang metal sa panit sa Yuta"); **zero** mean "to buy". A naturalised
+                loan beside native puthaw, not a false friend.
+        lana    REFUTED. Spanish *lana* = WOOL is ordinary Cebuano, and the corpus glosses it
+                itself — ffct-04698: "balhibo nga gitawag og **lana o wool**". Chunk C's claim
+                that 7 wool cards said "coconut oil" was wrong.
+        bulok   REFUTED. The ROTTEN sense is attested in Cebuano bodies ("bulok nga itlog",
+                "bulok nga pagkaon", "Bulok ba ang durian"); the COLOUR sense takes the suffixed
+                **bulokon** ("bulokon nga langgam"). Bare bulok for rotten is fine.
+        bukal   HALF wrong. A hot SPRING is `bukal` in 3 Cebuano bodies ("init nga bukal sa
+                Pansol, Laguna"). Only a mechanical/coil spring is a defect.
+        dayami  HALF wrong. Rice straw is genuinely `dayami`. Only a DRINKING straw is a defect.
+
+      **42 of the 740 sweep flags (5.7%) invoke one of these words and are QUARANTINED**
+      (`quarantine-refuted.json`) — not deleted, but they may not be rewritten without re-triage.
+
+      With the refuted pairs removed the detector gives **111 candidates at 93.7% precision
+      (104 CONFIRMED), 39 of them defects the blind LLM sweep missed.** Confirmed ids in
+      `c4-confirmed.json`; full verdicts in `title-outlier-triage.json`.
+
+      **Process change, permanent:** a false friend must be checked against the corpus's OWN
+      Cebuano bodies before it enters a prompt. The word list now lives in `title_outlier.py`
+      with the refutations recorded beside it, not in a workflow prompt where it cannot be
+      reviewed. Chunk E is in flight with the uncorrected list, so its bakal/lana/bulok/bukal/
+      dayami flags must be filtered on the same rule before use.
 
 - [ ] **C5** Rewrite confirmed defects, each independently verified before applying, with the
       emphasis guard. HOLD anything needing facts not on the card.
