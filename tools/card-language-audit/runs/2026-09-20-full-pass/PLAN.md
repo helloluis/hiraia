@@ -114,13 +114,37 @@ assisted work including the judge. Corpus is 1.22M tokens of content — well wi
       The Tier-2 rubric's first design note says "the judge never sees the lead alone... almost
       every genuine defect is provable as a within-card contradiction". I built the batches
       without it. Re-probing with the full card record supplied.
-- [ ] **F1b** Re-run the sweep once the full-context probe clears a recall bar, with the spiked
-      control repeated in EVERY batch rather than batch 0 only. Include the 58
-      gold items as a spiked control in one batch and report their accuracy, to confirm the
-      .983 holds at production batch size before trusting the other 4,942 verdicts.
-- [ ] **F2** en-mismatch sweep, cards 5,001-10,000.
-- [ ] **F3** en-mismatch sweep, cards 10,001-15,000.
-- [ ] **F4** en-mismatch sweep, cards 15,001-19,279. Then dedupe + summarise findings.
+- [x] **F1-fullctx** Supplying title/terms/bis raised recall .20 -> **.33**, identical at
+      batch 120 and 240 — which finally settles that batch size was never the driver.
+      Precision stayed 1.00 with zero false positives in every run. It plateaus at .33.
+
+      Breakdown of what it catches vs misses is the actionable part:
+
+      | class | caught | missed |
+      |---|---:|---:|
+      | nonword | 2 | 0 |
+      | en-mismatch | 2 | 1 |
+      | own-tagalog | 1 | 4 |
+      | gawa-ng | 0 | 2 |
+      | no-predicate | 0 | 3 |
+
+      **The classes it misses are the enumerable ones.** The judge found 0 of 2 gawa-ng
+      defects; the deterministic enumeration found 23 of 23 and all are already fixed. It is
+      genuinely good at the semantic classes it was needed for.
+
+      **PLAN CHANGED — deterministic first, narrow LLM second.** This is what TIER2-RUBRIC §1
+      recommended ("Step 0: three deterministic enumerations, free, do them before spending
+      anything") and which I skipped in favour of a monolithic six-class sweep. A 19,279-card
+      sweep at recall .33 would burn ~8M tokens to find a third of what a free grep finds.
+
+- [ ] **E1** Enumerate `own-tagalog` deterministically: lead contains an English token whose
+      Tagalog form appears in that card's OWN title_tl / terms / ans. ~1,490 candidates per the
+      rubric; expect ~300-400 real. Free, no model.
+- [ ] **E2** Enumerate `nonword`: corpus token frequency <= 2 across all 49,156 cards, minus
+      English and proper nouns. ~1,900 candidates, expect ~130-190 real. Free, no model.
+- [ ] **F1b** NARROW LLM sweep — `en-mismatch` and `answer-clash` ONLY, the two genuinely
+      semantic classes, full card record supplied, control spiked into EVERY batch. Re-measure
+      recall on just those classes before committing to the full 19,279.
 - [ ] **G0** Score the in-session judge on the 30-item answer-quality gold in
       `../2026-09-19-tl-questions/TIER2-RUBRIC.md` before sweeping.
 - [ ] **G1** answer-quality sweep, cards 1-6,500.
