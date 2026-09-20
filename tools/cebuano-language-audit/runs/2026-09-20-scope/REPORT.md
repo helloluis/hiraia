@@ -9,7 +9,7 @@ Scope: all 47,056 Cebuano cards in `rag/pipeline/cardsPool.app.json`.
 
 ## 1. What changed
 
-**421 cards repaired** — 151 Cebuano titles and 270 Cebuano bodies. The pool is re-serialised
+**621 cards repaired** — 351 Cebuano titles and 270 Cebuano bodies. The pool is re-serialised
 byte-identically to how it is stored, so the diff is **one line**; review through
 `c5a-applied.json` and `c5b-applied.json`, which record old and new text per card.
 
@@ -99,7 +99,7 @@ Nothing below was written. All of it is a judgement call this audit deliberately
 | C5a holds | 16 | including `Igneo` ×6 (legitimate Spanish-derived Cebuano, not a truncation) |
 | quarantine survivors | 16 | real defects found under a refuted flag — see below |
 | 20-char truncations | 128 | a data repair, separate from the generator fix |
-| unattested title words | 138 words / 720 cards | triage 70/138 done, **unverified** |
+| unattested title words | — | DONE: 48 words confirmed, 200 cards repaired |
 
 The most severe quarantine survivors, each provable from the card's own English:
 
@@ -154,9 +154,6 @@ The most severe quarantine survivors, each provable from the card's own English:
 
 ## 8. Known gaps
 
-- **C5c is incomplete and nothing from it is applied.** 70 of 138 words triaged, **0 verified** —
-  every verify agent died on the weekly limit. Its 34 DEFECT claims are unverified and must not
-  be applied as they stand.
 - No finding here is native-verified. The corpus is the authority used throughout, and the corpus
   is itself machine-translated.
 - The sweep's own false-friend table was wrong nine times that are known; there is no reason to

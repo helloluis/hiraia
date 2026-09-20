@@ -557,24 +557,39 @@ So the cheap deterministic wins are already banked; what remains is semantic.
 
 
 
-- [!] **C5c BLOCKED — weekly limit.** 7 of 14 triage batches finished (70 of 138 words:
-      34 DEFECT, 14 VARIANT, 22 FINE). **Every verify agent died**, so **0 DEFECT claims are
-      verified and NOTHING was applied.** The remaining 7 triage batches never ran.
+- [x] **C5c DONE — 48 words confirmed, 200 card titles repaired.** Resumed after Luis added
+      credits; the 7 cached triage batches replayed and only the missing work ran live. All 14
+      batches, 0 errors. **138 words: 63 DEFECT, 32 VARIANT, 43 FINE. All 63 DEFECT claims
+      verified — 59 ACCEPT, 4 REJECT.**
 
-      This is the **weekly** limit ("resets 4am Asia/Manila"), not the nightly session limit
-      that truncated chunk B and C5b. All agent work is blocked until it clears; the error text
-      does not say which day, so I cannot give a reliable ETA beyond "4am Manila".
+      The triage is the best-evidenced work in the audit: it cites Wolff's *Dictionary of
+      Cebuano Visayan* and binisaya.com alongside corpus counts, and it found things no amount
+      of corpus-internal reasoning would have:
 
-      First failure of this stage. Under the standing rule one more failure and it is abandoned,
-      but the failure was a quota wall, not a defect in the approach — the 7 batches that did
-      run produced the best-evidenced triage in the audit, citing Wolff's Cebuano dictionary and
-      binisaya.com alongside corpus counts. Resume by re-running the workflow: completed agents
-      replay from cache, so only the 7 missing triage batches and the verify phase will run.
+        bantol  25 jellyfish titles. Wolff: "bantul n k.o. small, excellent eating fish with
+                poisonous spines". It is a STONEFISH. The bodies say `dikya` (42 bodies).
+        landok  12 iron/steel titles. `landok` is **Ilocano**, not Cebuano — no Wolff entry, no
+                binisaya.com entry, Wiktionary lists Ilocano only.
+        kangi   10 shiver/vibrate titles, and it is not a word in any source. The 99 "bodies"
+                a prefix search reports are all `kangitngit` (darkness).
 
-      Strongest unverified claims, for context only — do NOT apply without verification:
-        bantol -> dikya    25 titles, all jellyfish cards; bantol is a STONEFISH (Wolff)
-        landok -> puthaw   12 titles; landok is ILOCANO for iron, absent from Cebuano dictionaries
-        kangi  -> kurog    10 titles meaning shiver/vibrate; kangi is not a word in any source
+      **32 VARIANT and 43 FINE — 75 of 138 words are not defects at all.** `malaksi`, `lumoy`,
+      `balhas` and `azul` are all correct Cebuano that the bodies simply never use; `daku`,
+      `itum` and `tiglilimpyo` are spelling variants. Absence from bodies is a SIGNAL, never a
+      verdict, and the detector would have been badly wrong if run without triage.
+
+      **GATE 5 was wrong and measurement caught it.** Counting overlapping distinctive terms
+      failed in both directions: it refused "Jellyfish Life Cycle" for `dikya` because the card
+      says jellyfish only once. Summing LIFT instead lets one decisive term (`jellyfish`, ~50x)
+      carry a card while a lone weak one (`water`, ~3x) cannot. Card-level skips fell 105 -> 51
+      and the control held: `kulob`->`mobukal` still fires on 27 boiling cards and still skips
+      exactly the two "fingers wrinkle in water" cards.
+
+      The 51 remaining skips are the gate working: `landok`->`puthaw` is refused on the STEEL
+      cards, because puthaw is iron and the triage itself said to use bakal/asero there.
+
+      Verified after writing: 200 cards changed, 0 non-`title.bis` changes, orphaned emphasis
+      spans 0 before and 0 after, pool diff 1 line.
 
 - [x] **C6 DONE** — `REPORT.md` written while the weekly limit blocked all agent work.
       Original text: REPORT.md: what changed, what is queued for a Cebuano speaker, and an explicit

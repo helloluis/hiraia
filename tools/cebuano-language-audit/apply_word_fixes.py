@@ -68,9 +68,9 @@ EN_STOP = set((
     'makes made use uses used get gets got one two three also very much many some other others '
     'like just because about there here them then have has had but all each even only same'
 ).split())
-RELEVANCE_TOPK = 20     # distinctive English words kept per Cebuano word
-MIN_LIFT = 3.0          # and each must be >=3x likelier here than corpus-wide
-MIN_OVERLAP = 2         # and the card must share at least this many of them
+MIN_LIFT = 3.0          # a term must be >=3x likelier on this word's cards than corpus-wide
+MIN_SCORE = 8.0         # and the card's overlapping terms must sum to this much lift
+RELEVANCE_TOPK = 30
 
 
 def en_keys(card):
@@ -79,21 +79,20 @@ def en_keys(card):
 
 
 def build_relevance(cards):
-    """Cebuano word -> the English words most DISTINCTIVE of the cards whose body uses it.
+    """Cebuano word -> {English term: lift} for the terms most distinctive of its cards.
 
-    A plain overlap test is useless: "water" is shared by boiling cards and by "Why Fingers
-    Wrinkle in Water", so any replacement would look relevant to both. This scores each English
-    word by how much MORE likely it is on cards using the Cebuano word than on cards generally
-    -- a pointwise-mutual-information style lift -- and keeps only the top few.
+    Lift is how much likelier a term is on cards whose BODY uses this Cebuano word than on
+    cards generally. Keeping the lift (rather than just the term) is what lets one very
+    distinctive term carry a card on its own -- see gate_relevance.
     """
     doc_en, use, joint = collections.Counter(), collections.Counter(), collections.defaultdict(collections.Counter)
     n = 0
     for c in cards:
-        keys = en_keys(c)
         bis = {w.lower() for w in TOK.findall((c.get('fact') or {}).get('bis') or '')}
         if not bis:
             continue
         n += 1
+        keys = en_keys(c)
         for k in keys:
             doc_en[k] += 1
         for w in bis:
@@ -109,14 +108,10 @@ def build_relevance(cards):
             if j < 2 or doc_en[k] < 2:
                 continue
             lift = (j / use[w]) / (doc_en[k] / n)
-            # A top-K by weighted score alone lets a merely-common word through: `water` rode
-            # into mobukal's list on sheer support, and then matched "Why Fingers Wrinkle in
-            # Water". Requiring real lift as well is what separates topic from background.
-            if lift < MIN_LIFT:
-                continue
-            scored.append((lift * j, k))
+            if lift >= MIN_LIFT:
+                scored.append((lift, k))
         scored.sort(reverse=True)
-        rel[w] = {k for _, k in scored[:RELEVANCE_TOPK]}
+        rel[w] = {k: lift for lift, k in scored[:RELEVANCE_TOPK]}
     return rel
 
 
@@ -124,17 +119,19 @@ def gate_relevance(card, replacement, rel):
     """GATE 5 -- is the replacement DISTINCTIVELY associated with this card's subject?
 
     A word decision fires on every card using the word, which is wrong whenever the word is
-    genuinely ambiguous. `kulob` heads 25 boiling cards AND "Kulob nga Tudlo sa Tubig" = why
-    fingers WRINKLE in water; swapping in `mobukal` there would invent a defect. The card's own
-    English must contain one of the replacement's most distinctive English associations.
+    ambiguous: `kulob` heads 25 boiling cards AND "Kulob nga Tudlo sa Tubig" = why fingers
+    WRINKLE in water, where swapping in `mobukal` would invent a defect.
+
+    Counting overlapping terms was the obvious test and it is wrong in both directions: two
+    weak terms pass while one decisive term fails, so "Jellyfish Life Cycle" got refused for
+    `dikya` on the grounds that it only says jellyfish once. Summing LIFT fixes both -- a lone
+    "jellyfish" (~50x) clears the bar by itself, while a lone "water" (~3x) does not.
     """
     keys = en_keys(card)
     if not keys:
         return False
-    # ONE shared term is not enough. `water` is genuinely distinctive of mobukal cards -- they
-    # are nearly all about boiling water -- and it is also in "Why Fingers Wrinkle in Water".
-    # Requiring two independent distinctive terms is what separates the topic from a coincidence.
-    return len(keys & rel.get(replacement.lower(), set())) >= MIN_OVERLAP
+    lifts = rel.get(replacement.lower(), {})
+    return sum(lifts.get(k, 0.0) for k in keys) >= MIN_SCORE
 
 
 def gate_emphasis(card, new_title):
