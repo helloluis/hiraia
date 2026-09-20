@@ -58,4 +58,9 @@ both eval harnesses reference the bundle so the "shipping" default can never dri
   its stop list). `build-apk.sh` refuses a stale one — see `packages/mobile/BUILD.md`.
 - `RUNPOD_API_KEY` lives in `.env.local` (gitignored) — never commit it.
 - `scp` uses `-P` (capital). On the default branch, branch first. Commit only when asked.
+- **Never trust an LLM's ear for Cebuano, including your own.** Check words against the
+  corpus (`tools/cebuano-language-audit/ceb_usage.py --bis <word>`, bodies only) or a
+  dictionary. The Sept 2026 audit's own false-friend list was refuted three separate
+  times. Known generator defects and the words that only LOOK wrong:
+  `docs/TRANSLATION-LEXICON-DEFECTS.md`.
 - Avoid heuristic intent-detection; prefer principled retrieval/grounding.
