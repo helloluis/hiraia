@@ -264,7 +264,34 @@ So the cheap deterministic wins are already banked; what remains is semantic.
       lumos (drown, for soft), buto (seed/explode, for bone — Cebuano bone is bukog), sungay
       (animal horn, for a vehicle horn = busina).
 
-- [ ] **C3 CHUNK E (final)** batches 290-336, 47 batches, ~6,580 cards. Completes the corpus.
+- [x] **C3 CHUNK E (final)** 47/47 batches, ~6,580 cards, **61 flags = 0.93%**.
+      **THE SWEEP IS COMPLETE: all 337 batches, 47,056 cards, 801 flags = 1.70% of the corpus.**
+      Per chunk: A 268 (1.91%), B 164 (1.67%), C 207 (2.46%), D 101 (1.20%), E 61 (0.93%).
+
+      None of chunk E's flags are contaminated by the refuted table entries — its two
+      `bounce->pabukal` flags are a DIFFERENT and valid claim (pabukal = to make boil, used for
+      "bounce"), not the refuted bukal-for-spring one.
+
+      Worst of chunk E:
+        dcard-09616  "Sa Dili Pa Mout-og" for "Before the Shaking". `ut-og` appears in ZERO
+                     Cebuano bodies and exactly one title — this one. The card's own body says
+                     `molinog` and the very next card (dcard-09617) says `mouyog`. Flag for the
+                     native reviewer with priority: the judge read it as an obscene word. I could
+                     not confirm that from the corpus (no standalone `utog` anywhere), so treat
+                     the obscenity as UNVERIFIED but the garbled title as certain.
+        dcard-08653  Animal Movements lists "molakaw, molukso, MOTIPDAS, molupad" — `tipdas` is
+                     MEASLES (6 corpus bodies, all the disease). The "jump" slot is a disease.
+        dcard-09344  "Mga Pako sa Tambubuyog" — dragonfly rendered as BUMBLEBEE, in the title,
+                     the body AND the emphasis span. Corpus uses `alindahaw` on 25 cards and
+                     `tambubuyog` on this one. The Cebuano now asserts that bees hunt, catch and
+                     eat other flying insects, which is false.
+        dcard-08294  Venn diagram's "overlapping circles" becomes `magkatapad` = side by side.
+                     The overlap IS the mechanism; a child following the Cebuano has nowhere to
+                     write what the two things share.
+        dcard-09590  "steep angle" becomes `titipid` (Tagalog: to economise) — and it is the
+                     emphasis span. Reads as a REDUCED angle, the opposite, contradicting the
+                     paired card dcard-09592.
+        dcard-07990/07995/09661  carbon and nitrogen FIXATION rendered as `pag-ayo` = to repair.
 
 - [x] **C4 DONE — and it refuted five of my own false friends.**
 
@@ -313,10 +340,40 @@ So the cheap deterministic wins are already banked; what remains is semantic.
       reviewed. Chunk E is in flight with the uncorrected list, so its bakal/lana/bulok/bukal/
       dayami flags must be filtered on the same rule before use.
 
+- [x] **C4b — truncated titles, a class the sweep almost entirely missed.** Free enumeration,
+      no model: a title whose last word is (a) a bare particle, or (b) a strict prefix of a
+      longer word the card itself contains, and is a real word nowhere in 47,056 cards.
+
+      **37 hits, ~78% clean on inspection**, and the sweep found only 2 of them. These are the
+      cheapest repairs in the audit because the full word is already on the card:
+        "Mata sa Mantis Shrim"  "Kabhang sa Sea Urchi"  "Pagligid nga Frictio"
+        "Panganod Cumulonimbu"  "Pagbag-o sa Ecosyste"  "Balaod sa Segregatio"
+        "Habagatang Hemispher"  "Krus nga Heterozygou"  "Pareho og Temperatur"
+        "Pinakamaayo nga Materyales para sa Proteksyon sa"  (head noun dropped entirely)
+      Arguable and left for review: "Mga Bato nga Igneo" (x7, Spanish igneo may be intended),
+      "Mga Biomolecule", "Non-Magnet", "Kangkon". Saved to `truncated-titles.json`.
+
+      This is a GENERATION/DISPLAY bug, not a translation one, and it is worth telling the
+      pipeline owner about separately.
+
 - [ ] **C5** Rewrite confirmed defects, each independently verified before applying, with the
       emphasis guard. HOLD anything needing facts not on the card.
 - [ ] **C6** REPORT.md: what changed, what is queued for a Cebuano speaker, and an explicit
       ship-or-not recommendation. Do not ship.
+
+## Final tally (sweep + deterministic detectors)
+
+| source | cards |
+|---|---:|
+| LLM sweep, all 337 batches | 800 unique |
+| less quarantined (refuted false friends) | -42 |
+| **sweep, net** | **758** |
+| C4 title-outlier detector, CONFIRMED | 104 (39 the sweep missed) |
+| C4b truncated titles | 37 (35 the sweep missed) |
+| **REPAIRABLE POOL** | **834 unique cards** |
+
+Written to `repair-pool.json`. 1.77% of the 47,056-card Cebuano corpus.
+
 
 ## Carried lessons (do not relearn these)
 
