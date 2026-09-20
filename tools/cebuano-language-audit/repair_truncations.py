@@ -115,12 +115,20 @@ def main():
     ocards = {c['id']: c for c in orig['cards']}
     for p in proposed:
         cards[p['id']]['title'][p['lang']] = p['new']
+    # A card can be truncated in more than one language (ffct-38221 is cut in both en and tl),
+    # so the scope check has to ignore EVERY language it edited on that card at once. Checking
+    # one language at a time reports the sibling edit as an out-of-scope change.
+    edited = collections.defaultdict(set)
     for p in proposed:
-        a = json.loads(json.dumps(ocards[p['id']], ensure_ascii=False))
-        b = json.loads(json.dumps(cards[p['id']], ensure_ascii=False))
-        a.get('title', {}).pop(p['lang'], None); b.get('title', {}).pop(p['lang'], None)
+        edited[p['id']].add(p['lang'])
+    for cid, langs in edited.items():
+        a = json.loads(json.dumps(ocards[cid], ensure_ascii=False))
+        b = json.loads(json.dumps(cards[cid], ensure_ascii=False))
+        for l in langs:
+            a.get('title', {}).pop(l, None); b.get('title', {}).pop(l, None)
         if a != b:
-            sys.exit('SCOPE FAILED on %s: a field other than title.%s changed' % (p['id'], p['lang']))
+            sys.exit('SCOPE FAILED on %s: a field other than title.%s changed'
+                     % (cid, '/'.join(sorted(langs))))
     with open(POOL, 'w', encoding='utf-8') as fh:
         json.dump(doc, fh, ensure_ascii=False)
     print('\nwrote %d title restores to %s' % (len(proposed), POOL))

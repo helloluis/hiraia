@@ -1,0 +1,236 @@
+[
+ {
+  "id": "ffct-20706",
+  "bucket": "proposer-hold",
+  "hold_reason": "proposer HOLD: HOLD on the emphasis rule, not on the language: emphasis_bis is exactly ['Mogawas'], i.e. the defective word IS the bolded span. Any correct repair (mohabok/modako/mo-expand) deletes 'Mogawas' and the span would silently stop rendering, and I cannot edit emphasis_bis from here. Keeping the span verbatim would mean leaving the defect in place, so per the span rule this goes to a Cebuano teacher, who can fix body and span together.",
+  "previously_proposed": "",
+  "title_en": "Water Freezing",
+  "title_bis": "Pagyelo sa Tubig",
+  "fact_en": "Why does a sealed glass water bottle shatter in the freezer?\n\nWater expands when it freezes into solid ice! This expansion is why leaving a sealed glass bottle in the freezer can shatter the glass.",
+  "fact_bis": "Nganong mabali ang sealed nga botelya nga puno ug tubig sa freezer?\n\nMogawas ang tubig kung magyelo kini ug mahimong solid ice! Maong kung ibutang nimo ang sealed nga botelya sa freezer, basin mabali ang baso.",
+  "terms": [
+   "state",
+   "change",
+   "practical",
+   "water",
+   "expands",
+   "freezes",
+   "solid",
+   "leaving",
+   "sealed",
+   "glass"
+  ],
+  "emphasis_bis": [
+   "Mogawas"
+  ]
+ },
+ {
+  "id": "ffct-21058",
+  "bucket": "proposer-hold",
+  "hold_reason": "proposer HOLD: HOLD on the emphasis-span rule. `emphasis_bis` is [\"hamog\"] and \"hamog\" is exactly the defective word: any correct replacement deletes the span and silently stops the bolding. The defect is real — `--bis hamog` = 21 bodies, all dew/condensation (ffct-20073 dew drops on sampaguita, ffct-18294 dew point, ffct-09610 \"tulo sa hamog\" on a web), and ffct-18298 explicitly separates the two: \"Ang frost sa damo ba kay nagyelong hamog lang? Dili! Deposition kini!\". But the corpus's repair word is the bare English loan \"frost\" (`--en frost` = 51 cards, \"frost\" used 47 times in the Cebuano bodies; escarcha appears in exactly 1 body, ffct-21067), and substituting it removes \"hamog\" entirel",
+  "previously_proposed": "",
+  "title_en": "Frost Formation",
+  "title_bis": "Pagtukod sa Frost",
+  "fact_en": "What is frost on mountain grass?\n\nFrost is water vapor changing directly into solid ice crystals! It forms on high altitude mountain grass without becoming liquid water first.",
+  "fact_bis": "Unsa ang hamog sa sagbot sa bukid?\n\nAng hamog kay singaw sa tubig nga nag-direct nga nahimong solid ice crystals! Kini motubo sa sagbot sa taas nga bukid.",
+  "terms": [
+   "deposition",
+   "frost",
+   "high",
+   "altitude",
+   "mountain",
+   "grass",
+   "water",
+   "vapor",
+   "changing",
+   "directly"
+  ],
+  "emphasis_bis": [
+   "hamog"
+  ]
+ },
+ {
+  "id": "ffct-21156",
+  "bucket": "proposer-hold",
+  "hold_reason": "proposer HOLD: HOLD — the finding does not hold against the body. fact_en (\"mudfish burrowing in wet soil creates a cool heterogeneous mixture of dirt and water\") is delivered by fact_bis (\"nag-ukay sa basa nga yuta nagbuhat ug heterogeneous mixture sa dirt ug water\"); nothing in the body is a false friend, and the emphasis span \"heterogeneous mixture\" is intact. The title repair (dalag → haluan/aluan) is out of scope for a body task and is a separate, unattested-in-body question. No word introduced.",
+  "previously_proposed": "",
+  "title_en": "Mudfish and Soil",
+  "title_bis": "Dalag ug Yuta",
+  "fact_en": "A native Philippine striped snakehead mudfish burrowing in wet soil creates a cool heterogeneous mixture of dirt and water!",
+  "fact_bis": "Ang native Philippine striped snakehead mudfish nga nag-ukay sa basa nga yuta nagbuhat ug heterogeneous mixture sa dirt ug water!",
+  "terms": [
+   "mudfish",
+   "soil",
+   "mixture",
+   "native",
+   "philippine",
+   "striped",
+   "snakehead",
+   "burrowing",
+   "creates",
+   "heterogeneous"
+  ],
+  "emphasis_bis": [
+   "heterogeneous mixture"
+  ]
+ },
+ {
+  "id": "ffct-21243",
+  "bucket": "proposer-hold",
+  "hold_reason": "proposer HOLD: HOLD — the finding is explicitly title-only (\"The body does use 'panit sa prutas' correctly\"), and re-checking against fact_en confirms it: bacteria, decomposition stage, nutrient-rich soil and the several-weeks timescale are all present in fact_bis. The remaining awkwardness is code-switching (\"solid fruit peels into nutrient-rich soil matter\"), which is register, not a wrong word, and is out of scope. No word introduced.",
+  "previously_proposed": "",
+  "title_en": "Compost Peels Decompose",
+  "title_bis": "Compost Balat Baktirya Yuta",
+  "fact_en": "What happens to fruit peels in compost?\n\nIn the decomposition stage of composting, bacteria chemically break down solid fruit peels into nutrient-rich soil matter over several weeks!",
+  "fact_bis": "Unsay mahitabo sa panit sa prutas sa compost?\n\nSa decomposition stage sa composting, chemically gibuungkag sa mga bakterya ang solid fruit peels into nutrient-rich soil matter sulod sa pipila ka semana!",
+  "terms": [
+   "composting",
+   "decomposition",
+   "during",
+   "stage",
+   "involves",
+   "bacteria",
+   "chemically",
+   "breaking",
+   "down",
+   "solid"
+  ],
+  "emphasis_bis": []
+ },
+ {
+  "id": "ffct-21295",
+  "bucket": "proposer-hold",
+  "hold_reason": "proposer HOLD: HOLD — the finding is against the title. fact_en (\"highly renewable grass with hollow internodes that give it low density, making it a lightweight but strong construction material\") maps clause-for-clause onto fact_bis, including \"gaan apan lig-on\" for \"lightweight but strong\", so the body asserts nothing false and there is nothing to repair. No word introduced.",
+  "previously_proposed": "",
+  "title_en": "Bamboo Hollow Strong",
+  "title_bis": "Kawayan Wala Tibay",
+  "fact_en": "Why is bamboo so lightweight but strong?\n\nBamboo is a highly renewable grass with hollow internodes that give it low density, making it a lightweight but strong construction material!",
+  "fact_bis": "Ngano nga gaan apan lig-on ang kawayan?\n\nAng kawayan kay usa ka highly renewable nga grass nga naay hollow internodes nga naghatag og low density, mao nga gaan apan lig-on kini nga construction material!",
+  "terms": [
+   "bamboo",
+   "density",
+   "highly",
+   "renewable",
+   "grass",
+   "hollow",
+   "internodes",
+   "give",
+   "making",
+   "lightweight"
+  ],
+  "emphasis_bis": []
+ },
+ {
+  "id": "ffct-21435",
+  "bucket": "proposer-hold",
+  "hold_reason": "proposer HOLD: HOLD — the sweep's own caveat says the body is correct (\"the body DOES say 'makairita sa baga' correctly ... treat as title-only repair, not a body defect\"), and fact_en (\"Inhaling aerosol sprays like air fresheners can irritate your lungs ... liquid droplets are suspended in a gas\") is fully delivered by fact_bis. Nothing in the body to change. No word introduced.",
+  "previously_proposed": "",
+  "title_en": "Aerosols Irritate Lungs",
+  "title_bis": "Aerosol sa Bagang",
+  "fact_en": "Inhaling aerosol sprays like air fresheners can irritate your lungs! This happens because liquid droplets are suspended in a gas.",
+  "fact_bis": "Ang paglanghap sa aerosol spray sama sa air freshener makairita sa baga! Tungod kini kay ang likido nga patak naglutaw sa gas.",
+  "terms": [
+   "aerosol",
+   "inhalation",
+   "inhaling",
+   "sprays",
+   "like",
+   "fresheners",
+   "irritate",
+   "your",
+   "lungs",
+   "liquid"
+  ],
+  "emphasis_bis": []
+ },
+ {
+  "id": "ffct-21987",
+  "bucket": "proposer-hold",
+  "hold_reason": "proposer HOLD: HOLD on the EMPHASIS constraint, not on doubt about the defect. The defect is real and a repair exists: the near-duplicate card ffct-25017 (EN 'Your upward support force is perpendicular to horizontal motion') renders it as 'Ang pataas nga support force perpendicular sa pahigang lihok', and ffct-25490 uses 'perpendicular sa direksyon sa...'; ffct-36623 uses 'patindog sa' and ffct-32774 'patayo'. But emphasis_bis = ['tul-id'] and 'tul-id' IS the defective word — every correct repair deletes it, so the bolded span would silently stop rendering, and the only ways to keep it verbatim ('tul-id nga patindog sa...', 'tul-id nga pataas, perpendicular sa...') are sentence restructures,",
+  "previously_proposed": "",
+  "title_en": "Zero Work",
+  "title_bis": "Walay Trabaho",
+  "fact_en": "When you carry an object while walking on level ground, you do no work on it! The upward force holding it is perpendicular to your motion.",
+  "fact_bis": "Kung magdala ka og butang samtang naglakaw sa patag, wala kay work nga gibuhat niini! Ang upward force pataas tul-id ngadto sa direksyon sa imong paglihok.",
+  "terms": [
+   "walang work",
+   "pasan",
+   "buhat sa load",
+   "carrying a load",
+   "force na patayo sa galaw",
+   "perpendicular force",
+   "no work done",
+   "pahalang na paglakad",
+   "walang work sa pasanin",
+   "walay work",
+   "pagdala og bug-at",
+   "pataas nga force",
+   "naglakaw nga patag",
+   "force nga tul-id sa lihok",
+   "hindi gumagawa ng work"
+  ],
+  "emphasis_bis": [
+   "tul-id"
+  ]
+ },
+ {
+  "id": "ffct-22174",
+  "bucket": "proposer-hold",
+  "hold_reason": "proposer HOLD: HOLD on the EMPHASIS constraint. Defect confirmed: `--bis linaw` = 53 Cebuano bodies, all pond/lake ('naglutaw sa mga linaw ug sapa' ffct-00184 = 'floats on ponds and streams'; 'suba, linaw, ug sapa' ffct-01075 = 'rivers, lakes, and streams') — never echo. The correct word is attested: `--bis lanog` = 3 bodies, all echo, including the near-duplicate card ffct-25932 ('Mahitabo ang lanog (echo) kon ang tingog mosukol sa layo nga butang sama sa bungbong o bukid' vs this card's EN 'bounce off a big wall or mountain'), and 'alingawngaw' = 24 bodies is the other attested echo word. BUT emphasis_bis = ['linaw'] and 'linaw' is exactly the word that must go; no minimal edit can keep th",
+  "previously_proposed": "",
+  "title_en": "Echo Reflection",
+  "title_bis": "Lanog",
+  "fact_en": "An echo happens when sound waves bounce off a big wall or mountain and come right back to us!",
+  "fact_bis": "Ang linaw mahitabo kung ang tingog mibanda sa usa ka bongbong o bukid ug mibalik direkta kanato!",
+  "terms": [
+   "alingawngaw",
+   "tumalbog",
+   "bumalik",
+   "pader",
+   "tunog",
+   "linaw",
+   "mibalik",
+   "mibanda",
+   "bongbong",
+   "tingog",
+   "echo",
+   "bounce",
+   "reflect"
+  ],
+  "emphasis_bis": [
+   "linaw"
+  ]
+ },
+ {
+  "id": "ffct-22548",
+  "bucket": "proposer-hold",
+  "hold_reason": "proposer HOLD: HOLD: finding does not hold against fact_en for the BODY. fact_en: 'A two-way switch lets you control one light from two different places! You can turn it on at the bottom of a stairway and turn it off at the top.' fact_bis: 'Ang two-way switch motugot nga makontrol ang usa ra ka suga gikan sa duha ka lahi nga dapit! Mahimo nimo kining buksan sa ubos sa hagdan ug patyon sa taas.' — one light ('usa ra ka suga', correct word suga), two places, on at the bottom, off at the top: all present. The finding itself concedes 'Body is fine'. No words introduced; nothing to attest.",
+  "previously_proposed": "",
+  "title_en": "Two-Way Switch Staircase",
+  "title_bis": "Two-Way Switch Hagdan Sugnod",
+  "fact_en": "A two-way switch lets you control one light from two different places! You can turn it on at the bottom of a stairway and turn it off at the top.",
+  "fact_bis": "Ang two-way switch motugot nga makontrol ang usa ra ka suga gikan sa duha ka lahi nga dapit! Mahimo nimo kining buksan sa ubos sa hagdan ug patyon sa taas.",
+  "terms": [
+   "two-way switch",
+   "three-way switch",
+   "switch",
+   "swits",
+   "hagdan",
+   "hagdanan",
+   "stairway",
+   "dalawang pwesto",
+   "duha ka dapit",
+   "iisang ilaw",
+   "usa ka suga",
+   "buksan",
+   "patayin",
+   "patyon",
+   "pasiga",
+   "pasilaw",
+   "kontrol",
+   "pareho",
+   "magkabilang dulo"
+  ],
+  "emphasis_bis": []
+ }
+]
