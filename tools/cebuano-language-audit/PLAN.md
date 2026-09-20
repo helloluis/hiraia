@@ -485,10 +485,50 @@ So the cheap deterministic wins are already banked; what remains is semantic.
       `kasingkasin` 6 (truncated kasingkasing), `energiya` 6 (variant of enerhiya).
       Saved to `title-unattested.json`. **TRIAGE IS THE NEXT STAGE'S FIRST JOB.**
 
-- [~] **C5b IN FLIGHT** — 693 body repairs (the sweep findings that are not title-only and
-      were not fixed in C5a), through propose -> adversarial verify -> the four gates in
-      `apply_body_fixes.py`. Both agents are required to run `ceb_usage.py` rather than trust
-      their ear. Not yet applied.
+- [~] **C5b PARTIAL — 102 body repairs applied, 199 proposals still OWED.**
+      693 cards through propose -> adversarial verify -> the four gates.
+
+      | stage | result |
+      |---|---:|
+      | proposed | 314 REWRITE, **379 HOLD (55%)** |
+      | adversarial verify | 107 ACCEPT, 8 REJECT — **and 199 never judged** |
+      | GATE 2 attestation (mine) | 5 further held |
+      | **applied** | **102** |
+
+      **STAGE PARTIALLY FAILED: 36 of 58 verify agents died on the session limit** (resets
+      3:30am Asia/Manila) — the same failure that truncated sweep chunk B. Their 199 proposals
+      are UNVERIFIED, not rejected, and are held under their own label in `c5b-applied.json` so
+      the distinction cannot be lost. **They must be re-verified after the reset, not applied.**
+      First failure of this stage; per the standing rule, one more and it gets abandoned.
+
+      **The 55% HOLD rate is the good news.** C5a's proposer held nothing at all, which was a
+      warning. Here, given `ceb_usage.py` and an instruction to check rather than assume, it
+      declined more than half — typically "finding refuted, the corpus attests the old word".
+
+      **My false-friend table was corrected for a third time, by the adversarial check:**
+        kagang    IS the corpus word for CRICKET — 9 bodies, all crickets/cicadas, crab is
+                  always alimango. My table had it backwards.
+        mopalta   IS attested for light bouncing off a surface.
+        gasolina  IS the corpus's standard rendering of generic English "fuel" (112 bodies).
+        sanga     IS attested for "stem" in 19 bodies.
+      Every one of these would have rewritten correct Cebuano. Three rounds of refutation now:
+      C4 (bakal/lana/bulok/bukal/dayami), C5b-0 (pako), and these four.
+
+      Applied repairs are minimal — **median churn 4.3%** — and each defect is provable from
+      the card's own English:
+        dcard-08653 the "jump" slot in Animal Movements was `motipdas`, built on the word for
+                    MEASLES
+        dcard-05173 haemophilia defined as blood that "changes" rather than fails to CLOT
+        dcard-05746 an asteroid that is SATED by the atmosphere instead of HITTING it
+        dcard-04065 plant defences that smell bad and taste DELICIOUS
+        dcard-08837 an SEM that BOILS the electron beam instead of bouncing it
+        dcard-00614 the skeleton's "enables movement" rendered as BREEDING
+
+      Verified after writing: 102 cards changed, **0** non-`fact.bis` changes, orphaned
+      emphasis spans **0 before and 0 after**, pool diff 1 line.
+
+- [ ] **C5b-2** Re-verify the 199 unverified proposals after the 3:30am Manila reset. Do NOT
+      apply them unverified. Smaller batches this time so a session limit truncates less.
 
 - [ ] **C5c** Triage the 720 cards from C4d, then repair the confirmed ones. Start with
       `kulob` (25 boiling cards), `balhas`, `pagtatanom`, `kasingkasin`.

@@ -130,8 +130,15 @@ def main():
         if p.get('verdict') != 'REWRITE':
             rec['reason'] = 'proposer HOLD: ' + p.get('attestation', ''); held.append(rec); continue
         v = verds.get(cid)
-        if not v or v.get('verdict') != 'ACCEPT':
-            rec['reason'] = 'adversarial REJECT: ' + (v or {}).get('reason', 'no verdict')
+        if not v:
+            # Not the same thing as a rejection. 36 of C5b's 58 verify agents died on the
+            # session limit, so these proposals were never checked. Unverified is held, and
+            # reported separately, because collapsing it into REJECT would understate how much
+            # work is still owed.
+            rec['reason'] = 'UNVERIFIED: no adversarial verdict (verify agent failed)'
+            held.append(rec); continue
+        if v.get('verdict') != 'ACCEPT':
+            rec['reason'] = 'adversarial REJECT: ' + v.get('reason', '')
             held.append(rec); continue
         if not new or new == old.strip():
             rec['reason'] = 'empty or unchanged'; held.append(rec); continue
