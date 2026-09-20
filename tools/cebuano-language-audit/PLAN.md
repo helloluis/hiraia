@@ -530,8 +530,20 @@ So the cheap deterministic wins are already banked; what remains is semantic.
 - [ ] **C5b-2** Re-verify the 199 unverified proposals after the 3:30am Manila reset. Do NOT
       apply them unverified. Smaller batches this time so a session limit truncates less.
 
-- [ ] **C5c** Triage the 720 cards from C4d, then repair the confirmed ones. Start with
-      `kulob` (25 boiling cards), `balhas`, `pagtatanom`, `kasingkasin`.
+- [~] **C5c** Triage the 138 unattested title words from C4d (720 cards), then repair the
+      confirmed ones. Start with `kulob` (25 boiling cards), `balhas`, `pagtatanom`.
+
+      **NEGATIVE RESULT — the cheap split does not work.** I tried to pre-sort the 138 words
+      deterministically into "spelling variant of an attested body word" vs "isolated
+      substitution", using edit-distance similarity against the body vocabulary. It fails in
+      BOTH directions and is not usable:
+        - false pairs: `balhas` (Tagalog SWEAT) matched `balas` (SAND, 478 bodies); `yabo`
+          matched `abo`; `sugad` matched `suga`. String distance is not sense distance.
+        - false isolates: `daku` and `itum` ARE variants of dako/itom, but at four letters a
+          one-character difference scores 0.75 and falls below any usable threshold.
+      Discarded. Triage is word-level instead — 138 decisions, not 720 — with each word's
+      `ceb_usage.py` evidence and the title_en of the cards that use it. Input prepared in
+      `runs/batches-c5c/`.
 
 - [ ] **C6** REPORT.md: what changed, what is queued for a Cebuano speaker, and an explicit
       ship-or-not recommendation. Do not ship.
