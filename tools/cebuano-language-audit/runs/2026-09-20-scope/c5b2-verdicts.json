@@ -1,0 +1,1002 @@
+{
+ "judged": 199,
+ "accepted": 183,
+ "rejected": 16,
+ "rows": [
+  {
+   "id": "ffct-11883",
+   "verdict": "ACCEPT",
+   "reason": "`--bis kagang` returns 9 bodies of which 8 are crickets/katydids (ffct-00655, ffct-03568 \"male cricket\"), so the old word delivered CRICKET for an English cicada card, while `--bis kuliglig` (37 bodies) and `--en cicada` (kuliglig 20 hits across 17 cicada cards, e.g. ffct-01016, ffct-02798) show kuliglig is the corpus rendering of cicada; one-word swap, emphasis span \"pako\" still verbatim in \"magkapako\"."
+  },
+  {
+   "id": "ffct-11974",
+   "verdict": "ACCEPT",
+   "reason": "`--bis napukan` returns only this card itself and `--bis pukan` is NOT ATTESTED IN ANY CEBUANO BODY, so the old verb never delivered \"break down\", whereas `mabungkag ngadto sa` is the corpus's standard break-down-into frame (mabungkag 38 bodies; \"mabungkag ngadto\" in ffct-16648, ffct-21429, dcard-01195); verb+preposition only, no fact, number or unit touched."
+  },
+  {
+   "id": "ffct-12047",
+   "verdict": "ACCEPT",
+   "reason": "`--bis kirok` is NOT ATTESTED IN ANY CEBUANO BODY and `mokirok` appears only in this card, while `--bis mopilok` (6 bodies) and `--en blink` (mopilok 9, pagpilok 8, pamilok 5) show mopilok is the corpus verb for blinking (ffct-00878, ffct-01638, ffct-04169); the swap is the same verb in both sentences with the 15-20/minute and 28,000/day figures untouched."
+  },
+  {
+   "id": "ffct-12166",
+   "verdict": "REJECT",
+   "reason": "The edit inserts a whole new mechanism clause (\"pinaagi sa pagdala og polen\") that fact_en never states — fact_en just says \"pollinate\" — and it leaves the supposedly defective \"pagpamulak sa bulak\" in place, which `--bis pagpamulak` shows the corpus already uses bare to render \"help pollinate\" (ffct-13754 \"motabang sa pagpamulak niini\" for \"help pollinate it\"); addition plus restyled conjunction, defect unchanged."
+  },
+  {
+   "id": "ffct-12242",
+   "verdict": "ACCEPT",
+   "reason": "`--bis langgam` returns 680 bodies that are uniformly BIRDS (ffct-00138 goose, ffct-00221 feathers), so the old text said \"some birds spray formic acid\" and \"formica means bird\", while `--bis hulmigas` (115 bodies) and `--en ants` (hulmigas 136 hits, top word) confirm hulmigas is the corpus word for ant; two-word swap, \"formic acid\" emphasis span still verbatim."
+  },
+  {
+   "id": "ffct-13361",
+   "verdict": "ACCEPT",
+   "reason": "`--bis bakaw` returns 122 bodies of which 119 are mangroves — the corpus even defines it (ffct-01680 \"Bakhaw o bakawan ang tawag sa mga kahoy nga motubo sa parat nga tubig\") — so \"Ang mga bakaw\" reads as mangrove trees eating insects, while `--bis tagak` (44 bodies) and `--en egret` (tagak 9 hits) show tagak is the corpus egret, used in exactly this rice-field frame (ffct-08738 \"Daghang matang sa tagak ... sa berde nga humayan\", ffct-00779 \"Ang puti nga tagak\"); one-word swap."
+  },
+  {
+   "id": "ffct-13502",
+   "verdict": "ACCEPT",
+   "reason": "`--bis manguhog` returns only this card and `--bis uhog` (19 bodies) shows the root means MUCUS (ffct-00149 fish slime, ffct-01943 runny nose), so \"Kung manguhog na\" never delivered \"when ready to lay eggs\", while `--bis mangitlog` (175 bodies, ffct-00380 \"Ang mga langgam mangitlog\") is the corpus verb; single word changed, \"kalaw\" emphasis span intact."
+  },
+  {
+   "id": "ffct-13646",
+   "verdict": "ACCEPT",
+   "reason": "`--bis halas` returns 42 bodies that are all SNAKES (ffct-00040 forked tongue, ffct-00063 shedding skin), so the old text asked about a snake where fact_en asks about a lizard, while `--bis tiki` (53 bodies) and `--en lizard` (tiki 58 hits, the top word; ffct-02465 \"reptilya sama sa bitin, tiki, ug buaya\") confirm tiki is the corpus lizard; one-word swap with the \"bugnaw ug dugo\" emphasis span still verbatim."
+  },
+  {
+   "id": "ffct-13754",
+   "verdict": "REJECT",
+   "reason": "new_fact_bis is byte-identical to old_fact_bis (word-diff empty), so whatever defect was alleged is still there and no corpus check can vindicate a non-edit."
+  },
+  {
+   "id": "ffct-13786",
+   "verdict": "REJECT",
+   "reason": "The old word was fine: ceb_usage.py --bis bombilya returns 143 bodies including ffct-10973 \"Ang bombilya, sama sa ahos o sibuyas, usa ka bahin sa tanom sa ilalom sa yuta\" — the corpus already uses bombilya for a PLANT bulb, so swapping it for the English 'bulb' is word preference, not repair."
+  },
+  {
+   "id": "ffct-13848",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage.py --bis langgam shows 680 bodies all meaning BIRD, so \"hamtong nga langgam\" said adult BIRDS can't spin silk; --bis hantik returns 14 bodies all rendering weaver ants (ffct-01170, ffct-03383), the same word already used twice in this card, and the one-token swap leaves the emphasis span \"larva\" verbatim."
+  },
+  {
+   "id": "ffct-13875",
+   "verdict": "ACCEPT",
+   "reason": "--bis langgam (680 bodies) is uniformly BIRD, so \"trabahante nga langgam\" mistranslated worker ants; --bis hulmigas returns 115 bodies of ants including ffct-00398 \"Ang matag trabahanteng hulmigas\" and ffct-14197 \"reynang hulmigas\" for this exact queen/worker concept, and only that single word changed."
+  },
+  {
+   "id": "ffct-14019",
+   "verdict": "ACCEPT",
+   "reason": "--bis tibi returns only 2 bodies, one of which is the false prefix match \"tibia\" (shin bone, ffct-08723) and the other is this card itself, so tibi is a Tagalog import with zero independent Cebuano attestation, while the corpus's own rendering of the concept is the loan itself (ffct-10342 \"maglisod ka kalibang — gitawag kining constipation\"); the emphasis span \"fiber\" is untouched."
+  },
+  {
+   "id": "ffct-14365",
+   "verdict": "ACCEPT",
+   "reason": "--bis binilyon returns 24 bodies all glossing English \"billions\" (ffct-01488, ffct-06568), so the old text contradicted fact_en's \"trillions\"; --bis trilyon returns 21 bodies for trillions and the collocation \"trilyon nga\" is attested in 6 bodies, making the single-word fix both correct and in-corpus."
+  },
+  {
+   "id": "ffct-14429",
+   "verdict": "ACCEPT",
+   "reason": "--bis tahong returns 37 bodies all meaning mussels (ffct-00382 \"tahong ug talaba\"), the wrong animal for fact_en's giant clams; --bis taklobo returns 32 bodies every one of which glosses \"giant clam\" (ffct-01903, ffct-04520), and \"dagkong taklobo\" is itself attested in ffct-13672."
+  },
+  {
+   "id": "ffct-14629",
+   "verdict": "ACCEPT",
+   "reason": "--bis langgam (680 bodies) is BIRD throughout, so the old body literally asked how BIRDS share food; both occurrences were replaced with hulmigas, attested in 115 bodies as ants (ffct-00154, ffct-00398), and the emphasis span \"baba ngadto sa baba\" still appears verbatim."
+  },
+  {
+   "id": "ffct-15228",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage.py --bis gabat returns 1 Cebuano body and it is this very card (i.e. unsourced), while --bis gibug-aton returns 294 bodies as the corpus word for weight — ffct-37396 even carries the identical question \"Naa bay gibug-aton ang hangin?\" — so the two-word swap is minimal, attested and fact-preserving."
+  },
+  {
+   "id": "ffct-15401",
+   "verdict": "ACCEPT",
+   "reason": "\"Asalinhagikan\" is a corrupted run-together token attested nowhere as a word (only this card plus the same corruption in ffct-16874), whereas the corpus opens 128 bodies with \"Asa gikan\", so restoring the interrogative is the minimal repair and nothing else in the sentence was touched."
+  },
+  {
+   "id": "ffct-16451",
+   "verdict": "ACCEPT",
+   "reason": "--bis mapunit returns 1 body, this card itself (a Tagalog false friend; Cebuano punit is 'pick up'), while --bis magisi returns 13 bodies all rendering English 'tear' and ffct-13793 attests the exact collocation \"sayon magisi\"; the emphasis span \"mosuyop og tubig\" survives verbatim."
+  },
+  {
+   "id": "ffct-16480",
+   "verdict": "ACCEPT",
+   "reason": "--bis higot shows the corpus uses it for tie/tight (hair ties, tight lids, sealed cans), never hardness, while --en \"hard water\" shows the corpus standard is \"gahi nga tubig\" (gahi 18× across those 24 cards, incl. sister card ffct-16478) and \"Giunsa pagkahimong X ang Y\" is attested (ffct-29619), so only the broken verb phrase changed."
+  },
+  {
+   "id": "ffct-16563",
+   "verdict": "ACCEPT",
+   "reason": "--bis bulak returns 458 bodies that are overwhelmingly FLOWER (Tagalog false friend), while --bis gapas returns 24 bodies/9 titles for cotton and ffct-03306 glosses it outright as \"ang cotton o gapas\", so \"bola nga bulak\" genuinely read as a ball of flowers and the one-word fix restores the English 'cotton ball'."
+  },
+  {
+   "id": "ffct-17153",
+   "verdict": "ACCEPT",
+   "reason": "--bis minilyon shows 122 bodies all rendering 'millions', which contradicts fact_en's 'billions of years old', while --bis binilyon returns 24 bodies for 'billions' and the exact phrase \"binilyon ka tuig\" is attested in 6 bodies (ffct-31320, ffct-36360, ffct-36371)."
+  },
+  {
+   "id": "ffct-17423",
+   "verdict": "ACCEPT",
+   "reason": "--bis langgam returns 680 bodies where it means BIRD and --bis hulmigas returns 115 bodies/58 titles where it means ANT — dcard-12282 uses both in one sentence to distinguish them — so \"paak sa langgam\" said 'bird bite' against fact_en's 'ant sting'; the emphasis span \"neutralize\" is still present verbatim."
+  },
+  {
+   "id": "ffct-17949",
+   "verdict": "ACCEPT",
+   "reason": "--bis mabuto returns only 6 bodies, all meaning burst/explode (pipes, cells), which misstates steel as exploding, while --en brittle shows the corpus renders brittleness with mabuak/mabali and ffct-11447 translates 'it's brittle' as \"mabali kini\" (mabali = 164 bodies), making the single-word swap attested and minimal."
+  },
+  {
+   "id": "ffct-18025",
+   "verdict": "ACCEPT",
+   "reason": "`panisigarilyo` appears in only 1 body (this card itself) and is built on sigarilyo = cigarette-smoking, while `pagpaaso` is attested in 4 bodies used exactly for smoke-preserving food and fish (ffct-15773 \"Sa pagpaaso, giluto kini sa init samtang gipauga sa aso\"), so the one-word swap fixes a real mistranslation of \"smoking fish\" with no other change and keeps \"phenols\" verbatim."
+  },
+  {
+   "id": "ffct-18039",
+   "verdict": "ACCEPT",
+   "reason": "`daan-tuig` is attested in only 1 body (this card itself) and does not mean \"hundreds of years\", whereas `gatusan` appears in 84 bodies including ffct-02839's verbatim \"gatusan ka tuig\" for \"hundreds of years old\"; the edit touches only that phrase and \"biodegradable\" is intact."
+  },
+  {
+   "id": "ffct-18220",
+   "verdict": "ACCEPT",
+   "reason": "The corpus shows `masugatan` means \"meet/encounter\", not \"harm\" (ffct-37477 \"Masugatan sa Earth kana nga abog\", ffct-27681 \"kon masugatan sa adlaw\", ffct-05743 \"kon masugatan pag-usab\"), while `makadaot` is the corpus word for harming organisms in 467 bodies (ffct-00023, ffct-00325), so the two-token swap `masugatan ang`→`makadaot sa` is the minimal repair and \"grey water\" is preserved."
+  },
+  {
+   "id": "ffct-18273",
+   "verdict": "ACCEPT",
+   "reason": "`mosink` is an English word occurring in only 2 bodies (this card and its twin ffct-18284), while `mogamay` is attested in 41 bodies as the corpus rendering of \"shrinks\" including gas/balloon contexts (ffct-13870, ffct-14335, and the --en shrink frequency table ranks mogamay 26), and the edit changes only that word, leaving \"thermal expansion\" verbatim."
+  },
+  {
+   "id": "ffct-18380",
+   "verdict": "ACCEPT",
+   "reason": "All 18 bodies containing `pagpalit` use it for BUYING (ffct-11760 \"pagpalit og ihalas nga binuhi\"), so \"pagpalit sa oxygen\" said \"buying the oxygen\" instead of displacing it; `pagpuli` is attested in a body (ffct-08447 \"pagpuli sa dahon\") with `mopuli` in 38 more, and ffct-15815 renders \"helium replaces the oxygen\" with the same root (\"gipulihan sa helium ang oxygen\"), so the single-word swap is correct and \"CO2\" is untouched."
+  },
+  {
+   "id": "ffct-18476",
+   "verdict": "ACCEPT",
+   "reason": "`pagkahaplos` is attested in only 1 body (this card itself) and `haplos` in 3 bodies means touch/rub (ffct-10028 touch receptors, ffct-23134 rubbing a nail), not breathing; `moginhawa` has 114 bodies and ffct-15815 contains the exact phrase \"kung moginhawa og helium\" for this same helium-voice fact, and no emphasis spans exist to break."
+  },
+  {
+   "id": "ffct-18494",
+   "verdict": "ACCEPT",
+   "reason": "`tungkab` returns \"NOT ATTESTED IN ANY CEBUANO BODY\" and `nakatungkab` appears only in this card itself (pry-open, not inverted), while `nakabaliktad` is attested in 2 bodies and `baliktad` in 20 for \"upside-down\" (ffct-00294 larvae hanging upside-down, ffct-27135 reversed ambulance logo); only that one word changed."
+  },
+  {
+   "id": "ffct-18516",
+   "verdict": "ACCEPT",
+   "reason": "Bare `gatas` in the corpus is dairy milk (ffct-00078, ffct-00339, ffct-00550), so \"pagkulo sa gatas\" failed to deliver \"boiling coconut milk\"; the --en \"coconut milk\" query ranks `gata` first with 25 standalone-body uses (ffct-02442 \"Ang gata sa lubi\", ffct-00141 \"giluto sa gata\"), and the edit changes only that word while \"evaporation\" stays verbatim."
+  },
+  {
+   "id": "ffct-18611",
+   "verdict": "ACCEPT",
+   "reason": "`--bis kuyamis` returns 1 body — this card itself — so the old word is unsourced for \"crispy\" (it is a coconut variety), while `--bis malutong` shows 8 bodies rendering exactly crisp/crispy food (chicharon, crispy pata, empanada), and the edit is only the two-word swap with \"init kaayo nga mantika\" intact."
+  },
+  {
+   "id": "ffct-19739",
+   "verdict": "ACCEPT",
+   "reason": "`--bis mamala` (55 bodies) is used exclusively for DRYING OUT (drying leaves, chili, chicks), not ripening — so the old text altered fact_en's \"as they ripen\" — while `--bis mahinog` (21 bodies) is the corpus word for fruit ripening (kamatis, cacao pod, coffee cherry), and only the two occurrences changed."
+  },
+  {
+   "id": "ffct-19921",
+   "verdict": "ACCEPT",
+   "reason": "`--bis pasabugan` returns 1 body — this card itself, i.e. unsourced, and it means \"blow up\" not \"add heat\" — whereas `--bis initan` shows 20 bodies on precisely this melting/state-change concept (\"Kung initan o bugnawon, matunaw ang solid ngadto sa liquid\"), a single-word minimal repair."
+  },
+  {
+   "id": "ffct-20023",
+   "verdict": "ACCEPT",
+   "reason": "`--bis makapabug-at` (5 bodies) is attested only for MAKING SOMETHING HEAVIER (\"Ang asin makapabug-at og gamay\", \"makapabug-at sa balloon\"), which reverses fact_en's \"lift\", while `--bis makaalsa` (8 bodies) is the corpus word for lifting a weight (levers, jackscrew), so the old text failed the English rather than merely reading clumsily."
+  },
+  {
+   "id": "ffct-20068",
+   "verdict": "ACCEPT",
+   "reason": "`--bis hubaron` (5 bodies) is dominantly \"interpret/untie/unplug\" (brain interpreting color, interpreting observations, unplugging the TV), so the old line said clay can be \"interpreted\" into shapes, while `--bis hulmahon` (23 bodies) is the corpus word for shaping/molding and covers clay itself (ffct-15437, ffct-16611)."
+  },
+  {
+   "id": "ffct-20228",
+   "verdict": "ACCEPT",
+   "reason": "`--bis pako` (359 bodies) means wings/fern in the corpus — a Tagalog false friend here — while `--bis lansang` (44 bodies) is the corpus word for NAIL in this very rusting concept (\"solido nga lansang nga puthaw\", the jar rust experiment), so the swap is minimal and fully attested."
+  },
+  {
+   "id": "ffct-20243",
+   "verdict": "ACCEPT",
+   "reason": "`--bis makapahugno` (7 bodies) is attested only for COLLAPSING (roofs, buildings, knocking a person over), the physical opposite of fact_en's internal pressure making the can explode, while `makapabuto` is attested (dcard-11924, \"Ang usa ka spark makapabuto sa coal dust\" = explode) and its root `mobuto` has 119 bodies for bursting."
+  },
+  {
+   "id": "ffct-20272",
+   "verdict": "ACCEPT",
+   "reason": "`--bis asalom` returns 1 body — this card itself — so it is unsourced (and the attested near-form `aslom`, 89 bodies, means SOUR, not salty), while `--bis parat` (176 bodies) is the corpus word for salty seawater, and the emphasis span \"homogeneous mixture\" survives verbatim."
+  },
+  {
+   "id": "ffct-20596",
+   "verdict": "ACCEPT",
+   "reason": "`--bis mopakpak` returns 5 bodies that all mean flap/snap/punch (bee wings, pistol shrimp claw, mantis shrimp), never trap, while `--bis modakop` returns 62 bodies using it for exactly this concept (earwax/mucus \"modakop sa abog ug mikrobyo\" = traps dust and germs), and the edit is a single word with \"HEPA air filters\" intact."
+  },
+  {
+   "id": "ffct-20745",
+   "verdict": "ACCEPT",
+   "reason": "The old body dropped fact_en's \"undergo a chemical change\" entirely, and `--en undergo` shows the corpus renders that exact English with moagi (35 hits; ffct-19731 \"Nag-agi kini og chemical change\" for the near-identical leaf-decomposition card), so the inserted clause is attested, minimal, and adds nothing beyond the English."
+  },
+  {
+   "id": "ffct-20784",
+   "verdict": "ACCEPT",
+   "reason": "`--bis pako` returns 359 bodies that all mean wing/fern (bat wings, eagle wingspan) — never nail — while `--bis lansang` returns 44 bodies for nails including rusty and iron nails (ffct-15177, ffct-16309 \"solido nga lansang nga puthaw\"), so the one-word swap fixes a real false-friend without touching anything else."
+  },
+  {
+   "id": "ffct-21030",
+   "verdict": "REJECT",
+   "reason": "`--bis hubog` shows the old word IS attested for shaping metal in the same domain — ffct-17948 \"Sayon kini hubogon\" for pewter \"easy to shape\" and ffct-17949 for low-carbon steel — so the pag-hubog→paghulma half is a word-preference rewrite of correct Cebuano, making the edit larger than any defect even if hugot→gahi were warranted."
+  },
+  {
+   "id": "ffct-21138",
+   "verdict": "REJECT",
+   "reason": "An exact-word scan shows standalone `halo` is used in the mixture sense in 20 Cebuano bodies, many in this very chemistry cluster (ffct-18157 \"lainlaing klase sa halo\" = kinds of mixtures, ffct-18386 \"usa ka halo sa mga gas\", ffct-19830 \"halo sa balas ug puthaw\"), so the old word was fine and sagol is only a preference."
+  },
+  {
+   "id": "ffct-21361",
+   "verdict": "ACCEPT",
+   "reason": "`--en bark` shows the corpus renders bark as panit (76 hits: \"panit sa mga kahoy\", ffct-00959 contrasts \"kahoy\" = wood against \"panit\" = bark), so the old \"kahoy sa narra tree\" said wood/tree instead of fact_en's bark; the fix is one word and leaves the \"tannins\" emphasis span verbatim."
+  },
+  {
+   "id": "ffct-21503",
+   "verdict": "ACCEPT",
+   "reason": "Same verified false friend as ffct-20784: `--bis pako` is 359 bodies of wings and `--bis lansang` is the attested nail word, so the question no longer asks about separating wings from coins; only that word changed and \"neodymium magnet\" is still verbatim."
+  },
+  {
+   "id": "ffct-21575",
+   "verdict": "ACCEPT",
+   "reason": "An exact-word scan of `poy` finds it in exactly one body — this card itself — so mapaka-poy is an unsourced coinage, while `--en fuel` ranks sugnod at 84 hits including the fuel sense (ffct-02205 \"sugnod sa lawas\"), and the replacement touches only that phrase."
+  },
+  {
+   "id": "ffct-21622",
+   "verdict": "ACCEPT",
+   "reason": "`ceb_usage.py --bis makapahimulos` returns 1 body — this card itself (and `--bis himulos` is NOT ATTESTED IN ANY CEBUANO BODY), so the old word is unsourced and means \"benefit from\", while `--bis nagkatag` returns 77 bodies and the sibling colloid card ffct-18510 renders \"particles that scatter light\" as the identical \"particles nga nagkatag sa kahayag\"."
+  },
+  {
+   "id": "ffct-21672",
+   "verdict": "ACCEPT",
+   "reason": "`--bis pako` returns 359 bodies that all mean wing/fin/fern, while `--bis lansang` returns 44 bodies that are all nails — including ffct-16309's identical phrase \"lansang nga puthaw\" for \"solid iron nail\" — and the only 16 pako-as-nail bodies sit in one contaminated batch (ffct-19808 is openly Tagalog: \"nagiging kayumanggi ug nagkakaroon\"), so \"purong pako nga puthaw\" read \"pure iron wing\"."
+  },
+  {
+   "id": "ffct-22319",
+   "verdict": "REJECT",
+   "reason": "THE OLD WORD WAS FINE: `--bis gahi` returns 626 bodies and the corpus repeatedly uses it against \"hamis\" for rough — the twin friction card ffct-27416 writes \"friction... sa gahi nga balili\" for \"the rough grass creates more friction\", and ffct-03661 renders \"smooth or rough\" as \"hamis o gahi\" — so swapping in magaspang is word preference, not a repair."
+  },
+  {
+   "id": "ffct-22744",
+   "verdict": "ACCEPT",
+   "reason": "`--bis nagsingot` returns only 2 bodies — this card and ffct-07260, where it plainly means sweating — so the old text said echolocation \"sweats well\", while \"maayo kaayo\" appears in 78 Cebuano bodies (e.g. ffct-20209 \"maayo kaayo nga conductors of heat\") and the one-span swap changes no fact."
+  },
+  {
+   "id": "ffct-22827",
+   "verdict": "ACCEPT",
+   "reason": "`--bis mokulo` shows the corpus uses it for boiling (ffct-17799 and ffct-28151, water boiling), so \"mokulo kung bugnawon\" said metal boils when cooled, while `--bis mokunhod` returns 203 bodies that carry exactly this sense (ffct-01734 \"modako o mokunhod\" for expand-or-shrink, ffct-09815 \"mokunhod ug mokulobot\" for shrinks-and-wrinkles)."
+  },
+  {
+   "id": "ffct-22094",
+   "verdict": "REJECT",
+   "reason": "THE OLD WORD WAS FINE: the corpus uses buhaton for lifting in 27 English-\"lift\" bodies spanning ffct-11940 (\"Pila kabug-at ang mahimong buhaton sa hulmigas?\" = how much can an ant lift) through ffct-27237 and ffct-28711 (\"aron buhaton ang bug-at nga load\"), so alsahon is a preferred alternative rather than a fix for a failure to deliver."
+  },
+  {
+   "id": "ffct-21920",
+   "verdict": "ACCEPT",
+   "reason": "The old text rendered an acceleration as a bare speed by dropping \"each second\"; \"matag segundo\" is attested in 74 Cebuano bodies and ffct-25671 uses the proposed construction verbatim (\"mopaspas ug 9.8 ka metro kada segundo matag segundo\" for \"speeds up by 9.8 meters per second every second\"), and the emphasis span \"9.8 ka metro kada segundo\" still appears untouched."
+  },
+  {
+   "id": "ffct-22963",
+   "verdict": "ACCEPT",
+   "reason": "The old text dropped the defining direction of \"tilting the wing's front slightly up\"; `--bis pataas` returns 338 bodies and the sibling airfoil card ffct-22488 uses the same frame (\"hangin motukmod sa pako pataas... Ikiling pa, mas daghang hangin ang maduso paubos\"), so the one-word insert restores fact_en without adding anything."
+  },
+  {
+   "id": "ffct-23706",
+   "verdict": "ACCEPT",
+   "reason": "The old body silently dropped fact_en's \"or in open fields\" safety clause, and the restored wording is corpus-exact — `--bis hawan` returns 28 bodies including ffct-30664, whose near-identical English (\"Never stand under a tree or in an open field during a storm\") is rendered \"Ayaw pagtindog ilalom sa kahoy o sa hawan nga dapit\", so nothing new is introduced and the emphasis span \"kilat\" survives verbatim."
+  },
+  {
+   "id": "ffct-23753",
+   "verdict": "ACCEPT",
+   "reason": "`--bis moabag` finds the word in only ONE body — this very card (self-attestation, and abag elsewhere is only \"abaga\"/shoulder or the help sense, i.e. the opposite of air resistance), while `--bis babag` gives 77 bodies and mobabag alone 41 (\"mobabag sa kahayag\", \"mobabag sa agianan sa hangin\"), matching fact_en's \"slows them down\"; the fix is one letter and \"mahulog nga dungan\" is intact."
+  },
+  {
+   "id": "ffct-23788",
+   "verdict": "ACCEPT",
+   "reason": "`--bis panguliyaw` returns 1 body — this card itself, so it is unsourced — whereas `--bis pangulitawo` returns the sibling kubing card ffct-23794 whose English is literally \"the kubing is used for courtship\"; the swap is one word and \"kubing\" is untouched."
+  },
+  {
+   "id": "ffct-23949",
+   "verdict": "ACCEPT",
+   "reason": "`--bis labong` shows the corpus uses it for LUSH/vivid (\"labong nga kalasangan\" = lush forests, \"mas labong nga berde\" = deeper green, plus bamboo shoot) — the opposite of \"dimmer\" — while `luya` is the corpus's own word for exactly this concept: ffct-24175 \"Ang luya nga ikaduhang balangaw\" for \"The fainter second rainbow\" and ffct-30798 \"luya nga mga bituon\" for \"the dimmer stars\"; one word changed, \"duha ka balik\" verbatim."
+  },
+  {
+   "id": "ffct-24123",
+   "verdict": "ACCEPT",
+   "reason": "`--bis libtong` returns 1 body — this card alone, so unsourced — while `--bis umbok` returns 8 bodies for bumps, including the sibling friction card ffct-22978 (\"Naggikan ang friction sa gagmay nga umbok ug buho sa nawong\" for \"friction comes from tiny bumps and dips\"); only the two libtong tokens change and no emphasis spans exist."
+  },
+  {
+   "id": "ffct-24240",
+   "verdict": "REJECT",
+   "reason": "THE OLD WORD WAS FINE: `--bis pako` shows the corpus already uses pako for iron nails in 16 bodies, 9 of them magnet cards in this very family (ffct-21503, ffct-27191, ffct-27405, ffct-27941, ffct-28090, ffct-28155), so \"puthaw sama sa pako\" reads as iron nails exactly as fact_en says — lansang (44 bodies) is merely the alternative, making this word preference, not a defect."
+  },
+  {
+   "id": "ffct-24658",
+   "verdict": "ACCEPT",
+   "reason": "`--bis sip-on` returns 64 bodies and every one means nasal mucus/colds (\"pilit nga sip-on sa ilong\"), never \"narrow\", so \"sip-on nga tubo\" fails fact_en's \"narrow pipe\", while `--bis pig-ot` returns 47 bodies of exactly that sense (\"pig-ot nga ear canal\", \"pig-ot nga puwang\"); one word changed, \"boltahe\" and \"kuryente\" intact."
+  },
+  {
+   "id": "ffct-24732",
+   "verdict": "ACCEPT",
+   "reason": "`--bis sinaw` returns 58 bodies all meaning SHINY (\"sinaw nga agi sa uhog\", \"sinaw nga panit\"), so \"mosinaw ang lubid\" says the rope shines rather than winds, while the likos root is attested 28 times for wrapping/coiling including ffct-23858 \"likosi ang pisi sa lawas niini\" (wind the string) and molikos itself (\"molikos sa punoan\"); one word changed, \"wheel and axle\" verbatim."
+  },
+  {
+   "id": "ffct-24749",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis hikaw returns 1 body (this card itself, i.e. unsourced), while --bis thread returns 29 bodies including four screw cards that name the ridges exactly this way (ffct-22286 \"palibot sa tornilyo gitawag og threads\", ffct-23106, ffct-23115, ffct-23120), so the one-word swap is the corpus rendering and the emphasis span \"inclined plane\" survives verbatim."
+  },
+  {
+   "id": "ffct-24773",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis balikwas finds only this card (unsourced), while --bis atras returns 7 bodies including ffct-38640 \"Ang awto nga nag-atras gawas sa driveway\" for a car reversing, so replacing the unattested stem in both spots delivers fact_en's \"go backwards / back up\" with no fact, number or relationship changed."
+  },
+  {
+   "id": "ffct-24816",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage shows maluod in 1 body (this card only) and ligo in 56 bodies that are all about BATHING (maya \"maligo sa abog\", carabao mud baths), whereas matumba is the corpus word for falling/knocking over (383 bodies, ffct-01242 \"Ngano nga dili ka matumba?\", ffct-03441 wind knocking plants over) and moliko is the corpus word for turning/bending (94 bodies, ffct-01620 fins help a fish \"moliko\"), so both swaps are minimal and attested."
+  },
+  {
+   "id": "ffct-24869",
+   "verdict": "ACCEPT",
+   "reason": "The --en road frequency table gives dalan 162 (daan does not even appear), and daan-for-road survives in only 4 sibling bodies of this same vehicle block while ffct-25007 writes both in one sentence (\"tali sa mga gulong ug sa daan — labi na kon basa ang dalan\"), so the single-word fix restores the corpus word for \"road\" and nothing else changes."
+  },
+  {
+   "id": "ffct-24872",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis gipalit returns 9 bodies that are all about BUYING (store bananas, market fish, iodized salt), while gibalhin is the corpus rendering of displaced water in the identical Archimedes context (ffct-18306 \"timbang sa tubig nga iyang gibalhin\", ffct-26370 \"gibug-aton sa likido nga gibalhin niini\"), so the one-word repair delivers \"the water it pushes away\" with the weight relationship untouched."
+  },
+  {
+   "id": "ffct-24900",
+   "verdict": "REJECT",
+   "reason": "The old word was already the corpus's: ceb_usage finds pako in 16 bodies whose English says \"nail\" (14 besides the two proposals, e.g. ffct-27191 \"ang pako nga puthaw\", ffct-24240 \"puthaw sama sa pako\", ffct-21503 unmodified \"mga pako ug mga sensilyo\") and the --en nail table shows pako 21 vs lansang 56 — the same attested-minority band as the already-refuted kagang (11) and sanga (20), so this is word preference, not a delivery failure."
+  },
+  {
+   "id": "ffct-24983",
+   "verdict": "REJECT",
+   "reason": "Same refutation as ffct-24900: ceb_usage attests pako for hardware nails in 14 other Cebuano bodies (21 occurrences in the --en nail table against lansang's 56), which is at or above the kagang/sanga threshold that already sank four proposals, so rewriting it is rewriting attested Cebuano."
+  },
+  {
+   "id": "ffct-25169",
+   "verdict": "REJECT",
+   "reason": "The repair imports a Tagalog form: ceb_usage --bis Yumuko returns only 2 bodies (ffct-24472/24473, themselves Tagalog-leaked), while the corpus's Cebuano imperative for this very sentence is \"Pagyuko og ubos\" (ffct-30102) or \"yukbo ka\" (ffct-22620) — and the edit also bundles a second, separate swap (duhaon -> ipundok) into the same body."
+  },
+  {
+   "id": "ffct-25378",
+   "verdict": "ACCEPT",
+   "reason": "Both old words fail the corpus test — `matahasan` returns 1 body (this card itself) and `nalingkod` also 1 body (itself), while the root `lingkod` in 8 bodies means only sit/crouch/perch — and both replacements are attested (`matamaan` 5 bodies, \"matamaan sa kilat/meteorite\"; `mokurog` 55 bodies, used for this exact concept in ffct-03181 \"eardrum, nipis nga panit nga mokurog\" and ffct-09699 \"mokurog ang imong eardrum\"), with the edit confined to two word swaps and the `eardrum` emphasis span intact."
+  },
+  {
+   "id": "ffct-25380",
+   "verdict": "ACCEPT",
+   "reason": "`nagalingkod` has 12 bodies but every one sits inside this same defective block (ffct-24988, 25380–25596) so it never vouches for itself outside it, and the root `lingkod` (8 bodies) is exclusively \"sit\"; `mokurog` is attested in 55 bodies for vibration, the swap is one word, and no fact, number or emphasis span changed."
+  },
+  {
+   "id": "ffct-25383",
+   "verdict": "ACCEPT",
+   "reason": "`nagikod` returns 1 Cebuano body — this card itself, i.e. an unsourced nonce — while `nagtuyok` has 161 bodies and is the corpus word for exactly this inner-ear situation (ffct-00912 and ffct-02068 both render \"you're still spinning\" as \"nagtuyok\" alongside inner-ear fluid), and the edit is a single-word swap that leaves the fluid/brain/balance relationship untouched."
+  },
+  {
+   "id": "ffct-25390",
+   "verdict": "ACCEPT",
+   "reason": "The replaced `nagalingkod` is attested only inside this defective vibration block (12 bodies, all ffct-249xx/255xx) with root `lingkod` meaning \"sit\" in the 8 genuine bodies, whereas `mokurog` (55 bodies) is corpus-standard for inanimate vibration (ffct-03181 \"panit nga mokurog\", ffct-16917 \"particles nagkurog\"); the single word swap keeps the emphasis span \"mas ubos nga pitch\" verbatim and the slower-vibration/lower-pitch relation unchanged."
+  },
+  {
+   "id": "ffct-25401",
+   "verdict": "ACCEPT",
+   "reason": "`mouyog` is attested in 22 bodies in precisely this construction — ffct-22172 \"kuwerdas mouyog nga mas paspas\" and ffct-22173 \"kuwerdas mouyog nga mas hinay\" for longer/shorter vibrating faster/slower — while the replaced `nagalingkod` is confined to the defective block and its root means \"sit\"; both occurrences are plain word swaps with the length/pitch facts untouched."
+  },
+  {
+   "id": "ffct-25482",
+   "verdict": "ACCEPT",
+   "reason": "`pagkat-on` has 26 bodies and in every one it means \"learning\" (ffct-05549 \"tulog sa pagkat-on\"), so the old text said \"when you learn all the paint colours\" and genuinely failed the English \"Mix every paint colour together\"; `sagolon` is attested in 30 bodies in the identical frame (ffct-15016 \"Kung sagolon kini\", ffct-16087 \"Kung sagolon, mobugnaw\"), and only the opening verb clause changed."
+  },
+  {
+   "id": "ffct-25490",
+   "verdict": "ACCEPT",
+   "reason": "`nag-vibrate` is attested in 45 Cebuano bodies and specifically for particle vibration (ffct-16917 \"ang particles niini nagkurog o nag-vibrate\", ffct-18242 \"Nag-vibrate lang sila sa ilang dapit\"), while the replaced `nagalingkod` appears only within this defective block and `lingkod` means \"sit\"; the swap is one word and the emphasis span \"transverse wave\" is still verbatim."
+  },
+  {
+   "id": "ffct-25562",
+   "verdict": "ACCEPT",
+   "reason": "`nagawagtang` returns just 3 bodies, all three inside this same defective scattering block (25296, 25478, 25562), and its root `wagtang` means eliminate/vanish (ffct-13400 \"wagtangon ang mga lugar\"), so the old text said the light was wiping out the particles; `nagkatag` has 77 bodies and the katag family is the corpus rendering of light scattering in the same shape (ffct-22019 \"ang kahayag mokatag sa ... tinulo sa tubig\", ffct-18510 \"particles nga nagkatag sa kahayag\"), with the \"Tyndall effect\" emphasis span intact."
+  },
+  {
+   "id": "ffct-25592",
+   "verdict": "ACCEPT",
+   "reason": "`--bis lingkod` returns 8 bodies that all mean sit/perch/crouch (the only \"vibrate\" uses of nagalingkod sit in the same defective id-block 24988-25591, so they cannot vouch for this card), while `--bis uyog` returns 216 bodies including ffct-06615 which renders vibrating vocal cords as \"mag-uyog\" — a one-word, fully attested repair."
+  },
+  {
+   "id": "ffct-25593",
+   "verdict": "ACCEPT",
+   "reason": "`--bis ginhawa` shows all 111 bodies mean breathe/breath, never \"release\", while `--bis nagpagawas` returns 297 bodies for release and ffct-35145 uses the exact proposed construction \"hinay-hinay nga nagpagawas niini sa ...\" for English \"slowly releasing it into\"."
+  },
+  {
+   "id": "ffct-25726",
+   "verdict": "ACCEPT",
+   "reason": "The old body said \"pagpataas sa tubig\" (lift water), a relationship fact_en never states; the swap to \"mga butang\" is a one-word restoration of \"lift things\" using a word already present in the same sentence (\"duha ka butang\")."
+  },
+  {
+   "id": "ffct-25799",
+   "verdict": "ACCEPT",
+   "reason": "`--bis aso` (212 bodies) is overwhelmingly cigarette/fire smoke and ffct-09057 explicitly contrasts it with vapor (\"dili aso\"), so the bare gloss \"gipalihok sa aso\" teaches a smoke-powered engine, while `--en \"steam engine\"` shows the corpus' own gloss at ffct-25699: \"makina nga de-alisngaw (steam engine)\" and `--bis alisngaw` gives 216 bodies."
+  },
+  {
+   "id": "ffct-25935",
+   "verdict": "ACCEPT",
+   "reason": "`--en \"fastest land\"` shows the corpus renders \"the fastest land animal on Earth\" as \"pinakapaspas nga mananap/hayop sa yuta\" (ffct-04434, ffct-08350), so the old \"sa tibuok yuta\" overclaimed fastest animal in the whole world and deleting the single word \"tibuok\" yields the corpus-standard rendering."
+  },
+  {
+   "id": "ffct-26999",
+   "verdict": "ACCEPT",
+   "reason": "`--bis gipainit` returns 55 bodies that all mean actively heated (pasteurized milk, incubated eggs), contradicting fact_en's \"keeps liquids hot\", while `--bis gipabilin` (30 bodies) shows the identical frame at ffct-01057 \"Gipabilin sa lawas nga balanse ang asukal\" = \"the body keeps ... balanced\"."
+  },
+  {
+   "id": "ffct-27016",
+   "verdict": "ACCEPT",
+   "reason": "All 62 corpus hits for \"mokusog\" mean grow stronger/faster (heartbeat, lungs, muscles), never warm, while `--bis moinit` returns 149 bodies for warming including skin/hands (ffct-00161, ffct-04117); one-word fix and the emphasis span \"infrared radiation\" is still verbatim."
+  },
+  {
+   "id": "ffct-27039",
+   "verdict": "ACCEPT",
+   "reason": "`--bis uyog` shows 216 bodies meaning shake/sway/vibrate, not rub, while `--bis kuskos` returns 33 bodies for rubbing including ffct-04117 \"Nganong moinit ang kamot pag kuskoson?\" — a one-word fix that restores fact_en's \"rubbing a balloon\" with \"static electricity\" intact."
+  },
+  {
+   "id": "ffct-27089",
+   "verdict": "ACCEPT",
+   "reason": "`--bis maligid` returns 5 bodies that all mean ROLL (wheels, test tubes rolling off a table), so \"maligid kaayo ang dahon\" said the leaf rolls, while `--bis madulas` shows 30 bodies using it for exactly this slippery/friction concept; the edit is the same one-word swap twice and \"friction\" survives verbatim."
+  },
+  {
+   "id": "ffct-27191",
+   "verdict": "ACCEPT",
+   "reason": "`--bis pako` gives 359 bodies of which 280 are WING/FIN and only 16 nail (all inside the same contaminated ffct-27xxx/28xxx block), whereas `--bis lansang` is 44 bodies with 43 about nails including ffct-16309's \"lansang nga puthaw\" = \"solid iron nail\"; single-token swap, \"magnetic domains\" intact."
+  },
+  {
+   "id": "ffct-27208",
+   "verdict": "ACCEPT",
+   "reason": "`--bis mahipos` returns exactly 1 body — this card itself — so the old word is unsourced, while `--bis matandog` returns 13 bodies for \"touched\", including ffct-08544, the sibling Venus-flytrap card (\"Kung ang sensitibo nga trigger hairs sa Venus flytrap matandog\"); one-word swap, both emphasis spans intact."
+  },
+  {
+   "id": "ffct-27230",
+   "verdict": "ACCEPT",
+   "reason": "`--bis gihuyop` shows 9 bodies that all mean BLOWN by wind (leaf blown, windsock, fan), so \"gihuyop ang bow\" failed \"fully drawn bow\", while `--bis gibira` gives 144 bodies of pulling including ffct-09067's stretched rubber band storing elastic energy; 50 joules and \"elastic potential energy\" unchanged."
+  },
+  {
+   "id": "ffct-27277",
+   "verdict": "ACCEPT",
+   "reason": "`--bis garbo` shows its only corpus-wide sense is PRIDE (ffct-05090 \"Garbo sa Palawan\"), its rough-texture uses being confined to this same defective block, and `--en '\\brough\\b'` ranks gaspang 35 / magaspang 24 with garbo absent, so magaspang (29 bodies) is the corpus word; only the two broken tokens changed and \"friction\" is verbatim."
+  },
+  {
+   "id": "ffct-27384",
+   "verdict": "ACCEPT",
+   "reason": "`--en 'horse pulling'` shows the corpus renders a horse pulling a kalesa as \"giguyod sa kabayo\" (ffct-24886), and `--bis naggukod` has its non-gravity uses meaning CHASE (reef shark chasing food, predator chasing deer), so \"naggukod sa kalesa\" read as the horse chasing the cart; one-token swap to an attested stem (guyod, 7 bodies) with \"kinetic energy\" intact."
+  },
+  {
+   "id": "ffct-27394",
+   "verdict": "ACCEPT",
+   "reason": "Each of the three changed spans was a distinct meaning error — `--bis hikap` is 169 bodies of TOUCHING (not lifting effort; `--bis pag-alsa` = 65 bodies of lifting), \"Usahay lang\" said \"only sometimes\" against fact_en's \"only changes\", and `--bis uyog` is 216 bodies of VIBRATING/swaying rather than pull (`--bis bira` = 173 bodies, noun use attested in ffct-12019) — nothing correct was restyled, the new clause copies the attested \"Usbon lang niini ang…\" pattern of ffct-00766, and emphasis_bis is empty."
+  },
+  {
+   "id": "ffct-27403",
+   "verdict": "ACCEPT",
+   "reason": "`--bis maluspad` shows its corpus-wide sense is PALE (tamaraw's pale markings, pale comet tail, Milky Way band), so \"maluspad ang paglakaw\" did not say slippery, while `--bis madulas` has 30 bodies for slipping/friction; single-token swap and \"friction\" still appears verbatim."
+  },
+  {
+   "id": "ffct-27405",
+   "verdict": "ACCEPT",
+   "reason": "`--bis pako` returns 359 bodies that all mean WING or FERN (bat wings, bee wings, fish fins), while `--bis lansang` returns 44 bodies that are all nails — including ffct-16309's verbatim \"lansang nga puthaw\" for \"solid iron nail\" — and across the 118 English nail cards the corpus splits lansang 43 / pako 16 with 4 of the 16 pako cards carrying Tagalog contamination markers (`bakal`, `nagiging kayumanggi`) versus 0 of 43 lansang cards, so \"pako nga puthaw\" read as \"iron wing\"; the swap is one word and the emphasis span \"ferromagnetic\" survives verbatim."
+  },
+  {
+   "id": "ffct-27409",
+   "verdict": "ACCEPT",
+   "reason": "Same corpus evidence: pako is attested 359 times for wings/ferns and never cleanly for nails, lansang is the corpus rendering of nail (44 bodies, e.g. ffct-15177 \"lansang sa tubig\" for a nail in water), so \"metal nga pako\" failed to deliver \"metal nails\"; one-word edit, \"chemical reaction\" still verbatim."
+  },
+  {
+   "id": "ffct-27438",
+   "verdict": "ACCEPT",
+   "reason": "`--bis gukod` shows it is the corpus word for CHASE (oysters/anglerfish/predators) with only 1 of 1,177 English \"pull\" cards using it versus 162 using bira, and `--bis bira` returns 173 bodies with the imperative \"biraha\" attested for physically pulling (ffct-00456, ffct-10299 \"Ayaw kini biraha og kusog\"), so \"paggukod ang plastic plug\" said chase, not pull; one-word repair, no emphasis spans to break."
+  },
+  {
+   "id": "ffct-27514",
+   "verdict": "ACCEPT",
+   "reason": "`--bis luspad` returns 40 bodies that all mean PALE (cave animals, pale bellies, pale urine) and it appears in only 1 of the 167 English slip cards, while `--bis madulas` returns 30 bodies used exactly for slipping in friction cards (ffct-24780, ffct-27024, ffct-27143), so \"mas luspad\" said \"paler\" instead of \"slipperier\"; the 0.03 and 0.8 coefficients are untouched."
+  },
+  {
+   "id": "ffct-27536",
+   "verdict": "ACCEPT",
+   "reason": "`--bis bangko` returns 17 bodies meaning bank, bench or chair and never a wheeled tool, while `--en wheelbarrow` shows kariton is the corpus's own Cebuano rendering of wheelbarrow in 10 of the 27 wheelbarrow cards (ffct-26784 \"Ang wheelbarrow o kariton\", ffct-26962, ffct-27112, ffct-27631), so \"bangko\" delivered \"bench\" where fact_en says wheelbarrow; only that noun changed, the lever/soil/arm content is intact."
+  },
+  {
+   "id": "ffct-27564",
+   "verdict": "ACCEPT",
+   "reason": "A substring scan shows all 14 talikod bodies mean TURN AWAY / face away (Earth turning from the Sun, new moon facing away) and none mean jump, while lukso has 181 bodies used precisely for jumping/leaping (ffct-00578, ffct-01701 kangaroo leap), so \"makatalikod ug unom ka beses nga mas taas\" was nonsense against \"jump six times higher\"; the emphasis span \"usa ka-unom\" still appears verbatim."
+  },
+  {
+   "id": "ffct-27636",
+   "verdict": "ACCEPT",
+   "reason": "`--bis buhian` returns 50 bodies that all mean RELEASE / let go (crab eggs released to sea, rescued animals set free, rubber band released), the opposite of holding a car up, while `--bis alsahon` returns 16 bodies for lifting heavy loads including the wheelbarrow card ffct-22264 \"sayon kaayo alsahon ang bug-at nga karga\"; one-word fix and the 1,500 kilograms figure is unchanged."
+  },
+  {
+   "id": "ffct-27666",
+   "verdict": "ACCEPT",
+   "reason": "`--bis hunong` returns 78 bodies that all mean STOP/quit (heart never stopping, stopping medicine, still water), so \"hilum nga hunong\" said \"quiet stop\" not whisper, while `--bis hunghong` is attested for whisper in 3 bodies including the near-identical sound-speed card ffct-24390 \"Parehong 340 m/s ang singgit ug hunghong\"; single-word repair with \"343 metros kada segundo\" verbatim."
+  },
+  {
+   "id": "ffct-27704",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis makabug-at returns only 4 bodies, 3 of them inside this same 27xxx cluster, while the root bug-at (650 bodies) means \"heavy\" and the corpus word for \"lift\" is alsa/makaalsa (116/8 bodies, e.g. dcard-10965 \"makaalsa og bug-at nga mga butang\"), so the old text said \"make heavy\" instead of fact_en's \"lift heavy pieces\" and the swap restores it with no new content."
+  },
+  {
+   "id": "ffct-27778",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis mokusog shows all 62 bodies mean \"grow stronger/faster\" (heart, muscles, lungs) and never \"warm\", while moinit has 149 bodies rendering exactly \"warms up\", so the single-word swap delivers fact_en's \"warms your hands\" and leaves the emphasis span \"direct heat conduction\" verbatim."
+  },
+  {
+   "id": "ffct-27821",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis garbo shows 10 of its 11 bodies are this very friction cluster and the one independent use (ffct-05090 \"Garbo sa Palawan\") means \"pride\", while --en '\\brough\\b' ranks magaspang/gaspang top (24/35 of 127 cards) and ffct-07674 independently pairs both swaps for tree bark (\"hapsay ang panit ... adunay magaspang\"), so \"rough wood\" becomes fact_en's \"rough bark\" with \"friction\" intact."
+  },
+  {
+   "id": "ffct-27872",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis maluspad shows its independent bodies (07204, 29190, 31325) all mean \"pale\", matching luspad's 40 bodies, whereas madulas has 30 bodies all meaning \"slip\" in friction cards, so the old \"dili sila maluspad\" (won't turn pale) failed fact_en's \"stops them from slipping\" and the one-word fix is attested."
+  },
+  {
+   "id": "ffct-27891",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis garbong returns 10 bodies that are all this same defective 27xxx/28xxx band while garbo elsewhere means \"pride\", and magaspang (29 bodies) is the corpus word for rough texture (ffct-18453 \"texture (mahayahay o magaspang)\"), so the lone swap delivers fact_en's \"rough texture\" and keeps \"friction\" verbatim."
+  },
+  {
+   "id": "ffct-27934",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis pag-ukit shows all 21 bodies mean \"carving\" (bulul, Banaue, Capiz shells), so \"pag-ukit sa bug-at nga karga\" said carving rather than fact_en's \"tying heavy loads\", and pagbugkos is attested for tying (ffct-12971 weaverbird \"tying its first strands\") just as magaspang is attested for rough against unattested-outside-this-batch garbong."
+  },
+  {
+   "id": "ffct-27963",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis mapalong shows all 40 bodies mean \"the light goes out\", the literal opposite of fact_en's \"to light the bulb\", while mosiga has 79 bodies meaning \"lights up/glows\", so the swap fixes a polarity inversion and preserves \"electrical energy\" verbatim."
+  },
+  {
+   "id": "ffct-28090",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis pako returns 359 bodies all meaning \"wing\" or \"fern\" (a Tagalog false friend), while lansang has 44 bodies all meaning \"nail\", including ffct-16309's \"solido nga lansang nga puthaw\" for \"solid iron nail\", so the swap delivers fact_en's \"iron nails\" with \"neodymium magnet\" untouched."
+  },
+  {
+   "id": "ffct-28096",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis pako returns 359 bodies all meaning wing/fin/fern (a Tagalog false friend) and none a metal nail, while --bis lansang returns 44 bodies all rendering \"nail\", so the two-token swap is the minimal attested repair with no emphasis spans at risk."
+  },
+  {
+   "id": "ffct-28111",
+   "verdict": "ACCEPT",
+   "reason": "--bis huyop shows 16 bodies all meaning blowing air (wind, balloons, flutes), never pulling, while --bis nagabira shows 3 bodies of which two are gravity pulling (ffct-28611, ffct-34036), and the emphasis span \"gravity\" still appears verbatim."
+  },
+  {
+   "id": "ffct-28138",
+   "verdict": "ACCEPT",
+   "reason": "--bis patindog gives 48 bodies all meaning vertical/upright (never stun), while --bis paluyahon gives 3 bodies including ffct-06527, the sibling electric-ray card whose English \"uses its shock to stun the fish it wants to eat\" is rendered with exactly \"paluyahon ang isda\"."
+  },
+  {
+   "id": "ffct-28153",
+   "verdict": "ACCEPT",
+   "reason": "--bis talong returns 28 bodies all about eggplant, never flower parts, while --bis petalo returns 13 bodies for petals including two gumamela cards (ffct-02649, ffct-08446), so the single-word swap is attested and minimal."
+  },
+  {
+   "id": "ffct-28155",
+   "verdict": "ACCEPT",
+   "reason": "Same corpus evidence as ffct-28096 — pako is wing in all 359 bodies while lansang is the corpus word for nail in 44 bodies, including the iron-nail phrasing \"lansang nga puthaw\" (ffct-16309) — and the emphasis span \"magnetization\" is untouched."
+  },
+  {
+   "id": "ffct-28226",
+   "verdict": "ACCEPT",
+   "reason": "The old body dropped the English payload \"slowing them down\" entirely, and --bis makapahinay shows 30 bodies rendering exactly \"slow down\" (including the drag sibling ffct-23334 \"walay hangin nga makapahinay\") with --bis kanila attested in 310 bodies, so the appended clause restores the missing fact with attested wording and adds nothing else."
+  },
+  {
+   "id": "ffct-28252",
+   "verdict": "ACCEPT",
+   "reason": "--bis mokusog returns 62 bodies meaning stronger/faster/louder and never \"gets hot\", while --bis moinit returns 149 bodies for heating up, so the old text said the spoon \"got stronger\" in the soup and the one-word swap is the minimal attested fix."
+  },
+  {
+   "id": "ffct-28290",
+   "verdict": "ACCEPT",
+   "reason": "--bis pasulod shows 47 bodies all meaning inward flow (the opposite of bypassing), while --bis molaktaw shows 5 bodies all meaning \"skips\", including the identical construction \"molaktaw sa liquid phase\" in ffct-21293, so the swap restores \"bypasses\" minimally."
+  },
+  {
+   "id": "ffct-28322",
+   "verdict": "ACCEPT",
+   "reason": "`--bis huyop` shows 16 bodies all meaning BLOW (wind, blowing into a balloon), never float, so the old \"makapahuyop\" failed fact_en's \"make a frog float\"; the corpus renders floating with lutaw (555 bodies; causative `makapalutaw`/`pagpalutaw` attested in 6 bodies, e.g. ffct-00553, ffct-20864), and nothing else in the sentence changed."
+  },
+  {
+   "id": "ffct-28445",
+   "verdict": "ACCEPT",
+   "reason": "`--bis pakpak` returns 25 bodies that all mean WING/flap (butterfly wings, fins), never bouncing, while `talbog` is the corpus word for light bouncing off objects (28 bodies, e.g. ffct-22652 \"ang kahayag motalbog gikan niini paingon sa atong mga mata\"); one-word swap, emphasis span \"reflection stage\" still verbatim."
+  },
+  {
+   "id": "ffct-28456",
+   "verdict": "ACCEPT",
+   "reason": "`--bis trapo` shows 6 bodies all meaning RAG/WIPE (trapohan, mapahid sa trapo), so \"nag-trapo sa hangin\" said the insulation wipes the air; `nag-trap` is attested for exactly this concept in near-identical cards (ffct-19954 \"porous structure nag-trap og hangin\", ffct-20178 feathers \"nag-trap ug hangin para sa insulation\", ffct-20987 \"nag-trap sa steam\")."
+  },
+  {
+   "id": "ffct-28474",
+   "verdict": "ACCEPT",
+   "reason": "`--bis tulon` returns 2 bodies, the only real one being ffct-13839 \"tibuok nilang tulonon ang biktima\" = SWALLOW (a Tagalog talon false friend), while `lukso` is the corpus word for jumping (34 bodies incl. ffct-01937 on luksong tinik, `makalukso` in 22 bodies); single word changed and the \"gravity\" emphasis span survives."
+  },
+  {
+   "id": "ffct-28503",
+   "verdict": "ACCEPT",
+   "reason": "`--bis hurot` has 1 body, ffct-14006 \"hurot-on sa bakterya ang oxygen\" = USE UP/CONSUME, not pull, so the old text said gravity consumed the fish; `gibira` is the corpus rendering of gravity pulling (144 bodies, incl. ffct-23812/ffct-24636 \"gibira sa gravity\"), with \"gravity\" still verbatim."
+  },
+  {
+   "id": "ffct-28567",
+   "verdict": "ACCEPT",
+   "reason": "`--bis bati` / `\\bmobati\\b` returns 55 bodies that uniformly mean FEEL (mobati og kasakit, kakapoy, katugnaw), never vibrate, while `vibrate` is attested in 110 bodies including the exact form `mo-vibrate` (18 bodies, e.g. ffct-20681 \"water molecules mo-vibrate\"); emphasis \"sound waves\" untouched."
+  },
+  {
+   "id": "ffct-28598",
+   "verdict": "ACCEPT",
+   "reason": "`--bis duso` shows 19 bodies all meaning PUSH — ffct-22428 defines force as \"duso o bira\" (push or pull) — so the old text contradicted fact_en's \"pull the heavy carriage\"; `pagbira` is attested in 109 bodies for pulling, and the \"lever\" emphasis span is intact."
+  },
+  {
+   "id": "ffct-29107",
+   "verdict": "ACCEPT",
+   "reason": "`--bis hapdos` returns 2 bodies, the only other one being dcard-08166 \"naay hapdos o burning effect\" = STINGING/BURNING, which does not deliver fact_en's \"slanted\" sunlight; `pahilig` is the corpus word for slant (12 bodies, e.g. ffct-22660 \"kahayag motama sa salamin nga pahilig\", ffct-29365 winds), and only that one word changed."
+  },
+  {
+   "id": "ffct-29163",
+   "verdict": "ACCEPT",
+   "reason": "`ceb_usage.py --bis laki` returns 87 bodies and every one of them means MALE (laki nga baka, laki nga peacock) — the corpus never uses laki for size — while `--bis managsama` (303 bodies) / `--bis gidak-on` (363) and the near-identical eclipse card ffct-32030 (\"halos managsama og gidak-on ang Adlaw ug Bulan\") show the new wording is the corpus's own rendering of this exact fact, with only the one defective slot touched and \"total solar eclipse\" intact."
+  },
+  {
+   "id": "ffct-29261",
+   "verdict": "ACCEPT",
+   "reason": "`--bis ulat` finds only 3 bodies and one of them (dcard-05197, \"gamay nga ulat sa liso\" = scar on a seed) shows the Cebuano sense is SCAR, whereas `--bis report` returns 36 bodies (\"unang report sa PHIVOLCS\", \"weather report\") and `--en report` ranks report/reports as the top Cebuano tokens with ulat absent, so the one-word swap fixes a false friend minimally."
+  },
+  {
+   "id": "ffct-29331",
+   "verdict": "ACCEPT",
+   "reason": "`--bis dalaw` returns 1 body — this card itself — while `--bis dalag` returns 166 bodies all rendering YELLOW (dalag nga dahon, dalag nga pula sa itlog), so the old text did not deliver fact_en's \"yellow\" at all and the single-word repair is the attested corpus term."
+  },
+  {
+   "id": "ffct-29402",
+   "verdict": "ACCEPT",
+   "reason": "`--bis hanas` returns 8 bodies that all mean SKILLED (hanas nga mangangayam) and `--bis maghanas` returns only this card, while `--bis banlas` shows the corpus washing topsoil away with exactly this root (ffct-32494 \"banlasan sa ulan ang dato nga topsoil\") and `--bis makabanlas` is attested in ffct-29286, so the one-word fix delivers \"wash away\" without touching anything else."
+  },
+  {
+   "id": "ffct-29847",
+   "verdict": "REJECT",
+   "reason": "The old word was fine: the corpus uses poste for Earth's poles in the very same aurora context — ffct-28949 \"Makita lang ang aurora duol sa duha ka poste sa Kalibutan\" — plus ffct-29526 (amihanang poste sa Earth), ffct-33097 (poste sa Yuta) and the magnet-pole cards ffct-22203/22204/22439, so swapping to polo is dialect/word preference, not a delivery failure."
+  },
+  {
+   "id": "ffct-29848",
+   "verdict": "REJECT",
+   "reason": "Same refutation: `--bis poste` plus a corpus scan shows \"habagatang/amihanang poste\" and \"poste sa Kalibutan\" already attested for Earth's north/south poles (ffct-28949, ffct-29526, ffct-33097), so the old rendering delivers fact_en and the polo swap is only a lexical preference."
+  },
+  {
+   "id": "ffct-29994",
+   "verdict": "ACCEPT",
+   "reason": "`--bis kalason` returns 1 body (this card alone) and a scan of \\bkalas\\w* finds only kalasag (shield) and one kalaskasan, while lason in the corpus means POISON (6 bodies) — so the stray second verb was unsourced and hazardous; deleting it leaves exactly the corpus's own rendering of the identical English in ffct-19672 (\"kung unsa ka lisod kini gasgason\"), with no fact added or lost."
+  },
+  {
+   "id": "ffct-30001",
+   "verdict": "ACCEPT",
+   "reason": "`--bis bordahi` returns \"NOT ATTESTED IN ANY CEBUANO BODY\" (borda = embroidery, not glaze), while `--bis unglazed` returns 3 bodies including ffct-36341's streak-plate card \"unglazed porcelain streak plate\", so the swap restores the corpus term for this exact concept in one slot and \"streak plate\" still appears verbatim."
+  },
+  {
+   "id": "ffct-30571",
+   "verdict": "ACCEPT",
+   "reason": "`--bis bulak` returns 458 bodies that are all FLOWER (e.g. ffct-05481 \"ang bulak niini\"), while `--bis gapas` returns 24 bodies that are all COTTON and `--en cumulus` shows the corpus's own cumulus cards render \"cotton\" as gapas (ffct-30899 \"Ang cumulus morag gapas\", ffct-30900 \"morag naglutaw nga gapas\"), so the old word was a Tagalog false friend and the one-word fix is the corpus word; emphasis spans \"cumulus\"/\"stratus\" survive verbatim."
+  },
+  {
+   "id": "ffct-32396",
+   "verdict": "ACCEPT",
+   "reason": "Same corpus evidence as ffct-30571 — a scan of the pool shows ffct-30571 and ffct-32396 are the ONLY two bodies where `bulak` stands for English \"cotton\" (all other 456 are flowers), and `--bis gapas` (24 bodies, ffct-01270 \"Ang gapas usa ka tanom…\") is the attested rendering; single-word repair, emphasis \"cumulus\" intact."
+  },
+  {
+   "id": "ffct-30591",
+   "verdict": "ACCEPT",
+   "reason": "`--bis daghan` (3157 bodies) is uniformly MANY, not big, so the old text said \"very many earthquakes\" where fact_en says \"really big/huge\"; `--bis dagko`/`dagkong` return 824/652 bodies and the phrase check shows \"dagko kaayong\" in 6 bodies and \"dagkong linog\" in 5 (ffct-31179, ffct-34003), so the two-word swap is attested and no fact, number or unit moved."
+  },
+  {
+   "id": "ffct-31235",
+   "verdict": "ACCEPT",
+   "reason": "Both edits repair meaning reversals with no new vocabulary: patient-focus marking made the old question read \"can Earth swallow the black hole\" (agent = sa-phrase, as in the corpus's own tukob/tukbonon cards from `--bis tukbon`, 48 bodies), and the old \"layo kaayo nga makabira sa Yuta\" asserted the pull it should deny — the corpus uses the \"kaayo nga dili\" negated-result pattern in 12 bodies; emphasis \"black hole\" appears verbatim."
+  },
+  {
+   "id": "ffct-31669",
+   "verdict": "ACCEPT",
+   "reason": "`--bis humok` (525 bodies) is exclusively SOFT (larvae, leaves, bone marrow) and never humid, so \"kon humok ang hangin\" failed to deliver fact_en's \"humid nights\"; `--bis umog` (51 bodies) and `--en humid` (umog 18 hits, ffct-01783 \"init ug umog ang atong klima\", ffct-22239 \"Sa umog o halumigmig nga hangin\") make umog the attested corpus word, and only that one word changed."
+  },
+  {
+   "id": "ffct-31747",
+   "verdict": "ACCEPT",
+   "reason": "Not a preference call: the card's own next clause is \"paglibot sa Earth sa Adlaw\", so the old molibot made both of fact_en's \"two moves\" the same libot and the contrast was not delivered — `--en \"Earth spins\"` shows that when the corpus draws this same spin-vs-orbit contrast it uses tuyok for spin and libot for orbit (ffct-29502 \"Gawas sa pagtuyok, milibot ang Kalibotan sa Adlaw\", ffct-30944), and \"motuyok ang Earth\" is attested (108 bodies, ffct-33621); emphasis \"Duha ka lihok\" intact."
+  },
+  {
+   "id": "ffct-31993",
+   "verdict": "ACCEPT",
+   "reason": "The old question asked the opposite of fact_en (\"Are they different?\" answered \"Dili!\" while the body then lists the differences); `--bis managsama` returns 303 bodies and the exact opener \"Managsama ba\" appears in 37, including the identical question-and-refute shape ffct-08970 \"Managsama ba ang kapok ug gapas? Dili diay!\", and only the first word changed."
+  },
+  {
+   "id": "ffct-32048",
+   "verdict": "ACCEPT",
+   "reason": "`tunga` is half, so the old body stated 365.5 days against fact_en's \"365 and a quarter\" — a wrong number, not a wording issue; the corpus already writes this exact value as a decimal in 5 bodies (ffct-33098 \"mga 365.25 ka adlaw\", ffct-33345, ffct-33619), the hedge \"mga\" is kept, and nothing else in the sentence was touched."
+  },
+  {
+   "id": "ffct-32404",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage.py --bis kinaadman returns 1 body (this very card, where it means 'wisdom', not 'below'), while --bis ubos shows 945 bodies using it exactly for 'below' (e.g. ffct-00606 'forest floor sa ubos'), so the one-word swap is the minimal, attested repair of a sentence that failed to say subsoil is beneath topsoil."
+  },
+  {
+   "id": "ffct-32458",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage.py --bis gamot shows 494 bodies of which essentially all mean ROOTS (only 1 stray medicine use), while --bis tambal shows 286 bodies and --en medicine ranks 'tambal' first at 272 occurrences, so the old word delivered 'roots' in a go-bag list and the single-word fix is the corpus rendering."
+  },
+  {
+   "id": "ffct-32469",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage.py --en winter puts 'tingtugnaw' at the top (72 of 135 winter cards) and never surfaces 'ting-ulan', which --bis ting-ulan shows is the corpus word for the RAINY season (75 bodies, e.g. ffct-02976 paired against ting-init), so the old text altered fact_en's 'winter' and the swap restores it with an attested word."
+  },
+  {
+   "id": "ffct-32620",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage.py --bis binalikbalik returns 1 body (this card itself, meaning 'repeated' rather than 'reversed'), while --bis balit-ad returns 7 bodies including ffct-28985 'Ngano nga balit-ad ang kolor sa double rainbow' for the identical reversed-colors concept, and the emphasis span 'double rainbow' survives verbatim."
+  },
+  {
+   "id": "ffct-32649",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage.py --bis langgam shows 680 bodies all meaning BIRD (eagle, goose, heron), so the old text said birds where fact_en says ants, while --bis hulmigas shows 115 bodies all meaning ant (ffct-00110, ffct-00154); only the noun changed and 'natural nga palatandaan' is intact."
+  },
+  {
+   "id": "ffct-32708",
+   "verdict": "ACCEPT",
+   "reason": "The old body dropped fact_en's final clause entirely, and the inserted sentence is the corpus's own phrasing for it — ceb_usage.py --bis maghupot returns 9 bodies including ffct-29403 'Ang mga gamot sa tanom maghupot sa yuta' for 'plant roots hold the soil' — with every other sentence and the 'erosion' emphasis untouched."
+  },
+  {
+   "id": "ffct-32730",
+   "verdict": "ACCEPT",
+   "reason": "Both one-word edits fix real delivery failures: --bis Unsang (570 bodies) is the corpus interrogative that the old 'Unang' broke, and --bis mapuslanon (140 bodies) is used only for 'useful/beneficial', inverting fact_en's 'more explosive', whereas ffct-29953 renders 'more explosive eruptions' as 'mas kusog nga pagbuto' (--bis kusog, 2190 bodies)."
+  },
+  {
+   "id": "ffct-32823",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage.py --bis taob shows 54 bodies all meaning TIDE, so the old gloss defined DUCK as 'high tide', while --bis magduko returns ffct-33001 'kinahanglan MAGDUKO, MOTAKIP sa ulo ug liog, ug MOHAWID' — the corpus's own gloss of the DUCK-COVER-HOLD drill — and the DUCK/COVER emphasis spans are unchanged."
+  },
+  {
+   "id": "ffct-32894",
+   "verdict": "ACCEPT",
+   "reason": "Old asserted MakBan is THE largest complex in the world while fact_en hedges \"one of the largest\"; the fix is a pure two-word insertion of the attested construction \"usa sa labing\" (73 Cebuano bodies) and touches nothing else."
+  },
+  {
+   "id": "ffct-32964",
+   "verdict": "ACCEPT",
+   "reason": "Old dropped the central number from fact_en (\"over 1,100 times the surface\"); the restored clause uses only corpus-attested pieces — \"kapin\" (201 bodies, consistently \"more than\" before a figure), \"pilo\" for multiples (136 bodies) and \"ibabaw sa dagat\" (16 bodies) — and the emphasis span \"Philippine Trench\" survives verbatim."
+  },
+  {
+   "id": "ffct-33006",
+   "verdict": "ACCEPT",
+   "reason": "\"sumbrera\" returns 1 Cebuano body and it is this very card, so the corpus never uses it for head protection, while \"helmet\" is the corpus rendering with 25 bodies (biking/skull cards); both emphasis spans stay verbatim."
+  },
+  {
+   "id": "ffct-33030",
+   "verdict": "ACCEPT",
+   "reason": "Old said \"gatusan ka milyon ka tuig\" (hundreds of millions) where fact_en says only \"millions of years\", inflating the figure 100x; \"milyon-milyon ka tuig\" is the corpus phrase for exactly this (66 bodies, e.g. ffct-00984, ffct-00250) and \"Surigao del Norte\" is untouched."
+  },
+  {
+   "id": "ffct-33144",
+   "verdict": "ACCEPT",
+   "reason": "The corpus uses \"nagdala\" only for carrying/bearing (543 bodies, none orbital — the only orbit-adjacent hits are satellites CARRYING instruments), so \"nagdala ang Yuta sa Adlaw\" failed fact_en's \"Earth also moves around the Sun\", while \"libot sa Adlaw\" is the attested orbital phrasing (71 bodies)."
+  },
+  {
+   "id": "ffct-33158",
+   "verdict": "ACCEPT",
+   "reason": "Both replaced words are unattested for their sense — \"matalinghaga\" (figurative) has 2 bodies, one of them this card, versus \"hait\" with 236 bodies for sharp, and \"mipakin\" has exactly 1 body (this card itself, i.e. a non-word), while \"pahamis\"/\"hamis\" for smoothing is attested (140 bodies, incl. dcard-08137 polishing)."
+  },
+  {
+   "id": "ffct-33209",
+   "verdict": "ACCEPT",
+   "reason": "\"nagsabog\" has only 2 bodies — this card plus ffct-18066 where it means leachate oozing/seeping — so it said the suit scattered rather than fact_en's \"ballooned outward\", whereas \"naghubag\" is the corpus word for puffing/swelling up (10 bodies: pufferfish, rising bread)."
+  },
+  {
+   "id": "ffct-33233",
+   "verdict": "ACCEPT",
+   "reason": "\"manghikog\" (to take one's own life) has 1 body and it is this card, so it never rendered fact_en's \"round\"; \"lingin\" is the corpus word for round with 253 bodies, and the swap leaves the 2006/IAU/three-rules facts untouched."
+  },
+  {
+   "id": "ffct-34742",
+   "verdict": "ACCEPT",
+   "reason": "`uwang` has 3 bodies and every one is howling/barking (wolf howl ffct-06105, dog barking dcard-01641), never erosion, while `--bis anod` and the erosion set show the corpus rendering of soil washing away as maanod/pag-anod (ffct-29403 \"aron dili maanod\", ffct-05172 \"mapugngan ang pag-anod sa baybayon\"); `taluktok` in bodies means wave CREST (ffct-21960/21973/21981) so \"steep\" was simply absent, and `tarik nga bakilid` is the corpus's literal rendering of \"steep slopes\" (ffct-33362, ffct-29767, ffct-23058) — six token swaps, no sentence rebuilt, \"vetiver grass\" intact."
+  },
+  {
+   "id": "ffct-34781",
+   "verdict": "ACCEPT",
+   "reason": "`--bis kunhod` returns 0 Cebuano bodies (it is the 'lessen/reduce' root, e.g. \"makunhuran ang paghubag\"), so the old text said the vapor 'decreases' rather than cools, while `bugnaw` has 1038 bodies and the parallel card ffct-15976 uses the identical \"water vapor mobugnaw ug mokondensa\"; single-word swap with \"water vapor\" preserved."
+  },
+  {
+   "id": "ffct-34846",
+   "verdict": "ACCEPT",
+   "reason": "`--bis makabag-on` returns exactly 1 body — this card itself — so it was unsourced, whereas `baga` (858 bodies) is the corpus word for thick and ffct-15976 has \"baga nga gabon\" for \"thick fog\"; `--en fog` ranks gabon 38 vs panganod 16 and ffct-16242 defines \"ang gabon mao ang panganod nga duol sa yuta\", so panganod alone lost the fog/cloud distinction the card is titled on; three word swaps, no emphasis spans to break."
+  },
+  {
+   "id": "ffct-34912",
+   "verdict": "ACCEPT",
+   "reason": "`--bis lukso` shows 34 bodies all meaning jump/leap (frogs, kangaroos), so the old text had the astronauts LEAPING into the Sea of Tranquility instead of landing, while `--bis tugpa` is attested in a body (ffct-03076 \"tugpahanan sa tutubi\" = landing pad) plus the spacecraft title \"Tugpa: Perseverance\" / \"Perseverance Landing\" — one-word repair, no fact altered."
+  },
+  {
+   "id": "ffct-34935",
+   "verdict": "ACCEPT",
+   "reason": "`--bis nagkaluoy` returns 1 body (this card) and `--bis kaluoy` returns 0 — the root means pity, not cooling — while `bugnaw` (1038 bodies) is the corpus verb for cooling, so \"dali ra nga mobugnaw sa ibabaw\" now delivers fact_en's \"cools rapidly on the surface\" via a single-word swap."
+  },
+  {
+   "id": "ffct-35078",
+   "verdict": "ACCEPT",
+   "reason": "`--bis kalibutan` (694 bodies) is uniformly world/Earth (\"pinakatigulang nga kahoy sa kalibutan\"), so the old line claimed the Wall cannot be seen from EARTH — the opposite of fact_en — while `--bis kawanangan` has 249 bodies used for outer space (ffct-07555 \"walay-hangin nga kawanangan\", ffct-08524); one word changed and \"Great Wall of China\" is verbatim intact."
+  },
+  {
+   "id": "ffct-35122",
+   "verdict": "ACCEPT",
+   "reason": "`--bis lingkod` returns 8 bodies, all sitting posture or perching (ffct-03853, ffct-05354, eagle perched ffct-26926), never crouching, while `--bis yukbo` returns the near-identical lightning-safety card ffct-22620 rendering \"crouch down low\" as exactly \"yukbo ka\" — a three-word-to-two-word swap that borrows the corpus's own phrasing."
+  },
+  {
+   "id": "ffct-35178",
+   "verdict": "ACCEPT",
+   "reason": "`--bis guyod` shows 7 bodies all meaning pull/drag (dung beetle pulling, tidal pull, dragging a load), so \"unom-ka-guyod nga kristal\" was meaningless for six-sided, while the corpus writes six-sided cells as \"unom-ka-kilid\" verbatim (ffct-05274) and \"unom ka kilid\" for quartz/snowflake six sides (ffct-18341, ffct-15495); only the two defective compounds changed."
+  },
+  {
+   "id": "ffct-35224",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis makapagligtas returns only this card (root ligtas = safe/rescue, the opposite of being swept off your feet), while --bis makapatumba returns ffct-29807 rendering the identical English 'knock a person right off their feet' as 'makapatumba sa usa ka tawo', so the one-word swap is the corpus's own phrasing and leaves the 'flash flood' emphasis span intact."
+  },
+  {
+   "id": "ffct-35233",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis panghupaw reports NOT ATTESTED IN ANY CEBUANO BODY (and hupaw is sighing, not sweating), whereas --bis pagsingot gives 6 bodies and --bis singot 118, including ffct-03401 'Ang pagsingot nagpalamig kanimo' for 'sweating cools you down', exactly what fact_en states."
+  },
+  {
+   "id": "ffct-35461",
+   "verdict": "ACCEPT",
+   "reason": "The corpus uses paingon for motion *toward* a destination (597 bodies, e.g. 'paingon sa mga suba'), so 'paingon sa bukid' sends the ash toward the mountain instead of down it, while --bis paubos gives 507 bodies with 'paubos sa bukid o bungtod' used for 'down a mountain or hill' in the landslide card ffct-29763."
+  },
+  {
+   "id": "ffct-35539",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis kalingkawas returns NOT ATTESTED (and it means to escape/be freed, not to wallow), while --bis molunang returns ffct-13352 (carabao loves wallowing in mud) plus naglunang 4 and paglunang 3 bodies all glossing English 'wallows in mud'; the 'Mindoro tamaraw' emphasis span is untouched."
+  },
+  {
+   "id": "ffct-35627",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis hilo shows all 362 bodies use it for poison/toxin and --bis mahilo's 5 bodies are all pufferfish poisoning, so the old text said the child was poisoned rather than dizzy, while --bis malipong returns 14 bodies meaning dizzy including the heat cards ffct-00379/ffct-01865 ('mahimo kang malipong' for 'you can feel dizzy'); both occurrences are the same defect fixed identically."
+  },
+  {
+   "id": "ffct-35725",
+   "verdict": "ACCEPT",
+   "reason": "--bis pinakabug-at's 24 bodies all mean heaviest and --bis nabuak's 24 all mean broken/cracked, neither delivering 'richest' or 'decayed', while --bis pinakadato returns ffct-02587 with the same sentence ('Ang topsoil mao ang pinakadato nga patong' for 'The topsoil is the richest layer') and --bis nadunot returns 50 bodies for rotting/decaying matter; 'horizons' still appears verbatim."
+  },
+  {
+   "id": "ffct-35816",
+   "verdict": "ACCEPT",
+   "reason": "--bis balod's 277 bodies are all waves and ffct-06754 explicitly contrasts 'sulog o balod' with tides, so 'taas ug ubos nga balod' delivered wave height rather than the moon-driven tides fact_en states, while --bis taob (54) and --bis hunas (20) show 'taob ug hunas' is the corpus pair for high and low tide (ffct-07128, ffct-12151, ffct-12457); 'grabidad sa bulan' is preserved."
+  },
+  {
+   "id": "ffct-35963",
+   "verdict": "ACCEPT",
+   "reason": "--bis luag's 61 bodies all mean loose/slack (loose soil, loosely attached teeth) and pinakaluag occurs only in this card, while --bis pinakahumok returns 14 bodies including the near-duplicate talc cards ffct-18755 and ffct-19078 that both render 'the softest mineral' as 'ang pinakahumok nga mineral'."
+  },
+  {
+   "id": "ffct-35990",
+   "verdict": "ACCEPT",
+   "reason": "`--bis hagkon` returns 1 body — this card itself (i.e. unattested elsewhere, and it is the 'kiss' root, not 'rub'), while `--bis kuskoson` returns 7 bodies rendering exactly EN \"rub/scrub\" (ffct-04117 \"kuskoson ang atong mga kamot\" = rub our hands), so the one-word swap is the minimal attested repair of a real meaning failure."
+  },
+  {
+   "id": "ffct-36040",
+   "verdict": "ACCEPT",
+   "reason": "A corpus scan for \"ihi-iho\" returns only this card, and `--bis ihi` shows all 114 bodies use it for URINE (kidney/pee cards), whereas `--bis tae` gives 44 bodies using it for animal feces/droppings including \"tae sa mga hayop\" (ffct-06661, ffct-13472) — the old word delivered the wrong substance and the swap is one word."
+  },
+  {
+   "id": "ffct-36091",
+   "verdict": "ACCEPT",
+   "reason": "`--bis kulob` returns 0 bodies for this sense (the only real hits are \"mokulobot\"=shrivel and \"nakakulob\"=belly-down, ffct-25773), so \"gikulob\" said turned-face-down, not \"when shaken\"; \"mauyog\" has 33 bodies including ffct-03301 \"mahikapan o mauyog\" for EN \"touched or shaken\", a one-word, fully attested fix."
+  },
+  {
+   "id": "ffct-36175",
+   "verdict": "ACCEPT",
+   "reason": "`--bis bulag` shows all 120 bodies mean SEPARATE (ffct-06495 \"bulag nga grupo\"), so \"nibulag ang buwan sa adlaw\" said the moon separated from the sun rather than blocked it, while babag-affixed forms appear in 264 bodies for blocking light (ffct-01316 \"nagbabag sa kahayag sa adlaw\"); the emphasis span \"partial solar eclipse\" survives verbatim."
+  },
+  {
+   "id": "ffct-36208",
+   "verdict": "ACCEPT",
+   "reason": "`--bis sul-ob` returns 4 bodies all meaning WEAR (gloves, mask), so \"makasul-ob\" delivered nothing of EN \"suffocate\", while lumos-forms appear in 20 bodies including ffct-18380 \"lumos sa siga pinaagi sa pagpalit sa oxygen\" — the corpus's own word for CO2 smothering by displacing oxygen; \"carbon dioxide\" emphasis is intact."
+  },
+  {
+   "id": "ffct-36259",
+   "verdict": "REJECT",
+   "reason": "The \"mudunggo\"→\"motan-aw\" half is justified (dunggo's 6 bodies all mean snout/land/wash-ashore), but the bundled \"pagkabulag\"→\"pagkabuta\" swap rewrites Cebuano the corpus already uses for this exact concept — bodies ffct-09183 (glaucoma \"hinungdan sa pagkabulag\") and ffct-35161 (eclipse \"mag-resulta sa pagkabulag\") plus title ffct-37828 \"Pagkabulag sa Kolor\" = Color Blindness — so the edit is larger than the defect and turns on word preference between two attested renderings."
+  },
+  {
+   "id": "ffct-36314",
+   "verdict": "ACCEPT",
+   "reason": "`--en crouch` shows the corpus renders crouching as moduko/yuko/pungko (ffct-15393 \"moduko o mokamang duol sa salog\" for EN \"crouch or crawl near the floor\"), and \"lingkodi ang lawas\" (= sit on it) occurs in only 2 bodies, this card and its sibling ffct-35122, so it is not independent attestation; sitting also contradicts the ground-contact point of the safety advice."
+  },
+  {
+   "id": "ffct-36341",
+   "verdict": "ACCEPT",
+   "reason": "`--bis uyog` returns 216 bodies all meaning shake/vibrate (sound, vocal cords), never rub, so \"nag-uyog sa mineral batok sa plate\" said shaking rather than EN \"rub against\", while `--bis kuskos` gives 33 bodies for rubbing against a surface (ffct-16079 \"kuskoson og krayola\"); one-word swap with \"streak plate\" emphasis preserved verbatim."
+  },
+  {
+   "id": "ffct-36348",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis magpahiyom returns only this card (1 body) and the root means \"smile\", while mosingot has 23 bodies rendering exactly \"the body sweats to cool down\" (ffct-00425, ffct-03728), so the one-word swap is the corpus rendering and nothing else in the sentence moved."
+  },
+  {
+   "id": "ffct-36530",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis sungay shows 54 bodies that are all animal horns/antlers (rhino, carabao, Triceratops), never a vehicle horn, while busina has 14 bodies including the sibling Doppler cards ffct-36516/36521/36524 for a passing vehicle horn, so the old word failed the English and the swap is single-word."
+  },
+  {
+   "id": "ffct-36532",
+   "verdict": "ACCEPT",
+   "reason": "Same corpus evidence as its sibling: sungay is attested 54 times only as an animal horn/antler while busina is the corpus word for a sounding horn (14 bodies, incl. the Doppler set ffct-36506/36519), and only that one noun changed while \"hilum\", \"low pitch\", \"lihok\" and \"gilay-on\" are untouched."
+  },
+  {
+   "id": "ffct-36626",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis lumba gives 25 bodies that are all \"race\" or \"lumba-lumba\" (dolphin) and none is a float, so the old text said \"a race jumping on the wave\"; pataw is attested in ffct-24511 precisely as the net's \"light floats\" that ride the surface, and the swap touches one noun only."
+  },
+  {
+   "id": "ffct-36687",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis timba (word-boundary) returns 11 bodies that are all well/pail buckets, so \"nagpadagan sa timba\" does not deliver the ripple-tank dipper, and the corpus's own ripple-tank cards ffct-36670/36671/36674 keep \"dipper\" verbatim in the Cebuano body, making the one-word swap the attested in-series rendering."
+  },
+  {
+   "id": "ffct-36888",
+   "verdict": "ACCEPT",
+   "reason": "Each of the four replaced tokens is corpus-refuted -- moana and res return only this card (1 body each), pag-uyog has 141 bodies all meaning vibration/shaking and never \"pull\", and mohunong means \"stop\" not \"land\" -- while every replacement is attested for exactly this sense (birahay sa gravity in 5 bodies, ffct-14924 rendering the identical English \"weight is gravity's pull\"; modaog 20 bodies; lumba 25 bodies; motugpa 22 bodies incl. the falling-object ffct-21994), and no fact, number or clause structure changed."
+  },
+  {
+   "id": "ffct-36927",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis itupi returns only this card (1 body) and the root is \"fold/trim\", which alters the English instruction \"bringing in chairs\", whereas isulod has 14 bodies for putting something inside (ffct-02933, ffct-23537), so the single-word repair restores the fact without touching \"itali ang gaan nga atop\"."
+  },
+  {
+   "id": "ffct-37255",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage --bis tambayayong returns only this card (1 body), while alindahaw has 23 bodies that are every one a dragonfly (ffct-00093 nymph, ffct-04274 eggs in water, ffct-05044 metamorphosis), so alindahaw is unambiguously the corpus word and only that noun changed."
+  },
+  {
+   "id": "ffct-37440",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage.py --bis boto returns 1 body (this card only), i.e. unattested, while butete appears in 6 tadpole cards (ffct-04918, ffct-10352, ffct-37343, ffct-37347, ffct-37203) as the corpus word for a baby frog, so the single-word swap is minimal and fully attested."
+  },
+  {
+   "id": "ffct-37974",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage.py --bis gubat shows 6 of its 7 bodies mean war/battle (vaccine, dengue, submarine, squid-vs-whale), a Tagalog false friend, while --bis lasang returns 230 bodies all meaning forest, so the one-word swap fixes a genuine mistranslation of \"mountain forests\"."
+  },
+  {
+   "id": "ffct-38479",
+   "verdict": "REJECT",
+   "reason": "new_fact_bis is byte-identical to old_fact_bis (diff shows no changed tokens), so whatever the defect was it is still there."
+  },
+  {
+   "id": "ffct-38501",
+   "verdict": "ACCEPT",
+   "reason": "the old text dropped fact_en's \"for its size\" — the whole point of a density card — and the inserted phrase is the corpus's own idiom for it (ffct-01588 renders \"strongest insect for its size\" as \"kumpara sa iyang gidak-on\"; kumpara = 196 bodies, gidak-on = 363 bodies), with nothing else in the sentence touched."
+  },
+  {
+   "id": "ffct-39250",
+   "verdict": "REJECT",
+   "reason": "ceb_usage.py --bis nagpaliti confirms the old word is unattested (1 body, this card), but the replacement's own root is not: --bis pakunhod returns \"NOT ATTESTED IN ANY CEBUANO BODY\" and, while nagpakunhod itself shows 37 bodies for \"lowers/reduces\", the repaired sentence still says the device reduces \"ang kadaot sa manibela sa dughan\" — the pre-existing garbled relation fact_en never states — so the card is not actually delivered by this swap."
+  },
+  {
+   "id": "ffct-39398",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage.py --bis mopalta shows its 3 bodies all mean reflect/bounce (heat reflection dcard-07176, helmet bouncing ffct-38285), never slide, whereas --bis modausdos returns 9 bodies that are exactly sliding-with-friction (ffct-22990 \"dili modausdos paubos ... sa banghilig\", ffct-22334 ice/friction), so the old word failed fact_en's \"won't slide\"."
+  },
+  {
+   "id": "ffct-39839",
+   "verdict": "ACCEPT",
+   "reason": "ceb_usage.py --bis magtinabangay shows all 56 bodies mean cooperate/help each other (mutualism, ants, termites), not physical attraction, while --bis magdani returns 11 bodies of charge/magnet attraction including the verbatim corpus phrasing \"magdani sa usag usa\" (ffct-18719 for \"attract each other\"), so the verb swap repairs a real fact error minimally."
+  }
+ ]
+}

@@ -527,8 +527,35 @@ So the cheap deterministic wins are already banked; what remains is semantic.
       Verified after writing: 102 cards changed, **0** non-`fact.bis` changes, orphaned
       emphasis spans **0 before and 0 after**, pool diff 1 line.
 
-- [ ] **C5b-2** Re-verify the 199 unverified proposals after the 3:30am Manila reset. Do NOT
-      apply them unverified. Smaller batches this time so a session limit truncates less.
+- [x] **C5b-2 DONE — the 199 owed proposals are verified; 168 more applied.** Run at 04:00
+      Manila, after the reset, in 25 batches of 8 instead of 58 of 12 so a limit would truncate
+      less. All 25 completed, 0 agent errors. **199 judged: 183 ACCEPT, 16 REJECT.**
+
+      C5b verification coverage is now **314/314 — no proposal is unverified.** Totals across
+      both passes: 290 ACCEPT, 24 REJECT, 20 held by the attestation gate, 379 proposer holds.
+
+      **C5b IS NOW COMPLETE: 270 body repairs applied** (102 + 168), median churn 4.2%.
+      Verified after writing: 168 cards changed this pass, 0 non-`fact.bis` changes, orphaned
+      emphasis spans 0 before and 0 after.
+
+      The re-verify was sharper than the first pass because it was told where the first one had
+      erred — "check the word that was REPLACED, not just the one introduced". It rejected 16,
+      including two the gates would not have caught:
+        ffct-13754  new_fact_bis was **byte-identical** to the old. A non-edit dressed as a
+                    repair; the defect is still there.
+        ffct-13786  `bombilya` is the corpus's own word for a PLANT bulb (143 bodies, incl.
+                    "Ang bombilya, sama sa ahos o sibuyas"). Swapping it for English "bulb"
+                    was preference, not repair.
+        ffct-12166  the edit invented a mechanism clause the English never states.
+
+      Worth recording, because it is the single largest confirmed class in the whole audit:
+      **`langgam` = BIRD in 680 Cebuano bodies, uniformly**, and it was used for ANT on card
+      after card — "worker birds", "how do birds share food", "adult birds cannot spin silk".
+      The corpus word is `hulmigas` (115 bodies). Also `halas` (snake) for lizard, `bakaw`
+      (mangrove) for egret, `tahong` (mussel) for giant clam, `binilyon` where the English says
+      trillions, and `kagang` (cricket) on a CICADA card, where the right word is `kuliglig`.
+
+
 
 - [~] **C5c** Triage the 138 unattested title words from C4d (720 cards), then repair the
       confirmed ones. Start with `kulob` (25 boiling cards), `balhas`, `pagtatanom`.
