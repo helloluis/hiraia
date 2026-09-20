@@ -1,0 +1,263 @@
+{
+ "judge": "in-session claude, batched ~20/agent",
+ "n": 58,
+ "note": "ffct-07609 judged in place of dcard-08636 by a batch-construction slip; 58 of 59 gold items scored. ffct-07609 is the byte-identical twin of ffct-07127, so it doubles as a self-consistency probe.",
+ "score": {
+  "n": 58,
+  "unparsed": 0,
+  "accuracy": 0.948,
+  "broken_precision": 0.947,
+  "broken_recall": 0.9,
+  "tp": 18,
+  "fp": 1,
+  "fn": 2,
+  "tn": 37,
+  "per_pattern": {
+   "existential-may": "0/1",
+   "existential-mayroon": "2/2",
+   "governing-verb": "15/15",
+   "locative-nasa": "7/7",
+   "measure-equational": "6/6",
+   "part-possession": "18/20",
+   "pseudo-verb": "7/7"
+  }
+ },
+ "verdicts": [
+  {
+   "id": "ffct-13212",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-03495",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-08252",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-13711",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-07845",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-08651",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-00831",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-29912",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-08179",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-11995",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-13698",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-18985",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-04668",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-26213",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-32385",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-34494",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-05614",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-10373",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-00784",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-22124",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-00290",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-07127",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-09585",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-18867",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-00868",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-02372",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-00263",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-33510",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-07118",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-03148",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-11930",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-19204",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-36399",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-26131",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-00033",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-32027",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-20033",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-01577",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-35034",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-37748",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-01534",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-07609",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-07827",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-10887",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-19713",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-37911",
+   "verdict": "BROKEN"
+  },
+  {
+   "id": "ffct-13422",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-08815",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-14423",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-11790",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-34065",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-13153",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-02651",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-34508",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-34590",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-28953",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-04713",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-33500",
+   "verdict": "CORRECT"
+  },
+  {
+   "id": "ffct-00791",
+   "verdict": "CORRECT"
+  }
+ ]
+}

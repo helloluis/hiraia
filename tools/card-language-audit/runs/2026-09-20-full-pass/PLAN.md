@@ -21,10 +21,31 @@ assisted work including the judge. Corpus is 1.22M tokens of content — well wi
 
 ## Stages
 
-- [ ] **F0** Score the in-session judge on the existing 59-item `gold.json`, same as the eight
-      OpenRouter models. **Do not skip this.** `claude-haiku-4.5` scored BELOW the cheapest
-      model in the bake-off, so "it's the expensive one" is not evidence. Record acc plus
-      precision and recall on BROKEN separately. If BROKEN precision < 0.9, stop and say so.
+- [x] **F0** DONE — in-session Claude, batched ~20/agent (mirroring production batching, not
+      one-call-per-item). **acc .948, BROKEN precision .947, recall .90** (tp18 fp1 fn2 tn37).
+      Passes the precision gate (>= .9), so the sweep proceeds.
+
+      **But it is NOT better than the cheap models**, which is worth stating plainly since the
+      argument for going in-session was cost and convention, not quality:
+
+      | judge | acc | BROKEN prec | BROKEN rec |
+      |---|---|---|---|
+      | 3-model OpenRouter panel | .983 | 1.00 | .95 |
+      | ling-3.0-flash (single, cheapest tier) | .966 | .95 | .95 |
+      | **in-session Claude (single)** | **.948** | **.947** | **.90** |
+
+      It missed 2 genuine part-possession defects the cheap panel caught (`ffct-08651`,
+      `ffct-13422`). One point in its favour: it was CONSISTENT on the byte-identical duplicate
+      probe (ffct-07127 / ffct-07609 both BROKEN), where the OpenRouter panel flipped.
+
+      **Decision: run the sweep as a 3-agent in-session PANEL with majority vote**, not a single
+      judge. The bake-off already showed a panel beats every single member (precision 1.00 vs
+      .95); tokens are free on the subscription, so there is no reason to take the weaker option.
+
+      Caveat: a batch-construction slip judged `ffct-07609` in place of `dcard-08636`, so 58 of
+      59 gold items were scored. `ffct-07609` is the byte-identical twin of `ffct-07127`, which
+      is why it doubled as the consistency probe.
+
 - [ ] **F1** en-mismatch sweep, cards 1-5,000.
 - [ ] **F2** en-mismatch sweep, cards 5,001-10,000.
 - [ ] **F3** en-mismatch sweep, cards 10,001-15,000.
