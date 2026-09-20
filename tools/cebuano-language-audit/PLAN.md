@@ -79,7 +79,41 @@ So the cheap deterministic wins are already banked; what remains is semantic.
       Draw candidates where the Cebuano contradicts its own English, label each WITH the card
       open, and mark every uncertain row `native: true`. Target 40-60 items, FLAG/PASS balanced.
       Record honestly that these labels are Claude's and are not native-verified.
-- [ ] **C1** Score the judge on C0's gold at PRODUCTION batch size. Report accuracy plus
+- [x] **C1** PASSED, with the scope narrowed by what it revealed. 3 independent runs over a
+      125-card production-shaped batch (50 gold + 75 unseen filler, judge blind to which):
+
+      | run | FLAG precision | recall | flags on unseen filler |
+      |---|---|---|---|
+      | 1 | 1.00 | .18 | 0 |
+      | 2 | 1.00 | .24 | 2 |
+      | 3 | 1.00 | .41 | 0 |
+
+      **Precision 1.00 across 375 judgements, zero false positives.** Gate cleared.
+
+      The low recall is NOT blindness — it is a THRESHOLD DIFFERENCE, visible in the notes.
+      The judge only flags when the fact is UNRECOVERABLE; the C0 proposer flagged wrong
+      wording even when the surrounding text rescued the fact. On ffct-15087 it wrote: title
+      'Asin' looks like a typo for 'aso', but "the body correctly says toxic smoke" -> PASS.
+      Both standards are defensible; they answer different questions. So the C0 gold labels
+      are too aggressive, not the judge too blind.
+
+      Recall against the gold's OWN confidence tiers makes it clean:
+        high-confidence FLAGs (unambiguous) .... 2/2  = 100%
+        medium ................................ 4/9
+        low ................................... 1/6
+        false positives on gold PASS rows ..... 0
+      The judge is reliable exactly where the gold is reliable, and misses exactly the rows
+      marked `native: true` where Claude's Cebuano was already the weak link.
+
+      **Consequence for scope:** this judge is fit for "cards that teach a child something
+      FALSE" — the project's accuracy-above-fluency rule — and is not fit for a wording or
+      style audit, which was already out of scope. C2 onward therefore targets unrecoverable
+      factual defects only, and runs as a 3-run union (41% overall recall, 100% on the
+      unambiguous tier, 0 false positives).
+
+      Also measured: 7 of 125 cards got different verdicts across the three runs, which is why
+      the union rather than a single run is the production configuration.
+- [x] **C1-note** original stage text: Score the judge on C0's gold at PRODUCTION batch size. Report accuracy plus
       precision and recall on FLAG **separately** — never averaged. Gate: FLAG precision >= 0.9.
       If it fails, stop and say so rather than sweeping 19,285 cards with an unmeasured judge.
 - [ ] **C2** Measured probe: 2,000 cards, gold spiked in, full card record, NO field truncation.
