@@ -174,7 +174,28 @@ So the cheap deterministic wins are already banked; what remains is semantic.
       monkey -> ungo (witch), feathers -> buhok (hair), light -> sugnod (firewood),
       balance -> bali (broken), toad -> bakulaw (gorilla — the SAME defect found in Tagalog).
 
-      159 distinct word-pair patterns captured. 33,056 cards remain unswept. Judge returns a reusable
+      159 distinct word-pair patterns captured.
+
+- [!] **C3 CHUNK B — BLOCKED BY SESSION LIMIT.** 70 of 100 batches completed (9,800 cards,
+      164 flags = 1.67%, consistent with chunk A's 1.91%). Batches **170-199 did NOT run** —
+      all 30 failed with "You've hit your session limit, resets 10:30pm Asia/Manila".
+      Those 4,200 cards are UNSWEPT and must be re-run after the reset.
+
+      Do not treat the sweep as complete. Remaining: batches 170-336 = 167 batches = ~23,400
+      cards, roughly half the corpus.
+
+      Chunk B's richest new seam is more Tagalog false friends, several severe:
+        bulok   Tagalog 'rotten', but Cebuano COLOUR — ~35 cards; "Gatos Tuig Bulok"
+        hilo    Cebuano POISON, used for 'thread' — "cotton is twisted to become poison"
+        bihag   Cebuano CAPTIVE, used for 'rare' — "captive expensive metal"
+        libog   Cebuano confusion (and crude in Tagalog), used for 'round'
+        lumot   Cebuano MOSS, used for 'soft' — "Moss Rubber Bendable"
+        bakal   Tagalog 'iron'; in Cebuano it is the verb TO BUY (iron is puthaw)
+        mabuak  'break', used for 'spoil' and 'rot' — 132 corpus uses all mean breaking
+        gamot   Cebuano ROOT, used for 'medicine' (4 more)
+      Plus a reversal, ffct-15480 "Tanso Mamatay sa Mikrobyo" = copper DIES FROM germs, the
+      opposite of "Copper Kills Germs"; and ffct-15401 carries a garbled non-word,
+      "Asalinhagikan", where "Asa gikan" belongs. Judge returns a reusable
       `pattern` per flag. Stop early if pattern discovery saturates.
 - [ ] **C4** Grep each discovered pattern corpus-wide, then TRIAGE every hit with its card in
       view. Expect most to be FINE. Report confirmed vs candidates separately.
