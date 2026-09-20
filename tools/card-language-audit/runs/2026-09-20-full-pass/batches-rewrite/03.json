@@ -1,0 +1,327 @@
+[
+ {
+  "id": "ffct-17004",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans: \"Steam comes from hot water and is safe to breathe\" -> ans: \"Ang singaw ay galing sa mainit na tubig at ligtas languyin\" (languyin = to swim in, from langoy; 'safe to breathe / langhapin' is gone, and the card's whole point is steam-safe-to-inhale vs smoke-not-safe)",
+  "tl": "Pareho ba ang singaw at usok?\n\nHindi! Ang singaw ay galing sa mainit na tubig at ligtas languyin. Ang usok ay galing sa sunog, may nasunog na tipik, at hindi ligtas!",
+  "en": "Is steam the same as smoke?\n\nNo! Steam comes from hot water and is safe to breathe. Smoke comes from burning things, has tiny burnt bits, and is not safe!",
+  "title_tl": "Singaw at Usok",
+  "emph_tl": [
+   "singaw",
+   "usok"
+  ]
+ },
+ {
+  "id": "ffct-17890",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans \"If we used pure iron or stone, they'd need to be huge to stand\" -> ans \"Kung purong bakal o bato, kailangan silang sobrang BAGAL para tumindig\" (bagal = slow; 'huge' = sobrang laki/kapal — the size fact is gone and the sentence teaches nonsense)",
+  "tl": "Bakit gumagamit ng steel ang mga tulay at gusali?\n\nSobrang lakas ng steel kahit hindi masyadong makapal o mabigat! Kung purong bakal o bato, kailangan silang sobrang bagal para tumindig. Ang steel ang nagbibigay ng malakas at magagaan na haligi.",
+  "en": "Why do tall buildings and large bridges use steel?\n\nSteel is super strong without being too thick or heavy! If we used pure iron or stone, they'd need to be huge to stand. Steel makes strong, lighter beams possible.",
+  "title_tl": "Steel Tulay Malakas Magaan",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-17986",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans \"stay visible in leaves when chlorophyll breaks down in autumn\" -> ans \"nananatili sa dahon kapag nawala ang chlorophyll sa TAGLAMIG\" (taglamig = winter; autumn = taglagas — wrong season taught)",
+  "tl": "Bakit may maliwanag na orange at dilaw na kulay ang karot at mature na saging?\n\nDahil ito sa mga carotenoid! Ang mga pigment na ito ang nagbibigay ng kulay at nananatili sa dahon kapag nawala ang chlorophyll sa taglamig.",
+  "en": "Why do carrots and ripe bananas have bright orange and yellow colors?\n\nIt’s because of carotenoids! These pigments give plants their colors and stay visible in leaves when chlorophyll breaks down in autumn.",
+  "title_tl": "Carotenoids Halaman",
+  "emph_tl": [
+   "carotenoid"
+  ]
+ },
+ {
+  "id": "ffct-18005",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"Is rust just dirty iron?\" -> tl \"Ang kalawang ba ay bakal na naging MALINIS lang?\" (malinis = clean, the exact opposite of 'dirty'; the answer never restores 'marumi')",
+  "tl": "Ang kalawang ba ay bakal na naging malinis lang?\n\nHindi! Ito ay bagong sangkap na iron oxide na may ibang katangian. Kaya ang pagkalawang ay chemical change, hindi physical!",
+  "en": "Is rust just dirty iron?\n\nNope! It's a totally new substance called iron oxide. Because it has different properties, rusting is a chemical change!",
+  "title_tl": "Kalawang na Bagong Substance",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-18025",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"How does smoking fish like tinapa keep it from spoiling?\" -> tl \"Paano pinapanatili ng PANINIGARILYO sa isda tulad ng tinapa na hindi ito masira?\" (paninigarilyo = smoking cigarettes; smoke-curing is pagpapausok/pagtitinapa)",
+  "tl": "Paano pinapanatili ng paninigarilyo sa isda tulad ng tinapa na hindi ito masira?\n\nAng usok ay may mga kemikal na phenols na pumipigil sa paglaki ng bacteria, kaya mas matagal na sariwa at masarap ang isda!",
+  "en": "How does smoking fish like tinapa keep it from spoiling?\n\nSmoke contains special chemicals called phenols that slow down bacterial growth, keeping the fish fresh and tasty for longer!",
+  "title_tl": "Pinausukang Pagkain",
+  "emph_tl": [
+   "phenols"
+  ]
+ },
+ {
+  "id": "ffct-18335",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"swims up too fast\" / en_ans \"ascends too quickly\" becomes tl \"masyadong mabilis sumalang ang scuba diver\" and ans \"masyadong mabilis ang pagsalang ng diver\". Sumalang/pagsalang does not mean to swim up or ascend (salang = to put over a fire / to undergo), so the upward direction -- the whole cause of the bends -- is gone from the question and is NOT restored by the answer, which repeats the same word. A child reads only that the diver moved fast, not that he rose fast.",
+  "tl": "Ano ang mangyayari kung masyadong mabilis sumalang ang scuba diver?\n\nKung masyadong mabilis ang pagsalang ng diver, ang nitrogen sa dugo ay bubuo ng mga bula! Ang masakit at mapanganib na ito ay tinatawag na 'the bends'.",
+  "en": "What happens if a scuba diver swims up too fast?\n\nIf a diver ascends too quickly, nitrogen dissolved in the blood can form bubbles! This painful and dangerous condition is called decompression sickness or 'the bends'.",
+  "title_tl": "Scuba Diver Nitrogen Bends",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-18380",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "tl asks \"Paano pinapatay ng CO2 fire extinguisher ang sunog?\" (how it PUTS OUT the fire) but ans says \"Naglalabas ito ng CO2 para lusugin ang apoy\" -- lusugin (from lusog, health/vigour) means to nourish or strengthen, the opposite of en \"to smother flames\". The Tagalog answer tells the child the extinguisher releases CO2 to FEED the fire, directly contradicting its own question.",
+  "tl": "Paano pinapatay ng CO2 fire extinguisher ang sunog?\n\nNaglalabas ito ng CO2 para lusugin ang apoy sa pagpalit ng oxygen! Ligtas ito sa sunog sa kuryente dahil hindi nagdadala ng kuryente ang CO2.",
+  "en": "How do CO2 fire extinguishers put out fires?\n\nThey release CO2 to smother flames by displacing oxygen! It's super safe for electrical fires because CO2 doesn't conduct electricity.",
+  "title_tl": "CO2 Pamatay-apoy",
+  "emph_tl": [
+   "CO2"
+  ]
+ },
+ {
+  "id": "ffct-18429",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"Why do places near the sea have milder temperatures than inland areas?\" becomes tl \"Bakit mas malambot ang temperatura sa mga lugar malapit sa dagat?\". Two losses: \"than inland areas\" is dropped and the ans also drops it (\"ang mga lugar tulad ng Pilipinas ay mas malambot\"), so \"mas\" has no comparison partner and the child cannot answer what it is milder THAN; and \"milder\" is rendered as malambot, which means soft to the touch, not moderate in temperature.",
+  "tl": "Bakit mas malambot ang temperatura sa mga lugar malapit sa dagat?\n\nAng tubig ay may napakataas na specific heat—kailangan ng maraming enerhiya para magbago ang temperatura! Kaya ang mga lugar tulad ng Pilipinas ay mas malambot.",
+  "en": "Why do places near the sea have milder temperatures than inland areas?\n\nWater has a very high specific heat, needing lots of energy to change temperature! That is why coastal places like the Philippines have milder temperatures than inland areas.",
+  "title_tl": "Tubig Mataas na Specific Heat",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-19382",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"How much does one carat of a gemstone actually weigh?\" -> tl \"Gaano katinig ang isang carat ng hiyas?\" (katinig = consonant; the weight/heaviness sense is gone from the question)",
+  "tl": "Gaano katinig ang isang carat ng hiyas?\n\nAng carat ay yunit ng timbang para sa mga hiyas! Ang isang carat ay katumbas ng 0.2 gramo, o 200 milligrams.",
+  "en": "How much does one carat of a gemstone actually weigh?\n\nA carat is a unit of weight for gemstones! One carat equals exactly 0.2 grams, which is 200 milligrams.",
+  "title_tl": "Carat 0.2 Gramo Hiyas",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-20464",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en: \"Ever wonder why puddles disappear without boiling?\" -> tl: \"Napapansin mo ba na nawawala ang latian kahit hindi kumukulo?\" — 'latian' means a swamp/marsh, not a puddle; the answer repeats it ('Ang mga latian ay nagiging singaw...'), so the everyday puddle the lesson depends on is gone and the child is told swamps vanish.",
+  "tl": "Napapansin mo ba na nawawala ang latian kahit hindi kumukulo?\n\nAng mga latian ay nagiging singaw kahit sa normal na temperatura, hindi lang kapag umabot na sa punto ng pagkulo!",
+  "en": "Ever wonder why puddles disappear without boiling?\n\nPuddles evaporate into water vapor at room temperature, not just when water reaches its boiling point!",
+  "title_tl": "Pagsingaw ng Tubig",
+  "emph_tl": [
+   "singaw"
+  ]
+ },
+ {
+  "id": "ffct-20670",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"Do puddles evaporate on cool days?\" becomes tl \"Nag-e-evaporate ba ang mga LATIAN sa malamig na araw?\" -- latian is a swamp/marsh, a permanent wetland, not a puddle (lusak / naipong tubig-ulan). The Tagalog answer repeats \"ang mga latian\", so the entity is never restored; the child learns about swamps drying up, not the small rain puddle the card is about.",
+  "tl": "Nag-e-evaporate ba ang mga latian sa malamig na araw?\n\nOo! Nag-e-evaporate ang mga latian into water vapor sa malamig na araw dahil ang evaporation occurs sa liquid surface sa anumang temperature.",
+  "en": "Do puddles evaporate on cool days?\n\nYes! Puddles evaporate into water vapor on cool days because evaporation occurs at the liquid surface at any temperature.",
+  "title_tl": "Evaporation sa Malamig na Araw",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-21058",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"What is frost on mountain grass?\" becomes tl \"Ano ang HAMOG sa damo ng bundok?\" -- hamog is dew/mist, liquid water condensed from vapor, which is the exact opposite of what this card teaches. The Tagalog answer then asserts \"Ang hamog ay singaw ng tubig na nagiging solid ice crystals nang direkta\" (i.e. dew forms as ice without ever becoming liquid), a false statement about hamog; card ffct-20488 in the same batch correctly uses hamog for \"morning dew\". Frost is namuong hamog / yelong hamog.",
+  "tl": "Ano ang hamog sa damo ng bundok?\n\nAng hamog ay singaw ng tubig na nagiging solid ice crystals nang direkta! Ito ay nabubuo sa matataas na bundok na damo.",
+  "en": "What is frost on mountain grass?\n\nFrost is water vapor changing directly into solid ice crystals! It forms on high altitude mountain grass without becoming liquid water first.",
+  "title_tl": "Pagbuo ng Frost",
+  "emph_tl": [
+   "hamog"
+  ]
+ },
+ {
+  "id": "ffct-21154",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"What is inside the BUBBLING MUD POTS of Tiwi, Albay?\" becomes tl \"Ano ang nasa loob ng mga PUTIK NA KAWALI sa Tiwi, Albay?\" -- kawali is a frying pan, so the Tagalog names the geothermal feature as \"muddy frying pans\"; \"bubbling\", the cue that these are boiling geothermal pools, is dropped and is not restored anywhere in the Tagalog answer. A child reading only the Tagalog cannot tell what object is being described.",
+  "tl": "Ano ang nasa loob ng mga putik na kawali sa Tiwi, Albay?\n\nSila ay mga heterogeneous mixtures na gawa sa liquid water, dissolved gases, at solid clay particles!",
+  "en": "What is inside the bubbling mud pots of Tiwi, Albay?\n\nThey are actually heterogeneous mixtures made of liquid water, dissolved gases, and solid clay particles!",
+  "title_tl": "Mud Pot ng Tiwi Albay",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-21170",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "Question asks about winnowing harvested palay (\"Paano hinahiwalay ng pagwinnow ang inani na palay?\"), but the Tagalog answer separates the grain from \"magagaan na BALAHIBO\" -- balahibo is feathers/body hair, a different entity entirely. en_ans reads \"the lighter husks\"; rice husk is ipa. The card as written teaches that winnowing rice removes feathers.",
+  "tl": "Paano hinahiwalay ng pagwinnow ang inani na palay?\n\nGinagamit nito ang pagkakaiba sa bigat para ihiwalay ang mabibigat na butil ng bigas mula sa magagaan na balahibo!",
+  "en": "How does winnowing harvested palay separate the mixture?\n\nIt uses differences in mass to separate the heavy rice grains from the lighter husks!",
+  "title_tl": "Pagpapahangin Palay",
+  "emph_tl": [
+   "bigat"
+  ]
+ },
+ {
+  "id": "ffct-21595",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en: \"Why is the water in Taal Lake heavier than pure water?\" / en_ans: \"It has a higher density!\" -> tl: \"Bakit mas makapal ang tubig sa Taal Lake...\" / ans: \"Mas makapal ito!\" -- 'makapal' means thick/viscous, not heavy or dense; the density fact is gone from both question and answer, so the Tagalog-only child learns Taal Lake water is THICK and the answer restates the question instead of explaining it.",
+  "tl": "Bakit mas makapal ang tubig sa Taal Lake kaysa sa purong tubig?\n\nMas makapal ito! Ang tubig ay may natunaw na mineral mula sa bulkan.",
+  "en": "Why is the water in Taal Lake heavier than pure water?\n\nIt has a higher density! The liquid water contains dissolved minerals from the volcano.",
+  "title_tl": "Taal Lake na Mas Mabigat",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-21979",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "Question asks how scientists SEE inside the Earth (\"Paano nakikita ng mga siyentipiko ang malalim na loob ng Mundo?\"), but the answer says \"naaalis nila ang istruktura sa loob ng Mundo\" (they REMOVE the structure) where en_ans says \"they map the deep structure inside the Earth\".",
+  "tl": "Paano nakikita ng mga siyentipiko ang malalim na loob ng Mundo?\n\nGumagamit ang mga heologo ng seismic wave mula sa lindol! Sa pagtingin kung paano tumatalbog ang mga ito, naaalis nila ang istruktura sa loob ng Mundo.",
+  "en": "How do scientists see deep inside the Earth?\n\nGeologists use seismic waves from earthquakes! By watching how these waves bounce at layer boundaries, they map the deep structure inside the Earth.",
+  "title_tl": "Alon ng Lindol",
+  "emph_tl": [
+   "seismic wave"
+  ]
+ },
+ {
+  "id": "ffct-22060",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"wind turbine blade tips\" became tl \"dulo ng pako ng wind turbine\" — pako means nail (or fern), not blade. The answer repeats it (\"ang dulo ng mahabang pako\"), so nothing restores it; everywhere else in this corpus turbine \"blades\" stay \"blades\".",
+  "tl": "Gaano kabilis talaga ang dulo ng pako ng wind turbine?\n\nKahit mukhang mabagal umikot ang malalaking wind turbine, ang dulo ng mahabang pako ay maaaring kumilos nang mas mabilis pa sa kotse sa highway — malayo ang nilalakbay nito sa bawat pag-ikot!",
+  "en": "How fast do wind turbine blade tips really move?\n\nEven though big wind turbines look like they turn slowly, the tip of a long blade can move faster than a car on the highway — it travels a huge distance with every rotation!",
+  "title_tl": "Bilis ng Pala",
+  "emph_tl": [
+   "dulo ng pako"
+  ]
+ },
+ {
+  "id": "ffct-23076",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "en asks composition: \"What is a screw thread really made of?\" -> tl asks function: \"Ano ba talaga ang GINAGAWA ng tirintas ng turnilyo?\" (= what does it DO), but the Tagalog answer gives composition, not function: \"ito ay isang mahabang inclined plane na binalot sa isang baras\". (Also 'thread' rendered as 'tirintas' = a braid of hair; the same bank renders screw threads as 'sinulid' in ffct-23106.)",
+  "tl": "Ano ba talaga ang ginagawa ng tirintas ng turnilyo?\n\nKung iuunat mo ito, makikita mong ito ay isang mahabang inclined plane na binalot sa isang baras!",
+  "en": "What is a screw thread really made of?\n\nIf you unwind it, you'll see it's just a long inclined plane wrapped around a rod!",
+  "title_tl": "Screw Thread Ramp Cylinder Balot",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-23125",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "en_ans \"a north pole and a south pole will PULL toward each other\" -> ans \"Ang magkasalungat na poles ay nag-aakit! ... magkakadikit dahil NAGTUTULAK sila papunta sa isa't isa\". 'Tulak' is push/repel, the opposite of 'hila' (pull); the card asserts attraction and then explains it by pushing, which is exactly the attract-vs-repel distinction the magnetism card is teaching.",
+  "tl": "Ano ang nangyayari kapag nagtagpo ang magkasalungat na poles?\n\nAng magkasalungat na poles ay nag-aakit! Ang north pole at south pole ay magkakadikit dahil nagtutulak sila papunta sa isa't isa.",
+  "en": "What happens when opposite poles meet?\n\nOpposite poles attract! A north pole and a south pole will pull toward each other and stick together.",
+  "title_tl": "Mga Polo ng Magnet",
+  "emph_tl": [
+   "magkasalungat na poles"
+  ]
+ },
+ {
+  "id": "ffct-23854",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans 'used the land breeze before dawn to sail out to sea' becomes 'ang land breeze bago madilim para lumayag papunta sa dagat' -- 'bago madilim' is before NIGHTFALL, not before dawn (madaling-araw/bukang-liwayway). The Tagalog then has them ride the sea breeze back 'sa hapon' (in the afternoon), i.e. returning before they left; the child learns the wrong time of day for the land breeze.",
+  "tl": "Paano ginamit ng mga mangingisda noon ang hangin para maglayag?\n\nGinamit ng mga mangingisda ang land breeze bago madilim para lumayag papunta sa dagat, at ang sea breeze sa hapon para bumalik sa pampang — libreng sakay mula sa convection winds!",
+  "en": "How did old-time fishermen use the wind to sail?\n\nFishermen used the land breeze before dawn to sail out to sea, then caught the sea breeze in the afternoon to ride back to shore — a free ride from convection winds!",
+  "title_tl": "Mangingisda at Hangi",
+  "emph_tl": [
+   "land breeze"
+  ]
+ },
+ {
+  "id": "ffct-24065",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans 'A fast vibrating guitar string has high frequency' becomes 'Mabilis na kumukurap na kuwerdas ng gitara ay may mataas na frequency' -- 'kumukurap' means BLINKING (eyes) / flickering, not vibrating (nanginginig/umuuga). The card's one concrete example of what frequency counts is rendered as a string that blinks.",
+  "tl": "Ano ang nagpapataas o nagpapababa ng frequency ng isang wave?\n\nNakadepende ito sa bilis ng vibration ng source! Mabilis na kumukurap na kuwerdas ng gitara ay may mataas na frequency, at mabagal ay mababa.",
+  "en": "What makes a wave's frequency high or low?\n\nIt depends on how fast the source vibrates! A fast vibrating guitar string has high frequency, while a slow one has low frequency.",
+  "title_tl": "Vibration Bilis Frequency Source",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-24473",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"Why does lightning hit the tallest thing around?\" -> tl \"Bakit ang pinakamataas na bagay ang TINITIRHAN ng kidlat?\". \"Tinitirhan\" is the -han form of tira/tirahan = \"is inhabited by / is left leftovers by\", not \"tinatamaan\" (is struck). The striking verb \"hit\" is gone and the Tagalog answer never restores it: it only says \"Pinapili ng kidlat ang pinakamalapit na daan mula sa ulap! Kaya mas delikado ang matayog\" - no strike/tama anywhere. A child reads that lightning LIVES IN the tallest object.",
+  "tl": "Bakit ang pinakamataas na bagay ang tinitirhan ng kidlat?\n\nPinapili ng kidlat ang pinakamalapit na daan mula sa ulap! Kaya mas delikado ang matayog—yumuko ka sa bukid!",
+  "en": "Why does lightning hit the tallest thing around?\n\nLightning takes the shortest path from the cloud! The taller something is, the closer it gets to the cloud—so stay low in open areas!",
+  "title_tl": "Kidlat Tumama Mataas na Bagay",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-26201",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "en_ans \"When the clapper strikes the inside\" became tl \"Kapag tumama ang batingaw sa loob\" — batingaw is a large BELL/gong, not the clapper, so the tl answer to \"Paano gumagawa ng tunog ang kampana?\" says a bell strikes inside the bell; the striking part (clapper) is gone and the child cannot learn what actually hits the metal.",
+  "tl": "Paano gumagawa ng tunog ang kampana?\n\nKapag tumama ang batingaw sa loob, nayayanig ang metal! Ang pagyanig na iyon ang gumagawa ng tunog.",
+  "en": "How does a bell make its loud sound?\n\nWhen the clapper strikes the inside, the metal vibrates! That vibration is exactly what makes the sound.",
+  "title_tl": "Kampana Metal Pagyanig",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-27585",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"Why does black sand stick to magnets on Camiguin beaches?\" -> tl \"Bakit dumidikit sa bakal ang itim na buhangin sa mga beach ng Camiguin?\" -- \"magnets\" became \"bakal\" (iron/steel; the same corpus uses \"bakal na pako\" for \"iron nail\"), and the tl answer repeats \"Madali itong dumikit sa bakal\", so the magnet is never restored.",
+  "tl": "Bakit dumidikit sa bakal ang itim na buhangin sa mga beach ng Camiguin?\n\nAng itim na magnetite sand sa mga beach ng Camiguin ay natural na magnetic! Madali itong dumikit sa bakal.",
+  "en": "Why does black sand stick to magnets on Camiguin beaches?\n\nThe black magnetite sand on Camiguin beaches is naturally magnetic! It easily sticks to iron all by itself.",
+  "title_tl": "Camiguin Itim Magnet",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-27693",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"drop a hammer and a feather at the same time on the Moon\" -> tl \"sabay mong ihulog ang martilyo at pamaypay sa Buwan\" -- \"feather\" (balahibo) became \"pamaypay\" (a hand fan); the tl answer only says \"kahit anong bigat\" and never names the feather.",
+  "tl": "Ano ang mangyayari kung sabay mong ihulog ang martilyo at pamaypay sa Buwan?\n\nSabay silang bumabagsak dahil ang gravity ay humahaboy sa lahat ng bagay nang pareho, kahit anong bigat!",
+  "en": "What happens if you drop a hammer and a feather at the same time on the Moon?\n\nThey hit the ground together because gravity accelerates all objects equally, regardless of their mass!",
+  "title_tl": "Buwan Martilyo Balaan Sabay",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-27773",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "en 'What happens to the rope in a tug-of-war?' -> tl 'Ano ang nangyayari sa lubid sa BATUHAN ng lubid?' — batuhan (bato = to throw stones) names a rope-THROWING contest, not a pulling contest (batakan/hilahan ng lubid); the Tagalog answer contradicts the question by describing pulling: 'Hindi ito gumagalaw kung magkapantay ang HILA, pero gumagalaw ito kapag mas malakas ang HILA ng isang panig'",
+  "tl": "Ano ang nangyayari sa lubid sa batuhan ng lubid?\n\nHindi ito gumagalaw kung magkapantay ang hila, pero gumagalaw ito kapag mas malakas ang hila ng isang panig!",
+  "en": "What happens to the rope in a tug-of-war?\n\nIt stays still when both sides pull equally, but moves when one side pulls harder!",
+  "title_tl": "Puwersang Balanse",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-27893",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en 'How do ice skates GLIDE SO SMOOTHLY on ice?' -> tl 'Paano GUMAGALA nang MALINAW ang ice skates sa yelo?' — gumagala = wanders/roams (not glide/dumudulas) and malinaw = visually clear (not smoothly/madulas), so the Tagalog question asks how skates 'roam clearly' on ice; the answer never says the skates glide smoothly, only that the water layer is 'parang madulas na lubricant'",
+  "tl": "Paano gumagala nang malinaw ang ice skates sa yelo?\n\nAng sliding friction sa pagitan ng talim ng skate at yelo ay gumagawa ng napakaliit na patong ng natutunaw na tubig na parang madulas na lubricant!",
+  "en": "How do ice skates glide so smoothly on ice?\n\nThe sliding friction between skate blades and ice creates a tiny layer of melted water that acts as a slippery lubricant!",
+  "title_tl": "Ice Skates Lubricant",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-28673",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"reach high coconut flowers\" / en_ans \"high coconut flower spikes\" -> tl \"matataas na bulak ng niyog\": bulak is COTTON in Tagalog (flower = bulaklak). Corpus-wide check confirms every other card uses bulak for cotton (ffct-15423 \"halamang bulak\", ffct-16563 \"bola ng bulak\", ffct-30900 cumulus \"parang lumulutang na bulak\") and bulaklak for flower (130+ hits). Both the tl question and the tl answer say bulak, so nothing restores the flower.",
+  "tl": "Paano umaabot ang mga tagakuha ng tuba sa matataas na bulak ng niyog?\n\nAng mga tagakuha ng tuba sa Quezon ay gumagamit ng mahabang kawayan bilang lever para madaling maabot at putulin ang matataas na bulak ng niyog!",
+  "en": "How do tuba gatherers reach high coconut flowers?\n\nTuba gatherers in Quezon province use long bamboo poles as levers to easily reach and cut high coconut flower spikes!",
+  "title_tl": "Lever na Kawayan",
+  "emph_tl": [
+   "lever"
+  ]
+ },
+ {
+  "id": "ffct-29847",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans \"light in the sky near Earth's poles\" -> tl \"ilaw sa langit malapit sa mga poste ng Mundo\". Tagalog \"poste\" means a post / pillar / lamp-post; the geographic pole is \"polo\" (Hilagang/Timog Polo). The Tagalog therefore says auroras appear near \"the Earth's posts\", changing the entity the card is teaching, and nothing in the card restores the correct sense.",
+  "tl": "Ano ang aurora?\n\nAng aurora ay kumikislap na berde o rosas na ilaw sa langit malapit sa mga poste ng Mundo! Nabubuo ito kapag tumama ang maliliit na tipik mula sa araw sa hangin sa atmospera.",
+  "en": "What is an aurora?\n\nAn aurora is shimmering green or pink light in the sky near Earth's poles! It forms when tiny particles from the sun hit the air high in the atmosphere.",
+  "title_tl": "Aurora sa Langit",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-29848",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans \"places close to Earth's north or south poles\" -> tl \"mga lugar na malapit sa hilaga o timog na poste ng Mundo\". Same wrong sense: \"poste\" = post/pillar, not the geographic pole (\"polo\"). The card's whole point is WHERE auroras are seen, so the child is left with \"near the Earth's north or south post\".",
+  "tl": "Nakikita ba natin ang aurora sa Pilipinas?\n\nKaraniwang hindi, dahil malapit tayo sa ekwador! Mas madalas makita ang aurora sa mga lugar na malapit sa hilaga o timog na poste ng Mundo.",
+  "en": "Can we see auroras in the Philippines?\n\nUsually no, because we are near the equator! Auroras are seen most often in places close to Earth's north or south poles.",
+  "title_tl": "Aurora Bihira sa Ekwador PH",
+  "emph_tl": null
+ }
+]

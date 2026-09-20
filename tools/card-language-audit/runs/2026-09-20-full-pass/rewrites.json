@@ -1,0 +1,1503 @@
+{
+ "total": 211,
+ "accepted": 210,
+ "rejected": 0,
+ "held": 1,
+ "items": [
+  {
+   "id": "ffct-10617",
+   "verdict": "FIXED",
+   "new_tl": "Ano talaga ang naka-imbak sa loob ng bulb ng halaman?\n\nAng pagkaing naka-imbak sa bulb ng halaman ay kadalasang asukal at almirol na ginawa ng mga dahon mula sa sikat ng araw.",
+   "what_changed": "Replaced \"bombilya\" (electric light bulb) with \"bulb ng halaman\" in both question and answer so the card is about a plant bulb.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-01195",
+   "verdict": "FIXED",
+   "new_tl": "Paano kumakanta ang balyena kahit walang vocal cords?\n\nHindi gumagamit ng bibig ang balyena para kumanta—pinapadaan nila ang hangin sa loob ng katawan, malapit sa lalamunan, kaya lumilikha ito ng tunog na parang sumisipol o humuhuni.",
+   "what_changed": "Question now says \"kahit walang vocal cords\" instead of \"hindi gumagamit ng bibig\", restoring the anatomical fact; answer left as is since it matches the English answer.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-27108",
+   "verdict": "FIXED",
+   "new_tl": "Paano umiinit ang iyong mga kamay kapag pinagkiskis mo sila sa malamig na araw?\n\nAng muscles mo ay nagko-convert ng chemical energy sa kinetic energy, at ang friction ay nagiging init para umiinit kayo!",
+   "what_changed": "\"pinagsabay-sabay mo sila\" became \"pinagkiskis mo sila\", restoring the rubbing that produces the friction.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-24392",
+   "verdict": "FIXED",
+   "new_tl": "Paano sumusukat ng layo sa ilalim ng tubig ang mga barko?\n\nGamit ang bilis ng tunog at echo! Sa pag-time kung gaano katagal bumalik ang tunog, ginagamit ng sonar sa barko para makuha ang layo.",
+   "what_changed": "Added the dropped \"sa ilalim ng tubig\" (underwater) to the question; answer untouched.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-21503",
+   "verdict": "FIXED",
+   "new_tl": "Paano hihiwalayin ng neodymium magnet ang mga pakong bakal sa mga baryang tanso?\n\nAng neodymium magnet ay humihila ng ferromagnetic materials tulad ng solid iron nails! Naihihiwalay sila sa non-magnetic solid copper coins.",
+   "what_changed": "Question now names the metals — \"pakong bakal\" (iron nails) and \"baryang tanso\" (copper coins) — which carry the magnetism fact.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-34930",
+   "verdict": "FIXED",
+   "new_tl": "Bakit parang mas mainit pakiramdam sa mga araw na maalinsangan at humid?\n\nAng high humidity ay pumipigil sa pawis na mag-evaporate nang mabilis, kaya mas mainit ang heat index kaysa sa actual temperature!",
+   "what_changed": "\"mga umagang maulap\" (cloudy mornings) became \"mga araw na maalinsangan\" (muggy days), removing the false cloudiness mechanism.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-35343",
+   "verdict": "FIXED",
+   "new_tl": "Talaga bang nasusunog ang Araw?\n\nHindi! Gumagawa ito ng enerhiya sa pamamagitan ng nuclear fusion, pagsasama ng hydrogen atoms into helium sa 15 million degrees Celsius.",
+   "what_changed": "Turned the presupposing \"Ba't ba...\" why-question into the yes/no myth-buster \"Talaga bang nasusunog ang Araw?\" so the \"Hindi!\" answer fits.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-16229",
+   "verdict": "FIXED",
+   "new_tl": "Umiinit pa ba ang tubig nang higit sa 100 degrees Celsius habang kumukulo?\n\nNananatili ito sa 100 degrees Celsius kahit dagdagan pa ang init.",
+   "what_changed": "Replaced \"nangangain\" (eats) with \"umiinit pa\", restoring the temperature verb.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-33320",
+   "verdict": "FIXED",
+   "new_tl": "Gaano katagal bago marating ng liwanag ng Araw ang Earth?\n\nUmaabot ng halos 8 minuto bago marating ng liwanag ng Araw dito sa Earth!",
+   "what_changed": "Question made unit-neutral (\"Gaano katagal\" instead of \"Ilanong oras\"), so it no longer contradicts the 8-minuto answer.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-20055",
+   "verdict": "FIXED",
+   "new_tl": "Ano talaga ang bumubuo sa isang South Sea pearl?\n\nAng South Sea pearl ay isang solid mixture na binubuo mainly ng maliliit na calcium carbonate crystals at conchiolin!",
+   "what_changed": "\"ginawa ng\" (did/made by) became \"bumubuo sa\", so the question asks what the pearl is made of, matching the answer's \"binubuo\".",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-34824",
+   "verdict": "FIXED",
+   "new_tl": "Bakit nawawala ang mga naiipong tubig-ulan kahit malamig ang araw?\n\nAng tubig ay nag-evaporate kahit anong temperatura na mas mataas sa pagyeyelo, kaya nawawala ang mga naiipong tubig-ulan nang hindi kailanman kumukulo!",
+   "what_changed": "\"latian\" (marsh) replaced with \"naiipong tubig-ulan\" (rain puddles) in both question and answer.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-12668",
+   "verdict": "FIXED",
+   "new_tl": "Bakit puti ang mga bulaklak na umaasa sa gamu-gamo para sa polinasyon?\n\nAng mga bulaklak na umaasa sa gamu-gamo para sa polinasyon ay kadalasang puti at mas mabango sa gabi, kaya't madali silang makita at maamoy sa dilim.",
+   "what_changed": "\"pinupulot ng gamu-gamo\" (picked up by moths) became \"umaasa sa gamu-gamo para sa polinasyon\" in both parts, restoring pollination.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-02738",
+   "verdict": "FIXED",
+   "new_tl": "Kamag-anak ba ng starfish ang sand dollar?\n\nOo! Buhay, ito'y patag, bilog, at may munting tinik; sa puti nitong kabibi ay may disenyong parang limang-tulis na bituin.",
+   "what_changed": "Question's \"bituin\" (sky star) replaced with \"starfish\", restoring the animal kinship fact; answer's star-pattern line kept.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-17584",
+   "verdict": "FIXED",
+   "new_tl": "Bakit papel ang ginagamit sa chromatography?\n\nMay maliliit na butas ang papel na sumisipsip ng tubig kaya umaakyat ito! Hindi ito gagana sa plastic o salamin.",
+   "what_changed": "Added the missing \"sa chromatography\" so the question has a subject.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-33750",
+   "verdict": "FIXED",
+   "new_tl": "Gaano karami sa ibabaw ng Mundo ang lupa?\n\nHalos 29% lang ng ibabaw ng Mundo ang lupa! Ang natitira sa ibabaw ay tubig.",
+   "what_changed": "Price interrogative \"Magkano\" replaced with the quantity interrogative \"Gaano karami\".",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-03164",
+   "verdict": "FIXED",
+   "new_tl": "Kailan masasabing ibon ang isang hayop?\n\nIbon ang isang hayop kung ito ay may balahibo, may pakpak at tuka, at nangingitlog.",
+   "what_changed": "\"Ano ang tumatak sa isang ibon?\" replaced with a criteria question about an animal, which is what the answer gives.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-35229",
+   "verdict": "FIXED",
+   "new_tl": "Ilang earthworms ang nakatira sa malusog na lupa pang-agrikultura?\n\nSa isang malusog na acre, maaaring may higit sa isang milyong earthworms na nagtatago sa ilalim!",
+   "what_changed": "Unit corrected from \"ektarya\" back to \"acre\" so the density matches the English fact.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-30361",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang pagkakaiba ng fog at hamog?\n\nAng pagkakaiba ay nabubuo ang fog sa hangin mismo, habang ang hamog ay nabubuo sa ibabaw ng mga bagay tulad ng damo!",
+   "what_changed": "\"ambon\" (drizzle) replaced with \"fog\" in question and answer, keeping \"hamog\" for dew.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-12484",
+   "verdict": "FIXED",
+   "new_tl": "Gaano katagal sa chrysalis ang higad?\n\nKaraniwang nananatili ang higad sa loob ng chrysalis nito nang halos isa hanggang dalawang linggo bago ito lumabas bilang paru-paro.",
+   "what_changed": "Restored the caterpillar (\"higad\") as the animal that stays in the chrysalis, with the butterfly kept as what comes out.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-12253",
+   "verdict": "FIXED",
+   "new_tl": "Bakit nanganganib ang agila ng Pilipinas?\n\nDahil sa pagkawala ng kagubatan at pangangaso ng tao.",
+   "what_changed": "Species qualifier restored: \"agila\" became \"agila ng Pilipinas\".",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-21626",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang natural na elementong may pinakamataas na density?\n\nOsmium! Ito ang natural na elementong may pinakamataas na density, na may 22.59 gramo sa bawat isang cubic centimeter ng espasyo.",
+   "what_changed": "\"pinakamabigat\" (heaviest) replaced with \"may pinakamataas na density\" in both parts, matching the 22.59 g/cm3 fact.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-36052",
+   "verdict": "FIXED",
+   "new_tl": "Paano ginagawa ang burnay jars para sa bagoong?\n\nHinuhulma ng mga magpapalayok sa Vigan ang lokal na clay soil para gawing tradisyonal na jars, na mahalaga sa pag-ferment ng masarap na bagoong!",
+   "what_changed": "\"alahero\" (jeweler) replaced with \"magpapalayok\" (potters), the artisans who mold the clay.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-03111",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang pagkakaiba ng lanaw at lawa?\n\nSukat at lalim! Maliit at mababaw ang lanaw, pero mas malaki at mas malalim ang lawa — kaya minsan hindi umaabot ang sikat ng araw sa ilalim nito.",
+   "what_changed": "Swapped the two terms so \"lawa\" keeps its true lake sense (big, deep) and \"lanaw\" carries the pond sense (small, shallow).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-16258",
+   "verdict": "FIXED",
+   "new_tl": "Saan napupunta ang naiipong tubig-ulan?\n\nNawawala ang naiipong tubig sa kalsada dahil sumisingaw ito sa init ng araw!",
+   "what_changed": "\"lawa ng ulan\"/\"lawa ng tubig\" (lake) replaced with \"naiipong tubig-ulan\"/\"naiipong tubig\" (puddle).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-14383",
+   "verdict": "FIXED",
+   "new_tl": "Makakahawa ba sa iyo ng warts ang paghawak ng palaka?\n\nHindi! Ang warts ng tao ay dulot ng tiyak na virus, kaya hindi ka magkakaroon ng warts sa paghipo ng palaka o palakang-bukid.",
+   "what_changed": "\"bakulaw\" (ape) replaced with \"palakang-bukid\" (toad).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-20936",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang espesyal sa tubig ng Hinatuan Enchanted River?\n\nAng maalat-alat na tubig nito ay isang homogeneous solution ng likidong tubig at natunaw na solid salts!",
+   "what_changed": "\"bahaw\" (stale/leftover) replaced with \"maalat-alat\" (brackish).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-19847",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang nangyayari sa bigas kapag niluluto mo?\n\nAng init ay nagpapakulo sa tubig at nagiging steam! Sinisipsip ng bigas ang tubig, kaya lumalambot at lumalaki ito.",
+   "what_changed": "Question's \"kanin\" (cooked rice) changed to \"bigas\" (uncooked rice), matching the answer's entity.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-12469",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang pinakamalaking buhay na bagay sa mundo?\n\nIsang honey fungus sa Oregon, USA — sumasakop ang ilalim-lupang network nito nang higit sa 2,300 acres ng kagubatan, kaya ito ang pinakamalaking buhay na organismo sa mundo.",
+   "what_changed": "Unit corrected from \"ektarya\" back to \"acres\" so the 2,300 figure states the English area.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-07089",
+   "verdict": "FIXED",
+   "new_tl": "Anong pamilya ng ibon ang bleeding-heart dove?\n\nColumbidae — ang pamilya ng lahat ng kalapati at batobato sa buong mundo! Ang genus nito ay Gallicolumba.",
+   "what_changed": "\"kalyos\" (skin callus) replaced with \"batobato\", a dove, so every family member named is a bird.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-30368",
+   "verdict": "FIXED",
+   "new_tl": "Saan madalas na mas makapal ang fog?\n\nSa mababang lambak at malapit sa ilog! Doon kasi nag-iipon ang malamig na hangin sa gabi.",
+   "what_changed": "\"ambon\" (drizzle) replaced with \"fog\" in the question.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-36888",
+   "verdict": "FIXED",
+   "new_tl": "Napapaisip ka ba kung bakit hindi laging nananalo ang mga mabibigat sa takbuhan ng pagbagsak?\n\nAng timbang ay ang paghila ng gravity! Mas malaking mass ay may mas malaking timbang, pero hindi sapat iyon para mauna itong bumagsak sa free fall.",
+   "what_changed": "Replaced the presupposing clause \"hindi ito nag-isa ang dahilan kung bakit una itong bumabagsak\" with \"hindi sapat iyon para mauna itong bumagsak sa free fall\", matching the English \"that alone doesn't make it land first\".",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-23190",
+   "verdict": "FIXED",
+   "new_tl": "Saan sa Pilipinas makikita ang mga malalaking turbina ng hangin sa tabing-dagat?\n\nSa Bangui, Ilocos Norte! May mga malalaking turbina ng hangin sa tabing-dagat na gumagawa ng kuryente.",
+   "what_changed": "Restored \"ng hangin\" (wind) to the turbines in both question and answer so the wind-energy fact is in the Tagalog.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-21200",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang pinakamatigas na solid na bahagi ng katawan mo?\n\nAng enamel ng ngipin mo! Ito ang pinakamatigas na solid na bagay sa katawan ng tao, gawa karamihan sa mineral na tinatawag na hydroxyapatite.",
+   "what_changed": "\"pinakamalupit\" (cruel) -> \"pinakamatigas\" (hardest) in both question and answer.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-29397",
+   "verdict": "FIXED",
+   "new_tl": "Bakit mabilis matuyo ang sandy soil?\n\nDahil mayroon itong mas malalaking particle! Kaya mabilis dumaloy at maubos ang tubig.",
+   "what_changed": "\"mauga\" (become loose/Cebuano for dry) -> \"matuyo\" (dry up) in the question.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-25331",
+   "verdict": "FIXED",
+   "new_tl": "Paano lumulutang ang mga bangkang may pasahero sa prusisyon sa ilog?\n\nLumulutang sila dahil itinutulak sila pataas ng tubig nang mas malakas kaysa bigat nila!",
+   "what_changed": "\"prusisyong panlawa\" (lake procession) -> \"prusisyon sa ilog\" (river procession).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-32195",
+   "verdict": "FIXED",
+   "new_tl": "Nawawala ba talaga ang ilang isla?\n\nNagtatago lang sa ilalim ng dagat ang mga maliliit na sandbar kapag mataas ang tubig! Hindi sila nawawala, naglalaro lang sila ng hide-and-seek sa dagat.",
+   "what_changed": "\"kapag mataas ang kati\" (kati = low/ebb tide) -> \"kapag mataas ang tubig\", so the card again says sandbars hide at high tide; note title_tl \"Sandbar sa Mataas na Kati\" carries the same wrong term and is outside this rewrite.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-28174",
+   "verdict": "FIXED",
+   "new_tl": "Paano gumagalaw nang maayos ang mga tren ng MRT-3 sa Manila?\n\nGumagamit sila ng malalakas na electromagnets sa loob ng electric motors para i-convert ang electrical energy sa galaw ng mga bagon ng tren!",
+   "what_changed": "\"galaw ng mga kotse\" (automobiles) -> \"galaw ng mga bagon ng tren\" (the train's cars), matching the question's MRT-3 trains.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-19885",
+   "verdict": "FIXED",
+   "new_tl": "Paano binubuo ng taklobo ang matigas nitong shell?\n\nGumagawa ito ng solidong calcium carbonate para buuin ang shell mula sa mga dissolved minerals sa dagat!",
+   "what_changed": "\"higanteng tahong\" (green mussel) -> \"taklobo\", the actual giant clam named in title_tl.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-31993",
+   "verdict": "FIXED",
+   "new_tl": "Pareho ba ang weathering at erosion?\n\nHindi! Ang weathering ay nagbabasag ng bato sa kinalalagyan nito. Ang erosion ay pagdadala ng tubig, hangin, o yelo sa mga durog na bato palayo!",
+   "what_changed": "Flipped the question back to the English polarity (\"Magkaiba ba\" -> \"Pareho ba\") so the existing \"Hindi!\" answer is correct.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-12624",
+   "verdict": "FIXED",
+   "new_tl": "May buto ba ang pating?\n\nHindi! Ang mga pating ay walang buto tulad ng karaniwang isda — ang kanilang balangkas ay gawa sa kartilago, isang matibay ngunit malambot na tisyu, tulad ng sa iyong tainga.",
+   "what_changed": "\"tela\" (cloth) -> \"tisyu\" (biological tissue).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-19946",
+   "verdict": "FIXED",
+   "new_tl": "Bakit nababasag ang selyadong bote ng salamin sa loob ng freezer?\n\nLumalawak ang nagyeyelong tubig at binabasag ang marupok na salamin!",
+   "what_changed": "\"marupok na baso\" (drinking glass) -> \"marupok na salamin\", the bottle's glass named in the question.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-10058",
+   "verdict": "FIXED",
+   "new_tl": "Paano nakakapasok ang sustansya sa dugo natin?\n\nSa maliit na bituka, natutunaw nang husto ang pagkain at sinisipsip ang sustansya papunta sa dugo sa pamamagitan ng maliliit na parang-daliring tupi na tinatawag na villi!",
+   "what_changed": "\"bulutong\" (smallpox) -> \"parang-daliring tupi\" (finger-like folds), matching the English description of villi.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-17443",
+   "verdict": "FIXED",
+   "new_tl": "Bakit gumagawa ng kurba ang tubig sa loob ng baso?\n\nMahilig kumapit ang tubig sa salamin at plastic! Sa manipis na tubo, umaalsa ang gilid nito para gumawa ng maliit na kurba.",
+   "what_changed": "Question's \"sa loob ng salamin\" (inside a mirror/pane) -> \"sa loob ng baso\" (in a drinking glass); the answer's \"salamin\" is the material sense and was left alone.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-30454",
+   "verdict": "FIXED",
+   "new_tl": "Hanggang saan abot ng troposphere mula sa lupa?\n\nUmaabot ito ng mga 8 kilometro sa mga polo at 18 kilometro malapit sa ekwador!",
+   "what_changed": "\"mga poste\" (posts/pillars) -> \"mga polo\" (Earth's poles), restoring the poles-vs-equator contrast.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-08958",
+   "verdict": "FIXED",
+   "new_tl": "Gaano kalaki ang Napoleon wrasse?\n\nAng Napoleon wrasse ay maaaring lumaki ng hanggang 2 metro at kilala sa malaking umbok sa noo nito — isa ito sa pinakamalaking isda sa bahura at endangered na sa buong mundo.",
+   "what_changed": "\"malaking utong sa noo\" (nipple) -> \"malaking umbok sa noo\" (hump on its forehead).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-11205",
+   "verdict": "FIXED",
+   "new_tl": "Anong hayop ang nabubuhay sa loob ng pitcher plant?\n\nMay ilang maliliit na hayop, gaya ng uod ng lamok, na nakakapamuhay sa loob ng likido ng pitcher plant nang hindi natutunaw!",
+   "what_changed": "\"tabo\" (water dipper) -> \"pitcher plant\" in both question and answer, matching title_tl.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-30355",
+   "verdict": "FIXED",
+   "new_tl": "Ano ba ang binubuo ng hamog?\n\nAng hamog ay binubuo ng napakaliliit na patak ng tubig na lumulutang sa hangin malapit sa lupa!",
+   "what_changed": "\"ambon\" (drizzle) -> \"hamog\" (fog) in question and answer.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-32894",
+   "verdict": "FIXED",
+   "new_tl": "Saan matatagpuan ang isa sa pinakamalalaking geothermal complex sa mundo?\n\nAng MakBan sa Laguna at Batangas, Pilipinas! Gumagamit ito ng mainit na steam mula sa ilalim ng lupa malapit sa Mt. Makiling at Mt. Banahaw.",
+   "what_changed": "Restored the English hedge in the question: \"ang pinakamalaking\" -> \"ang isa sa pinakamalalaking\", so MakBan is no longer claimed as THE largest.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-12960",
+   "verdict": "FIXED",
+   "new_tl": "Bakit tahimik lumipad ang kuwago?\n\nAng malambot at mahimulmol na balahibo nito ay nagpapatahimik sa bawat pagpaypay, kaya hindi na maabisuhan ang biktima.",
+   "what_changed": "\"malamig\" (cold) -> \"mahimulmol\" (fluffy/downy), the real reason owl flight is silent.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-31243",
+   "verdict": "FIXED",
+   "new_tl": "Bakit may makapal at manipis na patong ng bato?\n\nDepende ito sa dami ng sediment at tagal! Maraming putik sa mahabang panahon ang nagpapakapal ng patong. Hindi natin masasabi ang tumpak na taon basta sa kapal lang.",
+   "what_changed": "\"nagpapakinis\" (makes it smooth) -> \"nagpapakapal ng patong\" (makes the layer thick), answering the question actually asked.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-26927",
+   "verdict": "FIXED",
+   "new_tl": "Paano tayo pinoprotektahan ng seatbelt kapag biglang may bangga ang kotse?\n\nNagpoprotekta ang seatbelt sa mga pasahero sa pamamagitan ng pagbibigay ng di-balanseng puwersa na sumasalungat sa forward inertia ng katawan kapag may biglang bangga!",
+   "what_changed": "\"puwersa na balanse sa forward inertia\" -> \"di-balanseng puwersa na sumasalungat sa forward inertia\", restoring the unbalanced-force fact (same term as ffct-22480).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-30486",
+   "verdict": "FIXED",
+   "new_tl": "Paano lumalabas ang magagandang ilaw ng aurora sa kalangitan?\n\nAng magagandang ilaw na aurora ay nangyayari kapag ang mga particle mula sa Araw ay nahuhuli ng magnetic field ng Mundo malapit sa mga polo!",
+   "what_changed": "\"malapit sa mga poste\" -> \"malapit sa mga polo\" and restored the owner of the field: \"magnetic field ng Mundo\".",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-21453",
+   "verdict": "FIXED",
+   "new_tl": "Kaya bang mag-scratch ng copper coin ang bato sa ilog?\n\nOo! Ang quartz crystals na makikita sa mga bato ng ilog ay kayang mag-scratch ng copper coin dahil mas matigas na solid ang quartz.",
+   "what_changed": "Un-swapped scratcher and scratched in the question so the river rock scratches the copper coin, matching the \"Oo!\" answer and the English.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-39023",
+   "verdict": "FIXED",
+   "new_tl": "Nag-aaccelerate ba ang bisikleta kapag lumiliko sa kanto?\n\nOo! Nagbabago ito ng direksyon, kaya nag-aaccelerate ito kahit pareho lang ang bilis nito.",
+   "what_changed": "\"bumibilis ito\" (it speeds up) -> \"nag-aaccelerate ito\", removing the contradiction with \"pareho lang ang bilis nito\".",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-03015",
+   "verdict": "FIXED",
+   "new_tl": "Bakit ilang bahagi lang ng katawan ang naaapektuhan ng isang hormone?\n\nTinatamaan lang ng bawat hormone ang mga 'target cell' na may tugmang receptor — parang susi na akma lang sa isang kandado!",
+   "what_changed": "\"iisang bahagi lang\" (only one body part) -> \"ilang bahagi lang\" (only certain body parts), matching the English.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-00335",
+   "verdict": "FIXED",
+   "new_tl": "Ano talaga ang sanhi ng pananakit ng kalamnan pagkatapos mag-ehersisyo?\n\nHindi ang lactate! Kapag nagtrabaho ang kalamnan nang walang sapat na oxygen, gumagawa ito ng lactate, pero ang pananakit na nararamdaman mo ay dulot ng maliliit na punit sa kalamnan at pamamaga.",
+   "what_changed": "\"maliliit na luha\" (eye tears) -> \"maliliit na punit\" (tiny tears/rips) in the muscle.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-12035",
+   "verdict": "FIXED",
+   "new_tl": "Bakit kinakain ulit ng millipede ang sarili nitong dumi?\n\nKadiri pero totoo — minsan kinakain ulit ng millipede ang sarili nitong dumi, dahil may natitirang sustansya at mabubuting mikrobyo doon na tumutulong sa pagtunaw nito.",
+   "what_changed": "Question's \"alupihan\" (centipede) -> \"millipede\", the animal the answer, English, and title all name.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-11340",
+   "verdict": "FIXED",
+   "new_tl": "Nakakahawa ba ng kulugo ang paghawak sa palaka?\n\nHindi! Ang paghawak sa Philippine wrinkled frog ay hindi magdudulot ng kulugo — ang kulugo ay dulot ng human papillomavirus.",
+   "what_changed": "\"tinga\" (food stuck in teeth) -> \"kulugo\" (wart) in all three places, so the HPV fact attaches to warts.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-24922",
+   "verdict": "FIXED",
+   "new_tl": "Anong uri ng tulay ang kayang tumawid sa pinakamalawak na agwat?\n\nSuspension bridges! Mahabang kable na nakabitin sa matataas na tore, dinadala ang daan sa daan-daang metro.",
+   "what_changed": "\"pinakamalawak na agos\" (widest water current) -> \"pinakamalawak na agwat\" (widest gap).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-19386",
+   "verdict": "FIXED",
+   "new_tl": "Sino ang tumuklas ng oxygen na ating hinihinga noong 1774?\n\nSi Joseph Priestley ang matalinong siyentipikong kinikilalang tumuklas ng oxygen na ating hinihinga noong 1774!",
+   "what_changed": "\"hinihimod\" (lick) -> \"hinihinga\" (breathe) in both question and answer.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-20765",
+   "verdict": "FIXED",
+   "new_tl": "Gaano kabigat ang solid gold kumpara sa parehong dami ng tubig?\n\nIsang cubic centimeter ng solid gold ay 19.3 gramo—19.3 beses mas mabigat kaysa liquid water!",
+   "what_changed": "Question verb fixed: \"kagamit\" (how useful) -> \"kabigat\" (how heavy), so it matches the weight answer and the English.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-22152",
+   "verdict": "FIXED",
+   "new_tl": "Gusto mo bang makakita ng bahaghari?\n\nTumayo ka nang nasa likuran mo ang araw at harapin ang ulan o ambon para makita ang magagandang kulay nito!",
+   "what_changed": "\"sa likod ng araw\" (behind the sun) -> \"nang nasa likuran mo ang araw\", restoring the sun-at-your-back geometry.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-00583",
+   "verdict": "FIXED",
+   "new_tl": "Magkatulad ba ang talukab ng pagong at ng alimango?\n\nHindi — ang talukab ng pagong ay buto na may balat sa labas, pero ang alimango ay walang buto sa loob — ang matigas nitong balat ang siyang skeleton.",
+   "what_changed": "Named both compared animals in the question (\"talukab ng pagong at ng alimango\") instead of the antecedent-less \"nila\".",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-00115",
+   "verdict": "FIXED",
+   "new_tl": "Paano nararamdaman ng Philippine crocodile ang biktima sa tubig?\n\nAng bihirang Philippine crocodile sa mga latian ng Isabela ay may espesyal na mga butas sa ulo na nakakaramdam ng galaw ng biktima sa ilalim ng tubig.",
+   "what_changed": "Question verb \"naaamoy\" (smells) -> \"nararamdaman\" (senses), matching the vibration-sensing answer and the English \"sense\".",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-02024",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang remora?\n\nAng remora ay isang isda na may parang sipsip na disko sa ulo, ginagamit nito para kumapit sa pating o malaking isda at makisakay habang lumalangoy sila!",
+   "what_changed": "\"parang suso\" (snail/breast) -> \"parang sipsip na disko\", the bank's own wording for the remora's sucker disc (ffct-10853).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-02636",
+   "verdict": "FIXED",
+   "new_tl": "Kumakagat ba ang millipede kapag natakot?\n\nHindi — hindi nangangagat ang millipede. Sa halip, namamaluktot ito na parang singsing kapag natatakot.",
+   "what_changed": "Question animal \"alupihan\" (centipede, which does bite) -> \"millipede\", the same term the answer and the rest of the bank use.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-03153",
+   "verdict": "FIXED",
+   "new_tl": "Kaya bang mamunga ang isang bulaklak ng mangga mag-isa?\n\nOo! May parehong lalaki at babaeng bahagi ang bulaklak ng mangga, kaya kayang magbunga ng iisang bulaklak lang.",
+   "what_changed": "All three \"bulak\" (cotton) -> \"bulaklak\" (flower).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-03771",
+   "verdict": "FIXED",
+   "new_tl": "Bakit ngumunguya ulit ang baka ng kinain na niya?\n\nIbinabalik ng baka at tupa ang kanilang kinain para nginuyain muli — tinatawag itong pagnguya ng cud — para lubos na matunaw ang damo.",
+   "what_changed": "\"pag-usap\" (talking) -> \"pagnguya ng cud\", the chewing-the-cud term already used in the card title.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-04210",
+   "verdict": "FIXED",
+   "new_tl": "Bakit maasim ang lasa ng kalamansi?\n\nIyan ang matinding asim na nalalasahan ng dila mo sa mga acidic na pagkain—tulad ng kalamansi, suka, at sampalok!",
+   "what_changed": "\"tikatik na lasa\" (light drizzle) -> \"matinding asim na nalalasahan ng dila mo\", the sharp tang the English names.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-04509",
+   "verdict": "FIXED",
+   "new_tl": "May halamang naninirahan sa coral?\n\nMay maliliit na algae na tinatawag na zooxanthellae na naninirahan sa loob ng selula ng coral — gumagawa ang algae ng pagkain sa pamamagitan ng photosynthesis, at ito ang kinakain ng coral!",
+   "what_changed": "Reversed the eating direction: \"ito ang kumakain ng coral\" -> \"ito ang kinakain ng coral\" (the food feeds the coral).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-05204",
+   "verdict": "FIXED",
+   "new_tl": "Bakit parang dahon ang katawan ng kulisap na ito?\n\nLapad ang katawan nito na may gurlis na parang ugat ng dahon, at may lapad pa sa gilid ng paa nito na mukhang piraso ng dahon!",
+   "what_changed": "Restored the missing subject \"insect\" as \"kulisap\" in the question, giving \"nito\" an antecedent.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-05377",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang pagkakaiba ng palaka at palakang-bukid?\n\nAng palaka ay may makinis at mamasa-masang balat at kailangan ng tubig para mabuhay, samantalang ang palakang-bukid ay may tuyo at bukol-bukol na balat at nakatira sa lupa.",
+   "what_changed": "Both \"bakulaw\" (gorilla) -> \"palakang-bukid\", the bank's standard Tagalog for toad (ffct-05158, ffct-14393).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-05559",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang pinakamaingay na hayop sa mundo?\n\nAng blue whale ay isa sa pinakamaingay na hayop, umaabot ng halos 188 decibels ang tawag nito!",
+   "what_changed": "Both \"malakas\" (strongest) -> \"maingay\" (loudest), removing the strength reading.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-05991",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang mangyayari kung mawala ang sea otter?\n\nBiglang tataas ang bilang ng sea urchin at sisirain nila ang mahahalagang kelp forest, dahil ang sea otter ay keystone predator na pumipigil sa dami nila.",
+   "what_changed": "\"Bibilib\" (will be impressed) -> \"Biglang tataas\", so the urchin population boom is actually stated.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-07762",
+   "verdict": "FIXED",
+   "new_tl": "Saan makikita ang mga espesyal na hayop sa Pilipinas?\n\nKaramihan ay nasa kagubatan, bundok, at protektadong lugar — kaya mahalagang ingatan ang mga ito para hindi sila mawala.",
+   "what_changed": "Restored the dropped \"Philippine\" qualifier as \"sa Pilipinas\" in the question.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-08148",
+   "verdict": "FIXED",
+   "new_tl": "Kaya bang malaman ang temperatura sa tunog ng kuliglig?\n\nMedyo, oo! Mas mabilis kumuliglig ang kuliglig kapag mainit — may lumang formula na Dolbear's Law na tinatantya ang temperatura batay sa bilang ng huni kada minuto.",
+   "what_changed": "\"bilang ng kuliglig kada minuto\" (crickets per minute) -> \"bilang ng huni kada minuto\" (chirps per minute).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-08654",
+   "verdict": "FIXED",
+   "new_tl": "Umuuga ba nang basta-basta ang bola sa socket ng balakang?\n\nHindi — akmang-akma ang bola sa mangkok, at hinahawakan ito ng ligaments at kalamnan para hindi gumalaw nang basta-basta.",
+   "what_changed": "Restored the body part: \"bola sa socket\" -> \"bola sa socket ng balakang\" (hip joint).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-08960",
+   "verdict": "FIXED",
+   "new_tl": "Bakit hindi ang maya ang pambansang ibon?\n\nPinili ang Philippine Eagle bilang pambansang ibon dahil natatangi ito at makikita lang sa Pilipinas, hindi tulad ng maya na nasa maraming bansa.",
+   "what_changed": "Added the missing \"pambansang ibon\" to both question and answer, so what the eagle was chosen as is stated.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-09406",
+   "verdict": "FIXED",
+   "new_tl": "Aling hayop sa dagat ang mabilis magpalit ng kulay?\n\nAng cuttlefish o bagulan! Kayang baguhin ng molusko na ito ang kulay at disenyo ng balat nito sa ilang segundo — para magtago o makipag-usap sa kapwa nito.",
+   "what_changed": "\"himig\" (melody) -> \"disenyo\", restoring the skin-pattern fact.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-12517",
+   "verdict": "FIXED",
+   "new_tl": "Bakit mas malinaw ang tunog kapag inilalagay mo ang kamay sa likod ng tainga?\n\nAng nakikitang bahagi ng tainga natin, ang pinna, ay parang funnel na sumasalo at nagdidirekta ng tunog papasok — kapag inilagay mo ang kamay sa likod nito, mas malaki ang funnel kaya mas malinaw ang tunog.",
+   "what_changed": "\"tinatakpan/tinakpan ... ang tainga\" (covering the ear) -> putting the hand \"sa likod\" of the ear, matching the cupping-behind fact.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-13371",
+   "verdict": "FIXED",
+   "new_tl": "Anong disenyo ang natatago sa tinik ng sea urchin?\n\nKapag tinanggal ang mga tinik, makikita sa bilog na balat-bato ng sea urchin ang disenyong hati sa limang bahagi — parang bulaklak o bituin!",
+   "what_changed": "Both \"tihik\" (a stingy person) -> \"sea urchin\", the term the bank's other Tagalog cards use (e.g. ffct-04017, ffct-02799).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-14185",
+   "verdict": "FIXED",
+   "new_tl": "Saan nakatira ang halamang Rafflesia?\n\nAng Rafflesia ay nabubuhay sa loob ng baging na tinatawag na Tetrastigma, kamag-anak ng ubas. Doon ito kumukuha ng tubig at pagkain, kaya nakatago ang halos buong halaman sa loob ng host nito!",
+   "what_changed": "\"inaanay\" (termite-eaten) -> \"host\", the term already used in Tagalog elsewhere in the bank (ffct-02534, ffct-00694).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-14438",
+   "verdict": "FIXED",
+   "new_tl": "Paano nakakalipad ang balinsasayaw sa madilim na kweba?\n\nGumagamit ang balinsasayaw ng echolocation — gumagawa ito ng mga tunog na parang klik na tumatalbog pabalik para makahanap ng daan sa loob ng madilim na kweba!",
+   "what_changed": "\"tunog na pumipikit-pikit\" -> \"mga tunog na parang klik na tumatalbog pabalik\", restoring both the clicks and the echo (cf. ffct-05660, ffct-00102).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-14942",
+   "verdict": "FIXED",
+   "new_tl": "Saan ka gawa?\n\nAng lahat ng bagay, kasama ka, ay gawa sa napakaliit na piraso na tinatawag na atom! Napakaliit nila kaya hindi natin makikita kahit sa mikroskopyo.",
+   "what_changed": "Question \"Ano ang ginawa sa iyo?\" (what was done to you) -> \"Saan ka gawa?\" (what are you made of), matching the answer.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-15071",
+   "verdict": "FIXED",
+   "new_tl": "Bakit ang mga ladrilyo at tiles ay itinuturing na seramika?\n\nDahil gawa ito sa luwad na sinunog sa matinding init! Kaya ang ladrilyo at tiles ay seramika rin.",
+   "what_changed": "\"pinaputok sa init\" (made to explode) -> \"sinunog sa matinding init\", the kiln-firing sense used by the bank's other ceramics cards (ffct-17973, ffct-16157).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-15253",
+   "verdict": "FIXED",
+   "new_tl": "Saan gawa ang lahat ng bagay sa mundo?\n\nLahat, mula sa hangin at tubig hanggang sa bato at katawan mo, ay gawa sa kombinasyon ng iilang dosenang elemento lamang!",
+   "what_changed": "Question \"Ano ang ginagawa ng lahat ng bagay sa mundo?\" -> \"Saan gawa ang lahat ng bagay sa mundo?\", the made-of sense the answer gives.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-15464",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang dumidikit sa mga ladrilyo para gumawa ng pader?\n\nMortar! Ito ay timpla ng semento, buhangin, at tubig na inilalagay sa pagitan ng bricks o blocks para pagdugtungin sila.",
+   "what_changed": "\"tisa\" (chalk) -> \"ladrilyo\" (bricks), so the question names the same thing as the answer.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-15995",
+   "verdict": "FIXED",
+   "new_tl": "Bakit nakakaramdam ka ng malamig na ihip sa beach kapag araw?\n\nMas mabilis uminit ang lupa kaysa dagat! Umaakyat ang mainit na hangin sa ibabaw ng lupa, at pumapalit ang mas malamig na hangin mula sa dagat. Iyon ang sea breeze!",
+   "what_changed": "\"tuwing umaga\" (every morning) -> \"kapag araw\" (daytime), the bank's standard day/night contrast wording.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-16105",
+   "verdict": "FIXED",
+   "new_tl": "Ang aleasyon ba ay isang bagong substansiyang kemikal?\n\nHindi, isa lang itong halo! Ang mga orihinal na metal ay nasa loob pa rin ng aleasyon, magkahalo lang.",
+   "what_changed": "\"sustansyang kemikal\" (chemical nutrient) -> \"substansiyang kemikal\" (chemical substance), as in ffct-20529/ffct-20639.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-16562",
+   "verdict": "FIXED",
+   "new_tl": "Paano nasusukat ng spring scale ang timbang?\n\nSinusukat nito ang timbang base sa kung gaano naunat ang spring nito!",
+   "what_changed": "\"bukal\" (water spring) -> \"spring\", the coil spring named in the question and used this way across the bank.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-17004",
+   "verdict": "FIXED",
+   "new_tl": "Pareho ba ang singaw at usok?\n\nHindi! Ang singaw ay galing sa mainit na tubig at ligtas langhapin. Ang usok ay galing sa sunog, may nasunog na tipik, at hindi ligtas!",
+   "what_changed": "languyin (to swim in) -> langhapin, restoring 'safe to breathe'.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-17890",
+   "verdict": "FIXED",
+   "new_tl": "Bakit gumagamit ng steel ang mga tulay at gusali?\n\nSobrang lakas ng steel kahit hindi masyadong makapal o mabigat! Kung purong bakal o bato, kailangan silang sobrang laki para tumindig. Ang steel ang nagbibigay ng malakas at magagaan na haligi.",
+   "what_changed": "sobrang bagal (slow) -> sobrang laki, restoring the 'they'd need to be huge' size fact.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-17986",
+   "verdict": "FIXED",
+   "new_tl": "Bakit may maliwanag na orange at dilaw na kulay ang karot at mature na saging?\n\nDahil ito sa mga carotenoid! Ang mga pigment na ito ang nagbibigay ng kulay at nananatili sa dahon kapag nawala ang chlorophyll sa taglagas.",
+   "what_changed": "taglamig (winter) -> taglagas (autumn).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-18005",
+   "verdict": "FIXED",
+   "new_tl": "Ang kalawang ba ay bakal na naging marumi lang?\n\nHindi! Ito ay bagong sangkap na iron oxide na may ibang katangian. Kaya ang pagkalawang ay chemical change, hindi physical!",
+   "what_changed": "malinis (clean) -> marumi (dirty) in the question, matching 'Is rust just dirty iron?'.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-18025",
+   "verdict": "FIXED",
+   "new_tl": "Paano pinapanatili ng pagpapausok sa isda tulad ng tinapa na hindi ito masira?\n\nAng usok ay may mga kemikal na phenols na pumipigil sa paglaki ng bacteria, kaya mas matagal na sariwa at masarap ang isda!",
+   "what_changed": "paninigarilyo (cigarette smoking) -> pagpapausok (smoke-curing).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-18335",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang mangyayari kung masyadong mabilis umahon ang scuba diver?\n\nKung masyadong mabilis ang pag-ahon ng diver, ang nitrogen sa dugo ay bubuo ng mga bula! Ang masakit at mapanganib na ito ay tinatawag na 'the bends'.",
+   "what_changed": "sumalang/pagsalang -> umahon/pag-ahon, restoring the upward ascent in both question and answer.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-18380",
+   "verdict": "FIXED",
+   "new_tl": "Paano pinapatay ng CO2 fire extinguisher ang sunog?\n\nNaglalabas ito ng CO2 para patayin ang apoy sa pagpalit ng oxygen! Ligtas ito sa sunog sa kuryente dahil hindi nagdadala ng kuryente ang CO2.",
+   "what_changed": "lusugin (nourish) -> patayin, so the answer no longer says CO2 feeds the fire.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-18429",
+   "verdict": "FIXED",
+   "new_tl": "Bakit mas banayad ang temperatura sa mga lugar malapit sa dagat kaysa sa mga lugar na malayo sa dagat?\n\nAng tubig ay may napakataas na specific heat—kailangan ng maraming enerhiya para magbago ang temperatura! Kaya ang mga lugar tulad ng Pilipinas ay mas banayad ang temperatura kaysa sa mga lugar na malayo sa dagat.",
+   "what_changed": "malambot (soft) -> banayad (mild) and restored the dropped comparison 'kaysa sa mga lugar na malayo sa dagat' in both question and answer.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-19382",
+   "verdict": "FIXED",
+   "new_tl": "Gaano kabigat ang isang carat ng hiyas?\n\nAng carat ay yunit ng timbang para sa mga hiyas! Ang isang carat ay katumbas ng 0.2 gramo, o 200 milligrams.",
+   "what_changed": "katinig (consonant) -> kabigat, restoring the weight sense of the question.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-20464",
+   "verdict": "FIXED",
+   "new_tl": "Napapansin mo ba na nawawala ang mga naipong tubig-ulan kahit hindi kumukulo?\n\nAng mga naipong tubig-ulan ay nagiging singaw kahit sa normal na temperatura, hindi lang kapag umabot na sa punto ng pagkulo!",
+   "what_changed": "latian (swamp) -> mga naipong tubig-ulan (puddles) in both question and answer.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-20670",
+   "verdict": "FIXED",
+   "new_tl": "Nag-e-evaporate ba ang mga naipong tubig-ulan sa malamig na araw?\n\nOo! Nag-e-evaporate ang mga naipong tubig-ulan into water vapor sa malamig na araw dahil ang evaporation occurs sa liquid surface sa anumang temperature.",
+   "what_changed": "latian (swamp) -> mga naipong tubig-ulan (puddles) in both question and answer; the card's other code-switching left untouched as it is not the named defect.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-21058",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang frost sa damo ng bundok?\n\nAng frost ay singaw ng tubig na nagiging solid ice crystals nang direkta! Ito ay nabubuo sa matataas na bundok na damo.",
+   "what_changed": "hamog (dew) -> frost, the term the card's own title and English use; namuong/yelong hamog was rejected because it implies frozen liquid dew, contradicting the 'never becomes liquid first' fact.",
+   "changed_spans": [
+    "hamog"
+   ]
+  },
+  {
+   "id": "ffct-21154",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang nasa loob ng mga bumubulang mud pot sa Tiwi, Albay?\n\nSila ay mga heterogeneous mixtures na gawa sa liquid water, dissolved gases, at solid clay particles!",
+   "what_changed": "putik na kawali (muddy frying pans) -> bumubulang mud pot, restoring the dropped 'bubbling' and the card's own title term.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-21170",
+   "verdict": "FIXED",
+   "new_tl": "Paano hinahiwalay ng pagwinnow ang inani na palay?\n\nGinagamit nito ang pagkakaiba sa bigat para ihiwalay ang mabibigat na butil ng bigas mula sa magagaan na ipa!",
+   "what_changed": "balahibo (feathers) -> ipa (rice husk).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-21595",
+   "verdict": "FIXED",
+   "new_tl": "Bakit mas mabigat ang tubig sa Taal Lake kaysa sa purong tubig?\n\nMas mataas ang density nito! Ang tubig ay may natunaw na mineral mula sa bulkan.",
+   "what_changed": "makapal (thick) -> mabigat in the question and 'Mas makapal ito!' -> 'Mas mataas ang density nito!', restoring the density answer.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-21979",
+   "verdict": "FIXED",
+   "new_tl": "Paano nakikita ng mga siyentipiko ang malalim na loob ng Mundo?\n\nGumagamit ang mga heologo ng seismic wave mula sa lindol! Sa pagtingin kung paano tumatalbog ang mga ito, natutukoy nila ang istruktura sa loob ng Mundo.",
+   "what_changed": "naaalis (they remove) -> natutukoy (they determine/map) the structure inside the Earth.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-22060",
+   "verdict": "FIXED",
+   "new_tl": "Gaano kabilis talaga ang dulo ng pala ng wind turbine?\n\nKahit mukhang mabagal umikot ang malalaking wind turbine, ang dulo ng mahabang pala ay maaaring kumilos nang mas mabilis pa sa kotse sa highway — malayo ang nilalakbay nito sa bawat pag-ikot!",
+   "what_changed": "pako (nail) -> pala (blade), the word the card's own title 'Bilis ng Pala' uses; the emph span contained the defect.",
+   "changed_spans": [
+    "dulo ng pako"
+   ]
+  },
+  {
+   "id": "ffct-23076",
+   "verdict": "FIXED",
+   "new_tl": "Ano ba talaga ang sinulid ng turnilyo?\n\nKung iuunat mo ito, makikita mong ito ay isang mahabang inclined plane na binalot sa isang baras!",
+   "what_changed": "Dropped 'ginagawa ng' so the question asks what the thread IS (matching both the English and the card's own composition answer), and tirintas (hair braid) -> sinulid, the bank's term in ffct-23106.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-23125",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang nangyayari kapag nagtagpo ang magkasalungat na poles?\n\nAng magkasalungat na poles ay nag-aakit! Ang north pole at south pole ay magkakadikit dahil humihila sila papunta sa isa't isa.",
+   "what_changed": "nagtutulak (push/repel) -> humihila (pull), so the explanation matches the stated attraction.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-23854",
+   "verdict": "FIXED",
+   "new_tl": "Paano ginamit ng mga mangingisda noon ang hangin para maglayag?\n\nGinamit ng mga mangingisda ang land breeze bago sumikat ang araw para lumayag papunta sa dagat, at ang sea breeze sa hapon para bumalik sa pampang — libreng sakay mula sa convection winds!",
+   "what_changed": "bago madilim (before nightfall) -> bago sumikat ang araw (before dawn), so the land breeze precedes the afternoon return.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-24065",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang nagpapataas o nagpapababa ng frequency ng isang wave?\n\nNakadepende ito sa bilis ng vibration ng source! Mabilis na nanginginig na kuwerdas ng gitara ay may mataas na frequency, at mabagal ay mababa.",
+   "what_changed": "kumukurap (blinking) -> nanginginig (vibrating).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-24473",
+   "verdict": "FIXED",
+   "new_tl": "Bakit ang pinakamataas na bagay ang tinatamaan ng kidlat?\n\nPinapili ng kidlat ang pinakamalapit na daan mula sa ulap! Kaya mas delikado ang matayog—yumuko ka sa bukid!",
+   "what_changed": "tinitirhan (is inhabited by) -> tinatamaan (is struck), matching the card's own title.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-26201",
+   "verdict": "FIXED",
+   "new_tl": "Paano gumagawa ng tunog ang kampana?\n\nKapag tumama ang pamalo sa loob, nayayanig ang metal! Ang pagyanig na iyon ang gumagawa ng tunog.",
+   "what_changed": "batingaw (a bell/gong) -> pamalo (the striker), so the thing hitting the bell is no longer the bell itself.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-27585",
+   "verdict": "FIXED",
+   "new_tl": "Bakit dumidikit sa magnet ang itim na buhangin sa mga beach ng Camiguin?\n\nAng itim na magnetite sand sa mga beach ng Camiguin ay natural na magnetic! Madali itong dumikit sa bakal.",
+   "what_changed": "Question: bakal -> magnet, matching en 'stick to magnets'; the answer's 'bakal' was kept deliberately because en_ans itself says 'sticks to iron'.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-27693",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang mangyayari kung sabay mong ihulog ang martilyo at balahibo sa Buwan?\n\nSabay silang bumabagsak dahil ang gravity ay humahaboy sa lahat ng bagay nang pareho, kahit anong bigat!",
+   "what_changed": "pamaypay (hand fan) -> balahibo (feather); the answer's odd 'humahaboy' left alone as it is not the named defect.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-27773",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang nangyayari sa lubid sa hilahan ng lubid?\n\nHindi ito gumagalaw kung magkapantay ang hila, pero gumagalaw ito kapag mas malakas ang hila ng isang panig!",
+   "what_changed": "batuhan ng lubid (rope-throwing) -> hilahan ng lubid (tug-of-war), matching the answer's 'hila'.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-27893",
+   "verdict": "FIXED",
+   "new_tl": "Paano dumudulas nang maayos ang ice skates sa yelo?\n\nAng sliding friction sa pagitan ng talim ng skate at yelo ay gumagawa ng napakaliit na patong ng natutunaw na tubig na parang madulas na lubricant!",
+   "what_changed": "gumagala nang malinaw (roams clearly) -> dumudulas nang maayos (glides smoothly), reusing the answer's own 'madulas'.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-28673",
+   "verdict": "FIXED",
+   "new_tl": "Paano umaabot ang mga tagakuha ng tuba sa matataas na bulaklak ng niyog?\n\nAng mga tagakuha ng tuba sa Quezon ay gumagamit ng mahabang kawayan bilang lever para madaling maabot at putulin ang matataas na bulaklak ng niyog!",
+   "what_changed": "bulak (cotton) -> bulaklak (flower) in both question and answer.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-29847",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang aurora?\n\nAng aurora ay kumikislap na berde o rosas na ilaw sa langit malapit sa mga polo ng Mundo! Nabubuo ito kapag tumama ang maliliit na tipik mula sa araw sa hangin sa atmospera.",
+   "what_changed": "poste (post/pillar) -> polo (geographic pole).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-29848",
+   "verdict": "FIXED",
+   "new_tl": "Nakikita ba natin ang aurora sa Pilipinas?\n\nKaraniwang hindi, dahil malapit tayo sa ekwador! Mas madalas makita ang aurora sa mga lugar na malapit sa hilaga o timog na polo ng Mundo.",
+   "what_changed": "poste (post/pillar) -> polo (geographic pole).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-30362",
+   "verdict": "FIXED",
+   "new_tl": "Saan madalas magkaroon ng hamog sa Pilipinas?\n\nSa malalamig na lugar tulad ng Baguio at iba pang kabundukan!",
+   "what_changed": "\"magkaambon\" (drizzle) -> \"magkaroon ng hamog\" (fog), matching the card's own title \"Hamog sa Baguio\"; answer untouched.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-30364",
+   "verdict": "FIXED",
+   "new_tl": "Anong temperatura ang kailangan ng hangin para mabuo ang hamog o fog?\n\nKailangang lumamig ang hangin hanggang sa tinatawag na dew point bago mabuo ang hamog o fog!",
+   "what_changed": "Both occurrences of \"ambon\" (drizzle) -> \"fog\", so the pair reads dew (hamog) or fog, as in the English.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-30365",
+   "verdict": "FIXED",
+   "new_tl": "Paano bahagi ng siklo ng tubig ang fog at hamog?\n\nGaling sila sa singaw ng tubig na nagiging patak! Kaya bahagi sila ng siklo ng tubig.",
+   "what_changed": "\"ambon\" (drizzle) -> \"fog\" in the question so the card names fog and dew (hamog); answer untouched.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-30372",
+   "verdict": "FIXED",
+   "new_tl": "Saan kumakapit ang mga patak ng fog kapag nabubuo sa hangin?\n\nNabubuo sila sa palibot ng napakaliliit na alikabok na lumulutang sa hangin, na nagbibigay ng kapakpitan sa tubig!",
+   "what_changed": "\"patak ng ambon\" (drizzle drops) -> \"patak ng fog\", matching the title \"Fog Droplet\"; left the unrelated \"kapakpitan\" typo alone per rule 1.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-30637",
+   "verdict": "FIXED",
+   "new_tl": "Paano nabubuo ang sedimentary rock?\n\nAng mga patong ng latak tulad ng buhangin at putik ay naiipon, dumidiin nang malakas, at tumitigas!",
+   "what_changed": "\"tumatagas\" (leaks) -> \"tumitigas\" (hardens), one letter, restoring the English \"harden into rock\".",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-30806",
+   "verdict": "FIXED",
+   "new_tl": "May tubig ba sa Mars?\n\nOo! Natuklasan ng mga siyentipiko na may tubig sa Mars, pero karamihan ay nasa anyong yelo sa ilalim ng lupa at sa mga polo.",
+   "what_changed": "\"mga poste\" (posts/pillars) -> \"mga polo\" (the poles).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-30943",
+   "verdict": "FIXED",
+   "new_tl": "Paano nagbibigay ng araw at gabi ang pag-ikot ng Earth?\n\nAng Earth ay umiikot sa sarili nitong axis — isang imahinaryong linya sa hilaga at timog na polo. Isang buong rotation ay halos 24 oras, kaya nagkakaroon ng araw at gabi!",
+   "what_changed": "\"poste\" (post/pillar) -> \"polo\", so the axis runs through the north and south poles.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-32833",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang nangyayari sa lupa at bato kapag sumisid ang tectonic plate?\n\nNa-scrape ang sediment at nagtitipon bilang accretionary prism! Ito ay magulong, mixed na bato sa harapan ng subduction zone sa Pilipinas.",
+   "what_changed": "\"dumi\" (filth/waste) -> \"lupa\" (soil), the sense of English \"dirt\"; answer untouched.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-32972",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang mga deep-focus earthquakes?\n\nNangyayari ito mahigit 300 km ang lalim sa subduction zones kung saan pumapasok ang malamig na plate! Nararamdaman mo ito sa malayo, pero bihirang makasira.",
+   "what_changed": "\"300 km ang layo\" (distance) -> \"300 km ang lalim\" (depth); kept \"Nararamdaman mo ito sa malayo\" since the English does say \"feel them far away\".",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-33278",
+   "verdict": "FIXED",
+   "new_tl": "Gaano kalaki at kapatag ang ating Milky Way galaxy?\n\nAng disk ng Milky Way ay humigit-kumulang 100,000 light-years ang lapad ngunit 1,000 light-years lang ang kapal — parang napakalaki at napakapinong CD! Ang ating solar system ay nasa isang spiral arm, mga 26,000 light-years mula sa sentro.",
+   "what_changed": "\"kalamig\" (how cold) -> \"kapatag\" (how flat), so the question is the one the answer actually answers.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-33686",
+   "verdict": "FIXED",
+   "new_tl": "Aling mga planeta ang pinakamalaki sa ating solar system?\n\nApat na higanteng planeta ang nasa panlabas na bahagi ng solar system: Jupiter, Saturn, Uranus, at Neptune. Sila ang pinakamalaking planeta!",
+   "what_changed": "\"nasa labas ng solar system\" (outside it) -> \"nasa panlabas na bahagi ng solar system\" (the outer solar system).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-35011",
+   "verdict": "FIXED",
+   "new_tl": "Gaano kalayo ang mga bituin mula sa Earth?\n\nAng Sun ay 150 milyong kilometro ang layo, pero ang sumunod na pinakamalapit na bituin, Proxima Centauri, ay higit sa 40 trilyong kilometro!",
+   "what_changed": "Restored the dropped \"next\": \"ang pinakamalapit na bituin\" -> \"ang sumunod na pinakamalapit na bituin\".",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-35139",
+   "verdict": "FIXED",
+   "new_tl": "Alam mo ba kung gaano karaming ulan ang ibinubuhos ng isang malaking thunderstorm?\n\nAng isang malaking thunderstorm ay maaaring magbuhos ng higit sa 500 milyong litro ng tubig, sapat para mapuno ang 200 Olympic swimming pool!",
+   "what_changed": "\"bagyo\" (typhoon) -> \"thunderstorm\" in both question and answer, keeping the DepEd English term rather than a coinage; \"malaking\" kept, matching the English question's \"a big thunderstorm\".",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-35515",
+   "verdict": "FIXED",
+   "new_tl": "Naisip mo ba kung saan napupunta ang mga sanaw ng tubig sa mainit na araw?\n\nAng likidong tubig ay sumisipsip ng heat energy at nagiging invisible water vapor sa hangin!",
+   "what_changed": "\"latian\" (swamp/marsh) -> \"sanaw ng tubig\" (puddle); answer untouched.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-35649",
+   "verdict": "FIXED",
+   "new_tl": "Saan nakatira ang Philippine cloud rat sa Mount Pulag?\n\nNakatira ito sa basa at malumot na kagubatan na nabubuo ng malakas na ulan sa bundok ng Mount Pulag!",
+   "what_changed": "\"mabuhanging ulan\" (sandy rain) -> \"malakas na ulan\" (heavy rain) and \"mamasa-masang\" (merely damp) -> \"malumot na\" (mossy).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-35662",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang bumubuo sa Tubbataha Reefs Natural Park?\n\nBinubuo ito ng limestone rocks na nabuo mula sa mga accumulated skeletal remains ng corals!",
+   "what_changed": "Question re-aimed from activity to composition: \"Ano ang ginagawa sa...\" -> \"Ano ang bumubuo sa...\", matching the answer's \"Binubuo ito ng...\".",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-35679",
+   "verdict": "FIXED",
+   "new_tl": "Bakit nananatiling matigas ang inner core kahit ito ang pinakamainit na sapaw?\n\nDahil sa napakalakas na presyon na dumidiin dito! Ang inner core ang pinakaloob at pinakamainit, pero pinananatiling matigas na bakal ito ng presyon.",
+   "what_changed": "Un-negated the clause: \"pinipigilan ng presyon na maging matigas na bakal\" -> \"pinananatiling matigas na bakal ito ng presyon\" (pressure keeps it solid iron).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-35729",
+   "verdict": "FIXED",
+   "new_tl": "Isang solidong bola ba ng apoy ang Araw?\n\nHindi! Ang Araw ay isang napakalaking bola ng mainit, kumikislap na hydrogen at helium na mga gas—hindi isang solidong bola ng apoy!",
+   "what_changed": "Question turned back into the English yes/no form (\"Isang solidong bola ba ng apoy ang Araw?\") so it no longer asserts the premise its own \"Hindi!\" denies.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-36153",
+   "verdict": "FIXED",
+   "new_tl": "Paano tumutulong ang Philippine pygmy fruit bat pagkatapos ng mga pagputok ng bulkan?\n\nTumutulong ang fruit bat na ito na magtanim muli ng kagubatan sa pamamagitan ng paglaganap ng mga buto sa bagong ash soils!",
+   "what_changed": "Dropped the contradictory size word: \"ang malaking bat\" -> \"ang fruit bat na ito\" — note the English source itself says \"This large bat\" of a pygmy bat, so the en side is worth flagging.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-36576",
+   "verdict": "FIXED",
+   "new_tl": "Paano gumagawa ng musika ang biyolin?\n\nAng string ng biyolin na hinahagod ng arko ay gumagawa ng transversal na alon, pero ang tunog sa tainga mo ay ibang longitudinal na alon sa hangin!",
+   "what_changed": "\"hinipan na string\" (blown) -> \"string na hinahagod ng arko\" (bowed with a bow).",
+   "changed_spans": []
+  },
+  {
+   "id": "dcard-01860",
+   "verdict": "FIXED",
+   "new_tl": "Bakit nananatiling nakatigil ang isang picture frame sa dingding?\n\nAng pako at dingding ay tumutulak pataas at paatras na may mga puwersang bumabalanse sa bigat ng frame, kaya ang net force ay zero at ang frame ay nananatiling nakahinto.",
+   "what_changed": "\"nakahiga\" (lying down) -> \"nakahinto\" (at rest), the rendering already used by dcard-01479.",
+   "changed_spans": []
+  },
+  {
+   "id": "dcard-12486",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang tawag sa male reproductive sex cell?\n\nIto ay ang sperm cell. Ang trabaho nito ay i-fertilize ang female egg cell para magsimula ng bagong buhay ng tao.",
+   "what_changed": "\"lagyan ng pataba\" (apply agricultural fertilizer) -> \"i-fertilize\", the DepEd biology sense.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-37475",
+   "verdict": "FIXED",
+   "new_tl": "Pwede bang magkaroon ng energy ang isang bagay kahit hindi ito gumagalaw?\n\nOo! Ang isang aklat na nakapatong sa mataas na istante ay may mechanical energy mula sa potential lamang. Ang bolang gumugulong sa sahig ay may mechanical energy mula sa kinetic lamang.",
+   "what_changed": "\"bolang nagpupulong\" (holding a meeting) -> \"bolang gumugulong\" (rolling).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-37750",
+   "verdict": "FIXED",
+   "new_tl": "Paano nagsusukat ng oras ang pendulum clock?\n\nGumagamit ito ng mechanical energy ng umuugoy na bigat o spring, na nagpapakita kung paano gumagawa ng trabaho ang nakaimbak na energy!",
+   "what_changed": "\"nagtatago ng oras\" (hides the time) -> \"nagsusukat ng oras\" (keeps/measures time).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-37804",
+   "verdict": "FIXED",
+   "new_tl": "Saan ba talaga gawa ang lupa?\n\nIto ay gawa sa maliliit na piraso ng nabiyak na bato na hinaluan ng mga patay na dahon at ibang nabulok na bagay!",
+   "what_changed": "Question re-aimed to composition: \"Ano ba ang talagang ginagawa ng lupa?\" -> \"Saan ba talaga gawa ang lupa?\", matching the answer's \"Ito ay gawa sa...\".",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-37902",
+   "verdict": "FIXED",
+   "new_tl": "Paano naaamoy at nakikita ng mga insekto ang mundo?\n\nGumagamit ang mga insekto ng antennae para makaamoy at makaramdam! Mayroon din silang compound eyes na gawa sa maraming maliliit na lenses.",
+   "what_changed": "Non-word \"namomoo\" -> \"naaamoy\" (smell), keeping the original object-focus \"...ng mga insekto ang mundo\" structure.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-38465",
+   "verdict": "FIXED",
+   "new_tl": "Halaman ba ang kabute?\n\nHindi, nasa kahariang Fungi ito! Sumisipsip ng pagkain ang fungi imbes na gumawa nito gamit ang sikat ng araw tulad ng halaman.",
+   "what_changed": "\"Halamanan\" (garden) -> \"Halaman\" (plant).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-38501",
+   "verdict": "FIXED",
+   "new_tl": "Paano mo ikukumpara ang density ng dalawang bato?\n\nHawakan ang bawat isa sa kamay mo para damhin kung alin ang mas mabigat kumpara sa laki nito, o gumamit ng balance scale!",
+   "what_changed": "Restored the dropped \"for its size\": \"mas mabigat\" -> \"mas mabigat kumpara sa laki nito\", so it compares density, not mass.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-39024",
+   "verdict": "FIXED",
+   "new_tl": "Bakit nag-aaccelerate ang mga blade ng ceiling fan?\n\nUmiikot sila! Ang bawat blade ay palaging nagbabago ng direksyon at dahil dito ay nag-aaccelerate.",
+   "what_changed": "\"bumibilis\" (gets faster) -> \"nag-aaccelerate\", reusing the question's own verb, so direction change alone counts as acceleration.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-15440",
+   "verdict": "FIXED",
+   "new_tl": "Napakatatag ng ladrilyo kapag dinidiin mula sa itaas! Kaya isinasalansan natin ito para gumawa ng pader na kayang buhatin ang buong gusali.",
+   "what_changed": "tisa (chalk) -> ladrilyo (brick); rest untouched.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-16138",
+   "verdict": "FIXED",
+   "new_tl": "Ang mortar ay semento, buhangin, at tubig lang na walang graba! Ito ay parang malagkit na paste na nagdidikit ng mga ladrilyo.",
+   "what_changed": "mga tisa (chalk) -> mga ladrilyo (bricks).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-18121",
+   "verdict": "FIXED",
+   "new_tl": "Ang ladrilyo ay luwad na hinugis at sinunog sa mataas na temperatura! Ginagawa nitong matibay at fire-resistant na materyales na perpekto sa mga pader at sahig.",
+   "what_changed": "Definition subject tisa (chalk) -> ladrilyo (brick); the emph span itself had to change.",
+   "changed_spans": [
+    "tisa"
+   ]
+  },
+  {
+   "id": "ffct-32951",
+   "verdict": "FIXED",
+   "new_tl": "Ang mga bato ay nasa paligid natin araw-araw! Mga dingding ng bahay (ladrilyo mula sa inihurnong clay), mga kalsada (graba at aspalto), at semento (mula sa limestone) — lahat ay mula sa mga bato at mineral ng Mundo.",
+   "what_changed": "tisa (chalk) -> ladrilyo inside the house-walls parenthetical.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-27274",
+   "verdict": "FIXED",
+   "new_tl": "Paano nagpapatuloy ang roller coaster pagkatapos ng unang burol?\n\nAng motor ay humihila lang ng mga bagon ng roller coaster pataas sa unang burol! Pagkatapos, ginagamit ng gravity ang potential energy para maging kinetic energy sa buong ride.",
+   "what_changed": "mga kotse (automobiles) -> mga bagon ng roller coaster (the ride's cars).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-20344",
+   "verdict": "FIXED",
+   "new_tl": "Ang taklobo (higanteng kabibe) sa Tubbataha Reef ay nagse-secrete ng calcium carbonate para buuin ang matigas at solid na shell nito!",
+   "what_changed": "higanteng tahong (giant mussel) -> taklobo (higanteng kabibe), the actual giant clam.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-20225",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang pinakasiksik (pinakamataas ang density) na natural na elemento sa mundo?\n\nIto ang osmium! Napakabigat nito; isang litro ng solid osmium ay higit sa dalawampu't dalawang kilo!",
+   "what_changed": "Question now asks for densest (pinakasiksik / pinakamataas ang density), not heaviest; answer left as is.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-35297",
+   "verdict": "FIXED",
+   "new_tl": "May mapanganib na bacteria tulad ng tetanus ang lupa! Kaya dapat laging maghugas ng kamay gamit ang sabon pagkatapos maglaro sa lupa para maiwasan ang impeksyon.",
+   "what_changed": "maglaro sa dumi (filth) -> maglaro sa lupa (soil), matching the card's own first line.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-30356",
+   "verdict": "FIXED",
+   "new_tl": "Nabubuo ang hamog kapag lumalamig ang hangin at ang singaw ng tubig dito ay nagiging maliliit na patak!",
+   "what_changed": "ambon (drizzle) -> hamog (fog); the emph span itself was the defect.",
+   "changed_spans": [
+    "ambon"
+   ]
+  },
+  {
+   "id": "ffct-30357",
+   "verdict": "FIXED",
+   "new_tl": "Ang mist ay parang manipis na hamog! Nagpapalabo ito sa paligid, ngunit nakakakita ka pa nang medyo malayo.",
+   "what_changed": "manipis na ambon (light drizzle) -> manipis na hamog (thin fog).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-30358",
+   "verdict": "FIXED",
+   "new_tl": "Sa makapal na hamog, mahirap makita ang mga bagay na malayo, kaya kailangang mag-ingat ang mga drayber!",
+   "what_changed": "makapal na ambon (heavy drizzle) -> makapal na hamog (thick fog).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-30363",
+   "verdict": "FIXED",
+   "new_tl": "Karaniwang nawawala ang hamog pagsapit ng tanghali! Pinapainit ng araw ang hangin, kaya nag-e-evaporate ang mga patak.",
+   "what_changed": "ambon (drizzle) -> hamog (fog), the thing that clears at midday.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-30366",
+   "verdict": "FIXED",
+   "new_tl": "Minsan lumilitaw ang hamog sa ibabaw ng mainit na ilog o lawa! Nangyayari ito kapag malamig ang hangin sa itaas.",
+   "what_changed": "ambon (drizzle) -> hamog (fog); the emph span itself was the defect.",
+   "changed_spans": [
+    "ambon"
+   ]
+  },
+  {
+   "id": "ffct-30370",
+   "verdict": "FIXED",
+   "new_tl": "Hindi ulan ang hamog o mist! Napakaliit ng mga patak nito kaya lumulutang lang sa hangin sa halip na bumagsak.",
+   "what_changed": "ambon (which IS rain) -> hamog, removing the self-contradiction.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-02626",
+   "verdict": "FIXED",
+   "new_tl": "Ang balahibo ng nakakapasong halaman ay parang munting salamin — nababasag ang dulo nito at tumutusok sa balat na parang karayom.",
+   "what_changed": "munting baso (drinking glass) -> munting salamin (glass the material).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-20263",
+   "verdict": "FIXED",
+   "new_tl": "Paano pwedeng gawa sa eksaktong parehong materyal ang pinakamatigas na diyamante at ang pinakamalambot na lapis?\n\nPareho ang pinakamatigas na diyamante at ang pinakamalambot na lapis, ang grapayt, na gawa sa eksaktong parehong purong carbon atoms pero magkaiba ang ayos!",
+   "what_changed": "pinakamalupit (cruelest) -> pinakamatigas (hardest) in both question and answer.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-20775",
+   "verdict": "FIXED",
+   "new_tl": "Ang mga diyamante ang pinakamatigas na natural na materyal sa mundo! Ang mga carbon atom nito ay nakapirmi sa isang rigid, tightly packed crystal structure.",
+   "what_changed": "pinakamalupit (cruelest) -> pinakamatigas (hardest).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-00517",
+   "verdict": "FIXED",
+   "new_tl": "Kaya bang buksan at patayin ng alitaptap ang ilaw nito?\n\nOo! Kinokontrol nito kung gaano karaming oxygen ang papasok sa light organ nito — may oxygen ay kumikinang, wala ay namamatay ang ilaw, parang sariling switch.",
+   "what_changed": "kung magkano ang oxygen (price) -> kung gaano karaming oxygen (quantity); emph span 'oxygen' still present verbatim.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-18398",
+   "verdict": "FIXED",
+   "new_tl": "Gaano kabigat ka sa Mars?\n\nAng Mars ay may 38 percent ng gravity ng Earth! Ang taong 50 kg ay may weight na 190 Newtons sa Mars, kumpara sa 490 Newtons sa Earth.",
+   "what_changed": "Question 'Magkano ang iyong weight' (price) -> 'Gaano kabigat ka'; answer untouched.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-18639",
+   "verdict": "FIXED",
+   "new_tl": "Kapag pinagsama ang nitrogen at oxygen, gaano karaming bahagi ng hangin ang nabubuo nila?\n\nHalos lahat! Magkasama, ang nitrogen at oxygen ay bumubuo ng halos 99% ng hangin.",
+   "what_changed": "magkano ng hangin (price) -> gaano karaming bahagi ng hangin (portion).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-26527",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang timbang mo kung bibisita ka sa Buwan?\n\nAng timbang mo ay halos isang-anim (1/6) ng timbang mo sa Daigdig! Kaya ang 60 kg dito ay parang 10 kg lang sa Buwan.",
+   "what_changed": "'Magkano ang timbang mo' (price) -> 'Ano ang timbang mo', matching the answer's own phrasing.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-27503",
+   "verdict": "FIXED",
+   "new_tl": "Gaano kabigat ang 100-pound na bata kung nasa Moon siya?\n\nNapakababa ng gravitational pull ng Moon! Kung 100 pounds ang bigat ng bata, magiging 17 pounds lang siya doon.",
+   "what_changed": "'Magkano ang bigat' (price) -> 'Gaano kabigat'.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-27790",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang timbang mo sa Buwan?\n\nKung 100 pounds ang timbang mo sa Earth, mga 16.5 pounds lang ang timbang mo sa Moon!",
+   "what_changed": "'Magkano ang timbang mo' (price) -> 'Ano ang timbang mo'; emph span '16.5 pounds' untouched.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-31536",
+   "verdict": "FIXED",
+   "new_tl": "Gaano karami sa tubig ng Mundo ang talagang tabang at maiinom?\n\nHalos lahat ng tubig sa Mundo ay maalat na tubig-dagat — wala pang 3 porsyento ang tabang (fresh) na tubig, at karamihan pa nito ay nakatago sa yelo at glacier!",
+   "what_changed": "'Magkano sa tubig' (price) -> 'Gaano karami sa tubig'.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-39273",
+   "verdict": "FIXED",
+   "new_tl": "Gaano karami sa energy ng halaman ang nagiging bagong katawan ng hayop kapag kinain ng herbivore?\n\nKapag kumain ng halaman ang isang herbivore, mga sampung porsyento lamang ng energy ang nagiging bagong katawan ng hayop!",
+   "what_changed": "'Magkano sa energy' (price) -> 'Gaano karami sa energy'; kept the card's own word 'energy'.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-39776",
+   "verdict": "FIXED",
+   "new_tl": "Paano natin makikita kung gaano karami ang momentum ng isang cart?\n\nMaglagay ng magaan na block sa dulo ng track! Ang pagsukat kung gaano kalayo ito dumulas ay nagpapakita kung gaano karaming momentum ang dala ng cart.",
+   "what_changed": "'kung magkano ang momentum' (price) -> 'kung gaano karami ang momentum', matching the answer.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-19140",
+   "verdict": "FIXED",
+   "new_tl": "Saan gawa ang baro't saya?\n\nIto ay damit na gawa sa telang hinabi mula sa hibla gaya ng bulak o piña! Pinagsalit-salit ang sinulid bago tahiin.",
+   "what_changed": "'Ano ang ginagawa sa baro't saya' -> 'Saan gawa ang baro't saya', so the question matches the answer; emph span 'hinabi' untouched.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-33832",
+   "verdict": "FIXED",
+   "new_tl": "Saan ba gawa ang 'lead' sa loob ng iyong lapis?\n\nGraphite iyan! Ang graphite ay gawa sa purong carbon, at ito ang 'lead' na ginagamit sa loob ng lapis.",
+   "what_changed": "'Ano ba ang ginagawa sa lead' -> 'Saan ba gawa ang lead', matching the answer's 'gawa sa purong carbon'.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-17944",
+   "verdict": "FIXED",
+   "new_tl": "Kung kaunting tubig lang ang idadagdag sa calamansi juice, sobrang maasim pa rin! Pero kung maraming tubig, magiging matabang ang lasa. Iyan ang konsentrasyon!",
+   "what_changed": "malambot na lasa (soft texture) -> matabang na lasa (mild/weak taste); emph span 'konsentrasyon' untouched.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-08075",
+   "verdict": "FIXED",
+   "new_tl": "Ang 'trophic cascade' ay kapag ang pagbabago sa itaas na antas, tulad ng pag-alis ng top predator, ay bumababa hanggang sa pinakamababang antas: nawala ang predator, dumami ang mga kumakain ng halaman, naubos ang mga halaman — parang sunod-sunod na domino mula taas pababa.",
+   "what_changed": "Coinage 'halamanan-kainin' (garden-eat) -> 'mga kumakain ng halaman' (plant-eaters).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-29526",
+   "verdict": "FIXED",
+   "new_tl": "Ang Polaris o 'North Star' ay tila hindi gumagalaw sa langit dahil halos nasa direksyon ito ng hilagang polo ng Earth! Ginagamit ito ng mga manlalakbay para malaman ang direksyong hilaga.",
+   "what_changed": "hilagang poste -> hilagang polo (Earth's north pole).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-30480",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang binubuo ng magnetic field ng Daigdig?\n\nMga di-nakikitang linya! Umaabot ang mga ito mula sa isang polo papunta sa kabila.",
+   "what_changed": "isang poste -> isang polo (magnetic pole).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-22034",
+   "verdict": "FIXED",
+   "new_tl": "Ang magkaparehong polo ng dalawang magnet ay nagtataboy, pero ang magkasalungat na polo ay nag-aakit sa isa't isa!",
+   "what_changed": "Both 'poste' -> 'polo' (magnet poles); emph 'nagtataboy' untouched.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-22203",
+   "verdict": "FIXED",
+   "new_tl": "Kapag pinagdikit mo ang dalawang magkaparehong polo, nagtataboy o nag-iiwasan ang mga ito!",
+   "what_changed": "magkaparehong poste -> magkaparehong polo (like poles).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-22204",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang nangyayari kapag nagkaharap ang magkasalungat na polo?\n\nAng magkasalungat na polo, tulad ng hilaga at timog, ay umaakit at dumidikit sa isa't isa!",
+   "what_changed": "Both 'magkasalungat na poste' -> 'magkasalungat na polo'; emph 'umaakit' untouched.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-22217",
+   "verdict": "FIXED",
+   "new_tl": "Saan pinakamalakas ang puwersa ng magnet?\n\nPinakamalakas ang puwersa ng magnet sa dalawang polo niyan, at mas mahina sa gitna.",
+   "what_changed": "dalawang poste niyan -> dalawang polo niyan (its two poles).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-22439",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang nangyayari kapag nagtatagpo ang mga polo ng magnet?\n\nMagkasalungat na polo ng magnet ay naghihilahan, ngunit magkaparehong polo ay nagtutulakan! Hilaga at timog, magkaakit!",
+   "what_changed": "All three 'poste' -> 'polo'; emph spans 'Magkasalungat' and 'magkaparehong' kept verbatim.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-26974",
+   "verdict": "FIXED",
+   "new_tl": "Bakit lumulutang at napakabilis ng maglev train?\n\nAng magkatulad na polo ng magnet ay nagtutulakan, kaya lumulutang ito sa riles nang halos walang friction!",
+   "what_changed": "magkatulad na poste ng magnet -> magkatulad na polo ng magnet.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-27064",
+   "verdict": "FIXED",
+   "new_tl": "Bakit sobrang lakas ng horseshoe magnet?\n\nHugis-U ito na may dalawang polo sa dulo, kaya mas malakas humila ng bakal kaysa tuwid na magnet!",
+   "what_changed": "dalawang poste sa dulo -> dalawang polo sa dulo.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-28948",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang nagdudulot ng makukulay na aurora sa langit?\n\nAng Araw! Kapag tumama ang mga particle mula sa solar wind sa hangin sa itaas ng Mundo malapit sa mga polo, nagliliwanag ito at nagiging makukulay na ilaw.",
+   "what_changed": "malapit sa mga poste -> malapit sa mga polo (near Earth's poles).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-28949",
+   "verdict": "FIXED",
+   "new_tl": "Nakikita lang ang aurora malapit sa magkabilang polo ng Mundo, hindi sa tropikal na lugar tulad ng Pilipinas. Ginagabayan ng magnetikong puwersa ng Mundo ang mga particle ng Araw patungo sa mga polo!",
+   "what_changed": "Both 'poste' -> 'polo' (Earth's two poles).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-30477",
+   "verdict": "FIXED",
+   "new_tl": "Ang magkasalungat na polo ng magneto ay naghihilahan! Pero kung magkapareho, sila ay nagtataboy.",
+   "what_changed": "poste -> polo; the defect sat inside the emph span, so the span becomes 'polo'.",
+   "changed_spans": [
+    "poste"
+   ]
+  },
+  {
+   "id": "ffct-30805",
+   "verdict": "FIXED",
+   "new_tl": "May mga takip na yelo ang Mars sa dalawang polo nito, gawa sa tubig at frozen carbon dioxide!",
+   "what_changed": "dalawang poste nito -> dalawang polo nito (Mars's two poles).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-30962",
+   "verdict": "FIXED",
+   "new_tl": "Bilog ang Earth, kaya mas mainit sa ekwador at mas malamig sa mga polo! Direktang tumatama ang sinag sa ekwador, pero pahilis sa mga polo kaya mas mahina ang init.",
+   "what_changed": "Both 'mga poste' -> 'mga polo'.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-35858",
+   "verdict": "FIXED",
+   "new_tl": "Nasa eksaktong lugar ba ang mga magnetikong polo ng Daigdig tulad ng tunay na Hilaga at Timog na Polo?\n\nHindi! Ang mga magnetikong polo na tinuturo ng kompas ay hindi eksaktong nasa parehong lugar ng tunay na Hilaga at Timog na Polo ng pag-ikot ng Daigdig.",
+   "what_changed": "All 'poste/Poste' -> 'polo/Polo'; emph span rewritten to 'magnetikong polo'.",
+   "changed_spans": [
+    "magnetikong poste"
+   ]
+  },
+  {
+   "id": "ffct-35939",
+   "verdict": "FIXED",
+   "new_tl": "Ang magnetikong polo ng Daigdig ay dahan-dahang gumagalaw! Sa napakahabang panahon, ang buong magnetikong larangan ay nakapagpapalit pa ng direksyon!",
+   "what_changed": "magnetikong poste -> magnetikong polo.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-20609",
+   "verdict": "FIXED",
+   "new_tl": "Nawawala ang mga natipong tubig sa bakuran ng paaralan sa Quezon City tuwing maaraw dahil ang likidong tubig ay nag-e-evaporate at nagiging hindi nakikitang gas!",
+   "what_changed": "mga latian (swamps) -> mga natipong tubig (puddles).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-20613",
+   "verdict": "FIXED",
+   "new_tl": "Natutuyo ang mga natipong tubig dahil ang tubig ay nag-e-evaporate at nagiging gas sa temperatura ng silid, kaya hindi kailangang umabot sa boiling point!",
+   "what_changed": "mga latian -> mga natipong tubig (puddles).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-20721",
+   "verdict": "FIXED",
+   "new_tl": "Bakit natutuyo ang mga natipong tubig ng ulan kahit hindi kumukulo?\n\nNag-e-evaporate ang tubig at nagiging invisible na water vapor sa room temperature, bago pa man umabot sa boiling point!",
+   "what_changed": "mga latian -> mga natipong tubig ng ulan (rain puddles).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-36850",
+   "verdict": "FIXED",
+   "new_tl": "Nag-e-evaporate ang sikat ng araw sa tubig mula sa dagat at mga natipong tubig! Nagsisimula ito ng water cycle na nagdadala ng ulan sa bukirin at gubat.",
+   "what_changed": "dagat at latian -> dagat at mga natipong tubig (seas and puddles).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-00230",
+   "verdict": "FIXED",
+   "new_tl": "Kaya ba ng sea urchin na igalaw ang mga tinik nito?\n\nOo! Hindi nakatutok lang ang mga tinik nito — kayang itutok ng sea urchin ang mga ito sa anumang humihipo dito bilang pananggalang.",
+   "what_changed": "Both 'tihik' -> 'sea urchin' (matches title_tl); emph 'tinik' untouched.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-00861",
+   "verdict": "FIXED",
+   "new_tl": "Kapag natapakan mo nang nakayapak ang sea urchin, masakit ito dahil matutulis ang tinik nito — kaya mag-ingat sa batuhang dagat.",
+   "what_changed": "tihik -> sea urchin; the defect was the emph span itself, so the span becomes 'sea urchin'.",
+   "changed_spans": [
+    "tihik"
+   ]
+  },
+  {
+   "id": "ffct-05502",
+   "verdict": "FIXED",
+   "new_tl": "Magkamag-anak pala ang starfish at ang sea urchin — parehong kabilang sila sa grupo ng mga hayop-dagat na may matinik na balat, ang echinoderm.",
+   "what_changed": "tihik -> sea urchin.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-07679",
+   "verdict": "FIXED",
+   "new_tl": "Ang sea urchin ay gumagalaw gamit ang maliliit na paang puno ng tubig na lumalabas sa pagitan ng mga tinik nito, at ginagamit din nito ang mga ito para kumapit sa bato.",
+   "what_changed": "tihik -> sea urchin; emph 'paang puno ng tubig' untouched.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-11980",
+   "verdict": "FIXED",
+   "new_tl": "Sa ilalim ng mga tinik ng sea urchin ay may matigas at bilog na balat na tinatawag na 'test'. Ito ang naiiwan kapag namatay na ito at nalaglag ang mga tinik.",
+   "what_changed": "tihik -> sea urchin; emph 'test' untouched.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-26368",
+   "verdict": "FIXED",
+   "new_tl": "Sabi ng Batas ni Hooke: habang mas malayo ang pagkaunat mo sa isang spring, mas malakas ang puwersa nito pabalik! F = kx iyon.",
+   "what_changed": "'bukal (spring)' (water spring) -> 'spring', the coil spring of Hooke's law.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-01715",
+   "verdict": "FIXED",
+   "new_tl": "Ano ang chlorophyll?\n\nAng chlorophyll ang berdeng sangkap sa dahon na sumisipsip ng enerhiya mula sa araw para magamit sa potosintesis.",
+   "what_changed": "berdeng sustansya (nutrient) -> berdeng sangkap (substance).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-25180",
+   "verdict": "FIXED",
+   "new_tl": "Nakakaranas ang Pilipinas ng mga 200 araw ng thunderstorm bawat taon! Ang tropical climate, mataas na humidity, at mainit na dagat ay nagdudulot ng madalas na kidlat at kulog.",
+   "what_changed": "'200 araw ng bagyo' (typhoon days) -> '200 araw ng thunderstorm', matching the English and the card's own English-science register.",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-02488",
+   "verdict": "FIXED",
+   "new_tl": "Ang mga palakang-lupa ay may tuyo at kulubot na balat at karaniwang nasa lupa, hindi tulad ng makinis at tubig-tubig na mga palaka.",
+   "what_changed": "bakulaw (gorilla) -> palakang-lupa (toad).",
+   "changed_spans": []
+  },
+  {
+   "id": "ffct-22443",
+   "verdict": "FIXED",
+   "new_tl": "Sa masayang laro ng hilahan ng lubid, panalo ang panig na mas malakas humila sa lubid!",
+   "what_changed": "batuhan ng lubid (throwing ropes) -> hilahan ng lubid (tug-of-war); span rewritten.",
+   "changed_spans": [
+    "batuhan ng lubid"
+   ]
+  },
+  {
+   "id": "ffct-23370",
+   "verdict": "FIXED",
+   "new_tl": "Sino ang nananalo sa hilahan ng lubid?\n\nAng panig na may mas malakas na hila ang nananalo at nakakahatak sa kabila!",
+   "what_changed": "Replaced the wrong game name 'batuhan ng lubid' (rope-throwing) with 'hilahan ng lubid' (tug-of-war); answer left verbatim.",
+   "changed_spans": []
+  }
+ ],
+ "rejected_items": [],
+ "held_items": [
+  {
+   "id": "dcard-00460",
+   "why": "HOLD: the small-vs-big mismatch is inherited verbatim from the English (en_ans: \"A big change can upset the ecosystem's balance\"), so the Tagalog is faithful and any fix changes the fact, not the language — needs an English-side decision."
+  }
+ ]
+}

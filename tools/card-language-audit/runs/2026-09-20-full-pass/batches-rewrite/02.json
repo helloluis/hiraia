@@ -1,0 +1,340 @@
+[
+ {
+  "id": "ffct-20765",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "en asks \"How much heavier is solid gold compared to the same amount of water?\" but tl asks \"Gaano KAGAMIT ang solid gold kumpara sa parehong dami ng tubig?\" (= how USEFUL); the Tagalog answer never addresses usefulness and instead gives weight: \"19.3 beses mas mabigat kaysa liquid water\". Question asks one thing (usefulness), answer gives another (density/weight) -- \"heavier\" was turned into \"kagamit\" instead of \"kabigat\".",
+  "tl": "Gaano kagamit ang solid gold kumpara sa parehong dami ng tubig?\n\nIsang cubic centimeter ng solid gold ay 19.3 gramo—19.3 beses mas mabigat kaysa liquid water!",
+  "en": "How much heavier is solid gold compared to the same amount of water?\n\nOne cubic centimeter of solid gold weighs 19.3 grams—that's 19.3 times heavier than liquid water!",
+  "title_tl": "Solid Gold 19.3 Gram",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-22152",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans \"Stand with the sun behind you and face the rain or mist\" -> ans \"Tumayo ka sa likod ng araw at harapin ang ulan o ambon\". \"Sa likod ng araw\" means \"BEHIND THE SUN\" (the child is placed behind the sun), the exact reverse of \"with the sun behind you\" (Tagalog needs \"nang nasa likuran mo ang araw\" / \"talikuran mo ang araw\"). The rainbow-viewing rule IS the sun-at-your-back geometry, nothing in the card restores it, and the Tagalog instruction as written is physically impossible to follow.",
+  "tl": "Gusto mo bang makakita ng bahaghari?\n\nTumayo ka sa likod ng araw at harapin ang ulan o ambon para makita ang magagandang kulay nito!",
+  "en": "Want to see a rainbow?\n\nStand with the sun behind you and face the rain or mist to see its beautiful colors!",
+  "title_tl": "Araw sa Likod Bahaghari",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-00583",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"Is a turtle's shell like a crab's?\" -> tl \"Magkatulad ba ang bahay-buto nila?\": both compared entities (\"a turtle's\" and \"a crab's\") vanish, leaving a bare pronoun \"nila\" with no antecedent, so the Tagalog question cannot be answered as posed.",
+  "tl": "Magkatulad ba ang bahay-buto nila?\n\nHindi — ang talukab ng pagong ay buto na may balat sa labas, pero ang alimango ay walang buto sa loob — ang matigas nitong balat ang siyang skeleton.",
+  "en": "Is a turtle's shell like a crab's?\n\nNo — a turtle's shell is bone covered in skin, but a crab has no bones inside; its hard outer crust is its skeleton.",
+  "title_tl": "Pagong vs Alimango",
+  "emph_tl": [
+   "talukab"
+  ]
+ },
+ {
+  "id": "ffct-00115",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "tl asks \"Paano naaamoy ng Philippine crocodile ang biktima sa tubig?\" (how does it SMELL its prey) but the tl answer gives a different mechanism: \"may espesyal na mga butas sa ulo na nakakaramdam ng galaw ng biktima\" — the en original is \"How does the Philippine crocodile sense prey underwater?\" / \"sensing pits ... that detect vibrations from prey\", i.e. vibration-sensing, not smell.",
+  "tl": "Paano naaamoy ng Philippine crocodile ang biktima sa tubig?\n\nAng bihirang Philippine crocodile sa mga latian ng Isabela ay may espesyal na mga butas sa ulo na nakakaramdam ng galaw ng biktima sa ilalim ng tubig.",
+  "en": "How does the Philippine crocodile sense prey underwater?\n\nThe critically endangered Philippine crocodile in Isabela's freshwater marshes has special sensing pits on its head that detect vibrations from prey underwater.",
+  "title_tl": "Buwayang Pilipino",
+  "emph_tl": [
+   "espesyal na mga butas"
+  ]
+ },
+ {
+  "id": "ffct-02024",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "EN answer: \"a sucker-like disc on its head\" -> TL: \"may parang suso sa ulo\". 'Suso' is Tagalog for snail (cf. ffct-01834 'bahay ng suso') or breast -- never a suction disc. The child is told the remora has a snail/breast on its head instead of a sucker; the corpus elsewhere uses 'supang'/'sipsip' correctly.",
+  "tl": "Ano ang remora?\n\nAng remora ay isang isda na may parang suso sa ulo, ginagamit nito para kumapit sa pating o malaking isda at makisakay habang lumalangoy sila!",
+  "en": "What is a remora fish?\n\nA remora is a fish with a sucker-like disc on its head that it uses to cling onto sharks or big fish and hitch a free ride!",
+  "title_tl": "Isdang Remora",
+  "emph_tl": [
+   "remora"
+  ]
+ },
+ {
+  "id": "ffct-02636",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "EN_LEAD: \"Does a millipede bite when scared?\" vs TL_LEAD: \"Kumakagat ba ang alupihan kapag natakot?\" — \"alupihan\" is the centipede, a different animal that DOES bite (venomous forcipules); TL_ANSWER never restores \"millipede\" in Tagalog, it keeps the English word: \"Hindi — hindi nangangagat ang millipede\". A child reading only the Tagalog learns the false fact that centipedes do not bite.",
+  "tl": "Kumakagat ba ang alupihan kapag natakot?\n\nHindi — hindi nangangagat ang millipede. Sa halip, namamaluktot ito na parang singsing kapag natatakot.",
+  "en": "Does a millipede bite when scared?\n\nNo — a millipede doesn't bite. Instead, it curls into a tight coil when it feels scared.",
+  "title_tl": "Depensa ng Milipid",
+  "emph_tl": [
+   "millipede"
+  ]
+ },
+ {
+  "id": "ffct-03153",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"Can one mango flower make fruit by itself?\" -> tl \"Kaya bang mamunga ang isang bulak ng mangga mag-isa?\"; \"flower\" is rendered as \"bulak\" (= cotton), not \"bulaklak\". The answer repeats the error (\"ang bulak ng mangga\", \"iisang bulak lang\"), so nothing restores it. Elsewhere in this same bank \"bulak\" is used correctly for cotton (ffct-08970 \"Magkatulad ba ang kapok at bulak?\", ffct-15423 \"halamang bulak\", ffct-16563 \"bola ng bulak\"), confirming the sense is wrong here.",
+  "tl": "Kaya bang mamunga ang isang bulak ng mangga mag-isa?\n\nOo! May parehong lalaki at babaeng bahagi ang bulak ng mangga, kaya kayang magbunga ng iisang bulak lang.",
+  "en": "Can one mango flower make fruit by itself?\n\nYes! Mango flowers have both male and female parts in one flower, so a single flower can produce fruit all by itself.",
+  "title_tl": "Bulaklak ng Mangga",
+  "emph_tl": [
+   "lalaki at babaeng bahagi"
+  ]
+ },
+ {
+  "id": "ffct-03771",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans: \"it's called chewing the cud\" -> ans: \"tinatawag itong pag-usap\". In Tagalog \"usap\" means to talk/converse (chew is \"nguya\"); \"usap\" = chew is Cebuano. The card therefore names rumination \"pag-usap\" (talking), so the Tagalog gives the child a false term for the process the question asks about (\"Bakit ngumunguya ulit ang baka ng kinain na niya?\").",
+  "tl": "Bakit ngumunguya ulit ang baka ng kinain na niya?\n\nIbinabalik ng baka at tupa ang kanilang kinain para nginuyain muli — tinatawag itong pag-usap — para lubos na matunaw ang damo.",
+  "en": "Why do cows chew the same food twice?\n\nCattle and sheep bring their food back up to chew again — it's called chewing the cud — so they can fully digest the grass.",
+  "title_tl": "Pagnguya ng Cud ng Baka",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-04210",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "en_ans \"That's the sharp tang your tongue picks up from acidic foods\" -> ans \"Iyan ang tikatik na lasa ng mga acidic na pagkain\". The tl question states the taste is maasim (sour), but the answer names that taste \"tikatik\", which in Tagalog means a light drizzle of rain, not a sharp/sour taste; the sourness descriptor the card is teaching is replaced by a word meaning something else entirely.",
+  "tl": "Bakit maasim ang lasa ng kalamansi?\n\nIyan ang tikatik na lasa ng mga acidic na pagkain—tulad ng kalamansi, suka, at sampalok!",
+  "en": "Why does calamansi taste sour?\n\nThat's the sharp tang your tongue picks up from acidic foods—like calamansi, vinegar, and tamarind!",
+  "title_tl": "Asim ng Pagkain",
+  "emph_tl": [
+   "acidic"
+  ]
+ },
+ {
+  "id": "ffct-04509",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "en_ans \"the algae make food through photosynthesis, and that food feeds the coral\" -> ans \"gumagawa ang algae ng pagkain sa pamamagitan ng photosynthesis, at ito ang kumakain ng coral\". The direction is reversed: the Tagalog says the algae/food EATS the coral, while the tl question (\"May halamang naninirahan sa coral?\") and the English both teach that the algae live inside the coral and feed it. A child learns the opposite, predatory relationship.",
+  "tl": "May halamang naninirahan sa coral?\n\nMay maliliit na algae na tinatawag na zooxanthellae na naninirahan sa loob ng selula ng coral — gumagawa ang algae ng pagkain sa pamamagitan ng photosynthesis, at ito ang kumakain ng coral!",
+  "en": "Do algae live inside coral?\n\nCorals have tiny algae called zooxanthellae living inside their cells — the algae make food through photosynthesis, and that food feeds the coral!",
+  "title_tl": "Coral at Algae",
+  "emph_tl": [
+   "zooxanthellae"
+  ]
+ },
+ {
+  "id": "ffct-05204",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en: \"Why does this insect look like a leaf?\" -> tl: \"Bakit parang dahon ang katawan nito?\" -- the word \"insect\" is gone and the Tagalog answer never names the creature either (\"Lapad ang katawan nito na may gurlis...\"), so a Tagalog-only reader has no antecedent for \"nito\" and cannot tell what the card is about.",
+  "tl": "Bakit parang dahon ang katawan nito?\n\nLapad ang katawan nito na may gurlis na parang ugat ng dahon, at may lapad pa sa gilid ng paa nito na mukhang piraso ng dahon!",
+  "en": "Why does this insect look like a leaf?\n\nIts flat body has lines just like leaf veins, and even its legs have wide flaps that look like torn bits of a leaf!",
+  "title_tl": "Dahong Kulisap",
+  "emph_tl": [
+   "dahon"
+  ]
+ },
+ {
+  "id": "ffct-05377",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"What's the difference between frogs and toads?\" -- \"toads\" is rendered as \"bakulaw\", which in Tagalog means gorilla/ape, not toad (palakang-bukid/tukak). The answer repeats the error: \"ang bakulaw ay may tuyo at bukol-bukol na balat at nakatira sa lupa\", so a child learns that a gorilla has dry bumpy skin and is the land counterpart of a frog.",
+  "tl": "Ano ang pagkakaiba ng palaka at bakulaw?\n\nAng palaka ay may makinis at mamasa-masang balat at kailangan ng tubig para mabuhay, samantalang ang bakulaw ay may tuyo at bukol-bukol na balat at nakatira sa lupa.",
+  "en": "What's the difference between frogs and toads?\n\nFrogs have smooth, moist skin and need water to live, while toads have dry, bumpy skin and live on land.",
+  "title_tl": "Palaka Laban sa Bakulaw",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-05559",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"What is the loudest animal on Earth?\" becomes tl \"Ano ang pinakamalakas na hayop sa mundo?\" -- \"malakas\" applied to an animal reads as STRONGEST, not loudest (the same batch uses the identical phrase for strength: ffct-05410 \"Alin ang pinakamalakas na hayop sa lupa?\" = strongest land animal, answer elepante). The tl answer repeats the ambiguous \"isa sa pinakamalakas na hayop\" and never says tunog/ingay, so a child reading only the Tagalog learns the blue whale is the world's strongest animal -- and that it outranks the elephant. Correct rendering: pinakamaingay / may pinakamalakas na tunog",
+  "tl": "Ano ang pinakamalakas na hayop sa mundo?\n\nAng blue whale ay isa sa pinakamalakas na hayop, umaabot ng halos 188 decibels ang tawag nito!",
+  "en": "What is the loudest animal on Earth?\n\nThe blue whale is one of the loudest animals alive, with calls that can reach about 188 decibels!",
+  "title_tl": "Balyenang Asul",
+  "emph_tl": [
+   "188 decibels"
+  ]
+ },
+ {
+  "id": "ffct-05991",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans: \"Sea urchins explode in number\" -> ans: \"Bibilib ang bilang ng sea urchin\" — 'bibilib' means 'will be impressed/in awe', not 'will increase'; the Tagalog never says the urchin population booms.",
+  "tl": "Ano ang mangyayari kung mawala ang sea otter?\n\nBibilib ang bilang ng sea urchin at sisirain nila ang mahahalagang kelp forest, dahil ang sea otter ay keystone predator na pumipigil sa dami nila.",
+  "en": "What happens if sea otters disappear?\n\nSea urchins explode in number and overgraze the vital kelp forests, because the sea otter is a keystone predator that keeps them in check.",
+  "title_tl": "Sea Otter Bawas Sea Urchin Kelp",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-07762",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en asks \"Where do special Philippine animals live?\" but tl is \"Saan makikita ang mga espesyal na hayop?\" — the qualifier \"Philippine\" is gone, and the Tagalog answer (\"Karamihan ay nasa kagubatan, bundok, at protektadong lugar\") never restores it, so an endemic-species card reads as a generic worldwide claim.",
+  "tl": "Saan makikita ang mga espesyal na hayop?\n\nKaramihan ay nasa kagubatan, bundok, at protektadong lugar — kaya mahalagang ingatan ang mga ito para hindi sila mawala.",
+  "en": "Where do special Philippine animals live?\n\nMany live in forests, mountains, and protected areas — that's why protecting these places matters, so these animals never disappear.",
+  "title_tl": "Espesyal Hayop Gubat Bundok",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-08148",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "en_ans: 'estimates air temperature from how many chirps happen per minute' -> ans: 'batay sa bilang ng kuliglig kada minuto' = number of CRICKETS per minute, not chirps (chirp = huni). The tl question asks about 'tunog ng kuliglig' (the sound) but the answer tells the child to count the insects.",
+  "tl": "Kaya bang malaman ang temperatura sa tunog ng kuliglig?\n\nMedyo, oo! Mas mabilis kumuliglig ang kuliglig kapag mainit — may lumang formula na Dolbear's Law na tinatantya ang temperatura batay sa bilang ng kuliglig kada minuto.",
+  "en": "Can crickets tell you the temperature?\n\nSort of! Crickets chirp faster when it's hotter — an old formula called Dolbear's Law even estimates air temperature from how many chirps happen per minute.",
+  "title_tl": "Mga Kuliglig at Init",
+  "emph_tl": [
+   "Dolbear's Law"
+  ]
+ },
+ {
+  "id": "ffct-08654",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en: 'Does the HIP JOINT rattle loosely inside?' -> tl: 'Umuuga ba nang basta-basta ang bola sa socket?'. The body part is gone and the tl answer never restores it ('akmang-akma ang bola sa mangkok') — a child reading only Tagalog has no idea what 'bola sa socket' is a part of.",
+  "tl": "Umuuga ba nang basta-basta ang bola sa socket?\n\nHindi — akmang-akma ang bola sa mangkok, at hinahawakan ito ng ligaments at kalamnan para hindi gumalaw nang basta-basta.",
+  "en": "Does the hip joint rattle loosely inside?\n\nNo — the ball fits snugly in its socket, held tight by ligaments and muscles so it doesn't wobble.",
+  "title_tl": "Balakang",
+  "emph_tl": [
+   "bola"
+  ]
+ },
+ {
+  "id": "ffct-08960",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "EN question: \"Why not the maya as national bird?\" and EN answer \"was chosen as our national bird\" — the words \"as national bird\" / \"bilang pambansang ibon\" appear NOWHERE in the Tagalog. TL question is only \"Bakit hindi ang maya?\" and the TL answer only says \"Pinili ang Philippine Eagle dahil natatangi ito\" — chosen for WHAT is never stated, so a child reading only the Tagalog cannot tell the card is about the national bird and cannot answer the question.",
+  "tl": "Bakit hindi ang maya?\n\nPinili ang Philippine Eagle dahil natatangi ito at makikita lang sa Pilipinas, hindi tulad ng maya na nasa maraming bansa.",
+  "en": "Why not the maya as national bird?\n\nThe Philippine Eagle was chosen as our national bird because it is unique and found only in the Philippines, unlike the maya which lives in many countries.",
+  "title_tl": "Agilang Pilipino",
+  "emph_tl": [
+   "natatangi"
+  ]
+ },
+ {
+  "id": "ffct-09406",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans: \"change its skin's color and pattern in seconds\" -> tl ans: \"baguhin ... ang kulay at himig ng balat nito\"; 'himig' means melody/tune, so the skin-PATTERN fact is lost and replaced by a nonsense trait.",
+  "tl": "Aling hayop sa dagat ang mabilis magpalit ng kulay?\n\nAng cuttlefish o bagulan! Kayang baguhin ng molusko na ito ang kulay at himig ng balat nito sa ilang segundo — para magtago o makipag-usap sa kapwa nito.",
+  "en": "Which sea creature changes color in seconds?\n\nThe cuttlefish! This sea mollusk can change its skin's color and pattern in seconds — to hide from danger or 'talk' to other cuttlefish.",
+  "title_tl": "Kulay ng Cuttlefish",
+  "emph_tl": [
+   "cuttlefish"
+  ]
+ },
+ {
+  "id": "ffct-12517",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"Why does cupping your ear help you hear better?\" / en_ans \"cupping your hand behind it makes an even bigger funnel\" -> tl \"Bakit mas malinaw ang tunog kapag tinatakpan mo ang tainga?\" and ans \"kapag tinakpan mo ito ng kamay\": cupping a hand BEHIND the pinna becomes tinatakpan = COVERING the ear, and \"behind it\" (sa likod) is gone from both question and answer. The Tagalog teaches the opposite of the fact -- covering the ear blocks sound; the funnel explanation in the answer contradicts the covering it describes.",
+  "tl": "Bakit mas malinaw ang tunog kapag tinatakpan mo ang tainga?\n\nAng nakikitang bahagi ng tainga natin, ang pinna, ay parang funnel na sumasalo at nagdidirekta ng tunog papasok — kapag tinakpan mo ito ng kamay, mas malaki ang funnel kaya mas malinaw ang tunog.",
+  "en": "Why does cupping your ear help you hear better?\n\nThe visible part of your ear, the pinna, works like a funnel that catches sound and directs it inward — cupping your hand behind it makes an even bigger funnel, so sounds get clearer.",
+  "title_tl": "Funnel ng Tenga",
+  "emph_tl": [
+   "pinna"
+  ]
+ },
+ {
+  "id": "ffct-13371",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"What pattern hides under a SEA URCHIN's spines?\" -> tl \"Anong disenyo ang natatago sa tinik ng TIHIK?\". \"Tihik\" is not a sea urchin: in Tagalog (and Cebuano) tihik = kuripot/maramot, a STINGY person. The Tagalog answer repeats the same word (\"sa bilog na balat-bato ng tihik\") and never names the animal (salungo/maritangtang/sea urchin), so nothing restores it -- a child reading only the Tagalog is told a miser has spines and a round stony shell. Same wrong word is used corpus-wide (ffct-00230 \"Kaya ba ng tihik na igalaw ang mga tinik nito?\", ffct-00891 \"Ang katawan ng starfish at tihik...\"",
+  "tl": "Anong disenyo ang natatago sa tinik ng tihik?\n\nKapag tinanggal ang mga tinik, makikita sa bilog na balat-bato ng tihik ang disenyong hati sa limang bahagi — parang bulaklak o bituin!",
+  "en": "What pattern hides under a sea urchin's spines?\n\nWhen the spines are removed, a sea urchin's round shell shows a pattern split into five parts — just like a flower or star!",
+  "title_tl": "Tuyom",
+  "emph_tl": [
+   "limang bahagi"
+  ]
+ },
+ {
+  "id": "ffct-14185",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans \"most of the plant is hidden inside its host\" -> ans \"nakatago ang halos buong halaman sa loob ng inaanay nito\". \"Host\" is rendered as \"inaanay\", which in Tagalog means termite-eaten / termite-infested (anay = termite). The Tagalog never says \"host\"; a child reads that the Rafflesia hides inside something eaten by termites, a wrong entity that the card nowhere corrects.",
+  "tl": "Saan nakatira ang halamang Rafflesia?\n\nAng Rafflesia ay nabubuhay sa loob ng baging na tinatawag na Tetrastigma, kamag-anak ng ubas. Doon ito kumukuha ng tubig at pagkain, kaya nakatago ang halos buong halaman sa loob ng inaanay nito!",
+  "en": "Where does the Rafflesia flower live?\n\nRafflesia lives inside a jungle vine called Tetrastigma, a relative of the grape. It draws water and food from that vine, so most of the plant is hidden inside its host!",
+  "title_tl": "Rafflesia at Baging",
+  "emph_tl": [
+   "Tetrastigma"
+  ]
+ },
+ {
+  "id": "ffct-14438",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans \"making clicking sounds that bounce back to help them find their way\" -> ans \"gumagawa ito ng tunog na pumipikit-pikit para makahanap ng daan\". Two losses: \"clicking\" becomes \"pumipikit-pikit\" (pikit = to close the eyes, blinking), a word that means something else entirely and is nonsense applied to a sound; and \"bounce back\" (tumatalbog pabalik) -- the actual echolocation mechanism -- is gone from the Tagalog entirely, so the child is told the bird makes a blinking sound, not that the sound echoes back.",
+  "tl": "Paano nakakalipad ang balinsasayaw sa madilim na kweba?\n\nGumagamit ang balinsasayaw ng echolocation — gumagawa ito ng tunog na pumipikit-pikit para makahanap ng daan sa loob ng madilim na kweba!",
+  "en": "How do swiftlets fly in pitch-dark caves?\n\nSwiftlets use echolocation — making clicking sounds that bounce back to help them find their way inside dark caves!",
+  "title_tl": "Pag-echo ng Swiftlet",
+  "emph_tl": [
+   "echolocation"
+  ]
+ },
+ {
+  "id": "ffct-14942",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"What are you made of?\" became tl \"Ano ang ginawa sa iyo?\" = \"What was DONE to you?\" The composition sense of \"made of\" is gone: \"ginawa sa iyo\" is the passive of \"do something to someone\", not \"made out of\". A child reading only the Tagalog is asked what was done to them, then answered \"Ang lahat ng bagay, kasama ka, ay gawa sa napakaliit na piraso na tinatawag na atom\" — the question and the answer are about different things (correct Tagalog would be \"Saan ka gawa?\").",
+  "tl": "Ano ang ginawa sa iyo?\n\nAng lahat ng bagay, kasama ka, ay gawa sa napakaliit na piraso na tinatawag na atom! Napakaliit nila kaya hindi natin makikita kahit sa mikroskopyo.",
+  "en": "What are you made of?\n\nEverything around you, including you, is made of extremely tiny pieces called atoms! They are so small we can't see them, even with a microscope.",
+  "title_tl": "Atom na Maliit na Bloke",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-15071",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans \"they are made from clay fired in heat\" became tl \"gawa ito sa luwad na pinaputok sa init\". Wrong sense of \"fired\": \"pinaputok\" is the gun/firecracker sense (to make explode/discharge) — the same corpus uses it exactly that way in ffct-23029 \"Bakit umaatras ang baril kapag pinaputok ito?\" and for lava/paputok. So the card teaches that bricks and tiles are clay MADE TO EXPLODE in heat rather than baked/fired (hinurno/sinunog sa pugon), and nothing in the Tagalog restores the kiln sense.",
+  "tl": "Bakit ang mga ladrilyo at tiles ay itinuturing na seramika?\n\nDahil gawa ito sa luwad na pinaputok sa init! Kaya ang ladrilyo at tiles ay seramika rin.",
+  "en": "Why are bricks and tiles considered ceramics?\n\nBecause they are made from clay fired in heat! That makes bricks and tiles a type of ceramic.",
+  "title_tl": "Ladrilyo na Pinutok na Luad",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-15253",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "en asks \"What is everything in the world made of?\" but tl asks \"Ano ang ginagawa ng lahat ng bagay sa mundo?\" = \"What does/makes everything in the world DO?\" (ginagawa ng = made BY / being done by, the agent, not the material). The answer answers a different question: \"Lahat ... ay gawa sa kombinasyon ng iilang dosenang elemento lamang\" (what things are made OF). Correct rendering is \"Saan gawa ang lahat ng bagay sa mundo?\"",
+  "tl": "Ano ang ginagawa ng lahat ng bagay sa mundo?\n\nLahat, mula sa hangin at tubig hanggang sa bato at katawan mo, ay gawa sa kombinasyon ng iilang dosenang elemento lamang!",
+  "en": "What is everything in the world made of?\n\nEverything, from air and water to rocks and your body, is made from combinations of only a few dozen elements!",
+  "title_tl": "Lahat Bagay Elemento Kombinasyon",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-15464",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "en \"What glues bricks together to build a wall?\" became tl \"Ano ang dumidikit sa mga TISA ...\" -- tisa is chalk (or clay roof tile), not brick (laryo/ladrilyo). The same corpus uses tisa for chalk elsewhere: ffct-19904 \"What happens when you drop chalk into vinegar?\" -> \"inihulog mo ang tisa sa suka\", ffct-21205 \"dust from chalk or flour\" -> \"alikabok mula sa tisa o harina\". The Tagalog answer contradicts the question by naming a different entity: \"inilalagay sa pagitan ng BRICKS o BLOCKS\".",
+  "tl": "Ano ang dumidikit sa mga tisa para gumawa ng pader?\n\nMortar! Ito ay timpla ng semento, buhangin, at tubig na inilalagay sa pagitan ng bricks o blocks para pagdugtungin sila.",
+  "en": "What glues bricks together to build a wall?\n\nMortar! It's a sticky mix of cement, sand, and water spread between bricks or blocks to bind them tightly.",
+  "title_tl": "Mortar Semento Tisa Dikit",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-15995",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"Why do you feel a cool breeze at the beach during the day?\" -> tl \"...sa beach tuwing umaga?\": \"during the day\" becomes \"tuwing umaga\" (every morning). The day/night contrast is the whole teaching point of this sea-breeze card (its pair ffct-15996 is the night/land breeze), and the Tagalog answer (\"Mas mabilis uminit ang lupa kaysa dagat...\") never restores \"daytime\" — a child learns the sea breeze is a morning thing.",
+  "tl": "Bakit nakakaramdam ka ng malamig na ihip sa beach tuwing umaga?\n\nMas mabilis uminit ang lupa kaysa dagat! Umaakyat ang mainit na hangin sa ibabaw ng lupa, at pumapalit ang mas malamig na hangin mula sa dagat. Iyon ang sea breeze!",
+  "en": "Why do you feel a cool breeze at the beach during the day?\n\nLand heats faster than the sea! Warm air rises over land, and cooler air from the sea flows in to replace it. That's the sea breeze!",
+  "title_tl": "Simoy ng Dagat",
+  "emph_tl": [
+   "sea breeze"
+  ]
+ },
+ {
+  "id": "ffct-16105",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"Is an alloy a brand-new chemical substance?\" -> tl \"Ang aleasyon ba ay isang bagong sustansyang kemikal?\": \"chemical substance\" is rendered \"sustansyang kemikal\", but sustansya means NUTRIENT/nourishment, not substance (Filipino: sangkap / substansiya — this same bank uses \"purong sangkap\" for \"pure substance\" in ffct-15817 and \"sangkap\" in ffct-16053). The Tagalog answer (\"Hindi, isa lang itong halo!\") never restores the pure-substance-vs-mixture idea, so the child is asked whether an alloy is a new chemical nutrient.",
+  "tl": "Ang aleasyon ba ay isang bagong sustansyang kemikal?\n\nHindi, isa lang itong halo! Ang mga orihinal na metal ay nasa loob pa rin ng aleasyon, magkahalo lang.",
+  "en": "Is an alloy a brand-new chemical substance?\n\nNope, it's just a mixture! The original metals are still hiding inside the alloy, just mixed together.",
+  "title_tl": "Aleasyon ay Halo Lamang",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-16562",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "tl asks 'Paano nasusukat ng spring scale ang timbang?' but ans says 'kung gaano naunat ang bukal nito' - en_ans is 'how much its spring stretches'; 'bukal' is a water spring/fountain, a different entity from the scale's coil spring (all 10 other 'bukal' uses in this corpus are water springs, e.g. ffct-20001 'mainit na bukal' = hot spring). A child reads 'how far its fountain stretched'.",
+  "tl": "Paano nasusukat ng spring scale ang timbang?\n\nSinusukat nito ang timbang base sa kung gaano naunat ang bukal nito!",
+  "en": "How does a spring scale measure weight?\n\nIt measures weight by seeing how much its spring stretches!",
+  "title_tl": "Timbangan ng Spring",
+  "emph_tl": [
+   "spring scale"
+  ]
+ }
+]

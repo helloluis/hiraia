@@ -1,0 +1,320 @@
+[
+ {
+  "id": "ffct-30362",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"Where is fog most common in the Philippines?\" -> tl \"Saan madalas magkaambon...\" — ambon is DRIZZLE (light rain), not fog; the answer (\"Sa malalamig na lugar tulad ng Baguio\") never restores fog, so the Tagalog card is about rainfall, not fog.",
+  "tl": "Saan madalas magkaambon sa Pilipinas?\n\nSa malalamig na lugar tulad ng Baguio at iba pang kabundukan!",
+  "en": "Where is fog most common in the Philippines?\n\nIn cool highland places such as Baguio and other mountain areas!",
+  "title_tl": "Hamog sa Baguio",
+  "emph_tl": [
+   "Baguio"
+  ]
+ },
+ {
+  "id": "ffct-30364",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"to make dew or fog\" -> tl \"mabuo ang hamog o ambon\" — hamog=dew is fine but ambon=drizzle; the Tagalog answer repeats \"hamog o ambon\", so the child learns drizzle forms when air cools to the dew point, which is false.",
+  "tl": "Anong temperatura ang kailangan ng hangin para mabuo ang hamog o ambon?\n\nKailangang lumamig ang hangin hanggang sa tinatawag na dew point bago mabuo ang hamog o ambon!",
+  "en": "What temperature does air need to reach to make dew or fog?\n\nThe air must cool down to a specific temperature called the dew point before dew or fog can form!",
+  "title_tl": "Dew Point Air Cool Temperatura",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-30365",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"How are fog and dew part of the water cycle?\" -> tl \"ang ambon at hamog\" — fog becomes ambon (drizzle); neither question nor answer ever names fog.",
+  "tl": "Paano bahagi ng siklo ng tubig ang ambon at hamog?\n\nGaling sila sa singaw ng tubig na nagiging patak! Kaya bahagi sila ng siklo ng tubig.",
+  "en": "How are fog and dew part of the water cycle?\n\nThey come from water vapor turning back into liquid drops! That makes them a cool part of the water cycle.",
+  "title_tl": "Hamog at Siklo",
+  "emph_tl": [
+   "siklo ng tubig"
+  ]
+ },
+ {
+  "id": "ffct-30372",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"What do fog droplets cling to when they form in the air?\" -> tl \"mga patak ng ambon\" — fog droplets become drizzle drops; the answer keeps \"sila\" so fog is never restored.",
+  "tl": "Saan kumakapit ang mga patak ng ambon kapag nabubuo sa hangin?\n\nNabubuo sila sa palibot ng napakaliliit na alikabok na lumulutang sa hangin, na nagbibigay ng kapakpitan sa tubig!",
+  "en": "What do fog droplets cling to when they form in the air?\n\nThey form around very tiny bits of dust floating in the air, which give the water something to cling to!",
+  "title_tl": "Fog Droplet Alikabok Nucleus",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-30637",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "tl question \"Paano nabubuo ang sedimentary rock?\" vs tl answer \"...dumidiin nang malakas, at tumatagas!\" — en_ans is \"harden into rock\"; tumatagas means LEAKS/seeps (tumitigas = hardens), so the answer to a how-does-rock-form question ends with the sediment leaking and never becoming rock.",
+  "tl": "Paano nabubuo ang sedimentary rock?\n\nAng mga patong ng latak tulad ng buhangin at putik ay naiipon, dumidiin nang malakas, at tumatagas!",
+  "en": "How does sedimentary rock form?\n\nLayers of sediment like sand and mud pile up, get pressed tightly together, and harden into rock!",
+  "title_tl": "Sedimentaryong Bato",
+  "emph_tl": [
+   "sedimentary rock"
+  ]
+ },
+ {
+  "id": "ffct-30806",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans 'most of it is frozen as ice underground and at the poles' -> ans 'sa ilalim ng lupa at sa mga poste'; 'poste' is a post/pillar (lamppost), not a geographic pole ('polo'). The Tagalog says Mars' ice sits 'at the posts', so the polar-ice fact is lost and replaced by nonsense.",
+  "tl": "May tubig ba sa Mars?\n\nOo! Natuklasan ng mga siyentipiko na may tubig sa Mars, pero karamihan ay nasa anyong yelo sa ilalim ng lupa at sa mga poste.",
+  "en": "Is there water on Mars?\n\nYes! Scientists found water on Mars, but most of it is frozen as ice underground and at the poles.",
+  "title_tl": "Tubig sa Mars",
+  "emph_tl": [
+   "tubig"
+  ]
+ },
+ {
+  "id": "ffct-30943",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans 'an imaginary line through the north and south poles' -> ans 'isang imahinaryong linya sa hilaga at timog na poste'; 'poste' means a post/pillar, not the North/South Pole ('polo'), so the axis definition a child reads is wrong.",
+  "tl": "Paano nagbibigay ng araw at gabi ang pag-ikot ng Earth?\n\nAng Earth ay umiikot sa sarili nitong axis — isang imahinaryong linya sa hilaga at timog na poste. Isang buong rotation ay halos 24 oras, kaya nagkakaroon ng araw at gabi!",
+  "en": "How does Earth's spinning give us day and night?\n\nEarth spins on its axis — an imaginary line through the north and south poles. One full rotation takes about 24 hours, causing day and night!",
+  "title_tl": "Pag-ikot ng Mundo",
+  "emph_tl": [
+   "axis"
+  ]
+ },
+ {
+  "id": "ffct-32833",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"What happens to the dirt and rocks when a tectonic plate dives underwater?\" -> tl \"Ano ang nangyayari sa dumi at bato...\": English \"dirt\" here means soil/sediment, but \"dumi\" in Tagalog means filth/waste/excrement, so the child is asked about the wrong entity; the Tagalog answer only says the English technical word \"sediment\" (\"Na-scrape ang sediment...\"), which does not restore \"lupa\" for a Tagalog-only reader.",
+  "tl": "Ano ang nangyayari sa dumi at bato kapag sumisid ang tectonic plate?\n\nNa-scrape ang sediment at nagtitipon bilang accretionary prism! Ito ay magulong, mixed na bato sa harapan ng subduction zone sa Pilipinas.",
+  "en": "What happens to the dirt and rocks when a tectonic plate dives underwater?\n\nWhen a plate subducts, sediment on its surface is scraped off and piles up as an accretionary prism! It's a chaotic, mixed pile of rocks found in front of subduction zones around the Philippines!",
+  "title_tl": "Accretionary Prism",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-32972",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "tl question \"Ano ang mga deep-focus earthquakes?\" (deep = lalim) vs tl answer \"Nangyayari ito mahigit 300 km ang layo sa subduction zones\"; en_ans says \"They happen over 300 km deep\". \"Layo\" is distance, not depth, so the Tagalog turns the defining 300 km DEPTH into 300 km AWAY -- and the next clause \"Nararamdaman mo ito sa malayo\" reinforces the wrong reading.",
+  "tl": "Ano ang mga deep-focus earthquakes?\n\nNangyayari ito mahigit 300 km ang layo sa subduction zones kung saan pumapasok ang malamig na plate! Nararamdaman mo ito sa malayo, pero bihirang makasira.",
+  "en": "What are deep-focus earthquakes?\n\nThey happen over 300 km deep in subduction zones where a cold plate dives under another! You can feel them far away, but they rarely cause damage.",
+  "title_tl": "Deep-Focus Earthquake",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-33278",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en: \"How big and flat is our Milky Way galaxy?\" -> tl: \"Gaano kalaki at kalamig ang ating Milky Way galaxy?\" -- \"flat\" became \"kalamig\" (how cold); the answer gives thickness (\"1,000 light-years lang ang kapal\") and never mentions temperature, so the Tagalog question is both wrong and unanswered.",
+  "tl": "Gaano kalaki at kalamig ang ating Milky Way galaxy?\n\nAng disk ng Milky Way ay humigit-kumulang 100,000 light-years ang lapad ngunit 1,000 light-years lang ang kapal — parang napakalaki at napakapinong CD! Ang ating solar system ay nasa isang spiral arm, mga 26,000 light-years mula sa sentro.",
+  "en": "How big and flat is our Milky Way galaxy?\n\nThe Milky Way's disk is about 100,000 light-years across but only 1,000 light-years thick — like a giant, super-thin CD! Our solar system sits in a spiral arm about 26,000 light-years from the centre.",
+  "title_tl": "Disk ng Milky Way",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-33686",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "tl asks 'Aling mga planeta ang pinakamalaki sa ating solar system?' but ans says 'Apat na higanteng planeta ang nasa labas ng solar system' = outside the solar system; en_ans says 'Four giant planets live in the outer solar system' (panlabas na bahagi, not labas).",
+  "tl": "Aling mga planeta ang pinakamalaki sa ating solar system?\n\nApat na higanteng planeta ang nasa labas ng solar system: Jupiter, Saturn, Uranus, at Neptune. Sila ang pinakamalaking planeta!",
+  "en": "Which planets are the biggest in our solar system?\n\nFour giant planets live in the outer solar system: Jupiter, Saturn, Uranus, and Neptune. They're the biggest planets of all!",
+  "title_tl": "Apat na Higanteng Planeta",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-35011",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans says \"the next closest star, Proxima Centauri\"; the Tagalog drops \"next\" and says \"ang pinakamalapit na bituin, Proxima Centauri\" — teaching that Proxima Centauri is THE closest star, which contradicts the same sentence's \"Ang Sun ay 150 milyong kilometro ang layo\" (the Sun is the closest star) and other cards in this bank (ffct-34975: \"ito ang pinakamalapit na bituin sa Daigdig\").",
+  "tl": "Gaano kalayo ang mga bituin mula sa Earth?\n\nAng Sun ay 150 milyong kilometro ang layo, pero ang pinakamalapit na bituin, Proxima Centauri, ay higit sa 40 trilyong kilometro!",
+  "en": "How far are the stars from Earth?\n\nThe Sun is 150 million kilometers away, but the next closest star, Proxima Centauri, is over 40 trillion kilometers away!",
+  "title_tl": "40 Trilyong km kay Proxima",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-35139",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"how much rain a big thunderstorm can drop\" / en_ans \"A single mature thunderstorm\" becomes tl \"isang malaking bagyo\" in both question and answer. \"Bagyo\" is typhoon/tropical cyclone (used that way throughout this bank, e.g. ffct-35219 \"Nabubuo lang ang mga bagyo sa mainit na dagat\"), not a thunderstorm, so the Tagalog teaches that a big TYPHOON drops only 500 million liters / 200 pools — a wrong figure for the wrong phenomenon; \"mature\" is also gone and the answer does not restore \"thunderstorm\".",
+  "tl": "Alam mo ba kung gaano karaming ulan ang ibinubuhos ng isang malaking bagyo?\n\nAng isang malaking bagyo ay maaaring magbuhos ng higit sa 500 milyong litro ng tubig, sapat para mapuno ang 200 Olympic swimming pool!",
+  "en": "Did you know how much rain a big thunderstorm can drop?\n\nA single mature thunderstorm can dump over 500 million liters of water, enough to fill 200 Olympic swimming pools!",
+  "title_tl": "200 Swimming Pool ng Ulan",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-35515",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en: \"Ever wonder where puddles go on hot days?\" -> tl: \"...saan napupunta ang mga LATIAN sa mainit na araw?\". A latian is a swamp/marsh (a permanent wetland), not a puddle; the Tagalog answer only says \"Ang likidong tubig...\" and never restores the puddle. A child reading only the Tagalog learns that swamps evaporate away on hot days.",
+  "tl": "Naisip mo ba kung saan napupunta ang mga latian sa mainit na araw?\n\nAng likidong tubig ay sumisipsip ng heat energy at nagiging invisible water vapor sa hangin!",
+  "en": "Ever wonder where puddles go on hot days?\n\nLiquid water absorbs heat energy and transforms into invisible water vapor in the air!",
+  "title_tl": "Siklo ng Tubig",
+  "emph_tl": [
+   "water vapor"
+  ]
+ },
+ {
+  "id": "ffct-35649",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans: \"wet, mossy forests that are created by the HEAVY MOUNTAIN RAINS\" -> ans: \"basang, mamasa-masang kagubatan na nabubuo ng MABUHANGING ULAN\". Mabuhangin means SANDY, so the Tagalog teaches that the forest is made by 'sandy rain'; nothing in the card restores 'heavy/malakas'. ('Mossy/lumot' is also flattened to mamasa-masa = merely damp.)",
+  "tl": "Saan nakatira ang Philippine cloud rat sa Mount Pulag?\n\nNakatira ito sa basang, mamasa-masang kagubatan na nabubuo ng mabuhanging ulan sa bundok ng Mount Pulag!",
+  "en": "Where does the Philippine cloud rat live on Mount Pulag?\n\nIt lives in the wet, mossy forests that are created by the heavy mountain rains on Mount Pulag!",
+  "title_tl": "Tahanan ng Cloud Rat",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-35662",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "tl asks \"Ano ang GINAGAWA SA Tubbataha Reefs Natural Park?\" (= what is DONE AT the park - an activity question), but ans answers a composition question: \"BINUBUO ITO ng limestone rocks na nabuo mula sa accumulated skeletal remains ng corals!\". en was \"What is the Tubbataha Reefs Natural Park MADE OF?\" - 'made of' became 'ginagawa sa', so question and answer no longer match.",
+  "tl": "Ano ang ginagawa sa Tubbataha Reefs Natural Park?\n\nBinubuo ito ng limestone rocks na nabuo mula sa mga accumulated skeletal remains ng corals!",
+  "en": "What is the Tubbataha Reefs Natural Park made of?\n\nIt is composed of limestone rocks formed from the accumulated skeletal remains of corals!",
+  "title_tl": "Limestone ng Tubbataha",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-35679",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "tl asks \"Bakit NANATILING MATIGAS ang inner core...?\" but ans says \"pero PINIPIGILAN ng presyon na MAGING MATIGAS NA BAKAL\" = 'the pressure PREVENTS it from becoming solid iron' - the exact opposite of en_ans \"the pressure KEEPS IT AS SOLID IRON\". The Tagalog answer negates the premise of its own question.",
+  "tl": "Bakit nananatiling matigas ang inner core kahit ito ang pinakamainit na sapaw?\n\nDahil sa napakalakas na presyon na dumidiin dito! Ang inner core ang pinakaloob at pinakamainit, pero pinipigilan ng presyon na maging matigas na bakal.",
+  "en": "Why does the inner core stay solid even if it's the hottest layer?\n\nBecause of the enormous pressure squeezing it! The inner core is the deepest and hottest layer, but the pressure keeps it as solid iron.",
+  "title_tl": "Solid na Inner Core",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-35729",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "tl asks \"Ba't isang solidong bola ng apoy ang Araw?\" (presupposes the Sun IS a solid ball of fire) but ans says \"Hindi! ... hindi isang solidong bola ng apoy!\" — the en was a yes/no question, \"Is the Sun a giant ball of fire?\", so the Tagalog question now asserts the false premise its own answer denies",
+  "tl": "Ba't isang solidong bola ng apoy ang Araw?\n\nHindi! Ang Araw ay isang napakalaking bola ng mainit, kumikislap na hydrogen at helium na mga gas—hindi isang solidong bola ng apoy!",
+  "en": "Is the Sun a giant ball of fire?\n\nNope! The Sun is actually a massive sphere of hot, glowing hydrogen and helium gases—not a solid ball of fire!",
+  "title_tl": "Gas ang Araw Hindi Apoy",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-36153",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "tl asks about the \"Philippine pygmy fruit bat\" but ans calls it \"ang malaking bat\" (the large bat) — the Tagalog question names a pygmy (tiny) bat while its own answer says it is large, so the card teaches the wrong size for the animal",
+  "tl": "Paano tumutulong ang Philippine pygmy fruit bat pagkatapos ng mga pagputok ng bulkan?\n\nTumutulong ang malaking bat na magtanim muli ng kagubatan sa pamamagitan ng paglaganap ng mga buto sa bagong ash soils!",
+  "en": "How does the Philippine pygmy fruit bat help after volcanic eruptions?\n\nThis large bat helps replant forests by dispersing seeds over the newly formed ash soils!",
+  "title_tl": "Fruit Bat na Magtatanim",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-36576",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans \"A bowed violin string creates a transverse wave\" -> ans \"Ang hinipan na string ng biyolin\" (hinipan = blown with air; a violin string is bowed/hinahagod ng arko, never blown). The card teaches the wrong way a violin makes its sound, and nothing else in the card restores it.",
+  "tl": "Paano gumagawa ng musika ang biyolin?\n\nAng hinipan na string ng biyolin ay gumagawa ng transversal na alon, pero ang tunog sa tainga mo ay ibang longitudinal na alon sa hangin!",
+  "en": "How does a violin make music?\n\nA bowed violin string creates a transverse wave, but the sound reaching your ear is a different longitudinal wave in air!",
+  "title_tl": "Biyolin: Dalawang Alon",
+  "emph_tl": null
+ },
+ {
+  "id": "dcard-00460",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "tl asks \"Bakit nakakasira sa ecosystem ang MALIIT na pagbabago sa temperatura o tubig?\" but ans states \"Ang MALAKING pagbabago ay maaaring sumira sa balanse ng ecosystem.\" -- the answer asserts the opposite magnitude from the one the question asks about, so a child never learns why a small change matters.",
+  "tl": "Bakit nakakasira sa ecosystem ang maliit na pagbabago sa temperatura o tubig?\n\nKailangan ng mga buhay na bagay ang tamang abiotic factors, ang mga hindi buhay na bahagi tulad ng tubig at temperatura, para mabuhay. Ang malaking pagbabago ay maaaring sumira sa balanse ng ecosystem.",
+  "en": "Why can a small change in temperature or water hurt an ecosystem?\n\nLiving things need the right abiotic factors, the non-living parts like water and temperature, to survive. A big change can upset the ecosystem's balance.",
+  "title_tl": "Abiotic Factors at Balanse",
+  "emph_tl": [
+   "abiotic factors"
+  ]
+ },
+ {
+  "id": "dcard-01860",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "Q asks 'Bakit nananatiling nakatigil ang picture frame sa dingding?' but the answer ends '...ang frame ay nananatiling nakahiga' -- en_ans says 'the frame remains at rest'; 'nakahiga' means lying down, which contradicts a frame hanging still on a wall (cf. dcard-01479 which renders 'stays at rest' correctly as 'nananatiling nakahinto').",
+  "tl": "Bakit nananatiling nakatigil ang isang picture frame sa dingding?\n\nAng pako at dingding ay tumutulak pataas at paatras na may mga puwersang bumabalanse sa bigat ng frame, kaya ang net force ay zero at ang frame ay nananatiling nakahiga.",
+  "en": "Why does a picture frame stay still on a wall?\n\nThe nail and wall push up and back with forces that balance the frame's weight, so the net force is zero and the frame remains at rest.",
+  "title_tl": "Picture Frame sa Dingding",
+  "emph_tl": [
+   "net force"
+  ]
+ },
+ {
+  "id": "dcard-12486",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans \"Its job is to fertilize the female egg cell\" -> ans \"Ang trabaho nito ay lagyan ng pataba ang female egg cell\". Wrong sense: \"pataba\" is agricultural fertilizer/manure, so the Tagalog says the sperm PUTS FERTILIZER ON the egg cell. Biological fertilization is \"pagpapabunga\" / \"i-fertilize\". A child reading only the Tagalog learns a false mechanism, and the question (\"Ano ang tawag sa male reproductive sex cell?\") never restores it.",
+  "tl": "Ano ang tawag sa male reproductive sex cell?\n\nIto ay ang sperm cell. Ang trabaho nito ay lagyan ng pataba ang female egg cell para magsimula ng bagong buhay ng tao.",
+  "en": "What is the male reproductive sex cell called?\n\nIt is the sperm cell. Its job is to fertilize the female egg cell to start a new human life.",
+  "title_tl": "Ang Sperm Cell",
+  "emph_tl": [
+   "sperm cell"
+  ]
+ },
+ {
+  "id": "ffct-37475",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans \"A ball rolling on the floor has mechanical energy from kinetic alone\" -> ans \"Ang bolang nagpupulong sa sahig ay may mechanical energy mula sa kinetic lamang\"; nagpupulong = holding a meeting/conferring, not gumugulong (rolling), so the Tagalog kinetic-energy example is not a moving ball at all",
+  "tl": "Pwede bang magkaroon ng energy ang isang bagay kahit hindi ito gumagalaw?\n\nOo! Ang isang aklat na nakapatong sa mataas na istante ay may mechanical energy mula sa potential lamang. Ang bolang nagpupulong sa sahig ay may mechanical energy mula sa kinetic lamang.",
+  "en": "Can something have energy without moving?\n\nYes! A book sitting high on a shelf has mechanical energy from potential alone. A ball rolling on the floor has mechanical energy from kinetic alone.",
+  "title_tl": "Mekanikal Enerhiya",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-37750",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"How does a pendulum clock keep time?\" -> tl \"Paano nagtatago ng oras ang pendulum clock?\"; nagtatago ng oras = hides the time, not keeps/measures time, and the answer (\"Gumagamit ito ng mechanical energy ng umuugoy na bigat o spring\") never restores that the clock MEASURES time",
+  "tl": "Paano nagtatago ng oras ang pendulum clock?\n\nGumagamit ito ng mechanical energy ng umuugoy na bigat o spring, na nagpapakita kung paano gumagawa ng trabaho ang nakaimbak na energy!",
+  "en": "How does a pendulum clock keep time?\n\nIt uses the mechanical energy of a swinging weight or spring, showing how stored energy does work!",
+  "title_tl": "Relong Pendulum",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-37804",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "tl \"Ano ba ang talagang ginagawa ng lupa?\" asks what soil DOES/makes (ginagawa ng lupa = done/made BY the soil), but ans answers composition: \"Ito ay gawa sa maliliit na piraso ng nabiyak na bato\"; en is \"What is soil actually made of?\" (should be gawa SA / Saan gawa)",
+  "tl": "Ano ba ang talagang ginagawa ng lupa?\n\nIto ay gawa sa maliliit na piraso ng nabiyak na bato na hinaluan ng mga patay na dahon at ibang nabulok na bagay!",
+  "en": "What is soil actually made of?\n\nIt's made of tiny pieces of weathered rock mixed with dead leaves and other decayed matter!",
+  "title_tl": "Komposisyon ng Lupa",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-37902",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"How do insects smell and see the world?\" -> tl \"Paano namomoo at nakikita ng mga insekto ang mundo?\"; namomoo is not a Tagalog verb for smelling (reads as namumuo = to form/clot) — the English verb \"smell\" is gone from the question, which asks the child something unanswerable",
+  "tl": "Paano namomoo at nakikita ng mga insekto ang mundo?\n\nGumagamit ang mga insekto ng antennae para makaamoy at makaramdam! Mayroon din silang compound eyes na gawa sa maraming maliliit na lenses.",
+  "en": "How do insects smell and see the world?\n\nInsects use antennae to smell and feel! They also have compound eyes made of many tiny lenses.",
+  "title_tl": "Pandama ng Insekto",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-38465",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"Is a mushroom a plant?\" -> tl \"Halamanan ba ang kabute?\" — halamanan means garden/plant-bed, not halaman (plant), so the Tagalog question asks whether a mushroom is a garden; the answer never re-states the question's category, it only says fungi absorb food \"tulad ng halaman\".",
+  "tl": "Halamanan ba ang kabute?\n\nHindi, nasa kahariang Fungi ito! Sumisipsip ng pagkain ang fungi imbes na gumawa nito gamit ang sikat ng araw tulad ng halaman.",
+  "en": "Is a mushroom a plant?\n\nNope, it's in kingdom Fungi! Fungi absorb their food instead of making it with sunlight like plants do.",
+  "title_tl": "Kabute ay Fungi",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-38501",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "tl asks \"Paano mo ikukumpara ang density ng dalawang bato?\" but the Tagalog answer says \"damhin kung alin ang mas mabigat\" -- the English \"heavier FOR ITS SIZE\" is gone, so the answer compares mass, not density, and teaches heavier = denser.",
+  "tl": "Paano mo ikukumpara ang density ng dalawang bato?\n\nHawakan ang bawat isa sa kamay mo para damhin kung alin ang mas mabigat, o gumamit ng balance scale!",
+  "en": "How can you compare the density of two rocks?\n\nHold one in each hand to feel which is heavier for its size, or use a balance scale!",
+  "title_tl": "Densidad ng Bato",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-39024",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "tl asks \"Bakit nag-aaccelerate ang mga blade ng ceiling fan?\" but the answer says \"palaging nagbabago ng direksyon at dahil dito ay BUMIBILIS\" -- en \"therefore accelerating\" becomes \"gets faster\", so the card claims a steadily spinning blade keeps speeding up, destroying the very point that direction change alone is acceleration.",
+  "tl": "Bakit nag-aaccelerate ang mga blade ng ceiling fan?\n\nUmiikot sila! Ang bawat blade ay palaging nagbabago ng direksyon at dahil dito ay bumibilis.",
+  "en": "Why are a ceiling fan's blades accelerating?\n\nThey move in a circle! Each blade is constantly changing direction and therefore accelerating.",
+  "title_tl": "Pabilog na Galaw",
+  "emph_tl": null
+ }
+]

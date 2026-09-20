@@ -1,0 +1,328 @@
+[
+ {
+  "id": "ffct-10617",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"What is really stored inside a bulb?\" = a PLANT bulb (the en answer: \"food stored inside a bulb is mostly sugar and starch that the leaves made using sunlight\"). tl renders it \"bombilya\", which in Filipino means an electric LIGHT BULB (Sp. bombilla), not a plant bulb. The tl answer repeats the error (\"naka-imbak sa bombilya\"), so nothing restores it: a child reading only the Tagalog learns that light bulbs store sugar and starch made by leaves.",
+  "tl": "Ano talaga ang naka-imbak sa loob ng bombilya?\n\nAng pagkaing naka-imbak sa bombilya ay kadalasang asukal at almirol na ginawa ng mga dahon mula sa sikat ng araw.",
+  "en": "What is really stored inside a bulb?\n\nThe food stored inside a bulb is mostly sugar and starch that the leaves made using sunlight.",
+  "title_tl": "Bombilya Asukal Almirol Dahon",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-01195",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"How does a whale sing WITHOUT VOCAL CORDS?\" vs tl \"Paano kumakanta ang balyena kahit hindi gumagamit ng BIBIG?\" — the anatomical fact (no vocal cords) is replaced by \"doesn't use its mouth\", a different claim, and the tl answer never mentions vocal cords/litid-boses either, so it is not restored.",
+  "tl": "Paano kumakanta ang balyena kahit hindi gumagamit ng bibig?\n\nHindi gumagamit ng bibig ang balyena para kumanta—pinapadaan nila ang hangin sa loob ng katawan, malapit sa lalamunan, kaya lumilikha ito ng tunog na parang sumisipol o humuhuni.",
+  "en": "How does a whale sing without vocal cords?\n\nA whale doesn't use its mouth to sing—it moves air around inside its body near its throat to make sounds, almost like whistling or humming.",
+  "title_tl": "Kantang Balyena",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-27108",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"when you rub them together\" -> tl \"kapag pinagsabay-sabay mo sila\" (merely putting them together at once). The rubbing IS the physics -- it is what generates the friction -- and the Tagalog answer never restores it (it names \"friction\" but never kiskisan/pagkuskos).",
+  "tl": "Paano umiinit ang iyong mga kamay kapag pinagsabay-sabay mo sila sa malamig na araw?\n\nAng muscles mo ay nagko-convert ng chemical energy sa kinetic energy, at ang friction ay nagiging init para umiinit kayo!",
+  "en": "How do your hands get warm when you rub them together on a cold day?\n\nYour muscles transform chemical energy into kinetic energy, and friction converts it into heat to warm you up!",
+  "title_tl": "Enerhiya at Friction",
+  "emph_tl": [
+   "friction"
+  ]
+ },
+ {
+  "id": "ffct-24392",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en: \"How do ships measure distance underwater?\" -> tl: \"Paano sumusukat ng layo ang mga barko?\" -- \"underwater\" is dropped, and the Tagalog answer (\"Gamit ang bilis ng tunog at echo!... ginagamit ng sonar sa barko para makuha ang layo\") never restores it; the underwater setting is exactly why sound/sonar is the answer.",
+  "tl": "Paano sumusukat ng layo ang mga barko?\n\nGamit ang bilis ng tunog at echo! Sa pag-time kung gaano katagal bumalik ang tunog, ginagamit ng sonar sa barko para makuha ang layo.",
+  "en": "How do ships measure distance underwater?\n\nThey use sound speed and echoes! By timing how long a sound takes to bounce back, ships use sonar to find the exact distance.",
+  "title_tl": "Sonar Echo Layo Barko",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-21503",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en: \"separate iron nails from copper coins\" -> tl: \"ang mga pako sa barya\". Both metals (\"iron\", \"copper\") are dropped from the Tagalog question, and they are the physics: only iron is ferromagnetic, copper is not. NOTE: the Tagalog answer does restore them (\"solid iron nails\", \"non-magnetic solid copper coins\"), which by the stated carve-out would make this a PASS; flagged because the task names this exact card as the en-mismatch example.",
+  "tl": "Paano hihiwalayin ng neodymium magnet ang mga pako sa barya?\n\nAng neodymium magnet ay humihila ng ferromagnetic materials tulad ng solid iron nails! Naihihiwalay sila sa non-magnetic solid copper coins.",
+  "en": "How can a neodymium magnet separate iron nails from copper coins?\n\nA neodymium magnet attracts ferromagnetic materials like solid iron nails! This separates them from non-magnetic solid copper coins.",
+  "title_tl": "Paghiwalay ng Magnet",
+  "emph_tl": [
+   "neodymium magnet"
+  ]
+ },
+ {
+  "id": "ffct-34930",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"on muggy, humid days\" became tl \"sa mga umagang maulap at humid\" -- \"muggy\" is replaced by \"maulap\" (cloudy) and \"days\" narrowed to \"umaga\" (mornings). Cloudiness is not the mechanism; the answer only restores humidity (\"Ang high humidity ay pumipigil sa pawis na mag-evaporate\"), so a Tagalog-only child learns that CLOUDY mornings feel hotter.",
+  "tl": "Bakit parang mas mainit pakiramdam sa mga umagang maulap at humid?\n\nAng high humidity ay pumipigil sa pawis na mag-evaporate nang mabilis, kaya mas mainit ang heat index kaysa sa actual temperature!",
+  "en": "Why does it feel so much hotter on muggy, humid days?\n\nHigh humidity stops your sweat from evaporating quickly, making the heat index feel hotter than the actual temperature!",
+  "title_tl": "Heat Index sa Humid",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-35343",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "tl \"Ba't ba talagang nasusunog ang Araw?\" (Ba't = Bakit, a why-question that PRESUPPOSES the Sun burns) vs ans \"Hindi! Gumagawa ito ng enerhiya sa pamamagitan ng nuclear fusion\" -- the answer's \"Hindi!\" denies the premise the question asserts. The English \"Is the Sun actually on fire?\" was a yes/no myth-buster; the Tagalog teaches the misconception as fact.",
+  "tl": "Ba't ba talagang nasusunog ang Araw?\n\nHindi! Gumagawa ito ng enerhiya sa pamamagitan ng nuclear fusion, pagsasama ng hydrogen atoms into helium sa 15 million degrees Celsius.",
+  "en": "Is the Sun actually on fire?\n\nNo! It produces energy through nuclear fusion, combining hydrogen atoms into helium at 15 million degrees Celsius.",
+  "title_tl": "Hindi Apoy ang Araw",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-16229",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"Does water get hotter than 100 degrees Celsius while it is boiling?\" vs tl \"Nangangain ba ang tubig ng higit sa 100 degrees Celsius habang kumukulo?\" -- \"get hotter\" became \"nangangain\" (eats/preys on). The temperature verb is gone, so the Tagalog question is unanswerable as written (\"does water EAT more than 100 degrees\").",
+  "tl": "Nangangain ba ang tubig ng higit sa 100 degrees Celsius habang kumukulo?\n\nNananatili ito sa 100 degrees Celsius kahit dagdagan pa ang init.",
+  "en": "Does water get hotter than 100 degrees Celsius while it is boiling?\n\nIt stays at 100 degrees Celsius even if more heat is added.",
+  "title_tl": "Tubig na Pirmi sa 100 Degrees",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-33320",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "Question asks for an answer in HOURS, answer gives MINUTES: tl \"Ilanong oras bago marating ng liwanag ng Araw ang Earth?\" vs ans \"Umaabot ng halos 8 minuto bago marating ng liwanag ng Araw dito sa Earth!\" The English question is unit-neutral (\"How long does sunlight take to reach Earth?\"); the Tagalog pins it to oras, which contradicts the 8-minuto answer.",
+  "tl": "Ilanong oras bago marating ng liwanag ng Araw ang Earth?\n\nUmaabot ng halos 8 minuto bago marating ng liwanag ng Araw dito sa Earth!",
+  "en": "How long does sunlight take to reach Earth?\n\nSunlight takes about 8 minutes to travel all the way from the Sun to Earth!",
+  "title_tl": "Oras ng Sikat",
+  "emph_tl": [
+   "8 minuto"
+  ]
+ },
+ {
+  "id": "ffct-20055",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "tl asks \"Ano ang talagang GINAWA ng isang South Sea pearl?\" = \"What did a South Sea pearl actually do/make?\" (agent reading), but the answer gives composition: \"binubuo mainly ng maliliit na calcium carbonate crystals at conchiolin\". en asks \"made OF\"; Tagalog would need \"gawa sa\" / \"binubuo ng\", not \"ginawa ng\" — the question as written cannot be answered by the answer.",
+  "tl": "Ano ang talagang ginawa ng isang South Sea pearl?\n\nAng South Sea pearl ay isang solid mixture na binubuo mainly ng maliliit na calcium carbonate crystals at conchiolin!",
+  "en": "What is a South Sea pearl actually made of?\n\nThe South Sea pearl is a solid mixture composed primarily of microscopic calcium carbonate crystals and conchiolin!",
+  "title_tl": "Halo ng Perlas",
+  "emph_tl": [
+   "calcium carbonate"
+  ]
+ },
+ {
+  "id": "ffct-34824",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"Why do PUDDLES disappear on cool days?\" -> tl \"Bakit nawawala ang mga LATIAN kahit malamig ang araw?\" — \"latian\" is a marsh/swamp, a different body of water; the answer repeats \"nawawala ang mga latian\" so it is never restored. The rain puddle IS the everyday evidence for evaporation below boiling, and \"marshes disappear on cool days\" is simply untrue.",
+  "tl": "Bakit nawawala ang mga latian kahit malamig ang araw?\n\nAng tubig ay nag-evaporate kahit anong temperatura na mas mataas sa pagyeyelo, kaya nawawala ang mga latian nang hindi kailanman kumukulo!",
+  "en": "Why do puddles disappear on cool days?\n\nWater evaporates at any temperature above freezing, so puddles disappear without ever reaching a boil!",
+  "title_tl": "Latian na Nawawala",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-12668",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en: \"Why are moth-pollinated flowers pale?\" -> tl: \"Bakit puti ang mga bulaklak na pinupulot ng gamu-gamo?\" The English fact \"moth-pollinated\" becomes \"pinupulot\" (picked up/gathered by moths). Pollination -- the reason the flowers are pale and night-scented -- is gone, and the Tagalog answer repeats the same wrong relation (\"Ang mga bulaklak na pinupulot ng gamu-gamo\") instead of restoring it, so a child reading only Tagalog learns that moths pick up flowers.",
+  "tl": "Bakit puti ang mga bulaklak na pinupulot ng gamu-gamo?\n\nAng mga bulaklak na pinupulot ng gamu-gamo ay kadalasang puti at mas mabango sa gabi, kaya't madali silang makita at maamoy sa dilim.",
+  "en": "Why are moth-pollinated flowers pale?\n\nFlowers pollinated by moths are often white and smell strongest at night, making them easy to see and smell in the dark.",
+  "title_tl": "Gamu-gamong Bulaklak",
+  "emph_tl": [
+   "puti"
+  ]
+ },
+ {
+  "id": "ffct-02738",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"Is a sand dollar related to starfish?\" -> tl \"Kamag-anak ba ng bituin ang sand dollar?\" — \"starfish\" becomes plain \"bituin\" (a star in the sky; starfish is \"bituin-dagat\"/starfish). The animal kinship fact is the whole point, and the Tagalog answer does not restore it — it only mentions \"disenyong parang limang-tulis na bituin\" (a five-pointed star PATTERN), so a Tagalog-only child learns the sand dollar is related to a star shape, not to the starfish.",
+  "tl": "Kamag-anak ba ng bituin ang sand dollar?\n\nOo! Buhay, ito'y patag, bilog, at may munting tinik; sa puti nitong kabibi ay may disenyong parang limang-tulis na bituin.",
+  "en": "Is a sand dollar related to starfish?\n\nYes! Alive, it's flat, round, and covered in tiny spines; its bleached white shell shows a five-pointed star pattern.",
+  "title_tl": "Mga Sand Dollar",
+  "emph_tl": [
+   "sand dollar"
+  ]
+ },
+ {
+  "id": "ffct-17584",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en 'Why use paper for chromatography?' -> tl 'Bakit papel ang ginagamit?': the phrase 'for chromatography' is gone and the Tagalog answer never restores it ('May maliliit na butas ang papel...'), so the Tagalog question has no subject at all - used for what? A child reading only the Tagalog cannot tell what experiment the card is about.",
+  "tl": "Bakit papel ang ginagamit?\n\nMay maliliit na butas ang papel na sumisipsip ng tubig kaya umaakyat ito! Hindi ito gagana sa plastic o salamin.",
+  "en": "Why use paper for chromatography?\n\nPaper has tiny gaps that soak up water, making the liquid climb! It won't work on plastic or glass.",
+  "title_tl": "Chromatography Papel",
+  "emph_tl": [
+   "papel"
+  ]
+ },
+ {
+  "id": "ffct-33750",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en 'How much of Earth is actually land?' -> tl 'Magkano sa ibabaw ng Mundo ang lupa?': 'Magkano' is the price/money interrogative in Tagalog, so the quantity sense of 'how much' is rendered in the wrong sense - the Tagalog reads 'How much does the land on Earth cost?'. Compare ffct-34623 in the same batch, which correctly renders 'How much of the Moon is lit' as 'Gaano karami'.",
+  "tl": "Magkano sa ibabaw ng Mundo ang lupa?\n\nHalos 29% lang ng ibabaw ng Mundo ang lupa! Ang natitira sa ibabaw ay tubig.",
+  "en": "How much of Earth is actually land?\n\nOnly about 29% of Earth's surface is land! The rest of the surface is water.",
+  "title_tl": "29% Lupa sa Ibabaw",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-03164",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en 'What makes an animal a bird?' -> tl 'Ano ang tumatak sa isang ibon?'; 'makes (an animal) a bird' = defining criteria is rendered as 'tumatak' (left a mark/imprint on), and 'an animal'/'hayop' is dropped, so the Tagalog question asks 'what left a mark on a bird?' -- a child reading only the Tagalog cannot answer what was asked.",
+  "tl": "Ano ang tumatak sa isang ibon?\n\nIbon ang isang hayop kung ito ay may balahibo, may pakpak at tuka, at nangingitlog.",
+  "en": "What makes an animal a bird?\n\nAn animal is a bird if it has feathers, wings and a beak, and lays eggs.",
+  "title_tl": "Tanda ng Ibon",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-35229",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "EN answer: \"A single healthy acre can contain more than one million earthworms\" -> TL: \"Sa isang ektaryang malusog, maaaring may higit sa isang milyong earthworms\". An acre is not a hectare (1 ha = 2.47 acres), so the Tagalog card teaches a different density than the English; the TL question carries no unit to restore it.",
+  "tl": "Ilang earthworms ang nakatira sa malusog na lupa pang-agrikultura?\n\nSa isang ektaryang malusog, maaaring may higit sa isang milyong earthworms na nagtatago sa ilalim!",
+  "en": "How many earthworms live in healthy agricultural soil?\n\nA single healthy acre can contain more than one million earthworms hiding underground!",
+  "title_tl": "Milyong Earthworms",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-30361",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "EN \"What is the difference between fog and dew?\" -> TL \"Ano ang pagkakaiba ng ambon at hamog?\". \"Ambon\" is drizzle (light rain), not fog; the TL answer repeats it (\"nabubuo ang ambon sa hangin mismo\"), so the card teaches the false fact that drizzle forms in the air itself as opposed to dew. Wrong-sense noun.",
+  "tl": "Ano ang pagkakaiba ng ambon at hamog?\n\nAng pagkakaiba ay nabubuo ang ambon sa hangin mismo, habang ang hamog ay nabubuo sa ibabaw ng mga bagay tulad ng damo!",
+  "en": "What is the difference between fog and dew?\n\nThe difference is that fog forms in the air itself, while dew forms on surfaces like grass and leaves!",
+  "title_tl": "Fog Air Dew Surface Pagkakaiba",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-12484",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "EN \"How long does a caterpillar stay in a chrysalis?\" -> TL \"Gaano katagal sa chrysalis ang paru-paro?\" (butterfly). The entity is swapped and the TL answer repeats \"paru-paro\", so the Tagalog-only child loses the fact that it is the caterpillar that enters the chrysalis.",
+  "tl": "Gaano katagal sa chrysalis ang paru-paro?\n\nKaraniwang nananatili ang paru-paro sa loob ng chrysalis nito nang halos isa hanggang dalawang linggo bago ito lumabas.",
+  "en": "How long does a caterpillar stay in a chrysalis?\n\nA butterfly usually stays inside its chrysalis for about one to two weeks before it finally comes out.",
+  "title_tl": "Linggo sa Chrysalis",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-12253",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en 'Why is the Philippine eagle in danger?' -> tl 'Bakit nanganganib ang agila?': the species qualifier 'Philippine' is gone and the Tagalog answer ('Dahil sa pagkawala ng kagubatan at pangangaso ng tao.') never names the Philippine eagle, so the card reads as a claim about eagles in general rather than the endangered Philippine eagle.",
+  "tl": "Bakit nanganganib ang agila?\n\nDahil sa pagkawala ng kagubatan at pangangaso ng tao.",
+  "en": "Why is the Philippine eagle in danger?\n\nIts forests are being cut down, and people sometimes hunt it too.",
+  "title_tl": "Agila ng Pilipinas",
+  "emph_tl": [
+   "nanganganib"
+  ]
+ },
+ {
+  "id": "ffct-21626",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en 'What is the densest naturally occurring element?' -> tl 'Ano ang pinakamabigat na natural na elemento?': 'densest' is rendered as 'pinakamabigat' (heaviest), and the Tagalog answer repeats the wrong sense ('Ito ang pinakamabigat na natural na elemento'), so a child learns osmium is the heaviest element, which is false (uranium atoms are heavier); density is mass per volume, not weight.",
+  "tl": "Ano ang pinakamabigat na natural na elemento?\n\nOsmium! Ito ang pinakamabigat na natural na elemento, na may 22.59 gramo sa bawat isang cubic centimeter ng espasyo.",
+  "en": "What is the densest naturally occurring element?\n\nOsmium is the densest naturally occurring element! It packs 22.59 grams into every single cubic centimeter of space.",
+  "title_tl": "Osmium na Pinakamalakas Density",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-36052",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans \"Artisans in Vigan mold local clay soil\" -> ans \"Hinuhulma ng mga alahero sa Vigan ang lokal na clay soil\"; alahero = jeweler, so the Tagalog card teaches that jewelers make burnay jars instead of potters/artisans (magpapalayok)",
+  "tl": "Paano ginagawa ang burnay jars para sa bagoong?\n\nHinuhulma ng mga alahero sa Vigan ang lokal na clay soil para gawing tradisyonal na jars, na mahalaga sa pag-ferment ng masarap na bagoong!",
+  "en": "How do we make burnay jars for bagoong?\n\nArtisans in Vigan mold local clay soil to fire these traditional jars, which are essential for fermenting our yummy bagoong!",
+  "title_tl": "Luwad at Palayok",
+  "emph_tl": [
+   "burnay jars"
+  ]
+ },
+ {
+  "id": "ffct-03111",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"What's the difference between a pond and a lake?\" -> tl \"Ano ang pagkakaiba ng lawa at lanaw?\", ans \"Maliit at mababaw ang lawa, pero mas malaki at mas malalim ang lanaw\". Wrong-sense swap: \"lawa\" is the standard Tagalog word for LAKE (Lawa ng Laguna), yet the card gives it the pond's properties (small, shallow) and gives \"lanaw\" the lake's. A child reading only the Tagalog learns that a lawa is small and shallow; the answer does not restore the correct mapping.",
+  "tl": "Ano ang pagkakaiba ng lawa at lanaw?\n\nSukat at lalim! Maliit at mababaw ang lawa, pero mas malaki at mas malalim ang lanaw — kaya minsan hindi umaabot ang sikat ng araw sa ilalim nito.",
+  "en": "What's the difference between a pond and a lake?\n\nSize and depth! A pond is small and shallow, but a lake is bigger and deeper — so deep that sunlight might not reach the bottom.",
+  "title_tl": "Pagkakaiba ng Pond at Lawa",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-16258",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"Where does a rain puddle go?\" -> tl \"Saan napupunta ang lawa ng ulan?\", ans \"Nawawala ang lawa ng tubig sa kalsada\". \"puddle\" is rendered as \"lawa\" = LAKE (same defect family as puddle->latian). The answer repeats \"lawa ng tubig\" and never restores the small-puddle sense, so the Tagalog teaches that a lake on the road evaporates in the sun.",
+  "tl": "Saan napupunta ang lawa ng ulan?\n\nNawawala ang lawa ng tubig sa kalsada dahil sumisingaw ito sa init ng araw!",
+  "en": "Where does a rain puddle go?\n\nA puddle on the road disappears because the water evaporates in the heat of the sun!",
+  "title_tl": "Pagsingaw",
+  "emph_tl": [
+   "sumisingaw"
+  ]
+ },
+ {
+  "id": "ffct-14383",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "EN answer: \"touching frogs or toads cannot give you warts\" -> TL: \"sa paghipo ng palaka o bakulaw\". \"Bakulaw\" is a large ape/gorilla, not a toad (palakang bukid/tukak); the English entity \"toads\" is replaced by an unrelated animal and nothing else in the Tagalog restores it.",
+  "tl": "Makakahawa ba sa iyo ng warts ang paghawak ng palaka?\n\nHindi! Ang warts ng tao ay dulot ng tiyak na virus, kaya hindi ka magkakaroon ng warts sa paghipo ng palaka o bakulaw.",
+  "en": "Can touching a frog give you warts?\n\nNo! Human warts are caused by a specific virus, so touching frogs or toads cannot give you warts.",
+  "title_tl": "Warts Hindi sa Palaka",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-20936",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "EN answer: \"Its brackish water is a homogeneous solution\" -> TL: \"Ang bahaw na tubig nito\". \"Bahaw\" means stale/leftover (cold leftover food), not brackish (maalat-alat/halo ng tubig-alat at tubig-tabang); the defining fact about the Hinatuan river water -- that it is part salt, part fresh -- is replaced with a claim that the water is stale.",
+  "tl": "Ano ang espesyal sa tubig ng Hinatuan Enchanted River?\n\nAng bahaw na tubig nito ay isang homogeneous solution ng likidong tubig at natunaw na solid salts!",
+  "en": "What makes the Hinatuan Enchanted River water special?\n\nIts brackish water is a homogeneous solution of liquid water and dissolved solid salts!",
+  "title_tl": "Tubig ng Hinatuan",
+  "emph_tl": [
+   "homogeneous solution"
+  ]
+ },
+ {
+  "id": "ffct-19847",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "TL question: \"Ano ang nangyayari sa KANIN kapag niluluto mo?\" vs TL answer: \"Sinisipsip ng BIGAS ang tubig, kaya lumalambot at lumalaki ito.\" EN \"rice\" (uncooked) became \"kanin\" (already-cooked rice), so the question asks what happens to cooked rice while the answer describes uncooked bigas -- a different entity, and the question as written is self-contradictory (cooking rice that is already cooked).",
+  "tl": "Ano ang nangyayari sa kanin kapag niluluto mo?\n\nAng init ay nagpapakulo sa tubig at nagiging steam! Sinisipsip ng bigas ang tubig, kaya lumalambot at lumalaki ito.",
+  "en": "What happens to rice when you cook it?\n\nThe heat boils the water and turns some into steam! The rice grains soak up water, becoming soft and swollen.",
+  "title_tl": "Pagluluto ng Kanin",
+  "emph_tl": [
+   "steam"
+  ]
+ },
+ {
+  "id": "ffct-12469",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "EN answer: 'its underground network covers more than 2,300 acres of forest' -> TL: 'sumasakop ang ilalim-lupang network nito nang higit sa 2,300 ektarya ng kagubatan'. The unit is changed: 2,300 acres is about 930 hectares, so the Tagalog states an area ~2.5x too large. A child reading only the Tagalog learns a different number-plus-unit fact than the English card teaches.",
+  "tl": "Ano ang pinakamalaking buhay na bagay sa mundo?\n\nIsang honey fungus sa Oregon, USA — sumasakop ang ilalim-lupang network nito nang higit sa 2,300 ektarya ng kagubatan, kaya ito ang pinakamalaking buhay na organismo sa mundo.",
+  "en": "What's the largest living thing on Earth?\n\nIt's a honey fungus in Oregon, USA — its underground network covers more than 2,300 acres of forest, making it the largest living organism on Earth.",
+  "title_tl": "Honey Fungus",
+  "emph_tl": [
+   "pinakamalaking buhay na bagay"
+  ]
+ },
+ {
+  "id": "ffct-07089",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans \"the same family as all pigeons and doves worldwide\" -> ans \"ang pamilya ng lahat ng kalapati at kalyos sa buong mundo\": \"doves\" is rendered as \"kalyos\", which in Tagalog means a callus/corn on the skin, not a bird. The tl question asks \"Anong pamilya ng ibon\" but the tl answer then names a non-bird as a member of Columbidae, so a child learns a false fact about what is in the dove family.",
+  "tl": "Anong pamilya ng ibon ang bleeding-heart dove?\n\nColumbidae — ang pamilya ng lahat ng kalapati at kalyos sa buong mundo! Ang genus nito ay Gallicolumba.",
+  "en": "What bird family do bleeding-heart doves belong to?\n\nColumbidae — the same family as all pigeons and doves worldwide! Its genus is Gallicolumba.",
+  "title_tl": "Gallicolumba na Bleeding-Heart",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-30368",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"Where is fog often the thickest?\" -> tl \"Saan madalas na mas makapal ang ambon?\": \"fog\" is rendered as \"ambon\", which in Tagalog is drizzle/light rain, not fog (hamog / makapal na hamog). The tl answer (\"Sa mababang lambak at malapit sa ilog! Doon kasi nag-iipon ang malamig na hangin sa gabi\") never says fog, so a child learns that DRIZZLE is thickest where cold air settles overnight -- a false fact.",
+  "tl": "Saan madalas na mas makapal ang ambon?\n\nSa mababang lambak at malapit sa ilog! Doon kasi nag-iipon ang malamig na hangin sa gabi.",
+  "en": "Where is fog often the thickest?\n\nIn low valleys and near rivers! That is where cool air settles and gathers overnight.",
+  "title_tl": "Fog Lambak Ilog Gabi Malalim",
+  "emph_tl": null
+ }
+]

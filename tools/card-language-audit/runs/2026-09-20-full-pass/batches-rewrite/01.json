@@ -1,0 +1,328 @@
+[
+ {
+  "id": "ffct-36888",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "en_ans: \"but that alone doesn't make it land first in free fall\" -> tl ans: \"pero hindi ito nag-isa ang dahilan kung bakit una itong bumabagsak\" (= it is not the only reason why it lands first), which presupposes the heavier object DOES land first and contradicts the tl question \"bakit hindi laging nananalo ang mga mabibigat sa takbuhan ng pagbagsak\"",
+  "tl": "Napapaisip ka ba kung bakit hindi laging nananalo ang mga mabibigat sa takbuhan ng pagbagsak?\n\nAng timbang ay ang paghila ng gravity! Mas malaking mass ay may mas malaking timbang, pero hindi ito nag-isa ang dahilan kung bakit una itong bumabagsak.",
+  "en": "Ever wonder why heavy things don't always win a falling race?\n\nWeight is just gravity's pull! A bigger mass has bigger weight, but that alone doesn't make it land first in free fall.",
+  "title_tl": "Timbang Hila ng Gravity",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-23190",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"giant wind turbines by the sea\" -> tl \"mga malalaking turbina sa tabing-dagat\": the word \"wind\" is dropped from the question AND from the answer (\"May mga malalaking turbina sa tabing-dagat na gumagawa ng kuryente\"). The Bangui card's whole teachable fact is wind energy; a child reading only the Tagalog learns that big seaside turbines make electricity and can just as easily infer sea/water power.",
+  "tl": "Saan sa Pilipinas makikita ang mga malalaking turbina sa tabing-dagat?\n\nSa Bangui, Ilocos Norte! May mga malalaking turbina sa tabing-dagat na gumagawa ng kuryente.",
+  "en": "Where in the Philippines can you see giant wind turbines by the sea?\n\nIn Bangui, Ilocos Norte! Large turbines stand along the shore and make electricity.",
+  "title_tl": "Bangui Wind Farm",
+  "emph_tl": [
+   "Bangui, Ilocos Norte"
+  ]
+ },
+ {
+  "id": "ffct-21200",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"What's the hardest solid part of your body?\" -> tl \"Ano ang pinakamalupit na solid na bahagi ng katawan mo?\"; \"malupit\" means cruel/harsh, not hard/rigid (\"matigas\"). The answer repeats the error (\"Ito ang pinakamalupit na solid na bagay sa katawan ng tao\") instead of restoring the hardness fact, so the Tagalog-only reader never learns that enamel is the HARDEST material. Compare ffct-11703 in the same batch, which correctly uses \"pinakamatigas\".",
+  "tl": "Ano ang pinakamalupit na solid na bahagi ng katawan mo?\n\nAng enamel ng ngipin mo! Ito ang pinakamalupit na solid na bagay sa katawan ng tao, gawa karamihan sa mineral na tinatawag na hydroxyapatite.",
+  "en": "What's the hardest solid part of your body?\n\nYour tooth enamel! It's the hardest solid substance in the human body, made mostly of a mineral called hydroxyapatite.",
+  "title_tl": "Tooth Enamel Hydroxyapatite",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-29397",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"Why does sandy soil dry up so fast?\" -> tl \"Bakit mabilis mauga ang sandy soil?\": \"dry up\" is rendered as \"mauga\", which in Tagalog means to become loose/wobbly (uga = shake), not to dry (matuyo); \"uga\"=dry is Cebuano, so a Tagalog-only reader loses the drying fact the English question carries and the answer only says \"mabilis dumaloy at maubos ang tubig\".",
+  "tl": "Bakit mabilis mauga ang sandy soil?\n\nDahil mayroon itong mas malalaking particle! Kaya mabilis dumaloy at maubos ang tubig.",
+  "en": "Why does sandy soil dry up so fast?\n\nBecause it has larger particles! This lets water drain through it very quickly.",
+  "title_tl": "Mabuhanging Lupa",
+  "emph_tl": [
+   "particle"
+  ]
+ },
+ {
+  "id": "ffct-25331",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"in a river procession\" -> tl \"sa prusisyong panlawa\" (lake procession): the English question's water body (river / ilog) is changed to a lake, and neither the Tagalog question nor the answer (\"Lumulutang sila dahil itinutulak sila pataas ng tubig...\") restores it.",
+  "tl": "Paano lumulutang ang mga bangkang may pasahero sa prusisyong panlawa?\n\nLumulutang sila dahil itinutulak sila pataas ng tubig nang mas malakas kaysa bigat nila!",
+  "en": "How do passenger boats stay afloat in a river procession?\n\nThey stay afloat because the water pushes up on them more strongly than their weight pulls down!",
+  "title_tl": "Lumulutang na Bangka",
+  "emph_tl": [
+   "pataas"
+  ]
+ },
+ {
+  "id": "ffct-32195",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans: \"Tiny sandbars hide under the water during HIGH TIDE\" -> ans: \"Nagtatago lang sa ilalim ng dagat ang mga maliliit na sandbar kapag mataas ang KATI\". 'Kati' is the ebb / LOW tide, not high tide -- this same bank uses it correctly elsewhere ('Hinihintay nila ang kati para mamulot ng kabibe... sa lumitaw na baybayin'). A child reading only the Tagalog learns the reverse fact: that sandbars hide when the water recedes, when in reality low tide is exactly when sandbars are exposed.",
+  "tl": "Nawawala ba talaga ang ilang isla?\n\nNagtatago lang sa ilalim ng dagat ang mga maliliit na sandbar kapag mataas ang kati! Hindi sila nawawala, naglalaro lang sila ng hide-and-seek sa dagat.",
+  "en": "Do some islands really disappear?\n\nTiny sandbars hide under the water during high tide! They don't vanish, they just play hide-and-seek with the rising sea.",
+  "title_tl": "Sandbar sa Mataas na Kati",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-28174",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "Question asks about trains: \"Paano gumagalaw nang maayos ang mga tren ng MRT-3 sa Manila?\" but the answer ends \"...para i-convert ang electrical energy sa galaw ng mga kotse!\" -- en_ans \"the motion that moves the cars\" means the train's carriages, and \"kotse\" is the automobile sense, so the Tagalog answer names a different entity (cars/automobiles) than the question (MRT-3 trains).",
+  "tl": "Paano gumagalaw nang maayos ang mga tren ng MRT-3 sa Manila?\n\nGumagamit sila ng malalakas na electromagnets sa loob ng electric motors para i-convert ang electrical energy sa galaw ng mga kotse!",
+  "en": "How do MRT-3 trains in Manila move so smoothly?\n\nThey rely on powerful electromagnets inside their electric motors to convert electrical energy into the motion that moves the cars!",
+  "title_tl": "MRT-3 Electromagnet Manila",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-19885",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"giant clam\" is rendered as tl \"higanteng tahong\"; tahong is the green mussel, a different animal — the giant clam is the taklobo. The Tagalog answer never names the clam, so a child reading only Tagalog learns the shell fact about a giant mussel instead.",
+  "tl": "Paano binubuo ng higanteng tahong ang matigas nitong shell?\n\nGumagawa ito ng solidong calcium carbonate para buuin ang shell mula sa mga dissolved minerals sa dagat!",
+  "en": "How does a giant clam build its hard shell?\n\nIt produces solid calcium carbonate to build its shell from dissolved minerals found in seawater!",
+  "title_tl": "Kabibe ng Taklobo",
+  "emph_tl": [
+   "calcium carbonate"
+  ]
+ },
+ {
+  "id": "ffct-31993",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "en asks \"Are weathering and erosion the same thing?\" (answer \"Nope!\"), but tl flips the polarity of the question to \"Magkaiba ba ang weathering at erosion?\" (Are they different?) while keeping the answer \"Hindi!\" — so the Tagalog says they are NOT different and then immediately explains how they differ (\"Ang weathering ay nagbabasag ng bato sa kinalalagyan nito. Ang erosion ay pagdadala ... palayo!\").",
+  "tl": "Magkaiba ba ang weathering at erosion?\n\nHindi! Ang weathering ay nagbabasag ng bato sa kinalalagyan nito. Ang erosion ay pagdadala ng tubig, hangin, o yelo sa mga durog na bato palayo!",
+  "en": "Are weathering and erosion the same thing?\n\nNope! Weathering breaks rock right where it sits. Erosion is when water, wind, or ice carries those broken pieces far away!",
+  "title_tl": "Weathering laban sa Erosion",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-12624",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans: 'their skeleton is made of cartilage, a tough but bendy tissue' -> ans: 'ang kanilang balangkas ay gawa sa kartilago, isang matibay ngunit malambot na tela'. 'Tela' in Tagalog means cloth/fabric, never biological tissue (that is 'tisyu'/'himaymay'), so the card teaches a child that a shark's skeleton is made of a tough but soft piece of CLOTH. Wrong-sense rendering of the ambiguous English word 'tissue', same family as bulb->bombilya.",
+  "tl": "May buto ba ang pating?\n\nHindi! Ang mga pating ay walang buto tulad ng karaniwang isda — ang kanilang balangkas ay gawa sa kartilago, isang matibay ngunit malambot na tela, tulad ng sa iyong tainga.",
+  "en": "Do sharks have bones?\n\nNo! Sharks don't have bones like regular fish — their skeleton is made of cartilage, a tough but bendy tissue, like the cartilage in your ear.",
+  "title_tl": "Kartilago ng Pating",
+  "emph_tl": [
+   "kartilago"
+  ]
+ },
+ {
+  "id": "ffct-19946",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "TL question: 'Bakit nababasag ang selyadong bote ng salamin sa loob ng freezer?' vs TL answer: 'binabasag ang marupok na baso' -- EN answer 'shatters the fragile glass' refers to the bottle's glass, but 'baso' is a drinking glass, a different entity from the 'bote' in the question.",
+  "tl": "Bakit nababasag ang selyadong bote ng salamin sa loob ng freezer?\n\nLumalawak ang nagyeyelong tubig at binabasag ang marupok na baso!",
+  "en": "Why does a sealed glass bottle crack in the freezer?\n\nFreezing water expands and shatters the fragile glass!",
+  "title_tl": "Pagyeyelo ng Tubig",
+  "emph_tl": [
+   "Lumalawak"
+  ]
+ },
+ {
+  "id": "ffct-10058",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "EN 'nutrients pass into your blood through tiny finger-like folds called villi' -> TL 'sa pamamagitan ng maliliit na bulutong tinatawag na villi'. 'Bulutong' means smallpox/pox -- it is used that way everywhere else in this corpus (ffct-12800, ffct-07689, ffct-14909), and the correct rendering of villi elsewhere is 'parang-daliring bukol' (ffct-13007). The Tagalog child reads 'tiny smallpox called villi'.",
+  "tl": "Paano nakakapasok ang sustansya sa dugo natin?\n\nSa maliit na bituka, natutunaw nang husto ang pagkain at sinisipsip ang sustansya papunta sa dugo sa pamamagitan ng maliliit na bulutong tinatawag na villi!",
+  "en": "How do nutrients get into your blood?\n\nIn your small intestine, food gets fully broken down, and nutrients pass into your blood through tiny finger-like folds called villi!",
+  "title_tl": "Maliit na Bituka",
+  "emph_tl": [
+   "villi"
+  ]
+ },
+ {
+  "id": "ffct-17443",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"in a glass\" (a drinking glass, TL 'baso') -> tl \"sa loob ng salamin\" = inside a mirror/pane of glass. The container the meniscus forms in is gone; the TL answer does not restore it (it says \"kumapit ang tubig sa salamin at plastic\" and \"sa manipis na tubo\"). Sibling card ffct-16992 renders the same English word correctly as \"ordinaryong baso\".",
+  "tl": "Bakit gumagawa ng kurba ang tubig sa loob ng salamin?\n\nMahilig kumapit ang tubig sa salamin at plastic! Sa manipis na tubo, umaalsa ang gilid nito para gumawa ng maliit na kurba.",
+  "en": "Why does water form a little curve in a glass?\n\nWater loves clinging to glass and plastic! In a thin tube, its edges creep up the sides to form a little curve.",
+  "title_tl": "Meniskus ng Tubig",
+  "emph_tl": [
+   "kurba"
+  ]
+ },
+ {
+  "id": "ffct-30454",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans \"It reaches about 8 kilometers at the poles\" -> ans \"Umaabot ito ng mga 8 kilometro sa mga poste\": geographic \"poles\" is rendered as \"poste\" (a post/pillar, e.g. poste ng kuryente), the wrong sense; the rest of the corpus uses \"polo\" for the Earth's poles. Paired with \"malapit sa ekwador\" the child reads a nonsense contrast (posts vs the equator) instead of poles vs equator.",
+  "tl": "Hanggang saan abot ng troposphere mula sa lupa?\n\nUmaabot ito ng mga 8 kilometro sa mga poste at 18 kilometro malapit sa ekwador!",
+  "en": "How high does the troposphere reach from the ground?\n\nIt reaches about 8 kilometers at the poles and up to 18 kilometers near the equator!",
+  "title_tl": "Taas ng Troposphere",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-08958",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans: \"known for the big hump on its forehead\" -> tl ans: \"kilala sa malaking utong sa noo nito\". 'Utong' is Tagalog for nipple, not a forehead hump ('umbok'/'bukol'); the child learns the Napoleon wrasse has a big nipple on its forehead.",
+  "tl": "Gaano kalaki ang Napoleon wrasse?\n\nAng Napoleon wrasse ay maaaring lumaki ng hanggang 2 metro at kilala sa malaking utong sa noo nito — isa ito sa pinakamalaking isda sa bahura at endangered na sa buong mundo.",
+  "en": "How big is the Napoleon wrasse?\n\nThe Napoleon wrasse can grow up to 2 meters long and is known for the big hump on its forehead — it's one of the largest reef fish and is endangered worldwide.",
+  "title_tl": "Mameng",
+  "emph_tl": [
+   "2 metro"
+  ]
+ },
+ {
+  "id": "ffct-11205",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en: \"What can live inside a pitcher plant?\" -> tl: \"Anong hayop ang nabubuhay sa loob ng tabo?\". 'Tabo' is the household water dipper, not the carnivorous plant; the answer repeats it ('sa loob ng likido ng tabo') so the plant is never restored -- the child learns mosquito larvae live inside a bathroom dipper.",
+  "tl": "Anong hayop ang nabubuhay sa loob ng tabo?\n\nMay ilang maliliit na hayop, gaya ng uod ng lamok, na nakakapamuhay sa loob ng likido ng tabo nang hindi natutunaw!",
+  "en": "What can live inside a pitcher plant?\n\nA few small creatures, like mosquito larvae, can actually live inside a pitcher plant's liquid without being digested!",
+  "title_tl": "Halaman Pitcher",
+  "emph_tl": [
+   "uod ng lamok"
+  ]
+ },
+ {
+  "id": "ffct-30355",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en: \"What exactly is fog made of?\" -> tl: \"Ano ba ang binubuo ng ambon?\". 'Ambon' is drizzle (light falling rain), not fog ('hamog'/makapal na hamog); the answer keeps 'ambon' ('Ang ambon ay binubuo ng napakaliliit na patak ng tubig na lumulutang sa hangin'), so the child is taught that drizzle is suspended droplets hanging near the ground.",
+  "tl": "Ano ba ang binubuo ng ambon?\n\nAng ambon ay binubuo ng napakaliliit na patak ng tubig na lumulutang sa hangin malapit sa lupa!",
+  "en": "What exactly is fog made of?\n\nFog is made of countless tiny water droplets floating in the air close to the ground!",
+  "title_tl": "Lamang ng Ambon",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-32894",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "EN question: \"one of the world's biggest geothermal power plants\"; EN answer: \"one of the largest geothermal complexes in the Philippines and the world\". TL question drops the hedge: \"Saan ang pinakamalaking geothermal complex sa mundo?\" and the TL answer (\"Ang MakBan sa Laguna at Batangas, Pilipinas!\") does not restore it, so a child learns the false fact that MakBan is THE largest geothermal complex in the world.",
+  "tl": "Saan ang pinakamalaking geothermal complex sa mundo?\n\nAng MakBan sa Laguna at Batangas, Pilipinas! Gumagamit ito ng mainit na steam mula sa ilalim ng lupa malapit sa Mt. Makiling at Mt. Banahaw.",
+  "en": "Where can you find one of the world's biggest geothermal power plants?\n\nMakBan in Laguna and Batangas is one of the largest geothermal complexes in the Philippines and the world! It uses hot steam from underground near Mt. Makiling and Mt. Banahaw.",
+  "title_tl": "MakBan sa Mt. Makiling",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-12960",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans 'Its soft, fluffy feathers muffle every wingbeat' -> ans 'Ang malambot at malamig na balahibo nito ay nagpapatahimik sa bawat pagpaypay'. 'fluffy' is rendered as 'malamig' (cold), not 'mahimulmol/malago'. The Tagalog-only child learns the silencing trait is that owl feathers are COLD - a false fact - and the real reason (fluffy/downy feathers) is nowhere in the Tagalog.",
+  "tl": "Bakit tahimik lumipad ang kuwago?\n\nAng malambot at malamig na balahibo nito ay nagpapatahimik sa bawat pagpaypay, kaya hindi na maabisuhan ang biktima.",
+  "en": "Why can owls fly silently?\n\nIts soft, fluffy feathers muffle every wingbeat, so its prey never hears it swooping down until it's too late.",
+  "title_tl": "Tahimik na Kuwago",
+  "emph_tl": [
+   "tahimik"
+  ]
+ },
+ {
+  "id": "ffct-31243",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "TL question asks about thickness ('Bakit may makapal at manipis na patong ng bato?') but the TL answer explains smoothness: en 'Lots of mud over a long time makes it thick' became 'Maraming putik sa mahabang panahon ang nagpapakinis' (makes it smooth, not 'nagpapakapal'). The child is never told what makes a layer thick.",
+  "tl": "Bakit may makapal at manipis na patong ng bato?\n\nDepende ito sa dami ng sediment at tagal! Maraming putik sa mahabang panahon ang nagpapakinis. Hindi natin masasabi ang tumpak na taon basta sa kapal lang.",
+  "en": "Why are some rock layers thick and others thin?\n\nIt depends on how much sediment arrives and for how long! Lots of mud over a long time makes it thick. We cannot tell exact years from thickness alone.",
+  "title_tl": "Makapal at Manipis",
+  "emph_tl": [
+   "makapal at manipis"
+  ]
+ },
+ {
+  "id": "ffct-26927",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "EN answer: \"providing an unbalanced force to counteract our forward inertia\" -> TL answer: \"pagbibigay ng puwersa na balanse sa forward inertia\". The English teaches that the seatbelt applies an UNBALANCED force; the Tagalog says the force is BALANCED, the opposite term in the balanced/unbalanced-forces lesson (cf. ffct-22480 in this same batch, where unbalanced = 'di-balanse'). A child reading only the Tagalog learns the inverted physics fact.",
+  "tl": "Paano tayo pinoprotektahan ng seatbelt kapag biglang may bangga ang kotse?\n\nNagpoprotekta ang seatbelt sa mga pasahero sa pamamagitan ng pagbibigay ng puwersa na balanse sa forward inertia ng katawan kapag may biglang bangga!",
+  "en": "How do seatbelts keep us safe in a sudden car crash?\n\nSeatbelts protect us by providing an unbalanced force to counteract our forward inertia during a sudden car crash!",
+  "title_tl": "Seatbelt Inertia Bangga",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-30486",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en_ans: \"particles from the Sun are caught by Earth's magnetic field near the poles\" -> ans: \"nahuhuli ng magnetic field malapit sa mga poste\". \"Poste\" is a post/pillar (lamp post); Earth's geographic poles are \"polo\" (Hilagang/Timog Polo). Wrong-sense rendering, and \"Earth's\" is dropped from \"magnetic field\" too, so the Tagalog teaches that auroras happen near posts.",
+  "tl": "Paano lumalabas ang magagandang ilaw ng aurora sa kalangitan?\n\nAng magagandang ilaw na aurora ay nangyayari kapag ang mga particle mula sa Araw ay nahuhuli ng magnetic field malapit sa mga poste!",
+  "en": "How do those beautiful aurora lights appear in the sky?\n\nThe beautiful aurora lights appear when particles from the Sun are caught by Earth's magnetic field near the poles!",
+  "title_tl": "Aurora sa Kalangitan",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-21453",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "tl asks \"Kaya bang mag-scratch ng bato sa ilog ang COPPER COIN?\" (can the copper coin scratch a river rock) but the answer replies \"Oo!\" and then states the reverse: \"Ang quartz crystals na makikita sa mga bato ng ilog ay kayang mag-scratch ng copper coin\". English question is \"Can a river rock scratch a copper coin?\" — the Tagalog swapped scratcher and scratched, so the \"Oo!\" teaches the false fact that copper scratches quartz.",
+  "tl": "Kaya bang mag-scratch ng bato sa ilog ang copper coin?\n\nOo! Ang quartz crystals na makikita sa mga bato ng ilog ay kayang mag-scratch ng copper coin dahil mas matigas na solid ang quartz.",
+  "en": "Can a river rock scratch a copper coin?\n\nYes! Quartz crystals found in local river rocks can scratch a copper coin because quartz is a harder solid.",
+  "title_tl": "Quartz na Nangangahoy ng Barya",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-11340",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en \"Can touching a frog give you WARTS?\" became tl \"Nakakahawa ba ng TINGA ang paghawak sa palaka?\", and the answer repeats it: \"hindi magdudulot ng tinga — ang tinga ay dulot ng human papillomavirus\". \"Tinga\" is food stuck between the teeth, not a wart (kulugo); the whole medical fact is attached to the wrong entity. Elsewhere in this bank the same card renders it correctly: \"Ang warts ng tao ay dulot ng tiyak na virus\" and \"mga bukol na parang kulugo\".",
+  "tl": "Nakakahawa ba ng tinga ang paghawak sa palaka?\n\nHindi! Ang paghawak sa Philippine wrinkled frog ay hindi magdudulot ng tinga — ang tinga ay dulot ng human papillomavirus.",
+  "en": "Can touching a frog give you warts?\n\nNo! Handling a Philippine wrinkled frog won't give you warts — those are actually caused by the human papillomavirus.",
+  "title_tl": "Palaka Hindi Tinga Wart Virus",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-39023",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "tl asks 'Nag-aaccelerate ba ang bisikleta kapag lumiliko sa kanto?' and ans replies 'kaya bumibilis ito kahit pareho lang ang bilis nito' — 'bumibilis' (it speeds up) directly contradicts 'pareho lang ang bilis nito' (its speed stays the same); en_ans says only 'it is accelerating even if its speed stays the same'",
+  "tl": "Nag-aaccelerate ba ang bisikleta kapag lumiliko sa kanto?\n\nOo! Nagbabago ito ng direksyon, kaya bumibilis ito kahit pareho lang ang bilis nito.",
+  "en": "Is a bicycle accelerating when it turns a corner?\n\nYes! It changes direction, so it is accelerating even if its speed stays the same.",
+  "title_tl": "Pagliko",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-03015",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "EN asks \"Why does one hormone affect only certain body parts?\" (certain = some, selectively several). TL asks \"Bakit IISANG BAHAGI LANG ng katawan ang naaapektuhan ng isang hormone?\" = \"why is only ONE part of the body affected\". The plural/selective \"certain body parts\" is changed to a single body part, and the TL answer ('Tinatamaan lang ng bawat hormone ang mga target cell na may tugmang receptor — parang susi na akma lang sa isang kandado') never restores it — it reinforces the singular. A child reading only Tagalog learns the false rule that each hormone acts on exactly one body part.",
+  "tl": "Bakit iisang bahagi lang ng katawan ang naaapektuhan ng isang hormone?\n\nTinatamaan lang ng bawat hormone ang mga 'target cell' na may tugmang receptor — parang susi na akma lang sa isang kandado!",
+  "en": "Why does one hormone affect only certain body parts?\n\nEach hormone only affects 'target cells' with the matching receptor — like a key that fits just one lock!",
+  "title_tl": "Target Cell at Receptor",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-00335",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "EN answer: \"the soreness ... comes from tiny muscle tears and inflammation\" -> TL: \"ang pananakit ... ay dulot ng maliliit na luha sa kalamnan at pamamaga\". English \"tears\" (rips/punit) is rendered in the wrong sense as \"luha\" = tears wept from the eyes. The Tagalog therefore teaches that muscle soreness comes from tiny eye-tears in the muscle, i.e. nonsense in place of the actual cause (micro-tears). Correct sense: \"maliliit na punit/lamat sa kalamnan\".",
+  "tl": "Ano talaga ang sanhi ng pananakit ng kalamnan pagkatapos mag-ehersisyo?\n\nHindi ang lactate! Kapag nagtrabaho ang kalamnan nang walang sapat na oxygen, gumagawa ito ng lactate, pero ang pananakit na nararamdaman mo ay dulot ng maliliit na luha sa kalamnan at pamamaga.",
+  "en": "What really causes sore muscles after exercise?\n\nIt's not lactate! When muscles work without enough oxygen they make lactate, but the soreness you feel later actually comes from tiny muscle tears and inflammation.",
+  "title_tl": "Sakit ng Kalamnan",
+  "emph_tl": [
+   "lactate"
+  ]
+ },
+ {
+  "id": "ffct-12035",
+  "src": "sweep",
+  "cls": "answer-clash",
+  "defect": "tl asks about 'alupihan' (Tagalog for centipede) while ans answers about the 'millipede' ('minsan kinakain ulit ng millipede ang sarili nitong dumi') -- question and answer name different animals, and the child is taught that a centipede is a millipede.",
+  "tl": "Bakit kinakain ulit ng alupihan ang sarili nitong dumi?\n\nKadiri pero totoo — minsan kinakain ulit ng millipede ang sarili nitong dumi, dahil may natitirang sustansya at mabubuting mikrobyo doon na tumutulong sa pagtunaw nito.",
+  "en": "Why does a millipede eat its own poop?\n\nGross but true — a millipede sometimes eats its own droppings again, because leftover nutrients and helpful microbes are still inside, aiding its digestion.",
+  "title_tl": "Millipede na Kumakain ng Dumi",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-24922",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "en 'What bridge type can cross the widest gaps?' became tl 'pinakamalawak na agos' (widest water current/flow). The English fact is span length across a gap (valley, strait, any opening); the Tagalog asks about the strength/width of flowing water, and ans ('Mahabang kable... dinadala ang daan sa daan-daang metro') never restores the notion of a gap.",
+  "tl": "Anong uri ng tulay ang kayang tumawid sa pinakamalawak na agos?\n\nSuspension bridges! Mahabang kable na nakabitin sa matataas na tore, dinadala ang daan sa daan-daang metro.",
+  "en": "What bridge type can cross the widest gaps?\n\nSuspension bridges! Long cables hang from tall towers, carrying the road across hundreds or even thousands of meters.",
+  "title_tl": "Suspension Bridge sa Kable",
+  "emph_tl": null
+ },
+ {
+  "id": "ffct-19386",
+  "src": "sweep",
+  "cls": "en-mismatch",
+  "defect": "EN 'the oxygen we breathe' becomes TL 'oxygen na ating hinihimod' (oxygen we LICK); 'hinihinga' is the verb for breathe, and the answer repeats the same error ('tumuklas ng oxygen na ating hinihimod noong 1774'), so nothing restores the breathing fact.",
+  "tl": "Sino ang tumuklas ng oxygen na ating hinihimod noong 1774?\n\nSi Joseph Priestley ang matalinong siyentipikong kinikilalang tumuklas ng oxygen na ating hinihimod noong 1774!",
+  "en": "Who discovered the oxygen we breathe way back in 1774?\n\nJoseph Priestley is the brilliant scientist credited with discovering the oxygen we breathe in the year 1774!",
+  "title_tl": "Priestley Oxygen 1774",
+  "emph_tl": null
+ }
+]
