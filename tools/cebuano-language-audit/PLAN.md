@@ -44,7 +44,38 @@ So the cheap deterministic wins are already banked; what remains is semantic.
 
 ## Stages
 
-- [ ] **C0** Build the Cebuano gold set the EVIDENCE way: do not hand-label from a word list.
+- [x] **C0** DONE — 50-item gold set (17 FLAG / 33 PASS), 15 rows marked `native: true`.
+      Confidence on the FLAG side is honest: 2 high, 9 medium, 6 low.
+
+      **Negative result first, because it cost three attempts.** I tried to build the gold set
+      from "objective" en-vs-bis NUMBER mismatches, needing no Cebuano judgement at all.
+      It does not work:
+        attempt 1 (78 hits)    \b missed digits glued to letters — 10x, 23rd, COVID-19
+        attempt 2 (8,843 hits) mapping number-WORDS was catastrophic: Cebuano `usa` is both
+                               "one" AND the indefinite article, so `usa ka insekto` ("an
+                               insect") registered as the number 1 across thousands of cards
+        attempt 3 (21 hits)    digits only, both sides required — plausible, but most are
+                               still fine: `napulo ka beses` IS "10 times", `dekada '90` IS
+                               the 1990s, `ika-14 siglo` IS the 1300s, `liboan` IS "thousands"
+      Cebuano routinely spells numbers out and uses idiomatic date forms, so number mismatch is
+      NOT an objective signal here. That closes off the approach proposed to Luis as the way to
+      avoid relying on Claude's Cebuano.
+
+      **What worked instead: corpus-internal frequency.** The proposer had to quote both sides,
+      and each disputed word was then checked against how the CORPUS uses it — no appeal to
+      Claude's Cebuano intuition:
+        `panghupaw` (sighing) used for "sweat" on 4 cards, while `singot` (correct) appears on 152
+        `tabanog` appears with English "kite" on 7 cards and "dragonfly" on 2 — the 2 are outliers
+        `asin` appears on 551 cards, every one meaning SALT — so a title rendering "smoke" as
+        `asin` ("Toxic Asin Plastik") is wrong; smoke is `aso`
+      Verification also corrected the proposer once: it called `tabanog` unambiguously "kite",
+      but the corpus uses it both ways, so that row dropped from high to needing native review.
+
+      Sample drawn RANDOM and unfiltered on purpose — a filtered pool would bake the filter's
+      blind spots into the gold set, and this stage demonstrated three such blind spots.
+      Rate: 17 findings in 600 cards (2.8%), against 0.78% for Tagalog.
+- [x] **C0-note** Original wording of this stage kept below for provenance:
+      Build the Cebuano gold set the EVIDENCE way: do not hand-label from a word list.
       Draw candidates where the Cebuano contradicts its own English, label each WITH the card
       open, and mark every uncertain row `native: true`. Target 40-60 items, FLAG/PASS balanced.
       Record honestly that these labels are Claude's and are not native-verified.

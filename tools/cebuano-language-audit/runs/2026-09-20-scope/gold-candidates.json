@@ -1,0 +1,142 @@
+{
+ "batches": 5,
+ "found": 17,
+ "items": [
+  {
+   "id": "ffct-28569",
+   "kind": "dropped-fact",
+   "en_quote": "The rough woven texture of a traditional banig mat increases friction!",
+   "bis_quote": "Ang garbong hinabing banig naghatag ug friction!",
+   "would_learn": "The English gives the cause: the weave is ROUGH, so it increases friction. The Cebuano replaces \"rough\" with \"garbong\" — in this very corpus \"garbo\" is used consistently for pride/showiness (\"garbo sa nasod\" = national pride, \"magarbong buntot\" = a showy tail), never for texture. A Cebuano-only child reads \"the fancy/showy woven banig gives friction\" and never learns that roughness is what produces friction; the Cebuano answer never restores it. The card's own Tagalog says \"magaspang\" (rough), which is what the English intends.",
+   "confidence": "medium"
+  },
+  {
+   "id": "ffct-22369",
+   "kind": "dropped-fact",
+   "en_quote": "The sun heats air to create wind, and evaporates water that returns as rain to fill rivers for hydropower.",
+   "bis_quote": "Gipainit sa adlaw ang hangin aron mohimo ug hangin, ug gipaalisngaw ang tubig nga mobalik isip ulan aron mopuno sa mga suba para sa hydropower.",
+   "would_learn": "The causal step air -> wind collapses: the Cebuano literally reads \"the sun heats the hangin in order to make hangin\". The child gets a circular statement instead of the chain heated air becomes wind. The card's Tagalog deliberately kept the English word (\"para lumikha ng wind\") to avoid exactly this collision. LOW confidence because \"hangin\" legitimately covers both air and wind, so a native reader may still recover the intended meaning — this one needs a Cebuano speaker's ear.",
+   "confidence": "low"
+  },
+  {
+   "id": "ffct-09472",
+   "kind": "entity-swap",
+   "en_quote": "Rafflesia schadenbergiana, found on Mount Kitanglad, grows the world's largest flower — yet it has no leaves, stems, or roots!",
+   "bis_quote": "Ang Rafflesia schadenbergiana nga makita sa Bukid Kitanglad nag-produce sa pinakadako nga bulak sa kalibutan — pero walay dahon, sanga, ug gamot!",
+   "would_learn": "English lists no leaves, STEMS, roots; Cebuano lists no leaves, SANGA (branches), roots. A child could conclude the plant still has a stem and only lacks branches, losing the striking fact that Rafflesia has no stem at all. The card's Tagalog uses \"tangkay\" (stem), so the Cebuano is the odd one out. LOW confidence: the resulting sentence is still literally true of Rafflesia, and \"sanga\" may be used loosely for plant parts in some areas — a native speaker should settle it.",
+   "confidence": "low"
+  },
+  {
+   "id": "ffct-08595",
+   "kind": "entity-swap",
+   "en_quote": "A dragonfly nymph actually lives underwater — it only takes to the air on wings once it becomes an adult.",
+   "bis_quote": "Nagpuyo diay sa ilawom sa tubig ang nymph sa tabanog — molupad lang gamit ang pako kon mahamtong na kini.",
+   "would_learn": "\"Tabanog\" is the Cebuano word for a KITE (the paper toy), not a dragonfly — Cebuano dragonfly is alindanaw/tambuburay. A Cebuano-only child reads \"the nymph of a kite lives underwater and flies with wings when it grows up.\" Nothing in the Cebuano names the dragonfly: the title uses \"tutubi,\" the Tagalog word. Cross-checked in the same corpus, every other card uses \"tabanog\" for kite (e.g. \"Ang tabanog hinimo sa tao\" for human-made kites; the Benjamin Franklin kite card; the kite-and-sail lift card), so the word is unambiguously kite in this dataset's own Cebuano.",
+   "confidence": "high"
+  },
+  {
+   "id": "ffct-28342",
+   "kind": "fact-change",
+   "en_quote": "Your body releases excess thermal energy through sweat evaporation, cooling your skin down when you are hot or exercising!",
+   "bis_quote": "Ang lawas nimo mopagawas og sobra nga kainit pinaagi sa pagpanghupaw; kung ma-evaporate ang singot, mobugnaw ang panit nimo!",
+   "would_learn": "\"Panghupaw\" is Cebuano for sighing / heaving a sigh, not sweating (Cebuano sweat = singot / pagsingot). The child learns the body dumps excess heat by SIGHING, a different mechanism from the English; the sibling Tagalog of this same card correctly says \"sa pamamagitan ng pagpapawis.\" The second clause does re-mention evaporating singot, which partly rescues it, which is why this is medium rather than high. Same substitution recurs elsewhere in the corpus (ffct-35543: \"mapabugnaw ang lawas pinaagi sa pagpanghupaw\" for English \"through sweating\"), so it looks systematic rather than a one-off typo.",
+   "confidence": "medium"
+  },
+  {
+   "id": "ffct-20408",
+   "kind": "fact-change",
+   "en_quote": "Virgin coconut oil melts from a solid to a liquid at around 24°C",
+   "bis_quote": "Ang virgin coconut oil mobuto gikan sa solid ngadto sa liquid sa mga 24°C",
+   "would_learn": "\"Mobuto\" means bursts/explodes/pops, not melts (matunaw). The child reads that coconut oil EXPLODES from solid into liquid at 24°C — a phase change described as a violent event. Corpus usage confirms the sense: \"mobuto ang bunga aron itsahon ang ilang mga liso\" (pods exploding), \"mobuto kini\" (a virus-filled cell bursting). The clause right after does say \"dali kini matunaw,\" which restores melting, so medium not high.",
+   "confidence": "medium"
+  },
+  {
+   "id": "ffct-35877",
+   "kind": "fact-change",
+   "en_quote": "using durable wood that resists rotting in the humid, high-rainfall mountain climate",
+   "bis_quote": "gamit ang lig-on nga kahoy nga dili mabulok sa humid ug daghang ulan nga klima sa bukid",
+   "would_learn": "In Cebuano \"bulok\" is colour (mabulokon = colourful — the corpus itself uses it that way in a Cebuano line about a tandikan's tail feathers), while rot is dunot/madunot, which this same corpus uses in its Cebuano elsewhere (\"paspas kini madunot,\" \"aron dili kini madunot\"). A Cebuano-only child may read the wood as chosen because it does not FADE/discolour in the wet climate rather than because it does not rot, losing the reason the wood is special. Low confidence: \"mabulok\" is a common Tagalog loan (the Tagalog card says \"hindi nabubulok\") and many Cebuano speakers will simply read it as rot — a native speaker should settle this one.",
+   "confidence": "low"
+  },
+  {
+   "id": "ffct-06055",
+   "kind": "fact-change",
+   "en_quote": "The tiger mosquito (Aedes albopictus) also spreads dengue.",
+   "bis_quote": "Ang tiger mosquito (Aedes albopictus) nagapasabot usab og dengue.",
+   "would_learn": "The English says this mosquito TRANSMITS dengue. Cebuano \"nagapasabot\" is the verb for \"to mean / to signify / to explain\" (as in \"unsay pasabot?\" = \"what does it mean?\"), not for spreading a disease (nagdala / nagpakaylap / nagakatap). A Cebuano-only child reads \"the tiger mosquito also means dengue\" and never learns the one health-relevant fact on the card: that this second mosquito species carries dengue. The rest of the card (wider range, survives cooler places) then has no stated point.",
+   "confidence": "high"
+  },
+  {
+   "id": "ffct-27182",
+   "kind": "fact-change",
+   "en_quote": "A knife blade is a wedge, which is actually just two inclined planes pushed back-to-back!",
+   "bis_quote": "Ang talinis sa kutsilyo kay wedge, nga duha ka inclined planes nga gibalik-balik!",
+   "would_learn": "\"Back-to-back\" describes how the two inclined planes are JOINED (base against base) — that geometry is the whole lesson. Cebuano \"gibalik-balik\" means \"done over and over / repeated\" (balik = return, again), not \"placed back against back\" (likod = the body's back). A Cebuano-only child learns a wedge is \"two inclined planes repeated\" and gets no picture of the two slopes meeting back to back to form the blade.",
+   "confidence": "medium"
+  },
+  {
+   "id": "ffct-15087",
+   "kind": "entity-swap",
+   "en_quote": "Burning Plastic Toxic Smoke  /  When plastic is burned, it gives off toxic smoke!",
+   "bis_quote": "Toxic Asin Plastik  (title_bis)",
+   "would_learn": "The card's Cebuano title names the wrong substance: \"asin\" is salt in both Cebuano and Tagalog; smoke is \"aso\". The title a child sees says burning plastic gives off toxic SALT. The body does say \"toxic smoke\" correctly, so the defect is confined to the title, but the title as written teaches a different thing than the English title. Almost certainly a one-letter corruption of \"Aso\".",
+   "confidence": "medium"
+  },
+  {
+   "id": "ffct-28468",
+   "kind": "fact-change",
+   "en_quote": "the effort step requires pulling the rope downward to lift the load!",
+   "bis_quote": "kinahanglan nimo bunalon paubos ang pisi aron ma-angat ang karga!",
+   "would_learn": "The direction (paubos = downward) survives, but the action does not: Cebuano \"bunalon\" is to strike/whack with a stick, not to pull (birahon / guyoron / hilahon). A Cebuano-only child is told to hit the rope downward rather than pull it. Flagging low because the direction — the card's actual teaching point, and its title \"Pulley Hila Paubos\" — is intact, and a native speaker should confirm no regional sense of \"bunal\" covers pulling.",
+   "confidence": "low"
+  },
+  {
+   "id": "ffct-03825",
+   "kind": "dropped-fact",
+   "en_quote": "Forests can sometimes regrow all on their own, when wind or animals carry seeds down to the ground!",
+   "bis_quote": "Usahay motubo pag-usab ang lasang nga kusog kon dalhon sa hangin o mananap ang mga liso ngadto sa yuta!",
+   "would_learn": "\"All on their own\" (natural regeneration, without humans replanting) is the fact the card exists for — see title_en \"Forests Regrow Alone\" and the term \"natural regeneration\". Cebuano \"kusog\" means strong/fast, so the sentence reads \"sometimes the forest regrows STRONGLY when wind or animals carry seeds to the ground\"; the \"by itself\" idea is not restored anywhere in the Cebuano. The Cebuano title \"Kusang Gubat\" uses the Tagalog \"kusang\" (spontaneously), which suggests \"kusog\" is a corruption of it. Low because the seed-dispersal mechanism still implies no human planting, and a native speaker should judge whether \"kusog\" is read as \"kusa\" locally.",
+   "confidence": "low"
+  },
+  {
+   "id": "ffct-32587",
+   "kind": "fact-change",
+   "en_quote": "Wind spins large blades, driving a generator that converts kinetic energy into electrical energy!",
+   "bis_quote": "Ang hangin mopapailaw sa dagkong blades, nagpadagan sa generator nga nagkabig sa kinetic energy ngadto sa electrical energy!",
+   "would_learn": "The core mechanism verb is gone. English (and the card's own Tagalog, \"Pinapaikot ng hangin ang malalaking blades\") says the wind SPINS the blades; the Cebuano \"mopapailaw\" is built on ilaw (light), so a Cebuano-only child reads that the wind makes the blades light up -- or reads a nonword -- and never learns that a wind turbine works by rotation. Cebuano for this is mopatuyok/mopalibot.",
+   "confidence": "medium"
+  },
+  {
+   "id": "ffct-10181",
+   "kind": "entity-swap",
+   "en_quote": "Mold (title_en) -- \"That fuzzy mold growing on old bread or fruit?\"",
+   "bis_quote": "Agta (title_bis) -- body: \"Ang agup-op nga motubo sa daan nga pan o prutas...\"",
+   "would_learn": "The Cebuano title names a different thing than the English title: agta is the black forest giant/Negrito of folklore, not mold. The card's own body proves the intended word is agup-op (and the Tagalog title is \"Amag\" = mold), so the title contradicts its own card. A child scanning titles learns the topic is a folklore creature; the body does correct it, so the damage is title-level only.",
+   "confidence": "medium"
+  },
+  {
+   "id": "ffct-18350",
+   "kind": "fact-change",
+   "en_quote": "Kropek Puffing (title_en) -- \"This makes the cracker suddenly puff up and become crisp.\"",
+   "bis_quote": "Pagpaburo sa Kropek (title_bis) -- body: \"Mao nga kalit kining mohubag ug mokrispi.\"",
+   "would_learn": "buro is fermenting/pickling, not puffing; the Tagalog title is \"Pagpupuff ng Kropek\" and the Cebuano body correctly says mohubag (swells). A Cebuano-only child could take away that kropek is made to puff by fermentation rather than by trapped water flashing to steam during frying. Low confidence because I cannot rule out a regional sense of buro I do not know -- send to a native speaker.",
+   "confidence": "low"
+  },
+  {
+   "id": "ffct-17976",
+   "kind": "fact-change",
+   "en_quote": "Bioplastics are made from plant starch like corn or cassava instead of petroleum, and some break down much faster than ordinary plastics!",
+   "bis_quote": "Ang bioplastic gihimo gikan sa plant starch sama sa mais o kamoteng kahoy kaysa petrolyo, ug mas paspas kini madunot kaysa ordinaryong plastik!",
+   "would_learn": "The English hedges with \"some\" — only some bioplastics break down much faster. The Cebuano drops the quantifier and says \"mas paspas kini madunot\" of bioplastic as a class, so a Cebuano-only child learns that ALL bioplastics decompose faster than ordinary plastic, which is the exact misconception the English hedge exists to prevent (many bioplastics need industrial composting and do not break down faster in the open).",
+   "confidence": "medium"
+  },
+  {
+   "id": "dcard-07562",
+   "kind": "dropped-fact",
+   "en_quote": "because of the chalky rocks found in England and France from that time",
+   "bis_quote": "tungod sa mga batoon nga bato nga nakit-an sa England ug France nianang panahona",
+   "would_learn": "\"Chalky rocks\" becomes \"batoon nga bato\" — stony/rocky rocks. The naming logic of the card depends on those rocks being chalk ('creta'); the Cebuano answer never says the rocks were chalk, so the child is told the period is named after the Latin word for chalk because of ordinary rocky stones, and the cause-and-name link does not hold together.",
+   "confidence": "medium"
+  }
+ ]
+}

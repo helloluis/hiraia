@@ -1,0 +1,509 @@
+{
+ "_doc": "Cebuano gold set. FLAG rows come from a pass required to quote BOTH the English and the Cebuano, then cross-checked against how the CORPUS ITSELF uses the disputed word (panghupaw 4 cards vs singot 152; tabanog 7 kite vs 2 dragonfly; asin 551 all salt). PASS rows are cards the same pass examined and did not flag. Labels are NOT native-verified; every row with native:true needs a Cebuano speaker before it gates anything. Deliberately NOT hand-labelled from a word list -- that method was wrong on 3 of 9 controls in the Tagalog audit.",
+ "count": 50,
+ "flag": 17,
+ "pass": 33,
+ "needs_native": 15,
+ "items": [
+  {
+   "id": "ffct-23053",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Sa mga sakayan nga adunay layag, ang polea gigamit aron sayon nga ipataas ang dagkong layag pinaagi sa pagbira sa pisi!",
+   "en": "On sailing boats, pulleys help raise the large sails easily just by pulling on ropes!"
+  },
+  {
+   "id": "dcard-07562",
+   "gold": "FLAG",
+   "kind": "dropped-fact",
+   "confidence": "medium",
+   "native": true,
+   "evidence": "\"Chalky rocks\" becomes \"batoon nga bato\" — stony/rocky rocks. The naming logic of the card depends on those rocks being chalk ('creta'); the Cebuano answer never says the rocks were chalk, so the child is told the period is named after the Latin word for chalk because of ordinary rocky stones, and t",
+   "bis": "Ang Cretaceous Period ginganlan sunod sa Latin nga pulong 'creta' alang sa chalk, tungod sa mga batoon nga bato nga nakit-an sa England ug France nian",
+   "en": "The Cretaceous Period is named after the Latin word 'creta' for chalk, because of the chalky rocks found in England and France from that time."
+  },
+  {
+   "id": "ffct-18312",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Ngano nga mas sayon mulutaw sa dagat kaysa sa suba?\n\nMas siksik ang tubig-dagat kaysa sariwang tubig tungod sa natunaw nga asin! Sa grabe ka alat nga ",
+   "en": "Why is it easier to float in the sea than in a river?\n\nSeawater is denser than freshwater because of dissolved salt! In the super salty Dead Sea, you "
+  },
+  {
+   "id": "ffct-18350",
+   "gold": "FLAG",
+   "kind": "fact-change",
+   "confidence": "low",
+   "native": true,
+   "evidence": "buro is fermenting/pickling, not puffing; the Tagalog title is \"Pagpupuff ng Kropek\" and the Cebuano body correctly says mohubag (swells). A Cebuano-only child could take away that kropek is made to puff by fermentation rather than by trapped water flashing to steam during frying. Low confidence bec",
+   "bis": "Kung iprito, paspas nga mahimong steam ang tubig sa sulod sa nipis nga almirol sa kropek! Mao nga kalit kining mohubag ug mokrispi.",
+   "en": "When deep-fried, the water trapped inside kropek's thin starch quickly turns to steam! This makes the cracker suddenly puff up and become crisp."
+  },
+  {
+   "id": "dcard-12080",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Likayi ang pagbutang ug talinis nga mga butang sama sa stick o lapis duol sa mata kay makasamad o makasakit kini sa tin-aw nga cornea.",
+   "en": "Avoid placing pointed objects like sticks or pencils near the eyes because they can scratch or hurt the clear cornea."
+  },
+  {
+   "id": "ffct-07980",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Ang cacao pods motubo lamang sa tinuod nga cacao tree, dili sa bisan unsang kahoy — mao nga espesyal ug giatiman pag-ayo ang matag cacao tree.",
+   "en": "Cacao pods grow only on real cacao trees, never on just any tree — which is why each cacao tree is special and carefully cared for."
+  },
+  {
+   "id": "ffct-03523",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Ang butanding gipanalipdan sa balaod sa Pilipinas — dili tugot nga dakpon o pasakitan!",
+   "en": "The whale shark is protected by Philippine law — it's illegal to catch or hurt one!"
+  },
+  {
+   "id": "ffct-02750",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Ang agila sa Pilipinas mao ang pinakadako nga langgam nga mananakmal sa nasod, ug dinhi lang kini makit-an sa tibuok kalibutan.",
+   "en": "The Philippine eagle is the largest bird of prey in the country, and it's found nowhere else in the world."
+  },
+  {
+   "id": "ffct-06055",
+   "gold": "FLAG",
+   "kind": "fact-change",
+   "confidence": "high",
+   "native": false,
+   "evidence": "The English says this mosquito TRANSMITS dengue. Cebuano \"nagapasabot\" is the verb for \"to mean / to signify / to explain\" (as in \"unsay pasabot?\" = \"what does it mean?\"), not for spreading a disease (nagdala / nagpakaylap / nagakatap). A Cebuano-only child reads \"the tiger mosquito also means dengu",
+   "bis": "Ang tiger mosquito (Aedes albopictus) nagapasabot usab og dengue. Mas lapad ang sakop niini kaysa sa naandan nga Aedes aegypti ug makasugakod bisan sa",
+   "en": "The tiger mosquito (Aedes albopictus) also spreads dengue. It ranges wider than the usual Aedes aegypti and can even survive in cooler places."
+  },
+  {
+   "id": "ffct-23704",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Nganong ma-kuryente ta?\n\nAng lawas naay tubig ug asin, busa moagi ang kuryente! Magubot ni ang nerves ug heart signals, mao nga sakit ug delikado.",
+   "en": "Why do we get shocked by electricity?\n\nOur bodies have water and salt, letting electricity flow! This disrupts our nerves and heart signals, making it"
+  },
+  {
+   "id": "dcard-07888",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Ang mass sa 1.64 x 10^24 atoms sa carbon kay 32.69 grams, nga nakuha pinaagi sa pag-convert sa atoms ngadto sa moles ug pag-multiply sa molar mass sa ",
+   "en": "The mass of 1.64 x 10^24 atoms of carbon is 32.69 grams, found by converting atoms to moles and multiplying by carbon's molar mass of 12 g/mol."
+  },
+  {
+   "id": "ffct-16536",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Makahimo ba og yelo pag-usab ang natunaw nga yelo?\n\nOo! Kung matunaw ang yelo, mahimo kining tubig. Mabalik kini pag-yelo kung palamigon nimo pag-usab",
+   "en": "Can melted ice become ice again?\n\nYes! When ice melts, it becomes water. You can turn it back into ice just by cooling it again!"
+  },
+  {
+   "id": "ffct-35877",
+   "gold": "FLAG",
+   "kind": "fact-change",
+   "confidence": "low",
+   "native": true,
+   "evidence": "In Cebuano \"bulok\" is colour (mabulokon = colourful — the corpus itself uses it that way in a Cebuano line about a tandikan's tail feathers), while rot is dunot/madunot, which this same corpus uses in its Cebuano elsewhere (\"paspas kini madunot,\" \"aron dili kini madunot\"). A Cebuano-only child may r",
+   "bis": "Nganong espesyal ang kahoy sa bulul statues sa Ifugao?\n\nNag-ukit sila og tradisyonal nga kahoy nga bulul aron bantayan ang humay, gamit ang lig-on nga",
+   "en": "Why do the Ifugao use special wood for bulul statues?\n\nThey carve traditional wooden bulul statues to guard rice, using durable wood that resists rott"
+  },
+  {
+   "id": "ffct-05598",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Sa panahon sa mass spawning, ang mga coral nagpagawas og minilyon nga itlog ug sperm sa tubig nga dungan, kasagaran human sa hingpit nga bulan.",
+   "en": "During mass spawning, corals release millions of eggs and sperm into the water all at once, usually right after a full moon."
+  },
+  {
+   "id": "dcard-06905",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Kung ipataas ang stage, hunong sa dili pa modapat ang objective lens sa coverslip, tungod kay mabuak ang glass slide.",
+   "en": "When moving the stage upward, stop before the objective lens touches the coverslip, because the glass slide will break."
+  },
+  {
+   "id": "ffct-14729",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Unsa ang gikaon sa dakong tuki?\n\nBisan pa sa iyang kadako, ang tuki mokaon lang og plankton ug gagmayng isda pinaagi sa pagsala sa tubig.",
+   "en": "What does the giant whale shark eat?\n\nEven though it's huge, the whale shark eats only plankton and tiny fish, filtering them out of the water."
+  },
+  {
+   "id": "ffct-25487",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Unsa kadtong mga sinag sa adlaw sa panganod?\n\nAng mga sinag sa adlaw sa mga lungag sa panganod gitawag og crepuscular rays — makita ang suga kay nagka",
+   "en": "What are those sunbeams through clouds?\n\nSunbeams through gaps in clouds are called crepuscular rays — the light becomes visible because it scatters o"
+  },
+  {
+   "id": "dcard-04271",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Ang Reuse nagpasabot sa paggamit sa duha ka kilid sa papel kung mag-print ug pagdonar o pagbaligya sa mga butang imbes nga ilabay kini.",
+   "en": "Reuse means using both sides of paper when printing and donating or selling items instead of throwing them away."
+  },
+  {
+   "id": "ffct-15087",
+   "gold": "FLAG",
+   "kind": "entity-swap",
+   "confidence": "medium",
+   "native": true,
+   "evidence": "The card's Cebuano title names the wrong substance: \"asin\" is salt in both Cebuano and Tagalog; smoke is \"aso\". The title a child sees says burning plastic gives off toxic SALT. The body does say \"toxic smoke\" correctly, so the defect is confined to the title, but the title as written teaches a diff",
+   "bis": "Kung sunogon ang plastik, mogawas kini og toxic smoke! Daotan kini sa hangin ug sa atong baga.",
+   "en": "When plastic is burned, it gives off toxic smoke! This is very bad for the air and our lungs."
+  },
+  {
+   "id": "ffct-28342",
+   "gold": "FLAG",
+   "kind": "fact-change",
+   "confidence": "medium",
+   "native": true,
+   "evidence": "\"Panghupaw\" is Cebuano for sighing / heaving a sigh, not sweating (Cebuano sweat = singot / pagsingot). The child learns the body dumps excess heat by SIGHING, a different mechanism from the English; the sibling Tagalog of this same card correctly says \"sa pamamagitan ng pagpapawis.\" The second clau",
+   "bis": "Ang lawas nimo mopagawas og sobra nga kainit pinaagi sa pagpanghupaw; kung ma-evaporate ang singot, mobugnaw ang panit nimo!",
+   "en": "Your body releases excess thermal energy through sweat evaporation, cooling your skin down when you are hot or exercising!"
+  },
+  {
+   "id": "dcard-10327",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Ang stroke mahitabo kung ang usa ka ugat sa utok mabara sa blood clot o mobuto, mao nga mohunong ang pag-abot sa oxygen sa utok.",
+   "en": "A stroke happens when a blood vessel in the brain becomes blocked by a clot or bursts, stopping oxygen from reaching the brain."
+  },
+  {
+   "id": "dcard-00985",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Ang mga lumot naggikan sa spores, dili sa liso o cones.",
+   "en": "Moss plants are produced from spores, not from seeds or cones."
+  },
+  {
+   "id": "ffct-35218",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Ngano nga mas uga ang Central Luzon?\n\nAng Sierra Madre mountains nag-block sa Pacific moisture! Naghimo kini og mas uga nga rain shadow climate sa Cen",
+   "en": "Why is Central Luzon drier?\n\nThe Sierra Madre mountains block Pacific moisture! This creates a drier rain shadow climate across the Central Luzon plai"
+  },
+  {
+   "id": "ffct-09472",
+   "gold": "FLAG",
+   "kind": "entity-swap",
+   "confidence": "low",
+   "native": true,
+   "evidence": "English lists no leaves, STEMS, roots; Cebuano lists no leaves, SANGA (branches), roots. A child could conclude the plant still has a stem and only lacks branches, losing the striking fact that Rafflesia has no stem at all. The card's Tagalog uses \"tangkay\" (stem), so the Cebuano is the odd one out.",
+   "bis": "Unsang bulak ang walay dahon o gamot?\n\nAng Rafflesia schadenbergiana nga makita sa Bukid Kitanglad nag-produce sa pinakadako nga bulak sa kalibutan — ",
+   "en": "What flower has no leaves or roots?\n\nRafflesia schadenbergiana, found on Mount Kitanglad, grows the world's largest flower — yet it has no leaves, ste"
+  },
+  {
+   "id": "dcard-11550",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Ang usa ka food chain gikan sa Pilipinas mahimong: tanom nga humay nga gikaon sa ilaga, nga dayon gikaon sa Philippine cobra.",
+   "en": "A food chain from the Philippines could be: rice plant eaten by a rat, which is then eaten by a Philippine cobra."
+  },
+  {
+   "id": "ffct-30570",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Init ang adlaw kay sa kinasuloran niini, magtapok ang hydrogen aron maporma ang helium (nuclear fusion)! Mobuga kini og daghan kaayong enerhiya isip k",
+   "en": "The Sun is hot because deep inside, hydrogen joins to form helium (nuclear fusion)! This releases enormous energy as heat and light."
+  },
+  {
+   "id": "ffct-17976",
+   "gold": "FLAG",
+   "kind": "fact-change",
+   "confidence": "medium",
+   "native": true,
+   "evidence": "The English hedges with \"some\" — only some bioplastics break down much faster. The Cebuano drops the quantifier and says \"mas paspas kini madunot\" of bioplastic as a class, so a Cebuano-only child learns that ALL bioplastics decompose faster than ordinary plastic, which is the exact misconception th",
+   "bis": "Nahibaw-an ba ka unsay gihimo sa bioplastic?\n\nAng bioplastic gihimo gikan sa plant starch sama sa mais o kamoteng kahoy kaysa petrolyo, ug mas paspas ",
+   "en": "Ever wonder what bioplastics are made of?\n\nBioplastics are made from plant starch like corn or cassava instead of petroleum, and some break down much "
+  },
+  {
+   "id": "ffct-38484",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Unsay dapat nimo dad-a kung mobakwit?\n\nDad-a ang imong emergency go-bag! Naa nay tubig, pagkaon, ug flashlight samtang maghulat.",
+   "en": "What should you bring when you evacuate?\n\nBring your emergency go-bag! It has water, food, and a flashlight for when you wait."
+  },
+  {
+   "id": "ffct-28569",
+   "gold": "FLAG",
+   "kind": "dropped-fact",
+   "confidence": "medium",
+   "native": true,
+   "evidence": "The English gives the cause: the weave is ROUGH, so it increases friction. The Cebuano replaces \"rough\" with \"garbong\" — in this very corpus \"garbo\" is used consistently for pride/showiness (\"garbo sa nasod\" = national pride, \"magarbong buntot\" = a showy tail), never for texture. A Cebuano-only chil",
+   "bis": "Ang garbong hinabing banig naghatag ug friction! Mao nga dili madulas ang mga estudyante kung maglingkod sa hapsay nga salog sa klase.",
+   "en": "The rough woven texture of a traditional banig mat increases friction! This keeps students from slipping on smooth classroom floors."
+  },
+  {
+   "id": "ffct-02480",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Ngano mas peligro sa rabies ang mga bata?\n\nMas peligro ang mga bata sa rabies kay sagad sila magdula duol sa mga iro, mao nga dali sila makagat o maka",
+   "en": "Why are kids at higher risk from rabies?\n\nKids are more likely to get rabies because they often play close to dogs, making it easier to get bitten or "
+  },
+  {
+   "id": "ffct-22369",
+   "gold": "FLAG",
+   "kind": "dropped-fact",
+   "confidence": "low",
+   "native": true,
+   "evidence": "The causal step air -> wind collapses: the Cebuano literally reads \"the sun heats the hangin in order to make hangin\". The child gets a circular statement instead of the chain heated air becomes wind. The card's Tagalog deliberately kept the English word (\"para lumikha ng wind\") to avoid exactly thi",
+   "bis": "Nahibaw-an ba nimo nga ang adlaw ang nagpalihok sa kadaghanan sa renewable energy?\n\nOo! Gipainit sa adlaw ang hangin aron mohimo ug hangin, ug gipaali",
+   "en": "Did you know the sun powers most renewable energy?\n\nYes! The sun heats air to create wind, and evaporates water that returns as rain to fill rivers fo"
+  },
+  {
+   "id": "ffct-15217",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Unsaon paglihok sa partikulo sa likido?\n\nSa likido, duol gihapon ang partikulo apan modaplos sa usag usa, mao nga makaagos kini!",
+   "en": "How do particles move in a liquid?\n\nIn a liquid, particles stay close but slide past one another, which lets it flow!"
+  },
+  {
+   "id": "ffct-19197",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Usa ka metro parehas sa 100 ka sentimetro! Mahimo nimong ibutang ang 100 ka gagmay nga sentimetro sulod sa usa ka metro.",
+   "en": "One meter equals exactly 100 centimeters! You can fit 100 small centimeters inside one big meter."
+  },
+  {
+   "id": "ffct-03825",
+   "gold": "FLAG",
+   "kind": "dropped-fact",
+   "confidence": "low",
+   "native": true,
+   "evidence": "\"All on their own\" (natural regeneration, without humans replanting) is the fact the card exists for — see title_en \"Forests Regrow Alone\" and the term \"natural regeneration\". Cebuano \"kusog\" means strong/fast, so the sentence reads \"sometimes the forest regrows STRONGLY when wind or animals carry s",
+   "bis": "Usahay motubo pag-usab ang lasang nga kusog kon dalhon sa hangin o mananap ang mga liso ngadto sa yuta!",
+   "en": "Forests can sometimes regrow all on their own, when wind or animals carry seeds down to the ground!"
+  },
+  {
+   "id": "ffct-17723",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Ang daang papel pwede nga durugon balik sa tubig aron mahimong pulp ug himuon og bag-ong papel! Niini nga paagi, dili kaayo ta magputol og mga kahoy.",
+   "en": "Old paper can be mashed back into water to become pulp again and turned into new paper! This saves us from cutting down too many trees."
+  },
+  {
+   "id": "ffct-28468",
+   "gold": "FLAG",
+   "kind": "fact-change",
+   "confidence": "low",
+   "native": true,
+   "evidence": "The direction (paubos = downward) survives, but the action does not: Cebuano \"bunalon\" is to strike/whack with a stick, not to pull (birahon / guyoron / hilahon). A Cebuano-only child is told to hit the rope downward rather than pull it. Flagging low because the direction — the card's actual teachin",
+   "bis": "Unsaon nimo paggamit sa fixed pulley aron mabuhat ang bug-at nga butang?\n\nSa pag-operate sa fixed pulley, kinahanglan nimo bunalon paubos ang pisi aro",
+   "en": "How do you use a fixed pulley to lift something heavy?\n\nIn the operation of a fixed pulley, the effort step requires pulling the rope downward to lift"
+  },
+  {
+   "id": "ffct-06940",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Ang mga tawo adunay upat ka panguna nga tipo sa dugo — A, B, AB, ug O. Ang tipo O mahimong ihatag sa halos bisan kinsa, samtang ang AB makadawat gikan",
+   "en": "People have four main blood types — A, B, AB, and O. Type O can be given to almost anyone, while AB can receive from any type."
+  },
+  {
+   "id": "ffct-27182",
+   "gold": "FLAG",
+   "kind": "fact-change",
+   "confidence": "medium",
+   "native": true,
+   "evidence": "\"Back-to-back\" describes how the two inclined planes are JOINED (base against base) — that geometry is the whole lesson. Cebuano \"gibalik-balik\" means \"done over and over / repeated\" (balik = return, again), not \"placed back against back\" (likod = the body's back). A Cebuano-only child learns a wedg",
+   "bis": "Ang talinis sa kutsilyo kay wedge, nga duha ka inclined planes nga gibalik-balik!",
+   "en": "A knife blade is a wedge, which is actually just two inclined planes pushed back-to-back!"
+  },
+  {
+   "id": "ffct-26497",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Kinsa ang Amahan sa Koryente?\n\nSi Michael Faraday kasagaran tawgon nga Amahan sa Koryente (Father of Electricity) tungod sa iyang mga nadiskubrehan!",
+   "en": "Who is the Father of Electricity?\n\nMichael Faraday is often called the Father of Electricity because of his amazing discoveries!"
+  },
+  {
+   "id": "ffct-08595",
+   "gold": "FLAG",
+   "kind": "entity-swap",
+   "confidence": "high",
+   "native": false,
+   "evidence": "\"Tabanog\" is the Cebuano word for a KITE (the paper toy), not a dragonfly — Cebuano dragonfly is alindanaw/tambuburay. A Cebuano-only child reads \"the nymph of a kite lives underwater and flies with wings when it grows up.\" Nothing in the Cebuano names the dragonfly: the title uses \"tutubi,\" the Tag",
+   "bis": "Nagpuyo diay sa ilawom sa tubig ang nymph sa tabanog — molupad lang gamit ang pako kon mahamtong na kini.",
+   "en": "A dragonfly nymph actually lives underwater — it only takes to the air on wings once it becomes an adult."
+  },
+  {
+   "id": "ffct-07890",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Unsa ang sekreto sa gecko sa pagkupot sa bungbong?\n\nImbes usa ka dako nga pilit nga bahin, minilyon nga gagmay nga tumoy sa balahibo sa iyang tiil ang",
+   "en": "What's a gecko's secret for sticking to walls?\n\nInstead of one big sticky patch, millions of tiny hair-tips on its feet grip together — and that teamw"
+  },
+  {
+   "id": "ffct-27689",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Si Alessandro Volta maoy nag-imbento sa voltaic pile, ang unang battery sa kalibutan nga makaproduce ug steady electric current!",
+   "en": "Alessandro Volta invented the voltaic pile, the world’s first electrical battery capable of producing a steady electric current!"
+  },
+  {
+   "id": "ffct-32587",
+   "gold": "FLAG",
+   "kind": "fact-change",
+   "confidence": "medium",
+   "native": true,
+   "evidence": "The core mechanism verb is gone. English (and the card's own Tagalog, \"Pinapaikot ng hangin ang malalaking blades\") says the wind SPINS the blades; the Cebuano \"mopapailaw\" is built on ilaw (light), so a Cebuano-only child reads that the wind makes the blades light up -- or reads a nonword -- and ne",
+   "bis": "Unsaon paghimo og kuryente ang wind turbine?\n\nAng hangin mopapailaw sa dagkong blades, nagpadagan sa generator nga nagkabig sa kinetic energy ngadto s",
+   "en": "How does a wind turbine make electricity?\n\nWind spins large blades, driving a generator that converts kinetic energy into electrical energy!"
+  },
+  {
+   "id": "ffct-06404",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Igo na ba ang usa ka dako nga kaon sa adlaw?\n\nDili! Mas maayo ang regular nga gagmay nga kaon — lisod tunawon ang sobra kadaghan sa usa ka higayon, ug",
+   "en": "Is one giant meal a day enough?\n\nNo — smaller regular meals are better! Eating too much at once is hard to digest, and you'll just get hungry again la"
+  },
+  {
+   "id": "ffct-20579",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Dili bakante nga luna ang hangin! Kini sagol sa mga gas nga nag-okupar og puy-anan, sama sa makita nimo kung ang baso nakapugong sa hangin sa tubig.",
+   "en": "Air isn't just empty space! It's a mixture of gases that takes up physical space, just like when an inverted glass traps air underwater."
+  },
+  {
+   "id": "ffct-20408",
+   "gold": "FLAG",
+   "kind": "fact-change",
+   "confidence": "medium",
+   "native": true,
+   "evidence": "\"Mobuto\" means bursts/explodes/pops, not melts (matunaw). The child reads that coconut oil EXPLODES from solid into liquid at 24°C — a phase change described as a violent event. Corpus usage confirms the sense: \"mobuto ang bunga aron itsahon ang ilang mga liso\" (pods exploding), \"mobuto kini\" (a vir",
+   "bis": "Ngano nga natunaw ang virgin coconut oil kung mainit ang adlaw?\n\nAng virgin coconut oil mobuto gikan sa solid ngadto sa liquid sa mga 24°C — mao nga d",
+   "en": "Why does virgin coconut oil turn liquid on hot days?\n\nVirgin coconut oil melts from a solid to a liquid at around 24°C — that's why it easily liquefie"
+  },
+  {
+   "id": "ffct-30667",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Ang topsoil mao ang pinaka-ibabaw nga layer ug pinakatambok! Puno kini sa humus nga gikinahanglan sa mga tanom.",
+   "en": "Topsoil is the very top layer and the most fertile! It is packed with the humus that plants need."
+  },
+  {
+   "id": "ffct-12146",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Tinuod ba nga lemur ang kagwang?\n\nDili! Ang kagwang gitawag nga 'flying lemur,' apan dili kini tinuod nga lemur, ug dili pud kini unggoy.",
+   "en": "Is the kagwang really a lemur?\n\nNo! The kagwang is called a 'flying lemur,' but it's not a true lemur, and it's not a monkey either."
+  },
+  {
+   "id": "ffct-10181",
+   "gold": "FLAG",
+   "kind": "entity-swap",
+   "confidence": "medium",
+   "native": true,
+   "evidence": "The Cebuano title names a different thing than the English title: agta is the black forest giant/Negrito of folklore, not mold. The card's own body proves the intended word is agup-op (and the Tagalog title is \"Amag\" = mold), so the title contradicts its own card. A child scanning titles learns the ",
+   "bis": "Ang agup-op nga motubo sa daan nga pan o prutas usa diay ka matang sa fungi nga mokaon sa pagkaon.",
+   "en": "That fuzzy mold growing on old bread or fruit? It's actually a fungus feeding on the food."
+  },
+  {
+   "id": "dcard-03011",
+   "gold": "PASS",
+   "kind": "",
+   "confidence": "",
+   "native": false,
+   "evidence": "examined with the full card in view and not flagged",
+   "bis": "Ang celestial sphere usa ka imaginary sphere nga walay kinutoban ang radius diin makita nga gibutang ang tanang celestial bodies gikan sa Earth.",
+   "en": "The celestial sphere is an imaginary sphere of infinite radius against which all celestial bodies appear to be projected from Earth."
+  }
+ ]
+}
