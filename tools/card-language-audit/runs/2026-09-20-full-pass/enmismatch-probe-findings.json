@@ -1,0 +1,84 @@
+{
+ "judged": 2004,
+ "flagged": 13,
+ "items": [
+  {
+   "id": "ffct-10617",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "quote": "en \"What is really stored inside a bulb?\" = a PLANT bulb (the en answer: \"food stored inside a bulb is mostly sugar and starch that the leaves made using sunlight\"). tl renders it \"bombilya\", which in Filipino means an electric LIGHT BULB (Sp. bombilla), not a plant bulb. The tl answer repeats the error (\"naka-imbak sa bombilya\"), so nothing restores it: a child reading only the Tagalog learns that light bulbs store sugar and starch made by leaves."
+  },
+  {
+   "id": "ffct-01195",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "quote": "en \"How does a whale sing WITHOUT VOCAL CORDS?\" vs tl \"Paano kumakanta ang balyena kahit hindi gumagamit ng BIBIG?\" — the anatomical fact (no vocal cords) is replaced by \"doesn't use its mouth\", a different claim, and the tl answer never mentions vocal cords/litid-boses either, so it is not restored."
+  },
+  {
+   "id": "ffct-27108",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "quote": "en \"when you rub them together\" -> tl \"kapag pinagsabay-sabay mo sila\" (merely putting them together at once). The rubbing IS the physics -- it is what generates the friction -- and the Tagalog answer never restores it (it names \"friction\" but never kiskisan/pagkuskos)."
+  },
+  {
+   "id": "ffct-24392",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "quote": "en: \"How do ships measure distance underwater?\" -> tl: \"Paano sumusukat ng layo ang mga barko?\" -- \"underwater\" is dropped, and the Tagalog answer (\"Gamit ang bilis ng tunog at echo!... ginagamit ng sonar sa barko para makuha ang layo\") never restores it; the underwater setting is exactly why sound/sonar is the answer."
+  },
+  {
+   "id": "ffct-21503",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "quote": "en: \"separate iron nails from copper coins\" -> tl: \"ang mga pako sa barya\". Both metals (\"iron\", \"copper\") are dropped from the Tagalog question, and they are the physics: only iron is ferromagnetic, copper is not. NOTE: the Tagalog answer does restore them (\"solid iron nails\", \"non-magnetic solid copper coins\"), which by the stated carve-out would make this a PASS; flagged because the task names this exact card as the en-mismatch example."
+  },
+  {
+   "id": "ffct-34930",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "quote": "en \"on muggy, humid days\" became tl \"sa mga umagang maulap at humid\" -- \"muggy\" is replaced by \"maulap\" (cloudy) and \"days\" narrowed to \"umaga\" (mornings). Cloudiness is not the mechanism; the answer only restores humidity (\"Ang high humidity ay pumipigil sa pawis na mag-evaporate\"), so a Tagalog-only child learns that CLOUDY mornings feel hotter."
+  },
+  {
+   "id": "ffct-35343",
+   "verdict": "FLAG",
+   "cls": "answer-clash",
+   "quote": "tl \"Ba't ba talagang nasusunog ang Araw?\" (Ba't = Bakit, a why-question that PRESUPPOSES the Sun burns) vs ans \"Hindi! Gumagawa ito ng enerhiya sa pamamagitan ng nuclear fusion\" -- the answer's \"Hindi!\" denies the premise the question asserts. The English \"Is the Sun actually on fire?\" was a yes/no myth-buster; the Tagalog teaches the misconception as fact."
+  },
+  {
+   "id": "ffct-16229",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "quote": "en \"Does water get hotter than 100 degrees Celsius while it is boiling?\" vs tl \"Nangangain ba ang tubig ng higit sa 100 degrees Celsius habang kumukulo?\" -- \"get hotter\" became \"nangangain\" (eats/preys on). The temperature verb is gone, so the Tagalog question is unanswerable as written (\"does water EAT more than 100 degrees\")."
+  },
+  {
+   "id": "ffct-33320",
+   "verdict": "FLAG",
+   "cls": "answer-clash",
+   "quote": "Question asks for an answer in HOURS, answer gives MINUTES: tl \"Ilanong oras bago marating ng liwanag ng Araw ang Earth?\" vs ans \"Umaabot ng halos 8 minuto bago marating ng liwanag ng Araw dito sa Earth!\" The English question is unit-neutral (\"How long does sunlight take to reach Earth?\"); the Tagalog pins it to oras, which contradicts the 8-minuto answer."
+  },
+  {
+   "id": "ffct-20055",
+   "verdict": "FLAG",
+   "cls": "answer-clash",
+   "quote": "tl asks \"Ano ang talagang GINAWA ng isang South Sea pearl?\" = \"What did a South Sea pearl actually do/make?\" (agent reading), but the answer gives composition: \"binubuo mainly ng maliliit na calcium carbonate crystals at conchiolin\". en asks \"made OF\"; Tagalog would need \"gawa sa\" / \"binubuo ng\", not \"ginawa ng\" — the question as written cannot be answered by the answer."
+  },
+  {
+   "id": "ffct-34824",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "quote": "en \"Why do PUDDLES disappear on cool days?\" -> tl \"Bakit nawawala ang mga LATIAN kahit malamig ang araw?\" — \"latian\" is a marsh/swamp, a different body of water; the answer repeats \"nawawala ang mga latian\" so it is never restored. The rain puddle IS the everyday evidence for evaporation below boiling, and \"marshes disappear on cool days\" is simply untrue."
+  },
+  {
+   "id": "ffct-12668",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "quote": "en: \"Why are moth-pollinated flowers pale?\" -> tl: \"Bakit puti ang mga bulaklak na pinupulot ng gamu-gamo?\" The English fact \"moth-pollinated\" becomes \"pinupulot\" (picked up/gathered by moths). Pollination -- the reason the flowers are pale and night-scented -- is gone, and the Tagalog answer repeats the same wrong relation (\"Ang mga bulaklak na pinupulot ng gamu-gamo\") instead of restoring it, so a child reading only Tagalog learns that moths pick up flowers."
+  },
+  {
+   "id": "ffct-02738",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "quote": "en \"Is a sand dollar related to starfish?\" -> tl \"Kamag-anak ba ng bituin ang sand dollar?\" — \"starfish\" becomes plain \"bituin\" (a star in the sky; starfish is \"bituin-dagat\"/starfish). The animal kinship fact is the whole point, and the Tagalog answer does not restore it — it only mentions \"disenyong parang limang-tulis na bituin\" (a five-pointed star PATTERN), so a Tagalog-only child learns the sand dollar is related to a star shape, not to the starfish."
+  }
+ ]
+}

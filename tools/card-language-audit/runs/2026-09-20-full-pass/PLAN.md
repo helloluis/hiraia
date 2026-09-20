@@ -198,7 +198,25 @@ assisted work including the judge. Corpus is 1.22M tokens of content — well wi
       were wrong (`unatin`/`magbilis` are real words; `hingin` is a real word used incorrectly).
       Biggest find was indirect: **51 cards rendering a literal backslash-n on screen**, which
       also meant they never split into question and answer. Fixed separately.
-- [ ] **F1b-rest** NARROW LLM sweep — `en-mismatch`, `answer-clash`, plus adjudication of E2's
+- [x] **F1b-probe** DONE — measured 2,000-card probe. **13 flags (0.65%)**, and they are the
+      highest-value findings of the whole audit: cards that teach a child something false.
+        ffct-10617  "bulb" -> "bombilya" (electric light bulb) — the card states that the food
+                    stored inside a LIGHT BULB is sugar and starch made by leaves
+        ffct-16229  "get hotter" -> "nangangain" — "does water EAT more than 100 degrees"
+        ffct-02738  "starfish" -> "bituin" (a star in the sky)
+        ffct-34824  "puddles" -> "latian" (marsh) — "marshes disappear on cool days" is untrue
+        ffct-35343  question presupposes the Sun burns; its own answer opens "Hindi!"
+      Deterministic pre-filtering was tried first and does NOT work here: numbers/proper nouns
+      absent from the Tagalog gave 864 candidates that are overwhelmingly CORRECT translations
+      (Philippines->Pilipinas, Earth->mundo). Telling "dropped" from "translated" IS the
+      semantic judgement.
+      **Prompt flaw found by the judge itself:** I used ffct-21503 as the in-prompt example and
+      it is also a gold item, so catching it was not independent — the model said so unprompted.
+      Genuine recall on the uncontaminated gold is ~1/3, consistent with every earlier
+      measurement, so the true defect count is likely ~3x what a single pass finds.
+- [ ] **F1b-full** RECOMMENDED: run the narrow two-class sweep over all 19,279 (~9.4M tokens,
+      ~125 flags at this rate, likely ~375 real defects given recall ~1/3). Use a DIFFERENT
+      in-prompt example than any gold card. — `en-mismatch`, `answer-clash`, plus adjudication of E2's
       1,251 nonword candidates, the two genuinely
       semantic classes, full card record supplied, control spiked into EVERY batch. Re-measure
       recall on just those classes before committing to the full 19,279.
