@@ -266,8 +266,30 @@ So the cheap deterministic wins are already banked; what remains is semantic.
 
 - [ ] **C3 CHUNK E (final)** batches 290-336, 47 batches, ~6,580 cards. Completes the corpus.
 
-- [ ] **C4** Grep each discovered pattern corpus-wide, then TRIAGE every hit with its card in
-      view. Expect most to be FINE. Report confirmed vs candidates separately.
+- [~] **C4 IN PROGRESS.** Two deterministic detectors built; one kept, one killed.
+
+      **KILLED — singleton title words.** 1,095 title words that appear nowhere in any Cebuano
+      body and in no other title. Recall against the sweep's 739 known flags was **50 (6.8%)**
+      and the list is dominated by ordinary title-only Cebuano (Pag-ambus, Resipyente, Pepino,
+      Migrante). This is the Tagalog rarity lesson repeating: rarity is meaningless on an OPEN
+      class. Kept at `runs/2026-09-20-scope/title-singletons.json` as a negative result; do not
+      spend triage on it.
+
+      **KEPT — the title-outlier detector** (`title_outlier.py`). Chunk D's signature made
+      deterministic: fire only when (1) title_bis has the suspect word, (2) the EN card really
+      is about the concept it mistranslates, (3) the Cebuano body or terms carries the CORRECT
+      word, and (4) the suspect word is ABSENT from the body. Condition 3+4 is what rules out
+      regional variation, and is why a bare grep is useless here.
+
+      32 pairs → **162 candidates**, of which **76 were independently flagged by the LLM sweep**
+      and **86 are new**. That 47% agreement between a regex and a blind model pass is the
+      precision evidence the bare-grep approach never had. Biggest seams: iron→bakal 24,
+      soft→lumot/lumos 19, rotten→bulok 18, medicine→gamot 17, ant→langgam 16, bone→buto 10.
+
+      Triage running over all 162 — the 76 sweep-flagged cards are left in **as spiked controls**
+      and are not marked as such in the batches. If triage calls the controls FINE, the triage
+      prompt is too conservative and the run is void.
+
 - [ ] **C5** Rewrite confirmed defects, each independently verified before applying, with the
       emphasis guard. HOLD anything needing facts not on the card.
 - [ ] **C6** REPORT.md: what changed, what is queued for a Cebuano speaker, and an explicit
