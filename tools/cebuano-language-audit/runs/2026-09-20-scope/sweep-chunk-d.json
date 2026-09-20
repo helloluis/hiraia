@@ -1,0 +1,573 @@
+{
+ "batches_done": 60,
+ "batches_run": [
+  230,
+  231,
+  232,
+  233,
+  234,
+  235,
+  236,
+  237,
+  238,
+  239,
+  240,
+  241,
+  242,
+  243,
+  244,
+  245,
+  246,
+  247,
+  248,
+  249,
+  250,
+  251,
+  252,
+  253,
+  254,
+  255,
+  256,
+  257,
+  258,
+  259,
+  260,
+  261,
+  262,
+  263,
+  264,
+  265,
+  266,
+  267,
+  268,
+  269,
+  270,
+  271,
+  272,
+  273,
+  274,
+  275,
+  276,
+  277,
+  278,
+  279,
+  280,
+  281,
+  282,
+  283,
+  284,
+  285,
+  286,
+  287,
+  288,
+  289
+ ],
+ "flagged": 101,
+ "items": [
+  {
+   "id": "ffct-34274",
+   "pattern": "828m->838m",
+   "note": "title_bis \"838 Metro si Burj Khalifa\" changes the number: EN title and both bodies say 828 m (\"mga 828 ka metro (828 m)\"). The headline a child sees states a different height than the card; 838 appears nowhere else in the batch."
+  },
+  {
+   "id": "ffct-34319",
+   "pattern": "top->topas",
+   "note": "title_bis \"Walay Topas Magnitude\" — \"topas\" is topaz in this corpus (ffct-19042/19369 use topas/topasyo for the gemstone), not \"top/highest\". Title reads \"no topaz magnitude\"; the body has the correct wording (\"walay gitakdang kinatas-ang numero\"), so the title is the outlier."
+  },
+  {
+   "id": "ffct-34250",
+   "pattern": "wonders->kabanhangan",
+   "note": "title_bis \"Bag-ong Pito Ka Kabanhangan\" — \"kabanhangan\" is not a Cebuano word (single occurrence in the whole sweep corpus); the card's own body and the sibling card ffct-34249 use the correct \"Kahibulongan\"/\"Kabalaghan\". Title-only corruption of the wonder term."
+  },
+  {
+   "id": "ffct-34480",
+   "pattern": "cooled->nag-uyan",
+   "note": "title_bis \"Pinatubo Nag-uyan\" = \"Pinatubo rained\" (uyan = the l/y-variant of ulan). The English title is \"Pinatubo Cooled Earth\" and the body correctly says \"Ang Yuta temporaryong mibugnaw ug mga 0.5 °C\". The title names a different phenomenon (rainfall), which is especially misleading next to the neighbouring Typhoon Yunya / ash-mud card. Suggest \"Gipabugnaw sa Pinatubo ang Yuta\"."
+  },
+  {
+   "id": "ffct-34427",
+   "pattern": "spin->tirok",
+   "note": "title_bis \"24 Oras Tirok\" for \"24-Hour Spin\". Cebuano tirok = to gather/congregate (nagtirok ang mga tawo), not to rotate; rotation is tuyok — which this card's OWN body uses (\"Ang Yuta motuyok kausa sulod sa mga 24 ka oras\"). Title reads as \"24-hour gathering\". Suggest \"24 Oras nga Pagtuyok\"."
+  },
+  {
+   "id": "ffct-34435",
+   "pattern": "universe->kalibutan",
+   "note": "title_bis \"Kalibutan 13.8 Bilyon\" for \"Universe 13.8 Billion\". In Cebuano kalibutan = world/Earth, and this same batch uses \"Kalibutan\" to mean Earth (ffct-34464 \"radius sa Kalibutan\", ffct-34485/34486/34487 circumference/diameter/surface of the Earth). So the title states the Earth is 13.8 billion years old, contradicting ffct-34420 / ffct-34434 (\"Yuta 4.5 ka bilyon ka tuig\"). The body uses the correct \"uniberso\". Suggest \"Uniberso 13.8 Bilyon\"."
+  },
+  {
+   "id": "ffct-34479",
+   "pattern": "ash->aso",
+   "note": "title_bis \"35 km Aso nga Panganod\" for \"35 km Ash Cloud\". Cebuano aso = smoke; ash is abo, which the body uses correctly (\"gitas-on sa panganod sa abo nga gibuga sa Pinatubo\"). Ash vs smoke matters across this Pinatubo run (ash+gas cooled Earth, ash+rain collapsed roofs). Lower severity than the three above, but the same title-outlier pattern. Suggest \"35 km nga Panganod sa Abo\"."
+  },
+  {
+   "id": "ffct-34517",
+   "pattern": "law->bala",
+   "note": "title_bis \"Tulo ka Bala Kepler\" for \"Kepler's Three Laws\". Cebuano *bala* = BULLET/ammunition; law is *balaod*. The title reads \"Kepler's Three Bullets\" — a different thing, not a legitimate compaction (there is no short form of balaod). The card's own body has it right (\"tulo ka balaod sa paglihok sa mga planeta\"), and every sibling card in the sweep corpus uses the correct word in the title: \"Tulo ka Balaod ni Kepler\", \"Tulo ka Balaod ni Newton\" (x3), \"Newton sa Tulo ka Balaod\" (x2), \"Tulo ka Balaod Planeta\", \"Tulo ka Balaod sa Heredity\". This title is the lone outlier."
+  },
+  {
+   "id": "ffct-34600",
+   "pattern": "iron->bakal",
+   "note": "Body: \"Ang inner core sa Yuta usa ka init ug solido nga bola nga kasagaran bakal ug nickel!\" for \"made mostly of iron and nickel\". Cebuano *bakal* = TO BUY; iron is *puthaw* (the confirmed false friend). The fact-bearing sentence therefore never names the metal — a Cebuano-only child reads \"a ball mostly buy and nickel\". Evidence this is the defective field, not my ear: the card's OWN title_bis uses the correct word (\"Inner Core Puthaw\"), and the corpus uses *puthaw* for iron in the nutrition cards (\"dato sa puthaw\", \"kalsiyum ug puthaw\"). Partly mitigated by the title carrying *puthaw*, so rank this below the Kepler one."
+  },
+  {
+   "id": "ffct-34742",
+   "pattern": "erode->uwang",
+   "note": "The card's whole subject — soil WASHING AWAY (erosion) — never appears in the Cebuano. EN: \"How do we stop soil from washing away on steep slopes? / Planting deep-rooted vetiver grass along the steep slopes of Benguet prevents the topsoil from washing away!\" BIS: \"Unsaon pagsupak sa pag-uwang sa yuta...? / ...makapugong sa topsoil nga ma-uwang!\" In this very corpus 'uwang' is howling/barking (ffct-06105 wolves howl, ffct-08829 'Pag-uwang sa Iro' = why dogs bark, dcard-01641) and the rhinoceros/dung beetle (ffct-08920, ffct-11064); erosion is rendered pag-anod / pagdahili / pagkahugno / maanod everywhere else (ffct-05172, ffct-06557, ffct-02567). A Cebuano-only child reads \"stop the soil from howling\" and nothing in the card mentions water, rain or washing, so the fact is unrecoverable. Secondary: 'steep slopes' becomes 'taluktok nga bukid' (mountain summits), which also drops the slope."
+  },
+  {
+   "id": "ffct-34792",
+   "pattern": "form->tapak",
+   "note": "title_bis 'Pagtapak sa Panganod' for title_en 'How Clouds Form' — 'tapak' is to STEP ON, used that way exclusively in this corpus (ffct-30059 / ffct-33723 / ffct-34406 Armstrong and Aldrin 'nakatapak/mitapak sa Bulan', ffct-26457 'mutapak ka sa tumoy sa diving board'). The title a child scans says \"Stepping on the Cloud\", a different action from forming; the card's own body uses the correct verb (\"...aron makahimo ug panganod\"), and the sibling card ffct-34800 in this same batch titles the same idea 'Pagporma sa Panganod'. Title-only, so lower severity, but it is the same class as the gold set's asin/aso and agta/agup-op title flags."
+  },
+  {
+   "id": "ffct-34781",
+   "pattern": "cool->kunhod",
+   "note": "The cooling step of cloud formation is replaced by a quantity change. EN: \"Clouds only appear when it cools and condenses into visible liquid water droplets.\" BIS: \"Mogawas lang ang panganod kung mokunhod kini ug mag-condense...\" — 'mokunhod' is to DECREASE/lessen, used that way in 218 cards of this corpus; cooling is mobugnaw, which the sibling card ffct-34800 in this same batch uses correctly (\"mosaka, mobugnaw, ug mahimong gagmayng tulo sa tubig\"). A Cebuano-only child learns clouds appear when water vapour DIMINISHES rather than when it cools. Lower confidence / lower severity: the card's actual question (\"why can't we see water vapor?\") is still answered correctly, and 'mag-condense' survives."
+  },
+  {
+   "id": "ffct-34935",
+   "pattern": "cools->nagkaluoy",
+   "note": "Body: \"ang init nga lava ... dali ra nga nagkaluoy sa ibabaw\" — nagkaluoy = became pitiful / took pity, not cooled (mibugnaw / dali nga nabugnaw). The whole fact of the card is that basalt is fine-grained BECAUSE the lava cools rapidly at the surface; with nagkaluoy the cooling step is gone and nothing else in the card restores it, so a Cebuano-only reader cannot answer \"how does basalt form?\". The title compounds it: \"Pagbukad sa Basalt\" (bukad = to bloom/open out) for \"How Basalt Forms\" (pagkaporma / unsaon pagkabuo)."
+  },
+  {
+   "id": "ffct-34887",
+   "pattern": "space->kahangturan",
+   "note": "title_bis \"Walay Hangin sa Kahangturan\" = \"No Air in ETERNITY\" — kahangturan is eternity/forever (hangtod), not outer space. The card's OWN body uses the correct word twice-over sense: \"Ang kawanangan halos vacuum...\", so kawanangan is the outlier-proof. Title names a different thing (a span of time instead of a place) and is never corrected in the title itself."
+  },
+  {
+   "id": "ffct-34883",
+   "pattern": "sweat->baul",
+   "note": "title_bis \"Humidity ug Baul\" for \"Humidity and Sweat\" — baul is a chest/trunk (the box), not sweat; Cebuano sweat is singot (or balhas). The card's own body uses the correct word: \"hinay mosingaw ang singot\". Title names a different thing entirely, so the title alone reads as \"Humidity and a Trunk\"."
+  },
+  {
+   "id": "ffct-34846",
+   "pattern": "fog->yabo",
+   "note": "title_bis \"Yabo sa Baguio\" for \"Fog in Baguio\" — yabo is to spill/pour out a liquid; Cebuano fog is gabon (gabun). The body never uses a fog word either (it renders \"thick fog\" as \"makabag-on nga panganod\" = cloud), so nothing in the card restores it. Systemic: the same yabo=fog swap recurs in other batches (\"Yabo nga Panganod sa Yuta\", \"Yabo sa Dalan\")."
+  },
+  {
+   "id": "ffct-34863",
+   "pattern": "fog->yabo",
+   "note": "Same defective title as ffct-34846: \"Yabo sa Baguio\" = \"Spill in Baguio\" for \"Fog in Baguio\" (correct: gabon). Here the body keeps the English \"fog\", so the Cebuano card offers no correct Cebuano word for fog and the title asserts a different thing."
+  },
+  {
+   "id": "ffct-34893",
+   "pattern": "farming->pagsaka",
+   "note": "title_bis \"Pagsaka sa Terrace\" for \"Terrace Farming\" — Tagalog false friend: Tagalog pagsasaka = farming, but Cebuano saka = to CLIMB/go up, so the title reads \"Climbing the Terrace\". Cebuano farming is pag-uma / pagpanguma. The body is about erosion control and water retention in hagdan-hagdan nga palayan and never says uma, so the title's claim (climbing) is not corrected."
+  },
+  {
+   "id": "ffct-34912",
+   "pattern": "landed->milukso",
+   "note": "Lower confidence than the others, but the landing verb is wrong in BOTH fields with no restoration: title \"Lupad sa Tranquility\" (lupad = flight/to fly) for \"Landing at Tranquility\", and body \"milukso sa Sea of Tranquility\" (milukso = jumped/leapt) for \"landed on\" (nitugpa / milanding). A Cebuano-only reader gets astronauts jumping/flying, never landing; only \"unang pagbisita sa tawo\" hints at arrival."
+  },
+  {
+   "id": "ffct-35078",
+   "pattern": "space->kalibutan",
+   "note": "Body: EN \"cannot be seen from space with the naked eye\" becomes \"Dili makita sa mata ang Great Wall of China gikan sa KALIBUTAN\" — kalibutan is world/Earth in Cebuano (space is kalawakan/kawanangan, which card ffct-35069 itself uses). The Cebuano therefore asserts the Wall cannot be seen from Earth, which is plainly false and is the exact opposite framing of the myth the card exists to bust. The second clause (\"astronauts in low orbit can see highways, dams, cities\") is about highways, not the Wall, so nothing in the card restores \"from space\". A child reading only the Cebuano ends up believing something false."
+  },
+  {
+   "id": "ffct-35053",
+   "pattern": "forest->kagahuman",
+   "note": "title_bis \"Humus sa Kagahuman\" for title_en \"Forest Humus\". Kagahuman is from gahum = power/authority (dominion), not forest; Cebuano forest is lasang/kagubatan/kalasangan. The card's OWN body uses the correct word (\"topsoil sa LASANG\"), which is the title-outlier signal. Read alone, the title names a different thing entirely."
+  },
+  {
+   "id": "ffct-35069",
+   "pattern": "fly away->pakpak",
+   "note": "title_bis \"Ngano Dili Mupakpak\" for title_en \"Why Planets Stay Put\". In Cebuano pakpak = to clap/applaud (wing is pako; to fly is lupad), so the title reads \"Why doesn't it clap\" — and the subject (planets) is dropped as well, so the title names nothing recoverable. The card's OWN body uses the correct verb (\"Nganong dili MOLUPAD ang mga planeta palayo...\"), confirming the title is the outlier rather than dialect variation."
+  },
+  {
+   "id": "ffct-35224",
+   "pattern": "sweep away->makapagligtas",
+   "note": "Flash-flood safety card reverses the danger. EN: fast-moving flash floods \"can easily sweep a person off their feet\". BIS: \"ang kusog nga flash flood dali ra kaayo nga makapagligtas sa usa ka tawo\" — ligtas/makapagligtas = to save/rescue (corpus uses ligtas only for 'safe': ffct-21197, ffct-24482, ffct-25167). The card now says a strong flash flood can easily SAVE a person, the opposite of the hazard it is warning about; sweep away = makabanlas/makaanod (cf. ffct-32494 'banlasan sa ulan'). Nothing in the card corrects it."
+  },
+  {
+   "id": "ffct-35233",
+   "pattern": "sweating->pagpanghupaw",
+   "note": "The mechanism becomes false. EN: \"sweating cools your body down through evaporation\". BIS: \"ang pagpanghupaw nag-pa-cool sa lawas pinaagi sa evaporation\" — panghupaw = SIGHING, not sweating. A child reads that sighing cools the body by evaporation. Cebuano sweat is singot/pagsingot, which this corpus uses 155× (ffct-07477, ffct-13764, ffct-16165). Sweat is never named anywhere on the card, so the fact is unrecoverable."
+  },
+  {
+   "id": "ffct-35229",
+   "pattern": "acre->ektarya",
+   "note": "Unit changed. EN: \"A single healthy acre can contain more than one million earthworms\". BIS: \"Sa usa ka ektaryang maayo\" — ektarya is the corpus's word for HECTARE (ffct-38680, ffct-13514, ffct-30170 all render 'hectare' as ektarya), and 1 hectare = 2.47 acres. The Cebuano card states a ~2.5× wrong density and the correct unit appears nowhere on the card."
+  },
+  {
+   "id": "ffct-35122",
+   "pattern": "crouch->lingkod",
+   "note": "Lightning-safety action is changed and its reason dropped. EN: \"crouch low with your feet together to minimize ground contact\". BIS: \"lingkodi ang lawas ug ipundok ang mga tiil\" — lingkod = TO SIT (the listed false friend), so the card tells a child to SIT DOWN in a thunderstorm, which increases ground contact instead of minimising it; the 'minimize ground contact' clause is also gone. The corpus's own lightning card ffct-24485 uses the correct word for the same instruction: \"Daliana og pungko\". Title 'Yukbo sa Kilat' is fine; the body is the outlier."
+  },
+  {
+   "id": "ffct-35161",
+   "pattern": "blindness->pagkabulag",
+   "note": "Eclipse-safety outcome becomes a different thing. EN: \"can permanently damage your retinas and cause blindness\". BIS: \"mag-resulta sa pagkabulag\" — in Cebuano bulag = TO SEPARATE (this corpus uses it exactly that way for chromatography, ffct-17574 'magkabulag sila', and for splitting light, ffct-35097 'mo-bulag sa pito ka kolor'). Blind in Cebuano is buta/pagkabuta. The card's stated consequence reads as 'results in separation'; the word blindness is never restored on the card."
+  },
+  {
+   "id": "ffct-35178",
+   "pattern": "six-sided->unom-ka-guyod",
+   "note": "The body's key descriptor is a different word. EN question and answer both say \"six-sided crystals\"; BIS says \"unom-ka-guyod nga kristal\" twice — guyod = TO DRAG/PULL everywhere else in this corpus (ffct-24502 'Carry vs Drag', ffct-09052 bottom trawling, ffct-04130 kalesa), so the body reads 'six-drag crystals', which is meaningless. The card's OWN title has the correct word, 'Quartz nga Unom ka Kilid' (kilid = side, 478 corpus uses), which is what makes the body the outlier."
+  },
+  {
+   "id": "ffct-35173",
+   "pattern": "garbled-title",
+   "note": "title_bis is corrupted text, not Cebuano: \"97% Tubig ASA Asoy\" for \"97% of Water Is Salty\" — asa = where, asoy = to narrate/recount; neither means salty, and the stray all-caps ASA looks like a mangled token. The body is correct and uses asin ('Mga 97 porsyento sa tanang tubig sa Kalibutan kay asin'), so a reader recovers the fact from the body, but the shipped title itself is unreadable rather than merely terse — unlike the acceptable compact-title style, it names nothing. Lowest-severity flag here; included because the defect is in the title and is not register or regional variation."
+  },
+  {
+   "id": "ffct-35358",
+   "pattern": "brightest->pinakadasigon",
+   "note": "title_bis \"Pinakadasigon: Venus\" for \"Brightest Planet: Venus\". Cebuano dasig = fast/energetic (this same batch uses kadasig for SPEED on the tornado card ffct-35315), never bright. The title therefore asserts a false fact — Venus as the FASTEST planet — and the card's own body uses the correct word (\"pinakasilaw nga planeta\"), so the title is the outlier."
+  },
+  {
+   "id": "ffct-35368",
+   "pattern": "fuel->sungkit",
+   "note": "title_bis \"Sungkit sa Bagyo\" for \"What Fuels a Typhoon\". Cebuano sungkit = a pole/hook for picking fruit down; it has no fuel sense (fuel = sugnod). Looks like a corruption of \"Sugnod sa Bagyo\". The word is never corrected anywhere in the card — the body paraphrases with \"nagpalig-on\" and keeps the English \"latent heat\" — so the title names a different thing entirely."
+  },
+  {
+   "id": "ffct-35305",
+   "pattern": "sun->sikad",
+   "note": "title_bis \"Sikad Basilan Tuig\" for \"Basilan Year-Round Sun\". Cebuano sikad = to kick / push off with the foot; it never means sun or sunshine (adlaw / init sa adlaw / sidlak). The title as written is meaningless for the card's subject, and no form of the word appears in the body to correct it. Medium confidence — likely a mangled \"sikat\" (Tagalog), which is also not Cebuano for sun."
+  },
+  {
+   "id": "ffct-35543",
+   "pattern": "heart->bato",
+   "note": "title_bis \"Paspas nga Bato sa Init\" for \"Fast Heart in Heat\". In Cebuano bato = stone (or kidney); heart is kasingkasing, which the card's OWN body uses correctly (\"mopaspas ang pag-pump sa kasingkasing\"). The title names a different organ/thing and is never corrected in the title."
+  },
+  {
+   "id": "ffct-35543",
+   "pattern": "sweating->pagpanghupaw",
+   "note": "Body: \"mopapaspas sa kasingkasing aron mapabugnaw ang lawas pinaagi sa pagpanghupaw\". Panghupaw = TO SIGH in Cebuano; sweating is pagsingot/paningot (card ffct-35484 in this same batch uses \"singot\" correctly). The card's only cooling mechanism becomes sighing, so a child reading only the Cebuano learns a false mechanism — the fact is unrecoverable."
+  },
+  {
+   "id": "ffct-35539",
+   "pattern": "wallow->mokalingkawas",
+   "note": "EN \"The Mindoro tamaraw wallows in muddy soil and freshwater pools to cool its body\" became \"mokalingkawas sa lapok nga yuta\" = ESCAPES/frees itself FROM the muddy soil. That reverses the relationship (it goes INTO the mud, Cebuano molunang/maglunang) and contradicts the cooling reason the card gives. Nothing else in the card restores it."
+  },
+  {
+   "id": "ffct-35415",
+   "pattern": "bone->buto",
+   "note": "title_bis \"Buto Ugipin Fossil\" for \"Bones Fossilize Best\". Cebuano bone = bukog (buto in Cebuano = an explosion / vulgar sense), and \"Ugipin\" is a mangled Tagalog ngipin — Cebuano teeth = ngipon. The card's own body has both correct words (\"bukog, ngipon, ug kabhang\"), so the title is the outlier."
+  },
+  {
+   "id": "ffct-35414",
+   "pattern": "form->pagbuto",
+   "note": "title_bis \"Pagbuto Fossil\" for \"How Fossils Form\". Pagbuto in Cebuano = an explosion/eruption (used correctly for eruption in ffct-35409 \"Pagbuto sa Bulkan\"), not formation. The body uses the right verb (\"Maporma ang fossil\"), so the title says a different thing: fossils exploding rather than forming."
+  },
+  {
+   "id": "ffct-35411",
+   "pattern": "decay->mabulok",
+   "note": "\"Ang half-life mao ang panahon aron mabulok ang katunga sa radioactive isotope.\" Mabulok is the Tagalog word for rot/decay; in Cebuano bulok = COLOUR (also dull/stupid). Cebuano decay = madunot (used correctly in ffct-35415 \"dali madunot\"). The card's whole definition of half-life hangs on this verb and nothing restores it."
+  },
+  {
+   "id": "ffct-35432",
+   "pattern": "cliff->bungbong",
+   "note": "title_bis \"Delikado nga Shale Bungbong\" for \"Dangerous Shale Cliffs\". Bungbong in Cebuano = a wall/partition of a house, not a cliff; the body uses the correct word (\"matatarik nga bangin\"). The title names a different thing (a shale wall) and the safety warning is about cliffs."
+  },
+  {
+   "id": "ffct-35475",
+   "pattern": "spin->tuyo",
+   "note": "title_bis \"Tuyo Bulan Axis\" for \"The Moon Does Spin\". Tuyo in Cebuano = purpose/intent (Tagalog: dried fish); rotation is tuyok/ikot — the body uses \"nag-ikot\" correctly. The title reads \"Moon's purpose, axis\" and never delivers the spin claim the card is about."
+  },
+  {
+   "id": "ffct-35461",
+   "pattern": "downhill-reversed",
+   "note": "EN \"Heavy rains wash loose volcanic ash DOWN mountains\" became \"Gihugasan sa kusog nga ulan ang luag nga abo sa bulkan PAINGON SA BUKID\" = toward/up the mountain. Direction is reversed (should be paubos sa bukid / gikan sa bukid paubos), and the danger of a lahar is precisely that it comes down onto lowland communities. Nothing in the card restores the downhill direction."
+  },
+  {
+   "id": "ffct-35515",
+   "pattern": "puddle->latian",
+   "note": "EN hook \"where puddles go on hot days\" became \"asa mawala ang mga latian\" — latian = swamp/marshland, a different thing from a puddle (Cebuano lunang/danaw). A swamp does not evaporate away on a hot day, and the card never mentions puddles again, so the observation the card is built on is lost."
+  },
+  {
+   "id": "ffct-35467",
+   "pattern": "lost->nasala",
+   "note": "title_bis \"Polaris Nasala\" for \"Polaris When Lost\". Nasala in Cebuano = was strained/filtered (cf. \"pagsala sa sobrang asin\" in ffct-35548), or na-sala = committed a fault — not lost, which is nasaag/nawala. The body only says \"Na-lost sa gabii?\" in English, so no Cebuano word in the card restores the intended meaning."
+  },
+  {
+   "id": "ffct-35627",
+   "pattern": "dizzy->hilo",
+   "note": "EN \"feel dizzy\" is rendered with Tagalog hilo (and Tagalog morphology \"nahihilo\"). In Cebuano hilo = POISON; dizzy is lipong/lipong-lipong. Question reads \"Nganong nahihilo... ka panahon sa heatwave?\" and the body repeats it: \"mahimong mahilo ug malibog ang imong utok\" = your brain gets POISONED and confused. Nothing in the card restores \"dizzy\" (the title only carries libog = confused), so a Cebuano-only reader learns that dehydration poisons the brain — a different, false claim. This is the confirmed hilo false friend."
+  },
+  {
+   "id": "ffct-35592",
+   "pattern": "radioactive->radyo",
+   "note": "title_bis \"Pagkadunot sa Radyo\" = \"decay/rotting of the RADIO (the appliance)\". Radioactive is radyoaktibo, never radyo, and the card's own body and emph_bis keep the correct term \"radioactive decay\" — classic title-outlier. The title alone names a different thing (a broken radio) as the source of Earth's internal heat."
+  },
+  {
+   "id": "ffct-35681",
+   "pattern": "tectonic plate->plato",
+   "note": "title_bis \"Lithosphere Plato\" — plato is the Spanish loan for a dinner PLATE/dish, not a tectonic plate (plaka/plate). The card's own body says \"nabahin sa mga tectonic plate\" and its terms list carries \"mga plaka\", so the title is the outlier. Lower severity than the other two (the body restores the concept), but the title as written names a dish."
+  },
+  {
+   "id": "ffct-35701",
+   "pattern": "bone->buto",
+   "note": "title_bis \"Buto sa Kawanangan\" for \"Bones in Space\". Tagalog false friend: Cebuano bone is BUKOG; \"buto\" in Cebuano is an explosion/burst (and vulgar slang for genitals), never bone. Nothing in the card corrects it - the body carries the fact only in English (\"bone density loss\", \"skeleton\") and never says bukog once, so a child reading only the Cebuano gets no Cebuano word for the thing the card is about. Compare ffct-35715 in this same batch, which titles bones correctly as \"Kalsiyo sa Bukog\"."
+  },
+  {
+   "id": "ffct-35825",
+   "pattern": "cube->kubyeta",
+   "note": "title_bis \"Halite nga Kubyeta\" for \"Halite Cube Crystals\". \"Kubyeta/kubeta\" means TOILET (latrine) in Cebuano and Tagalog, not cube - the title reads \"Halite the toilet\". The card's own body uses the correct idea in English (\"perpektong cubic crystals\"), which is exactly the title-outlier signature; the Cebuano title names a completely different object and is never repaired in Cebuano."
+  },
+  {
+   "id": "ffct-35725",
+   "pattern": "richest->pinakabug-at",
+   "note": "Body: \"ang topsoil mao ang pinakabug-at nga layer\" = \"topsoil is the HEAVIEST layer\" (EN: the RICHEST layer). Bug-at is weight, not nutrient richness, so a child ends up believing a false claim about soil horizons (topsoil is in fact the lightest, most organic layer). Same card also has \"humus gikan sa mga NABUAK nga tanom ug hayop\" - nabuak = broken/shattered, not decayed (madunot) - the confirmed mabuak/madunot seam. Sister card ffct-35733 in this batch states the fact correctly: \"ang topsoil ang nag-gunit sa pinakadaghan nga organic matter\"."
+  },
+  {
+   "id": "ffct-35816",
+   "pattern": "tides->balod",
+   "note": "Body: \"ang grabidad sa bulan aron ma-predict ang taas ug ubos nga BALOD\" = \"to predict high and low WAVES\". Balod is a wind-driven wave; tide is taob (high) / hunas (low). As written the card teaches that the moon's gravity controls how big the waves are, which is false science, and nothing in the Cebuano restores it (title_bis keeps the English word \"Tides\"). Other cards in this same batch use the correct term - ffct-35705 \"Taob sa Dagat\", ffct-35844 \"Taob ug Sakit\", ffct-35826 \"Sulog sa Bulan\"."
+  },
+  {
+   "id": "ffct-35963",
+   "pattern": "softest->pinakaluag",
+   "note": "\"Talc is the SOFTEST mineral on the hardness scale\" -> \"Ang Talc mao ang PINAKALUAG nga mineral sa standard hardness scale\". Cebuano luag = loose/slack/roomy (luag nga sapatos), not soft; soft is humok. The whole point of the card is the hardness ranking, and nothing else in the card restores it — a child reads \"the loosest mineral on the hardness scale\", which is meaningless, so the fact that talc is the softest mineral is gone."
+  },
+  {
+   "id": "ffct-35990",
+   "pattern": "rub->hagkon",
+   "note": "\"If you RUB your eyes with dirty hands\" -> \"Kung HAGKON nimo ang imong mata gamit ang hugaw nga kamot\". Cebuano hagkon = to KISS (halok); rub the eyes is kuskuson/kusi-kusihon. Wrong-sense verb in a safety card: the hazardous action itself becomes an impossible one (kissing your own eye with your hand), and the card never states the real behaviour to avoid, so the hand-to-eye transmission warning is not recoverable from the Cebuano."
+  },
+  {
+   "id": "ffct-36067",
+   "pattern": "stilts->sulo",
+   "note": "title_bis \"Bahay Kubo Sulo\" for \"Stilted Bahay Kubo\". Cebuano `sulo` = TORCH (also Tagalog); it has no stilt/post sense — stilts is `tukod` (or haligi/poste). The title tells a Cebuano-only reader the card is about a torch, and the card's own body keeps the correct concept only in English (\"gitukod sa stilts\"), so the headline fact — the house stands on raised posts, which is WHY it survives quakes and floods — never appears in Cebuano anywhere on the card."
+  },
+  {
+   "id": "ffct-36040",
+   "pattern": "feces->ihi",
+   "note": "bis body says \"Ang ihi-iho sa hayop sa yuta makadala og harmful parasitic worms\" for EN \"Animal feces in the dirt can transmit harmful parasitic worms\". Cebuano `ihi` = URINE (mangihi = to urinate); feces is `tae`/`iti`. The card names a different substance as the parasite vector and never corrects it — a Cebuano-only reader learns that animal urine in soil carries parasitic worms, which is false, and this is a health/safety card."
+  },
+  {
+   "id": "ffct-36074",
+   "pattern": "weathering->hubas",
+   "note": "title_bis \"Paghubas sa Gamot\" for \"Root Weathering\". Cebuano `hubas` = to DRY UP / ebb (of water), never to weather or break down rock. The title announces \"the drying-up of the root\" — a different process from the one the card teaches (roots wedging into bedrock cracks and physically breaking it), and no Cebuano word for weathering/breaking-down appears in the title to correct it."
+  },
+  {
+   "id": "ffct-36091",
+   "pattern": "shaken->kulob",
+   "note": "bis body: \"Ang solidong bato sa Bulan nag-vibrate sama sa kampana kung gikulob\" for EN \"...vibrates like a ringing bell when shaken\". Cebuano `kulob` = to turn face-down / overturn, not to shake (uyog, tay-og, kurog). The stated trigger for the bell-like ringing becomes flipping the Moon over, which is nonsense as a mechanism, and the card never restores the shaking/impact idea elsewhere."
+  },
+  {
+   "id": "ffct-36208",
+   "pattern": "suffocate->makasul-ob",
+   "note": "Body: \"...carbon dioxide gas duol sa salog ang limestone caves, nga MAKASUL-OB kung magsulod ka nga nag-crawl!\" EN = \"which might SUFFOCATE you if you crawl inside\". Cebuano sul-ob = TO WEAR (put on clothing); suffocate is makalumos / makahuot / makatuok. The one fact that makes the card a safety warning — the gas can kill you by suffocation — is replaced by nonsense (\"can wear you\") and is never restored anywhere on the card; the title only says \"Kuyaw sa Langob\" (cave danger) without naming the hazard. A child reads only that caves are somehow dangerous, and cannot answer what the trapped CO2 actually does."
+  },
+  {
+   "id": "ffct-36259",
+   "pattern": "blindness->pagkabulag",
+   "note": "Body answer: \"makadaut permanente sa retina ug makapahinabo og partial nga PAGKABULAG\" for EN \"cause partial BLINDNESS\". This is the confirmed false friend: Cebuano bulag = TO SEPARATE / part ways (pagkabulag = a breakup); Cebuano for blind is buta, so blindness is pagkabuta. Nothing on the card restores \"blindness\" — the child gets \"damages the retina and causes partial separation\", and the actual consequence of staring at the sun is unrecoverable. (Note the same card's question also uses mudunggo = to dock/land for \"stare\", but the title \"Ayaw Tutoka sa Adlaw\" and the answer's \"pagtan-aw\" restore that one — the blindness word is the unrecoverable part.)"
+  },
+  {
+   "id": "ffct-36175",
+   "pattern": "blocked->nibulag",
+   "note": "Body: \"Nahitabo ni sa dihang NIBULAG ang buwan sa adlaw\" for EN \"happened when the moon moved and BLOCKED the sun\". Cebuano bulag = to separate / part from, not to block or cover (that is mitabon / misalipod). The card therefore states the eclipse happened when the moon SEPARATED FROM the sun — the direction of the mechanism is reversed, and the blocking fact appears nowhere else on the card. A child asked why a solar eclipse happens would answer with the opposite of the truth."
+  },
+  {
+   "id": "ffct-36157",
+   "pattern": "soft->lumos",
+   "note": "title_bis \"Lumos Gypsum\" for title_en \"Soft Gypsum Mineral\". Cebuano lumos = TO DROWN / be suffocated (and lumot = moss, the already-confirmed wrong word for \"soft\" in this corpus); soft is humok. The card's OWN body uses the correct word — \"Kay kini hilabihan ka HUMOK nga mineral!\" — which is the strongest evidence the title word is the outlier and not regional variation. The title as shipped names a different thing (\"drowned gypsum\") than the card is about."
+  },
+  {
+   "id": "ffct-36205",
+   "pattern": "crescent->gasuklay",
+   "note": "title_bis \"Nagtubo nga Gasuklay\" for \"Waxing Crescent\". Gasuklay is the TAGALOG moon-phase word for crescent; in Cebuano suklay = comb and the ga- prefix is the progressive aspect marker, so the title parses as \"growing, is combing\". Cebuano would use bag-ong subang / the English term. Tagalog-only vocabulary in the title, with the correct sense carried only by the English \"waxing crescent moon\" left in the body."
+  },
+  {
+   "id": "ffct-36211",
+   "pattern": "title-reverses-fact",
+   "note": "title_bis \"Red Giant gikan sa Sobra\" = \"Red Giant from EXCESS/SURPLUS\", but the fact — stated correctly in the card's own body — is the reverse: \"Kung MAUBUSAN na sa hydrogen fuel sa core ... mahimong red giant\" (when it RUNS OUT of fuel). The title asserts the opposite driver of the very process the card teaches, and also drops \"fuel\" (title_en: \"Red Giants from Fuel\"). Lower severity than the word-swaps above since the body restores it, but the title as displayed states a reversed relationship."
+  },
+  {
+   "id": "ffct-36348",
+   "pattern": "sweat->magpahiyom",
+   "note": "\"ang lawas magpahiyom aron mapabugnaw ang panit\" — pahiyom = TO SMILE. English: \"your body sweats to cool your skin\". Cebuano sweat is singot/gasingot. The card's whole mechanism (sweating cools you, so replace the lost fluid or you dehydrate) is gone: the Cebuano says the body SMILES to cool the skin, and nothing else in the card ever mentions sweat, so the link between the lost \"likido\" and dehydration is unrecoverable."
+  },
+  {
+   "id": "ffct-36341",
+   "pattern": "rub->uyog",
+   "note": "\"Ang mga geologist nag-uyog sa mineral batok sa unglazed porcelain streak plate\" — uyog = TO SHAKE (this same corpus uses pag-uyog correctly for earthquake shaking, e.g. ffct-36311). English: \"rub a mineral against a streak plate\". Cebuano rub/scrape is kuskos/kiskis. The streak test's method is the entire fact of the card; a child answering \"Unsaon pagsulay sa mga mineral?\" would say scientists SHAKE the mineral at a plate, and no other sentence restores the rubbing."
+  },
+  {
+   "id": "ffct-36314",
+   "pattern": "crouch->lingkod",
+   "note": "\"lingkodi ang imong lawas sa ubos sa usa ka lungag\" — lingkod = TO SIT (the known false friend). English is \"crouch low in a ditch\" during a thunderstorm; crouching is pungko/duko. On a lightning-safety card the action IS the fact, and it is changed to sitting (the posture safety advice specifically avoids) with no correction anywhere in the card. The title compounds it: \"Yuko Bangin\" puts the child at a bangin (ravine/precipice), not the kanal/ditch of the English title."
+  },
+  {
+   "id": "ffct-36296",
+   "pattern": "weathering->paghubas",
+   "note": "title_bis \"Paghubas sa Bato\" for title_en \"Rock Weathering\" — hubas = TO EBB / DRY UP / EVAPORATE (tubig mihubas), a completely different process from the physical/chemical break-up of rock. The body keeps the English \"weathering\" untranslated, so the title is the ONLY Cebuano gloss the child gets, and it teaches that weathering means rock drying up. Nothing in the card corrects it."
+  },
+  {
+   "id": "ffct-36412",
+   "pattern": "surprising->kabantug",
+   "note": "title_bis \"Balik Kabantug Resulta\" for title_en \"Repeat Surprising Results\" — bantug/kabantug = FAMOUS, RENOWNED, not surprising (katingad-an/nakurat). The card's own body uses the correct word, \"Ang nakurat nga resulta hinungdan nga balik-balikon ang eksperimento\", which is the strongest evidence the title is the outlier. As a heading it states a different rule (repeat the famous result rather than the surprising one)."
+  },
+  {
+   "id": "ffct-36486",
+   "pattern": "quiet->tahom",
+   "note": "title_bis \"Tahom nga Bulkan\" = BEAUTIFUL volcano; card is about a QUIET (long-repose) volcano. The card's own body uses the correct word twice (\"hilom nga bulkan\", \"taas nga hilom nga panahon\") and the terms list carries \"hilom\" - the title is the outlier and names a different property than the English \"Quiet Volcano Warnings\"."
+  },
+  {
+   "id": "ffct-36530",
+   "pattern": "horn->sungay",
+   "note": "Vehicle horn is named nowhere in the card: title_bis \"Paminaw sa Agianan nga Buryo\" (buryo = boredom/irritation) and body \"paminawa ang nag-agi nga sungay\" (sungay = an ANIMAL's horn/antler). A child is told to stand still and listen to a passing antler, so the activity - listen to a passing vehicle horn - is not recoverable from this card. The card's own terms list has the correct \"busina\", and 5 other cards in the batch use \"busina\"."
+  },
+  {
+   "id": "ffct-36532",
+   "pattern": "horn->sungay",
+   "note": "Body \"Ang layo nga sungay mas hilum\" uses sungay = animal horn/antler for a distant vehicle horn, and nothing in the card corrects it (title is about pitch, not the source). Reads as \"a distant antler is quieter\"; correct word is busina, used in 5 other cards of this batch."
+  },
+  {
+   "id": "ffct-36521",
+   "pattern": "horn->buryo",
+   "note": "title_bis \"Buryo sa Ferry sa Tubig\" - buryo means boredom/being fed up, not a horn, so the title reads \"The Ferry's Boredom on the Water\" for \"Ferry Horn on the Water\". The body uses the correct \"busina sa ferry\", which confirms the title is the outlier."
+  },
+  {
+   "id": "ffct-36482",
+   "pattern": "ash->aso",
+   "note": "title_bis \"Aso sa Hangin\" = SMOKE in the wind; the card is specifically about ASHFALL (\"Ash Falls Downwind\"). Cebuano ash is abo, which the body uses correctly (\"ang abo mohulog sa direksyon sa hangin\"), so the title names a different substance than the fact the card teaches."
+  },
+  {
+   "id": "ffct-36458",
+   "pattern": "retest->uli",
+   "note": "title_bis \"Tinuod nga Resulta: Uli\" - Cebuano uli means to GO HOME / return something (Tagalog uli = again is the false friend here), so the title reads \"Real Result: Go Home\" instead of \"Real Result: Retest\". Cebuano for another try is usab / laing pagsulay, which the body uses (\"kinahanglan pa ug laing pagsulay\")."
+  },
+  {
+   "id": "ffct-36590",
+   "pattern": "bell->badya",
+   "note": "title_bis \"Badya sa Plaza\" for title_en \"The Bell across the Plaza\". Cebuano badya = to mimic/imitate; it is not a bell. The card's own body uses the right word (\"Nadungog nimo ba ang kampana sa simbahan sa plaza?\") and the terms list carries kampana/batingting, so the title is the outlier. A child scanning titles reads \"Mimicry at the Plaza\" for a card whose whole point is the church bell as the longitudinal-sound example."
+  },
+  {
+   "id": "ffct-36626",
+   "pattern": "float->lumba",
+   "note": "\"Ang trace sa mikropono sa tingog ug lumba nga naglukso sa balod\" for \"A microphone trace of sound and a bouncing float on a ripple\". Cebuano lumba = a race/racing; a float (bobber) is pataw/palutaw. Nothing in the card restores it — title_bis is only \"Graph Oras\" — so the second half of the card's comparison becomes \"a race jumping on the wave\" and the child cannot picture the bobbing float whose up-and-down trace is supposed to look like the sound wiggle."
+  },
+  {
+   "id": "ffct-36689",
+   "pattern": "ask->pahina",
+   "note": "title_bis \"Pahina Elder\" for title_en \"Ask an Elder First\". Pahina is not \"ask\" in Cebuano — it reads as unpaid communal labour (Sp. faena), or as page / pa-hina (make weak); none of those is the card's action. The body proves the intended verb (\"Pangayoa una og permission sa usa ka elder\") and the terms list has pahintulot/permission, so the title names a different thing and drops the permission step the card exists to teach."
+  },
+  {
+   "id": "ffct-36687",
+   "pattern": "dipper->timba",
+   "note": "\"nagpadagan sa timba\" for \"run the dipper\". Cebuano timba = a pail/bucket; the ripple-tank dipper is the vibrating dipper (kept in English on the sibling cards ffct-36670/36671/36674, and a hand dipper would be kabo/tabo, never timba). The card never corrects it — title_bis is \"Kauban Obserba\" — so a Cebuano-only child is told one partner runs a bucket in the ripple tank."
+  },
+  {
+   "id": "ffct-36785",
+   "pattern": "ash->aso",
+   "note": "title_bis \"Aso sa Bulkan Bato\" (EN: \"Volcanic Ash Is Rock\"). Cebuano `aso` = SMOKE (and in Tagalog it is DOG); volcanic ash is `abo`. The body never says `abo` — it only carries the English \"volcanic ash\" — so the single Cebuano naming of the subject labels a different thing and is never corrected. A Cebuano-only child takes away \"volcano SMOKE is made of tiny rock bits / is non-living\". `abo` is the word every other ash card in this same batch uses (ffct-36808 \"mu-ulan og abo\", ffct-36811 \"basa nga abo\", ffct-36841 \"pinong abo\", ffct-36848 \"abo\"), and the card's own terms list has \"abo sa bulkan\" — the title is the outlier."
+  },
+  {
+   "id": "ffct-36859",
+   "pattern": "oil->lana",
+   "note": "bis \"Ang uling ug lana nagtipig og enerhiya...\" for \"Coal and oil store energy that plants captured from sunlight long ago\". Cebuano `lana` = COCONUT OIL; petroleum/fossil oil is `langis` or `petrolyo` (the card's own terms list carries \"langis\"). The fossil-fuel fact is the whole card, and the Cebuano names an ordinary kitchen coconut oil instead — the child learns \"charcoal and coconut oil are ancient stored sunlight\", which is false of coconut oil and never corrected (the opening line only says \"gasolina sa makina\" generically). `uling` for coal is fine on its own; the defect is `lana`."
+  },
+  {
+   "id": "ffct-36888",
+   "pattern": "pull->uyog",
+   "note": "Definition sentence is false in Cebuano and nothing in the card restores it. EN: \"Weight is just gravity's pull!\" -> BIS: \"Ang timbang mao ang pag-uyog sa gravity!\" — uyog = to SHAKE/sway (nag-uyog ang lubi), not to pull (bira/gunit/dani). A child learns \"weight is gravity's shaking\". The rest of the card is degraded the same way and gives no recovery: the hook question \"nganong dili kanunay nga moana ang mga bug-at sa res sa pagkahulog\" is unanswerable (moana = to go there, not modaog = to win; \"res\" is not a word — untranslated \"race\"), and the payoff \"dili kini nag-inusara nga rason ngano nga una kini mohunong\" says the heavy object STOPS first, not LANDS first (moabot/mohulog). title_bis \"Gibiya-ong Gunit sa Gravity\" (\"the abandoned grip of gravity\") does not repair it either."
+  },
+  {
+   "id": "ffct-36927",
+   "pattern": "bring in->itupi",
+   "note": "The safety action the card depends on is replaced by a different action and never corrected. EN: \"Bringing in chairs and tying light roofs\" -> BIS: \"dapat itupi ang mga lingkuranan ug itali ang gaan nga atop\". Cebuano tupi = to cut/trim hair (magpatupi); read as Tagalog it is \"fold\". Neither is \"bring indoors\" (isulod / dad-a sa sulod). Folding or trimming a chair does not stop Signal-1 wind from tossing it, so the child gets the wrong protective action; title_bis (\"Signal 1 Palipad Butang Bangko\") and the rest of the body never say to bring anything inside."
+  },
+  {
+   "id": "ffct-37035",
+   "pattern": "pear->pera",
+   "note": "title_bis \"Pera Porma Matris\" — pera is MONEY, not pear (Cebuano pear = peras). Title reads \"money-shaped uterus\", and the card's whole point IS the pear shape. Body never restores it in Cebuano: it only says \"ang uterus kay ang pear-shaped organ sa tunga\" in English. Corpus check: pera appears exactly once in 47,056 cards (this title); the sibling card ffct-37040 uses the correct \"peras nga porma\" in its body."
+  },
+  {
+   "id": "ffct-37063",
+   "pattern": "size->laki",
+   "note": "title_bis \"Prostate nga Laki Walnut\" — laki in Cebuano means MALE (animal), not size (Tagalog false friend: Tag. laki = size). Title reads \"prostate that is a male walnut\". The card's OWN body uses the correct word: \"parehas kadako sa walnut\". Corpus check: all 88 other uses of laki in 47,056 cards mean male (laki nga lamok, laki nga peacock, laki o baye); size is kadako/gidak-on (546 hits)."
+  },
+  {
+   "id": "dcard-00614",
+   "pattern": "movement->magpaliwat",
+   "note": "Skeletal System Functions. EN lists five functions including \"enables movement\"; the Cebuano renders that item as \"magpaliwat\" — Cebuano paliwat = to breed/propagate offspring, not to move. The card therefore tells a child the skeleton \"reproduces/breeds\", and the movement function is dropped entirely with nothing elsewhere in the card restoring it. Correct word is motabang sa paglihok — which the corpus's own parallel card dcard-00603 (same function list) uses: \"motabang sa paglihok\"."
+  },
+  {
+   "id": "dcard-00575",
+   "pattern": "inverted->bali",
+   "note": "Image Characteristics. EN pairs are \"upright or inverted\", \"larger or smaller\", \"real or virtual\"; the Cebuano gives \"pagtindog o bali\". Cebuano bali = broken/fractured, so the contrast reads \"standing up or broken\" — a false property of mirror images, and the inverted concept is lost and never restored in the card. Inverted is baliskad / balit-ad. Lower confidence than dcard-00614: some speakers use bali-bali loosely for reversed, but bare bali in a science list reads as broken."
+  },
+  {
+   "id": "dcard-01209",
+   "pattern": "strands->hilo",
+   "note": "bis renders \"Optical fibers are thin strands\" as \"Ang optical fibers mga nipis nga mga hilo\". In Cebuano hilo = POISON/VENOM (correct Cebuano for thread/fibre is tanod or hibla). The card never uses the right word, so the only definition it gives of an optical fiber reads as \"thin poisons that carry visible light\" — the child is left with a different thing than the English names, and nothing in the card restores it. Corpus evidence: hilo is used ~20x elsewhere in this sweep for snake/toad/jellyfish/bee venom, while the textile cards that really mean thread use tanod/hibla. Moderate-not-certain: a few other cards do use hilo for silk thread, so the corpus is not unanimous."
+  },
+  {
+   "id": "dcard-01629",
+   "pattern": "firewood->suyop",
+   "note": "title_bis \"Tanom alang sa Suyop\" renders \"Plants for Firewood\" as \"Plants for Sipping/Absorbing\" — suyop means to suck up, sip or absorb, never firewood (Cebuano: sugnod/gatong). Corpus evidence: 14 of the 15 cards using suyop use it for absorb/sip (tadpole tail suyopon, soil suyopon ang ulan, black absorbs light); this is the only one using it for firewood, and suyop is also in this card's terms, so the mis-mapping is systematic. The body never supplies a correct Cebuano word — it leaves \"firewood\" in English — so the title's Cebuano is uncorrected, and a child reading title_bis alone gets a different thing entirely."
+  },
+  {
+   "id": "dcard-02529",
+   "pattern": "senses->panan-aw",
+   "note": "bis: 'nga atong maobserbahan gamit ang atong mga panan-aw' — panan-aw is SIGHT, not the senses (corpus elsewhere uses igbalati/pamati/sentido, and lists panan-aw as just one of the five). The card says hardness and stretchability are observed with our eyes, and nothing in the card corrects it; a child asked how we observe physical properties answers 'sight'. Same card also garbles the second property: 'pagkakasaw' for shininess is a non-word (single occurrence in the whole sweep) where the corpus consistently says sinaw/masinaw/pagkasinaw, so 'shininess' is unrecoverable from the Cebuano."
+  },
+  {
+   "id": "dcard-03111",
+   "pattern": "reflected->maaninag",
+   "note": "EN: \"About half of the sun's radiation is reflected or absorbed by clouds and the atmosphere before it ever reaches the ground.\" BIS: \"Mga katunga sa radiation sa adlaw ang maaninag o masuyop...\". In Cebuano aninag = light shining/seen THROUGH something translucent, i.e. transmission, the opposite of reflection back. This corpus uses aninag exactly that way elsewhere (ffct-15053 'Ang salamin aninag, mao nga makaagi ang kahayag'; ffct-16625 transparent; ffct-17042 translucent capiz), and renders 'reflect' as nag-reflect / mobalik / salamin everywhere else. A child reading only the Cebuano gets 'half the sun's radiation passes through or is absorbed by the clouds', so the blocked-by-reflection half is lost and nothing in the card restores it."
+  },
+  {
+   "id": "dcard-03213",
+   "note": "Definition card for reflection: EN \"the property of light bouncing off a shiny surface\" -> BIS \"ang kinaiya sa light nga mopalta gikan sa sinaw nga butang\". Cebuano palta (< Sp. falta) = to be absent / lacking / to miss, not to bounce; the correct verbs are motalbog / mobalik (both used elsewhere in this same corpus, e.g. dcard-07322 'kung kini motalbog sa mga butang', dcard-12249 'mobalik pabalik sa gigikanan'). The card is a two-meaning definition, so the verb IS the fact: the Cebuano-only child reads 'light that goes missing from a shiny object' and cannot recover 'light bounces off'; nothing else in the card restores it. mopalta is an outlier used only 5x sweep-wide, always where bounce/reflect/slip was meant.",
+   "pattern": "bounce->mopalta"
+  },
+  {
+   "id": "dcard-03447",
+   "pattern": "base->tungkod",
+   "note": "title_bis \"Suckers sa Tungkod\" for \"Suckers at the Base\": tungkod means a walking stick/cane, not the base of a plant. The card's own body uses the correct word (\"motubo gikan sa mga bud sa punoan sa parent plant\"), so the title is the outlier; a child reading the heading is told suckers grow on a cane."
+  },
+  {
+   "id": "dcard-03612",
+   "pattern": "halve->bahaon",
+   "note": "EN: \"Each mixture is halved into two small bottles, capped tightly, and shaken...\" BIS: \"Ang matag mixture BAHAON ngadto sa duha ka gagmay nga bottles, takpan og hugot, ug uyogon...\" In this very corpus 'bahaon' is the word for SNEEZE ('Ang usa ka bahaon mopakatap og liboan ka gagmayng tulo' ffct-13186; 'mobahaon' ffct-13019; 'pagbahaon' ffct-12872), while the verb for divide/split is 'bahinon' (used 44x elsewhere, e.g. 'bahinon ang tubig ngadto sa hydrogen ug oxygen'). The Cebuano procedure step therefore reads as 'each mixture is sneezed into two small bottles' -- the divide action is never named correctly anywhere on the card. Low-to-medium confidence: the trailing 'ngadto sa duha ka gagmay nga bottles' still tells the child the mixture ends up in two bottles, and the card's headline answer (bubbles come from shaking) survives, so a lenient reader could call the fact recoverable. Same defect appears on dcard-07603 ('glucose molecule nga bahaon nito'), which suggests a writer-level habit rather than a one-off typo."
+  },
+  {
+   "id": "dcard-04065",
+   "pattern": "bad taste->lami",
+   "note": "Title and body both render \"bad smell and taste\" as \"baho ug lami\". \"Baho\" carries the negative on its own, but \"lami\" in Cebuano means TASTY/delicious (\"adunay lami\" = has good flavour) — the opposite of the English \"bad ... taste\", and nothing in the card restores it (no pait / dili lami / walay lami anywhere). A child reads \"some plants stink and taste good, and these are the structures that stop predators from eating them\", which reverses the defence mechanism the card is built on. Compare dcard-04071, which correctly keeps the bad-smell sense with \"baho nga baho\" and never claims good taste. Fix: \"baho ug pait nga lami\" or \"baho ug dili lami\"."
+  },
+  {
+   "id": "dcard-04352",
+   "pattern": "stem->sanga",
+   "note": "EN body: \"Healthy plants have dark-green leaves and sturdy upright stems\". The Cebuano renders \"stems\" as \"mga sanga\" — sanga is a BRANCH, a different plant part; the Cebuano stem is tangkay/punoan (and 'tangkay' is in fact sitting in this card's own terms list). Nothing else in the card restores the stem, so a child reading only the Cebuano learns the health sign is strong straight BRANCHES and would answer 'sanga' where the grade-5 ugat/tangkay/dahon lesson wants the stem."
+  },
+  {
+   "id": "dcard-05173",
+   "note": "Cebuano defines hemophilia as blood that \"mobag-o hinay kaayo o dili gyud\" (changes very slowly or not at all) instead of CLOTS slowly or not at all. Clotting is the whole fact of the card and is never restored elsewhere in the card, so a child gets no definition of hemophilia. Confirmed outlier: every other clotting card in the corpus uses mamuo/momuo/pagmuo (ffct-09055, same condition: \"kulang sila sa gikinahanglan aron mamuo ang dugo\"); dcard-05173 is the only card in the sweep using mobag-o.",
+   "pattern": "clot->mobag-o"
+  },
+  {
+   "id": "dcard-05746",
+   "pattern": "hit->tagbaw",
+   "note": "Wrong-sense verb in both title and body. `tagbaw` in Cebuano means SATISFIED/SATED (katagbawan = satisfaction); it is not a verb of collision. title_bis \"Pagtagbaw sa Asteroid\" reads as \"Satisfying the Asteroid\" for \"Asteroid Impacts\", and the body repeats it twice: \"Kanus-a kanunay motagbaw ang asteroid sa Earth?\" / \"...ang motagbaw sa atmosphere sa Earth\". The card never uses the correct word anywhere, so the action (an asteroid STRIKING Earth's atmosphere) is never restored. Strong outlier evidence: the sibling cards in this same batch use the correct verb — dcard-05743 \"kon ang meteorite MOBANGGA sa usa ka planeta o bulan\" and dcard-05744 \"kon MOBANGGA ang comet o asteroid\". (Secondary, not the flag reason: \"Kanus-a kanunay\" renders \"How often\" as \"When\", though \"kausa sa usa ka tuig\" partly restores the frequency.)"
+  },
+  {
+   "id": "dcard-05968",
+   "pattern": "tens of->napulo ka",
+   "note": "Tephra height: EN \"can extend tens of kilometers above the volcano\" becomes \"kini makaabot ug napulo ka mga kilometro sa taas sa bulkan\" — \"napulo ka\" is the cardinal TEN, so the Cebuano states a fixed ~10 km instead of the open-ended tens (20-40 km) the English gives. Cebuano for \"tens of\" is pinulo-pulo / daghang kilometro. Nothing else in the card restores the magnitude, so a child reading only the Cebuano learns a single, smaller number as the height of an eruption column."
+  },
+  {
+   "id": "dcard-06158",
+   "pattern": "copies->pag-ila",
+   "note": "Mimicry definition is inverted. EN: \"a harmless animal COPIES the look, smell, taste, colour or sound of a dangerous animal\". BIS: \"Ang mimicry mao ang PAG-ILA sa usa ka dili peligroso nga mananap sa dagway, baho, lami, kolor, o tingog sa usa ka peligroso nga mananap\" — pag-ila is to identify/recognise, not to copy. A Cebuano-only child learns that mimicry is the harmless animal RECOGNISING the dangerous one, which is false and is never corrected anywhere on the card (the card has no other verb). Corpus evidence: pag-ila occurs on 74 cards and means identify/recognise on every one; all other mimicry cards use pagsundog/pagpanundog/mokopya (dcard-04237, dcard-12171, dcard-08649, ffct-01226, ffct-08522). Correct word here is pagsundog."
+  },
+  {
+   "id": "dcard-06034",
+   "pattern": "bending->pagbalik",
+   "note": "The action that makes a glowstick work is lost. EN: \"BENDING a glowstick allows two chemicals inside to react\". BIS: \"Ang PAGBALIK sa glowstick nagtugot...\" — pagbalik is returning/going back, not bending (bent = baliko, likely a dropped -o). The card is titled \"Giunsa Nagtrabaho ang Glowstick\", so the trigger action is the fact it depends on, and nothing else on the card names it. Corpus evidence: pagbalik occurs on 75 cards, all meaning return; \"bend\" is rendered baliko/ibawog/moliko across the corpus, and the sibling glowstick card ffct-04265 says \"sama sa pagbaliko sa glow stick aron mosiga\". Medium confidence: the chemistry half (two chemicals react, give light, luminescence) does survive."
+  },
+  {
+   "id": "dcard-07176",
+   "pattern": "reflect->mopalta",
+   "note": "title_bis 'Ang Itom Mosuyop, Ang Puti Mopalta' and the body 'ang puti o sinaw nga butang mas mopalta sa init' use 'mopalta' for 'reflect'. Cebuano 'palta' (< Sp. falta) means to be lacking/missing/absent; it is not a word for reflecting light or heat, so the title reads 'Black Absorbs, White Is-Missing' and the card's whole absorb-vs-reflect contrast is never stated. The card never restores it — the only other clue is 'magpabiling mas bugnaw'. Corpus-wide evidence this is an outlier: every other reflection card uses mobalik/magpabalik/gibanda/mobanaag/masalamin/mo-reflect (e.g. ffct-21948 'ang puti nagbalik sa halos tanang kahayag', ffct-22657 'Ang puti nga butang mobalik ug daghang kahayag'), and this batch's own sibling dcard-07181 states the absorber/emitter pair correctly. 'mopalta' occurs in only 4 cards in the entire 337-batch sweep (also dcard-03213, same reflect error)."
+  },
+  {
+   "id": "dcard-07327",
+   "pattern": "reflect->bukal",
+   "note": "Title 'Opaque: Babag ug Bukal' and body 'gipabukal ang uban' use bukal (Cebuano: TO BOIL) for 'reflect'. The card's core fact is that opaque materials block, absorb AND reflect light, which is why you see their colour and shape; a child reading only the Cebuano gets 'made some of it boil' and never learns reflection. Nothing in the card restores it. Same batch uses the correct word: dcard-07322/dcard-07324 say 'motalbog' for light bouncing, and dcard-07415 uses bukal correctly for a boiling spring."
+  }
+ ]
+}

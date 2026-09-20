@@ -217,6 +217,55 @@ So the cheap deterministic wins are already banked; what remains is semantic.
       `mix -> pagkat-on` (to LEARN), `scatter -> nagawagtang` (to DESTROY — the light destroys
       the dust rather than bouncing off it).
 
+- [x] **C3 CHUNK D** 60/60 batches, 8,400 cards, **101 flags = 1.20%** (A 1.91%, B 1.67%,
+      C 2.46%). Saved to `runs/2026-09-20-scope/sweep-chunk-d.json`. The drop is expected, not
+      a miss: chunks A-C front-loaded the animal/plant/body cards where Tagalog false friends
+      cluster; D is mostly astronomy, geology and weather, where the English science vocabulary
+      is left in English and there is simply less to get wrong.
+
+      **The title-outlier signature is now the audit's most reliable detector.** In nearly every
+      D finding the card's OWN body carries the correct word and only `title_bis` is wrong —
+      which is exactly the evidence that rules out regional variation. Worst of them:
+
+        ffct-34517  "Tulo ka Bala Kepler"      = Kepler's Three BULLETS (law = balaod)
+        ffct-34435  "Kalibutan 13.8 Bilyon"    = the EARTH is 13.8 billion years old, directly
+                                                 contradicting ffct-34420/34434 ("Yuta 4.5 ka
+                                                 bilyon"). Universe is uniberso.
+        ffct-35825  "Halite nga Kubyeta"       = "Halite the TOILET" (cube)
+        ffct-34887  "Walay Hangin sa Kahangturan" = "No Air in ETERNITY" (space = kawanangan)
+        ffct-37035  "Pera Porma Matris"        = a MONEY-shaped uterus; the card's whole point
+                                                 is the pear shape, and `pera` occurs exactly
+                                                 once in 47,056 cards — this title.
+        ffct-35543  "Paspas nga Bato sa Init"  = fast STONE/KIDNEY in heat (heart = kasingkasing)
+        ffct-34274  "838 Metro si Burj Khalifa" — the number itself changes; EN and both bodies
+                                                 say 828 m. 838 appears nowhere else.
+
+      **Three defects are in the body, where nothing can restore them:**
+        ffct-34742  erosion becomes "stop the soil from HOWLING" (uwang = a dog's bark; erosion
+                    is pag-anod/pagdahili). Water, rain and washing are absent from the card.
+        ffct-34935  "ang init nga lava dali ra nga NAGKALUOY" — the lava TOOK PITY instead of
+                    cooling, and rapid cooling IS why basalt is fine-grained.
+        ffct-36040  animal FECES becomes `ihi` (urine) as the parasitic-worm vector. Health card.
+        ffct-35543  the body's only cooling mechanism is `pagpanghupaw` = SIGHING (sweat=singot).
+
+      **Two direction/magnitude reversals** — the class that does not look like a word error:
+        ffct-35461  lahar ash washes "PAINGON SA BUKID" (UP the mountain). The danger of a lahar
+                    is precisely that it comes down onto lowland communities.
+        dcard-05968 "tens of kilometers" becomes "napulo ka kilometro" = a flat TEN. Note this is
+                    the inverse of the PASS rule: napulo ka beses IS "10 times", but napulo ka
+                    for an open-ended "tens of" collapses the magnitude.
+
+      New false friends confirmed, folded into chunk E's prompt: kalibutan (world, for UNIVERSE
+      and for SPACE), kahangturan (eternity, for space), bala (bullet, for law), aso (smoke, for
+      ash), tirok (gather, for spin), tapak (step on, for form), kunhod (decrease, for cool),
+      uwang (howl, for erode), hubas (dry up, for weathering), baul (chest, for sweat), ihi
+      (urine, for feces), pera (money, for pear), plato (dinner plate, for tectonic plate),
+      balod (wave, for tides), lami (delicious, for bad taste), uyog (shake, for rub/pull),
+      lumos (drown, for soft), buto (seed/explode, for bone — Cebuano bone is bukog), sungay
+      (animal horn, for a vehicle horn = busina).
+
+- [ ] **C3 CHUNK E (final)** batches 290-336, 47 batches, ~6,580 cards. Completes the corpus.
+
 - [ ] **C4** Grep each discovered pattern corpus-wide, then TRIAGE every hit with its card in
       view. Expect most to be FINE. Report confirmed vs candidates separately.
 - [ ] **C5** Rewrite confirmed defects, each independently verified before applying, with the
