@@ -62,7 +62,7 @@ data class SchoolClass(
     val schoolYear: String
 )
 
-class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hiraia-tala.db", null, 7) {
+class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hiraia-tala.db", null, 8) {
     private val legacyGroupId = ClassIdentity.legacyClassId(context)
     private val random = SecureRandom()
 
@@ -73,6 +73,7 @@ class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hi
         createOptionTable(db)
         createIssueTables(db)
         insertDefaultClass(db)
+        createRelayTables(db)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -109,6 +110,80 @@ class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hi
         if (oldVersion < 5) migrateActivityState(db)
         if (oldVersion < 6) migrateIssues(db)
         if (oldVersion < 7) createAvatarTable(db)
+        if (oldVersion < 8) {
+            createRelayTables(db)
+            // Prior Tala versions kept props but not session IDs. Preserve IDs/dates and
+            // explicitly label these records as reconstructed instead of inventing a session.
+            db.rawQuery("SELECT class_id,installation_id,event_id,event_name,occurred_at,props FROM events", null).use { c ->
+                while (c.moveToNext()) {
+                    val event = JSONObject().put("id", c.getString(2)).put("name", c.getString(3))
+                        .put("occurred_at", c.getLong(4)).put("session_id", c.getString(1))
+                        .put("props", JSONObject(c.getString(5))).put("reconstructed", true)
+                    saveRelay(db, c.getString(0), c.getString(1), event)
+                }
+            }
+        }
+    }
+
+    private fun createRelayTables(db: SQLiteDatabase) {
+        db.execSQL("""CREATE TABLE activity_relay (
+            class_id TEXT NOT NULL, installation_id TEXT NOT NULL, event_id TEXT NOT NULL,
+            payload TEXT NOT NULL, reconstructed INTEGER NOT NULL, state TEXT NOT NULL DEFAULT 'pending',
+            PRIMARY KEY(class_id,installation_id,event_id))""")
+        db.execSQL("CREATE INDEX activity_relay_pending ON activity_relay(state,class_id,installation_id)")
+        db.execSQL("CREATE TABLE relay_identity(id TEXT PRIMARY KEY)")
+        db.execSQL("INSERT INTO relay_identity VALUES(?)", arrayOf(UUID.randomUUID().toString()))
+    }
+
+    fun reporterId(): String = readableDatabase.rawQuery("SELECT id FROM relay_identity", null).use {
+        check(it.moveToFirst()); it.getString(0)
+    }
+
+    private fun saveRelay(db: SQLiteDatabase, classId: String, installation: String, event: JSONObject) {
+        val payload = ActivityRelay.event(event, installation)
+        db.execSQL("""INSERT OR IGNORE INTO activity_relay
+            (class_id,installation_id,event_id,payload,reconstructed) VALUES(?,?,?,?,?)""",
+            arrayOf(classId, installation, event.getString("id"), payload.toString(),
+                if (event.optBoolean("reconstructed") || !ID.matches(event.optString("session_id"))) 1 else 0))
+    }
+
+    fun activityDeliverySummary(): String {
+        val counts = mutableMapOf<String, Int>()
+        readableDatabase.rawQuery("SELECT state,count(*) FROM activity_relay GROUP BY state", null).use {
+            while (it.moveToNext()) counts[it.getString(0)] = it.getInt(1)
+        }
+        return "${counts["pending"] ?: 0} awaiting upload · ${counts["accepted"] ?: 0} delivered" +
+            if ((counts["rejected"] ?: 0) > 0) " · ${counts["rejected"]} rejected (kept on this phone)" else ""
+    }
+
+    fun pendingActivity(): RelayBatch? {
+        val group = readableDatabase.rawQuery("""SELECT class_id,installation_id FROM activity_relay
+            WHERE state='pending' ORDER BY rowid LIMIT 1""", null).use {
+            if (!it.moveToFirst()) return null
+            it.getString(0) to it.getString(1)
+        }
+        val events = JSONArray()
+        val reconstructed = JSONArray()
+        readableDatabase.rawQuery("""SELECT event_id,payload,reconstructed FROM activity_relay
+            WHERE state='pending' AND class_id=? AND installation_id=? ORDER BY rowid LIMIT 50""",
+            arrayOf(group.first, group.second)).use { c ->
+            while (c.moveToNext()) {
+                events.put(JSONObject(c.getString(1)))
+                if (c.getInt(2) != 0) reconstructed.put(c.getString(0))
+            }
+        }
+        return RelayBatch(group.first, group.second, events, reconstructed)
+    }
+
+    fun acknowledgeActivity(batch: RelayBatch, response: JSONObject) {
+        val states = ActivityRelay.acknowledgments(batch, response)
+        writableDatabase.beginTransaction()
+        try {
+            for ((id, state) in states) writableDatabase.execSQL("""UPDATE activity_relay SET state=?
+                WHERE class_id=? AND installation_id=? AND event_id=? AND state='pending'""",
+                arrayOf(state, batch.classId, batch.installationId, id))
+            writableDatabase.setTransactionSuccessful()
+        } finally { writableDatabase.endTransaction() }
     }
 
     private fun createAvatarTable(db: SQLiteDatabase) {
@@ -443,6 +518,11 @@ class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hi
                     classId, installationId, eventId, profileId, name,
                     if (props.optBoolean("correct")) 1 else 0, occurredAt, now, props.toString()
                 ))
+                if (studentName(db, classId, installationId, profileId) == null) {
+                    db.execSQL("INSERT OR IGNORE INTO students VALUES(?,?,?,?,?)",
+                        arrayOf(classId, installationId, profileId, "Recovered student", now))
+                }
+                saveRelay(db, classId, installationId, event)
                 accepted.add(eventId)
             }
             if (recordSync) db.execSQL("""INSERT INTO devices

@@ -1,36 +1,15 @@
 import { NextResponse } from 'next/server';
 import { DOWNLOAD } from '@/config/download';
+import assets from '@/config/asset-updates.json';
+import tala from '@/config/tala-download.json';
 
 /**
- * The in-app update manifest — what an INSTALLED phone polls to learn whether a newer APK
- * is on the mirror (packages/mobile/src/store/updateStore.ts is the only consumer).
- *
- * Derived entirely from src/config/download.ts, the same single source of truth the
- * landing page renders, so the website and the phones can never disagree about what the
- * current release is. Nothing here is hand-maintained: publish = edit download.ts, deploy.
- *
- * Shape (schema 1):
- *   {
- *     schema: 1,
- *     app: {                       // the APK — null when there is nothing publishable
- *       versionCode, versionName, url, bytes, sha256, md5,
- *       minSupportedVersionCode, publishedAt
- *     } | null,
- *     content: null,               // reserved: fact-bank / card packs (a later phase)
- *     models: null                 // reserved: model + adapter revisions (a later phase)
- *   }
- * The two reserved keys exist so the phone-side parser can already tolerate them; they will
- * gain shape when those phases land. Add keys, never rename or retype existing ones — an
- * installed app may be many releases behind the website.
- *
- * `app` is null (rather than a half-filled object) unless the release is fully pinned:
- * released, a positive versionCode, an exact byte count and BOTH digests. The phone-side
- * downloader hard-gates on bytes + md5, so offering an APK without them would only ever
- * produce a failed download on a child's metered data. Same rule as the landing page,
- * which links nothing without a sha256.
- *
- * `Cache-Control: no-store` — a phone that checks once a launch must see the deploy, not a
- * CDN's memory of the previous one.
+ * Installed apps poll this no-store endpoint for measured release metadata.
+ * Hiraia's APK remains derived from download.ts (shared with the landing page).
+ * The optional assets catalog offers compatible model weights and sparse image packs.
+ * Tala uses ?app=tala and its own signed-APK release metadata.
+ * Keep schema-1 fields stable: older APKs ignore the additional assets field.
+ * Empty channels use app:null / empty arrays, never unmeasured placeholder artifacts.
  */
 
 export const dynamic = 'force-dynamic';
@@ -63,9 +42,15 @@ function currentApp() {
   };
 }
 
-export async function GET() {
+export async function GET(request: Request) {
+  if (new URL(request.url).searchParams.get('app') === 'tala') {
+    return NextResponse.json(
+      {schema: 1, applicationId: 'com.hiraia.tala', app: tala.app},
+      {headers: {'Cache-Control': 'no-store'}},
+    );
+  }
   return NextResponse.json(
-    { schema: 1, app: currentApp(), content: null, models: null },
+    { schema: 1, app: currentApp(), content: null, models: null, assets },
     { headers: { 'Cache-Control': 'no-store' } },
   );
 }

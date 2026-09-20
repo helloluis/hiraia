@@ -1,6 +1,7 @@
 import { NativeModules } from 'react-native';
 import { File, Paths } from 'expo-file-system';
 import { ACTIVE_MODEL } from '../config/model';
+import { installedModelUpdate } from '../updates/model';
 import { memoryBlock, type MemoryBlock, type MemorySnapshot } from './memoryPolicy';
 
 export async function readMemory(): Promise<MemorySnapshot | null> {
@@ -14,9 +15,10 @@ export class MemoryBlockedError extends Error {
 }
 export async function requireModelMemory(beforeDownload = false): Promise<MemorySnapshot> {
   let needsDownload = beforeDownload;
-  if (beforeDownload && ACTIVE_MODEL.remote) {
-    const file = new File(Paths.document, 'models', ACTIVE_MODEL.remote.filename);
-    needsDownload = !file.exists || file.size !== ACTIVE_MODEL.remote.bytes;
+  const remote = await installedModelUpdate() ?? ACTIVE_MODEL.remote;
+  if (beforeDownload && remote) {
+    const file = new File(Paths.document, 'models', remote.filename);
+    needsDownload = !file.exists || file.size !== remote.bytes;
   }
   const memory = await readMemory();
   const reason = memoryBlock(memory, needsDownload);

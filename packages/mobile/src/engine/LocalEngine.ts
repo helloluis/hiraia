@@ -23,6 +23,8 @@ import { openFactSource } from '../data/cardDb';
 import { cardSlugForFact } from '../data/factCardSlug';
 import { getSetting, setSetting } from '../db/repo';
 import { ensureRemoteAsset } from './modelDownload';
+import { installedModelUpdate, rejectModelUpdate } from '../updates/model';
+import type { ModelUpdate } from '../updates/catalog';
 import { withModelLock } from './modelLock';
 import type { AdapterLanguage } from '../config/model';
 import type {
@@ -344,6 +346,7 @@ export class LocalEngine implements TutorEngine {
     const telemetryStart = Date.now();
     const telemetryProps = { model: ACTIVE_MODEL.key, attempt_id: newId(), language: config.language };
     let telemetryBackend: 'cpu' | 'unknown' = 'unknown';
+    let loadingUpdate: ModelUpdate | null = null;
     track('model_load_started', telemetryProps);
     try {
       await requireModelMemory(true); // Before any model/adapter network request.
@@ -385,9 +388,11 @@ export class LocalEngine implements TutorEngine {
         // passed straight through. ensureRemoteAsset drives the loader's download
         // band; once it returns, loadModel reads from disk (no network) so its own
         // onProgress just snaps to 100.
+        loadingUpdate = await installedModelUpdate();
+        const remote = loadingUpdate ?? ACTIVE_MODEL.remote;
         const src =
-          ACTIVE_MODEL.remote
-            ? await ensureRemoteAsset(ACTIVE_MODEL.remote, (pct, phase) => {
+          remote
+            ? await ensureRemoteAsset(remote, (pct, phase) => {
                 band(ADAPTER_BAND, 100)(pct);
                 // The downloader tells us when its 99 means "hashing 1.27 GB" rather
                 // than "still fetching" — a real ~15 s stage that deserves its own
@@ -490,6 +495,7 @@ export class LocalEngine implements TutorEngine {
           );
           await persistCpuFallbackVerdict();
         }
+        loadingUpdate = null;
       } else {
         // No source configured — load a stock SDK model as a placeholder so the
         // app still runs.
@@ -557,6 +563,10 @@ export class LocalEngine implements TutorEngine {
       track('model_load_failed', { ...telemetryProps, error: errorCategory(error), duration_ms: Math.max(0, Date.now() - telemetryStart) });
       console.error('Failed to load model:', error);
       if (error instanceof MemoryBlockedError) throw error;
+      if (loadingUpdate) {
+        await rejectModelUpdate(loadingUpdate);
+        throw new Error('The updated model could not load. The previous model has been restored; please try again.');
+      }
       throw new Error(
         `Failed to initialize LocalEngine: ${error instanceof Error ? error.message : 'Unknown error'}`
       );

@@ -24,6 +24,10 @@ CREATE TABLE IF NOT EXISTS hiraia_telemetry.events (
  props jsonb NOT NULL,PRIMARY KEY(installation_id,id));
 CREATE INDEX IF NOT EXISTS hiraia_events_time ON hiraia_telemetry.events(occurred_at);
 CREATE INDEX IF NOT EXISTS hiraia_events_session ON hiraia_telemetry.events(installation_id,session_id,occurred_at);
+CREATE TABLE IF NOT EXISTS hiraia_telemetry.deliveries (
+ installation_id text NOT NULL,event_id text NOT NULL,reporter_app text NOT NULL,
+ reporter_id text NOT NULL,reporter_version text NOT NULL,received_at bigint NOT NULL,
+ reconstructed integer NOT NULL,PRIMARY KEY(installation_id,event_id,reporter_app,reporter_id));
 CREATE TABLE IF NOT EXISTS hiraia_telemetry.apk_download_hits (
  day date NOT NULL,ip_hash text NOT NULL,country text,PRIMARY KEY(day,ip_hash));
 CREATE TABLE IF NOT EXISTS hiraia_telemetry.mirror_health (
@@ -32,6 +36,9 @@ CREATE TABLE IF NOT EXISTS hiraia_telemetry.mirror_health (
 LOCAL_SCHEMA = '''CREATE TABLE IF NOT EXISTS telemetry_mirror_receipts (
  target TEXT NOT NULL,installation_id TEXT NOT NULL,id TEXT NOT NULL,
  PRIMARY KEY(target,installation_id,id));
+CREATE TABLE IF NOT EXISTS telemetry_mirror_delivery_receipts (
+ target TEXT NOT NULL,installation_id TEXT NOT NULL,event_id TEXT NOT NULL,reporter_app TEXT NOT NULL,
+ reporter_id TEXT NOT NULL,PRIMARY KEY(target,installation_id,event_id,reporter_app,reporter_id));
 CREATE TABLE IF NOT EXISTS telemetry_mirror_meta(key TEXT PRIMARY KEY,value TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS telemetry_mirror_apk_receipts (
  target TEXT NOT NULL,day TEXT NOT NULL,ip_hash TEXT NOT NULL,PRIMARY KEY(target,day,ip_hash));'''
@@ -95,6 +102,39 @@ def mirror_events(local,remote,target,batch=500,max_batches=10,reconcile=False):
         copied+=len(records)
     return copied
 
+DELIVERY_COLUMNS = 'installation_id,event_id,reporter_app,reporter_id,reporter_version,received_at,reconstructed'
+DELIVERY_JOIN = """FROM telemetry_deliveries d LEFT JOIN telemetry_mirror_delivery_receipts r
+ ON r.target=? AND r.installation_id=d.installation_id AND r.event_id=d.event_id
+ AND r.reporter_app=d.reporter_app AND r.reporter_id=d.reporter_id WHERE r.event_id IS NULL"""
+
+def pending_deliveries(db, target):
+    if not db.execute("SELECT 1 FROM sqlite_master WHERE name='telemetry_deliveries'").fetchone(): return 0
+    if not db.execute("SELECT 1 FROM sqlite_master WHERE name='telemetry_mirror_delivery_receipts'").fetchone():
+        return db.execute('SELECT count(*) FROM telemetry_deliveries').fetchone()[0]
+    return db.execute('SELECT count(*) '+DELIVERY_JOIN,(target,)).fetchone()[0]
+
+def mirror_deliveries(local, remote, target, batch=500, max_batches=10, reconcile=False):
+    if not local.execute("SELECT 1 FROM sqlite_master WHERE name='telemetry_deliveries'").fetchone(): return 0
+    copied=0; after=0
+    for _ in range(max_batches):
+        if reconcile:
+            records=local.execute('SELECT rowid,'+DELIVERY_COLUMNS+
+                ' FROM telemetry_deliveries WHERE rowid>? ORDER BY rowid LIMIT ?',(after,batch)).fetchall()
+        else:
+            records=local.execute('SELECT d.rowid,'+','.join('d.'+c for c in DELIVERY_COLUMNS.split(','))+
+                ' '+DELIVERY_JOIN+' ORDER BY d.rowid LIMIT ?',(target,batch)).fetchall()
+        if not records: break
+        with remote.transaction():
+            with remote.cursor() as c:
+                c.executemany('INSERT INTO hiraia_telemetry.deliveries ('+DELIVERY_COLUMNS+
+                    ') VALUES(%s,%s,%s,%s,%s,%s,%s) ON CONFLICT(installation_id,event_id,reporter_app,reporter_id) DO NOTHING',
+                    [tuple(r[1:]) for r in records])
+        with local:
+            local.executemany('INSERT OR IGNORE INTO telemetry_mirror_delivery_receipts VALUES(?,?,?,?,?)',
+                [(target,*r[1:5]) for r in records])
+        copied+=len(records);after=records[-1][0]
+    return copied
+
 def mirror_apk(local,remote,target,webfile):
     if not webfile or not Path(webfile).is_file(): return 0
     with closing(sqlite3.connect(Path(webfile).resolve().as_uri()+'?mode=ro',uri=True,timeout=3)) as web:
@@ -142,7 +182,7 @@ def run_once(filename,url,webfile=None,reconcile=False):
                   ON r.target=? AND r.installation_id=e.installation_id AND r.id=e.id WHERE r.id IS NULL""",(target,)).fetchone()[0]
                 apk_waiting=pending_apk(local,target,webfile)
                 with local: meta(local,'last_check',timestamp)
-                if not reconcile and not pending and not apk_waiting and not meta(local,'last_error'):
+                if not reconcile and not pending and not apk_waiting and not pending_deliveries(local,target) and not meta(local,'last_error'):
                     return {'state':'up_to_date','copied':0,'apk_records':0}
                 with remote_connect(url) as remote:
                     remote.autocommit=True
@@ -151,6 +191,7 @@ def run_once(filename,url,webfile=None,reconcile=False):
                     # remote restore/admin deletion hasn't removed previously copied rows.
                     reconcile = reconcile or int(time.time()*1000)-int(meta(local,'reconciled_'+target) or 0)>86400000
                     n=mirror_events(local,remote,target,max_batches=100000 if reconcile else 10,reconcile=reconcile)
+                    deliveries=mirror_deliveries(local,remote,target,max_batches=100000 if reconcile else 10,reconcile=reconcile)
                     apk=mirror_apk(local,remote,target,webfile)
                     remote.execute('''INSERT INTO hiraia_telemetry.mirror_health(source_id,copied_events)
                       VALUES(%s,%s) ON CONFLICT(source_id) DO UPDATE SET last_success=now(),copied_events=hiraia_telemetry.mirror_health.copied_events+excluded.copied_events''',(meta(local,'source_id'),n))
@@ -158,7 +199,7 @@ def run_once(filename,url,webfile=None,reconcile=False):
                     timestamp=int(time.time()*1000)
                     meta(local,'target',target);meta(local,'last_success',timestamp);meta(local,'last_error','')
                     if reconcile: meta(local,'reconciled_'+target,timestamp)
-                return {'state':'copied','copied':n,'apk_records':apk}
+                return {'state':'copied','copied':n,'apk_records':apk,'delivery_records':deliveries}
             except Exception as error:
                 with local: meta(local,'last_error',type(error).__name__)
                 raise RuntimeError('mirror_failed_retry_pending') from None
@@ -174,6 +215,7 @@ def status(filename=None):
             if not target: return {'state':'unconfigured','message':'first copy has not succeeded'}
             pending=db.execute('''SELECT count(*) FROM telemetry_events e LEFT JOIN telemetry_mirror_receipts r
               ON r.target=? AND r.installation_id=e.installation_id AND r.id=e.id WHERE r.id IS NULL''',(target,)).fetchone()[0]
+            pending+=pending_deliveries(db,target)
             success=int(meta(db,'last_success') or 0)
             stale=time.time()*1000-int(meta(db,'last_check') or success)>300000
             return {'state':'pending' if pending else 'stale' if stale or meta(db,'last_error') else 'synced',
@@ -201,6 +243,19 @@ def restore(url,destination,apk_destination=None):
                 if not records: break
                 db.executemany('INSERT INTO telemetry_events VALUES(?,?,?,?,?,?,?)',records)
                 count+=len(records);after=records[-1][:2]
+            db.execute("""CREATE TABLE telemetry_deliveries (
+              installation_id TEXT NOT NULL,event_id TEXT NOT NULL,reporter_app TEXT NOT NULL,
+              reporter_id TEXT NOT NULL,reporter_version TEXT NOT NULL,received_at INTEGER NOT NULL,
+              reconstructed INTEGER NOT NULL,PRIMARY KEY(installation_id,event_id,reporter_app,reporter_id))""")
+            if remote.execute("SELECT to_regclass('hiraia_telemetry.deliveries')").fetchone()[0]:
+                after_delivery=('','','','')
+                while True:
+                    records=remote.execute('SELECT '+DELIVERY_COLUMNS+""" FROM hiraia_telemetry.deliveries
+                      WHERE (installation_id,event_id,reporter_app,reporter_id)>(%s,%s,%s,%s)
+                      ORDER BY installation_id,event_id,reporter_app,reporter_id LIMIT 1000""",after_delivery).fetchall()
+                    if not records: break
+                    db.executemany('INSERT INTO telemetry_deliveries VALUES(?,?,?,?,?,?,?)',records)
+                    after_delivery=records[-1][:4]
             db.commit()
             if apk_destination:
                 with closing(sqlite3.connect(apk_destination)) as web:

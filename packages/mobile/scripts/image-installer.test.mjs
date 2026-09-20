@@ -8,7 +8,7 @@ const packs=full.packs.filter(p=>p.cell==='common').slice(0,2);
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 async function until(fn){for(let i=0;i<1000;i++){if(fn())return;await wait(10);}throw Error('timeout');}
 test('installer recovers failed writes, relaunches offline, repairs missing files, and resumes after backgrounding',async()=>{
- const dir=fs.mkdtempSync(path.join(os.tmpdir(),'hiraia-image-test-'));const prefs=new Map();let seq=0, transfers=0, fail=true, writes=0, corrupt=false;
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'hiraia-image-test-'));const prefs=new Map();let seq=0, transfers=0, fail=true, writes=0, corrupt=false;const sources=new Map();
  const listeners=new Set();const app={currentState:'active',addEventListener:(_,f)=>{listeners.add(f);return {remove:()=>listeners.delete(f)}}};
  const emit=s=>{app.currentState=s;for(const f of listeners)f(s)};
  const location=(...parts)=>path.join(...parts.map(p=>(typeof p==='string'?p:p.uri).replace('file://','')));
@@ -20,9 +20,9 @@ test('installer recovers failed writes, relaunches offline, repairs missing file
   presence:{hydrateDownloadedArt:rows=>{registry.clear();for(const [k,v] of rows)registry.set(k,v)},markArtDownloadedMany:rows=>{for(const [k,v] of rows)registry.set(k,v)}},
   engine:{getState:()=>({grade:3,bootstrapped:true,onboardingActive:false}),subscribe:()=>()=>{}},download:async(spec,progress,signal)=>{
    transfers++;await wait(30);if(signal.aborted)throw Error('cancelled');
-   const dest=path.join(dir,'models',spec.filename);fs.mkdirSync(path.dirname(dest),{recursive:true});fs.copyFileSync(path.join(mobile,'build/image-packs',spec.filename),dest);if(corrupt){const fd=fs.openSync(dest,'r+');fs.writeSync(fd,Buffer.from([0]),0,1,12);fs.closeSync(fd)}progress(100);return dest;
+   const dest=path.join(dir,'models',spec.filename);fs.mkdirSync(path.dirname(dest),{recursive:true});fs.copyFileSync(sources.get(spec.filename)??path.join(mobile,'build/image-packs',spec.filename),dest);if(corrupt){const fd=fs.openSync(dest,'r+');fs.writeSync(fd,Buffer.from([0]),0,1,12);fs.closeSync(fd)}progress(100);return dest;
   }};
- const mocks={'expo-file-system':'export const {Directory,File,Paths}=globalThis.__imageTest.fs',
+ const mocks={'expo-application':'export const nativeBuildVersion="16"', 'expo-file-system':'export const {Directory,File,Paths}=globalThis.__imageTest.fs',
   'expo-file-system/legacy':'export const {getInfoAsync}=globalThis.__imageTest.legacy',
   'react-native':'export const AppState=globalThis.__imageTest.app',
   '@react-native-async-storage/async-storage':'export default globalThis.__imageTest.storage',
@@ -46,5 +46,19 @@ test('installer recovers failed writes, relaunches offline, repairs missing file
   const before=transfers;x=await load();registry.clear();await x.initializeImages();assert.equal(x.imageDownloadStatus().completed,2);assert.equal(transfers,before);assert(registry.size>0);
   fs.unlinkSync(path.join(dir,'image-packs',packs[0].md5,'0.png'));x=await load();await x.initializeImages();assert.equal(x.imageDownloadStatus().completed,1);assert.equal(registry.size,packs[1].images);
   stop=x.startImageDownloads();await until(()=>transfers===before+1);emit('background');await until(()=>x.imageDownloadStatus().phase==='paused');emit('active');await until(()=>x.imageDownloadStatus().phase==='complete');assert.equal(x.imageDownloadStatus().completed,2);assert.equal(transfers,before+2);stop();
+  // Publish a replacement with the same slugs and changed bytes. An interrupted update
+  // must continue serving the prior pack, even after a cold/offline relaunch.
+  const bytes=fs.readFileSync(path.join(mobile,'build/image-packs',packs[0].filename));bytes[bytes.length-1]^=1;
+  const hash=crypto.createHash('md5').update(bytes).digest('hex');
+  const replacement={...packs[0],md5:hash,filename:packs[0].id+'-'+hash+'.hpak'};
+  const source=path.join(dir,replacement.filename);fs.writeFileSync(source,bytes);sources.set(replacement.filename,source);
+  const catalog={format:1,revision:2,minAppVersionCode:16,maxAppVersionCode:16,imageBaseline:full.version,models:[],imagePacks:[replacement]};
+  const oldRegistry=new Map(registry);fail=true;writes=0;
+  stop=x.startImageDownloads();await x.acceptImageUpdates(catalog);await until(()=>x.imageDownloadStatus().error);
+  assert.deepEqual(registry,oldRegistry);await x.setImageDownloadsEnabled(false);stop();
+  x=await load();await x.initializeImages();assert.deepEqual(registry,oldRegistry);
+  fail=false;stop=x.startImageDownloads();await x.setImageDownloadsEnabled(true);await until(()=>x.imageDownloadStatus().phase==='complete');stop();
+  const newRegistry=new Map(registry);assert.notDeepEqual(newRegistry,oldRegistry);assert.equal(newRegistry.size,oldRegistry.size);
+  const finalTransfers=transfers;x=await load();await x.initializeImages();assert.deepEqual(registry,newRegistry);assert.equal(transfers,finalTransfers);
  }finally{stop();delete globalThis.__imageTest;fs.rmSync(dir,{recursive:true,force:true})}
 });

@@ -83,7 +83,11 @@ export function validEvent(value: unknown): value is Event {
   )
     return false;
   if (JSON.stringify(e).length > 1800) return false;
-  if (e.props.profile_kind === 'student' && (typeof e.props.profile_id !== 'string' || !id.test(e.props.profile_id))) return false;
+  if (
+    e.props.profile_kind === 'student' &&
+    (typeof e.props.profile_id !== 'string' || !id.test(e.props.profile_id))
+  )
+    return false;
   if (e.props.profile_id !== undefined && e.props.profile_kind !== 'student') return false;
   return Object.entries(e.props).every(([k, v]) => {
     if (k === 'profile_id') return typeof v === 'string' && id.test(v);
@@ -108,7 +112,13 @@ export function openTelemetry(filename: string) {
   CREATE INDEX IF NOT EXISTS telemetry_time ON telemetry_events(occurred_at);
   CREATE INDEX IF NOT EXISTS telemetry_name_time ON telemetry_events(name, occurred_at);
   CREATE INDEX IF NOT EXISTS telemetry_session ON telemetry_events(installation_id,session_id,occurred_at);
-  CREATE INDEX IF NOT EXISTS telemetry_received ON telemetry_events(received_at);`);
+  CREATE INDEX IF NOT EXISTS telemetry_received ON telemetry_events(received_at);
+  CREATE TABLE IF NOT EXISTS telemetry_deliveries (
+    installation_id TEXT NOT NULL, event_id TEXT NOT NULL,
+    reporter_app TEXT NOT NULL, reporter_id TEXT NOT NULL, reporter_version TEXT NOT NULL,
+    received_at INTEGER NOT NULL, reconstructed INTEGER NOT NULL,
+    PRIMARY KEY(installation_id,event_id,reporter_app,reporter_id));
+  CREATE INDEX IF NOT EXISTS telemetry_deliveries_reporter ON telemetry_deliveries(reporter_app,reporter_id);`);
   return db;
 }
 let singleton: Database.Database | undefined;
@@ -118,7 +128,13 @@ export function getTelemetry() {
   ));
 }
 export function ingest(db: Database.Database, body: unknown, now = Date.now()) {
-  const b = body as { schema?: number; installation_id?: string; events?: unknown[] };
+  const b = body as {
+    schema?: number;
+    installation_id?: string;
+    events?: unknown[];
+    reporter?: unknown;
+    reconstructed_ids?: unknown;
+  };
   if (
     !b ||
     b.schema !== 1 ||
@@ -130,6 +146,37 @@ export function ingest(db: Database.Database, body: unknown, now = Date.now()) {
   ) {
     throw new Error('invalid_batch');
   }
+  // Delivery identity is separate from event ownership. A teacher forwards the
+  // student's original IDs, so direct + relayed uploads still count as one event.
+  // This is client-declared provenance, not teacher authentication.
+  let reporter = { app: 'hiraia', installation_id: b.installation_id, version: '' };
+  if (b.reporter !== undefined) {
+    const r = b.reporter as typeof reporter;
+    if (
+      !r ||
+      typeof r !== 'object' ||
+      Array.isArray(r) ||
+      Object.keys(r).some((k) => !['app', 'installation_id', 'version'].includes(k)) ||
+      !['hiraia', 'tala'].includes(r.app) ||
+      typeof r.installation_id !== 'string' ||
+      !id.test(r.installation_id) ||
+      typeof r.version !== 'string' ||
+      !label.test(r.version) ||
+      (r.app === 'hiraia' && r.installation_id !== b.installation_id)
+    )
+      throw new Error('invalid_batch');
+    reporter = r;
+  }
+  const reconstructed = b.reconstructed_ids ?? [];
+  if (
+    !Array.isArray(reconstructed) ||
+    reconstructed.length > 50 ||
+    (reconstructed.length > 0 && reporter.app !== 'tala') ||
+    !reconstructed.every(
+      (x) => typeof x === 'string' && b.events!.some((e) => (e as Event)?.id === x)
+    )
+  )
+    throw new Error('invalid_batch');
   // A malformed record must not strand the valid events behind it on an offline device.
   // Only syntactically valid IDs can receive a permanent rejection acknowledgement.
   if (
@@ -147,6 +194,9 @@ export function ingest(db: Database.Database, body: unknown, now = Date.now()) {
   const rejected = b.events.filter((e) => !validEvent(e)).map((e) => (e as Event).id);
   const insert = db.prepare(`INSERT OR IGNORE INTO telemetry_events
     (installation_id,id,name,occurred_at,received_at,session_id,props) VALUES (?,?,?,?,?,?,?)`);
+  const receipt = db.prepare(`INSERT OR IGNORE INTO telemetry_deliveries
+    (installation_id,event_id,reporter_app,reporter_id,reporter_version,received_at,reconstructed)
+    VALUES(?,?,?,?,?,?,?)`);
   const acknowledged = db.transaction(() => {
     for (const e of valid) {
       insert.run(
@@ -158,8 +208,21 @@ export function ingest(db: Database.Database, body: unknown, now = Date.now()) {
         e.session_id,
         JSON.stringify(e.props)
       );
+      receipt.run(
+        b.installation_id,
+        e.id,
+        reporter.app,
+        reporter.installation_id,
+        reporter.version,
+        now,
+        reconstructed.includes(e.id) ? 1 : 0
+      );
     }
     return valid.map((e) => e.id);
   })();
-  return { acknowledged, rejected };
+  return {
+    acknowledged,
+    rejected,
+    ...(reporter.app === 'tala' ? { reporter_recorded: true } : {}),
+  };
 }

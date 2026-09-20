@@ -398,6 +398,21 @@ strong, b, h1, h2, h3, h4, h5, h6 {
 }
 .mc-band-olive { background: var(--olive); }
 
+.tala-new-burst {
+  display: grid;
+  place-items: center;
+  flex: 0 0 54px;
+  height: 54px;
+  margin: -7px 2px;
+  background: var(--gold);
+  color: var(--ink);
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 11px;
+  font-weight: 700;
+  transform: rotate(-10deg);
+  clip-path: polygon(50% 0%, 60% 13%, 75% 7%, 78% 24%, 93% 25%, 87% 41%, 100% 50%, 87% 60%, 93% 75%, 76% 78%, 75% 93%, 59% 87%, 50% 100%, 40% 87%, 25% 93%, 22% 76%, 7% 75%, 13% 59%, 0% 50%, 13% 40%, 7% 25%, 24% 22%, 25% 7%, 41% 13%);
+}
+
 .mc-plate {
   background: var(--peach);
   border: 3px solid var(--ink);

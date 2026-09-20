@@ -55,12 +55,25 @@ need an internet connection.
 
 The student implementation is developed separately from Tala. Verify the installed
 student APK against this teacher build before the pilot. The current student build
-keeps a separate teacher queue, copies its last seven days of card and quiz events
-when joining, and records Tala acknowledgements in `teacher_sent`. This does not
+keeps a separate teacher queue. The next build pages all retained card and quiz
+history when joining (the v0.4.17 APK restores only seven days). Delivery ACKs
+are scoped to the current class/public key; a new pairing resets them atomically. This does not
 modify the mothership outbox. While foregrounded, Hiraia keeps looking for Tala
-instead of pausing discovery after 15 minutes.
+at 10–15 minute intervals, backing off to 30 minutes after repeated misses.
+
+See [activity relay and recovery](../../docs/TALA-ACTIVITY-RECOVERY.md) for the
+next build’s teacher upload labels, offline queue, and reinstall recovery.
 
 ## Build
+
+The September 20 public pilot release is **v0.4.1, Android versionCode 16**.
+This intentionally renumbers the display version after v0.7.5 (code 15); Android
+uses the increasing code for upgrades. The release variant retains the existing
+pilot signing identity so teachers can update without uninstalling or losing data.
+The new URL is `https://assets.hiraia.org/models/tala-v0p4p1.apk`; older
+`hiraia-tala-v0p4p1-*-debug.apk` artifacts remain immutable historical builds.
+Install Hiraia and Tala on separate phones: Nearby cannot transfer activity between
+both apps running on one device.
 
 The project uses the existing Android Gradle wrapper generated under
 `packages/mobile/android`. With JDK 17 and the Android SDK installed:

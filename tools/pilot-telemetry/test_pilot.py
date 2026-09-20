@@ -148,6 +148,17 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(s['dynamic_cards'],1)
         self.assertEqual(s['context']['grade'],6)
         self.assertEqual(p.session_events(s['installation_id'],s['session_id'])['events'][0]['props']['source'],'generated')
+    def test_teacher_and_direct_delivery_labels_do_not_change_activity_counts(self):
+        self.event('card_viewed',props={'grade':5})
+        with connection(self.dbpath) as db:
+            db.execute('CREATE TABLE telemetry_deliveries(installation_id TEXT,event_id TEXT,reporter_app TEXT,reporter_id TEXT,reporter_version TEXT,received_at INTEGER,reconstructed INTEGER)')
+            for app,reporter in [('hiraia','installation_00001'),('tala','teacher_0000000001')]:
+                db.execute('INSERT INTO telemetry_deliveries VALUES(?,?,?,?,?,?,?)',
+                  ('installation_00001','event_0000000000000001',app,reporter,'0.4.1',self.now,0))
+        detail=p.session_events('installation_00001','session_0000000001')['events'][0]
+        self.assertEqual({d['reporter_app'] for d in detail['deliveries']},{'tala','hiraia'})
+        self.assertEqual(p.overview(self.now)['totals']['cards'],1)
+
     def test_ranges_clamp_leap_and_month_boundaries(self):
         now=int(datetime(2024,3,30,tzinfo=timezone.utc).timestamp()*1000)
         start,end=p.window('1M',now)
@@ -214,6 +225,54 @@ class MirrorTests(unittest.TestCase):
         self.db.execute('DELETE FROM telemetry_events');self.db.commit()
         mirror.mirror_events(self.db,self.remote,'target',reconcile=True)
         self.assertEqual(len(self.remote.records),3)
+    def test_delivery_provenance_is_mirrored_even_after_event_was_already_copied(self):
+        mirror.mirror_events(self.db,self.remote,'target')
+        self.db.execute("""CREATE TABLE telemetry_deliveries(installation_id TEXT,event_id TEXT,reporter_app TEXT,
+          reporter_id TEXT,reporter_version TEXT,received_at INTEGER,reconstructed INTEGER,
+          PRIMARY KEY(installation_id,event_id,reporter_app,reporter_id))""")
+        records=[('install_0000000001','event_0000000000000000',app,reporter,'0.4.1',200,0)
+                 for app,reporter in [('hiraia','install_0000000001'),('tala','teacher_0000000001')]]
+        self.db.executemany('INSERT INTO telemetry_deliveries VALUES(?,?,?,?,?,?,?)',records);self.db.commit()
+        class DeliveryRemote(FakeRemote):
+            def executemany(self,sql,records):
+                for row in records:self.pending.setdefault(tuple(row[:4]),row)
+        remote=DeliveryRemote();remote.fail=True
+        with self.assertRaises(RuntimeError):mirror.mirror_deliveries(self.db,remote,'target')
+        self.assertEqual(mirror.pending_deliveries(self.db,'target'),2)
+        remote.fail=False
+        self.assertEqual(mirror.mirror_deliveries(self.db,remote,'target',batch=1),2)
+        self.assertEqual(mirror.pending_deliveries(self.db,'target'),0)
+        self.assertEqual(mirror.mirror_deliveries(self.db,remote,'target'),0)
+        self.assertEqual(len(remote.records),2)
+        remote.records.clear()
+        self.assertEqual(mirror.mirror_deliveries(self.db,remote,'target',reconcile=True),2)
+        self.assertEqual(len(remote.records),2)
+
+    def test_restore_includes_delivery_provenance_and_accepts_older_remote_schema(self):
+        events=self.db.execute('SELECT * FROM telemetry_events ORDER BY installation_id,id').fetchall()
+        delivery=('install_0000000001','event_0000000000000000','tala','teacher_0000000001','0.4.1',200,1)
+        class Result:
+            def __init__(self, rows):self.rows=rows
+            def fetchall(self):return self.rows
+            def fetchone(self):return self.rows[0]
+        class Source:
+            def __init__(self, labeled):self.labeled=labeled
+            def __enter__(self):return self
+            def __exit__(self,*args):pass
+            def execute(self, sql, args=None):
+                if sql.startswith('SET TRANSACTION'):return None
+                if 'to_regclass' in sql:return Result([('deliveries' if self.labeled else None,)])
+                if 'FROM hiraia_telemetry.deliveries' in sql:
+                    return Result([delivery] if delivery[:4]>args else [])
+                return Result([e for e in events if e[:2]>args])
+        for labeled in [False,True]:
+            with tempfile.TemporaryDirectory() as folder, patch.object(mirror,'remote_connect',return_value=Source(labeled)):
+                target=Path(folder)/'restore.db'
+                self.assertEqual(mirror.restore('test',target)['restored_events'],3)
+                with connection(target) as db:
+                    self.assertEqual(db.execute('SELECT count(*) FROM telemetry_deliveries').fetchone()[0],int(labeled))
+                    if labeled:self.assertEqual(db.execute('SELECT * FROM telemetry_deliveries').fetchone(),delivery)
+
     def test_restore_refuses_existing_database(self):
         with tempfile.NamedTemporaryFile() as f:
             with self.assertRaises(ValueError):mirror.restore('unused',f.name)

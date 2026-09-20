@@ -29,6 +29,7 @@ function memoryStore(): TeacherStore & { events: TeacherEvent[] } {
       return bound;
     },
     async bind(next) {
+      if (bound?.class_id !== next.class_id || bound?.public_key !== next.public_key) events.length = 0;
       bound = next;
     },
     async unbind() {

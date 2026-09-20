@@ -222,3 +222,54 @@ test('anonymous profile IDs are accepted while student names and malformed ident
   assert.equal(validEvent({...event(),props:{profile_kind:'student'}}),false);
   assert.equal(validEvent({...event(),props:{...profile,profile_kind:'guest'}}),false);
 });
+
+test('teacher relay retains provenance independently of direct upload order and event deduplication', () => {
+  for (const teacherFirst of [true, false]) {
+    const db = openTelemetry(path.join(temp, `relay-${teacherFirst}.db`));
+    const direct = { schema: 1, installation_id, events: [event(801)] };
+    const relay = {
+      ...direct,
+      reporter: { app: 'tala', installation_id: 'teacher_installation_1234', version: '0.4.1' },
+      reconstructed_ids: [],
+    };
+    for (const body of teacherFirst ? [relay, direct, relay] : [direct, relay, direct])
+      ingest(db, body);
+    assert.equal((db.prepare('SELECT count(*) n FROM telemetry_events').get() as any).n, 1);
+    const receipts = db
+      .prepare('SELECT reporter_app,reporter_id FROM telemetry_deliveries ORDER BY reporter_app')
+      .all();
+    assert.deepEqual(receipts, [
+      { reporter_app: 'hiraia', reporter_id: installation_id },
+      { reporter_app: 'tala', reporter_id: 'teacher_installation_1234' },
+    ]);
+    assert.equal(ingest(db, relay).reporter_recorded, true);
+    assert.equal(
+      (db.prepare('SELECT installation_id FROM telemetry_events').get() as any).installation_id,
+      installation_id
+    );
+    db.close();
+  }
+});
+
+test('reporter validation rejects names, malformed labels, and false student identity; partial legacy receipt is explicit', () => {
+  const db = openTelemetry(path.join(temp, 'relay-invalid.db'));
+  const base = { schema: 1, installation_id, events: [event(802)] };
+  for (const reporter of [
+    { app: 'tala', installation_id: 'Teacher Ana', version: '0.4.1' },
+    { app: 'tala', installation_id: 'teacher_installation_1234', version: '0.4.1', name: 'Ana' },
+    { app: 'hiraia', installation_id: 'someone_else_12345678', version: '0.4.17' },
+  ]) {
+    assert.throws(() => ingest(db, { ...base, reporter }), /invalid_batch/);
+  }
+  assert.throws(() => ingest(db, { ...base, reconstructed_ids: [event(802).id] }), /invalid_batch/);
+  ingest(db, {
+    ...base,
+    reporter: { app: 'tala', installation_id: 'teacher_installation_1234', version: '0.4.1' },
+    reconstructed_ids: [event(802).id],
+  });
+  assert.equal(
+    (db.prepare('SELECT reconstructed FROM telemetry_deliveries').get() as any).reconstructed,
+    1
+  );
+  db.close();
+});
