@@ -402,8 +402,46 @@ So the cheap deterministic wins are already banked; what remains is semantic.
       English-facing data defect in a shipped build, and repairing the pool is a separate job
       from the generator fix landed here.
 
-- [ ] **C5** Rewrite confirmed defects, each independently verified before applying, with the
-      emphasis guard. HOLD anything needing facts not on the card.
+- [~] **C5a APPLIED — 125 Cebuano titles repaired.** The title tranche of C5: the 104
+      C4-confirmed title outliers plus the 37 truncations, 141 cards.
+
+      Pipeline: propose -> adversarial verify (a second agent told to REFUTE, shown the card
+      but NOT the proposer's reasoning or the `defect`/`evidence` fields) -> three mechanical
+      gates in `apply_title_fixes.py` that recompute everything rather than trusting prose.
+
+      | stage | result |
+      |---|---:|
+      | proposed | 141 REWRITE, **0 HOLD** |
+      | adversarial verify | 128 ACCEPT, **13 REJECT** |
+      | GATE 2 sourcing (mine) | 3 further HELD |
+      | **applied** | **125** |
+
+      **The proposer's 0 HOLDs is a warning, not a success** — it never declined once, which
+      means it was not applying the sourcing constraint as strictly as instructed. That is
+      exactly why the constraint is ALSO enforced mechanically. GATE 2 caught three cards where
+      the new title used a real Cebuano word (`tuyok`, `paghimo`) that appears nowhere on that
+      card. Correct Cebuano or not, unattested is unattested; those three go to the reviewer.
+
+      **The adversarial check earned its place and corrected two of MY findings:**
+        - `Igneo` (6 cards) is legitimate Spanish-derived Cebuano, not a truncation of
+          "Igneous" — the card's own title_tl uses the same form. My C4b detector was wrong.
+        - `plato` for a tectonic plate (2 cards) is used in title_tl too, so it is deliberate
+          terminology, not the false friend I recorded. The `plate` pair is now doubtful.
+        - It also caught the proposer making a card WORSE: `Kolor Balas Gikan` ->
+          `...Ginikanan`, where ginikanan is PARENTS (24 of 24 corpus titles) and the origin
+          word is gigikanan (41 of 41).
+
+      Verified independently after writing: 125 cards changed, **0 cards where any field other
+      than title.bis changed**, orphaned emphasis spans **0 before and 0 after**, pool diff is
+      **1 line / +194 bytes**. Repairs in `c5a-applied.json`.
+
+      Examples: `Tulo ka Bala Kepler` -> `Tulo ka Balaod ni Kepler`; `Buto sa Hita` ->
+      `Bukog sa Hita`; `Cheek Pouch sa Ungo` -> `Cheek Pouch sa Unggoy`; `Kolonya sa Langgam`
+      -> `Kolonya sa Hulmigas`; `Mata sa Mantis Shrim` -> `Mata sa Mantis Shrimp`.
+
+- [ ] **C5b** The remaining ~700 sweep findings — body defects, reversals and dropped facts.
+      Not title-only, so each needs the fact checked against its own English. Bigger and slower
+      than C5a; the 42 quarantined flags must be re-triaged first, not rewritten.
 - [ ] **C6** REPORT.md: what changed, what is queued for a Cebuano speaker, and an explicit
       ship-or-not recommendation. Do not ship.
 
