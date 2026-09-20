@@ -1,0 +1,1347 @@
+{
+ "batches_done": 100,
+ "judged": 14000,
+ "flagged": 268,
+ "items": [
+  {
+   "id": "ffct-00110",
+   "pattern": "ant->langgam",
+   "note": "title_bis 'Langgam sa Matag Tawo' for title_en 'Ants Per Person'. In Cebuano langgam = BIRD (it is Tagalog that uses langgam for ant), so the title names a different animal than the card. Body is correct (uses hulmigas throughout: 2.5 milyon nga hulmigas per person, baynte ka quadrillion), so this is a title-only defect of the same kind as the cat-card-titled-iro example. Corpus grep confirms langgam is used for BIRD in ~700 other cards, and the same ant->langgam slip also shows up in the body of ffct-00337 ('pagkaon og milyun-milyong langgam ug termites' for 'Pangolin Eats Ants')."
+  },
+  {
+   "id": "ffct-00131",
+   "pattern": "taste->titi",
+   "note": "title_bis 'Titi sa Tiil sa Alibangbang' for title_en \"Butterflies' Tasting Feet\". 'Titi' is not the Cebuano for taste (tilaw/timtim) and reads as the vulgar term for penis — unacceptable in a grade-school card title, and the title as written conveys no meaning. Body is fine ('adunay espesyal nga sensory receptors sa ilang tiil aron matilawan ang dahon una sila mangitlog didto'), so the fact itself survives; the defect is the title word. Standalone 'titi' occurs in only 3 cards corpus-wide, all apparent artifacts (ffct-00424 'Prints sa Titi ug Palad' for 'Prints on Toes and Palms'; ffct-02351 'Laing Prints Titi'), so the grep pair is narrow."
+  },
+  {
+   "id": "ffct-00295",
+   "pattern": "trail->daug",
+   "note": "title_bis 'Daug nga Lika sa Kuhol' for 'Snail Slime Trail' names neither slime nor trail: 'daug' means win/defeat and 'lika' is not slime (uhog) or track (agi). The title is the only place a child sees the topic named, and it points at nothing. 'Daug' is used the same way as 'trail/track' in two other corpus titles (ffct-08253 Dugong Feeding Trails, ffct-09038 Herd Footprint Fossils), so the grep is small and targeted. Body sentence itself is correct ('sinaw nga agi sa uhog')."
+  },
+  {
+   "id": "ffct-00259",
+   "pattern": "title-topic-drift",
+   "note": "title_bis 'Kalainan sa Tubig ug Pagkaon' = 'the DIFFERENCE between water and food', but the card is 'Germs in Food and Water' (tl title is 'Kalusugan sa Tubig at Pagkain'). 'Kalainan' is used in its ordinary 'difference' sense in ~20 other corpus titles (e.g. 'Kalainan sa Pond ug Lanaw' = Pond vs Lake), so this is not a regional reading of 'lain' as 'bad' — the title announces a comparison the card never makes. Not given as a word-pair because greping 'kalainan' corpus-wide would be almost all fine."
+  },
+  {
+   "id": "ffct-00424",
+   "pattern": "toes->titi",
+   "note": "title_bis \"Prints sa Titi ug Palad\" for title_en \"Prints on Toes and Palms\". \"Titi\" is not toes (tudlo sa tiil) — it is the vulgar word for penis in Cebuano/Tagalog, and it stands as the headline on a grade-school card about fingerprints. The body is correct (\"tudlo sa tiil, palad, ug lapalapa\"), so the fact survives, but the title names a different body part and is obscene in a kids' app. Grep \"titi\" corpus-wide."
+  },
+  {
+   "id": "ffct-00337",
+   "pattern": "ants->langgam",
+   "note": "Body says the pangolin eats \"milyun-milyong langgam ug termite\" — in Cebuano langgam = BIRD, not ant (ant = hulmigas). English is \"millions of ants and termites\". Nothing in the card corrects it, so a Cebuano-only reader learns that pangolins eat millions of birds. Confirmed in-corpus: every other card in this batch uses langgam for bird (ffct-00339 \"Langgam ba ang kabog?\", ffct-00345, ffct-00380, ffct-00412) and ffct-00398 uses hulmigas for ant."
+  },
+  {
+   "id": "ffct-00335",
+   "pattern": "tears->luha",
+   "note": "\"ang kasakit nga imong gibati tungod sa gagmay nga luha sa kaunuran\" — English \"tiny muscle tears\" (rips) rendered as \"luha\" (teardrops, the crying kind). This is the card's whole answer: it's not lactate, it's micro-tears + inflammation. With \"luha\" the real cause is never stated anywhere on the card, so the child cannot answer the question the card asks. Classic English homograph trap; \"luha\" is never right for tears-as-rips."
+  },
+  {
+   "id": "ffct-00431",
+   "pattern": "ribs->gukod",
+   "note": "title_bis \"Gukod nga Bantay sa Baga\" for \"Ribs Guard the Lungs\". \"Gukod\" means to chase/pursue in Cebuano; ribs are \"gusok\" — which the body itself uses correctly (\"Ang mga gusok manalipod sa baga\"). Lower severity because the body restores the fact, but the title as shipped names an action, not the bone, and looks like a corrupted gusok."
+  },
+  {
+   "id": "ffct-00440",
+   "pattern": "burrow->lumos",
+   "note": "title_bis \"Nangalumos nga Halaan\" for \"Burrowing Clams\". \"Lumos\" = to drown (same root used correctly in ffct-00429 \"Lumos sa Mabaw nga Tubig\"), not to burrow/bury — the body correctly says \"magkalot ug maglubong sa iyang kaugalingon sa balas\". Body restores the fact, so low severity, but the headline tells the child the clams are drowning."
+  },
+  {
+   "id": "ffct-00571",
+   "pattern": "wasp->putyokan",
+   "note": "Wasp card titled with the wrong insect: title_bis \"Salag sa Putyokan\" = honeybee's nest, but the card is about wasps (en title \"Wasp Nest\"; body correctly says \"putakti\"). Same class of defect as the cat card titled `iro`: the heading names a different animal than the card teaches, so a child skimming titles learns bees sting near their nest. Body text is otherwise accurate."
+  },
+  {
+   "id": "ffct-00655",
+   "pattern": "cricket->kagang",
+   "note": "Body calls the cricket `kagang` twice (\"Nganong mag-awit ang lalaki nga kagang... danihon ang baye nga kagang\"). `kagang` is a small crab in Cebuano — the repo's own Cebuano prose uses it that way (\"ang umang — ang gagmayng kagang sa baybayon\", \"ang kagang adunay shell nga adunay mga tunok\"). Only title_bis says `kuliglig`, so the body never corrects itself: a child reads that male crabs sing to attract females. Cricket is `gangis`/`kuliglig` (both already used elsewhere in the corpus). Corpus-wide the swap hits 9 cards (ffct-01825, ffct-01874, ffct-03568, ffct-03598, ffct-03727, ffct-04846, ffct-11883, ffct-11910), several with no cricket word anywhere to restore it."
+  },
+  {
+   "id": "ffct-00767",
+   "pattern": "wasp->putyukan",
+   "note": "Card is about a WASP sting ('How does a wasp sting deliver venom?'). The Cebuano body asks 'Unsaon pagsulod sa hilo sa PUTYUKAN?' — putyukan is the honeybee, a different insect. The corpus itself draws that distinction: ffct-03517 bis reads 'Ang putakti ug hornet dili maghimo og dugos — ang tam-is nga dugos gikan ra sa putyukan' (wasps/hornets make no honey; honey comes only from the putyukan), and this card's own tl says 'putakti'. Nothing in the Cebuano card corrects it: title_bis is 'Tibo sa Kagitgit', which never repeats putakti, so a child reading only the Cebuano learns this is about bees. Body-level species swap, not a wording nit."
+  },
+  {
+   "id": "ffct-01067",
+   "pattern": "wears down->maghait",
+   "note": "EN: grinding grass \"wears those teeth down over time\". BIS says the opposite: \"nga mao usab maghait niini sa paglabay sa panahon\" = it SHARPENS them over time. The wearing-down fact is the whole point of the card and nothing in the Cebuano restores it; a child reads that chewing grass sharpens the rabbit's back teeth."
+  },
+  {
+   "id": "ffct-01093",
+   "pattern": "pufferfish->baboy-dagat",
+   "note": "title_bis \"Itlog sa Baboy-Dagat\" names a different animal: baboy-dagat is the dugong/sea cow (the corpus itself uses it that way in ffct-03453 terms: dugong/duyong/baboy-dagat/sea-cow). The card is about pufferfish (butete, as the body correctly says), and dugongs are mammals that do not lay eggs, so the heading teaches a false name-to-animal mapping."
+  },
+  {
+   "id": "ffct-01291",
+   "pattern": "sweat->bahu",
+   "note": "title_bis is \"Bahu Pabugnaw sa Lawas\" = \"Odor/stink cools the body\". `bahu` is smell, not sweat (the body correctly uses `singot`, and the corpus elsewhere titles the same concept `Singot sa Lawas`, `Pagpabugnaw sa Lawas`). As a standalone title it asserts a different thing than \"Sweat Cools the Body\". Systemic: the same sweat->bahu title substitution appears in ffct-05803 (\"Bahu nga Minus sa Ihi\"), ffct-11579 (\"Kilay nga Babag sa Bahu\"), ffct-11872 (\"Bahu nga Walay Baho\" - where bahu and baho are used as two different words in one title), ffct-25325 - so the grep should be worth running."
+  },
+  {
+   "id": "ffct-01283",
+   "pattern": "wasp->putyukan",
+   "note": "Card is about a WASP sting, but both the Cebuano question and answer say `putyukan` (honeybee) - \"Nganong murag nagdilaab ang tusok sa putyukan?\". Its own title_bis says `Tambuboan` (wasp), so the card names two different insects and the body never corrects itself. Lower-confidence flag: the science (venom triggers pain nerves, not real heat) stays true for bees, and some speakers use `putyukan` loosely for stinging insects - but the corpus itself distinguishes them, using `putakti`/`tambubuk`/`alumindig` for wasp (ffct-00325, ffct-01604, ffct-02130, ffct-04292) and `putyukan` for bee (ffct-01268, ffct-01309, ffct-01331). Note ffct-00767, ffct-03518 and ffct-03786 make the same wasp->putyukan substitution, so the grep will hit a cluster."
+  },
+  {
+   "id": "ffct-01426",
+   "pattern": "ant->langgam",
+   "note": "Whole body is about ANTS in English but says `langgam` three times in Cebuano — in Cebuano `langgam` is a BIRD (the Tagalog false friend: TL langgam = ant). Card reads \"Giunsa pagpangita og pagkaon sa langgam? Ang mga langgam nagbiya og pheromone...\", so a Cebuano child learns that birds lay pheromone trails. Only title_bis (`Hantik`) is right; the body never says ant (hulmigas/hantik/subay). Unrecoverable."
+  },
+  {
+   "id": "ffct-01351",
+   "pattern": "monkey->ungo",
+   "note": "title_bis \"Cheek Pouch sa Ungo\" — `ungo` is an aswang/witch in Cebuano, not `unggoy` (monkey). Body correctly says `unggoya`, but the title names a different creature entirely (same class as the cat card titled `iro`)."
+  },
+  {
+   "id": "ffct-01339",
+   "pattern": "vine->ubas",
+   "note": "title_bis \"Rafflesia Kinahanglan ug Ubas\" — `ubas` is GRAPES, not a host vine (`baging`/`liana`/`balagon`, as the terms list and the body's `liana` show). Title asserts the Rafflesia needs grapes."
+  },
+  {
+   "id": "ffct-01466",
+   "pattern": "pull away->mahilak",
+   "note": "Question renders \"after pulling away\" as \"human ka mahilak\" = after you CRY. The withdrawal reflex — the whole setup of the card — is gone, so the posed question (why pain after crying?) is not what the answer explains."
+  },
+  {
+   "id": "ffct-01346",
+   "pattern": "balance->bali",
+   "note": "title_bis \"Bali sa Sulod sa Lawas\" — `bali` in Cebuano reads as fracture/break (or reverse), not `balanse` (the term list has `balanse`). Title announces something broken inside the body; body text is correct about a narrow safe range. Title-only defect, lower severity than the others."
+  },
+  {
+   "id": "ffct-01526",
+   "pattern": "light->sugnod",
+   "note": "title_bis 'Anay nga Nabungol sa Sugnod' = 'termites deafened by FIREWOOD' for title_en 'Termites Confused by Lights'. Two swaps: sugnod = firewood/fuel (used that way 100+ times elsewhere in the corpus), not suga (light); and nabungol = went deaf, not 'confused'. Dangerous because termites+firewood is plausible enough for a child to believe the card is about wood, not lamps — the body says suga/nalibog, so the title is the defect."
+  },
+  {
+   "id": "ffct-01518",
+   "pattern": "monkey->ungo",
+   "note": "title_bis 'Ungo nga Bungkat sa Adlaw' for 'Monkeys Active in the Day'. 'Ungo' is a witch/monster (aswang) in Cebuano, not 'unggoy' (monkey); 'bungkat' (dig up/turn over) is not 'active'. Corpus grep: 'ungo' occurs only 3× total, all in title_bis, all where the animal is a monkey/colugo — same class as the known cat-card-titled-'iro' defect. Body correctly says 'unggoy'."
+  },
+  {
+   "id": "ffct-01546",
+   "pattern": "fart->kutkot",
+   "note": "The Cebuano question is 'Nganong mokutkot ta?' and the answer opens 'Mokutkot ta kay...' for 'Why do we pass gas?'. 'kutkot' means dig/gnaw — all 16 other corpus uses are turtles digging sand, birds probing mud, rats gnawing, molars chewing. A child asked 'why do we dig?' cannot answer the intended question. Note: title_bis does say 'Utot', so it is partially recoverable, but the corruption is in the question itself (cf. the fever card asking about 'tugnaw')."
+  },
+  {
+   "id": "ffct-01521",
+   "pattern": "yawn->haya",
+   "note": "Question and body use paghaya/mohaya/naghaya for 'yawn' ('Nganong makatakod ang paghaya?'). Cebuano for yawn is 'hikab' (12 corpus uses, incl. this card's own title_bis 'Makatakod nga Hikab'); 'haya' means a corpse lying in state at a wake. Recoverable from the title, so lower confidence — but the corrupted word is in the question a child must answer. Only 2 cards corpus-wide use haya for yawn (this one and ffct-03742)."
+  },
+  {
+   "id": "ffct-01730",
+   "pattern": "sheds->magpalit",
+   "note": "EN: 'As a monitor lizard grows, it sheds its old skin to make room for new skin underneath.' BIS: 'Samtang nagdako ang bayawak, magpalit kini og daan nga panit aron makabaton og bag-ong panit.' In Cebuano palit = BUY (corpus check: 74 bis cards use palit/mopalit/paliton and every ordinary one means buy - mopalit og tambal, mopalit og botelya); shedding is ilis/ukang/mangaliskis, which this same corpus uses correctly in the sibling bark card ffct-01736 ('mangaliskis ang daan nga panit'). The Cebuano literally says the lizard BUYS old skin in order to have new skin. The card's only fact - that it sheds the old skin - is never stated anywhere else on the card, so a Cebuano-only child cannot recover it. Source of the leak is the Tagalog 'nagpapalit ito ng lumang balat' (palit = change in Tagalog, buy in Cebuano)."
+  },
+  {
+   "id": "ffct-01726",
+   "pattern": "ant->langgam",
+   "note": "title_en 'Weaver Ants' -> title_bis 'Langgam nga Habol'. In Cebuano langgam = BIRD (habol = blanket), so the title a child sees reads 'blanket bird' on a card about ants. Classic Tagalog false friend carried over from the card's own Tagalog title 'Manghahabong Langgam' (Tagalog langgam = ant). The body says 'Ang mga hantik bangis nga mangtutukob...' and never states that a hantik is an insect/ant, so nothing in the Cebuano corrects the bird. Corpus confirms the split: the same corpus writes ant colonies as hulmigas/hantik ('Reyna sa Hulmigas', 'Mamumuo nga Hulmigas', 'Mga Hulmigas') and uses langgam for birds. Same class as the known iro-on-a-cat-card defect."
+  },
+  {
+   "id": "ffct-01749",
+   "pattern": "ant->langgam",
+   "note": "title_en 'Ant Nests' -> title_bis 'Salag sa Langgam' = 'bird's nest' in Cebuano, on a card whose body correctly says 'Daghang hulmigas ang naghimo og pugad ilalom sa yuta...' (many ants build nests underground). Again carried from the Tagalog title 'Pugad ng Langgam'. The title as displayed tells a Cebuano child that BIRDS build underground nests with tunnels and chambers; the body names hulmigas but never reconciles the title. Note 'salag' is the corpus's normal bird-nest word (Salag sa Pawikan, Salag sa Swiftlet), which sharpens the bird reading. Slightly weaker than ffct-01726 because the body does name hulmigas."
+  },
+  {
+   "id": "ffct-01684",
+   "pattern": "medicine->gamot",
+   "note": "title_en 'Medicine Cures TB' -> title_bis 'Gamot Batok sa TB'. In Cebuano gamot = ROOT, not medicine (tambal/bulong); the corpus proves the sense itself - 498 bis cards use gamot where the English is about roots (incl. 4 in this same batch: 'Gamot Mosuhop', 'Bakterya sa Gamot', 'Mineral sa Gamot', 'Gamot sa Bakhaw') against 3 where it means medicine. So the title reads 'Root against TB' on the one card whose whole point is that only proper medicine - not rest, not a home remedy - kills TB bacteria. The body does say it correctly ('ang husto nga tambal ra ang makaayo niini'), so the defect is confined to the title, but it is health-load-bearing and the corpus has 15 title_bis using gamot for medicine, so the pattern is worth a corpus-wide triage. Lower confidence than the flags above: gamot is a common Tagalog loan in speech."
+  },
+  {
+   "id": "ffct-01758",
+   "pattern": "blurry->bulong",
+   "note": "title_en 'Blurry Vision and Retina' -> title_bis 'Bulong Retina Focus'. Bulong is not blurry in any sense - in this corpus its three other bis occurrences are all whisper ('Bulong Pari', 'Tunog nga Bulong' = Whispering Sound), and in Cebuano it otherwise means a remedy/charm; blurry is hanap/lubog, which this card's own body uses correctly ('Mahimong hanap ang panan-aw kung ang kahayag dili mahulog sa retina...'). Weakest of the five: the body fully restores the fact and the title asserts no false claim, only a wrong word, so this is a title-repair candidate rather than a child-misleads-me defect. Flagging it only because the title is the text the child sees first."
+  },
+  {
+   "id": "ffct-01825",
+   "pattern": "cricket->kagang",
+   "note": "EN \"Crickets, grasshoppers, and katydids are actually all related — one big group of jumping insects\". BIS: \"Ang kagang, apan, ug katydid managsoon diay — sakop sila sa usa ka grupo sa mga insekto...\". `kagang` in Cebuano is a mud/land crab (binisaya.com, Wiktionary), not a cricket (cricket = gangis; the corpus itself uses kuliglig 108x and gangis 2x). The card therefore tells a child a CRAB is an insect related to grasshoppers. Nothing in the card corrects it — title_bis is \"Insekto nga Molukso\" and never names the cricket. Corpus-wide kagang=cricket appears in ~8 cards (004/009/024/025/032/079/080), so the grep pair is worth running."
+  },
+  {
+   "id": "ffct-01874",
+   "pattern": "cricket->kagang",
+   "note": "EN \"Why do male crickets sing different songs?\". BIS asks \"Nganong lainlain ang awit sa kagang? / Ang lalaki nga kagang adunay lainlaing awit...\" — i.e. \"why does the mud crab sing\". The body never says kuliglig/gangis; title_bis says \"Awit sa Kuliglig\", so the card contradicts itself and a Cebuano-only child is left believing crabs sing. Same swap as ffct-01825."
+  },
+  {
+   "id": "ffct-01826",
+   "pattern": "jellyfish->bantol",
+   "note": "title_bis \"Pagkaon sa Bantol\" for EN title \"Jellyfish Diet\". `bantol` is the tasseled scorpionfish / stonefish (Scorpaenopsis, Synanceia) — a venomous FISH, a different animal entirely. The body correctly uses `dikya`, so the title actively teaches a wrong animal name rather than the fact. Systemic: 10+ jellyfish cards corpus-wide are titled Bantol (ffct-02243 \"Tusok sa Bantol\", ffct-03530 \"Siklo sa Bantol\", ffct-04714 \"First Aid sa Bantol\", ffct-03633/ffct-06358 titled just \"Bantol\") while bodies say dikya — worth a corpus-wide title sweep (grep must be case-insensitive and must exclude the fruit `santol`)."
+  },
+  {
+   "id": "ffct-01889",
+   "pattern": "ant->langgam",
+   "note": "EN \"Which ants are most common in a colony?\". BIS asks \"Kinsay pinakadaghan sa kolonya sa langgam?\" — in Cebuano `langgam` is a BIRD (the same batch uses it correctly for birds 10+ times: ffct-01906 agila, ffct-01916 maya, ffct-01899 \"langgam nga mananhi\"); `langgam` = ant is the Tagalog sense. The card asks about a bird colony and answers about worker ants and a queen, with no correction anywhere (ants are `hulmigas` elsewhere in this same batch — ffct-01858, ffct-01924). A Cebuano-only child either can't answer the question as asked or concludes langgam means ant."
+  },
+  {
+   "id": "ffct-02166",
+   "pattern": "chew->pagngala",
+   "note": "EN \"You can prevent choking by chewing food well...\" -> BIS \"Malikayan ang pagkatuk-ok pinaagi sa maayong PAGNGALA sa pagkaon\". 'Ngala' is not chewing; the only ngala* forms anywhere in the corpus are 'pagngalan' = naming, and all 52 chewing cards use nguya / usap / mama. The card's first and most important prevention step reads as 'naming the food well', and nothing else in the Cebuano says chew, so that step is unrecoverable."
+  },
+  {
+   "id": "ffct-02217",
+   "pattern": "cricket->kagiw",
+   "note": "EN \"The cricket is a nocturnal insect that chirps at night...\" -> BIS \"Ang KAGIW usa ka nokturnal nga insekto nga mohuni sa gabii...\". 'Kagiw' is to flee/evacuate, not an insect; the corpus names the cricket 'kuliglig' in 44 cards, including this card's own title_bis. The body therefore names a non-animal as the subject (only the title hints at kuliglig)."
+  },
+  {
+   "id": "ffct-02126",
+   "pattern": "shoots->lumot",
+   "note": "title_en \"Aphids on New Shoots\" -> title_bis \"Aphid sa Bag-ong LUMOT\". 'Lumot' is moss/algae (88 corpus cards use it that way; this is the only card where it stands for 'shoot'), and the body correctly says 'bag-ong saha'. The title a child scans teaches that aphids crowd onto new moss, a different organism from the young plant shoots the card is about."
+  },
+  {
+   "id": "ffct-02131",
+   "pattern": "title-names-cough-not-cold",
+   "note": "title_en \"Colds Clear in a Week\" -> title_bis \"UBO Gikan sa Pito ka Adlaw\". 'Ubo' is cough, not cold (the body correctly uses 'sip-on', as do 50 other corpus cards), and 'gikan sa pito ka adlaw' drops the clearing-up verb, so the title reads 'cough from seven days'. Lower confidence than the others because the body states the real fact; the defect is confined to the title."
+  },
+  {
+   "id": "ffct-02351",
+   "pattern": "finger->titi",
+   "note": "title_bis \"Laing Prints Titi\" for \"Unique Fingerprint Patterns\": the Cebuano title never says finger/tudlo — \"titi\" is not the word for finger or toe, and across Filipino languages it reads as the vulgar term for penis. On a grade-5 card the title names a different (and unsafe) body part; only the body restores \"tumoy sa imong mga tudlo\". Same generator error recurs in ffct-00424 (\"Prints sa Titi ug Palad\", EN toes) and ffct-00131 (\"Titi sa Tiil sa Alibangbang\", EN tasting feet), so the grep is worth running."
+  },
+  {
+   "id": "ffct-02267",
+   "pattern": "ant->langgam",
+   "note": "title_bis \"Kolonya sa Langgam\" for \"Ant Colonies\": in Cebuano \"langgam\" means BIRD (the corpus uses it that way in ~700 cards, e.g. ffct-02227 ostrich, ffct-02326 crocodile eating langgam). It is a Tagalog false friend for ant; the body correctly uses \"hulmigas\". Title tells the child this is a bird colony. Same defect in ffct-00110 (\"Langgam sa Matag Tawo\" for \"Ants Per Person\")."
+  },
+  {
+   "id": "ffct-02344",
+   "pattern": "garbled-title-reklamo",
+   "note": "title_bis \"Reklamo Klima INIT\" for \"Spices in Warm Climates\": \"reklamo\" means complaint and has nothing to do with the card; the word for spices (panakot) is dropped entirely, and \"INIT\" is shouted in caps. The title names a different thing than the card. Body is correct."
+  },
+  {
+   "id": "ffct-02352",
+   "pattern": "dive->lango",
+   "note": "title_bis \"Balyena Ginhawa Lango\" for \"Whales Hold Breath Dive\": \"lango\" means dizzy/stupefied/drunk, not dive (body correctly uses \"molusong og lawom\"). Reads as a fainting whale; the diving fact is absent from the title. Lower severity than the others — likely a truncation of \"langoy\" — but it is a real wrong word in the title."
+  },
+  {
+   "id": "ffct-02488",
+   "pattern": "toad->bakulaw",
+   "note": "Title 'Bakulaw vs Baki' and body 'Ang mga bakulaw adunay uga ug bukol-bukol nga panit...' use bakulaw for TOAD. In standard Cebuano bakulaw is a large ape/monkey (a big hairy creature), not an amphibian, and the card never corrects it — a child reads that 'bakulaw' (an ape) has dry bumpy skin and lives on land, unlike frogs. Corpus-internal evidence supports the swap being wrong: the same corpus renders toad as baki (ffct-00232 'Ang baki o toad'), kamprag (ffct-00641), kabkab (ffct-06098, ffct-14393), kabakaba (ffct-06020), or just 'toad' (ffct-11999). bakulaw-for-toad occurs only 3x corpus-wide (ffct-02488, ffct-05158, ffct-05377), so the grep is cheap. Confidence moderate, not certain — worth one native-speaker check before mass-editing."
+  },
+  {
+   "id": "ffct-02481",
+   "pattern": "boil->lunod",
+   "note": "English: 'people BOIL certain tree barks to make a drink used as traditional medicine.' Cebuano: 'nagalunod og panit sa kahoy' — lunod means to sink/submerge/drown, not to boil, so the Cebuano says people SOAK (or drown) bark rather than boil it, and nothing in the card restores the boiling. The card is a single sentence whose whole content is the preparation method, so the method fact is lost. Corpus-wide this translator otherwise renders boil correctly as pabukal/pabukalon (ffct-02282, ffct-01030, ffct-04385) or lat-an/gilat-an (ffct-01940 'gilat-an ang gamot sa kugon', ffct-01223, ffct-02355); 'lunod' in its 107 other corpus occurrences always means submerged/drowned, so this one is the outlier."
+  },
+  {
+   "id": "ffct-02526",
+   "pattern": "kapeckan-nonword",
+   "note": "Lower severity, title-only: title_bis 'Babala sa Macaque sa Kapeckan' contains 'Kapeckan', which is not a Cebuano word — 'ck' is not even native Cebuano orthography; the intended sense is danger (kakuyaw/katalagman/kapeligrohan), which the body does supply ('kon adunay nagkaduol nga kakuyaw'), so the FACT is recoverable and this is not a meaning reversal. Flagged because it is a user-visible garbled title token, not dialect or register, and it recurs 7x corpus-wide as the house rendering of 'danger' (ffct-06876, ffct-13041, ffct-15779, ffct-27838, ffct-29330, ffct-29335) — one grep fixes all of them. Treat as a corpus-wide typo sweep, not a per-card fact defect."
+  },
+  {
+   "id": "ffct-02580",
+   "pattern": "choke->mahurot",
+   "note": "EN warns \"you might choke\" if you swallow before molars grind food. BIS says \"basin mahurot ka\" — mahurot = to be used up/run out (the corpus uses it that way in ~20 other cards: mahurot ang isda, mahurot ang oxygen). The choking danger, which is the whole point of the card, is never stated; the Cebuano reads as \"you might get used up\". Cebuano for choking exists and is used elsewhere (ffct-07198: \"Nabilaw\"). Same card also has title_bis \"Maayong Ngisi sa Bagang\" — ngisi = grin, not chew (grep pair chew->ngisi also hits ffct-07198)."
+  },
+  {
+   "id": "ffct-02611",
+   "pattern": "endangered->namingaw",
+   "note": "EN: \"The whale shark is an endangered animal\". BIS body: \"usa ka namingaw nga mananap\" = a lonely/desolate animal, and namingaw is the emph_bis word, so it is the highlighted claim. A child reads that the butanding is lonely, not at risk of disappearing. namingaw appears nowhere else in the corpus; the correct word (nameligro) is used in the neighbouring card ffct-02586 and even in this card's own title."
+  },
+  {
+   "id": "ffct-02547",
+   "pattern": "seedling->lumot",
+   "note": "title_bis \"Cotyledon Pagkaon sa Lumot\" = \"Cotyledon, food of the moss/algae\". EN title is \"Cotyledons Feed Seedlings\"; lumot is used ~150x in the corpus for algae/moss, and every other seedling card uses semilya (ffct-00394, ffct-01465, ffct-03155). The title names a different organism — cotyledons do not feed algae."
+  },
+  {
+   "id": "ffct-02610",
+   "pattern": "spinal cord->utok",
+   "note": "title_bis \"Gulugod Protekta sa Utok\" = \"the spine protects the brain\" — false; the skull protects the brain. EN title and the body both say spinal cord, and every other spinal-cord card in the corpus keeps gulugod/taludtod/spinal cord (ffct-07231, ffct-08014, ffct-09897). Title states a wrong fact on its own."
+  },
+  {
+   "id": "ffct-02545",
+   "pattern": "cold->ubo",
+   "note": "title_bis \"Walay Tambal sa Ubo\" = \"no cure for the cough\"; EN and the BIS body are about the common cold (sip-on). Cough and cold are different illnesses to a grade-5 reader. Same swap recurs at ffct-02131 (\"Colds Clear in a Week\" -> \"Ubo Gikan sa Pito ka Adlaw\") and ffct-02368, while ffct-00027 gets it right with sip-on."
+  },
+  {
+   "id": "ffct-02532",
+   "pattern": "scar->peke",
+   "note": "title_bis \"Peke sa Lawom nga Samad\" = \"fake of the deep wound\". peke means counterfeit/fake everywhere else in the corpus (ffct-13448 butterfly fake head, ffct-17499, ffct-24018); the word for scar is peklat, which the body uses. Same title swap at ffct-06230 (\"Deep Wounds Leave Scars\" -> \"Lawom nga Samad Peke\"), so it is a repeated defect, not a one-off typo."
+  },
+  {
+   "id": "ffct-02597",
+   "pattern": "sharp->matarong",
+   "note": "title_bis \"Matarong nga Ngipon sa Karniboro\" — matarong = righteous/upright, not sharp; the body correctly says \"hait nga ngipon\". Title-only, but it describes carnivore teeth as straight/proper rather than sharp. Same swap at ffct-13345 (\"The Sharp Fovea\" -> \"Fovea Matarong\") and ffct-32728 (\"Sharp Obsidian Glass\" -> \"Obsidian nga Matarong\")."
+  },
+  {
+   "id": "ffct-02641",
+   "pattern": "heal->ayaw",
+   "note": "title_bis \"Samad Lawas Ayaw\" — ayaw means \"don't\"; the intended word is ayo (heal). EN title is \"Skin Heals Its Cuts\", so the headline reads as a prohibition about wounds instead of a healing fact. Corpus shows the same heal->ayaw title slip at ffct-03304 (\"Slow Healing Wounds\" -> \"Hinay Ayaw Samad\") and ffct-05051, versus the correct \"Pag-ayo\" at ffct-01372."
+  },
+  {
+   "id": "ffct-02578",
+   "pattern": "expand->nagtapak",
+   "note": "title_bis \"Nagtapak nga Pantog\" for \"Bladder Stretches as It Fills\" — tapak means to patch/step on, not to stretch or expand; the body correctly says \"moluag ug modako\". Title-only, lower confidence than the rows above, but it recurs as the corpus's stock title word for expand (ffct-19997 air in balloons, ffct-20393 metal bridges, ffct-21565 ice), so one grep settles four titles at once."
+  },
+  {
+   "id": "ffct-02706",
+   "pattern": "tortoise->pawikan",
+   "note": "title_bis \"Hinay nga Pawikan sa Yuta\" names a sea turtle (pawikan) for a land tortoise, and the card is specifically about walking on LAND - the exact land/sea distinction the wrong word destroys. The body never gives a Cebuano name for the animal (it leaves \"tortoise\" in English: \"Hinay molakaw ang tortoise kay bug-at ang bao niini\"), so a Cebuano-only grade-5 reader takes pawikan as the referent and learns that a sea turtle is the slow land-walker. In Cebuano the land turtle is bao; pawikan is strictly the marine turtle."
+  },
+  {
+   "id": "ffct-02894",
+   "pattern": "garbled-title-sakit",
+   "note": "title_bis 'Bola Lukong Sakit' for 'Ball-and-Socket Joint': 'sakit' means pain/illness and appears nowhere in the card (body is about the joint's range of motion) and 'lutahan' (joint) is missing, so the title announces a card about joint PAIN. Body itself is correct."
+  },
+  {
+   "id": "ffct-02924",
+   "pattern": "garbled-title-sakit",
+   "note": "title_bis 'Cartilage Sakit Buki' for 'Joint Cartilage Cushion': again injects 'sakit' (pain), which the card never mentions, and 'Buki' is not a word (apparently a broken 'bukog'). Title reads as cartilage pain rather than cartilage as a cushion; body is fine."
+  },
+  {
+   "id": "ffct-02888",
+   "pattern": "garbled-title-token",
+   "note": "title_bis 'Ngabil Mangungmnt Butete': 'Mangungmnt' is not a Cebuano (or any) word — corrupt token, unreadable. The body answers the question correctly, so the fact survives, but the shipped title is broken."
+  },
+  {
+   "id": "ffct-02836",
+   "pattern": "garbled-title-token",
+   "note": "title_bis 'Tulman Oras Tunaw Kaon' for 'Stomach Takes Hours': 'Tulman' is not a word (nearest real word is 'tul-an' = bone, which is off-topic for a stomach card). Rest of the title carries hours/digest/food; body is correct."
+  },
+  {
+   "id": "ffct-02965",
+   "pattern": "garbled-title-token",
+   "note": "title_bis 'Siyensya sa Tree Rin': 'Rin' is a truncated 'Ring' — broken token in a shipped title. Low severity: body uses 'singsing sa kahoy' correctly."
+  },
+  {
+   "id": "ffct-03031",
+   "pattern": "cat->iro",
+   "note": "title_bis \"Leon nga Daku nga Iro\" for title_en \"The Lion the Great Cat\" — `iro` is DOG. The body correctly says `iring` (cat), but the headline itself asserts the lion is a big dog. Same defect class as the known cat-titled-with-iro example."
+  },
+  {
+   "id": "ffct-02975",
+   "pattern": "fiber->hilo",
+   "note": "\"ang abaka gitanom para sa hilo, dili sa prutas\" — EN is \"grown for its fiber\". In Cebuano `hilo` reads as POISON (this same batch uses it that way in ffct-03024 liver `mga hilo`, ffct-03099 `hilo sa putyukan` = venom, ffct-03080 `makahilo`). Nothing in the card restores fiber (`lanot`), so the child learns abaca is grown for poison. Flagging despite the thread sense of hílu, because the corpus itself uses hilo = poison."
+  },
+  {
+   "id": "ffct-03058",
+   "pattern": "title-negation",
+   "note": "title_bis \"Kabaw Dili Asin Yuta\" for title_en \"Carabao Licks Salty Soil\" — the verb is gone and `Dili` (= not) sits in its place, so the title reads as a negation of the very fact the card teaches (looks like a corrupted `Dila`). Body is correct (`tilapan ... ang parat nga yuta`), but the title alone states the opposite."
+  },
+  {
+   "id": "ffct-03089",
+   "pattern": "feathers->buhok",
+   "note": "title_bis \"Makulay nga Buhok sa Pag-ikid\" for title_en \"Bright Feathers Attract Mates\" — `buhok` is HAIR; birds' feathers are `balhibo`, which is what the body (and the terms list) correctly uses. Lower severity than the others since the body restores it, but it is a title naming a different thing, same class as the iro case."
+  },
+  {
+   "id": "ffct-03195",
+   "pattern": "moth->kagaw",
+   "note": "title_bis \"Kagaw Makadungog Paniki\" for \"Moths Hear Bats\" — kagaw is germ/microbe, not moth. Corroborated: elsewhere in this very batch (ffct-03225) and across the corpus kagaw is consistently used for germs, while every other moth card titles it anunugba or gamugamo. Title reads \"Germs Can Hear Bats\"; only the body (anunugba) names the right animal."
+  },
+  {
+   "id": "ffct-03200",
+   "pattern": "rooster->tandok",
+   "note": "title_bis \"Tandok\" for \"Rooster\" — tandok is the traditional cupping/suction horn, not a rooster. Body correctly says sunoy. Corpus check: \"Tandok\" occurs exactly once (this card); all other rooster cards title it Tandang or use sunoy, so this looks like a one-off corruption of tandang."
+  },
+  {
+   "id": "ffct-03255",
+   "pattern": "locust->dulaw",
+   "note": "title_bis \"Panon sa mga Dulaw\" for \"Locust Swarms\" — dulaw is turmeric/yellow (corpus elsewhere: \"modulaw\" = turn yellow), not locust (dulon/balang). Body correctly says balang/apan. \"Dulaw\" as a locust appears only here; other locust cards use Balang or Locust."
+  },
+  {
+   "id": "ffct-03401",
+   "pattern": "sweating->paghuyop",
+   "note": "EN: \"Sweating cools you down after playing outside, but you must drink water to replace what you lost...\" BIS: \"Ang paghuyop nagpalamig kanimo human maglaro...\". `paghuyop` is BLOWING (air out of the mouth) — the corpus uses it correctly that way elsewhere (ffct-05051 paghuyop sa samad, ffct-05080 elephant blowing air). Sweat (singot / pagsingot) never appears anywhere in the card, and title_bis is only \"Pagkawala sa Tubig\". A child reading only the Cebuano learns that BLOWING cools you and never learns that sweating is what cools you and what drains the water that must be replaced — the card's whole causal fact is gone. Same family as the known `pagpanghupaw` (sighing) defect."
+  },
+  {
+   "id": "ffct-03394",
+   "pattern": "ant->langgam",
+   "note": "EN: \"...the queen can live for years since all new ants come from her.\" BIS: \"...kay gikan kaniya ang tanang bag-ong langgam.\" In Cebuano `langgam` = BIRD (Tagalog false friend, where langgam = ant); the corpus uses langgam ~1000x correctly for birds. The fact-bearing clause therefore says the ant queen produces all the new BIRDS, and the card never names ants in Cebuano (it keeps English \"worker ant\" and \"reyna\", nothing restores subay/hulmigas). Same false-friend defect appears in ffct-00110, titled \"Langgam sa Matag Tawo\" for an ants card."
+  },
+  {
+   "id": "ffct-03518",
+   "pattern": "wasp->putyukan",
+   "note": "English card is about a WASP (\"When a wasp stings, it releases a special smell that calls other wasps...\"). The Cebuano calls it \"putyukan\" throughout — title_bis \"Alarma sa Putyukan\" and body \"Kung manukol ang putyukan... magtawag sa ubang putyukan\" — and putyukan/putyokan is the honeybee, not a wasp. Nothing in the card corrects it, so a child reading only the Cebuano learns this about bees. This corpus already has distinct Cebuano words for wasp (kagitgit, tambuboan, tambubuk) plus untranslated \"wasp\", so putyukan here is a wrong-animal swap, not regional usage."
+  },
+  {
+   "id": "ffct-03673",
+   "pattern": "goosebumps->gansa",
+   "note": "title_bis \"Pagkurog ug Gansa\" renders \"goosebumps\" as gansa = a GOOSE, a different animal, for a card about shivering vs goosebumps. Corpus check: 9 cards use gansa and the other 8 are all real geese cards (honking, V-formation, ducks-and-geese), so gansa means goose everywhere else in this corpus. The body uses the correct word kilabot, but the header a child reads first says \"shivering and goose\"."
+  },
+  {
+   "id": "ffct-03560",
+   "pattern": "dog->aso",
+   "note": "EN \"A Chihuahua and a Saint Bernard are both the same species -- dogs!\" becomes \"Ang Chihuahua ug Saint Bernard parehong aso\" — in Cebuano aso is SMOKE, not dog. Corpus check is decisive: 213 cards use aso and every other one means smoke (cigarette smoke, cooking smoke, onion fumes), while dog is iro in 188 cards. The sentence carrying the fact tells a Cebuano-only child the two breeds are \"both smoke\"; only the title (Gidak-on sa Iro) hints at dogs."
+  },
+  {
+   "id": "ffct-03602",
+   "pattern": "tortoise->pawikan",
+   "note": "Card is about LAND tortoises living ~180 years, but title_bis is \"180 Tuig sa Kinabuhi sa Pawikan\" — pawikan is the sea turtle, which does not live 180 years. Corpus check: of 25 tortoise cards, 23 use bao/pagong/tortoise and only this one and ffct-02706 use pawikan, while pawikan is the sea-turtle word in 158 cards (incl. ffct-03666 prosthetic flipper). The body's \"baw-i sa yuta\" is correct, so the defect is the title attributing the number to the wrong animal."
+  },
+  {
+   "id": "ffct-03674",
+   "pattern": "adult->kaban",
+   "note": "title_bis \"Lalom Samat Kaban\" for \"Deep Cut Tell Adult\": kaban is a chest/box/vault (used correctly that way in ffct-00441 \"sama sa kaban nga nanalipod\"), never \"adult\", and samat is not a word (samad = cut). Same title bug recurs corpus-wide: \"206 Bones in Adults\" -> \"206 Bukog Kaban\" in both ffct-05855 and ffct-09441. Here the card never says hamtong anywhere — the body says tigulang (an old person) — so \"adult\" is not restored, and the title reads as a deep chest wound."
+  },
+  {
+   "id": "ffct-03786",
+   "pattern": "wasp->putyukan",
+   "note": "EN is about WASP venom (\"What's really inside a wasp's sting?\"); the Cebuano body says \"hilo sa putyukan\" twice, and putyukan is the honeybee. Corpus proof, no Cebuano intuition needed: ffct-03517 renders \"Wasps and hornets don't make honey - honey comes only from honeybees\" as \"Ang putakti ug hornet dili maghimo og dugos - ang tam-is nga dugos gikan ra sa putyukan\", i.e. the corpus itself uses putakti=wasp vs putyukan=bee; putyukan appears on 90 cards, overwhelmingly for \"bee\" (beekeepers, queen bee, honey, pollination). The tl of this same card says \"putakti\", so the Cebuano is the divergent one. A Cebuano-only child learns this is bee venom. Same swap recurs on ffct-00767, ffct-01283, ffct-02130, ffct-03099 (corpus elsewhere uses tambuboan/tambubuk for wasp), so the grep is worth running."
+  },
+  {
+   "id": "ffct-03719",
+   "pattern": "caterpillar->tangkong",
+   "note": "EN: \"hatches into a leaf-eating caterpillar\"; tl correctly says \"higad\". The Cebuano names the larval stage \"tangkong\" - water spinach (kangkong) - so the card reads \"the butterfly becomes a tangkong that eats leaves, then a pupa\", naming a vegetable as the life-cycle stage, and nothing in the card (title is just \"Siklo sa Alibangbang\") corrects it. Corpus evidence: \"tangkong\" occurs on only 2 cards, both caterpillar contexts (this one and ffct-11068 \"itlog, tangkong, pupa, alibangbang\"), while the corpus otherwise uses \"ulod\" for caterpillar (e.g. ffct-03849 \"Ulod sa Alibangbang\", ffct-03765) and spells the vegetable \"kangkong\" on 22 cards. Medium confidence - narrow grep (2 cards), both the same defect."
+  },
+  {
+   "id": "ffct-03925",
+   "pattern": "ant->langgam",
+   "note": "title_bis \"Milyon Langgam Kolonya\" for \"Millions in an Ant Colony\" — in Cebuano langgam is a BIRD (Tagalog false friend for ant); the card is about ants, and the body correctly says hulmigas. Corpus-wide leak: ~47 ant cards carry langgam (e.g. ffct-01749 \"Salag sa Langgam\" for Ant Nests)."
+  },
+  {
+   "id": "ffct-03980",
+   "pattern": "backbone->gusok",
+   "note": "\"invertebrate: mananap nga walay gusok\" — gusok is RIB, not backbone, so the Cebuano defines invertebrates as animals without ribs. Every other invertebrate card in the corpus uses gulugod / bukobuko / bukog sa likod (ffct-00105, ffct-00139, ffct-05662, ffct-07351). (Title \"Buto sa Wati\" is also Tagalog buto for bukog, but that one is recoverable.)"
+  },
+  {
+   "id": "ffct-04007",
+   "pattern": "mouse->guya",
+   "note": "title_bis \"Ilaga ug Guya nga Peste\" for \"Rats and Mice as Pests\" — guya is a CALF, not a mouse (same corpus uses it that way in ffct-06093, \"usa lamang ka guya ang ipanganak\" of a carabao). Title claims calves are household pests; body only says \"ilaga ug ilagang gamay\"."
+  },
+  {
+   "id": "ffct-03902",
+   "pattern": "jellyfish->labod",
+   "note": "title_bis \"Lawas sa Labod\" for \"Jellyfish Body\" — labod is a welt/wound mark in Cebuano (see ffct-13984 \"Kon adunay samad o labod nimo\"), not a jellyfish; the corpus's jellyfish words are dikya / salabay / bantol, and this card's own body uses dikya."
+  },
+  {
+   "id": "ffct-04093",
+   "pattern": "feathers->buhok",
+   "note": "title_bis \"Buhok nga Motabon sa Langgam\" = \"hair that covers the bird\". The card's entire claim is that birds are the ONLY animals with TRUE FEATHERS (body correctly uses balhibo throughout), so the title header names a different thing than the fact it heads - buhok is head hair and is never feathers. A child scanning titles reads the feather-uniqueness card as being about hair."
+  },
+  {
+   "id": "ffct-04029",
+   "pattern": "adult->tigulang",
+   "note": "title_bis \"Tigulang nga Pangayo sa Tabang\" for \"Trusted Adults for Help\": tigulang = elderly/old person, not adult (hamtong), and the phrasing reads as the old person asking for help rather than the child asking a trusted adult. The body correctly says \"ubang masaligang hamtong\", but the title changes who a struggling child is told to approach - on a socio-emotional safety card that swap matters."
+  },
+  {
+   "id": "ffct-04253",
+   "pattern": "ant->langgam",
+   "note": "Card is about a worker ant's antennae, but the Cebuano question asks 'Para unsa ang antennae sa langgam?' and the answer ends '...makig-istorya sa ubang langgam!'. In Cebuano langgam = BIRD (the ant sense is Tagalog). A child reading only the Cebuano is told birds have antennae and use them to talk to other birds; the single mid-sentence English 'worker ant' does not undo the question and the closing clause, which both name the wrong animal."
+  },
+  {
+   "id": "ffct-04281",
+   "pattern": "title-hollow-as-no-bones",
+   "note": "title_en 'Hollow Bird Bones' became title_bis 'Wala Bukog Langgam', which in Cebuano reads 'birds have no bones' — the opposite of the card's fact that bird bones are hollow and hold less marrow. The body never repairs it because it never uses 'bukog': it says 'buto' three times ('gaan ang buto sa langgam', 'hawan nga buto sa langgam'), and 'buto' is not Cebuano for bone (that is Tagalog; Cebuano 'buto' = burst/explode, and is vulgar slang). So the false title claim stands uncorrected for a Cebuano-only reader."
+  },
+  {
+   "id": "ffct-04417",
+   "pattern": "cassava->kamote",
+   "note": "Tapai card: EN says tapai is fermented from \"rice or cassava\"; bis says \"gikan sa bigas o kamote\". In Cebuano `kamote` is sweet potato, a different plant from cassava (balanghoy / kamoteng kahoy). Nothing else in the card corrects it, so a child learns the wrong source crop."
+  },
+  {
+   "id": "ffct-04430",
+   "pattern": "garbled-title-landslides",
+   "note": "title_bis is \"Reflex Braha Landslides\" for title_en \"Automatic Balance Reflex\". `Landslides` names an unrelated phenomenon (dahili/landslide) and `Braha` is not a Cebuano word; the title tells the child the card is about landslides, not about the arm-out balance reflex the body describes (body text itself is correct)."
+  },
+  {
+   "id": "ffct-04415",
+   "pattern": "common->kasingkasing",
+   "note": "title_bis \"Darwin ug Kasingkasing Ninuno\" for title_en \"Darwin Common Ancestors\": `kasingkasing` means heart, so the title reads \"Darwin and the Heart Ancestor\". Body correctly says \"managsamang katigulangan\", but the title names a different thing (heart) that has nothing to do with common descent."
+  },
+  {
+   "id": "ffct-04337",
+   "pattern": "title-heating-not-cooling",
+   "note": "title_bis \"Pagbahinbahin sa Pagpainit\" (distributing/partitioning of heating) for title_en \"Sweat Cools the Body\" — the title states the opposite direction (pagpainit = causing heat) and never mentions singot. The body sentence is correct (\"magpagawas og singot aron pabugnawon ang lawas\"), so this is a title-only reversal."
+  },
+  {
+   "id": "ffct-04476",
+   "note": "EN lists \"cockroaches, grasshoppers, dragonflies, and crickets\"; the Cebuano renders dragonfly as `tabanog`, which is a KITE (the flying toy), not an insect. Never corrected in the card, so the incomplete-metamorphosis list contains a toy. Corpus check confirms the error is isolated: the 7 other cards containing `tabanog` are all about kites, while dragonfly is rendered `tutubi`/`alindanaw`/`alindahaw` in 23 other cards.",
+   "pattern": "dragonfly->tabanog"
+  },
+  {
+   "id": "ffct-04539",
+   "note": "Queen-ant card: the body opens \"Ang bag-o nga reyna sa langgam mokalot og gamayng lungag\" — `langgam` is BIRD in Cebuano (ant = `hulmigas`/`hantik`; `langgam`=ant is Tagalog interference). The body never says ant again, so a child reads that a new queen BIRD digs a chamber and raises workers. Only the compact title_bis (\"Reyna sa Hulmigas\") is correct. Same false-friend appears elsewhere in the corpus (e.g. ffct-00110, an ants card titled \"Langgam sa Matag Tawo\"), so the grep is worth running.",
+   "pattern": "ant->langgam"
+  },
+  {
+   "id": "ffct-04556",
+   "note": "EN: \"one of the rarest birds in the Philippines\". Cebuano: \"usa sa pinakalangitnon nga langgam\" — `langitnon` means heavenly/celestial, not rare (`talagsaon`). The card's headline fact (rarity) is gone and replaced with a meaningless claim; \"makita lamang sa Sulu ug Tawi-Tawi\" gives restricted range, not rarity, so it is not recoverable. `langitnon` occurs nowhere else in the corpus, so this is a one-off, not a convention.",
+   "pattern": "rare->langitnon"
+  },
+  {
+   "id": "ffct-04685",
+   "pattern": "ant->langgam",
+   "note": "Worker ants become birds. EN \"Worker ants are female ants that cannot have babies\" -> BIS \"Unsay trabaho sa manggagawang langgam? Ang manggagawang langgam mga babaye nga langgam nga dili na makapanamkon... nagbantay sa pugad\". In Cebuano langgam = BIRD (Tagalog false friend; other cards in this same batch use langgam correctly for birds, e.g. ffct-04634 \"Philippine bulbul usa ka lumad nga langgam\"). Reinforced by \"pugad\" (bird nest) instead of salag/balay sa hulmigas. The body never says ant; only title_bis (\"Mamumuo nga Hulmigas\") disagrees, so the answer text a child reads teaches that worker BIRDS are sterile females that tend eggs and larvae."
+  },
+  {
+   "id": "ffct-04699",
+   "pattern": "ant->langgam",
+   "note": "Zombie-fungus card asks about the wrong animal. EN \"Can a fungus control an ant's mind? ...infects carpenter ants... forcing the ant to climb\" -> BIS question \"Makakontrol ba sa hunahuna sa LANGGAM ang fungus?\" and \"mopugos sa LANGGAM nga mokatkat\". langgam = bird in Cebuano, so the question and the key clause are about a bird; the only ant reference left is the untranslated English \"carpenter ant\", which a grade-5 Cebuano reader cannot be expected to decode. Child comes away believing Ophiocordyceps mind-controls birds."
+  },
+  {
+   "id": "ffct-04774",
+   "pattern": "ants->langgam",
+   "note": "title_bis \"Langgam ug Beetle\" for \"Ants and Beetles Clean\": in Cebuano langgam = BIRD (the corpus uses langgam for birds in 700+ cards, and hulmigas/hantik for ants — the body of this very card says \"Ang hulmigas ug bakukang\"). The title names a different animal than the card. Same defect recurs elsewhere in the corpus (ffct-00110 \"Langgam sa Matag Tawo\" = Ants Per Person, ffct-13974 \"Langgam sa Linya\" = Ants Follow Scent Lines), so the grep is likely to find real siblings."
+  },
+  {
+   "id": "ffct-04834",
+   "pattern": "fibers->himbis",
+   "note": "Patola/loofah card: EN \"when left to ripen, its dried fibers become a natural scrubbing sponge\" -> BIS \"ang gahi nga himbis niini mahimong natural nga panghugas\". himbis = SCALES (fish/reptile/pangolin scales — that is how the corpus uses it elsewhere, e.g. ffct-04748 pangolin). Fiber is lanot/himaymay in this same corpus (ffct-00202 \"Lanot sa Pinya\", ffct-04806 \"himaymay\"). Nothing in the card corrects it, so the child is told the loofah sponge comes from hard scales/rind rather than dried fibers."
+  },
+  {
+   "id": "ffct-04873",
+   "pattern": "blow nose->pagsinghot",
+   "note": "title_bis \"Hinay nga Pagsinghot\" for \"Blow Nose Gently\" — singhot is sniffing/inhaling through the nose, the opposite direction from blowing out; the body correctly says \"hinay-hinay huypon ang ilong\". Flagged because it is the title (headline read on its own) and it reverses the direction of the very action the card is teaching, not just wording."
+  },
+  {
+   "id": "ffct-04881",
+   "pattern": "piglets->uyok",
+   "note": "title_bis \"Uyok sa Baboy Ramo\" for \"Warty Pig Piglets\". uyok is not the young of an animal (it is marrow/pith; the only other corpus uses are ffct-24119 and ffct-33414 where it is stretched to mean faint/weak). The body correctly says \"anak sa baboy ihalas\", so the title is the defect: it does not name piglets at all. Lower severity than the other three — flagged only because title_bis was called out for checking."
+  },
+  {
+   "id": "ffct-05158",
+   "pattern": "toad->kabkab",
+   "note": "Toad card: the Cebuano body calls the animal `kabkab` twice ('Moambak ba ang kabkab sama sa baki? Ang kabkab naay mas mubo nga mga tiil...'). Corpus-wide `kabkab` is the moth (ffct-02117, ffct-02174, ffct-03612, ffct-03704, ffct-05371 all use it for moth/gamugamo), while toad is `bakulaw` (ffct-02488 'Bakulaw vs Baki', ffct-05377 'kalainan sa baki ug bakulaw'). Only the title here says `Bakulaw`, so the body teaches that a moth has short legs and walks instead of hopping - a different animal, and false about moths."
+  },
+  {
+   "id": "ffct-05159",
+   "pattern": "sneeze->sipon",
+   "note": "The card's fact is that pollen triggers a SNEEZE via histamine, but the Cebuano says `magsipon ka sa polen` / `mao nga magsipon ka` - sipon is colds/runny nose, never sneeze (the corpus uses bahing for sneeze and sip-on specifically for virus-caused colds, e.g. ffct-12167 'daghang lainlaing virus ang hinungdan sa sip-on', ffct-13177 'Makatakod ang sip-on kay virus ang hinungdan'). Neither the title (`Histamine sa Polen`) nor the body restores the sneeze, so a child reads that pollen gives you colds - contradicting the corpus's own virus cards. Lower confidence than the first flag, since a runny nose is also a real pollen symptom."
+  },
+  {
+   "id": "ffct-05460",
+   "pattern": "diarrhea->tibi",
+   "note": "EN: antibiotics kill gut bacteria \"which is why some people get diarrhea\". BIS says \"usahay magtibi ang moinom niini\" — tibi is CONSTIPATION, the opposite symptom. The card never says kalibanga, so the fact is unrecoverable and a child learns the reverse. Corpus check confirms the sense: ffct-14019 uses 'tibi' for constipation (fiber prevents it), while diarrhea is 'kalibanga' in 32 other cards."
+  },
+  {
+   "id": "ffct-05371",
+   "pattern": "moth->kabkab",
+   "note": "Moth card: body says \"antena sa kabkab\", title_bis says \"Anunghoy\". Neither names a moth recognisably — 'kabkab' is the cassava cracker (see ffct-18262) and this same corpus also uses it for TOAD (ffct-06098, ffct-10639, ffct-05158); 'anunghoy' occurs exactly once in 47k cards, i.e. not a word. Corpus standard for moth is anunugba / gamu-gamo (33+ cards). Child reading only the Cebuano cannot tell which animal has feathery antennae."
+  },
+  {
+   "id": "ffct-05377",
+   "pattern": "toad->bakulaw",
+   "note": "Frogs-vs-toads card renders 'toad' as 'bakulaw', which in Bisaya means a large ape / monster, not an amphibian. The card only lists traits (dry bumpy skin, lives on land) and never identifies bakulaw as a toad-type animal, so the frog/toad contrast is not learnable. Flagged with moderate confidence — note the corpus is unstable on 'toad' (bakulaw, kabkab, kabakaba, plain 'toad' all appear), so a Cebuano reviewer should pick one standard term."
+  },
+  {
+   "id": "ffct-05396",
+   "pattern": "spur->tuko",
+   "note": "title_bis \"Echidna nga Tuko Walay Hilo\" for EN \"Echidna's Harmless Spur\": 'tuko' is the gecko (corpus ffct-01153 \"Tuko sa Balay\"), so the standalone title labels the echidna a gecko. Body does restore it (\"paryente sa platypus… adunay tibo pud sa tiil\"), so this is title-only — same class as the cat-card-titled-iro defect. Likely a mangling of 'tunok' (spine); weakest of the four."
+  },
+  {
+   "id": "ffct-05580",
+   "pattern": "muscle->otot",
+   "note": "EN: zygomaticus major is 'the muscle that pulls up the corners of our mouth'. BIS renders muscle as 'otot' — in Cebuano 'otot' is fart/flatulence, not muscle. The card never uses kaunuran/unod anywhere, so a Cebuano-only reader is told the zygomaticus major is an 'otot'. Corpus check: 392 sweep cards contain 'muscle' in EN and every other one uses kaunuran/kaunoran/unod; 'otot' occurs exactly once corpus-wide, here."
+  },
+  {
+   "id": "ffct-05539",
+   "pattern": "floats->mobangga",
+   "note": "EN: water hyacinth 'floats freely on the surface of rivers and lakes' — the point of the card, and what distinguishes it from the rooted water lily it is contrasted with. BIS says 'mobangga sa ibabaw sa mga suba ug lanaw' — mobangga = collides/bumps into, not floats. The floating fact is not restored anywhere else in the card. Corpus check: of 557 cards with float/floating in EN, 477 use lutaw; 'bangga' forms otherwise appear only in genuine collision cards (particles, echoes, musk ox headbutt)."
+  },
+  {
+   "id": "ffct-05608",
+   "pattern": "ant->langgam",
+   "note": "title_bis 'Reyna sa Pait sa Langgam' for title_en 'Bait Reaching the Queen' is wrong twice over: 'langgam' is Tagalog for ant but means BIRD in Cebuano (the card is about ants — body correctly says hulmigas), and 'pait' means bitter, not bait ('paon', which the body uses). Title reads as 'Queen of the bitterness in the bird'. Corpus check: of 147 ant cards, 107 use hulmigas and 47 use langgam — a Tagalog false-friend leak worth a corpus-wide grep, incl. bodies (e.g. ffct-01426 'Giunsa pagpangita og pagkaon sa langgam?' for 'How do ants find food?')."
+  },
+  {
+   "id": "ffct-05626",
+   "pattern": "bait->pait",
+   "note": "title_bis 'Pait sa Anay' for title_en 'Termite Bait' — 'pait' is bitter/bitterness, not bait; the body correctly uses 'paon'. English 'bait' appears to have been read as the Cebuano word 'pait'. Lower severity than ffct-05608 since the body restores 'paon' in the same sentence, but the displayed title states a different thing. Corpus check: EN 'bait' + BIS 'pait' hits exactly 2 cards, both in this batch."
+  },
+  {
+   "id": "ffct-05495",
+   "pattern": "braces->modagan",
+   "note": "title_bis 'Usa ka Tiil Taas, Usa Modagan' = 'one leg up, one RUNS', for title_en 'One Leg Lifts, One Braces'. The card's whole fact is that the other leg stiffens to hold you up (body has it right: 'motig-a ang pikas aron mosuporta'), so the title asserts the opposite action. Title-only defect, restored by the body, but it is a factual change rather than awkward wording."
+  },
+  {
+   "id": "ffct-05652",
+   "pattern": "unwashed->hugot",
+   "note": "EN \"Dust mites hiding in unwashed bedding\" -> BIS \"Ang mga dust mite sa dili hugot nga higdaanan\". `hugot` is tight/firm, so the Cebuano says \"bedding that isn't tight\" (loose bedding), not unwashed bedding (dili hinugasan/dili labhan). Nothing else in the card restores washing, so the child is left with a false attribute — that looseness of the bedding is what harbours dust mites — and loses the one actionable fact (wash the bedding). Likely a slip from `hugas`."
+  },
+  {
+   "id": "ffct-05803",
+   "pattern": "sweat->bahu",
+   "note": "title_bis entity swap. title_en \"Sweat Reduces Urine\" -> title_bis \"Bahu nga Minus sa Ihi\". Cebuano 'bahu/baho' is smell/stench, not sweat (singot) — the title a child sees says a SMELL is what reduces urine. The body restores it (\"mas mosingot ta\"), so the defect is confined to the title, same shape as the gold-set 'asin'-for-smoke title flag. Corpus evidence: bodies use 'singot' everywhere, while 'bahu' is used for English 'sweat' in 4 titles corpus-wide (ffct-01291 \"Bahu Pabugnaw sa Lawas\", ffct-11579 \"Kilay nga Babag sa Bahu\", ffct-11872 \"Bahu nga Walay Baho\" = 'smell that has no smell', ffct-25325) — a clean, low-noise grep pair."
+  },
+  {
+   "id": "ffct-05855",
+   "pattern": "adult->kaban",
+   "note": "title_bis entity swap. title_en \"206 Bones in Adults\" -> title_bis \"206 Bukog Kaban\". Cebuano 'kaban' is a chest/trunk/box (or a sack of grain), never 'adult' — the title reads as '206 bones [in the] chest', a false claim about where the 206 bones are. Correct word is 'hamtong', which this card's own body uses (\"Ang lawas sa hamtong nga tawo adunay 206 ka bukog\") and which the corpus uses 177 times. 'kaban' has only 4 corpus hits and 3 of them are this same adult->kaban mistranslation (ffct-09441 same card, and ffct-03674 \"Deep Cut Tell Adult\" -> \"Lalom Samat Kaban\", body 'tigulang'), so the grep is almost noise-free."
+  },
+  {
+   "id": "ffct-05864",
+   "pattern": "hollow bones->wala bukog",
+   "note": "title_bis states a false fact. title_en \"Hollow Bones Light Birds\" -> title_bis \"Wala Bukog Langgam\" = 'bird has no bones'. Birds' bones being hollow (not absent) is the whole point; the body says it correctly (\"hungaw ang daghan sa iyang mga bukog, may sulod nga hangin\"), but a title-only reader is told birds have no bones. Corpus evidence that 'wala' is the wrong word here: hollow is rendered 'guwang' 36x (e.g. ffct-02021 \"Guwang nga Bukog sa Langgam\") plus 'hawan'/'hungaw'; meanwhile 'wala bukog' is used correctly for genuinely boneless things (ffct-13375 \"Organ nga Wala Bukog\" = organs with no bones), which is exactly the reading it forces here. Systematic: 5 hollow-bone cards carry this same title (ffct-04281, ffct-07676, ffct-08329, ffct-10741, ffct-14140)."
+  },
+  {
+   "id": "ffct-05835",
+   "pattern": "title-topic-swap-appearance",
+   "note": "title_bis names a different topic than the card. title_en \"Wild Pig Family Groups\" -> title_bis \"Panagway sa Ligaw nga Baboy\" = 'Appearance/Looks of the wild pig'. The card is entirely about social structure (\"nagpuyo nga magkauban sa gagmay nga pundok sa mga inahan ug nati\"); nothing about looks. 'panagway' is unambiguously face/appearance and the corpus uses it that way 22 times (\"lahi ang panagway sa managsoon\", \"Mausab ang panagway sa grassland\"), so this is a misuse, not regional variation. Lower severity than the three above — the title is off-topic rather than false, and the body carries the fact — but the family-group idea is absent from the title a child sees. Deliberately given a slug, not a word pair: 'panagway' is correct for 'appearance' in general and a corpus-wide grep would be ~96% false hits."
+  },
+  {
+   "id": "ffct-05952",
+   "pattern": "shell->balhibo",
+   "note": "Ocean acidification card: Cebuano ends \"nagpalisod sa mga shellfish ug coral sa paghimo sa ilang mga balhibo\" — balhibo is fur/feathers/body hair, not a shell. The corpus's own word is kabhang (e.g. ffct-05967 \"Kabhang sa Hipon\", ffct-06018). The Cebuano body never names a shell anywhere, so a Cebuano-only child learns that acid makes it hard for shellfish and coral to grow FUR. The only 'Shell' on the card is the untranslated English word sitting in title_bis (\"Ocean Acidification Shell\"), which does not repair the sentence."
+  },
+  {
+   "id": "ffct-05941",
+   "pattern": "seal (animal)->selyo",
+   "note": "Krill food-chain card renders the animal seal as \"selyo\": \"nagsalig kaayo ang mga balyena, penguin, ug selyo niini isip pagkaon.\" In Cebuano selyo is a stamp / safety seal / gasket — the same corpus uses it in exactly that sense (ffct-11108 \"Tibuok nga selyo\" = intact medicine safety seal; ffct-17259 rubber seals). The corpus's baby-seal card ffct-11331 keeps the English word \"seal\" for the animal. Nothing in this card restores it, so the child is told whales, penguins and stamps depend on krill and cannot name the third animal."
+  },
+  {
+   "id": "ffct-06020",
+   "pattern": "toad->kabakaba",
+   "note": "Toad-vs-frog card names the toad twice with words that are not toad: body \"Makalukso ba ang kabakaba sama sa baki? ... mas mubo ang paa sa kabakaba\", and title_bis \"Baki vs Hibya sa Lukso\". Corpus-wide, toad is baki, plain \"toad\", kamprag or kambabalod (ffct-00232 \"Ang baki o toad\"; the parallel toad/frog card ffct-11999 writes \"toad\" in Cebuano); \"kabakaba\" occurs nowhere else as toad and IS listed in the corpus's own terms for a BUTTERFLY card (ffct-13032, alongside alibangbang/paruparo), and \"hibya\" occurs nowhere else at all. A Cebuano-only child cannot tell which animal is being compared to the frog, and may read it as a butterfly with short legs. Medium confidence on the word sense — the flag rests mainly on the card naming the same animal two different non-corpus ways and never saying toad/baki for it."
+  },
+  {
+   "id": "ffct-06139",
+   "pattern": "glide->dagan-dagan",
+   "note": "Whole card is about gliding, and both the question and the answer call it 'pagdagan-dagan' (running/scampering around) with no air context in the question: 'Nganong mas makatipig og kusog ang pagdagan-dagan?' A child reads that running around saves energy compared to real flying because you don't have to flap wings — the concept of gliding (staying airborne without flapping) is never named. Cebuano for glide is 'modahili' / 'molutaw', which this same corpus uses correctly in the colugo card ffct-06090 ('modahili gikan sa kahoy paingon sa kahoy')."
+  },
+  {
+   "id": "ffct-06187",
+   "pattern": "glide->dagan-dagan",
+   "note": "'Dili sama sa colugo nga nagdagan-dagan lang' for 'Unlike the colugo, which only glides' — states flatly that the colugo just runs around, with no 'sa hangin' to rescue it, and the card never corrects it. The headline fact (the bat is the only truly flying mammal) does survive, so this is the weaker of the two, but the contrast the card is built on is reversed into a false claim about the colugo."
+  },
+  {
+   "id": "ffct-06336",
+   "pattern": "evaporates->nagsuyop",
+   "note": "Transpiration direction reversed at the leaf. EN: 'As water evaporates from tiny leaf pores, it pulls more water up through the xylem.' BIS: 'Samtang nagsuyop ang tubig sa stomata, naghila kini og tubig pataas sa xylem' — 'suyop' is suck/absorb (used that way elsewhere in the corpus: lorikeet tongue, remora sucker), so the Cebuano says water is being sucked IN at the stomata, the opposite of evaporating out. Evaporation is never mentioned; sibling cards render this correctly with 'alisngaw'/'mogawas' (ffct-01646, ffct-04162). A child reads that water enters through the leaf pores."
+  },
+  {
+   "id": "ffct-06368",
+   "pattern": "boil->pakuanon",
+   "note": "The safety instruction is lost. EN: 'boiling or filtering water keeps it safe to drink.' BIS: 'luwas ra imnon ang tubig kon pakuanon o paagion sa filter'. 'Pakuanon' is not a word for boiling — it reads as 'have it whatchamacallit-ed' from the filler 'kuan' (the only other corpus hit, ffct-24137, is the same filler artifact). Cebuano for boil is 'pakuluon' / 'pabukalon' (the corpus uses 'pagkulo', 'pagpabukal' elsewhere). Child gets only 'filter it', and this is a flood/cholera card."
+  },
+  {
+   "id": "ffct-06362",
+   "pattern": "galangal->lagkaw",
+   "note": "EN names ginger and galangal; BIS says 'Ang luya ug lagkaw'. 'Lagkaw' is a hut/shed, not a plant — galangal is 'langkawas' (zero corpus hits; 'lagkaw' appears only in this card). Never corrected anywhere on the card, so the second example plant is a different thing entirely."
+  },
+  {
+   "id": "ffct-06242",
+   "pattern": "ribs->gukod",
+   "note": "title_bis 'Butete Walay Gukod' = 'pufferfish has no chase/pursuit'; the fact is ribs ('gusok', used correctly in the body). Same title typo recurs in ffct-00431 ('Gukod nga Bantay sa Baga' on a rib-cage card), so the pair is worth greping — 'gukod' legitimately means chase in ffct-28499 / dcard-03520, never ribs. Body does restore 'gusok', so this is a title-field defect, not a lost fact."
+  },
+  {
+   "id": "ffct-06230",
+   "pattern": "scar->peke",
+   "note": "title_bis 'Lawom nga Samad Peke' = 'deep wound fake'. 'Peke' means counterfeit in this corpus (platypus ffct-01802, fool's gold ffct-32719, kwek-kwek ffct-17499); the intended word is 'peklat'/'piklat' (scar), which the body does use. Title-field defect: the card face states a different thing, though the body restores the fact."
+  },
+  {
+   "id": "ffct-06411",
+   "pattern": "millipede->alupihan",
+   "note": "title_bis \"Alupihan\" names a centipede, not the millipede the card is about. The corpus itself keeps the two apart (Centipede => \"Alupihan\" in ffct-00140/00581/01719; Millipede => \"Milipid\" in ffct-00135/01041/03115, and ffct-03345 \"Alupihan ug Milipid\" uses both side by side), so the Cebuano title names a different animal. The body only ever says the English \"millipede\", so nothing in the Cebuano corrects it."
+  },
+  {
+   "id": "ffct-06372",
+   "pattern": "hides->mangayam",
+   "note": "title_bis \"Camouflage Mangayam\" says camouflage HUNTS (mangayam = to hunt), reversing the card's point — English title is \"Camouflage Hides Animals\" and the body is about prey being hard for predators to spot. No other camouflage card in the corpus uses a hunting word (they use Camouflage / Pagtago / Kamuplong / Pagtakoban); cf. the same misuse in ffct-10579."
+  },
+  {
+   "id": "ffct-06454",
+   "pattern": "floats->lupad",
+   "note": "title_bis \"Tambok Dugong Lupad\" says the dugong's fat FLIES (lupad) where the English title is \"Dugong Fat Floats\"; float is lutaw, which the body correctly uses (\"sayon molutaw\"). Read on its own the title states something physically false about a sea mammal."
+  },
+  {
+   "id": "ffct-06453",
+   "pattern": "knuckle->kuko",
+   "note": "title_bis \"Crack Kuko Gas\" puts the cracking in the fingernails (kuko = nail/claw) instead of the knuckles/finger joints of the English \"Knuckle Gas Bubbles\". The body says \"pag-crack sa bukog\" and mentions \"lutahan\", so the joint is never named in the title's terms — a child reading the title alone gets the wrong body part."
+  },
+  {
+   "id": "ffct-06613",
+   "pattern": "ants->langgam",
+   "note": "EN 'eats ants and termites' -> BIS 'mokaon og langgam ug anay'. In Cebuano langgam = BIRD (same batch, ffct-06517: 'Ang manok langgam' = a chicken is a bird); the Tagalog sense langgam = ant does not apply. anay (termite) is right, so the Cebuano card says the pangolin eats birds and termites. Ants appear nowhere on the card, so the fact is unrecoverable from the Cebuano alone."
+  },
+  {
+   "id": "ffct-06796",
+   "pattern": "slimy->pisot",
+   "note": "Cold-Blooded Snakes. EN myth is \"cold and slimy\" skin; bis renders slimy as `pisot` in BOTH the question (\"Kanunay ba bugnaw ug pisot ang panit sa bitin?\") and the answer (\"dili pisot\"). `pisot` means uncircumcised (and is a kids' taunt word), not slimy — it is never corrected, so the myth the card exists to bust is not stated in Cebuano at all. Corpus evidence: `danlog` is the corpus's word for slippery/slimy (67 cards); this is the only `pisot` in 47k cards."
+  },
+  {
+   "id": "ffct-06736",
+   "pattern": "sucks blood->nangihap",
+   "note": "Parasitism. \"sama sa garapata nga nangihap sa dugo sa iro\" — `nangihap` = counting (ihap = to count), not sucking; corpus uses suyop/supsop/sipsip everywhere else and this is the only `nangihap` in 47k cards. The defining sentence is also carried by two non-words/unparseable forms — `makiginabaw` for \"benefits\" and `naano-ano` for \"is harmed\" — so the parasite-gains / host-is-harmed relationship plus its one concrete example are not recoverable from the Cebuano."
+  },
+  {
+   "id": "ffct-06808",
+   "pattern": "ants->langgam",
+   "note": "Ants Store in Nest. title_bis \"Langgam Tipon Salag\" uses the Tagalog false friend: in Cebuano `langgam` is a BIRD, not an ant (body correctly says `hulmigas`). Titled card therefore tells a Cebuano child birds store seeds in their nests. Systemic, not a one-off: same swap in ffct-01726 (\"Langgam nga Habol\" = Weaver Ants), ffct-01749 (\"Salag sa Langgam\" = Ant Nests), ffct-13875 (\"Reyna sa Langgam\"), ffct-13974, ffct-11300, ffct-14513 — grep of titles will be noisy because `langgam` is legitimately bird elsewhere, so pair it with an English-side \"ant\" check."
+  },
+  {
+   "id": "ffct-06731",
+   "pattern": "thick->dagkot",
+   "note": "Thick Bark Resists Fire. title_bis \"Dagkot nga Panit Batok sa Kalayo\" — `dagkot` in Cebuano is to LIGHT/kindle (a candle, a fire), not thick; on a fire card the title reads as \"lit bark\", the opposite of the card's point. Body restores it with `baga nga panit`. Same wrong title word in ffct-23565 (\"Dagkot nga Bungbong\" for Thick Walls), so it is a repeat defect worth grepping."
+  },
+  {
+   "id": "ffct-06697",
+   "pattern": "title-drops-flapping",
+   "note": "Gliding Uses No Wing Flaps. title_bis \"Gliding nga Walay Pakpak\" = \"gliding WITHOUT WINGS\" — `pakpak` is the noun wing throughout this corpus (64 cards), so the title asserts something false: gliders do have wings/membranes, they just do not flap. Body has it right (\"walay pagkampay sa pako\"), so this is title-only, but the false claim is the exact thing the card is correcting. (Body's `pagdagan-dagan` for gliding is systemic in the corpus — colugo/flying-fish cards — so I did not flag that.)"
+  },
+  {
+   "id": "ffct-06707",
+   "pattern": "legs->bitay",
+   "note": "Crab Legs. title_bis \"Bitay sa Alimango\" = \"hanging of the crab\"; `bitay` is hang/hanging in every other use in this corpus (98 bodies, and 5 other titles all about hanging roots/bats/objects), never leg — the word for legs here is `tiil`, which the body uses correctly (\"napulo ka tiil\"). Lower severity than the others because the body restores the fact; reported because it is a wrong noun in a title, the pattern the cat/`iro` case flagged."
+  },
+  {
+   "id": "ffct-06865",
+   "pattern": "sticky->lapok",
+   "note": "Body: EN 'the pangolin uses a long sticky tongue' becomes 'mogamit ang pangolin og taas nga lapok nga dila' — lapok is MUD, not sticky (Cebuano for sticky is pilit/malagkit, which this corpus itself uses in ffct-36761 'malagkit'). Nothing in the card corrects it, so the Cebuano-only reader is told the pangolin has a long MUDDY tongue, and the mechanism that makes the tongue catch ants is gone."
+  },
+  {
+   "id": "ffct-06848",
+   "pattern": "title-drops-dont-negation",
+   "note": "title_bis 'Tan-aw dali Hikap Reef' for 'Look Don't Touch Reef' — the negation is gone and replaced by 'dali'. Corpus-wide check of every title containing 'dali' (60 cards) shows it always means fast/easy/quick, and as an imperative it means 'come/hurry', so the title reads 'Look, quickly touch the reef' — the opposite of the safety rule. Body ('tan-awa lang, ayaw hikapa') is correct, but this is a safety instruction inverted in the card's headline."
+  },
+  {
+   "id": "ffct-06943",
+   "pattern": "dark->mabug-at",
+   "note": "title_bis 'Rainforest Salog Mabug-at' for 'Dark Rainforest Floor' — mabug-at is HEAVY, not dark (dark = ngitngit, which this card's own body uses). 35 corpus uses of mabug-at all mean heavy/weight, and the same swap recurs in ffct-23475 ('A Shadow, a Dark Area' -> 'Anino Mabug-at Lugar'), so the pair is a real corpus pattern, not a one-off typo."
+  },
+  {
+   "id": "ffct-06964",
+   "pattern": "migrate->lubad",
+   "note": "title_bis 'Tulog Lubad o Kaupod' for 'Sleep, Migrate, or Adapt' — two of the three survival strategies are named as different things: 'lubad' is to fade/discolour (migrate = lalin, used correctly in the body as 'molalin') and 'kaupod' is a companion, not adapting/changing. Both words are hapax in the whole corpus, so this is a per-card corruption; the body lists the three strategies correctly."
+  },
+  {
+   "id": "ffct-07074",
+   "pattern": "yawn->hiyaw",
+   "note": "title_bis \"Hiyaw nga Lawom nga Ginhawa\" for \"A Yawn Is a Deep Breath\". Cebuano hiyaw = a shout/yell, not a yawn (yawn = huyab/panghuyab/hikab), so the title asserts \"a shout is a deep breath\" — a different bodily act. The body uses panghuyab correctly, so this is a title-only defect, but it is the same class as the cat-titled-iro case: the title names a different thing and is never corrected in the title itself."
+  },
+  {
+   "id": "ffct-07046",
+   "pattern": "millipede->ulahipan",
+   "note": "EN lists detritivores as \"cockroaches and millipedes\"; bis renders millipede as \"ulahipan\", which is the centipede (a predator, not a detritivore). The card then teaches that ulahipan eat dead matter and shred it for bacteria — false for centipedes, and nothing in the card corrects the swap. Lower confidence than the first flag: Philippine usage does conflate centipede/millipede and there may be no common Cebuano term for millipede, so keeping the English word would have been the safe choice."
+  },
+  {
+   "id": "ffct-07241",
+   "pattern": "medicine->gamot",
+   "note": "EN: bacteria are reprogrammed \"to make medicines, proteins, and enzymes\". BIS: \"ma-engineer aron makahimo og gamot, protina, ug enzymes\". In Cebuano `gamot` means ROOT, not medicine (Cebuano for medicine is `tambal`) — this corpus itself uses `gamot` for plant roots ~520x (e.g. ffct-07243 stilt roots, ffct-07259 mangrove roots) and `tambal` for medicine ~330x. A child reading only the Cebuano gets \"engineered to make roots, proteins and enzymes\"; nothing in the card restores 'medicine'. Caveat: Tagalog-influenced (Davao) speakers may read `gamot` as medicine, so verdict is plausible rather than certain; title_bis of ffct-07258 in this same batch shows the same Tagalog-ism but its body carries the fact, so that one passes."
+  },
+  {
+   "id": "ffct-07335",
+   "pattern": "half->kalimot",
+   "note": "title_bis \"Meiosis sa Kalimot\" for title_en \"Meiosis Halves Chromosomes\". Cebuano kalimot = forgetting (kalimot/nakalimot appears corpus-wide only in that sense, e.g. \"Ayaw kalimoti ang payong\"); half is katunga, which the card's own body uses correctly (\"makadawat lamang og katunga sa kromosoma\"). The title a child scans says \"Meiosis of forgetting\" -- the halving, which is the entire point of the card, is absent from it. Confirmed systematic, not a one-off typo: ffct-?? \"Charon, Half of Pluto\" => \"Charon, Kalimot sa Pluto\" makes the same substitution."
+  },
+  {
+   "id": "ffct-07303",
+   "pattern": "light->sugnod",
+   "note": "title_bis \"Color Blind Sugnod Prutas Lisod\" for title_en \"Color Blind Traffic Fruit\". Cebuano sugnod = firewood/fuel, and the corpus uses it that way consistently and correctly (\"Ipil-Ipil nga Sugnod\", \"Init sa Sugnod\", \"Gasoline isip Sugnod\"); the corpus's own word for a traffic light is suga (ffct-26029 / ffct-26275 \"Traffic Light\" => \"Suga sa Trapiko\"). The title names firewood where the card is about traffic lights. Same substitution elsewhere: ffct-22943 \"Daylight Instead of Lights\" => \"...Imbes Sugnod\", ffct-23515 \"Bulb Converts to Light\" => \"Bombilya Kuryente sa Sugnod\", ffct-01526 \"Termites Confused by Lights\" => \"...sa Sugnod\". Body is correct (\"ilaw sa trapiko\"), so the defect is confined to the title."
+  },
+  {
+   "id": "ffct-07417",
+   "pattern": "feathers->buhok",
+   "note": "title_bis \"Buhok sa Tago ug Show\" for title_en \"Feathers Hide or Show\". Cebuano buhok = the hair on a person's head (corpus uses it correctly that way: \"Melanin nga Kolor sa Buhok\", \"Keratin sa Buhok Kuko\"); bird feathers are balhibo/balahibo, which this card's own body uses (\"ang kolor sa balhibo niini\") and which the corpus uses in the parallel titles (\"Balahibo sa Agila\", \"Mga Klase sa Balhibo\"). The title tells a child the card is about birds' head-hair. Systematic: ffct-04661 \"Feathers Push Air for Flight\" => \"Buhok sa Lupad sa Langgam\", ffct-04093 \"Feathers Cover Bird Bodies\" => \"Buhok nga Motabon sa Langgam\"."
+  },
+  {
+   "id": "ffct-07276",
+   "pattern": "blink->kislap",
+   "note": "title_bis \"Reflex nga Kislap sa Panalipod\" for title_en \"Blinking Guards the Eye\". Kislap is sparkle/flash -- the corpus uses it for stars, fireflies and electric sparks (\"Kislap sa Alitaptap\", \"Kislap sa Bituon Dili Planeta\", \"Kislap Karga Lukso Hangin\") -- while its word for blinking is kurap (\"Kurap Batok sa Abog\", \"Reflex nga Pagkurap\", \"Walay Kurap nga Mata sa Insekto\"). The title names a flashing/sparkling eye instead of a blink. Weakest of the four: the body restores the action plainly (\"kusog nga mopiyong ang mata ... isip reflex aron manalipod\"), so this is a title-only scan-level defect."
+  },
+  {
+   "id": "ffct-07494",
+   "pattern": "ant->langgam",
+   "note": "Leafcutter ant card calls the ants `langgam` twice — in Cebuano `langgam` is a BIRD (Tagalog false friend). The question reads \"Pila ka langgam ang mahimong mopuyo sa usa ka kolonya?\" and the answer \"walo ka milyon ka mga trabahante nga langgam\" = eight million worker BIRDS living in underground tunnels. The stray English \"leafcutter ant\" and the title `hantik` do not undo a child reading 8 million birds in one colony. Note: this looks systematic — ~47 cards corpus-wide pair English \"ant\" with `langgam`, though several correctly use `hantik`, `hulmigas`, or `subay`."
+  },
+  {
+   "id": "ffct-07522",
+   "pattern": "fold->uyog",
+   "note": "Makahiya's one and only fact is its defense mechanism, and the Cebuano states the wrong mechanism: \"pinaagi sa dali nga pag-uyog sa mga dahon\" = by quickly SHAKING its leaves. The plant folds/closes its leaves (motikom / mokumo / pagpilo); `uyog` means to shake or sway (the corpus itself uses `pag-uyog` for earthquake shaking). Nothing else in the card restores the folding, so a child ends up believing makahiya shakes its leaves when touched."
+  },
+  {
+   "id": "ffct-07525",
+   "pattern": "fin->bagolbagol",
+   "note": "Manta ray's head fins are rendered `bagolbagol` = SKULL (the corpus uses `bagolbagol` for skull in 6 other cards: helmet, brain protection, calcium). The emphasised phrase reads \"duha ka morag-sungay nga bagolbagol sa ulo\" = two horn-like skulls on its head. The correct word `kapay` appears only in the title, never in the sentence itself, so the body asserts a different body part than the English."
+  },
+  {
+   "id": "ffct-07441",
+   "pattern": "tangy->pait",
+   "note": "Yogurt's flavour is given as \"pait nga lami\" = BITTER taste; the English says tangy (aslom/maaslom). Bitter is a distinct, wrong taste and nothing later in the card corrects it, so a child reading only the Cebuano learns yogurt tastes bitter. Lower severity than the others — the bacteria fact itself survives — but the taste claim is a factual property of the card and stands uncorrected."
+  },
+  {
+   "id": "ffct-07782",
+   "pattern": "relatives->managhigala",
+   "note": "EN asks why coral and jellyfish are RELATIVES (same cnidarian group). The Bisaya question asks 'Ngano nga managhigala ang coral ug dikya?' — managhigala = they are FRIENDS, not kin. The answer only says corals have stinging cells 'sama sa dikya' (like jellyfish) and never states they belong to the same group, so the relatedness fact the card exists to teach is not recoverable from the Cebuano; a child is left with a nonsense 'corals and jellyfish are friends' claim. Corpus note: 'managhigala' is used for English 'relatives' in exactly 3 cards (ffct-02117 butterfly/moth, ffct-09878 nodes/tonsils) — in ffct-02117 the answer restores it ('sakop sila sa usa ka grupo'), here nothing does."
+  },
+  {
+   "id": "ffct-07776",
+   "pattern": "moth->anuplos",
+   "note": "Card is about bark-coloured MOTHS and natural selection. title_bis correctly says 'Anunugba' (moth), but the body twice calls the animal 'anuplos' — the stinging/hairy caterpillar (Tagalog higad), a different creature. Corpus check: 'anuplos' occurs in this one card only, while 'anunugba' is used in 33 other moth cards, so it is an outlier slip rather than regional variation. Medium confidence on flag-worthiness: the science (camouflage -> survival) still lands and the title carries the right word, but the Q&A body names the wrong animal throughout."
+  },
+  {
+   "id": "ffct-07777",
+   "pattern": "spice->paminta",
+   "note": "title_bis 'Paminta nga Nutmeg' asserts nutmeg is a paminta (black pepper) — a different spice entirely; EN title is just 'Nutmeg Spice'. The body does call it 'usa ka panimpla ... gikan sa uga nga liso', which restores the category, so this is title-only, but it is the same shape as the known cat-titled-iro defect: a child reading the heading learns nutmeg is a kind of pepper. Corpus uses 'panakot/panimpla' for spice and reserves 'paminta' for black pepper (ffct-02639, ffct-06463), so the grep pair is real but will also hit legitimate pepper cards."
+  },
+  {
+   "id": "ffct-07873",
+   "pattern": "caterpillar->hantak",
+   "note": "title_bis is \"Hantak\" for title_en \"Caterpillar\". In Cebuano `hantak` is a coin-toss gambling game (and, regionally, a bean) — not a caterpillar, which is `ulod` / `til-as` (the body correctly uses `ulod`). The card label a child sees names a completely different thing. Same defect recurs at ffct-13301 (089.json, title_bis \"Yugto sa Hantak\"); corpus-wide `hantak` appears only in these two caterpillar titles."
+  },
+  {
+   "id": "ffct-07954",
+   "pattern": "doorknob->manibela",
+   "note": "title_bis is \"Germs Manibela\" for title_en \"Germs on Doorknobs\". `Manibela` is a steering wheel / crank handle, not a doorknob (`gunitanan sa pultahan`, as the body itself correctly says; elsewhere the corpus uses `pomelya`). The title labels the card with a different object. Every other corpus use of `manibela` (13 cards) is a genuine steering wheel, so this is a one-off swap."
+  },
+  {
+   "id": "ffct-08014",
+   "pattern": "hot-touch-rendered-as-rotting",
+   "note": "The Cebuano question reads \"Unsa ang una molihok kon madunot ang imong kamot?\" — \"what moves first when your hand ROTS\" — where the English asks what reacts when you touch something hot. `madunot` (to rot/decay) is used correctly 160+ times elsewhere in the corpus, so this is a one-off breakage of the card's premise: the question as asked describes a situation the answer never addresses. The answer sentence does mention `pagbira sa kamot gikan sa init`, so the reflex fact partly survives, but the prompt the child reads is about a different (and alarming) scenario. No word-pair given since `madunot` is right for rot in general."
+  },
+  {
+   "id": "ffct-08025",
+   "pattern": "ant->langgam",
+   "note": "Body: 'bug-at kaayo kini alang sa usa lang ka langgam' — langgam is BIRD in Cebuano (Tagalog false friend for ant). EN is 'too heavy for just one ant to bend'. The card's whole point (a leaf is too heavy for ONE ANT, so many hantik pull together) becomes 'too heavy for one bird', which is both false and destroys the reasoning. Never corrected in the card. Same batch, ffct-08072 uses langgam correctly for birds, so this is a real swap, not dialect."
+  },
+  {
+   "id": "ffct-08067",
+   "pattern": "ant->langgam",
+   "note": "title_bis 'Colony Langgam' on the card 'What do you call a group of ants? — a colony'. In Cebuano that title reads 'Bird Colony'. Worse, the very next card in this batch (ffct-08072) teaches that a group of BIRDS is a 'flock', so the title teaches the child the opposite of a card they will also see. Body correctly says hulmigas, but the displayed title names a different animal."
+  },
+  {
+   "id": "ffct-08096",
+   "pattern": "ant->langgam",
+   "note": "title_bis 'Lungga sa Langgam sa Uma' = 'bird burrows in the farm', for EN 'Ant Tunnels Aerate Soil'. Body only says 'worker ant' in English and never says hulmigas, so the Cebuano-only reader is left believing birds dig the tunnels that aerate farm soil. Same langgam=bird false friend."
+  },
+  {
+   "id": "ffct-08175",
+   "pattern": "breeding-season-rendered-as-birthing",
+   "note": "EN \"During breeding season, the male Visayan warty pig grows a long, tall mane\" becomes \"Sa panahon sa pagpanganak, ang laki nga baboy-ihalas motubo og taas ug habog nga buhok\". \"Panahon sa pagpanganak\" is the birthing/farrowing season, not the mating/breeding season, and nothing in the card corrects it — a Cebuano-only reader learns the male grows his mane when females are giving birth. The same sentence also drops \"Visayan\", widening a Visayan warty pig fact to wild pigs in general (title says only \"Mane Baboy-ramo\")."
+  },
+  {
+   "id": "ffct-08334",
+   "pattern": "ants->langgam",
+   "note": "EN: poison dart frogs get toxins \"from eating certain poisonous ants and mites\". BIS: \"pagkaon sa mga lasong langgam ug mite\" — in Cebuano `langgam` is BIRD, not ant (Tagalog false friend). The card never says hulmigas anywhere, so a Cebuano-only reader learns that poison frogs get their toxin from eating poisonous BIRDS. Unrecoverable: the source of the toxin IS the fact of the card. Same batch uses `hulmigas` correctly for ants (ffct-08316, ffct-08427) and `langgam` for birds everywhere else."
+  },
+  {
+   "id": "ffct-08441",
+   "pattern": "ants->langgam",
+   "note": "title_bis \"Pangolin sa Langgam\" for EN title \"Pangolin Blocks Ant Bites\" — same false friend: the heading reads \"Pangolin of the Bird\". The body is correct (`hulmigas` twice), so the body recovers it, but the title as displayed names a different animal than the card is about — the same class of defect as the known `iro`-titled cat card. Lower severity than ffct-08334; a title-only fix."
+  },
+  {
+   "id": "ffct-08341",
+   "pattern": "floats-rendered-nagtabang",
+   "note": "EN: \"It floats quietly in water while its whole body transforms\". BIS: \"Hilom ra kining nagtabang sa tubig...\" — `nagtabang` = \"is helping\"; nothing in Cebuano makes `tabang` mean float (`naglutaw` is the word), and the card never restores it. Borderline by the unrecoverable test: the Q&A fact (pupa does not eat; it transforms into an adult) survives intact, so a child can still answer the question — but the floating fact is deleted and replaced by a nonsense verb, the same class as the known sweating->pagpanghupaw swap. Flagging for a verb fix, not as a false-belief risk."
+  },
+  {
+   "id": "ffct-08583",
+   "pattern": "ant->langgam",
+   "note": "EN: \"they fight back and bite to protect the queen and the baby ants\". BIS: \"...aron panalipdan ang reyna ug ang mga bata nga langgam.\" In Cebuano langgam is a BIRD (ant = hulmigas); the Tagalog sibling \"mga sanggol na langgam\" is correct because Tagalog langgam = ant, so the word was carried over as a false friend. A Cebuano-only child reads that worker ants guard the nest to protect the queen and the baby BIRDS, and nothing in the card corrects it — the rest of the card uses the English \"worker ant\" and \"salag\". Corpus-wide this pair is real, not a one-off: 29 cards whose English says ant render it langgam in bis, while 226 use hulmigas."
+  },
+  {
+   "id": "ffct-08532",
+   "pattern": "buttocks->tiyan",
+   "note": "title_bis \"Dako Kaunoran Tiyan\" puts the biggest muscle in the TIYAN (belly/abdomen); title_en is \"Biggest Muscle Buttocks\" and the Tagalog title is \"Pinakamalaking Kalamnan sa Puwit\". The defect is confined to the title — the bis body correctly says \"anaa sa lubot\" — but the title is the standalone headline shown in the feed, so it asserts a false anatomy fact on its own (same shape as the gold-set title-only entity swap ffct-15087, where asin/salt replaced aso/smoke). tiyan is correct for stomach/belly across the corpus, so grep only on the buttocks+tiyan pairing."
+  },
+  {
+   "id": "ffct-08760",
+   "pattern": "cat->iro",
+   "note": "title_bis \"Toxoplasma Iri Iro\" puts `iro` (dog) on a cat card. EN title is \"Toxoplasma Cat Litter\" and the body is correctly about `tae sa iring` (cat poop) + litter box. Toxoplasma-from-litter is cat-specific, so the title names the wrong animal outright — a child skimming the heading takes away dog. Same defect class as the known cat-titled-`iro` example."
+  },
+  {
+   "id": "ffct-08648",
+   "pattern": "title-negation",
+   "note": "title_bis \"Dili Butiki Bungbong\" = \"Not gecko wall\" — the leading `dili` negates the card's whole claim, and the title also drops the subject (tae/droppings). EN title is \"Gecko Droppings on Walls\" and the body answers correctly (`Kana ang tae sa butiki`), so the fact is restored in-card; flagged because the title as written asserts the opposite of the card. Lower confidence than the other flag."
+  },
+  {
+   "id": "ffct-08844",
+   "pattern": "related->managhinabang",
+   "note": "EN: DNA \"helps them check if eagles bred in centers are RELATED to each other\". BIS: \"mahibaloan kon MANAGHINABANG ba ang mga agila nga gipasanay sa breeding centers\" — managhinabang reads as \"help each other\" (tabang), not kin/paryente. The card's whole point (DNA reveals relatedness of captive-bred eagles) is replaced by an unrelated claim and nothing in the card restores it. Corpus check: managhinabang occurs exactly once in 49,364 cards; the corpus word for related is paryente (e.g. ffct-08836 \"dili suod nga paryente\")."
+  },
+  {
+   "id": "ffct-08841",
+   "pattern": "worms->bitin",
+   "note": "title_bis \"Utanon Dili Hugas Bitin\" for EN title \"Unwashed Veggies Spread Worms\" — bitin is snake (or \"hanging\") in this corpus, never worm. Corpus check: all 78 worm-titled cards use wati/bulate/uod/ulod; the ~400 bitin hits are snakes (or sloths hanging, ffct-13676). Same class as the known cat-card-titled-iro defect. Body is correct (bulate), so this is a title-only swap."
+  },
+  {
+   "id": "ffct-08836",
+   "pattern": "two-species-same-name",
+   "note": "EN names three separate gliders: flying lizard, gliding snake, gliding gecko. BIS: \"Ang naglupad nga TIKI, naglutaw nga halas, ug naglutaw nga TIKI dili suod nga paryente\" — the flying lizard and the gliding gecko are given the identical name, so the sentence asserts that two identically-named animals are not close relatives. The gecko is erased (corpus uses tuko for gecko: ffct-03544, ffct-04734) and the card's fact (three DIFFERENT lineages evolved gliding independently) is not recoverable from the Cebuano."
+  },
+  {
+   "id": "ffct-08854",
+   "pattern": "garbled-title-token",
+   "note": "title_bis \"Bakuna Depensa Tuno\" (EN \"What a Vaccine Is\"). In this corpus tuno is coconut milk/cream (ffct-16607: \"humok ug puti nga tuno gikan sa gaspang nga sapal\"), so the title reads \"Vaccine Defense Coconut-milk\"; it looks like a corruption of tudlo (teach), which is what the body says. Low severity — the body is complete and correct — but the title word names an unrelated thing."
+  },
+  {
+   "id": "ffct-08842",
+   "pattern": "garbled-title-token",
+   "note": "title_bis \"Porma Tinged Minana\" (EN \"Earlobe Inherited Trait\"). \"Tinged\" is not a Cebuano word — it occurs once in all 49,364 cards and looks like a mangled Tagalog \"tainga\"; Cebuano ear is dalunggan, which the body uses correctly. Low severity (body carries the fact), but the title is corrupt rather than merely compact."
+  },
+  {
+   "id": "ffct-08958",
+   "pattern": "hump->bukog",
+   "note": "EN: \"known for the big hump on its forehead\" -> BIS: \"nailhan sa dakong bukog sa agtang niini\". `bukog` is bone, not `bukol` (hump/lump). The Cebuano says the Napoleon wrasse is known for a big BONE on its forehead - a different thing than the fleshy hump, and nothing else in the card corrects it (terms list even carries \"humphead\"/\"hump on forehead\")."
+  },
+  {
+   "id": "ffct-09058",
+   "pattern": "hearing->ginhawa",
+   "note": "title_bis \"Dalunggan nga Ginhawa ug Balanse\" for title_en \"Ears Balance and Hear\". `ginhawa` is breath/breathing, never hearing (`pagpaminaw`/`pandungog`). The title asserts the ear does breathing; the body lists only hearing and balance, so the false breathing claim is never denied. Title-level defect only - the body sentence itself is correct."
+  },
+  {
+   "id": "ffct-09217",
+   "pattern": "ant->langgam",
+   "note": "Ant queen card renders \"ant\" as \"langgam\" — the Tagalog false friend; in Cebuano langgam means BIRD. Body: \"Unsa kadugay mabuhi ang reyna sa langgam? ... Ang reyna sa pipila ka species sa langgam makabuhi og 20 hangtod 30 ka tuig\". The Cebuano text never says hulmigas/olmigas anywhere, so a child reading only the Cebuano learns that a queen BIRD lives 20-30 years while its workers live weeks — false, and the actual ant fact is unrecoverable (only the untranslated English title_bis \"Ant Queen Kinabuhi\" hints at it). Note the same batch uses langgam correctly for birds in ffct-09192, confirming the Cebuano sense."
+  },
+  {
+   "id": "ffct-09352",
+   "pattern": "tadpole->lawalawa",
+   "note": "Body calls the tadpole `lawalawa`, which means SPIDER everywhere else in this corpus (ffct-00695, ffct-02002, ffct-00538). The Cebuano reads 'the spider's tail doesn't fall off when it becomes a frog... while its legs grow', so a Cebuano-only child learns spiders turn into frogs. Other tadpole cards use `tadpole` or `ulo-ulo` (ffct-01714, ffct-02027)."
+  },
+  {
+   "id": "ffct-09381",
+   "pattern": "sneeze->bahin",
+   "note": "Sneeze card never says sneeze. title_bis \"Mga Lakang sa Lawas sa Bahin\" and the body \"Sa dili ka mobahin...\" use bahin (part/share/divide), not bahing (sneeze). Unlike the other sneeze cards in the corpus, nothing here restores the subject: the English \"drive the irritant away\" is also dropped, so the Cebuano is just deep breath + chest/belly muscles + air blasted out, which a child would read as breathing or hiccups. Note this is systematic (118 corpus cards use mobahin/pagbahin vs 17 with bahing), so the grep will be noisy — this card is the instance where the fact is unrecoverable."
+  },
+  {
+   "id": "ffct-09378",
+   "pattern": "spots->liki",
+   "note": "title_bis \"Liki sa Usa\" = \"crack in the deer\"; the card is about fawn spots (body correctly uses batik). liki means crack/crevice everywhere else in the corpus (95 cards: cracked mud, bone fracture, rock crevices, fault lines), so it is wrong for \"spots\" in general. The title names a different thing than the card; the body does correct it."
+  },
+  {
+   "id": "ffct-09470",
+   "pattern": "heals->ayaw",
+   "note": "title_bis \"Lawas Ayaw Kaugalingon\" for \"The Body Repairs Itself\": ayaw is the Cebuano prohibitive (\"don't\"), not ayo/pag-ayo (heal). In the same corpus ~55 titles use Ayaw correctly as \"don't\" (Ayaw Tan-aw sa Adlaw, Ayaw Langoy sa Baha), so a child reads this title as a prohibition rather than a statement that the body heals itself. Systematic in heal-titles (Panit Ayaw Samad, Mitosis Tubo Ayaw, Hinay Ayaw Samad, Suri Ayaw TB). Body sentence is correct."
+  },
+  {
+   "id": "ffct-09513",
+   "pattern": "parrot->abuk",
+   "note": "Body calls the parrot \"abuk\" (= dust) in both the question line and the explanation, and it is the emphasized word: \"Abuk o kalaw—kinsay motabang og tanom? Mobuak ug mokaon ang abuk sa liso...\". Corpus-wide this bird is always \"loro\" (40+ cards); \"abuk\" appears nowhere else. Half the comparison (the seed-cracking parrot) is attached to a word meaning dust; only the English word \"Parrot\" in title_bis hints at the intended animal."
+  },
+  {
+   "id": "ffct-09541",
+   "pattern": "qa-polarity-flip",
+   "note": "The Cebuano question is flipped but the answer word was kept, so the card contradicts itself. EN: \"Are floating plants and algae the same?\" / \"No!\". BIS: \"Managlahi ba ang lumot ug naglutaw nga tanom?\" (= are they DIFFERENT?) answered \"Dili!\" — i.e. \"no, they are not different\" = they are the same, the opposite of the fact. The following sentence then explains that they do differ, so the emphasized answer teaches the false belief."
+  },
+  {
+   "id": "ffct-09561",
+   "pattern": "ant->langgam",
+   "note": "title_bis \"Langgam Baho Dalan\" names a bird — in Cebuano langgam = bird (this same corpus uses langgam for birds, e.g. ffct-09598 \"May ngipon ba ang mga langgam?\"). The card is about ants and the body correctly says \"hulmigas\". Looks like a Tagalog carry-over (Tagalog langgam = ant) and it is systemic: ~30 ant cards across the sweep carry langgam titles over hulmigas bodies (ffct-00110, ffct-01749, ffct-02267, ffct-03925, ffct-08067, ffct-11146, ffct-13875, ...), so the grep is likely to be mostly true positives here."
+  },
+  {
+   "id": "ffct-09610",
+   "pattern": "web->lambay",
+   "note": "The question line says \"Ngano nga nagsidlak ang lambay sa gagamba sa buntag?\" — lambay is a crab, not a web (elsewhere in this corpus: \"Ang kugita mokaon og lambay, pasayan, ug kinhason\"). Other web cards use sapot / lawa / lambat. The thing the dew sticks to is misnamed as a different animal in the question the child has to answer; only title_bis (\"Tun-og sa Lawa\") carries the correct word."
+  },
+  {
+   "id": "ffct-09663",
+   "pattern": "damselfly->kasing-kasing",
+   "note": "The damselfly is named `kasing-kasing`, which is Cebuano for HEART (the corpus uses kasing-kasing for the heart organ everywhere else, e.g. the ECG card). Body: 'Unsaon pag-ila sa alindahaw gikan sa kasing-kasing? ... nagkalayo ang mata sa kasing-kasing.' Nothing in the card corrects it: title_bis is 'Tutubi ug Damselfly' (Tagalog tutubi + English damselfly), so there is zero lexical overlap with the body's alindahaw/kasing-kasing pair and the mapping is only positional, and the wrong word is also pushed into emph_bis. A child reading only the Cebuano learns that a 'heart' is an insect with wide-set eyes and cannot tell a damselfly from a dragonfly. Other cards in the corpus render damselfly as plain 'damselfly' or 'nipis nga alindahaw' (ffct-04554, ffct-14224), so this is a one-off mistranslation, not a regional name."
+  },
+  {
+   "id": "ffct-09824",
+   "pattern": "mudskipper->siga",
+   "note": "title_bis \"Pagkaon sa Siga\" = \"Food of the Flame\" — siga is flame/light in Cebuano, not a fish. The card is Mudskipper Diet, and the title never names the mudskipper, so the header tells a child the card is about something else entirely. Corpus check: siga appears ~40x elsewhere only as flame/light (Siga sa Aninipot = firefly light, Siga sa Anglerfish, Kolor sa Siga sa Bunsen Burner), and every other mudskipper card uses tambasakan, baklaw, or mudskipper. Same pattern as the known cat-card-titled-iro defect."
+  },
+  {
+   "id": "ffct-09983",
+   "pattern": "peas->sitaw",
+   "note": "EN 'ran experiments with pea plants' -> BIS 'nagbuhat og mga eksperimento sa mga sitaw'. 'Sitaw' is string bean, a different plant: this same corpus says 'gisantes' for Mendel's peas in every other card (ffct-03787, ffct-04092, ffct-04392, ffct-08276, dcard-01613, ffct-38435) and reserves 'sitaw' for string beans (ffct-05422, ffct-00127). The correct word appears only in title_bis ('Gisantes ni Mendel'), so the Cebuano body teaches that genetics was discovered on string beans. Same shape as the gold-set tabanog/dragonfly flag (ffct-08595)."
+  },
+  {
+   "id": "ffct-09982",
+   "pattern": "sway->alindahaw",
+   "note": "EN 'white, feathery flowers on top that sway gently whenever the wind blows' -> BIS 'bulak sa tumoy nga nag-alindahaw kon adunay hangin'. 'Alindahaw' is this corpus's word for DRAGONFLY (25 cards: ffct-00093, ffct-01239, ffct-04274, ffct-05044...), never a verb for swaying; elsewhere it is glossed as drizzle. The swaying-in-the-wind action is the second half of the card and is never stated any other way, so a Cebuano-only child cannot say what the plumes do in the wind."
+  },
+  {
+   "id": "ffct-10077",
+   "pattern": "title-reverses-direction",
+   "note": "title_en 'Forests Feed the Rain' -> title_bis 'Kagsuban nga Minus sa Ulan'. 'Kagsuban' is this corpus's title word for forest (ffct-04015, ffct-07403, ffct-14604) and the frame 'X nga Minus sa Y' means 'X reduces Y' elsewhere (ffct-05803 'Sweat Reduces Urine' -> 'Bahu nga Minus sa Ihi'). So the child-facing title asserts forests REDUCE rain, the reverse of the card, whose body correctly says cutting forests lowers local rainfall. Body is correct; the title states the opposite relationship."
+  },
+  {
+   "id": "ffct-09981",
+   "pattern": "pale->lumot",
+   "note": "title_en 'Cloud Rat Pale Belly Fur' -> title_bis 'Lumot Tiyan Cloud Rat'. 'Lumot' is moss/algae in all 167 other corpus uses (48 titles, 119 bodies) with no exception, so the title tells a child the cloud rat has moss on its belly. Same class as the gold-set title entity-swaps 'Toxic Asin Plastik' (ffct-15087) and 'Agta' for mold (ffct-10181). Honest caveat: the body is intact ('mas humok ug mas mapusok nga balhibo... lahi ang kolor'), and 'Lumot' could be a one-letter slip for 'lumo' (soft), so this is lower confidence than the three above."
+  },
+  {
+   "id": "ffct-10142",
+   "pattern": "ant->langgam",
+   "note": "Ant queen card: the Cebuano says \"Ang reyna nga langgam\" — in Cebuano langgam is a BIRD (the Tagalog false friend langgam = ant). The card never says hulmigas anywhere, and the workers are only \"mga trabahante\", so a Cebuano child reads this as a queen bird being fed mouth-to-mouth by workers. The whole ant-colony fact is unrecoverable. Corpus check confirms the correct word is used elsewhere (\"Ants\" -> \"Hulmigas\", 001.json) and that the same bird/ant slip recurs (000.json \"Ants Per Person\" -> \"Langgam sa Matag Tawo\")."
+  },
+  {
+   "id": "ffct-10157",
+   "pattern": "toe-hairs-moved-to-wall",
+   "note": "Gecko-on-wet-surface card: \"makasagabal ang tubig sa pagbira sa mga balahibo sa bungbong\" puts the hairs on the WALL (bungbong), not on the gecko's toes. The card never mentions tudlo/toes, so the mechanism a child takes away is that walls have hairs — false, and not restored anywhere on the card. Compare ffct-10137 in the same batch, which correctly puts the balhibo \"sa ilalom sa iyang mga tudlo\". Not giving a general word pair: bungbong is the right word for wall, the defect is where the hairs were attached."
+  },
+  {
+   "id": "ffct-10113",
+   "pattern": "feathers->buhok",
+   "note": "title_bis \"Peacock sa Pagyugyog sa Buhok\" renders feathers as buhok (human head hair); Cebuano for feathers is balhibo. The body only says \"Iuyog niini ang ikog\" and never says balhibo, so feathers are never restored — the title asserts a peacock shakes its hair. Lower severity than the other two (the body still delivers tail-shake -> rattling sound -> peahen hears it), but the wrong word is wrong in general. Note this looks systematic in titles corpus-wide (027.json \"Buhok nga Motabon sa Langgam\", 031.json \"Buhok sa Lupad sa Langgam\", 160.json \"Buhok sa Hangin\"), while 074.json correctly uses \"Balhibo sa Langgam\" — so a grep will hit many real instances, not noise."
+  },
+  {
+   "id": "ffct-10524",
+   "pattern": "fins->kapikas",
+   "note": "Sharks-in-danger card: EN 'especially just for their fins' becomes 'ilabi na para lang sa ilang mga kapikas' — kapikas means mate/partner (corpus uses it that way in 37 cards, e.g. ffct-00276, ffct-02433). Fins are palikpik/kapay everywhere else in the corpus (66 fin cards). A child reads that sharks are over-caught 'just for their mates'; the finning fact is destroyed and nothing in the card restores it."
+  },
+  {
+   "id": "ffct-10526",
+   "pattern": "mumps->baki",
+   "note": "MMR card: 'nanalipod batok niini, ug usab sa baki ug German measles'. baki = frog/toad in this corpus (185 cards, incl. ffct-10459 in this same batch). Mumps is rendered beke everywhere else (ffct-00400 'mumps (beke)', ffct-02413 titled 'Beke'). The card never says beke/mumps, so the child learns MMR protects against measles, frogs and German measles — one of the three diseases is lost."
+  },
+  {
+   "id": "ffct-10519",
+   "pattern": "cat->iro",
+   "note": "title_bis 'Toxoplasma Iro Busug' for EN 'Toxoplasma Cats Pregnancy': iro = dog, but the card is about cats (body correctly says pusa), and busug = full/satiated, not pregnant (buntis/mabdos). The title asserts the wrong animal for the parasite risk — same defect class as the known cat-card-titled-iro example."
+  },
+  {
+   "id": "ffct-10397",
+   "pattern": "everywhere->layo",
+   "note": "title_bis 'Makahiya nga Layo sa Pilipinas' for EN 'Wild Makahiya Everywhere': layo = far/distant, which asserts the opposite of the card's point (makahiya is easy to find, grows along roadsides and yards). 'Wild' (ihalas, as used in the parallel card ffct-10539) is also gone. Title makes a false claim about where makahiya is found."
+  },
+  {
+   "id": "ffct-10617",
+   "pattern": "bulb->bombilya",
+   "note": "Plant bulb rendered as 'bombilya' (electric light bulb) in BOTH title_bis ('Bumbilya Asukar Dahon') and body ('Unsa ba gyud ang gitipig sulod sa bombilya? Ang pagkaon nga gitipig sa bombilya...'). Nothing in the Cebuano names a plant part, so a child reads that sugar and starch are stored inside a light bulb. The English is about an onion-type storage bulb. Unrecoverable from the card."
+  },
+  {
+   "id": "ffct-10635",
+   "pattern": "grooves->kinhason",
+   "note": "EN 'winding ridges and grooves on its surface' becomes 'liko-liko nga mga tubo ug kinhason sa ibabaw niini'. 'Kinhason' is shellfish/seashells, a completely different thing, and 'tubo' (pipe) is not a ridge. The card asserts brain coral has shellfish on its surface and never corrects it; only the 'looks like a brain' part survives."
+  },
+  {
+   "id": "ffct-10583",
+   "pattern": "title-asserts-debunked-myth",
+   "note": "title_bis 'Schisto Dali Hawak' reads as schisto being easily caught by touch/contact - the exact myth the card exists to debunk (title_en: 'Schisto Not by Touch'). Looks like 'Dili' corrupted to 'Dali'; also 'hawak' is waist in Cebuano, not touch (hikap/gunit, as the body uses). Body does say 'Dili!', so a full reader recovers it, but the heading alone states the opposite health claim."
+  },
+  {
+   "id": "ffct-10589",
+   "pattern": "hermit crab->ermitanyo",
+   "note": "title_bis 'Anemone sa Ermitanyo' translates 'hermit crab' as 'ermitanyo' - a hermit/recluse person, not an animal. Body correctly says 'umang', so the fact is recoverable, but the title names a different thing (same class as the cat card titled 'iro')."
+  },
+  {
+   "id": "ffct-10586",
+   "pattern": "bone->buto",
+   "note": "Body uses Tagalog 'buto' for bone twice ('hawan ang buto niini', 'gaan nga buto'). Cebuano for bone is 'bukog' (which title_bis correctly uses); Cebuano 'buto' means explode / seed / vulgar genitals, so the question 'Molutaw ba ang langgam tungod kay hawan ang buto niini?' names a different thing in a kids' card. Title restores the fact, so lower severity, but the swap is wrong for Cebuano in general."
+  },
+  {
+   "id": "ffct-10777",
+   "pattern": "break down->purito",
+   "note": "EN: \"...all work together to break down food and absorb nutrients\"; BIS: \"...magkauban nga nagpurito sa pagkaon ug nagsuyop og sustansya\". `purito` is not a word in this corpus at all (0 of 49,156 cards; the corpus renders \"break down food\" as pagtunaw / magbungkag / pagdugmok / naglata across 52 cards), and the nearest reading for a child is `prito` = fried, so the Cebuano body says the mouth, esophagus, stomach and intestines FRY the food. The tl row has it right (\"nagtutunaw ng pagkain\"), so this is bis-specific. Partial mitigation: title_bis \"Sistema sa Paghilis\" still says digestion, so a child may recover the topic but not the mechanism."
+  },
+  {
+   "id": "ffct-10848",
+   "pattern": "pitcher-plant-as-tabo",
+   "note": "EN: \"Why are pitcher plants so brightly colored? Pitchers are often brightly colored like flowers so they can attract insects more easily.\" BIS: \"Ngano nga mabulokon ang mga tabo? Ang mga tabo kasagaran mabulokon nga morag bulak aron mas madani ang mga insekto.\" The Cebuano never says tanom / pitcher plant anywhere in the body — the subject is only ever \"tabo\", which to a Cebuano child is the water dipper (or a market day, tabo-an). The English question line anchors it with \"pitcher plants\"; the Cebuano question line drops that anchor. The only other anchor is title_bis \"Nepenthes\", a Latin name a grade-5 child will not know. Corpus check: 34 pitcher-plant cards use \"tabo\" only for the cup and always with \"pitcher plant\" / \"tanom\" adjacent in the same sentence (e.g. \"sa sulod sa tabo sa pitcher plant\") — this card is the one where the anchor is missing, so the child is told dippers are brightly coloured to attract insects. Slug not a word-pair, because \"tabo\" for the cup itself is fine when anchored."
+  },
+  {
+   "id": "ffct-10850",
+   "pattern": "ant->langgam",
+   "note": "title_bis \"Langgam Salag Ilalom\" on an ants card (title_en \"Ants Underground Nests\"). In Cebuano langgam = BIRD (705 cards in the corpus use it that way); ant is hulmigas/hantik, which is what this card's own body correctly uses. The title as displayed says \"Bird Nest Underground\" — same shape as the known cat-card-titled-iro defect. Corpus-wide this is a systematic Tagalog false-friend leak: 47 of 147 ant cards carry langgam, several in the BODY where nothing restores it (ffct-07494 \"Pila ka langgam ang mahimong mopuyo sa usa ka kolonya?\", ffct-13875 \"Reyna sa Langgam ... mga trabahante nga langgam\", ffct-04685 \"manggagawang langgam mga babaye nga langgam\"), so the grep pattern should pay off well beyond this card."
+  },
+  {
+   "id": "ffct-10953",
+   "pattern": "spur->tuko",
+   "note": "title_bis \"Tuko Dili Tuka sa Platypus\" for title_en \"Venom Spur Not Bill\". In Cebuano tuko = GECKO — the corpus itself uses tuko as gecko in 53 cards (\"Tiil sa Tuko\", \"Tuko vs Butiki\"), and renders spur as \"tibo\", including in this card's own answer (\"ang hilo niini naa sa hait nga tibo sa likod sa iyang tiil\") and in the sibling platypus cards (\"Tibo Platypus Kirot\", \"Venom Spur Platypus\"). The title therefore reads \"Gecko Not Beak of the Platypus\" — a different animal named on the card. Same defect recurs in ffct-* \"Echidna nga Tuko Walay Hilo\" (Echidna's Harmless Spur), so spur->tuko is wrong in general, not a one-off."
+  },
+  {
+   "id": "ffct-11146",
+   "pattern": "ants->langgam",
+   "note": "Whole card swaps ants for birds. EN 'Why do ants walk in a line?' -> BIS 'Ngano nagsunod-sunod paglakaw ang mga langgam?' and 'Ang ubang langgam mosunod niini nga baho'; title_bis 'Baho nga Dalan sa Langgam'. In Cebuano langgam = BIRD (Tagalog false friend: langgam = ant). Only the stray English 'worker ant' hints otherwise, so a Cebuano-only reader learns birds follow scent trails in single file. Corpus elsewhere uses the correct 'hulmigas' (ffct-11049)."
+  },
+  {
+   "id": "ffct-11150",
+   "pattern": "ants->langgam",
+   "note": "EN: termite soldiers defend the colony 'from predators like ants'. BIS: 'gikan sa mga manunukob sama sa langgam' = predators like BIRDS. The named predator is a different animal and nothing in the card corrects it."
+  },
+  {
+   "id": "ffct-11074",
+   "pattern": "cat->iro",
+   "note": "Cat card titled with the word for dog: title_bis 'Iro Dila Balahibo' (dog/tongue/fur) for title_en 'Cats Groom Themselves'. The body correctly uses 'iring', but the title itself names the wrong animal - the same defect class already confirmed in this corpus."
+  },
+  {
+   "id": "ffct-11068",
+   "pattern": "caterpillar->tangkong",
+   "note": "Butterfly life cycle listed as 'itlog, tangkong, pupa, alibangbang'. 'Tangkong' is water spinach (kangkong), not a caterpillar ('ulod'). The correct word appears nowhere on the card, so the larval stage is unrecoverable - a child reads a vegetable as a life-cycle stage. The frog list ('itlog, ulo-ulo, baki') is fine."
+  },
+  {
+   "id": "ffct-11020",
+   "pattern": "monkey->ungo",
+   "note": "title_bis 'Colugo sa Ungo' for title_en 'Colugo, Cousin of Monkeys'. 'Ungo' is the aswang/witch-ghoul, a completely different thing from 'unggoy' (monkey). The body uses 'unggoy' correctly, but the title as displayed names a monster."
+  },
+  {
+   "id": "ffct-11002",
+   "pattern": "animals->tawo",
+   "note": "title_bis 'Animalia Gingharian Tawo' for title_en 'Animalia Kingdom Animals' - the title says the Animalia kingdom is HUMANS ('tawo') instead of animals ('mananap'). Body is correct ('gingharian sa mga mananap'), but the title names the wrong group."
+  },
+  {
+   "id": "ffct-11011",
+   "pattern": "fatty->matabang",
+   "note": "title_bis 'Matabang Pagkaon sa Bile' for title_en 'Fatty Food Frees Bile'. In Cebuano 'matabang' means BLAND/insipid (cf. 'tubig-tabang' = freshwater in ffct-11128), the opposite of the trigger described; fatty is 'tambok', which the body does use. The title therefore states that bland food releases bile."
+  },
+  {
+   "id": "ffct-11033",
+   "pattern": "sailfin lizard->tiki",
+   "note": "title_bis 'Tiki nga Layag' for title_en 'Sailfin Lizard'. 'Tiki' is the house gecko, a different animal from the sailfin lizard (ibid/layagan); the card's fact is that it reaches almost a metre with over half of that tail, which is false for a gecko. Body keeps the English name, so only the title misnames it."
+  },
+  {
+   "id": "ffct-11276",
+   "pattern": "ant->langgam",
+   "note": "title_bis \"Langgam Buhat Bug-at\" for \"Ants Carry Heavy Loads\": in Cebuano langgam = BIRD (Tagalog false friend for ant). The body correctly uses hulmigas (as does ffct-11181's title), so the title labels the card with the wrong animal."
+  },
+  {
+   "id": "ffct-11223",
+   "pattern": "earthworm->buli",
+   "note": "title_bis \"Lima ka Kasingkasing sa Buli\" for \"An Earthworm's Five Hearts\": buli is not earthworm in Cebuano (buri palm / backside). The body uses the correct word wati, so the title names a different thing entirely."
+  },
+  {
+   "id": "ffct-11243",
+   "pattern": "sting->singhot",
+   "note": "title_bis \"Buyog sa Singhot\" for \"Why Bees Die After Stinging\": singhot = to sniff/smell, not to sting. The body uses motusok/tuslok correctly, so the fact survives, but the title states the wrong action."
+  },
+  {
+   "id": "ffct-11175",
+   "pattern": "title-eat-for-bite",
+   "note": "title_bis \"Millipede nga Dili Mokaon\" (= does not EAT) for \"Harmless Millipedes\"; the body says dili kini mopaak (does not bite). The title asserts a separate false claim (millipedes don't eat) that nothing on the card corrects."
+  },
+  {
+   "id": "ffct-11300",
+   "pattern": "ant->langgam",
+   "note": "title_bis 'Langgam Lalaki dili Bantay' — in Cebuano langgam is BIRD (Tagalog false friend for ant). The card is about male ants; body correctly uses 'hulmigas', so the title names a different animal than the whole card."
+  },
+  {
+   "id": "ffct-11324",
+   "pattern": "cat->iro",
+   "note": "title_bis 'Iro Iro Dalunggan' for 'Dog Cat Swivel Ears' — says dog twice; the cat (iring) is gone, erasing the dog-vs-cat contrast the card exists to make. Body is correct ('iro ug iring')."
+  },
+  {
+   "id": "ffct-11420",
+   "pattern": "cat->iro",
+   "note": "title_bis 'Larynx sa Iro ug Iro' — 'dogs and dogs' where the card is about dogs AND cats; body correctly says 'iro ug iring'. Same title defect as ffct-11324."
+  },
+  {
+   "id": "ffct-11340",
+   "pattern": "warts->tinga",
+   "note": "title_bis 'Baki Dili Tinga' — 'tinga' is food stuck between the teeth, not warts (kulugo). The title states a different, unrelated claim about frogs; body keeps English 'warts'."
+  },
+  {
+   "id": "ffct-11446",
+   "pattern": "swallow->lunok",
+   "note": "title_bis 'Lunok ug Piso' — 'lunok' is the VERB to swallow/gulp, not the bird. The bird sense was mistranslated, so the title reads 'Gulping and Chicks'; the bird is never named in Cebuano in the title."
+  },
+  {
+   "id": "ffct-11447",
+   "pattern": "cotton->bulak",
+   "note": "title_bis 'Kapok Dili Bulak' — 'bulak' is flower; cotton is 'gapas' (used correctly in the body). The title asserts a different claim ('kapok is not a flower') than the card's point (kapok is not cotton)."
+  },
+  {
+   "id": "ffct-11440",
+   "pattern": "hedgehog-title-dagger",
+   "note": "title_bis 'Dagger sa Pagliko' for 'Hedgehogs Curl Into Balls' — the animal is missing entirely and an unrelated noun ('dagger') stands in its place; nothing in the title points to a hedgehog curling up."
+  },
+  {
+   "id": "ffct-11570",
+   "pattern": "wasp->putyukan",
+   "note": "English card is about WASPS (title_bis correctly says 'Tambuboan'), but the whole Cebuano body says 'putyukan' = honeybee: 'Tanan ba nga putyukan peligroso?... Ang ubang matang sa putyukan gagmay kaayo ug halos dili makatukol — hinuon, motabang sila sa pagkaon sa peste sa tanom.' A child reading only the Cebuano learns that some BEES barely sting and eat plant pests — a false claim about bees, and the wasp fact is never delivered. putyukan = bee throughout this corpus (e.g. the drone card ffct-11481); wasp is tamboboan/putakti."
+  },
+  {
+   "id": "ffct-11530",
+   "pattern": "ant->langgam",
+   "note": "title_bis 'Worker Langgam Hukay' — in Cebuano langgam = BIRD, not ant. The card is about worker ants digging nests (body keeps the English 'worker ant', so the title is the only Cebuano name for the animal and it names a different animal). Same class as the known cat-titled-iro defect. NOTE: this ant->langgam swap is corpus-wide (~40 cards in this sweep, many in the body text, e.g. ffct-01426 'Ang mga langgam nagbiya og...'), so the grep will hit broadly and legitimately."
+  },
+  {
+   "id": "ffct-11579",
+   "pattern": "sweat->bahu",
+   "note": "title_bis 'Kilay nga Babag sa Bahu' = 'eyebrow that blocks ODOR/smell' (bahu/baho = smell). English title is 'Eyebrows Block Sweat' and the point of the card is that eyebrows stop sweat from reaching the eyes. The body is correct ('gibabagan niini ang singot gikan sa agtang'), but the title as read alone states a different, nonsensical function."
+  },
+  {
+   "id": "ffct-11883",
+   "pattern": "cicada->kagang",
+   "note": "Wrong insect. EN is about a CICADA growing wings (title_bis correctly says 'Sikada'), but the body asks 'Kanus-a magkapako ang kagang?' — and corpus-wide 'kagang' is this corpus's word for CRICKET (8 other cards, all EN 'cricket': ffct-00655, ffct-01825, ffct-01874, ffct-03568, ffct-03598, ffct-03727, ffct-04846, ffct-11910); cicada is rendered 'kuliglig' elsewhere (ffct-11786 in this same batch). In general Cebuano 'kagang' is also a small crab, so a child reading only the body can learn that a crab/cricket is the animal that grows wings as an adult. The body never names the cicada, so the intended subject is not recoverable from the Cebuano text itself."
+  },
+  {
+   "id": "ffct-11940",
+   "pattern": "ant->langgam",
+   "note": "title_bis \"Langgam sa 50x nga Bug-aton\" names a BIRD (Cebuano langgam = bird) for a card about ants lifting 50x their weight; the body correctly says hulmigas but the title a child reads announces the wrong animal and is never corrected. Tagalog false-friend leak (Tagalog langgam = ant). Same defect recurs corpus-wide: ffct-00110 title \"Langgam sa Matag Tawo\" (Ants Per Person) and ffct-01726 title \"Langgam nga Habol\" (Weaver Ants); ffct-01426 has it in the BODY (\"Giunsa pagpangita og pagkaon sa langgam?\" for ants). Grep must be triaged as en=ant + bis=langgam only — 705 langgam cards are legitimately about birds."
+  },
+  {
+   "id": "ffct-11974",
+   "pattern": "break down->napukan",
+   "note": "\"Napukan kini sa glucose nga gamiton sa mga selula\" — pukan/napukan is to fall or be felled (a tree, a person), not to break down/convert (matunaw, mabungkag, magub-a, which this corpus uses elsewhere). The card's mechanism step, carbohydrates BREAK DOWN INTO glucose, is destroyed; nothing else in the Cebuano restores it (title_bis is only \"Carbohydrate Kusog\"), so a Cebuano-only child gets carbs = energy and glycogen storage but never the carb->glucose conversion. Hapax: the only occurrence of napukan in the 47k-card sweep corpus."
+  },
+  {
+   "id": "ffct-12134",
+   "pattern": "fluff->bulak",
+   "note": "Kapok seeds are said to be wrapped in 'humok nga puti nga BULAK' — bulak is flower in Cebuano (this is the Tagalog false friend bulak = cotton). The card never says fiber/lanot, so a Cebuano-only child reads that kapok seeds are wrapped in soft white flowers and that flowers are stuffed into pillows. Every other kapok card in the corpus uses lanot / hibla / lugas / balhibo; the CPT Cebuano corpus uses bulak exclusively for flower and gapas for cotton."
+  },
+  {
+   "id": "ffct-12047",
+   "pattern": "blink->sukmol",
+   "note": "Blink card. title_bis '28000 Sukmol Adlaw' — sukmol is a punch/blow, not a blink; and the body never rescues it because it uses 'mokirok' (a word that appears exactly once in 47k cards and not at all in the Cebuano CPT corpus) instead of the standard pilok/pamilok/kurap used by ~30 other blink cards. So the card only says we do some unnamed thing 15-20 times a minute, 28,000 times a day."
+  },
+  {
+   "id": "ffct-12096",
+   "pattern": "veins->gamot",
+   "note": "title_bis 'Gamot sa Uga nga Dahon' names leaf ROOTS (gamot) for leaf VEINS; the body correctly uses ugat, so the title heads a leaf-vein card with a plant part leaves do not have. Same title-level swap recurs at ffct-04299 ('Gamot Dahon Daloy') and ffct-06538 ('Gamot sa Dahon sa Bagyo'), while 19 other leaf-vein cards title it 'Ugat sa Dahon'."
+  },
+  {
+   "id": "ffct-12116",
+   "pattern": "balance->bali",
+   "note": "title_bis 'Paspas nga Signal sa Bali' — bali in Cebuano is a fracture/break (cf. ffct-02396 'First Aid sa Bali', ffct-02434 'Bali nga Bukog'), so the balance card is titled 'fast fracture signals'. Body correctly says balanse. Same truncation of balanse -> Bali also at ffct-01096 and ffct-01346."
+  },
+  {
+   "id": "ffct-12166",
+   "pattern": "pollinate->pagpamulak",
+   "note": "English 'bats, birds, and bees pollinate flowers and spread seeds' becomes 'motabang sa pagpamulak sa bulak' = help the flowers BLOOM. Pollination is replaced by a different process and nothing in the card restores it (no polen/polinasyon), so the child learns that fruit-eating animals make flowers bloom. 26+ corpus cards use polinasyon/pollinate; the one other card that uses pagpamulak (ffct-07113) repairs it with 'pinaagi sa pagdala sa polen'."
+  },
+  {
+   "id": "ffct-12242",
+   "pattern": "ant->langgam",
+   "note": "Formic acid card: Cebuano body renders 'ants' as 'langgam', which is BIRD in Cebuano (Tagalog false friend). Reads 'Ang pipila ka langgam sama sa wood ants nagaspray og formic acid' and, fatally, 'gikan kini sa Latin nga formica nga nagpasabot og langgam' — so the card's entire point teaches that formica means bird. Never corrected in the body; only title_bis ('Hulmigas ug Asido') has the right word."
+  },
+  {
+   "id": "ffct-12360",
+   "pattern": "bulb->bombilya",
+   "note": "Plant bulb rendered 'bombilya', which in Cebuano means an electric light bulb. The card then says roots grow down from its flat base and leaves grow up — a child reads that a light bulb grows roots and leaves. Nothing in the card (title_bis is only 'Gamot Paubos Dahon Pataas') names the plant structure, so the actual subject is unrecoverable. Correct sense would be the onion/garlic-type bulb (e.g. 'bonggolan'/'ang bulb sa tanom sama sa sibuyas')."
+  },
+  {
+   "id": "ffct-12429",
+   "pattern": "ants->langgam",
+   "note": "'ants' translated as 'langgam', which in Cebuano means BIRD (the Tagalog false friend: TL langgam = ant, CEB langgam = bird). Card says the pangolin's sticky tongue catches 'langgam ug termite ilawom sa yuta' — birds and termites underground. The card never restores 'ants' (Cebuano 'hulmigas'), and elsewhere in this same corpus 'langgam' is used correctly for birds, so the child has no way to recover the fact."
+  },
+  {
+   "id": "ffct-12469",
+   "pattern": "acres->ektarya",
+   "note": "Unit changed: English '2,300 acres' becomes '2,300 ka ektarya' (hectares). 2,300 acres is about 930 hectares, so the Cebuano overstates the honey fungus's area by ~2.5x. Number-with-unit is the whole point of the card and is not corrected anywhere."
+  },
+  {
+   "id": "ffct-12385",
+   "pattern": "chickenpox->bakuna",
+   "note": "title_bis 'Bakuna nga Hilanat ug Rash' says VACCINE (bakuna) causes the fever and rash. The card is about chickenpox (bulutong-tubig) causing fever before the blisters — no vaccine is involved. Title-level defect with a health-misinformation reading ('vaccines give you fever and rash'); body uses 'bulutong-tubig' correctly, but the title as displayed names the wrong thing."
+  },
+  {
+   "id": "ffct-12382",
+   "pattern": "stinger->tuko",
+   "note": "title_bis 'Gasgas sa Card sa Tuko' — 'tuko' is a gecko in Cebuano, not a stinger. English title is 'Scrape Out the Stinger'; the body correctly uses 'tibo sa buyog' (bee stinger), so the title names an animal that has nothing to do with the card (likely a mangling of 'tusok'/'tibo')."
+  },
+  {
+   "id": "ffct-12495",
+   "pattern": "vine->gapnod",
+   "note": "Body opens \"Ang mga gapnod o liana mokatay paibabaw sa mga kahoy\" — `gapnod` is driftwood/water-borne debris, not a vine (Cebuano is `balagon`, or `baging`). The card names a different thing as its lead noun and `gapnod` is also seeded into `terms` alongside `baging`, so retrieval carries the bad pairing too. Partial mitigation: title_bis is correctly \"Mga Baging\" and `liana` is kept in-line, so the climbing-for-canopy-light fact itself survives — flagging mainly because the wrong-word pair is corpus-wide greppable and was written into terms on purpose."
+  },
+  {
+   "id": "ffct-12643",
+   "pattern": "millipede->alupihan",
+   "note": "title_bis 'Pagliko sa Alupihan' names the centipede, but the card is about a millipede coiling into a spiral. The corpus consistently uses 'alupihan' for centipede and leaves millipede in English (ffct-01041 contrasts 'millipede ug alupihan'; ffct-09946 'Ang alupihan adunay usa ka paris nga tiil sa matag segment'). The Cebuano body never supplies a Cebuano name, so the title is uncorrected and teaches that a centipede is the animal that curls up - the exact trait that separates millipedes from centipedes."
+  },
+  {
+   "id": "ffct-12867",
+   "pattern": "rumble->kalibang",
+   "note": "EN: \"Why does your tummy rumble when you're hungry?\" BIS renders rumble as \"magkalibang\" twice: \"Nganong magkalibang ang tiyan kon gutom?\" ... \"mao nga magkalibang ang tiyan\". In this corpus kalibang always means defecate/diarrhea (58 hits, e.g. ffct-00355 \"Kon ang bata magkalibang o magsuka\", ffct-02996 \"Rason sa Kalibang\"). Every other stomach-growl card uses mosaba / mongulob / mokuros / mokabog / nagpakagol (ffct-04401, ffct-11180, ffct-14596, ffct-12944). A Cebuano-only child reads that an empty stomach makes you move your bowels; the rumbling-sound fact is never delivered anywhere on the card."
+  },
+  {
+   "id": "ffct-12813",
+   "pattern": "title-invents-pain-topic",
+   "note": "title_bis \"Sakit sa Baba\" (mouth pain/illness) for title_en \"Jaw Joint Chewing\". The card is pure anatomy — a joint in front of the ear that moves the apapangig up, down and sideways so you can chew and speak — and never mentions pain or disease. Using \"Baba\" for jaw is a corpus title convention (ffct-14407 \"Molars sa Baba\", ffct-14495 \"Honey Badger sa Baba\"), so the defect is \"Sakit\": all 25 other \"Sakit ...\" titles in the corpus sit on English titles that really are about pain or disease, making this one the lone outlier that renames the card's topic."
+  },
+  {
+   "id": "ffct-12822",
+   "pattern": "stem->lihog",
+   "note": "title_bis \"Lihog sa Kangkong\" for \"Kangkong Stems\". Lihog/palihog means please/a favour, not stem; the body correctly uses \"punoan\". Same wrong mapping recurs corpus-wide in exactly the stem slot — ffct-01646 \"Tubig sa Lihog\" (Water in Stems) and ffct-37862 \"Gibag-on sa Lihog\" (Stem Thickness) — so it is one lexicon entry, not a typo, and a single fix covers 3 titles. Title-only; the body of each card still delivers the fact, so treat as lower severity than the two above."
+  },
+  {
+   "id": "ffct-13139",
+   "pattern": "tearing->mopunit",
+   "note": "Types-of-teeth card. EN: \"pointy canines for tearing\". BIS: \"hait nga canines para mopunit\" — `punit` is to pick up / gather (corpus-wide it is used only that way: \"pagpunit ug basura\", \"napunit nga palay\", \"mopunit og bato\"), not to tear (`mogisi`). The card lists one job per tooth type (cut / tear / crush-grind) and nothing else in the Cebuano restores tearing, so a child reading only the Cebuano learns canines are for picking things up."
+  },
+  {
+   "id": "ffct-13090",
+   "pattern": "webbed->lambay",
+   "note": "title_bis \"Tiil nga Lambay\" for EN title \"Webbed Feet\". `lambay` is the swimming crab in Cebuano — elsewhere in this same corpus it is used exactly that way (\"Ang kugita mokaon og lambay, pasayan, ug kinhason\"). The title therefore reads \"crab feet\" on a card about ducks. The body does give the right term (\"tiil nga may lapyahan tali sa mga tudlo\"), so this is a title-only defect, flagged because it names a different animal in the title."
+  },
+  {
+   "id": "ffct-13361",
+   "pattern": "egret->bakaw",
+   "note": "Egret is rendered `bakaw`, which in Cebuano is the mangrove tree (`bakaw`/`bakhaw`/`bakawan` — used that way ~170x elsewhere in this same corpus, e.g. ffct-00444, ffct-01680). The card never says `langgam`, so nothing restores the referent: a child reads \"ang mga bakaw ... kan-on nila ang insekto, ulod, ug peste sa humayan\" as mangroves eating insects in rice fields. The corpus's own words for egret/heron are tulabong/talabong/tagak (ffct-00713, ffct-09030). title_bis has the same problem plus Tagalog `magsasaka`."
+  },
+  {
+   "id": "ffct-13301",
+   "pattern": "caterpillar->hantak",
+   "note": "title_bis \"Yugto sa Hantak\" for \"Caterpillar Stage\" — `hantak` is not caterpillar (it is the coin-toss gambling game; caterpillar is `ulod`, which the body correctly uses). The heading names a different thing than the card. Greps clean: only 2 corpus hits, both caterpillar titles (this card and ffct-07873, titled just \"Hantak\"), so both are wrong. Body still delivers the fact, so title-only severity."
+  },
+  {
+   "id": "ffct-13345",
+   "pattern": "sharp->matarong",
+   "note": "title_bis \"Fovea Matarong\" renders \"sharp\" as `matarong` = righteous/upright — wrong property, not a register choice. The body uses the correct `pinaka-hait`, so the fact survives; the heading does not. Grep is clean and all hits are the same error: ffct-02597 \"Matarong nga Ngipon sa Karniboro\" (Sharp Teeth of Meat Eaters) and ffct-32728 \"Obsidian nga Matarong\" (Sharp Obsidian)."
+  },
+  {
+   "id": "ffct-13300",
+   "pattern": "balance->bali",
+   "note": "title_bis \"Tulo ka Nutrient sa Bali\" renders \"balance\" as `bali`, which in Cebuano means a fracture/break — the same corpus uses `bali` with exactly that meaning in bone cards (ffct-00710 \"Ang fracture mao ang bali o liki sa bukog\", ffct-02434, ffct-09258). A child reads the heading as \"three nutrients for a broken bone\". Body is correct and complete, so title-only; same swap recurs in ffct-01096, ffct-01346, ffct-10261, ffct-12116."
+  },
+  {
+   "id": "ffct-13502",
+   "pattern": "lay eggs->manguhog",
+   "note": "MEDIUM. EN: \"When ready to lay eggs, a female hornbill enters a tree hole and seals the entrance.\" BIS: \"Kung manguhog na, mosulod ang baye nga kalaw sa lungag sa kahoy ug isirhan ang agianan, mao nga makulong kini sa sulod.\" The trigger the card exists for -- she is about to LAY EGGS (mangitlog) -- is replaced by 'manguhog', built on uhog (mucus/snot); the corpus itself uses uhog for mucus (ffct-13399, snail slime) and mangitlog 224x for egg-laying. So the Cebuano answer to its own question \"Ngano gisirhan sa baye nga kalaw ang iyang kaugalingon?\" collapses into a circular 'she seals the entrance so she is shut inside', with no egg/nesting reason left in the body; title_bis 'Salag sa Hornbill' gives nest but never eggs. 'manguhog' occurs exactly once in the entire sweep corpus -- this card -- so it is a one-off corruption, not a regional form."
+  },
+  {
+   "id": "ffct-13406",
+   "pattern": "spoil->mabuak",
+   "note": "LOW/PLAUSIBLE, title-only. title_en \"Marang Spoils Quickly\" -> title_bis \"Marang nga Dali Mabuak\" = marang breaks/cracks easily, a different (and false-sounding-plausible) claim about the fruit. Corpus usage is unambiguous: buak/mabuak = break, crack, smash across 236 cards (parrot beaks cracking seeds, hollow bird bones, blood vessels bursting). The body does restore the real fact (\"Ang marang dali ra madaot\"), so this is recoverable -- I raise it only because the gold set treats a title that states a different thing (e.g. ffct-15087 'asin' for smoke) as a flag even when the body is right."
+  },
+  {
+   "id": "ffct-13425",
+   "pattern": "half->kadungganan",
+   "note": "LOW/PLAUSIBLE, title-only. title_en \"Parents Give Half Each\" -> title_bis \"Gene sa Kadungganan\"; kadungganan is honor/dignity (dungog), not katunga (half), so the title a child sees reads 'gene of honor'. Not idiosyncratic to this card: the same corruption is in ffct-24601, title_bis \"Kadungganan sa String\" for title_en \"Halving String Jumps Pitch\" -- both cards are about halves, and those two are the only occurrences of kadungganan in the corpus. The body is correct (\"ang matag ginikanan naghatag og katunga sa mga gene sa anak\"), so the fact is recoverable from the card."
+  },
+  {
+   "id": "ffct-13646",
+   "pattern": "lizard->halas",
+   "note": "EN question is about a lizard (\"Why does a lizard feel warm in the sun?\"); BIS asks about `halas` = snake (\"Ngano nga moinit ang lawas sa halas sa adlaw?\"). Different animal, never corrected anywhere on the card (title `Bugnaw og Dugo`, terms have only `reptilya`), so the Cebuano-only reader is pointed at the wrong creature — and at the likely lizard illustration. The cold-blooded claim itself stays true, so this is a wrong-referent defect rather than a false fact."
+  },
+  {
+   "id": "ffct-13754",
+   "pattern": "pollinate->pagpamulak",
+   "note": "Rafflesia card. EN: the stink attracts flies \"that help pollinate it\". BIS: \"...makadani og mga langaw nga motabang sa pagpamulak niini\" — pagpamulak = flowering/blooming, not pollination. The card's whole point (flies act as pollinators) is replaced by a false mechanism (flies make it bloom), and nothing else in the Cebuano card mentions pollen or polinasyon, so it is unrecoverable. Other cards in this same batch correctly use 'polinasyon' / 'mabalhin ang pollen' (ffct-13678, ffct-13686)."
+  },
+  {
+   "id": "ffct-13786",
+   "pattern": "bulb->bombilya",
+   "note": "Bulb-plant card. EN: \"Onion and garlic aren't the only bulb plants — lily and tulip make bulbs too!\" BIS: \"Dili lang sibuyas ug ahos ang naghimo og bombilya — mao usab ang liryo ug tulip!\" bombilya is an electric light bulb, not the plant bulb (bulbo). The Cebuano body names a different thing and never restores it; title_bis keeps only the bare English word 'Bulb' (\"Lily ug Tulip sa Bulb\"), which a grade-5 reader will most likely map to the same light bulb. Reads as: onions and garlic make light bulbs."
+  },
+  {
+   "id": "ffct-13875",
+   "pattern": "ant->langgam",
+   "note": "Queen ANT card turned into a bird card and never corrected. bis: \"Ngano nga mas dako ang reyna kaysa mga trabahante nga LANGGAM?\" and title_bis \"Reyna sa Langgam\" (= Queen of the Birds) for title_en \"The Bigger Queen Ant\". In Cebuano langgam = bird (hulmigas/subay/hantik = ant); the word 'ant' appears nowhere in the Cebuano, and the wing detail (\"didto kaniadto nakakabit ang iyang mga pako\") makes the bird reading fully coherent, so a child reads a false fact about birds. Tagalog-interference (Tg langgam = ant)."
+  },
+  {
+   "id": "ffct-13848",
+   "pattern": "ant->langgam",
+   "note": "The sentence carrying the card's whole contrast says BIRDS: \"dili na kini mahimo sa mga hamtong nga LANGGAM\" for EN \"the grown-up ants can't spin silk anymore\". The question/title do say hantik, but the payload clause names a different animal, so the larvae-vs-adult-ant contrast (the fact the card exists for) is lost / turned into a claim about adult birds."
+  },
+  {
+   "id": "ffct-13847",
+   "pattern": "moth->kagaw",
+   "note": "title_bis \"Alibangbang ug Kagaw\" = \"Butterfly and GERM\" for title_en \"Butterfly vs Moth Rest\". Corpus confirms kagaw = germ (e.g. ffct-01879 \"Hugasi ang Kagaw\"/Wash Away Germs, ffct-03167 \"Kagaw sa Kamot\"/Germs on Hands) and that moth = anunugba/gamu-gamo (ffct-03405, ffct-01201). The body only uses the English word \"moth\", so the Cebuano never restores it — the title teaches moth = kagaw. Same defect recurs at ffct-03195 (\"Kagaw Makadungog Paniki\"/Moths Hear Bats)."
+  },
+  {
+   "id": "ffct-13974",
+   "pattern": "ant->langgam",
+   "note": "title_bis \"Langgam sa Linya\" = \"Birds in a Line\" for title_en \"Ants Follow Scent Lines\". The body is correct (\"ang mga subay molakaw nga sunod-sunod...\"), but the displayed title names a different animal than the card, mirroring the known iro/cat title defect; same ant->langgam slip also at ffct-00110 and ffct-01426."
+  },
+  {
+   "id": "ffct-14019",
+   "pattern": "constipation->tibi",
+   "note": "Dietary-fiber card ends \"malikayan ang tibi\". In Cebuano `tibi` is the everyday word for TB (tuberculosis); constipation is Tagalog `tibi`. A Cebuano-only reader gets the false health claim \"fiber prevents TB\", and nothing in the card restores \"hard stool / constipation\" — the surrounding text only says fiber helps the large intestine move waste. The corpus's other constipation card (ffct-10342) keeps the English word \"constipation\" in the Cebuano, so this rendering is unique to this card (one grep hit corpus-wide, so low blast radius)."
+  },
+  {
+   "id": "ffct-14365",
+   "pattern": "trillions->binilyon",
+   "note": "EN says the body's cells number in the trillions; bis says \"ang tanan sa binilyon nga selula\" = billions, a 1000x understatement of the number. The card contradicts itself: title_bis is \"Trilyon Selusa Usa\" while the body says binilyon, so a child reading only the Cebuano gets two conflicting magnitudes and the stated number in the body text is simply wrong. Should be \"trilyon\"."
+  },
+  {
+   "id": "ffct-14513",
+   "pattern": "ant->langgam",
+   "note": "title_bis \"Langgam Bati Yanig\" — in Cebuano `langgam` means BIRD (it is Tagalog that uses langgam for ant). The card is entirely about ants (body correctly says `hulmigas`), so the Cebuano title names a different animal: \"Bird Feels Vibration\". Same class of defect as the cat card titled `iro`. The terms list confirms the slip: `langgam` is listed on the Tagalog side and `hulmigas` on the Cebuano side."
+  },
+  {
+   "id": "ffct-14542",
+   "pattern": "ant->langgam",
+   "note": "title_bis \"2.5 Milyon Langgam Tawo\" — again `langgam` (Cebuano = bird) used for ants; body correctly says `hulmigas` and the terms row pairs Tagalog `langgam at tao` with Cebuano `hulmigas ug tawo`. A Cebuano child reads the headline as \"2.5 million birds\" for an ants-vs-people card."
+  },
+  {
+   "id": "ffct-14429",
+   "pattern": "giant clam->tahong",
+   "note": "\"giant clams\" rendered `tahong` in both title_bis (\"Tubbataha Gigante nga Tahong\") and body (\"dagkong tahong\"). `Tahong` is the green mussel, a different bivalve; the giant clam is `taklobo` in Cebuano — and card ffct-14477 in this same batch uses `taklobo` correctly. Nothing in the card corrects it, so the child learns Tubbataha is known for giant mussels rather than giant clams."
+  },
+  {
+   "id": "ffct-14629",
+   "pattern": "ant->langgam",
+   "note": "Ants card: the Cebuano question and body use `langgam`, which is BIRD in Cebuano (Tagalog interference — Tagalog langgam = ant). Q: `Giunsa pag-ambit sa pagkaon sa mga langgam?` and `...baba ngadto sa baba sa laing langgam`. A Cebuano child reads a card about birds sharing food mouth-to-mouth in a colony; the body never corrects it (only the title `Hulmigas` and the untranslated English `worker ant` hint at ants). Sibling card ffct-14661 uses `hulmigas` correctly, confirming the corpus norm."
+  },
+  {
+   "id": "ffct-14760",
+   "pattern": "sailfin lizard->tiki",
+   "note": "title_bis 'Tiki nga Layag' names the sailfin lizard a tiki (house gecko) — a different animal. The Cebuano body never corrects it: it keeps the English 'sailfin lizard' and gives no Cebuano name, and the card's own terms list carries the correct 'ibid'. A child reading only the Cebuano learns that the protected animal is a house gecko."
+  }
+ ]
+}

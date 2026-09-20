@@ -146,7 +146,35 @@ So the cheap deterministic wins are already banked; what remains is semantic.
       13 reusable word-pair patterns captured for the C4 grep stage.
 - [x] **C2-note** original stage text: Measured probe: 2,000 cards, gold spiked in, full card record, NO field truncation.
       Report the flag rate and the projected corpus total before spending on the rest.
-- [ ] **C3** Discovery sweep over the remaining ~17,300 in chunks. Judge returns a reusable
+- [~] **C3 CHUNK A DONE, REST HELD pending Luis.** 14,000 cards swept (single run, not 3 --
+      per-run flags were 9/10/12 vs a union of 14, so one run buys ~70% of the findings for a
+      third of the cost). **268 flags = 1.91%**, against the probe's 0.93%. Treat 0.93% as the
+      corpus estimate until chunk B: the probe sampled randomly while this chunk took cards in
+      id order, which clusters by card family.
+
+      **URGENT, surfaced to Luis out of band:** three SHIPPED card titles contain `titi`, the
+      vulgar Cebuano/Tagalog word for penis, rendering "tasting" and "toes" --
+      ffct-00131 "Titi sa Tiil sa Alibangbang", ffct-00424 "Prints sa Titi ug Palad",
+      ffct-02351 "Laing Prints Titi". Bodies are correct; the defect is title-only, and
+      title_bis is what a child sees. Live in 0.4.19. NOT fixed unilaterally — awaiting his call.
+
+      **193 of 268 findings (72%) are in `title_bis`, not the body.** So the earlier title
+      hypothesis was right and my TEST of it was wrong: I measured whether titles lack Cebuano
+      linkers (a style proxy, 19.2% vs Tagalog 18.7% — no signal) when the real skew is that
+      titles carry the SEMANTIC errors. Wrong proxy, not wrong hypothesis.
+
+      **Dominant pattern is another Tagalog false friend, and it is large.** `langgam` means
+      BIRD in Cebuano and ANT in Tagalog. Corpus-wide, 47 cards use `langgam` on a card whose
+      English says ANT, against 657 that correctly use it for BIRD. "Ants Per Person" is titled
+      "Langgam sa Matag Tawo"; the pangolin eats millions of birds.
+
+      Other confirmed swaps: tears(rips) -> luha (teardrops), cricket -> kagang (crab, 9 cards),
+      wasp -> putyokan (honeybee), pufferfish -> baboy-dagat (dugong, which is a mammal and
+      lays no eggs), wears-down -> maghait (sharpens — the opposite), sweat -> bahu (odour),
+      monkey -> ungo (witch), feathers -> buhok (hair), light -> sugnod (firewood),
+      balance -> bali (broken), toad -> bakulaw (gorilla — the SAME defect found in Tagalog).
+
+      159 distinct word-pair patterns captured. 33,056 cards remain unswept. Judge returns a reusable
       `pattern` per flag. Stop early if pattern discovery saturates.
 - [ ] **C4** Grep each discovered pattern corpus-wide, then TRIAGE every hit with its card in
       view. Expect most to be FINE. Report confirmed vs candidates separately.
