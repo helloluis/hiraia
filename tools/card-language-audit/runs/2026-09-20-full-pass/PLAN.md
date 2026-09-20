@@ -168,9 +168,32 @@ assisted work including the judge. Corpus is 1.22M tokens of content — well wi
       into Filipino; that is a different decision and is left for a human.
       Emphasis spans co-renamed with the text; **0 orphaned spans of 81,757, before and after.**
 
-- [ ] **E2** Enumerate `nonword`: corpus token frequency <= 2 across all 49,156 cards, minus
-      English and proper nouns. ~1,900 candidates, expect ~130-190 real. Free, no model.
-- [ ] **F1b** NARROW LLM sweep — `en-mismatch` and `answer-clash` ONLY, the two genuinely
+- [x] **E2 — the deterministic rule FAILED. Zero reliable findings; useful as a funnel only.**
+
+      Raw rarity is meaningless here: 18,584 of 33,733 distinct Tagalog tokens appear <=2
+      times, because Tagalog is agglutinative and rare inflected forms are normal
+      (`nasasakal`, `iminumungkahi`, `nagbibigay-init` are all perfectly good words).
+
+      The near-neighbour test (rare token within 1 edit of a >=20x more common one) gives
+      1,345 hits, but precision is poor for a linguistic reason: Tagalog phonology puts many
+      REAL words one edit apart. `hapag` (table) is not a typo of `kapag`; `galos` (scratch)
+      is not `halos`; `gumagaya` (imitates) is not `gumagawa`; `hingin` is not `hangin`.
+
+      The 94 "punctuation artifacts" I isolated as a high-confidence subset turned out to be
+      false positives too — legitimate single-quoted phrases (`'kaunti lang'`,
+      `'malamig na liwanag'`) whose closing quote my tokeniser swallowed.
+
+      **Generalisation worth carrying:** deterministic enumeration works on CLOSED classes with
+      external evidence — `gawa ng` (confirmed by the card's own English, 23/23) and spelling
+      pairs (settled by corpus counts, 1,359 cards). It fails on OPEN classes in an
+      agglutinative language, where "is this a word?" needs a lexicon nobody has.
+
+      **Value delivered: a funnel.** 1,251 candidates is small enough for a cheap LLM pass,
+      versus 19,279 cards blind — the same 274 -> 32 -> 16 funnel that worked for Tier 1.
+      Folded into F1b's scope rather than run as its own sweep.
+
+- [ ] **F1b** NARROW LLM sweep — `en-mismatch`, `answer-clash`, plus adjudication of E2's
+      1,251 nonword candidates, the two genuinely
       semantic classes, full card record supplied, control spiked into EVERY batch. Re-measure
       recall on just those classes before committing to the full 19,279.
 - [ ] **G0** Score the in-session judge on the 30-item answer-quality gold in
