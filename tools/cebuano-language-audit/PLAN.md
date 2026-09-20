@@ -557,22 +557,27 @@ So the cheap deterministic wins are already banked; what remains is semantic.
 
 
 
-- [~] **C5c** Triage the 138 unattested title words from C4d (720 cards), then repair the
-      confirmed ones. Start with `kulob` (25 boiling cards), `balhas`, `pagtatanom`.
+- [!] **C5c BLOCKED — weekly limit.** 7 of 14 triage batches finished (70 of 138 words:
+      34 DEFECT, 14 VARIANT, 22 FINE). **Every verify agent died**, so **0 DEFECT claims are
+      verified and NOTHING was applied.** The remaining 7 triage batches never ran.
 
-      **NEGATIVE RESULT — the cheap split does not work.** I tried to pre-sort the 138 words
-      deterministically into "spelling variant of an attested body word" vs "isolated
-      substitution", using edit-distance similarity against the body vocabulary. It fails in
-      BOTH directions and is not usable:
-        - false pairs: `balhas` (Tagalog SWEAT) matched `balas` (SAND, 478 bodies); `yabo`
-          matched `abo`; `sugad` matched `suga`. String distance is not sense distance.
-        - false isolates: `daku` and `itum` ARE variants of dako/itom, but at four letters a
-          one-character difference scores 0.75 and falls below any usable threshold.
-      Discarded. Triage is word-level instead — 138 decisions, not 720 — with each word's
-      `ceb_usage.py` evidence and the title_en of the cards that use it. Input prepared in
-      `runs/batches-c5c/`.
+      This is the **weekly** limit ("resets 4am Asia/Manila"), not the nightly session limit
+      that truncated chunk B and C5b. All agent work is blocked until it clears; the error text
+      does not say which day, so I cannot give a reliable ETA beyond "4am Manila".
 
-- [ ] **C6** REPORT.md: what changed, what is queued for a Cebuano speaker, and an explicit
+      First failure of this stage. Under the standing rule one more failure and it is abandoned,
+      but the failure was a quota wall, not a defect in the approach — the 7 batches that did
+      run produced the best-evidenced triage in the audit, citing Wolff's Cebuano dictionary and
+      binisaya.com alongside corpus counts. Resume by re-running the workflow: completed agents
+      replay from cache, so only the 7 missing triage batches and the verify phase will run.
+
+      Strongest unverified claims, for context only — do NOT apply without verification:
+        bantol -> dikya    25 titles, all jellyfish cards; bantol is a STONEFISH (Wolff)
+        landok -> puthaw   12 titles; landok is ILOCANO for iron, absent from Cebuano dictionaries
+        kangi  -> kurog    10 titles meaning shiver/vibrate; kangi is not a word in any source
+
+- [x] **C6 DONE** — `REPORT.md` written while the weekly limit blocked all agent work.
+      Original text: REPORT.md: what changed, what is queued for a Cebuano speaker, and an explicit
       ship-or-not recommendation. Do not ship.
 
 ## Final tally (sweep + deterministic detectors)

@@ -1,0 +1,502 @@
+{
+ "batches": 7,
+ "words": 70,
+ "defects": 34,
+ "variants": 14,
+ "fine": 22,
+ "accepted": 0,
+ "rejected": 0,
+ "claims": [
+  {
+   "word": "bantol",
+   "verdict": "DEFECT",
+   "replacement": "dikya",
+   "affected_ids": [],
+   "evidence": "All 25 titles are jellyfish cards (Jellyfish Diet/Stingers/Life Cycle/Sting Care...), but 'bantol' is not a jellyfish: Wolff's Dictionary of Cebuano Visayan has 'bantul n k.o. small, excellent eating fish with poisonous spines... and a frog-like face', and binisaya.com glosses bantol = stonefish (Synanceja verrucosa). Wolff's Cebuano jellyfish words are bukya, buruy (general name for jellyfish), bulbug, sabay, dangkalan. Corpus: bantol 0 bodies / 25 titles; dikya 42 Cebuano bodies (46 Tagalog bodies), and the bodies of these very cards say dikya (ffct-01826 'Ang dikya mokaon og gagmay nga mga mananap', ffct-03270, ffct-04714). A Cebuano-only child reads these 25 cards as being about a venomous bottom-dwelling fish."
+  },
+  {
+   "word": "landok",
+   "verdict": "DEFECT",
+   "replacement": "puthaw",
+   "affected_ids": [],
+   "evidence": "'landok' is Ilocano for iron (Wiktionary lists Ilocano only; no Cebuano/Hiligaynon entry), it has NO entry in Wolff's Cebuano dictionary (0 occurrences of landuk/landok in the whole dictionary text) and none on binisaya.com. Corpus: landok 0 bodies / 12 titles; the concept words the bodies actually use are puthaw 440 bodies for iron (ffct-02360 title 'Kakulang sa Landok Anemya' -> body 'Kon kulang og puthaw ang lawas'), and bakal 42 / asero 22 for steel (ffct-24923 title 'Semento Piga Landok Hila' -> body 'gisagol... ang semento ug bakal'); Wolff: 'asiru n 1 steel'. Use puthaw on the iron cards (ffct-02360, ffct-20659, ffct-21586, ffct-23726, ffct-27998) and bakal/asero on the steel ones (ffct-20686, ffct-24923, ffct-25363, ffct-25944, ffct-26597, ffct-27285, plus ffct-27118 metals)."
+  },
+  {
+   "word": "kangi",
+   "verdict": "DEFECT",
+   "replacement": "kurog",
+   "affected_ids": [],
+   "evidence": "All 10 titles mean shivering/vibrating (Heat From Shivering, Chills Before Fever, Eardrum Vibrates With Sound), but 'kangi' is not a word: 0 standalone occurrences anywhere in Wolff's Cebuano dictionary (headwords or example sentences), no binisaya.com entry, no Wiktionary page in any language (404), 0 hits in the Bloom Cebuano books. The 99 'bodies' the prefix-matching tool reports are kangitngit (darkness). Corpus: kangi 0 bodies / 10 titles vs mokurog 58, pagkurog 35, kurog 8 bodies -- and the bodies of these exact cards say kurog (ffct-00120 'mangurog kung bugnaw kay ang pagkurog naghimo og init'; ffct-07483 'Ang pagkurog mao ang paspas nga paglihok sa atong kaunuran'). Wolff 'kurug' covers both senses, incl. machine vibration ('Ang kurug sa makina'), so pagkurog also serves ffct-09699 and ffct-16917."
+  },
+  {
+   "word": "bug-aton",
+   "verdict": "VARIANT",
+   "replacement": "gibug-aton",
+   "affected_ids": [],
+   "evidence": "Not a meaning error -- all 11 titles are about weight/heaviness and the root bug-at is transparent. But the attested noun is the gi-...-on / ka-...-on circumfix form: Wolff under bug-at gives 'ka-un, gi-un n 1 weight', and the beginners' textbook glosses 'gibug-aton = weight, heaviness'; bare 'bug-aton' has no dictionary entry. Corpus: bug-aton 0 bodies / 11 titles vs gibug-aton 295 bodies, kabug-at 78, bug-at 648. So 'Elepante sa Bug-aton' is a clipped 'sa gibug-aton' (and the adjectival uses, 'Bug-aton nga Butang', would standardly be bug-at). Normalising this is spelling/morphology work, out of scope here."
+  },
+  {
+   "word": "malaksi",
+   "verdict": "FINE",
+   "replacement": "",
+   "affected_ids": [],
+   "evidence": "Genuine Cebuano for fast, and it delivers exactly what all 23 title_en say (Fast-Growing Kamote, Cheetah Fastest Land Runner, Sound Fastest in Steel). Wolff: 'laksi = laski' and 'laski a be fast, sprightly in doing s.t. Laski mulakaw, A fast walker... Mulaski (malaski) na siyang sugoon' -- i.e. the ma- form is attested. The bodies simply prefer a different lexeme: paspas 1693 bodies (kapaspas 100), laksi/malaksi 0 bodies. Title-only vocabulary, not an error."
+  },
+  {
+   "word": "lumoy",
+   "verdict": "FINE",
+   "replacement": "",
+   "affected_ids": [],
+   "evidence": "Wolff: 'lumuy, lumuy a soft and delicate, not rigid. Lumuy nga tsiku, A soft sapodilla' -- lumoy is the modern o-spelling of that headword and means precisely 'soft', which is what all 18 title_en say (Soft Guyabano Spines, Hatchlings' Soft Shells, Soft Pure Gold, What Soft Water Is). Corpus: lumoy 0 bodies / 18 titles, humok 523 bodies (the bodies of these cards all say humok). Synonym, correctly used; absence from bodies is style, not meaning."
+  },
+  {
+   "word": "balhas",
+   "verdict": "FINE",
+   "replacement": "",
+   "affected_ids": [],
+   "evidence": "Standard Cebuano for sweat: Wolff 'balhas n 1 perspiration. 2 prickly heat. v perspire. Mubalhas ku ug mulampaso sa sawug, I'll perspire if I scrub the floor.' All 15 titles are sweat cards (Sweat Makes You Thirsty, Why Sweat Tastes Salty, Heat Stroke Stops Sweat). Corpus: balhas 0 bodies / 15 titles vs singot 115 bodies -- the bodies chose the synonym singot, but balhas is exact, not a defect."
+  },
+  {
+   "word": "tigsukod",
+   "verdict": "FINE",
+   "replacement": "",
+   "affected_ids": [],
+   "evidence": "Transparent, fully productive Cebuano agentive: tig- + sukod = 'the thing that measures'. The root is heavily attested in bodies (sukod 151, pagsukod 214, magsukod 27; Wolff has sukud and sukdanan 'thing on the basis of which other things are measured'), and the bodies of these cards say 'Ang rain gauge nagsukod...'. All 14 titles are instruments (13x Rain Gauge, 1x Seismograph), so 'Tigsukod sa Ulan' delivers exactly the title_en. Title-compact coinage on an attested root, not a meaning error."
+  },
+  {
+   "word": "kahinungdanon",
+   "verdict": "FINE",
+   "replacement": "",
+   "affected_ids": [],
+   "evidence": "Regular Cebuano abstract noun 'importance' from hinungdanon (important), which the bodies do use: hinungdanon 21 bodies, mahinungdanon 16 bodies (kahinungdanon itself 0 bodies / 11 titles). All 11 titles are exactly 'importance of / why X matters' (Why Weather Study Matters, DNA Importance, Importance of Constellations), so the word delivers the title_en. Bodies just never need the nominalisation because they are declarative sentences."
+  },
+  {
+   "word": "azul",
+   "verdict": "FINE",
+   "replacement": "",
+   "affected_ids": [],
+   "evidence": "Spanish loan for blue, and every one of the 23 titles is a blue card (Blue Light Scattering, Blue Neptune, Red Green and Blue). Attested in real human-written Cebuano: it appears in the Bloom Cebuano children's books in this repo (bloom-ang-regalong-relo, bloom-pagluto). The bodies use the nativised spelling asul (203 bodies; Wolff headword 'asul a blue'), and azul 0 bodies -- same word, Spanish spelling. Per the FINE rule for Spanish loans, no change."
+  },
+  {
+   "word": "tiglilimpyo",
+   "verdict": "VARIANT",
+   "replacement": "tiglimpyo",
+   "evidence": "tiglilimpyo: 0 bodies / 10 titles. The unreduplicated form IS attested: tiglimpyo 2 bodies (ffct-07114 'makatabang sa kinaiyahan isip tiglimpyo!' = cleaning up carcasses; ffct-14799 'ang ihi mao ang nag-unang tiglimpyo sa dugo' = blood-cleaner), root limpyo 717 bodies. A token scan of every tig- form in the bodies shows the corpus never reduplicates the agentive: tiglimpyo, tighinlo (4), tighimo (2), tigbaligya (4), tigpanalipod (9), tigbantay, tigdala — zero tig-CVCV- forms. Meaning is delivered correctly: all 10 cards are cleaner fish/shrimp and their bodies say naglimpyo / maglimpyo / naglinis / paglinis (ffct-00877, ffct-09445, ffct-07766). Reduplicated spelling of an attested word, not a meaning error.",
+   "affected_ids": []
+  },
+  {
+   "word": "daku",
+   "verdict": "VARIANT",
+   "replacement": "dako",
+   "evidence": "dako 2884 bodies / 270 titles vs daku 1 standalone body (ffct-32931 'human sa dakung pagsabog'). The daku root also surfaces inside body-attested derivations: padakuon, modaku, gipadaku (12 substring hits, e.g. ffct-04628 'modaku kung ngitngit'). Every example body renders the title's 'big/huge' as dako/dakong/dagkong (ffct-04197 'gamay nga mas dako', ffct-05550 'dako nga baba', ffct-10762 'dagkong kausaban'). Pure u/o spelling alternation, the same class as itum/itom. (Unrelated: ffct-03031 'Leon nga Daku nga Iro' also has iro=dog where the body says iring=cat — a different word's problem, not daku's.)",
+   "affected_ids": []
+  },
+  {
+   "word": "pagtatanom",
+   "verdict": "VARIANT",
+   "replacement": "pagtanom",
+   "evidence": "pagtatanom: 0 bodies / 9 titles; the unreduplicated pagtanom has 119 bodies / 18 titles and root tanom 2175 bodies. The word does deliver what the title_en says in every example — all nine are planting/replanting cards and their bodies use exactly this root: ffct-10111 'Ang pagtanom og narra', ffct-11694 'Ang pagtanom og kahoy, o reforestation', ffct-10950 'nagtanom pag-usab og mangrove', ffct-12185 'bag-ong tanom'. The only difference from the body vocabulary is the CV-reduplicated form, which the bodies never write. Spelling/morphological form, not a meaning error.",
+   "affected_ids": []
+  },
+  {
+   "word": "buhag",
+   "verdict": "DEFECT",
+   "replacement": "naghimo",
+   "evidence": "buhag: 0 bodies as a word, 9 titles. The 5 substring hits are a different word entirely — mobuhagay/mibuhagay 'gush/flow out' (ffct-03953 'dugo nga mibuhagay', ffct-30925 'mobuhagay ang lava', ffct-39839 'hinay mobuhagay ang honey') — so the corpus has no 'buhag' meaning 'makes'. The titles use it for two unrelated concepts at once, which is itself proof it is unanchored: 8 cards mean 'makes/builds' and ffct-01293 means 'blowhole'. For 'makes/builds' the corpus word is himo — 8906 bodies — and it is what these very cards' bodies say: ffct-11389 'naghimo og protina', ffct-05809 'naghimo og bag-ong red blood cells', ffct-04928 'ang bakterya nga naghimo sa nata', ffct-08170 'naghimo og daghang bitamina', ffct-14426 'maghimo og init'; the agent noun is tighimo. For the blowhole card the corpus word is lungag (323 bodies; across the 6 blowhole cards lungag is the body rendering) and ffct-01293's own body says 'lungag sa ibabaw sa ulo'. So ffct-01293 needs lungag and the other 8 need naghimo/himo; all 9 are wrong as written.",
+   "affected_ids": []
+  },
+  {
+   "word": "itum",
+   "verdict": "VARIANT",
+   "replacement": "itom",
+   "evidence": "itom 259 bodies / 56 titles vs itum 0 standalone bodies. The itum spelling does occur inside a body derivation — ffct-07037 'Kon maitum nga yellow o orange ang ihi' — and the remaining substring hits are unrelated words (itumong 'aims', itumog 'dip', gitumban, gitumpok). All nine example bodies render the title's 'black' as itom (ffct-22657 'itom nga bado', ffct-23326 'ang atong makita itom', ffct-26053 'mukitag itom', ffct-26639 'itom ang kolor', ffct-12042 'Mas itom kini'). Textbook u/o spelling variant, explicitly out of scope.",
+   "affected_ids": []
+  },
+  {
+   "word": "liwang",
+   "verdict": "DEFECT",
+   "replacement": "gaan",
+   "evidence": "liwang: 0 bodies as a word, 8 titles. The 2 substring hits are kaliwang = 'left (side)' (ffct-01321 'kaliwang baga', ffct-10019 'kaliwang ventricle') — a different word, and the wrong meaning for these cards. Every one of the 8 titles means light-in-weight, and every matching body writes gaan/magaan: ffct-05220 'Gaan kaayo ang lawas sa langgam', ffct-08443 'Ang balhibo sa langgam gaan apan lig-on', ffct-14967 'molutaw kung mas gaan kini', ffct-15485 'super magaan nga metal', ffct-16500 'mas gaan ang abo', ffct-00322 'Sobra kagaan ang ilang liso'. Corpus counts: gaan 546 bodies / 52 titles, magaan 60 bodies, vs liwang 0.",
+   "affected_ids": []
+  },
+  {
+   "word": "kagaangan",
+   "verdict": "DEFECT",
+   "replacement": "bahura",
+   "evidence": "kagaangan: 0 bodies, 8 titles. The only gaan-family nouns the bodies actually use are kagaan / pinakagaan = 'lightness / lightest' (31 hits), so read as Cebuano the token says lightness, not reef. The corpus word for reef is bahura: 105 bodies / 28 titles, and it is the dominant Cebuano noun in reef cards (of 127 cards whose title_en contains 'reef', 70 bodies use bahura). Every example here proves it card-by-card — title says Reef, its own body says bahura: ffct-01127 'Ang bahura morag paril sa dagat', ffct-01180 'aron mahimo ang dagko nga bahura', ffct-03793 'naglibot ang reef shark sa bahura', ffct-08845 'manunukob sa bahura', ffct-11630 'Ang bahura sa korales', ffct-00444 'mobalhin sa bahura'.",
+   "affected_ids": []
+  },
+  {
+   "word": "punuan",
+   "verdict": "VARIANT",
+   "replacement": "punoan",
+   "evidence": "punuan: 0 bodies / 8 titles; punoan: 189 bodies / 5 titles. Same word, same sense (stem/trunk), only the unstressed o/u differs — and each example body uses punoan for precisely the concept its title names: ffct-04574 'Ang berde nga punoan adunay chlorophyll', ffct-10155 'ang punoan sa saging', ffct-10625 'Ang punoan maoy nagdala sa tubig', ffct-11092 'Guwang sa sulod ang punoan sa kawayan', ffct-13593 'Ayaw isagol ang punoan ug gamot'. Spelling normalisation only, out of scope here.",
+   "affected_ids": []
+  },
+  {
+   "word": "kapeckan",
+   "verdict": "DEFECT",
+   "replacement": "peligro",
+   "evidence": "kapeckan: 0 bodies, 0 English, 0 Tagalog, 8 titles — it is not a Cebuano word in this corpus in any form (no ka-pe... family member exists in the bodies; it looks like a mangled kapeligrohan). The corpus renders 'danger/dangerous' as peligro (281 bodies / 50 titles), delikado (326 bodies / 48 titles), katalagman (33 bodies / 23 titles) and kakuyaw (22 bodies), and those are exactly what these cards' own bodies say: ffct-02526 'pasidan-an ... kon adunay nagkaduol nga kakuyaw', ffct-15779 'Usa ka makahilo nga gas ... delikado kaayo', ffct-27838 'Delikado nga lamon ang gagmay nga magnetic beads', ffct-29260 'Ngano nga delikado ang PEIS Intensity VII'. Two of the eight are not even about danger — ffct-06876 is 'damage' (body: 'gidaot sa ilaga ang humay') and ffct-13041 is 'stored food saves lives' (body: 'kon wala nay makaon') — which confirms the token carries no stable meaning; all 8 titles are affected.",
+   "affected_ids": []
+  },
+  {
+   "word": "sipsik",
+   "verdict": "DEFECT",
+   "replacement": "suyop",
+   "evidence": "sipsik: 0 bodies, 8 titles. All 8 titles mean absorb/soak, and the corpus word for that is suyop — 565 bodies / 46 titles, and across the 496 cards whose English mentions 'absorb' the single most characteristic Cebuano body word is mosuyop (156 hits), followed by masuyop (36). Each example body says it outright: ffct-15882 'Mosuyop ang paper towel og tubig', ffct-16634 'mosuyop o mobalik sa kahayag', ffct-16849 'nagsuyop ug kainit', ffct-16862 'nagsuyop ug enerhiya', ffct-17768 'Mosuyop ang cotton og singot', ffct-31023 'mosuyop sila sa sobra nga tubig'. The near-spelling sipsip IS attested (65 bodies / 34 titles, e.g. ffct-06828 'sama sa espongha nga mosipsip ug motipig og tubig') and would also be readable, but sipsik with a final k is attested nowhere in bodies, English or Tagalog.",
+   "affected_ids": []
+  },
+  {
+   "word": "sugad",
+   "verdict": "DEFECT",
+   "replacement": "kahayag",
+   "evidence": "`--bis sugad` = 0 Cebuano bodies, 8 titles; absent from Wolff's Dictionary of Cebuano Visayan (accent/o-u-normalised search) and binisaya.com returns \"No results found for the Cebuano word sugad\" (nearest suggestions sugod/sukad/sugat). It is not the corpus's word for light: `--bis kahayag` = 1591 bodies / 442 titles, `--bis suga` = 341 bodies. Every one of the 8 cards' own bodies says kahayag, never sugad (ffct-23484 'ang kahayag mobiyahe sa tul-id nga linya'; ffct-23326 'ang itom mao ang kawalay kahayag'; ffct-23478 'Kon daghan ang gigikanan sa kahayag'), and the parallel TL titles all say Liwanag/Ilaw. Whatever 'sugad' is (it is the Waray/Bikol word for 'like, such as'), it does not deliver the 'Light' every title_en asserts.",
+   "affected_ids": []
+  },
+  {
+   "word": "pamalandong",
+   "verdict": "DEFECT",
+   "replacement": "repleksyon",
+   "evidence": "`--bis pamalandong` = 0 bodies, 8 titles; `--bis palandong` = 0 bodies. Wolff lists it only under landung (shade/shadow) — 'palandung see landung' — i.e. the pamalandong family is mental contemplation/meditation, not optical bounce. The corpus renders optical reflection with the loan: `--bis reflection` = 36 bodies / 12 titles, reflect* = 130 bodies, `--bis repleksyon` = 3 bodies / 14 titles ('makita nimo niini ang repleksyon sa langit', ffct-23495), plus 'mobalik ang kahayag' (mobalik = 415 bodies). All 8 cards' bodies describe light bouncing — ffct-26858 'Ang reflection mao ang pagbalik sa kahayag gikan sa usa ka surface'; ffct-27913 'nag-reflect sila og kusog nga kahayag' — and the sibling Cebuano titles of the same 45-card EN-'Reflection' set already use Repleksyon sa Suga / Repleksyon sa Hayag. TL titles say Repleksyon/Pagsalamin. So the word delivers 'meditation' where title_en says 'Reflection'.",
+   "affected_ids": []
+  },
+  {
+   "word": "yabo",
+   "verdict": "DEFECT",
+   "replacement": "gabon",
+   "evidence": "`--bis yabo` = 1 body and that single body means pouring/emptying, not fog: ffct-08616 'Ang pag-yabo sa tubig gikan sa mga sudlanan' (EN: 'Emptying water from containers'). Wolff's yabu is likewise 'throw/pour water' ('pirmihag yabu sa hinúgas'). The corpus's fog word is gabon: `--bis gabon` = 41 bodies / 17 titles, and `--en \\bfog` shows gabon 40 occurrences as the top content word of the 68 fog cards (hamog 9, panganod 14). Each of the 8 cards' own bodies says gabon (ffct-30355 'Ang gabon gilangkuban sa daghan kaayong gagmayng tinulo sa tubig'; ffct-34846 'makahimo kini og baga nga gabon sa Baguio'), except ffct-32630 which uses hamog; none uses yabo. TL titles say Hamog/Ambon.",
+   "affected_ids": []
+  },
+  {
+   "word": "bukagnon",
+   "verdict": "DEFECT",
+   "replacement": "putyokan",
+   "evidence": "`--bis bukagnon` = 0 bodies, 7 titles; not in Wolff; binisaya.com resolves it only as root bukag 'basket' + affix -non, never as an insect. The corpus's bee word is putyokan/putyukan: `--bis putyukan` = 85 bodies, `--bis putyokan` = 50 bodies, `--en \\bbee` ranks putyukan 101 / putyokan 72 / buyog 35 as the characteristic words of the 339 bee cards. All 7 cards' own bodies name the bee as putyokan/putyukan (ffct-01685 'mosayaw ang putyokan og espesyal nga sayaw'; ffct-13199 'Ang talo nga gigamit sa putyukan'), and the parallel TL titles all say Bubuyog. 'Bukagnon' does not deliver the 'Bee' of every title_en.",
+   "affected_ids": []
+  },
+  {
+   "word": "gatlang",
+   "verdict": "DEFECT",
+   "replacement": "gintang",
+   "evidence": "`--bis gatlang` = 0 bodies, 7 titles; absent from Wolff (o/u- and accent-normalised) and binisaya.com answers 'No results found for the Cebuano word gatlang' (it only offers the unrelated gutling). The corpus renders expansion gaps with gintang/puwang/luna: `--bis gintang` = 32 bodies / 4 titles, `--bis puwang` = 21 bodies, `--bis luna` = 139 bodies; `--en \\bgap` ranks lungag 26, gintang 24, puwang 17, luna 17 across 129 gap cards. Every one of the 7 cards' own bodies uses one of those and never gatlang (ffct-15550 'may gagmayng gintang aron may luna sila molapad'; ffct-16795 'gagmayng puwang tunga-tunga sa mga riles'; ffct-15561 'may luna para sa paglapad'), and the TL titles all say Puwang. Note gintang is dictionary-attested ('May gintang dyis mitrus ang balay sa karsáda').",
+   "affected_ids": []
+  },
+  {
+   "word": "salaman",
+   "verdict": "VARIANT",
+   "replacement": "salamin",
+   "evidence": "Spelling form of salamin, not a meaning error. `--bis salaman` = 0 standalone bodies (the 12 prefix hits are 'salamander', ffct-00707/ffct-01324), while `--bis salamin` = 193 bodies / 87 titles. Wolff's entry itself records variation — 'salamin, salaming n 1 mirror 2 s.t. made of glass', plus sámin = salamin — so the vowel is the only thing in play. Each of the 7 cards' own bodies spells it salamin for exactly the concept its title carries (ffct-23494 'Ang salamin tin-aw nga bildo nga adunay nipis nga sapaw sa makintab nga metal'; ffct-03363 'murag salamin nga moputos sa mga selula' = glass; ffct-27300 'Mosaka ang gecko sa hapsay nga salamin'), and all 7 parallel TL titles read Salamin. Meaning delivered; normalising the spelling is out of scope here.",
+   "affected_ids": []
+  },
+  {
+   "word": "pangimhot",
+   "verdict": "FINE",
+   "replacement": "",
+   "evidence": "Ordinary Cebuano of the simhot family that simply never surfaced in a body as a bare noun. The root is corpus-attested: `--bis simhot` = 10 bodies ('simhoton ang hangin', ffct-11019), and one of these very cards, ffct-11819, uses it in its own body — 'nakasimhot kini sa mga butang nga dili masimhutan sa tawo'. Wolff documents exactly this nominalisation under simhut: 'paN- v [A] smell, sniff' and, in the affix table, 'Panimhut, Sense of smell'. The corpus's habitual noun is the synonym panimaho (30 bodies, e.g. ffct-02635 'hait kaayong panimaho' for this card's own 'Pig's Sense of Smell'), which is word-preference, not contradiction: all 7 titles say Smell/Scent and pangimhot delivers smelling. TL titles confirm intent (Pang-amoy). No defect.",
+   "affected_ids": []
+  },
+  {
+   "word": "paluya",
+   "verdict": "FINE",
+   "replacement": "",
+   "evidence": "The root IS attested in bodies — the zero count is an exact-token artefact. `--bis paluya` = 4 bodies via its inflections: ffct-06527 'gigamit niini ang kuryente aron paluyahon ang isda', ffct-28138 'aron paluyahon ang gagmay nga isda', ffct-05859 'mahimong palig-onon, paluyahon, o pugngan ang mensahe' (EN 'stronger, weaker, or stopped'), dcard-10020 'babagan o paluyahon ang mosulod nga tsunami waves'. A prior pass in this same audit already accepted paluyahon on that evidence. Bodies also carry the family broadly (huyang 220 bodies, moluya/mohuyang). All 7 titles mean weaken/weakest and the bodies say exactly that (ffct-23723 'moluya kini'; ffct-24204 'mohuyang'); TL titles read humina/mahina. Compact title form of a corpus root.",
+   "affected_ids": []
+  },
+  {
+   "word": "panimalayan",
+   "verdict": "FINE",
+   "replacement": "",
+   "evidence": "Transparent -an derivation of a corpus word that delivers 'home', which is what all 6 title_en say (Home / Habitat / Houses). `--bis panimalay` = 41 bodies / 8 titles, and Wolff glosses the paniN- form as '1 household 2 home' ('Ang asáwa mauy hára sa panimalay'). The bodies' usual habitat noun is puy-anan (269 bodies / 93 titles, e.g. ffct-06142 'naguba ang ilang puy-anan' for 'Habitat Loss'), but preferring puy-anan over panimalayan is word-preference/register, explicitly out of scope — the title word still names a dwelling place, and the TL titles agree (Tahanan/Tirahan). No card is told something different from its English.",
+   "affected_ids": []
+  },
+  {
+   "word": "kinhas",
+   "verdict": "FINE",
+   "replacement": "",
+   "evidence": "Exact-token zero only; the word is corpus-attested in its -un/-on form. `--bis kinhason` = 24 bodies, all shellfish ('kuhol, tahong, ug uban pang kinhason', ffct-00526; red-tide shellfish, ffct-00240; 'Asa mahiadto ang carbon sa kinhason?', ffct-00568 EN 'Where does carbon go in shells?'). Wolff lists kinhas as a headword under hunas — 'Manginhas ta kun muhunas, Let's gather shellfish when the tide is out' — so kinhas is the bare root of shellfish/shell-gathering. The 6 titles say Shells/Shellfish/Clams and the bodies use its co-hyponyms kabhang (143 bodies) / kabibe (50) / halaan; TL titles say Kabibe. Correct Cebuano that happens to be title-only.",
+   "affected_ids": []
+  },
+  {
+   "word": "kasingkasin",
+   "verdict": "VARIANT",
+   "replacement": "kasingkasing",
+   "evidence": "'kasingkasin' 0 Cebuano bodies; 'kasingkasing' 317 bodies + 87 bis titles (+721 quiz-bank hits). Meaning is delivered — every example body itself says kasingkasing. All five ffct titles are exactly 20 characters ('Pitik sa Kasingkasin' 20, 'Lawak sa Kasingkasin' 20, 'Klima ug Kasingkasin' 20), i.e. the documented 20-char title-truncation bug (truncation_20char.py), a dropped final -g rather than a word choice. Route to the truncation fixer, not the word fixer.",
+   "affected_ids": []
+  },
+  {
+   "word": "gibiya-ong",
+   "verdict": "DEFECT",
+   "replacement": "gibug-aton",
+   "evidence": "'gibiya-ong' 0 Cebuano bodies, 0 of 27,783 quiz-bank items, 0 in the CPT Cebuano corpora — unsourced. The corpus word for weight/mass is 'gibug-aton' (295 bodies, 20 bis titles, 487 quiz) with 'timbang' (103 bodies, 52 weight/mass titles) alongside; all six example bodies use gibug-aton or timbang. The only attested biya- root in the corpus is gibiyaan = left/abandoned, which is not weight.",
+   "affected_ids": []
+  },
+  {
+   "word": "sig-a",
+   "verdict": "VARIANT",
+   "replacement": "siga",
+   "evidence": "'sig-a' 0 bodies, but 'siga' 32 bodies and it is exactly the flame word: 31 of its hits fall inside cards whose English contains 'flame' (ffct-16088 'gamay nga siga sa kandila' = small candle flame; ffct-16002 'ang init nga hangin palibot sa siga' = hot air around the flame; ffct-05178 'walay siga' = no glow). Meaning matches all six title_en (candle flame / flickering flame / fire triangle). Hyphenated spelling form only.",
+   "affected_ids": []
+  },
+  {
+   "word": "dagum",
+   "verdict": "VARIANT",
+   "replacement": "dagom",
+   "evidence": "'dagum' 0 bodies exact; 'dagom' 33 bodies and it means needle (ffct-02086 'talinis nga sungo nga morag dagom' = needle-like jaw; ffct-02263 talinis nga 'dagom' sa pino = pine needles; ffct-02626 'motuslok sa panit sama sa dagom'). The u-spelling is attested elsewhere in the same sense (ffct-29102 'dagumon nga porma sa dahon' = needle-shaped leaves; quiz-05709 'balahibo nga dagum-dagum'). Plain u/o spelling variation, meaning correct.",
+   "affected_ids": []
+  },
+  {
+   "word": "energiya",
+   "verdict": "VARIANT",
+   "replacement": "enerhiya",
+   "evidence": "'energiya' 0 bodies; 'enerhiya' 702 bodies + 416 bis titles + 4,086 quiz-bank hits. Every example body itself writes enerhiya (ffct-22353 'dugangan kini og enerhiya', ffct-22361 'enerhiya gikan sa naglihok nga hangin'). g/h spelling of the same Spanish loan — the exact case named in the brief.",
+   "affected_ids": []
+  },
+  {
+   "word": "taludtod",
+   "verdict": "FINE",
+   "replacement": "",
+   "evidence": "Absent from bodies (0 of 47,056) and from every Cebuano quiz-bank field; the corpus word for spine/backbone is 'gulugod' (63 bodies, 21 bis titles, 383 quiz), and the bodies of all five example cards use gulugod. But the word is not shown to be wrong: its only corpus occurrences (153 in the raw DepEd crawl, 1 quiz option) are TAGALOG, where taludtod = line of verse, and Visayan lexicons give taludtod/taludtud = backbone, ridge of the back — so it is plausibly compact title vocabulary for gulugod. No corpus evidence of a meaning error, so FINE per the unsure rule; flag for a native check rather than a rewrite.",
+   "affected_ids": []
+  },
+  {
+   "word": "kuruy-kuruy",
+   "verdict": "DEFECT",
+   "replacement": "kurog",
+   "evidence": "'kuruy'/'kuroy' 0 hits in 47,056 Cebuano bodies, 0 in the 27,783-item quiz bank, 0 across the CPT Cebuano corpora — unsourced in any register. The corpus word for shiver/vibrate is 'kurog': 8 exact bodies, 34 'mokurog' hits inside cards whose English contains 'vibrat', 320 quiz hits, and other bis titles already use it (pagkurog 25, kurog 11). Each example card contradicts its own title — ffct-00451 body 'Mokurog ang lawas', ffct-23276 'nagkurog o naglihok dali balikbalik' — and their terms fields list kurog/pagkurog/nagkurog.",
+   "affected_ids": []
+  },
+  {
+   "word": "nagdapit",
+   "verdict": "DEFECT",
+   "replacement": "nameligro",
+   "evidence": "'dapit' in the corpus means place/spot or to adjoin — 576 body hits, all locational (ffct-00020 'Hugasi ang dapit', ffct-00082 'motubo sa laing dapit'), and quiz-04860 uses the exact form: 'nagdapit sa baybayon sa Pilipinas' = adjoins the coastline. It never means endangered. Endangered/threatened is 'nameligro' (47 bodies, 6 bis titles, 51 quiz) or 'namiligro' (34 bodies); all five example bodies use namiligro/nameligro while the titles say Endangered/Threatened.",
+   "affected_ids": []
+  },
+  {
+   "word": "lagtaw",
+   "verdict": "DEFECT",
+   "replacement": "hamtong",
+   "evidence": "'lagtaw' 0 hits in 47,056 bodies, 0 in the quiz bank, 0 in the raw and synthetic CPT Cebuano corpora — unsourced, and no near-spelling supports an 'adult' sense ('laktaw' = skip, 1 body, leap year). The corpus word is 'hamtong': 179 bodies, 163 hits inside cards whose English contains 'adult', 486 quiz, 8 bis titles; 'hingkod' (24 bodies) is the secondary. Every example body uses hamtong or hingkod, and the tl titles all say Matanda.",
+   "affected_ids": []
+  },
+  {
+   "word": "katkat",
+   "verdict": "DEFECT",
+   "replacement": "katol",
+   "evidence": "The corpus does use katkat — but for CLIMBING, never itching: 18 body hits (mokatkat 13, makakatkat 3, nagakatkat 1, pagkatkat 1) e.g. ffct-00520 'nagakatkat nga palma — mokatkat kini sa kahoy', and 42 quiz hits such as 'mokatkat sa makinis nga ibabaw' (climb smooth surfaces). Itch is 'katol' (18 bodies, 73 quiz), with kati (4 bodies) and pangatol. All five example bodies use katol/kati/pangatol against an itch title — ffct-02240 'kusog nga katol sa lubot', ffct-06845 'kati', ffct-12700 'pangatol'.",
+   "affected_ids": []
+  },
+  {
+   "word": "paghahabol",
+   "verdict": "DEFECT",
+   "replacement": "paghabol",
+   "affected_ids": [],
+   "evidence": "Tagalog CV-reduplication morphology pasted onto a Cebuano root. Bodies: paghabol 7, hinabol 6, habolon 6, habol 51; paghahabol 0 bodies (0 in tl/en/terms too, 5 titles). Decisive: ffct-17767's own body says 'Gitawag kini nga paghabol' while its title says 'Paghahabol'. The tl twin of every one of these titles is 'Paghahabi ng X', so the bis title was built off the Tagalog gerund shape; as written, 'paghahabol' is the Tagalog word for chasing/claiming (Tagalog habol = chase), not weaving (Cebuano habol = weave of cloth)."
+  },
+  {
+   "word": "lalum",
+   "verdict": "VARIANT",
+   "replacement": "lalom",
+   "affected_ids": [],
+   "evidence": "Plain u/o spelling variant of the same root, and a dictionary headword itself (pinoydictionary Cebuano 'lalum' = deep; also 'deep, low in tone', which covers the pitch cards ffct-21968/ffct-22173). Bodies: lawom 378, lalom 19, lalum 1 ('pinaka-lalum', ffct-32769), halawom 4, kinalawman 6. Corpus titles already mix all three (Isda sa Lawom / Lalom Samat Kaban / Kalaluman). Meaning is delivered on every card; normalising spelling is out of scope."
+  },
+  {
+   "word": "layog",
+   "verdict": "DEFECT",
+   "replacement": "gilay-on",
+   "affected_ids": [],
+   "evidence": "All 5 titles use it for 'distance', which it does not mean: binisaya.com gives layog (lá.yug) = adj. 'tall and straight'; v. 'grapple'. Bodies: layog 0 (0 in tl/en/terms), gilay-on 288, layo 592. The cards' own bodies use the real words — ffct-23891 'gilay-on o oras', ffct-24537 'Bahina ang gilay-on sa oras', ffct-23162 'molayo'. Corpus title practice for tl 'Distansya' is to keep 'Distansya' or use 'Layo/Kalayo' (Kilometro Layo Distansya, Distansya Unsa Kalayo) — never 'Layog'."
+  },
+  {
+   "word": "balansi",
+   "verdict": "VARIANT",
+   "replacement": "balanse",
+   "affected_ids": [],
+   "evidence": "Regular Cebuano adaptation of the Spanish loan (final -e raised to -i) and a dictionary headword in its own right: pinoydictionary Cebuano 'balansi' n. 'balance' — 'Nawad-an siyag balansi' (He lost his balance). Bodies: balanse 195 (magbalanse/balanse used in all five of these cards' bodies), balansi 0. Same word, same meaning; spelling only."
+  },
+  {
+   "word": "osang",
+   "verdict": "DEFECT",
+   "replacement": "usa",
+   "affected_ids": [],
+   "evidence": "Not a Cebuano word — it is tl 'usang' (usa + Tagalog linker -ng) carried over with o-spelling; the tl twin of ffct-00611 is literally 'Usang Pilipino', and in 'Batik sa Osang' / 'Paglangoy sa Osang' the linker has nothing to link. Bodies: osang 0 (0 in tl/en; 1 stray terms hit), while all 54 deer cards render deer as 'usa' — including these cards' own bodies ('ang usa sa Pilipinas', 'nati nga usa', 'Kahibalo molangoy ang usa'). Corpus title twins prove the intended forms: 'Batik ng Usa | Batik sa Lagsaw' and 'Usa ng Pilipinas | Lagsaw sa Pilipinas' vs the defective 'Batik ng Usa | Batik sa Osang'. Use 'usa' (bodies) or 'lagsaw' (7 titles) where 'usa' would read as 'one'."
+  },
+  {
+   "word": "kapunaw",
+   "verdict": "DEFECT",
+   "replacement": "pagkapuo for the extinction cards (ffct-00708, ffct-14034); basakan/humayan for the rice-paddy cards (ffct-04557, ffct-31674)",
+   "affected_ids": [],
+   "evidence": "One unattested word standing in for two unrelated concepts: tl twins are 'Antas ng Panganib sa Lipol' and 'Kaunting Natitira Lipol' (extinction) but also 'Azolla sa Palayan' and 'Methane Palayan Bacteria Baka' (rice paddy). Bodies: kapunaw 0 (0 in tl/en/terms), punaw 0; extinction = pagkapuo 12 bodies/10 titles, malipol/mapuo 9 (ffct-14034's body says 'dali sila malipol'); paddy = basakan 41 (ffct-04557's body says 'Sa mga basakan sa Pilipinas'), palayan 20, and corpus titles render tl 'Palayan' as 'Humayan/Basakan/Palayan' (Itik sa Humayan, Tagak sa Basakan). The only real word in this family is 'kapunawpunawan' = horizon/space, which fits neither sense. All 4 cards affected."
+  },
+  {
+   "word": "tambuboan",
+   "verdict": "FINE",
+   "replacement": "",
+   "affected_ids": [],
+   "evidence": "Genuine Cebuano: binisaya.com 'tambubuan [tam.bu.bú.an] : hornet (n.) — large stinging paper wasp'; wikilanguages gives tambuboan as the Cebuano for 'wasp'. Title-only here (0 bodies) because the bodies use putakti 35 / putyukan 85, but the corpus title layer already carries the same native wasp vocabulary: tl 'Putakti' is rendered in bis titles as Tambubuk (x2), Kagitgit, Alumindig, Putyokan, Putakti. All four cards are about wasps and the word means wasp/hornet; the -oan/-uan spelling and the lexical choice are regional variation, which is out of scope."
+  },
+  {
+   "word": "gaway",
+   "verdict": "FINE",
+   "replacement": "",
+   "affected_ids": [],
+   "evidence": "Genuine Cebuano for tentacles: pinoydictionary Cebuano 'gaway' n. 'tentacles' — 'Katul ang gaway sa bukya' (jellyfish have itchy tentacles); binisaya's kugita entry uses it too ('molikus ang mga gaway niini'). Title-only (0 bodies) simply because bodies prefer galamay 45 / bukton 94 / tentakulo 3. All four cards are octopus/squid arms, which is exactly what gaway denotes; bis titles elsewhere already alternate Galamay/Tentakulo/Braso for the same concept."
+  },
+  {
+   "word": "kaugalion",
+   "verdict": "DEFECT",
+   "replacement": "kinaiya",
+   "affected_ids": [],
+   "evidence": "Unattested string (0 bodies, 0 tl, 0 en, 0 terms; not a dictionary headword) whose nearest real word 'kaugalian' means custom/habit/tradition — wrong for scaly skin, cold blood, or a gene-coded eye colour. The corpus word for tl 'Katangian' is kinaiya: 312 bodies, 111 titles, and three of these four cards' own bodies use 'kinaiya' for the very trait in the title (ffct-04030, ffct-05935, ffct-10233); ffct-05935's terms list includes 'kinaiya'. Title twins are decisive: 'Katangian ng Reptile | Kinaiya sa Reptil' and 'Katangian ng Amphibian | Kinaiya sa Amphibian' against the defective 'Katangian ng Reptilya | Kaugalion sa Reptilya'."
+  },
+  {
+   "word": "nagtapak",
+   "verdict": "DEFECT",
+   "replacement": "molapad (ffct-02578 bladder: nagkadako/moluag)",
+   "affected_ids": [],
+   "evidence": "tapak means patch/mend (binisaya: 'patch… a piece of cloth used to mend a hole'; no sense of expanding) — 0 bodies, 0 in any bis body in any form; nagtapak 0 bodies / 4 titles. tl twins are 'Lumalawak' and 'Umuunat'. Corpus for 'expand' (246 cards): molapad 93, modako 288/nagkadako 20, nagkalapad 11, mo-expand 38, and the bis title convention is already 'Tubig Molapad', 'Molapad ang Gas', 'Molapad ang Tubig' for tl 'Lumalawak'. These cards' own bodies say 'mo-expand', 'mag-spread', and ffct-02578's terms literally list 'moluag' and 'modako'."
+  },
+  {
+   "word": "panangka",
+   "verdict": "DEFECT",
+   "replacement": "pangayam",
+   "affected_ids": [],
+   "evidence": "`panangka` = 0 Cebuano bodies, 0 en/tl/terms, and no dictionary entry (binisaya.com has no `panangka`; nearest real words are `sangka` = a fight/contest, 1 body ffct-dcard-03107 about medals in contests, and `panangga` = shield). All 4 cards are hunting cards and their OWN bodies say pagpangayam (ffct-02644, ffct-02791, ffct-11678, ffct-14150 all contain `pagpangayam`). Corpus hunting vocabulary: pagpangayam 72 bodies, mangayam 54, mangangayam 30, nangayam 20, pangayam 6 (7 titles) -- vs panangka 0 bodies. The title word for 'hunt' the bodies actually use is pangayam."
+  },
+  {
+   "word": "pamahong",
+   "verdict": "DEFECT",
+   "replacement": "panimaho",
+   "affected_ids": [],
+   "evidence": "`pamaho*` = 0 Cebuano bodies (only the 4 titles). binisaya.com has no entry for `pamaho` itself, only the decomposition pa- + baho, and `baho` is the ODOR/stink noun (304 bodies, e.g. 'ang baho sa tawo', 'baho sa lawas'), not the faculty. So 'Pamahong sa Iro' / 'Pamahong sa Baboy' reads as the dog's/pig's smell-as-odor, while title_en says 'Sense of Smell'. The bodies of all 4 cards use the faculty word: ffct-04488/06751/12797 `panimaho`, ffct-06781 `manimaho`. Corpus: panimaho 30 bodies (3 titles), panimho 7, pang-amoy 4, pang-simhot 3, pamaho 0."
+  },
+  {
+   "word": "imoy",
+   "verdict": "DEFECT",
+   "replacement": "panimaho",
+   "affected_ids": [],
+   "evidence": "`imoy` = 0 Cebuano bodies. binisaya.com: `imoy` = imo + -y, pronoun 'your' -- it has no smell sense at all, so 'Baboy Imoy Dili Mata' / 'Sloth Imoy Dili Mata' are not delivering title_en 'Smell'. The bodies of all 4 cards use the real word: ffct-07334 `panimaho`, ffct-08203 `panimho`, ffct-11458 `panimaho`, ffct-11652 `simhoton`. Corpus: panimaho 30 bodies, amoy 20 bodies (pang-amoy 4), simhot(on) 6, imoy 0. Note the same generator also produced 2 unattested `pang-imoy` titles (ffct-00076, ffct-06266) against 4 attested `pang-amoy` bodies -- same substitution, same fix."
+  },
+  {
+   "word": "balit",
+   "verdict": "DEFECT",
+   "replacement": "kausaban",
+   "affected_ids": [],
+   "evidence": "`balit` = 0 Cebuano bodies and binisaya.com returns 'No results found for the Cebuano word balit'. The only real neighbours in the corpus are balit-ad 12 bodies / balitad 5 = INVERTED, upside-down (title ffct-32613 'Balit-ad nga Hangin' = Inversion Layer, dcard-11226 'Tul-id ug Balit-ad nga Imahe' = Upright and Inverted) -- a different concept from the change/transformation these 4 titles claim. Their own bodies use the change words: ffct-06780 `nag-usab og porma`, ffct-12632 `giusab ang lawas`, ffct-16378 `pagbag-o`, ffct-22458 `kausaban sa iyang lihok`. Corpus: kausaban 234 bodies (49 titles), pagbag-o 310 bodies, usab 1226 bodies -- vs balit 0."
+  },
+  {
+   "word": "batan",
+   "verdict": "DEFECT",
+   "replacement": "batan-ong",
+   "affected_ids": [],
+   "evidence": "Bare `batan` = 0 bodies; it is the hyphenated adjective with its suffix cut off. Corpus: batan-ong 112 bodies / 7 titles, batan-on 30 bodies / 1 title -- the correct title form is already attested elsewhere ('Batan-ong Pako', 'Batan-ong Tanom', 'Batan-ong Himalayas'). The 4 cards' own bodies say batan-ong (ffct-09152 x2, ffct-11899), linghod (ffct-08029) or 'bata pa nga bukid' (ffct-30024). binisaya.com has no adjectival `batan`; its only hit is a fuzzy derivation of balat (sea cucumber), which is nothing these titles mean. 'Batan Okra Lami' does not deliver 'Young Tender Okra'."
+  },
+  {
+   "word": "pinaugang",
+   "verdict": "FINE",
+   "replacement": "",
+   "affected_ids": [],
+   "evidence": "Attested in bodies as the same word minus the linker: `pinauga` = 5 bodies, all meaning exactly 'dried' -- ffct-00349/05419 'ang copra mao ang pinauga nga unod sa niyog/lubi' (EN: dried coconut meat), ffct-08560 'pinauga nga dahon sa nipa' (dried nipa leaves), ffct-08972 'pinauga nga dahon sa buri', ffct-32953 'pinauga nga lapok ug dayami'. Root uga = 360 bodies. `pinaugang` is only title-unattested because the detector matches exact tokens and titles carry the -ng linker (Pinaugang Mangga = dried mango). Correct meaning, correct morphology, no defect."
+  },
+  {
+   "word": "amimislon",
+   "verdict": "FINE",
+   "replacement": "",
+   "affected_ids": [],
+   "evidence": "binisaya.com: 'amimislon [a.mi.mis.lun.] : kidney (n.)' -- it is the native Cebuano word for kidney, and all 4 cards are kidney cards. It is absent from bodies only because the bodies use the English loan instead: kidney 111 bodies / kidneys 27 (20 kidney titles). That is the bodies being loan-heavy, not the titles being wrong; the title is if anything the better Cebuano. Absence from bodies here is exactly the 'signal, not a verdict' case."
+  },
+  {
+   "word": "hupot",
+   "verdict": "FINE",
+   "replacement": "",
+   "affected_ids": [],
+   "evidence": "binisaya.com: `hupot` = possess (v.), acquire (v.) -- ordinary Cebuano for holding/keeping, and all 4 titles are hold cards (Roots Hold Firm, Screws Hold Wood Tight, Gravity Keeps Us Down, The Groove Holds the Rope). The bodies reach for near-synonyms rather than a different concept: gikuptan (kuptan 44 bodies, kupti 8), naggunit (gunitan 18, gunit 7), paghugot, nagpabilin. Choosing hupot over kupot/gunit is register/word choice, which is out of scope; the meaning delivered matches title_en."
+  },
+  {
+   "word": "katapos",
+   "verdict": "FINE",
+   "replacement": "",
+   "affected_ids": [],
+   "evidence": "binisaya.com: katapos = ka- + tapos, 'after (adv.); conclude (v.); end (v.); terminate (v.)' -- ordinary Cebuano, and all 4 titles mean last/at the end (Wisdom Teeth Last, Malunggay Goes in Last, Cleanup Comes Last, Stop at the Last Step). The same root is heavily used in bodies, just in the nominalised form the exact-token detector misses: kataposan 35 bodies, kataposang 28, katapusan 59, katapusang 39 (and the very cards' bodies say kataposang/katapusan). Compact title clipping of an attested root, not a meaning error."
+  },
+  {
+   "word": "minatay",
+   "verdict": "FINE",
+   "replacement": "",
+   "affected_ids": [],
+   "evidence": "binisaya.com: minatay = in- + matay, 'cadaver, corpse, remains' -- a real, dictionary-attested Cebuano word built on the same root the bodies use, and it does deliver 'dead' in all 4 titles (Dead Outer Bark, Mushrooms on Dead Matter, Pus Dead White Cells x2). The bodies prefer plain patay (206 bodies, 29 titles; minatay 0 bodies) and for dead CELLS/bark a normalisation pass would reasonably prefer 'patay nga selula' as the bodies write it -- but the gap is collocation/register (corpse-of-a-person vs dead tissue), which the rubric puts out of scope, so not a DEFECT."
+  },
+  {
+   "word": "tag-uha",
+   "verdict": "DEFECT",
+   "replacement": "hulaw",
+   "affected_ids": [],
+   "evidence": "'tag-uha' = 0 Cebuano bodies (and 0 anywhere else). The corpus word for drought is 'hulaw' = 57 bodies (variant 'huwaw' 6); ffct-31612's own body defines it: \"Ang hulaw (drought) dugay nga panahon nga halos walay ulan\", and ffct-31613's body uses 'hulaw' too. Binisaya dictionary: 'uha' = cry/wail (of a newborn), so 'tag-uha' reads as 'time of crying', not a dry spell; Cebuano seasons also take ting- (ting-init 99 bodies, ting-ulan 74), not the Tagalog tag-. All 4 titles mean drought, so all 4 are wrong."
+  },
+  {
+   "word": "katawo",
+   "verdict": "DEFECT",
+   "replacement": "pagkatawo",
+   "affected_ids": [],
+   "evidence": "'katawo' = 0 bodies as a word; the only body form with that string is 'pagkatawo' (14 bodies, e.g. ffct-08431 \"mga 7 ka metro na sa pagkatawo\" = 'the moment it's born'), plus 'natawo' 72 bodies. Binisaya lists 'katawo' as ka- + tawo, i.e. person/human (cf. 'katawhan' = mankind, 2 bodies) — not birth. So 'Katawo sa Nebula'/'Katawo sa Iceberg' read as 'person of the nebula/iceberg', and 'Baho sa Katawo' reads 'smell of the human' where the body means the river where salmon were born. Birth = pagkatawo in every attested body."
+  },
+  {
+   "word": "asok",
+   "verdict": "DEFECT",
+   "replacement": "aso",
+   "affected_ids": [],
+   "evidence": "'asok' = 0 bodies as a standalone word (the 53 substring hits are dasok/pasok/kadasok, unrelated); binisaya.com returns \"No results found for the Cebuano word asok\" and suggests 'aso'. Smoke = 'aso' in 211 bodies, and each of the four cards' own bodies uses 'aso' ('mogamit og hinay nga aso', 'Ang init nga aso mosaka', 'makahilo nga aso', 'humot sa kamanyang o aso'). Final -k is not a Cebuano spelling alternation (the attested variation is u/o), so this is a wrong token, not a variant."
+  },
+  {
+   "word": "kit-an",
+   "verdict": "FINE",
+   "replacement": "",
+   "affected_ids": [],
+   "evidence": "Same lexeme the bodies use: 'makit-an' 286 bodies, 'kit-an' as a substring 334, 'makita' 1951 (ffct-16233's own body: \"usa ka gas nga dili makita\"). Binisaya lists 'kit-an' as a real form of root 'kita' = see. 'Dili Kit-an' is the compact-title clipping of 'dili makit-an' and delivers 'invisible' exactly as title_en says; the \\b regex just cannot see it inside 'makit-an'."
+  },
+  {
+   "word": "pag-itom",
+   "verdict": "FINE",
+   "replacement": "",
+   "affected_ids": [],
+   "evidence": "Regular pag- gerund of the corpus's own root: 'itom' 238 bodies, 'moitom' 8 — ffct-16517's own body is \"Nganong moitom ang pilak kon dugay na?\" for the same tarnishing event, and ffct-21829's body uses 'mongitngit' for browning. Nothing about the title's meaning departs from the bodies; only the nominalised form happens to be title-only."
+  },
+  {
+   "word": "yabyab",
+   "verdict": "DEFECT",
+   "replacement": "hunghong",
+   "affected_ids": [],
+   "evidence": "'yabyab' = 0 bodies, and no near-spelling in bodies (only bayabas/pagyabo/yabag). Binisaya defines yabyab as 'to shake something to remove foreign matter clinging to it' (Iyabyab ang abug sa imong karsunis) or literary 'send off a breeze' — not whisper. The corpus renders whisper as 'hunghong' (4 bodies, incl. ffct-24390's own body \"Parehong 340 m/s ang singgit ug hunghong\") and 'hagawhaw' (1 body — ffct-22958's own body \"Ang hagawhaw mga 30 desibel ra\"). All 4 titles say Whisper, so all 4 are wrong."
+  },
+  {
+   "word": "daog",
+   "verdict": "FINE",
+   "replacement": "",
+   "affected_ids": [],
+   "evidence": "The bodies use exactly this root and this o-spelling, just always affixed: 'daog' substring in 63 bodies — modaog 24 (ffct-23728's own body: \"modaog ang grabidad\"), nakadaog 27, midaog 12, nidaog 9, pagdaog 1; 'daug' spelling only ~17 and several of those are English 'daughter'. Bare root in a compact title = win/beat, which is what every title_en says (Lift Beats Weight, No Winner, Winning the Sunlight)."
+  },
+  {
+   "word": "kurug",
+   "verdict": "VARIANT",
+   "replacement": "kurog",
+   "affected_ids": [],
+   "evidence": "Pure u/o spelling variant of the body word: 'kurog' 140 bodies by substring (mokurog 66, pagkurog 38, nagkurog 24, bare kurog 12) vs 'kurug' 0. ffct-23164's own body uses 'pagkurog' for the very vibration its title calls 'Kurug'. Meaning is intact across all four cards (vibration / trembling / rumbling), so this is spelling normalisation, which is out of scope."
+  },
+  {
+   "word": "kasubsob",
+   "verdict": "FINE",
+   "replacement": "",
+   "affected_ids": [],
+   "evidence": "Well-formed ka- nominalisation of an attested body word: 'subsob' 18 bodies = frequent/often (binisaya: subsob = frequent), plus masubsob 4 and one body token 'ka-subsob'; dcard-05591's own body says \"unsa ka subsob mahitabo\" for the frequency its title calls 'Kasubsob'. The bodies usually keep the English loan ('frequency' 164 occurrences, glossed 'kadalas' in ffct-21961), but that is a style preference, not a different word for the concept."
+  },
+  {
+   "word": "pagdalag",
+   "verdict": "DEFECT",
+   "replacement": "pagbalhin sa init (o 'conduction')",
+   "affected_ids": [],
+   "evidence": "'pagdalag' = 0 bodies, but 'dalag' = yellow is one of the commonest body words (179 bodies; 'modalag' = turns yellow, 4 bodies: \"Kung modalag o mamatay ang dahon\"), so 'Pagdalag sa Init' reads as 'the yellowing of the heat'. The og-contraction reading ('pagdala og') is blocked by the following 'sa', and the corpus writes carrying out in full ('pagdala' 92 bodies) and marks contractions with an apostrophe ('gitawag'g'). Conduction in the bodies is 'conduction' (81 occurrences across 105 conduction cards, incl. all four of these cards' own bodies) or 'pagbalhin sa init' (pagbalhin 97 bodies, ffct-15994: \"Tulo ka paagi ang pagbalhin sa init\"). All 4 titles are Heat Conduction."
+  }
+ ],
+ "verdicts": []
+}
