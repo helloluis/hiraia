@@ -137,9 +137,30 @@ assisted work including the judge. Corpus is 1.22M tokens of content — well wi
       anything") and which I skipped in favour of a monolithic six-class sweep. A 19,279-card
       sweep at recall .33 would burn ~8M tokens to find a third of what a free grep finds.
 
-- [ ] **E1** Enumerate `own-tagalog` deterministically: lead contains an English token whose
-      Tagalog form appears in that card's OWN title_tl / terms / ans. ~1,490 candidates per the
-      rubric; expect ~300-400 real. Free, no model.
+- [x] **E1** DONE, and the naive version over-flags badly — a useful negative result.
+
+      The broad rule (token untranslated in the lead but translated in the card's own title)
+      yields **2,138 candidates, ~11% of all leads**, with `energy` (78), `water` (41) and
+      `table` (17) as the top tokens and "Philippine eagle" among the hits. Those are DepEd
+      science vocabulary and proper names — exactly the two things the rubric's never-flag list
+      names. Acting on that set would churn good cards. **Not actionable; kept as a queue only.**
+
+      The defensible subset is cards that contradict THEMSELVES: the same card spelling one
+      word two ways. **75 cards, 28 pairs.** Corpus-wide counts then decide the winner by
+      evidence rather than taste, and they split cleanly in two:
+
+      - **CLEAR-CUT — 40 cards, 15 pairs**, minority form <=10% of usage and usually a one-off
+        typo: asteroyd(0) vs asteroid(125), statik(0) vs static(154), kobra(0) vs cobra(21),
+        eklipse(13) vs eclipse(124), koral(12) vs coral(331), grap(2) vs graph(143).
+        Mechanical, provable from the card, safe to normalise.
+      - **HOUSE-STYLE SPLIT — 35 cards, 13 pairs**, where BOTH forms are in genuine corpus-wide
+        use: bacteria(379)/bakterya(352), plastic(190)/plastik(330), camera(23)/kamera(22),
+        crystal(73)/kristal(170). These are not defects, they are an unmade editorial decision.
+        **Luis or a Filipino teacher picks the house form; I should not.**
+
+      Files: `enum-own-tagalog.json` (2,138 queue), `enum-own-tagalog-strong.json` (75),
+      `enum-spelling-clearcut.json` (15 pairs), `enum-spelling-housestyle.json` (13 pairs).
+
 - [ ] **E2** Enumerate `nonword`: corpus token frequency <= 2 across all 49,156 cards, minus
       English and proper nouns. ~1,900 candidates, expect ~130-190 real. Free, no model.
 - [ ] **F1b** NARROW LLM sweep — `en-mismatch` and `answer-clash` ONLY, the two genuinely
