@@ -263,8 +263,22 @@ assisted work including the judge. Corpus is 1.22M tokens of content — well wi
       ONE context and assuming it holds everywhere is the same error as the 141 bulb matches of
       which 126 were fine.
 
-- [ ] **F1b-rest** Remaining 9,284 cards, same config. Pattern discovery has NOT saturated --
-      this chunk found 45 new patterns against the probe's 6 -- so the remainder is worth it.
+- [x] **F1b-rest** DONE — **all 19,279 question cards now swept.** 87 flags in this chunk
+      (0.94%), **150 unique flags total (0.78%)**: 111 en-mismatch, 39 answer-clash,
+      123 distinct patterns of which 110 are word-pairs.
+
+      Severe new finds:
+        mango "flower" -> "bulak"        (cotton: "can one COTTON of mango bear fruit")
+        algae "feeds" coral -> "kumakain ng coral"  (the algae EATS the coral — reversed)
+        "cud" -> "pag-usap"              (usap = CHEW in Cebuano, TALK in Tagalog)
+        "loudest" -> "pinakamalakas"     (reads as STRONGEST; blue whale outranks elephant)
+        "chirps" -> "bilang ng kuliglig" (count the crickets, not the chirps)
+        "sucker" disc -> "suso"          (snail/breast)
+        skin "pattern" -> "himig"        (melody)
+
+      `cud -> pag-usap` is diagnostic: a CEBUANO bleed into Tagalog, the same multilingual
+      leakage class as the `Haiwan` (Malay) finding earlier. Worth telling whoever owns the
+      translation pipeline — it points at the generator, not at individual cards.
 - [ ] **T1** Triage the 465 context-dependent candidates (cheap: one model pass over a bounded
       list, same funnel shape that worked for nonwords). run the narrow two-class sweep over all 19,279 (~9.4M tokens,
       run OPUS over the full 19,279 (~9.4M tokens) to DISCOVER defect patterns, then grep the
