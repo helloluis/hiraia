@@ -88,8 +88,34 @@ assisted work including the judge. Corpus is 1.22M tokens of content — well wi
       Precision staying at 1.00 while recall collapses points at the rubric's heavy
       "NEVER flag these" section dominating under volume: the judge defaults to PASS.
       NEXT: measure recall vs batch size (30 / 60 / 120) before re-running anything.
-- [ ] **F1b** Re-run the sweep at whatever batch size the sensitivity test supports, with the
-      spiked control repeated in EVERY batch, not just batch 0. Include the 58
+- [x] **F1-diag** Sensitivity probe — **my batch-size diagnosis was WRONG, and the real cause
+      was my own data preparation.** Recall by condition, precision 1.00 throughout:
+
+      | probe | batch | density | recall |
+      |---|---:|---:|---:|
+      | A-30 | 30 | 100% | .27 |
+      | A-60 | 60 | 50% | .20 |
+      | A-120 | 120 | 25% | .20 |
+      | A-240 | 240 | 12% | .13 |
+      | B-240 (rebalanced prompt) | 240 | 12% | .27 |
+      | B-120 | 120 | 25% | .20 |
+
+      Batch size moves recall only .27 -> .13; the floor is ~.2 in EVERY condition, including
+      30 cards at 100% density. So "batch size killed recall" was wrong — F1's own control
+      (.33) was in fact the best score of any run.
+
+      The judge caught the same 3-4 items every time and never the other 11. Cross-referencing
+      those against the rubric's own gold table: **5 of the 11 are `own-tagalog`, a class the
+      rubric defines as "tl uses an English word while THIS CARD's own TITLE_TL, TERMS or BIS
+      carries the Tagalog form" — and the batch records I built contained only
+      {id, tl, en, ans}.** No title, no terms, no bis. Those 5 were unjudgeable by
+      construction, capping recall at .67 before the model started.
+
+      The Tier-2 rubric's first design note says "the judge never sees the lead alone... almost
+      every genuine defect is provable as a within-card contradiction". I built the batches
+      without it. Re-probing with the full card record supplied.
+- [ ] **F1b** Re-run the sweep once the full-context probe clears a recall bar, with the spiked
+      control repeated in EVERY batch rather than batch 0 only. Include the 58
       gold items as a spiked control in one batch and report their accuracy, to confirm the
       .983 holds at production batch size before trusting the other 4,942 verdicts.
 - [ ] **F2** en-mismatch sweep, cards 5,001-10,000.
