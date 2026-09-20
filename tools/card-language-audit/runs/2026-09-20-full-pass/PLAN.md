@@ -71,7 +71,25 @@ assisted work including the judge. Corpus is 1.22M tokens of content — well wi
 
       Both disagreements were on rows already marked `borderline` (ffct-22124, ffct-37748).
 
-- [ ] **F1** en-mismatch sweep, cards 1-5,000, SINGLE judge at 200/batch. Include the 58
+- [!] **F1 FAILED ITS GATE — verdicts NOT banked.** 25 agents completed (2.17M tokens, 0 agent
+      errors) and the workflow then died returning 5,030 rows past the 4,096 VM-boundary cap;
+      all rows were recovered from journal.jsonl, so no work was lost. The spiked control is
+      what killed the stage:
+
+      **FLAG precision 1.00, FLAG recall 0.33** (tp5 fp0 fn10 tn15) at ~230 cards/agent.
+      It caught 5 of 15 known defects. Sweep flag rate was 0.8% (40/5,024) against a measured
+      Tier-A rate of ~3.7% — about a fifth of what is there, consistent with recall .33.
+
+      Without the spiked control this would have been reported as "40 findings, corpus is
+      clean". That is the SECOND time batch size silently changed the answer (F0's .948 was
+      the first). Batch size is now a first-class variable in this pipeline, never an
+      incidental choice.
+
+      Precision staying at 1.00 while recall collapses points at the rubric's heavy
+      "NEVER flag these" section dominating under volume: the judge defaults to PASS.
+      NEXT: measure recall vs batch size (30 / 60 / 120) before re-running anything.
+- [ ] **F1b** Re-run the sweep at whatever batch size the sensitivity test supports, with the
+      spiked control repeated in EVERY batch, not just batch 0. Include the 58
       gold items as a spiked control in one batch and report their accuracy, to confirm the
       .983 holds at production batch size before trusting the other 4,942 verdicts.
 - [ ] **F2** en-mismatch sweep, cards 5,001-10,000.
