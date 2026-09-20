@@ -192,7 +192,13 @@ assisted work including the judge. Corpus is 1.22M tokens of content — well wi
       versus 19,279 cards blind — the same 274 -> 32 -> 16 funnel that worked for Tier 1.
       Folded into F1b's scope rather than run as its own sweep.
 
-- [ ] **F1b** NARROW LLM sweep — `en-mismatch`, `answer-clash`, plus adjudication of E2's
+- [x] **F1b-nonword** DONE — the funnel works. 19,279 cards -> 1,248 candidates -> 158 live
+      typos -> **129 applied across 105 cards**, 29 held for a Filipino speaker.
+      Control: 6/9 nominal, but on review the judge was right on all three and my hand labels
+      were wrong (`unatin`/`magbilis` are real words; `hingin` is a real word used incorrectly).
+      Biggest find was indirect: **51 cards rendering a literal backslash-n on screen**, which
+      also meant they never split into question and answer. Fixed separately.
+- [ ] **F1b-rest** NARROW LLM sweep — `en-mismatch`, `answer-clash`, plus adjudication of E2's
       1,251 nonword candidates, the two genuinely
       semantic classes, full card record supplied, control spiked into EVERY batch. Re-measure
       recall on just those classes before committing to the full 19,279.
