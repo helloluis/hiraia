@@ -301,14 +301,10 @@ export function AppDownload() {
       )}
       <p className="mt-6 max-w-3xl font-zilla text-sm font-medium leading-relaxed text-[var(--ink)]/80">
         Hiraia is a continued-pretraining fork of Qwen 3.5-2B, further trained on a
-        Filipino and Bisaya corpus so the tutor can run on-device in those
-        languages. Its flash cards and illustrations are pregenerated from the
-        Department of Education&apos;s MATATAG science competencies. A separate
-        fact bank, indexed with LaBSE sentence embeddings, supports dynamic card
-        generation: when a student asks for a topic that is not already in the
-        deck, retrieved facts are printed as a new card in Tagalog, English, or
-        Bisaya. As of early Sept 2026, Hiraia is in its second round of CPT and
-        preliminary SFT.
+        Filipino and Bisaya corpus and the DepEd MATATAG science curriculum.{' '}
+        <a href="/hiraia-whitepaper.pdf" className="underline underline-offset-4 hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">
+          Read about its training methodology and architecture in the Hiraia whitepaper.
+        </a>
       </p>
       <TalaDownload />
     </div>
