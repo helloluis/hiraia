@@ -1,0 +1,372 @@
+[
+ {
+  "id": "ffct-23825",
+  "title_en": "Feathers Grip the Air",
+  "title_bis": "Buhok sa Hangin",
+  "fact_en": "How do bird feathers trap air?\n\nOn the downstroke, feathers press together to push air down! On the upstroke, they open slightly to let air slip through, making flying up much easier.",
+  "fact_bis": "Unsaon pagdakop sa balhibo sa hangin?\n\nSa downstroke, magdikit ang balhibo aron iduso ang hangin paubos! Sa upstroke, gamayng moabli aron makalusot ang hangin ug mogaan ang pagsaka.",
+  "terms": [
+   "balahibo",
+   "feather",
+   "hangin",
+   "buksan",
+   "isara",
+   "pakpak",
+   "humampas",
+   "air",
+   "balhibo",
+   "salaan ng hangin",
+   "flap",
+   "unsaon"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "feather->buhok",
+    "note": "TITLE entity swap. title_en \"Feathers Grip the Air\" -> title_bis \"Buhok sa Hangin\". Cebuano buhok = HAIR (head hair); feathers are balhibo/balahibo, which this very card's body uses correctly (\"Unsaon pagdakop sa balhibo sa hangin?\") and which the corpus uses ~900x (balhibo 509 + balahibo 418) against zero legitimate feather-as-buhok usage. The headline a child scans says bird flight works by hair catching air, i.e. a different body part than the one the card teaches. Confidence medium-low: the body restores balhibo one line down, so the defect is confined to the title (same shape as the gold-set asin/agta title flags)."
+   }
+  ]
+ },
+ {
+  "id": "ffct-23905",
+  "title_en": "Planes Beat Ships",
+  "title_bis": "Eroplano sa wala pa Barko",
+  "fact_en": "Airplanes changed travel! A trip that once took months by ship now takes just hours, making it easy to reach faraway countries.",
+  "fact_bis": "Giusab sa eroplano ang pagpanaw! Ang biyahe nga kaniadto mag-abot og mga bulan pinaagi sa barko mahimo na sa pipila lang ka oras, mao nga mas sayon makaabot sa layong mga nasod.",
+  "terms": [
+   "eroplano",
+   "ayroplano",
+   "airplane",
+   "paglalakbay",
+   "panaw",
+   "pagbiyahe",
+   "malayong bansa",
+   "layong nasod",
+   "mabilis",
+   "paspas",
+   "oras",
+   "buwan",
+   "biyahe",
+   "barko",
+   "sakayan",
+   "dagat",
+   "binago",
+   "giusab",
+   "kontinente"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "title-comparison-became-chronology",
+    "note": "Title-only, but the title is a false claim about the world. title_en \"Planes Beat Ships\" (planes outperform ships) became title_bis \"Eroplano sa wala pa Barko\" = \"Airplane before Ship\" — sa wala pa is plain Cebuano for \"before\" (278 correct uses of it elsewhere in the corpus), so a comparison of speed was rendered as chronological order. The headline a child reads says airplanes came before ships, which is false; the body is correct but never states the ordering explicitly (only \"kaniadto ... pinaagi sa barko\" implies it), so the headline claim is not corrected on the card. Do NOT grep \"sa wala pa\" corpus-wide — the phrase is fine everywhere else; this is a per-card title defect, hence a slug not a word-pair."
+   }
+  ]
+ },
+ {
+  "id": "ffct-23949",
+  "title_en": "Fainter Rainbow",
+  "title_bis": "Malubog nga Balangaw",
+  "fact_en": "Each time light bounces inside a raindrop, a little leaks out. Since the second rainbow needs two bounces, less light is left — making it always look dimmer than the first!",
+  "fact_bis": "Matag balik sa kahayag sulod sa tinulo, naay gamay nga mogawas. Tungod kay duha ka balik ang kinahanglan sa ikaduhang bahaghari, gamay na lang ang nabilin — mao nga mas labong kini!",
+  "terms": [
+   "bakit malabo",
+   "faint",
+   "mahina kulay",
+   "nawawalang liwanag",
+   "pangalawang bahaghari",
+   "second rainbow dim",
+   "ngano luya",
+   "light escapes",
+   "nasasayang na liwanag",
+   "double rainbow",
+   "dobleng bahaghari",
+   "kulay",
+   "langit"
+  ],
+  "emphasis_bis": [
+   "duha ka balik"
+  ],
+  "findings": [
+   {
+    "pattern": "faint->labong",
+    "note": "Reversal of the card's whole thesis. EN: \"less light is left — making it always look dimmer than the first!\" BIS ends: \"gamay na lang ang nabilin — mao nga mas labong kini!\" In Cebuano labong is lush/thick/luxuriant (this very corpus uses it for bamboo shoot: ffct-00393 \"Ang labong, ang murang usbong sa kawayan\"; ffct-13102 \"mas labong nga berde\"; ffct-29010 \"labong nga kalasangan\"). It is a borrowing of Tagalog malabo (blurry/faint) — a Tagalog false friend. So the Cebuano concludes the second rainbow is MORE vivid, the opposite of the card's only claim, and it directly contradicts the clause before it. Sibling cards prove the writer knows the right word: ffct-23948 \"mas luya\" and ffct-23955 \"luya na kaayo ang kolor\" for the same English \"faint\". The title (Malubog nga Balangaw) points the right way but the body sentence is the fact. Same labong-for-faint also appears in ffct-23957 (\"labong nga ikaduhang arko\") and ffct-23960 (\"apil ang labong nga ikaduhang arko\") — I passed those two because faintness is only a decorative adjective there, but if the pattern is swept corpus-wide they are the same defect."
+   }
+  ]
+ },
+ {
+  "id": "ffct-24123",
+  "title_en": "Tiny Bumps Cause Friction",
+  "title_bis": "Mga Bungbong Friction",
+  "fact_en": "Why does friction happen even on smooth surfaces?\n\nEven smooth surfaces have tiny bumps and dips up close! When two surfaces slide, these bumps catch on each other, making movement hard — that's friction!",
+  "fact_bis": "Nganong adunay friction bisan sa hamis nga nawong?\n\nBisan morag hamis, adunay gagmay nga libtong ug lawom ang mga nawong kung tan-awon pag-ayo! Kung magdausdos, magsangit kining gagmay nga libtong, mao nga maglisod molihok — mao kana ang friction!",
+  "terms": [
+   "friction",
+   "mechanism",
+   "bumps",
+   "umbok",
+   "libtong",
+   "unsaon",
+   "maliit",
+   "gagmay",
+   "ibabaw",
+   "surface",
+   "nagkakabit",
+   "nagsabod",
+   "nadidikit",
+   "hooks",
+   "why"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "bumps->bungbong",
+    "note": "title_bis \"Mga Bungbong Friction\" for title_en \"Tiny Bumps Cause Friction\": bungbong is WALL in Cebuano, not a bump. The headline a child sees says \"Walls Friction\", a different thing from the card's subject (microscopic bumps on smooth surfaces), and the body never mentions walls so it is never corrected. Same corpus confirms the meaning: ffct-24113 uses bungbong correctly for \"walls\" (\"makaagi sila sa bungbong ug kahoy\" = pass through walls and wood). Body also renders \"bumps\" as libtong (a deep pool/hollow in Cebuano, i.e. a dip, the opposite of a bump), so nothing in the card supplies \"bump\" - flagging the title only, since the body still conveys that surfaces are rough up close and catch when sliding."
+   }
+  ]
+ },
+ {
+  "id": "ffct-24240",
+  "title_en": "Static vs Magnet",
+  "title_bis": "Static vs Magnet",
+  "fact_en": "A magnet only pulls iron like nails, but static charge can pull paper, hair, or water! They are two totally different forces.",
+  "fact_bis": "Ang magnet mobira lang og puthaw sama sa pako, pero ang static charge makabira og papel, buhok, o tubig! Lahi sila nga puwersa.",
+  "terms": [
+   "magnet",
+   "magnetiko",
+   "static",
+   "pagkakaiba",
+   "comparison",
+   "ngano",
+   "bakal",
+   "iron",
+   "papel",
+   "lahat",
+   "charge",
+   "kaiba",
+   "magkaiba",
+   "naa-attract",
+   "lansang"
+  ],
+  "emphasis_bis": [
+   "static charge"
+  ],
+  "findings": [
+   {
+    "pattern": "nail->pako",
+    "note": "EN \"A magnet only pulls iron like nails\" -> BIS \"mobira lang og puthaw sama sa pako\". In Cebuano pako = WING (this same batch uses pako for bird/airplane wings, e.g. ffct-24286, ffct-24229); nail is lansang. Tagalog false friend (Tl pako = nail). The card is two sentences long and never says lansang, so the example reads as \"iron like a wing\" and is not corrected anywhere."
+   }
+  ]
+ },
+ {
+  "id": "ffct-24293",
+  "title_en": "Feathers Trap Air Down",
+  "title_bis": "Buhok sa Downstroke",
+  "fact_en": "How do feathers help a bird flap without wasting energy?\n\nWhen pushing down, feathers close to catch air. When lifting up, they part slightly so air slips through without dragging.",
+  "fact_bis": "Unsaon pagtabang sa mga balhibo aron dili mausik ang kusog sa pagkampay?\n\nSa pagpaubos, magsira ang balhibo aron madakpan ang hangin. Sa pagpaibabaw, moabli og gamay aron moagi ang hangin nga dili mobira.",
+  "terms": [
+   "balahibo",
+   "balhibo",
+   "feathers",
+   "magkadikit",
+   "magkapatong",
+   "overlap",
+   "hangin",
+   "dikit",
+   "saradong",
+   "downstroke",
+   "bukas",
+   "upstroke",
+   "paano humahawak ng hangin",
+   "unsaon pagkupot sa hangin",
+   "pakpak",
+   "pako"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "feather->buhok",
+    "note": "title_bis \"Buhok sa Downstroke\" for EN \"Feathers Trap Air Down\". Buhok = hair; birds have balhibo (which the body correctly uses twice). The headline a child sees names a different body covering than the card is about."
+   }
+  ]
+ },
+ {
+  "id": "ffct-24454",
+  "title_en": "Seesaw Lever",
+  "title_bis": "Lever sa Sip-sip",
+  "fact_en": "A playground seesaw is a real lever! The middle resting part is the fulcrum. When one end goes down, the other goes up!",
+  "fact_bis": "Ang seesaw sa lingawan usa ka tinuod nga lever! Ang tunga nga gisandigan mao ang fulcrum. Kon mokanaog ang usa, mosaka ang pikas!",
+  "terms": [
+   "seesaw",
+   "sesaw",
+   "palanka",
+   "lever",
+   "example",
+   "halimbawa",
+   "pananglitan",
+   "laruan",
+   "palaruan",
+   "fulcrum",
+   "gitna",
+   "balanse",
+   "timbang",
+   "laro"
+  ],
+  "emphasis_bis": [
+   "lever"
+  ],
+  "findings": [
+   {
+    "pattern": "seesaw->sip-sip",
+    "note": "title_bis \"Lever sa Sip-sip\" — sip-sip/sipsip in Cebuano means to SUCK/SIP (the corpus itself uses it that way in ffct-16285: 'Kung mosipsip ka sa straw'), not a seesaw. The headline a child sees reads 'lever of sucking' and names a different thing than the English 'Seesaw Lever'. Every other seesaw card in this corpus (150/153/166/175.json) just says 'seesaw' plainly, so this is an isolated wrong-word, not a regional variant; the body's 'Ang seesaw sa lingawan' only restores it via the English loanword."
+   }
+  ]
+ },
+ {
+  "id": "ffct-24531",
+  "title_en": "Kite in Wind",
+  "title_bis": "Langgam sa Hangin",
+  "fact_en": "A kite or bati flies when wind strikes its tilted face to push it up, while the string holds it back so air can lift it!",
+  "fact_bis": "Molupad ang bati kon iduso kini pataas sa hangin nga motama sa nawong niini, samtang gipugong sa pisi aron ma-lift sa hangin!",
+  "terms": [
+   "bati",
+   "saranggola",
+   "kite",
+   "cobra kite",
+   "hangin",
+   "lift",
+   "lumilipad",
+   "tali",
+   "wind",
+   "buga sa hangin",
+   "tangkad",
+   "hangin nga nagtukbal",
+   "tabanog",
+   "string"
+  ],
+  "emphasis_bis": [
+   "ma-lift"
+  ],
+  "findings": [
+   {
+    "pattern": "kite->langgam",
+    "note": "title_bis \"Langgam sa Hangin\" = \"Bird in the Wind\" — the English homonym trap: \"kite\" the toy was translated as \"kite\" the bird of prey, and langgam is unambiguously BIRD in Cebuano. Nothing in the Cebuano restores the toy: the body says only \"Molupad ang bati kon iduso kini pataas sa hangin... samtang gipugong sa pisi\", and \"bati\" in Cebuano reads as ugly/bad, not a kite (tabanog / saranggola, both in terms, appear nowhere in the bis). A Cebuano-only child reads a headline about a bird plus a body about something held up by a string, and ends up with a bird on a string rather than a kite."
+   }
+  ]
+ },
+ {
+  "id": "ffct-24658",
+  "title_en": "Water Pipe Analogy",
+  "title_bis": "Analohiya sa Tubig",
+  "fact_en": "Picture water in a pipe! Voltage is the pressure pushing it, current is the water flowing, and resistance is a narrow pipe slowing the flow.",
+  "fact_bis": "Hunahunaa ang tubig sa tubo! Ang boltahe kay presyon nga nagtulod, ang kuryente kay gidaghanon sa tubig nga nagaagas, ug ang resistensya kay sip-on nga tubo nga nagpahinay.",
+  "terms": [
+   "water analogy",
+   "tubig",
+   "pipe",
+   "tubo",
+   "pressure",
+   "presyon",
+   "analohiya",
+   "paano gumagana",
+   "unsa pananglitan",
+   "example",
+   "comparison",
+   "daloy",
+   "agos",
+   "flow",
+   "voltage"
+  ],
+  "emphasis_bis": [
+   "boltahe",
+   "kuryente"
+  ],
+  "findings": [
+   {
+    "pattern": "narrow->sip-on",
+    "note": "The water-pipe analogy renders \"a narrow pipe\" as \"sip-on nga tubo\" — sip-on is nasal mucus/snot in Cebuano (narrow is sigpit/pig-ot, and the same batch uses pig-ot correctly in ffct-24619). The card never says narrow anywhere else, so the one mapping the analogy exists to teach — resistance = a constriction/narrowing — is lost; the child is left with \"resistance is a snot pipe\" and cannot answer why resistance slows the current."
+   }
+  ]
+ },
+ {
+  "id": "ffct-24732",
+  "title_en": "Windlass Machine",
+  "title_bis": "Pambuhat nga Makina",
+  "fact_en": "A windlass used to pull water from a well is a wheel and axle! Turning the crank handle winds the rope and lifts the heavy bucket.",
+  "fact_bis": "Ang windlass nga gamiton sa balon usa ka wheel and axle! Pag-ikot nimo sa crank handle, mosinaw ang lubid ug moakyat ang bug-at nga timba.",
+  "terms": [
+   "windlass",
+   "bango",
+   "hoist",
+   "iangat",
+   "bucket",
+   "balde",
+   "crank",
+   "wheel and axle",
+   "simple machine",
+   "balon"
+  ],
+  "emphasis_bis": [
+   "wheel and axle"
+  ],
+  "findings": [
+   {
+    "pattern": "wind (rope)->mosinaw",
+    "note": "\"Pag-ikot nimo sa crank handle, mosinaw ang lubid\" — mosinaw = it SHINES/becomes glossy. English is \"winds the rope\", i.e. the rope coils on the axle, which is the whole wheel-and-axle mechanism the card teaches; the Cebuano leaves the crank causing the rope to glisten. Compounded in the same card: \"gamiton sa balon\" — balon in Cebuano is packed PROVISIONS/baon, not a well (atabay/bubon, correctly used in ffct-24723), and title_bis \"Pambuhat nga Makina\" drops \"windlass\" and reads in Cebuano as \"machine for doing/making\" (buhat = do/make in Cebuano, lift only in Tagalog), so neither title nor body restores the setting or the mechanism."
+   }
+  ]
+ },
+ {
+  "id": "ffct-24749",
+  "title_en": "Screw Thread",
+  "title_bis": "Hilo sa Turnilyo",
+  "fact_en": "The thread of a screw is an inclined plane wrapped around a cylinder! Each turn converts a small rotational effort into a large forward force.",
+  "fact_bis": "Ang hikaw sa tornilyo usa ka inclined plane nga nakalikot sa silindro! Ang matag pag-ikot nagbalhin sa gamay nga rotational effort ngadto sa dako nga forward force.",
+  "terms": [
+   "screw",
+   "tornilyo",
+   "thread",
+   "hikaw",
+   "inclined plane",
+   "spiral",
+   "paikot",
+   "cylinder",
+   "naka-likot",
+   "wrapped"
+  ],
+  "emphasis_bis": [
+   "inclined plane"
+  ],
+  "findings": [
+   {
+    "pattern": "thread->hikaw",
+    "note": "The card's whole subject — the screw THREAD — is never named in Cebuano. Body: \"Ang hikaw sa tornilyo usa ka inclined plane nga nakalikot sa silindro\" — hikaw = EARRING. title_bis \"Hilo sa Turnilyo\" is no better: hilo in Cebuano = POISON (hilo = thread is Hiligaynon/Tagalog, not Cebuano; Cebuano thread = tanod, and sibling cards ffct-24751/ffct-24753 simply keep \"screw threads\" in English). Nothing in the card restores it, so a child reads that the screw's earring is an inclined plane and cannot tell which part of the screw the fact is about."
+   }
+  ]
+ },
+ {
+  "id": "ffct-24773",
+  "title_en": "Reverse Gear Idler",
+  "title_bis": "Reverse Gear Idler Kotse",
+  "fact_en": "How does a car manage to go backwards?\n\nA car's reverse gear uses an idler gear to flip the wheel axle's rotation direction, letting the vehicle back up!",
+  "fact_bis": "Unsaon pagbalikwas sa sakyanan?\n\nAng reverse gear sa sakyanan naggamit og idler gear aron baliktaron ang pag-ikot sa wheel axle, makabalikwas ang sakyanan!",
+  "terms": [
+   "reverse gear",
+   "gear paatras",
+   "car",
+   "sasakyan",
+   "idler",
+   "intermediate gear",
+   "reverse",
+   "paurong",
+   "transmission",
+   "pag-ikot"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "reverse->balikwas",
+    "note": "English: the idler gear reverses the axle's rotation so the car can BACK UP. Cebuano uses balikwas twice — \"Unsaon pagbalikwas sa sakyanan?\" / \"makabalikwas ang sakyanan\" — and balikwas in Cebuano = to FLIP OVER / overturn / spring up, not to move backwards (that is moatras / paatras). A child is told the reverse gear makes the car flip over, and the Cebuano never corrects it."
+   }
+  ]
+ }
+]

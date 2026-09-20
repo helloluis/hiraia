@@ -1,0 +1,363 @@
+[
+ {
+  "id": "ffct-21672",
+  "title_en": "Iron Rusting",
+  "title_bis": "Taya sa Puthaw",
+  "fact_en": "A pure iron nail actually gains about 43% of its original mass when it completely rusts!",
+  "fact_bis": "Ang usa ka purong pako nga puthaw mokupot og mga 43% nga dugang nga masa kung kini hingpit nga mag-rust!",
+  "terms": [
+   "iron",
+   "rusting",
+   "mass",
+   "pure",
+   "nail",
+   "gains",
+   "original",
+   "completely",
+   "rusts"
+  ],
+  "emphasis_bis": [
+   "43%"
+  ],
+  "findings": [
+   {
+    "pattern": "nail->pako",
+    "note": "Title_bis \"Taya sa Puthaw\" is fine, but the body renders \"a pure iron nail\" as \"usa ka purong pako nga puthaw\". In Cebuano pako = WING (or fern), never a nail; the corpus itself uses lansang for nail (e.g. ffct tetanus cards) and pako for wings (Philippine Eagle, bat, bee). Nothing in the card corrects it, so the Cebuano-only reader is told a pure iron WING gains ~43% mass when it rusts — a Tagalog false friend (Tagalog pako = nail, Tagalog wing = pakpak). The sibling card ffct-21701 states the same fact with \"iron nail\" left in English, which is the safe rendering."
+   }
+  ]
+ },
+ {
+  "id": "ffct-21920",
+  "title_en": "Free Fall",
+  "title_bis": "Libreng Pagkahulog",
+  "fact_en": "Do heavy and light objects really fall at the same speed without air resistance?\n\nYes! In free fall, all objects speed up downward at the same acceleration due to gravity, about 9.8 meters per second each second.",
+  "fact_bis": "Pareho ba gyud ug tulin mahulog ang bug-at ug gaan nga butang kung walay hangin?\n\nOo! Sa gawasnong pagkahulog, mopaspas paubos ang tanang butang sa parehas nga aselerasyon tungod sa grabidad, mga 9.8 ka metro kada segundo.",
+  "terms": [
+   "free fall",
+   "malayang paghulog",
+   "gawasnong pagkahulog",
+   "grabidad",
+   "gravity",
+   "aselerasyon",
+   "acceleration",
+   "9.8",
+   "metro kada segundo",
+   "bumibilis paghulog",
+   "mopaspas pagkahulog",
+   "9.8 m/s2",
+   "patuloy na bumibilis",
+   "padayon nga mopaspas",
+   "walang hangin",
+   "way hangin",
+   "vacuum",
+   "downward",
+   "pababa"
+  ],
+  "emphasis_bis": [
+   "9.8 ka metro kada segundo"
+  ],
+  "findings": [
+   {
+    "pattern": "meters per second each second->metro kada segundo",
+    "note": "Unit changed. EN: 'the same acceleration due to gravity, about 9.8 meters per second each second' (m/s^2). BIS drops the second 'each second': 'mga 9.8 ka metro kada segundo' = 9.8 m/s, a speed, not an acceleration. The card calls it 'aselerasyon' but then gives a speed unit, and the correct unit is not recoverable anywhere on the card; the sibling card ffct-21904 keeps the full 'meters per second each second'. Lower severity than the flag above, but it is a genuine unit defect, not register."
+   }
+  ]
+ },
+ {
+  "id": "ffct-21987",
+  "title_en": "Zero Work",
+  "title_bis": "Walay Trabaho",
+  "fact_en": "When you carry an object while walking on level ground, you do no work on it! The upward force holding it is perpendicular to your motion.",
+  "fact_bis": "Kung magdala ka og butang samtang naglakaw sa patag, wala kay work nga gibuhat niini! Ang upward force pataas tul-id ngadto sa direksyon sa imong paglihok.",
+  "terms": [
+   "walang work",
+   "pasan",
+   "buhat sa load",
+   "carrying a load",
+   "force na patayo sa galaw",
+   "perpendicular force",
+   "no work done",
+   "pahalang na paglakad",
+   "walang work sa pasanin",
+   "walay work",
+   "pagdala og bug-at",
+   "pataas nga force",
+   "naglakaw nga patag",
+   "force nga tul-id sa lihok",
+   "hindi gumagawa ng work"
+  ],
+  "emphasis_bis": [
+   "tul-id"
+  ],
+  "findings": [
+   {
+    "pattern": "perpendicular->tul-id",
+    "note": "EN: \"The upward force holding it is perpendicular to your motion.\" BIS: \"Ang upward force pataas tul-id ngadto sa direksyon sa imong paglihok.\" — 'tul-id ngadto sa direksyon sa imong paglihok' reads as 'straight TOWARD the direction of your motion', i.e. parallel/along the motion, the reverse of perpendicular ('patindog'/'tadlas'/'perpendicular'). Nothing in the card corrects it, and the reversed direction is the whole reason the card gives for zero work — a child reading only the Cebuano gets a force pointing along the motion, which would mean work IS done, contradicting 'wala kay work nga gibuhat'. The wrong word is also the emphasised one (emph_bis = ['tul-id'])."
+   }
+  ]
+ },
+ {
+  "id": "ffct-22094",
+  "title_en": "Junkyard Magnets",
+  "title_bis": "Magneto sa Junkyard",
+  "fact_en": "In a junkyard, a crane uses a giant electromagnet to lift whole cars, then drops them by switching off the current!",
+  "fact_bis": "Sa junkyard, mogamit ang crane og giant electromagnet aron buhaton ang tibuok awto, ug ibuhian kini sa pag-off sa current!",
+  "terms": [
+   "crane",
+   "grua",
+   "electromagnet",
+   "junkyard",
+   "basura ng kotse",
+   "tambakan",
+   "kotse",
+   "sasakyan",
+   "awto",
+   "bakal",
+   "puthaw",
+   "nagbubuhat",
+   "mobuhat",
+   "binibitawan",
+   "gibuwagan",
+   "patayin ang kuryente",
+   "switch",
+   "kalakhan"
+  ],
+  "emphasis_bis": [
+   "giant electromagnet"
+  ],
+  "findings": [
+   {
+    "pattern": "lift->buhat",
+    "note": "Junkyard electromagnet card. \"mogamit ang crane og giant electromagnet aron buhaton ang tibuok awto\" — English is \"to lift whole cars\". Cebuano buhat = to do/make (Tagalog buhatin = to lift); lift in Cebuano is alsa/isa. As written it reads \"so as to make/build the whole car\", and nothing in the card restores the lifting action — \"ibuhian\" only says it is let go. The card's central action (a magnet strong enough to pick up a whole car) is lost."
+   }
+  ]
+ },
+ {
+  "id": "ffct-22174",
+  "title_en": "Echo Reflection",
+  "title_bis": "Lanog",
+  "fact_en": "An echo happens when sound waves bounce off a big wall or mountain and come right back to us!",
+  "fact_bis": "Ang linaw mahitabo kung ang tingog mibanda sa usa ka bongbong o bukid ug mibalik direkta kanato!",
+  "terms": [
+   "alingawngaw",
+   "tumalbog",
+   "bumalik",
+   "pader",
+   "tunog",
+   "linaw",
+   "mibalik",
+   "mibanda",
+   "bongbong",
+   "tingog",
+   "echo",
+   "bounce",
+   "reflect"
+  ],
+  "emphasis_bis": [
+   "linaw"
+  ],
+  "findings": [
+   {
+    "pattern": "echo->linaw",
+    "note": "Echo card. Body + emph_bis name the phenomenon \"linaw\": \"Ang linaw mahitabo kung ang tingog mibanda sa usa ka bongbong o bukid ug mibalik direkta kanato!\" In Cebuano linaw = calm/still (water) or clarity — it is not the word for echo; echo is lanog (which the title correctly uses). The defining sentence, and the one word the card emphasises, names a different thing, so a child asked what an echo is called in Cebuano is taught the wrong term by the body text. Tagalog-adjacent false friend (Tagalog linaw = clarity)."
+   }
+  ]
+ },
+ {
+  "id": "ffct-22319",
+  "title_en": "Rough Friction",
+  "title_bis": "Magaspang nga Kiskis",
+  "fact_en": "Rough surfaces have more friction than smooth ones! That's why you slide more easily on a smooth floor.",
+  "fact_bis": "Mas dako ang friction sa gahi nga nawong kaysa sa hamis! Mao nga sayon madalin-as sa hamis nga salog.",
+  "terms": [
+   "friction",
+   "kiskisan",
+   "magaspang",
+   "gahi",
+   "makinis",
+   "hamis",
+   "rough",
+   "smooth",
+   "ibabaw",
+   "nawong",
+   "more friction",
+   "dakong kiskisan"
+  ],
+  "emphasis_bis": [
+   "friction"
+  ],
+  "findings": [
+   {
+    "pattern": "rough->gahi",
+    "note": "Body swaps 'rough' for 'gahi' (= HARD/stiff, not rough; rough is magaspang/gaspang): 'Mas dako ang friction sa gahi nga nawong kaysa sa hamis' = 'hard surfaces have more friction than smooth ones'. That is a different claim and a false one for hard-but-smooth surfaces (ice, glass) that other cards in the same batch call slippery. The body is the entire fact; only the title still carries 'Magaspang'."
+   }
+  ]
+ },
+ {
+  "id": "ffct-22548",
+  "title_en": "Two-Way Switch Staircase",
+  "title_bis": "Two-Way Switch Hagdan Sugnod",
+  "fact_en": "A two-way switch lets you control one light from two different places! You can turn it on at the bottom of a stairway and turn it off at the top.",
+  "fact_bis": "Ang two-way switch motugot nga makontrol ang usa ra ka suga gikan sa duha ka lahi nga dapit! Mahimo nimo kining buksan sa ubos sa hagdan ug patyon sa taas.",
+  "terms": [
+   "two-way switch",
+   "three-way switch",
+   "switch",
+   "swits",
+   "hagdan",
+   "hagdanan",
+   "stairway",
+   "dalawang pwesto",
+   "duha ka dapit",
+   "iisang ilaw",
+   "usa ka suga",
+   "buksan",
+   "patayin",
+   "patyon",
+   "pasiga",
+   "pasilaw",
+   "kontrol",
+   "pareho",
+   "magkabilang dulo"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "light->sugnod",
+    "note": "title_bis \"Two-Way Switch Hagdan Sugnod\" for \"Two-Way Switch Staircase\": sugnod means FIREWOOD/fuel in Cebuano, not light (suga). The card is about controlling one lamp from two points on a staircase; the headline names a fuel that appears nowhere in the card. Corpus-wide the same title slip shows up as \"Bombilya Kuryente sa Sugnod\" (ffct-23515, \"Bulb Converts to Light\") and \"Kahayag Adlaw Imbes Sugnod\" (ffct-22943, \"Daylight Instead of Lights\"), so it is a repeating light->sugnod title defect, not a one-off. Body is fine (\"usa ra ka suga\")."
+   }
+  ]
+ },
+ {
+  "id": "ffct-22653",
+  "title_en": "Light Travels Very Fast",
+  "title_bis": "Sugad Paspas Kidlat",
+  "fact_en": "Light travels extremely fast, which is why we see lightning in the sky before we hear the loud thunder!",
+  "fact_bis": "Paspas kaayo mobiyahe ang kahayag, mao nga makita una nato ang kilat sa langit sa dili pa madungog ang dalugdog!",
+  "terms": [
+   "liwanag",
+   "mabilis",
+   "tunog",
+   "kidlat",
+   "kahayag",
+   "paspas",
+   "light",
+   "faster",
+   "sound",
+   "thunder",
+   "kulog",
+   "dalugdog"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "light->sugad",
+    "note": "title_bis \"Sugad Paspas Kidlat\" for \"Light Travels Very Fast\": \"sugad\" is not Cebuano for light (suga); it is a Waray/Bikol word meaning \"like/as\". With the word dropped, the headline a child reads is \"... fast lightning\", shifting the claim from light being fast to lightning being fast. Same slip appears corpus-wide in title_bis only: ffct-23477 \"Walay Sugad Walay Anino\", ffct-23478 \"Daghan Sugad Daghan Anino\", ffct-23453 \"Sugad Anino Butang\", ffct-23484 \"Anino Sugad Tul-id\". Body uses kahayag correctly."
+   }
+  ]
+ },
+ {
+  "id": "ffct-22654",
+  "title_en": "Pinholes Prove Straight Light",
+  "title_bis": "Pinhole Tul-id Sugad",
+  "fact_en": "If you line up three cards with a hole, light passes only when the holes are in a straight line!",
+  "fact_bis": "Kung mag-laray ka ug tulo ka karton nga may lungag, moagi lang ang kahayag kung tul-id ang laray sa mga lungag!",
+  "terms": [
+   "butas",
+   "liwanag",
+   "tuwid",
+   "pinhole",
+   "lungag",
+   "tul-id",
+   "straight",
+   "card",
+   "hole",
+   "patunay",
+   "linya",
+   "laray"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "light->sugad",
+    "note": "title_bis \"Pinhole Tul-id Sugad\" for \"Pinholes Prove Straight Light\" — same defect class as ffct-22653: \"sugad\" is not the Cebuano word for light (suga), so the headline's subject word is missing/unreadable. Body (\"moagi lang ang kahayag kung tul-id ang laray sa mga lungag\") is correct."
+   }
+  ]
+ },
+ {
+  "id": "ffct-22744",
+  "title_en": "Faster Sound in Water",
+  "title_bis": "Tunog Tubig Hangin",
+  "fact_en": "Sound zooms faster through water than air! That's why echolocation works so well for dolphins swimming in the sea.",
+  "fact_bis": "Mas paspas mobiyahe ang tingog sa tubig kaysa hangin! Mao nga nagsingot maayo ang echolocation alang sa mga lumba-lumba sa dagat.",
+  "terms": [
+   "sound in water",
+   "tunog sa tubig",
+   "tingog sa tubig",
+   "mas mabilis",
+   "mas paspas",
+   "faster",
+   "ocean",
+   "dagat",
+   "kadagatan",
+   "dolphin",
+   "lumba-lumba"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "works->nagsingot",
+    "note": "Second half of the card is destroyed: EN \"That's why echolocation works so well for dolphins swimming in the sea\" becomes \"Mao nga NAGSINGOT maayo ang echolocation alang sa mga lumba-lumba sa dagat\" — `singot` is sweat (152 corpus uses, all sweat: sweat glands, carabao can't sweat, cotton absorbs sweat), so it reads \"echolocation sweats well for the dolphins\". Never corrected anywhere on the card, so the dolphin/echolocation fact is unrecoverable from the Cebuano; only the first sentence (sound faster in water) survives. Flagged because the word names a different thing and a whole stated fact is lost, not merely clumsy phrasing."
+   }
+  ]
+ },
+ {
+  "id": "ffct-22827",
+  "title_en": "Metal Thermal Expansion",
+  "title_bis": "Metal sa Expansion",
+  "fact_en": "Most things like metal expand a little when heated and shrink when cooled, because their jiggling tiny particles spread farther apart!",
+  "fact_bis": "Kadaghanan sa mga butang sama sa metal molapad og gamay kung painiton ug mokulo kung bugnawon, kay ang nag-uyog nga gagmay nga bahin niini magkalayo og diyutay!",
+  "terms": [
+   "lumalawak ang metal",
+   "umiinit nag-eexpand",
+   "lumaki kapag mainit",
+   "molapad ang metal",
+   "mag-init molako",
+   "thermal expansion",
+   "metal expands",
+   "gets bigger when hot",
+   "swells"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "shrink->kulo",
+    "note": "Body reverses the thermal-contraction fact: EN \"expand a little when heated and shrink when cooled\" becomes \"molapad og gamay kung painiton ug MOKULO kung bugnawon\". Corpus-wide (17+ cards, e.g. ffct-17799, ffct-18299, ffct-19923) `kulo`/`mokulo`/`pagpakulo` means BOIL, never shrink — Cebuano for shrink/contract is `mokuyos`, which this corpus uses correctly in the neighbouring card ffct-22828. So the Cebuano reads \"metal expands when heated and BOILS when cooled\". Nothing restores it: the trailing clause (\"magkalayo og diyutay\" = particles spread farther apart) only explains expansion. A child reading only the Cebuano loses the contraction fact and gets a false one."
+   }
+  ]
+ },
+ {
+  "id": "ffct-22913",
+  "title_en": "Blowing Cools Hot Food",
+  "title_bis": "Bugha Init Pagkaon Bugnaw",
+  "fact_en": "Why do we blow on hot food?\n\nThe moving air carries the heat away, making it cool faster!",
+  "fact_bis": "Nganong atong gihuypan ang init nga pagkaon?\n\nAng naglihok nga hangin modala sa init palayo, mao nga mas paspas kining mobugnaw!",
+  "terms": [
+   "hinihipan ang mainit na pagkain",
+   "lumalamig kapag inihip",
+   "init naaalis ng hangin",
+   "huypan ang init nga pagkaon",
+   "mobugnaw kung huypan",
+   "blowing cools food",
+   "blow on hot soup",
+   "moving air"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "blowing->bugha",
+    "note": "title_bis \"Bugha Init Pagkaon Bugnaw\" — bugha is to SPLIT/chop firewood in Cebuano; the card is about BLOWING on hot food (body correctly uses \"gihuypan\"). Headline names a different action entirely. Single corpus occurrence, so the grep is cheap."
+   }
+  ]
+ }
+]

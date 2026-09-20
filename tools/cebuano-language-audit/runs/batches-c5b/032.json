@@ -1,0 +1,360 @@
+[
+ {
+  "id": "ffct-22943",
+  "title_en": "Daylight Instead of Lights",
+  "title_bis": "Kahayag Adlaw Imbes Sugnod",
+  "fact_en": "On a sunny day it is better to use daylight than to switch on lights, to save electricity!",
+  "fact_bis": "Kung adlawon, mas maayo nga gamiton ang kahayag sa adlaw kaysa sindihan ang suga aron makatipid og koryente!",
+  "terms": [
+   "liwanag ng araw",
+   "sikat ng araw",
+   "adlaw",
+   "kahayag sa adlaw",
+   "bintana",
+   "window",
+   "ilaw",
+   "suga",
+   "tipid",
+   "makatipid",
+   "natural light",
+   "araw"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "lights->sugnod",
+    "note": "title_bis \"Kahayag Adlaw Imbes Sugnod\" — sugnod is FIREWOOD/fuel in Cebuano, not suga (lamp/electric light). Headline reads \"daylight instead of firewood\" on a save-electricity card; body uses \"sindihan ang suga\" correctly, so the title word is the whole defect. Systemic: same swap in ffct-01526 (Termites Confused by Lights), ffct-23515 (Bulb Converts to Light), ffct-22548 (Two-Way Switch) — grep will also hit ~130 legitimate 'fuel' uses, check only titles whose title_en says light/lamp."
+   }
+  ]
+ },
+ {
+  "id": "ffct-22963",
+  "title_en": "Angle of Attack Lift",
+  "title_bis": "Angle of Attack Paubos Hangin",
+  "fact_en": "Tilting the wing's front slightly up is the angle of attack! It pushes more air down to increase lift.",
+  "fact_bis": "Kon ikiling og gamay ang atubangan sa pako (angle of attack), mas daghang hangin ang mabira paubos ug modako ang lift!",
+  "terms": [
+   "anggulo",
+   "angle",
+   "angle of attack",
+   "tilt",
+   "ikiling",
+   "pagkiling",
+   "hangin",
+   "air",
+   "more lift",
+   "ibaling",
+   "mabira",
+   "modako"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "angle-of-attack-direction-dropped",
+    "note": "Body drops the direction the English fact depends on. EN: \"Tilting the wing's front slightly UP is the angle of attack\"; BIS: \"Kon ikiling og gamay ang atubangan sa pako (angle of attack)...\" — no paibabaw/up anywhere in the card, so a child cannot tell which way the wing tilts to gain lift (tilting the nose down would kill it). Only body-level defect in the batch."
+   }
+  ]
+ },
+ {
+  "id": "ffct-22990",
+  "title_en": "Friction Holds Slope",
+  "title_bis": "Dahilig Friction Hawak",
+  "fact_en": "Why does an object stay put on a slope instead of sliding down?\n\nWhen there is enough friction, an object resting on a slope stays put! The friction holds it in place instead of letting it slide down.",
+  "fact_bis": "Ngano dili modausdos paubos ang usa ka butang sa banghilig?\n\nKung adunay igong friction, ang butang nga naa sa banghilig magpabilin sa lugar! Gipugong kini sa friction imbes nga modausdos paubos.",
+  "terms": [
+   "friction",
+   "kuskos",
+   "alitan",
+   "dahilig",
+   "banghilig",
+   "hindi gumugulong pababa",
+   "dili modausdos",
+   "nananatili",
+   "pugong",
+   "dumadausdos",
+   "paubos",
+   "humihinto"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "holds->hawak",
+    "note": "title_bis \"Dahilig Friction Hawak\" — hawak is WAIST in Cebuano (Tagalog false friend for 'hold'; Cebuano hold = kupot/gunit/pugong). Title_en is \"Friction Holds Slope\", so the headline reads \"slope friction waist\". Body repairs it with \"Gipugong kini sa friction\". Corpus-wide class: 17 titles use hawak for hold/grip/touch (ffct-24196 Holding Scissors, ffct-37034 Uterus Holds Baby, ffct-22323 Friction Grip, ffct-26030 Tongs Grip)."
+   }
+  ]
+ },
+ {
+  "id": "ffct-23143",
+  "title_en": "Charged Hair Stands Up",
+  "title_bis": "Buhok Motaas Magbangga",
+  "fact_en": "When every strand of hair gets the same charge, they push apart so the hair rises and spreads out!",
+  "fact_bis": "Kon parehas ang karga sa matag lugas sa buhok, magsinikway sila mao nga ang buhok motindog ug magkatag!",
+  "terms": [
+   "buhok",
+   "balahibo",
+   "hair stands up",
+   "nagtindog ang buhok",
+   "tumayo",
+   "nagsalikway",
+   "like charge",
+   "magkaparehong karga",
+   "kuryente",
+   "motindog"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "repel->magbangga",
+    "note": "Title_bis \"Buhok Motaas Magbangga\" says the hair strands COLLIDE (bangga = collide/crash); the card's whole point is the opposite interaction — like charges repel and push apart, which is why the hair rises. Headline states the wrong mechanism (body does say \"magsinikway\", so severity is title-only)."
+   }
+  ]
+ },
+ {
+  "id": "ffct-23470",
+  "title_en": "Trapped Air Insulates",
+  "title_bis": "Nakulong Hangin Kumot",
+  "fact_en": "How does a thick blanket keep us warm if it doesn't produce heat?\n\nTrapped air is a great insulator that conducts heat very slowly! A blanket just slows the escape of your body's heat.",
+  "fact_bis": "Unsaon pagpainit sa atong baga nga habol bisan wala man kini mohatag og init?\n\nAng nakubkob nga hangin maayong insulator kay hinay magpadala og init! Gibabagan lang sa habol ang pag-ikyas sa init sa imong lawas.",
+  "terms": [
+   "insulation",
+   "trapped air",
+   "init",
+   "kainit",
+   "nakukulong na hangin",
+   "nakubkob nga hangin",
+   "panapton",
+   "blanket",
+   "kumot",
+   "manipis",
+   "mabagal na conduction",
+   "init ng katawan"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "blanket->kumot",
+    "note": "title_bis \"Nakulong Hangin Kumot\" — kumot is the TAGALOG word for blanket; in Cebuano kumot means to crumple/rumple, and the blanket is habol (which the body correctly uses twice). Tagalog false friend in the headline. Lower confidence than the others because Tagalog kumot is widely understood, so treat the grep hits with care."
+   }
+  ]
+ },
+ {
+  "id": "ffct-23475",
+  "title_en": "A Shadow, a Dark Area",
+  "title_bis": "Anino Mabug-at Lugar",
+  "fact_en": "What exactly is a shadow?\n\nA shadow is a dark area that has less light than the space around it!",
+  "fact_bis": "Unsa ba gyud ang landong?\n\nAng landong usa ka ngitngit nga dapit nga mas gamay og kahayag kaysa palibot niini!",
+  "terms": [
+   "madilim",
+   "maitim anino",
+   "kulang liwanag",
+   "ngitngit",
+   "itom landong",
+   "kulang kahayag",
+   "dark area",
+   "less light",
+   "madilim na lugar",
+   "dark patch"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "dark->mabug-at",
+    "note": "title_bis \"Anino Mabug-at Lugar\" — mabug-at means HEAVY in Cebuano, not dark. The title tells a child a shadow is a heavy place; the English is \"A Shadow, a Dark Area\" and the correct word is ngitngit/madulom (which the body does use). Looks like a mis-carry of Tagalog madilim -> mabigat."
+   }
+  ]
+ },
+ {
+  "id": "ffct-23490",
+  "title_en": "Light Reflection",
+  "title_bis": "Kahayag Pamalandong",
+  "fact_en": "When a ray of light hits a mirror, it bounces off at the same angle — if it strikes at a slant, it leaves at the same slant on the other side!",
+  "fact_bis": "Kung motama ang silaw sa kahayag sa salamin, mobalik kini sa pareho nga anggulo — kung pahilig kini motama, pahilig usab kini mobalik sa pikas bahin!",
+  "terms": [
+   "anggulo",
+   "salamin",
+   "tumatama",
+   "bumabalik",
+   "parehong anggulo",
+   "liwanag",
+   "sinag",
+   "angle",
+   "reflect",
+   "bounce",
+   "mirror",
+   "tumalbog",
+   "anggulo sa pagtama",
+   "motama",
+   "mobalik",
+   "pareho nga anggulo",
+   "silaw"
+  ],
+  "emphasis_bis": [
+   "pareho nga anggulo"
+  ],
+  "findings": [
+   {
+    "pattern": "reflection->pamalandong",
+    "note": "title_bis \"Kahayag Pamalandong\" — pamalandong is mental reflection/meditation/pondering in Cebuano, not optical reflection. English polysemy taken in the wrong sense; the physics term is repleksyon (or pagbalik sa kahayag). Body describes the bounce correctly but never names reflection, so the headline concept label is simply the wrong thing."
+   }
+  ]
+ },
+ {
+  "id": "ffct-23515",
+  "title_en": "Bulb Converts to Light",
+  "title_bis": "Bombilya Kuryente sa Sugnod",
+  "fact_en": "The bulb changes electricity into light! When current passes through its thin filament, the filament gets super hot and glows brightly.",
+  "fact_bis": "Ang bombilya nag-usab sa kuryente ngadto sa kahayag! Kung moagi ang kuryente sa nipis nga filament, moinit kini ug modan-ag.",
+  "terms": [
+   "bulb",
+   "bombilya",
+   "ilaw",
+   "suga",
+   "kahayag",
+   "liwanag",
+   "init",
+   "kainit",
+   "nagliliwanag",
+   "modan-ag",
+   "kuryente",
+   "nagiging",
+   "filament",
+   "elektrisidad"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "light->sugnod",
+    "note": "title_bis \"Bombilya Kuryente sa Sugnod\" — sugnod is FIREWOOD/fuel in Cebuano, not light. The headline a child sees says the bulb turns electricity into firewood/fuel, which is a different (and false) energy conversion; the intended word is kahayag/suga (the body uses kahayag correctly). Same corpus uses gatong correctly for fuel in ffct-23451, so sugnod here is a genuine swap, not a register choice."
+   }
+  ]
+ },
+ {
+  "id": "ffct-23565",
+  "title_en": "Thick Walls Block Sound",
+  "title_bis": "Dagkot nga Bungbong sa Tunog",
+  "fact_en": "Thick, solid walls block most sound, which is why it is heard much fainter in the next room!",
+  "fact_bis": "Ang baga ug gahi nga bungbong moharang sa kadaghanan sa tingog, mao nga mas hinay kini madungog sa pikas kwarto!",
+  "terms": [
+   "makapal",
+   "pader",
+   "humaharang",
+   "tunog",
+   "thick",
+   "baga",
+   "block",
+   "bungbong",
+   "moharang",
+   "mahina",
+   "soundproof",
+   "gahi"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "thick->dagkot",
+    "note": "title_bis \"Dagkot nga Bungbong sa Tunog\" — dagkot means to IGNITE/light (a candle, a cigarette) in Cebuano; thick is baga. The title reads as \"kindled wall\", not \"thick wall\", so the title's causal fact (thickness is what blocks sound) is gone; the body's \"baga ug gahi nga bungbong\" is correct. Possibly a slip for dagko (big), which would still not be \"thick\"."
+   }
+  ]
+ },
+ {
+  "id": "ffct-23706",
+  "title_en": "Lightning Safety",
+  "title_bis": "Luwas sa Kidlat",
+  "fact_en": "Lightning is powerful electricity from the sky! Stay safe by going inside a building with a roof. Never stand under tall trees or in open fields.",
+  "fact_bis": "Ang kilat kusgan nga koryente gikan sa langit! Pag-ingat sa sulod sa balay nga naay atop. Ayaw pagtindog ilawom sa taas nga kahoy.",
+  "terms": [
+   "lightning",
+   "kidlat",
+   "kuryente sa langit",
+   "bagyo",
+   "bakit delikado kidlat",
+   "huwag sa puno",
+   "tumba sa puno",
+   "lightning safety",
+   "kulog kidlat",
+   "thunderstorm",
+   "ulan",
+   "ngano delikado ang kilat",
+   "kilat",
+   "sulip sa balay",
+   "labihan sa bagyo"
+  ],
+  "emphasis_bis": [
+   "kilat"
+  ],
+  "findings": [
+   {
+    "pattern": "dropped-open-field-warning",
+    "note": "Lightning safety. EN: \"Stay safe by going inside a building with a roof. Never stand under tall trees or in open fields.\" BIS: \"Pag-ingat sa sulod sa balay nga naay atop. Ayaw pagtindog ilawom sa taas nga kahoy.\" Two problems and neither is repaired anywhere else on the card: (1) the \"or in open fields\" prohibition is dropped entirely, so a Cebuano-only child is never told that an open field is dangerous during lightning; (2) \"Pag-ingat sa sulod sa balay\" reads as \"be careful inside the house\" rather than the directive to GO inside for shelter, so the card's main action item is blunted. The body has no other sentence that restores either point."
+   }
+  ]
+ },
+ {
+  "id": "ffct-23753",
+  "title_en": "Falling Objects",
+  "title_bis": "Pagkahulog sa Butang",
+  "fact_en": "Galileo showed that heavy and light objects fall at the same speed when no air slows them down!",
+  "fact_bis": "Gipakita ni Galileo nga ang bug-at ug gaan nga mga butang mahulog nga dungan kung walay hangin nga moabag!",
+  "terms": [
+   "galileo",
+   "falling",
+   "nahuhulog",
+   "nahulog",
+   "bagay",
+   "objects",
+   "bigat",
+   "weight",
+   "mabigat",
+   "magaan",
+   "heavy",
+   "light",
+   "same speed",
+   "sabay",
+   "dungan",
+   "gravity",
+   "eksperimento",
+   "experiment"
+  ],
+  "emphasis_bis": [
+   "mahulog nga dungan"
+  ],
+  "findings": [
+   {
+    "pattern": "moabag-for-mobabag",
+    "note": "Reversed role of air in the Galileo card. EN \"...fall at the same speed when no air slows them down\" -> BIS \"...mahulog nga dungan kung walay hangin nga moabag\". Cebuano abag = to HELP/assist; the word needed is babag/mobabag (to obstruct), which the corpus uses 37x against this single moabag (likely a one-letter typo that lands on a real word with the opposite sense). A child reading only the Cebuano is told air HELPS objects fall — the exact inverse of air resistance, which is the whole point of the card. Confidence LOW: the headline conclusion (heavy and light fall together with no air) survives intact, so only the mechanism clause is wrong."
+   }
+  ]
+ },
+ {
+  "id": "ffct-23788",
+  "title_en": "Kubing Instrument",
+  "title_bis": "Lumad nga Kubing",
+  "fact_en": "The kubing is a beautiful indigenous instrument from Mindanao! Used for storytelling, courtship, and relaxation, it is a perfect example of the physics of sound in Filipino culture.",
+  "fact_bis": "Ang kubing usa ka nindot nga lumad nga instrumento gikan sa Mindanao! Gigamit sa pagsugilanon, panguliyaw, ug pagpahulay, kini nindot nga panig-ingnan sa physics sa tunog sa kulturang Pilipino.",
+  "terms": [
+   "kubing",
+   "pilipinas",
+   "philippines",
+   "mindanao",
+   "katutubo",
+   "indigenous",
+   "instrumento",
+   "kultura",
+   "asa",
+   "lumad",
+   "maguindanao",
+   "tradisyon",
+   "tugtog",
+   "kawayan"
+  ],
+  "emphasis_bis": [
+   "kubing"
+  ],
+  "findings": [
+   {
+    "pattern": "courtship->panguliyaw",
+    "note": "Body fact swap in a list the card depends on. EN \"Used for storytelling, courtship, and relaxation\" -> BIS \"Gigamit sa pagsugilanon, panguliyaw, ug pagpahulay\". Cebuano guliyaw = to shout/holler, so panguliyaw reads 'used for shouting' — not courtship (pangulitawo / panguyab, which is what the corpus uses: pangulitawo 4x, panguyab 4x, guliyaw only this 1x; the sibling card ffct-23794 correctly says \"gigamit sa pangulitawo\"). Nothing in this card corrects it, so a Cebuano-only child learns the kubing is a shouting/calling instrument, which also contradicts its defining quietness. Confidence medium-low."
+   }
+  ]
+ }
+]

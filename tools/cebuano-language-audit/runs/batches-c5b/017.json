@@ -1,0 +1,357 @@
+[
+ {
+  "id": "ffct-09541",
+  "title_en": "Plants vs Algae",
+  "title_bis": "Tanom vs Algae",
+  "fact_en": "Are floating plants and algae the same?\n\nNo! A real floating plant like duckweed has true leaves and roots, but algae has none — it's just green slime in the water.",
+  "fact_bis": "Managlahi ba ang lumot ug naglutaw nga tanom?\n\nDili! Ang tinuod nga naglutaw nga tanom sama sa duckweed adunay tinuod nga dahon ug gamot, apan ang lumot walay ingon niini — morag berde ra kining lapot sa tubig.",
+  "terms": [
+   "algae",
+   "lumot",
+   "not algae",
+   "dili lumot",
+   "pagkakaiba",
+   "difference",
+   "dahon",
+   "ugat",
+   "leaves",
+   "roots",
+   "floating plant",
+   "misconception",
+   "duckweed",
+   "lumulutang",
+   "tanom",
+   "naglutaw"
+  ],
+  "emphasis_bis": [
+   "lumot"
+  ],
+  "findings": [
+   {
+    "pattern": "qa-polarity-flip",
+    "note": "The Cebuano question is flipped but the answer word was kept, so the card contradicts itself. EN: \"Are floating plants and algae the same?\" / \"No!\". BIS: \"Managlahi ba ang lumot ug naglutaw nga tanom?\" (= are they DIFFERENT?) answered \"Dili!\" — i.e. \"no, they are not different\" = they are the same, the opposite of the fact. The following sentence then explains that they do differ, so the emphasized answer teaches the false belief."
+   }
+  ]
+ },
+ {
+  "id": "ffct-09610",
+  "title_en": "Spider Web Dew",
+  "title_bis": "Tun-og sa Lawa",
+  "fact_en": "Why do spiderwebs sparkle in the morning?\n\nMorning dew droplets stick to the web, and the spider can drink this water! Engineers even copy this trick to design water-collecting surfaces.",
+  "fact_bis": "Ngano nga nagsidlak ang lambay sa gagamba sa buntag?\n\nKay ang mga tulo sa hamog sa buntag mopilit niini — ug mahimo kining imnon sa gagamba! Ginasundog pa kini sa mga inhinyero aron maghimo og surface nga makakuha og tubig gikan sa hangin.",
+  "terms": [
+   "spider web",
+   "dew",
+   "hamog",
+   "water collection",
+   "drink",
+   "condensation",
+   "morning",
+   "biomimicry",
+   "tubig",
+   "droplets"
+  ],
+  "emphasis_bis": [
+   "hamog"
+  ],
+  "findings": [
+   {
+    "pattern": "web->lambay",
+    "note": "The question line says \"Ngano nga nagsidlak ang lambay sa gagamba sa buntag?\" — lambay is a crab, not a web (elsewhere in this corpus: \"Ang kugita mokaon og lambay, pasayan, ug kinhason\"). Other web cards use sapot / lawa / lambat. The thing the dew sticks to is misnamed as a different animal in the question the child has to answer; only title_bis (\"Tun-og sa Lawa\") carries the correct word."
+   }
+  ]
+ },
+ {
+  "id": "ffct-09663",
+  "title_en": "Dragonfly/Damselfly",
+  "title_bis": "Tutubi ug Damselfly",
+  "fact_en": "How can you tell a dragonfly from a damselfly?\n\nA dragonfly's big eyes touch each other, but a damselfly's eyes sit far apart on the sides of its head.",
+  "fact_bis": "Unsaon pag-ila sa alindahaw gikan sa kasing-kasing?\n\nNagkadikit ang dagkong mata sa alindahaw, samtang nagkalayo ang mata sa kasing-kasing sa duha ka kilid sa ulo.",
+  "terms": [
+   "tutubi",
+   "kasing-kasing",
+   "damselfly",
+   "mata",
+   "eyes",
+   "magkadikit",
+   "magkalayo",
+   "wide-set eyes",
+   "pagkaiba",
+   "kalainan",
+   "difference"
+  ],
+  "emphasis_bis": [
+   "alindahaw",
+   "kasing-kasing"
+  ],
+  "findings": [
+   {
+    "pattern": "damselfly->kasing-kasing",
+    "note": "The damselfly is named `kasing-kasing`, which is Cebuano for HEART (the corpus uses kasing-kasing for the heart organ everywhere else, e.g. the ECG card). Body: 'Unsaon pag-ila sa alindahaw gikan sa kasing-kasing? ... nagkalayo ang mata sa kasing-kasing.' Nothing in the card corrects it: title_bis is 'Tutubi ug Damselfly' (Tagalog tutubi + English damselfly), so there is zero lexical overlap with the body's alindahaw/kasing-kasing pair and the mapping is only positional, and the wrong word is also pushed into emph_bis. A child reading only the Cebuano learns that a 'heart' is an insect with wide-set eyes and cannot tell a damselfly from a dragonfly. Other cards in the corpus render damselfly as plain 'damselfly' or 'nipis nga alindahaw' (ffct-04554, ffct-14224), so this is a one-off mistranslation, not a regional name."
+   }
+  ]
+ },
+ {
+  "id": "ffct-09824",
+  "title_en": "Mudskipper Diet",
+  "title_bis": "Pagkaon sa Siga",
+  "fact_en": "A mudskipper eats small animals like insects and worms, and also eats algae — a plant-like organism, not an animal at all.",
+  "fact_bis": "Mokaon ang mudskipper og gagmay nga hayop sama sa insekto ug bulate, ug mokaon usab og algae — usa ka morag-tanom nga organismo, dili hayop.",
+  "terms": [
+   "mudskipper",
+   "eats",
+   "food",
+   "kumakain",
+   "pagkain",
+   "insekto",
+   "lumot",
+   "mokaon",
+   "pagkaon",
+   "gagmayng hayop",
+   "alga",
+   "ulod"
+  ],
+  "emphasis_bis": [
+   "algae"
+  ],
+  "findings": [
+   {
+    "pattern": "mudskipper->siga",
+    "note": "title_bis \"Pagkaon sa Siga\" = \"Food of the Flame\" — siga is flame/light in Cebuano, not a fish. The card is Mudskipper Diet, and the title never names the mudskipper, so the header tells a child the card is about something else entirely. Corpus check: siga appears ~40x elsewhere only as flame/light (Siga sa Aninipot = firefly light, Siga sa Anglerfish, Kolor sa Siga sa Bunsen Burner), and every other mudskipper card uses tambasakan, baklaw, or mudskipper. Same pattern as the known cat-card-titled-iro defect."
+   }
+  ]
+ },
+ {
+  "id": "ffct-09982",
+  "title_en": "Talahib Silvery Plumes",
+  "title_bis": "Balahibong Talahib Bulak",
+  "fact_en": "Talahib grass has white, feathery flowers on top that sway gently whenever the wind blows.",
+  "fact_bis": "Ang talahib adunay puti ug morag balhibo nga bulak sa tumoy nga nag-alindahaw kon adunay hangin.",
+  "terms": [
+   "talahib",
+   "bulaklak",
+   "pilak",
+   "balahibo",
+   "bulak",
+   "silver plume",
+   "feathery",
+   "puti nga bulak",
+   "umuugoy",
+   "balhibo",
+   "tumoy",
+   "hangin"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "sway->alindahaw",
+    "note": "EN 'white, feathery flowers on top that sway gently whenever the wind blows' -> BIS 'bulak sa tumoy nga nag-alindahaw kon adunay hangin'. 'Alindahaw' is this corpus's word for DRAGONFLY (25 cards: ffct-00093, ffct-01239, ffct-04274, ffct-05044...), never a verb for swaying; elsewhere it is glossed as drizzle. The swaying-in-the-wind action is the second half of the card and is never stated any other way, so a Cebuano-only child cannot say what the plumes do in the wind."
+   }
+  ]
+ },
+ {
+  "id": "ffct-09983",
+  "title_en": "Mendel's Peas",
+  "title_bis": "Gisantes ni Mendel",
+  "fact_en": "Who discovered how traits are inherited?\n\nGregor Mendel, a monk, ran experiments with pea plants in the 19th century and discovered the basic rules of how traits are inherited.",
+  "fact_bis": "Kinsa ang nakadiskobre kung giunsa gipasa ang mga katangian?\n\nSi Gregor Mendel, usa ka monghe, nagbuhat og mga eksperimento sa mga sitaw sa ika-19 siglo ug nadiskobrehan ang mga batakang lagda kung giunsa ipasa ang mga katangian.",
+  "terms": [
+   "mendel",
+   "gregor mendel",
+   "peas",
+   "gisantes",
+   "inheritance",
+   "heredity",
+   "monk",
+   "garden",
+   "dominant",
+   "recessive"
+  ],
+  "emphasis_bis": [
+   "Gregor Mendel"
+  ],
+  "findings": [
+   {
+    "pattern": "peas->sitaw",
+    "note": "EN 'ran experiments with pea plants' -> BIS 'nagbuhat og mga eksperimento sa mga sitaw'. 'Sitaw' is string bean, a different plant: this same corpus says 'gisantes' for Mendel's peas in every other card (ffct-03787, ffct-04092, ffct-04392, ffct-08276, dcard-01613, ffct-38435) and reserves 'sitaw' for string beans (ffct-05422, ffct-00127). The correct word appears only in title_bis ('Gisantes ni Mendel'), so the Cebuano body teaches that genetics was discovered on string beans. Same shape as the gold-set tabanog/dragonfly flag (ffct-08595)."
+   }
+  ]
+ },
+ {
+  "id": "ffct-10077",
+  "title_en": "Forests Feed the Rain",
+  "title_bis": "Kagsuban nga Minus sa Ulan",
+  "fact_en": "Can cutting down forests really change the rain?\n\nYes — trees release huge amounts of moisture into the air through transpiration, so cutting down forests can lower how much it rains locally!",
+  "fact_bis": "Makaapekto ba gyud sa ulan ang pagputol og kahoy?\n\nOo — ang mga kahoy nagpagawas og dako kaayong halumigmig ngadto sa hangin pinaagi sa transpiration, mao nga ang pagputol sa kagubatan mahimong makapaubos sa lokal nga ulan!",
+  "terms": [
+   "deforestation rainfall",
+   "less rain after cutting",
+   "transpiration trees",
+   "local climate",
+   "forest water cycle",
+   "rain reduction",
+   "forest effects climate",
+   "hydrological cycle",
+   "pilipinas",
+   "local weather"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "title-reverses-direction",
+    "note": "title_en 'Forests Feed the Rain' -> title_bis 'Kagsuban nga Minus sa Ulan'. 'Kagsuban' is this corpus's title word for forest (ffct-04015, ffct-07403, ffct-14604) and the frame 'X nga Minus sa Y' means 'X reduces Y' elsewhere (ffct-05803 'Sweat Reduces Urine' -> 'Bahu nga Minus sa Ihi'). So the child-facing title asserts forests REDUCE rain, the reverse of the card, whose body correctly says cutting forests lowers local rainfall. Body is correct; the title states the opposite relationship."
+   }
+  ]
+ },
+ {
+  "id": "ffct-10113",
+  "title_en": "Peacocks Rattle Their Feathers",
+  "title_bis": "Peacock sa Pagyugyog sa Buhok",
+  "fact_en": "How does a peacock get attention from a peahen?\n\nIt shakes its tail feathers to make a rattling sound that the peahen can feel and hear.",
+  "fact_bis": "Unsaon sa paboreal pagdani sa atensyon?\n\nIuyog niini ang ikog aron mohimo og kaluskos nga tingog nga mabati ug madunggan sa baye nga pabo.",
+  "terms": [
+   "pag-iling",
+   "pag-uyog",
+   "shake",
+   "kaluskos",
+   "kaluskos sa",
+   "rattle",
+   "tunog",
+   "tingog",
+   "sound",
+   "buntot",
+   "ikog",
+   "feathers",
+   "paboreal",
+   "pabo",
+   "vibrasyon",
+   "kurog"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "feathers->buhok",
+    "note": "title_bis \"Peacock sa Pagyugyog sa Buhok\" renders feathers as buhok (human head hair); Cebuano for feathers is balhibo. The body only says \"Iuyog niini ang ikog\" and never says balhibo, so feathers are never restored — the title asserts a peacock shakes its hair. Lower severity than the other two (the body still delivers tail-shake -> rattling sound -> peahen hears it), but the wrong word is wrong in general. Note this looks systematic in titles corpus-wide (027.json \"Buhok nga Motabon sa Langgam\", 031.json \"Buhok sa Lupad sa Langgam\", 160.json \"Buhok sa Hangin\"), while 074.json correctly uses \"Balhibo sa Langgam\" — so a grep will hit many real instances, not noise."
+   }
+  ]
+ },
+ {
+  "id": "ffct-10142",
+  "title_en": "Workers Feed the Queen",
+  "title_bis": "Reyna sa Pagkaon",
+  "fact_en": "The ant queen no longer leaves to find food — worker ants bring her food, feed her mouth-to-mouth, and clean her so she stays healthy and can keep laying eggs.",
+  "fact_bis": "Ang reyna nga langgam dili na mogawas aron mokaon — ang mga trabahante magdala og pagkaon ngadto kaniya, magpakaon baba-sa-baba, ug limpyohan siya aron magpabilin nga himsog ug makapangitlog.",
+  "terms": [
+   "workers feed queen",
+   "pinapakain ang reyna",
+   "inaalagaan",
+   "cared for",
+   "nililinis",
+   "groom",
+   "paano kumakain reyna",
+   "how queen eats",
+   "trophallaxis",
+   "binubuga ng pagkain",
+   "mouth to mouth",
+   "obrero"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "ant->langgam",
+    "note": "Ant queen card: the Cebuano says \"Ang reyna nga langgam\" — in Cebuano langgam is a BIRD (the Tagalog false friend langgam = ant). The card never says hulmigas anywhere, and the workers are only \"mga trabahante\", so a Cebuano child reads this as a queen bird being fed mouth-to-mouth by workers. The whole ant-colony fact is unrecoverable. Corpus check confirms the correct word is used elsewhere (\"Ants\" -> \"Hulmigas\", 001.json) and that the same bird/ant slip recurs (000.json \"Ants Per Person\" -> \"Langgam sa Matag Tawo\")."
+   }
+  ]
+ },
+ {
+  "id": "ffct-10157",
+  "title_en": "Gecko",
+  "title_bis": "Tuko",
+  "fact_en": "It's harder for a gecko to cling to a soaking wet surface because water blocks its toe hairs from gripping — though some geckos are adapted to damp places and can still hold on.",
+  "fact_bis": "Lisod alang sa gecko nga mokupot sa basa kaayo nga bahin kay makasagabal ang tubig sa pagbira sa mga balahibo sa bungbong, apan ang ubang gecko nahimong angay sa mabasa nga dapit ug makakupot gihapon bisan basa.",
+  "terms": [
+   "wet",
+   "basa",
+   "ulan",
+   "rain",
+   "tubig",
+   "water",
+   "tuko",
+   "gecko",
+   "bakit nadudulas",
+   "ngano modan-as",
+   "slippery",
+   "madulas",
+   "basang pader",
+   "follow-up",
+   "mahirap umakyat",
+   "grip"
+  ],
+  "emphasis_bis": [
+   "pagbira"
+  ],
+  "findings": [
+   {
+    "pattern": "toe-hairs-moved-to-wall",
+    "note": "Gecko-on-wet-surface card: \"makasagabal ang tubig sa pagbira sa mga balahibo sa bungbong\" puts the hairs on the WALL (bungbong), not on the gecko's toes. The card never mentions tudlo/toes, so the mechanism a child takes away is that walls have hairs — false, and not restored anywhere on the card. Compare ffct-10137 in the same batch, which correctly puts the balhibo \"sa ilalom sa iyang mga tudlo\". Not giving a general word pair: bungbong is the right word for wall, the defect is where the hairs were attached."
+   }
+  ]
+ },
+ {
+  "id": "ffct-10397",
+  "title_en": "Wild Makahiya Everywhere",
+  "title_bis": "Makahiya nga Layo sa Pilipinas",
+  "fact_en": "Makahiya is easy to spot in the Philippines because it grows all on its own along roadsides and in yards.",
+  "fact_bis": "Sayon makita ang makahiya sa Pilipinas kay motubo kini nga mag-inusara sa daplin sa dalan ug sa mga nataran.",
+  "terms": [
+   "makahiya",
+   "pilipinas",
+   "philippines",
+   "tabi",
+   "roadside",
+   "daplin",
+   "tabi sa dalan",
+   "damo",
+   "weed",
+   "sagbot",
+   "ligaw",
+   "wild",
+   "bakuran",
+   "nataran",
+   "lupa"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "everywhere->layo",
+    "note": "title_bis 'Makahiya nga Layo sa Pilipinas' for EN 'Wild Makahiya Everywhere': layo = far/distant, which asserts the opposite of the card's point (makahiya is easy to find, grows along roadsides and yards). 'Wild' (ihalas, as used in the parallel card ffct-10539) is also gone. Title makes a false claim about where makahiya is found."
+   }
+  ]
+ },
+ {
+  "id": "ffct-10519",
+  "title_en": "Toxoplasma Cats Pregnancy",
+  "title_bis": "Toxoplasma Iro Busug",
+  "fact_en": "Why is Toxoplasma risky for pregnant women?\n\nToxoplasma gondii is a protist commonly found in cats, and it can harm a developing baby's brain if a pregnant woman gets infected.",
+  "fact_bis": "Nganong delikado sa buntis ang Toxoplasma?\n\nAng Toxoplasma gondii usa ka protist nga kasagaran naa sa mga pusa, ug mahimong makadaot sa utak sa bata kon matakdan ang usa ka buntis.",
+  "terms": [
+   "toxoplasma gondii",
+   "cats",
+   "pusa",
+   "pregnancy",
+   "buntis",
+   "zoonotic",
+   "litter box",
+   "parasite",
+   "brain",
+   "fetal harm"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "cat->iro",
+    "note": "title_bis 'Toxoplasma Iro Busug' for EN 'Toxoplasma Cats Pregnancy': iro = dog, but the card is about cats (body correctly says pusa), and busug = full/satiated, not pregnant (buntis/mabdos). The title asserts the wrong animal for the parasite risk — same defect class as the known cat-card-titled-iro example."
+   }
+  ]
+ }
+]

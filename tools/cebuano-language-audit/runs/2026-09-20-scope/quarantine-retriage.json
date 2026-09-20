@@ -1,0 +1,259 @@
+{
+ "judged": 42,
+ "survives": 16,
+ "refuted": 26,
+ "rows": [
+  {
+   "id": "ffct-15081",
+   "verdict": "REFUTED",
+   "note": "The flag rested entirely on the bad \"bulok = colour\" entry; the rotten sense is attested in Cebuano bodies, so \"Gatos Tuig Bulok\" correctly headlines \"hundreds of years to rot\" for \"Centuries to Break Down\".",
+   "corpus_evidence": "ceb_usage.py --bis bulok: 14 Cebuano BODIES -- ffct-05209 \"Unsay hinungdan sa baho sa bulok nga itlog?\" / EN \"What makes that rotten-egg smell?\"; ffct-01035 \"Bulok ba ang durian tungod sa kusog nga baho?\"; the colour sense appears as the suffixed bulokon (ffct-03200 \"bulokon nga palong\"). --bis gatos: 33 bodies (\"tulo ka gatos ka adult nga elepante\")."
+  },
+  {
+   "id": "ffct-15430",
+   "verdict": "REFUTED",
+   "note": "Same bad entry: bulok is a real Cebuano word for rotten, so \"Cotton sa Bulok\" names the card's own topic (cotton rotting) rather than colour, and nothing else in the card's English is contradicted.",
+   "corpus_evidence": "ceb_usage.py --bis bulok: 14 bodies with the ROTTEN sense (ffct-05209 \"bulok nga itlog\" = rotten egg); colour is carried by bulokon, not bulok. The body's own madunot and the title's bulok are both attested rot words."
+  },
+  {
+   "id": "ffct-15476",
+   "verdict": "REFUTED",
+   "note": "The flag rested only on the bad \"bakal = to buy\" entry; the corpus uses bakal for iron/steel and never for buying, and pinaka- is ordinary Cebuano, so \"Bakal Pinakagamit\" is a valid headline for \"Iron the Most Used\".",
+   "corpus_evidence": "ceb_usage.py --bis bakal: 42 Cebuano BODIES, all metal -- ffct-17957 \"Ang bakal usa sa labing daghang metal sa panit sa Yuta\" / EN \"Iron is one of the most plentiful metals\"; ffct-17936 \"Gidani sa magnet ang bakal\". --bis pinaka*: 1,731 bodies (pinakadako, pinakadugay)."
+  },
+  {
+   "id": "ffct-16194",
+   "verdict": "REFUTED",
+   "note": "Flag depended on the refuted \"bulok = colour\" claim; with the rotten sense attested, \"Pag-uri Basura Bulok Dili\" states exactly the biodegradable/non-biodegradable split the card teaches, and pag-uri is used in the card's own Cebuano body.",
+   "corpus_evidence": "ceb_usage.py --bis bulok: rotten sense in bodies (ffct-05209 \"bulok nga itlog\", ffct-01035 \"Bulok ba ang durian\"); pag-uri* attested in 5 Cebuano bodies including this card's own (\"Ang pag-uri sa basura mao ang paglain sa madunot\")."
+  },
+  {
+   "id": "ffct-16309",
+   "verdict": "REFUTED",
+   "note": "Both limbs of the note are contradicted by the corpus -- molubog is the normal body word for sinking and pako is attested for a metal nail -- so \"Molubog ang Pako\" is variation against the body's lansang, not a provable defect.",
+   "corpus_evidence": "ceb_usage.py --bis molubog: 46 Cebuano BODIES meaning SINK -- ffct-09651 \"ang molubog kasagaran maayo, apan ang molutaw...\" / EN \"seeds that sink\"; ffct-01197 \"molubog ang ilang balangkas sa ilawom sa dagat\" / EN \"shells sink to the ocean floor\". Pool grep: 16 Cebuano bodies use pako for a nail -- ffct-28155 \"temporary magnet gikan sa pako nga puthaw\" / EN \"temporary magnet out of an iron nail\"; ffct-27941 \"bakal nga pako\"; ffct-28096 \"copper nga pako ug zinc nga pako\"."
+  },
+  {
+   "id": "ffct-16895",
+   "verdict": "REFUTED",
+   "note": "The flagged word is not even in the card -- title_bis reads \"Lana Detergent Tambal Pintura\", using tambal (medicine), not gamot -- and lana for oil is the corpus's own idiom, so nothing survives.",
+   "corpus_evidence": "Card field title_bis = \"Lana Detergent Tambal Pintura\" (the note quoted a non-existent \"Gamot\"). ceb_usage.py --bis tambal: 285 Cebuano BODIES for medicine (ffct-00137 \"Ang antibiotic usa ka tambal nga mopatay...\"); --bis lana shows the oil sense in bodies (ffct-00243 \"Dili makuha sa tubig lang ang lana diin motapot ang mga germ\")."
+  },
+  {
+   "id": "ffct-17763",
+   "verdict": "REFUTED",
+   "note": "Rests entirely on the refuted \"lana = oil only\" entry; the corpus glosses lana as wool itself, so \"Lana sa Karnero\" is a correct rendering of \"Wool from Sheep\".",
+   "corpus_evidence": "ffct-04698 body: \"Ang karnero adunay baga nga balhibo nga gitawag og lana o wool.\" ceb_usage.py --en wool: 28 cards, lana occurs 9 times in their Cebuano bodies alongside karnero (16) and balhibo (6)."
+  },
+  {
+   "id": "ffct-18918",
+   "verdict": "SURVIVES",
+   "note": "Independent of the bukal entry, the title's only process word, kulob, is never used for boiling anywhere in the corpus (it means face-down/shrivelled), so the headline for \"Alcohol Boils Before Water\" names no boiling at all.",
+   "corpus_evidence": "ceb_usage.py --bis kulob: \"0 Cebuano BODIES, 29 Cebuano titles -- NOT ATTESTED IN ANY CEBUANO BODY.\" Substring grep finds only ffct-25773 \"Ang skydiver nga nakakulob\" (belly-down) and ffct-09815 \"mokulobot\" (shrivels). Bodies boil with bukal/kulo: --en boil gives mobukal 82, nagbukal 75; ffct-17799 \"Nganong mokulo ang tubig...\"."
+  },
+  {
+   "id": "ffct-18929",
+   "verdict": "SURVIVES",
+   "note": "Same surviving defect: \"373 Kelvin Kulob\" attaches the card's English \"Boiling Point\" to kulob, a word with zero boiling attestation in Cebuano bodies, leaving the headline's temperature attached to no process.",
+   "corpus_evidence": "ceb_usage.py --bis kulob: 0 Cebuano BODIES / 29 titles, \"NOT ATTESTED IN ANY CEBUANO BODY\"; the body of this very card uses the attested form (\"ang tubig mobukal sa mga 373 Kelvin\"), and --bis bukal shows the genuine root in bodies (ffct-20687 \"init nga bukal sa Pansol, Laguna\")."
+  },
+  {
+   "id": "ffct-18923",
+   "verdict": "SURVIVES",
+   "note": "\"Asin Kulob Taas\" for \"Salt Raises Boiling Point\" uses kulob, unattested for boiling in 47k Cebuano bodies, so the relationship the card teaches is absent from the headline; the defect is separate from the refuted bukal entry.",
+   "corpus_evidence": "ceb_usage.py --bis kulob: 0 bodies, 29 titles; corpus boiling words are mobukal/nagbukal (157 hits across --en boil cards) and kulo (ffct-18299 \"Unsay kalainan sa pagsingaw ug pagkulo?\"). Note the corpus distinguishes kulo (boil) from kulob (face-down, ffct-25773 \"nakakulob\")."
+  },
+  {
+   "id": "ffct-18919",
+   "verdict": "SURVIVES",
+   "note": "\"Bundok Mubu Kulob\" names neither water nor boiling because kulob is not a Cebuano boiling word, while bundok and mubu are both attested, so the defect is the kulob substitution alone and is provable from title_en \"Boils Below 100 Mountain\".",
+   "corpus_evidence": "ceb_usage.py --bis kulob: 0 Cebuano BODIES / 29 titles; --bis bundok: 16 bodies (ffct-18414 \"Sa taas nga bundok, mahimong mas manipis ang hangin\") and --bis mubu: 50 bodies, so only kulob is unsourced; the card's body says \"mobukal ang tubig ubos sa 100°C\"."
+  },
+  {
+   "id": "ffct-18927",
+   "verdict": "SURVIVES",
+   "note": "Independent of the bukal refutation: the title word standing in for \"boils\", *kulob*, is not Cebuano for boiling at all, so the headline of a boiling-point card carries no boiling word (body's \"mobukal\" is correct and is not what was flagged).",
+   "corpus_evidence": "ceb_usage.py --bis kulob: \"'kulob': 0 Cebuano BODIES, 29 Cebuano titles -- NOT ATTESTED IN ANY CEBUANO BODY. Treat as unsourced.\" ; --en boils: 106 cards, characteristic words \"mobukal 69, magbukal 23, mubukal 12, nagbukal 11\" (e.g. ffct-15225 \"Mobukal kini ug paspas nga mahimong alisngaw\")."
+  },
+  {
+   "id": "ffct-19808",
+   "verdict": "REFUTED",
+   "note": "OVERTURNED by my own corpus check: the re-triage claimed pako is never a nail, but 16 Cebuano BODIES pair pako with English \"nail\" (ffct-20228 \"mga pako nga puthaw\" for \"iron nails\", ffct-21672, ffct-20784). It is a minority usage beside lansang (44 bodies), not a provable defect. Queue for the native reviewer, do not rewrite.",
+   "corpus_evidence": "ceb_usage.py --bis pako: 359 Cebuano bodies, all wing/fern senses -- ffct-00006 \"makalupad gamit ang iyang kaugalingong mga pako\" = \"fly using its own wings\", ffct-00405 \"bukton, pako, ug palikpik\" = \"arms, wings, and flippers\". --bis lansang: 44 bodies, ffct-16309 \"maunlod ang solido nga lansang nga puthaw\" for EN \"a solid iron nail sinks\"."
+  },
+  {
+   "id": "ffct-20134",
+   "verdict": "SURVIVES",
+   "note": "The flag never rested on lana (the card says mantika): the body states \"motunaw ang mantika sa tubig\" = the oil DISSOLVES in the water, which reverses the card's only fact -- English says oil FLOATS, which is why water must not be used.",
+   "corpus_evidence": "ceb_usage.py --bis motunaw: 38 bodies, all dissolve/digest -- ffct-02847 \"likido nga puno sa enzyme nga hinay-hinayng motunaw sa nahulog nga insekto\" = \"dissolves any trapped insect\". --en \"floats on water\": 23 cards, characteristic word \"molutaw 20\" -- ffct-09464 \"molutaw kini sa tubig\" for \"it floats on water\"."
+  },
+  {
+   "id": "ffct-20506",
+   "verdict": "SURVIVES",
+   "note": "Lana = oil is fine, but the title's *kape* means COFFEE, so \"Sabon nga Kape sa Lana\" reads \"Soap that is Coffee in Oil\" and the binding idea in the English title \"Soap Binds to Grease\" is absent from the headline (the body's makakupot is the correct verb).",
+   "corpus_evidence": "ceb_usage.py --bis kape: 124 Cebuano bodies, coffee/brown only -- ffct-00058 \"Ang kape motubo sa usa ka palumpong\" = \"Coffee grows on a shrub\", ffct-01464 \"Ngano mahal ang kape alamid?\". --bis makakupot: 32 bodies = grip/cling, ffct-03692 \"makakupot kini og hugot\" = \"it clings on so tightly\"."
+  },
+  {
+   "id": "ffct-21835",
+   "verdict": "SURVIVES",
+   "note": "Separate from bulok entirely: the negation is dropped -- \"Aslom kaayo ang suka aron mabuhi ang kadaghanan sa bakterya\" says the vinegar is sour SO THAT most bacteria CAN LIVE, the exact opposite of the English \"too acidic for most spoilage bacteria to survive\", and the card's own terms list still contains \"dili mabuhi\".",
+   "corpus_evidence": "Not needed for the surviving defect -- it is a dropped \"dili\" provable from the card's own English; corpus was only consulted for the bulok half (per the brief, the rotten sense is attested, so that part of the note is discarded)."
+  },
+  {
+   "id": "ffct-22992",
+   "verdict": "SURVIVES",
+   "note": "Same unsourced token as ffct-18927 and independent of the bukal refutation: title \"100 Pirmi Kulob\" uses *kulob* for boiling, a word absent from every Cebuano body and applied in other titles to \"wrinkle\" as well, so it is a confused token rather than a boiling word.",
+   "corpus_evidence": "ceb_usage.py --bis kulob: \"0 Cebuano BODIES, 29 Cebuano titles -- NOT ATTESTED IN ANY CEBUANO BODY\"; of those 29 titles, 27 are boiling cards but ffct-02691 \"Why Fingers Wrinkle in Water\" -> \"Kulob nga Tudlo sa Tubig\" and ffct-05180 \"Wrinkles for Wet Grip\" -> \"Kulob nga Kaptan\". Bodies use mobukal (--en boils: mobukal 69)."
+  },
+  {
+   "id": "ffct-25013",
+   "verdict": "SURVIVES",
+   "note": "This is the half of the dayami entry that stands: the card's object is a DRINKING straw (\"sucking... pushes the liquid right up into your mouth\"), but the body calls it *dayami* = rice straw/hay, so the pressure mechanism is attached to a stalk of hay and the bad pair is baked into terms as \"straw, dayami\".",
+   "corpus_evidence": "ceb_usage.py --bis dayami: 6 bodies -- 4 are agricultural (ffct-13550 EN \"rice straw (dayami)\", ffct-20435 \"pagsunog sa uga nga dayami sa mga uma sa Nueva Ecija\" = burning dried rice straw in fields, ffct-32953 adobe \"pinauga nga lapok ug dayami\"), and the only two drinking-straw uses are this card and ffct-25319."
+  },
+  {
+   "id": "ffct-25211",
+   "verdict": "SURVIVES",
+   "note": "Because dayami really is rice STRAW, the title \"Dayami sa Kuryente\" names the wrong agricultural material for a card whose English is explicitly about rice HULLS (\"the outer shell removed from grain during milling\"), which the card's own body correctly calls ipa.",
+   "corpus_evidence": "ceb_usage.py --en \"rice hull\": ffct-11132 \"Rice hull, or ipa, removed during milling\" -> \"Ang ipa nga gikuha panahon sa pag-giling sa humay\"; ffct-21327 uses \"balot sa humay\". --bis dayami: ffct-13550 EN gloss \"rice straw (dayami)\" -- straw and hull are separate materials in the corpus."
+  },
+  {
+   "id": "ffct-25319",
+   "verdict": "SURVIVES",
+   "note": "Again the surviving drinking-straw half: the refraction demonstration needs a drinking straw in a glass of water, but title and body both say *dayami* = rice straw, so the child is told to put hay in the glass and nothing on the card corrects it.",
+   "corpus_evidence": "ceb_usage.py --bis dayami: 6 bodies; every non-defective use is agricultural (ffct-13550 \"rice straw (dayami)... animal feed, garden mulch\", ffct-22069 \"biomass sama sa kahoy ug dayami\" = \"wood and rice straw\"), with only ffct-25013 and this card using it for a drinking straw."
+  },
+  {
+   "id": "ffct-25363",
+   "verdict": "REFUTED",
+   "note": "The flag was purely the bad bakal entry -- bakal is the corpus's ordinary word for iron/steel, so \"Sa bakal ang tunog mobalhin og mga 5,100 m/s\" correctly attaches the figure to the material, and the title's landok is simply the other legitimate word for steel.",
+   "corpus_evidence": "ceb_usage.py --bis bakal: 42 Cebuano bodies, all iron/steel -- ffct-13567 \"Mas gahi ba sa bakal ang sinulid sa gagamba?\" for EN \"Is spider silk stronger than steel?\", ffct-17957 \"Ang bakal usa sa labing daghang metal sa panit sa Yuta\" for \"Iron is one of the most plentiful metals in Earth's crust\"."
+  },
+  {
+   "id": "ffct-25454",
+   "verdict": "REFUTED",
+   "note": "The flag rested entirely on the bad lana entry -- the corpus itself glosses lana as wool, so \"Lana Hangin Insulator\" and \"ang lana ug nakulong nga hangin\" read as wool-and-trapped-air exactly as the English intends, and the only residue is Tagalog-flavoured wording (kaya, damit), which is out of scope.",
+   "corpus_evidence": "ceb_usage.py --en wool: 28 cards, characteristic words \"wool 25, karnero 16, lana 9\" -- ffct-04698 \"Ang karnero adunay baga nga balhibo nga gitawag og lana o wool\" for EN \"a thick coat of hair all over its body called wool\"."
+  },
+  {
+   "id": "ffct-25502",
+   "verdict": "REFUTED",
+   "note": "The flag misquotes the card: title_bis is \"Timbangan sa Tinggol\", not \"Timbangan sa Bukal\" — bukal appears only in the lexical `terms` retrieval keys (which also carry Tagalog like bigat/hila), never in the title or body, so the whole flag rests on the refuted word.",
+   "corpus_evidence": "ceb_usage.py --bis bukal: \"7 Cebuano BODIES, 15 Cebuano titles\", incl. ffct-20687 \"init nga bukal sa Pansol, Laguna\" (hot springs) and ffct-16709 \"Bukalan ang mixture\" (boil) — both senses attested; --bis tinggol: \"1 Cebuano BODIES\" (this card itself, so unsourced elsewhere but not disproved; muelye 1 body, resorte 0)."
+  },
+  {
+   "id": "ffct-25426",
+   "verdict": "REFUTED",
+   "note": "\"Ang mga metal sama sa bakal\" correctly renders \"metals like iron\"; nothing else in the card is broken — the terse headline title is style, not a defect.",
+   "corpus_evidence": "ceb_usage.py --bis bakal: \"42 Cebuano BODIES, 39 Cebuano titles\", e.g. ffct-17957 \"Ang bakal usa sa labing daghang metal sa panit sa Yuta\" = \"Iron is one of the most plentiful metals in Earth's crust\"."
+  },
+  {
+   "id": "ffct-27410",
+   "verdict": "REFUTED",
+   "note": "bakal for steel is fine, and the body independently keeps \"steel\" plus the correct \"napulo-limang beses\" for fifteen times; the title's headline compression is out of scope.",
+   "corpus_evidence": "ceb_usage.py --bis bakal: ffct-13567 \"Mas gahi ba sa bakal ang sinulid sa gagamba?\" = \"Is spider silk stronger than steel?\" — steel sense attested; zero bodies use bakal for buying."
+  },
+  {
+   "id": "ffct-27440",
+   "verdict": "REFUTED",
+   "note": "bakal is the corpus's ordinary word for iron, so \"Magnet Nickel Cobalt Bakal\" names the right metal and the body's content (nickel/cobalt also attracted) is intact.",
+   "corpus_evidence": "ceb_usage.py --bis bakal: ffct-17936 \"Gidani sa magnet ang bakal, pero gibilin niini ang buhangin\" = \"The magnet pulls the iron pieces, but it leaves the sand behind\" — magnet+iron context, identical to this card."
+  },
+  {
+   "id": "ffct-27941",
+   "verdict": "REFUTED",
+   "note": "Both halves of the flag fail: bakal = iron is refuted, and the separable \"pako = WING\" claim is contradicted by the corpus, which itself renders iron nails as \"pako nga puthaw\" in clean Cebuano bodies, so \"bakal nga pako\" reads as \"iron nail\".",
+   "corpus_evidence": "16 Cebuano bodies pair pako with English \"nail\", e.g. ffct-24900 \"Nganong sayon mosulod ang matalas nga pako sa kahoy o dingding?\" = \"Why does a sharp nail easily pierce wood or a wall?\" and ffct-27405 \"gidadani sa magnet ang pako nga puthaw\"; ceb_usage.py --en \"iron nail\" frequency table shows lansang 14 / pako 13 across those cards."
+  },
+  {
+   "id": "ffct-31049",
+   "verdict": "REFUTED",
+   "note": "nabulok is the corpus's own word for decomposed/rotting organic matter, so \"gikan sa nabulok nga mga tanom ug hayop\" carries the decay idea correctly.",
+   "corpus_evidence": "5 Cebuano bodies use nabulok, all for rot/decay: ffct-08817 \"humus ... hinimo sa nabulok nga dahon, hayop\" = \"made from decomposed leaves, animals\"; ffct-21225 \"nabulok nga papaya sa compost pit\" = \"rotting papaya\"."
+  },
+  {
+   "id": "ffct-31038",
+   "verdict": "REFUTED",
+   "note": "gibulok is attested in Cebuano bodies as the verb for decomposers breaking dead matter down, so the card's decomposition mechanism is stated correctly.",
+   "corpus_evidence": "3 Cebuano bodies use gibulok, all decomposition: ffct-06213 \"gibulok sa fungi ang nangahulog nga mga dahon ug troso\" = \"fungi rot fallen leaves and logs\"; ffct-10633 \"tagabulok kay ilang gibulok ang patay nga mga butang\" = \"decomposers because they break down dead things\"."
+  },
+  {
+   "id": "ffct-31281",
+   "verdict": "REFUTED",
+   "note": "\"bulok nga itlog\" is exactly the corpus's own rendering of rotten egg, so the sulfur smell cue survives intact.",
+   "corpus_evidence": "ceb_usage.py --en \"rotten egg\" and --bis bulok: ffct-05209 \"Unsay hinungdan sa baho sa bulok nga itlog?\" = \"What makes that rotten-egg smell?\"; also ffct-01035 \"Bulok ba ang durian\" = \"Is durian rotten\" and ffct-09287 \"bulok nga pagkaon\" = \"rotting food\" (the colour sense uses bare bulok only in rainbow cards)."
+  },
+  {
+   "id": "ffct-31489",
+   "verdict": "SURVIVES",
+   "note": "bukal for a water spring is fine, but a separate defect remains in the same title: \"Clear\" in the card's own English title \"Clear Spring Water\" is rendered \"Hinaw\", a hand-washing word that appears in ZERO Cebuano bodies, where the corpus word for clear water is tin-aw (the card's own body avoids it too, saying \"limpyo ang tubig\").",
+   "corpus_evidence": "ceb_usage.py --bis hinaw: \"0 Cebuano BODIES, 3 Cebuano titles — NOT ATTESTED IN ANY CEBUANO BODY. Treat as unsourced.\" (all 3 are title-only, so they cannot vouch for themselves); --bis tin-aw: \"193 Cebuano BODIES\", and --en \"clear water\" ranks tin-aw 14 across 16 cards, e.g. ffct-00050 \"mainit, mabaw, ug tin-aw nga tubig\" = \"warm, shallow, and clear water\"; --bis bukal confirms ffct-35187 \"aquifers sa mga bukal\" and ffct-25532 \"mainit nga bukal\" for springs."
+  },
+  {
+   "id": "ffct-31583",
+   "verdict": "REFUTED",
+   "note": "Same refuted entry as ffct-31281 — \"baho og bulok nga itlog\" is the corpus's normal phrasing for the rotten-egg smell of sulfur gas.",
+   "corpus_evidence": "ceb_usage.py --en \"rotten egg\": corpus siblings use the same idiom (ffct-05209 \"bulok nga itlog\", ffct-32904 \"amoy nabulok nga itlog\", ffct-29962 \"daot nga itlog\") — bulok/nabulok for rotten is the majority rendering."
+  },
+  {
+   "id": "ffct-31743",
+   "verdict": "REFUTED",
+   "note": "bakal for metal/iron is correct Cebuano, and the body reinforces it with puthaw throughout (\"marka sa puthaw\"), so the metal-marking subject is present in both title and body.",
+   "corpus_evidence": "ceb_usage.py --bis bakal: \"42 Cebuano BODIES\" all iron/steel, e.g. ffct-17988 \"nagpadali sa pagkalawang sa bakal\" = \"speed up the rusting of iron\"; zero bodies use bakal to mean buying."
+  },
+  {
+   "id": "ffct-31944",
+   "verdict": "REFUTED",
+   "note": "bakal is the corpus's ordinary word for iron/steel, so the title \"Bakal Core Magnetic Poles\" names iron exactly as the English \"Molten Iron Poles\" does, and nothing else in the card is broken (the body's \"natunaw nga puthaw\" is simply the native synonym, not a correction).",
+   "corpus_evidence": "ceb_usage.py --bis bakal: 42 Cebuano BODIES, e.g. ffct-17957 'Ang bakal usa sa labing daghang metal sa panit sa Yuta!' = 'Iron is one of the most plentiful metals in Earth's crust'; ffct-17936 'ibulag ang bakal sa buhangin' = 'separate iron from sand'. No body uses bakal for 'to buy'."
+  },
+  {
+   "id": "ffct-32019",
+   "verdict": "REFUTED",
+   "note": "The rot sense of bulok is attested Cebuano, so \"Plastik nga Dili Mabulok\" does deliver \"plastic does not rot\"; the body's madunot is a synonym, not evidence against the title.",
+   "corpus_evidence": "ceb_usage.py --bis bulok: 14 Cebuano BODIES, e.g. ffct-05209 'baho sa bulok nga itlog' = 'that rotten-egg smell'; ffct-09287 'bulok nga pagkaon' = 'rotting food'; ffct-01035 'Bulok ba ang durian' = 'Is durian rotten'. The colour sense takes the suffixed bulokon ('bulokon nga palong' = colorful comb)."
+  },
+  {
+   "id": "ffct-32504",
+   "verdict": "REFUTED",
+   "note": "bulok for spoil is genuine Cebuano so the title is fine; the body's \"pagkain\" is a minor Tagalog-form spelling that is itself attested in the corpus and is out-of-scope variation, not a separate provable defect.",
+   "corpus_evidence": "ceb_usage.py --bis bulok: ffct-09287 'basurahan ug bulok nga pagkaon' = 'garbage and rotting food'. ceb_usage.py --bis pagkain: 15 Cebuano BODIES (e.g. ffct-13253 'adunay daghang pagkain' = 'there's plenty of food') alongside 2316 bodies for pagkaon."
+  },
+  {
+   "id": "ffct-32753",
+   "verdict": "SURVIVES",
+   "note": "Independent of the refuted bulok claim, the same sentence renders the English \"hard parts like bones and shells\" as \"matagas nga bahin\", using Tagalog matagas instead of Cebuano gahi, so the contrast the card's answer depends on (hard preserves, soft decays) is not stated in Cebuano.",
+   "corpus_evidence": "ceb_usage.py --bis matagas: only 2 Cebuano BODIES and one of them is this very card (ffct-32753); ceb_usage.py --bis gahi: 626 Cebuano BODIES, e.g. ffct-00004 'gahi ug morag tigib' = 'hard and shaped like a chisel', ffct-00039 'gahi nga bagol sa lubi' = 'hard coconut shell'. Meanwhile bulok is fine: ffct-05209 'bulok nga itlog' = 'rotten egg'."
+  },
+  {
+   "id": "ffct-32897",
+   "verdict": "SURVIVES",
+   "note": "The defect never rested on bukal's spring/bounce senses: the card's own English says \"The isobutane boils easily\" but the Cebuano says \"Sayon mosinaw ang isobutane\", and sinaw means shiny, so the boiling mechanism that makes a binary cycle work is absent from the Cebuano.",
+   "corpus_evidence": "ceb_usage.py --bis sinaw: 58 Cebuano BODIES, all 'shiny' — ffct-15104 'usa ka sinaw nga metal' = 'a shiny metal', ffct-00295 'sinaw nga agi sa uhog' = 'a shiny trail of slime'. ceb_usage.py --en boils: mobukal 69 / magbukal 23 / mubukal 12 / nagbukal 11, e.g. ffct-15713 'Mobukal ang tubig sa 100 ka degrees Celsius'."
+  },
+  {
+   "id": "ffct-34600",
+   "verdict": "REFUTED",
+   "note": "bakal is a naturalised Cebuano loan for iron, so \"kasagaran bakal ug nickel\" states \"mostly iron and nickel\" correctly and the card has no other defect.",
+   "corpus_evidence": "ceb_usage.py --bis bakal: 42 Cebuano BODIES meaning iron/steel, e.g. ffct-18005 'Ang kalawang ba hugaw lang nga bakal?' = 'Is rust just dirty iron?'; ffct-13567 'Mas gahi ba sa bakal ang sinulid sa gagamba?' = 'Is spider silk stronger than steel?'"
+  },
+  {
+   "id": "ffct-35411",
+   "verdict": "REFUTED",
+   "note": "bulok carries the decay/rot sense in Cebuano, so \"mabulok ang katunga sa radioactive isotope\" delivers the half-life definition; the rest of the card (rate constant, natural clock) tracks the English.",
+   "corpus_evidence": "ceb_usage.py --bis bulok: 14 Cebuano BODIES with the rot sense — ffct-08955 'Mangitlog ang langaw sa bulok nga butang' = 'A housefly lays eggs on rotting matter'; the colour sense appears only as bulokon (ffct-28948 'bulokon nga aurora')."
+  },
+  {
+   "id": "ffct-36859",
+   "verdict": "REFUTED",
+   "note": "The corpus itself uses lana for fossil oil next to coal, so \"Ang uling ug lana\" renders \"Coal and oil\" the way the card set normally does; the presence of langis in the terms list is just a synonym.",
+   "corpus_evidence": "ceb_usage.py --en 'coal and oil': lana is the single most characteristic Cebuano word (9 occurrences across 12 cards) — ffct-31034 'fossil fuels sama sa uling ug lana', ffct-26830 'mga tinubdan sama sa karbon ug lana', ffct-15789 'pagsunog sa karbon ug lana nga adunay sulfur', dcard-07132 'fossil fuels sama sa coal ug lana'."
+  },
+  {
+   "id": "dcard-07327",
+   "verdict": "SURVIVES",
+   "note": "The surviving defect is the one part of the bukal entry that was not refuted: the card's own English says opaque materials \"reflect some of it\", but the Cebuano \"gipabukal ang uban\" says the material made some of the light boil, and the title \"Babag ug Bukal\" repeats it, so reflection — the reason you see colour and shape — is never taught.",
+   "corpus_evidence": "ceb_usage.py --bis bukal: 7 Cebuano BODIES, every one boiling or a hot spring (ffct-16709 'Bukalan ang mixture hangtod mosingaw ang tubig', ffct-21731 'init nga bukal sa Laguna'), none about light. ceb_usage.py --en reflect (245 cards) gives nag-reflect 34, mobalik 26, salamin 48, and ffct-22648 'ang kahayag motama sa usa ka ibabaw ug motalbog pabalik' = 'light hits a surface and bounces right back'."
+  }
+ ]
+}

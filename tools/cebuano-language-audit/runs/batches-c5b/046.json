@@ -1,0 +1,387 @@
+[
+ {
+  "id": "ffct-31425",
+  "title_en": "Tsunami Warnings",
+  "title_bis": "Babag sa Tsunami",
+  "fact_en": "How do we know a tsunami is coming before it hits?\n\nMachines and sensors in the ocean detect quakes or water changes, sending warnings so people can leave early!",
+  "fact_bis": "Unsaon nato pagsayod nga moabot ang tsunami sa dili pa moabot?\n\nAdunay mga makina ug sensor sa dagat nga makabati sa linog o kausaban, mopadala og pasidaan aron makabiya dayon ang mga tawo!",
+  "terms": [
+   "tsunami",
+   "warning system",
+   "babala",
+   "sensor",
+   "buoy",
+   "phivolcs",
+   "alarm",
+   "sirena",
+   "paano malalaman",
+   "unsa",
+   "detect",
+   "nakikita",
+   "ligtas",
+   "evacuate",
+   "babala sa dagat"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "warnings->babag",
+    "note": "title_bis \"Babag sa Tsunami\" = \"tsunami barrier/blockade\" for title_en \"Tsunami Warnings\". The card is entirely about detection and alerting (sensors, \"mopadala og pasidaan aron makabiya dayon ang mga tawo\"), never about physical barriers — a sea wall is a genuinely different thing from a warning system. The body uses the correct word (pasidaan), and the same batch uses babag correctly for a real barrier in ffct-31482 (\"Babag sa Bukid\" = Mountain Barriers), confirming this title is the outlier."
+   }
+  ]
+ },
+ {
+  "id": "ffct-31458",
+  "title_en": "How Lakes Form",
+  "title_bis": "Pagbuto sa Lanaw",
+  "fact_en": "A lake forms when a hollow in the ground—left by ice, a volcano, or shifting land—fills up with rain, streams, or groundwater!",
+  "fact_bis": "Maporma ang lanaw kung mapuno og tubig-ulan, sapa, o groundwater ang usa ka lungag sa yuta nga gibilin sa yelo, bulkan, o paglihok sa yuta!",
+  "terms": [
+   "lawa",
+   "nabubuo",
+   "lubak",
+   "yelo",
+   "bulkan",
+   "natipon",
+   "tubig-ulan",
+   "lake",
+   "form",
+   "hollow",
+   "basin",
+   "lanaw",
+   "naporma",
+   "lungag",
+   "natipon nga tubig",
+   "paano nabuo ang lawa",
+   "unsaon pagkaporma sa lanaw"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "forms->pagbuto",
+    "note": "title_bis \"Pagbuto sa Lanaw\" = \"the exploding/bursting of the lake\" for title_en \"How Lakes Form\". In Cebuano mobuto/pagbuto is to explode; there is no reading that means \"to form\". The card's mechanism is the opposite of explosive — a hollow left by ice, a volcano or shifting land quietly filling with rain, streams or groundwater — and the body uses the correct word (\"Maporma ang lanaw kung mapuno og tubig...\"), so the title names an event the card never describes."
+   }
+  ]
+ },
+ {
+  "id": "ffct-31669",
+  "title_en": "Water Vapor Greenhouse",
+  "title_bis": "Water Vapor Daghan Gas",
+  "fact_en": "Is carbon dioxide the only greenhouse gas?\n\nNope! Water vapor is the most abundant greenhouse gas in the atmosphere. It makes humid nights feel warmer, but humans don't directly control how much of it is up there.",
+  "fact_bis": "Carbon dioxide ra ba ang greenhouse gas?\n\nDili! Ang water vapor ang labing daghang greenhouse gas sa atmosphere. Mao nga mas init ang gabii kon humok ang hangin, pero dili direktang makontrol sa tawo ang gidaghanon niini.",
+  "terms": [
+   "water vapor",
+   "singaw",
+   "tubig",
+   "greenhouse gas",
+   "pinakamarami",
+   "alisngaw",
+   "humidity",
+   "halumigmig",
+   "init",
+   "carbon dioxide",
+   "labing daghan",
+   "basa",
+   "araw"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "humid->humok",
+    "note": "bis: \"mas init ang gabii kon humok ang hangin\" for EN \"It makes humid nights feel warmer\". humok = SOFT in Cebuano (606 uses elsewhere in this corpus are all 'soft', incl. ffct-31604 'humok nga klase' of coal); humid is halumigmig/umog — the corpus uses 'umog' correctly in ffct-31549/31553. The card never corrects it, so the water-vapour/humidity link becomes the nonsense claim that nights are warmer when the air is soft."
+   }
+  ]
+ },
+ {
+  "id": "ffct-31747",
+  "title_en": "Two Star Moves",
+  "title_bis": "Duha ka Lihok",
+  "fact_en": "Two moves! Each night, stars slide east to west because Earth spins. But swapping whole constellations month to month? That's Earth orbiting the Sun all year!",
+  "fact_bis": "Duha ka lihok! Matag gabii, moagi ang mga bituon gikan sa sidlakan paingon sa kasadpan tungod kay molibot ang Earth. Apan ang pag-ilis sa tibuok konstelasyon matag bulan? Tungod kini sa paglibot sa Earth sa Adlaw sulod sa usa ka tuig!",
+  "terms": [
+   "gabi-gabi",
+   "kada gabii",
+   "every night",
+   "umiikot",
+   "rotation",
+   "spin",
+   "earth",
+   "orbit",
+   "taon",
+   "tuig",
+   "year",
+   "konstelasyon",
+   "constellation",
+   "magkaiba",
+   "kalainan",
+   "dahan-dahan",
+   "silangan",
+   "kanluran"
+  ],
+  "emphasis_bis": [
+   "Duha ka lihok"
+  ],
+  "findings": [
+   {
+    "pattern": "spins->molibot",
+    "note": "The card's entire point is TWO distinct motions, but the Cebuano uses libot (orbit/go around) for both. EN: stars slide east-west nightly \"because Earth spins\" -> BIS \"tungod kay molibot ang Earth\"; then the monthly swap -> \"paglibot sa Earth sa Adlaw\". Corpus convention confirms the split (ffct-31707 \"nagtuyok ang Kalibutan\" = spins; ffct-31746/31762 \"molibot ang Earth sa Adlaw\" = orbits), and ffct-31778 rescues the same slip with \"pagtuyok\" — this card never does. A Cebuano-only reader concludes Earth's orbit causes the nightly east-to-west motion (false) and cannot name the two moves the title \"Duha ka Lihok\" promises. Fix: \"tungod kay motuyok ang Earth\"."
+   }
+  ]
+ },
+ {
+  "id": "ffct-31786",
+  "title_en": "What Is Composting",
+  "title_bis": "Composting Balat Prutas Pataba",
+  "fact_en": "What is composting?\n\nComposting is letting food scraps like fruit peels rot in the soil so they become natural fertilizer for plants.",
+  "fact_bis": "Unsa ang composting?\n\nAng composting mao ang pagpadunot sa mga basura sama sa panit sa prutas sa yuta aron mahimo kining natural nga abono para sa mga tanom.",
+  "terms": [
+   "compost",
+   "composting",
+   "kompos",
+   "abono",
+   "patabang yutang",
+   "nabubulok",
+   "madunot nga basura",
+   "food waste",
+   "tira sa pagkain",
+   "bunga",
+   "dahon",
+   "balat sa prutas",
+   "lupa",
+   "yuta",
+   "halaman",
+   "natural na pataba"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "peel->balat",
+    "note": "title_bis \"Composting Balat Prutas Pataba\" uses balat for fruit peel. In Cebuano balat = SEA CUCUMBER (the marine animal); peel/skin is panit, which the card's own body uses correctly (\"panit sa prutas\"). Title reads as sea-cucumber-fruit compost. (pataba for fertilizer is also Tagalog vs the body's abono, but that one is recoverable; balat is the naming error.)"
+   }
+  ]
+ },
+ {
+  "id": "ffct-31993",
+  "title_en": "Weathering versus Erosion",
+  "title_bis": "Weathering batok sa Erosyon",
+  "fact_en": "Are weathering and erosion the same thing?\n\nNope! Weathering breaks rock right where it sits. Erosion is when water, wind, or ice carries those broken pieces far away!",
+  "fact_bis": "Lahi ba ang weathering ug erosion?\n\nDili! Ang weathering moguba sa bato sa nahimutangan niini. Ang erosion pagdala sa tubig, hangin, o yelo sa naguba nga mga tipik palayo!",
+  "terms": [
+   "weathering",
+   "erosion",
+   "pagkakaiba",
+   "kaibahan",
+   "difference",
+   "bato",
+   "nadadala",
+   "carried away",
+   "tubig",
+   "hangin",
+   "erosion vs weathering",
+   "natatangay",
+   "nababasag",
+   "unsa kalainan",
+   "sediment"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "answer-polarity-flipped",
+    "note": "RELATIONSHIP REVERSED in the Q/A. EN: \"Are weathering and erosion the same thing? | Nope!\". BIS flips the question but keeps the answer: \"Lahi ba ang weathering ug erosion? | Dili!\" = \"Are weathering and erosion DIFFERENT? | No!\" — i.e. the card explicitly tells the child the two ARE the same, which is precisely the misconception the card exists to correct. Every other Dili!-card in this batch (ffct-31987, -32009, -32026, -32055, -32078, -32106) keeps the polarity intact, so this one is the outlier, not a house style."
+   }
+  ]
+ },
+ {
+  "id": "ffct-32048",
+  "title_en": "Leap Year, February 29",
+  "title_bis": "Leap Year, Pebrero 29",
+  "fact_en": "Earth's trip around the Sun takes about 365 and a quarter days! So, every fourth year, we add one extra day, February 29, to make a leap year.",
+  "fact_bis": "Ang libot sa Earth sa Adlaw mokabat og mga 365 ug tunga ka adlaw! Mao nga matag ikaupat ka tuig, modugang ta og usa ka adlaw, Pebrero 29, para sa leap year.",
+  "terms": [
+   "leap year",
+   "taong lukso",
+   "tuig nga lukso",
+   "366 araw",
+   "366 ka adlaw",
+   "pebrero 29",
+   "february 29",
+   "pebrero",
+   "dagdag na araw",
+   "dugang nga adlaw",
+   "365 at kalahati",
+   "365 ug tunga",
+   "revolution",
+   "umiikot sa araw",
+   "molibot sa adlaw",
+   "kada apat na taon"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "quarter->tunga",
+    "note": "NUMBER CHANGED. EN: \"365 and a quarter days\"; BIS: \"mokabat og mga 365 ug tunga ka adlaw\" = 365 and a HALF days. 'tunga' is half, not a quarter. This also breaks the card's own logic: a half-day surplus would need an extra day every 2 years, not the \"matag ikaupat ka tuig\" the very next sentence states. A child reading only the Cebuano learns a wrong orbital period and a leap-year rule that does not follow from it. Nothing in the card restores the quarter."
+   }
+  ]
+ },
+ {
+  "id": "ffct-32078",
+  "title_en": "Microplastics Never Rot",
+  "title_bis": "Dili Mabulok nga Plastik",
+  "fact_en": "Do microplastics rot or dissolve in water like dirt?\n\nNope! Plastic is not alive and does not dissolve. It stays as tiny plastic pieces for a very long time.",
+  "fact_bis": "Madunot ba o matunaw ang microplastics sa tubig sama sa hugaw?\n\nDili! Ang plastik dili buhi ug dili matunaw. Magpabilin kining gagmay nga tipik sa dugay kaayo nga panahon.",
+  "terms": [
+   "microplastics",
+   "mikroplastik",
+   "buhay",
+   "buhi",
+   "alive",
+   "nabubulok",
+   "madunot",
+   "dissolve",
+   "natutunaw",
+   "matunaw",
+   "mali",
+   "sayop",
+   "misconception",
+   "akala",
+   "hindi",
+   "dili",
+   "nawawala",
+   "totoo",
+   "correction"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "rot->mabulok",
+    "note": "TAGALOG FALSE FRIEND IN TITLE, same defect as ffct-32019. title_en \"Microplastics Never Rot\" -> title_bis \"Dili Mabulok nga Plastik\". Body uses the correct Cebuano verb in both question and answer (\"Madunot ba o matunaw ang microplastics...? | Dili!\"), so the title is the outlier. Fix: \"Dili Madunot nga Plastik\"."
+   }
+  ]
+ },
+ {
+  "id": "ffct-32157",
+  "title_en": "Muddy Hiding Spots",
+  "title_bis": "Lapok nga Tagoanan",
+  "fact_en": "Mangrove water is muddy and shady! Big fish can't see tiny fish in this murky water. The mud and shadows give extra hiding spots besides the roots!",
+  "fact_bis": "Mabugnaw ug malandong ang tubig sa bakawan! Dili makita sa dagkong isda ang gagmay nga isda sa mabugnaw nga tubig. Ang lapok ug landong dugang nga taguan gawas sa mga gamot!",
+  "terms": [
+   "putik",
+   "mud",
+   "lapok",
+   "muddy",
+   "malabo na tubig",
+   "cloudy water",
+   "anino",
+   "shade",
+   "lilim",
+   "bakawan",
+   "taguan",
+   "camouflage",
+   "paano nagtatago",
+   "bakit malabo",
+   "ilalim",
+   "isda"
+  ],
+  "emphasis_bis": [
+   "Mabugnaw ug malandong"
+  ],
+  "findings": [
+   {
+    "pattern": "murky->mabugnaw",
+    "note": "Body changes the hiding mechanism from muddy/murky water to COLD water and never corrects it. EN: \"Mangrove water is muddy and shady! Big fish can't see tiny fish in this murky water.\" BIS: \"Mabugnaw ug malandong ang tubig sa bakawan! Dili makita sa dagkong isda ang gagmay nga isda sa mabugnaw nga tubig.\" mabugnaw = cold; the needed word is malubog (murky) / lapok. The wrong word appears twice and is the highlighted phrase (emph_bis = 'Mabugnaw ug malandong'), so a child learns (a) mangrove water is cold - contradicting ffct-32162 in the same batch, \"motubo lang sa init ug parat nga baybayon\" - and (b) that coldness is why predators cannot see the fry. title_bis 'Lapok nga Tagoanan' is correct, which is what identifies the body as the outlier; the closing line mentions lapok only as an *extra* hiding spot, so the murky-water fact itself is never delivered."
+   }
+  ]
+ },
+ {
+  "id": "ffct-32221",
+  "title_en": "Earth's Time Zones",
+  "title_bis": "Sona sa Oras",
+  "fact_en": "Why do different countries have different times?\n\nBecause Earth rotates! When it's noon in the Philippines, it's night in America, and a totally different time of day in other countries.",
+  "fact_bis": "Ngano lahi-lai ang oras sa lain-laing nasod?\n\nKay molibot ang Earth! Kung udto sa Pilipinas, gabii na sa Amerika, ug lahi ang oras sa ubang nasod.",
+  "terms": [
+   "time zone",
+   "sona ng oras",
+   "sona sa oras",
+   "iba't ibang oras",
+   "lain-laing oras",
+   "different time",
+   "umaga sa isa gabi sa iba",
+   "buntag sa usa gabii sa lain",
+   "umiikot ang earth",
+   "molibot ang earth",
+   "rotation",
+   "kabilang bansa",
+   "lain-laing nasod",
+   "mas maaga o mas huli"
+  ],
+  "emphasis_bis": [
+   "molibot"
+  ],
+  "findings": [
+   {
+    "pattern": "rotates->molibot",
+    "note": "Time zones are attributed to Earth's REVOLUTION instead of its rotation. EN: \"Because Earth rotates!\" BIS: \"Kay molibot ang Earth!\" - molibot = to go around / orbit; rotation is motuyok / magtuyok. The same batch fixes both meanings: ffct-32220 uses molibot for orbiting the Sun (\"ang Earth maoy molibot sa Adlaw\") and ffct-32126 uses tuyok for spinning (\"nagatuyok nga poste\"), so in this corpus molibot unambiguously reads as orbit. emph_bis highlights 'molibot', and nothing else in the card mentions spinning, so a child ends up with the classic rotation/revolution misconception - that different countries have different clock times because Earth travels around the Sun."
+   }
+  ]
+ },
+ {
+  "id": "ffct-32290",
+  "title_en": "Warm Seas as Fuel",
+  "title_bis": "Mainit nga Dagat nga Sobra",
+  "fact_en": "The eyewall lives on warm ocean water's heat and moisture, acting like fuel! When hitting land or cool water, it loses this fuel, so the eyewall weakens and slowly falls apart.",
+  "fact_bis": "Mabuhi ang eyewall sa init ug alisngaw sa init nga dagat, nga sama sa gasolina niini! Kung mohasmag ang bagyo sa yuta o bugnaw nga tubig, mawad-an kini sa gasolina, mao nga mohuyang ug maguba.",
+  "terms": [
+   "mainit na dagat",
+   "init nga dagat",
+   "warm ocean",
+   "bakit humihina sa lupa",
+   "ngano mohuyang sa yuta",
+   "weakens over land",
+   "fuel",
+   "gasolina ng bagyo",
+   "sumideltay",
+   "cool water",
+   "eyewall humina",
+   "why land weakens"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "fuel->sobra",
+    "note": "title_bis \"Mainit nga Dagat nga Sobra\" = \"warm sea that is excess/extra\"; English title is \"Warm Seas as Fuel\" and sobra is not fuel (sugnod/gasolina). Lower confidence than the others because the body does restore the idea (\"sama sa gasolina niini ... mawad-an kini sa gasolina\") — flagged only because the defect is in the title, where the concept the heading is built on is replaced by a different word."
+   }
+  ]
+ },
+ {
+  "id": "ffct-32396",
+  "title_en": "Cumulus Clouds",
+  "title_bis": "Panganod nga Cumulus",
+  "fact_en": "Cumulus clouds are puffy and white just like cotton! They are commonly seen during fair weather and usually do not produce rain.",
+  "fact_bis": "Ang cumulus mabulo ug puti nga parehas sa bulak! Sagad kini makita sa maayong panahon ug dili kasagaran naghatag og ulan.",
+  "terms": [
+   "cumulus",
+   "puffy",
+   "mabulo",
+   "fair weather",
+   "magandang panahon",
+   "cotton",
+   "bulak",
+   "ulap",
+   "cloud",
+   "kalangitan",
+   "puti",
+   "tagsikat",
+   "bulak-ulap",
+   "panganod"
+  ],
+  "emphasis_bis": [
+   "cumulus"
+  ],
+  "findings": [
+   {
+    "pattern": "cotton->bulak",
+    "note": "Tagalog false friend: \"puti nga parehas sa BULAK\" — Tagalog bulak = cotton, but Cebuano bulak = FLOWER (cotton in Cebuano is gapas). English is \"puffy and white just like cotton\". Nothing else in the card mentions cotton, so the image a Cebuano child gets is a flower, not cotton. (terms[] even carries the pair \"cotton\"/\"bulak\", so the swap is baked in.)"
+   }
+  ]
+ }
+]

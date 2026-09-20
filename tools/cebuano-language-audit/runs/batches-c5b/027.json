@@ -1,0 +1,327 @@
+[
+ {
+  "id": "ffct-18168",
+  "title_en": "Fire Safety",
+  "title_bis": "Kaluwasan sa Kalayo",
+  "fact_en": "What should you do if your clothes catch fire?\n\nStop, drop, and roll! This smothers the flames and cuts off the oxygen keeping the fire burning.",
+  "fact_bis": "Unsay buhaton nimo kung masunog ang imong sinina?\n\nHunong, luhod, ug ligid! Matabonan niini ang kalayo ug maputol ang oksiheno nga nagpadayon sa pagdilaab niini.",
+  "terms": [
+   "tumigil lumuhod gumulong",
+   "sunog",
+   "apoy",
+   "kaligtasan sa sunog",
+   "oksiheno",
+   "kalayo",
+   "pagpalong",
+   "stop drop roll",
+   "fire safety",
+   "flame",
+   "oxygen",
+   "smother"
+  ],
+  "emphasis_bis": [
+   "Hunong, luhod, ug ligid"
+  ],
+  "findings": [
+   {
+    "pattern": "drop->luhod",
+    "note": "The emphasised answer phrase \"Hunong, luhod, ug ligid\" renders \"Stop, drop, and roll\" as \"Stop, KNEEL, and roll\". LUHOD = kneel in Cebuano; the fire-safety action is to get flat on the ground (hapa/higda), and kneeling is precisely the wrong posture for smothering burning clothes. Nothing else on the card restores \"get down on the ground\". Note the Tagalog terms field carries the same error (\"tumigil lumuhod gumulong\"), so the defect is likely upstream and corpus-wide."
+   }
+  ]
+ },
+ {
+  "id": "ffct-18186",
+  "title_en": "Cast Iron Carbon Brittle",
+  "title_bis": "Cast Iron Carbon Kalambo",
+  "fact_en": "Cast iron has more carbon (2-4%) than steel, making it brittle but great at keeping heat! That's why cast iron pans are loved for cooking food evenly.",
+  "fact_bis": "Ang cast iron adunay mas daghang carbon (2-4%) kaysa steel, hinungdan nga kini marupok pero maayo kaayo magtago sa init! Mao nga paborito ang cast iron pans sa pantay nga pagluto.",
+  "terms": [
+   "cast iron",
+   "steel",
+   "carbon",
+   "brittle",
+   "madaling mabiyak",
+   "cookware",
+   "kawali",
+   "fry pan",
+   "heavy",
+   "mabigat",
+   "high carbon",
+   "iron"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "brittle->kalambo",
+    "note": "title_bis \"Cast Iron Carbon Kalambo\" for title_en \"Cast Iron Carbon Brittle\". KALAMBO in Cebuano = growth/thriving (lambo), the opposite register of brittle (marupok / huyang / dali mabuak). The headline keyword that carries the card's key property is wrong. Body does say \"marupok\", so this is a title-only defect — flagged because the title is the headline."
+   }
+  ]
+ },
+ {
+  "id": "ffct-18210",
+  "title_en": "Catalytic Converters Clean",
+  "title_bis": "Converter sa Eksena",
+  "fact_en": "How does a car clean its own dirty exhaust?\n\nA car's catalytic converter uses platinum, palladium, and rhodium as catalysts! They convert harmful carbon monoxide and nitrogen oxides from exhaust into less harmful carbon dioxide and nitrogen.",
+  "fact_bis": "Giunsa paglimpyo sa sasakyan ang iyang kaugalingong hugaw nga exhaust?\n\nAng catalytic converter sa sasakyan naggamit og platinum, palladium, ug rhodium isip catalysts! Gikombert nila ang delikado nga carbon monoxide ug nitrogen oxides gikan sa exhaust ngadto sa dili kaayo delikado nga carbon dioxide ug nitrogen.",
+  "terms": [
+   "catalytic converter",
+   "exhaust",
+   "emissions",
+   "co",
+   "nox",
+   "platinum",
+   "palladium",
+   "rhodium",
+   "catalyst",
+   "car",
+   "sasakyan",
+   "environment"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "title-eksena-garbled",
+    "note": "title_bis \"Converter sa Eksena\" = \"Converter of the Scene\". EKSENA (Sp. escena) = scene/drama — it is not exhaust, not emissions, not cleaning. The headline a child sees names a different thing than the card (title_en \"Catalytic Converters Clean\"); the correct keyword is eksos/exhaust (the body itself keeps \"exhaust\")."
+   }
+  ]
+ },
+ {
+  "id": "ffct-18220",
+  "title_en": "Grey Water",
+  "title_bis": "Grey Water",
+  "fact_en": "Grey water from laundry and bathing has soap, detergent, and dirt. If untreated, it changes river pH and harms aquatic organisms, especially in crowded areas!",
+  "fact_bis": "Ang grey water gikan sa paglabanda ug paligo adunay soap, detergent, ug dumi. Kon untreated, magbag-o ang pH sa ilog ug masugatan ang aquatic organisms!",
+  "terms": [
+   "grey water",
+   "soap",
+   "sabon",
+   "biodegradable",
+   "discharge",
+   "ilog",
+   "river",
+   "wastewater",
+   "surfactant",
+   "environment",
+   "phosphate"
+  ],
+  "emphasis_bis": [
+   "grey water"
+  ],
+  "findings": [
+   {
+    "pattern": "harm->masugatan",
+    "note": "Tagalog false friend. EN \"it changes river pH and harms aquatic organisms\"; BIS \"magbag-o ang pH sa ilog ug masugatan ang aquatic organisms\". In Cebuano SUGAT = to MEET/encounter (masugatan = will be met), not to wound — wound/harm is samad/makadaot. The card's whole point (untreated grey water HARMS river life) is never stated anywhere else on the card, so a Cebuano-only reader is left with \"the pH changes and aquatic organisms are encountered\" and loses the harm entirely."
+   }
+  ]
+ },
+ {
+  "id": "ffct-18243",
+  "title_en": "Liquid Particles Slide Flow",
+  "title_bis": "Partikulo Likido Dalag",
+  "fact_en": "In a liquid like water, particles are still close together but can slide past each other freely. That is exactly why water flows!",
+  "fact_bis": "Sa usa ka liquid sama sa tubig, ang mga particles duol pa gihapon pero gawasnon silang mobalhin sa usag-usa. Mao na nga nagdaloy ang tubig!",
+  "terms": [
+   "liquid",
+   "particle",
+   "slide",
+   "gumalaw",
+   "tubig",
+   "flow",
+   "nagdaloy",
+   "likido",
+   "particles",
+   "freely"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "flow->dalag",
+    "note": "title_bis \"Partikulo Likido Dalag\" — DALAG in Cebuano is YELLOW (used correctly as yellow elsewhere in this same batch, ffct-18221 \"dalag sa base\"). title_en is \"Liquid Particles Slide Flow\"; flow = daloy/dagayday (the body correctly says \"nagdaloy\"). As it stands the headline asserts liquid particles are yellow, which is both wrong and not what the card teaches."
+   }
+  ]
+ },
+ {
+  "id": "ffct-18273",
+  "title_en": "Balloon and Heat",
+  "title_bis": "Lobo ug Init",
+  "fact_en": "Put a balloon in a warm spot and it grows bigger! Move it somewhere cold and it shrinks. That's thermal expansion and contraction of the gas inside!",
+  "fact_bis": "Ibutang ang balloon sa init nga lugar ug modako kini! Ibutang sa bugnaw ug mosink. Kini ang thermal expansion ug contraction sa gas sa sulod!",
+  "terms": [
+   "balloon",
+   "balloon",
+   "heat",
+   "init",
+   "expand",
+   "nagpapalawak",
+   "airgunot",
+   "cold",
+   "malamig",
+   "shrink"
+  ],
+  "emphasis_bis": [
+   "thermal expansion"
+  ],
+  "findings": [
+   {
+    "pattern": "shrink->mosink",
+    "note": "EN \"Move it somewhere cold and it shrinks\" -> BIS \"Ibutang sa bugnaw ug mosink\" = \"and it SINKS\". A child learns that a cold balloon goes down rather than gets smaller; the only counterweight is the English word \"contraction\" at the end. Contrast with sister card ffct-18284, which uses the same mosink but restores it with \"mogawas kini nga mas gamay\" and \"nagduol sa usag-usa\" (that one passes)."
+   }
+  ]
+ },
+ {
+  "id": "ffct-18361",
+  "title_en": "Slow Cooling Big Crystals",
+  "title_bis": "Hinay Luto Dako Kristal",
+  "fact_en": "Crystals that form slowly grow BIG! That's why granite has large crystals, while fast-cooled basalt has tiny ones.",
+  "fact_bis": "Ang mga crystals nga nahimo nga hinay molakbo nga DAKO! Mao nga ang granite adunay dagkong crystals, samtang ang paspas nga nabugnaw nga basalt adunay gagmay.",
+  "terms": [
+   "crystal size",
+   "laki ng kristal",
+   "slow cooling",
+   "mabagal na paglamig",
+   "large",
+   "malaki",
+   "fast cooling",
+   "mabilis na paglamig",
+   "small",
+   "geology"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "cooling->luto",
+    "note": "title_bis \"Hinay Luto Dako Kristal\" = \"slow COOKED/cooking big crystal\" for title_en \"Slow Cooling Big Crystals\". The headline blames cooking for crystal size. The body never states slow COOLING either — it only says \"nahimo nga hinay\" (formed slowly), with \"nabugnaw\" used only for basalt — so the cause named in the headline is wrong and the card never corrects it."
+   }
+  ]
+ },
+ {
+  "id": "ffct-18380",
+  "title_en": "CO2 Extinguisher",
+  "title_bis": "CO2 Pamatay-sunog",
+  "fact_en": "How do CO2 fire extinguishers put out fires?\n\nThey release CO2 to smother flames by displacing oxygen! It's super safe for electrical fires because CO2 doesn't conduct electricity.",
+  "fact_bis": "Unsaon pagpatay sa sunog sa CO2 fire extinguisher?\n\nNaglabas kini og CO2 aron lumos sa siga pinaagi sa pagpalit sa oxygen! Luwas kini sa sunog sa kuryente kay ang CO2 dili nagdala og kuryente.",
+  "terms": [
+   "co2",
+   "carbon dioxide",
+   "fire extinguisher",
+   "pampawi ng sunog",
+   "extinguish",
+   "pataying sunog",
+   "oxygen",
+   "smother",
+   "electrical fire",
+   "safe"
+  ],
+  "emphasis_bis": [
+   "CO2"
+  ],
+  "findings": [
+   {
+    "pattern": "displace->palit",
+    "note": "EN: CO2 smothers flames \"by displacing oxygen\". BIS: \"lumos sa siga pinaagi sa pagpalit sa oxygen\" = \"by BUYING the oxygen\". Tagalog false friend: Tagalog palit = replace/exchange, Cebuano palit = buy — all 41 other uses of palit in the corpus mean \"buy\" (buying wild meat, buying medicine), so a Cebuano child reads it as buying. The displacement mechanism, which is the whole point of the card, is never restored anywhere else in the card."
+   }
+  ]
+ },
+ {
+  "id": "ffct-18476",
+  "title_en": "Helium's Funny Voice",
+  "title_bis": "Helium sa Tingog",
+  "fact_en": "Why does your voice sound funny and high-pitched after breathing helium?\n\nHelium is less dense than air, so sound travels faster through it! This raises the pitch of your voice, making it sound cartoonish!",
+  "fact_bis": "Nganong kataw-anan ug matayog ang imong boses pagkahaplos og helium?\n\nMas gaan ang helium kaysa hangin, mao nga mas paspas ang tunog! Nagpataas kini sa pitch sa boses, nga kataw-anan!",
+  "terms": [
+   "helium",
+   "helium",
+   "voice",
+   "boses",
+   "high pitch",
+   "mataas na tunog",
+   "density",
+   "magaan",
+   "sound speed",
+   "kakaibang boses"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "breathing->haplos",
+    "note": "EN: \"Why does your voice sound funny and high-pitched after breathing helium?\" BIS: \"Nganong kataw-anan ug matayog ang imong boses PAGKAHAPLOS og helium?\" Haplos is to stroke/touch with the palm, not to inhale (Cebuano inhale = singhot/ginhawa). Corpus check: \"haplos\" occurs 3x in 47,056 cards and all three are touch (\"Haplos Dili Rabies\", makahiya touched, \"sensitibo sa haplos\"). Nothing anywhere in the card says breathe or inhale, so a Cebuano-only child is told that TOUCHING helium makes your voice squeaky - a different mechanism that is simply false. Medium confidence."
+   }
+  ]
+ },
+ {
+  "id": "ffct-18494",
+  "title_en": "Proving Air Exists",
+  "title_bis": "Air sa Patunay",
+  "fact_en": "We can't see air, but we know it's there! We feel it when wind blows, it makes balloons grow, and it stops water from entering an upside-down glass underwater.",
+  "fact_bis": "Bisan dili nato makita ang hangin, nahibaloan nato nga anaa kini! Mabation nato kini sa paghuyop sa hangin, nagpadako kini sa balloon, ug nagpugong kini sa tubig sa nakatungkab nga baso.",
+  "terms": [
+   "gas",
+   "hangin",
+   "invisible",
+   "hindi nakikita",
+   "blow",
+   "balloon"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "upside-down->tungkab",
+    "note": "EN: \"...it stops water from entering an UPSIDE-DOWN GLASS UNDERWATER.\" BIS: \"...nagpugong kini sa tubig sa NAKATUNGKAB nga baso.\" Tungkab is to pry/break open (gitungkab ang pultahan), not inverted; \"tungkab\" occurs exactly once in 47,056 cards - this one - while the corpus uses baliktad (60) / balit-ad (13), and the sibling card ffct-18469 titles the same demo \"Baso Baliktad\". Both \"upside-down\" and \"underwater\" are gone, so the third proof of air's existence cannot be reconstructed from the Cebuano. Low confidence: the card's headline fact (air is there though invisible) still survives on the wind and balloon examples."
+   }
+  ]
+ },
+ {
+  "id": "ffct-18516",
+  "title_en": "Coconut Oil Making",
+  "title_bis": "Paghimo sa Lana",
+  "fact_en": "How is traditional coconut oil made?\n\nBy boiling coconut milk! As it boils, the water evaporates and the oil is left behind. This uses evaporation to separate oil from water.",
+  "fact_bis": "Unsaon paghimo sa tradisyonal nga langis sa niyog?\n\nPinaagi sa pagkulo sa gatas! Samang nagkulo, ang tubig nagsingaw ug ang langis nabilin. Kini naggamit og evaporation aron ihiwalay ang langis gikan sa tubig.",
+  "terms": [
+   "coconut oil",
+   "langis ng niyog",
+   "boiling",
+   "pagkulo",
+   "evaporation",
+   "pagsingaw",
+   "copra",
+   "gata"
+  ],
+  "emphasis_bis": [
+   "evaporation"
+  ],
+  "findings": [
+   {
+    "pattern": "coconut milk->gatas",
+    "note": "EN: \"How is traditional coconut oil made? By boiling COCONUT MILK!\" BIS: \"...Pinaagi sa pagkulo sa GATAS!\" Gatas is (dairy) milk; coconut milk is gata - the corpus keeps the distinction, 29 cards use \"gata\" for coconut milk (laing, ginataan, \"Pagsala sa Gata\") against 245 \"gatas\" cards that are all animal milk. The method IS the whole answer here and the answer sentence never says gata/lubi/niyog, so the child is taught you boil milk to get coconut oil. Medium-low confidence: the question line does say \"langis sa niyog\", so an elided \"gatas [sa niyog]\" reading is possible."
+   }
+  ]
+ },
+ {
+  "id": "ffct-18517",
+  "title_en": "Limescale in Kettles",
+  "title_bis": "Tulo sa Takure",
+  "fact_en": "Limescale inside kettles comes from calcium and magnesium dissolved in hard water! When water evaporates, these minerals remain and build up as a solid deposit.",
+  "fact_bis": "Ang limescale sulod sa mga kettle gikan sa calcium ug magnesium nga natunaw sa hard water! Sa pagsingaw sa tubig, ang mga mineral nagtipon isip solid deposit.",
+  "terms": [
+   "limescale",
+   "scale",
+   "hard water",
+   "matigas na tubig",
+   "kettle",
+   "calcium",
+   "magnesium",
+   "evaporate",
+   "mineral",
+   "deposit"
+  ],
+  "emphasis_bis": [
+   "limescale"
+  ],
+  "findings": [
+   {
+    "pattern": "limescale->tulo",
+    "note": "title_en \"Limescale in Kettles\" -> title_bis \"Tulo sa Takure\" = \"Three in the Kettle\" (or \"a drip in the kettle\"). \"Tulo\" appears in ~770 corpus cards and the dominant sense is the number three; the corpus's own word for limescale in a title is \"Apog\" (ffct-16484). The headline therefore names a different thing than the card. Body does say \"Ang limescale sulod sa mga kettle...\", i.e. title-only - the same shape as the gold-set FLAG ffct-15087, where an \"asin\" (salt) title over a correct \"toxic smoke\" body was still flagged. Medium confidence."
+   }
+  ]
+ }
+]

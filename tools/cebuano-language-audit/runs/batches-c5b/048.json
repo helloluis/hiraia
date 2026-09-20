@@ -1,0 +1,334 @@
+[
+ {
+  "id": "ffct-32896",
+  "title_en": "Steam Spins the Turbine",
+  "title_bis": "Singaw nga Tuyo Turbine",
+  "fact_en": "How does hot steam from underground create electricity?\n\nHot steam from the ground rushes up through drilled wells and spins turbine blades! The spinning blades turn a generator that produces electricity.",
+  "fact_bis": "Giunsa paghimo sa mainit nga singaw gikan sa yuta og kuryente?\n\nAng mainit nga singaw gikan sa yuta mosulod pataas pinaagi sa mga drilled wells ug mopalikid sa turbine blades! Ang paglikid sa blades mopalikid sa generator nga nagbuhat og kuryente.",
+  "terms": [
+   "steam turbine",
+   "geothermal power",
+   "electricity generation",
+   "turbine blades",
+   "generator",
+   "spin turbine",
+   "steam from earth",
+   "geothermal process",
+   "power production",
+   "renewable steam",
+   "paano gumagawa ng kuryente",
+   "singaw na mula sa lupa"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "spins->tuyo",
+    "note": "title_bis \"Singaw nga Tuyo Turbine\" for title_en \"Steam Spins the Turbine\". \"Tuyo\" in Cebuano is purpose, or dried fish (corpus: bulad/tuyo, gituyo = on purpose) — never spin, which is tuyok/palikid; the body itself says \"mopalikid sa turbine blades\" correctly. The title as shipped names a different thing (dried/intentional steam) and drops the spin relationship the card exists to teach. Same writer-level error as ffct-33013 above, so it is worth grepping title_bis corpus-wide for tuyo-where-tuyok-is-meant."
+   }
+  ]
+ },
+ {
+  "id": "ffct-32900",
+  "title_en": "Enhanced Geothermal Systems",
+  "title_bis": "EGS nga Lawom nga Buto",
+  "fact_en": "Enhanced Geothermal Systems (EGS) unlock hot underground rock even without natural water! Engineers drill deep, pump water down, and capture the steam to expand geothermal energy potential.",
+  "fact_bis": "Ang Enhanced Geothermal Systems (EGS) nagbukas sa mainit nga bato sa ilawom sa yuta bisan walay tubig! Nagbutas ang mga inhinyero og lawom, nagpump og tubig, ug nagkolekta sa singaw aron mapadako ang geothermal energy.",
+  "terms": [
+   "enhanced geothermal system",
+   "egs",
+   "hot dry rock",
+   "deep drilling",
+   "fracturing rock",
+   "geothermal potential",
+   "future energy",
+   "deep heat",
+   "no natural fluid",
+   "artificial reservoir",
+   "deep earth heat",
+   "hot rock energy"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "borehole->buto",
+    "note": "title_bis \"EGS nga Lawom nga Buto\" vs title_en \"Enhanced Geothermal Systems\". In this corpus standalone \"buto\" is BONE (46 cards: buto sa hita, nabaling buto) and in verb form an explosion (pagbuto sa bulkan) — neither is a drilled well. The card's own body proves the intended word: \"Nagbutas ang mga inhinyero og lawom\" (butas = hole). So the title is the outlier and reads as \"EGS, the Deep Bone/Deep Blast\", teaching a child scanning titles that EGS is an underground explosion rather than deep drilling. Same shape as gold row ffct-10181 (agta vs agup-op in the title)."
+   }
+  ]
+ },
+ {
+  "id": "ffct-32964",
+  "title_en": "Deep-Sea Animals",
+  "title_bis": "Mga Hayop sa Lawom",
+  "fact_en": "Animals in the Philippine Trench survive extreme water pressure over 1,100 times the surface! Amphipod crustaceans and sea cucumbers have special body adaptations for these deep depths.",
+  "fact_bis": "Ang mga hayop sa Philippine Trench makabuhi sa grabe ka taas nga presyon sa tubig! Ang amphipod crustaceans ug sea cucumbers adunay espesyal nga adaptasyon alang sa maong giladmon.",
+  "terms": [
+   "philippine trench biology",
+   "hadal zone animals",
+   "deep sea pressure",
+   "deep sea creatures",
+   "adapted to pressure",
+   "amphipods",
+   "holothurians",
+   "trench biology",
+   "extreme deep sea",
+   "pressure adaptation",
+   "hayop sa malalim",
+   "buhay sa kailaliman"
+  ],
+  "emphasis_bis": [
+   "Philippine Trench"
+  ],
+  "findings": [
+   {
+    "pattern": "dropped-number",
+    "note": "EN: \"Animals in the Philippine Trench survive extreme water pressure over 1,100 times the surface!\" BIS: \"makabuhi sa grabe ka taas nga presyon sa tubig\" — the 1,100x figure is simply absent (it is the only en/bis digit mismatch in the batch that is not an idiomatic rewrite). The card's one quantitative fact is gone, so a child reading only the Cebuano cannot say how much pressure the trench animals withstand. Lowest-confidence of the seven: the qualitative claim (extreme pressure, special adaptations) does survive."
+   }
+  ]
+ },
+ {
+  "id": "ffct-33006",
+  "title_en": "Safe Cave Visits",
+  "title_bis": "Luwas nga Kweba",
+  "fact_en": "When visiting a cave, always wear a helmet, bring light, and go with a guide! Remember to never touch or break stalactites and stalagmites.",
+  "fact_bis": "Sa pag-bisita sa langub, kanunay og sumbrera ug dala ang suga, ug adunha og giya! Ayaw kalimoti nga ayaw paghikap o pagbali sa mga stalactite ug stalagmite.",
+  "terms": [
+   "cave",
+   "spelunking",
+   "safety",
+   "ilaw",
+   "helmet",
+   "guide",
+   "kweba",
+   "ligtas",
+   "stalactite",
+   "stalagnita",
+   "proteksyon"
+  ],
+  "emphasis_bis": [
+   "stalactite",
+   "stalagmite"
+  ],
+  "findings": [
+   {
+    "pattern": "helmet->sumbrera",
+    "note": "Cave-safety card. EN: \"always wear a helmet, bring light, and go with a guide\". BIS: \"kanunay og sumbrera ug dala ang suga\" — sumbrera is a HAT, not a helmet, and nothing else in the card mentions head protection. Corpus cross-check is decisive: of 26 cards whose English says \"helmet\", 25 keep the word \"helmet\" in the Cebuano; ffct-33006 is the only \"sumbrera\" in all 49,156 cards. A child is told a hat is the gear for entering a cave."
+   }
+  ]
+ },
+ {
+  "id": "ffct-33013",
+  "title_en": "Earth Orbits the Sun",
+  "title_bis": "Yuta nga Nituyo sa Adlaw",
+  "fact_en": "Did the Sun really revolve around the Earth?\n\nGalileo said no! He supported the idea that the Earth and other planets actually move around the Sun, not the other way around.",
+  "fact_bis": "Nagtuyok ba gyud ang Adlaw sa Kalibotan?\n\nMiingon si Galileo nga dili! Gisuportahan niya ang ideya nga ang Kalibotan ug ubang planeta nagtuyok sa Adlaw, dili ang Adlaw sa Kalibotan.",
+  "terms": [
+   "galileo",
+   "earth moves",
+   "umiikot",
+   "mundo",
+   "earth",
+   "araw",
+   "sun",
+   "planeta",
+   "planet",
+   "heliocentric",
+   "umiikot sa araw",
+   "orbit",
+   "copernicus",
+   "astronomo",
+   "siyentista"
+  ],
+  "emphasis_bis": [
+   "Galileo"
+  ],
+  "findings": [
+   {
+    "pattern": "orbits->nituyo",
+    "note": "title_bis \"Yuta nga Nituyo sa Adlaw\" for title_en \"Earth Orbits the Sun\". Cebuano \"tuyo/nituyo\" is purpose / did-on-purpose (corpus: gituyo sa buwaya ang pagtulon og bato, gituyo nimo nga usbon) and \"nituyo\" appears in exactly zero other cards; orbit/spin is tuyok (552 cards), which this card's own body uses correctly (\"nagtuyok sa Adlaw\"). The title of a heliocentrism card therefore states no orbital relation at all — it reads \"Earth that intended the Sun\"."
+   }
+  ]
+ },
+ {
+  "id": "ffct-33030",
+  "title_en": "Nickel in Surigao",
+  "title_bis": "Nickel sa Surigao",
+  "fact_en": "Where do nickel and iron ore deposits form in Mindanao?\n\nSurigao del Norte! These ores formed from the weathering of ultramafic rocks like peridotite over millions of years.",
+  "fact_bis": "Asa nagporma ang dakong deposito sa nickel ug iron ore sa Mindanao?\n\nSa Surigao del Norte! Nagporma kini gikan sa weathering sa ultramafic rocks sama sa peridotite sulod sa gatusan ka milyon ka tuig.",
+  "terms": [
+   "iron ore",
+   "surigao",
+   "mindanao",
+   "mineral deposit",
+   "magnetite",
+   "hematite",
+   "bakal",
+   "pagmimina",
+   "laterite iron",
+   "philippine mining"
+  ],
+  "emphasis_bis": [
+   "Surigao del Norte"
+  ],
+  "findings": [
+   {
+    "pattern": "number-magnitude-inflated",
+    "note": "Number changed by two orders of magnitude. EN: \"formed from the weathering of ultramafic rocks like peridotite over millions of years\". BIS: \"sulod sa gatusan ka milyon ka tuig\" = over HUNDREDS OF MILLIONS of years. Not a spelled-out-digit difference — the magnitude itself is different, and nothing in the Cebuano card restores the correct figure, so a child ends up with a wrong number for how long the Surigao nickel/iron laterite took to form."
+   }
+  ]
+ },
+ {
+  "id": "ffct-33080",
+  "title_en": "Sun's Red Giant Future",
+  "title_bis": "Uma nga Red Giant",
+  "fact_en": "In about 5 billion years, our Sun will expand into a red giant that might swallow the inner planets! Later, it will leave behind a planetary nebula and a small, hot white dwarf.",
+  "fact_bis": "Mga 5 bilyong tuig na karon, ang atong Adlaw molapad ngadto sa red giant nga basin molunok sa mga panloob nga planeta! Unya, mobiya kini og planetary nebula ug usa ka gamay, init nga white dwarf.",
+  "terms": [
+   "red giant",
+   "white dwarf",
+   "sun fate",
+   "araw",
+   "pinalaking bituin",
+   "planetary nebula",
+   "stellar evolution",
+   "lifecycle",
+   "end of sun",
+   "5 billion years"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "future->uma",
+    "note": "title_bis \"Uma nga Red Giant\" for title_en \"Sun's Red Giant Future\". 'Uma' in Cebuano is a FARM / farmland — it is used with exactly that meaning elsewhere in this same batch (ffct-33102: \"aron himoong umahan\"). The intended word is 'umaabot' (future/coming); truncated to 'Uma' the title names a different thing entirely (a farm that is a red giant) and the word 'uma' never reappears in the body to be corrected. The body also weakens the time direction: \"Mga 5 bilyong tuig na karon\" for \"in about 5 billion years\" (the 'ago' form used in this corpus is \"na ang milabay\", cf. ffct-33134), so the title is the only place 'future' was supposed to live."
+   }
+  ]
+ },
+ {
+  "id": "ffct-33121",
+  "title_en": "Polaris the North Star",
+  "title_bis": "Polaris nga Amihan",
+  "fact_en": "Why is Polaris called the North Star?\n\nPolaris is almost directly above Earth's north pole! It appears not to move while other stars circle around it, and sailors have used it as a direction guide for centuries.",
+  "fact_bis": "Nganong gitawag nga North Star ang Polaris?\n\nAng Polaris halos direkta sa ibabaw sa north pole sa Yuta! Daw dili kini nagalihok samtang ang ubang mga bituin naglibot sa palibot, ug gigamit sa mga manlalayag isip giya sa direksyon.",
+  "terms": [
+   "polaris",
+   "north star",
+   "navigation",
+   "bituin",
+   "hantong",
+   "big dipper",
+   "north celestial pole",
+   "direction finding",
+   "bituin sa hilaga",
+   "direction"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "north-star->amihan",
+    "note": "title_bis \"Polaris nga Amihan\" for \"Polaris the North Star\". In Cebuano 'amihan' is the NORTHEAST MONSOON / north wind — the same batch uses it that way as a standalone title (ffct-33103 title_bis \"Amihan\" = \"Northeast Monsoon\"). North as a direction is 'amihanan'; a star is 'bituon'. The title therefore names a wind, not a star, and the body never supplies any Cebuano rendering to correct it (it only carries the English strings \"North Star\" and \"north pole\")."
+   }
+  ]
+ },
+ {
+  "id": "ffct-33144",
+  "title_en": "The Moon's Two Cycles",
+  "title_bis": "Duha ka Siklo sa Bulan",
+  "fact_en": "Why does the Moon's phase cycle take longer than its orbit?\n\nThe Moon orbits Earth in 27.3 days (sidereal period), but since Earth also moves around the Sun, the Moon must travel a bit farther to repeat the same phase — making the synodic period 29.5 days!",
+  "fact_bis": "Ngano nga mas dugay ang phase cycle sa Moon?\n\nMo-orbit ang Moon sa Yuta sulod sa 27.3 ka adlaw (sidereal period), apan nagdala usab ang Yuta sa Adlaw, kaya kinahanglan pa og dugang ang Moon aron maulit ang phase, busa ang synodic period 29.5 ka adlaw!",
+  "terms": [
+   "sidereal period",
+   "synodic period",
+   "27.3 days",
+   "29.5 days",
+   "moon orbit",
+   "lunar month",
+   "buwan",
+   "orbit period",
+   "lunar cycle",
+   "earth movement"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "moves-around->nagdala",
+    "note": "Body reverses the Earth-Sun relationship that the whole card rests on. EN: \"since Earth also moves around the Sun, the Moon must travel a bit farther\". BIS: \"apan nagdala usab ang Yuta sa Adlaw, kaya kinahanglan pa og dugang ang Moon\" — 'nagdala ... sa Adlaw' = the EARTH CARRIES/BRINGS THE SUN, not that Earth orbits the Sun (naglibot sa Adlaw). A child reading only the Cebuano gets a false relation (Earth carrying the Sun) and cannot recover the actual reason the synodic period (29.5 d) exceeds the sidereal one (27.3 d); nothing else in the card restores it."
+   }
+  ]
+ },
+ {
+  "id": "ffct-33158",
+  "title_en": "Moon Regolith",
+  "title_bis": "Regolith sa Bulan",
+  "fact_en": "The Moon's surface is covered in regolith — crushed rock and dust with sharp edges! Billions of years of meteorite impacts made it, and no wind or water ever smoothed it.",
+  "fact_bis": "Ang nawong sa Moon natakpan sa regolith — crushed rock ug abug nga adunay matalinghaga nga mga kilid! Bilyun-bilyong tuig sa meteorite impact ang naghimo, ug walay hangin o tubig nga mipakin.",
+  "terms": [
+   "regolith",
+   "lunar soil",
+   "moon surface",
+   "meteorite impacts",
+   "crushed rock",
+   "sharp dust",
+   "astronaut",
+   "buwan",
+   "surface material",
+   "no wind no water"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "sharp->matalinghaga",
+    "note": "EN: \"regolith — crushed rock and dust with sharp edges\". BIS: \"crushed rock ug abug nga adunay MATALINGHAGA nga mga kilid\" — 'matalinghaga' means figurative/metaphorical/obscure, not sharp ('hait'). The sharpness is the card's distinguishing fact about regolith and it appears nowhere else in the Cebuano; the closing clause that would imply it is also broken (\"walay hangin o tubig nga MIPAKIN\" — 'mipakin' is not a word; 'smoothed' = mipahamis), so a child cannot recover why lunar dust is sharp/unweathered."
+   }
+  ]
+ },
+ {
+  "id": "ffct-33181",
+  "title_en": "Why It Rains",
+  "title_bis": "Ngano Moulaw",
+  "fact_en": "Why does it rain?\n\nIt rains when tiny water droplets in clouds join and grow too heavy to float. Then, they fall down as rain!",
+  "fact_bis": "Nganong moulan?\n\nMoulan kung ang mga tulo sa tubig sa panganod magtapok ug modako hangtod mabug-at na kaayo aron molutaw, mao nga mahulog sila!",
+  "terms": [
+   "umuulan",
+   "ulan",
+   "moulan",
+   "rain",
+   "ulap",
+   "panganod",
+   "clouds",
+   "patak",
+   "tulo"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "rain->moulaw",
+    "note": "title_bis \"Ngano Moulaw\" for \"Why It Rains\". \"Ulaw\" is a real Cebuano word meaning shame/shyness (maulaw = to be embarrassed); rain is \"ulan\". The body has the correct form twice (\"Nganong moulan?\" / \"Moulan kung...\"), so the title is the single wrong word and reads as \"Why be ashamed\"."
+   }
+  ]
+ },
+ {
+  "id": "ffct-33209",
+  "title_en": "Leonov's First Spacewalk",
+  "title_bis": "Unang Spacewalk",
+  "fact_en": "Who was the first person to do a spacewalk, and what happened during his trip?\n\nSoviet cosmonaut Alexei Leonov! In March 1965, his 12-minute spacewalk had a serious problem when his spacesuit ballooned outward.",
+  "fact_bis": "Kinsa ang unang tawo nga ni-spacewalk, ug unsay nahitabo sa iyang biyahe?\n\nSoviet cosmonaut Alexei Leonov! Niadtong Marso 1965, ang iyang 12-minutong spacewalk nagkaproblema sa dihang nagsabog sa gawas ang iyang spacesuit.",
+  "terms": [
+   "spacewalk",
+   "eva",
+   "alexei leonov",
+   "1965",
+   "extravehicular activity",
+   "first spacewalk",
+   "spacesuit",
+   "tether",
+   "space exploration",
+   "soviet union"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "ballooned->nagsabog",
+    "note": "The card asks \"unsay nahitabo sa iyang biyahe?\" and answers \"nagkaproblema sa dihang nagsabog sa gawas ang iyang spacesuit\". \"Sabog\" in Cebuano = to scatter / blow apart, so the Cebuano says Leonov's spacesuit BURST APART, while the English says it ballooned (inflated, miburot/mihubag) outward. The suit did not rupture, and nothing else in the card restores the inflation fact — the child answers the card's own question with a false event."
+   }
+  ]
+ }
+]

@@ -1,0 +1,371 @@
+[
+ {
+  "id": "ffct-08841",
+  "title_en": "Unwashed Veggies Spread Worms",
+  "title_bis": "Utanon Dili Hugas Bitin",
+  "fact_en": "How can you catch worms from food?\n\nIf you eat unwashed vegetables or fruit, or drink dirty water, tiny worm eggs can sneak into your body and grow into worms!",
+  "fact_bis": "Unsaon pagkuha og bulate gikan sa pagkaon?\n\nKon mokaon ka og utanon o prutas nga wala hugasi, o moinom og hugaw nga tubig, mahimong makasulod sa imong lawas ang itlog sa bulate ug motubo didto!",
+  "terms": [
+   "gulay",
+   "prutas",
+   "hindi hugas",
+   "tubig",
+   "pagkain",
+   "bulate",
+   "utanon",
+   "kontaminado",
+   "wala hugasi",
+   "kaon",
+   "unwashed",
+   "vegetables"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "worms->bitin",
+    "note": "title_bis \"Utanon Dili Hugas Bitin\" for EN title \"Unwashed Veggies Spread Worms\" — bitin is snake (or \"hanging\") in this corpus, never worm. Corpus check: all 78 worm-titled cards use wati/bulate/uod/ulod; the ~400 bitin hits are snakes (or sloths hanging, ffct-13676). Same class as the known cat-card-titled-iro defect. Body is correct (bulate), so this is a title-only swap."
+   }
+  ]
+ },
+ {
+  "id": "ffct-08842",
+  "title_en": "Earlobe Inherited Trait",
+  "title_bis": "Porma Tinged Minana",
+  "fact_en": "Whether your earlobe is attached or hangs free is passed down from your parents — it's an inherited trait!",
+  "fact_bis": "Ang porma sa imong dalunggan — nagkabit man o nagbitay — napanunod nimo gikan sa imong ginikanan, mao nga usa kini ka pananglitan sa napanunod nga kinaiya!",
+  "terms": [
+   "tainga",
+   "dalunggan",
+   "earlobe",
+   "lobyulo",
+   "nakadikit",
+   "nagkabit",
+   "nakalaylay",
+   "nagbitay",
+   "katangian",
+   "kinaiya",
+   "namana",
+   "halimbawa"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "garbled-title-token",
+    "note": "title_bis \"Porma Tinged Minana\" (EN \"Earlobe Inherited Trait\"). \"Tinged\" is not a Cebuano word — it occurs once in all 49,364 cards and looks like a mangled Tagalog \"tainga\"; Cebuano ear is dalunggan, which the body uses correctly. Low severity (body carries the fact), but the title is corrupt rather than merely compact."
+   }
+  ]
+ },
+ {
+  "id": "ffct-08844",
+  "title_en": "Eagle DNA",
+  "title_bis": "DNA sa Agila",
+  "fact_en": "In the Philippines, scientists study DNA to protect animals close to disappearing, like the Philippine eagle — it helps them check if eagles bred in centers are related to each other.",
+  "fact_bis": "Sa Pilipinas, gigamit ang pagtuon sa DNA aron panalipdan ang mga hayop nga hapit na mawala, sama sa Philippine eagle — mahibaloan kon managhinabang ba ang mga agila nga gipasanay sa breeding centers.",
+  "terms": [
+   "philippine eagle",
+   "agila",
+   "haribon",
+   "dna conservation",
+   "endangered",
+   "namimiligrong mawala",
+   "ph",
+   "pilipinas",
+   "konserbasyon",
+   "breeding",
+   "pagpaparami",
+   "hayop",
+   "wildlife",
+   "lahi"
+  ],
+  "emphasis_bis": [
+   "DNA"
+  ],
+  "findings": [
+   {
+    "pattern": "related->managhinabang",
+    "note": "EN: DNA \"helps them check if eagles bred in centers are RELATED to each other\". BIS: \"mahibaloan kon MANAGHINABANG ba ang mga agila nga gipasanay sa breeding centers\" — managhinabang reads as \"help each other\" (tabang), not kin/paryente. The card's whole point (DNA reveals relatedness of captive-bred eagles) is replaced by an unrelated claim and nothing in the card restores it. Corpus check: managhinabang occurs exactly once in 49,364 cards; the corpus word for related is paryente (e.g. ffct-08836 \"dili suod nga paryente\")."
+   }
+  ]
+ },
+ {
+  "id": "ffct-08854",
+  "title_en": "What a Vaccine Is",
+  "title_bis": "Bakuna Depensa Tuno",
+  "fact_en": "What does a vaccine do inside your body?\n\nA vaccine is a medicine that teaches your body's defenses to recognize and fight a certain disease — so you become much less likely to get sick from it!",
+  "fact_bis": "Unsa may buhaton sa bakuna sa imong lawas?\n\nAng bakuna usa ka tambal nga magtudlo sa depensa sa imong lawas nga moilha ug makigbatok sa usa ka sakit — mao nga gamay ra kaayo ang tsansa nga masakit ka niini!",
+  "terms": [
+   "bakuna",
+   "bakunay",
+   "vaccine",
+   "sakit",
+   "balatian",
+   "depensa",
+   "panalipod",
+   "immune system",
+   "katawan",
+   "lawas",
+   "nakikilala",
+   "mailhan",
+   "germ",
+   "mikrobyo",
+   "naghahanda",
+   "moandam",
+   "proteksyon",
+   "iniksyon",
+   "turok"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "garbled-title-token",
+    "note": "title_bis \"Bakuna Depensa Tuno\" (EN \"What a Vaccine Is\"). In this corpus tuno is coconut milk/cream (ffct-16607: \"humok ug puti nga tuno gikan sa gaspang nga sapal\"), so the title reads \"Vaccine Defense Coconut-milk\"; it looks like a corruption of tudlo (teach), which is what the body says. Low severity — the body is complete and correct — but the title word names an unrelated thing."
+   }
+  ]
+ },
+ {
+  "id": "ffct-08958",
+  "title_en": "Napoleon Wrasse",
+  "title_bis": "Mameng",
+  "fact_en": "How big is the Napoleon wrasse?\n\nThe Napoleon wrasse can grow up to 2 meters long and is known for the big hump on its forehead — it's one of the largest reef fish and is endangered worldwide.",
+  "fact_bis": "Unsa kadako ang Napoleon wrasse?\n\nAng Napoleon wrasse makaabot og 2 metro ang gitas-on ug nailhan sa dakong bukog sa agtang niini — usa kini sa pinakadako nga isda sa bahura ug globally endangered na.",
+  "terms": [
+   "napoleon wrasse",
+   "humphead",
+   "bump",
+   "endangered",
+   "reef",
+   "large fish",
+   "coral",
+   "napo",
+   "longfish",
+   "hump on forehead"
+  ],
+  "emphasis_bis": [
+   "2 metro"
+  ],
+  "findings": [
+   {
+    "pattern": "hump->bukog",
+    "note": "EN: \"known for the big hump on its forehead\" -> BIS: \"nailhan sa dakong bukog sa agtang niini\". `bukog` is bone, not `bukol` (hump/lump). The Cebuano says the Napoleon wrasse is known for a big BONE on its forehead - a different thing than the fleshy hump, and nothing else in the card corrects it (terms list even carries \"humphead\"/\"hump on forehead\")."
+   }
+  ]
+ },
+ {
+  "id": "ffct-09058",
+  "title_en": "Ears Balance and Hear",
+  "title_bis": "Dalunggan nga Ginhawa ug Balanse",
+  "fact_en": "The ear isn't just for hearing; it also helps you keep your balance so you don't fall over.",
+  "fact_bis": "Dili lang pagpaminaw ang trabaho sa dalunggan; motabang usab kini sa pagpadayon sa imong balanse aron dili ka matumba.",
+  "terms": [
+   "tainga",
+   "ear",
+   "pandinig",
+   "hearing",
+   "pakikinig",
+   "dili lang",
+   "hindi lang",
+   "balanse",
+   "panimbang",
+   "dalunggan",
+   "pagpaminaw",
+   "trabaho"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "hearing->ginhawa",
+    "note": "title_bis \"Dalunggan nga Ginhawa ug Balanse\" for title_en \"Ears Balance and Hear\". `ginhawa` is breath/breathing, never hearing (`pagpaminaw`/`pandungog`). The title asserts the ear does breathing; the body lists only hearing and balance, so the false breathing claim is never denied. Title-level defect only - the body sentence itself is correct."
+   }
+  ]
+ },
+ {
+  "id": "ffct-09217",
+  "title_en": "Ant Queen Lifespan",
+  "title_bis": "Ant Queen Kinabuhi",
+  "fact_en": "How long can an ant queen live?\n\nA queen of some ant species can live 20 to 30 years — while worker ants usually live only a few weeks to months.",
+  "fact_bis": "Unsa kadugay mabuhi ang reyna sa langgam?\n\nAng reyna sa pipila ka species sa langgam makabuhi og 20 hangtod 30 ka tuig — samtang ang mga manggagawa kasagaran ilang semana hangtod pipila ka bulan ra ang kinabuhi.",
+  "terms": [
+   "ant queen",
+   "lifespan",
+   "years",
+   "decades",
+   "reyna",
+   "worker",
+   "langgam",
+   "colony"
+  ],
+  "emphasis_bis": [
+   "20 hangtod 30 ka tuig"
+  ],
+  "findings": [
+   {
+    "pattern": "ant->langgam",
+    "note": "Ant queen card renders \"ant\" as \"langgam\" — the Tagalog false friend; in Cebuano langgam means BIRD. Body: \"Unsa kadugay mabuhi ang reyna sa langgam? ... Ang reyna sa pipila ka species sa langgam makabuhi og 20 hangtod 30 ka tuig\". The Cebuano text never says hulmigas/olmigas anywhere, so a child reading only the Cebuano learns that a queen BIRD lives 20-30 years while its workers live weeks — false, and the actual ant fact is unrecoverable (only the untranslated English title_bis \"Ant Queen Kinabuhi\" hints at it). Note the same batch uses langgam correctly for birds in ffct-09192, confirming the Cebuano sense."
+   }
+  ]
+ },
+ {
+  "id": "ffct-09352",
+  "title_en": "Tadpole's Tail",
+  "title_bis": "Ikog sa Tadpole",
+  "fact_en": "Where does a tadpole's tail go?\n\nA tadpole's tail doesn't fall off when it becomes a frog — the body absorbs it and uses it as food while the legs are growing.",
+  "fact_bis": "Asa moadto ang ikog sa lawalawa?\n\nAng ikog sa lawalawa dili matangtang kung mahimo na kining baki — suyopon kini sa iyang lawas ug himoong sustansya samtang nagtubo ang mga paa.",
+  "terms": [
+   "tadpole tail disappears",
+   "buntot ng ulo-ulo nawawala",
+   "ikog sa lawalawa nawala",
+   "reabsorbs tail",
+   "nilulunok ng katawan ang buntot",
+   "gisuyop sa lawas ang ikog",
+   "tail becomes food",
+   "ginagawang sustansya ang buntot",
+   "gihimong sustansya ang ikog",
+   "not falling off",
+   "hindi nahuhulog ang buntot",
+   "dili matangtang ang ikog",
+   "metamorphosis frog tail",
+   "paanong nawawala ang buntot",
+   "ngano nawala ang ikog",
+   "palaka butete"
+  ],
+  "emphasis_bis": [
+   "suyopon"
+  ],
+  "findings": [
+   {
+    "pattern": "tadpole->lawalawa",
+    "note": "Body calls the tadpole `lawalawa`, which means SPIDER everywhere else in this corpus (ffct-00695, ffct-02002, ffct-00538). The Cebuano reads 'the spider's tail doesn't fall off when it becomes a frog... while its legs grow', so a Cebuano-only child learns spiders turn into frogs. Other tadpole cards use `tadpole` or `ulo-ulo` (ffct-01714, ffct-02027)."
+   }
+  ]
+ },
+ {
+  "id": "ffct-09378",
+  "title_en": "Deer Fawn Spots",
+  "title_bis": "Liki sa Usa",
+  "fact_en": "Why do Philippine deer fawns have spots?\n\nThe spots help them hide! Philippine deer fawns are born with spots that camouflage them from predators while they're still young and small.",
+  "fact_bis": "Ngano naay batik ang batang usa?\n\nMakatabang ang mga batik aron makatago! Ang batang usa sa Pilipinas natawo nga adunay mga batik nga nagsilbing camouflage batok sa mga manunukob samtang bata pa.",
+  "terms": [
+   "philippine deer",
+   "usa",
+   "batik",
+   "spots",
+   "batang usa",
+   "fawn",
+   "baby",
+   "camouflage",
+   "pangtago",
+   "hide",
+   "kagubatan",
+   "forest",
+   "proteksyon",
+   "mother",
+   "ina"
+  ],
+  "emphasis_bis": [
+   "batik"
+  ],
+  "findings": [
+   {
+    "pattern": "spots->liki",
+    "note": "title_bis \"Liki sa Usa\" = \"crack in the deer\"; the card is about fawn spots (body correctly uses batik). liki means crack/crevice everywhere else in the corpus (95 cards: cracked mud, bone fracture, rock crevices, fault lines), so it is wrong for \"spots\" in general. The title names a different thing than the card; the body does correct it."
+   }
+  ]
+ },
+ {
+  "id": "ffct-09381",
+  "title_en": "The Body Steps of a Sneeze",
+  "title_bis": "Mga Lakang sa Lawas sa Bahin",
+  "fact_en": "Before you sneeze, you take a deep breath to fill your lungs. Then your chest and belly muscles squeeze tight and blast the air out fast to drive the irritant away.",
+  "fact_bis": "Sa dili ka mobahin, mokuha kag lawom nga ginhawa aron mapuno ug hangin ang imong baga. Unya mohugot ang unod sa imong dughan ug tiyan ug kalit nga mogawas ang hangin og paspas.",
+  "terms": [
+   "bahing",
+   "sneeze",
+   "bahin",
+   "paano gumagana",
+   "mekanismo",
+   "steps",
+   "hakbang",
+   "baga",
+   "lungs",
+   "dibdib",
+   "hangin",
+   "air",
+   "malalim na hinga",
+   "diaphragm",
+   "ilabas",
+   "force"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "sneeze->bahin",
+    "note": "Sneeze card never says sneeze. title_bis \"Mga Lakang sa Lawas sa Bahin\" and the body \"Sa dili ka mobahin...\" use bahin (part/share/divide), not bahing (sneeze). Unlike the other sneeze cards in the corpus, nothing here restores the subject: the English \"drive the irritant away\" is also dropped, so the Cebuano is just deep breath + chest/belly muscles + air blasted out, which a child would read as breathing or hiccups. Note this is systematic (118 corpus cards use mobahin/pagbahin vs 17 with bahing), so the grep will be noisy — this card is the instance where the fact is unrecoverable."
+   }
+  ]
+ },
+ {
+  "id": "ffct-09470",
+  "title_en": "The Body Repairs Itself",
+  "title_bis": "Lawas Ayaw Kaugalingon",
+  "fact_en": "The body repairs itself when there is a wound.",
+  "fact_bis": "Ang lawas mismo ang moayo sa iyang kaugalingon kung adunay samad.",
+  "terms": [
+   "katawan",
+   "body",
+   "lawas",
+   "gumaling",
+   "heal",
+   "mo-ayo",
+   "kusa",
+   "by itself",
+   "iyaha",
+   "nag-aayos",
+   "repairs",
+   "nag-ayo"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "heals->ayaw",
+    "note": "title_bis \"Lawas Ayaw Kaugalingon\" for \"The Body Repairs Itself\": ayaw is the Cebuano prohibitive (\"don't\"), not ayo/pag-ayo (heal). In the same corpus ~55 titles use Ayaw correctly as \"don't\" (Ayaw Tan-aw sa Adlaw, Ayaw Langoy sa Baha), so a child reads this title as a prohibition rather than a statement that the body heals itself. Systematic in heal-titles (Panit Ayaw Samad, Mitosis Tubo Ayaw, Hinay Ayaw Samad, Suri Ayaw TB). Body sentence is correct."
+   }
+  ]
+ },
+ {
+  "id": "ffct-09513",
+  "title_en": "Hornbill vs Parrot",
+  "title_bis": "Hornbill ug Parrot",
+  "fact_en": "Parrot or hornbill—who's the better tree planter?\n\nA parrot cracks and eats fruit seeds with its strong beak, but the hornbill swallows fruit whole without destroying the seed—helping plant new trees.",
+  "fact_bis": "Abuk o kalaw—kinsay motabang og tanom?\n\nMobuak ug mokaon ang abuk sa liso sa prutas pinaagi sa iyang sungo, apan lamyon sa kalaw ang tibuok prutas nga dili guba-on ang liso—busa makatabang kini sa pagtanom.",
+  "terms": [
+   "kalaw",
+   "loro",
+   "parrot",
+   "pagkakaiba",
+   "kalainan",
+   "kumakain",
+   "mokaon",
+   "prutas",
+   "fruit",
+   "buto",
+   "seed",
+   "durog",
+   "crush",
+   "nilulunok",
+   "compare",
+   "comparison",
+   "hornbill",
+   "abuk"
+  ],
+  "emphasis_bis": [
+   "Abuk",
+   "kalaw"
+  ],
+  "findings": [
+   {
+    "pattern": "parrot->abuk",
+    "note": "Body calls the parrot \"abuk\" (= dust) in both the question line and the explanation, and it is the emphasized word: \"Abuk o kalaw—kinsay motabang og tanom? Mobuak ug mokaon ang abuk sa liso...\". Corpus-wide this bird is always \"loro\" (40+ cards); \"abuk\" appears nowhere else. Half the comparison (the seed-cracking parrot) is attached to a word meaning dust; only the English word \"Parrot\" in title_bis hints at the intended animal."
+   }
+  ]
+ }
+]

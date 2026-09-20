@@ -439,9 +439,60 @@ So the cheap deterministic wins are already banked; what remains is semantic.
       `Bukog sa Hita`; `Cheek Pouch sa Ungo` -> `Cheek Pouch sa Unggoy`; `Kolonya sa Langgam`
       -> `Kolonya sa Hulmigas`; `Mata sa Mantis Shrim` -> `Mata sa Mantis Shrimp`.
 
-- [ ] **C5b** The remaining ~700 sweep findings — body defects, reversals and dropped facts.
-      Not title-only, so each needs the fact checked against its own English. Bigger and slower
-      than C5a; the 42 quarantined flags must be re-triaged first, not rewritten.
+- [x] **C5b-0 QUARANTINE CLEARED — 26 of 42 flags were bogus, 16 real defects survive.**
+      The 42 flags contaminated by the five refuted false friends, re-triaged against the corpus
+      with the new `ceb_usage.py`. Every verdict quotes corpus evidence rather than an ear.
+
+      **26 REFUTED** — the card is fine and the flag existed only because of a bad word-list
+      entry. Confirms the refutations hold at card level, not just in aggregate.
+      **16 SURVIVE** with a real, separate defect provable from the card's own English:
+        ffct-21835  the NEGATION is dropped — "Aslom kaayo ang suka aron MABUHI ang bakterya"
+                    says vinegar is sour SO THAT bacteria CAN live. English: "too acidic for
+                    most spoilage bacteria to survive." The card's own terms still say "dili
+                    mabuhi".
+        ffct-20134  "motunaw ang mantika sa tubig" = the oil DISSOLVES in water. English says
+                    it FLOATS, which is the entire reason water must not be used on a grease
+                    fire.
+        ffct-32897  "Sayon mosinaw ang isobutane" — sinaw is SHINY (58 bodies). English: "the
+                    isobutane boils easily", the mechanism a binary geothermal cycle runs on.
+        dcard-07327 opaque materials "gipabukal ang uban" = made some of the light BOIL, for
+                    "reflect some of it". Reflection is never taught.
+        ffct-25013/25211/25319 the drinking-straw half of `dayami`, which does stand.
+
+      **I overturned one of the re-triage's own verdicts.** Two agents contradicted each other
+      on `pako`: one said it is never a nail (359 wing/fern bodies), the other that 16 bodies
+      pair it with English "nail". I checked: **16 nail-cards, 314 wing/fern-cards**. So
+      `pako` for an iron nail IS attested, a minority usage beside lansang (44 bodies).
+      ffct-19808 demoted to REFUTED and queued for the native reviewer, not rewritten.
+
+- [x] **C4d — the strongest detector in the audit, and it needs no Cebuano judgement at all.**
+      `title_unattested.py`. A word that heads >=3 Cebuano TITLES, appears in **ZERO** of 47,056
+      Cebuano BODIES, and in no English, Tagalog or terms field either. Purely structural: the
+      thing that wrote the titles was not drawing on the vocabulary that wrote the bodies.
+
+      **The case that revealed it: `kulob`.** 27 Cebuano titles, **25 of them boiling-point
+      cards** — "100 Degrees Kulob Tubig", "373 Kelvin Kulob", "Asin Kulob Taas", "78 Ethanol
+      Kulob" — and zero Cebuano bodies, while the bodies of those same cards correctly say
+      mobukal/nagbukal. The two non-boiling uses give the real meaning away: "Kulob nga Tudlo
+      sa Tubig" = why fingers WRINKLE in water. **The entire boiling curriculum is headed by a
+      word meaning wrinkled.** Same shape as chunk C's `lingkod`-for-vibrate finding, found
+      structurally this time instead of by reading.
+
+      **138 words touching 720 cards.** NOT all defects — spelling variants (daku/dako,
+      itum/itom) and Spanish loans (azul) land here because the bodies prefer the other form.
+      It is a candidate list and needs triage like every other enumeration. Clear ones already
+      visible: `balhas` 15 titles (Tagalog for sweat; Cebuano singot), `pagtatanom` 9 (Tagalog),
+      `kasingkasin` 6 (truncated kasingkasing), `energiya` 6 (variant of enerhiya).
+      Saved to `title-unattested.json`. **TRIAGE IS THE NEXT STAGE'S FIRST JOB.**
+
+- [~] **C5b IN FLIGHT** — 693 body repairs (the sweep findings that are not title-only and
+      were not fixed in C5a), through propose -> adversarial verify -> the four gates in
+      `apply_body_fixes.py`. Both agents are required to run `ceb_usage.py` rather than trust
+      their ear. Not yet applied.
+
+- [ ] **C5c** Triage the 720 cards from C4d, then repair the confirmed ones. Start with
+      `kulob` (25 boiling cards), `balhas`, `pagtatanom`, `kasingkasin`.
+
 - [ ] **C6** REPORT.md: what changed, what is queued for a Cebuano speaker, and an explicit
       ship-or-not recommendation. Do not ship.
 

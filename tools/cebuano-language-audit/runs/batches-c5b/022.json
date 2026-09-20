@@ -1,0 +1,339 @@
+[
+ {
+  "id": "ffct-13300",
+  "title_en": "All Three for Balance",
+  "title_bis": "Tulo ka Nutrient sa Bali",
+  "fact_en": "Your body needs all three — protein, carbohydrates, and fats — together to stay healthy and strong.",
+  "fact_bis": "Gikinahanglan sa lawas ang tanang tulo — protina, karbohaydrat, ug tambok — nga magkauban aron mahimong himsog ug kusgan.",
+  "terms": [
+   "balanseng pagkain",
+   "balanced diet",
+   "sustansya",
+   "protina",
+   "karbohaydrat",
+   "taba",
+   "timbang",
+   "balanse",
+   "himsog",
+   "malusog",
+   "kombinasyon",
+   "kinahanglan"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "balance->bali",
+    "note": "title_bis \"Tulo ka Nutrient sa Bali\" renders \"balance\" as `bali`, which in Cebuano means a fracture/break — the same corpus uses `bali` with exactly that meaning in bone cards (ffct-00710 \"Ang fracture mao ang bali o liki sa bukog\", ffct-02434, ffct-09258). A child reads the heading as \"three nutrients for a broken bone\". Body is correct and complete, so title-only; same swap recurs in ffct-01096, ffct-01346, ffct-10261, ffct-12116."
+   }
+  ]
+ },
+ {
+  "id": "ffct-13301",
+  "title_en": "Caterpillar Stage",
+  "title_bis": "Yugto sa Hantak",
+  "fact_en": "Before becoming a chrysalis, a caterpillar keeps eating leaves and sheds its skin several times to grow.",
+  "fact_bis": "Una mahimong chrysalis, ang ulod magpadayon sa pagkaon og dahon ug manghubad sa panit balik-balik aron motubo.",
+  "terms": [
+   "uod",
+   "higad",
+   "caterpillar",
+   "kumakain",
+   "mokaon",
+   "dahon",
+   "leaf",
+   "lumalaki",
+   "modako",
+   "grows",
+   "balat",
+   "panit"
+  ],
+  "emphasis_bis": [
+   "chrysalis"
+  ],
+  "findings": [
+   {
+    "pattern": "caterpillar->hantak",
+    "note": "title_bis \"Yugto sa Hantak\" for \"Caterpillar Stage\" — `hantak` is not caterpillar (it is the coin-toss gambling game; caterpillar is `ulod`, which the body correctly uses). The heading names a different thing than the card. Greps clean: only 2 corpus hits, both caterpillar titles (this card and ffct-07873, titled just \"Hantak\"), so both are wrong. Body still delivers the fact, so title-only severity."
+   }
+  ]
+ },
+ {
+  "id": "ffct-13345",
+  "title_en": "The Sharp Fovea",
+  "title_bis": "Fovea Matarong",
+  "fact_en": "Which part of your eye sees the sharpest?\n\nThe fovea -- a tiny spot in the retina packed with cones -- that's why we look straight at things we want to see clearly.",
+  "fact_bis": "Unsang bahin sa mata ang pinaka-hait?\n\nAng fovea -- usa ka gamay nga dapit sa retina nga puno sa cones -- mao nga motan-aw ta og diretso sa gusto natong makita nga klaro.",
+  "terms": [
+   "fovea",
+   "pinakamatalas",
+   "pinakatalinis",
+   "sharpest",
+   "gitna ng retina",
+   "tunga sa retina",
+   "cones",
+   "siksik",
+   "detalye",
+   "tingnan diretso",
+   "tan-aw diretso",
+   "klaro",
+   "tin-aw"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "sharp->matarong",
+    "note": "title_bis \"Fovea Matarong\" renders \"sharp\" as `matarong` = righteous/upright — wrong property, not a register choice. The body uses the correct `pinaka-hait`, so the fact survives; the heading does not. Grep is clean and all hits are the same error: ffct-02597 \"Matarong nga Ngipon sa Karniboro\" (Sharp Teeth of Meat Eaters) and ffct-32728 \"Obsidian nga Matarong\" (Sharp Obsidian)."
+   }
+  ]
+ },
+ {
+  "id": "ffct-13361",
+  "title_en": "Egrets Eat Farm Pests",
+  "title_bis": "Bakaw Amigo Magsasaka",
+  "fact_en": "Egrets are farmers' best friends! They eat insects, worms, and pests in rice fields, protecting crops without any chemicals.",
+  "fact_bis": "Ang mga bakaw suod nga higala sa mag-uuma! Kan-on nila ang insekto, ulod, ug peste sa humayan, nga nagpanalipod sa tanom nga walay kemikal.",
+  "terms": [
+   "bakaw",
+   "egret",
+   "magsasaka",
+   "farmer",
+   "peste",
+   "pests",
+   "insekto",
+   "tulong",
+   "palayan",
+   "bakit mabuti",
+   "kapaki-pakinabang",
+   "nakakatulong",
+   "nganong maayo",
+   "mag-uuma"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "egret->bakaw",
+    "note": "Egret is rendered `bakaw`, which in Cebuano is the mangrove tree (`bakaw`/`bakhaw`/`bakawan` — used that way ~170x elsewhere in this same corpus, e.g. ffct-00444, ffct-01680). The card never says `langgam`, so nothing restores the referent: a child reads \"ang mga bakaw ... kan-on nila ang insekto, ulod, ug peste sa humayan\" as mangroves eating insects in rice fields. The corpus's own words for egret/heron are tulabong/talabong/tagak (ffct-00713, ffct-09030). title_bis has the same problem plus Tagalog `magsasaka`."
+   }
+  ]
+ },
+ {
+  "id": "ffct-13406",
+  "title_en": "Marang Spoils Quickly",
+  "title_bis": "Marang nga Dali Mabuak",
+  "fact_en": "Marang spoils fast, so it's best to eat it while it's still fresh off the tree.",
+  "fact_bis": "Ang marang dali ra madaot, mao nga mas maayo kining kan-on samtang lab-as pa.",
+  "terms": [
+   "marang",
+   "kainin",
+   "kaonon",
+   "dali",
+   "spoil",
+   "panis",
+   "masira",
+   "madaot",
+   "lab-as",
+   "sariwa",
+   "fresh",
+   "prutas"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "spoil->mabuak",
+    "note": "LOW/PLAUSIBLE, title-only. title_en \"Marang Spoils Quickly\" -> title_bis \"Marang nga Dali Mabuak\" = marang breaks/cracks easily, a different (and false-sounding-plausible) claim about the fruit. Corpus usage is unambiguous: buak/mabuak = break, crack, smash across 236 cards (parrot beaks cracking seeds, hollow bird bones, blood vessels bursting). The body does restore the real fact (\"Ang marang dali ra madaot\"), so this is recoverable -- I raise it only because the gold set treats a title that states a different thing (e.g. ffct-15087 'asin' for smoke) as a flag even when the body is right."
+   }
+  ]
+ },
+ {
+  "id": "ffct-13425",
+  "title_en": "Parents Give Half Each",
+  "title_bis": "Gene sa Kadungganan",
+  "fact_en": "In sexual reproduction, each parent gives half of their genes to their child -- that's why every child has two alleles for each trait.",
+  "fact_bis": "Sa sekswal nga pagsanay, ang matag ginikanan naghatag og katunga sa mga gene sa anak, mao nga ang bata adunay duha ka allele sa matag kinaiya.",
+  "terms": [
+   "half the genes",
+   "kalahati ng genes",
+   "katunga sa gene",
+   "each parent contributes half",
+   "kalahati mula sa bawat magulang",
+   "katunga gikan sa matag ginikanan",
+   "two alleles",
+   "dalawang allele",
+   "duha ka allele",
+   "isa mula sa ina",
+   "isa mula sa ama",
+   "usa gikan sa inahan",
+   "usa gikan sa amahan",
+   "one from each parent",
+   "pamana sa magulang"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "half->kadungganan",
+    "note": "LOW/PLAUSIBLE, title-only. title_en \"Parents Give Half Each\" -> title_bis \"Gene sa Kadungganan\"; kadungganan is honor/dignity (dungog), not katunga (half), so the title a child sees reads 'gene of honor'. Not idiosyncratic to this card: the same corruption is in ffct-24601, title_bis \"Kadungganan sa String\" for title_en \"Halving String Jumps Pitch\" -- both cards are about halves, and those two are the only occurrences of kadungganan in the corpus. The body is correct (\"ang matag ginikanan naghatag og katunga sa mga gene sa anak\"), so the fact is recoverable from the card."
+   }
+  ]
+ },
+ {
+  "id": "ffct-13502",
+  "title_en": "Hornbill Nesting",
+  "title_bis": "Salag sa Hornbill",
+  "fact_en": "Why does a female hornbill seal herself in?\n\nWhen ready to lay eggs, a female hornbill enters a tree hole and seals the entrance, shutting herself safely inside.",
+  "fact_bis": "Ngano gisirhan sa baye nga kalaw ang iyang kaugalingon?\n\nKung manguhog na, mosulod ang baye nga kalaw sa lungag sa kahoy ug isirhan ang agianan, mao nga makulong kini sa sulod.",
+  "terms": [
+   "kalaw",
+   "pugad",
+   "salag",
+   "lungga",
+   "tree hole",
+   "selyado",
+   "seal",
+   "babae",
+   "baye",
+   "nesting",
+   "puno",
+   "kahoy",
+   "nakakulong"
+  ],
+  "emphasis_bis": [
+   "kalaw"
+  ],
+  "findings": [
+   {
+    "pattern": "lay eggs->manguhog",
+    "note": "MEDIUM. EN: \"When ready to lay eggs, a female hornbill enters a tree hole and seals the entrance.\" BIS: \"Kung manguhog na, mosulod ang baye nga kalaw sa lungag sa kahoy ug isirhan ang agianan, mao nga makulong kini sa sulod.\" The trigger the card exists for -- she is about to LAY EGGS (mangitlog) -- is replaced by 'manguhog', built on uhog (mucus/snot); the corpus itself uses uhog for mucus (ffct-13399, snail slime) and mangitlog 224x for egg-laying. So the Cebuano answer to its own question \"Ngano gisirhan sa baye nga kalaw ang iyang kaugalingon?\" collapses into a circular 'she seals the entrance so she is shut inside', with no egg/nesting reason left in the body; title_bis 'Salag sa Hornbill' gives nest but never eggs. 'manguhog' occurs exactly once in the entire sweep corpus -- this card -- so it is a one-off corruption, not a regional form."
+   }
+  ]
+ },
+ {
+  "id": "ffct-13646",
+  "title_en": "Cold-Blooded Animals",
+  "title_bis": "Bugnaw og Dugo",
+  "fact_en": "Why does a lizard feel warm in the sun?\n\nBecause cold-blooded animals' body temperature rises when it's warm outside and falls when it's cold.",
+  "fact_bis": "Ngano nga moinit ang lawas sa halas sa adlaw?\n\nTungod kay ang temperatura sa lawas sa mga mananap nga bugnaw ug dugo motaas kung init ug monaog kung bugnaw ang palibot.",
+  "terms": [
+   "malamig ang dugo",
+   "nagbabago",
+   "body temperature",
+   "temperatura",
+   "bugnaw ug dugo",
+   "nagbag-o",
+   "init o lamig",
+   "palibot",
+   "mananap",
+   "reptilya"
+  ],
+  "emphasis_bis": [
+   "bugnaw ug dugo"
+  ],
+  "findings": [
+   {
+    "pattern": "lizard->halas",
+    "note": "EN question is about a lizard (\"Why does a lizard feel warm in the sun?\"); BIS asks about `halas` = snake (\"Ngano nga moinit ang lawas sa halas sa adlaw?\"). Different animal, never corrected anywhere on the card (title `Bugnaw og Dugo`, terms have only `reptilya`), so the Cebuano-only reader is pointed at the wrong creature — and at the likely lizard illustration. The cold-blooded claim itself stays true, so this is a wrong-referent defect rather than a false fact."
+   }
+  ]
+ },
+ {
+  "id": "ffct-13754",
+  "title_en": "Rafflesia's Rotting Smell",
+  "title_bis": "Baho sa Rafflesia",
+  "fact_en": "Why does the Rafflesia smell so bad?\n\nThe Rafflesia smells like rotting meat on purpose — the stink attracts flies that help pollinate it.",
+  "fact_bis": "Ngano baho kaayo ang Rafflesia?\n\nTinuyo nga mobaho ang Rafflesia sama sa dunot nga karne aron makadani og mga langaw nga motabang sa pagpamulak niini.",
+  "terms": [
+   "rafflesia smell",
+   "amoy ng rafflesia",
+   "corpse flower",
+   "bulok na amoy",
+   "rotting meat",
+   "baho sa rafflesia",
+   "stinky flower",
+   "flies pollinate",
+   "why rafflesia stinks"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "pollinate->pagpamulak",
+    "note": "Rafflesia card. EN: the stink attracts flies \"that help pollinate it\". BIS: \"...makadani og mga langaw nga motabang sa pagpamulak niini\" — pagpamulak = flowering/blooming, not pollination. The card's whole point (flies act as pollinators) is replaced by a false mechanism (flies make it bloom), and nothing else in the Cebuano card mentions pollen or polinasyon, so it is unrecoverable. Other cards in this same batch correctly use 'polinasyon' / 'mabalhin ang pollen' (ffct-13678, ffct-13686)."
+   }
+  ]
+ },
+ {
+  "id": "ffct-13786",
+  "title_en": "Other Bulb Plants",
+  "title_bis": "Lily ug Tulip sa Bulb",
+  "fact_en": "Onion and garlic aren't the only bulb plants — lily and tulip make bulbs too!",
+  "fact_bis": "Dili lang sibuyas ug ahos ang naghimo og bombilya — mao usab ang liryo ug tulip!",
+  "terms": [
+   "bombilya",
+   "sibuyas",
+   "bawang",
+   "tulip",
+   "lily",
+   "liryo",
+   "bulaklak",
+   "flower bulb",
+   "tanom",
+   "ahos",
+   "example"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "bulb->bombilya",
+    "note": "Bulb-plant card. EN: \"Onion and garlic aren't the only bulb plants — lily and tulip make bulbs too!\" BIS: \"Dili lang sibuyas ug ahos ang naghimo og bombilya — mao usab ang liryo ug tulip!\" bombilya is an electric light bulb, not the plant bulb (bulbo). The Cebuano body names a different thing and never restores it; title_bis keeps only the bare English word 'Bulb' (\"Lily ug Tulip sa Bulb\"), which a grade-5 reader will most likely map to the same light bulb. Reads as: onions and garlic make light bulbs."
+   }
+  ]
+ },
+ {
+  "id": "ffct-13847",
+  "title_en": "Butterfly vs Moth Rest",
+  "title_bis": "Alibangbang ug Kagaw",
+  "fact_en": "When resting, a butterfly holds its wings straight up above its body — a moth, on the other hand, usually rests with its wings flat to the sides.",
+  "fact_bis": "Kung nagpahulay, gitaas sa mariposa ang pakpak niini nga patindog ibabaw sa lawas — ang moth kasagaran nagpatag sa pakpak sa kilid.",
+  "terms": [
+   "butterfly",
+   "moth",
+   "wings",
+   "upright",
+   "nakatulog"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "moth->kagaw",
+    "note": "title_bis \"Alibangbang ug Kagaw\" = \"Butterfly and GERM\" for title_en \"Butterfly vs Moth Rest\". Corpus confirms kagaw = germ (e.g. ffct-01879 \"Hugasi ang Kagaw\"/Wash Away Germs, ffct-03167 \"Kagaw sa Kamot\"/Germs on Hands) and that moth = anunugba/gamu-gamo (ffct-03405, ffct-01201). The body only uses the English word \"moth\", so the Cebuano never restores it — the title teaches moth = kagaw. Same defect recurs at ffct-03195 (\"Kagaw Makadungog Paniki\"/Moths Hear Bats)."
+   }
+  ]
+ },
+ {
+  "id": "ffct-13848",
+  "title_en": "Weaver Ant Larvae",
+  "title_bis": "Ulod sa Hantik",
+  "fact_en": "Which weaver ants can make silk?\n\nOnly the larvae (babies) of weaver ants can make silk — the grown-up ants can't spin silk anymore!",
+  "fact_bis": "Hain nga hantik ang makahimo og seda?\n\nAng mga larva (bata) lang sa hantik ang makahimo og seda — dili na kini mahimo sa mga hamtong nga langgam!",
+  "terms": [
+   "larva",
+   "uod",
+   "sutla",
+   "silk",
+   "adult",
+   "hamtong",
+   "seda",
+   "manghahabi",
+   "worker",
+   "langgam",
+   "hingkod"
+  ],
+  "emphasis_bis": [
+   "larva"
+  ],
+  "findings": [
+   {
+    "pattern": "ant->langgam",
+    "note": "The sentence carrying the card's whole contrast says BIRDS: \"dili na kini mahimo sa mga hamtong nga LANGGAM\" for EN \"the grown-up ants can't spin silk anymore\". The question/title do say hantik, but the payload clause names a different animal, so the larvae-vs-adult-ant contrast (the fact the card exists for) is lost / turned into a claim about adult birds."
+   }
+  ]
+ }
+]

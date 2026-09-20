@@ -1,0 +1,347 @@
+[
+ {
+  "id": "ffct-06697",
+  "title_en": "Gliding Uses No Wing Flaps",
+  "title_bis": "Gliding nga Walay Pakpak",
+  "fact_en": "Gliding means no wing-flapping at all — the animal just slowly drifts down as it moves through the air.",
+  "fact_bis": "Ang pagdagan-dagan walay pagkampay sa pako — hinay-hinay ra monaog ang mananap samtang naglihok sa hangin.",
+  "terms": [
+   "paglutang",
+   "pagdagan-dagan",
+   "gliding",
+   "walang kampay",
+   "walay kampay",
+   "pakpak",
+   "pako",
+   "paglipad",
+   "paglupad",
+   "bumababa",
+   "monaog"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "title-drops-flapping",
+    "note": "Gliding Uses No Wing Flaps. title_bis \"Gliding nga Walay Pakpak\" = \"gliding WITHOUT WINGS\" — `pakpak` is the noun wing throughout this corpus (64 cards), so the title asserts something false: gliders do have wings/membranes, they just do not flap. Body has it right (\"walay pagkampay sa pako\"), so this is title-only, but the false claim is the exact thing the card is correcting. (Body's `pagdagan-dagan` for gliding is systemic in the corpus — colugo/flying-fish cards — so I did not flag that.)"
+   }
+  ]
+ },
+ {
+  "id": "ffct-06707",
+  "title_en": "Crab Legs",
+  "title_bis": "Bitay sa Alimango",
+  "fact_en": "A crab has ten legs in total — eight for walking and two that are pincer claws!",
+  "fact_bis": "Ang alimango adunay napulo ka tiil — walo alang sa paglakaw ug duha nga sipit!",
+  "terms": [
+   "alimango",
+   "binti",
+   "tiil",
+   "legs",
+   "sampu",
+   "ten",
+   "napulo",
+   "sipit",
+   "claws",
+   "paa",
+   "decapod",
+   "bilang"
+  ],
+  "emphasis_bis": [
+   "napulo ka tiil"
+  ],
+  "findings": [
+   {
+    "pattern": "legs->bitay",
+    "note": "Crab Legs. title_bis \"Bitay sa Alimango\" = \"hanging of the crab\"; `bitay` is hang/hanging in every other use in this corpus (98 bodies, and 5 other titles all about hanging roots/bats/objects), never leg — the word for legs here is `tiil`, which the body uses correctly (\"napulo ka tiil\"). Lower severity than the others because the body restores the fact; reported because it is a wrong noun in a title, the pattern the cat/`iro` case flagged."
+   }
+  ]
+ },
+ {
+  "id": "ffct-06731",
+  "title_en": "Thick Bark Resists Fire",
+  "title_bis": "Dagkot nga Panit Batok sa Kalayo",
+  "fact_en": "Some trees have thick bark that shields their living tissue inside, even during a forest fire.",
+  "fact_bis": "Ang ubang kahoy adunay baga nga panit nga nagapanalipod sa buhi nga bahin niini, bisan adunay sunog sa lasang.",
+  "terms": [
+   "makapal",
+   "balat",
+   "sunog",
+   "puno",
+   "init",
+   "baga",
+   "kapal",
+   "panit",
+   "kalayo",
+   "thick bark",
+   "fire",
+   "lasang"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "thick->dagkot",
+    "note": "Thick Bark Resists Fire. title_bis \"Dagkot nga Panit Batok sa Kalayo\" — `dagkot` in Cebuano is to LIGHT/kindle (a candle, a fire), not thick; on a fire card the title reads as \"lit bark\", the opposite of the card's point. Body restores it with `baga nga panit`. Same wrong title word in ffct-23565 (\"Dagkot nga Bungbong\" for Thick Walls), so it is a repeat defect worth grepping."
+   }
+  ]
+ },
+ {
+  "id": "ffct-06736",
+  "title_en": "Parasitism",
+  "title_bis": "Parasitismo",
+  "fact_en": "What happens in parasitism?\n\nIn parasitism, the parasite benefits while the host is harmed—like a tick sucking blood from a dog.",
+  "fact_bis": "Unsay mahitabo sa parasitism?\n\nSa parasitism, makiginabaw ang parasite samtang naano-ano ang host—sama sa garapata nga nangihap sa dugo sa iro.",
+  "terms": [
+   "parasitism",
+   "parasitism",
+   "parasite",
+   "host harmed",
+   "tick",
+   "garapata",
+   "linta",
+   "leech",
+   "sinisipsip ng dugo"
+  ],
+  "emphasis_bis": [
+   "parasitism"
+  ],
+  "findings": [
+   {
+    "pattern": "sucks blood->nangihap",
+    "note": "Parasitism. \"sama sa garapata nga nangihap sa dugo sa iro\" — `nangihap` = counting (ihap = to count), not sucking; corpus uses suyop/supsop/sipsip everywhere else and this is the only `nangihap` in 47k cards. The defining sentence is also carried by two non-words/unparseable forms — `makiginabaw` for \"benefits\" and `naano-ano` for \"is harmed\" — so the parasite-gains / host-is-harmed relationship plus its one concrete example are not recoverable from the Cebuano."
+   }
+  ]
+ },
+ {
+  "id": "ffct-06796",
+  "title_en": "Cold-Blooded Snakes",
+  "title_bis": "Bitin Cold-Blooded",
+  "fact_en": "Is a snake's skin always cold and slimy?\n\nNot true! Because a snake is cold-blooded, people assume its skin is always cold and slimy — but after basking, it's actually warm, dry, and smooth-scaled, not slimy at all.",
+  "fact_bis": "Kanunay ba bugnaw ug pisot ang panit sa bitin?\n\nDili tinuod! Tungod kay cold-blooded ang bitin, gituohan sa daghan nga kanunay bugnaw ug pisot ang panit niini — apan human magpa-adlaw, init gani kini, uga ug hamis nga himbis, dili pisot.",
+  "terms": [
+   "maling akala",
+   "slimy",
+   "malamig ba",
+   "tuyo ang balat",
+   "misconception",
+   "cold-blooded meaning",
+   "basa ba",
+   "dili basa",
+   "bisaya",
+   "balat ng ahas",
+   "scales",
+   "kaliskis",
+   "mamasa-masa",
+   "akala"
+  ],
+  "emphasis_bis": [
+   "cold-blooded"
+  ],
+  "findings": [
+   {
+    "pattern": "slimy->pisot",
+    "note": "Cold-Blooded Snakes. EN myth is \"cold and slimy\" skin; bis renders slimy as `pisot` in BOTH the question (\"Kanunay ba bugnaw ug pisot ang panit sa bitin?\") and the answer (\"dili pisot\"). `pisot` means uncircumcised (and is a kids' taunt word), not slimy — it is never corrected, so the myth the card exists to bust is not stated in Cebuano at all. Corpus evidence: `danlog` is the corpus's word for slippery/slimy (67 cards); this is the only `pisot` in 47k cards."
+   }
+  ]
+ },
+ {
+  "id": "ffct-06848",
+  "title_en": "Look Don't Touch Reef",
+  "title_bis": "Tan-aw dali Hikap Reef",
+  "fact_en": "When you visit a reef, the safest rule is: look, don't touch! Never grab or step on the fish or rocks.",
+  "fact_bis": "Kung anaa sa bahura, ang pinakaluwas nga lagda mao: tan-awa lang, ayaw hikapa! Ayaw hikapa o tumbi ang isda o bato.",
+  "terms": [
+   "reef",
+   "bahura",
+   "look don't touch",
+   "huwag hawakan",
+   "ayaw hikapa",
+   "snorkeling",
+   "watch your step",
+   "ingat",
+   "amping",
+   "safety",
+   "kaluwasan",
+   "ligtas"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "title-drops-dont-negation",
+    "note": "title_bis 'Tan-aw dali Hikap Reef' for 'Look Don't Touch Reef' — the negation is gone and replaced by 'dali'. Corpus-wide check of every title containing 'dali' (60 cards) shows it always means fast/easy/quick, and as an imperative it means 'come/hurry', so the title reads 'Look, quickly touch the reef' — the opposite of the safety rule. Body ('tan-awa lang, ayaw hikapa') is correct, but this is a safety instruction inverted in the card's headline."
+   }
+  ]
+ },
+ {
+  "id": "ffct-06865",
+  "title_en": "Pangolin vs Armadillo",
+  "title_bis": "Dila Pangolin Kuko",
+  "fact_en": "Both armadillos and pangolins eat ants and termites — but the pangolin uses a long sticky tongue, while the armadillo digs with claws and eats with a regular mouth.",
+  "fact_bis": "Pareho nga mokaon og hulmigas ug anay ang armadillo ug pangolin — pero mogamit ang pangolin og taas nga lapok nga dila, samtang maghukay ang armadillo gamit ang kuko ug mokaon gamit ang ordinaryong baba.",
+  "terms": [
+   "armadillo",
+   "pangolin",
+   "langgam",
+   "hulmigas",
+   "anay",
+   "ants",
+   "termites",
+   "kumakain",
+   "mokaon",
+   "dila",
+   "tongue",
+   "dela"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "sticky->lapok",
+    "note": "Body: EN 'the pangolin uses a long sticky tongue' becomes 'mogamit ang pangolin og taas nga lapok nga dila' — lapok is MUD, not sticky (Cebuano for sticky is pilit/malagkit, which this corpus itself uses in ffct-36761 'malagkit'). Nothing in the card corrects it, so the Cebuano-only reader is told the pangolin has a long MUDDY tongue, and the mechanism that makes the tongue catch ants is gone."
+   }
+  ]
+ },
+ {
+  "id": "ffct-06943",
+  "title_en": "Dark Rainforest Floor",
+  "title_bis": "Rainforest Salog Mabug-at",
+  "fact_en": "Why is a rainforest floor so dark?\n\nBecause the thick canopy above blocks most sunlight! Less and less light reaches each layer as you go down.",
+  "fact_bis": "Ngano halos ngitngit ang salog sa rainforest?\n\nKay gisala sa baga nga canopy sa ibabaw ang kadaghanan sa kahayag! Mas mokunhod ang kahayag nga makaabot samtang mopaubos ka.",
+  "terms": [
+   "sunlight",
+   "liwanag ng araw",
+   "kahayag sa adlaw",
+   "bumababa",
+   "mokunhod",
+   "less light",
+   "kaunting araw",
+   "gamay nga adlaw",
+   "canopy",
+   "forest floor",
+   "pababa",
+   "paubos",
+   "harang",
+   "sagang"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "dark->mabug-at",
+    "note": "title_bis 'Rainforest Salog Mabug-at' for 'Dark Rainforest Floor' — mabug-at is HEAVY, not dark (dark = ngitngit, which this card's own body uses). 35 corpus uses of mabug-at all mean heavy/weight, and the same swap recurs in ffct-23475 ('A Shadow, a Dark Area' -> 'Anino Mabug-at Lugar'), so the pair is a real corpus pattern, not a one-off typo."
+   }
+  ]
+ },
+ {
+  "id": "ffct-06964",
+  "title_en": "Sleep, Migrate, or Adapt",
+  "title_bis": "Tulog Lubad o Kaupod",
+  "fact_en": "Animals survive hard seasons in three ways: sleeping (hibernation or estivation), traveling (migration), or changing and hiding.",
+  "fact_bis": "Adunay tulo ka paagi ang mga mananap aron makalahutay sa lisod nga panahon: matulog, molalin, o mausab ug motago.",
+  "terms": [
+   "survive",
+   "makaligtas",
+   "makalahutay",
+   "tatlong paraan",
+   "tulong panahon",
+   "hibernate migrate adapt",
+   "lumipat",
+   "magtago",
+   "tatlo ka paagi",
+   "lumaban",
+   "hirap na panahon",
+   "lisod nga panahon"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "migrate->lubad",
+    "note": "title_bis 'Tulog Lubad o Kaupod' for 'Sleep, Migrate, or Adapt' — two of the three survival strategies are named as different things: 'lubad' is to fade/discolour (migrate = lalin, used correctly in the body as 'molalin') and 'kaupod' is a companion, not adapting/changing. Both words are hapax in the whole corpus, so this is a per-card corruption; the body lists the three strategies correctly."
+   }
+  ]
+ },
+ {
+  "id": "ffct-07046",
+  "title_en": "Detritivores",
+  "title_bis": "Detritivores",
+  "fact_en": "Detritivores like cockroaches and millipedes eat dead matter and shred it into tiny pieces so bacteria can decompose it faster.",
+  "fact_bis": "Ang mga detritivore sama sa ipis ug ulahipan mokaon og patay nga butang ug gisi-gisonon kini sa gagmay nga tipik aron paspas nga mabungkag sa bakterya.",
+  "terms": [
+   "detritivore",
+   "detritivores",
+   "ipis",
+   "cockroach",
+   "gagmay nga mananap",
+   "millipede",
+   "alupihan",
+   "ulahipan",
+   "pira-piraso",
+   "gagmay nga tipik",
+   "break into pieces",
+   "gisi-gisi",
+   "kumakain ng patay",
+   "mokaon og patay",
+   "decomposer",
+   "tigbungkag"
+  ],
+  "emphasis_bis": [
+   "detritivore"
+  ],
+  "findings": [
+   {
+    "pattern": "millipede->ulahipan",
+    "note": "EN lists detritivores as \"cockroaches and millipedes\"; bis renders millipede as \"ulahipan\", which is the centipede (a predator, not a detritivore). The card then teaches that ulahipan eat dead matter and shred it for bacteria — false for centipedes, and nothing in the card corrects the swap. Lower confidence than the first flag: Philippine usage does conflate centipede/millipede and there may be no common Cebuano term for millipede, so keeping the English word would have been the safe choice."
+   }
+  ]
+ },
+ {
+  "id": "ffct-07074",
+  "title_en": "A Yawn Is a Deep Breath",
+  "title_bis": "Hiyaw nga Lawom nga Ginhawa",
+  "fact_en": "A yawn is a deep breath that fills your lungs with extra air!",
+  "fact_bis": "Ang panghuyab usa ka lawom nga pagginhawa nga mopuno sa imong baga og dugang nga hangin!",
+  "terms": [
+   "hikab",
+   "yawn",
+   "paghikab",
+   "malalim na hininga",
+   "deep breath",
+   "oksiheno",
+   "oxygen",
+   "baga",
+   "lungs",
+   "hangin",
+   "air",
+   "panghuyab"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "yawn->hiyaw",
+    "note": "title_bis \"Hiyaw nga Lawom nga Ginhawa\" for \"A Yawn Is a Deep Breath\". Cebuano hiyaw = a shout/yell, not a yawn (yawn = huyab/panghuyab/hikab), so the title asserts \"a shout is a deep breath\" — a different bodily act. The body uses panghuyab correctly, so this is a title-only defect, but it is the same class as the cat-titled-iro case: the title names a different thing and is never corrected in the title itself."
+   }
+  ]
+ },
+ {
+  "id": "ffct-07241",
+  "title_en": "Bacteria as Biotech Workers",
+  "title_bis": "E. coli nga Mamumuo sa Biotech",
+  "fact_en": "Tiny bacteria like E. coli are science's little workers — scientists grow them fast and reprogram them to make medicines, proteins, and enzymes!",
+  "fact_bis": "Ang gagmayng bakterya sama sa E. coli morag gagmayng trabahante — dali silang paladakon sa mga syentista ug ma-engineer aron makahimo og gamot, protina, ug enzymes!",
+  "terms": [
+   "genetic engineering",
+   "biotechnology",
+   "bacteria",
+   "e. coli",
+   "plasmid",
+   "gene cloning",
+   "recombinant",
+   "protein production",
+   "pharmaceutical"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "medicine->gamot",
+    "note": "EN: bacteria are reprogrammed \"to make medicines, proteins, and enzymes\". BIS: \"ma-engineer aron makahimo og gamot, protina, ug enzymes\". In Cebuano `gamot` means ROOT, not medicine (Cebuano for medicine is `tambal`) — this corpus itself uses `gamot` for plant roots ~520x (e.g. ffct-07243 stilt roots, ffct-07259 mangrove roots) and `tambal` for medicine ~330x. A child reading only the Cebuano gets \"engineered to make roots, proteins and enzymes\"; nothing in the card restores 'medicine'. Caveat: Tagalog-influenced (Davao) speakers may read `gamot` as medicine, so verdict is plausible rather than certain; title_bis of ffct-07258 in this same batch shows the same Tagalog-ism but its body carries the fact, so that one passes."
+   }
+  ]
+ }
+]

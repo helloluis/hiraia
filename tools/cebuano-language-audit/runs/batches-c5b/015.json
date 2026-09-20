@@ -1,0 +1,353 @@
+[
+ {
+  "id": "ffct-07954",
+  "title_en": "Germs on Doorknobs",
+  "title_bis": "Germs Manibela",
+  "fact_en": "Germs spread when a sick person touches something like a doorknob, and then we touch it too and bring it to our face.",
+  "fact_bis": "Mokatap ang mikrobyo kon ang usa ka may sakit mohikap sa usa ka butang sama sa gunitanan sa pultahan, dayon hikapon usab nato kini ug ibutang sa atong nawong.",
+  "terms": [
+   "kumakalat sa paghawak",
+   "mokatap pinaagi sa paghikap",
+   "spread by touch",
+   "hawakan",
+   "doorknob",
+   "manibela ng pinto",
+   "gunitanan sa pultahan",
+   "laruan",
+   "dulaan",
+   "kamay",
+   "kamot",
+   "mikrobyo",
+   "germs",
+   "ibang tao",
+   "lain nga tawo",
+   "surface",
+   "ibabaw",
+   "kalat",
+   "katap"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "doorknob->manibela",
+    "note": "title_bis is \"Germs Manibela\" for title_en \"Germs on Doorknobs\". `Manibela` is a steering wheel / crank handle, not a doorknob (`gunitanan sa pultahan`, as the body itself correctly says; elsewhere the corpus uses `pomelya`). The title labels the card with a different object. Every other corpus use of `manibela` (13 cards) is a genuine steering wheel, so this is a one-off swap."
+   }
+  ]
+ },
+ {
+  "id": "ffct-08014",
+  "title_en": "Spinal Cord Fast Reflexes",
+  "title_bis": "Gulugod Dali Reflex",
+  "fact_en": "What reacts first when you touch something hot?\n\nIn fast reactions like pulling your hand away from something hot, the spinal cord acts at once — even before the brain gets involved.",
+  "fact_bis": "Unsa ang una molihok kon madunot ang imong kamot?\n\nSa paspas nga reaksyon sama sa pagbira sa kamot gikan sa init, ang gulugod ang molihok dayon — bisan wala pa kini moagi sa utok.",
+  "terms": [
+   "reflex",
+   "reflek",
+   "gulugod",
+   "spinal cord",
+   "ugat sa likod",
+   "mabilis",
+   "paspas",
+   "tugon",
+   "reaksyon",
+   "mainit",
+   "init",
+   "utak"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "hot-touch-rendered-as-rotting",
+    "note": "The Cebuano question reads \"Unsa ang una molihok kon madunot ang imong kamot?\" — \"what moves first when your hand ROTS\" — where the English asks what reacts when you touch something hot. `madunot` (to rot/decay) is used correctly 160+ times elsewhere in the corpus, so this is a one-off breakage of the card's premise: the question as asked describes a situation the answer never addresses. The answer sentence does mention `pagbira sa kamot gikan sa init`, so the reflex fact partly survives, but the prompt the child reads is about a different (and alarming) scenario. No word-pair given since `madunot` is right for rot in general."
+   }
+  ]
+ },
+ {
+  "id": "ffct-08025",
+  "title_en": "Weaver Ants",
+  "title_bis": "Mga Hulmigas",
+  "fact_en": "Why do weaver ants pull a leaf together?\n\nMany weaver ants pull a leaf together because it's too heavy for just one ant to bend.",
+  "fact_bis": "Ngano magdungan mubira og dahon ang mga hantik?\n\nDaghang hantik ang dungan nga mubira sa dahon kay bug-at kaayo kini alang sa usa lang ka langgam.",
+  "terms": [
+   "sama-sama",
+   "teamwork",
+   "cooperation",
+   "tulong",
+   "hila",
+   "fold",
+   "dahon",
+   "langgam",
+   "tinabangay",
+   "pagtinabangay",
+   "pagbira"
+  ],
+  "emphasis_bis": [
+   "hantik"
+  ],
+  "findings": [
+   {
+    "pattern": "ant->langgam",
+    "note": "Body: 'bug-at kaayo kini alang sa usa lang ka langgam' — langgam is BIRD in Cebuano (Tagalog false friend for ant). EN is 'too heavy for just one ant to bend'. The card's whole point (a leaf is too heavy for ONE ANT, so many hantik pull together) becomes 'too heavy for one bird', which is both false and destroys the reasoning. Never corrected in the card. Same batch, ffct-08072 uses langgam correctly for birds, so this is a real swap, not dialect."
+   }
+  ]
+ },
+ {
+  "id": "ffct-08096",
+  "title_en": "Ant Tunnels Aerate Soil",
+  "title_bis": "Lungga sa Langgam sa Uma",
+  "fact_en": "In Philippine farms, worker ants help the soil. As they dig tunnels, air mixes in, making it easier for the farmer's plants to grow.",
+  "fact_bis": "Sa mga uma sa Pilipinas, makatabang ang worker ant sa yuta. Samtang magkalot sila ug lungag, masagolan ug hangin ang yuta, mao nga mas sayon motubo ang tanom.",
+  "terms": [
+   "worker ants",
+   "soil",
+   "lupa",
+   "farmer",
+   "magsasaka",
+   "tumutulong",
+   "pilipinas",
+   "bukid",
+   "humuhukay",
+   "hangin sa lupa",
+   "pananim",
+   "nakakatulong ba",
+   "tumutulong sa halaman",
+   "yuta",
+   "mananom",
+   "ph"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "ant->langgam",
+    "note": "title_bis 'Lungga sa Langgam sa Uma' = 'bird burrows in the farm', for EN 'Ant Tunnels Aerate Soil'. Body only says 'worker ant' in English and never says hulmigas, so the Cebuano-only reader is left believing birds dig the tunnels that aerate farm soil. Same langgam=bird false friend."
+   }
+  ]
+ },
+ {
+  "id": "ffct-08175",
+  "title_en": "Warty Pig Breeding Mane",
+  "title_bis": "Mane Baboy-ramo",
+  "fact_en": "During breeding season, the male Visayan warty pig grows a long, tall mane of stiff hair standing up on its head.",
+  "fact_bis": "Sa panahon sa pagpanganak, ang laki nga baboy-ihalas motubo og taas ug habog nga buhok nga nagtindog sa ulo.",
+  "terms": [
+   "mane",
+   "kiling",
+   "buhok",
+   "balahibo",
+   "stiff hair",
+   "lalaking baboy",
+   "laki nga baboy",
+   "breeding season",
+   "panahon ng pag-aanak",
+   "pagpanganak"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "breeding-season-rendered-as-birthing",
+    "note": "EN \"During breeding season, the male Visayan warty pig grows a long, tall mane\" becomes \"Sa panahon sa pagpanganak, ang laki nga baboy-ihalas motubo og taas ug habog nga buhok\". \"Panahon sa pagpanganak\" is the birthing/farrowing season, not the mating/breeding season, and nothing in the card corrects it — a Cebuano-only reader learns the male grows his mane when females are giving birth. The same sentence also drops \"Visayan\", widening a Visayan warty pig fact to wild pigs in general (title says only \"Mane Baboy-ramo\")."
+   }
+  ]
+ },
+ {
+  "id": "ffct-08334",
+  "title_en": "Poison Frog Toxins",
+  "title_bis": "Hilo sa Poison Frog",
+  "fact_en": "Do poison frogs make their own poison?\n\nSurprisingly, no! Poison dart frogs get their toxins from eating certain poisonous ants and mites.",
+  "fact_bis": "Naghimo ba og kaugalingong hilo ang poison frog?\n\nDili diay! Makuha sa poison dart frog ang iyang hilo pinaagi sa pagkaon sa mga lasong langgam ug mite.",
+  "terms": [
+   "amphibian",
+   "defense",
+   "poison",
+   "dart",
+   "frogs",
+   "produce",
+   "toxins",
+   "acquire",
+   "eating",
+   "specific"
+  ],
+  "emphasis_bis": [
+   "hilo"
+  ],
+  "findings": [
+   {
+    "pattern": "ants->langgam",
+    "note": "EN: poison dart frogs get toxins \"from eating certain poisonous ants and mites\". BIS: \"pagkaon sa mga lasong langgam ug mite\" — in Cebuano `langgam` is BIRD, not ant (Tagalog false friend). The card never says hulmigas anywhere, so a Cebuano-only reader learns that poison frogs get their toxin from eating poisonous BIRDS. Unrecoverable: the source of the toxin IS the fact of the card. Same batch uses `hulmigas` correctly for ants (ffct-08316, ffct-08427) and `langgam` for birds everywhere else."
+   }
+  ]
+ },
+ {
+  "id": "ffct-08341",
+  "title_en": "Mosquito Pupa",
+  "title_bis": "Pupa sa Lamok",
+  "fact_en": "Does a mosquito pupa eat?\n\nNo! It floats quietly in water while its whole body transforms into an adult mosquito.",
+  "fact_bis": "Mokaon ba ang pupa sa lamok?\n\nDili! Hilom ra kining nagtabang sa tubig samtang hingpit nga nag-usab ang tibuok niyang lawas aron mahimong hamtong nga lamok.",
+  "terms": [
+   "mosquito pupa",
+   "tumbler",
+   "transformation",
+   "no food",
+   "walang kainin",
+   "stage",
+   "development",
+   "water",
+   "complete metamorphosis",
+   "adult"
+  ],
+  "emphasis_bis": [
+   "pupa"
+  ],
+  "findings": [
+   {
+    "pattern": "floats-rendered-nagtabang",
+    "note": "EN: \"It floats quietly in water while its whole body transforms\". BIS: \"Hilom ra kining nagtabang sa tubig...\" — `nagtabang` = \"is helping\"; nothing in Cebuano makes `tabang` mean float (`naglutaw` is the word), and the card never restores it. Borderline by the unrecoverable test: the Q&A fact (pupa does not eat; it transforms into an adult) survives intact, so a child can still answer the question — but the floating fact is deleted and replaced by a nonsense verb, the same class as the known sweating->pagpanghupaw swap. Flagging for a verb fix, not as a false-belief risk."
+   }
+  ]
+ },
+ {
+  "id": "ffct-08532",
+  "title_en": "Biggest Muscle Buttocks",
+  "title_bis": "Dako Kaunoran Tiyan",
+  "fact_en": "Where's the biggest muscle in your body?\n\nThe largest muscle in your body is in your buttocks — it helps you stand up and climb.",
+  "fact_bis": "Asa makit-an ang pinakadako nga kaunuran?\n\nAng pinakadako nga kaunuran sa lawas anaa sa lubot, ug motabang kini sa pagtindog ug pagsaka.",
+  "terms": [
+   "kalamnan",
+   "muscle",
+   "kaunuran",
+   "pinakamalaki",
+   "pinakadako",
+   "largest",
+   "puwit",
+   "lubot",
+   "buttock",
+   "tindig",
+   "tindog",
+   "stand"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "buttocks->tiyan",
+    "note": "title_bis \"Dako Kaunoran Tiyan\" puts the biggest muscle in the TIYAN (belly/abdomen); title_en is \"Biggest Muscle Buttocks\" and the Tagalog title is \"Pinakamalaking Kalamnan sa Puwit\". The defect is confined to the title — the bis body correctly says \"anaa sa lubot\" — but the title is the standalone headline shown in the feed, so it asserts a false anatomy fact on its own (same shape as the gold-set title-only entity swap ffct-15087, where asin/salt replaced aso/smoke). tiyan is correct for stomach/belly across the corpus, so grep only on the buttocks+tiyan pairing."
+   }
+  ]
+ },
+ {
+  "id": "ffct-08583",
+  "title_en": "Worker Ant Colony Guards",
+  "title_bis": "Worker Ant Bantay",
+  "fact_en": "Worker ants don't just work — they also guard the nest! When an enemy comes, they fight back and bite to protect the queen and the baby ants.",
+  "fact_bis": "Dili lang magtrabaho ang worker ant — magbantay usab sila sa salag! Kon adunay kaaway, makig-away sila ug mopaak aron panalipdan ang reyna ug ang mga bata nga langgam.",
+  "terms": [
+   "worker ants",
+   "soldier ants",
+   "guard",
+   "bantay",
+   "depensa",
+   "nagtatanggol",
+   "nangangagat",
+   "kagat",
+   "bakit kumakagat",
+   "kaaway",
+   "nanlaban",
+   "guwardiya",
+   "panalipod",
+   "mopaak",
+   "tagabantay"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "ant->langgam",
+    "note": "EN: \"they fight back and bite to protect the queen and the baby ants\". BIS: \"...aron panalipdan ang reyna ug ang mga bata nga langgam.\" In Cebuano langgam is a BIRD (ant = hulmigas); the Tagalog sibling \"mga sanggol na langgam\" is correct because Tagalog langgam = ant, so the word was carried over as a false friend. A Cebuano-only child reads that worker ants guard the nest to protect the queen and the baby BIRDS, and nothing in the card corrects it — the rest of the card uses the English \"worker ant\" and \"salag\". Corpus-wide this pair is real, not a one-off: 29 cards whose English says ant render it langgam in bis, while 226 use hulmigas."
+   }
+  ]
+ },
+ {
+  "id": "ffct-08648",
+  "title_en": "Gecko Droppings on Walls",
+  "title_bis": "Dili Butiki Bungbong",
+  "fact_en": "What are those black specks on the wall?\n\nThey're gecko droppings, made from the bugs it eats — clean them up to keep your house free of germs.",
+  "fact_bis": "Unsa nang itom nga tulpok sa bongbong?\n\nKana ang tae sa butiki gikan sa insekto nga iyang gikaon — limpyohi kini aron dili mokatag ang mikrobyo sa balay.",
+  "terms": [
+   "butiki",
+   "dumi",
+   "tae",
+   "droppings",
+   "poop",
+   "marumi ba",
+   "hugaw ba",
+   "bakit may dumi sa pader",
+   "ngano naay tae",
+   "linisin",
+   "limpyohan",
+   "pagkain",
+   "insekto",
+   "myth",
+   "kalusugan",
+   "hugasan"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "title-negation",
+    "note": "title_bis \"Dili Butiki Bungbong\" = \"Not gecko wall\" — the leading `dili` negates the card's whole claim, and the title also drops the subject (tae/droppings). EN title is \"Gecko Droppings on Walls\" and the body answers correctly (`Kana ang tae sa butiki`), so the fact is restored in-card; flagged because the title as written asserts the opposite of the card. Lower confidence than the other flag."
+   }
+  ]
+ },
+ {
+  "id": "ffct-08760",
+  "title_en": "Toxoplasma Cat Litter",
+  "title_bis": "Toxoplasma Iri Iro",
+  "fact_en": "Cat poop can carry a tiny parasite called Toxoplasma gondii — always wash your hands with soap after cleaning the litter box!",
+  "fact_bis": "Ang tae sa iring pwede adunay Toxoplasma gondii nga parasite — kanunay panglimpyo sa kamot og sabon human limpyohan ang litter box!",
+  "terms": [
+   "hygiene",
+   "feces",
+   "contain",
+   "toxoplasma",
+   "gondii",
+   "parasites",
+   "always",
+   "wash",
+   "your",
+   "hands"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "cat->iro",
+    "note": "title_bis \"Toxoplasma Iri Iro\" puts `iro` (dog) on a cat card. EN title is \"Toxoplasma Cat Litter\" and the body is correctly about `tae sa iring` (cat poop) + litter box. Toxoplasma-from-litter is cat-specific, so the title names the wrong animal outright — a child skimming the heading takes away dog. Same defect class as the known cat-titled-`iro` example."
+   }
+  ]
+ },
+ {
+  "id": "ffct-08836",
+  "title_en": "Gliders Evolved Separately",
+  "title_bis": "Flying Lizard Gecko Snake",
+  "fact_en": "The flying lizard, gliding snake, and gliding gecko aren't closely related — each one learned to glide separately.",
+  "fact_bis": "Ang naglupad nga tiki, naglutaw nga halas, ug naglutaw nga tiki dili suod nga paryente, apan tagsa-tagsa sila nga nakakat-on molutaw.",
+  "terms": [
+   "magkahiwalay",
+   "separately",
+   "lumulutang",
+   "gliding",
+   "hindi magkamag-anak",
+   "not related",
+   "ebolusyon",
+   "evolution",
+   "magkalainlain",
+   "molutaw",
+   "paryente",
+   "convergent"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "two-species-same-name",
+    "note": "EN names three separate gliders: flying lizard, gliding snake, gliding gecko. BIS: \"Ang naglupad nga TIKI, naglutaw nga halas, ug naglutaw nga TIKI dili suod nga paryente\" — the flying lizard and the gliding gecko are given the identical name, so the sentence asserts that two identically-named animals are not close relatives. The gecko is erased (corpus uses tuko for gecko: ffct-03544, ffct-04734) and the card's fact (three DIFFERENT lineages evolved gliding independently) is not recoverable from the Cebuano."
+   }
+  ]
+ }
+]

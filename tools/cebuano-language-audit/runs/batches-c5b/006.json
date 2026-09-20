@@ -1,0 +1,347 @@
+[
+ {
+  "id": "ffct-02217",
+  "title_en": "Cricket",
+  "title_bis": "Kuliglig",
+  "fact_en": "The cricket is a nocturnal insect that chirps at night by rubbing its wings together.",
+  "fact_bis": "Ang kagiw usa ka nokturnal nga insekto nga mohuni sa gabii pinaagi sa pagkiskis sa iyang mga pako.",
+  "terms": [
+   "kuliglig",
+   "cricket",
+   "kagiw",
+   "tunog",
+   "huni",
+   "chirp",
+   "sound",
+   "tingog",
+   "gabi",
+   "gabii",
+   "pakpak",
+   "tawag"
+  ],
+  "emphasis_bis": [
+   "nokturnal"
+  ],
+  "findings": [
+   {
+    "pattern": "cricket->kagiw",
+    "note": "EN \"The cricket is a nocturnal insect that chirps at night...\" -> BIS \"Ang KAGIW usa ka nokturnal nga insekto nga mohuni sa gabii...\". 'Kagiw' is to flee/evacuate, not an insect; the corpus names the cricket 'kuliglig' in 44 cards, including this card's own title_bis. The body therefore names a non-animal as the subject (only the title hints at kuliglig)."
+   }
+  ]
+ },
+ {
+  "id": "ffct-02344",
+  "title_en": "Spices in Warm Climates",
+  "title_bis": "Reklamo Klima INIT",
+  "fact_en": "The Philippines has a warm, rainy climate all year, so spices like ginger, chili, lemongrass, and garlic grow easily here!",
+  "fact_bis": "Ang Pilipinas adunay init ug ulanon nga klima sa tibuok tuig, mao nga sayon motubo dinhi ang mga panakot sama sa luya, sili, tanglad, ug ahos!",
+  "terms": [
+   "pilipinas",
+   "pinas",
+   "philippines",
+   "mainit",
+   "init",
+   "tropical",
+   "klima",
+   "climate",
+   "pampalasa",
+   "panakot",
+   "luya",
+   "bawang",
+   "sili",
+   "tanim",
+   "tanom",
+   "ulan",
+   "araw",
+   "halaman"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "garbled-title-reklamo",
+    "note": "title_bis \"Reklamo Klima INIT\" for \"Spices in Warm Climates\": \"reklamo\" means complaint and has nothing to do with the card; the word for spices (panakot) is dropped entirely, and \"INIT\" is shouted in caps. The title names a different thing than the card. Body is correct."
+   }
+  ]
+ },
+ {
+  "id": "ffct-02351",
+  "title_en": "Unique Fingerprint Patterns",
+  "title_bis": "Talagsaon nga Fingerprint",
+  "fact_en": "Why is no fingerprint the same?\n\nThe skin on your fingertips has one-of-a-kind patterns called fingerprints — no two people in the world have the same ones!",
+  "fact_bis": "Nganong walay parehas nga fingerprint?\n\nAng panit sa tumoy sa imong mga tudlo adunay talagsaon nga marka nga gitawag og fingerprint — walay duha ka tawo nga managsama!",
+  "terms": [
+   "bakas ng daliri",
+   "tudlo nga marka",
+   "fingerprint",
+   "balat",
+   "panit",
+   "guhit",
+   "linya",
+   "patern",
+   "natatangi",
+   "lahi"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "finger->titi",
+    "note": "title_bis \"Laing Prints Titi\" for \"Unique Fingerprint Patterns\": the Cebuano title never says finger/tudlo — \"titi\" is not the word for finger or toe, and across Filipino languages it reads as the vulgar term for penis. On a grade-5 card the title names a different (and unsafe) body part; only the body restores \"tumoy sa imong mga tudlo\". Same generator error recurs in ffct-00424 (\"Prints sa Titi ug Palad\", EN toes) and ffct-00131 (\"Titi sa Tiil sa Alibangbang\", EN tasting feet), so the grep is worth running."
+   }
+  ]
+ },
+ {
+  "id": "ffct-02352",
+  "title_en": "Whales Hold Breath Dive",
+  "title_bis": "Balyena Ginhawa Lango",
+  "fact_en": "A whale can hold its breath and dive deep for many minutes before coming back up to breathe air!",
+  "fact_bis": "Ang balyena makapugong sa iyang ginhawa ug molusong og lawom sulod sa daghang minuto ayha motungha aron makaginhawa!",
+  "terms": [
+   "hold breath",
+   "dive",
+   "sumisid",
+   "molusong",
+   "paghinga",
+   "lalim",
+   "lawom",
+   "balyena",
+   "lumba-lumba",
+   "hangin",
+   "ginhawa",
+   "minuto"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "dive->lango",
+    "note": "title_bis \"Balyena Ginhawa Lango\" for \"Whales Hold Breath Dive\": \"lango\" means dizzy/stupefied/drunk, not dive (body correctly uses \"molusong og lawom\"). Reads as a fainting whale; the diving fact is absent from the title. Lower severity than the others — likely a truncation of \"langoy\" — but it is a real wrong word in the title."
+   }
+  ]
+ },
+ {
+  "id": "ffct-02481",
+  "title_en": "Bark Medicine",
+  "title_bis": "Panambal nga Panit",
+  "fact_en": "In many places, including the Philippines, people boil certain tree barks to make a drink used as traditional medicine.",
+  "fact_bis": "Sa daghang dapit, lakip ang Pilipinas, adunay mga tawo nga nagalunod og panit sa kahoy aron himoong tradisyonal nga tambal nga ilimnon.",
+  "terms": [
+   "bark",
+   "balat",
+   "panit",
+   "gamot",
+   "medicine",
+   "tambal",
+   "herbal",
+   "halamang gamot",
+   "traditional",
+   "pinakuluan",
+   "decoction",
+   "sakit",
+   "trangkaso",
+   "ginagamit",
+   "gigamit",
+   "saan ginagamit ang balat",
+   "lunas"
+  ],
+  "emphasis_bis": [
+   "tradisyonal nga tambal nga ilimnon"
+  ],
+  "findings": [
+   {
+    "pattern": "boil->lunod",
+    "note": "English: 'people BOIL certain tree barks to make a drink used as traditional medicine.' Cebuano: 'nagalunod og panit sa kahoy' — lunod means to sink/submerge/drown, not to boil, so the Cebuano says people SOAK (or drown) bark rather than boil it, and nothing in the card restores the boiling. The card is a single sentence whose whole content is the preparation method, so the method fact is lost. Corpus-wide this translator otherwise renders boil correctly as pabukal/pabukalon (ffct-02282, ffct-01030, ffct-04385) or lat-an/gilat-an (ffct-01940 'gilat-an ang gamot sa kugon', ffct-01223, ffct-02355); 'lunod' in its 107 other corpus occurrences always means submerged/drowned, so this one is the outlier."
+   }
+  ]
+ },
+ {
+  "id": "ffct-02488",
+  "title_en": "Toads vs Frogs",
+  "title_bis": "Bakulaw vs Baki",
+  "fact_en": "Toads have dry, bumpy skin and live mostly on land, unlike smooth, water-loving frogs.",
+  "fact_bis": "Ang mga bakulaw adunay uga ug bukol-bukol nga panit ug kasagaran nagpuyo sa yuta, dili sama sa hapsay ug tubig-tubig nga mga baki.",
+  "terms": [
+   "toads",
+   "frogs",
+   "unlike",
+   "smooth",
+   "aquatic",
+   "bumpy",
+   "skin",
+   "spend",
+   "adult",
+   "lives"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "toad->bakulaw",
+    "note": "Title 'Bakulaw vs Baki' and body 'Ang mga bakulaw adunay uga ug bukol-bukol nga panit...' use bakulaw for TOAD. In standard Cebuano bakulaw is a large ape/monkey (a big hairy creature), not an amphibian, and the card never corrects it — a child reads that 'bakulaw' (an ape) has dry bumpy skin and lives on land, unlike frogs. Corpus-internal evidence supports the swap being wrong: the same corpus renders toad as baki (ffct-00232 'Ang baki o toad'), kamprag (ffct-00641), kabkab (ffct-06098, ffct-14393), kabakaba (ffct-06020), or just 'toad' (ffct-11999). bakulaw-for-toad occurs only 3x corpus-wide (ffct-02488, ffct-05158, ffct-05377), so the grep is cheap. Confidence moderate, not certain — worth one native-speaker check before mass-editing."
+   }
+  ]
+ },
+ {
+  "id": "ffct-02526",
+  "title_en": "Macaque Calls Warn of Danger",
+  "title_bis": "Babala sa Macaque sa Kapeckan",
+  "fact_en": "Macaques make different calls and sounds to warn the rest of their group whenever danger is near.",
+  "fact_bis": "Ang mga unggoy mohimo og lain-laing tawag o tingog aron pasidan-an ang ilang mga kauban kon adunay nagkaduol nga kakuyaw.",
+  "terms": [
+   "tawag",
+   "huni",
+   "babala",
+   "tingog",
+   "singgit",
+   "pasidaan",
+   "call",
+   "warning",
+   "danger sound",
+   "matsing",
+   "unggoy",
+   "panganib"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "kapeckan-nonword",
+    "note": "Lower severity, title-only: title_bis 'Babala sa Macaque sa Kapeckan' contains 'Kapeckan', which is not a Cebuano word — 'ck' is not even native Cebuano orthography; the intended sense is danger (kakuyaw/katalagman/kapeligrohan), which the body does supply ('kon adunay nagkaduol nga kakuyaw'), so the FACT is recoverable and this is not a meaning reversal. Flagged because it is a user-visible garbled title token, not dialect or register, and it recurs 7x corpus-wide as the house rendering of 'danger' (ffct-06876, ffct-13041, ffct-15779, ffct-27838, ffct-29330, ffct-29335) — one grep fixes all of them. Treat as a corpus-wide typo sweep, not a per-card fact defect."
+   }
+  ]
+ },
+ {
+  "id": "ffct-02532",
+  "title_en": "Why Deep Wounds Scar",
+  "title_bis": "Peke sa Lawom nga Samad",
+  "fact_en": "Why do deep wounds leave a scar?\n\nA deep wound can leave a scar because the new tissue that fills it in isn't exactly the same as your original skin.",
+  "fact_bis": "Ngano nga adunay peklat sa lawom nga samad?\n\nKon lawom ang samad, usahay mabilin kini og peklat tungod kay ang bag-ong unod nga mopuno niini dili parehas sa orihinal nga panit.",
+  "terms": [
+   "scar",
+   "peklat",
+   "malalim na sugat",
+   "bagong tisyu",
+   "marka",
+   "samad nga lawom",
+   "bag-ong unod",
+   "timaan",
+   "nahimong peklat",
+   "panit nga lahi"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "scar->peke",
+    "note": "title_bis \"Peke sa Lawom nga Samad\" = \"fake of the deep wound\". peke means counterfeit/fake everywhere else in the corpus (ffct-13448 butterfly fake head, ffct-17499, ffct-24018); the word for scar is peklat, which the body uses. Same title swap at ffct-06230 (\"Deep Wounds Leave Scars\" -> \"Lawom nga Samad Peke\"), so it is a repeated defect, not a one-off typo."
+   }
+  ]
+ },
+ {
+  "id": "ffct-02545",
+  "title_en": "No Cure for the Cold",
+  "title_bis": "Walay Tambal sa Ubo",
+  "fact_en": "Is there a real cure for the common cold?\n\nNo! There's no direct cure for the common cold. Medicine only helps you feel better while your own body heals itself.",
+  "fact_bis": "Naa bay tinuod nga tambal sa sip-on?\n\nWala! Walay direktang tambal sa komon nga sip-on. Ang tambal makatabang lang aron mogaan ang bati samtang ang imong lawas mismo ang nag-ayo.",
+  "terms": [
+   "lunas",
+   "walang gamot",
+   "sip-on",
+   "walay tambal",
+   "cure",
+   "sipon",
+   "cold",
+   "comfort",
+   "ginhawa",
+   "sintomas"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "cold->ubo",
+    "note": "title_bis \"Walay Tambal sa Ubo\" = \"no cure for the cough\"; EN and the BIS body are about the common cold (sip-on). Cough and cold are different illnesses to a grade-5 reader. Same swap recurs at ffct-02131 (\"Colds Clear in a Week\" -> \"Ubo Gikan sa Pito ka Adlaw\") and ffct-02368, while ffct-00027 gets it right with sip-on."
+   }
+  ]
+ },
+ {
+  "id": "ffct-02547",
+  "title_en": "Cotyledons Feed Seedlings",
+  "title_bis": "Cotyledon Pagkaon sa Lumot",
+  "fact_en": "Cotyledons are the seed leaves that store food to feed a young seedling — until it grows big enough to make its own food through photosynthesis.",
+  "fact_bis": "Ang cotyledon mao ang seed leaf sa liso nga adunay tinipigan nga pagkaon aron pakan-on ang bag-ong salingsing — hangtod nga makahimo na kini og kaugalingong pagkaon pinaagi sa photosynthesis.",
+  "terms": [
+   "cotyledon",
+   "seed leaf",
+   "food store",
+   "seedling",
+   "buto",
+   "mungo",
+   "bean",
+   "sustansya",
+   "seed food",
+   "embryo"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "seedling->lumot",
+    "note": "title_bis \"Cotyledon Pagkaon sa Lumot\" = \"Cotyledon, food of the moss/algae\". EN title is \"Cotyledons Feed Seedlings\"; lumot is used ~150x in the corpus for algae/moss, and every other seedling card uses semilya (ffct-00394, ffct-01465, ffct-03155). The title names a different organism — cotyledons do not feed algae."
+   }
+  ]
+ },
+ {
+  "id": "ffct-02578",
+  "title_en": "Bladder Stretches as It Fills",
+  "title_bis": "Nagtapak nga Pantog",
+  "fact_en": "The bladder stretches and grows bigger as it fills up with urine, just like a balloon filling with water.",
+  "fact_bis": "Ang pantog moluag ug modako samtang mapuno sa ihi, sama sa lobo nga gipuno og tubig.",
+  "terms": [
+   "pantog",
+   "bladder",
+   "unat",
+   "stretch",
+   "laki",
+   "grow",
+   "puno",
+   "full",
+   "lobo",
+   "balloon",
+   "moluag",
+   "modako"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "expand->nagtapak",
+    "note": "title_bis \"Nagtapak nga Pantog\" for \"Bladder Stretches as It Fills\" — tapak means to patch/step on, not to stretch or expand; the body correctly says \"moluag ug modako\". Title-only, lower confidence than the rows above, but it recurs as the corpus's stock title word for expand (ffct-19997 air in balloons, ffct-20393 metal bridges, ffct-21565 ice), so one grep settles four titles at once."
+   }
+  ]
+ },
+ {
+  "id": "ffct-02580",
+  "title_en": "Chew Slowly With Molars",
+  "title_bis": "Maayong Ngisi sa Bagang",
+  "fact_en": "Why chew your food well?\n\nIf you swallow before your molars grind the food small, you might choke! That's why chewing properly really matters.",
+  "fact_bis": "Nganong kinahanglan mo-usap og maayo?\n\nKon tunlon nimo sa dili pa mapino sa bag-ang ang pagkaon, basin mahurot ka! Mao nga importante ang husto nga pag-usap.",
+  "terms": [
+   "choke",
+   "nasamid",
+   "molars",
+   "bagang",
+   "grind",
+   "durog",
+   "dahan-dahan",
+   "slowly",
+   "bakit dahan-dahan",
+   "why slow",
+   "swallow",
+   "lunok",
+   "chew well",
+   "ngumunguya mabuti",
+   "safe eating",
+   "samid"
+  ],
+  "emphasis_bis": [],
+  "findings": [
+   {
+    "pattern": "choke->mahurot",
+    "note": "EN warns \"you might choke\" if you swallow before molars grind food. BIS says \"basin mahurot ka\" — mahurot = to be used up/run out (the corpus uses it that way in ~20 other cards: mahurot ang isda, mahurot ang oxygen). The choking danger, which is the whole point of the card, is never stated; the Cebuano reads as \"you might get used up\". Cebuano for choking exists and is used elsewhere (ffct-07198: \"Nabilaw\"). Same card also has title_bis \"Maayong Ngisi sa Bagang\" — ngisi = grin, not chew (grep pair chew->ngisi also hits ffct-07198)."
+   }
+  ]
+ }
+]
