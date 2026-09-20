@@ -46,7 +46,34 @@ assisted work including the judge. Corpus is 1.22M tokens of content — well wi
       59 gold items were scored. `ffct-07609` is the byte-identical twin of `ffct-07127`, which
       is why it doubled as the consistency probe.
 
-- [ ] **F1** en-mismatch sweep, cards 1-5,000.
+- [x] **F0b** Same-model panel test — **panel design REJECTED, and F0's number was wrong.**
+      Three independent in-session passes over the same 58 gold items (different orderings):
+
+      | | acc | BROKEN prec | BROKEN rec |
+      |---|---|---|---|
+      | member 1 / 2 / 3 | .983 / .983 / .983 | .952 / .952 / 1.00 | 1.00 / 1.00 / .95 |
+      | majority vote | .983 | .952 | 1.00 |
+
+      Members disagreed on **2 of 58 (3.4%)** and the majority equals any single member, so a
+      same-model panel adds nothing — correlated errors, as expected once the members are one
+      model rather than three.
+
+      **More important: the single-judge score moved .948 -> .983 purely from BATCH SIZE.**
+      F0 split 59 items into three ~20-item batches; this run gave each agent all 58. The
+      larger mixed batch lets the judge calibrate against contrastive cases in view. So F0's
+      .948 measured my chunking, not the judge. At .983 a single in-session judge matches the
+      diverse OpenRouter panel and beats ling-3.0-flash (.966).
+
+      **Design: SINGLE in-session judge, large batches.** One third the agents of the panel
+      plan and better measured accuracy. F1 must re-confirm the effect holds at the production
+      batch size of 200 — having been caught once assuming batch size is neutral, do not
+      assume it scales.
+
+      Both disagreements were on rows already marked `borderline` (ffct-22124, ffct-37748).
+
+- [ ] **F1** en-mismatch sweep, cards 1-5,000, SINGLE judge at 200/batch. Include the 58
+      gold items as a spiked control in one batch and report their accuracy, to confirm the
+      .983 holds at production batch size before trusting the other 4,942 verdicts.
 - [ ] **F2** en-mismatch sweep, cards 5,001-10,000.
 - [ ] **F3** en-mismatch sweep, cards 10,001-15,000.
 - [ ] **F4** en-mismatch sweep, cards 15,001-19,279. Then dedupe + summarise findings.
