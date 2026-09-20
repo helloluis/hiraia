@@ -1,0 +1,29 @@
+{
+ "_doc": "Hand-authored by Claude Opus 5, 2026-09-20. NOT panel output and NOT native-verified. These are the three 2-1 split cards where the panel was arguably right that the lead is broken, but the mechanical `Ilan ang X ng Y?` transform produces gibberish because Y is not a bare noun. The existential `mayroon` frame is the correct repair for a part-possession question with extra structure.",
+ "items": [
+  {
+   "id": "ffct-00868",
+   "before": "Ilang kaharian ang mga buhay na bagay?",
+   "after": "Ilang kaharian mayroon ang mga buhay na bagay?",
+   "why": "part-possession; `ng` form would give `Ilan ang kaharian ng mga buhay na bagay?` which is passable but shifts the sense to 'the kingdoms OF living things' as a fixed set. EN is 'How many kingdoms of living things are there?' — mayroon keeps the existential reading."
+  },
+  {
+   "id": "ffct-02372",
+   "before": "Ilang bahagi ang sikmura ng kambing?",
+   "after": "Ilang bahagi mayroon ang sikmura ng kambing?",
+   "why": "part-possession with a possessive chain already present (`sikmura ng kambing`). The `ng` form stacks a second `ng` and reads badly; mayroon avoids it. Answer confirms the sense: 'Ang sikmura ng kambing ay may apat na bahagi'."
+  },
+  {
+   "id": "ffct-23523",
+   "before": "Ilang dulo ang may baterya?",
+   "after": "Ilang dulo mayroon ang baterya?",
+   "why": "`ang may baterya` reads as 'the one that HAS a battery', which is not the question. EN is 'How many ends does a battery have?'. Drops the stray `may` and moves the existential to its correct slot. Note ffct-22124 carries the identical lead and the panel called it CORRECT — see the self-consistency caveat in REPORT.md; both cards should get the same treatment."
+  },
+  {
+   "id": "ffct-22124",
+   "before": "Ilang dulo ang may baterya?",
+   "after": "Ilang dulo mayroon ang baterya?",
+   "why": "Byte-identical duplicate of ffct-23523. The panel called this one CORRECT and its twin BROKEN on the same input at temperature 0 (the self-consistency failure in REPORT.md). Leaving them divergent would put the same sentence in two states in one pool, which is worse than either verdict. Fixed to match."
+  }
+ ]
+}

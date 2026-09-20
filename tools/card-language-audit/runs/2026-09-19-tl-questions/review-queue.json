@@ -1,0 +1,254 @@
+{
+ "t1_splits": [
+  {
+   "id": "dcard-08636",
+   "tl": "Ilang enerhiya ang gamit ng 1200-watt toaster sa 20 araw?",
+   "proposed": "Ilan ang enerhiya ng gamit ng 1200-watt toaster sa 20 araw?",
+   "en": "How much energy does a 1200-watt toaster use in 20 days?",
+   "tl_answer": "Gumagamit ito ng 12 kilowatt-hours, dahil ang 1200 watts na minultiplika sa 10 kabuuang oras ay katumbas ng 12",
+   "votes": {
+    "gemini-3.5-flash-lite": "CORRECT",
+    "ling-3.0-flash": "BROKEN",
+    "gpt-5-nano": "BROKEN"
+   },
+   "broken_votes": 2
+  },
+  {
+   "id": "ffct-00868",
+   "tl": "Ilang kaharian ang mga buhay na bagay?",
+   "proposed": "Ilan ang kaharian ng mga buhay na bagay?",
+   "en": "How many kingdoms of living things are there?",
+   "tl_answer": "Sa paaralan, inuuri ang mga buhay na bagay sa limang kaharian: hayop, halaman, fungi, protist, at monera (bact",
+   "votes": {
+    "gemini-3.5-flash-lite": "BROKEN",
+    "ling-3.0-flash": "CORRECT",
+    "gpt-5-nano": "BROKEN"
+   },
+   "broken_votes": 2
+  },
+  {
+   "id": "ffct-02372",
+   "tl": "Ilang bahagi ang sikmura ng kambing?",
+   "proposed": "Ilan ang bahagi ng sikmura ng kambing?",
+   "en": "How many stomach parts does a goat have?",
+   "tl_answer": "Apat! Ang sikmura ng kambing ay may apat na bahagi na tumutulong itunaw ang matitigas na damo.",
+   "votes": {
+    "gemini-3.5-flash-lite": "BROKEN",
+    "ling-3.0-flash": "BROKEN",
+    "gpt-5-nano": "CORRECT"
+   },
+   "broken_votes": 2
+  },
+  {
+   "id": "ffct-08651",
+   "tl": "Ilang salita ang scientific name?",
+   "proposed": "Ilan ang salita ng scientific name?",
+   "en": "How many words are in a scientific name?",
+   "tl_answer": "Ang scientific name ng isang nilalang ay laging binubuo ng 2 salita, gaya ng 'Homo sapiens' para sa tao.",
+   "votes": {
+    "gemini-3.5-flash-lite": "BROKEN",
+    "ling-3.0-flash": "CORRECT",
+    "gpt-5-nano": "CORRECT"
+   },
+   "broken_votes": 1
+  },
+  {
+   "id": "ffct-23523",
+   "tl": "Ilang dulo ang may baterya?",
+   "proposed": "Ilan ang dulo ng may baterya?",
+   "en": "How many ends does a battery have?",
+   "tl_answer": "Dalawa! May positibo (+) at negatibo (−) terminal ang baterya. Para gumana ang circuit, kailangang may daanan ",
+   "votes": {
+    "gemini-3.5-flash-lite": "BROKEN",
+    "ling-3.0-flash": "BROKEN",
+    "gpt-5-nano": "CORRECT"
+   },
+   "broken_votes": 2
+  },
+  {
+   "id": "ffct-26131",
+   "tl": "Ilang digri (degrees) ang buong paligid ng kompas?",
+   "proposed": "Ilan ang digri (degrees) ng buong paligid ng kompas?",
+   "en": "How many degrees make a full turn around the compass?",
+   "tl_answer": "Ang buong paligid ng kompas ay may 360 digri (degrees)!",
+   "votes": {
+    "gemini-3.5-flash-lite": "CORRECT",
+    "ling-3.0-flash": "CORRECT",
+    "gpt-5-nano": "BROKEN"
+   },
+   "broken_votes": 1
+  },
+  {
+   "id": "ffct-32385",
+   "tl": "Ilang porsyento ng tubig sa Mundo ang freshwater?",
+   "proposed": "Ilan ang porsyento ng tubig sa Mundo ng freshwater?",
+   "en": "How much of Earth's water is freshwater?",
+   "tl_answer": "Halos 97% ay maalat! Tanging 3% lamang ang freshwater, at karamihan nito ay nakaimbak sa mga glacier at polar ",
+   "votes": {
+    "gemini-3.5-flash-lite": "CORRECT",
+    "ling-3.0-flash": "CORRECT",
+    "gpt-5-nano": "BROKEN"
+   },
+   "broken_votes": 1
+  },
+  {
+   "id": "ffct-34590",
+   "tl": "Ilang taon na ang edad ng Earth?",
+   "proposed": "Ilan ang taon na ng edad ng Earth?",
+   "en": "How old is our planet Earth?",
+   "tl_answer": "Ang Earth ay humigit-kumulang 4.6 bilyong taon na ang edad! Nakakagulat, 'di ba?",
+   "votes": {
+    "gemini-3.5-flash-lite": "BROKEN",
+    "ling-3.0-flash": "CORRECT",
+    "gpt-5-nano": "CORRECT"
+   },
+   "broken_votes": 1
+  },
+  {
+   "id": "ffct-35034",
+   "tl": "Ilang masa ang hawak ng Araw sa buong solar system natin?",
+   "proposed": "Ilan ang masa ng hawak ng Araw sa buong solar system natin?",
+   "en": "How much mass does the Sun hold in our solar system?",
+   "tl_answer": "Ang Araw ay naglalaman ng 99.8% ng kabuuang masa ng buong solar system natin!",
+   "votes": {
+    "gemini-3.5-flash-lite": "CORRECT",
+    "ling-3.0-flash": "BROKEN",
+    "gpt-5-nano": "CORRECT"
+   },
+   "broken_votes": 1
+  }
+ ],
+ "tl_in_en": [
+  {
+   "id": "ffct-01521",
+   "en_lead": "Bakit nakakahawa ang paghikab?",
+   "tl_lead": "Bakit nakakahawa ang paghikab?",
+   "en_answer": "We often yawn when we see someone else yawn, so a yawn can feel like it spreads from person to person."
+  },
+  {
+   "id": "ffct-01523",
+   "en_lead": "Bakit hindi mapigilan ang panginginig?",
+   "tl_lead": "Bakit hindi mapigilan ang panginginig?",
+   "en_answer": "You don't choose to shiver — your body does it on its own, which is why it's so hard to stop shivering when yo"
+  },
+  {
+   "id": "ffct-01524",
+   "en_lead": "Bakit berde ang dahon ng malunggay?",
+   "tl_lead": "Bakit berde ang dahon ng malunggay?",
+   "en_answer": "Because of chlorophyll — the same reason many other backyard plants in the Philippines are green too."
+  },
+  {
+   "id": "ffct-01525",
+   "en_lead": "Paano nagpapainit ang katawan ng ahas?",
+   "tl_lead": "Paano nagpapainit ang katawan ng ahas?",
+   "en_answer": "A snake is an ectotherm — it doesn't make much body heat from food like we do. Instead, it takes heat from the"
+  },
+  {
+   "id": "ffct-01526",
+   "en_lead": "Bakit dumadagsa ang anay sa ilaw?",
+   "tl_lead": "Bakit dumadagsa ang anay sa ilaw?",
+   "en_answer": "At night, swarming termites gather around lights like bulbs or lamp posts — not to eat the light, but because "
+  },
+  {
+   "id": "ffct-01528",
+   "en_lead": "Ano ang pinakamabilis na ibon sa tuwid na lipad?",
+   "tl_lead": "Ano ang pinakamabilis na ibon sa tuwid na lipad?",
+   "en_answer": "The common swift, reaching speeds of about 111 kilometers per hour."
+  },
+  {
+   "id": "ffct-01534",
+   "en_lead": "Ilang braso ang pugita?",
+   "tl_lead": "Ilan ang braso ng pugita?",
+   "en_answer": "An octopus has eight arms in total."
+  },
+  {
+   "id": "ffct-01536",
+   "en_lead": "Paano nakakalaban ang mongoose sa kamandag?",
+   "tl_lead": "Paano nakakalaban ang mongoose sa kamandag?",
+   "en_answer": "Some animals, like the mongoose, have natural protection that lets them fight venomous snakes without being ba"
+  },
+  {
+   "id": "ffct-01537",
+   "en_lead": "Bakit mas matagal matulog ang sanggol?",
+   "tl_lead": "Bakit mas matagal matulog ang sanggol?",
+   "en_answer": "Babies sleep much more than adults because their bodies are growing so quickly."
+  },
+  {
+   "id": "ffct-01539",
+   "en_lead": "Bakit ligtas ang clownfish sa anemone?",
+   "tl_lead": "Bakit ligtas ang clownfish sa anemone?",
+   "en_answer": "Clownfish live among the stinging arms of sea anemones on the reef, which actually keep the clownfish safe."
+  },
+  {
+   "id": "ffct-01540",
+   "en_lead": "May ngipin ba ang kuhol?",
+   "tl_lead": "May ngipin ba ang kuhol?",
+   "en_answer": "A snail has a tongue called a radula that's covered with tiny teeth, which it uses to scrape up its food."
+  },
+  {
+   "id": "ffct-01544",
+   "en_lead": "Bakit naglulublob ang kalabaw sa putik?",
+   "tl_lead": "Bakit naglulublob ang kalabaw sa putik?",
+   "en_answer": "The carabao wallows in mud to cool its body down and protect its skin from the heat and biting insects."
+  },
+  {
+   "id": "ffct-01546",
+   "en_lead": "Bakit tayo umuutot?",
+   "tl_lead": "Bakit tayo umuutot?",
+   "en_answer": "We pass gas because helpful bacteria in our intestines break down some foods and make gas — when it builds up,"
+  },
+  {
+   "id": "ffct-01550",
+   "en_lead": "Anong ngipin ang ginagamit sa paggiling ng pagkain?",
+   "tl_lead": "Anong ngipin ang ginagamit sa paggiling ng pagkain?",
+   "en_answer": "We use the wide molars at the back of our mouth to chew and crush our food."
+  },
+  {
+   "id": "ffct-01551",
+   "en_lead": "Bakit binabalikan ng skink ang sarili niyang buntot?",
+   "tl_lead": "Bakit binabalikan ng skink ang sarili niyang buntot?",
+   "en_answer": "Sometimes, after danger has passed, a skink comes back and eats its own dropped tail — normal for them, since "
+  },
+  {
+   "id": "ffct-01553",
+   "en_lead": "Bakit malagkit ang okra kapag hiniwa?",
+   "tl_lead": "Bakit malagkit ang okra kapag hiniwa?",
+   "en_answer": "Okra gets slimy when you cut or cook it because it has a juice inside that comes out and sticks together — thi"
+  },
+  {
+   "id": "ffct-01555",
+   "en_lead": "Malinaw ba ang paningin ng alakdan?",
+   "tl_lead": "Malinaw ba ang paningin ng alakdan?",
+   "en_answer": "Although a scorpion has several eyes, its vision is actually poor, so it relies on sensing movement instead."
+  },
+  {
+   "id": "ffct-01556",
+   "en_lead": "Marumi ba ang pinaghahati-hating sabon?",
+   "tl_lead": "Marumi ba ang pinaghahati-hating sabon?",
+   "en_answer": "Many worry that a bar of soap shared by many people is dirty, but it's still safe — rinsing it as you use it w"
+  },
+  {
+   "id": "ffct-01559",
+   "en_lead": "Bakit naglalaglag ng dahon ang mga punong nasa malamig na bansa?",
+   "tl_lead": "Bakit naglalaglag ng dahon ang mga punong nasa malamig na bansa?",
+   "en_answer": "In cold countries, trees drop their leaves in winter to save water and avoid damage from the deep cold."
+  }
+ ],
+ "dup_summary": {
+  "groups": 422,
+  "cards": 966,
+  "by_group_size": {
+   "2": 343,
+   "3": 48,
+   "4": 24,
+   "5": 4,
+   "6": 1,
+   "7": 2
+  }
+ },
+ "counts": {
+  "t1_splits": 9,
+  "tl_in_en": 19,
+  "dup_groups": 422
+ }
+}

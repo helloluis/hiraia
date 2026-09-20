@@ -82,6 +82,14 @@ def main():
         if len(d['v']) == 3 and all(x == 'BROKEN' for x in d['v']):
             edits[cid] = ('t1', d['before'], d['after'])
 
+    # Hand-authored repairs for splits where the mechanical transform is wrong. Kept in a
+    # separate file so provenance is never confused with panel output -- these are not
+    # native-verified and a reviewer must be able to tell them apart.
+    mr = run / 'manual-rewrites.json'
+    if mr.exists():
+        for r in json.loads(mr.read_text(encoding='utf-8'))['items']:
+            edits[r['id']] = ('manual', r['before'], r['after'])
+
     for r in json.loads((run / 'enum-gawa-ng.json').read_text(encoding='utf-8'))['items']:
         new = rewrite_gawa(r['tl'])
         if new:
@@ -89,7 +97,7 @@ def main():
 
     doc = json.loads(POOL.read_text(encoding='utf-8'))
     index = {c['id']: c for c in doc['cards']}
-    applied, held = [], []
+    applied, held, already = [], [], []
 
     for cid, (src, before, after) in sorted(edits.items()):
         c = index.get(cid)
@@ -97,6 +105,10 @@ def main():
             held.append({'id': cid, 'src': src, 'reason': 'card not found'})
             continue
         cur = c['fact'].get('tl') or ''
+        if lead_of(cur) == after:
+            # Already at the target -- a previous run applied it. Idempotent, not a problem.
+            already.append(cid)
+            continue
         if lead_of(cur) != before:
             held.append({'id': cid, 'src': src, 'reason': 'lead drifted since adjudication',
                          'expected': before, 'found': lead_of(cur)})
@@ -113,14 +125,16 @@ def main():
     if not a.dry_run:
         POOL.write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
 
-    report = {'applied': len(applied), 'held': len(held),
-              'by_source': {s: sum(1 for x in applied if x['src'] == s) for s in ('t1', 'gawang')},
+    report = {'applied': len(applied), 'held': len(held), 'already_applied': len(already),
+              'by_source': {s: sum(1 for x in applied if x['src'] == s) for s in ('t1', 'gawang', 'manual')},
               'applied_items': applied, 'held_items': held}
     (run / 'applied-fixes.json').write_text(
         json.dumps(report, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
     print('  ' + ('DRY RUN -- ' if a.dry_run else '') + 'applied ' + str(len(applied)) +
           ' (t1 ' + str(report['by_source']['t1']) + ', gawa-ng ' +
-          str(report['by_source']['gawang']) + '), held ' + str(len(held)))
+          str(report['by_source']['gawang']) + ', manual ' +
+          str(report['by_source']['manual']) + '), already-applied ' + str(len(already)) +
+          ', held ' + str(len(held)))
     for h in held:
         print('    HELD ' + h['id'] + ' [' + h['src'] + ']: ' + h['reason'])
     return 0
