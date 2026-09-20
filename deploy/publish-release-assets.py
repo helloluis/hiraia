@@ -52,7 +52,15 @@ import urllib.request
 BUCKET = 'hiraia-assets'
 PUBLIC = 'https://assets.hiraia.org'
 IMMUTABLE = 'public, max-age=31536000, immutable'
-ALIAS_TTL = 'public, max-age=14400'
+# 5 minutes, not 4 hours. The alias is a MUTABLE pointer for legacy links and QR codes, so
+# its whole staleness window is however long the edge caches it. Purging after each release
+# would fix that, but the purge is best-effort and has silently failed on three consecutive
+# releases (the API token carries Zone:Read but not Zone:Cache Purge, so purge_cache returns
+# 401 while the zone lookup succeeds -- see cf_purge_hint below). A short TTL needs no
+# Cloudflare permission at all and caps the exposure at minutes instead of hours. The
+# versioned key is still immutable and is what download.ts and the in-app manifest point at,
+# so this only governs how fast an old QR code catches up.
+ALIAS_TTL = 'public, max-age=300'
 
 
 def load_env(path):
@@ -149,6 +157,19 @@ def zone_id(v, zone_name='hiraia.org'):
         return None
 
 
+def cf_purge_hint():
+    """Say exactly what is wrong and how to fix it, rather than 'it expires within 4 h'."""
+    print('   FIX: the API token can read zones but cannot purge cache. In the Cloudflare')
+    print('        dashboard -> My Profile -> API Tokens, edit the token used here and add')
+    print('        permission  Zone > Cache Purge > Purge  for zone hiraia.org.')
+    print('        Verify with:  curl -sX POST -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \\')
+    print('          -H "Content-Type: application/json" --data \'{"purge_everything":false,'
+          '"files":["https://assets.hiraia.org/models/hiraia.apk"]}\' \\')
+    print('          https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/purge_cache')
+    print('        Until then the alias self-heals in ALIAS_TTL (5 min); the versioned key,')
+    print('        which download.ts and the manifest point at, is unaffected.')
+
+
 def purge(v, urls):
     if not (v.get('CLOUDFLARE_API_TOKEN') or v.get('CF_API_TOKEN')):
         print('   (no CLOUDFLARE_API_TOKEN — alias edge cache not purged; it expires within 4 h)')
@@ -159,9 +180,14 @@ def purge(v, urls):
         return
     try:
         res = cf_api(v, f'/zones/{zid}/purge_cache', {'files': urls})
-        print(f"   purge {'ok' if res.get('success') else '!! FAILED: ' + json.dumps(res)[:200]}: {', '.join(urls)}")
+        if res.get('success'):
+            print(f"   purge ok: {', '.join(urls)}")
+        else:
+            print(f"   purge FAILED: {json.dumps(res.get('errors'))[:160]}")
+            cf_purge_hint()
     except Exception as e:  # noqa: BLE001
-        print(f'   (purge request failed: {e} — alias edge cache expires within 4 h)')
+        print(f'   (purge request failed: {e})')
+        cf_purge_hint()
 
 
 def check(s3):
