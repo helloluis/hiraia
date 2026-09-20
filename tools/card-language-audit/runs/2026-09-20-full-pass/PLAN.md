@@ -279,8 +279,22 @@ assisted work including the judge. Corpus is 1.22M tokens of content — well wi
       `cud -> pag-usap` is diagnostic: a CEBUANO bleed into Tagalog, the same multilingual
       leakage class as the `Haiwan` (Malay) finding earlier. Worth telling whoever owns the
       translation pipeline — it points at the generator, not at individual cards.
-- [ ] **T1** Triage the 465 context-dependent candidates (cheap: one model pass over a bounded
-      list, same funnel shape that worked for nonwords). run the narrow two-class sweep over all 19,279 (~9.4M tokens,
+- [x] **T1** DONE — regrepped with all 110 patterns from the full sweep (not just the first 45),
+      giving 1,017 candidates not already flagged. Triaged with each card in view:
+      **952 FINE (94%), 61 WRONG (6%)**, 4 unreturned.
+
+      94% FINE is the `bulb` precedent holding at scale — blind application of the greps would
+      have corrupted 952 good cards. Grep proposes, triage disposes.
+
+      The 61 real ones cluster, which is more useful than a flat list:
+        poles -> poste      ~14 cards: magnetic and Earth's poles rendered as fence POSTS,
+                            running through the whole magnetism topic
+        how much -> magkano   9 cards asking the PRICE of your weight / oxygen / momentum
+        fog -> ambon          6 cards (drizzle, not fog)
+        brick -> tisa         4 cards: tisa is CHALK, so walls are built of chalk
+        hardest -> pinakamalupit  2 cards: the CRUELEST diamond
+
+      **Corpus total: 150 sweep flags + 61 triage = 211 confirmed defective cards.** run the narrow two-class sweep over all 19,279 (~9.4M tokens,
       run OPUS over the full 19,279 (~9.4M tokens) to DISCOVER defect patterns, then grep the
       corpus for every pattern found and triage. Do NOT truncate `ans` -- send the full answer.
       Expect the grep stage to multiply the model's findings ~3.5x at no cost.
