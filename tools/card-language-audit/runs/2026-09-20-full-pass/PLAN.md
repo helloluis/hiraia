@@ -214,9 +214,35 @@ assisted work including the judge. Corpus is 1.22M tokens of content — well wi
       it is also a gold item, so catching it was not independent — the model said so unprompted.
       Genuine recall on the uncontaminated gold is ~1/3, consistent with every earlier
       measurement, so the true defect count is likely ~3x what a single pass finds.
-- [ ] **F1b-full** RECOMMENDED: run the narrow two-class sweep over all 19,279 (~9.4M tokens,
-      ~125 flags at this rate, likely ~375 real defects given recall ~1/3). Use a DIFFERENT
-      in-prompt example than any gold card. — `en-mismatch`, `answer-clash`, plus adjudication of E2's
+- [x] **F1b-models** Opus vs Sonnet on the identical 2,004 cards: **Opus 13 flags, Sonnet 6**
+      — but 3 of Sonnet's 6 were an artifact of MY batch prep (I truncated `ans` to 200 chars
+      and Sonnet correctly reported the answer was cut off). Real: Opus 13, Sonnet 3, overlap 2.
+      None of Opus's 13 were affected by the truncation. **Opus is ~4x the real yield.**
+
+- [x] **KEY ARCHITECTURAL FINDING — models discover patterns, greps enumerate them.**
+      Opus found `puddle->latian` on ffct-34824; Sonnet found the SAME defect on ffct-20721.
+      Different cards, identical error, neither found both. Grepping the corpus for the six
+      patterns the two runs discovered:
+
+      | pattern | grep finds | models found |
+      |---|---:|---:|
+      | plant bulb -> bombilya | 5 real (of 141 matches) | 1 |
+      | puddle -> latian | 12 real | 2 |
+      | starfish -> bituin | 1 real (of 5 matches) | 1 |
+      | vocal cord / muggy / rub | 3 | 3 |
+
+      ~21 real defects against the 6 the models surfaced — a **~3.5x multiplier, free.**
+      Both directions of verification mattered: 126 of the 141 `bulb` matches are genuinely
+      about LIGHT bulbs and correctly translated, and 4 of the 5 `starfish` matches are correct
+      usage. Grep proposes, triage disposes.
+
+- [ ] **F1b-full** RECOMMENDED, with the architecture revised: run the narrow two-class sweep over all 19,279 (~9.4M tokens,
+      run OPUS over the full 19,279 (~9.4M tokens) to DISCOVER defect patterns, then grep the
+      corpus for every pattern found and triage. Do NOT truncate `ans` -- send the full answer.
+      Expect the grep stage to multiply the model's findings ~3.5x at no cost.
+      Queue built: `known-pattern-queue.json` (21 defects from the 6 patterns already known).
+      NOT applied: choosing the right Tagalog for 'puddle' is a lexical call for a Filipino
+      speaker, like the other 29 lexical rewrites. — `en-mismatch`, `answer-clash`, plus adjudication of E2's
       1,251 nonword candidates, the two genuinely
       semantic classes, full card record supplied, control spiked into EVERY batch. Re-measure
       recall on just those classes before committing to the full 19,279.
