@@ -9,7 +9,7 @@ Scope: all 47,056 Cebuano cards in `rag/pipeline/cardsPool.app.json`.
 
 ## 1. What changed
 
-**395 cards repaired** — 125 Cebuano titles and 270 Cebuano bodies. The pool is re-serialised
+**421 cards repaired** — 151 Cebuano titles and 270 Cebuano bodies. The pool is re-serialised
 byte-identically to how it is stored, so the diff is **one line**; review through
 `c5a-applied.json` and `c5b-applied.json`, which record old and new text per card.
 
@@ -115,9 +115,21 @@ The most severe quarantine survivors, each provable from the card's own English:
 
 1. **Do not ship the Cebuano repairs on their own timeline.** They are safe — gated, verified,
    measured — but they are 395 cards out of 47,056 and nothing in the app is worse without them.
-2. **The truncation bug is the one worth acting on.** It is English-facing, in a shipped build,
-   and the generator fix is already landed. The pool repair is mechanical: the full word is
-   present on the card in every case. That is a better use of a release than this audit is.
+2. **The truncation bug is the one worth acting on, and the repair is ready.** It is
+   English-facing, in a shipped build, the generator fix is landed, and the pool repair is
+   mechanical because the full word is on the card in every case.
+
+   **I expected restoring to be a trade-off and it is not.** Restored titles land at 21–23
+   characters, which looked like it would overflow a band sized for `TITLE_MAX = 20`. But
+   **36.5% of the 147,468 titles already in the pool are longer than 20 characters, 9.2% are
+   longer than 27 — the width the generator's own comment says the band fits — and ZERO of the
+   restores reach 27.** A 21-character title is unremarkable here. `TITLE_MAX = 20` was the
+   defect, not the titles.
+
+   The **26 Cebuano** restores are applied. The **79 English and Tagalog** restores are staged
+   in `truncation-repairs.json` and NOT applied, because they are wider than the audit that
+   found them — `python3 repair_truncations.py --apply` lands them. That is the decision waiting
+   on Luis, and on this evidence it is a low-risk yes.
 3. **Queue the 573 held cards for a Cebuano teacher**, unanimity-gated and hard-capped for the
    first batch, exactly as the Tagalog report recommended. The holds are the product here as much
    as the repairs are.
@@ -134,6 +146,7 @@ The most severe quarantine survivors, each provable from the card's own English:
 | `quarantine-retriage.json` | the 42 contaminated flags re-judged, 26 refuted / 16 survive |
 | `c5c-triage.json` | 70 of 138 unattested title words, **unverified** |
 | `truncation-20char.json` | the 128 mid-word title cuts, all three languages |
+| `truncation-repairs.json` | 105 restores: 26 applied (bis), 79 staged (en/tl) |
 | `title-unattested.json` | 138 words / 720 cards |
 | `../ceb_usage.py` | the corpus-as-authority tool |
 | `../apply_*.py` | the three gated appliers |
