@@ -1,0 +1,358 @@
+{
+ "batches": 64,
+ "judged": 8000,
+ "flagged": 50,
+ "items": [
+  {
+   "id": "ffct-17584",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "dropped-topic-chromatography",
+   "quote": "en 'Why use paper for chromatography?' -> tl 'Bakit papel ang ginagamit?': the phrase 'for chromatography' is gone and the Tagalog answer never restores it ('May maliliit na butas ang papel...'), so the Tagalog question has no subject at all - used for what? A child reading only the Tagalog cannot tell what experiment the card is about."
+  },
+  {
+   "id": "ffct-33750",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "how much->magkano",
+   "quote": "en 'How much of Earth is actually land?' -> tl 'Magkano sa ibabaw ng Mundo ang lupa?': 'Magkano' is the price/money interrogative in Tagalog, so the quantity sense of 'how much' is rendered in the wrong sense - the Tagalog reads 'How much does the land on Earth cost?'. Compare ffct-34623 in the same batch, which correctly renders 'How much of the Moon is lit' as 'Gaano karami'."
+  },
+  {
+   "id": "ffct-03164",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "makes->tumatak",
+   "quote": "en 'What makes an animal a bird?' -> tl 'Ano ang tumatak sa isang ibon?'; 'makes (an animal) a bird' = defining criteria is rendered as 'tumatak' (left a mark/imprint on), and 'an animal'/'hayop' is dropped, so the Tagalog question asks 'what left a mark on a bird?' -- a child reading only the Tagalog cannot answer what was asked."
+  },
+  {
+   "id": "ffct-35229",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "acre->ektarya",
+   "quote": "EN answer: \"A single healthy acre can contain more than one million earthworms\" -> TL: \"Sa isang ektaryang malusog, maaaring may higit sa isang milyong earthworms\". An acre is not a hectare (1 ha = 2.47 acres), so the Tagalog card teaches a different density than the English; the TL question carries no unit to restore it."
+  },
+  {
+   "id": "ffct-30361",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "fog->ambon",
+   "quote": "EN \"What is the difference between fog and dew?\" -> TL \"Ano ang pagkakaiba ng ambon at hamog?\". \"Ambon\" is drizzle (light rain), not fog; the TL answer repeats it (\"nabubuo ang ambon sa hangin mismo\"), so the card teaches the false fact that drizzle forms in the air itself as opposed to dew. Wrong-sense noun."
+  },
+  {
+   "id": "ffct-12484",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "caterpillar->paru-paro",
+   "quote": "EN \"How long does a caterpillar stay in a chrysalis?\" -> TL \"Gaano katagal sa chrysalis ang paru-paro?\" (butterfly). The entity is swapped and the TL answer repeats \"paru-paro\", so the Tagalog-only child loses the fact that it is the caterpillar that enters the chrysalis."
+  },
+  {
+   "id": "ffct-12253",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "Philippine eagle->agila",
+   "quote": "en 'Why is the Philippine eagle in danger?' -> tl 'Bakit nanganganib ang agila?': the species qualifier 'Philippine' is gone and the Tagalog answer ('Dahil sa pagkawala ng kagubatan at pangangaso ng tao.') never names the Philippine eagle, so the card reads as a claim about eagles in general rather than the endangered Philippine eagle."
+  },
+  {
+   "id": "ffct-21626",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "densest->pinakamabigat",
+   "quote": "en 'What is the densest naturally occurring element?' -> tl 'Ano ang pinakamabigat na natural na elemento?': 'densest' is rendered as 'pinakamabigat' (heaviest), and the Tagalog answer repeats the wrong sense ('Ito ang pinakamabigat na natural na elemento'), so a child learns osmium is the heaviest element, which is false (uranium atoms are heavier); density is mass per volume, not weight."
+  },
+  {
+   "id": "ffct-36052",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "artisans->alahero",
+   "quote": "en_ans \"Artisans in Vigan mold local clay soil\" -> ans \"Hinuhulma ng mga alahero sa Vigan ang lokal na clay soil\"; alahero = jeweler, so the Tagalog card teaches that jewelers make burnay jars instead of potters/artisans (magpapalayok)"
+  },
+  {
+   "id": "ffct-03111",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "pond->lawa",
+   "quote": "en \"What's the difference between a pond and a lake?\" -> tl \"Ano ang pagkakaiba ng lawa at lanaw?\", ans \"Maliit at mababaw ang lawa, pero mas malaki at mas malalim ang lanaw\". Wrong-sense swap: \"lawa\" is the standard Tagalog word for LAKE (Lawa ng Laguna), yet the card gives it the pond's properties (small, shallow) and gives \"lanaw\" the lake's. A child reading only the Tagalog learns that a lawa is small and shallow; the answer does not restore the correct mapping."
+  },
+  {
+   "id": "ffct-16258",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "puddle->lawa",
+   "quote": "en \"Where does a rain puddle go?\" -> tl \"Saan napupunta ang lawa ng ulan?\", ans \"Nawawala ang lawa ng tubig sa kalsada\". \"puddle\" is rendered as \"lawa\" = LAKE (same defect family as puddle->latian). The answer repeats \"lawa ng tubig\" and never restores the small-puddle sense, so the Tagalog teaches that a lake on the road evaporates in the sun."
+  },
+  {
+   "id": "ffct-14383",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "toads->bakulaw",
+   "quote": "EN answer: \"touching frogs or toads cannot give you warts\" -> TL: \"sa paghipo ng palaka o bakulaw\". \"Bakulaw\" is a large ape/gorilla, not a toad (palakang bukid/tukak); the English entity \"toads\" is replaced by an unrelated animal and nothing else in the Tagalog restores it."
+  },
+  {
+   "id": "ffct-20936",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "brackish->bahaw",
+   "quote": "EN answer: \"Its brackish water is a homogeneous solution\" -> TL: \"Ang bahaw na tubig nito\". \"Bahaw\" means stale/leftover (cold leftover food), not brackish (maalat-alat/halo ng tubig-alat at tubig-tabang); the defining fact about the Hinatuan river water -- that it is part salt, part fresh -- is replaced with a claim that the water is stale."
+  },
+  {
+   "id": "ffct-19847",
+   "verdict": "FLAG",
+   "cls": "answer-clash",
+   "pattern": "rice->kanin",
+   "quote": "TL question: \"Ano ang nangyayari sa KANIN kapag niluluto mo?\" vs TL answer: \"Sinisipsip ng BIGAS ang tubig, kaya lumalambot at lumalaki ito.\" EN \"rice\" (uncooked) became \"kanin\" (already-cooked rice), so the question asks what happens to cooked rice while the answer describes uncooked bigas -- a different entity, and the question as written is self-contradictory (cooking rice that is already cooked)."
+  },
+  {
+   "id": "ffct-12469",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "acres->ektarya",
+   "quote": "EN answer: 'its underground network covers more than 2,300 acres of forest' -> TL: 'sumasakop ang ilalim-lupang network nito nang higit sa 2,300 ektarya ng kagubatan'. The unit is changed: 2,300 acres is about 930 hectares, so the Tagalog states an area ~2.5x too large. A child reading only the Tagalog learns a different number-plus-unit fact than the English card teaches."
+  },
+  {
+   "id": "ffct-07089",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "doves->kalyos",
+   "quote": "en_ans \"the same family as all pigeons and doves worldwide\" -> ans \"ang pamilya ng lahat ng kalapati at kalyos sa buong mundo\": \"doves\" is rendered as \"kalyos\", which in Tagalog means a callus/corn on the skin, not a bird. The tl question asks \"Anong pamilya ng ibon\" but the tl answer then names a non-bird as a member of Columbidae, so a child learns a false fact about what is in the dove family."
+  },
+  {
+   "id": "ffct-30368",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "fog->ambon",
+   "quote": "en \"Where is fog often the thickest?\" -> tl \"Saan madalas na mas makapal ang ambon?\": \"fog\" is rendered as \"ambon\", which in Tagalog is drizzle/light rain, not fog (hamog / makapal na hamog). The tl answer (\"Sa mababang lambak at malapit sa ilog! Doon kasi nag-iipon ang malamig na hangin sa gabi\") never says fog, so a child learns that DRIZZLE is thickest where cold air settles overnight -- a false fact."
+  },
+  {
+   "id": "ffct-36888",
+   "verdict": "FLAG",
+   "cls": "answer-clash",
+   "pattern": "alone-doesnt->hindi-nag-isa-ang-dahilan",
+   "quote": "en_ans: \"but that alone doesn't make it land first in free fall\" -> tl ans: \"pero hindi ito nag-isa ang dahilan kung bakit una itong bumabagsak\" (= it is not the only reason why it lands first), which presupposes the heavier object DOES land first and contradicts the tl question \"bakit hindi laging nananalo ang mga mabibigat sa takbuhan ng pagbagsak\""
+  },
+  {
+   "id": "ffct-23190",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "wind_turbine->turbina",
+   "quote": "en \"giant wind turbines by the sea\" -> tl \"mga malalaking turbina sa tabing-dagat\": the word \"wind\" is dropped from the question AND from the answer (\"May mga malalaking turbina sa tabing-dagat na gumagawa ng kuryente\"). The Bangui card's whole teachable fact is wind energy; a child reading only the Tagalog learns that big seaside turbines make electricity and can just as easily infer sea/water power."
+  },
+  {
+   "id": "ffct-21200",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "hardest->pinakamalupit",
+   "quote": "en \"What's the hardest solid part of your body?\" -> tl \"Ano ang pinakamalupit na solid na bahagi ng katawan mo?\"; \"malupit\" means cruel/harsh, not hard/rigid (\"matigas\"). The answer repeats the error (\"Ito ang pinakamalupit na solid na bagay sa katawan ng tao\") instead of restoring the hardness fact, so the Tagalog-only reader never learns that enamel is the HARDEST material. Compare ffct-11703 in the same batch, which correctly uses \"pinakamatigas\"."
+  },
+  {
+   "id": "ffct-29397",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "dry up->mauga",
+   "quote": "en \"Why does sandy soil dry up so fast?\" -> tl \"Bakit mabilis mauga ang sandy soil?\": \"dry up\" is rendered as \"mauga\", which in Tagalog means to become loose/wobbly (uga = shake), not to dry (matuyo); \"uga\"=dry is Cebuano, so a Tagalog-only reader loses the drying fact the English question carries and the answer only says \"mabilis dumaloy at maubos ang tubig\"."
+  },
+  {
+   "id": "ffct-25331",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "river->lawa",
+   " quote": "",
+   "quote": "en \"in a river procession\" -> tl \"sa prusisyong panlawa\" (lake procession): the English question's water body (river / ilog) is changed to a lake, and neither the Tagalog question nor the answer (\"Lumulutang sila dahil itinutulak sila pataas ng tubig...\") restores it."
+  },
+  {
+   "id": "ffct-32195",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "high tide->mataas ang kati",
+   "quote": "en_ans: \"Tiny sandbars hide under the water during HIGH TIDE\" -> ans: \"Nagtatago lang sa ilalim ng dagat ang mga maliliit na sandbar kapag mataas ang KATI\". 'Kati' is the ebb / LOW tide, not high tide -- this same bank uses it correctly elsewhere ('Hinihintay nila ang kati para mamulot ng kabibe... sa lumitaw na baybayin'). A child reading only the Tagalog learns the reverse fact: that sandbars hide when the water recedes, when in reality low tide is exactly when sandbars are exposed."
+  },
+  {
+   "id": "ffct-28174",
+   "verdict": "FLAG",
+   "cls": "answer-clash",
+   "pattern": "cars->kotse",
+   "quote": "Question asks about trains: \"Paano gumagalaw nang maayos ang mga tren ng MRT-3 sa Manila?\" but the answer ends \"...para i-convert ang electrical energy sa galaw ng mga kotse!\" -- en_ans \"the motion that moves the cars\" means the train's carriages, and \"kotse\" is the automobile sense, so the Tagalog answer names a different entity (cars/automobiles) than the question (MRT-3 trains)."
+  },
+  {
+   "id": "ffct-19885",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "clam->tahong",
+   "quote": "en \"giant clam\" is rendered as tl \"higanteng tahong\"; tahong is the green mussel, a different animal — the giant clam is the taklobo. The Tagalog answer never names the clam, so a child reading only Tagalog learns the shell fact about a giant mussel instead."
+  },
+  {
+   "id": "ffct-31993",
+   "verdict": "FLAG",
+   "cls": "answer-clash",
+   "pattern": "same-question-negated->magkaiba",
+   "quote": "en asks \"Are weathering and erosion the same thing?\" (answer \"Nope!\"), but tl flips the polarity of the question to \"Magkaiba ba ang weathering at erosion?\" (Are they different?) while keeping the answer \"Hindi!\" — so the Tagalog says they are NOT different and then immediately explains how they differ (\"Ang weathering ay nagbabasag ng bato sa kinalalagyan nito. Ang erosion ay pagdadala ... palayo!\")."
+  },
+  {
+   "id": "ffct-12624",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "tissue->tela",
+   "quote": "en_ans: 'their skeleton is made of cartilage, a tough but bendy tissue' -> ans: 'ang kanilang balangkas ay gawa sa kartilago, isang matibay ngunit malambot na tela'. 'Tela' in Tagalog means cloth/fabric, never biological tissue (that is 'tisyu'/'himaymay'), so the card teaches a child that a shark's skeleton is made of a tough but soft piece of CLOTH. Wrong-sense rendering of the ambiguous English word 'tissue', same family as bulb->bombilya."
+  },
+  {
+   "id": "ffct-19946",
+   "verdict": "FLAG",
+   "cls": "answer-clash",
+   "pattern": "glass->baso",
+   "quote": "TL question: 'Bakit nababasag ang selyadong bote ng salamin sa loob ng freezer?' vs TL answer: 'binabasag ang marupok na baso' -- EN answer 'shatters the fragile glass' refers to the bottle's glass, but 'baso' is a drinking glass, a different entity from the 'bote' in the question."
+  },
+  {
+   "id": "ffct-10058",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "folds->bulutong",
+   "quote": "EN 'nutrients pass into your blood through tiny finger-like folds called villi' -> TL 'sa pamamagitan ng maliliit na bulutong tinatawag na villi'. 'Bulutong' means smallpox/pox -- it is used that way everywhere else in this corpus (ffct-12800, ffct-07689, ffct-14909), and the correct rendering of villi elsewhere is 'parang-daliring bukol' (ffct-13007). The Tagalog child reads 'tiny smallpox called villi'."
+  },
+  {
+   "id": "ffct-17443",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "glass->salamin",
+   "quote": "en \"in a glass\" (a drinking glass, TL 'baso') -> tl \"sa loob ng salamin\" = inside a mirror/pane of glass. The container the meniscus forms in is gone; the TL answer does not restore it (it says \"kumapit ang tubig sa salamin at plastic\" and \"sa manipis na tubo\"). Sibling card ffct-16992 renders the same English word correctly as \"ordinaryong baso\"."
+  },
+  {
+   "id": "ffct-30454",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "poles->poste",
+   "quote": "en_ans \"It reaches about 8 kilometers at the poles\" -> ans \"Umaabot ito ng mga 8 kilometro sa mga poste\": geographic \"poles\" is rendered as \"poste\" (a post/pillar, e.g. poste ng kuryente), the wrong sense; the rest of the corpus uses \"polo\" for the Earth's poles. Paired with \"malapit sa ekwador\" the child reads a nonsense contrast (posts vs the equator) instead of poles vs equator."
+  },
+  {
+   "id": "ffct-08958",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "hump->utong",
+   "quote": "en_ans: \"known for the big hump on its forehead\" -> tl ans: \"kilala sa malaking utong sa noo nito\". 'Utong' is Tagalog for nipple, not a forehead hump ('umbok'/'bukol'); the child learns the Napoleon wrasse has a big nipple on its forehead."
+  },
+  {
+   "id": "ffct-11205",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "pitcher plant->tabo",
+   "quote": "en: \"What can live inside a pitcher plant?\" -> tl: \"Anong hayop ang nabubuhay sa loob ng tabo?\". 'Tabo' is the household water dipper, not the carnivorous plant; the answer repeats it ('sa loob ng likido ng tabo') so the plant is never restored -- the child learns mosquito larvae live inside a bathroom dipper."
+  },
+  {
+   "id": "ffct-30355",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "fog->ambon",
+   "quote": "en: \"What exactly is fog made of?\" -> tl: \"Ano ba ang binubuo ng ambon?\". 'Ambon' is drizzle (light falling rain), not fog ('hamog'/makapal na hamog); the answer keeps 'ambon' ('Ang ambon ay binubuo ng napakaliliit na patak ng tubig na lumulutang sa hangin'), so the child is taught that drizzle is suspended droplets hanging near the ground."
+  },
+  {
+   "id": "ffct-32894",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "one-of-the-largest->pinakamalaki",
+   "quote": "EN question: \"one of the world's biggest geothermal power plants\"; EN answer: \"one of the largest geothermal complexes in the Philippines and the world\". TL question drops the hedge: \"Saan ang pinakamalaking geothermal complex sa mundo?\" and the TL answer (\"Ang MakBan sa Laguna at Batangas, Pilipinas!\") does not restore it, so a child learns the false fact that MakBan is THE largest geothermal complex in the world."
+  },
+  {
+   "id": "ffct-12960",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "fluffy->malamig",
+   "quote": "en_ans 'Its soft, fluffy feathers muffle every wingbeat' -> ans 'Ang malambot at malamig na balahibo nito ay nagpapatahimik sa bawat pagpaypay'. 'fluffy' is rendered as 'malamig' (cold), not 'mahimulmol/malago'. The Tagalog-only child learns the silencing trait is that owl feathers are COLD - a false fact - and the real reason (fluffy/downy feathers) is nowhere in the Tagalog."
+  },
+  {
+   "id": "ffct-31243",
+   "verdict": "FLAG",
+   "cls": "answer-clash",
+   "pattern": "thick->makinis",
+   "quote": "TL question asks about thickness ('Bakit may makapal at manipis na patong ng bato?') but the TL answer explains smoothness: en 'Lots of mud over a long time makes it thick' became 'Maraming putik sa mahabang panahon ang nagpapakinis' (makes it smooth, not 'nagpapakapal'). The child is never told what makes a layer thick."
+  },
+  {
+   "id": "ffct-26927",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "unbalanced force->puwersa na balanse",
+   "quote": "EN answer: \"providing an unbalanced force to counteract our forward inertia\" -> TL answer: \"pagbibigay ng puwersa na balanse sa forward inertia\". The English teaches that the seatbelt applies an UNBALANCED force; the Tagalog says the force is BALANCED, the opposite term in the balanced/unbalanced-forces lesson (cf. ffct-22480 in this same batch, where unbalanced = 'di-balanse'). A child reading only the Tagalog learns the inverted physics fact."
+  },
+  {
+   "id": "ffct-30486",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "poles->poste",
+   "quote": "en_ans: \"particles from the Sun are caught by Earth's magnetic field near the poles\" -> ans: \"nahuhuli ng magnetic field malapit sa mga poste\". \"Poste\" is a post/pillar (lamp post); Earth's geographic poles are \"polo\" (Hilagang/Timog Polo). Wrong-sense rendering, and \"Earth's\" is dropped from \"magnetic field\" too, so the Tagalog teaches that auroras happen near posts."
+  },
+  {
+   "id": "ffct-21453",
+   "verdict": "FLAG",
+   "cls": "answer-clash",
+   "pattern": "subject-object-reversal",
+   "quote": "tl asks \"Kaya bang mag-scratch ng bato sa ilog ang COPPER COIN?\" (can the copper coin scratch a river rock) but the answer replies \"Oo!\" and then states the reverse: \"Ang quartz crystals na makikita sa mga bato ng ilog ay kayang mag-scratch ng copper coin\". English question is \"Can a river rock scratch a copper coin?\" — the Tagalog swapped scratcher and scratched, so the \"Oo!\" teaches the false fact that copper scratches quartz."
+  },
+  {
+   "id": "ffct-11340",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "warts->tinga",
+   "quote": "en \"Can touching a frog give you WARTS?\" became tl \"Nakakahawa ba ng TINGA ang paghawak sa palaka?\", and the answer repeats it: \"hindi magdudulot ng tinga — ang tinga ay dulot ng human papillomavirus\". \"Tinga\" is food stuck between the teeth, not a wart (kulugo); the whole medical fact is attached to the wrong entity. Elsewhere in this bank the same card renders it correctly: \"Ang warts ng tao ay dulot ng tiyak na virus\" and \"mga bukol na parang kulugo\"."
+  },
+  {
+   "id": "ffct-39023",
+   "verdict": "FLAG",
+   "cls": "answer-clash",
+   "pattern": "accelerate->bumibilis",
+   "quote": "tl asks 'Nag-aaccelerate ba ang bisikleta kapag lumiliko sa kanto?' and ans replies 'kaya bumibilis ito kahit pareho lang ang bilis nito' — 'bumibilis' (it speeds up) directly contradicts 'pareho lang ang bilis nito' (its speed stays the same); en_ans says only 'it is accelerating even if its speed stays the same'"
+  },
+  {
+   "id": "ffct-03015",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "certain-body-parts->iisang-bahagi",
+   "quote": "EN asks \"Why does one hormone affect only certain body parts?\" (certain = some, selectively several). TL asks \"Bakit IISANG BAHAGI LANG ng katawan ang naaapektuhan ng isang hormone?\" = \"why is only ONE part of the body affected\". The plural/selective \"certain body parts\" is changed to a single body part, and the TL answer ('Tinatamaan lang ng bawat hormone ang mga target cell na may tugmang receptor — parang susi na akma lang sa isang kandado') never restores it — it reinforces the singular. A child reading only Tagalog learns the false rule that each hormone acts on exactly one body part."
+  },
+  {
+   "id": "ffct-00335",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "tears->luha",
+   "quote": "EN answer: \"the soreness ... comes from tiny muscle tears and inflammation\" -> TL: \"ang pananakit ... ay dulot ng maliliit na luha sa kalamnan at pamamaga\". English \"tears\" (rips/punit) is rendered in the wrong sense as \"luha\" = tears wept from the eyes. The Tagalog therefore teaches that muscle soreness comes from tiny eye-tears in the muscle, i.e. nonsense in place of the actual cause (micro-tears). Correct sense: \"maliliit na punit/lamat sa kalamnan\"."
+  },
+  {
+   "id": "ffct-12035",
+   "verdict": "FLAG",
+   "cls": "answer-clash",
+   "pattern": "millipede->alupihan",
+   "quote": "tl asks about 'alupihan' (Tagalog for centipede) while ans answers about the 'millipede' ('minsan kinakain ulit ng millipede ang sarili nitong dumi') -- question and answer name different animals, and the child is taught that a centipede is a millipede."
+  },
+  {
+   "id": "ffct-24922",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "gaps->agos",
+   "quote": "en 'What bridge type can cross the widest gaps?' became tl 'pinakamalawak na agos' (widest water current/flow). The English fact is span length across a gap (valley, strait, any opening); the Tagalog asks about the strength/width of flowing water, and ans ('Mahabang kable... dinadala ang daan sa daan-daang metro') never restores the notion of a gap."
+  },
+  {
+   "id": "ffct-19386",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "breathe->hinihimod",
+   "quote": "EN 'the oxygen we breathe' becomes TL 'oxygen na ating hinihimod' (oxygen we LICK); 'hinihinga' is the verb for breathe, and the answer repeats the same error ('tumuklas ng oxygen na ating hinihimod noong 1774'), so nothing restores the breathing fact."
+  },
+  {
+   "id": "ffct-20765",
+   "verdict": "FLAG",
+   "cls": "answer-clash",
+   "pattern": "heavier->kagamit",
+   "quote": "en asks \"How much heavier is solid gold compared to the same amount of water?\" but tl asks \"Gaano KAGAMIT ang solid gold kumpara sa parehong dami ng tubig?\" (= how USEFUL); the Tagalog answer never addresses usefulness and instead gives weight: \"19.3 beses mas mabigat kaysa liquid water\". Question asks one thing (usefulness), answer gives another (density/weight) -- \"heavier\" was turned into \"kagamit\" instead of \"kabigat\"."
+  },
+  {
+   "id": "ffct-22152",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "sun-behind-you->tumayo-sa-likod-ng-araw",
+   "quote": "en_ans \"Stand with the sun behind you and face the rain or mist\" -> ans \"Tumayo ka sa likod ng araw at harapin ang ulan o ambon\". \"Sa likod ng araw\" means \"BEHIND THE SUN\" (the child is placed behind the sun), the exact reverse of \"with the sun behind you\" (Tagalog needs \"nang nasa likuran mo ang araw\" / \"talikuran mo ang araw\"). The rainbow-viewing rule IS the sun-at-your-back geometry, nothing in the card restores it, and the Tagalog instruction as written is physically impossible to follow."
+  },
+  {
+   "id": "ffct-00583",
+   "verdict": "FLAG",
+   "cls": "en-mismatch",
+   "pattern": "comparison-subjects->nila",
+   "quote": "en \"Is a turtle's shell like a crab's?\" -> tl \"Magkatulad ba ang bahay-buto nila?\": both compared entities (\"a turtle's\" and \"a crab's\") vanish, leaving a bare pronoun \"nila\" with no antecedent, so the Tagalog question cannot be answered as posed."
+  }
+ ]
+}

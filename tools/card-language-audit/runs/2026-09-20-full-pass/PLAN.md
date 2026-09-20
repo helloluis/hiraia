@@ -236,7 +236,37 @@ assisted work including the judge. Corpus is 1.22M tokens of content — well wi
       about LIGHT bulbs and correctly translated, and 4 of the 5 `starfish` matches are correct
       usage. Grep proposes, triage disposes.
 
-- [ ] **F1b-full** RECOMMENDED, with the architecture revised: run the narrow two-class sweep over all 19,279 (~9.4M tokens,
+- [x] **F1b-full (8,000 of 17,284)** DONE — 50 flags (0.62%, matching the probe's 0.65%),
+      **45 distinct wrong-sense translation patterns**, several severe:
+
+        unbalanced force -> "puwersa na balanse"   (says BALANCED force, the opposite)
+        high tide        -> "mataas ang kati"      (kati is LOW tide)
+        hump (camel)     -> "utong"                (nipple)
+        toads            -> "bakulaw"              (gorilla)
+        doves            -> "kalyos"               (a callus on the skin)
+        warts            -> "tinga"                (food stuck in teeth)
+        breathe          -> "hinihimod"            (licking)
+        acre             -> "ektarya"              (1 ha = 2.47 acres; the number is 2.5x off)
+        densest          -> "pinakamabigat"        (heaviest != densest; teaches a false fact)
+
+      **Grep multiplier, then triage.** The 50 flags grep to 687 corpus instances (13.7x) --
+      but the `bulb` lesson applies and the headline number is wrong before triage:
+
+        59  pattern is ALWAYS a mistranslation        -> real defects
+       163  pattern is ALWAYS correct (tears->luha,
+            cars->kotse -- luha IS tears)             -> bogus, model flagged a context
+       465  context-dependent (glass->salamin/baso,
+            rice->kanin, pond->lawa)                  -> needs per-card triage
+
+      So: 50 model findings -> **59 confirmed defects** by grep, plus 465 candidates. The real
+      multiplier on confirmed defects is ~1.2x, not 13.7x. Greping a pattern the model found in
+      ONE context and assuming it holds everywhere is the same error as the 141 bulb matches of
+      which 126 were fine.
+
+- [ ] **F1b-rest** Remaining 9,284 cards, same config. Pattern discovery has NOT saturated --
+      this chunk found 45 new patterns against the probe's 6 -- so the remainder is worth it.
+- [ ] **T1** Triage the 465 context-dependent candidates (cheap: one model pass over a bounded
+      list, same funnel shape that worked for nonwords). run the narrow two-class sweep over all 19,279 (~9.4M tokens,
       run OPUS over the full 19,279 (~9.4M tokens) to DISCOVER defect patterns, then grep the
       corpus for every pattern found and triage. Do NOT truncate `ans` -- send the full answer.
       Expect the grep stage to multiply the model's findings ~3.5x at no cost.
