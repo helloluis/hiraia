@@ -42,6 +42,7 @@ import kotlin.math.abs
 
 class MainActivity : Activity(), NearbyCollector.Listener {
     private lateinit var database: TalaDatabase
+    private val updater by lazy { TalaUpdater(this) { if (!tutorialVisible) render() } }
     private var collector: NearbyCollector? = null
     private val manualEnrollment = ManualEnrollment()
     private val preferences by lazy { getSharedPreferences("tala-dashboard-v2", Context.MODE_PRIVATE) }
@@ -112,6 +113,7 @@ class MainActivity : Activity(), NearbyCollector.Listener {
 
     override fun onResume() {
         super.onResume()
+        updater.resume()
         if (tutorialVisible) return
         render()
         if (database.pendingIssueCount() > 0) IssueUploader.schedule(this)
@@ -124,12 +126,14 @@ class MainActivity : Activity(), NearbyCollector.Listener {
     }
 
     override fun onPause() {
+        updater.pause()
         collector?.stop()
         live.entries.removeAll { it.value != SyncState.ERROR_CONNECTING && it.value != SyncState.ERROR_TRANSFER }
         super.onPause()
     }
 
     override fun onDestroy() {
+        updater.close()
         settingsDialog?.dismiss()
         studentDialog?.dismiss()
         collector?.close()
@@ -424,6 +428,10 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         header.addView(brand, LinearLayout.LayoutParams(0, -2, 1f))
         header.addView(button("☰ Settings", false) { showSettings() })
         page.addView(header)
+        updater.banner?.let { message ->
+            page.addView(button(message, false) { updater.show() },
+                LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(10) })
+        }
         page.addView(label(greeting(schoolClass.teacherName), 26f, INK, true),
             LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(12) })
         page.addView(label("Active classroom", 12f, MUTED, true),
@@ -643,7 +651,8 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         if (settingsDialog?.isShowing == true) return
         settingsDialog = TalaSettings(this, database, selectedClassId,
             onClassSelected = { selectClass(it) },
-            onClassesChanged = { render() }).show()
+            onClassesChanged = { render() },
+            onCheckUpdates = { updater.check(true) }).show()
     }
 
     private fun showQr() {

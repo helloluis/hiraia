@@ -49,6 +49,7 @@ import { getSetting, setSetting } from '../db/repo';
 import { ensureRemoteAsset } from '../engine/modelDownload';
 import { errorCategory, track } from '../telemetry';
 import { useEngineStore, type ReadyStage } from './engineStore';
+import { useAssetUpdateStore } from './assetUpdateStore';
 
 /** Override at build time for staging. Must be https. */
 export const MANIFEST_URL =
@@ -198,7 +199,7 @@ export function parseManifest(body: unknown): AppManifest | null {
   };
 }
 
-async function fetchManifest(): Promise<AppManifest | null> {
+async function fetchManifest(manual = false): Promise<AppManifest | null> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
   try {
@@ -213,7 +214,13 @@ async function fetchManifest(): Promise<AppManifest | null> {
       signal: controller.signal as RequestInit['signal'],
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return parseManifest(await res.json());
+    const body = await res.json();
+    if (!body || body.schema !== 1 || !Object.prototype.hasOwnProperty.call(body, 'app')) throw new Error('Invalid update manifest');
+    // A bad optional asset catalog must not suppress an APK update.
+    await useAssetUpdateStore.getState().acceptManifest(body.assets, manual).catch(() => {});
+    const app = parseManifest(body);
+    if (body.app !== null && !app) throw new Error('Invalid APK update metadata');
+    return app;
   } finally {
     clearTimeout(timeout);
   }
@@ -333,7 +340,7 @@ export const useUpdateStore = create<UpdateState>((set, get) => ({
     // its chip stays live) while the recheck runs, so the bar never blinks.
     if (status === 'idle') set({ status: 'checking' });
     try {
-      const manifest = await fetchManifest();
+      const manifest = await fetchManifest(reason === 'manual');
       const now = Date.now();
       lastFailedAt = 0;
       // The fetch yielded: the reader may have tapped download meanwhile. Their state wins.
@@ -391,6 +398,7 @@ export const useUpdateStore = create<UpdateState>((set, get) => ({
   },
 
   startDownload: async () => {
+    if (useAssetUpdateStore.getState().status === 'downloading' || modelTransferInFlight()) return;
     const { status, manifest } = get();
     if (!manifest || (status !== 'available' && status !== 'failed')) return;
     set({ status: 'downloading', pct: 0, error: null });
@@ -464,7 +472,7 @@ export const useUpdateStore = create<UpdateState>((set, get) => ({
 
   manualCheck: async () => {
     if (Platform.OS !== 'android') return 'uptodate';
-    if (modelTransferInFlight()) return 'busy';
+    if (modelTransferInFlight() || useAssetUpdateStore.getState().status === 'downloading') return 'busy';
     // An explicit ask forgets the ✕ — clearing BEFORE the check so a snoozed manifest
     // resurfaces as 'available' rather than sliding back into 'snoozed'.
     try {
@@ -478,6 +486,7 @@ export const useUpdateStore = create<UpdateState>((set, get) => ({
     const after = get();
     if (after.status === 'available' || after.status === 'downloading' || after.status === 'ready')
       return 'available';
+    if (['available','ready','failed'].includes(useAssetUpdateStore.getState().status)) return 'available';
     if (after.lastCheckedAt !== before) return 'uptodate';
     return 'error';
   },
@@ -554,7 +563,7 @@ export function startUpdateChecks(): () => void {
   // A tablet that never leaves the foreground still gets its 6-hourly look.
   const tick = setInterval(() => {
     if (AppState.currentState === 'active' && checkDue()) void useUpdateStore.getState().checkForUpdate('tick');
-  }, RECHECK_MS);
+  }, FAILED_RETRY_MS);
 
   return () => {
     started--;

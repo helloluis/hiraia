@@ -2,13 +2,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppState } from 'react-native';
 import { Directory, File, Paths } from 'expo-file-system';
 import { getInfoAsync } from 'expo-file-system/legacy';
+import * as Application from 'expo-application';
+import { mergeImagePacks, parseAssetCatalog, type AssetCatalog } from '../updates/catalog';
 import manifest from '../generated/imagePacks.generated.json';
 import { ensureRemoteAsset } from '../engine/modelDownload';
 import { hydrateDownloadedArt, markArtDownloadedMany } from '../data/artPresence';
 import { useEngineStore } from '../store/engineStore';
 import { headerLength, parseEntries, requiredPacks, type ImagePack, type ImageEntry } from './format';
 
-const packs: ImagePack[] = manifest.packs;
+let packs: ImagePack[] = manifest.packs;
+const catalogKey = 'hiraia.image-catalog.v1';
 const root = () => new Directory(Paths.document, 'image-packs');
 const preference = 'hiraia.image-downloads.enabled.v2';
 const listeners = new Set<() => void>();
@@ -40,8 +43,24 @@ function entriesAt(dir: Directory, rows: ImageEntry[]) { return rows.map((row,i)
 export function initializeImages(): Promise<void> {
   return initialized ??= (async () => {
     root().create({ intermediates: true, idempotent: true });
+    try {
+      const raw = await AsyncStorage.getItem(catalogKey);
+      const saved = raw && parseAssetCatalog(JSON.parse(raw), Number(Application.nativeBuildVersion), manifest.version);
+      if (saved) packs = mergeImagePacks(manifest.packs, saved.imagePacks);
+    } catch { /* Bundled catalog remains usable offline. */ }
     const entries: (readonly [string,string])[] = [];
-    for (const pack of packs) {
+    // Replay prior versions first. Their images remain visible until a replacement is
+    // completely installed, including across a kill halfway through an update.
+    const historyRaw = await AsyncStorage.getItem(catalogKey + '.history').catch(() => null);
+    const history: ImagePack[] = [];
+    try {
+      for (const raw of JSON.parse(historyRaw ?? '[]')) {
+        const saved = parseAssetCatalog(raw, Number(Application.nativeBuildVersion), manifest.version);
+        if (saved) history.push(...saved.imagePacks);
+      }
+    } catch { /* Bad metadata must never prevent bundled illustrations from loading. */ }
+    for (const pack of [...manifest.packs, ...history, ...packs]) {
+      if (installed.has(pack.md5)) continue;
       const staging = new Directory(root(), pack.md5+'.staging');
       if (staging.exists) staging.delete();
       const dir = folder(pack); const marker = new File(dir, 'installed.json');
@@ -69,6 +88,31 @@ export function initializeImages(): Promise<void> {
     update({ ready: true, enabled, phase: 'paused' });
     refreshProgress();
   })().catch(() => { initialized = null; update({ phase: 'paused', error: true }); });
+}
+
+/** Sparse corrections can include common patch packs that override APK-bundled art. */
+export function pendingImageUpdates(replacements: ImagePack[]): ImagePack[] {
+  const engine = useEngineStore.getState();
+  return requiredPacks(replacements, engine.bootstrapped && !engine.onboardingActive ? engine.grade : null)
+    .filter(p => !installed.has(p.md5));
+}
+
+export async function acceptImageUpdates(catalog: AssetCatalog): Promise<void> {
+  await initializeImages();
+  const previous = await AsyncStorage.getItem(catalogKey);
+  if (previous) {
+    const history = JSON.parse(await AsyncStorage.getItem(catalogKey + '.history') ?? '[]');
+    // Keep prior receipts so interrupted updates retain their last working illustrations.
+    if (!history.some((c: AssetCatalog) => c.revision === JSON.parse(previous).revision)) {
+      history.push(JSON.parse(previous));
+      await AsyncStorage.setItem(catalogKey + '.history', JSON.stringify(history));
+    }
+  }
+  await AsyncStorage.setItem(catalogKey, JSON.stringify(catalog));
+  packs = mergeImagePacks(manifest.packs, catalog.imagePacks);
+  refreshProgress();
+  // Honour a user's paused-download preference.
+  void pump();
 }
 
 async function install(pack: ImagePack, signal: AbortSignal) {

@@ -23,7 +23,8 @@ class TalaSettings(
     private val database: TalaDatabase,
     private val selectedClassId: String?,
     private val onClassSelected: (String) -> Unit,
-    private val onClassesChanged: () -> Unit
+    private val onClassesChanged: () -> Unit,
+    private val onCheckUpdates: () -> Unit = {}
 ) {
     private lateinit var dialog: Dialog
 
@@ -66,6 +67,8 @@ class TalaSettings(
         header.addView(label("Settings", 29f, INK, true), LinearLayout.LayoutParams(0, -2, 1f))
         header.addView(button("×", false) { dialog.dismiss() }, LinearLayout.LayoutParams(dp(48), dp(48)))
         content.addView(header)
+        content.addView(button("Check for app updates", false) { onCheckUpdates() },
+            LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(12) })
         content.addView(label("Classes on this phone", 22f, INK, true),
             LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(25); bottomMargin = dp(10) })
         content.addView(label("Tap a class to open its dashboard and QR.", 13f, MUTED, false),
