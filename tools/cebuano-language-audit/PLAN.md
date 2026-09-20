@@ -116,7 +116,35 @@ So the cheap deterministic wins are already banked; what remains is semantic.
 - [x] **C1-note** original stage text: Score the judge on C0's gold at PRODUCTION batch size. Report accuracy plus
       precision and recall on FLAG **separately** — never averaged. Gate: FLAG precision >= 0.9.
       If it fails, stop and say so rather than sweeping 19,285 cards with an unmeasured judge.
-- [ ] **C2** Measured probe: 2,000 cards, gold spiked in, full card record, NO field truncation.
+- [x] **C2** DONE — 1,500 unseen cards, 3-run union, full card record, no truncation.
+      **14 flags = 0.93%** (per-run 9 / 10 / 12; 6 unanimous). Tagalog was 0.78%.
+      Projected over 19,285 cards: ~180 findable at this recall; at the measured recall of
+      ~.41 the true population is plausibly ~440.
+
+      The defects are severe and several are provable against the corpus's own usage:
+        cat -> iro          title says Toxoplasma comes from DOG droppings; EN and body say
+                            CAT. A false health claim, and cat-specificity is the card's point.
+        fever -> tugnaw     "why are we weak when COLD" instead of "with a fever"
+        sweating -> pagpanghupaw   the brain triggers SIGHING to cool the body (the same batch
+                            uses `mopawis` correctly, so the right word exists in the corpus)
+        absorb -> mopasok   carrots PUT minerals INTO the soil — uptake direction reversed
+        left -> miadto      sunlight WENT TO the sun eight minutes ago — direction reversed
+        thunderstorm -> bagyo   a hot Manila afternoon signals an incoming TYPHOON
+        beak -> sungkad     Darwin's finch BEAKS become fruit-knocking poles (corpus uses
+                            `tuka` for the same Darwin fact elsewhere)
+        whisper -> bulong   "a shout reaches farther than MEDICINE"
+        cools -> moluoy     "when the magma TAKES PITY"
+        roast -> gilanggaw  coffee beans VINEGARED, not roasted (corpus uses `gisanlag`)
+
+      **blindness -> pagkabulag is explicitly a TAGALOG FALSE FRIEND**: in Cebuano `bulag`
+      means to separate, blind is `buta`, and the corpus uses `makabuta` correctly elsewhere.
+      That is the same cross-language interference class as `cud -> pag-usap` (Cebuano into
+      Tagalog) and `Haiwan` (Malay) — now observed in the third direction, Tagalog into
+      Cebuano. Three directions of bleed from one generator is a pipeline finding, not a card
+      finding.
+
+      13 reusable word-pair patterns captured for the C4 grep stage.
+- [x] **C2-note** original stage text: Measured probe: 2,000 cards, gold spiked in, full card record, NO field truncation.
       Report the flag rate and the projected corpus total before spending on the rest.
 - [ ] **C3** Discovery sweep over the remaining ~17,300 in chunks. Judge returns a reusable
       `pattern` per flag. Stop early if pattern discovery saturates.
