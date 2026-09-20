@@ -128,3 +128,102 @@ test('real SQLite: corrupt queued JSON is discarded without blocking valid event
     0
   );
 });
+
+test('teacher reinstall restores retained semester history in pages after both upload ACKs and a restart', async () => {
+  connections.forEach((db) => db.close());
+  connections = [];
+  rmSync(path.join(temp, 'hiraia-telemetry.db'), { force: true });
+  const repo = await openRepository(event(8000));
+  const first = { class_id: 'old-class', public_key: 'old-key', bound_at: Date.now() };
+  const replacement = { class_id: 'new-class', public_key: 'new-key', bound_at: Date.now() };
+  const history = Array.from({ length: 123 }, (_, i) => ({
+    ...event(9000 + i, 'quiz_graded'),
+    occurred_at: Date.now() - 400 * 86400000,
+    props: {
+      grade: 5,
+      language: 'tagalog',
+      correct: true,
+      profile_kind: 'student',
+      profile_id: 'profile_1234567890123456',
+    },
+  }));
+  await repo.append(history);
+  await repo.acknowledge(history.map((e) => e.id));
+  await repo.bind(first);
+  async function drain(r: any) {
+    const received: any[] = [];
+    for (let i = 0; i < 20; i++) {
+      const page = await r.teacherList(50);
+      if (!page.length) return received;
+      assert.ok(page.length <= 50);
+      received.push(...page);
+      await r.teacherAcknowledge(
+        page.map((e: any) => e.id),
+        await r.binding()
+      );
+    }
+    throw new Error('Recovery did not drain');
+  }
+  const old = await drain(repo);
+  assert.equal(old.filter((e) => history.some((h) => h.id === e.id)).length, 123);
+  await repo.bind(first);
+  assert.equal((await repo.teacherList(50)).length, 0, 'same QR does not replay ACKed history');
+  await repo.bind(replacement);
+  const page = await repo.teacherList(50);
+  assert.equal(page.length, 50);
+  await repo.teacherAcknowledge(
+    page.map((e: any) => e.id),
+    first
+  );
+  assert.equal(
+    (await repo.teacherList(50)).length,
+    50,
+    'old receiver ACK cannot erase new recovery'
+  );
+  await repo.teacherAcknowledge(
+    page.map((e: any) => e.id),
+    replacement
+  );
+  connections.forEach((db) => db.close());
+  connections = [];
+  const reopened = await openRepository(event(8001));
+  const recovered = [...page, ...(await drain(reopened))].filter((e) =>
+    history.some((h) => h.id === e.id)
+  );
+  assert.equal(recovered.length, 123);
+  for (const e of recovered)
+    assert.deepEqual(
+      e,
+      history.find((h) => h.id === e.id)
+    );
+  assert.equal((await reopened.teacherList(50)).length, 0);
+  await reopened.unbind();
+});
+
+test('legacy recovery labels reconstructed history, includes grade, and obeys telemetry opt-out', async () => {
+  connections.forEach((db) => db.close());
+  connections = [];
+  rmSync(path.join(temp, 'hiraia-telemetry.db'), { force: true });
+  const repo = await openRepository(event(8100));
+  const db = connections.at(-1)!;
+  const id = 'legacy_recovery_123456';
+  db.prepare('INSERT INTO activity VALUES(?,?,?,?,?)').run(
+    id,
+    Date.now() - 200 * 86400000,
+    'card_viewed',
+    'curated',
+    0
+  );
+  db.prepare(
+    'INSERT INTO activity_details(id,grade,language,card_id,profile_id) VALUES(?,?,?,?,?)'
+  ).run(id, 6, 'cebuano', 'card-legacy', 'profile_1234567890123456');
+  await repo.setEnabled(false);
+  await repo.bind({ class_id: 'restored-class', public_key: 'restored-key', bound_at: Date.now() });
+  assert.deepEqual(await repo.teacherList(50), []);
+  await repo.setEnabled(true);
+  const recovered = (await repo.teacherList(50)).find((e: any) => e.id === id);
+  assert.equal(recovered.reconstructed, true);
+  assert.equal(recovered.props.grade, 6);
+  assert.equal(recovered.props.profile_id, 'profile_1234567890123456');
+  await repo.unbind();
+});

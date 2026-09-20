@@ -38,6 +38,7 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
     CREATE TABLE IF NOT EXISTS teacher_outbox(seq INTEGER PRIMARY KEY AUTOINCREMENT,id TEXT UNIQUE NOT NULL,
       queued_at INTEGER NOT NULL,event TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS teacher_sent(id TEXT PRIMARY KEY);
+    CREATE TABLE IF NOT EXISTS activity_payloads(id TEXT PRIMARY KEY,event TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS teacher_meta(key TEXT PRIMARY KEY,value TEXT NOT NULL);`);
   await db.withExclusiveTransactionAsync(async (tx) => {
     const columns = await tx.getAllAsync<{ name: string }>('PRAGMA table_info(activity_details)');
@@ -51,6 +52,11 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
   });
   const recordActivity = async (tx: Pick<SQLite.SQLiteDatabase, 'runAsync'>, e: Event) => {
     if (e.name !== 'card_viewed' && e.name !== 'quiz_graded') return;
+    await tx.runAsync(
+      'INSERT OR IGNORE INTO activity_payloads VALUES(?,?)',
+      e.id,
+      JSON.stringify(e)
+    );
     await tx.runAsync(
       'INSERT OR IGNORE INTO activity VALUES(?,?,?,?,?)',
       e.id,
@@ -107,6 +113,22 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
         /* Preserve legacy counters if a queued event cannot be read. */
       }
     }
+  });
+  await db.withExclusiveTransactionAsync(async (tx) => {
+    if (await tx.getFirstAsync("SELECT value FROM meta WHERE key='activity_payloads_since'"))
+      return;
+    const pending = await tx.getAllAsync<{ event: string }>(
+      'SELECT event FROM outbox UNION ALL SELECT event FROM teacher_outbox'
+    );
+    for (const row of pending) {
+      try {
+        const e = JSON.parse(row.event) as Event;
+        if (sanitizeEvent(e)) await recordActivity(tx, e);
+      } catch {
+        /* Keep compact history when the original payload is unavailable. */
+      }
+    }
+    await tx.runAsync("INSERT INTO meta VALUES('activity_payloads_since',?)", String(Date.now()));
   });
   let installationId = '';
   // One connection and exclusive transactions: appends/acks/initialization cannot mingle.
@@ -227,6 +249,21 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
     },
     async bind(next: Binding) {
       await db.withExclusiveTransactionAsync(async (tx) => {
+        const previous = await tx.getAllAsync<{ key: string; value: string }>(
+          "SELECT key,value FROM teacher_meta WHERE key IN ('class_id','public_key')"
+        );
+        const same =
+          previous.find((r) => r.key === 'class_id')?.value === next.class_id &&
+          previous.find((r) => r.key === 'public_key')?.value === next.public_key;
+        if (!same) {
+          // Binding + delivery reset are one transaction, including recovery after a reinstall.
+          await tx.runAsync('DELETE FROM teacher_outbox');
+          await tx.runAsync('DELETE FROM teacher_sent');
+          await tx.runAsync(
+            "DELETE FROM teacher_meta WHERE key IN ('last_sync','status','dropped')"
+          );
+        }
+
         await tx.runAsync(
           "INSERT OR REPLACE INTO teacher_meta VALUES('class_id',?)",
           next.class_id
@@ -239,49 +276,6 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
           "INSERT OR REPLACE INTO teacher_meta VALUES('bound_at',?)",
           String(next.bound_at)
         );
-        const since = Date.now() - 7 * 86400000;
-        const history = await tx.getAllAsync<{
-          id: string;
-          occurred_at: number;
-          name: string;
-          source: string;
-          correct: number;
-          card_id: string | null;
-          profile_id: string | null;
-          language: string | null;
-        }>(
-          `SELECT a.id,a.occurred_at,a.name,a.source,a.correct,d.card_id,d.profile_id,d.language
-           FROM activity a LEFT JOIN activity_details d ON a.id=d.id
-           WHERE a.occurred_at>=? AND a.name IN ('card_viewed','quiz_graded')`,
-          since
-        );
-        for (const row of history) {
-          if (await tx.getFirstAsync('SELECT 1 FROM teacher_sent WHERE id=?', row.id)) continue;
-          const props: Record<string, string | number | boolean> = {};
-          if (row.source === 'curated' || row.source === 'generated') props.source = row.source;
-          if (row.card_id) props.card_id = row.card_id;
-          if (row.language === 'english' || row.language === 'tagalog' || row.language === 'cebuano')
-            props.language = row.language;
-          if (row.profile_id && /^[A-Za-z0-9_-]{16,80}$/.test(row.profile_id)) {
-            props.profile_id = row.profile_id;
-            props.profile_kind = 'student';
-          }
-          if (row.name === 'quiz_graded') props.correct = row.correct === 1;
-          const event = sanitizeEvent({
-            id: row.id,
-            name: row.name,
-            occurred_at: row.occurred_at,
-            session_id: installationId,
-            props,
-          });
-          if (!event) continue;
-          await tx.runAsync(
-            'INSERT OR IGNORE INTO teacher_outbox(id,queued_at,event) VALUES(?,?,?)',
-            event.id,
-            Date.now(),
-            JSON.stringify(event)
-          );
-        }
       });
     },
     async unbind() {
@@ -333,7 +327,10 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
             "SELECT value FROM teacher_meta WHERE key='dropped'"
           );
           const count = Number(row?.value || 0) + dropped;
-          await tx.runAsync("INSERT OR REPLACE INTO teacher_meta VALUES('dropped',?)", String(count));
+          await tx.runAsync(
+            "INSERT OR REPLACE INTO teacher_meta VALUES('dropped',?)",
+            String(count)
+          );
           if (events[0]) {
             const report = {
               ...events[0],
@@ -357,6 +354,74 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
         "SELECT value FROM meta WHERE key='enabled'"
       );
       if (preference?.value === 'false') return [];
+      // Page retained learning history into the bounded delivery queue. A large semester
+      // never needs to fit in memory/the outbox; ACKs advance recovery across restarts.
+      await db.withExclusiveTransactionAsync(async (tx) => {
+        const enabled = await tx.getFirstAsync<{value: string}>("SELECT value FROM meta WHERE key='enabled'");
+        if (enabled?.value === 'false') return;
+        if (!(await tx.getFirstAsync("SELECT 1 FROM teacher_meta WHERE key='class_id'"))) return;
+        const queued = await tx.getFirstAsync<{ n: number }>(
+          'SELECT count(*) n FROM teacher_outbox'
+        );
+        const room = Math.max(0, Math.min(50, limit) - (queued?.n || 0));
+        if (!room) return;
+        const history = await tx.getAllAsync<{
+          id: string;
+          occurred_at: number;
+          name: string;
+          source: string;
+          correct: number;
+          grade: number | null;
+          card_id: string | null;
+          profile_id: string | null;
+          language: string | null;
+          event: string | null;
+        }>(
+          `SELECT a.*,d.grade,d.card_id,d.profile_id,d.language,p.event
+          FROM activity a LEFT JOIN activity_details d ON a.id=d.id
+          LEFT JOIN activity_payloads p ON a.id=p.id
+          WHERE a.name IN ('card_viewed','quiz_graded') AND a.occurred_at>=1577836800000
+          AND length(a.id) BETWEEN 16 AND 80 AND a.id NOT GLOB '*[^A-Za-z0-9_-]*'
+          AND NOT EXISTS(SELECT 1 FROM teacher_sent s WHERE s.id=a.id)
+          AND NOT EXISTS(SELECT 1 FROM teacher_outbox o WHERE o.id=a.id)
+          ORDER BY a.occurred_at,a.id LIMIT ?`,
+          room
+        );
+        for (const row of history) {
+          let event: TeacherEvent | null = null;
+          try {
+            if (row.event) event = sanitizeEvent(JSON.parse(row.event) as TeacherEvent);
+          } catch {}
+          if (event?.id !== row.id) event = null;
+          if (!event) {
+            const props: Record<string, string | number | boolean> = {};
+            if (row.source === 'curated' || row.source === 'generated') props.source = row.source;
+            if (row.card_id) props.card_id = row.card_id;
+            if (row.grade != null) props.grade = row.grade;
+            if (row.language) props.language = row.language;
+            if (row.profile_id && /^[A-Za-z0-9_-]{16,80}$/.test(row.profile_id)) {
+              props.profile_id = row.profile_id;
+              props.profile_kind = 'student';
+            }
+            if (row.name === 'quiz_graded') props.correct = row.correct === 1;
+            event = sanitizeEvent({
+              id: row.id,
+              name: row.name,
+              occurred_at: row.occurred_at,
+              session_id: installationId,
+              props,
+              reconstructed: true,
+            });
+          }
+          if (event)
+            await tx.runAsync(
+              'INSERT OR IGNORE INTO teacher_outbox(id,queued_at,event) VALUES(?,?,?)',
+              event.id,
+              Date.now(),
+              JSON.stringify(event)
+            );
+        }
+      });
       const rows = await db.getAllAsync<{ id: string; event: string }>(
         'SELECT id,event FROM teacher_outbox ORDER BY seq LIMIT ?',
         limit
@@ -374,9 +439,20 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
       }
       return valid;
     },
-    async teacherAcknowledge(ids: string[]) {
+    async teacherAcknowledge(ids: string[], expected?: Binding) {
       if (!ids.length) return;
       await db.withExclusiveTransactionAsync(async (tx) => {
+        if (expected) {
+          const current = await tx.getAllAsync<{ key: string; value: string }>(
+            "SELECT key,value FROM teacher_meta WHERE key IN ('class_id','public_key')"
+          );
+          if (
+            current.find((r) => r.key === 'class_id')?.value !== expected.class_id ||
+            current.find((r) => r.key === 'public_key')?.value !== expected.public_key
+          )
+            return;
+        }
+
         for (const id of ids)
           await tx.runAsync('INSERT OR IGNORE INTO teacher_sent(id) VALUES(?)', id);
         await tx.runAsync(

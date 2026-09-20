@@ -150,11 +150,13 @@ async function sendEnvelope(
 ) {
   const native = talaNative();
   if (!native) throw new Error('native');
+  const session = sessions.get(endpointId);
+  if (!session || !enabled) return;
   const text = JSON.stringify(body);
   if (text.length > 150_000) throw new Error('inner-size');
   const enc = await native.encryptRequest(publicKey, challenge, text);
-  const session = sessions.get(endpointId);
-  if (session) session.sessionKey = enc.session_key;
+  if (!enabled || sessions.get(endpointId) !== session) return;
+  session.sessionKey = enc.session_key;
   const outer = JSON.stringify({
     v: 1,
     type,
@@ -276,6 +278,7 @@ async function onBytes(endpointId: string, json: string) {
       msg.nonce,
       msg.ciphertext
     );
+    if (sessions.get(endpointId) !== session) return;
     const ack = JSON.parse(plain) as AckBody;
     if (msg.type === 'ready') {
       if (ack.challenge !== session.challenge) throw new Error('ready-challenge');
@@ -286,7 +289,7 @@ async function onBytes(endpointId: string, json: string) {
     const outstanding = session.outstanding ?? [];
     const result = applyAck(outstanding, ack, session.challenge);
     if (!result.ok) throw new Error(result.reason);
-    await queue!.ack(result.done, result.lost);
+    await queue!.ack(result.done, result.lost, binding ?? undefined);
     await sendNextBatch(endpointId);
   }
 }
@@ -296,6 +299,7 @@ async function sendNextBatch(endpointId: string) {
   const binding = await queue?.binding();
   if (!session?.challenge || !binding || !queue) return;
   const pending = await queue.pending(MAX_EVENTS);
+  if (!enabled || sessions.get(endpointId) !== session) return;
   if (!pending.length && session.didEmptyBatch) {
     await queue.markSynced();
     sessions.delete(endpointId);
@@ -486,6 +490,7 @@ export async function enrollQr(text: string, confirmRebind: () => Promise<boolea
     if (!(await confirmRebind())) return;
   }
   pendingManual = undefined;
+  await stopTalaSession();
   await queue!.bind({ class_id: qr.class_id, public_key: qr.public_key, bound_at: Date.now() });
   setUi({ state: 'idle', bound: true, detail: '' });
   await startTalaSession();

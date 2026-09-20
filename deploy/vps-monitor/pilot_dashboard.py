@@ -242,7 +242,11 @@ def session_events(installation, session, offset=0):
         result = rows(db, '''SELECT id,name,occurred_at,received_at,props FROM telemetry_events
           WHERE installation_id=? AND session_id=? ORDER BY occurred_at,id LIMIT 101 OFFSET ?''', (installation,session,offset))
         more = len(result)>100
+        has_deliveries = db.execute("SELECT 1 FROM sqlite_master WHERE name='telemetry_deliveries'").fetchone()
         for row in result[:100]:
+            row['deliveries'] = rows(db, '''SELECT reporter_app,reporter_id,reporter_version,received_at,reconstructed
+              FROM telemetry_deliveries WHERE installation_id=? AND event_id=? ORDER BY received_at''',
+              (installation,row['id'])) if has_deliveries else []
             row['props'] = json.loads(row['props'])
             if row['props'].get('profile_kind') == 'student' and row['props'].get('profile_id'):
                 row['props']['profile_label'] = profile_alias(installation,row['props']['profile_id'])

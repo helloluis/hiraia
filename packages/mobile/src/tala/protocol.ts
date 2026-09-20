@@ -38,6 +38,8 @@ export const TEACHER_EVENTS = new Set([
 
 export type TeacherProfile = { id: string; name: string };
 export type TeacherEvent = {
+  /** Legacy compact history has no original session/payload. */
+  reconstructed?: boolean;
   id: string;
   name: string;
   occurred_at: number;
@@ -92,6 +94,7 @@ export function sanitizeEvent(e: TeacherEvent): TeacherEvent | null {
     occurred_at: e.occurred_at,
     session_id: e.session_id,
     props,
+    ...(e.reconstructed === true ? { reconstructed: true } : {}),
   };
 }
 

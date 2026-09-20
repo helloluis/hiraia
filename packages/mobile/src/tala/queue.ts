@@ -4,12 +4,13 @@ export type Binding = { class_id: string; public_key: string; bound_at: number }
 
 export interface TeacherStore {
   binding(): Promise<Binding | null>;
+  /** Atomically replace binding and reset delivery ACKs only when class/key changes. */
   bind(next: Binding): Promise<void>;
   /** Clears the binding and every unsent teacher event. */
   unbind(): Promise<void>;
   teacherAppend(events: TeacherEvent[]): Promise<void>;
   teacherList(limit: number): Promise<TeacherEvent[]>;
-  teacherAcknowledge(ids: string[]): Promise<void>;
+  teacherAcknowledge(ids: string[], expected?: Binding): Promise<void>;
   markLost(count: number): Promise<void>;
   lost(): Promise<number>;
   lastSync(): Promise<number>;
@@ -37,10 +38,6 @@ export class TeacherQueue {
   }
 
   async bind(next: Binding) {
-    const prev = await this.store.binding();
-    if (prev && (prev.class_id !== next.class_id || prev.public_key !== next.public_key)) {
-      await this.store.unbind();
-    }
     await this.store.bind(next);
   }
 
@@ -59,8 +56,8 @@ export class TeacherQueue {
     return this.store.teacherList(limit);
   }
 
-  async ack(ids: string[], lost: string[]) {
-    if (ids.length) await this.store.teacherAcknowledge(ids);
+  async ack(ids: string[], lost: string[], expected?: Binding) {
+    if (ids.length) await this.store.teacherAcknowledge(ids, expected);
     if (lost.length) await this.store.markLost(lost.length);
   }
 

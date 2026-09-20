@@ -84,6 +84,7 @@ class NearbyCollector(
                         if (running && challenges[endpointId] == challenge) listener.onTransfer(receivedInstallationId)
                     }
                     val result = database.ingest(identity.classId, batch, kind == "batch")
+                    if (result.accepted.isNotEmpty()) runCatching { ActivityUploader.schedule(activity) }
                     endpointInstallations[endpointId] = receivedInstallationId
                     val response = JSONObject()
                         .put("challenge", challenge)

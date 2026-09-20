@@ -114,6 +114,7 @@ class MainActivity : Activity(), NearbyCollector.Listener {
     override fun onResume() {
         super.onResume()
         updater.resume()
+        runCatching { ActivityUploader.schedule(this) }
         if (tutorialVisible) return
         render()
         if (database.pendingIssueCount() > 0) IssueUploader.schedule(this)

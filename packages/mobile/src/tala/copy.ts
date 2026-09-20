@@ -13,9 +13,9 @@ const copy = {
     leaveConfirm:
       'This phone will stop sending activity to that teacher. Data already on the teacher phone is not erased.',
     rebind:
-      'This phone is already sharing with another teacher. Switch? Unsent activity for the previous teacher will be discarded.',
+      'This phone is already sharing with another teacher. Switch? The new teacher will receive the card and quiz history still saved on this phone.',
     disclose:
-      'Scanning lets that teacher phone receive this phone’s learning activity and the student names saved on this phone. Hiraia’s online service still does not receive names.',
+      'Scanning lets that teacher phone receive this phone’s saved card and quiz history, new learning activity, and student names. Hiraia’s online service still does not receive names.',
     sync: 'Sync now',
     searching: 'Searching for the teacher phone…',
     connected: 'Connected',
@@ -50,9 +50,9 @@ const copy = {
     leaveConfirm:
       'Hihinto ang teleponong ito sa pagpapadala ng activity sa gurong iyon. Hindi mabubura ang datos na nasa telepono na ng guro.',
     rebind:
-      'May ibang gurong nakakabit na sa teleponong ito. Palitan? Ang hindi pa naipadalang activity para sa dating guro ay mawawala.',
+      'May ibang gurong nakakabit na sa teleponong ito. Palitan? Matatanggap ng bagong guro ang kasaysayan ng mga card at quiz na naka-save pa sa teleponong ito.',
     disclose:
-      'Kapag ni-scan, puwedeng matanggap ng telepono ng gurong iyon ang learning/activity telemetry ng teleponong ito at ang mga pangalang naka-save dito. Hindi pa rin tumatanggap ng pangalan ang online na serbisyo ng Hiraia.',
+      'Kapag ni-scan, puwedeng matanggap ng telepono ng gurong iyon ang kasaysayan ng mga card at quiz, bagong activity, at mga pangalang naka-save sa teleponong ito. Hindi pa rin tumatanggap ng pangalan ang online na serbisyo ng Hiraia.',
     sync: 'I-sync ngayon',
     searching: 'Naghahanap ng telepono ng guro…',
     connected: 'Nakakonekta',
@@ -87,9 +87,9 @@ const copy = {
     leaveConfirm:
       'Mohunong ning telepono sa pagpadala og activity nganha sa magtutudlo. Dili mapapas ang datos nga naa na sa telepono sa magtutudlo.',
     rebind:
-      'Naa nay laing magtutudlo nga nakabit niining telepono. Ilisan? Ang wala pa mapadala nga activity sa karaang magtutudlo mawala.',
+      'Naa nay laing magtutudlo nga nakabit niining telepono. Ilisan? Madawat sa bag-ong magtutudlo ang kasaysayan sa mga card ug quiz nga naka-save pa niining telepono.',
     disclose:
-      'Inig-scan, ang telepono niadtong magtutudlo makadawat sa learning/activity telemetry niining telepono ug sa mga ngalan nga naka-save dinhi. Wala gihapon madawat nga ngalan ang online nga serbisyo sa Hiraia.',
+      'Inig-scan, ang telepono niadtong magtutudlo makadawat sa kasaysayan sa mga card ug quiz, bag-ong activity, ug mga ngalan nga naka-save niining telepono. Wala gihapon madawat nga ngalan ang online nga serbisyo sa Hiraia.',
     sync: 'I-sync karon',
     searching: 'Nangita sa telepono sa magtutudlo…',
     connected: 'Nakakonektar',
