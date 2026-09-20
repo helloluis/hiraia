@@ -356,6 +356,52 @@ So the cheap deterministic wins are already banked; what remains is semantic.
       This is a GENERATION/DISPLAY bug, not a translation one, and it is worth telling the
       pipeline owner about separately.
 
+- [x] **C4c — ROOT CAUSE FOUND: a 20-character title truncation bug, in all three languages.**
+
+      C4b's truncated titles were not a Cebuano problem at all. A length control proves it:
+
+      | title length | mid-word truncations |
+      |---:|---:|
+      | 18 | 2 |
+      | 19 | 6 |
+      | **20** | **128** |
+      | 21 | 2 |
+      | 22 | 4 |
+
+      and the raw histogram over all 147,468 titles has a matching cliff — 12,679 at 18 chars,
+      12,657 at 19, 12,053 at 20, then **6,808 at 21**. Smooth everywhere else.
+
+      It hits **English 31, Tagalog 48, Cebuano 49** — roughly evenly, which is why the Cebuano
+      LLM sweep missed nearly all of it: a cut title reads as terse, not as wrong. English cards
+      are shipping as "Energy Without Oxyge", "Glowing Eyes at Nigh", "Geckos Eat Mosquitoe".
+
+      **Source located** — `rag/pipeline/fw-gen-card-titles.py:197` and the identical block in
+      `fw-gen-new-titles.py` and `fw-gen-topup-titles.py`:
+
+          if len(t_en) > TITLE_MAX:
+              long_ += 1                                      # counted, never acted on
+          rows.append({'id': card['id'], 'title_en': t_en[:TITLE_MAX].strip(),
+                       'title_tl': (...).strip()[:TITLE_MAX].strip(),
+                       'title_bis': (...).strip()[:TITLE_MAX].strip(), ...})
+
+      Two defects in four lines: an over-length title is **counted and then shipped anyway**,
+      and the trim is a **raw character slice** with no word-boundary handling. Only `title_en`
+      is even measured; tl and bis are sliced without ever being checked.
+
+      **FIXED** in all three generators via a shared `_fit()` that trims whole words only and,
+      when no two-word prefix fits, returns the title UNCHANGED to overflow — the index band
+      clips an overflowing title at render time, which is recoverable, whereas a severed word is
+      baked into the data permanently. This prevents recurrence; it does not repair the pool.
+
+      128 is a FLOOR. It counts only cuts that leave a non-word; a cut landing on a word
+      boundary ("Waling-Waling Orchid" for "...Orchids") is indistinguishable from an
+      intentionally compact title. The 20-vs-21 cliff implies the true number is in the
+      thousands. Detector: `truncation_20char.py`; list: `truncation-20char.json`.
+
+      **This outranks the Cebuano language defects and needs Luis's decision** — it is an
+      English-facing data defect in a shipped build, and repairing the pool is a separate job
+      from the generator fix landed here.
+
 - [ ] **C5** Rewrite confirmed defects, each independently verified before applying, with the
       emphasis guard. HOLD anything needing facts not on the card.
 - [ ] **C6** REPORT.md: what changed, what is queued for a Cebuano speaker, and an explicit

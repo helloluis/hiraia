@@ -52,6 +52,36 @@ os.makedirs(OUT, exist_ok=True)
 TITLE_MAX = 20  # characters; measured against the index band, which fits ~27 at 10.5px caps
 
 
+def _fit(title):
+    """Trim a title to TITLE_MAX WITHOUT cutting a word in half.
+
+    The previous `title[:TITLE_MAX]` was a raw character slice, and it shipped: an audit of
+    the 147,468 titles in the pool found 128 titles cut mid-word at exactly 20 characters
+    against 2-6 at every neighbouring length -- "Energy Without Oxyge", "Sibol mula sa Rhizom",
+    "Mata sa Mantis Shrim". It hit English (31), Tagalog (48) and Cebuano (49) alike, because
+    only `title_en` is length-checked above and all three were sliced regardless.
+
+    Dropping whole words is not a good outcome either, but it is an HONEST one: the title stays
+    readable and the loss is visible to a reviewer, where a half-word looks like a typo the
+    reader has to decode. And when no two-word prefix fits, this RETURNS THE TITLE UNCHANGED
+    rather than mangling it -- an overflowing title is clipped by the index band at render time,
+    which is recoverable, while a severed word is baked into the data forever.
+
+    This does NOT fix the real problem, which is that an over-length title should be regenerated
+    rather than trimmed at all (`long_` counts them and nothing acts on it). It only guarantees
+    that whatever ships is a sequence of whole words.
+    """
+    t = ' '.join((title or '').split())
+    if len(t) <= TITLE_MAX:
+        return t
+    words = t.split(' ')
+    for n in range(len(words) - 1, 1, -1):          # never shorter than two words
+        cut = ' '.join(words[:n]).strip(' ,;:-')
+        if len(cut) <= TITLE_MAX:
+            return cut
+    return t          # nothing sane fits: overflow, and let the caller's counter report it
+
+
 class TokenBudget:
     """Sliding-window limiter over OBSERVED completion tokens.
 
@@ -196,9 +226,9 @@ def do_call(batch, idx, leaves, valid, tries=3):
         bad += len([x for x in (o.get('cats') or []) if x not in valid])
         if len(t_en) > TITLE_MAX:
             long_ += 1
-        rows.append({'id': card['id'], 'title_en': t_en[:TITLE_MAX].strip(),
-                     'title_tl': (o.get('title_tl') or t_en).strip()[:TITLE_MAX].strip(),
-                     'title_bis': (o.get('title_bis') or t_en).strip()[:TITLE_MAX].strip(),
+        rows.append({'id': card['id'], 'title_en': _fit(t_en),
+                     'title_tl': _fit(o.get('title_tl') or t_en),
+                     'title_bis': _fit(o.get('title_bis') or t_en),
                      'cats': cats})
     with open(os.path.join(OUT, f'titles-{idx}.jsonl'), 'w') as fh:
         for r in rows:
