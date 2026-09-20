@@ -161,6 +161,13 @@ assisted work including the judge. Corpus is 1.22M tokens of content — well wi
       Files: `enum-own-tagalog.json` (2,138 queue), `enum-own-tagalog-strong.json` (75),
       `enum-spelling-clearcut.json` (15 pairs), `enum-spelling-housestyle.json` (13 pairs).
 
+- [x] **E1b** Spelling normalised to English, corpus-wide — **1,359 cards**, Luis's call:
+      "just spell it in English; the PH curriculum is dominated with English words in science".
+      Applied to 26 of the 28 pairs. HELD by policy: `kalamansi` and `abaka` (78 cards) —
+      Filipino words with anglicised export spellings, not English science terms respelled
+      into Filipino; that is a different decision and is left for a human.
+      Emphasis spans co-renamed with the text; **0 orphaned spans of 81,757, before and after.**
+
 - [ ] **E2** Enumerate `nonword`: corpus token frequency <= 2 across all 49,156 cards, minus
       English and proper nouns. ~1,900 candidates, expect ~130-190 real. Free, no model.
 - [ ] **F1b** NARROW LLM sweep — `en-mismatch` and `answer-clash` ONLY, the two genuinely
