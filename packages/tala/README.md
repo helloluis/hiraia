@@ -62,6 +62,15 @@ instead of pausing discovery after 15 minutes.
 
 ## Build
 
+The September 20 public pilot release is **v0.4.1, Android versionCode 16**.
+This intentionally renumbers the display version after v0.7.5 (code 15); Android
+uses the increasing code for upgrades. The release variant retains the existing
+pilot signing identity so teachers can update without uninstalling or losing data.
+The new URL is `https://assets.hiraia.org/models/tala-v0p4p1.apk`; older
+`hiraia-tala-v0p4p1-*-debug.apk` artifacts remain immutable historical builds.
+Install Hiraia and Tala on separate phones: Nearby cannot transfer activity between
+both apps running on one device.
+
 The project uses the existing Android Gradle wrapper generated under
 `packages/mobile/android`. With JDK 17 and the Android SDK installed:
 
