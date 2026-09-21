@@ -273,3 +273,23 @@ test('reporter validation rejects names, malformed labels, and false student ide
   );
   db.close();
 });
+
+test('app and content versions survive direct and teacher delivery without changing event ownership', () => {
+  const db = openTelemetry(path.join(temp, 'versions.db'));
+  const e = { ...event(901), props: { app_version: '0.4.19', build: '19',
+    hiraiapedia_version: '1.5', cards_db_version: 'eaacc6f34090' } };
+  const base = { schema: 1, installation_id, events: [e] };
+  ingest(db, { ...base, reporter: { app: 'tala', installation_id: 'teacher_installation_1234', version: '0.4.1' } });
+  ingest(db, { ...base, reporter: { app: 'hiraia', installation_id, version: '0.4.19' } });
+  const rows = db.prepare('SELECT installation_id,props FROM telemetry_events').all() as any[];
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].installation_id, installation_id);
+  assert.deepEqual(JSON.parse(rows[0].props), e.props);
+  assert.deepEqual(db.prepare('SELECT reporter_app,reporter_version FROM telemetry_deliveries ORDER BY reporter_app').all(), [
+    { reporter_app: 'hiraia', reporter_version: '0.4.19' },
+    { reporter_app: 'tala', reporter_version: '0.4.1' },
+  ]);
+  assert.equal(validEvent({ ...e, props: { hiraiapedia_version: 'private text' } }), false);
+  assert.equal(validEvent({ ...e, props: { cards_db_version: 123 } }), false);
+  db.close();
+});

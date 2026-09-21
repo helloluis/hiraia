@@ -24,6 +24,22 @@ class ActivityRelayTest {
         .put("acknowledged", JSONArray((0 until pending.events.length()).map { pending.events.getJSONObject(it).getString("id") }))
         .put("rejected", JSONArray())
 
+    @Test fun studentVersionsSurviveRelayAndTeacherVersionUsesInstalledPackage() {
+        val input = event(9)
+        input.getJSONObject("props").put("app_version", "0.4.19").put("build", "19")
+            .put("hiraiapedia_version", "1.5").put("cards_db_version", "eaacc6f34090")
+        val clean = ActivityRelay.event(input, installation)
+        assertEquals("1.5", clean.getJSONObject("props").getString("hiraiapedia_version"))
+        assertEquals("eaacc6f34090", clean.getJSONObject("props").getString("cards_db_version"))
+        val installed = AppVersion.installed(context)
+        val body = ActivityRelay.body(RelayBatch("class", installation, JSONArray().put(clean), JSONArray()),
+            "teacher_installation_1234", installed.version)
+        assertEquals(context.packageManager.getPackageInfo(context.packageName, 0).versionName,
+            body.getJSONObject("reporter").getString("version"))
+        assertEquals("0.4.19", body.getJSONArray("events").getJSONObject(0).getJSONObject("props").getString("app_version"))
+        assertEquals(context.packageManager.getPackageInfo(context.packageName, 0).longVersionCode, installed.build)
+    }
+
     @Test fun relayKeepsOriginalIdsSanitizesNamesAndSurvivesLostAckAndReopen() {
         context.deleteDatabase("hiraia-tala.db")
         var reporter = ""

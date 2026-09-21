@@ -32,7 +32,7 @@ export class Outbox {
   constructor(
     private repository: () => Promise<Repository>,
     private send: (
-      body: object
+      body: { schema: 1; installation_id: string; events: Event[] }
     ) => Promise<{
       ok: boolean;
       acknowledged?: unknown;

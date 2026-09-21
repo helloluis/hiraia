@@ -29,6 +29,8 @@ const id = /^[a-zA-Z0-9_-]{16,80}$/;
 const label = /^[a-zA-Z0-9_.:-]{1,100}$/;
 const strings = new Set([
   'app_version',
+  'hiraiapedia_version',
+  'cards_db_version',
   'build',
   'android',
   'abi',

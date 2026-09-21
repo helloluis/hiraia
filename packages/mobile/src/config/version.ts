@@ -15,7 +15,8 @@ import type { Language } from '@hiraia/shared';
  * planetary stats, world/PH records, historical firsts) — the discrete who/what/how-much
  * layer kids get asked in quizzes.
  */
-export const HIRAIAPEDIA_VERSION = '1.1.0';
+// 1.5: expanded card pool, translation repairs and the September Cebuano audit.
+export const HIRAIAPEDIA_VERSION = '1.5';
 
 /**
  * Per-language fine-tune, as shown in the Settings "Adapter" row. The shipping

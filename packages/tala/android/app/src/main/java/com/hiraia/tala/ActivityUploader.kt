@@ -20,7 +20,7 @@ object ActivityRelay {
     private val id = Regex("[A-Za-z0-9_-]{16,80}")
     private val label = Regex("[A-Za-z0-9_.:-]{1,100}")
     private val labels = setOf("app_version", "build", "android", "abi", "model", "asset",
-        "attempt_id", "view_id", "question_id", "card_id")
+        "attempt_id", "view_id", "question_id", "card_id", "hiraiapedia_version", "cards_db_version")
     private val numbers = setOf("duration_ms", "bytes", "expected_bytes", "offset", "attempt", "ram_gb", "count")
     private val enums = mapOf("profile_kind" to setOf("guest", "student"),
         "language" to setOf("english", "tagalog", "cebuano"), "source" to setOf("curated", "generated"),
@@ -100,7 +100,7 @@ object ActivityUploader {
             val prefs = context.getSharedPreferences("activity-upload", Context.MODE_PRIVATE)
             if (prefs.getLong("retry_at", 0) > System.currentTimeMillis()) return false
             TalaDatabase(context).use { database ->
-                val version = context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: "unknown"
+                val version = AppVersion.installed(context).version
                 repeat(20) {
                     if (cancelled()) return false
                     val batch = database.pendingActivity() ?: return true

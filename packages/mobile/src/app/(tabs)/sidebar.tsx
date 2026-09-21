@@ -16,6 +16,7 @@ import { LANGUAGE_OPTIONS } from '../../config/languages';
 import { VECTORS_META } from '../../config/model';
 import { uiStrings } from '../../config/strings';
 import { HIRAIAPEDIA_VERSION } from '../../config/version';
+import { APP_VERSION, APP_BUILD } from '../../config/appVersion';
 import { useEngineStore } from '../../store/engineStore';
 import { useUpdateStore } from '../../store/updateStore';
 import { card, fonts, cardAlpha } from '../../theme';
@@ -152,6 +153,10 @@ export default function SidebarScreen() {
         <ImageDownloads />
         <Text style={styles.sectionTitle}>{t.sectionVersion}</Text>
         <View style={styles.versionBlock}>
+          <View style={styles.versionRow}>
+            <Text style={styles.versionLabel}>Hiraia</Text>
+            <Text selectable style={styles.versionValue}>v{APP_VERSION} · build {APP_BUILD}</Text>
+          </View>
           <ModelDownloadStatus language={language ?? 'tagalog'} label={t.labelModel} />
           <View style={styles.versionRow}>
             <Text style={styles.versionLabel}>Hiraiapedia</Text>

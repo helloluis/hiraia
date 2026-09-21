@@ -67,6 +67,10 @@ class TalaSettings(
         header.addView(label("Settings", 29f, INK, true), LinearLayout.LayoutParams(0, -2, 1f))
         header.addView(button("×", false) { dialog.dismiss() }, LinearLayout.LayoutParams(dp(48), dp(48)))
         content.addView(header)
+        val installed = AppVersion.installed(activity)
+        content.addView(label("Tala v${installed.version} · build ${installed.build}", 14f, MUTED, false).apply {
+            setTextIsSelectable(true)
+        }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(12) })
         content.addView(button("Check for app updates", false) { onCheckUpdates() },
             LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(12) })
         content.addView(label("Activity uploads", 18f, INK, true),

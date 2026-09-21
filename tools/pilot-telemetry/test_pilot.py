@@ -42,6 +42,25 @@ class DashboardTests(unittest.TestCase):
         self.n+=1
         with connection(self.dbpath) as db:
             db.execute('INSERT INTO telemetry_events VALUES(?,?,?,?,?,?,?)',(installation,f'event_{self.n:016}',name,self.now-day*p.DAY,self.now,session,json.dumps(props or {})))
+    def test_session_versions_keep_student_content_and_teacher_reporter_separate(self):
+        self.event('session_started', day=2, props={'app_version':'0.4.18','build':'18'})
+        self.event('card_viewed', props={'app_version':'0.4.19','build':'19',
+            'hiraiapedia_version':'1.5','cards_db_version':'eaacc6f34090'})
+        session = p.recent_sessions(now=self.now)['sessions'][0]
+        self.assertEqual(session['context']['app_version'], '0.4.19')
+        self.assertEqual(session['context']['hiraiapedia_version'], '1.5')
+        self.assertEqual(session['context']['cards_db_version'], 'eaacc6f34090')
+        self.assertEqual(session['reporters'], [])
+        with connection(self.dbpath) as db:
+            db.execute('CREATE TABLE telemetry_deliveries(installation_id TEXT,event_id TEXT,reporter_app TEXT,reporter_id TEXT,reporter_version TEXT,received_at INTEGER,reconstructed INTEGER)')
+            db.execute('INSERT INTO telemetry_deliveries VALUES(?,?,?,?,?,?,?)',
+                ('installation_00001','event_0000000000000002','tala','teacher_installation_1234','0.4.1',self.now,0))
+        session = p.recent_sessions(now=self.now)['sessions'][0]
+        self.assertEqual(session['reporters'], [{'reporter_app':'tala','reporter_version':'0.4.1'}])
+        self.assertEqual(session['context']['app_version'], '0.4.19')
+        events = p.session_events('installation_00001','session_0000000001')['events']
+        self.assertEqual(events[-1]['deliveries'][0]['reporter_version'], '0.4.1')
+
     def test_card_chart_stacks_event_grades_without_losing_unknowns(self):
         self.event('card_viewed',props={'grade':5})
         self.event('card_viewed',props={'grade':4})

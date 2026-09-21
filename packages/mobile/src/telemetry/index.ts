@@ -1,6 +1,7 @@
 import { initializeProfiles, profileTelemetry, profileSnapshot } from '../profiles';
-import * as Application from 'expo-application';
-import Constants from 'expo-constants';
+import { APP_VERSION, APP_BUILD } from '../config/appVersion';
+import { HIRAIAPEDIA_VERSION } from '../config/version';
+import cardsIndex from '../generated/cardsIndex.generated.json';
 import * as Device from 'expo-device';
 import { AppState, Platform } from 'react-native';
 import { newId, Outbox, type Event, type Props } from './core';
@@ -14,18 +15,10 @@ const clean = (value: unknown) =>
     .replace(/[^a-zA-Z0-9_.:-]/g, '_')
     .slice(0, 100) || 'unknown';
 const context: Props = {
-  // The INSTALLED package's versionName/versionCode (expo-application = PackageInfo),
-  // not the app.json snapshot expo-constants freezes into the bundle at build time —
-  // the two drift (2026-09-16: the updater misjudged itself off the frozen copy), and
-  // fleet metrics must reflect what phones actually run. expoConfig stays as fallback
-  // for dev clients, where there is no meaningful package version.
-  app_version: clean(Application.nativeApplicationVersion ?? Constants.expoConfig?.version),
-  build: clean(
-    process.env.EXPO_PUBLIC_BUILD_ID ||
-      Application.nativeBuildVersion ||
-      Constants.expoConfig?.android?.versionCode ||
-      'pilot-telemetry-v1'
-  ),
+  app_version: clean(APP_VERSION),
+  build: clean(APP_BUILD),
+  hiraiapedia_version: HIRAIAPEDIA_VERSION,
+  cards_db_version: cardsIndex.dbVersion,
   android: clean(Platform.Version),
   abi: clean(Device.supportedCpuArchitectures?.[0]),
   ram_gb: Device.totalMemory ? Math.ceil(Device.totalMemory / 1073741824) : 0,
@@ -74,7 +67,10 @@ const queue = new Outbox(getRepository, async (body) => {
     const response = await fetch(ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
+      body: JSON.stringify({
+        ...body,
+        reporter: { app: 'hiraia', installation_id: body.installation_id, version: clean(APP_VERSION) },
+      }),
       // Cast: onnxruntime's types drag @types/node into the program, and Node's
       // AbortSignal is not structurally RN's. Same object at runtime either way.
       signal: controller.signal as RequestInit['signal'],
