@@ -40,19 +40,52 @@ the instrument, and nothing in the card audit had anything as clean.
 Failure modes it catches that a translation review misses: a distractor that became true, a
 correct option that became wrong, a question whose subject shifted, and clue leakage.
 
-## Q0 — deterministic enumeration (DONE, free, no model)
+## Q0 — deterministic enumeration: RETRACTED AND REDONE. The bank is clean.
 
-`deterministic.json`. **320 candidates, 174 of them in shipped items.**
+**My first Q0 pass was wrong in every class, and the bug was mine.** I reported "320
+candidates, 174 shipped" and called 29 items "unanswerable — the highest-severity finding,
+provable without any language judgement". Applying those "fixes" would have corrupted 29
+correct items.
 
-| class | total | shipped | note |
-|---|---:|---:|---|
-| option untranslated | 274 | 133 | English text sitting in the `tl` field, ≥20 chars |
-| **correct option duplicated by a distractor** | **24** | **23** | item is unanswerable — two identical options, one keyed |
-| question number drift | 17 | 14 | mostly FALSE positives: Tagalog spells numbers out ("100-peso" → "isang daang piso"). Same trap as Cebuano's `napulo ka beses`. Needs triage. |
-| options differ only by case | 5 | 4 | `cm` / `Cm` / `cM` — unanswerable |
+The cause: I compared options after `re.sub(r'[^a-z0-9 ]','',s.lower())`, which deletes
+exactly what those items test.
 
-The 24+5 unanswerable items are the highest-severity finding and are provable without any
-language judgement at all.
+| I flagged | it really is |
+|---|---|
+| `V = haba + lapad + taas` = `V = haba × lapad × taas` | different formulas; my normaliser ate `+` and `×` |
+| `cm` = `Cm` = `cM` | deliberate case distractors — the item tests capitalisation |
+| `9.8` = `98` metro | different numbers; the decimal point was stripped |
+| `π` = `α` | different Greek letters, both stripped to nothing |
+
+Redone with whitespace-collapse only, case- and symbol-preserving:
+
+| class | first claim | actual | shipped |
+|---|---:|---:|---:|
+| options identical in `tl` | 24 | **1** | **0** |
+| options differ only by case | 5 | **0** | 0 |
+| option untranslated (English prose) | 274 | **38 candidates, ~0 real** | 17 |
+| question number drift | 17 | **1** | 1 |
+
+- The single duplicate is `quiz-26373` (all three options identical) and it **does not ship**.
+- The 274 "untranslated" came from a length+capitalisation heuristic. 9,297 options really are
+  byte-identical across `en`/`tl`, and nearly all are correct: proper nouns (Cebu City,
+  Newton), song titles (Lupang Hinirang), formulas. Only 38 carry two or more English function
+  words, and those are mostly **quotations** ("Mr. Watson, come here…") and **agency-name
+  expansions** for acronym items — left in English by design.
+- The number drift is almost entirely **Unicode subscripts** (`CH4` → `CH₄`, `H₂O`, `CO₂`),
+  where the Tagalog is better than the English, plus Tagalog spelling numbers out
+  ("100-peso" → "isang daang piso"). One genuine hit: **quiz-04867**, where the English asks
+  what Siargao is known for and the Tagalog asks where Cloud 9 is — a different question,
+  which can change which option is correct.
+
+**So the structural layer is essentially clean, and that is the result.** It also raises the
+stakes on Q1: if there are Tagalog quiz defects, they are semantic, and only the blind-answer
+instrument will find them.
+
+**Lesson, and it is the same one this project keeps paying for:** a normaliser that "cleans"
+text destroys the distinctions under test. I caught models over-normalising all through the
+Cebuano audit and then did it myself. Compare exactly; normalise only what you can prove is
+noise.
 
 ## Q1 — answer-key integrity sweep (the main instrument)
 
