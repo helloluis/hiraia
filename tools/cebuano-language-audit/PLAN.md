@@ -595,6 +595,34 @@ So the cheap deterministic wins are already banked; what remains is semantic.
       Original text: REPORT.md: what changed, what is queued for a Cebuano speaker, and an explicit
       ship-or-not recommendation. Do not ship.
 
+## C8 — the affix instrument, pointed at Cebuano for the first time
+
+Built for Tagalog during the quiz audit, never run on Cebuano. Two results.
+
+**The mo-/nag- probe is NOISE, and saying so is the result.** Cebuano's mo-/mu-/mi-/ni- against
+nag-/mag- is an ASPECT contrast, not the transitivity contrast that made the Tagalog version
+work. "kaon: real 3,047 vs prog 140" just means these cards say *eats* more often than *is
+eating*. 114 roots, 1,003 tokens, essentially all expected. Do not mine this.
+
+**One real finding, and it is OUT OF SCOPE.** `naga-`/`maga-` is the Hiligaynon and older-Cebuano
+progressive; modern standard Cebuano uses `nag-`. The corpus carries **both**:
+
+| form family | distinct forms | tokens |
+|---|---:|---:|
+| `nag-` / `mag-` | 3,678 | 73,412 |
+| `naga-` / `maga-` | 557 | **3,796 (4.9%)** |
+
+**249 roots are written both ways** with the `nag-` form dominating 5x or more —
+`naghimo` 3,185 vs `nagahimo` 195; `naglihok` 1,225 vs `nagalihok` 189.
+
+`naga-` is **not wrong**. It is dialect, which this audit's governing constraint puts out of
+scope, and the `langoy` lesson from the quiz pass applies directly: *inconsistent is not the
+same as ungrammatical*. So nothing is flagged and nothing is repaired.
+
+What it is: evidence the corpus is **dialectally mixed**, so a Cebuano child meets both forms
+across the feed. Whether to normalise on `nag-` is a product decision about which Cebuano the
+app speaks, not a defect list. Inventory in `naga-dialect.json`.
+
 ## Final tally (sweep + deterministic detectors)
 
 | source | cards |
