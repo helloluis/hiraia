@@ -87,65 +87,61 @@ text destroys the distinctions under test. I caught models over-normalising all 
 Cebuano audit and then did it myself. Compare exactly; normalise only what you can prove is
 noise.
 
-## Q1 — blind-answer sweep: 14% COMPLETE, BLOCKED ON THE MONTHLY SPEND LIMIT
+## Q1 — blind-answer sweep: COMPLETE. 1 translation defect in 25,651 items.
 
-37 of 308 agents finished before the account hit its **monthly** spend cap (not a weekly
-reset — it needs raising at claude.ai/settings/usage). **3,700 items answered**, all from the
-Tagalog arm; the English control arm never started.
+25,751 Tagalog items (100% of what ships) and 4,386 English controls. The workflow itself
+errored at the return boundary — I tried to hand back 30,151 answers against a 4,096 cap, the
+exact mistake the Cebuano plan's carried lessons warn about — but 302 of 308 agents had
+finished, so everything was recovered from `journal.jsonl` at zero further cost. Arms were
+re-attributed by matching each result's id-set to its batch file.
 
-### The instrument is validated — 15 / 15
+### Validity: 100 / 100
 
-100 items were spiked by swapping the correct option's Tagalog into a distractor's slot, so the
-key points at a false statement. 15 spikes fell inside the completed batches:
+All 100 spiked items were reached and **all 100 caught**. Perfect detection, so the numbers
+below are a real measurement rather than a blunt instrument's silence.
+
+### The control subtraction
+
+| | Tagalog | English control |
+|---|---:|---:|
+| items | 25,651 | 4,386 |
+| key mismatch | 0.09% | **0.09%** |
+| low confidence | 1.16% | 1.28% |
+| item problems | 0.40% | 0.46% |
+
+On the 4,386 items measured in BOTH languages: English 0.09%, Tagalog 0.14%.
+**Translation damage = 0.05 percentage points.** The Tagalog is statistically indistinguishable
+from its English source, and the English scores slightly WORSE on item problems.
+
+### The 24 mismatches, triaged
+
+- **21** internally consistent — question, keyed option and explanation all agree in both
+  languages. Source disputes or judge errors, not translation.
+- **3** needed reading. Two turned out to be judge errors or source ambiguity:
+  - `quiz-17421` "How many sides is the human heart split into?" keys Two; the judge said Four,
+    thinking of chambers. I suspected the Tagalog "bahagi" (parts) had changed the question —
+    **the corpus refuted me**: quiz-08658, 10328, 13655 and 27668 all render "side of the heart"
+    as exactly "bahagi ng puso". The card is correct and I nearly "fixed" it.
+  - `quiz-30424` basketball dribbling: key Friction, explanation supports Friction, judge said
+    Gravity. Judge error.
+
+### The one real defect — FIXED
+
+`quiz-32456`, a grade-5 card, in the **keyed** option:
 
 | | |
-|---|---:|
-| spiked items reached | 15 |
-| **caught** (judge's pick ≠ key, as designed) | **15** |
-| missed | **0** |
+|---|---|
+| EN | It decreases its density to overcome gravity |
+| TL was | Pinapataas nito ang timbang para mas mabilis lumubog |
+| | *"increases its weight so it sinks faster"* — the exact opposite |
+| TL now | Pinapababa nito ang densidad nito para malabanan ang gravity |
 
-So the calibration Luis chose to skip as a separate phase ran anyway, for free, and passed.
-A null result from this instrument is a real null, not a blunt tool.
+The card contradicted itself: its own Tagalog explanation says the liver *lowers* density and
+keeps the shark buoyant. Replacement words all corpus-attested (densidad 242, gravity 1,405,
+pinapababa 37). Structural invariants asserted before writing — option count, option order,
+answer index, English text and the other two Tagalog options all unchanged. **1 line changed.**
 
-### And the result is: the Tagalog is clean
-
-| measure | value |
-|---|---:|
-| non-spiked items answered | 3,685 |
-| **answer-key mismatches** | **2 = 0.05%** |
-| judge low-confidence | 46 = 1.24% |
-| item problems flagged | 20 = 0.54% |
-
-For comparison, the Sept Gemini pipeline flagged **1.24%** of `tl` items. On this evidence the
-translation layer's answer-key integrity is **~25x cleaner than that**, which is consistent
-with those 406 repairs having already landed.
-
-### What it actually found is defects in the ENGLISH, not the Tagalog
-
-Both mismatches are source-item problems that translation merely exposed:
-
-- **quiz-04091** — "what colour is the LIVE wire in Philippine electrical wiring?" Key says
-  brown/red; the judge chose blue/black. A real-world **safety** fact that the item may simply
-  have wrong. Worth a human check regardless of language.
-- **quiz-01496** — many egrets in an area, in Filipino folklore. The key says clean water; the
-  judge says an approaching storm. Both readings are genuinely current.
-
-The 20 problem flags follow the same shape: the judge usually picks the keyed option and then
-notes the item is loose — bangus is famous for its bones *and* for tolerating salt and fresh
-water; the mudskipper walks on land *and* survives both waters. English-item quality, not
-Tagalog.
-
-**This is the same conclusion the Tagalog CARD audit reached** ("the highest-value defects are
-in ANSWERS, not leads"), arrived at independently by a different instrument.
-
-### Cost to finish
-
-37 of 308 agents exhausted the monthly cap, so completing this sweep needs roughly **8x** the
-quota already spent. Extrapolating the measured rates over all 25,751 shipped items:
-**~14 answer-key mismatches and ~140 loose items** — a queue small enough to fix by hand.
-
-Whether that is worth 8x the spend is Luis's call. The rate is already measured to ±0.07% at
-n=3,685; finishing the sweep buys the specific ids, not a better estimate.
+**Rate: 1 translation defect in 25,651 items = 0.004%.**
 
 ## Q2 — corpus as authority for Tagalog
 
