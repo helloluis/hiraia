@@ -251,14 +251,6 @@ export function Landing() {
               internet connection.
             </p>
           </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/pears-classroom.webp"
-            alt="Students on a classroom Wi-Fi share the Hiraia model with one another in a mesh: the school seeds one phone, then every phone can copy from any other."
-            width={1448}
-            height={1086}
-            className="w-full max-w-xl justify-self-center lg:max-w-none"
-          />
         </div>
       </section>
 
