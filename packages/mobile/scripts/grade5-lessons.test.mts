@@ -81,12 +81,12 @@ test('real feed completes each bounded run in order, resumes exactly, and keeps 
 });
 test('return visits prefer reserve cards; invalid saves rebuild; profiles do not share progress', () => {
   const lesson = grade5Lessons.find((l) => l.key === 'g5:heat-and-state')!;
-  const first = planLesson(lesson, new Set());
+  const first = planLesson(lesson, new Set(), undefined, 42);
   const second = planLesson(lesson, new Set(first.cards));
   assert.ok(second.cards.filter((id) => !first.cards.includes(id)).length >= 15);
-  const independent = planLesson(lesson, new Set());
+  const independent = planLesson(lesson, new Set(), undefined, 42);
   assert.deepEqual(first, independent);
-  assert.deepEqual(planLesson(lesson, new Set(), { ...first, cards: ['missing'] }), first);
+  assert.deepEqual(planLesson(lesson, new Set(), { ...first, cards: ['missing'] }, 42), first);
   assert.equal(C.curriculumCursor(5, 'Q1.1')?.key, 'g5:states-of-matter');
 });
 test('supplemental erosion activity and all new quizzes work offline in all three languages', () => {

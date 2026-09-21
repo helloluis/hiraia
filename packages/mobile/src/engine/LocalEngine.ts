@@ -1,5 +1,4 @@
-import { MemoryBlockedError, requireModelMemory, readMemory } from './memory';
-import { canLoadSemantic } from './memoryPolicy';
+import { MemoryBlockedError, requireModelMemory, requireSemanticMemory } from './memory';
 import { track, newId, errorCategory } from '../telemetry';
 import { loadModel, completion, unloadModel, embed, cancel, QWEN3_1_7B_INST_Q4 } from '@qvac/sdk';
 import { Asset } from 'expo-asset';
@@ -26,6 +25,7 @@ import { ensureRemoteAsset } from './modelDownload';
 import { installedModelUpdate, rejectModelUpdate } from '../updates/model';
 import type { ModelUpdate } from '../updates/catalog';
 import { withModelLock } from './modelLock';
+import { readVectorSlice } from './readVectorSlice';
 import type { AdapterLanguage } from '../config/model';
 import type {
   TutorEngine,
@@ -199,12 +199,12 @@ async function persistCpuFallbackVerdict(): Promise<void> {
  *   • cpu-retry — the GPU placement died and the load is RESTARTING on CPU (the
  *                 honest message is "taking longer", never a percent that goes
  *                 backwards — the store's monotonic bar holds through the restart)
- *   • semantic  — the BACKGROUND LaBSE init (384 MB download + load + attach),
- *                 which continues AFTER the engine is ready; pct 100 also fires on
- *                 failure, because either way the loading story is over (the app
- *                 stays lexical-only — a working tutor, not an error).
+ *   • semantic — LaBSE + vectors setup, BEFORE the optional LLM. pct 100 means
+ *                setup ended; isSemanticReady() distinguishes success from fallback.
+ *   • retrieval-ready — publish retrieval while generation is still initializing.
  */
 export type EngineProgressEvent =
+  | { stage: 'retrieval-ready' }
   | { stage: 'download'; pct: number }
   | { stage: 'verify' }
   | { stage: 'load'; pct: number }
@@ -226,15 +226,21 @@ export class LocalEngine implements TutorEngine {
   // Has the model been warmed for this session (graph compiled, kernels hot)? See warmUp().
   // NOT keyed on the grade any more: the warm-up no longer prefills a grade-bearing prompt.
   private warmed = false;
+  private generationReady = false;
+  private initializationAbort = new AbortController();
+
+  cancelInitialization(): void { this.initializationAbort.abort(); }
+
+  private checkInitialization(): void {
+    if (this.initializationAbort.signal.aborted) throw new Error('Engine initialization cancelled');
+  }
   // In-memory grounding bank. Built at init; no native deps, so it works offline.
   private rag: RagStore | null = null;
-  // Semantic embedder (LaBSE via QVAC) for the hybrid retriever. Loaded in the
-  // BACKGROUND after the LLM (lexical-first); until ready, retrieval is lexical.
+  // LaBSE is loaded before the optional LLM; the feed is lexical until ready.
   private embedModelId: string | null = null;
   private semanticReady = false;
   // Structured load-stage channel (see EngineProgressEvent). Set by initialize();
-  // kept on the instance so the BACKGROUND initSemantic() can keep reporting the
-  // LaBSE band long after initialize() has resolved.
+  // shared by both sequential initialization stages.
   private onEvent: ((ev: EngineProgressEvent) => void) | null = null;
   // Illustration catalog (one LaBSE vector per bundled clip-art PNG); loaded with the
   // semantic init. Null → no picture is ever resolved (no picture, never wrong).
@@ -335,7 +341,42 @@ export class LocalEngine implements TutorEngine {
     }
   }
 
+  /** Prepare retrieval first; generation failure never takes search away. */
   async initialize(
+    config: TutorConfig,
+    onProgress?: (p: number) => void,
+    onEvent?: (ev: EngineProgressEvent) => void
+  ): Promise<void> {
+    this.config = config;
+    this.onEvent = onEvent ?? null;
+    // Open the indexed fact bank without materializing it. Missing/corrupt data cannot
+    // disable the feed's independent authored-card search.
+    try {
+      const facts = await openFactSource();
+      if (facts) {
+        this.rag = new RagStore(facts);
+        console.log(`RAG bank ready: ${this.rag.size} facts (cards.db ${facts.bankHash ?? '?'})`);
+      }
+    } catch (error) {
+      console.error('[LocalEngine] grounding bank unavailable:', error);
+    }
+
+    // Await every allocation so a language switch cannot orphan a background embedder.
+    this.checkInitialization();
+    await this.initSemantic();
+    this.checkInitialization();
+    onEvent?.({ stage: 'retrieval-ready' });
+    try {
+      await this.initializeGenerator(config, onProgress, onEvent);
+    } catch (error) {
+      console.warn('[LocalEngine] generation unavailable; retrieval retained:', error);
+    }
+    this.checkInitialization();
+    this.isReadyFlag = true;
+    console.log(`[LocalEngine] retrieval-first ready: semantic=${this.semanticReady} generation=${!!this.modelId}`);
+  }
+
+  private async initializeGenerator(
     config: TutorConfig,
     onProgress?: (p: number) => void,
     // Structured stage feed for the readiness UI — see EngineProgressEvent. The numeric
@@ -347,9 +388,9 @@ export class LocalEngine implements TutorEngine {
     const telemetryProps = { model: ACTIVE_MODEL.key, attempt_id: newId(), language: config.language };
     let telemetryBackend: 'cpu' | 'unknown' = 'unknown';
     let loadingUpdate: ModelUpdate | null = null;
+    await requireModelMemory(true); // Do not count an ineligible device as a model failure.
     track('model_load_started', telemetryProps);
     try {
-      await requireModelMemory(true); // Before any model/adapter network request.
       this.config = config;
       this.onEvent = onEvent ?? null;
       console.log(`Loading ${ACTIVE_MODEL.displayName} model...`);
@@ -374,7 +415,7 @@ export class LocalEngine implements TutorEngine {
       // it has cost the child ~100 MB of prepaid data instead of the full
       // download. Do not "optimise" this by starting the base download first or
       // in parallel.
-      const loraPath = await this.resolveAdapterPath(config.language, band(0, ADAPTER_BAND));
+      const loraPath = await this.resolveAdapterPath(config.language, band(0, ADAPTER_BAND), this.initializationAbort.signal);
 
       if (ACTIVE_MODEL.modelSrc) {
         // For a REMOTE GGUF (our nginx mirror), download it ourselves and hand QVAC
@@ -398,9 +439,10 @@ export class LocalEngine implements TutorEngine {
                 // than "still fetching" — a real ~15 s stage that deserves its own
                 // honest message instead of a bar that looks stuck.
                 onEvent?.(phase === 'verify' ? { stage: 'verify' } : { stage: 'download', pct });
-              })
+              }, this.initializationAbort.signal)
             : ACTIVE_MODEL.modelSrc;
 
+        this.checkInitialization();
         await requireModelMemory(); // Downloads can take minutes; recheck before allocation.
 
         // Load the configured GGUF. `lora` applies a downloaded + verified
@@ -514,47 +556,7 @@ export class LocalEngine implements TutorEngine {
         });
       }
 
-      // Build the lexical grounding retriever over the fact bank in cards.db. Nothing is
-      // loaded here beyond a row count — RagStore reads the inverted index per query and
-      // materialises only the handful of facts it returns (see data/cardDb openFactSource).
-      // SqlFactSource's constructor THROWS on a truncated or bank-mismatched cards.db, and
-      // openFactSource does not catch it. Unguarded, that rejection unwinds to this method's
-      // catch and becomes `Failed to initialize LocalEngine` — engineStore then parks the app
-      // on an error screen and the child gets no chat at all. Ungrounded answers are a far
-      // better failure than no tutor, so the throw is folded into the same null the
-      // could-not-open path already returns and handled by the branch below.
-      let facts: SqlFactSource | null = null;
-      try {
-        facts = await openFactSource();
-      } catch (e) {
-        console.error('[LocalEngine] cards.db fact bank unusable — answers will be UNGROUNDED:', e);
-      }
-      if (facts) {
-        this.rag = new RagStore(facts);
-        console.log(`RAG bank ready: ${this.rag.size} facts (cards.db ${facts.bankHash ?? '?'})`);
-      } else {
-        // There is no in-bundle fallback bank any more, so this is not a degraded mode with a
-        // slower path — it is NO grounding at all, and every answer becomes ungenerated or
-        // unsourced. Loud on purpose.
-        console.error('[LocalEngine] fact bank unavailable — answers will be UNGROUNDED');
-      }
-
-      // Load the semantic embedder + vectors blob in the BACKGROUND — the app is
-      // usable on lexical retrieval immediately; the hybrid upgrades in when ready.
-      if (canLoadSemantic(await readMemory())) {
-        void this.initSemantic();
-      } else {
-        console.log('[memory] skipping semantic downloads and embedder; lexical retrieval active');
-        this.onEvent?.({ stage: 'semantic', pct: 100 });
-      }
-
-      // NO warm-up here — see prime(). It stays the CALLER's call (engineStore.changeLanguage,
-      // once, just before it flips isReady) so readiness owns when the cold start is paid.
-      // Historically it also had to wait for the grade to settle, because the warm-up prefilled
-      // a grade-bearing chat system prompt (~78 s on the target Redmi, measured `warm-up
-      // complete (77835ms)`) and a grade change meant paying it twice. The warm-up is
-      // grade-independent now, so that constraint is gone; what remains is that a cold prefill
-      // should happen where the loader bar can cover it, not inside the model load.
+      // prime() owns the optional generator warm-up; retrieval is already available.
       this.isReadyFlag = true;
 
       track('model_ready', { ...telemetryProps, backend: telemetryBackend, duration_ms: Math.max(0, Date.now() - telemetryStart) });
@@ -654,6 +656,7 @@ export class LocalEngine implements TutorEngine {
     this.config = { ...this.config, gradeLevel: grade };
     if (this.warmed) return;
     await this.warmUp();
+    this.generationReady = !!this.modelId;
   }
 
   /**
@@ -974,18 +977,15 @@ export class LocalEngine implements TutorEngine {
    * background; any failure leaves the app on lexical-only retrieval.
    */
   private async initSemantic(): Promise<void> {
-    // The semantic band of the readiness bar. TWO downloads share it now, split by their
-    // real byte weights (LaBSE 384 MB ≈ 0–69, the fact-vectors blob 116 MB ≈ 69–90 — the
-    // blob moved out of the APK, see REMOTE_ASSETS.vectors); the into-RAM load takes
-    // 90–99 and attach/warm snaps 100. pct 100 ALWAYS fires (success, failure, or no-RAG
-    // early return) — the bar must finish its walk to green either way, because "loading
-    // is over" is true in every one of those cases.
+    // Download both verified assets, check headroom again, then allocate. Completing
+    // this progress stage does not imply success: isSemanticReady() reports capability.
     const emit = (pct: number) => this.onEvent?.({ stage: 'semantic', pct });
     try {
       if (!this.rag) {
         emit(100);
         return;
       }
+      await requireSemanticMemory(true);
       const t0 = Date.now();
       // 1) embedder (LaBSE GGUF via the QVAC llamacpp-embedding plugin). Same
       // resilient local download as the base model (retry/resume/background) — it's
@@ -996,8 +996,18 @@ export class LocalEngine implements TutorEngine {
         ? await ensureRemoteAsset(EMBEDDER.remote, (pct) => {
             console.log(`[LocalEngine] LaBSE downloading: ${pct}%`);
             emit(Math.round(pct * 0.69));
-          })
+          }, this.initializationAbort.signal)
         : EMBEDDER.modelSrc;
+      // 2) fact-vectors blob — DOWNLOADED through the same verified gate as every other
+      // remote asset (declared bytes + streaming MD5, byte-exact resume, self-healing
+      // cache). It used to be a 78.6 MB bundled Metro asset; it is inert without the
+      // embedder above, so it rides the same background phase and costs the APK nothing.
+      const vectorsPath = await ensureRemoteAsset(REMOTE_ASSETS.vectors, (pct) => {
+        console.log(`[LocalEngine] vectors downloading: ${pct}%`);
+        emit(69 + Math.round(pct * 0.21));
+      }, this.initializationAbort.signal);
+      this.checkInitialization();
+      await requireSemanticMemory(); // Headroom may change during either download.
       this.embedModelId = await loadModel({
         modelSrc: embedSrc,
         modelType: EMBEDDER.modelType,
@@ -1008,16 +1018,16 @@ export class LocalEngine implements TutorEngine {
           emit(90 + Math.round(pct * 0.09));
         },
       });
-      // 2) fact-vectors blob — DOWNLOADED through the same verified gate as every other
-      // remote asset (declared bytes + streaming MD5, byte-exact resume, self-healing
-      // cache). It used to be a 78.6 MB bundled Metro asset; it is inert without the
-      // embedder above, so it rides the same background phase and costs the APK nothing.
-      const vectorsPath = await ensureRemoteAsset(REMOTE_ASSETS.vectors, (pct) => {
-        console.log(`[LocalEngine] vectors downloading: ${pct}%`);
-        emit(69 + Math.round(pct * 0.21));
-      });
-      const bytes = await new File('file://' + vectorsPath).bytes(); // Uint8Array
-      const data = new Int8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+      this.checkInitialization();
+      const language = this.config?.language ?? 'english';
+      const lang = language === 'english' ? 'en' : language === 'cebuano' ? 'bis' : 'tl';
+      const stride = VECTORS_META.count * VECTORS_META.dims;
+      const languageIndex = VECTORS_META.langs.indexOf(lang);
+      if (languageIndex < 0) throw new Error(`No semantic vectors for ${language}`);
+      const data = await readVectorSlice(new File('file://' + vectorsPath),
+        stride * VECTORS_META.langs.length, languageIndex * stride, stride,
+        this.initializationAbort.signal);
+      this.checkInitialization();
       // 3) attach. The guard inside attachSemantic catches a stale blob two ways: the count
       // must equal the bank's row count, and — since an edit that rewrites facts without
       // adding or removing any leaves the count identical while every vector goes wrong —
@@ -1028,7 +1038,7 @@ export class LocalEngine implements TutorEngine {
           dims: VECTORS_META.dims,
           scale: VECTORS_META.scale,
           count: VECTORS_META.count,
-          langs: VECTORS_META.langs,
+          langs: [lang],
           data,
         }),
         VECTORS_META.bankHash
@@ -1058,6 +1068,7 @@ export class LocalEngine implements TutorEngine {
       // Lexical-only is a WORKING tutor; the loading story is still over. Finish the bar.
       emit(100);
     }
+    if (!this.semanticReady) return;
     // Image catalog blob (~3MB): substrate of the retired tag path (`resolveImageTag`) and
     // nothing else now — the card path is an id lookup. Independent of the fact-bank blob;
     // its failure costs nothing the product currently exercises, never retrieval.
@@ -1289,11 +1300,32 @@ export class LocalEngine implements TutorEngine {
     };
   }
 
+  canGenerate(): boolean {
+    return this.generationReady && this.isReadyFlag && !!this.modelId;
+  }
+
+  isSemanticReady(): boolean {
+    return this.semanticReady;
+  }
+
+  /** Ranked source-fact IDs; callers map these to authored cards, never generated text. */
+  async searchFacts(query: string): Promise<{ factIds: string[]; offDomain: boolean }> {
+    if (!this.semanticReady) return { factIds: [], offDomain: false };
+    const r = await this.ragSearchDiag(query, 12);
+    const unreachable = r.lexEmpty && !!this.rag?.lexicallyUnreachable(query, this.config?.language ?? 'english');
+    const offDomain = r.semantic && isOffDomain(r.topCos, unreachable);
+    return { factIds: offDomain ? [] : r.facts.map(f => f.id), offDomain };
+  }
+
   isReady(): boolean {
     return this.isReadyFlag;
   }
 
   async shutdown(): Promise<void> {
+    this.cancelInitialization();
+    this.isReadyFlag = false;
+    this.generationReady = false;
+    this.semanticReady = false;
     if (this.embedModelId) {
       try {
         await unloadModel({ modelId: this.embedModelId });
@@ -1313,5 +1345,10 @@ export class LocalEngine implements TutorEngine {
       this.modelId = null;
       this.isReadyFlag = false;
     }
+    this.rag = null;
+    this.imageIndex = null;
+    this.config = null;
+    this.onEvent = null;
+    this.warmed = false;
   }
 }

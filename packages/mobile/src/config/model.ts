@@ -221,7 +221,7 @@ export const ACTIVE_MODEL: OnDeviceModel = {
   quant: 'Q4_K_M',
   sizeGB: 1.27, // hiraia-sft-2b-v2.Q4_K_M.gguf, 1,274,396,000 B
   ramGB: 1.4, // ~1.27 GB weights mmap'd + KV cache at ctx 4096
-  minRamGB: 4,
+  minRamGB: 6,
   // 4096: the card prompt is ~500 tokens and every generation is single-turn
   // (one card prompt, no history), so the ceiling is barely pressed; 4096 keeps
   // headroom without inflating the KV cache.

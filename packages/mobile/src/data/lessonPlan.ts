@@ -6,6 +6,7 @@ import grade6Manifest from '../generated/grade6Lessons.generated.json';
 import manifest from '../generated/grade5Lessons.generated.json';
 import grade4Manifest from '../generated/grade4Lessons.generated.json';
 import grade3Manifest from '../generated/grade3Lessons.generated.json';
+import { lessonRandom, lessonVariety } from './lessonVariety';
 
 export const grade9Lessons = grade9Manifest.lessons;
 export const grade10Lessons = grade10Manifest.lessons;
@@ -64,6 +65,8 @@ export interface LessonRun {
   completed: string[];
   shelfCat?: string;
   manualSelection?: boolean;
+  /** New runs vary; saved runs keep their exact sequence across restarts/language changes. */
+  seed?: number;
 }
 export const lessonByKey = (key: string) => allLessons.find((l) => l.key === key);
 export function lessonObjectives(key: string | null, card: string): string[] {
@@ -74,7 +77,12 @@ export function lessonObjectives(key: string | null, card: string): string[] {
   );
 }
 /** Cover each objective before filling remaining places, reserving unused facts for later visits. */
-export function planLesson(lesson: Lesson, seen: ReadonlySet<string>, saved?: unknown): LessonRun {
+export function planLesson(
+  lesson: Lesson,
+  seen: ReadonlySet<string>,
+  saved?: unknown,
+  seed?: number
+): LessonRun {
   const old = saved as LessonRun | undefined;
   if (
     old?.version === 1 &&
@@ -89,6 +97,9 @@ export function planLesson(lesson: Lesson, seen: ReadonlySet<string>, saved?: un
     lesson.units.every((u) => (u.quizCardIds.length ? u.quizCardIds : u.cardIds).some((id) => old.cards.includes(id)))
   )
     return { ...old, revision: lesson.revision };
+  const runSeed = (seed ?? Math.floor(Math.random() * 4294967296)) >>> 0;
+  const random = lessonRandom(runSeed);
+  const variety = lessonVariety(lesson.key, lesson.revision, lesson.cardIds, lessonFactId, random);
   const cards: string[] = [];
   const selectedFacts = new Set<string>();
   const seenFacts = new Set([...seen].map(lessonFactId));
@@ -98,6 +109,7 @@ export function planLesson(lesson: Lesson, seen: ReadonlySet<string>, saved?: un
     if (id && available(id) && cards.length < lesson.target) {
       cards.push(id);
       selectedFacts.add(lessonFactId(id));
+      variety.selected(id);
     }
   };
   const prefer = (ids: string[]) =>
@@ -115,15 +127,19 @@ export function planLesson(lesson: Lesson, seen: ReadonlySet<string>, saved?: un
   // Every unseen pool is tried before any optional repeat. Scarce anchors may repeat.
   const core = lesson.units.map((u) => u.cardIds);
   const related = lesson.relatedGroups.map((g) => g.cardIds);
-  let corePosition =
-    lesson.coreCardIds.filter((id) => !unseen(id)).length % Math.max(1, core.length);
-  let relatedPosition =
-    lesson.relatedCardIds.filter((id) => !unseen(id)).length % Math.max(1, related.length);
+  let corePosition = Math.floor(random() * Math.max(1, core.length));
+  let relatedPosition = Math.floor(random() * Math.max(1, related.length));
   const pick = (groups: string[][], isRelated: boolean, unseenOnly: boolean) => {
     const start = isRelated ? relatedPosition : corePosition;
     for (let offset = 0; offset < groups.length; offset++) {
       const position = (start + offset) % groups.length;
-      const id = groups[position]!.find((id) => available(id) && (!unseenOnly || unseen(id)));
+      let id: string | undefined;
+      let best = -Infinity;
+      for (const candidate of groups[position]!) {
+        if (!available(candidate) || (unseenOnly && !unseen(candidate))) continue;
+        const score = variety.score(candidate);
+        if (score > best) { best = score; id = candidate; }
+      }
       if (id) {
         add(id);
         if (isRelated) relatedPosition = position + 1;
@@ -145,5 +161,5 @@ export function planLesson(lesson: Lesson, seen: ReadonlySet<string>, saved?: un
         break;
     }
   }
-  return { version: 1, revision: lesson.revision, key: lesson.key, cards, completed: [] };
+  return { version: 1, revision: lesson.revision, key: lesson.key, cards, completed: [], seed: runSeed };
 }

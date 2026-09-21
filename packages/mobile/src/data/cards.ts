@@ -1276,6 +1276,13 @@ export function poolSize(): number {
   return POOL.length;
 }
 
+/** Return authored cards in semantic fact rank order; include text-only cards. */
+export function cardsForFacts(factIds: readonly string[]): CardFact[] {
+  const rank = new Map(factIds.map((id, index) => [id, index]));
+  return POOL.filter(card => rank.has(card.factId))
+    .sort((a, b) => rank.get(a.factId)! - rank.get(b.factId)!);
+}
+
 export function getCard(id: string): CardFact | undefined {
   return BY_ID.get(id);
 }

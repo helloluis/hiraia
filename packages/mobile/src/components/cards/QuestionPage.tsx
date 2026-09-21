@@ -44,6 +44,8 @@ import { card, fonts } from '../../theme';
 import { CardPrint, Divider, IndexBand, Ticket, cardFrame } from './CardFrame';
 import { CardSpeaker } from './CardSpeaker';
 import { utterance } from '../../speech';
+import { recordQuizFeedback, useQuizSparkle } from '../../audio/quizSounds';
+import { profileSnapshot } from '../../profiles';
 
 /** The mascot — same alpha-cut PNG for the small band stamp and the big peach disc. */
 const CAT = require('../../../assets/hiraia-profile.png');
@@ -153,8 +155,8 @@ interface ConfettiPiece {
   delay: number;
 }
 
-function makeConfetti(): ConfettiPiece[] {
-  return Array.from({ length: CONFETTI_COUNT }, (_, i) => {
+function makeConfetti(big: boolean): ConfettiPiece[] {
+  return Array.from({ length: big ? CONFETTI_COUNT * 2 : CONFETTI_COUNT }, (_, i) => {
     // Cycle the palette rather than sampling it, so every burst carries all six inks.
     const color = CONFETTI_INKS[i % CONFETTI_INKS.length]!;
     const side = Math.random() < 0.5 ? -1 : 1;
@@ -163,11 +165,11 @@ function makeConfetti(): ConfettiPiece[] {
       w: 5 + Math.random() * 4,
       h: 8 + Math.random() * 6,
       x0: side * Math.random() * 24,
-      dx: side * (30 + Math.random() * 130),
-      apex: -(24 + Math.random() * 66),
+      dx: side * (30 + Math.random() * 130) * (big ? 1.3 : 1),
+      apex: -(24 + Math.random() * 66) * (big ? 1.5 : 1),
       fall: 230 + Math.random() * 190,
       spin: `${(Math.random() < 0.5 ? -1 : 1) * Math.round(180 + Math.random() * 360)}deg`,
-      delay: Math.random() * CONFETTI_STAGGER_MS,
+      delay: i === 0 ? 0 : Math.random() * CONFETTI_STAGGER_MS,
     };
   });
 }
@@ -180,8 +182,8 @@ function makeConfetti(): ConfettiPiece[] {
  * the JS thread until the completion callback. The layer takes no touches, is hidden from
  * accessibility, and the parent unmounts it via `onDone` so nothing lingers in the tree.
  */
-function Confetti({ onDone }: { onDone: () => void }) {
-  const pieces = useMemo(makeConfetti, []);
+function Confetti({ onDone, onStart, big }: { onDone: () => void; onStart: () => void; big: boolean }) {
+  const pieces = useMemo(() => makeConfetti(big), [big]);
   const drivers = useRef(pieces.map(() => new Animated.Value(0))).current;
 
   useEffect(() => {
@@ -199,6 +201,7 @@ function Confetti({ onDone }: { onDone: () => void }) {
     );
     // `cancelled` gates the callback so a page turn mid-burst can never set state on an
     // unmounted parent.
+    onStart(); // The preloaded cue and native particle drivers start in the same turn.
     burst.start(() => {
       if (!cancelled) onDone();
     });
@@ -300,6 +303,12 @@ export function QuestionPage({ question, language, onAnswer, onContinue, reviewT
   const revealed = selected !== null;
   const correctDisplay = order.indexOf(question.a);
   const gotIt = revealed && selected === correctDisplay;
+  // A restored result is already answered, even if its caller uses default props.
+  const canCelebrate = useRef(celebrate && !revealed).current;
+  const picked = useRef(revealed);
+  const freshAnswer = useRef(false);
+  const bigCelebration = useRef(false);
+  const playSparkle = useQuizSparkle(canCelebrate);
 
   // ---- celebration (correct answers only — see the block comment above Confetti) ----
   //
@@ -310,8 +319,8 @@ export function QuestionPage({ question, language, onAnswer, onContinue, reviewT
   // rows unpin from the bottom edge) instead of racing it.
   const reduceMotion = useReduceMotion();
   const [confetti, setConfetti] = useState(false);
-  const starPop = useRef(new Animated.Value(celebrate ? 0 : 1)).current;
-  const chipPop = useRef(new Animated.Value(celebrate ? 0 : 1)).current;
+  const starPop = useRef(new Animated.Value(canCelebrate ? 0 : 1)).current;
+  const chipPop = useRef(new Animated.Value(canCelebrate ? 0 : 1)).current;
   /**
    * `null` until the celebration fires, then a snapshot of the path it took. The flag
    * above arrives from an async read, so it can resolve (or the reader can flip the
@@ -319,12 +328,13 @@ export function QuestionPage({ question, language, onAnswer, onContinue, reviewT
    * snapshot, never the live flag, so a running pop can't switch from the transform
    * branch to the opacity branch and snap the star to full size.
    */
-  const celebration = useRef<'pop' | 'fade' | null>(celebrate ? null : 'fade');
+  const celebration = useRef<'pop' | 'fade' | null>(canCelebrate ? null : 'fade');
 
   useEffect(() => {
-    if (!celebrate || !gotIt || celebration.current) return;
+    if (!celebrate || !freshAnswer.current || !gotIt || celebration.current) return;
     celebration.current = reduceMotion ? 'fade' : 'pop';
     if (reduceMotion) {
+      playSparkle();
       // Reduced motion: no confetti, and the star + band tick fade in rather than pop.
       Animated.parallel([
         Animated.timing(starPop, { toValue: 1, duration: 200, useNativeDriver: true }),
@@ -342,7 +352,7 @@ export function QuestionPage({ question, language, onAnswer, onContinue, reviewT
         Animated.spring(chipPop, { toValue: 1, tension: 300, friction: 6, useNativeDriver: true }),
       ]),
     ]).start();
-  }, [celebrate, gotIt, reduceMotion, starPop, chipPop]);
+  }, [celebrate, gotIt, reduceMotion, starPop, chipPop, playSparkle]);
 
   // Under reduced motion the pops become fades: the same drivers, mapped to opacity
   // instead of transform, so both paths share one timeline and one completion state.
@@ -363,7 +373,10 @@ export function QuestionPage({ question, language, onAnswer, onContinue, reviewT
     : { transform: [{ scale: chipPop }] };
 
   const pickOption = (displayIdx: number) => {
-    if (revealed || disabled) return;
+    if (revealed || disabled || picked.current) return;
+    picked.current = true;
+    freshAnswer.current = canCelebrate;
+    if (canCelebrate) bigCelebration.current = recordQuizFeedback(profileSnapshot().activeId, displayIdx === correctDisplay);
     setSelected(displayIdx);
     onSelect?.(displayIdx);
     onAnswer(displayIdx === correctDisplay);
@@ -540,7 +553,7 @@ export function QuestionPage({ question, language, onAnswer, onContinue, reviewT
 
       {/* The celebration overlay paints above everything on the card, takes no touches,
           and is unmounted the moment the burst completes. */}
-      {confetti ? <Confetti onDone={() => setConfetti(false)} /> : null}
+      {confetti ? <Confetti big={bigCelebration.current} onStart={playSparkle} onDone={() => setConfetti(false)} /> : null}
     </View>
   );
 }

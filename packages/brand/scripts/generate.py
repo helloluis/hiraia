@@ -48,6 +48,7 @@ ty = 620 - hb[3] * scale
 foreground = f'<path d="{hi}" transform="translate({tx} {ty}) scale({scale})" fill="#F5ECD6"/><path d="M340 704Q422 686 512 766Q602 686 684 704" fill="none" stroke="#E9B949" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>'
 (out / 'app-icon.svg').write_text(svg('<path fill="#1C3B2E" d="M0 0h1024v1024H0z"/>'+foreground))
 (out / 'adaptive-icon.svg').write_text(svg(foreground))
-# Native splash starts with the seed at the same position as the JS animation.
-(out / 'splash.svg').write_text(svg('<circle cx="512" cy="784" r="32" fill="#E9B949"/>'))
+# Full 40-unit glyph at 125dp inside the 200dp splash: 40 * 16 / 1024 * 200.
+# This frame must look complete even while Android is still starting the JS runtime.
+(out / 'splash.svg').write_text(svg('<g transform="translate(192 192) scale(16)">'+glyph('#E9B949')+'</g>'))
 print('Generated brand SVG masters and geometry')

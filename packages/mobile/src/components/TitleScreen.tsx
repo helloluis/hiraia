@@ -1,6 +1,5 @@
-/** Boot cover: a seed dot grows into the book / signal / plant glyph on the UI thread.
- * The native splash uses the same seed position, then the existing card-peel exit
- * hands off as soon as content is ready. Reduced motion shows the complete mark.
+/** Boot cover: the complete glyph is visible from the native splash onward.
+ * A gentle UI-thread pulse keeps it alive without ever collapsing to a seed dot.
  */
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback, useEffect, useRef } from 'react';
@@ -9,21 +8,18 @@ import Reanimated, {
   Easing,
   cancelAnimation,
   runOnJS,
-  useAnimatedProps,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
   withTiming,
-  type SharedValue,
 } from 'react-native-reanimated';
-import Svg, { Circle, G, Path } from 'react-native-svg';
+import Svg, { Circle, Path } from 'react-native-svg';
 
 import geometry from './brand/brand.generated.json';
 import { card } from '../theme';
 import { useReduceMotion } from './cards/useReduceMotion';
 
-export const GROW_CYCLE_MS = 2400;
-// 125dp SVG maps its seed to the 200dp native splash's seed (1024px asset).
+// Matches the full glyph inside the 200dp native splash asset.
 const GLYPH_SIDE = 125;
 const GLYPH_YELLOW = '#E9B949';
 
@@ -86,27 +82,6 @@ function peelTransform(
   ];
 }
 
-const AnimatedGroup = Reanimated.createAnimatedComponent(G);
-
-function GrowingLayer({ d, order, phase, reduced }: {
-  d: string; order: number; phase: SharedValue<number>; reduced: boolean;
-}) {
-  const props = useAnimatedProps(() => {
-    // Bottom pages sprout first; each pair expands upward from the seed.
-    const growth = reduced ? 1 : Math.min(1, Math.max(0, (phase.value - order * .16 - .08) / .28));
-    const fade = reduced ? 1 : Math.min(1, Math.max(0, (1 - phase.value) / .12));
-    const scale = .08 + .92 * growth;
-    return {
-      opacity: growth * fade,
-      matrix: [scale, 0, 0, scale, 20 * (1 - scale), 37 * (1 - scale)],
-    };
-  });
-  return <AnimatedGroup animatedProps={props}>
-    <Path d={d} fill="none" stroke={GLYPH_YELLOW} strokeWidth={3.4}
-      strokeLinecap="round" strokeLinejoin="round" />
-  </AnimatedGroup>;
-}
-
 // --------------------------------------------------------------------------- the screen ----
 
 interface TitleScreenProps {
@@ -120,7 +95,7 @@ export function TitleScreen({ exiting, onGone }: TitleScreenProps) {
   const reduceMotion = useReduceMotion();
   // ---- native splash hand-off ----
   // Hide the native splash the frame AFTER this screen has laid out, so the OS frame (same
-  // seed, same ink) is only ever swapped for a painted copy of itself.
+  // complete glyph, same ink) is only ever swapped for a painted copy of itself.
   const splashHidden = useRef(false);
   const onLayout = useCallback(() => {
     if (splashHidden.current) return;
@@ -130,16 +105,24 @@ export function TitleScreen({ exiting, onGone }: TitleScreenProps) {
     });
   }, []);
 
-  const phase = useSharedValue(0);
+  const glow = useSharedValue(1);
+  // Animate the native view, not SVG group opacity: GroupView's bitmap layer can
+  // be invalidated mid-draw on Android (reproduced on both Jambo and Redmi).
+  const glyphStyle = useAnimatedStyle(() => ({ opacity: glow.value }));
   useEffect(() => {
-    cancelAnimation(phase);
-    phase.value = 0;
-    if (reduceMotion) return;
-    phase.value = withRepeat(withTiming(1, {
-      duration: GROW_CYCLE_MS, easing: Easing.linear,
-    }), -1, false);
-    return () => cancelAnimation(phase);
-  }, [phase, reduceMotion]);
+    cancelAnimation(glow);
+    glow.value = 1;
+    if (reduceMotion || exiting) return;
+    glow.value = withRepeat(
+      withTiming(0.78, {
+        duration: 1200,
+        easing: Easing.inOut(Easing.quad),
+      }),
+      -1,
+      true
+    );
+    return () => cancelAnimation(glow);
+  }, [glow, reduceMotion, exiting]);
 
   // ---- the exit (UI thread) ----
   const flyX = useSharedValue(0);
@@ -195,11 +178,22 @@ export function TitleScreen({ exiting, onGone }: TitleScreenProps) {
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
     >
-      <Svg width={GLYPH_SIDE} height={GLYPH_SIDE} viewBox="0 0 40 40">
-        <Circle cx={20} cy={37} r={2} fill={GLYPH_YELLOW} />
-        {geometry.layers.map((d, i) => <GrowingLayer key={d} d={d} order={2 - i}
-          phase={phase} reduced={reduceMotion} />)}
-      </Svg>
+      <Reanimated.View style={glyphStyle}>
+        <Svg width={GLYPH_SIDE} height={GLYPH_SIDE} viewBox="0 0 40 40">
+          <Circle cx={20} cy={37} r={2} fill={GLYPH_YELLOW} />
+          {geometry.layers.map((d) => (
+            <Path
+              key={d}
+              d={d}
+              fill="none"
+              stroke={GLYPH_YELLOW}
+              strokeWidth={3.4}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          ))}
+        </Svg>
+      </Reanimated.View>
     </Reanimated.View>
   );
 }

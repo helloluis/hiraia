@@ -1,3 +1,5 @@
+import { QuizSoundSettings } from '../../audio/QuizSoundSettings';
+import { ModelDownloadStatus } from '../../components/ModelDownloadStatus';
 import { ImageDownloads } from '../../images/ImageDownloads';
 import { ActivityTable } from '../../telemetry/ActivityTable';
 import { TelemetrySettings } from '../../telemetry/TelemetrySettings';
@@ -11,7 +13,7 @@ import type { Language } from '@hiraia/shared';
 
 import { GRADE_OPTIONS } from '../../config/grades';
 import { LANGUAGE_OPTIONS } from '../../config/languages';
-import { ACTIVE_MODEL, VECTORS_META } from '../../config/model';
+import { VECTORS_META } from '../../config/model';
 import { uiStrings } from '../../config/strings';
 import { HIRAIAPEDIA_VERSION } from '../../config/version';
 import { useEngineStore } from '../../store/engineStore';
@@ -146,15 +148,11 @@ export default function SidebarScreen() {
           <Text style={styles.tutorialButtonText}>View detailed activity →</Text>
         </TouchableOpacity>
 
+        <QuizSoundSettings language={language ?? 'tagalog'} />
         <ImageDownloads />
         <Text style={styles.sectionTitle}>{t.sectionVersion}</Text>
         <View style={styles.versionBlock}>
-          <View style={styles.versionRow}>
-            <Text style={styles.versionLabel}>{t.labelModel}</Text>
-            <Text style={styles.versionValue}>
-              {ACTIVE_MODEL.displayName} · {ACTIVE_MODEL.quant}
-            </Text>
-          </View>
+          <ModelDownloadStatus language={language ?? 'tagalog'} label={t.labelModel} />
           <View style={styles.versionRow}>
             <Text style={styles.versionLabel}>Hiraiapedia</Text>
             <Text style={styles.versionValue}>

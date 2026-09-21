@@ -124,6 +124,10 @@ export interface TutorEngine {
    * Check if the engine is ready to process requests.
    */
   isReady(): boolean;
+  /** Search can remain available without a generation model. */
+  canGenerate?(): boolean;
+  isSemanticReady?(): boolean;
+  searchFacts?(query: string): Promise<{ factIds: string[]; offDomain: boolean }>;
 
   /**
    * Clean up resources and unload models.

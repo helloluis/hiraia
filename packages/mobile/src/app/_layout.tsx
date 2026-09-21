@@ -1,4 +1,9 @@
-import { initializeProfiles, useProfiles, finishProfileOnboarding } from '../profiles';
+import {
+  initializeProfiles,
+  useProfiles,
+  finishProfileOnboarding,
+  cancelProfileChoice,
+} from '../profiles';
 import { ProfilePicker } from '../profiles/ProfilePicker';
 import { Text, Pressable } from 'react-native';
 import { startImageDownloads } from '../images/installer';
@@ -43,9 +48,9 @@ const SPLASH_HOLD_MAX_MS = 4000;
 /**
  * How long the title stays up at MINIMUM, from mount. A warm start can be ready in a couple
  * of hundred ms, and a title that flashes and peels before the eye has settled reads as a
- * glitch; 900 ms is enough for the pen to travel most of the mark before the sheet is thrown.
+ * glitch; a short hold lets the complete mark settle before the sheet is thrown.
  */
-const TITLE_MIN_MS = 900;
+const TITLE_MIN_MS = 500;
 /**
  * Safety net: whatever the readiness signals do, the title is thrown after this long — the
  * feed underneath has its own not-yet-hydrated state and the app must never strand behind
@@ -59,14 +64,27 @@ type TitlePhase = 'shown' | 'exiting' | 'gone';
 export default function RootLayout() {
   const profiles = useProfiles();
   const [profileError, setProfileError] = useState(false);
-  useEffect(() => { void initializeProfiles().catch(() => setProfileError(true)); }, []);
-  useEffect(() => startTelemetry(), []);
   useEffect(() => {
+    void initializeProfiles().catch(() => setProfileError(true));
+  }, []);
+  useEffect(() => {
+    if (!profiles.ready || !profiles.hasChoice || profiles.choosing) return;
+    return startTelemetry();
+  }, [profiles.ready, profiles.hasChoice, profiles.choosing]);
+  useEffect(() => {
+    if (!profiles.ready || !profiles.hasChoice || profiles.choosing) return;
     let alive = true;
     let stop: (() => void) | undefined;
-    void initializeProfiles().then(() => { if (alive) stop = startImageDownloads(); }).catch(() => {});
-    return () => { alive = false; stop?.(); };
-  }, []);
+    void initializeProfiles()
+      .then(() => {
+        if (alive) stop = startImageDownloads();
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+      stop?.();
+    };
+  }, [profiles.ready, profiles.hasChoice, profiles.choosing]);
   const bootstrap = useEngineStore((s) => s.bootstrap);
   const changeLanguage = useEngineStore((s) => s.changeLanguage);
   const bootstrapped = useEngineStore((s) => s.bootstrapped);
@@ -97,8 +115,9 @@ export default function RootLayout() {
   useEffect(() => {
     // Resolve the saved language. The engine is NOT started here — it loads only when
     // something needs it (the feed's search field, or onboarding's language pick).
-    void bootstrap();
-  }, [bootstrap]);
+    if (profiles.ready && profiles.hasChoice && !profiles.choosing && !bootstrapped)
+      void bootstrap();
+  }, [bootstrap, profiles.ready, profiles.hasChoice, profiles.choosing, bootstrapped]);
 
   // The warm-up loader NO LONGER covers the app.
   //
@@ -123,19 +142,27 @@ export default function RootLayout() {
 
   // ---- the title sheet ----
   //
-  // The TitleScreen (the icon's "hi" mark being traced on ink) covers the app from the first
+  // The TitleScreen (the complete gold glyph on ink) covers the app from the first
   // JS frame until it is FULLY loaded, then peels off toward the top-right like a swiped
   // card. "Fully loaded" is two signals, by path:
   //   - feed path (a returning reader): fonts + bootstrap AND cardStore.hydrated. The feed
   //     kicks hydrate() itself when it mounts, so the Stack has to be rendered UNDER the
-  //     title as soon as the shell is ready — hydration runs while the pen is still going.
-  //   - first launch / tutorial: fonts + bootstrap. The carousel is the next thing to show,
+  //     title as soon as the shell is ready — hydration runs while the glyph is still visible.
+  //   - first profile choice: fonts + profile storage, without opening any profile database.
+  //   - tutorial: fonts + bootstrap. The carousel is the next thing to show,
   //     and the feed deliberately does not hydrate under it (the grade picked there weights
   //     the first draw), so waiting on `hydrated` would strand the title.
   // The LLM is not part of readiness — the feed is zero-model; the search field carries its
   // own progress bar.
   const shellReady = fontsLoaded && bootstrapped && profiles.ready;
-  const appReady = shellReady && (onboardingActive || profiles.choosing || hydrated);
+  const pickerReady = fontsLoaded && profiles.ready && profiles.choosing;
+  const appReady = pickerReady || (shellReady && (onboardingActive || hydrated));
+  const onFirstChoice = useCallback(async () => {
+    // The picker remains painted while the new profile's settings load. No JS reload,
+    // and no guest database/model/download jobs are started before this first choice.
+    await bootstrap();
+    cancelProfileChoice();
+  }, [bootstrap]);
   const [title, setTitle] = useState<TitlePhase>('shown');
   const titleShownAt = useRef(Date.now());
 
@@ -176,16 +203,18 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={styles.root}>
       {/* Light content over the title's ink; the app's own dark-on-paper style after. */}
-      <StatusBar style={title === 'gone' ? 'dark' : 'light'} />
+      <StatusBar
+        style={title !== 'gone' || profiles.choosing || onboardingActive ? 'light' : 'dark'}
+      />
 
       {/* The update bar sits ABOVE the navigator in the root column, so every screen —
           feed, sidebar, activity — is pushed down under it while it shows. Suppressed
           during onboarding: a first-launch reader has nothing older to update. */}
-      {shellReady && !onboardingActive && <UpdateBanner />}
-      {shellReady && !onboardingActive && <AssetUpdateBanner />}
+      {shellReady && !onboardingActive && !profiles.choosing && <UpdateBanner />}
+      {shellReady && !onboardingActive && !profiles.choosing && <AssetUpdateBanner />}
 
       {/* The Stack mounts as soon as fonts + bootstrap are in — under the title — so the
-          feed can start hydrating while the mark is still being traced. */}
+          feed can start hydrating while the glyph is still visible. */}
       {shellReady && (
         <Stack
           screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.paper } }}
@@ -201,12 +230,42 @@ export default function RootLayout() {
         <OnboardingCarousel
           initialLanguage={language}
           onPickLanguage={changeLanguage}
-          onFinish={() => { void finishProfileOnboarding().then(() => { setProfileError(false); setOnboardingActive(false); }).catch(() => setProfileError(true)); }}
+          onFinish={() => {
+            void finishProfileOnboarding()
+              .then(() => {
+                setProfileError(false);
+                setOnboardingActive(false);
+              })
+              .catch(() => setProfileError(true));
+          }}
         />
       )}
 
-      {profiles.ready && profiles.choosing && <ProfilePicker onCancel={() => setOnboardingActive(false)} />}
-      {profileError && <Pressable style={{ position: 'absolute', bottom: 30, left: 16, right: 16, padding: 16, backgroundColor: '#f4ead5' }} onPress={() => { void initializeProfiles().then(() => { setProfileError(false); void bootstrap(); }).catch(() => setProfileError(true)); }}><Text>Could not save or load profiles. Tap to retry, or try Start again.</Text></Pressable>}
+      {pickerReady && (
+        <ProfilePicker onFirstChoice={onFirstChoice} onCancel={() => setOnboardingActive(false)} />
+      )}
+      {profileError && (
+        <Pressable
+          style={{
+            position: 'absolute',
+            bottom: 30,
+            left: 16,
+            right: 16,
+            padding: 16,
+            backgroundColor: '#f4ead5',
+          }}
+          onPress={() => {
+            void initializeProfiles()
+              .then(() => {
+                setProfileError(false);
+                void bootstrap();
+              })
+              .catch(() => setProfileError(true));
+          }}
+        >
+          <Text>Could not save or load profiles. Tap to retry, or try Start again.</Text>
+        </Pressable>
+      )}
 
       {/* The title sheet, last in the tree so it sits over everything until it is thrown. */}
       {title !== 'gone' && <TitleScreen exiting={title === 'exiting'} onGone={onTitleGone} />}

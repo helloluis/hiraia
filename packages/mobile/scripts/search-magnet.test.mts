@@ -116,3 +116,62 @@ test('the local engine refuses previously used grounding even if retrieval retur
   assert.equal(result.grounded, false);
   assert.equal(result.text, '');
 });
+
+function semanticAskHarness(search: () => Promise<any>) {
+  const state: any = { asking: false, current: { id: 'old' }, pageKey: 1, seen: new Set(), response: null };
+  const landed: string[] = [];
+  let generations = 0;
+  const run = action('ask', 'dismissQuery', {
+    get: () => ({ ...state }), set: (patch: any) => Object.assign(state, patch),
+    abortRewardPrefetch: () => {}, feedContext: () => ({}),
+    useEngineStore: { getState: () => ({ language: 'english', engine: {
+      isReady: () => true, canGenerate: () => false, searchFacts: search,
+      answerQuery: async () => { generations++; throw new Error('Must not generate'); },
+    } }) },
+    searchCards: async () => ({ best: null, suggestion: null, magnet: [] }),
+    cardsForFacts: (ids: string[]) => ids.map(id => ({ id: `card-${id}` })),
+    WEAK_CONSULT_TIMEOUT_MS: 20,
+    navigateTo: (card: any, _set: any, _get: any, options: any) => {
+      landed.push(card.id); state.asking = false; state.magnet = options.magnet;
+    },
+    formMagnet: (query: string, ids: string[]) => ({ query, idSet: new Set(ids) }),
+    sanitizeCardAnswer: (text: string) => text,
+  });
+  return { run, state, landed, generations: () => generations };
+}
+test('a lexical miss uses semantic cards and a topic queue with no LLM request', async () => {
+  const h = semanticAskHarness(async () => ({ factIds: ['one', 'two'], offDomain: false }));
+  await h.run('fotosintesis');
+  assert.deepEqual(h.landed, ['card-one']);
+  assert.deepEqual([...h.state.magnet.idSet], ['card-one', 'card-two']);
+  assert.equal(h.state.response, null, 'authored cards never get the generated label');
+  assert.equal(h.generations(), 0);
+});
+test('semantic off-domain and no-match outcomes never invoke an unavailable LLM', async () => {
+  for (const offDomain of [true, false]) {
+    const h = semanticAskHarness(async () => ({ factIds: [], offDomain }));
+    await h.run('query');
+    assert.equal(h.state.response.kind, offDomain ? 'offdomain' : 'abstain');
+    assert.equal(h.state.asking, false);
+    assert.equal(h.generations(), 0);
+  }
+});
+test('a semantic timeout ends the spinner and ignores the late result', async () => {
+  let finish!: (value: any) => void;
+  const h = semanticAskHarness(() => new Promise(resolve => { finish = resolve; }));
+  await h.run('query');
+  assert.equal(h.state.asking, false);
+  finish({ factIds: ['late'], offDomain: false });
+  await Promise.resolve();
+  assert.deepEqual(h.landed, []);
+});
+test('navigation while a semantic query runs prevents a stale landing', async () => {
+  let finish!: (value: any) => void;
+  const h = semanticAskHarness(() => new Promise(resolve => { finish = resolve; }));
+  const pending = h.run('query');
+  await new Promise(resolve => setTimeout(resolve, 0));
+  h.state.pageKey++;
+  finish({ factIds: ['late'], offDomain: false });
+  await pending;
+  assert.deepEqual(h.landed, []);
+});

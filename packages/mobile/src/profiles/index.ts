@@ -101,8 +101,7 @@ export function cleanFirstName(name: string) {
     .replace(/\s+/g, ' ')
     .slice(0, 40);
 }
-/** Commit for the next JS runtime. Until restart, old async jobs keep their old identity. */
-export async function selectProfile(id: string | null, name?: string) {
+async function saveSelection(id: string | null, name?: string) {
   await initializeProfiles();
   let next = { ...saved, profiles: [...saved.profiles], onboarding: true };
   if (name !== undefined) {
@@ -116,6 +115,21 @@ export async function selectProfile(id: string | null, name?: string) {
     next.activeId = id ?? 'guest';
   }
   await AsyncStorage.setItem(KEY, JSON.stringify(next));
+  return next;
+}
+/** Existing-profile switches retain their old identity until a new JS runtime starts. */
+export async function selectProfile(id: string | null, name?: string) {
+  await saveSelection(id, name);
+}
+/** The first choice happens before any profile-scoped services/navigator are mounted.
+ * Keep the picker visible until the root has bootstrapped the chosen profile.
+ */
+export async function selectFirstProfile(name?: string) {
+  await initializeProfiles();
+  if (state.hasChoice) throw new Error('A first profile has already been selected');
+  const next = await saveSelection(null, name);
+  saved = next;
+  update({ hasChoice: true, activeId: next.activeId, profiles: next.profiles });
 }
 export async function finishProfileOnboarding() {
   const next = { ...saved, onboarding: false };

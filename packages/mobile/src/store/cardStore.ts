@@ -41,6 +41,7 @@ import {
 import {
   advanceCurriculum,
   cardTitle,
+  cardsForFacts,
   cardTitleById,
   choiceLabel,
   competencyKeys,
@@ -809,7 +810,34 @@ export const useCardStore = create<CardState>()((set, get) => ({
     // Set only by answerQuery, and only when the embedder was up to judge it: the query wasn't
     // science, so neither a card nor a science topic is the right answer.
     let offDomain = false;
-    if (engine?.isReady() && engine.answerQuery) {
+    // Meaning-based lookup serves the SAME authored cards/quizzes as lexical search.
+    // No LLM, new text, or generated-card label is involved.
+    if (engine?.searchFacts) {
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      try {
+        const result = await Promise.race([
+          engine.searchFacts(q),
+          new Promise<null>(resolve => { timer = setTimeout(() => resolve(null), WEAK_CONSULT_TIMEOUT_MS); }),
+        ]);
+        if (!stillCurrent()) return;
+        offDomain = result?.offDomain === true;
+        const cards = cardsForFacts(result?.factIds ?? []);
+        const best = cards[0];
+        if (best) {
+          const ids = cards.map(card => card.id);
+          const seen = new Set(get().seen);
+          for (const id of ids) seen.delete(id);
+          set({ seen });
+          console.log(`[cards] semantic search served ${best.id} (${cards.length} authored cards)`);
+          navigateTo(best, set, get, { magnet: formMagnet(q, ids) });
+          return;
+        }
+      } catch (error) {
+        console.warn('[cards] semantic search unavailable; retaining lexical fallback', error);
+      } finally { clearTimeout(timer); }
+    }
+
+    if (!offDomain && engine?.isReady() && engine.canGenerate?.() !== false && engine.answerQuery) {
       set({ asking: true });
       try {
         // NOT wrapped in withModelLock: answerQuery takes it itself, around the generation and
@@ -942,7 +970,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
     const engine = useEngineStore.getState().engine;
     const lang = useEngineStore.getState().language ?? 'english';
     if (s.response?.kind === 'generated' && magnet && dynamic && dynamic.attempts < 3 &&
-        dynamic.sourceFactIds.length && engine?.isReady() && engine.answerQuery) {
+        dynamic.sourceFactIds.length && engine?.isReady() && engine.canGenerate?.() !== false && engine.answerQuery) {
       set({ asking: true });
       try {
         const ans = await engine.answerQuery(magnet.query, lang, { excludeFactIds: dynamic.sourceFactIds });
@@ -975,7 +1003,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
     // itself never waits on this (zero-model); if it isn't ready when a reward is due, the
     // deterministic template is used instead.
     const es = useEngineStore.getState();
-    if (es.engine?.isReady() || es.isReady) return;
+    if (es.engine?.isReady() || es.isReady || es.loadingPhase === 'downloading' || es.loadingPhase === 'warming') return;
     const lang = es.language;
     if (lang) void es.changeLanguage(lang);
   },
@@ -1403,7 +1431,7 @@ async function prefetchReward() {
   if (AppState.currentState === 'background') return;
   const es = useEngineStore.getState();
   const engine = es.engine;
-  if (!engine?.isReady() || !engine.generateReward) return;
+  if (!engine?.isReady() || engine.canGenerate?.() === false || !engine.generateReward) return;
   const lang = es.language ?? 'tagalog';
   const topics = recapTopics(s.viewLog, lang);
   if (topics.length < REWARD_MIN_TOPICS) return;

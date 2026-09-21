@@ -234,6 +234,68 @@ function checkContract(
  */
 const inFlight = new Map<string, Promise<string>>();
 
+export type AssetDownloadStatus = {
+  phase:
+    | 'checking'
+    | 'missing'
+    | 'paused'
+    | 'downloading'
+    | 'retrying'
+    | 'verifying'
+    | 'downloaded'
+    | 'failed';
+  percent: number;
+};
+const unchecked: AssetDownloadStatus = { phase: 'checking', percent: 0 };
+const downloadStatuses = new Map<string, AssetDownloadStatus>();
+const statusListeners = new Set<() => void>();
+export const assetDownloadStatus = (filename: string): AssetDownloadStatus =>
+  downloadStatuses.get(filename) ?? unchecked;
+export function subscribeAssetDownloads(listener: () => void): () => void {
+  statusListeners.add(listener);
+  return () => {
+    statusListeners.delete(listener);
+  };
+}
+function setDownloadStatus(
+  filename: string,
+  phase: AssetDownloadStatus['phase'],
+  percent = 0
+): void {
+  percent = Math.max(0, Math.min(100, Math.floor(percent)));
+  const previous = downloadStatuses.get(filename);
+  if (previous?.phase === phase && previous.percent === percent) return;
+  downloadStatuses.set(filename, { phase, percent });
+  for (const listener of statusListeners) listener();
+}
+
+/** Read-only cache inspection: never starts a transfer or hashes a GB-sized file.
+ * Uses the same size-checked cache contract as fetchAndVerify's read path.
+ * An in-flight transfer always owns its status, including while disk reads await.
+ */
+export async function inspectAssetDownload(spec: RemoteAssetSpec): Promise<void> {
+  if (inFlight.has(spec.filename)) return;
+  const before = assetDownloadStatus(spec.filename);
+  const uri = `${spec.dir ?? MODELS_DIR}${spec.filename}`;
+  try {
+    const [size, partial] = await Promise.all([statSize(uri), statSize(`${uri}.part`)]);
+    if (inFlight.has(spec.filename) || assetDownloadStatus(spec.filename) !== before) return;
+    if (size === spec.bytes) setDownloadStatus(spec.filename, 'downloaded', 100);
+    else if (before.phase !== 'failed') {
+      const validPartial = partial !== null && partial > 0 && partial <= spec.bytes;
+      setDownloadStatus(
+        spec.filename,
+        validPartial ? 'paused' : 'missing',
+        validPartial ? Math.min(99, (partial / spec.bytes) * 100) : 0
+      );
+    }
+  } catch {
+    if (!inFlight.has(spec.filename) && assetDownloadStatus(spec.filename) === before) {
+      setDownloadStatus(spec.filename, 'failed');
+    }
+  }
+}
+
 /**
  * Progress callback for `ensureRemoteAsset`. `pct` is 0–100. `phase` distinguishes
  * the two very different things "99%" can mean: `'transfer'` (bytes still arriving)
@@ -270,12 +332,31 @@ export async function ensureRemoteAsset(
     onProgress?.(100);
     return path;
   }
-  const run = fetchAndVerify(spec, onProgress, signal);
+  setDownloadStatus(spec.filename, 'checking');
+  const run = fetchAndVerify(
+    spec,
+    (pct, phase) => {
+      // Completion is published only after fetchAndVerify returns the installed path.
+      if (pct < 100)
+        setDownloadStatus(spec.filename, phase === 'verify' ? 'verifying' : 'downloading', pct);
+      onProgress?.(pct, phase);
+    },
+    signal
+  );
   // Register BEFORE the first await inside `fetchAndVerify` can yield, so there is
   // no window in which a second caller sees an empty map.
   inFlight.set(spec.filename, run);
   try {
-    return await run;
+    const path = await run;
+    setDownloadStatus(spec.filename, 'downloaded', 100);
+    return path;
+  } catch (error) {
+    setDownloadStatus(
+      spec.filename,
+      signal?.aborted ? 'paused' : 'failed',
+      assetDownloadStatus(spec.filename).percent
+    );
+    throw error;
   } finally {
     inFlight.delete(spec.filename);
   }
@@ -328,7 +409,15 @@ async function fetchAndVerify(
     await deleteAsync(partUri, { idempotent: true });
   }
 
-  const assetKind = /\.apk$/i.test(spec.filename) ? 'apk' : /adapter|lora/i.test(spec.filename) ? 'adapter' : /vector/i.test(spec.filename) ? 'vectors' : /\.(zip|tar|webp|hpak)$/i.test(spec.filename) ? 'images' : 'model';
+  const assetKind = /\.apk$/i.test(spec.filename)
+    ? 'apk'
+    : /adapter|lora/i.test(spec.filename)
+      ? 'adapter'
+      : /vector/i.test(spec.filename)
+        ? 'vectors'
+        : /\.(zip|tar|webp|hpak)$/i.test(spec.filename)
+          ? 'images'
+          : 'model';
   let lastError: unknown = null;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     if (signal?.aborted) throw new Error('model download aborted');
@@ -353,7 +442,9 @@ async function fetchAndVerify(
       // Already have every byte from an earlier launch? Skip straight to verification
       // rather than re-requesting the file.
       if (startOffset !== spec.bytes) {
-        onProgress?.(startOffset > 0 ? Math.min(99, Math.round((startOffset / spec.bytes) * 100)) : 0);
+        onProgress?.(
+          startOffset > 0 ? Math.min(99, Math.round((startOffset / spec.bytes) * 100)) : 0
+        );
         declaredTotal = await runTransfer(spec, partUri, startOffset, onProgress, signal);
       } else {
         LOG(`${spec.label}: partial already complete (${mb(startOffset)}) — verifying`);
@@ -373,7 +464,8 @@ async function fetchAndVerify(
       // (~20 s on the target device). Never pay that to reject a login page.
       const t0 = Date.now();
       const md5 = size === spec.bytes && spec.md5 ? await localMd5(partUri) : undefined;
-      if (md5) LOG(`${spec.label}: hashed ${mb(size)} in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
+      if (md5)
+        LOG(`${spec.label}: hashed ${mb(size)} in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
 
       const bad = checkContract(spec, size, md5);
       if (bad) {
@@ -447,7 +539,10 @@ async function fetchAndVerify(
         `${spec.label}: attempt ${attempt}/${MAX_ATTEMPTS} failed — ` +
           `${e instanceof Error ? e.message : String(e)}`
       );
-      if (attempt < MAX_ATTEMPTS) await sleep(Math.min(15_000, 1000 * 2 ** attempt));
+      if (attempt < MAX_ATTEMPTS) {
+        setDownloadStatus(spec.filename, 'retrying', assetDownloadStatus(spec.filename).percent);
+        await sleep(Math.min(15_000, 1000 * 2 ** attempt));
+      }
     }
   }
 

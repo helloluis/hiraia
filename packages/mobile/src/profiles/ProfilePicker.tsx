@@ -1,8 +1,10 @@
 import { Wordmark } from '../components/brand/Wordmark';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { reloadAppAsync } from 'expo';
 import {
   Image,
+  Keyboard,
+  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -13,30 +15,56 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useProfiles, selectProfile, cancelProfileChoice, cleanFirstName } from './index';
+import {
+  useProfiles,
+  selectFirstProfile,
+  selectProfile,
+  cancelProfileChoice,
+  cleanFirstName,
+} from './index';
 import { drainTelemetryWrites } from '../telemetry';
 import { card, fonts } from '../theme';
 import { SlideCard } from '../components/onboarding/SlideCard';
 import { CardPrint, IndexBand, cardFrame } from '../components/cards/CardFrame';
 const CAT = require('../../assets/hiraia-profile.png');
-export function ProfilePicker({ onCancel }: { onCancel: () => void }) {
+export function ProfilePicker({
+  onCancel,
+  onFirstChoice,
+}: {
+  onCancel: () => void;
+  onFirstChoice: () => Promise<void>;
+}) {
   const state = useProfiles();
+  // Saving the first name updates the store before onboarding is ready. Keep this
+  // form's choices stable so the new name does not insert a row and move the buttons.
+  const choices = useRef(state.profiles).current;
+  const hadChoice = useRef(state.hasChoice).current;
   const [name, setName] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [restart, setRestart] = useState(false);
+  const [firstChoiceSaved, setFirstChoiceSaved] = useState(false);
   const choose = async (id: string | null, firstName?: string) => {
     if (busy) return;
     setBusy(true);
     setError('');
+    Keyboard.dismiss();
     try {
+      if (!state.hasChoice || firstChoiceSaved) {
+        if (!firstChoiceSaved) {
+          await selectFirstProfile(firstName);
+          setFirstChoiceSaved(true);
+        }
+        await onFirstChoice();
+        return;
+      }
       await drainTelemetryWrites();
       await selectProfile(id, firstName);
       setRestart(true);
       await drainTelemetryWrites();
       await reloadAppAsync();
     } catch {
-      setError('Could not finish switching. Please retry.');
+      setError('Could not continue. Please try again.');
       setBusy(false);
     }
   };
@@ -69,12 +97,26 @@ export function ProfilePicker({ onCancel }: { onCancel: () => void }) {
               style={styles.flex}
               contentContainerStyle={styles.content}
             >
-              <View style={{ alignItems: 'center' }}><Wordmark size={36} /></View>
+              <View style={{ alignItems: 'center' }}>
+                <Wordmark size={36} />
+              </View>
               <Text style={styles.title}>Who’s learning today?</Text>
               <Text style={styles.text}>
                 You can use your first name to keep your activity separate on this phone. Your name
                 stays on this device.
               </Text>
+              <View style={{ minHeight: 32, flexDirection: 'row', gap: 10, alignItems: 'center' }}>
+                {busy && !restart && (
+                  <>
+                    <ActivityIndicator color={card.ink} />
+                    <Text style={styles.text}>Getting things ready…</Text>
+                  </>
+                )}
+              </View>
+              {firstChoiceSaved &&
+                !busy &&
+                !!error &&
+                button('Continue setup', () => void choose(null), true)}
               {restart ? (
                 <>
                   {button('Restart Hiraia', () => {
@@ -88,12 +130,12 @@ export function ProfilePicker({ onCancel }: { onCancel: () => void }) {
                 </>
               ) : (
                 <>
-                  {state.profiles.length > 0 && <Text style={styles.title}>Continue as</Text>}
-                  {state.profiles.map((p, i) => (
+                  {choices.length > 0 && <Text style={styles.title}>Continue as</Text>}
+                  {choices.map((p, i) => (
                     <View key={p.id}>
                       {button(
                         p.name +
-                          (state.profiles.filter(
+                          (choices.filter(
                             (x) => x.name.toLocaleLowerCase() === p.name.toLocaleLowerCase()
                           ).length > 1
                             ? ` · Profile ${i + 1}`
@@ -122,7 +164,7 @@ export function ProfilePicker({ onCancel }: { onCancel: () => void }) {
                     Guest activity is shared by everyone who skips. To keep your own history, select
                     your saved profile next time.
                   </Text>
-                  {state.hasChoice &&
+                  {hadChoice &&
                     button('Cancel', () => {
                       cancelProfileChoice();
                       onCancel();
@@ -142,7 +184,7 @@ export function ProfilePicker({ onCancel }: { onCancel: () => void }) {
   );
 }
 const styles = StyleSheet.create({
-  screen: { ...StyleSheet.absoluteFillObject, backgroundColor: card.board },
+  screen: { ...StyleSheet.absoluteFillObject, backgroundColor: card.board, zIndex: 110 },
   flex: { flex: 1 },
   content: { paddingHorizontal: 4, paddingTop: 18, gap: 14, paddingBottom: 20 },
   title: {
