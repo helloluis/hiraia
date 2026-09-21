@@ -214,8 +214,10 @@ async function fetchManifest(manual = false): Promise<AppManifest | null> {
       signal: controller.signal as RequestInit['signal'],
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const body = await res.json();
-    if (!body || body.schema !== 1 || !Object.prototype.hasOwnProperty.call(body, 'app')) throw new Error('Invalid update manifest');
+    const raw: unknown = await res.json();
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new Error('Invalid update manifest');
+    const body = raw as Record<string, unknown>;
+    if (body.schema !== 1 || !Object.prototype.hasOwnProperty.call(body, 'app')) throw new Error('Invalid update manifest');
     // A bad optional asset catalog must not suppress an APK update.
     await useAssetUpdateStore.getState().acceptManifest(body.assets, manual).catch(() => {});
     const app = parseManifest(body);
