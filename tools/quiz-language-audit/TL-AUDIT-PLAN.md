@@ -143,6 +143,47 @@ answer index, English text and the other two Tagalog options all unchanged. **1 
 
 **Rate: 1 translation defect in 25,651 items = 0.004%.**
 
+## Q3 — affix triage: DONE. 42 tokens repaired, and the guardrail earned its keep.
+
+170 roots triaged in-session, each DEFECT claim then adversarially verified.
+
+| verdict | roots |
+|---|---:|
+| DUAL — both affixes correct, different meanings | **61** |
+| FINE — acceptable variation | **63** |
+| DEFECT | 46 → **38 accepted, 8 rejected** |
+
+**124 of 170 roots are not defects**, which is the outcome the transitivity guardrail was
+written for. The triage produced dictionary evidence for each: `magbigay` = to give vs
+`bumigay` = to give way (every one of its 8 tokens is a roof or a cliff giving way);
+`dumaloy` = to flow vs `magdaloy ng X` = to conduct X (a blanket rewrite would have made metals
+"flow electricity"); `magtubo ng X` = to grow/produce X vs `tumubo` = to sprout.
+
+**The verifier rejected `langoy` — Luis's own example.** Its finding: `maglangoy` /
+`naglalangoy` is attested, fluent Tagalog for "to swim", with ~309 hits in ordinary prose.
+That is a correction I have to accept and it refines what this detector measures:
+
+> The corpus tells you a form is INCONSISTENT with the rest of the corpus. It does not tell
+> you the form is UNGRAMMATICAL. I described it correctly as a consistency instrument and then
+> pitched a consistency deviation as a grammar error. Both things can be true at once —
+> `naglalangoy` can be real Tagalog AND a 1% outlier against this corpus's 858 `lumalangoy`.
+
+`langoy` is therefore HELD, not rewritten. So is `galaw`, where the verifier caught the
+transitivity trap directly: the English is "a force moving an object", which genuinely needs a
+transitive form.
+
+**Applied: 21 substitutions, 42 tokens, 24 quiz items + 16 cards.** All intransitive
+"becomes/does" verbs where -um- is not in contention: `nagtitigas`→`tumitigas`,
+`naglalamig`→`lumalamig`, `nagtatalbog`→`tumatalbog`, `magbagal`→`bumagal`. Four more were
+held by the attestation gate for targets the corpus uses fewer than 20 times.
+
+Verified after writing: 0 structural violations (answer index, option count, option order and
+English all unchanged), 0 changes outside `tl` fields in the pool, orphaned emphasis spans 0
+before and 0 after.
+
+**The defects spanned both banks.** 26 tokens were in the quiz bank and 16 in the card pool —
+the same generator, two outputs. Fixing only the quiz bank would have left half of them.
+
 ## Q2 — corpus as authority for Tagalog
 
 Port `ceb_usage.py` to Tagalog over the quiz bank plus the 49,156-card corpus, so word-level
