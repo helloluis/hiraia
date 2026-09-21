@@ -1,3 +1,4 @@
+import { completedLessonCards, lessonRunFinished, parseLessonRecap, type LessonRecap } from '../data/lessonRecap';
 import { titleForCard, type TitleCardContent } from '../data/titleCard';
 import { reviewDue } from '../reviews/logic';
 import {
@@ -42,12 +43,14 @@ import {
   advanceCurriculum,
   cardTitle,
   cardsForFacts,
+  cardsForTopic,
   cardTitleById,
   choiceLabel,
   competencyKeys,
   curriculumCursor,
   cursorTopic,
   topicTitle,
+  topicShelves,
   estimatedCurriculumCursor,
   getCard,
   hasServableCurriculum,
@@ -179,6 +182,9 @@ export interface ActiveMagnet {
 export type ActiveCurriculum = CurriculumCursor;
 
 interface CardState {
+  lessonRecap: LessonRecap | null;
+  continueAfterLessonRecap: () => void;
+  repeatLesson: () => void;
   titleCard: TitleCardContent | null;
   introducedTopic: string | null;
   continueAfterTitle: () => void;
@@ -408,6 +414,22 @@ let hydrating: Promise<void> | null = null;
 export const useCardStore = create<CardState>()((set, get) => ({
   hydrated: false,
   current: null,
+  lessonRecap: null,
+  continueAfterLessonRecap: () => {
+    const s = get();
+    if (!s.lessonRecap || !s.pending) return;
+    const choice = s.pending;
+    // Acknowledge exactly this boundary; ordinary navigation still intercepts the next one.
+    set({ lessonRecap: null, pending: null });
+    advance(choice, set, get, true);
+  },
+  repeatLesson: () => {
+    const recap = get().lessonRecap;
+    if (!recap) return;
+    beginTitleSection();
+    // Replan from persistent coverage; do not reuse the completed run or erase history.
+    get().enterCurriculum(recap.key, undefined, recap.run.shelfCat);
+  },
   titleCard: null,
   introducedTopic: null,
   continueAfterTitle: () => {
@@ -497,6 +519,35 @@ export const useCardStore = create<CardState>()((set, get) => ({
       const initial = saved ?? estimated;
       let curriculum = initial && advanceCurriculum(initial, null, seen);
       let ctx = feedContext(null, curriculum);
+      const restoredRecap = parseLessonRecap(
+        await getSetting(`cards.lessonRecap.${grade}`).catch(() => null), grade,
+        (key, shelf) => {
+          const c = curriculumCursor(grade, key, seen);
+          const topic = c && cursorTopic(c);
+          if (!topic) return null;
+          return shelf ? topicShelves(topic, 'english').find(s => s.cat === shelf)?.ids ?? null
+            : new Set(cardsForTopic(topic));
+        }
+      );
+      // Eligibility must use the saved run, not a freshly randomized subset.
+      if (restoredRecap) {
+        curriculum = curriculumCursor(grade, restoredRecap.nextKey, seen, restoredRecap.nextRun) ?? curriculum;
+        ctx = feedContext(null, curriculum);
+      }
+      if (restoredRecap && curriculum) {
+        const last = getCard(restoredRecap.cardIds[restoredRecap.cardIds.length - 1]!);
+        const dest = jumpCard(null, seen, ctx);
+        if (last) {
+          const previous = curriculumCursor(grade, restoredRecap.key, seen, restoredRecap.run);
+          await warmPage([...restoredRecap.cardIds, dest.id]).catch(() => undefined);
+          const choice: CardChoice = { factId: dest.id, label: '', kind: 'deep' };
+          set({ hydrated: true, pagesRead, correctCount, seen, current: last,
+            currentTopic: previous, curriculum, choices: [choice], pending: choice,
+            lessonRecap: restoredRecap, titleCard: null, pageKey: 1,
+            reinforcementQueue, remediationQueue });
+          return;
+        }
+      }
       const currentTopic = curriculum;
       const first = curriculum ? jumpCard(null, seen, ctx) : startCard(seen, ctx);
       const consumedReinforcement = reinforcementQueue.includes(first.id);
@@ -572,7 +623,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
 
   prepareReview: () => {
     const s = get();
-    if (!s.current || s.titleCard || s.question || s.reward || s.response || !s.choices[0]) return;
+    if (!s.current || s.lessonRecap || s.titleCard || s.question || s.reward || s.response || !s.choices[0]) return;
     const topic = s.currentTopic && cursorTopic(s.currentTopic);
     prepareReview({
       pageKey: s.pageKey,
@@ -587,6 +638,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
   },
   choose: (choice) => {
     const s = get();
+    if (s.lessonRecap) { get().continueAfterLessonRecap(); return; }
     if (s.titleCard) { get().continueAfterTitle(); return; }
     if (
       !s.current ||
@@ -652,7 +704,9 @@ export const useCardStore = create<CardState>()((set, get) => ({
   },
   chooseWithoutReview: (choice) => {
     const s = get();
-    if (s.question || s.reward || s.response) return; // an interject page is up — resolve it first
+    if (s.lessonRecap || s.question || s.reward || s.response) return; // an interject page is up — resolve it first
+
+    if (boundaryRecap(s)) { advance(choice, set, get); return; }
 
     // REWARD due? (jittered 15-25 pages, needs enough distinct topics.) Rarer than the
     // quiz, so check it first; it intercepts the flip and resumes the choice after.
@@ -706,7 +760,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
     const q = query.trim();
     const s = get();
     if (!q || s.asking) return;
-    set({ titleCard: null });
+    set({ titleCard: null, lessonRecap: null });
     // The child asked: the speculative reward line yields NOW, before the search's embedding
     // (which is not under the model lock and would otherwise share the CPU with it). The
     // `asking` edge in the page-turn hook below is the backstop for the generation itself.
@@ -1034,6 +1088,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
       lang
     );
     set({
+      lessonRecap: null,
       current: dest,
       ...introduce(dest, null, s.introducedTopic),
       asking: false,
@@ -1137,6 +1192,26 @@ let previewCache: {
   choices: CardChoice[];
 } | null = null;
 
+/** Completion is a visited-card boundary, independent of quiz correctness. */
+function boundaryRecap(s: CardState): LessonRecap | null {
+  if (s.magnet || !s.current || !s.currentTopic?.lessonRun) return null;
+  const cursor = s.currentTopic;
+  const run = cursor.lessonRun!;
+  if (!s.curriculum || !lessonRunFinished(run, s.current.id)) return null;
+  const cardIds = completedLessonCards(run, s.current.id);
+  if (cardIds.length !== run.cards.length) return null;
+  const topic = cursorTopic(cursor);
+  if (!topic) return null;
+  const shelf = run.shelfCat;
+  const title = shelf ? {
+    en: topicShelves(topic, 'english').find(s => s.cat === shelf)?.label ?? topic.title.en,
+    tl: topicShelves(topic, 'tagalog').find(s => s.cat === shelf)?.label ?? topic.title.tl,
+    bis: topicShelves(topic, 'cebuano').find(s => s.cat === shelf)?.label ?? topic.title.bis,
+  } : topic.title;
+  return { version: 1, grade: cursor.grade, key: cursor.key, title,
+    run: { ...run, completed: cardIds }, cardIds, nextKey: s.curriculum.key, nextRun: s.curriculum.lessonRun };
+}
+
 type Set_ = (partial: Partial<CardState>) => void;
 type Get_ = () => CardState;
 
@@ -1214,6 +1289,7 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, opts: NavigateOpts = {
     magnet
   );
   set({
+    lessonRecap: null,
     current: fact,
     ...introduce(fact, held, s.introducedTopic),
     asking: false,
@@ -1243,8 +1319,15 @@ function navigateTo(fact: CardFact, set: Set_, get: Get_, opts: NavigateOpts = {
 }
 
 /** Advance the walk onto the chosen card (the normal page-turn). */
-function advance(choice: CardChoice, set: Set_, get: Get_) {
+function advance(choice: CardChoice, set: Set_, get: Get_, recapAcknowledged = false) {
   const s = get();
+  const recap = !recapAcknowledged && boundaryRecap(s);
+  if (recap) {
+    void warmPage(recap.cardIds).catch(() => undefined);
+    set({ lessonRecap: recap, pending: choice, titleCard: null, rewardPrefetch: null,
+      untilReward: nextRewardGap(), pageKey: s.pageKey + 1 });
+    return;
+  }
   const nextFact = getCard(choice.factId);
   if (!nextFact) return;
   const lang = useEngineStore.getState().language ?? 'tagalog';
@@ -1355,6 +1438,7 @@ const rewardJob: {
 function rewardNear(s: CardState): boolean {
   return (
     s.untilReward <= REWARD_PREFETCH_AT &&
+    !s.lessonRecap &&
     !s.titleCard &&
     !s.rewardPrefetch &&
     !s.reward &&
@@ -1521,6 +1605,12 @@ useCardStore.subscribe((s, prev) => {
  * turn, so the warm-up completing arms one for the page the reader is on.
  */
 useCardStore.subscribe((s, prev) => {
+  if (s.currentTopic !== prev.currentTopic || s.curriculum !== prev.curriculum || s.lessonRecap !== prev.lessonRecap) {
+    const grade = s.currentTopic?.grade ?? s.curriculum?.grade ?? useEngineStore.getState().grade;
+    const recap = s.lessonRecap ?? boundaryRecap(s);
+    void setSetting(`cards.lessonRecap.${grade}`, JSON.stringify(recap))
+      .catch(e => console.warn('[cards] saving recap failed', e));
+  }
   if (s.curriculum && s.curriculum !== prev.curriculum) {
     if (s.curriculum.lessonRun)
       void setSetting(

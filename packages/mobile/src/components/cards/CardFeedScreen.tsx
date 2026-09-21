@@ -1,3 +1,5 @@
+import { LessonRecapPage } from './LessonRecapPage';
+import { lessonRunFinished, type LessonRecap } from '../../data/lessonRecap';
 import { TitleCardPage } from './TitleCardPage';
 import type { TitleCardContent } from '../../data/titleCard';
 import { Wordmark } from '../brand/Wordmark';
@@ -301,6 +303,7 @@ type SwipeDir = Side | 'up' | 'down' | 'back';
 
 /** What was on the pad for the page being peeled away. */
 interface PageSnap {
+  lessonRecap: LessonRecap | null;
   titleCard: TitleCardContent | null;
   pageKey: number;
   fact: CardFact | null;
@@ -747,6 +750,10 @@ export function CardFeedScreen() {
   const hydrate = useCardStore((s) => s.hydrate);
   const current = useCardStore((s) => s.current);
   const choices = useCardStore((s) => s.choices);
+  const lessonRecap = useCardStore(s => s.lessonRecap);
+  const atLessonEnd = useCardStore(s => !s.magnet && lessonRunFinished(s.currentTopic?.lessonRun, s.current?.id));
+  const continueAfterLessonRecap = useCardStore(s => s.continueAfterLessonRecap);
+  const repeatLesson = useCardStore(s => s.repeatLesson);
   const titleCard = useCardStore((s) => s.titleCard);
   const continueAfterTitle = useCardStore((s) => s.continueAfterTitle);
   const question = useCardStore((s) => s.question);
@@ -825,10 +832,10 @@ export function CardFeedScreen() {
     setHistoryOffset(0);
   }, []);
   useEffect(() => {
-    if (!current || question || reward || response) return;
+    if (!current || lessonRecap || question || reward || response) return;
     if (titleCard) appendHistory({ kind: 'title', key: pageKey, content: titleCard, pagesRead });
     else appendHistory({ kind: 'fact', key: pageKey, fact: current, choices, pagesRead });
-  }, [appendHistory, pageKey, current, choices, pagesRead, question, reward, response, titleCard]);
+  }, [appendHistory, pageKey, current, choices, pagesRead, question, reward, response, titleCard, lessonRecap]);
   const onReviewGraded = useCallback(
     (result: CompletedReviewAttempt) => {
       useCardStore.getState().recordReviewGrade(result);
@@ -994,7 +1001,7 @@ export function CardFeedScreen() {
    * return, because the pan needs it as a shared value (see forkMiddleUp).
    */
   const forking =
-    !browsingHistory && !titleCard && choices.length > 1 && !question && !reward && !response;
+    !browsingHistory && !lessonRecap && !titleCard && choices.length > 1 && !question && !reward && !response;
 
   /**
    * The card underneath — what a swipe is about to reveal, printed on the sheet behind.
@@ -1010,7 +1017,7 @@ export function CardFeedScreen() {
    */
   const [under, setUnder] = useState<{ fact: CardFact; choices: CardChoice[] } | null>(null);
   useEffect(() => {
-    if (titleCard || browsingHistory || forking || question || reward || response || !choices[0]) {
+    if (atLessonEnd || lessonRecap || titleCard || browsingHistory || forking || question || reward || response || !choices[0]) {
       setUnder(null);
       return;
     }
@@ -1037,7 +1044,7 @@ export function CardFeedScreen() {
     // that is actually printed. Every other context change bumps pageKey → new `choices`.
     // `curriculum` is a dep for exactly the same reason: exitCurriculum nulls the cursor
     // without turning a page, and the sheet beneath must re-print unrestricted tickets.
-  }, [titleCard, browsingHistory, forking, question, reward, response, choices, language, magnet, curriculum]);
+  }, [atLessonEnd, lessonRecap, titleCard, browsingHistory, forking, question, reward, response, choices, language, magnet, curriculum]);
   /**
    * Did this card just arrive from the preview underneath?
    *
@@ -1204,6 +1211,7 @@ export function CardFeedScreen() {
     }
     lastSnap.current = {
       pageKey: shownPageKey,
+      lessonRecap: browsingHistory ? null : lessonRecap,
       titleCard: shownTitle,
       fact: shownFact,
       choices: shownChoices,
@@ -1211,7 +1219,7 @@ export function CardFeedScreen() {
       reward: browsingHistory ? null : reward,
       response: browsingHistory ? null : response,
     };
-  }, [shownTitle, shownPageKey, shownFact, shownChoices, shownQuestion, browsingHistory, reward, response, flip, dragX, dragY, handoff, historyPull]);
+  }, [lessonRecap, shownTitle, shownPageKey, shownFact, shownChoices, shownQuestion, browsingHistory, reward, response, flip, dragX, dragY, handoff, historyPull]);
 
   useEffect(
     () => () => {
@@ -1286,7 +1294,10 @@ export function CardFeedScreen() {
       const side: Side = vertical ? (downX < width / 2 ? 'left' : 'right') : dir;
       downRef.current = dir === 'down';
 
-      if (s.titleCard) {
+      if (s.lessonRecap) {
+        sideRef.current = side;
+        s.continueAfterLessonRecap();
+      } else if (s.titleCard) {
         sideRef.current = side;
         s.continueAfterTitle();
       } else if (s.response) {
@@ -1367,7 +1378,8 @@ export function CardFeedScreen() {
     () =>
       Gesture.Pan()
         .activeOffsetX([-DRAG_SLOP, DRAG_SLOP])
-        .activeOffsetY([-DRAG_SLOP, DRAG_SLOP])
+        .activeOffsetY(lessonRecap && !browsingHistory ? [-100000, 100000] : [-DRAG_SLOP, DRAG_SLOP])
+        .failOffsetY(lessonRecap && !browsingHistory ? [-DRAG_SLOP, DRAG_SLOP] : [-100000, 100000])
         .onBegin((e) => {
           cancelAnimation(historyPull);
           historyPull.value = 0;
@@ -1505,6 +1517,8 @@ export function CardFeedScreen() {
       height,
       commitSwipe,
       clearFlownOutgoing,
+      lessonRecap,
+      browsingHistory,
       markDragStart,
       markDragEnd,
       dragX,
@@ -1743,7 +1757,10 @@ export function CardFeedScreen() {
             <Reanimated.View
               style={[styles.cardLayer, { backgroundColor: stockFor(shownQuestion) }, cardDrag]}
             >
-              {shownTitle ? (
+              {!browsingHistory && lessonRecap ? (
+                <LessonRecapPage content={lessonRecap} language={language}
+                  onRepeat={() => tapNav(repeatLesson)} onContinue={() => tapNav(continueAfterLessonRecap)} />
+              ) : shownTitle ? (
                 <TitleCardPage content={shownTitle} language={language} onContinue={() => tapNav(browsingHistory ? historyForward : continueAfterTitle)} />
               ) : !browsingHistory && response ? (
                 <ResponseCard
@@ -1841,7 +1858,7 @@ export function CardFeedScreen() {
                 ]}
                 pointerEvents="none"
               >
-                {outgoing.titleCard ? <TitleCardPage content={outgoing.titleCard} language={language} onContinue={NOOP} /> : outgoing.fact && !outgoing.question && !outgoing.reward && !outgoing.response ? (
+                {outgoing.lessonRecap ? <LessonRecapPage content={outgoing.lessonRecap} language={language} onRepeat={NOOP} onContinue={NOOP} /> : outgoing.titleCard ? <TitleCardPage content={outgoing.titleCard} language={language} onContinue={NOOP} /> : outgoing.fact && !outgoing.question && !outgoing.reward && !outgoing.response ? (
                   <CardPage
                     fact={outgoing.fact}
                     choices={outgoing.choices}
@@ -1872,7 +1889,7 @@ export function CardFeedScreen() {
                 ]}
                 pointerEvents="none"
               >
-                {outgoing.titleCard ? <TitleCardPage content={outgoing.titleCard} language={language} onContinue={NOOP} /> : outgoing.fact && !outgoing.question && !outgoing.reward && !outgoing.response ? (
+                {outgoing.lessonRecap ? <LessonRecapPage content={outgoing.lessonRecap} language={language} onRepeat={NOOP} onContinue={NOOP} /> : outgoing.titleCard ? <TitleCardPage content={outgoing.titleCard} language={language} onContinue={NOOP} /> : outgoing.fact && !outgoing.question && !outgoing.reward && !outgoing.response ? (
                   <CardPage
                     fact={outgoing.fact}
                     choices={outgoing.choices}

@@ -76,7 +76,7 @@ export function lessonObjectives(key: string | null, card: string): string[] {
       .map((u) => u.id) ?? []
   );
 }
-/** Cover each objective before filling remaining places, reserving unused facts for later visits. */
+/** Reserve every objective, then select connected blocks and retain authored objective order. */
 export function planLesson(
   lesson: Lesson,
   seen: ReadonlySet<string>,
@@ -94,7 +94,7 @@ export function planLesson(
     old.cards.every((id) => lesson.cardIds.includes(id)) &&
     Array.isArray(old.completed) &&
     old.completed.every((id) => old.cards.includes(id)) &&
-    lesson.units.every((u) => (u.quizCardIds.length ? u.quizCardIds : u.cardIds).some((id) => old.cards.includes(id)))
+    lesson.units.every((u) => (u.quizCardIds.length ? u.quizCardIds : u.cardIds).some((id) => old.cards.some(card => lessonFactId(card) === lessonFactId(id))))
   )
     return { ...old, revision: lesson.revision };
   const runSeed = (seed ?? Math.floor(Math.random() * 4294967296)) >>> 0;
@@ -114,16 +114,23 @@ export function planLesson(
   };
   const prefer = (ids: string[]) =>
     ids.find((id) => unseen(id) && available(id)) ?? ids.find(available);
+  const anchors: string[] = [];
   for (const unit of lesson.units) {
+    const before = cards.length;
+    const rotate = (ids: string[]) => {
+      const start = Math.floor(random() * Math.max(1, ids.length));
+      return [...ids.slice(start), ...ids.slice(0, start)];
+    };
     if (!unit.quizCardIds.some((id) => cards.includes(id)))
       add(
-        prefer(unit.quizCardIds.filter((id) => unseen(id))) ??
-          prefer(unit.quizCardIds) ??
-          prefer(unit.cardIds)
+        prefer(rotate(unit.quizCardIds.filter((id) => unseen(id)))) ??
+          prefer(rotate(unit.quizCardIds)) ??
+          prefer(rotate(unit.cardIds))
       );
+    if (cards.length > before) anchors.push(cards[cards.length - 1]!);
   }
-  // After the coverage anchors, rotate between examples and core material. Two
-  // related slots per core slot allow the wider library to carry most of a rich run.
+  // After reserving coverage anchors, select short example/core blocks. Two
+  // related blocks per core block keep the wider library present in rich runs.
   // Every unseen pool is tried before any optional repeat. Scarce anchors may repeat.
   const core = lesson.units.map((u) => u.cardIds);
   const related = lesson.relatedGroups.map((g) => g.cardIds);
@@ -142,6 +149,15 @@ export function planLesson(
       }
       if (id) {
         add(id);
+        // Stay with this subject for a short sequence instead of changing groups
+        // after every card. Unseen-only selection still runs before any repeats.
+        for (let slot = 1; slot < 5 && cards.length < lesson.target; slot++) {
+          const next = groups[position]!.filter(candidate =>
+            available(candidate) && (!unseenOnly || unseen(candidate)))
+            .sort((a, b) => variety.score(b) - variety.score(a))[0];
+          if (!next) break;
+          add(next);
+        }
         if (isRelated) relatedPosition = position + 1;
         else corePosition = position + 1;
         return true;
@@ -161,5 +177,25 @@ export function planLesson(
         break;
     }
   }
-  return { version: 1, revision: lesson.revision, key: lesson.key, cards, completed: [], seed: runSeed };
+  // Selection and presentation are separate. Teach the authored core objectives in
+  // order, followed by contiguous related-example groups. Never scatter the coverage
+  // anchors across an otherwise random walk; never treat a missing LaBSE edge as proof
+  // that two cards are unrelated. Each new run varies its starting examples, not units.
+  const ordered: string[] = [];
+  const remaining = new Set(cards);
+  const emit = (ids: readonly string[]) => {
+    for (const id of ids) if (remaining.delete(id)) ordered.push(id);
+  };
+  for (const unit of lesson.units) {
+    emit(anchors.filter(id => unit.cardIds.includes(id)));
+    emit(unit.cardIds);
+  }
+  // Rotate independent example groups; retain the sequence within each group.
+  const start = Math.floor(random() * Math.max(1, related.length));
+  for (let i = 0; i < related.length; i++) {
+    const group = related[(start + i) % related.length]!;
+    emit(group);
+  }
+  emit(cards);
+  return { version: 1, revision: lesson.revision, key: lesson.key, cards: ordered, completed: [], seed: runSeed };
 }

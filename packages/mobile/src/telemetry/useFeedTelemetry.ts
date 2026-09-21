@@ -14,6 +14,8 @@ export function useFeedTelemetry() {
   const current = useCardStore((s) => s.current);
   const question = useCardStore((s) => s.question);
   const response = useCardStore((s) => s.response);
+  const lessonRecap = useCardStore(s => s.lessonRecap);
+  const titleCard = useCardStore(s => s.titleCard);
   const reward = useCardStore((s) => s.reward);
   const hydrated = useCardStore((s) => s.hydrated);
   const onboarding = useEngineStore((s) => s.onboardingActive);
@@ -29,7 +31,7 @@ export function useFeedTelemetry() {
           onboarding ||
           profiles.choosing ||
           !profiles.ready ||
-          reward || reviewing
+          lessonRecap || titleCard || reward || reviewing
         )
           return;
         // Committed, focused page visible for 500 ms; no preloads or outgoing animation copies.
@@ -50,6 +52,8 @@ export function useFeedTelemetry() {
       };
     }, [
       reviewing,
+      lessonRecap,
+      titleCard,
       pageKey,
       current,
       question,

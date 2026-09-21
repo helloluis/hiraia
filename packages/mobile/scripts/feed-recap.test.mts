@@ -10,11 +10,11 @@ assert.ok(start>=0 && end>start);
 const gapSource=source.match(/const nextRewardGap = (.*);/)![1];
 const gap=new Function(`return (${gapSource});`)();
 const minTopics=Number(source.match(/const REWARD_MIN_TOPICS = (\d+)/)![1]);
-const makeChoose=new Function('get','set','recentTopics','REWARD_MIN_TOPICS','useEngineStore','recapTopics','templateReward','nextRewardGap','advance',`return ({${source.slice(start,end)}}).chooseWithoutReview`);
+const makeChoose=new Function('get','set','recentTopics','REWARD_MIN_TOPICS','useEngineStore','recapTopics','templateReward','nextRewardGap','advance','boundaryRecap',`return ({${source.slice(start,end)}}).chooseWithoutReview`);
 test('encouraging recaps still interrupt a feed with single quizzes and series, with no model',()=>{
  let state:any={question:null,reward:null,response:null,untilReward:gap(),viewLog:[],pagesRead:0,rewardPrefetch:null,pageKey:0};
  let reviews=freshReview(6), serial=0, recaps=0, singles=0, batches=0;
- const choose=makeChoose(()=>state,(patch:any)=>{state={...state,...patch}},recentTopics,minTopics,{getState:()=>({language:'tagalog'})},(log:any)=>recentTopics(log),templateReward,gap,()=>{state.untilReward--;state.pagesRead++;});
+ const choose=makeChoose(()=>state,(patch:any)=>{state={...state,...patch}},recentTopics,minTopics,{getState:()=>({language:'tagalog'})},(log:any)=>recentTopics(log),templateReward,gap,()=>{state.untilReward--;state.pagesRead++;},()=>null);
  const question=(id:string):any=>({f:id,q:{tl:'Tanong'},o:[{tl:'A'},{tl:'B'}],a:1});
  for(let turn=1;turn<=80;turn++){
   state.viewLog.push({factId:String(turn),topic:`Topic ${turn}`,ts:Date.now()});
