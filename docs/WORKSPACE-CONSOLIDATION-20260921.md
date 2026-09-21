@@ -73,14 +73,21 @@ Restart any needed development server from the canonical checkout.
   route regeneration and manifest validation.
 - The local on-device-model regression harness completed with `GATE GREEN`.
   This is a regression result, not independent language-quality certification.
-- The release build is run with `packages/mobile/scripts/build-apk.sh`; its
+- The release build completed with `packages/mobile/scripts/build-apk.sh`; its
   illustration, voice, curriculum, database freshness and native checks remain
-  enabled. Build details and APK verification are saved in the consolidation
-  archive's `BUILD-VERIFICATION.json` once complete.
+  enabled. All 12,373 packaged illustrations passed exact inventory and hash
+  checks. The signed APK's database matches the rebuilt database byte for byte,
+  and its JavaScript bundle contains the matching database version.
+- `packages/mobile/scripts/sign-apk.sh` produced the versioned APK with the
+  established release certificate (`40d750d5…`). Build details, the full APK hash
+  and verification are saved in the archive's `BUILD-VERIFICATION.json`.
 
 The APK location is:
 
-`packages/mobile/android/app/build/outputs/apk/release/app-release.apk`
+`packages/mobile/android/app/build/outputs/apk/release/hiraia-v0p4p19.apk`
+
+Use this signed versioned artifact for installation. The intermediate
+`app-release.apk` is Gradle's debug-signed output.
 
 The earlier Redmi profiling report remains at
 `/Users/luis/Code/hiraia-device-profiles/redmi10-6gb-20260921/FINAL-REPORT.md`.

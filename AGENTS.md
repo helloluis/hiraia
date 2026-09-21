@@ -21,6 +21,9 @@ weights and image packs include ignored build inputs; a clean Git status alone
 does not establish that they are present or current. Use the repository build
 script and its content, image and voice checks. Preserve the established signing
 identity, and do not publish or change release versions without task authorization.
+After `build-apk.sh`, use `packages/mobile/scripts/sign-apk.sh` for an installable
+release artifact; Gradle's `app-release.apk` uses the debug key. The signing script
+verifies the established release certificate and writes the versioned APK.
 
 For Cebuano edits, follow the evidence requirements in `CLAUDE.md` and
 `docs/TRANSLATION-LEXICON-DEFECTS.md`; merging the completed audit does not authorize
