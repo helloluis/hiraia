@@ -96,11 +96,13 @@ def report(days=30, now=None):
           FROM telemetry_events WHERE {scope} GROUP BY day ORDER BY day DESC""", args)
         builds = rows(f"""SELECT coalesce(json_extract(props,'$.app_version'),'unknown') version,
           coalesce(json_extract(props,'$.build'),'unknown') build,
+          coalesce(json_extract(props,'$.hiraiapedia_version'),'unknown') hiraiapedia,
+          coalesce(json_extract(props,'$.cards_db_version'),'unknown') cards_db,
           coalesce(json_extract(props,'$.android'),'unknown') android,
           coalesce(json_extract(props,'$.ram_gb'),'unknown') ram_gb,
           count(DISTINCT installation_id) installations
           FROM telemetry_events WHERE {scope} AND name='session_started'
-          GROUP BY version,build,android,ram_gb ORDER BY installations DESC LIMIT 100""", args)
+          GROUP BY version,build,hiraiapedia,cards_db,android,ram_gb ORDER BY installations DESC LIMIT 100""", args)
         failures = rows(f"""SELECT name, coalesce(json_extract(props,'$.asset'),json_extract(props,'$.model'),'unknown') asset,
           coalesce(json_extract(props,'$.error'),'unknown') error, count(*) n
           FROM telemetry_events WHERE {scope} AND name IN ('download_failed','model_load_failed','generation_failed')

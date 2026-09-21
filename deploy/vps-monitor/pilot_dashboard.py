@@ -214,6 +214,7 @@ def recent_sessions(offset=0, now=None):
         result = rows(db, f'''SELECT * FROM ({SESSION_SQL}) ORDER BY last_received DESC,started DESC,installation_id,session_id LIMIT 51 OFFSET ?''', (now+300000,offset))
         has_more = len(result)>50
         result = result[:50]
+        has_deliveries = db.execute("SELECT 1 FROM sqlite_master WHERE name='telemetry_deliveries'").fetchone()
         for session in result:
             ids = (session['installation_id'],session['session_id'],now+300000)
             metadata = rows(db, '''SELECT props FROM telemetry_events WHERE installation_id=? AND session_id=?
@@ -225,12 +226,17 @@ def recent_sessions(offset=0, now=None):
                     context['profile_label'] = profile_alias(session['installation_id'],props['profile_id'])
                 elif 'profile_label' not in context and props.get('profile_kind') == 'guest':
                     context['profile_label'] = 'Guest (shared)'
-                for key in ('app_version','build','android','abi','ram_gb','model'):
+                for key in ('app_version','build','hiraiapedia_version','cards_db_version','android','abi','ram_gb','model'):
                     if key in props and key not in context: context[key] = props[key]
                 if 'grade' in props and 'language' in props and 'grade' not in context:
                     context.update(grade=props['grade'],language=props['language'])
                 if 'language' in props and 'language' not in context: context['language'] = props['language']
             session['context'] = context
+            session['reporters'] = rows(db, '''SELECT DISTINCT d.reporter_app,d.reporter_version
+              FROM telemetry_deliveries d JOIN telemetry_events e
+              ON e.installation_id=d.installation_id AND e.id=d.event_id
+              WHERE e.installation_id=? AND e.session_id=?
+              ORDER BY d.reporter_app,d.reporter_version''', ids[:2]) if has_deliveries else []
         return {'available':True,'sessions':result,'has_more':has_more}
 
 def session_events(installation, session, offset=0):
