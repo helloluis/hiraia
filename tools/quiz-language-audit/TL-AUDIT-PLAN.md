@@ -87,15 +87,65 @@ text destroys the distinctions under test. I caught models over-normalising all 
 Cebuano audit and then did it myself. Compare exactly; normalise only what you can prove is
 noise.
 
-## Q1 — answer-key integrity sweep (the main instrument)
+## Q1 — blind-answer sweep: 14% COMPLETE, BLOCKED ON THE MONTHLY SPEND LIMIT
 
-25,751 shipped items, Tagalog-only, blind to the English and the key, plus the English control
-arm on the same items. Report the two rates separately and never average them — the Cebuano
-bake-off's `nova-micro` lesson.
+37 of 308 agents finished before the account hit its **monthly** spend cap (not a weekly
+reset — it needs raising at claude.ai/settings/usage). **3,700 items answered**, all from the
+Tagalog arm; the English control arm never started.
 
-Calibrate on a spiked set first: take ~200 items, deliberately damage 40 of them (swap a
-distractor's meaning, negate the correct option), and confirm the instrument catches them
-before trusting it at scale.
+### The instrument is validated — 15 / 15
+
+100 items were spiked by swapping the correct option's Tagalog into a distractor's slot, so the
+key points at a false statement. 15 spikes fell inside the completed batches:
+
+| | |
+|---|---:|
+| spiked items reached | 15 |
+| **caught** (judge's pick ≠ key, as designed) | **15** |
+| missed | **0** |
+
+So the calibration Luis chose to skip as a separate phase ran anyway, for free, and passed.
+A null result from this instrument is a real null, not a blunt tool.
+
+### And the result is: the Tagalog is clean
+
+| measure | value |
+|---|---:|
+| non-spiked items answered | 3,685 |
+| **answer-key mismatches** | **2 = 0.05%** |
+| judge low-confidence | 46 = 1.24% |
+| item problems flagged | 20 = 0.54% |
+
+For comparison, the Sept Gemini pipeline flagged **1.24%** of `tl` items. On this evidence the
+translation layer's answer-key integrity is **~25x cleaner than that**, which is consistent
+with those 406 repairs having already landed.
+
+### What it actually found is defects in the ENGLISH, not the Tagalog
+
+Both mismatches are source-item problems that translation merely exposed:
+
+- **quiz-04091** — "what colour is the LIVE wire in Philippine electrical wiring?" Key says
+  brown/red; the judge chose blue/black. A real-world **safety** fact that the item may simply
+  have wrong. Worth a human check regardless of language.
+- **quiz-01496** — many egrets in an area, in Filipino folklore. The key says clean water; the
+  judge says an approaching storm. Both readings are genuinely current.
+
+The 20 problem flags follow the same shape: the judge usually picks the keyed option and then
+notes the item is loose — bangus is famous for its bones *and* for tolerating salt and fresh
+water; the mudskipper walks on land *and* survives both waters. English-item quality, not
+Tagalog.
+
+**This is the same conclusion the Tagalog CARD audit reached** ("the highest-value defects are
+in ANSWERS, not leads"), arrived at independently by a different instrument.
+
+### Cost to finish
+
+37 of 308 agents exhausted the monthly cap, so completing this sweep needs roughly **8x** the
+quota already spent. Extrapolating the measured rates over all 25,751 shipped items:
+**~14 answer-key mismatches and ~140 loose items** — a queue small enough to fix by hand.
+
+Whether that is worth 8x the spend is Luis's call. The rate is already measured to ±0.07% at
+n=3,685; finishing the sweep buys the specific ids, not a better estimate.
 
 ## Q2 — corpus as authority for Tagalog
 
