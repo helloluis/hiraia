@@ -1,0 +1,219 @@
+[
+ {
+  "id": "dcard-09590",
+  "lane": "dialect",
+  "prior_reason": "Defect confirmed beyond doubt: 'titipid' is absent from Wolff and from binisaya.com and occurs in exactly one Cebuano body in 47,056 cards — this card. The correct word is settled and needs no native judgement: 'titip', which is both dictionary-verified and the corpus's standard rendering of 'steep angle' specifically, including in ffct-39347, which states the same physics fact as this card. The ready text is 'Kung taas na ang adlaw sa langit, titip ang anggulo sa iyang silaw sa yuta, busa ang solar energy mag-concentrate sa mas gamay nga lugar ug mas moinit.' I am still not returning REPAIR, because emphasis_bis is exactly ['titipid'] — the defective word IS the bolded span, so any correct repair deletes it and the rule forbids proposing that edit. One warning for whoever applies it: do NOT use the corpus-frequent 'tarik'. It has 36 bodies here but two independent dictionaries call it a",
+  "prior_evidence": "Wolff (Gutenberg #40074) l.98530 'titip, títip a very steep. Way makasáka ánang titip nga pangpang' (No one can climb that steep cliff). grep 'titipid' wolff.txt = 0; binisaya.com: 'No results found for the Cebuano word titipid!'. ceb_usage --bis titipid = 1 body (dcard-09590 itself); --bis titip = 30 bodies / 1 title. ceb_usage --en 'steep angle' returns 4 cards: the three healthy ones all use titip — ffct-39347 'Sa titip nga anggulo, mokatap ang silaw sa adlaw sa mas gamay nga lugar' for EN 'At a steep angle, sunlight spreads over a smaller area', plus ffct-38831 'titip nga anggulo nga mga 30 degrees' and (--bis titip) dcard-03468/dcard-03476 'mas titip nga anggulo' for 'a steeper angle'. Against 'tarik': Wolff l.95386 'tarik n {1} outrigger boom, the poles to which the floats are attached'; binisaya.com/cebuano/tarik = 'outrigger spar (n.)', syn. palatig; grep -i 'matarik' wolff.txt =",
+  "previously_proposed": "",
+  "title_en": "High Sun, More Heat",
+  "title_bis": "Taas nga Adlaw, Mas Init",
+  "fact_en": "When the Sun is high in the sky, its rays strike the ground at a steep angle, concentrating solar energy on a smaller area and causing more heating.",
+  "fact_bis": "Kung taas na ang adlaw sa langit, titipid ang anggulo sa iyang silaw sa yuta, busa ang solar energy mag-concentrate sa mas gamay nga lugar ug mas moinit.",
+  "terms": [
+   "high angle",
+   "solar energy",
+   "heating",
+   "concentrated",
+   "sun angle"
+  ],
+  "emphasis_bis": [
+   "titipid"
+  ]
+ },
+ {
+  "id": "ffct-00440",
+  "lane": "dialect",
+  "prior_reason": "The proposition is correct — \"Ang halaan magkalot ug maglubong sa iyang kaugalingon sa balas o lapok ilalom sa tubig aron motago\" matches fact_en clause for clause, and magkalot/maglubong are solidly attested. The unresolved item is the noun `halaan` itself: it is the Tagalog word for clam, and no Cebuano dictionary I could reach lists it, while Wolff gives imbaw/litub for clam. The corpus does back it (5 bodies, 3 titles, used consistently for clam), but this corpus is machine-translated, so 5 consistent hits is exactly what a bulk Tagalog carry-over would look like. Neither dictionary silence nor MT-corpus frequency settles it, so a native should. This is a lexical/register question spanning 5 cards (ffct-00440, 03178, 04350, 11792, 13510), not a factual defect in this one — if the native says halaan is current Cebuano, close all five with no edit. I did not propose imbaw/litob myself:",
+  "prior_evidence": "Wolff (wolff1.txt:38377) \"imbaw n k.o. grey lucene clam with concentric ridges…\"; wolff2.txt:8695 \"litub n k.o. edible arc shell\"; no `halaan` headword anywhere in either Wolff volume (grep = 0 hits). binisaya.com/cebuano/halaan returns no clam sense — only a derivation of \"hala\" (\"my my\"; \"expression of surprise\"). A Bisaya word list gives \"talaba (n); imbaw (n); litob (n); tuway\" for clam/oyster. Corpus: `\\bhalaan\\b` = 5 bodies (all EN \"clam\"), `\\bimbaw\\b` = 0, `\\blitob\\b` = 1 (and there it glosses \"mussel\"), `\\bkabibe\\b` = 50 (generic shellfish). Verbs are clean: --bis magkalot 22 bodies (ffct-00152 tamilok digging tunnels), maglubong 3 bodies (ffct-07491 horseshoe crabs burying eggs).",
+  "previously_proposed": "",
+  "title_en": "Burrowing Clams",
+  "title_bis": "Nangalumos nga Halaan",
+  "fact_en": "Why do clams bury in sand?\n\nClams dig down into sand or mud underwater and bury themselves there to hide.",
+  "fact_bis": "Nganong naglubong ang halaan sa balas?\n\nAng halaan magkalot ug maglubong sa iyang kaugalingon sa balas o lapok ilalom sa tubig aron motago.",
+  "terms": [
+   "halaan",
+   "kabibe",
+   "clam",
+   "buhangin",
+   "balas",
+   "putik",
+   "lapok",
+   "lubong",
+   "naglubong",
+   "nagtago",
+   "burrow",
+   "nagkalot",
+   "mokalot",
+   "motago"
+  ],
+  "emphasis_bis": []
+ },
+ {
+  "id": "ffct-01546",
+  "lane": "attestation",
+  "prior_reason": "This is a confirmed false-belief defect, provable from the card's own English. fact_en asks 'Bakit tayo umuutot? / We pass gas...' and the Cebuano asks and answers 'Nganong mokutkot ta? / Mokutkot ta kay...' -- kutkot means to gnaw or scratch. A child reading only the Cebuano is told that gut bacteria making gas is why we GNAW, which is nonsense, and never learns the actual fact. The first agent held it purely on attestation grounds (utot has 0 corpus bodies), and that hold is exactly the case the dictionary is supposed to break: this corpus is itself machine-translated, so its silence is not evidence. Wolff settles both the word and the inflection, giving 'muutut (mangutut)' in a worked example. I take Wolff's muutut in the corpus's own mo-/-o- orthography, which is how this project already spells every mo- + vowel-initial verb, giving moutot. The edit is the minimal one: the prefix, th",
+  "prior_evidence": "Wolff, 'A Dictionary of Cebuano Visayan' (Gutenberg text 40074, headword line): 'utut n fart, gas released from the stomach. ... v [A2N; c] break wind. Muutut (mangutut) ka man lang bisag naay mga tawu! Why do you break wind in front of people! (<-) v [A13P] break wind frequently.' Wolff uses the word in two further entries: 'Nangutut man gud ka! I couldn't help laughing. You broke wind!' (s.v. ahat) and 'Ang bahu sa iyang utut makatublig bunug' (s.v. tubli). binisaya.com/cebuano/utot: '[u.tut.] Noun (act): breaking wind, fart, farting, flatus, wind ... Verb (body): break wind, fart -- to expel intestinal gases through the anus'; binisaya.com/cebuano/pangutot lists 'utot' as the root. Corpus, against: --bis kutkot = 1 body, ffct-04007 'ilang kutkoton ang pagkaon' / EN 'they gnaw on food' -- the gnaw sense, not gas. --en 'pass gas' returns only this card. --bis utot/utut/mangutot/moutot/p",
+  "previously_proposed": "Nganong moutot ta?\n\nMoutot ta kay ang mabuot nga bakterya sa atong tinai magbungkag sa pipila ka pagkaon ug maghimo og gas; kon matigom na kini, ipagawas sa lawas — normal ug himsog ra kini.",
+  "title_en": "Why We Pass Gas",
+  "title_bis": "Utot Gikan sa Baktirya sa Tinai",
+  "fact_en": "Bakit tayo umuutot?\n\nWe pass gas because helpful bacteria in our intestines break down some foods and make gas — when it builds up, the body simply lets it out, and that's normal and healthy.",
+  "fact_bis": "Nganong mokutkot ta?\n\nMokutkot ta kay ang mabuot nga bakterya sa atong tinai magbungkag sa pipila ka pagkaon ug maghimo og gas; kon matigom na kini, ipagawas sa lawas — normal ug himsog ra kini.",
+  "terms": [
+   "fart",
+   "pass gas",
+   "utot",
+   "umuutot",
+   "gas",
+   "hangin",
+   "bituka",
+   "intestines",
+   "bacteria",
+   "mikrobyo",
+   "digesting",
+   "tinutunaw",
+   "food",
+   "pagkain",
+   "umutot",
+   "gas sa tiyan",
+   "kabag",
+   "gas sa bituka",
+   "gikutkot",
+   "mikrobyo sa tinai",
+   "tinai",
+   "na-tunaw",
+   "tunaw"
+  ],
+  "emphasis_bis": []
+ },
+ {
+  "id": "ffct-02611",
+  "lane": "dialect",
+  "prior_reason": "Not a language question — the language is settled, and I am recording it as NEEDS-NATIVE only because the repair is barred by the emphasis-span rule, which a human can lift and I cannot. Defect CONFIRMED: 'namingaw' is from mingaw = lonely/deserted, so the Cebuano tells a child the whale shark is a LONELY animal, while fact_en says endangered. The correct corpus word is 'nameligro' (49 bodies, 12 titles, always for endangered/threatened). But emphasis_bis is exactly ['namingaw'] — the defective word IS the bolded span, so any honest fix deletes the span and silently kills the bold, and the rule says keep every span verbatim or do not propose the edit; keeping it verbatim means not fixing the falsehood. Handing this to a human who can edit fact_bis and emphasis_bis TOGETHER: set fact_bis to 'Ang butanding usa ka nameligro nga mananap, busa kinahanglan natong amping-an ug dili gub-on ang p",
+  "prior_evidence": "binisaya.com/cebuano/mingaw: 'mingaw — deserted (adj.), lonely (adj.)'. ceb_usage --bis namingaw = 1 body / 0 titles, and that one body is THIS card (self-attesting, worthless as support). ceb_usage --bis mingaw = 0 bodies, NOT ATTESTED. ceb_usage --bis nameligro = 49 bodies / 12 titles, all endangered/threatened: ffct-00770 \"What does 'endangered' mean?\" → 'Nagpasabot nga nameligro nga mawala hangtod ang usa ka hayop'; ffct-00594 'critically endangered' → 'Ngano nameligro ang Philippine Eagle'; ffct-00410 'one of the most endangered turtles on Earth' → 'labing nameligro nga pagong sa kalibutan'. ceb_usage --bis butanding = 37 bodies / 45 titles = whale shark (ffct-00948 'the biggest fish in the world' → 'ang butanding mao ang pinakadako nga isda sa kalibutan').",
+  "previously_proposed": "",
+  "title_en": "Whale Shark Danger",
+  "title_bis": "Butanding Nameligro",
+  "fact_en": "The whale shark is an endangered animal, so we must protect it and never destroy its home.",
+  "fact_bis": "Ang butanding usa ka namingaw nga mananap, busa kinahanglan natong amping-an ug dili gub-on ang puy-anan niini.",
+  "terms": [
+   "butanding",
+   "whale shark",
+   "namimiligro",
+   "namingaw",
+   "endangered",
+   "nanganganib",
+   "konserbasyon",
+   "panalipod",
+   "pagkawala",
+   "babantayan"
+  ],
+  "emphasis_bis": [
+   "namingaw"
+  ]
+ },
+ {
+  "id": "ffct-03673",
+  "lane": "dialect",
+  "prior_reason": "Half of the hold closes cleanly, half does not. CLOSED: the phrase the proposer called clumsy, \"aron makakuha og kainit duol sa panit\", is the corpus's house rendering of this exact English — the sibling card ffct-00055 renders the identical clause \"to trap a little warmth close to your skin\" the same way; no edit needed there, and both reflexes are correctly and distinctly stated (kurog = muscle movement making heat; kilabot = hair standing up). OPEN and not settleable by evidence: `kilabot` is in NO Cebuano dictionary I checked — Wolff's goosebump word is kiligkilig — and the only dictionary that has kilabot is a Tagalog one, where it primarily means terror. Its corpus support is 3 bodies total, and since this corpus is itself machine-translated, 3 bodies cannot rule out a Tagalog borrowing applied in bulk. I am not proposing an edit even if it is wrong: `kilabot` is an emphasis span (",
+  "prior_evidence": "ffct-00055 EN \"Tiny hairs stand up to trap a little warmth close to your skin\" -> BIS \"Motindog ang gagmayng balahibo aron makuha ang gamayng init duol sa panit\" — same 'makuha ... duol sa panit' construction as this card. Wolff: \"kiligkilig v [A; b6] shudder from cold or on experiencing s.t. that raises goose bumps\"; no `kilabut`/`kilabot` headword in Wolff. binisaya.com/cebuano/kilabot: \"No results found for the Cebuano word kilabot!\". tagalog.com root-word `kilabot` = terror / goose bumps (a TAGALOG dictionary). Corpus exact-word `kilabot` = 3 Cebuano bodies only: ffct-00055, ffct-02004, ffct-03673 — all glossing EN goosebumps.",
+  "previously_proposed": "",
+  "title_en": "Shivering Goosebumps",
+  "title_bis": "Pagkurog ug Gansa",
+  "fact_en": "What's the difference between shivering and goosebumps?\n\nShivering and goosebumps are different reflexes to cold! Shivering is muscle movement that makes heat; goosebumps make hair stand up to trap heat near the skin.",
+  "fact_bis": "Unsay kalainan sa kurog ug kilabot?\n\nLahi nga reflex ang kurog ug kilabot bisan pareho silang tungod sa bugnaw! Ang kurog kay paglihok sa kaunoran nga naghimo og kainit; ang kilabot kay pagtindog sa balhibo aron makakuha og kainit duol sa panit.",
+  "terms": [
+   "nginig",
+   "shiver",
+   "goosebumps",
+   "kilabot",
+   "balahibo",
+   "balhibo",
+   "hair",
+   "pagkakaiba",
+   "compare",
+   "kaibahan",
+   "lamig",
+   "cold",
+   "init",
+   "heat",
+   "reflex",
+   "magkaiba"
+  ],
+  "emphasis_bis": [
+   "kurog",
+   "kilabot"
+  ]
+ },
+ {
+  "id": "ffct-04685",
+  "lane": "dialect",
+  "prior_reason": "CONFIRMED defect, but it cannot be landed as a body-only repair, so it needs a human, not another judgement. fact_en is about worker ANTS; fact_bis says 'manggagawang langgam' = worker BIRDS, three times, and then asserts these birds cannot have babies and tend eggs and LARVA — a flatly false belief for a child. The fix word is settled (hulmigas). What blocks a REPAIR row is the emphasis rule: emphasis_bis is ['manggagawang langgam'], i.e. the bolded span IS the wrong phrase, so any correct body loses the span verbatim. I verified that this is a hard stop in the pipeline, not a style worry: apply_body_fixes.py GATE 1 rejects a body that drops an emphasis span ('cards.ts:91 -- a span not present verbatim is silently not emphasised'), and GATE 4 SCOPE allows exactly one field to change (fact.bis), so emphasis_bis can never be fixed in the same pass. Recommended human edit, applied to fact.",
+  "prior_evidence": "ceb_usage.py --bis hulmigas = 120 Cebuano BODIES / 58 titles, ant sense with no exceptions (ffct-00398 'Ang matag trabahanteng hulmigas' / EN 'Worker ants each have a job'; ffct-00479 'Ang hulmigas — mga 20 ka quadrillion' / EN 'Ants'). --bis langgam = 674 bodies, bird sense throughout — the two are never interchangeable. Worker-ant collocations already in the corpus: 'trabahanteng hulmigas' = 3 bodies (ffct-00398, ffct-02652), 'mamumuong hulmigas' in ffct-00776 ('liboan ka mamumuong hulmigas' / EN 'thousands of worker ants'); 'manggagawa' = 6 bodies (ffct-06478 worker bees). Gate text quoted from apply_body_fixes.py lines 8-11 and 25-26 (GATE 1 EMPHASIS, GATE 4 SCOPE), gate_emphasis() at line 98.",
+  "previously_proposed": "",
+  "title_en": "Worker Ants",
+  "title_bis": "Mamumuo nga Hulmigas",
+  "fact_en": "What jobs do worker ants do?\n\nWorker ants are female ants that cannot have babies — instead they search for food, guard the nest, and take care of the eggs and larvae.",
+  "fact_bis": "Unsay trabaho sa manggagawang langgam?\n\nAng manggagawang langgam mga babaye nga langgam nga dili na makapanamkon — hinuon, nangita sila og pagkaon, nagbantay sa pugad, ug nag-atiman sa mga itlog ug larva.",
+  "terms": [
+   "worker ant",
+   "manggagawa",
+   "sterile",
+   "colony",
+   "langgam",
+   "forager"
+  ],
+  "emphasis_bis": [
+   "manggagawang langgam"
+  ]
+ },
+ {
+  "id": "ffct-06453",
+  "lane": "attestation",
+  "prior_reason": "The hold concluded 'no attested repair exists' after checking only 'lubricate' as an English loan and finding 'hapohap' unattested. But the corpus does render this exact concept — joint fluid as a lubricant — and it does so twice, so the repair is attested. The defect is provable from the English: 'lubricates' is the whole scientific point, and Wolff gives hapúhap = 'stroke gently back and forth with little pressure', so the Cebuano says the fluid *caresses* your joints. The child loses the mechanism (slipperiness) and gets a nonsense one. 'nagpadanlog' is the causative of danlug/danglug ('make s.t. slippery' — Wolff's own pa- subentry), is corpus-attested including for literal lubrication by oil, and mirrors the card's Tagalog 'likidong nagpapadulas'. I left 'pag-crack sa bukog' alone even though EN says 'knuckles': the corpus has no knuckle rendering, the Tagalog sibling says the same ",
+  "prior_evidence": "Wolff l.35298: 'hapúhap v [A; a12] stroke gently back and forth with little pressure. Mihapúhap siya sa ákung bukubuku sa paghumpay sa kasakit, He stroked my back to relieve the pain.' Corpus: 'hapohap'/'hapuhap' = 0 bodies. Wolff l.24497 'danlug = danglug'; l.24452 'danglug a slippery from being wet or having s.t. slimy on it ... pa- v [A; c] 1 make s.t. slippery'. Corpus: 'danlog' = 40 bodies; 'nagpadanlog' = 2 bodies, incl. ffct-24126 'Ang lana nagpadanlog aron dili direktang magkuskos' (EN: oil reduces friction between machine parts) — the literal lubricant sense. Joint-fluid precedent: ffct-02997 'magdugang sa danlog nga likido sa lutahan' (EN 'increases the slippery fluid in your joints') and ffct-08264 'Adunay danlog nga likido sa sulod sa atong lutahan nga sama sa lana' (EN 'A slippery fluid inside our joints works just like oil'). 'lutahan' = 39 bodies for 'joint'.",
+  "previously_proposed": "Makahatag ba og arthritis ang pag-crack sa bukog?\n\nDili — ang tingog gikan ra sa pagputok sa mga gas bubble sa likido nga nagpadanlog sa imong mga lutahan.",
+  "title_en": "Knuckle Gas Bubbles",
+  "title_bis": "Crack Kuko Gas",
+  "fact_en": "Does cracking your knuckles cause arthritis?\n\nNo — that popping sound is just gas bubbles bursting in the fluid that lubricates your joints.",
+  "fact_bis": "Makahatag ba og arthritis ang pag-crack sa bukog?\n\nDili — ang tingog gikan ra sa pagputok sa mga gas bubble sa likido nga naghapohap sa imong mga lutahan.",
+  "terms": [
+   "knuckle",
+   "cracking",
+   "your",
+   "knuckles",
+   "does",
+   "cause",
+   "arthritis",
+   "popping",
+   "sound",
+   "simply"
+  ],
+  "emphasis_bis": []
+ },
+ {
+  "id": "ffct-07525",
+  "lane": "dialect",
+  "prior_reason": "CONFIRMED defect, but the row schema cannot express the fix. 'bagolbagol' means SKULL, so the Cebuano reads 'two horn-like skulls on its head' where fact_en says 'two horn-like fins' — an unambiguous false belief, and the right word (kapay) is heavily attested. The blocker is not linguistic: emphasis_bis is [\"morag-sungay nga bagolbagol\"] and the wrong word sits inside that span, so every correction breaks the exact-substring match. cards.ts silently drops a span that is not present verbatim, and apply_body_fixes.py GATE 1 would HOLD the edit anyway, so proposing REPAIR here would either kill the card's bolding at render time or be mechanically rejected. A human must make ONE combined edit — fact_bis 'bagolbagol' -> 'kapay' AND emphasis_bis -> [\"morag-sungay nga kapay\"] — which is outside what a fact_bis-only row can do. Intended body: 'Ang manta ray adunay duha ka morag-sungay nga kapay",
+  "prior_evidence": "ceb_usage.py --bis bagolbagol = 7 Cebuano BODIES, 0 titles. Six of the seven are unambiguously the skull: ffct-03252 'Ang utok gipanalipdan sa gahi nga bagolbagol' (EN 'protected by the hard skull'), ffct-04633 'Ang bagolbagol mao ang gahi nga bukog sa ulo' (EN 'The skull is the hard bone of your head'), ffct-02849 'bukog sa bagolbagol' (EN 'skull bones'), ffct-09991 + ffct-26114 helmet/skull, ffct-13250 'bukton, paa, ug bagolbagol' (EN 'arms, legs, and skull'). The 7th is ffct-07525 itself — the lone outlier, i.e. the defect vouching for itself. ceb_usage.py --bis kapay = 61 bodies, 6 titles, all fish fins: ffct-01620 'Ang mga kapay sa kilid ug likod sa isda' for EN 'The fins on a fish's sides and back'; ffct-02712 'himbis, kapay aron molangoy' for EN 'scales, fins for swimming'; ffct-03300 tilapia 'mga kapay ug ikog'.",
+  "previously_proposed": "",
+  "title_en": "Manta Ray Head Fins",
+  "title_bis": "Kapay sa Manta",
+  "fact_en": "A manta ray has two horn-like fins on its head that guide food straight into its mouth!",
+  "fact_bis": "Ang manta ray adunay duha ka morag-sungay nga bagolbagol sa ulo nga mogiya sa pagkaon padulong sa iyang baba!",
+  "terms": [
+   "manta ray",
+   "manta",
+   "ulo",
+   "sungay",
+   "cephalic",
+   "horn",
+   "bibig",
+   "baba",
+   "pagkain",
+   "pagkaon"
+  ],
+  "emphasis_bis": [
+   "morag-sungay nga bagolbagol"
+  ]
+ }
+]

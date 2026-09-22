@@ -1,0 +1,230 @@
+[
+ {
+  "id": "ffct-09513",
+  "lane": "dialect",
+  "prior_reason": "Not a judgement call - the defect is CONFIRMED and the fix is known, but the rules forbid me to propose it, so this needs a human rather than a verdict. \"Abuk\" is not a Cebuano word for parrot (or for anything: Wolff has abug = dust and ábug = drive away, no abuk at all), so the Cebuano reads as a contest between a nonexistent creature and a hornbill, and the child cannot learn which bird is the better tree planter - the exact fact the card teaches. The correct word is loro. I cannot issue it as a REPAIR because emphasis_bis = [\"Abuk\", \"kalaw\"] and \"Abuk\" IS the defective token: any corrected body silently kills that bold span, and the rule is keep the span verbatim or do not propose the edit. A maintainer who can also re-anchor emphasis_bis should apply: \"Loro o kalaw—kinsay motabang og tanom?  Mobuak ug mokaon ang loro sa liso sa prutas pinaagi sa iyang sungo, apan lamyon sa kalaw ang ",
+  "prior_evidence": "ceb_usage.py --bis abuk = 2 Cebuano BODIES, and one is a substring false hit (ffct-11547 \"Ang abukado usa ka prutas\" = avocado); the only real occurrence is this card itself, i.e. zero independent attestation. --bis loro = 44 bodies / 13 titles, all parrots, incl. ffct-00925 \"Ginamit sa mga loro ang ilang kusgan ug liko nga sungo aron buakon ang gahi nga liso\" EN \"Parrots use their strong, curved beak... to crack open hard seeds\" - this card's exact claim. Wolff: no abuk entry (abug1 n dust; ábug1 v drive away); parrot is \"piríku n 1 parrot, esp. the blue-naped parrot: Tanygnathus lucionensis\" and \"pikuy\". --bis kalaw = 196 bodies / 194 titles (hornbill, correct and untouched); --bis sungo = 136 bodies (beak).",
+  "previously_proposed": "",
+  "title_en": "Hornbill vs Parrot",
+  "title_bis": "Hornbill ug Parrot",
+  "fact_en": "Parrot or hornbill—who's the better tree planter?\n\nA parrot cracks and eats fruit seeds with its strong beak, but the hornbill swallows fruit whole without destroying the seed—helping plant new trees.",
+  "fact_bis": "Abuk o kalaw—kinsay motabang og tanom?\n\nMobuak ug mokaon ang abuk sa liso sa prutas pinaagi sa iyang sungo, apan lamyon sa kalaw ang tibuok prutas nga dili guba-on ang liso—busa makatabang kini sa pagtanom.",
+  "terms": [
+   "kalaw",
+   "loro",
+   "parrot",
+   "pagkakaiba",
+   "kalainan",
+   "kumakain",
+   "mokaon",
+   "prutas",
+   "fruit",
+   "buto",
+   "seed",
+   "durog",
+   "crush",
+   "nilulunok",
+   "compare",
+   "comparison",
+   "hornbill",
+   "abuk"
+  ],
+  "emphasis_bis": [
+   "Abuk",
+   "kalaw"
+  ]
+ },
+ {
+  "id": "ffct-09663",
+  "lane": "dialect",
+  "prior_reason": "Same shape as ffct-09513: CONFIRMED defect, blocked repair. \"Kasing-kasing\" is the Cebuano word for heart (Wolff kasingkásing, ~10 entries, all heart; kasing alone = spinning top). Using it for damselfly makes the card read \"How do you tell a dragonfly from a heart? The dragonfly's big eyes touch, while the heart's eyes are far apart\" - a child learns an absurdity instead of the eye-placement distinction. The dragonfly half (alindahaw) is correct and dictionary-confirmed. But emphasis_bis = [\"alindahaw\", \"kasing-kasing\"] and kasing-kasing is precisely the token that must change, so under the keep-the-span-verbatim rule I may not propose the edit. For a maintainer who can re-anchor the span, the corpus's own solution is the bare English loanword or \"nipis nga alindahaw\": \"Unsaon pag-ila sa alindahaw gikan sa damselfly?  Nagkadikit ang dagkong mata sa alindahaw, samtang nagkalayo ang mata ",
+  "prior_evidence": "ceb_usage.py --bis kasing-kasing = 2 Cebuano BODIES: this card, and ffct-28003 \"electrical signals nga gihimo sa imong kasing-kasing\" EN \"the tiny electrical signals your heart generates\" - i.e. the only independent use is the heart. Wolff: \"kasingkásing, The doctor will examine your heart\", \"kasingkásing, Heart tastes good stewed in soy sauce\", \"kasing n top\"; no damselfly sense, and Wolff has no damselfly headword at all. --bis alindahaw = 24 bodies, all dragonfly, matching Wolff \"alindánaw (from danaw) n dragonfly\" and \"halindánaw (from dánaw) n dragonfly\". --en damselfly = 3 cards; the two that are not this one use bare \"damselfly\" (ffct-04554) and \"ang damselfly o nipis nga alindahaw\" (ffct-14224).",
+  "previously_proposed": "",
+  "title_en": "Dragonfly/Damselfly",
+  "title_bis": "Tutubi ug Damselfly",
+  "fact_en": "How can you tell a dragonfly from a damselfly?\n\nA dragonfly's big eyes touch each other, but a damselfly's eyes sit far apart on the sides of its head.",
+  "fact_bis": "Unsaon pag-ila sa alindahaw gikan sa kasing-kasing?\n\nNagkadikit ang dagkong mata sa alindahaw, samtang nagkalayo ang mata sa kasing-kasing sa duha ka kilid sa ulo.",
+  "terms": [
+   "tutubi",
+   "kasing-kasing",
+   "damselfly",
+   "mata",
+   "eyes",
+   "magkadikit",
+   "magkalayo",
+   "wide-set eyes",
+   "pagkaiba",
+   "kalainan",
+   "difference"
+  ],
+  "emphasis_bis": [
+   "alindahaw",
+   "kasing-kasing"
+  ]
+ },
+ {
+  "id": "ffct-11570",
+  "lane": "dialect",
+  "prior_reason": "The defect is CONFIRMED, not uncertain — `putyukan` is the honeybee, so the Cebuano teaches a child that not all BEES are dangerous and that some bees survive by eating crop pests, which is false about bees and loses the wasp fact entirely. But the repair is structurally blocked: emphasis_bis = ['putyukan'] and title_bis is 'Pipila ka Tambuboan', which contains no occurrence of the span, so every word swap drops the card's bolding silently (the GATE 1 rule). I will not propose an edit that breaks an emphasis span, and no honest rewrite can keep a bee word in a wasp card. Escalate: a native/owner pass that may also rewrite emphasis_bis should set body + span to `putakti` (the corpus's own wasp word) or the dictionary's `lampinig/lapinig`, and align title_bis at the same time.",
+  "prior_evidence": "Dictionary: binisaya.com/cebuano/putyukan = 'Apis dorsata (n.); honeybee (n.)'; Wolff, via the same entry family, 'putyúkan — k.o. bee forming hives hanging from the branches of trees, fiercer than the ligwan', with the derived -un glossed 'slim-waisted like a WASP' (i.e. wasp-like, hence not a wasp). binisaya.com/english/wasp returns 'lampinig (n.); lapinig (n.)' — never putyukan. Corpus (current pool, after the earlier repair passes): `putyukan` 85 bodies, uniformly bees (ffct-00248 beekeepers/honey, ffct-00421 pollinators, ffct-00465 queen bee); --en wasp now ranks putakti 51 vs putyukan 7, and `putakti` 35 bodies are all wasps/hornets (ffct-00223 'Ang hornet usa ka klase sa putakti'). Decisive: the near-twin card ffct-00325, EN 'Are all wasps bad? Not all! Many wasps eat pests...' -> BIS 'Daotan ba ang tanang putakti? Dili tanan! Daghan kanila ang mokaon og peste...' — same content, ",
+  "previously_proposed": "",
+  "title_en": "Some Wasps",
+  "title_bis": "Pipila ka Tambuboan",
+  "fact_en": "Are all wasps fierce stingers?\n\nNope! Some wasps are tiny and can barely sting at all — instead, they help by eating pests that harm plants.",
+  "fact_bis": "Tanan ba nga putyukan peligroso?\n\nDili diay! Ang ubang matang sa putyukan gagmay kaayo ug halos dili makatukol — hinuon, motabang sila sa pagkaon sa peste sa tanom.",
+  "terms": [
+   "hindi lahat nananaksak",
+   "not all sting",
+   "ibang uri",
+   "types of wasp",
+   "mahihina",
+   "tiny wasp",
+   "helpful wasp",
+   "kapaki-pakinabang",
+   "peste",
+   "pest control",
+   "misconception",
+   "akala",
+   "putakti",
+   "tamiok",
+   "lahat ba"
+  ],
+  "emphasis_bis": [
+   "putyukan"
+  ]
+ },
+ {
+  "id": "ffct-13090",
+  "lane": "dialect",
+  "prior_reason": "I overturn the HOLD's premise but cannot repair. The earlier pass treated the body as already correct; it is not. 'lapyahan' is a maritime word — breaker zone / beach / shore — and has nothing to do with webbing, so 'tiil nga may lapyahan tali sa mga tudlo' reads to a Cebuano child as 'feet with a beach between the toes'. The corpus has seven other ways of saying it and uses none of them here. fact_en's explanatory gloss 'skin stretched between their toes' is also simply gone: the body never says 'panit'. So this is a CONFIRMED defect, not a register quibble. What blocks a REPAIR is the task's own hard rule: emphasis_bis is ['tiil nga may lapyahan'], the broken word sits INSIDE that span, and any fix must delete it — 'keep every emphasis_bis span VERBATIM or do not propose the edit'. I will not smuggle the edit through by leaving 'lapyahan' in place and bolting a gloss onto the sentence,",
+  "prior_evidence": "ceb_usage.py --bis lapyahan = 1 Cebuano BODY and 0 titles — and that one body IS ffct-13090 itself, so the corpus offers zero independent support. Dictionary: binisaya.com 'lapyahan' = 'breaker zone' (n.), root 'lapya' = 'flattened out' / 'lapping of waves'; bohol.ph and Wolff's Dictionary of Cebuano Visayan give shore/beach/coast. No dictionary gives a webbing sense. By contrast ceb_usage.py --en webbed = 10 cards, and the other nine all render it differently and comprehensibly: ffct-01590 'tiil nga adunay panit sa tunga-tunga', ffct-07047 'panit nga nagsumpay sa mga tudlo sa tiil, gitawag og lambat nga tiil', ffct-10411 'lambat nga tiil', ffct-10316 'lapnit nga tiil', ffct-13226 'pukot sa tunga-tunga sa mga tudlo', dcard-12144 'tiil nga may sapaw', ffct-00138 'webbed nga tiil'. Clearing the two words I am NOT flagging: binisaya.com 'gaod' (gá.ud) = 'an implement used to propel or steer",
+  "previously_proposed": "",
+  "title_en": "Webbed Feet",
+  "title_bis": "Tiil nga Lambay",
+  "fact_en": "Water birds like ducks have webbed feet — skin stretched between their toes — that help them paddle through water.",
+  "fact_bis": "Ang mga langgam sa tubig sama sa itik adunay tiil nga may lapyahan tali sa mga tudlo, nga makatabang kanila nga mogaud sa tubig.",
+  "terms": [
+   "paang lapad",
+   "pato",
+   "lumalangoy",
+   "tiil nga adunay lapyahan",
+   "itik",
+   "webbed feet",
+   "duck",
+   "swim",
+   "paddle"
+  ],
+  "emphasis_bis": [
+   "tiil nga may lapyahan"
+  ]
+ },
+ {
+  "id": "ffct-14950",
+  "lane": "dialect",
+  "prior_reason": "Honest non-answer: I cannot settle `pamuo` for 'condensation', and even a confirmed defect could not be repaired in this row because `pamuo` is an emphasis_bis span, so any rewrite orphans it. The corpus and the dictionaries disagree. The corpus uses the muo-root coherently for clot/condense across ~35 bodies and the sibling card even defines it, but the corpus is machine-translated and all four `pamuo` NOUN uses come from one water-cycle card family, so they are not independent attestation. Against that, no Cebuano dictionary I can reach gives the root a clot/condense sense; binisaya.com maps pamuo/mamuo/namuo to 'labor' (root puo = exterminate), and the clot sense is documented as Tagalog (namuo/namumuo ang dugo). If binisaya is right, a child reads 'ang kabugnaw maoy hinungdan sa pamuo' as 'cooling causes labour'. That is a native-speaker call. (title_bis 'Alisngaw ug Paghalay' IS con",
+  "prior_evidence": "Corpus: --bis pamuo = 4 bodies, all condensation, all in the ffct-14948/14950/14963/14966 family; --bis mamuo = 23 bodies (clot: ffct-03958 'makatabang nga mamuo ang dugo' / 'help your blood clot'), --bis namuo = 6, --bis mopamuo = 2. Dictionaries: binisaya.com/cebuano/pamuo, /namuo, /mamuo all return only 'labor (n.)', root 'puo = exterminate'; Wolff has 'púu v exterminate' and 'muu = mau' but no buu/muu clot root — his coagulate word is 'ápul n coagulated blood', and for condensation he gives 'singut n 1 perspiration. 2 condensation on an object cooler than the atmosphere'. Wolff 'halay v [A; c] hang clothes on the line'.",
+  "previously_proposed": "",
+  "title_en": "Evap vs Condensation",
+  "title_bis": "Alisngaw ug Paghalay",
+  "fact_en": "How are evaporation and condensation related?\n\nThey are opposites! Heat causes evaporation, while cooling causes condensation.",
+  "fact_bis": "Unsaon pagkaugnay ang pag-alisngaw ug pamuo?\n\nMagkasukwahi sila! Ang kainit maoy hinungdan sa pag-alisngaw, ug ang kabugnaw maoy hinungdan sa pamuo.",
+  "terms": [
+   "kabaligtaran",
+   "opposite",
+   "pagsingaw",
+   "paghalumigmig",
+   "evaporation",
+   "condensation",
+   "init",
+   "lamig",
+   "sukwahi",
+   "pamuo",
+   "alisngaw"
+  ],
+  "emphasis_bis": [
+   "pag-alisngaw",
+   "pamuo"
+  ]
+ },
+ {
+  "id": "ffct-16771",
+  "lane": "dialect",
+  "prior_reason": "The content is correct and I found no factual defect: diffusion alone is slow, stirring mixes the dye faster, and kutaw/kutawon and tina are the right words. What I cannot settle is the clitic placement in 'Nganong nato kutawon ang tubig'. Cebuano's postposed genitive 'nato' appears preverbally 311 times in the corpus, but in every case it is hosted by a preceding particle (dili, kinahanglan, una, mao nga); after a bare interrogative the corpus writes either 'Nganong kutawon nato' or the preposed form 'Nganong atong kutawon', and this card is the ONLY body in 47k that writes 'Nganong nato VERB'. Whether a fronted 'Nganong' can itself host the enclitic is a grammaticality/register judgement no dictionary adjudicates and my ear cannot be trusted on — and since it produces no false belief, I will not invent a repair. A native should either wave it through or swap the order; the safe rewrite",
+  "prior_evidence": "Corpus regex over Cebuano bodies: 'Nganong (nato|nimo|nako|niya|nila|namo|ninyo) ...' = 1 body, and it is this card. 'Nganong VERB nato' = 7 bodies (ffct-00609 'Nganong kuhaon nato ang panit sa matag bahin sa suha?', ffct-23626 'Nganong gamiton nato ang oven mitt?', ffct-25718, ffct-36269, ffct-38385, ffct-39589, ffct-29546). 'Nganong + preposed genitive' = 5 bodies (ffct-15189 'Nganong atong asinan ang isda ug karne?', ffct-17512, ffct-17541, ffct-21473, ffct-22913). Preverbal enclitic hosted by a particle = 311 bodies (ffct-00149 'dili nato hikapon ang isda', ffct-02083 'una nato tunlon'). Content words check out: kutaw* 23 bodies, incl. ffct-15958 'Kon kutawon nimo ang tubig, mas paspas matunaw ang asin o asukal' and ffct-15522 'mokatag ang kolor bisan dili nimo kutawon ... tungod sa diffusion'; tina (dye) 22 bodies (ffct-11344 'natural nga tina para sa panapton').",
+  "previously_proposed": "",
+  "title_en": "Diffusion vs Stirring",
+  "title_bis": "Diffusion Halok",
+  "fact_en": "Why do we stir water when mixing dye?\n\nDiffusion alone is slow, so stirring the water mixes the dye much faster than diffusion by itself!",
+  "fact_bis": "Nganong nato kutawon ang tubig kon magbutang og tina?\n\nAng diffusion lang hinay, mao nga kon kutawon nato ang tubig, mas paspas mosagol ang tina kaysa diffusion lamang!",
+  "terms": [
+   "haluin",
+   "kutaw",
+   "kinutaw",
+   "kutawon",
+   "stirring",
+   "mabagal",
+   "hinay",
+   "mabilis",
+   "paspas",
+   "diffusion",
+   "naghalo",
+   "mosagol",
+   "mixing"
+  ],
+  "emphasis_bis": []
+ },
+ {
+  "id": "ffct-18168",
+  "lane": "dialect",
+  "prior_reason": "Two independent blockers, and I do not think either can be honestly argued away. (1) Mechanical: the disputed word sits inside the emphasis_bis span \"Hunong, luhod, ug ligid\", which is matched verbatim at render. This pass can only return a new fact_bis, so any fix silently kills the bolding of the card's answer line — the brief says keep every span verbatim or do not propose the edit. (2) Substantive: 'luhod' = kneel, not 'drop', and the card's own explanation (\"Matabonan niini ang kalayo\" — it smothers the flames) presupposes lying on the ground, which kneeling does not achieve. But the card's Tagalog also says 'lumuhod' and its terms field leads with \"tumigil lumuhod gumulong\", so the Cebuano faithfully mirrors a deliberate Filipino-slogan rendering rather than making a Cebuano-specific slip. Whether \"Tumigil, lumuhod, gumulong\" is an accepted PH fire-safety idiom or a mistranslation ",
+  "prior_evidence": "ceb_usage.py `--bis luhod` = 1 Cebuano body = this card only. Its sibling shares the slug \"fire-safety-stop-drop-roll\" and has identical English: ffct-15392 bis \"Hunong, hapa, ug ligid sa yuta\", tl \"Huminto, lumapag, at gumulong sa lupa\", emphasis.bis [\"Hunong, hapa, ug ligid\"]. binisaya.com/cebuano/hapa = \"lie face-down, prostrate, hit the dirt\" — the correct 'drop'. ffct-18168 pool record: emphasis = {\"bis\":[\"Hunong, luhod, ug ligid\"],\"tl\":[\"Tumigil, lumuhod, at gumulong\"],\"en\":[\"Stop, drop, and roll\"]}, fact.tl \"Tumigil, lumuhod, at gumulong!\", terms[0] \"tumigil lumuhod gumulong\".",
+  "previously_proposed": "",
+  "title_en": "Fire Safety",
+  "title_bis": "Kaluwasan sa Kalayo",
+  "fact_en": "What should you do if your clothes catch fire?\n\nStop, drop, and roll! This smothers the flames and cuts off the oxygen keeping the fire burning.",
+  "fact_bis": "Unsay buhaton nimo kung masunog ang imong sinina?\n\nHunong, luhod, ug ligid! Matabonan niini ang kalayo ug maputol ang oksiheno nga nagpadayon sa pagdilaab niini.",
+  "terms": [
+   "tumigil lumuhod gumulong",
+   "sunog",
+   "apoy",
+   "kaligtasan sa sunog",
+   "oksiheno",
+   "kalayo",
+   "pagpalong",
+   "stop drop roll",
+   "fire safety",
+   "flame",
+   "oxygen",
+   "smother"
+  ],
+  "emphasis_bis": [
+   "Hunong, luhod, ug ligid"
+  ]
+ },
+ {
+  "id": "ffct-18186",
+  "lane": "dialect",
+  "prior_reason": "Body delivers the numbers and the cookware claim, but two load-bearing words are unsettleable by my evidence. (1) 'marupok' for 'brittle' is a Tagalog word with NO entry in either Cebuano dictionary I checked and essentially no corpus support; the corpus renders material brittleness as 'mabuak' / 'sayon mabuak' / 'babasagon'. (2) 'maayo kaayo magtago sa init' for 'great at keeping heat' is ambiguous: Wolff licenses tagu = 'put away in a safe place for future use', and one sibling card uses the root for heat ('itago ang kainit sa sulod'), but all 69 corpus bodies with 'magtago' mean 'hide (oneself)', so a child may read 'good at hiding in the heat'. Neither is a provable FALSE belief from fact_en, and neither is a word I can adjudicate on my own ear, so this is a native register call, not a repair. If a native agrees, the attested fixes are 'dali mabuak' and 'magtipig sa init' / 'mag-reta",
+  "prior_evidence": "ceb_usage --bis marupok = 2 bodies, 1 title — ffct-14500 (brittle bones) plus this card itself. binisaya.com/cebuano/rupok: 'No results found for the Cebuano word rupok!'. Wolff (Gutenberg ed. 40074, accent-flattened grep of the full text): rupuk/rupok = 0 hits. ceb_usage --en brittle: top Cebuano words mabuak 20, mabali 5 (ffct-19317 'Sayon mabuak ang salamin', ffct-15067 'ang seramika babasagon'). ceb_usage --bis magtago = 69 bodies, all 'hide oneself' (ffct-00721 'Magtago ang pagi ilalom sa balas', ffct-00087 'didto sila matulog ug magtago'); contrast ffct-07934 EN 'keep heat deep inside' → BIS 'aron itago ang kainit sa sulod'. Wolff tagu v.3 '[A; b5c2] put away in a safe place for future use. Nagtagu ka ug sud-an para ugma?'. Alternatives attested: magtipig 54 bodies, nagtipig 137; ffct-27008 'mosuhop ug mag-retain sa kainit nga pantay-pantay'. 'pantay' is NOT a problem: 46 bodies an",
+  "previously_proposed": "",
+  "title_en": "Cast Iron Carbon Brittle",
+  "title_bis": "Cast Iron Carbon Kalambo",
+  "fact_en": "Cast iron has more carbon (2-4%) than steel, making it brittle but great at keeping heat! That's why cast iron pans are loved for cooking food evenly.",
+  "fact_bis": "Ang cast iron adunay mas daghang carbon (2-4%) kaysa steel, hinungdan nga kini marupok pero maayo kaayo magtago sa init! Mao nga paborito ang cast iron pans sa pantay nga pagluto.",
+  "terms": [
+   "cast iron",
+   "steel",
+   "carbon",
+   "brittle",
+   "madaling mabiyak",
+   "cookware",
+   "kawali",
+   "fry pan",
+   "heavy",
+   "mabigat",
+   "high carbon",
+   "iron"
+  ],
+  "emphasis_bis": []
+ }
+]

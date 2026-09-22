@@ -66,6 +66,30 @@ def attestation_corpus(cards):
     return freq
 
 
+
+# Cebuano affixes, longest first. GATE 2 originally counted SURFACE forms, which penalises
+# ordinary morphology in a language built on affixation: `pagkasinaw` occurs once, but its root
+# `sinaw` occurs 59 times and is plainly attested. Counting the surface form was measuring the
+# wrong unit -- the same error that made the quiz Q0 probe flag 29 correct items. A word now
+# passes if EITHER its surface form or its root is attested.
+PREFIXES = ('makapa', 'nakapa', 'magpa', 'nagpa', 'maka', 'naka', 'mag', 'nag',
+            'pagka', 'pag', 'mo', 'mu', 'mi', 'ni', 'ma', 'na', 'ka', 'gi', 'i')
+
+
+def root_of(word, freq):
+    """Best-attested plausible root, undoing one prefix and any CV- reduplication."""
+    w = word.lower()
+    best = w
+    for p in sorted(PREFIXES, key=len, reverse=True):
+        if w.startswith(p) and len(w) - len(p) >= 3:
+            cand = w[len(p):]
+            if len(cand) > 3 and cand[0] not in 'aeiou' and cand[2:].startswith(cand[0]):
+                cand = cand[2:]
+            if freq[cand] > freq[best]:
+                best = cand
+    return best
+
+
 def gate_attestation(card, old, new, freq):
     introduced = set(words(new)) - set(words(old))
     on_card = set(words((card.get('fact') or {}).get('en')))
@@ -77,7 +101,7 @@ def gate_attestation(card, old, new, freq):
     for w in sorted(introduced):
         if w in FUNCTION or w in on_card or w.isdigit() or len(w) < 3:
             continue
-        if freq[w] >= MIN_ATTEST:
+        if freq[w] >= MIN_ATTEST or freq[root_of(w, freq)] >= MIN_ATTEST:
             continue
         # a sourced stem plus a Cebuano affix is still sourced
         if any(w.startswith(a) and 0 < len(w) - len(a) <= 3 and freq[a] >= MIN_ATTEST

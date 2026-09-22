@@ -1,0 +1,211 @@
+[
+ {
+  "id": "ffct-18243",
+  "lane": "dialect",
+  "prior_reason": "The proposer held on the title and on 'mobalhin sa usag-usa'; I agree that clause is fine (mobalhin is heavily attested and the science point — particles stay close but move freely relative to each other — survives). But the card's punchline verb is the real question: 'nagdaloy' for 'water flows' is a Tagalog word that appears in exactly one Cebuano body in 47k cards (this one), has no Wolff root, and binisaya only resolves it by decomposing it to Cebuano 'dalo' + -y = 'greedy/selfish', i.e. a potential false friend rather than 'flow'. The corpus has three strongly attested ways to say it and the nearest sibling card uses one of them. Because 'daloy' is a common Tagalog word, whether a Cebuano-speaking grade-5 child reads it as 'flows' or as nothing is a sociolinguistic call I cannot settle — but it is not a factual falsehood, so I will not repair it on my own ear. If a native says it do",
+  "prior_evidence": "ceb_usage --bis nagdaloy = 1 body (ffct-18243 itself); regex 'daloy\\w*' over all Cebuano bodies = 1 hit, same card; magdaloy = 0. Wolff (Gutenberg 40074, flattened): daluy = 0 hits; the flow roots present are agus 'ooze, flow out slowly' and dagayday 'flow in trickles'. binisaya.com/cebuano/daloy returns 'daloy = dalo + -y … greedy (adj.); selfish (adj.)'. Corpus norms for flow: moagos 106 bodies, modagayday 108, nagaagos 21. Nearest sibling ffct-15217 (same physics, EN 'slide past one another, which lets it flow') → BIS 'duol gihapon ang partikulo apan modaplos sa usag usa, mao nga makaagos kini!'. mobalhin itself = 152 bodies (ffct-00057 'mobalhin sa yuta').",
+  "previously_proposed": "",
+  "title_en": "Liquid Particles Slide Flow",
+  "title_bis": "Partikulo Likido Dalag",
+  "fact_en": "In a liquid like water, particles are still close together but can slide past each other freely. That is exactly why water flows!",
+  "fact_bis": "Sa usa ka liquid sama sa tubig, ang mga particles duol pa gihapon pero gawasnon silang mobalhin sa usag-usa. Mao na nga nagdaloy ang tubig!",
+  "terms": [
+   "liquid",
+   "particle",
+   "slide",
+   "gumalaw",
+   "tubig",
+   "flow",
+   "nagdaloy",
+   "likido",
+   "particles",
+   "freely"
+  ],
+  "emphasis_bis": []
+ },
+ {
+  "id": "ffct-19985",
+  "lane": "dialect",
+  "prior_reason": "The defect is CONFIRMED, not in doubt: 'Mogawas ang tubig kung mag-freeze kini' says the water COMES OUT when it freezes — a different, false mechanism, and it contradicts the card's own next clause about SEALED bottles, since nothing escapes a closed bottle. It is unrepairable under this schema, not unproven: emphasis_bis is exactly ['Mogawas'], i.e. the single defective word IS the bolded span. Every truthful rewrite (sibling wording 'Mo-expand'/'Modako') deletes that span, and spans render by exact substring match, so the edit would silently kill the bold; and the only sentence that keeps 'Mogawas' verbatim ('mogawas ang tubig sa bote') asserts a consequence fact_en never states, the same over-reach that got C5b proposals rejected. A human must repoint emphasis_bis alongside the body — send to the Cebuano teacher WITH the span, do not close this hold.",
+  "prior_evidence": "ceb_usage --bis mogawas: 675 bodies, uniformly egress/emission — ffct-00015 'Mogawas ang tubig sa gagmayng lungag sa dahon' (EN 'water evaporates out through tiny pores'), ffct-00364 'walay init nga mogawas niini' (EN 'no heat comes out of it'), ffct-00544 'Mogawas ang scab sa samad'. Zero mean expand. The corpus's word is the loan mo-expand (34 bodies), and this card's own siblings use it for the identical fact: ffct-19920 'Mo-expand kini mga siyam ka porsyento kung mag-freeze', ffct-19946 'Mo-expand ang nag-freeze nga tubig', ffct-21565 'mo-expand kung mag-freeze'.",
+  "previously_proposed": "",
+  "title_en": "Ice Expansion",
+  "title_bis": "Paglapad sa Yelo",
+  "fact_en": "Did you know water expands when it freezes into solid ice? This growing ice can actually burst closed glass bottles left inside your freezer!",
+  "fact_bis": "Mogawas ang tubig kung mag-freeze kini ug mahimong solid ice! Maong makabuak ang mga siradong glass bottle nga gibutang sulod sa freezer.",
+  "terms": [
+   "freezing",
+   "expansion",
+   "water",
+   "expands",
+   "freezes",
+   "solid",
+   "burst",
+   "closed",
+   "glass",
+   "bottles"
+  ],
+  "emphasis_bis": [
+   "Mogawas"
+  ]
+ },
+ {
+  "id": "ffct-20706",
+  "lane": "dialect",
+  "prior_reason": "Defect is confirmed, not a matter of taste: \"Mogawas ang tubig kung magyelo kini\" tells a child the water COMES OUT when it freezes, which is false and contradicts the card's own \"sealed nga botelya\" — the EN mechanism is expansion, not leakage. A corpus-attested repair exists (modako / molapad / mo-expand), but emphasis_bis is exactly [\"Mogawas\"] and there is no true reading of mogawas anywhere in this sentence, so every correct repair deletes the bolded span and I cannot edit emphasis_bis from this row. Per the verbatim-span rule I do not propose the edit: a Cebuano teacher should write \"Modako ang tubig...\" and re-point the span in the same pass (and, same pass, consider mabuak for \"shatter\" where this body has mabali = snap).",
+  "prior_evidence": "ceb_usage --bis mogawas = 675 Cebuano BODIES, every one 'come/go out': ffct-00364 'halos walay init nga mogawas niini' = 'almost no heat comes out of it'; ffct-00544 'Mogawas ang scab sa samad'; ffct-00962 'mogawas ang gagmay nga tinulo'. --en expand = 246 cards, characteristic Cebuano words molapad 67 / modako 44 / mo-expand 38. Near-duplicate ffct-17530 renders this exact English as 'Modako ang tubig kung mag-yelo! Kinahanglan sa yelo og mas dako nga espasyo kaysa likido nga tubig'; ffct-19985 carries the identical 'Mogawas' wording, i.e. a bulk MT error rather than attestation.",
+  "previously_proposed": "",
+  "title_en": "Water Freezing",
+  "title_bis": "Pagyelo sa Tubig",
+  "fact_en": "Why does a sealed glass water bottle shatter in the freezer?\n\nWater expands when it freezes into solid ice! This expansion is why leaving a sealed glass bottle in the freezer can shatter the glass.",
+  "fact_bis": "Nganong mabali ang sealed nga botelya nga puno ug tubig sa freezer?\n\nMogawas ang tubig kung magyelo kini ug mahimong solid ice! Maong kung ibutang nimo ang sealed nga botelya sa freezer, basin mabali ang baso.",
+  "terms": [
+   "state",
+   "change",
+   "practical",
+   "water",
+   "expands",
+   "freezes",
+   "solid",
+   "leaving",
+   "sealed",
+   "glass"
+  ],
+  "emphasis_bis": [
+   "Mogawas"
+  ]
+ },
+ {
+  "id": "ffct-21058",
+  "lane": "dialect",
+  "prior_reason": "Confirmed defect: the body calls frost 'hamog' (dew/fog), so a child reading only the Cebuano learns that DEW is water vapour turning straight into ice crystals — precisely the belief another card in the same corpus exists to deny. The BIS also drops the EN's decisive clause 'without becoming liquid water first'. The repair word is the loan 'frost' (the card's own title already uses it), but emphasis_bis = [\"hamog\"] and the only way to keep that token verbatim is to demote it into a negative contrast ('dili kini nagyelong hamog'), which would bold 'dew' on a frost card and import content the EN does not have — worse than no edit. Teacher fixes body + span together and restores the 'dili una mahimong likido' clause.",
+  "prior_evidence": "--bis hamog = 21 Cebuano BODIES, all dew/fog: ffct-20073 'mga patak sa hamog sa dahon sa sampaguita' = dew drops, ffct-18294 dew point, ffct-07275 'mahimong klarong hamog' = breath fog. --bis yamog = 28 bodies, also dew. --en frost = 51 cards and the bare loan 'frost' appears 47x in their Cebuano bodies (ffct-16876 'Ang frost maoy nipis nga yelo sa sagbot'; ffct-17386 'Ang frost sa bungbong sa freezer'). ffct-18298: 'Ang frost sa damo ba kay nagyelong hamog lang? Dili! Deposition kini!'. binisaya.com hamog = 'dampen (v.)', syn. hamlog — no frost sense.",
+  "previously_proposed": "",
+  "title_en": "Frost Formation",
+  "title_bis": "Pagtukod sa Frost",
+  "fact_en": "What is frost on mountain grass?\n\nFrost is water vapor changing directly into solid ice crystals! It forms on high altitude mountain grass without becoming liquid water first.",
+  "fact_bis": "Unsa ang hamog sa sagbot sa bukid?\n\nAng hamog kay singaw sa tubig nga nag-direct nga nahimong solid ice crystals! Kini motubo sa sagbot sa taas nga bukid.",
+  "terms": [
+   "deposition",
+   "frost",
+   "high",
+   "altitude",
+   "mountain",
+   "grass",
+   "water",
+   "vapor",
+   "changing",
+   "directly"
+  ],
+  "emphasis_bis": [
+   "hamog"
+  ]
+ },
+ {
+  "id": "ffct-22174",
+  "lane": "dialect",
+  "prior_reason": "Confirmed defect, not a re-judgement: 'Ang linaw mahitabo kung ang tingog mibanda...' reads as 'the lake/pond happens when the sound bounces' — the card's own title already says Lanog, so body and title disagree. Both corpus and dictionary settle the word; what cannot be settled from this row is the bolded span. emphasis_bis = [\"linaw\"] and no sense of linaw (calm / lake / pool) survives in an echo sentence — the 'clear' sense people reach for is tin-aw, not linaw — so every correct repair deletes the span. Escalate: a teacher picks lanog / alingawngaw / the loan 'echo' and re-points emphasis_bis in the same pass.",
+  "prior_evidence": "--bis linaw = 53 Cebuano BODIES, all pond/lake, never echo: ffct-01075 'suba, linaw, ug sapa' = 'rivers, lakes, and streams'; ffct-00184 water lettuce 'naglutaw sa mga linaw ug sapa'; ffct-01496 koi 'gibuhi sa linaw o tangke'. binisaya.com linaw = 'calm (adj.); lake (n.); pool (n.)' — no echo sense. Echo in this corpus: --en echo = 124 cards with alingawngaw 28 and the loan 'echo' 42 as the characteristic words; --bis lanog = 3 bodies, all echo, incl. the near-duplicate ffct-25932 'Mahitabo ang lanog (echo) kon ang tingog mosukol sa layo nga butang sama sa bungbong o bukid'. binisaya.com lanog = 'loud (adj.); resonant (adj.)', which is why the choice among lanog / alingawngaw / echo is a native call, not a corpus-count call.",
+  "previously_proposed": "",
+  "title_en": "Echo Reflection",
+  "title_bis": "Lanog",
+  "fact_en": "An echo happens when sound waves bounce off a big wall or mountain and come right back to us!",
+  "fact_bis": "Ang linaw mahitabo kung ang tingog mibanda sa usa ka bongbong o bukid ug mibalik direkta kanato!",
+  "terms": [
+   "alingawngaw",
+   "tumalbog",
+   "bumalik",
+   "pader",
+   "tunog",
+   "linaw",
+   "mibalik",
+   "mibanda",
+   "bongbong",
+   "tingog",
+   "echo",
+   "bounce",
+   "reflect"
+  ],
+  "emphasis_bis": [
+   "linaw"
+  ]
+ },
+ {
+  "id": "ffct-25391",
+  "lane": "dialect",
+  "prior_reason": "The LANGUAGE question is now settled and the defect is confirmed: 'nagalingkod' means sitting, not vibrating, so the Cebuano says the flute makes sound 'when the air SITS inside the tube' — a false mechanism provable straight from fact_en ('the air column inside the tube vibrates'). What I cannot do is repair it inside this pass's rules. emphasis_bis is ['nagalingkod nga air column'], i.e. the defective word is itself the bolded span; every correct rewrite deletes the span, and the instruction is explicit that a span must be kept verbatim or the edit not proposed. Fixing only the first occurrence to save the span would leave the nonsense word as the single most visually prominent thing on the card. So this needs a human who can edit body and span together in one move. Recommended one-shot for that human, using the corpus's own clean rendering: body -> 'Unsaon paghimo og tunog ang simplen",
+  "prior_evidence": "Dictionary: binisaya.com/cebuano/lingkod gives only 'sit / sit down' and its positional senses — no vibrate/shake/oscillate sense at all. Corpus: --bis lingkod = 6 Cebuano BODIES, every one about sitting posture (ffct-05145 'tul-id nga lingkod' for EN 'sitting up straight'). --bis nagalingkod = 7 BODIES, and they are a self-vouching poisoned cluster, all mistranslating 'vibrating/swings': ffct-25400 'Ang nagalingkod nga kuwerdas' for EN 'The vibrating string', ffct-25402 'Ang nagalingkod nga mga ngabil' for EN 'These vibrating lips', ffct-24988 'pendulum nagalingkod nga mas hinay' for EN 'a longer pendulum swings more slowly', ffct-25594, plus this card. The clean control is ffct-22710, which renders EN 'the vibrating air column' as 'ang hangin nga mag-uyog'. Corpus support for the replacement: --bis mag-uyog = 29 BODIES, --bis pag-uyog = 138 BODIES, and uyog forms dominate the 391 cards",
+  "previously_proposed": "",
+  "title_en": "Bamboo Flute",
+  "title_bis": "Plawta nga Kawayan",
+  "fact_en": "How does a simple bamboo flute actually make music?\n\nA bamboo flute makes sound when the air column inside the tube vibrates! The exact length of this vibrating air column is what determines the pitch.",
+  "fact_bis": "Unsaon paghimo og tunog ang simpleng bamboo flute?\n\nNagahimo og tunog ang bamboo flute kung nagalingkod ang hangin sa sulod sa tubo! Ang gitas-on sa nagalingkod nga air column maoy nagtino sa pitch.",
+  "terms": [
+   "bamboo flute",
+   "kawayan",
+   "plawta",
+   "air column",
+   "vibration",
+   "tubo",
+   "pitch",
+   "tunog",
+   "filipino",
+   "tambol"
+  ],
+  "emphasis_bis": [
+   "nagalingkod nga air column"
+  ]
+ },
+ {
+  "id": "ffct-27545",
+  "lane": "dialect",
+  "prior_reason": "The defect is CONFIRMED, not in doubt — and so is the fix — but this instrument cannot deliver it. fact_en says 'Light bends when it enters water'; fact_bis says 'Mokurot ang suga', i.e. 'the light PINCHES'. `kurot` is pinch, never bend, so a child reading only the Cebuano is told something that is not refraction. The corpus even contains the correctly-worded twin of this card (ffct-23299). The blocker is structural: 'Mokurot ang suga' is itself the entire emphasis_bis span, so every correct repair deletes the span verbatim, which the emphasis rule forbids. This needs a paired body+emphasis edit by a Cebuano teacher, not another judgement. Recommended text for that pass: 'Nganong murag naputol ang straw sa sulod sa baso nga may tubig?\\n\\nMobawog ang kahayag pag-sulod sa tubig kay mohinay kini! Mao nga murag naputol ang straw nga medyo nasulod.' with emphasis_bis re-anchored to 'Mobawog a",
+  "prior_evidence": "`--bis mokurot` = 1 body = this card only; `--bis kurot` = 1 other body, ffct-27824 'gamay nga kurot pag-abli sa jeepney' EN 'a tiny zap' — a pinch/sting sensation, not bending. The bend verb is `mobawog` = 20 bodies, ALL refraction/optics: ffct-23299 'Mobawog ang kahayag kay mohinay kini kon mosulod sa mas baga nga materyales' EN 'Light bends because it slows down when entering denser materials' (the same fact as this card), ffct-23297 'mausab kini sa direksyon ug gamay nga mobawog ... refraction', ffct-23298 'mobawog ang kahayag sa refraction' EN straw-in-glass. binisaya.com/cebuano/bawog: 'bawog [bá.wug.] : bend (v.)'. Optics cards also prefer `kahayag` over `suga` for physics light (suga skews to lamp/light-source).",
+  "previously_proposed": "",
+  "title_en": "Light Refraction",
+  "title_bis": "Repraksyon sa Hayag",
+  "fact_en": "Why does a straw look broken in a glass of water?\n\nLight bends when it enters water because it slows down! This makes a partially submerged straw look broken.",
+  "fact_bis": "Nganong murag naputol ang straw sa sulod sa baso nga may tubig?\n\nMokurot ang suga pag-sulod sa tubig kay hinay-hinay kini! Mao nga murag naputol ang straw nga medyo nasulod.",
+  "terms": [
+   "light",
+   "refraction",
+   "bends",
+   "entering",
+   "water",
+   "slows",
+   "down",
+   "making",
+   "partially",
+   "submerged"
+  ],
+  "emphasis_bis": [
+   "Mokurot ang suga"
+  ]
+ },
+ {
+  "id": "ffct-28089",
+  "lane": "dialect",
+  "prior_reason": "I set out to repair this one and then the dictionary stopped me, so I am reporting the unresolved half honestly. 'buhaton' for 'lift' is NOT the Tagalog false friend I expected: Wolff carries a distinct second headword buhat-2 meaning lift, with a lift-a-box example, so the word is legitimately Cebuano and the proposer's hold was correct. What evidence cannot settle is the construction, not the word: buhat-1 ('do, make') is overwhelmingly the dominant sense in this corpus, and ffct-28089 is the ONLY card in 47,056 where buhaton takes a person/reciprocal object. Wolff's lift example takes an inanimate object (a box). So 'sayon ra nila buhaton ang usag usa' may read naturally as 'easily lift each other' — or may first-parse as 'do each other', which on a grade-school card about kids on a seesaw is a reading worth a native's eye. That is a register/idiom question, which is exactly the case ",
+  "prior_evidence": "Wolff, TWO separate headwords: 'búhat 1 ... do s.t. conscientiously, work' AND verbatim 'búhat 2 v [A; a1] lift. Buháta ring kahun ug itungtung sa lamísa, Lift this box, and put it on the table.' Wiktionary and binisaya.com list ONLY do/make/work for Cebuano buhat (lift appears under their Tagalog entry) — Wolff is the stronger source and it vindicates the word. Corpus: 'buhaton' 283 bodies, the visible majority the 'do' sense ('Unsay buhaton sa utok?' ffct-00525, 'Unsa ang buhaton sa kuhol' ffct-00686); ~26 cards use buhat- where EN says lift (ffct-22094, ffct-27467, ffct-28124, ffct-28539 ...); person/reciprocal object: 1 of 47,056 — this card. Every other seesaw card uses the alsa/pataas family instead: ffct-27729 'mag-alsa sa bug-at nga karga', ffct-27816 'ipataas ang mas bug-at nga bata', ffct-28120 'maka-alsa', ffct-22264 'sayon kaayo alsahon ang bug-at nga karga'. Alternative is d",
+  "previously_proposed": "",
+  "title_en": "Seesaw Lever",
+  "title_bis": "Sip-sip nga Lever",
+  "fact_en": "Kids playing on a wooden seesaw at Rizal Park in Manila use a first-class lever to easily lift each other up and down!",
+  "fact_bis": "Ang mga bata nga nagdula sa kahoy nga seesaw sa Rizal Park sa Manila naggamit ug first-class lever aron sayon ra nila buhaton ang usag usa!",
+  "terms": [
+   "lever",
+   "children",
+   "playing",
+   "wooden",
+   "seesaw",
+   "rizal",
+   "park",
+   "manila",
+   "first",
+   "class"
+  ],
+  "emphasis_bis": [
+   "first-class lever"
+  ]
+ }
+]

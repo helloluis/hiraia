@@ -1,0 +1,112 @@
+[
+ {
+  "id": "ffct-18918",
+  "lane": "dialect",
+  "prior_reason": "ROUTING, not doubt — read the reason before treating this as an open language question. The defect is CONFIRMED by dictionary and corpus (see evidence): 'kulob' is not a boiling word, so 'Alcohol Boils Before Water' is headed by a title that names no boiling. But the defect is entirely in title_bis; fact_bis correctly says 'mobukal una kaysa tubig' and needs no edit. This instrument's only output slot is new_fact_bis, which apply_body_fixes.py writes into fact.bis under a GATE 4 scope check, so a title repair cannot be expressed here. RESOLVE-FINE would be false (it asserts the card is correct as it stands) and would let the poisoned-word-list quarantine permanently swallow a confirmed defect; REPAIR would require either corrupting a correct body or shipping a byte-identical non-edit, the exact failure C5b-2 rejected on ffct-13754. So: route to the TITLE stage, no native speaker needed. ",
+  "prior_evidence": "ceb_usage.py --bis kulob: 0 of 47,056 Cebuano BODIES, 29 Cebuano titles — 25 of them boiling-point cards. binisaya.com/cebuano/kulob: 'prone (adj.); overturn (v.)', synonym kaob — no boiling sense. Wolff / pinoydictionary kulub: 'lay the washed plates face downward', extended 'deprive someone of his livelihood (turn the plate upside down on him)'. binisaya.com/cebuano/bukal: 'come to the boiling point'. The two non-boiling kulob titles give the intended sense away: ffct-02691 'Kulob nga Tudlo sa Tubig' for EN 'Why Fingers Wrinkle in Water' (title_tl 'Kulubot na Daliri'). This card's own body: 'Ang alkohol (ethanol) mobukal una kaysa tubig'.",
+  "previously_proposed": "",
+  "title_en": "Alcohol Boils Before Water",
+  "title_bis": "78 Alak Una Kulob",
+  "fact_en": "Alcohol (ethanol) boils before water! Its boiling point is only about 78°C, while water is 100°C.",
+  "fact_bis": "Ang alkohol (ethanol) mobukal una kaysa tubig! Ang boiling point niini mga 78°C lang, samtang ang tubig 100°C.",
+  "terms": [
+   "alcohol boils first",
+   "alkohol kumukulo muna",
+   "ethanol 78 degrees",
+   "alkohol 78°c",
+   "what boils first",
+   "alin kumukulo muna",
+   "unsa mobukal una",
+   "alcohol vs water boiling"
+  ],
+  "emphasis_bis": []
+ },
+ {
+  "id": "ffct-18919",
+  "lane": "dialect",
+  "prior_reason": "Same routing call as ffct-18918: confirmed title_bis defect, correct body, and no way to express a title repair through new_fact_bis. 'Bundok Mubu Kulob' for 'Boils Below 100 Mountain' names neither boiling (kulob is face-down/overturn) nor, strictly, the Cebuano word this card's own body uses for mountain — fact_bis says 'bukid', not 'bundok'. fact_bis is correct and complete ('Sa habog nga bukid, mobukal ang tubig ubos sa 100°C! Mas huyang kay ang presyon sa hangin didto' matches the English including the lower-air-pressure cause), so no body edit. Ready-made title repair, GATE 2 sourcing and 20-char fit already checked: 'Bukid Mobukal Ubos' (18 chars; bukid, mobukal and ubos all appear verbatim in this card's fact_bis, which is stronger sourcing than the current 'Bundok Mubu'). One caveat the title stage should know: title_tl is 'Bundok na Mababang Kulob', so the SAME wrong word is in",
+  "prior_evidence": "ceb_usage.py --bis kulob: 0 of 47,056 Cebuano bodies, 29 titles. binisaya.com/cebuano/kulob: 'prone (adj.); overturn (v.)'. Wolff/pinoydictionary kulub: 'lay the washed plates face downward'. Pool: ffct-18919 title_tl = 'Bundok na Mababang Kulob'; fact_bis = 'Sa habog nga bukid, mobukal ang tubig ubos sa 100°C!'. Sibling ffct-16222 has the identical title_bis 'Bundok Mubu Kulob' but title_tl 'Bundok na Mababang Boiling Point' — the Tagalog side sometimes escapes the error, the Cebuano never does.",
+  "previously_proposed": "",
+  "title_en": "Boils Below 100 Mountain",
+  "title_bis": "Bundok Mubu Kulob",
+  "fact_en": "On a high mountain, water boils below 100°C! This happens because the air pressure there is lower.",
+  "fact_bis": "Sa habog nga bukid, mobukal ang tubig ubos sa 100°C! Mas huyang kay ang presyon sa hangin didto.",
+  "terms": [
+   "water boils lower on mountain",
+   "tubig kumukulo mababa bundok",
+   "altitude boiling point",
+   "mataas na lugar kumukulo",
+   "bukid mobukal ubos",
+   "air pressure boiling",
+   "presyon hangin pagkulo",
+   "bundok 100 degrees"
+  ],
+  "emphasis_bis": []
+ },
+ {
+  "id": "ffct-18923",
+  "lane": "dialect",
+  "prior_reason": "Same routing call: confirmed title_bis defect, correct body, unexpressible through new_fact_bis. 'Asin Kulob Taas' drops the relationship the card teaches — with kulob meaning face-down/overturn rather than boiling, the headline reads roughly 'salt overturned high' and the raised BOILING POINT is nowhere in it. fact_bis is correct and needs no edit ('Ang pagdugang og asin sa tubig gamay nga magpataas sa boiling point niini labaw sa 100°C. Kinahanglan niya og gamay nga kainit aron mobukal!'), including the 'slightly' hedge and the 'needs a little more heat' consequence. Ready-made title repair, GATE 2 sourcing and 20-char fit already checked: 'Asin Magpataas Bukal' (exactly 20 chars; asin and magpataas are in fact_bis, and bukal is on the card in its own terms list, 'asin nagpataas bukal').",
+  "prior_evidence": "ceb_usage.py --bis kulob: 0 of 47,056 Cebuano bodies, 29 titles, 25 of them boiling cards. binisaya.com/cebuano/kulob: 'prone (adj.); overturn (v.)', synonym kaob. Wolff/pinoydictionary kulub: 'lay the washed plates face downward'. binisaya.com/cebuano/bukal: 'come to the boiling point'. This card's terms field already contains 'asin nagpataas bukal' and 'asin pagkulo', and its body says 'mobukal' — the correct vocabulary is on the card, only the title missed it.",
+  "previously_proposed": "",
+  "title_en": "Salt Raises Boiling Point",
+  "title_bis": "Asin Kulob Taas",
+  "fact_en": "What happens when you add salt to water?\n\nAdding salt to water slightly raises its boiling point above 100°C. It needs a little more heat to start bubbling!",
+  "fact_bis": "Unsay mahitabo kung magdugang ka og asin sa tubig?\n\nAng pagdugang og asin sa tubig gamay nga magpataas sa boiling point niini labaw sa 100°C. Kinahanglan niya og gamay nga kainit aron mobukal!",
+  "terms": [
+   "salt raises boiling point",
+   "asin nagtataas boiling point",
+   "salt water boils higher",
+   "asin tubig kumukulo mataas",
+   "asin nagpataas bukal",
+   "boiling point elevation",
+   "maalat na tubig kumukulo",
+   "asin pagkulo"
+  ],
+  "emphasis_bis": []
+ },
+ {
+  "id": "ffct-18927",
+  "lane": "dialect",
+  "prior_reason": "Same routing call: confirmed title_bis defect, correct body, unexpressible through new_fact_bis. '78 Ethanol Kulob' for 'Ethanol Boils 78 Celsius' attaches the number to no process, because kulob is face-down/overturn, not boiling. fact_bis is correct twice over ('mobukal sa mga 78 degrees Celsius' and 'Mobukal kini sa mas ubos nga temperatura kay sa ordinaryong tubig') and must not be touched. Ready-made title repair, GATE 2 sourcing and 20-char fit already checked: '78 Ethanol Mobukal' (18 chars; 78, ethanol and mobukal all appear in this card's fact_bis). Note for the title stage: title_tl is also '78°C Ethanol Kulob', and kulob is not a Tagalog boiling word either (Tagalog boil = kulo/kumukulo; kulob = covered/stuffy), so the agreement between tl and bis is the generator repeating one error, not intentional terminology — compare the near-duplicate ffct-19421, same title_bis but title",
+  "prior_evidence": "ceb_usage.py --bis kulob: 0 of 47,056 Cebuano bodies, 29 titles. binisaya.com/cebuano/kulob: 'prone (adj.); overturn (v.)'. Wolff/pinoydictionary kulub: 'lay the washed plates face downward'. Pool: ffct-18927 title_tl = '78°C Ethanol Kulob' vs sibling ffct-19421 title_tl = '78°C Ethanol Kumukulo' for the identical English.",
+  "previously_proposed": "",
+  "title_en": "Ethanol Boils 78 Celsius",
+  "title_bis": "78 Ethanol Kulob",
+  "fact_en": "Ethanol, which is a type of alcohol, boils at about 78 degrees Celsius (78°C). It boils at a lower temperature than plain water!",
+  "fact_bis": "Ang ethanol, nga matang sa alkohol, mobukal sa mga 78 degrees Celsius (78°C). Mobukal kini sa mas ubos nga temperatura kay sa ordinaryong tubig!",
+  "terms": [
+   "ethanol boiling point",
+   "alkohol kumukulo",
+   "ethanol",
+   "78 degrees celsius",
+   "78°c",
+   "alcohol boiling point",
+   "alkohol mobukal",
+   "ethanol celsius"
+  ],
+  "emphasis_bis": []
+ },
+ {
+  "id": "ffct-18929",
+  "lane": "dialect",
+  "prior_reason": "Same routing call: confirmed title_bis defect, correct body, unexpressible through new_fact_bis. '373 Kelvin Kulob' leaves the card's English 'Boiling Point' attached to a word meaning face-down/overturn, so the headline's temperature names no process. fact_bis is correct and minimal ('Sa sukat nga Kelvin, ang tubig mobukal sa mga 373 Kelvin (373 K)!') and needs no edit. Ready-made title repair, GATE 2 sourcing and 20-char fit already checked: '373 Kelvin Mobukal' (18 chars; 373, Kelvin and mobukal all appear in this card's fact_bis). The title stage should batch this with its two duplicates rather than treat it as one card.",
+  "prior_evidence": "ceb_usage.py --bis kulob: 0 of 47,056 Cebuano bodies, 29 Cebuano titles. binisaya.com/cebuano/kulob: 'prone (adj.); overturn (v.)', synonym kaob. Wolff/pinoydictionary kulub: 'lay the washed plates face downward'. binisaya.com/cebuano/bukal: 'come to the boiling point and change from a liquid to vapor'. Exact title_bis '373 Kelvin Kulob' also appears on ffct-18572 and ffct-18833 for the same English 'Boiling Point 373 Kelvin'; all three bodies say mobukal.",
+  "previously_proposed": "",
+  "title_en": "Boiling Point 373 Kelvin",
+  "title_bis": "373 Kelvin Kulob",
+  "fact_en": "In the Kelvin scale, water boils at about 373 Kelvin (373 K)!",
+  "fact_bis": "Sa sukat nga Kelvin, ang tubig mobukal sa mga 373 Kelvin (373 K)!",
+  "terms": [
+   "boiling point of water kelvin",
+   "kumukulo kelvin",
+   "373 kelvin",
+   "373 k",
+   "tubig kelvin",
+   "water boiling kelvin",
+   "kelvin pagkulo",
+   "boiling point kelvin"
+  ],
+  "emphasis_bis": []
+ }
+]

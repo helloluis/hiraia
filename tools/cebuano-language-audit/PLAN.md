@@ -623,6 +623,48 @@ What it is: evidence the corpus is **dialectally mixed**, so a Cebuano child mee
 across the feed. Whether to normalise on `nag-` is a product decision about which Cebuano the
 app speaks, not a defect list. Inventory in `naga-dialect.json`.
 
+## C9 — the two new decision rules, and a gate that was measuring the wrong unit
+
+61 open holds (39 NEEDS-NATIVE + 22 attestation-gated) re-decided under two rules that did not
+exist when they were first held: **the target variety is Cebu Cebuano**, and **a dictionary
+outranks corpus frequency**.
+
+| | |
+|---|---:|
+| REPAIR | 27 → adversarial **24 accept, 3 reject** |
+| RESOLVE-FINE | 1 |
+| **STILL-NATIVE** | **33** |
+| **applied after gates** | **11** |
+
+**My own gate was blocking the cards the rules were meant to unblock.** All 27 repairs went in
+and only 2 came out: GATE 2 held 22 for using a word with fewer than 3 corpus uses — the exact
+tooling threshold Rule 2 was written to overrule. Every one of the 22 cited a real dictionary,
+but trusting that prose is the failure mode this project keeps paying for, so instead:
+
+**The gate was counting SURFACE FORMS in a language built on affixation.** `pagkasinaw` occurs
+once; its root `sinaw` occurs 59 times. `makapahamis` once; `hamis` 146. `nagpadanlog` twice;
+`danlog` 43. Rare surface form, ordinary root — nothing suspicious about it. This is the same
+error as the quiz Q0 probe, which flagged 29 correct items because it normalised away the
+distinctions under test: **measuring the wrong unit, not setting the wrong threshold.**
+
+GATE 2 now passes a word if EITHER its surface form or its root is attested, which released 9
+morphologically-regular repairs and still holds 13 whose roots really are rare — `moutot` (0
+uses), `pangulitawo` (1), `tinagpulo` (1). Those stay held.
+
+**The verifier also caught the new rules being over-applied**, which is why it was given the
+failure mode of each: it rejected 3, including `halo` → `sagol`, where the claim rested on
+dictionaries while `halo` is attested for "mixture" in ~25 Cebuano bodies including the
+identical frame.
+
+**And Rule 1 overturned an earlier proposal.** C7 wanted `igbalati` for "senses"; C9 found it
+is **Hiligaynon**, absent from Wolff, and the one Cebuano dictionary carrying the string glosses
+it "sea cucumber". Under the Cebu ruling that is a defect to introduce, so the repair used the
+Cebu-attested `panimati` instead — and flagged honestly that it carries a "listen/pay heed"
+flavour a teacher may still want to revisit.
+
+**33 STILL-NATIVE is the honest floor.** Those are idiom and lexical-authority questions where
+dictionary and corpus genuinely disagree, and no rule available to me breaks the tie.
+
 ## Final tally (sweep + deterministic detectors)
 
 | source | cards |
