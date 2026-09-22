@@ -37,6 +37,9 @@ ATTEMPT_MINUTE_LIMIT = 5
 ATTEMPT_HOURLY_LIMIT = 30
 GLOBAL_ATTEMPT_HOURLY_LIMIT = 120
 PROCESSOR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tala_media.py")
+# Resend allows 40 MB of attachments after Base64. Tala already caps media at 10 MB;
+# leave headroom for the JSON envelope and skip any leftover that would overflow.
+EMAIL_ATTACH_BUDGET = 8_000_000
 _lock = threading.Lock()
 
 
@@ -297,6 +300,98 @@ def receive(raw, config, source_ip="unknown"):
     return 200, {"ok": True, "id": report["id"]}
 
 
+def _utc(ms):
+    return datetime.fromtimestamp(ms / 1000, timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+
+
+def _load_media_files(report_id):
+    with _db() as conn:
+        rows = conn.execute("SELECT id,name,mime,size,path FROM media WHERE report_id=?",
+                            (report_id,)).fetchall()
+    files = []
+    for row in rows:
+        try:
+            with open(row["path"], "rb") as file:
+                files.append({
+                    "id": row["id"], "name": row["name"], "mime": row["mime"],
+                    "size": row["size"], "data": file.read(),
+                })
+        except OSError:
+            files.append({
+                "id": row["id"], "name": row["name"], "mime": row["mime"],
+                "size": row["size"], "data": None,
+            })
+    return files
+
+
+def pick_email_attachments(files, budget=EMAIL_ATTACH_BUDGET):
+    attached, skipped = [], []
+    used = 0
+    for item in files:
+        data = item.get("data")
+        if not data:
+            skipped.append(f'{item["name"]} (unreadable on server)')
+            continue
+        if used + len(data) > budget:
+            skipped.append(f'{item["name"]} ({len(data) // 1024} KB — over the email size budget)')
+            continue
+        attached.append({
+            "filename": item["name"],
+            "content": base64.b64encode(data).decode("ascii"),
+            "content_type": item["mime"],
+        })
+        used += len(data)
+    return attached, skipped
+
+
+def email_payload(row, files, budget=EMAIL_ATTACH_BUDGET):
+    attached, skipped = pick_email_attachments(files, budget)
+    review = f"https://hiraia.org/admin/tala-reports#{row['id']}"
+    lines = [
+        f"New Tala report: {row['category']}",
+        f"Teacher: {row['teacher_name'] or '—'}",
+        f"School: {row['school_name'] or '—'}",
+        f"Class: {row['class_name'] or '—'}",
+        f"Received: {_utc(row['received_at'])}",
+        f"Device: {row['device_id']}",
+        "",
+        "Details:",
+        row["details"] or "(no details)",
+        "",
+        f"Attachments stored: {row['media_count']}",
+    ]
+    if attached:
+        lines.append("Attached to this email: " + ", ".join(item["filename"] for item in attached))
+    if skipped:
+        lines.append("Not attached (see the dashboard): " + "; ".join(skipped))
+    if not attached and not skipped and row["media_count"]:
+        lines.append("Files are on the dashboard only.")
+    lines.extend(["", f"Review: {review}"])
+    text = "\n".join(lines)
+    html_details = html.escape(row["details"] or "(no details)").replace("\n", "<br>")
+    html_body = (
+        f"<p><strong>{html.escape(row['category'])}</strong></p>"
+        f"<p>Teacher: {html.escape(row['teacher_name'] or '—')}<br>"
+        f"School: {html.escape(row['school_name'] or '—')}<br>"
+        f"Class: {html.escape(row['class_name'] or '—')}<br>"
+        f"Received: {_utc(row['received_at'])}</p>"
+        f"<p><strong>Details</strong></p><p>{html_details}</p>"
+        f"<p>{len(attached)} file(s) attached to this email"
+        + (f"; not attached: {html.escape('; '.join(skipped))}" if skipped else "")
+        + f".</p><p><a href=\"{html.escape(review, quote=True)}\">Open in admin</a></p>"
+    )
+    payload = {
+        "from": "Hiraia Tala <feedback@hiraia.org>",
+        "to": [],
+        "subject": f"Hiraia Tala report: {row['category']}",
+        "text": text,
+        "html": html_body,
+    }
+    if attached:
+        payload["attachments"] = attached
+    return payload
+
+
 def notify(report_id, config):
     with _db() as conn:
         row = conn.execute("SELECT * FROM reports WHERE id=?", (report_id,)).fetchone()
@@ -308,22 +403,16 @@ def notify(report_id, config):
             conn.execute("UPDATE reports SET notify_error=? WHERE id=?",
                          ("Resend not configured", report_id))
             return False
-        subject = f"Hiraia Tala report: {row['category']}"
-        message = "\n".join((
-            f"New Tala report from {row['teacher_name'] or 'teacher'}",
-            f"School: {row['school_name']}", f"Class: {row['class_name']}",
-            f"Attachments: {row['media_count']}",
-            f"Review: https://hiraia.org/admin/tala-reports#{report_id}",
-            "", "Details and media stay in the protected admin dashboard."
-        ))
+        payload = email_payload(dict(row), _load_media_files(report_id))
+        payload["from"] = config.get("tala_notify_from", payload["from"])
+        payload["to"] = [recipient]
         request = urllib.request.Request("https://api.resend.com/emails",
-            data=json.dumps({"from": config.get("tala_notify_from", "Hiraia Tala <feedback@hiraia.org>"),
-                             "to": [recipient], "subject": subject, "text": message}).encode(),
+            data=json.dumps(payload).encode(),
             headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json",
                      "Idempotency-Key": f"tala-report-{report_id}",
-                     "User-Agent": "HiraiaTala/0.7.0"}, method="POST")
+                     "User-Agent": "HiraiaTala/0.4.2"}, method="POST")
         try:
-            with urllib.request.urlopen(request, timeout=12) as response:
+            with urllib.request.urlopen(request, timeout=20) as response:
                 if response.status not in (200, 201):
                     raise RuntimeError(f"Resend returned {response.status}")
             conn.execute("UPDATE reports SET notified_at=?,notify_error='' WHERE id=?",
@@ -359,7 +448,7 @@ def delete_report(report_id):
     return False
 
 
-def page(mount, head, csrf):
+def page_body(mount, csrf):
     with _db() as conn:
         reports = conn.execute("SELECT * FROM reports ORDER BY received_at DESC LIMIT 500").fetchall()
         attachments = {row["id"]: conn.execute("SELECT id,name,mime,size FROM media WHERE report_id=?",
@@ -370,26 +459,34 @@ def page(mount, head, csrf):
         received = datetime.fromtimestamp(row["received_at"] / 1000, timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
         notified = "Email sent" if row["notified_at"] else f"Email pending: {row['notify_error'] or 'not sent'}"
         links = " ".join(
-            f'<a href="{mount}/tala-reports/media/{report_id}/{media["id"]}">'
+            f'<a href="{html.escape(mount, quote=True)}/tala-reports/media/{report_id}/{media["id"]}">'
             f'{html.escape(media["name"])} ({media["size"] // 1024} KB)</a>'
             for media in attachments[report_id]
         ) or "No attachments"
         retry = "" if row["notified_at"] else (
-            f'<form method="post" action="{mount}/tala-reports/{report_id}/retry">'
-            f'<input type="hidden" name="csrf" value="{csrf}">'
-            '<button type="submit">Retry email</button></form>'
+            f'<form method="post" action="{html.escape(mount, quote=True)}/tala-reports/{report_id}/retry">'
+            f'<input type="hidden" name="csrf" value="{html.escape(csrf, quote=True)}">'
+            '<button type="submit" class="refresh">Retry email</button></form>'
         )
-        delete = (f'<form method="post" action="{mount}/tala-reports/{report_id}/delete" '
-                  'onsubmit="return confirm(\'Permanently delete this report and its media?\')">'
-                  f'<input type="hidden" name="csrf" value="{csrf}">'
-                  '<button type="submit">Delete report</button></form>')
-        cards.append(f'<article class="panel" id="{report_id}" style="margin:12px 0;padding:18px">'
-                     f'<h2>{html.escape(row["category"])} · {received}</h2>'
-                     f'<p>{html.escape(row["school_name"])} · {html.escape(row["class_name"])} '
-                     f'· {html.escape(row["teacher_name"])}</p>'
-                     f'<p style="white-space:pre-wrap;overflow-wrap:anywhere">{html.escape(row["details"])}</p>'
-                     f'<p>{links}</p><small>{html.escape(notified)}</small>{retry}{delete}</article>')
-    body = (f'<div class="wrap"><header class="top"><div class="brand">Hiraia <em>//</em> Tala reports</div>'
-            f'</header><p>{len(reports)} most recent reports · media are private and available only after sign-in.</p>'
-            + "".join(cards or ['<div class="panel" style="padding:18px">No reports yet.</div>']) + '</div></body></html>')
-    return head + body
+        delete = (
+            f'<form method="post" action="{html.escape(mount, quote=True)}/tala-reports/{report_id}/delete" '
+            'onsubmit="return confirm(\'Permanently delete this report and its media?\')">'
+            f'<input type="hidden" name="csrf" value="{html.escape(csrf, quote=True)}">'
+            '<button type="submit" class="btn-danger">Delete report</button></form>'
+        )
+        cards.append(
+            f'<article class="report" id="{html.escape(report_id, quote=True)}">'
+            f'<div class="kicker">{html.escape(row["category"])} · {received}</div>'
+            f'<h2>{html.escape(row["school_name"])} · {html.escape(row["class_name"])} · {html.escape(row["teacher_name"])}</h2>'
+            f'<p class="details">{html.escape(row["details"])}</p>'
+            f'<p class="media">{links}</p><p class="note">{html.escape(notified)}</p>'
+            f'<div class="report-actions">{retry}{delete}</div></article>'
+        )
+    empty = '<div class="panel">No reports yet.</div>'
+    return (
+        f'<h1>Tala reports</h1>'
+        f'<p class="lede">{len(reports)} most recent reports. Media stays on this server and is only '
+        f'available after sign-in.</p>'
+        + "".join(cards or [empty])
+        + '<p class="foot">Classroom issue reports from Tala. The alert email includes the report text and attaches files that fit.</p>'
+    )

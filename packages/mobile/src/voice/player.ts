@@ -1,5 +1,5 @@
 /**
- * Reading a card aloud: chunk, synthesise EAGERLY, and play the clips back to back.
+ * Reading a card aloud: phrase, synthesise EAGERLY, and play with punctuation pauses.
  *
  * Chunking (see ./chunk) is not a nicety. A whole card is 10-20 seconds of speech and the
  * model is not fast on a budget phone, so synthesising a card in one pass would mean a long
@@ -14,6 +14,9 @@
  * also wrapped in its AudioPlayer AHEAD of time, so the hand-off between clips is a play()
  * call, not a file load.
  *
+ * Deliberate punctuation pauses are silent PCM at the end of a clip. Synthesis keeps
+ * running during those pauses; no extra timer or model token is needed.
+ *
  * Only one read-aloud runs at a time. A second tap (or turning the page) cancels the one in
  * flight: `stop()` bumps a generation counter that every async step checks, so synthesis
  * already on the CPU finishes into the void instead of playing over the next card.
@@ -27,7 +30,7 @@ import { Directory, File, Paths } from 'expo-file-system';
 
 import type { Language } from '@hiraia/shared';
 
-import { chunk } from './chunk';
+import { speechChunks } from './chunk';
 import { sampleRateFor, synthesize, vocabFor } from './engine';
 import { normalizeForSpeech } from './normalize';
 import { hasSpeakableText } from './tokenizer';
@@ -57,7 +60,7 @@ interface Prepared {
   seconds: number;
 }
 
-function prepare(samples: Float32Array, sampleRate: number, mine: number, i: number): Prepared {
+function prepare(samples: Float32Array, sampleRate: number, mine: number, i: number, pauseMs: number): Prepared {
   const root = dir();
   root.create({ intermediates: true, idempotent: true });
   // Unique per (utterance, chunk): clips of one card coexist, and the previous
@@ -65,7 +68,7 @@ function prepare(samples: Float32Array, sampleRate: number, mine: number, i: num
   const file = new File(root, `u${mine}-${i}.wav`);
   if (file.exists) file.delete();
   file.create();
-  file.write(encodeWav(samples, sampleRate));
+  file.write(encodeWav(samples, sampleRate, pauseMs));
   return { player: createAudioPlayer({ uri: file.uri }), seconds: samples.length / sampleRate };
 }
 
@@ -111,8 +114,8 @@ export async function speak(
   const t0 = Date.now();
   const vocab = vocabFor(language);
   if (!vocab) return;
-  const parts = chunk(normalizeForSpeech(text, language)).filter((p) =>
-    hasSpeakableText(p, vocab),
+  const parts = speechChunks(normalizeForSpeech(text, language)).filter((p) =>
+    hasSpeakableText(p.text, vocab),
   );
   if (!parts.length) return;
   console.log(`${TAG} speak lang=${language} chunks=${parts.length} "${text.slice(0, 32)}…"`);
@@ -135,12 +138,13 @@ export async function speak(
     const step = line.then(async () => {
       if (mine !== generation) return null;
       const s0 = Date.now();
-      const samples = await synthesize(part, language);
+      const samples = await synthesize(part.text, language);
       if (mine !== generation) return null;
-      const p = prepare(samples, sampleRate, mine, i);
+      const pauseMs = i < parts.length - 1 ? part.pauseAfterMs : 0;
+      const p = prepare(samples, sampleRate, mine, i, pauseMs);
       console.log(
         `${TAG} chunk ${i + 1}/${parts.length} synth ${Date.now() - s0}ms → ` +
-          `${p.seconds.toFixed(1)}s audio (RTF ${((Date.now() - s0) / 1000 / p.seconds).toFixed(2)})`,
+          `${p.seconds.toFixed(1)}s audio (RTF ${((Date.now() - s0) / 1000 / p.seconds).toFixed(2)}), pause=${pauseMs}ms`,
       );
       return p;
     });

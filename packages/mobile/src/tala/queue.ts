@@ -1,6 +1,6 @@
 import { sanitizeEvent, type TeacherEvent } from './protocol';
 
-export type Binding = { class_id: string; public_key: string; bound_at: number };
+export type Binding = { class_id: string; public_key: string; bound_at: number; class_name?: string };
 
 export interface TeacherStore {
   binding(): Promise<Binding | null>;

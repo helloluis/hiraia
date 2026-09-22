@@ -45,7 +45,9 @@ let ui: {
   bound: boolean;
   lastSync: number;
   lost: number;
-} = { state: 'unbound', detail: '', bound: false, lastSync: 0, lost: 0 };
+  /** Class name from the enrolment QR; '' when the teacher build predates it. */
+  className: string;
+} = { state: 'unbound', detail: '', bound: false, lastSync: 0, lost: 0, className: '' };
 
 function emit() {
   for (const fn of listeners) fn();
@@ -227,8 +229,8 @@ async function acceptManualKey(
     }
   }
   pendingManual = undefined;
-  await queue!.bind({ class_id: qr.class_id, public_key: qr.public_key, bound_at: Date.now() });
-  setUi({ state: 'connected', bound: true, detail: '' });
+  await queue!.bind({ class_id: qr.class_id, public_key: qr.public_key, bound_at: Date.now(), class_name: qr.class_name });
+  setUi({ state: 'connected', bound: true, detail: '', className: qr.class_name ?? '' });
   const session = sessions.get(endpointId);
   if (!session) return;
   session.phase = 'wait-ready';
@@ -491,8 +493,8 @@ export async function enrollQr(text: string, confirmRebind: () => Promise<boolea
   }
   pendingManual = undefined;
   await stopTalaSession();
-  await queue!.bind({ class_id: qr.class_id, public_key: qr.public_key, bound_at: Date.now() });
-  setUi({ state: 'idle', bound: true, detail: '' });
+  await queue!.bind({ class_id: qr.class_id, public_key: qr.public_key, bound_at: Date.now(), class_name: qr.class_name });
+  setUi({ state: 'idle', bound: true, detail: '', className: qr.class_name ?? '' });
   await startTalaSession();
 }
 
@@ -512,7 +514,7 @@ export async function leaveClass(): Promise<void> {
   pendingManual = undefined;
   await stopTalaSession();
   await queue!.unbind();
-  setUi({ state: 'unbound', bound: false, lastSync: 0, detail: '' });
+  setUi({ state: 'unbound', bound: false, lastSync: 0, detail: '', className: '' });
 }
 
 export function teacherTrack(events: Event[]): void {
@@ -545,6 +547,7 @@ export async function initTala(opts: {
     lost,
     state: binding ? 'idle' : 'unbound',
     detail: '',
+    className: binding?.class_name ?? '',
   });
   unsubNative?.();
   unsubNative = subscribeTala((e) => {

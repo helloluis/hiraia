@@ -29,9 +29,10 @@ export function Faq() {
           <p className="mc-label text-[10px] text-[var(--gold)]">A field guide</p>
           <h1 className="mt-2 text-4xl leading-none text-[var(--stock)] sm:text-5xl">Questions</h1>
           <p className="mt-5 max-w-xl font-zilla text-lg font-medium leading-relaxed text-[var(--stock)]/90">
-            How to use Hiraia, what it runs on, what science is in the tutor, and
-            what to do when something sticks. An on-page assistant will use these
-            same answers; this page is the source of truth.
+            How to use Hiraia, how teachers use Tala, what they run on, what
+            science is in the tutor, and what to do when something sticks. An
+            on-page assistant will use these same answers; this page is the
+            source of truth.
           </p>
         </div>
       </section>

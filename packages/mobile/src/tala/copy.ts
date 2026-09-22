@@ -3,6 +3,14 @@ import type { Language } from '@hiraia/shared';
 const copy = {
   english: {
     title: 'Hiraia Tala',
+    sectionJoin: 'JOIN A CLASS',
+    scanQr: 'SCAN QR CODE',
+    enterTheCode: 'Enter the Code ...',
+    joinBody:
+      'Join a Hiraia classroom by scanning a QR code on the Hiraia Tala teacher’s app. Joining a class will share this student’s activities with the teacher.',
+    leaveClass: 'LEAVE CLASS',
+    leaveBody: 'If you leave this class, your teacher will not be able to see your activities.',
+    yourClass: 'YOUR CLASS',
     join: 'Join Hiraia Tala / Scan teacher QR',
     scan: 'Scan QR',
     enterCode: 'Enter code instead',
@@ -40,6 +48,14 @@ const copy = {
   },
   tagalog: {
     title: 'Hiraia Tala',
+    sectionJoin: 'SUMALI SA KLASE',
+    scanQr: 'I-SCAN ANG QR CODE',
+    enterTheCode: 'Ilagay ang Code ...',
+    joinBody:
+      'Sumali sa klase sa Hiraia sa pag-scan ng QR code sa app ng guro. Kapag sumali, makikita ng guro ang mga gawain ng mag-aaral na ito.',
+    leaveClass: 'UMALIS SA KLASE',
+    leaveBody: 'Kapag umalis ka, hindi na makikita ng guro mo ang mga gawain mo.',
+    yourClass: 'ANG KLASE MO',
     join: 'Sumali sa Hiraia Tala / I-scan ang QR ng guro',
     scan: 'I-scan ang QR',
     enterCode: 'Maglagay ng code',
@@ -77,6 +93,14 @@ const copy = {
   },
   cebuano: {
     title: 'Hiraia Tala',
+    sectionJoin: 'APIL SA KLASE',
+    scanQr: 'I-SCAN ANG QR CODE',
+    enterTheCode: 'Isulod ang Code ...',
+    joinBody:
+      'Apil sa klase sa Hiraia pinaagi sa pag-scan sa QR code sa app sa magtutudlo. Inig-apil, makita sa magtutudlo ang mga buhat niining estudyante.',
+    leaveClass: 'MOBIYA SA KLASE',
+    leaveBody: 'Kon mobiya ka, dili na makita sa imong magtutudlo ang imong mga buhat.',
+    yourClass: 'ANG IMONG KLASE',
     join: 'Apil sa Hiraia Tala / I-scan ang QR sa magtutudlo',
     scan: 'I-scan ang QR',
     enterCode: 'Ibutang ang code',

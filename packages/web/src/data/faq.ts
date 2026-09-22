@@ -13,12 +13,33 @@
 
 import { DOWNLOAD } from '@/config/download';
 import { DEFAULT_GRADE, GRADE_OPTIONS } from '@/config/grades';
+import talaManifest from '@/config/tala-download.json';
 
 const APK_LIVE = DOWNLOAD.released && !!DOWNLOAD.apk.url;
+const TALA = talaManifest.app;
+const TALA_LIVE = !!TALA?.url;
 const GRADE_SPAN = `Grades ${GRADE_OPTIONS[0]} through ${GRADE_OPTIONS[GRADE_OPTIONS.length - 1]}`;
+const FIRST_FETCH = `about ${DOWNLOAD.modelDownloadGB}GB`;
 
 /** Newest first. The "What's new?" item and the assistant read this. */
 export const FAQ_SHIPPED: readonly { date: string; title: string; faqIds: readonly string[] }[] = [
+  {
+    date: '2026-09',
+    title: TALA_LIVE
+      ? `Tala v${TALA.versionName} is the teacher companion — download it from the homepage, on a separate phone from Hiraia.`
+      : 'Tala is Hiraia’s teacher companion for classroom activity on a nearby phone.',
+    faqIds: [
+      'tala-what',
+      'tala-download',
+      'tala-join',
+      'tala-code',
+      'tala-offline',
+      'tala-phones',
+      'tala-privacy',
+      'tala-records',
+      'trouble-tala',
+    ],
+  },
   {
     date: '2026-09',
     title: `Android ${DOWNLOAD.minAndroid} and newer are now supported.`,
@@ -31,12 +52,12 @@ export const FAQ_SHIPPED: readonly { date: string; title: string; faqIds: readon
   },
   {
     date: '2026-09',
-    title: 'A class can copy the 2GB model over school or municipal Wi-Fi with Pears, once one phone has a complete copy.',
+    title: 'A class can copy the model over school or municipal Wi-Fi with Pears, once one phone has a complete copy.',
     faqIds: ['usage-class', 'devices-data'],
   },
 ];
 
-export type FaqSectionId = 'usage' | 'devices' | 'content' | 'troubleshooting';
+export type FaqSectionId = 'usage' | 'tala' | 'devices' | 'content' | 'troubleshooting';
 
 export interface FaqSection {
   id: FaqSectionId;
@@ -57,6 +78,11 @@ export const FAQ_SECTIONS: readonly FaqSection[] = [
     id: 'usage',
     label: 'Using Hiraia',
     blurb: 'How the tutor works, what a session looks like, and what is free.',
+  },
+  {
+    id: 'tala',
+    label: 'Tala for teachers',
+    blurb: 'The classroom companion on the teacher’s phone, Nearby collection, and class records.',
   },
   {
     id: 'devices',
@@ -93,7 +119,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     a: APK_LIVE
       ? [
           `Yes. The Android app is on the homepage as “Download Hiraia for Android” (v${DOWNLOAD.version}). It is an APK from hiraia.org, not the Play Store. You can also try the cards in the browser with “Try the demo” before you install.`,
-          'The first time you open the app it fetches about 2GB — the model and the illustrations. After that it runs offline. The project is still early alpha, so expect rough edges.',
+          `The first time you open the app it fetches ${FIRST_FETCH} — the model and related files. After that it runs offline. The project is still early alpha, so expect rough edges.`,
         ]
       : [
           'The Android app is in early alpha and the public download is marked Coming soon. You can try the tutor in the browser from the homepage: open “Try the demo,” pick a language and a grade, and walk a stack of science cards.',
@@ -120,8 +146,8 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'usage',
     q: 'Does it need the internet?',
     a: [
-      'Only for the first fetch. The first time you open the app it downloads about 2GB — the customized AI model and the illustration library — from Hiraia’s servers. Prefer Wi-Fi; that transfer is large.',
-      'After that it runs fully offline. No account, no feed of student data, and nothing typed on the phone is sent anywhere. Sharing a finished copy across classroom Wi-Fi is coming soon; until then each phone still fetches the model itself.',
+      `Only for the first fetch. The first time you open the app it downloads ${FIRST_FETCH} — the customized AI model and related files — from Hiraia’s servers. Prefer Wi-Fi; that transfer is large.`,
+      'After that the tutor runs fully offline. No account, and Hiraia’s servers do not receive student names or what was typed. If a student joins Tala with a class QR, that teacher phone can receive saved names and learning activity over Nearby — still not over the internet. Sharing a finished model copy across classroom Wi-Fi is coming soon; until then each phone still fetches the model itself.',
     ],
   },
   {
@@ -139,8 +165,8 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'usage',
     q: 'Who is it for?',
     a: [
-      'Students in Philippine elementary to junior high, roughly Grades 3 through 10, studying science. A parent or teacher can sit with the student, pick the grade, and let them walk the cards; the product is the student’s tutor, not a classroom management system.',
-      'It is not a replacement for a teacher, and it is not affiliated with the Department of Education.',
+      'Students in Philippine elementary to junior high, roughly Grades 3 through 10, studying science. A parent or teacher can sit with the student, pick the grade, and let them walk the cards. The Hiraia app is the student’s tutor.',
+      'Teachers who want a classroom view install Tala, a separate app on the teacher’s phone. Hiraia is not a replacement for a teacher, and it is not affiliated with the Department of Education.',
     ],
   },
   {
@@ -156,8 +182,85 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'usage',
     q: 'Can a whole class use it from one download?',
     a: [
-      'That classroom path is coming soon. The plan is Pears, a peer-to-peer filesharing protocol: once one phone on the school or municipal Wi-Fi holds a complete copy, the rest of the class can take it from that phone — and from one another — without another trip to the internet.',
-      'Until that ships, each phone still downloads the two-gigabyte model itself. Use Wi-Fi for that first fetch.',
+      'Copying the model from phone to phone over school or municipal Wi-Fi is coming soon (Pears). Until that ships, each phone still downloads the model itself. Use Wi-Fi for that first fetch.',
+      'Watching a class while they study is a different path: that is Tala, on the teacher’s phone. Students keep using Hiraia; they do not share one Hiraia install as a classroom dashboard.',
+    ],
+  },
+
+  // ── tala ───────────────────────────────────────────────────────────────
+  {
+    id: 'tala-what',
+    section: 'tala',
+    q: 'What is Tala?',
+    a: [
+      'Tala is Hiraia’s free teacher companion. Students keep studying in Hiraia. The teacher installs Tala on a separate Android phone, creates a class, and collects learning activity from nearby student phones — card views, quizzes, and the names saved on those phones.',
+      'It is not a replacement for a teacher, not a gradebook that uploads to DepEd, and not affiliated with the Department of Education. Records stay on the teacher phone unless the teacher exports or shares them.',
+    ],
+  },
+  {
+    id: 'tala-download',
+    section: 'tala',
+    q: 'How do I get Tala?',
+    a: TALA_LIVE
+      ? [
+          `From the homepage, “Download Tala v${TALA.versionName} for Android.” It is a separate APK from Hiraia, also from hiraia.org, not the Play Store. The file is ${TALA.url}. Android will ask you to allow a sideloaded install; that is expected.`,
+          'If Tala is already on the phone, update it without uninstalling so classes and records stay put.',
+        ]
+      : [
+          'Tala will be posted on the homepage next to the Hiraia download, as its own APK from hiraia.org, not the Play Store.',
+        ],
+  },
+  {
+    id: 'tala-join',
+    section: 'tala',
+    q: 'How do students join a class?',
+    a: [
+      'On Tala, enter the teacher name for that class and tap Show QR Code. Wait until the screen says Nearby ready. On each student phone, open Hiraia, go to settings, and choose Join Hiraia Tala / Scan teacher QR.',
+      'One QR belongs to the whole class. Students do not pick a group. After phones have joined, the teacher assigns groups on Tala if needed. The QR does not change when groups are created or students are moved.',
+    ],
+  },
+  {
+    id: 'tala-code',
+    section: 'tala',
+    q: 'What if a student’s camera cannot read the QR?',
+    a: [
+      'Tala can show a temporary 12-character code (XXXX-XXXX-XXXX) while that class is collecting. On Hiraia, choose Enter code instead and type it. The code works only while Tala is collecting that class and expires after one hour. Refresh QR Code on Tala rotates the backup code; the class QR itself stays the same.',
+    ],
+  },
+  {
+    id: 'tala-offline',
+    section: 'tala',
+    q: 'Does Tala need the internet?',
+    a: [
+      'Not for collecting a class. Transfers use Google Nearby Connections over Bluetooth and Wi-Fi radios in the same room. Keep both apps in the foreground, phones unlocked, Bluetooth and Wi-Fi on. There is no pairing list and no remote collection over mobile data.',
+      'Internet is only for later extras: sending an issue report, or sharing an exported spreadsheet from the teacher phone. Collection itself does not upload student activity to Hiraia’s servers.',
+    ],
+  },
+  {
+    id: 'tala-phones',
+    section: 'tala',
+    q: 'Can Hiraia and Tala run on the same phone?',
+    a: [
+      `Both need Android ${DOWNLOAD.minAndroid} or newer. Tala also needs Google Play services. Install Tala on the teacher’s phone and Hiraia on each student’s phone.`,
+      'Do not run both apps on one device for a class. Nearby cannot move activity between Hiraia and Tala on the same phone.',
+    ],
+  },
+  {
+    id: 'tala-privacy',
+    section: 'tala',
+    q: 'What does the teacher see, and who else sees it?',
+    a: [
+      'After a student joins, Tala can show saved profile names and learning activity from that phone: card views (every view, and unique cards), quizzes, and related events. A tile lights up while that phone is connected.',
+      'Hiraia’s online service still does not receive those names. Activity reaches Tala only after a QR or class code join, encrypted for that teacher phone. Share an export only with people you trust — the spreadsheet includes names and event details.',
+    ],
+  },
+  {
+    id: 'tala-records',
+    section: 'tala',
+    q: 'Can I export or share class records?',
+    a: [
+      'Yes. Share XLSX on Tala exports the active class: class details, each learner’s totals, and stored events. Tala builds the file on the phone and opens Android’s share sheet. It is a snapshot, not an automatic upload.',
+      'Issue reports (optional photos or a short video) stay on the phone until the teacher is online; Send pending reports retries them. Share report text is a text-only fallback.',
     ],
   },
 
@@ -178,7 +281,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'devices',
     q: 'How much storage does it need?',
     a: [
-      'The app itself is a small download. The first time you open it, it fetches about 2GB of files — the on-device model and the illustration library. Leave that much free space before the first launch, plus a little room for the system to unpack the files.',
+      `The Hiraia app itself is a few hundred megabytes. The first time you open it, it fetches ${FIRST_FETCH} of files — the on-device model and related assets. Leave that much free space before the first launch, plus a little room for the system to unpack the files. Tala is a much smaller teacher APK and does not download that model.`,
     ],
   },
   {
@@ -186,7 +289,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'devices',
     q: 'What happens the first time I open the app?',
     a: [
-      'Hiraia looks for the model and illustrations. If they are not on the phone yet, it downloads them from Hiraia’s own servers. The transfer can resume if the connection drops. Sharing a finished copy across classroom Wi-Fi is coming soon.',
+      `Hiraia looks for the model and related files. If they are not on the phone yet, it downloads about ${DOWNLOAD.modelDownloadGB}GB from Hiraia’s own servers. The transfer can resume if the connection drops. Sharing a finished copy across classroom Wi-Fi is coming soon.`,
       'When that finishes, the tutor is local. You can turn on airplane mode and keep studying.',
     ],
   },
@@ -195,7 +298,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'devices',
     q: 'Should I use mobile data for the first download?',
     a: [
-      'Prefer Wi-Fi. Two gigabytes on a cellular plan is a large bill for most families. Classroom sharing over school or municipal Wi-Fi is coming soon; until then, each phone still fetches the model itself, so that first download should not ride a cellular plan.',
+      `Prefer Wi-Fi. ${DOWNLOAD.modelDownloadGB}GB on a cellular plan is a large bill for most families. Classroom sharing of the model over school or municipal Wi-Fi is coming soon; until then, each student phone still fetches the model itself, so that first download should not ride a cellular plan.`,
     ],
   },
   {
@@ -283,7 +386,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'content',
     q: 'How finished is the tutor?',
     a: [
-      'Early alpha. As of early September 2026, Hiraia is in its second round of continued pretraining and preliminary supervised fine-tuning. Cards, illustrations, and retrieval are already in the build; the on-device voice of the tutor is still being trained. Expect rough edges, and treat answers as a study aid rather than an authority.',
+      `Early alpha. The public student app is Hiraia v${DOWNLOAD.version}: cards, illustrations, quizzes, recaps, and the on-device Hiraia-2B tutor. Tala v${TALA?.versionName ?? '0.4'} is the companion teacher app. Expect rough edges, and treat answers as a study aid rather than an authority.`,
     ],
   },
 
@@ -314,7 +417,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'troubleshooting',
     q: 'The first-run download is stuck or keeps restarting.',
     a: [
-      'Stay on Wi-Fi. Check that the phone has more than 2GB free. Leave the app open until the fetch finishes — switching away can pause some downloads. Classroom sharing from a nearby phone is coming soon; until then the fetch is from Hiraia’s servers.',
+      `Stay on Wi-Fi. Check that the phone has more than ${DOWNLOAD.modelDownloadGB}GB free. Leave the app open until the fetch finishes — switching away can pause some downloads. Classroom sharing of the model from a nearby phone is coming soon; until then the fetch is from Hiraia’s servers.`,
       'The transfer is built to resume. Opening the app again should continue rather than start at zero. If it loops from the beginning, clear the incomplete files by force-stopping Hiraia and retrying on a more stable network.',
     ],
   },
@@ -323,7 +426,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'troubleshooting',
     q: 'The app is slow, hot, or closes by itself.',
     a: [
-      'The on-device model needs RAM. Close other apps, especially browsers and video. Phones with less than 6GB of memory will struggle; that is a hardware limit, not a setting you can flip. Lowering screen brightness and keeping the phone out of direct sun helps on long sessions.',
+      `The on-device model needs RAM. Close other apps, especially browsers and video. Phones with less than ${DOWNLOAD.minRamGB}GB of memory will struggle with generated cards; that is a hardware limit, not a setting you can flip. The built-in library still works. Lowering screen brightness and keeping the phone out of direct sun helps on long sessions.`,
       'If the app is killed as soon as a card is asked, the model likely never finished downloading. Confirm the first-run fetch completed.',
     ],
   },
@@ -374,6 +477,15 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     q: 'None of this matches what I am seeing.',
     a: [
       'Write down the phone model, Android version, and whether the first-run download finished. The project is early alpha; rough edges are expected. Luis Buenaventura, who built Hiraia, is at x.com/helloluis. Use the feedback form on the homepage. An on-page assistant for this FAQ is next.',
+    ],
+  },
+  {
+    id: 'trouble-tala',
+    section: 'troubleshooting',
+    q: 'Tala is not finding student phones.',
+    a: [
+      'Keep Tala on Collect activity or the class QR screen until it says Nearby ready. Keep Hiraia open on each student phone. Both phones unlocked, in the same room, Bluetooth and Wi-Fi radios on — they do not need internet. Use two devices; one phone running both apps will not transfer.',
+      'Allow Nearby, Bluetooth, location, and camera when Android asks. Play services must be installed for Tala. If a camera cannot read the QR, use the 12-character code while Tala is still collecting.',
     ],
   },
 ];

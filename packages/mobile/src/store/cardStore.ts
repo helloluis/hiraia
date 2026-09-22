@@ -1124,12 +1124,12 @@ export const useCardStore = create<CardState>()((set, get) => ({
  * roughly half of pages, and the label the reader had already started reading on the sheet
  * beneath would swap the instant the swipe completed.
  *
- * Only meaningful on a single-path page: a fork shows two blank coloured sheets, never a
- * printed preview, so there is nothing to agree with.
+ * The vertical neighbour follows the first choice at a fork. Interject continuations
+ * pass their saved destination explicitly, preserving the choice that was interrupted.
  */
-export function previewChoices(language: Language): CardChoice[] {
+export function previewChoices(language: Language, target?: CardChoice): CardChoice[] {
   const s = useCardStore.getState();
-  const choice = s.choices.length === 1 ? s.choices[0] : undefined;
+  const choice = target ?? s.choices[0];
   const next = choice ? getCard(choice.factId) : undefined;
   if (!choice || !next) return [];
   const seen = new Set(s.seen);
@@ -1164,6 +1164,9 @@ export function previewChoices(language: Language): CardChoice[] {
   // it in advance() could legitimately name a different card than the sheet beneath showed.
   previewCache = {
     pageKey: s.pageKey,
+    seen: s.seen,
+    reinforcementQueue: s.reinforcementQueue,
+    remediationQueue: s.remediationQueue,
     factId: next.id,
     language,
     magnet: s.magnet,
@@ -1172,6 +1175,58 @@ export function previewChoices(language: Language): CardChoice[] {
   };
   void warmPage(choices.map((c) => c.factId));
   return choices;
+}
+
+/** Read-only neighbour selection: no seen counts, telemetry, review opening or generation. */
+export interface FeedPreview {
+  key: string;
+  fact: CardFact | null;
+  choices: CardChoice[];
+  titleCard: TitleCardContent | null;
+  lessonRecap: LessonRecap | null;
+  reward: RewardContent | null;
+  question: CardQuestion | null;
+  response: FeedResponse | null;
+  order?: number[];
+  selected?: number | null;
+  pagesRead: number;
+}
+export function previewNextPage(language: Language): FeedPreview | null {
+  const s = useCardStore.getState();
+  if (!s.hydrated || !s.current || s.asking) return null;
+  const base: FeedPreview = { key: `${s.pageKey + 1}:fact`, fact: null, choices: [],
+    titleCard: null, lessonRecap: null, reward: null, question: null, response: null,
+    pagesRead: s.pagesRead };
+  if (s.titleCard) return { ...base, fact: s.current, choices: s.choices };
+  // Generated follow-ups are explicitly requested by Continue. Prefetch must never
+  // trigger an LLM request, choose a random fallback, or claim its destination is known.
+  if (s.response) return null;
+  if (s.question && !s.questionAnswered) return null;
+  const resuming = !!(s.lessonRecap || s.reward || s.question);
+  const choice = resuming ? s.pending : s.choices[0];
+  if (!choice) return null;
+  if (!resuming) {
+    const review = useReviewStore.getState().data;
+    if (review && reviewDue(review)) {
+      const series = review.queue[0];
+      const attempt = series?.items[series.position];
+      return attempt ? { ...base, key: `preview-review:${attempt.id}`, question: attempt.question,
+        order: attempt.order, selected: attempt.selected } : null;
+    }
+  }
+  const recap = !s.lessonRecap && boundaryRecap(s);
+  if (recap) return { ...base, key: `${s.pageKey + 1}:recap`, lessonRecap: recap };
+  if (!resuming && s.untilReward <= 1 && recentTopics(s.viewLog).length >= REWARD_MIN_TOPICS) {
+    const topics = recapTopics(s.viewLog, language);
+    const minutes = Math.max(1, Math.round((Date.now() - (s.viewLog[0]?.ts ?? Date.now())) / 60000));
+    return { ...base, key: `${s.pageKey + 1}:reward`,
+      reward: s.rewardPrefetch ?? templateReward(topics, s.pagesRead, minutes, language) };
+  }
+  const fact = getCard(choice.factId);
+  if (!fact) return null;
+  const titleCard = introduce(fact, s.curriculum, s.introducedTopic).titleCard;
+  return { ...base, key: `${s.pageKey + 1}:${titleCard ? 'title' : 'fact'}`, fact,
+    titleCard, choices: previewChoices(language, choice), pagesRead: s.pagesRead + 1 };
 }
 
 /**
@@ -1185,6 +1240,9 @@ export function previewChoices(language: Language): CardChoice[] {
  */
 let previewCache: {
   pageKey: number;
+  seen: Set<string>;
+  reinforcementQueue: string[];
+  remediationQueue: string[];
   factId: string;
   language: Language;
   magnet: ActiveMagnet | null;
@@ -1367,6 +1425,9 @@ function advance(choice: CardChoice, set: Set_, get: Get_, recapAcknowledged = f
   const naturalChoices =
     cached &&
     cached.pageKey === s.pageKey &&
+    cached.seen === s.seen &&
+    cached.reinforcementQueue === s.reinforcementQueue &&
+    cached.remediationQueue === s.remediationQueue &&
     cached.factId === nextFact.id &&
     cached.language === lang &&
     cached.magnet === s.magnet &&

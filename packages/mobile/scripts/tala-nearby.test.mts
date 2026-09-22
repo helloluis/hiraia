@@ -6,15 +6,13 @@ import { parseTeacherQr, QrError, sameBinding } from '../src/tala/qr.ts';
 import { TeacherQueue, type Binding, type TeacherStore } from '../src/tala/queue.ts';
 import type { TeacherEvent } from '../src/tala/protocol.ts';
 
-function rsaQr(classId = randomUUID()) {
+function rsaQr(classId = randomUUID(), class_name?: unknown) {
   const { publicKey } = generateKeyPairSync('rsa', { modulusLength: 2048 });
   const der = publicKey.export({ type: 'spki', format: 'der' }) as Buffer;
   const public_key = der.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-  return {
-    text: JSON.stringify({ v: 1, kind: 'hiraia-tala', class_id: classId, public_key }),
-    classId,
-    public_key,
-  };
+  const payload: Record<string, unknown> = { v: 1, kind: 'hiraia-tala', class_id: classId, public_key };
+  if (class_name !== undefined) payload.class_name = class_name;
+  return { text: JSON.stringify(payload), classId, public_key };
 }
 
 function memoryStore(): TeacherStore & { events: TeacherEvent[] } {
@@ -277,4 +275,32 @@ test('typed class code normalizes and rejects ambiguous glyphs', async () => {
   assert.equal(b64urlDecode(b64urlEncode(proof)).length, 32);
   assert.equal(proof.length, 32);
   assert.equal(key.length, 32);
+});
+
+// class_name is advisory and was added after the first teacher builds shipped, so the
+// student must accept a QR with it, without it, and with rubbish in it.
+test('class QR without class_name still parses (older teacher build)', () => {
+  const qr = rsaQr();
+  const parsed = parseTeacherQr(qr.text);
+  assert.equal(parsed.class_id, qr.classId);
+  assert.equal(parsed.class_name, undefined);
+});
+
+test('class_name is trimmed, collapsed and capped at 48', () => {
+  assert.equal(parseTeacherQr(rsaQr(undefined, '  Grade 5 -   Mabini  ').text).class_name,
+    'Grade 5 - Mabini');
+  assert.equal(parseTeacherQr(rsaQr(undefined, 'x'.repeat(200)).text).class_name!.length, 48);
+});
+
+test('a hostile or non-string class_name never rejects a valid QR', () => {
+  const ctl = `A${String.fromCharCode(0)}${String.fromCharCode(31)}B`;
+  assert.equal(parseTeacherQr(rsaQr(undefined, ctl).text).class_name, 'A B');
+  assert.equal(parseTeacherQr(rsaQr(undefined, 42).text).class_name, undefined);
+  assert.equal(parseTeacherQr(rsaQr(undefined, '   ').text).class_name, undefined);
+});
+
+test('renaming a class does not make it a different binding', () => {
+  const qr = rsaQr(undefined, 'Grade 5 - Mabini');
+  const parsed = parseTeacherQr(qr.text);
+  assert.equal(sameBinding(parsed, { class_id: qr.classId, public_key: qr.public_key }), true);
 });

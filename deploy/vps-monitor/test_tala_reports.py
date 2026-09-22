@@ -122,6 +122,69 @@ class TalaReportTests(unittest.TestCase):
         self.assertEqual(video[0], "video/mp4")
         self.assertLessEqual(len(video[2]), tala_reports.MAX_MEDIA)
 
+    def test_notify_email_includes_details_and_fitting_attachment(self):
+        self.notification.stop()
+        report_id = str(uuid.uuid4())
+        media_id = str(uuid.uuid4())
+        png = b"fake-jpeg-bytes"
+        folder = os.path.join(tala_reports.MEDIA_DIR, report_id)
+        os.makedirs(folder, exist_ok=True)
+        path = os.path.join(folder, "attachment-1.jpg")
+        with open(path, "wb") as file:
+            file.write(png)
+        now = int(time.time() * 1000)
+        with tala_reports._db() as conn:
+            conn.execute("""INSERT INTO reports
+                (id,payload_sha256,device_id,category,details,created_at,received_at,
+                 class_name,school_name,teacher_name,media_count,source_ip)
+                VALUES(?,?,?,?,?,?,?,?,?,?,?,?)""",
+                (report_id, "x", str(uuid.uuid4()), "App problem", "The lesson froze",
+                 now, now, "Perseverance", "Calapacuan", "Jannie", 1, "192.0.2.10"))
+            conn.execute("INSERT INTO media VALUES(?,?,?,?,?,?)",
+                         (media_id, report_id, "attachment-1.jpg", "image/jpeg", len(png), path))
+        captured = {}
+
+        class Fake:
+            status = 200
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return False
+            def read(self):
+                return b'{"id":"re_test"}'
+
+        def fake_urlopen(request, timeout=20):
+            captured["payload"] = json.loads(request.data)
+            return Fake()
+
+        with patch("urllib.request.urlopen", fake_urlopen):
+            self.assertTrue(tala_reports.notify(report_id, {
+                "resend_api_key": "re_test", "notify_email": "ops@example.com"}))
+        payload = captured["payload"]
+        self.assertIn("The lesson froze", payload["text"])
+        self.assertIn("Calapacuan", payload["text"])
+        self.assertIn("Perseverance", payload["text"])
+        self.assertIn("Jannie", payload["text"])
+        self.assertIn("The lesson froze", payload["html"])
+        self.assertEqual(payload["to"], ["ops@example.com"])
+        self.assertEqual(len(payload["attachments"]), 1)
+        self.assertTrue(payload["attachments"][0]["filename"].endswith(".jpg"))
+        self.assertIn("content", payload["attachments"][0])
+
+    def test_oversized_attachment_is_named_not_attached(self):
+        files = [{"name": "tiny.jpg", "mime": "image/jpeg", "data": b"abc"},
+                 {"name": "huge.mp4", "mime": "video/mp4", "data": b"x" * 5000}]
+        attached, skipped = tala_reports.pick_email_attachments(files, budget=100)
+        self.assertEqual([item["filename"] for item in attached], ["tiny.jpg"])
+        self.assertTrue(any("huge.mp4" in item for item in skipped))
+        row = {"id": str(uuid.uuid4()), "category": "App problem", "teacher_name": "Jannie",
+               "school_name": "Calapacuan", "class_name": "Pilot", "details": "image is nonsense",
+               "received_at": 1_700_000_000_000, "device_id": "dev", "media_count": 2}
+        payload = tala_reports.email_payload(row, files, budget=100)
+        self.assertIn("image is nonsense", payload["text"])
+        self.assertIn("huge.mp4", payload["text"])
+        self.assertEqual(payload["attachments"][0]["filename"], "tiny.jpg")
+
     @unittest.skipUnless(shutil.which("ffmpeg") and shutil.which("ffprobe"), "ffmpeg is unavailable")
     def test_mp4_header_without_valid_stream_is_rejected(self):
         attachment = {"id": str(uuid.uuid4()), "mime": "video/mp4",

@@ -65,18 +65,27 @@ export function TalaSettings({ language }: { language: Language }) {
     else void requestPermission().then((p) => p.granted && go());
   };
 
+  // The section names itself: JOIN A CLASS before enrolment, the class's own name after.
+  // Every class now HAS a name — the teacher app generates a colour-animal one when none is
+  // typed — so the `yourClass` fallback only fires for a teacher build that predates the
+  // field. It stays as a guard: better a generic heading than the opaque class_id.
+  const heading = ui.bound ? ui.className || t.yourClass : t.sectionJoin;
+
   return (
     <View style={styles.section}>
+      <Text style={styles.sectionHeading} accessibilityRole="header" numberOfLines={2}>
+        {heading}
+      </Text>
       {!ui.bound ? (
         <>
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel={t.scan}
+            accessibilityLabel={t.scanQr}
             style={styles.primaryAction}
             onPress={openScanner}
           >
             <CameraIcon />
-            <Text style={styles.primaryActionText}>{t.scan}</Text>
+            <Text style={styles.primaryActionText}>{t.scanQr}</Text>
           </Pressable>
           <Pressable
             accessibilityRole="button"
@@ -86,7 +95,7 @@ export function TalaSettings({ language }: { language: Language }) {
               setCodeOpen(true);
             }}
           >
-            <Text style={styles.secondaryText}>{t.enterCode}</Text>
+            <Text style={styles.secondaryText}>{t.enterTheCode}</Text>
           </Pressable>
         </>
       ) : (
@@ -110,12 +119,11 @@ export function TalaSettings({ language }: { language: Language }) {
               ])
             }
           >
-            <Text style={styles.secondaryText}>{t.leave}</Text>
+            <Text style={styles.secondaryText}>{t.leaveClass}</Text>
           </Pressable>
         </>
       )}
-      <Text style={styles.title}>{t.title}</Text>
-      <Text style={styles.body}>{t.disclose}</Text>
+      <Text style={styles.body}>{ui.bound ? t.leaveBody : t.joinBody}</Text>
       <Text style={styles.status}>{status}</Text>
       {needsConnectivityAction ? (
         <Pressable
@@ -237,7 +245,23 @@ function SyncIcon() {
 }
 
 const styles = StyleSheet.create({
-  section: { marginVertical: 16, gap: 8 },
+  // A rule along the top separates this from Wika and Baitang above it: classroom enrolment
+  // shares data off the device, so it should not read as one more preference in the same list.
+  section: {
+    marginTop: 20,
+    marginBottom: 16,
+    paddingTop: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#cfc7b6',
+    gap: 8,
+  },
+  sectionHeading: {
+    color: '#20342c',
+    fontWeight: '700',
+    fontSize: 13,
+    letterSpacing: 1.1,
+    textTransform: 'uppercase',
+  },
   title: { color: '#20342c', fontWeight: '600', fontSize: 16 },
   body: { color: '#58635c', fontSize: 13, lineHeight: 18 },
   status: { color: '#20342c', fontSize: 14 },

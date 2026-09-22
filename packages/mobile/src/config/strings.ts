@@ -276,7 +276,7 @@ const UI_STRINGS: Record<Language, UIStrings> = {
         'Gumagana pa rin…',
         'Aabutin ito nang ilang minuto.',
         'Salamat sa paghihintay!',
-        'Hindi mo kailangang maghintay — i-swipe ang mga card!',
+        'Hindi mo kailangang maghintay — mag-scroll sa mga card!',
       ],
         // Non-blocking reassurance (Luis, 2026-09-02): the deck works during the whole
         // download, and the child should be TOLD so — the point of the background design
@@ -384,7 +384,7 @@ const UI_STRINGS: Record<Language, UIStrings> = {
         'Still working…',
         'This will take a few minutes.',
         'Thanks for waiting!',
-        'No need to wait — swipe through the cards!',
+        'No need to wait — scroll through the cards!',
       ],
         downloadEvergreen: [
         'You can read cards while we download!',
@@ -514,7 +514,7 @@ const UI_STRINGS: Record<Language, UIStrings> = {
         'Moabot kini og pipila ka minuto.',
         'Salamat sa paghulat!',
         // FLAGGED for native review with the other ceb loading lines.
-        'Dili na kinahanglan maghulat — i-swipe ang mga card!',
+        'Dili na kinahanglan maghulat — mag-scroll sa mga card!',
       ],
         downloadEvergreen: [
         'Pwede ka magbasa og cards samtang nag-download!',

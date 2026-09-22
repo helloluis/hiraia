@@ -5,7 +5,7 @@ import { FAQ_ITEMS } from '@/data/faq';
 export const metadata: Metadata = {
   title: 'Questions — Hiraia',
   description:
-    'How to use Hiraia, which Android phones it runs on, what MATATAG science is in the tutor, and how to fix a stuck download.',
+    'How to use Hiraia, how teachers use Tala, which Android phones they run on, what MATATAG science is in the tutor, and how to fix a stuck download.',
 };
 
 export default function FaqPage() {

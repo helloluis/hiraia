@@ -57,6 +57,13 @@ export function DemoSlide({
         <View style={styles.disc}>
           <Image source={CAT} style={styles.discImage} resizeMode="contain" />
         </View>
+        <Text style={styles.instructions}>
+          {language === 'english'
+            ? 'Scroll down for the next card. Scroll up to revisit earlier cards.'
+            : language === 'tagalog'
+              ? 'Mag-scroll pababa para sa susunod na card. Mag-scroll pataas para balikan ang mga naunang card.'
+              : 'Pag-scroll paubos para sa sunod nga card. Pag-scroll pataas aron balikan ang naunang mga card.'}
+        </Text>
       </View>
 
       {/* The last — and only — action of onboarding. GOLD, because the deck reserves gold
@@ -87,6 +94,15 @@ export function DemoSlide({
 }
 
 const styles = StyleSheet.create({
+  instructions: {
+    fontFamily: fonts.cardBodyBold,
+    fontSize: 18,
+    lineHeight: 25,
+    color: card.ink,
+    textAlign: 'center',
+    marginTop: 22,
+    paddingHorizontal: 12,
+  },
   hero: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   disc: {
     width: 96,

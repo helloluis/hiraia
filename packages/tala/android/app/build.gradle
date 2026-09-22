@@ -11,9 +11,22 @@ android {
         applicationId 'com.hiraia.tala'
         minSdk 29
         targetSdk 35
-        versionCode 17
-        versionName '0.4.2'
+        versionCode 18
+        versionName '0.4.3'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+
+    buildTypes {
+        // The pilot's Tala releases are signed with the Android DEBUG certificate
+        // (SHA-256 50dcc69a…1703ae). That is deliberate and must not change: it is the
+        // established pilot key, and re-keying would stop every existing install from
+        // upgrading. `debuggable false` is what makes this a release variant rather than
+        // a debug build wearing a release name.
+        release {
+            signingConfig signingConfigs.debug
+            debuggable false
+            minifyEnabled false
+        }
     }
 
     compileOptions {

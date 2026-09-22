@@ -35,8 +35,10 @@ acting on them and watch intake volumes. Admin read access remains session-prote
 
 Set `resend_api_key` in `/opt/hiraia-monitor/config.json` and keep
 `notify_email` set to the operator's inbox. Notifications use the Resend REST API
-and contain a link and metadata only; report details and media stay in the
-password-protected page. Failed notifications are visible there and can be retried.
+and include the report details in the email body. Attachments that fit under the
+email size budget (8 MB raw, under Resend's 40 MB encoded cap) are attached;
+anything larger is named in the email and remains on the password-protected page.
+Failed notifications are visible there and can be retried.
 Reports and media can be permanently deleted from the page after triage; avoid
 uploading recognizable student faces or names unless needed for diagnosis.
 The `tala_notify_from` config value defaults to the already-used

@@ -6,7 +6,7 @@ import type { CardChoice } from '../data/cards';
 import { card, fonts } from '../theme';
 import { SlideCard } from '../components/onboarding/SlideCard';
 import { QuestionPage } from '../components/cards/QuestionPage';
-import { cardFrame, CardPrint, IndexBand } from '../components/cards/CardFrame';
+import { Arrow, cardFrame, CardPrint, IndexBand } from '../components/cards/CardFrame';
 import {
   useReviewStore,
   shownReview,
@@ -73,9 +73,10 @@ export function ReviewSeries({
     if (s.open && a) shownReview();
   }, [s.open, a?.id]);
   if (!s.open && !s.busy && !s.error) return null;
-  const button = (label: string, onPress: () => void) => (
+  const button = (label: string, onPress: () => void, next = false) => (
     <Pressable accessibilityRole="button" disabled={s.busy} onPress={onPress} style={styles.button}>
       <Text style={styles.buttonText}>{label}</Text>
+      {next && <Arrow color={card.ink} direction="down" />}
     </Pressable>
   );
   return (
@@ -100,7 +101,9 @@ export function ReviewSeries({
               // series the counter stays "Quiz n/total" in every language: the words translate badly and
               // the numerals carry the meaning on their own.
               reviewProgress={
-                series.items.length > 1 ? `Quiz ${series.position + 1}/${series.items.length}` : undefined
+                series.items.length > 1
+                  ? `Quiz ${series.position + 1}/${series.items.length}`
+                  : undefined
               }
               displayOrder={a.order}
               selectedOption={a.selected}
@@ -131,7 +134,7 @@ export function ReviewSeries({
                   </Text>
                 );
               })}
-              {button(t.next, () => void leaveReview(false, onExit))}
+              {button(t.next, () => void leaveReview(false, onExit), true)}
             </View>
           </View>
         ) : (
@@ -149,6 +152,8 @@ const styles = StyleSheet.create({
   score: { fontFamily: fonts.slab, fontSize: 42, color: card.ink },
   message: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, gap: 18 },
   button: {
+    flexDirection: 'row',
+    gap: 10,
     borderWidth: 3,
     borderColor: card.ink,
     borderRadius: 11,

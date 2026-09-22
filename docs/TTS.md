@@ -6,6 +6,28 @@ is the default — so this is closer to core accessibility than to a nice-to-hav
 **Shipping:** a voice we trained ourselves, bundled in the APK and run on-device.
 `src/voice/` + `src/speech.ts`.
 
+## Punctuation-guided pauses (September 2026)
+
+The shipped vocabularies do not encode commas, full stops or em dashes. The speech
+front end therefore splits at these marks before tokenization and appends explicit
+PCM silence to each phrase: comma 180 ms, em/en dash or colon/semicolon 280 ms,
+sentence ending (`.`, `?`, `!`, `…`) 420 ms. Closing quotes stay with the preceding
+phrase. Only pauses between phrases are added, not after the last phrase of a card.
+These are additional pauses; existing model silence and synthesis delays can make
+the total gap longer. Phone listening/timing checks are still needed to tune pacing.
+
+Number/unit expansion happens first so decimal points and thousands separators do
+not create false pauses. Prose commas after numbers are preserved. Compound-word
+hyphens stay intact; common abbreviations and initials are not sentence boundaries.
+The existing 90-character first-chunk / 180-character later-chunk limits remain,
+and length-only splits add no deliberate silence. Eager serial synthesis continues
+preparing the next phrase during playback. Pauses live inside the WAV clips, so
+the existing audio cancellation also stops them without extra timers.
+
+This changes phrasing for the existing English and Filipino voices; it does not
+retrain the models or add reliable question/emphasis intonation. The voice tests
+check punctuation boundaries, measurement normalization, and actual silent PCM.
+
 ## Why not the OS engine
 
 The first version of this used Android's `TextToSpeech` through `expo-speech`, on the

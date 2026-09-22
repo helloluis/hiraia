@@ -13,18 +13,23 @@
  * come only from `card` in theme.ts.
  *
  * DIVISION OF LABOUR: CardFeedScreen owns the card SURFACE (stock, the 3px ink edge, the
- * rounded corners, the ledge under it, the board) because the surface has to survive the
- * page peel and the outgoing snapshot needs it too. The page components print ON that
+ * rounded corners and the board) for each row in the vertical list. Page components print ON that
  * surface, inside `cardFrame.content`.
  *
  * Every "shadow" here is a ledge — a darker parent View with a few px of bottom padding —
  * because RN on Android ignores shadowOffset/shadowRadius and honours only `elevation`,
  * which cannot be offset downward.
  */
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { Animated, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { runOnJS } from 'react-native-reanimated';
+import { useEffect, useRef, type ReactNode } from 'react';
+import {
+  Animated,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  type StyleProp,
+  type ViewStyle,
+} from 'react-native';
 
 import Svg, { Path } from 'react-native-svg';
 
@@ -177,48 +182,26 @@ export function Divider({ style }: { style?: StyleProp<ViewStyle> }) {
  */
 export function Arrow({
   color = card.gold,
-  direction = 'right',
+  direction = 'down',
 }: {
   color?: string;
-  /**
-   * Which way it points. A left arrow is NOT this one rotated 180deg by the caller:
-   * `arrowGlyph` carries a `marginLeft: 2` optical nudge (a triangle's mass sits left of its
-   * bounding box), and rotating the wrapper carries that nudge round with it, so the
-   * correction ends up pointing the wrong way and the glyph lands 4dp off-centre. The mirror
-   * is printed here instead — still one arrow implementation, now with two directions.
-   */
-  direction?: 'left' | 'right';
+  direction?: 'left' | 'right' | 'up' | 'down';
 }) {
-  return direction === 'left' ? (
-    <View style={[cardFrame.arrowGlyph, cardFrame.arrowGlyphLeft, { borderRightColor: color }]} />
-  ) : (
-    <View style={[cardFrame.arrowGlyph, { borderLeftColor: color }]} />
+  // Vector geometry avoids Android's font/emoji fallback for directional symbols.
+  const paths = {
+    down: 'M2 4H18L10 16Z',
+    up: 'M2 16H18L10 4Z',
+    left: 'M16 2V18L4 10Z',
+    right: 'M4 2V18L16 10Z',
+  };
+  return (
+    <Svg width={20} height={20} viewBox="0 0 20 20" accessible={false}>
+      <Path d={paths[direction]} fill={color} />
+    </Svg>
   );
 }
 
-/**
- * The single-path continuation: one fat mustard ticket on an ink ledge. Gold is reserved
- * for exactly this across the whole deck — it is what "just keep going" looks like, which
- * is why a fork's two picks are never gold.
- */
-/**
- * Travel that turns a tap into a drag — the same slop the feed's pan activates on, so there
- * is no band where the tap has already failed but the pan has not yet started.
- */
-const DRAG_SLOP = 10;
-
-/**
- * A tap target that yields to the feed's swipe.
- *
- * Every button on a card sits inside the pan that turns the page, and the tickets sit along
- * the bottom edge — exactly where an upward swipe naturally begins. An RN Pressable there
- * puts the responder system in contention with the RNGH pan on an ancestor: whichever claims
- * the touch first keeps it, so a swipe started on a ticket could be swallowed. As an RNGH
- * Tap both live in one gesture tree, and a Tap fails the instant the finger travels past
- * DRAG_SLOP, so a drag always reaches the pan while a real tap still fires.
- *
- * `pressed` is tracked here because Pressable's render-prop is what we gave up to get this.
- */
+/** Native buttons yield to their enclosing vertical ScrollView when the finger moves. */
 export function TapTarget({
   onPress,
   hitSlop,
@@ -233,32 +216,16 @@ export function TapTarget({
   children: ReactNode;
   accessibilityLabel?: string;
 }) {
-  const [pressed, setPressed] = useState(false);
-  const tap = useMemo(
-    () =>
-      Gesture.Tap()
-        .maxDistance(DRAG_SLOP)
-        .hitSlop(
-          hitSlop ? { top: hitSlop, bottom: hitSlop, left: hitSlop, right: hitSlop } : undefined
-        )
-        .onBegin(() => runOnJS(setPressed)(true))
-        .onEnd((_e, ok) => {
-          if (ok) runOnJS(onPress)();
-        })
-        .onFinalize(() => runOnJS(setPressed)(false)),
-    [onPress, hitSlop]
-  );
   return (
-    <GestureDetector gesture={tap}>
-      <View
-        style={style(pressed)}
-        accessible
-        accessibilityRole="button"
-        accessibilityLabel={accessibilityLabel}
-      >
-        {children}
-      </View>
-    </GestureDetector>
+    <Pressable
+      onPress={onPress}
+      hitSlop={hitSlop}
+      style={({ pressed }) => style(pressed)}
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
+    >
+      {children}
+    </Pressable>
   );
 }
 
@@ -269,6 +236,7 @@ export function Ticket({
   hitSlop,
   style,
   trailing,
+  arrowDirection = 'down',
 }: {
   label: string;
   eyebrow?: string;
@@ -281,6 +249,7 @@ export function Ticket({
    * single-path continuation and nothing else creeps onto the gold.
    */
   trailing?: ReactNode;
+  arrowDirection?: 'up' | 'down';
 }) {
   const ticket = (
     <View style={[cardFrame.ticketLedge, trailing ? cardFrame.grow : style]}>
@@ -301,7 +270,7 @@ export function Ticket({
           </Text>
         </View>
         <View style={cardFrame.arrow}>
-          <Arrow />
+          <Arrow direction={arrowDirection} />
         </View>
       </TapTarget>
     </View>
@@ -323,8 +292,7 @@ export function Ticket({
  * The disc is cream on all four band tones, so one ink glyph reads on every one.
  * Speaking inverts the disc (ink fill, cream stop square), which needs no extra colour.
  *
- * hitSlop is generous because the band sits at the top of the card where an upward
- * swipe often begins, and TapTarget yields to that pan rather than swallowing it.
+ * hitSlop is generous for small hands. Native buttons yield to the scrolling list.
  */
 /** One arc of the speaker's sound waves, alone in its own Svg so opacity can animate. */
 function Wave({ d, color, size }: { d: string; color: string; size: number }) {
@@ -359,7 +327,7 @@ export function BandSpeaker({
         Animated.sequence([
           Animated.timing(pulse, { toValue: 0.35, duration: 450, useNativeDriver: true }),
           Animated.timing(pulse, { toValue: 1, duration: 450, useNativeDriver: true }),
-        ]),
+        ])
       );
       loop.start();
       return () => {
@@ -375,7 +343,7 @@ export function BandSpeaker({
             Animated.timing(v, { toValue: 0.15, duration: 280, useNativeDriver: true }),
             Animated.timing(v, { toValue: 1, duration: 280, useNativeDriver: true }),
             Animated.delay(240 - delay),
-          ]),
+          ])
         );
       const a = ripple(near, 0);
       const b = ripple(far, 160);
@@ -642,27 +610,6 @@ export const cardFrame = StyleSheet.create({
     backgroundColor: card.ink,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  arrowGlyph: {
-    // a right-pointing triangle from borders: a zero-size box with transparent top and
-    // bottom borders and one coloured left border
-    width: 0,
-    height: 0,
-    borderStyle: 'solid',
-    borderTopWidth: 6,
-    borderBottomWidth: 6,
-    borderLeftWidth: 10,
-    borderTopColor: 'transparent',
-    borderBottomColor: 'transparent',
-    marginLeft: 2, // optical centring: a triangle's mass sits left of its bounding box
-  },
-  /** The same triangle mirrored: the coloured border moves to the right edge, and the
-      optical nudge moves with it (a left-pointing triangle's mass sits RIGHT of its box). */
-  arrowGlyphLeft: {
-    borderLeftWidth: 0,
-    borderRightWidth: 10,
-    marginLeft: 0,
-    marginRight: 2,
   },
 
   // ---- the answer/choice row ledge (mockup `.ledge-a` / `.ledge-o`) ----

@@ -143,7 +143,9 @@ export function normalizeForSpeech(text: string, language: Language): string {
 
   // Numbers: thousands separators dropped, a decimal read digit by digit after the point
   // ("3.5" is "three point five", never "three point thirty-five").
-  s = s.replace(/-?\d[\d,]*(?:\.\d+)?/g, (match) => {
+  // Only a complete three-digit group is a thousands separator. A prose comma
+  // after a number ("6, pero...") must survive to become a speech pause.
+  s = s.replace(/-?\d+(?:,\d{3})*(?:\.\d+)?/g, (match) => {
     const negative = match.startsWith('-');
     const [whole, fraction] = match.replace(/^-/, '').replace(/,/g, '').split('.');
     let out = numberToWords(Number(whole));

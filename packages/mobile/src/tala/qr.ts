@@ -1,4 +1,4 @@
-import { CLASS_UUID, QR_KIND, type TeacherQr } from './protocol';
+import { CLASS_UUID, QR_KIND, cleanClassName, type TeacherQr } from './protocol';
 
 const MAX_QR = 4096;
 const RSA_OID = new Uint8Array([0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x01, 0x01]);
@@ -54,11 +54,14 @@ export function parseTeacherQr(text: string): TeacherQr {
   if (typeof o.public_key !== 'string') throw new QrError('key encoding');
   const der = b64urlDecode(o.public_key);
   assertRsa2048Spki(der);
+  // Display-only, so a bad or absent name must never reject an otherwise valid class QR.
+  const class_name = cleanClassName(o.class_name);
   return {
     v: 1,
     kind: QR_KIND,
     class_id: o.class_id,
     public_key: o.public_key,
+    ...(class_name ? { class_name } : {}),
   };
 }
 

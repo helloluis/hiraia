@@ -8,7 +8,7 @@
  *
  * The card SURFACE is not ours: CardFeedScreen owns the board, the deck, the fanned cards
  * behind, the ledge under the card and the card's own stock/ink edge/rounded corners
- * (it has to — the surface survives the page peel, and the outgoing snapshot needs it).
+ * (shared by every row of the vertical list).
  * This component fills that surface's content box and prints on it.
  *
  * Behaviour is unchanged from the notebook version this replaces: the factoid types itself
@@ -26,6 +26,7 @@ import {
   Dimensions,
   type LayoutChangeEvent,
   Image,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -33,9 +34,6 @@ import {
   type StyleProp,
   type TextStyle,
 } from 'react-native';
-
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { runOnJS } from 'react-native-reanimated';
 
 import type { Language } from '@hiraia/shared';
 
@@ -64,7 +62,6 @@ import { useReduceMotion } from './useReduceMotion';
  * Travel that turns a tap into a drag. Matches the feed pan's own activation slop, so there
  * is no band where the tap has already failed but the pan has not yet started.
  */
-const DRAG_SLOP = 10;
 
 const CAT = require('../../../assets/hiraia-profile.png');
 
@@ -242,13 +239,11 @@ interface CardPageProps {
   choices: CardChoice[];
   language: Language;
   onChoose: (choice: CardChoice) => void;
-  /** Render fully typed with no animation (the outgoing page during the flip). */
+  /** Render history fully typed, without restarting its reveal. */
   instant?: boolean;
   /**
    * Run the reading guide — the gold marker stroke that sweeps the text line by line once
-   * the typewriter lands. TRUE ONLY FOR THE LIVE CARD; the preview sheet, the outgoing peel
-   * and any snapshot copy pass false. Independent of `instant`: a card the reader already saw
-   * under the sheet is drawn instantly and is still the card they are now reading.
+   * the typewriter lands. Only the visible live card enables this; history stays still.
    */
   guide?: boolean;
 }
@@ -477,7 +472,10 @@ export function CardPage({
           fontSize: Math.max(MIN_SIZE, Math.round(fitted.fontSize * factor * 10) / 10),
           lineHeight: Math.max(MIN_SIZE * 1.3, Math.round(fitted.lineHeight * factor * 10) / 10),
           askSize: Math.max(MIN_SIZE, Math.round(fitted.askSize * factor * 10) / 10),
-          askLineHeight: Math.max(MIN_SIZE * 1.3, Math.round(fitted.askLineHeight * factor * 10) / 10),
+          askLineHeight: Math.max(
+            MIN_SIZE * 1.3,
+            Math.round(fitted.askLineHeight * factor * 10) / 10
+          ),
         };
   // Two choices == this page forks. nextChoices returns a single choice on a normal page.
   const branching = choices.length > 1;
@@ -496,8 +494,7 @@ export function CardPage({
    * page, exactly as before.
    */
   useEffect(() => {
-    // An instantly-drawn page (the preview sheet, the outgoing peel, a card the reader had
-    // already read underneath) shows all of its text — including text that only just got here.
+    // History shows all of its text, including content that only just finished loading.
     if (instant) {
       setShown(text.length);
       return;
@@ -681,32 +678,12 @@ export function CardPage({
     if (!shrinkLogged.current && !instant) {
       shrinkLogged.current = true;
       if (shrink > 0)
-        console.log(`[card] ${fact.id} settled after ${shrink} shrink pass(es) in ${Date.now() - mountedAt.current}ms art=${art ? 'y' : 'n'}`);
+        console.log(
+          `[card] ${fact.id} settled after ${shrink} shrink pass(es) in ${Date.now() - mountedAt.current}ms art=${art ? 'y' : 'n'}`
+        );
     }
     if (over !== overflowing) setOverflowing(over);
   };
-
-  /**
-   * Tap-to-skip over the WHOLE card, as an RNGH gesture rather than a Pressable.
-   *
-   * It used to be `<Pressable style={cardFrame.content}>`, which put RN's responder system
-   * across the entire card for the length of every typewriter reveal — and the feed's swipe
-   * is an RNGH pan on an ancestor. Mixing the two is where a drag gets swallowed: whichever
-   * claims the touch first keeps it, so a swipe begun on the card during the reveal could
-   * simply not happen. Expressed as a Tap, RNGH arbitrates both in one tree: a Tap fails the
-   * moment the finger travels, so any real drag falls through to the pan, and a genuine tap
-   * still skips.
-   */
-  const skipTap = useMemo(
-    () =>
-      Gesture.Tap()
-        .maxDistance(DRAG_SLOP)
-        .enabled(!done)
-        .onEnd((_e, ok) => {
-          if (ok) runOnJS(skip)();
-        }),
-    [done, skip]
-  );
 
   /**
    * The card's name, in the two lengths the page needs.
@@ -719,78 +696,68 @@ export function CardPage({
   const spoken = bandLabel(title, fact.topic, Number.MAX_SAFE_INTEGER);
 
   return (
-    <GestureDetector gesture={skipTap}>
-      <View style={cardFrame.content}>
-        {/* keyline + punched binder holes — the shared die-cut, graphite on a fork so the
+    <Pressable onPress={done ? undefined : skip} accessible={false} style={cardFrame.content}>
+      {/* keyline + punched binder holes — the shared die-cut, graphite on a fork so the
           card's own furniture favours neither branch */}
-        <CardPrint keyline={branching ? 'graphite' : 'sage'} />
+      <CardPrint keyline={branching ? 'graphite' : 'sage'} />
 
-        {/* Index band: the card's title in tracked caps, and the cat stamp.
+      {/* Index band: the card's title in tracked caps, and the cat stamp.
           The label is the authored title when the card has one, and otherwise its `topic` made
           presentable. `topic` is a retrieval key, and 42% of the deck has no title yet —
           printing the key raw put a lower-case English fragment in the band, uppercased by the
           band's own styling and then cut mid-word by the tail ellipsis. See topicLabel:
           title-cased, and cut on a word boundary instead. */}
-        <IndexBand
-          tone={branching ? 'graphite' : 'ink'}
-          label={band}
-          stamp={
-            <CardSpeaker
-              text={text}
-              language={language}
-              variant="band"
-              onAudioStart={() => setSpeechEpoch((e) => e + 1)}
-            />
-          }
-        />
+      <IndexBand
+        tone={branching ? 'graphite' : 'ink'}
+        label={band}
+        stamp={
+          <CardSpeaker
+            text={text}
+            language={language}
+            variant="band"
+            onAudioStart={() => setSpeechEpoch((e) => e + 1)}
+          />
+        }
+      />
 
-        {/*
+      {/*
         The engraving, matted — the deck's one way of printing a picture (CardPlate), shared
         with the generated response card so the two read as cards of the same deck. It fades
         in with the other extras once the typewriter lands, and the zoom is armed only then:
         a tap during the reveal means "finish typing".
       */}
-        {art != null ? (
-          <CardPlate
-            source={art}
-            label={spoken}
-            enabled={done}
-            style={{ opacity: extrasOpacity }}
-          />
-        ) : null}
+      {art != null ? (
+        <CardPlate source={art} label={spoken} enabled={done} style={{ opacity: extrasOpacity }} />
+      ) : null}
 
-        {/* The factoid itself: a printed question/answer pair, or one plain block.
+      {/* The factoid itself: a printed question/answer pair, or one plain block.
           With an illustration above it this is a caption under the art. WITHOUT one it takes
           over the mat entirely and is centred in it, so the card is filled by type rather
           than topped by an empty frame — a different printing of the same card, not a card
           missing its picture. */}
-        {art == null ? (
-          <View style={styles.typePlate}>
-            {/*
-            Scrollable ONLY when the type overran the plate. The feed's pan gesture reads
-            vertical drags as a page turn, so a permanently scrollable view here would eat
-            the swipe (QuestionPage avoids a ScrollView outright for that reason). Gating it
-            on the measurement keeps the gesture intact on every card that fits — which,
-            given the fit, is essentially all of them — and surrenders the vertical drag only
-            on a card that would otherwise be clipped. Even then the reader is not stuck: the
-            feed also advances on a left or right swipe, and those are unaffected.
+      {art == null ? (
+        <View style={styles.typePlate}>
+          {/*
+            Scroll only when the text exceeds its plate. Nested scrolling lets long
+            content be read before continuing down the outer card list.
           */}
-            <ScrollView
-              style={styles.typeInner}
-              contentContainerStyle={styles.typeInnerContent}
-              scrollEnabled={overflowing}
-              showsVerticalScrollIndicator={overflowing}
-              onLayout={onPlateLayout}
-              onContentSizeChange={onContentSize}
-            >
-              {factBlock}
-            </ScrollView>
-          </View>
-        ) : (
-          <View style={styles.body}>{factBlock}</View>
-        )}
+          <ScrollView
+            nestedScrollEnabled
+            style={styles.typeInner}
+            contentContainerStyle={styles.typeInnerContent}
+            scrollEnabled={overflowing}
+            showsVerticalScrollIndicator={overflowing}
+            onLayout={onPlateLayout}
+            onContentSizeChange={onContentSize}
+          >
+            {factBlock}
+          </ScrollView>
+        </View>
+      ) : (
+        <View style={styles.body}>{factBlock}</View>
+      )}
 
-        {/*
+      {/*
         SINGLE-PATH is the normal state: one fat mustard ticket, full width, so turning the
         card stays a rhythm rather than a decision. The second choice only ever appears when
         the thread genuinely forks (the BRANCH_EVERY cadence or a dead end, see
@@ -798,65 +765,64 @@ export function CardPage({
         stepping forward, two colour-coded picks. Keeping that distinct is the point: a fork
         should read as a real moment, not as the default state.
       */}
-        <Animated.View
-          style={[styles.foot, { opacity: extrasOpacity }]}
-          pointerEvents={done ? 'auto' : 'none'}
-        >
-          {branching && choices[0] && choices[1] ? (
-            <>
-              {/* A fork has no ticket, so the speaker stands alone in the same corner. */}
-              <View style={styles.forkHead}>
-                <View style={styles.forkCat}>
-                  <Image source={CAT} style={styles.forkCatImage} resizeMode="contain" />
-                </View>
-                <Text style={styles.forkWord} numberOfLines={1}>
-                  {t.cards.fork}
-                </Text>
-                <View style={styles.forkRule} />
+      <Animated.View
+        style={[styles.foot, { opacity: extrasOpacity }]}
+        pointerEvents={done ? 'auto' : 'none'}
+      >
+        {branching && choices[0] && choices[1] ? (
+          <>
+            {/* A fork has no ticket, so the speaker stands alone in the same corner. */}
+            <View style={styles.forkHead}>
+              <View style={styles.forkCat}>
+                <Image source={CAT} style={styles.forkCatImage} resizeMode="contain" />
               </View>
-              <View style={styles.picks}>
-                <View style={cardFrame.rowLedge}>
-                  <TapTarget
-                    style={(pressed) => [styles.pick, styles.pickA, pressed && cardFrame.pressed]}
-                    onPress={() => onChoose(choices[0]!)}
-                    accessibilityLabel={choiceLabels[0]}
-                  >
-                    <View style={styles.key}>
-                      <Text style={styles.keyText}>A</Text>
-                    </View>
-                    <Text style={styles.pickWord} numberOfLines={1} ellipsizeMode="tail">
-                      {choiceLabels[0]}
-                    </Text>
-                    <Arrow color={card.stock} />
-                  </TapTarget>
-                </View>
-                <View style={cardFrame.rowLedge}>
-                  <TapTarget
-                    style={(pressed) => [styles.pick, styles.pickB, pressed && cardFrame.pressed]}
-                    onPress={() => onChoose(choices[1]!)}
-                    accessibilityLabel={choiceLabels[1]}
-                  >
-                    <View style={styles.key}>
-                      <Text style={styles.keyText}>B</Text>
-                    </View>
-                    <Text style={styles.pickWord} numberOfLines={1} ellipsizeMode="tail">
-                      {choiceLabels[1]}
-                    </Text>
-                    <Arrow color={card.stock} />
-                  </TapTarget>
-                </View>
+              <Text style={styles.forkWord} numberOfLines={1}>
+                {t.cards.fork}
+              </Text>
+              <View style={styles.forkRule} />
+            </View>
+            <View style={styles.picks}>
+              <View style={cardFrame.rowLedge}>
+                <TapTarget
+                  style={(pressed) => [styles.pick, styles.pickA, pressed && cardFrame.pressed]}
+                  onPress={() => onChoose(choices[0]!)}
+                  accessibilityLabel={choiceLabels[0]}
+                >
+                  <View style={styles.key}>
+                    <Text style={styles.keyText}>A</Text>
+                  </View>
+                  <Text style={styles.pickWord} numberOfLines={1} ellipsizeMode="tail">
+                    {choiceLabels[0]}
+                  </Text>
+                  <Arrow color={card.stock} />
+                </TapTarget>
               </View>
-            </>
-          ) : choices[0] ? (
-            <Ticket
-              eyebrow={t.cards.nextCard}
-              label={choiceLabels[0] ?? choices[0].label}
-              onPress={() => onChoose(choices[0]!)}
-            />
-          ) : null}
-        </Animated.View>
-      </View>
-    </GestureDetector>
+              <View style={cardFrame.rowLedge}>
+                <TapTarget
+                  style={(pressed) => [styles.pick, styles.pickB, pressed && cardFrame.pressed]}
+                  onPress={() => onChoose(choices[1]!)}
+                  accessibilityLabel={choiceLabels[1]}
+                >
+                  <View style={styles.key}>
+                    <Text style={styles.keyText}>B</Text>
+                  </View>
+                  <Text style={styles.pickWord} numberOfLines={1} ellipsizeMode="tail">
+                    {choiceLabels[1]}
+                  </Text>
+                  <Arrow color={card.stock} />
+                </TapTarget>
+              </View>
+            </View>
+          </>
+        ) : choices[0] ? (
+          <Ticket
+            eyebrow={t.cards.nextCard}
+            label={choiceLabels[0] ?? choices[0].label}
+            onPress={() => onChoose(choices[0]!)}
+          />
+        ) : null}
+      </Animated.View>
+    </Pressable>
   );
 }
 

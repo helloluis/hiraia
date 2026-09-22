@@ -671,7 +671,7 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         }
         val identity = ClassIdentity(this, schoolClass.enrollmentId)
         val size = minOf(resources.displayMetrics.widthPixels - dp(100), dp(310))
-        val bitmap = EnrollmentQr.create(identity.qrPayload(), getDrawable(R.drawable.hiraia_glyph)!!, INK)
+        val bitmap = EnrollmentQr.create(identity.qrPayload(schoolClass.name), getDrawable(R.drawable.hiraia_glyph)!!, INK)
         val image = ImageView(this).apply {
             setImageBitmap(bitmap)
             contentDescription = "Class enrollment QR code with Hiraia logo"

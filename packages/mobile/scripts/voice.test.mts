@@ -11,7 +11,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 
-import { chunk } from '../src/voice/chunk.ts';
+import { chunk, speechChunks, SPEECH_PAUSE_MS } from '../src/voice/chunk.ts';
 import { normalizeForSpeech, numberToWords } from '../src/voice/normalize.ts';
 import { encode, hasSpeakableText } from '../src/voice/tokenizer.ts';
 import { encodeWav } from '../src/voice/wav.ts';
@@ -106,6 +106,52 @@ test('chunking splits on sentences and caps the long ones', () => {
   assert.equal(parts.join(' ').split(/\s+/).length, long.split(/\s+/).length);
 });
 
+test('punctuation creates distinct audible phrases even without spaces', () => {
+  const parts = speechChunks('Una,pangalawa—paliwanag. Susunod!');
+  assert.deepEqual(parts, [
+    { text: 'Una,', pauseAfterMs: SPEECH_PAUSE_MS.comma },
+    { text: 'pangalawa—', pauseAfterMs: SPEECH_PAUSE_MS.clause },
+    { text: 'paliwanag.', pauseAfterMs: SPEECH_PAUSE_MS.sentence },
+    { text: 'Susunod!', pauseAfterMs: 0 },
+  ]);
+  assert.deepEqual(chunk('Oo.Hindi.'), ['Oo.', 'Hindi.']);
+});
+
+test('spoken measurements retain prose pauses without breaking decimals, ranges or hyphenated words', () => {
+  const text = normalizeForSpeech('May 6, pero 1,000 ang iba—mga 3.5 hanggang 20–25. Balik-aral.', 'tagalog');
+  const parts = speechChunks(text);
+  assert.deepEqual(parts.map((p) => p.text), [
+    'May six,',
+    'pero one thousand ang iba—',
+    'mga three punto five hanggang twenty hanggang twenty-five.',
+    'Balik-aral.',
+  ]);
+  assert.equal(parts[0]!.pauseAfterMs, SPEECH_PAUSE_MS.comma);
+  assert.deepEqual(chunk('Dr. Reyes at J. Cruz ay narito.'), ['Dr. Reyes at J. Cruz ay narito.']);
+  assert.deepEqual(chunk('It is 3.5, not 1,000.'), ['It is 3.5,', 'not 1,000.']);
+});
+
+test('closing quotes, repeated punctuation and bare dashes do not create empty voice requests', () => {
+  assert.deepEqual(speechChunks('“Tama!” Susunod… Oo.'), [
+    { text: '“Tama!”', pauseAfterMs: SPEECH_PAUSE_MS.sentence },
+    { text: 'Susunod…', pauseAfterMs: SPEECH_PAUSE_MS.sentence },
+    { text: 'Oo.', pauseAfterMs: 0 },
+  ]);
+  assert.deepEqual(chunk('— Una, — dalawa.'), ['Una,', 'dalawa.']);
+  assert.deepEqual(speechChunks('... — , !'), []);
+});
+
+test('length-only splits preserve all words without adding punctuation pauses', () => {
+  const text = `${'salita '.repeat(60).trim()}, tapos.`;
+  const parts = speechChunks(text);
+  assert.ok(parts[0]!.text.length <= 90);
+  assert.ok(parts.every((p) => p.text.length <= 180));
+  assert.equal(parts.map((p) => p.text).join(' '), text);
+  assert.ok(parts.slice(0, -2).every((p) => p.pauseAfterMs === 0));
+  assert.equal(parts[parts.length - 2]!.pauseAfterMs, SPEECH_PAUSE_MS.comma);
+  assert.equal(parts[parts.length - 1]!.pauseAfterMs, 0);
+});
+
 test('the two shipped voices are separate vocabularies, not one shared table', () => {
   // They differ in size (44 vs 39) and in assignment, which is why voice.json carries a
   // vocabulary per voice instead of one table in the bundle.
@@ -133,4 +179,19 @@ test('overshoot past 1.0 clamps instead of wrapping to noise', () => {
   const v = new DataView(bytes.buffer);
   assert.equal(v.getInt16(44, true), 32767);
   assert.equal(v.getInt16(46, true), -32768);
+});
+
+test('each deliberate pause is PCM silence with the correct duration and WAV lengths', () => {
+  const samples = Float32Array.from([0.25, -0.5, 1]);
+  const original = encodeWav(samples, 16000);
+  for (const pause of Object.values(SPEECH_PAUSE_MS)) {
+    const bytes = encodeWav(samples, 16000, pause);
+    const silenceSamples = Math.round(16000 * pause / 1000);
+    const view = new DataView(bytes.buffer);
+    assert.equal(bytes.length, original.length + silenceSamples * 2);
+    assert.equal(view.getUint32(4, true), bytes.length - 8);
+    assert.equal(view.getUint32(40, true), bytes.length - 44);
+    assert.deepEqual(bytes.slice(44, original.length), original.slice(44), 'voice samples preserved');
+    assert.ok(bytes.slice(original.length).every((byte) => byte === 0), 'silence, not a model token');
+  }
 });

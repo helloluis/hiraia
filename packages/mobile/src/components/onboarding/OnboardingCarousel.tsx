@@ -1,38 +1,4 @@
-/**
- * The onboarding carousel, printed as THREE CARDS OF THE DECK.
- *
- * It used to be paper in a notebook (NotebookBackground + the legacy `colors` palette),
- * which is the look the rest of the app is moving off. It is now the same mid-century
- * flash card the feed deals: a dark board (card.board), one cream card lying on it with
- * a printed ledge under it, a 3px forest-ink edge and rounded corners, and — inside — the
- * shared die-cut every page of the deck carries (punched binder holes, printed keyline,
- * index band with the cat stamp). Geometry and colours come from CardFrame + `card` in
- * theme.ts; nothing is re-implemented here.
- *
- * DIVISION OF LABOUR, copied deliberately from CardFeedScreen: this shell owns the card
- * SURFACE (stock, ink edge, radius, the ledge, the board) and each slide prints ON that
- * surface inside `cardFrame.content`. A slide that painted its own card would nest a
- * second card inside the first.
- *
- * THREE swipeable slides: language pick → grade pick → start card. Picking a language
- * on slide 1 fires `onPickLanguage` (which starts the model download in the background) and
- * advances, the grade pick goes straight to engineStore, `onFinish` — the gold START ticket
- * that is the last card — dismisses it, and the user can swipe back at any time.
- *
- * There used to be a fourth card warning that a large one-time download was about to
- * happen. It was pure notice: it started nothing, touched no store, and only called
- * `onDone`. The download already begins the moment a language is picked on card 1 and runs
- * in the background, so the warning was telling a child to wait for something they were
- * never waiting for. It is gone, and `onFinish` moved onto the last card's ticket.
- *
- * The one LAYOUT change: the BACK/dots/NEXT bar is a normal flex row under the pager
- * rather than an absolutely-positioned overlay. It used to float over the slides, which is
- * why GradeSlide carried an 80px NAV_BAR_CLEARANCE so its last row of buttons was not
- * covered by (and tapped through to) the NEXT button. A card has a hard edge and cannot be
- * overlapped by chrome without looking broken, so the bar now sits below the card and that
- * clearance hack is gone.
- */
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   NativeSyntheticEvent,
   ScrollView,
@@ -75,6 +41,10 @@ export function OnboardingCarousel({
   const { width } = useWindowDimensions();
   const scrollRef = useRef<ScrollView>(null);
   const [index, setIndex] = useState(0);
+  const [pageHeight, setPageHeight] = useState(0);
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ y: index * pageHeight, animated: false });
+  }, [pageHeight, width]);
   // language driving slides 2-3 copy; defaults to the saved language (re-trigger) or TL.
   const [lang, setLang] = useState<Language>(initialLanguage ?? 'tagalog');
   // whether a language has been chosen — pre-set (re-watch from Settings) or picked here.
@@ -86,7 +56,7 @@ export function OnboardingCarousel({
   const grade = useEngineStore((s) => s.grade);
   const changeGrade = useEngineStore((s) => s.changeGrade);
 
-  const goTo = (i: number) => scrollRef.current?.scrollTo({ x: i * width, animated: true });
+  const goTo = (i: number) => scrollRef.current?.scrollTo({ y: i * pageHeight, animated: true });
 
   const handlePick = (picked: Language) => {
     setLang(picked);
@@ -107,25 +77,30 @@ export function OnboardingCarousel({
   const showNext = index === 0 ? chosen : index < SLIDES - 1;
 
   const onScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) =>
-    setIndex(Math.round(e.nativeEvent.contentOffset.x / width));
+    setIndex(Math.round(e.nativeEvent.contentOffset.y / Math.max(1, pageHeight)));
 
   return (
     <SafeAreaView style={styles.overlay}>
       <ScrollView
         ref={scrollRef}
         style={styles.pager}
-        horizontal
+        onLayout={(e) => setPageHeight(e.nativeEvent.layout.height)}
+        scrollEnabled={chosen}
+        directionalLockEnabled
+        bounces={false}
         pagingEnabled
-        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        onScroll={onScrollEnd}
+        scrollEventThrottle={16}
         onMomentumScrollEnd={onScrollEnd}
         keyboardShouldPersistTaps="handled"
       >
-        <View style={{ width }}>
+        <View style={{ width, height: pageHeight }}>
           <SlideCard>
             <LanguageSlide onPick={handlePick} />
           </SlideCard>
         </View>
-        <View style={{ width }}>
+        <View style={{ width, height: pageHeight }}>
           <SlideCard>
             <GradeSlide
               language={lang}
@@ -135,9 +110,15 @@ export function OnboardingCarousel({
             />
           </SlideCard>
         </View>
-        <View style={{ width }}>
+        <View style={{ width, height: pageHeight }}>
           <SlideCard>
-            <DemoSlide language={lang} active={index === 2} onStart={onFinish} />
+            <DemoSlide
+              language={lang}
+              active={index === 2}
+              onStart={() => {
+                if (chosen) onFinish();
+              }}
+            />
           </SlideCard>
         </View>
       </ScrollView>
@@ -147,18 +128,14 @@ export function OnboardingCarousel({
           ledge — board #20342C and ink #1C3B2E are two shades apart, so a printed ledge is
           invisible off the card. Ledges stay on-card. */}
       <View style={styles.navBar}>
-        {/* BACK (left) — a plain cream plate, i.e. the secondary of the pair. */}
+        {/* BACK (up) — a plain cream plate, i.e. the secondary of the pair. */}
         {showBack ? (
           <TouchableOpacity
             style={styles.navBtn}
             onPress={() => goTo(index - 1)}
             activeOpacity={0.8}
           >
-            {/* One arrow primitive, asked to point the other way (a border triangle, because
-                every arrow glyph in this range is a coin-flip on Android's font fallback).
-                NOT a 180deg rotation of the right-pointing one: that carries the glyph's
-                optical-centring nudge round with it and lands it 4dp off-centre. */}
-            <Arrow color={card.ink} direction="left" />
+            <Arrow color={card.ink} direction="up" />
             <Text style={styles.navText}>BACK</Text>
           </TouchableOpacity>
         ) : (
@@ -173,7 +150,7 @@ export function OnboardingCarousel({
           ))}
         </View>
 
-        {/* NEXT (right) — GOLD, because gold is the deck's single-path continuation and
+        {/* NEXT (down) — GOLD, because gold is the deck's single-path continuation and
             "keep going" is exactly what this is. Not a fork colour (nothing is being
             chosen) and not teal (that is quiz stock). */}
         {showNext ? (
@@ -198,7 +175,7 @@ const NAV_SLOT_W = 116; // keeps the dots centered whether or not a button is pr
 const styles = StyleSheet.create({
   // the desk the deck sits on — the same board the feed deals its cards onto
   overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: card.board, zIndex: 100 },
-  // flex:1, or the horizontal pager sizes itself to its content while its content sizes
+  // flex:1, or the vertical pager sizes itself to its content while its content sizes
   // itself to the pager
   pager: { flex: 1 },
 
@@ -230,7 +207,7 @@ const styles = StyleSheet.create({
    * The deck's BODY face at near-ticket size, not the micro-label gothic these started in.
    * The gothic at 11.5px is what CardFrame prints an eyebrow in — a caption ABOVE a control
    * — while the thing you actually press, the Ticket, is 18.5px `cardBodyBold`. BACK/NEXT
-   * are the only way forward for a child who never discovers the horizontal swipe, so they
+   * are the only way forward for a child who never discovers the vertical scroll, so they
    * take the control scale rather than the chrome scale. One step down from the ticket's own
    * face; 16px still leaves ~50dp of slack in the 116dp plate.
    */

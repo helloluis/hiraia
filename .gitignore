@@ -233,3 +233,21 @@ card-cats/
 !packages/mobile/modules/*/android/**
 packages/mobile/modules/*/android/build/
 packages/mobile/modules/*/android/.gradle/
+
+# Training artefacts and model weights — multi-GB, never belong in the repo.
+# Swept in by a `git add -A` during the 0.4.22 release and rejected by GitHub LFS's
+# 2 GB per-object limit. Ignored by directory so the next one does not repeat it.
+batch_*_output.jsonl
+finetuning/cpt/local-v3-run/
+finetuning/distill/ceb-heal/hf-dl/
+finetuning/distill/ceb-heal/pruned/
+finetuning/teacher/*.tgz
+*.safetensors
+
+# TTS corpora and training data — 6.5 GB in finetuning/teacher/omni-bank alone.
+# These are generated artefacts, not source; they blew the 2 GiB pack limit on the 0.4.22 push.
+finetuning/teacher/omni-bank/
+finetuning/cpt/synth-ceb/
+finetuning/distill/ceb-heal/
+finetuning/reference-materials/deped-science/
+finetuning/**/*.jsonl

@@ -80,8 +80,7 @@ const LABELS: Record<Language, { band: string; hint: string; answer: string }> =
  * pass. It matters more here than on a factoid page: bank questions run to 139 chars at
  * p99 and single options to 126, so the roomy setting would push four answer rows off a
  * 720x1600 panel. Falling one step keeps the whole card on screen without scrolling
- * (the feed's corner-swipe pan responder captures vertical drags, so a ScrollView here
- * would fight the page turn).
+ * so answer buttons and the explanation remain together.
  */
 interface Tier {
   /** Diameter of the peach disc the cat sits on. */
@@ -537,6 +536,7 @@ export function QuestionPage({ question, language, onAnswer, onContinue, reviewT
             {localize(question.e, language)}
           </Text>
           <Ticket
+            arrowDirection="down"
             label={t.cards.continueNote}
             onPress={onContinue}
             hitSlop={12}

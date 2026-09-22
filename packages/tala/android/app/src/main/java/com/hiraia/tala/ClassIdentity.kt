@@ -17,6 +17,8 @@ import javax.crypto.spec.OAEPParameterSpec
 import javax.crypto.spec.PSource
 import java.security.spec.MGF1ParameterSpec
 
+private const val MAX_CLASS_NAME = 48
+
 class ClassIdentity(context: Context, val classId: String = legacyClassId(context)) {
     private val privateKey: PrivateKey
     private val publicKey: ByteArray
@@ -37,10 +39,21 @@ class ClassIdentity(context: Context, val classId: String = legacyClassId(contex
         publicKey = keyStore.getCertificate(alias).publicKey.encoded
     }
 
-    fun qrPayload(): String = JSONObject()
+    /**
+     * The enrolment payload. `class_name` is carried so the student phone can NAME the class it
+     * joined instead of showing an opaque class_id; it is advisory only — nothing authenticates
+     * or routes on it, and a student build that predates it simply ignores the extra key.
+     * Capped so a long name cannot bloat the QR past its scan-reliable density.
+     *
+     * NEVER BLANK. Classes created before names were required have none stored, so
+     * ClassNames.resolve derives a stable colour-animal name from the class id instead —
+     * same class, same name, on every phone, with nothing to migrate.
+     */
+    fun qrPayload(className: String = ""): String = JSONObject()
         .put("v", 1)
         .put("kind", "hiraia-tala")
         .put("class_id", classId)
+        .put("class_name", ClassNames.resolve(classId, className).take(MAX_CLASS_NAME))
         .put("public_key", encode(publicKey))
         .toString()
 

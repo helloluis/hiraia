@@ -47,12 +47,28 @@ export type TeacherEvent = {
   props: Record<string, string | number | boolean>;
 };
 
+export const MAX_CLASS_NAME = 48;
+
 export type TeacherQr = {
   v: 1;
   kind: typeof QR_KIND;
   class_id: string;
   public_key: string;
+  /**
+   * Display-only name of the class, added Sept 2026 so the student phone can say WHICH class
+   * it joined instead of an opaque class_id. OPTIONAL on purpose: teacher builds that predate
+   * it emit no such key, and nothing authenticates or routes on it — `sameBinding` still
+   * compares class_id and public_key only, so a renamed class is not a different class.
+   */
+  class_name?: string;
 };
+
+/** Trim, cap, and drop control characters from a teacher-supplied class name. */
+export function cleanClassName(value: unknown): string {
+  if (typeof value !== 'string') return '';
+  // eslint-disable-next-line no-control-regex
+  return value.replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, MAX_CLASS_NAME);
+}
 
 export type InnerBatch = {
   schema: 1;

@@ -7,15 +7,15 @@ import { useCardStore } from '../store/cardStore';
 import { useEngineStore } from '../store/engineStore';
 import { showQuiz, viewCard } from './views';
 
-export function useFeedTelemetry() {
+export function useFeedTelemetry(visible = true) {
   const profiles = useProfiles();
-  const reviewing = useReviewStore(s=>s.open||s.busy||!!s.error);
+  const reviewing = useReviewStore((s) => s.open || s.busy || !!s.error);
   const pageKey = useCardStore((s) => s.pageKey);
   const current = useCardStore((s) => s.current);
   const question = useCardStore((s) => s.question);
   const response = useCardStore((s) => s.response);
-  const lessonRecap = useCardStore(s => s.lessonRecap);
-  const titleCard = useCardStore(s => s.titleCard);
+  const lessonRecap = useCardStore((s) => s.lessonRecap);
+  const titleCard = useCardStore((s) => s.titleCard);
   const reward = useCardStore((s) => s.reward);
   const hydrated = useCardStore((s) => s.hydrated);
   const onboarding = useEngineStore((s) => s.onboardingActive);
@@ -26,12 +26,16 @@ export function useFeedTelemetry() {
       const schedule = () => {
         clearTimeout(timer);
         if (
+          !visible ||
           AppState.currentState !== 'active' ||
           !hydrated ||
           onboarding ||
           profiles.choosing ||
           !profiles.ready ||
-          lessonRecap || titleCard || reward || reviewing
+          lessonRecap ||
+          titleCard ||
+          reward ||
+          reviewing
         )
           return;
         // Committed, focused page visible for 500 ms; no preloads or outgoing animation copies.
@@ -51,6 +55,7 @@ export function useFeedTelemetry() {
         sub.remove();
       };
     }, [
+      visible,
       reviewing,
       lessonRecap,
       titleCard,

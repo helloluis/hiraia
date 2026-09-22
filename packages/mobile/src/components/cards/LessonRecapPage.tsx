@@ -2,20 +2,22 @@ import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import type { Language } from '@hiraia/shared';
 import type { LessonRecap } from '../../data/lessonRecap';
-import { cardText, getCard, warmPage } from '../../data/cards';
+import { cardText, cardTitle, choiceLabel, getCard, warmPage } from '../../data/cards';
 import { card, fonts } from '../../theme';
-import { CardPrint, TapTarget } from './CardFrame';
+import { Arrow, CardPrint, TapTarget } from './CardFrame';
 
 export function LessonRecapPage({
   content,
   language,
   onRepeat,
   onContinue,
+  readOnly = false,
 }: {
   content: LessonRecap;
   language: Language;
   onRepeat: () => void;
   onContinue: () => void;
+  readOnly?: boolean;
 }) {
   const [ready, setReady] = useState(() =>
     content.cardIds.every((id) => {
@@ -43,7 +45,7 @@ export function LessonRecapPage({
       'Here’s what we explored',
       'Explore again',
       'Try different examples when available.',
-      'Swipe to the next section',
+      'Scroll down to the next section',
       'Loading recap…',
     ],
     tl: [
@@ -51,7 +53,7 @@ export function LessonRecapPage({
       'Ito ang mga tinalakay natin',
       'Balikan natin',
       'Subukan ang ibang halimbawa kung mayroon pa.',
-      'Mag-swipe para sa susunod na paksa',
+      'Mag-scroll pababa para sa susunod na paksa',
       'Inihahanda ang balik-aral…',
     ],
     bis: [
@@ -59,22 +61,30 @@ export function LessonRecapPage({
       'Mao kini ang atong gihisgotan',
       'Balikon nato',
       'Sulayi ang ubang pananglitan kon aduna pa.',
-      'Pag-swipe ngadto sa sunod nga hilisgutan',
+      'Pag-scroll paubos ngadto sa sunod nga hilisgutan',
       'Giandam ang pagbalik-aral…',
     ],
   }[lang];
-  const points = ready
-    ? [
-        ...new Set(
-          content.cardIds
-            .map((id) => {
-              const fact = getCard(id);
-              return fact ? cardText(fact, language) : '';
-            })
-            .filter(Boolean)
-        ),
-      ]
-    : [];
+  // Reuse short, localized labels rather than repeating every card's body text.
+  // Sample across the completed section so the recap includes its later topics too.
+  const concepts = new Map<string, string>();
+  if (ready) {
+    for (const id of content.cardIds) {
+      const fact = getCard(id);
+      if (!fact) continue;
+      const title = cardTitle(fact, language).replace(/\s+/g, ' ').trim();
+      const label =
+        title && title.length <= 60 && title.split(' ').length <= 8
+          ? title
+          : choiceLabel(fact, language).trim();
+      if (label && !concepts.has(label.toLowerCase())) concepts.set(label.toLowerCase(), label);
+    }
+  }
+  const labels = [...concepts.values()];
+  const points =
+    labels.length <= 3
+      ? labels
+      : [labels[0], labels[Math.floor((labels.length - 1) / 2)], labels[labels.length - 1]];
   return (
     <View style={styles.page}>
       <CardPrint />
@@ -91,12 +101,17 @@ export function LessonRecapPage({
           </Text>
         ))}
       </ScrollView>
-      <TapTarget onPress={onRepeat} style={() => styles.repeat}>
-        <Text style={styles.button}>{copy[2]} ↻</Text>
-      </TapTarget>
-      <Text style={styles.hint}>{copy[3]}</Text>
+      {!readOnly && (
+        <>
+          <TapTarget onPress={onRepeat} style={() => styles.repeat}>
+            <Text style={styles.button}>{copy[2]} ↻</Text>
+          </TapTarget>
+          <Text style={styles.hint}>{copy[3]}</Text>
+        </>
+      )}
       <TapTarget onPress={onContinue} style={() => styles.next}>
-        <Text style={styles.button}>{copy[4]} →</Text>
+        <Text style={styles.button}>{copy[4]}</Text>
+        <Arrow color={card.ink} />
       </TapTarget>
     </View>
   );
@@ -123,7 +138,19 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 10,
   },
-  next: { paddingVertical: 10 },
-  button: { fontFamily: fonts.slab, fontSize: 17, color: card.ink, textAlign: 'center' },
+  next: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    paddingVertical: 10,
+  },
+  button: {
+    flexShrink: 1,
+    fontFamily: fonts.slab,
+    fontSize: 17,
+    color: card.ink,
+    textAlign: 'center',
+  },
   hint: { fontSize: 12, textAlign: 'center', color: card.ink, marginTop: 6 },
 });

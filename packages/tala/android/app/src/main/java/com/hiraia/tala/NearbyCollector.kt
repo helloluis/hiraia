@@ -64,8 +64,12 @@ class NearbyCollector(
                         require(bytes.size <= 2048)
                         val attempts = manualAttempts.merge(endpointId, 1, Int::plus) ?: 1
                         require(attempts <= 3)
+                        // Same payload the QR carries, name included: a student who types the
+                        // code must end up with the same class name as one who scans.
+                        val className = database.classes()
+                            .firstOrNull { it.enrollmentId == identity.classId }?.name ?: ""
                         val response = manualEnrollment.respond(
-                            identity.classId, challenge, envelope, identity.qrPayload()
+                            identity.classId, challenge, envelope, identity.qrPayload(className)
                         )
                         if (running && challenges[endpointId] == challenge)
                             connections.sendPayload(endpointId, Payload.fromBytes(response.toString().toByteArray()))

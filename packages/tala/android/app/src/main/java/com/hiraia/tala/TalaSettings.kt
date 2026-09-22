@@ -155,7 +155,10 @@ class TalaSettings(
             orientation = LinearLayout.VERTICAL
             setPadding(dp(20), dp(8), dp(20), dp(8))
         }
-        val className = field(form, "Class name", existing?.name ?: "")
+        // A class name is not optional any more: the student phone shows it instead of an
+        // opaque id. New classes open with a colour-animal suggestion the teacher can accept
+        // or type over, so the common path needs no typing and the field is never empty.
+        val className = field(form, "Class name", existing?.name ?: ClassNames.suggest())
         val teacherName = catalogField(form, "Teacher name", template?.teacherName ?: "", database.options("teacher"))
         val schoolName = catalogField(form, "School name", template?.schoolName ?: "", database.options("school"))
         val gradeLevel = Spinner(activity).apply {
@@ -173,22 +176,27 @@ class TalaSettings(
             .setPositiveButton(if (existing == null) "Create" else "Save", null).create()
         editor.setOnShowListener {
             editor.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                val required = listOf(className, teacherName, schoolName, schoolYear)
+                val required = listOf(teacherName, schoolName, schoolYear)
                 val missing = required.firstOrNull { it.text.toString().trim().isEmpty() }
                 if (missing != null) {
                     missing.error = "Required"
                     return@setOnClickListener
                 }
                 if (existing == null) {
+                    // Blank only if the teacher cleared the suggestion: fall back rather than refuse.
+                    val typed = className.text.toString().trim()
                     val schoolClass = database.createClass(
-                        className.text.toString(), teacherName.text.toString(), schoolName.text.toString(),
+                        typed.ifEmpty { ClassNames.suggest() }, teacherName.text.toString(),
+                        schoolName.text.toString(),
                         gradeLevel.selectedItem.toString(), schoolYear.text.toString()
                     )
                     editor.dismiss()
                     dialog.dismiss()
                     onClassSelected(schoolClass.id)
                 } else {
-                    database.updateClass(existing.id, className.text.toString(), teacherName.text.toString(),
+                    database.updateClass(existing.id,
+                        className.text.toString().trim().ifEmpty { ClassNames.forClass(existing.enrollmentId) },
+                        teacherName.text.toString(),
                         schoolName.text.toString(), gradeLevel.selectedItem.toString(), schoolYear.text.toString())
                     editor.dismiss()
                     refresh()

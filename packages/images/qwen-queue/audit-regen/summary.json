@@ -1,0 +1,24 @@
+{
+  "model": "gpt-image-2",
+  "quality": "low",
+  "size": "1024x1024",
+  "reject_uncertain_images": 7063,
+  "queued": 5485,
+  "skipped_no_prompt": 1578,
+  "jobs": [
+    {
+      "file": "batch-requests-1.jsonl",
+      "n": 2743,
+      "bytes": 2286769
+    },
+    {
+      "file": "batch-requests-2.jsonl",
+      "n": 2742,
+      "bytes": 2438941
+    }
+  ],
+  "visual_mix": {
+    "reject": 2193,
+    "uncertain": 3292
+  }
+}

@@ -19,6 +19,7 @@ rate limiting, CSRF token on every state-changing POST.
 """
 import hashlib, hmac, html, json, os, re, secrets, subprocess, threading, time, urllib.parse, urllib.request
 from datetime import datetime, timezone
+import admin_chrome
 import pilot_analytics
 import tala_reports
 try:
@@ -756,6 +757,13 @@ form.note button:hover{background:var(--signal);color:#12100f}
 .err{color:var(--crit);font-size:11.5px;margin-top:13px}
 .foot{color:var(--ink-3);font-size:11px;letter-spacing:.06em;margin-top:26px;
   padding-top:14px;border-top:1px solid var(--line)}
+.admin-nav{display:flex;flex-wrap:wrap;gap:16px;align-items:center;width:100%;
+  margin:0 0 4px;font-size:12px;letter-spacing:.04em}
+.admin-nav a{color:var(--ink-2)}
+.admin-nav a[aria-current=page]{color:var(--signal);text-decoration:underline;text-underline-offset:4px}
+.admin-nav form{margin-left:auto}
+.admin-nav .plain{background:transparent;border:0;padding:0;color:var(--ink-2);
+  text-transform:none;letter-spacing:.04em;text-decoration:underline;cursor:pointer}
 @media(max-width:640px){
   .wrap{padding:14px 12px 48px} .tile .v{font-size:21px}
   table{font-size:11.5px} .hide-sm{display:none}
@@ -769,7 +777,7 @@ HEAD = """<!doctype html><html lang="en"><head><meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>__CSS__</style></head><body data-mount="__MOUNT__"><nav style="display:flex;gap:18px;padding:12px 24px"><a href="__MOUNT__/">Mission control</a><a href="__MOUNT__/telemetry">Pilot analytics</a><a href="__MOUNT__/tala-reports">Tala reports</a></nav>"""
+<style>__CSS__</style></head><body data-mount="__MOUNT__">"""
 
 JS = r"""
 const $ = s => document.querySelector(s);
@@ -1126,6 +1134,7 @@ document.addEventListener('visibilitychange',()=>{ if(!document.hidden) refresh(
 def page_dashboard(csrf):
     body = """
 <div class="wrap">
+  __NAV__
   <header class="top">
     <div>
       <div class="brand">Hiraia <em>//</em> Mission Control</div>
@@ -1163,7 +1172,8 @@ def page_dashboard(csrf):
 </div>
 <script>__JS__</script></body></html>"""
     head = HEAD.replace("__TITLE__", "Hiraia // Mission Control").replace("__CSS__", CSS)
-    return (head + body).replace("__CSRF__", csrf).replace("__MOUNT__", MOUNT).replace("__JS__", JS)
+    return (head + body).replace("__CSRF__", csrf).replace("__MOUNT__", MOUNT).replace("__JS__", JS).replace(
+        "__NAV__", admin_chrome.nav(MOUNT, csrf, "training"))
 
 
 def page_login(error=""):
@@ -1261,13 +1271,11 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(401, {"error": "unauthenticated"})
             return self._redirect(f"{MOUNT}/login")
         if path in ("/", "/telemetry") and pilot_dashboard is not None:
-            page = pilot_dashboard.page(MOUNT, self._csrf())
-            page = page.replace("<nav>", f'<nav><a href="{MOUNT}/tala-reports">Tala reports</a>', 1)
-            return self._send(200, page)
+            return self._send(200, pilot_dashboard.page(MOUNT, self._csrf()))
         if path == "/archive/training" and pilot_dashboard is not None:
             return self._send(200, page_dashboard(self._csrf()))
         if path == "/archive/telemetry" and pilot_dashboard is not None:
-            return self._send(200, pilot_analytics.page(MOUNT))
+            return self._send(200, pilot_analytics.page(MOUNT, self._csrf()))
         if path.startswith("/api/pilot/") and pilot_dashboard is not None:
             try:
                 if path == "/api/pilot/overview":
@@ -1290,11 +1298,11 @@ class Handler(BaseHTTPRequestHandler):
             except (OSError, pilot_dashboard.sqlite3.Error):
                 return self._json(503, {"error": "report_unavailable"})
         if path == "/telemetry":
-            return self._send(200, pilot_analytics.page(MOUNT))
+            return self._send(200, pilot_analytics.page(MOUNT, self._csrf()))
         if path == "/tala-reports":
-            head = HEAD.replace("__TITLE__", "Tala reports // Hiraia").replace("__CSS__", CSS)
-            head = head.replace("__MOUNT__", MOUNT)
-            return self._send(200, tala_reports.page(MOUNT, head, self._csrf()))
+            return self._send(200, admin_chrome.wrap(
+                "Tala reports", "Classroom reports", "tala-reports",
+                MOUNT, self._csrf(), tala_reports.page_body(MOUNT, self._csrf())))
         media_match = re.fullmatch(r"/tala-reports/media/([a-f0-9-]{36})/([a-f0-9-]{36})", path)
         if media_match:
             attachment = tala_reports.attachment(*media_match.groups())
