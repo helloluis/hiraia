@@ -4,9 +4,11 @@ import importlib
 import json
 import os
 from pathlib import Path
+import re
 import sqlite3
 import sys
 import tempfile
+import time
 import unittest
 from unittest.mock import patch
 from email.message import Message
@@ -295,5 +297,26 @@ class MirrorTests(unittest.TestCase):
     def test_restore_refuses_existing_database(self):
         with tempfile.NamedTemporaryFile() as f:
             with self.assertRaises(ValueError):mirror.restore('unused',f.name)
+
+    def test_staleness_window_tracks_the_timer_interval(self):
+        # status() derives 'stale' from last_check, which only advances when the timer
+        # fires. A threshold narrower than the interval makes a healthy mirror look broken
+        # on the dashboard, so the unit file and the module constant have to agree.
+        unit=(Path(__file__).resolve().parent/'hiraia-neon-mirror.timer').read_text()
+        match=re.search(r'^OnUnitInactiveSec=(\d+)s$',unit,re.M)
+        self.assertIsNotNone(match,'OnUnitInactiveSec must be a plain number of seconds')
+        self.assertEqual(mirror.MIRROR_INTERVAL_MS,int(match.group(1))*1000)
+        now=int(time.time()*1000)
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'telemetry.db'
+            with connection(path) as db:
+                db.execute('CREATE TABLE telemetry_events(installation_id TEXT,id TEXT,name TEXT,occurred_at INTEGER,received_at INTEGER,session_id TEXT,props TEXT,PRIMARY KEY(installation_id,id))')
+                mirror.prepare(db)
+                mirror.meta(db,'target','target')
+                for age,state in [(1,'synced'),(3,'stale')]:
+                    mirror.meta(db,'last_check',now-age*mirror.MIRROR_INTERVAL_MS)
+                    mirror.meta(db,'last_success',now-age*mirror.MIRROR_INTERVAL_MS)
+                    db.commit()
+                    self.assertEqual(mirror.status(str(path))['state'],state)
 
 if __name__=='__main__':unittest.main()

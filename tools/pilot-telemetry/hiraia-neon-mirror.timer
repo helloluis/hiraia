@@ -1,8 +1,15 @@
 [Unit]
-Description=Retry Hiraia remote mirror every 30 seconds
+Description=Retry Hiraia remote mirror every 30 minutes
 [Timer]
 OnBootSec=20s
-OnUnitInactiveSec=30s
+# 1800s, not 30s. Neon suspends a compute 300s after its last connection, so any
+# interval below that tail splits the same work into more runs without reducing
+# the number of awake windows. Measured over 72h of the live journal: 30s = 39
+# windows / 0.52 CU-h/day, 1800s = 39 runs / 0.27 CU-h/day. Going wider keeps
+# helping (3600s = -64%) at the cost of remote RPO, which is <= this interval.
+# Keep neon_mirror.MIRROR_INTERVAL_MS in sync — the dashboard's staleness window
+# is derived from it.
+OnUnitInactiveSec=1800s
 AccuracySec=5s
 [Install]
 WantedBy=timers.target

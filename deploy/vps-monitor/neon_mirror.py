@@ -204,6 +204,13 @@ def run_once(filename,url,webfile=None,reconcile=False):
                 with local: meta(local,'last_error',type(error).__name__)
                 raise RuntimeError('mirror_failed_retry_pending') from None
 
+# The mirror timer's interval (tools/pilot-telemetry/hiraia-neon-mirror.timer,
+# OnUnitInactiveSec). `last_check` only advances when that timer fires, so the
+# staleness window has to stay wider than two intervals or a healthy mirror reads
+# as broken on the dashboard. The old hardcoded 300000 was correct for a 30s timer.
+MIRROR_INTERVAL_MS = 1800000
+STALE_AFTER_MS = 2*MIRROR_INTERVAL_MS+60000
+
 def status(filename=None):
     filename=filename or os.environ.get('HIRAIA_TELEMETRY_DB_PATH','')
     if not filename or not Path(filename).is_file(): return {'state':'unconfigured','message':'waiting for collector'}
@@ -217,7 +224,7 @@ def status(filename=None):
               ON r.target=? AND r.installation_id=e.installation_id AND r.id=e.id WHERE r.id IS NULL''',(target,)).fetchone()[0]
             pending+=pending_deliveries(db,target)
             success=int(meta(db,'last_success') or 0)
-            stale=time.time()*1000-int(meta(db,'last_check') or success)>300000
+            stale=time.time()*1000-int(meta(db,'last_check') or success)>STALE_AFTER_MS
             return {'state':'pending' if pending else 'stale' if stale or meta(db,'last_error') else 'synced',
                     'pending':pending,'last_success':success,'message':'copy worker needs attention' if stale else ''}
     except sqlite3.Error:

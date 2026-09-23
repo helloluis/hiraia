@@ -43,12 +43,20 @@ SQLite remains the ingest database; successful responses follow a durable SQLite
 The credential belongs only in `/etc/hiraia/telemetry-mirror.env` (root-owned, mode 0600).
 The local credential file is git-ignored and mode 0600; it is not in the deployment archive.
 
-Remote schema: `hiraia_telemetry.events`, `apk_download_hits`, and `mirror_health`.
+Remote schema: `hiraia_telemetry.events`, `deliveries`, `apk_download_hits`, and `mirror_health`.
 The worker commits each remote batch before saving SQLite receipts. Duplicate replay uses
 `ON CONFLICT DO NOTHING`; restored SQLite files and lost acknowledgments are safe to replay.
 Local deletions never delete the remote copy. A daily full reconciliation repairs missing
-remote rows even if old local receipts exist. Timer checks run every 30 seconds, but skip
-Neon connections when nothing is pending, allowing Neon to sleep between activity.
+remote rows even if old local receipts exist. The timer fires every 30 minutes and skips the
+Neon connection entirely when nothing is pending, so an idle VPS leaves Neon asleep. The
+interval is deliberately wider than Neon's 300 s suspend tail: below that tail, extra runs
+only split the same work without reducing the number of awake windows (measured over 72 h of
+the live journal — 30 s and 300 s both cost ~0.52 CU-h/day, 30 min costs 0.27). It is also
+the remote RPO: up to 30 minutes of events can exist only on the VPS disk. Local durability
+is unaffected either way, because the collector commits to SQLite before it answers a device.
+`neon_mirror.MIRROR_INTERVAL_MS` must match the unit file — the dashboard derives its
+staleness window from it, and a threshold narrower than the interval reports a healthy mirror
+as broken.
 
 The former 180-day pruning script now deletes nothing. Pilot history is retained for LTD
 and 1Y reporting and recovery. This is asynchronous replication: events awaiting their
@@ -58,7 +66,7 @@ cannot be backed up remotely until they upload. The dashboard exposes mirror sta
 ### Restore
 
 Use new destination filenames; the command refuses to overwrite existing files. It takes
-a repeatable-read snapshot of Neon and restores the event and optional APK tables.
+a repeatable-read snapshot of Neon and restores the event, delivery and optional APK tables.
 
 ```sh
 python deploy/vps-monitor/neon_mirror.py --env-file /etc/hiraia/telemetry-mirror.env \
