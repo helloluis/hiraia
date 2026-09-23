@@ -47,9 +47,10 @@ import { create } from 'zustand';
 
 import { getSetting, setSetting } from '../db/repo';
 import { ensureRemoteAsset } from '../engine/modelDownload';
+import { modelDownloadPreference, subscribeModelDownloadPreference } from '../engine/modelDownloadControl';
 import { errorCategory, track } from '../telemetry';
 import { useEngineStore, type ReadyStage } from './engineStore';
-import { useAssetUpdateStore } from './assetUpdateStore';
+import { useAssetUpdateStore, pauseAssetModelDownload, startAssetUpdates } from './assetUpdateStore';
 
 /** Override at build time for staging. Must be https. */
 export const MANIFEST_URL =
@@ -199,7 +200,7 @@ export function parseManifest(body: unknown): AppManifest | null {
   };
 }
 
-async function fetchManifest(manual = false): Promise<AppManifest | null> {
+async function fetchManifest(): Promise<AppManifest | null> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
   try {
@@ -219,7 +220,7 @@ async function fetchManifest(manual = false): Promise<AppManifest | null> {
     const body = raw as Record<string, unknown>;
     if (body.schema !== 1 || !Object.prototype.hasOwnProperty.call(body, 'app')) throw new Error('Invalid update manifest');
     // A bad optional asset catalog must not suppress an APK update.
-    await useAssetUpdateStore.getState().acceptManifest(body.assets, manual).catch(() => {});
+    await useAssetUpdateStore.getState().acceptManifest(body.assets).catch(() => {});
     const app = parseManifest(body);
     if (body.app !== null && !app) throw new Error('Invalid APK update metadata');
     return app;
@@ -290,7 +291,7 @@ async function readSnooze(): Promise<{ until: number; versionCode: number } | nu
   }
 }
 
-const modelTransferInFlight = () => MODEL_TRANSFER_STAGES.has(useEngineStore.getState().readyStage);
+const modelTransferInFlight = () => modelDownloadPreference().enabled && MODEL_TRANSFER_STAGES.has(useEngineStore.getState().readyStage);
 
 /**
  * One manifest fetch at a time. A module flag rather than the 'checking' status, because
@@ -342,7 +343,7 @@ export const useUpdateStore = create<UpdateState>((set, get) => ({
     // its chip stays live) while the recheck runs, so the bar never blinks.
     if (status === 'idle') set({ status: 'checking' });
     try {
-      const manifest = await fetchManifest(reason === 'manual');
+      const manifest = await fetchManifest();
       const now = Date.now();
       lastFailedAt = 0;
       // The fetch yielded: the reader may have tapped download meanwhile. Their state wins.
@@ -400,12 +401,13 @@ export const useUpdateStore = create<UpdateState>((set, get) => ({
   },
 
   startDownload: async () => {
-    if (useAssetUpdateStore.getState().status === 'downloading' || modelTransferInFlight()) return;
+    if (modelTransferInFlight()) return;
     const { status, manifest } = get();
     if (!manifest || (status !== 'available' && status !== 'failed')) return;
     set({ status: 'downloading', pct: 0, error: null });
     track('update_download_started', { version_code: manifest.versionCode, bytes: manifest.bytes });
     try {
+      await pauseAssetModelDownload();
       const path = await ensureRemoteAsset(
         {
           url: manifest.url,
@@ -474,7 +476,7 @@ export const useUpdateStore = create<UpdateState>((set, get) => ({
 
   manualCheck: async () => {
     if (Platform.OS !== 'android') return 'uptodate';
-    if (modelTransferInFlight() || useAssetUpdateStore.getState().status === 'downloading') return 'busy';
+    if (modelTransferInFlight()) return 'busy';
     // An explicit ask forgets the ✕ — clearing BEFORE the check so a snoozed manifest
     // resurfaces as 'available' rather than sliding back into 'snoozed'.
     try {
@@ -488,7 +490,6 @@ export const useUpdateStore = create<UpdateState>((set, get) => ({
     const after = get();
     if (after.status === 'available' || after.status === 'downloading' || after.status === 'ready')
       return 'available';
-    if (['available','ready','failed'].includes(useAssetUpdateStore.getState().status)) return 'available';
     if (after.lastCheckedAt !== before) return 'uptodate';
     return 'error';
   },
@@ -522,12 +523,15 @@ let deferral: (() => void) | null = null;
  */
 function deferUntilModelIdle(): void {
   if (deferral) return;
-  deferral = useEngineStore.subscribe((s) => {
-    if (MODEL_TRANSFER_STAGES.has(s.readyStage)) return;
+  const check = () => {
+    if (modelTransferInFlight()) return;
     deferral?.();
     deferral = null;
     void useUpdateStore.getState().checkForUpdate('deferred');
-  });
+  };
+  const stopEngine = useEngineStore.subscribe(check);
+  const stopPreference = subscribeModelDownloadPreference(check);
+  deferral = () => { stopEngine(); stopPreference(); };
 }
 
 let started = 0;
@@ -542,6 +546,7 @@ export function startUpdateChecks(): () => void {
       started--;
     };
   }
+  const stopAssets = startAssetUpdates(() => useUpdateStore.getState().status === 'downloading');
   const store = useUpdateStore.getState();
   const installed = store.installedVersionCode;
   if (installed !== null) void pruneStaleApks(installed);
@@ -569,6 +574,7 @@ export function startUpdateChecks(): () => void {
 
   return () => {
     started--;
+    stopAssets();
     launch.cancel();
     if (launchTimer) clearTimeout(launchTimer);
     sub.remove();

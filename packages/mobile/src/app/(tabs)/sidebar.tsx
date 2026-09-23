@@ -1,5 +1,6 @@
 import { QuizSoundSettings } from '../../audio/QuizSoundSettings';
 import { ModelDownloadStatus } from '../../components/ModelDownloadStatus';
+import { ModelDownloads } from '../../components/ModelDownloads';
 import { ImageDownloads } from '../../images/ImageDownloads';
 import { ActivityTable } from '../../telemetry/ActivityTable';
 import { TelemetrySettings } from '../../telemetry/TelemetrySettings';
@@ -150,6 +151,7 @@ export default function SidebarScreen() {
         </TouchableOpacity>
 
         <QuizSoundSettings language={language ?? 'tagalog'} />
+        <ModelDownloads />
         <ImageDownloads />
         <Text style={styles.sectionTitle}>{t.sectionVersion}</Text>
         <View style={styles.versionBlock}>

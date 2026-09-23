@@ -81,6 +81,7 @@
  * initialisations racing each other must never open two append-mode streams onto
  * the same `.part`.
  */
+import { withModelDownloadControl } from './modelDownloadControl';
 import { beginDownload } from '../telemetry/download';
 import { track } from '../telemetry';
 import {
@@ -333,7 +334,7 @@ export async function ensureRemoteAsset(
     return path;
   }
   setDownloadStatus(spec.filename, 'checking');
-  const run = fetchAndVerify(
+  const run = fetchWithDownloadControl(
     spec,
     (pct, phase) => {
       // Completion is published only after fetchAndVerify returns the installed path.
@@ -360,6 +361,20 @@ export async function ensureRemoteAsset(
   } finally {
     inFlight.delete(spec.filename);
   }
+}
+
+/** APK downloads remain user-requested and independent of the model pause switch.
+ * Already installed weights remain usable even when future downloads are paused. */
+async function fetchWithDownloadControl(spec: RemoteAssetSpec, progress?: DownloadProgressFn, signal?: AbortSignal): Promise<string> {
+  if (spec.dir || /\.(apk|hpak)$/i.test(spec.filename) ||
+      await statSize(`${MODELS_DIR}${spec.filename}`) === spec.bytes) {
+    return fetchAndVerify(spec, progress, signal);
+  }
+  return withModelDownloadControl(
+    inner => fetchAndVerify(spec, progress, inner),
+    () => setDownloadStatus(spec.filename, 'paused', assetDownloadStatus(spec.filename).percent),
+    signal,
+  );
 }
 
 /** The real work. Serialised per filename by `ensureRemoteAsset` above. */
@@ -568,6 +583,7 @@ async function runTransfer(
   onProgress: DownloadProgressFn | undefined,
   signal: AbortSignal | undefined
 ): Promise<number | null> {
+  if (signal?.aborted) throw new Error('model download aborted');
   LOG(
     `${spec.label}: ${startOffset > 0 ? `resuming at ${mb(startOffset)}/${mb(spec.bytes)}` : `starting (${mb(spec.bytes)})`}`
   );

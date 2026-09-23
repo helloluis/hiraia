@@ -31,7 +31,9 @@ test('download status follows verified files, isolates images, and never initiat
   let digest = 'good',
     releaseHash = null,
     blockHash = false;
+  const prefs = new Map();
   globalThis.__downloadStatusTest = {
+    storage: {getItem: async key => prefs.get(key) ?? null, setItem: async (key, value) => prefs.set(key, value)},
     documentDirectory: 'file:///documents/',
     getInfoAsync: async (uri, options) => {
       if (options?.md5 && blockHash)
@@ -50,22 +52,24 @@ test('download status follows verified files, isolates images, and never initiat
       files.set(to, files.get(from));
       files.delete(from);
     },
-    createDownloadResumable: (_, target, options, progress) => {
+    createDownloadResumable: (_, target, options, progress, resumeData) => {
       let finish;
       const done = new Promise((r) => {
         finish = r;
       });
       transfers.push({
+        resumeData,
         progress: (bytes) => {
           files.set(target, bytes);
           progress({ totalBytesExpectedToWrite: 100, totalBytesWritten: bytes });
         },
-        finish: () => finish({ status: 200 }),
+        finish: () => finish({ status: resumeData ? 206 : 200 }),
       });
       return { downloadAsync: () => done, pauseAsync: async () => finish(null) };
     },
   };
   const mocks = {
+    '@react-native-async-storage/async-storage': 'export default globalThis.__downloadStatusTest.storage',
     'expo-file-system/legacy':
       'export const {documentDirectory,getInfoAsync,makeDirectoryAsync,deleteAsync,moveAsync,createDownloadResumable}=globalThis.__downloadStatusTest',
     '../telemetry/download': 'export const beginDownload=()=>({installed(){},failed(){}})',
@@ -75,7 +79,7 @@ test('download status follows verified files, isolates images, and never initiat
   async function load() {
     const outfile = path.join(dir, `runtime-${seq++}.cjs`);
     await build({
-      entryPoints: [path.join(mobile, 'src/engine/modelDownload.ts')],
+      stdin: {contents: "export * from './src/engine/modelDownload'; export * from './src/engine/modelDownloadControl';", resolveDir: mobile, loader: 'ts'},
       outfile,
       bundle: true,
       platform: 'node',
@@ -174,6 +178,38 @@ test('download status follows verified files, isolates images, and never initiat
     await cancelled;
     assert.deepEqual(x.assetDownloadStatus(paused.filename), { phase: 'paused', percent: 25 });
     assert.equal(files.get(uri(paused) + '.part'), 25, 'Observability preserves resumable bytes');
+
+    const controlled = {...base, filename: 'controlled.gguf'};
+    const controlledRun = x.ensureRemoteAsset(controlled);
+    const controlledJoin = x.ensureRemoteAsset(controlled);
+    await until(() => transfers.length === 5);
+    transfers[4].progress(40);
+    await x.setModelDownloadsEnabled(false);
+    await until(() => x.assetDownloadStatus(controlled.filename).phase === 'paused');
+    await new Promise(r => setTimeout(r, 10));
+    assert.equal(transfers.length, 5, 'Manual pause cannot auto-restart');
+    assert.equal(files.get(uri(controlled) + '.part'), 40);
+    assert.equal(await x.ensureRemoteAsset(base), uri(base).replace('file://', ''), 'Installed models remain usable while paused');
+    const apk = {...base, filename: 'update.apk', dir: 'file:///cache/'};
+    const apkRun = x.ensureRemoteAsset(apk);
+    await until(() => transfers.length === 6);
+    transfers[5].progress(100); transfers[5].finish();
+    await apkRun;
+    await x.setModelDownloadsEnabled(true);
+    await until(() => transfers.length === 7);
+    assert.equal(transfers[6].resumeData, '40', 'Resume uses the saved prefix, not byte zero');
+    transfers[6].progress(100); transfers[6].finish();
+    await Promise.all([controlledRun, controlledJoin]);
+    assert.equal(transfers.length, 7, 'Paused joiners keep sharing one transfer');
+    await x.setModelDownloadsEnabled(false);
+    x = await load();
+    const abortPaused = new AbortController();
+    const cold = {...base, filename: 'cold.gguf'};
+    const coldRun = assert.rejects(x.ensureRemoteAsset(cold, undefined, abortPaused.signal), /aborted/);
+    await until(() => x.assetDownloadStatus(cold.filename).phase === 'paused');
+    assert.equal(transfers.length, 7, 'Pause survives a new app process');
+    abortPaused.abort();
+    await coldRun;
   } finally {
     delete globalThis.__downloadStatusTest;
     fs.rmSync(dir, { recursive: true, force: true });
