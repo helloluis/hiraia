@@ -11,8 +11,8 @@ android {
         applicationId 'com.hiraia.tala'
         minSdk 29
         targetSdk 35
-        versionCode 18
-        versionName '0.4.3'
+        versionCode 19
+        versionName '0.4.4'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
@@ -37,6 +37,39 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
+
+    testOptions {
+        // CardCatalogCoverageTest reads the student app's whole card index (16 MB of JSON).
+        unitTests.all { maxHeapSize = '1g' }
+    }
+}
+
+// Tala files a student's cards under the student app's subcategories using
+// assets/card-catalog.tsv, generated from the student app's card index. A catalog that fell
+// behind the index would quietly file every newer card under "No subcategory", so no build —
+// debug or release — goes ahead until the generator agrees it is current.
+def repository = rootProject.file('../../..')
+def cardCatalogScript = new File(repository, 'packages/tala/scripts/build-card-catalog.py')
+// Everything the catalog is derived from: the student app's index, the lesson-supplement files
+// it spreads into its pool, and the source the generator reads its rules out of.
+def cardCatalogSources = files('src/main/assets/card-catalog.tsv',
+    new File(repository, 'packages/mobile/src/generated/cardsIndex.generated.json'),
+    new File(repository, 'packages/mobile/src/data/cards.ts'),
+    new File(repository, 'packages/mobile/src/data/lessonSupplement.ts'),
+    fileTree(new File(repository, 'packages/mobile/src/data')) { include '*LessonSupplement.json' })
+def checkCardCatalog = tasks.register('checkCardCatalog', Exec) {
+    description = 'Fails when assets/card-catalog.tsv is behind the student app card index.'
+    inputs.files(cardCatalogScript, cardCatalogSources)
+    def checked = layout.buildDirectory.file('card-catalog/checked')
+    outputs.file(checked)
+    commandLine 'python3', cardCatalogScript, '--check'
+    doLast { checked.get().asFile.text = 'current\n' }
+}
+tasks.named('preBuild') { dependsOn checkCardCatalog }
+// CardCatalogCoverageTest reads the same files straight off disk; without them as inputs a
+// data-only change would leave the unit tests UP-TO-DATE and replay an old green result.
+tasks.withType(Test).configureEach {
+    inputs.files(cardCatalogSources).withPropertyName('cardCatalogSources').withPathSensitivity(PathSensitivity.RELATIVE)
 }
 
 dependencies {
@@ -44,6 +77,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-nearby:19.4.0'
     implementation 'com.google.zxing:core:3.5.4'
     implementation 'androidx.core:core:1.17.0'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.json:json:20180813'
     androidTestImplementation 'androidx.test:runner:1.6.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
 }

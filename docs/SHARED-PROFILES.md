@@ -33,6 +33,15 @@ keys, so label collisions cannot merge data. Session lists show the friendly lab
 Neon already mirrors event JSON, so the new anonymous fields need no mirror schema
 change.
 
+Classroom sync (Hiraia Tala, `packages/mobile/TALA-SETUP.md`) is per profile too. Each
+profile, and the Guest, joins its own class; a teacher receives only the names and activity
+of the students in that class, and one student leaving does not affect the others. The
+bindings live in the shared telemetry database, keyed by profile id or `guest`, because the
+sync engine must serve every student from whichever profile is open. Phones enrolled on
+0.4.23 (one class per phone) re-join per student after upgrading. If profile delete or
+rename is ever added, delete must leave that profile's class and rename changes the name
+its teacher sees at the next sync.
+
 Local Activity filters by profile and grade at event time; quiz attempts retain the
 identity and persona from first display. Historic rows with no profile are Guest.
 Existing anonymous history is never reassigned when a student gives a name.

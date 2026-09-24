@@ -32,6 +32,17 @@
  * NOTHING HERE THROWS TO A CALLER. The ribbon is a courtesy; a failed check is logged and
  * the feed carries on. Only the download / install steps surface a `failed` state, and
  * only because the reader asked for them.
+ *
+ * OTA JS UPDATES (expo-updates, 0.4.24+) are a second, quieter channel beside the APK — see
+ * updates/ota.ts for what the native module already does on its own. This store adds:
+ *   • `manualCheck` asks the OTA route FIRST and downloads what it offers, on any network
+ *     (the reader asked), then carries on with the APK manifest. A staged update surfaces
+ *     only as `otaPending` — "Hiraia will update the next time you open it" — never as the
+ *     ribbon: there is nothing for the reader to do.
+ *   • the launch / foreground / tick schedule above also takes an OTA look, on its own 6 h
+ *     cadence and under the same model-transfer gate, that fetches only the manifest and
+ *     applies only a rollback directive (the native check never runs on mobile data).
+ * Nothing here ever reloads the JS: an update applies at the next cold start.
  */
 import * as Application from 'expo-application';
 import Constants from 'expo-constants';
@@ -49,6 +60,7 @@ import { getSetting, setSetting } from '../db/repo';
 import { ensureRemoteAsset } from '../engine/modelDownload';
 import { modelDownloadPreference, subscribeModelDownloadPreference } from '../engine/modelDownloadControl';
 import { errorCategory, track } from '../telemetry';
+import { applyOtaRollback, fetchOtaNow, otaEnabled, subscribeOtaPending } from '../updates/ota';
 import { useEngineStore, type ReadyStage } from './engineStore';
 import { useAssetUpdateStore, pauseAssetModelDownload, startAssetUpdates } from './assetUpdateStore';
 
@@ -127,6 +139,8 @@ interface UpdateState {
   localPath: string | null;
   /** installed < manifest.minSupportedVersionCode: the ribbon cannot be snoozed. */
   forced: boolean;
+  /** An OTA update (or a rollback) is downloaded and applies at the next cold start. */
+  otaPending: boolean;
 
   /** Ask the manifest. Silent on every failure. `reason` is for the log only. */
   checkForUpdate: (reason: 'launch' | 'foreground' | 'tick' | 'deferred' | 'manual') => Promise<void>;
@@ -138,11 +152,12 @@ interface UpdateState {
   retry: () => Promise<void>;
   /**
    * Settings → "Check for updates": the reader asked, so gates that exist for politeness
-   * (snooze, recheck spacing) do not apply. Resolves to what the row should say. 'busy'
-   * = a model/content transfer owns the network right now; 'error' = the manifest was
+   * (snooze, recheck spacing, Wi-Fi only) do not apply. Resolves to what the row should say.
+   * 'ota' = no newer APK, but a JS update is staged for the next launch; 'busy' = a
+   * model/content transfer owns the network right now; 'error' = the manifest was
    * unreachable (offline being the normal case).
    */
-  manualCheck: () => Promise<'available' | 'uptodate' | 'busy' | 'error'>;
+  manualCheck: () => Promise<'available' | 'ota' | 'uptodate' | 'busy' | 'error'>;
   /** The ✕: hide this versionCode for SNOOZE_MS. No-op when `forced`. */
   snooze: () => Promise<void>;
 }
@@ -310,6 +325,46 @@ function checkDue(): boolean {
   return now - lastFailedAt >= FAILED_RETRY_MS;
 }
 
+/**
+ * The OTA look keeps its own clock, with the same spacing: it talks to a different route,
+ * and one of the two answering must not silence the other for six hours. A reader's manual
+ * check stamps it too.
+ */
+let otaCheckedAt = 0;
+let otaFailedAt = 0;
+let otaInFlight = false;
+
+function otaDue(): boolean {
+  if (!otaEnabled() || otaInFlight) return false;
+  const now = Date.now();
+  return now - otaCheckedAt >= RECHECK_MS && now - otaFailedAt >= FAILED_RETRY_MS;
+}
+
+/**
+ * The background OTA look (manifest only; applies only a rollback directive). A model
+ * transfer skips it rather than deferring it: the 15-minute tick asks again, and a
+ * few-KB request is not worth a subscription.
+ */
+async function lookForOta(reason: 'launch' | 'foreground' | 'tick'): Promise<void> {
+  if (!otaDue()) return;
+  if (modelTransferInFlight()) {
+    LOG(`${reason}: OTA look skipped — model transfer in flight`);
+    return;
+  }
+  otaInFlight = true;
+  try {
+    const result = await applyOtaRollback();
+    if (result === 'error') {
+      otaFailedAt = Date.now();
+    } else if (result !== null) {
+      otaCheckedAt = Date.now();
+      otaFailedAt = 0;
+    }
+  } finally {
+    otaInFlight = false;
+  }
+}
+
 // ---------------------------------------------------------------------------------------
 // the store
 // ---------------------------------------------------------------------------------------
@@ -323,6 +378,7 @@ export const useUpdateStore = create<UpdateState>((set, get) => ({
   installedVersionCode: installedVersionCode(),
   localPath: null,
   forced: false,
+  otaPending: false,
 
   checkForUpdate: async (reason) => {
     if (Platform.OS !== 'android') return;
@@ -477,6 +533,16 @@ export const useUpdateStore = create<UpdateState>((set, get) => ({
   manualCheck: async () => {
     if (Platform.OS !== 'android') return 'uptodate';
     if (modelTransferInFlight()) return 'busy';
+    // OTA first, and on any network: this is the one path allowed to download a bundle over
+    // mobile data, because the reader asked. The native state listener (startUpdateChecks)
+    // also flips otaPending, but its event may land after this promise, so set it here too.
+    const ota = await fetchOtaNow();
+    if (ota === 'error') otaFailedAt = Date.now();
+    else if (ota !== null) {
+      otaCheckedAt = Date.now();
+      otaFailedAt = 0;
+    }
+    if (ota === 'staged') set({ otaPending: true });
     // An explicit ask forgets the ✕ — clearing BEFORE the check so a snoozed manifest
     // resurfaces as 'available' rather than sliding back into 'snoozed'.
     try {
@@ -490,6 +556,7 @@ export const useUpdateStore = create<UpdateState>((set, get) => ({
     const after = get();
     if (after.status === 'available' || after.status === 'downloading' || after.status === 'ready')
       return 'available';
+    if (after.otaPending) return 'ota';
     if (after.lastCheckedAt !== before) return 'uptodate';
     return 'error';
   },
@@ -547,6 +614,9 @@ export function startUpdateChecks(): () => void {
     };
   }
   const stopAssets = startAssetUpdates(() => useUpdateStore.getState().status === 'downloading');
+  const stopOta = subscribeOtaPending((otaPending) => {
+    if (useUpdateStore.getState().otaPending !== otaPending) useUpdateStore.setState({ otaPending });
+  });
   const store = useUpdateStore.getState();
   const installed = store.installedVersionCode;
   if (installed !== null) void pruneStaleApks(installed);
@@ -560,21 +630,27 @@ export function startUpdateChecks(): () => void {
   const launch = InteractionManager.runAfterInteractions(() => {
     launchTimer = setTimeout(() => {
       if (checkDue()) void useUpdateStore.getState().checkForUpdate('launch');
+      void lookForOta('launch');
     }, LAUNCH_DELAY_MS);
   });
 
   // Foreground: every return to the app, at most every RECHECK_MS.
   const sub = AppState.addEventListener('change', (state) => {
-    if (state === 'active' && checkDue()) void useUpdateStore.getState().checkForUpdate('foreground');
+    if (state !== 'active') return;
+    if (checkDue()) void useUpdateStore.getState().checkForUpdate('foreground');
+    void lookForOta('foreground');
   });
   // A tablet that never leaves the foreground still gets its 6-hourly look.
   const tick = setInterval(() => {
-    if (AppState.currentState === 'active' && checkDue()) void useUpdateStore.getState().checkForUpdate('tick');
+    if (AppState.currentState !== 'active') return;
+    if (checkDue()) void useUpdateStore.getState().checkForUpdate('tick');
+    void lookForOta('tick');
   }, FAILED_RETRY_MS);
 
   return () => {
     started--;
     stopAssets();
+    stopOta();
     launch.cancel();
     if (launchTimer) clearTimeout(launchTimer);
     sub.remove();

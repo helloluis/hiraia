@@ -343,6 +343,192 @@ module, camera permissions, and `withTalaNearby.js`; an old generated Android tr
 does not acquire those changes from `pnpm apk` alone. Do not run a clean prebuild
 over locally customized native files without preserving them first.
 
+## OTA JS updates (expo-updates, 0.4.24+)
+
+From 0.4.24 an installed APK can take a **JS-only** update without a new APK: a new
+Hermes bundle (plus any small new Metro assets) for the SAME native build. Everything
+native — a dependency, a config plugin, `app.json`, the QVAC engines, the bundled art —
+still needs an APK, and the runtime version enforces that on the phone (below). 0.4.23
+and older have no expo-updates; they reach 0.4.24 through the APK channel only.
+
+How a phone behaves (`src/updates/ota.ts`, `src/store/updateStore.ts`):
+
+- **Cold start on Wi-Fi** (`checkAutomatically: WIFI_ONLY`): the native module asks
+  `https://hiraia.org/api/updates/manifest` and downloads a newer update in the
+  background. Launch never waits (`fallbackToCacheTimeout: 0`); the update runs from the
+  NEXT cold start. Never on mobile data.
+- **Settings → Check for updates**: checks and downloads on any network (the reader
+  asked), then does the APK check as before. A staged update shows one line —
+  "Hiraia will update the next time you open it" — and no banner.
+- **Every 6 h in the foreground**, never during a model transfer: the manifest only, and
+  only a rollback directive is acted on — so a phone that lives on prepaid data still
+  gets pulled back off a bad update.
+- JS never calls `reloadAsync()`: reloading with the QVAC worker or ONNX sessions alive
+  can orphan a loaded model.
+- A crash before first render marks the update failed and relaunches the previous one.
+  Anything later (the tutor, sync, a `dlopen` at model load) needs a server-side rollback.
+- The sidebar's version row shows the running update's short id next to the build number;
+  telemetry can carry `otaTelemetry()` (`ota_update_id`, `ota_runtime`).
+
+### Release order: the server side goes FIRST (0.4.24, Tala 0.4.4)
+
+Every 0.4.24 `session_started` carries `ota_update_id`, and Tala 0.4.4 relays that key.
+The collector 0.4.23 talks to rejects any prop key it does not know, and **a rejection is
+final**: the phone's outbox deletes the event (logging `queue_dropped`), and Tala marks the
+relayed row `rejected` and never retries it. So no 0.4.24 phone or Tala 0.4.4 — **test
+devices included** — may sync with hiraia.org until all of this is live:
+
+1. Commit and push `packages/web` (the `ota_update_id` allowlist in
+   `src/lib/telemetry/store.ts` and the `/api/updates/manifest` route); run
+   `deploy/update.sh` on the VPS.
+2. Redeploy the telemetry collector — **`update.sh` does not**. nginx sends
+   `/api/telemetry/batch` to the standalone collector (`hiraia-telemetry`, `127.0.0.1:8136`,
+   running `/opt/hiraia-telemetry/server.cjs`), a separate bundle of the same `store.ts`.
+   From that commit, `bash tools/pilot-telemetry/build-server.sh` (plain JS, so the Mac is
+   fine), copy `packages/web/.telemetry/server.cjs` to `/opt/hiraia-telemetry/server.cjs`
+   on the VPS, then `systemctl restart hiraia-telemetry` (layout:
+   `tools/pilot-telemetry/PILOT-DASHBOARD.md`; `docs/APP-VERSION-REPORTING.md` set the
+   same rule for its fields).
+3. Check both:
+   ```bash
+   curl -s -o /dev/null -w '%{http_code}\n' -H 'expo-protocol-version: 1' https://hiraia.org/api/updates/manifest
+   #   400 = the route is live (a 404 = the old web build)
+   curl -s https://hiraia.org/api/telemetry/batch -H 'content-type: application/json' -d '{"schema":1,"installation_id":"release-smoke-ota-0p4p24","events":[{"id":"release-smoke-ota-0p4p24-1","name":"session_started","occurred_at":'"$(date +%s000)"',"session_id":"release-smoke-ota-0p4p24-s","props":{"ota_update_id":"embedded"}}]}'
+   #   {"acknowledged":["release-smoke-ota-0p4p24-1"],"rejected":[]} — "rejected" = the old collector: STOP
+   ```
+   The POST records that one designated synthetic event; remove just it from both stores
+   afterwards, as `PILOT-DASHBOARD.md` requires. (An old collector's rejection stores nothing.)
+4. Only then install 0.4.24 or Tala 0.4.4 on any device, upload the APKs or the
+   `hiraia.apk` alias, move the `download.ts` / `tala-download.json` pointers (a second
+   commit + `update.sh`), or publish an OTA.
+
+The same rule holds for any later release that adds a telemetry prop key.
+
+### It needs a prebuild
+
+The updates server is ours, not EAS: `app.json` keeps `extra.eas.projectId` for EAS
+Build only. Never run `eas update` or `eas update:configure` — they would repoint
+`updates.url` at `u.expo.dev`, and the URL is permanent (it scopes every downloaded update).
+
+`app.json`'s `updates` block and `runtimeVersion` are **baked at prebuild**: the URL, the
+Wi-Fi-only check, the code-signing certificate and `expo_runtime_version =
+file:fingerprint` go into the generated manifest and `strings.xml`. Change any of them —
+or `version` / `versionCode` — and `pnpm prebuild` again, or the APK ships the old values
+(the same trap as versionCode). `pnpm apk` then refuses an APK that is not OTA-ready:
+
+- `createReleaseUpdatesResources` (expo-updates' gradle task, which writes the embedded
+  `assets/app.manifest` and `assets/fingerprint`) has no file inputs, so its output is
+  deleted before every build like the JS bundle's, and an `UP-TO-DATE` run of it fails
+  the build;
+- the finished APK must contain both files, its `assets/fingerprint` must equal
+  `npx expo-updates fingerprint:generate --platform android` for this tree, and its
+  manifest must say updates enabled, this URL, `WIFI_ONLY`, and `file:fingerprint`.
+
+### The runtime version is a fingerprint
+
+`runtimeVersion: { policy: "fingerprint" }`: a phone only accepts an update whose runtime
+equals the hash in its own APK. The default fingerprint covers `app.json`, the config
+plugins (and what they `require`), every autolinked native module and React Native's
+version. `fingerprint.config.js` adds what reaches the APK another way — the QVAC addon
+versions and worker `bundleId` (from `qvac/addons.manifest.json`), the bundled
+illustration inventory, `post-prebuild.mjs` / `illustration-assets.gradle` /
+`stage-bundled-art.mjs`, `native/`, `qvac.config.json` and `certs/certificate.pem`. It
+fails closed: in a tree that never ran prebuild (no `qvac/`) the command errors instead of
+producing a fingerprint without those sources.
+
+```bash
+cd packages/mobile && npx expo-updates fingerprint:generate --platform android   # {"sources":[…],"hash":"<40 hex>"}
+```
+
+That is THIS tree's fingerprint. The runtime the phones run is the one baked into the APK;
+wherever a command below takes `--runtime`, take it from the signed APK or
+from the `"runtime"` of the `ledger:` line the publish printed — never from
+`fingerprint:generate` on a checkout that has moved on since (any `app.json`, plugin or
+script change gives another hash):
+
+```bash
+unzip -p packages/mobile/android/app/build/outputs/apk/release/hiraia-v0p4p24.apk assets/fingerprint
+```
+
+Consequence: **publish an OTA from the tree that built the APK** — tag each release and
+cherry-pick JS fixes into a worktree at that tag. A fresh worktree also needs the build
+inputs git does not hold (the voice `model.onnx` files, `assets/data/cards.db` and
+`tokens.bin`, a prebuilt `qvac/`), with the same bytes, or the guards below refuse.
+
+### Signing key custody
+
+- The **private key** is `~/.hiraia/ota-keys/private-key.pem` (mode 600) on Luis's Mac.
+  It never enters the repo (the root `.gitignore` covers `*.key`, **not** `*.pem`) and never
+  the server: the route relays manifests signed at publish time.
+- **Back it up now** to the password manager, with `public-key.pem` beside it. Losing it
+  means no OTA can ever reach the APKs already installed; only a new APK with a new
+  certificate recovers, and rotating the key costs the same.
+- The **certificate** `certs/certificate.pem` is public and committed (CN=Hiraia, valid to
+  2046-09-24). Prebuild inlines it into the APK; an expired certificate makes phones
+  reject every update until a new APK ships.
+
+### Publish
+
+`deploy/publish-ota.py` (boto3 venv, same env file as `publish-release-assets.py`) is the
+only thing that makes an update: it checks the tree against the SIGNED APK (clean git,
+`PREFLIGHT_ONLY=1 scripts/build-apk.sh`, fingerprint equality, Hermes version, QVAC
+`bundleId`), runs `expo export`, refuses new assets over 2 MB each / 5 MB total (content
+goes by content pack or APK — never `cards.db`, `tokens.bin` or a voice by OTA), uploads
+content-addressed objects under `assets.hiraia.org/ota/android/`, signs the manifest, and
+flips the ring in `ota/android/<runtime>/channel.json`. Today's JS-only update is the
+37.6 MB Hermes bundle (8–11 MB on the wire if the edge compresses it; the script measures).
+
+```bash
+PY=~/.venvs/hiraia-publish/bin/python; ENV=--env-file=/Users/luis/Code/hiraia/.env.cloudflare.local
+APK=packages/mobile/android/app/build/outputs/apk/release/hiraia-v0p4p24.apk
+RT=$(unzip -p $APK assets/fingerprint)                                # the runtime the phones run
+$PY deploy/publish-ota.py --dry-run --apk $APK                       # everything local, nothing uploaded
+$PY deploy/publish-ota.py $ENV --apk $APK --ring canary --canary-client <EAS-Client-ID>
+#   cold-start the canary phone twice: the sidebar shows the new id; no [cardDb] re-copy
+finetuning/eval/harness/run-harness.sh | tee /tmp/gate.log            # production needs a GREEN gate
+$PY deploy/publish-ota.py $ENV --runtime $RT --ring production --promote --rollout 10 --gate-log /tmp/gate.log
+$PY deploy/publish-ota.py $ENV --runtime $RT --ring production --rollout-only --rollout 100
+```
+
+A test phone's EAS-Client-ID: tap Check for updates on it, then read the newest
+`[ota] … client=<id>` line in `pm2 logs hiraia-web` on the VPS. The same log carries
+`[ota] LAUNCH FAILURE … failed=<ids> fatal=<text>` when phones report a failed launch —
+**stop widening a rollout when those appear** (`--rollout-only --rollout 0` halts it; phones
+that already took it need a rollback, below).
+
+How the rings move (every flip prints what each ring now serves):
+
+- Phones outside a production rollout get the **fallback**: the release it replaced, but
+  only if that one had reached 100%. A release held below 100% (halted, or still going
+  out) never becomes the fallback, so publishing its fix at 10% leaves everyone else on
+  the last release that reached them all — not on the one you held back.
+- Whenever production takes a new release (`--promote`, `--republish`, a direct publish,
+  `--rollback-to-embedded`), the canary release is cleared and canary phones follow
+  production again. Re-sizing (`--rollout-only`) leaves the canary alone.
+
+### Roll back
+
+Phones only move FORWARD (a newer `createdAt`), so pointing the channel back at an older
+update does nothing. Either sign something new:
+
+```bash
+$PY deploy/publish-ota.py $ENV --runtime <fingerprint> --ring production --republish <last good update id> --rollout 100
+$PY deploy/publish-ota.py $ENV --runtime <fingerprint> --ring production --rollback-to-embedded   # back to the APK's bundle
+```
+
+`<fingerprint>` is the APK's own (`unzip -p <signed apk> assets/fingerprint`, or the ledger
+line — see "The runtime version is a fingerprint"). A rollback aimed at a runtime where no
+update was ever published is refused before anything is signed, and the refusal lists the
+runtimes that exist on R2: a brake on the wrong runtime would otherwise "succeed" while
+every real phone keeps the bad update. Either rollback also clears the canary release, so
+canary phones are rolled back with everyone else. Database migrations must stay
+additive, because a crash on launch or `--rollback-to-embedded` runs older JS against the
+newer database, and in the end that is the APK's embedded bundle, which no OTA can patch: an
+OTA may only add tables, and columns that are nullable or have a default. It must never drop,
+rename or retype a table or column, or add a constraint older writes could break. Every INSERT
+in `src/telemetry/repository.ts` names its columns, so older JS survives added columns
+(`tools/pilot-telemetry/repository.test.mts` enforces it).
+
 ## Image-pack coverage gate
 
 After changing card grade assignments, curriculum tags, bundled art or image shards, run:

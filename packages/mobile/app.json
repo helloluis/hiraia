@@ -2,7 +2,7 @@
   "expo": {
     "name": "Hiraia",
     "slug": "hiraia",
-    "version": "0.4.23",
+    "version": "0.4.24",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -29,7 +29,7 @@
         "backgroundColor": "#1C3B2E"
       },
       "package": "com.hiraia.app",
-      "versionCode": 23,
+      "versionCode": 24,
       "permissions": [
         "REQUEST_INSTALL_PACKAGES"
       ]
@@ -72,6 +72,21 @@
         }
       ]
     ],
+    "runtimeVersion": {
+      "policy": "fingerprint"
+    },
+    "updates": {
+      "enabled": true,
+      "url": "https://hiraia.org/api/updates/manifest",
+      "checkAutomatically": "WIFI_ONLY",
+      "fallbackToCacheTimeout": 0,
+      "useEmbeddedUpdate": true,
+      "codeSigningCertificate": "./certs/certificate.pem",
+      "codeSigningMetadata": {
+        "keyid": "main",
+        "alg": "rsa-v1_5-sha256"
+      }
+    },
     "experiments": {
       "typedRoutes": true
     },

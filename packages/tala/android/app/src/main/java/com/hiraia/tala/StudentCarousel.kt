@@ -1,7 +1,7 @@
 package com.hiraia.tala
 
-import android.app.Dialog
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
@@ -15,8 +15,10 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
-import org.json.JSONObject
 import java.text.DateFormat
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import kotlin.math.abs
 
 class StudentCarousel(
@@ -24,6 +26,7 @@ class StudentCarousel(
     private val database: TalaDatabase,
     private val roster: List<RosterCard>,
     private var index: Int,
+    private val onRemoved: () -> Unit = {},
     private val status: (StudentRow) -> Pair<String, Int>
 ) : Dialog(context) {
     private lateinit var pages: FrameLayout
@@ -165,53 +168,67 @@ class StudentCarousel(
         tableRow(content, "Last batch accepted", student.lastAccepted.toString(), false)
         tableRow(content, "Last batch rejected", student.lastRejected.toString(), true)
 
-        section(content, "Activity by type · all time")
-        tableHeader(content, "Activity", "Count")
-        val breakdown = database.eventBreakdown(student)
-        if (breakdown.isEmpty()) tableRow(content, "No activity stored yet", "—", false)
-        breakdown.forEachIndexed { row, (name, count) ->
-            tableRow(content, readable(name), count.toString(), row % 2 != 0)
+        section(content, "Learning activity")
+        val periods = SchoolPeriods.around(LocalDate.now(), ZoneId.systemDefault())
+        val events = database.learningEvents(student, periods.minOf { it.start }, periods.maxOf { it.end })
+        val totals = periods.map { period ->
+            ActivityTotals.of(events.filter { it.occurredAt >= period.start && it.occurredAt < period.end })
         }
+        periodHeader(content, periods)
+        periodRow(content, "Total viewed", totals.map { it.viewed.toString() }, false)
+        periodRow(content, "Unique viewed", totals.map { it.unique.toString() }, true)
+        periodRow(content, "Quizzes taken", totals.map { it.quizzes.toString() }, false)
+        periodRow(content, "Quizzes correct", totals.map { it.correct.toString() }, true)
+        note(content, "Counted by when the student did it. A phone that has not connected " +
+            "since may still add to these. School days are Monday to Friday; holidays are not skipped.")
 
-        section(content, "Recent activity · last 7 days")
-        val events = database.recentEvents(student, System.currentTimeMillis() - SEVEN_DAYS)
-        content.addView(label("Includes older activity received by Tala this week. Tap an event for details.", 12f, MUTED, false),
-            LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = dp(8) })
-        tableHeader(content, "When", "Activity / result")
-        if (events.isEmpty()) tableRow(content, "No recent activity", "—", false)
-        val eventRows = LinearLayout(context).apply { orientation = LinearLayout.VERTICAL }
-        content.addView(eventRows)
-        var shown = 0
-        lateinit var showMore: () -> Unit
-        val more = navigationButton("Show 50 more") { showMore() }
-        showMore = {
-            val end = minOf(shown + 50, events.size)
-            for (row in shown until end) {
-                val event = events[row]
-                val result = when {
-                    event.name == "quiz_graded" && event.correct -> " · Correct"
-                    event.name == "quiz_graded" -> " · Incorrect"
-                    else -> ""
-                }
-                tableRow(eventRows, formatted(event.occurredAt), readable(event.name) + result + " ›",
-                    row % 2 != 0).setOnClickListener {
-                    val details = JSONObject(event.props).toString(2)
-                    AlertDialog.Builder(context).setTitle(readable(event.name))
-                        .setMessage("Occurred: ${formatted(event.occurredAt)}\n" +
-                            "Received: ${formatted(event.receivedAt)}\n" +
-                            "Event ID: ${event.eventId}\n\n$details")
-                        .setPositiveButton("Close", null).show()
-                }
-            }
-            shown = end
-            more.visibility = if (shown < events.size) View.VISIBLE else View.GONE
+        section(content, "By day")
+        val catalog = CardCatalog.get(context)
+        val zone = ZoneId.systemDefault()
+        val today = LocalDate.now(zone)
+        val days = LinearLayout(context).apply { orientation = LinearLayout.VERTICAL }
+        content.addView(days)
+        var before = Long.MAX_VALUE
+        lateinit var earlier: TextView
+        val load = {
+            val page = database.learningDays(student, before, DAYS_PER_PAGE, zone)
+            for ((date, dayEvents) in page) dayBlock(days, DayActivity.of(date, dayEvents, catalog), today)
+            page.lastOrNull()?.let { before = it.first.atStartOfDay(zone).toInstant().toEpochMilli() }
+            if (page.isEmpty() && days.childCount == 0)
+                days.addView(label("No cards viewed or quizzes answered yet.", 13f, MUTED, false))
+            earlier.visibility = if (database.latestLearningBefore(student, before) != null) View.VISIBLE else View.GONE
         }
-        content.addView(more, LinearLayout.LayoutParams(-1, dp(46)).apply { topMargin = dp(10) })
-        showMore()
+        earlier = navigationButton("Show earlier days") { load() }
+        content.addView(earlier, LinearLayout.LayoutParams(-1, dp(46)).apply { topMargin = dp(12) })
+        load()
+        note(content, "A card in two subcategories is listed under both.")
+        content.addView(navigationButton("Remove from class") { confirmRemove(card) }.apply {
+            setTextColor(DANGER)
+            background = rounded(DANGER_PALE, 12)
+        }, LinearLayout.LayoutParams(-1, dp(46)).apply { topMargin = dp(32) })
         return ScrollView(context).apply {
             isFillViewport = false
             addView(content)
         }
+    }
+
+    private fun confirmRemove(card: RosterCard) {
+        // A 'guest' row is the placeholder older student builds made for Guest activity. Removing
+        // it is not sticky against the phone's Guest later joining this class for real.
+        val after = if (card.student.profileId == "guest")
+            "If a student on that phone later joins this class as Guest, they appear again as a new tile."
+        else "If their phone syncs again, Tala ignores their activity; other students on the same " +
+            "phone are not affected. This cannot be undone."
+        AlertDialog.Builder(context).setTitle("Remove ${card.displayName} from this class?")
+            .setMessage("Their activity is deleted from Tala, and they no longer appear in this class " +
+                "or its spreadsheet. $after")
+            .setNegativeButton("Cancel", null)
+            .setPositiveButton("Remove") { _, _ ->
+                database.removeStudent(card.student)
+                dismiss()
+                onRemoved()
+            }
+            .show()
     }
 
     private fun section(parent: LinearLayout, title: String) {
@@ -226,11 +243,11 @@ class StudentCarousel(
     }
 
     private fun tableRow(parent: LinearLayout, first: String, second: String, shaded: Boolean,
-        heading: Boolean = false): LinearLayout {
+        heading: Boolean = false) {
         val row = LinearLayout(context).apply {
             gravity = Gravity.CENTER_VERTICAL
             setPadding(dp(10), dp(9), dp(10), dp(9))
-            setBackgroundColor(if (heading) PALE else if (shaded) 0xFFF0F2ED.toInt() else Color.WHITE)
+            setBackgroundColor(if (heading) PALE else if (shaded) SHADE else Color.WHITE)
         }
         row.addView(label(first, if (heading) 12f else 13f, if (heading) TEAL else MUTED, heading),
             LinearLayout.LayoutParams(0, -2, 0.43f))
@@ -238,7 +255,68 @@ class StudentCarousel(
             gravity = Gravity.END
         }, LinearLayout.LayoutParams(0, -2, 0.57f))
         parent.addView(row, LinearLayout.LayoutParams(-1, -2))
-        return row
+    }
+
+    private fun periodHeader(parent: LinearLayout, periods: List<SchoolPeriod>) {
+        // Bottom-aligned so the dates share one line however many lines each name wraps to.
+        val row = periodRowLayout(PALE).apply { gravity = Gravity.BOTTOM }
+        row.addView(label("", 12f, TEAL, true), LinearLayout.LayoutParams(0, -2, MEASURE_WEIGHT))
+        for (period in periods) row.addView(LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            addView(label(period.label, 12f, TEAL, true).apply { gravity = Gravity.END })
+            addView(label(period.dates, 11f, MUTED, false).apply { gravity = Gravity.END })
+        }, LinearLayout.LayoutParams(0, -2, PERIOD_WEIGHT).apply { leftMargin = dp(6) })
+        parent.addView(row, LinearLayout.LayoutParams(-1, -2))
+    }
+
+    private fun periodRow(parent: LinearLayout, measure: String, values: List<String>, shaded: Boolean) {
+        val row = periodRowLayout(if (shaded) SHADE else Color.WHITE)
+        row.addView(label(measure, 13f, MUTED, false), LinearLayout.LayoutParams(0, -2, MEASURE_WEIGHT))
+        for (value in values) row.addView(label(value, 15f, INK, true).apply {
+            gravity = Gravity.END
+        }, LinearLayout.LayoutParams(0, -2, PERIOD_WEIGHT).apply { leftMargin = dp(6) })
+        parent.addView(row, LinearLayout.LayoutParams(-1, -2))
+    }
+
+    private fun dayBlock(parent: LinearLayout, day: DayActivity, today: LocalDate) {
+        val heading = LinearLayout(context).apply {
+            gravity = Gravity.CENTER_VERTICAL
+            setPadding(dp(10), dp(9), dp(10), dp(9))
+            setBackgroundColor(PALE)
+        }
+        val pattern = if (day.date.year == today.year) "EEEE d MMM" else "EEEE d MMM yyyy"
+        heading.addView(label(day.date.format(DateTimeFormatter.ofPattern(pattern)), 15f, INK, true),
+            LinearLayout.LayoutParams(0, -2, 1f))
+        when (day.date) {
+            today -> "Today"
+            today.minusDays(1) -> "Yesterday"
+            else -> null
+        }?.let { heading.addView(label(it, 12f, TEAL, true)) }
+        parent.addView(heading, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(12) })
+        // With one subcategory the day's totals ARE that subcategory's; saying it twice is noise.
+        if (day.subcategories.size > 1) parent.addView(label(day.totals.describe(), 13f, INK, false).apply {
+            setPadding(dp(10), dp(8), dp(10), dp(8))
+            setBackgroundColor(Color.WHITE)
+        }, LinearLayout.LayoutParams(-1, -2))
+        day.subcategories.forEachIndexed { index, subcategory ->
+            parent.addView(LinearLayout(context).apply {
+                orientation = LinearLayout.VERTICAL
+                setPadding(dp(22), dp(8), dp(10), dp(9))
+                setBackgroundColor(if (index % 2 == 0) SHADE else Color.WHITE)
+                addView(label(subcategory.label, 14f, INK, true))
+                addView(label(subcategory.totals.describe(), 12f, MUTED, false))
+            }, LinearLayout.LayoutParams(-1, -2))
+        }
+    }
+
+    private fun note(parent: LinearLayout, text: String) {
+        parent.addView(label(text, 12f, MUTED, false), LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(8) })
+    }
+
+    private fun periodRowLayout(color: Int): LinearLayout = LinearLayout(context).apply {
+        gravity = Gravity.CENTER_VERTICAL
+        setPadding(dp(10), dp(9), dp(10), dp(9))
+        setBackgroundColor(color)
     }
 
     private fun navigationButton(text: String, action: () -> Unit): TextView = label(text, 14f, TEAL, true).apply {
@@ -264,15 +342,18 @@ class StudentCarousel(
     private fun formatted(timestamp: Long): String = DateFormat.getDateTimeInstance(
         DateFormat.SHORT, DateFormat.SHORT).format(timestamp)
 
-    private fun readable(value: String): String = value.replace('_', ' ')
-        .replaceFirstChar { it.uppercase() }
-
     companion object {
-        private const val SEVEN_DAYS = 7L * 24 * 60 * 60 * 1000
+        private const val MEASURE_WEIGHT = 0.37f
+        private const val PERIOD_WEIGHT = 0.21f
+        /** About a school week of active days; older ones load on request. */
+        private const val DAYS_PER_PAGE = 5
         private val PAPER = 0xFFF6F4EC.toInt()
+        private val SHADE = 0xFFF0F2ED.toInt()
         private val INK = 0xFF173F3D.toInt()
         private val TEAL = 0xFF087A78.toInt()
         private val PALE = 0xFFDDF0EE.toInt()
         private val MUTED = 0xFF667872.toInt()
+        private val DANGER = 0xFFAD514B.toInt()
+        private val DANGER_PALE = 0xFFF7E3E0.toInt()
     }
 }

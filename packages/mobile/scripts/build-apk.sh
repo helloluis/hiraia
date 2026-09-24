@@ -14,8 +14,15 @@
 # the repo rather than /tmp precisely because the /tmp copy went missing and the
 # trap came back.
 #
-#   packages/mobile/scripts/build-apk.sh            # build
-#   INSTALL=1 packages/mobile/scripts/build-apk.sh  # build + adb install
+# expo-updates (0.4.24+) adds a second task with the same trap:
+# `createReleaseUpdatesResources` writes the APK's embedded update manifest and its
+# OTA runtime fingerprint, and declares no file inputs at all. Its output is
+# deleted too, an UP-TO-DATE run of it fails the build, and the fingerprint in the
+# finished APK is checked against this tree (see the end of this script).
+#
+#   packages/mobile/scripts/build-apk.sh                  # build
+#   INSTALL=1 packages/mobile/scripts/build-apk.sh        # build + adb install
+#   PREFLIGHT_ONLY=1 packages/mobile/scripts/build-apk.sh # checks only (deploy/publish-ota.py)
 # ============================================================================
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
@@ -156,6 +163,13 @@ if [ "$STALE" = 1 ]; then
 fi
 echo ">> card inventory is current"
 
+# An OTA ships the same JS against the same bundled data, so deploy/publish-ota.py runs every
+# check above before it exports — from here, so the two can never disagree.
+if [ "${PREFLIGHT_ONLY:-0}" = "1" ]; then
+  echo ">> pre-flight checks passed (PREFLIGHT_ONLY — not building)"
+  exit 0
+fi
+
 cd "$MOBILE"
 
 # ---------------------------------------------------------------------------------------
@@ -171,8 +185,13 @@ echo ">> re-applying native overrides (post-prebuild)"
 node "$MOBILE/scripts/post-prebuild.mjs"
 
 echo ">> clearing bundle outputs so Metro cannot be skipped"
+# createReleaseUpdatesResources is expo-updates' task (expo-updates-gradle-plugin
+# ExpoUpdatesPlugin.kt): its output directory is registered with AGP's
+# addGeneratedSourceDirectory, which places it at generated/assets/<task name> — the same
+# rule that puts the bundle at generated/assets/createBundleReleaseJsAndAssets.
 rm -rf "$AND/app/build/generated/assets/createBundleReleaseJsAndAssets" \
        "$AND/app/build/generated/res/createBundleReleaseJsAndAssets" \
+       "$AND/app/build/generated/assets/createReleaseUpdatesResources" \
        "$AND/app/build/intermediates/assets/release" 2>/dev/null || true
 
 echo ">> assembleRelease"
@@ -192,7 +211,7 @@ set +e
 NODE_OPTIONS="$METRO_NODE_OPTIONS" ./gradlew --console=plain assembleRelease "$@" 2>&1 | tee /tmp/apk-build.log
 STATUS=${PIPESTATUS[0]}
 set -e
-grep -E "^> Task :app:(createBundle|package|assemble)|BUILD |FAILURE|error:" /tmp/apk-build.log | tail -12 || true
+grep -E "^> Task :app:(createBundle|createRelease|package|assemble)|BUILD |FAILURE|error:" /tmp/apk-build.log | tail -12 || true
 
 if [ "$STATUS" -ne 0 ]; then
   echo "!! gradle exited $STATUS — see /tmp/apk-build.log"
@@ -212,6 +231,14 @@ fi
 if grep -q "createBundleReleaseJsAndAssets UP-TO-DATE" /tmp/apk-build.log; then
   echo "!! WARNING: the JS bundle was SKIPPED — this APK may run old code"
 fi
+# The embedded update manifest and the OTA fingerprint are not a warning: a stale fingerprint
+# puts this APK on another APK's OTA runtime, where every update is built for other native
+# code — or none ever applies — and nothing on the phone says so.
+if grep -q "createReleaseUpdatesResources UP-TO-DATE" /tmp/apk-build.log; then
+  echo "!! expo-updates resources were SKIPPED (createReleaseUpdatesResources UP-TO-DATE) —"
+  echo "   the APK may carry a previous build's app.manifest and fingerprint. Not shipping it."
+  exit 1
+fi
 
 # Belt and braces on the same failure the post-prebuild call above prevents: assert the GPU
 # backend actually made it into the archive. Without it the 3B silently falls back to CPU.
@@ -228,6 +255,75 @@ if [ "$VULKAN_SO_COUNT" -eq 0 ]; then
 fi
 
 python3 "$MOBILE/scripts/verify-bundled-art.py" "$APK"
+
+# ---------------------------------------------------------------------------------------
+# OTA readiness (expo-updates). An APK is only ever as updatable as what prebuild and this
+# build baked into it, and every one of these fails SILENTLY on the phone — it just never
+# takes an update — so check the archive, not the config:
+#   • assets/app.manifest + assets/fingerprint exist (the embedded update, and the runtime
+#     version the phone will send; app.json's policy is "fingerprint", read from that file);
+#   • that fingerprint is THIS tree's — what deploy/publish-ota.py will compare against when
+#     it publishes for this APK;
+#   • the manifest meta-data prebuild writes from app.json: updates enabled, the URL, Wi-Fi
+#     only, and the runtime resource pointing at the fingerprint file. A version or config
+#     change without `pnpm prebuild` ships the OLD values (the same trap as versionCode).
+# Same `grep -c` reasoning as the Vulkan check above.
+# ---------------------------------------------------------------------------------------
+for ENTRY in assets/app.manifest assets/fingerprint; do
+  if [ "$(unzip -l "$APK" 2>/dev/null | grep -c " $ENTRY\$" || true)" -eq 0 ]; then
+    echo "!! $ENTRY missing from the APK — expo-updates did not run. Was \`pnpm prebuild\` run"
+    echo "   after expo-updates was added?"
+    exit 1
+  fi
+done
+unzip -p "$APK" assets/app.manifest | python3 -c '
+import json, sys
+m = json.load(sys.stdin)
+assert m.get("id") and m.get("assets"), "embedded app.manifest has no id or no assets"
+' || { echo "!! assets/app.manifest is not a usable embedded update"; exit 1; }
+APK_FINGERPRINT="$(unzip -p "$APK" assets/fingerprint)"
+TREE_FINGERPRINT="$(cd "$MOBILE" && npx expo-updates fingerprint:generate --platform android | python3 -c 'import json, sys; print(json.load(sys.stdin)["hash"])')"
+if [ "$APK_FINGERPRINT" != "$TREE_FINGERPRINT" ]; then
+  echo "!! OTA runtime mismatch: the APK says $APK_FINGERPRINT, this tree fingerprints as"
+  echo "   $TREE_FINGERPRINT. No OTA published from this tree would ever reach this APK."
+  echo "   If src/generated/bundledArt.generated.json changed during the build (gradle restages"
+  echo "   the illustrations), just build again; otherwise diff the fingerprint JSON that"
+  echo "   createReleaseUpdatesResources printed into /tmp/apk-build.log against"
+  echo "   \`npx expo-updates fingerprint:generate --platform android\`."
+  exit 1
+fi
+AAPT="$(ls "$ANDROID_HOME"/build-tools/*/aapt 2>/dev/null | tail -1)"
+UPDATES_URL="$(python3 -c 'import json, sys; print(json.load(open(sys.argv[1]))["expo"]["updates"]["url"])' "$MOBILE/app.json")"
+{ "$AAPT" dump xmltree "$APK" AndroidManifest.xml; echo "@@resources"; "$AAPT" dump --values resources "$APK"; } 2>/dev/null |
+  python3 -c '
+import re, sys
+url = sys.argv[1]
+xml, _, res = sys.stdin.read().partition("@@resources")
+meta, name = {}, None
+for line in xml.splitlines():
+    n = re.search(r"android:name\(0x01010003\)=\"([^\"]+)\"", line)
+    v = re.search(r"android:value\(0x01010024\)=(.*)", line)
+    if n:
+        name = n.group(1)
+    elif v and name:
+        # A string prints quoted; a boolean prints as (type 0x12)0x0 / 0xffffffff.
+        raw = v.group(1)
+        quoted = re.match(r"\"([^\"]*)\"", raw)
+        meta[name] = quoted.group(1) if quoted else ("false" if raw == "(type 0x12)0x0" else "true" if raw.startswith("(type 0x12)") else raw)
+runtime = re.search(r"string/expo_runtime_version: [^\n]*\n\s*\(string8\) \"([^\"]*)\"", res)
+want = {
+    "expo.modules.updates.ENABLED": "true",
+    "expo.modules.updates.EXPO_UPDATE_URL": url,
+    "expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH": "WIFI_ONLY",
+}
+bad = [f"{k} = {meta.get(k)!r}, want {v!r}" for k, v in want.items() if meta.get(k) != v]
+if not runtime or runtime.group(1) != "file:fingerprint":
+    bad.append(f"string/expo_runtime_version = {runtime.group(1) if runtime else None!r}, want \"file:fingerprint\"")
+for b in bad:
+    print("!! " + b)
+sys.exit(1 if bad else 0)
+' "$UPDATES_URL" || { echo "!! the APK is not configured for OTA updates as app.json says — run \`pnpm prebuild\` and build again"; exit 1; }
+echo ">> OTA-ready: runtime $APK_FINGERPRINT, updates from $UPDATES_URL (Wi-Fi only)"
 
 echo
 echo "APK: $APK"

@@ -20,7 +20,7 @@ object ClassWorkbook {
             ?.forEach { it.delete() }
         val file = File.createTempFile("hiraia-tala-class-", ".xlsx", directory)
         try {
-            write(file, database, schoolClass)
+            write(file, database, schoolClass, CardCatalog.get(context))
         } catch (error: Exception) {
             file.delete()
             throw error
@@ -28,8 +28,10 @@ object ClassWorkbook {
         return file
     }
 
-    private fun write(file: File, database: TalaDatabase, schoolClass: SchoolClass) {
-        val roster = database.rosterCards(schoolClass, database.students(schoolClass.id))
+    private fun write(file: File, database: TalaDatabase, schoolClass: SchoolClass, catalog: CardCatalog) {
+        // Students who left stay in the export, marked as such; removed ones are gone for good.
+        val roster = database.classRoster(schoolClass, includeLeft = true)
+        val leftCount = roster.count { it.student.leftAt > 0 }
         val names = roster.associate { (it.student.installationId to it.student.profileId) to it.displayName }
         val snapshot = database.eventSnapshot(schoolClass.id)
         val eventCount = database.eventCount(schoolClass.id, snapshot)
@@ -91,7 +93,7 @@ object ClassWorkbook {
                     </styleSheet>""".trimIndent())
             }
             entry(zip, writer, "xl/worksheets/sheet1.xml") {
-                startSheet(writer, listOf(25, 45), 9)
+                startSheet(writer, listOf(25, 45), 10)
                 row(writer, 1, listOf("Field", "Value"), true)
                 listOf(
                     "Class" to schoolClass.name,
@@ -100,19 +102,21 @@ object ClassWorkbook {
                     "Grade" to schoolClass.gradeLevel,
                     "School year" to schoolClass.schoolYear,
                     "Exported" to timestamp(System.currentTimeMillis()),
-                    "Students" to roster.size.toString(),
+                    "Students" to (roster.size - leftCount).toString(),
+                    "Students who left" to leftCount.toString(),
                     "Stored events" to eventCount.toString()
                 ).forEachIndexed { index, (key, value) -> row(writer, index + 2, listOf(key, value)) }
                 endSheet(writer)
             }
             entry(zip, writer, "xl/worksheets/sheet2.xml") {
-                startSheet(writer, listOf(25, 25, 16, 16, 16, 16, 18, 16, 26, 26, 22, 22), roster.size + 1)
-                row(writer, 1, listOf("Student", "Profile name", "Cards viewed", "Unique cards",
+                startSheet(writer, listOf(25, 25, 18, 16, 16, 16, 16, 18, 16, 26, 26, 22, 22), roster.size + 1)
+                row(writer, 1, listOf("Student", "Profile name", "Status", "Cards viewed", "Unique cards",
                     "Quiz answers", "Correct answers", "Device failures", "Stored events",
                     "Last connection", "Last transfer", "Last batch accepted", "Last batch rejected"), true)
                 roster.forEachIndexed { index, card ->
                     val student = card.student
-                    row(writer, index + 2, listOf(card.displayName, student.name, student.cards,
+                    val status = if (student.leftAt > 0) "Left ${day(student.leftAt)}" else "In class"
+                    row(writer, index + 2, listOf(card.displayName, student.name, status, student.cards,
                         database.uniqueCards(student), student.quizzes, student.correct,
                         student.failures, student.events, timestamp(student.lastSeen),
                         timestamp(student.lastSync), student.lastAccepted, student.lastRejected))
@@ -124,9 +128,10 @@ object ClassWorkbook {
             fun startEvents() {
                 zip.putNextEntry(ZipEntry("xl/worksheets/sheet$sheetNumber.xml"))
                 val rows = minOf(MAX_DATA_ROWS, eventCount - (sheetNumber - 3) * MAX_DATA_ROWS)
-                startSheet(writer, listOf(25, 24, 27, 27, 16, 65, 42, 42, 42), rows + 1)
+                startSheet(writer, listOf(25, 24, 27, 27, 16, 40, 65, 42, 42, 42), rows + 1)
                 row(writer, 1, listOf("Student", "Activity", "Occurred", "Received by Tala",
-                    "Quiz result", "Properties JSON", "Event ID", "Installation ID", "Profile ID"), true)
+                    "Quiz result", "Subcategories", "Properties JSON", "Event ID", "Installation ID",
+                    "Profile ID"), true)
             }
             startEvents()
             database.forEachEvent(schoolClass.id, snapshot) { event ->
@@ -143,6 +148,9 @@ object ClassWorkbook {
                     names[event.installationId to event.profileId] ?: "Unassigned",
                     event.name, timestamp(event.occurredAt), timestamp(event.receivedAt),
                     if (event.name == "quiz_graded") if (event.correct) "Correct" else "Incorrect" else "",
+                    if (event.name != "card_viewed" && event.name != "quiz_graded") ""
+                    else catalog.subcategories(TalaDatabase.learningEvent(event.name, event.occurredAt,
+                        event.correct, event.props)).joinToString("; ") { catalog.label(it) },
                     event.props, event.eventId, event.installationId, event.profileId
                 ))
             }
@@ -218,4 +226,6 @@ object ClassWorkbook {
 
     private fun timestamp(value: Long): String = if (value > 0) SimpleDateFormat(
         "yyyy-MM-dd HH:mm:ss Z", Locale.ROOT).format(Date(value)) else "Never"
+
+    private fun day(value: Long): String = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT).format(Date(value))
 }

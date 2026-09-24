@@ -25,6 +25,7 @@ script calls so that one command produces the whole asset.
   python3 rag/pipeline/build-cards-db.py
   -> packages/mobile/assets/data/cards.db             (ships; the APK deflates it)
   -> packages/mobile/src/generated/cardsIndex.generated.json  (bundled, small)
+  -> packages/tala/android/app/src/main/assets/card-catalog.tsv  (Tala: ids -> subcategories)
 """
 import json, os, gzip, hashlib, importlib.util, zlib, struct, sqlite3, collections
 
@@ -44,6 +45,10 @@ _facts_mod = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_facts_mod)
 build_facts = _facts_mod.build_facts
 db_version = _facts_mod.db_version
+_tala_spec = importlib.util.spec_from_file_location(
+    'build_card_catalog', os.path.join(ROOT, 'packages/tala/scripts/build-card-catalog.py'))
+_tala_catalog = importlib.util.module_from_spec(_tala_spec)
+_tala_spec.loader.exec_module(_tala_catalog)
 
 
 def main():
@@ -297,7 +302,13 @@ def main():
     # kept serving whatever database it created on first launch, however old. The index is
     # written here rather than above because the stamp needs the finished file.
     index['dbVersion'] = db_version(OUT_DB)
-    json.dump(index, open(OUT_IDX, 'w'), ensure_ascii=False, separators=(',', ':'))
+    with open(OUT_IDX, 'w') as f:
+        json.dump(index, f, ensure_ascii=False, separators=(',', ':'))
+    # Tala turns the card ids students report into these same subcategories from its own
+    # catalog, and its build refuses one made from any other index — so it is regenerated
+    # here, with the index, rather than left to be remembered.
+    if _tala_catalog.main([]) != 0:
+        raise SystemExit('build-cards-db: Tala card catalog failed')
     # Match the release wrapper's two sed blocks, including their trailing newlines.
     # A fresh checkout must not need a manually manufactured freshness marker.
     stop_source = _re.search(r'^const SEARCH_STOP = new Set\(\[.*?^\]\);', _src, _re.M | _re.S)

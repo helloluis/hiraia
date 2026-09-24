@@ -29,6 +29,8 @@ type Native = {
   startDiscovery(): Promise<boolean>;
   requestConnection(endpointId: string): Promise<boolean>;
   send(endpointId: string, json: string): Promise<boolean>;
+  /** 0.4.24 and later. */
+  disconnect?(endpointId: string): Promise<void>;
   stop(): Promise<void>;
 };
 
@@ -49,7 +51,8 @@ export function talaNative(): NativeEmitter | null {
 }
 
 export type TalaNativeEvent =
-  | { kind: 'found'; endpointId: string }
+  /** `name` is the teacher's advertised endpoint name; builds before 0.4.24 do not forward it. */
+  | { kind: 'found'; endpointId: string; name?: string }
   | { kind: 'lost'; endpointId: string }
   | { kind: 'connection'; endpointId: string; status: string }
   | { kind: 'bytes'; endpointId: string; json: string }
@@ -59,7 +62,9 @@ export function subscribeTala(fn: (e: TalaNativeEvent) => void): () => void {
   const native = talaNative();
   if (!native) return () => {};
   const subs: EventSubscription[] = [
-    native.addListener('onFound', (e) => fn({ kind: 'found', endpointId: e.endpointId ?? '' })),
+    native.addListener('onFound', (e) =>
+      fn({ kind: 'found', endpointId: e.endpointId ?? '', name: e.name })
+    ),
     native.addListener('onLost', (e) => fn({ kind: 'lost', endpointId: e.endpointId ?? '' })),
     native.addListener('onConnection', (e) =>
       fn({ kind: 'connection', endpointId: e.endpointId ?? '', status: e.status ?? '' })

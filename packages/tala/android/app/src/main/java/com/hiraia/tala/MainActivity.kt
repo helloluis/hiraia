@@ -97,6 +97,10 @@ class MainActivity : Activity(), NearbyCollector.Listener {
         window.navigationBarColor = PAPER
         WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = false
         database = TalaDatabase(this)
+        // The card catalog takes a moment to parse; have it ready before a student page asks. A
+        // failure here must not take enrolment and sync down with it — the page reports it.
+        Thread({ runCatching { CardCatalog.get(applicationContext) } }, "card-catalog")
+            .apply { isDaemon = true }.start()
         val classes = database.classes()
         selectedClassId = preferences.getString("class_id", null)?.takeIf { id -> classes.any { it.id == id } }
             ?: classes.first().id
@@ -388,8 +392,8 @@ class MainActivity : Activity(), NearbyCollector.Listener {
     private fun render() {
         val classes = database.classes()
         val schoolClass = classes.first { it.id == selectedClassId }
-        val students = database.students(schoolClass.id)
-        val roster = database.rosterCards(schoolClass, students)
+        val roster = database.classRoster(schoolClass)
+        val students = roster.map { it.student }
         val today = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
@@ -587,13 +591,13 @@ class MainActivity : Activity(), NearbyCollector.Listener {
     private fun showStudent(card: RosterCard) {
         if (studentDialog?.isShowing == true) return
         val schoolClass = database.classes().first { it.id == card.student.classId }
-        val roster = database.rosterCards(schoolClass, database.students(schoolClass.id))
+        val roster = database.classRoster(schoolClass)
         val index = roster.indexOfFirst {
             it.student.installationId == card.student.installationId &&
                 it.student.profileId == card.student.profileId
         }
         if (index < 0) return
-        studentDialog = StudentCarousel(this, database, roster, index) { student ->
+        studentDialog = StudentCarousel(this, database, roster, index, onRemoved = { render() }) { student ->
             val state = studentState(student)
             state.label to state.color
         }.apply {

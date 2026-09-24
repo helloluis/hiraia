@@ -11,6 +11,12 @@ const copy = {
     leaveClass: 'LEAVE CLASS',
     leaveBody: 'If you leave this class, your teacher will not be able to see your activities.',
     yourClass: 'YOUR CLASS',
+    // Class membership is per student: the section names whose class it is.
+    student: 'Student',
+    // Matches the title bar, which shows "Guest" in every language.
+    guest: 'Guest',
+    rejoin:
+      'Hiraia was updated: each student on this phone now joins a class on their own. Scan your teacher’s QR code again.',
     join: 'Join Hiraia Tala / Scan teacher QR',
     scan: 'Scan QR',
     enterCode: 'Enter code instead',
@@ -18,12 +24,10 @@ const copy = {
     codeInvalid: 'That code is not valid. Check the teacher phone and try again.',
     codeExpired: 'That code expired or is wrong. Ask the teacher to show a new one, then retry.',
     leave: 'Leave class / Stop sharing',
-    leaveConfirm:
-      'This phone will stop sending activity to that teacher. Data already on the teacher phone is not erased.',
+    leaveConfirm: (name: string) =>
+      `${name} will stop sending activity to that teacher. Other students on this phone stay in their own classes. Data already on the teacher phone is not erased.`,
     rebind:
-      'This phone is already sharing with another teacher. Switch? The new teacher will receive the card and quiz history still saved on this phone.',
-    disclose:
-      'Scanning lets that teacher phone receive this phone’s saved card and quiz history, new learning activity, and student names. Hiraia’s online service still does not receive names.',
+      'This student is already in another class. Switch? The new teacher will receive this student’s card and quiz history still saved on this phone.',
     sync: 'Sync now',
     searching: 'Searching for the teacher phone…',
     connected: 'Connected',
@@ -56,6 +60,10 @@ const copy = {
     leaveClass: 'UMALIS SA KLASE',
     leaveBody: 'Kapag umalis ka, hindi na makikita ng guro mo ang mga gawain mo.',
     yourClass: 'ANG KLASE MO',
+    student: 'Mag-aaral',
+    guest: 'Guest',
+    rejoin:
+      'Na-update ang Hiraia: hiwalay nang sumasali sa klase ang bawat mag-aaral sa teleponong ito. I-scan muli ang QR code ng guro mo.',
     join: 'Sumali sa Hiraia Tala / I-scan ang QR ng guro',
     scan: 'I-scan ang QR',
     enterCode: 'Maglagay ng code',
@@ -63,12 +71,10 @@ const copy = {
     codeInvalid: 'Hindi wasto ang code. Tingnan ang telepono ng guro at subukan muli.',
     codeExpired: 'Expired o mali ang code. Hingin sa guro ang bagong code, saka subukan muli.',
     leave: 'Umalis sa klase / Itigil ang pagbabahagi',
-    leaveConfirm:
-      'Hihinto ang teleponong ito sa pagpapadala ng activity sa gurong iyon. Hindi mabubura ang datos na nasa telepono na ng guro.',
+    leaveConfirm: (name: string) =>
+      `Hihinto na si ${name} sa pagpapadala ng activity sa gurong iyon. Mananatili sa sarili nilang klase ang ibang mag-aaral sa teleponong ito. Hindi mabubura ang datos na nasa telepono na ng guro.`,
     rebind:
-      'May ibang gurong nakakabit na sa teleponong ito. Palitan? Matatanggap ng bagong guro ang kasaysayan ng mga card at quiz na naka-save pa sa teleponong ito.',
-    disclose:
-      'Kapag ni-scan, puwedeng matanggap ng telepono ng gurong iyon ang kasaysayan ng mga card at quiz, bagong activity, at mga pangalang naka-save sa teleponong ito. Hindi pa rin tumatanggap ng pangalan ang online na serbisyo ng Hiraia.',
+      'Nasa ibang klase na ang mag-aaral na ito. Palitan? Matatanggap ng bagong guro ang kasaysayan ng mga card at quiz ng mag-aaral na ito na naka-save pa sa teleponong ito.',
     sync: 'I-sync ngayon',
     searching: 'Naghahanap ng telepono ng guro…',
     connected: 'Nakakonekta',
@@ -101,6 +107,10 @@ const copy = {
     leaveClass: 'MOBIYA SA KLASE',
     leaveBody: 'Kon mobiya ka, dili na makita sa imong magtutudlo ang imong mga buhat.',
     yourClass: 'ANG IMONG KLASE',
+    student: 'Estudyante',
+    guest: 'Guest',
+    rejoin:
+      'Karon, ang matag estudyante niining telepono kinahanglan moapil sa klase. I-scan pag-usab ang QR code sa imong magtutudlo.',
     join: 'Apil sa Hiraia Tala / I-scan ang QR sa magtutudlo',
     scan: 'I-scan ang QR',
     enterCode: 'Ibutang ang code',
@@ -108,12 +118,10 @@ const copy = {
     codeInvalid: 'Dili sakto ang code. Tan-awa ang telepono sa magtutudlo ug sulayi pag-usab.',
     codeExpired: 'Expired o sayop ang code. Pangayoa ang bag-ong code, dayon sulayi pag-usab.',
     leave: 'Mobiya sa klase / Hunonga ang pagpaambit',
-    leaveConfirm:
-      'Mohunong ning telepono sa pagpadala og activity nganha sa magtutudlo. Dili mapapas ang datos nga naa na sa telepono sa magtutudlo.',
+    leaveConfirm: (name: string) =>
+      `Mohunong na si ${name} sa pagpadala og activity ngadto sa magtutudlo. Ang ubang estudyante niining telepono magpabilin sa ilang kaugalingong klase. Dili mapapas ang datos nga naa na sa telepono sa magtutudlo.`,
     rebind:
-      'Naa nay laing magtutudlo nga nakabit niining telepono. Ilisan? Madawat sa bag-ong magtutudlo ang kasaysayan sa mga card ug quiz nga naka-save pa niining telepono.',
-    disclose:
-      'Inig-scan, ang telepono niadtong magtutudlo makadawat sa kasaysayan sa mga card ug quiz, bag-ong activity, ug mga ngalan nga naka-save niining telepono. Wala gihapon madawat nga ngalan ang online nga serbisyo sa Hiraia.',
+      'Naa na sa laing klase kining estudyante. Ilisan? Madawat sa bag-ong magtutudlo ang kasaysayan sa mga card ug quiz niining estudyante nga naka-save pa niining telepono.',
     sync: 'I-sync karon',
     searching: 'Nangita sa telepono sa magtutudlo…',
     connected: 'Nakakonektar',

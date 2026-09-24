@@ -43,6 +43,10 @@ export function useProfiles() {
 export function activeProfile() {
   return saved.profiles.find((p) => p.id === state.activeId) ?? null;
 }
+/** Classroom-sync scope of the student on screen: their profile id, or 'guest' (tala/scope.ts). */
+export function profileScope(): string {
+  return state.activeId;
+}
 export function profileTelemetry(): Record<string, string> {
   return state.activeId === 'guest'
     ? { profile_kind: 'guest' }

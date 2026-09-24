@@ -21,6 +21,7 @@ import { APP_VERSION, APP_BUILD } from '../../config/appVersion';
 import { useEngineStore } from '../../store/engineStore';
 import { useUpdateStore } from '../../store/updateStore';
 import { card, fonts, cardAlpha } from '../../theme';
+import { otaPendingText, shortOtaId } from '../../updates/ota';
 
 export default function SidebarScreen() {
   const router = useRouter();
@@ -43,6 +44,10 @@ export default function SidebarScreen() {
   // install step. Courteous outcomes (up to date / busy / offline) print inline here.
   const updateStatus = useUpdateStore((u) => u.status);
   const updatePct = useUpdateStore((u) => u.pct);
+  // An OTA JS update waiting for the next launch: one quiet line, no action — see
+  // updates/ota.ts. The version row names the running OTA (null on the APK's own bundle).
+  const otaPending = useUpdateStore((u) => u.otaPending);
+  const otaId = shortOtaId();
   const [updChecking, setUpdChecking] = useState(false);
   const [updVerdict, setUpdVerdict] = useState<null | 'uptodate' | 'busy' | 'error'>(null);
   const onCheckUpdates = useCallback(() => {
@@ -60,7 +65,8 @@ export default function SidebarScreen() {
         // The reader asked for the update — begin the download without a second tap.
         const now = useUpdateStore.getState();
         if (now.status === 'available') void now.startDownload();
-      } else {
+      } else if (r !== 'ota') {
+        // ('ota' needs no verdict: the pending line under the button already says it.)
         setUpdVerdict(r);
         setTimeout(() => setUpdVerdict(null), 6000);
       }
@@ -157,7 +163,10 @@ export default function SidebarScreen() {
         <View style={styles.versionBlock}>
           <View style={styles.versionRow}>
             <Text style={styles.versionLabel}>Hiraia</Text>
-            <Text selectable style={styles.versionValue}>v{APP_VERSION} · build {APP_BUILD}</Text>
+            <Text selectable style={styles.versionValue}>
+              v{APP_VERSION} · build {APP_BUILD}
+              {otaId ? ` · ${otaId}` : ''}
+            </Text>
           </View>
           <ModelDownloadStatus language={language ?? 'tagalog'} label={t.labelModel} />
           <View style={styles.versionRow}>
@@ -186,6 +195,7 @@ export default function SidebarScreen() {
                   : t.updatesError}
             </Text>
           ) : null}
+          {otaPending ? <Text style={styles.updateVerdict}>{otaPendingText(language)}</Text> : null}
         </View>
 
         <Text style={styles.sectionTitle}>{t.tutorial}</Text>

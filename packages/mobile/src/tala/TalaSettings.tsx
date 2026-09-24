@@ -3,6 +3,7 @@ import { useRef, useSyncExternalStore, useState } from 'react';
 import { Alert, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import type { Language } from '@hiraia/shared';
+import { useProfiles } from '../profiles';
 import { talaCopy } from './copy';
 import { formatCode } from './manual';
 import {
@@ -18,6 +19,9 @@ import {
 export function TalaSettings({ language }: { language: Language }) {
   const t = talaCopy(language);
   const ui = useSyncExternalStore(subscribeTalaUi, talaSnapshot, talaSnapshot);
+  const profiles = useProfiles();
+  // Everything below acts on the student on screen; siblings keep their own classes.
+  const student = profiles.profiles.find((p) => p.id === profiles.activeId)?.name ?? t.guest;
   const [scan, setScan] = useState(false);
   const [codeOpen, setCodeOpen] = useState(false);
   const [code, setCode] = useState('');
@@ -76,6 +80,10 @@ export function TalaSettings({ language }: { language: Language }) {
       <Text style={styles.sectionHeading} accessibilityRole="header" numberOfLines={2}>
         {heading}
       </Text>
+      <Text style={styles.student} numberOfLines={1}>
+        {`${t.student}: ${student}`}
+      </Text>
+      {!ui.bound && ui.rejoin ? <Text style={styles.notice}>{t.rejoin}</Text> : null}
       {!ui.bound ? (
         <>
           <Pressable
@@ -113,7 +121,7 @@ export function TalaSettings({ language }: { language: Language }) {
             accessibilityRole="button"
             style={styles.secondary}
             onPress={() =>
-              Alert.alert(t.leave, t.leaveConfirm, [
+              Alert.alert(t.leave, t.leaveConfirm(student), [
                 { text: t.cancel, style: 'cancel' },
                 { text: t.leaveBtn, style: 'destructive', onPress: () => void leaveClass() },
               ])
@@ -262,6 +270,8 @@ const styles = StyleSheet.create({
     letterSpacing: 1.1,
     textTransform: 'uppercase',
   },
+  student: { color: '#58635c', fontSize: 13 },
+  notice: { color: '#20342c', fontSize: 13, lineHeight: 18, fontWeight: '600' },
   title: { color: '#20342c', fontWeight: '600', fontSize: 16 },
   body: { color: '#58635c', fontSize: 13, lineHeight: 18 },
   status: { color: '#20342c', fontSize: 14 },

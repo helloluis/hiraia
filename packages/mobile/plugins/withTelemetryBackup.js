@@ -4,8 +4,11 @@ const path = require('node:path');
 
 // expo-sqlite Android stores databases under files/SQLite, not databases/.
 // Excluding all sidecars keeps installation IDs and pending events off restored/cloned phones.
+// expo-updates keeps downloaded JS under files/.expo-internal; restoring that onto another phone
+// would launch an update chosen for a different install, so it is never backed up either.
 const exclusions = ['', '-wal', '-shm', '-journal']
   .map((suffix) => `    <exclude domain="file" path="SQLite/hiraia-telemetry.db${suffix}" />`)
+  .concat('    <exclude domain="file" path=".expo-internal/" />')
   .join('\n');
 function writeRules(projectRoot) {
   const dir = path.join(projectRoot, 'android/app/src/main/res/xml');

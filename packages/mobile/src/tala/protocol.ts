@@ -77,13 +77,25 @@ export type InnerBatch = {
   challenge: string;
   profiles: TeacherProfile[];
   events: TeacherEvent[];
+  /**
+   * Wire ids of students who left this class (Tala >= 0.4.4 marks them left). Sent only to a
+   * teacher whose endpoint name carries this class's hint: older builds would ignore it.
+   */
+  left_profiles?: string[];
 };
 
 export type AckBody = {
   challenge: string;
   accepted: string[];
   rejected: string[];
+  /** Tala >= 0.4.4: the class's display name, so a QR without one still gets named. */
+  class_name?: unknown;
+  /** Tala >= 0.4.4: protocol extensions this teacher honours, e.g. LEAVE_CAP. */
+  caps?: unknown;
 };
+
+export const MAX_LEFT_PROFILES = 50;
+export const LEAVE_CAP = 'left_profiles';
 
 export function chunk<T>(items: T[], size: number): T[][] {
   if (size < 1) return [];

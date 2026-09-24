@@ -43,8 +43,18 @@ need an internet connection.
   its complete stored properties; the timeline loads 50 rows at a time. Card views count every view;
   unique cards count distinct `card_id` values in accepted `card_viewed` events.
   The last nonempty batch's accepted/rejected counts remain visible.
+- A student whose phone reports that their profile left the class disappears from the
+  tiles and counts; they come back if that profile joins again. **Remove from class** at
+  the bottom of a student's page (after a confirmation) deletes that student's activity
+  from Tala, including anything not yet uploaded, and hides them everywhere. It is
+  permanent: the phone is not told, and whatever it later sends for that student is
+  acknowledged and discarded. Other students on the same phone are unaffected. The one
+  exception is a `Guest-…` placeholder that a student build up to 0.4.23 left without
+  naming anyone: removing it does not stop that phone's Guest from later joining the
+  class, which then appears as a new Guest under a new alias.
 - **Share XLSX** beside Classroom exports the active class only, with class details,
-  each learner's totals, and all stored event rows. Tala creates the workbook offline
+  each learner's totals, and all stored event rows. Students who left stay in it with a
+  `Left <date>` status; removed students do not. Tala creates the workbook offline
   and opens Android's share sheet. It contains student names and event properties, so
   share it only with trusted recipients. The export is a snapshot, not automatic upload.
 - Saves issue reports offline with up to three JPG, PNG, WebP or MP4 attachments
@@ -174,8 +184,31 @@ using the batch's AES key, a fresh nonce and the same associated data. Its plain
 `{"challenge":"...","accepted":["event-id"],"rejected":[]}`. A student retries
 unacknowledged IDs. Tala deduplicates by `(installation_id,event_id)`, so a lost
 acknowledgement does not duplicate activity. The student should send its current profile
-list on each connection so name changes reach Tala. Binding is at the device level and
-covers every profile on that device.
+list on each connection so name changes reach Tala. Student builds up to 0.4.23 bind the
+whole device to one class; from 0.4.24 each profile joins its own class, and a phone sends
+each class only the profiles that joined it.
+
+### Additions in Tala 0.4.4
+
+These keep `v` and `schema` at 1 and the service ID unchanged; older students ignore them.
+
+- **Class hint.** Tala advertises the endpoint name `"Hiraia Tala 2 " + hint` instead of
+  `"Hiraia Tala"`, where `hint` is the first 8 characters of
+  base64url-without-padding(SHA-256(UTF-8(`"hiraia-tala-hint-v1:" + class_id`))) and
+  `class_id` is the QR's. A later Tala may list several hints, comma-separated. Test
+  vectors: `0f8fad5b-d9cb-469f-a165-70867728950e` → `WlOusN1s`,
+  `7c9e6679-7425-40de-944b-e07fc1f90ae7` → `x3ejyN5T`. The hint is advisory; only the
+  class key can read a batch.
+- **Reply additions.** `ready` and `ack` plaintexts also carry `"class_name"` (the name the
+  QR would show, at most 48 characters) and `"caps":["left_profiles"]`.
+- **Leaving.** An intro or batch may carry `"left_profiles":["profile-id"]` (at most 50).
+  Tala marks each listed student that is not also in `profiles` as having left; being
+  listed in `profiles` again undoes it. Ids that are not valid ids are skipped. The Guest's
+  id is the phone's `installation_id`; a leave for it also marks the `guest` placeholder
+  that a build up to 0.4.23 may have left for that phone, which is the same Guest. An intro
+  with no profiles but a leave does not create a Guest tile. The student deletes a leave
+  once the `ready` or `ack` for the message carrying it arrives, and sends it only to a
+  Tala whose endpoint name carries the matching hint.
 
 ### Manual enrollment without a camera
 

@@ -16,6 +16,10 @@ ios/
 *.p8
 *.p12
 *.key
+# OTA update-signing keys live in ~/.hiraia/ota-keys — never in the tree (the public
+# certificate, packages/mobile/certs/certificate.pem, is the only one that belongs here).
+private-key*.pem
+public-key*.pem
 *.mobileprovision
 *.orig.*
 

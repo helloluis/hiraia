@@ -66,10 +66,8 @@ class NearbyCollector(
                         require(attempts <= 3)
                         // Same payload the QR carries, name included: a student who types the
                         // code must end up with the same class name as one who scans.
-                        val className = database.classes()
-                            .firstOrNull { it.enrollmentId == identity.classId }?.name ?: ""
                         val response = manualEnrollment.respond(
-                            identity.classId, challenge, envelope, identity.qrPayload(className)
+                            identity.classId, challenge, envelope, identity.qrPayload(className(identity, database))
                         )
                         if (running && challenges[endpointId] == challenge)
                             connections.sendPayload(endpointId, Payload.fromBytes(response.toString().toByteArray()))
@@ -90,13 +88,7 @@ class NearbyCollector(
                     val result = database.ingest(identity.classId, batch, kind == "batch")
                     if (result.accepted.isNotEmpty()) runCatching { ActivityUploader.schedule(activity) }
                     endpointInstallations[endpointId] = receivedInstallationId
-                    val response = JSONObject()
-                        .put("challenge", challenge)
-                        .put("accepted", JSONArray(result.accepted))
-                        .put("rejected", JSONArray(result.rejected))
-                    val ack = identity.encrypt(
-                        sessionKey, challenge, response.toString(), if (kind == "intro") "ready" else "ack"
-                    )
+                    val ack = reply(identity, database, sessionKey, challenge, kind, result)
                     if (!running || challenges[endpointId] != challenge) return@execute
                     connections.sendPayload(endpointId, Payload.fromBytes(ack.toString().toByteArray()))
                     activity.runOnUiThread {
@@ -153,7 +145,7 @@ class NearbyCollector(
         val startedGeneration = ++generation
         listener.onStatus("Starting Nearby…", 0)
         val options = AdvertisingOptions.Builder().setStrategy(Strategy.P2P_STAR).build()
-        connections.startAdvertising("Hiraia Tala", SERVICE_ID, connectionCallback, options)
+        connections.startAdvertising(ClassHint.endpointName(identity.classId), SERVICE_ID, connectionCallback, options)
             .addOnSuccessListener {
                 if (running && generation == startedGeneration)
                     listener.onStatus("Nearby ready · Waiting for student phones", challenges.size)
@@ -187,5 +179,27 @@ class NearbyCollector(
 
     companion object {
         const val SERVICE_ID = "com.hiraia.classroom.v1"
+
+        /** Additions to protocol 1 this Tala honours; a student sends leave notices only on seeing them. */
+        private val CAPABILITIES = listOf("left_profiles")
+
+        /**
+         * The sealed answer to an intro (`ready`) or a batch (`ack`). Besides the event ids it
+         * names the class, so a phone can show which class it reached even when its QR carried
+         * no name, and lists [CAPABILITIES]. Student builds that predate them ignore both keys.
+         */
+        fun reply(identity: ClassIdentity, database: TalaDatabase, sessionKey: ByteArray,
+            challenge: String, kind: String, result: IngestResult): JSONObject {
+            val response = JSONObject()
+                .put("challenge", challenge)
+                .put("accepted", JSONArray(result.accepted))
+                .put("rejected", JSONArray(result.rejected))
+                .put("class_name", identity.displayName(className(identity, database)))
+                .put("caps", JSONArray(CAPABILITIES))
+            return identity.encrypt(sessionKey, challenge, response.toString(), if (kind == "intro") "ready" else "ack")
+        }
+
+        private fun className(identity: ClassIdentity, database: TalaDatabase): String =
+            database.classes().firstOrNull { it.enrollmentId == identity.classId }?.name ?: ""
     }
 }

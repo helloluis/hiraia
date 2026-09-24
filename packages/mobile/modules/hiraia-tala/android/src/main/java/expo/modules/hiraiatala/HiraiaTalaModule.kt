@@ -126,6 +126,10 @@ class HiraiaTalaModule : Module() {
             })
         }
 
+        AsyncFunction("disconnect") { endpointId: String ->
+            nearby?.disconnect(endpointId)
+        }
+
         AsyncFunction("stop") {
             nearby?.stop()
         }

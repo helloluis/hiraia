@@ -14,7 +14,9 @@ def prepareIllustrations = tasks.register('prepareBundledIllustrations', Exec) {
 android.sourceSets.main.assets.srcDir(layout.buildDirectory.dir('generated/illustrationAssets'))
 tasks.configureEach { task ->
     if (task.name == 'preBuild' || task.name == 'generateCodegenSchemaFromJavaScript' ||
-        task.name.startsWith('createBundle') || task.name ==~ /merge.*Assets/) {
+        task.name.startsWith('createBundle') || task.name ==~ /merge.*Assets/ ||
+        // expo-updates fingerprints bundledArt.generated.json, which this task writes.
+        task.name ==~ /create.*UpdatesResources/) {
         task.dependsOn(prepareIllustrations)
     }
 }

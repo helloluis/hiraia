@@ -40,6 +40,8 @@ const strings = new Set([
   'view_id',
   'question_id',
   'card_id',
+  // Which over-the-air JS update a phone ran (its UUID, or 'embedded'); on session_started only.
+  'ota_update_id',
 ]);
 const enums: Record<string, string[]> = {
   profile_kind: ['guest', 'student'],

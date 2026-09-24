@@ -20,7 +20,8 @@ object ActivityRelay {
     private val id = Regex("[A-Za-z0-9_-]{16,80}")
     private val label = Regex("[A-Za-z0-9_.:-]{1,100}")
     private val labels = setOf("app_version", "build", "android", "abi", "model", "asset",
-        "attempt_id", "view_id", "question_id", "card_id", "hiraiapedia_version", "cards_db_version")
+        "attempt_id", "view_id", "question_id", "card_id", "hiraiapedia_version", "cards_db_version",
+        "ota_update_id")
     private val numbers = setOf("duration_ms", "bytes", "expected_bytes", "offset", "attempt", "ram_gb", "count")
     private val enums = mapOf("profile_kind" to setOf("guest", "student"),
         "language" to setOf("english", "tagalog", "cebuano"), "source" to setOf("curated", "generated"),

@@ -6,7 +6,8 @@ import * as Device from 'expo-device';
 import { AppState, Platform } from 'react-native';
 import { newId, Outbox, type Event, type Props } from './core';
 import { openRepository, type TelemetryRepository } from './repository';
-import { initTala, setTalaEnabled, teacherTrack } from '../tala';
+import { drainTeacherWrites, initTala, setTalaEnabled, teacherTrack } from '../tala';
+import { otaTelemetry } from '../updates/ota';
 
 // Override at build time for staging. No secret is shipped in the APK.
 const ENDPOINT = process.env.EXPO_PUBLIC_TELEMETRY_URL || 'https://hiraia.org/api/telemetry/batch';
@@ -25,16 +26,20 @@ const context: Props = {
 };
 let persona: Props = {};
 let sessionId = newId();
-let sessionEvent = event('session_started');
+const launchedAt = Date.now();
+let sessionEvent: Event | undefined;
 let repository: Promise<TelemetryRepository> | undefined;
 let activeRequest: AbortController | undefined;
 let enabled = true;
 function getRepository(): Promise<TelemetryRepository> {
   if (!repository)
     repository = initializeProfiles()
-      .then(() =>
-        openRepository({ ...sessionEvent, props: { ...sessionEvent.props, ...profileTelemetry() } })
-      )
+      .then(() => {
+        // Built only now: before profiles load, profileTelemetry() reports Guest, and a joined
+        // student's launch would reach their teacher as a phantom Guest tile.
+        sessionEvent ??= { ...event('session_started'), occurred_at: launchedAt };
+        return openRepository(sessionEvent);
+      })
       .catch((error) => {
         repository = undefined;
         throw error;
@@ -42,12 +47,16 @@ function getRepository(): Promise<TelemetryRepository> {
   return repository;
 }
 function event(name: string, props: Props = {}, id = newId()): Event {
+  // Which over-the-air update this run is on rides only on session_started: one per launch is
+  // enough to attribute a session, and every event pays the size caps (1800 server, 1600 Tala).
+  const ota: Props =
+    name === 'session_started' ? { ota_update_id: otaTelemetry().ota_update_id ?? 'embedded' } : {};
   return {
     id,
     name,
     occurred_at: Date.now(),
     session_id: sessionId,
-    props: { ...context, ...profileTelemetry(), ...persona, ...props },
+    props: { ...context, ...profileTelemetry(), ...persona, ...ota, ...props },
   };
 }
 function retryAfter(value: string | null) {
@@ -131,7 +140,8 @@ export function startTelemetry(): () => void {
         installationId: repo.installationId,
         enabled,
       });
-      if (enabled && (await repo.binding())) teacherTrack([sessionEvent]);
+      // Routed by profile: it reaches a teacher only if this student joined a class.
+      if (enabled && sessionEvent) teacherTrack([sessionEvent]);
       flush();
     })
     .catch(() => {});
@@ -207,6 +217,8 @@ export function telemetryPersona(): Props {
   return { ...profileTelemetry(), ...persona };
 }
 
+/** Awaited before a profile-switch reload, so no write lands under the next student. */
 export async function drainTelemetryWrites() {
   await queue.drainWrites();
+  await drainTeacherWrites();
 }

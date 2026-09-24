@@ -12,6 +12,10 @@
  * Same ink/gold ribbon language as the retired feed slot — moved, not redesigned. No
  * entrance animation, deliberately: reduced-motion-neutral, and a bar that pushes the
  * layout down (it is the first child of the root column) never covers content.
+ *
+ * APK only. An OTA JS update (store `otaPending`, updates/ota.ts) never raises this bar:
+ * it asks nothing of the reader and applies at the next launch by itself, so it gets one
+ * quiet line in Settings under "Check for updates" instead of an app-wide interruption.
  */
 import { useCallback } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';

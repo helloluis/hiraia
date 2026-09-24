@@ -90,7 +90,9 @@ public final class TalaNearby {
       new EndpointDiscoveryCallback() {
         @Override
         public void onEndpointFound(String endpointId, DiscoveredEndpointInfo info) {
-          emit("onFound", "endpointId", endpointId);
+          // The teacher's name carries the class hints JS matches before connecting.
+          String name = info == null ? null : info.getEndpointName();
+          emit("onFound", "endpointId", endpointId, "name", name == null ? "" : name);
         }
 
         @Override
@@ -132,6 +134,11 @@ public final class TalaNearby {
       return;
     }
     connections.sendPayload(endpointId, Payload.fromBytes(bytes)).addOnSuccessListener(ok).addOnFailureListener(fail);
+  }
+
+  /** Frees one teacher: a discovering phone holds one Nearby connection at a time. */
+  public void disconnect(String endpointId) {
+    connections.disconnectFromEndpoint(endpointId);
   }
 
   public void stop() {

@@ -103,7 +103,7 @@ export function ProfilePicker({
               <Text style={styles.title}>Who’s learning today?</Text>
               <Text style={styles.text}>
                 You can use your first name to keep your activity separate on this phone. Your name
-                stays on this device.
+                stays on this phone unless you join a class; then only your teacher sees it.
               </Text>
               <View style={{ minHeight: 32, flexDirection: 'row', gap: 10, alignItems: 'center' }}>
                 {busy && !restart && (

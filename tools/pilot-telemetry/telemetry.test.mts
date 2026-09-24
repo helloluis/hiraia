@@ -36,6 +36,12 @@ test('late events retain their original date and retries are acknowledged withou
   assert.ok(row.received_at - row.occurred_at >= 10 * 86400000);
   db.close();
 });
+test('0.4.24 session events carry which OTA update ran; the label is validated like any other', () => {
+  for (const ota of ['embedded', '0b3c1f2e-8d4a-4f1b-9c2d-7e6f5a4b3c2d'])
+    assert.equal(validEvent({ ...event(), props: { ota_update_id: ota } }), true);
+  assert.equal(validEvent({ ...event(), props: { ota_update_id: 'not a label!' } }), false);
+});
+
 test('unexpected child text is rejected without blocking valid records in the batch', () => {
   const db = openTelemetry(path.join(temp, 'validation.db'));
   for (const key of ['query', 'answer', 'email', 'latitude', 'device_id']) {

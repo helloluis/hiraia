@@ -53,9 +53,12 @@ class ClassIdentity(context: Context, val classId: String = legacyClassId(contex
         .put("v", 1)
         .put("kind", "hiraia-tala")
         .put("class_id", classId)
-        .put("class_name", ClassNames.resolve(classId, className).take(MAX_CLASS_NAME))
+        .put("class_name", displayName(className))
         .put("public_key", encode(publicKey))
         .toString()
+
+    /** The class name a student phone is given, in the QR and in every sync reply alike. */
+    fun displayName(className: String?): String = ClassNames.resolve(classId, className).take(MAX_CLASS_NAME)
 
     fun unwrapSessionKey(wrapped: String): ByteArray {
         val cipher = Cipher.getInstance("RSA/ECB/OAEPPadding")

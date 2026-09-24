@@ -6,6 +6,8 @@ Settings includes an explicit APK check. APK notices can be dismissed for seven 
 per release; a new release can notify again. APK downloads and installation require
 user action. Compatible asset updates download automatically while the app is active,
 with progress in Settings rather than a notification bar above the feed.
+From 0.4.24, Hiraia also takes JS-only OTA updates from `/api/updates/manifest`; they
+need no user action and apply the next time the app is opened (below).
 
 ## Release channels
 
@@ -19,12 +21,75 @@ with progress in Settings rather than a notification bar above the feed.
   `packages/web/src/config/asset-updates.json`. Old APKs ignore this additional field.
   Compatible tutor-model weights and illustrations update automatically. User-requested
   APK downloads pause automatic model replacements and take priority.
+* Hiraia JS (OTA, 0.4.24+): expo-updates against `https://hiraia.org/api/updates/manifest`,
+  a relay of manifests signed on the publisher's Mac (`deploy/publish-ota.py`) and stored
+  on R2 under `ota/android/`. JS only, within one APK's runtime; see below.
 
 These checks require a new APK containing the updater and a website deployment.
 The checked-in Tala channel is empty until a signed, published release is measured.
 The initial asset channel is empty: it must not invent improved weights or illustrations.
 Publishing files alone does not announce them; publishing metadata alone must never
 point phones at files that are not available yet.
+
+## OTA JS updates
+
+The third channel ships a new JS bundle to phones already running a given APK, without
+reinstalling. It is deliberately narrow:
+
+* **Scope.** One APK build = one runtime version (a fingerprint of everything native,
+  `packages/mobile/fingerprint.config.js`). A phone accepts only updates for its own
+  runtime, so native changes, new dependencies, `@qvac/sdk` changes and bundled-art
+  changes still need an APK. Card data, voices and models never travel this way: the
+  publisher refuses new assets over 2 MB each / 5 MB total, because a changed `cards.db`
+  (146 MB) would be downloaded in full and duplicated on disk. Content goes by the data
+  channel above, or an APK.
+* **When phones check.** At every cold start on Wi-Fi (never on mobile data), in the
+  background; the update runs from the next cold start and launch never waits for it. The
+  Settings check also asks, on any network, because the reader asked. A foreground look at
+  most every 6 hours fetches the manifest only and acts only on a rollback. Nothing ever
+  reloads the running app.
+* **What the reader sees.** Nothing to accept: at most "Hiraia will update the next time
+  you open it" under Settings → Check for updates, and the running update's short id next
+  to the build number. The APK banner is unchanged and never announces an OTA.
+* **Trust.** Every manifest and rollback directive is signed with a key that exists only
+  on the publisher's Mac; the APK carries the certificate and rejects anything else. The
+  website only relays signed bytes, so it cannot create or alter an update.
+* **Rings.** A canary allowlist of install ids, then production with a rollout
+  percentage. Phones outside it keep the previous release only if that release had
+  reached 100%; one held back (halted for a bug, or still going out) never reaches the
+  rest through the back door. Every new production release hands the canary phones back
+  to production, so a rollback reaches them too. Launch failures that phones report are
+  logged by the route and are the signal to halt a rollout. A flood of requests for
+  made-up runtimes is budgeted and cannot keep real phones from their channel.
+* **Rollback.** Phones only move forward, so rolling back means publishing something new:
+  the last good update re-signed as a new one, or a directive back to the APK's own bundle.
+  A crash before first render rolls back on the phone by itself. The runtime to roll back
+  is the one inside the shipped APK (`unzip -p <apk> assets/fingerprint`) or the publish's
+  ledger line; the publisher refuses a runtime where no update was ever published.
+* **Coexistence.** A newer APK always wins over any OTA of the older runtime. The
+  `/api/app/manifest` channels (APK, Tala, data) are unchanged by OTA.
+
+### Release order for 0.4.24 and Tala 0.4.4: server side first
+
+0.4.24 adds `ota_update_id` to every `session_started`, and Tala 0.4.4 relays it. The
+0.4.23 collector rejects unknown prop keys, and a rejection is final (the phone deletes the
+event; Tala marks the relayed row rejected and never retries). So, in this order:
+
+1. Deploy `packages/web` (the `store.ts` allowlist and `/api/updates/manifest`) with
+   `deploy/update.sh`.
+2. Redeploy the standalone telemetry collector that actually serves
+   `/api/telemetry/batch` (`hiraia-telemetry`, `/opt/hiraia-telemetry/server.cjs`, rebuilt
+   with `tools/pilot-telemetry/build-server.sh`). `update.sh` does not touch it.
+3. Confirm the route answers 400, not 404, and a synthetic `session_started` carrying
+   `ota_update_id` is acknowledged, not rejected.
+4. Only then install 0.4.24 or Tala 0.4.4 on any device (test devices included), upload the
+   APKs or the `hiraia.apk` alias, or move the download pointers.
+
+Commands: `packages/mobile/BUILD.md` → "Release order". Any later release that adds a
+telemetry prop key follows the same order.
+
+Runbook (prebuild requirement, key custody, publish, promote, rollback):
+`packages/mobile/BUILD.md` → "OTA JS updates".
 
 ## Compatible data updates
 

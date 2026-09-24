@@ -9,6 +9,9 @@ import org.json.JSONObject
 import java.security.SecureRandom
 import java.util.UUID
 import java.io.File
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 
 data class StudentRow(
     val classId: String,
@@ -23,7 +26,9 @@ data class StudentRow(
     val lastSync: Long,
     val lastSeen: Long,
     val lastAccepted: Int,
-    val lastRejected: Int
+    val lastRejected: Int,
+    /** When the student's phone said they left this class; 0 while they are in it. */
+    val leftAt: Long = 0
 )
 
 data class IngestResult(val accepted: List<String>, val rejected: List<String>)
@@ -62,7 +67,7 @@ data class SchoolClass(
     val schoolYear: String
 )
 
-class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hiraia-tala.db", null, 8) {
+class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hiraia-tala.db", null, 9) {
     private val legacyGroupId = ClassIdentity.legacyClassId(context)
     private val random = SecureRandom()
 
@@ -123,6 +128,21 @@ class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hi
                 }
             }
         }
+        if (oldVersion < 9) migrateStudentStatus(db)
+    }
+
+    /**
+     * A student row now outlives its place in the class. `left_at` is set when the student's
+     * phone reports the profile left, and cleared when it lists the profile again; `removed_at`
+     * is the teacher's Remove from class, which nothing the phone sends can undo.
+     */
+    private fun migrateStudentStatus(db: SQLiteDatabase) {
+        // Upgrade tests fake an older version on a current database, whose table has them.
+        val columns = db.rawQuery("PRAGMA table_info(students)", null).use { cursor ->
+            buildSet { while (cursor.moveToNext()) add(cursor.getString(1)) }
+        }
+        for (column in listOf("left_at", "removed_at"))
+            if (column !in columns) db.execSQL("ALTER TABLE students ADD COLUMN $column INTEGER")
     }
 
     private fun createRelayTables(db: SQLiteDatabase) {
@@ -273,7 +293,7 @@ class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hi
             PRIMARY KEY (class_id, installation_id, profile_id))""")
         else db.execSQL("""CREATE TABLE students (
             class_id TEXT NOT NULL, installation_id TEXT NOT NULL, profile_id TEXT NOT NULL,
-            name TEXT NOT NULL, first_seen INTEGER NOT NULL,
+            name TEXT NOT NULL, first_seen INTEGER NOT NULL, left_at INTEGER, removed_at INTEGER,
             PRIMARY KEY (class_id, installation_id, profile_id))""")
         db.execSQL("""CREATE TABLE events (
             class_id TEXT NOT NULL, installation_id TEXT NOT NULL, event_id TEXT NOT NULL, profile_id TEXT NOT NULL,
@@ -459,14 +479,18 @@ class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hi
         val installationId = batch.getString("installation_id")
         require(ID.matches(installationId))
         val profiles = batch.optJSONArray("profiles") ?: JSONArray()
+        // Profiles the phone says have left this class. Only a student that saw "left_profiles"
+        // in this Tala's capabilities sends them; older ones never do.
+        val leftProfiles = batch.optJSONArray("left_profiles") ?: JSONArray()
         val events = batch.getJSONArray("events")
-        require(profiles.length() <= 50 && events.length() <= 50)
+        require(profiles.length() <= 50 && leftProfiles.length() <= 50 && events.length() <= 50)
         val accepted = mutableListOf<String>()
         val rejected = mutableListOf<String>()
         val now = System.currentTimeMillis()
         val db = writableDatabase
         db.beginTransaction()
         try {
+            val listed = mutableSetOf<String>()
             for (index in 0 until profiles.length()) {
                 val profile = profiles.getJSONObject(index)
                 val profileId = profile.getString("id")
@@ -474,9 +498,19 @@ class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hi
                 val guest = name.equals("Guest", ignoreCase = true) || profileId == "guest"
                 require((ID.matches(profileId) || guest && profileId == "guest") &&
                     name.isNotEmpty() && name.length <= 40)
+                listed.add(profileId)
                 val existingName = studentName(db, classId, installationId, profileId)
                 val syntheticGuest = if (guest && profileId != "guest")
                     studentName(db, classId, installationId, "guest") else null
+                // The 'guest' placeholder is what older builds left for this phone without listing
+                // anyone. A teacher's removal of it does not bind a Guest that now joins by being
+                // listed: that Guest starts afresh, under an alias drawn while the placeholder's is
+                // still taken, so the removed tile's name never comes back.
+                val syntheticRemoved = syntheticGuest != null &&
+                    removedAt(db, classId, installationId, "guest") != null
+                val storedName = if (guest) existingName?.takeIf { it.startsWith("Guest-") }
+                    ?: syntheticGuest?.takeIf { it.startsWith("Guest-") && !syntheticRemoved }
+                    ?: guestAlias(db, classId) else name
                 if (syntheticGuest != null) {
                     db.execSQL("""UPDATE events SET profile_id=? WHERE class_id=? AND installation_id=?
                         AND profile_id='guest'""", arrayOf(profileId, classId, installationId))
@@ -488,14 +522,28 @@ class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hi
                     db.execSQL("""DELETE FROM student_avatars WHERE class_id=? AND installation_id=?
                         AND profile_id='guest'""", arrayOf(classId, installationId))
                 }
-                val storedName = if (guest) existingName?.takeIf { it.startsWith("Guest-") }
-                    ?: syntheticGuest?.takeIf { it.startsWith("Guest-") }
-                    ?: guestAlias(db, classId) else name
+                // Being listed means being in the class again, so a student who left is back. A
+                // student the teacher removed is not: removal is the teacher's, not the phone's.
                 db.execSQL("""INSERT INTO students(class_id,installation_id,profile_id,name,first_seen)
                     VALUES(?,?,?,?,?) ON CONFLICT(class_id,installation_id,profile_id)
-                    DO UPDATE SET name=excluded.name""", arrayOf(classId, installationId, profileId, storedName, now))
+                    DO UPDATE SET name=excluded.name,left_at=NULL""",
+                    arrayOf(classId, installationId, profileId, storedName, now))
             }
-            if (!recordSync && profiles.length() == 0 && !hasStudents(db, classId, installationId))
+            // Leaving is per profile: a phone shared by students of different classes tells each
+            // class only about its own. An id that is not an id is skipped; the rest still counts.
+            for (index in 0 until leftProfiles.length()) {
+                val profileId = leftProfiles.opt(index) as? String ?: continue
+                if (!ID.matches(profileId) || profileId in listed) continue
+                // The phone's Guest goes by its installation id. An older build could also have left
+                // a 'guest' placeholder for it here, which is the same Guest and leaves with it.
+                val placeholder = if (profileId == installationId && "guest" !in listed) "guest" else profileId
+                db.execSQL("""UPDATE students SET left_at=? WHERE class_id=? AND installation_id=?
+                    AND profile_id IN (?,?) AND left_at IS NULL""",
+                    arrayOf<Any>(now, classId, installationId, profileId, placeholder))
+            }
+            // A phone that only came to say its profiles left must not leave a Guest tile behind.
+            if (!recordSync && profiles.length() == 0 && leftProfiles.length() == 0 &&
+                !hasStudents(db, classId, installationId))
                 ensureGuestRow(db, classId, installationId, now)
             for (index in 0 until events.length()) {
                 val event = events.getJSONObject(index)
@@ -512,6 +560,12 @@ class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hi
                     rejected.add(eventId)
                     continue
                 }
+                // A removed student's phone was never told and would resend forever, so the event
+                // is acknowledged as taken — but nothing of it is kept or relayed.
+                if (removedAt(db, classId, installationId, profileId) != null) {
+                    accepted.add(eventId)
+                    continue
+                }
                 db.execSQL("""INSERT OR IGNORE INTO events
                     (class_id,installation_id,event_id,profile_id,event_name,correct,occurred_at,received_at,props)
                     VALUES(?,?,?,?,?,?,?,?,?)""", arrayOf(
@@ -519,8 +573,8 @@ class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hi
                     if (props.optBoolean("correct")) 1 else 0, occurredAt, now, props.toString()
                 ))
                 if (studentName(db, classId, installationId, profileId) == null) {
-                    db.execSQL("INSERT OR IGNORE INTO students VALUES(?,?,?,?,?)",
-                        arrayOf(classId, installationId, profileId, "Recovered student", now))
+                    db.execSQL("""INSERT OR IGNORE INTO students(class_id,installation_id,profile_id,name,first_seen)
+                        VALUES(?,?,?,?,?)""", arrayOf(classId, installationId, profileId, "Recovered student", now))
                 }
                 saveRelay(db, classId, installationId, event)
                 accepted.add(eventId)
@@ -561,9 +615,16 @@ class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hi
             arrayOf(classId, installationId)).use { cursor ->
             if (cursor.moveToFirst()) return cursor.getString(0)
         }
-        db.execSQL("INSERT INTO students VALUES(?,?,?,?,?)",
+        db.execSQL("INSERT INTO students(class_id,installation_id,profile_id,name,first_seen) VALUES(?,?,?,?,?)",
             arrayOf<Any>(classId, installationId, "guest", guestAlias(db, classId), now))
         return "guest"
+    }
+
+    private fun removedAt(db: SQLiteDatabase, classId: String, installationId: String,
+        profileId: String): Long? = db.rawQuery("""SELECT removed_at FROM students
+            WHERE class_id=? AND installation_id=? AND profile_id=? AND removed_at IS NOT NULL""",
+            arrayOf(classId, installationId, profileId)).use { cursor ->
+        if (cursor.moveToFirst()) cursor.getLong(0) else null
     }
 
     private fun guestAlias(db: SQLiteDatabase, classId: String): String {
@@ -577,22 +638,27 @@ class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hi
         }
     }
 
-    fun students(classId: String? = null): List<StudentRow> {
+    /**
+     * The students in a class (or on this phone), with their totals. A student the teacher
+     * removed is never listed; one whose phone said they left only when [includeLeft] asks.
+     */
+    fun students(classId: String? = null, includeLeft: Boolean = false): List<StudentRow> {
         val rows = mutableListOf<StudentRow>()
-        val conditions = mutableListOf<String>()
+        val conditions = mutableListOf("s.removed_at IS NULL")
         val arguments = mutableListOf<String>()
         if (classId != null) {
             conditions.add("s.class_id=?")
             arguments.add(classId)
         }
-        val where = if (conditions.isEmpty()) "" else "WHERE ${conditions.joinToString(" AND ")}"
+        if (!includeLeft) conditions.add("s.left_at IS NULL")
+        val where = "WHERE ${conditions.joinToString(" AND ")}"
         readableDatabase.rawQuery("""SELECT s.class_id,s.installation_id,s.profile_id,s.name,
             COALESCE(SUM(e.event_name='card_viewed'),0),
             COALESCE(SUM(e.event_name='quiz_graded'),0),
             COALESCE(SUM(e.event_name='quiz_graded' AND e.correct=1),0),
             COALESCE(SUM(e.event_name IN ('download_failed','model_load_failed','generation_failed')),0),
             COUNT(e.event_id),COALESCE(d.last_sync,0),COALESCE(d.last_seen,0),
-            COALESCE(d.last_accepted,0),COALESCE(d.last_rejected,0)
+            COALESCE(d.last_accepted,0),COALESCE(d.last_rejected,0),COALESCE(s.left_at,0)
             FROM students s
             LEFT JOIN events e ON e.class_id=s.class_id AND e.installation_id=s.installation_id
                 AND e.profile_id=s.profile_id
@@ -602,10 +668,43 @@ class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hi
             while (cursor.moveToNext()) rows.add(StudentRow(
                 cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3),
                 cursor.getInt(4), cursor.getInt(5), cursor.getInt(6), cursor.getInt(7),
-                cursor.getInt(8), cursor.getLong(9), cursor.getLong(10), cursor.getInt(11), cursor.getInt(12)
+                cursor.getInt(8), cursor.getLong(9), cursor.getLong(10), cursor.getInt(11), cursor.getInt(12),
+                cursor.getLong(13)
             ))
         }
         return rows
+    }
+
+    /**
+     * The class as the teacher sees it: the students still in it, or with [includeLeft] also
+     * those who left, for the spreadsheet. Duplicate names are numbered across both, so a
+     * student who leaves or comes back never makes a classmate's "-2" move.
+     */
+    fun classRoster(schoolClass: SchoolClass, includeLeft: Boolean = false): List<RosterCard> =
+        rosterCards(schoolClass, students(schoolClass.id, includeLeft = true))
+            .filter { includeLeft || it.student.leftAt == 0L }
+
+    /**
+     * The teacher's Remove from class. The student's activity on this phone goes, including
+     * anything not yet relayed, and they disappear from the class and its spreadsheet. The row
+     * itself stays behind as the marker ingest checks: the phone is never told, so it keeps
+     * listing the profile and sending its events, and neither may bring the student back.
+     */
+    fun removeStudent(student: StudentRow) {
+        val db = writableDatabase
+        db.beginTransaction()
+        try {
+            val key = arrayOf(student.classId, student.installationId, student.profileId)
+            db.execSQL("""UPDATE students SET removed_at=? WHERE class_id=? AND installation_id=?
+                AND profile_id=? AND removed_at IS NULL""", arrayOf<Any>(System.currentTimeMillis(), *key))
+            db.execSQL("""DELETE FROM activity_relay WHERE state='pending' AND class_id=? AND installation_id=?
+                AND event_id IN (SELECT event_id FROM events WHERE class_id=? AND installation_id=?
+                AND profile_id=?)""", arrayOf(student.classId, student.installationId, *key))
+            db.execSQL("DELETE FROM events WHERE class_id=? AND installation_id=? AND profile_id=?", key)
+            db.setTransactionSuccessful()
+        } finally {
+            db.endTransaction()
+        }
     }
 
     fun rosterCards(schoolClass: SchoolClass, students: List<StudentRow>): List<RosterCard> {
@@ -650,51 +749,69 @@ class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hi
         it.getInt(0)
     }
 
-    /** Count activity by its learner-recorded time, rather than a later reconnection time. */
+    /**
+     * Count activity by its learner-recorded time, rather than a later reconnection time. Like
+     * the roster it sits under, it leaves out students who left the class.
+     */
     fun eventCountSince(classId: String, since: Long): Int = readableDatabase.rawQuery(
-        "SELECT COUNT(*) FROM events WHERE class_id=? AND occurred_at>=?",
+        """SELECT COUNT(*) FROM events e WHERE e.class_id=? AND e.occurred_at>=? AND NOT EXISTS (
+            SELECT 1 FROM students s WHERE s.class_id=e.class_id AND s.installation_id=e.installation_id
+            AND s.profile_id=e.profile_id AND s.left_at IS NOT NULL)""",
         arrayOf(classId, since.toString())).use {
         it.moveToFirst()
         it.getInt(0)
     }
 
-    fun eventBreakdown(student: StudentRow): List<Pair<String, Int>> {
-        val rows = mutableListOf<Pair<String, Int>>()
-        readableDatabase.rawQuery("""SELECT event_name,COUNT(*) FROM events
+    /**
+     * A student's card views and graded quizzes in [from, until), by the learner-recorded time —
+     * so activity that reaches Tala days later still lands on the day it happened.
+     */
+    fun learningEvents(student: StudentRow, from: Long = Long.MIN_VALUE,
+        until: Long = Long.MAX_VALUE): List<LearningEvent> {
+        val rows = mutableListOf<LearningEvent>()
+        readableDatabase.rawQuery("""SELECT event_name,occurred_at,correct,props FROM events
             WHERE class_id=? AND installation_id=? AND profile_id=?
-            GROUP BY event_name ORDER BY COUNT(*) DESC,event_name""",
-            arrayOf(student.classId, student.installationId, student.profileId)).use { cursor ->
-            while (cursor.moveToNext()) rows.add(cursor.getString(0) to cursor.getInt(1))
-        }
-        return rows
-    }
-
-    fun uniqueCards(student: StudentRow): Int {
-        val cards = mutableSetOf<String>()
-        readableDatabase.rawQuery("""SELECT props FROM events WHERE class_id=? AND installation_id=?
-            AND profile_id=? AND event_name='card_viewed'""",
-            arrayOf(student.classId, student.installationId, student.profileId)).use { cursor ->
-            while (cursor.moveToNext()) {
-                val cardId = JSONObject(cursor.getString(0)).optString("card_id").trim()
-                if (cardId.isNotEmpty()) cards.add(cardId)
-            }
-        }
-        return cards.size
-    }
-
-    fun recentEvents(student: StudentRow, since: Long): List<StoredEvent> {
-        val rows = mutableListOf<StoredEvent>()
-        readableDatabase.rawQuery("""SELECT installation_id,profile_id,event_id,event_name,
-            occurred_at,received_at,correct,props FROM events
-            WHERE class_id=? AND installation_id=? AND profile_id=?
-            AND (occurred_at>=? OR received_at>=?)
-            ORDER BY received_at DESC,occurred_at DESC,event_id DESC""",
+            AND event_name IN ('card_viewed','quiz_graded') AND occurred_at>=? AND occurred_at<?""",
             arrayOf(student.classId, student.installationId, student.profileId,
-                since.toString(), since.toString())).use { cursor ->
-            while (cursor.moveToNext()) rows.add(eventFrom(cursor))
+                from.toString(), until.toString())).use { cursor ->
+            while (cursor.moveToNext()) rows.add(learningEvent(cursor.getString(0), cursor.getLong(1),
+                cursor.getInt(2) != 0, cursor.getString(3)))
         }
         return rows
     }
+
+    /**
+     * The student's most recent days with any learning before [before], newest first, each with
+     * all of that day's events. Days are calendar days in [zone]; a day with nothing is skipped
+     * rather than shown empty. Page backwards by passing the start of the oldest day returned.
+     */
+    fun learningDays(student: StudentRow, before: Long, count: Int,
+        zone: ZoneId): List<Pair<LocalDate, List<LearningEvent>>> {
+        val days = mutableListOf<Pair<LocalDate, List<LearningEvent>>>()
+        var cursor = before
+        while (days.size < count) {
+            val latest = latestLearningBefore(student, cursor) ?: break
+            val date = Instant.ofEpochMilli(latest).atZone(zone).toLocalDate()
+            val start = date.atStartOfDay(zone).toInstant().toEpochMilli()
+            days.add(date to learningEvents(student, start, date.plusDays(1).atStartOfDay(zone).toInstant().toEpochMilli()))
+            cursor = start
+        }
+        return days
+    }
+
+    /** When the student last viewed a card or answered a quiz before [before], if ever. */
+    fun latestLearningBefore(student: StudentRow, before: Long): Long? = readableDatabase.rawQuery(
+        """SELECT occurred_at FROM events WHERE class_id=? AND installation_id=? AND profile_id=?
+        AND event_name IN ('card_viewed','quiz_graded') AND occurred_at<?
+        ORDER BY occurred_at DESC LIMIT 1""",
+        arrayOf(student.classId, student.installationId, student.profileId, before.toString())).use {
+        if (it.moveToFirst()) it.getLong(0) else null
+    }
+
+    fun activityTotals(student: StudentRow, from: Long = Long.MIN_VALUE,
+        until: Long = Long.MAX_VALUE): ActivityTotals = ActivityTotals.of(learningEvents(student, from, until))
+
+    fun uniqueCards(student: StudentRow): Int = activityTotals(student).unique
 
     fun forEachEvent(classId: String, throughRowId: Long = Long.MAX_VALUE,
         action: (StoredEvent) -> Unit) {
@@ -835,6 +952,12 @@ class TalaDatabase(private val context: Context) : SQLiteOpenHelper(context, "hi
     }
 
     companion object {
+        fun learningEvent(name: String, occurredAt: Long, correct: Boolean, props: String): LearningEvent {
+            val json = JSONObject(props)
+            return LearningEvent(name, occurredAt, correct, json.optString("card_id").trim(),
+                json.optString("question_id").trim())
+        }
+
         private const val GUEST_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"
         private val OPTION_KINDS = setOf("teacher", "school")
         private val ID = Regex("[A-Za-z0-9_-]{16,80}")
