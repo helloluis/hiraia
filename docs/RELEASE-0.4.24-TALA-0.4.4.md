@@ -1,13 +1,14 @@
 # Hiraia v0.4.24 and Tala v0.4.4
 
-Built September 24, 2026 from `hiraia-unified` in the canonical checkout (base `cc977c66d`,
-uncommitted at build time). **Not yet published**: the server side must go live first (see
-"Release order"), and neither APK has been tested on a physical phone pair.
+Built and published September 24, 2026 from `hiraia-unified` (release commit `13d489287`).
+Server side deployed first (telemetry collector, then the web app); neither APK has been
+tested on a physical phone pair.
 
 ## Student APK
 
 - Package: `com.hiraia.app`; version 0.4.24; Android version code 24; non-debuggable.
 - Signed APK: `packages/mobile/android/app/build/outputs/apk/release/hiraia-v0p4p24.apk`.
+- Download: https://assets.hiraia.org/models/hiraia-v0p4p24.apk (and the `hiraia.apk` alias, purged).
 - Bytes: 437168945 (417 MiB).
 - SHA-256: `653caede387177bbdb1a56383f2a0e70170750e152afd20f81c268ff034de12a`.
 - MD5: `f505f688ed77c5fb49ac3b7f3bdb8c0d`.
@@ -20,7 +21,8 @@ uncommitted at build time). **Not yet published**: the server side must go live 
 
 - Package: `com.hiraia.tala`; version 0.4.4; Android version code 19; non-debuggable.
 - APK: `packages/tala/android/app/build/outputs/apk/release/app-release.apk` (copy:
-  `/tmp/release-0424/tala-v0p4p4.apk`); publish as `tala-v0p4p4.apk`.
+  `/tmp/release-0424/tala-v0p4p4.apk`).
+- Download: https://assets.hiraia.org/models/tala-v0p4p4.apk
 - Bytes: 15578868.
 - SHA-256: `dd78002292a3363d4aea16f690450ce139b55f8768c9f09842ea55e039023d64`.
 - MD5: `64f7c47092a49878d4018bf357f8c8c3`.
