@@ -4,6 +4,7 @@ import { Wordmark } from '@/components/brand/Wordmark';
 
 import { type ReactNode } from 'react';
 import { AppDownload } from '@/components/AppDownload';
+import { DevDiary } from '@/components/DevDiary';
 import { FeedbackBreaker } from '@/components/FeedbackBreaker';
 import { SiteFooter } from '@/components/SiteFooter';
 import { YouTubeEmbed } from '@/components/YouTubeEmbed';
@@ -218,6 +219,8 @@ export function Landing() {
           </div>
         </div>
       </section>
+
+      <DevDiary />
 
       <FeedbackBreaker />
 
