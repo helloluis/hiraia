@@ -293,7 +293,8 @@ export function Landing() {
               className="w-full"
             />
             <div className="mc-soon" role="status">
-              <svg viewBox="0 0 100 100" aria-hidden="true">
+              {/* The burst ends at y=81.5; center its visible bounds, not empty SVG space. */}
+              <svg viewBox="0 0 100 83.5" aria-hidden="true">
                 <polygon
                   fill="var(--gold)"
                   stroke="var(--accent)"

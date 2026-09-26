@@ -169,9 +169,8 @@ strong, b, h1, h2, h3, h4, h5, h6 {
 .mc-soon span {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-content: center;
   text-align: center;
   font-family: 'Caveat Brush', 'Patrick Hand', cursive;
   font-size: 1.18rem;

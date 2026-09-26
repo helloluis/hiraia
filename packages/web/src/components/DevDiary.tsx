@@ -220,9 +220,17 @@ export function DevDiary() {
           </div>
           <div className={styles.navigation} aria-label="Timeline navigation">
             <button type="button" aria-label="Earlier events" aria-controls="diary-timeline"
-              disabled={position.atStart} onClick={() => scroll(-1)}>←</button>
+              disabled={position.atStart} onClick={() => scroll(-1)}>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M19 12H5m6-6-6 6 6 6" />
+              </svg>
+            </button>
             <button type="button" aria-label="Later events" aria-controls="diary-timeline"
-              disabled={position.atEnd} onClick={() => scroll(1)}>→</button>
+              disabled={position.atEnd} onClick={() => scroll(1)}>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 12h14m-6-6 6 6-6 6" />
+              </svg>
+            </button>
           </div>
         </div>
         <ol id="diary-timeline" ref={track} className={styles.timeline} tabIndex={0} aria-label="Hiraia milestones">

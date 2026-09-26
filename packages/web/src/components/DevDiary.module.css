@@ -4,7 +4,8 @@
 .eyebrow { font-family: 'Archivo Black', sans-serif; font-size: .625rem; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); margin-bottom: .75rem; }
 .heading h2 { font-size: clamp(2.5rem, 5vw, 3.5rem); line-height: 1.1; }
 .navigation { display: flex; gap: .5rem; }
-.navigation button { border: 1px solid var(--stock); border-radius: 50%; width: 2.75rem; height: 2.75rem; font-size: 1.5rem; }
+.navigation button { display: grid; place-items: center; padding: 0; border: 1px solid var(--stock); border-radius: 50%; width: 2.75rem; height: 2.75rem; }
+.navigation svg { display: block; width: 1.5rem; height: 1.5rem; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
 .navigation button:hover:not(:disabled) { background: var(--stock); color: var(--ink); }
 .navigation button:disabled { opacity: .25; cursor: default; }
 .timeline { display: flex; gap: 2rem; list-style: none; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: #8c9e6e transparent; padding: 0 0 1.5rem; }
