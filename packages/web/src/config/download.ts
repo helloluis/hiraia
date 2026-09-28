@@ -43,26 +43,26 @@ export const DOWNLOAD = {
    */
   released: true,
 
-  version: '0.4.24',
+  version: '0.4.26',
 
   /** Android's monotonic update number, embedded in the signed APK. */
-  versionCode: 24,
+  versionCode: 26,
 
   /** The oldest build which may dismiss the update prompt. */
   minSupportedVersionCode: 1,
 
   /** Date that the immutable APK URL was published. */
-  publishedAt: '2026-09-24',
+  publishedAt: '2026-09-28',
 
   apk: {
-    url: 'https://assets.hiraia.org/models/hiraia-v0p4p24.apk',
+    url: 'https://assets.hiraia.org/models/hiraia-v0p4p26.apk',
     /** Omit from the UI when 0 (file not measured yet). */
     fileSizeMB: 417,
     /** Exact signed APK size, required by the in-app downloader. */
-    bytes: 437168945,
-    sha256: '653caede387177bbdb1a56383f2a0e70170750e152afd20f81c268ff034de12a',
+    bytes: 437205865,
+    sha256: 'aca9790d44893e1b3361d14575c16db26bef7f50684514847f4b30e7e4aa8b28',
     /** MD5 of the same signed APK, required by the in-app downloader. */
-    md5: 'f505f688ed77c5fb49ac3b7f3bdb8c0d',
+    md5: 'c8cc2a1ca611c083171147c839754b46',
   },
 
   /** SHA-256 of the signing cert. Stays the same across releases. */
