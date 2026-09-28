@@ -2,7 +2,7 @@
   "expo": {
     "name": "Hiraia",
     "slug": "hiraia",
-    "version": "0.4.24",
+    "version": "0.4.26",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -29,7 +29,7 @@
         "backgroundColor": "#1C3B2E"
       },
       "package": "com.hiraia.app",
-      "versionCode": 24,
+      "versionCode": 26,
       "permissions": [
         "REQUEST_INSTALL_PACKAGES"
       ]
@@ -65,6 +65,7 @@
       "./plugins/withOnnxruntime.js",
       "./plugins/withBundledIllustrations.js",
       "./plugins/withTalaNearby.js",
+      "./plugins/withAssetMirrorCleartext.js",
       [
         "expo-camera",
         {

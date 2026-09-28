@@ -26,6 +26,21 @@ export function semanticMemoryBlock(s: MemorySnapshot | null, needsDownload = fa
   if (needsDownload && s.freeStorageBytes < GiB) return 'storage';
   return null;
 }
+/**
+ * The DOWNLOAD gate for LaBSE + vectors, deliberately narrower than semanticMemoryBlock: only
+ * what waiting cannot fix refuses a download — a phone too small to ever hold LaBSE
+ * ('unsupported', a fixed property of the device) or no room to store it ('storage').
+ * RAM 'pressure' is a moment, not a property of the phone (a game behind Hiraia, the feed
+ * decoding art), so it gates only the load into RAM, which semanticMemoryBlock re-checks just
+ * before loadModel. Refusing the download on it left a JP1 that was busy at first launch
+ * keyword-only for good. An unreadable snapshot stays a (retryable) 'unknown': it proves
+ * nothing about the phone, and the allocation gate would refuse to load on it anyway.
+ */
+export function semanticDownloadBlock(s: MemorySnapshot | null, needsDownload = false): MemoryBlock | null {
+  const reason = semanticMemoryBlock(s, false);
+  if (reason === 'unsupported' || reason === 'unknown') return reason;
+  return needsDownload && s!.freeStorageBytes < GiB ? 'storage' : null;
+}
 export function canLoadSemantic(s: MemorySnapshot | null): boolean {
   return semanticMemoryBlock(s) === null;
 }

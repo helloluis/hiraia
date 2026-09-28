@@ -7,6 +7,7 @@ import {
 import { ProfilePicker } from '../profiles/ProfilePicker';
 import { Text, Pressable } from 'react-native';
 import { startImageDownloads } from '../images/installer';
+import { startSemanticPrefetch } from '../engine/semanticPrefetch';
 import { startTelemetry } from '../telemetry';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
@@ -66,6 +67,10 @@ export default function RootLayout() {
   useEffect(() => {
     void initializeProfiles().catch(() => setProfileError(true));
   }, []);
+  // LaBSE search files for every phone that can hold them, from launch, whatever the profile
+  // state: the files are shared by every profile, and a donated phone that leaves the
+  // warehouse without them must still fetch them at school. See engine/semanticPrefetch.ts.
+  useEffect(() => startSemanticPrefetch(), []);
   useEffect(() => {
     if (!profiles.ready || !profiles.hasChoice || profiles.choosing) return;
     return startTelemetry();
@@ -158,7 +163,8 @@ export default function RootLayout() {
   const appReady = pickerReady || (shellReady && (onboardingActive || hydrated));
   const onFirstChoice = useCallback(async () => {
     // The picker remains painted while the new profile's settings load. No JS reload,
-    // and no guest database/model/download jobs are started before this first choice.
+    // and no guest database, engine or image download is started before this first choice
+    // (the LaBSE prefetch above is shared by every profile and deliberately runs from launch).
     await bootstrap();
     cancelProfileChoice();
   }, [bootstrap]);

@@ -21,7 +21,7 @@ import { artSourceFor } from '../data/artSource';
 import { openFactSource } from '../data/cardDb';
 import { cardSlugForFact } from '../data/factCardSlug';
 import { getSetting, setSetting } from '../db/repo';
-import { ensureRemoteAsset } from './modelDownload';
+import { assetDownloadStatus, ensureRemoteAsset, subscribeAssetDownloads, type RemoteAssetSpec } from './modelDownload';
 import { installedModelUpdate, rejectModelUpdate } from '../updates/model';
 import type { ModelUpdate } from '../updates/catalog';
 import { withModelLock } from './modelLock';
@@ -239,6 +239,11 @@ export class LocalEngine implements TutorEngine {
   // LaBSE is loaded before the optional LLM; the feed is lexical until ready.
   private embedModelId: string | null = null;
   private semanticReady = false;
+  // The retrySemantic() attempt in flight, shared by concurrent callers.
+  private semanticAttempt: Promise<boolean> | null = null;
+  // Semantic setup failed AFTER LaBSE was allocated (the load itself, the vector read, the
+  // attach guard): a property of these files on this phone, not something waiting fixes.
+  private semanticLoadFailed = false;
   // Structured load-stage channel (see EngineProgressEvent). Set by initialize();
   // shared by both sequential initialization stages.
   private onEvent: ((ev: EngineProgressEvent) => void) | null = null;
@@ -972,19 +977,91 @@ export class LocalEngine implements TutorEngine {
   }
 
   /**
+   * Try LaBSE + vectors AGAIN on an engine that is already initialized but came up
+   * keyword-only (offline at first launch, RAM pressure at that moment, a download that died
+   * mid-file) — without touching the generator. initialize() swallows a semantic failure by
+   * design (lexical search is a working product), and that used to make the failure permanent
+   * for the whole process: the store reads 'done' and nothing ever asked again.
+   *
+   * Downloads if needed (ensureRemoteAsset: verified, resumable, mirror-first, and it JOINS a
+   * transfer of the same file already in flight), re-checks RAM headroom, then attaches.
+   * Returns whether semantic search is ready now. Safe to call repeatedly and concurrently:
+   * callers share the attempt in flight, and a ready engine answers true with no work. The
+   * app calls it through engineStore.retrySemantic, which also serializes it on the store's
+   * loadQueue, so a retry can never overlap a language switch loading a second LaBSE.
+   *
+   * It sends NO readiness-bar events: the bar belongs to a load, and this engine's load is
+   * over (the sidebar's search row shows the download instead).
+   *
+   * Only what waiting can fix is retried: a missing download, or RAM too short to allocate.
+   * Once LaBSE has been allocated and setup still failed, this engine answers false for good
+   * — the prefetcher asks on every foreground, network change and search-field focus, and each
+   * of those would otherwise load and unload ~384 MB to hit the same failure. A language
+   * switch or a relaunch (a new engine) tries once more.
+   */
+  retrySemantic(): Promise<boolean> {
+    if (this.semanticReady) return Promise.resolve(true);
+    // Never initialized, shut down, or cancelled: there is nothing to attach to.
+    if (!this.isReadyFlag || !this.rag || this.initializationAbort.signal.aborted) return Promise.resolve(false);
+    if (this.semanticLoadFailed) return Promise.resolve(false);
+    return (this.semanticAttempt ??= this.initSemantic(false)
+      .then(() => this.semanticReady)
+      .finally(() => { this.semanticAttempt = null; }));
+  }
+
+  /**
+   * ensureRemoteAsset for a semantic file, with progress that survives JOINING a transfer
+   * someone else started. The semantic prefetcher (engine/semanticPrefetch.ts) usually has —
+   * it starts at launch — and a joiner gets no byte counter of its own from the downloader, so
+   * without this the search field's bar would sit still for the whole ~500 MB. The
+   * downloader's status feed carries the real percent either way; repeats are dropped.
+   *
+   * Cancelling this engine also ends the WAIT when it only joined. The downloader hands a
+   * joiner's signal to nobody (the transfer belongs to its first caller, and the prefetcher
+   * passes none), so without the race below a language switch would sit behind the whole
+   * ~500 MB transfer, and behind a paused one ("AI downloads" off) forever: the switch waits
+   * on the load queue this engine holds. The transfer itself carries on for the prefetcher.
+   */
+  private async fetchSemanticAsset(spec: RemoteAssetSpec, onPct: (pct: number) => void): Promise<string> {
+    this.checkInitialization();
+    const signal = this.initializationAbort.signal;
+    let last = -1;
+    const report = (pct: number) => { if (pct !== last) { last = pct; onPct(pct); } };
+    const stop = subscribeAssetDownloads(() => {
+      const s = assetDownloadStatus(spec.filename);
+      if (s.phase === 'downloading' || s.phase === 'verifying') report(s.percent);
+    });
+    let abandon = () => {};
+    const abandoned = new Promise<never>((_, reject) => {
+      abandon = () => reject(new Error('Engine initialization cancelled'));
+    });
+    signal.addEventListener('abort', abandon);
+    try {
+      return await Promise.race([ensureRemoteAsset(spec, report, signal), abandoned]);
+    } finally {
+      signal.removeEventListener('abort', abandon);
+      stop();
+    }
+  }
+
+  /**
    * Load the LaBSE embedder (downloaded on first run) + the bundled int8 vectors
    * blob, then attach the semantic index to the lexical RagStore. Runs in the
-   * background; any failure leaves the app on lexical-only retrieval.
+   * background; any failure leaves the app on lexical-only retrieval (retrySemantic
+   * runs this again later, with `reportProgress` off).
    */
-  private async initSemantic(): Promise<void> {
+  private async initSemantic(reportProgress = true): Promise<void> {
     // Download both verified assets, check headroom again, then allocate. Completing
     // this progress stage does not imply success: isSemanticReady() reports capability.
-    const emit = (pct: number) => this.onEvent?.({ stage: 'semantic', pct });
+    const emit = (pct: number) => { if (reportProgress) this.onEvent?.({ stage: 'semantic', pct }); };
+    let allocating = false; // Past every gate that waiting can change (see retrySemantic).
     try {
       if (!this.rag) {
         emit(100);
         return;
       }
+      // The DOWNLOAD gate: only a phone that can never hold LaBSE, or one with no room for
+      // the files, refuses here. RAM pressure is checked below, just before the allocation.
       await requireSemanticMemory(true);
       const t0 = Date.now();
       // 1) embedder (LaBSE GGUF via the QVAC llamacpp-embedding plugin). Same
@@ -993,21 +1070,22 @@ export class LocalEngine implements TutorEngine {
       // it reports through the semantic band of the readiness bar, never gating the
       // engine's own readiness.
       const embedSrc = EMBEDDER.remote
-        ? await ensureRemoteAsset(EMBEDDER.remote, (pct) => {
+        ? await this.fetchSemanticAsset(EMBEDDER.remote, (pct) => {
             console.log(`[LocalEngine] LaBSE downloading: ${pct}%`);
             emit(Math.round(pct * 0.69));
-          }, this.initializationAbort.signal)
+          })
         : EMBEDDER.modelSrc;
       // 2) fact-vectors blob — DOWNLOADED through the same verified gate as every other
       // remote asset (declared bytes + streaming MD5, byte-exact resume, self-healing
       // cache). It used to be a 78.6 MB bundled Metro asset; it is inert without the
       // embedder above, so it rides the same background phase and costs the APK nothing.
-      const vectorsPath = await ensureRemoteAsset(REMOTE_ASSETS.vectors, (pct) => {
+      const vectorsPath = await this.fetchSemanticAsset(REMOTE_ASSETS.vectors, (pct) => {
         console.log(`[LocalEngine] vectors downloading: ${pct}%`);
         emit(69 + Math.round(pct * 0.21));
-      }, this.initializationAbort.signal);
+      });
       this.checkInitialization();
       await requireSemanticMemory(); // Headroom may change during either download.
+      allocating = true;
       this.embedModelId = await loadModel({
         modelSrc: embedSrc,
         modelType: EMBEDDER.modelType,
@@ -1060,6 +1138,7 @@ export class LocalEngine implements TutorEngine {
     } catch (e) {
       console.warn('[LocalEngine] semantic init failed — staying lexical-only:', e);
       this.semanticReady = false;
+      if (allocating && !this.initializationAbort.signal.aborted) this.semanticLoadFailed = true;
       // A failed vector read must not leave an unused embedder resident.
       if (this.embedModelId) {
         try { await unloadModel({ modelId: this.embedModelId }); } catch {}

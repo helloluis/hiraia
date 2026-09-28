@@ -80,8 +80,26 @@
  * `ensureRemoteAsset` is re-entrant by construction (see `inFlight`): two engine
  * initialisations racing each other must never open two append-mode streams onto
  * the same `.part`.
+ *
+ * THE LAN MIRROR
+ * --------------
+ * A donated classroom phone can be told, by its device owner only, about a download
+ * mirror on the provisioning laptop (config/assetMirror.ts). That mirror is an
+ * UNTRUSTED delivery truck and a pure accelerator: it is tried once, first, under the
+ * SAME size + MD5 gate, into its OWN partial file; on any failure the canonical URL
+ * runs exactly as it always has. The setting leaves the warehouse with the phone, so a
+ * mirror that does not answer is then skipped by every download for a cool-off that
+ * grows while it stays silent (a few probes, then one per 10 minutes, not one per file),
+ * and a genuine partial it left behind is continued from the canonical URL, not bought
+ * again. See `fetchFromMirror` and `adoptMirrorPartial`.
  */
+import { readAssetMirrorSetting } from 'hiraia-managed-config';
 import { withModelDownloadControl } from './modelDownloadControl';
+import {
+  assetMirrorRoute,
+  createMirrorBreaker,
+  type AssetMirrorRoute,
+} from '../config/assetMirror';
 import { beginDownload } from '../telemetry/download';
 import { track } from '../telemetry';
 import {
@@ -144,6 +162,21 @@ const STALL_POLL_MS = 5_000;
  * page: a captive-portal login form, a proxy error, an nginx 404 body.
  */
 const MIN_PLAUSIBLE_BYTES = 4096;
+/**
+ * A LAN mirror answers in milliseconds. One that has not answered a HEAD in this long
+ * is not there (laptop asleep, phone taken home), and the transfer's own 60 s connect
+ * timeout is far too long to wait before going to the canonical host.
+ */
+const MIRROR_PROBE_MS = 3_000;
+/** A LAN mirror that sends nothing for this long is gone; do not wait out STALL_MS. */
+const MIRROR_STALL_MS = 15_000;
+const MD5_HEX = /^[0-9a-f]{32}$/i;
+/**
+ * Shared by every download in this process: once the mirror stops answering, the other
+ * files go straight to their own host for the cool-off instead of each spending
+ * MIRROR_PROBE_MS to learn the same thing.
+ */
+const mirrorBreaker = createMirrorBreaker();
 
 const LOG = (m: string) => console.log(`[modelDownload] ${m}`);
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
@@ -185,6 +218,9 @@ async function statSize(uri: string): Promise<number | null> {
 async function localSize(uri: string): Promise<number> {
   return (await statSize(uri)) ?? 0;
 }
+
+/** Only an asset pinned to a full MD5 is covered end to end by the write-path gate. */
+const pinnedMd5 = (spec: RemoteAssetSpec): boolean => !!spec.md5 && MD5_HEX.test(spec.md5);
 
 /** Streaming, native, constant-memory MD5 of a local file (lowercase hex). */
 async function localMd5(uri: string): Promise<string | undefined> {
@@ -433,6 +469,30 @@ async function fetchAndVerify(
         : /\.(zip|tar|webp|hpak)$/i.test(spec.filename)
           ? 'images'
           : 'model';
+
+  // LAN mirror first, when the device owner configured one and it has not just failed.
+  // It either installs a verified file or returns null, and the canonical `.part` is not
+  // touched unless the mirror succeeded (then that prefix is simply obsolete).
+  const mirrorPartUri = `${finalUri}.mirror.part`;
+  const mirror = await mirrorFor(spec);
+  if (mirror) {
+    const path = await fetchFromMirror(
+      spec,
+      mirror,
+      finalUri,
+      mirrorPartUri,
+      assetKind,
+      onProgress,
+      signal
+    );
+    if (path) {
+      await deleteAsync(partUri, { idempotent: true });
+      return path;
+    }
+  }
+  // No mirror (any more), cooling off, or not there: what it left carries on from spec.url.
+  await adoptMirrorPartial(spec, mirrorPartUri, partUri);
+
   let lastError: unknown = null;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     if (signal?.aborted) throw new Error('model download aborted');
@@ -568,6 +628,190 @@ async function fetchAndVerify(
 }
 
 /**
+ * The LAN mirror for this download, or null. Read as each download starts, not
+ * cached: the device owner moves the mirror whenever the laptop's address changes.
+ *
+ * Only an asset pinned to a full MD5 may use a mirror. A size-only gate is enough to
+ * catch a captive portal's login page, but a mirror that wanted to could serve any
+ * bytes of exactly the right length.
+ *
+ * A mirror that has just stopped answering is not asked at all while it cools off: away
+ * from the warehouse it is almost certainly still not there.
+ */
+async function mirrorFor(spec: RemoteAssetSpec): Promise<AssetMirrorRoute | null> {
+  if (!pinnedMd5(spec)) return null;
+  const route = await assetMirrorRoute(spec.url, readAssetMirrorSetting);
+  if (!route) return null;
+  if (mirrorBreaker.skipping(route.mirror)) {
+    LOG(`${spec.label}: the LAN mirror failed recently — going straight to ${spec.url}`);
+    return null;
+  }
+  LOG(`${spec.label}: trying the LAN mirror first — ${route.url}`);
+  return route;
+}
+
+/**
+ * THE PARTIAL HANDOFF. An interrupted mirror transfer (app backgrounded, downloads
+ * paused, the mirror went quiet or the connection dropped) keeps its bytes. When the
+ * mirror cannot continue them — the phone has left the warehouse, the setting is gone,
+ * the breaker is open, the probe failed, the transfer just broke off — those bytes
+ * become the canonical resume prefix instead of being thrown away, so a phone that got
+ * 300 MB of LaBSE in the warehouse buys only the rest at school.
+ *
+ * Safe although the mirror is untrusted, because the canonical loop MD5s the WHOLE file
+ * from disk before promoting it: mirror bytes are installed only if they are exactly
+ * the pinned bytes. A bad prefix fails that gate as a RESUMED transfer (startOffset > 0),
+ * which deletes the `.part` and retries from byte 0 rather than throwing IntegrityError,
+ * so the worst case is paying for the remainder once. That argument needs the MD5, so a
+ * size-only asset never adopts one. A partial longer than the whole file is a prefix of
+ * nothing and is never moved, and a longer canonical `.part` is kept over a mirror one.
+ */
+async function adoptMirrorPartial(
+  spec: RemoteAssetSpec,
+  mirrorPartUri: string,
+  partUri: string
+): Promise<void> {
+  const mirrorPart = await statSize(mirrorPartUri);
+  if (mirrorPart === null) return;
+  // Over-long partials are worth nothing: the canonical loop discards those too.
+  const usable = (size: number) => (size <= spec.bytes ? size : 0);
+  if (pinnedMd5(spec) && usable(mirrorPart) > usable(await localSize(partUri))) {
+    // Delete, then move, rather than rely on a rename replacing its destination. A crash
+    // in between leaves only the mirror partial, which the next launch adopts again.
+    await deleteAsync(partUri, { idempotent: true });
+    await moveAsync({ from: mirrorPartUri, to: partUri });
+    LOG(`${spec.label}: continuing the mirror's ${mb(mirrorPart)} from ${spec.url}`);
+  } else {
+    await deleteAsync(mirrorPartUri, { idempotent: true });
+  }
+}
+
+/**
+ * ONE attempt at the LAN mirror, under exactly the integrity contract the canonical
+ * host gets. Resolves the installed path, or null to fall back to `spec.url`; throws
+ * only when the caller aborted.
+ *
+ * Only a probe the mirror does not answer at all opens the breaker. A mirror that
+ * answers is there: a file it lacks (a sync still running, a pack newer than its
+ * tables) or gets wrong costs that file alone, and the next file still asks it. That
+ * is what keeps one missing pack from sending LaBSE to the internet — or, in a
+ * warehouse without internet, to nowhere.
+ *
+ * The mirror's bytes live in their OWN partial file, never the canonical `.part`. What
+ * is POISONED is deleted: `runTransfer` removes an HTTP error body or an ignored Range,
+ * and a COMPLETE body of the wrong size or MD5 is removed here, so a mirror that serves
+ * the wrong file costs one LAN transfer, never a retry budget. There is deliberately no
+ * retry loop here either: the mirror's whole value is that it is quick, and the
+ * canonical path below already knows how to be patient.
+ *
+ * A transfer that merely STOPPED — an abort, a stall, a dropped connection — keeps its
+ * bytes, exactly as the canonical loop keeps a stalled `.part`: nothing wrong was
+ * written, it just ended early. After an abort the next mirror attempt resumes them
+ * with a Range request; after a stall or a drop `adoptMirrorPartial` continues them from
+ * the canonical URL at once. Either way the same MD5 gate covers them end to end.
+ */
+async function fetchFromMirror(
+  spec: RemoteAssetSpec,
+  route: AssetMirrorRoute,
+  finalUri: string,
+  partUri: string,
+  assetKind: Parameters<typeof beginDownload>[1],
+  onProgress: DownloadProgressFn | undefined,
+  signal: AbortSignal | undefined
+): Promise<string | null> {
+  const source: RemoteAssetSpec = { ...spec, url: route.url, label: `${spec.label} (mirror)` };
+  const answer = await probeMirror(route.url, spec.bytes, signal);
+  // Checked first: a probe cut short by the caller says nothing about the mirror.
+  if (signal?.aborted) throw new Error('model download aborted');
+  if (answer === 'silent') {
+    const coolOffMs = mirrorBreaker.trip(route.mirror);
+    LOG(
+      `${source.label}: the mirror did not answer — using ${spec.url}, and skipping the ` +
+        `mirror for ${coolOffMs / 60_000} min`
+    );
+    return null;
+  }
+  mirrorBreaker.answered(route.mirror);
+  if (answer === 'missing') {
+    LOG(`${source.label}: the mirror does not hold this file — using ${spec.url}`);
+    return null;
+  }
+
+  let startOffset = await localSize(partUri);
+  if (startOffset > spec.bytes) {
+    await deleteAsync(partUri, { idempotent: true });
+    startOffset = 0;
+  }
+  const telemetry = beginDownload(spec.filename, assetKind, spec.bytes, startOffset);
+  try {
+    if (startOffset !== spec.bytes) {
+      onProgress?.(
+        startOffset > 0 ? Math.min(99, Math.round((startOffset / spec.bytes) * 100)) : 0
+      );
+      await runTransfer(source, partUri, startOffset, onProgress, signal, MIRROR_STALL_MS);
+    }
+    if (signal?.aborted) throw new Error('model download aborted');
+
+    // The same WRITE-path gate as the canonical loop: size first, then a streaming MD5
+    // of every byte on disk, resumed ones included.
+    onProgress?.(99, 'verify');
+    const size = await localSize(partUri);
+    const md5 = size === spec.bytes ? await localMd5(partUri) : undefined;
+    const bad = checkContract(spec, size, md5);
+    if (bad) {
+      // The body ENDED and is not our file: none of it is a prefix worth keeping.
+      await deleteAsync(partUri, { idempotent: true });
+      throw new Error(`integrity check failed: ${bad}`);
+    }
+
+    await moveAsync({ from: partUri, to: finalUri });
+    telemetry.installed(size);
+    LOG(`${source.label}: verified + installed (${mb(size)})`);
+    onProgress?.(100);
+    return stripScheme(finalUri);
+  } catch (e) {
+    telemetry.failed(signal?.aborted ? new Error('cancelled') : e);
+    if (signal?.aborted) throw new Error('model download aborted');
+    LOG(`${source.label}: ${e instanceof Error ? e.message : String(e)} — using ${spec.url}`);
+    return null;
+  }
+}
+
+/**
+ * Does the mirror hold a file of exactly our size? A HEAD with a short deadline, so an
+ * unreachable mirror costs seconds. `'silent'` means no HTTP answer at all (nothing
+ * there, a refused connection, too slow), the one outcome that says something about
+ * the mirror rather than this file. Only a hint: a mirror that lies here still has to
+ * get past the size + MD5 gate.
+ */
+async function probeMirror(
+  url: string,
+  bytes: number,
+  signal?: AbortSignal
+): Promise<'offered' | 'missing' | 'silent'> {
+  if (signal?.aborted) return 'silent';
+  const probe = new AbortController();
+  const cancel = () => probe.abort();
+  signal?.addEventListener('abort', cancel);
+  const deadline = setTimeout(cancel, MIRROR_PROBE_MS);
+  try {
+    const response = await fetch(url, {
+      method: 'HEAD',
+      // Cast: Node's AbortSignal type is not structurally RN's (see telemetry/index.ts).
+      signal: probe.signal as RequestInit['signal'],
+    });
+    return response.status === 200 && response.headers.get('content-length') === String(bytes)
+      ? 'offered'
+      : 'missing';
+  } catch {
+    return 'silent';
+  } finally {
+    clearTimeout(deadline);
+    signal?.removeEventListener('abort', cancel);
+  }
+}
+
+/**
  * One transfer attempt into `partUri`, resuming from `startOffset`. Resolves when
  * the socket is done; the CALLER verifies what landed on disk. Throws on HTTP
  * error, stall, or a server that ignored our Range.
@@ -575,13 +819,15 @@ async function fetchAndVerify(
  * Returns the total size the server DECLARED for this transfer (absolute, i.e.
  * including `startOffset`), or null if no progress event ever arrived. The caller
  * uses it to tell a genuine truncated prefix from a body that was never our file.
+ * `stallMs` is shortened for the LAN mirror, which has no slow link to excuse it.
  */
 async function runTransfer(
   spec: RemoteAssetSpec,
   partUri: string,
   startOffset: number,
   onProgress: DownloadProgressFn | undefined,
-  signal: AbortSignal | undefined
+  signal: AbortSignal | undefined,
+  stallMs = STALL_MS
 ): Promise<number | null> {
   if (signal?.aborted) throw new Error('model download aborted');
   LOG(
@@ -650,9 +896,9 @@ async function runTransfer(
   // downloadAsync resolve null — and leaves the .part intact for the next attempt
   // to resume from.
   const watchdog = setInterval(() => {
-    if (Date.now() - lastAdvanceAt > STALL_MS && !stalled) {
+    if (Date.now() - lastAdvanceAt > stallMs && !stalled) {
       stalled = true;
-      LOG(`${spec.label}: no data for ${STALL_MS / 1000}s — treating as stalled`);
+      LOG(`${spec.label}: no data for ${stallMs / 1000}s — treating as stalled`);
       resumable.pauseAsync().catch(() => {});
     }
   }, STALL_POLL_MS);
@@ -682,7 +928,7 @@ async function runTransfer(
 
     // A stall is the ONLY failure that leaves a good partial: nothing bad was
     // written, we just stopped early. Keep it so the next attempt resumes.
-    if (stalled) throw new Error(`stalled (no data for ${STALL_MS / 1000}s)`);
+    if (stalled) throw new Error(`stalled (no data for ${stallMs / 1000}s)`);
 
     // Null means the native call was cancelled — a pause we did not classify.
     if (!result) throw new Error('transfer cancelled');

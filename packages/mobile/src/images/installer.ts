@@ -7,6 +7,7 @@ import { mergeImagePacks, parseAssetCatalog, type AssetCatalog } from '../update
 import manifest from '../generated/imagePacks.generated.json';
 import { ensureRemoteAsset } from '../engine/modelDownload';
 import { hydrateDownloadedArt, markArtDownloadedMany } from '../data/artPresence';
+import { subscribeInternetRestored } from '../net/connectivity';
 import { useEngineStore } from '../store/engineStore';
 import { headerLength, parseEntries, requiredPacks, type ImagePack, type ImageEntry } from './format';
 
@@ -22,7 +23,29 @@ let initialized: Promise<void> | null = null;
 let startupRefs = 0;
 let subscription: ReturnType<typeof AppState.addEventListener> | null = null;
 let stopEngine: (() => void) | null = null;
+let stopNetwork: (() => void) | null = null;
 let retry: ReturnType<typeof setTimeout> | null = null;
+// Per-pack retry ladder, in memory only: every launch gives every pack a fresh start.
+// It paces the timer; foreground, a returning network and Retry all make packs due now.
+const firstRetry = 60_000, lastRetry = 30 * 60_000;
+const backoff = new Map<string, { at: number; delay: number }>();
+// The pump's own rest after a pack could not be downloaded, on the same ladder: consecutive
+// such failures, whichever packs they were, since every pack shares the network and server.
+let restUntil = 0, failedTransfers = 0;
+// A COMPLETE transfer that failed the pinned MD5 (ensureRemoteAsset's `fatal`): the same
+// request returns the same bytes, so the pack waits for a relaunch or a new catalog.
+const parked = new Set<string>();
+const isFatal = (e: unknown) => typeof e === 'object' && e !== null && (e as { fatal?: unknown }).fatal === true;
+const due = (pack: ImagePack) => !installed.has(pack.md5) && !parked.has(pack.md5)
+  && Math.max(restUntil, backoff.get(pack.md5)?.at ?? 0) <= Date.now();
+/** The due pack that has failed least, in catalog order among equals: one broken pack never holds up the rest. */
+const nextPack = () => selectedPacks().filter(due)
+  .sort((a, b) => (backoff.get(a.md5)?.delay ?? 0) - (backoff.get(b.md5)?.delay ?? 0))[0];
+function stepAside(pack: ImagePack) {
+  const delay = Math.min(lastRetry, 2 * (backoff.get(pack.md5)?.delay ?? firstRetry / 2));
+  backoff.set(pack.md5, { at: Date.now() + delay, delay });
+}
+function wake() { for (const b of backoff.values()) b.at = 0; restUntil = 0; failedTransfers = 0; void pump(); }
 export const imageDownloadStatus = () => status;
 export function subscribeImageDownloads(fn: () => void) { listeners.add(fn); return () => { listeners.delete(fn); }; }
 function update(value: Partial<typeof status>) { status = { ...status, ...value }; for (const fn of listeners) fn(); }
@@ -110,18 +133,25 @@ export async function acceptImageUpdates(catalog: AssetCatalog): Promise<void> {
   }
   await AsyncStorage.setItem(catalogKey, JSON.stringify(catalog));
   packs = mergeImagePacks(manifest.packs, catalog.imagePacks);
+  // Every manifest check re-offers the same catalog; only a changed one may fix a parked pack.
+  if (previous !== JSON.stringify(catalog)) { parked.clear(); backoff.clear(); }
   refreshProgress();
   // Honour a user's paused-download preference.
   void pump();
 }
 
-async function install(pack: ImagePack, signal: AbortSignal) {
+/** Gets the pack onto the phone. What fails here (connection, server, storage) is shared by every pack. */
+async function download(pack: ImagePack, signal: AbortSignal): Promise<string> {
   check(signal);
   // One staging copy plus one downloaded pack and headroom for SQLite/model activity.
   if (Paths.availableDiskSpace < pack.bytes + pack.unpackedBytes + 50_000_000) throw new Error('Not enough storage');
-  const path = await ensureRemoteAsset({ ...pack, label: 'Illustrations '+pack.id,
+  return ensureRemoteAsset({ ...pack, label: 'Illustrations '+pack.id,
     url: 'https://assets.hiraia.org/models/images/'+pack.filename,
   }, percent => update({ phase: 'downloading', percent }), signal);
+}
+
+/** Unpacks a downloaded pack. What fails here is this pack's own. */
+async function install(pack: ImagePack, path: string, signal: AbortSignal) {
   check(signal);
   const file = new File(path.startsWith('file:') ? path : 'file://'+path);
   // Recheck cached packages too; a matching file size alone is not enough for extraction.
@@ -169,16 +199,37 @@ async function pump() {
   update({ error: false });
   try {
     while (true) {
-      const pack = selectedPacks().find(p => !installed.has(p.md5));
+      const pack = nextPack();
       if (!pack) break;
       check(controller.signal);
-      if (!installed.has(pack.md5)) await install(pack, controller.signal);
+      let path: string;
+      try { path = await download(pack, controller.signal); }
+      catch (e) {
+        if (controller.signal.aborted) throw e;
+        if (isFatal(e)) { backoff.delete(pack.md5); parked.add(pack.md5); continue; }
+        // Short of wrong bytes, a failed download is the connection's or the server's doing, and
+        // the next pack would meet the same: rest rather than walk every pack through an outage.
+        stepAside(pack);
+        restUntil = Date.now() + Math.min(lastRetry, firstRetry * 2 ** failedTransfers++);
+        break;
+      }
+      // A pack that will not unpack steps aside; the next may still install.
+      try { await install(pack, path, controller.signal); backoff.delete(pack.md5); failedTransfers = 0; }
+      catch (e) {
+        if (controller.signal.aborted) throw e;
+        stepAside(pack);
+      }
     }
     refreshProgress();
-    update({ phase: 'complete' });
+    const waiting = selectedPacks().filter(p => !installed.has(p.md5));
+    if (!waiting.length) { update({ phase: 'complete' }); return; }
+    update({ phase: 'paused', error: true });
+    // Sleep until the first pack is due again. Parked packs never are.
+    const next = Math.min(...waiting.map(p => parked.has(p.md5) ? Infinity : Math.max(restUntil, backoff.get(p.md5)?.at ?? 0)));
+    if (Number.isFinite(next) && status.enabled) retry = setTimeout(() => { retry = null; void pump(); }, Math.max(0, next - Date.now()));
   } catch {
     update({ phase: 'paused', error: !controller.signal.aborted });
-    if (!controller.signal.aborted && status.enabled) retry = setTimeout(() => { retry = null; void pump(); }, 60000);
+    if (!controller.signal.aborted && status.enabled) retry = setTimeout(() => { retry = null; void pump(); }, firstRetry);
   } finally {
     active = null;
     if (controller.signal.aborted && startupRefs && status.enabled && AppState.currentState === 'active') setTimeout(() => void pump(), 0);
@@ -189,7 +240,7 @@ export async function setImageDownloadsEnabled(enabled: boolean) {
   await AsyncStorage.setItem(preference, String(enabled));
   update({ enabled, error: false });
   if (!enabled) { active?.abort(); if (retry) clearTimeout(retry); retry = null; }
-  else void pump();
+  else wake();
 }
 export function startImageDownloads() {
   startupRefs++;
@@ -201,11 +252,16 @@ export function startImageDownloads() {
       }
     });
     subscription = AppState.addEventListener('change', state => {
-      if (state !== 'active') active?.abort(); else void pump();
+      if (state !== 'active') active?.abort(); else wake();
     });
+    // Wi-Fi (or the warehouse LAN) coming back is when a failed pack can succeed.
+    stopNetwork = subscribeInternetRestored(wake);
     void initializeImages().then(() => { if (startupRefs) void pump(); });
   }
   return () => {
-    if (--startupRefs === 0) { stopEngine?.(); stopEngine = null; subscription?.remove(); subscription = null; active?.abort(); if (retry) clearTimeout(retry); retry = null; }
+    if (--startupRefs === 0) {
+      stopEngine?.(); stopEngine = null; subscription?.remove(); subscription = null; stopNetwork?.(); stopNetwork = null;
+      active?.abort(); if (retry) clearTimeout(retry); retry = null;
+    }
   };
 }

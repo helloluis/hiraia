@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { GiB, memoryBlock, semanticMemoryBlock, canLoadSemantic } from '../src/engine/memoryPolicy';
+import { GiB, memoryBlock, semanticMemoryBlock, semanticDownloadBlock, canLoadSemantic } from '../src/engine/memoryPolicy';
 const jambo = { totalBytes: 3.666 * GiB, availableBytes: 1.7 * GiB, thresholdBytes: 0.2 * GiB, freeStorageBytes: 3 * GiB, lowMemory: false, lowRamDevice: false };
 assert.equal(memoryBlock(jambo, true), 'unsupported', '4 GB must never download/load the LLM');
 assert.equal(semanticMemoryBlock(jambo, true), null, '4 GB supports standalone LaBSE');
@@ -21,4 +21,14 @@ for (const policy of [memoryBlock, semanticMemoryBlock]) {
 }
 assert.equal(semanticMemoryBlock({ ...jambo, availableBytes: GiB }), 'pressure');
 assert.equal(semanticMemoryBlock(jambo), null, 'headroom recovery is not cached');
+// The DOWNLOAD gate refuses only what waiting cannot fix; RAM pressure gates only the load.
+const busy = { ...jambo, availableBytes: 0.5 * GiB };
+assert.equal(semanticMemoryBlock(busy, true), 'pressure', 'a busy JP1 must not LOAD LaBSE now');
+assert.equal(semanticDownloadBlock(busy, true), null, 'but it must still DOWNLOAD it');
+assert.equal(semanticDownloadBlock({ ...jambo, lowMemory: true }, true), null);
+assert.equal(semanticDownloadBlock({ ...busy, freeStorageBytes: 0.5 * GiB }, true), 'storage');
+assert.equal(semanticDownloadBlock({ ...busy, freeStorageBytes: 0.5 * GiB }, false), null, 'files already here');
+assert.equal(semanticDownloadBlock({ ...busy, totalBytes: 2.91 * GiB }, true), 'unsupported');
+assert.equal(semanticDownloadBlock({ ...jambo, lowRamDevice: true }, true), 'unsupported');
+assert.equal(semanticDownloadBlock(null, true), 'unknown', 'an unreadable snapshot waits for the next attempt');
 console.log('Memory policy checks passed');

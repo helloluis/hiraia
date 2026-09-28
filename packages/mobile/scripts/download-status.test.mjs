@@ -74,6 +74,8 @@ test('download status follows verified files, isolates images, and never initiat
       'export const {documentDirectory,getInfoAsync,makeDirectoryAsync,deleteAsync,moveAsync,createDownloadResumable}=globalThis.__downloadStatusTest',
     '../telemetry/download': 'export const beginDownload=()=>({installed(){},failed(){}})',
     '../telemetry': 'export const track=()=>{}',
+    // No device owner, no mirror: these downloads must behave exactly as they always have.
+    'hiraia-managed-config': 'export const readAssetMirrorSetting=async()=>null',
   };
   let seq = 0;
   async function load() {

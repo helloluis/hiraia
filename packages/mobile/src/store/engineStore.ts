@@ -1,4 +1,4 @@
-import { readMemory, MemoryBlockedError } from '../engine/memory';
+import { readMemory, MemoryBlockedError, semanticAssetsMissing } from '../engine/memory';
 import { memoryBlock, type MemoryBlock } from '../engine/memoryPolicy';
 import { needsProfileOnboarding } from '../profiles';
 import { setTelemetryPersona } from '../telemetry';
@@ -76,6 +76,9 @@ interface EngineState {
   readiness: number;
   /** The stage tag matching `readiness` — drives the truthful status messages. */
   readyStage: ReadyStage;
+  /** The loaded engine has LaBSE search attached (engine.isSemanticReady(), made reactive
+   *  for the sidebar). False while no engine is loaded. */
+  semanticReady: boolean;
   /** Whether the onboarding carousel is showing. True on first launch (no saved
    *  language) and whenever Settings → "show tutorial" re-triggers it. */
   onboardingActive: boolean;
@@ -89,6 +92,9 @@ interface EngineState {
   /** Persist + apply a grade. Cheap — no model reload (grade only pitches the
    *  card prompt); a ready engine just takes the config write in place. */
   changeGrade: (grade: GradeLevel) => Promise<void>;
+  /** Attach LaBSE search to the READY engine if it came up keyword-only (see
+   *  LocalEngine.retrySemantic). Serialized with loads; resolves whether search is semantic. */
+  retrySemantic: () => Promise<boolean>;
   shutdown: () => Promise<void>;
 }
 
@@ -159,7 +165,7 @@ async function loadEngineFor(language: Language): Promise<void> {
   const prev = get().engine;
   const seq = ++loadSeq;
   setTelemetryPersona(language, get().grade);
-  set({ language, engine: null, memoryNotice: null, isReady: false, error: null,
+  set({ language, engine: null, memoryNotice: null, isReady: false, error: null, semanticReady: false,
     loadingProgress: 0, loadingPhase: 'downloading', readiness: 0, readyStage: 'semantic' });
   const engine = new LocalEngine();
   loadingEngine = engine;
@@ -192,7 +198,7 @@ async function loadEngineFor(language: Language): Promise<void> {
     progress('warm', 0.95);
     await engine.prime(get().grade); // No-op without the LLM; LaBSE is already warm.
     set({ engine, isReady: true, readiness: 1, readyStage: 'done',
-      loadingProgress: 100, loadingPhase: 'ready' });
+      loadingProgress: 100, loadingPhase: 'ready', semanticReady: engine.isSemanticReady() });
     console.log(`QVAC ready (${language}): semantic=${engine.isSemanticReady()} generation=${engine.canGenerate()}`);
   } catch (error) {
     await engine.shutdown();
@@ -219,6 +225,7 @@ export const useEngineStore = create<EngineState>((set, get) => ({
   loadingPhase: 'idle',
   readiness: 0,
   readyStage: 'idle',
+  semanticReady: false,
   onboardingActive: false,
 
   setOnboardingActive: (active: boolean) => set({ onboardingActive: active }),
@@ -319,6 +326,29 @@ export const useEngineStore = create<EngineState>((set, get) => ({
     if (isReady && engine instanceof LocalEngine) await engine.setGrade(grade);
   },
 
+  retrySemantic: () => {
+    // ON THE LOAD QUEUE, not beside it: a retry loads a LaBSE instance, and one running
+    // while a language switch loads the next engine's LaBSE would put two of them in RAM on
+    // a 4 GB phone (and SDK 0.17.1 rejects a second registration of the same model). It
+    // attaches only files already on disk (fetching them is the prefetcher's job, outside
+    // this queue), so it holds the queue for a load of a few seconds, never a ~500 MB
+    // download a language switch would wait behind. Checked INSIDE the queue: whatever
+    // engine is current by then is the one that gets the retry — unless a pick of another
+    // language is queued behind it: that engine is about to be shut down, so loading ~384 MB of
+    // LaBSE into it would only be unloaded again (the next engine loads its own).
+    const queued = loadQueue.then(async () => {
+      const { engine, isReady, language } = get();
+      if (!isReady || !(engine instanceof LocalEngine) || semanticAssetsMissing()) return false;
+      if (requestedLanguage !== language) return false;
+      const ready = await engine.retrySemantic();
+      if (get().engine === engine) set({ semanticReady: ready });
+      if (ready) console.log('[engineStore] semantic search attached to the running engine');
+      return ready;
+    });
+    loadQueue = queued.then(() => {}, () => {});
+    return queued;
+  },
+
   shutdown: async () => {
     // Finish any allocation before unloading; no orphaned semantic/background writer.
     requestedLanguage = null;
@@ -326,7 +356,7 @@ export const useEngineStore = create<EngineState>((set, get) => ({
     const queued = loadQueue.then(async () => {
       ++loadSeq;
       const engine = get().engine;
-      set({ engine: null, isReady: false });
+      set({ engine: null, isReady: false, semanticReady: false });
       await engine?.shutdown();
       set({ loadingPhase: 'idle', readyStage: 'idle', readiness: 0, loadingProgress: 0 });
     });

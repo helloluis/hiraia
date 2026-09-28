@@ -76,6 +76,7 @@ import {
 } from '../data/reward';
 import { getSetting, loadSeen, recordCardSeen, recordCompetencySeen, setSetting } from '../db/repo';
 import { withModelLock } from '../engine/modelLock';
+import { nudgeSemanticPrefetch } from '../engine/semanticPrefetch';
 import { useEngineStore } from './engineStore';
 
 // Trail of just-read cards. Two consumers: "ask about something the kid just saw" (quiz
@@ -1057,7 +1058,14 @@ export const useCardStore = create<CardState>()((set, get) => ({
     // itself never waits on this (zero-model); if it isn't ready when a reward is due, the
     // deterministic template is used instead.
     const es = useEngineStore.getState();
-    if (es.engine?.isReady() || es.isReady || es.loadingPhase === 'downloading' || es.loadingPhase === 'warming') return;
+    if (es.engine?.isReady() || es.isReady) {
+      // Loaded, but search came up keyword-only (offline or short on RAM when it loaded).
+      // The focus is a hint to try LaBSE again; the prefetcher throttles these nudges itself
+      // (NUDGE_MIN_MS), so a child tapping in and out of the field cannot turn it into a loop.
+      if (es.engine?.isSemanticReady?.() === false) nudgeSemanticPrefetch('search field focused');
+      return;
+    }
+    if (es.loadingPhase === 'downloading' || es.loadingPhase === 'warming') return;
     const lang = es.language;
     if (lang) void es.changeLanguage(lang);
   },

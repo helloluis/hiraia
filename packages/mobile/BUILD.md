@@ -340,7 +340,11 @@ Run `pnpm exec expo prebuild --platform android --no-install` and
 `node scripts/post-prebuild.mjs` after changes to native plugins or dependencies.
 In particular, student Nearby requires the tracked `modules/hiraia-tala/android`
 module, camera permissions, and `withTalaNearby.js`; an old generated Android tree
-does not acquire those changes from `pnpm apk` alone. Do not run a clean prebuild
+does not acquire those changes from `pnpm apk` alone. The same goes for the LAN
+download mirror (`src/config/assetMirror.ts`): it needs the `modules/hiraia-managed-config`
+module, which reads the mirror address the provisioning DPC sets, and
+`withAssetMirrorCleartext.js`, which lets release builds fetch from it over plain HTTP.
+Without them the app simply never uses a mirror. Do not run a clean prebuild
 over locally customized native files without preserving them first.
 
 ## OTA JS updates (expo-updates, 0.4.24+)
