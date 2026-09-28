@@ -150,4 +150,8 @@ Built for the [QVAC Hackathon I — Unleash Edge AI](https://dorahacks.io/hackat
 
 ## License
 
-TBD — likely Apache 2.0 (matching QVAC).
+Hiraia uses scoped licenses, not one blanket repository license. Designated original
+educational content is **CC BY-NC 4.0**, with commercial permission reserved to
+**Luis Buenaventura**. Existing Apache/MIT code, previously licensed assets, and third-party
+components retain their own terms. See [LICENSE.md](./LICENSE.md) for exact coverage and
+exclusions.

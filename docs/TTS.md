@@ -108,9 +108,14 @@ tests check both shipped vocabularies.
 
 ### Licensing
 
-MMS is **CC-BY-NC-4.0**. Non-commercial is fine — Hiraia is not-for-profit — but the
-**BY** half is an obligation: Meta's MMS must be credited wherever the voices are
-described. VoxCPM2 is Apache-2.0 and imposes nothing.
+MMS is **CC-BY-NC-4.0**. Whether a use is noncommercial depends on the use itself,
+not simply on Hiraia's nonprofit purpose. Retain Meta MMS attribution, the license,
+and notices of our modifications when sharing the models. Luis's permission for Hiraia's
+own work cannot waive Meta's restriction. VoxCPM2 is Apache-2.0; retain its applicable
+license, attribution/NOTICE, and modification notices when distributing covered material.
+Model licensing alone does not establish rights in reference speech or generated recordings.
+See the [licensing inventory](licensing/INVENTORY-2026-09-28.md) and
+[project terms](licensing/TERMS.md).
 
 ## Sizes and speed
 

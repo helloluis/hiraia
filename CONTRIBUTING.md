@@ -212,4 +212,17 @@ Open an issue or discussion on GitHub. We're building this in the open and welco
 
 ## License
 
-By contributing to Hiraia, you agree that your contributions will be licensed under the Apache 2.0 License.
+Before 28 September 2026, this guide stated:
+
+> By contributing to Hiraia, you agree that your contributions will be licensed under the Apache 2.0 License.
+
+That historical grant is preserved. Contributions to existing Apache-licensed code continue
+under Apache 2.0 unless a different, compatible arrangement is explicitly agreed in writing.
+
+For other material, agree on its license and scope with Luis Buenaventura before acceptance.
+Do not assume that the repository's content license applies to code, upstream assets, or
+unidentified files. Where Hiraia needs the ability to grant a separate commercial license,
+that permission must be recorded explicitly from the contributor; an NC contribution alone
+does not provide it. Contribution does not automatically transfer copyright ownership.
+
+See [the licensing notice](./LICENSE.md) and [full terms](./docs/licensing/TERMS.md).
