@@ -18,9 +18,9 @@ platform succeeds. Versions must match; native OTA fingerprints must differ. See
 on the machine holding the signing key. It uses the same `pnpm apk` command, keeps
 the APKs and provenance together for seven days, and does not publish to the website.
 
-**Not activated yet:** the repository has no registered native runner. The existing
-GitHub-hosted job only compiles JS/web; it cannot build and sign these native releases.
-Host selection is still needed before enabling the workflow. Provision the runner:
+The approved host is this Mac while awake, registered as `hiraia-luis-mac` with
+label `hiraia-native`. Its launch agent starts at login. Sleeping/offline means jobs
+wait for the Mac; no cloud VM is required. Provisioning requirements:
 
 1. Use a dedicated macOS ARM64 runner labelled `hiraia-native`, with Node 22, pnpm 9,
    Python 3.11+, JDK 17, Android SDK + NDK 29.0.14206865, and the same `llama-server`
@@ -29,14 +29,27 @@ Host selection is still needed before enabling the workflow. Provision the runne
 2. Put the six ignored inputs listed in `deploy/restore-native-build-inputs.py` in a
    private directory **outside** the Actions checkout, preserving their relative paths.
    Keep the directory owner-only. Never place these credentials in an Actions artifact.
+   This Mac uses `~/.hiraia/native-build-inputs`; the isolated runner is at
+   `~/.hiraia/actions-runner` with checkout `_work/hiraia/hiraia`.
+   The optional QVAC seed is verified against the tracked source/toolchain pins and
+   actual ELF hashes. Actions caches only verified native libraries and notices.
+   Retrieval vectors come from Git LFS; card databases and image packs are rebuilt.
 3. Set repository variable `HIRAIA_BUILD_INPUTS_DIR` to that directory and
    `HIRAIA_NATIVE_BUILDS=enabled`. Run one manual build before relying on push triggers.
 4. Require the native job for release promotion. A red model gate, stale voice, wrong
    signing key, source change during the pair or missing ABI must stop the release.
 
-The workflow is gated on the explicit repository variable so an unprovisioned host does
-not leave every push waiting indefinitely for a nonexistent runner. Until it is enabled,
-automatic per-push APK generation is **not** configured; local paired builds do work.
+The workflow is gated on repository variable `HIRAIA_NATIVE_BUILDS=enabled`.
+The installed pre-job hook (`deploy/native-runner-job-started.sh`, copied outside both
+the runner and checkout) accepts only this workflow on trusted `main` or
+`hiraia-unified` pushes/dispatches. It rejects pull requests, forks, other branches and
+other workflows before steps run. The runner environment sets
+`ACTIONS_RUNNER_HOOK_JOB_STARTED=~/.hiraia/native-runner-hooks/job-started.sh` using the
+expanded absolute path. Guard tests cover the allowed and rejected cases.
+
+Runner model servers use ports 18088/18090 to avoid interactive development. Stop or
+start the service with `~/.hiraia/actions-runner/svc.sh stop` / `start`; no system sleep
+settings are changed. Jobs clean signing material from their checkout after completion.
 
 ## Release boundary
 
