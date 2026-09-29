@@ -1,0 +1,88 @@
+name: Android and ChromeOS APKs
+
+on:
+  push:
+    branches: [main, hiraia-unified]
+    paths:
+      - 'packages/mobile/**'
+      - 'packages/shared/**'
+      - 'packages/images/**'
+      - 'rag/**'
+      - 'finetuning/eval/**'
+      - 'deploy/app_artifacts.py'
+      - 'deploy/restore-native-build-inputs.py'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/native-apps.yml'
+  workflow_dispatch:
+
+# No pull_request trigger: untrusted PR code must never run beside the signing key.
+permissions:
+  contents: read
+concurrency:
+  group: hiraia-native-builds
+  cancel-in-progress: false
+
+jobs:
+  signed-platforms:
+    name: Build and verify both signed APKs
+    # Enable only after provisioning the documented runner and private inputs.
+    if: vars.HIRAIA_NATIVE_BUILDS == 'enabled'
+    runs-on: [self-hosted, macOS, ARM64, hiraia-native]
+    timeout-minutes: 120
+    env:
+      HIRAIA_BUILD_INPUTS_DIR: ${{ vars.HIRAIA_BUILD_INPUTS_DIR }}
+      JAVA_HOME: /opt/homebrew/opt/openjdk@17
+      # Keep the runner's model servers separate from interactive development.
+      PORT: '18088'
+      EMBED_PORT: '18090'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Fetch the retrieval vectors
+        run: git lfs pull --include='packages/mobile/assets/rag/*.bin'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/cache@v4
+        with:
+          path: |
+            build/qvac-android-x64/manifest.json
+            build/qvac-android-x64/x86_64
+            build/qvac-android-x64/notices
+          key: qvac-android-x64-${{ hashFiles('packages/mobile/native/qvac-android-x64.json', 'packages/mobile/native/qvac-x64-overlay/**', 'pnpm-lock.yaml') }}
+      - name: Restore private native inputs
+        run: python3 deploy/restore-native-build-inputs.py
+      - name: Rebuild generated content
+        run: |
+          python3 rag/pipeline/build-cards-db.py
+          python3 packages/mobile/scripts/package-art.py
+          git diff --exit-code -- packages/mobile/src/generated/imagePacks.generated.json
+      - name: Both platforms (including regression gate and signing)
+        run: pnpm apk
+      - name: Locate complete release
+        id: release
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          manifest = Path(json.loads(Path('build/app-releases/latest.json').read_text())['manifest'])
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write(f'directory={manifest.parent}\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hiraia-android-chromeos-${{ github.sha }}
+          path: ${{ steps.release.outputs.directory }}
+          if-no-files-found: error
+          retention-days: 7
+      - name: Remove checkout signing material
+        if: always()
+        run: |
+          rm -f packages/mobile/credentials.json packages/mobile/keystores/release.jks

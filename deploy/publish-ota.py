@@ -434,6 +434,10 @@ def read_apk(apk):
         runtime = z.read('assets/fingerprint').decode().strip()
         embedded = json.loads(z.read('assets/app.manifest'))
         bundle = z.read('assets/index.android.bundle')
+        config = json.loads(z.read('assets/app.config')) if 'assets/app.config' in names else {}
+        platform = config.get('extra', {}).get('distributionPlatform', 'android')
+        if platform not in ('android', 'chromeos'):
+            sys.exit('!! unknown APK distribution')
     hermes = hermes_version(bundle[:12])
     if not RUNTIME.fullmatch(runtime):
         sys.exit(f'!! assets/fingerprint is not a 40-hex fingerprint: {runtime!r}')
@@ -445,6 +449,7 @@ def read_apk(apk):
     name = re.search(r"versionName='([^']+)'", badging)
     return {
         'runtime': runtime,
+        'platform': platform,
         'embedded': embedded,
         'hermes': hermes,
         'bundle': bundle,
@@ -849,6 +854,7 @@ def main():
     if not runtime or not RUNTIME.fullmatch(runtime):
         ap.error('give --apk, or --runtime <40-hex fingerprint>')
     if apk:
+        os.environ['HIRAIA_APK_VARIANT'] = apk['platform']
         print(f"== APK {args.apk.name}: {apk['versionName']} ({apk['versionCode']}), runtime {runtime}, Hermes v{apk['hermes']}")
         if apk['cert'] != PINNED_APK_CERT:
             sys.exit(f"!! APK signed by {apk['cert']}, not the release key {PINNED_APK_CERT[:12]}… — sign it first (sign-apk.sh)")

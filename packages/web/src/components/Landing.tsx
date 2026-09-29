@@ -207,12 +207,11 @@ export function Landing() {
       >
         <div className="mx-auto max-w-5xl">
           <h2 className="text-3xl leading-none text-[var(--ink)] sm:text-4xl md:text-[2.75rem]">
-            Free to download
+            A little curiosity. On every screen.
           </h2>
           <p className="mt-3 max-w-2xl font-zilla text-lg font-medium leading-relaxed text-[var(--ink)] opacity-80">
-            No account, no fees. Just download and start learning. The first time
-            you launch the app, it will download its 2GB AI tutoring model. After
-            that, Hiraia no longer requires an internet connection.
+            Choose Hiraia for your device. The same science cards, quizzes, and
+            on-device tutor, with room to learn your way. Free to download, with no account needed.
           </p>
           <div className="mt-8">
             <AppDownload />

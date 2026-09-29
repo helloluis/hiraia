@@ -31,6 +31,13 @@ jobs:
       - name: Type check
         run: pnpm type-check
 
+      - name: Platform release and updater guards
+        run: |
+          pnpm --filter @hiraia/mobile qa:platforms
+          python3 -B -m unittest discover -s deploy -p test_publish_platforms.py
+          python3 -B -m unittest discover -s deploy -p test_native_runner.py
+          pnpm exec tsx --test packages/web/src/config/platforms.test.ts
+
       - name: Lint
         run: pnpm lint
 

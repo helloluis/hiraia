@@ -29,7 +29,8 @@
     "qa:tala": "tsx --test scripts/tala-nearby.test.mts scripts/tala-session.test.mts",
     "qa:semantic": "tsx --test scripts/semantic-prefetch.test.mjs scripts/retrieval-first.test.mts scripts/engine-lifecycle.test.mts scripts/memory-policy.test.mts",
     "qa:mirror": "tsx --test scripts/asset-mirror.test.mts scripts/download-status.test.mjs scripts/connectivity.test.mts",
-    "qa:images": "python3 scripts/audit-image-packs.py --check && python3 -B -m unittest discover -s scripts -p test_image_pack_audit.py && tsx --test scripts/image-packs.test.mts scripts/image-installer.test.mjs"
+    "qa:images": "python3 scripts/audit-image-packs.py --check && python3 -B -m unittest discover -s scripts -p test_image_pack_audit.py && tsx --test scripts/image-packs.test.mts scripts/image-installer.test.mjs",
+    "qa:platforms": "tsx --test scripts/platform-updates.test.mts && python3 -B -m unittest discover -s ../../deploy -p test_app_artifacts.py"
   },
   "dependencies": {
     "@hiraia/shared": "workspace:*",

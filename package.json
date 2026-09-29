@@ -16,7 +16,8 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "type-check": "turbo run type-check",
     "clean": "turbo run clean && rm -rf node_modules",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "apk": "pnpm --filter @hiraia/mobile apk"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.0.0",

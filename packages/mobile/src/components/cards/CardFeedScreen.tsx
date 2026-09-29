@@ -4,8 +4,10 @@ import { TitleCardPage } from './TitleCardPage';
 import type { TitleCardContent } from '../../data/titleCard';
 import { Wordmark } from '../brand/Wordmark';
 import { useNextCardPreview } from './useNextCardPreview';
-import { VerticalCardPager } from './VerticalCardPager';
+import { AdaptiveCardPager } from './AdaptiveCardPager';
+import { dismissKeyboardAfterBlur } from '../../../modules/hiraia-reader-input/src';
 import { rememberPage } from './verticalFeed';
+import { createReadingSession } from './readingSession';
 import { ReviewSeries } from '../../reviews/ReviewSeries';
 import { overallStars } from '../../reviews/logic';
 import { useReviewStore, type CompletedReviewAttempt } from '../../reviews/store';
@@ -15,16 +17,18 @@ import { MemoryNotice } from './MemoryNotice';
 import { useFeedTelemetry } from '../../telemetry/useFeedTelemetry';
 import { useRouter } from 'expo-router';
 import Svg, { Circle, Path, Polygon } from 'react-native-svg';
-import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ComponentProps, type ReactNode } from 'react';
 import {
   ActivityIndicator,
   Animated,
   Easing,
   Keyboard,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -46,7 +50,7 @@ import { useEngineStore } from '../../store/engineStore';
 import { card, cardAlpha, fonts } from '../../theme';
 import { useReduceMotion } from './useReduceMotion';
 import { barColor } from './searchReadiness';
-import { CARD_EDGE, CARD_RADIUS } from './CardFrame';
+import { CARD_EDGE, CARD_RADIUS, TapTarget, cardFrame } from './CardFrame';
 import { CardPage } from './CardPage';
 import { CurriculumSheet } from './CurriculumSheet';
 import { QuestionPage } from './QuestionPage';
@@ -67,8 +71,19 @@ interface PageSnap {
   selected?: number | null;
   pagesRead: number;
 }
+const readingSessions = createReadingSession<PageSnap>();
 const NOOP = () => {};
 const stockFor = (question: CardQuestion | null) => (question ? card.teal : card.stock);
+
+/** The horizontal pager already scrolls each card; narrow pages need their own quiz
+ * scroller so answers, explanations and Continue cannot escape the fixed page shell. */
+function FeedQuestion({ wide, ...props }: ComponentProps<typeof QuestionPage> & { wide: boolean }) {
+  const content = <QuestionPage {...props} scrollable showContinue={!wide} />;
+  return wide ? content : <ScrollView nestedScrollEnabled style={{ flex: 1 }}
+    contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
+    {content}
+  </ScrollView>;
+}
 
 const DIE_ROWS: boolean[][] = [
   [true, false, true],
@@ -288,12 +303,12 @@ const CycleButton = memo(function CycleButton({
 const DONE_LINGER_MS = 800;
 
 /** Shared top bar, outside the scrolling card list. */
-const ChromeBar = memo(function ChromeBar() {
+const ChromeBar = memo(function ChromeBar({ desktop = false, children }: { desktop?: boolean; children?: ReactNode }) {
   useProfiles();
   const student = activeProfile();
   return (
-    <View style={styles.chrome}>
-      <Wordmark size={26} color={card.stock} />
+    <View style={[styles.chrome, desktop && styles.desktopChrome]}>
+      {!desktop && <Wordmark size={26} color={card.stock} />}
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={`Switch student: ${student?.name ?? 'Guest'}`}
@@ -301,7 +316,7 @@ const ChromeBar = memo(function ChromeBar() {
           useEngineStore.getState().setOnboardingActive(true);
           requestProfileChoice();
         }}
-        style={({ pressed }) => [styles.profilePill, pressed && { opacity: 0.75 }]}
+        style={({ pressed }) => [styles.profilePill, desktop && styles.desktopProfile, pressed && { opacity: 0.75 }]}
       >
         <Text numberOfLines={1} style={styles.profileName}>
           {student?.name ?? 'Guest'}
@@ -335,19 +350,15 @@ const ChromeBar = memo(function ChromeBar() {
           />
         </Svg>
       </Pressable>
+      {children}
     </View>
   );
 });
 
 /** The footer caption/settings strip, memoized for the same reason as ChromeBar. */
 const Caption = memo(function Caption({
-  language,
-  grade,
-  correctCount,
-  stars,
-  remediationActive,
-  bottomPad,
-  onOpenSettings,
+  language, grade, correctCount, stars, remediationActive, bottomPad, onOpenSettings,
+  desktop = false, context,
 }: {
   language: Language;
   grade: number;
@@ -356,29 +367,14 @@ const Caption = memo(function Caption({
   remediationActive: boolean;
   bottomPad: number;
   onOpenSettings: () => void;
+  desktop?: boolean;
+  context?: ReactNode;
 }) {
-  return (
-    <View style={[styles.caption, { paddingBottom: bottomPad }]}>
-      {/* Three regions, two equal 46dp gutters: the cog alone on the left IS the way into
-          Settings; the grade/pages label sits centred between the gutters and is just a
-          label; the score keeps the right gutter. (Luis, 2026-09-05.) */}
-      <Pressable
-        style={({ pressed }) => [
-          styles.captionTap,
-          styles.captionSide,
-          pressed && styles.captionTapPressed,
-        ]}
-        onPress={onOpenSettings}
-        hitSlop={10}
-        accessibilityLabel={
-          language === 'english'
-            ? 'Settings'
-            : language === 'cebuano'
-              ? 'Mga setting'
-              : 'Mga setting'
-        }
-        accessibilityRole="button"
-      >
+  const settings = <TapTarget
+    onPress={onOpenSettings}
+    accessibilityLabel={language === 'english' ? 'Settings' : 'Mga setting'}
+    style={pressed => [styles.settingsButton, pressed && styles.settingsFocused]}
+  >
         <Svg width={20} height={20} viewBox="0 0 24 24" accessible={false}>
           <Polygon
             points="23.00,12.00 22.79,14.15 19.85,15.25 19.07,16.72 19.78,19.78 18.11,21.15 15.25,19.85 13.66,20.34 12.00,23.00 9.85,22.79 8.75,19.85 7.28,19.07 4.22,19.78 2.85,18.11 4.15,15.25 3.66,13.66 1.00,12.00 1.21,9.85 4.15,8.75 4.93,7.28 4.22,4.22 5.89,2.85 8.75,4.15 10.34,3.66 12.00,1.00 14.15,1.21 15.25,4.15 16.72,4.93 19.78,4.22 21.15,5.89 19.85,8.75 20.34,10.34"
@@ -386,15 +382,19 @@ const Caption = memo(function Caption({
           />
           <Circle cx="12" cy="12" r="4" fill={card.board} />
         </Svg>
-      </Pressable>
-      <Text style={styles.captionText} numberOfLines={1}>
+  </TapTarget>;
+  return (
+    <View style={desktop ? styles.desktopCaption : [styles.caption, { paddingBottom: bottomPad }]}>
+      {!desktop && settings}
+      <Text style={desktop ? styles.desktopGrade : styles.captionText}>
         {GRADE_WORD[language]} {grade}
         {remediationActive ? '*' : ''}
         {stars > 0 ? ` · ${'★'.repeat(stars)}` : ''}
       </Text>
-      <Text style={[styles.captionScore, styles.captionSide]} numberOfLines={1}>
-        ✓ {correctCount}
+      <Text style={desktop ? styles.desktopScore : [styles.captionScore, styles.captionSide]}>
+        {desktop ? 'Quiz ' : ''}✓ {correctCount}
       </Text>
+      {desktop && <><View style={styles.desktopContextSlot}>{context}</View>{settings}</>}
     </View>
   );
 });
@@ -407,13 +407,17 @@ export function CardFeedScreen() {
 
 function CardFeed() {
   const router = useRouter();
+  const profiles = useProfiles();
   const language = useEngineStore((s) => s.language) ?? 'tagalog';
-  // The student's grade, printed in the footer — which is also the way INTO Settings from
-  // the feed (see the footer below).
+  // Wide windows put profile, grade, score and settings together above the cards.
   const grade = useEngineStore((s) => s.grade);
   const onboardingActive = useEngineStore((s) => s.onboardingActive);
+  const readingSession = useMemo(() => readingSessions.open(`${profiles.activeId}:${grade}`), [profiles.activeId, grade]);
   const t = uiStrings(language);
   const insets = useSafeAreaInsets();
+  const { width: windowWidth, fontScale } = useWindowDimensions();
+  const wideWindow = windowWidth >= 840;
+  const actionLabels = windowWidth / Math.max(1, fontScale) >= 1100;
   // Stable handle for the memoized footer (see Caption below the styles).
   const openSettings = useCallback(() => router.push('/sidebar'), [router]);
 
@@ -481,22 +485,16 @@ function CardFeed() {
   const warmModel = useCardStore((s) => s.warmModel);
   const jumpToRandom = useCardStore((s) => s.jumpToRandom);
   const nextPreview = useNextCardPreview(language);
-  const [history, setHistory] = useState<PageSnap[]>([]);
-  const historyKey = useRef(0);
-  const kind = lessonRecap
-    ? 'recap'
-    : titleCard
-      ? 'title'
-      : question
-        ? 'quiz'
-        : reward
-          ? 'reward'
-          : response
-            ? 'response'
-            : 'fact';
+  const kind = lessonRecap ? 'recap' : titleCard ? 'title' : question ? 'quiz'
+    : reward ? 'reward' : response ? 'response' : 'fact';
+  const [history, setHistory] = useState<PageSnap[]>(() => readingSession.pages);
+  const historyKey = useRef(readingSession.reviewKey);
+  useLayoutEffect(() => { readingSession.pages = history; }, [history, readingSession]);
   const liveKey = `${pageKey}:${kind}`;
   // Keep quiz ordering and the selected display index even after a virtualized page unmounts.
   const order = useMemo(() => {
+    const restored = readingSession.pages.find(page => page.key === liveKey)?.order;
+    if (restored) return restored;
     const indices = question?.o.map((_, i) => i);
     if (indices)
       for (let i = indices.length - 1; i > 0; i--) {
@@ -504,8 +502,15 @@ function CardFeed() {
         [indices[i], indices[j]] = [indices[j]!, indices[i]!];
       }
     return indices;
-  }, [liveKey, question]);
-  const [answer, setAnswer] = useState<{ key: string; selected: number } | null>(null);
+  }, [liveKey, question, readingSession]);
+  const [answer, setAnswer] = useState<{ key: string; selected: number } | null>(() => {
+    const restored = readingSession.pages.find(page => page.key === liveKey)?.selected;
+    return restored == null ? null : { key: liveKey, selected: restored };
+  });
+  const rememberVisible = useCallback((live: boolean, key?: string) => {
+    if (key) readingSession.visibleKey = key;
+    setLiveVisible(live);
+  }, [readingSession]);
   const selected = answer?.key === liveKey ? answer.selected : null;
   useLayoutEffect(() => {
     if (!current || !hydrated) return;
@@ -571,10 +576,11 @@ function CardFeed() {
       selected: result.attempt.selected!,
       pagesRead: useCardStore.getState().pagesRead,
     };
+    readingSession.reviewKey = historyKey.current;
     // Record quiz results after the fact that triggered them. The review modal locks
     // scrolling until the store appends the next fact or lesson recap.
     setHistory((old) => rememberPage(old, quiz));
-  }, []);
+  }, [readingSession]);
   const advance = useCallback(() => {
     const s = useCardStore.getState();
     const review = useReviewStore.getState();
@@ -602,11 +608,12 @@ function CardFeed() {
   // Counter, not boolean: every die tap must re-pop the toast even mid-fade (see RerollToast).
   const [rerollTick, setRerollTick] = useState(0);
 
-  const [queryText, setQueryText] = useState('');
+  const [queryText, setQueryText] = useState(readingSession.searchDraft);
   const submitQuery = () => {
     const q = queryText.trim();
     if (!q) return;
     Keyboard.dismiss();
+    readingSession.searchDraft = '';
     setQueryText('');
     void ask(q);
   };
@@ -634,77 +641,12 @@ function CardFeed() {
   );
   const canSend = queryText.trim().length > 0;
 
-  return (
-    <SafeAreaView style={styles.screen} edges={['top']}>
-      <MemoryNotice />
-      <View>
-        <ChromeBar />
-      </View>
-
-      {/* persistent "ask anything" box — the kid's agency: type a topic or a question and
-          RAG decides (found card → response card → honest abstention). Printed as a cream
-          index-card field on the board; the gold diamond is the mockup's divider mark. */}
-      <View style={styles.searchRow}>
-        {/* Keyword search works immediately; focus starts optional semantic setup. */}
-        <View style={styles.searchField}>
-          <View style={styles.searchDiamond} />
-          <TextInput
-            style={styles.searchInput}
-            value={queryText}
-            onChangeText={setQueryText}
-            onFocus={warmModel}
-            onSubmitEditing={submitQuery}
-            placeholder={t.cards.searchPlaceholder}
-            placeholderTextColor={card.olive}
-            returnKeyType="search"
-            editable={!asking}
-            selectionColor={card.sage}
-          />
-          {asking ? (
-            <ActivityIndicator size="small" color={card.ink} style={styles.searchSpinner} />
-          ) : (
-            <Pressable onPress={submitQuery} disabled={!canSend} hitSlop={8}>
-              <View style={[styles.sendChip, !canSend && styles.sendChipOff]}>
-                <View style={[styles.sendArrow, !canSend && styles.sendArrowOff]} />
-              </View>
-            </Pressable>
-          )}
-        </View>
-        {/* The cycling button: DIE = "reroll" (jump to a fresh topic — or, in calendar mode,
-            another card of the held topic); CALENDAR = open the grade's MATATAG outline. The
-            two faces alternate every 2 s; the cycle freezes while pressed and while the sheet
-            is open (see CycleButton). */}
-        <CycleButton
-          language={language}
-          frozen={sheetOpen}
-          onDie={() => {
-            jumpToRandom();
-            setRerollTick((n) => n + 1);
-          }}
-          onCalendar={openSheet}
-        />
-        <RerollToast
-          tick={rerollTick}
-          text={curriculum ? t.cards.rerollToastTopic : t.cards.rerollToast}
-        />
-        {/* Optional-model setup progress; the search field remains interactive. */}
-        {barVisible ? (
-          <View pointerEvents="none" style={styles.readyBarTrack}>
-            <View
-              style={[
-                styles.readyBarFill,
-                { width: `${Math.round(readiness * 100)}%`, backgroundColor: barColor(readiness) },
-              ]}
-            />
-          </View>
-        ) : null}
-      </View>
-
+  const context = <>
       {/* "you asked" ribbon when a search navigated straight to a found card. It rides on
           the BOARD, directly under the box it echoes — not on the card: the top of a card
           is its punched holes and index band, and a ribbon would print straight over them. */}
       {queryBanner && !reward && !question ? (
-        <View style={styles.banner}>
+        <View style={[styles.banner, wideWindow && styles.desktopContext]}>
           <Text style={styles.bannerLabel} numberOfLines={1}>
             {t.cards.yourQuestion}
           </Text>
@@ -734,7 +676,7 @@ function CardFeed() {
           the cursor has already moved on, so the ribbon already reads the next topic the scroll
           will serve. */}
       {!queryBanner && curriculum && curriculumTopic && !response && !reward && !question ? (
-        <View style={styles.banner}>
+        <View style={[styles.banner, wideWindow && styles.desktopContext]}>
           <Text style={styles.bannerLabel} numberOfLines={1}>
             {t.cards.curriculum} · Q{curriculumTopic.quarter} ·
           </Text>
@@ -744,17 +686,108 @@ function CardFeed() {
         </View>
       ) : null}
 
-      <VerticalCardPager
+  </>;
+  const renderHeader = (navigation: ReactNode) => <>
+    <ChromeBar desktop={wideWindow}>
+      {wideWindow && <Caption desktop language={language} grade={grade}
+        correctCount={correctCount} stars={achievementStars} remediationActive={remediationActive}
+        bottomPad={0} onOpenSettings={openSettings} context={context} />}
+    </ChromeBar>
+      {/* persistent "ask anything" box — the kid's agency: type a topic or a question and
+          RAG decides (found card → response card → honest abstention). Printed as a cream
+          index-card field on the board; the gold diamond is the mockup's divider mark. */}
+      <View style={styles.searchRow}>
+        {/* Keyword search works immediately; focus starts optional semantic setup. */}
+        <View style={styles.searchField}>
+          <View style={styles.searchDiamond} />
+          <TextInput
+            accessibilityLabel={t.cards.searchPlaceholder}
+            style={styles.searchInput}
+            value={queryText}
+            onChangeText={value => { readingSession.searchDraft = value; setQueryText(value); }}
+            onFocus={warmModel}
+            onBlur={dismissKeyboardAfterBlur}
+            onSubmitEditing={submitQuery}
+            placeholder={t.cards.searchPlaceholder}
+            placeholderTextColor={card.olive}
+            returnKeyType="search"
+            editable={!asking}
+            selectionColor={card.sage}
+          />
+          {asking ? (
+            <ActivityIndicator size="small" color={card.ink} style={styles.searchSpinner} />
+          ) : (
+            <TapTarget onPress={submitQuery} disabled={!canSend} hitSlop={4}
+              accessibilityLabel={t.cards.searchAction}
+              style={pressed => [styles.sendTarget, pressed && { opacity: 0.65 }]}>
+              <View style={[styles.sendChip, !canSend && styles.sendChipOff]}>
+                <View style={[styles.sendArrow, !canSend && styles.sendArrowOff]} />
+              </View>
+            </TapTarget>
+          )}
+        </View>
+        {/* The cycling button: DIE = "reroll" (jump to a fresh topic — or, in calendar mode,
+            another card of the held topic); CALENDAR = open the grade's MATATAG outline. The
+            two faces alternate every 2 s; the cycle freezes while pressed and while the sheet
+            is open (see CycleButton). */}
+        {wideWindow ? <>
+          <TapTarget accessibilityLabel={t.cards.reroll}
+            onPress={() => { jumpToRandom(); setRerollTick(n => n + 1); }}
+            style={pressed => [styles.desktopAction, pressed && { backgroundColor: card.gold }]}>
+            <DieFace />{actionLabels && <Text style={styles.desktopActionText}>{t.cards.reroll}</Text>}
+          </TapTarget>
+          <TapTarget accessibilityLabel={t.cards.openCurriculum}
+            onPress={openSheet}
+            style={pressed => [styles.desktopAction, pressed && { backgroundColor: card.gold }]}>
+            <CalendarFace />{actionLabels && <Text style={styles.desktopActionText}>{t.cards.curriculum}</Text>}
+          </TapTarget>
+        </> : <CycleButton
+          language={language}
+          frozen={sheetOpen}
+          onDie={() => {
+            jumpToRandom();
+            setRerollTick((n) => n + 1);
+          }}
+          onCalendar={openSheet}
+        />}
+        {navigation}
+        <RerollToast
+          tick={rerollTick}
+          text={curriculum ? t.cards.rerollToastTopic : t.cards.rerollToast}
+        />
+        {/* Optional-model setup progress; the search field remains interactive. */}
+        {barVisible ? (
+          <View pointerEvents="none" style={styles.readyBarTrack}>
+            <View
+              style={[
+                styles.readyBarFill,
+                { width: `${Math.round(readiness * 100)}%`, backgroundColor: barColor(readiness) },
+              ]}
+            />
+          </View>
+        ) : null}
+      </View>
+
+    {!wideWindow && context}
+  </>;
+
+  return (
+    <SafeAreaView style={[styles.screen, wideWindow && { paddingBottom: insets.bottom }]} edges={['top']}>
+      <MemoryNotice />
+      <AdaptiveCardPager
+        renderHeader={renderHeader}
+        language={language}
         pages={feedPages}
+        initialVisibleKey={readingSession.visibleKey}
         preview={nextPreview}
         liveKey={liveKey}
         canAdvance={canAdvance}
         locked={asking || reviewActive || sheetOpen || onboardingActive}
         onAdvance={advance}
-        onVisible={setLiveVisible}
+        onVisible={rememberVisible}
         onDragStart={markDragStart}
         onDragEnd={markDragEnd}
-        renderPage={(page, live, forward, visible) => (
+        renderPage={(page, live, forward, visible, minimumHeight) => (
           <View
             pointerEvents={
               asking || reviewActive || sheetOpen || onboardingActive ? 'none' : 'auto'
@@ -762,6 +795,7 @@ function CardFeed() {
             style={[
               styles.cardLayer,
               { position: 'relative', flex: 1, backgroundColor: stockFor(page.question) },
+              wideWindow && { ...cardFrame.scrollContent, minHeight: minimumHeight },
             ]}
           >
             {page.lessonRecap ? (
@@ -779,7 +813,8 @@ function CardFeed() {
             ) : page.reward ? (
               <RewardCard reward={page.reward} language={language} onContinue={forward} />
             ) : page.question ? (
-              <QuestionPage
+              <FeedQuestion
+                wide={wideWindow}
                 question={page.question}
                 language={language}
                 displayOrder={page.order}
@@ -792,6 +827,7 @@ function CardFeed() {
               />
             ) : page.fact ? (
               <CardPage
+                desktop={wideWindow}
                 fact={page.fact}
                 choices={page.choices}
                 language={language}
@@ -817,7 +853,7 @@ function CardFeed() {
         )}
       />
 
-      <Caption
+      {!wideWindow && <Caption
         language={language}
         grade={grade}
         correctCount={correctCount}
@@ -825,7 +861,7 @@ function CardFeed() {
         remediationActive={remediationActive}
         bottomPad={Math.max(insets.bottom, 10)}
         onOpenSettings={openSettings}
-      />
+      />}
 
       {/* The outline sheet, for the CURRENT grade (the cursor keeps the grade it was entered
           at; a grade change mid-mode shows the new grade's outline on the next open). */}
@@ -863,6 +899,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
   },
+  desktopChrome: { gap: 16, paddingVertical: 4 },
+  desktopProfile: { maxWidth: 240, minHeight: 48, flexShrink: 1 },
+  desktopCaption: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 16 },
+  desktopGrade: { fontFamily: fonts.cardBodyBold, fontSize: 15, color: card.stock },
+  desktopScore: { fontFamily: fonts.cardBodyBold, fontSize: 15, color: card.gold },
+  desktopContextSlot: { flex: 1, minWidth: 0 },
+  desktopContext: { marginHorizontal: 0, marginBottom: 0, paddingVertical: 4 },
+  settingsButton: { minWidth: 48, minHeight: 48, justifyContent: 'center', alignItems: 'center', borderRadius: 12 },
+  settingsFocused: { backgroundColor: card.ink, outlineColor: card.gold, outlineWidth: 2 },
   profilePill: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -896,11 +941,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 8,
   },
+  desktopAction: { minHeight: 48, minWidth: 48, maxWidth: 210, justifyContent: 'center', flexDirection: 'row', alignItems: 'center',
+    gap: 10, padding: 10, borderRadius: 11, borderWidth: CARD_EDGE, borderColor: card.ink,
+    backgroundColor: card.stock },
+  desktopActionText: { fontFamily: fonts.cardBodyBold, fontSize: 15, color: card.ink, flexShrink: 1 },
   searchField: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    height: 44,
+    minHeight: 48,
+    paddingVertical: 2,
     paddingLeft: 10,
     paddingRight: 4,
     borderRadius: 11,
@@ -933,6 +983,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  sendTarget: { minWidth: 40, minHeight: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 8 },
   /**
    * Idle/disabled send: NOT the old `opacity: 0.3` fade — dimming the whole ink chip made
    * a "transparent gray box" whose gold arrow measured near-invisible on device (Luis,

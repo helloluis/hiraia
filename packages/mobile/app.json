@@ -2,8 +2,8 @@
   "expo": {
     "name": "Hiraia",
     "slug": "hiraia",
-    "version": "0.4.26",
-    "orientation": "portrait",
+    "version": "0.4.27",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "scheme": "hiraia",
@@ -29,13 +29,14 @@
         "backgroundColor": "#1C3B2E"
       },
       "package": "com.hiraia.app",
-      "versionCode": 26,
+      "versionCode": 27,
       "permissions": [
         "REQUEST_INSTALL_PACKAGES"
       ]
     },
     "plugins": [
       "./plugins/withGradleProps.js",
+      "./plugins/withAdaptiveWindow.js",
       "expo-router",
       [
         "expo-build-properties",

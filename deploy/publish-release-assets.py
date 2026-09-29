@@ -6,17 +6,12 @@ behind the custom domain https://assets.hiraia.org (Cloudflare edge). The VPS ke
 307 redirects for the legacy URLs (deploy/nginx/hiraia.org.conf) — copying a file into
 /var/www/hiraia-models/ no longer publishes anything. THIS script is the publish step.
 
-What it does for an APK (`--apk`):
-  1. measures bytes / sha256 / md5 and reads android.versionCode with aapt;
-  2. uploads it to an IMMUTABLE versioned key   models/hiraia-v<versionName with dots replaced by p>.apk
-     (Cache-Control: public, max-age=31536000, immutable) — the URL the website and the
-     in-app manifest should point at, so no phone can ever get a stale edge-cached copy;
-  3. also refreshes the mutable alias          models/hiraia.apk  (max-age=14400)
-     for old links/QR codes, and purges its edge cache if CF_ZONE_ID/CF_API_TOKEN are set;
-  4. reads every uploaded object back and re-hashes it (sha256), then HEADs it through
-     assets.hiraia.org and checks the byte count and Accept-Ranges;
-  5. prints the download.ts block (versionCode, publishedAt, url, fileSizeMB, bytes,
-     sha256, md5) that feeds BOTH the landing page and /api/app/manifest.
+Student APKs are published as one complete Android + ChromeOS build:
+  --release build/app-releases/<timestamp>/release.json --output <new-candidate.json>
+Both signatures, versions, ABIs, runtimes and hashes are verified before any upload.
+Both immutable destination keys are checked for collisions before writing either.
+The website catalog is emitted only after both files pass read-back and public HEAD.
+Each platform has its own legacy alias; no platform can replace the other's APK.
 For a model/vector file (`--asset FILE`): upload under models/<basename> as immutable,
 read-back-verified. Filenames are versioned by convention (see packages/mobile/src/config/
 model.ts REMOTE_ASSETS) — NEVER reuse a filename for different bytes.
@@ -34,7 +29,7 @@ Same file the image-pack publisher uses (packages/mobile/scripts/publish-image-p
   python3 -m venv ~/.venvs/hiraia-publish && ~/.venvs/hiraia-publish/bin/pip install boto3
   ~/.venvs/hiraia-publish/bin/python deploy/publish-release-assets.py \
       --env-file /private/path/.env.cloudflare.local \
-      --apk packages/mobile/android/app/build/outputs/apk/release/hiraia-signed.apk
+      --release build/app-releases/<timestamp>/release.json --output build/candidate-platforms.json
   ~/.venvs/hiraia-publish/bin/python deploy/publish-release-assets.py \
       --env-file ... --asset deploy/models/labse.Q4_K_M.gguf
 """
@@ -48,6 +43,8 @@ import re
 import subprocess
 import sys
 import urllib.request
+from pathlib import Path
+from app_artifacts import PLATFORMS, validate_pair
 
 BUCKET = 'hiraia-assets'
 PUBLIC = 'https://assets.hiraia.org'
@@ -200,16 +197,68 @@ def check(s3):
     print(f'   (+ {imgs} objects under models/images/{" — truncated listing" if resp.get("IsTruncated") else ""})')
 
 
+def ensure_immutable(s3, key, sha):
+    from botocore.exceptions import ClientError
+    try:
+        existing = s3.head_object(Bucket=BUCKET, Key=key)
+    except ClientError as error:
+        if str(error.response.get('Error', {}).get('Code')) not in ('404', 'NoSuchKey', 'NotFound'):
+            raise
+    else:
+        if existing.get('Metadata', {}).get('sha256') != sha:
+            raise ValueError(f'{key} already exists with different bytes — a new release version is required')
+
+
+def publish_pair(s3, v, manifest_path, output, no_alias=False):
+    if output.exists():
+        raise ValueError('Candidate already exists; use a new --output path')
+    manifest = json.loads(manifest_path.read_text())
+    artifacts = validate_pair(manifest, manifest_path.parent)
+    # Check EVERY immutable destination before uploading either platform.
+    for item in artifacts.values():
+        ensure_immutable(s3, f'models/{item["filename"]}', item['sha256'])
+    releases = {}
+    for platform, item in artifacts.items():
+        key = f'models/{item["filename"]}'
+        path = str(manifest_path.parent / item['path'])
+        upload(s3, key, path, IMMUTABLE, item['sha256'])
+        head_public(key, item['bytes'])
+        releases[platform] = {k: item[k] for k in ('platform', 'versionCode', 'versionName', 'bytes', 'md5', 'sha256',
+                                                   'runtime', 'signingCertSha256', 'abis')}
+        releases[platform].update(url=f'{PUBLIC}/{key}', minSupportedVersionCode=1,
+                                  publishedAt=dt.date.today().isoformat())
+    if not no_alias:
+        for platform, item in artifacts.items():
+            key = 'models/' + PLATFORMS[platform]['alias']
+            upload(s3, key, str(manifest_path.parent / item['path']), ALIAS_TTL, item['sha256'])
+            purge(v, [f'{PUBLIC}/{key}', f'https://hiraia.org/{key}'])
+            head_public(key, item['bytes'], strict=False)
+    # No current site metadata is changed on a partial upload or a failed read-back.
+    output.write_text(json.dumps({'schema': 1, 'platforms': releases}, indent=2) + '\n')
+    print(f'Verified BOTH platforms. Candidate website config: {output}')
+    print('Review and copy to packages/web/src/config/platform-releases.json before deploying.')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--env-file', required=True)
     ap.add_argument('--apk', help='signed APK to publish (versioned key + hiraia.apk alias)')
+    ap.add_argument('--release', type=Path, help='complete release.json produced by pnpm apk (both platforms)')
+    ap.add_argument('--output', type=Path, help='new platform-releases.json candidate after both uploads verify')
     ap.add_argument('--asset', action='append', default=[], help='model/vector file → models/<basename> (immutable)')
     ap.add_argument('--no-alias', action='store_true', help='do not touch models/hiraia.apk')
     ap.add_argument('--check', action='store_true', help='authenticate and list models/ only (read-only)')
     a = ap.parse_args()
-    if not a.check and not a.apk and not a.asset:
-        ap.error('nothing to publish: give --apk and/or --asset (or --check)')
+    if a.apk:
+        ap.error('Student releases now require BOTH platforms: use --release <release.json> --output <candidate.json>')
+    if a.release and not a.output:
+        ap.error('--release requires --output for the measured platform catalog')
+    if not a.check and not a.release and not a.asset:
+        ap.error('nothing to publish: give --release and/or --asset (or --check)')
+    if a.release:
+        if a.output.exists():
+            ap.error('--output already exists')
+        validate_pair(json.loads(a.release.read_text()), a.release.parent)
     v = load_env(a.env_file)
     import boto3  # in the publish venv (see header)
     s3 = boto3.client('s3', endpoint_url=v['R2_ENDPOINT'], aws_access_key_id=v['R2_ACCESS_KEY_ID'],
@@ -217,6 +266,8 @@ def main():
     if a.check:
         check(s3)
         return
+    if a.release:
+        publish_pair(s3, v, a.release, a.output, a.no_alias)
 
     for path in a.asset:
         key = f'models/{os.path.basename(path)}'
@@ -225,40 +276,6 @@ def main():
         upload(s3, key, path, IMMUTABLE, sha)
         head_public(key, n)
 
-    if a.apk:
-        n, sha, md5 = digests(a.apk)
-        vc, version_name = apk_version(a.apk)
-        key = f'models/{apk_filename(version_name)}'
-        # A release name is immutable. A changed APK must get a new versionName.
-        from botocore.exceptions import ClientError
-        try:
-            existing = s3.head_object(Bucket=BUCKET, Key=key)
-        except ClientError as error:
-            if str(error.response.get('Error', {}).get('Code')) not in ('404', 'NoSuchKey', 'NotFound'):
-                raise
-        else:
-            if existing.get('Metadata', {}).get('sha256') != sha:
-                sys.exit(f'!! {key} already exists with different bytes — bump the app version first')
-        print(f'== apk {a.apk}: version {version_name}, versionCode {vc}, {n} bytes')
-        upload(s3, key, a.apk, IMMUTABLE, sha)
-        head_public(key, n)
-        if not a.no_alias:
-            upload(s3, 'models/hiraia.apk', a.apk, ALIAS_TTL, sha)
-            purge(v, [f'{PUBLIC}/models/hiraia.apk', 'https://hiraia.org/models/hiraia.apk'])
-            head_public('models/hiraia.apk', n, strict=False)
-        mb = round(n / 1048576)
-        print('\nPaste into packages/web/src/config/download.ts (feeds the landing page AND /api/app/manifest),')
-        print('then push main and run deploy/update.sh on the VPS:\n')
-        print(f"  version: '{version_name}',")
-        print(f'  versionCode: {vc},')
-        print(f"  publishedAt: '{dt.date.today().isoformat()}',")
-        print('  apk: {')
-        print(f"    url: '{PUBLIC}/{key}',")
-        print(f'    fileSizeMB: {mb},')
-        print(f'    bytes: {n},')
-        print(f"    sha256: '{sha}',")
-        print(f"    md5: '{md5}',")
-        print('  },')
 
 
 if __name__ == '__main__':

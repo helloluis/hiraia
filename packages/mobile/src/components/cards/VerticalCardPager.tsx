@@ -14,6 +14,7 @@ export function VerticalCardPager<T extends { key: string }>({
   onDragStart,
   onDragEnd,
   renderPage,
+  initialVisibleKey = liveKey,
 }: {
   pages: T[];
   preview: T | null;
@@ -21,15 +22,16 @@ export function VerticalCardPager<T extends { key: string }>({
   canAdvance: boolean;
   locked: boolean;
   onAdvance: () => void;
-  onVisible: (live: boolean) => void;
+  onVisible: (live: boolean, key?: string) => void;
   onDragStart: () => void;
   onDragEnd: () => void;
   renderPage: (page: T, live: boolean, forward: () => void, visible: boolean) => ReactNode;
+  initialVisibleKey?: string;
 }) {
   const list = useRef<FlatList<T>>(null);
   const [height, setHeight] = useState(0);
-  const [visibleKey, setVisibleKey] = useState(liveKey);
-  const visible = useRef(liveKey);
+  const [visibleKey, setVisibleKey] = useState(initialVisibleKey);
+  const visible = useRef(initialVisibleKey);
   const dragging = useRef(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const offset = useRef(0);
@@ -47,7 +49,7 @@ export function VerticalCardPager<T extends { key: string }>({
     if (key) {
       visible.current = key;
       setVisibleKey(key);
-      onVisible(key === liveKey);
+      onVisible(key === liveKey, key);
     }
   };
   // A new store page follows a button tap or the trailing scroll slot. Offset updates also

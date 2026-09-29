@@ -21,20 +21,12 @@
  * when it comes back null. A plate that could show a broken-image glyph would turn "we had no
  * confident picture" — the ordinary outcome on a generated card — into a visible failure.
  */
-import { useMemo, useState } from 'react';
-import { Animated, Image, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { runOnJS } from 'react-native-reanimated';
+import { useState } from 'react';
+import { Animated, Image, Pressable, StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
 
 import { type ArtSource } from '../../data/artSource';
 import { card } from '../../theme';
 import { Lightbox } from '../Lightbox';
-
-/**
- * Travel that turns a tap into a drag. Matches the feed pan's own activation slop, so there is
- * no band where the tap has already failed but the pan has not yet started.
- */
-const DRAG_SLOP = 10;
 
 export function CardPlate({
   source,
@@ -53,36 +45,22 @@ export function CardPlate({
 }) {
   const [zoom, setZoom] = useState(false);
 
-  /**
-   * Tap-to-zoom as an RNGH gesture rather than a Pressable, because the feed's swipe is an
-   * RNGH pan on an ancestor and the plate covers a large share of the card. Mixing RN's
-   * responder system with RNGH is where a drag gets swallowed: whichever claims the touch
-   * first keeps it. Expressed as a Tap, RNGH arbitrates both in one tree — a Tap fails the
-   * moment the finger travels, so any real drag falls through to the page turn.
-   */
-  const zoomTap = useMemo(
-    () =>
-      Gesture.Tap()
-        .maxDistance(DRAG_SLOP)
-        .enabled(enabled)
-        .onEnd((_e, ok) => {
-          if (ok) runOnJS(setZoom)(true);
-        }),
-    [enabled]
-  );
+  // A native button yields to the native feed scroll and supports keyboard, mouse,
+  // switch access and screen-reader activation as well as a touch tap.
+  const [focused, setFocused] = useState(false);
 
   return (
     <Animated.View style={[plateStyles.mat, style]}>
-      <GestureDetector gesture={zoomTap}>
-        <View
-          style={styles.window}
+        <Pressable
+          style={[styles.window, focused && { outlineColor: card.ink, outlineWidth: 3 }]}
+          onPress={() => setZoom(true)} disabled={!enabled} focusable={enabled}
+          onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
           accessible
           accessibilityRole="imagebutton"
-          accessibilityLabel={`Larawan: ${label}. I-tap para palakihin.`}
+          accessibilityLabel={label}
         >
           <Image source={source} style={styles.art} resizeMode="contain" />
-        </View>
-      </GestureDetector>
+        </Pressable>
       <Lightbox visible={zoom} desc={label} source={source} onClose={() => setZoom(false)} />
     </Animated.View>
   );

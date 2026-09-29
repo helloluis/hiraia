@@ -20,13 +20,14 @@
  * because RN on Android ignores shadowOffset/shadowRadius and honours only `elevation`,
  * which cannot be offset downward.
  */
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   Animated,
   Pressable,
   StyleSheet,
   Text,
   View,
+  useWindowDimensions,
   type StyleProp,
   type ViewStyle,
 } from 'react-native';
@@ -34,6 +35,7 @@ import {
 import Svg, { Path } from 'react-native-svg';
 
 import { card, fonts } from '../../theme';
+import { feedViewport } from './adaptiveFeed';
 
 /** The card surface, owned by CardFeedScreen — exported so the shell and the pages agree. */
 export const CARD_RADIUS = 18;
@@ -208,6 +210,7 @@ export function TapTarget({
   style,
   children,
   accessibilityLabel,
+  disabled = false,
 }: {
   onPress: () => void;
   hitSlop?: number;
@@ -215,14 +218,23 @@ export function TapTarget({
   style: (pressed: boolean) => StyleProp<ViewStyle>;
   children: ReactNode;
   accessibilityLabel?: string;
+  disabled?: boolean;
 }) {
+  const [focused, setFocused] = useState(false);
   return (
     <Pressable
+      focusable={!disabled}
+      disabled={disabled}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
       onPress={onPress}
       hitSlop={hitSlop}
-      style={({ pressed }) => style(pressed)}
+      style={({ pressed }) => [style(pressed), focused && {
+        outlineColor: card.ink, outlineWidth: 3, outlineOffset: 2,
+      }]}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
+      accessibilityState={{ disabled }}
     >
       {children}
     </Pressable>
@@ -236,7 +248,7 @@ export function Ticket({
   hitSlop,
   style,
   trailing,
-  arrowDirection = 'down',
+  arrowDirection,
 }: {
   label: string;
   eyebrow?: string;
@@ -249,8 +261,10 @@ export function Ticket({
    * single-path continuation and nothing else creeps onto the gold.
    */
   trailing?: ReactNode;
-  arrowDirection?: 'up' | 'down';
+  arrowDirection?: 'up' | 'down' | 'left' | 'right';
 }) {
+  const { width } = useWindowDimensions();
+  const direction = arrowDirection ?? (feedViewport(width).horizontal ? 'right' : 'down');
   const ticket = (
     <View style={[cardFrame.ticketLedge, trailing ? cardFrame.grow : style]}>
       <TapTarget
@@ -270,7 +284,7 @@ export function Ticket({
           </Text>
         </View>
         <View style={cardFrame.arrow}>
-          <Arrow direction={arrowDirection} />
+          <Arrow direction={direction} />
         </View>
       </TapTarget>
     </View>
@@ -440,6 +454,9 @@ export function Speaker({
 }
 
 export const cardFrame = StyleSheet.create({
+  // A page inside a ScrollView fills short content and grows for long content. A zero
+  // flex basis would instead constrain the page and clip its answers inside the shell.
+  scrollContent: { flexGrow: 1, flexShrink: 0, flexBasis: 'auto' },
   /**
    * The card's content box, and the ONLY root style a page component should use: no
    * background, no border, no radius, no safe-area padding. The shell's `cardLayer` is the

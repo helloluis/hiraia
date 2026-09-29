@@ -19,11 +19,12 @@ export function SlideCard({
 }
 
 const styles = StyleSheet.create({
-  deck: { flex: 1, marginHorizontal: 16, marginTop: 2, marginBottom: 14 },
+  deck: { flex: 1, width: '100%', maxWidth: 672, alignSelf: 'center',
+    paddingHorizontal: 16, marginTop: 2, marginBottom: 14 },
   cardLedge: {
     position: 'absolute',
-    left: 0,
-    right: 0,
+    left: 16,
+    right: 16,
     top: 0,
     bottom: -4,
     borderRadius: CARD_RADIUS + 1,
@@ -31,6 +32,8 @@ const styles = StyleSheet.create({
   },
   cardLayer: {
     ...StyleSheet.absoluteFillObject,
+    left: 16,
+    right: 16,
     borderRadius: CARD_RADIUS,
     borderWidth: CARD_EDGE,
     borderColor: card.ink,

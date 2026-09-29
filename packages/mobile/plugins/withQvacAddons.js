@@ -36,6 +36,7 @@
 const { withDangerousMod } = require('@expo/config-plugins');
 const fs = require('fs');
 const path = require('path');
+const { chromeOSBuild, cache, verifiedPort, checkLinked } = require('../scripts/qvac-android-x64.cjs');
 
 module.exports = function withQvacAddons(config) {
   return withDangerousMod(config, [
@@ -49,6 +50,7 @@ module.exports = function withQvacAddons(config) {
         'main',
         'jniLibs'
       );
+      const notices = path.join(cfg.modRequest.platformProjectRoot, 'app/src/main/assets/qvac-native-notices');
 
       // Use the bundle's allowlist (qvac/addons.manifest.json, written by the
       // @qvac/sdk expo plugin earlier in prebuild) so we only link the engines we
@@ -66,14 +68,17 @@ module.exports = function withQvacAddons(config) {
         }
       }
 
+      // Check before replacing any generated libraries.
+      if (chromeOSBuild()) verifiedPort();
       // Start from a clean slate — see the header comment.
       fs.rmSync(jniLibs, { recursive: true, force: true });
+      fs.rmSync(notices, { recursive: true, force: true });
 
       const { default: link } = await import('bare-link');
       let count = 0;
       for await (const _resource of link(
         projectRoot,
-        { hosts: ['android-arm64'], out: jniLibs },
+        { hosts: chromeOSBuild() ? ['android-arm64', 'android-x64'] : ['android-arm64'], out: jniLibs },
         pkg
       )) {
         count++;
@@ -99,6 +104,13 @@ module.exports = function withQvacAddons(config) {
         if (CPU_VARIANT.test(f)) { fs.rmSync(path.join(abiDir, f)); dropped++; }
       }
       if (dropped) console.log(`[withQvacAddons] dropped ${dropped} non-baseline CPU backend variant(s) — armv8.0 is the universal fallback`);
+      if (chromeOSBuild()) {
+        fs.cpSync(path.join(cache, 'x86_64'), path.join(jniLibs, 'x86_64'), { recursive: true });
+        fs.cpSync(path.join(cache, 'notices'), notices, { recursive: true });
+        fs.copyFileSync(path.join(cache, 'manifest.json'), path.join(notices, 'build-provenance.json'));
+        checkLinked(jniLibs);
+        console.log('[withQvacAddons] installed verified source-built QVAC x86_64 engines and CPU/GPU backends');
+      }
       return cfg;
     },
   ]);

@@ -43,12 +43,15 @@ const path = require('path');
 
 /** Committed files whose bytes are native inputs. A missing one is an error, not a skip. */
 const FILES = [
+  ['build-platforms.json', 'hiraia: distribution ABIs'],
+  ['scripts/build-platform.cjs', 'hiraia: distribution selection'],
   ['qvac.config.json', 'hiraia: QVAC worker plugin set'],
   ['src/generated/bundledArt.generated.json', 'hiraia: bundled illustration inventory (APK assets/illustrations)'],
   ['src/generated/imageMap.ts', 'hiraia: bundled illustration selection'],
   ['scripts/post-prebuild.mjs', 'hiraia: native patches'],
   ['scripts/illustration-assets.gradle', 'hiraia: native patches'],
   ['scripts/stage-bundled-art.mjs', 'hiraia: native patches'],
+  ['scripts/qvac-android-x64.cjs', 'hiraia: native ABI selection and QVAC port verification'],
   ['certs/certificate.pem', 'hiraia: OTA code-signing certificate'],
 ];
 const DIRS = [['native', 'hiraia: native sources copied in by config plugins']];
@@ -86,6 +89,11 @@ function extraSources() {
   }
   sources = [
     { type: 'contents', id: 'hiraia-qvac-native', contents: qvacNative(), reasons: ['hiraia: QVAC addon versions + worker bundleId'] },
+    ...(require('./scripts/qvac-android-x64.cjs').chromeOSBuild() ? [{
+      type: 'contents', id: 'hiraia-chromeos-native',
+      contents: JSON.stringify(require('./scripts/qvac-android-x64.cjs').verifiedPort()),
+      reasons: ['hiraia: mixed ARM64/x86_64 private runtime, pinned QVAC source and actual native binary hashes'],
+    }] : []),
     ...FILES.map(([filePath, reason]) => ({ type: 'file', filePath, reasons: [reason] })),
     ...DIRS.map(([filePath, reason]) => ({ type: 'dir', filePath, reasons: [reason] })),
   ];

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { Language } from '@hiraia/shared';
 import type { CardChoice } from '../data/cards';
@@ -80,8 +80,12 @@ export function ReviewSeries({
     </Pressable>
   );
   return (
+    <Modal visible animationType="none" onRequestClose={() => {}}
+      supportedOrientations={['portrait', 'portrait-upside-down', 'landscape-left', 'landscape-right']}>
     <SafeAreaView style={styles.screen}>
       <SlideCard backgroundColor={a ? card.teal : card.stock}>
+        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled">
         {s.error ? (
           <View style={styles.message}>
             <Text accessibilityRole="alert" style={styles.body}>
@@ -91,9 +95,9 @@ export function ReviewSeries({
             {button(t.close, hideReviewError)}
           </View>
         ) : s.open && a ? (
-          <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
             <QuestionPage
               key={a.id}
+              scrollable
               question={a.question}
               language={language}
               reviewTitle={`${series.kind === 'topic' ? t.topic : t.quick}${series.title ? ` · ${series.title}` : ''}`}
@@ -112,9 +116,8 @@ export function ReviewSeries({
               onAnswer={() => {}}
               onContinue={() => void continueReview(onExit)}
             />
-          </ScrollView>
         ) : s.open && series ? (
-          <View style={cardFrame.content}>
+          <View style={[cardFrame.content, cardFrame.scrollContent]}>
             <CardPrint keyline="gold" />
             <IndexBand label={t.done} tone="gold" stamp={null} />
             <View style={styles.message}>
@@ -142,15 +145,17 @@ export function ReviewSeries({
             <Text style={styles.body}>{t.loading}</Text>
           </View>
         )}
+        </ScrollView>
       </SlideCard>
     </SafeAreaView>
+    </Modal>
   );
 }
 const styles = StyleSheet.create({
   screen: { ...StyleSheet.absoluteFillObject, zIndex: 200, backgroundColor: card.board },
   body: { fontFamily: fonts.cardBody, fontSize: 19, color: card.ink, textAlign: 'center' },
   score: { fontFamily: fonts.slab, fontSize: 42, color: card.ink },
-  message: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, gap: 18 },
+  message: { flexGrow: 1, flexShrink: 0, justifyContent: 'center', alignItems: 'center', padding: 20, gap: 18 },
   button: {
     flexDirection: 'row',
     gap: 10,

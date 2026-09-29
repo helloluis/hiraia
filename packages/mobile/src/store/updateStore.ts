@@ -63,10 +63,14 @@ import { errorCategory, track } from '../telemetry';
 import { applyOtaRollback, fetchOtaNow, otaEnabled, subscribeOtaPending } from '../updates/ota';
 import { useEngineStore, type ReadyStage } from './engineStore';
 import { useAssetUpdateStore, pauseAssetModelDownload, startAssetUpdates } from './assetUpdateStore';
+import { acceptsManifestPlatform, distributionPlatform, platformManifestUrl } from '../updates/platform';
 
 /** Override at build time for staging. Must be https. */
-export const MANIFEST_URL =
-  process.env.EXPO_PUBLIC_UPDATE_MANIFEST_URL || 'https://hiraia.org/api/app/manifest';
+const DISTRIBUTION = distributionPlatform(Constants.expoConfig?.extra?.distributionPlatform);
+export const MANIFEST_URL = platformManifestUrl(
+  process.env.EXPO_PUBLIC_UPDATE_MANIFEST_URL || 'https://hiraia.org/api/app/manifest',
+  DISTRIBUTION,
+);
 
 /** The manifest fetch's hard timeout — a captive portal or a dead link must not hang the store. */
 const FETCH_TIMEOUT_MS = 8_000;
@@ -195,6 +199,7 @@ const isPosInt = (n: unknown): n is number => typeof n === 'number' && Number.is
  * reserved `content` / `models`) are ignored: the schema is allowed to GROW.
  */
 export function parseManifest(body: unknown): AppManifest | null {
+  if (!acceptsManifestPlatform(body, DISTRIBUTION)) return null;
   if (!body || typeof body !== 'object') return null;
   const { schema, app } = body as { schema?: unknown; app?: unknown };
   if (schema !== 1) return null;

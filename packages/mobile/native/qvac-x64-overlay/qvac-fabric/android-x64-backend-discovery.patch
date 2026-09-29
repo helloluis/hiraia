@@ -1,0 +1,53 @@
+--- a/ggml/src/ggml-backend-reg.cpp
++++ b/ggml/src/ggml-backend-reg.cpp
+@@ -507,7 +507,13 @@
+             auto score_fn = (ggml_backend_score_t) dl_get_sym(handle.get(), "ggml_backend_score");
+             int  s        = 1;
+             if (score_fn) {
+-                s = score_fn() + scoreOffset;
++                s = score_fn();
++                // Zero means this CPU cannot execute the backend. A preference
++                // offset must never turn an unsupported instruction set into a candidate.
++                if (s <= 0) {
++                    return;
++                }
++                s += scoreOffset;
+             }
+ #ifdef NDEBUG
+             GGML_LOG_DEBUG("%s: %s score: %d\n", _func, path_str(entryPath).c_str(), s);
+@@ -562,10 +568,22 @@
+         std::vector<fs::path> names = { name_path };
+ #ifdef __ANDROID__
+         if (strcmp(name, "cpu") == 0) {
++#if defined(__x86_64__)
++            // Android's linker can resolve APK-embedded libraries by name, but
++            // filesystem enumeration cannot see them. Keep the baseline for
++            // older Intel/AMD Chromebooks; each variant checks CPUID before use.
++            for (const char * variant : {
++                     "x64", "sse42", "sandybridge", "ivybridge", "piledriver",
++                     "haswell", "skylakex", "cannonlake", "cascadelake", "icelake",
++                     "cooperlake", "zen4", "alderlake", "sapphirerapids" }) {
++                names.emplace_back(std::string("cpu-") + variant);
++            }
++#elif defined(__aarch64__)
+             names.emplace_back("cpu-android_armv8.0_1");
+             names.emplace_back("cpu-android_armv8.2_1");
+             names.emplace_back("cpu-android_armv8.2_2");
+             names.emplace_back("cpu-android_armv8.6_1");
++#endif
+         }
+ #endif
+         for (size_t scoreOffset = 0; scoreOffset < names.size(); ++scoreOffset) {
+@@ -573,7 +591,12 @@
+             // Try loading backend with just the library name, leave to dlopen path resolution.
+             fs::path     filename     = backend_filename_prefix().native() + loopNamePath.native() +
+                                 backend_filename_extension().native();
++#if defined(__ANDROID__) && defined(__x86_64__)
++            // On x86 the feature score alone ranks compatible variants.
++            tryEntryWithScore(filename);
++#else
+             tryEntryWithScore(filename, 1+scoreOffset);
++#endif
+         }
+     }
+ 

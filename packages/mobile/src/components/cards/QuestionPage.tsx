@@ -287,12 +287,15 @@ interface QuestionPageProps {
   disabled?: boolean;
   /** False for a read-only history result: print the marks without replaying confetti. */
   celebrate?: boolean;
+  /** A scrollable host can show every word instead of truncating to a phone-sized page. */
+  scrollable?: boolean;
+  showContinue?: boolean;
   onSelect?: (index: number) => void;
   onAnswer: (correct: boolean) => void;
   onContinue: () => void;
 }
 
-export function QuestionPage({ question, language, onAnswer, onContinue, reviewTitle, reviewProgress, displayOrder, selectedOption, disabled, celebrate = true, onSelect }: QuestionPageProps) {
+export function QuestionPage({ question, language, onAnswer, onContinue, reviewTitle, reviewProgress, displayOrder, selectedOption, disabled, celebrate = true, scrollable = false, showContinue = true, onSelect }: QuestionPageProps) {
   const t = uiStrings(language);
   const labels = LABELS[language];
   const shuffledOrder = useMemo(() => shuffled(question.o.length), [question.f, question.o.length]);
@@ -400,7 +403,7 @@ export function QuestionPage({ question, language, onAnswer, onContinue, reviewT
   const qLine = revealed ? tier.qLine - 3 : tier.qLine;
 
   return (
-    <View style={cardFrame.content}>
+    <View style={[cardFrame.content, scrollable && cardFrame.scrollContent]}>
       {/* keyline + binder punches; the keyline goes gold on an interject page */}
       <CardPrint keyline="gold" />
 
@@ -435,7 +438,7 @@ export function QuestionPage({ question, language, onAnswer, onContinue, reviewT
 
       <Text
         style={[styles.question, { fontSize: qSize, lineHeight: qLine }]}
-        numberOfLines={revealed ? 3 : undefined}
+        numberOfLines={!scrollable && revealed ? 3 : undefined}
       >
         {questionText}
       </Text>
@@ -488,7 +491,9 @@ export function QuestionPage({ question, language, onAnswer, onContinue, reviewT
                   pressed && cardFrame.pressed,
                 ]}
                 onPress={() => pickOption(displayIdx)}
-                disabled={revealed}
+                disabled={revealed || disabled}
+                accessibilityRole="button"
+                accessibilityLabel={`${String.fromCharCode(65 + displayIdx)}. ${text}${mark ? ` ${mark}` : ''}`}
                 // The tightest tier prints a 40px row, under the 44dp touch minimum, so
                 // the target is padded out to 48 without spending any layout. 4px a side
                 // is safe: rows are 7px apart plus their 4px ledge, so two targets can
@@ -502,7 +507,7 @@ export function QuestionPage({ question, language, onAnswer, onContinue, reviewT
                 </View>
                 {/* Rows the kid neither picked nor needed are spent: clamp them so a
                     long bank option cannot push the ticket off the card. */}
-                <Text style={wordStyle} numberOfLines={state === 'dim' ? 2 : undefined}>
+                <Text style={wordStyle} numberOfLines={!scrollable && state === 'dim' ? 2 : undefined}>
                   {text}
                 </Text>
                 {!!mark && (
@@ -528,20 +533,17 @@ export function QuestionPage({ question, language, onAnswer, onContinue, reviewT
         <>
           {/* the printed rule + diamond that introduces an answer everywhere in the deck */}
           <Divider style={styles.divider} />
-          {/* Clamped, not free-flowing. v2 explanations are capped at 120-145 chars by the
-              generator, but the legacy bank still in the deck reaches 354 — and one long
-              enough would push the ticket out again. Ellipsis costs a few words; losing the
-              continue button costs the whole page. */}
-          <Text style={styles.explanation} numberOfLines={5} ellipsizeMode="tail">
+          {/* Scrollable desktop/review hosts retain the complete explanation. */}
+          <Text style={styles.explanation} numberOfLines={scrollable ? undefined : 5} ellipsizeMode="tail">
             {localize(question.e, language)}
           </Text>
-          <Ticket
+          {showContinue && <Ticket
             arrowDirection="down"
             label={t.cards.continueNote}
             onPress={onContinue}
             hitSlop={12}
             style={styles.ticketGap}
-          />
+          />}
         </>
       ) : (
         <>

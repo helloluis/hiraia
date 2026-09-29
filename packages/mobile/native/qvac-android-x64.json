@@ -1,0 +1,22 @@
+{
+  "source": "https://github.com/tetherto/qvac.git",
+  "commit": "cba9434b05b708449393986ed8e58360dc58f61e",
+  "engines": {
+    "@qvac/llm-llamacpp": "0.39.4",
+    "@qvac/embed-llamacpp": "0.30.1"
+  },
+  "fabric": "9840.1.1",
+  "vcpkgCommit": "84bab45d415d22042bd0b9081aea57f362da3f35",
+  "ndk": "29.0.14206865",
+  "bareHeaders": "1.30.0",
+  "bareMake": "1.8.0",
+  "cmakeBare": "1.9.0",
+  "cmakeVcpkg": "1.2.0",
+  "cmakeRuntime": "4.3.1",
+  "ninjaRuntime": "1.13.2",
+  "fabricOverlay": {
+    "qvac-x64-overlay/qvac-fabric/android-x64-backend-discovery.patch": "5720bbef14d29330ac12b72a3932643dd1ea5ccc444195b0a3707b2015de0b61",
+    "qvac-x64-overlay/qvac-fabric/portfile.cmake": "10f09562468e4535f7d1f5339859a35c03a60b91c1538b1332894b9a92b6776e",
+    "qvac-x64-overlay/qvac-fabric/vcpkg.json": "e3cb546cefa5870cf3f01bbec56461f97565da4e86c69cfac2dcbb93fc0af745"
+  }
+}

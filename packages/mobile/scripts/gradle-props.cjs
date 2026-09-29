@@ -1,3 +1,4 @@
+const { architectures } = require('./qvac-android-x64.cjs');
 /**
  * THE gradle.properties SETTINGS THIS APP CANNOT SHIP WITHOUT — in one place, because
  * two different mechanisms have to apply them and they must never drift apart:
@@ -31,11 +32,9 @@
 module.exports = [
   ['org.gradle.jvmargs', '-Xmx6144m -XX:MaxMetaspaceSize=1024m', "Hermes JS compile OOMs at Expo's 512m default"],
   ['android.minSdkVersion', '29', "belt and braces — app.json's expo-build-properties plugin sets this during prebuild; pinned so a hand-edited tree can't drop below react-native-bare-kit's floor of 29"],
-  // @qvac/sdk's own expo-plugin (withAndroidArchitecture) already pins this on every
-  // prebuild, so it is the ONE entry here that was never at risk on EAS. Kept anyway:
-  // shipping three dead ABIs is not something that should depend on a vendor plugin
-  // continuing to do it for us, and the values agree, so it is free.
-  ['reactNativeArchitectures', 'arm64-v8a', 'prebuild reverts to all four ABIs; we ship arm64 only (@qvac/sdk pins this too — belt and braces)'],
+  // Override the SDK's ARM-only default for the verified private ChromeOS port.
+  // Ordinary phone builds keep their existing ARM64 packaging.
+  ['reactNativeArchitectures', architectures().join(','), 'explicit build ABIs; private ChromeOS preview includes the source-built QVAC x86_64 port'],
   ['android.enableMinifyInReleaseBuilds', 'true', 'reverts to false and silently fattens the release APK'],
   ['android.enableShrinkResourcesInReleaseBuilds', 'true', 'same — resource shrinking off by default'],
   // Store the native .so libraries UNCOMPRESSED and page-align them (the pre-API-23

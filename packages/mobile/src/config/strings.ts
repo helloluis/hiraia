@@ -80,9 +80,12 @@ interface UIStrings {
     readLabel: string;
     /** Eyebrow on the single-path "next" ticket (mid-century card). */
     nextCard: string;
+    previousCard: string;
     /** Banner announcing a two-way split in the thread (mid-century card). */
     fork: string;
     searchPlaceholder: string;
+    /** Same search label used by ModelDownloadStatus; spoken name for the submit button. */
+    searchAction: string;
     /** Shown if warm-up failed — tapping the field retries, so this must not read as fatal. */
     searchUnavailable: string;
     yourQuestion: string;
@@ -236,8 +239,10 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       continueNote: 'ituloy',
       readLabel: 'pahina',
       nextCard: 'Sunod na kard',
+      previousCard: 'Bumalik',
       fork: 'Sangandaan',
       searchPlaceholder: 'Anong gusto mong malaman?',
+      searchAction: 'Paghahanap',
       searchUnavailable: 'Pindutin para subukan ulit',
       yourQuestion: 'Ang tanong mo',
       dismissAsk: 'Alisin ang tanong',
@@ -346,8 +351,10 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       continueNote: 'continue',
       readLabel: 'pages',
       nextCard: 'Next card',
+      previousCard: 'Previous card',
       fork: 'Crossroads',
       searchPlaceholder: 'What do you want to learn about?',
+      searchAction: 'Search',
       searchUnavailable: 'Tap to try again',
       yourQuestion: 'You asked',
       dismissAsk: 'Dismiss your question',
@@ -450,8 +457,10 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       continueNote: 'padayon',
       readLabel: 'panid',
       nextCard: 'Sunod nga kard',
+      previousCard: 'Balik',
       fork: 'Sangang-dalan',
       searchPlaceholder: 'Unsa ang gusto nimong hibaw-an?',
+      searchAction: 'Pagpangita',
       searchUnavailable: 'I-tap para sulayan pag-usab',
       yourQuestion: 'Ang pangutana nimo',
       dismissAsk: 'Kuhaa ang pangutana',

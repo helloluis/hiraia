@@ -51,6 +51,13 @@ both eval harnesses reference the bundle so the "shipping" default can never dri
   hijacks the photosynthesis probe). Fix those alongside a new-model benchmark, not before.
 
 ## Conventions (load-bearing)
+
+- **Every student-app build targets Android AND ChromeOS.** `pnpm apk` runs the formal
+  regression gate once, then prebuilds, builds, signs and verifies both platforms from
+  unchanged source inputs. Only a complete `build/app-releases/<timestamp>/release.json`
+  is releasable. Publish with `deploy/publish-release-assets.py --release ... --output ...`;
+  the verified `platform-releases.json` drives the website and platform-specific updater.
+  Do not replace this with one Gradle APK or a JS export. See `packages/mobile/BUILD.md`.
 - Use the Claude **subscription**, not the API, for assisted work (incl. the benchmark judge).
 - Adapters + images are **bundled in the APK** (the core offline value).
 - The card inventory is **generated**: run `python3 rag/pipeline/build-cards-db.py` before

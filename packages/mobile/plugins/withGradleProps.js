@@ -52,7 +52,7 @@ function applyManagedProps(items) {
   return [...kept, ...block];
 }
 
-const ABI = 'arm64-v8a';
+const ABI = require('../scripts/qvac-android-x64.cjs').architectures().join('", "');
 const ABI_START = '// HIRAIA_ABI_START — packaging ABI filter; see plugins/withGradleProps.js';
 const ABI_END = '// HIRAIA_ABI_END';
 

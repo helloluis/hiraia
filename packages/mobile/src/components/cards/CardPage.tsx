@@ -246,6 +246,8 @@ interface CardPageProps {
    * the typewriter lands. Only the visible live card enables this; history stays still.
    */
   guide?: boolean;
+  /** The desktop toolbar owns ordinary forward navigation; keep actual branch choices. */
+  desktop?: boolean;
 }
 
 /**
@@ -384,6 +386,7 @@ export function CardPage({
   onChoose,
   instant = false,
   guide = false,
+  desktop = false,
 }: CardPageProps) {
   const t = uiStrings(language);
   /**
@@ -696,7 +699,8 @@ export function CardPage({
   const spoken = bandLabel(title, fact.topic, Number.MAX_SAFE_INTEGER);
 
   return (
-    <Pressable onPress={done ? undefined : skip} accessible={false} style={cardFrame.content}>
+    <Pressable onPress={done ? undefined : skip} accessible={false}
+      style={[cardFrame.content, desktop && cardFrame.scrollContent]}>
       {/* keyline + punched binder holes — the shared die-cut, graphite on a fork so the
           card's own furniture favours neither branch */}
       <CardPrint keyline={branching ? 'graphite' : 'sage'} />
@@ -765,7 +769,7 @@ export function CardPage({
         stepping forward, two colour-coded picks. Keeping that distinct is the point: a fork
         should read as a real moment, not as the default state.
       */}
-      <Animated.View
+      {(!desktop || branching) && <Animated.View
         style={[styles.foot, { opacity: extrasOpacity }]}
         pointerEvents={done ? 'auto' : 'none'}
       >
@@ -821,7 +825,7 @@ export function CardPage({
             onPress={() => onChoose(choices[0]!)}
           />
         ) : null}
-      </Animated.View>
+      </Animated.View>}
     </Pressable>
   );
 }

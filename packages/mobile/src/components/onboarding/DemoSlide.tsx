@@ -19,11 +19,13 @@
  * palette rather than by growing Ticket itself: the feed's tickets keep their one size, and
  * the press-into-the-ledge behaviour still comes from the shared primitive.
  */
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
 import type { Language } from '@hiraia/shared';
 
 import { DEMO_START, SLIDE_BAND } from '../../config/onboarding';
+import { uiStrings } from '../../config/strings';
+import { feedViewport } from '../cards/adaptiveFeed';
 import { card, fonts } from '../../theme';
 import { Arrow, CardPrint, IndexBand, TapTarget, cardFrame } from '../cards/CardFrame';
 
@@ -39,6 +41,9 @@ export function DemoSlide({
   active: boolean;
   onStart: () => void;
 }) {
+  const { width } = useWindowDimensions();
+  const horizontal = feedViewport(width).horizontal;
+  const navigation = uiStrings(language).cards;
   return (
     <View style={cardFrame.content}>
       {/* keyline + punched binder holes — the deck's shared die-cut */}
@@ -58,7 +63,9 @@ export function DemoSlide({
           <Image source={CAT} style={styles.discImage} resizeMode="contain" />
         </View>
         <Text style={styles.instructions}>
-          {language === 'english'
+          {horizontal
+            ? `← ${navigation.previousCard}    ·    ${navigation.nextCard} →\nPage Up    ·    Page Down`
+            : language === 'english'
             ? 'Scroll down for the next card. Scroll up to revisit earlier cards.'
             : language === 'tagalog'
               ? 'Mag-scroll pababa para sa susunod na card. Mag-scroll pataas para balikan ang mga naunang card.'
@@ -84,7 +91,7 @@ export function DemoSlide({
             {/* the shared border-triangle has one printed size; scale it to the bigger box
                 rather than reimplementing it */}
             <View style={styles.arrowScale}>
-              <Arrow />
+              <Arrow direction={horizontal ? 'right' : 'down'} />
             </View>
           </View>
         </TapTarget>

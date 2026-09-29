@@ -1,0 +1,63 @@
+.downloads { color: var(--ink); font-family: 'Zilla Slab', Georgia, serif; }
+.platformNav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+.platformNav a { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 8px 16px; border: 1.5px solid var(--ink); border-radius: 999px; font-weight: 700; background: var(--stock); }
+.platformNav svg { width: 23px; height: 23px; }
+.platformNav small { font-size: 11px; font-weight: 500; }
+.platformNav a:hover { background: var(--plate); }
+.platformList { display: grid; gap: 24px; }
+.platform { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.15fr); overflow: hidden; border: 2px solid var(--ink); border-radius: 20px; background: var(--stock); box-shadow: 0 6px 0 #1c3b2e3b; scroll-margin-top: 24px; }
+.information { padding: 30px; min-width: 0; }
+.identity { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.deviceIcon { width: 42px; height: 42px; flex-shrink: 0; display: grid; place-items: center; background: var(--plate); border: 1px solid var(--sage); border-radius: 12px; }
+.deviceIcon svg { width: 29px; height: 29px; }
+.eyebrow { font-family: 'Archivo Black', sans-serif; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; line-height: 1.6; }
+.identity h3 { font-family: 'Fraunces', Georgia, serif; font-size: 32px; line-height: 1.2; margin: 3px 0 0; }
+.badge { display: inline-flex; align-items: center; width: fit-content; padding: 5px 9px; border-radius: 5px; background: var(--ink); color: var(--stock); font-size: 11px; font-weight: 700; margin-left: auto; }
+.previewBadge { color: var(--ink); background: var(--gold); border: 1px solid var(--ink); }
+.description { font-size: 17px; line-height: 1.55; margin: 22px 0 16px; }
+.requirements { list-style: none; display: grid; gap: 8px; font-size: 13px; line-height: 1.45; }
+.requirements li { padding-left: 16px; position: relative; }
+.requirements li::before { content: ''; position: absolute; width: 5px; height: 5px; top: .55em; left: 1px; transform: rotate(45deg); background: var(--olive); }
+.actions { margin-top: 25px; }
+.downloadButton { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 55px; border: 2px solid var(--ink); border-radius: 10px; padding: 12px 16px; background: var(--gold); box-shadow: 0 4px 0 var(--ink); font-size: 18px; font-weight: 700; line-height: 1.2; }
+.downloadButton svg { width: 22px; height: 22px; flex-shrink: 0; }
+.downloadButton:hover { background: #e5b945; }
+.fileMeta { margin: 13px 0 17px; font-size: 12px; }
+.fileMeta span { margin: 0 6px; }
+.pending { padding: 15px 16px; border: 1px dashed var(--olive); border-radius: 10px; font-weight: 700; margin-bottom: 16px; }
+.details { border-top: 1px solid #1c3b2e30; font-size: 13px; line-height: 1.5; }
+.details summary { cursor: pointer; padding: 13px 0; font-weight: 700; min-height: 44px; }
+.details p { margin-bottom: 12px; }
+.details a { text-decoration: underline; text-underline-offset: 3px; }
+.visual { display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 0; padding: 30px 24px 22px; background-color: #e5e7d5; background-image: radial-gradient(#94a47666 .8px, transparent .8px); background-size: 12px 12px; border-left: 1px solid #1c3b2e30; gap: 20px; }
+.screenshotLink { display: block; max-width: 100%; border: 3px solid var(--ink); border-radius: 10px; overflow: hidden; box-shadow: 5px 7px 0 #1c3b2e25; background: var(--ink); }
+.screenshotLink img { display: block; width: 100%; height: auto; object-fit: contain; }
+.phoneVisual .screenshotLink { width: 186px; border-radius: 17px; }
+.visual figcaption { max-width: 340px; font-size: 12px; line-height: 1.5; text-align: center; }
+.laptopVisual { background-color: #e7d9bd; }
+.laptopVisual .screenshotLink { width: 100%; }
+.planned { display: block; background: #f6ebd28c; box-shadow: none; border-style: dashed; }
+.planned .information { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.15fr); align-items: center; gap: 28px; padding: 23px 30px; }
+.planned .description { margin: 0; font-size: 15px; }
+.planned h3 { font-size: 26px; }
+.planned .badge { border: 1px solid var(--olive); color: var(--ink); background: transparent; }
+.offlineNote { display: grid; grid-template-columns: 1fr 1.2fr; gap: 30px; padding: 32px 0 24px; }
+.offlineNote h3, .teacherHeading h3 { font-family: 'Fraunces', Georgia, serif; font-size: 23px; line-height: 1.25; margin-top: 8px; }
+.offlineNote > p { font-size: 15px; line-height: 1.6; }
+.sectionFoot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 15px; font-size: 13px; padding-bottom: 30px; border-bottom: 1px solid #1c3b2e55; }
+.sectionFoot a { text-decoration: underline; text-underline-offset: 4px; }
+.teacherHeading { margin-top: 28px; }
+.downloads :is(a, button, summary):focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+@media (max-width: 760px) {
+  .platform { grid-template-columns: minmax(0, 1fr); }
+  .information { padding: 23px; }
+  .visual { border-left: 0; border-top: 1px solid #1c3b2e30; padding: 25px 20px 20px; }
+  .phoneVisual .screenshotLink { width: 170px; }
+  .planned .information, .offlineNote { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .planned .information { padding: 23px; }
+  .identity h3 { font-size: 29px; }
+  .badge { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .downloads * { scroll-behavior: auto; }
+}
