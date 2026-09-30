@@ -7,7 +7,11 @@ const { pathToFileURL } = require('node:url');
 const { createStorage } = require('./storage.cjs');
 const { createDownloads } = require('./downloads.cjs');
 const { createInference } = require('./inference.cjs');
+const { createTelemetry } = require('./telemetry.cjs');
 const pkg = require('../package.json');
+const buildInfo = require('../renderer/build-info.json');
+const worker = path.join(__dirname, '..', 'qvac/worker.entry.mjs');
+if (fs.existsSync(worker)) process.env.QVAC_WORKER_PATH = worker;
 
 // Stable per-user storage, never next to an EXE on a USB stick or in Downloads.
 app.setName('Hiraia');
@@ -19,6 +23,7 @@ let window;
 let storage;
 let inference;
 let downloads;
+const telemetry = createTelemetry();
 let shuttingDown = false;
 
 const CSP = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' hiraia://file data: blob:; font-src 'self' data:; media-src 'self' hiraia://file blob:; connect-src 'self' hiraia://file https://hiraia.org https://assets.hiraia.org; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; frame-src 'none'; form-action 'none'";
@@ -36,11 +41,11 @@ async function start() {
   storage = createStorage({ rendererRoot, dataRoot: app.getPath('userData') });
   downloads = createDownloads(storage, emit);
   inference = createInference(storage, emit);
-  const info = () => ({ version: pkg.version, build: 27, platform: process.platform, arch: process.arch,
+  const info = () => ({ version: pkg.version, build: buildInfo.versionCode, platform: process.platform, arch: process.arch,
     totalMemory: os.totalmem(), screenReader: app.isAccessibilitySupportEnabled(), paths: storage.paths });
   const sync = { ...storage.sync, info };
   const async = { ...sync, 'fs.hash': storage.hash, 'download.start': downloads.start,
-    'download.cancel': downloads.cancel, ...inference.handlers };
+    'download.cancel': downloads.cancel, ...inference.handlers, ...telemetry.handlers };
   ipcMain.on('hiraia:sync', (event, operation, args) => {
     try { trusted(event); if (!Object.hasOwn(sync, operation) || !Array.isArray(args)) throw new Error('Unknown desktop operation');
       event.returnValue = { value: sync[operation](...args) }; }
@@ -76,7 +81,8 @@ async function start() {
   window = new BrowserWindow({ title: 'Hiraia', width: 1366, height: 850, minWidth: 360, minHeight: 480,
     backgroundColor: '#1C3B2E', show: false, autoHideMenuBar: true,
     webPreferences: { preload: path.join(__dirname, 'preload.cjs'), nodeIntegration: false, contextIsolation: true,
-      sandbox: true, webSecurity: true, spellcheck: false } });
+      sandbox: true, webSecurity: true, spellcheck: false,
+      additionalArguments: ['--hiraia-desktop-info=' + encodeURIComponent(JSON.stringify(info()))] } });
   Menu.setApplicationMenu(Menu.buildFromTemplate([
     { label: 'Hiraia', submenu: [{ role: 'quit' }] },
     { label: 'Edit', submenu: [{ role: 'undo' }, { role: 'redo' }, { type: 'separator' }, { role: 'cut' }, { role: 'copy' }, { role: 'paste' }, { role: 'selectAll' }] },
@@ -89,7 +95,7 @@ async function start() {
   });
   window.webContents.on('will-attach-webview', event => event.preventDefault());
   window.webContents.on('render-process-gone', (_event, details) => console.error('[desktop renderer]', details));
-  window.webContents.on('console-message', (_event, details) => console.log('[renderer]', details.message));
+  window.webContents.on('console-message', event => console.log('[renderer]', event.message));
   app.on('accessibility-support-changed', (_event, value) => emit('accessibility', value));
   window.once('ready-to-show', () => window.show());
   await window.loadURL('hiraia://app/');
@@ -99,8 +105,8 @@ app.on('second-instance', () => { if (window) { if (window.isMinimized()) window
 app.on('window-all-closed', () => app.quit());
 app.on('before-quit', event => {
   if (shuttingDown || !storage) return;
-  event.preventDefault(); shuttingDown = true; downloads.close();
+  event.preventDefault(); shuttingDown = true; downloads.close(); telemetry.close();
   Promise.race([inference.close(), new Promise(resolve => setTimeout(resolve, 3000))])
-    .finally(() => { storage.close(); app.quit(); });
+    .finally(() => { if (window && !window.isDestroyed()) window.destroy(); storage.close(); app.quit(); });
 });
 if (primary) start().catch(error => { console.error(error); dialog.showErrorBox('Hiraia could not start', error.message); app.exit(1); });

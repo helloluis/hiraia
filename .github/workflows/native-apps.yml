@@ -1,19 +1,23 @@
-name: Android and ChromeOS APKs
+name: Android, ChromeOS and Windows
 
 on:
   push:
     branches: [main, hiraia-unified]
     paths:
       - 'packages/mobile/**'
+      - 'packages/desktop/**'
       - 'packages/shared/**'
       - 'packages/images/**'
       - 'rag/**'
       - 'finetuning/eval/**'
       - 'deploy/app_artifacts.py'
+      - 'deploy/combine-app-artifacts.py'
+      - 'scripts/fix-qvac-win32.mjs'
       - 'deploy/restore-native-build-inputs.py'
       - 'package.json'
       - 'pnpm-lock.yaml'
       - '.github/workflows/native-apps.yml'
+      - '.github/workflows/windows-build.yml'
   workflow_dispatch:
 
 # No pull_request trigger: untrusted PR code must never run beside the signing key.
@@ -38,6 +42,7 @@ jobs:
       # Keep the runner's model servers separate from interactive development.
       PORT: '18088'
       EMBED_PORT: '18090'
+      SAMPLES: '5'
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -47,7 +52,7 @@ jobs:
       - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: 22
+          node-version: 24
           # This Mac already retains its local pnpm store between jobs.
       - run: pnpm install --frozen-lockfile
       - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
@@ -71,6 +76,9 @@ jobs:
           python3 -B -m unittest discover -s packages/mobile/scripts -p 'test_native_abis.py'
           python3 -B -m unittest discover -s deploy -p 'test_native_runner.py'
           python3 -B -m unittest discover -s deploy -p 'test_publish_platforms.py'
+          python3 -B -m unittest discover -s deploy -p 'test_all_platforms.py'
+          pnpm --filter @hiraia/mobile exec tsc --noEmit
+          pnpm --filter @hiraia/mobile exec tsc -p tsconfig.desktop.json --noEmit
       - name: Both platforms (including regression gate and signing)
         run: nice -n 10 pnpm apk
       - name: Locate complete release
@@ -90,7 +98,29 @@ jobs:
           if-no-files-found: error
           retention-days: 7
           compression-level: 0 # APKs are already compressed.
+      - name: Export the shared Windows renderer
+        env:
+          NODE_OPTIONS: --max-old-space-size=6144
+        run: |
+          nice -n 10 pnpm --filter @hiraia/desktop renderer
+          mkdir -p build/desktop-inputs
+          tar -czf build/desktop-inputs/renderer.tar.gz -C packages/desktop renderer
+          cp '${{ steps.release.outputs.directory }}/release.json' build/desktop-inputs/release.json
+          cp '${{ steps.release.outputs.directory }}/regression.log' build/desktop-inputs/regression.log
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: hiraia-desktop-inputs-${{ github.sha }}
+          path: build/desktop-inputs/
+          if-no-files-found: error
+          retention-days: 2
+          compression-level: 0
       - name: Remove checkout signing material
         if: always()
         run: |
           rm -f packages/mobile/credentials.json packages/mobile/keystores/release.jks
+  windows:
+    name: Build and verify Windows; complete all three editions
+    needs: signed-platforms
+    uses: ./.github/workflows/windows-build.yml
+    with:
+      renderer-artifact: hiraia-desktop-inputs-${{ github.sha }}

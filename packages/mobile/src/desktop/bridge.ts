@@ -15,8 +15,9 @@ export interface DesktopBridge {
 }
 declare global { interface Window { hiraiaDesktop?: DesktopBridge } }
 export function desktop(): DesktopBridge {
-  if (!globalThis.window?.hiraiaDesktop) throw new Error('This build must run inside Hiraia Desktop');
-  return window.hiraiaDesktop;
+  const bridge = globalThis.window?.hiraiaDesktop;
+  if (!bridge) throw new Error('This build must run inside Hiraia Desktop');
+  return bridge;
 }
 /** Browser media stays on the application origin; file access is checked in the host. */
 export function mediaUri(uri: string): string {

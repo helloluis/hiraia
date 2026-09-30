@@ -1,4 +1,5 @@
 import { initializeProfiles, profileTelemetry, profileSnapshot } from '../profiles';
+import { telemetryRequest } from '../platform/telemetryRequest';
 import { APP_VERSION, APP_BUILD } from '../config/appVersion';
 import { HIRAIAPEDIA_VERSION } from '../config/version';
 import cardsIndex from '../generated/cardsIndex.generated.json';
@@ -73,7 +74,7 @@ const queue = new Outbox(getRepository, async (body) => {
   activeRequest = controller;
   const timeout = setTimeout(() => controller.abort(), 8000);
   try {
-    const response = await fetch(ENDPOINT, {
+    const response = await telemetryRequest(ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

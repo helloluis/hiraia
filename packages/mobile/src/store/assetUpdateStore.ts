@@ -1,3 +1,4 @@
+import { fileUri } from '../platform/filePath';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Application from 'expo-application';
 import { AppState } from 'react-native';
@@ -87,7 +88,7 @@ export const useAssetUpdateStore = create<State>((set, get) => ({
         if (abort.signal.aborted) throw new Error('Paused');
         await installedModelUpdate();
         const path = await ensureRemoteAsset(model, pct => set({pct}), abort.signal);
-        const uri = path.startsWith('file:') ? path : 'file://' + path;
+        const uri = fileUri(path);
         const info = await getInfoAsync(uri, {md5: true});
         if (!info.exists || info.isDirectory || info.size !== model.bytes || info.md5 !== model.md5) {
           await deleteAsync(uri, {idempotent: true});

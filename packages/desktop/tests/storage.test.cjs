@@ -1,0 +1,62 @@
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const { pathToFileURL } = require('node:url');
+const { createStorage } = require('../src/storage.cjs');
+function fixture(t) {
+  const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'hiraia-desktop-')));
+  const rendererRoot = path.join(root, 'renderer');
+  const dataRoot = path.join(root, 'user');
+  fs.mkdirSync(rendererRoot);
+  const storage = createStorage({ rendererRoot, dataRoot });
+  t.after(() => { storage.close(); fs.rmSync(root, { recursive: true, force: true }); });
+  return { root, rendererRoot, dataRoot, storage };
+}
+test('files are confined to app storage, including encoded traversal and symlinks', t => {
+  const { root, rendererRoot, dataRoot, storage } = fixture(t);
+  const outside = path.join(root, 'private.txt'); fs.writeFileSync(outside, 'not app data');
+  assert.throws(() => storage.resolve(pathToFileURL(outside).href));
+  assert.throws(() => storage.resolve('hiraia://app/%2e%2e%2fprivate.txt'));
+  assert.throws(() => storage.resolve('hiraia://app/index.html', true));
+  fs.symlinkSync(root, path.join(dataRoot, 'escape'), process.platform === 'win32' ? 'junction' : 'dir');
+  assert.throws(() => storage.resolve(path.join(dataRoot, 'escape/private.txt')));
+  assert.throws(() => storage.resolve(path.join(dataRoot, 'escape/new.txt'), true));
+  fs.writeFileSync(path.join(rendererRoot, 'asset.bin'), 'verified');
+  assert.equal(storage.sync['fs.read']('hiraia://app/asset.bin', 'utf8'), 'verified');
+  const target = storage.paths.document + 'saved.txt';
+  storage.sync['fs.write'](target, 'pagkatuto');
+  assert.equal(storage.sync['fs.read'](target, 'utf8'), 'pagkatuto');
+  assert.throws(() => storage.sync['fs.remove'](storage.paths.document));
+  assert.throws(() => storage.sync['fs.remove'](storage.paths.document + './'));
+  assert.throws(() => storage.sync['fs.remove'](storage.paths.document + '../'));
+  const named = path.join(dataRoot, 'José Dela Cruz 100%.bin');
+  const uri = pathToFileURL(named).href;
+  assert.equal(storage.sync['fs.path'](uri), named);
+  assert.equal(storage.sync['fs.uri'](named), uri);
+});
+test('SQLite isolates profiles and rolls failed transactions back without losing prior progress', t => {
+  const { storage } = fixture(t);
+  for (const name of ['hiraia.db', 'hiraia-profile-pupil.db']) storage.sql(name, 'exec', 'CREATE TABLE progress (card TEXT PRIMARY KEY, score INTEGER)');
+  storage.sql('hiraia.db', 'run', 'INSERT INTO progress VALUES (?, ?)', ['plant', 1]);
+  storage.sql('hiraia.db', 'exec', 'BEGIN IMMEDIATE', [], 'test-transaction');
+  storage.sql('hiraia.db', 'run', 'UPDATE progress SET score=5', [], 'test-transaction');
+  assert.equal(storage.sql('hiraia.db', 'first', 'SELECT score FROM progress').score, 1);
+  storage.sql('hiraia.db', 'exec', 'ROLLBACK', [], 'test-transaction');
+  storage.sync['db.close']('hiraia.db', 'test-transaction');
+  assert.equal(storage.sql('hiraia.db', 'first', 'SELECT score FROM progress').score, 1);
+  assert.equal(storage.sql('hiraia-profile-pupil.db', 'all', 'SELECT * FROM progress').length, 0);
+  assert.throws(() => storage.sql('hiraia.db', 'exec', "ATTACH DATABASE '/outside.db' AS stolen"));
+  assert.throws(() => storage.sql('../outside.db', 'exec', 'CREATE TABLE bad (x)'));
+});
+test('bounded binary reads preserve offsets and hashes include all bytes', async t => {
+  const { storage } = fixture(t);
+  const target = storage.paths.document + 'bytes.bin';
+  storage.sync['fs.write'](target, new Uint8Array([1, 2, 3, 4]));
+  const handle = storage.sync['fs.open'](target);
+  assert.deepEqual([...storage.sync['fs.readRange'](handle, 1, 2)], [2, 3]);
+  assert.throws(() => storage.sync['fs.readRange'](handle, 0, 2 ** 30));
+  storage.sync['fs.close'](handle);
+  assert.equal(await storage.hash(target, 'sha256'), '9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a');
+});

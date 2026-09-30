@@ -5,7 +5,14 @@ import {acceptsManifestPlatform, distributionPlatform, platformManifestUrl} from
 test('distribution comes from the installed build and cannot fall back on an unknown value', () => {
   assert.equal(distributionPlatform(undefined), 'android');
   assert.equal(distributionPlatform('chromeos'), 'chromeos');
-  assert.throws(() => distributionPlatform('windows'));
+  assert.equal(distributionPlatform('windows'), 'windows');
+  assert.throws(() => distributionPlatform('unknown'));
+});
+test('Windows rejects every APK manifest and unlabelled legacy releases', () => {
+  for (const value of [{app: {}}, {platform: 'android'}, {platform: 'chromeos'}, null]) {
+    assert.equal(acceptsManifestPlatform(value, 'windows'), false);
+  }
+  assert.equal(acceptsManifestPlatform({platform: 'windows'}, 'windows'), true);
 });
 test('ChromeOS never accepts the phone update, including an old unlabelled server', () => {
   for (const value of [{app: {}}, {platform: 'android'}, {platform: 'windows'}, null]) {

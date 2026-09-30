@@ -6,7 +6,9 @@ function unwrap(result) {
   return result?.value;
 }
 contextBridge.exposeInMainWorld('hiraiaDesktop', {
-  info: unwrap(ipcRenderer.sendSync('hiraia:sync', 'info', [])),
+  // Preload runs before the main frame has a committed URL. Pass immutable
+  // startup metadata directly; never weaken IPC origin checks for that phase.
+  info: JSON.parse(decodeURIComponent(process.argv.find(value => value.startsWith('--hiraia-desktop-info=')).split('=').slice(1).join('='))),
   sync: (operation, ...args) => unwrap(ipcRenderer.sendSync('hiraia:sync', operation, args)),
   invoke: (operation, ...args) => ipcRenderer.invoke('hiraia:invoke', operation, args).then(unwrap),
   subscribe: (channel, callback) => {

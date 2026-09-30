@@ -1,3 +1,4 @@
+import { nativeFilePath } from '../platform/filePath';
 /**
  * ON-DEVICE synthesis benchmark — a diagnostic, not a feature.
  *
@@ -44,7 +45,7 @@ async function materialise(asset: number, name: string): Promise<string> {
   const a = Asset.fromModule(asset);
   await a.downloadAsync();
   new File(a.localUri ?? a.uri).copy(file);
-  return file.uri.replace(/^file:\/\//, '');
+  return nativeFilePath(file.uri);
 }
 
 let started = false;

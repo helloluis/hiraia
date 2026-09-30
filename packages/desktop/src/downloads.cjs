@@ -17,6 +17,12 @@ function createDownloads(storage, emit) {
     try {
       const response = await fetch(remote, { headers: offset ? { Range: `bytes=${offset}-` } : {}, redirect: 'error', signal: controller.signal });
       if (!response.ok || !response.body) throw new Error(`HTTP ${response.status}`);
+      // Shared download logic discards a prefix and retries from zero on 200.
+      // Report it without ever appending the replayed body to that prefix.
+      if (offset && response.status === 200) {
+        await response.body.cancel();
+        return { uri: fileUri, status: 200, headers: Object.fromEntries(response.headers) };
+      }
       if (offset && (response.status !== 206 || !response.headers.get('content-range')?.startsWith(`bytes ${offset}-`))) throw new Error('Server did not honor the requested range');
       const length = Number(response.headers.get('content-length'));
       const total = Number.isFinite(length) && length > 0 ? offset + length : -1;
@@ -36,11 +42,18 @@ function createDownloads(storage, emit) {
       progress();
       return { uri: fileUri, status: response.status, headers: Object.fromEntries(response.headers) };
     } catch (error) {
-      if (controller.signal.aborted) return null;
+      if (controller.signal.aborted && controller.signal.reason?.name === 'AbortError') return null;
       throw error;
     } finally {
+      controller.abort();
       // Settle only after the writer closes; callers can now verify or rename the partial.
-      if (output && !output.closed) { const closed = once(output, 'close').catch(() => {}); output.destroy(); await closed; }
+      if (output && !output.closed) {
+        const closed = once(output, 'close').catch(() => {});
+        // A pause stops the network, then flushes bytes already accepted by the
+        // writer. Destroying it here would discard the most recent prefix.
+        if (!output.destroyed && !output.writableEnded) output.end();
+        await closed;
+      }
       active.delete(id);
     }
   }

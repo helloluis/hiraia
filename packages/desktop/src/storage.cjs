@@ -26,6 +26,7 @@ function createStorage({ rendererRoot, dataRoot }) {
 
   function resolve(input, write = false) {
     if (typeof input !== 'string' || input.includes('\0') || input.length > 32768) throw new Error('Invalid file path');
+    if (input.startsWith('/assets/') || input.startsWith('/_expo/')) input = 'hiraia://app' + input;
     let candidate;
     if (input.startsWith('hiraia://app/')) {
       const url = new URL(input);
@@ -36,8 +37,10 @@ function createStorage({ rendererRoot, dataRoot }) {
     } else {
       candidate = input.startsWith('file:') ? fileURLToPath(input) : path.resolve(input);
     }
+    // fileURLToPath preserves a trailing slash. Canonicalise before root checks
+    // so a directory URI cannot bypass the protected-root deletion guard.
+    candidate = path.resolve(candidate);
     const roots = write ? [dataRoot] : [dataRoot, rendererRoot];
-    if (!roots.some(root => inside(root, candidate))) throw new Error('File access outside Hiraia storage');
     let ancestor = candidate;
     while (!fs.existsSync(ancestor)) {
       const parent = path.dirname(ancestor);
@@ -45,8 +48,9 @@ function createStorage({ rendererRoot, dataRoot }) {
       ancestor = parent;
     }
     const real = fs.realpathSync(ancestor);
-    if (!roots.some(root => inside(root, real))) throw new Error('Symlink leaves Hiraia storage');
-    return candidate;
+    const canonical = path.resolve(real, path.relative(ancestor, candidate));
+    if (!roots.some(root => inside(root, canonical))) throw new Error('File access outside Hiraia storage');
+    return canonical;
   }
 
   function stat(input) {
@@ -69,9 +73,11 @@ function createStorage({ rendererRoot, dataRoot }) {
       lowMemory: availableBytes < thresholdBytes, lowRamDevice: totalBytes < 3.5 * 1024 ** 3 };
   }
 
-  function database(name) {
+  function database(name, connection = '') {
     if (typeof name !== 'string' || !/^[a-zA-Z0-9_-]+\.db$/.test(name)) throw new Error('Invalid database name');
-    if (!connections.has(name)) {
+    if (typeof connection !== 'string' || !/^[a-zA-Z0-9-]{0,64}$/.test(connection)) throw new Error('Invalid connection');
+    const key = `${name}:${connection}`;
+    if (!connections.has(key)) {
       const { DatabaseSync, constants } = require('node:sqlite');
       const db = new DatabaseSync(resolve(path.join(databases, name), true), { allowExtension: false });
       // No SQL request may reach files outside its one app-owned connection.
@@ -81,15 +87,15 @@ function createStorage({ rendererRoot, dataRoot }) {
         return constants.SQLITE_OK;
       });
       db.exec('PRAGMA busy_timeout=2000');
-      connections.set(name, db);
+      connections.set(key, db);
     }
-    return connections.get(name);
+    return connections.get(key);
   }
 
-  function sql(name, operation, query, parameters = []) {
+  function sql(name, operation, query, parameters = [], connection = '') {
     if (typeof query !== 'string' || query.length > 200000 || /\b(attach|detach|load_extension|writable_schema|temp_store_directory|data_store_directory|vacuum\s+into)\b/i.test(query)) throw new Error('SQL operation is not allowed');
     if (!Array.isArray(parameters) || parameters.length > 32766) throw new Error('Invalid SQL parameters');
-    const db = database(name);
+    const db = database(name, connection);
     if (operation === 'exec') { db.exec(query); return null; }
     const statement = db.prepare(query);
     if (operation === 'all') return statement.all(...parameters);
@@ -102,6 +108,8 @@ function createStorage({ rendererRoot, dataRoot }) {
   }
 
   const sync = {
+    'fs.path': input => resolve(input),
+    'fs.uri': input => pathToFileURL(resolve(input)).href,
     'fs.stat': stat,
     'fs.read': (input, encoding) => {
       const file = resolve(input);
@@ -136,6 +144,11 @@ function createStorage({ rendererRoot, dataRoot }) {
     },
     'fs.close': (id) => { if (handles.has(id)) fs.closeSync(handles.get(id)); handles.delete(id); },
     'db.query': sql,
+    'db.close': (name, connection) => {
+      if (!connection) throw new Error('The shared connection stays open until app exit');
+      const key = `${name}:${connection}`;
+      connections.get(key)?.close(); connections.delete(key);
+    },
     memory,
   };
 

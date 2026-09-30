@@ -73,6 +73,12 @@ function createInference(storage, emit) {
       const output = await (await voices.get(id)).run(tensors);
       return Object.fromEntries(Object.entries(output).map(([name, tensor]) => [name, { type: tensor.type, dims: tensor.dims, data: new Float32Array(tensor.data) }]));
     },
+    async 'voice.release'(id) {
+      const opening = voices.get(id);
+      if (!opening) return;
+      voices.delete(id);
+      await (await opening).release();
+    },
   };
   return { handlers, async close() {
     if (sdkPromise) await (await sdkPromise).close();

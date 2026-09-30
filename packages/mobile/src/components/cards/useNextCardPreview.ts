@@ -5,6 +5,7 @@ import { previewNextPage, useCardStore, type FeedPreview } from '../../store/car
 import { useReviewStore } from '../../reviews/store';
 import { warmPage } from '../../data/cards';
 import { artSourceFor } from '../../data/artSource';
+import { imageSourceUri } from '../../platform/imageSourceUri';
 
 /** Prepare one read-only neighbour during reading time. Stale async loads never publish. */
 export function useNextCardPreview(language: Language): FeedPreview | null {
@@ -34,7 +35,7 @@ export function useNextCardPreview(language: Language): FeedPreview | null {
           .filter((source) => source !== null);
         await Promise.all(
           sources.map(async (source) => {
-            const uri = Image.resolveAssetSource(source)?.uri;
+            const uri = imageSourceUri(source);
             if (uri) await Image.prefetch(uri).catch(() => false);
           })
         );

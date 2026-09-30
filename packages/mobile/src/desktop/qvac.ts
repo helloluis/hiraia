@@ -1,6 +1,10 @@
 import { desktop } from './bridge';
 export const QWEN3_1_7B_INST_Q4 = 'unsupported-placeholder-model';
-export async function loadModel({ onProgress, ...options }: any): Promise<string> {
+type LoadOptions = {
+  modelSrc: unknown; modelType?: string; modelConfig?: object;
+  onProgress?: (progress: { percentage?: number }) => void;
+};
+export async function loadModel({ onProgress, ...options }: LoadOptions): Promise<string> {
   const id = crypto.randomUUID();
   const off = desktop().subscribe('qvac-progress', event => { if (event.id === id) onProgress?.(event.progress); });
   try { return await desktop().invoke('qvac.load', id, options); } finally { off(); }

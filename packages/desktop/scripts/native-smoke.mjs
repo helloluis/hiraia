@@ -24,6 +24,9 @@ for (const [name, bytes, digest] of pins) {
   for await (const chunk of fs.createReadStream(target)) hash.update(chunk);
   if (hash.digest('hex') !== digest) throw new Error(`Model hash mismatch: ${name}`);
 }
+const { bundleSdk } = await import('@qvac/sdk/commands');
+const hosts = [`${process.platform}-${process.arch}`];
+await bundleSdk({ projectRoot: desktop, hosts, quiet: true });
 const sdk = await import('@qvac/sdk');
 const report = { platform: process.platform, arch: process.arch, cpuOnly: true, passed: false };
 try {
@@ -40,6 +43,7 @@ try {
   if (!/sun/i.test(answer)) throw new Error(`Native generation did not answer the control: ${answer}`);
   report.answer = answer;
   report.stats = await run.stats;
+  if (report.stats.backendDevice !== 'cpu') throw new Error('The CPU test selected a different backend');
   await sdk.unloadModel({ modelId: llmId });
   report.passed = true;
 } finally {

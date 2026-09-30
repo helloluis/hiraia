@@ -1,3 +1,4 @@
+import { fileUri } from '../platform/filePath';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppState } from 'react-native';
 import { Directory, File, Paths } from 'expo-file-system';
@@ -153,7 +154,7 @@ async function download(pack: ImagePack, signal: AbortSignal): Promise<string> {
 /** Unpacks a downloaded pack. What fails here is this pack's own. */
 async function install(pack: ImagePack, path: string, signal: AbortSignal) {
   check(signal);
-  const file = new File(path.startsWith('file:') ? path : 'file://'+path);
+  const file = new File(fileUri(path));
   // Recheck cached packages too; a matching file size alone is not enough for extraction.
   const info = await getInfoAsync(file.uri, { md5: true });
   if (!info.exists || info.md5 !== pack.md5) { file.delete(); throw new Error('Image package integrity failure'); }

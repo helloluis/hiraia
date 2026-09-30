@@ -28,6 +28,14 @@ config.resolver.assetExts.push('onnx');
 
 // 1. Watch all files in the workspace
 config.watchFolders = [workspaceRoot];
+// Desktop staging contains its own complete dependency tree. Neither Metro's
+// crawler nor asset discovery should recurse into build output.
+const escapePath = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+config.resolver.blockList = [
+  ...(Array.isArray(config.resolver.blockList) ? config.resolver.blockList : [config.resolver.blockList].filter(Boolean)),
+  new RegExp('^' + escapePath(path.join(workspaceRoot, 'build')) + '[/\\\\]'),
+  new RegExp('^' + escapePath(path.join(workspaceRoot, 'packages/desktop')) + '[/\\\\](renderer|out|resources|build)[/\\\\]'),
+];
 
 // 2. Let Metro know where to resolve packages
 config.resolver.nodeModulesPaths = [
@@ -49,6 +57,11 @@ config.resolver.nodeModulesPaths = [
 // `.js` imports and let Metro re-resolve (its sourceExts cover ts/tsx, and a
 // genuine `.js` still resolves extensionless), falling back to the default.
 config.resolver.resolveRequest = (context, moduleName, platform) => {
+  // SDK optional peers bring their own React. Every renderer dependency must
+  // share the app's React singleton, including Expo Router's hooks.
+  if (moduleName === 'react' || moduleName.startsWith('react/') || moduleName === 'react-dom' || moduleName.startsWith('react-dom/')) {
+    return { type: 'sourceFile', filePath: require.resolve(moduleName, { paths: [__dirname] }) };
+  }
   if (platform === 'web' && process.env.HIRAIA_DESKTOP_BUILD === '1') {
     const desktopModules = {
       'expo-file-system': 'filesystem',
@@ -63,7 +76,10 @@ config.resolver.resolveRequest = (context, moduleName, platform) => {
       type: 'sourceFile', filePath: path.join(__dirname, 'src/desktop', desktopModules[moduleName] + '.ts'),
     };
   }
-  if (moduleName.startsWith('.') && moduleName.endsWith('.js')) {
+  // Only our NodeNext sources need this fallback. Stripping an explicit .js
+  // inside dependencies can resolve their .mjs wrapper back to itself.
+  if (context.originModulePath.startsWith(path.join(workspaceRoot, 'packages/shared') + path.sep)
+    && moduleName.startsWith('.') && moduleName.endsWith('.js')) {
     try {
       return context.resolveRequest(context, moduleName.slice(0, -3), platform);
     } catch {

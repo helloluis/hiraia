@@ -1,4 +1,12 @@
-# Building Hiraia for Android and ChromeOS
+# Building Hiraia for Android, ChromeOS and Windows
+
+The automatic three-edition pipeline is `.github/workflows/native-apps.yml`. The
+protected Mac runner builds/signs both APKs and exports the shared Windows renderer;
+a GitHub Windows runner packages and tests the real Windows executable. A complete
+three-platform manifest requires matching source commits and versions plus successful
+packaged Windows CPU/voice/UI tests. See [Windows build notes](../desktop/README.md).
+`pnpm apk` remains the local paired-APK command described below; `pnpm build` alone
+does not produce any native release.
 
 
 ## Standard build: always both platforms

@@ -1,3 +1,4 @@
+import { nativeFilePath } from '../platform/filePath';
 /**
  * The bundled neural voice: an MMS-VITS checkpoint fine-tuned on Hiraia's own content,
  * run on-device through onnxruntime.
@@ -94,7 +95,7 @@ async function modelPath(voice: Voice): Promise<string> {
     // the boot preload did its job; if it shows up AFTER a tap, the kid paid for it.
     console.log(`[voice] model ${voice.id}: copied out of the APK in ${Date.now() - t0}ms`);
   }
-  return file.uri.replace(/^file:\/\//, '');
+  return nativeFilePath(file.uri);
 }
 
 // One session per language, created once and kept. Loading is the expensive part

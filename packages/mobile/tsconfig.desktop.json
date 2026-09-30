@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "paths": {
+      "@/*": ["./src/*"],
+      "expo-file-system": ["./src/desktop/filesystem.ts"],
+      "expo-file-system/legacy": ["./src/desktop/filesystemLegacy.ts"],
+      "expo-sqlite": ["./src/desktop/sqlite.ts"],
+      "@qvac/sdk": ["./src/desktop/qvac.ts"],
+      "onnxruntime-react-native": ["./src/desktop/onnx.ts"],
+      "expo-application": ["./src/desktop/application.ts"],
+      "expo-device": ["./src/desktop/device.ts"]
+    }
+  },
+  "exclude": ["node_modules", "android", "ios"]
+}

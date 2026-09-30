@@ -1,4 +1,4 @@
-import { createElement, type ReactNode } from 'react';
+import { createElement, useEffect, useLayoutEffect, useRef, type ReactNode } from 'react';
 import { View, type NativeSyntheticEvent, type ViewProps } from 'react-native';
 type Props = ViewProps & {
   children?: ReactNode;
@@ -11,11 +11,17 @@ export function dismissKeyboardAfterBlur() {
   if (focused instanceof HTMLElement && (focused.matches('input, textarea') || focused.isContentEditable)) focused.blur();
 }
 export function ReaderInput({ enabled, blockDescendantFocus, onNavigate, ...props }: Props) {
-  return createElement(View, {
-    ...props,
-    // inert prevents offscreen previews from entering Tab / screen-reader traversal.
-    ...(blockDescendantFocus ? { inert: '' } : {}),
-    onKeyDown: (event: KeyboardEvent) => {
+  const ref = useRef<View>(null);
+  // RN Web filters unknown View props, including inert and onKeyDown. Attach
+  // these DOM behaviours to its host ref so previews really leave Tab order.
+  useLayoutEffect(() => {
+    const element = ref.current as unknown as HTMLElement | null;
+    if (element) element.inert = !!blockDescendantFocus;
+  }, [blockDescendantFocus]);
+  useEffect(() => {
+    const element = ref.current as unknown as HTMLElement | null;
+    if (!element) return;
+    const keydown = (event: KeyboardEvent) => {
       const target = event.target;
       if (!enabled || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey ||
         (target instanceof HTMLElement && (target.closest('input, textarea, select, [contenteditable="true"]') || target.closest('[role="dialog"]')))) return;
@@ -23,6 +29,9 @@ export function ReaderInput({ enabled, blockDescendantFocus, onNavigate, ...prop
       if (!direction) return;
       event.preventDefault();
       onNavigate?.({ nativeEvent: { direction } } as NativeSyntheticEvent<{ direction: number }>);
-    },
-  } as ViewProps);
+    };
+    element.addEventListener('keydown', keydown);
+    return () => element.removeEventListener('keydown', keydown);
+  }, [enabled, onNavigate]);
+  return createElement(View, { ...props, ref });
 }

@@ -13,4 +13,5 @@ export class InferenceSession {
       { type: tensor.type, dims: [...tensor.dims], data: Array.from(tensor.data as BigInt64Array, String) }]));
     return desktop().invoke('voice.run', this.id, serialized);
   }
+  async release(): Promise<void> { await desktop().invoke('voice.release', this.id); }
 }

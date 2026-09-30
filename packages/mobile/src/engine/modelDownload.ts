@@ -1,3 +1,4 @@
+import { nativeFilePath } from '../platform/filePath';
 /**
  * Download + VERIFY the large remote assets (the ~1.27 GB base GGUF and the
  * 384 MB LaBSE embedder — plus any per-language LoRA adapters a future model
@@ -180,7 +181,7 @@ const mirrorBreaker = createMirrorBreaker();
 
 const LOG = (m: string) => console.log(`[modelDownload] ${m}`);
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
-const stripScheme = (uri: string) => uri.replace(/^file:\/\//, '');
+const stripScheme = nativeFilePath;
 const mb = (n: number) => `${(n / 1e6).toFixed(0)}MB`;
 
 /**

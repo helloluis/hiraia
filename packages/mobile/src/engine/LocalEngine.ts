@@ -1,3 +1,4 @@
+import { fileUri } from '../platform/filePath';
 import { MemoryBlockedError, requireModelMemory, requireSemanticMemory } from './memory';
 import { track, newId, errorCategory } from '../telemetry';
 import { loadModel, completion, unloadModel, embed, cancel, QWEN3_1_7B_INST_Q4 } from '@qvac/sdk';
@@ -1102,7 +1103,7 @@ export class LocalEngine implements TutorEngine {
       const stride = VECTORS_META.count * VECTORS_META.dims;
       const languageIndex = VECTORS_META.langs.indexOf(lang);
       if (languageIndex < 0) throw new Error(`No semantic vectors for ${language}`);
-      const data = await readVectorSlice(new File('file://' + vectorsPath),
+      const data = await readVectorSlice(new File(fileUri(vectorsPath)),
         stride * VECTORS_META.langs.length, languageIndex * stride, stride,
         this.initializationAbort.signal);
       this.checkInitialization();

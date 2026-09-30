@@ -1,49 +1,14 @@
-name: Windows native preview verification
+name: Windows preview
 on:
+  workflow_dispatch:
   push:
     branches: [codex/windows-preview-20260930]
-    paths:
-      - 'packages/desktop/scripts/**'
-      - 'packages/desktop/package.json'
-      - 'packages/desktop/qvac.config.json'
-      - '.github/workflows/windows-preview.yml'
-  workflow_dispatch:
+    paths: ['.github/workflows/windows-preview.yml']
 permissions:
   contents: read
 jobs:
-  native-windows:
-    runs-on: windows-2022
-    timeout-minutes: 45
-    steps:
-      - run: git config --system core.longpaths true
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-        with:
-          persist-credentials: false
-      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-        with:
-          node-version: 24
-      - run: pnpm install --frozen-lockfile
-      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
-        id: vulkan
-        with:
-          path: packages/desktop/resources/native
-          key: windows-vulkan-${{ hashFiles('packages/desktop/scripts/build-vulkan.ps1') }}
-      - name: Build bundled Windows Vulkan loader
-        if: steps.vulkan.outputs.cache-hit != 'true'
-        shell: pwsh
-        run: packages/desktop/scripts/build-vulkan.ps1
-      - run: node packages/desktop/scripts/install-native-deps.cjs
-      - name: Verify the Bare runtime executable exists
-        run: node -e "const fs=require('fs');const bin=require('bare-runtime')();if(!fs.existsSync(bin))throw new Error('Missing '+bin);console.log(bin)"
-      - name: Real native CPU embedding and generation
-        run: node packages/desktop/scripts/native-smoke.mjs
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: windows-native-${{ github.sha }}
-          path: |
-            packages/desktop/resources/native/
-            build/windows-native/native-smoke.json
-          if-no-files-found: error
-          retention-days: 7
+  preview:
+    uses: ./.github/workflows/windows-build.yml
+    with:
+      renderer-url: ${{ vars.HIRAIA_WINDOWS_PREVIEW_INPUT_URL }}
+      renderer-sha256: ${{ vars.HIRAIA_WINDOWS_PREVIEW_INPUT_SHA256 }}

@@ -30,3 +30,19 @@ foreach ($pin in $pins) {
 }
 @{ loader = $pins[1].Commit; headers = $pins[0].Commit; sha256 = (Get-FileHash "$out/vulkan-1.dll" -Algorithm SHA256).Hash.ToLowerInvariant() } | ConvertTo-Json | Set-Content "$out/provenance.json"
 Write-Host 'Built the pinned Vulkan loader with a static MSVC runtime.'
+$vswhere = "${env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe"
+$vs = (& $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath).Trim()
+if (!$vs) { throw 'Visual C++ redistributable directory is unavailable' }
+$crt = Get-Item "$vs/VC/Redist/MSVC/*/x64/Microsoft.VC143.CRT" | Sort-Object FullName -Descending | Select-Object -First 1
+if (!$crt) { throw 'The official Microsoft C++ runtime files are unavailable' }
+$crtOut = Join-Path $out 'msvc'
+New-Item -ItemType Directory -Force $crtOut | Out-Null
+Get-ChildItem $crt.FullName -Filter '*.dll' | Copy-Item -Destination $crtOut -Force
+@'
+Microsoft Visual C++ Runtime, redistributed app-local from Visual Studio's licensed REDIST directory.
+Redistribution terms: https://learn.microsoft.com/visualstudio/releases/2022/redistribution
+Copyright Microsoft Corporation. All rights reserved.
+'@ | Set-Content "$licenses/Microsoft-Visual-Cpp-Runtime.txt"
+Get-ChildItem $crtOut -Filter '*.dll' | ForEach-Object {
+  @{ file = $_.Name; version = $_.VersionInfo.FileVersion; sha256 = (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant() }
+} | ConvertTo-Json | Set-Content "$out/msvc-provenance.json"

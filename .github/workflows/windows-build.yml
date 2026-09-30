@@ -1,0 +1,108 @@
+name: Package and test Windows
+on:
+  workflow_call:
+    inputs:
+      renderer-artifact:
+        type: string
+        default: ''
+      renderer-url:
+        type: string
+        default: ''
+      renderer-sha256:
+        type: string
+        default: ''
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 60
+    steps:
+      - run: git config --system core.longpaths true
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @hiraia/desktop test
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        if: inputs.renderer-artifact != ''
+        with:
+          name: ${{ inputs.renderer-artifact }}
+          path: build/desktop-inputs
+      - name: Fetch immutable preview input
+        if: inputs.renderer-artifact == ''
+        env:
+          RENDERER_URL: ${{ inputs.renderer-url }}
+          RENDERER_SHA256: ${{ inputs.renderer-sha256 }}
+        shell: pwsh
+        run: |
+          if ($env:RENDERER_URL -notmatch '^https://assets\.hiraia\.org/models/hiraia-desktop-inputs-[a-f0-9]{32}\.tar\.gz$') { throw 'Invalid preview input origin' }
+          if ($env:RENDERER_SHA256 -notmatch '^[a-f0-9]{64}$') { throw 'Missing input digest' }
+          New-Item -ItemType Directory -Force build/desktop-inputs | Out-Null
+          Invoke-WebRequest $env:RENDERER_URL -OutFile build/desktop-inputs/renderer.tar.gz
+          if ((Get-FileHash build/desktop-inputs/renderer.tar.gz -Algorithm SHA256).Hash.ToLowerInvariant() -ne $env:RENDERER_SHA256) { throw 'Renderer input digest mismatch' }
+      - name: Restore shared renderer and verify source identity
+        shell: pwsh
+        run: |
+          tar -xzf build/desktop-inputs/renderer.tar.gz -C packages/desktop
+          if ($LASTEXITCODE -ne 0) { throw 'Renderer extraction failed' }
+          $identity = Get-Content packages/desktop/renderer/build-info.json | ConvertFrom-Json
+          if ($identity.gitCommit -ne $env:GITHUB_SHA) { throw 'Renderer and native host have different source commits' }
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+        id: vulkan
+        with:
+          path: packages/desktop/resources/native
+          key: windows-native-runtime-${{ hashFiles('packages/desktop/scripts/build-vulkan.ps1') }}
+      - name: Build pinned Vulkan loader and bundle Microsoft runtime
+        if: steps.vulkan.outputs.cache-hit != 'true'
+        shell: pwsh
+        run: packages/desktop/scripts/build-vulkan.ps1
+      - run: node packages/desktop/scripts/install-native-deps.cjs
+      - name: Verify native QVAC CPU engines
+        run: node packages/desktop/scripts/native-smoke.mjs
+      - name: Build portable Windows ZIP
+        run: pnpm --filter @hiraia/desktop make
+      - name: Extract and relocate the actual distributable
+        shell: pwsh
+        run: |
+          $zip = Get-ChildItem packages/desktop/out/make/zip/win32/x64/*.zip
+          if (@($zip).Count -ne 1) { throw 'Expected one Windows package' }
+          $destination = Join-Path $env:RUNNER_TEMP 'Hiraia prueba José'
+          Expand-Archive $zip.FullName -DestinationPath $destination
+          $exe = Get-ChildItem $destination -Filter Hiraia.exe -Recurse
+          if (@($exe).Count -ne 1) { throw 'Expected one Hiraia executable' }
+          "HIRAIA_E2E_EXECUTABLE=$($exe.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: Test packaged UI, persistence, QVAC and both offline voices
+        env:
+          HIRAIA_E2E_NATIVE: '1'
+        run: node packages/desktop/tests/e2e.cjs
+      - name: Record verified Windows artifact
+        run: node packages/desktop/scripts/artifact-manifest.cjs
+      - name: Complete the three-platform manifest
+        if: inputs.renderer-artifact != ''
+        run: python deploy/combine-app-artifacts.py build/desktop-inputs/release.json build/windows-release/release.json build/windows-release/all-platforms.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: hiraia-windows-${{ github.sha }}
+          path: |
+            packages/desktop/out/make/zip/win32/x64/
+            build/windows-release/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: windows-validation-${{ github.sha }}
+          path: |
+            build/windows-e2e/*.json
+            build/windows-e2e/*.png
+            build/windows-e2e/*.log
+            build/windows-native/native-smoke.json
+            packages/desktop/resources/native/
+          if-no-files-found: warn
+          retention-days: 7
