@@ -5,6 +5,7 @@ import { VerticalCardPager } from './VerticalCardPager';
 import { feedViewport, railDestination, railOffset } from './adaptiveFeed';
 import { useScreenReader } from './useScreenReader';
 import { useReduceMotion } from './useReduceMotion';
+import { useRailGestures } from './useRailGestures';
 import { Arrow } from './CardFrame';
 import { uiStrings } from '../../config/strings';
 import { card, fonts } from '../../theme';
@@ -140,6 +141,10 @@ export function HorizontalCardPager<T extends { key: string }>({
     onDragStart();
   };
   const selectedIndex = Math.max(0, pages.findIndex(p => p.key === visibleKey));
+  useRailGestures(list, !locked, height, {
+    begin: beginDrag,
+    end: x => { offset.current = x; settle(); },
+  });
   const data = canAdvance && !locked && preview ? [...pages, preview] : pages;
   const navigation = <View style={styles.controls}>
     <NavigationButton label={t.previousCard} direction="left" disabled={locked || selectedIndex === 0}

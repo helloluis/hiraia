@@ -53,6 +53,12 @@ async function main() {
     await expect.poll(() => page.locator('body').innerText()).not.toBe(before);
     assert.ok(await page.locator('[inert]').count(), 'Future cards must be removed from Tab navigation');
     report.checks.push('keyboard navigation and inactive-card focus isolation');
+    const rail = page.getByTestId('horizontal-card-carousel');
+    const previousPosition = await page.getByText(/^\d+ \/ \d+$/).innerText();
+    await rail.hover();
+    await page.mouse.wheel(500, 0);
+    await expect.poll(() => page.getByText(/^\d+ \/ \d+$/).innerText()).not.toBe(previousPosition);
+    report.checks.push('horizontal trackpad scroll advances the active card');
     const choices = page.getByRole('button', { name: /^[A-D]\. / }).and(page.locator(':not([disabled])'));
     for (let turn = 0; turn < 14 && !await choices.count(); turn++) {
       await next.click();
