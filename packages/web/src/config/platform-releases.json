@@ -3,17 +3,36 @@
   "platforms": {
     "android": {
       "platform": "android",
-      "versionCode": 26,
-      "versionName": "0.4.26",
-      "url": "https://assets.hiraia.org/models/hiraia-v0p4p26.apk",
-      "bytes": 437205865,
-      "sha256": "aca9790d44893e1b3361d14575c16db26bef7f50684514847f4b30e7e4aa8b28",
-      "md5": "c8cc2a1ca611c083171147c839754b46",
+      "versionCode": 27,
+      "versionName": "0.4.27",
+      "bytes": 437250921,
+      "md5": "081467698d806fd8fac5e68f1fe142f7",
+      "sha256": "20e7cebd5d2282200b7cedc4060eaf774e232b93ce2f654edcc84c86ca3bc15a",
+      "runtime": "6946cb84c3bfedfdce13d6fb604fd0f368660753",
       "signingCertSha256": "40d750d5576cb59c311c7ba713403e065b934967d7a7d1bc80652e1167a20c35",
-      "abis": ["arm64-v8a"],
+      "abis": [
+        "arm64-v8a"
+      ],
+      "url": "https://assets.hiraia.org/models/hiraia-v0p4p27.apk",
       "minSupportedVersionCode": 1,
-      "publishedAt": "2026-09-28"
+      "publishedAt": "2026-09-30"
     },
-    "chromeos": null
+    "chromeos": {
+      "platform": "chromeos",
+      "versionCode": 27,
+      "versionName": "0.4.27",
+      "bytes": 522058276,
+      "md5": "3fddcef35d5223fdf6157e5b478aab29",
+      "sha256": "076f20c33185b86f7c95f04aed91e69276af2ecbf507b417774b5e1bed482fbd",
+      "runtime": "a79b1e8c4bcd07f8030d4a6bc92ea6663b9bd414",
+      "signingCertSha256": "40d750d5576cb59c311c7ba713403e065b934967d7a7d1bc80652e1167a20c35",
+      "abis": [
+        "arm64-v8a",
+        "x86_64"
+      ],
+      "url": "https://assets.hiraia.org/models/hiraia-v0p4p27-chromeos.apk",
+      "minSupportedVersionCode": 1,
+      "publishedAt": "2026-09-30"
+    }
   }
 }

@@ -43,7 +43,7 @@ export const DOWNLOAD_PLATFORMS: DownloadPlatform[] = [
     id: 'chromeos', name: 'ChromeOS', device: 'laptop', status: 'preview',
     eyebrow: 'For Chromebooks',
     description: 'More room for curiosity. Browse cards side by side with a keyboard, trackpad, mouse, or touch screen.',
-    requirements: ['Chromebook with Android app support · ARM64 or Intel/AMD 64-bit', 'School administrator approval may be needed to install the APK'],
+    requirements: ['Chromebook with Android 10+ app support · ARM64 or Intel/AMD 64-bit', 'School administrator approval may be needed to install the APK'],
     installNote: 'This preview uses the Chromebook’s Android app environment. APK installation must be enabled by the device owner or school. ChromeOS Flex is not supported.',
     screenshot: { src: '/screens/download-chromeos.png', width: 1366, height: 768,
       alt: 'Hiraia’s wide layout showing three full science cards and part of the next card, with all reading controls at the top.',

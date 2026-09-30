@@ -33,6 +33,8 @@ jobs:
     env:
       HIRAIA_BUILD_INPUTS_DIR: ${{ vars.HIRAIA_BUILD_INPUTS_DIR }}
       JAVA_HOME: /opt/homebrew/opt/openjdk@17
+      # Return the 6 GB Gradle heap when each build finishes on the shared Mac.
+      GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2
       # Keep the runner's model servers separate from interactive development.
       PORT: '18088'
       EMBED_PORT: '18090'
@@ -46,7 +48,7 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22
-          cache: pnpm
+          # This Mac already retains its local pnpm store between jobs.
       - run: pnpm install --frozen-lockfile
       - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
@@ -70,7 +72,7 @@ jobs:
           python3 -B -m unittest discover -s deploy -p 'test_native_runner.py'
           python3 -B -m unittest discover -s deploy -p 'test_publish_platforms.py'
       - name: Both platforms (including regression gate and signing)
-        run: pnpm apk
+        run: nice -n 10 pnpm apk
       - name: Locate complete release
         id: release
         run: |
@@ -87,6 +89,7 @@ jobs:
           path: ${{ steps.release.outputs.directory }}
           if-no-files-found: error
           retention-days: 7
+          compression-level: 0 # APKs are already compressed.
       - name: Remove checkout signing material
         if: always()
         run: |

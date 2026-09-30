@@ -1,5 +1,9 @@
 # Android + ChromeOS releases
 
+Current public release: **0.4.27 / code 27**, released 30 September 2026.
+Measured APKs and validation: [RELEASE-0.4.27.md](RELEASE-0.4.27.md).
+The first automatic paired build [passed on this Mac](https://github.com/helloluis/hiraia/actions/runs/36646218435).
+
 The website renders a platform registry (`packages/web/src/config/platforms.ts`), with
 an actual screenshot, requirements, install details and verification hashes per platform.
 Windows is a planned entry, with no fictitious executable or download link. Published
@@ -17,6 +21,9 @@ platform succeeds. Versions must match; native OTA fingerprints must differ. See
 `hiraia-unified`, and manual dispatch. It deliberately does not run pull request code
 on the machine holding the signing key. It uses the same `pnpm apk` command, keeps
 the APKs and provenance together for seven days, and does not publish to the website.
+The persistent Mac keeps its pnpm package cache locally; the workflow does not upload
+the machine’s shared package store. Only the task’s verified QVAC native cache is saved
+in GitHub cache.
 
 The approved host is this Mac while awake, registered as `hiraia-luis-mac` with
 label `hiraia-native`. Its launch agent starts at login. Sleeping/offline means jobs
@@ -47,15 +54,18 @@ other workflows before steps run. The runner environment sets
 `ACTIONS_RUNNER_HOOK_JOB_STARTED=~/.hiraia/native-runner-hooks/job-started.sh` using the
 expanded absolute path. Guard tests cover the allowed and rejected cases.
 
-Runner model servers use ports 18088/18090 to avoid interactive development. Stop or
+Runner model servers use ports 18088/18090 to avoid interactive development.
+Native builds run at nice priority 10 with two Gradle workers and no retained daemon,
+so a completed build releases its 6 GB Gradle heap on the shared Mac. Stop or
 start the service with `~/.hiraia/actions-runner/svc.sh stop` / `start`; no system sleep
 settings are changed. Jobs clean signing material from their checkout after completion.
 
 ## Release boundary
 
 The public 0.4.26 Android URL already contains different bytes from this development
-build. It is immutable. Publishing the new pair requires a new app version/code and
-the normal release authorization; never overwrite 0.4.26 or make up a ChromeOS URL.
+build. It is immutable. Version 0.4.27 is the first published platform pair. Future
+releases require a new version/code and release authorization; never overwrite any
+versioned artifact or invent a platform download URL.
 The paired publisher writes the website candidate only after both uploads pass read-back
 and public HEAD checks. Update `asset-updates.json` bounds with the actual new app code.
 
@@ -64,7 +74,7 @@ probe are documented in `CHROMEOS-20260929.md`; school Chromebook/ARC deployment
 still unvalidated. [Google's testing guide](https://developers.google.com/chromeos/app-development/develop/deploying-apps)
 explains the ADB installation limits, including managed devices.
 
-## Verification record
+## Development verification record (29 September 2026)
 
 - Website checked at 1440, 390 and 320 CSS pixels, including expanded checksums.
 - Legacy Android, explicit Android, ChromeOS and Tala manifest routes remain separate.
