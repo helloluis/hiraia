@@ -52,7 +52,7 @@ import { remoteAssetUrl } from './assetDelivery';
  *     stat -f%z <name>; md5 -q <name>; shasum -a 256 <name>
  *
  *  hiraia-sft-2b-v2.Q4_K_M.gguf  1274396160 B
- *      sha256 b13e66678be6718252c692cb765bbe1d6bafd69c11772a1d1e9c23ee6ce0cd89
+ *      sha256 7aec3b3b3ba0f131341ca2e09f676a651c2ed30de133570bb05069fca5dc5cbb
  *  labse.Q4_K_M.gguf              383762048 B
  *      sha256 3869330197b5a583afc572104bf93393e384c72473a15c2dae43cab43e194b3e
  *  vectors-labse-af171fe8a9f9.i8.bin  115842816 B  md5 4f80d21b0526db1aeadb7033b5aa8998

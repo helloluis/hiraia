@@ -10,7 +10,7 @@ const cache = path.join(root, 'build/windows-native/models');
 fs.mkdirSync(cache, { recursive: true });
 const pins = [
   ['labse.Q4_K_M.gguf', 383762048, '3869330197b5a583afc572104bf93393e384c72473a15c2dae43cab43e194b3e'],
-  ['hiraia-sft-2b-v2.Q4_K_M.gguf', 1274396160, 'b13e66678be6718252c692cb765bbe1d6bafd69c11772a1d1e9c23ee6ce0cd89'],
+  ['hiraia-sft-2b-v2.Q4_K_M.gguf', 1274396160, '7aec3b3b3ba0f131341ca2e09f676a651c2ed30de133570bb05069fca5dc5cbb'],
 ];
 for (const [name, bytes, digest] of pins) {
   const target = path.join(cache, name);
