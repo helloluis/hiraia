@@ -22,7 +22,7 @@ Source input SHA-256: `08299b928301b18bf71cfbf5151edf3d5510e0de0913ed98a5a6d93be
 | Platform | File | Bytes | OTA runtime |
 | --- | --- | ---: | --- |
 | Android | `hiraia-v0p4p27.apk` | 437,250,921 | `6946cb84c3bfedfdce13d6fb604fd0f368660753` |
-| Chromeos | `hiraia-v0p4p27-chromeos.apk` | 522,058,276 | `a79b1e8c4bcd07f8030d4a6bc92ea6663b9bd414` |
+| ChromeOS | `hiraia-v0p4p27-chromeos.apk` | 522,058,276 | `a79b1e8c4bcd07f8030d4a6bc92ea6663b9bd414` |
 
 **Android**: [download](https://assets.hiraia.org/models/hiraia-v0p4p27.apk).
 
@@ -30,7 +30,7 @@ Source input SHA-256: `08299b928301b18bf71cfbf5151edf3d5510e0de0913ed98a5a6d93be
 - MD5: `081467698d806fd8fac5e68f1fe142f7`
 - ABIs: arm64-v8a
 
-**Chromeos**: [download](https://assets.hiraia.org/models/hiraia-v0p4p27-chromeos.apk).
+**ChromeOS**: [download](https://assets.hiraia.org/models/hiraia-v0p4p27-chromeos.apk).
 
 - SHA-256: `076f20c33185b86f7c95f04aed91e69276af2ecbf507b417774b5e1bed482fbd`
 - MD5: `3fddcef35d5223fdf6157e5b478aab29`
@@ -46,6 +46,11 @@ The asset catalog is revision 5, restricted to code 27 with image baseline
 
 - Formal regression: 45/45 cases, 111 draws. A separate fresh Actions checkout
   passed another 45/45 gate before building both platforms.
+- Post-release run `36648181847` stopped before building at 44/45: the existing
+  grade-register photosynthesis case produced identical Grade 3/10 wording in all
+  three sampled pairs. Queued run `36648182032` passed 45/45 on the same source with
+  no gate/model changes. Grade steering remains an intermittent model limitation;
+  failed gates must continue to block APK creation.
 - Platform/update/publisher failure guards and adaptive reader/review tests pass;
   TypeScript passes. The inherited type-aware ESLint configuration remains broken
   and is not claimed green. The old generic CI workflow remains disabled as found.
@@ -64,6 +69,12 @@ The asset catalog is revision 5, restricted to code 27 with image baseline
   a process-start timeout. Restarting the emulator host process restored normal
   startup. Logs are retained; this was not hidden as a passing first attempt.
 
+Live verification after deployment: Android, ChromeOS and legacy manifests offer the
+measured code-27 artifacts; Tala remains 0.4.4; unknown platforms return 400. The public
+page loads both screenshots without horizontal overflow at desktop and phone widths.
+Both aliases and versioned CDN URLs return the measured sizes and byte-range support;
+the existing 0.4.26 URL remains unchanged. The standalone telemetry collector is active.
+
 ## Automatic builds
 
 The user's Mac is registered as `hiraia-luis-mac` and starts the runner at login.
@@ -75,8 +86,16 @@ a pre-job hook rejects PRs, forks and other workflows before checkout. Actions a
 pinned to full commit SHAs. The first setup attempt failed on a duplicated pnpm
 version setting; the workflow now uses `package.json`'s pinned pnpm 9.15.9.
 
-Successful run: https://github.com/helloluis/hiraia/actions/runs/36646218435
+First successful run: https://github.com/helloluis/hiraia/actions/runs/36646218435
 Artifact `11068941631` contains both signed APKs and provenance (877,984,650-byte archive).
+
+Final configuration verified: https://github.com/helloluis/hiraia/actions/runs/36648182032
+Both builds passed with lower process priority, two Gradle workers and no persistent
+Gradle daemon. Artifact `11069203468` contains both signed APKs and provenance
+(959,754,204-byte archive). The temporary checkout's signing credentials were removed;
+the runner finished online and idle. These verification builds do not replace the
+immutable published pair listed above.
+
 Provisioning and commands: `MULTIPLATFORM-RELEASES.md`.
 
 ## Limits
