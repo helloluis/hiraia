@@ -24,8 +24,10 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: hiraia-native-builds
-  cancel-in-progress: false
+  # The same commit is normally fast-forwarded to both branches together.
+  # Keep one complete build; the single Mac runner serializes distinct commits.
+  group: hiraia-native-${{ github.sha }}
+  cancel-in-progress: true
 
 jobs:
   signed-platforms:
@@ -62,6 +64,9 @@ jobs:
             build/qvac-android-x64/x86_64
             build/qvac-android-x64/notices
           key: qvac-android-x64-${{ hashFiles('packages/mobile/native/qvac-android-x64.json', 'packages/mobile/native/qvac-x64-overlay/**', 'pnpm-lock.yaml') }}
+          # verifiedPort still checks every pin, installed engine version and ELF
+          # digest. Unrelated desktop lockfile changes need not recompile QVAC.
+          restore-keys: qvac-android-x64-
       - name: Restore private native inputs
         run: python3 deploy/restore-native-build-inputs.py
       - name: Rebuild generated content

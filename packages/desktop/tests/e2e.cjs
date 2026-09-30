@@ -107,6 +107,20 @@ async function main() {
     await expect(page.getByText(/Quiz ✓ 1/, { exact: false })).toBeVisible({ timeout: 90000 });
     report.checks.push('profile and quiz result persist after restart');
     if (process.env.HIRAIA_E2E_NATIVE === '1') {
+      await page.evaluate(() => {
+        window.hiraiaPlaybackProbe = [];
+        const play = HTMLMediaElement.prototype.play;
+        HTMLMediaElement.prototype.play = function () {
+          const entry = { source: this.src, playing: false, duration: 0 };
+          window.hiraiaPlaybackProbe.push(entry);
+          this.addEventListener('playing', () => { entry.playing = true; entry.duration = this.duration; }, { once: true });
+          return play.call(this);
+        };
+      });
+      await page.getByRole('button', { name: 'Listen', exact: true }).last().click();
+      await expect.poll(() => page.evaluate(() => window.hiraiaPlaybackProbe.some(entry => entry.source.includes('speech') && entry.playing && entry.duration > 0)), { timeout: 45000 }).toBe(true);
+      report.playback = await page.evaluate(() => window.hiraiaPlaybackProbe);
+      report.checks.push('Listen button plays synthesized offline narration');
       const info = await page.evaluate(() => window.hiraiaDesktop.info);
       assert.equal(info.platform, process.platform);
       const modelDirectory = path.join(user, 'documents/validation-models');

@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 import ts from 'typescript';
 import { feedViewport, railOffset, railDestination } from '../src/components/cards/adaptiveFeed';
 import { createReadingSession } from '../src/components/cards/readingSession';
+import { useRailGestures } from '../src/components/cards/useRailGestures';
 
 const require = createRequire(import.meta.url);
 const { applyAdaptiveWindow, applyFontBootstrap } = require('../plugins/withAdaptiveWindow.js');
@@ -108,6 +109,7 @@ function mount() {
     './VerticalCardPager': {}, './adaptiveFeed': { feedViewport, railOffset, railDestination },
     './useScreenReader': {}, './useReduceMotion': { useReduceMotion: () => false },
     './CardFrame': { Arrow: 'Arrow' }, '../../theme': { card: {}, fonts: {} },
+    './useRailGestures': { useRailGestures },
     '../../config/strings': { uiStrings: () => ({ cards: { previousCard: 'Previous', nextCard: 'Next' } }) },
     '../../../modules/hiraia-reader-input/src': { ReaderInput: 'ReaderInput' },
   })[id], (f: () => void) => { timers.set(++serial, f); return serial; }, (id: number) => timers.delete(id));
