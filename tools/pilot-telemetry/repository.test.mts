@@ -7,8 +7,7 @@ import { createRequire } from 'node:module';
 import Database from 'better-sqlite3';
 import { build } from 'esbuild';
 const mobile =
-  process.env.PILOT_MOBILE_PATH ||
-  path.resolve(import.meta.dirname, '../../packages/mobile');
+  process.env.PILOT_MOBILE_PATH || path.resolve(import.meta.dirname, '../../packages/mobile');
 const temp = mkdtempSync(path.join(tmpdir(), 'hiraia-outbox-'));
 const bundle = path.join(temp, 'repository.cjs');
 await build({
@@ -740,7 +739,8 @@ test('OTA rollback: this JS still records, syncs and migrates on tables a later 
 
 test('a write that meets another connection’s write is retried, not dropped', async () => {
   const repo = await openRepository(event(9101));
-  const locked = 'Call to function NativeStatement.runAsync has been rejected. Caused by: Error code 5: database is locked';
+  const locked =
+    'Call to function NativeStatement.runAsync has been rejected. Caused by: Error code 5: database is locked';
   (globalThis as any).__lockFailures = [locked, locked, locked];
   await repo.append([event(9102, 'card_viewed')]);
   assert.equal((globalThis as any).__lockFailures.length, 0, 'every injected lock was hit');
@@ -749,4 +749,140 @@ test('a write that meets another connection’s write is retried, not dropped', 
   (globalThis as any).__lockFailures = ['no such table: nowhere'];
   await assert.rejects(repo.append([event(9103, 'card_viewed')]), /no such table/);
   (globalThis as any).__lockFailures = [];
+});
+
+function assessmentEvent(n: number, scope = ANA) {
+  const assessmentId = `ha-${n.toString(16).padStart(24, '0')}`;
+  return {
+    id: `assessment_completed-${assessmentId}`,
+    name: 'assessment_completed',
+    occurred_at: Date.now(),
+    session_id: assessmentId,
+    props: {
+      profile_kind: scope === 'guest' ? 'guest' : 'student',
+      ...(scope === 'guest' ? {} : { profile_id: scope }),
+      grade: 5,
+      language: 'tagalog',
+      assessment_id: assessmentId,
+      assessment_kind: 'baseline',
+      assessment_mode: 'local_evaluation',
+      assessment_blueprint: 'incoming-grade5',
+      assessment_segment: 'a'.repeat(64),
+      assessment_bank: 'b'.repeat(64),
+      assessment_blueprint_revision: 'c'.repeat(64),
+      assessment_correct: 8,
+      assessment_total: 12,
+      benchmark_correct: 3,
+      benchmark_total: 6,
+      recent_correct: 0,
+      recent_total: 0,
+      readiness_correct: 5,
+      readiness_total: 6,
+      assessment_repeats: 0,
+      assessment_curriculum: 'unverified',
+      assessment_clock: 'device_time_unverified',
+      assessment_support: 'none',
+      assessment_targets: JSON.stringify([['g4-test-target', 8, 12]]),
+    },
+  };
+}
+
+test('assessment staging is atomic and idempotent across restart, server ACK and teacher replay', async () => {
+  let { repo, db } = await freshRepository(10010);
+  const event = assessmentEvent(1);
+  const policy = await repo.assessmentPolicy();
+  assert.equal(policy.enabled, true);
+  await repo.stageAssessment(event, policy.epoch);
+  await repo.stageAssessment(event, policy.epoch);
+  assert.equal((await repo.list(50)).filter((e: any) => e.id === event.id).length, 1);
+  assert.equal((db.prepare('SELECT count(*) n FROM assessment_reports').get() as any).n, 1);
+  connections.forEach((c) => c.close());
+  connections = [];
+  repo = await openRepository(eventForRestart());
+  await repo.acknowledge([event.id]);
+  await repo.stageAssessment(event, policy.epoch);
+  assert.ok(
+    !(await repo.list(50)).some((e: any) => e.id === event.id),
+    'upload receipt prevents duplicate staging'
+  );
+  await repo.bind(ANA, X);
+  assert.deepEqual(
+    await repo.teacherList(X, [ANA], 50),
+    [],
+    'old teacher does not receive summaries'
+  );
+  assert.deepEqual(ids(await repo.teacherList(X, [ANA], 50, true)), [event.id]);
+  await repo.teacherAcknowledge([event.id], X);
+  assert.deepEqual(await repo.teacherList(X, [ANA], 50, true), []);
+  await repo.bind(ANA, Y);
+  assert.deepEqual(
+    ids(await repo.teacherList(Y, [ANA], 50, true)),
+    [event.id],
+    'new class can receive retained summary'
+  );
+  const counts = (await repo.activity(Date.now(), ANA)).counts[0];
+  assert.equal(counts.quizzes, 0, 'assessment is not twelve ordinary mini-quizzes');
+  function eventForRestart() {
+    return { ...event, id: 'restart-session-10011', name: 'session_started', props: {} };
+  }
+});
+
+test('assessment opt-out clears queued payloads and invalidates deferred completion consent', async () => {
+  const { repo, db } = await freshRepository(10020);
+  const before = await repo.assessmentPolicy();
+  await repo.bind(ANA, X);
+  await repo.stageAssessment(assessmentEvent(2), before.epoch);
+  await repo.setEnabled(false);
+  await repo.setEnabled(true);
+  const after = await repo.assessmentPolicy();
+  assert.notEqual(after.epoch, before.epoch);
+  await repo.stageAssessment(assessmentEvent(2), before.epoch);
+  await repo.stageAssessment(assessmentEvent(3), before.epoch);
+  assert.deepEqual(await repo.list(50), []);
+  assert.deepEqual(await repo.teacherList(X, [ANA], 50, true), []);
+  assert.equal(
+    (db.prepare('SELECT count(*) n FROM assessment_reports WHERE event IS NOT NULL').get() as any)
+      .n,
+    0
+  );
+  await repo.stageAssessment(assessmentEvent(4), after.epoch);
+  assert.deepEqual(ids(await repo.list(50)), [assessmentEvent(4).id]);
+});
+
+test('assessment archive recovers an evicted upload without recreating completion time', async () => {
+  const { repo, db } = await freshRepository(10030);
+  const event = assessmentEvent(5);
+  const policy = await repo.assessmentPolicy();
+  await repo.stageAssessment(event, policy.epoch);
+  db.prepare('DELETE FROM outbox WHERE id=?').run(event.id);
+  const recovered = (await repo.list(50)).find((e: any) => e.id === event.id);
+  assert.deepEqual(recovered, event);
+  await repo.acknowledge([event.id]);
+  assert.ok(!(await repo.list(50)).some((e: any) => e.id === event.id));
+});
+
+test('queued summaries do not block old teachers or cross student/class boundaries', async () => {
+  const { repo } = await freshRepository(10040);
+  const policy = await repo.assessmentPolicy();
+  await repo.bind(ANA, X);
+  await repo.bind(BEN, Y);
+  for (let n = 10; n < 65; n++) await repo.stageAssessment(assessmentEvent(n), policy.epoch);
+  const ben = assessmentEvent(70, BEN);
+  await repo.stageAssessment(ben, policy.epoch);
+  const ordinary = studentEvent('ordinary_after_assessments_01', ANA);
+  await repo.teacherAppend([ordinary]);
+  assert.deepEqual(ids(await repo.teacherList(X, [ANA], 1)), [ordinary.id]);
+  const capable = await repo.teacherList(X, [ANA, BEN], 50, true);
+  assert.equal(capable.length, 50);
+  assert.ok(capable.every((e: any) => e.props.profile_id === ANA));
+  assert.deepEqual(ids(await repo.teacherList(Y, [BEN], 50, true)), [ben.id]);
+});
+
+test('invalid assessment summaries never enter either persistent queue', async () => {
+  const { repo, db } = await freshRepository(10050);
+  const policy = await repo.assessmentPolicy();
+  const bad = assessmentEvent(80);
+  (bad.props as any).student_name = 'PRIVATE_NAME';
+  await assert.rejects(repo.stageAssessment(bad, policy.epoch), /Invalid assessment/);
+  assert.equal((db.prepare('SELECT count(*) n FROM assessment_reports').get() as any).n, 0);
 });

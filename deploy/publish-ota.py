@@ -802,7 +802,7 @@ def measure_bundle(bundle):
         encoding, wire = r.headers.get('Content-Encoding', 'identity'), r.read()
     if encoding == 'gzip' and hashlib.sha256(gzip.decompress(wire)).hexdigest() != bundle['sha256']:
         sys.exit('!! the gzip-encoded bundle does not decode to the uploaded bytes')
-    with urllib.request.urlopen(urllib.request.Request(url, headers={'Accept-Encoding': 'identity'}), timeout=300) as r:
+    with urllib.request.urlopen(urllib.request.Request(url, headers={'Accept-Encoding': 'identity', 'User-Agent': 'hiraia-publish-ota'}), timeout=300) as r:
         if hashlib.sha256(r.read()).hexdigest() != bundle['sha256']:
             sys.exit('!! the public bundle is not the uploaded bytes')
     print(f"   bundle on the wire: {len(wire):,} B ({encoding}) for {bundle['bytes']:,} B"

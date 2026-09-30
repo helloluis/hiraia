@@ -36,7 +36,12 @@ export interface TeacherStore {
   /** Routes each event to its scope's queue; events of unbound scopes are not kept. */
   teacherAppend(events: TeacherEvent[]): Promise<void>;
   /** The next events of these scopes that `expected` has not acknowledged yet. */
-  teacherList(expected: ClassKey, scopes: string[], limit: number): Promise<TeacherEvent[]>;
+  teacherList(
+    expected: ClassKey,
+    scopes: string[],
+    limit: number,
+    includeAssessments?: boolean
+  ): Promise<TeacherEvent[]>;
   teacherAcknowledge(ids: string[], expected: ClassKey, lost?: string[]): Promise<void>;
   setLastSync(scopes: string[], time: number): Promise<void>;
   /** When a 0.4.23 phone-wide class was dropped, if this scope still owes a re-scan; else 0. */
@@ -85,8 +90,12 @@ export class TeacherQueue {
     await this.store.teacherAppend(clean);
   }
 
-  async pending(expected: ClassKey, scopes: string[], limit: number) {
-    return this.store.teacherList(expected, scopes, limit);
+  async pending(expected: ClassKey, scopes: string[], limit: number, includeAssessments = false) {
+    const rows = await this.store.teacherList(expected, scopes, limit, includeAssessments);
+    // Defence in depth while a caller/repository transitions to the capability-aware signature.
+    return includeAssessments
+      ? rows
+      : rows.filter((event) => event.name !== 'assessment_completed');
   }
 
   async ack(ids: string[], lost: string[], expected: ClassKey) {

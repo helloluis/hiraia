@@ -1,4 +1,5 @@
 /** Tala Nearby protocol v1. Teacher Kotlin is the authority if this drifts. */
+import { validAssessmentEvent } from './assessmentProtocol';
 
 export const SERVICE_ID = 'com.hiraia.classroom.v1';
 export const QR_KIND = 'hiraia-tala';
@@ -34,6 +35,7 @@ export const TEACHER_EVENTS = new Set([
   'generation_completed',
   'generation_failed',
   'queue_dropped',
+  'assessment_completed',
 ]);
 
 export type TeacherProfile = { id: string; name: string };
@@ -67,7 +69,11 @@ export type TeacherQr = {
 export function cleanClassName(value: unknown): string {
   if (typeof value !== 'string') return '';
   // eslint-disable-next-line no-control-regex
-  return value.replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, MAX_CLASS_NAME);
+  return value
+    .replace(/[\u0000-\u001f\u007f]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, MAX_CLASS_NAME);
 }
 
 export type InnerBatch = {
@@ -115,7 +121,9 @@ export function sanitizeEvent(e: TeacherEvent): TeacherEvent | null {
   if (!Number.isSafeInteger(e.occurred_at) || e.occurred_at < 1577836800000) return null;
   if (typeof e.session_id !== 'string' || !e.props) return null;
   const props = { ...e.props };
-  if (JSON.stringify(props).length > MAX_PROPS) return null;
+  if (e.name === 'assessment_completed') {
+    if (!validAssessmentEvent(e)) return null;
+  } else if (JSON.stringify(props).length > MAX_PROPS) return null;
   return {
     id: e.id,
     name: e.name,

@@ -1,0 +1,888 @@
+{
+  "schema_version": 2,
+  "status": "draft_for_content_planning_only",
+  "production_enabled": false,
+  "comparison_warning": "Matching a knowledge family is a design hypothesis, not empirical form equivalence. All language, teacher and cohort reviews remain pending.",
+  "rules": {
+    "assessment_length": 12,
+    "followup_benchmark_slots": 6,
+    "followup_recent_target": 6,
+    "recent_window_days": 14,
+    "history_assessments": 3,
+    "max_exact_repeats_in_history": 2,
+    "allow_duplicate_knowledge_family_in_form": false,
+    "allow_duplicate_source_fact_in_form": false,
+    "calendar_alone_establishes_coverage": false,
+    "sparse_recent_policy": "Fill with eligible prior-grade readiness supplements, labelled separately; defer if twelve items cannot satisfy eligibility and repetition rules."
+  },
+  "blueprints": [
+    {
+      "id": "incoming-grade4-prior-grade3-proposal",
+      "student_grade": 4,
+      "material_grade": 3,
+      "curriculum_cohort_verified": false,
+      "status": "superseded_draft_retained_for_failure_evidence",
+      "baseline_domain_counts": {
+        "MATTER": 3,
+        "LIVING_THINGS": 3,
+        "FORCE_MOTION_ENERGY": 3,
+        "EARTH_SPACE": 3
+      },
+      "baseline_example_item_ids": [
+        "ha-g3-0002",
+        "ha-g3-0014",
+        "ha-g3-0001",
+        "ha-g3-0005",
+        "ha-g3-0006",
+        "ha-g3-0004",
+        "ha-g3-0008",
+        "ha-g3-0033",
+        "ha-g3-0041",
+        "ha-g3-0012",
+        "ha-g3-0043",
+        "ha-g3-0046"
+      ],
+      "benchmark_slots": [
+        {
+          "id": "matter-deformation",
+          "knowledge_family_id": "rubber-band-stretching"
+        },
+        {
+          "id": "matter-reuse",
+          "knowledge_family_id": "reusing-an-existing-object"
+        },
+        {
+          "id": "living-animal-body-function",
+          "knowledge_family_id": "frog-jumping-back-legs"
+        },
+        {
+          "id": "living-plant-body-function",
+          "knowledge_family_id": "roots-soil-water"
+        },
+        {
+          "id": "physical-sound-vibration",
+          "knowledge_family_id": "sound-from-vibration"
+        },
+        {
+          "id": "earth-sun-energy",
+          "knowledge_family_id": "sun-earth-light-heat"
+        }
+      ],
+      "notes": [
+        "The twelve example items demonstrate proposed domain coverage only. They are not approved for a child.",
+        "The same six benchmark slot definitions persist during a comparison period. Teachers must review representativeness and difficulty.",
+        "Four reviewed forms per slot would permit a simple four-session cycle without exact benchmark repeats within the previous three sessions. This is a sufficient planning condition, not proof that four forms are necessary or semantically adequate.",
+        "The recent block needs specific card-exposure evidence and its own repetition/coverage checks. A benchmark-only check cannot certify a full assessment.",
+        "Do not author cosmetic rewordings to hit the four-form screen. Search existing forms, review meaningful alternate representations, or revise the blueprint transparently."
+      ],
+      "baseline_benchmark_item_ids": {
+        "matter-deformation": "ha-g3-0002",
+        "matter-reuse": "ha-g3-0014",
+        "living-animal-body-function": "ha-g3-0005",
+        "living-plant-body-function": "ha-g3-0006",
+        "physical-sound-vibration": "ha-g3-0008",
+        "earth-sun-energy": "ha-g3-0012"
+      },
+      "baseline_readiness_probe_ids": [
+        "ha-g3-0001",
+        "ha-g3-0004",
+        "ha-g3-0033",
+        "ha-g3-0041",
+        "ha-g3-0043",
+        "ha-g3-0046"
+      ]
+    },
+    {
+      "student_grade": 4,
+      "material_grade": 3,
+      "curriculum_cohort_verified": false,
+      "baseline_domain_counts": {
+        "MATTER": 3,
+        "LIVING_THINGS": 3,
+        "FORCE_MOTION_ENERGY": 3,
+        "EARTH_SPACE": 3
+      },
+      "baseline_example_item_ids": [
+        "ha-g3-0002",
+        "ha-g3-0014",
+        "ha-g3-0001",
+        "ha-g3-0005",
+        "ha-g3-0006",
+        "ha-g3-0004",
+        "ha-g3-0008",
+        "ha-g3-0033",
+        "ha-g3-0041",
+        "ha-g3-0012",
+        "ha-g3-0043",
+        "ha-g3-0046"
+      ],
+      "id": "incoming-grade4-prior-grade3-proposal-v2",
+      "status": "draft_content_blueprint",
+      "supersedes": "incoming-grade4-prior-grade3-proposal",
+      "benchmark_slot_model": "explicit reviewed-candidate proposal; within-slot equivalence unvalidated",
+      "benchmark_slots": [
+        {
+          "id": "matter-deformation",
+          "construct": "Recalls the effect of gently stretching a rubber band.",
+          "candidate_item_ids": [
+            "ha-g3-0002"
+          ]
+        },
+        {
+          "id": "matter-reuse",
+          "construct": "Recognizes an existing object being used again without remanufacture.",
+          "candidate_item_ids": [
+            "ha-g3-0014",
+            "ha-g3-0015",
+            "ha-g3-0073",
+            "ha-g3-0074"
+          ]
+        },
+        {
+          "id": "living-animal-body-function",
+          "construct": "Matches a familiar animal movement with its enabling body part.",
+          "candidate_item_ids": [
+            "ha-g3-0005",
+            "ha-g3-0057",
+            "ha-g3-0058",
+            "ha-g3-0060"
+          ]
+        },
+        {
+          "id": "living-plant-body-function",
+          "construct": "Matches an ordinary plant part with its basic function.",
+          "candidate_item_ids": [
+            "ha-g3-0006",
+            "ha-g3-0063",
+            "ha-g3-0064",
+            "ha-g3-0065"
+          ]
+        },
+        {
+          "id": "physical-sound-vibration",
+          "construct": "Recalls the vibrating source or its motion in an everyday musical sound.",
+          "candidate_item_ids": [
+            "ha-g3-0008",
+            "ha-g3-0038",
+            "ha-g3-0075",
+            "ha-g3-0076"
+          ]
+        },
+        {
+          "id": "earth-sun-energy",
+          "construct": "Identifies the Sun as Earth’s main natural source of light and heat.",
+          "candidate_item_ids": [
+            "ha-g3-0012"
+          ]
+        }
+      ],
+      "notes": [
+        "See ROTATION-DESIGN.md for the explicit scope change, exact-repeat anchors and comparability limits.",
+        "The two singleton anchors consume the full two-repeat allowance. Other items must not repeat from any of the last three complete assessments.",
+        "No item is eligible for a real child until all required review gates pass."
+      ],
+      "baseline_benchmark_item_ids": {
+        "matter-deformation": "ha-g3-0002",
+        "matter-reuse": "ha-g3-0014",
+        "living-animal-body-function": "ha-g3-0005",
+        "living-plant-body-function": "ha-g3-0006",
+        "physical-sound-vibration": "ha-g3-0008",
+        "earth-sun-energy": "ha-g3-0012"
+      },
+      "baseline_readiness_probe_ids": [
+        "ha-g3-0001",
+        "ha-g3-0004",
+        "ha-g3-0033",
+        "ha-g3-0041",
+        "ha-g3-0043",
+        "ha-g3-0046"
+      ]
+    },
+    {
+      "id": "incoming-grade5-prior-grade4-proposal",
+      "student_grade": 5,
+      "material_grade": 4,
+      "curriculum_cohort_verified": false,
+      "status": "draft_content_blueprint",
+      "baseline_domain_counts": {
+        "MATTER": 3,
+        "LIVING_THINGS": 3,
+        "FORCE_MOTION_ENERGY": 3,
+        "EARTH_SPACE": 3
+      },
+      "baseline_example_item_ids": [
+        "ha-g4-0067",
+        "ha-g4-0061",
+        "ha-g4-0069",
+        "ha-g4-0001",
+        "ha-g4-0012",
+        "ha-g4-0020",
+        "ha-g4-0031",
+        "ha-g4-0021",
+        "ha-g4-0039",
+        "ha-g4-0048",
+        "ha-g4-0056",
+        "ha-g4-0044"
+      ],
+      "benchmark_slot_model": "fixed instructional content samples; example-level equivalence unvalidated",
+      "benchmark_slots": [
+        {
+          "id": "matter-temperature-change",
+          "construct": "Recalls or recognizes a familiar material change associated with heating or cooling.",
+          "candidate_item_ids": [
+            "ha-g4-0067",
+            "ha-g4-0068",
+            "ha-g4-0071",
+            "ha-g4-0073"
+          ]
+        },
+        {
+          "id": "living-diet-classification",
+          "construct": "Recalls or recognizes herbivore, carnivore and omnivore diet groups.",
+          "candidate_item_ids": [
+            "ha-g4-0001",
+            "ha-g4-0002",
+            "ha-g4-0003",
+            "ha-g4-0004",
+            "ha-g4-0005",
+            "ha-g4-0006",
+            "ha-g4-0007"
+          ]
+        },
+        {
+          "id": "living-human-organ-function",
+          "construct": "Recalls the basic function of a named human organ.",
+          "candidate_item_ids": [
+            "ha-g4-0012",
+            "ha-g4-0013",
+            "ha-g4-0015",
+            "ha-g4-0016"
+          ]
+        },
+        {
+          "id": "physical-magnet-properties",
+          "construct": "Recalls simple-magnet pole, attraction, strength-location and noncontact properties.",
+          "candidate_item_ids": [
+            "ha-g4-0031",
+            "ha-g4-0032",
+            "ha-g4-0033",
+            "ha-g4-0034",
+            "ha-g4-0035",
+            "ha-g4-0036"
+          ]
+        },
+        {
+          "id": "earth-weather-instrument-functions",
+          "construct": "Associates a weather instrument with the quantity or direction it measures.",
+          "candidate_item_ids": [
+            "ha-g4-0047",
+            "ha-g4-0048",
+            "ha-g4-0049",
+            "ha-g4-0050",
+            "ha-g4-0051",
+            "ha-g4-0052"
+          ]
+        },
+        {
+          "id": "earth-sun-and-shadow-knowledge",
+          "construct": "Recalls Sun identity, its apparent size or the relation between sunlight and shadows.",
+          "candidate_item_ids": [
+            "ha-g4-0056",
+            "ha-g4-0058",
+            "ha-g4-0059",
+            "ha-g4-0060"
+          ]
+        }
+      ],
+      "notes": [
+        "Initial proposal only; no learner history is being placed on a validated comparison scale.",
+        "Slots deliberately sample named instructional content. Magnet properties and Sun/shadow knowledge cover different facts; correct answers are not interchangeable mastery claims.",
+        "Recognition and definition/function questions may differ in difficulty. This is unvalidated content matching, not equating.",
+        "The Sun hydrogen/helium item is excluded from this small benchmark because specialized element-name vocabulary should not silently increase its demand.",
+        "Prior-grade cohort confirmation is required. Synthetic follow-up fixtures are explicitly separate from real learner coverage."
+      ],
+      "baseline_benchmark_item_ids": {
+        "matter-temperature-change": "ha-g4-0067",
+        "living-diet-classification": "ha-g4-0001",
+        "living-human-organ-function": "ha-g4-0012",
+        "physical-magnet-properties": "ha-g4-0031",
+        "earth-weather-instrument-functions": "ha-g4-0048",
+        "earth-sun-and-shadow-knowledge": "ha-g4-0056"
+      },
+      "baseline_readiness_probe_ids": [
+        "ha-g4-0061",
+        "ha-g4-0069",
+        "ha-g4-0020",
+        "ha-g4-0021",
+        "ha-g4-0039",
+        "ha-g4-0044"
+      ]
+    },
+    {
+      "id": "incoming-grade6-prior-grade5-proposal",
+      "student_grade": 6,
+      "material_grade": 5,
+      "curriculum_cohort_verified": false,
+      "status": "draft_content_blueprint",
+      "baseline_domain_counts": {
+        "MATTER": 3,
+        "LIVING_THINGS": 3,
+        "FORCE_MOTION_ENERGY": 3,
+        "EARTH_SPACE": 3
+      },
+      "baseline_example_item_ids": [
+        "ha-g5-0003",
+        "ha-g5-0010",
+        "ha-g5-0001",
+        "ha-g5-0021",
+        "ha-g5-0032",
+        "ha-g5-0039",
+        "ha-g5-0041",
+        "ha-g5-0047",
+        "ha-g5-0054",
+        "ha-g5-0067",
+        "ha-g5-0070",
+        "ha-g5-0079"
+      ],
+      "benchmark_slot_model": "fixed named content samples; example-level equivalence unvalidated",
+      "benchmark_slots": [
+        {
+          "id": "matter-state-properties",
+          "construct": "Recalls or recognizes shape/volume properties of familiar solid, liquid and gas examples.",
+          "candidate_item_ids": [
+            "ha-g5-0003",
+            "ha-g5-0004",
+            "ha-g5-0005",
+            "ha-g5-0006"
+          ]
+        },
+        {
+          "id": "matter-measurement-purpose",
+          "construct": "Associates a mass, volume or temperature unit or instrument with its measurement purpose.",
+          "candidate_item_ids": [
+            "ha-g5-0010",
+            "ha-g5-0014",
+            "ha-g5-0016",
+            "ha-g5-0017"
+          ]
+        },
+        {
+          "id": "living-organ-functions",
+          "construct": "Recalls the basic function or identity of a digestive or respiratory organ.",
+          "candidate_item_ids": [
+            "ha-g5-0021",
+            "ha-g5-0022",
+            "ha-g5-0023",
+            "ha-g5-0024"
+          ]
+        },
+        {
+          "id": "living-classification-traits",
+          "construct": "Recognizes a distinguishing feature of birds, mammals, bacteria or ferns.",
+          "candidate_item_ids": [
+            "ha-g5-0031",
+            "ha-g5-0032",
+            "ha-g5-0034",
+            "ha-g5-0035"
+          ]
+        },
+        {
+          "id": "physical-simple-circuit",
+          "construct": "Recalls a complete circuit, energy source, switch or incandescent-bulb function.",
+          "candidate_item_ids": [
+            "ha-g5-0052",
+            "ha-g5-0054",
+            "ha-g5-0055",
+            "ha-g5-0056"
+          ]
+        },
+        {
+          "id": "earth-rock-water-processes",
+          "construct": "Recognizes rock breakdown, sediment transport, precipitation or infiltration from a simple description.",
+          "candidate_item_ids": [
+            "ha-g5-0067",
+            "ha-g5-0068",
+            "ha-g5-0070",
+            "ha-g5-0072"
+          ]
+        }
+      ],
+      "notes": [
+        "Draft instructional content samples, not interchangeable claims of mastery or an equated growth scale.",
+        "Bird feather and measurement vocabulary require language review. The circuit slot deliberately excludes ambiguous conductor/resistor distinctions.",
+        "The water/rock-process slot spans several taught facts, not four variants of one fact. Fix this scope through the comparison period and pilot demand.",
+        "The held TCWS 1 item is excluded. All teacher, native-language and cohort review gates remain open."
+      ],
+      "baseline_benchmark_item_ids": {
+        "matter-state-properties": "ha-g5-0003",
+        "matter-measurement-purpose": "ha-g5-0010",
+        "living-organ-functions": "ha-g5-0021",
+        "living-classification-traits": "ha-g5-0032",
+        "physical-simple-circuit": "ha-g5-0054",
+        "earth-rock-water-processes": "ha-g5-0067"
+      },
+      "baseline_readiness_probe_ids": [
+        "ha-g5-0001",
+        "ha-g5-0039",
+        "ha-g5-0041",
+        "ha-g5-0047",
+        "ha-g5-0070",
+        "ha-g5-0079"
+      ]
+    },
+    {
+      "id": "incoming-grade7-prior-grade6-proposal",
+      "student_grade": 7,
+      "material_grade": 6,
+      "curriculum_cohort_verified": false,
+      "status": "draft_content_blueprint",
+      "baseline_domain_counts": {
+        "MATTER": 3,
+        "LIVING_THINGS": 3,
+        "FORCE_MOTION_ENERGY": 3,
+        "EARTH_SPACE": 3
+      },
+      "baseline_example_item_ids": [
+        "ha-g6-0012",
+        "ha-g6-0007",
+        "ha-g6-0018",
+        "ha-g6-0021",
+        "ha-g6-0031",
+        "ha-g6-0027",
+        "ha-g6-0041",
+        "ha-g6-0051",
+        "ha-g6-0059",
+        "ha-g6-0061",
+        "ha-g6-0074",
+        "ha-g6-0079"
+      ],
+      "benchmark_slot_model": "fixed named content samples; example-level equivalence unvalidated",
+      "benchmark_slots": [
+        {
+          "id": "matter-separation",
+          "construct": "Matches a separation method with a simple mixture.",
+          "candidate_item_ids": [
+            "ha-g6-0012",
+            "ha-g6-0013",
+            "ha-g6-0014",
+            "ha-g6-0015"
+          ]
+        },
+        {
+          "id": "living-circulation",
+          "construct": "Recalls a blood component, vessel or heart feature.",
+          "candidate_item_ids": [
+            "ha-g6-0021",
+            "ha-g6-0022",
+            "ha-g6-0023",
+            "ha-g6-0024"
+          ]
+        },
+        {
+          "id": "living-ecosystem-roles",
+          "construct": "Recognizes producer, primary consumer, decomposer or scavenger roles.",
+          "candidate_item_ids": [
+            "ha-g6-0031",
+            "ha-g6-0032",
+            "ha-g6-0033",
+            "ha-g6-0034"
+          ]
+        },
+        {
+          "id": "physical-machine-parts",
+          "construct": "Identifies the part or function of a simple machine.",
+          "candidate_item_ids": [
+            "ha-g6-0041",
+            "ha-g6-0043",
+            "ha-g6-0045",
+            "ha-g6-0048"
+          ]
+        },
+        {
+          "id": "physical-wave-quantities",
+          "construct": "Recalls wave energy, crest, amplitude or wavelength.",
+          "candidate_item_ids": [
+            "ha-g6-0051",
+            "ha-g6-0052",
+            "ha-g6-0054",
+            "ha-g6-0055"
+          ]
+        },
+        {
+          "id": "earth-volcanic-materials",
+          "construct": "Identifies a volcano, lava, ash or pumice feature.",
+          "candidate_item_ids": [
+            "ha-g6-0061",
+            "ha-g6-0062",
+            "ha-g6-0063",
+            "ha-g6-0064"
+          ]
+        }
+      ],
+      "baseline_benchmark_item_ids": {
+        "matter-separation": "ha-g6-0012",
+        "living-circulation": "ha-g6-0021",
+        "living-ecosystem-roles": "ha-g6-0031",
+        "physical-machine-parts": "ha-g6-0041",
+        "physical-wave-quantities": "ha-g6-0051",
+        "earth-volcanic-materials": "ha-g6-0061"
+      },
+      "baseline_readiness_probe_ids": [
+        "ha-g6-0007",
+        "ha-g6-0018",
+        "ha-g6-0027",
+        "ha-g6-0059",
+        "ha-g6-0074",
+        "ha-g6-0079"
+      ],
+      "notes": [
+        "Draft instructional content samples, not interchangeable claims of mastery or an equated growth scale.",
+        "Fix the named sample scope through the comparison period. All teacher, language and cohort review gates remain pending.",
+        "The Alert Level 1 held source is excluded. These text items do not test practical machine use or emergency readiness."
+      ]
+    },
+    {
+      "id": "incoming-grade8-prior-grade7-proposal",
+      "student_grade": 8,
+      "material_grade": 7,
+      "curriculum_cohort_verified": false,
+      "status": "draft_content_blueprint",
+      "baseline_domain_counts": {
+        "MATTER": 3,
+        "LIVING_THINGS": 3,
+        "FORCE_MOTION_ENERGY": 3,
+        "EARTH_SPACE": 3
+      },
+      "baseline_example_item_ids": [
+        "ha-g7-0002",
+        "ha-g7-0008",
+        "ha-g7-0018",
+        "ha-g7-0023",
+        "ha-g7-0034",
+        "ha-g7-0031",
+        "ha-g7-0055",
+        "ha-g7-0041",
+        "ha-g7-0052",
+        "ha-g7-0061",
+        "ha-g7-0071",
+        "ha-g7-0075"
+      ],
+      "benchmark_slot_model": "fixed named content samples; example-level equivalence unvalidated",
+      "benchmark_slots": [
+        {
+          "id": "matter-particle-model",
+          "construct": "Recalls particles and their solid, liquid or gas arrangement/motion.",
+          "candidate_item_ids": [
+            "ha-g7-0002",
+            "ha-g7-0003",
+            "ha-g7-0004",
+            "ha-g7-0005"
+          ]
+        },
+        {
+          "id": "matter-solution-properties",
+          "construct": "Recalls solute role, mass percentage, dilute or saturated solution meaning.",
+          "candidate_item_ids": [
+            "ha-g7-0008",
+            "ha-g7-0010",
+            "ha-g7-0011",
+            "ha-g7-0012"
+          ]
+        },
+        {
+          "id": "living-cell-functions",
+          "construct": "Recalls membrane, nucleus, mitochondrion or cell-wall function.",
+          "candidate_item_ids": [
+            "ha-g7-0023",
+            "ha-g7-0024",
+            "ha-g7-0025",
+            "ha-g7-0027"
+          ]
+        },
+        {
+          "id": "living-levels-of-organization",
+          "construct": "Recognizes tissue, organ system, population or community.",
+          "candidate_item_ids": [
+            "ha-g7-0034",
+            "ha-g7-0035",
+            "ha-g7-0036",
+            "ha-g7-0037"
+          ]
+        },
+        {
+          "id": "physical-heat-transfer",
+          "construct": "Recalls heat transfer and conduction, convection or radiation.",
+          "candidate_item_ids": [
+            "ha-g7-0055",
+            "ha-g7-0056",
+            "ha-g7-0057",
+            "ha-g7-0058"
+          ]
+        },
+        {
+          "id": "earth-faults-and-quakes",
+          "construct": "Recalls fault definition, normal or strike-slip motion, or earthquake focus.",
+          "candidate_item_ids": [
+            "ha-g7-0061",
+            "ha-g7-0062",
+            "ha-g7-0064",
+            "ha-g7-0065"
+          ]
+        }
+      ],
+      "baseline_benchmark_item_ids": {
+        "matter-particle-model": "ha-g7-0002",
+        "matter-solution-properties": "ha-g7-0008",
+        "living-cell-functions": "ha-g7-0023",
+        "living-levels-of-organization": "ha-g7-0034",
+        "physical-heat-transfer": "ha-g7-0055",
+        "earth-faults-and-quakes": "ha-g7-0061"
+      },
+      "baseline_readiness_probe_ids": [
+        "ha-g7-0018",
+        "ha-g7-0031",
+        "ha-g7-0041",
+        "ha-g7-0052",
+        "ha-g7-0071",
+        "ha-g7-0075"
+      ],
+      "notes": [
+        "Draft instructional content samples, not interchangeable claims of mastery or an equated growth scale.",
+        "Fix the named sample scope through the comparison period. All teacher, language and cohort review gates remain pending.",
+        "The solution slot includes distinct supporting facts and is not four equivalent variants. Phase-state and cell vocabularies need demand review.",
+        "Natural tsunami-warning recall does not establish practical preparedness."
+      ]
+    },
+    {
+      "id": "incoming-grade9-prior-grade8-proposal",
+      "student_grade": 9,
+      "material_grade": 8,
+      "curriculum_cohort_verified": false,
+      "status": "draft_content_blueprint",
+      "baseline_domain_counts": {
+        "MATTER": 3,
+        "LIVING_THINGS": 3,
+        "FORCE_MOTION_ENERGY": 3,
+        "EARTH_SPACE": 3
+      },
+      "baseline_example_item_ids": [
+        "ha-g8-0005",
+        "ha-g8-0015",
+        "ha-g8-0018",
+        "ha-g8-0021",
+        "ha-g8-0029",
+        "ha-g8-0039",
+        "ha-g8-0047",
+        "ha-g8-0041",
+        "ha-g8-0057",
+        "ha-g8-0061",
+        "ha-g8-0065",
+        "ha-g8-0074"
+      ],
+      "benchmark_slot_model": "fixed named content samples; example-level equivalence unvalidated",
+      "benchmark_slots": [
+        {
+          "id": "matter-atomic-structure",
+          "construct": "Recalls proton charge, nucleus mass, atomic number or mass number.",
+          "candidate_item_ids": [
+            "ha-g8-0005",
+            "ha-g8-0008",
+            "ha-g8-0010",
+            "ha-g8-0011"
+          ]
+        },
+        {
+          "id": "living-material-transport",
+          "construct": "Recalls peristalsis, absorption, villi or kidney filtration.",
+          "candidate_item_ids": [
+            "ha-g8-0021",
+            "ha-g8-0022",
+            "ha-g8-0023",
+            "ha-g8-0024"
+          ]
+        },
+        {
+          "id": "living-inheritance-vocabulary",
+          "construct": "Recalls allele, genotype, heterozygosity or complete dominance.",
+          "candidate_item_ids": [
+            "ha-g8-0029",
+            "ha-g8-0030",
+            "ha-g8-0032",
+            "ha-g8-0033"
+          ]
+        },
+        {
+          "id": "physical-energy-work",
+          "construct": "Recalls height and potential energy, elastic storage, work or power.",
+          "candidate_item_ids": [
+            "ha-g8-0047",
+            "ha-g8-0048",
+            "ha-g8-0050",
+            "ha-g8-0052"
+          ]
+        },
+        {
+          "id": "earth-crust-properties",
+          "construct": "Recalls surface water fraction, crust density/thickness or lithosphere parts.",
+          "candidate_item_ids": [
+            "ha-g8-0061",
+            "ha-g8-0062",
+            "ha-g8-0063",
+            "ha-g8-0064"
+          ]
+        },
+        {
+          "id": "earth-volcanic-materials",
+          "construct": "Recalls composite deposits, shield slopes, cinders or viscosity.",
+          "candidate_item_ids": [
+            "ha-g8-0065",
+            "ha-g8-0066",
+            "ha-g8-0067",
+            "ha-g8-0068"
+          ]
+        }
+      ],
+      "baseline_benchmark_item_ids": {
+        "matter-atomic-structure": "ha-g8-0005",
+        "living-material-transport": "ha-g8-0021",
+        "living-inheritance-vocabulary": "ha-g8-0029",
+        "physical-energy-work": "ha-g8-0047",
+        "earth-crust-properties": "ha-g8-0061",
+        "earth-volcanic-materials": "ha-g8-0065"
+      },
+      "baseline_readiness_probe_ids": [
+        "ha-g8-0015",
+        "ha-g8-0018",
+        "ha-g8-0039",
+        "ha-g8-0041",
+        "ha-g8-0057",
+        "ha-g8-0074"
+      ],
+      "notes": [
+        "Fixed instructional samples, not six mastered competencies or empirically equivalent forms.",
+        "Current-grade exposure must still meet exact teaching claim, language and body-hash requirements.",
+        "Teacher, native-language, cohort and pilot difficulty review are pending."
+      ]
+    },
+    {
+      "id": "incoming-grade10-prior-grade9-proposal",
+      "student_grade": 10,
+      "material_grade": 9,
+      "curriculum_cohort_verified": false,
+      "status": "draft_content_blueprint",
+      "baseline_domain_counts": {
+        "MATTER": 3,
+        "LIVING_THINGS": 3,
+        "FORCE_MOTION_ENERGY": 3,
+        "EARTH_SPACE": 3
+      },
+      "baseline_example_item_ids": [
+        "ha-g9-0009",
+        "ha-g9-0003",
+        "ha-g9-0008",
+        "ha-g9-0021",
+        "ha-g9-0031",
+        "ha-g9-0039",
+        "ha-g9-0041",
+        "ha-g9-0047",
+        "ha-g9-0057",
+        "ha-g9-0061",
+        "ha-g9-0068",
+        "ha-g9-0074"
+      ],
+      "benchmark_slot_model": "fixed named content samples; example-level equivalence unvalidated",
+      "benchmark_slots": [
+        {
+          "id": "compound-formulas",
+          "construct": "Recalls the formulas of named ionic compounds.",
+          "candidate_item_ids": [
+            "ha-g9-0009",
+            "ha-g9-0010",
+            "ha-g9-0011",
+            "ha-g9-0012"
+          ]
+        },
+        {
+          "id": "genetic-structures",
+          "construct": "Recalls named DNA and chromosome structures.",
+          "candidate_item_ids": [
+            "ha-g9-0021",
+            "ha-g9-0022",
+            "ha-g9-0025",
+            "ha-g9-0026"
+          ]
+        },
+        {
+          "id": "biodiversity-terms",
+          "construct": "Recalls biodiversity, risk and conservation concepts.",
+          "candidate_item_ids": [
+            "ha-g9-0031",
+            "ha-g9-0033",
+            "ha-g9-0039",
+            "ha-g9-0040"
+          ]
+        },
+        {
+          "id": "newton-foundations",
+          "construct": "Recalls inertia and Newtonian force relations.",
+          "candidate_item_ids": [
+            "ha-g9-0041",
+            "ha-g9-0042",
+            "ha-g9-0043",
+            "ha-g9-0045"
+          ]
+        },
+        {
+          "id": "circuit-foundations",
+          "construct": "Recalls current units, direction and circuit relations.",
+          "candidate_item_ids": [
+            "ha-g9-0047",
+            "ha-g9-0048",
+            "ha-g9-0051",
+            "ha-g9-0052"
+          ]
+        },
+        {
+          "id": "earth-history-evidence",
+          "construct": "Recalls supercontinent, fossil and geological-time knowledge.",
+          "candidate_item_ids": [
+            "ha-g9-0061",
+            "ha-g9-0062",
+            "ha-g9-0067",
+            "ha-g9-0070"
+          ]
+        }
+      ],
+      "baseline_benchmark_item_ids": {
+        "compound-formulas": "ha-g9-0009",
+        "genetic-structures": "ha-g9-0021",
+        "biodiversity-terms": "ha-g9-0031",
+        "newton-foundations": "ha-g9-0041",
+        "circuit-foundations": "ha-g9-0047",
+        "earth-history-evidence": "ha-g9-0061"
+      },
+      "baseline_readiness_probe_ids": [
+        "ha-g9-0003",
+        "ha-g9-0008",
+        "ha-g9-0039",
+        "ha-g9-0057",
+        "ha-g9-0068",
+        "ha-g9-0074"
+      ],
+      "notes": [
+        "These fixed content samples rotate different facts, not calibrated equivalent forms. No causal or placement claim is supported.",
+        "Prior Grade 9 curriculum must be verified for the actual student cohort; Grade 9 MATATAG rollout does not establish that last year’s Grade 9 class used this curriculum.",
+        "Calendar date alone never approves current-grade content. Production eligibility remains disabled."
+      ]
+    }
+  ],
+  "unresolved_student_grades": [
+    3
+  ],
+  "unresolved_scope": [
+    "Incoming Grade 3 prerequisite science scope under the applicable Makabansa cohort remains unverified.",
+    "Incoming Grade 10 benchmark proposal and current Grades 9–10 exposure simulations are not yet authored.",
+    "All production curriculum-cohort, language, teacher and empirical form-comparability reviews remain pending.",
+    "Actual lesson exposure coverage remains incomplete; synthetic rich histories do not demonstrate the 50 percent recent-learning target in ordinary use."
+  ]
+}

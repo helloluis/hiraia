@@ -13,6 +13,7 @@ import {
   type TeacherEvent,
 } from './protocol';
 import { TeacherQueue } from './queue';
+import { ASSESSMENT_CAP, SYNC_BATCH_BYTES, utf8Bytes } from './assessmentProtocol';
 import { parseTeacherQr, sameBinding, QrError } from './qr';
 import { BURST_MS, retryDelay } from './schedule';
 import { eventScope } from './scope';
@@ -126,6 +127,7 @@ const sessions = new Map<
     /** Leave tombstones the intro carried; cleared once the teacher says it honours them. */
     leaves?: string[];
     clientNonce?: Uint8Array;
+    assessmentsSupported?: boolean;
   }
 >();
 type Session = NonNullable<ReturnType<typeof sessions.get>>;
@@ -366,6 +368,7 @@ async function sendIntro(endpointId: string, session: Session) {
 
 /** Tala >= 0.4.4 names the class, and says whether it honoured the intro's leave tombstones. */
 async function noteReply(group: Group, session: Session, reply: AckBody) {
+  session.assessmentsSupported = Array.isArray(reply.caps) && reply.caps.includes(ASSESSMENT_CAP);
   const name = cleanClassName(reply.class_name);
   if (name) {
     await queue!.setClassName(group, name);
@@ -455,7 +458,12 @@ async function sendNextBatch(endpointId: string) {
   const session = sessions.get(endpointId);
   const group = findGroup(burst, session?.group);
   if (!session?.challenge || !group || !queue) return;
-  const pending = await queue.pending(group, group.scopes, MAX_EVENTS);
+  const pending = await queue.pending(
+    group,
+    group.scopes,
+    MAX_EVENTS,
+    session.assessmentsSupported === true
+  );
   if (!enabled || sessions.get(endpointId) !== session) return;
   if (!pending.length && session.didEmptyBatch) {
     await queue.markSynced(group.scopes);
@@ -463,7 +471,15 @@ async function sendNextBatch(endpointId: string) {
     return;
   }
   showStatus('sending');
-  const body = inner(group, session.challenge, pending, []);
+  const body = inner(group, session.challenge, [], []);
+  for (const event of pending) {
+    body.events.push(event);
+    if (utf8Bytes(JSON.stringify(body)) > SYNC_BATCH_BYTES) {
+      body.events.pop();
+      break;
+    }
+  }
+  if (pending.length && !body.events.length) throw new Error('assessment-batch-size');
   session.outstanding = body.events.map((e) => e.id);
   if (!body.events.length) session.didEmptyBatch = true;
   await sendEnvelope(endpointId, 'batch', session.challenge, group.public_key, body);

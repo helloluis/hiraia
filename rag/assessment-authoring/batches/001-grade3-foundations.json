@@ -1,0 +1,2903 @@
+{
+  "schema_version": 1,
+  "batch_id": "001-grade3-foundations",
+  "title": "Grade 3 foundations: first twelve-item design batch",
+  "created_at": "2026-09-28T01:35:56+00:00",
+  "author": {
+    "agent": "Codex",
+    "method": "direct in-session authorship",
+    "requested_model": "Astra",
+    "runtime_model_id": null,
+    "model_identity_note": "The runtime model identifier is not exposed to this file-writing step; requested model is recorded without claiming independent attestation."
+  },
+  "purpose": "Establish the question design and review process for Hiraia-scoped recall and recognition. This is not an assembled assessment or formal grade-placement instrument.",
+  "scope": {
+    "material_grade": 3,
+    "intended_readiness_student_grade": 4,
+    "domain_distribution": {
+      "MATTER": 3,
+      "LIVING_THINGS": 3,
+      "FORCE_MOTION_ENERGY": 3,
+      "EARTH_SPACE": 3
+    },
+    "incoming_grade3_bridge": "separate; earlier-grade target coverage has not been verified",
+    "curriculum_review": "Mapped to the local August 2023 extract, not certified against every later published revision. Prior-grade eligibility must match the learner cohort and applicable school-year curriculum before release."
+  },
+  "source_files": {
+    "bank": {
+      "path": "rag/bank/quiz-bank-v2.jsonl",
+      "sha256": "a83be6e1773da1c536a013bb340d1863c5b1a8e29279d140eee1d0e89cc18e07"
+    },
+    "cards": {
+      "path": "rag/pipeline/cardsPool.app.json",
+      "sha256": "7a9989363561c91ef5181abd0bf2428bd6b832412f20d4f678f8ab9c42d67b10"
+    },
+    "curriculum": {
+      "path": "rag/sources/curriculum-guides/matatag-elementary-competencies.json",
+      "sha256": "60cf4299b9bf5346139e7ff136e7e857da1c63a6bb7373b9f02c006193a55393"
+    },
+    "subcategory_inventory": {
+      "path": "tools/assessment-evaluation/reports/2026-09-28/subcategories.csv",
+      "sha256": "5c73cc79fe27f1c1f7b0459ffa5761f84b6aad8d813659d2cad96833b192b308"
+    }
+  },
+  "references": {
+    "osu-roots": {
+      "title": "Oregon State University Extension: Vegetative plant parts",
+      "url": "https://extension.oregonstate.edu/catalog/em-9904-vegetative-plant-parts",
+      "accessed": "2026-09-28",
+      "support": "Roots take up water and nutrients from soil.",
+      "review": "Read search-result source text; no quotation copied."
+    },
+    "exploratorium-sound": {
+      "title": "Exploratorium: Recycle Tin Cans To Make BONKO Music",
+      "url": "https://annex.exploratorium.edu/science-explorer/can.html",
+      "accessed": "2026-09-28",
+      "support": "Sound production begins with vibration; pitch depends on vibration rate.",
+      "review": "Read source text returned by web search; the stopping condition is a physical inference also directly stated in the Hiraia source."
+    },
+    "nasa-sun": {
+      "title": "NASA Science: Sun Facts",
+      "url": "https://science.nasa.gov/sun/facts/",
+      "accessed": "2026-09-28",
+      "support": "The Sun provides light and heat seen and felt on Earth.",
+      "review": "Read source text returned by web search, with NASA TSIS-1 supporting its predominant energy contribution.",
+      "related_url": "https://science.nasa.gov/mission/tsis-1/"
+    }
+  },
+  "items": [
+    {
+      "id": "ha-g3-0001",
+      "revision": 1,
+      "batch_id": "001-grade3-foundations",
+      "origin": "reuse",
+      "status": "source_checked",
+      "production_ready": false,
+      "scope": {
+        "material_grade": 3,
+        "domain": "MATTER",
+        "internal_competency_code": "G3-M-3",
+        "internal_competency_text": "describe the uses of various science equipment and materials used in simple activities, such as a ruler, hand lens, scissors, balloons, modeling clay, and cardboard",
+        "subcategory_id": "g3-matter-science-process-skills",
+        "target_id": "g3-ruler-measures-length",
+        "knowledge_claim": "Identifies measuring length as the purpose of a ruler.",
+        "curriculum_version": "FINAL-MATATAG-Science-CG-2023-Grades-3-10.pdf (DepEd, August 2023)",
+        "mapping_status": "author-reviewed supporting-knowledge mapping; teacher confirmation pending",
+        "claim_limit": "Recalls the purpose of a ruler; does not demonstrate accurate measurement.",
+        "source_grade_tags": [
+          3,
+          4
+        ],
+        "grade_note": "The grade suffix in a fact ID and the bank grade tags do not set assessment eligibility. The narrow claim is mapped separately to the Grade 3 curriculum."
+      },
+      "eligibility": {
+        "prior_grade_readiness": {
+          "intended_student_grade": 4,
+          "material_grade": 3,
+          "coverage_basis": "expected prerequisite, not verified teaching",
+          "enabled_after_review": true,
+          "requires_school_year_curriculum_match": true,
+          "curriculum_match_status": "unverified for a specific learner cohort; review required before eligibility is enabled"
+        },
+        "current_grade": {
+          "allowed_routes": [
+            "verified Hiraia knowledge exposure",
+            "teacher-reported coverage of this target"
+          ],
+          "calendar_alone_sufficient": false
+        },
+        "recent_learning": {
+          "window_days": 14,
+          "source_card_ids": [
+            "ffct-28774"
+          ],
+          "condition": "Exposure must cover the tested knowledge, not merely a broad topic. This is a proposed route, not a live eligibility record."
+        },
+        "incoming_grade3": "not eligible as a Grade 2-readiness item without separate foundational review"
+      },
+      "uses": {
+        "readiness": "candidate for incoming Grade 4 after content/language/coverage review",
+        "recent_learning": "candidate only after exposure to this specific knowledge",
+        "benchmark": "candidate; equivalent forms and student response calibration are not established",
+        "reinforcement": "one supporting observation about the named target; require repeated evidence before changing support level"
+      },
+      "relationships": {
+        "knowledge_family_id": "ruler-length",
+        "form_family_id": "ruler-length-recall",
+        "form_equivalence": "unvalidated hypothesis",
+        "prerequisite_target_id": null,
+        "prerequisite_review": "Earlier-grade prerequisite edges have not been established.",
+        "supersedes_assessment_item_id": null,
+        "proposed_bank_replacement_fact_id": null
+      },
+      "provenance": {
+        "primary": {
+          "fact_id": "ruler-g3",
+          "card_ids": [
+            "ffct-28774"
+          ],
+          "fact": {
+            "en": "A ruler is a straight tool with centimeter and millimeter marks — perfect for measuring how long something is!",
+            "tl": "Ang ruler ay isang tuwid na kagamitan na may mga guhit ng sentimetro at milimetro — perpekto para sukatin ang haba ng isang bagay!",
+            "bis": "Ang ruler usa ka tul-id nga himan nga adunay mga marka sa sentimetro ug milimetro — perpekto sa pagsukod sa gitas-on sa usa ka butang!"
+          },
+          "bank_question": {
+            "factId": "ruler-g3",
+            "v": 2,
+            "type": "why",
+            "domain": "FORCE_MOTION_ENERGY",
+            "topic": "ruler measuring length",
+            "grades": [
+              3,
+              4
+            ],
+            "quizTopic": "Simple Machines & Tools",
+            "q": {
+              "en": "Why use a ruler?",
+              "tl": "Bakit gumagamit ng ruler?",
+              "bis": "Ngano nga mogamit og ruler?"
+            },
+            "options": [
+              {
+                "en": "To measure length",
+                "tl": "Para sukatin ang haba",
+                "bis": "Para sukdon ang gitas-on"
+              },
+              {
+                "en": "To measure weight",
+                "tl": "Para timbangin",
+                "bis": "Para timbangon"
+              },
+              {
+                "en": "To measure heat",
+                "tl": "Para sukatin ang init",
+                "bis": "Para sukdon ang kainit"
+              }
+            ],
+            "answer": 0,
+            "explanation": {
+              "en": "A ruler has centimeter and millimeter marks for measuring length.",
+              "tl": "Ang ruler ay may marka ng sentimetro at milimetro para sa pagsukat ng haba.",
+              "bis": "Ang ruler adunay marka sa sentimetro ug milimetro para sa pagsukod sa gitas-on."
+            },
+            "difficulty": 0
+          }
+        },
+        "related": [],
+        "supporting_statement": "The ruler has centimeter and millimeter markings for measuring length.",
+        "external_reference_ids": []
+      },
+      "content": {
+        "stem": {
+          "en": "Why use a ruler?",
+          "tl": "Bakit gumagamit ng ruler?",
+          "bis": "Ngano nga mogamit og ruler?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "To measure length",
+              "tl": "Para sukatin ang haba",
+              "bis": "Para sukdon ang gitas-on"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "To measure weight",
+              "tl": "Para timbangin",
+              "bis": "Para timbangon"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "To measure heat",
+              "tl": "Para sukatin ang init",
+              "bis": "Para sukdon ang kainit"
+            }
+          }
+        ],
+        "correct_option_id": "o1",
+        "explanation": {
+          "en": "A ruler has centimeter and millimeter marks for measuring length.",
+          "tl": "Ang ruler ay may marka ng sentimetro at milimetro para sa pagsukat ng haba.",
+          "bis": "Ang ruler adunay marka sa sentimetro ug milimetro para sa pagsukod sa gitas-on."
+        }
+      },
+      "rationale": {
+        "correct": "The ruler has centimeter and millimeter markings for measuring length.",
+        "distractors": {
+          "o2": "Confuses length with weight; a ruler does not measure weight.",
+          "o3": "Confuses length with a thermal quantity; a ruler does not measure heat."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "conceptual_demand": "single familiar fact or relationship",
+        "reading_demand": "author estimate: foundational; no measured readability or student timing",
+        "image_required": false,
+        "read_aloud": "permitted if presented consistently; no sound discrimination is needed"
+      },
+      "review": {
+        "reviewer": {
+          "agent": "Codex",
+          "method": "in-session author self-review",
+          "independent": false
+        },
+        "source_check": "Supporting source read; conditions and claim scope reviewed. This is not independent validation.",
+        "selection_decision": "Reuse the three-language bank item exactly. Its claim is tool-purpose recall, not ability to measure accurately.",
+        "ambiguity_and_distractors": "Author challenged each wrong option under the stated conditions; see rationale and remaining limitations.",
+        "exact_bank_stem_matches": {
+          "en": [
+            "ruler-g3"
+          ],
+          "tl": [
+            "ruler-g3"
+          ],
+          "bis": [
+            "ruler-g3"
+          ]
+        },
+        "semantic_duplicate_review": {
+          "status": "targeted self-review only; not exhaustive",
+          "related_bank_fact_ids": [
+            "ruler-g3"
+          ],
+          "rule": "Existing and revised versions share the knowledge family; do not score them as independent targets."
+        },
+        "languages": {
+          "en": {
+            "status": "draft_pending_language_review",
+            "evidence": "Bank wording is retained. Ruler, sukatin ang haba and sukdon ang gitas-on are supported by the source card."
+          },
+          "tl": {
+            "status": "draft_pending_language_review",
+            "evidence": "Bank wording is retained. Ruler, sukatin ang haba and sukdon ang gitas-on are supported by the source card."
+          },
+          "bis": {
+            "status": "draft_pending_language_review",
+            "evidence": "Bank wording is retained. Ruler, sukatin ang haba and sukdon ang gitas-on are supported by the source card."
+          }
+        },
+        "language_evidence_cards": [],
+        "holds": [],
+        "remaining_limitations": [
+          "The longest correct option is flagged for later form-level review; all options remain short purpose phrases."
+        ],
+        "empirical_difficulty": null,
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      }
+    },
+    {
+      "id": "ha-g3-0002",
+      "revision": 1,
+      "batch_id": "001-grade3-foundations",
+      "origin": "revise",
+      "status": "source_checked",
+      "production_ready": false,
+      "scope": {
+        "material_grade": 3,
+        "domain": "MATTER",
+        "internal_competency_code": "G3-M-5",
+        "internal_competency_text": "describe the physical properties of solid materials, such as hard, shiny, or stretchable",
+        "subcategory_id": "g3-matter-physical-properties-of-materials",
+        "target_id": "g3-rubber-band-stretches",
+        "knowledge_claim": "Recalls that a rubber band becomes longer when gently stretched.",
+        "curriculum_version": "FINAL-MATATAG-Science-CG-2023-Grades-3-10.pdf (DepEd, August 2023)",
+        "mapping_status": "author-reviewed supporting-knowledge mapping; teacher confirmation pending",
+        "claim_limit": "Measures the familiar example of stretchability, not a general test of all physical properties.",
+        "source_grade_tags": null,
+        "grade_note": "The grade suffix in a fact ID and the bank grade tags do not set assessment eligibility. The narrow claim is mapped separately to the Grade 3 curriculum."
+      },
+      "eligibility": {
+        "prior_grade_readiness": {
+          "intended_student_grade": 4,
+          "material_grade": 3,
+          "coverage_basis": "expected prerequisite, not verified teaching",
+          "enabled_after_review": true,
+          "requires_school_year_curriculum_match": true,
+          "curriculum_match_status": "unverified for a specific learner cohort; review required before eligibility is enabled"
+        },
+        "current_grade": {
+          "allowed_routes": [
+            "verified Hiraia knowledge exposure",
+            "teacher-reported coverage of this target"
+          ],
+          "calendar_alone_sufficient": false
+        },
+        "recent_learning": {
+          "window_days": 14,
+          "source_card_ids": [
+            "dcard-07935"
+          ],
+          "condition": "Exposure must cover the tested knowledge, not merely a broad topic. This is a proposed route, not a live eligibility record."
+        },
+        "incoming_grade3": "not eligible as a Grade 2-readiness item without separate foundational review"
+      },
+      "uses": {
+        "readiness": "candidate for incoming Grade 4 after content/language/coverage review",
+        "recent_learning": "candidate only after exposure to this specific knowledge",
+        "benchmark": "candidate; equivalent forms and student response calibration are not established",
+        "reinforcement": "one supporting observation about the named target; require repeated evidence before changing support level"
+      },
+      "relationships": {
+        "knowledge_family_id": "rubber-band-stretching",
+        "form_family_id": "rubber-band-stretching-recall",
+        "form_equivalence": "unvalidated hypothesis",
+        "prerequisite_target_id": null,
+        "prerequisite_review": "Earlier-grade prerequisite edges have not been established.",
+        "supersedes_assessment_item_id": null,
+        "proposed_bank_replacement_fact_id": "stretching-objects-g4"
+      },
+      "provenance": {
+        "primary": {
+          "fact_id": "stretching-objects-g4",
+          "card_ids": [
+            "dcard-07935"
+          ],
+          "fact": {
+            "en": "Stretching a rubber band or a spring uses a pulling force that makes the object longer without breaking it.",
+            "tl": "Ang pag-unat ng rubber band o spring ay gumagamit ng pulling force na nagpapahaba sa bagay nang hindi ito napipigtas.",
+            "bis": "Ang pag-inat sa rubber band o spring mogamit og pulling force nga makapalugway sa butang nga dili kini maputol."
+          },
+          "bank_question": {
+            "factId": "stretching-objects-g4",
+            "v": 2,
+            "type": "what-if",
+            "domain": null,
+            "topic": null,
+            "grades": null,
+            "quizTopic": null,
+            "q": {
+              "en": "What happens when you stretch a rubber band?",
+              "tl": "Ano ang mangyayari kapag inunat mo ang rubber band?",
+              "bis": "Unsa ang mahitabo kung imong i-inat ang rubber band?"
+            },
+            "options": [
+              {
+                "en": "It becomes longer",
+                "tl": "Humahaba ito",
+                "bis": "Molugway kini"
+              },
+              {
+                "en": "It becomes shorter",
+                "tl": "Umuikli ito",
+                "bis": "Mubo kini"
+              },
+              {
+                "en": "It becomes harder",
+                "tl": "Tumitigas ito",
+                "bis": "Magahi kini"
+              }
+            ],
+            "answer": 0,
+            "explanation": {
+              "en": "A pulling force makes the object longer without breaking it.",
+              "tl": "Ang pulling force ay nagpapahaba sa bagay nang hindi ito napipigtas.",
+              "bis": "Ang pulling force makapalugway sa butang nga dili kini maputol."
+            },
+            "difficulty": 0
+          }
+        },
+        "related": [],
+        "supporting_statement": "Pulling stretches a rubber band, increasing its length within its elastic range.",
+        "external_reference_ids": []
+      },
+      "content": {
+        "stem": {
+          "en": "What happens to the length of a rubber band when you gently pull its ends apart?",
+          "tl": "Ano ang mangyayari sa haba ng rubber band kapag marahan mong hinila ang magkabilang dulo nito?",
+          "bis": "Unsay mahitabo sa gitas-on sa rubber band kon hinay nimong birahon ang duha ka tumoy palayo sa usag usa?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "It gets longer.",
+              "tl": "Humahaba ito.",
+              "bis": "Molugway kini."
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "It gets shorter.",
+              "tl": "Umiikli ito.",
+              "bis": "Momubo kini."
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "It stays the same.",
+              "tl": "Hindi nagbabago ang haba nito.",
+              "bis": "Dili mausab ang gitas-on niini."
+            }
+          }
+        ],
+        "correct_option_id": "o1",
+        "explanation": {
+          "en": "A rubber band is stretchable. Pulling its ends gently apart makes it longer.",
+          "tl": "Nababanat ang rubber band. Humahaba ito kapag marahang hinila ang magkabilang dulo.",
+          "bis": "Mabira-bira ang rubber band. Molugway kini kon hinay nga birahon ang duha ka tumoy palayo sa usag usa."
+        }
+      },
+      "rationale": {
+        "correct": "Pulling stretches a rubber band, increasing its length within its elastic range.",
+        "distractors": {
+          "o2": "Confuses stretching with shortening; the stated pull separates the ends.",
+          "o3": "Treats the rubber band as rigid; a gentle stretch changes its length."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "conceptual_demand": "single familiar fact or relationship",
+        "reading_demand": "author estimate: foundational; no measured readability or student timing",
+        "image_required": false,
+        "read_aloud": "permitted if presented consistently; no sound discrimination is needed"
+      },
+      "review": {
+        "reviewer": {
+          "agent": "Codex",
+          "method": "in-session author self-review",
+          "independent": false
+        },
+        "source_check": "Supporting source read; conditions and claim scope reviewed. This is not independent validation.",
+        "selection_decision": "Add gentle pulling as a condition and replace the unrelated hardness distractor with unchanged length. This is a revision, not an extra form.",
+        "ambiguity_and_distractors": "Author challenged each wrong option under the stated conditions; see rationale and remaining limitations.",
+        "exact_bank_stem_matches": {
+          "en": [],
+          "tl": [],
+          "bis": []
+        },
+        "semantic_duplicate_review": {
+          "status": "targeted self-review only; not exhaustive",
+          "related_bank_fact_ids": [
+            "stretching-objects-g4"
+          ],
+          "rule": "Existing and revised versions share the knowledge family; do not score them as independent targets."
+        },
+        "languages": {
+          "en": {
+            "status": "draft_pending_language_review",
+            "evidence": "Molugway is retained from the source quiz. Nababanat and mabira-bira are attested in stretchable-plastic-bags-g3. Momubo is attested for shortening in corpus bodies."
+          },
+          "tl": {
+            "status": "draft_pending_language_review",
+            "evidence": "Molugway is retained from the source quiz. Nababanat and mabira-bira are attested in stretchable-plastic-bags-g3. Momubo is attested for shortening in corpus bodies."
+          },
+          "bis": {
+            "status": "draft_pending_language_review",
+            "evidence": "Molugway is retained from the source quiz. Nababanat and mabira-bira are attested in stretchable-plastic-bags-g3. Momubo is attested for shortening in corpus bodies."
+          }
+        },
+        "language_evidence_cards": [
+          {
+            "card_id": "dcard-09630",
+            "fact": {
+              "en": "Plastic bags are stretchable, which means they can be pulled longer without breaking.",
+              "tl": "Ang mga plastic bag ay nababanat, ibig sabihin kaya silang hilahin nang humaba nang hindi napupunit.",
+              "bis": "Ang mga plastic bag mabira-bira, nagpasabot nga kaya silang birahon nga motaas nga dili magisi."
+            }
+          },
+          {
+            "card_id": "ffct-09272",
+            "fact": {
+              "en": "Each muscle is made of many thin fibers that shorten together to make a pull.",
+              "tl": "Ang bawat kalamnan ay binubuo ng maraming manipis na hibla na sabay-sabay umuurong para makahila.",
+              "bis": "Ang matag kaunuran gilangkoban sa daghang nipis nga hibla nga dungan momubo aron makabira."
+            }
+          }
+        ],
+        "holds": [],
+        "remaining_limitations": [
+          "Measures the familiar example of stretchability, not a general test of all physical properties."
+        ],
+        "empirical_difficulty": null,
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      }
+    },
+    {
+      "id": "ha-g3-0003",
+      "revision": 1,
+      "batch_id": "001-grade3-foundations",
+      "origin": "alternate",
+      "status": "source_checked",
+      "production_ready": false,
+      "scope": {
+        "material_grade": 3,
+        "domain": "MATTER",
+        "internal_competency_code": "G3-M-8",
+        "internal_competency_text": "describe how changes in solid materials make them useful, such as when they are shaped, pressed, hammered, joined, or cut",
+        "subcategory_id": "g3-matter-changes-in-solid-materials",
+        "target_id": "g3-pressing-clay-changes-shape",
+        "knowledge_claim": "Recognizes pressing as an action that can flatten soft modeling clay.",
+        "curriculum_version": "FINAL-MATATAG-Science-CG-2023-Grades-3-10.pdf (DepEd, August 2023)",
+        "mapping_status": "author-reviewed supporting-knowledge mapping; teacher confirmation pending",
+        "claim_limit": "Recognizes an action; does not demonstrate the practical skill of shaping material.",
+        "source_grade_tags": null,
+        "grade_note": "The grade suffix in a fact ID and the bank grade tags do not set assessment eligibility. The narrow claim is mapped separately to the Grade 3 curriculum."
+      },
+      "eligibility": {
+        "prior_grade_readiness": {
+          "intended_student_grade": 4,
+          "material_grade": 3,
+          "coverage_basis": "expected prerequisite, not verified teaching",
+          "enabled_after_review": true,
+          "requires_school_year_curriculum_match": true,
+          "curriculum_match_status": "unverified for a specific learner cohort; review required before eligibility is enabled"
+        },
+        "current_grade": {
+          "allowed_routes": [
+            "verified Hiraia knowledge exposure",
+            "teacher-reported coverage of this target"
+          ],
+          "calendar_alone_sufficient": false
+        },
+        "recent_learning": {
+          "window_days": 14,
+          "source_card_ids": [
+            "dcard-09702"
+          ],
+          "condition": "Exposure must cover the tested knowledge, not merely a broad topic. This is a proposed route, not a live eligibility record."
+        },
+        "incoming_grade3": "not eligible as a Grade 2-readiness item without separate foundational review"
+      },
+      "uses": {
+        "readiness": "candidate for incoming Grade 4 after content/language/coverage review",
+        "recent_learning": "candidate only after exposure to this specific knowledge",
+        "benchmark": "candidate; equivalent forms and student response calibration are not established",
+        "reinforcement": "one supporting observation about the named target; require repeated evidence before changing support level"
+      },
+      "relationships": {
+        "knowledge_family_id": "pressing-soft-clay",
+        "form_family_id": "pressing-soft-clay-recall",
+        "form_equivalence": "unvalidated hypothesis",
+        "prerequisite_target_id": null,
+        "prerequisite_review": "Earlier-grade prerequisite edges have not been established.",
+        "supersedes_assessment_item_id": null,
+        "proposed_bank_replacement_fact_id": null
+      },
+      "provenance": {
+        "primary": {
+          "fact_id": "easily-pressed-materials-g4",
+          "card_ids": [
+            "dcard-09702"
+          ],
+          "fact": {
+            "en": "Modeling clay and dough are easily pressed because they are soft and can be squashed into new shapes with your hands.",
+            "tl": "Ang modeling clay at dough ay madaling mapisil dahil malambot ang mga ito at kayang mapisil sa mga bagong hugis gamit ang iyong mga kamay.",
+            "bis": "Ang modeling clay ug dough dali ra mapisil tungod kay humok kini ug mahimo nga mapisil ngadto sa bag-ong mga porma gamit ang imong mga kamot."
+          },
+          "bank_question": {
+            "factId": "easily-pressed-materials-g4",
+            "v": 2,
+            "type": "what-if",
+            "domain": null,
+            "topic": null,
+            "grades": null,
+            "quizTopic": null,
+            "q": {
+              "en": "What happens when you press modeling clay?",
+              "tl": "Ano ang mangyayari kapag pinisil mo ang modeling clay?",
+              "bis": "Unsa ang mahitabo kung imong pisliton ang modeling clay?"
+            },
+            "options": [
+              {
+                "en": "It changes shape.",
+                "tl": "Nagbabago ang hugis.",
+                "bis": "Mausab ang porma."
+              },
+              {
+                "en": "It turns to liquid.",
+                "tl": "Nagiging likido.",
+                "bis": "Mahimong likido."
+              },
+              {
+                "en": "It breaks into pieces.",
+                "tl": "Nabibiyak sa piraso.",
+                "bis": "Mabuak ngadto sa piraso."
+              }
+            ],
+            "answer": 0,
+            "explanation": {
+              "en": "Clay is soft, so pressing it changes its shape without breaking it.",
+              "tl": "Malambot ang clay, kaya ang pagpisil ay nagbabago ng hugis nito nang hindi nababali.",
+              "bis": "Humok ang clay, busa ang pagpislit mausab ang porma nga dili mabuak."
+            },
+            "difficulty": 0
+          }
+        },
+        "related": [],
+        "supporting_statement": "Soft modeling clay can be pressed into a new shape with the hands.",
+        "external_reference_ids": []
+      },
+      "content": {
+        "stem": {
+          "en": "How can you flatten a lump of soft modeling clay?",
+          "tl": "Paano mo mapapatag ang isang tipak ng malambot na modeling clay?",
+          "bis": "Unsaon nimo pagpatag sa usa ka tipak sa humok nga modeling clay?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Paint it.",
+              "tl": "Kulayan ito.",
+              "bis": "Koloran kini."
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Press it.",
+              "tl": "Pisilin ito.",
+              "bis": "Pisliton kini."
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Dry it.",
+              "tl": "Patuyuin ito.",
+              "bis": "Paugahon kini."
+            }
+          }
+        ],
+        "correct_option_id": "o2",
+        "explanation": {
+          "en": "Pressing soft modeling clay changes its shape and can make it flat.",
+          "tl": "Nababago ng pagpisil ang hugis ng malambot na modeling clay at maaari itong mapatag.",
+          "bis": "Ang pagpislit sa humok nga modeling clay makausab sa porma niini ug makapatag niini."
+        }
+      },
+      "rationale": {
+        "correct": "Soft modeling clay can be pressed into a new shape with the hands.",
+        "distractors": {
+          "o1": "Confuses a surface-color change with reshaping; painting does not flatten the lump.",
+          "o3": "Confuses drying with applying pressure; drying is not the action that flattens the lump."
+        }
+      },
+      "demand": {
+        "type": "recognition",
+        "conceptual_demand": "single familiar fact or relationship",
+        "reading_demand": "author estimate: foundational; no measured readability or student timing",
+        "image_required": false,
+        "read_aloud": "permitted if presented consistently; no sound discrimination is needed"
+      },
+      "review": {
+        "reviewer": {
+          "agent": "Codex",
+          "method": "in-session author self-review",
+          "independent": false
+        },
+        "source_check": "Supporting source read; conditions and claim scope reviewed. This is not independent validation.",
+        "selection_decision": "Reverse the source question from identifying the effect to selecting the action. Treat comparability with the source form as untested.",
+        "ambiguity_and_distractors": "Author challenged each wrong option under the stated conditions; see rationale and remaining limitations.",
+        "exact_bank_stem_matches": {
+          "en": [],
+          "tl": [],
+          "bis": []
+        },
+        "semantic_duplicate_review": {
+          "status": "targeted self-review only; not exhaustive",
+          "related_bank_fact_ids": [
+            "easily-pressed-materials-g4",
+            "pressing-solid-materials-g4"
+          ],
+          "rule": "Existing and revised versions share the knowledge family; do not score them as independent targets."
+        },
+        "languages": {
+          "en": {
+            "status": "draft_pending_language_review",
+            "evidence": "Source card supports humok, porma and pisliton; recycling-paper-pulp-g5 provides patagon and paugahon. The complete newly composed Cebuano sentence still needs language review."
+          },
+          "tl": {
+            "status": "draft_pending_language_review",
+            "evidence": "Source card supports humok, porma and pisliton; recycling-paper-pulp-g5 provides patagon and paugahon. The complete newly composed Cebuano sentence still needs language review."
+          },
+          "bis": {
+            "status": "draft_pending_language_review",
+            "evidence": "Source card supports humok, porma and pisliton; recycling-paper-pulp-g5 provides patagon and paugahon. The complete newly composed Cebuano sentence still needs language review."
+          }
+        },
+        "language_evidence_cards": [
+          {
+            "card_id": "ffct-16174",
+            "fact": {
+              "en": "Old paper is soaked in water and mixed into a soft mush called pulp! Then, it gets flattened and dried into new paper.",
+              "tl": "Ang lumang papel ay binababad sa tubig at hinahalo hanggang maging malambot na pulp! Pagkatapos, pinapatag at pinapatuyo ito para maging bagong papel.",
+              "bis": "Ang daang papel ibutang sa tubig ug isagol hangtod mahimong humok nga pulp! Dayon, patagon ug paugahon kini aron mahimong bag-ong papel."
+            }
+          }
+        ],
+        "holds": [],
+        "remaining_limitations": [
+          "Recognizes an action; does not demonstrate the practical skill of shaping material."
+        ],
+        "empirical_difficulty": null,
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      }
+    },
+    {
+      "id": "ha-g3-0004",
+      "revision": 2,
+      "batch_id": "001-grade3-foundations",
+      "origin": "revise",
+      "status": "source_checked",
+      "production_ready": false,
+      "scope": {
+        "material_grade": 3,
+        "domain": "LIVING_THINGS",
+        "internal_competency_code": "G3-L-3",
+        "internal_competency_text": "describe the characteristics of living things: they grow, respond, and reproduce",
+        "subcategory_id": "g3-living_things-living-and-non-living-things",
+        "target_id": "g3-new-leaves-show-growth",
+        "knowledge_claim": "Recognizes the appearance of new leaves as evidence of plant growth.",
+        "curriculum_version": "FINAL-MATATAG-Science-CG-2023-Grades-3-10.pdf (DepEd, August 2023)",
+        "mapping_status": "author-reviewed supporting-knowledge mapping; teacher confirmation pending",
+        "claim_limit": "A recognition item about growth, not proof that the child can observe or record growth over time.",
+        "source_grade_tags": null,
+        "grade_note": "The grade suffix in a fact ID and the bank grade tags do not set assessment eligibility. The narrow claim is mapped separately to the Grade 3 curriculum."
+      },
+      "eligibility": {
+        "prior_grade_readiness": {
+          "intended_student_grade": 4,
+          "material_grade": 3,
+          "coverage_basis": "expected prerequisite, not verified teaching",
+          "enabled_after_review": true,
+          "requires_school_year_curriculum_match": true,
+          "curriculum_match_status": "unverified for a specific learner cohort; review required before eligibility is enabled"
+        },
+        "current_grade": {
+          "allowed_routes": [
+            "verified Hiraia knowledge exposure",
+            "teacher-reported coverage of this target"
+          ],
+          "calendar_alone_sufficient": false
+        },
+        "recent_learning": {
+          "window_days": 14,
+          "source_card_ids": [
+            "dcard-09236"
+          ],
+          "condition": "Exposure must cover the tested knowledge, not merely a broad topic. This is a proposed route, not a live eligibility record."
+        },
+        "incoming_grade3": "not eligible as a Grade 2-readiness item without separate foundational review"
+      },
+      "uses": {
+        "readiness": "candidate for incoming Grade 4 after content/language/coverage review",
+        "recent_learning": "candidate only after exposure to this specific knowledge",
+        "benchmark": "candidate; equivalent forms and student response calibration are not established",
+        "reinforcement": "one supporting observation about the named target; require repeated evidence before changing support level"
+      },
+      "relationships": {
+        "knowledge_family_id": "living-things-growth",
+        "form_family_id": "seedling-growth-new-leaves-recall",
+        "form_equivalence": "unvalidated hypothesis",
+        "prerequisite_target_id": null,
+        "prerequisite_review": "Earlier-grade prerequisite edges have not been established.",
+        "supersedes_assessment_item_id": null,
+        "proposed_bank_replacement_fact_id": "seedling-changes-g5"
+      },
+      "provenance": {
+        "primary": {
+          "fact_id": "seedling-changes-g5",
+          "card_ids": [
+            "dcard-09236"
+          ],
+          "fact": {
+            "en": "A growing seedling shows changes such as the appearance of leaves and an increase in height as it develops into a young plant.",
+            "tl": "Ang lumalaking seedling ay nagpapakita ng mga pagbabago tulad ng paglitaw ng mga dahon at pagtaas ng taas habang ito ay nagiging batang halaman.",
+            "bis": "Ang nagtubo nga seedling nagpakita ug mga kausaban sama sa paggawas sa mga dahon ug pagtaas sa gitas-on samtang kini nahimong batan-ong tanom."
+          },
+          "bank_question": {
+            "factId": "seedling-changes-g5",
+            "v": 2,
+            "type": "what-does",
+            "domain": null,
+            "topic": null,
+            "grades": null,
+            "quizTopic": null,
+            "q": {
+              "en": "What does a seedling show as it grows?",
+              "tl": "Ano ang ipinapakita ng seedling habang lumalaki?",
+              "bis": "Unsa ang gipakita sa seedling samtang motubo?"
+            },
+            "options": [
+              {
+                "en": "New leaves appear",
+                "tl": "Lumilitaw ang mga dahon",
+                "bis": "Motumaw ang mga dahon"
+              },
+              {
+                "en": "Roots shrink",
+                "tl": "Lumiliit ang mga ugat",
+                "bis": "Mokunhod ang mga gamot"
+              },
+              {
+                "en": "Stem turns black",
+                "tl": "Naninlimang ang tangkay",
+                "bis": "Mangitom ang punoan"
+              }
+            ],
+            "answer": 0,
+            "explanation": {
+              "en": "A growing seedling shows new leaves and increases in height as it becomes a young plant.",
+              "tl": "Ang lumalaking seedling ay nagpapakita ng mga bagong dahon at pagtaas ng taas.",
+              "bis": "Ang nagtubo nga seedling nagpakita og bag-ong dahon ug pagtaas sa gitas-on."
+            },
+            "difficulty": 0
+          }
+        },
+        "related": [],
+        "supporting_statement": "A growing seedling develops new leaves.",
+        "external_reference_ids": []
+      },
+      "content": {
+        "stem": {
+          "en": "Which change shows that a young plant is growing?",
+          "tl": "Aling pagbabago ang nagpapakitang lumalaki ang isang batang halaman?",
+          "bis": "Unsang kausaban ang nagpakita nga nagtubo ang usa ka batan-ong tanom?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Its leaves move in the wind.",
+              "tl": "Gumagalaw ang mga dahon nito sa hangin.",
+              "bis": "Molihok ang mga dahon niini sa hangin."
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Its leaves get wet in the rain.",
+              "tl": "Nababasa ang mga dahon nito sa ulan.",
+              "bis": "Mabasa ang mga dahon niini sa ulan."
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "It develops new leaves.",
+              "tl": "Nagkakaroon ito ng mga bagong dahon.",
+              "bis": "Motubo ang bag-ong mga dahon niini."
+            }
+          }
+        ],
+        "correct_option_id": "o3",
+        "explanation": {
+          "en": "New leaves are part of a plant growing. Moving in the wind or getting wet does not by itself show growth.",
+          "tl": "Bahagi ng paglaki ng halaman ang pagkakaroon ng mga bagong dahon. Ang paggalaw sa hangin o pagkabasa sa ulan ay hindi sapat na palatandaan ng paglaki.",
+          "bis": "Ang pagtubo sa bag-ong mga dahon bahin sa pagtubo sa tanom. Ang paglihok sa hangin o pagkabasa sa ulan dili igo nga timailhan sa pagtubo."
+        }
+      },
+      "rationale": {
+        "correct": "A growing seedling develops new leaves.",
+        "distractors": {
+          "o1": "Confuses externally caused movement with growth; a wind-driven leaf can move without growing.",
+          "o2": "Confuses an external condition that may support growth with evidence that growth has occurred."
+        }
+      },
+      "demand": {
+        "type": "recognition",
+        "conceptual_demand": "single familiar fact or relationship",
+        "reading_demand": "author estimate: foundational; no measured readability or student timing",
+        "image_required": false,
+        "read_aloud": "permitted if presented consistently; no sound discrimination is needed"
+      },
+      "review": {
+        "reviewer": {
+          "agent": "Codex",
+          "method": "in-session author self-review",
+          "independent": false
+        },
+        "source_check": "Supporting source read; conditions and claim scope reviewed. This is not independent validation.",
+        "selection_decision": "Replace weak source distractors with motion and wetting, so the child distinguishes growth from other observable changes. Cross-batch review groups this with the kitten size-change item as growth evidence; do not count both as independent competency coverage in one form.",
+        "ambiguity_and_distractors": "Author challenged each wrong option under the stated conditions; see rationale and remaining limitations.",
+        "exact_bank_stem_matches": {
+          "en": [],
+          "tl": [],
+          "bis": []
+        },
+        "semantic_duplicate_review": {
+          "status": "targeted self-review only; not exhaustive",
+          "related_bank_fact_ids": [
+            "seedling-changes-g5"
+          ],
+          "rule": "Existing and revised versions share the knowledge family; do not score them as independent targets."
+        },
+        "languages": {
+          "en": {
+            "status": "draft_pending_language_review",
+            "evidence": "Batan-ong tanom and nagtubo occur in the source. Bag-ong mga dahon with motubo occurs in fern-pako-roots-rhizome-g6. The revised explanations are drafts."
+          },
+          "tl": {
+            "status": "draft_pending_language_review",
+            "evidence": "Batan-ong tanom and nagtubo occur in the source. Bag-ong mga dahon with motubo occurs in fern-pako-roots-rhizome-g6. The revised explanations are drafts."
+          },
+          "bis": {
+            "status": "draft_pending_language_review",
+            "evidence": "Batan-ong tanom and nagtubo occur in the source. Bag-ong mga dahon with motubo occurs in fern-pako-roots-rhizome-g6. The revised explanations are drafts."
+          }
+        },
+        "language_evidence_cards": [
+          {
+            "card_id": "ffct-05849",
+            "fact": {
+              "en": "How do ferns spread underground?\n\nA creeping underground stem called a rhizome. New leaves sprout up from it.",
+              "tl": "Paano kumakalat ang pako sa ilalim ng lupa?\n\nGumagapang na tangkay sa ilalim ng lupa na tinatawag na rhizome ang ginagamit ng maraming pako. Mula rito tumutubo ang mga bagong dahon.",
+              "bis": "Giunsa pagkatag sa pako ubos sa yuta?\n\nGamit ang punoan nga nagkamang ilawom sa yuta nga gitawag og rhizome. Gikan niini motubo ang bag-ong mga dahon."
+            }
+          }
+        ],
+        "holds": [],
+        "remaining_limitations": [
+          "A recognition item about growth, not proof that the child can observe or record growth over time."
+        ],
+        "empirical_difficulty": null,
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      }
+    },
+    {
+      "id": "ha-g3-0005",
+      "revision": 1,
+      "batch_id": "001-grade3-foundations",
+      "origin": "reuse",
+      "status": "source_checked",
+      "production_ready": false,
+      "scope": {
+        "material_grade": 3,
+        "domain": "LIVING_THINGS",
+        "internal_competency_code": "G3-L-4",
+        "internal_competency_text": "observe and describe the outer body parts of animals, such as head, legs or wings, and identify their role to move and to gather food",
+        "subcategory_id": "g3-living_things-animal-body-parts",
+        "target_id": "g3-frog-back-legs-jumping",
+        "knowledge_claim": "Identifies strong back legs as the body parts that help a frog jump far.",
+        "curriculum_version": "FINAL-MATATAG-Science-CG-2023-Grades-3-10.pdf (DepEd, August 2023)",
+        "mapping_status": "author-reviewed supporting-knowledge mapping; teacher confirmation pending",
+        "claim_limit": "Identifies one familiar structure-function relationship; does not establish knowledge of every animal body part.",
+        "source_grade_tags": [
+          3,
+          4
+        ],
+        "grade_note": "The grade suffix in a fact ID and the bank grade tags do not set assessment eligibility. The narrow claim is mapped separately to the Grade 3 curriculum."
+      },
+      "eligibility": {
+        "prior_grade_readiness": {
+          "intended_student_grade": 4,
+          "material_grade": 3,
+          "coverage_basis": "expected prerequisite, not verified teaching",
+          "enabled_after_review": true,
+          "requires_school_year_curriculum_match": true,
+          "curriculum_match_status": "unverified for a specific learner cohort; review required before eligibility is enabled"
+        },
+        "current_grade": {
+          "allowed_routes": [
+            "verified Hiraia knowledge exposure",
+            "teacher-reported coverage of this target"
+          ],
+          "calendar_alone_sufficient": false
+        },
+        "recent_learning": {
+          "window_days": 14,
+          "source_card_ids": [
+            "ffct-10006"
+          ],
+          "condition": "Exposure must cover the tested knowledge, not merely a broad topic. This is a proposed route, not a live eligibility record."
+        },
+        "incoming_grade3": "not eligible as a Grade 2-readiness item without separate foundational review"
+      },
+      "uses": {
+        "readiness": "candidate for incoming Grade 4 after content/language/coverage review",
+        "recent_learning": "candidate only after exposure to this specific knowledge",
+        "benchmark": "candidate; equivalent forms and student response calibration are not established",
+        "reinforcement": "one supporting observation about the named target; require repeated evidence before changing support level"
+      },
+      "relationships": {
+        "knowledge_family_id": "frog-jumping-back-legs",
+        "form_family_id": "frog-jumping-back-legs-recall",
+        "form_equivalence": "unvalidated hypothesis",
+        "prerequisite_target_id": null,
+        "prerequisite_review": "Earlier-grade prerequisite edges have not been established.",
+        "supersedes_assessment_item_id": null,
+        "proposed_bank_replacement_fact_id": null
+      },
+      "provenance": {
+        "primary": {
+          "fact_id": "frog-jump-long-legs-g3",
+          "card_ids": [
+            "ffct-10006"
+          ],
+          "fact": {
+            "en": "A frog's strong, long back legs are what let it jump so far!",
+            "tl": "Ang malakas at mahabang likurang binti ng palaka ang dahilan kaya ito ay malayong makatalon!",
+            "bis": "Ang kusgan ug taas nga likod nga tiil sa baki mao ang hinungdan nga makaambak kini og layo!"
+          },
+          "bank_question": {
+            "factId": "frog-jump-long-legs-g3",
+            "v": 2,
+            "type": "term",
+            "domain": "LIVING_THINGS",
+            "topic": "frogs jump with strong legs",
+            "grades": [
+              3,
+              4
+            ],
+            "quizTopic": "Animals",
+            "q": {
+              "en": "What helps a frog jump far?",
+              "tl": "Ano ang tumutulong sa palaka na tumalon nang malayo?",
+              "bis": "Unsa ang makatabang sa baki nga makalukso og layo?"
+            },
+            "options": [
+              {
+                "en": "Strong back legs",
+                "tl": "Malakas na likurang binti",
+                "bis": "Kusgan nga likod nga tiil"
+              },
+              {
+                "en": "Long front legs",
+                "tl": "Mahabang harapang binti",
+                "bis": "Taas nga atubangan nga tiil"
+              },
+              {
+                "en": "Wide flat feet",
+                "tl": "Malapad na patag na paa",
+                "bis": "Lapad nga patag nga tiil"
+              }
+            ],
+            "answer": 0,
+            "explanation": {
+              "en": "A frog's strong, long back legs are what let it jump so far.",
+              "tl": "Ang malakas at mahabang likurang binti ng palaka ang dahilan kaya ito ay malayong makatalon.",
+              "bis": "Ang kusgan ug taas nga likod nga tiil sa baki mao ang hinungdan nga makaambak kini og layo."
+            },
+            "difficulty": 0
+          }
+        },
+        "related": [],
+        "supporting_statement": "Frogs have strong, long back legs that power jumping.",
+        "external_reference_ids": []
+      },
+      "content": {
+        "stem": {
+          "en": "What helps a frog jump far?",
+          "tl": "Ano ang tumutulong sa palaka na tumalon nang malayo?",
+          "bis": "Unsa ang makatabang sa baki nga makalukso og layo?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Strong back legs",
+              "tl": "Malakas na likurang binti",
+              "bis": "Kusgan nga likod nga tiil"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Long front legs",
+              "tl": "Mahabang harapang binti",
+              "bis": "Taas nga atubangan nga tiil"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Wide flat feet",
+              "tl": "Malapad na patag na paa",
+              "bis": "Lapad nga patag nga tiil"
+            }
+          }
+        ],
+        "correct_option_id": "o1",
+        "explanation": {
+          "en": "A frog's strong, long back legs are what let it jump so far.",
+          "tl": "Ang malakas at mahabang likurang binti ng palaka ang dahilan kaya ito ay malayong makatalon.",
+          "bis": "Ang kusgan ug taas nga likod nga tiil sa baki mao ang hinungdan nga makaambak kini og layo."
+        }
+      },
+      "rationale": {
+        "correct": "Frogs have strong, long back legs that power jumping.",
+        "distractors": {
+          "o2": "Confuses the propulsive back legs with the front legs.",
+          "o3": "Attributes the distance mainly to the shape of the feet rather than the powerful back legs."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "conceptual_demand": "single familiar fact or relationship",
+        "reading_demand": "author estimate: foundational; no measured readability or student timing",
+        "image_required": false,
+        "read_aloud": "permitted if presented consistently; no sound discrimination is needed"
+      },
+      "review": {
+        "reviewer": {
+          "agent": "Codex",
+          "method": "in-session author self-review",
+          "independent": false
+        },
+        "source_check": "Supporting source read; conditions and claim scope reviewed. This is not independent validation.",
+        "selection_decision": "Reuse the three-language bank item exactly. Each option is an animal body-part description.",
+        "ambiguity_and_distractors": "Author challenged each wrong option under the stated conditions; see rationale and remaining limitations.",
+        "exact_bank_stem_matches": {
+          "en": [
+            "frog-jump-long-legs-g3"
+          ],
+          "tl": [
+            "frog-jump-long-legs-g3"
+          ],
+          "bis": [
+            "frog-jump-long-legs-g3"
+          ]
+        },
+        "semantic_duplicate_review": {
+          "status": "targeted self-review only; not exhaustive",
+          "related_bank_fact_ids": [
+            "frog-jump-long-legs-g3"
+          ],
+          "rule": "Existing and revised versions share the knowledge family; do not score them as independent targets."
+        },
+        "languages": {
+          "en": {
+            "status": "draft_pending_language_review",
+            "evidence": "Retain source-bank wording, including kusgan and likod nga tiil. Corpus evidence is not independent native-language validation."
+          },
+          "tl": {
+            "status": "draft_pending_language_review",
+            "evidence": "Retain source-bank wording, including kusgan and likod nga tiil. Corpus evidence is not independent native-language validation."
+          },
+          "bis": {
+            "status": "draft_pending_language_review",
+            "evidence": "Retain source-bank wording, including kusgan and likod nga tiil. Corpus evidence is not independent native-language validation."
+          }
+        },
+        "language_evidence_cards": [],
+        "holds": [],
+        "remaining_limitations": [
+          "Identifies one familiar structure-function relationship; does not establish knowledge of every animal body part."
+        ],
+        "empirical_difficulty": null,
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      }
+    },
+    {
+      "id": "ha-g3-0006",
+      "revision": 1,
+      "batch_id": "001-grade3-foundations",
+      "origin": "reuse",
+      "status": "source_checked",
+      "production_ready": false,
+      "scope": {
+        "material_grade": 3,
+        "domain": "LIVING_THINGS",
+        "internal_competency_code": "G3-L-5",
+        "internal_competency_text": "observe the outer parts of plants, such as leaves, roots, and stems and identify their role to get water and nutrients from the soil",
+        "subcategory_id": "g3-living_things-plant-parts-and-functions",
+        "target_id": "g3-roots-absorb-soil-water",
+        "knowledge_claim": "Identifies roots as the plant part that takes up water from the soil.",
+        "curriculum_version": "FINAL-MATATAG-Science-CG-2023-Grades-3-10.pdf (DepEd, August 2023)",
+        "mapping_status": "author-reviewed supporting-knowledge mapping; teacher confirmation pending",
+        "claim_limit": "Recalls the function; does not show that the child can identify roots on an unfamiliar live plant.",
+        "source_grade_tags": [
+          4,
+          5,
+          6
+        ],
+        "grade_note": "The grade suffix in a fact ID and the bank grade tags do not set assessment eligibility. The narrow claim is mapped separately to the Grade 3 curriculum."
+      },
+      "eligibility": {
+        "prior_grade_readiness": {
+          "intended_student_grade": 4,
+          "material_grade": 3,
+          "coverage_basis": "expected prerequisite, not verified teaching",
+          "enabled_after_review": true,
+          "requires_school_year_curriculum_match": true,
+          "curriculum_match_status": "unverified for a specific learner cohort; review required before eligibility is enabled"
+        },
+        "current_grade": {
+          "allowed_routes": [
+            "verified Hiraia knowledge exposure",
+            "teacher-reported coverage of this target"
+          ],
+          "calendar_alone_sufficient": false
+        },
+        "recent_learning": {
+          "window_days": 14,
+          "source_card_ids": [
+            "ffct-14433"
+          ],
+          "condition": "Exposure must cover the tested knowledge, not merely a broad topic. This is a proposed route, not a live eligibility record."
+        },
+        "incoming_grade3": "not eligible as a Grade 2-readiness item without separate foundational review"
+      },
+      "uses": {
+        "readiness": "candidate for incoming Grade 4 after content/language/coverage review",
+        "recent_learning": "candidate only after exposure to this specific knowledge",
+        "benchmark": "candidate; equivalent forms and student response calibration are not established",
+        "reinforcement": "one supporting observation about the named target; require repeated evidence before changing support level"
+      },
+      "relationships": {
+        "knowledge_family_id": "roots-soil-water",
+        "form_family_id": "roots-soil-water-recall",
+        "form_equivalence": "unvalidated hypothesis",
+        "prerequisite_target_id": null,
+        "prerequisite_review": "Earlier-grade prerequisite edges have not been established.",
+        "supersedes_assessment_item_id": null,
+        "proposed_bank_replacement_fact_id": null
+      },
+      "provenance": {
+        "primary": {
+          "fact_id": "plant-roots-absorb-water-g4",
+          "card_ids": [
+            "ffct-14433"
+          ],
+          "fact": {
+            "en": "A plant's roots soak up water and nutrients from the soil so the whole plant can use them.",
+            "tl": "Ang ugat ng halaman ang humihigop ng tubig at mga sustansya mula sa lupa para magamit ng buong halaman.",
+            "bis": "Ang gamot sa tanom mosuyop og tubig ug sustansya gikan sa yuta aron magamit sa tibuok tanom."
+          },
+          "bank_question": {
+            "factId": "plant-roots-absorb-water-g4",
+            "v": 2,
+            "type": "term",
+            "domain": "LIVING_THINGS",
+            "topic": "roots absorb water from soil",
+            "grades": [
+              4,
+              5,
+              6
+            ],
+            "quizTopic": "Plants",
+            "q": {
+              "en": "What part of a plant soaks up water from the soil?",
+              "tl": "Anong bahagi ng halaman ang humihigop ng tubig mula sa lupa?",
+              "bis": "Unsa nga bahin sa tanom ang mosuyop og tubig gikan sa yuta?"
+            },
+            "options": [
+              {
+                "en": "Roots",
+                "tl": "Ugat",
+                "bis": "Gamot"
+              },
+              {
+                "en": "Leaves",
+                "tl": "Dahon",
+                "bis": "Dahon"
+              },
+              {
+                "en": "Flowers",
+                "tl": "Bulaklak",
+                "bis": "Bulak"
+              }
+            ],
+            "answer": 0,
+            "explanation": {
+              "en": "Roots absorb water and nutrients from the soil so the whole plant can use them.",
+              "tl": "Ang ugat ang humihigop ng tubig at sustansya mula sa lupa para sa buong halaman.",
+              "bis": "Ang gamot mosuyop og tubig ug sustansya gikan sa yuta para sa tibuok tanom."
+            },
+            "difficulty": 0
+          }
+        },
+        "related": [],
+        "supporting_statement": "Roots absorb water and mineral nutrients from soil.",
+        "external_reference_ids": [
+          "osu-roots"
+        ]
+      },
+      "content": {
+        "stem": {
+          "en": "What part of a plant soaks up water from the soil?",
+          "tl": "Anong bahagi ng halaman ang humihigop ng tubig mula sa lupa?",
+          "bis": "Unsa nga bahin sa tanom ang mosuyop og tubig gikan sa yuta?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Roots",
+              "tl": "Ugat",
+              "bis": "Gamot"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Leaves",
+              "tl": "Dahon",
+              "bis": "Dahon"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Flowers",
+              "tl": "Bulaklak",
+              "bis": "Bulak"
+            }
+          }
+        ],
+        "correct_option_id": "o1",
+        "explanation": {
+          "en": "Roots absorb water and nutrients from the soil so the whole plant can use them.",
+          "tl": "Ang ugat ang humihigop ng tubig at sustansya mula sa lupa para sa buong halaman.",
+          "bis": "Ang gamot mosuyop og tubig ug sustansya gikan sa yuta para sa tibuok tanom."
+        }
+      },
+      "rationale": {
+        "correct": "Roots absorb water and mineral nutrients from soil.",
+        "distractors": {
+          "o2": "Confuses leaves with the main soil-water absorbing organ; the question specifies water from soil.",
+          "o3": "Confuses flowers with the main soil-water absorbing organ; flowers have a reproductive role."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "conceptual_demand": "single familiar fact or relationship",
+        "reading_demand": "author estimate: foundational; no measured readability or student timing",
+        "image_required": false,
+        "read_aloud": "permitted if presented consistently; no sound discrimination is needed"
+      },
+      "review": {
+        "reviewer": {
+          "agent": "Codex",
+          "method": "in-session author self-review",
+          "independent": false
+        },
+        "source_check": "Supporting source read; conditions and claim scope reviewed. This is not independent validation.",
+        "selection_decision": "Reuse the three-language bank item exactly. The words from the soil distinguish the target from special cases of leaf water uptake.",
+        "ambiguity_and_distractors": "Author challenged each wrong option under the stated conditions; see rationale and remaining limitations.",
+        "exact_bank_stem_matches": {
+          "en": [
+            "plant-roots-absorb-water-g4"
+          ],
+          "tl": [
+            "plant-roots-absorb-water-g4"
+          ],
+          "bis": [
+            "plant-roots-absorb-water-g4"
+          ]
+        },
+        "semantic_duplicate_review": {
+          "status": "targeted self-review only; not exhaustive",
+          "related_bank_fact_ids": [
+            "plant-roots-absorb-water-g4"
+          ],
+          "rule": "Existing and revised versions share the knowledge family; do not score them as independent targets."
+        },
+        "languages": {
+          "en": {
+            "status": "draft_pending_language_review",
+            "evidence": "Ugat, gamot and mosuyop are supported directly by the source card and quiz."
+          },
+          "tl": {
+            "status": "draft_pending_language_review",
+            "evidence": "Ugat, gamot and mosuyop are supported directly by the source card and quiz."
+          },
+          "bis": {
+            "status": "draft_pending_language_review",
+            "evidence": "Ugat, gamot and mosuyop are supported directly by the source card and quiz."
+          }
+        },
+        "language_evidence_cards": [],
+        "holds": [],
+        "remaining_limitations": [
+          "Recalls the function; does not show that the child can identify roots on an unfamiliar live plant."
+        ],
+        "empirical_difficulty": null,
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      }
+    },
+    {
+      "id": "ha-g3-0007",
+      "revision": 1,
+      "batch_id": "001-grade3-foundations",
+      "origin": "revise",
+      "status": "source_checked",
+      "production_ready": false,
+      "scope": {
+        "material_grade": 3,
+        "domain": "FORCE_MOTION_ENERGY",
+        "internal_competency_code": "G3-F-1",
+        "internal_competency_text": "explore and demonstrate different ways to make objects move by natural causes, such as wind and water, or by people, such as pushing, pulling, rolling, and carrying",
+        "subcategory_id": "g3-force_motion_energy-ways-to-move-objects",
+        "target_id": "g3-carabao-pulls-plow",
+        "knowledge_claim": "Identifies pulling as the action a carabao uses to move a plow behind it.",
+        "curriculum_version": "FINAL-MATATAG-Science-CG-2023-Grades-3-10.pdf (DepEd, August 2023)",
+        "mapping_status": "author-reviewed supporting-knowledge mapping; teacher confirmation pending",
+        "claim_limit": "Depends on familiarity with a plow; teacher review should check that this context is accessible.",
+        "source_grade_tags": [
+          3,
+          4
+        ],
+        "grade_note": "The grade suffix in a fact ID and the bank grade tags do not set assessment eligibility. The narrow claim is mapped separately to the Grade 3 curriculum."
+      },
+      "eligibility": {
+        "prior_grade_readiness": {
+          "intended_student_grade": 4,
+          "material_grade": 3,
+          "coverage_basis": "expected prerequisite, not verified teaching",
+          "enabled_after_review": true,
+          "requires_school_year_curriculum_match": true,
+          "curriculum_match_status": "unverified for a specific learner cohort; review required before eligibility is enabled"
+        },
+        "current_grade": {
+          "allowed_routes": [
+            "verified Hiraia knowledge exposure",
+            "teacher-reported coverage of this target"
+          ],
+          "calendar_alone_sufficient": false
+        },
+        "recent_learning": {
+          "window_days": 14,
+          "source_card_ids": [
+            "ffct-10629"
+          ],
+          "condition": "Exposure must cover the tested knowledge, not merely a broad topic. This is a proposed route, not a live eligibility record."
+        },
+        "incoming_grade3": "not eligible as a Grade 2-readiness item without separate foundational review"
+      },
+      "uses": {
+        "readiness": "candidate for incoming Grade 4 after content/language/coverage review",
+        "recent_learning": "candidate only after exposure to this specific knowledge",
+        "benchmark": "candidate; equivalent forms and student response calibration are not established",
+        "reinforcement": "one supporting observation about the named target; require repeated evidence before changing support level"
+      },
+      "relationships": {
+        "knowledge_family_id": "pulling-plow",
+        "form_family_id": "pulling-plow-recall",
+        "form_equivalence": "unvalidated hypothesis",
+        "prerequisite_target_id": null,
+        "prerequisite_review": "Earlier-grade prerequisite edges have not been established.",
+        "supersedes_assessment_item_id": null,
+        "proposed_bank_replacement_fact_id": "carabao-pulls-plow-g3"
+      },
+      "provenance": {
+        "primary": {
+          "fact_id": "carabao-pulls-plow-g3",
+          "card_ids": [
+            "ffct-10629"
+          ],
+          "fact": {
+            "en": "Farmers use the carabao to pull a plow and break up the soil in rice fields.",
+            "tl": "Ginagamit ng mga magsasaka ang kalabaw upang humila ng araro at bungkalin ang lupa sa palayan.",
+            "bis": "Gigamit sa mga mag-uuma ang kalabaw aron mobira sa daro ug magbungkal sa yuta sa umahan."
+          },
+          "bank_question": {
+            "factId": "carabao-pulls-plow-g3",
+            "v": 2,
+            "type": "what-does",
+            "domain": "LIVING_THINGS",
+            "topic": "carabao helps farmers plow rice fields",
+            "grades": [
+              3,
+              4
+            ],
+            "quizTopic": "Animals",
+            "q": {
+              "en": "What does the carabao do for the farmer?",
+              "tl": "Ano ang ginagawa ng kalabaw para sa magsasaka?",
+              "bis": "Unsa ang gibuhat sa kalabaw para sa mag-uuma?"
+            },
+            "options": [
+              {
+                "en": "Pulls the plow",
+                "tl": "Hinihila ang araro",
+                "bis": "Mobira sa daro"
+              },
+              {
+                "en": "Plants the seeds",
+                "tl": "Nagtatanim ng binhi",
+                "bis": "Mugtanom sa binhi"
+              },
+              {
+                "en": "Harvests the rice",
+                "tl": "Umaani ng palay",
+                "bis": "Magaani sa humay"
+              }
+            ],
+            "answer": 0,
+            "explanation": {
+              "en": "Farmers use the carabao to pull a plow and break up the soil in rice fields.",
+              "tl": "Ginagamit ng mga magsasaka ang kalabaw upang hilahin ang araro at bungkalin ang lupa sa palayan.",
+              "bis": "Gigamit sa mga mag-uuma ang kalabaw aron mobira sa daro ug magbungkal sa yuta sa umahan."
+            },
+            "difficulty": 0
+          }
+        },
+        "related": [],
+        "supporting_statement": "A carabao pulls a plow to work the soil.",
+        "external_reference_ids": []
+      },
+      "content": {
+        "stem": {
+          "en": "How does a carabao move the plow behind it?",
+          "tl": "Paano pinapagalaw ng kalabaw ang ararong nasa likuran nito?",
+          "bis": "Giunsa sa kalabaw pagpalihok ang daro nga naa sa luyo niini?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "By pushing it.",
+              "tl": "Sa pagtulak dito.",
+              "bis": "Pinaagi sa pagtulod niini."
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "By pulling it.",
+              "tl": "Sa paghila dito.",
+              "bis": "Pinaagi sa pagbira niini."
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "By spinning it.",
+              "tl": "Sa pagpapaikot dito.",
+              "bis": "Pinaagi sa pagtuyok niini."
+            }
+          }
+        ],
+        "correct_option_id": "o2",
+        "explanation": {
+          "en": "The carabao pulls the plow along behind it. Pulling is one way to make an object move.",
+          "tl": "Hinihila ng kalabaw ang araro sa likuran nito. Ang paghila ay isang paraan upang mapagalaw ang bagay.",
+          "bis": "Gibira sa kalabaw ang daro sa luyo niini. Ang pagbira usa ka paagi sa pagpalihok sa butang."
+        }
+      },
+      "rationale": {
+        "correct": "A carabao pulls a plow to work the soil.",
+        "distractors": {
+          "o1": "Confuses pushing with pulling; the plow trails behind the animal.",
+          "o3": "Confuses rotation with moving the trailing plow through the field."
+        }
+      },
+      "demand": {
+        "type": "recognition",
+        "conceptual_demand": "single familiar fact or relationship",
+        "reading_demand": "author estimate: foundational; no measured readability or student timing",
+        "image_required": false,
+        "read_aloud": "permitted if presented consistently; no sound discrimination is needed"
+      },
+      "review": {
+        "reviewer": {
+          "agent": "Codex",
+          "method": "in-session author self-review",
+          "independent": false
+        },
+        "source_check": "Supporting source read; conditions and claim scope reviewed. This is not independent validation.",
+        "selection_decision": "Replace farming-task distractors with movement actions and specify the plow is behind the carabao.",
+        "ambiguity_and_distractors": "Author challenged each wrong option under the stated conditions; see rationale and remaining limitations.",
+        "exact_bank_stem_matches": {
+          "en": [],
+          "tl": [],
+          "bis": []
+        },
+        "semantic_duplicate_review": {
+          "status": "targeted self-review only; not exhaustive",
+          "related_bank_fact_ids": [
+            "carabao-pulls-plow-g3"
+          ],
+          "rule": "Existing and revised versions share the knowledge family; do not score them as independent targets."
+        },
+        "languages": {
+          "en": {
+            "status": "draft_pending_language_review",
+            "evidence": "Kalabaw, araro, daro and mobira are attested in the source. Newly composed syntax is pending language review."
+          },
+          "tl": {
+            "status": "draft_pending_language_review",
+            "evidence": "Kalabaw, araro, daro and mobira are attested in the source. Newly composed syntax is pending language review."
+          },
+          "bis": {
+            "status": "draft_pending_language_review",
+            "evidence": "Kalabaw, araro, daro and mobira are attested in the source. Newly composed syntax is pending language review."
+          }
+        },
+        "language_evidence_cards": [],
+        "holds": [],
+        "remaining_limitations": [
+          "Depends on familiarity with a plow; teacher review should check that this context is accessible."
+        ],
+        "empirical_difficulty": null,
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      }
+    },
+    {
+      "id": "ha-g3-0008",
+      "revision": 2,
+      "batch_id": "001-grade3-foundations",
+      "origin": "revise",
+      "status": "source_checked",
+      "production_ready": false,
+      "scope": {
+        "material_grade": 3,
+        "domain": "FORCE_MOTION_ENERGY",
+        "internal_competency_code": "G3-F-4",
+        "internal_competency_text": "explore and describe how sound is made and transferred in everyday situations, such as the ringing of a bell or the hearing of noises",
+        "subcategory_id": "g3-force_motion_energy-sound-sources-and-production",
+        "target_id": "g3-vibration-needed-for-ringing",
+        "knowledge_claim": "Recalls that a bell no longer produces its ringing sound when its vibration stops.",
+        "curriculum_version": "FINAL-MATATAG-Science-CG-2023-Grades-3-10.pdf (DepEd, August 2023)",
+        "mapping_status": "author-reviewed supporting-knowledge mapping; teacher confirmation pending",
+        "claim_limit": "Concerns production at the bell; it does not claim that already-travelling waves or an echo vanish instantly.",
+        "source_grade_tags": [
+          5,
+          6
+        ],
+        "grade_note": "The grade suffix in a fact ID and the bank grade tags do not set assessment eligibility. The narrow claim is mapped separately to the Grade 3 curriculum."
+      },
+      "eligibility": {
+        "prior_grade_readiness": {
+          "intended_student_grade": 4,
+          "material_grade": 3,
+          "coverage_basis": "expected prerequisite, not verified teaching",
+          "enabled_after_review": true,
+          "requires_school_year_curriculum_match": true,
+          "curriculum_match_status": "unverified for a specific learner cohort; review required before eligibility is enabled"
+        },
+        "current_grade": {
+          "allowed_routes": [
+            "verified Hiraia knowledge exposure",
+            "teacher-reported coverage of this target"
+          ],
+          "calendar_alone_sufficient": false
+        },
+        "recent_learning": {
+          "window_days": 14,
+          "source_card_ids": [
+            "ffct-22718"
+          ],
+          "condition": "Exposure must cover the tested knowledge, not merely a broad topic. This is a proposed route, not a live eligibility record."
+        },
+        "incoming_grade3": "not eligible as a Grade 2-readiness item without separate foundational review"
+      },
+      "uses": {
+        "readiness": "candidate for incoming Grade 4 after content/language/coverage review",
+        "recent_learning": "candidate only after exposure to this specific knowledge",
+        "benchmark": "candidate; equivalent forms and student response calibration are not established",
+        "reinforcement": "one supporting observation about the named target; require repeated evidence before changing support level"
+      },
+      "relationships": {
+        "knowledge_family_id": "sound-from-vibration",
+        "form_family_id": "bell-vibration-sound-recall",
+        "form_equivalence": "unvalidated hypothesis",
+        "prerequisite_target_id": null,
+        "prerequisite_review": "Earlier-grade prerequisite edges have not been established.",
+        "supersedes_assessment_item_id": null,
+        "proposed_bank_replacement_fact_id": "vibration-stops-sound-stops-g5"
+      },
+      "provenance": {
+        "primary": {
+          "fact_id": "vibration-stops-sound-stops-g5",
+          "card_ids": [
+            "ffct-22718"
+          ],
+          "fact": {
+            "en": "What happens when you touch a ringing bell?\n\nSound stops when the vibration stops, so touching it with your hand makes it go quiet!",
+            "tl": "Anong nangyayari kapag hinawakan mo ang tumutunog na kampana?\n\nTitigil ang tunog kapag tumigil ang vibration, kaya kapag hinawakan mo ito, tumitigil agad ang tunog!",
+            "bis": "Unsay mahitabo kon imong kuptan ang nagtingog nga kampana?\n\nMuhunong ang tingog kon muhunong ang vibration, mao nga kon imong kuptan kini, muhilom ang tingog!"
+          },
+          "bank_question": {
+            "id": "quiz-00613",
+            "factId": "vibration-stops-sound-stops-g5",
+            "domain": "FORCE_MOTION_ENERGY",
+            "topic": "sound stops when vibration stops",
+            "grades": [
+              5,
+              6
+            ],
+            "q": {
+              "en": "Why does a ringing bell go quiet when you touch it with your hand?",
+              "tl": "Bakit tumitigil ang tunog ng kampana kapag hinawakan mo ito?",
+              "bis": "Ngano mohilom ang nagtingog nga kampana kon imong kuptan kini?"
+            },
+            "options": [
+              {
+                "en": "Because your hand absorbs all the air around the bell",
+                "tl": "Dahil sinisipsip ng iyong kamay ang lahat ng hangin sa paligid ng kampana",
+                "bis": "Tungod kay mosuyop ang imong kamot sa tanan nga hangin sa palibot sa kampana"
+              },
+              {
+                "en": "Because your hand is warmer than the bell and heat stops sound",
+                "tl": "Dahil mas mainit ang iyong kamay kaysa sa kampana at ang init ay nagpapahinto ng tunog",
+                "bis": "Tungod kay mas mainit ang imong kamay kaysa sa kampana ug ang kainit mohunong sa tingog"
+              },
+              {
+                "en": "Because touching it stops the vibration, and sound stops when vibration stops",
+                "tl": "Dahil ang paghawak dito ay nagpapahinto ng yanig, at titigil ang tunog kapag tumigil ang yanig",
+                "bis": "Tungod kay kon kuptan kini mohunong ang uyog, ug mohunong ang tingog kon mohunong ang uyog"
+              },
+              {
+                "en": "Because the metal cools down instantly when touched",
+                "tl": "Dahil lumalamig agad ang metal kapag nahawakan",
+                "bis": "Tungod kay mobugnaw dayon ang metal kon mahikap"
+              }
+            ],
+            "answer": 2,
+            "explanation": {
+              "en": "Sound stops when the vibration stops, so touching the bell with your hand dampens the vibration and silences it.",
+              "tl": "Titigil ang tunog kapag tumigil ang yanig, kaya kapag hinawakan mo ang kampana, napipigilan ang yanig at tumitigil ang tunog.",
+              "bis": "Mohunong ang tingog kon mohunong ang uyog, mao nga kon imong kuptan ang nagtingog nga kampana, mopahilom kini."
+            },
+            "difficulty": 1,
+            "reviewed": true,
+            "quizTopic": "Light & Sound",
+            "concept": 3905,
+            "v": 1
+          }
+        },
+        "related": [],
+        "supporting_statement": "A vibrating bell produces a ringing sound; stopping its vibration stops further production of that sound.",
+        "external_reference_ids": [
+          "exploratorium-sound"
+        ]
+      },
+      "content": {
+        "stem": {
+          "en": "What happens to a ringing bell's sound when its vibration stops?",
+          "tl": "Ano ang mangyayari sa tunog ng kampana kapag tumigil ang vibration nito?",
+          "bis": "Unsay mahitabo sa tingog sa kampana kon mohunong ang vibration niini?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "It becomes louder.",
+              "tl": "Lalakas ang tunog.",
+              "bis": "Mokusog ang tingog."
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Its pitch becomes higher.",
+              "tl": "Tataas ang tono.",
+              "bis": "Motaas ang tono."
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "The bell becomes silent.",
+              "tl": "Mawawala ang tunog.",
+              "bis": "Mohilom ang kampana."
+            }
+          }
+        ],
+        "correct_option_id": "o3",
+        "explanation": {
+          "en": "The bell must vibrate to keep producing a ringing sound. When that vibration stops, it no longer makes that sound.",
+          "tl": "Kailangang mag-vibrate ang kampana upang patuloy itong tumunog. Kapag tumigil ang vibration, hindi na nito nalilikha ang tunog.",
+          "bis": "Kinahanglan mag-vibrate ang kampana aron padayon kini nga motingog. Kon mohunong ang vibration, dili na kini makahimo sa maong tingog."
+        }
+      },
+      "rationale": {
+        "correct": "A vibrating bell produces a ringing sound; stopping its vibration stops further production of that sound.",
+        "distractors": {
+          "o1": "Confuses stopping a vibration with increasing its amplitude and loudness.",
+          "o2": "Confuses stopping a vibration with increasing its frequency and pitch."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "conceptual_demand": "single familiar fact or relationship",
+        "reading_demand": "author estimate: foundational; no measured readability or student timing",
+        "image_required": false,
+        "read_aloud": "permitted if presented consistently; no sound discrimination is needed"
+      },
+      "review": {
+        "reviewer": {
+          "agent": "Codex",
+          "method": "in-session author self-review",
+          "independent": false
+        },
+        "source_check": "Supporting source read; conditions and claim scope reviewed. This is not independent validation.",
+        "selection_decision": "Replace the four-option legacy fallback inside the shipping v2 bank with a reviewed three-option draft. State that vibration stops rather than claiming every light touch instantly silences a bell. Family review groups this with related instrument/wind-effect forms; previous draft family ID was bell-vibration-sound. No released history uses that draft ID.",
+        "ambiguity_and_distractors": "Author challenged each wrong option under the stated conditions; see rationale and remaining limitations.",
+        "exact_bank_stem_matches": {
+          "en": [],
+          "tl": [],
+          "bis": []
+        },
+        "semantic_duplicate_review": {
+          "status": "targeted self-review only; not exhaustive",
+          "related_bank_fact_ids": [
+            "vibration-stops-sound-stops-g5"
+          ],
+          "rule": "Existing and revised versions share the knowledge family; do not score them as independent targets."
+        },
+        "languages": {
+          "en": {
+            "status": "draft_pending_language_review",
+            "evidence": "Vibration is retained as established classroom vocabulary. Mohunong and mohilom are attested in the source card; no claim of validated fluency is made."
+          },
+          "tl": {
+            "status": "draft_pending_language_review",
+            "evidence": "Vibration is retained as established classroom vocabulary. Mohunong and mohilom are attested in the source card; no claim of validated fluency is made."
+          },
+          "bis": {
+            "status": "draft_pending_language_review",
+            "evidence": "Vibration is retained as established classroom vocabulary. Mohunong and mohilom are attested in the source card; no claim of validated fluency is made."
+          }
+        },
+        "language_evidence_cards": [],
+        "holds": [],
+        "remaining_limitations": [
+          "Concerns production at the bell; it does not claim that already-travelling waves or an echo vanish instantly."
+        ],
+        "empirical_difficulty": null,
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      }
+    },
+    {
+      "id": "ha-g3-0009",
+      "revision": 2,
+      "batch_id": "001-grade3-foundations",
+      "origin": "revise",
+      "status": "source_checked",
+      "production_ready": false,
+      "scope": {
+        "material_grade": 3,
+        "domain": "FORCE_MOTION_ENERGY",
+        "internal_competency_code": "G3-F-6",
+        "internal_competency_text": "participate in guided science activities to explore and describe sources of light, how it behaves or can be changed, and its uses in everyday situations",
+        "subcategory_id": "g3-force_motion_energy-light-and-shadows",
+        "target_id": "g3-opaque-blocks-visible-light",
+        "knowledge_claim": "Recalls the term opaque for a material that does not transmit visible light.",
+        "curriculum_version": "FINAL-MATATAG-Science-CG-2023-Grades-3-10.pdf (DepEd, August 2023)",
+        "mapping_status": "author-reviewed supporting-knowledge mapping; teacher confirmation pending",
+        "claim_limit": "Term recall supporting a light investigation; does not demonstrate the guided activity in G3-F-6.",
+        "source_grade_tags": [
+          5
+        ],
+        "grade_note": "The grade suffix in a fact ID and the bank grade tags do not set assessment eligibility. The narrow claim is mapped separately to the Grade 3 curriculum."
+      },
+      "eligibility": {
+        "prior_grade_readiness": {
+          "intended_student_grade": 4,
+          "material_grade": 3,
+          "coverage_basis": "expected prerequisite, not verified teaching",
+          "enabled_after_review": true,
+          "requires_school_year_curriculum_match": true,
+          "curriculum_match_status": "unverified for a specific learner cohort; review required before eligibility is enabled"
+        },
+        "current_grade": {
+          "allowed_routes": [
+            "verified Hiraia knowledge exposure",
+            "teacher-reported coverage of this target"
+          ],
+          "calendar_alone_sufficient": false
+        },
+        "recent_learning": {
+          "window_days": 14,
+          "source_card_ids": [
+            "ffct-27361"
+          ],
+          "condition": "Exposure must cover the tested knowledge, not merely a broad topic. This is a proposed route, not a live eligibility record."
+        },
+        "incoming_grade3": "not eligible as a Grade 2-readiness item without separate foundational review"
+      },
+      "uses": {
+        "readiness": "candidate for incoming Grade 4 after content/language/coverage review",
+        "recent_learning": "candidate only after exposure to this specific knowledge",
+        "benchmark": "candidate; equivalent forms and student response calibration are not established",
+        "reinforcement": "one supporting observation about the named target; require repeated evidence before changing support level"
+      },
+      "relationships": {
+        "knowledge_family_id": "opaque-visible-light",
+        "form_family_id": "opaque-visible-light-recall",
+        "form_equivalence": "unvalidated hypothesis",
+        "prerequisite_target_id": null,
+        "prerequisite_review": "Earlier-grade prerequisite edges have not been established.",
+        "supersedes_assessment_item_id": null,
+        "proposed_bank_replacement_fact_id": "fwg-light-and-shadows-1651"
+      },
+      "provenance": {
+        "primary": {
+          "fact_id": "fwg-light-and-shadows-1651",
+          "card_ids": [
+            "ffct-27361"
+          ],
+          "fact": {
+            "en": "A wooden block casts a dark shadow because its opaque surface completely blocks straight-traveling light rays from a flashlight!",
+            "tl": "Nagbubuo ng madilim na anino ang wooden block dahil ang opaque surface nito ay ganap na humaharang sa straight-traveling light rays mula sa flashlight!",
+            "bis": "Nagbuhat og ngitngit nga anino ang wooden block kay ang opaque surface niini nagbabag sa straight-traveling light rays gikan sa flashlight!"
+          },
+          "bank_question": {
+            "factId": "fwg-light-and-shadows-1651",
+            "v": 2,
+            "type": "term",
+            "domain": "FORCE_MOTION_ENERGY",
+            "topic": "Light and Shadows",
+            "grades": [
+              5
+            ],
+            "quizTopic": null,
+            "q": {
+              "en": "What do we call a material that blocks all light?",
+              "tl": "Ano ang tawag sa bagay na humaharang sa lahat ng liwanag?",
+              "bis": "Unsa ang tawag sa butang nga mobabag sa tanang kahayag?"
+            },
+            "options": [
+              {
+                "en": "opaque",
+                "tl": "opaque",
+                "bis": "opaque"
+              },
+              {
+                "en": "transparent",
+                "tl": "transparent",
+                "bis": "transparent"
+              },
+              {
+                "en": "translucent",
+                "tl": "translucent",
+                "bis": "translucent"
+              }
+            ],
+            "answer": 0,
+            "explanation": {
+              "en": "Opaque materials block all light, creating dark shadows.",
+              "tl": "Hinaharangan ng opaque ang lahat ng liwanag, kaya madilim ang anino.",
+              "bis": "Ang opaque mobabag sa tanang kahayag, busa ngitngit ang anino."
+            },
+            "difficulty": 0
+          }
+        },
+        "related": [],
+        "supporting_statement": "The wooden block in the source blocks flashlight light and casts a shadow.",
+        "external_reference_ids": []
+      },
+      "content": {
+        "stem": {
+          "en": "What do we call a material that does not let visible light pass through?",
+          "tl": "Ano ang tawag sa materyal na hindi pinapadaan ang nakikitang liwanag?",
+          "bis": "Unsay tawag sa materyal nga dili makapaagi sa kahayag nga makita?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Opaque",
+              "tl": "Opaque",
+              "bis": "Opaque"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Transparent",
+              "tl": "Transparent",
+              "bis": "Transparent"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Translucent",
+              "tl": "Translucent",
+              "bis": "Translucent"
+            }
+          }
+        ],
+        "correct_option_id": "o1",
+        "explanation": {
+          "en": "An opaque material does not let visible light pass through it.",
+          "tl": "Hindi pinapadaan ng opaque na materyal ang nakikitang liwanag.",
+          "bis": "Ang opaque nga materyal mobabag sa kahayag nga makita."
+        }
+      },
+      "rationale": {
+        "correct": "The wooden block in the source blocks flashlight light and casts a shadow.",
+        "distractors": {
+          "o2": "Confuses blocking with clear transmission of visible light.",
+          "o3": "Confuses no transmission with partial, scattered transmission."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "conceptual_demand": "single familiar fact or relationship",
+        "reading_demand": "author estimate: foundational; no measured readability or student timing",
+        "image_required": false,
+        "read_aloud": "permitted if presented consistently; no sound discrimination is needed"
+      },
+      "review": {
+        "reviewer": {
+          "agent": "Codex",
+          "method": "in-session author self-review",
+          "independent": false
+        },
+        "source_check": "Supporting source read; conditions and claim scope reviewed. This is not independent validation.",
+        "selection_decision": "Narrow all light to visible light. The same source-bank stem appears under multiple fact IDs, which must belong to one equivalent-item family. Revision 2 keeps the explanation on the assessed opaque-material claim instead of introducing extra optics claims.",
+        "ambiguity_and_distractors": "Author challenged each wrong option under the stated conditions; see rationale and remaining limitations.",
+        "exact_bank_stem_matches": {
+          "en": [],
+          "tl": [],
+          "bis": []
+        },
+        "semantic_duplicate_review": {
+          "status": "targeted self-review only; not exhaustive",
+          "related_bank_fact_ids": [
+            "fwg-light-and-shadows-1651",
+            "fwg2-solid-opacity-2715",
+            "opaque-block-of-wood-g4",
+            "uses-of-opaque-materials-g5",
+            "opaque-materials-g7"
+          ],
+          "rule": "Existing and revised versions share the knowledge family; do not score them as independent targets."
+        },
+        "languages": {
+          "en": {
+            "status": "draft_pending_language_review",
+            "evidence": "The three English optics terms are intentionally retained in every language. The source card supports mobabag and kahayag. Newly written visible-light wording requires language review."
+          },
+          "tl": {
+            "status": "draft_pending_language_review",
+            "evidence": "The three English optics terms are intentionally retained in every language. The source card supports mobabag and kahayag. Newly written visible-light wording requires language review."
+          },
+          "bis": {
+            "status": "draft_pending_language_review",
+            "evidence": "The three English optics terms are intentionally retained in every language. The source card supports mobabag and kahayag. Newly written visible-light wording requires language review."
+          }
+        },
+        "language_evidence_cards": [],
+        "holds": [],
+        "remaining_limitations": [
+          "Term recall supporting a light investigation; does not demonstrate the guided activity in G3-F-6."
+        ],
+        "empirical_difficulty": null,
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      }
+    },
+    {
+      "id": "ha-g3-0010",
+      "revision": 2,
+      "batch_id": "001-grade3-foundations",
+      "origin": "revise",
+      "status": "hold",
+      "production_ready": false,
+      "scope": {
+        "material_grade": 3,
+        "domain": "EARTH_SPACE",
+        "internal_competency_code": "G3-E-2",
+        "internal_competency_text": "identify some useful things that people have made from non-living materials and describe what natural materials have been used to make the items",
+        "subcategory_id": "g3-earth_space-natural-and-human-made-things",
+        "target_id": "g3-clay-used-for-pottery",
+        "knowledge_claim": "Identifies clay as the earth material shaped and fired to make pottery.",
+        "curriculum_version": "FINAL-MATATAG-Science-CG-2023-Grades-3-10.pdf (DepEd, August 2023)",
+        "mapping_status": "author-reviewed supporting-knowledge mapping; teacher confirmation pending",
+        "claim_limit": "Pottery/firing vocabulary may add reading demand; check with a Grade 3 teacher.",
+        "source_grade_tags": [
+          3,
+          4,
+          5
+        ],
+        "grade_note": "The grade suffix in a fact ID and the bank grade tags do not set assessment eligibility. The narrow claim is mapped separately to the Grade 3 curriculum."
+      },
+      "eligibility": {
+        "prior_grade_readiness": {
+          "intended_student_grade": 4,
+          "material_grade": 3,
+          "coverage_basis": "expected prerequisite, not verified teaching",
+          "enabled_after_review": true,
+          "requires_school_year_curriculum_match": true,
+          "curriculum_match_status": "unverified for a specific learner cohort; review required before eligibility is enabled"
+        },
+        "current_grade": {
+          "allowed_routes": [
+            "verified Hiraia knowledge exposure",
+            "teacher-reported coverage of this target"
+          ],
+          "calendar_alone_sufficient": false
+        },
+        "recent_learning": {
+          "window_days": 14,
+          "source_card_ids": [
+            "ffct-16611"
+          ],
+          "condition": "Exposure must cover the tested knowledge, not merely a broad topic. This is a proposed route, not a live eligibility record."
+        },
+        "incoming_grade3": "not eligible as a Grade 2-readiness item without separate foundational review"
+      },
+      "uses": {
+        "readiness": "candidate for incoming Grade 4 after content/language/coverage review",
+        "recent_learning": "candidate only after exposure to this specific knowledge",
+        "benchmark": "candidate; equivalent forms and student response calibration are not established",
+        "reinforcement": "one supporting observation about the named target; require repeated evidence before changing support level"
+      },
+      "relationships": {
+        "knowledge_family_id": "clay-pottery-material",
+        "form_family_id": "clay-pottery-material-recall",
+        "form_equivalence": "unvalidated hypothesis",
+        "prerequisite_target_id": null,
+        "prerequisite_review": "Earlier-grade prerequisite edges have not been established.",
+        "supersedes_assessment_item_id": null,
+        "proposed_bank_replacement_fact_id": "clay-natural-pottery-g4"
+      },
+      "provenance": {
+        "primary": {
+          "fact_id": "clay-natural-pottery-g4",
+          "card_ids": [
+            "ffct-16611"
+          ],
+          "fact": {
+            "en": "How do we make pots and jars from the ground?\n\nWe use clay, a natural material that is easy to shape! When fired with heat, it hardens into pots and jars.",
+            "tl": "Paano tayo gumawa ng palayok at paso mula sa lupa?\n\nGumagamit tayo ng luwad (clay), isang natural na materyales na madaling hubugin! Kapag sinunog sa init, tumitigas ito at nagiging palayok o paso.",
+            "bis": "Unsaon paghimo og kolon o palayuk gikan sa yuta?\n\nNaggamit kita og luwad (clay), usa ka natural nga materyales nga sayon hulmahon! Kung sunugon sa init, mogahi kini ug mahimong kolon o palayuk."
+          },
+          "bank_question": {
+            "factId": "clay-natural-pottery-g4",
+            "v": 2,
+            "type": "term",
+            "domain": "MATTER",
+            "topic": "clay is a natural material shaped and fired",
+            "grades": [
+              3,
+              4,
+              5
+            ],
+            "quizTopic": "Changes in Matter",
+            "q": {
+              "en": "What natural material hardens into pots when fired?",
+              "tl": "Anong natural na materyales ang tumitigas bilang palayok kapag sinunog?",
+              "bis": "Unsa nga natural nga materyales ang mogahi nga kolon kung sunugon?"
+            },
+            "options": [
+              {
+                "en": "Clay",
+                "tl": "Luwad",
+                "bis": "Luwad"
+              },
+              {
+                "en": "Sand",
+                "tl": "Buhangin",
+                "bis": "Balas"
+              },
+              {
+                "en": "Metal",
+                "tl": "Metal",
+                "bis": "Metal"
+              }
+            ],
+            "answer": 0,
+            "explanation": {
+              "en": "Clay is a natural material that hardens into pots when fired.",
+              "tl": "Ang luwad ay natural na materyales na tumitigas bilang palayok kapag sinunog.",
+              "bis": "Ang luwad usa ka natural nga materyales nga mogahi nga kolon kung sunugon."
+            },
+            "difficulty": 0
+          }
+        },
+        "related": [
+          {
+            "fact_id": "clay-products-g3",
+            "card_ids": [
+              "dcard-03092"
+            ],
+            "fact": {
+              "en": "Clay can be shaped and hardened to make useful things like pottery, bricks, and tiles.",
+              "tl": "Ang clay ay pwedeng ihugis at patigasin para makagawa ng mga kapaki-pakinabang na bagay tulad ng pottery, bricks, at tiles.",
+              "bis": "Ang clay mahimong hulmahon ug patig-aon aron makahimo ug mapuslanong mga butang sama sa pottery, bricks, ug tiles."
+            },
+            "bank_question": null
+          },
+          {
+            "fact_id": "potter-at-wheel-g5",
+            "card_ids": [
+              "ffct-20192"
+            ],
+            "fact": {
+              "en": "A potter shapes wet, soft clay as the wheel spins! When fired in heat, the clay hardens into a strong pot.",
+              "tl": "Hinuhubog ng magpapalayok ang basang luwad habang umiikot ang gulong! Kapag sinunog sa init, tumitigas ito at nagiging matibay na palayok.",
+              "bis": "Giumol sa magkukulon ang basang yuta samtang nagtuyok ang ligid! Kon sunogon sa kainit, mogahi kini ug mahimong lig-on nga kolon."
+            },
+            "bank_question": {
+              "factId": "potter-at-wheel-g5",
+              "v": 2,
+              "type": "term",
+              "domain": "MATTER",
+              "topic": "pottery shaping and firing clay",
+              "grades": [
+                4,
+                5,
+                6
+              ],
+              "quizTopic": "Changes in Matter",
+              "q": {
+                "en": "What makes soft clay become a hard pot?",
+                "tl": "Ano ang nagpapatigas ng malambot na luwad?",
+                "bis": "Unsa ang nagpatig-a sa humok nga yutang kulonon?"
+              },
+              "options": [
+                {
+                  "en": "Shaping on a spinning wheel",
+                  "tl": "Paghubog sa umiikot na gulong",
+                  "bis": "Pag-umol sa nagtuyok nga ligid"
+                },
+                {
+                  "en": "Firing in high heat",
+                  "tl": "Pagsunog sa mataas na init",
+                  "bis": "Pagsunog sa taas nga kainit"
+                },
+                {
+                  "en": "Adding more water",
+                  "tl": "Pagdadagdag ng tubig",
+                  "bis": "Pagdugang og tubig"
+                }
+              ],
+              "answer": 1,
+              "explanation": {
+                "en": "Firing in heat hardens the clay into a strong pot.",
+                "tl": "Ang pagsunog sa init ang nagpapatigas ng luwad para maging matibay na palayok.",
+                "bis": "Ang pagsunog sa kainit ang nagpatig-a sa yutang kulonon aron mahimong lig-on nga kolon."
+              },
+              "difficulty": 0
+            }
+          },
+          {
+            "fact_id": "ceramics-made-from-clay-g5",
+            "card_ids": [
+              "ffct-15058"
+            ],
+            "fact": {
+              "en": "How are ceramics made?\n\nCeramics are made from clay! The clay is first shaped, and then it is baked in fire.",
+              "tl": "Paano ginagawa ang seramika?\n\nAng seramika ay gawa mula sa luwad! Ito ay hinuhubog muna, at saka pinapainit sa apoy.",
+              "bis": "Unsaon paghimo sa seramika?\n\nAng seramika gihimo gikan sa yutang kolonon! Kini gihulma una, ug dayon gipainit sa kalayo."
+            },
+            "bank_question": {
+              "id": "quiz-16809",
+              "factId": "ceramics-made-from-clay-g5",
+              "domain": "MATTER",
+              "topic": "ceramics made from clay",
+              "grades": [
+                5,
+                6,
+                7
+              ],
+              "q": {
+                "en": "What material is shaped and then baked in fire to make ceramics?",
+                "tl": "Anong materyal ang hinuhulma at pagkatapos ay pinapaputok sa apoy para makagawa ng seramika?",
+                "bis": "Unsa nga materyal ang gihulma ug dayon gisugba sa kalayo aron makahimo og seramika?"
+              },
+              "options": [
+                {
+                  "en": "Wood",
+                  "tl": "Wood",
+                  "bis": "Wood"
+                },
+                {
+                  "en": "Metal",
+                  "tl": "Metal",
+                  "bis": "Metal"
+                },
+                {
+                  "en": "Plastic",
+                  "tl": "Plastic",
+                  "bis": "Plastic"
+                },
+                {
+                  "en": "Clay",
+                  "tl": "Clay",
+                  "bis": "Clay"
+                }
+              ],
+              "answer": 3,
+              "explanation": {
+                "en": "Ceramics are made from clay that is shaped and then baked in fire to become hard.",
+                "tl": "Ang seramika ay gawa mula sa luwad o putik na hinuhubog at saka pinapaputok sa apoy.",
+                "bis": "Ang seramika gihimo gikan sa yutang kolonon nga gihulma ug dayon gisugba sa kalayo."
+              },
+              "difficulty": 0,
+              "reviewed": false,
+              "quizTopic": "Materials & Things",
+              "concept": 8594,
+              "v": 1
+            }
+          }
+        ],
+        "supporting_statement": "Clay is shaped and hardened to make pottery; the linked potter card specifies heating the shaped clay to make a hard pot.",
+        "external_reference_ids": []
+      },
+      "content": {
+        "stem": {
+          "en": "What earth material is shaped and fired to make pottery?",
+          "tl": "Anong materyal mula sa lupa ang hinuhulma at pinapainit sa hurno upang gawing pottery?",
+          "bis": "Unsang materyal gikan sa yuta ang hulmahon ug initon sa hurnohan aron mahimong pottery?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Sand",
+              "tl": "Buhangin",
+              "bis": "Balas"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Clay",
+              "tl": "Clay",
+              "bis": "Clay"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Gravel",
+              "tl": "Graba",
+              "bis": "Graba"
+            }
+          }
+        ],
+        "correct_option_id": "o2",
+        "explanation": {
+          "en": "Wet clay can be shaped. Firing it makes it hard, so people can use it to make pottery.",
+          "tl": "Maaaring hulmahin ang basang clay. Tumitigas ito kapag pinainit sa hurno, kaya ginagamit ito sa paggawa ng pottery.",
+          "bis": "Mahimong hulmahon ang basang clay. Mogahi kini kon initon sa hurnohan, mao nga gamiton kini sa paghimo og pottery."
+        }
+      },
+      "rationale": {
+        "correct": "Clay is shaped and hardened to make pottery; the linked potter card specifies heating the shaped clay to make a hard pot.",
+        "distractors": {
+          "o1": "Confuses loose sand with the moldable clay body. Sand may be an additive or glass ingredient, but does not replace the clay in this pottery process.",
+          "o3": "Confuses loose rock fragments with the moldable clay body; gravel is not the material shaped into pottery."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "conceptual_demand": "single familiar fact or relationship",
+        "reading_demand": "author estimate: foundational; no measured readability or student timing",
+        "image_required": false,
+        "read_aloud": "permitted if presented consistently; no sound discrimination is needed"
+      },
+      "review": {
+        "reviewer": {
+          "agent": "Codex",
+          "method": "in-session author self-review",
+          "independent": false
+        },
+        "source_check": "Supporting source read; conditions and claim scope reviewed. This is not independent validation.",
+        "selection_decision": "Revise the existing clay-material question, specifying pottery and using parallel earth-material distractors. Related questions already assess this knowledge under other fact IDs, so this is not a new question or a new coverage gain.",
+        "ambiguity_and_distractors": "Author challenged each wrong option under the stated conditions; see rationale and remaining limitations.",
+        "exact_bank_stem_matches": {
+          "en": [],
+          "tl": [],
+          "bis": []
+        },
+        "semantic_duplicate_review": {
+          "status": "Targeted search of stems and correct answers found existing clay-to-pottery questions. This revision belongs to that family; full semantic inventory remains incomplete.",
+          "related_bank_fact_ids": [
+            "clay-natural-pottery-g4",
+            "ceramics-made-from-clay-g5",
+            "potter-at-wheel-g5"
+          ],
+          "rule": "Existing and revised versions share the knowledge family; do not score them as independent targets."
+        },
+        "languages": {
+          "en": {
+            "status": "draft_pending_language_review",
+            "evidence": "Clay and pottery are retained from the source card. Hulmahon is also source-attested. Hurno/hurnohan and the age-appropriate meaning of firing need explicit review before use."
+          },
+          "tl": {
+            "status": "draft_pending_language_review",
+            "evidence": "Clay and pottery are retained from the source card. Hulmahon is also source-attested. Hurno/hurnohan and the age-appropriate meaning of firing need explicit review before use."
+          },
+          "bis": {
+            "status": "draft_pending_language_review",
+            "evidence": "Clay and pottery are retained from the source card. Hulmahon is also source-attested. Hurno/hurnohan and the age-appropriate meaning of firing need explicit review before use."
+          }
+        },
+        "language_evidence_cards": [],
+        "holds": [
+          {
+            "code": "pottery-vocabulary",
+            "languages": [
+              "en",
+              "tl",
+              "bis"
+            ],
+            "reason": "Confirm that pottery and firing/hurno/hurnohan are understood at the intended level; the source corpus alone does not establish this."
+          }
+        ],
+        "remaining_limitations": [
+          "Pottery/firing vocabulary may add reading demand; check with a Grade 3 teacher.",
+          "Keep separate from the modeling-clay item during form assembly until cross-item cueing is reviewed."
+        ],
+        "empirical_difficulty": null,
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      }
+    },
+    {
+      "id": "ha-g3-0011",
+      "revision": 2,
+      "batch_id": "001-grade3-foundations",
+      "origin": "alternate",
+      "status": "source_checked",
+      "production_ready": false,
+      "scope": {
+        "material_grade": 3,
+        "domain": "EARTH_SPACE",
+        "internal_competency_code": "G3-E-4",
+        "internal_competency_text": "observe and record changes in the weather during a day or over some days and describe the different types and patterns of weather in the local area",
+        "subcategory_id": "g3-earth_space-weather-conditions",
+        "target_id": "g3-flag-movement-shows-wind",
+        "knowledge_claim": "Recognizes a flag waving on a pole outdoors as an observable sign of wind.",
+        "curriculum_version": "FINAL-MATATAG-Science-CG-2023-Grades-3-10.pdf (DepEd, August 2023)",
+        "mapping_status": "author-reviewed supporting-knowledge mapping; teacher confirmation pending",
+        "claim_limit": "Checks recognition of a weather sign; does not measure actual weather recording or pattern tracking.",
+        "source_grade_tags": null,
+        "grade_note": "The grade suffix in a fact ID and the bank grade tags do not set assessment eligibility. The narrow claim is mapped separately to the Grade 3 curriculum."
+      },
+      "eligibility": {
+        "prior_grade_readiness": {
+          "intended_student_grade": 4,
+          "material_grade": 3,
+          "coverage_basis": "expected prerequisite, not verified teaching",
+          "enabled_after_review": true,
+          "requires_school_year_curriculum_match": true,
+          "curriculum_match_status": "unverified for a specific learner cohort; review required before eligibility is enabled"
+        },
+        "current_grade": {
+          "allowed_routes": [
+            "verified Hiraia knowledge exposure",
+            "teacher-reported coverage of this target"
+          ],
+          "calendar_alone_sufficient": false
+        },
+        "recent_learning": {
+          "window_days": 14,
+          "source_card_ids": [
+            "dcard-01111"
+          ],
+          "condition": "Exposure must cover the tested knowledge, not merely a broad topic. This is a proposed route, not a live eligibility record."
+        },
+        "incoming_grade3": "not eligible as a Grade 2-readiness item without separate foundational review"
+      },
+      "uses": {
+        "readiness": "candidate for incoming Grade 4 after content/language/coverage review",
+        "recent_learning": "candidate only after exposure to this specific knowledge",
+        "benchmark": "candidate; equivalent forms and student response calibration are not established",
+        "reinforcement": "one supporting observation about the named target; require repeated evidence before changing support level"
+      },
+      "relationships": {
+        "knowledge_family_id": "observable-wind-effects",
+        "form_family_id": "wind-flag-movement-recall",
+        "form_equivalence": "unvalidated hypothesis",
+        "prerequisite_target_id": null,
+        "prerequisite_review": "Earlier-grade prerequisite edges have not been established.",
+        "supersedes_assessment_item_id": null,
+        "proposed_bank_replacement_fact_id": null
+      },
+      "provenance": {
+        "primary": {
+          "fact_id": "wind-pushes-things-g3",
+          "card_ids": [
+            "dcard-01111"
+          ],
+          "fact": {
+            "en": "Wind can push objects and make them move, like a flag waving on a pole.",
+            "tl": "Kayang itulak ng hangin ang mga bagay at pagalawin ang mga ito, tulad ng watawat na kumakaway sa poste.",
+            "bis": "Ang hangin makatulod sa mga butang ug makapalihok kanila, sama sa bandila nga nagwarawara sa poste."
+          },
+          "bank_question": {
+            "factId": "wind-pushes-things-g3",
+            "v": 2,
+            "type": "term",
+            "domain": null,
+            "topic": null,
+            "grades": null,
+            "quizTopic": null,
+            "q": {
+              "en": "What can push objects and make them move, like a flag waving?",
+              "tl": "Ano ang kayang magtulak ng mga bagay at pagalawin, tulad ng watawat?",
+              "bis": "Unsa ang makatulod sa mga butang ug makapalihok, sama sa bandila?"
+            },
+            "options": [
+              {
+                "en": "Wind",
+                "tl": "Hangin",
+                "bis": "Hangin"
+              },
+              {
+                "en": "Sound",
+                "tl": "Tunog",
+                "bis": "Tingog"
+              },
+              {
+                "en": "Light",
+                "tl": "Liwanag",
+                "bis": "Kahayag"
+              }
+            ],
+            "answer": 0,
+            "explanation": {
+              "en": "Wind is moving air that can push things, like making a flag wave on a pole.",
+              "tl": "Ang hangin ay gumagalaw na hangin na kayang magtulak, tulad ng pagpapakaway ng watawat.",
+              "bis": "Ang hangin mao ang naglihok nga hangin nga makatulod, sama sa pagwarawara sa bandila."
+            },
+            "difficulty": 0
+          }
+        },
+        "related": [],
+        "supporting_statement": "Wind can push objects, including a flag on a pole.",
+        "external_reference_ids": []
+      },
+      "content": {
+        "stem": {
+          "en": "Outside, which observation shows that the wind is blowing?",
+          "tl": "Aling napapansin sa labas ang nagpapakitang umiihip ang hangin?",
+          "bis": "Unsang makita sa gawas ang nagpakita nga naghuyop ang hangin?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Rainwater collects on the ground.",
+              "tl": "Naiipon ang tubig-ulan sa lupa.",
+              "bis": "Magtapok ang tubig-ulan sa yuta."
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "A stone gets warm in sunlight.",
+              "tl": "Umiinit ang bato sa sikat ng araw.",
+              "bis": "Moinit ang bato sa kahayag sa adlaw."
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "A flag waves on its pole.",
+              "tl": "Kumakaway ang watawat sa poste nito.",
+              "bis": "Nagwarawara ang bandila sa poste niini."
+            }
+          }
+        ],
+        "correct_option_id": "o3",
+        "explanation": {
+          "en": "Wind pushes the flag and makes it move. Rainwater and a sun-warmed stone do not by themselves show wind.",
+          "tl": "Itinutulak ng hangin ang watawat kaya ito gumagalaw. Hindi sapat na palatandaan ng pag-ihip ng hangin ang tubig-ulan o batong uminit sa araw.",
+          "bis": "Gitulod sa hangin ang bandila mao nga molihok kini. Ang tubig-ulan o bato nga nainitan sa adlaw dili igo nga timailhan sa paghuyop sa hangin."
+        }
+      },
+      "rationale": {
+        "correct": "Wind can push objects, including a flag on a pole.",
+        "distractors": {
+          "o1": "Confuses evidence of rain with evidence of wind; collecting rainwater does not establish blowing wind.",
+          "o2": "Confuses solar heating with evidence of wind; a warm stone does not establish blowing wind."
+        }
+      },
+      "demand": {
+        "type": "recognition",
+        "conceptual_demand": "single familiar fact or relationship",
+        "reading_demand": "author estimate: foundational; no measured readability or student timing",
+        "image_required": false,
+        "read_aloud": "permitted if presented consistently; no sound discrimination is needed"
+      },
+      "review": {
+        "reviewer": {
+          "agent": "Codex",
+          "method": "in-session author self-review",
+          "independent": false
+        },
+        "source_check": "Supporting source read; conditions and claim scope reviewed. This is not independent validation.",
+        "selection_decision": "Change cause identification to observation recognition. Avoid the air/wind definition that collapses into hangin in both Philippine-language versions. Equivalence is untested. Family review groups this with related instrument/wind-effect forms; previous draft family ID was wind-flag-movement. No released history uses that draft ID.",
+        "ambiguity_and_distractors": "Author challenged each wrong option under the stated conditions; see rationale and remaining limitations.",
+        "exact_bank_stem_matches": {
+          "en": [],
+          "tl": [],
+          "bis": []
+        },
+        "semantic_duplicate_review": {
+          "status": "targeted self-review only; not exhaustive",
+          "related_bank_fact_ids": [
+            "wind-pushes-things-g3",
+            "wind-moves-leaves-g3"
+          ],
+          "rule": "Existing and revised versions share the knowledge family; do not score them as independent targets."
+        },
+        "languages": {
+          "en": {
+            "status": "draft_pending_language_review",
+            "evidence": "Flag phrases are taken from the source card: watawat na kumakaway and bandila nga nagwarawara. Moinit and magtapok are attested in corpus bodies. The complete revision remains a language draft."
+          },
+          "tl": {
+            "status": "draft_pending_language_review",
+            "evidence": "Flag phrases are taken from the source card: watawat na kumakaway and bandila nga nagwarawara. Moinit and magtapok are attested in corpus bodies. The complete revision remains a language draft."
+          },
+          "bis": {
+            "status": "draft_pending_language_review",
+            "evidence": "Flag phrases are taken from the source card: watawat na kumakaway and bandila nga nagwarawara. Moinit and magtapok are attested in corpus bodies. The complete revision remains a language draft."
+          }
+        },
+        "language_evidence_cards": [],
+        "holds": [],
+        "remaining_limitations": [
+          "Checks recognition of a weather sign; does not measure actual weather recording or pattern tracking.",
+          "Wind can accompany rain, but rainwater alone is not evidence that it is blowing."
+        ],
+        "empirical_difficulty": null,
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      }
+    },
+    {
+      "id": "ha-g3-0012",
+      "revision": 1,
+      "batch_id": "001-grade3-foundations",
+      "origin": "revise",
+      "status": "source_checked",
+      "production_ready": false,
+      "scope": {
+        "material_grade": 3,
+        "domain": "EARTH_SPACE",
+        "internal_competency_code": "G3-E-6",
+        "internal_competency_text": "participate in guided activities to carefully observe and describe the natural objects commonly seen in the sky during daytime and nighttime, including the Sun, the Moon, planets, and stars",
+        "subcategory_id": "g3-earth_space-sky-objects",
+        "target_id": "g3-sun-main-light-heat-source",
+        "knowledge_claim": "Identifies the Sun as Earth's main natural source of light and heat.",
+        "curriculum_version": "FINAL-MATATAG-Science-CG-2023-Grades-3-10.pdf (DepEd, August 2023)",
+        "mapping_status": "author-reviewed supporting-knowledge mapping; teacher confirmation pending",
+        "claim_limit": "Identifies a sky object; does not demonstrate observation of the sky or understanding of all solar effects.",
+        "source_grade_tags": [
+          4,
+          5,
+          6
+        ],
+        "grade_note": "The grade suffix in a fact ID and the bank grade tags do not set assessment eligibility. The narrow claim is mapped separately to the Grade 3 curriculum."
+      },
+      "eligibility": {
+        "prior_grade_readiness": {
+          "intended_student_grade": 4,
+          "material_grade": 3,
+          "coverage_basis": "expected prerequisite, not verified teaching",
+          "enabled_after_review": true,
+          "requires_school_year_curriculum_match": true,
+          "curriculum_match_status": "unverified for a specific learner cohort; review required before eligibility is enabled"
+        },
+        "current_grade": {
+          "allowed_routes": [
+            "verified Hiraia knowledge exposure",
+            "teacher-reported coverage of this target"
+          ],
+          "calendar_alone_sufficient": false
+        },
+        "recent_learning": {
+          "window_days": 14,
+          "source_card_ids": [
+            "ffct-23441"
+          ],
+          "condition": "Exposure must cover the tested knowledge, not merely a broad topic. This is a proposed route, not a live eligibility record."
+        },
+        "incoming_grade3": "not eligible as a Grade 2-readiness item without separate foundational review"
+      },
+      "uses": {
+        "readiness": "candidate for incoming Grade 4 after content/language/coverage review",
+        "recent_learning": "candidate only after exposure to this specific knowledge",
+        "benchmark": "candidate; equivalent forms and student response calibration are not established",
+        "reinforcement": "one supporting observation about the named target; require repeated evidence before changing support level"
+      },
+      "relationships": {
+        "knowledge_family_id": "sun-earth-light-heat",
+        "form_family_id": "sun-earth-light-heat-recall",
+        "form_equivalence": "unvalidated hypothesis",
+        "prerequisite_target_id": null,
+        "prerequisite_review": "Earlier-grade prerequisite edges have not been established.",
+        "supersedes_assessment_item_id": null,
+        "proposed_bank_replacement_fact_id": "sun-main-source-heat-light-g4"
+      },
+      "provenance": {
+        "primary": {
+          "fact_id": "sun-main-source-heat-light-g4",
+          "card_ids": [
+            "ffct-23441"
+          ],
+          "fact": {
+            "en": "The Sun is the main natural source of heat and light energy for the Philippines and our whole Earth!",
+            "tl": "Ang Araw ang pangunahing natural na pinagmumulan ng init at liwanag para sa Pilipinas at sa buong Mundo!",
+            "bis": "Ang Adlaw mao ang nag-unang natural nga tinubdan sa init ug kahayag nga enerhiya para sa Pilipinas ug sa tibuok Kalibotan!"
+          },
+          "bank_question": {
+            "factId": "sun-main-source-heat-light-g4",
+            "v": 2,
+            "type": "term",
+            "domain": "FORCE_MOTION_ENERGY",
+            "topic": "Sun as energy source",
+            "grades": [
+              4,
+              5,
+              6
+            ],
+            "quizTopic": "Energy & Electricity",
+            "q": {
+              "en": "What is the main natural source of heat and light?",
+              "tl": "Ano ang pangunahing natural na pinagmumulan ng init at liwanag?",
+              "bis": "Unsa ang nag-unang natural nga tinubdan sa init ug kahayag?"
+            },
+            "options": [
+              {
+                "en": "The Sun",
+                "tl": "Ang Araw",
+                "bis": "Ang Adlaw"
+              },
+              {
+                "en": "The Moon",
+                "tl": "Ang Buwan",
+                "bis": "Ang Bulan"
+              },
+              {
+                "en": "The Stars",
+                "tl": "Ang mga Bituin",
+                "bis": "Ang mga Bituon"
+              }
+            ],
+            "answer": 0,
+            "explanation": {
+              "en": "The Sun is the main natural source of heat and light for Earth.",
+              "tl": "Ang Araw ang pangunahing natural na pinagmumulan ng init at liwanag para sa Mundo.",
+              "bis": "Ang Adlaw mao ang nag-unang natural nga tinubdan sa init ug kahayag alang sa Kalibotan."
+            },
+            "difficulty": 0
+          }
+        },
+        "related": [],
+        "supporting_statement": "The Sun supplies Earth with sunlight and is its dominant external energy source.",
+        "external_reference_ids": [
+          "nasa-sun"
+        ]
+      },
+      "content": {
+        "stem": {
+          "en": "Which object in the sky is Earth's main natural source of light and heat?",
+          "tl": "Aling bagay sa langit ang pangunahing natural na pinagmumulan ng liwanag at init ng Mundo?",
+          "bis": "Unsang butang sa langit ang nag-unang natural nga tinubdan sa kahayag ug kainit sa Kalibotan?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "The Sun",
+              "tl": "Ang Araw",
+              "bis": "Ang Adlaw"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "The Moon",
+              "tl": "Ang Buwan",
+              "bis": "Ang Bulan"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Venus",
+              "tl": "Venus",
+              "bis": "Venus"
+            }
+          }
+        ],
+        "correct_option_id": "o1",
+        "explanation": {
+          "en": "The Sun is Earth's main natural source of light and heat.",
+          "tl": "Ang Araw ang pangunahing natural na pinagmumulan ng liwanag at init ng Mundo.",
+          "bis": "Ang Adlaw mao ang nag-unang natural nga tinubdan sa kahayag ug kainit sa Kalibotan."
+        }
+      },
+      "rationale": {
+        "correct": "The Sun supplies Earth with sunlight and is its dominant external energy source.",
+        "distractors": {
+          "o2": "Confuses a bright object reflecting sunlight with Earth's main natural source of light and heat.",
+          "o3": "Confuses another bright sky object with Earth's main natural source of light and heat."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "conceptual_demand": "single familiar fact or relationship",
+        "reading_demand": "author estimate: foundational; no measured readability or student timing",
+        "image_required": false,
+        "read_aloud": "permitted if presented consistently; no sound discrimination is needed"
+      },
+      "review": {
+        "reviewer": {
+          "agent": "Codex",
+          "method": "in-session author self-review",
+          "independent": false
+        },
+        "source_check": "Supporting source read; conditions and claim scope reviewed. This is not independent validation.",
+        "selection_decision": "State Earth explicitly and replace the overlapping stars option, because the Sun itself is a star. Keep the curriculum claim limited to recognition of a sky object.",
+        "ambiguity_and_distractors": "Author challenged each wrong option under the stated conditions; see rationale and remaining limitations.",
+        "exact_bank_stem_matches": {
+          "en": [],
+          "tl": [],
+          "bis": []
+        },
+        "semantic_duplicate_review": {
+          "status": "targeted self-review only; not exhaustive",
+          "related_bank_fact_ids": [
+            "sun-main-source-heat-light-g4",
+            "earth-sun-energy-source-day-g3"
+          ],
+          "rule": "Existing and revised versions share the knowledge family; do not score them as independent targets."
+        },
+        "languages": {
+          "en": {
+            "status": "draft_pending_language_review",
+            "evidence": "Natural source wording, Araw/Adlaw and Buwan/Bulan are retained from the source. Venus is a proper name in all three versions."
+          },
+          "tl": {
+            "status": "draft_pending_language_review",
+            "evidence": "Natural source wording, Araw/Adlaw and Buwan/Bulan are retained from the source. Venus is a proper name in all three versions."
+          },
+          "bis": {
+            "status": "draft_pending_language_review",
+            "evidence": "Natural source wording, Araw/Adlaw and Buwan/Bulan are retained from the source. Venus is a proper name in all three versions."
+          }
+        },
+        "language_evidence_cards": [],
+        "holds": [],
+        "remaining_limitations": [
+          "Identifies a sky object; does not demonstrate observation of the sky or understanding of all solar effects."
+        ],
+        "empirical_difficulty": null,
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      }
+    }
+  ]
+}

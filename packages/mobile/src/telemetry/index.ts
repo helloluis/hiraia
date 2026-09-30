@@ -4,10 +4,12 @@ import { HIRAIAPEDIA_VERSION } from '../config/version';
 import cardsIndex from '../generated/cardsIndex.generated.json';
 import * as Device from 'expo-device';
 import { AppState, Platform } from 'react-native';
-import { newId, Outbox, type Event, type Props } from './core';
+import { newId, Outbox, supportedAcknowledgements, type Event, type Props } from './core';
 import { openRepository, type TelemetryRepository } from './repository';
 import { drainTeacherWrites, initTala, setTalaEnabled, teacherTrack } from '../tala';
 import { otaTelemetry } from '../updates/ota';
+import { assessmentReport, AssessmentReportQueue } from '../assessment/reporting';
+import type { AssessmentResult } from '../assessment/types';
 
 // Override at build time for staging. No secret is shipped in the APK.
 const ENDPOINT = process.env.EXPO_PUBLIC_TELEMETRY_URL || 'https://hiraia.org/api/telemetry/batch';
@@ -78,7 +80,11 @@ const queue = new Outbox(getRepository, async (body) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         ...body,
-        reporter: { app: 'hiraia', installation_id: body.installation_id, version: clean(APP_VERSION) },
+        reporter: {
+          app: 'hiraia',
+          installation_id: body.installation_id,
+          version: clean(APP_VERSION),
+        },
       }),
       // Cast: onnxruntime's types drag @types/node into the program, and Node's
       // AbortSignal is not structurally RN's. Same object at runtime either way.
@@ -90,13 +96,29 @@ const queue = new Outbox(getRepository, async (body) => {
     // `json()` is typed `unknown` under the stricter typings; the collector answers
     // with these two counters, and a malformed body reads as undefined rather than
     // throwing — the queue only uses them for logging.
-    const data = (await response.json()) as { acknowledged?: number; rejected?: number };
-    return { ok: true, acknowledged: data.acknowledged, rejected: data.rejected };
+    const data = (await response.json()) as {
+      acknowledged?: unknown;
+      rejected?: unknown;
+      assessment_supported?: boolean;
+    };
+    // An older collector permanently rejects names it does not know. Keep assessment
+    // summaries queued until an upgraded collector explicitly confirms schema support.
+    return { ok: true, ...supportedAcknowledgements(body.events, data) };
   } finally {
     clearTimeout(timeout);
     if (activeRequest === controller) activeRequest = undefined;
   }
 });
+const assessmentReports = new AssessmentReportQueue(async (result) => {
+  const row = assessmentReport(result, context);
+  if (row) await (await getRepository()).stageAssessment(row, result.reporting!.consentEpoch);
+});
+export function reportAssessmentHistory(history: AssessmentResult[]): void {
+  assessmentReports.offer(history);
+}
+export async function assessmentReportingPolicy() {
+  return (await getRepository()).assessmentPolicy();
+}
 export function track(name: string, props: Props = {}, id?: string): void {
   if (!enabled) return;
   const row = event(name, props, id);
@@ -129,7 +151,8 @@ export function startTelemetry(): () => void {
   let backgroundAt = 0;
   let stopTala: (() => void) | undefined;
   const flush = () => {
-    if (enabled && AppState.currentState === 'active') void queue.flush();
+    if (enabled && AppState.currentState === 'active')
+      void assessmentReports.flush().then(() => queue.flush());
   };
   // Initialization records first_open and this process's session atomically.
   void getRepository()
@@ -219,6 +242,7 @@ export function telemetryPersona(): Props {
 
 /** Awaited before a profile-switch reload, so no write lands under the next student. */
 export async function drainTelemetryWrites() {
+  await assessmentReports.flush();
   await queue.drainWrites();
   await drainTeacherWrites();
 }

@@ -5,6 +5,8 @@ import {
   cancelProfileChoice,
 } from '../profiles';
 import { ProfilePicker } from '../profiles/ProfilePicker';
+import { AssessmentScreen } from '../assessment/AssessmentScreen';
+import { useAssessmentStore } from '../assessment/store';
 import { Text, Pressable } from 'react-native';
 import { startImageDownloads } from '../images/installer';
 import { startSemanticPrefetch } from '../engine/semanticPrefetch';
@@ -93,13 +95,12 @@ export default function RootLayout() {
   const changeLanguage = useEngineStore((s) => s.changeLanguage);
   const bootstrapped = useEngineStore((s) => s.bootstrapped);
   const language = useEngineStore((s) => s.language);
+  const assessmentOpen = useAssessmentStore((s) => !!s.activeSession || !!s.results);
   // Warm the read-aloud voice the moment a language exists — at every launch, and during
   // onboarding right after slide 1's pick, so the one-time copy-out-of-the-APK and the
   // onnxruntime session load run while the kid is still choosing a grade instead of after
   // their first tap on the speaker (measured cold: seconds of dead silence).
   useEffect(() => {
-    // Diagnostic build only (see bench.ts): the matrix run replaces the ordinary preload,
-    // which would otherwise contend with it for the same cores and muddy every number.
     if (BENCH_ON_LAUNCH) {
       void runVoiceBench();
       return;
@@ -108,6 +109,17 @@ export default function RootLayout() {
   }, [language]);
   const onboardingActive = useEngineStore((s) => s.onboardingActive);
   const setOnboardingActive = useEngineStore((s) => s.setOnboardingActive);
+  useEffect(() => {
+    // A chosen assessment is durable before onboarding is retired. This also completes
+    // onboarding if the process stopped between those two saves.
+    if (!assessmentOpen || !onboardingActive) return;
+    void finishProfileOnboarding()
+      .then(() => {
+        setProfileError(false);
+        setOnboardingActive(false);
+      })
+      .catch(() => setProfileError(true));
+  }, [assessmentOpen, onboardingActive, setOnboardingActive]);
   const isReady = useEngineStore((s) => s.isReady);
   const engineError = useEngineStore((s) => s.error);
   const hydrated = useCardStore((s) => s.hydrated);
@@ -215,7 +227,7 @@ export default function RootLayout() {
       {/* The update bar sits ABOVE the navigator in the root column, so every screen —
           feed, sidebar, activity — is pushed down under it while it shows. Suppressed
           during onboarding: a first-launch reader has nothing older to update. */}
-      {shellReady && !onboardingActive && !profiles.choosing && <UpdateBanner />}
+      {shellReady && !onboardingActive && !profiles.choosing && !assessmentOpen && <UpdateBanner />}
 
       {/* The Stack mounts as soon as fonts + bootstrap are in — under the title — so the
           feed can start hydrating while the glyph is still visible. */}
@@ -273,6 +285,8 @@ export default function RootLayout() {
 
       {/* The title sheet, last in the tree so it sits over everything until it is thrown. */}
       {title !== 'gone' && <TitleScreen exiting={title === 'exiting'} onGone={onTitleGone} />}
+
+      {shellReady && profiles.hasChoice && !profiles.choosing && <AssessmentScreen />}
 
       {/* Engine warm-up (started in bootstrap): sleeping-cat loader until isReady. */}
     </GestureHandlerRootView>

@@ -12,15 +12,19 @@ import { ReviewSeries } from '../../reviews/ReviewSeries';
 import { overallStars } from '../../reviews/logic';
 import { useReviewStore, type CompletedReviewAttempt } from '../../reviews/store';
 import { useProfiles, activeProfile, requestProfileChoice } from '../../profiles';
+import { useAssessmentStore } from '../../assessment/store';
+import { assessmentFeedGates } from '../../assessment/uiCopy';
+import { useCardTextRow } from '../../data/cardTextSource';
 /** Native vertical card feed. Reading history never advances the curriculum store. */
 import { MemoryNotice } from './MemoryNotice';
 import { useFeedTelemetry } from '../../telemetry/useFeedTelemetry';
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import Svg, { Circle, Path, Polygon } from 'react-native-svg';
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ComponentProps, type ReactNode } from 'react';
 import {
   ActivityIndicator,
   Animated,
+  AppState,
   Easing,
   Keyboard,
   Pressable,
@@ -38,6 +42,7 @@ import type { Language } from '@hiraia/shared';
 import { GRADE_WORD } from '../../config/grades';
 import { uiStrings } from '../../config/strings';
 import {
+  cardText,
   cursorTopic,
   topicTitle,
   type CardChoice,
@@ -83,6 +88,27 @@ function FeedQuestion({ wide, ...props }: ComponentProps<typeof QuestionPage> & 
     contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
     {content}
   </ScrollView>;
+}
+
+/** Learning evidence is local and independent of the optional telemetry service. */
+function AssessmentExposure({ fact, language, visible }: {
+  fact: CardFact;
+  language: Language;
+  visible: boolean;
+}) {
+  const row = useCardTextRow(fact.id);
+  const text = cardText(fact, language);
+  useEffect(() => {
+    if (!visible || !row || !text) return;
+    const timer = setTimeout(() => {
+      if (AppState.currentState !== 'active') return;
+      const assessment = useAssessmentStore.getState();
+      if (!assessment.loaded || assessment.activeSession || assessment.results) return;
+      void assessment.recordExposure({ cardId: fact.id, language, exactRenderedBody: text, timestamp: Date.now() });
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [visible, row, text, fact.id, language]);
+  return null;
 }
 
 const DIE_ROWS: boolean[][] = [
@@ -413,6 +439,7 @@ function CardFeed() {
   const grade = useEngineStore((s) => s.grade);
   const onboardingActive = useEngineStore((s) => s.onboardingActive);
   const readingSession = useMemo(() => readingSessions.open(`${profiles.activeId}:${grade}`), [profiles.activeId, grade]);
+  const memoryNotice = useEngineStore((s) => s.memoryNotice);
   const t = uiStrings(language);
   const insets = useSafeAreaInsets();
   const { width: windowWidth, fontScale } = useWindowDimensions();
@@ -422,7 +449,21 @@ function CardFeed() {
   const openSettings = useCallback(() => router.push('/sidebar'), [router]);
 
   const [liveVisible, setLiveVisible] = useState(true);
-  useFeedTelemetry(liveVisible);
+  const assessmentLoaded = useAssessmentStore((s) => s.loaded);
+  const assessmentBusy = useAssessmentStore((s) => s.busy);
+  const assessmentOpen = useAssessmentStore((s) => !!s.activeSession || !!s.results || !!s.error);
+  useFeedTelemetry(liveVisible && !assessmentOpen);
+  const [foreground, setForeground] = useState(AppState.currentState === 'active');
+  const [focused, setFocused] = useState(false);
+  const [searchFocused, setSearchFocused] = useState(false);
+  useFocusEffect(useCallback(() => {
+    setFocused(true);
+    return () => setFocused(false);
+  }, []));
+  useEffect(() => {
+    const listener = AppState.addEventListener('change', (next) => setForeground(next === 'active'));
+    return () => listener.remove();
+  }, []);
   const hydrated = useCardStore((s) => s.hydrated);
   const hydrate = useCardStore((s) => s.hydrate);
   const current = useCardStore((s) => s.current);
@@ -487,6 +528,12 @@ function CardFeed() {
   const nextPreview = useNextCardPreview(language);
   const kind = lessonRecap ? 'recap' : titleCard ? 'title' : question ? 'quiz'
     : reward ? 'reward' : response ? 'response' : 'fact';
+  const { unobstructed } = assessmentFeedGates({
+    foreground, focused, onboarding: onboardingActive, choosingProfile: profiles.choosing,
+    asking, review: reviewActive, sheet: sheetOpen, assessment: assessmentOpen,
+    search: searchFocused, memoryNotice: !!memoryNotice, liveVisible, pageKind: kind,
+    loaded: assessmentLoaded, busy: assessmentBusy,
+  });
   const [history, setHistory] = useState<PageSnap[]>(() => readingSession.pages);
   const historyKey = useRef(readingSession.reviewKey);
   useLayoutEffect(() => { readingSession.pages = history; }, [history, readingSession]);
@@ -584,7 +631,8 @@ function CardFeed() {
   const advance = useCallback(() => {
     const s = useCardStore.getState();
     const review = useReviewStore.getState();
-    if (s.asking || review.open || review.busy || review.error) return;
+    const assessment = useAssessmentStore.getState();
+    if (s.asking || review.open || review.busy || review.error || assessment.activeSession || assessment.results) return;
     if (s.lessonRecap) s.continueAfterLessonRecap();
     else if (s.titleCard) s.continueAfterTitle();
     else if (s.response) s.continueAfterResponse();
@@ -610,6 +658,7 @@ function CardFeed() {
 
   const [queryText, setQueryText] = useState(readingSession.searchDraft);
   const submitQuery = () => {
+    if (assessmentOpen) return;
     const q = queryText.trim();
     if (!q) return;
     Keyboard.dismiss();
@@ -705,13 +754,13 @@ function CardFeed() {
             style={styles.searchInput}
             value={queryText}
             onChangeText={value => { readingSession.searchDraft = value; setQueryText(value); }}
-            onFocus={warmModel}
-            onBlur={dismissKeyboardAfterBlur}
+            onFocus={() => { setSearchFocused(true); warmModel(); }}
+            onBlur={() => { setSearchFocused(false); dismissKeyboardAfterBlur(); }}
             onSubmitEditing={submitQuery}
             placeholder={t.cards.searchPlaceholder}
             placeholderTextColor={card.olive}
             returnKeyType="search"
-            editable={!asking}
+            editable={!asking && !assessmentOpen}
             selectionColor={card.sage}
           />
           {asking ? (
@@ -743,7 +792,7 @@ function CardFeed() {
           </TapTarget>
         </> : <CycleButton
           language={language}
-          frozen={sheetOpen}
+          frozen={sheetOpen || assessmentOpen}
           onDie={() => {
             jumpToRandom();
             setRerollTick((n) => n + 1);
@@ -773,7 +822,7 @@ function CardFeed() {
 
   return (
     <SafeAreaView style={[styles.screen, wideWindow && { paddingBottom: insets.bottom }]} edges={['top']}>
-      <MemoryNotice />
+      {!assessmentOpen && <MemoryNotice />}
       <AdaptiveCardPager
         renderHeader={renderHeader}
         language={language}
@@ -782,7 +831,7 @@ function CardFeed() {
         preview={nextPreview}
         liveKey={liveKey}
         canAdvance={canAdvance}
-        locked={asking || reviewActive || sheetOpen || onboardingActive}
+        locked={asking || reviewActive || sheetOpen || onboardingActive || assessmentOpen}
         onAdvance={advance}
         onVisible={rememberVisible}
         onDragStart={markDragStart}
@@ -790,7 +839,7 @@ function CardFeed() {
         renderPage={(page, live, forward, visible, minimumHeight) => (
           <View
             pointerEvents={
-              asking || reviewActive || sheetOpen || onboardingActive ? 'none' : 'auto'
+              asking || reviewActive || sheetOpen || onboardingActive || assessmentOpen ? 'none' : 'auto'
             }
             style={[
               styles.cardLayer,
@@ -826,22 +875,26 @@ function CardFeed() {
                 onContinue={forward}
               />
             ) : page.fact ? (
-              <CardPage
-                desktop={wideWindow}
-                fact={page.fact}
-                choices={page.choices}
-                language={language}
-                instant
-                guide={live && visible}
-                onChoose={
-                  live
-                    ? (choice) => {
-                        const state = useCardStore.getState();
-                        if (state.pageKey === pageKey && !state.asking) state.choose(choice);
-                      }
-                    : forward
-                }
-              />
+              <>
+                <AssessmentExposure fact={page.fact} language={language} visible={visible && unobstructed} />
+                <CardPage
+                  desktop={wideWindow}
+                  fact={page.fact}
+                  choices={page.choices}
+                  language={language}
+                  instant
+                  guide={live && visible}
+                  onChoose={
+                    live
+                      ? (choice) => {
+                          const state = useCardStore.getState();
+                          const assessment = useAssessmentStore.getState();
+                          if (state.pageKey === pageKey && !state.asking && !assessment.activeSession && !assessment.results) state.choose(choice);
+                        }
+                      : forward
+                  }
+                />
+              </>
             ) : null}
             <View pointerEvents="none" style={styles.cardProgress}>
               {Array.from({ length: METER_TICKS }, (_, i) => (
@@ -1218,6 +1271,8 @@ const styles = StyleSheet.create({
     // paddingBottom applied inline (bottom safe-area inset) to clear the Android nav bar
   },
   captionSide: { width: 46 }, // equal gutters keep the label optically centred
+  assessmentCaption: { flex: 1, minHeight: 44, justifyContent: 'center', paddingHorizontal: 6 },
+  assessmentCaptionText: { textAlign: 'center', fontFamily: fonts.cardBodyBold, fontSize: 15, lineHeight: 20, color: card.gold },
   // The Settings tap target: the cog alone in the left gutter, tall enough (44dp) to be a
   // comfortable target although the glyph is 20dp.
   captionTap: {
