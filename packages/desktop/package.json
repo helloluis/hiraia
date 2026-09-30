@@ -17,7 +17,8 @@
   "dependencies": {
     "@qvac/rag": "0.6.4",
     "@qvac/sdk": "0.17.1",
-    "onnxruntime-node": "1.24.3"
+    "onnxruntime-node": "1.24.3",
+    "require-asset": "1.2.2"
   },
   "devDependencies": {
     "@electron-forge/cli": "7.11.1",
@@ -28,7 +29,7 @@
     "yaml": "2.9.0"
   },
   "optionalDependencies": {
-    "bare-runtime-win32-x64": "1.28.5",
-    "bare-runtime-darwin-arm64": "1.28.5"
+    "bare-runtime-darwin-arm64": "1.28.5",
+    "bare-runtime-win32-x64": "1.28.5"
   }
 }

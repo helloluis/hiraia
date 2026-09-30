@@ -52,6 +52,9 @@ importers:
       onnxruntime-node:
         specifier: 1.24.3
         version: 1.24.3
+      require-asset:
+        specifier: 1.2.2
+        version: 1.2.2(bare-url@2.4.3)
     optionalDependencies:
       bare-runtime-darwin-arm64:
         specifier: 1.28.5
@@ -17427,7 +17430,6 @@ snapshots:
       bare-module-resolve: 1.12.2(bare-url@2.4.3)
     transitivePeerDependencies:
       - bare-url
-    optional: true
 
   require-directory@2.1.1: {}
 
