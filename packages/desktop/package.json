@@ -11,19 +11,24 @@
     "dev": "electron .",
     "renderer": "node scripts/export-renderer.mjs",
     "package": "electron-forge package",
-    "make": "electron-forge make",
+    "make": "node scripts/package.cjs",
     "test": "node --test tests/*.test.cjs"
   },
   "dependencies": {
-    "@qvac/sdk": "0.17.1",
     "@qvac/rag": "0.6.4",
+    "@qvac/sdk": "0.17.1",
     "onnxruntime-node": "1.24.3"
   },
   "devDependencies": {
-    "electron": "44.5.0",
     "@electron-forge/cli": "7.11.1",
-    "@electron-forge/plugin-base": "7.11.1",
     "@electron-forge/maker-zip": "7.11.1",
-    "@playwright/test": "1.58.2"
+    "@electron-forge/plugin-base": "7.11.1",
+    "@playwright/test": "1.58.2",
+    "electron": "44.5.0",
+    "yaml": "2.9.0"
+  },
+  "optionalDependencies": {
+    "bare-runtime-win32-x64": "1.28.5",
+    "bare-runtime-darwin-arm64": "1.28.5"
   }
 }

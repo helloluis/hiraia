@@ -52,6 +52,13 @@ importers:
       onnxruntime-node:
         specifier: 1.24.3
         version: 1.24.3
+    optionalDependencies:
+      bare-runtime-darwin-arm64:
+        specifier: 1.28.5
+        version: 1.28.5
+      bare-runtime-win32-x64:
+        specifier: 1.28.5
+        version: 1.28.5
     devDependencies:
       '@electron-forge/cli':
         specifier: 7.11.1
@@ -68,6 +75,9 @@ importers:
       electron:
         specifier: 44.5.0
         version: 44.5.0
+      yaml:
+        specifier: 2.9.0
+        version: 2.9.0
 
   packages/factoids: {}
 

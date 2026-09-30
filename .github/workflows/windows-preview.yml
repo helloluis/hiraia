@@ -24,10 +24,18 @@ jobs:
         with:
           node-version: 24
       - run: pnpm install --frozen-lockfile
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+        id: vulkan
+        with:
+          path: packages/desktop/resources/native
+          key: windows-vulkan-${{ hashFiles('packages/desktop/scripts/build-vulkan.ps1') }}
       - name: Build bundled Windows Vulkan loader
+        if: steps.vulkan.outputs.cache-hit != 'true'
         shell: pwsh
         run: packages/desktop/scripts/build-vulkan.ps1
       - run: node packages/desktop/scripts/install-native-deps.cjs
+      - name: Verify the Bare runtime executable exists
+        run: node -e "const fs=require('fs');const bin=require('bare-runtime')();if(!fs.existsSync(bin))throw new Error('Missing '+bin);console.log(bin)"
       - name: Real native CPU embedding and generation
         run: node packages/desktop/scripts/native-smoke.mjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
