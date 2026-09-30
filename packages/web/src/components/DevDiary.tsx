@@ -31,6 +31,15 @@ const events: DiaryEvent[] = [
       },
     ],
   },
+  {
+    date: '2026-09-29', day: '29',
+    caption: 'Second school pilot launched at Better World Smokey Mountain, Manila',
+    images: [{
+      src: '/dev-diary/smokey-mountain-launch.jpg',
+      alt: 'Participants trying Hiraia on their phones at Better World Smokey Mountain, Manila',
+      caption: 'Trying Hiraia together at Better World Smokey Mountain, Manila.',
+    }],
+  },
 ];
 
 type Point = { x: number; y: number };
