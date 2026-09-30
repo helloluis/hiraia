@@ -35,6 +35,7 @@ import { sampleRateFor, synthesize, vocabFor } from './engine';
 import { normalizeForSpeech } from './normalize';
 import { hasSpeakableText } from './tokenizer';
 import { encodeWav } from './wav';
+import { mediaUri } from '../platform/mediaUri';
 
 const TAG = '[voice]';
 const dir = () => new Directory(Paths.cache, 'speech');
@@ -69,7 +70,7 @@ function prepare(samples: Float32Array, sampleRate: number, mine: number, i: num
   if (file.exists) file.delete();
   file.create();
   file.write(encodeWav(samples, sampleRate, pauseMs));
-  return { player: createAudioPlayer({ uri: file.uri }), seconds: samples.length / sampleRate };
+  return { player: createAudioPlayer({ uri: mediaUri(file.uri) }), seconds: samples.length / sampleRate };
 }
 
 /** Sweep clips of finished utterances. Unlinking a file a stale player still holds is fine. */

@@ -1,4 +1,4 @@
-import { NativeModules } from 'react-native';
+import { memorySnapshot } from '../platform/memory';
 import { File, Paths } from 'expo-file-system';
 import { ACTIVE_MODEL, EMBEDDER, REMOTE_ASSETS } from '../config/model';
 import { installedModelUpdate } from '../updates/model';
@@ -6,7 +6,7 @@ import { memoryBlock, semanticDownloadBlock, semanticMemoryBlock, type MemoryBlo
 
 export async function readMemory(): Promise<MemorySnapshot | null> {
   try {
-    const value = await NativeModules.HiraiaMemory?.snapshot();
+    const value = await memorySnapshot();
     return value ?? null;
   } catch { return null; }
 }

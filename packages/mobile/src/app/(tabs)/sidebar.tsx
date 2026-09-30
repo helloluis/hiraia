@@ -22,6 +22,7 @@ import { useEngineStore } from '../../store/engineStore';
 import { useUpdateStore } from '../../store/updateStore';
 import { card, fonts, cardAlpha } from '../../theme';
 import { otaPendingText, shortOtaId } from '../../updates/ota';
+import { capabilities } from '../../platform/capabilities';
 
 export default function SidebarScreen() {
   const router = useRouter();
@@ -149,7 +150,7 @@ export default function SidebarScreen() {
         </View>
 
         {/* Classroom join/sync sits by grade selection; artwork management stays with app info. */}
-        <TalaSettings language={language ?? 'tagalog'} />
+        {capabilities.nearbyClassroom ? <TalaSettings language={language ?? 'tagalog'} /> : null}
         <ActivityTable />
         <TelemetrySettings language={language ?? 'tagalog'} />
         <TouchableOpacity accessibilityRole="button" style={[styles.tutorialButton, { marginTop: 12 }]} onPress={() => router.push('/activity')}>
@@ -178,14 +179,14 @@ export default function SidebarScreen() {
           {/* Not decoration: the bundled voices are CC BY-NC 4.0, which obliges us to
               credit Meta and say we modified them. It travels with the APK. */}
           <Text style={styles.voiceCredit}>{t.voiceCredit}</Text>
-          <TouchableOpacity
+          {capabilities.appUpdates ? <TouchableOpacity
             style={styles.updateButton}
             onPress={onCheckUpdates}
             activeOpacity={0.85}
             disabled={updChecking}
           >
             <Text style={styles.updateButtonText}>{updLabel}</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> : <Text style={styles.voiceCredit}>Windows preview · Download a newer preview to update. Your profiles and progress stay on this computer.</Text>}
           {updVerdict ? (
             <Text style={styles.updateVerdict}>
               {updVerdict === 'uptodate'

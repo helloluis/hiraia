@@ -255,3 +255,11 @@ finetuning/cpt/synth-ceb/
 finetuning/distill/ceb-heal/
 finetuning/reference-materials/deped-science/
 finetuning/**/*.jsonl
+
+# Windows/Electron build outputs and native packaging inputs
+packages/desktop/out/
+packages/desktop/renderer/
+packages/desktop/.qvac/
+packages/desktop/resources/
+packages/desktop/test-results/
+packages/desktop/playwright-report/

@@ -1,0 +1,12 @@
+html, body, #root { height: 100%; width: 100%; margin: 0; }
+html { color-scheme: light; }
+:focus-visible { outline: 3px solid #005fcc !important; outline-offset: 3px; }
+button, [role="button"], input { touch-action: manipulation; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+@media (forced-colors: active) {
+  :focus-visible { outline-color: Highlight !important; }
+  button, [role="button"], input { border: 1px solid ButtonText !important; }
+  [aria-disabled="true"] { color: GrayText !important; }
+}

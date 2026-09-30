@@ -4,5 +4,6 @@ const { buildPlatform } = require('./scripts/build-platform.cjs');
 // The updater uses the installed distribution, never screen width or CPU guessing.
 module.exports = ({ config }) => ({
   ...config,
-  extra: { ...config.extra, distributionPlatform: buildPlatform() },
+  ...(process.env.HIRAIA_DESKTOP_BUILD === '1' ? { web: { bundler: 'metro', output: 'single' } } : {}),
+  extra: { ...config.extra, distributionPlatform: process.env.HIRAIA_DESKTOP_BUILD === '1' ? 'windows' : buildPlatform() },
 });

@@ -49,6 +49,20 @@ config.resolver.nodeModulesPaths = [
 // `.js` imports and let Metro re-resolve (its sourceExts cover ts/tsx, and a
 // genuine `.js` still resolves extensionless), falling back to the default.
 config.resolver.resolveRequest = (context, moduleName, platform) => {
+  if (platform === 'web' && process.env.HIRAIA_DESKTOP_BUILD === '1') {
+    const desktopModules = {
+      'expo-file-system': 'filesystem',
+      'expo-file-system/legacy': 'filesystemLegacy',
+      'expo-sqlite': 'sqlite',
+      '@qvac/sdk': 'qvac',
+      'onnxruntime-react-native': 'onnx',
+      'expo-application': 'application',
+      'expo-device': 'device',
+    };
+    if (desktopModules[moduleName]) return {
+      type: 'sourceFile', filePath: path.join(__dirname, 'src/desktop', desktopModules[moduleName] + '.ts'),
+    };
+  }
   if (moduleName.startsWith('.') && moduleName.endsWith('.js')) {
     try {
       return context.resolveRequest(context, moduleName.slice(0, -3), platform);

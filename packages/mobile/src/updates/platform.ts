@@ -1,8 +1,9 @@
-export type AppPlatform = 'android' | 'chromeos';
+export type AppPlatform = 'android' | 'chromeos' | 'windows';
 
 export function distributionPlatform(value: unknown): AppPlatform {
   if (value == null || value === 'android') return 'android';
   if (value === 'chromeos') return 'chromeos';
+  if (value === 'windows') return 'windows';
   throw new Error('Unsupported app distribution');
 }
 
