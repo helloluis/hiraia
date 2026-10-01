@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updated_at_utc": "2026-10-01T03:41:48.726844+00:00",
+  "updated_at_utc": "2026-10-01T06:07:02.891190+00:00",
   "bucket": "hiraia-archive",
   "storage_class": "Standard",
   "public_access": {
@@ -63,6 +63,8 @@
       "scope": "manual",
       "snapshot_id": "20261001T032135Z-bbe01ba073aa",
       "manifest_sha256": "498f88ca9390f9eaa300ee61da5fc5b8883052edd290533d2666d3e7c34741e4",
+      "receipt_sha256": "df20dfb93203b523408206c15336e8d163887fe2c2ae7d9286f8769f3b0ecb9a",
+      "committed_at_utc": "2026-10-01T03:25:49Z",
       "totals": {
         "files": 28,
         "logical_bytes": 32462395,
@@ -71,14 +73,24 @@
         "unique_files": 28
       },
       "state": "restored",
-      "receipt_sha256": "df20dfb93203b523408206c15336e8d163887fe2c2ae7d9286f8769f3b0ecb9a",
       "verified_bytes": 32462395,
-      "restored_files": 28
+      "verified_objects": 28,
+      "restored_files": 28,
+      "restore": {
+        "status": "restored",
+        "error_count": 0,
+        "existing_verified_files": 0,
+        "result_sha256": "8d987a1f6914d168b3ef19a3a5d3d2c29a68b754b9dacb56e4b51d23a1a15038",
+        "result_written_at_utc": "2026-10-01T03:26:47.335610+00:00",
+        "method": "Read remote manifest and receipt; verify every chunk and complete file while restoring into a fresh directory."
+      }
     },
     {
       "scope": "images",
       "snapshot_id": "20261001T032632Z-e31bd67b96c7",
       "manifest_sha256": "679c0fb9d97aa99915d8b5a1b59c219b9a3e2f429e525c6ff2236515c1c69c9b",
+      "receipt_sha256": "7760d088876422813eefc246a5730e74d9c961ad10d7e13a4f2c672af89e1aa9",
+      "committed_at_utc": "2026-10-01T05:40:05Z",
       "totals": {
         "files": 49275,
         "logical_bytes": 56666347540,
@@ -86,12 +98,25 @@
         "stored_bytes": 56635374584,
         "unique_files": 49248
       },
-      "state": "uploading"
+      "state": "restored",
+      "verified_bytes": 56635374584,
+      "verified_objects": 49248,
+      "restored_files": 49275,
+      "restore": {
+        "status": "restored",
+        "error_count": 0,
+        "existing_verified_files": 0,
+        "result_sha256": "f518548ce3c68cbd9361395cb575aee6b7078ce74c22889610229cd2d8c83bf3",
+        "result_written_at_utc": "2026-10-01T06:06:18.436892+00:00",
+        "method": "Read remote manifest and receipt; verify every chunk and complete file while restoring into a fresh directory."
+      }
     },
     {
       "scope": "reference",
       "snapshot_id": "20261001T032120Z-4462db0f7a1b",
       "manifest_sha256": "95530b9d52f6f40e535896c43ca96c9137531192f19420afab200c7f9ea5d7ca",
+      "receipt_sha256": "972931b575933e170d9d31f7e4545a543b753a2a245c49a9b70d42d86c162619",
+      "committed_at_utc": "2026-10-01T04:28:17Z",
       "totals": {
         "files": 5230,
         "logical_bytes": 21651725720,
@@ -99,12 +124,25 @@
         "stored_bytes": 21307743278,
         "unique_files": 5154
       },
-      "state": "uploading"
+      "state": "restored",
+      "verified_bytes": 21307743278,
+      "verified_objects": 5154,
+      "restored_files": 5230,
+      "restore": {
+        "status": "restored",
+        "error_count": 0,
+        "existing_verified_files": 0,
+        "result_sha256": "f9bf469e55d7c7a673e587c1ac98061fdd8be8e5937e8b10d428b4382213980d",
+        "result_written_at_utc": "2026-10-01T04:47:33.741356+00:00",
+        "method": "Read remote manifest and receipt; verify every chunk and complete file while restoring into a fresh directory."
+      }
     },
     {
       "scope": "auxiliary",
       "snapshot_id": "20261001T033642Z-15723adeee8f",
       "manifest_sha256": "36222481d1b229542fa4e3658f4b0b6135be7e5c49427ba83e40d2f848a95737",
+      "receipt_sha256": "23fd81ad002fa493134ea9a69f39b2134b882fa4d09fdabd4f00cdea8f674f3f",
+      "committed_at_utc": "2026-10-01T03:39:01Z",
       "totals": {
         "files": 90,
         "logical_bytes": 90512523,
@@ -113,15 +151,183 @@
         "unique_files": 88
       },
       "state": "restored",
-      "receipt_sha256": "23fd81ad002fa493134ea9a69f39b2134b882fa4d09fdabd4f00cdea8f674f3f",
       "verified_bytes": 90339506,
-      "restored_files": 90
+      "verified_objects": 88,
+      "restored_files": 90,
+      "restore": {
+        "status": "restored",
+        "error_count": 0,
+        "existing_verified_files": 0,
+        "result_sha256": "d90f8fa87a00cc9d946d3226b97b184d25f70eea0921721250171794cfbaff5d",
+        "result_written_at_utc": "2026-10-01T03:40:17.145716+00:00",
+        "method": "Read remote manifest and receipt; verify every chunk and complete file while restoring into a fresh directory."
+      }
+    },
+    {
+      "scope": "history",
+      "snapshot_id": "20261001T042000Z-b0b27ac8b39e",
+      "manifest_sha256": "82936a1a74afc8b2421ff8ec8db80d1ccb5c09b1d55594fead020af5b028d287",
+      "receipt_sha256": "6b651e90684b9e7a759cd31875ccb7a07820df9970cca9ca764de3fc0cc55994",
+      "committed_at_utc": "2026-10-01T04:20:54Z",
+      "totals": {
+        "files": 47,
+        "logical_bytes": 25735298,
+        "objects": 47,
+        "stored_bytes": 25735298,
+        "unique_files": 47
+      },
+      "state": "restored",
+      "verified_bytes": 25735298,
+      "verified_objects": 47,
+      "restored_files": 47,
+      "restore": {
+        "status": "restored",
+        "error_count": 0,
+        "existing_verified_files": 0,
+        "result_sha256": "9c212504518ded5f5f02ec2e0c2526b292dd727901849e5ac8022de33459c8da",
+        "result_written_at_utc": "2026-10-01T04:21:39.614534+00:00",
+        "method": "Read remote manifest and receipt; verify every chunk and complete file while restoring into a fresh directory."
+      }
+    },
+    {
+      "scope": "codewide",
+      "snapshot_id": "20261001T053954Z-2f53283f7bf0",
+      "manifest_sha256": "1215b28bf2e9f98c999e5529efc1fd378db2d932bf7b91a4125e6b357743d4da",
+      "receipt_sha256": "93629cd15f0180e6d905c7291426dcef01e1995b7dc9f49200a21f2568ccf0ac",
+      "committed_at_utc": "2026-10-01T05:41:25Z",
+      "totals": {
+        "files": 204,
+        "logical_bytes": 18086613,
+        "objects": 204,
+        "stored_bytes": 18086613,
+        "unique_files": 204
+      },
+      "state": "restored",
+      "verified_bytes": 18086613,
+      "verified_objects": 204,
+      "restored_files": 204,
+      "restore": {
+        "status": "restored",
+        "error_count": 0,
+        "existing_verified_files": 0,
+        "result_sha256": "7f487004fe1184a3d4fa2bfc9614366cc5ab7f44e1e0b8d0f6e3378431e67259",
+        "result_written_at_utc": "2026-10-01T05:43:00.473288+00:00",
+        "method": "Read remote manifest and receipt; verify every chunk and complete file while restoring into a fresh directory."
+      }
     }
   ],
   "notes": [
-    "Counts are per snapshot; object bytes deduplicate across snapshots. Manual originals are also in the complete image snapshot.",
-    "Original images:47,893 unique full-resolution byte variants; archive metadata and generation references are counted separately.",
-    "Bulk snapshot state remains uploading until full remote-byte verification and receipt creation succeed.",
-    "No independent second cloud provider or scheduled maintenance job has been configured."
-  ]
+    "All six selected snapshots passed full remote-byte verification, committed receipt verification and independent full-file restores.",
+    "Aggregate content totals deduplicate exact bytes across snapshots; manual originals also occur in the core image snapshot.",
+    "The historical supplement adds 42 full-resolution variants to the 47,893 core image variants. Earlier artwork does not recover the 15 missing later manual imports.",
+    "The separately selected generation references, website/branding artwork, SVG masters, metadata and 512-pixel survival copies are outside the core-plus-history original-resolution image count.",
+    "The expanded Code-directory search adds auxiliary artwork, compact provider records, recovery evidence and a pinned copy of the archive tooling. No additional original-resolution science images or missing later manual revisions were recovered.",
+    "The tiny locked retention probe is outside the snapshot content totals; bucket listing, if present, records exact billed object bytes.",
+    "All source originals remain local; only temporary test restore copies may be removed after verification.",
+    "No independent second provider or recurring maintenance job has been configured."
+  ],
+  "remote_object_audit": {
+    "checked_at_utc": "2026-10-01T05:43:49.656448+00:00",
+    "bucket": "hiraia-archive",
+    "prefixes": [
+      "objects/sha256/",
+      "snapshots/"
+    ],
+    "status": "matched",
+    "expected_objects": 54753,
+    "listed_objects": 54753,
+    "expected_bytes": 78099471224,
+    "listed_bytes": 78099471224,
+    "retention_probe_sha256_verified": true,
+    "missing_count": 0,
+    "unexpected_count": 0,
+    "wrong_size_count": 0,
+    "missing": [],
+    "unexpected": [],
+    "wrong_sizes": [],
+    "note": "Listing reconciles inventory completeness only; full remote-byte integrity is established by upload read-back and independent restores.",
+    "result_sha256": "813b9a296bc464732b7fd879df05b943ab9d10d612146607e76b102a841162ed"
+  },
+  "state": "all_snapshots_restored",
+  "aggregate": {
+    "snapshot_count": 6,
+    "selected_file_paths_including_cross_snapshot_duplicates": 54874,
+    "unique_files": 54740,
+    "unique_content_objects": 54740,
+    "unique_content_bytes": 78077273461,
+    "snapshot_metadata_bytes": 22197634,
+    "distinct_original_resolution_image_variants": 47935,
+    "distinct_original_resolution_image_bytes": 56528893161,
+    "unlocated_specific_manual_source_revisions": 15
+  },
+  "expanded_code_search": {
+    "record": "docs/original-image-code-wide-recovery-20261001.json",
+    "record_sha256": "e155493db4ef38c18a67641f14baaae5e67f3c7eb6766dad816b890933b6b272",
+    "artwork_assets": 128,
+    "artwork_bytes": 5890077,
+    "native_provider_originals_added": 0,
+    "manual_revision_gaps_closed": 0,
+    "scope_and_limits": [
+      "Fifteen specific manual source revisions remain unlocated; earlier alternative artwork and processed derivatives do not close these gaps.",
+      "No network/provider retrieval and no traversal outside /Users/luis/Code.",
+      "Five large training/TTS archives received bounded header inspection only; see archive-container-review.json.",
+      "Dependency/cache trees, shipping illustrations, screenshots, document renders and ordinary photographs were excluded by role unless specifically relevant generated artwork.",
+      "This is a search of identified Hiraia-related source/worktree/backup paths, not proof that every arbitrary or renamed file anywhere under Code has been exhaustively classified."
+    ]
+  },
+  "tooling": {
+    "archive_path": "tools/reference-archive/archive.py",
+    "archive_sha256": "adb5c24fbf4ce0d2a8270c7ddee02fc3b82f1d46117a2b88fffada38e80ba35b",
+    "credential_helper_sha256": "94980bdd66b86a81fd8fb068fbea66f254bd50ebb4166b1d2f6ba977a9945084",
+    "archived_source_commit": "9294fce56ee7eb86f696fa7f8353bed79836c843"
+  },
+  "temporary_restore_cleanup": {
+    "scope": "Task-created temporary restore copies only; all source originals and recovery staging retained.",
+    "files_removed": 54874,
+    "bytes_removed": 78484870089,
+    "destinations": [
+      {
+        "scope": "manual",
+        "destination": "/Users/luis/Code/hiraia/build/reference-archive/restore-manual-canary-20261001",
+        "files": 28,
+        "bytes": 32462395,
+        "removed_at_utc": "2026-10-01T06:06:49.392409+00:00"
+      },
+      {
+        "scope": "reference",
+        "destination": "/Users/luis/Code/hiraia/build/reference-archive/full-restore-reference-20261001",
+        "files": 5230,
+        "bytes": 21651725720,
+        "removed_at_utc": "2026-10-01T06:06:51.456776+00:00"
+      },
+      {
+        "scope": "images",
+        "destination": "/Users/luis/Code/hiraia/build/reference-archive/full-restore-images-20261001",
+        "files": 49275,
+        "bytes": 56666347540,
+        "removed_at_utc": "2026-10-01T06:07:02.806928+00:00"
+      },
+      {
+        "scope": "auxiliary",
+        "destination": "/private/tmp/hiraia-archive-auxiliary-restore-20261001",
+        "files": 90,
+        "bytes": 90512523,
+        "removed_at_utc": "2026-10-01T06:07:02.819894+00:00"
+      },
+      {
+        "scope": "history",
+        "destination": "/private/tmp/hiraia-archive-history-restore-20261001",
+        "files": 47,
+        "bytes": 25735298,
+        "removed_at_utc": "2026-10-01T06:07:02.827543+00:00"
+      },
+      {
+        "scope": "codewide",
+        "destination": "/private/tmp/hiraia-archive-codewide-restore-20261001",
+        "files": 204,
+        "bytes": 18086613,
+        "removed_at_utc": "2026-10-01T06:07:02.890905+00:00"
+      }
+    ]
+  }
 }

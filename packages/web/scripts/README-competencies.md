@@ -69,3 +69,7 @@ Peru's national competency hierarchy is a separate research artifact. Publishing
 another country's reference map must distinguish reference targets from learning
 materials Hiraia actually provides; never relabel Philippine lessons as equivalent
 coverage without an explicit, reviewed crosswalk.
+
+## Production validation on 1 October 2026
+
+The competency generator check, Next.js production build and TypeScript checks passed for the deployed page. The production build also reported a pre-existing ESLint configuration failure: inherited type-aware rules have no TypeScript project information. A read-only trial adding project service removes that exception but reveals missing resolver/plugin setup and a wider existing lint backlog. This task does not claim a clean repository lint run, and does not suppress the affected rules. Restore the shared lint configuration and triage the resulting backlog as a separate repository maintenance change.

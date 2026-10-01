@@ -1,0 +1,227 @@
+{
+  "schema": 1,
+  "checked_at_utc": "2026-10-01T05:40:48.448806+00:00",
+  "scope": "Additional local Hiraia image and artwork recovery across identified source, worktree and backup roots under /Users/luis/Code.",
+  "status": "Local supplement frozen and verified; this document does not assert cloud upload or restore completion.",
+  "baseline_snapshot_ids": [
+    "20261001T032632Z-e31bd67b96c7",
+    "20261001T042000Z-b0b27ac8b39e",
+    "20261001T033642Z-15723adeee8f",
+    "20261001T032135Z-bbe01ba073aa"
+  ],
+  "selection": {
+    "path": "build/reference-archive/code-wide-recovery-20261001/source-selection.json",
+    "sha256": "22d28f505e8bd95846c24451c9e8f185d3c1a7e480f0d5b8831d6d7db3b5012e",
+    "frozen_at_utc": "2026-10-01T05:39:09.003253+00:00",
+    "source_roots": 2,
+    "files": 204,
+    "logical_bytes": 18086613,
+    "source_file_counts": {
+      "code-wide-artwork-and-provider-evidence": 172,
+      "historical-manual-gap-derivatives-and-search-evidence": 32
+    },
+    "source_bytes": {
+      "code-wide-artwork-and-provider-evidence": 10117598,
+      "historical-manual-gap-derivatives-and-search-evidence": 7969015
+    }
+  },
+  "preserved_artwork": {
+    "unique_files": 128,
+    "raster_files_including_one_ico": 119,
+    "source_svg_files": 9,
+    "raster_bytes": 5851185,
+    "source_svg_bytes": 38892,
+    "total_artwork_bytes": 5890077,
+    "classifications": {
+      "generated-brand-raster-artwork": 8,
+      "generated-app-raster-artwork": 10,
+      "composed-social-artwork": 1,
+      "historical-web-artwork-native-provenance-unproven": 2,
+      "historical-processed-512px-backup": 92,
+      "generated-wallpaper-artwork": 4,
+      "source-vector-artwork": 9,
+      "app-mascot-best-available-raster-native-provenance-unproven": 1,
+      "generated-app-icon-container": 1
+    },
+    "native_provider_originals_added": 0,
+    "manual_revision_gaps_closed": 0,
+    "images_reencoded": false,
+    "exact_byte_copies_readback_sha256_verified": true,
+    "historical_512px_variants": 92,
+    "classification_note": "Historical 512px backups remain processed derivatives. Brand/app/wallpaper rasterizations and SVG sources are auxiliary artwork. Two old web JPEGs and the mascot preserve best available local bytes with native provider provenance unproven."
+  },
+  "new_provider_response_evidence": {
+    "response_files": 25,
+    "source_bytes": 4530849961,
+    "decoded_image_records": 2737,
+    "new_unique_images": 0,
+    "all_decoded_image_sha256_already_in_core": true,
+    "compact_metadata_bytes": 2260463,
+    "base64_images_replaced_by_sha_references": true,
+    "source_response_hashes_preserved": true,
+    "remaining_jsonl_containers_fully_scanned": 10779,
+    "additional_jsonl_bytes_fully_scanned": 267090988,
+    "additional_provider_json_files_scanned": 2594,
+    "additional_provider_json_bytes": 54283919,
+    "additional_payload_matches": 0
+  },
+  "archive_recovery_tooling": {
+    "source_commit": "9294fce56ee7eb86f696fa7f8353bed79836c843",
+    "files": 6,
+    "bytes": 113026,
+    "preservation": "Exact committed Git blobs, SHA256 verified after copying; includes source, runbook and tests; no credentials or journals."
+  },
+  "search_scope": {
+    "boundary": "/Users/luis/Code",
+    "roots": [
+      "hiraia-archive",
+      "hiraia-integration-backups",
+      "hiraia-paused-work",
+      "hiraia-recovery-b-work",
+      "hiraia-device-profiles",
+      "hiraia-chromeos-20260929",
+      "hiraia-windows-20260930",
+      "unified-depth-fill-parallel-run-backup-2026-09-08",
+      "hiraia-worktree-archive",
+      "hiraia"
+    ],
+    "nested_current_worktrees": [
+      "build/manual-exam-ota-024-20260930",
+      "build/manual-exam-ota-025-20260930",
+      "build/manual-exam-ota-026-20260930",
+      "build/manual-exam-ota-027-20260930",
+      "build/manual-exam-ota-20260930",
+      "build/manual-exam-ota-refactor-026-20260930"
+    ],
+    "counts": {
+      "initial_paths_enumerated": 1293925,
+      "initial_candidate_files": 971344,
+      "main_and_retired_headers": 118923,
+      "current_root_extra_headers": 4483,
+      "main_and_retired_hash_candidates": 10801,
+      "current_root_extra_hash_candidates": 198,
+      "small_brand_role_paths_at_all_dimensions": 77,
+      "source_svg_paths": 10192,
+      "focused_peer_enumerated_entries": 3179838,
+      "note": "These are overlapping passes and units; do not sum them as unique files."
+    },
+    "roles_included": [
+      "Explicit raw/manual/provider output locations at every resolution, including extensionless manual imports checked by the focused search.",
+      "Other plausible image source locations checked by signatures and dimensions, then classified by source role.",
+      "Hiraia brand/app raster artwork, best available mascot/web artwork, generated wallpapers and SVG sources.",
+      "Provider response JSONL/JSON containers and relevant backup/archive member lists."
+    ],
+    "excluded": [
+      "All task-generated build/reference-archive trees and temporary restore copies.",
+      "Dependency/cache trees, shipping illustration copies, screenshots, document renders and ordinary photographs unless specifically relevant generated artwork.",
+      "Secrets, credential files, upload journals, model weights and unrelated projects."
+    ],
+    "source_mutations": false,
+    "existing_snapshot_mutations": false,
+    "symlinks_outside_boundary_followed": false,
+    "network_or_provider_retrieval": false
+  },
+  "archive_container_coverage": {
+    "focused_peer_containers_fully_listed": 21,
+    "focused_peer_members": 758,
+    "focused_peer_raster_members": 0,
+    "additional_containers_examined": 15,
+    "additional_fully_listed": 10,
+    "additional_bounded_only": 5,
+    "fully_listed_outcomes": [
+      "Two desktop-input bundles contain shipping illustration shards, dependency UI icons and Hiraia profile copies.",
+      "Five desktop application ZIPs and one wrapper ZIP contain packaged delivery assets. Hiraia profile and ICO bytes matched direct source files, which are preserved in the supplement.",
+      "Telemetry tar contains 17 code/configuration members; teach4.zip contains one WAV file."
+    ],
+    "bounded_archives": [
+      {
+        "path": "hiraia-archive/cpt-corpus-v1-finals-2026-08-22/v1-finals.tar.gz",
+        "compressed_bytes": 3985787886,
+        "observed_headers": "pool_tl/data_clean.jsonl, member size 5,001,443,412 bytes",
+        "coverage": "initial header only",
+        "exhaustively_listed": false
+      },
+      {
+        "path": "hiraia-archive/hiraia-ks-volume-2026-08-21/ks-salvage.tar.gz",
+        "compressed_bytes": 5772513308,
+        "observed_headers": "training logs, scripts, distillation JSONLs and GGUF",
+        "coverage": "first 16 headers; stopped after 16 MiB compressed",
+        "exhaustively_listed": false
+      },
+      {
+        "path": "hiraia/finetuning/teacher/corpus-en-v2.tgz",
+        "compressed_bytes": 774212936,
+        "observed_headers": "TTS WAV directory trees",
+        "coverage": "first 40 headers each",
+        "exhaustively_listed": false
+      },
+      {
+        "path": "hiraia/finetuning/teacher/corpus-tl-omni.tgz",
+        "compressed_bytes": 2447591192,
+        "observed_headers": "TTS WAV directory trees",
+        "coverage": "first 40 headers each",
+        "exhaustively_listed": false
+      },
+      {
+        "path": "hiraia/finetuning/teacher/corpus-tl-v2.tgz",
+        "compressed_bytes": 444214297,
+        "observed_headers": "TTS WAV directory trees",
+        "coverage": "first 40 headers each",
+        "exhaustively_listed": false
+      }
+    ],
+    "limitation": "Five large training/TTS archives were only inspected through bounded headers. Observed training/audio/model content does not establish that no image could occur later."
+  },
+  "missing_manual_source_revisions": {
+    "count": 15,
+    "families": [
+      "balut-eating-roadside-scene",
+      "lifecycle-chicken",
+      "lifecycle-coral-polyp",
+      "lifecycle-dragonfly",
+      "lifecycle-fish",
+      "lifecycle-frog",
+      "kuliglig-hand-tractor-cart-scene",
+      "lifecycle-mangrove-propagule",
+      "lifecycle-mosquito",
+      "evaporation-puddle-drying",
+      "lifecycle-rice-plant",
+      "clean-water-drinking-safe",
+      "lifecycle-snail",
+      "tricycle-front-parked",
+      "tuba-gatherer-coconut-scene"
+    ],
+    "result": "Specific later manual imports remain unlocated. Older artwork, processed derivatives, reference images and the newly preserved brand assets do not close these gaps."
+  },
+  "verification": {
+    "artwork_deduplicated_against_baseline_sha256": true,
+    "focused_peer_artwork_hashes_deduplicated": true,
+    "all_preserved_artwork_copied_byte_for_byte": true,
+    "all_copy_sha256_readback_verified": true,
+    "selected_sources_pass_archive_tool_normalization_and_enumeration": true,
+    "selected_file_hashes_and_stat_fingerprints_recorded": true,
+    "selected_copy_reencoding": false,
+    "compact_provider_responses": "Image payloads replaced by SHA references; source response hashes, custom IDs, statuses, model/usage metadata and per-image provenance retained.",
+    "restore_tooling": "Six exact committed source/runbook/test files from commit 9294fce56ee7eb86f696fa7f8353bed79836c843, each with Git blob SHA1 and SHA256 provenance."
+  },
+  "frozen_evidence": {
+    "root": "build/reference-archive/code-wide-recovery-20261001",
+    "summary": "investigation-summary.json",
+    "artwork_source_paths_hashes_and_dimensions": "selected-assets-provenance.json",
+    "compact_provider_response_summary": "provider-recovery-summary.json",
+    "provider_image_lineage": "provider-image-provenance.jsonl",
+    "archive_coverage": "archive-container-review.json",
+    "restore_tooling_provenance": "archive-tooling-provenance.json",
+    "local_selection_verification": "freeze-verification.json",
+    "focused_peer_root": "build/reference-archive/code-wide-manual-search-20261001",
+    "focused_peer_summary": "summary.json",
+    "focused_peer_artwork_lineage": "preservation-provenance.json"
+  },
+  "limits": [
+    "Fifteen specific manual source revisions remain unlocated; earlier alternative artwork and processed derivatives do not close these gaps.",
+    "No network/provider retrieval and no traversal outside /Users/luis/Code.",
+    "Five large training/TTS archives received bounded header inspection only; see archive-container-review.json.",
+    "Dependency/cache trees, shipping illustrations, screenshots, document renders and ordinary photographs were excluded by role unless specifically relevant generated artwork.",
+    "This is a search of identified Hiraia-related source/worktree/backup paths, not proof that every arbitrary or renamed file anywhere under Code has been exhaustively classified."
+  ]
+}
