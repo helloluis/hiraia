@@ -24,6 +24,10 @@ keyboard navigation, nonsequential answers, restart after three answers, an expe
 8/12 score and saved history. A focus handler initially moved a partially visible card
 between pointer-down and pointer-up; removing that programmatic move fixed dropped
 clicks. The test now requires every single real click to produce its durable answer.
+Keyboard arrows also move focus to the newly browsed question shell, so Enter cannot
+accidentally submit a choice on the previous, now hidden card. The regression test
+reproduced that stale-focus defect before the fix. Tab reaches all 36 options in the
+actual app, keeps each focused option in view, and stays inside the exam modal.
 
 Windows release evidence must include carousel, out-of-order and screen-reader checks.
 The Windows runner sets a real 1920 × 1080 desktop before creating the test window;

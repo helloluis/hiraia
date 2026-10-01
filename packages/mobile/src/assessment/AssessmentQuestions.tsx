@@ -34,6 +34,8 @@ export function AssessmentQuestions({ session, language, foreground, busy, pendi
   const horizontal = viewport.horizontal && !screenReader;
   const { cardWidth, stride } = viewport;
   const rail = useRef<ScrollView>(null);
+  const questions = useRef<(View | null)[]>([]);
+  const focusedQuestion = useRef<number | null>(null);
   const offset = useRef(0);
   const previous = useRef({ stride, horizontal });
   const [height, setHeight] = useState(0);
@@ -76,7 +78,13 @@ export function AssessmentQuestions({ session, language, foreground, busy, pendi
   </View>;
 
   return <ReaderInput style={styles.root} enabled={horizontal}
-    onNavigate={event => jump(start + event.nativeEvent.direction)}>
+    onNavigate={event => {
+      const index = Math.max(0, Math.min(11, (focusedQuestion.current ?? start) + event.nativeEvent.direction));
+      // Do not leave Enter aimed at an answer that arrows moved off screen.
+      // Focus the question shell, so another deliberate Tab/choice is needed.
+      jump(index, false);
+      questions.current[index]?.focus();
+    }}>
     <View style={styles.toolbar}>
       <Text style={styles.instructions}>{t.pick}</Text>
       <Text testID="exam-answer-count" style={styles.count} accessibilityLiveRegion="polite"
@@ -130,6 +138,9 @@ export function AssessmentQuestions({ session, language, foreground, busy, pendi
             </View>}
           </>;
           return <View key={item.id} testID={`exam-question-${index + 1}`}
+            ref={node => { questions.current[index] = node; }} focusable={horizontal}
+            onFocus={() => { focusedQuestion.current = index; }}
+            onBlur={() => { focusedQuestion.current = null; }}
             onLayout={event => { positions.current.set(index, event.nativeEvent.layout.y); }}
             style={[styles.paper, horizontal
               ? { width: cardWidth, height: Math.max(1, height - 24), marginRight: index < 11 ? 16 : 0 }

@@ -48,6 +48,29 @@ async function verifyExam({app, page, launch, output, report}) {
   await page.mouse.wheel(6000, 0);
   await expect(question(12)).toBeInViewport();
   assert.equal((await readExam(page)).activeSession.answers.length,0, 'Browsing must never submit answers');
+  await options(1).first().focus();
+  await page.keyboard.press('ArrowRight');
+  await expect.poll(() => page.evaluate(() => document.activeElement?.closest('[data-testid^="exam-question-"]')?.getAttribute('data-testid'))).toBe('exam-question-2');
+  await page.keyboard.press('Enter');
+  assert.equal((await readExam(page)).activeSession.answers.length,0,'Enter after browsing must not choose an offscreen answer');
+  await options(1).first().focus();
+  const reached = new Set();
+  for (let tab=0; tab<80 && reached.size<36; tab++) {
+    const focused = await page.evaluate(() => {
+      const node=document.activeElement, box=node?.getBoundingClientRect();
+      return {card:node?.closest('[data-testid^="exam-question-"]')?.getAttribute('data-testid'),
+        label:node?.getAttribute('aria-label')??'', dialog:!!node?.closest('[role="dialog"]'),
+        visible:!!box&&box.left>=0&&box.right<=innerWidth+1&&box.top>=0&&box.bottom<=innerHeight+1};
+    });
+    assert.ok(focused.dialog,'Tab must remain inside the exam');
+    if (focused.card && /^[1-3]\. /.test(focused.label)) {
+      assert.ok(focused.visible,JSON.stringify(focused));
+      reached.add(focused.card+focused.label);
+    }
+    await page.keyboard.press('Tab');
+  }
+  assert.equal(reached.size,36,'Tab must reach every answer without submitting');
+  assert.equal((await readExam(page)).activeSession.answers.length,0);
   report.checks.push('keyboard arrows and trackpad browse the complete exam without submitting');
 
   await app.evaluate(({BrowserWindow}) => BrowserWindow.getAllWindows()[0].webContents.setZoomFactor(2));
