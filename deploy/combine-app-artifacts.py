@@ -47,6 +47,6 @@ def combine(android, windows):
 
 if __name__ == '__main__':
     pair, desktop, output = map(Path, sys.argv[1:])
-    result = combine(json.loads(pair.read_text()), json.loads(desktop.read_text()))
-    output.write_text(json.dumps(result, indent=2) + '\n')
+    result = combine(json.loads(pair.read_text(encoding='utf-8')), json.loads(desktop.read_text(encoding='utf-8')))
+    output.write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
     print(f'Complete three-platform build: {output}')

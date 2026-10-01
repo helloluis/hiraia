@@ -70,15 +70,15 @@ export const DOWNLOAD_PLATFORMS: DownloadPlatform[] = [
   {
     id: 'windows', name: 'Windows', device: 'desktop', status: 'preview',
     eyebrow: 'For PCs & laptops',
-    description: 'Science on a bigger screen. Explore cards side by side, take quizzes, and listen offline in English or Tagalog.',
+    description: 'Science on a bigger screen. Explore cards side by side, take the 12-question exam, and listen offline in English or Tagalog.',
     requirements: ['Windows 10 or 11 · Intel/AMD 64-bit (x64)',
       'No dedicated graphics card needed for the optional AI tutor',
       'Tala classroom sync is not available in this preview'],
     downloadNote: 'Extract the ZIP, then open Hiraia.exe. This preview is unsigned, so Windows may show a SmartScreen warning.',
     installNote: 'Extract the whole ZIP to a folder before opening Hiraia.exe. To update, download and extract the newer version. Your profiles, progress, and downloaded content are stored separately and stay on your computer. Windows ARM is not supported.',
-    screenshot: { src: '/screens/download-windows.png', width: 1008, height: 689,
-      alt: 'Hiraia running on Windows with a science quiz and all three answer choices visible.',
-      caption: 'Windows preview captured during native app testing. Testing on Windows 10 devices is still pending.' },
+    screenshot: { src: '/screens/download-windows-exam.png', width: 1008, height: 689,
+      alt: 'Hiraia’s 12-question exam running on Windows, showing the question counter, progress bar, and three answer choices.',
+      caption: 'The 12-question exam, available in every edition. Captured from the Windows preview; Windows 10 device testing is still pending.' },
   },
 ];
 

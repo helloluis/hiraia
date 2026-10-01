@@ -1,0 +1,61 @@
+{
+  "passed": true,
+  "platform": "win32",
+  "arch": "x64",
+  "packaged": true,
+  "gitCommit": "c0299c74e2929424e7d49ede6a6e72bf2439dee2",
+  "checks": [
+    "offline first-run profile and curriculum",
+    "12-question exam is available offline from Settings",
+    "all exam answers remain reachable at 200% zoom and 900x600",
+    "exam answers, question text and option order survive process restart",
+    "all twelve answers score once and appear in the saved profile history",
+    "keyboard navigation and inactive-card focus isolation",
+    "horizontal trackpad scroll advances the active card",
+    "all quiz answers reachable at 200% zoom",
+    "all quiz answers reachable in a 900\u00d7600 window",
+    "system accessibility mode renders",
+    "profile and quiz result persist after restart",
+    "Listen button plays synthesized offline narration",
+    "packaged QVAC CPU embedding and generation after relocation",
+    "bundled English and Tagalog voices synthesize offline"
+  ],
+  "exam": {
+    "questions": 12,
+    "completed": true,
+    "resumed": true,
+    "history": true,
+    "keyboard": true,
+    "zoom": true
+  },
+  "playback": [
+    {
+      "playing": true,
+      "duration": 4.74
+    }
+  ],
+  "native": {
+    "embeddingDimensions": 768,
+    "answer": "The star at the center of our solar system is called the Sun.",
+    "stats": {
+      "timeToFirstToken": 579.008,
+      "tokensPerSecond": 20.549704597996403,
+      "cacheTokens": 0,
+      "promptTokens": 23,
+      "generatedTokens": 14,
+      "emittedTokens": 14,
+      "avgConcurrentSeq": 1,
+      "backendDevice": "cpu"
+    }
+  },
+  "voices": {
+    "en": {
+      "samples": 36608
+    },
+    "tl": {
+      "samples": 49920
+    }
+  },
+  "errors": [],
+  "ciRun": "https://github.com/helloluis/hiraia/actions/runs/36810771410"
+}

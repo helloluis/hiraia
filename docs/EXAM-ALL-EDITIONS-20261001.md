@@ -7,8 +7,8 @@ question-bank provenance into the shared release branch instead of maintaining a
 edition-specific copy. It preserves the bank's pending teacher/language review labels
 and all five held questions; inclusion in the app does not promote draft content.
 
-Target release: Android/ChromeOS 0.4.28 (28), Windows 0.4.28-preview.1. Native release
-measurements and publication evidence will be recorded after the packages pass.
+Release: Android/ChromeOS 0.4.28 (28), Windows 0.4.28-preview.1. Native release
+measurements and publication evidence are in [the release record](RELEASE-0.4.28.md).
 
 Windows now honors isolated SQLite connections and closes only the report reader.
 This prevents reading exam history from applying `query_only` to a child's progress
@@ -18,9 +18,9 @@ The shared model-free suite passes 108 exam, reporting and reader cases. The des
 host suite passes eight storage/download cases. Desktop renderer testing completes
 all twelve questions offline, resumes the exact attempt after a process restart,
 checks the result and history, and verifies keyboard input and reachable options at
-200% zoom and in a 900 × 600 window. Native Windows and both signed APKs still require
-their release checks before publication. Windows screenshots will come from the
-packaged Windows run, not from a mockup or another platform.
+200% zoom and in a 900 × 600 window. Native Windows and both signed APKs passed
+their release checks before publication. The website screenshot comes from the
+packaged Windows run.
 
 The formal model gate passed all 45 cases and all 185 sampled answers on 1 October
 2026. Server ingestion and repository tests pass, including privacy validation,
@@ -36,6 +36,6 @@ paghinga.” The existing pattern missed `sinisira`, while the earlier `masama` 
 more than 40 characters from `baga`. `Sinisira` is attested in 61 fact-bank bodies
 with English damage/destroy meanings. The assertion now accepts this observed form
 and rejects negated harm; recorded-answer and negative-control tests run before the
-model. Every release retains all model draws in `regression.json`, and failed cases
+model. Every release retains all printed model samples in `regression.json`, and failed cases
 print every draw instead of showing only the first. The model, prompts, sample count,
 temperature and requirement that every draw pass are unchanged.

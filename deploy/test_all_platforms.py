@@ -1,7 +1,12 @@
 import copy
 import importlib.util
+import json
 from pathlib import Path
+import runpy
+import sys
+import tempfile
 import unittest
+from unittest.mock import patch
 from app_artifacts import CERT
 
 spec = importlib.util.spec_from_file_location('combine_apps', Path(__file__).with_name('combine-app-artifacts.py'))
@@ -27,6 +32,26 @@ class AllPlatforms(unittest.TestCase):
             a, w = copy.deepcopy(self.apks), copy.deepcopy(self.windows)
             mutate(a, w)
             with self.assertRaises(ValueError): module.combine(a, w)
+
+    def test_cli_preserves_utf8_evidence_under_a_windows_legacy_locale(self):
+        # Reproduce the actual Windows runner's cp1252 default without requiring
+        # that locale to be installed on the Mac that gates all three builds.
+        original_open = Path.open
+        def windows_open(path, mode='r', buffering=-1, encoding=None, errors=None, newline=None):
+            if 'b' not in mode and encoding in (None, 'locale'):
+                encoding = 'cp1252'
+            return original_open(path, mode, buffering, encoding, errors, newline)
+        checks = ['900\u00d7600 window', 'Learner Jos\u00e9 data']
+        self.windows['artifacts']['windows']['validation']['checks'] = checks
+        with tempfile.TemporaryDirectory() as temp:
+            a, w, out = [Path(temp) / name for name in ['apks.json', 'windows.json', 'all.json']]
+            for path, value in [(a, self.apks), (w, self.windows)]:
+                path.write_text(json.dumps(value, ensure_ascii=False), encoding='utf-8')
+            script = str(Path(__file__).with_name('combine-app-artifacts.py'))
+            with patch.object(Path, 'open', windows_open), patch.object(sys, 'argv', [script, str(a), str(w), str(out)]):
+                runpy.run_path(script, run_name='__main__')
+            actual = json.loads(out.read_text(encoding='utf-8'))
+            self.assertEqual(actual['artifacts']['windows']['validation']['checks'], checks)
 
     def test_rejects_unverified_windows_or_wrong_android_identity(self):
         for mutate in [lambda a, w: w['artifacts']['windows']['validation'].update(passed=False),
