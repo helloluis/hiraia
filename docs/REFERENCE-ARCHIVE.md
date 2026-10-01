@@ -1,82 +1,83 @@
-# Hiraia reference archive
+# Hiraia reference and original-image archive
 
-Pricing and inventory checked **1 October 2026**. This is a recommendation and implementation plan; **no archive bucket has been created or uploaded to by this task**. The [source ledger and calculations](reference-archive-options-20261001.json) preserve the rates, assumptions and inventory snapshot.
+Updated **1 October 2026**, Asia/Manila. The selected archive is **Cloudflare R2 Standard**, private bucket **`hiraia-archive`**. Public R2 access is disabled and no custom domain is attached. The [verification record](REFERENCE-ARCHIVE-20261001.json) pins snapshot IDs, manifest/receipt hashes and completion states. It is the authority for what has actually been uploaded and restored.
 
-Use a **private Cloudflare R2 Standard bucket for the working reference library**, with an **independent Backblaze B2 copy of originals and acquisition evidence**. Hiraia already uses R2 for release assets, so the primary archive can reuse familiar tooling while keeping research materials separate from public downloads. If choosing a single new service on storage cost alone, B2 is cheaper and provides immediate access.
+The 27 rescued manual originals and their provenance, plus the 90 auxiliary image files, have passed complete uploads, remote SHA-256 read-back and independent restores. The complete image and country-reference snapshots are being uploaded; do not treat their inventory counts as completed cloud copies until their records say so. No B2 bucket or maintenance schedule has been created.
 
-The currently inventoried library is small enough that both copies cost about **$0.48/month in storage before free allowances**, or about **$0.41/month** if B2's 10 GB allowance is unused and R2's storage allowance is already consumed. Request charges, taxes, additional versions and remote-only collections are separate. Check account usage before estimating the total bill.
+## What is being preserved
 
-## What needs preserving
-
-The local snapshot totals **5,143 files and 21,611,255,369 bytes**, approximately **21.61 GB decimal**. It is a path/byte inventory, not a deduplicated corpus or a rights audit.
-
-| Local scope | Approximate size | Contents |
+| Scope | Frozen inventory | Meaning |
 | --- | ---: | --- |
-| `finetuning/reference-materials/peru-quechua/` | 13.06 GB | 628 school PDFs, acquisition pages, metadata, raw extracted text and page JSONL. |
-| `finetuning/reference-materials/peru-curriculum/` | 0.022 GB | Official primary curriculum PDF and original extraction, preserved from scratch storage. |
-| `finetuning/reference-materials/lrmds/` | 7.54 GB | Local Philippine learning-resource PDFs and metadata. |
-| `finetuning/reference-materials/science/` | 0.94 GB | PDF, DOC and DOCX science materials and extraction. |
-| `finetuning/reference-materials/deped-science/` | 0.038 GB | Existing extracted records. |
-| `rag/sources/` | 0.011 GB | Seven PDFs, including curriculum/framework references, and small derived files. |
+| Original-image collection | 47,893 distinct image byte variants; 56,504,547,726 bytes | Available original-resolution outputs and explicitly identified best local masters, including historical variants. This is not a count of unique illustrations or proof that every past generation survives. |
+| Complete image snapshot | 49,275 file paths; 56,635,374,584 unique object bytes | Images above plus prompts, generation metadata, source-path mappings, provider records and recovery evidence. Every duplicate path retains its provenance. |
+| Country-reference snapshot | 5,230 file paths; 21,307,743,278 unique object bytes | Philippine and Peruvian materials, curriculum sources, acquisition evidence, text extraction, catalogues and scratch research evidence. |
+| Manual rescue snapshot | 27 images plus provenance; 32,462,395 bytes | An initial independently restored check, also included in the complete image snapshot; not an additional 32 MB of unique storage. |
+| Auxiliary image snapshot | 90 file paths; 90,339,506 unique object bytes | Generation reference inputs, available website artwork and explicitly labeled low-resolution survival copies; independently restored. |
 
-Prioritize original source bytes, acquisition evidence, edition/rights metadata, checksums and human corrections. Text extraction and thumbnails are reproducible but inexpensive to retain when labeled with their source hash and extraction method. Small mapping files can change after this snapshot; use a fresh manifest for the actual upload.
+See the [image inventory](original-image-archive-inventory-20261001.json) for source roots, dimensions, file-format evidence and gaps. The [earlier storage comparison](reference-archive-options-20261001.json) records the recommendation and pricing research before the original-image scope was added.
 
-Also snapshot the small catalogue, acquisition-gap, rights-hold and review records in `tools/quechua-school-corpus/`, the Peru research documents/inventory in `docs/`, and the curriculum maps. These records preserve decisions that are absent from raw PDFs. Either include their bytes with the snapshot or pin and verify a repository revision containing them; untracked files have no remote Git copy. These additional records are outside the folder-size snapshot above.
+The image recovery found **2,853 native PNG byte variants**, 3,807,841,950 bytes, present only inside a provider batch response. They were base64-decoded without image decoding or re-encoding and independently hashed. All 21,882 embedded images across 15 provider responses were checked against standalone or recovered hashes. Compact response copies preserve provider metadata and replace embedded payloads with image hashes; original response-file hashes remain in the recovery ledger. The original response files are still local.
 
-**This is not the complete remote inventory.** The LRMDs README records 24,975 DepEd modules on a RunPod volume at `/workspace/corpus/raw/deped-lrportal/`. Its present availability, byte count and backup status were not checked. Inventory that collection before treating this archive as complete. Model weights, APKs, illustration packs and general training corpora are outside these estimates.
+Some JPEG originals have no extension; 141 historical files named `.png` actually contain JPEG bytes. Selection uses the inventory's file-signature evidence, and upload uses unchanged binary bytes. A filename extension does not determine the archived format.
 
-Earlier exploratory Peru downloads also remain under `/tmp/hiraia-peru-research-20260930/`, including publisher manifests and an AmericasNLP parallel-text sample. Review and preserve useful evidence during archive ingest, deduplicating the curriculum PDF already saved in the permanent reference folder. Temporary downloads are outside this size estimate and should not be treated as a durable copy.
+The main sources include `rag/pipeline/imagegen/raw/`, the original-output directories under `packages/images/qwen-queue/`, protected manual imports, and distinct original-resolution files recovered from the retired worktree archive. Retired checkouts are read-only recovery inputs, never build inputs. Current 512-pixel `cards-png/` and `factoid-webp/` outputs are derivatives and are not counted as originals.
 
-## Cost comparison
+The country references include:
 
-Approximate monthly **storage only**, excluding free allowances and tax. Column sizes are decimal bytes; AWS prices are converted from its binary GB billing. B2 estimates interpret its advertised TB as decimal; provider usage reports and invoices control the final amount.
+- `finetuning/reference-materials/peru-quechua/`: 628 school PDFs, acquisition pages, metadata, raw text and page extraction.
+- `finetuning/reference-materials/peru-curriculum/`: the official primary curriculum PDF and its extraction.
+- `finetuning/reference-materials/{lrmds,science,deped-science}/`: locally available Philippine resources and extraction.
+- `rag/sources/`: curriculum/framework sources and maps, excluding Python caches.
+- The Quechua catalogue and review records, country dossiers and useful `/tmp/hiraia-peru-research-20260930/` evidence, including publisher manifests and the AmericasNLP sample.
 
-| Option | Peru school collection 13.06 GB | Current library 21.61 GB | 100 GB | 1 TB | Use here |
-| --- | ---: | ---: | ---: | ---: | --- |
-| R2 Standard | $0.21 | $0.33 | $1.50 | $15.00 | Recommended working archive. |
-| Backblaze B2 | $0.09 | $0.15 | $0.70 | $6.95 | Recommended independent copy; also viable alone. |
-| S3 Glacier Flexible Retrieval | $0.04 | $0.07 | $0.34 | $3.35 | Consider later for rarely used bulk archives. |
-| S3 Glacier Deep Archive | $0.01 | $0.02 | $0.09 | $0.92 | Consider at much larger scale with slow restores acceptable. |
+Acquisition and rights records travel with the files. Archive inclusion does **not** mean a source is approved for model training, redistribution or publication. The Quechua school collection remains on a training-permission hold.
 
-Rates: [R2 pricing](https://developers.cloudflare.com/r2/pricing/), [B2 pricing](https://www.backblaze.com/cloud-storage/pricing), [AWS S3 US East rate card](https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonS3/current/us-east-1/index.json), [AWS Deep Archive US East rate card](https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonS3GlacierDeepArchive/current/us-east-1/index.json). AWS figures are payload storage only and exclude per-object archive metadata, requests, temporary restored copies and downloads.
+## Coverage gaps
 
-R2 Standard offers immediate retrieval without retrieval/egress fees. Its monthly account allowance includes 10 GB of storage, one million write/list operations and ten million read operations. The proposed initial upload and full verification fit those request allowances if sufficient headroom remains. Billable requests round to whole million-operation blocks. **Avoid R2 Infrequent Access for this collection:** it lacks the free allowance, and a small write/read batch can trigger $9.90 in request blocks. The inventoried upload plus full read-back would cost about $10.34 for the first full month on that tier. [R2 billing examples](https://developers.cloudflare.com/r2/pricing/).
+Fifteen manual clip-art source families have no located original in the examined current/retired roots; their available 512-pixel derivatives are listed in the image inventory. Matching image names and known manual aliases identify candidates but do not establish the same historical revision. Do not upscale a derivative and label it recovered original quality.
 
-B2's current rate is **$6.95/TB per 30 days**, with the first 10 GB free and ordinary API calls free. Downloads up to three times average stored data are included; excess direct egress is $0.01/GB. This suits an independent copy and periodic restores. The older $6/TB rate changed on 1 May 2026. [B2 pricing](https://www.backblaze.com/cloud-storage/pricing), [price-change announcement](https://www.backblaze.com/blog/backblaze-pricing-and-product-updates/).
+Generation reference images and four large website assets are auxiliary material, with their roles and uncertain native-generation provenance labeled separately. Available derivatives for the 15 unresolved families are retained as survival copies, not counted in the 47,893 original variants.
 
-Glacier Flexible Retrieval has a 90-day minimum; Deep Archive has 180 days. Typical bulk restores take 5–12 hours and up to 48 hours respectively. Download and temporary-copy charges can exceed months of storage savings: downloading 1 decimal TB from US East would incur about $74.82 in internet egress even with an otherwise unused 100 binary GB allowance, before restore charges. The active reference library benefits more from straightforward access than from saving a few cents. [Storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html), [restore options](https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects-retrieval-options.html), [transfer rate card](https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AWSDataTransfer/current/us-east-1/index.json).
+The LRMDs README also records **24,975 DepEd modules on a RunPod volume** at `/workspace/corpus/raw/deped-lrportal/`. Current availability and size remain unverified; this local-library snapshot does not claim to contain that entire remote collection. Model weights, APKs and unrelated training corpora are outside this archive ingest. Additional image folders supplied by the owner require their own explicit inventory and snapshot.
 
-Wasabi's current $7.99/TB/month offering has a one-TB minimum and 90-day minimum storage duration. That minimum makes it poor value for this library today. [Wasabi pricing](https://wasabi.com/pricing), [product terms](https://wasabi.com/product-terms).
+## Storage cost
 
-## Archive structure
+R2 Standard is **$0.015 per GB-month** with immediate access and no egress or retrieval fees. These image and reference snapshots require approximately **78 GB**, or about **$1.20/month in storage before free allowances**, including a small allowance for manifests and auxiliary evidence. The account's existing release bucket shares free allowances; this is an incremental storage estimate, not the total account bill. Requests, future variants and taxes are separate. [R2 pricing](https://developers.cloudflare.com/r2/pricing/).
 
-Keep the archive private. Do not attach it to `assets.hiraia.org` or enable a public bucket URL. The existing release publisher deliberately makes assets public and is therefore not the archive uploader. Public access to a textbook also does not settle redistribution or training permission.
+The initial upload and verification should fit R2 Standard's monthly one-million write/list and ten-million read allowances if account headroom remains. Billable request quantities round up to million-operation blocks. Infrequent Access lacks these allowances and is poor value for this small-object archive. The earlier B2/Glacier comparison remains in the source ledger; R2 is the service selected and implemented here.
 
-Use immutable content-addressed keys, for example:
+## Integrity and access
+
+The archive uses immutable hash-addressed objects and unique UTC snapshot IDs:
 
 ```text
-objects/sha256/34/34009689b6e3fe2194ec61c1675af13407528ae5e0f34f4d484007efd9e832f7.pdf
-snapshots/2026-10-01T020000Z-initial/manifest.jsonl
-snapshots/2026-10-01T020000Z-initial/manifest.sha256
+objects/sha256/AA/FULL_SHA256
+snapshots/20261001T032632Z-e31bd67b96c7/manifest.json
+snapshots/20261001T032632Z-e31bd67b96c7/receipt.json
 ```
 
-Country, publisher, language, grade, title and original filename belong in the manifest. Identical bytes can share one object while retaining every source attribution. A different edition receives a different hash/key. Give derived files their own hashes and parent-source hashes; never overwrite an original with cleaned text. Use a unique UTC timestamp and snapshot ID so two acquisitions on the same day cannot overwrite a manifest.
+The manifest preserves each source ID, original relative path, source provenance, byte count, full-file SHA-256 and ordered chunk hashes. Country/edition/language/rights details remain in the included acquisition catalogues rather than being inferred from filenames. Identical bytes share storage; a different byte version receives a different key. Larger files are split into bounded immutable chunks and restored without changing their bytes.
 
-The manifest should include source and acquisition URLs, title, publisher, edition, retrieval date, country/subject/grade, language/variety and confidence, bytes, SHA-256, media type, reuse/training status, local path, cloud bucket/key and verified-copy status. Store the manifest in Git and with every remote snapshot. Credentials stay outside the repository.
+A snapshot is committed only after every object has been downloaded from R2 and matched by byte length and SHA-256, followed by verified manifest and receipt uploads. ETags, successful PUTs and matching HEAD sizes are insufficient. The trusted receipt hash is recorded outside the bucket in the verification record. The restore command needs the remote snapshot, credentials and that trusted hash; it does not read original paths or upload journals.
 
-Cloud durability alone does not protect against deleting or overwriting the right object with the wrong bytes. R2 bucket locks can prevent changes to protected prefixes, but a configuration administrator can remove the rules. Use hash-based keys and scoped credentials; do not rely on unverified native S3 versioning behavior. [R2 bucket locks](https://developers.cloudflare.com/r2/buckets/bucket-locks/), [S3 compatibility](https://developers.cloudflare.com/r2/api/s3/api/).
+**Retention is active** on both `objects/sha256/` and `snapshots/`. The live check returned `409 ObjectLockedByBucketPolicy` for overwrite and delete attempts against a purpose-created probe object, which remained intact. These R2 rules are administrator-removable; they are protection against ordinary upload credentials, not against an administrator deliberately removing the rules. [R2 bucket locks](https://developers.cloudflare.com/r2/buckets/bucket-locks/).
 
-B2 retains file versions by default. Its Object Lock can add retention protection; enabling that bucket feature is irreversible, and compliance retention cannot be shortened. For an ordinary research archive, governance retention with an ingest key lacking delete/bypass capabilities is the proposed starting point. Choose the retention period during setup and keep administrator credentials separate. [B2 versions](https://www.backblaze.com/docs/en/cloud-storage-lifecycle-rules), [Object Lock](https://www.backblaze.com/docs/cloud-storage-object-lock).
+Upload credentials are temporary, scoped to this bucket and its two archive prefixes, and cannot edit bucket configuration. The live R2 endpoint rejected JWT `actions` restrictions even for `GetObject`, despite their current documentation; bucket/prefix restrictions worked. The functioning upload permission is `object-read-write`, with deletion/overwrite blocked by bucket retention and conditional-create code. Do not describe the credential itself as delete-free. Read-only credentials should be used for restore and verification. [Temporary credentials](https://developers.cloudflare.com/r2/api/s3/temporary-credentials/).
 
-## Implementation and maintenance
+No local deletion is mirrored to R2. The archive tool has no delete or garbage-collection command. Keep local originals until the remote snapshot and restore checks succeed; this task does not request local source cleanup. Credentials and operational journals remain outside Git and outside archive source selections.
 
-1. Inventory the local scopes and the remote DepEd collection. Build a manifest, verify source hashes and resolve duplicate bytes without discarding provenance. Preserve the existing 628-PDF Quechua collection as a named acquisition snapshot.
-2. Create a dedicated private R2 Standard bucket and a private B2 bucket with separate, narrowly scoped ingest credentials. Set retention deliberately; do not reuse the website publisher's public destination or administrative credentials.
-3. Upload originals, evidence and snapshot manifests additively. Never propagate local deletions automatically. Keep the local source copy until remote verification succeeds.
-4. Download every initially uploaded object, compute SHA-256 from the returned bytes and compare it with the manifest. A successful upload or matching HEAD length is insufficient. Record verified locations and timestamps only after the comparison passes.
-5. Independently restore a complete snapshot from **each provider** into an empty directory using that archive and its manifests alone. Demonstrate that another machine can recover the catalogue and originals without this MacBook's paths or caches. A successful R2 restore does not validate the B2 copy.
-6. Assign an archive owner. After each acquisition, add new hashes and publish a new manifest. Proposed maintenance is a quarterly sample restore and an annual full restore, plus a full check after changing archive tooling. Record the last successful restore and investigate missing objects or checksum failures immediately.
+## Operation and maintenance
 
-The cadence above is a proposal; no scheduled task was created. The next implementation milestone is a verified, restorable copy with a manifest and an owner, rather than simply a bucket containing uploaded files.
+The [archive tool runbook](../tools/reference-archive/README.md) covers explicit selection, temporary credentials, inventory, upload/resume, verification and restore. Operational state belongs under ignored `build/reference-archive/`; commit the tooling and small verification records. Large originals, manifests and logs are preserved in R2.
 
-Feed new archival lessons back into the [country bootstrap recipe](COUNTRY-BOOTSTRAP.md).
+For each acquisition or image-generation batch:
+
+1. Preserve original bytes before transformations. Include source/reference images, prompts, provider metadata, source hashes and derivative mappings. Never overwrite a master with its shipping version.
+2. Freeze an explicit inventory with stable source fingerprints and hashes. A file changed during hashing/upload fails the snapshot; acquire a fresh stable inventory rather than editing a frozen manifest.
+3. Upload additively and perform complete remote-byte verification. Resume with the same manifest; previous journal success is not proof of current remote integrity.
+4. Record the committed snapshot and trusted receipt digest, then restore into an empty destination. Record what was restored and any missing/corrupt object. Large restores must respect available disk space.
+5. Add new evidence and archive lessons to the [country bootstrap recipe](COUNTRY-BOOTSTRAP.md). Preserve superseded sources and historical decisions.
+
+Both manual-image processors now preserve exact source bytes under ignored `packages/images/manual-originals/sha256/` and immutable source-to-output records under `provenance/` before removing an unchanged queue input. New archive selections must include **all files** in that store, including extensionless hash-named blobs. A changed source remains pending, and preservation or provenance failure prevents source deletion.
+
+Owner: the Hiraia team member leading each acquisition/generation task. Proposed continuing practice is a quarterly sample restore and annual full restore, plus a full check after changing archive tooling. No recurring job has been scheduled. An independent second-provider copy remains an optional later improvement; it is not part of the current R2-only completion claim.

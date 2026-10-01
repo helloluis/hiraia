@@ -47,7 +47,7 @@ The existing demographic research separately records a 2017 childhood-language c
 
 Acquire official curriculum frameworks, subject programmes, assessment guidance, teacher guides, approved textbooks, language references and bilingual materials. Separate a curriculum requirement from an example in a workbook and from a local teacher's recommendation.
 
-Use the [reference archive plan](REFERENCE-ARCHIVE.md). Keep small inventories, provenance and collection tools in Git; store original PDFs and other large files in the private archive, with a local working copy. Record at least:
+Use the [private R2 reference archive](REFERENCE-ARCHIVE.md). Keep small inventories, provenance and collection tools in Git; store original PDFs and other large files in the private archive, with a local working copy. Record at least:
 
 - Stable source ID, issuing organization, title, jurisdiction, subject, grades, language and variety; retain uncertain catalogue labels as uncertain.
 - Edition shown inside the document, catalogue publication date, retrieval timestamp, original and mirror URLs, original filename, byte count and SHA-256.
@@ -56,6 +56,10 @@ Use the [reference archive plan](REFERENCE-ARCHIVE.md). Keep small inventories, 
 - Archive location and verification state. A planned object key is not a verified uploaded copy.
 
 **Peru lessons:** a current ministry listing links a March 2017 curriculum edition; the listing date does not create a new curriculum. The school collection has 628 distinct PDF hashes from 376 candidate catalogue entries, including split workbooks and editions. These are not 628 distinct books. Some titles came from a mirror and remain provisional. Sixteen PDFs need OCR; a successful download does not establish usable text. See the [collection audit](../tools/quechua-school-corpus/audit.json).
+
+**Image preservation lesson:** retain the original generation bytes before any resizing, grayscale conversion, palette reduction or format change. Archive prompts, source/reference images, provider response metadata and source-to-derivative mappings with hashes. Inspect file signatures: some JPEG originals have no extension or are named `.png`. Recover embedded provider payloads when the standalone original is missing, and retain every distinct byte version. A same-name high-resolution image is only a candidate for the same revision until provenance establishes the link. Never call an upscaled derivative an original.
+
+**Archive completion:** require a private, additive snapshot, a trusted manifest/receipt digest, full remote-byte hash verification and an independent restore into an empty destination. Keep source copies until verification succeeds. The R2 archive has separate retention-protected object/snapshot prefixes; its upload credentials cannot edit retention configuration. Keep large data outside Git and commit tooling plus the small verification record.
 
 **Ready for mapping:** every source used for a target has a retrievable original or a documented access gap, edition information and a page locator. Work does not depend solely on a browser URL or a file in `/tmp`.
 
@@ -158,5 +162,6 @@ Changes to the shared recipe, with dated evidence:
 | 1 October 2026 | Peru education and language-policy research | Begin with school language profiles and local partners. Treat national science targets and instructional language as related but separate choices. |
 | 1 October 2026 | Peru curriculum extraction and grade comparison | Preserve hierarchy and source edition; compare individual expectations across countries. Review scientific examples even in official documents. |
 | 1 October 2026 | Quechua school-material acquisition | Archive original bytes and provenance early. Count distinct files, works, words and usable training data separately; record mirrors, OCR gaps and unresolved permissions. |
+| 1 October 2026 | Original-image recovery and private R2 archive implementation | Preserve originals before manual conversion, including extensionless and mislabeled files. Recover embedded response images without re-encoding; separate generation inputs, original variants and shipping derivatives. Confirm retention and restore behavior against the live service. |
 
 Add later findings here when they change a step. Keep failed assumptions visible enough that the next country team does not repeat them.

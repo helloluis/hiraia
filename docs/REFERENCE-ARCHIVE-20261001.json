@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "updated_at_utc": "2026-10-01T03:41:48.726844+00:00",
+  "bucket": "hiraia-archive",
+  "storage_class": "Standard",
+  "public_access": {
+    "managed_domain_enabled": false,
+    "custom_domains": []
+  },
+  "retention": {
+    "bucket": "hiraia-archive",
+    "configured_at_utc": "2026-10-01T03:25:09.663211+00:00",
+    "rules": [
+      {
+        "id": "archive-original-objects",
+        "enabled": true,
+        "prefix": "objects/sha256/",
+        "condition": {
+          "type": "Indefinite"
+        }
+      },
+      {
+        "id": "archive-snapshot-records",
+        "enabled": true,
+        "prefix": "snapshots/",
+        "condition": {
+          "type": "Indefinite"
+        }
+      }
+    ],
+    "note": "Administrator-removable bucket locks; upload credential cannot change configuration. Actions claim rejected by live R2 despite current docs; use bucket/prefix scoped object-read-write credentials."
+  },
+  "retention_verification": {
+    "checked_at_utc": "2026-10-01T03:29:42.805710+00:00",
+    "bucket": "hiraia-archive",
+    "probe_key": "objects/sha256/55/5559594ae777ff004bcdae020f8753f6fd2d61e8f4b9ec807fccb7c1dff93184",
+    "probe_intact": true,
+    "checks": {
+      "overwrite": {
+        "blocked": true,
+        "http_status": 409,
+        "error_code": "ObjectLockedByBucketPolicy"
+      },
+      "delete_probe": {
+        "blocked": true,
+        "http_status": 409,
+        "error_code": "ObjectLockedByBucketPolicy"
+      },
+      "outside_prefix_read": {
+        "blocked": true,
+        "http_status": 403,
+        "error_code": "AccessDenied"
+      },
+      "public_bucket_read": {
+        "blocked": true,
+        "http_status": 403,
+        "error_code": "403"
+      }
+    }
+  },
+  "snapshots": [
+    {
+      "scope": "manual",
+      "snapshot_id": "20261001T032135Z-bbe01ba073aa",
+      "manifest_sha256": "498f88ca9390f9eaa300ee61da5fc5b8883052edd290533d2666d3e7c34741e4",
+      "totals": {
+        "files": 28,
+        "logical_bytes": 32462395,
+        "objects": 28,
+        "stored_bytes": 32462395,
+        "unique_files": 28
+      },
+      "state": "restored",
+      "receipt_sha256": "df20dfb93203b523408206c15336e8d163887fe2c2ae7d9286f8769f3b0ecb9a",
+      "verified_bytes": 32462395,
+      "restored_files": 28
+    },
+    {
+      "scope": "images",
+      "snapshot_id": "20261001T032632Z-e31bd67b96c7",
+      "manifest_sha256": "679c0fb9d97aa99915d8b5a1b59c219b9a3e2f429e525c6ff2236515c1c69c9b",
+      "totals": {
+        "files": 49275,
+        "logical_bytes": 56666347540,
+        "objects": 49248,
+        "stored_bytes": 56635374584,
+        "unique_files": 49248
+      },
+      "state": "uploading"
+    },
+    {
+      "scope": "reference",
+      "snapshot_id": "20261001T032120Z-4462db0f7a1b",
+      "manifest_sha256": "95530b9d52f6f40e535896c43ca96c9137531192f19420afab200c7f9ea5d7ca",
+      "totals": {
+        "files": 5230,
+        "logical_bytes": 21651725720,
+        "objects": 5154,
+        "stored_bytes": 21307743278,
+        "unique_files": 5154
+      },
+      "state": "uploading"
+    },
+    {
+      "scope": "auxiliary",
+      "snapshot_id": "20261001T033642Z-15723adeee8f",
+      "manifest_sha256": "36222481d1b229542fa4e3658f4b0b6135be7e5c49427ba83e40d2f848a95737",
+      "totals": {
+        "files": 90,
+        "logical_bytes": 90512523,
+        "objects": 88,
+        "stored_bytes": 90339506,
+        "unique_files": 88
+      },
+      "state": "restored",
+      "receipt_sha256": "23fd81ad002fa493134ea9a69f39b2134b882fa4d09fdabd4f00cdea8f674f3f",
+      "verified_bytes": 90339506,
+      "restored_files": 90
+    }
+  ],
+  "notes": [
+    "Counts are per snapshot; object bytes deduplicate across snapshots. Manual originals are also in the complete image snapshot.",
+    "Original images:47,893 unique full-resolution byte variants; archive metadata and generation references are counted separately.",
+    "Bulk snapshot state remains uploading until full remote-byte verification and receipt creation succeed.",
+    "No independent second cloud provider or scheduled maintenance job has been configured."
+  ]
+}

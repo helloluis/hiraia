@@ -1,0 +1,856 @@
+{
+  "schema_version": 1,
+  "title": "Original-resolution generated image archive inventory and verified recovery",
+  "measured_at_utc": "2026-10-01T03:28:59.871087+00:00",
+  "status": "Local recovery and frozen core input selection complete; cloud upload and remote restore verification are owned by the parent task and are not attested here.",
+  "workspace": "/Users/luis/Code/hiraia",
+  "core": {
+    "selection_path": "/Users/luis/Code/hiraia/build/reference-archive/recovered-batch-originals-20261001/source-selection.json",
+    "selection_sha256": "170aacbfb93ada893a337d57567ff9e17df87d2abf6ce9bfcebfbf1f0feb5241",
+    "selection_frozen_at_utc": "2026-10-01T03:25:51.674901+00:00",
+    "selected_sources": 17,
+    "selected_files_including_metadata_and_duplicate_copies": 49275,
+    "selected_bytes_before_content_deduplication": 56666347540,
+    "original_image_path_records": 47916,
+    "original_image_path_bytes": 56531009132,
+    "unique_original_resolution_image_sha256": 47893,
+    "unique_original_resolution_image_bytes": 56504547726,
+    "image_sha256_and_source_path_manifest": "/Users/luis/Code/hiraia/build/reference-archive/recovered-batch-originals-20261001/original-image-files.jsonl",
+    "image_manifest_sha256": "4f2dac7e142418a5f641359a7bc9ae9ceeeffa157e634db3c9c117362a2574ab",
+    "formats_by_unique_image": {
+      "PNG": 47722,
+      "JPEG": 171
+    },
+    "dimensions_by_unique_image": {
+      "1024x1024": 47729,
+      "1328x1328": 134,
+      "2816x1536": 3,
+      "2620x1632": 1,
+      "2048x2048": 21,
+      "2662x1600": 1,
+      "2323x2323": 1,
+      "1390x1390": 1,
+      "2159x2159": 1,
+      "2436x2436": 1
+    },
+    "counting_note": "Counts are distinct byte variants from multiple generations, not distinct scenes or active app illustrations. Original-resolution does not by itself establish native provider byte identity.",
+    "source_scopes": [
+      {
+        "source_id": "pipeline-raw",
+        "path": "/Users/luis/Code/hiraia/rag/pipeline/imagegen/raw",
+        "image_files": 8361,
+        "image_bytes": 10764767931,
+        "dimensions": {
+          "1024x1024": 8343,
+          "1328x1328": 18
+        },
+        "classification": "generator-output-full-resolution",
+        "current_writer_possible": true
+      },
+      {
+        "source_id": "qwen-final",
+        "path": "/Users/luis/Code/hiraia/packages/images/qwen-queue/out-final",
+        "image_files": 18816,
+        "image_bytes": 23005852785,
+        "dimensions": {
+          "1024x1024": 18745,
+          "1328x1328": 71
+        },
+        "classification": "generator-output-full-resolution",
+        "current_writer_possible": true
+      },
+      {
+        "source_id": "qwen-fallback",
+        "path": "/Users/luis/Code/hiraia/packages/images/qwen-queue/out",
+        "image_files": 68,
+        "image_bytes": 79043849,
+        "dimensions": {
+          "1328x1328": 68
+        },
+        "classification": "generator-output-full-resolution",
+        "current_writer_possible": true
+      },
+      {
+        "source_id": "openai-direct",
+        "path": "/Users/luis/Code/hiraia/packages/images/qwen-queue/out-openai",
+        "image_files": 11,
+        "image_bytes": 10564511,
+        "dimensions": {
+          "1024x1024": 11
+        },
+        "classification": "full-resolution-export-alpha-may-have-been-flattened",
+        "current_writer_possible": true
+      },
+      {
+        "source_id": "openai-batch-test",
+        "path": "/Users/luis/Code/hiraia/packages/images/qwen-queue/out-batch-test",
+        "image_files": 2,
+        "image_bytes": 2896558,
+        "dimensions": {
+          "1024x1024": 2
+        },
+        "classification": "generator-output-full-resolution",
+        "current_writer_possible": true
+      },
+      {
+        "source_id": "openai-asset-fix",
+        "path": "/Users/luis/Code/hiraia/packages/images/qwen-queue/out-assetfix",
+        "image_files": 5,
+        "image_bytes": 6206616,
+        "dimensions": {
+          "1024x1024": 5
+        },
+        "classification": "generator-output-full-resolution",
+        "current_writer_possible": true
+      },
+      {
+        "source_id": "audit-regen-raw",
+        "path": "/Users/luis/Code/hiraia/packages/images/qwen-queue/audit-regen/raw",
+        "image_files": 7168,
+        "image_bytes": 8956192177,
+        "dimensions": {
+          "1024x1024": 7168
+        },
+        "classification": "generator-output-full-resolution",
+        "current_writer_possible": true
+      },
+      {
+        "source_id": "audit-regen-raw-4",
+        "path": "/Users/luis/Code/hiraia/packages/images/qwen-queue/audit-regen/raw-4",
+        "image_files": 3518,
+        "image_bytes": 4548344529,
+        "dimensions": {
+          "1024x1024": 3518
+        },
+        "classification": "generator-output-full-resolution",
+        "current_writer_possible": true
+      },
+      {
+        "source_id": "profile-master",
+        "path": "/Users/luis/Code/hiraia/packages/images/hiraia-profile.png",
+        "image_files": 1,
+        "image_bytes": 502024,
+        "dimensions": {
+          "1024x1024": 1
+        },
+        "classification": "highest-resolution-local-master",
+        "current_writer_possible": false
+      },
+      {
+        "source_id": "cow-master",
+        "path": "/Users/luis/Code/hiraia/packages/images/samples/cow.jpeg",
+        "image_files": 1,
+        "image_bytes": 2682088,
+        "dimensions": {
+          "2816x1536": 1
+        },
+        "classification": "highest-resolution-local-master",
+        "current_writer_possible": false
+      },
+      {
+        "source_id": "retired-expansion-raw",
+        "path": "/Users/luis/Code/hiraia-worktree-archive/20260921-consolidation/retired-worktrees/hiraia-expansion2-images/packages/images/assets-png-raw",
+        "image_files": 1403,
+        "image_bytes": 656131525,
+        "dimensions": {
+          "1024x1024": 1403
+        },
+        "classification": "retired-original-resolution-backup",
+        "current_writer_possible": false
+      },
+      {
+        "source_id": "retired-expansion-fullres",
+        "path": "/Users/luis/Code/hiraia-worktree-archive/20260921-consolidation/retired-worktrees/hiraia-expansion2-images/packages/images/assets-png",
+        "image_files": 160,
+        "image_bytes": 70255819,
+        "dimensions": {
+          "1024x1024": 160
+        },
+        "classification": "retired-original-resolution-backup",
+        "current_writer_possible": false
+      },
+      {
+        "source_id": "retired-manual-raw",
+        "path": "/Users/luis/Code/hiraia-worktree-archive/20260921-consolidation/retired-worktrees/hiraia-manual-images/packages/images/assets-png-raw",
+        "image_files": 2783,
+        "image_bytes": 1189322294,
+        "dimensions": {
+          "1024x1024": 2783
+        },
+        "classification": "retired-original-resolution-backup",
+        "current_writer_possible": false
+      },
+      {
+        "source_id": "retired-manual-imports",
+        "path": "/Users/luis/Code/hiraia-worktree-archive/20260921-consolidation/retired-worktrees/hiraia-manual-images/packages/images/assets-png/manually-generated",
+        "image_files": 2,
+        "image_bytes": 919567,
+        "dimensions": {
+          "2620x1632": 1,
+          "2816x1536": 1
+        },
+        "classification": "retired-original-resolution-backup",
+        "current_writer_possible": false
+      },
+      {
+        "source_id": "retired-depth-raw",
+        "path": "/Users/luis/Code/hiraia-worktree-archive/20260921-consolidation/retired-worktrees/hiraia-depth-fill/rag/pipeline/imagegen/raw",
+        "image_files": 2737,
+        "image_bytes": 3397032443,
+        "dimensions": {
+          "1024x1024": 2737
+        },
+        "classification": "retired-original-resolution-backup",
+        "current_writer_possible": false
+      },
+      {
+        "source_id": "manual-protected",
+        "path": "/Users/luis/Code/hiraia/build/reference-archive/rescued-manual-originals-20261001",
+        "image_files": 27,
+        "image_bytes": 32452466,
+        "classification": "protected-manual-original",
+        "current_writer_possible": false
+      },
+      {
+        "source_id": "recovered-originals",
+        "path": "/Users/luis/Code/hiraia/build/reference-archive/recovered-batch-originals-20261001",
+        "image_files": 2853,
+        "image_bytes": 3807841950,
+        "classification": "verified-native-provider-image-payload",
+        "current_writer_possible": false,
+        "additional_duplicate_manual_images": 3,
+        "additional_duplicate_manual_bytes": 4511187
+      }
+    ],
+    "regeneration_metadata": {
+      "files": 1331,
+      "bytes": 71816156,
+      "snapshot_path": "/Users/luis/Code/hiraia/build/reference-archive/recovered-batch-originals-20261001/regeneration-metadata",
+      "manifest_path": "/Users/luis/Code/hiraia/build/reference-archive/recovered-batch-originals-20261001/regeneration-metadata-provenance.jsonl",
+      "includes": "Prompts, worklists, generation statuses, scripts, vector SVG sources, mapping decisions and selected audit evidence. Full raw base64 JSONLs and voluminous audit execution streams are excluded."
+    }
+  },
+  "recovery": {
+    "schema_version": 1,
+    "verified_at_utc": "2026-10-01T03:17:21.762838+00:00",
+    "native_image_bytes_preserved_without_reencoding": true,
+    "recovered_images": 2853,
+    "recovered_bytes": 3807841950,
+    "provider_images_verified": 21882,
+    "compact_provider_metadata_bytes": 18697056,
+    "provenance_manifest_sha256": "fe5d051b8e41fe4cff73f72e7a6a86b4842cce15e23a4f5d51fc6d8e170f0e4e",
+    "sources": [
+      {
+        "source_batch_file": "batch_6a9e255f76148190bbc34caa96b4a5e3_output.jsonl",
+        "source_bytes": 5078667949,
+        "source_sha256": "7b6a4227af399365dfaf6ee88abc4beec704f57a679d8ffa63da72b813d97424",
+        "source_mtime_ns": 1788751652840395135,
+        "images": 2853,
+        "newly_recovered_images": 2853,
+        "newly_recovered_bytes": 3807841950,
+        "metadata_path": "build/reference-archive/recovered-batch-originals-20261001/provider-responses/batch_6a9e255f76148190bbc34caa96b4a5e3_output.jsonl",
+        "metadata_bytes": 2350354,
+        "metadata_sha256": "bf9dec6fdf0300a26e07461250f604da2735ab43ef2624419d7146a68b7558e4"
+      },
+      {
+        "source_batch_file": "batch_6ab1b6ac31e48190996ed524acd2ac8a_output.jsonl",
+        "source_bytes": 4529613990,
+        "source_sha256": "3f3834e33760cbfb414a9153a0d523e288c464e6d55de12b4afd96ead7f17ff6",
+        "source_mtime_ns": 1790034763886103328,
+        "images": 2723,
+        "newly_recovered_images": 0,
+        "newly_recovered_bytes": 0,
+        "metadata_path": "build/reference-archive/recovered-batch-originals-20261001/provider-responses/batch_6ab1b6ac31e48190996ed524acd2ac8a_output.jsonl",
+        "metadata_bytes": 2387182,
+        "metadata_sha256": "25a48c920e1973d59913557ffd945ca9e42b25c96977f7fac4bd141e4ce5cc2c"
+      },
+      {
+        "source_batch_file": "batch_6ab1b6b03bdc8190bf6c90a7e3fa7b75_output.jsonl",
+        "source_bytes": 4550106497,
+        "source_sha256": "03b7e7449fca62cd29d5fecd6731d3de215e500471ff463250ffeeb8df747b2f",
+        "source_mtime_ns": 1790034568828193225,
+        "images": 2735,
+        "newly_recovered_images": 0,
+        "newly_recovered_bytes": 0,
+        "metadata_path": "build/reference-archive/recovered-batch-originals-20261001/provider-responses/batch_6ab1b6b03bdc8190bf6c90a7e3fa7b75_output.jsonl",
+        "metadata_bytes": 2398836,
+        "metadata_sha256": "52292dfe09d354413c38bead67583907a24e016a23c3b5ff34bb8106d3622f93"
+      },
+      {
+        "source_batch_file": "batch_6ab1c69784e8819080c360b336a95854_output.jsonl",
+        "source_bytes": 2866147039,
+        "source_sha256": "4a409f7a4b4a63aa6e5a6dd764ffb93245eb98179fb639a36fd9b59f7db4c58e",
+        "source_mtime_ns": 1790041468919053893,
+        "images": 1710,
+        "newly_recovered_images": 0,
+        "newly_recovered_bytes": 0,
+        "metadata_path": "build/reference-archive/recovered-batch-originals-20261001/provider-responses/batch_6ab1c69784e8819080c360b336a95854_output.jsonl",
+        "metadata_bytes": 1499073,
+        "metadata_sha256": "1b98a34c02ee4a8cfb6885bd0b9cfafedb3fdff8e49398e52c008d2679abf406"
+      },
+      {
+        "source_batch_file": "batch_6ab21073afd88190999458f7b02b1354_output.jsonl",
+        "source_bytes": 6066558404,
+        "source_sha256": "fef2240f18616fedde557b7a563257b0f2129ba4361bdafaa9265db9b910ffe2",
+        "source_mtime_ns": 1790057619526360827,
+        "images": 3518,
+        "newly_recovered_images": 0,
+        "newly_recovered_bytes": 0,
+        "metadata_path": "build/reference-archive/recovered-batch-originals-20261001/provider-responses/batch_6ab21073afd88190999458f7b02b1354_output.jsonl",
+        "metadata_bytes": 3084780,
+        "metadata_sha256": "e6088e4997b47d27e4739553fa3400f13c3820896f533816037691756adbd476"
+      },
+      {
+        "source_batch_file": "rag/pipeline/imagegen/batch_6a8a6f7f86cc819088117200f8224bed.jsonl",
+        "source_bytes": 5961385516,
+        "source_sha256": "7ad86921e85880e3d28c218f8349ecd98fd6797004759665b7e369a1668c34e2",
+        "source_mtime_ns": 1787481869941905477,
+        "images": 3464,
+        "newly_recovered_images": 0,
+        "newly_recovered_bytes": 0,
+        "metadata_path": "build/reference-archive/recovered-batch-originals-20261001/provider-responses/batch_6a8a6f7f86cc819088117200f8224bed.jsonl",
+        "metadata_bytes": 2897802,
+        "metadata_sha256": "b3b44d6b8b33c093702720a5bdb7a4bc143d90a6109d4b17e04af1822c455f6d"
+      },
+      {
+        "source_batch_file": "rag/pipeline/imagegen/batch_6a8a797406e4819098c5db863297f437.jsonl",
+        "source_bytes": 5953800820,
+        "source_sha256": "b83d395b550073707b08c59f860cbba218869c385d54236de2a45310d29c6800",
+        "source_mtime_ns": 1787482168043832230,
+        "images": 3450,
+        "newly_recovered_images": 0,
+        "newly_recovered_bytes": 0,
+        "metadata_path": "build/reference-archive/recovered-batch-originals-20261001/provider-responses/batch_6a8a797406e4819098c5db863297f437.jsonl",
+        "metadata_bytes": 2886091,
+        "metadata_sha256": "d3693b1c551eebe4d2855a75c535cfcca8bf10bad5a018a289d1e7e0d69182d9"
+      },
+      {
+        "source_batch_file": "rag/pipeline/imagegen/batch_6a8a81ff16608190a16f32f67754f37e.jsonl",
+        "source_bytes": 1240578008,
+        "source_sha256": "67a00e603c6b43a5a713ef339b4fe84edc5ea87cd182185870a19d1394d6fce1",
+        "source_mtime_ns": 1787480624512750960,
+        "images": 724,
+        "newly_recovered_images": 0,
+        "newly_recovered_bytes": 0,
+        "metadata_path": "build/reference-archive/recovered-batch-originals-20261001/provider-responses/batch_6a8a81ff16608190a16f32f67754f37e.jsonl",
+        "metadata_bytes": 605054,
+        "metadata_sha256": "498b63f503e27881cd39297cfbc8db8a2754fc3b118be7a2d33141f24bcc5c43"
+      },
+      {
+        "source_batch_file": "rag/pipeline/imagegen/batch_6a90792eddd481909b83df669892c347.jsonl",
+        "source_bytes": 190576878,
+        "source_sha256": "9db1eea5df6befe088f202790525827ce5eb8595137d9f372df75875f18a887d",
+        "source_mtime_ns": 1787859048940897148,
+        "images": 110,
+        "newly_recovered_images": 0,
+        "newly_recovered_bytes": 0,
+        "metadata_path": "build/reference-archive/recovered-batch-originals-20261001/provider-responses/batch_6a90792eddd481909b83df669892c347.jsonl",
+        "metadata_bytes": 91738,
+        "metadata_sha256": "4845af6aab3861529e8ddf0456b31b2e73b49a65e24fbbe45ea9a6a8aa00bb0e"
+      },
+      {
+        "source_batch_file": "rag/pipeline/imagegen/batch_6a907930a19c8190915d54ba8d37c805.jsonl",
+        "source_bytes": 167015250,
+        "source_sha256": "210397c4b3cd1698a0edfb8bcb1791146b3f16aea99d487967779287d4745ad8",
+        "source_mtime_ns": 1787859080929126700,
+        "images": 110,
+        "newly_recovered_images": 0,
+        "newly_recovered_bytes": 0,
+        "metadata_path": "build/reference-archive/recovered-batch-originals-20261001/provider-responses/batch_6a907930a19c8190915d54ba8d37c805.jsonl",
+        "metadata_bytes": 91717,
+        "metadata_sha256": "5d63ed6f21c5186832e3fdc0c7b3147792dea6088b11b5ab243af48b8a092cdf"
+      },
+      {
+        "source_batch_file": "rag/pipeline/imagegen/batch_6a9079317dd481908d07cd7ec5cefc9b.jsonl",
+        "source_bytes": 176038926,
+        "source_sha256": "fcff824bd2306e857a2e5aa56b1264ef5fe9eebf05759b5d13599df23bb814a3",
+        "source_mtime_ns": 1787855919538665844,
+        "images": 110,
+        "newly_recovered_images": 0,
+        "newly_recovered_bytes": 0,
+        "metadata_path": "build/reference-archive/recovered-batch-originals-20261001/provider-responses/batch_6a9079317dd481908d07cd7ec5cefc9b.jsonl",
+        "metadata_bytes": 91712,
+        "metadata_sha256": "aef2c7450fca4adbc105a2d1f04ed45d7e5433f1340a52bd064b3f377a21a4dc"
+      },
+      {
+        "source_batch_file": "rag/pipeline/imagegen/batch_6a907932593c8190926311c88f27b66e.jsonl",
+        "source_bytes": 197912338,
+        "source_sha256": "685dd2f3fdebeccbebe2dfc545682f80b6870360e0255b54c7d8e859146da041",
+        "source_mtime_ns": 1787855960392052825,
+        "images": 110,
+        "newly_recovered_images": 0,
+        "newly_recovered_bytes": 0,
+        "metadata_path": "build/reference-archive/recovered-batch-originals-20261001/provider-responses/batch_6a907932593c8190926311c88f27b66e.jsonl",
+        "metadata_bytes": 91737,
+        "metadata_sha256": "135ea7c98c99a01f9d598a6ca62ea6ae504710e9846195325afeb8afd05f27b8"
+      },
+      {
+        "source_batch_file": "rag/pipeline/imagegen/batch_6a90793326988190b86ee8093c57f63d.jsonl",
+        "source_bytes": 184958750,
+        "source_sha256": "a9cf410d5c2791373075ffe03ba912485c42e1fa10110ba4f1cf8ed9dd7fdf46",
+        "source_mtime_ns": 1787859115647444858,
+        "images": 110,
+        "newly_recovered_images": 0,
+        "newly_recovered_bytes": 0,
+        "metadata_path": "build/reference-archive/recovered-batch-originals-20261001/provider-responses/batch_6a90793326988190b86ee8093c57f63d.jsonl",
+        "metadata_bytes": 91731,
+        "metadata_sha256": "e87d13da315ed014201c24075c003b249502735f0d5815880b8a3a3027fac3c7"
+      },
+      {
+        "source_batch_file": "rag/pipeline/imagegen/batch_6a9079342f6c8190a9352e7cdc3f06cf.jsonl",
+        "source_bytes": 178864294,
+        "source_sha256": "222a1c392fba753553e8a08d942cd0917f4fca49b002c09b4879291124235d91",
+        "source_mtime_ns": 1787857244970567503,
+        "images": 106,
+        "newly_recovered_images": 0,
+        "newly_recovered_bytes": 0,
+        "metadata_path": "build/reference-archive/recovered-batch-originals-20261001/provider-responses/batch_6a9079342f6c8190a9352e7cdc3f06cf.jsonl",
+        "metadata_bytes": 88394,
+        "metadata_sha256": "30d41bba03950766167d9e690c08b5876c41a72847e69a8d8181917f662a277b"
+      },
+      {
+        "source_batch_file": "rag/pipeline/imagegen/batch_6a90793534b881908ff2fba36ccd71f6.jsonl",
+        "source_bytes": 78814805,
+        "source_sha256": "b709319019c5773f636372b52d9be40bbeb21f7958eef3ff01e215df8148af86",
+        "source_mtime_ns": 1787855979614630133,
+        "images": 49,
+        "newly_recovered_images": 0,
+        "newly_recovered_bytes": 0,
+        "metadata_path": "build/reference-archive/recovered-batch-originals-20261001/provider-responses/batch_6a90793534b881908ff2fba36ccd71f6.jsonl",
+        "metadata_bytes": 40855,
+        "metadata_sha256": "515807e4e5c8c53d377f523baf2069d311e1810ec3e1e218b2c43575d2e11db8"
+      }
+    ],
+    "scanned_provider_response_files": 15,
+    "scanned_provider_response_bytes": 37421039464,
+    "embedded_native_image_count": 21882,
+    "embedded_native_image_decoded_bytes": 28056463610,
+    "new_native_png_count": 2853,
+    "new_native_png_bytes": 3807841950,
+    "method": "Streamed every JSONL record, decoded base64 without image conversion, checked image hashes and byte lengths against an independent first pass, wrote SHA-named PNGs, reread and verified each recovered file. Provider metadata retains fields such as custom_id, model, usage and status with image payloads replaced by SHA references. Original response files were hashed and checked for stable size, inode and mtime.",
+    "source_of_all_new_pngs": "batch_6a9e255f76148190bbc34caa96b4a5e3_output.jsonl",
+    "provenance_path": "/Users/luis/Code/hiraia/build/reference-archive/recovered-batch-originals-20261001/provenance.jsonl",
+    "extractor_path": "/Users/luis/Code/hiraia/build/reference-archive/recovered-batch-originals-20261001/recover.py",
+    "raw_response_files_modified": false,
+    "remaining_provider_payloads": "19,029 embedded images exactly match standalone originals already selected; compact response records preserve their provider metadata without copying redundant base64.",
+    "manual_import_rescue": {
+      "files": 27,
+      "bytes": 32452466,
+      "primary_input": "/Users/luis/Code/hiraia/build/reference-archive/rescued-manual-originals-20261001",
+      "manifest": "provenance.json",
+      "extensionless_jpeg_sources": 3,
+      "extensionless_bytes": 4511187,
+      "extra_duplicate_safety_copy": "/Users/luis/Code/hiraia/build/reference-archive/recovered-batch-originals-20261001/manual-extensionless",
+      "images_reencoded": false
+    }
+  },
+  "coverage_and_gaps": {
+    "card_pngs": {
+      "shipping_files": 32221,
+      "same_slug_full_resolution_candidate_after_recovery": 32221
+    },
+    "factoid_webp": {
+      "shipping_files": 22269,
+      "same_slug_full_resolution_candidate": 22269
+    },
+    "clip_art": {
+      "unique_shipping_stems": 4203,
+      "same_slug_full_resolution_candidate": 4170,
+      "additional_explicit_manual_alias_matches": 18,
+      "manual_source_families_unlocated": 15,
+      "unlocated_slugs": [
+        "balut-eating-roadside-scene",
+        "clean-water-drinking-safe",
+        "evaporation-puddle-drying",
+        "kuliglig-hand-tractor-cart-scene",
+        "lifecycle-chicken",
+        "lifecycle-coral-polyp",
+        "lifecycle-dragonfly",
+        "lifecycle-fish",
+        "lifecycle-frog",
+        "lifecycle-mangrove-propagule",
+        "lifecycle-mosquito",
+        "lifecycle-rice-plant",
+        "lifecycle-snail",
+        "tricycle-front-parked",
+        "tuba-gatherer-coconut-scene"
+      ],
+      "available_derivative_files": [
+        {
+          "path": "packages/images/assets-png/general/balut-eating-roadside-scene.png",
+          "bytes": 36274,
+          "width": 512,
+          "height": 512,
+          "format": "PNG"
+        },
+        {
+          "path": "packages/images/assets-png/biology/clean-water-drinking-safe.png",
+          "bytes": 11793,
+          "width": 512,
+          "height": 512,
+          "format": "PNG"
+        },
+        {
+          "path": "packages/images/assets-png/chemistry/evaporation-puddle-drying.png",
+          "bytes": 9324,
+          "width": 512,
+          "height": 512,
+          "format": "PNG"
+        },
+        {
+          "path": "packages/images/assets-png/general/kuliglig-hand-tractor-cart-scene.png",
+          "bytes": 24953,
+          "width": 512,
+          "height": 512,
+          "format": "PNG"
+        },
+        {
+          "path": "packages/images/assets-png/biology/lifecycle-chicken.png",
+          "bytes": 12403,
+          "width": 512,
+          "height": 512,
+          "format": "PNG"
+        },
+        {
+          "path": "packages/images/assets-png/biology/lifecycle-coral-polyp.png",
+          "bytes": 14097,
+          "width": 512,
+          "height": 512,
+          "format": "PNG"
+        },
+        {
+          "path": "packages/images/assets-png/biology/lifecycle-dragonfly.png",
+          "bytes": 19977,
+          "width": 512,
+          "height": 512,
+          "format": "PNG"
+        },
+        {
+          "path": "packages/images/assets-png/biology/lifecycle-fish.png",
+          "bytes": 14680,
+          "width": 512,
+          "height": 512,
+          "format": "PNG"
+        },
+        {
+          "path": "packages/images/assets-png/biology/lifecycle-frog.png",
+          "bytes": 13242,
+          "width": 512,
+          "height": 512,
+          "format": "PNG"
+        },
+        {
+          "path": "packages/images/assets-png/biology/lifecycle-mangrove-propagule.png",
+          "bytes": 18143,
+          "width": 512,
+          "height": 512,
+          "format": "PNG"
+        },
+        {
+          "path": "packages/images/assets-png/biology/lifecycle-mosquito.png",
+          "bytes": 13917,
+          "width": 512,
+          "height": 512,
+          "format": "PNG"
+        },
+        {
+          "path": "packages/images/assets-png/biology/lifecycle-rice-plant.png",
+          "bytes": 20783,
+          "width": 512,
+          "height": 512,
+          "format": "PNG"
+        },
+        {
+          "path": "packages/images/assets-png/biology/lifecycle-snail.png",
+          "bytes": 14812,
+          "width": 512,
+          "height": 512,
+          "format": "PNG"
+        },
+        {
+          "path": "packages/images/assets-png/general/tricycle-front-parked.png",
+          "bytes": 22267,
+          "width": 512,
+          "height": 512,
+          "format": "PNG"
+        },
+        {
+          "path": "packages/images/assets-png/general/tuba-gatherer-coconut-scene.png",
+          "bytes": 41865,
+          "width": 512,
+          "height": 512,
+          "format": "PNG"
+        }
+      ],
+      "explicit_alias_matches": [
+        {
+          "source_path": "packages/images/assets-png/manually-generated/element-tile.jpeg",
+          "target_slug": "periodic-table-cell",
+          "evidence": "explicit alias rule in process-manual-batch-dynamic.mjs"
+        },
+        {
+          "source_path": "packages/images/assets-png/manually-generated/brake-pedal.jpeg",
+          "target_slug": "jeepney-brake-pedal-lever",
+          "evidence": "explicit alias rule in process-manual-batch-dynamic.mjs"
+        },
+        {
+          "source_path": "packages/images/assets-png/manually-generated/good-bad-posture.jpeg",
+          "target_slug": "good-vs-slouch-posture-sitting",
+          "evidence": "explicit alias rule in process-manual-batch-dynamic.mjs"
+        },
+        {
+          "source_path": "packages/images/assets-png/manually-generated/jeepney-with-vendor.jpeg",
+          "target_slug": "vendors-at-jeepney-stop-scene",
+          "evidence": "explicit alias rule in process-manual-batch-dynamic.mjs"
+        },
+        {
+          "source_path": "packages/images/assets-png/manually-generated/food-chain.jpeg",
+          "target_slug": "food-chain-generic",
+          "evidence": "explicit alias rule in process-manual-batch-dynamic.mjs"
+        },
+        {
+          "source_path": "packages/images/assets-png/manually-generated/homologous-limbs.jpeg",
+          "target_slug": "homologous-limbs-comparison",
+          "evidence": "explicit alias rule in process-manual-batch-dynamic.mjs"
+        },
+        {
+          "source_path": "packages/images/assets-png/manually-generated/wrist-pulse.jpeg",
+          "target_slug": "heartbeat-pulse-wrist",
+          "evidence": "explicit alias rule in process-manual-batch-dynamic.mjs"
+        },
+        {
+          "source_path": "packages/images/assets-png/manually-generated/yoyo-energy",
+          "target_slug": "yoyo-energy-transformation",
+          "evidence": "explicit alias rule in process-manual-batch-dynamic.mjs"
+        },
+        {
+          "source_path": "packages/images/assets-png/manually-generated/walo-walo.jpeg",
+          "target_slug": "sea-snake-walo-walo",
+          "evidence": "explicit alias rule in process-manual-batch-dynamic.mjs"
+        },
+        {
+          "source_path": "packages/images/assets-png/manually-generated/seed-growth.jpeg",
+          "target_slug": "germination-cup-row-conditions",
+          "evidence": "explicit alias rule in process-manual-batch-dynamic.mjs"
+        },
+        {
+          "source_path": "packages/images/assets-png/manually-generated/how-eye-sees.jpeg",
+          "target_slug": "how-eye-sees-light",
+          "evidence": "explicit alias rule in process-manual-batch-dynamic.mjs"
+        },
+        {
+          "source_path": "packages/images/assets-png/manually-generated/cloud-types.jpeg",
+          "target_slug": "cloud-types-chart",
+          "evidence": "explicit alias rule in process-manual-batch-dynamic.mjs"
+        },
+        {
+          "source_path": "packages/images/assets-png/manually-generated/luksong-tinik.jpeg",
+          "target_slug": "kids-playing-luksong-tinik-scene",
+          "evidence": "explicit alias rule in process-manual-batch-dynamic.mjs"
+        },
+        {
+          "source_path": "packages/images/assets-png/manually-generated/stomata-guard-cell.jpeg",
+          "target_slug": "guard-cells-stomata",
+          "evidence": "explicit alias rule in process-manual-batch-dynamic.mjs"
+        },
+        {
+          "source_path": "packages/images/assets-png/manually-generated/evacuation-drill",
+          "target_slug": "fire-drill-evacuation",
+          "evidence": "explicit alias rule in process-manual-batch-dynamic.mjs"
+        },
+        {
+          "source_path": "packages/images/assets-png/manually-generated/cicada-shell.jpg",
+          "target_slug": "cicada-molt-shell",
+          "evidence": "explicit alias rule in process-manual-batch-dynamic.mjs"
+        },
+        {
+          "source_path": "packages/images/assets-png/manually-generated/continental-drift.jpeg",
+          "target_slug": "continental-drift-pangaea",
+          "evidence": "explicit alias rule in process-manual-batch-dynamic.mjs"
+        },
+        {
+          "source_path": "packages/images/assets-png/manually-generated/butterfly-life-cycle.jpeg",
+          "target_slug": "lifecycle-butterfly",
+          "evidence": "explicit alias rule in process-manual-batch-dynamic.mjs"
+        }
+      ]
+    },
+    "version_caveat": "A matching slug or explicit alias establishes a candidate source family, not that the archived original produced the current shipping revision. Images can be regenerated under the same filename; distinct recovered hashes are retained.",
+    "openai_direct_export_caveat": "The 11 out-openai PNGs preserve full resolution, but gen-images-openai.py may flatten alpha onto white and resave before writing; native provider bytes are not established for this scope.",
+    "retired_backup_caveat": "91 PNGs in retired hiraia-manual-images/assets-png-raw are already 512px derivatives. They are explicitly excluded from native-resolution selection.",
+    "unlocated_does_not_mean_permanently_lost": "Earlier manual processors deleted input images after producing a 512px derivative. Source imports for 15 families were not found in examined roots; external chat attachments, Downloads and provider-held outputs were not searched or downloaded.",
+    "remote_leads": "Saved provider batch IDs and generation manifests can identify earlier outputs if a provider still retains them. Some signed-download scripts deleted response JSONLs after writing out-final, and repeated slugs can overwrite earlier generations; remote retention has not been verified.",
+    "auxiliary_web_artwork_not_in_core_selection": [
+      {
+        "path": "packages/web/public/landing.jpeg",
+        "bytes": 303155,
+        "width": 2048,
+        "height": 1152,
+        "format": "JPEG",
+        "sha256": "74378d570d6bf8fa2c3cfa5e846937c02910cd65f43c60657f4226af4f4db7cc",
+        "classification": "auxiliary-best-available-web-artwork-native-provenance-unproven",
+        "included_in_core_selection": false
+      },
+      {
+        "path": "packages/web/public/hand-and-app.jpeg",
+        "bytes": 2073874,
+        "width": 2816,
+        "height": 1536,
+        "format": "JPEG",
+        "sha256": "539c24703acd5e94b6e28791b07481a52fbf5d57882dfbd42e29a046f195e2f1",
+        "classification": "auxiliary-best-available-web-artwork-native-provenance-unproven",
+        "included_in_core_selection": false
+      },
+      {
+        "path": "packages/web/public/pears-classroom.webp",
+        "bytes": 121142,
+        "width": 1448,
+        "height": 1086,
+        "format": "WEBP",
+        "sha256": "f128d9d78afaf5a0b6abf5a325ab321defe9c39c67adee6389d32644a0bcde4a",
+        "classification": "auxiliary-best-available-web-artwork-native-provenance-unproven",
+        "included_in_core_selection": false
+      },
+      {
+        "path": "packages/web/public/hand-and-app.png",
+        "bytes": 1765236,
+        "width": 1306,
+        "height": 1498,
+        "format": "PNG",
+        "sha256": "9f8bc58a651842aa00be8a489dceabdf1f3e3a220b4413f0a211e41ff7eaac6f",
+        "classification": "auxiliary-best-available-web-artwork-native-provenance-unproven",
+        "included_in_core_selection": false
+      }
+    ],
+    "auxiliary_web_artwork_bytes": 4263407,
+    "search_scope": "Current packages/images and rag/pipeline/imagegen; image roots in the 2026-09-21 retired-worktree archive; name-directed recovery searches under other repository backup roots; website/mobile assets; all 15 local provider response JSONLs. This is not a full-machine or cloud account search.",
+    "misleading_extensions": "141 selected files in retired-manual-raw have .png filenames but JPEG content. The byte manifest records measured format; the uploader uses application/octet-stream and preserves exact bytes and original names."
+  },
+  "derived_outputs_excluded_as_originals": [
+    {
+      "path": "packages/images/cards-png",
+      "files": 32221,
+      "bytes": 503732112,
+      "description": "512px palette PNG shipping images"
+    },
+    {
+      "path": "packages/images/factoid-webp",
+      "files": 22269,
+      "bytes": 724923812,
+      "description": "512px WebP shipping images"
+    },
+    {
+      "path": "packages/images/qwen-queue/audit-regen/bundled",
+      "files": 7168,
+      "bytes": 108835118,
+      "description": "512px bundled PNG derivatives"
+    },
+    {
+      "path": "packages/images/qwen-queue/audit-regen/bundled-4",
+      "files": 3518,
+      "bytes": 54987522,
+      "description": "512px bundled PNG derivatives"
+    },
+    {
+      "path": "rag/pipeline/imagegen/webp",
+      "files": 2353,
+      "bytes": 81347210,
+      "description": "512px WebP derivatives"
+    },
+    {
+      "path": "packages/images/quarantine-qwen-reject",
+      "files": 564,
+      "bytes": 8093286,
+      "description": "512px rejected image derivatives"
+    },
+    {
+      "path": "packages/images/gemini-queue/references",
+      "files": 71,
+      "bytes": 85960586,
+      "description": "Downloaded reference photos/diagrams, not generated originals; classification and usage rights require separate reference provenance"
+    },
+    {
+      "path": "packages/images/crop-review",
+      "description": "Composite review sheets; tall dimensions do not make them native high-resolution images"
+    },
+    {
+      "path": "packages/web/public/cards and mobile shipping packs",
+      "description": "App/demo thumbnails and compressed delivery assets are not the native generation source"
+    }
+  ],
+  "pipeline_evidence": [
+    {
+      "path": "packages/images/to-card-png.mjs",
+      "finding": "Converts full-resolution generators to 512px palette shipping PNGs. A stale comment that factoids only retain WebP is contradicted by the raw roots measured here."
+    },
+    {
+      "path": "packages/images/qwen-queue/gen-images-batch.py",
+      "finding": "Writes native decoded provider PNGs to out-final before downstream conversion."
+    },
+    {
+      "path": "packages/images/qwen-queue/gen-images-openai.py",
+      "finding": "Can flatten alpha and resave RGB; full-resolution exports are distinguished from verified native provider bytes."
+    },
+    {
+      "path": "packages/images/qwen-queue/audit-regen/extract_batch.py",
+      "finding": "Writes native decoded images to raw; raw-4 is separately preserved."
+    },
+    {
+      "path": "packages/images/gemini-queue/downsize.mjs",
+      "finding": "In-place conversion can back up assets-png-raw, but some retired backup entries are already downsized."
+    },
+    {
+      "path": "packages/images/gemini-queue/process-manual-batch.mjs",
+      "finding": "Pre-fix code removed input imports after creating shipping derivatives; retention fix is owned by a separate agent."
+    },
+    {
+      "path": "packages/images/gemini-queue/process-manual-batch-dynamic.mjs",
+      "finding": "Pre-fix code removed input imports after creating shipping derivatives; explicit aliases explain 18 apparent filename gaps."
+    },
+    {
+      "path": "rag/pipeline/art-qa-newart-extract.py",
+      "finding": "Extracted native batch images directly to cards-png, where later shipping conversion overwrote originals. Local raw batch recovery restored 2,853 exact images."
+    },
+    {
+      "path": "docs/WORKSPACE-CONSOLIDATION-20260921.md",
+      "finding": "Retired snapshots preserve ignored and untracked image recovery material; they are read-only recovery sources, not active worktrees."
+    }
+  ],
+  "verification": {
+    "initial_header_inventory_regular_images": 110420,
+    "retired_header_inventory_regular_images": 73421,
+    "extensionless_manual_images_found_by_content": 3,
+    "first_full_resolution_file_hash_pass": {
+      "files": 45060,
+      "unstable_sources": 0,
+      "changed_since_header_inventory": 0,
+      "measured_at_utc": "2026-10-01T03:09:57.093929+00:00"
+    },
+    "frozen_selection_validated_with": "tools/reference-archive/archive.py normalize_sources and enumerate_files",
+    "selected_symlinks": 0,
+    "every_image_manifest_record_covered_by_selection": true,
+    "free_disk_bytes_before_recovery": 133860327424,
+    "manifest_and_snapshot_mutation_rule": "Recovery staging and protected manual copies are frozen inputs. Current generator roots can have active writers; ingestion must compare source stat/hash and refuse changed files, then retry with a fresh inventory. Never upload an unchecked mixture of two writes.",
+    "remote_verification": "Pending parent uploader: content-addressed immutable keys, full byte hash after upload/readback, and independent restore into an empty destination. No cloud operation was performed by this inventory task.",
+    "uploader_content_type": "application/octet-stream; no decoding, format conversion or filename-based media interpretation."
+  },
+  "incremental_r2_standard_cost": {
+    "pricing_checked_at_utc": "2026-10-01T01:54:29Z",
+    "source": "https://developers.cloudflare.com/r2/pricing/",
+    "storage_usd_per_decimal_gb_month": 0.015,
+    "core_unique_image_decimal_gb": 56.504547726,
+    "all_selected_files_decimal_gb_before_deduplication": 56.66634754,
+    "planning_gb_month_rounded_up": 57,
+    "monthly_usd_before_account_allowances": 0.855,
+    "assumptions": "Full-month steady storage; images plus selected metadata fit the same 57GB rounded planning band. Actual bills aggregate account usage and monthly average storage; 10GB storage/1M Class A/10M Class B Standard free allowances are account-scoped and are not assumed available here. Request charges and independent backup storage are separate.",
+    "request_rounding": "R2 rounds billable Class A and B operation usage up to whole million-operation billing units; if account allowances are exhausted, a small new ingest can therefore add a full $4.50 Class A and $0.36 Class B unit. The exact incremental account bill depends on other usage."
+  },
+  "handoff": {
+    "uploader_owner": "parent /root with tools/reference-archive/archive.py",
+    "destination": "private R2 hiraia-archive, configured by parent; this inventory did not provision or upload",
+    "core_selection_ready": true,
+    "stage_frozen": true,
+    "additional_scope_decision": "Parent can add the four separately identified website assets as auxiliary best-available artwork, and retain low-resolution gap derivatives under an explicitly different classification if desired. Neither is counted as a recovered native original.",
+    "commit_status": "Inventory task has not committed or deployed any changes."
+  }
+}

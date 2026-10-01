@@ -2,10 +2,12 @@ import sharp from 'sharp';
 import { existsSync, readFileSync, writeFileSync, unlinkSync, readdirSync, lstatSync, readlinkSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { MANUAL_TRANSFORM, processPreservedManualImage } from './manual-originals.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const IMG_DIR = join(HERE, '..');
 const MANUAL_DIR = join(IMG_DIR, 'assets-png/manually-generated');
+const ORIGINALS_DIR = join(IMG_DIR, 'manual-originals');
 const FLAGGED_DIR = join(IMG_DIR, 'assets-png/flagged');
 const QC_PROGRESS_PATH = join(HERE, 'qc-progress.json');
 
@@ -97,22 +99,33 @@ async function processImage(manualFile) {
   console.log(`Processing ${manualFile} -> ${category}/${destName} (ID: ${id})`);
 
   try {
-    const buf = await sharp(srcPath)
-      .resize(512, 512, { fit: 'inside', withoutEnlargement: true })
-      .grayscale()
-      .linear(1.28, -38)
-      .png({ palette: true, colours: 16, effort: 10, compressionLevel: 9 })
-      .toBuffer();
-
-    writeFileSync(destPath, buf);
-    console.log(`  Saved optimized PNG (${Math.round(buf.length / 1024)} KB)`);
+    const result = await processPreservedManualImage({
+      sourcePath: srcPath,
+      outputPath: destPath,
+      originalsDir: ORIGINALS_DIR,
+      imageId: id,
+      processor: 'process-manual-batch-dynamic.mjs',
+      render: (originalBytes) => sharp(originalBytes)
+        .resize(MANUAL_TRANSFORM.resize)
+        .grayscale(MANUAL_TRANSFORM.grayscale)
+        .linear(MANUAL_TRANSFORM.linear.multiplier, MANUAL_TRANSFORM.linear.offset)
+        .png(MANUAL_TRANSFORM.png)
+        .toBuffer(),
+    });
+    console.log(`  Saved optimized PNG (${Math.round(result.output.bytes / 1024)} KB)`);
+    console.log(`  Preserved full-resolution original: ${result.originalPath}`);
+    if (!result.sourceDeleted) {
+      console.warn(`  Source cleanup held (${result.reason}); keeping the flagged item and QC pending. Retained source: ${result.retainedSourcePath ?? srcPath}`);
+      return null;
+    }
 
     if (existsSync(flaggedPath)) {
       unlinkSync(flaggedPath);
       console.log(`  Deleted flagged copy/symlink: ${flaggedPath}`);
     }
 
-    unlinkSync(srcPath);
+    // Only the helper may remove the unchanged source, after its verified
+    // original and immutable source-to-output provenance are durable.
     console.log(`  Deleted source manual file: ${srcPath}`);
 
     return id;

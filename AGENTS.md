@@ -76,6 +76,19 @@ rag/bank/quiz-bank.jsonl ──► gen-cards-questions.py ──► packages/mob
 - The pool is a single 50 MB line. Re-serialise it with `json.dumps(doc, ensure_ascii=False)`
   and default separators; `indent=1` turns a one-line diff into a 2,070,923-line one.
 
+## Original images and reference archive
+
+- Preserve original image bytes before downsampling, grayscale conversion or palette
+  reduction. The two manual-image processors retain verified masters and provenance in
+  gitignored `packages/images/manual-originals/`; never bypass that preservation step.
+- Native originals may be JPEGs without extensions or with `.png` names. Shipping 512px
+  images are derivatives. Archive selections for the original store must include its
+  extensionless hash-named files and provenance.
+- Research materials and original images belong in private R2 `hiraia-archive`, separate
+  from public release assets. Use `tools/reference-archive/README.md` and the snapshot
+  verification record in `docs/REFERENCE-ARCHIVE.md`; never mirror local deletions or
+  claim a backup complete from upload success alone.
+
 ## Build and release — the checklist, with why
 
 1. **Regression gate green first.** `finetuning/eval/harness/run-harness.sh`. Hard rule, not
