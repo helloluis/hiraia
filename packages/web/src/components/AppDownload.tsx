@@ -15,8 +15,9 @@ function DeviceIcon({device}: {device: DownloadPlatform['device']}) {
 }
 
 function trackDownload(platform: string, release: PlatformRelease, onCount: (n: number) => void) {
-  window.gtag?.('event', 'apk_download', {
-    file_name: release.url.split('/').pop(), file_extension: 'apk',
+  const extension = release.platform === 'windows' ? release.format : 'apk';
+  window.gtag?.('event', extension === 'apk' ? 'apk_download' : 'file_download', {
+    file_name: release.url.split('/').pop(), file_extension: extension,
     link_url: release.url, app_version: release.versionName, platform,
   });
   void fetch('/api/metrics/apk-download', { method: 'POST', keepalive: true })
@@ -27,6 +28,7 @@ function trackDownload(platform: string, release: PlatformRelease, onCount: (n: 
 
 function PlatformDownload({platform, onCount}: {platform: DownloadPlatform; onCount: (n: number) => void}) {
   const release = platformRelease(platform.id);
+  const format = release?.platform === 'windows' ? 'ZIP' : 'APK';
   const shot = platform.screenshot;
   return <article id={`download-${platform.id}`} className={`${styles.platform} ${platform.status === 'planned' ? styles.planned : ''}`}
     aria-labelledby={`platform-${platform.id}`}>
@@ -48,7 +50,8 @@ function PlatformDownload({platform, onCount}: {platform: DownloadPlatform; onCo
             <span>Download for {platform.name}</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden><path d="M12 3v12m-5-4 5 5 5-5M5 21h14"/></svg>
           </a>
-          <p className={styles.fileMeta}>v{release.versionName} <span aria-hidden>·</span> {Math.ceil(release.bytes / 1048576)} MB <span aria-hidden>·</span> APK</p>
+          <p className={styles.fileMeta}>v{release.versionName} <span aria-hidden>·</span> {Math.round(release.bytes / 1_000_000)} MB <span aria-hidden>·</span> {format}</p>
+          {platform.downloadNote && <p className={styles.downloadNote}>{platform.downloadNote}</p>}
         </> : <p className={styles.pending}>Preview release pending</p>}
         <details className={styles.details}>
           <summary>Installation & requirements</summary>
@@ -61,8 +64,8 @@ function PlatformDownload({platform, onCount}: {platform: DownloadPlatform; onCo
         {release && <details className={styles.details}>
           <summary>Verify this download</summary>
           <div className="mt-3 space-y-4">
-            <Checksum label={`${platform.name} APK SHA-256`} value={release.sha256} hint="The SHA-256 of your downloaded APK must match this value."/>
-            <Checksum label="Signing certificate SHA-256" value={release.signingCertSha256} hint="The same signing identity lets Hiraia update without losing your progress."/>
+            <Checksum label={`${platform.name} ${format} SHA-256`} value={release.sha256} hint={`The SHA-256 of your downloaded ${format} must match this value.`}/>
+            {release.platform !== 'windows' && <Checksum label="Signing certificate SHA-256" value={release.signingCertSha256} hint="The same signing identity lets Hiraia update without losing your progress."/>}
           </div>
         </details>}
       </div>}
@@ -168,7 +171,7 @@ function TalaDownload() {
             }}>
               <span className="flex-1">Download Tala v{tala.versionName} for Android</span>
               <span className="shrink-0 rounded-md bg-[var(--ink)] px-2 py-1 font-gothic text-[9px] uppercase tracking-[0.14em] text-[var(--stock)]">
-                {Math.ceil(tala.bytes / 1048576)} MB
+                {Math.round(tala.bytes / 1_000_000)} MB
               </span>
               <span className="mc-arrow mc-arrow-dl" aria-hidden>
                 <svg viewBox="0 0 24 24"><path d="M12 3v12" /><path d="M7 11l5 5 5-5" /><path d="M5 21h14" /></svg>

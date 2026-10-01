@@ -19,3 +19,20 @@ test('download links require complete measured metadata and immutable CDN URLs',
   }
   assert.equal(validRelease(android), true);
 });
+
+test('Windows offers a measured unsigned x64 ZIP without weakening APK verification', () => {
+  const windows = platformRelease('windows');
+  assert.ok(windows);
+  assert.equal(DOWNLOAD_PLATFORMS.find(p => p.id === 'windows')?.status, 'preview');
+  assert.equal('signingCertSha256' in windows, false);
+  for (const fields of [{bytes: 0}, {sha256: ''}, {versionName: ''}, {publishedAt: ''},
+    {format: 'apk'}, {arch: 'arm64'}, {signed: true}, {signed: undefined},
+    {url: 'https://assets.hiraia.org/models/app.apk'}, {url: 'https://example.org/app.zip'}]) {
+    assert.equal(validRelease({...windows, ...fields}), false);
+  }
+  const android = platformRelease('android')!;
+  assert.equal(validRelease({...android, url: windows.url}), false);
+  assert.equal(validRelease({...android, signingCertSha256: undefined, signed: false}), false);
+  assert.equal(platformRelease('android', {android: windows}), null);
+  assert.equal(platformRelease('windows', {windows: android}), null);
+});

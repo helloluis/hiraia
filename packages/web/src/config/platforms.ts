@@ -1,19 +1,36 @@
 import releases from './platform-releases.json';
+import windowsRelease from './windows-release.json';
 
-export interface PlatformRelease {
-  platform: string;
+interface ReleaseFile {
   versionCode: number;
   versionName: string;
   url: string;
   bytes: number;
-  md5: string;
   sha256: string;
+  publishedAt: string;
+}
+
+interface ApkRelease extends ReleaseFile {
+  platform: 'android' | 'chromeos';
+  md5: string;
   signingCertSha256: string;
   abis: string[];
   runtime?: string;
   minSupportedVersionCode: number;
-  publishedAt: string;
 }
+
+interface WindowsRelease extends ReleaseFile {
+  platform: 'windows';
+  format: 'zip';
+  arch: 'x64';
+  signed: false;
+}
+
+export type PlatformRelease = ApkRelease | WindowsRelease;
+
+// APK publication replaces platform-releases.json. Keep the separately published
+// Windows preview intact when the Android/ChromeOS pair is updated.
+const releaseCatalog = {...releases.platforms, windows: windowsRelease};
 
 export interface DownloadPlatform {
   id: string;
@@ -23,6 +40,7 @@ export interface DownloadPlatform {
   eyebrow: string;
   description: string;
   requirements: string[];
+  downloadNote?: string;
   installNote: string;
   screenshot?: { src: string; width: number; height: number; alt: string; caption: string };
 }
@@ -50,24 +68,38 @@ export const DOWNLOAD_PLATFORMS: DownloadPlatform[] = [
       caption: 'Desktop Android emulator preview. Testing on school Chromebooks is still pending.' },
   },
   {
-    id: 'windows', name: 'Windows', device: 'desktop', status: 'planned',
-    eyebrow: 'Looking ahead',
-    description: 'A Windows version is planned. We’ll add its download here when it’s ready.',
-    requirements: [], installNote: '',
+    id: 'windows', name: 'Windows', device: 'desktop', status: 'preview',
+    eyebrow: 'For PCs & laptops',
+    description: 'Science on a bigger screen. Explore cards side by side, take quizzes, and listen offline in English or Tagalog.',
+    requirements: ['Windows 10 or 11 · Intel/AMD 64-bit (x64)',
+      'No dedicated graphics card needed for the optional AI tutor',
+      'Tala classroom sync is not available in this preview'],
+    downloadNote: 'Extract the ZIP, then open Hiraia.exe. This preview is unsigned, so Windows may show a SmartScreen warning.',
+    installNote: 'Extract the whole ZIP to a folder before opening Hiraia.exe. To update, download and extract the newer version. Your profiles, progress, and downloaded content are stored separately and stay on your computer. Windows ARM is not supported.',
+    screenshot: { src: '/screens/download-windows.png', width: 1008, height: 689,
+      alt: 'Hiraia running on Windows with a science quiz and all three answer choices visible.',
+      caption: 'Windows preview captured during native app testing. Testing on Windows 10 devices is still pending.' },
   },
 ];
 
 export function validRelease(value: unknown): value is PlatformRelease {
   if (!value || typeof value !== 'object') return false;
   const r = value as PlatformRelease;
-  return Number.isSafeInteger(r.versionCode) && r.versionCode > 0 &&
+  const measuredFile = Number.isSafeInteger(r.versionCode) && r.versionCode > 0 &&
     Number.isSafeInteger(r.bytes) && r.bytes > 0 && typeof r.url === 'string' &&
-    /^https:\/\/assets\.hiraia\.org\/models\/[a-zA-Z0-9._-]+\.(apk|exe|msix)$/.test(r.url) &&
-    /^[a-f0-9]{64}$/i.test(r.sha256) && /^[a-f0-9]{32}$/i.test(r.md5) &&
-    /^[a-f0-9]{64}$/i.test(r.signingCertSha256) && typeof r.versionName === 'string';
+    /^[a-f0-9]{64}$/i.test(r.sha256) && typeof r.versionName === 'string' && r.versionName.length > 0 &&
+    typeof r.publishedAt === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(r.publishedAt);
+  if (!measuredFile) return false;
+  if (r.platform === 'windows') {
+    return r.format === 'zip' && r.arch === 'x64' && r.signed === false &&
+      /^https:\/\/assets\.hiraia\.org\/models\/[a-zA-Z0-9._-]+\.zip$/.test(r.url);
+  }
+  return (r.platform === 'android' || r.platform === 'chromeos') &&
+    /^https:\/\/assets\.hiraia\.org\/models\/[a-zA-Z0-9._-]+\.apk$/.test(r.url) &&
+    /^[a-f0-9]{32}$/i.test(r.md5) && /^[a-f0-9]{64}$/i.test(r.signingCertSha256);
 }
 
-export function platformRelease(platform: string, catalog: Record<string, unknown> = releases.platforms): PlatformRelease | null {
+export function platformRelease(platform: string, catalog: Record<string, unknown> = releaseCatalog): PlatformRelease | null {
   const candidate = Object.hasOwn(catalog, platform) ? catalog[platform] : null;
   return validRelease(candidate) && candidate.platform === platform ? candidate : null;
 }
