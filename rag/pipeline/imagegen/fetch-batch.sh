@@ -12,6 +12,7 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 BID="${1:?usage: fetch-batch.sh <batch_id> '<url>'}"
 URL="${2:?missing signed url}"
 OUT="$HERE/$BID.jsonl"
+python3 "$HERE/../../../tools/reference-archive/offload_guard.py" "$HERE/raw" "$OUT"
 [ -f "$OUT" ] && echo "resuming from $(du -h "$OUT" | cut -f1)" || echo "fresh download"
 # -C - resumes at the current byte offset; a half-written final line is completed correctly.
 curl -sS -L -C - --retry 5 --retry-delay 5 --speed-limit 1024 --speed-time 120 \

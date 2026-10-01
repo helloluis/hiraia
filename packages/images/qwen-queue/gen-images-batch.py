@@ -18,8 +18,13 @@ Env: OPENAI_API_KEY, WORKLIST (default worklist.jsonl), MODE, OPENAI_MODEL/QUALI
      (build cap; 0 = all).
 """
 import os, sys, json, time, base64, urllib.request, urllib.error
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / 'tools/reference-archive'))
+from offload_guard import assert_local
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+assert_local(os.path.join(HERE, 'out-final'))
 KEY = os.environ['OPENAI_API_KEY']
 WORKLIST = os.environ.get('WORKLIST', os.path.join(HERE, 'worklist.jsonl'))
 OUT = os.path.join(HERE, 'out-final'); os.makedirs(OUT, exist_ok=True)
@@ -148,6 +153,7 @@ def _download_batch(bid, man):
     b = _req(f'{API}/batches/{bid}'); saved = declined = out = 0
     if b.get('output_file_id'):
         tmp = os.path.join(HERE, f'.out-{bid}.jsonl')
+        assert_local(tmp)
         _req(f'{API}/files/{b["output_file_id"]}/content', to_file=tmp)  # stream ~GBs to disk
         with open(tmp) as fh:
             for line in fh:  # parse line-by-line — never hold the whole file in memory

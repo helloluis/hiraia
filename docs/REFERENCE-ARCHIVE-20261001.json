@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updated_at_utc": "2026-10-01T06:07:02.891190+00:00",
+  "updated_at_utc": "2026-10-01T07:27:13.771741+00:00",
   "bucket": "hiraia-archive",
   "storage_class": "Standard",
   "public_access": {
@@ -214,30 +214,56 @@
         "result_written_at_utc": "2026-10-01T05:43:00.473288+00:00",
         "method": "Read remote manifest and receipt; verify every chunk and complete file while restoring into a fresh directory."
       }
+    },
+    {
+      "scope": "local_offload_evidence",
+      "snapshot_id": "20261001T071841Z-6df97cde44ef",
+      "manifest_sha256": "07899419afc3a42024472c8503bed905811d9c34439466d12fe27045a007fb49",
+      "receipt_sha256": "60cf23cc16aed6ebbb86b309d6497725148668544ac62881c9cf7400b1f2e575",
+      "committed_at_utc": "2026-10-01T07:19:16Z",
+      "totals": {
+        "files": 43,
+        "logical_bytes": 125851588,
+        "objects": 43,
+        "stored_bytes": 125851588,
+        "unique_files": 43
+      },
+      "state": "restored",
+      "verified_bytes": 125851588,
+      "verified_objects": 43,
+      "restored_files": 43,
+      "restore": {
+        "status": "restored",
+        "error_count": 0,
+        "existing_verified_files": 0,
+        "result_sha256": "860a7996f5786326acaf05bb082531f6bf61d2f1f11af9db1bfb3d22d2361cec",
+        "result_written_at_utc": "2026-10-01T07:20:41.843542+00:00",
+        "method": "Read remote manifest and receipt using read-only credentials; independently restore every evidence file into a fresh directory."
+      }
     }
   ],
   "notes": [
-    "All six selected snapshots passed full remote-byte verification, committed receipt verification and independent full-file restores.",
+    "All seven selected snapshots passed full remote-byte verification, committed receipt verification and independent full-file restores.",
     "Aggregate content totals deduplicate exact bytes across snapshots; manual originals also occur in the core image snapshot.",
     "The historical supplement adds 42 full-resolution variants to the 47,893 core image variants. Earlier artwork does not recover the 15 missing later manual imports.",
     "The separately selected generation references, website/branding artwork, SVG masters, metadata and 512-pixel survival copies are outside the core-plus-history original-resolution image count.",
     "The expanded Code-directory search adds auxiliary artwork, compact provider records, recovery evidence and a pinned copy of the archive tooling. No additional original-resolution science images or missing later manual revisions were recovered.",
     "The tiny locked retention probe is outside the snapshot content totals; bucket listing, if present, records exact billed object bytes.",
-    "All source originals remain local; only temporary test restore copies may be removed after verification.",
+    "User-authorized local offload subsequently removed 50,645 verified files totaling 102,216,381,009 logical bytes. Exact paths and reconstruction recipes were independently archived and restored before deletion; retained shipping/pending images passed unchanged-file verification.",
     "No independent second provider or recurring maintenance job has been configured."
   ],
   "remote_object_audit": {
-    "checked_at_utc": "2026-10-01T05:43:49.656448+00:00",
+    "checked_at_utc": "2026-10-01T07:22:22.394496+00:00",
     "bucket": "hiraia-archive",
     "prefixes": [
       "objects/sha256/",
       "snapshots/"
     ],
     "status": "matched",
-    "expected_objects": 54753,
-    "listed_objects": 54753,
-    "expected_bytes": 78099471224,
-    "listed_bytes": 78099471224,
+    "expected_objects": 54797,
+    "listed_objects": 54797,
+    "expected_bytes": 78225298524,
+    "listed_bytes": 78225298524,
     "retention_probe_sha256_verified": true,
     "missing_count": 0,
     "unexpected_count": 0,
@@ -246,16 +272,16 @@
     "unexpected": [],
     "wrong_sizes": [],
     "note": "Listing reconciles inventory completeness only; full remote-byte integrity is established by upload read-back and independent restores.",
-    "result_sha256": "813b9a296bc464732b7fd879df05b943ab9d10d612146607e76b102a841162ed"
+    "result_sha256": "1133bef91dc7669787ce778edab2dfc053ec2c051725f5807066bd4a6ebeca2f"
   },
   "state": "all_snapshots_restored",
   "aggregate": {
-    "snapshot_count": 6,
-    "selected_file_paths_including_cross_snapshot_duplicates": 54874,
-    "unique_files": 54740,
-    "unique_content_objects": 54740,
-    "unique_content_bytes": 78077273461,
-    "snapshot_metadata_bytes": 22197634,
+    "snapshot_count": 7,
+    "selected_file_paths_including_cross_snapshot_duplicates": 54917,
+    "unique_files": 54782,
+    "unique_content_objects": 54782,
+    "unique_content_bytes": 78203081540,
+    "snapshot_metadata_bytes": 22216855,
     "distinct_original_resolution_image_variants": 47935,
     "distinct_original_resolution_image_bytes": 56528893161,
     "unlocated_specific_manual_source_revisions": 15
@@ -329,5 +355,15 @@
         "removed_at_utc": "2026-10-01T06:07:02.890905+00:00"
       }
     ]
+  },
+  "local_source_offload": {
+    "record": "docs/LOCAL-IMAGE-OFFLOAD-20261001.json",
+    "record_sha256": "f7f539c15d25855b52a860d84724411375c31540ea49a5322bf6cf6383766108",
+    "status": "completed",
+    "files_removed": 50645,
+    "logical_bytes_removed": 102216381009,
+    "recovery_evidence_snapshot_id": "20261001T071841Z-6df97cde44ef",
+    "protected_regular_files_verified_unchanged": 61081,
+    "protected_symlinks_verified_unchanged": 40
   }
 }

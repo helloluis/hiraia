@@ -24,6 +24,7 @@
 import sharp from 'sharp';
 import { readdirSync, statSync, mkdirSync, existsSync, readFileSync } from 'node:fs';
 import { join, basename, extname } from 'node:path';
+import { assertLocal } from '../../tools/reference-archive/offload-guard.mjs';
 
 const arg = (k, d) => { const i = process.argv.indexOf(`--${k}`); return i > -1 ? process.argv[i + 1] : d; };
 const IN = arg('in', 'factoid-webp');
@@ -31,6 +32,7 @@ const OUT = arg('out', 'cards-png');
 const SIZE = +arg('size', 512);
 const COLORS = +arg('colors', 8);
 const ONLY = arg('only', '');
+assertLocal(IN, OUT, ...[ONLY].filter(Boolean));
 
 const wanted = ONLY
   ? new Set(readFileSync(ONLY, 'utf8').split('\n').map((s) => s.trim()).filter(Boolean))

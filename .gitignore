@@ -273,3 +273,6 @@ finetuning/reference-materials/peru-curriculum/
 
 # Preserve manual image originals separately from shipping derivatives; archive in private R2.
 packages/images/manual-originals/
+
+# Machine-local offload markers retain recovery pointers; recovery plans live in private R2.
+*.hiraia-archive-offloaded.json

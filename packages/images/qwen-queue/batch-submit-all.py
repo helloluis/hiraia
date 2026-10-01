@@ -12,8 +12,15 @@ batches-to-download.json = [{batch_id, output_file_id, filename, n}] for tomorro
   CHUNK=7000 python3 packages/images/qwen-queue/batch-submit-all.py
 """
 import os, sys, json, time, urllib.request, urllib.error, re
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / 'tools/reference-archive'))
+from offload_guard import assert_local
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+# Imported by other generators for prompt construction, without using this output.
+if __name__ == '__main__':
+    assert_local(os.path.join(HERE, 'out-final'))
 KEY = os.environ['OPENAI_API_KEY']
 WORKLIST = os.environ.get('WORKLIST', os.path.join(HERE, 'worklist.jsonl'))
 OUT = os.path.join(HERE, 'out-final')
@@ -82,6 +89,7 @@ def upload_and_create():
                 method='POST', headers={'Content-Type': 'application/json'})['id']
 
 def main():
+    assert_local(OUT)
     submitted = set(open(SUBMITTED).read().split()) if os.path.exists(SUBMITTED) else set()
     batches = json.load(open(BATCHES)) if os.path.exists(BATCHES) else []
     chunk = CHUNK0

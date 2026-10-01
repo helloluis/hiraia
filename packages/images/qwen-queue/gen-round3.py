@@ -17,8 +17,14 @@ Env: OPENAI_API_KEY (required), WORKLIST, OUT (default out-round3), WORKERS (def
 """
 import os, sys, json, base64, importlib.util, urllib.request, urllib.error, time
 from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / 'tools/reference-archive'))
+from offload_guard import assert_local
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+OUT = os.environ.get('OUT', os.path.join(HERE, 'out-round3'))
+assert_local(OUT)
 KEY = os.environ['OPENAI_API_KEY']
 
 # reuse the round-2 prompt construction verbatim — never re-implement it here
@@ -28,7 +34,6 @@ _spec.loader.exec_module(_bsa)
 strip_style, STYLE = _bsa.strip_style, _bsa.STYLE
 
 WORKLIST = os.environ.get('WORKLIST', os.path.join(HERE, '..', 'review', 'round3-prompts.jsonl'))
-OUT = os.environ.get('OUT', os.path.join(HERE, 'out-round3'))
 MANIFEST = os.path.join(OUT, 'manifest.jsonl')
 MODEL = os.environ.get('OPENAI_MODEL', 'gpt-image-2')
 QUALITY = os.environ.get('OPENAI_QUALITY', 'low')

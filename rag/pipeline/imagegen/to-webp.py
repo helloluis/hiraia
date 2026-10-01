@@ -10,7 +10,10 @@ naming by card id) keeps one loader path for old and new illustrations alike.
   python3 rag/pipeline/imagegen/to-webp.py --only ids.txt [--out DIR]   # just those card ids (one per line)
 """
 import os, glob, sys
-from PIL import Image
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / 'tools/reference-archive'))
+from offload_guard import assert_local
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -25,6 +28,9 @@ DST = arg('out', os.path.join(HERE, 'webp'))
 ONLY = arg('only')          # a batch's worth of ids, so a small download never re-walks the whole raw/ dir
 SIZE = (512, 512)
 QUALITY = 82
+
+assert_local(SRC, DST, *([ONLY] if ONLY else []))
+from PIL import Image
 
 os.makedirs(DST, exist_ok=True)
 

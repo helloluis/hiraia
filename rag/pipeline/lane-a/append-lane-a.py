@@ -47,6 +47,9 @@ import sqlite3
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
+sys.path.insert(0, os.path.join(ROOT, 'tools/reference-archive'))
+from offload_guard import assert_local
+
 OUT = os.path.join(HERE, 'out')
 BANK = os.path.join(ROOT, 'rag', 'bank', 'science-facts.jsonl')
 FACTOIDS = os.path.join(ROOT, 'rag', 'bank', 'factoids.jsonl')
@@ -694,6 +697,7 @@ def load_batch_submit():
 
 
 def stage_images(st, chunk=120):
+    assert_local(os.path.join(IMAGEGEN, 'raw'))
     lane = {r['id']: s for s, r in lane_rows()}
     new_rows = [r for r in read_jsonl(FACTOIDS) if r['factId'] in lane]
     if len(new_rows) != len(lane):
@@ -782,11 +786,13 @@ def stage_fetch(st):
     each COMPLETED batch not yet downloaded: the error file → failed custom_ids (ids + error code only, never a prompt)
     → out/image-declined.jsonl + the qwen-image fallback worklist; the output file → imagegen/<batch>.jsonl → extract.py
     → to-webp.py --only → imagegen/webp/<id>.webp (staging). Idempotent: a batch is downloaded once."""
+    assert_local(os.path.join(IMAGEGEN, 'raw'), os.path.join(IMAGEGEN, 'webp'), BATCHES_OUT)
     if not os.path.exists(BATCHES_OUT):
         raise SystemExit('fetch: no image-batches.json — run the images stage first')
     mod = load_batch_submit()
     api = mod.API
     rec = json.load(open(BATCHES_OUT))
+    assert_local(*(os.path.join(IMAGEGEN, f'{b["batch_id"]}.jsonl') for b in rec['batches']))
     declined = {r['id']: r for r in read_jsonl(DECLINED_OUT)}
     prompts = {r['id']: r for s, _ in STREAMS for r in read_jsonl(os.path.join(OUT, f'image-worklist.{s}.jsonl'))}
     n_completed = n_new = 0
@@ -879,6 +885,8 @@ def main():
     ap.add_argument('--chunk', type=int, default=int(os.environ.get('CHUNK', '120')), help='image requests per batch (≈120 → API-downloadable output)')
     ap.add_argument('--status', action='store_true')
     a = ap.parse_args()
+    if not a.status and {'images', 'fetch'} & {s.strip() for s in a.stages.split(',')}:
+        assert_local(os.path.join(IMAGEGEN, 'raw'), os.path.join(IMAGEGEN, 'webp'))
     os.makedirs(OUT, exist_ok=True)
     signal.signal(signal.SIGTERM, lambda *_: sys.exit(143))   # a kill reaches run()'s handler, so a dying Fireworks run is still booked
     st = load_state()

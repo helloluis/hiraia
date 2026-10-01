@@ -22,8 +22,13 @@ Env:
 """
 import os, sys, json, time, base64, threading, urllib.request, urllib.error
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / 'tools/reference-archive'))
+from offload_guard import assert_local
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+assert_local(os.path.join(HERE, 'out-final'))
 OAI_KEY = os.environ['OPENAI_API_KEY']
 ALI_KEY = os.environ['ALIBABACLOUD_API_KEY']
 WORKLIST = os.environ.get('WORKLIST', os.path.join(HERE, 'worklist.jsonl'))

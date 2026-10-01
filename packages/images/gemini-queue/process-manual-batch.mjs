@@ -3,6 +3,7 @@ import { existsSync, readFileSync, writeFileSync, unlinkSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { MANUAL_TRANSFORM, processPreservedManualImage } from './manual-originals.mjs';
+import { assertLocal } from '../../../tools/reference-archive/offload-guard.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const IMG_DIR = join(HERE, '..');
@@ -10,6 +11,7 @@ const MANUAL_DIR = join(IMG_DIR, 'assets-png/manually-generated');
 const ORIGINALS_DIR = join(IMG_DIR, 'manual-originals');
 const FLAGGED_DIR = join(IMG_DIR, 'assets-png/flagged');
 const QC_PROGRESS_PATH = join(HERE, 'qc-progress.json');
+assertLocal(MANUAL_DIR, ORIGINALS_DIR);
 
 const itemsToProcess = [
   {

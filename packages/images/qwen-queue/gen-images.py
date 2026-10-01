@@ -23,8 +23,13 @@ Env:
   RATE_S     seconds between submits (default 1.0)
 """
 import os, sys, json, time, urllib.request, urllib.error
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / 'tools/reference-archive'))
+from offload_guard import assert_local
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+assert_local(os.path.join(HERE, 'out'))
 KEY = os.environ['ALIBABACLOUD_API_KEY']
 WORKLIST = os.environ.get('WORKLIST', os.path.join(HERE, 'worklist.jsonl'))
 OUT = os.path.join(HERE, 'out')

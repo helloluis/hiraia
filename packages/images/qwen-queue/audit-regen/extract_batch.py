@@ -5,11 +5,15 @@ import json
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[4] / 'tools/reference-archive'))
+from offload_guard import assert_local
+
 HERE = Path(__file__).resolve().parent
 RAW = HERE / 'raw'
 
 
 def extract(path):
+    assert_local(RAW, path)
     RAW.mkdir(parents=True, exist_ok=True)
     ok = skip = bad = declined = 0
     truncated = False
@@ -49,6 +53,7 @@ def main():
     paths = [Path(p) for p in sys.argv[1:]]
     if not paths:
         raise SystemExit('usage: extract_batch.py <batch_output.jsonl> ...')
+    assert_local(RAW, *paths)
     for path in paths:
         extract(path)
 

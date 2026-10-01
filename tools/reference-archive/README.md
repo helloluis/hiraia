@@ -7,7 +7,7 @@ originals, source documents and recovery provenance without decoding or re-encod
 them. Python 3.10+ on macOS/Linux is required; cloud operations use the existing
 `~/.venvs/hiraia-publish` environment's boto3. Inventory and tests use only stdlib.
 
-The CLI never provisions buckets, makes objects public, overwrites existing objects,
+The `archive.py` CLI never provisions buckets, makes objects public, overwrites existing objects,
 or deletes local or remote files. The operator must verify that the destination has
 no public R2.dev endpoint or custom domain. `--bucket` is required; `hiraia-assets`
 and common public bucket names are refused. Name validation cannot establish privacy.
@@ -215,6 +215,53 @@ to verify/restore detects changes to the receipt itself. Without a trusted recei
 pin, verification establishes consistency with the currently stored remote receipt,
 not historical authenticity. Application-level conditional immutability is not WORM
 storage or protection against an administrator deleting/replacing objects externally.
+
+## Reviewed local cleanup
+
+`local_cleanup.py` is a separate, stdlib-only executor for an explicitly reviewed
+list of local files. It has no network or remote-delete operation. Start with a
+dry run; applying requires the exact SHA256 of the reviewed plan:
+
+```bash
+python3 tools/reference-archive/local_cleanup.py --plan /absolute/reviewed-plan.json
+python3 tools/reference-archive/local_cleanup.py --plan /absolute/reviewed-plan.json \
+  --plan-sha256 REVIEWED_SHA256 --apply
+```
+
+Plan schema `1` requires `allowed_roots`, `protected_paths`, a
+`remote_verification: {path, sha256}` document, `snapshots` containing
+`{manifest_path, receipt_path}`, and `files`. Every file has an absolute normalized
+`path`, `sha256`, `bytes`, and `stat: {device, inode, size, mtime_ns, ctime_ns, mode,
+links}`. `mode` accepts permission bits or full `st_mode`; `links` must be `1`.
+Exact-file proof is `archive: {kind: "exact-file", snapshot_id: "..."}`. The pinned
+remote evidence must report matching manifest/receipt hashes and a successful full
+restore for every referenced snapshot. This executor validates that evidence
+locally; it does not perform another remote verification.
+
+Provider responses use `archive: {kind: "provider-fields", proof_path,
+proof_sha256}` pointing to the reviewed provider-audit JSONL. Each matching source
+record must prove all parsed fields and native payloads are preserved in the pinned
+snapshots, with zero errors, and verify byte-identical JSONL reconstruction against
+the source SHA256. A raw response hash is not assumed to be an archived object.
+Preserve the plan, provider reconstruction recipes and archival evidence before
+removing sources. Metadata, offload markers and all protected build paths are excluded.
+
+Stop writers and check open readers before applying; an already-open descriptor can
+still write after a rename. The executor rejects symlinks at every path component,
+hardlinks, changed stats and changed bytes. Each file is freshly hashed, atomically
+renamed to a reserved `.hiraia-cleanup-...claim` name in the same parent using native
+no-overwrite rename, then checked and fully hashed again before unlinking. Rollback
+never overwrites a recreated source. No directory is recursively removed.
+
+Journals live under ignored `build/reference-archive/local-cleanup-state/PLAN_SHA/`
+by default (`--state-dir` can select another operational directory). They are
+locked, fsynced and hash-chained; a crash leaves a recoverable claim or a durable
+verified unlink intent. Repeat the same pinned command to resume. Preserve both
+the journal and any claim if rollback is blocked. A rolled-back file has a new
+ctime and needs a new reviewed plan. Completed paths recreated by another writer
+are refused and retained. Dry runs neither claim files nor create a journal.
+Progress goes to stderr every 500 completed files or 15 seconds; stdout contains
+the final JSON result. Ctrl-C returns `130` and preserves claims for resume.
 
 ## Verify independently and restore
 

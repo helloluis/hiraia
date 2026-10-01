@@ -2,7 +2,11 @@
 """Build gpt-image-2 batch request files from Qwen visual reject/uncertain prompts."""
 import json
 import re
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[4] / 'tools/reference-archive'))
+from offload_guard import assert_local
 
 ROOT = Path('/Users/luis/Code/hiraia')
 HERE = Path(__file__).resolve().parent
@@ -97,6 +101,7 @@ def batch_line(item):
 
 
 def main():
+    assert_local(HERE / 'raw', HERE / 'raw-4')
     prompts = load_prompts()
     review = json.loads((OUT_AUDIT / 'review-queue.json').read_text())
     items, skipped, seen = [], [], set()

@@ -6,13 +6,18 @@ still perfectly good, so this stops at the first incomplete line instead of disc
 file. Re-running after a resume picks up the rest.
 """
 import json, base64, os, sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / 'tools/reference-archive'))
+from offload_guard import assert_local
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RAW = os.path.join(HERE, 'raw')
-os.makedirs(RAW, exist_ok=True)
 
 
 def main(path):
+    assert_local(RAW, path)
+    os.makedirs(RAW, exist_ok=True)
     ok = bad = 0
     truncated = False
     with open(path, 'rb') as f:

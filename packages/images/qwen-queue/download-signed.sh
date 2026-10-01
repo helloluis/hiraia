@@ -12,6 +12,7 @@ cd "$(dirname "$0")/../../.."
 URL="${1:?usage: download-signed.sh <signed-url>}"
 TMP="/tmp/batch-signed-$(date +%s).jsonl"
 OUT="packages/images/qwen-queue/out-final"
+python3 tools/reference-archive/offload_guard.py "$OUT" "$TMP"
 
 echo "downloading (resumable) → $TMP"
 curl -C - --retry 5 -o "$TMP" "$URL"

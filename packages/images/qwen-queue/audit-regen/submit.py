@@ -9,6 +9,9 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[4] / 'tools/reference-archive'))
+from offload_guard import assert_local
+
 HERE = Path(__file__).resolve().parent
 ROOT = Path('/Users/luis/Code/hiraia')
 API = 'https://api.openai.com/v1'
@@ -73,6 +76,7 @@ def upload_and_create(key, path):
 
 
 def main():
+    assert_local(HERE / 'raw', HERE / 'raw-4')
     key = load_key()
     records = []
     for name in ('batch-requests-1.jsonl', 'batch-requests-2.jsonl'):

@@ -2,7 +2,7 @@
 
 Updated **1 October 2026**, Asia/Manila. The selected archive is **Cloudflare R2 Standard**, private bucket **`hiraia-archive`**. Public R2 access is disabled and no custom domain is attached. The [verification record](REFERENCE-ARCHIVE-20261001.json) pins snapshot IDs, manifest/receipt hashes and completion states. It is the authority for what has actually been uploaded and restored.
 
-**All six snapshots are complete.** Every uploaded object passed remote SHA-256 read-back, and all 54,874 selected file paths passed independent full restores into fresh directories using read-only credentials, with zero errors. The remote listing matches all 54,753 expected objects and 78,099,471,224 stored bytes, including manifests, receipts and the retention probe, with no missing or unexpected objects. Counts include repeated source paths; exact content deduplicates to 54,740 objects. No B2 bucket or maintenance schedule has been created.
+**All seven snapshots are complete.** Every uploaded object passed remote SHA-256 read-back, and all 54,917 selected file paths passed independent full restores into fresh directories using read-only credentials, with zero errors. The remote listing matches all 54,797 expected objects and 78,225,298,524 stored bytes, including manifests, receipts and the retention probe, with no missing or unexpected objects. Counts include repeated source paths; exact content deduplicates to 54,782 objects. The seventh snapshot preserves the exact local-offload map, provider reconstruction recipes and tooling. No B2 bucket or maintenance schedule has been created.
 
 ## What is preserved
 
@@ -15,10 +15,11 @@ Updated **1 October 2026**, Asia/Manila. The selected archive is **Cloudflare R2
 | Auxiliary image snapshot | 90 file paths; 90,339,506 unique object bytes | Generation reference inputs, available website artwork and explicitly labeled low-resolution survival copies; independently restored. |
 | Historical image supplement | 42 additional 1024×1024 image variants plus provenance; 47 files, 25,735,298 bytes | Exact historical Git bytes; independently restored. These are superseded artwork, not recovered copies of the missing manual imports. |
 | Expanded `~/Code` search supplement | 204 files; 18,086,613 bytes | 128 auxiliary artwork assets, compact provider records, recovery evidence and a pinned copy of the archive tooling. Adds no original-resolution science variants. |
+| Local-offload recovery evidence | 43 files; 125,851,588 bytes | Exact paths/hashes for all 50,645 removed files, provider-cache reconstruction recipes, pinned prior manifests/receipts, protected-image baseline and tested recovery tools. Uploaded and independently restored before source deletion. |
 
 See the [core image inventory](original-image-archive-inventory-20261001.json), [historical supplement](original-image-history-recovery-20261001.json) and [expanded search record](original-image-code-wide-recovery-20261001.json) for source roots, dimensions, file-format evidence and gaps. The [earlier storage comparison](reference-archive-options-20261001.json) records the recommendation and pricing research before the original-image scope was added.
 
-The image recovery found **2,853 native PNG byte variants**, 3,807,841,950 bytes, present only inside a provider batch response. They were base64-decoded without image decoding or re-encoding and independently hashed. All 21,882 embedded images across 15 provider responses were checked against standalone or recovered hashes. Compact response copies preserve provider metadata and replace embedded payloads with image hashes; original response-file hashes remain in the recovery ledger. The original response files are still local.
+The image recovery found **2,853 native PNG byte variants**, 3,807,841,950 bytes, present only inside a provider batch response. They were base64-decoded without image decoding or re-encoding and independently hashed. All 21,882 embedded images across 15 provider responses were checked against standalone or recovered hashes. Compact response copies preserve provider metadata and replace embedded payloads with image hashes; original response-file hashes remain in the recovery ledger. The original response caches were subsequently offloaded after the 40-file audit proved exact reconstruction from compact metadata and image bytes; see the local-offload record below.
 
 Some JPEG originals have no extension; 141 historical files named `.png` actually contain JPEG bytes. Selection uses the inventory's file-signature evidence, and upload uses unchanged binary bytes. A filename extension does not determine the archived format.
 
@@ -50,7 +51,7 @@ The LRMDs README also records **24,975 DepEd modules on a RunPod volume** at `/w
 
 ## Storage cost
 
-R2 Standard is **$0.015 per GB-month** with immediate access and no egress or retrieval fees. These image and reference snapshots occupy **78.1 GB**, or about **$1.20/month in storage before free allowances**, including manifests and auxiliary evidence. The account's existing release bucket shares free allowances; this is an incremental storage estimate, not the total account bill. Requests, future variants and taxes are separate. [R2 pricing](https://developers.cloudflare.com/r2/pricing/).
+R2 Standard is **$0.015 per GB-month** with immediate access and no egress or retrieval fees. These image, reference and recovery-evidence snapshots occupy **78.2 GB**, or about **$1.20/month in storage before free allowances**, including manifests and auxiliary evidence. The account's existing release bucket shares free allowances; this is an incremental storage estimate, not the total account bill. Requests, future variants and taxes are separate. [R2 pricing](https://developers.cloudflare.com/r2/pricing/).
 
 The initial upload and verification should fit R2 Standard's monthly one-million write/list and ten-million read allowances if account headroom remains. Billable request quantities round up to million-operation blocks. Infrequent Access lacks these allowances and is poor value for this small-object archive. The earlier B2/Glacier comparison remains in the source ledger; R2 is the service selected and implemented here.
 
@@ -72,9 +73,19 @@ A snapshot is committed only after every object has been downloaded from R2 and 
 
 Upload credentials are temporary, scoped to this bucket and its two archive prefixes, and cannot edit bucket configuration. The live R2 endpoint rejected JWT `actions` restrictions even for `GetObject`, despite their current documentation; bucket/prefix restrictions worked. The functioning upload permission is `object-read-write`, with deletion/overwrite blocked by bucket retention and conditional-create code. Do not describe the credential itself as delete-free. Read-only credentials should be used for restore and verification. [Temporary credentials](https://developers.cloudflare.com/r2/api/s3/temporary-credentials/).
 
-No local deletion is mirrored to R2. The archive tool has no delete or garbage-collection command. Keep local originals until the remote snapshot and restore checks succeed; this task does not request local source cleanup. Credentials and operational journals remain outside Git and outside archive source selections.
+No local deletion is mirrored to R2. The archive tool has no delete or garbage-collection command. Local source cleanup requires separate owner authorization, verified restoration and an explicit unchanged-file selection; the authorized 1 October offload is recorded below. Credentials and operational journals remain outside Git and outside archive source selections.
 
-After all six full restores passed, the task-created test copies were removed, reclaiming 78,484,870,089 bytes. The verification record logs those exact destinations and counts. All source originals, recovered files, frozen manifests and acquisition evidence remain local.
+After the initial six full restores passed, their task-created test copies were removed: 78,484,870,089 logical bytes. That earlier test-copy cleanup is distinct from the later user-authorized source offload below. Frozen manifests, acquisition evidence and local recovery records remain available.
+
+## Local image offload on 1 October 2026
+
+The user-authorized cleanup removed **50,645 files / 102,216,381,009 logical bytes**: 60.3 GB of original images and duplicate copies, plus 42.0 GB of provider-response caches. Observed free space increased by **102,234,345,472 bytes**, to **204,624,564,224 bytes**; filesystem sharing, bookkeeping and concurrent work can make physical and logical changes differ. The [offload record](LOCAL-IMAGE-OFFLOAD-20261001.json) pins the plan, journal, checks and recovery snapshot.
+
+Every selected file matched its reviewed full hash and stable identity immediately before removal. All 40 response files were proven reconstructable byte-for-byte, preserving 24,619 image records and every provider field. The 43-file recovery-evidence snapshot `20261001T071841Z-6df97cde44ef` was fully restored before deletion; trusted receipt SHA-256: `60cf23cc16aed6ebbb86b309d6497725148668544ac62881c9cf7400b1f2e575`.
+
+**Retained and checked unchanged:** 61,081 files and 40 symlinks, including shipping images and all 27 pending manual imports. Tracked artwork, references, build masters, prompts, catalogues, provenance, reference PDFs and unresolved revisions remain local. Retired checkouts remain recovery material, not development inputs.
+
+Fourteen raw collections retain directory markers, and 40 response files retain sidecars. Current generators, extractors and converters stop on these markers so absent files cannot trigger accidental paid regeneration or incomplete conversions. Follow [OFFLOAD.md](../tools/reference-archive/OFFLOAD.md) to restore the exact selection and verify original paths before clearing a marker. The reconstruction CLI can recover one provider response directly from R2 without restoring every image. The evidence snapshot includes the CLI and its exact recipes; use the current Git runbook for complete command examples.
 
 ## Operation and maintenance
 

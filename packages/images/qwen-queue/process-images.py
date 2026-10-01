@@ -11,11 +11,17 @@ Env: SRC (default out-final), DST (default out-processed), FMT webp|png, SIZE (d
      Q webp quality (default 80).
 """
 import os, glob, sys
-from PIL import Image
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / 'tools/reference-archive'))
+from offload_guard import assert_local
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.environ.get('SRC', os.path.join(HERE, 'out-final'))
 DST = os.environ.get('DST', os.path.join(HERE, 'out-processed'))
+assert_local(SRC, DST)
+from PIL import Image
+
 FMT = os.environ.get('FMT', 'webp').lower()
 SIZE = int(os.environ.get('SIZE', '512'))
 Q = int(os.environ.get('Q', '80'))

@@ -14,6 +14,7 @@
 import sharp from 'sharp';
 import { readdirSync, statSync, mkdirSync, existsSync, copyFileSync, writeFileSync } from 'node:fs';
 import { join, dirname, relative } from 'node:path';
+import { assertLocal } from '../../../tools/reference-archive/offload-guard.mjs';
 
 const arg = (k, d) => { const i = process.argv.indexOf(`--${k}`); return i > -1 ? process.argv[i + 1] : d; };
 const IN = arg('in', 'assets-png');        // Gemini's raw originals (never modified)
@@ -21,6 +22,7 @@ const OUT = arg('out', 'assets-png-min');  // downsized shipping copies (separat
 const SIZE = +arg('size', 512);
 const COLORS = +arg('colors', 16);
 const BACKUP = arg('backup', IN === OUT ? `${IN}-raw` : '');
+assertLocal(IN, OUT, ...[BACKUP].filter(Boolean));
 
 function* walk(dir) {
   for (const e of readdirSync(dir)) {
@@ -83,4 +85,3 @@ for (const f of files) {
   console.log(`${String(Math.round(inBytes / 1024)).padStart(4)}KB -> ${String(Math.round(buf.length / 1024)).padStart(3)}KB  ${relative(IN, f)}`);
 }
 console.log(`\n${files.length} files: ${(before / 1024 / 1024).toFixed(2)}MB -> ${(after / 1024).toFixed(0)}KB total  (${(100 - after / before * 100).toFixed(1)}% smaller, avg ${(after / files.length / 1024).toFixed(1)}KB)`);
-

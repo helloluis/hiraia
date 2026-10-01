@@ -88,6 +88,12 @@ rag/bank/quiz-bank.jsonl ──► gen-cards-questions.py ──► packages/mob
   from public release assets. Use `tools/reference-archive/README.md` and the snapshot
   verification record in `docs/REFERENCE-ARCHIVE.md`; never mirror local deletions or
   claim a backup complete from upload success alone.
+- Raw collections may be deliberately offloaded. A `.hiraia-archive-offloaded.json`
+  directory marker or `<filename>.hiraia-archive-offloaded.json` sidecar means the
+  missing files are archived, not unfinished generation work. Do not remove markers,
+  create placeholders or buy replacement generations. Follow
+  `tools/reference-archive/OFFLOAD.md` to restore and verify the complete selection
+  before resuming a marked pipeline. Retired worktree scripts remain retired.
 
 ## Build and release — the checklist, with why
 

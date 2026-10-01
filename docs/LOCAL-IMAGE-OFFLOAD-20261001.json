@@ -1,0 +1,164 @@
+{
+  "schema": 1,
+  "status": "completed",
+  "completed_at_utc": "2026-10-01T07:27:13.771741+00:00",
+  "authorization": "User requested local image cleanup after verified R2 archival, restricted to ~/Code.",
+  "authorized_boundary": "/Users/luis/Code",
+  "cleanup_plan_sha256": "385ab87c1fee57df5aead00270ddb29d06b40e387789901786b7a5818279b180",
+  "recovery_evidence": {
+    "status": "restored",
+    "error_count": 0,
+    "verified_at_utc": "2026-10-01T07:20:41.843542+00:00",
+    "snapshot_id": "20261001T071841Z-6df97cde44ef",
+    "manifest_sha256": "07899419afc3a42024472c8503bed905811d9c34439466d12fe27045a007fb49",
+    "receipt_sha256": "60cf23cc16aed6ebbb86b309d6497725148668544ac62881c9cf7400b1f2e575",
+    "totals": {
+      "files": 43,
+      "logical_bytes": 125851588,
+      "objects": 43,
+      "stored_bytes": 125851588,
+      "unique_files": 43
+    },
+    "verified_objects": 43,
+    "verified_bytes": 125851588,
+    "restored_files": 43,
+    "cleanup_plan_sha256": "385ab87c1fee57df5aead00270ddb29d06b40e387789901786b7a5818279b180",
+    "restore_result_sha256": "860a7996f5786326acaf05bb082531f6bf61d2f1f11af9db1bfb3d22d2361cec"
+  },
+  "removed": {
+    "files": 50645,
+    "logical_bytes": 102216381009,
+    "groups": {
+      "provider_response_caches": {
+        "files": 40,
+        "bytes": 41951889425
+      },
+      "retired_image_copies": {
+        "files": 9776,
+        "bytes": 9050328212
+      },
+      "current_and_staged_image_originals": {
+        "files": 40829,
+        "bytes": 51214163372
+      }
+    }
+  },
+  "disk_usage_before": {
+    "total": 1995218165760,
+    "used": 1892827947008,
+    "free": 102390218752
+  },
+  "disk_usage_after": {
+    "total": 1995218165760,
+    "used": 1790593601536,
+    "free": 204624564224
+  },
+  "observed_free_space_increase_bytes": 102234345472,
+  "space_note": "Logical file lengths and physical free-space change differ with APFS shared blocks, filesystem bookkeeping and concurrent work.",
+  "protected_images": {
+    "schema": 1,
+    "status": "unchanged",
+    "started_at_utc": "2026-10-01T07:26:11.967403+00:00",
+    "baseline_sha256": "76ec5c983d0af65db094e9a5412d5c61f3112c679d06c1db5f957341a7d002ad",
+    "summary_sha256": "b803185c3eda1420e13d54aecab9b41c27af3ef7f5ee30ae9d76759ae0d75e97",
+    "expected_regular_files": 61081,
+    "expected_symlinks": 40,
+    "verified_regular_files": 61081,
+    "verified_symlinks": 40,
+    "verified_bytes": 1411421555,
+    "errors": [],
+    "metadata_changes": [],
+    "scope": "Recorded baseline paths only; no symlink targets followed; new paths are not enumerated.",
+    "completed_at_utc": "2026-10-01T07:26:26.293232+00:00",
+    "content_status": "unchanged"
+  },
+  "retained": [
+    "Shipping images and build masters",
+    "All 27 pending manual imports",
+    "Tracked artwork and generation references",
+    "Catalogues, prompts, manifests and provenance",
+    "Unarchived or unresolved revisions",
+    "Reference PDFs, models, APKs and other projects"
+  ],
+  "provider_responses": {
+    "files": 40,
+    "bytes": 41951889425,
+    "image_records": 24619,
+    "all_fields_and_image_bytes_preserved": true,
+    "byte_exact_reconstruction_verified_files": 40,
+    "proposal_sha256": "b7881d22399acf9623fbeb0fac1ddc0d241c165cad0a24388bba5866ccaa1042",
+    "live_r2_reconstruction_canary": {
+      "status": "reconstructed",
+      "destination": "/Users/luis/Code/hiraia/build/reference-archive/local-cleanup-20261001/reconstruction-canary/batch_6a9ed6ad37108190a003bd3ae01b6d55.jsonl",
+      "source": "/Users/luis/Code/hiraia-worktree-archive/20260921-consolidation/retired-worktrees/hiraia-depth-fill/rag/pipeline/imagegen/batch_6a9ed6ad37108190a003bd3ae01b6d55.jsonl",
+      "sha256": "a217d19a82a0e44a9979a23a447ad05b67fbe92040237d85cb11f7592e31a40d",
+      "bytes": 2950402,
+      "records": 2,
+      "image_records": 2,
+      "offload_markers_modified": false
+    }
+  },
+  "operational_markers": {
+    "directory_markers": 14,
+    "file_sidecars": 40,
+    "all_marker_bytes_verified": true,
+    "registry_sha256": "4e3039e223b10d2e2bc156bb034d78d605dc3426230030460acbc7508c0e92fe",
+    "scope": "Current generator/converter guards protect marked paths. Retired scripts are not modified and must remain retired."
+  },
+  "journal": {
+    "path": "/Users/luis/Code/hiraia/build/reference-archive/local-cleanup-state/385ab87c1fee57df5aead00270ddb29d06b40e387789901786b7a5818279b180/journal.jsonl",
+    "sha256": "3f7b5e1fecffa07fd6943ce7a053f516a49ed11d5bb78bb1b3d32c44f4511ccb",
+    "post_cleanup_replay": {
+      "status": "dry_run",
+      "plan_sha256": "385ab87c1fee57df5aead00270ddb29d06b40e387789901786b7a5818279b180",
+      "files": 50645,
+      "logical_bytes": 102216381009,
+      "eligible": 0,
+      "recoverable_claim": 0,
+      "deleted": 0,
+      "already_deleted": 50645,
+      "journal": null
+    },
+    "record": "Hash-chained per-file deletion and interruption recovery journal."
+  },
+  "checks": {
+    "preflight": {
+      "checked_at_utc": "2026-10-01T07:21:04.737666+00:00",
+      "plan_files": 50645,
+      "open_handles": [],
+      "matching_processes": [],
+      "disk_usage_before": {
+        "total": 1995218165760,
+        "used": 1892827947008,
+        "free": 102390218752
+      },
+      "status": "clear"
+    },
+    "archive_tool_tests": 98,
+    "test_log_sha256": "523c1a4539f95b60b902b27b55b058d00eec1ddbced7992765ca84943acb51d6",
+    "remote_object_audit": {
+      "checked_at_utc": "2026-10-01T07:22:22.394496+00:00",
+      "bucket": "hiraia-archive",
+      "prefixes": [
+        "objects/sha256/",
+        "snapshots/"
+      ],
+      "status": "matched",
+      "expected_objects": 54797,
+      "listed_objects": 54797,
+      "expected_bytes": 78225298524,
+      "listed_bytes": 78225298524,
+      "retention_probe_sha256_verified": true,
+      "missing_count": 0,
+      "unexpected_count": 0,
+      "wrong_size_count": 0,
+      "missing": [],
+      "unexpected": [],
+      "wrong_sizes": [],
+      "note": "Listing reconciles inventory completeness only; full remote-byte integrity is established by upload read-back and independent restores."
+    },
+    "protected_baseline_sha256": "76ec5c983d0af65db094e9a5412d5c61f3112c679d06c1db5f957341a7d002ad"
+  },
+  "documentation_correction_after_evidence_freeze": "The frozen OFFLOAD.md command example omits required proposal-pin and bucket flags. The frozen CLI enforces both; the current Git runbook supplies them.",
+  "restore_runbook": "tools/reference-archive/OFFLOAD.md"
+}

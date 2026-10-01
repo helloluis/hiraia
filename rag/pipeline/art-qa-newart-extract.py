@@ -7,11 +7,16 @@ writes <custom_id>.png. Skips already-extracted. Reports failures/declines.
   python3 rag/pipeline/art-qa-newart-extract.py <path-to-output.jsonl>
 """
 import os, sys, json, base64
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'tools/reference-archive'))
+from offload_guard import assert_local
 
 OUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
                        'packages/images/cards-png')
 
 def main(src):
+    assert_local(src, OUT_DIR)
     os.makedirs(OUT_DIR, exist_ok=True)
     ok = skip = fail = 0
     with open(src) as f:
