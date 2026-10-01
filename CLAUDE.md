@@ -52,7 +52,11 @@ both eval harnesses reference the bundle so the "shipping" default can never dri
 
 ## Conventions (load-bearing)
 
-- **Every student-app build targets Android AND ChromeOS.** `pnpm apk` runs the formal
+- **Every release includes Android, ChromeOS AND Windows.** The shared 12-question
+  exam is required in every edition. `.github/workflows/native-apps.yml` runs the
+  exam/content gates, builds both APKs, then packages and tests Windows from the same
+  source. Never publish a platform build that omits the exam or its saved history.
+  `pnpm apk` runs the formal
   regression gate once, then prebuilds, builds, signs and verifies both platforms from
   unchanged source inputs. Only a complete `build/app-releases/<timestamp>/release.json`
   is releasable. Publish with `deploy/publish-release-assets.py --release ... --output ...`;

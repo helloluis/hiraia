@@ -1,0 +1,3463 @@
+{
+  "schema_version": 1,
+  "scope_id": "incoming-grade3-foundations-2016k-v1",
+  "created_at": "2026-09-29T00:25:40.560732+00:00",
+  "items": [
+    {
+      "id": "ha-f3-0037",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "FORCE_MOTION_ENERGY",
+      "target_id": "g3-foundation-push-away",
+      "knowledge_claim": "Moving a door away from oneself with the hands is a push.",
+      "claim_limit": "Recognizes a pictured-in-words everyday action; does not measure force, strength, or ability to open a door.",
+      "knowledge_family_id": "push-pull-action-direction",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKPP-00-4",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKPP-00-4",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "Your hands move a door away from you. What are you doing?",
+          "tl": "Inilalayo mo ang pinto gamit ang iyong mga kamay. Ano ang ginagawa mo?",
+          "bis": "Gipalayo nimo ang pultahan gamit ang imong mga kamot. Unsa ang imong gibuhat?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Pushing",
+              "tl": "Pagtulak",
+              "bis": "Pagtulod"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Pulling",
+              "tl": "Paghila",
+              "bis": "Pagbira"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Lifting",
+              "tl": "Pagbuhat",
+              "bis": "Pag-alsa"
+            }
+          }
+        ],
+        "correct_option_id": "o1",
+        "explanation": {
+          "en": "You push the door when your hands move it away from you.",
+          "tl": "Itinutulak mo ang pinto kapag inilalayo ito ng iyong mga kamay.",
+          "bis": "Gitulod nimo ang pultahan kung gipalayo kini sa imong mga kamot."
+        }
+      },
+      "rationale": {
+        "correct": "The stated hand action moves the door away from the child.",
+        "distractors": {
+          "o2": "Pulling toward oneself reverses the stated direction.",
+          "o3": "Lifting moves an object upward; that is not the stated door action."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKPP-00-4, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. The door-away scenario directly fixes the direction; no force calculation is inferred.",
+        "language_evidence": "Compared the action words with current ffct-22429 (push/pull a door), dcard-01799 (pagtulak/pagtulod), and ffct-10629 (humila/mobira); corpus usage supports vocabulary, not native fluency of these new sentences. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": "foundation-push-pull-motion"
+    },
+    {
+      "id": "ha-f3-0038",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "FORCE_MOTION_ENERGY",
+      "target_id": "g3-foundation-pull-toward",
+      "knowledge_claim": "Bringing a drawer handle toward oneself is a pull.",
+      "claim_limit": "Recognizes the stated hand action only; opening direction is explicit rather than assumed for every drawer.",
+      "knowledge_family_id": "push-pull-action-direction",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKPP-00-4",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKPP-00-4",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "You bring a drawer handle toward you. What is this action?",
+          "tl": "Inilalapit mo sa iyo ang hawakan ng drawer. Anong kilos ito?",
+          "bis": "Gipaduol nimo ang kuptanan sa drawer ngadto kanimo. Unsa kini nga lihok?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Pushing",
+              "tl": "Pagtulak",
+              "bis": "Pagtulod"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Lifting",
+              "tl": "Pagbuhat",
+              "bis": "Pag-alsa"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Pulling",
+              "tl": "Paghila",
+              "bis": "Pagbira"
+            }
+          }
+        ],
+        "correct_option_id": "o3",
+        "explanation": {
+          "en": "Bringing the handle toward you is pulling.",
+          "tl": "Paghila ang paglapit ng hawakan sa iyo.",
+          "bis": "Pagbira ang pagduol sa kuptanan ngadto kanimo."
+        }
+      },
+      "rationale": {
+        "correct": "The handle is drawn toward the child.",
+        "distractors": {
+          "o1": "Pushing away is the opposite action.",
+          "o2": "Lifting raises the handle; the scenario says toward the child."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKPP-00-4, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. ",
+        "language_evidence": "Compared the action words with current ffct-22429 (push/pull a door), dcard-01799 (pagtulak/pagtulod), and ffct-10629 (humila/mobira); corpus usage supports vocabulary, not native fluency of these new sentences. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": "foundation-push-pull-motion"
+    },
+    {
+      "id": "ha-f3-0039",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "FORCE_MOTION_ENERGY",
+      "target_id": "g3-foundation-press-button",
+      "knowledge_claim": "Pressing a button inward with a finger is a push.",
+      "claim_limit": "Classifies the physical finger action; no electrical or machine-function claim is tested.",
+      "knowledge_family_id": "push-pull-action-direction",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKPP-00-4",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKPP-00-4",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "A finger presses a button inward. Which action is this?",
+          "tl": "Dinidiinan ng daliri ang pindutan papasok. Anong kilos ito?",
+          "bis": "Gipislit sa tudlo ang buton pasulod. Unsa kini nga lihok?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Pulling",
+              "tl": "Paghila",
+              "bis": "Pagbira"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Pushing",
+              "tl": "Pagtulak",
+              "bis": "Pagtulod"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Lifting",
+              "tl": "Pagbuhat",
+              "bis": "Pag-alsa"
+            }
+          }
+        ],
+        "correct_option_id": "o2",
+        "explanation": {
+          "en": "Pressing the button inward gives it a push.",
+          "tl": "Pagtulak ang pagdiin sa pindutan papasok.",
+          "bis": "Pagtulod ang pagpislit sa buton pasulod."
+        }
+      },
+      "rationale": {
+        "correct": "The finger presses the button inward, away from the finger.",
+        "distractors": {
+          "o1": "Pulling would draw the button outward toward the finger.",
+          "o3": "Lifting would raise the button, not press it inward."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKPP-00-4, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. ",
+        "language_evidence": "Compared the action words with current ffct-22429 (push/pull a door), dcard-01799 (pagtulak/pagtulod), and ffct-10629 (humila/mobira); corpus usage supports vocabulary, not native fluency of these new sentences. Button wording is a new familiar-object application, not copied from a reviewed teaching card. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": "foundation-push-pull-motion"
+    },
+    {
+      "id": "ha-f3-0040",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "FORCE_MOTION_ENERGY",
+      "target_id": "g3-foundation-pull-wagon-rope",
+      "knowledge_claim": "Drawing a toy wagon closer by its rope is a pull.",
+      "claim_limit": "Recognizes a direct, stated rope action; does not assess pulleys, friction, or rope tension.",
+      "knowledge_family_id": "push-pull-action-direction",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKPP-00-4",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKPP-00-4",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "You bring a toy wagon closer by its rope. What are you doing?",
+          "tl": "Inilalapit mo ang laruang kariton gamit ang tali nito. Ano ang ginagawa mo?",
+          "bis": "Gipaduol nimo ang dulaan nga kariton gamit ang pisi niini. Unsa ang imong gibuhat?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Pulling",
+              "tl": "Paghila",
+              "bis": "Pagbira"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Pushing",
+              "tl": "Pagtulak",
+              "bis": "Pagtulod"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Lifting",
+              "tl": "Pagbuhat",
+              "bis": "Pag-alsa"
+            }
+          }
+        ],
+        "correct_option_id": "o1",
+        "explanation": {
+          "en": "You pull the rope to bring the wagon closer.",
+          "tl": "Hinihila mo ang tali upang ilapit ang kariton.",
+          "bis": "Gibira nimo ang pisi aron mapaduol ang kariton."
+        }
+      },
+      "rationale": {
+        "correct": "The rope draws the wagon toward the child.",
+        "distractors": {
+          "o2": "Pushing does not describe drawing the rope toward oneself.",
+          "o3": "The wagon is brought closer, not raised from the ground."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKPP-00-4, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. ",
+        "language_evidence": "Compared the action words with current ffct-22429 (push/pull a door), dcard-01799 (pagtulak/pagtulod), and ffct-10629 (humila/mobira); corpus usage supports vocabulary, not native fluency of these new sentences. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": "foundation-push-pull-motion"
+    },
+    {
+      "id": "ha-f3-0041",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "FORCE_MOTION_ENERGY",
+      "target_id": "g3-foundation-push-cart-forward",
+      "knowledge_claim": "A forward push on a cart can start it rolling forward.",
+      "claim_limit": "Recognizes an everyday action for a free-rolling cart; no claim that every push overcomes a brake or blockage.",
+      "knowledge_family_id": "push-pull-action-direction",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKPP-00-4",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [
+        {
+          "card_id": "dcard-01799",
+          "fact_id": "pushing-a-cart-g3",
+          "fact": {
+            "en": "Pushing a cart makes it roll forward because your hands apply a push force that moves the cart from its resting position.",
+            "tl": "Ang pagtulak sa kariton ay nagpapagulong dito pasulong dahil ang iyong mga kamay ay naglalapat ng lakas ng pagtulak na nagpapagalaw sa kariton mula sa posisyong at rest.",
+            "bis": "Ang pagtulod sa kariton nagpaligid kini padulong sa unahan kay ang imong mga kamot nag-apply og kusog sa pagtulod nga nagpalihok sa kariton gikan sa posisyon nga at rest."
+          },
+          "support": {
+            "en": "Pushing a cart makes it roll forward because your hands apply a push force that moves the cart from its resting position.",
+            "tl": "Ang pagtulak sa kariton ay nagpapagulong dito pasulong dahil ang iyong mga kamay ay naglalapat ng lakas ng pagtulak na nagpapagalaw sa kariton mula sa posisyong at rest.",
+            "bis": "Ang pagtulod sa kariton nagpaligid kini padulong sa unahan kay ang imong mga kamot nag-apply og kusog sa pagtulod nga nagpalihok sa kariton gikan sa posisyon nga at rest."
+          },
+          "reviewed_languages": [
+            "en",
+            "tl",
+            "bis"
+          ]
+        }
+      ],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKPP-00-4",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "A cart is free to roll. Which action can start it moving forward?",
+          "tl": "Malayang makagugulong ang kariton. Aling kilos ang makapagpapagalaw dito pasulong?",
+          "bis": "Makaligid ang kariton nga walay babag. Unsang lihok ang makapasugod niini sa paglihok paabante?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Hold it still",
+              "tl": "Hawakan nang hindi gumagalaw",
+              "bis": "Kupti aron dili molihok"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Lift it straight up",
+              "tl": "Buhatin nang tuwid pataas",
+              "bis": "Alsaha kini diretso pataas"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Push it forward",
+              "tl": "Itulak pasulong",
+              "bis": "Itulod paabante"
+            }
+          }
+        ],
+        "correct_option_id": "o3",
+        "explanation": {
+          "en": "Pushing the cart forward can start it rolling forward.",
+          "tl": "Maaaring magsimulang gumulong pasulong ang kariton kapag itinulak ito pasulong.",
+          "bis": "Ang pagtulod sa kariton paabante makapasugod niini sa pagligid paabante."
+        }
+      },
+      "rationale": {
+        "correct": "A forward push directly matches the requested rolling direction.",
+        "distractors": {
+          "o1": "Holding the cart still prevents its movement.",
+          "o2": "Lifting moves it upward rather than rolling it forward."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKPP-00-4, for this narrower supporting-knowledge scope. Checked the current English, Tagalog and Cebuano bodies of the listed cards against the claim. The cart card supports a push starting forward movement. The stem explicitly removes an obstruction/brake assumption.",
+        "language_evidence": "Compared the action words with current ffct-22429 (push/pull a door), dcard-01799 (pagtulak/pagtulod), and ffct-10629 (humila/mobira); corpus usage supports vocabulary, not native fluency of these new sentences. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": "foundation-push-pull-motion"
+    },
+    {
+      "id": "ha-f3-0042",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "FORCE_MOTION_ENERGY",
+      "target_id": "g3-foundation-pull-rope-action",
+      "knowledge_claim": "Pulling a rope toward oneself can bring the object attached to it closer.",
+      "claim_limit": "Recognizes the chosen action in a light toy context; not a test of lifting equipment or mechanical advantage.",
+      "knowledge_family_id": "push-pull-action-direction",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKPP-00-4",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKPP-00-4",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "A light toy is tied to a rope. Which action brings it toward your hand?",
+          "tl": "Nakatali sa tali ang magaan na laruan. Aling kilos ang maglalapit dito sa iyong kamay?",
+          "bis": "Ang gaan nga dulaan gihigot sa pisi. Unsang lihok ang makapaduol niini sa imong kamot?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Push the toy away",
+              "tl": "Itulak palayo ang laruan",
+              "bis": "Itulod palayo ang dulaan"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Pull the rope toward you",
+              "tl": "Hilahin ang tali papalapit sa iyo",
+              "bis": "Biraa ang pisi padulong kanimo"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Leave the rope still",
+              "tl": "Hayaang hindi gumalaw ang tali",
+              "bis": "Pasagdi ang pisi nga dili molihok"
+            }
+          }
+        ],
+        "correct_option_id": "o2",
+        "explanation": {
+          "en": "Pulling the rope toward you brings the attached toy closer.",
+          "tl": "Lalapit ang nakakabit na laruan kapag hinila mo ang tali papalapit sa iyo.",
+          "bis": "Maduol ang gihigot nga dulaan kung imong birahon ang pisi padulong kanimo."
+        }
+      },
+      "rationale": {
+        "correct": "The selected action applies the familiar toward-self pull to the attached toy.",
+        "distractors": {
+          "o1": "Pushing the toy away changes its position in the opposite direction.",
+          "o3": "Leaving the rope still supplies no action to bring the toy closer."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKPP-00-4, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. ",
+        "language_evidence": "Compared the action words with current ffct-22429 (push/pull a door), dcard-01799 (pagtulak/pagtulod), and ffct-10629 (humila/mobira); corpus usage supports vocabulary, not native fluency of these new sentences. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": "foundation-push-pull-motion"
+    },
+    {
+      "id": "ha-f3-0043",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "FORCE_MOTION_ENERGY",
+      "target_id": "g3-foundation-round-and-round",
+      "knowledge_claim": "A wheel turning about its center moves round and round.",
+      "claim_limit": "Names the familiar motion of a wheel turning in place; does not infer axle function, force, or rotational speed.",
+      "knowledge_family_id": "movement-round-and-round",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKPP-00-5",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKPP-00-5",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "A wheel spins in place. How does it move?",
+          "tl": "Umiikot ang gulong sa kinalalagyan nito. Paano ito gumagalaw?",
+          "bis": "Nagtuyok ang ligid sa iyang nahimutangan. Giunsa kini paglihok?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Back and forth",
+              "tl": "Pabalik-balik",
+              "bis": "Balik-balik"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Round and round",
+              "tl": "Paikot-ikot",
+              "bis": "Patuyok-tuyok"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Straight ahead",
+              "tl": "Tuwid na pasulong",
+              "bis": "Diretso paabante"
+            }
+          }
+        ],
+        "correct_option_id": "o2",
+        "explanation": {
+          "en": "A spinning wheel turns round and round about its center.",
+          "tl": "Ang umiikot na gulong ay gumagalaw nang paikot-ikot sa gitna nito.",
+          "bis": "Ang nagtuyok nga ligid molihok nga patuyok-tuyok palibot sa tunga niini."
+        }
+      },
+      "rationale": {
+        "correct": "The wheel turns around its center rather than travelling away.",
+        "distractors": {
+          "o1": "Back-and-forth motion reverses along a path, unlike the stated spinning.",
+          "o3": "Straight-ahead travel would change the wheel’s place; the stem fixes it in place."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKPP-00-5, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. ",
+        "language_evidence": "Compared familiar movement wording with the Kindergarten examples and current ffct-22445; new movement descriptions and translations need native and intended-age review. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": null
+    },
+    {
+      "id": "ha-f3-0044",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "FORCE_MOTION_ENERGY",
+      "target_id": "g3-foundation-straight-motion",
+      "knowledge_claim": "A toy car travelling along a path without bends moves straight ahead.",
+      "claim_limit": "Names the explicitly described path; does not test distance, speed, or a force law.",
+      "knowledge_family_id": "movement-straight",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKPP-00-5",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKPP-00-5",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "A toy car follows a path with no bends. How does it move?",
+          "tl": "Dumaraan ang laruang kotse sa daang walang liko. Paano ito gumagalaw?",
+          "bis": "Nagsubay ang dulaan nga sakyanan sa agianang walay liko. Giunsa kini paglihok?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Straight ahead",
+              "tl": "Tuwid na pasulong",
+              "bis": "Diretso paabante"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Round and round",
+              "tl": "Paikot-ikot",
+              "bis": "Patuyok-tuyok"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "In zigzags",
+              "tl": "Paliku-liko",
+              "bis": "Liko-liko"
+            }
+          }
+        ],
+        "correct_option_id": "o1",
+        "explanation": {
+          "en": "A path with no bends goes straight ahead.",
+          "tl": "Tuwid na pasulong ang daang walang liko.",
+          "bis": "Diretso paabante ang agianan nga walay liko."
+        }
+      },
+      "rationale": {
+        "correct": "The path is explicitly described as having no bends.",
+        "distractors": {
+          "o2": "Round-and-round travel follows a circular path.",
+          "o3": "A zigzag path has repeated turns, unlike the path without bends."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKPP-00-5, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. ",
+        "language_evidence": "Compared familiar movement wording with the Kindergarten examples and current ffct-22445; new movement descriptions and translations need native and intended-age review. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": null
+    },
+    {
+      "id": "ha-f3-0045",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "FORCE_MOTION_ENERGY",
+      "target_id": "g3-foundation-back-and-forth",
+      "knowledge_claim": "A playground swing usually moves back and forth.",
+      "claim_limit": "Recognizes the ordinary swing motion, not every possible motion or safe use of playground equipment.",
+      "knowledge_family_id": "movement-back-and-forth",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKPP-00-5",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKPP-00-5",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "How does a playground swing usually move?",
+          "tl": "Paano karaniwang gumagalaw ang duyan sa palaruan?",
+          "bis": "Giunsa kasagarang paglihok sa duyan sa dulaanan?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Only straight upward",
+              "tl": "Tuwid na pataas lamang",
+              "bis": "Diretso pataas lamang"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "In complete circles",
+              "tl": "Sa buong mga bilog",
+              "bis": "Sa kompleto nga mga lingin"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Back and forth",
+              "tl": "Pabalik-balik",
+              "bis": "Balik-balik"
+            }
+          }
+        ],
+        "correct_option_id": "o3",
+        "explanation": {
+          "en": "A swing moves forward, then back, again and again.",
+          "tl": "Umuusad ang duyan, bumabalik, at inuulit ang kilos na ito.",
+          "bis": "Molihok ang duyan paabante, dayon pabalik, ug sublion kini nga lihok."
+        }
+      },
+      "rationale": {
+        "correct": "Ordinary playground swinging alternates forward and backward.",
+        "distractors": {
+          "o1": "A swing does not normally continue only upward.",
+          "o2": "A swing does not normally make full circles around its support."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKPP-00-5, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. ",
+        "language_evidence": "Compared familiar movement wording with the Kindergarten examples and current ffct-22445; new movement descriptions and translations need native and intended-age review. Duyan is attested in ffct-22445 in all-language context; the exact back-and-forth claim is not a teaching link to that card. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": null
+    },
+    {
+      "id": "ha-f3-0046",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "FORCE_MOTION_ENERGY",
+      "target_id": "g3-foundation-faster-same-path",
+      "knowledge_claim": "For the same travel distance and simultaneous start, the toy arriving first completes the trip faster.",
+      "claim_limit": "Compares overall trip time under explicit equal-distance and simultaneous-start conditions; does not assert speed at every instant or ask for a calculation.",
+      "knowledge_family_id": "relative-motion-speed",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKPP-00-5",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKPP-00-5",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "Red and blue toy cars start together and travel the same distance. Red arrives first. Which finished faster?",
+          "tl": "Sabay nagsimula ang pula at asul na laruang kotse. Pareho ang layong tinakbo. Nauna ang pula. Alin ang mas mabilis nakatapos?",
+          "bis": "Dungan nagsugod ang pula ug asul nga dulaan nga sakyanan. Pareho ang gilay-on nga ilang giagi. Naabot una ang pula. Hain ang mas paspas nakahuman?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "The red car",
+              "tl": "Ang pulang kotse",
+              "bis": "Ang pula nga sakyanan"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "The blue car",
+              "tl": "Ang asul na kotse",
+              "bis": "Ang asul nga sakyanan"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "They finished together",
+              "tl": "Sabay silang natapos",
+              "bis": "Dungan sila nahuman"
+            }
+          }
+        ],
+        "correct_option_id": "o1",
+        "explanation": {
+          "en": "They started together and travelled the same distance. Red arrived first, so it finished the trip faster.",
+          "tl": "Sabay silang nagsimula at pareho ang layong tinakbo. Nauna ang pula, kaya mas mabilis nitong natapos ang biyahe.",
+          "bis": "Dungan sila nagsugod ug pareho ang gilay-on nga ilang giagi. Nauna ang pula, busa mas paspas kini nakahuman sa biyahe."
+        }
+      },
+      "rationale": {
+        "correct": "Simultaneous starts and equal travel distances make earlier arrival the faster completed trip.",
+        "distractors": {
+          "o2": "The blue car did not arrive first in the stated event.",
+          "o3": "The stem explicitly says red arrived first, excluding a tie."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKPP-00-5, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. The everyday comparison explicitly fixes equal travel distance and simultaneous start. Same path alone would not fix distance. This is a fast/slow recognition prompt, not a numerical speed problem; its listening demand needs intended-age review.",
+        "language_evidence": "Compared familiar movement wording with the Kindergarten examples and current ffct-22445; new movement descriptions and translations need native and intended-age review. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": null
+    },
+    {
+      "id": "ha-f3-0047",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "FORCE_MOTION_ENERGY",
+      "target_id": "g3-foundation-sinking-motion",
+      "knowledge_claim": "An object moving downward through water toward the bottom is sinking.",
+      "claim_limit": "Names an observed direction in the stated scenario; does not explain density or claim every coin/object sinks.",
+      "knowledge_family_id": "sinking-downward-movement",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKPP-00-4",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKPP-00-4",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "A coin moves down through water to the bottom. What is it doing?",
+          "tl": "Bumababa ang barya sa tubig hanggang sa ilalim. Ano ang ginagawa nito?",
+          "bis": "Nanaog ang sensilyo sa tubig padulong sa ilalom. Unsa ang gibuhat niini?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Floating on top",
+              "tl": "Lumulutang sa ibabaw",
+              "bis": "Naglutaw sa ibabaw"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Sinking",
+              "tl": "Lumulubog",
+              "bis": "Nag-unlod"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Rising",
+              "tl": "Umaangat",
+              "bis": "Nisaka"
+            }
+          }
+        ],
+        "correct_option_id": "o2",
+        "explanation": {
+          "en": "The coin is sinking because it is moving downward through the water.",
+          "tl": "Lumulubog ang barya dahil pababa ang galaw nito sa tubig.",
+          "bis": "Nag-unlod ang sensilyo kay paubos ang paglihok niini sa tubig."
+        }
+      },
+      "rationale": {
+        "correct": "Sinking names the downward movement through the water.",
+        "distractors": {
+          "o1": "Floating on top does not match movement toward the bottom.",
+          "o3": "Rising is upward, opposite the stated downward movement."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKPP-00-4, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. This item names the supplied observation. It does not adopt an unreviewed card’s sinking mechanism.",
+        "language_evidence": "Compared familiar movement wording with the Kindergarten examples and current ffct-22445; new movement descriptions and translations need native and intended-age review. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": null
+    },
+    {
+      "id": "ha-f3-0048",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "FORCE_MOTION_ENERGY",
+      "target_id": "g3-foundation-rising-motion",
+      "knowledge_claim": "An object moving upward is rising.",
+      "claim_limit": "Names the stated upward motion of a balloon; does not imply all balloons rise or assess why a particular balloon rises.",
+      "knowledge_family_id": "rising-upward-movement",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKPP-00-4",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKPP-00-4",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "A balloon moves upward toward the ceiling. Which word describes its movement?",
+          "tl": "Gumagalaw ang lobo pataas patungo sa kisame. Aling salita ang naglalarawan sa galaw nito?",
+          "bis": "Molihok ang balloon pataas padulong sa kisame. Unsang pulong ang naghulagway sa paglihok niini?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Falling",
+              "tl": "Bumabagsak",
+              "bis": "Nahulog"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Staying still",
+              "tl": "Hindi gumagalaw",
+              "bis": "Wala molihok"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Rising",
+              "tl": "Umaangat",
+              "bis": "Nisaka"
+            }
+          }
+        ],
+        "correct_option_id": "o3",
+        "explanation": {
+          "en": "The balloon is rising because it moves upward.",
+          "tl": "Umaangat ang lobo dahil pataas ang galaw nito.",
+          "bis": "Nisaka ang balloon kay pataas ang paglihok niini."
+        }
+      },
+      "rationale": {
+        "correct": "Rising matches the explicitly upward direction.",
+        "distractors": {
+          "o1": "Falling is downward movement.",
+          "o2": "The balloon is moving, so it is not staying still."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKPP-00-4, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. ",
+        "language_evidence": "Compared familiar movement wording with the Kindergarten examples and current ffct-22445; new movement descriptions and translations need native and intended-age review. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": null
+    },
+    {
+      "id": "ha-f3-0049",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "FORCE_MOTION_ENERGY",
+      "target_id": "g3-foundation-inside-position",
+      "knowledge_claim": "The ball shown within the open boundary of the box is inside the box.",
+      "claim_limit": "Recognizes this two-object picture only; not a test of three-dimensional geometry or position vocabulary categories.",
+      "knowledge_family_id": "spatial-containment-inside",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "MKSC-00-12",
+        "page": 21,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=21",
+          "page": 21,
+          "code": "MKSC-00-12",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "Look at the picture. Where is the ball?",
+          "tl": "Tingnan ang larawan. Nasaan ang bola?",
+          "bis": "Tan-awa ang hulagway. Asa ang bola?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Inside the box",
+              "tl": "Sa loob ng kahon",
+              "bis": "Sa sulod sa kahon"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "On the box",
+              "tl": "Sa ibabaw ng kahon",
+              "bis": "Sa ibabaw sa kahon"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Below the box",
+              "tl": "Sa ilalim ng kahon",
+              "bis": "Sa ilalom sa kahon"
+            }
+          }
+        ],
+        "correct_option_id": "o1",
+        "explanation": {
+          "en": "The ball is inside the open box.",
+          "tl": "Nasa loob ng bukas na kahon ang bola.",
+          "bis": "Naa sa sulod sa abli nga kahon ang bola."
+        },
+        "diagram": {
+          "kind": "ball_box",
+          "relation": "inside"
+        }
+      },
+      "rationale": {
+        "correct": "The rendered ball lies within the open box boundary.",
+        "distractors": {
+          "o2": "The ball is not resting on the box’s top.",
+          "o3": "The ball is not beneath the box."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": true,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 21, MKSC-00-12, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. Code MKSC-00-12 is reused elsewhere in the PDF; page21 specifically gives the position competency. Diagram relation=inside was checked against the keyed option.",
+        "language_evidence": "Compared the three languages against the explicit ball/box scene and the keyed relation. Sa loob/sa sulod means inside; sa ilalim/sa ilalom means under. Sa ibabaw can describe on or above, so those alternatives are never opposed in one item. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null,
+        "diagram_question_subject": "ball",
+        "diagram_answer_relation": "inside"
+      },
+      "benchmark_slot": "foundation-relative-position"
+    },
+    {
+      "id": "ha-f3-0050",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "FORCE_MOTION_ENERGY",
+      "target_id": "g3-foundation-on-position",
+      "knowledge_claim": "The ball touching and resting on top of the box is on the box.",
+      "claim_limit": "Recognizes the contact shown in the picture; above is deliberately not an alternative because it can also be broadly true.",
+      "knowledge_family_id": "spatial-contact-on",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "MKSC-00-12",
+        "page": 21,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=21",
+          "page": 21,
+          "code": "MKSC-00-12",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "Where is the ball resting in this picture?",
+          "tl": "Saan nakapatong ang bola sa larawang ito?",
+          "bis": "Asa nagpatong ang bola niini nga hulagway?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Inside the box",
+              "tl": "Sa loob ng kahon",
+              "bis": "Sa sulod sa kahon"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Below the box",
+              "tl": "Sa ilalim ng kahon",
+              "bis": "Sa ilalom sa kahon"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "On the box",
+              "tl": "Sa ibabaw ng kahon",
+              "bis": "Sa ibabaw sa kahon"
+            }
+          }
+        ],
+        "correct_option_id": "o3",
+        "explanation": {
+          "en": "The ball rests on top of the box.",
+          "tl": "Nakapatong ang bola sa ibabaw ng kahon.",
+          "bis": "Nagpatong ang bola sa ibabaw sa kahon."
+        },
+        "diagram": {
+          "kind": "ball_box",
+          "relation": "on"
+        }
+      },
+      "rationale": {
+        "correct": "The picture places the ball in contact with the top of the box.",
+        "distractors": {
+          "o1": "The ball is not inside the box.",
+          "o2": "The ball is not underneath the box."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": true,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 21, MKSC-00-12, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. This is a contact scene. No on/above competition is scored.",
+        "language_evidence": "Compared the three languages against the explicit ball/box scene and the keyed relation. Sa loob/sa sulod means inside; sa ilalim/sa ilalom means under. Sa ibabaw can describe on or above, so those alternatives are never opposed in one item. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null,
+        "diagram_question_subject": "ball",
+        "diagram_answer_relation": "on"
+      },
+      "benchmark_slot": "foundation-relative-position"
+    },
+    {
+      "id": "ha-f3-0051",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "FORCE_MOTION_ENERGY",
+      "target_id": "g3-foundation-above-position",
+      "knowledge_claim": "The ball shown with a clear gap higher than the box is above the box.",
+      "claim_limit": "Recognizes the explicit vertical relation in one picture, not physical support or why the ball is there.",
+      "knowledge_family_id": "relative-vertical-position",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "MKSC-00-12",
+        "page": 21,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=21",
+          "page": 21,
+          "code": "MKSC-00-12",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "Compare the ball with the box. Where is the ball?",
+          "tl": "Ihambing ang bola sa kahon. Nasaan ang bola?",
+          "bis": "Itandi ang bola sa kahon. Asa ang bola?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Inside the box",
+              "tl": "Sa loob ng kahon",
+              "bis": "Sa sulod sa kahon"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Above the box",
+              "tl": "Sa ibabaw ng kahon",
+              "bis": "Sa ibabaw sa kahon"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Below the box",
+              "tl": "Sa ilalim ng kahon",
+              "bis": "Sa ilalom sa kahon"
+            }
+          }
+        ],
+        "correct_option_id": "o2",
+        "explanation": {
+          "en": "The ball is above the box, with a gap between them.",
+          "tl": "Nasa ibabaw ng kahon ang bola, at may puwang sa pagitan nila.",
+          "bis": "Naa sa ibabaw sa kahon ang bola, ug adunay luna tali kanila."
+        },
+        "diagram": {
+          "kind": "ball_box",
+          "relation": "above"
+        }
+      },
+      "rationale": {
+        "correct": "The ball is visibly higher than and separated from the box.",
+        "distractors": {
+          "o1": "The ball lies outside the box boundary.",
+          "o3": "Below reverses the visible vertical order."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": true,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 21, MKSC-00-12, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. The deterministic diagram must preserve a clear gap above the box.",
+        "language_evidence": "Compared the three languages against the explicit ball/box scene and the keyed relation. Sa loob/sa sulod means inside; sa ilalim/sa ilalom means under. Sa ibabaw can describe on or above, so those alternatives are never opposed in one item. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null,
+        "diagram_question_subject": "ball",
+        "diagram_answer_relation": "above"
+      },
+      "benchmark_slot": "foundation-relative-position"
+    },
+    {
+      "id": "ha-f3-0052",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "FORCE_MOTION_ENERGY",
+      "target_id": "g3-foundation-below-position",
+      "knowledge_claim": "The ball shown beneath the raised box is below the box.",
+      "claim_limit": "Recognizes the displayed vertical relation, not the stability or mechanics of the raised box.",
+      "knowledge_family_id": "relative-vertical-position",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "MKSC-00-12",
+        "page": 21,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=21",
+          "page": 21,
+          "code": "MKSC-00-12",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "The picture shows a raised box. Where is the ball compared with it?",
+          "tl": "May nakataas na kahon sa larawan. Nasaan ang bola kung ihahambing dito?",
+          "bis": "Adunay gipataas nga kahon sa hulagway. Asa ang bola kon itandi niini?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Below the box",
+              "tl": "Sa ilalim ng kahon",
+              "bis": "Sa ilalom sa kahon"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Inside the box",
+              "tl": "Sa loob ng kahon",
+              "bis": "Sa sulod sa kahon"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Above the box",
+              "tl": "Sa ibabaw ng kahon",
+              "bis": "Sa ibabaw sa kahon"
+            }
+          }
+        ],
+        "correct_option_id": "o1",
+        "explanation": {
+          "en": "The ball is below the raised box.",
+          "tl": "Nasa ilalim ng nakataas na kahon ang bola.",
+          "bis": "Naa sa ilalom sa gipataas nga kahon ang bola."
+        },
+        "diagram": {
+          "kind": "ball_box",
+          "relation": "below"
+        }
+      },
+      "rationale": {
+        "correct": "The diagram places the ball below the box with visible separation.",
+        "distractors": {
+          "o2": "The ball is outside the box boundary.",
+          "o3": "Above reverses the pictured vertical order."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": true,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 21, MKSC-00-12, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. ",
+        "language_evidence": "Compared the three languages against the explicit ball/box scene and the keyed relation. Sa loob/sa sulod means inside; sa ilalim/sa ilalom means under. Sa ibabaw can describe on or above, so those alternatives are never opposed in one item. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null,
+        "diagram_question_subject": "ball",
+        "diagram_answer_relation": "below"
+      },
+      "benchmark_slot": "foundation-relative-position"
+    },
+    {
+      "id": "ha-f3-0053",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "FORCE_MOTION_ENERGY",
+      "target_id": "g3-foundation-box-below-ball",
+      "knowledge_claim": "When the ball is above the box, the box is below the ball.",
+      "claim_limit": "Recognizes the inverse reference in the pictured vertical relation; shares the same family as ball-above and ball-below items.",
+      "knowledge_family_id": "relative-vertical-position",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "MKSC-00-12",
+        "page": 21,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=21",
+          "page": 21,
+          "code": "MKSC-00-12",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "Look at the box. Where is it compared with the ball?",
+          "tl": "Tingnan ang kahon. Nasaan ito kung ihahambing sa bola?",
+          "bis": "Tan-awa ang kahon. Asa kini kon itandi sa bola?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Inside the ball",
+              "tl": "Sa loob ng bola",
+              "bis": "Sa sulod sa bola"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Above the ball",
+              "tl": "Sa ibabaw ng bola",
+              "bis": "Sa ibabaw sa bola"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Below the ball",
+              "tl": "Sa ilalim ng bola",
+              "bis": "Sa ilalom sa bola"
+            }
+          }
+        ],
+        "correct_option_id": "o3",
+        "explanation": {
+          "en": "The box is below the ball. The ball is higher.",
+          "tl": "Nasa ilalim ng bola ang kahon. Mas mataas ang bola.",
+          "bis": "Naa sa ilalom sa bola ang kahon. Mas taas ang bola."
+        },
+        "diagram": {
+          "kind": "ball_box",
+          "relation": "above"
+        }
+      },
+      "rationale": {
+        "correct": "The scene encodes ball above box; the question explicitly asks about the box.",
+        "distractors": {
+          "o1": "The separate box is not contained within the ball.",
+          "o2": "Above applies to the ball relative to the box, not the reversed question."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": true,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 21, MKSC-00-12, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. Reverse-reference item: content.diagram.relation=above is ball relative to box; the keyed box-relative-ball answer is below.",
+        "language_evidence": "Compared the three languages against the explicit ball/box scene and the keyed relation. Sa loob/sa sulod means inside; sa ilalim/sa ilalom means under. Sa ibabaw can describe on or above, so those alternatives are never opposed in one item. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null,
+        "diagram_question_subject": "box",
+        "diagram_answer_relation": "below"
+      },
+      "benchmark_slot": "foundation-relative-position"
+    },
+    {
+      "id": "ha-f3-0054",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "FORCE_MOTION_ENERGY",
+      "target_id": "g3-foundation-box-above-ball",
+      "knowledge_claim": "When the ball is below the box, the box is above the ball.",
+      "claim_limit": "Recognizes the inverse reference in one diagram; no new independent knowledge family is claimed for the reversal.",
+      "knowledge_family_id": "relative-vertical-position",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "MKSC-00-12",
+        "page": 21,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=21",
+          "page": 21,
+          "code": "MKSC-00-12",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "Find the box in the picture. Where is the box compared with the ball?",
+          "tl": "Hanapin ang kahon sa larawan. Nasaan ang kahon kung ihahambing sa bola?",
+          "bis": "Pangitaa ang kahon sa hulagway. Asa ang kahon kon itandi sa bola?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Below the ball",
+              "tl": "Sa ilalim ng bola",
+              "bis": "Sa ilalom sa bola"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Above the ball",
+              "tl": "Sa ibabaw ng bola",
+              "bis": "Sa ibabaw sa bola"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Inside the ball",
+              "tl": "Sa loob ng bola",
+              "bis": "Sa sulod sa bola"
+            }
+          }
+        ],
+        "correct_option_id": "o2",
+        "explanation": {
+          "en": "The box is above the ball. The ball is lower.",
+          "tl": "Nasa ibabaw ng bola ang kahon. Mas mababa ang bola.",
+          "bis": "Naa sa ibabaw sa bola ang kahon. Mas ubos ang bola."
+        },
+        "diagram": {
+          "kind": "ball_box",
+          "relation": "below"
+        }
+      },
+      "rationale": {
+        "correct": "The scene encodes ball below box; the explicitly named box is above the ball.",
+        "distractors": {
+          "o1": "Below describes the ball relative to the box, the reverse of the question.",
+          "o3": "The box is separate from the ball, not contained within it."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": true,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 21, MKSC-00-12, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. Reverse-reference item: content.diagram.relation=below is ball relative to box; the keyed box-relative-ball answer is above.",
+        "language_evidence": "Compared the three languages against the explicit ball/box scene and the keyed relation. Sa loob/sa sulod means inside; sa ilalim/sa ilalom means under. Sa ibabaw can describe on or above, so those alternatives are never opposed in one item. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null,
+        "diagram_question_subject": "box",
+        "diagram_answer_relation": "above"
+      },
+      "benchmark_slot": "foundation-relative-position"
+    },
+    {
+      "id": "ha-f3-0055",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "EARTH_SPACE",
+      "target_id": "g3-foundation-rain-drops",
+      "knowledge_claim": "Rain consists of water drops falling from clouds.",
+      "claim_limit": "Recognizes familiar rain; no water-cycle, cloud-formation, or precipitation-process claim is assessed.",
+      "knowledge_family_id": "rain-water-drops",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKE-00-1",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKE-00-1",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "What do we call water drops falling from clouds?",
+          "tl": "Ano ang tawag sa mga patak ng tubig na bumabagsak mula sa ulap?",
+          "bis": "Unsay tawag sa mga tulo sa tubig nga nahulog gikan sa panganod?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Wind",
+              "tl": "Hangin",
+              "bis": "Hangin"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Rain",
+              "tl": "Ulan",
+              "bis": "Uwan"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Sunshine",
+              "tl": "Sikat ng araw",
+              "bis": "Kahayag sa adlaw"
+            }
+          }
+        ],
+        "correct_option_id": "o2",
+        "explanation": {
+          "en": "Water drops falling from clouds are rain.",
+          "tl": "Ulan ang mga patak ng tubig na bumabagsak mula sa ulap.",
+          "bis": "Uwan ang mga tulo sa tubig nga nahulog gikan sa panganod."
+        }
+      },
+      "rationale": {
+        "correct": "Rain matches the described falling water drops.",
+        "distractors": {
+          "o1": "Wind is moving air, not falling water drops.",
+          "o3": "Sunshine is light, not falling water drops."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKE-00-1, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. The ordinary rain observation is directly checked within the weather-recognition scope; no unreviewed teaching-card hash is asserted.",
+        "language_evidence": "Compared current dcard-00635, dcard-00636, dcard-00640, dcard-05269 and dcard-05270 in all three languages. New wording uses explicit observations; it does not rely on treating Cebuano init (hot) alone as an exact translation of sunny. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": "foundation-weather"
+    },
+    {
+      "id": "ha-f3-0056",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "EARTH_SPACE",
+      "target_id": "g3-foundation-sunny-sky",
+      "knowledge_claim": "Bright sunshine with few clouds is a familiar sign of sunny weather.",
+      "claim_limit": "Recognizes a clear sunny example without claiming sunny always means hot or that rain and sunshine can never occur together.",
+      "knowledge_family_id": "sunny-sky-observation",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKE-00-1",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKE-00-1",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "Which sky best shows sunny weather?",
+          "tl": "Aling langit ang nagpapakita ng maaraw na panahon?",
+          "bis": "Hain nga langit ang nagpakita nga hayag ang pagsidlak sa adlaw?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Bright Sun and few clouds",
+              "tl": "Maliwanag na araw at kaunting ulap",
+              "bis": "Hayag nga adlaw ug pipila ka panganod"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Thick clouds cover the Sun",
+              "tl": "Makapal na ulap na tumatakip sa araw",
+              "bis": "Baga nga panganod nga nagtabon sa adlaw"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Dark clouds with heavy rain",
+              "tl": "Madilim na ulap at malakas na ulan",
+              "bis": "Ngitngit nga panganod ug kusog nga uwan"
+            }
+          }
+        ],
+        "correct_option_id": "o1",
+        "explanation": {
+          "en": "Bright sunshine and few clouds show a sunny sky.",
+          "tl": "Maliwanag na sikat ng araw at kaunting ulap ang makikita sa maaraw na langit.",
+          "bis": "Hayag nga kahayag sa adlaw ug pipila ka panganod ang makita sa maong langit."
+        }
+      },
+      "rationale": {
+        "correct": "The keyed choice gives a clear observable sunny example.",
+        "distractors": {
+          "o2": "Thick cloud cover blocking the Sun describes a cloudy example.",
+          "o3": "Dark clouds and heavy rain describe a rainy example rather than the clear sunny example requested."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKE-00-1, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. dcard-00635 was inspected for vocabulary but is not linked: its Cebuano opening labels sunny weather as init nga panahon, a potentially overbroad hot-weather equivalence. The new item uses an explicit bright-Sun/few-clouds description.",
+        "language_evidence": "Compared current dcard-00635, dcard-00636, dcard-00640, dcard-05269 and dcard-05270 in all three languages. New wording uses explicit observations; it does not rely on treating Cebuano init (hot) alone as an exact translation of sunny. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": "foundation-weather"
+    },
+    {
+      "id": "ha-f3-0057",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "EARTH_SPACE",
+      "target_id": "g3-foundation-cloudy-sky",
+      "knowledge_claim": "Many clouds covering the sky are a familiar sign of cloudy weather.",
+      "claim_limit": "Recognizes an observable cloudy sky; does not claim cloudiness guarantees rain, cold air, or a particular cloud type.",
+      "knowledge_family_id": "cloudy-sky-observation",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKE-00-1",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [
+        {
+          "card_id": "dcard-05269",
+          "fact_id": "cloudy-weather-g3",
+          "fact": {
+            "en": "Cloudy weather has many puffy or layered clouds that may be low, middle, or high in the sky.",
+            "tl": "Ang cloudy weather ay maraming puffy o patong-patong na ulap na maaaring mababa, nasa gitna, o mataas sa langit.",
+            "bis": "Ang cloudy weather adunay daghang puffy o nagpatong-patong nga panganod nga mahimong ubos, tunga, o taas sa langit."
+          },
+          "support": {
+            "en": "Cloudy weather has many puffy or layered clouds that may be low, middle, or high in the sky.",
+            "tl": "Ang cloudy weather ay maraming puffy o patong-patong na ulap na maaaring mababa, nasa gitna, o mataas sa langit.",
+            "bis": "Ang cloudy weather adunay daghang puffy o nagpatong-patong nga panganod nga mahimong ubos, tunga, o taas sa langit."
+          },
+          "reviewed_languages": [
+            "en",
+            "tl",
+            "bis"
+          ]
+        }
+      ],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKE-00-1",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "Many clouds cover most of the sky. What is the weather like?",
+          "tl": "Maraming ulap ang tumatakip sa halos buong langit. Ano ang lagay ng panahon?",
+          "bis": "Daghang panganod ang nagtabon sa kadaghanan sa langit. Unsa ang kahimtang sa panahon?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Clear, with no clouds",
+              "tl": "Maaliwalas, walang ulap",
+              "bis": "Hayag, walay panganod"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Raining heavily",
+              "tl": "Malakas ang ulan",
+              "bis": "Kusog ang uwan"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Cloudy",
+              "tl": "Maulap",
+              "bis": "Dag-om"
+            }
+          }
+        ],
+        "correct_option_id": "o3",
+        "explanation": {
+          "en": "A sky covered by many clouds is cloudy. Clouds alone do not prove it is raining.",
+          "tl": "Maulap ang langit na natatakpan ng maraming ulap. Hindi sapat ang ulap lamang upang masabing umuulan.",
+          "bis": "Dag-om ang langit nga gitabonan sa daghang panganod. Ang panganod lamang dili pasabot nga nag-uwan."
+        }
+      },
+      "rationale": {
+        "correct": "Cloudy directly describes the observed cloud cover.",
+        "distractors": {
+          "o1": "No clouds contradicts the many clouds described.",
+          "o2": "Heavy rain is not stated and cannot be concluded from cloud cover alone."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKE-00-1, for this narrower supporting-knowledge scope. Checked the current English, Tagalog and Cebuano bodies of the listed cards against the claim. ",
+        "language_evidence": "Compared current dcard-00635, dcard-00636, dcard-00640, dcard-05269 and dcard-05270 in all three languages. New wording uses explicit observations; it does not rely on treating Cebuano init (hot) alone as an exact translation of sunny. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": "foundation-weather"
+    },
+    {
+      "id": "ha-f3-0058",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "EARTH_SPACE",
+      "target_id": "g3-foundation-wind-signs",
+      "knowledge_claim": "Moving leaves can show the effect of wind, although the wind itself is not visible.",
+      "claim_limit": "Recognizes one familiar effect of wind; does not claim every moving leaf is caused by wind or measure wind strength.",
+      "knowledge_family_id": "observable-wind-effects",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKE-00-1",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [
+        {
+          "card_id": "dcard-00636",
+          "fact_id": "windy-weather-g3",
+          "fact": {
+            "en": "Can you see the wind?\n\nNo, you cannot see the wind itself, but you can see and feel what it does—leaves fly, trees bend, and your hair moves.",
+            "tl": "Nakikita ba natin ang hangin?\n\nHindi, hindi natin nakikita ang hangin mismo, pero nakikita at nararamdaman natin ang ginagawa nito—lumilipad ang mga dahon, yumuyuko ang mga puno, at gumagalaw ang iyong buhok.",
+            "bis": "Makita ba nato ang hangin?\n\nDili, dili nato makita ang hangin mismo, pero makita ug mabati nato ang iyang gibuhat—molupad ang mga dahon, moyukbo ang mga kahoy, ug molihok ang imong buhok."
+          },
+          "support": {
+            "en": "Can you see the wind?\n\nNo, you cannot see the wind itself, but you can see and feel what it does—leaves fly, trees bend, and your hair moves.",
+            "tl": "Nakikita ba natin ang hangin?\n\nHindi, hindi natin nakikita ang hangin mismo, pero nakikita at nararamdaman natin ang ginagawa nito—lumilipad ang mga dahon, yumuyuko ang mga puno, at gumagalaw ang iyong buhok.",
+            "bis": "Makita ba nato ang hangin?\n\nDili, dili nato makita ang hangin mismo, pero makita ug mabati nato ang iyang gibuhat—molupad ang mga dahon, moyukbo ang mga kahoy, ug molihok ang imong buhok."
+          },
+          "reviewed_languages": [
+            "en",
+            "tl",
+            "bis"
+          ]
+        }
+      ],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKE-00-1",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "Leaves flutter. No rain is falling and nobody touches them. What can make them move?",
+          "tl": "Kumakaway ang mga dahon. Walang ulan at walang humahawak sa mga ito. Ano ang maaaring magpagalaw sa mga ito?",
+          "bis": "Nagkaway ang mga dahon. Wala mag-uwan ug walay naghikap niini. Unsay makapalihok niini?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Wind",
+              "tl": "Hangin",
+              "bis": "Hangin"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Rain",
+              "tl": "Ulan",
+              "bis": "Uwan"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Sunshine",
+              "tl": "Sikat ng araw",
+              "bis": "Kahayag sa adlaw"
+            }
+          }
+        ],
+        "correct_option_id": "o1",
+        "explanation": {
+          "en": "Wind can move leaves. We see its effect, not the wind itself.",
+          "tl": "Maaaring pagalawin ng hangin ang mga dahon. Epekto nito ang nakikita natin, hindi ang hangin mismo.",
+          "bis": "Ang hangin makapalihok sa mga dahon. Ang epekto niini ang atong makita, dili ang hangin mismo."
+        }
+      },
+      "rationale": {
+        "correct": "Wind can make untouched leaves flutter; no rain is falling in the stated scenario.",
+        "distractors": {
+          "o2": "The stem explicitly excludes falling rain.",
+          "o3": "Sunshine is not the direct moving-air action that makes leaves flutter."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKE-00-1, for this narrower supporting-knowledge scope. Checked the current English, Tagalog and Cebuano bodies of the listed cards against the claim. ",
+        "language_evidence": "Compared current dcard-00635, dcard-00636, dcard-00640, dcard-05269 and dcard-05270 in all three languages. New wording uses explicit observations; it does not rely on treating Cebuano init (hot) alone as an exact translation of sunny. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": "foundation-weather"
+    },
+    {
+      "id": "ha-f3-0059",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "EARTH_SPACE",
+      "target_id": "g3-foundation-rain-wets-ground",
+      "knowledge_claim": "Rain reaching dry, uncovered ground can make its surface wet.",
+      "claim_limit": "Recognizes the immediate wetting effect; does not claim every ground surface stays wet, that puddles always form, or why water later disappears.",
+      "knowledge_family_id": "rain-wets-ground",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKE-00-5",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKE-00-5",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "Rain falls onto dry ground. What can happen to the surface?",
+          "tl": "Bumuhos ang ulan sa tuyong lupa. Ano ang maaaring mangyari sa ibabaw nito?",
+          "bis": "Miulan sa uga nga yuta. Unsay mahimong mahitabo sa ibabaw niini?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "It becomes drier",
+              "tl": "Lalo itong matutuyo",
+              "bis": "Mas mouga kini"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "It becomes wet",
+              "tl": "Mababasa ito",
+              "bis": "Mabasa kini"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "It stays completely dry",
+              "tl": "Mananatili itong lubos na tuyo",
+              "bis": "Magpabilin kini nga hingpit nga uga"
+            }
+          }
+        ],
+        "correct_option_id": "o2",
+        "explanation": {
+          "en": "Rain brings water to the ground, so its surface can become wet.",
+          "tl": "May dalang tubig ang ulan, kaya maaaring mabasa ang ibabaw ng lupa.",
+          "bis": "Nagdala og tubig ang uwan, busa mahimong mabasa ang ibabaw sa yuta."
+        }
+      },
+      "rationale": {
+        "correct": "Rain reaching the surface supplies water that can wet it.",
+        "distractors": {
+          "o1": "Rain adds water rather than drying the surface in this direct observation.",
+          "o3": "The stated rain reaches the ground; remaining completely dry is not the wetting effect being recalled."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKE-00-5, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. Narrow familiar cause/effect under PNEKE-00-5. No rainy-weather card with broader always-cold/dark assumptions is used as an exact teaching link.",
+        "language_evidence": "Compared current dcard-00635, dcard-00636, dcard-00640, dcard-05269 and dcard-05270 in all three languages. New wording uses explicit observations; it does not rely on treating Cebuano init (hot) alone as an exact translation of sunny. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": "foundation-weather"
+    },
+    {
+      "id": "ha-f3-0060",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "EARTH_SPACE",
+      "target_id": "g3-foundation-weather-changes-in-day",
+      "knowledge_claim": "Weather can change between morning and afternoon on the same day.",
+      "claim_limit": "Recognizes same-day change; does not predict later weather, seasons, or climate.",
+      "knowledge_family_id": "weather-can-change-within-day",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKE-00-1",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [
+        {
+          "card_id": "dcard-00640",
+          "fact_id": "weather-changes-in-a-day-g3",
+          "fact": {
+            "en": "Does the weather stay the same all day?\n\nNo, weather can change from morning to midday to afternoon—it may be sunny in the morning and rainy later.",
+            "tl": "Pareho ba ang panahon sa buong araw?\n\nHindi, maaaring magbago ang panahon mula umaga hanggang tanghali hanggang hapon—maaaring maaraw sa umaga at maulan mamaya.",
+            "bis": "Pareho ba ang panahon sa tibuok adlaw?\n\nDili, mahimong mausab ang panahon gikan sa buntag hangtod sa udto hangtod sa hapon—mahimong init sa buntag ug mag-uwan unya."
+          },
+          "support": {
+            "en": "Does the weather stay the same all day?\n\nNo, weather can change from morning to midday to afternoon—it may be sunny in the morning and rainy later.",
+            "tl": "Pareho ba ang panahon sa buong araw?\n\nHindi, maaaring magbago ang panahon mula umaga hanggang tanghali hanggang hapon—maaaring maaraw sa umaga at maulan mamaya.",
+            "bis": "Pareho ba ang panahon sa tibuok adlaw?\n\nDili, mahimong mausab ang panahon gikan sa buntag hangtod sa udto hangtod sa hapon—mahimong init sa buntag ug mag-uwan unya."
+          },
+          "reviewed_languages": [
+            "en",
+            "tl",
+            "bis"
+          ]
+        }
+      ],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKE-00-1",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "The morning is sunny, then rain falls that afternoon. What does this show?",
+          "tl": "Maaraw sa umaga, saka umulan sa hapon. Ano ang ipinapakita nito?",
+          "bis": "Hayag ang adlaw sa buntag, dayon miulan sa hapon. Unsa ang gipakita niini?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Weather cannot change",
+              "tl": "Hindi nagbabago ang panahon",
+              "bis": "Dili mausab ang panahon"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "It rained the whole day",
+              "tl": "Umulan buong araw",
+              "bis": "Miulan sa tibuok adlaw"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Weather can change in a day",
+              "tl": "Maaaring magbago ang panahon sa isang araw",
+              "bis": "Mahimong mausab ang panahon sulod sa usa ka adlaw"
+            }
+          }
+        ],
+        "correct_option_id": "o3",
+        "explanation": {
+          "en": "The weather changed from sunny to rainy within one day.",
+          "tl": "Nagbago ang panahon mula maaraw tungo sa maulan sa loob ng isang araw.",
+          "bis": "Nausab ang panahon gikan sa hayag nga adlaw ngadto sa pag-uwan sulod sa usa ka adlaw."
+        }
+      },
+      "rationale": {
+        "correct": "The described morning and afternoon have different weather in one day.",
+        "distractors": {
+          "o1": "The observed change contradicts an unchanging-weather claim.",
+          "o2": "The morning was sunny in the given example, so continuous all-day rain is not what was described."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKE-00-1, for this narrower supporting-knowledge scope. Checked the current English, Tagalog and Cebuano bodies of the listed cards against the claim. The linked card’s main all-language claim is same-day weather change. The item avoids using init alone as the translation of sunny.",
+        "language_evidence": "Compared current dcard-00635, dcard-00636, dcard-00640, dcard-05269 and dcard-05270 in all three languages. New wording uses explicit observations; it does not rely on treating Cebuano init (hot) alone as an exact translation of sunny. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": "foundation-weather"
+    },
+    {
+      "id": "ha-f3-0061",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "EARTH_SPACE",
+      "target_id": "g3-foundation-raincoat-keeps-dry",
+      "knowledge_claim": "Wearing a raincoat over clothing helps keep the covered clothing and body dry in rain.",
+      "claim_limit": "Recognizes the ordinary purpose of a raincoat; does not guarantee dryness in all conditions or assess flood/storm safety.",
+      "knowledge_family_id": "rain-protection-clothing",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKE-00-2",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKE-00-2",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "Which clothing helps keep your body dry when it rains?",
+          "tl": "Aling kasuotan ang tumutulong na hindi mabasa ang katawan kapag umuulan?",
+          "bis": "Unsang sinina ang makatabang nga dili mabasa ang lawas kung mag-uwan?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "A cotton shirt",
+              "tl": "Koton na damit",
+              "bis": "Sinina nga gapas"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "A raincoat",
+              "tl": "Kapote",
+              "bis": "Raincoat"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "A sweater",
+              "tl": "Sweater",
+              "bis": "Sweater"
+            }
+          }
+        ],
+        "correct_option_id": "o2",
+        "explanation": {
+          "en": "A raincoat covers your clothing and helps keep rain off your body.",
+          "tl": "Tinatakpan ng kapote ang iyong damit at tumutulong upang hindi mabasa ng ulan ang katawan.",
+          "bis": "Gitabonan sa raincoat ang imong sinina ug makatabang kini nga dili mabasa sa uwan ang lawas."
+        }
+      },
+      "rationale": {
+        "correct": "A raincoat is specifically worn as a barrier to rain over clothing.",
+        "distractors": {
+          "o1": "An ordinary cotton shirt absorbs rain instead of serving as rain protection.",
+          "o3": "An ordinary sweater is for warmth and is not designed as rainwear."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKE-00-2, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. No exact teaching link: dcard-08198 / full-raincoat-g4 has EN rainy days and TL maulan, but BIS ting-ulaw nga adlaw. That weather-language mismatch is retained in review notes for corpus repair; the new item does not copy it.",
+        "language_evidence": "Reviewed dcard-04583 and dcard-04584 across English, Tagalog and Cebuano for cold/rainy safety context. Weather clothing wording is new and remains pending native and teacher review. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": null
+    },
+    {
+      "id": "ha-f3-0062",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "EARTH_SPACE",
+      "target_id": "g3-foundation-umbrella-rain",
+      "knowledge_claim": "An open umbrella held overhead can block ordinary raindrops from reaching the person beneath it.",
+      "claim_limit": "Recognizes the ordinary rain-protection purpose of an umbrella, not safe use during lightning, strong wind, or flooding.",
+      "knowledge_family_id": "rain-protection-clothing",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKE-00-2",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKE-00-2",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "Which item is made to keep rain off you?",
+          "tl": "Aling gamit ang ginawa bilang panangga sa ulan?",
+          "bis": "Unsang gamit ang gihimo nga panagang sa uwan?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "An umbrella",
+              "tl": "Payong",
+              "bis": "Payong"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "A paper fan",
+              "tl": "Pamaypay na papel",
+              "bis": "Paypay nga papel"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "A notebook",
+              "tl": "Kuwaderno",
+              "bis": "Notebook"
+            }
+          }
+        ],
+        "correct_option_id": "o1",
+        "explanation": {
+          "en": "An open umbrella can stop raindrops from reaching you underneath it.",
+          "tl": "Maaaring salagin ng bukas na payong ang mga patak ng ulan upang hindi ka mabasa sa ilalim nito.",
+          "bis": "Ang abli nga payong makapugong sa mga tulo sa uwan aron dili ka mabasa sa ilalom niini."
+        }
+      },
+      "rationale": {
+        "correct": "An open umbrella is built to cover the person beneath it from ordinary rain.",
+        "distractors": {
+          "o2": "A paper fan is designed for moving air, not for rain cover, even if someone briefly holds it overhead.",
+          "o3": "A notebook is designed for writing, not as rain protection, even if someone briefly holds it overhead."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKE-00-2, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. Direct familiar designed use: an umbrella is made as rain cover. No claim of storm or electrical protection.",
+        "language_evidence": "Reviewed dcard-04583 and dcard-04584 across English, Tagalog and Cebuano for cold/rainy safety context. Weather clothing wording is new and remains pending native and teacher review. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": null
+    },
+    {
+      "id": "ha-f3-0063",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "EARTH_SPACE",
+      "target_id": "g3-foundation-cold-weather-clothing",
+      "knowledge_claim": "A sweater helps a person keep warm in cold weather.",
+      "claim_limit": "Recognizes familiar clothing for an explicitly cold situation; does not equate all cloudy days with cold weather.",
+      "knowledge_family_id": "cold-weather-warm-clothing",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKE-00-2",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [
+        {
+          "card_id": "dcard-04583",
+          "fact_id": "cloudy-day-safety-g3",
+          "fact": {
+            "en": "Cloudy weather is usually safe for walking and playing, but it can feel colder in mountain areas, so a sweater helps.",
+            "tl": "Ang maulap na panahon ay karaniwang ligtas para sa paglalakad at paglalaro, pero maaaring mas malamig ito sa mga lugar na bundok, kaya makakatulong ang sweater.",
+            "bis": "Ang dag-om nga panahon sagad luwas alang sa paglakaw ug pagdula, apan mahimong mas bugnaw kini sa mga lugar nga bukid, busa makatabang ang sweater."
+          },
+          "support": {
+            "en": "Cloudy weather is usually safe for walking and playing, but it can feel colder in mountain areas, so a sweater helps.",
+            "tl": "Ang maulap na panahon ay karaniwang ligtas para sa paglalakad at paglalaro, pero maaaring mas malamig ito sa mga lugar na bundok, kaya makakatulong ang sweater.",
+            "bis": "Ang dag-om nga panahon sagad luwas alang sa paglakaw ug pagdula, apan mahimong mas bugnaw kini sa mga lugar nga bukid, busa makatabang ang sweater."
+          },
+          "reviewed_languages": [
+            "en",
+            "tl",
+            "bis"
+          ]
+        }
+      ],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKE-00-2",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "You feel cold on a chilly day. What can you wear to keep warm?",
+          "tl": "Giniginaw ka sa malamig na araw. Ano ang maaari mong isuot upang manatiling mainit ang katawan?",
+          "bis": "Gitugnaw ka sa bugnaw nga adlaw. Unsay imong masul-ob aron dili tugnawon?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "A thin sleeveless shirt",
+              "tl": "Manipis na damit na walang manggas",
+              "bis": "Nipis nga sinina nga walay manggas"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Swimwear",
+              "tl": "Panlangoy na kasuotan",
+              "bis": "Sinina sa paglangoy"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "A sweater",
+              "tl": "Sweater",
+              "bis": "Sweater"
+            }
+          }
+        ],
+        "correct_option_id": "o3",
+        "explanation": {
+          "en": "A sweater adds a warm layer when you feel cold.",
+          "tl": "Tumutulong ang sweater na panatilihing mainit ang katawan.",
+          "bis": "Makatabang ang sweater nga dili ka tugnawon."
+        }
+      },
+      "rationale": {
+        "correct": "The sweater is the warm layer among the three choices.",
+        "distractors": {
+          "o1": "A thin sleeveless shirt leaves more skin uncovered and provides less warmth.",
+          "o2": "Swimwear is not the added warm layer for this cold situation."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKE-00-2, for this narrower supporting-knowledge scope. Checked the current English, Tagalog and Cebuano bodies of the listed cards against the claim. Only the cold/sweater part of the source is used; the item does not adopt the card’s broad cloudy-weather safety generalization.",
+        "language_evidence": "Reviewed dcard-04583 and dcard-04584 across English, Tagalog and Cebuano for cold/rainy safety context. Weather clothing wording is new and remains pending native and teacher review. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": null
+    },
+    {
+      "id": "ha-f3-0064",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "EARTH_SPACE",
+      "target_id": "g3-foundation-sun-shade-hat",
+      "knowledge_claim": "A wide-brimmed hat can shade the head and face from sunlight.",
+      "claim_limit": "Recognizes shade from a familiar item; does not claim complete sun protection or make a medical UV-prevention guarantee.",
+      "knowledge_family_id": "sun-protection-shade",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKE-00-2",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKE-00-2",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "Which item shades your head and face from bright sunlight?",
+          "tl": "Aling gamit ang nagbibigay-lilim sa ulo at mukha mula sa maliwanag na sikat ng araw?",
+          "bis": "Unsang gamit ang makalandong sa ulo ug nawong gikan sa hayag nga kahayag sa adlaw?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "A wide-brimmed hat",
+              "tl": "Sombrerong malapad ang gilid",
+              "bis": "Kalo nga lapad ang ngilit"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Rubber boots",
+              "tl": "Botang goma",
+              "bis": "Botas nga goma"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Gloves",
+              "tl": "Guwantes",
+              "bis": "Guwantes"
+            }
+          }
+        ],
+        "correct_option_id": "o1",
+        "explanation": {
+          "en": "The wide brim of the hat casts shade over the head and face.",
+          "tl": "Nagbibigay-lilim sa ulo at mukha ang malapad na gilid ng sombrero.",
+          "bis": "Ang lapad nga ngilit sa kalo makalandong sa ulo ug nawong."
+        }
+      },
+      "rationale": {
+        "correct": "The hat is placed over the named body parts and its brim provides shade.",
+        "distractors": {
+          "o2": "Boots cover feet, not the head or face.",
+          "o3": "Gloves cover hands, not the head or face."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKE-00-2, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. Directly checked familiar shade action within weather-clothing scope. No exact current-card teaching link was reviewed.",
+        "language_evidence": "Reviewed dcard-04583 and dcard-04584 across English, Tagalog and Cebuano for cold/rainy safety context. Weather clothing wording is new and remains pending native and teacher review. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": null
+    },
+    {
+      "id": "ha-f3-0065",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "EARTH_SPACE",
+      "target_id": "g3-foundation-wet-path-care",
+      "knowledge_claim": "Walking slowly and carefully on a wet, slippery path is safer than running or jumping on it.",
+      "claim_limit": "Recognizes a simple safe action on an ordinary wet path; not proof of behavior, physical balance, or safe floodwater access.",
+      "knowledge_family_id": "wet-surface-slip-risk",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKE-00-6",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [
+        {
+          "card_id": "dcard-04584",
+          "fact_id": "slippery-rainy-ground-g3",
+          "fact": {
+            "en": "Rainy weather can make the ground slippery, so running on wet roads or paths can cause falls and injuries.",
+            "tl": "Ang maulang panahon ay maaaring magpadulas sa lupa, kaya ang pagtakbo sa basang kalsada o daanan ay maaaring magdulot ng pagkadulas at pagkakasugat.",
+            "bis": "Ang ting-ulang panahon makapadanlog sa yuta, busa ang pagdagan sa basang dalan o agianan mahimong hinungdan sa pagkahulog ug pagkasamad."
+          },
+          "support": {
+            "en": "Rainy weather can make the ground slippery, so running on wet roads or paths can cause falls and injuries.",
+            "tl": "Ang maulang panahon ay maaaring magpadulas sa lupa, kaya ang pagtakbo sa basang kalsada o daanan ay maaaring magdulot ng pagkadulas at pagkakasugat.",
+            "bis": "Ang ting-ulang panahon makapadanlog sa yuta, busa ang pagdagan sa basang dalan o agianan mahimong hinungdan sa pagkahulog ug pagkasamad."
+          },
+          "reviewed_languages": [
+            "en",
+            "tl",
+            "bis"
+          ]
+        }
+      ],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKE-00-6",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "Rain has made a path wet and slippery. How should you move?",
+          "tl": "Nabasa at naging madulas ang daan dahil sa ulan. Paano ka dapat kumilos?",
+          "bis": "Basa ug danlog ang agianan tungod sa uwan. Unsaon nimo paglihok?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Run quickly",
+              "tl": "Tumakbo nang mabilis",
+              "bis": "Pagdagan og paspas"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Walk slowly and carefully",
+              "tl": "Maglakad nang mabagal at maingat",
+              "bis": "Paglakaw og hinay ug mabinantayon"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Jump along the path",
+              "tl": "Tumalon-talon sa daan",
+              "bis": "Paglukso-lukso sa agianan"
+            }
+          }
+        ],
+        "correct_option_id": "o2",
+        "explanation": {
+          "en": "Wet paths can be slippery. Walking slowly and carefully lowers the chance of falling.",
+          "tl": "Maaaring madulas ang basang daan. Mas maliit ang panganib na matumba kung mabagal at maingat kang lalakad.",
+          "bis": "Mahimong danlog ang basang agianan. Mas gamay ang risgo nga matumba kung hinay ug mabinantayon ang paglakaw."
+        }
+      },
+      "rationale": {
+        "correct": "Careful slow movement addresses the explicitly slippery surface.",
+        "distractors": {
+          "o1": "Running makes maintaining balance on the slippery path harder.",
+          "o3": "Jumping adds landing/balance demands on the slippery path."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKE-00-6, for this narrower supporting-knowledge scope. Checked the current English, Tagalog and Cebuano bodies of the listed cards against the claim. 2016 p21 MKAP-00-5 also gives running on a wet/slippery corridor as a familiar cause/effect example. The item stays at recognition of safe movement.",
+        "language_evidence": "Reviewed dcard-04583 and dcard-04584 across English, Tagalog and Cebuano for cold/rainy safety context. Weather clothing wording is new and remains pending native and teacher review. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": null
+    },
+    {
+      "id": "ha-f3-0066",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "EARTH_SPACE",
+      "target_id": "g3-foundation-rain-boots",
+      "knowledge_claim": "Rubber boots help keep feet dry from small rain splashes.",
+      "claim_limit": "Recognizes ordinary waterproof clothing for feet; no advice to enter floodwater or deep puddles and no claim boots always prevent wet feet.",
+      "knowledge_family_id": "rain-protection-clothing",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKE-00-2",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKE-00-2",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "Which keeps your feet dry from small rain splashes?",
+          "tl": "Alin ang tumutulong na hindi mabasa ang paa sa maliliit na talsik ng ulan?",
+          "bis": "Hain ang makatabang nga dili mabasa ang tiil sa gagmayng talsik sa uwan?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Cotton socks",
+              "tl": "Medyas na koton",
+              "bis": "Medyas nga gapas"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Cloth slippers",
+              "tl": "Tsinelas na tela",
+              "bis": "Tsinelas nga panapton"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Rubber boots",
+              "tl": "Botang goma",
+              "bis": "Botas nga goma"
+            }
+          }
+        ],
+        "correct_option_id": "o3",
+        "explanation": {
+          "en": "Rubber boots cover the feet and help keep small splashes out.",
+          "tl": "Tinatakpan ng botang goma ang mga paa at tumutulong upang hindi mapasukan ng maliliit na talsik ng tubig.",
+          "bis": "Gitabonan sa botas nga goma ang mga tiil ug makatabang nga dili makasulod ang gagmayng talsik sa tubig."
+        }
+      },
+      "rationale": {
+        "correct": "Rubber boots are the rain-blocking footwear among the three choices.",
+        "distractors": {
+          "o1": "Ordinary cotton socks soak up water rather than block it.",
+          "o2": "Cloth slippers absorb water and leave more of the foot exposed."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKE-00-2, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. No exact teaching link: dcard-03728 / rainy-day-gear-g4 suggests boots for walking in flooded areas, an unsafe context excluded from this new item.",
+        "language_evidence": "Reviewed dcard-04583 and dcard-04584 across English, Tagalog and Cebuano for cold/rainy safety context. Weather clothing wording is new and remains pending native and teacher review. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": null
+    },
+    {
+      "id": "ha-f3-0067",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "EARTH_SPACE",
+      "target_id": "g3-foundation-proper-trash-place",
+      "knowledge_claim": "Putting one’s own small litter in a suitable rubbish bin helps keep shared surroundings clean.",
+      "claim_limit": "Recognizes ordinary litter disposal; does not ask a child to handle sharp, medical, unknown or hazardous waste.",
+      "knowledge_family_id": "proper-disposal-keeps-surroundings-clean",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKE-00-4",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKE-00-4",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "You finish a snack. Where should your empty wrapper go?",
+          "tl": "Tapos ka nang kumain ng meryenda. Saan dapat ilagay ang walang lamang balot?",
+          "bis": "Nahuman ka og kaon sa merienda. Asa angay ibutang ang walay sulod nga putos?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "In the proper rubbish bin",
+              "tl": "Sa tamang basurahan",
+              "bis": "Sa hustong basurahan"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Under a bench",
+              "tl": "Sa ilalim ng bangko",
+              "bis": "Sa ilalom sa bangko"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "In a roadside drain",
+              "tl": "Sa kanal sa tabi ng daan",
+              "bis": "Sa kanal daplin sa dalan"
+            }
+          }
+        ],
+        "correct_option_id": "o1",
+        "explanation": {
+          "en": "Put your wrapper in the proper bin to keep the surroundings clean.",
+          "tl": "Ilagay ang balot sa tamang basurahan upang manatiling malinis ang paligid.",
+          "bis": "Ibutang ang putos sa hustong basurahan aron magpabiling limpyo ang palibot."
+        }
+      },
+      "rationale": {
+        "correct": "The proper bin is the designated collection place for this ordinary wrapper.",
+        "distractors": {
+          "o2": "Leaving the wrapper under a bench hides the litter rather than disposing of it.",
+          "o3": "A drain carries water; adding litter there can obstruct it."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKE-00-4, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. A familiar care action under PNEKE-00-4. Existing no-littering cards were reviewed for context but do not literally state the exact own-wrapper/proper-bin claim in all three languages, so no exact teaching link is attached.",
+        "language_evidence": "Compared all-language bodies for ffct-05964, dcard-01458, ffct-23593 and dcard-01174. New actions use familiar objects, avoiding a requirement to recall formal reduce/reuse/recycle category names. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": null
+    },
+    {
+      "id": "ha-f3-0068",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "EARTH_SPACE",
+      "target_id": "g3-foundation-keep-wrapper-until-bin",
+      "knowledge_claim": "When no bin is nearby, keeping one’s own wrapper until reaching a bin avoids littering.",
+      "claim_limit": "Recognition for the child’s own ordinary small wrapper only; no instruction to collect unknown waste.",
+      "knowledge_family_id": "proper-disposal-keeps-surroundings-clean",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKE-00-4",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKE-00-4",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "You have your empty wrapper, but no bin is nearby. What should you do?",
+          "tl": "Hawak mo ang walang lamang balot, ngunit walang malapit na basurahan. Ano ang dapat mong gawin?",
+          "bis": "Naa nimo ang walay sulod nga putos, apan walay duol nga basurahan. Unsay angay nimong buhaton?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Leave it beside the path",
+              "tl": "Iwan sa tabi ng daan",
+              "bis": "Ibilin daplin sa agianan"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Keep it until you find a bin",
+              "tl": "Itago muna hanggang makakita ng basurahan",
+              "bis": "Tipigi hangtod makakita og basurahan"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Hide it under leaves",
+              "tl": "Itago sa ilalim ng mga dahon",
+              "bis": "Tagoa ilalom sa mga dahon"
+            }
+          }
+        ],
+        "correct_option_id": "o2",
+        "explanation": {
+          "en": "Keep your wrapper with you, then put it in a bin when you find one.",
+          "tl": "Dalhin muna ang balot, saka ilagay sa basurahan kapag may nakita ka na.",
+          "bis": "Dad-a una ang imong putos, dayon ibutang sa basurahan kung makakita na ka."
+        }
+      },
+      "rationale": {
+        "correct": "Keeping the wrapper prevents litter until proper disposal is available.",
+        "distractors": {
+          "o1": "Leaving it beside the path makes it litter.",
+          "o3": "Covering litter with leaves does not dispose of it properly."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKE-00-4, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. Shares the disposal family with ha-f3-0067; this is a no-bin context, not a new independent construct.",
+        "language_evidence": "Compared all-language bodies for ffct-05964, dcard-01458, ffct-23593 and dcard-01174. New actions use familiar objects, avoiding a requirement to recall formal reduce/reuse/recycle category names. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": null
+    },
+    {
+      "id": "ha-f3-0069",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "EARTH_SPACE",
+      "target_id": "g3-foundation-reuse-paper",
+      "knowledge_claim": "Writing on the unused side of a used sheet lets the same paper be used again.",
+      "claim_limit": "Recognizes using the same suitable paper again; does not assess recycling processes, formal categories, or a quantified environmental benefit.",
+      "knowledge_family_id": "reusing-an-existing-object",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKE-00-4",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [
+        {
+          "card_id": "dcard-04271",
+          "fact_id": "reuse-materials-g4",
+          "fact": {
+            "en": "Reuse means using both sides of paper when printing and donating or selling items instead of throwing them away.",
+            "tl": "Ang Reuse ay nangangahulugang paggamit ng magkabilang panig ng papel kapag nagpi-print at pagdo-donate o pagbebenta ng mga bagay sa halip na itapon ang mga ito.",
+            "bis": "Ang Reuse nagpasabot sa paggamit sa duha ka kilid sa papel kung mag-print ug pagdonar o pagbaligya sa mga butang imbes nga ilabay kini."
+          },
+          "support": {
+            "en": "Reuse means using both sides of paper when printing and donating or selling items instead of throwing them away.",
+            "tl": "Ang Reuse ay nangangahulugang paggamit ng magkabilang panig ng papel kapag nagpi-print at pagdo-donate o pagbebenta ng mga bagay sa halip na itapon ang mga ito.",
+            "bis": "Ang Reuse nagpasabot sa paggamit sa duha ka kilid sa papel kung mag-print ug pagdonar o pagbaligya sa mga butang imbes nga ilabay kini."
+          },
+          "reviewed_languages": [
+            "en",
+            "tl",
+            "bis"
+          ]
+        }
+      ],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKE-00-4",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "One side of your paper is still blank. How can you use the paper again?",
+          "tl": "Wala pang sulat ang isang panig ng papel mo. Paano mo ito magagamit muli?",
+          "bis": "Wala pay sulat ang usa ka bahin sa imong papel. Unsaon nimo kini paggamit pag-usab?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Throw the sheet away",
+              "tl": "Itapon ang papel",
+              "bis": "Ilabay ang papel"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Take a new sheet instead",
+              "tl": "Kumuha na lang ng bagong papel",
+              "bis": "Pagkuha na lang og bag-ong papel"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Write on the blank side",
+              "tl": "Sulatan ang walang sulat na panig",
+              "bis": "Sulati ang bahin nga walay sulat"
+            }
+          }
+        ],
+        "correct_option_id": "o3",
+        "explanation": {
+          "en": "You can write on the blank side and use the same paper again.",
+          "tl": "Maaari mong sulatan ang walang sulat na panig at gamitin muli ang parehong papel.",
+          "bis": "Mahimo nimong sulatan ang bahin nga walay sulat ug gamiton pag-usab ang samang papel."
+        }
+      },
+      "rationale": {
+        "correct": "Writing on its unused side is another use of the same sheet.",
+        "distractors": {
+          "o1": "Discarding the paper prevents the intended second use.",
+          "o2": "Taking another sheet leaves the existing blank side unused."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKE-00-4, for this narrower supporting-knowledge scope. Checked the current English, Tagalog and Cebuano bodies of the listed cards against the claim. The current card explicitly names using both sides of paper as using material again. The item does not require formal reduce/reuse/recycle category names.",
+        "language_evidence": "Compared all-language bodies for ffct-05964, dcard-01458, ffct-23593 and dcard-01174. New actions use familiar objects, avoiding a requirement to recall formal reduce/reuse/recycle category names. Independently reviewed dcard-04271 in all three languages: using both sides of paper / magkabilang panig / duha ka kilid. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": null
+    },
+    {
+      "id": "ha-f3-0070",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "EARTH_SPACE",
+      "target_id": "g3-foundation-reuse-bag",
+      "knowledge_claim": "Using an existing usable bag again avoids taking another bag for the same task.",
+      "claim_limit": "Recognizes a concrete second use; does not claim any bag lasts forever or measure the life-cycle impacts of materials.",
+      "knowledge_family_id": "reusing-an-existing-object",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKE-00-4",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKE-00-4",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "Your bag is still usable. What can you do to avoid taking another bag?",
+          "tl": "Magagamit pa ang iyong bag. Ano ang magagawa mo upang hindi na kumuha ng isa pang bag?",
+          "bis": "Magamit pa ang imong bag. Unsay mahimo nimo aron dili na mokuha og laing bag?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Use the same bag again",
+              "tl": "Gamitin muli ang parehong bag",
+              "bis": "Gamita pag-usab ang samang bag"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Throw it away before shopping",
+              "tl": "Itapon ito bago mamili",
+              "bis": "Ilabay kini sa dili pa mamalit"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Leave it and take a new bag",
+              "tl": "Iwan ito at kumuha ng bagong bag",
+              "bis": "Ibilin kini ug kuhaa ang bag-ong bag"
+            }
+          }
+        ],
+        "correct_option_id": "o1",
+        "explanation": {
+          "en": "A bag that is still usable can be used again for your things.",
+          "tl": "Maaaring gamitin muli para sa iyong mga gamit ang bag na maayos pa.",
+          "bis": "Ang bag nga magamit pa mahimong gamiton pag-usab alang sa imong mga butang."
+        }
+      },
+      "rationale": {
+        "correct": "Using the existing suitable bag directly avoids taking a replacement.",
+        "distractors": {
+          "o2": "Discarding a usable bag creates a need for another one.",
+          "o3": "Taking a new bag does not use the existing one again."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKE-00-4, for this narrower supporting-knowledge scope. No exact, fully reviewed Hiraia teaching-card link is asserted. No exact teaching link: dcard-01170 / reusing-shopping-bags-g4 says a cloth bag can be used for life. That overclaim is not adopted; this item is limited to a bag explicitly still usable. Shares the same reuse family as ha-f3-0069 and equivalent existing drafts.",
+        "language_evidence": "Compared all-language bodies for ffct-05964, dcard-01458, ffct-23593 and dcard-01174. New actions use familiar objects, avoiding a requirement to recall formal reduce/reuse/recycle category names. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": null
+    },
+    {
+      "id": "ha-f3-0071",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "EARTH_SPACE",
+      "target_id": "g3-foundation-close-unused-tap",
+      "knowledge_claim": "Closing a running tap when it is no longer needed avoids wasting water.",
+      "claim_limit": "Recognizes an ordinary conservation action at a working tap; no water-quality, supply-safety, or plumbing claim.",
+      "knowledge_family_id": "closing-unused-tap",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKE-00-4",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [
+        {
+          "card_id": "dcard-01458",
+          "fact_id": "saving-water-and-electricity-g3",
+          "fact": {
+            "en": "Closing taps and switching off lights when not in use saves water and electricity.",
+            "tl": "Ang pagsasara ng gripo at pagpatay ng ilaw kapag hindi ginagamit ay nakakatipid ng tubig at kuryente.",
+            "bis": "Ang pagsira sa gripo ug pagpalong sa suga kon dili gamiton makadaginot ug tubig ug kuryente."
+          },
+          "support": {
+            "en": "Closing taps and switching off lights when not in use saves water and electricity.",
+            "tl": "Ang pagsasara ng gripo at pagpatay ng ilaw kapag hindi ginagamit ay nakakatipid ng tubig at kuryente.",
+            "bis": "Ang pagsira sa gripo ug pagpalong sa suga kon dili gamiton makadaginot ug tubig ug kuryente."
+          },
+          "reviewed_languages": [
+            "en",
+            "tl",
+            "bis"
+          ]
+        }
+      ],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKE-00-4",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "You have finished using the tap. How can you avoid wasting water?",
+          "tl": "Tapos ka nang gumamit ng gripo. Paano mo maiiwasang masayang ang tubig?",
+          "bis": "Nahuman ka na og gamit sa gripo. Unsaon nimo paglikay nga mausik ang tubig?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Leave the water running",
+              "tl": "Hayaang umaagos ang tubig",
+              "bis": "Pasagdi nga mag-agos ang tubig"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Close the tap",
+              "tl": "Isara ang gripo",
+              "bis": "Sirad-i ang gripo"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Open it farther",
+              "tl": "Lalo pang buksan ang gripo",
+              "bis": "Ablihi pa og dako ang gripo"
+            }
+          }
+        ],
+        "correct_option_id": "o2",
+        "explanation": {
+          "en": "Closing the tap stops water from running when it is not needed.",
+          "tl": "Nahihinto ang pag-agos ng tubig na hindi kailangan kapag isinara ang gripo.",
+          "bis": "Mohunong ang pag-agos sa tubig nga wala na kinahanglana kung sirad-an ang gripo."
+        }
+      },
+      "rationale": {
+        "correct": "Turning off the unused tap stops the unnecessary flow.",
+        "distractors": {
+          "o1": "Leaving it running continues the waste.",
+          "o3": "Opening it farther increases the unnecessary flow."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKE-00-4, for this narrower supporting-knowledge scope. Checked the current English, Tagalog and Cebuano bodies of the listed cards against the claim. ",
+        "language_evidence": "Compared all-language bodies for ffct-05964, dcard-01458, ffct-23593 and dcard-01174. New actions use familiar objects, avoiding a requirement to recall formal reduce/reuse/recycle category names. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": null
+    },
+    {
+      "id": "ha-f3-0072",
+      "revision": 1,
+      "status": "source_checked",
+      "production_ready": false,
+      "material_grade": 0,
+      "domain": "EARTH_SPACE",
+      "target_id": "g3-foundation-switch-off-unused-light",
+      "knowledge_claim": "Switching off a light that is no longer needed saves electricity.",
+      "claim_limit": "Recognizes using a normal light switch only; no instruction to handle wiring, sockets, or a damaged switch.",
+      "knowledge_family_id": "turn-off-unneeded-light",
+      "curriculum": {
+        "source_id": "deped-kindergarten-2016",
+        "code": "PNEKE-00-4",
+        "page": 23,
+        "mapping_note": "Narrow recognition/recall support for the cited Kindergarten competency; it does not establish practical performance or full competency mastery. The normally progressing 2026 Grade 3 cohort would have attended Kindergarten in 2023–2024 under the earlier guide; this is a cohort inference, not verified individual coverage or a complete Grade 2 Makabansa crosswalk."
+      },
+      "source_cards": [
+        {
+          "card_id": "ffct-23593",
+          "fact_id": "energy-saving-turn-off-g3",
+          "fact": {
+            "en": "Did you know you can save electricity at home just by turning things off?\n\nTurning off lights and appliances you are not using saves electricity at home!",
+            "tl": "Alam mo bang makakatipid ka ng kuryente sa bahay basta't pinapatay mo ang mga hindi ginagamit?\n\nAng pagpatay ng mga ilaw at gamit na hindi ginagamit ay nakakatipid ng kuryente sa bahay!",
+            "bis": "Nahibaw-an ba nimo nga makadaginot ka ug koryente sa balay basta patyon nimo ang mga wala gamita?\n\nAng pagpalong sa mga suga ug gamit nga wala gamita makadaginot ug koryente sa balay!"
+          },
+          "support": {
+            "en": "Did you know you can save electricity at home just by turning things off?\n\nTurning off lights and appliances you are not using saves electricity at home!",
+            "tl": "Alam mo bang makakatipid ka ng kuryente sa bahay basta't pinapatay mo ang mga hindi ginagamit?\n\nAng pagpatay ng mga ilaw at gamit na hindi ginagamit ay nakakatipid ng kuryente sa bahay!",
+            "bis": "Nahibaw-an ba nimo nga makadaginot ka ug koryente sa balay basta patyon nimo ang mga wala gamita?\n\nAng pagpalong sa mga suga ug gamit nga wala gamita makadaginot ug koryente sa balay!"
+          },
+          "reviewed_languages": [
+            "en",
+            "tl",
+            "bis"
+          ]
+        }
+      ],
+      "external_references": [
+        {
+          "source_id": "deped-kindergarten-2016",
+          "title": "K to 12 Kindergarten Curriculum Guide, May 2016",
+          "url": "https://www.deped.gov.ph/wp-content/uploads/2019/01/Kinder-CG_0.pdf#page=23",
+          "page": 23,
+          "code": "PNEKE-00-4",
+          "accessed": "2026-09-29"
+        }
+      ],
+      "content": {
+        "stem": {
+          "en": "No one needs the room light now. What saves electricity?",
+          "tl": "Wala nang nangangailangan ng ilaw sa silid ngayon. Ano ang makatitipid ng kuryente?",
+          "bis": "Wala nay nanginahanglan sa suga sa kwarto karon. Unsa ang makadaginot og koryente?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Leave the light on",
+              "tl": "Hayaang nakabukas ang ilaw",
+              "bis": "Pasagdi nga siga ang suga"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Switch on another light",
+              "tl": "Magbukas pa ng isa pang ilaw",
+              "bis": "Pasigaa pa ang laing suga"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Switch the light off",
+              "tl": "Patayin ang ilaw",
+              "bis": "Palonga ang suga"
+            }
+          }
+        ],
+        "correct_option_id": "o3",
+        "explanation": {
+          "en": "Switching off a light you no longer need saves electricity.",
+          "tl": "Nakatitipid ng kuryente ang pagpatay ng ilaw na hindi na kailangan.",
+          "bis": "Makadaginot og koryente ang pagpalong sa suga nga dili na kinahanglan."
+        }
+      },
+      "rationale": {
+        "correct": "Turning off the unneeded light stops its electricity use.",
+        "distractors": {
+          "o1": "Leaving the unneeded light on continues its electricity use.",
+          "o2": "Another switched-on light adds electricity use."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "reading_demand": "Earlier-learner recognition with short options; no calculation or required formal science terminology. The intended age group must still review reading/listening accessibility.",
+        "image_required": false,
+        "read_aloud": "Read the complete stem and every option in the pinned language. For a diagram, keep the picture visible and do not narrate its answer. Record read-aloud support; no answer coaching."
+      },
+      "review": {
+        "source_check": "Checked the official DepEd May 2016 Kindergarten guide, PDF page 23, PNEKE-00-4, for this narrower supporting-knowledge scope. Checked the current English, Tagalog and Cebuano bodies of the listed cards against the claim. Uses a separate exact source fact from the unused-tap item. Only an ordinary intact light switch is implied; electrical handling is outside scope.",
+        "language_evidence": "Compared all-language bodies for ffct-05964, dcard-01458, ffct-23593 and dcard-01174. New actions use familiar objects, avoiding a requirement to recall formal reduce/reuse/recycle category names. English, Tagalog and Cebuano answers were compared in-session; this is model review, not native-speaker or teacher approval.",
+        "holds": [],
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      },
+      "benchmark_slot": null
+    }
+  ]
+}

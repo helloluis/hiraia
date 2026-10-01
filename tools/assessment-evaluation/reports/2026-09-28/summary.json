@@ -1,0 +1,481 @@
+{
+  "schema": 1,
+  "basis": "User-designated newer bank; working-source projection, not released APK verification.",
+  "limits": [
+    "Card-level tags are candidate links, not reviewed question-level competency claims.",
+    "Three-option structural checks do not establish factual quality or calibrated difficulty.",
+    "Exact English stem counts do not establish independent concepts or equivalent forms.",
+    "Coverage across codes/grades is overlapping; do not sum it as unique item count.",
+    "Supplement overlay is reported separately from the newer bank."
+  ],
+  "inputs": {
+    "rag/bank/quiz-bank-v2.jsonl": {
+      "sha256": "a83be6e1773da1c536a013bb340d1863c5b1a8e29279d140eee1d0e89cc18e07",
+      "bytes": 54018884
+    },
+    "rag/pipeline/cardsPool.app.json": {
+      "sha256": "7a9989363561c91ef5181abd0bf2428bd6b832412f20d4f678f8ab9c42d67b10",
+      "bytes": 50724092
+    },
+    "packages/mobile/src/generated/curriculumTags.generated.json": {
+      "sha256": "446b8a42a8caf4a767259c12aee148d0f96be8c0cab7967db32e6133d44b640d",
+      "bytes": 2232919
+    },
+    "rag/bank/competency-kinds.json": {
+      "sha256": "98d986531f81e119d7ebadf7728617dd1db5de15d9110fcd8c1610bbecf85377",
+      "bytes": 67755
+    },
+    "rag/sources/curriculum-guides/matatag-elementary-competencies.json": {
+      "sha256": "60cf4299b9bf5346139e7ff136e7e857da1c63a6bb7373b9f02c006193a55393",
+      "bytes": 39017
+    },
+    "rag/sources/curriculum-guides/matatag-jhs-competencies.json": {
+      "sha256": "e844ed75a019d56daff3877c937c46ba5038f3c58912ecd0550385dbbb44fa5c",
+      "bytes": 88018
+    },
+    "packages/mobile/src/data/grade3LessonSupplement.json": {
+      "sha256": "dd4309c6077b4c2844052881dd8307ada510f0a395fe0a45c05bf29d4c6cc329",
+      "bytes": 38639
+    },
+    "packages/mobile/src/generated/grade3Lessons.generated.json": {
+      "sha256": "8f524db6afe5a940bd6eeb008bbc77a7beae79e744470659d6b802e0e25f0a20",
+      "bytes": 628107
+    },
+    "packages/mobile/src/data/grade4LessonSupplement.json": {
+      "sha256": "dcc27656a216d20fab62593f39023783651926928d2bb1b9fff09159f8df1ce3",
+      "bytes": 39373
+    },
+    "packages/mobile/src/generated/grade4Lessons.generated.json": {
+      "sha256": "76082ffd28cf873a9045fb2a5d9a4daf8f9c018e84aae2cbb76e26ac74dc8e4d",
+      "bytes": 410173
+    },
+    "packages/mobile/src/data/grade5LessonSupplement.json": {
+      "sha256": "fa5e63384f6976df874d1e50ffd52eaba15a11b82ffb5843d0d8d0e053db2c28",
+      "bytes": 47006
+    },
+    "packages/mobile/src/generated/grade5Lessons.generated.json": {
+      "sha256": "6a2c15640f9bc87c9507d399894d4c7c54549e88e712e5bd239f5459b16a9f9f",
+      "bytes": 455882
+    },
+    "packages/mobile/src/data/grade6LessonSupplement.json": {
+      "sha256": "33268e8ba6e4f1743938d34b43a5055ba6147a59618d37fb25bdda54e2f5b32b",
+      "bytes": 59950
+    },
+    "packages/mobile/src/generated/grade6Lessons.generated.json": {
+      "sha256": "08ece8a0da9a76a8c3a9d3be6d8c746445be59340be2b64f9e2da64cb41fcbb1",
+      "bytes": 525759
+    },
+    "packages/mobile/src/data/grade7LessonSupplement.json": {
+      "sha256": "a0d98d7124648c177ab80ed250b2d85291489ceff2ce36c3167e0f0bc4e769cd",
+      "bytes": 90814
+    },
+    "packages/mobile/src/generated/grade7Lessons.generated.json": {
+      "sha256": "0ae7a4dafd95df10b2f63278fe76c5ce2ee1a58fd4dcce60d7dcf0dfd44bf8f9",
+      "bytes": 276584
+    },
+    "packages/mobile/src/data/grade8LessonSupplement.json": {
+      "sha256": "96f5ab942f124f79a6479b78e1dcd14504af375a888d5dd3f43dbdfcfe47c1e3",
+      "bytes": 84213
+    },
+    "packages/mobile/src/generated/grade8Lessons.generated.json": {
+      "sha256": "95af2bb5ef2e467ccfa0277cc4f030feaba74af8fff54f61d4df90f9ef078c47",
+      "bytes": 255797
+    },
+    "packages/mobile/src/data/grade9LessonSupplement.json": {
+      "sha256": "9e2c1bf83f1192cd8966626102647084c01f8917563aaaa2583ee510e00b5c4e",
+      "bytes": 79032
+    },
+    "packages/mobile/src/generated/grade9Lessons.generated.json": {
+      "sha256": "bdb20c8161f2bae184bd36144b03e5271434df08f35d444566f7f1909300dca4",
+      "bytes": 262688
+    },
+    "packages/mobile/src/data/grade10LessonSupplement.json": {
+      "sha256": "a73181a601ecbb231122805cdb0e062c12dc32b9a87a4cb3c29e3490a8574f42",
+      "bytes": 81810
+    },
+    "packages/mobile/src/generated/grade10Lessons.generated.json": {
+      "sha256": "9df303df9c9ef9e6ca0031a70f41409c2ab512df839238629aaa4b75012b9ddb",
+      "bytes": 258907
+    },
+    "packages/mobile/src/data/subcategoryPrerequisites.json": {
+      "sha256": "b7a71408553c47b0468cea84b6fb5cf6f4908c697c4436b0131e2d50eb48f772",
+      "bytes": 48758
+    }
+  },
+  "inventory": {
+    "core_cards": 49156,
+    "core_facts": 48613,
+    "all_cards": 49262,
+    "all_facts": 48719,
+    "supplement_questions": 214,
+    "supplement_overrides_matching_bank": 18,
+    "bank_candidates_with_known_code": 16757,
+    "v2_candidates_with_known_code": 9157
+  },
+  "bank_all": {
+    "items": 40619,
+    "versions": {
+      "2": 20058,
+      "1": 20561
+    },
+    "structurally_valid": 40614,
+    "flags": {
+      "duplicate_option_bis": 4,
+      "duplicate_option_tl": 3,
+      "duplicate_option_en": 1
+    },
+    "option_counts": {
+      "3": 20058,
+      "4": 20561
+    },
+    "types": {
+      "number": 946,
+      "unspecified": 20561,
+      "which-example": 2013,
+      "order": 1350,
+      "term": 6556,
+      "odd-one-out": 2075,
+      "what-does": 2469,
+      "why": 2655,
+      "what-if": 1994
+    },
+    "difficulty_labels": {
+      "0": 17310,
+      "1": 20966,
+      "2": 2343
+    },
+    "missing_grades": 8028,
+    "missing_concept": 20058,
+    "distinct_english_stems": 39507,
+    "repeated_english_stem_groups": 871,
+    "items_beyond_first_identical_english_stem": 1107,
+    "uniform_guess_accuracy_valid_items": 0.29115,
+    "longest_option_expected_accuracy_valid_items": {
+      "en": 0.455323,
+      "tl": 0.408533,
+      "bis": 0.408484
+    }
+  },
+  "bank_matching_core_cards": {
+    "items": 31843,
+    "versions": {
+      "2": 18240,
+      "1": 13603
+    },
+    "structurally_valid": 31839,
+    "flags": {
+      "duplicate_option_bis": 3,
+      "duplicate_option_tl": 2,
+      "duplicate_option_en": 1
+    },
+    "option_counts": {
+      "3": 18240,
+      "4": 13603
+    },
+    "types": {
+      "number": 853,
+      "unspecified": 13603,
+      "order": 1213,
+      "odd-one-out": 1873,
+      "which-example": 1840,
+      "term": 6011,
+      "what-does": 2248,
+      "why": 2401,
+      "what-if": 1801
+    },
+    "difficulty_labels": {
+      "0": 13361,
+      "1": 16673,
+      "2": 1809
+    },
+    "missing_grades": 6213,
+    "missing_concept": 18240,
+    "distinct_english_stems": 31069,
+    "repeated_english_stem_groups": 601,
+    "items_beyond_first_identical_english_stem": 770,
+    "uniform_guess_accuracy_valid_items": 0.297732,
+    "longest_option_expected_accuracy_valid_items": {
+      "en": 0.45461,
+      "tl": 0.405017,
+      "bis": 0.402894
+    }
+  },
+  "v2_rewrites_matching_core_cards": {
+    "items": 18240,
+    "versions": {
+      "2": 18240
+    },
+    "structurally_valid": 18237,
+    "flags": {
+      "duplicate_option_tl": 2,
+      "duplicate_option_en": 1,
+      "duplicate_option_bis": 2
+    },
+    "option_counts": {
+      "3": 18240
+    },
+    "types": {
+      "number": 853,
+      "order": 1213,
+      "odd-one-out": 1873,
+      "which-example": 1840,
+      "term": 6011,
+      "what-does": 2248,
+      "why": 2401,
+      "what-if": 1801
+    },
+    "difficulty_labels": {
+      "0": 8500,
+      "1": 9447,
+      "2": 293
+    },
+    "missing_grades": 6213,
+    "missing_concept": 18240,
+    "distinct_english_stems": 17779,
+    "repeated_english_stem_groups": 345,
+    "items_beyond_first_identical_english_stem": 458,
+    "uniform_guess_accuracy_valid_items": 0.333333,
+    "longest_option_expected_accuracy_valid_items": {
+      "en": 0.419632,
+      "tl": 0.367093,
+      "bis": 0.35969
+    }
+  },
+  "projection_after_supplements": {
+    "items": 32039,
+    "versions": {
+      "2": 18222,
+      "1": 13603,
+      "supplement": 214
+    },
+    "structurally_valid": 32035,
+    "flags": {
+      "duplicate_option_bis": 3,
+      "duplicate_option_tl": 2,
+      "duplicate_option_en": 1
+    },
+    "option_counts": {
+      "3": 18436,
+      "4": 13603
+    },
+    "types": {
+      "number": 853,
+      "unspecified": 13817,
+      "order": 1211,
+      "odd-one-out": 1870,
+      "which-example": 1838,
+      "term": 6007,
+      "what-does": 2245,
+      "why": 2398,
+      "what-if": 1800
+    },
+    "difficulty_labels": {
+      "0": 13351,
+      "1": 16665,
+      "2": 1809,
+      "8": 32,
+      "6": 25,
+      "3": 22,
+      "5": 26,
+      "7": 39,
+      "4": 20,
+      "9": 26,
+      "10": 24
+    },
+    "missing_grades": 6411,
+    "missing_concept": 18436,
+    "distinct_english_stems": 31263,
+    "repeated_english_stem_groups": 603,
+    "items_beyond_first_identical_english_stem": 772,
+    "uniform_guess_accuracy_valid_items": 0.29795,
+    "longest_option_expected_accuracy_valid_items": {
+      "en": 0.455273,
+      "tl": 0.405962,
+      "bis": 0.403816
+    }
+  },
+  "competency_coverage": {
+    "3": {
+      "total": 34,
+      "zero_bank_candidates": 0,
+      "zero_projected_3_option": 0,
+      "under_6_distinct_stems_3_option": 3,
+      "under_12_distinct_stems_3_option": 6
+    },
+    "4": {
+      "total": 33,
+      "zero_bank_candidates": 0,
+      "zero_projected_3_option": 0,
+      "under_6_distinct_stems_3_option": 3,
+      "under_12_distinct_stems_3_option": 7
+    },
+    "5": {
+      "total": 40,
+      "zero_bank_candidates": 0,
+      "zero_projected_3_option": 0,
+      "under_6_distinct_stems_3_option": 4,
+      "under_12_distinct_stems_3_option": 11
+    },
+    "6": {
+      "total": 37,
+      "zero_bank_candidates": 0,
+      "zero_projected_3_option": 0,
+      "under_6_distinct_stems_3_option": 8,
+      "under_12_distinct_stems_3_option": 13
+    },
+    "7": {
+      "total": 45,
+      "zero_bank_candidates": 0,
+      "zero_projected_3_option": 0,
+      "under_6_distinct_stems_3_option": 2,
+      "under_12_distinct_stems_3_option": 15
+    },
+    "8": {
+      "total": 44,
+      "zero_bank_candidates": 0,
+      "zero_projected_3_option": 0,
+      "under_6_distinct_stems_3_option": 10,
+      "under_12_distinct_stems_3_option": 27
+    },
+    "9": {
+      "total": 46,
+      "zero_bank_candidates": 0,
+      "zero_projected_3_option": 0,
+      "under_6_distinct_stems_3_option": 6,
+      "under_12_distinct_stems_3_option": 25
+    },
+    "10": {
+      "total": 45,
+      "zero_bank_candidates": 0,
+      "zero_projected_3_option": 0,
+      "under_6_distinct_stems_3_option": 12,
+      "under_12_distinct_stems_3_option": 24
+    }
+  },
+  "subcategory_coverage": {
+    "3": {
+      "total": 39,
+      "zero_bank_candidates": 0,
+      "zero_projected_3_option": 0,
+      "under_6_distinct_stems_3_option": 5,
+      "under_12_distinct_stems_3_option": 18
+    },
+    "4": {
+      "total": 46,
+      "zero_bank_candidates": 1,
+      "zero_projected_3_option": 1,
+      "under_6_distinct_stems_3_option": 5,
+      "under_12_distinct_stems_3_option": 14
+    },
+    "5": {
+      "total": 43,
+      "zero_bank_candidates": 0,
+      "zero_projected_3_option": 0,
+      "under_6_distinct_stems_3_option": 9,
+      "under_12_distinct_stems_3_option": 24
+    },
+    "6": {
+      "total": 42,
+      "zero_bank_candidates": 0,
+      "zero_projected_3_option": 0,
+      "under_6_distinct_stems_3_option": 8,
+      "under_12_distinct_stems_3_option": 16
+    },
+    "7": {
+      "total": 46,
+      "zero_bank_candidates": 0,
+      "zero_projected_3_option": 0,
+      "under_6_distinct_stems_3_option": 4,
+      "under_12_distinct_stems_3_option": 16
+    },
+    "8": {
+      "total": 47,
+      "zero_bank_candidates": 0,
+      "zero_projected_3_option": 0,
+      "under_6_distinct_stems_3_option": 3,
+      "under_12_distinct_stems_3_option": 16
+    },
+    "9": {
+      "total": 35,
+      "zero_bank_candidates": 0,
+      "zero_projected_3_option": 0,
+      "under_6_distinct_stems_3_option": 1,
+      "under_12_distinct_stems_3_option": 5
+    },
+    "10": {
+      "total": 37,
+      "zero_bank_candidates": 0,
+      "zero_projected_3_option": 0,
+      "under_6_distinct_stems_3_option": 4,
+      "under_12_distinct_stems_3_option": 6
+    }
+  },
+  "lesson_unit_coverage": {
+    "3": {
+      "total": 99,
+      "zero_bank_candidates": 11,
+      "zero_projected_3_option": 0,
+      "under_6_distinct_stems_3_option": 35,
+      "under_12_distinct_stems_3_option": 59
+    },
+    "4": {
+      "total": 108,
+      "zero_bank_candidates": 11,
+      "zero_projected_3_option": 3,
+      "under_6_distinct_stems_3_option": 46,
+      "under_12_distinct_stems_3_option": 68
+    },
+    "5": {
+      "total": 105,
+      "zero_bank_candidates": 11,
+      "zero_projected_3_option": 3,
+      "under_6_distinct_stems_3_option": 50,
+      "under_12_distinct_stems_3_option": 76
+    },
+    "6": {
+      "total": 127,
+      "zero_bank_candidates": 20,
+      "zero_projected_3_option": 7,
+      "under_6_distinct_stems_3_option": 57,
+      "under_12_distinct_stems_3_option": 85
+    },
+    "7": {
+      "total": 142,
+      "zero_bank_candidates": 13,
+      "zero_projected_3_option": 1,
+      "under_6_distinct_stems_3_option": 73,
+      "under_12_distinct_stems_3_option": 121
+    },
+    "8": {
+      "total": 133,
+      "zero_bank_candidates": 20,
+      "zero_projected_3_option": 3,
+      "under_6_distinct_stems_3_option": 84,
+      "under_12_distinct_stems_3_option": 114
+    },
+    "9": {
+      "total": 156,
+      "zero_bank_candidates": 17,
+      "zero_projected_3_option": 4,
+      "under_6_distinct_stems_3_option": 109,
+      "under_12_distinct_stems_3_option": 141
+    },
+    "10": {
+      "total": 165,
+      "zero_bank_candidates": 28,
+      "zero_projected_3_option": 5,
+      "under_6_distinct_stems_3_option": 124,
+      "under_12_distinct_stems_3_option": 154
+    }
+  },
+  "broad_rotation_probe": {
+    "3": 12,
+    "4": 12,
+    "5": 12,
+    "6": 12,
+    "7": 12,
+    "8": 12,
+    "9": 12,
+    "10": 12
+  }
+}

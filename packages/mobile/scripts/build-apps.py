@@ -51,6 +51,8 @@ def build(directory, env):
     directory.mkdir(parents=True, exist_ok=False)
     # One formal model gate per pair, before either APK. No skip-gate release mode.
     initial = source_digest()
+    run(['pnpm', 'qa:exam'], directory / 'exam-tests.log', env)
+    run(['python3', 'scripts/build-assessment-bank.py', '--check'], directory / 'exam-bank.log', env)
     run(['bash', str(ROOT / 'finetuning/eval/harness/run-harness.sh')], directory / 'regression.log', env, ROOT)
     try:
         run(['node', '-e', "require('./scripts/qvac-android-x64.cjs').verifiedPort()"], directory / 'qvac-check.log', env)

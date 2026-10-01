@@ -2,6 +2,7 @@ import { QuizSoundSettings } from '../../audio/QuizSoundSettings';
 import { ModelDownloadStatus } from '../../components/ModelDownloadStatus';
 import { ModelDownloads } from '../../components/ModelDownloads';
 import { ImageDownloads } from '../../images/ImageDownloads';
+import { AssessmentSettings } from '../../assessment/AssessmentSettings';
 import { ActivityTable } from '../../telemetry/ActivityTable';
 import { TelemetrySettings } from '../../telemetry/TelemetrySettings';
 import { TalaSettings } from '../../tala';
@@ -148,6 +149,8 @@ export default function SidebarScreen() {
             );
           })}
         </View>
+
+        <AssessmentSettings />
 
         {/* Classroom join/sync sits by grade selection; artwork management stays with app info. */}
         {capabilities.nearbyClassroom ? <TalaSettings language={language ?? 'tagalog'} /> : null}

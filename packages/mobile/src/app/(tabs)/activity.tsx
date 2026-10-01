@@ -8,6 +8,7 @@ import { curriculumOutline, cardsForTopic, topicTitle } from '../../data/cards';
 import { useEngineStore } from '../../store/engineStore';
 import { card, fonts } from '../../theme';
 import { detailedActivity } from '../../telemetry';
+import { AssessmentHistory } from '../../assessment/AssessmentHistory';
 import {
   activityDateRange,
   activityWindows,
@@ -124,7 +125,7 @@ export default function ActivityScreen() {
       </View>
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.note}>
-          Practice records for the selected profile on this device, not a student assessment. Guest
+          Records for the selected profile on this device. Guest
           activity combines students who skipped naming a profile.
         </Text>
         <Text style={styles.heading}>Student profile</Text>
@@ -134,6 +135,8 @@ export default function ActivityScreen() {
             chip(`${p.name} · ${i + 1}`, profileId === p.id, () => setProfileId(p.id))
           )}
         </View>
+        <AssessmentHistory profileId={profileId} />
+        <Text style={styles.heading}>Card practice activity</Text>
         <Text style={styles.heading}>When the activity happened</Text>
         <View style={styles.wrap}>
           {['This week', 'Last 30 days', 'All recorded'].map((p) =>

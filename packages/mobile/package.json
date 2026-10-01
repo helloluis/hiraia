@@ -15,6 +15,7 @@
     "qa:art": "npx tsx scripts/art-presence-check.mts",
     "qa:adjacency": "RUNS=${RUNS:-30} CARDS=${CARDS:-60} SAMPLE=${SAMPLE:-300} npx tsx scripts/card-adjacency-qa.mts",
     "type-check": "tsc --noEmit",
+    "qa:exam": "tsx --test scripts/assessment*.test.mts src/assessment/historyRepository.test.ts scripts/tala-assessment.test.mts",
     "clean": "rm -rf .expo .expo-shared dist",
     "qa:grade5": "python3 ../../rag/pipeline/compile-grade5-lessons.py --check && tsx --test scripts/grade5-lessons.test.mts scripts/calendar-selection.test.mts scripts/curriculum-default.test.mts scripts/review-series.test.mts",
     "qa:content-reach": "tsx scripts/audit-content-reach.mts",

@@ -12,6 +12,7 @@ async function main() {
   const identity = JSON.parse(fs.readFileSync(path.join(root, 'packages/desktop/renderer/build-info.json')));
   const tests = JSON.parse(fs.readFileSync(path.join(root, 'build/windows-e2e/report.json')));
   if (identity.gitCommit !== commit || tests.gitCommit !== commit || !tests.passed || !tests.packaged || tests.platform !== 'win32' || tests.arch !== 'x64' || tests.native?.embeddingDimensions !== 768 || tests.native?.stats?.backendDevice !== 'cpu' || !tests.voices?.en || !tests.voices?.tl) throw new Error('Windows package lacks complete validation for this source commit');
+  if (tests.exam?.questions !== 12 || !['completed','resumed','history','keyboard','zoom'].every(check => tests.exam[check] === true)) throw new Error('Windows package lacks the required exam validation');
   const file = path.join(directory, files[0]);
   const hash = crypto.createHash('sha256');
   for await (const block of fs.createReadStream(file)) hash.update(block);

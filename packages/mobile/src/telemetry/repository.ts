@@ -27,6 +27,8 @@ export interface TelemetryRepository extends Repository, TeacherStore {
   activityReport(start: number, end: number, profileId?: string): Promise<ActivityReport>;
   isEnabled(): Promise<boolean>;
   setEnabled(value: boolean): Promise<void>;
+  assessmentPolicy(): Promise<{ enabled: boolean; epoch: string }>;
+  stageAssessment(event: Event, consentEpoch: string): Promise<void>;
 }
 export async function openRepository(session: Event): Promise<TelemetryRepository> {
   // Separate file: telemetry failures and migrations cannot break the learning database.
@@ -40,7 +42,10 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
       try {
         return await db.withExclusiveTransactionAsync(task);
       } catch (error) {
-        if (attempt >= 6 || !/database (table )?is locked|SQLITE_BUSY|SQLITE_LOCKED/i.test(String(error)))
+        if (
+          attempt >= 6 ||
+          !/database (table )?is locked|SQLITE_BUSY|SQLITE_LOCKED/i.test(String(error))
+        )
           throw error;
         await new Promise((r) => setTimeout(r, 20 * 2 ** attempt * (0.5 + Math.random())));
       }
@@ -67,7 +72,17 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
       PRIMARY KEY(class_id,id));
     CREATE TABLE IF NOT EXISTS teacher_leaves(class_id TEXT NOT NULL,public_key TEXT NOT NULL,
       wire_id TEXT NOT NULL,left_at INTEGER NOT NULL,PRIMARY KEY(class_id,wire_id));
-    CREATE TABLE IF NOT EXISTS teacher_rejoined(scope TEXT PRIMARY KEY);`);
+    CREATE TABLE IF NOT EXISTS teacher_rejoined(scope TEXT PRIMARY KEY);
+    CREATE TABLE IF NOT EXISTS assessment_reports(id TEXT PRIMARY KEY,scope TEXT NOT NULL,
+      occurred_at INTEGER NOT NULL,event TEXT,uploaded INTEGER NOT NULL DEFAULT 0,
+      suppressed INTEGER NOT NULL DEFAULT 0);
+    CREATE INDEX IF NOT EXISTS assessment_reports_scope ON assessment_reports(scope,occurred_at);`);
+  await write(async (tx) => {
+    await tx.runAsync(
+      "INSERT OR IGNORE INTO meta(key,value) VALUES('assessment_consent_epoch',?)",
+      newId()
+    );
+  });
   await write(async (tx) => {
     const columns = await tx.getAllAsync<{ name: string }>('PRAGMA table_info(activity_details)');
     if (!columns.some((c) => c.name === 'profile_id'))
@@ -315,7 +330,66 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
         if (!value) {
           await tx.runAsync('DELETE FROM outbox');
           await tx.runAsync('DELETE FROM teacher_outbox');
+          // Keep receipts, not payloads: re-enabling must not reconstruct opted-out uploads.
+          await tx.runAsync('UPDATE assessment_reports SET event=NULL,suppressed=1,uploaded=1');
+          await tx.runAsync(
+            "INSERT OR REPLACE INTO meta(key,value) VALUES('assessment_consent_epoch',?)",
+            newId()
+          );
         }
+      });
+    },
+    async assessmentPolicy() {
+      const rows = await db.getAllAsync<{ key: string; value: string }>(
+        "SELECT key,value FROM meta WHERE key IN ('enabled','assessment_consent_epoch')"
+      );
+      const values = Object.fromEntries(rows.map((r) => [r.key, r.value]));
+      return { enabled: values.enabled !== 'false', epoch: values.assessment_consent_epoch! };
+    },
+    async stageAssessment(event, consentEpoch) {
+      const clean = sanitizeEvent(event);
+      if (!clean || clean.name !== 'assessment_completed')
+        throw new Error('Invalid assessment summary');
+      await write(async (tx) => {
+        if (await tx.getFirstAsync('SELECT id FROM assessment_reports WHERE id=?', clean.id))
+          return;
+        const rows = await tx.getAllAsync<{ key: string; value: string }>(
+          "SELECT key,value FROM meta WHERE key IN ('enabled','assessment_consent_epoch')"
+        );
+        const values = Object.fromEntries(rows.map((r) => [r.key, r.value]));
+        const allowed =
+          values.enabled !== 'false' && consentEpoch === values.assessment_consent_epoch;
+        const scope = eventScope(clean.props);
+        const payload = allowed ? JSON.stringify(clean) : null;
+        await tx.runAsync(
+          'INSERT INTO assessment_reports(id,scope,occurred_at,event,uploaded,suppressed) VALUES(?,?,?,?,?,?)',
+          clean.id,
+          scope,
+          clean.occurred_at,
+          payload,
+          allowed ? 0 : 1,
+          allowed ? 0 : 1
+        );
+        if (!allowed) return;
+        await tx.runAsync(
+          `INSERT OR IGNORE INTO outbox(id,queued_at,event)
+          SELECT ?,?,? WHERE (SELECT count(*) FROM outbox) < ?`,
+          clean.id,
+          Date.now(),
+          payload,
+          MAX_EVENTS
+        );
+        if (await tx.getFirstAsync('SELECT scope FROM teacher_bindings WHERE scope=?', scope))
+          await tx.runAsync(
+            `INSERT OR IGNORE INTO teacher_outbox(id,queued_at,event,scope)
+            SELECT ?,?,?,? WHERE (SELECT count(*) FROM teacher_outbox WHERE scope=?) < ?`,
+            clean.id,
+            Date.now(),
+            payload,
+            scope,
+            scope,
+            TEACHER_QUEUE_MAX
+          );
       });
     },
     async bindings() {
@@ -545,7 +619,7 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
         }
       });
     },
-    async teacherList(expected, scopes, limit) {
+    async teacherList(expected, scopes, limit, includeAssessments = false) {
       const preference = await db.getFirstAsync<{ value: string }>(
         "SELECT value FROM meta WHERE key='enabled'"
       );
@@ -554,7 +628,9 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
       // Page retained learning history into the bounded delivery queue. A large semester
       // never needs to fit in memory/the outbox; ACKs advance recovery across restarts.
       await write(async (tx) => {
-        const enabled = await tx.getFirstAsync<{value: string}>("SELECT value FROM meta WHERE key='enabled'");
+        const enabled = await tx.getFirstAsync<{ value: string }>(
+          "SELECT value FROM meta WHERE key='enabled'"
+        );
         if (enabled?.value === 'false') return;
         // Only students still in this class: one who left mid-sync sends nothing more.
         live = (
@@ -569,11 +645,39 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
         if (!live.length) return;
         const within = live.map(() => '?').join(',');
         const queued = await tx.getFirstAsync<{ n: number }>(
-          `SELECT count(*) n FROM teacher_outbox WHERE scope IN (${within})`,
-          ...live
+          `SELECT count(*) n FROM teacher_outbox WHERE scope IN (${within})
+          AND (? OR CASE WHEN json_valid(event) THEN json_extract(event,'$.name') ELSE '' END <> 'assessment_completed')`,
+          ...live,
+          includeAssessments ? 1 : 0
         );
         const room = Math.max(0, Math.min(50, limit) - (queued?.n || 0));
         if (!room) return;
+        const assessments = includeAssessments
+          ? await tx.getAllAsync<{
+              id: string;
+              event: string;
+              scope: string;
+            }>(
+              `SELECT a.id,a.event,a.scope FROM assessment_reports a
+          WHERE a.suppressed=0 AND a.event IS NOT NULL AND a.scope IN (${within})
+          AND NOT EXISTS(SELECT 1 FROM teacher_sent_scoped s WHERE s.class_id=? AND s.id=a.id)
+          AND NOT EXISTS(SELECT 1 FROM teacher_outbox o WHERE o.id=a.id)
+          ORDER BY a.occurred_at,a.id LIMIT ?`,
+              ...live,
+              expected.class_id,
+              room
+            )
+          : [];
+        for (const row of assessments)
+          await tx.runAsync(
+            'INSERT OR IGNORE INTO teacher_outbox(id,queued_at,event,scope) VALUES(?,?,?,?)',
+            row.id,
+            Date.now(),
+            row.event,
+            row.scope
+          );
+        const remaining = room - assessments.length;
+        if (!remaining) return;
         // History with no known owner goes nowhere. The Guest is whoever used the phone without
         // a profile since profiles were recorded; before that, 'guest' only means "unattributed"
         // (the column's default, and rows backfilled from pre-profile builds), which may be any
@@ -608,7 +712,7 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
           ...live,
           Number.isSafeInteger(since) ? since : Number.MAX_SAFE_INTEGER,
           expected.class_id,
-          room
+          remaining
         );
         for (const row of history) {
           let event: TeacherEvent | null = null;
@@ -647,8 +751,10 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
       if (!live.length) return [];
       const rows = await db.getAllAsync<{ id: string; event: string }>(
         `SELECT id,event FROM teacher_outbox WHERE scope IN (${live.map(() => '?').join(',')})
+        AND (? OR CASE WHEN json_valid(event) THEN json_extract(event,'$.name') ELSE '' END <> 'assessment_completed')
         ORDER BY seq LIMIT ?`,
         ...live,
+        includeAssessments ? 1 : 0,
         limit
       );
       const valid: TeacherEvent[] = [];
@@ -788,6 +894,30 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
         "SELECT value FROM meta WHERE key='enabled'"
       );
       if (preference?.value === 'false') return [];
+      // Assessment summaries have their own durable archive. A busy card feed cannot
+      // permanently evict them from the ordinary bounded delivery queue.
+      await write(async (tx) => {
+        const preference = await tx.getFirstAsync<{ value: string }>(
+          "SELECT value FROM meta WHERE key='enabled'"
+        );
+        if (preference?.value === 'false') return;
+        const queued = await tx.getFirstAsync<{ n: number }>('SELECT count(*) n FROM outbox');
+        const room = Math.max(0, Math.min(limit, MAX_EVENTS - (queued?.n || 0)));
+        if (!room) return;
+        const rows = await tx.getAllAsync<{ id: string; event: string }>(
+          `SELECT a.id,a.event FROM assessment_reports a WHERE a.uploaded=0 AND a.suppressed=0
+          AND a.event IS NOT NULL AND NOT EXISTS(SELECT 1 FROM outbox o WHERE o.id=a.id)
+          ORDER BY a.occurred_at,a.id LIMIT ?`,
+          room
+        );
+        for (const row of rows)
+          await tx.runAsync(
+            'INSERT OR IGNORE INTO outbox(id,queued_at,event) VALUES(?,?,?)',
+            row.id,
+            Date.now(),
+            row.event
+          );
+      });
       const rows = await db.getAllAsync<{ id: string; event: string }>(
         'SELECT id,event FROM outbox ORDER BY seq LIMIT ?',
         limit
@@ -819,10 +949,14 @@ export async function openRepository(session: Event): Promise<TelemetryRepositor
     },
     async acknowledge(ids) {
       if (ids.length)
-        await db.runAsync(
-          `DELETE FROM outbox WHERE id IN (${ids.map(() => '?').join(',')})`,
-          ...ids
-        );
+        await write(async (tx) => {
+          const within = ids.map(() => '?').join(',');
+          await tx.runAsync(
+            `UPDATE assessment_reports SET uploaded=1 WHERE id IN (${within})`,
+            ...ids
+          );
+          await tx.runAsync(`DELETE FROM outbox WHERE id IN (${within})`, ...ids);
+        });
     },
     async retryAt() {
       const row = await db.getFirstAsync<{ value: string }>(

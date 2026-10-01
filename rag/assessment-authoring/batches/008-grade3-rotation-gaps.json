@@ -1,0 +1,936 @@
+{
+  "schema_version": 1,
+  "batch_id": "008-grade3-rotation-gaps",
+  "title": "Grade 3 reuse and sound: targeted rotation gaps",
+  "created_at": "2026-09-28T04:50:23+00:00",
+  "author": {
+    "agent": "Codex",
+    "method": "direct in-session authorship; script attaches provenance only",
+    "requested_model": "Astra",
+    "runtime_model_id": null
+  },
+  "purpose": "Reviewable Hiraia-scoped assessment item candidates; not an assembled student examination or formal grade placement.",
+  "scope": {
+    "material_grade": 3,
+    "intended_readiness_student_grade": 4,
+    "domain_distribution": {
+      "MATTER": 2,
+      "FORCE_MOTION_ENERGY": 2
+    },
+    "curriculum_review": "Local curriculum extract; check applicable published guide, cohort and school year before production eligibility."
+  },
+  "review_notes": [
+    "Four items address an actual proposed benchmark rotation gap, not a uniform twenty-item quota.",
+    "Two reuse examples and two sound-source examples stay in existing knowledge families. They do not add independent mastery dimensions.",
+    "These forms remain author proposals; comparison across examples requires teacher/language review and later calibration."
+  ],
+  "references": {},
+  "source_files": {
+    "bank": {
+      "path": "rag/bank/quiz-bank-v2.jsonl",
+      "sha256": "a83be6e1773da1c536a013bb340d1863c5b1a8e29279d140eee1d0e89cc18e07"
+    },
+    "cards": {
+      "path": "rag/pipeline/cardsPool.app.json",
+      "sha256": "7a9989363561c91ef5181abd0bf2428bd6b832412f20d4f678f8ab9c42d67b10"
+    },
+    "curriculum": {
+      "path": "rag/sources/curriculum-guides/matatag-elementary-competencies.json",
+      "sha256": "60cf4299b9bf5346139e7ff136e7e857da1c63a6bb7373b9f02c006193a55393"
+    },
+    "subcategory_inventory": {
+      "path": "tools/assessment-evaluation/reports/2026-09-28/subcategories.csv",
+      "sha256": "5c73cc79fe27f1c1f7b0459ffa5761f84b6aad8d813659d2cad96833b192b308"
+    }
+  },
+  "items": [
+    {
+      "id": "ha-g3-0073",
+      "revision": 3,
+      "batch_id": "008-grade3-rotation-gaps",
+      "origin": "alternate",
+      "status": "source_checked",
+      "production_ready": false,
+      "scope": {
+        "material_grade": 3,
+        "domain": "MATTER",
+        "internal_competency_code": "G3-M-7",
+        "internal_competency_text": "demonstrate proper handling and disposal of materials according to their properties, such as reusing objects, disposing of excess oil into garbage, and recycling paper, plastic or glass",
+        "subcategory_id": "g3-matter-waste-materials",
+        "target_id": "g3-reuse-clothing-donation",
+        "knowledge_claim": "Recognizes passing usable clothing to another child to wear as reuse.",
+        "curriculum_version": "FINAL-MATATAG-Science-CG-2023-Grades-3-10.pdf (DepEd, August 2023)",
+        "mapping_status": "author-reviewed supporting-knowledge mapping; cohort/version and teacher confirmation pending",
+        "claim_limit": "Supporting-knowledge recall/recognition only. Does not establish practical performance or equal difficulty with other forms.",
+        "source_grade_tags": null,
+        "grade_note": "Source grade tags are not assessment eligibility. The narrow claim has its own mapping."
+      },
+      "eligibility": {
+        "prior_grade_readiness": {
+          "intended_student_grade": 4,
+          "material_grade": 3,
+          "coverage_basis": "expected prerequisite, not verified teaching",
+          "enabled_after_review": true,
+          "requires_school_year_curriculum_match": true,
+          "curriculum_match_status": "unverified for a specific learner cohort; review required before eligibility is enabled"
+        },
+        "current_grade": {
+          "allowed_routes": [
+            "verified Hiraia knowledge exposure",
+            "teacher-reported coverage of this target"
+          ],
+          "calendar_alone_sufficient": false
+        },
+        "recent_learning": {
+          "window_days": 14,
+          "source_card_ids": [
+            "dcard-01350",
+            "dcard-08093"
+          ],
+          "condition": "Source-card exposure must include the tested knowledge; a broad topic match is insufficient."
+        },
+        "incoming_grade3": "not eligible as a Grade 2-readiness item without separate foundational review"
+      },
+      "uses": {
+        "readiness": "prior-grade candidate after coverage review",
+        "recent_learning": "candidate after specific knowledge exposure",
+        "benchmark": "candidate; calibration and form equivalence untested",
+        "reinforcement": "one supporting observation; require repeated evidence before changing support level"
+      },
+      "relationships": {
+        "knowledge_family_id": "reusing-an-existing-object",
+        "form_family_id": "reusing-an-existing-object-foundations",
+        "form_equivalence": "unvalidated hypothesis",
+        "prerequisite_target_id": null,
+        "prerequisite_review": "Earlier-grade prerequisite edges need review.",
+        "supersedes_assessment_item_id": null,
+        "proposed_bank_replacement_fact_id": null
+      },
+      "provenance": {
+        "primary": {
+          "fact_id": "reusing-old-clothes-g5",
+          "card_ids": [
+            "dcard-01350"
+          ],
+          "fact": {
+            "en": "Old clothes can be reused by donating them to younger siblings or selling them at an affordable price.",
+            "tl": "Ang mga lumang damit ay maaaring gamitin muli sa pamamagitan ng pag-donate sa mga nakababatang kapatid o pagbenta sa abot-kayang presyo.",
+            "bis": "Ang mga daan nga sinina mahimong gamiton pag-usab pinaagi sa pag-donate sa mga manghod o pagbaligya sa barato nga presyo."
+          },
+          "bank_fact_id": "reusing-old-clothes-g5",
+          "bank_question": {
+            "factId": "reusing-old-clothes-g5",
+            "v": 2,
+            "type": "term",
+            "domain": null,
+            "topic": null,
+            "grades": null,
+            "quizTopic": null,
+            "q": {
+              "en": "What do we call using old clothes as rags?",
+              "tl": "Ano ang tawag sa paggamit ng lumang damit bilang basahan?",
+              "bis": "Unsa ang tawag sa paggamit sa daang sinina isip trapo?"
+            },
+            "options": [
+              {
+                "en": "Reusing",
+                "tl": "Reuse",
+                "bis": "Reuse"
+              },
+              {
+                "en": "Recycling",
+                "tl": "Recycle",
+                "bis": "Recycle"
+              },
+              {
+                "en": "Reducing",
+                "tl": "Bawasan",
+                "bis": "Pagkunhod"
+              }
+            ],
+            "answer": 0,
+            "explanation": {
+              "en": "Reusing means using an item again for another purpose, like making rags from old clothes.",
+              "tl": "Ang reuse ay paggamit muli ng bagay para sa ibang layunin, tulad ng paggawa ng basahan mula sa lumang damit.",
+              "bis": "Ang reuse mao ang paggamit pag-usab sa butang alang sa laing katuyoan, sama sa paghimog trapo gikan sa daang sinina."
+            },
+            "difficulty": 0
+          }
+        },
+        "related": [],
+        "supporting_statement": "The current source card explicitly describes passing old clothing to younger siblings as reuse.",
+        "external_reference_ids": [],
+        "additional_teaching_cards": [
+          {
+            "card_id": "dcard-08093",
+            "fact_id": "reusing-old-clothes-g5",
+            "fact": {
+              "en": "What can I do with old clothes that still fit?\n\nYou can reuse them for the same purpose, like wearing hand-me-down clothes from an older sibling.",
+              "tl": "Ano ang maaari kong gawin sa mga lumang damit na kasya pa?\n\nMaaari mong gamitin muli ang mga ito para sa parehong layunin, tulad ng pagsusuot ng mga pinaglumaan mula sa nakatatandang kapatid.",
+              "bis": "Unsa ang akong mahimo sa mga daan nga sinina nga angay pa?\n\nMahimo nimo kining gamiton pag-usab alang sa samang katuyoan, sama sa pagsul-ob og mga pinasahan nga sinina gikan sa magulang nga igsoon."
+            },
+            "knowledge_claim": "Recognizes passing usable clothing to another child to wear as reuse.",
+            "knowledge_family_id": "reusing-an-existing-object",
+            "review_status": "author_source_checked",
+            "independent": false,
+            "reviewed_languages": [
+              "en",
+              "tl",
+              "bis"
+            ],
+            "review_method": "manual_same_claim_check",
+            "support": {
+              "en": "What can I do with old clothes that still fit?\n\nYou can reuse them for the same purpose, like wearing hand-me-down clothes from an older sibling.",
+              "tl": "Ano ang maaari kong gawin sa mga lumang damit na kasya pa?\n\nMaaari mong gamitin muli ang mga ito para sa parehong layunin, tulad ng pagsusuot ng mga pinaglumaan mula sa nakatatandang kapatid.",
+              "bis": "Unsa ang akong mahimo sa mga daan nga sinina nga angay pa?\n\nMahimo nimo kining gamiton pag-usab alang sa samang katuyoan, sama sa pagsul-ob og mga pinasahan nga sinina gikan sa magulang nga igsoon."
+            },
+            "conditions_note": "All three bodies identify wearing hand-me-down clothing as reuse for the same purpose, matching another child continuing to wear the shirt."
+          }
+        ]
+      },
+      "content": {
+        "stem": {
+          "en": "A child gives a good shirt to a younger sibling who wears it. Which practice is this?",
+          "tl": "Ibinigay ng bata ang maayos na damit sa nakababatang kapatid na nagsuot nito. Anong gawain ito?",
+          "bis": "Gihatag sa bata ang maayong sinina sa manghod nga nagsul-ob niini. Unsang buhat kini?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Reusing",
+              "tl": "Pag-reuse",
+              "bis": "Pag-reuse"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Composting",
+              "tl": "Composting",
+              "bis": "Composting"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Recycling into new fabric",
+              "tl": "Pag-recycle bilang bagong tela",
+              "bis": "Pag-recycle ngadto sa bag-ong panapton"
+            }
+          }
+        ],
+        "correct_option_id": "o1",
+        "explanation": {
+          "en": "The existing shirt stays useful as clothing. Giving it to another wearer is reuse.",
+          "tl": "Nananatiling kapaki-pakinabang bilang kasuotan ang damit. Pag-reuse ang pagpasa nito sa ibang magsusuot.",
+          "bis": "Ang daang sinina nagpabiling mapuslanon. Pag-reuse ang paghatag niini sa laing magsul-ob."
+        }
+      },
+      "rationale": {
+        "correct": "The current source card explicitly describes passing old clothing to younger siblings as reuse.",
+        "distractors": {
+          "o2": "No decomposition into compost occurs when another child wears the shirt.",
+          "o3": "The shirt is not processed into newly manufactured fabric."
+        }
+      },
+      "demand": {
+        "type": "recognition",
+        "conceptual_demand": "one familiar fact or relationship",
+        "reading_demand": "author estimate: foundational; not measured with students",
+        "image_required": false,
+        "read_aloud": "permitted if presented consistently; record language and assistance"
+      },
+      "review": {
+        "reviewer": {
+          "agent": "Codex",
+          "method": "in-session author self-review",
+          "independent": false
+        },
+        "source_check": "Source statement read; answer and relevant conditions reviewed. Not independent validation.",
+        "selection_decision": "Add a same-purpose transfer example to the existing jar and scrap-paper family. The linked bank item asks about rags, so this is an additional form, not an unchanged reuse. Language self-review uses the primary-card term sinina consistently. This is not a finding that sapot is incorrect; corpus hits mainly concerned spider webs and did not establish this intended clothing use.",
+        "ambiguity_and_distractors": "Author self-review; see option-specific rationales and remaining limitations.",
+        "exact_bank_stem_matches": {
+          "en": [],
+          "tl": [],
+          "bis": []
+        },
+        "semantic_duplicate_review": {
+          "status": "targeted source/stem/answer search; not exhaustive",
+          "related_bank_fact_ids": [
+            "reusing-old-clothes-g5"
+          ],
+          "rule": "Related forms are not independent knowledge targets; preserve equivalent-family exposure history."
+        },
+        "languages": {
+          "en": {
+            "status": "draft_pending_language_review",
+            "evidence": "Primary source and relevant bank question read in English, Tagalog and Cebuano. Shared terminology with earlier batch forms; new sentences remain pending native-language review."
+          },
+          "tl": {
+            "status": "draft_pending_language_review",
+            "evidence": "Primary source and relevant bank question read in English, Tagalog and Cebuano. Shared terminology with earlier batch forms; new sentences remain pending native-language review."
+          },
+          "bis": {
+            "status": "draft_pending_language_review",
+            "evidence": "Primary source and relevant bank question read in English, Tagalog and Cebuano. Shared terminology with earlier batch forms; new sentences remain pending native-language review."
+          }
+        },
+        "language_evidence_cards": [],
+        "holds": [],
+        "remaining_limitations": [],
+        "empirical_difficulty": null,
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      }
+    },
+    {
+      "id": "ha-g3-0074",
+      "revision": 1,
+      "batch_id": "008-grade3-rotation-gaps",
+      "origin": "alternate",
+      "status": "source_checked",
+      "production_ready": false,
+      "scope": {
+        "material_grade": 3,
+        "domain": "MATTER",
+        "internal_competency_code": "G3-M-7",
+        "internal_competency_text": "demonstrate proper handling and disposal of materials according to their properties, such as reusing objects, disposing of excess oil into garbage, and recycling paper, plastic or glass",
+        "subcategory_id": "g3-matter-waste-materials",
+        "target_id": "g3-reuse-shopping-bag-for-books",
+        "knowledge_claim": "Recognizes carrying school materials in an existing shopping bag as reuse.",
+        "curriculum_version": "FINAL-MATATAG-Science-CG-2023-Grades-3-10.pdf (DepEd, August 2023)",
+        "mapping_status": "author-reviewed supporting-knowledge mapping; cohort/version and teacher confirmation pending",
+        "claim_limit": "Supporting-knowledge recall/recognition only. Does not establish practical performance or equal difficulty with other forms.",
+        "source_grade_tags": null,
+        "grade_note": "Source grade tags are not assessment eligibility. The narrow claim has its own mapping."
+      },
+      "eligibility": {
+        "prior_grade_readiness": {
+          "intended_student_grade": 4,
+          "material_grade": 3,
+          "coverage_basis": "expected prerequisite, not verified teaching",
+          "enabled_after_review": true,
+          "requires_school_year_curriculum_match": true,
+          "curriculum_match_status": "unverified for a specific learner cohort; review required before eligibility is enabled"
+        },
+        "current_grade": {
+          "allowed_routes": [
+            "verified Hiraia knowledge exposure",
+            "teacher-reported coverage of this target"
+          ],
+          "calendar_alone_sufficient": false
+        },
+        "recent_learning": {
+          "window_days": 14,
+          "source_card_ids": [
+            "dcard-01356"
+          ],
+          "condition": "Source-card exposure must include the tested knowledge; a broad topic match is insufficient."
+        },
+        "incoming_grade3": "not eligible as a Grade 2-readiness item without separate foundational review"
+      },
+      "uses": {
+        "readiness": "prior-grade candidate after coverage review",
+        "recent_learning": "candidate after specific knowledge exposure",
+        "benchmark": "candidate; calibration and form equivalence untested",
+        "reinforcement": "one supporting observation; require repeated evidence before changing support level"
+      },
+      "relationships": {
+        "knowledge_family_id": "reusing-an-existing-object",
+        "form_family_id": "reusing-an-existing-object-foundations",
+        "form_equivalence": "unvalidated hypothesis",
+        "prerequisite_target_id": null,
+        "prerequisite_review": "Earlier-grade prerequisite edges need review.",
+        "supersedes_assessment_item_id": null,
+        "proposed_bank_replacement_fact_id": null
+      },
+      "provenance": {
+        "primary": {
+          "fact_id": "reusing-paper-bags-g5",
+          "card_ids": [
+            "dcard-01356"
+          ],
+          "fact": {
+            "en": "A paper bag from a department store can be used again for other school stuff, which is Reuse, using products again for the same purpose.",
+            "tl": "Ang paper bag mula sa department store ay maaaring gamitin muli para sa ibang gamit sa paaralan, na Reuse, ang paggamit muli ng mga produkto para sa parehong layunin.",
+            "bis": "Ang paper bag nga maggikan sa department store mahimong gamiton pag-usab alang sa laing gamit sa eskwelahan, nga Reuse, ang paggamit pag-usab sa mga produkto alang sa samang katuyoan."
+          },
+          "bank_fact_id": null,
+          "bank_question": null
+        },
+        "related": [
+          {
+            "fact_id": "things-we-reuse-g5",
+            "card_ids": [
+              "dcard-01345"
+            ],
+            "fact": {
+              "en": "Plastic bags, glass jars, soda bottles, and clothes are examples of items that can be reused.",
+              "tl": "Ang mga plastic bag, glass jar, bote ng soda, at damit ay mga halimbawa ng mga bagay na maaaring gamitin muli.",
+              "bis": "Ang mga plastic bag, glass jar, botelya sa soda, ug mga sinina maoy mga pananglitan sa mga butang nga mahimong gamiton pag-usab."
+            },
+            "bank_fact_id": null,
+            "bank_question": null
+          }
+        ],
+        "supporting_statement": "The current paper-bag card describes carrying school materials in an existing store bag.",
+        "external_reference_ids": []
+      },
+      "content": {
+        "stem": {
+          "en": "A clean bag from a shop now carries a child’s notebooks. Which practice is this?",
+          "tl": "Ginawang lalagyan ng kuwaderno ang malinis na bag mula sa tindahan. Anong gawain ito?",
+          "bis": "Ang limpyo nga bag gikan sa tindahan gisudlan na og mga notebook sa bata. Unsang buhat kini?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Composting",
+              "tl": "Composting",
+              "bis": "Composting"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Reusing",
+              "tl": "Pag-reuse",
+              "bis": "Pag-reuse"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Recycling into new paper",
+              "tl": "Pag-recycle bilang bagong papel",
+              "bis": "Pag-recycle ngadto sa bag-ong papel"
+            }
+          }
+        ],
+        "correct_option_id": "o2",
+        "explanation": {
+          "en": "The bag remains a bag and serves another use. It has not been processed into new paper.",
+          "tl": "Bag pa rin ito na may bagong gamit. Hindi ito pinroseso upang maging bagong papel.",
+          "bis": "Bag gihapon kini nga adunay laing gamit. Wala kini iproseso aron mahimong bag-ong papel."
+        }
+      },
+      "rationale": {
+        "correct": "The current paper-bag card describes carrying school materials in an existing store bag.",
+        "distractors": {
+          "o1": "No biological decomposition is described.",
+          "o3": "Using the bag intact differs from processing its material into new paper."
+        }
+      },
+      "demand": {
+        "type": "recognition",
+        "conceptual_demand": "one familiar fact or relationship",
+        "reading_demand": "author estimate: foundational; not measured with students",
+        "image_required": false,
+        "read_aloud": "permitted if presented consistently; record language and assistance"
+      },
+      "review": {
+        "reviewer": {
+          "agent": "Codex",
+          "method": "in-session author self-review",
+          "independent": false
+        },
+        "source_check": "Source statement read; answer and relevant conditions reviewed. Not independent validation.",
+        "selection_decision": "Add a transport-container example rather than rewording the jar item. A different object does not prove equal difficulty; keep equivalence unvalidated.",
+        "ambiguity_and_distractors": "Author self-review; see option-specific rationales and remaining limitations.",
+        "exact_bank_stem_matches": {
+          "en": [],
+          "tl": [],
+          "bis": []
+        },
+        "semantic_duplicate_review": {
+          "status": "targeted source/stem/answer search; not exhaustive",
+          "related_bank_fact_ids": [],
+          "rule": "Related forms are not independent knowledge targets; preserve equivalent-family exposure history."
+        },
+        "languages": {
+          "en": {
+            "status": "draft_pending_language_review",
+            "evidence": "Primary source and relevant bank question read in English, Tagalog and Cebuano. Shared terminology with earlier batch forms; new sentences remain pending native-language review."
+          },
+          "tl": {
+            "status": "draft_pending_language_review",
+            "evidence": "Primary source and relevant bank question read in English, Tagalog and Cebuano. Shared terminology with earlier batch forms; new sentences remain pending native-language review."
+          },
+          "bis": {
+            "status": "draft_pending_language_review",
+            "evidence": "Primary source and relevant bank question read in English, Tagalog and Cebuano. Shared terminology with earlier batch forms; new sentences remain pending native-language review."
+          }
+        },
+        "language_evidence_cards": [],
+        "holds": [],
+        "remaining_limitations": [],
+        "empirical_difficulty": null,
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      }
+    },
+    {
+      "id": "ha-g3-0075",
+      "revision": 1,
+      "batch_id": "008-grade3-rotation-gaps",
+      "origin": "revise",
+      "status": "source_checked",
+      "production_ready": false,
+      "scope": {
+        "material_grade": 3,
+        "domain": "FORCE_MOTION_ENERGY",
+        "internal_competency_code": "G3-F-4",
+        "internal_competency_text": "explore and describe how sound is made and transferred in everyday situations, such as the ringing of a bell or the hearing of noises",
+        "subcategory_id": "g3-force_motion_energy-sound-sources-and-production",
+        "target_id": "g3-drum-skin-vibration",
+        "knowledge_claim": "Recalls that a drum’s stretched skin vibrates to produce its sound.",
+        "curriculum_version": "FINAL-MATATAG-Science-CG-2023-Grades-3-10.pdf (DepEd, August 2023)",
+        "mapping_status": "author-reviewed supporting-knowledge mapping; cohort/version and teacher confirmation pending",
+        "claim_limit": "Supporting-knowledge recall/recognition only. Does not establish practical performance or equal difficulty with other forms.",
+        "source_grade_tags": [
+          4,
+          5
+        ],
+        "grade_note": "Source grade tags are not assessment eligibility. The narrow claim has its own mapping."
+      },
+      "eligibility": {
+        "prior_grade_readiness": {
+          "intended_student_grade": 4,
+          "material_grade": 3,
+          "coverage_basis": "expected prerequisite, not verified teaching",
+          "enabled_after_review": true,
+          "requires_school_year_curriculum_match": true,
+          "curriculum_match_status": "unverified for a specific learner cohort; review required before eligibility is enabled"
+        },
+        "current_grade": {
+          "allowed_routes": [
+            "verified Hiraia knowledge exposure",
+            "teacher-reported coverage of this target"
+          ],
+          "calendar_alone_sufficient": false
+        },
+        "recent_learning": {
+          "window_days": 14,
+          "source_card_ids": [
+            "ffct-23087"
+          ],
+          "condition": "Source-card exposure must include the tested knowledge; a broad topic match is insufficient."
+        },
+        "incoming_grade3": "not eligible as a Grade 2-readiness item without separate foundational review"
+      },
+      "uses": {
+        "readiness": "prior-grade candidate after coverage review",
+        "recent_learning": "candidate after specific knowledge exposure",
+        "benchmark": "candidate; calibration and form equivalence untested",
+        "reinforcement": "one supporting observation; require repeated evidence before changing support level"
+      },
+      "relationships": {
+        "knowledge_family_id": "sound-from-vibration",
+        "form_family_id": "sound-from-vibration-foundations",
+        "form_equivalence": "unvalidated hypothesis",
+        "prerequisite_target_id": null,
+        "prerequisite_review": "Earlier-grade prerequisite edges need review.",
+        "supersedes_assessment_item_id": null,
+        "proposed_bank_replacement_fact_id": "drum-membrane-vibration-g4"
+      },
+      "provenance": {
+        "primary": {
+          "fact_id": "drum-membrane-vibration-g4",
+          "card_ids": [
+            "ffct-23087"
+          ],
+          "fact": {
+            "en": "How does a drum make its sound?\n\nWhen struck, a drum's stretched skin vibrates up and down very fast, pushing the air to create the sound!",
+            "tl": "Paano gumagawa ng tunog ang tambol?\n\nKapag pinukpok, nayayanig ang nakaunat na balat ng tambol pataas-pababa nang mabilis, at tinutulak ang hangin para lumikha ng tunog!",
+            "bis": "Unsaon paghimo ug tingog ang tambol?\n\nKon bunalan, ang gibutang nga panit sa tambol magkurog pataas-paubos ug paspas, ug motuklod sa hangin aron makahimo ug tingog!"
+          },
+          "bank_fact_id": "drum-membrane-vibration-g4",
+          "bank_question": {
+            "id": "quiz-15802",
+            "factId": "drum-membrane-vibration-g4",
+            "domain": "FORCE_MOTION_ENERGY",
+            "topic": "drums and percussion",
+            "grades": [
+              4,
+              5
+            ],
+            "q": {
+              "en": "How does a drum make sound when you hit it?",
+              "tl": "Paano nakagawa ng tunog ang tambol kapag ito ay pinukpok?",
+              "bis": "Unsaon paghimo ug tingog sa tambol kung kini bunalan?"
+            },
+            "options": [
+              {
+                "en": "Its stretched skin vibrates and pushes the air to create sound",
+                "tl": "Ang nakaunat na balat nito ay kumikilos at itinutulak ang hangin para lumikha ng tunog",
+                "bis": "Ang gibutang nga panit niini nagkurog ug nagtulod sa hangin aron makagama ug tingog"
+              },
+              {
+                "en": "Air trapped inside the drum bounces out through the rim",
+                "tl": "Ang hangin na nakasara sa loob ng tambol ay tumatalbog palabas sa gilid",
+                "bis": "Ang hangin nga nakasulod sa tambol mobuto palabas sa rim"
+              },
+              {
+                "en": "The hard shell of the drum shakes the ground beneath it",
+                "tl": "Ang matigas na balutan ng tambol ay yuyugyog ang lupa sa ilalim nito",
+                "bis": "Ang hugot nga panit sa tambol mag-uyog sa yuta ilawom niini"
+              },
+              {
+                "en": "The drumstick releases a stored sound when it strikes",
+                "tl": "Ang drumstick ay naglalabas ng nakaimbak na tunog kapag tumama",
+                "bis": "Ang drumstick nagpagawas ug nakaimbak nga tingog kung kini moigo"
+              }
+            ],
+            "answer": 0,
+            "explanation": {
+              "en": "When a drum is struck, its stretched skin vibrates rapidly and pushes the air, creating the sound we hear.",
+              "tl": "Kapag pinukpok ang tambol, ang nakaunat nitong balat ay mabilis na yumuyuko pataas‑pababa, at ang pag‑yugyog na ito ang nagtutulak sa hangin para lumikha ng tunog.",
+              "bis": "Kon bunalan ang tambol, ang gibutang nga panit niini magkurog pataas‑paubos ug paspas kaayo, ug kining pagkurog mao ang motuklod sa hangin aron makahimo ug tingog."
+            },
+            "difficulty": 0,
+            "reviewed": false,
+            "quizTopic": "Light & Sound",
+            "concept": 3898,
+            "v": 1
+          }
+        },
+        "related": [],
+        "supporting_statement": "The source describes the membrane moving rapidly up and down when struck and producing sound.",
+        "external_reference_ids": []
+      },
+      "content": {
+        "stem": {
+          "en": "A drum keeps sounding briefly after it is struck. What is its stretched skin doing?",
+          "tl": "Sandaling patuloy na tumutunog ang tambol matapos paluin. Ano ang ginagawa ng nakaunat na balat nito?",
+          "bis": "Nagpadayon kadiyot ang tingog sa tambol human kini bunalan. Unsay gibuhat sa inat nga panit niini?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "Staying completely still",
+              "tl": "Nananatiling hindi gumagalaw",
+              "bis": "Nagpabiling wala molihok"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Turning all the way around",
+              "tl": "Umiikot nang buong paikot",
+              "bis": "Nagtuyok sa usa ka tibuok tuyok"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "Vibrating back and forth",
+              "tl": "Nagva-vibrate nang pabalik-balik",
+              "bis": "Nagkurog nga balik-balik"
+            }
+          }
+        ],
+        "correct_option_id": "o3",
+        "explanation": {
+          "en": "The stretched skin vibrates after the strike. These vibrations help produce the drum’s sound.",
+          "tl": "Nagva-vibrate ang nakaunat na balat matapos paluin. Tumutulong ang vibration na ito sa paggawa ng tunog ng tambol.",
+          "bis": "Ang inat nga panit magkurog human bunalan. Kini nga vibration makatabang sa paghimo sa tingog sa tambol."
+        }
+      },
+      "rationale": {
+        "correct": "The source describes the membrane moving rapidly up and down when struck and producing sound.",
+        "distractors": {
+          "o1": "Confuses continuing sound production with an entirely stationary sounding surface.",
+          "o2": "Confuses oscillation of the membrane with full rotation of the membrane."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "conceptual_demand": "one familiar fact or relationship",
+        "reading_demand": "author estimate: foundational; not measured with students",
+        "image_required": false,
+        "read_aloud": "permitted if presented consistently; record language and assistance"
+      },
+      "review": {
+        "reviewer": {
+          "agent": "Codex",
+          "method": "in-session author self-review",
+          "independent": false
+        },
+        "source_check": "Source statement read; answer and relevant conditions reviewed. Not independent validation.",
+        "selection_decision": "Specify the continuing sound after the strike; remove stored-sound and rim-escape explanations from the legacy item. Related to guitar vibration, with a different vibrating surface.",
+        "ambiguity_and_distractors": "Author self-review; see option-specific rationales and remaining limitations.",
+        "exact_bank_stem_matches": {
+          "en": [],
+          "tl": [],
+          "bis": []
+        },
+        "semantic_duplicate_review": {
+          "status": "targeted source/stem/answer search; not exhaustive",
+          "related_bank_fact_ids": [
+            "drum-membrane-vibration-g4"
+          ],
+          "rule": "Related forms are not independent knowledge targets; preserve equivalent-family exposure history."
+        },
+        "languages": {
+          "en": {
+            "status": "draft_pending_language_review",
+            "evidence": "Primary source and relevant bank question read in English, Tagalog and Cebuano. Shared terminology with earlier batch forms; new sentences remain pending native-language review."
+          },
+          "tl": {
+            "status": "draft_pending_language_review",
+            "evidence": "Primary source and relevant bank question read in English, Tagalog and Cebuano. Shared terminology with earlier batch forms; new sentences remain pending native-language review."
+          },
+          "bis": {
+            "status": "draft_pending_language_review",
+            "evidence": "Primary source and relevant bank question read in English, Tagalog and Cebuano. Shared terminology with earlier batch forms; new sentences remain pending native-language review."
+          }
+        },
+        "language_evidence_cards": [],
+        "holds": [],
+        "remaining_limitations": [],
+        "empirical_difficulty": null,
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      }
+    },
+    {
+      "id": "ha-g3-0076",
+      "revision": 1,
+      "batch_id": "008-grade3-rotation-gaps",
+      "origin": "alternate",
+      "status": "source_checked",
+      "production_ready": false,
+      "scope": {
+        "material_grade": 3,
+        "domain": "FORCE_MOTION_ENERGY",
+        "internal_competency_code": "G3-F-4",
+        "internal_competency_text": "explore and describe how sound is made and transferred in everyday situations, such as the ringing of a bell or the hearing of noises",
+        "subcategory_id": "g3-force_motion_energy-sound-sources-and-production",
+        "target_id": "g3-flute-vibrating-air",
+        "knowledge_claim": "Recalls that vibrating air inside a flute produces its musical sound.",
+        "curriculum_version": "FINAL-MATATAG-Science-CG-2023-Grades-3-10.pdf (DepEd, August 2023)",
+        "mapping_status": "author-reviewed supporting-knowledge mapping; cohort/version and teacher confirmation pending",
+        "claim_limit": "Supporting-knowledge recall/recognition only. Does not establish practical performance or equal difficulty with other forms.",
+        "source_grade_tags": [
+          4
+        ],
+        "grade_note": "Source grade tags are not assessment eligibility. The narrow claim has its own mapping."
+      },
+      "eligibility": {
+        "prior_grade_readiness": {
+          "intended_student_grade": 4,
+          "material_grade": 3,
+          "coverage_basis": "expected prerequisite, not verified teaching",
+          "enabled_after_review": true,
+          "requires_school_year_curriculum_match": true,
+          "curriculum_match_status": "unverified for a specific learner cohort; review required before eligibility is enabled"
+        },
+        "current_grade": {
+          "allowed_routes": [
+            "verified Hiraia knowledge exposure",
+            "teacher-reported coverage of this target"
+          ],
+          "calendar_alone_sufficient": false
+        },
+        "recent_learning": {
+          "window_days": 14,
+          "source_card_ids": [
+            "ffct-24638"
+          ],
+          "condition": "Source-card exposure must include the tested knowledge; a broad topic match is insufficient."
+        },
+        "incoming_grade3": "not eligible as a Grade 2-readiness item without separate foundational review"
+      },
+      "uses": {
+        "readiness": "prior-grade candidate after coverage review",
+        "recent_learning": "candidate after specific knowledge exposure",
+        "benchmark": "candidate; calibration and form equivalence untested",
+        "reinforcement": "one supporting observation; require repeated evidence before changing support level"
+      },
+      "relationships": {
+        "knowledge_family_id": "sound-from-vibration",
+        "form_family_id": "sound-from-vibration-foundations",
+        "form_equivalence": "unvalidated hypothesis",
+        "prerequisite_target_id": null,
+        "prerequisite_review": "Earlier-grade prerequisite edges need review.",
+        "supersedes_assessment_item_id": null,
+        "proposed_bank_replacement_fact_id": null
+      },
+      "provenance": {
+        "primary": {
+          "fact_id": "slow-vibration-part-vibrating-object-g4",
+          "card_ids": [
+            "ffct-24638"
+          ],
+          "fact": {
+            "en": "What exactly is vibrating when you hear a sound?\n\nThe part that moves quickly back and forth is what vibrates! It can be a guitar string, a drumhead, or air inside a flute. When it moves slowly, the sound is low.",
+            "tl": "Ano ba ang nagva-vibrate kapag nakakarinig ka ng tunog?\n\nAng bahaging mabilis na gumagalaw paroo't parito ang nagva-vibrate! Pwede itong kuwerdas ng gitara, balat ng tambol, o hangin sa loob ng plawta. Kapag mabagal ang galaw, mababa ang tunog.",
+            "bis": "Unsa man ang nag-vibrate kung makadungog ka og tingog?\n\nAng bahin nga paspas nga molihok balik-balik mao ang nag-vibrate! Mahimo kini nga kuwerdas sa gitara, panit sa tambol, o hangin sulod sa plawta. Kung hinay ang lihok, mubo ang tingog."
+          },
+          "bank_fact_id": "slow-vibration-part-vibrating-object-g4",
+          "bank_question": {
+            "factId": "slow-vibration-part-vibrating-object-g4",
+            "v": 2,
+            "type": "order",
+            "domain": "FORCE_MOTION_ENERGY",
+            "topic": "The vibrating object is what makes the sound",
+            "grades": [
+              4
+            ],
+            "quizTopic": "Light & Sound",
+            "q": {
+              "en": "What comes right after a string vibrates?",
+              "tl": "Ano ang kasunod kapag nag-vibrate ang kuwerdas?",
+              "bis": "Unsa ang sunod kung nag-vibrate ang kuwerdas?"
+            },
+            "options": [
+              {
+                "en": "Sound is made",
+                "tl": "Gumagawa ng tunog",
+                "bis": "Mohimo og tingog"
+              },
+              {
+                "en": "String breaks",
+                "tl": "Naputol ang kuwerdas",
+                "bis": "Mabali ang kuwerdas"
+              },
+              {
+                "en": "Air stops",
+                "tl": "Humihinto ang hangin",
+                "bis": "Moundang ang hangin"
+              }
+            ],
+            "answer": 0,
+            "explanation": {
+              "en": "When a string vibrates, it makes sound waves that reach your ear.",
+              "tl": "Kapag nag-vibrate ang kuwerdas, gumagawa ito ng sound waves na umaabot sa tenga.",
+              "bis": "Kung nag-vibrate ang kuwerdas, mohimo kini og sound waves nga moabot sa dalunggan."
+            },
+            "difficulty": 1
+          }
+        },
+        "related": [
+          {
+            "fact_id": "instruments-vibrate-g3",
+            "card_ids": [
+              "dcard-03665"
+            ],
+            "fact": {
+              "en": "Plucking a guitar string, striking a drumhead, or blowing into a flute causes vibrations that create sound.",
+              "tl": "Ang pagkalabit sa string ng gitara, pagpalo sa drumhead, o pag-ihip sa plauta ay nagdudulot ng vibrations na lumilikha ng sound.",
+              "bis": "Ang pagkusion sa string sa gitara, pagbunal sa drumhead, o paghuyop sa plauta makapahinabo ug vibrations nga maghimo ug sound."
+            },
+            "bank_fact_id": null,
+            "bank_question": null
+          }
+        ],
+        "supporting_statement": "The primary source explicitly lists air inside a flute as a vibrating sound source.",
+        "external_reference_ids": []
+      },
+      "content": {
+        "stem": {
+          "en": "What vibrates inside a flute to produce its musical sound?",
+          "tl": "Ano ang nagva-vibrate sa loob ng plawta upang lumikha ng tunog nito?",
+          "bis": "Unsa ang nagkurog sulod sa plawta aron makahimo sa tingog niini?"
+        },
+        "options": [
+          {
+            "id": "o1",
+            "text": {
+              "en": "A stretched skin",
+              "tl": "Nakaunat na balat",
+              "bis": "Inat nga panit"
+            }
+          },
+          {
+            "id": "o2",
+            "text": {
+              "en": "Air",
+              "tl": "Hangin",
+              "bis": "Hangin"
+            }
+          },
+          {
+            "id": "o3",
+            "text": {
+              "en": "A plucked string",
+              "tl": "Pinitik na kuwerdas",
+              "bis": "Gikuhit nga kuwerdas"
+            }
+          }
+        ],
+        "correct_option_id": "o2",
+        "explanation": {
+          "en": "Air inside the flute vibrates to produce sound. A vibrating skin or string is used in other kinds of instruments.",
+          "tl": "Nagva-vibrate ang hangin sa loob ng plawta upang lumikha ng tunog. Sa ibang uri ng instrumento ginagamit ang nagva-vibrate na balat o kuwerdas.",
+          "bis": "Ang hangin sulod sa plawta magkurog aron makahimo og tingog. Ang nagkurog nga panit o kuwerdas gigamit sa laing matang sa instrumento."
+        }
+      },
+      "rationale": {
+        "correct": "The primary source explicitly lists air inside a flute as a vibrating sound source.",
+        "distractors": {
+          "o1": "Confuses a flute’s air column with the sounding membrane of a drum.",
+          "o3": "Confuses a wind instrument with the sounding string of a guitar."
+        }
+      },
+      "demand": {
+        "type": "recall",
+        "conceptual_demand": "one familiar fact or relationship",
+        "reading_demand": "author estimate: foundational; not measured with students",
+        "image_required": false,
+        "read_aloud": "permitted if presented consistently; record language and assistance"
+      },
+      "review": {
+        "reviewer": {
+          "agent": "Codex",
+          "method": "in-session author self-review",
+          "independent": false
+        },
+        "source_check": "Source statement read; answer and relevant conditions reviewed. Not independent validation.",
+        "selection_decision": "Add a vibrating-air example rather than another string or membrane rewording. This asks which material vibrates, so equivalence to questions about motion remains unvalidated.",
+        "ambiguity_and_distractors": "Author self-review; see option-specific rationales and remaining limitations.",
+        "exact_bank_stem_matches": {
+          "en": [],
+          "tl": [],
+          "bis": []
+        },
+        "semantic_duplicate_review": {
+          "status": "targeted source/stem/answer search; not exhaustive",
+          "related_bank_fact_ids": [
+            "slow-vibration-part-vibrating-object-g4"
+          ],
+          "rule": "Related forms are not independent knowledge targets; preserve equivalent-family exposure history."
+        },
+        "languages": {
+          "en": {
+            "status": "draft_pending_language_review",
+            "evidence": "Primary source and relevant bank question read in English, Tagalog and Cebuano. Shared terminology with earlier batch forms; new sentences remain pending native-language review."
+          },
+          "tl": {
+            "status": "draft_pending_language_review",
+            "evidence": "Primary source and relevant bank question read in English, Tagalog and Cebuano. Shared terminology with earlier batch forms; new sentences remain pending native-language review."
+          },
+          "bis": {
+            "status": "draft_pending_language_review",
+            "evidence": "Primary source and relevant bank question read in English, Tagalog and Cebuano. Shared terminology with earlier batch forms; new sentences remain pending native-language review."
+          }
+        },
+        "language_evidence_cards": [],
+        "holds": [],
+        "remaining_limitations": [
+          "Flute familiarity and the air-column idea need explicit coverage; instrument names alone are not sufficient exposure."
+        ],
+        "empirical_difficulty": null,
+        "native_speaker_review": null,
+        "teacher_review": null,
+        "student_pilot": null
+      }
+    }
+  ]
+}

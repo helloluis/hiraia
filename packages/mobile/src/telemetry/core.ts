@@ -23,6 +23,43 @@ export function newId(): string {
       .padStart(8, '0')
   ).join('')}`;
 }
+/** UTF-8 length without Node Buffer or a native TextEncoder dependency. */
+export function jsonBytes(value: unknown): number {
+  let bytes = 0;
+  for (const char of JSON.stringify(value)) {
+    const point = char.codePointAt(0)!;
+    bytes += point <= 0x7f ? 1 : point <= 0x7ff ? 2 : point <= 0xffff ? 3 : 4;
+  }
+  return bytes;
+}
+export function boundedBatch(events: Event[], installationId: string): Event[] {
+  // Reserve 1KB of the 90KB application budget for reporter metadata added by the caller.
+  let bytes = jsonBytes({ schema: 1, installation_id: installationId, events: [] }) + 1024;
+  const selected: Event[] = [];
+  for (const event of events.slice(0, 50)) {
+    const size = jsonBytes(event) + (selected.length ? 1 : 0);
+    if (bytes + size > 90_000) break;
+    selected.push(event);
+    bytes += size;
+  }
+  return selected;
+}
+export function supportedAcknowledgements(
+  events: Event[],
+  response: { acknowledged?: unknown; rejected?: unknown; assessment_supported?: boolean }
+) {
+  const assessmentIds = new Set(
+    events.filter((e) => e.name === 'assessment_completed').map((e) => e.id)
+  );
+  const supportedIds = (ids: unknown) =>
+    Array.isArray(ids) && response.assessment_supported !== true
+      ? ids.filter((id) => !assessmentIds.has(id))
+      : ids;
+  return {
+    acknowledged: supportedIds(response.acknowledged),
+    rejected: supportedIds(response.rejected),
+  };
+}
 export class Outbox {
   private writes = Promise.resolve();
   private pending = 0;
@@ -31,9 +68,7 @@ export class Outbox {
   private failures = 0;
   constructor(
     private repository: () => Promise<Repository>,
-    private send: (
-      body: { schema: 1; installation_id: string; events: Event[] }
-    ) => Promise<{
+    private send: (body: { schema: 1; installation_id: string; events: Event[] }) => Promise<{
       ok: boolean;
       acknowledged?: unknown;
       rejected?: unknown;
@@ -83,7 +118,7 @@ export class Outbox {
       if ((await repo.retryAt()) > this.now()) return;
       // Limit each wake to five batches; subsequent foreground ticks continue draining.
       for (let batch = 0; batch < 5; batch++) {
-        const events = await repo.list(50);
+        const events = boundedBatch(await repo.list(50), repo.installationId);
         if (!events.length) return;
         const response = await this.send({
           schema: 1,

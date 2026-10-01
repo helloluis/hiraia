@@ -78,6 +78,9 @@ jobs:
         run: |
           pnpm --filter @hiraia/mobile qa:platforms
           pnpm --filter @hiraia/mobile exec tsx --test scripts/adaptive-feed.test.mts scripts/review-series.test.mts
+          pnpm --filter @hiraia/mobile qa:exam
+          python3 packages/mobile/scripts/build-assessment-bank.py --check
+          python3 -B -m unittest discover -s packages/mobile/scripts -p 'test_assessment_bank_compiler.py'
           python3 -B -m unittest discover -s packages/mobile/scripts -p 'test_native_abis.py'
           python3 -B -m unittest discover -s deploy -p 'test_native_runner.py'
           python3 -B -m unittest discover -s deploy -p 'test_publish_platforms.py'

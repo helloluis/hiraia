@@ -1,6 +1,7 @@
 import Database from 'better-sqlite3';
 import fs from 'node:fs';
 import path from 'node:path';
+import { validAssessment } from './assessment';
 
 export const EVENTS = [
   'first_open',
@@ -10,6 +11,7 @@ export const EVENTS = [
   'quiz_shown',
   'quiz_answer_submitted',
   'quiz_graded',
+  'assessment_completed',
   'download_started',
   'download_resumed',
   'download_failed',
@@ -86,13 +88,16 @@ export function validEvent(value: unknown): value is Event {
     Array.isArray(e.props)
   )
     return false;
-  if (JSON.stringify(e).length > 1800) return false;
+  if (e.name === 'assessment_completed'
+    ? Buffer.byteLength(JSON.stringify(e), 'utf8') > 4096
+    : JSON.stringify(e).length > 1800) return false;
   if (
     e.props.profile_kind === 'student' &&
     (typeof e.props.profile_id !== 'string' || !id.test(e.props.profile_id))
   )
     return false;
   if (e.props.profile_id !== undefined && e.props.profile_kind !== 'student') return false;
+  if (e.name === 'assessment_completed') return validAssessment(e);
   return Object.entries(e.props).every(([k, v]) => {
     if (k === 'profile_id') return typeof v === 'string' && id.test(v);
     if (strings.has(k)) return typeof v === 'string' && label.test(v);
@@ -227,6 +232,8 @@ export function ingest(db: Database.Database, body: unknown, now = Date.now()) {
   return {
     acknowledged,
     rejected,
+    ...(b.events.some((event) => (event as Event).name === 'assessment_completed')
+      ? { assessment_supported: true } : {}),
     ...(reporter.app === 'tala' ? { reporter_recorded: true } : {}),
   };
 }

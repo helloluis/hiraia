@@ -8,6 +8,12 @@ packaged Windows CPU/voice/UI tests. See [Windows build notes](../desktop/README
 `pnpm apk` remains the local paired-APK command described below; `pnpm build` alone
 does not produce any native release.
 
+The 12-question exam and saved history are shared requirements for all three editions.
+`pnpm --filter @hiraia/mobile qa:exam` and the exam-bank freshness check gate both APKs.
+The packaged Windows test completes twelve answers offline, restarts partway through,
+checks the saved history, and exercises keyboard input, large text and a small window.
+The three-edition manifest rejects Windows evidence without those exam checks.
+
 
 ## Standard build: always both platforms
 

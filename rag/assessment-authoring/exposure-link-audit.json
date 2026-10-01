@@ -1,0 +1,5253 @@
+{
+  "created_at": "2026-09-28T09:32:44+00:00",
+  "source_files": {
+    "rag/assessment-authoring/batches/001-grade3-foundations.json": "db1e0ecaa8f6386b7cc0b1ca5463baa4ca7ea8a20c551c10bb0679063c4547a4",
+    "rag/assessment-authoring/batches/002-grade3-materials.json": "e086a9dba5993f68adc351b6e060c4f2d0f3efe54927f15e7cb1aa5e6927c385",
+    "rag/assessment-authoring/batches/003-grade4-living-things.json": "8709e4cebfa5de75f6a72a1880ca5d36f6a1cd1765a92e81986726b9f4115faa",
+    "rag/assessment-authoring/batches/004-grade3-motion-light-sky.json": "2f71c7956c25eefa843ed870b3244165ff9c7028bf12b04682ca67b0e8374c8c",
+    "rag/assessment-authoring/batches/005-grade3-living-things.json": "f74a64f045fd1234cd4c355a700273e4790f8e71c2a21f7ae466d21b7c9c6a29",
+    "rag/assessment-authoring/batches/006-grade4-motion-magnets-energy.json": "6fcb7e22b5117327b0f193b730ca9b3710ab0c59ed70dee670efe14de6c3006b",
+    "rag/assessment-authoring/batches/007-grade4-soil-weather-sun.json": "3f44131dfacd1e32717edb8fd9069e863e87ce50352afc6819b5a28bba8f4f79",
+    "rag/assessment-authoring/batches/008-grade3-rotation-gaps.json": "d6abe46cee7df83775ed5047a061730fefb0fb798046fcbab21a1dcbc4d1d7d7",
+    "rag/assessment-authoring/batches/009-grade4-materials-and-investigation.json": "f398134494a6dd43f2796a653ad1a51362679173d31450b320bae62a0680cb64",
+    "rag/assessment-authoring/batches/010-grade5-matter-measurement.json": "7d153a58021bd817f18adc269d4292d403f85cd91464543964993c3ab0b0faf3",
+    "rag/assessment-authoring/batches/011-grade5-living-things.json": "556812c404afb819bea62acca579a6d69cc44541c3289d24dca518b9fed3c493",
+    "rag/assessment-authoring/batches/012-grade5-forces-and-circuits.json": "906294820be89f5b95720c45c400458d4ea8d8e51d1837edb5a61db59309413b",
+    "rag/assessment-authoring/batches/013-grade5-earth-and-space.json": "61a33eb72da44b91adb604a402d3a0c52f66034008123eb9d3397912fa708dc2",
+    "rag/assessment-authoring/batches/014-grade6-matter-mixtures-investigation.json": "8e4e4f5198dc999ded0fc90a9cec1594588f8658ce97985dc7c54b5da9045018",
+    "rag/assessment-authoring/batches/015-grade6-living-things.json": "aa0b67952ae4f7fc130e4bd1b398fd2af24b7d6cc8cfb9344c1ad044080debec",
+    "rag/assessment-authoring/batches/016-grade6-machines-and-waves.json": "4760f1e3acb478fe4ff00f7d2a7df2a3126d0af0865844d8cefbac63fa2964c2",
+    "rag/assessment-authoring/batches/017-grade6-earth-and-space.json": "638a018c8ba98985eb2133ae701791ff9230613180848e1a0f13e0bfb4e14359",
+    "rag/assessment-authoring/batches/018-grade7-matter-and-investigation.json": "afe222931e4698070f07f6e7daa03f14cf0e09a4559a1dbe5b2413765b8ef86d",
+    "rag/assessment-authoring/batches/019-grade7-cells-and-life-organization.json": "7bc26935b7e02c86e019d742206f5bfd5e35fca8eaa4241e71182d5bf9b91e10",
+    "rag/assessment-authoring/batches/020-grade7-motion-and-heat.json": "7cd5245a34a60f248d3c208492e9a355910721749cd1d0c06c775a8a1303fcfb",
+    "rag/assessment-authoring/batches/021-grade7-earthquakes-and-weather.json": "e0f9d5a0c092aa9dc06ad8fed060206beb282c0cb05fd809f7f6f6a1d2e07d69",
+    "rag/assessment-authoring/batches/022-grade8-atoms-and-periodic-table.json": "f327cda575012af698236078861db07dfbf04358df81deb9129eb8aaba4dc3dd",
+    "rag/assessment-authoring/batches/023-grade8-systems-and-inheritance.json": "967900f72768ef271031ebebe5451a8f987283f29a5ba673c39b241cdfdf94d3",
+    "rag/assessment-authoring/batches/024-grade8-motion-energy-and-light.json": "34d4ad6d932457ba9b81f94e737935e22d7a1798b14f14ce93d394ccc06c66ae",
+    "rag/assessment-authoring/batches/025-grade8-earth-oceans-and-storms.json": "f0b9b1fb886659fb8fed9c16a06d103224bf6b424f289d3be11a02e2b2d7c2dc",
+    "rag/assessment-authoring/batches/026-grade9-bonding-and-compounds.json": "7a78f21a8eeec2ff4caef0d0b5dd0c19a0eaa40f4101679eae33169377c17819",
+    "rag/assessment-authoring/batches/027-grade9-genetics-and-biodiversity.json": "568b8992eb33f9427d60ec45f01c067ba43808535da040676744cddceaf46f1f",
+    "rag/assessment-authoring/batches/028-grade9-forces-circuits-and-radiation.json": "f84d3c055e9c6bf44644549d49dc5f03685246b77f6bc5636c31a3adf5a2e244",
+    "rag/assessment-authoring/batches/029-grade9-earth-history-and-space.json": "b26e80c83038754f9929ce2d5fb54a07b1c7f1148654002c495cdb2ef1d945ad",
+    "rag/assessment-authoring/batches/030-grade10-reactions-and-rates.json": "66d40b9ab9ea98382c3dae480242a0f6b5b3d95608ab60caa2a1c24b441949f4",
+    "rag/assessment-authoring/batches/031-grade10-homeostasis-evolution-and-biotechnology.json": "4f3233bf250f292af3d84b661db228b38ab990156b28baa6617be81c1c6737e9",
+    "rag/assessment-authoring/batches/032-grade10-momentum-and-electricity.json": "58a8e46899b68772e028ceba46e48d3973a329bde250c33ffccfdd0f2157834a",
+    "rag/assessment-authoring/batches/033-grade10-plates-climate-and-energy.json": "5ba305eb4b6cc5794e7fa7310fc66c47280aae7aec8a7c30ba1a421f13ee2dde",
+    "rag/pipeline/cardsPool.app.json": "7a9989363561c91ef5181abd0bf2428bd6b832412f20d4f678f8ab9c42d67b10",
+    "packages/mobile/src/generated/grade3Lessons.generated.json": "8f524db6afe5a940bd6eeb008bbc77a7beae79e744470659d6b802e0e25f0a20",
+    "packages/mobile/src/data/grade3LessonSupplement.json": "dd4309c6077b4c2844052881dd8307ada510f0a395fe0a45c05bf29d4c6cc329",
+    "packages/mobile/src/generated/grade4Lessons.generated.json": "76082ffd28cf873a9045fb2a5d9a4daf8f9c018e84aae2cbb76e26ac74dc8e4d",
+    "packages/mobile/src/data/grade4LessonSupplement.json": "dcc27656a216d20fab62593f39023783651926928d2bb1b9fff09159f8df1ce3",
+    "packages/mobile/src/generated/grade5Lessons.generated.json": "6a2c15640f9bc87c9507d399894d4c7c54549e88e712e5bd239f5459b16a9f9f",
+    "packages/mobile/src/data/grade5LessonSupplement.json": "fa5e63384f6976df874d1e50ffd52eaba15a11b82ffb5843d0d8d0e053db2c28",
+    "packages/mobile/src/generated/grade6Lessons.generated.json": "08ece8a0da9a76a8c3a9d3be6d8c746445be59340be2b64f9e2da64cb41fcbb1",
+    "packages/mobile/src/data/grade6LessonSupplement.json": "33268e8ba6e4f1743938d34b43a5055ba6147a59618d37fb25bdda54e2f5b32b",
+    "packages/mobile/src/generated/grade7Lessons.generated.json": "0ae7a4dafd95df10b2f63278fe76c5ce2ee1a58fd4dcce60d7dcf0dfd44bf8f9",
+    "packages/mobile/src/data/grade7LessonSupplement.json": "a0d98d7124648c177ab80ed250b2d85291489ceff2ce36c3167e0f0bc4e769cd",
+    "packages/mobile/src/generated/grade8Lessons.generated.json": "95af2bb5ef2e467ccfa0277cc4f030feaba74af8fff54f61d4df90f9ef078c47",
+    "packages/mobile/src/data/grade8LessonSupplement.json": "96f5ab942f124f79a6479b78e1dcd14504af375a888d5dd3f43dbdfcfe47c1e3",
+    "packages/mobile/src/generated/grade9Lessons.generated.json": "bdb20c8161f2bae184bd36144b03e5271434df08f35d444566f7f1909300dca4",
+    "packages/mobile/src/data/grade9LessonSupplement.json": "9e2c1bf83f1192cd8966626102647084c01f8917563aaaa2583ee510e00b5c4e",
+    "packages/mobile/src/generated/grade10Lessons.generated.json": "9df303df9c9ef9e6ca0031a70f41409c2ab512df839238629aaa4b75012b9ddb",
+    "packages/mobile/src/data/grade10LessonSupplement.json": "a73181a601ecbb231122805cdb0e062c12dc32b9a87a4cb3c29e3490a8574f42"
+  },
+  "draft_items": 638,
+  "core_cards": 49156,
+  "linked_core_cards": 642,
+  "production_eligible_items": 0,
+  "controls_passed": 4,
+  "grades": [
+    {
+      "grade": 3,
+      "lessons": 29,
+      "shelf_cards": 6201,
+      "linked_cards": 44,
+      "candidate_items": 45,
+      "knowledge_families_upper_bound": 41,
+      "item_ids": [
+        "ha-g3-0001",
+        "ha-g3-0005",
+        "ha-g3-0006",
+        "ha-g3-0007",
+        "ha-g3-0008",
+        "ha-g3-0009",
+        "ha-g3-0011",
+        "ha-g3-0013",
+        "ha-g3-0015",
+        "ha-g3-0016",
+        "ha-g3-0020",
+        "ha-g3-0021",
+        "ha-g3-0023",
+        "ha-g3-0026",
+        "ha-g3-0027",
+        "ha-g3-0030",
+        "ha-g3-0031",
+        "ha-g3-0033",
+        "ha-g3-0034",
+        "ha-g3-0035",
+        "ha-g3-0038",
+        "ha-g3-0039",
+        "ha-g3-0041",
+        "ha-g3-0042",
+        "ha-g3-0043",
+        "ha-g3-0044",
+        "ha-g3-0045",
+        "ha-g3-0050",
+        "ha-g3-0051",
+        "ha-g3-0052",
+        "ha-g3-0053",
+        "ha-g3-0055",
+        "ha-g3-0057",
+        "ha-g3-0058",
+        "ha-g3-0059",
+        "ha-g3-0060",
+        "ha-g3-0061",
+        "ha-g3-0062",
+        "ha-g3-0063",
+        "ha-g3-0065",
+        "ha-g3-0067",
+        "ha-g3-0068",
+        "ha-g3-0072",
+        "ha-g3-0075",
+        "ha-g3-0076"
+      ],
+      "lessons_without_any_link": 11,
+      "lesson_window_capacity": {
+        "1": {
+          "windows": 29,
+          "at_least_six_upper_bound": 1,
+          "minimum": 0,
+          "maximum": 6
+        },
+        "2": {
+          "windows": 28,
+          "at_least_six_upper_bound": 4,
+          "minimum": 0,
+          "maximum": 10
+        },
+        "4": {
+          "windows": 26,
+          "at_least_six_upper_bound": 11,
+          "minimum": 1,
+          "maximum": 15
+        }
+      }
+    },
+    {
+      "grade": 4,
+      "lessons": 33,
+      "shelf_cards": 3992,
+      "linked_cards": 60,
+      "candidate_items": 60,
+      "knowledge_families_upper_bound": 52,
+      "item_ids": [
+        "ha-g3-0002",
+        "ha-g3-0003",
+        "ha-g3-0006",
+        "ha-g3-0012",
+        "ha-g3-0018",
+        "ha-g3-0025",
+        "ha-g3-0028",
+        "ha-g3-0035",
+        "ha-g3-0064",
+        "ha-g3-0067",
+        "ha-g3-0071",
+        "ha-g4-0001",
+        "ha-g4-0002",
+        "ha-g4-0003",
+        "ha-g4-0004",
+        "ha-g4-0005",
+        "ha-g4-0006",
+        "ha-g4-0007",
+        "ha-g4-0017",
+        "ha-g4-0018",
+        "ha-g4-0019",
+        "ha-g4-0021",
+        "ha-g4-0022",
+        "ha-g4-0023",
+        "ha-g4-0024",
+        "ha-g4-0025",
+        "ha-g4-0028",
+        "ha-g4-0031",
+        "ha-g4-0032",
+        "ha-g4-0033",
+        "ha-g4-0034",
+        "ha-g4-0035",
+        "ha-g4-0036",
+        "ha-g4-0037",
+        "ha-g4-0038",
+        "ha-g4-0039",
+        "ha-g4-0041",
+        "ha-g4-0042",
+        "ha-g4-0043",
+        "ha-g4-0044",
+        "ha-g4-0047",
+        "ha-g4-0048",
+        "ha-g4-0049",
+        "ha-g4-0050",
+        "ha-g4-0051",
+        "ha-g4-0052",
+        "ha-g4-0054",
+        "ha-g4-0057",
+        "ha-g4-0060",
+        "ha-g4-0062",
+        "ha-g4-0063",
+        "ha-g4-0064",
+        "ha-g4-0065",
+        "ha-g4-0067",
+        "ha-g4-0069",
+        "ha-g4-0072",
+        "ha-g4-0073",
+        "ha-g4-0075",
+        "ha-g4-0077",
+        "ha-g4-0080"
+      ],
+      "lessons_without_any_link": 7,
+      "lesson_window_capacity": {
+        "1": {
+          "windows": 33,
+          "at_least_six_upper_bound": 0,
+          "minimum": 0,
+          "maximum": 5
+        },
+        "2": {
+          "windows": 32,
+          "at_least_six_upper_bound": 5,
+          "minimum": 0,
+          "maximum": 7
+        },
+        "4": {
+          "windows": 30,
+          "at_least_six_upper_bound": 20,
+          "minimum": 2,
+          "maximum": 10
+        }
+      }
+    },
+    {
+      "grade": 5,
+      "lessons": 29,
+      "shelf_cards": 4629,
+      "linked_cards": 62,
+      "candidate_items": 62,
+      "knowledge_families_upper_bound": 58,
+      "item_ids": [
+        "ha-g3-0036",
+        "ha-g3-0040",
+        "ha-g3-0045",
+        "ha-g3-0062",
+        "ha-g3-0066",
+        "ha-g3-0072",
+        "ha-g4-0068",
+        "ha-g4-0071",
+        "ha-g5-0001",
+        "ha-g5-0002",
+        "ha-g5-0003",
+        "ha-g5-0004",
+        "ha-g5-0005",
+        "ha-g5-0006",
+        "ha-g5-0007",
+        "ha-g5-0008",
+        "ha-g5-0009",
+        "ha-g5-0010",
+        "ha-g5-0011",
+        "ha-g5-0012",
+        "ha-g5-0013",
+        "ha-g5-0014",
+        "ha-g5-0015",
+        "ha-g5-0016",
+        "ha-g5-0017",
+        "ha-g5-0018",
+        "ha-g5-0019",
+        "ha-g5-0020",
+        "ha-g5-0021",
+        "ha-g5-0022",
+        "ha-g5-0023",
+        "ha-g5-0024",
+        "ha-g5-0032",
+        "ha-g5-0033",
+        "ha-g5-0035",
+        "ha-g5-0037",
+        "ha-g5-0038",
+        "ha-g5-0039",
+        "ha-g5-0040",
+        "ha-g5-0044",
+        "ha-g5-0045",
+        "ha-g5-0047",
+        "ha-g5-0048",
+        "ha-g5-0049",
+        "ha-g5-0051",
+        "ha-g5-0052",
+        "ha-g5-0053",
+        "ha-g5-0054",
+        "ha-g5-0055",
+        "ha-g5-0057",
+        "ha-g5-0060",
+        "ha-g5-0062",
+        "ha-g5-0067",
+        "ha-g5-0068",
+        "ha-g5-0070",
+        "ha-g5-0072",
+        "ha-g5-0073",
+        "ha-g5-0074",
+        "ha-g5-0075",
+        "ha-g5-0076",
+        "ha-g5-0078",
+        "ha-g5-0079"
+      ],
+      "lessons_without_any_link": 5,
+      "lesson_window_capacity": {
+        "1": {
+          "windows": 29,
+          "at_least_six_upper_bound": 2,
+          "minimum": 0,
+          "maximum": 6
+        },
+        "2": {
+          "windows": 28,
+          "at_least_six_upper_bound": 7,
+          "minimum": 0,
+          "maximum": 11
+        },
+        "4": {
+          "windows": 26,
+          "at_least_six_upper_bound": 20,
+          "minimum": 2,
+          "maximum": 20
+        }
+      }
+    },
+    {
+      "grade": 6,
+      "lessons": 37,
+      "shelf_cards": 5079,
+      "linked_cards": 84,
+      "candidate_items": 85,
+      "knowledge_families_upper_bound": 74,
+      "item_ids": [
+        "ha-g3-0018",
+        "ha-g3-0051",
+        "ha-g3-0070",
+        "ha-g4-0008",
+        "ha-g4-0009",
+        "ha-g4-0010",
+        "ha-g4-0012",
+        "ha-g4-0013",
+        "ha-g4-0014",
+        "ha-g4-0035",
+        "ha-g4-0045",
+        "ha-g4-0067",
+        "ha-g4-0068",
+        "ha-g4-0072",
+        "ha-g4-0073",
+        "ha-g4-0079",
+        "ha-g5-0020",
+        "ha-g5-0038",
+        "ha-g5-0064",
+        "ha-g6-0002",
+        "ha-g6-0003",
+        "ha-g6-0004",
+        "ha-g6-0005",
+        "ha-g6-0006",
+        "ha-g6-0007",
+        "ha-g6-0008",
+        "ha-g6-0010",
+        "ha-g6-0011",
+        "ha-g6-0012",
+        "ha-g6-0013",
+        "ha-g6-0014",
+        "ha-g6-0015",
+        "ha-g6-0016",
+        "ha-g6-0017",
+        "ha-g6-0018",
+        "ha-g6-0019",
+        "ha-g6-0021",
+        "ha-g6-0022",
+        "ha-g6-0023",
+        "ha-g6-0024",
+        "ha-g6-0025",
+        "ha-g6-0026",
+        "ha-g6-0027",
+        "ha-g6-0028",
+        "ha-g6-0029",
+        "ha-g6-0030",
+        "ha-g6-0031",
+        "ha-g6-0032",
+        "ha-g6-0033",
+        "ha-g6-0034",
+        "ha-g6-0035",
+        "ha-g6-0036",
+        "ha-g6-0037",
+        "ha-g6-0039",
+        "ha-g6-0040",
+        "ha-g6-0041",
+        "ha-g6-0042",
+        "ha-g6-0043",
+        "ha-g6-0044",
+        "ha-g6-0046",
+        "ha-g6-0047",
+        "ha-g6-0048",
+        "ha-g6-0049",
+        "ha-g6-0050",
+        "ha-g6-0052",
+        "ha-g6-0053",
+        "ha-g6-0055",
+        "ha-g6-0056",
+        "ha-g6-0057",
+        "ha-g6-0058",
+        "ha-g6-0060",
+        "ha-g6-0061",
+        "ha-g6-0062",
+        "ha-g6-0063",
+        "ha-g6-0064",
+        "ha-g6-0065",
+        "ha-g6-0069",
+        "ha-g6-0071",
+        "ha-g6-0074",
+        "ha-g6-0075",
+        "ha-g6-0078",
+        "ha-g6-0079",
+        "ha-g6-0080",
+        "ha-g6-0081",
+        "ha-g6-0082"
+      ],
+      "lessons_without_any_link": 6,
+      "lesson_window_capacity": {
+        "1": {
+          "windows": 37,
+          "at_least_six_upper_bound": 4,
+          "minimum": 0,
+          "maximum": 8
+        },
+        "2": {
+          "windows": 36,
+          "at_least_six_upper_bound": 10,
+          "minimum": 0,
+          "maximum": 12
+        },
+        "4": {
+          "windows": 34,
+          "at_least_six_upper_bound": 25,
+          "minimum": 2,
+          "maximum": 14
+        }
+      }
+    },
+    {
+      "grade": 7,
+      "lessons": 45,
+      "shelf_cards": 2490,
+      "linked_cards": 54,
+      "candidate_items": 52,
+      "knowledge_families_upper_bound": 48,
+      "item_ids": [
+        "ha-g4-0010",
+        "ha-g4-0011",
+        "ha-g4-0012",
+        "ha-g5-0005",
+        "ha-g5-0034",
+        "ha-g5-0041",
+        "ha-g6-0009",
+        "ha-g6-0072",
+        "ha-g6-0076",
+        "ha-g6-0077",
+        "ha-g7-0001",
+        "ha-g7-0003",
+        "ha-g7-0005",
+        "ha-g7-0012",
+        "ha-g7-0013",
+        "ha-g7-0016",
+        "ha-g7-0017",
+        "ha-g7-0023",
+        "ha-g7-0024",
+        "ha-g7-0025",
+        "ha-g7-0026",
+        "ha-g7-0027",
+        "ha-g7-0030",
+        "ha-g7-0034",
+        "ha-g7-0035",
+        "ha-g7-0036",
+        "ha-g7-0037",
+        "ha-g7-0038",
+        "ha-g7-0039",
+        "ha-g7-0040",
+        "ha-g7-0041",
+        "ha-g7-0042",
+        "ha-g7-0045",
+        "ha-g7-0046",
+        "ha-g7-0050",
+        "ha-g7-0053",
+        "ha-g7-0055",
+        "ha-g7-0060",
+        "ha-g7-0061",
+        "ha-g7-0062",
+        "ha-g7-0063",
+        "ha-g7-0064",
+        "ha-g7-0065",
+        "ha-g7-0066",
+        "ha-g7-0067",
+        "ha-g7-0069",
+        "ha-g7-0070",
+        "ha-g7-0073",
+        "ha-g7-0074",
+        "ha-g7-0077",
+        "ha-g7-0079",
+        "ha-g7-0080"
+      ],
+      "lessons_without_any_link": 16,
+      "lesson_window_capacity": {
+        "1": {
+          "windows": 45,
+          "at_least_six_upper_bound": 1,
+          "minimum": 0,
+          "maximum": 6
+        },
+        "2": {
+          "windows": 44,
+          "at_least_six_upper_bound": 2,
+          "minimum": 0,
+          "maximum": 9
+        },
+        "4": {
+          "windows": 42,
+          "at_least_six_upper_bound": 11,
+          "minimum": 1,
+          "maximum": 13
+        }
+      }
+    },
+    {
+      "grade": 8,
+      "lessons": 44,
+      "shelf_cards": 2252,
+      "linked_cards": 59,
+      "candidate_items": 56,
+      "knowledge_families_upper_bound": 52,
+      "item_ids": [
+        "ha-g3-0032",
+        "ha-g4-0011",
+        "ha-g6-0031",
+        "ha-g7-0026",
+        "ha-g8-0001",
+        "ha-g8-0003",
+        "ha-g8-0004",
+        "ha-g8-0005",
+        "ha-g8-0006",
+        "ha-g8-0009",
+        "ha-g8-0010",
+        "ha-g8-0011",
+        "ha-g8-0012",
+        "ha-g8-0014",
+        "ha-g8-0015",
+        "ha-g8-0016",
+        "ha-g8-0017",
+        "ha-g8-0019",
+        "ha-g8-0020",
+        "ha-g8-0022",
+        "ha-g8-0025",
+        "ha-g8-0026",
+        "ha-g8-0028",
+        "ha-g8-0035",
+        "ha-g8-0037",
+        "ha-g8-0038",
+        "ha-g8-0039",
+        "ha-g8-0040",
+        "ha-g8-0041",
+        "ha-g8-0042",
+        "ha-g8-0043",
+        "ha-g8-0044",
+        "ha-g8-0046",
+        "ha-g8-0048",
+        "ha-g8-0049",
+        "ha-g8-0050",
+        "ha-g8-0051",
+        "ha-g8-0052",
+        "ha-g8-0053",
+        "ha-g8-0056",
+        "ha-g8-0057",
+        "ha-g8-0061",
+        "ha-g8-0062",
+        "ha-g8-0064",
+        "ha-g8-0066",
+        "ha-g8-0067",
+        "ha-g8-0068",
+        "ha-g8-0069",
+        "ha-g8-0070",
+        "ha-g8-0071",
+        "ha-g8-0073",
+        "ha-g8-0074",
+        "ha-g8-0076",
+        "ha-g8-0078",
+        "ha-g8-0079",
+        "ha-g8-0080"
+      ],
+      "lessons_without_any_link": 7,
+      "lesson_window_capacity": {
+        "1": {
+          "windows": 44,
+          "at_least_six_upper_bound": 1,
+          "minimum": 0,
+          "maximum": 6
+        },
+        "2": {
+          "windows": 43,
+          "at_least_six_upper_bound": 3,
+          "minimum": 0,
+          "maximum": 7
+        },
+        "4": {
+          "windows": 41,
+          "at_least_six_upper_bound": 15,
+          "minimum": 1,
+          "maximum": 9
+        }
+      }
+    },
+    {
+      "grade": 9,
+      "lessons": 46,
+      "shelf_cards": 2226,
+      "linked_cards": 61,
+      "candidate_items": 62,
+      "knowledge_families_upper_bound": 55,
+      "item_ids": [
+        "ha-g3-0022",
+        "ha-g4-0065",
+        "ha-g5-0058",
+        "ha-g7-0043",
+        "ha-g7-0044",
+        "ha-g8-0018",
+        "ha-g8-0032",
+        "ha-g8-0034",
+        "ha-g8-0043",
+        "ha-g9-0001",
+        "ha-g9-0003",
+        "ha-g9-0004",
+        "ha-g9-0005",
+        "ha-g9-0007",
+        "ha-g9-0008",
+        "ha-g9-0009",
+        "ha-g9-0010",
+        "ha-g9-0012",
+        "ha-g9-0013",
+        "ha-g9-0014",
+        "ha-g9-0015",
+        "ha-g9-0016",
+        "ha-g9-0017",
+        "ha-g9-0018",
+        "ha-g9-0020",
+        "ha-g9-0022",
+        "ha-g9-0025",
+        "ha-g9-0027",
+        "ha-g9-0028",
+        "ha-g9-0029",
+        "ha-g9-0033",
+        "ha-g9-0034",
+        "ha-g9-0036",
+        "ha-g9-0040",
+        "ha-g9-0041",
+        "ha-g9-0042",
+        "ha-g9-0043",
+        "ha-g9-0045",
+        "ha-g9-0046",
+        "ha-g9-0048",
+        "ha-g9-0049",
+        "ha-g9-0051",
+        "ha-g9-0052",
+        "ha-g9-0053",
+        "ha-g9-0054",
+        "ha-g9-0055",
+        "ha-g9-0056",
+        "ha-g9-0057",
+        "ha-g9-0059",
+        "ha-g9-0061",
+        "ha-g9-0063",
+        "ha-g9-0065",
+        "ha-g9-0067",
+        "ha-g9-0069",
+        "ha-g9-0070",
+        "ha-g9-0071",
+        "ha-g9-0074",
+        "ha-g9-0076",
+        "ha-g9-0077",
+        "ha-g9-0078",
+        "ha-g9-0079",
+        "ha-g9-0080"
+      ],
+      "lessons_without_any_link": 10,
+      "lesson_window_capacity": {
+        "1": {
+          "windows": 46,
+          "at_least_six_upper_bound": 0,
+          "minimum": 0,
+          "maximum": 3
+        },
+        "2": {
+          "windows": 45,
+          "at_least_six_upper_bound": 0,
+          "minimum": 0,
+          "maximum": 5
+        },
+        "4": {
+          "windows": 43,
+          "at_least_six_upper_bound": 18,
+          "minimum": 2,
+          "maximum": 9
+        }
+      }
+    },
+    {
+      "grade": 10,
+      "lessons": 45,
+      "shelf_cards": 2107,
+      "linked_cards": 60,
+      "candidate_items": 60,
+      "knowledge_families_upper_bound": 53,
+      "item_ids": [
+        "ha-g10-0006",
+        "ha-g10-0007",
+        "ha-g10-0008",
+        "ha-g10-0009",
+        "ha-g10-0010",
+        "ha-g10-0011",
+        "ha-g10-0013",
+        "ha-g10-0014",
+        "ha-g10-0015",
+        "ha-g10-0016",
+        "ha-g10-0019",
+        "ha-g10-0020",
+        "ha-g10-0021",
+        "ha-g10-0022",
+        "ha-g10-0023",
+        "ha-g10-0024",
+        "ha-g10-0025",
+        "ha-g10-0026",
+        "ha-g10-0027",
+        "ha-g10-0028",
+        "ha-g10-0029",
+        "ha-g10-0030",
+        "ha-g10-0032",
+        "ha-g10-0033",
+        "ha-g10-0034",
+        "ha-g10-0035",
+        "ha-g10-0036",
+        "ha-g10-0037",
+        "ha-g10-0038",
+        "ha-g10-0042",
+        "ha-g10-0043",
+        "ha-g10-0044",
+        "ha-g10-0045",
+        "ha-g10-0046",
+        "ha-g10-0047",
+        "ha-g10-0048",
+        "ha-g10-0049",
+        "ha-g10-0054",
+        "ha-g10-0055",
+        "ha-g10-0056",
+        "ha-g10-0058",
+        "ha-g10-0059",
+        "ha-g10-0063",
+        "ha-g10-0064",
+        "ha-g10-0065",
+        "ha-g10-0066",
+        "ha-g10-0070",
+        "ha-g10-0071",
+        "ha-g10-0072",
+        "ha-g10-0073",
+        "ha-g10-0074",
+        "ha-g10-0075",
+        "ha-g10-0076",
+        "ha-g10-0077",
+        "ha-g10-0080",
+        "ha-g4-0065",
+        "ha-g5-0059",
+        "ha-g9-0002",
+        "ha-g9-0063",
+        "ha-g9-0065"
+      ],
+      "lessons_without_any_link": 12,
+      "lesson_window_capacity": {
+        "1": {
+          "windows": 45,
+          "at_least_six_upper_bound": 0,
+          "minimum": 0,
+          "maximum": 4
+        },
+        "2": {
+          "windows": 44,
+          "at_least_six_upper_bound": 2,
+          "minimum": 0,
+          "maximum": 6
+        },
+        "4": {
+          "windows": 42,
+          "at_least_six_upper_bound": 17,
+          "minimum": 2,
+          "maximum": 10
+        }
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "grade": 3,
+      "lesson": "g3:everyday-science",
+      "title": "Science Around Us",
+      "quarter": 1,
+      "shelf_cards": 86,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:exploring",
+      "title": "Ask and Try",
+      "quarter": 1,
+      "shelf_cards": 4,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:science-tools",
+      "title": "Our Science Tools",
+      "quarter": 1,
+      "shelf_cards": 59,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g3-0001"
+      ],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:science-skills",
+      "title": "Observe, Predict, Measure",
+      "quarter": 1,
+      "shelf_cards": 79,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g3-0001"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:solid-properties",
+      "title": "Properties of Solids",
+      "quarter": 1,
+      "shelf_cards": 478,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g3-0026",
+        "ha-g3-0041",
+        "ha-g3-0045"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:harmful-changes",
+      "title": "Harmful Material Changes",
+      "quarter": 1,
+      "shelf_cards": 106,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g3-0020"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:safe-materials",
+      "title": "Use and Dispose Safely",
+      "quarter": 1,
+      "shelf_cards": 140,
+      "linked_cards": 5,
+      "candidate_items": 5,
+      "knowledge_families_upper_bound": 5,
+      "item_ids": [
+        "ha-g3-0013",
+        "ha-g3-0015",
+        "ha-g3-0016",
+        "ha-g3-0021",
+        "ha-g3-0023"
+      ],
+      "core_knowledge_families_upper_bound": 5
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:useful-changes",
+      "title": "Making Solids Useful",
+      "quarter": 1,
+      "shelf_cards": 166,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g3-0030"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:community-metals",
+      "title": "Metals We Use",
+      "quarter": 1,
+      "shelf_cards": 177,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g3-0027",
+        "ha-g3-0030",
+        "ha-g3-0031"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:living-things-investigation",
+      "title": "Investigate Living Things",
+      "quarter": 2,
+      "shelf_cards": 12,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:living-or-not",
+      "title": "Living and Non-living",
+      "quarter": 2,
+      "shelf_cards": 37,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:signs-of-life",
+      "title": "Signs of Life",
+      "quarter": 2,
+      "shelf_cards": 639,
+      "linked_cards": 4,
+      "candidate_items": 4,
+      "knowledge_families_upper_bound": 4,
+      "item_ids": [
+        "ha-g3-0053",
+        "ha-g3-0055",
+        "ha-g3-0062",
+        "ha-g3-0072"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:animal-parts",
+      "title": "Animal Parts and Their Jobs",
+      "quarter": 2,
+      "shelf_cards": 766,
+      "linked_cards": 6,
+      "candidate_items": 6,
+      "knowledge_families_upper_bound": 6,
+      "item_ids": [
+        "ha-g3-0005",
+        "ha-g3-0057",
+        "ha-g3-0058",
+        "ha-g3-0059",
+        "ha-g3-0060",
+        "ha-g3-0061"
+      ],
+      "core_knowledge_families_upper_bound": 5
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:plant-parts",
+      "title": "Plant Parts and Their Jobs",
+      "quarter": 2,
+      "shelf_cards": 72,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g3-0006",
+        "ha-g3-0063",
+        "ha-g3-0065"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:basic-needs",
+      "title": "What Living Things Need",
+      "quarter": 2,
+      "shelf_cards": 427,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g3-0067",
+        "ha-g3-0068"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:depending-on-nature",
+      "title": "Living Things Depend on Each Other",
+      "quarter": 2,
+      "shelf_cards": 739,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g3-0068"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:protecting-nature",
+      "title": "Protect Our Environment",
+      "quarter": 2,
+      "shelf_cards": 317,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:moving-things",
+      "title": "Ways to Move Things",
+      "quarter": 3,
+      "shelf_cards": 154,
+      "linked_cards": 5,
+      "candidate_items": 5,
+      "knowledge_families_upper_bound": 4,
+      "item_ids": [
+        "ha-g3-0007",
+        "ha-g3-0011",
+        "ha-g3-0033",
+        "ha-g3-0034",
+        "ha-g3-0035"
+      ],
+      "core_knowledge_families_upper_bound": 4
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:movement-factors",
+      "title": "What Changes Movement?",
+      "quarter": 3,
+      "shelf_cards": 96,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:position",
+      "title": "Where Did It Move?",
+      "quarter": 3,
+      "shelf_cards": 7,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:sound",
+      "title": "Making and Hearing Sound",
+      "quarter": 3,
+      "shelf_cards": 486,
+      "linked_cards": 5,
+      "candidate_items": 5,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g3-0008",
+        "ha-g3-0038",
+        "ha-g3-0039",
+        "ha-g3-0075",
+        "ha-g3-0076"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:light",
+      "title": "Light Around Us",
+      "quarter": 3,
+      "shelf_cards": 356,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g3-0009",
+        "ha-g3-0042"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:light-and-sound-safety",
+      "title": "Protect Eyes and Ears",
+      "quarter": 3,
+      "shelf_cards": 129,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:sending-messages",
+      "title": "Send a Message",
+      "quarter": 3,
+      "shelf_cards": 46,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:earth-materials",
+      "title": "Earth Materials Around Us",
+      "quarter": 4,
+      "shelf_cards": 256,
+      "linked_cards": 1,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g3-0043",
+        "ha-g3-0044"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:weather",
+      "title": "Watch the Weather",
+      "quarter": 4,
+      "shelf_cards": 178,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:watching-the-sky",
+      "title": "Watch the Sky",
+      "quarter": 4,
+      "shelf_cards": 327,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g3-0050",
+        "ha-g3-0051",
+        "ha-g3-0052"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:sky-and-our-day",
+      "title": "The Sky and Our Activities",
+      "quarter": 4,
+      "shelf_cards": 72,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 3,
+      "lesson": "g3:sun-safety",
+      "title": "Stay Safe in the Sun",
+      "quarter": 4,
+      "shelf_cards": 100,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g3-0052"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:scientists",
+      "title": "Scientists and Inventions",
+      "quarter": 1,
+      "shelf_cards": 568,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g4-0077"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:local-inventions",
+      "title": "Inventions in Daily Life",
+      "quarter": 1,
+      "shelf_cards": 143,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g4-0075"
+      ],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:chemical-properties",
+      "title": "Chemical Properties",
+      "quarter": 1,
+      "shelf_cards": 299,
+      "linked_cards": 5,
+      "candidate_items": 5,
+      "knowledge_families_upper_bound": 5,
+      "item_ids": [
+        "ha-g4-0062",
+        "ha-g4-0063",
+        "ha-g4-0064",
+        "ha-g4-0065",
+        "ha-g4-0072"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:heating-materials",
+      "title": "Heating Changes Materials",
+      "quarter": 1,
+      "shelf_cards": 202,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g4-0067",
+        "ha-g4-0073"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:preventing-harm",
+      "title": "Prevent Harmful Changes",
+      "quarter": 1,
+      "shelf_cards": 50,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g3-0025",
+        "ha-g4-0069"
+      ],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:community-problems",
+      "title": "Science Helps Our Community",
+      "quarter": 1,
+      "shelf_cards": 115,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g3-0018"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:environment-survey",
+      "title": "Survey Our Environment",
+      "quarter": 1,
+      "shelf_cards": 12,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g4-0080"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:body-systems",
+      "title": "Our Body Systems",
+      "quarter": 2,
+      "shelf_cards": 308,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g4-0017",
+        "ha-g4-0018",
+        "ha-g4-0019"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:plant-systems",
+      "title": "Roots and Shoots",
+      "quarter": 2,
+      "shelf_cards": 100,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g3-0006",
+        "ha-g3-0064"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:habitat-groups",
+      "title": "Group Living Things by Habitat",
+      "quarter": 2,
+      "shelf_cards": 96,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:habitat-examples",
+      "title": "Who Lives Here?",
+      "quarter": 2,
+      "shelf_cards": 76,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:life-cycles",
+      "title": "Compare Life Cycles",
+      "quarter": 2,
+      "shelf_cards": 93,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:animal-food",
+      "title": "What Animals Eat",
+      "quarter": 2,
+      "shelf_cards": 142,
+      "linked_cards": 8,
+      "candidate_items": 8,
+      "knowledge_families_upper_bound": 4,
+      "item_ids": [
+        "ha-g3-0071",
+        "ha-g4-0001",
+        "ha-g4-0002",
+        "ha-g4-0003",
+        "ha-g4-0004",
+        "ha-g4-0005",
+        "ha-g4-0006",
+        "ha-g4-0007"
+      ],
+      "core_knowledge_families_upper_bound": 4
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:food-chains",
+      "title": "Draw a Food Chain",
+      "quarter": 2,
+      "shelf_cards": 43,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:rigid-soft",
+      "title": "Rigid and Soft Objects",
+      "quarter": 3,
+      "shelf_cards": 48,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g3-0003"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:distance-time",
+      "title": "Measure Distance and Time",
+      "quarter": 3,
+      "shelf_cards": 18,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g4-0021",
+        "ha-g4-0022"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:speed",
+      "title": "Understanding Speed",
+      "quarter": 3,
+      "shelf_cards": 60,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g4-0023",
+        "ha-g4-0024",
+        "ha-g4-0025"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:speed-graphs",
+      "title": "Distance–Time Graphs",
+      "quarter": 3,
+      "shelf_cards": 10,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:change-motion",
+      "title": "Change How Objects Move",
+      "quarter": 3,
+      "shelf_cards": 66,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g4-0028"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:change-shape",
+      "title": "Forces Change Shape",
+      "quarter": 3,
+      "shelf_cards": 79,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g3-0002",
+        "ha-g3-0035"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:magnets",
+      "title": "Explore Magnets",
+      "quarter": 3,
+      "shelf_cards": 153,
+      "linked_cards": 5,
+      "candidate_items": 5,
+      "knowledge_families_upper_bound": 4,
+      "item_ids": [
+        "ha-g4-0031",
+        "ha-g4-0032",
+        "ha-g4-0033",
+        "ha-g4-0034",
+        "ha-g4-0035"
+      ],
+      "core_knowledge_families_upper_bound": 4
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:effects-at-distance",
+      "title": "Effects Without Touching",
+      "quarter": 3,
+      "shelf_cards": 156,
+      "linked_cards": 4,
+      "candidate_items": 4,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g3-0028",
+        "ha-g4-0031",
+        "ha-g4-0032",
+        "ha-g4-0036"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:energy",
+      "title": "Energy Causes Change",
+      "quarter": 3,
+      "shelf_cards": 259,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g4-0037",
+        "ha-g4-0038"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:energy-uses",
+      "title": "Energy in Our Community",
+      "quarter": 3,
+      "shelf_cards": 311,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g4-0039"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:soil",
+      "title": "Compare Soils",
+      "quarter": 4,
+      "shelf_cards": 65,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g4-0041",
+        "ha-g4-0042",
+        "ha-g4-0043"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:water-for-life",
+      "title": "Water for Living Things",
+      "quarter": 4,
+      "shelf_cards": 53,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g3-0067",
+        "ha-g4-0044"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:soil-and-growth",
+      "title": "Soil and Plant Growth",
+      "quarter": 4,
+      "shelf_cards": 44,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:weather-elements",
+      "title": "Describe the Weather",
+      "quarter": 4,
+      "shelf_cards": 254,
+      "linked_cards": 5,
+      "candidate_items": 5,
+      "knowledge_families_upper_bound": 5,
+      "item_ids": [
+        "ha-g4-0048",
+        "ha-g4-0049",
+        "ha-g4-0050",
+        "ha-g4-0052",
+        "ha-g4-0054"
+      ],
+      "core_knowledge_families_upper_bound": 5
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:weather-tools",
+      "title": "Measure the Weather",
+      "quarter": 4,
+      "shelf_cards": 62,
+      "linked_cards": 5,
+      "candidate_items": 5,
+      "knowledge_families_upper_bound": 5,
+      "item_ids": [
+        "ha-g4-0047",
+        "ha-g4-0048",
+        "ha-g4-0049",
+        "ha-g4-0050",
+        "ha-g4-0051"
+      ],
+      "core_knowledge_families_upper_bound": 5
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:weather-chart-safety",
+      "title": "Weather Charts and Safety",
+      "quarter": 4,
+      "shelf_cards": 85,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g4-0054"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:sun",
+      "title": "Our Sun",
+      "quarter": 4,
+      "shelf_cards": 113,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g3-0012",
+        "ha-g4-0057"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:shadows",
+      "title": "Track a Shadow",
+      "quarter": 4,
+      "shelf_cards": 31,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g4-0060"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 4,
+      "lesson": "g4:sun-and-life",
+      "title": "The Sun Supports Life",
+      "quarter": 4,
+      "shelf_cards": 49,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:matter",
+      "title": "Matter: mass and space",
+      "quarter": 1,
+      "shelf_cards": 86,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g5-0001",
+        "ha-g5-0002"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:states-of-matter",
+      "title": "Solids, liquids and gases",
+      "quarter": 1,
+      "shelf_cards": 182,
+      "linked_cards": 6,
+      "candidate_items": 6,
+      "knowledge_families_upper_bound": 6,
+      "item_ids": [
+        "ha-g5-0003",
+        "ha-g5-0004",
+        "ha-g5-0005",
+        "ha-g5-0006",
+        "ha-g5-0007",
+        "ha-g5-0008"
+      ],
+      "core_knowledge_families_upper_bound": 6
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:volume",
+      "title": "Measuring volume",
+      "quarter": 1,
+      "shelf_cards": 29,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g5-0013",
+        "ha-g5-0014",
+        "ha-g5-0015"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:heat-and-state",
+      "title": "Heat and changes of state",
+      "quarter": 1,
+      "shelf_cards": 569,
+      "linked_cards": 6,
+      "candidate_items": 6,
+      "knowledge_families_upper_bound": 5,
+      "item_ids": [
+        "ha-g3-0045",
+        "ha-g4-0068",
+        "ha-g4-0071",
+        "ha-g5-0018",
+        "ha-g5-0019",
+        "ha-g5-0020"
+      ],
+      "core_knowledge_families_upper_bound": 5
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:investigations",
+      "title": "Planning a science investigation",
+      "quarter": 1,
+      "shelf_cards": 222,
+      "linked_cards": 6,
+      "candidate_items": 6,
+      "knowledge_families_upper_bound": 6,
+      "item_ids": [
+        "ha-g5-0009",
+        "ha-g5-0010",
+        "ha-g5-0011",
+        "ha-g5-0012",
+        "ha-g5-0016",
+        "ha-g5-0017"
+      ],
+      "core_knowledge_families_upper_bound": 6
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:digestion",
+      "title": "The digestive system",
+      "quarter": 2,
+      "shelf_cards": 46,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g5-0021",
+        "ha-g5-0022"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:breathing",
+      "title": "The respiratory system",
+      "quarter": 2,
+      "shelf_cards": 67,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g5-0023",
+        "ha-g5-0024"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:human-reproduction",
+      "title": "Human reproductive organs",
+      "quarter": 2,
+      "shelf_cards": 58,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:classification",
+      "title": "Classifying living things",
+      "quarter": 2,
+      "shelf_cards": 229,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g5-0032",
+        "ha-g5-0035"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:animal-reproduction",
+      "title": "Live young and eggs",
+      "quarter": 2,
+      "shelf_cards": 157,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g3-0062",
+        "ha-g3-0072",
+        "ha-g5-0033"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:life-cycles",
+      "title": "Animal and plant life cycles",
+      "quarter": 2,
+      "shelf_cards": 47,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g3-0066"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:plant-structures",
+      "title": "Specialized plant structures",
+      "quarter": 2,
+      "shelf_cards": 221,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g5-0037",
+        "ha-g5-0038",
+        "ha-g5-0039"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:adaptations",
+      "title": "Plant and animal adaptations",
+      "quarter": 2,
+      "shelf_cards": 733,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g5-0039",
+        "ha-g5-0040"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:contact-forces",
+      "title": "Contact forces and motion",
+      "quarter": 3,
+      "shelf_cards": 28,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:friction",
+      "title": "Investigating friction",
+      "quarter": 3,
+      "shelf_cards": 229,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g3-0036",
+        "ha-g5-0044",
+        "ha-g5-0045"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:gravity",
+      "title": "Gravity and falling objects",
+      "quarter": 3,
+      "shelf_cards": 348,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g5-0047",
+        "ha-g5-0048"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:static-electricity",
+      "title": "Static electricity",
+      "quarter": 3,
+      "shelf_cards": 67,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g5-0049",
+        "ha-g5-0051"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:simple-circuits",
+      "title": "Building and drawing circuits",
+      "quarter": 3,
+      "shelf_cards": 97,
+      "linked_cards": 5,
+      "candidate_items": 5,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g3-0040",
+        "ha-g5-0052",
+        "ha-g5-0053",
+        "ha-g5-0054",
+        "ha-g5-0055"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:conductors",
+      "title": "Testing conductors and insulators",
+      "quarter": 3,
+      "shelf_cards": 68,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g5-0057"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:electromagnets",
+      "title": "Making an electromagnet",
+      "quarter": 3,
+      "shelf_cards": 43,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g5-0060"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:landforms",
+      "title": "Landforms and bodies of water",
+      "quarter": 4,
+      "shelf_cards": 150,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g5-0062"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:rock-observation",
+      "title": "Observing rocks",
+      "quarter": 4,
+      "shelf_cards": 53,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:rock-classification",
+      "title": "Classifying rocks",
+      "quarter": 4,
+      "shelf_cards": 38,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:soil-formation",
+      "title": "How soil forms",
+      "quarter": 4,
+      "shelf_cards": 95,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g5-0067"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:erosion",
+      "title": "Erosion and transported materials",
+      "quarter": 4,
+      "shelf_cards": 127,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g5-0068"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:water-cycle",
+      "title": "The water cycle and its model",
+      "quarter": 4,
+      "shelf_cards": 183,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g5-0070",
+        "ha-g5-0072"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:weather-disturbances",
+      "title": "Typhoons and weather warnings",
+      "quarter": 4,
+      "shelf_cards": 258,
+      "linked_cards": 4,
+      "candidate_items": 4,
+      "knowledge_families_upper_bound": 4,
+      "item_ids": [
+        "ha-g5-0073",
+        "ha-g5-0074",
+        "ha-g5-0075",
+        "ha-g5-0076"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:solar-system",
+      "title": "Exploring the solar system",
+      "quarter": 4,
+      "shelf_cards": 292,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g5-0078",
+        "ha-g5-0079"
+      ],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 5,
+      "lesson": "g5:moon-phases",
+      "title": "The Moon’s changing appearance",
+      "quarter": 4,
+      "shelf_cards": 36,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:state-changes",
+      "title": "Mapping Changes of State",
+      "quarter": 1,
+      "shelf_cards": 141,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g6-0006"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:heat-and-state",
+      "title": "Heat and Changes of State",
+      "quarter": 1,
+      "shelf_cards": 291,
+      "linked_cards": 5,
+      "candidate_items": 5,
+      "knowledge_families_upper_bound": 5,
+      "item_ids": [
+        "ha-g4-0068",
+        "ha-g5-0020",
+        "ha-g6-0002",
+        "ha-g6-0003",
+        "ha-g6-0004"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:physical-chemical",
+      "title": "Physical and Chemical Changes",
+      "quarter": 1,
+      "shelf_cards": 170,
+      "linked_cards": 4,
+      "candidate_items": 4,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g4-0067",
+        "ha-g4-0072",
+        "ha-g4-0073",
+        "ha-g6-0005"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:useful-mixtures",
+      "title": "Useful Mixtures",
+      "quarter": 1,
+      "shelf_cards": 376,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g4-0045",
+        "ha-g6-0007",
+        "ha-g6-0008"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:air-mixture",
+      "title": "What Is in Air?",
+      "quarter": 1,
+      "shelf_cards": 86,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g6-0010",
+        "ha-g6-0011"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:separation-methods",
+      "title": "Separating Mixtures",
+      "quarter": 1,
+      "shelf_cards": 328,
+      "linked_cards": 8,
+      "candidate_items": 8,
+      "knowledge_families_upper_bound": 7,
+      "item_ids": [
+        "ha-g4-0035",
+        "ha-g4-0079",
+        "ha-g6-0012",
+        "ha-g6-0013",
+        "ha-g6-0014",
+        "ha-g6-0015",
+        "ha-g6-0016",
+        "ha-g6-0017"
+      ],
+      "core_knowledge_families_upper_bound": 7
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:separation-products",
+      "title": "Choosing a Separation Method",
+      "quarter": 1,
+      "shelf_cards": 90,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g6-0014"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:fair-tests",
+      "title": "Design a Fair Test",
+      "quarter": 1,
+      "shelf_cards": 26,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g6-0018",
+        "ha-g6-0019"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:repeat-record",
+      "title": "Repeat, Measure, Record",
+      "quarter": 1,
+      "shelf_cards": 55,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:circulation",
+      "title": "Heart, Blood, and Vessels",
+      "quarter": 2,
+      "shelf_cards": 293,
+      "linked_cards": 8,
+      "candidate_items": 8,
+      "knowledge_families_upper_bound": 8,
+      "item_ids": [
+        "ha-g4-0012",
+        "ha-g4-0013",
+        "ha-g4-0014",
+        "ha-g6-0021",
+        "ha-g6-0022",
+        "ha-g6-0023",
+        "ha-g6-0024",
+        "ha-g6-0025"
+      ],
+      "core_knowledge_families_upper_bound": 7
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:plant-reproduction",
+      "title": "How Plants Reproduce",
+      "quarter": 2,
+      "shelf_cards": 374,
+      "linked_cards": 5,
+      "candidate_items": 5,
+      "knowledge_families_upper_bound": 4,
+      "item_ids": [
+        "ha-g3-0070",
+        "ha-g5-0038",
+        "ha-g6-0026",
+        "ha-g6-0027",
+        "ha-g6-0028"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:propagation-tests",
+      "title": "Compare Plant Propagation",
+      "quarter": 2,
+      "shelf_cards": 8,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g6-0028"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:animal-groups",
+      "title": "Animals With and Without Backbones",
+      "quarter": 2,
+      "shelf_cards": 69,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g6-0029",
+        "ha-g6-0030"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:food-webs",
+      "title": "Roles in a Food Web",
+      "quarter": 2,
+      "shelf_cards": 267,
+      "linked_cards": 7,
+      "candidate_items": 7,
+      "knowledge_families_upper_bound": 6,
+      "item_ids": [
+        "ha-g3-0018",
+        "ha-g4-0009",
+        "ha-g4-0010",
+        "ha-g6-0031",
+        "ha-g6-0032",
+        "ha-g6-0033",
+        "ha-g6-0034"
+      ],
+      "core_knowledge_families_upper_bound": 5
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:competition-predation",
+      "title": "Competition and Predation",
+      "quarter": 2,
+      "shelf_cards": 304,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g4-0008",
+        "ha-g6-0035"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:ecosystem-factors",
+      "title": "Living and Nonliving Factors",
+      "quarter": 2,
+      "shelf_cards": 75,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g6-0039",
+        "ha-g6-0040"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:ecosystem-effects",
+      "title": "How Interactions Help or Harm",
+      "quarter": 2,
+      "shelf_cards": 725,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g6-0036",
+        "ha-g6-0037"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:simple-machines",
+      "title": "Simple Machines Around Us",
+      "quarter": 3,
+      "shelf_cards": 484,
+      "linked_cards": 7,
+      "candidate_items": 7,
+      "knowledge_families_upper_bound": 7,
+      "item_ids": [
+        "ha-g6-0041",
+        "ha-g6-0042",
+        "ha-g6-0046",
+        "ha-g6-0047",
+        "ha-g6-0048",
+        "ha-g6-0049",
+        "ha-g6-0050"
+      ],
+      "core_knowledge_families_upper_bound": 7
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:machine-investigation",
+      "title": "Investigate Simple Machines",
+      "quarter": 3,
+      "shelf_cards": 179,
+      "linked_cards": 4,
+      "candidate_items": 4,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g6-0043",
+        "ha-g6-0044",
+        "ha-g6-0046",
+        "ha-g6-0047"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:lever-tests",
+      "title": "A Fair Test of Levers",
+      "quarter": 3,
+      "shelf_cards": 38,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:wave-energy",
+      "title": "Waves Carry Energy",
+      "quarter": 3,
+      "shelf_cards": 67,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:water-waves",
+      "title": "Explore Water Waves",
+      "quarter": 3,
+      "shelf_cards": 35,
+      "linked_cards": 1,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g6-0052",
+        "ha-g6-0053"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:wave-properties",
+      "title": "Describing a Wave",
+      "quarter": 3,
+      "shelf_cards": 72,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g6-0055"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:wave-types",
+      "title": "Longitudinal and Transverse Waves",
+      "quarter": 3,
+      "shelf_cards": 35,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:wave-models",
+      "title": "Model Moving Energy",
+      "quarter": 3,
+      "shelf_cards": 46,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g6-0056",
+        "ha-g6-0057"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:wave-examples",
+      "title": "Waves in Daily Life",
+      "quarter": 3,
+      "shelf_cards": 55,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g6-0058"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:moving-sound",
+      "title": "Sound From a Moving Source",
+      "quarter": 3,
+      "shelf_cards": 62,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g6-0060"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:volcano-formation",
+      "title": "How Volcanoes Form",
+      "quarter": 4,
+      "shelf_cards": 54,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g6-0061"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:local-volcano-risk",
+      "title": "Know Your Local Volcano Risk",
+      "quarter": 4,
+      "shelf_cards": 37,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g6-0069"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:eruption-history",
+      "title": "Reading Eruption History",
+      "quarter": 4,
+      "shelf_cards": 37,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:volcanic-materials",
+      "title": "What Volcanoes Release",
+      "quarter": 4,
+      "shelf_cards": 162,
+      "linked_cards": 5,
+      "candidate_items": 5,
+      "knowledge_families_upper_bound": 5,
+      "item_ids": [
+        "ha-g5-0064",
+        "ha-g6-0062",
+        "ha-g6-0063",
+        "ha-g6-0064",
+        "ha-g6-0065"
+      ],
+      "core_knowledge_families_upper_bound": 5
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:volcano-alerts",
+      "title": "Read Alerts and Act Safely",
+      "quarter": 4,
+      "shelf_cards": 51,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:philippine-seasons",
+      "title": "Seasons Where We Live",
+      "quarter": 4,
+      "shelf_cards": 82,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g6-0071"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:day-night",
+      "title": "A Globe Model of Day and Night",
+      "quarter": 4,
+      "shelf_cards": 29,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g3-0051",
+        "ha-g6-0074",
+        "ha-g6-0075"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:sun-earth-moon",
+      "title": "Model the Sun, Earth, and Moon",
+      "quarter": 4,
+      "shelf_cards": 73,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g6-0078",
+        "ha-g6-0079",
+        "ha-g6-0082"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:sky-navigation",
+      "title": "Stars, Navigation, and Seasons",
+      "quarter": 4,
+      "shelf_cards": 54,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g6-0080"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 6,
+      "lesson": "g6:community-sky-knowledge",
+      "title": "Learning About Community Sky Knowledge",
+      "quarter": 4,
+      "shelf_cards": 23,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g6-0081"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:scientific-models",
+      "title": "Why Scientists Use Models",
+      "quarter": 1,
+      "shelf_cards": 35,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g7-0001"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:particle-model",
+      "title": "Matter Is Made of Particles",
+      "quarter": 1,
+      "shelf_cards": 98,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:particle-motion",
+      "title": "How Particles Behave",
+      "quarter": 1,
+      "shelf_cards": 164,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g5-0005",
+        "ha-g7-0003"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:particle-diagrams",
+      "title": "Draw Three States of Matter",
+      "quarter": 1,
+      "shelf_cards": 33,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g7-0005"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:particle-state-changes",
+      "title": "Particles During Changes of State",
+      "quarter": 1,
+      "shelf_cards": 42,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:investigation-steps",
+      "title": "Plan and Report an Investigation",
+      "quarter": 1,
+      "shelf_cards": 62,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:measure-record",
+      "title": "Measure and Organize Data",
+      "quarter": 1,
+      "shelf_cards": 70,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:solute-solvent",
+      "title": "Solute and Solvent",
+      "quarter": 1,
+      "shelf_cards": 93,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g6-0009",
+        "ha-g7-0012"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:concentration",
+      "title": "How Much Solute?",
+      "quarter": 1,
+      "shelf_cards": 32,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:solubility",
+      "title": "Investigate Solubility",
+      "quarter": 1,
+      "shelf_cards": 69,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g7-0012",
+        "ha-g7-0013"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:litmus",
+      "title": "Acids, Bases, and Litmus",
+      "quarter": 1,
+      "shelf_cards": 101,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g7-0016"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:equipment-safety",
+      "title": "Handle Science Equipment Safely",
+      "quarter": 1,
+      "shelf_cards": 59,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g7-0017"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:microscope",
+      "title": "Meet the Compound Microscope",
+      "quarter": 2,
+      "shelf_cards": 50,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:cell-observation",
+      "title": "Observe Cells",
+      "quarter": 2,
+      "shelf_cards": 73,
+      "linked_cards": 4,
+      "candidate_items": 4,
+      "knowledge_families_upper_bound": 4,
+      "item_ids": [
+        "ha-g7-0023",
+        "ha-g7-0024",
+        "ha-g7-0025",
+        "ha-g7-0026"
+      ],
+      "core_knowledge_families_upper_bound": 4
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:one-many-cells",
+      "title": "One Cell or Many?",
+      "quarter": 2,
+      "shelf_cards": 48,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g5-0034"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:plant-animal-cells",
+      "title": "Compare Plant and Animal Cells",
+      "quarter": 2,
+      "shelf_cards": 31,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g7-0027"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:cell-division",
+      "title": "Mitosis and Meiosis",
+      "quarter": 2,
+      "shelf_cards": 57,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g7-0030"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:inherited-information",
+      "title": "Information From Both Parents",
+      "quarter": 2,
+      "shelf_cards": 34,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g7-0030"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:reproduction-types",
+      "title": "Sexual and Asexual Reproduction",
+      "quarter": 2,
+      "shelf_cards": 30,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:biological-levels",
+      "title": "From Cells to the Biosphere",
+      "quarter": 2,
+      "shelf_cards": 44,
+      "linked_cards": 8,
+      "candidate_items": 6,
+      "knowledge_families_upper_bound": 6,
+      "item_ids": [
+        "ha-g4-0012",
+        "ha-g7-0034",
+        "ha-g7-0035",
+        "ha-g7-0036",
+        "ha-g7-0037",
+        "ha-g7-0038"
+      ],
+      "core_knowledge_families_upper_bound": 5
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:trophic-levels",
+      "title": "Levels in an Energy Pyramid",
+      "quarter": 2,
+      "shelf_cards": 24,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g4-0010",
+        "ha-g7-0039",
+        "ha-g7-0040"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:energy-transfer",
+      "title": "Energy Between Trophic Levels",
+      "quarter": 2,
+      "shelf_cards": 43,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g4-0010",
+        "ha-g4-0011"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:measuring-forces",
+      "title": "Forces Can Be Measured",
+      "quarter": 3,
+      "shelf_cards": 95,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g5-0041",
+        "ha-g7-0041",
+        "ha-g7-0042"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:balanced-unbalanced",
+      "title": "Balanced or Unbalanced?",
+      "quarter": 3,
+      "shelf_cards": 62,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:force-diagrams",
+      "title": "Draw Force Arrows",
+      "quarter": 3,
+      "shelf_cards": 46,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g7-0046"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:net-force",
+      "title": "When Motion Changes",
+      "quarter": 3,
+      "shelf_cards": 24,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g7-0045"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:distance-displacement",
+      "title": "Distance and Displacement",
+      "quarter": 3,
+      "shelf_cards": 36,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g7-0050"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:speed-velocity",
+      "title": "Speed and Velocity",
+      "quarter": 3,
+      "shelf_cards": 50,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:motion-graphs",
+      "title": "Graph Uniform Motion",
+      "quarter": 3,
+      "shelf_cards": 45,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g7-0053"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:heat-temperature",
+      "title": "Heat Is Not Temperature",
+      "quarter": 3,
+      "shelf_cards": 21,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g7-0055"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:heat-transfer-uses",
+      "title": "When Heat Transfer Helps or Hurts",
+      "quarter": 3,
+      "shelf_cards": 235,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:heat-particles",
+      "title": "Particles Transfer Heat",
+      "quarter": 3,
+      "shelf_cards": 59,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:heat-electricity",
+      "title": "Turning Heat Into Electricity",
+      "quarter": 3,
+      "shelf_cards": 25,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g7-0060"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:fault-types",
+      "title": "Classify Faults",
+      "quarter": 4,
+      "shelf_cards": 28,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g7-0062",
+        "ha-g7-0063",
+        "ha-g7-0064"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:fault-models",
+      "title": "Model Fault Movement",
+      "quarter": 4,
+      "shelf_cards": 40,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g7-0061"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:earthquake-effects",
+      "title": "What Shapes Earthquake Damage?",
+      "quarter": 4,
+      "shelf_cards": 50,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:local-faults",
+      "title": "Find Local Fault Information",
+      "quarter": 4,
+      "shelf_cards": 48,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:earthquake-models",
+      "title": "Model an Earthquake",
+      "quarter": 4,
+      "shelf_cards": 37,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g7-0065",
+        "ha-g7-0066",
+        "ha-g7-0067"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:earthquake-plan",
+      "title": "Practice the Local Earthquake Plan",
+      "quarter": 4,
+      "shelf_cards": 49,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:tsunami-generation",
+      "title": "How Tsunamis Form",
+      "quarter": 4,
+      "shelf_cards": 30,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g7-0069"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:tsunami-alerts",
+      "title": "Tsunami Alerts and Action",
+      "quarter": 4,
+      "shelf_cards": 50,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g7-0070"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:sun-atmosphere",
+      "title": "Sunlight Meets the Atmosphere",
+      "quarter": 4,
+      "shelf_cards": 86,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:sunlight-angle",
+      "title": "Model Sunlight Through the Year",
+      "quarter": 4,
+      "shelf_cards": 78,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g6-0076",
+        "ha-g6-0077",
+        "ha-g7-0077"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:day-length",
+      "title": "Why Day Length Changes",
+      "quarter": 4,
+      "shelf_cards": 40,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 7,
+      "lesson": "g7:solar-winds",
+      "title": "Sunlight Drives Wind Patterns",
+      "quarter": 4,
+      "shelf_cards": 66,
+      "linked_cards": 5,
+      "candidate_items": 5,
+      "knowledge_families_upper_bound": 4,
+      "item_ids": [
+        "ha-g6-0072",
+        "ha-g7-0073",
+        "ha-g7-0074",
+        "ha-g7-0079",
+        "ha-g7-0080"
+      ],
+      "core_knowledge_families_upper_bound": 4
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:digestion",
+      "title": "Trace Food’s Journey",
+      "quarter": 1,
+      "shelf_cards": 50,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0022"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:body-systems",
+      "title": "Body Systems Work Together",
+      "quarter": 1,
+      "shelf_cards": 36,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:plant-transport",
+      "title": "Roots, Stems, and Leaves",
+      "quarter": 1,
+      "shelf_cards": 63,
+      "linked_cards": 1,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0025",
+        "ha-g8-0026"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:inheritance-patterns",
+      "title": "Track an Inherited Trait",
+      "quarter": 1,
+      "shelf_cards": 48,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:inheritance-ratios",
+      "title": "Predict Inheritance Ratios",
+      "quarter": 1,
+      "shelf_cards": 42,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:classification",
+      "title": "Kingdoms and Domains",
+      "quarter": 1,
+      "shelf_cards": 47,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0035"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:humans-primates",
+      "title": "Humans, Mammals, and Primates",
+      "quarter": 1,
+      "shelf_cards": 51,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0037"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:nature-cycles",
+      "title": "Trace Nature’s Cycles",
+      "quarter": 1,
+      "shelf_cards": 93,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g8-0028",
+        "ha-g8-0039"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:photosynthesis-respiration",
+      "title": "Photosynthesis and Respiration",
+      "quarter": 1,
+      "shelf_cards": 143,
+      "linked_cards": 9,
+      "candidate_items": 6,
+      "knowledge_families_upper_bound": 6,
+      "item_ids": [
+        "ha-g4-0011",
+        "ha-g6-0031",
+        "ha-g7-0026",
+        "ha-g8-0038",
+        "ha-g8-0039",
+        "ha-g8-0040"
+      ],
+      "core_knowledge_families_upper_bound": 6
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:cell-energy-sites",
+      "title": "Where Cell Processes Happen",
+      "quarter": 1,
+      "shelf_cards": 24,
+      "linked_cards": 2,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g7-0026"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:photosynthesis-test",
+      "title": "Plan a Photosynthesis Test",
+      "quarter": 1,
+      "shelf_cards": 43,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:atomic-timeline",
+      "title": "How Atomic Models Changed",
+      "quarter": 2,
+      "shelf_cards": 35,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g8-0001",
+        "ha-g8-0003"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:draw-atom",
+      "title": "Draw an Atom Model",
+      "quarter": 2,
+      "shelf_cards": 38,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0004"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:subatomic-particles",
+      "title": "Compare Subatomic Particles",
+      "quarter": 2,
+      "shelf_cards": 47,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g8-0005",
+        "ha-g8-0006",
+        "ha-g8-0009"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:pure-substances",
+      "title": "What Defines an Element?",
+      "quarter": 2,
+      "shelf_cards": 106,
+      "linked_cards": 4,
+      "candidate_items": 4,
+      "knowledge_families_upper_bound": 4,
+      "item_ids": [
+        "ha-g8-0010",
+        "ha-g8-0012",
+        "ha-g8-0014",
+        "ha-g8-0015"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:periodic-history",
+      "title": "Building the Periodic Table",
+      "quarter": 2,
+      "shelf_cards": 33,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:element-names",
+      "title": "Element Names and Symbols",
+      "quarter": 2,
+      "shelf_cards": 215,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0020"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:periods-groups",
+      "title": "Read Groups and Periods",
+      "quarter": 2,
+      "shelf_cards": 45,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0016",
+        "ha-g8-0017"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:electron-position",
+      "title": "Electrons and Table Position",
+      "quarter": 2,
+      "shelf_cards": 40,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0019"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:count-particles",
+      "title": "Count Protons, Neutrons, Electrons",
+      "quarter": 2,
+      "shelf_cards": 32,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0011"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:group-valence",
+      "title": "Valence Electrons in a Group",
+      "quarter": 2,
+      "shelf_cards": 32,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:land-water",
+      "title": "Earth’s Land and Water",
+      "quarter": 3,
+      "shelf_cards": 23,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0061"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:crust-sources",
+      "title": "Investigate Earth’s Crust",
+      "quarter": 3,
+      "shelf_cards": 42,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0062"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:volcano-types",
+      "title": "Compare Volcano Types",
+      "quarter": 3,
+      "shelf_cards": 27,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0067"
+      ],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:volcano-shape",
+      "title": "Why Volcano Shapes Differ",
+      "quarter": 3,
+      "shelf_cards": 30,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g8-0066",
+        "ha-g8-0067",
+        "ha-g8-0068"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:global-patterns",
+      "title": "Map Earth’s Active Belts",
+      "quarter": 3,
+      "shelf_cards": 23,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g8-0069",
+        "ha-g8-0070"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:plates-crust",
+      "title": "Crust and Lithospheric Plates",
+      "quarter": 3,
+      "shelf_cards": 37,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0064"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:typhoon-formation",
+      "title": "Why Typhoons Form",
+      "quarter": 3,
+      "shelf_cards": 51,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0071"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:typhoon-track",
+      "title": "Plot a Typhoon Track",
+      "quarter": 3,
+      "shelf_cards": 55,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0074"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:land-sea-storms",
+      "title": "Land, Sea, and Typhoon Strength",
+      "quarter": 3,
+      "shelf_cards": 20,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0076"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:community-support",
+      "title": "How Authorities Help",
+      "quarter": 3,
+      "shelf_cards": 45,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0073"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:tide-motions",
+      "title": "Sun, Moon, and Tides",
+      "quarter": 3,
+      "shelf_cards": 50,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0078",
+        "ha-g8-0079"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:tidal-energy",
+      "title": "Can Tides Generate Electricity?",
+      "quarter": 3,
+      "shelf_cards": 40,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0080"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:acceleration",
+      "title": "Acceleration Changes Velocity",
+      "quarter": 4,
+      "shelf_cards": 43,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g8-0041",
+        "ha-g8-0043"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:local-motion",
+      "title": "Find Acceleration Around You",
+      "quarter": 4,
+      "shelf_cards": 26,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g8-0042",
+        "ha-g8-0043"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:acceleration-graphs",
+      "title": "Draw Motion Graphs",
+      "quarter": 4,
+      "shelf_cards": 5,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0044"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:kinetic-potential",
+      "title": "Moving and Stored Energy",
+      "quarter": 4,
+      "shelf_cards": 204,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g8-0046",
+        "ha-g8-0048",
+        "ha-g8-0049"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:energy-exchange",
+      "title": "Energy Changes Form",
+      "quarter": 4,
+      "shelf_cards": 94,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0049"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:work",
+      "title": "When Is Work Done?",
+      "quarter": 4,
+      "shelf_cards": 41,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g8-0050",
+        "ha-g8-0051"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:power",
+      "title": "How Quickly Work Is Done",
+      "quarter": 4,
+      "shelf_cards": 34,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g8-0052",
+        "ha-g8-0053"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:mechanical-energy",
+      "title": "Add Mechanical Energy",
+      "quarter": 4,
+      "shelf_cards": 33,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:falling-energy",
+      "title": "Follow Energy in a Fall",
+      "quarter": 4,
+      "shelf_cards": 26,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0049"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:hydropower",
+      "title": "Water Power in the Philippines",
+      "quarter": 4,
+      "shelf_cards": 41,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0056"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 8,
+      "lesson": "g8:light-investigations",
+      "title": "Investigate Mirrors and Refraction",
+      "quarter": 4,
+      "shelf_cards": 146,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g3-0032",
+        "ha-g8-0057"
+      ],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:f-1",
+      "title": "Inertia and Net Force",
+      "quarter": 1,
+      "shelf_cards": 94,
+      "linked_cards": 3,
+      "candidate_items": 4,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g7-0043",
+        "ha-g7-0044",
+        "ha-g9-0041",
+        "ha-g9-0042"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:f-2",
+      "title": "Changing Speed and Direction",
+      "quarter": 1,
+      "shelf_cards": 25,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g8-0043"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:f-3",
+      "title": "Investigate Force, Mass, Acceleration",
+      "quarter": 1,
+      "shelf_cards": 25,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0043"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:f-4",
+      "title": "Forces Between Two Objects",
+      "quarter": 1,
+      "shelf_cards": 76,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0045",
+        "ha-g9-0046"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:f-5",
+      "title": "Draw Action–Reaction Pairs",
+      "quarter": 1,
+      "shelf_cards": 56,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0046"
+      ],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:f-6",
+      "title": "Electron Flow and Safety",
+      "quarter": 1,
+      "shelf_cards": 70,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g5-0058",
+        "ha-g9-0048"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:f-7",
+      "title": "Investigate Circuits",
+      "quarter": 1,
+      "shelf_cards": 61,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g9-0049",
+        "ha-g9-0051",
+        "ha-g9-0053"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:f-8",
+      "title": "Draw and Assemble Circuits",
+      "quarter": 1,
+      "shelf_cards": 55,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0055",
+        "ha-g9-0056"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:f-9",
+      "title": "Compare Circuit Choices",
+      "quarter": 1,
+      "shelf_cards": 29,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g9-0052",
+        "ha-g9-0054"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:f-10",
+      "title": "How Electromagnetic Waves Travel",
+      "quarter": 1,
+      "shelf_cards": 42,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0057"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:f-11",
+      "title": "Read the Electromagnetic Spectrum",
+      "quarter": 1,
+      "shelf_cards": 81,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:f-12",
+      "title": "Uses of Electromagnetic Waves",
+      "quarter": 1,
+      "shelf_cards": 71,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0059"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:f-13",
+      "title": "Research Radiation Effects",
+      "quarter": 1,
+      "shelf_cards": 32,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:e-1",
+      "title": "Evidence for Continental Drift",
+      "quarter": 2,
+      "shelf_cards": 31,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0061"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:e-2",
+      "title": "Map Philippine Plate Boundaries",
+      "quarter": 2,
+      "shelf_cards": 28,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:e-3",
+      "title": "Three Plate Boundaries",
+      "quarter": 2,
+      "shelf_cards": 24,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0063",
+        "ha-g9-0065"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:e-4",
+      "title": "Fossils Date Rock Layers",
+      "quarter": 2,
+      "shelf_cards": 33,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0067"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:e-5",
+      "title": "Relative and Absolute Dating",
+      "quarter": 2,
+      "shelf_cards": 31,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0069"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:e-6",
+      "title": "Read Earth’s Timeline",
+      "quarter": 2,
+      "shelf_cards": 68,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0070"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:e-7",
+      "title": "Seismic Clues to Earth’s Interior",
+      "quarter": 2,
+      "shelf_cards": 34,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0071"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:e-8",
+      "title": "Draw Earth’s Layers to Scale",
+      "quarter": 2,
+      "shelf_cards": 62,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:e-9",
+      "title": "Small Worlds, Early Solar System",
+      "quarter": 2,
+      "shelf_cards": 69,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g9-0074",
+        "ha-g9-0076",
+        "ha-g9-0077"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:e-10",
+      "title": "Why Meteor Showers Return",
+      "quarter": 2,
+      "shelf_cards": 26,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0078"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:e-11",
+      "title": "Tools for Space Research",
+      "quarter": 2,
+      "shelf_cards": 91,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g9-0079",
+        "ha-g9-0080"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:l-1",
+      "title": "Model the DNA Double Helix",
+      "quarter": 3,
+      "shelf_cards": 39,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:l-2",
+      "title": "DNA, Genes, and Inheritance",
+      "quarter": 3,
+      "shelf_cards": 93,
+      "linked_cards": 4,
+      "candidate_items": 4,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g8-0032",
+        "ha-g8-0034",
+        "ha-g9-0022",
+        "ha-g9-0025"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:l-3",
+      "title": "How Mutations Arise",
+      "quarter": 3,
+      "shelf_cards": 27,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g9-0027",
+        "ha-g9-0029"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:l-4",
+      "title": "Different Effects of Mutations",
+      "quarter": 3,
+      "shelf_cards": 22,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0028"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:l-5",
+      "title": "Biodiversity and Resilience",
+      "quarter": 3,
+      "shelf_cards": 37,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:l-6",
+      "title": "Read Conservation Classifications",
+      "quarter": 3,
+      "shelf_cards": 35,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0033"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:l-7",
+      "title": "Threats and Extinction",
+      "quarter": 3,
+      "shelf_cards": 51,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0034"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:l-8",
+      "title": "Research Local Conservation",
+      "quarter": 3,
+      "shelf_cards": 60,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0040"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:l-9",
+      "title": "Label Philippine Ecosystems",
+      "quarter": 3,
+      "shelf_cards": 73,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:l-10",
+      "title": "Human Impacts on Ecosystems",
+      "quarter": 3,
+      "shelf_cards": 187,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g3-0022",
+        "ha-g9-0036"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:l-11",
+      "title": "Plan an Environmental Survey",
+      "quarter": 3,
+      "shelf_cards": 7,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:m-1",
+      "title": "Investigate a New Substance",
+      "quarter": 4,
+      "shelf_cards": 45,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:m-2",
+      "title": "Bonds Change in Reactions",
+      "quarter": 4,
+      "shelf_cards": 79,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g4-0065",
+        "ha-g9-0001"
+      ],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:m-3",
+      "title": "Valence Electrons Make Bonds",
+      "quarter": 4,
+      "shelf_cards": 38,
+      "linked_cards": 4,
+      "candidate_items": 4,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g8-0018",
+        "ha-g9-0003",
+        "ha-g9-0008",
+        "ha-g9-0018"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:m-4",
+      "title": "Count Oxygen’s Valence Electrons",
+      "quarter": 4,
+      "shelf_cards": 78,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0004"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:m-5",
+      "title": "Form Ions and Ionic Bonds",
+      "quarter": 4,
+      "shelf_cards": 30,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g9-0005",
+        "ha-g9-0007",
+        "ha-g9-0010"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:m-6",
+      "title": "Name Ionic Compounds",
+      "quarter": 4,
+      "shelf_cards": 33,
+      "linked_cards": 4,
+      "candidate_items": 4,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g9-0009",
+        "ha-g9-0010",
+        "ha-g9-0012",
+        "ha-g9-0017"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:m-7",
+      "title": "Share Electrons in Molecules",
+      "quarter": 4,
+      "shelf_cards": 25,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:m-8",
+      "title": "Name Molecular Compounds",
+      "quarter": 4,
+      "shelf_cards": 43,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g9-0013",
+        "ha-g9-0014",
+        "ha-g9-0015"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:m-9",
+      "title": "Lattices and Molecules",
+      "quarter": 4,
+      "shelf_cards": 38,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0016"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:m-10",
+      "title": "Metallic Bonding",
+      "quarter": 4,
+      "shelf_cards": 27,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g9-0018"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 9,
+      "lesson": "g9:m-11",
+      "title": "Compare Bonding and Properties",
+      "quarter": 4,
+      "shelf_cards": 38,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g9-0018",
+        "ha-g9-0020"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:e-1",
+      "title": "Measure Plate Motion",
+      "quarter": 1,
+      "shelf_cards": 29,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:e-2",
+      "title": "Compare Plate Boundaries",
+      "quarter": 1,
+      "shelf_cards": 37,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g10-0065",
+        "ha-g9-0063",
+        "ha-g9-0065"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:e-3",
+      "title": "Read the Philippine Tectonic Map",
+      "quarter": 1,
+      "shelf_cards": 37,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:e-4",
+      "title": "Project Future Plate Positions",
+      "quarter": 1,
+      "shelf_cards": 32,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:e-5",
+      "title": "What Drives Plates?",
+      "quarter": 1,
+      "shelf_cards": 29,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g10-0063",
+        "ha-g10-0064",
+        "ha-g10-0065"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:e-6",
+      "title": "Effects of Subduction",
+      "quarter": 1,
+      "shelf_cards": 21,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:e-7",
+      "title": "Himalayas and Andes",
+      "quarter": 1,
+      "shelf_cards": 20,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g10-0066"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:e-8",
+      "title": "Evidence of Climate Change",
+      "quarter": 1,
+      "shelf_cards": 41,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g10-0071",
+        "ha-g10-0074"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:e-9",
+      "title": "Enhanced Greenhouse Warming",
+      "quarter": 1,
+      "shelf_cards": 93,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g10-0070",
+        "ha-g10-0072",
+        "ha-g10-0073"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:e-10",
+      "title": "ENSO and Weather",
+      "quarter": 1,
+      "shelf_cards": 61,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g10-0075",
+        "ha-g10-0076",
+        "ha-g10-0077"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:e-11",
+      "title": "Local Climate Action",
+      "quarter": 1,
+      "shelf_cards": 43,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:e-12",
+      "title": "Philippine Renewable Energy",
+      "quarter": 1,
+      "shelf_cards": 48,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g10-0059",
+        "ha-g10-0080"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:f-1",
+      "title": "Investigate Projectiles",
+      "quarter": 2,
+      "shelf_cards": 39,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g10-0042",
+        "ha-g10-0043"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:f-2",
+      "title": "Elastic and Inelastic Collisions",
+      "quarter": 2,
+      "shelf_cards": 22,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g10-0044",
+        "ha-g10-0045"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:f-3",
+      "title": "Model a Collision",
+      "quarter": 2,
+      "shelf_cards": 46,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g10-0044",
+        "ha-g10-0045"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:f-4",
+      "title": "Mass, Velocity, and Momentum",
+      "quarter": 2,
+      "shelf_cards": 33,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g10-0046",
+        "ha-g10-0047"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:f-5",
+      "title": "Investigate Stopping Motion",
+      "quarter": 2,
+      "shelf_cards": 37,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g10-0047"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:f-6",
+      "title": "Impulse Changes Momentum",
+      "quarter": 2,
+      "shelf_cards": 29,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g10-0048",
+        "ha-g10-0049"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:f-7",
+      "title": "Research Collision Protection",
+      "quarter": 2,
+      "shelf_cards": 20,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g10-0049"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:f-8",
+      "title": "Conservation of Momentum",
+      "quarter": 2,
+      "shelf_cards": 29,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g10-0045"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:f-9",
+      "title": "From Power Plant to Home",
+      "quarter": 2,
+      "shelf_cards": 31,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:f-10",
+      "title": "Household Electrical Safety",
+      "quarter": 2,
+      "shelf_cards": 102,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g10-0054",
+        "ha-g10-0055"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:f-11",
+      "title": "Motors and Generators",
+      "quarter": 2,
+      "shelf_cards": 47,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g10-0056",
+        "ha-g5-0059"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:f-12",
+      "title": "Save Electricity Together",
+      "quarter": 2,
+      "shelf_cards": 37,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g10-0058"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:f-13",
+      "title": "Compare Energy Sources",
+      "quarter": 2,
+      "shelf_cards": 46,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:m-1",
+      "title": "Evidence of Chemical Reactions",
+      "quarter": 3,
+      "shelf_cards": 152,
+      "linked_cards": 4,
+      "candidate_items": 4,
+      "knowledge_families_upper_bound": 4,
+      "item_ids": [
+        "ha-g10-0020",
+        "ha-g10-0032",
+        "ha-g4-0065",
+        "ha-g9-0002"
+      ],
+      "core_knowledge_families_upper_bound": 4
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:m-2",
+      "title": "Test Acids, Bases, and Salts",
+      "quarter": 3,
+      "shelf_cards": 74,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:m-3",
+      "title": "Four Reaction Types",
+      "quarter": 3,
+      "shelf_cards": 29,
+      "linked_cards": 5,
+      "candidate_items": 5,
+      "knowledge_families_upper_bound": 4,
+      "item_ids": [
+        "ha-g10-0006",
+        "ha-g10-0007",
+        "ha-g10-0008",
+        "ha-g10-0009",
+        "ha-g10-0011"
+      ],
+      "core_knowledge_families_upper_bound": 3
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:m-4",
+      "title": "Reactions Around Us",
+      "quarter": 3,
+      "shelf_cards": 80,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g10-0010",
+        "ha-g10-0073"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:m-5",
+      "title": "Write Chemical Equations",
+      "quarter": 3,
+      "shelf_cards": 47,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:m-6",
+      "title": "Atoms Rearrange, Mass Remains",
+      "quarter": 3,
+      "shelf_cards": 39,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g10-0013"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:m-7",
+      "title": "Balance an Equation",
+      "quarter": 3,
+      "shelf_cards": 53,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g10-0013",
+        "ha-g10-0014",
+        "ha-g10-0015"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:m-8",
+      "title": "Control Reaction Rates",
+      "quarter": 3,
+      "shelf_cards": 123,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g10-0016"
+      ],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:m-9",
+      "title": "Exothermic and Endothermic",
+      "quarter": 3,
+      "shelf_cards": 50,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g10-0019",
+        "ha-g10-0020"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:l-1",
+      "title": "Keep Internal Conditions Balanced",
+      "quarter": 4,
+      "shelf_cards": 138,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g10-0021",
+        "ha-g10-0022"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:l-2",
+      "title": "Compare Feedback Loops",
+      "quarter": 4,
+      "shelf_cards": 65,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g10-0022",
+        "ha-g10-0023",
+        "ha-g10-0024"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:l-3",
+      "title": "Research Natural Selection",
+      "quarter": 4,
+      "shelf_cards": 33,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 2,
+      "item_ids": [
+        "ha-g10-0025",
+        "ha-g10-0026"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:l-4",
+      "title": "How Populations Evolve",
+      "quarter": 4,
+      "shelf_cards": 55,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g10-0026"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:l-5",
+      "title": "Evidence for Evolution",
+      "quarter": 4,
+      "shelf_cards": 49,
+      "linked_cards": 4,
+      "candidate_items": 4,
+      "knowledge_families_upper_bound": 4,
+      "item_ids": [
+        "ha-g10-0027",
+        "ha-g10-0028",
+        "ha-g10-0029",
+        "ha-g10-0030"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:l-6",
+      "title": "What Is Biotechnology?",
+      "quarter": 4,
+      "shelf_cards": 31,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:l-7",
+      "title": "Traditional Fermentation",
+      "quarter": 4,
+      "shelf_cards": 95,
+      "linked_cards": 3,
+      "candidate_items": 3,
+      "knowledge_families_upper_bound": 3,
+      "item_ids": [
+        "ha-g10-0033",
+        "ha-g10-0034",
+        "ha-g10-0035"
+      ],
+      "core_knowledge_families_upper_bound": 2
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:l-8",
+      "title": "Modern Biotechnology",
+      "quarter": 4,
+      "shelf_cards": 21,
+      "linked_cards": 2,
+      "candidate_items": 2,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g10-0036",
+        "ha-g10-0037"
+      ],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:l-9",
+      "title": "Debate Biotechnology Choices",
+      "quarter": 4,
+      "shelf_cards": 49,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:l-10",
+      "title": "Limits to Population Size",
+      "quarter": 4,
+      "shelf_cards": 23,
+      "linked_cards": 0,
+      "candidate_items": 0,
+      "knowledge_families_upper_bound": 0,
+      "item_ids": [],
+      "core_knowledge_families_upper_bound": 0
+    },
+    {
+      "grade": 10,
+      "lesson": "g10:l-11",
+      "title": "Growth Near Carrying Capacity",
+      "quarter": 4,
+      "shelf_cards": 52,
+      "linked_cards": 1,
+      "candidate_items": 1,
+      "knowledge_families_upper_bound": 1,
+      "item_ids": [
+        "ha-g10-0038"
+      ],
+      "core_knowledge_families_upper_bound": 1
+    }
+  ],
+  "limits": [
+    "Only explicitly reviewed source-card/knowledge links count. Related topics, tags, fact suffixes and source snapshots alone do not add eligible links.",
+    "Non-held drafts are counted for planning; no item is approved for a student.",
+    "All cards in a shelf/window are hypothetically encountered. This is an optimistic upper bound, not a prediction of ordinary app usage.",
+    "The feed can navigate topics and apply weights; lesson order does not establish elapsed time or actual knowledge exposure.",
+    "Six families do not guarantee a valid form: duplicate source facts, benchmark overlap, history and language/coverage gates can reduce availability.",
+    "One, two and four lesson windows are content breadth scenarios, not assertions about how many lessons a learner completes in fourteen days."
+  ]
+}

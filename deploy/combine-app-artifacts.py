@@ -32,6 +32,9 @@ def combine(android, windows):
     if apks['android'].get('runtime') == apks['chromeos'].get('runtime'):
         raise ValueError('Android and ChromeOS require separate OTA runtimes')
     test = desktop['windows'].get('validation', {})
+    exam = test.get('exam', {})
+    if exam.get('questions') != 12 or not all(exam.get(check) is True for check in ['completed', 'resumed', 'history', 'keyboard', 'zoom']):
+        raise ValueError('Windows must include a tested twelve-question exam')
     if not (test.get('passed') and test.get('packaged') and test.get('gitCommit') == commit and
             test.get('platform') == 'win32' and test.get('arch') == 'x64' and
             test.get('native', {}).get('stats', {}).get('backendDevice') == 'cpu' and

@@ -1,0 +1,265 @@
+{
+  "created_at": "2026-09-28T09:35:59+00:00",
+  "status": "selected blueprint authoring pass complete; human review, coverage expansion and app validation remain separate",
+  "batches": 33,
+  "items": 638,
+  "language_versions": 1914,
+  "origins": {
+    "reuse": 43,
+    "revise": 577,
+    "alternate": 14,
+    "new": 4
+  },
+  "statuses": {
+    "source_checked": 633,
+    "hold": 5
+  },
+  "production_ready": 0,
+  "knowledge_families": 554,
+  "target_records": 638,
+  "coverage": {
+    "subcategories": {
+      "total": 335,
+      "with_any_draft": 212,
+      "with_nonheld_draft": 212,
+      "unsampled": 123
+    },
+    "competencies": {
+      "total": 324,
+      "with_any_draft": 291,
+      "with_nonheld_draft": 291,
+      "unsampled": 33
+    }
+  },
+  "grades": [
+    {
+      "material_grade": 3,
+      "items": 76,
+      "held": 2,
+      "families": 67,
+      "domains": {
+        "MATTER": 25,
+        "LIVING_THINGS": 23,
+        "FORCE_MOTION_ENERGY": 15,
+        "EARTH_SPACE": 13
+      }
+    },
+    {
+      "material_grade": 4,
+      "items": 80,
+      "held": 1,
+      "families": 72,
+      "domains": {
+        "MATTER": 20,
+        "LIVING_THINGS": 20,
+        "FORCE_MOTION_ENERGY": 20,
+        "EARTH_SPACE": 20
+      }
+    },
+    {
+      "material_grade": 5,
+      "items": 80,
+      "held": 1,
+      "families": 74,
+      "domains": {
+        "MATTER": 20,
+        "LIVING_THINGS": 20,
+        "FORCE_MOTION_ENERGY": 20,
+        "EARTH_SPACE": 20
+      }
+    },
+    {
+      "material_grade": 6,
+      "items": 82,
+      "held": 1,
+      "families": 76,
+      "domains": {
+        "MATTER": 20,
+        "LIVING_THINGS": 20,
+        "FORCE_MOTION_ENERGY": 20,
+        "EARTH_SPACE": 22
+      }
+    },
+    {
+      "material_grade": 7,
+      "items": 80,
+      "held": 0,
+      "families": 69,
+      "domains": {
+        "MATTER": 20,
+        "LIVING_THINGS": 20,
+        "FORCE_MOTION_ENERGY": 20,
+        "EARTH_SPACE": 20
+      }
+    },
+    {
+      "material_grade": 8,
+      "items": 80,
+      "held": 0,
+      "families": 73,
+      "domains": {
+        "MATTER": 20,
+        "LIVING_THINGS": 20,
+        "FORCE_MOTION_ENERGY": 20,
+        "EARTH_SPACE": 20
+      }
+    },
+    {
+      "material_grade": 9,
+      "items": 80,
+      "held": 0,
+      "families": 71,
+      "domains": {
+        "MATTER": 20,
+        "LIVING_THINGS": 20,
+        "FORCE_MOTION_ENERGY": 20,
+        "EARTH_SPACE": 20
+      }
+    },
+    {
+      "material_grade": 10,
+      "items": 80,
+      "held": 0,
+      "families": 72,
+      "domains": {
+        "MATTER": 20,
+        "LIVING_THINGS": 20,
+        "FORCE_MOTION_ENERGY": 20,
+        "EARTH_SPACE": 20
+      }
+    }
+  ],
+  "holds": [
+    {
+      "id": "ha-g3-0010",
+      "reasons": [
+        {
+          "code": "pottery-vocabulary",
+          "languages": [
+            "en",
+            "tl",
+            "bis"
+          ],
+          "reason": "Confirm that pottery and firing/hurno/hurnohan are understood at the intended level; the source corpus alone does not establish this."
+        }
+      ]
+    },
+    {
+      "id": "ha-g3-0049",
+      "reasons": [
+        {
+          "code": "moon-grade-fit",
+          "languages": [
+            "en",
+            "tl",
+            "bis"
+          ],
+          "reason": "Grade 3 sky-observation wording does not explicitly require reflected-light recall. Keep out of readiness until applicable cohort/teacher coverage is confirmed; an exposure-only route can be considered separately."
+        }
+      ]
+    },
+    {
+      "id": "ha-g4-0076",
+      "reasons": [
+        {
+          "code": "insufficient_current_card_knowledge_link",
+          "languages": [
+            "en",
+            "tl",
+            "bis"
+          ],
+          "reason": "Current card names Maria Orosa’s ketchup but does not explicitly teach her development of it. A reviewed teaching-card link or explicit target coverage is needed; do not auto-qualify from this card exposure."
+        }
+      ]
+    },
+    {
+      "id": "ha-g5-0077",
+      "reasons": [
+        {
+          "code": "teaching-source-conflicts-with-current-standard",
+          "languages": [
+            "en",
+            "tl",
+            "bis"
+          ],
+          "reason": "Current core card dcard-09415 says up to 63 km/h and shipping question keys 30–60 km/h; PAGASA current TCWS1 is 39–61 km/h. Needs corrected and actually presented teaching content before assessment use."
+        }
+      ]
+    },
+    {
+      "id": "ha-g6-0067",
+      "reasons": [
+        {
+          "code": "unsafe_primary_teaching_assurance",
+          "languages": [
+            "tl"
+          ],
+          "reason": "ffct-29309 says Hindi ito sasabog agad. Official monitoring levels do not assure that sudden hazardous activity cannot occur; correct and re-review the teaching source before using this item."
+        }
+      ]
+    }
+  ],
+  "validation": {
+    "batch_controls_per_batch": 25,
+    "batches_passed": 33,
+    "pool_controls": 9,
+    "full_form_controls": 159,
+    "exposure_count_controls": 4,
+    "exact_duplicate_groups": 0,
+    "simulated_student_grades": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "synthetic_followups_per_grade": 8,
+    "independent_model_review_items": 100,
+    "native_speaker_review": false,
+    "teacher_review": false,
+    "student_pilot": false
+  },
+  "exposure": {
+    "linked_core_cards": 642,
+    "total_core_cards": 49156,
+    "lesson_count": 308,
+    "single_lessons_with_six_family_upper_bound": 9
+  },
+  "source_hashes": {
+    "rag/assessment-authoring/batches/001-grade3-foundations.json": "db1e0ecaa8f6386b7cc0b1ca5463baa4ca7ea8a20c551c10bb0679063c4547a4",
+    "rag/assessment-authoring/batches/002-grade3-materials.json": "e086a9dba5993f68adc351b6e060c4f2d0f3efe54927f15e7cb1aa5e6927c385",
+    "rag/assessment-authoring/batches/003-grade4-living-things.json": "8709e4cebfa5de75f6a72a1880ca5d36f6a1cd1765a92e81986726b9f4115faa",
+    "rag/assessment-authoring/batches/004-grade3-motion-light-sky.json": "2f71c7956c25eefa843ed870b3244165ff9c7028bf12b04682ca67b0e8374c8c",
+    "rag/assessment-authoring/batches/005-grade3-living-things.json": "f74a64f045fd1234cd4c355a700273e4790f8e71c2a21f7ae466d21b7c9c6a29",
+    "rag/assessment-authoring/batches/006-grade4-motion-magnets-energy.json": "6fcb7e22b5117327b0f193b730ca9b3710ab0c59ed70dee670efe14de6c3006b",
+    "rag/assessment-authoring/batches/007-grade4-soil-weather-sun.json": "3f44131dfacd1e32717edb8fd9069e863e87ce50352afc6819b5a28bba8f4f79",
+    "rag/assessment-authoring/batches/008-grade3-rotation-gaps.json": "d6abe46cee7df83775ed5047a061730fefb0fb798046fcbab21a1dcbc4d1d7d7",
+    "rag/assessment-authoring/batches/009-grade4-materials-and-investigation.json": "f398134494a6dd43f2796a653ad1a51362679173d31450b320bae62a0680cb64",
+    "rag/assessment-authoring/batches/010-grade5-matter-measurement.json": "7d153a58021bd817f18adc269d4292d403f85cd91464543964993c3ab0b0faf3",
+    "rag/assessment-authoring/batches/011-grade5-living-things.json": "556812c404afb819bea62acca579a6d69cc44541c3289d24dca518b9fed3c493",
+    "rag/assessment-authoring/batches/012-grade5-forces-and-circuits.json": "906294820be89f5b95720c45c400458d4ea8d8e51d1837edb5a61db59309413b",
+    "rag/assessment-authoring/batches/013-grade5-earth-and-space.json": "61a33eb72da44b91adb604a402d3a0c52f66034008123eb9d3397912fa708dc2",
+    "rag/assessment-authoring/batches/014-grade6-matter-mixtures-investigation.json": "8e4e4f5198dc999ded0fc90a9cec1594588f8658ce97985dc7c54b5da9045018",
+    "rag/assessment-authoring/batches/015-grade6-living-things.json": "aa0b67952ae4f7fc130e4bd1b398fd2af24b7d6cc8cfb9344c1ad044080debec",
+    "rag/assessment-authoring/batches/016-grade6-machines-and-waves.json": "4760f1e3acb478fe4ff00f7d2a7df2a3126d0af0865844d8cefbac63fa2964c2",
+    "rag/assessment-authoring/batches/017-grade6-earth-and-space.json": "638a018c8ba98985eb2133ae701791ff9230613180848e1a0f13e0bfb4e14359",
+    "rag/assessment-authoring/batches/018-grade7-matter-and-investigation.json": "afe222931e4698070f07f6e7daa03f14cf0e09a4559a1dbe5b2413765b8ef86d",
+    "rag/assessment-authoring/batches/019-grade7-cells-and-life-organization.json": "7bc26935b7e02c86e019d742206f5bfd5e35fca8eaa4241e71182d5bf9b91e10",
+    "rag/assessment-authoring/batches/020-grade7-motion-and-heat.json": "7cd5245a34a60f248d3c208492e9a355910721749cd1d0c06c775a8a1303fcfb",
+    "rag/assessment-authoring/batches/021-grade7-earthquakes-and-weather.json": "e0f9d5a0c092aa9dc06ad8fed060206beb282c0cb05fd809f7f6f6a1d2e07d69",
+    "rag/assessment-authoring/batches/022-grade8-atoms-and-periodic-table.json": "f327cda575012af698236078861db07dfbf04358df81deb9129eb8aaba4dc3dd",
+    "rag/assessment-authoring/batches/023-grade8-systems-and-inheritance.json": "967900f72768ef271031ebebe5451a8f987283f29a5ba673c39b241cdfdf94d3",
+    "rag/assessment-authoring/batches/024-grade8-motion-energy-and-light.json": "34d4ad6d932457ba9b81f94e737935e22d7a1798b14f14ce93d394ccc06c66ae",
+    "rag/assessment-authoring/batches/025-grade8-earth-oceans-and-storms.json": "f0b9b1fb886659fb8fed9c16a06d103224bf6b424f289d3be11a02e2b2d7c2dc",
+    "rag/assessment-authoring/batches/026-grade9-bonding-and-compounds.json": "7a78f21a8eeec2ff4caef0d0b5dd0c19a0eaa40f4101679eae33169377c17819",
+    "rag/assessment-authoring/batches/027-grade9-genetics-and-biodiversity.json": "568b8992eb33f9427d60ec45f01c067ba43808535da040676744cddceaf46f1f",
+    "rag/assessment-authoring/batches/028-grade9-forces-circuits-and-radiation.json": "f84d3c055e9c6bf44644549d49dc5f03685246b77f6bc5636c31a3adf5a2e244",
+    "rag/assessment-authoring/batches/029-grade9-earth-history-and-space.json": "b26e80c83038754f9929ce2d5fb54a07b1c7f1148654002c495cdb2ef1d945ad",
+    "rag/assessment-authoring/batches/030-grade10-reactions-and-rates.json": "66d40b9ab9ea98382c3dae480242a0f6b5b3d95608ab60caa2a1c24b441949f4",
+    "rag/assessment-authoring/batches/031-grade10-homeostasis-evolution-and-biotechnology.json": "4f3233bf250f292af3d84b661db228b38ab990156b28baa6617be81c1c6737e9",
+    "rag/assessment-authoring/batches/032-grade10-momentum-and-electricity.json": "58a8e46899b68772e028ceba46e48d3973a329bde250c33ffccfdd0f2157834a",
+    "rag/assessment-authoring/batches/033-grade10-plates-climate-and-energy.json": "5ba305eb4b6cc5794e7fa7310fc66c47280aae7aec8a7c30ba1a421f13ee2dde"
+  }
+}
