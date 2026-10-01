@@ -119,8 +119,13 @@
    "query": "ilang buwan po meron ang planetang Jupiter?",
    "_note": "Was an abstain case; the bank has accurate Jupiter-moon facts, so this is a coverage test.",
    "_note_2026_09_02": "FIXED retrieval-side: 'planetang Jupiter' added to jupiter-many-moons-g6 terms puts the one fact carrying BOTH the >90 count and the four Galilean names at lexical #1 (fused #3), so the grounding now contains the specifics this case asserts; measured 6/6 draws green.",
+   "_note_2026_10_01": "Run 36815520298 rejected a correct count-only answer for omitting optional moon names. The query asks how many: require the grounded >90 count and Jupiter, reject negation, and test positive/negative controls. No model, sampling or content change.",
    "mustContain": [
-    "[Gg]alile|[Gg]anymede|[Ee]uropa|apat na malalak"
+    "Jupiter",
+    "(?:mahigit|higit|lampas)\\s+(?:sa\\s+)?90\\s+(?:(?:na|kilalang)\\s+)*buwan"
+   ],
+   "mustNotContain": [
+    "(?:hindi|wala(?:ng)?)\\b[^.!?]{0,60}(?:mahigit|higit|lampas)\\s+(?:sa\\s+)?90"
    ]
   },
   {

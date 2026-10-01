@@ -339,7 +339,7 @@ test('answers are durable before advance; failed write retries and process resta
   await resumed.answer({ sessionId: started.id, itemId: item.id, optionId: item.correctOptionId });
   assert.equal(resumed.getSnapshot().activeSession!.answers.length, 1);
 });
-test('concurrent duplicate submissions commit once and out-of-order answers are rejected', async () => {
+test('independent questions accept any order and concurrent duplicate submissions commit once', async () => {
   const h = harness(),
     c = h.create();
   await c.begin(context());
@@ -347,12 +347,73 @@ test('concurrent duplicate submissions commit once and out-of-order answers are 
     q = s.items[0]!,
     second = s.items[1]!;
   await c.answer({ sessionId: s.id, itemId: second.id, optionId: second.correctOptionId });
-  assert.equal(c.getSnapshot().activeSession!.answers.length, 0);
+  assert.equal(c.getSnapshot().activeSession!.answers.length, 1);
   await Promise.all([
     c.answer({ sessionId: s.id, itemId: q.id, optionId: q.correctOptionId }),
     c.answer({ sessionId: s.id, itemId: q.id, optionId: q.correctOptionId }),
   ]);
-  assert.equal(c.getSnapshot().activeSession!.answers.length, 1);
+  assert.equal(c.getSnapshot().activeSession!.answers.length, 2);
+  assert.deepEqual(c.getSnapshot().activeSession!.answers.map(a => a.itemId), [second.id, q.id]);
+});
+test('out-of-order choices survive failed writes and restart, then score by identity in every group', async () => {
+  const h = harness();
+  let c = h.create();
+  await c.begin(context());
+  const original = structuredClone(c.getSnapshot().activeSession!);
+  const order = [7, 1, 11, 3, 9, 0, 10, 2, 8, 4, 6, 5];
+  for (let turn = 0; turn < order.length; turn++) {
+    const index = order[turn]!;
+    const item = original.items[index]!;
+    const optionId = index % 3 === 0 ? item.options.find(o => o.id !== item.correctOptionId)!.id : item.correctOptionId;
+    h.setDate(new Date(Date.parse(NOW) + turn * 1000).toISOString());
+    if (turn === 2) h.setFailSave(true);
+    await c.answer({ sessionId: original.id, itemId: item.id, optionId,
+      supportUsed: turn === 0 ? 'read_aloud' : 'none' });
+    if (turn === 2) {
+      assert.match(c.getSnapshot().error, /write failed/);
+      assert.equal(c.getSnapshot().activeSession!.answers.length, 2);
+      h.setFailSave(false);
+      await c.retry();
+      const before = structuredClone(c.getSnapshot().activeSession);
+      c = h.create();
+      await c.hydrate(context());
+      assert.equal(c.getSnapshot().error, '');
+      assert.deepEqual(c.getSnapshot().activeSession, before);
+    }
+    assert.equal(c.getSnapshot().error, '');
+  }
+  const result = c.getSnapshot().results!;
+  assert.equal(result.score.correct, 8);
+  assert.equal(result.score.total, 12);
+  assert.deepEqual(result.session.answers.map(a => a.itemId), order.map(i => original.items[i]!.id));
+  for (const role of ['benchmark', 'recent', 'readiness'] as const) {
+    const indexes = original.items.flatMap((item, index) => item.role === role ? [index] : []);
+    assert.deepEqual(result[role], {total: indexes.length, correct: indexes.filter(i => i % 3 !== 0).length});
+  }
+  const reloaded = h.create();
+  await reloaded.hydrate(context());
+  assert.equal(reloaded.getSnapshot().error, '');
+  assert.deepEqual(reloaded.getSnapshot().results, result);
+});
+test('saved arbitrary-order answers still reject duplicates, unknown items, invalid choices and backwards times', () => {
+  const session = selected();
+  session.answers = [7, 1].map((index, n) => ({itemId:session.items[index]!.id,
+    optionId:session.items[index]!.correctOptionId, answeredAt:new Date(Date.parse(NOW) + n * 1000).toISOString()}));
+  const data = {...emptyAssessmentData(session.profileId), activeSession: session};
+  assert.deepEqual(decodeAssessmentData(JSON.stringify(data), session.profileId).activeSession, session);
+  for (const mutate of [
+    (s: AssessmentSession) => { s.answers[1] = {...s.answers[0]!}; },
+    (s: AssessmentSession) => { s.answers[1]!.itemId = 'unknown-item'; },
+    (s: AssessmentSession) => { s.answers[1]!.optionId = 'unknown-option'; },
+    (s: AssessmentSession) => { s.answers[1]!.answeredAt = '2026-09-27T00:00:00.000Z'; },
+  ]) {
+    const broken = structuredClone(data);
+    mutate(broken.activeSession);
+    assert.throws(() => decodeAssessmentData(JSON.stringify(broken), session.profileId), /kept for recovery/);
+  }
+  const full = complete(selected());
+  full.session.answers[11] = {...full.session.answers[0]!};
+  assert.throws(() => resultFor(full.session, NOW, []), /exactly one valid answer/);
 });
 test('final answer, history and results are one durable commit; replay never appends another result', async () => {
   const h = harness(),

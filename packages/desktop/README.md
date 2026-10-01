@@ -25,6 +25,12 @@ At narrower widths and increased zoom it switches to the scrollable single-card 
 Quiz options and explanations remain scrollable. Accessibility mode is automated-tested;
 manual NVDA/Narrator acceptance is still required before a general release.
 
+The twelve-question exam exposes the complete frozen set in a horizontal row, with
+about 3.5 cards at ordinary desktop width. Every question can be answered in any order;
+browsing submits nothing. Saved choices stay visible and correctness appears only after
+all twelve answers. Narrow windows, high zoom and screen-reader mode use a linear list.
+Long questions and options scroll within each wide card instead of being cropped.
+
 This preview is unsigned. Windows may show a SmartScreen reputation warning. No
 Android APK update is offered to Windows. Tala Nearby enrolment is unavailable because
 its current native implementation depends on Google's Android Nearby API. This is an

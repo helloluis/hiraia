@@ -21,7 +21,7 @@ class AllPlatforms(unittest.TestCase):
         artifact = {'versionName': '0.4.27', 'versionCode': 27, 'bytes': 500, 'sha256': 'b' * 64}
         self.apks = {**base, 'artifacts': {p: {**artifact, 'platform': p, 'runtime': p, 'signingCertSha256': CERT} for p in ['android', 'chromeos']}}
         validation = {'passed': True, 'packaged': True, 'gitCommit': commit, 'platform': 'win32', 'arch': 'x64',
-                      'exam': {'questions': 12, 'completed': True, 'resumed': True, 'history': True, 'keyboard': True, 'zoom': True},
+                      'exam': {'questions': 12, 'completed': True, 'resumed': True, 'history': True, 'keyboard': True, 'zoom': True, 'carousel': True, 'outOfOrder': True, 'screenReader': True},
                       'native': {'stats': {'backendDevice': 'cpu'}, 'embeddingDimensions': 768}, 'voices': {'en': {}, 'tl': {}}}
         self.windows = {**base, 'artifacts': {'windows': {**artifact, 'platform': 'windows', 'validation': validation}}}
 
@@ -58,6 +58,8 @@ class AllPlatforms(unittest.TestCase):
                        lambda a, w: w['artifacts']['windows']['validation'].update(packaged=False),
                        lambda a, w: w['artifacts']['windows']['validation'].pop('exam'),
                        lambda a, w: w['artifacts']['windows']['validation']['exam'].update(resumed=False),
+                       lambda a, w: w['artifacts']['windows']['validation']['exam'].update(carousel=False),
+                       lambda a, w: w['artifacts']['windows']['validation']['exam'].update(outOfOrder=False),
                        lambda a, w: w['artifacts']['windows']['validation']['voices'].pop('tl'),
                        lambda a, w: a['artifacts']['android'].update(signingCertSha256='wrong')]:
             a, w = copy.deepcopy(self.apks), copy.deepcopy(self.windows)

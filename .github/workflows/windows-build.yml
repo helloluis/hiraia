@@ -79,7 +79,11 @@ jobs:
       - name: Test packaged UI, persistence, QVAC and both offline voices
         env:
           HIRAIA_E2E_NATIVE: '1'
-        run: node packages/desktop/tests/e2e.cjs
+        run: |
+          # The default 1024px virtual display clamps native windows. Exercise a
+          # real wide window before the test also checks small windows and zoom.
+          Set-DisplayResolution -Width 1920 -Height 1080 -Force
+          node packages/desktop/tests/e2e.cjs
       - name: Record verified Windows artifact
         run: node packages/desktop/scripts/artifact-manifest.cjs
       - name: Complete the three-platform manifest

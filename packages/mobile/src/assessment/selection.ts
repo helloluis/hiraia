@@ -402,12 +402,13 @@ export function resultFor(
 ): AssessmentResult {
   if (session.answers.length !== 12 || session.items.length !== 12)
     throw new Error('Only complete assessments can be scored.');
-  const scored = session.items.map((item, index) => ({
+  const answers = new Map(session.answers.map((answer) => [answer.itemId, answer]));
+  if (answers.size !== 12 || session.items.some((item) =>
+    !item.options.some((option) => option.id === answers.get(item.id)?.optionId)))
+    throw new Error('Every question needs exactly one valid answer before scoring.');
+  const scored = session.items.map((item) => ({
     item,
-    correct: Number(
-      session.answers[index]?.itemId === item.id &&
-        session.answers[index]?.optionId === item.correctOptionId
-    ),
+    correct: Number(answers.get(item.id)!.optionId === item.correctOptionId),
   }));
   const score = (role?: AssessmentRole) => {
     const rows = role ? scored.filter((r) => r.item.role === role) : scored;

@@ -24,7 +24,10 @@ export function ReaderInput({ enabled, blockDescendantFocus, onNavigate, ...prop
     const keydown = (event: KeyboardEvent) => {
       const target = event.target;
       if (!enabled || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey ||
-        (target instanceof HTMLElement && (target.closest('input, textarea, select, [contenteditable="true"]') || target.closest('[role="dialog"]')))) return;
+        (target instanceof HTMLElement && (target.closest('input, textarea, select, [contenteditable="true"]') ||
+          // A nested dialog owns its keys. A reader inside a modal (the exam)
+          // still owns its own arrows.
+          (target.closest('[role="dialog"]') && element.contains(target.closest('[role="dialog"]')))))) return;
       const direction = event.key === 'ArrowRight' || event.key === 'PageDown' ? 1 : event.key === 'ArrowLeft' || event.key === 'PageUp' ? -1 : 0;
       if (!direction) return;
       event.preventDefault();

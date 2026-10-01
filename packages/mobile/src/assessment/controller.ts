@@ -269,13 +269,15 @@ export function createAssessmentController(options: {
           if (previous.optionId === input.optionId) return;
           throw new Error('This question was already answered.');
         }
-        const question = session.items[session.answers.length];
+        // Every frozen question is available from the start. Answers remain an
+        // append-only event sequence; item identity, not its position, owns a choice.
+        const question = session.items.find((item) => item.itemId === input.itemId);
         if (
           !question ||
           question.id !== input.itemId ||
           !question.options.some((o) => o.id === input.optionId)
         )
-          throw new Error('This answer does not match the current question.');
+          throw new Error('This answer does not match a question in this assessment.');
         const answeredAt = now(),
           at = validTime(answeredAt),
           lastAt = validTime(session.answers.at(-1)?.answeredAt ?? session.startedAt);

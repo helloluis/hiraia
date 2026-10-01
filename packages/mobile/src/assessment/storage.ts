@@ -75,12 +75,11 @@ function validSession(value: AssessmentSession, profileId: string, completed: bo
   }
   if (value.items.filter((i) => i.role === 'benchmark').length !== 6) return false;
   let lastTime = validTime(value.startedAt)!;
-  for (let index = 0; index < value.answers.length; index++) {
-    const answer = value.answers[index],
-      item = value.items[index]!;
+  const answered = new Set<string>();
+  for (const answer of value.answers) {
+    const item = value.items.find((item) => item.id === answer?.itemId);
     if (
-      !answer ||
-      answer.itemId !== item.id ||
+      !answer || !item || answered.has(answer.itemId) ||
       !item.options.some((o) => o.id === answer.optionId) ||
       (answer.supportUsed !== undefined && !['none', 'read_aloud'].includes(answer.supportUsed))
     )
@@ -88,6 +87,7 @@ function validSession(value: AssessmentSession, profileId: string, completed: bo
     const time = validTime(answer.answeredAt);
     if (time === null || time < lastTime) return false;
     lastTime = time;
+    answered.add(answer.itemId);
   }
   return true;
 }
@@ -139,7 +139,7 @@ export function decodeAssessmentData(raw: string | null, profileId: string): Ass
       ['readiness', result.readiness],
     ] as const) {
       const rows = result.session.items
-        .map((item, index) => ({ item, answer: result.session.answers[index]! }))
+        .map((item) => ({ item, answer: result.session.answers.find((answer) => answer.itemId === item.id)! }))
         .filter((row) => role === 'all' || row.item.role === role);
       if (
         !score ||

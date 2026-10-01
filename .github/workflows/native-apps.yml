@@ -89,6 +89,16 @@ jobs:
           pnpm --filter @hiraia/mobile exec tsc -p tsconfig.desktop.json --noEmit
       - name: Both platforms (including regression gate and signing)
         run: nice -n 10 pnpm apk
+      - name: Retain failed model-gate evidence
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: model-gate-failure-${{ github.sha }}
+          path: |
+            build/app-releases/*/regression.json
+            build/app-releases/*/regression.log
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Locate complete release
         id: release
         run: |

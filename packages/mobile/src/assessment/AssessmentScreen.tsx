@@ -22,6 +22,7 @@ import { useAssessmentStore } from './store';
 import { assessmentRegistry, ASSESSMENT_EVALUATION_ENABLED } from './registry';
 import { assessmentCopy, assessmentUiLanguage, canLeaveAssessmentError } from './uiCopy';
 import { AssessmentDiagramView } from './AssessmentDiagramView';
+import { AssessmentQuestions } from './AssessmentQuestions';
 
 const EVALUATION = ASSESSMENT_EVALUATION_ENABLED;
 const ENABLED = EVALUATION || assessmentRegistry.productionEnabled;
@@ -36,11 +37,10 @@ export function AssessmentScreen() {
   const language = assessmentUiLanguage(session?.language ?? results?.session.language ?? selectedLanguage);
   const t = assessmentCopy(language);
   const [foreground, setForeground] = useState(AppState.currentState === 'active');
-  const [pendingOption, setPendingOption] = useState<string | null>(null);
+  const [pendingOption, setPendingOption] = useState<{ itemId: string; optionId: string } | null>(null);
   const saving = useRef(false);
-  const usedReadAloud = useRef(false);
+  const usedReadAloud = useRef(new Set<string>());
   const scroll = useRef<ScrollView>(null);
-  const question = session?.items[session.answers.length];
   const visible = ENABLED && (!state.loaded || !!session || !!results || !!state.error);
 
   useEffect(() => {
@@ -73,20 +73,20 @@ export function AssessmentScreen() {
 
   useEffect(() => {
     setPendingOption(null);
-    usedReadAloud.current = false;
+    usedReadAloud.current.clear();
     scroll.current?.scrollTo({ y: 0, animated: false });
     stopSpeech();
-  }, [session?.id, question?.id, results?.completedAt]);
+  }, [session?.id, results?.completedAt]);
 
-  const answer = async (optionId: string) => {
-    if (!session || !question || saving.current || pendingOption || state.busy || state.error) return;
+  const answer = async (itemId: string, optionId: string) => {
+    if (!session || saving.current || pendingOption || state.busy || state.error) return;
     saving.current = true;
     stopSpeech();
-    setPendingOption(optionId);
-    // The store commits to disk before changing answers.length. A failed write leaves
-    // this question in place and retry() retries the same pending answer.
+    setPendingOption({ itemId, optionId });
+    // Save the selected item before displaying its answer. Browsing does not
+    // change the pending item; retry() always retries the same durable choice.
     try {
-      await state.answer({ sessionId: session.id, itemId: question.itemId, optionId, supportUsed: usedReadAloud.current ? 'read_aloud' : 'none' });
+      await state.answer({ sessionId: session.id, itemId, optionId, supportUsed: usedReadAloud.current.has(itemId) ? 'read_aloud' : 'none' });
     } finally {
       saving.current = false;
       setPendingOption(null);
@@ -105,9 +105,6 @@ export function AssessmentScreen() {
   const canLeaveError = canLeaveAssessmentError(state.loaded, !!session, !!results);
   const errorMessage = state.error.startsWith('The device date ')
     ? t.dateError : canLeaveError ? t.startError : t.error;
-  const speakerText = question
-    ? `${question.stem}. ${question.options.map((option, index) => `${index + 1}. ${option.text}`).join('. ')}`
-    : '';
 
   if (!ENABLED) return null;
 
@@ -124,7 +121,12 @@ export function AssessmentScreen() {
           <Text style={styles.brand}>{t.title}</Text>
           {EVALUATION && <Text style={styles.preview}>{t.preview}</Text>}
         </View>
-        <ScrollView
+        {!recovering && !validResults && session && !invalidSession ? (
+          <AssessmentQuestions key={session.id} session={session} language={language}
+            foreground={foreground} busy={state.busy} pending={pendingOption}
+            onAnswer={(itemId, optionId) => void answer(itemId, optionId)}
+            onReadAloud={itemId => usedReadAloud.current.add(itemId)} />
+        ) : <ScrollView
           ref={scroll}
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
@@ -207,50 +209,13 @@ export function AssessmentScreen() {
                 <Text style={styles.buttonText}>{t.finish}</Text>
               </Pressable>
             </View>
-          ) : session && question && !invalidSession ? (
-            <View style={styles.paper}>
-              <View style={styles.questionHeader}>
-                <Text style={styles.counter}>{t.question} {session.answers.length + 1} / 12</Text>
-                {foreground && !pendingOption && !state.busy && (
-                  <CardSpeaker key={`${session.id}:${question.id}`} text={speakerText} language={language} onAudioStart={() => { usedReadAloud.current = true; }} />
-                )}
-              </View>
-              <View style={styles.progress} accessible={false}>
-                {session.items.map((item, index) => <View key={item.id} style={[styles.tick, index < session.answers.length && styles.tickDone]} />)}
-              </View>
-              <Text style={styles.question} accessibilityRole="header">{question.stem}</Text>
-              {question.diagram && <AssessmentDiagramView diagram={question.diagram} language={session.language} />}
-              <Text style={styles.note}>{t.pick}</Text>
-              <View style={styles.options}>
-                {question.options.map((option, index) => (
-                  <Pressable
-                    key={option.id}
-                    onPress={() => void answer(option.id)}
-                    disabled={!!pendingOption || state.busy || !foreground}
-                    accessibilityRole="button"
-                    accessibilityLabel={`${index + 1}. ${option.text}`}
-                    accessibilityState={{ disabled: !!pendingOption || state.busy || !foreground, selected: pendingOption === option.id }}
-                    style={({ pressed }) => [styles.option, (pressed || pendingOption === option.id) && styles.optionPressed]}
-                  >
-                    <Text style={styles.optionNumber}>{index + 1}</Text>
-                    <Text style={styles.optionText}>{option.text}</Text>
-                  </Pressable>
-                ))}
-              </View>
-              {(pendingOption || state.busy) && (
-                <View style={styles.saving} accessibilityLiveRegion="polite">
-                  <ActivityIndicator color={card.ink} />
-                  <Text style={styles.note}>{t.saving}</Text>
-                </View>
-              )}
-            </View>
           ) : (
             <View style={styles.loading}>
               <ActivityIndicator size="large" color={card.stock} />
               <Text style={styles.loadingText}>{t.loading}</Text>
             </View>
           )}
-        </ScrollView>
+        </ScrollView>}
       </SafeAreaView>
     </Modal>
   );
@@ -258,7 +223,7 @@ export function AssessmentScreen() {
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: card.board },
-  heading: { paddingHorizontal: 20, paddingVertical: 14, gap: 4 },
+  heading: { paddingHorizontal: 20, paddingVertical: 14, gap: 12, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' },
   brand: { fontFamily: fonts.cardBodyBold, fontSize: 22, color: card.stock },
   preview: { fontFamily: fonts.cardBody, fontSize: 14, color: card.gold },
   scrollContent: { padding: 12, paddingBottom: 24, flexGrow: 1 },
@@ -268,18 +233,6 @@ const styles = StyleSheet.create({
   body: { fontFamily: fonts.cardBody, fontSize: 18, lineHeight: 25, color: card.ink },
   centeredBody: { fontFamily: fonts.cardBodyBold, fontSize: 18, lineHeight: 25, color: card.ink, textAlign: 'center' },
   note: { fontFamily: fonts.cardBody, fontSize: 15, lineHeight: 21, color: card.olive },
-  questionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
-  counter: { flex: 1, fontFamily: fonts.cardBodyBold, fontSize: 18, color: card.ink },
-  question: { fontFamily: fonts.cardBodyBold, fontSize: 25, lineHeight: 34, color: card.ink, marginTop: 8 },
-  progress: { flexDirection: 'row', gap: 4 },
-  tick: { flex: 1, height: 7, backgroundColor: card.sage, borderRadius: 3 },
-  tickDone: { backgroundColor: card.ink },
-  options: { gap: 12, marginTop: 8 },
-  option: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: card.plate, borderWidth: 2, borderColor: card.ink, borderRadius: 12, minHeight: 68, padding: 14 },
-  optionPressed: { backgroundColor: card.gold },
-  optionNumber: { fontFamily: fonts.cardBodyBold, fontSize: 20, color: card.ink },
-  optionText: { flex: 1, fontFamily: fonts.cardBody, fontSize: 19, lineHeight: 26, color: card.ink },
-  saving: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   continue: { backgroundColor: card.gold, borderColor: card.ink, borderWidth: 2, borderRadius: 12, minHeight: 56, padding: 14, justifyContent: 'center', marginTop: 8 },
   secondary: { backgroundColor: card.stock, borderColor: card.ink, borderWidth: 2, borderRadius: 12, minHeight: 56, padding: 14, justifyContent: 'center' },
   buttonText: { fontFamily: fonts.cardBodyBold, fontSize: 20, lineHeight: 27, textAlign: 'center', color: card.ink },
