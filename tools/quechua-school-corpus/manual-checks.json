@@ -1,0 +1,53 @@
+{
+  "checked_date_local": "2026-10-01",
+  "scope": "Extraction and imprint spot checks, not native-language validation, scientific validation, or rights clearance.",
+  "checks": [
+    {
+      "resource_id": "1k0E-hL_qvMyCupmSB-cKJR0KLofMuD8L",
+      "title": "Sumaq Kawsay 5, Quechua Collao",
+      "checks": [
+        {
+          "pdf_page": 4,
+          "finding": "MINEDU publisher imprint; October 2021 printing."
+        },
+        {
+          "pdf_page": 25,
+          "finding": "Rendered page visually checked against extracted text; worksheet layout and Quechua text present. No native fluency or science validation performed."
+        }
+      ],
+      "preview": "finetuning/reference-materials/peru-quechua/review/collao-science5-page25.png"
+    },
+    {
+      "resource_id": "1Mq5tYdnRpQbmqeXSYVHPXDa0dtBqJCPT",
+      "title": "Kichwapa tukuy shimikuna, Kichwa visual dictionary",
+      "checks": [
+        {
+          "pdf_page": 15,
+          "finding": "Sparse text is expected: illustrated vocabulary page with a small number of labels. Low words/page alone is not an OCR failure."
+        }
+      ],
+      "preview": "finetuning/reference-materials/peru-quechua/review/kichwa-dictionary-page15.png"
+    },
+    {
+      "resource_id": "1UGCn7ICQ5KR2WsODlWg0XY5VyNMCpEqQ",
+      "title": "Rimana 3, Inkawasi-Kañaris",
+      "checks": [
+        {
+          "pdf_page": 12,
+          "finding": "Rendered page visibly contains text, but pdftotext extracts zero words from the entire PDF and pdffonts lists no fonts. Requires OCR or a different source edition; empty extraction is not usable corpus text."
+        }
+      ],
+      "preview": "finetuning/reference-materials/peru-quechua/review/inkawasi-rimana3-page12.png"
+    },
+    {
+      "resource_id": "1Xk4gkDv7RF04yE33Nn8t24cSWA2qBimY",
+      "title": "Vocabulario Pedagógico Quechua Norteño",
+      "checks": [
+        {
+          "pdf_page": 4,
+          "finding": "Imprint states first edition 2024 and October 2024 printing; mirror button says edition 2025. Publication and allocation labels must remain distinct."
+        }
+      ]
+    }
+  ]
+}

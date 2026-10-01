@@ -141,9 +141,12 @@ export function Landing() {
             <div>
               <p className="mc-label text-[10px] text-[var(--gold)]">Tagalog and English</p>
               <p className="mt-2 font-zilla text-base font-medium leading-relaxed text-[var(--stock)]/85 sm:text-lg">
-                Built for Philippine elementary to junior high, based on the
-                Department of Education&apos;s new 2027 MATATAG science curriculum.
+                Built for Philippine elementary to junior high, with science lessons mapped to
+                the Department of Education&apos;s MATATAG curriculum.
               </p>
+              <a href="/competencies" className="mt-3 inline-block font-zilla text-base text-[var(--gold)] underline underline-offset-4">
+                Explore the competencies
+              </a>
             </div>
             <div>
               <p className="mc-label text-[10px] text-[var(--gold)]">100% Free Forever</p>

@@ -44,6 +44,14 @@ This file is the map and the pitfall list; it points at deeper docs rather than 
 | Docs | `docs/` | Release notes (`RELEASE-*.md`), curriculum audits per grade, `IMAGE-PACKS.md`, `APP-AND-ASSET-UPDATES.md`, `TTS.md`, **`TRANSLATION-LEXICON-DEFECTS.md`**. |
 | Root logs | `ENGINEERING-LOG.md`, `README.md` | The chronological engineering record and the public framing. |
 
+## International expansion
+
+For country research, curriculum mapping, language-data acquisition or a new-country pilot,
+read **`docs/COUNTRY-BOOTSTRAP.md`**. Keep country-specific evidence in its linked records.
+When a task reveals a reusable lesson or overturns an assumption, update the relevant recipe
+step and its dated learning log in the same task. Preserve source editions and provenance;
+keep proposed curriculum targets distinct from content actually available to learners.
+
 ## The data flow that bites people
 
 ```

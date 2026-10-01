@@ -328,7 +328,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'content',
     q: 'What subject does it teach?',
     a: [
-      'Science. Hiraia is built around the Department of Education’s MATATAG science competencies for the 2027 curriculum, aimed at elementary through junior high. It is not a math tutor, not an English workbook, and not a general chatbot.',
+      'Science. Hiraia is built around the Department of Education’s MATATAG science competencies, aimed at elementary through junior high. It is not a math tutor, not an English workbook, and not a general chatbot.',
     ],
   },
   {

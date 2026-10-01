@@ -1,0 +1,3035 @@
+{
+  "schema": "hiraia.country-competency-map/v1",
+  "id": "PE-CNEB-2017-primary-science",
+  "version": 1,
+  "created_date": "2026-10-01",
+  "country_code": "PE",
+  "country_name": "Peru",
+  "education_level": "primary",
+  "grades": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "subject": {
+    "source_name_es": "Ciencia y Tecnología",
+    "label_en": "Science and Technology"
+  },
+  "status": "source_map_complete; content_alignment_not_assessed; local_educator_review_pending",
+  "id_policy": {
+    "owner": "Hiraia editorial identifiers, not MINEDU codes",
+    "pattern": "PE-CNEB-2017-CYT-{INQ|EXP|TEC}-G{grade}-{source bullet ordinal}",
+    "stability": "IDs identify the ordered bullets in the pinned March 2017 edition. A future source edition needs a new map and explicit relationships; do not silently reassign these IDs."
+  },
+  "hierarchy_notes": [
+    "The three competencies run across every grade. Their capacities must be combined; this file does not assign a performance bullet to a single capacity without an explicit editorial crosswalk.",
+    "National progression levels 3, 4 and 5 correspond to the ends of primary cycles III, IV and V, not Grades 3, 4 and 5.",
+    "Grade performances (desempeños) describe observable development of a competency. MINEDU introduces them as examples; 103 bullets are not 103 separate national competencies or a prescribed lesson count.",
+    "No national quarter order is inferred from this section. Country, cycle, grade and any locally chosen sequence are separate dimensions.",
+    "English labels are editorial summaries. Spanish source statements control the target; bilingual/local adaptation is a later review.",
+    "Source examples are retained separately as research evidence. They can contain hypothetical student answers and factual mistakes. Do not feed them into a tutor, fact bank or CPT as verified science.",
+    "Preserving the national standard does not endorse every illustrative scientific claim in its publication."
+  ],
+  "source_documents": [
+    {
+      "id": "minedu-primary-2017",
+      "publisher": "Ministerio de Educación del Perú (MINEDU)",
+      "title": "Programa curricular de Educación Primaria",
+      "edition": "Primera edición: marzo 2017",
+      "source_language": "es",
+      "publication_url": "https://www.gob.pe/institucion/minedu/informes-publicaciones/6790803-programa-curricular-de-educacion-primaria",
+      "pdf_url": "https://cdn.www.gob.pe/uploads/document/file/10209521/6790803-programa-curricular-de-educacion-primaria.pdf?v=1782418171",
+      "official_repository_record": "https://repositorio.minedu.gob.pe/handle/20.500.12799/4549",
+      "source_catalogue_date": "2025-05-21",
+      "catalogue_date_is_not_edition": true,
+      "pdf_downloaded_date": "2026-09-30",
+      "metadata_rechecked_date": "2026-10-01",
+      "sha256": "34009689b6e3fe2194ec61c1675af13407528ae5e0f34f4d484007efd9e832f7",
+      "bytes": 20473784,
+      "pdf_total_pages": 396,
+      "science_section_printed_pages": [
+        271,
+        301
+      ],
+      "science_section_pdf_pages": [
+        273,
+        303
+      ],
+      "page_number_rule": "pdf_page = printed_page + 2; all arrays use one-based page numbers",
+      "local_ignored_path": "finetuning/reference-materials/peru-curriculum/minedu-primary-2017-34009689b6e3.pdf",
+      "transcription": "pdftotext -bbox-layout; explicit grade columns; line-wrap hyphens and layout whitespace normalized; original statement and illustrative example separated at Ejemplo:. Footnote marker 48 is preserved.",
+      "rights_note": "The publication asserts copyright. This map records official administrative curriculum targets with attribution; it does not establish permission to republish the illustrated book or use its examples for training. Training reuse is not approved."
+    }
+  ],
+  "cycles": [
+    {
+      "id": "III",
+      "grades": [
+        1,
+        2
+      ],
+      "end_grade": 2,
+      "national_progression_level": 3
+    },
+    {
+      "id": "IV",
+      "grades": [
+        3,
+        4
+      ],
+      "end_grade": 4,
+      "national_progression_level": 4
+    },
+    {
+      "id": "V",
+      "grades": [
+        5,
+        6
+      ],
+      "end_grade": 6,
+      "national_progression_level": 5
+    }
+  ],
+  "competencies": [
+    {
+      "id": "PE-CNEB-2017-CYT-INQ",
+      "node_kind": "national_competency",
+      "title_es": "Indaga mediante métodos científicos para construir sus conocimientos",
+      "title_en": "Investigate using scientific methods",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          273
+        ],
+        "pdf_pages": [
+          275
+        ]
+      },
+      "capacities": [
+        {
+          "id": "PE-CNEB-2017-CYT-INQ-CAP01",
+          "node_kind": "capacity",
+          "title_es": "Problematiza situaciones para hacer indagación",
+          "title_en": "Pose investigable questions",
+          "source": {
+            "document_id": "minedu-primary-2017",
+            "printed_pages": [
+              273
+            ],
+            "pdf_pages": [
+              275
+            ]
+          }
+        },
+        {
+          "id": "PE-CNEB-2017-CYT-INQ-CAP02",
+          "node_kind": "capacity",
+          "title_es": "Diseña estrategias para hacer indagación",
+          "title_en": "Design an investigation",
+          "source": {
+            "document_id": "minedu-primary-2017",
+            "printed_pages": [
+              273
+            ],
+            "pdf_pages": [
+              275
+            ]
+          }
+        },
+        {
+          "id": "PE-CNEB-2017-CYT-INQ-CAP03",
+          "node_kind": "capacity",
+          "title_es": "Genera y registra datos e información",
+          "title_en": "Generate and record data",
+          "source": {
+            "document_id": "minedu-primary-2017",
+            "printed_pages": [
+              273
+            ],
+            "pdf_pages": [
+              275
+            ]
+          }
+        },
+        {
+          "id": "PE-CNEB-2017-CYT-INQ-CAP04",
+          "node_kind": "capacity",
+          "title_es": "Analiza datos e información",
+          "title_en": "Analyze data",
+          "source": {
+            "document_id": "minedu-primary-2017",
+            "printed_pages": [
+              273
+            ],
+            "pdf_pages": [
+              275
+            ]
+          }
+        },
+        {
+          "id": "PE-CNEB-2017-CYT-INQ-CAP05",
+          "node_kind": "capacity",
+          "title_es": "Evalúa y comunica el proceso y resultados de su indagación",
+          "title_en": "Evaluate and communicate the investigation",
+          "source": {
+            "document_id": "minedu-primary-2017",
+            "printed_pages": [
+              273
+            ],
+            "pdf_pages": [
+              275
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP",
+      "node_kind": "national_competency",
+      "title_es": "Explica el mundo físico basándose en conocimientos sobre los seres vivos, materia y energía, biodiversidad, Tierra y universo",
+      "title_en": "Explain the physical world using scientific knowledge",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          283
+        ],
+        "pdf_pages": [
+          285
+        ]
+      },
+      "capacities": [
+        {
+          "id": "PE-CNEB-2017-CYT-EXP-CAP01",
+          "node_kind": "capacity",
+          "title_es": "Comprende y usa conocimientos sobre los seres vivos, materia y energía, biodiversidad, Tierra y universo",
+          "title_en": "Understand and use scientific knowledge",
+          "source": {
+            "document_id": "minedu-primary-2017",
+            "printed_pages": [
+              283
+            ],
+            "pdf_pages": [
+              285
+            ]
+          }
+        },
+        {
+          "id": "PE-CNEB-2017-CYT-EXP-CAP02",
+          "node_kind": "capacity",
+          "title_es": "Evalúa las implicancias del saber y del quehacer científico y tecnológico",
+          "title_en": "Evaluate the implications of science and technology",
+          "source": {
+            "document_id": "minedu-primary-2017",
+            "printed_pages": [
+              283
+            ],
+            "pdf_pages": [
+              285
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC",
+      "node_kind": "national_competency",
+      "title_es": "Diseña y construye soluciones tecnológicas para resolver problemas de su entorno",
+      "title_en": "Design and build technological solutions",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          293
+        ],
+        "pdf_pages": [
+          295
+        ]
+      },
+      "capacities": [
+        {
+          "id": "PE-CNEB-2017-CYT-TEC-CAP01",
+          "node_kind": "capacity",
+          "title_es": "Determina una alternativa de solución tecnológica",
+          "title_en": "Choose a possible technological solution",
+          "source": {
+            "document_id": "minedu-primary-2017",
+            "printed_pages": [
+              293
+            ],
+            "pdf_pages": [
+              295
+            ]
+          }
+        },
+        {
+          "id": "PE-CNEB-2017-CYT-TEC-CAP02",
+          "node_kind": "capacity",
+          "title_es": "Diseña la alternativa de solución tecnológica",
+          "title_en": "Design the solution",
+          "source": {
+            "document_id": "minedu-primary-2017",
+            "printed_pages": [
+              293
+            ],
+            "pdf_pages": [
+              295
+            ]
+          }
+        },
+        {
+          "id": "PE-CNEB-2017-CYT-TEC-CAP03",
+          "node_kind": "capacity",
+          "title_es": "Implementa y valida la alternativa de solución tecnológica",
+          "title_en": "Implement and validate the solution",
+          "source": {
+            "document_id": "minedu-primary-2017",
+            "printed_pages": [
+              293
+            ],
+            "pdf_pages": [
+              295
+            ]
+          }
+        },
+        {
+          "id": "PE-CNEB-2017-CYT-TEC-CAP04",
+          "node_kind": "capacity",
+          "title_es": "Evalúa y comunica el funcionamiento y los impactos de su alternativa de solución tecnológica",
+          "title_en": "Evaluate and communicate operation and impacts",
+          "source": {
+            "document_id": "minedu-primary-2017",
+            "printed_pages": [
+              293
+            ],
+            "pdf_pages": [
+              295
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "cycle_standards": [
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-CIII",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "cycle": "III",
+      "national_progression_level": 3,
+      "end_grade": 2,
+      "statement_es": "Indaga al explorar objetos o fenómenos, al hacer preguntas, proponer posibles respuestas y actividades para obtener información sobre las características y relaciones que establece sobre estos. Sigue un procedimiento para observar, manipular, describir y comparar sus ensayos y los utiliza para elaborar conclusiones. Expresa en forma oral, escrita o gráfica lo realizado, aprendido y las dificultades de su indagación.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          275
+        ],
+        "pdf_pages": [
+          277
+        ],
+        "table_level": 3
+      }
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-CIV",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "cycle": "IV",
+      "national_progression_level": 4,
+      "end_grade": 4,
+      "statement_es": "Indaga al establecer las causas de un hecho o fenómeno para formular preguntas y posibles respuestas sobre estos sobre la base de sus experiencias. Propone estrategias para obtener información sobre el hecho o fenómeno y sus posibles causas, registra datos, los analiza estableciendo relaciones y evidencias de causalidad. Comunica en forma oral, escrita o gráfica sus procedimientos, dificultades, conclusiones y dudas.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          275
+        ],
+        "pdf_pages": [
+          277
+        ],
+        "table_level": 4
+      }
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-CV",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "cycle": "V",
+      "national_progression_level": 5,
+      "end_grade": 6,
+      "statement_es": "Indaga las causas o describe un objeto o fenómeno que identifica para formular preguntas e hipótesis en las que relaciona las variables que intervienen y que se pueden observar. Propone estrategias para observar o generar una situación controlada en la cual registra evidencias de cómo una variable independiente afecta a otra dependiente. Establece relaciones entre los datos, los interpreta y los contrasta con información confiable. Evalúa y comunica sus conclusiones y procedimientos.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          275
+        ],
+        "pdf_pages": [
+          277
+        ],
+        "table_level": 5
+      }
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-CIII",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "cycle": "III",
+      "national_progression_level": 3,
+      "end_grade": 2,
+      "statement_es": "Explica, con base en sus observaciones y experiencias previas, las relaciones entre: las características de los materiales con los cambios que sufren por acción de la luz, del calor y del movimiento; la estructura de los seres vivos con sus funciones y su desarrollo; la Tierra, sus componentes y movimientos con los seres que lo habitan. Opina sobre los impactos del uso de objetos tecnológicos en relación a sus necesidades y estilo de vida.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          285
+        ],
+        "pdf_pages": [
+          287
+        ],
+        "table_level": 3
+      }
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-CIV",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "cycle": "IV",
+      "national_progression_level": 4,
+      "end_grade": 4,
+      "statement_es": "Explica, con base en evidencias documentadas con respaldo científico, las relaciones que establece entre: las fuentes de energía o sus manifestaciones con los tipos de cambio que producen en los materiales; entre las fuerzas con el movimiento de los cuerpos; la estructura de los sistemas vivos con sus funciones y su agrupación en especies; la radiación del sol con las zonas climáticas de la Tierra y las adaptaciones de los seres vivos. Opina sobre los impactos de diversas tecnologías en la solución de problemas relacionados a necesidades y estilos de vida colectivas.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          285
+        ],
+        "pdf_pages": [
+          287
+        ],
+        "table_level": 4
+      }
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-CV",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "cycle": "V",
+      "national_progression_level": 5,
+      "end_grade": 6,
+      "statement_es": "Explica, con base en evidencia con respaldo científico, las relaciones entre: propiedades o funciones macroscópicas de los cuerpos, materiales o seres vivos con su estructura y movimiento microscópico; la reproducción sexual con la diversidad genética; los ecosistemas con la diversidad de especies; el relieve con la actividad interna de la Tierra. Relaciona el descubrimiento científico o la innovación tecnológica con sus impactos. Justifica su posición frente a situaciones controversiales sobre el uso de la tecnología y el saber científico.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          285
+        ],
+        "pdf_pages": [
+          287
+        ],
+        "table_level": 5
+      }
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-CIII",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "cycle": "III",
+      "national_progression_level": 3,
+      "end_grade": 2,
+      "statement_es": "Diseña y construye soluciones tecnológicas al establecer las causas de un problema tecnológico y propone alternativas de solución. Representa una, incluyendo sus partes, a través de esquemas o dibujos y describe la secuencia de pasos para implementarla, usando herramientas y materiales seleccionados. Realiza ajustes en el proceso de construcción de la solución tecnológica. Describe el procedimiento y beneficios de la solución tecnológica; evalúa su funcionamiento según los requerimientos establecidos y propone mejoras.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          295
+        ],
+        "pdf_pages": [
+          297
+        ],
+        "table_level": 3
+      }
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-CIV",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "cycle": "IV",
+      "national_progression_level": 4,
+      "end_grade": 4,
+      "statement_es": "Diseña y construye soluciones tecnológicas al establecer las posibles causas que generan problemas tecnológicos; propone alternativas de solución con conocimientos científicos. Representa una de ellas, incluyendo las partes o etapas, a través de esquemas o dibujos; establece características de forma, estructura y función y explica una secuencia de pasos para implementarla usando herramientas y materiales; verifica el funcionamiento de la solución tecnológica y realiza ajustes. Explica el procedimiento, conocimiento científico aplicado y beneficios de la solución tecnológica; evalúa su funcionamiento considerando los requerimientos establecidos y propone mejoras.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          295
+        ],
+        "pdf_pages": [
+          297
+        ],
+        "table_level": 4
+      }
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-CV",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "cycle": "V",
+      "national_progression_level": 5,
+      "end_grade": 6,
+      "statement_es": "Diseña y construye soluciones tecnológicas al identificar las causas que generan problemas tecnológicos y propone alternativas de solución con base en conocimientos científicos. Representa una de ellas incluyendo sus partes o etapas, a través de esquemas o dibujos estructurados. Establece características de forma, estructura y función y explica el procedimiento, los recursos de implementación; los ejecuta usando herramientas y materiales seleccionados; verifica el funcionamiento de la solución tecnológica detectando imprecisiones y realiza ajustes para mejorarlo. Explica el procedimiento, conocimiento científico aplicado y limitaciones de la solución tecnológica. Evalúa su funcionamiento a través de pruebas considerando los requerimientos establecidos y propone mejoras. Infiere impactos de la solución tecnológica.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          295
+        ],
+        "pdf_pages": [
+          297
+        ],
+        "table_level": 5
+      }
+    }
+  ],
+  "performance_expectations": [
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G1-01",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 1,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 1,
+      "statement_es": "Hace preguntas acerca de hechos, fenómenos u objetos naturales y tecnológicos que explora y observa en su entorno. Propone posibles respuestas con base en sus experiencias.",
+      "source_example_es": "El estudiante observa cómo un caracol sube por el tronco de un árbol, y pregunta: “¿Por qué el caracol no se cae?”. Propone posibles respuestas, como: “Tiene baba pegajosa como la goma”.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          277
+        ],
+        "pdf_pages": [
+          279
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 1
+      },
+      "title_en": "Ask observation questions and propose experience-based answers",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G1-02",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 1,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 2,
+      "statement_es": "Propone acciones que le permiten responder a la pregunta. Busca información, selecciona los materiales e instrumentos que necesitará para explorar y observar objetos, hechos o fenómenos y recoger datos.",
+      "source_example_es": "El estudiante podría decir: “Salgamos al patio a buscar otros caracoles; llevaremos lupas para mirarlos”, “Tengo un libro que trata sobre caracoles”, etc.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          277
+        ],
+        "pdf_pages": [
+          279
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 2
+      },
+      "title_en": "Choose actions, information, materials and instruments",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G1-03",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 1,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 3,
+      "statement_es": "Obtiene datos a partir de la observación y exploración de objetos, hechos o fenómenos; y los registra en organizadores mediante dibujos o primeras formas de escritura.",
+      "source_example_es": "El estudiante hace dibujos con detalles de las formas del caracol, del camino que recorrió, etc.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          277
+        ],
+        "pdf_pages": [
+          279
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 3
+      },
+      "title_en": "Observe and record with drawings or early writing",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G1-04",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 1,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 4,
+      "statement_es": "Describe las características del hecho, fenómeno u objeto natural y tecnológico que registró, para comprobar si su respuesta es verdadera o no.",
+      "source_example_es": "El estudiante describe los caracoles: forma, color, si tienen patas, qué estaban haciendo y lo que sucedió cuando se acercó a observarlos. Después de que el docente lea un texto sobre los caracoles, podrá comparar si lo que observó concuerda con lo que dice el texto, por qué, etc.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          277
+        ],
+        "pdf_pages": [
+          279
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 4
+      },
+      "title_en": "Compare observations with a proposed answer",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G1-05",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 1,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 5,
+      "statement_es": "Comunica las respuestas que dio a la pregunta, lo que aprendió, así como sus logros y dificultades, mediante diversas formas de expresión: gráficas, orales o a través de su nivel de escritura.",
+      "source_example_es": "El estudiante comenta si los caracoles tenían patas, cómo era su cuerpo, así como las dificultades que tuvo para observarlos y lo que haría para estudiarlos mejor después de esta experiencia. Podría dibujar en una hoja lo que le pareció más importante y, además, comentar qué parte del trabajo y de lo aprendido le gustó más.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          277
+        ],
+        "pdf_pages": [
+          279
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 5
+      },
+      "title_en": "Communicate findings, learning, achievements and difficulties",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G1-01",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 1,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 1,
+      "statement_es": "Describe las características y necesidades de los seres vivos.",
+      "source_example_es": "El estudiante describe qué necesitan los seres vivos para vivir: alimentos, oxígeno, etc.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          286
+        ],
+        "pdf_pages": [
+          288
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 1
+      },
+      "title_en": "Characteristics and needs of living things",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G1-02",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 1,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 2,
+      "statement_es": "Relaciona las actividades cotidianas con el uso de la energía.",
+      "source_example_es": "El estudiante relaciona el uso de gas en su cocina con la cocción de sus alimentos, o el uso de las pilas con el funcionamiento de sus juguetes.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          286
+        ],
+        "pdf_pages": [
+          288
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 2
+      },
+      "title_en": "Energy in everyday activities",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G1-03",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 1,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 3,
+      "statement_es": "Propone una clasificación de los objetos según sus características.",
+      "source_example_es": "El estudiante separa objetos que absorben agua de otros que no.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          286
+        ],
+        "pdf_pages": [
+          288
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 3
+      },
+      "title_en": "Classify objects by their characteristics",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G1-04",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 1,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 4,
+      "statement_es": "Describe que el suelo está formado por seres vivos y no vivos.",
+      "source_example_es": "El estudiante distingue lo que hay dentro del suelo: tierra, gusanos, rocas, objetos de plástico, etc.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          286
+        ],
+        "pdf_pages": [
+          288
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 4
+      },
+      "title_en": "Living and nonliving components of soil",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G1-05",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 1,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 5,
+      "statement_es": "Justifica por qué el agua, el aire y el suelo son importantes para los seres vivos.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          286
+        ],
+        "pdf_pages": [
+          288
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 5
+      },
+      "title_en": "Importance of water, air and soil",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G1-06",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 1,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 6,
+      "statement_es": "Relaciona el comportamiento de los seres vivos con los cambios de clima.",
+      "source_example_es": "El estudiante da razones de por qué cuando hace frío tenemos que abrigarnos más y cuando hace calor buscamos lugares frescos.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          287
+        ],
+        "pdf_pages": [
+          289
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 6
+      },
+      "title_en": "Living things and changing climatic conditions",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G1-07",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 1,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 7,
+      "statement_es": "Relaciona los objetos tecnológicos con su utilidad para satisfacer las necesidades de las personas y opina sobre cómo su uso impacta en ellos.",
+      "source_example_es": "El estudiante menciona que para cocinar sus alimentos, su madre usa una cocina a gas o un fogón con leña, y cómo impacta en sus vidas.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          287
+        ],
+        "pdf_pages": [
+          289
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 7
+      },
+      "title_en": "Technology, human needs and its effects",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G1-01",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 1,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 1,
+      "statement_es": "Selecciona un problema tecnológico de su entorno. Explica su alternativa de solución con base en conocimientos previos o prácticas locales; considera los requerimientos que deberá cumplir y los recursos disponibles para construirla.",
+      "source_example_es": "El estudiante propone retirar los residuos sólidos del jardín de la institución educativa; para ello, elaborará un rastrillo, con material reciclable, a fin de evitar tocar directamente los desechos con las manos.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          296
+        ],
+        "pdf_pages": [
+          298
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 1
+      },
+      "title_en": "Identify a local problem and possible solution",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G1-02",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 1,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 2,
+      "statement_es": "Representa su alternativa de solución tecnológica con dibujos y textos. Describe lo que hará para construirla.",
+      "source_example_es": "El estudiante dibuja su rastrillo, señala sus partes y comenta qué acciones realizará para elaborarlo.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          296
+        ],
+        "pdf_pages": [
+          298
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 2
+      },
+      "title_en": "Draw and describe a solution",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G1-03",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 1,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 3,
+      "statement_es": "Construye la alternativa de solución tecnológica manipulando materiales, instrumentos y herramientas; cumple las normas de seguridad y considera medidas de ecoeficiencia. Usa unidades de medida no convencionales. Realiza ensayos hasta que la alternativa funcione.",
+      "source_example_es": "El estudiante elabora su rastrillo utilizando botellas descartables de medio litro, un palo de escoba en desuso o una rama larga y delgada, tijeras, cordel o soga; evita hacerse daño con dichas herramientas. Utiliza el grosor de sus dedos para estimar el ancho de cada diente del rastrillo y su mano para estimar el largo. Rastrilla una parte del jardín de la institución educativa y añade o quita dientes al rastrillo, según sea necesario, hasta que funcione.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          297
+        ],
+        "pdf_pages": [
+          299
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 3
+      },
+      "title_en": "Build safely, measure informally and test",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G1-04",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 1,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 4,
+      "statement_es": "Realiza pruebas para verificar el funcionamiento de su alternativa de solución tecnológica con los requerimientos establecidos. Describe cómo la construyó, su uso, beneficios y los conocimientos previos o prácticas locales aplicadas. Comenta las dificultades que tuvo.",
+      "source_example_es": "El estudiante rastrilla todo el jardín de la institución educativa para comprobar la durabilidad del rastrillo y, al finalizar, estima el desgaste de cada diente con el uso de su mano, a fin de predecir cuántas veces más podría rastrillar el jardín. Explica a sus compañeros cómo elaboró su rastrillo, de qué manera se utiliza, de dónde obtuvo las ideas para hacerlo, el impacto del mismo en el manejo de residuos sólidos en la institución educativa y los problemas que tuvo en el proceso de elaboración.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          297
+        ],
+        "pdf_pages": [
+          299
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 4
+      },
+      "title_en": "Check requirements and describe benefits and difficulties",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G2-01",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 2,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 1,
+      "statement_es": "Hace preguntas que buscan la descripción de las características de los hechos, fenómenos u objetos naturales y tecnológicos que explora y observa en su entorno. Propone posibles respuestas basándose en el reconocimiento de regularidades 48 identificadas en su experiencia.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          277
+        ],
+        "pdf_pages": [
+          279
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 1
+      },
+      "title_en": "Ask descriptive questions and recognize regularities",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": [],
+      "source_footnote_ids": [
+        "MINEDU-2017-p277-n48"
+      ]
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G2-02",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 2,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 2,
+      "statement_es": "Propone acciones que le permiten responder a la pregunta y las ordena secuencialmente; selecciona los materiales, instrumentos y herramientas necesarios para explorar, observar y recoger datos sobre los hechos, fenómenos u objetos naturales o tecnológicos.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          277
+        ],
+        "pdf_pages": [
+          279
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 2
+      },
+      "title_en": "Sequence investigation actions and select tools",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G2-03",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 2,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 3,
+      "statement_es": "Obtiene y registra datos, a partir de las acciones que realizó para responder a la pregunta. Utiliza algunos organizadores de información o representa los datos mediante dibujos o sus primeras formas de escritura.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          277
+        ],
+        "pdf_pages": [
+          279
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 3
+      },
+      "title_en": "Collect and organize observations",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G2-04",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 2,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 4,
+      "statement_es": "Compara y establece si hay diferencia entre la respuesta que propuso y los datos o la información obtenida en su observación o experimentación. Elabora sus conclusiones.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          277
+        ],
+        "pdf_pages": [
+          279
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 4
+      },
+      "title_en": "Compare results with predictions and conclude",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G2-05",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 2,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 5,
+      "statement_es": "Comunica las respuestas que dio a la pregunta, lo que aprendió, así como sus logros y dificultades, mediante diversas formas de expresión: gráficas, orales o a través de su nivel de escritura.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          277
+        ],
+        "pdf_pages": [
+          279
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 5
+      },
+      "title_en": "Communicate answers, learning and difficulties",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G2-01",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 2,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 1,
+      "statement_es": "Relaciona las partes externas de los seres vivos con sus funciones.",
+      "source_example_es": "El estudiante relaciona la función de los dientes (que sirven para masticar los alimentos antes de ingerirlos) con la buena salud.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          286
+        ],
+        "pdf_pages": [
+          288
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 1
+      },
+      "title_en": "External body parts and their functions",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G2-02",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 2,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 2,
+      "statement_es": "Compara las semejanzas externas de los progenitores y sus descendientes durante el desarrollo.",
+      "source_example_es": "El estudiante compara las características que los renacuajos toman progresivamente hasta tener la forma de sus progenitores.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          286
+        ],
+        "pdf_pages": [
+          288
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 2
+      },
+      "title_en": "Parent–offspring similarities during development",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G2-03",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 2,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 3,
+      "statement_es": "Describe los cambios que experimentan los objetos debido a la luz o al calor que reciben.",
+      "source_example_es": "El estudiante describe las causas por las que el hielo, la mantequilla o la cera se derriten cuando se calientan o les da la luz del sol.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          286
+        ],
+        "pdf_pages": [
+          288
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 3
+      },
+      "title_en": "Changes caused by light and heat",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G2-04",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 2,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 4,
+      "statement_es": "Justifica por qué los cambios que sufren los objetos dependen de sus características.",
+      "source_example_es": "El estudiante da razones de por qué, con un golpe, un vaso de vidrio se rompe; mientras que uno de cartón, solo se deforma.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          287
+        ],
+        "pdf_pages": [
+          289
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 4
+      },
+      "title_en": "Material properties affect how objects change",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G2-05",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 2,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 5,
+      "statement_es": "Utiliza modelos para explicar las relaciones entre los seres vivos y sus características.",
+      "source_example_es": "El estudiante diseña un modelo para explicar los componentes de una cadena alimenticia.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          287
+        ],
+        "pdf_pages": [
+          289
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 5
+      },
+      "title_en": "Model relationships among living things",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G2-06",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 2,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 6,
+      "statement_es": "Describe que el ciclo día-noche influye en los seres vivos.",
+      "source_example_es": "El estudiante describe las características de los animales que duermen durante el día y se mantienen despiertos por la noche.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          287
+        ],
+        "pdf_pages": [
+          289
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 6
+      },
+      "title_en": "Day–night cycles influence living things",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G2-07",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 2,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 7,
+      "statement_es": "Describe que en la Tierra se encuentran masas de agua, aire y material sólido.",
+      "source_example_es": "El estudiante describe las características de las lagunas, los ríos, los cerros y las rocas, y cómo el viento fuerte puede mover algunos objetos.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          287
+        ],
+        "pdf_pages": [
+          289
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 7
+      },
+      "title_en": "Earth contains water, air and solid materials",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G2-08",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 2,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 8,
+      "statement_es": "Describe el suelo como fuente esencial de nutrientes y sustrato para muchos seres vivos.",
+      "source_example_es": "El estudiante describe que las plantas necesitan el suelo para crecer y que algunos animales se alimentan de ellas.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          287
+        ],
+        "pdf_pages": [
+          289
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 8
+      },
+      "title_en": "Soil provides nutrients and a place to live",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G2-09",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 2,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 9,
+      "statement_es": "Justifica por qué hay objetos tecnológicos que transforman los productos que consume o que usa en tareas específicas, y opina cómo estos objetos cambian su vida, la de su familia o el ambiente.",
+      "source_example_es": "El estudiante justifica las ventajas de usar un molino para transformar los granos de maíz o trigo en harina, a fin de que sean utilizados en diferentes productos que consume en su vida diaria.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          287
+        ],
+        "pdf_pages": [
+          289
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 9
+      },
+      "title_en": "Technology transforms products and everyday life",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G2-01",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 2,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 1,
+      "statement_es": "Selecciona un problema tecnológico de su entorno y describe las causas que lo generan. Explica su alternativa de solución con base en conocimientos previos o prácticas locales; toma en cuenta los requerimientos que debe cumplir y los recursos disponibles para construirla.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          296
+        ],
+        "pdf_pages": [
+          298
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 1
+      },
+      "title_en": "Identify a problem, its causes and a possible solution",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G2-02",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 2,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 2,
+      "statement_es": "Representa su alternativa de solución tecnológica con dibujos y textos. Describe sus partes, la secuencia de pasos para su elaboración y selecciona herramientas, instrumentos y materiales según sus propiedades físicas.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          296
+        ],
+        "pdf_pages": [
+          298
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 2
+      },
+      "title_en": "Draw parts and steps and select suitable materials",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G2-03",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 2,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 3,
+      "statement_es": "Construye su alternativa de solución tecnológica manipulando materiales, instrumentos y herramientas según su utilidad; cumple las normas de seguridad y considera medidas de ecoeficiencia. Usa unidades de medida convencionales. Realiza cambios o ajustes para cumplir los requerimientos o mejorar el funcionamiento de su alternativa de solución tecnológica.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          296
+        ],
+        "pdf_pages": [
+          298
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 3
+      },
+      "title_en": "Build safely, measure and improve",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G2-04",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 2,
+      "cycle": "III",
+      "ordinal_within_grade_competency": 4,
+      "statement_es": "Realiza pruebas para verificar el funcionamiento de su alternativa de solución tecnológica con los requerimientos establecidos. Describe cómo la construyó, su uso, beneficios y funcionamiento, así como los conocimientos previos o prácticas locales aplicadas. Comenta las dificultades que tuvo.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          297
+        ],
+        "pdf_pages": [
+          299
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 4
+      },
+      "title_en": "Test against requirements and explain the solution",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G3-01",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 3,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 1,
+      "statement_es": "Hace preguntas sobre hechos, fenómenos u objetos naturales y tecnológicos que explora y observa en su entorno. Propone posibles respuestas con base en el reconocimiento de regularidades identificadas en situaciones similares.",
+      "source_example_es": "El estudiante podría preguntar: “¿Por qué una vela encendida se derrite y no ocurre lo mismo con un mechero?”. Y podría responder: “La cera se consume más rápido que el kerosene”.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          279
+        ],
+        "pdf_pages": [
+          281
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 1
+      },
+      "title_en": "Question observations and propose pattern-based answers",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G3-02",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 3,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 2,
+      "statement_es": "Propone un plan donde describe las acciones y los procedimientos que utilizará para responder a la pregunta. Selecciona los materiales e instrumentos que necesitará para su indagación, así como las fuentes de información que le permitan comprobar la respuesta.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          279
+        ],
+        "pdf_pages": [
+          281
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 2
+      },
+      "title_en": "Plan procedures, materials and information sources",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G3-03",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 3,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 3,
+      "statement_es": "Obtiene datos cualitativos o cuantitativos al llevar a cabo el plan que propuso para responder la pregunta. Usa unidades de medida convencionales y no convencionales, registra los datos y los representa en organizadores.",
+      "source_example_es": "Cuando el estudiante observa cómo se derriten unos cubos de hielo, puede medir la temperatura a la que están inicialmente y, luego, medir la temperatura del líquido, el tiempo que pasó para que se derritan, así como hacer una representación gráfica de lo sucedido.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          279
+        ],
+        "pdf_pages": [
+          281
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 3
+      },
+      "title_en": "Measure and organize qualitative or quantitative data",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G3-04",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 3,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 4,
+      "statement_es": "Establece relaciones que expliquen el fenómeno estudiado. Utiliza los datos obtenidos y los compara con la respuesta que propuso, así como con la información científica que posee. Elabora sus conclusiones.",
+      "source_example_es": "Cuando el estudiante dice “en un día caluroso, los cubos de hielo se derriten más rápido; y en un día frío, demoran en derretirse”, utiliza los datos tomados para confirmar sus afirmaciones, así como los resúmenes que explican el tema.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          279
+        ],
+        "pdf_pages": [
+          281
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 4
+      },
+      "title_en": "Compare data, proposed answers and scientific information",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G3-05",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 3,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 5,
+      "statement_es": "Comunica las conclusiones de su indagación y lo que aprendió usando conocimientos científicos, así como el procedimiento, los logros y las dificultades que tuvo durante su desarrollo. Propone algunas mejoras. Da a conocer su indagación en forma oral o escrita.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          279
+        ],
+        "pdf_pages": [
+          281
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 5
+      },
+      "title_en": "Communicate conclusions and suggest investigation improvements",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G3-01",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 3,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 1,
+      "statement_es": "Describe los órganos que conforman los sistemas de plantas y animales.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          288
+        ],
+        "pdf_pages": [
+          290
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 1
+      },
+      "title_en": "Organs in plant and animal systems",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G3-02",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 3,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 2,
+      "statement_es": "Compara diversas especies y reconoce semejanzas y diferencias.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          288
+        ],
+        "pdf_pages": [
+          290
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 2
+      },
+      "title_en": "Compare species",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G3-03",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 3,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 3,
+      "statement_es": "Clasifica los materiales de acuerdo a sus características físicas (duros, blandos, frágiles, etc.).",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          288
+        ],
+        "pdf_pages": [
+          290
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 3
+      },
+      "title_en": "Classify materials by physical properties",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G3-04",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 3,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 4,
+      "statement_es": "Relaciona el desplazamiento, el cambio de dirección o la modificación de la forma de los objetos por la aplicación de fuerzas sobre ellos.",
+      "source_example_es": "El estudiante relaciona la deformación que sufre una pelota con la fuerza generada sobre ella cuando alguien la presiona con la planta de los pies.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          288
+        ],
+        "pdf_pages": [
+          290
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 4
+      },
+      "title_en": "Forces change motion, direction and shape",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G3-05",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 3,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 5,
+      "statement_es": "Compara las diferentes manifestaciones del clima a lo largo de un año y en las diferentes zonas en la superficie terrestre.",
+      "source_example_es": "El estudiante diferencia las características de la época del año en que llueve y otra en que no.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          289
+        ],
+        "pdf_pages": [
+          291
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 5
+      },
+      "title_en": "Compare climate through the year and across places",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G3-06",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 3,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 6,
+      "statement_es": "Describe cómo el hábitat proporciona a los organismos recursos para satisfacer sus necesidades básicas.",
+      "source_example_es": "El estudiante describe cómo se alimentan los animales en la selva.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          289
+        ],
+        "pdf_pages": [
+          291
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 6
+      },
+      "title_en": "Habitats supply organisms’ basic needs",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G3-07",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 3,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 7,
+      "statement_es": "Describe las interacciones entre los seres vivos y los no vivos en su hábitat.",
+      "source_example_es": "El estudiante señala que los herbívoros comen pasto, que algunos animales se alimentan de herbívoros y que las plantas necesitan del suelo para vivir.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          289
+        ],
+        "pdf_pages": [
+          291
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 7
+      },
+      "title_en": "Living–nonliving interactions in habitats",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G3-08",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 3,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 8,
+      "statement_es": "Argumenta por qué la creación de objetos tecnológicos para satisfacer necesidades requiere de personas que tienen diferentes ocupaciones o especialidades, y opina sobre cómo el uso de los productos tecnológicos cambia la vida de las personas y el ambiente.",
+      "source_example_es": "El estudiante explica que la producción de alimentos en conservas demanda la producción de materia prima, envases, planta procesadora, etc., para que las personas puedan consumirlos, y opina acerca de las ventajas y desventajas de esta clase de productos, en relación a la calidad de vida y del ambiente.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          289
+        ],
+        "pdf_pages": [
+          291
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 8
+      },
+      "title_en": "Technology depends on different occupations and expertise",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G3-01",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 3,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 1,
+      "statement_es": "Determina el problema tecnológico y las causas que lo generan. Propone alternativas de solución con base en conocimientos científicos o prácticas locales, así como los requerimientos que debe cumplir y los recursos disponibles para construirlas.",
+      "source_example_es": "El estudiante propone construir un sistema de riego para el jardín de la institución educativa usando material reciclable, a fin de que disminuya el consumo de agua, basándose en el conocimiento de las técnicas de regadío y en las formas de riego de jardines, parques o chacras observadas en su localidad.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          298
+        ],
+        "pdf_pages": [
+          300
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 1
+      },
+      "title_en": "Identify causes, requirements, resources and possible solutions",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G3-02",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 3,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 2,
+      "statement_es": "Representa su alternativa de solución tecnológica con dibujos y textos; describe sus partes, la secuencia de pasos para su implementación y selecciona herramientas, instrumentos y materiales según sus propiedades físicas.",
+      "source_example_es": "El estudiante realiza gráficos de su sistema de riego, lo presenta y describe cómo será construido y cómo funcionará.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          299
+        ],
+        "pdf_pages": [
+          301
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 2
+      },
+      "title_en": "Draw parts and steps and select suitable materials",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G3-03",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 3,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 3,
+      "statement_es": "Construye su alternativa de solución tecnológica manipulando materiales, instrumentos y herramientas según su utilidad; cumple las normas de seguridad y considera medidas de ecoeficiencia. Usa unidades de medida convencionales. Realiza cambios o ajustes para cumplir los requerimientos o mejorar el funcionamiento de su alternativa de solución tecnológica.",
+      "source_example_es": "El estudiante construye su sistema de riego usando material reciclable (botellas descartables y mangueras) y herramientas (tijeras, cinta adhesiva, punzones, etc.), siguiendo las recomendaciones para su seguridad y la limpieza de la mesa de trabajo. Riega el jardín de la institución educativa utilizando el sistema de riego y realiza las modificaciones necesarias hasta que funcione y cumpla con los requerimientos establecidos.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          299
+        ],
+        "pdf_pages": [
+          301
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 3
+      },
+      "title_en": "Build safely, measure and adjust",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G3-04",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 3,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 4,
+      "statement_es": "Realiza pruebas para verificar si la solución tecnológica cumple con los requerimientos establecidos. Explica cómo construyó su solución tecnológica, su funcionamiento, el conocimiento científico o prácticas locales aplicadas y las dificultades superadas.",
+      "source_example_es": "El estudiante pone en funcionamiento su sistema de riego por dos meses (previamente, determina cuánto volumen de agua se usaba para regar el área correspondiente al jardín y realiza una lectura inicial del recibo de agua). Después de ese tiempo, compara los recibos de agua e indica si el consumo disminuyó. Finalmente, menciona qué materiales y herramientas utilizó para construir su sistema de riego, si fue fácil, de dónde obtuvo las ideas para su construcción, así como qué le gusto más y qué no le gustó.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          299
+        ],
+        "pdf_pages": [
+          301
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 4
+      },
+      "title_en": "Test requirements and explain construction and knowledge used",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G4-01",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 4,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 1,
+      "statement_es": "Hace preguntas sobre hechos, fenómenos u objetos naturales o tecnológicos que explora. Elabora una posible explicación como respuesta, donde establece una relación entre los hechos y los factores que producen los cambios.",
+      "source_example_es": "El estudiante podría preguntar: “¿Por qué algunos globos inflados se elevan y otros caen al suelo? Y, luego, responder: “El aire que contienen tiene diferente peso y por eso unos caen al suelo mientras otros siguen elevándose”.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          279
+        ],
+        "pdf_pages": [
+          281
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 1
+      },
+      "title_en": "Ask questions and explain factors causing change",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G4-02",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 4,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 2,
+      "statement_es": "Propone un plan donde describe las acciones y los procedimientos que utilizará para recoger información acerca de los factores relacionados con el problema en su indagación. Selecciona materiales, instrumentos y fuentes de información científica que le permiten comprobar la respuesta.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          279
+        ],
+        "pdf_pages": [
+          281
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 2
+      },
+      "title_en": "Plan to investigate relevant factors",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G4-03",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 4,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 3,
+      "statement_es": "Obtiene datos cualitativos o cuantitativos al llevar a cabo el plan que propuso para responder la pregunta. Usa unidades de medida convencionales y no convencionales, registra los datos y los representa en organizadores.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          279
+        ],
+        "pdf_pages": [
+          281
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 3
+      },
+      "title_en": "Measure and organize qualitative or quantitative data",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G4-04",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 4,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 4,
+      "statement_es": "Establece relaciones que expliquen el fenómeno estudiado. Utiliza los datos cualitativos y cuantitativos que obtuvo y los compara con la respuesta que propuso, así como con información científica. Elabora sus conclusiones.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          279
+        ],
+        "pdf_pages": [
+          281
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 4
+      },
+      "title_en": "Use data and scientific information to draw conclusions",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G4-05",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 4,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 5,
+      "statement_es": "Comunica las conclusiones de su indagación y lo que aprendió usando conocimientos científicos, así como el procedimiento, los logros y las dificultades que tuvo durante su desarrollo. Propone algunas mejoras. Da a conocer su indagación en forma oral o escrita.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          279
+        ],
+        "pdf_pages": [
+          281
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 5
+      },
+      "title_en": "Communicate conclusions, procedures and improvements",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G4-01",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 4,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 1,
+      "statement_es": "Utiliza modelos para explicar las relaciones entre los órganos y sistemas con las funciones vitales en plantas y animales.",
+      "source_example_es": "El estudiante utiliza un modelo para describir cómo el sistema digestivo transforma los alimentos en nutrientes que se distribuyen, a través de la sangre, por todo el organismo.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          288
+        ],
+        "pdf_pages": [
+          290
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 1
+      },
+      "title_en": "Model how organs and systems support life",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G4-02",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 4,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 2,
+      "statement_es": "Justifica por qué los individuos se reproducen con otros de su misma especie.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          288
+        ],
+        "pdf_pages": [
+          290
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 2
+      },
+      "title_en": "Reproduction within a species",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G4-03",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 4,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 3,
+      "statement_es": "Describe que los objetos pueden sufrir cambios reversibles e irreversibles por acción de la energía.",
+      "source_example_es": "El estudiante describe por qué un cubo de hielo se disuelve por acción del calor del ambiente y por qué puede volver a ser un cubo de hielo al colocar el líquido en un refrigerador.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          288
+        ],
+        "pdf_pages": [
+          290
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 3
+      },
+      "title_en": "Energy causes reversible and irreversible changes",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G4-04",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 4,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 4,
+      "statement_es": "Relaciona los cambios en el equilibrio, la posición y la forma de los objetos por las fuerzas aplicadas sobre ellos.",
+      "source_example_es": "El estudiante da razones de por qué al tirar de un elástico, este se deforma, y cuando cesa esta acción, recupera su forma inicial.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          289
+        ],
+        "pdf_pages": [
+          291
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 4
+      },
+      "title_en": "Forces affect balance, position and shape",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G4-05",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 4,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 5,
+      "statement_es": "Describe cómo la energía se manifiesta de diferentes formas y puede usarse para diferentes propósitos.",
+      "source_example_es": "El estudiante describe cómo la energía producida en una batería para un carro de juguete se manifiesta en movimiento, sonido y luz al poner en funcionamiento todos sus componentes.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          289
+        ],
+        "pdf_pages": [
+          291
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 5
+      },
+      "title_en": "Forms and uses of energy",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G4-06",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 4,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 6,
+      "statement_es": "Describe el rol que cumplen los seres vivos en su hábitat.",
+      "source_example_es": "El estudiante señala que las plantas son productores, la liebre es un consumidor y la lombriz es un descomponedor.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          289
+        ],
+        "pdf_pages": [
+          291
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 6
+      },
+      "title_en": "Roles of living things in habitats",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G4-07",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 4,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 7,
+      "statement_es": "Argumenta por qué las plantas y los animales poseen estructuras y comportamientos adaptados a su hábitat.",
+      "source_example_es": "El estudiante da razones de por qué un camaleón se mimetiza con su ambiente o por qué los cactus tienen espinas en lugar de hojas.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          289
+        ],
+        "pdf_pages": [
+          291
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 7
+      },
+      "title_en": "Structures and behaviours adapted to habitats",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G4-08",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 4,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 8,
+      "statement_es": "Describe las diferentes zonas climáticas y señala que se forman por la distribución de la energía del sol sobre la Tierra y su relieve.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          289
+        ],
+        "pdf_pages": [
+          291
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 8
+      },
+      "title_en": "Sunlight, relief and climatic zones",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G4-09",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 4,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 9,
+      "statement_es": "Argumenta por qué los diversos objetos tecnológicos son creados para satisfacer necesidades personales y colectivas.",
+      "source_example_es": "El estudiante da razones de por qué los rayos X son empleados por los médicos en el diagnóstico de fracturas, así como las ventajas y desventajas de su uso.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          289
+        ],
+        "pdf_pages": [
+          291
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 9
+      },
+      "title_en": "Technology meets individual and collective needs",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G4-10",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 4,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 10,
+      "statement_es": "Opina sobre los cambios que la tecnología ha generado en la forma de vivir de las personas y en el ambiente.",
+      "source_example_es": "El estudiante explica que gracias a la refrigeradora se pueden conservar los alimentos durante más tiempo, y cómo esto impacta sobre la calidad de vida y del ambiente.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          289
+        ],
+        "pdf_pages": [
+          291
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 10
+      },
+      "title_en": "Technology changes lifestyles and the environment",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G4-01",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 4,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 1,
+      "statement_es": "Determina el problema tecnológico y las causas que lo generan. Propone alternativas de solución con base en conocimientos científicos o prácticas locales, así como los requerimientos que debe cumplir y los recursos disponibles para construirlas.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          298
+        ],
+        "pdf_pages": [
+          300
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 1
+      },
+      "title_en": "Identify causes, requirements, resources and possible solutions",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G4-02",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 4,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 2,
+      "statement_es": "Representa su alternativa de solución tecnológica con dibujos y textos; describe sus partes o etapas, la secuencia de pasos, sus características, forma, estructura y función. Selecciona herramientas, instrumentos y materiales según sus propiedades físicas.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          298
+        ],
+        "pdf_pages": [
+          300
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 2
+      },
+      "title_en": "Specify parts, steps, form, structure and function",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G4-03",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 4,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 3,
+      "statement_es": "Construye su alternativa de solución tecnológica manipulando materiales, instrumentos y herramientas según sus funciones; cumple las normas de seguridad y medidas de ecoeficiencia. Usa unidades de medida convencionales. Realiza cambios o ajustes para cumplir los requerimientos o mejorar el funcionamiento de su alternativa de solución tecnológica.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          299
+        ],
+        "pdf_pages": [
+          301
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 3
+      },
+      "title_en": "Build safely and efficiently, measure and adjust",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G4-04",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 4,
+      "cycle": "IV",
+      "ordinal_within_grade_competency": 4,
+      "statement_es": "Realiza pruebas para verificar si la solución tecnológica cumple con los requerimientos establecidos. Explica cómo construyó su alternativa de solución tecnológica, su funcionamiento, el conocimiento científico o las prácticas locales aplicadas, las dificultades superadas y los beneficios e inconvenientes de su uso.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          299
+        ],
+        "pdf_pages": [
+          301
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 4
+      },
+      "title_en": "Test and explain benefits, disadvantages and knowledge used",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G5-01",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 5,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 1,
+      "statement_es": "Formula preguntas acerca de las variables que influyen en un hecho, fenómeno u objeto natural o tecnológico. Plantea hipótesis que expresan la relación causa-efecto y determina las variables involucradas.",
+      "source_example_es": "El estudiante podría preguntar: “¿Qué le sucedería a una planta si la encerramos en una caja con un huequito por donde entre la luz?”. La hipótesis podría ser: “Las plantas puestas en oscuridad mueren rápido y se les caen las hojas porque necesitan luz para vivir”.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          280
+        ],
+        "pdf_pages": [
+          282
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 1
+      },
+      "title_en": "Identify variables and propose causal hypotheses",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G5-02",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 5,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 2,
+      "statement_es": "Propone un plan que le permita observar las variables involucradas, a fin de obtener datos para comprobar sus hipótesis. Selecciona materiales, instrumentos y fuentes que le brinden información científica. Considera el tiempo para el desarrollo del plan y las medidas de seguridad necesarias.",
+      "source_example_es": "Si se está indagando sobre el comportamiento de las plantas y la luz, el estudiante podría decir: “Necesitaremos una planta en un macetero y una caja de cartón para cubrirla. Haremos un huequito en la caja, la dejaremos cubierta por 5 días y anotaremos qué sucede. Buscaremos información en libros e internet”.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          280
+        ],
+        "pdf_pages": [
+          282
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 2
+      },
+      "title_en": "Plan observations with time and safety considerations",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G5-03",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 5,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 3,
+      "statement_es": "Obtiene datos cualitativos o cuantitativos que evidencian la relación entre las variables que utiliza para responder la pregunta. Registra los datos y los representa en diferentes organizadores.",
+      "source_example_es": "Al revisar diariamente lo que sucede con la planta cubierta por una caja con un huequito, el estudiante tomará nota para identificar si el color de las hojas se mantiene, si el tallo sigue en la misma dirección o si cambió, y hará resúmenes con la información que encontró en los libros e internet.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          281
+        ],
+        "pdf_pages": [
+          283
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 3
+      },
+      "title_en": "Record evidence of relationships between variables",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G5-04",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 5,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 4,
+      "statement_es": "Compara los datos cualitativos o cuantitativos para probar sus hipótesis y las contrasta con información científica. Elabora sus conclusiones.",
+      "source_example_es": "El estudiante podría decir: “Nuestra hipótesis es que las plantas puestas en la oscuridad mueren rápido y se les caen las hojas”; “Experimentando, obtuvimos estos datos: a los ‘x’ días las hojas de la planta cambiaron de color, a los ‘y’ días el tallo de la planta se dobló hacia la fuente de luz”; “Según los libros, el movimiento de las plantas hacia la luz se llama fototropismo positivo y su raíz tiene fototropismo negativo”.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          281
+        ],
+        "pdf_pages": [
+          283
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 4
+      },
+      "title_en": "Test hypotheses against data and scientific information",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G5-05",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 5,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 5,
+      "statement_es": "Comunica sus conclusiones y lo que aprendió usando conocimientos científicos. Evalúa si los procedimientos seguidos en su indagación ayudaron a comprobar sus hipótesis. Menciona las dificultades que tuvo y propone mejoras. Da a conocer su indagación en forma oral o escrita.",
+      "source_example_es": "El estudiante podría decir: “Las plantas buscan las fuentes de luz y a eso se le llama fototropismo positivo, por ello, se torció el tallo hacia la fuente de luz”; “Las plantas no mueren en la oscuridad, pero el color de sus hojas sí cambia”; “Tendríamos que haber contado con una planta igualita, pero expuesta a la luz, para compararlas”.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          281
+        ],
+        "pdf_pages": [
+          283
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 5
+      },
+      "title_en": "Evaluate procedures and communicate conclusions",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G5-01",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 5,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 1,
+      "statement_es": "Describe las diferencias entre la célula animal y vegetal, y explica que ambas cumplen funciones básicas.",
+      "source_example_es": "El estudiante describe por qué el cuerpo de un animal es suave en comparación con una planta, en función del tipo de células que poseen.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          291
+        ],
+        "pdf_pages": [
+          293
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 1
+      },
+      "title_en": "Compare animal and plant cells and basic functions",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G5-02",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 5,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 2,
+      "statement_es": "Representa las diferentes formas de reproducción de los seres vivos.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          291
+        ],
+        "pdf_pages": [
+          293
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 2
+      },
+      "title_en": "Represent forms of reproduction",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G5-03",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 5,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 3,
+      "statement_es": "Describe la materia y señala que se compone de partículas pequeñas.",
+      "source_example_es": "El estudiante señala que el vapor (moléculas) que sale del agua cuando hierve es la razón por la que disminuye el volumen inicial.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          291
+        ],
+        "pdf_pages": [
+          293
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 3
+      },
+      "title_en": "Matter consists of small particles",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G5-04",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 5,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 4,
+      "statement_es": "Describe los ecosistemas y señala que se encuentran constituidos por componentes abióticos y bióticos que se interrelacionan.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          291
+        ],
+        "pdf_pages": [
+          293
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 4
+      },
+      "title_en": "Ecosystems contain interacting living and nonliving components",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G5-05",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 5,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 5,
+      "statement_es": "Describe el carácter dinámico de la estructura externa de la Tierra.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          291
+        ],
+        "pdf_pages": [
+          293
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 5
+      },
+      "title_en": "Earth’s external structure changes",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G5-06",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 5,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 6,
+      "statement_es": "Justifica que el quehacer tecnológico progresa con el paso del tiempo como resultado del avance científico para resolver problemas.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          291
+        ],
+        "pdf_pages": [
+          293
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 6
+      },
+      "title_en": "Scientific advances support technological progress",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G5-07",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 5,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 7,
+      "statement_es": "Opina cómo el uso de los objetos tecnológicos impacta en el ambiente, con base en fuentes documentadas con respaldo científico.",
+      "source_example_es": "El estudiante opina sobre cómo la demanda de muebles de madera promueve el desarrollo de maquinaria maderera, así como la deforestación, y qué alternativas existen desde la ciencia y tecnología para fomentar el desarrollo sostenible de esta industria.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          291
+        ],
+        "pdf_pages": [
+          293
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 7
+      },
+      "title_en": "Use documented evidence to discuss environmental impacts",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G5-01",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 5,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 1,
+      "statement_es": "Determina el problema tecnológico, las causas que lo generan y su alternativa de solución, con base en conocimientos científicos o prácticas locales; asimismo, los requerimientos que debe cumplir y los recursos disponibles para construirla.",
+      "source_example_es": "Ante la necesidad de conservar el refrigerio caliente, el estudiante propone elaborar un envase que permita mantener las bebidas calientes por 2 horas. Considera los principios de conservación del calor en los cuerpos y las formas de conservación del calor en los alimentos utilizados por sus familiares o la comunidad. Usa materiales reciclables.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          300
+        ],
+        "pdf_pages": [
+          302
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 1
+      },
+      "title_en": "Define a problem and evidence-based solution requirements",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G5-02",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 5,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 2,
+      "statement_es": "Representa su alternativa de solución tecnológica con dibujos y textos; describe sus partes o etapas, la secuencia de pasos, características de forma, estructura y función. Selecciona herramientas, instrumentos y materiales según sus propiedades físicas. Considera el tiempo para desarrollarla y las medidas de seguridad necesarias, así como medidas de ecoeficiencia.",
+      "source_example_es": "El estudiante dibuja el envase para mantener las bebidas calientes; describe las partes que tendrá y sus características: tamaño, forma, material del que estará hecho; expone cómo lo elaborará y hace un listado de las herramientas que utilizará (papel de aluminio, poliestireno expandido, lana, botellas descartables, pegamento, tijeras, etc.).",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          301
+        ],
+        "pdf_pages": [
+          303
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 2
+      },
+      "title_en": "Plan structure, materials, time and safe construction",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G5-03",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 5,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 3,
+      "statement_es": "Construye su alternativa de solución tecnológica manipulando los materiales, instrumentos y herramientas según sus funciones; cumple las normas de seguridad. Usa unidades de medida convencionales. Verifica el funcionamiento de cada parte o etapa de la solución tecnológica y realiza cambios o ajustes para cumplir los requerimientos establecidos.",
+      "source_example_es": "El estudiante elabora el envase para mantener las bebidas calientes utilizando botellas de plástico descartables, papel de aluminio, poliestireno, lana, pegamento, tijeras, etc.; determina el tamaño del envase en centímetros y su capacidad en mililitros; maneja las herramientas e instrumentos con los cuidados del caso. Pone a prueba el envase elaborado y lo compara con otro diferente de las mismas dimensiones, vierte agua caliente, mide la temperatura inicial del líquido de ambos envases y los cierra. Vuelve a tomar la temperatura después de 30 minutos y compara las medidas encontradas, para determinar si el envase elaborado conserva mejor el agua caliente que el otro. Si la diferencia de la temperatura de los líquidos de los dos envases no es amplia, realizará los ajustes necesarios, como aumentar las capas de papel aluminio o lana que envuelven el envase elaborado.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          301
+        ],
+        "pdf_pages": [
+          303
+        ],
+        "column": "left",
+        "bullet_ordinal_in_grade": 3
+      },
+      "title_en": "Build, measure, verify parts and adjust",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G6-01",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 6,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 1,
+      "statement_es": "Formula preguntas acerca de las variables que influyen en un hecho, fenómeno u objeto natural o tecnológico. Plantea hipótesis que expresan la relación causa-efecto y determina las variables involucradas.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          280
+        ],
+        "pdf_pages": [
+          282
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 1
+      },
+      "title_en": "Identify variables and propose causal hypotheses",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G6-02",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 6,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 2,
+      "statement_es": "Propone un plan para observar las variables del problema de indagación y controlar aquellas que pueden modificar la experimentación, con la finalidad de obtener datos para comprobar sus hipótesis. Selecciona instrumentos, materiales y herramientas, así como fuentes que le brinden información científica. Considera el tiempo para el desarrollo del plan y las medidas de seguridad necesarias.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          280
+        ],
+        "pdf_pages": [
+          282
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 2
+      },
+      "title_en": "Plan investigations and control other variables",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G6-03",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 6,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 3,
+      "statement_es": "Obtiene datos cualitativos o cuantitativos que evidencian la relación entre las variables que utiliza para responder la pregunta. Organiza los datos, hace cálculos de moda, proporcionalidad directa y otros, y los representa en diferentes organizadores.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          280
+        ],
+        "pdf_pages": [
+          282
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 3
+      },
+      "title_en": "Organize data and calculate mode and direct proportion",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G6-04",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 6,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 4,
+      "statement_es": "Utiliza los datos cualitativos o cuantitativos para probar sus hipótesis y las contrasta con información científica. Elabora sus conclusiones.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          281
+        ],
+        "pdf_pages": [
+          283
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 4
+      },
+      "title_en": "Evaluate hypotheses using data and scientific information",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-INQ-G6-05",
+      "competency_id": "PE-CNEB-2017-CYT-INQ",
+      "grade": 6,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 5,
+      "statement_es": "Comunica sus conclusiones y lo que aprendió usando conocimientos científicos. Evalúa si los procedimientos seguidos en su indagación ayudaron a comprobar sus hipótesis. Menciona las dificultades que tuvo y propone mejoras. Da a conocer su indagación en forma oral o escrita.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          281
+        ],
+        "pdf_pages": [
+          283
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 5
+      },
+      "title_en": "Evaluate procedures and communicate conclusions",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G6-01",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 6,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 1,
+      "statement_es": "Describe los organismos y señala que pueden ser unicelulares o pluricelulares y que cada célula cumple funciones básicas o especializadas.",
+      "source_example_es": "El estudiante señala que las bacterias necesitan un huésped para poder cumplir sus funciones básicas.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          291
+        ],
+        "pdf_pages": [
+          293
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 1
+      },
+      "title_en": "Unicellular and multicellular organisms and cell functions",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": [
+        "PE-SOURCE-BACTERIA-001"
+      ]
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G6-02",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 6,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 2,
+      "statement_es": "Relaciona la reproducción sexual con la diversidad dentro de una especie.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          291
+        ],
+        "pdf_pages": [
+          293
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 2
+      },
+      "title_en": "Sexual reproduction and variation within a species",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G6-03",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 6,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 3,
+      "statement_es": "Relaciona los estados de los cuerpos con las fuerzas que predominan en sus moléculas (fuerzas de repulsión y cohesión) y sus átomos.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          291
+        ],
+        "pdf_pages": [
+          293
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 3
+      },
+      "title_en": "States of matter and interactions among constituent particles",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G6-04",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 6,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 4,
+      "statement_es": "Relaciona los cambios que sufren los materiales con el reordenamiento de sus componentes constituyentes.",
+      "source_example_es": "El estudiante relaciona la ceniza, el humo y el vapor del agua con la combustión de madera.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          291
+        ],
+        "pdf_pages": [
+          293
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 4
+      },
+      "title_en": "Material changes rearrange constituent components",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G6-05",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 6,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 5,
+      "statement_es": "Interpreta la relación entre la temperatura y el movimiento molecular en los objetos.",
+      "source_example_es": "El estudiante da razones de por qué cuando se calienta un objeto metálico como el aluminio, este cambia de tamaño.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          291
+        ],
+        "pdf_pages": [
+          293
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 5
+      },
+      "title_en": "Temperature and molecular motion",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G6-06",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 6,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 6,
+      "statement_es": "Justifica por qué la diversidad de especies da estabilidad a los ecosistemas.",
+      "source_example_es": "El estudiante da razones de por qué cuando disminuye la cantidad de pasto por el friaje, la población de vizcachas se reduce, y cómo esto también afecta a la población de zorros.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          291
+        ],
+        "pdf_pages": [
+          293
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 6
+      },
+      "title_en": "Species diversity and ecosystem stability",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G6-07",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 6,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 7,
+      "statement_es": "Relaciona los cambios del relieve terrestre con la estructura dinámica interna y externa de la Tierra.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          291
+        ],
+        "pdf_pages": [
+          293
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 7
+      },
+      "title_en": "Landform changes and Earth’s internal and external dynamics",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G6-08",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 6,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 8,
+      "statement_es": "Argumenta que algunos objetos tecnológicos y conocimientos científicos han ayudado a formular nuevas teorías que propiciaron el cambio en la forma de pensar y el estilo de vida de las personas.",
+      "source_example_es": "El estudiante da razones de cómo el uso del telescopio dio un nuevo lugar a la Tierra en el universo y de cómo con el microscopio se originó la teoría de los gérmenes como causantes de enfermedades.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          291
+        ],
+        "pdf_pages": [
+          293
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 8
+      },
+      "title_en": "Tools and discoveries change scientific explanations",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-EXP-G6-09",
+      "competency_id": "PE-CNEB-2017-CYT-EXP",
+      "grade": 6,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 9,
+      "statement_es": "Defiende su punto de vista respecto al avance científico y tecnológico, y su impacto en la sociedad y el ambiente, con base en fuentes documentadas con respaldo científico.",
+      "source_example_es": "El estudiante discute sus puntos de vista acerca de si la instalación de antenas de telefonía en zonas pobladas podría afectar la salud de los seres vivos.",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          291
+        ],
+        "pdf_pages": [
+          293
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 9
+      },
+      "title_en": "Defend evidence-based views on science and technology",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G6-01",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 6,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 1,
+      "statement_es": "Determina el problema tecnológico, las causas que lo generan y su alternativa de solución, con base en conocimientos científicos o prácticas locales; asimismo, los requerimientos que debe cumplir y los recursos disponibles para construirla.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          300
+        ],
+        "pdf_pages": [
+          302
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 1
+      },
+      "title_en": "Define a problem and evidence-based solution requirements",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G6-02",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 6,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 2,
+      "statement_es": "Representa su alternativa de solución tecnológica con dibujos y textos; describe sus partes o etapas, la secuencia de pasos y las características: dimensiones, forma, estructura y función. Selecciona herramientas, instrumentos y materiales según sus propiedades físicas; incluye los recursos a utilizar y los posibles costos. Considera el tiempo para desarrollarla y las medidas de seguridad necesarias.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          300
+        ],
+        "pdf_pages": [
+          302
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 2
+      },
+      "title_en": "Specify dimensions, resources, costs, time and safety",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G6-03",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 6,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 3,
+      "statement_es": "Construye su alternativa de solución tecnológica manipulando los materiales, instrumentos y herramientas según sus funciones; cumple las normas de seguridad y considera medidas de ecoeficiencia. Usa unidades de medida convencionales. Verifica el funcionamiento de cada parte o etapa de la solución tecnológica; detecta imprecisiones en las dimensiones y procedimientos, o errores en la selección de materiales; y realiza ajustes o cambios necesarios para cumplir los requerimientos establecidos.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          301
+        ],
+        "pdf_pages": [
+          303
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 3
+      },
+      "title_en": "Build, verify and correct dimensions, procedures or materials",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    },
+    {
+      "id": "PE-CNEB-2017-CYT-TEC-G6-04",
+      "competency_id": "PE-CNEB-2017-CYT-TEC",
+      "grade": 6,
+      "cycle": "V",
+      "ordinal_within_grade_competency": 4,
+      "statement_es": "Realiza pruebas para verificar si la solución tecnológica cumple con los requerimientos establecidos. Explica cómo construyó su solución tecnológica, su funcionamiento, el conocimiento científico o las prácticas locales aplicadas, las dificultades superadas y los beneficios e inconvenientes de su uso. Infiere posibles impactos positivos o negativos de la solución tecnológica en diferentes contextos.",
+      "source_example_es": null,
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          301
+        ],
+        "pdf_pages": [
+          303
+        ],
+        "column": "right",
+        "bullet_ordinal_in_grade": 4
+      },
+      "title_en": "Test, explain and infer positive and negative impacts",
+      "title_en_status": "editorial summary, not an official translation or substitute for the Spanish statement",
+      "coverage_status": "not_assessed",
+      "source_issue_ids": []
+    }
+  ],
+  "source_footnotes": [
+    {
+      "id": "MINEDU-2017-p277-n48",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          277
+        ],
+        "pdf_pages": [
+          279
+        ]
+      },
+      "summary_en": "The source defines regularity through recurring properties or phenomena, illustrated by day/night and a bouncing inflated ball."
+    }
+  ],
+  "source_issues": [
+    {
+      "id": "PE-SOURCE-BACTERIA-001",
+      "severity": "factual_error_in_illustrative_example",
+      "performance_id": "PE-CNEB-2017-CYT-EXP-G6-01",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          291
+        ],
+        "pdf_pages": [
+          293
+        ]
+      },
+      "claim_summary_en": "The example generalizes that bacteria require a host to carry out their basic functions.",
+      "finding_en": "False as a general statement: many bacteria are free-living. The organism/cell-function performance target remains usable; replace the example during content authoring.",
+      "corrective_reference_url": "https://microbiologysociety.org/why-microbiology-matters/what-is-microbiology/what-are-bacteria.html",
+      "handling": "preserve_source; exclude_example_from_learning_content; require_science_review",
+      "validation_status": "source example visually checked in prior research and retained separately; no automated approval of other examples"
+    }
+  ],
+  "source_structure_notes": [
+    {
+      "id": "PE-SOURCE-G5-TEC-COUNT",
+      "source": {
+        "document_id": "minedu-primary-2017",
+        "printed_pages": [
+          300,
+          301
+        ],
+        "pdf_pages": [
+          302,
+          303
+        ]
+      },
+      "note": "The Grade 5 technology column contains three bullets, not four. Its final construction example also describes testing and adjustment. All four capacities and the end-of-cycle standard still apply; no additional fourth Grade 5 bullet has been invented."
+    }
+  ],
+  "counts": {
+    "national_competencies": 3,
+    "capacities": 11,
+    "primary_cycle_standards": 9,
+    "grade_performance_bullets": 103,
+    "performance_bullets_by_grade": {
+      "1": 16,
+      "2": 18,
+      "3": 17,
+      "4": 19,
+      "5": 15,
+      "6": 18
+    },
+    "performance_bullets_by_competency": {
+      "INQ": 30,
+      "EXP": 50,
+      "TEC": 23
+    }
+  },
+  "coverage": {
+    "peru_lessons_verified_aligned": 0,
+    "peru_performances_reviewed_for_coverage": 0,
+    "coverage_fraction": null,
+    "note": "Zero reviewed is not evidence that existing material has zero relevance. Reuse candidates are a separate, unapproved crosswalk."
+  }
+}
