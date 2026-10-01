@@ -59,18 +59,24 @@ spec.loader.exec_module(builder)
 
 
 class BuildFailureTests(unittest.TestCase):
-    def test_failed_regression_stops_before_any_platform_and_preserves_last_good_pair(self):
-        with tempfile.TemporaryDirectory() as temp:
-            parent = Path(temp)
-            (parent / 'latest.json').write_text('last good release')
-            with patch.object(builder, 'source_digest', return_value='source'), \
-                 patch.object(builder, 'run', side_effect=RuntimeError('regression failed')) as run:
-                with self.assertRaisesRegex(RuntimeError, 'regression failed'):
-                    builder.build(parent / 'failed', {})
-            self.assertEqual(run.call_count, 1)
-            self.assertIn('run-harness.sh', run.call_args.args[0][1])
-            self.assertFalse((parent / 'failed/release.json').exists())
-            self.assertEqual((parent / 'latest.json').read_text(), 'last good release')
+    def test_each_failed_gate_stops_before_any_platform_and_preserves_last_good_pair(self):
+        for failed_log in ['exam-tests.log', 'exam-bank.log', 'regression.log']:
+            with self.subTest(gate=failed_log), tempfile.TemporaryDirectory() as temp:
+                parent = Path(temp)
+                directory = parent / 'failed'
+                (parent / 'latest.json').write_text('last good release')
+                def fail_gate(command, log, *args):
+                    if log.name == failed_log:
+                        raise RuntimeError('required gate failed')
+                with patch.object(builder, 'source_digest', return_value='source'), \
+                     patch.object(builder, 'run', side_effect=fail_gate) as run:
+                    with self.assertRaisesRegex(RuntimeError, 'required gate failed'):
+                        builder.build(directory, {})
+                self.assertEqual(run.call_args.args[1].name, failed_log)
+                self.assertTrue(all(call.args[1].parent == directory for call in run.call_args_list))
+                self.assertFalse((directory / 'release.json').exists())
+                self.assertFalse(any((directory / platform).exists() for platform in artifacts.PLATFORMS))
+                self.assertEqual((parent / 'latest.json').read_text(), 'last good release')
 
     def test_source_drift_stops_before_building(self):
         with tempfile.TemporaryDirectory() as temp, \
@@ -79,7 +85,8 @@ class BuildFailureTests(unittest.TestCase):
             directory = Path(temp) / 'drift'
             with self.assertRaisesRegex(RuntimeError, 'inputs changed'):
                 builder.build(directory, {})
-            self.assertEqual(run.call_count, 2)  # regression and native cache verification only
+            self.assertTrue(all(call.args[1].parent == directory for call in run.call_args_list))
+            self.assertFalse(any((directory / platform).exists() for platform in artifacts.PLATFORMS))
             self.assertFalse((directory / 'release.json').exists())
 
 
