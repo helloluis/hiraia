@@ -1,10 +1,14 @@
 """Failure-focused archive tests. No cloud credentials, network or real bucket."""
 from contextlib import contextmanager, redirect_stdout
+from concurrent.futures import CancelledError, ThreadPoolExecutor
 import hashlib
 import io
 import json
 import os
 from pathlib import Path
+import signal
+import subprocess
+import sys
 import tempfile
 import threading
 from types import SimpleNamespace
@@ -360,12 +364,311 @@ class ArchiveTests(unittest.TestCase):
             self.assertIs(archive.make_client(env_file), client)
         self.assertEqual(factory.call_args.kwargs["aws_session_token"], "fake-session-token")
         self.assertEqual(output.getvalue(), "")
-        self.assertEqual(factory.call_args.kwargs["config"]["max_pool_connections"], 16)
+        self.assertEqual(factory.call_args.kwargs["config"]["max_pool_connections"], 32)
 
-    def test_workers_are_bounded_and_sixteen_are_supported(self):
-        self.assertEqual(list(archive.bounded_results(lambda value: value * 2, range(20), 16)), list(range(0, 40, 2)))
-        self.assert_code("invalid_workers", lambda: list(archive.bounded_results(lambda value: value, [], 17)))
+    def test_workers_are_bounded_and_thirty_two_are_supported(self):
+        self.assertEqual(sorted(archive.bounded_results(lambda value: value * 2, range(40), 32)), list(range(0, 80, 2)))
+        self.assert_code("invalid_workers", lambda: list(archive.bounded_results(lambda value: value, [], 33)))
+
+    def test_slow_first_future_does_not_block_completion_or_replenishment(self):
+        release_first, later_started, result_yielded = threading.Event(), threading.Event(), threading.Event()
+        results = []
+
+        def task(index):
+            if index == 0:
+                release_first.wait(10)
+            if index == 4:
+                later_started.set()  # Beyond the initial 2 * workers submissions.
+            return index
+
+        def collect():
+            for value in archive.bounded_results(task, range(10), 2):
+                results.append(value)
+                result_yielded.set()
+
+        thread = threading.Thread(target=collect)
+        thread.start()
+        try:
+            self.assertTrue(later_started.wait(2), "A slow first future stalled replenishment")
+            self.assertTrue(result_yielded.wait(2), "Completed work was not yielded")
+            self.assertTrue(results)
+            self.assertNotIn(0, results)
+        finally:
+            release_first.set()
+            thread.join(5)
+        self.assertFalse(thread.is_alive())
+        self.assertEqual(sorted(results), list(range(10)))
+
+    def test_completion_queue_does_not_eagerly_submit_the_entire_inventory(self):
+        submitted = []
+
+        def source():
+            for value in range(100):
+                submitted.append(value)
+                yield value
+
+        results = archive.bounded_results(lambda value: value, source(), 2)
+        first = next(results)
+        self.assertEqual(len(submitted), 4)  # No replenishment until the caller handles the result.
+        self.assertEqual(sorted([first, *results]), list(range(100)))
+
+    def test_closing_result_iterator_cancels_queued_work(self):
+        release, cancelled = threading.Event(), threading.Event()
+        started, mutex = [], threading.Lock()
+
+        def task(index):
+            with mutex:
+                started.append(index)
+            if index:
+                release.wait(5)
+            return index
+
+        def cancel():
+            cancelled.set()
+            release.set()
+
+        results = archive.bounded_results(task, range(100), 2, on_cancel=cancel)
+        self.assertEqual(next(results), 0)
+        results.close()
+        self.assertTrue(cancelled.is_set())
+        self.assertLessEqual(len(started), 3)  # First completed task plus at most two active tasks.
+        self.assertTrue(all(index < 4 for index in started))
+
+    def test_worker_error_stops_queued_work_and_preserves_error(self):
+        release, cancelled = threading.Event(), threading.Event()
+        started = []
+
+        def task(index):
+            started.append(index)
+            if index == 0:
+                raise ValueError("original worker failure")
+            release.wait(5)
+            return index
+
+        def cancel():
+            cancelled.set()
+            release.set()
+
+        with self.assertRaisesRegex(ValueError, "original worker failure"):
+            list(archive.bounded_results(task, range(100), 2, on_cancel=cancel))
+        self.assertTrue(cancelled.is_set())
+        self.assertLessEqual(len(started), 3)
+
+    def test_budget_cancellation_wakes_waiters_without_a_new_lease(self):
+        budget = archive.PayloadBudget(1)
+        entered_wait, cancelled, acquired = threading.Event(), threading.Event(), threading.Event()
+        original_wait_for = budget.condition.wait_for
+
+        def wait_for(predicate):
+            entered_wait.set()
+            return original_wait_for(predicate)
+
+        def waiter():
+            try:
+                with budget.reserve(1):
+                    acquired.set()
+            except CancelledError:
+                cancelled.set()
+
+        with budget.reserve(1):
+            with patch.object(budget.condition, "wait_for", wait_for):
+                thread = threading.Thread(target=waiter)
+                thread.start()
+                try:
+                    self.assertTrue(entered_wait.wait(2))
+                    budget.cancel()
+                    self.assertTrue(cancelled.wait(2), "Budget waiter did not wake while capacity remained occupied")
+                    self.assertEqual(budget.used, 1)
+                    self.assertFalse(acquired.is_set())
+                finally:
+                    budget.cancel()
+                    thread.join(5)
+        self.assertEqual(budget.used, 0)
+        self.assertFalse(thread.is_alive())
+
+    def test_sigint_cancels_budget_waiters_and_never_commits_partial_snapshot(self):
+        result = subprocess.run([sys.executable, str(Path(__file__).resolve()), "--cancellation-probe", str(self.root)],
+                                capture_output=True, text=True, timeout=15, check=True)
+        self.assertEqual(result.stderr, "")
+        result = json.loads(result.stdout)
+        self.assertEqual(result["exit_code"], 130)
+        self.assertEqual(result["cli_status"], "interrupted")
+        self.assertTrue(result["cancel_seen"])
+        self.assertGreaterEqual(result["reservation_attempts"], 4)
+        self.assertEqual(result["uploads_started_before_resume"], 1)
+        self.assertEqual(result["verified_before_resume"], 1)
+        self.assertEqual(result["budget_used_after_interrupt"], 0)
+        self.assertFalse(result["remote_snapshot_before_resume"])
+        self.assertFalse(result["local_receipt_before_resume"])
+        self.assertEqual(result["resume_status"], "committed")
+
+    def test_interrupt_from_progress_handler_closes_workers_before_commit(self):
+        self.plan({f"{index}.bin": index.to_bytes(4, "big") for index in range(128)}, chunk_bytes=4)
+        budget = archive.PayloadBudget(8)
+
+        def interrupt(_progress):
+            raise KeyboardInterrupt()
+
+        with patch.object(archive, "PayloadBudget", return_value=budget):
+            with self.assertRaises(KeyboardInterrupt):
+                archive.upload_snapshot(self.client, self.bucket, self.manifest_path, workers=32, progress=interrupt)
+        self.assertTrue(budget.cancelled)
+        self.assertEqual(budget.used, 0)
+        self.assertFalse(any(key.startswith("snapshots/") for key in self.client.objects))
+        self.assertFalse((self.manifest_path.parent / "receipt.json").exists())
+        for line in (self.manifest_path.parent / "journal.jsonl").read_text().splitlines():
+            json.loads(line)
+
+    def test_source_reads_are_reserved_and_aggregate_payload_is_bounded(self):
+        self.plan({f"{i}.png": bytes([i]) * 3 for i in range(4)}, chunk_bytes=3)
+        budget = archive.PayloadBudget(6)
+        two_payloads_started, release_uploads = threading.Event(), threading.Event()
+        mutex, reads, puts = threading.Lock(), [], []
+        original_reader, original_put = archive.stable_reader, self.client.put_object
+
+        @contextmanager
+        def checked_reader(path, expected):
+            self.assertGreaterEqual(budget.stats()["payload_buffer_used_bytes"], 3)
+            with mutex:
+                reads.append(path)
+            with original_reader(path, expected) as stream:
+                yield stream
+
+        def held_put(**kwargs):
+            if kwargs["Key"].startswith("objects/"):
+                with mutex:
+                    puts.append(kwargs["Key"])
+                    if len(puts) == 2:
+                        two_payloads_started.set()
+                if not release_uploads.wait(5):
+                    raise RuntimeError("Test upload gate timed out")
+            return original_put(**kwargs)
+
+        with patch.object(archive, "PayloadBudget", return_value=budget), \
+                patch.object(archive, "stable_reader", checked_reader), \
+                patch.object(self.client, "put_object", held_put), ThreadPoolExecutor(max_workers=1) as executor:
+            future = executor.submit(archive.upload_snapshot, self.client, self.bucket, self.manifest_path,
+                                     workers=4, payload_buffer_bytes=6)
+            try:
+                self.assertTrue(two_payloads_started.wait(2))
+                self.assertEqual(budget.stats()["payload_buffer_used_bytes"], 6)
+                self.assertEqual(len(reads), 2, "Extra source bytes were read before acquiring their budget")
+            finally:
+                release_uploads.set()
+            result = future.result(timeout=5)
+        self.assertEqual(result["status"], "committed")
+        self.assertEqual(result["payload_buffer_peak_bytes"], 6)
+        self.assertEqual(result["payload_buffer_used_bytes"], 0)
+        self.assertEqual(len(reads), 4)
+
+    def test_payload_budget_is_released_after_upload_or_source_failure(self):
+        self.plan({"a.png": b"abc"})
+        item = self.manifest["files"][0]
+        chunk, budget = item["chunks"][0], archive.PayloadBudget(3)
+        key = archive.object_key(chunk["sha256"])
+        self.client.fail_put.add(key)
+        arguments = (self.client, self.bucket, key, self.source / "a.png", item["stat"], chunk, budget)
+        self.assert_code("remote_write_failed", archive.upload_source_chunk, *arguments)
+        self.assertEqual(budget.used, 0)
+        self.client.fail_put.clear()
+        corrupt_client = FakeS3()
+        corrupt_client.corrupt_put.add(key)
+        self.assert_code("remote_corrupt", archive.upload_source_chunk, corrupt_client, *arguments[1:])
+        self.assertEqual(budget.used, 0)
+        with patch.object(archive, "stable_reader", side_effect=OSError("Test source read failure")):
+            with self.assertRaises(OSError):
+                archive.upload_source_chunk(*arguments)
+        self.assertEqual(budget.used, 0)
+        self.assertTrue(archive.upload_source_chunk(*arguments))
+        self.assertEqual(budget.used, 0)
+        self.assertEqual(budget.peak, 3)
+
+    def test_insufficient_or_invalid_buffer_budget_fails_before_remote_operations(self):
+        self.plan({"a.png": b"abc"})
+        self.assert_code("buffer_budget_too_small", archive.upload_snapshot, self.client, self.bucket,
+                         self.manifest_path, payload_buffer_bytes=2)
+        self.assertFalse(self.client.gets)
+        self.assertFalse(self.client.puts)
+        for limit in (0, -1, 513 * 1024 * 1024, True):
+            self.assert_code("invalid_buffer_budget", archive.PayloadBudget, limit)
+        with patch.object(archive, "make_client") as client, redirect_stdout(io.StringIO()) as output:
+            code = archive.main(["upload", "--bucket", self.bucket, "--env-file", "do-not-open",
+                                 "--manifest", str(archive.DEFAULT_STATE / "manifest.json"), "--buffer-mib", "513"])
+        self.assertEqual(code, 1)
+        self.assertEqual(json.loads(output.getvalue())["error"]["code"], "invalid_buffer_budget")
+        client.assert_not_called()
+
+
+def cancellation_probe(root):
+    """SIGINT only this isolated test child; never signal the live uploader."""
+    source = root / "cancel-probe-source"
+    source.mkdir()
+    for index in range(128):
+        (source / f"{index:03d}.bin").write_bytes(index.to_bytes(4, "big"))
+    planned = archive.inventory({"schema": 1, "sources": [{"id": "probe", "path": str(source)}]},
+                                root / "cancel-probe-state", chunk_bytes=4)
+    manifest_path = Path(planned["manifest"])
+    client, budget = FakeS3(), archive.PayloadBudget(4)
+    active, waiting, cancel_seen, release = (threading.Event() for _ in range(4))
+    original_put, original_reserve, original_cancel = client.put_object, budget.reserve, budget.cancel
+    attempts, started, mutex = [], [], threading.Lock()
+
+    @contextmanager
+    def tracked_reserve(amount):
+        with mutex:
+            attempts.append(amount)
+            if len(attempts) >= 4:
+                waiting.set()
+        with original_reserve(amount):
+            yield
+
+    def cancel():
+        original_cancel()
+        cancel_seen.set()
+
+    def held_put(**kwargs):
+        if kwargs["Key"].startswith("objects/"):
+            started.append(kwargs["Key"])
+            active.set()
+            if not release.wait(5):
+                raise RuntimeError("Test release deadline exceeded")
+        return original_put(**kwargs)
+
+    def interrupt():
+        try:
+            if active.wait(3) and waiting.wait(3):
+                os.kill(os.getpid(), signal.SIGINT)
+                cancel_seen.wait(3)
+        finally:
+            release.set()
+
+    thread = threading.Thread(target=interrupt, daemon=True)
+    captured = io.StringIO()
+    with patch.object(archive, "PayloadBudget", return_value=budget), \
+            patch.object(budget, "reserve", tracked_reserve), patch.object(budget, "cancel", cancel), \
+            patch.object(client, "put_object", held_put), patch.object(archive, "make_client", return_value=client), \
+            redirect_stdout(captured):
+        thread.start()
+        code = archive.main(["upload", "--manifest", str(manifest_path), "--bucket", "hiraia-archive",
+                             "--env-file", "unused-fake-env", "--workers", "32"])
+        thread.join(5)
+    records = [json.loads(line) for line in (manifest_path.parent / "journal.jsonl").read_text().splitlines()]
+    result = {"exit_code": code, "cli_status": json.loads(captured.getvalue())["status"],
+              "cancel_seen": cancel_seen.is_set(), "reservation_attempts": len(attempts),
+              "uploads_started_before_resume": len(started),
+              "verified_before_resume": sum(row["event"] == "object_verified" for row in records),
+              "budget_used_after_interrupt": budget.used,
+              "remote_snapshot_before_resume": any(key.startswith("snapshots/") for key in client.objects),
+              "local_receipt_before_resume": (manifest_path.parent / "receipt.json").exists()}
+    # Kernel lock release and a fresh budget allow an ordinary verified resume.
+    with archive.snapshot_lock(manifest_path.parent):
+        pass
+    result["resume_status"] = archive.upload_snapshot(client, "hiraia-archive", manifest_path, workers=32)["status"]
+    print(json.dumps(result))
 
 
 if __name__ == "__main__":
-    unittest.main()
+    if len(sys.argv) == 3 and sys.argv[1] == "--cancellation-probe":
+        cancellation_probe(Path(sys.argv[2]))
+    else:
+        unittest.main()

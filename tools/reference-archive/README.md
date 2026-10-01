@@ -139,11 +139,42 @@ process releases its OS lock, and an incomplete final journal line is safely dis
 All existing remote objects are downloaded and SHA-256 verified again on resume;
 a previous journal success is never accepted as proof of intact remote bytes.
 
-`--workers` accepts 1–16, default 4. The pending queue is at most twice the worker
-count. Chunks default to 64 MiB (`inventory --chunk-mib`, max 128); small images are
-single objects, while large files are split without byte changes. At 16 workers and
-64 MiB chunks, upload data buffers may approach 1 GiB plus SDK/Python overhead.
-Read-back uses streaming hashes rather than a second full chunk buffer.
+Ctrl-C stops submissions, cancels unstarted futures, and wakes/cancels workers waiting
+for payload capacity. Transfers that already hold a payload lease or are reading an
+existing object finish verification and journal their outcome before the lock is
+released. The queued inventory is not drained. Active requests can still take time
+to finish within SDK timeout/retry limits. Cancelling during content transfer never
+advances to manifest/receipt publication; the CLI returns interrupted status (130).
+An interrupt during an already-issued final metadata request can leave that remote
+request committed. Resume verifies the stored state rather than assuming the request
+failed or attempting to roll back immutable objects.
+
+`--workers` accepts 1–32, default 4; the HTTP connection pool supports 32. The pending
+queue is at most twice the worker count. It replenishes workers as transfers complete,
+so a slow earlier object cannot stall later work. This changes processing order only;
+the frozen manifest, object keys and verification requirements are unchanged.
+
+Uploads share a **512 MiB source-payload budget across all workers in that process**.
+The lease is acquired before reading a source chunk and retained through verified
+remote creation/read-back. Payload and exception-frame references are discarded
+before releasing it, including on failure. Eight full 64 MiB payloads can coexist;
+32 small images can transfer concurrently when their combined size fits. Use
+`upload --workers 32 --buffer-mib 512` explicitly to select the higher concurrency.
+`--buffer-mib` can lower the budget (1–512); it must accommodate the largest selected
+chunk or upload fails before remote operations. Progress/final JSON includes the
+buffer limit, current reservation and observed peak in bytes.
+
+Chunks default to 64 MiB (`inventory --chunk-mib`, max 128); small images are single
+objects, while large files are split without byte changes. Existing-object checks,
+read-back, independent verification and restore stream bytes. The payload budget is
+**not a total process-memory limit**: allow roughly two 1 MiB blocks per active reader
+for streaming-buffer turnover, plus SDK/TLS buffers, hashes, parsed manifest and
+serial metadata operations. Metadata is separately capped at 256 MiB. Separate
+upload processes each have their own budget; they do not share a machine-wide cap.
+
+Increasing concurrency does not guarantee a speedup. Existing processes retain their
+loaded code; changing this script does not alter them. A deliberate restart re-reads
+every existing remote object, so account for that verification cost before restarting.
 
 Every new or reused blob is fully downloaded and checked for both byte length and
 SHA-256. Upload thus includes at least one complete archive-sized read-back. Resume
@@ -238,6 +269,13 @@ mismatch, safe paths, bucket refusal and temporary credential forwarding.
 Credential-helper tests independently verify JWT scope, HMAC signature, expiry and
 secret derivation, exclusive private output, concurrent-file refusal and redacted
 success/failure output. No real parent credentials are used by the tests.
+Concurrency tests hold an early future open while later work replenishes, check the
+bounded pending queue, block simultaneous uploads to prove the shared byte limit is
+acquired before source reads, and check reservation release after source/remote failures.
+Cancellation tests cover queue shutdown, immediate wakeup of budget waiters, preservation
+of the original error, and a real SIGINT sent only to an isolated fake-storage test
+subprocess. That probe verifies exit 130, a valid journal, no partial-snapshot receipt,
+lock release, and successful subsequent resume.
 
 The implementation uses R2's documented conditional PutObject and Content-MD5 support:
 [Cloudflare S3 API compatibility](https://developers.cloudflare.com/r2/api/s3/api/).

@@ -4,9 +4,8 @@ from __future__ import annotations
 
 import argparse
 import base64
-from collections import deque
-from concurrent.futures import ThreadPoolExecutor
-from contextlib import contextmanager
+from concurrent.futures import CancelledError, ThreadPoolExecutor
+from contextlib import closing, contextmanager
 from datetime import datetime, timezone
 import fnmatch
 import hashlib
@@ -14,6 +13,7 @@ import io
 import json
 import os
 from pathlib import Path, PurePosixPath
+from queue import SimpleQueue
 import re
 import stat
 import sys
@@ -28,7 +28,8 @@ DEFAULT_STATE = REPO / "build/reference-archive"
 SCHEMA = "hiraia.reference-archive.v1"
 CHUNK_BYTES = 64 * 1024 * 1024
 READ_BYTES = 1024 * 1024
-MAX_WORKERS = 16
+MAX_WORKERS = 32
+PAYLOAD_BUFFER_BYTES = 512 * 1024 * 1024
 MAX_MANIFEST_BYTES = 256 * 1024 * 1024
 HASH_RE = re.compile(r"[0-9a-f]{64}\Z")
 ID_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,127}\Z")
@@ -454,29 +455,129 @@ def snapshot_lock(directory):
             fcntl.flock(stream, fcntl.LOCK_UN)
 
 
-def bounded_results(function, values, workers):
+def bounded_results(function, values, workers, on_cancel=None):
     if not 1 <= workers <= MAX_WORKERS:
         fail("invalid_workers", f"Workers must be between 1 and {MAX_WORKERS}")
     iterator = iter(values)
-    with ThreadPoolExecutor(max_workers=workers) as executor:
-        queue = deque()
+    executor = ThreadPoolExecutor(max_workers=workers)
+    pending, completed, stopped = set(), SimpleQueue(), threading.Event()
+
+    def run(value):
+        if stopped.is_set():
+            raise CancelledError()
+        return function(value)
+
+    def submit_next():
+        if stopped.is_set():
+            return
+        try:
+            value = next(iterator)
+        except StopIteration:
+            return
+        future = executor.submit(run, value)
+        pending.add(future)
+        future.add_done_callback(completed.put)
+
+    try:
         for _ in range(workers * 2):
-            try:
-                queue.append(executor.submit(function, next(iterator)))
-            except StopIteration:
-                break
-        while queue:
-            yield queue.popleft().result()
-            try:
-                queue.append(executor.submit(function, next(iterator)))
-            except StopIteration:
-                pass
+            submit_next()
+        while pending:
+            future = completed.get()
+            pending.remove(future)
+            result = future.result()
+            yield result
+            # Refill in completion order, after the caller has handled this result.
+            # A cancellation in that handler must not submit more work.
+            submit_next()
+    except BaseException:
+        stopped.set()
+        try:
+            if on_cancel is not None:
+                on_cancel()
+        finally:
+            # Unstarted tasks must never drain after Ctrl-C. Workers already inside
+            # a verified transfer finish; guards and budget cancellation stop others.
+            executor.shutdown(wait=True, cancel_futures=True)
+        raise
+    else:
+        executor.shutdown(wait=True)
 
 
-def upload_snapshot(client, bucket, manifest_path, workers=4, progress=None):
+class PayloadBudget:
+    """Cap retained source-chunk payloads across every worker in one upload process."""
+    def __init__(self, capacity=PAYLOAD_BUFFER_BYTES):
+        if type(capacity) is not int or not 1 <= capacity <= PAYLOAD_BUFFER_BYTES:
+            fail("invalid_buffer_budget", "Payload buffer budget must be positive and no more than 512 MiB")
+        self.capacity, self.used, self.peak = capacity, 0, 0
+        self.cancelled = False
+        self.condition = threading.Condition()
+
+    @contextmanager
+    def reserve(self, amount):
+        if type(amount) is not int or not 0 <= amount <= self.capacity:
+            fail("buffer_budget_too_small", "Payload budget cannot hold one selected chunk; increase the budget")
+        with self.condition:
+            self.condition.wait_for(lambda: self.cancelled or self.used + amount <= self.capacity)
+            if self.cancelled:
+                raise CancelledError()
+            self.used += amount
+            self.peak = max(self.peak, self.used)
+        try:
+            yield
+        finally:
+            with self.condition:
+                self.used -= amount
+                self.condition.notify_all()
+
+    def cancel(self):
+        with self.condition:
+            self.cancelled = True
+            self.condition.notify_all()
+
+    def check_cancelled(self):
+        with self.condition:
+            if self.cancelled:
+                raise CancelledError()
+
+    def stats(self):
+        with self.condition:
+            return {"payload_buffer_limit_bytes": self.capacity,
+                    "payload_buffer_used_bytes": self.used,
+                    "payload_buffer_peak_bytes": self.peak}
+
+
+def upload_source_chunk(client, bucket, key, path, expected_stat, chunk, budget):
+    """Retain the lease through read-back; drop payload/traceback references before release."""
+    caught, created = None, False
+    with budget.reserve(chunk["bytes"]):
+        value = None
+        try:
+            with stable_reader(path, expected_stat) as stream:
+                stream.seek(chunk["offset"])
+                value = stream.read(chunk["bytes"])
+            if len(value) != chunk["bytes"] or sha(value) != chunk["sha256"]:
+                fail("source_changed", "Source bytes differ from the frozen inventory", path=str(path))
+            created = verified_create(client, bucket, key, value, "application/octet-stream", known_absent=True)
+        except BaseException as error:
+            # Failed SDK/verification frames can otherwise retain the full payload
+            # after its lease is released. Preserve the error without those frames.
+            error.__traceback__ = error.__context__ = error.__cause__ = None
+            caught = error
+        finally:
+            value = None
+    if caught is not None:
+        raise caught from None
+    return created
+
+
+def upload_snapshot(client, bucket, manifest_path, workers=4, progress=None,
+                    payload_buffer_bytes=PAYLOAD_BUFFER_BYTES):
     validate_bucket(bucket)
     manifest_path = Path(manifest_path)
     manifest, data = load_manifest(manifest_path)
+    budget = PayloadBudget(payload_buffer_bytes)
+    if any(chunk["bytes"] > budget.capacity for item in manifest["files"] for chunk in item["chunks"]):
+        fail("buffer_budget_too_small", "Payload budget cannot hold one selected chunk; increase the budget")
     directory, snapshot_id = manifest_path.parent, manifest["snapshot_id"]
     with snapshot_lock(directory):
         journal = Journal(directory)
@@ -491,6 +592,7 @@ def upload_snapshot(client, bucket, manifest_path, workers=4, progress=None):
                 objects.setdefault(chunk["sha256"], (item, chunk))
 
         def transfer(pair):
+            budget.check_cancelled()
             item, chunk = pair
             digest, key = chunk["sha256"], object_key(chunk["sha256"])
             try:
@@ -500,12 +602,7 @@ def upload_snapshot(client, bucket, manifest_path, workers=4, progress=None):
                     consume(response, digest, chunk["bytes"], limit=chunk["bytes"])
                 else:
                     path = source_path(manifest, item)
-                    with stable_reader(path, item["stat"]) as stream:
-                        stream.seek(chunk["offset"])
-                        value = stream.read(chunk["bytes"])
-                    if len(value) != chunk["bytes"] or sha(value) != digest:
-                        fail("source_changed", "Source bytes differ from the frozen inventory", path=str(path))
-                    created = verified_create(client, bucket, key, value, "application/octet-stream", known_absent=True)
+                    created = upload_source_chunk(client, bucket, key, path, item["stat"], chunk, budget)
                 journal.append("object_verified", sha256=digest, bytes=chunk["bytes"], created=created)
                 return {"ok": True, "created": created, "bytes": chunk["bytes"]}
             except ArchiveError as error:
@@ -514,22 +611,24 @@ def upload_snapshot(client, bucket, manifest_path, workers=4, progress=None):
 
         completed = created = verified_bytes = error_count = 0
         errors = []
-        for result in bounded_results(transfer, objects.values(), workers):
-            if result["ok"]:
-                completed += 1
-                created += int(result["created"])
-                verified_bytes += result["bytes"]
-            else:
-                error_count += 1
-                if len(errors) < 50:
-                    errors.append(result["error"])
-            if progress and (completed + error_count) % 100 == 0:
-                progress({"status": "uploading", "snapshot_id": snapshot_id, "verified_objects": completed,
-                          "objects": len(objects), "verified_bytes": verified_bytes, "error_count": error_count})
+        with closing(bounded_results(transfer, objects.values(), workers, on_cancel=budget.cancel)) as transfers:
+            for result in transfers:
+                if result["ok"]:
+                    completed += 1
+                    created += int(result["created"])
+                    verified_bytes += result["bytes"]
+                else:
+                    error_count += 1
+                    if len(errors) < 50:
+                        errors.append(result["error"])
+                if progress and (completed + error_count) % 100 == 0:
+                    progress({"status": "uploading", "snapshot_id": snapshot_id, "verified_objects": completed,
+                              "objects": len(objects), "verified_bytes": verified_bytes, "error_count": error_count,
+                              **budget.stats()})
         summary = {"snapshot_id": snapshot_id, "bucket": bucket, "totals": manifest["totals"],
                    "verified_objects": completed, "uploaded_objects": created,
                    "reused_objects": completed - created, "verified_bytes": verified_bytes,
-                   "error_count": error_count, "errors": errors}
+                   "error_count": error_count, "errors": errors, **budget.stats()}
         if error_count:
             return {"status": "incomplete", **summary}
         for item in manifest["files"]:
@@ -752,9 +851,11 @@ def main(argv=None):
         command = commands.add_parser(name)
         command.add_argument("--env-file", required=True, type=Path)
         command.add_argument("--bucket", required=True, help="Previously verified private bucket; no public default")
-        command.add_argument("--workers", type=int, default=4, help="Concurrent transfers, 1–16 (default: 4)")
+        command.add_argument("--workers", type=int, default=4, help="Concurrent transfers, 1–32 (default: 4)")
         if name == "upload":
             command.add_argument("--manifest", required=True, type=Path)
+            command.add_argument("--buffer-mib", type=int, default=512,
+                                 help="Aggregate source payload budget, 1–512 MiB (default: 512); streaming/SDK overhead is separate")
         else:
             command.add_argument("--snapshot", required=True)
             command.add_argument("--receipt-sha256", help="Optional trusted hash from the original commit receipt")
@@ -777,10 +878,13 @@ def main(argv=None):
                 fail("invalid_workers", f"Workers must be between 1 and {MAX_WORKERS}")
             if args.command == "upload":
                 operational_path(args.manifest.parent)
+                if not 1 <= args.buffer_mib <= 512:
+                    fail("invalid_buffer_budget", "Payload buffer budget must be between 1 and 512 MiB")
             client = make_client(args.env_file)
             if args.command == "upload":
                 result = upload_snapshot(client, args.bucket, args.manifest, args.workers,
-                                         progress=lambda row: print(json.dumps(row), file=sys.stderr, flush=True))
+                                         progress=lambda row: print(json.dumps(row), file=sys.stderr, flush=True),
+                                         payload_buffer_bytes=args.buffer_mib * 1024 * 1024)
             elif args.command == "verify":
                 result = verify_snapshot(client, args.bucket, args.snapshot, args.workers, args.receipt_sha256)
             else:
