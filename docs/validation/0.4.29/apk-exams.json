@@ -1,0 +1,38 @@
+{
+  "android": {
+    "at": "2026-10-01T14:43:08.654356+08:00",
+    "check": "signed carousel validation complete",
+    "status": "PASS",
+    "edition": "android",
+    "version": "0.4.29",
+    "questions": 12,
+    "score": 8,
+    "carousel": false,
+    "resumed": true,
+    "history": true,
+    "outOfOrder": true,
+    "largeText": true
+  },
+  "chromeos": {
+    "at": "2026-10-01T14:29:08.246706+08:00",
+    "check": "signed carousel validation complete",
+    "status": "PASS",
+    "edition": "chromeos",
+    "version": "0.4.29",
+    "questions": 12,
+    "score": 8,
+    "carousel": true,
+    "resumed": true,
+    "history": true,
+    "outOfOrder": true,
+    "largeText": true
+  },
+  "sourceCommit": "2b136d65b0011fef1291126985ba19d607184254",
+  "environment": "Dedicated Android API 34 ARM64 emulator, portrait 720x1600 and landscape 1366x768",
+  "limitation": "ChromeOS package verified in a large-screen Android emulator; physical ChromeOS ARC validation remains pending.",
+  "driverCorrections": [
+    "Dismiss the Android fullscreen tutorial before examining the app accessibility tree.",
+    "Give each read-only database snapshot its own directory so repeated runs cannot mix old synthetic profiles.",
+    "Scroll partially clipped cards toward the visible area before tapping their choices."
+  ]
+}

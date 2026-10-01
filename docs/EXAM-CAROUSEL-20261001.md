@@ -47,4 +47,6 @@ Controls accept the captured short/long answers and reject four-only, exactly-90
 wrong-planet, negated-count and name-only answers. No model, prompt, temperature,
 sample count or curriculum content changed. The full gate remains required for release.
 
-Final native and published-artifact evidence belongs in `RELEASE-0.4.29.md`.
+The full gate passed 45/45 cases and 185 samples on the final app source. The packaged
+Windows executable and both signed APK exam flows passed. Final native and published
+artifact evidence is recorded in [the 0.4.29 release](RELEASE-0.4.29.md).

@@ -76,9 +76,9 @@ export const DOWNLOAD_PLATFORMS: DownloadPlatform[] = [
       'Tala classroom sync is not available in this preview'],
     downloadNote: 'Extract the ZIP, then open Hiraia.exe. This preview is unsigned, so Windows may show a SmartScreen warning.',
     installNote: 'Extract the whole ZIP to a folder before opening Hiraia.exe. To update, download and extract the newer version. Your profiles, progress, and downloaded content are stored separately and stay on your computer. Windows ARM is not supported.',
-    screenshot: { src: '/screens/download-windows-exam.png', width: 1008, height: 689,
-      alt: 'Hiraia’s 12-question exam running on Windows, showing the question counter, progress bar, and three answer choices.',
-      caption: 'The 12-question exam, available in every edition. Captured from the Windows preview; Windows 10 device testing is still pending.' },
+    screenshot: { src: '/screens/download-windows-exam-carousel.png', width: 1350, height: 811,
+      alt: 'Hiraia’s 12-question exam on Windows, showing three full question cards and part of a fourth in a horizontal carousel.',
+      caption: 'Browse all 12 questions and answer in any order. Available in every edition; captured from the Windows preview. Windows 10 device testing is still pending.' },
   },
 ];
 
