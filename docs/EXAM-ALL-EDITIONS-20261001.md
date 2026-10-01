@@ -28,3 +28,14 @@ deduplication and direct/Tala replay; the standalone collector already supports
 assessment summaries. The release pipeline repeats the model gate, verifies the
 compiled question bank, and requires packaged Windows exam evidence before accepting
 the combined three-edition artifact manifest.
+
+The first CI model run stopped at 44/45: the smoking-harm assertion rejected one
+sample. A focused 40-draw diagnostic reproduced the rejection on sample 21:
+“Oo, masama ang paninigarilyo. Sinisira nito ang malusog na baga at nagpapahina ng
+paghinga.” The existing pattern missed `sinisira`, while the earlier `masama` was
+more than 40 characters from `baga`. `Sinisira` is attested in 61 fact-bank bodies
+with English damage/destroy meanings. The assertion now accepts this observed form
+and rejects negated harm; recorded-answer and negative-control tests run before the
+model. Every release retains all model draws in `regression.json`, and failed cases
+print every draw instead of showing only the first. The model, prompts, sample count,
+temperature and requirement that every draw pass are unchanged.

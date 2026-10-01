@@ -87,6 +87,8 @@ echo ">> model:   $MODEL"
 # caught and downgraded to a warning — a green gate would ship an APK that had silently fallen
 # back to lexical-only retrieval. --check proves ordinal alignment, row content, the inverted
 # index, and both hashes.
+echo ">> checking case assertions against recorded answers and negative controls ..."
+"$ROOT/node_modules/.bin/tsx" --test "$HERE/case-assertions.test.mts" || exit 1
 echo ">> checking fact bank <-> cards.db <-> vectors blob ..."
 python3 "$ROOT/rag/pipeline/build-facts-db.py" --check || {
   echo "ERR: cards.db / vectors blob disagree with the fact bank — gate FAILS."

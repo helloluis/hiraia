@@ -53,7 +53,8 @@ def build(directory, env):
     initial = source_digest()
     run(['pnpm', 'qa:exam'], directory / 'exam-tests.log', env)
     run(['python3', 'scripts/build-assessment-bank.py', '--check'], directory / 'exam-bank.log', env)
-    run(['bash', str(ROOT / 'finetuning/eval/harness/run-harness.sh')], directory / 'regression.log', env, ROOT)
+    run(['bash', str(ROOT / 'finetuning/eval/harness/run-harness.sh')], directory / 'regression.log',
+        {**env, 'JSON_OUT': str(directory / 'regression.json')}, ROOT)
     try:
         run(['node', '-e', "require('./scripts/qvac-android-x64.cjs').verifiedPort()"], directory / 'qvac-check.log', env)
     except RuntimeError:

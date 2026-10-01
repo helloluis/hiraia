@@ -294,7 +294,10 @@
    "query": "masama po ba ang manigarilyo?",
    "_was_pending": "Deflected ('tanungin ang doktor') — no smoking-harm fact retrieved. BLOCKING now; the universal no-deflection rule covers the punt, this asserts the substance.",
    "mustContain": [
-    "(oo|masama|nakakasama|delikado|nakakasira).{0,40}(baga|kalusugan|lung|katawan)"
+    "(oo|masama|nakakasama|delikado|nakakasira|sinisira).{0,40}(baga|kalusugan|lung|katawan)"
+   ],
+   "mustNotContain": [
+    "\\bhindi\\b[^.!?]{0,25}\\b(masama|nakakasama|delikado|nakakasira|sinisira)\\b"
    ]
   },
   {

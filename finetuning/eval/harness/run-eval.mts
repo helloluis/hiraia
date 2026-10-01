@@ -454,6 +454,9 @@ for (const c of cases) {
     console.log(`   C: ${shown}${spread}`);
   }
   fails.forEach((f) => console.log(`   ↳ ${f}`));
+  // The first sample can pass while a later one fails. Retain every printed draw
+  // so a red release gate can be diagnosed without rerunning away the evidence.
+  if (!ok) cards.forEach((card, index) => console.log(`   draw ${index + 1}: ${JSON.stringify(card)}`));
 }
 
 // ---------------------------------------------------------------------------------------
