@@ -1,0 +1,59 @@
+{
+  "observed_date_local": "2026-10-01",
+  "timezone": "Asia/Manila",
+  "observations": [
+    {
+      "source": "MINEDU EIB materials landing page",
+      "url": "https://www.gob.pe/39449-educacion-intercultural-bilingue-eib-materiales-educativos-en-educacion-intercultural-bilingue",
+      "status": "retrieved",
+      "detail": "Public page links to 2024, 2025 and 2026 PeruEduca allocations."
+    },
+    {
+      "source": "PeruEduca current 2026 EIB catalogue",
+      "url": "https://www.perueduca.pe/#/home/materiales-educativos/intercultural-bilingue/dotacion-2026-intercultural-bilingue",
+      "status": "page_retrieved_no_items_loaded",
+      "detail": "Unauthenticated browser rendered catalogue shell with no materials. Sampled API requests returned HTTP 401; no authentication was attempted."
+    },
+    {
+      "source": "MINEDU SIFODS archive",
+      "url": "https://formacionenservicio.minedu.gob.pe/sifods/centro-recurso/2022/Material-educativo/",
+      "status": "http_403",
+      "detail": "Search-index catalogue was available; direct HTTP retrieval was forbidden. Do not interpret this as proof the books do not exist."
+    },
+    {
+      "source": "MINEDU institutional repository",
+      "url": "https://repositorio.minedu.gob.pe/handle/20.500.12799/8198",
+      "status": "security_verification_html",
+      "detail": "Sampled record and PDF URLs returned Check Point security HTML rather than the requested content."
+    },
+    {
+      "source": "PeruEduca 2022 direct PDFs",
+      "url": "https://repositorio.perueduca.pe/recursos/2022/DEIB22-0191.pdf",
+      "status": "security_verification_html",
+      "detail": "HTTP response had 15,323 bytes and text/html; rejected as a PDF."
+    },
+    {
+      "source": "PeruEduca legacy Inkawasi workbook",
+      "url": "https://www.perueduca.pe/recursosedu/EIB/cuadernos_de_trabajo/quechua_inkawasi_canaris/ps_inkawasi1.pdf",
+      "status": "http_403",
+      "detail": "Published link found via Tu Amawta; no valid PDF retrieved."
+    },
+    {
+      "source": "UGEL Acomayo-attributed education blog",
+      "url": "https://ugelacomayoprimaria.blogspot.com/2023/03/cuadernos-de-trabajo-eib-general-por.html",
+      "status": "retrieved",
+      "detail": "Parsed 150 Quechua-related rows with official PeruEduca file URLs. Blog attribution is not independent verification of government ownership. Links not individually tested are labelled not_attempted."
+    },
+    {
+      "source": "Independent public mirror catalogue",
+      "url": "https://peru.librosminedu.com/colecciones/educacion-intercultural-bilingue/quechua/",
+      "status": "retrieved",
+      "detail": "Seven index pages; 377 entries, including one excluded Shawi misclassification. Remaining 376 entries resolve to 628 public Google Drive PDF links. Publisher and content are checked from PDFs separately from mirror metadata."
+    },
+    {
+      "source": "All missing 2022 science-series official links",
+      "status": "18_of_18_returned_security_verification_html",
+      "detail": "Individually checked Central, Chanka and Inkawasi-Kanaris Grades 1-6. Per-file status and UTC check time are retained in official-url-leads-2022.json."
+    }
+  ]
+}

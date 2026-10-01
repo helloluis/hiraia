@@ -16,6 +16,13 @@ sources/curriculum-guides/*
 !README.md
 !scripts/
 !*.json
+# Peru's reviewed curriculum metadata/tooling; PDFs, caches and scratch stay ignored.
+!sources/curriculum-guides/peru/
+sources/curriculum-guides/peru/*
+!sources/curriculum-guides/peru/cneb-primary-science.json
+!sources/curriculum-guides/peru/reuse-candidates.json
+!sources/curriculum-guides/peru/extract_source.py
+!sources/curriculum-guides/peru/validate.py
 # ...but `!*.json` above is broad enough to un-ignore the root .gitignore's large regenerable
 # JSON intermediates, and this file is the deeper one, so it wins. Re-ignore them here.
 pipeline/cardsPool.deped*.json

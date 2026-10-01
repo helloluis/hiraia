@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "pnpm competencies:check && next build",
+    "competencies:generate": "node scripts/build-competencies.mjs",
+    "competencies:check": "node scripts/build-competencies.mjs --check",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",

@@ -1,0 +1,2278 @@
+{
+  "schema": "hiraia.country-reuse-candidates/v1",
+  "version": 1,
+  "created_date": "2026-10-01",
+  "target_map_id": "PE-CNEB-2017-primary-science",
+  "status": "preliminary_editorial_crosswalk; no_Peru_coverage_claim",
+  "method": "Read the Spanish MINEDU performance statements against the repository’s PH competency wording and lesson authoring units. References are explicit editorial matches, not keyword or embedding scores. Individual cards, quizzes, practical tasks, age appropriateness and local examples have not been audited for Peru.",
+  "limits": [
+    "A common topic is not an equivalent learning demand.",
+    "A lesson authoring unit is not evidence that every card in its generated pool is suitable.",
+    "The numbered PH codes are the repository’s existing baseline identifiers. No claim is made here about official DepEd code assignment.",
+    "No automatic grade-number mapping or quarter mapping is permitted."
+  ],
+  "baseline_files": [
+    {
+      "path": "rag/pipeline/grade10-lessons.authoring.json",
+      "sha256": "44c498f57de7eccf06ce9f3ef99929de4dd91dcda4475e9a5b7276959b74f325"
+    },
+    {
+      "path": "rag/pipeline/grade3-lessons.authoring.json",
+      "sha256": "96c3431bac9bd34342b420e859552acf26c219c8d5698723c0b4bc7ad9fce346"
+    },
+    {
+      "path": "rag/pipeline/grade4-lessons.authoring.json",
+      "sha256": "aa76e9a011eed5134affb3ab4dbe71928fafa335de233cd1c2cdb7e088a78f49"
+    },
+    {
+      "path": "rag/pipeline/grade5-lessons.authoring.json",
+      "sha256": "b97a6ce84d92f399646bb98673ce49d2b753432cff6ca3ca683a862b1be76851"
+    },
+    {
+      "path": "rag/pipeline/grade6-lessons.authoring.json",
+      "sha256": "1969f03fff1d18c687ddca0b7c8ebe120306bb57506d393b1c5cf1ac3ca85f1e"
+    },
+    {
+      "path": "rag/pipeline/grade7-lessons.authoring.json",
+      "sha256": "0ffd3bc96b54f243bc450e0163a4d54b5ef0f87cce35fde777a35b46ab0cb9aa"
+    },
+    {
+      "path": "rag/pipeline/grade8-lessons.authoring.json",
+      "sha256": "349b143c44b95d0bd48e6fe902cf529b873d6403b0a5f6826b6b616e16098dd5"
+    },
+    {
+      "path": "rag/pipeline/grade9-lessons.authoring.json",
+      "sha256": "b3a7ebe9c1816133a6bb122d5aba5a66e1b9d168f34d117640db07477a9cdaf1"
+    },
+    {
+      "path": "rag/sources/curriculum-guides/matatag-elementary-competencies.json",
+      "sha256": "60cf4299b9bf5346139e7ff136e7e857da1c63a6bb7373b9f02c006193a55393"
+    },
+    {
+      "path": "rag/sources/curriculum-guides/matatag-jhs-competencies.json",
+      "sha256": "e844ed75a019d56daff3877c937c46ba5038f3c58912ecd0550385dbbb44fa5c"
+    }
+  ],
+  "candidates": [
+    {
+      "id": "PE-PH-REUSE-001",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G1-01",
+        "PE-CNEB-2017-CYT-EXP-G1-05"
+      ],
+      "peru_grades": [
+        1
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g3:signs-of-life",
+          "grade": 3,
+          "title_en": "Signs of Life",
+          "authoring_file": "rag/pipeline/grade3-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G3-L-3",
+              "statement_en": "describe the characteristics of living things: they grow, respond, and reproduce",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G3-L-3:grow",
+            "G3-L-3:respond",
+            "G3-L-3:reproduce"
+          ]
+        },
+        {
+          "lesson_key": "g3:basic-needs",
+          "grade": 3,
+          "title_en": "What Living Things Need",
+          "authoring_file": "rag/pipeline/grade3-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G3-L-6",
+              "statement_en": "identify the basic needs of all living things, such as air, food, water, and shelter",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G3-L-6:air",
+            "G3-L-6:food",
+            "G3-L-6:water",
+            "G3-L-6:shelter"
+          ]
+        },
+        {
+          "lesson_key": "g4:water-for-life",
+          "grade": 4,
+          "title_en": "Water for Living Things",
+          "authoring_file": "rag/pipeline/grade4-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G4-E-2",
+              "statement_en": "recognize that water is one of the basic needs of plants and animals",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G4-E-2:plants",
+            "G4-E-2:animals"
+          ]
+        }
+      ],
+      "rationale": "The PH targets describe living things and their basic needs; these can supply science explanations for the corresponding early primary Peru targets.",
+      "required_work": "Rebuild for emergent readers and local organisms; justify the roles of air, water and soil rather than only recall a list.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-002",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G1-02",
+        "PE-CNEB-2017-CYT-EXP-G4-05"
+      ],
+      "peru_grades": [
+        1,
+        4
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g4:energy",
+          "grade": 4,
+          "title_en": "Energy Causes Change",
+          "authoring_file": "rag/pipeline/grade4-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G4-F-9",
+              "statement_en": "identify that energy is something that can cause change including light, sound, and heat energy",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G4-F-9:change",
+            "G4-F-9:forms"
+          ]
+        },
+        {
+          "lesson_key": "g4:energy-uses",
+          "grade": 4,
+          "title_en": "Energy in Our Community",
+          "authoring_file": "rag/pipeline/grade4-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G4-F-10",
+              "statement_en": "observe and identify sources and uses of light, sound, and heat energy at school, at home and in the local community",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G4-F-10:light",
+            "G4-F-10:sound",
+            "G4-F-10:heat"
+          ]
+        }
+      ],
+      "rationale": "Energy causing change and local uses are explicit PH targets.",
+      "required_work": "Separate Grade 1 daily observations from Grade 4 explanations; replace household examples as needed.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-003",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G1-03",
+        "PE-CNEB-2017-CYT-EXP-G3-03"
+      ],
+      "peru_grades": [
+        1,
+        3
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g3:solid-properties",
+          "grade": 3,
+          "title_en": "Properties of Solids",
+          "authoring_file": "rag/pipeline/grade3-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G3-M-5",
+              "statement_en": "describe the physical properties of solid materials, such as hard, shiny, or stretchable",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G3-M-5:hardness",
+            "G3-M-5:shine",
+            "G3-M-5:stretch"
+          ]
+        }
+      ],
+      "rationale": "The PH competency explicitly describes physical properties of solids.",
+      "required_work": "Add the required classification activity and broader locally available materials; verify age and terminology.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-004",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G1-04",
+        "PE-CNEB-2017-CYT-EXP-G2-08"
+      ],
+      "peru_grades": [
+        1,
+        2
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g4:soil",
+          "grade": 4,
+          "title_en": "Compare Soils",
+          "authoring_file": "rag/pipeline/grade4-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G4-E-1",
+              "statement_en": "participate in guided activities using simple equipment to compare different types of soil including sandy, clay, silt, and loam, including comparing the ability of the soils to hold water",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G4-E-1:sand",
+            "G4-E-1:clay",
+            "G4-E-1:silt",
+            "G4-E-1:loam",
+            "G4-E-1:water-retention",
+            "G4-E-1:investigation"
+          ]
+        },
+        {
+          "lesson_key": "g4:soil-and-growth",
+          "grade": 4,
+          "title_en": "Soil and Plant Growth",
+          "authoring_file": "rag/pipeline/grade4-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G4-E-3",
+              "statement_en": "participate in a guided investigation to identify the effect of different types of soil on the growth of plants",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G4-E-3:investigation",
+            "G4-E-3:fair-comparison"
+          ]
+        }
+      ],
+      "rationale": "PH soil comparison and plant-growth investigation give related explanations and observations.",
+      "required_work": "Adapt to Grades 1–2 and ensure living soil components, nutrients and substrate roles are taught explicitly.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-005",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G1-06",
+        "PE-CNEB-2017-CYT-EXP-G3-05"
+      ],
+      "peru_grades": [
+        1,
+        3
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g3:weather",
+          "grade": 3,
+          "title_en": "Watch the Weather",
+          "authoring_file": "rag/pipeline/grade3-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G3-E-4",
+              "statement_en": "observe and record changes in the weather during a day or over some days and describe the different types and patterns of weather in the local area",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            },
+            {
+              "code": "G3-E-5",
+              "statement_en": "describe how changes in the weather can affect daily activities and explain how some types of weather can be dangerous for people",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G3-E-4:record",
+            "G3-E-4:patterns",
+            "G3-E-5:activities",
+            "G3-E-5:danger"
+          ]
+        },
+        {
+          "lesson_key": "g6:philippine-seasons",
+          "grade": 6,
+          "title_en": "Seasons Where We Live",
+          "authoring_file": "rag/pipeline/grade6-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G6-E-6",
+              "statement_en": "describe the different seasons in the Philippines and suggest activities that are appropriate for each season",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G6-E-6:wet-dry",
+            "G6-E-6:activities",
+            "G6-E-6:regional"
+          ]
+        }
+      ],
+      "rationale": "PH targets observe weather and compare seasonal patterns.",
+      "required_work": "Replace Philippine seasons with local Peruvian observations; distinguish weather from climate and include living-organism responses.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-006",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G1-07",
+        "PE-CNEB-2017-CYT-EXP-G2-09",
+        "PE-CNEB-2017-CYT-EXP-G4-09"
+      ],
+      "peru_grades": [
+        1,
+        2,
+        4
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g4:local-inventions",
+          "grade": 4,
+          "title_en": "Inventions in Daily Life",
+          "authoring_file": "rag/pipeline/grade4-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G4-M-2",
+              "statement_en": "use information from the home or the local community to identify a science invention and explain its impact on their everyday life",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G4-M-2:uses",
+            "G4-M-2:community"
+          ]
+        }
+      ],
+      "rationale": "The PH target asks learners to identify inventions and explain impacts on daily life.",
+      "required_work": "Author local technology cases and arguments about need, product transformation, users and impacts; Grade 1 reading level is a separate design.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-007",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G2-01"
+      ],
+      "peru_grades": [
+        2
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g3:animal-parts",
+          "grade": 3,
+          "title_en": "Animal Parts and Their Jobs",
+          "authoring_file": "rag/pipeline/grade3-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G3-L-4",
+              "statement_en": "observe and describe the outer body parts of animals, such as head, legs or wings, and identify their role to move and to gather food",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G3-L-4:legs",
+            "G3-L-4:wings",
+            "G3-L-4:feeding",
+            "G3-L-4:other-movement"
+          ]
+        },
+        {
+          "lesson_key": "g3:plant-parts",
+          "grade": 3,
+          "title_en": "Plant Parts and Their Jobs",
+          "authoring_file": "rag/pipeline/grade3-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G3-L-5",
+              "statement_en": "observe the outer parts of plants, such as leaves, roots, and stems and identify their role to get water and nutrients from the soil",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G3-L-5:roots",
+            "G3-L-5:stems",
+            "G3-L-5:leaves"
+          ]
+        }
+      ],
+      "rationale": "Both PH targets explicitly connect external parts with their functions.",
+      "required_work": "Simplify to Grade 2, check local species, and design observation or model evidence.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-008",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G2-02"
+      ],
+      "peru_grades": [
+        2
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g4:life-cycles",
+          "grade": 4,
+          "title_en": "Compare Life Cycles",
+          "authoring_file": "rag/pipeline/grade4-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G4-L-5",
+              "statement_en": "use flow charts to compare the different stages in the life cycle of animals, such as a butterfly, frog, chicken, and human",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G4-L-5:butterfly",
+            "G4-L-5:frog",
+            "G4-L-5:chicken",
+            "G4-L-5:human",
+            "G4-L-5:flow-chart"
+          ]
+        }
+      ],
+      "rationale": "PH life-cycle comparison supplies related developmental material.",
+      "required_work": "The Peru target specifically compares external parent–offspring similarities during development; add this evidence, not just a life-cycle diagram.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-009",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G2-03",
+        "PE-CNEB-2017-CYT-EXP-G4-03"
+      ],
+      "peru_grades": [
+        2,
+        4
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g5:heat-and-state",
+          "grade": 5,
+          "title_en": "Heat and changes of state",
+          "authoring_file": "rag/pipeline/grade5-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G5-M-6",
+              "statement_en": "describe how changes in temperature cause matter to change in state, such as solid to liquid to gas",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G5-M-6:melting",
+            "G5-M-6:freezing",
+            "G5-M-6:evaporation",
+            "G5-M-6:condensation"
+          ]
+        },
+        {
+          "lesson_key": "g6:physical-chemical",
+          "grade": 6,
+          "title_en": "Physical and Chemical Changes",
+          "authoring_file": "rag/pipeline/grade6-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G6-M-3",
+              "statement_en": "explain why physical changes are reversible, and chemical changes are irreversible",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G6-M-3:identity",
+            "G6-M-3:new-substance",
+            "G6-M-3:reversing",
+            "G6-M-3:reversibility-caveat"
+          ]
+        }
+      ],
+      "rationale": "PH heat-driven state changes and physical/chemical changes supply related content.",
+      "required_work": "Re-sequence for Peru Grades 2/4, include light where relevant, distinguish melting from dissolving, and assess reversibility.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-010",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G2-04"
+      ],
+      "peru_grades": [
+        2
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g3:solid-properties",
+          "grade": 3,
+          "title_en": "Properties of Solids",
+          "authoring_file": "rag/pipeline/grade3-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G3-M-5",
+              "statement_en": "describe the physical properties of solid materials, such as hard, shiny, or stretchable",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G3-M-5:hardness",
+            "G3-M-5:shine",
+            "G3-M-5:stretch"
+          ]
+        },
+        {
+          "lesson_key": "g4:rigid-soft",
+          "grade": 4,
+          "title_en": "Rigid and Soft Objects",
+          "authoring_file": "rag/pipeline/grade4-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G4-F-1",
+              "statement_en": "participate in guided activities to discover and predict how rigid and soft objects can be moved and/or changed in shape",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G4-F-1:rigid",
+            "G4-F-1:soft",
+            "G4-F-1:guided"
+          ]
+        }
+      ],
+      "rationale": "Properties and how rigid or soft objects change connect to the Peru target.",
+      "required_work": "Require a property-based explanation of different outcomes, with safe local materials.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-011",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G2-05"
+      ],
+      "peru_grades": [
+        2
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g4:food-chains",
+          "grade": 4,
+          "title_en": "Draw a Food Chain",
+          "authoring_file": "rag/pipeline/grade4-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G4-L-7",
+              "statement_en": "draw a simple food chain using living things from the Philippines and label them as herbivores, carnivores, and omnivores",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G4-L-7:local-chain",
+            "G4-L-7:arrows",
+            "G4-L-7:diet-labels"
+          ]
+        }
+      ],
+      "rationale": "The PH target requires drawing a simple food chain; MINEDU gives a food-chain model as an illustration of this broader modelling performance.",
+      "required_work": "The MINEDU statement is broader than food chains; choose an age-appropriate model and check the learner can explain relationships.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-012",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G2-06"
+      ],
+      "peru_grades": [
+        2
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g6:day-night",
+          "grade": 6,
+          "title_en": "A Globe Model of Day and Night",
+          "authoring_file": "rag/pipeline/grade6-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G6-E-7",
+              "statement_en": "demonstrate the rotation of the Earth on its axis using a globe to explain day and night",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G6-E-7:rotation",
+            "G6-E-7:model"
+          ]
+        },
+        {
+          "lesson_key": "g5:adaptations",
+          "grade": 5,
+          "title_en": "Plant and animal adaptations",
+          "authoring_file": "rag/pipeline/grade5-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G5-L-8",
+              "statement_en": "explain how some plants have adapted to unfavorable conditions in the environment, such as lack of rain or floods",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            },
+            {
+              "code": "G5-L-9",
+              "statement_en": "use information from secondary sources to describe examples of how some animals have changed to better suit their environment, such as mimicry or camouflage",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G5-L-8:dry-conditions",
+            "G5-L-8:flooded-conditions",
+            "G5-L-9:camouflage",
+            "G5-L-9:mimicry"
+          ]
+        }
+      ],
+      "rationale": "PH day/night modelling and adaptation topics offer partial ingredients.",
+      "required_work": "No direct equivalent: add how daily cycles change activity in local living things; the abstract globe model is not automatically appropriate to Grade 2.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-013",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G2-07"
+      ],
+      "peru_grades": [
+        2
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g3:earth-materials",
+          "grade": 3,
+          "title_en": "Earth Materials Around Us",
+          "authoring_file": "rag/pipeline/grade3-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G3-E-1",
+              "statement_en": "participate in guided activities to locate and describe different types of non-living things found in and around their school, such as rocks, soil, water, air, metals, clouds, rain, and sunlight",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            },
+            {
+              "code": "G3-E-2",
+              "statement_en": "identify some useful things that people have made from non-living materials and describe what natural materials have been used to make the items",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            },
+            {
+              "code": "G3-E-3",
+              "statement_en": "recognize that the non-living materials that make up the environment are referred to as 'earth materials'",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G3-E-1:guided-observation",
+            "G3-E-1:examples",
+            "G3-E-2:human-made-objects",
+            "G3-E-3:earth-materials"
+          ]
+        },
+        {
+          "lesson_key": "g5:landforms",
+          "grade": 5,
+          "title_en": "Landforms and bodies of water",
+          "authoring_file": "rag/pipeline/grade5-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G5-E-1",
+              "statement_en": "identify local examples of natural landforms and bodies of water such as mountains, valleys, rivers, and coastlines, and describe how they influence non-living and living components of the environment",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G5-E-1:environmental-effects",
+            "G5-E-1:mountain",
+            "G5-E-1:valley",
+            "G5-E-1:river",
+            "G5-E-1:coast"
+          ]
+        }
+      ],
+      "rationale": "PH earth-material and landform targets explicitly include air, water and solid Earth materials.",
+      "required_work": "Adapt to Grade 2 and the community’s water bodies and landscape.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-014",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G3-01",
+        "PE-CNEB-2017-CYT-EXP-G4-01"
+      ],
+      "peru_grades": [
+        3,
+        4
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g4:body-systems",
+          "grade": 4,
+          "title_en": "Our Body Systems",
+          "authoring_file": "rag/pipeline/grade4-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G4-L-1",
+              "statement_en": "describe in simple terms how the following human body systems work: muscular, skeletal, digestive, circulatory, and respiratory",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G4-L-1:muscular",
+            "G4-L-1:skeletal",
+            "G4-L-1:digestive",
+            "G4-L-1:circulatory",
+            "G4-L-1:respiratory"
+          ]
+        },
+        {
+          "lesson_key": "g4:plant-systems",
+          "grade": 4,
+          "title_en": "Roots and Shoots",
+          "authoring_file": "rag/pipeline/grade4-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G4-L-2",
+              "statement_en": "observe the root and shoot system in plants and describe why they are important",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G4-L-2:roots",
+            "G4-L-2:shoots"
+          ]
+        }
+      ],
+      "rationale": "The PH targets describe body systems and plant root/shoot systems.",
+      "required_work": "Review animal coverage and explicit models linking organs, systems and vital functions; current human-focused material is only partial.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-015",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G3-02"
+      ],
+      "peru_grades": [
+        3
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g5:classification",
+          "grade": 5,
+          "title_en": "Classifying living things",
+          "authoring_file": "rag/pipeline/grade5-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G5-L-4",
+              "statement_en": "use a table to show how living things can be classified into groups based on similar characteristics (plants including flowering and non-flowering; animals including mammals, reptiles, insects, birds, fish, amphibians; microorganisms including fungi and bacteria)",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G5-L-4:classification-table",
+            "G5-L-4:flowering-plants",
+            "G5-L-4:nonflowering-plants",
+            "G5-L-4:mammals",
+            "G5-L-4:reptiles",
+            "G5-L-4:insects",
+            "G5-L-4:birds",
+            "G5-L-4:fish",
+            "G5-L-4:amphibians",
+            "G5-L-4:fungi",
+            "G5-L-4:bacteria"
+          ]
+        },
+        {
+          "lesson_key": "g6:animal-groups",
+          "grade": 6,
+          "title_en": "Animals With and Without Backbones",
+          "authoring_file": "rag/pipeline/grade6-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G6-L-4",
+              "statement_en": "describe the differences between animals with a backbone (vertebrates) and animals without backbones (invertebrates) by using common local examples of each group",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G6-L-4:vertebrates",
+            "G6-L-4:invertebrates",
+            "G6-L-4:local"
+          ]
+        }
+      ],
+      "rationale": "PH classification lessons supply comparisons of organisms and grouping features.",
+      "required_work": "Replace the older-grade taxonomy demand with appropriate comparisons of local species.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-016",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G3-04",
+        "PE-CNEB-2017-CYT-EXP-G4-04"
+      ],
+      "peru_grades": [
+        3,
+        4
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g3:moving-things",
+          "grade": 3,
+          "title_en": "Ways to Move Things",
+          "authoring_file": "rag/pipeline/grade3-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G3-F-1",
+              "statement_en": "explore and demonstrate different ways to make objects move by natural causes, such as wind and water, or by people, such as pushing, pulling, rolling, and carrying",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G3-F-1:wind",
+            "G3-F-1:water",
+            "G3-F-1:push",
+            "G3-F-1:pull",
+            "G3-F-1:roll",
+            "G3-F-1:carry"
+          ]
+        },
+        {
+          "lesson_key": "g4:change-motion",
+          "grade": 4,
+          "title_en": "Change How Objects Move",
+          "authoring_file": "rag/pipeline/grade4-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G4-F-5",
+              "statement_en": "participate in guided activities to demonstrate that pushes and pulls can be used to change the speed and direction of an object including making it go faster, turn it to a different direction, slow it down, and stop it",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G4-F-5:faster",
+            "G4-F-5:turn",
+            "G4-F-5:slow-stop",
+            "G4-F-5:guided"
+          ]
+        },
+        {
+          "lesson_key": "g4:change-shape",
+          "grade": 4,
+          "title_en": "Forces Change Shape",
+          "authoring_file": "rag/pipeline/grade4-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G4-F-6",
+              "statement_en": "determine how forces can change the shape of objects such as when they are pushed, pulled, stretched, bent, twisted, or squeezed",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G4-F-6:stretch",
+            "G4-F-6:bend",
+            "G4-F-6:twist",
+            "G4-F-6:squeeze"
+          ]
+        }
+      ],
+      "rationale": "PH competencies explicitly address forces changing motion, direction and shape.",
+      "required_work": "Add evidence about balance where required and choose grade-appropriate investigations.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-017",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G3-06",
+        "PE-CNEB-2017-CYT-EXP-G3-07"
+      ],
+      "peru_grades": [
+        3
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g3:depending-on-nature",
+          "grade": 3,
+          "title_en": "Living Things Depend on Each Other",
+          "authoring_file": "rag/pipeline/grade3-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G3-L-7",
+              "statement_en": "observe examples and explain how living things depend on one another and on the environment to meet their basic needs",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G3-L-7:food-and-shelter",
+            "G3-L-7:environment"
+          ]
+        },
+        {
+          "lesson_key": "g4:habitat-examples",
+          "grade": 4,
+          "title_en": "Who Lives Here?",
+          "authoring_file": "rag/pipeline/grade4-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G4-L-4",
+              "statement_en": "make a list or draw up a table with examples of animals and plants in a particular habitat, such as a garden, rice field, seashore, and mangrove swamp",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G4-L-4:garden",
+            "G4-L-4:rice-field",
+            "G4-L-4:seashore",
+            "G4-L-4:mangroves",
+            "G4-L-4:table"
+          ]
+        }
+      ],
+      "rationale": "PH interdependence and habitat examples supply related explanations.",
+      "required_work": "Explicitly connect living/nonliving interactions and habitat resources; replace Philippine habitats and species.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-018",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G3-08"
+      ],
+      "peru_grades": [
+        3
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g4:local-inventions",
+          "grade": 4,
+          "title_en": "Inventions in Daily Life",
+          "authoring_file": "rag/pipeline/grade4-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G4-M-2",
+              "statement_en": "use information from the home or the local community to identify a science invention and explain its impact on their everyday life",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G4-M-2:uses",
+            "G4-M-2:community"
+          ]
+        },
+        {
+          "lesson_key": "g4:community-problems",
+          "grade": 4,
+          "title_en": "Science Helps Our Community",
+          "authoring_file": "rag/pipeline/grade4-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G4-M-6",
+              "statement_en": "identify issues and concerns in the local community and how they could be addressed by science, such as the treatment of waste",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G4-M-6:waste",
+            "G4-M-6:solutions"
+          ]
+        }
+      ],
+      "rationale": "The PH targets consider inventions, community needs and science solutions.",
+      "required_work": "No direct equivalent: author the chain of occupations or specialisms involved in a local technology and evaluate its effects.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-019",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G4-02",
+        "PE-CNEB-2017-CYT-EXP-G5-02"
+      ],
+      "peru_grades": [
+        4,
+        5
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g5:animal-reproduction",
+          "grade": 5,
+          "title_en": "Live young and eggs",
+          "authoring_file": "rag/pipeline/grade5-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G5-L-5",
+              "statement_en": "identify which groups of animals reproduce by giving birth to live young, such as mammals, and which reproduce by laying eggs, such as birds and reptiles",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G5-L-5:live-young",
+            "G5-L-5:egg-laying"
+          ]
+        },
+        {
+          "lesson_key": "g6:plant-reproduction",
+          "grade": 6,
+          "title_en": "How Plants Reproduce",
+          "authoring_file": "rag/pipeline/grade6-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G6-L-2",
+              "statement_en": "describe the different ways that plants reproduce, such as pollination, seed production, and plant propagation",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G6-L-2:pollination",
+            "G6-L-2:seeds",
+            "G6-L-2:propagation"
+          ]
+        },
+        {
+          "lesson_key": "g7:reproduction-types",
+          "grade": 7,
+          "title_en": "Sexual and Asexual Reproduction",
+          "authoring_file": "rag/pipeline/grade7-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G7-L-7",
+              "statement_en": "differentiate sexual from asexual reproduction in terms of: a) number of parents involved, and b) similarities of offspring to parents",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G7-L-7:parents",
+            "G7-L-7:similarity"
+          ]
+        }
+      ],
+      "rationale": "Existing targets compare forms of animal/plant reproduction and sexual/asexual reproduction.",
+      "required_work": "Match the exact Peru claim and age; do not turn the species statement into an exceptionless definition or import unneeded secondary detail.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-020",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G4-06",
+        "PE-CNEB-2017-CYT-EXP-G5-04"
+      ],
+      "peru_grades": [
+        4,
+        5
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g6:food-webs",
+          "grade": 6,
+          "title_en": "Roles in a Food Web",
+          "authoring_file": "rag/pipeline/grade6-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G6-L-5",
+              "statement_en": "describe the roles of producers, consumers, scavengers, and decomposers in a food web",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G6-L-5:producers",
+            "G6-L-5:consumers",
+            "G6-L-5:scavengers",
+            "G6-L-5:decomposers",
+            "G6-L-5:web"
+          ]
+        },
+        {
+          "lesson_key": "g6:ecosystem-factors",
+          "grade": 6,
+          "title_en": "Living and Nonliving Factors",
+          "authoring_file": "rag/pipeline/grade6-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G6-L-7",
+              "statement_en": "describe living things, such as animals and plants, as biotic factors and light, water, temperature, and soil type, as abiotic factors in an ecosystem",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G6-L-7:biotic",
+            "G6-L-7:light",
+            "G6-L-7:water",
+            "G6-L-7:temperature",
+            "G6-L-7:soil"
+          ]
+        }
+      ],
+      "rationale": "PH targets cover ecological roles and living/nonliving factors in ecosystems.",
+      "required_work": "Re-sequence to Peru Grades 4/5 and use local ecosystems; explain interactions rather than only list factors.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-021",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G4-07"
+      ],
+      "peru_grades": [
+        4
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g5:adaptations",
+          "grade": 5,
+          "title_en": "Plant and animal adaptations",
+          "authoring_file": "rag/pipeline/grade5-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G5-L-8",
+              "statement_en": "explain how some plants have adapted to unfavorable conditions in the environment, such as lack of rain or floods",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            },
+            {
+              "code": "G5-L-9",
+              "statement_en": "use information from secondary sources to describe examples of how some animals have changed to better suit their environment, such as mimicry or camouflage",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G5-L-8:dry-conditions",
+            "G5-L-8:flooded-conditions",
+            "G5-L-9:camouflage",
+            "G5-L-9:mimicry"
+          ]
+        }
+      ],
+      "rationale": "PH targets explicitly relate plant/animal traits to survival in habitats.",
+      "required_work": "Replace species as needed and require evidence-based reasons about structures and behaviours.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-022",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G4-08"
+      ],
+      "peru_grades": [
+        4
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g7:sunlight-angle",
+          "grade": 7,
+          "title_en": "Model Sunlight Through the Year",
+          "authoring_file": "rag/pipeline/grade7-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G7-E-10",
+              "statement_en": "make a physical model or use drawings to demonstrate how the tilt of the Earth relative to its orbit around the Sun affects the intensity of sunlight absorbed by different areas of Earth over a year",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G7-E-10:tilt-orbit",
+            "G7-E-10:intensity",
+            "G7-E-10:model"
+          ]
+        },
+        {
+          "lesson_key": "g7:solar-winds",
+          "grade": 7,
+          "title_en": "Sunlight Drives Wind Patterns",
+          "authoring_file": "rag/pipeline/grade7-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G7-E-12",
+              "statement_en": "explain how solar energy contributes to the occurrence of land and sea breezes, monsoons, and the Intertropical Convergence Zone (ITCZ)",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G7-E-12:land-sea-breeze",
+            "G7-E-12:monsoon",
+            "G7-E-12:itcz",
+            "G7-E-12:solar-heating"
+          ]
+        }
+      ],
+      "rationale": "PH secondary lessons address uneven sunlight and atmospheric movement.",
+      "required_work": "Partial prerequisite overlap only: build a Grade 4 treatment of climatic zones and relief, not the full Grade 7 lesson.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-023",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G4-10",
+        "PE-CNEB-2017-CYT-EXP-G5-06"
+      ],
+      "peru_grades": [
+        4,
+        5
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g4:scientists",
+          "grade": 4,
+          "title_en": "Scientists and Inventions",
+          "authoring_file": "rag/pipeline/grade4-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G4-M-1",
+              "statement_en": "use information from secondary sources to identify a famous Filipino and/or foreign scientist and their invention/s",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G4-M-1:invention",
+            "G4-M-1:sources"
+          ]
+        },
+        {
+          "lesson_key": "g4:local-inventions",
+          "grade": 4,
+          "title_en": "Inventions in Daily Life",
+          "authoring_file": "rag/pipeline/grade4-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G4-M-2",
+              "statement_en": "use information from the home or the local community to identify a science invention and explain its impact on their everyday life",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G4-M-2:uses",
+            "G4-M-2:community"
+          ]
+        }
+      ],
+      "rationale": "PH invention history and daily impacts provide starting material.",
+      "required_work": "Add the explicit relationships among scientific progress, technological change, lifestyles and environmental effects.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-024",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G5-01"
+      ],
+      "peru_grades": [
+        5
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g7:plant-animal-cells",
+          "grade": 7,
+          "title_en": "Compare Plant and Animal Cells",
+          "authoring_file": "rag/pipeline/grade7-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G7-L-4",
+              "statement_en": "differentiate plant and animal cells based on their organelles",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G7-L-4:shared",
+            "G7-L-4:wall",
+            "G7-L-4:chloroplast",
+            "G7-L-4:vacuole"
+          ]
+        }
+      ],
+      "rationale": "The PH competency explicitly differentiates plant and animal cells.",
+      "required_work": "Re-sequence Grade 7 content to Grade 5 and include basic cell functions without importing all secondary terminology; review the source’s illustrative comparison for scientific accuracy.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-025",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G5-03"
+      ],
+      "peru_grades": [
+        5
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g7:particle-model",
+          "grade": 7,
+          "title_en": "Matter Is Made of Particles",
+          "authoring_file": "rag/pipeline/grade7-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G7-M-2",
+              "statement_en": "describe the Particle Model of Matter as 'All matter is made up of tiny particles with each pure substance having its own kind of particles.'",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G7-M-2:particles",
+            "G7-M-2:pure-substance"
+          ]
+        }
+      ],
+      "rationale": "The PH competency explicitly describes matter as small particles.",
+      "required_work": "Re-sequence to Grade 5 and prepare appropriate representations; avoid implying visible mist is individual water molecules.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-026",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G5-05",
+        "PE-CNEB-2017-CYT-EXP-G6-07"
+      ],
+      "peru_grades": [
+        5,
+        6
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g5:erosion",
+          "grade": 5,
+          "title_en": "Erosion and transported materials",
+          "authoring_file": "rag/pipeline/grade5-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G5-E-5",
+              "statement_en": "demonstrate how erosion transports Earth materials",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G5-E-5:transport",
+            "G5-E-5:demonstration"
+          ]
+        },
+        {
+          "lesson_key": "g6:volcano-formation",
+          "grade": 6,
+          "title_en": "How Volcanoes Form",
+          "authoring_file": "rag/pipeline/grade6-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G6-E-1",
+              "statement_en": "explain what volcanoes are and how they are formed",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G6-E-1:magma",
+            "G6-E-1:formation"
+          ]
+        },
+        {
+          "lesson_key": "g8:plates-crust",
+          "grade": 8,
+          "title_en": "Crust and Lithospheric Plates",
+          "authoring_file": "rag/pipeline/grade8-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G8-E-6",
+              "statement_en": "identify how oceanic crust and continental crust is associated with the Earth's lithospheric plates",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G8-E-6:plate-composition",
+            "G8-E-6:crust-types"
+          ]
+        }
+      ],
+      "rationale": "Existing targets supply erosion, volcanism and tectonic-structure concepts.",
+      "required_work": "No single equivalent: connect Peru’s external/internal Earth dynamics to changing relief and local evidence; avoid a Philippine hazard-only treatment.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-027",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G5-07",
+        "PE-CNEB-2017-CYT-EXP-G6-09"
+      ],
+      "peru_grades": [
+        5,
+        6
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g9:l-10",
+          "grade": 9,
+          "title_en": "Human Impacts on Ecosystems",
+          "authoring_file": "rag/pipeline/grade9-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G9-L-10",
+              "statement_en": "use information from secondary sources to describe the possible effects of human activities, such as deforestation, pollution, and introduction of invasive species, on living things in an ecosystem",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G9-L-10:focus-1",
+            "G9-L-10:focus-2",
+            "G9-L-10:focus-3",
+            "G9-L-10:focus-4"
+          ]
+        },
+        {
+          "lesson_key": "g10:l-9",
+          "grade": 10,
+          "title_en": "Debate Biotechnology Choices",
+          "authoring_file": "rag/pipeline/grade10-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G10-L-9",
+              "statement_en": "participate in a class debate on the societal, environmental, and ethical implications of using biotechnological products and methods",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G10-L-9:focus-1",
+            "G10-L-9:focus-2",
+            "G10-L-9:focus-3",
+            "G10-L-9:focus-4"
+          ]
+        }
+      ],
+      "rationale": "PH secondary targets discuss environmental impacts and evidence-based views of technology.",
+      "required_work": "Only discussion structures and selected facts are candidates: author primary-level local issues, sources and argument scaffolds; do not import a secondary biotechnology debate unchanged.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-028",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G6-01"
+      ],
+      "peru_grades": [
+        6
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g7:one-many-cells",
+          "grade": 7,
+          "title_en": "One Cell or Many?",
+          "authoring_file": "rag/pipeline/grade7-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G7-L-3",
+              "statement_en": "recognize that some organisms consist of a single cell (unicellular) like in bacteria and some consist of many cells (multicellular) like in a human",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G7-L-3:unicellular",
+            "G7-L-3:multicellular"
+          ]
+        },
+        {
+          "lesson_key": "g7:biological-levels",
+          "grade": 7,
+          "title_en": "From Cells to the Biosphere",
+          "authoring_file": "rag/pipeline/grade7-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G7-L-8",
+              "statement_en": "use a labelled diagram to describe the connections between the levels of biological organization to one another from cells to the biosphere",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G7-L-8:cell-to-organism",
+            "G7-L-8:organism-to-biosphere",
+            "G7-L-8:diagram"
+          ]
+        }
+      ],
+      "rationale": "PH targets explicitly distinguish unicellular/multicellular organisms and levels of organization.",
+      "required_work": "Re-sequence to Grade 6, cover basic/specialized functions, and replace the erroneous MINEDU bacteria-host example.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-029",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G6-02"
+      ],
+      "peru_grades": [
+        6
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g7:inherited-information",
+          "grade": 7,
+          "title_en": "Information From Both Parents",
+          "authoring_file": "rag/pipeline/grade7-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G7-L-6",
+              "statement_en": "explain that genetic information is passed on to offspring from both parents by the process of meiosis and fertilization",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G7-L-6:meiosis",
+            "G7-L-6:fertilization",
+            "G7-L-6:both-parents"
+          ]
+        },
+        {
+          "lesson_key": "g7:reproduction-types",
+          "grade": 7,
+          "title_en": "Sexual and Asexual Reproduction",
+          "authoring_file": "rag/pipeline/grade7-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G7-L-7",
+              "statement_en": "differentiate sexual from asexual reproduction in terms of: a) number of parents involved, and b) similarities of offspring to parents",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G7-L-7:parents",
+            "G7-L-7:similarity"
+          ]
+        }
+      ],
+      "rationale": "PH targets link sexual reproduction with information from both parents and offspring similarities.",
+      "required_work": "Make the variation-within-species connection explicit at Grade 6; do not assume the current units fully cover it.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-030",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G6-03",
+        "PE-CNEB-2017-CYT-EXP-G6-05"
+      ],
+      "peru_grades": [
+        6
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g7:particle-motion",
+          "grade": 7,
+          "title_en": "How Particles Behave",
+          "authoring_file": "rag/pipeline/grade7-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G7-M-3",
+              "statement_en": "describe that particles are constantly in motion, have spaces between them, attract each other, and move faster as the temperature increases (or with the addition of heat)",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G7-M-3:motion",
+            "G7-M-3:spaces",
+            "G7-M-3:attraction",
+            "G7-M-3:temperature"
+          ]
+        },
+        {
+          "lesson_key": "g7:particle-diagrams",
+          "grade": 7,
+          "title_en": "Draw Three States of Matter",
+          "authoring_file": "rag/pipeline/grade7-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G7-M-4",
+              "statement_en": "use diagrams and illustrations to describe the arrangement, spacing, and relative motion of the particles in each of the three states (phases) of matter",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G7-M-4:solid",
+            "G7-M-4:liquid",
+            "G7-M-4:gas",
+            "G7-M-4:diagram"
+          ]
+        },
+        {
+          "lesson_key": "g7:heat-particles",
+          "grade": 7,
+          "title_en": "Particles Transfer Heat",
+          "authoring_file": "rag/pipeline/grade7-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G7-F-10",
+              "statement_en": "explain in terms of the particle model the processes underlying convection and conduction of heat energy",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G7-F-10:conduction",
+            "G7-F-10:convection"
+          ]
+        }
+      ],
+      "rationale": "PH targets explicitly connect particle motion, spacing, attraction, temperature and states.",
+      "required_work": "Re-sequence to Grade 6; review the source’s repulsion/cohesion phrasing and model limits with a science reviewer.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-031",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G6-04"
+      ],
+      "peru_grades": [
+        6
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g6:physical-chemical",
+          "grade": 6,
+          "title_en": "Physical and Chemical Changes",
+          "authoring_file": "rag/pipeline/grade6-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G6-M-3",
+              "statement_en": "explain why physical changes are reversible, and chemical changes are irreversible",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G6-M-3:identity",
+            "G6-M-3:new-substance",
+            "G6-M-3:reversing",
+            "G6-M-3:reversibility-caveat"
+          ]
+        },
+        {
+          "lesson_key": "g9:m-2",
+          "grade": 9,
+          "title_en": "Bonds Change in Reactions",
+          "authoring_file": "rag/pipeline/grade9-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G9-M-2",
+              "statement_en": "explain that the formation of new bonds or the breaking of existing bonds constitutes a chemical change and the formation of a new substance",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G9-M-2:focus-1",
+            "G9-M-2:focus-2",
+            "G9-M-2:focus-3"
+          ]
+        },
+        {
+          "lesson_key": "g10:m-6",
+          "grade": 10,
+          "title_en": "Atoms Rearrange, Mass Remains",
+          "authoring_file": "rag/pipeline/grade10-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G10-M-6",
+              "statement_en": "explain that chemical equations demonstrate a rearrangement of atoms but the total mass of the system remains the same during a chemical reaction",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G10-M-6:focus-1",
+            "G10-M-6:focus-2",
+            "G10-M-6:focus-3"
+          ]
+        }
+      ],
+      "rationale": "Physical/chemical changes plus secondary explanations of bonds and atom rearrangement give relevant source material.",
+      "required_work": "The Peru target needs constituent rearrangement at Grade 6: develop a simple accurate explanation without importing equations or bonding theory unnecessarily.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-032",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G6-06"
+      ],
+      "peru_grades": [
+        6
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g9:l-5",
+          "grade": 9,
+          "title_en": "Biodiversity and Resilience",
+          "authoring_file": "rag/pipeline/grade9-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G9-L-5",
+              "statement_en": "explain the advantage of high biodiversity in maintaining the stability of an ecosystem during difficult conditions, such as food shortages, disease, and climate change",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G9-L-5:focus-1",
+            "G9-L-5:focus-2"
+          ]
+        }
+      ],
+      "rationale": "The PH Grade 9 target explicitly relates biodiversity to ecosystem stability under difficult conditions.",
+      "required_work": "Re-sequence to Grade 6 with simple local food-web evidence, preserving that stability is not an absolute guarantee.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-033",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-EXP-G6-08"
+      ],
+      "peru_grades": [
+        6
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g8:atomic-timeline",
+          "grade": 8,
+          "title_en": "How Atomic Models Changed",
+          "authoring_file": "rag/pipeline/grade8-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G8-M-1",
+              "statement_en": "develop a timeline for the historical background of the development of the current Atomic Model that identifies tiny particles as atoms",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G8-M-1:early",
+            "G8-M-1:nucleus",
+            "G8-M-1:modern",
+            "G8-M-1:timeline",
+            "G8-M-1:current-model"
+          ]
+        },
+        {
+          "lesson_key": "g9:e-11",
+          "grade": 9,
+          "title_en": "Tools for Space Research",
+          "authoring_file": "rag/pipeline/grade9-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G9-E-11",
+              "statement_en": "explain how modern research about celestial objects uses new space technologies including telescopes and space probes",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G9-E-11:focus-1",
+            "G9-E-11:focus-2"
+          ]
+        }
+      ],
+      "rationale": "PH targets include changing scientific models and tools for space research.",
+      "required_work": "Partial ingredients only: author examples connecting instruments, evidence, theory change and changes in everyday life.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-034",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-INQ-G1-01",
+        "PE-CNEB-2017-CYT-INQ-G1-02",
+        "PE-CNEB-2017-CYT-INQ-G1-03",
+        "PE-CNEB-2017-CYT-INQ-G1-04",
+        "PE-CNEB-2017-CYT-INQ-G1-05",
+        "PE-CNEB-2017-CYT-INQ-G2-01",
+        "PE-CNEB-2017-CYT-INQ-G2-02",
+        "PE-CNEB-2017-CYT-INQ-G2-03",
+        "PE-CNEB-2017-CYT-INQ-G2-04",
+        "PE-CNEB-2017-CYT-INQ-G2-05"
+      ],
+      "peru_grades": [
+        1,
+        2
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g3:exploring",
+          "grade": 3,
+          "title_en": "Ask and Try",
+          "authoring_file": "rag/pipeline/grade3-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G3-M-2",
+              "statement_en": "participate in guided science activities by asking questions and tinkering with materials",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G3-M-2:questions",
+            "G3-M-2:guided-tinkering"
+          ]
+        },
+        {
+          "lesson_key": "g3:science-skills",
+          "grade": 3,
+          "title_en": "Observe, Predict, Measure",
+          "authoring_file": "rag/pipeline/grade3-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G3-M-4",
+              "statement_en": "describe different science process skills used in performing simple science activities, such as observing, predicting, and measuring using units such as millimeter, centimeter, and meter",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G3-M-4:observing",
+            "G3-M-4:predicting",
+            "G3-M-4:millimeters",
+            "G3-M-4:centimeters",
+            "G3-M-4:meters"
+          ]
+        },
+        {
+          "lesson_key": "g3:living-things-investigation",
+          "grade": 3,
+          "title_en": "Investigate Living Things",
+          "authoring_file": "rag/pipeline/grade3-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G3-L-1",
+              "statement_en": "use the skills of observing, predicting, and measuring in performing simple guided science activities",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G3-L-1:observe",
+            "G3-L-1:predict",
+            "G3-L-1:measure",
+            "G3-L-1:guided-activity"
+          ]
+        }
+      ],
+      "rationale": "PH guided investigation and observing/predicting/measuring targets supply related process scaffolds.",
+      "required_work": "Build a full Grade 1–2 inquiry sequence using oral responses, pictures, teacher support and actual observations. Card or quiz completion does not demonstrate investigation.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-035",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-INQ-G3-01",
+        "PE-CNEB-2017-CYT-INQ-G3-02",
+        "PE-CNEB-2017-CYT-INQ-G3-03",
+        "PE-CNEB-2017-CYT-INQ-G3-04",
+        "PE-CNEB-2017-CYT-INQ-G3-05",
+        "PE-CNEB-2017-CYT-INQ-G4-01",
+        "PE-CNEB-2017-CYT-INQ-G4-02",
+        "PE-CNEB-2017-CYT-INQ-G4-03",
+        "PE-CNEB-2017-CYT-INQ-G4-04",
+        "PE-CNEB-2017-CYT-INQ-G4-05"
+      ],
+      "peru_grades": [
+        3,
+        4
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g4:environment-survey",
+          "grade": 4,
+          "title_en": "Survey Our Environment",
+          "authoring_file": "rag/pipeline/grade4-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G4-M-7",
+              "statement_en": "apply science process skills and attitudes in conducting a guided survey about environmental issues and concerns including grouping and classifying, communicating, and open mindedness",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G4-M-7:guided-survey",
+            "G4-M-7:classify",
+            "G4-M-7:communicate",
+            "G4-M-7:open-minded"
+          ]
+        },
+        {
+          "lesson_key": "g5:investigations",
+          "grade": 5,
+          "title_en": "Planning a science investigation",
+          "authoring_file": "rag/pipeline/grade5-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G5-M-7",
+              "statement_en": "describe the steps of a simple science investigation (What is the problem? What materials do you need? What do you need to do? What have you found out/learned?)",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            },
+            {
+              "code": "G5-M-8",
+              "statement_en": "identify and appropriately use units in simple science activities, such as milligrams (mg), grams (g), kilograms (kg), and degrees centigrade (C)",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            },
+            {
+              "code": "G5-M-9",
+              "statement_en": "plan simple scientific investigations in answering questions, such as 'Do gases (like air) or liquids (like water) have mass?', using appropriate simple science equipment, such as a balance, and a thermometer, with appropriate units",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G5-M-7:investigation-steps",
+            "G5-M-8:mass-units",
+            "G5-M-8:temperature-units",
+            "G5-M-9:mass-investigation",
+            "G5-M-9:equipment"
+          ]
+        },
+        {
+          "lesson_key": "g6:repeat-record",
+          "grade": 6,
+          "title_en": "Repeat, Measure, Record",
+          "authoring_file": "rag/pipeline/grade6-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G6-M-9",
+              "statement_en": "recognize the features of a fair test and that scientific investigations also involve doing at least three trials, or use replication, and observing, measuring, and recording accurately",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G6-M-9:three-trials",
+            "G6-M-9:accurate-records"
+          ]
+        }
+      ],
+      "rationale": "PH survey, planning and repeated-measurement targets supply related procedures.",
+      "required_work": "Assemble question → plan → evidence → comparison → conclusion → communication tasks; review quantitative expectations and suitable community examples.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    },
+    {
+      "id": "PE-PH-REUSE-036",
+      "relation": "candidate_for_adaptation; not_equivalence_or_coverage",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-INQ-G5-01",
+        "PE-CNEB-2017-CYT-INQ-G5-02",
+        "PE-CNEB-2017-CYT-INQ-G5-03",
+        "PE-CNEB-2017-CYT-INQ-G5-04",
+        "PE-CNEB-2017-CYT-INQ-G5-05",
+        "PE-CNEB-2017-CYT-INQ-G6-01",
+        "PE-CNEB-2017-CYT-INQ-G6-02",
+        "PE-CNEB-2017-CYT-INQ-G6-03",
+        "PE-CNEB-2017-CYT-INQ-G6-04",
+        "PE-CNEB-2017-CYT-INQ-G6-05"
+      ],
+      "peru_grades": [
+        5,
+        6
+      ],
+      "philippines_lesson_candidates": [
+        {
+          "lesson_key": "g6:fair-tests",
+          "grade": 6,
+          "title_en": "Design a Fair Test",
+          "authoring_file": "rag/pipeline/grade6-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G6-M-8",
+              "statement_en": "apply the features of a fair test: a. change one factor, b. measure one factor, and c. keep all other factors the same",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G6-M-8:change-one",
+            "G6-M-8:measure",
+            "G6-M-8:control"
+          ]
+        },
+        {
+          "lesson_key": "g6:repeat-record",
+          "grade": 6,
+          "title_en": "Repeat, Measure, Record",
+          "authoring_file": "rag/pipeline/grade6-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G6-M-9",
+              "statement_en": "recognize the features of a fair test and that scientific investigations also involve doing at least three trials, or use replication, and observing, measuring, and recording accurately",
+              "source_file": "rag/sources/curriculum-guides/matatag-elementary-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G6-M-9:three-trials",
+            "G6-M-9:accurate-records"
+          ]
+        },
+        {
+          "lesson_key": "g7:investigation-steps",
+          "grade": 7,
+          "title_en": "Plan and Report an Investigation",
+          "authoring_file": "rag/pipeline/grade7-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G7-M-6",
+              "statement_en": "follow appropriate steps of a scientific investigation which includes: a. Aim or problem, b. Materials and equipment, c. Method or procedures, d. Results including data, and e. Conclusion",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G7-M-6:aim",
+            "G7-M-6:materials",
+            "G7-M-6:method",
+            "G7-M-6:results",
+            "G7-M-6:conclusion"
+          ]
+        },
+        {
+          "lesson_key": "g7:measure-record",
+          "grade": 7,
+          "title_en": "Measure and Organize Data",
+          "authoring_file": "rag/pipeline/grade7-lessons.authoring.json",
+          "competencies": [
+            {
+              "code": "G7-M-7",
+              "statement_en": "make accurate measurements using standard units for physical quantities and organize the collected data when carrying out a scientific investigation",
+              "source_file": "rag/sources/curriculum-guides/matatag-jhs-competencies.json"
+            }
+          ],
+          "unit_ids": [
+            "G7-M-7:units",
+            "G7-M-7:accuracy",
+            "G7-M-7:organize"
+          ]
+        }
+      ],
+      "rationale": "PH competencies explicitly include changing one factor, controlling others, measuring and reporting investigations.",
+      "required_work": "Check all stages and Grade 6 calculations (mode and direct proportion). Require collected data and explanations; a relevant fact pool is insufficient.",
+      "status": "editorial_candidate; educator_and_content_review_pending"
+    }
+  ],
+  "gaps": [
+    {
+      "id": "PE-GAP-EARLY-PRIMARY",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-INQ-G1-01",
+        "PE-CNEB-2017-CYT-INQ-G1-02",
+        "PE-CNEB-2017-CYT-INQ-G1-03",
+        "PE-CNEB-2017-CYT-INQ-G1-04",
+        "PE-CNEB-2017-CYT-INQ-G1-05",
+        "PE-CNEB-2017-CYT-EXP-G1-01",
+        "PE-CNEB-2017-CYT-EXP-G1-02",
+        "PE-CNEB-2017-CYT-EXP-G1-03",
+        "PE-CNEB-2017-CYT-EXP-G1-04",
+        "PE-CNEB-2017-CYT-EXP-G1-05",
+        "PE-CNEB-2017-CYT-EXP-G1-06",
+        "PE-CNEB-2017-CYT-EXP-G1-07",
+        "PE-CNEB-2017-CYT-TEC-G1-01",
+        "PE-CNEB-2017-CYT-TEC-G1-02",
+        "PE-CNEB-2017-CYT-TEC-G1-03",
+        "PE-CNEB-2017-CYT-TEC-G1-04",
+        "PE-CNEB-2017-CYT-INQ-G2-01",
+        "PE-CNEB-2017-CYT-INQ-G2-02",
+        "PE-CNEB-2017-CYT-INQ-G2-03",
+        "PE-CNEB-2017-CYT-INQ-G2-04",
+        "PE-CNEB-2017-CYT-INQ-G2-05",
+        "PE-CNEB-2017-CYT-EXP-G2-01",
+        "PE-CNEB-2017-CYT-EXP-G2-02",
+        "PE-CNEB-2017-CYT-EXP-G2-03",
+        "PE-CNEB-2017-CYT-EXP-G2-04",
+        "PE-CNEB-2017-CYT-EXP-G2-05",
+        "PE-CNEB-2017-CYT-EXP-G2-06",
+        "PE-CNEB-2017-CYT-EXP-G2-07",
+        "PE-CNEB-2017-CYT-EXP-G2-08",
+        "PE-CNEB-2017-CYT-EXP-G2-09",
+        "PE-CNEB-2017-CYT-TEC-G2-01",
+        "PE-CNEB-2017-CYT-TEC-G2-02",
+        "PE-CNEB-2017-CYT-TEC-G2-03",
+        "PE-CNEB-2017-CYT-TEC-G2-04"
+      ],
+      "kind": "learning_path_and_accessibility",
+      "finding": "The inspected PH authoring baseline starts at Grade 3. Related science content exists, but a Peru Grade 1–2 path, emergent-reader interaction design and developmentally appropriate practical tasks are not mapped or validated.",
+      "next_work": "Co-design with Peruvian early-primary teachers; support oral/picture evidence and the learner’s main language."
+    },
+    {
+      "id": "PE-GAP-TECHNOLOGY",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-TEC-G1-01",
+        "PE-CNEB-2017-CYT-TEC-G1-02",
+        "PE-CNEB-2017-CYT-TEC-G1-03",
+        "PE-CNEB-2017-CYT-TEC-G1-04",
+        "PE-CNEB-2017-CYT-TEC-G2-01",
+        "PE-CNEB-2017-CYT-TEC-G2-02",
+        "PE-CNEB-2017-CYT-TEC-G2-03",
+        "PE-CNEB-2017-CYT-TEC-G2-04",
+        "PE-CNEB-2017-CYT-TEC-G3-01",
+        "PE-CNEB-2017-CYT-TEC-G3-02",
+        "PE-CNEB-2017-CYT-TEC-G3-03",
+        "PE-CNEB-2017-CYT-TEC-G3-04",
+        "PE-CNEB-2017-CYT-TEC-G4-01",
+        "PE-CNEB-2017-CYT-TEC-G4-02",
+        "PE-CNEB-2017-CYT-TEC-G4-03",
+        "PE-CNEB-2017-CYT-TEC-G4-04",
+        "PE-CNEB-2017-CYT-TEC-G5-01",
+        "PE-CNEB-2017-CYT-TEC-G5-02",
+        "PE-CNEB-2017-CYT-TEC-G5-03",
+        "PE-CNEB-2017-CYT-TEC-G6-01",
+        "PE-CNEB-2017-CYT-TEC-G6-02",
+        "PE-CNEB-2017-CYT-TEC-G6-03",
+        "PE-CNEB-2017-CYT-TEC-G6-04"
+      ],
+      "kind": "full_design_process",
+      "finding": "The 23 technology performance bullets require selecting problems, designing, building, testing, adjusting and communicating effects. PH lessons on useful changes, circuits or machines supply ingredients but have not been shown to cover this full process.",
+      "related_lesson_keys": [
+        "g3:useful-changes",
+        "g4:community-problems",
+        "g5:simple-circuits",
+        "g5:electromagnets",
+        "g6:machine-investigation"
+      ],
+      "next_work": "Design sequenced local engineering tasks with safe materials, evidence of construction and testing, and a teacher observation rubric. Retain the Grade 5 source’s actual three bullets."
+    },
+    {
+      "id": "PE-GAP-LOCALIZATION",
+      "peru_performance_ids": [
+        "PE-CNEB-2017-CYT-INQ-G1-01",
+        "PE-CNEB-2017-CYT-INQ-G1-02",
+        "PE-CNEB-2017-CYT-INQ-G1-03",
+        "PE-CNEB-2017-CYT-INQ-G1-04",
+        "PE-CNEB-2017-CYT-INQ-G1-05",
+        "PE-CNEB-2017-CYT-EXP-G1-01",
+        "PE-CNEB-2017-CYT-EXP-G1-02",
+        "PE-CNEB-2017-CYT-EXP-G1-03",
+        "PE-CNEB-2017-CYT-EXP-G1-04",
+        "PE-CNEB-2017-CYT-EXP-G1-05",
+        "PE-CNEB-2017-CYT-EXP-G1-06",
+        "PE-CNEB-2017-CYT-EXP-G1-07",
+        "PE-CNEB-2017-CYT-TEC-G1-01",
+        "PE-CNEB-2017-CYT-TEC-G1-02",
+        "PE-CNEB-2017-CYT-TEC-G1-03",
+        "PE-CNEB-2017-CYT-TEC-G1-04",
+        "PE-CNEB-2017-CYT-INQ-G2-01",
+        "PE-CNEB-2017-CYT-INQ-G2-02",
+        "PE-CNEB-2017-CYT-INQ-G2-03",
+        "PE-CNEB-2017-CYT-INQ-G2-04",
+        "PE-CNEB-2017-CYT-INQ-G2-05",
+        "PE-CNEB-2017-CYT-EXP-G2-01",
+        "PE-CNEB-2017-CYT-EXP-G2-02",
+        "PE-CNEB-2017-CYT-EXP-G2-03",
+        "PE-CNEB-2017-CYT-EXP-G2-04",
+        "PE-CNEB-2017-CYT-EXP-G2-05",
+        "PE-CNEB-2017-CYT-EXP-G2-06",
+        "PE-CNEB-2017-CYT-EXP-G2-07",
+        "PE-CNEB-2017-CYT-EXP-G2-08",
+        "PE-CNEB-2017-CYT-EXP-G2-09",
+        "PE-CNEB-2017-CYT-TEC-G2-01",
+        "PE-CNEB-2017-CYT-TEC-G2-02",
+        "PE-CNEB-2017-CYT-TEC-G2-03",
+        "PE-CNEB-2017-CYT-TEC-G2-04",
+        "PE-CNEB-2017-CYT-INQ-G3-01",
+        "PE-CNEB-2017-CYT-INQ-G3-02",
+        "PE-CNEB-2017-CYT-INQ-G3-03",
+        "PE-CNEB-2017-CYT-INQ-G3-04",
+        "PE-CNEB-2017-CYT-INQ-G3-05",
+        "PE-CNEB-2017-CYT-EXP-G3-01",
+        "PE-CNEB-2017-CYT-EXP-G3-02",
+        "PE-CNEB-2017-CYT-EXP-G3-03",
+        "PE-CNEB-2017-CYT-EXP-G3-04",
+        "PE-CNEB-2017-CYT-EXP-G3-05",
+        "PE-CNEB-2017-CYT-EXP-G3-06",
+        "PE-CNEB-2017-CYT-EXP-G3-07",
+        "PE-CNEB-2017-CYT-EXP-G3-08",
+        "PE-CNEB-2017-CYT-TEC-G3-01",
+        "PE-CNEB-2017-CYT-TEC-G3-02",
+        "PE-CNEB-2017-CYT-TEC-G3-03",
+        "PE-CNEB-2017-CYT-TEC-G3-04",
+        "PE-CNEB-2017-CYT-INQ-G4-01",
+        "PE-CNEB-2017-CYT-INQ-G4-02",
+        "PE-CNEB-2017-CYT-INQ-G4-03",
+        "PE-CNEB-2017-CYT-INQ-G4-04",
+        "PE-CNEB-2017-CYT-INQ-G4-05",
+        "PE-CNEB-2017-CYT-EXP-G4-01",
+        "PE-CNEB-2017-CYT-EXP-G4-02",
+        "PE-CNEB-2017-CYT-EXP-G4-03",
+        "PE-CNEB-2017-CYT-EXP-G4-04",
+        "PE-CNEB-2017-CYT-EXP-G4-05",
+        "PE-CNEB-2017-CYT-EXP-G4-06",
+        "PE-CNEB-2017-CYT-EXP-G4-07",
+        "PE-CNEB-2017-CYT-EXP-G4-08",
+        "PE-CNEB-2017-CYT-EXP-G4-09",
+        "PE-CNEB-2017-CYT-EXP-G4-10",
+        "PE-CNEB-2017-CYT-TEC-G4-01",
+        "PE-CNEB-2017-CYT-TEC-G4-02",
+        "PE-CNEB-2017-CYT-TEC-G4-03",
+        "PE-CNEB-2017-CYT-TEC-G4-04",
+        "PE-CNEB-2017-CYT-INQ-G5-01",
+        "PE-CNEB-2017-CYT-INQ-G5-02",
+        "PE-CNEB-2017-CYT-INQ-G5-03",
+        "PE-CNEB-2017-CYT-INQ-G5-04",
+        "PE-CNEB-2017-CYT-INQ-G5-05",
+        "PE-CNEB-2017-CYT-EXP-G5-01",
+        "PE-CNEB-2017-CYT-EXP-G5-02",
+        "PE-CNEB-2017-CYT-EXP-G5-03",
+        "PE-CNEB-2017-CYT-EXP-G5-04",
+        "PE-CNEB-2017-CYT-EXP-G5-05",
+        "PE-CNEB-2017-CYT-EXP-G5-06",
+        "PE-CNEB-2017-CYT-EXP-G5-07",
+        "PE-CNEB-2017-CYT-TEC-G5-01",
+        "PE-CNEB-2017-CYT-TEC-G5-02",
+        "PE-CNEB-2017-CYT-TEC-G5-03",
+        "PE-CNEB-2017-CYT-INQ-G6-01",
+        "PE-CNEB-2017-CYT-INQ-G6-02",
+        "PE-CNEB-2017-CYT-INQ-G6-03",
+        "PE-CNEB-2017-CYT-INQ-G6-04",
+        "PE-CNEB-2017-CYT-INQ-G6-05",
+        "PE-CNEB-2017-CYT-EXP-G6-01",
+        "PE-CNEB-2017-CYT-EXP-G6-02",
+        "PE-CNEB-2017-CYT-EXP-G6-03",
+        "PE-CNEB-2017-CYT-EXP-G6-04",
+        "PE-CNEB-2017-CYT-EXP-G6-05",
+        "PE-CNEB-2017-CYT-EXP-G6-06",
+        "PE-CNEB-2017-CYT-EXP-G6-07",
+        "PE-CNEB-2017-CYT-EXP-G6-08",
+        "PE-CNEB-2017-CYT-EXP-G6-09",
+        "PE-CNEB-2017-CYT-TEC-G6-01",
+        "PE-CNEB-2017-CYT-TEC-G6-02",
+        "PE-CNEB-2017-CYT-TEC-G6-03",
+        "PE-CNEB-2017-CYT-TEC-G6-04"
+      ],
+      "kind": "context_language_and_assessment",
+      "finding": "No target has a completed Peru review of Spanish/Quechua language, selected Quechua variety, local knowledge, community materials, assessment or curriculum fit.",
+      "next_work": "Choose deployment community and language profile; review examples with EIB educators and language specialists; preserve scientific accuracy when adapting local knowledge."
+    }
+  ],
+  "counts": {
+    "candidate_groups": 36,
+    "performance_targets_with_a_candidate": 80,
+    "performance_targets_without_a_candidate": 23,
+    "alignment_approved": 0
+  },
+  "unmatched_performance_ids": [
+    "PE-CNEB-2017-CYT-TEC-G1-01",
+    "PE-CNEB-2017-CYT-TEC-G1-02",
+    "PE-CNEB-2017-CYT-TEC-G1-03",
+    "PE-CNEB-2017-CYT-TEC-G1-04",
+    "PE-CNEB-2017-CYT-TEC-G2-01",
+    "PE-CNEB-2017-CYT-TEC-G2-02",
+    "PE-CNEB-2017-CYT-TEC-G2-03",
+    "PE-CNEB-2017-CYT-TEC-G2-04",
+    "PE-CNEB-2017-CYT-TEC-G3-01",
+    "PE-CNEB-2017-CYT-TEC-G3-02",
+    "PE-CNEB-2017-CYT-TEC-G3-03",
+    "PE-CNEB-2017-CYT-TEC-G3-04",
+    "PE-CNEB-2017-CYT-TEC-G4-01",
+    "PE-CNEB-2017-CYT-TEC-G4-02",
+    "PE-CNEB-2017-CYT-TEC-G4-03",
+    "PE-CNEB-2017-CYT-TEC-G4-04",
+    "PE-CNEB-2017-CYT-TEC-G5-01",
+    "PE-CNEB-2017-CYT-TEC-G5-02",
+    "PE-CNEB-2017-CYT-TEC-G5-03",
+    "PE-CNEB-2017-CYT-TEC-G6-01",
+    "PE-CNEB-2017-CYT-TEC-G6-02",
+    "PE-CNEB-2017-CYT-TEC-G6-03",
+    "PE-CNEB-2017-CYT-TEC-G6-04"
+  ]
+}

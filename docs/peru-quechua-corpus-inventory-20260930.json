@@ -1,0 +1,386 @@
+{
+  "research_date": "2026-09-30",
+  "purpose": "Preliminary inventory for Peru Quechua continued-pretraining feasibility; not an approved training manifest.",
+  "counting_rules": [
+    "Do not sum sources: web crawls, religious texts, Wikipedia and research collections overlap.",
+    "Preserve units: publisher model tokens, whitespace words, rows, documents and compressed bytes are not interchangeable.",
+    "A publisher language code is not a verified variety label.",
+    "A packaging licence does not settle all underlying text rights.",
+    "Retained target-variety tokens after audit have not been measured.",
+    "The initial 30 September pass downloaded metadata, samples, a curriculum PDF and the AmericasNLP training file. The 1 October school-material pass also acquired the separately catalogued PDFs and page text; those measurements include all languages."
+  ],
+  "datasets": [
+    {
+      "id": "hplt-3.0-quy_Latn",
+      "source_url": "https://huggingface.co/datasets/HPLT/HPLT3.0",
+      "stats_url": "https://data.hplt-project.org/three/sorted/manifest.json",
+      "manifest_format": "JSON Lines despite .json extension",
+      "manifest_file_sha256": "eb82cccdc093235f5ffd89fc775963ce9ca6b61857366b91b4b4096991afdb4c",
+      "publisher_statistics": {
+        "files": 6,
+        "bytes": 39400105,
+        "documents": 20199,
+        "segments": 565160,
+        "tokens": 42765018,
+        "characters": 113998628,
+        "name": "quy_Latn",
+        "t/d": 2117.1849101440666,
+        "c/t": 2.6656981180272155,
+        "samples": "https://data.hplt-project.org/three/sorted/quy_Latn.json",
+        "urls": [
+          "https://data.hplt-project.org/three/sorted/quy_Latn/10_1.jsonl.zst",
+          "https://data.hplt-project.org/three/sorted/quy_Latn/5_1.jsonl.zst",
+          "https://data.hplt-project.org/three/sorted/quy_Latn/6_1.jsonl.zst",
+          "https://data.hplt-project.org/three/sorted/quy_Latn/7_1.jsonl.zst",
+          "https://data.hplt-project.org/three/sorted/quy_Latn/8_1.jsonl.zst",
+          "https://data.hplt-project.org/three/sorted/quy_Latn/9_1.jsonl.zst"
+        ],
+        "map": "https://data.hplt-project.org/three/sorted/quy_Latn.map",
+        "md5": "https://data.hplt-project.org/three/sorted/quy_Latn.md5"
+      },
+      "tokenizer": "Gemma 3 vocabulary, per dataset card",
+      "packaging_license": "CC0-1.0; original text rights retained per card",
+      "verification": "Manifest, six-shard map and 12 publisher samples retrieved; full shards not downloaded or audited.",
+      "sample_sha256": "cfad16a036c7dbd986f57f08561f18c6124125bbb3173734c626515deaf9694f",
+      "sample_findings": [
+        "Spanish passages appended to Quechua",
+        "English translation-site boilerplate",
+        "Religious material",
+        "Heterogeneous orthography; variety membership requires expert review"
+      ],
+      "sample_limit": "Two examples in each of quality-score bins 5 through 10; not a random prevalence estimate."
+    },
+    {
+      "id": "fineweb2-peru-southern-candidates",
+      "source_url": "https://huggingface.co/datasets/HuggingFaceFW/fineweb-2",
+      "stats_url": "https://github.com/huggingface/fineweb-2/blob/d0defb24f193bb9a5a11b8b14524a03c4858e1b6/fineweb2-language-distribution.csv",
+      "statistics_commit": "d0defb24f193bb9a5a11b8b14524a03c4858e1b6",
+      "statistics_sha256": "0c6e6fbcef62cb034aff493187dee8d327c6bb2c08bb14a81a9c7221b091e0a5",
+      "publisher_statistics": [
+        {
+          "subset": "quy_Latn",
+          "split": "train",
+          "code": "quy",
+          "script": "Latn",
+          "name": "Ayacucho Quechua",
+          "family": "Quechuan",
+          "words": 1280177,
+          "documents": 2903,
+          "utf8_bytes": 8685023,
+          "utf8_bytes_human": "8.28MB",
+          "parquet_bytes": 3788785,
+          "parquet_bytes_human": "3.61MB",
+          "bible_ratio": "0.075",
+          "wiki_ratio": "0.617"
+        },
+        {
+          "subset": "quy_Latn",
+          "split": "test",
+          "code": "quy",
+          "script": "Latn",
+          "name": "Ayacucho Quechua",
+          "family": "Quechuan",
+          "words": 5465,
+          "documents": 23,
+          "utf8_bytes": 36356,
+          "utf8_bytes_human": "35.50KB",
+          "parquet_bytes": 29239,
+          "parquet_bytes_human": "28.55KB",
+          "bible_ratio": "-",
+          "wiki_ratio": "-"
+        },
+        {
+          "subset": "quz_Latn",
+          "split": "train",
+          "code": "quz",
+          "script": "Latn",
+          "name": "Cusco Quechua",
+          "family": "Quechuan",
+          "words": 928961,
+          "documents": 1528,
+          "utf8_bytes": 6441744,
+          "utf8_bytes_human": "6.14MB",
+          "parquet_bytes": 2607828,
+          "parquet_bytes_human": "2.49MB",
+          "bible_ratio": "0.288",
+          "wiki_ratio": "0.192"
+        },
+        {
+          "subset": "quz_Latn",
+          "split": "test",
+          "code": "quz",
+          "script": "Latn",
+          "name": "Cusco Quechua",
+          "family": "Quechuan",
+          "words": 11946,
+          "documents": 18,
+          "utf8_bytes": 74340,
+          "utf8_bytes_human": "72.60KB",
+          "parquet_bytes": 48558,
+          "parquet_bytes_human": "47.42KB",
+          "bible_ratio": "-",
+          "wiki_ratio": "-"
+        }
+      ],
+      "training_total": {
+        "words": 2209138,
+        "documents": 4431,
+        "utf8_bytes": 15126767
+      },
+      "packaging_license": "ODC-By-1.0; source rights require separate consideration",
+      "verification": "Publisher statistics retrieved; payload not audited.",
+      "exclusions": [
+        "Test splits",
+        "Removed/rejected text",
+        "Other Quechuan varieties outside the two selected codes"
+      ],
+      "notes": [
+        "Bible and wiki ratios copied verbatim as publisher metadata; not interpreted as token shares."
+      ]
+    },
+    {
+      "id": "qubert-paper-and-current-llamacha",
+      "paper_url": "https://aclanthology.org/2022.deeplo-1.1/",
+      "source_url": "https://huggingface.co/datasets/Llamacha/monolingual-quechua-iic",
+      "repository_revision": "db42e5b3fc768e45fb1376dce4367f8f692143cf",
+      "paper_statistics": {
+        "sentences": 384184,
+        "tokens": 4408953,
+        "token_unit": "Paper terminology, not normalized to the Hiraia model tokenizer"
+      },
+      "current_viewer_rows": 175408,
+      "repository_label_license": "Apache-2.0; underlying sources require separate review",
+      "verification": "Paper, current dataset page and repository file metadata inspected; full payload not audited.",
+      "notes": [
+        "Published paper corpus size and current repository viewer size differ.",
+        "Do not treat the advertised historical download size as current unique Quechua prose.",
+        "QuBERT itself is a BERT encoder, not a generative tutor."
+      ]
+    },
+    {
+      "id": "madlad-400-qu",
+      "source_url": "https://huggingface.co/datasets/allenai/madlad-400",
+      "file_metadata_url": "https://huggingface.co/api/datasets/allenai/madlad-400/tree/main/data/qu?limit=1000",
+      "publisher_clean_documents": 2449,
+      "files": [
+        {
+          "path": "data/qu/qu_clean_0000.jsonl.gz",
+          "size": 4217307,
+          "oid": "3e6ce130a311035215064a47f4fdcb0bfd9b2c86"
+        },
+        {
+          "path": "data/qu/qu_noisy_0000.jsonl.gz",
+          "size": 71577709,
+          "oid": "3b8fa957930fb5b6827de01e31b9e547b7c6b8f7"
+        }
+      ],
+      "packaging_license": "ODC-By",
+      "verification": "Dataset card and file API metadata; payload not audited.",
+      "notes": [
+        "Clean gzip size is 4217307 bytes, not an uncompressed text or token count.",
+        "Noisy gzip size is 71577709 bytes and is excluded from clean-data estimates.",
+        "Macro-language code qu does not establish a Peruvian variety."
+      ]
+    },
+    {
+      "id": "americasnlp-2024-train-quy",
+      "source_url": "https://github.com/AmericasNLP/americasnlp2024/tree/master/ST1_MachineTranslation/data/quechua-spanish",
+      "payload_url": "https://raw.githubusercontent.com/AmericasNLP/americasnlp2024/master/ST1_MachineTranslation/data/quechua-spanish/train.quy",
+      "git_blob_sha1": "086357e5b1d09127bfa6b51801a9e9365ccc904e",
+      "payload_sha256": "abb38aa9cf50a717f289da5a6a0c8174539c2f213bb25a493ca04d21f31d36cf",
+      "measured": {
+        "bytes": 11019760,
+        "physical_lines": 125008,
+        "nonempty_lines": 123042,
+        "whitespace_words": 1169644
+      },
+      "verification": "Quechua-side payload downloaded and counted; Spanish-side alignment not checked.",
+      "provenance": "README describes train.quy/train.es as JW300 Ayacucho; dictionaries and extras are separate.",
+      "licensing_status": "Source-specific terms need verification before training inclusion.",
+      "exclusions": [
+        "Development/test sets",
+        "synthetic.tsv backtranslations counted separately from natural text"
+      ],
+      "notes": [
+        "Physical lines include empty records; do not call all 125008 lines usable sentence pairs.",
+        "Likely overlap with religious material in other collections."
+      ]
+    },
+    {
+      "id": "minedu-eib-educational-text",
+      "source_url": "https://www.gob.pe/39449-educacion-intercultural-bilingue-eib-materiales-educativos-en-educacion-intercultural-bilingue",
+      "directory_url": "https://formacionenservicio.minedu.gob.pe/sifods/centro-recurso/2022/Material-educativo/",
+      "example_title": "383.ITEM-134-PS-y-CT-3er-Quechua-Chanka-2021-PDF-WEB.pdf",
+      "verified_token_count": null,
+      "verification": "Completed acquisition of 628 public-mirror PDFs; hashes, PDF headers, page records and raw word counts checked. Publisher imprint and extraction spot checks recorded separately. All 18 missing science-series official links returned security-verification HTML.",
+      "licensing_status": "Not cleared for CPT. Some source imprints explicitly restrict reproduction; all resources remain training_approved=false.",
+      "notes": [
+        "376 candidate catalogue entries resolve to 628 PDF files including worksheet parts and multiple editions; this is not 628 distinct books.",
+        "One explicitly Shawi entry was excluded from the Quechua candidate pool.",
+        "The science subset covers Collao Grades 1-6 and Kichwa Grades 1-2; Central, Chanka and Inkawasi-Kanaris Grades 1-6 are acquisition gaps.",
+        "Mirror language, grade and edition metadata is provisional and contains errors.",
+        "Raw and page-deduplicated word counts include all languages and boilerplate; no target-variety token yield has been established.",
+        "Scientific accuracy, native-language quality and reuse terms require review. Some downloaded files need OCR.",
+        "Educational books may overlap research and web corpora; do not add these counts to other collections without cross-corpus deduplication."
+      ],
+      "collection_date": "2026-10-01",
+      "local_catalogue": "tools/quechua-school-corpus/catalogue.csv",
+      "local_browser": "tools/quechua-school-corpus/index.html",
+      "local_summary": "tools/quechua-school-corpus/summary.json",
+      "local_audit": "tools/quechua-school-corpus/audit.json",
+      "raw_storage": "finetuning/reference-materials/peru-quechua/",
+      "measured": {
+        "downloaded_resource_ids": 628,
+        "unique_pdf_sha256s": 628,
+        "unique_pdf_bytes": 12824862846,
+        "unique_pdf_pages": 57997,
+        "unique_pdfs_with_zero_extracted_words": 16,
+        "raw_whitespace_words_all_languages": 4566122,
+        "quechua_only_word_count": null,
+        "training_approved_resources": 0,
+        "words_after_exact_page_text_dedup_all_languages": 4015123,
+        "science_and_personal_social": {
+          "unique_pdfs": 8,
+          "pdf_pages": 1328,
+          "raw_whitespace_words_all_languages": 103946
+        }
+      }
+    },
+    {
+      "id": "hplt-2.0-legacy",
+      "source_url": "https://hplt-project.org/datasets/v2.0",
+      "publisher_cleaned_quy_Latn": {
+        "words_rounded": 17310000,
+        "documents_rounded": 36940
+      },
+      "status": "Legacy comparison, not an additive source count",
+      "notes": [
+        "Overlaps HPLT 3.0.",
+        "Publisher words differ from HPLT 3.0 model tokens."
+      ]
+    },
+    {
+      "id": "dcad-2000-overlap-candidate",
+      "source_url": "https://huggingface.co/datasets/openbmb/DCAD-2000",
+      "file_metadata": {
+        "quy_Latn": [
+          {
+            "type": "file",
+            "oid": "a592e8d0545fd6f7c813bd804cfb2dd1a6b609bf",
+            "size": 7422877,
+            "path": "quy_Latn/fineweb-2_000001_keep.jsonl"
+          },
+          {
+            "type": "file",
+            "oid": "44a70bc6056df64d3d12be8062550e9db3f5dcb5",
+            "size": 1052627,
+            "path": "quy_Latn/fineweb-2_000001_remove.jsonl"
+          },
+          {
+            "type": "file",
+            "oid": "c0def055a6ce2d47f505eebf0c3e4ac2aff811d4",
+            "size": 3594,
+            "path": "quy_Latn/fineweb-2_000001_stas.jsonl"
+          },
+          {
+            "type": "file",
+            "oid": "fa999c795a2505e84e7647fef9fec6a9b43afb1f",
+            "size": 312907,
+            "path": "quy_Latn/mala_000002_keep.jsonl"
+          },
+          {
+            "type": "file",
+            "oid": "c13ac91cf37060a3a02d4abcef2183ea1a35f075",
+            "size": 86417,
+            "path": "quy_Latn/mala_000002_remove.jsonl"
+          },
+          {
+            "type": "file",
+            "oid": "298259e53214898ab70da1330d5475b1f3654f77",
+            "size": 3628,
+            "path": "quy_Latn/mala_000002_stas.jsonl"
+          }
+        ],
+        "quz_Latn": [
+          {
+            "type": "file",
+            "oid": "010489ba2de82662f1f17b7400ecb716f802f6be",
+            "size": 7117812,
+            "path": "quz_Latn/fineweb-2_000001_keep.jsonl"
+          },
+          {
+            "type": "file",
+            "oid": "4886425f96728ec00392e97a7f14e4971c8096fc",
+            "size": 1747770,
+            "path": "quz_Latn/fineweb-2_000001_remove.jsonl"
+          },
+          {
+            "type": "file",
+            "oid": "ba6e5aea1e81ea9b3f3c5016fec8227cb31720c1",
+            "size": 3524,
+            "path": "quz_Latn/fineweb-2_000001_stas.jsonl"
+          },
+          {
+            "type": "file",
+            "oid": "84a10c3c4626dc70fcc3951b0e591e2d81af2e72",
+            "size": 2480,
+            "path": "quz_Latn/mala_000002_keep.jsonl"
+          },
+          {
+            "type": "file",
+            "oid": "a82879a7d443e0ea04f0dccca463eff7835c214d",
+            "size": 2615,
+            "path": "quz_Latn/mala_000002_remove.jsonl"
+          },
+          {
+            "type": "file",
+            "oid": "da066d5118e243fc313478ea89fdb5fb22d2564c",
+            "size": 3537,
+            "path": "quz_Latn/mala_000002_stas.jsonl"
+          }
+        ]
+      },
+      "status": "Upstream-derived material; unique increment unmeasured"
+    },
+    {
+      "id": "ixari-unverified-size-claim",
+      "source_url": "https://huggingface.co/datasets/OpceanAI/Ixari",
+      "advertised_quechua_tokens": 500000000,
+      "repository_tree_observed": [
+        {
+          "type": "file",
+          "oid": "bed0738c7eeb449bca98b5d2f33c89a1ee56349a",
+          "size": 2504,
+          "path": ".gitattributes"
+        },
+        {
+          "type": "file",
+          "oid": "65bec4f83f4ea77cbcea32a3253339a698ae1068",
+          "size": 17066,
+          "path": "README.md"
+        }
+      ],
+      "status": "EXCLUDED: no usable payload verified; advertised count not accepted as available data"
+    }
+  ],
+  "reference_document": {
+    "title": "MINEDU Programa curricular de Educacion Primaria",
+    "edition": "March 2017, from current MINEDU publication catalogue",
+    "publication_url": "https://www.gob.pe/institucion/minedu/informes-publicaciones/6790803-programa-curricular-de-educacion-primaria",
+    "pdf_url": "https://cdn.www.gob.pe/uploads/document/file/10209521/6790803-programa-curricular-de-educacion-primaria.pdf?v=1782418171",
+    "bytes": 20473784,
+    "sha256": "34009689b6e3fe2194ec61c1675af13407528ae5e0f34f4d484007efd9e832f7",
+    "local_ignored_path": "finetuning/reference-materials/peru-curriculum/minedu-primary-2017-34009689b6e3.pdf",
+    "competency_map_path": "rag/sources/curriculum-guides/peru/cneb-primary-science.json",
+    "science_printed_pages": "271-301",
+    "visually_verified_page": {
+      "printed_page": 291,
+      "pdf_one_based_page": 293,
+      "observations": [
+        "Grade 5 plant/animal cell expectation",
+        "Grade 6 bacteria-host example incorrectly generalizes host dependence"
+      ]
+    }
+  },
+  "last_updated_date": "2026-10-01"
+}

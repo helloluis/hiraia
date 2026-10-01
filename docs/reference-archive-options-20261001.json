@@ -1,0 +1,600 @@
+{
+  "schema_version": 1,
+  "title": "Hiraia reference archive options",
+  "checked_at": "2026-10-01T01:54:29Z",
+  "status": "recommendation_only_no_remote_changes",
+  "recommendation": {
+    "primary": "Create a private Cloudflare R2 Standard bucket dedicated to reference materials, separate from public hiraia-assets.",
+    "second_copy": "Keep an independent private Backblaze B2 copy of originals and acquisition evidence, with file versions retained and a scoped ingest key. If choosing only one new provider, B2 is the lower storage-cost option.",
+    "why": "The known archive is about 21.6GB. The operational simplicity of an existing R2 integration and immediate access outweigh tiny cold-storage savings. A second provider still costs cents per month at this size.",
+    "at_current_size_storage_only_usd": 0.410698,
+    "cost_assumption": "Existing R2 storage allowance unavailable; a new B2 account has its first 10GB available. Ordinary request costs remain zero only while R2 account request allowances have headroom. Excludes tax, version growth and remote-only collections.",
+    "cold_storage_threshold": "Revisit Deep Archive when immutable collections grow to multi-TB scale and long restore delays are acceptable. Do not put the active educational reference library there just to save cents."
+  },
+  "inventory": {
+    "measured_at_utc": "2026-10-01T01:51:54.685372+00:00",
+    "directories": [
+      {
+        "path": "finetuning/reference-materials/deped-science",
+        "files": 1,
+        "bytes": 37645278,
+        "extensions": {
+          ".jsonl": {
+            "files": 1,
+            "bytes": 37645278
+          }
+        }
+      },
+      {
+        "path": "finetuning/reference-materials/lrmds",
+        "files": 1300,
+        "bytes": 7540303968,
+        "extensions": {
+          ".md": {
+            "files": 1,
+            "bytes": 1291
+          },
+          ".json": {
+            "files": 1,
+            "bytes": 87
+          },
+          ".jsonl": {
+            "files": 1,
+            "bytes": 20338254
+          },
+          "": {
+            "files": 1,
+            "bytes": 25
+          },
+          ".pdf": {
+            "files": 1296,
+            "bytes": 7519964311
+          }
+        }
+      },
+      {
+        "path": "finetuning/reference-materials/science",
+        "files": 244,
+        "bytes": 940926570,
+        "extensions": {
+          ".md": {
+            "files": 1,
+            "bytes": 997
+          },
+          ".json": {
+            "files": 1,
+            "bytes": 84
+          },
+          ".jsonl": {
+            "files": 1,
+            "bytes": 33081192
+          },
+          "": {
+            "files": 1,
+            "bytes": 25
+          },
+          ".pdf": {
+            "files": 189,
+            "bytes": 484189320
+          },
+          ".docx": {
+            "files": 44,
+            "bytes": 399602216
+          },
+          ".doc": {
+            "files": 7,
+            "bytes": 24052736
+          }
+        }
+      },
+      {
+        "path": "finetuning/reference-materials/peru-quechua",
+        "files": 3545,
+        "bytes": 13059476507,
+        "extensions": {
+          ".json": {
+            "files": 629,
+            "bytes": 1437904
+          },
+          ".pdf": {
+            "files": 628,
+            "bytes": 12824862846
+          },
+          ".html": {
+            "files": 1011,
+            "bytes": 88446339
+          },
+          ".png": {
+            "files": 3,
+            "bytes": 1095496
+          },
+          ".response": {
+            "files": 18,
+            "bytes": 275814
+          },
+          ".txt": {
+            "files": 628,
+            "bytes": 67290947
+          },
+          ".jsonl": {
+            "files": 628,
+            "bytes": 76067161
+          }
+        }
+      },
+      {
+        "path": "finetuning/reference-materials/peru-curriculum",
+        "files": 2,
+        "bytes": 21686084,
+        "extensions": {
+          ".pdf": {
+            "files": 1,
+            "bytes": 20473784
+          },
+          ".txt": {
+            "files": 1,
+            "bytes": 1212300
+          }
+        }
+      },
+      {
+        "path": "rag/sources",
+        "files": 51,
+        "bytes": 11216962,
+        "extensions": {
+          "": {
+            "files": 1,
+            "bytes": 8196
+          },
+          ".md": {
+            "files": 1,
+            "bytes": 7102
+          },
+          ".pdf": {
+            "files": 7,
+            "bytes": 8849736
+          },
+          ".json": {
+            "files": 5,
+            "bytes": 304124
+          },
+          ".txt": {
+            "files": 36,
+            "bytes": 2040678
+          },
+          ".py": {
+            "files": 1,
+            "bytes": 7126
+          }
+        }
+      }
+    ],
+    "total_files": 5143,
+    "total_bytes": 21611255369,
+    "max_object_bytes": 66548718,
+    "single_put_class_a_requests": 5143,
+    "readback_class_b_get_requests": 5143,
+    "one_global_list_sweep_requests": 6,
+    "modeled_8mib_multipart_upload_class_a_requests": 8475,
+    "excluded_paths": [
+      "finetuning/reference-materials/peru-quechua/curriculum/ (temporary duplicate removed by map agent)"
+    ],
+    "not_a_deduplicated_inventory": true,
+    "method": "Read-only recursive file-path count and stat bytes, without hash deduplication or rights review. Snapshot of these directories only; a concurrent agent can add small mapping files after this measurement.",
+    "pdf_scope_note": "Peru-quechua contains 628 school-material PDFs. Peru-curriculum separately contains the official programme PDF and extracted text. Do not count a duplicate temporary curriculum PDF twice.",
+    "unmeasured_remote_scope": "finetuning/reference-materials/lrmds/README.md records 24,975 DepEd modules on RunPod at /workspace/corpus/raw/deped-lrportal/. Remote size, availability and present backup status were not checked.",
+    "excluded_large_assets": "Model weights, APKs, image packs and general training corpora are outside this reference-library estimate.",
+    "originals_priority": [
+      "PDF/DOC/DOCX source bytes",
+      "catalogue/acquisition HTML and access observations",
+      "source/edition/rights provenance and SHA256 manifests",
+      "human corrections and mapping review records"
+    ],
+    "reproducible_derivatives": [
+      "unchanged PDF text extraction",
+      "page-level JSONL",
+      "rendered review thumbnails"
+    ],
+    "derivative_policy": "Retain derivatives when cheap, labeled with parent hash and extractor/version; never substitute them for source bytes. Published training sets and human corrections require their own immutable release manifests."
+  },
+  "billing_assumptions": {
+    "currency": "USD",
+    "duration": "Full representative month; Backblaze quoted per 30-day storage rate",
+    "decimal_gb_bytes": 1000000000,
+    "decimal_tb_bytes": 1000000000000,
+    "aws_gb_bytes": 1073741824,
+    "b2_units": "Estimates interpret advertised TB as decimal 10^12 bytes and use byte-hour proration. Provider storage totals and invoice rounding are authoritative.",
+    "r2_units": "GB modeled as decimal per R2 unit definitions; storage/retrieval round up to whole GB and request charges to million-request billing blocks.",
+    "allowances": "Free allowances belong to an account, not a bucket. No account billing or secrets were inspected.",
+    "scenario_exclusions": [
+      "tax",
+      "extra retained versions",
+      "AWS per-object metadata",
+      "AWS restore requests/temporary copies/egress",
+      "one-time ingest requests",
+      "minimum-duration early deletion",
+      "optional paid support"
+    ]
+  },
+  "providers": [
+    {
+      "id": "r2-standard",
+      "role": "recommended_primary",
+      "storage_usd_per_gb_month": 0.015,
+      "free_storage_gb_month": 10,
+      "class_a_usd_per_million": 4.5,
+      "class_b_usd_per_million": 0.36,
+      "free_class_a_requests": 1000000,
+      "free_class_b_requests": 10000000,
+      "retrieval_usd_per_gb": 0,
+      "internet_egress_usd_per_gb": 0,
+      "minimum_storage_days": 0,
+      "lock_and_versions": "Use content-addressed keys and bucket locks. Locks can be removed by a bucket-configuration administrator. Native S3 versioning operations are not listed in the compatibility table; archive correctness must not depend on them.",
+      "sources": [
+        "r2-pricing",
+        "r2-classes",
+        "r2-locks",
+        "r2-s3-api"
+      ]
+    },
+    {
+      "id": "r2-infrequent-access",
+      "role": "not_recommended_for_small_active_archive",
+      "storage_usd_per_gb_month": 0.01,
+      "free_storage_gb_month": 0,
+      "class_a_usd_per_million": 9,
+      "class_b_usd_per_million": 0.9,
+      "free_class_a_requests": 0,
+      "free_class_b_requests": 0,
+      "retrieval_usd_per_gb": 0.01,
+      "internet_egress_usd_per_gb": 0,
+      "minimum_storage_days": 30,
+      "pitfall": "A month with even a small upload and read-back triggers a $9 Class A block and a $0.90 Class B block, plus retrieval and storage; this follows the official rounding rule and its explicit 1,000-write example.",
+      "sources": [
+        "r2-pricing",
+        "r2-classes"
+      ]
+    },
+    {
+      "id": "backblaze-b2",
+      "role": "recommended_independent_copy_or_lowest_cost_hot_primary",
+      "storage_usd_per_decimal_tb_30_days": 6.95,
+      "free_storage_gb": 10,
+      "ordinary_class_a_b_c_requests_usd": 0,
+      "special_class_d_usd_per_10000": 0.004,
+      "special_class_d_free_daily": 2500,
+      "free_monthly_egress_multiple_of_average_storage": 3,
+      "excess_egress_usd_per_gb": 0.01,
+      "minimum_storage_days": 0,
+      "minimum_file_size_bytes": 0,
+      "lock_and_versions": "Retains all file versions by default. Governance Object Lock plus a key lacking delete/bypass capability suits the archive. Enabling Object Lock itself is irreversible; choose intentionally. Compliance retention cannot be shortened.",
+      "price_change_note": "May 1, 2026 replaced $6/TB with $6.95/TB and removed ordinary API charges. Ignore stale marketing pages still quoting $6.",
+      "sources": [
+        "b2-pricing",
+        "b2-price-change",
+        "b2-locks",
+        "b2-versions",
+        "b2-billable-files"
+      ]
+    },
+    {
+      "id": "aws-s3-glacier-flexible",
+      "role": "secondary_cold_option_at_larger_scale",
+      "region": "us-east-1",
+      "storage_usd_per_gib_month": 0.0036,
+      "minimum_storage_days": 90,
+      "lifecycle_transition_usd_per_1000": 0.03,
+      "bulk_restore": {
+        "typical_hours": "5–12",
+        "retrieval_usd_per_gib": 0,
+        "requests_usd_per_1000": 0
+      },
+      "standard_restore": {
+        "typical_hours": "3–5",
+        "retrieval_usd_per_gib": 0.01,
+        "requests_usd_per_1000": 0.05
+      },
+      "notes": "Restore to a temporary readable copy before GET; internet download and temporary Standard storage can dominate the storage bill.",
+      "sources": [
+        "aws-s3-ratecard",
+        "aws-storage-classes",
+        "aws-retrieval",
+        "aws-pricing-units",
+        "aws-transfer-ratecard"
+      ]
+    },
+    {
+      "id": "aws-s3-glacier-deep-archive",
+      "role": "possible_large_immutable_second_copy",
+      "region": "us-east-1",
+      "storage_usd_per_gib_month": 0.00099,
+      "minimum_storage_days": 180,
+      "put_usd_per_1000": 0.05,
+      "bulk_restore": {
+        "typical_hours": "up to 48",
+        "retrieval_usd_per_gib": 0.0025,
+        "requests_usd_per_1000": 0.025
+      },
+      "standard_restore": {
+        "typical_hours": "up to 12",
+        "retrieval_usd_per_gib": 0.02,
+        "requests_usd_per_1000": 0.1
+      },
+      "notes": "Lowest storage rate here; long restore workflow, six-month minimum billing and internet egress make it unsuitable as the active reference library.",
+      "sources": [
+        "aws-da-ratecard",
+        "aws-storage-classes",
+        "aws-retrieval",
+        "aws-pricing-units",
+        "aws-transfer-ratecard"
+      ]
+    },
+    {
+      "id": "wasabi-paygo",
+      "role": "not_recommended_at_present_size",
+      "storage_usd_per_billed_tb_month": 7.99,
+      "minimum_billed_tb": 1,
+      "minimum_storage_days": 90,
+      "ordinary_requests_usd": 0,
+      "egress": "Free subject to monthly downloads not exceeding active stored volume under published Pay-Go terms.",
+      "reason": "The one-TB monthly minimum makes a ~22GB reference archive substantially more expensive than R2 or B2.",
+      "sources": [
+        "wasabi-pricing",
+        "wasabi-price-change",
+        "wasabi-terms"
+      ]
+    }
+  ],
+  "monthly_storage_scenarios": [
+    {
+      "id": "peru_school_collection",
+      "bytes": 13059476507,
+      "decimal_gb": 13.059477,
+      "aws_billable_gib": 12.162585,
+      "monthly_storage_usd": {
+        "r2_standard_no_unused_free_storage": 0.21,
+        "r2_standard_if_full_10gb_allowance_unused": 0.06,
+        "r2_infrequent_access": 0.14,
+        "b2_no_unused_free_storage": 0.090763,
+        "b2_if_full_10gb_allowance_unused": 0.021263,
+        "aws_flexible_payload_only": 0.043785,
+        "aws_deep_archive_payload_only": 0.012041,
+        "wasabi_paygo_minimum": 7.99
+      }
+    },
+    {
+      "id": "all_local_reference_scopes",
+      "bytes": 21611255369,
+      "decimal_gb": 21.611255,
+      "aws_billable_gib": 20.12705,
+      "monthly_storage_usd": {
+        "r2_standard_no_unused_free_storage": 0.33,
+        "r2_standard_if_full_10gb_allowance_unused": 0.18,
+        "r2_infrequent_access": 0.22,
+        "b2_no_unused_free_storage": 0.150198,
+        "b2_if_full_10gb_allowance_unused": 0.080698,
+        "aws_flexible_payload_only": 0.072457,
+        "aws_deep_archive_payload_only": 0.019926,
+        "wasabi_paygo_minimum": 7.99
+      }
+    },
+    {
+      "id": "100_decimal_GB",
+      "bytes": 100000000000,
+      "decimal_gb": 100,
+      "aws_billable_gib": 93.132257,
+      "monthly_storage_usd": {
+        "r2_standard_no_unused_free_storage": 1.5,
+        "r2_standard_if_full_10gb_allowance_unused": 1.35,
+        "r2_infrequent_access": 1,
+        "b2_no_unused_free_storage": 0.695,
+        "b2_if_full_10gb_allowance_unused": 0.6255,
+        "aws_flexible_payload_only": 0.335276,
+        "aws_deep_archive_payload_only": 0.092201,
+        "wasabi_paygo_minimum": 7.99
+      }
+    },
+    {
+      "id": "1_decimal_TB",
+      "bytes": 1000000000000,
+      "decimal_gb": 1000,
+      "aws_billable_gib": 931.322575,
+      "monthly_storage_usd": {
+        "r2_standard_no_unused_free_storage": 15,
+        "r2_standard_if_full_10gb_allowance_unused": 14.85,
+        "r2_infrequent_access": 10,
+        "b2_no_unused_free_storage": 6.95,
+        "b2_if_full_10gb_allowance_unused": 6.8805,
+        "aws_flexible_payload_only": 3.352761,
+        "aws_deep_archive_payload_only": 0.922009,
+        "wasabi_paygo_minimum": 7.99
+      }
+    }
+  ],
+  "first_ingest_example": {
+    "scope": "All inventoried files, stored individually; duplicate bytes not yet eliminated.",
+    "objects": 5143,
+    "total_bytes": 21611255369,
+    "single_put_requests": 5143,
+    "single_prefix_list_requests": 6,
+    "full_readback_get_requests": 5143,
+    "r2_standard_request_cost_if_allowances_available_usd": 0,
+    "r2_standard_increment_if_account_allowances_unavailable": "Account-total rounding decides the exact increment: this small batch crosses at most one extra $4.50 A block and one extra $0.36 B block. Zero additional cost if it fits already-paid blocks.",
+    "r2_ia_fresh_month_requests_usd": 9.9,
+    "r2_ia_readback_retrieval_usd": 0.22,
+    "r2_ia_storage_full_month_usd": 0.22,
+    "r2_ia_first_month_total_usd": 10.34,
+    "multipart_note": "Largest measured object is 66548718 bytes, so a single PUT per file is feasible. An 8MiB-threshold uploader instead produces approximately 8475 upload operations, still well within one million. Extra HEADs/list prefixes/retries add requests; do not copy the public-release script unchanged.",
+    "verification": "Download every uploaded object and recompute SHA256; successful PUT or HEAD byte count alone is not proof of a recoverable archive.",
+    "sources": [
+      "r2-pricing"
+    ]
+  },
+  "aws_common_costs": {
+    "standard_storage_usd_per_gib_month": 0.023,
+    "get_requests_usd_per_1000": 0.0004,
+    "internet_egress_free_gib_per_month_account_wide": 100,
+    "internet_egress_usd_per_gib_first_paid_10tib": 0.09,
+    "archive_metadata_bytes_per_object": {
+      "standard": 8192,
+      "archive": 32768
+    },
+    "versions": "Versioning and Object Lock are available; retained versions incur storage.",
+    "one_decimal_tb_egress_after_unused_100gib_allowance_usd": 74.819032,
+    "sources": [
+      "aws-s3-ratecard",
+      "aws-transfer-ratecard",
+      "aws-storage-classes",
+      "aws-pricing-units",
+      "aws-locks"
+    ]
+  },
+  "implementation_recipe": [
+    "Create a dedicated private reference bucket; no public custom domain or r2.dev access. Keep the existing public release bucket separate.",
+    "Build an inventory before uploading: source URL, final download URL, publisher, document title, country, subject, grade, language/variety, edition date, fetched timestamp, bytes, SHA256, rights/usage status and parent hash for derivatives.",
+    "Use immutable keys such as objects/sha256/<first-two>/<sha256>.pdf. Keep a versioned manifest in Git and also upload that manifest with every snapshot. Preserve multiple editions as separate hashes; deduplicate identical bytes without losing multiple source attributions.",
+    "Use a dedicated archive uploader with bucket-scoped credentials. Its routine token cannot change retention/bucket settings; keep the administrator credential separate. For B2 omit deleteFiles and bypassGovernance capabilities from the ingest key.",
+    "Retain originals indefinitely by policy; configure locks to enforce that policy where appropriate. Copy newly added objects and snapshots, never mirror local deletion into the archive.",
+    "Verify the initial upload by full read-back SHA256. Restore into an empty directory without the source laptop; check every restored file against the manifest and record the result.",
+    "Copy verified originals and acquisition evidence to B2 under separate credentials. Restore samples quarterly and a complete snapshot annually or after changing archive tooling; define an owner and record last successful restore.",
+    "Keep copyrighted references private. A downloaded textbook is not automatically cleared for redistribution or model training; expose only approved materials, and keep training rights as an explicit manifest field.",
+    "Treat Git as the catalogue and pipeline record, not bulk storage. Keep both cloud-object locators and the manifest schema in the repository so another machine can restore the collection."
+  ],
+  "sources": [
+    {
+      "id": "r2-pricing",
+      "url": "https://developers.cloudflare.com/r2/pricing/",
+      "facts": "Storage, request blocks, free allowances, retrieval and egress.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "r2-classes",
+      "url": "https://developers.cloudflare.com/r2/buckets/storage-classes/",
+      "facts": "Standard has no minimum duration; Infrequent Access has 30 days.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "r2-locks",
+      "url": "https://developers.cloudflare.com/r2/buckets/bucket-locks/",
+      "facts": "Locks prevent deletion/overwrite but a configuration administrator can remove rules.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "r2-durability",
+      "url": "https://developers.cloudflare.com/r2/reference/durability/",
+      "facts": "Designed for eleven-nines annual durability, distinct from protection against deletion.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "r2-s3-api",
+      "url": "https://developers.cloudflare.com/r2/api/s3/api/",
+      "facts": "Supported S3 operations; bucket versioning operations are not listed. Do not assume S3 native version recovery.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "r2-units",
+      "url": "https://developers.cloudflare.com/r2/platform/limits/",
+      "facts": "Defines GB as 10^9 bytes and GiB as 2^30 bytes.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "b2-pricing",
+      "url": "https://www.backblaze.com/cloud-storage/pricing",
+      "facts": "Current $6.95/TB/30-day storage, first 10GB free, three-times average storage free egress, excess $0.01/GB; ordinary A/B/C API calls free, special Class D charge.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "b2-price-change",
+      "url": "https://www.backblaze.com/blog/backblaze-pricing-and-product-updates/",
+      "published_at": "2026-03-17",
+      "effective_at": "2026-05-01",
+      "facts": "Raises B2 from $6 to $6.95/TB; ordinary API transactions become free. Some other Backblaze pages still show $6.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "b2-locks",
+      "url": "https://www.backblaze.com/docs/cloud-storage-object-lock",
+      "facts": "Governance can be bypassed by specifically authorized keys; compliance retention cannot be shortened. Enabling bucket Object Lock cannot be reversed.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "b2-versions",
+      "url": "https://www.backblaze.com/docs/en/cloud-storage-lifecycle-rules",
+      "facts": "All file versions are retained by default unless deleted; lifecycle rules can remove older versions.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "b2-billable-files",
+      "url": "https://help.backblaze.com/hc/en-us/articles/218427927-How-is-storage-space-calculated-for-B2-Cloud-Storage",
+      "facts": "Billed on file bytes; old versions and duplicate copies count.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "aws-s3-ratecard",
+      "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonS3/current/us-east-1/index.json",
+      "publication_date": "2026-09-28T23:04:16Z",
+      "sha256": "798f9727bc5102d15d471c5b84c15ed3e20297015330f515a33d5f6a032cc2f1",
+      "facts": "US East N. Virginia S3 Flexible Retrieval and Standard storage/request rates.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "aws-da-ratecard",
+      "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonS3GlacierDeepArchive/current/us-east-1/index.json",
+      "publication_date": "2026-09-11T12:45:07Z",
+      "sha256": "33729eb763fe6c5c1d4695a53fc552fc7dfa361a1b4abd13c7c56e92859508b7",
+      "facts": "Deep Archive storage, PUT, standard/bulk restore requests and retrieval bytes.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "aws-transfer-ratecard",
+      "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AWSDataTransfer/current/us-east-1/index.json",
+      "publication_date": "2026-09-16T13:22:08Z",
+      "sha256": "00f81657d01946d02c905e32ca87cc6c23720b5de079b90fef5775243abcee80",
+      "facts": "100GB aggregate monthly free internet egress; US East first paid 10TB is $0.09/GB.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "aws-storage-classes",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html",
+      "facts": "Flexible minimum 90 days; Deep Archive minimum 180 days; each archived object adds 8KiB billed at Standard plus 32KiB at archival rate.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "aws-retrieval",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects-retrieval-options.html",
+      "facts": "Restore needed before GET; Flexible bulk normally 5–12h, standard 3–5h; Deep Archive bulk within 48h, standard within 12h.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "aws-pricing-units",
+      "url": "https://aws.amazon.com/s3/pricing/",
+      "facts": "S3 bills storage in binary GB (GiB). Temporary restored copies incur Standard storage alongside original archival storage.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "aws-locks",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html",
+      "facts": "Object Lock protects individual versions and requires S3 Versioning.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "wasabi-pricing",
+      "url": "https://wasabi.com/pricing",
+      "facts": "Current starting Pay-Go price $7.99/TB/month; pricing calculator uses base 2.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "wasabi-price-change",
+      "url": "https://docs.wasabi.com/docs/may-2026-wasabi-pricing",
+      "effective_at": "2026-07-01",
+      "facts": "$7.99/TB/month in all regions for affected Pay-Go accounts.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    },
+    {
+      "id": "wasabi-terms",
+      "url": "https://wasabi.com/product-terms",
+      "facts": "Pay-Go one-TB minimum, 90-day minimum duration; free egress when monthly downloads do not exceed active storage.",
+      "checked_at": "2026-10-01T01:54:29Z"
+    }
+  ]
+}
