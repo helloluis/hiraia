@@ -157,17 +157,18 @@ async function main() {
       report.voices = {};
       for (const [language, text] of [['en', 'The Sun gives plants energy.'], ['tl', 'Ang araw ay nagbibigay ng liwanag.']]) {
         const metadata = JSON.parse(fs.readFileSync(path.join(root, `packages/mobile/assets/voices/${language}/voice.json`)));
+        const filename = `voice-${language}-${metadata.sha256.slice(0, 16)}.onnx`;
         const tokens = [0];
         for (const character of text.toLowerCase()) if (metadata.vocab[character] !== undefined) tokens.push(metadata.vocab[character], 0);
-        report.voices[language] = await page.evaluate(async ({ language, tokens }) => {
+        report.voices[language] = await page.evaluate(async ({ language, tokens, filename }) => {
           const api = window.hiraiaDesktop;
           const files = api.sync('fs.list', 'hiraia://app/assets/assets/voices/' + language);
           const model = files.find(file => file.name.endsWith('.onnx'))?.name;
           if (!model) throw new Error('Bundled voice is missing');
-          // The native voice gate accepts only the two language filenames.
+          // Use the same versioned filename as the shared voice installer.
           const dir = api.info.paths.document + 'validation-voices/';
           api.sync('fs.mkdir', dir, { intermediates: true, idempotent: true });
-          const uri = dir + language + '.onnx';
+          const uri = dir + filename;
           api.sync('fs.copy', 'hiraia://app/assets/assets/voices/' + language + '/' + model, uri);
           const voice = await api.invoke('voice.open', uri);
           try {
@@ -177,7 +178,7 @@ async function main() {
             if (waveform.length < 1600 || !Array.from(waveform).every(Number.isFinite) || !Array.from(waveform).some(n => Math.abs(n) > 0.001)) throw new Error('Voice returned silent or invalid audio');
             return { samples: waveform.length };
           } finally { await api.invoke('voice.release', voice.id); }
-        }, { language, tokens });
+        }, { language, tokens, filename });
       }
       report.checks.push('bundled English and Tagalog voices synthesize offline');
     }

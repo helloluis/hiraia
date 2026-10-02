@@ -1,4 +1,5 @@
 import type { GradeLevel, Language } from '@hiraia/shared';
+import { ACTIVE_EDITION } from './edition';
 
 /**
  * The grade levels the app offers, in display order. The default is Grade 5 on purpose:
@@ -7,9 +8,9 @@ import type { GradeLevel, Language } from '@hiraia/shared';
  * feed answers. Persisted in the SQLite settings key 'grade' as a digit string ("3".."10")
  * — see engineStore.
  */
-export const GRADE_OPTIONS: readonly GradeLevel[] = [3, 4, 5, 6, 7, 8, 9, 10];
+export const GRADE_OPTIONS: readonly GradeLevel[] = ACTIVE_EDITION.grades;
 
-export const DEFAULT_GRADE: GradeLevel = 5;
+export const DEFAULT_GRADE: GradeLevel = ACTIVE_EDITION.defaultGrade;
 
 /** Parse a persisted/untrusted value ("3".."10") into a GradeLevel; null if it isn't one. */
 export function toGradeLevel(value: string | number | null | undefined): GradeLevel | null {

@@ -33,7 +33,7 @@ def restore(directory):
         shutil.copyfile(directory / name, target)
         if name.endswith(('.jks', 'credentials.json')):
             target.chmod(0o600)
-    subprocess.run(['node', 'scripts/verify-voices.mjs'], cwd=ROOT / 'packages/mobile', check=True)
+    subprocess.run(['node', 'scripts/verify-voices.mjs', '--include-downloads'], cwd=ROOT / 'packages/mobile', check=True)
     # The first run may use a locally provisioned native cache. Future runs use
     # Actions cache; changed pins force the canonical source build instead.
     seed = directory / 'build/qvac-android-x64'

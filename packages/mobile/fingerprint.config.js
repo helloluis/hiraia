@@ -48,6 +48,7 @@ const FILES = [
   ['qvac.config.json', 'hiraia: QVAC worker plugin set'],
   ['src/generated/bundledArt.generated.json', 'hiraia: bundled illustration inventory (APK assets/illustrations)'],
   ['src/generated/imageMap.ts', 'hiraia: bundled illustration selection'],
+  ['assets/voices/catalog.json', 'hiraia: bundled and downloadable voice identities'],
   ['scripts/post-prebuild.mjs', 'hiraia: native patches'],
   ['scripts/illustration-assets.gradle', 'hiraia: native patches'],
   ['scripts/stage-bundled-art.mjs', 'hiraia: native patches'],

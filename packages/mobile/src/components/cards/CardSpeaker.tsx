@@ -11,7 +11,7 @@ import { Alert } from 'react-native';
 import type { Language } from '@hiraia/shared';
 
 import { uiStrings } from '../../config/strings';
-import { canSpeak, preloadVoice, useSpeech } from '../../speech';
+import { canSpeak, preloadVoice, useSpeech, useVoiceAvailable } from '../../speech';
 import { BandSpeaker, Speaker } from './CardFrame';
 
 export function CardSpeaker({
@@ -33,17 +33,18 @@ export function CardSpeaker({
 }) {
   const t = uiStrings(language);
   const { phase, toggle } = useSpeech();
+  const voiceReady = useVoiceAvailable(language);
 
   // Warm the model while the card is being read rather than on the tap. The first load
   // also materialises the weights out of the APK, which is the slow part and happens
   // exactly once per install.
   useEffect(() => {
-    preloadVoice(language);
-  }, [language]);
+    if (voiceReady) preloadVoice(language);
+  }, [language, voiceReady]);
 
   // No voice trained for this language yet — render nothing rather than a button that
   // speaks in a different narrator's voice. Hooks run first so the order stays stable.
-  if (!canSpeak(language)) return null;
+  if (!canSpeak(language) || !voiceReady) return null;
 
   const press = () =>
     toggle(text, language, {

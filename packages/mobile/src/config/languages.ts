@@ -1,4 +1,5 @@
 import type { Language } from '@hiraia/shared';
+import { ACTIVE_EDITION } from './edition';
 
 /** Display labels keep the existing language keys used by model prompts and retrieval. */
 export interface LanguageOption {
@@ -8,10 +9,6 @@ export interface LanguageOption {
   comingSoon?: boolean;
 }
 
-export const LANGUAGE_OPTIONS: LanguageOption[] = [
-  { lang: 'tagalog', label: 'Tagalog', beta: false },
-  { lang: 'english', label: 'English', beta: true },
-  { lang: 'cebuano', label: 'Cebuano', beta: false },
-];
+export const LANGUAGE_OPTIONS: readonly LanguageOption[] = ACTIVE_EDITION.languages;
 
-export const DEFAULT_LANGUAGE: Language = 'tagalog';
+export const DEFAULT_LANGUAGE: Language = ACTIVE_EDITION.defaultLanguage;

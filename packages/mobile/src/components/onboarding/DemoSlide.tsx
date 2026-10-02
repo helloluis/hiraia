@@ -26,6 +26,7 @@ import type { Language } from '@hiraia/shared';
 import { DEMO_START, SLIDE_BAND } from '../../config/onboarding';
 import { uiStrings } from '../../config/strings';
 import { feedViewport } from '../cards/adaptiveFeed';
+import { VoiceDownloads } from '../../voice/VoiceDownloads';
 import { card, fonts } from '../../theme';
 import { Arrow, CardPrint, IndexBand, TapTarget, cardFrame } from '../cards/CardFrame';
 
@@ -77,6 +78,8 @@ export function DemoSlide({
           for the ordinary continuation and "start" is exactly that. The model download this
           card's ancestor once warned about still runs in the background from the language
           pick on card 1, so there is nothing to wait for and nothing else to say. */}
+      <VoiceDownloads compact />
+
       <View style={styles.ticketLedge}>
         <TapTarget
           onPress={onStart}

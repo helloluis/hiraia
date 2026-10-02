@@ -11,11 +11,12 @@
  * a `speaking` flag, and the joining rule for card fields. The model, the tokenizer and
  * the playback queue live under `voice/`.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 
 import type { Language } from '@hiraia/shared';
 
-import { hasBundledVoice, preloadVoice } from './voice/engine';
+import { hasVoice, preloadVoice } from './voice/engine';
+import { subscribeVoiceDownloads, voiceAvailable } from './voice/downloads';
 import { speak as speakNow, stop as stopNow } from './voice/player';
 
 /**
@@ -26,7 +27,11 @@ import { speak as speakNow, stop as stopNow } from './voice/player';
  * than the same teacher. Its corpus script is written; this flips on with the voice.
  */
 export function canSpeak(language: Language): boolean {
-  return hasBundledVoice(language);
+  return hasVoice(language);
+}
+
+export function useVoiceAvailable(language: Language): boolean {
+  return useSyncExternalStore(subscribeVoiceDownloads, () => voiceAvailable(language));
 }
 
 export { preloadVoice };

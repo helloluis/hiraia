@@ -4,11 +4,8 @@ import { useEngineStore } from '../store/engineStore';
 import { card, fonts } from '../theme';
 import { initializeModelDownloadPreference, modelDownloadPreference, setModelDownloadsEnabled, subscribeModelDownloadPreference } from '../engine/modelDownloadControl';
 
-const copy = {
-  english: {title: 'AI downloads', detail: 'Search and tutor models download automatically. Pausing keeps downloaded files and progress.', pause: 'Pause downloads', resume: 'Resume downloads', error: 'Could not save this setting. Please try again.'},
-  tagalog: {title: 'Mga download ng AI', detail: 'Awtomatikong dina-download ang mga modelo para sa paghahanap at tutor. Hindi mabubura ang mga na-download kapag naka-pause.', pause: 'I-pause ang download', resume: 'Ipagpatuloy ang download', error: 'Hindi na-save ang setting. Subukan muli.'},
-  cebuano: {title: 'Mga download sa AI', detail: 'Awtomatikong i-download ang mga modelo para sa pagpangita ug tutor. Dili mapapas ang mga na-download kon naka-pause.', pause: 'I-pause ang download', resume: 'Ipadayon ang download', error: 'Wala ma-save ang setting. Sulayi pag-usab.'},
-};
+import { downloadControlsCopy as copy } from '../config/downloadStrings';
+
 export function ModelDownloads() {
   const t = copy[useEngineStore(s => s.language) || 'english'];
   const state = useSyncExternalStore(subscribeModelDownloadPreference, modelDownloadPreference);

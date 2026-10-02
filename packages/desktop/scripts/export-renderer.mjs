@@ -3,10 +3,12 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
+import { verifyVoices } from '../../mobile/scripts/verify-voices.mjs';
 const root = fileURLToPath(new URL('../../../', import.meta.url));
 const desktop = path.join(root, 'packages/desktop');
+verifyVoices(path.join(root, 'packages/mobile'), { includeDownloads: true });
 // Metro enumerates every sibling for every image to discover scale variants.
-// Shard our 12k selected illustrations instead of repeatedly scanning a 35k-file
+// Shard the selected illustrations instead of repeatedly scanning a 35k-file
 // art directory. The exact images and shared lookup keys remain unchanged.
 const mapPath = path.join(root, 'packages/mobile/src/generated/imageMap.ts');
 const map = fs.readFileSync(mapPath, 'utf8').replace(/require\("([^"\n]+)"\)/g, (_match, relative) => {

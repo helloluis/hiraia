@@ -1,4 +1,5 @@
 import type { ImagePack } from '../images/format';
+import { ACTIVE_EDITION } from '../config/edition';
 
 /** Data-only updates; runtime/tokenizer/schema changes must ship in an APK. */
 export interface ModelUpdate {
@@ -22,7 +23,7 @@ export function parseAssetCatalog(value: unknown, appVersion: number, imageBasel
       c.imageBaseline !== imageBaseline || !Array.isArray(c.models) || c.models.length > 1 ||
       !Array.isArray(c.imagePacks) || c.imagePacks.length > 300) return null;
   for (const m of c.models) {
-    if (!m || m.id !== 'base' || m.runtime !== 'hiraia-2b-qwen35-v1' || !positive(m.revision) || m.revision > c.revision ||
+    if (!m || m.id !== 'base' || m.runtime !== ACTIVE_EDITION.modelFamily || !positive(m.revision) || m.revision > c.revision ||
         !file(m.filename) || !m.filename.endsWith('.gguf') || !positive(m.bytes) || m.bytes > 2_000_000_000 ||
         !digest(m.md5) || m.url !== `https://assets.hiraia.org/models/${m.filename}` ||
         typeof m.label !== 'string' || m.label.length > 100 || typeof m.notes !== 'string' || m.notes.length > 500) return null;

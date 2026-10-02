@@ -86,12 +86,16 @@ export function hasArt(slug: string | null | undefined): boolean {
   if (bundled === null) return true;
   if (bundled.has(slug)) return true;
   // Only pay for the rewrite when the slug actually carries a grade suffix.
-  return GRADE_SUFFIX.test(slug) && bundled.has(slug.replace(GRADE_SUFFIX, '').toLowerCase());
+  const base = GRADE_SUFFIX.test(slug) ? slug.replace(GRADE_SUFFIX, '').toLowerCase() : null;
+  return base !== null && (bundled.has(base) || downloaded.has(base));
 }
 
 /** The on-disk URI for a backfilled illustration, or undefined if it is bundled / absent. */
 export function artUri(slug: string | null | undefined): string | undefined {
-  return slug && downloaded.size !== 0 ? downloaded.get(slug) : undefined;
+  if (!slug || downloaded.size === 0) return undefined;
+  const exact = downloaded.get(slug);
+  if (exact || bundled?.has(slug)) return exact;
+  return GRADE_SUFFIX.test(slug) ? downloaded.get(slug.replace(GRADE_SUFFIX, '').toLowerCase()) : undefined;
 }
 
 /**

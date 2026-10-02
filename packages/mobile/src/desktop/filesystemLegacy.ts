@@ -1,6 +1,8 @@
 import { desktop } from './bridge';
 export const documentDirectory = desktop().info.paths.document;
 export const cacheDirectory = desktop().info.paths.cache;
+export const getFreeDiskStorageAsync = async (): Promise<number> =>
+  desktop().sync<{ freeStorageBytes: number }>('memory').freeStorageBytes;
 export async function getInfoAsync(uri: string, options: { md5?: boolean } = {}) {
   const stat = await desktop().invoke('fs.stat', uri);
   if (stat.exists && options.md5) stat.md5 = await desktop().invoke('fs.hash', uri, 'md5');

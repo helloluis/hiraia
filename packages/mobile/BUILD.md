@@ -14,6 +14,62 @@ The packaged Windows test completes twelve answers offline, restarts partway thr
 checks the saved history, and exercises keyboard input, large text and a small window.
 The three-edition manifest rejects Windows evidence without those exam checks.
 
+## Footprint refactor branch (2026-10-02)
+
+`codex/apk-footprint-refactor` combines current `main` at `2c51a4454` (including
+0.4.29's exam carousel and Windows support) with the footprint work from `ad2ffd6d2`.
+The app version remains 0.4.29 for development. This branch is not a new release or
+an OTA for existing 0.4.29 installs; the changed bundled assets require a new native
+runtime and a new version before publication.
+
+Both APK editions bundle all three text languages, English voice and the approved
+3,070 illustrations. Tagalog voice installs when selected; PH remains implicit.
+Windows retains its existing bundled English and Tagalog voices through
+`src/voice/bundled.web.ts`. Its native loader accepts the shared installer's versioned
+filenames, and its export verifies both voice models before invoking Metro.
+
+Start a fresh devbox checkout with Node 24, pnpm 9.15.9, Python 3 and Git LFS:
+
+```sh
+GIT_LFS_SKIP_SMUDGE=1 git clone --branch codex/apk-footprint-refactor git@github.com:helloluis/hiraia.git
+cd hiraia
+git lfs pull --include='packages/mobile/assets/rag/*.bin'
+pnpm install --frozen-lockfile
+python3 rag/pipeline/build-cards-db.py
+python3 packages/mobile/scripts/package-art.py
+pnpm --filter @hiraia/mobile type-check
+pnpm --filter @hiraia/mobile qa:exam
+```
+
+The committed selection, shard inventory and `rag/pipeline/image-pack-layout.json`
+reproduce all 61 packs with manifest version `ca57f3d76e889f08`; the original 42
+packs keep their identities. Shipping PNG derivatives are tracked. Offloaded image
+originals, research archives and retired worktrees are not inputs to this process.
+Rebuilding the database changes its generated `dbVersion`; retain the matching index
+with any APK built from it.
+
+Git does not contain `assets/voices/en/model.onnx` or `assets/voices/tl/model.onnx`.
+Before exporting or building, restore English weights for APKs, and both weights
+for Windows, from the provisioned build inputs. Their sizes and SHA-256 pins are in
+`assets/voices/catalog.json`; run `node packages/mobile/scripts/verify-voices.mjs`
+(add `--include-downloads` for Windows) before proceeding. The protected runner uses
+`deploy/restore-native-build-inputs.py` with `HIRAIA_BUILD_INPUTS_DIR`, which also
+restores the model-gate inputs and signing credentials. Keep those private inputs
+outside Git; a source checkout alone cannot sign a release.
+
+Before shipping, run the normal regression gate and three-edition pipeline, validate
+the packaged Windows executable on Windows, measure the new signed APKs, and update
+release/catalog versions through the normal release process. The earlier refactor
+APK size is not a measurement of this merged 0.4.29 tree.
+
+Integration validation on 2026-10-02 passed both TypeScript configurations, 84 exam
+tests, 49 mobile refactor/platform tests, nine desktop tests and eight Python tests.
+All image packs rebuilt with identical digests; native staging reproduced 3,070 images
+at 39,999,997 bytes. Android prebuild generated and verified the QVAC worker, and the
+Android and Windows renderer exports succeeded with their expected voice inventories.
+No APK build, signing, release publication or packaged Windows end-to-end run was
+performed for this branch handover.
+
 
 ## Standard build: always both platforms
 
@@ -277,8 +333,14 @@ actively deletes those excludes if it finds them in a long-lived tree.
 ## First run: the downloads
 
 The APK itself is a few hundred MB (app + bare worker + native engines + the **bundled**
-card database and engraving art — the 12,374-illustration art pack ships in the APK).
-**No generation or embedding model weights are bundled.** The English and Filipino ONNX read-aloud voices **are** bundled. On first launch the app downloads, from the mirror
+card database and engraving art — 3,070 illustrations, 39,999,997 bytes, ship in the APK).
+**No generation or embedding model weights are bundled.** English read-aloud is bundled;
+the Tagalog voice downloads only when Tagalog is selected. All English, Tagalog, and
+Cebuano text stays bundled. The release assumes PH internally and has no country picker.
+Language and grade capabilities come from `src/config/edition.ts`; voice identities,
+integrity pins, and APK delivery policy come from `assets/voices/catalog.json`.
+Windows preserves its two bundled voices through `src/voice/bundled.web.ts`.
+On first launch the app downloads, from the mirror
 (`https://assets.hiraia.org/models/`, overridable at build time with
 `EXPO_PUBLIC_ASSETS_BASE_URL`), everything listed in `src/config/model.ts`
 `REMOTE_ASSETS`:
@@ -293,7 +355,35 @@ So a first run costs **~1.27 GB blocking** plus ~500 MB in the background (the f
 vectors and the LaBSE embedder share the readiness bar's semantic band). Separately and
 **opt-out-able** (Settings, on by default), the reader's grade-cell art is backfilled
 from `https://assets.hiraia.org/models/images/` `.hpak` packs — common plus the selected
-grade packs, approximately 250–283 MB depending on grade after the September 19 coverage fix.
+grade packs, approximately 293–331 MB depending on grade with the 40 MB core selection.
+The approved 3,070 images are pinned in `src/config/bundled-art.selection.json`.
+The previous 42 download packs retain their exact filenames and bytes; 19 additional packs
+carry the 9,079 images removed from the APK. `rag/pipeline/image-pack-layout.json` preserves
+pack membership so later packaging does not reshuffle already downloaded images.
+
+Rebuild illustrations in this order:
+
+```bash
+node --import tsx packages/mobile/scripts/build-art-pack.mts
+node packages/mobile/scripts/gen-image-map.mjs
+node packages/mobile/scripts/stage-bundled-art.mjs
+python3 -B packages/mobile/scripts/package-art.py
+```
+
+Run those commands from the repository root. Stage the remote voice with
+`node packages/mobile/scripts/stage-remote-voices.mjs`. It checks the local weights against
+both vocabulary metadata and the delivery catalog, then emits the immutable filename in
+`packages/mobile/build/voice-packages/`. Publish those voice files with
+`deploy/publish-release-assets.py --asset ...` and the image packs with
+`packages/mobile/scripts/publish-image-packs.py`, before distributing the new APK.
+Tagalog voice transfer size is 56,346,485 bytes. Existing verified `voices/tl.onnx` files
+migrate locally, so upgrades do not require that transfer. Voice downloads have their own
+pause control and resume across interruption; speech controls appear when the selected
+voice is ready. Cebuano has no trained voice and triggers no voice download.
+
+`build-apk.sh` verifies the actual APK contains the approved image inventory, exactly the
+bundled voice weights, and the complete current text database. Voice delivery changes are
+part of the OTA runtime fingerprint and require a new APK.
 
 There are **no LoRA adapters** any more. The shipping model is a FULL-PARAMETER SFT —
 Tagalog, Cebuano and English all live in the one set of weights (`loraRemote` in
@@ -385,8 +475,9 @@ This wrapper enables `scripts/metro-static-asset-cache.cjs` only for the release
 retains native Gradle caches, forces a fresh JS bundle, stages illustrations as native
 assets, and verifies APK contents. Do not enable the static cache for `pnpm dev`.
 
-On a fresh worktree, run `pnpm install --frozen-lockfile`, restore the two ignored
-`assets/voices/{en,tl}/model.onnx` files matching each tracked `voice.json` SHA-256,
+On a fresh worktree, run `pnpm install --frozen-lockfile`, restore ignored
+`assets/voices/en/model.onnx` (plus `tl/model.onnx` for Windows or voice publication)
+matching each tracked `voice.json` SHA-256,
 then run `python3 ../../rag/pipeline/build-cards-db.py`. The database builder records
 a new content hash in the resident index; keep that generated change with the build.
 The release wrapper rejects missing or mismatched voice weights before Gradle.

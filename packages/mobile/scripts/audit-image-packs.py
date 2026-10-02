@@ -95,9 +95,10 @@ def audit(root, manifest_path, packs_dir):
         if not slug:
             text_only += 1
             continue
-        # Match the runtime's bundled grade-suffix fallback.
+        # Both bundled and downloaded images support the same grade-suffix fallback.
         fallback = re.sub(r'-g\d+$', '', slug).lower()
-        if re.search(r'-g\d+$', slug) and slug not in bundled and fallback in bundled:
+        if (re.search(r'-g\d+$', slug) and slug not in bundled and slug not in owners
+                and (fallback in bundled or fallback in owners)):
             slug = fallback
         for grade in card_grades(card, tags):
             wanted[grade].add(slug)

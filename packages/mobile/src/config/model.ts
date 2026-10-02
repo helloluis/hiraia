@@ -25,7 +25,7 @@ import type { RemoteAssetSpec } from '../engine/modelDownload';
 
 // HTTPS is the canonical pilot delivery path. CDN and VPS serve the same
 // immutable files; downloads always pass through our resume + integrity gate.
-import { remoteAssetUrl } from './assetDelivery';
+import { ACTIVE_EDITION } from './edition';
 
 /**
  * ============================================================================
@@ -68,38 +68,8 @@ import { remoteAssetUrl } from './assetDelivery';
  * keep the old file forever. Bump the filename AND the digests together —
  * `hiraia-sft-2b-v1` is versioned in the filename for exactly this reason.
  */
-export const REMOTE_ASSETS = {
-  /** The base GGUF — the ~1.27 GB first-run download. FULL-parameter SFT (no LoRA). */
-  base: {
-    url: remoteAssetUrl('hiraia-sft-2b-v2.Q4_K_M.gguf'),
-    filename: 'hiraia-sft-2b-v2.Q4_K_M.gguf',
-    bytes: 1274396160,
-    md5: 'fe2d0ab2ad856f2a42c5add5872c4234',
-    label: 'Hiraia-2B base',
-  },
-  /** LaBSE embedder for the hybrid retriever (background download). */
-  /**
-   * The fact-bank semantic vectors (int8 LaBSE, 53,022 × 3 langs × 768). DOWNLOADED, not bundled —
-   * 78.6 MB of APK for a blob that is inert until the 384 MB embedder lands anyway (the
-   * same argument that moved the adapters out). The filename embeds the BANK HASH
-   * (md5(science-facts.jsonl)[:12]) so a rebuilt bank can never silently pair with a stale
-   * blob: attachSemantic hard-fails on hash mismatch, and the URL itself must change.
-   */
-  vectors: {
-    url: remoteAssetUrl('vectors-labse-90318bad81dd.i8.bin'),
-    filename: 'vectors-labse-90318bad81dd.i8.bin',
-    bytes: 122162688,
-    md5: '69d152b4c38b619d4f019e652384d9b6',
-    label: 'Hiraiapedia vectors',
-  },
-  embedder: {
-    url: remoteAssetUrl('labse.Q4_K_M.gguf'),
-    filename: 'labse.Q4_K_M.gguf',
-    bytes: 383762048,
-    md5: '2667f69edfbcb68acf617187fe817fae',
-    label: 'LaBSE embedder',
-  },
-} satisfies Record<string, RemoteAssetSpec>;
+/** Edition-scoped model pins; all PH languages share the same CPT/SFT model and bank. */
+export const REMOTE_ASSETS = ACTIVE_EDITION.models;
 
 /**
  * ============================================================================

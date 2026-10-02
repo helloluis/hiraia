@@ -26,50 +26,8 @@ import type { ModelUpdate } from '../updates/catalog';
 import { card, fonts } from '../theme';
 import { useReduceMotion } from './cards/useReduceMotion';
 
-const copy = {
-  english: {
-    checking: 'Checking download…',
-    missing: 'Not downloaded',
-    paused: 'Download paused',
-    downloading: 'Downloading',
-    retrying: 'Retrying connection…',
-    verifying: 'Verifying download…',
-    downloaded: 'Downloaded · available offline',
-    failed: 'Download unavailable · check connection and storage',
-    restart: 'Model update · ready for next app launch',
-    searchLabel: 'Search',
-    ready: 'Ready · available offline',
-    unsupported: 'Not available on this phone',
-  },
-  tagalog: {
-    checking: 'Sinusuri ang download…',
-    missing: 'Hindi pa na-download',
-    paused: 'Naka-pause ang download',
-    downloading: 'Dina-download',
-    retrying: 'Sinusubukang kumonekta muli…',
-    verifying: 'Bineberipika ang download…',
-    downloaded: 'Na-download na · magagamit offline',
-    failed: 'Hindi makumpleto ang download · suriin ang koneksiyon at storage',
-    restart: 'Bagong modelo · handa sa susunod na pagbukas ng app',
-    searchLabel: 'Paghahanap',
-    ready: 'Handa na · magagamit offline',
-    unsupported: 'Hindi magagamit sa teleponong ito',
-  },
-  cebuano: {
-    checking: 'Gisusi ang download…',
-    missing: 'Wala pa ma-download',
-    paused: 'Naka-pause ang download',
-    downloading: 'Gi-download',
-    retrying: 'Gisulayang mokonekta pag-usab…',
-    verifying: 'Gipamatud-an ang download…',
-    downloaded: 'Na-download na · magamit offline',
-    failed: 'Dili makompleto ang download · susiha ang koneksiyon ug storage',
-    restart: 'Bag-ong modelo · andam sa sunod nga pag-abli sa app',
-    searchLabel: 'Pagpangita',
-    ready: 'Andam na · magamit offline',
-    unsupported: 'Dili magamit niining telepono',
-  },
-};
+import { downloadStatusCopy as copy } from '../config/downloadStrings';
+
 
 function DownloadIcon({ phase }: { phase: AssetDownloadStatus['phase'] | 'unsupported' }) {
   const rotation = useRef(new Animated.Value(0)).current;

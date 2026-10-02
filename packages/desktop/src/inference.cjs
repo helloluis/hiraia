@@ -51,7 +51,9 @@ function createInference(storage, emit) {
     },
     async 'voice.open'(uri) {
       const file = storage.resolve(uri);
-      if (!['en.onnx', 'tl.onnx'].includes(path.basename(file))) throw new Error('Unknown voice');
+      // Shared voice storage now uses content-addressed names; retain the legacy
+      // names for existing installations and packaged voice validation.
+      if (!/^(?:en|tl|voice-(?:en|tl)-[a-f0-9]{16})\.onnx$/.test(path.basename(file))) throw new Error('Unknown voice');
       if (!voices.has(file)) {
         const ort = require('onnxruntime-node');
         const opening = ort.InferenceSession.create(file, { executionProviders: ['cpu'], graphOptimizationLevel: 'all', intraOpNumThreads: 2 });

@@ -1,50 +1,10 @@
 /**
- * Art-pack packer — cuts the 140 MB bundled head of the illustration corpus and emits the
- * tail as shard manifests for the future backfill downloader.
+ * Builds the approved bundled illustration set and the complete downloadable tail.
+ * The selection is reviewed data in config/bundled-art.selection.json, never silently
+ * re-ranked during a content build. Download pack membership is preserved separately by
+ * package-art.py so an APK upgrade does not make students buy the same pictures again.
  *
- * The APK cannot carry all 30,062 mapped illustrations (440 MiB / 461.8 MB), so the bundle
- * ships the HEAD of ONE ordered list and the rest arrives later, shard by shard. This script
- * computes that order, deterministically, and writes:
- *
- *   src/generated/artPack.keep.json        — the keep-list gen-image-map.mjs consumes: only
- *                                            these slugs are require()d into IMAGE_MAP, so
- *                                            Metro bundles exactly the pack and
- *                                            installBundledArt's manifest follows for free.
- *   ../../rag/pipeline/art-shards/         — index.json + one manifest per tail shard for
- *                                            the backfill downloader (NOT built here).
- *
- * Selection = greedy DRAW-WEIGHTED CARDS-PER-BYTE with a COMPETENCY FLOOR:
- *
- *   - The value of an image is the summed draw weight of every feed card that resolves to it
- *     (a card resolves exactly one slug, via resolveImage()'s exact-then-strip-grade-suffix
- *     rule). A card's draw weight is curriculumMultiplier() summed over all 32 grade×quarter
- *     cells (grades 3–10 × Q1–4, packages/shared feedWeighting, default weights, no seen
- *     decay) — i.e. how often the card is drawn across every student the app can serve.
- *   - PHASE 1 (floored lazy-greedy): a card only earns its image credit while its competency
- *     (primary MATATAG code; 'off' for untagged/low-confidence) still sits below
- *     ceil(FLOOR_T × n_competency), where n_competency counts the competency's cards with
- *     resolvable art. Plain value-per-byte greedy leaves ~31 competencies under 60%
- *     illustrated while the average looks fine; the floor spreads the head across the
- *     curriculum before any competency gets over-served. Lazy-greedy because selecting an
- *     image fills floors and stales every other image's credit: re-evaluate the top of the
- *     heap until it stays on top.
- *   - PHASE 2 (plain value-per-byte): once no image holds floor credit, the remaining budget
- *     and the whole tail are ordered by total value per byte. Card-unreachable clip-art
- *     (chat substrate, value 0) is NEVER selected — not even as budget filler when the
- *     residual hole is smaller than every positive-value image — because the decision is
- *     that it rides the download tier; it sorts last and goes straight to the tail.
- *   - FORCE-KEEP: slugs hard-referenced by code ship regardless of value — a missing one is
- *     a blank component (DEMO_IMAGE_SLUG renders in onboarding before any backfill exists).
- *
- * The tail is grouped into grade×quarter shards by OWNER CELL — the strongest MATATAG cell
- * of the image's highest-value card (untagged / card-unreachable → 'common') — and split
- * into ≤ SHARD_CAP chunks in global-order, so the first shard of every cell is that cell's
- * most valuable megabytes. Frozen full-corpus stats ride in index.json so the downloader
- * can show real coverage numbers without recomputing any of this.
- *
- * Deterministic: no RNG, stable tie-breaks (slug asc), byte sizes from the real files.
- *
- *   node_modules/.bin/tsx scripts/build-art-pack.mts
+ * Run: node --import tsx scripts/build-art-pack.mts
  */
 import { createHash } from 'node:crypto';
 import { mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
@@ -64,15 +24,21 @@ const TAGS_JSON = join(MOBILE, 'src/generated/curriculumTags.generated.json');
 const OUT_KEEP = join(MOBILE, 'src/generated/artPack.keep.json');
 const OUT_SHARDS = join(MOBILE, '../../rag/pipeline/art-shards');
 
-/** 140 MB (decimal, the unit every budget discussion used: the full corpus is "461.8 MB"). */
-const BUDGET_BYTES = 140_000_000;
+const selection = JSON.parse(readFileSync(join(MOBILE, 'src/config/bundled-art.selection.json'), 'utf8')) as {
+  format: number; budgetBytes: number; approvedImages: number;
+  selectionMethod: string; forceKeep: string[]; keep: string[];
+};
+if (selection.format !== 1 || !Number.isSafeInteger(selection.budgetBytes) || selection.budgetBytes <= 0 ||
+    !Array.isArray(selection.keep) || new Set(selection.keep).size !== selection.approvedImages ||
+    selection.keep.length !== selection.approvedImages) throw new Error('Invalid approved illustration selection');
+const BUDGET_BYTES = selection.budgetBytes;
 /** Competency floor: a card earns floor credit while its competency is below ceil(T × n). */
 const FLOOR_T = 0.65;
 /** Tail shard size cap (~6–8 MB target). */
 const SHARD_CAP = 8_000_000;
 /** Slugs hard-referenced by code (grep require/useArtSource/resolveImage literals):
  *  DEMO_IMAGE_SLUG (src/config/onboarding.ts) — the onboarding demo card's art. */
-const FORCE_KEEP = ['plant-parts'];
+const FORCE_KEEP = selection.forceKeep;
 
 const GRADES = [3, 4, 5, 6, 7, 8, 9, 10] as const;
 const QUARTERS = [1, 2, 3, 4] as const;
@@ -203,143 +169,27 @@ for (const c of cards) {
 }
 const cardById = new Map(cards.map((c) => [c.id, c]));
 
-// ---------------------------------------------------------------- competency floors
-const compAll = new Map<string, number>(); // illustratable cards per competency
-for (const c of cards) if (c.img) compAll.set(c.comp, (compAll.get(c.comp) ?? 0) + 1);
-const target = new Map<string, number>();
-for (const [comp, n] of compAll) target.set(comp, Math.ceil(FLOOR_T * n));
-const covered = new Map<string, number>(); // illustrated-so-far per competency
-
-/** Floor credit of an image right now: weight of its cards whose competency is still short. */
-function floorValue(img: Img): number {
-  let v = 0;
-  for (const id of img.cardIds) {
-    const c = cardById.get(id)!;
-    if ((covered.get(c.comp) ?? 0) < (target.get(c.comp) ?? 0)) v += c.weight;
-  }
-  return v;
-}
-
-// ---------------------------------------------------------------- selection
-/**
- * Reserved for the PHASE 1.5 minimum-one seeds. The greedy fills to within a few hundred
- * bytes of the line, so post-hoc seeds can never fit unless the line is drawn short for
- * them (measured: two ~15 KB seeds against a 139,999,431/140,000,000 fill = both WARN).
- * 64 KiB covers the observed need several times over; whatever the seeds leave unused is
- * intentionally forfeited (~0.02% of budget) rather than triggering another value pass.
- */
-const SEED_RESERVE = 65536;
-const GREEDY_BUDGET = BUDGET_BYTES - SEED_RESERVE;
-
-const selected: Img[] = [];
-const selectedSet = new Set<string>();
-let packBytes = 0;
-function take(img: Img, phase: string) {
-  selected.push(img);
-  selectedSet.add(img.slug);
-  packBytes += img.bytes;
-  for (const id of img.cardIds) {
-    const comp = cardById.get(id)!.comp;
-    covered.set(comp, (covered.get(comp) ?? 0) + 1);
-  }
-  phases.set(img.slug, phase);
-}
-const phases = new Map<string, string>();
-
-// force-keep first — these are load-bearing for code, not for the value function
+// The exact, user-approved set. Fail before writing anything if an image is missing
+// or a regeneration has pushed it past the budget. Never drop an image silently.
+const selected = selection.keep.map((slug) => {
+  const image = images.get(slug);
+  if (!image) throw new Error(`Approved bundled image is missing: ${slug}`);
+  return image;
+});
+const selectedSet = new Set(selection.keep);
 for (const slug of FORCE_KEEP) {
-  const img = images.get(slug);
-  if (!img) throw new Error(`force-keep slug has no file: ${slug}`);
-  take(img, 'force');
+  if (!selectedSet.has(slug)) throw new Error(`Required bundled image omitted: ${slug}`);
 }
+const packBytes = selected.reduce((n, image) => n + image.bytes, 0);
+if (packBytes > BUDGET_BYTES) throw new Error(`Approved illustrations exceed budget: ${packBytes} > ${BUDGET_BYTES}`);
+const tail = [...images.values()].filter((image) => !selectedSet.has(image.slug))
+  .sort((a, b) => b.value / b.bytes - a.value / a.bytes || a.slug.localeCompare(b.slug));
 
-// PHASE 1 — floored lazy-greedy (binary heap keyed by stale credit-per-byte)
-type Entry = { slug: string; key: number };
-const heap: Entry[] = [];
-const less = (a: Entry, b: Entry) => a.key > b.key || (a.key === b.key && a.slug < b.slug);
-function push(e: Entry) {
-  heap.push(e);
-  let i = heap.length - 1;
-  while (i > 0) {
-    const p = (i - 1) >> 1;
-    if (less(heap[i]!, heap[p]!)) [heap[i], heap[p]] = [heap[p]!, heap[i]!];
-    else break;
-    i = p;
-  }
-}
-function pop(): Entry | undefined {
-  if (heap.length === 0) return undefined;
-  const top = heap[0]!;
-  const last = heap.pop()!;
-  if (heap.length) {
-    heap[0] = last;
-    let i = 0;
-    for (;;) {
-      const l = 2 * i + 1;
-      const r = l + 1;
-      let m = i;
-      if (l < heap.length && less(heap[l]!, heap[m]!)) m = l;
-      if (r < heap.length && less(heap[r]!, heap[m]!)) m = r;
-      if (m === i) break;
-      [heap[i], heap[m]] = [heap[m]!, heap[i]!];
-      i = m;
-    }
-  }
-  return top;
-}
-for (const img of images.values()) {
-  if (selectedSet.has(img.slug)) continue;
-  const v = floorValue(img);
-  if (v > 0) push({ slug: img.slug, key: v / img.bytes });
-}
-while (packBytes < BUDGET_BYTES) {
-  const top = pop();
-  if (!top) break;
-  if (selectedSet.has(top.slug)) continue;
-  const img = images.get(top.slug)!;
-  const fresh = floorValue(img) / img.bytes;
-  if (fresh <= 0) continue; // its floors filled since it was queued
-  if (heap.length && fresh < heap[0]!.key) {
-    push({ slug: top.slug, key: fresh }); // stale — re-rank and try again
-    continue;
-  }
-  if (packBytes + img.bytes > GREEDY_BUDGET) continue; // does not fit; smaller ones may
-  take(img, 'floor');
-}
-
-// PHASE 1.5 — MINIMUM-ONE SEED: no MATATAG competency with illustratable art lands at
-// LITERAL ZERO images. The pure value function left two single-card competencies (G3-L-1,
-// G10-L-9) at 0% — their lone images never win per-byte — and the floor's whole point is
-// that no competency is invisibly starved. For each MATATAG code (G\d+- prefix; deped:
-// modules and 'off' are the backfill tier's job) with ≥1 illustratable card and 0 selected
-// images, keep its SMALLEST resolvable image. Cost measured at ~30 KB against a
-// 140,000,000-byte budget; if it ever cannot fit, the shortfall is reported, not silent.
-{
-  const compHasImg = new Set<string>();
-  for (const img of selected) for (const id of img.cardIds) compHasImg.add(cardById.get(id)!.comp);
-  const missing = [...compAll.keys()].filter((c) => /^G\d+-/.test(c) && !compHasImg.has(c)).sort();
-  for (const comp of missing) {
-    const candidates = [...images.values()]
-      .filter((i) => !selectedSet.has(i.slug) && i.cardIds.some((id) => cardById.get(id)!.comp === comp))
-      .sort((a, b) => a.bytes - b.bytes || (a.slug < b.slug ? -1 : 1));
-    const pick = candidates.find((i) => packBytes + i.bytes <= BUDGET_BYTES);
-    if (pick) take(pick, 'seed');
-    else console.log(`WARN: min-one seed for ${comp} does not fit the budget`);
-  }
-  if (missing.length) console.log(`seeded ${missing.length} zero-image MATATAG competencies`);
-}
-
-// PHASE 2 — plain value-per-byte for the remaining budget, and the whole tail order
-const rest = [...images.values()]
-  .filter((i) => !selectedSet.has(i.slug))
-  .sort((a, b) => b.value / b.bytes - a.value / a.bytes || (a.slug < b.slug ? -1 : 1));
-const tail: Img[] = [];
-for (const img of rest) {
-  // Zero-value images (card-unreachable chat clip-art, or cards nothing ever draws) are not
-  // budget filler: they ship by download-tier decision, however small the residual hole.
-  if (img.value <= 0 || packBytes + img.bytes > GREEDY_BUDGET) tail.push(img);
-  else take(img, 'value');
-}
+// Retain the original 65% target as an explicit comparison in the coverage report;
+// the 40 MB selection promises a minimum, not that old, much larger bundle's floor.
+const compAll = new Map<string, number>();
+for (const c of cards) if (c.img) compAll.set(c.comp, (compAll.get(c.comp) ?? 0) + 1);
+const target = new Map([...compAll].map(([comp, n]) => [comp, Math.ceil(FLOOR_T * n)]));
 
 // ---------------------------------------------------------------- stats
 function md5(file: string): string {
@@ -403,9 +253,10 @@ writeFileSync(
       clipArt: { images: clipSel.length, bytes: sum(clipSel) },
       cardArt: { images: cardSel.length, bytes: sum(cardSel) },
       forceKeep: FORCE_KEEP,
-      floorT: FLOOR_T,
+      comparisonFloorT: FLOOR_T,
+      selectionMethod: selection.selectionMethod,
       perGradeWeightedIllustratedPct: packStats.perGrade,
-      // selection order IS the head of the one ordered list (force → floor → value)
+      // Stable, reviewed selection order.
       keep: selected.map((i) => i.slug),
     },
     null,
@@ -489,7 +340,8 @@ writeFileSync(
         cardUnreachableImages: [...images.values()].filter((i) => i.cardIds.length === 0).length,
         perGradeWeightedIllustratedPct: { pack: packStats.perGrade, full: fullStats.perGrade },
         packFloor: { matatag: packStats.matatag, deped: packStats.deped, offCurriculumPct: packStats.offPct },
-        floorT: FLOOR_T,
+        comparisonFloorT: FLOOR_T,
+      selectionMethod: selection.selectionMethod,
       },
       tail: { images: tail.length, bytes: tailBytes, shards: shardMetas.length },
       shards: shardMetas,
@@ -503,7 +355,7 @@ writeFileSync(
 console.log(`corpus: ${images.size} images ${MB(sum([...images.values()]))} MB | ${cards.length} cards, ${cards.filter((c) => c.img).length} with resolvable art`);
 console.log(`pack:   ${selected.length} images ${MB(packBytes)} MB of ${MB(BUDGET_BYTES)} MB budget`);
 console.log(`        clip-art ${clipSel.length} (${MB(sum(clipSel))} MB) + card art ${cardSel.length} (${MB(sum(cardSel))} MB)`);
-console.log(`        phases: force ${FORCE_KEEP.length}, floor ${[...phases.values()].filter((p) => p === 'floor').length}, value ${[...phases.values()].filter((p) => p === 'value').length}`);
+console.log(`        selection: ${selection.selectionMethod}`);
 console.log(`        per-grade draw-weighted illustrated %: ${JSON.stringify(packStats.perGrade)}`);
 console.log(`        (full corpus would be: ${JSON.stringify(fullStats.perGrade)})`);
 const fl = (l: string, r: { nComps: number; minPct: number; minComp: string; below60: number; met: number }) =>

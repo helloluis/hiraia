@@ -39,6 +39,7 @@ python3 "$REPO/rag/pipeline/compile-lessons.py" --grade 8 --check
 python3 "$REPO/rag/pipeline/compile-lessons.py" --grade 9 --check
 python3 "$REPO/rag/pipeline/compile-lessons.py" --grade 10 --check
 python3 "$REPO/rag/pipeline/compile-lessons.py" --grade 5 --check
+python3 "$HERE/build-assessment-bank.py" --check
 AND="$MOBILE/android"
 APK="$AND/app/build/outputs/apk/release/app-release.apk"
 

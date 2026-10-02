@@ -77,6 +77,30 @@ class ImageCoverageTests(unittest.TestCase):
         self.assertEqual(audit_module.card_grades({'id': 'a', 'factId': 'a-g10'}, {}), {10})
         self.assertEqual(audit_module.card_grades({'id': 'a', 'factId': 'a-g345'}, {}), {3, 4, 5})
 
+    def test_grade_suffix_can_resolve_to_downloaded_base_image(self):
+        self.write(self.generated + 'cardsIndex.generated.json', {'cards': [
+            {'id': 'fish', 'factId': 'fish-g4', 'slug': 'fish-g4'},
+        ]})
+        self.package('common')
+        self.assertTrue(self.audit()['ok'])
+
+
+class PackMembershipTests(unittest.TestCase):
+    def test_new_images_do_not_regroup_or_reorder_existing_packs(self):
+        spec = importlib.util.spec_from_file_location('packer', Path(__file__).with_name('package-art.py'))
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        layout = {'format': 1, 'packs': [{'id': 'common-01', 'cell': 'common', 'slugs': ['z', 'b']}]}
+        rows = {slug: {} for slug in ['a', 'b', 'c', 'z']}
+        cells = {'a': 'common', 'b': 'common', 'c': 'g5-all', 'z': 'common'}
+        result = module.extend_layout(layout, rows, cells)
+        self.assertEqual(result['packs'][0], layout['packs'][0])
+        self.assertEqual(result['packs'][1], {'id': 'common-02', 'cell': 'common', 'slugs': ['a']})
+        self.assertEqual(result['packs'][2], {'id': 'g5-all-01', 'cell': 'g5-all', 'slugs': ['c']})
+        self.assertEqual(module.extend_layout(result, rows, cells), result)
+        with self.assertRaisesRegex(ValueError, 'no longer downloadable'):
+            module.extend_layout(layout, {'z': {}}, cells)
+
 
 if __name__ == '__main__':
     unittest.main()

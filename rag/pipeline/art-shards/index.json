@@ -2,9 +2,9 @@
  "generatedBy": "packages/mobile/scripts/build-art-pack.mts",
  "note": "Tail of the bundled-art order, grouped by owner grade×quarter cell for the backfill downloader. Image files live under packages/images/.",
  "pack": {
-  "budgetBytes": 140000000,
-  "bytes": 139933156,
-  "images": 12149,
+  "budgetBytes": 40000000,
+  "bytes": 39999997,
+  "images": 3070,
   "keepList": "packages/mobile/src/generated/artPack.keep.json"
  },
  "corpus": {
@@ -15,14 +15,14 @@
   "cardUnreachableImages": 8241,
   "perGradeWeightedIllustratedPct": {
    "pack": {
-    "g3": 53.4,
-    "g4": 53.5,
-    "g5": 53.6,
-    "g6": 53.6,
-    "g7": 53.5,
-    "g8": 53.6,
-    "g9": 53.7,
-    "g10": 53.5
+    "g3": 32.1,
+    "g4": 31.7,
+    "g5": 31.7,
+    "g6": 32.1,
+    "g7": 31.3,
+    "g8": 30.9,
+    "g9": 31.3,
+    "g10": 31.2
    },
    "full": {
     "g3": 81.6,
@@ -38,579 +38,628 @@
   "packFloor": {
    "matatag": {
     "nComps": 324,
-    "minPct": 65,
-    "minComp": "G4-L-5",
-    "below60": 0,
-    "met": 324
+    "minPct": 1.5,
+    "minComp": "G9-M-4",
+    "below60": 294,
+    "met": 18
    },
    "deped": {
     "nComps": 923,
-    "minPct": 66.7,
-    "minComp": "deped:1-806AsjWRCThbofCp0dU0VwZ5zoal8Wa",
-    "below60": 0,
-    "met": 923
+    "minPct": 8.3,
+    "minComp": "deped:1scCmnhkNxjEIO525Iui1n81WbSvzlqik",
+    "below60": 442,
+    "met": 459
    },
-   "offCurriculumPct": 53.1
+   "offCurriculumPct": 33.5
   },
-  "floorT": 0.65
+  "comparisonFloorT": 0.65,
+  "selectionMethod": "2026-09-30 approved reuse priority with primary-curriculum minimum"
  },
  "tail": {
-  "images": 22932,
-  "bytes": 407589059,
-  "shards": 69
+  "images": 32011,
+  "bytes": 507522218,
+  "shards": 75
  },
  "shards": [
   {
    "id": "common-01",
    "cell": "common",
    "file": "common-01.json",
-   "images": 665,
-   "bytes": 7999583,
-   "md5": "0501fa4a47eb24b442055efdbe1a37da"
+   "images": 1067,
+   "bytes": 7992142,
+   "md5": "88b6bff1f7743351d5c1de055d8ceffe"
   },
   {
    "id": "common-02",
    "cell": "common",
    "file": "common-02.json",
-   "images": 616,
-   "bytes": 7991920,
-   "md5": "bc47dbcbec61e6b34a6985c7c28c030d"
+   "images": 798,
+   "bytes": 7996869,
+   "md5": "cbc845568c169ce49401b1b6ddb2dde7"
   },
   {
    "id": "common-03",
    "cell": "common",
    "file": "common-03.json",
-   "images": 568,
-   "bytes": 7995050,
-   "md5": "02a1931496d6685d07ea7fb9ede22c08"
+   "images": 707,
+   "bytes": 7995724,
+   "md5": "f9be9b16b1a6c4010d0fd7bbd9db22e8"
   },
   {
    "id": "common-04",
    "cell": "common",
    "file": "common-04.json",
-   "images": 535,
-   "bytes": 7987855,
-   "md5": "4d4af2eed0c0863a1ec7482a161d5302"
+   "images": 653,
+   "bytes": 7996791,
+   "md5": "c733e3376032828631b7d0e4073c7d16"
   },
   {
    "id": "common-05",
    "cell": "common",
    "file": "common-05.json",
-   "images": 505,
-   "bytes": 7995192,
-   "md5": "575c071ae33367b0e7238da3e7c4cf25"
+   "images": 601,
+   "bytes": 7992472,
+   "md5": "79b4c29d942733edd8935a6432b396a7"
   },
   {
    "id": "common-06",
    "cell": "common",
    "file": "common-06.json",
-   "images": 478,
-   "bytes": 7989482,
-   "md5": "42d5fe15903f43d32df1fa9eb067d5c6"
+   "images": 560,
+   "bytes": 7997713,
+   "md5": "430364e75a9c035a6f70deb7ac75e261"
   },
   {
    "id": "common-07",
    "cell": "common",
    "file": "common-07.json",
-   "images": 454,
-   "bytes": 7986604,
-   "md5": "a6580742696cb1192b95cb7613770030"
+   "images": 527,
+   "bytes": 7997771,
+   "md5": "0597f9f33688352816fd58ac3d30ce94"
   },
   {
    "id": "common-08",
    "cell": "common",
    "file": "common-08.json",
-   "images": 433,
-   "bytes": 7988587,
-   "md5": "28280de18f0d0acaa5f177c2ed312df9"
+   "images": 497,
+   "bytes": 7988125,
+   "md5": "e6843eaadaa4c404a13937ba320c7b1b"
   },
   {
    "id": "common-09",
    "cell": "common",
    "file": "common-09.json",
-   "images": 414,
-   "bytes": 7986789,
-   "md5": "13c0279aa0179e8e38d5d6cb20501738"
+   "images": 472,
+   "bytes": 7996349,
+   "md5": "761cd88d3d2219a165861ebf7808dbcc"
   },
   {
    "id": "common-10",
    "cell": "common",
    "file": "common-10.json",
-   "images": 394,
-   "bytes": 7982578,
-   "md5": "780e135ce2b26bd53b5ea7f4c44d5048"
+   "images": 448,
+   "bytes": 7987445,
+   "md5": "7361f3a35ce4dced0db5fab37faf588f"
   },
   {
    "id": "common-11",
    "cell": "common",
    "file": "common-11.json",
-   "images": 374,
-   "bytes": 7997823,
-   "md5": "cf5f1d9156f2130b540f1da0fd5b897a"
+   "images": 428,
+   "bytes": 7986918,
+   "md5": "1896733bf9cea2e8815e506cdb2b2739"
   },
   {
    "id": "common-12",
    "cell": "common",
    "file": "common-12.json",
-   "images": 352,
-   "bytes": 7997452,
-   "md5": "76b1910431a6f8c9b03aae828ff12b32"
+   "images": 409,
+   "bytes": 7987429,
+   "md5": "af9eb65e63db58a6a312f422575ac3bb"
   },
   {
    "id": "common-13",
    "cell": "common",
    "file": "common-13.json",
-   "images": 328,
-   "bytes": 7990831,
-   "md5": "2d156efa4260359032b2863e94636e80"
+   "images": 389,
+   "bytes": 7990123,
+   "md5": "5a1e800e4319f3136092a8c52ee41cb5"
   },
   {
    "id": "common-14",
    "cell": "common",
    "file": "common-14.json",
-   "images": 298,
-   "bytes": 7997736,
-   "md5": "f58963e8f35ec4b66e230a2b9aa63d6f"
+   "images": 368,
+   "bytes": 7987213,
+   "md5": "e64986563de3945c9d7b506abc9bdbaf"
   },
   {
    "id": "common-15",
    "cell": "common",
    "file": "common-15.json",
-   "images": 369,
-   "bytes": 7982797,
-   "md5": "664f434a509b1b7d23954d9b9362666a"
+   "images": 346,
+   "bytes": 7996889,
+   "md5": "708645c9df17d06c382d3a26ff7bd009"
   },
   {
    "id": "common-16",
    "cell": "common",
    "file": "common-16.json",
-   "images": 444,
-   "bytes": 7988648,
-   "md5": "dcc31a468a9aaa0c865fe425db7661e0"
+   "images": 321,
+   "bytes": 7986746,
+   "md5": "9a267d1e96fc7054572bc88a35513a64"
   },
   {
    "id": "common-17",
    "cell": "common",
    "file": "common-17.json",
-   "images": 439,
-   "bytes": 7986794,
-   "md5": "9cf7741a7ee664951a9784884b49001d"
+   "images": 286,
+   "bytes": 7983082,
+   "md5": "7c706fbe5784f420d30a631db0790fae"
   },
   {
    "id": "common-18",
    "cell": "common",
    "file": "common-18.json",
-   "images": 437,
-   "bytes": 7979408,
-   "md5": "7747fdcac93f70d77b008c60c51560e4"
+   "images": 417,
+   "bytes": 7981470,
+   "md5": "e420ab22a9ab5efd6ff52fb116435a6c"
   },
   {
    "id": "common-19",
    "cell": "common",
    "file": "common-19.json",
-   "images": 433,
-   "bytes": 7989081,
-   "md5": "84a9afc0119ba8d37e03f767cf5a693a"
+   "images": 442,
+   "bytes": 7991307,
+   "md5": "cb4f62829195470ba96ba0ce32ec63a8"
   },
   {
    "id": "common-20",
    "cell": "common",
    "file": "common-20.json",
-   "images": 432,
-   "bytes": 7985213,
-   "md5": "3ca632b52dede8503130e539222a67ca"
+   "images": 438,
+   "bytes": 7985967,
+   "md5": "6264d50389da4ddd597cf0a75e2fd2b6"
   },
   {
    "id": "common-21",
    "cell": "common",
    "file": "common-21.json",
-   "images": 442,
-   "bytes": 7991704,
-   "md5": "fe189004c8da3c43fcc9da8e872ab4d7"
+   "images": 432,
+   "bytes": 7998241,
+   "md5": "431002dbbc1ba34ea6cbe542229cf556"
   },
   {
    "id": "common-22",
    "cell": "common",
    "file": "common-22.json",
-   "images": 430,
-   "bytes": 7990433,
-   "md5": "24077ed6511134d2fa17ea8667b3e49a"
+   "images": 436,
+   "bytes": 7987455,
+   "md5": "ac859a9f591086d2eb24fe86881d45eb"
   },
   {
    "id": "common-23",
    "cell": "common",
    "file": "common-23.json",
-   "images": 439,
-   "bytes": 7978792,
-   "md5": "479dc390e5f84c4e950fd7dd8811ac0d"
+   "images": 436,
+   "bytes": 7982392,
+   "md5": "67114584f5d6e886809809fd1ff1afb3"
   },
   {
    "id": "common-24",
    "cell": "common",
    "file": "common-24.json",
-   "images": 421,
-   "bytes": 7997338,
-   "md5": "152ad7ea1b597bf2013dbd51628e3c03"
+   "images": 441,
+   "bytes": 7984417,
+   "md5": "c5c9612e0afa8c76459295a42f83bedb"
   },
   {
    "id": "common-25",
    "cell": "common",
    "file": "common-25.json",
-   "images": 441,
-   "bytes": 7990713,
-   "md5": "fcfbb8900f26f0c64cd7adad57d491db"
+   "images": 440,
+   "bytes": 7998312,
+   "md5": "ac72e909312aa326d7f53b3ab9cdf59e"
   },
   {
    "id": "common-26",
    "cell": "common",
    "file": "common-26.json",
-   "images": 448,
-   "bytes": 7991383,
-   "md5": "188d8a77b04186cf7a64ee38f7fad518"
+   "images": 426,
+   "bytes": 7996023,
+   "md5": "5f93b215880025c8fc08599f25ee641f"
   },
   {
    "id": "common-27",
    "cell": "common",
    "file": "common-27.json",
-   "images": 523,
-   "bytes": 7996971,
-   "md5": "47d6659a23d4b692713e3d14b7f9a0f4"
+   "images": 421,
+   "bytes": 7999350,
+   "md5": "0f334eb51828d4296aa73b7649f70a97"
   },
   {
    "id": "common-28",
    "cell": "common",
    "file": "common-28.json",
-   "images": 547,
-   "bytes": 7999449,
-   "md5": "48874c9b21ff2c208f77bdb4652f3b97"
+   "images": 440,
+   "bytes": 7985376,
+   "md5": "7d23271d1d4679ea2018edd8453bc852"
   },
   {
    "id": "common-29",
    "cell": "common",
    "file": "common-29.json",
-   "images": 531,
-   "bytes": 7995418,
-   "md5": "89efae229e2ddb1b7f255cf0e1ae0ebe"
+   "images": 469,
+   "bytes": 7989159,
+   "md5": "7a1bcf70530b7e158ebd31d837c44a18"
   },
   {
    "id": "common-30",
    "cell": "common",
    "file": "common-30.json",
-   "images": 433,
-   "bytes": 7999049,
-   "md5": "d22793f6a3c99110a4462e54ab0df2cf"
+   "images": 532,
+   "bytes": 7995246,
+   "md5": "4e55767f1f89b338bf037c323943dca9"
   },
   {
    "id": "common-31",
    "cell": "common",
    "file": "common-31.json",
-   "images": 436,
-   "bytes": 7991706,
-   "md5": "8ae6f8f8c20f6ab5bce18c6b1b6658f9"
+   "images": 555,
+   "bytes": 7996590,
+   "md5": "90ca92712d45bcc096dea03b6b021bbf"
   },
   {
    "id": "common-32",
    "cell": "common",
    "file": "common-32.json",
-   "images": 461,
-   "bytes": 7991133,
-   "md5": "a8a0c9ebe8d29875a7c011030b83d2c1"
+   "images": 498,
+   "bytes": 7977288,
+   "md5": "e5f3ff0dc5f4a6b9f9afcc346bbcf7b7"
   },
   {
    "id": "common-33",
    "cell": "common",
    "file": "common-33.json",
-   "images": 230,
-   "bytes": 4212333,
-   "md5": "1d003f8059463db154f67ac0ad8b75d0"
+   "images": 447,
+   "bytes": 7993683,
+   "md5": "f8589ce32bd819cb1e06618a6d1f3d1a"
+  },
+  {
+   "id": "common-34",
+   "cell": "common",
+   "file": "common-34.json",
+   "images": 417,
+   "bytes": 7997756,
+   "md5": "d0a82497459dc5390777f0d57c336fb3"
+  },
+  {
+   "id": "common-35",
+   "cell": "common",
+   "file": "common-35.json",
+   "images": 463,
+   "bytes": 7987168,
+   "md5": "68f64812caae41c3f8a1898c4b990148"
+  },
+  {
+   "id": "common-36",
+   "cell": "common",
+   "file": "common-36.json",
+   "images": 117,
+   "bytes": 2145892,
+   "md5": "37f19d30527da521eea31650a7e0653f"
   },
   {
    "id": "g10-q1-01",
    "cell": "g10-q1",
    "file": "g10-q1-01.json",
-   "images": 146,
-   "bytes": 2907403,
-   "md5": "e942813f55351fdbc660db00080ccd0e"
+   "images": 290,
+   "bytes": 4767869,
+   "md5": "f9007e2fc7f9edea69ceaa79c029d912"
   },
   {
    "id": "g10-q2-01",
    "cell": "g10-q2",
    "file": "g10-q2-01.json",
-   "images": 159,
-   "bytes": 2473230,
-   "md5": "cd0da5b407d96daae7443a2b4c7cbd99"
+   "images": 353,
+   "bytes": 4377497,
+   "md5": "67bf7341dc24c73efadacb8161eda427"
   },
   {
    "id": "g10-q3-01",
    "cell": "g10-q3",
    "file": "g10-q3-01.json",
-   "images": 179,
-   "bytes": 2987405,
-   "md5": "e199b9f7ba6abaf3769a735cbc720ed1"
+   "images": 349,
+   "bytes": 4836538,
+   "md5": "16b16f77edca8b991a57ca1741136d60"
   },
   {
    "id": "g10-q4-01",
    "cell": "g10-q4",
    "file": "g10-q4-01.json",
-   "images": 161,
-   "bytes": 3310079,
-   "md5": "fb3bd7d54b300c7ec47a277bde5134d3"
+   "images": 325,
+   "bytes": 5566950,
+   "md5": "8894c7943af226994787e3cf3e15d855"
   },
   {
    "id": "g3-q1-01",
    "cell": "g3-q1",
    "file": "g3-q1-01.json",
-   "images": 330,
-   "bytes": 6133480,
-   "md5": "c23c58ff33e5984fc906315c62fbcefb"
+   "images": 574,
+   "bytes": 7985563,
+   "md5": "cbc0af976745966600bbb7a3333ff898"
+  },
+  {
+   "id": "g3-q1-02",
+   "cell": "g3-q1",
+   "file": "g3-q1-02.json",
+   "images": 78,
+   "bytes": 1876778,
+   "md5": "8b2b71c8b71c05d3d41365effc2cdb6f"
   },
   {
    "id": "g3-q2-01",
    "cell": "g3-q2",
    "file": "g3-q2-01.json",
-   "images": 512,
-   "bytes": 7982624,
-   "md5": "8d39d7fbdc47c3237c3229853b551734"
+   "images": 602,
+   "bytes": 7988291,
+   "md5": "6ffa5c000bd112f9547f75e6d3598a0f"
   },
   {
    "id": "g3-q2-02",
    "cell": "g3-q2",
    "file": "g3-q2-02.json",
-   "images": 237,
-   "bytes": 5563665,
-   "md5": "b7ebfe1dce089b6630e63a06c5e3529a"
+   "images": 362,
+   "bytes": 7901148,
+   "md5": "3b13c42cb224e3bc716f2e1d6555c082"
   },
   {
    "id": "g3-q3-01",
    "cell": "g3-q3",
    "file": "g3-q3-01.json",
-   "images": 336,
-   "bytes": 5389507,
-   "md5": "ed6684f2ba69c923cf9e26e141a76a3e"
+   "images": 565,
+   "bytes": 7879981,
+   "md5": "13b0b45fad6aa0eadc62980f0847716b"
   },
   {
    "id": "g3-q4-01",
    "cell": "g3-q4",
    "file": "g3-q4-01.json",
-   "images": 241,
-   "bytes": 4648950,
-   "md5": "fbb97ebebc5698180dd719bbf9ed2fec"
+   "images": 473,
+   "bytes": 7445805,
+   "md5": "7d38bc603988171e6575fc59e4622f4c"
   },
   {
    "id": "g4-q1-01",
    "cell": "g4-q1",
    "file": "g4-q1-01.json",
-   "images": 382,
-   "bytes": 7986224,
-   "md5": "5ed52fe3c21ccf07947d78b93162470d"
+   "images": 585,
+   "bytes": 7993423,
+   "md5": "e48091d758bc2cfb3ddef5471c438b33"
   },
   {
    "id": "g4-q1-02",
    "cell": "g4-q1",
    "file": "g4-q1-02.json",
-   "images": 8,
-   "bytes": 248649,
-   "md5": "744541c263bb06752e6a3af15be040f6"
+   "images": 257,
+   "bytes": 5945922,
+   "md5": "d0294a31bfb18cd1e78281b5a3cab5a3"
   },
   {
    "id": "g4-q2-01",
    "cell": "g4-q2",
    "file": "g4-q2-01.json",
-   "images": 226,
-   "bytes": 4162554,
-   "md5": "bfaae9f5410d77f92fbc8f12cd104ff1"
+   "images": 371,
+   "bytes": 5723187,
+   "md5": "8a89febde9abc04a34d10c15b6c2877f"
   },
   {
    "id": "g4-q3-01",
    "cell": "g4-q3",
    "file": "g4-q3-01.json",
-   "images": 255,
-   "bytes": 4077965,
-   "md5": "52cd16d0e0af59e40c674e3aa7e1e465"
+   "images": 432,
+   "bytes": 5957228,
+   "md5": "129e543001e8ede9070316ae01b16608"
   },
   {
    "id": "g4-q4-01",
    "cell": "g4-q4",
    "file": "g4-q4-01.json",
-   "images": 217,
-   "bytes": 4283346,
-   "md5": "8fd2f00fc8442f78c9b7e234609b5ef9"
+   "images": 445,
+   "bytes": 7311283,
+   "md5": "9609a6fbd3d576b3c297c2d5012cbd9f"
   },
   {
    "id": "g5-q1-01",
    "cell": "g5-q1",
    "file": "g5-q1-01.json",
-   "images": 256,
-   "bytes": 4160813,
-   "md5": "0075f2972072fc1b6bb3b0bfc2dac9c8"
+   "images": 463,
+   "bytes": 6348575,
+   "md5": "2e607e3f4178408ff4df02f1206eb424"
   },
   {
    "id": "g5-q2-01",
    "cell": "g5-q2",
    "file": "g5-q2-01.json",
-   "images": 413,
-   "bytes": 7993933,
-   "md5": "e6b420143fb2308284d530091eb7c47c"
+   "images": 537,
+   "bytes": 7990522,
+   "md5": "affd52a1683e6d7df6522af2f9001bb4"
   },
   {
    "id": "g5-q2-02",
    "cell": "g5-q2",
    "file": "g5-q2-02.json",
-   "images": 6,
-   "bytes": 181168,
-   "md5": "0c472fc2d4a8892244f9c109fd356e63"
+   "images": 135,
+   "bytes": 3175400,
+   "md5": "6039c916a17ea84bbb4a15cdd2407469"
   },
   {
    "id": "g5-q3-01",
    "cell": "g5-q3",
    "file": "g5-q3-01.json",
-   "images": 255,
-   "bytes": 3979228,
-   "md5": "883bd088188a4b11435c57a1f6617e48"
+   "images": 491,
+   "bytes": 6342915,
+   "md5": "537c4016c1d8f57352c7ca764749e62e"
   },
   {
    "id": "g5-q4-01",
    "cell": "g5-q4",
    "file": "g5-q4-01.json",
-   "images": 369,
-   "bytes": 7795780,
-   "md5": "972b1da56c1fce6912af3e0fd6597fae"
+   "images": 515,
+   "bytes": 7983345,
+   "md5": "0f13da58b4674581378ad11ec13503e1"
+  },
+  {
+   "id": "g5-q4-02",
+   "cell": "g5-q4",
+   "file": "g5-q4-02.json",
+   "images": 163,
+   "bytes": 3977595,
+   "md5": "8e56fc237ef76adf64666cd2fb677972"
   },
   {
    "id": "g6-q1-01",
    "cell": "g6-q1",
    "file": "g6-q1-01.json",
-   "images": 377,
-   "bytes": 6308184,
-   "md5": "797e2ac73602609c327f6f4a12d6b914"
+   "images": 549,
+   "bytes": 7984405,
+   "md5": "741109b098fd39b628d906b4d1fafdd9"
+  },
+  {
+   "id": "g6-q1-02",
+   "cell": "g6-q1",
+   "file": "g6-q1-02.json",
+   "images": 34,
+   "bytes": 816093,
+   "md5": "65ab72f766d104779e22e93a69f0cad4"
   },
   {
    "id": "g6-q2-01",
    "cell": "g6-q2",
    "file": "g6-q2-01.json",
-   "images": 452,
-   "bytes": 7995852,
-   "md5": "adfa2a883956e67d5989ed7a247f8b50"
+   "images": 536,
+   "bytes": 7989392,
+   "md5": "73a72d4630133dbcd9b58e6d3713a961"
   },
   {
    "id": "g6-q2-02",
    "cell": "g6-q2",
    "file": "g6-q2-02.json",
-   "images": 41,
-   "bytes": 1127107,
-   "md5": "6c2e3e1ea974a64658c922f81ff40c86"
+   "images": 134,
+   "bytes": 3161483,
+   "md5": "b5b1fc9a6fbc038928c1b08905ef4b4d"
   },
   {
    "id": "g6-q3-01",
    "cell": "g6-q3",
    "file": "g6-q3-01.json",
-   "images": 296,
-   "bytes": 4495937,
-   "md5": "f1387eca077df682fd33ecf3d2a4793e"
+   "images": 557,
+   "bytes": 7007463,
+   "md5": "71559d8460d10b59966ead1aa193f5ff"
   },
   {
    "id": "g6-q4-01",
    "cell": "g6-q4",
    "file": "g6-q4-01.json",
-   "images": 169,
-   "bytes": 3436528,
-   "md5": "d4418281f8b722189be4b5056f15dbda"
+   "images": 294,
+   "bytes": 5327620,
+   "md5": "1be87bcfbc4a17228771b570f7fdf7d1"
   },
   {
    "id": "g7-q1-01",
    "cell": "g7-q1",
    "file": "g7-q1-01.json",
-   "images": 237,
-   "bytes": 3810744,
-   "md5": "ba6bb76dbfb635b13dfc0685a940f732"
+   "images": 459,
+   "bytes": 6175933,
+   "md5": "24f58c4eda8d44e72386e4a04f66e74b"
   },
   {
    "id": "g7-q2-01",
    "cell": "g7-q2",
    "file": "g7-q2-01.json",
-   "images": 123,
-   "bytes": 2357070,
-   "md5": "095887062c3812683c29061cb39fb0c0"
+   "images": 258,
+   "bytes": 3991215,
+   "md5": "99041c967f28c08ae51dab2cae3fb473"
   },
   {
    "id": "g7-q3-01",
    "cell": "g7-q3",
    "file": "g7-q3-01.json",
-   "images": 224,
-   "bytes": 3236584,
-   "md5": "330ca0eb783f9322903d2dbedc0e22bb"
+   "images": 409,
+   "bytes": 4829450,
+   "md5": "5616c9caf3f371425269791b47e4bf77"
   },
   {
    "id": "g7-q4-01",
    "cell": "g7-q4",
    "file": "g7-q4-01.json",
-   "images": 178,
-   "bytes": 3561821,
-   "md5": "9fa3f17b4380df18b92570d75c1ecd97"
+   "images": 386,
+   "bytes": 6396469,
+   "md5": "3993a54fb0cccc3fdfe839c1379ff0bc"
   },
   {
    "id": "g8-q1-01",
    "cell": "g8-q1",
    "file": "g8-q1-01.json",
-   "images": 206,
-   "bytes": 4178860,
-   "md5": "2650f8b9f60d97f96f82e158c08145b2"
+   "images": 453,
+   "bytes": 7435808,
+   "md5": "5f294317c9cc68b20ff70f7d1f22d4ba"
   },
   {
    "id": "g8-q2-01",
    "cell": "g8-q2",
    "file": "g8-q2-01.json",
-   "images": 198,
-   "bytes": 3220602,
-   "md5": "145af80f8ee29893d7b4ba908f1cb2fc"
+   "images": 471,
+   "bytes": 5937006,
+   "md5": "cfe4eca7bb674bef89e1c251f2abd56c"
   },
   {
    "id": "g8-q3-01",
    "cell": "g8-q3",
    "file": "g8-q3-01.json",
-   "images": 144,
-   "bytes": 3080802,
-   "md5": "200f7d6afd06dbc4744d6bdcdf21b960"
+   "images": 328,
+   "bytes": 5936154,
+   "md5": "327508abf9f8ca8e406126b4e0ac2278"
   },
   {
    "id": "g8-q4-01",
    "cell": "g8-q4",
    "file": "g8-q4-01.json",
-   "images": 128,
-   "bytes": 1816877,
-   "md5": "293bdafe65c99bceee443b7cce08098c"
+   "images": 212,
+   "bytes": 2583237,
+   "md5": "c633a5f207f589b1c0ca8d80db19f8c3"
   },
   {
    "id": "g9-q1-01",
    "cell": "g9-q1",
    "file": "g9-q1-01.json",
-   "images": 205,
-   "bytes": 2878886,
-   "md5": "e1c0b3cf5bf52846205d2d31d97f9164"
+   "images": 371,
+   "bytes": 4344727,
+   "md5": "161a9ac2623d92c7e8dc6cee2096cbe1"
   },
   {
    "id": "g9-q2-01",
    "cell": "g9-q2",
    "file": "g9-q2-01.json",
-   "images": 167,
-   "bytes": 3531562,
-   "md5": "63018961dc409e828b3e220fde60b990"
+   "images": 349,
+   "bytes": 6105732,
+   "md5": "d28f21fbde9254ba34fce83db7cb89b0"
   },
   {
    "id": "g9-q3-01",
    "cell": "g9-q3",
    "file": "g9-q3-01.json",
-   "images": 184,
-   "bytes": 3814088,
-   "md5": "eabd3463ad9bd0b6d192cd5ff5c50d17"
+   "images": 336,
+   "bytes": 5757525,
+   "md5": "2d7b0e78fbbfa9213ba0703c08a33254"
   },
   {
    "id": "g9-q4-01",
    "cell": "g9-q4",
    "file": "g9-q4-01.json",
-   "images": 165,
-   "bytes": 2545707,
-   "md5": "7aa02e999fe6a31feb7d7450d8cdc86e"
+   "images": 366,
+   "bytes": 4533798,
+   "md5": "cd0622edb3aa15d1973c8ab0d232682b"
   }
  ]
 }
