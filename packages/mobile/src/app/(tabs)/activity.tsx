@@ -90,13 +90,7 @@ export default function ActivityScreen() {
         const rows = selected.filter((r) => r.cardId && ids.has(r.cardId));
         return { topic, total: ids.size, ...totalActivity(rows) };
       })
-      .filter(
-        (m) =>
-          curriculum === 'All modules' ||
-          curriculum === `Q${m.topic.quarter}` ||
-          (curriculum === 'Semester 1 · Q1–Q2' && m.topic.quarter <= 2) ||
-          (curriculum === 'Semester 2 · Q3–Q4' && m.topic.quarter >= 3)
-      );
+      .filter((m) => curriculum === 'All modules' || curriculum === `Term ${m.topic.term}`);
   }, [grade, selected, curriculum]);
   const chip = (label: string, active: boolean, onPress: () => void) => (
     <Pressable
@@ -125,8 +119,8 @@ export default function ActivityScreen() {
       </View>
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.note}>
-          Records for the selected profile on this device. Guest
-          activity combines students who skipped naming a profile.
+          Records for the selected profile on this device. Guest activity combines students who
+          skipped naming a profile.
         </Text>
         <Text style={styles.heading}>Student profile</Text>
         <View style={styles.wrap}>
@@ -146,9 +140,7 @@ export default function ActivityScreen() {
             })
           )}
         </View>
-        <Text style={styles.note}>
-          For a school quarter or semester, enter its dates (YYYY-MM-DD).
-        </Text>
+        <Text style={styles.note}>For a school term, enter its dates (YYYY-MM-DD).</Text>
         <View style={styles.wrap}>
           <TextInput
             accessibilityLabel="Start date YYYY-MM-DD"
@@ -254,19 +246,12 @@ export default function ActivityScreen() {
               mastery.
             </Text>
             <View style={styles.wrap}>
-              {[
-                'All modules',
-                'Q1',
-                'Q2',
-                'Q3',
-                'Q4',
-                'Semester 1 · Q1–Q2',
-                'Semester 2 · Q3–Q4',
-              ].map((c) => chip(c, curriculum === c, () => setCurriculum(c)))}
+              {['All modules', 'Term 1', 'Term 2', 'Term 3'].map((c) =>
+                chip(c, curriculum === c, () => setCurriculum(c))
+              )}
             </View>
             <Text style={styles.note}>
-              Q1–Q4 and semester groups describe curriculum content, independently of the activity
-              dates above.
+              Terms 1–3 describe curriculum content, independently of the activity dates above.
             </Text>
             {modules.map((m) => (
               <View key={m.topic.key} style={styles.module}>

@@ -40,8 +40,8 @@ export const PH_EDITION: LearningEdition = {
       bytes: 1274396160, md5: 'fe2d0ab2ad856f2a42c5add5872c4234', label: 'Hiraia-2B base',
     },
     vectors: {
-      filename: 'vectors-labse-90318bad81dd.i8.bin', url: remoteAssetUrl('vectors-labse-90318bad81dd.i8.bin'),
-      bytes: 122162688, md5: '69d152b4c38b619d4f019e652384d9b6', label: 'Hiraiapedia vectors',
+      filename: 'vectors-labse-31c53977775e.i8.bin', url: remoteAssetUrl('vectors-labse-31c53977775e.i8.bin'),
+      bytes: 122162688, md5: '59e10b0c4daeac9bce3aefcbdd62914a', label: 'Hiraiapedia vectors',
     },
     embedder: {
       filename: 'labse.Q4_K_M.gguf', url: remoteAssetUrl('labse.Q4_K_M.gguf'),

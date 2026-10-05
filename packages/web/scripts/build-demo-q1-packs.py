@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Split the web-demo subset into a tiny Q1 seed and per-grade Q1 packs.
+"""Split the web-demo subset into a tiny Term 1 seed and per-grade Term 1 packs.
 
 Seed: the first 5 Q1 cards per grade in competency order, so the lightbox can
 open without parsing the full 2 MB bank and the walk can start in curriculum
 sequence. After the visitor picks a grade, the matching pack loads the rest of
-that grade's first-quarter cards + their MCQs.
+that grade's first-term cards + their MCQs.
 """
 from __future__ import annotations
 
@@ -17,6 +17,7 @@ DATA = WEB / "src" / "data"
 
 cards_doc = json.loads((DATA / "demo-cards.json").read_text())
 questions_doc = json.loads((DATA / "demo-questions.json").read_text())
+SCHEDULE = json.loads((WEB.parents[1] / "packages/shared/src/curriculum/three-term-2026.json").read_text())["competencies"]
 CARDS = cards_doc["cards"]
 TAGS = cards_doc.get("tags") or {}
 TAXONOMY = cards_doc.get("taxonomy") or []
@@ -42,9 +43,9 @@ def q1_for_grade(grade: int) -> list[dict]:
         if not tag:
             continue
         _comp, g, q = tag[0], tag[1], tag[2]
-        if g == grade and q == 1:
+        if g == grade and SCHEDULE.get(_comp, {}).get("term") == 1:
             rows.append(c)
-    rows.sort(key=lambda c: (comp_key(TAGS[c["id"]][0]), c["id"]))
+    rows.sort(key=lambda c: (SCHEDULE[TAGS[c["id"]][0]]["order"], c["id"]))
     return rows
 
 
@@ -79,7 +80,7 @@ for grade in range(3, 11):
     rest = [c for c in seq if c["id"] not in {s["id"] for s in seed}]
     pack = {
         "grade": grade,
-        "quarter": 1,
+        "term": 1,
         "cards": rest,
         "tags": slice_tags(rest),
         "questions": questions_for(seq),  # quizzes for the whole Q1 walk

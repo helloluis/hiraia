@@ -33,7 +33,7 @@ import { create } from 'zustand';
 // ResponseCard is laid out for. It sits next to the prompt it cleans up after
 // (@hiraia/shared prompts/cards.ts) so the web demo's card route applies the same one.
 import {
-  inferCurriculumQuarter,
+  inferCurriculumTerm,
   sanitizeCardAnswer,
   type Language,
   type SeenRecord,
@@ -321,7 +321,8 @@ function feedContext(
 ): FeedContext {
   return {
     studentGrade: useEngineStore.getState().grade,
-    currentQuarter: inferCurriculumQuarter(new Date()).quarter,
+    currentQuarter: null,
+    currentTerm: inferCurriculumTerm(new Date()).term,
     now: Date.now(),
     cardSeen: seenStore.cards,
     competencySeen: seenStore.competencies,
@@ -491,7 +492,7 @@ export const useCardStore = create<CardState>()((set, get) => ({
       const savedKey = await getSetting(`cards.curriculum.${grade}`).catch(() => null);
       const estimated = estimatedCurriculumCursor(
         grade,
-        inferCurriculumQuarter(new Date()).fraction
+        inferCurriculumTerm(new Date())
       );
       const rawRun = await getSetting(`cards.lessonRun.${grade}`).catch(() => null);
       let savedRun: unknown;
@@ -1694,7 +1695,7 @@ useCardStore.subscribe((s, prev) => {
 
 useEngineStore.subscribe((s, prev) => {
   if (s.grade !== prev.grade && useCardStore.getState().hydrated) {
-    const cursor = estimatedCurriculumCursor(s.grade, inferCurriculumQuarter(new Date()).fraction);
+    const cursor = estimatedCurriculumCursor(s.grade, inferCurriculumTerm(new Date()));
     void Promise.all([
       getSetting(`cards.curriculum.${s.grade}`),
       getSetting(`cards.lessonRun.${s.grade}`),

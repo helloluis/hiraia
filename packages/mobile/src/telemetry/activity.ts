@@ -1,11 +1,33 @@
+import { calendarFor, inferCurriculumTerm } from '@hiraia/shared/curriculum';
+
 /** Windows use the device's local calendar; the 24-hour window is elapsed time. */
 export function activityWindows(now: number) {
   const monday = new Date(now);
   monday.setHours(0, 0, 0, 0);
   monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
   const date = new Date(now);
-  const quarter = new Date(date.getFullYear(), Math.floor(date.getMonth() / 3) * 3, 1);
-  return [now - 86400000, monday.getTime(), quarter.getTime()];
+  const calendar = calendarFor(date);
+  const current = inferCurriculumTerm(date, calendar);
+  const term = calendar.terms.find((t) => t.term === current.term);
+  // No current school term during the summer gap. Known calendars use exact starts.
+  let start = now + 1;
+  if (current.term !== null) {
+    if (calendar.terms.length === 3 && term) {
+      const [y, m, d] = term.start.split('-').map(Number);
+      start = new Date(y!, m! - 1, d!).getTime();
+    } else {
+      // Match inferCurriculumTerm's documented estimate for future school years.
+      const cursor = new Date(date);
+      cursor.setHours(0, 0, 0, 0);
+      while (
+        inferCurriculumTerm(new Date(cursor.getTime() - 86400000), calendar).term === current.term
+      ) {
+        cursor.setDate(cursor.getDate() - 1);
+      }
+      start = cursor.getTime();
+    }
+  }
+  return [now - 86400000, monday.getTime(), start];
 }
 export interface ActivityCounts {
   /** Absolute card_viewed events, including repeats of the same card. */

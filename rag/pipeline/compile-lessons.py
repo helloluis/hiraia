@@ -1,4 +1,4 @@
-"""Compile authored MATATAG coverage slots against the bundled card bank.
+"""Compile authored Revised K-12 coverage slots against the bundled card bank.
 Run from repository root. --check validates that generated output is current.
 """
 import json,re,pathlib,hashlib,sys
@@ -14,6 +14,9 @@ expected=set(code_quarter)
 supp=json.loads((ROOT/f'packages/mobile/src/data/grade{GRADE}LessonSupplement.json').read_text());p['cards']+=supp['cards'];questions.update(supp['questions']);tags.update({id:[codes[0],GRADE,code_quarter[codes[0]],1,[],codes] for id,codes in supp['competencies'].items()})
 available={c['id'] for c in idx['cards']}|{c['id'] for c in supp['cards']}
 cards={c['id']:c for c in p['cards']}
+review=json.loads((ROOT/'rag/pipeline/term2-pilot-review.json').read_text())
+reviewed_units=review['units']
+reviewed_codes=set(review['codes'])
 for lesson in a['lessons']:
  assert all(code_quarter[u['competency']]==lesson['quarter'] for u in lesson['units']), f"Wrong quarter: {lesson['key']}"
 result=[];gaps=[];evidence=[]
@@ -23,12 +26,15 @@ for lesson in a['lessons']:
  units=[]
  for u in lesson['units']:
   match=re.compile(u['pattern'],re.I|re.S); candidates=[]
+  reviewed=reviewed_units.get(u['id'])
   for c in p['cards']:
    if c['id'] not in available:continue
    t=tags.get(c['id']);codes=(t[5] if len(t)>5 and t[5] else [t[0]]) if t else []
    if c['factId'] in excluded or not t or t[3]<.2 or u['competency'] not in codes:continue
    text=c.get('fact',{}).get('en','')
-   if not match.search(text):continue
+   if reviewed is not None:
+    if c['id'] not in reviewed['cardIds']:continue
+   elif not match.search(text):continue
    # Author reviewed scoped exclusions can reject a misleading assignment without
    # deleting the card or its other discovery labels.
    if c['id'] in a.get('excludedCardIds',[]):continue
@@ -38,6 +44,10 @@ for lesson in a['lessons']:
   # One fact can have more than one rendered card; avoid treating paraphrases as depth.
   seen=set();candidates=[id for id in candidates if not(cards[id]['factId'] in seen or seen.add(cards[id]['factId']))]
   quiz=[id for id in candidates if cards[id]['factId'] in questions]
+  if reviewed is not None:
+   assert set(candidates)==set(reviewed['cardIds']),f"Unavailable reviewed cards: {u['id']}"
+   quiz=[id for id in quiz if id in reviewed['quizCardIds']]
+   assert set(quiz)==set(reviewed['quizCardIds']),f"Unavailable reviewed questions: {u['id']}"
   units.append(dict(id=u['id'],competency=u['competency'],focus=u['focus'],cardIds=candidates,quizCardIds=quiz))
   evidence.append(dict(lesson=lesson['key'],unit=u['id'],cards=len(candidates),quizzes=len(quiz),examples=[dict(id=id,text=cards[id]['fact']['en']) for id in candidates[:2]]))
   if not candidates:gaps.append(u['id']+' has no instructional card')
@@ -52,6 +62,10 @@ for lesson in a['lessons']:
   # Additional examples still need a reviewed competency match at the normal confidence
   # floor. Category names alone do not establish grade or lesson relevance.
   if not t or t[3]<.2 or not set(codes)&set(out['codes']):continue
+  # The focused pilot block uses reviewed examples. Unreviewed cards remain in
+  # discovery and other lessons; a keyword hit alone cannot refill this block.
+  matching=set(codes)&set(out['codes'])
+  if matching<=reviewed_codes and c['id'] not in review['relatedCardIds'].get(lesson['key'],[]):continue
   if c.get('cats') and all(cat in enrichment for cat in c['cats']):continue
   if c['factId'] in core_facts or c['factId'] in related_facts:continue
   related_facts.add(c['factId']);related.append(c['id'])

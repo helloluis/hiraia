@@ -64,7 +64,7 @@ export function Landing() {
 
             <div className="mc-band !h-auto !min-h-[34px] !py-1.5">
               <span className="mc-topic !whitespace-normal leading-tight !tracking-[0.08em]">
-                MATATAG-compatible science tutor
+                Science tutor for the Revised K-12 Curriculum
               </span>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/hiraia-profile.png" alt="" width={26} height={26} className="mc-stamp" />
@@ -142,7 +142,7 @@ export function Landing() {
               <p className="mc-label text-[10px] text-[var(--gold)]">Tagalog and English</p>
               <p className="mt-2 font-zilla text-base font-medium leading-relaxed text-[var(--stock)]/85 sm:text-lg">
                 Built for Philippine elementary to junior high, with science lessons mapped to
-                the Department of Education&apos;s MATATAG curriculum.
+                the Department of Education&apos;s Revised K-12 Curriculum.
               </p>
               <a href="/competencies" className="mt-3 inline-block font-zilla text-base text-[var(--gold)] underline underline-offset-4">
                 Explore the competencies

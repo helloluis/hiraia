@@ -54,7 +54,7 @@ export function ActivityTable() {
       <View style={styles.table}>
         <View style={[styles.row, styles.heading]}>
           <Text style={[styles.label, styles.header]}>Counter</Text>
-          {['Last 24h', 'This Week', 'This Quarter'].map((label) => (
+          {['Last 24h', 'This Week', 'This Term'].map((label) => (
             <Text key={label} style={[styles.value, styles.header]}>
               {label}
             </Text>

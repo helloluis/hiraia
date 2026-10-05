@@ -108,8 +108,8 @@ interface UIStrings {
     curriculum: string;
     /** One line under the sheet's title saying what a topic-row tap does. */
     curriculumHint: string;
-    /** The four quarter headings of the outline, Q1..Q4 in order. */
-    quarters: [string, string, string, string];
+    /** Three-term curriculum headings. */
+    terms: [string, string, string];
     /** a11y label of the outline sheet's close affordance. */
     closeCurriculum: string;
     /** a11y label of the calendar ribbon's ✕ — leaves calendar mode (clears the cursor). */
@@ -252,7 +252,7 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       rerollToastTopic: 'Random na card sa paksang ito!',
       curriculum: 'Kurikulum',
       curriculumHint: 'Pumili ng paksa — tatapusin natin ang lahat ng kard nito.',
-      quarters: ['Unang Markahan', 'Ikalawang Markahan', 'Ikatlong Markahan', 'Ikaapat na Markahan'],
+      terms: ['Term 1', 'Term 2', 'Term 3'],
       closeCurriculum: 'Isara ang kurikulum',
       exitCurriculum: 'Lumabas sa kurikulum',
       curriculumEmpty: 'Wala pang kard para sa baitang na ito.',
@@ -278,18 +278,18 @@ const UI_STRINGS: Record<Language, UIStrings> = {
         cpuRetry: ['Medyo natatagalan — sandali pa…'],
         warm: ['Ginigising si Hiraia…', 'Nag-uunat pa si Hiraia…'],
         evergreen: [
-        'Gumagana pa rin…',
-        'Aabutin ito nang ilang minuto.',
-        'Salamat sa paghihintay!',
-        'Hindi mo kailangang maghintay — mag-scroll sa mga card!',
-      ],
+          'Gumagana pa rin…',
+          'Aabutin ito nang ilang minuto.',
+          'Salamat sa paghihintay!',
+          'Hindi mo kailangang maghintay — mag-scroll sa mga card!',
+        ],
         // Non-blocking reassurance (Luis, 2026-09-02): the deck works during the whole
         // download, and the child should be TOLD so — the point of the background design
         // is lost if they sit and watch the bar. Offered only while bytes actually arrive.
         downloadEvergreen: [
-        'Pwede ka nang magbasa ng cards habang nagda-download!',
-        'Nagda-download lang ng dagdag na content — tuloy lang sa pagbabasa.',
-      ],
+          'Pwede ka nang magbasa ng cards habang nagda-download!',
+          'Nagda-download lang ng dagdag na content — tuloy lang sa pagbabasa.',
+        ],
         // NOTE for native review: "{pct}% na ang tapos" may read more naturally as
         // "{pct}% na ang natapos" — flagged, not self-corrected.
         pctDone: '{pct}% na ang tapos',
@@ -364,7 +364,7 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       rerollToastTopic: 'Random card from this topic!',
       curriculum: 'Curriculum',
       curriculumHint: "Pick a topic — we'll go through all of its cards.",
-      quarters: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4'],
+      terms: ['Term 1', 'Term 2', 'Term 3'],
       closeCurriculum: 'Close the curriculum',
       exitCurriculum: 'Leave the curriculum',
       curriculumEmpty: 'No cards for this grade yet.',
@@ -388,15 +388,15 @@ const UI_STRINGS: Record<Language, UIStrings> = {
         cpuRetry: ['Taking a little longer — hang on…'],
         warm: ['Waking Hiraia up…', 'Hiraia is stretching…'],
         evergreen: [
-        'Still working…',
-        'This will take a few minutes.',
-        'Thanks for waiting!',
-        'No need to wait — scroll through the cards!',
-      ],
+          'Still working…',
+          'This will take a few minutes.',
+          'Thanks for waiting!',
+          'No need to wait — scroll through the cards!',
+        ],
         downloadEvergreen: [
-        'You can read cards while we download!',
-        'Downloading extra content — keep reading.',
-      ],
+          'You can read cards while we download!',
+          'Downloading extra content — keep reading.',
+        ],
         pctDone: '{pct}% done',
       },
     },
@@ -465,7 +465,7 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       yourQuestion: 'Ang pangutana nimo',
       dismissAsk: 'Kuhaa ang pangutana',
       // NOTE for native review (calendar mode, drafted 2026-09-05, flagged not self-corrected):
-      //   • "Kwarter" for a school quarter — DepEd Cebuano materials also use "Markahan";
+      //   • Term numbers follow the 2026 three-term BOW in all languages;
       //     confirm which reads naturally to a Grade 5 reader.
       //   • ordinals "Ikaduhang / Ikatulong / Ikaupat nga" — check the linker forms.
       //   • "humanon nato" for "we'll finish/go through" — check register.
@@ -477,7 +477,7 @@ const UI_STRINGS: Record<Language, UIStrings> = {
       rerollToastTopic: 'Random nga card gikan niini nga hilisgutan!',
       curriculum: 'Kurikulum',
       curriculumHint: 'Pilia ang hilisgutan — humanon nato ang tanan niyang kard.',
-      quarters: ['Unang Kwarter', 'Ikaduhang Kwarter', 'Ikatulong Kwarter', 'Ikaupat nga Kwarter'],
+      terms: ['Term 1', 'Term 2', 'Term 3'],
       closeCurriculum: 'Isira ang kurikulum',
       exitCurriculum: 'Gawas sa kurikulum',
       curriculumEmpty: 'Wala pay kard para niini nga grado.',
@@ -519,16 +519,16 @@ const UI_STRINGS: Record<Language, UIStrings> = {
         cpuRetry: ['Medyo nadugay — kadiyot na lang…'],
         warm: ['Ginapukaw si Hiraia…', 'Nag-inat pa si Hiraia…'],
         evergreen: [
-        'Nagtrabaho pa gihapon…',
-        'Moabot kini og pipila ka minuto.',
-        'Salamat sa paghulat!',
-        // FLAGGED for native review with the other ceb loading lines.
-        'Dili na kinahanglan maghulat — mag-scroll sa mga card!',
-      ],
+          'Nagtrabaho pa gihapon…',
+          'Moabot kini og pipila ka minuto.',
+          'Salamat sa paghulat!',
+          // FLAGGED for native review with the other ceb loading lines.
+          'Dili na kinahanglan maghulat — mag-scroll sa mga card!',
+        ],
         downloadEvergreen: [
-        'Pwede ka magbasa og cards samtang nag-download!',
-        'Nag-download og dugang content — padayon lang sa pagbasa.',
-      ],
+          'Pwede ka magbasa og cards samtang nag-download!',
+          'Nag-download og dugang content — padayon lang sa pagbasa.',
+        ],
         pctDone: '{pct}% na ang nahuman',
       },
     },

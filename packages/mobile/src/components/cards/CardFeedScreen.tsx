@@ -718,7 +718,7 @@ function CardFeed() {
       ) : null}
 
       {/* CALENDAR MODE's ribbon — the same ribbon grammar, under the same box, one line:
-          "KURIKULUM · Q2 · <title>" — the label names the mode and the quarter, the body is the
+          "KURIKULUM · Term 2 · <title>" — the label names the mode and the term, the body is the
           held topic's DepEd title in the tutor language. Randomize leaves the mode. Mutually
           exclusive with the ask ribbon by construction (entering either clears the other in the
           store). It names the topic the feed is DRAWING FROM: on the page where a topic runs out
@@ -727,7 +727,7 @@ function CardFeed() {
       {!queryBanner && curriculum && curriculumTopic && !response && !reward && !question ? (
         <View style={[styles.banner, wideWindow && styles.desktopContext]}>
           <Text style={styles.bannerLabel} numberOfLines={1}>
-            {t.cards.curriculum} · Q{curriculumTopic.quarter} ·
+            {t.cards.curriculum} · Term {curriculumTopic.term} ·
           </Text>
           <Text style={styles.bannerText} numberOfLines={1}>
             {topicTitle(curriculumTopic, language)}
@@ -776,7 +776,7 @@ function CardFeed() {
           )}
         </View>
         {/* The cycling button: DIE = "reroll" (jump to a fresh topic — or, in calendar mode,
-            another card of the held topic); CALENDAR = open the grade's MATATAG outline. The
+            another card of the held topic); CALENDAR = open the grade's three-term outline. The
             two faces alternate every 2 s; the cycle freezes while pressed and while the sheet
             is open (see CycleButton). */}
         {wideWindow ? <>

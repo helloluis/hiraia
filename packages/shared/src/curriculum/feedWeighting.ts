@@ -9,6 +9,8 @@
  */
 import type { GradeLevel } from '../types/index.js';
 import type { Quarter } from './index.js';
+import { scheduleForCodes } from './terms.js';
+import type { Term } from './scheduleLessons.js';
 
 // ---------------------------------------------------------------- calendar
 
@@ -94,19 +96,60 @@ export function genericCalendar(startYear: number): SchoolCalendar {
     source: 'generic PH school-year model (no DepEd Order on file)',
     opens: iso(opens),
     closes: iso(closes),
-    terms: [{ term: 1, start: iso(opens), end: iso(closes), instruction: [iso(opens), iso(closes)] }],
+    terms: [
+      { term: 1, start: iso(opens), end: iso(closes), instruction: [iso(opens), iso(closes)] },
+    ],
   };
 }
 
 /** The calendar a date belongs to: a known one if the date falls inside it, else the generic model
  * for that school year (June–April → the year the SY opened; the summer gap resolves to no quarter). */
-export function calendarFor(date: Date, known: readonly SchoolCalendar[] = KNOWN_CALENDARS): SchoolCalendar {
+export function calendarFor(
+  date: Date,
+  known: readonly SchoolCalendar[] = KNOWN_CALENDARS
+): SchoolCalendar {
   const d = dayStart(date);
   for (const cal of known) {
     if (d >= localDate(cal.opens) && d <= localDate(cal.closes)) return cal;
   }
   const startYear = d.getMonth() >= 5 ? d.getFullYear() : d.getFullYear() - 1;
   return genericCalendar(startYear);
+}
+
+export interface TermInference {
+  term: Term | null;
+  week: number;
+  inSchoolYear: boolean;
+}
+
+/** Instruction weeks follow the actual term boundaries. End-of-term blocks and
+ * Christmas retain the preceding term for review. Future calendars are estimates. */
+export function inferCurriculumTerm(
+  date: Date,
+  cal: SchoolCalendar = calendarFor(date)
+): TermInference {
+  const d = dayStart(date);
+  if (d < localDate(cal.opens) || d > localDate(cal.closes)) {
+    return { term: null, week: 1, inSchoolYear: false };
+  }
+  if (cal.terms.length !== 3) {
+    const fraction =
+      weekdaysBetween(localDate(cal.opens), d) /
+      weekdaysBetween(localDate(cal.opens), localDate(cal.closes));
+    const progress = Math.min(2.999999, fraction * 3);
+    return {
+      term: (Math.floor(progress) + 1) as Term,
+      week: Math.min(11, Math.floor((progress % 1) * 11) + 1),
+      inSchoolYear: true,
+    };
+  }
+  const term = [...cal.terms].reverse().find((t) => d >= localDate(t.start)) ?? cal.terms[0]!;
+  const elapsed = weekdaysBetween(localDate(term.instruction[0]), d);
+  return {
+    term: term.term as Term,
+    week: Math.max(1, Math.min(11, Math.ceil(elapsed / 5))),
+    inSchoolYear: true,
+  };
 }
 
 export interface QuarterInference {
@@ -118,12 +161,15 @@ export interface QuarterInference {
 }
 
 /**
- * MATATAG competencies are organised in FOUR quarters; SY 2026-27 runs THREE terms and DepEd has
- * published no quarter→term pacing guide. We infer the curriculum quarter from the fraction of
+ * Legacy compatibility for historical quarter-tagged callers. New app and website callers use
+ * inferCurriculumTerm and the published 2026 BOW. This infers a legacy quarter from the fraction of
  * instructional weekdays elapsed: Q = ⌊4·f⌋ + 1. End-of-term blocks count as the end of that
  * term's instruction. Outside the school year there is no current quarter.
  */
-export function inferCurriculumQuarter(date: Date, cal: SchoolCalendar = calendarFor(date)): QuarterInference {
+export function inferCurriculumQuarter(
+  date: Date,
+  cal: SchoolCalendar = calendarFor(date)
+): QuarterInference {
   const d = dayStart(date);
   if (d < localDate(cal.opens) || d > localDate(cal.closes)) {
     return { quarter: null, fraction: 0, inSchoolYear: false };
@@ -204,7 +250,7 @@ function cellMultiplier(
   cell: CurriculumCell,
   studentGrade: GradeLevel,
   currentQuarter: Quarter | null,
-  w: CurriculumWeights,
+  w: CurriculumWeights
 ): number {
   const sameGrade = cell.grade === studentGrade;
   if (currentQuarter === null) {
@@ -236,7 +282,7 @@ export function curriculumMultiplier(
   tag: CurriculumTag | null | undefined,
   studentGrade: GradeLevel,
   currentQuarter: Quarter | null,
-  w: CurriculumWeights = DEFAULT_CURRICULUM_WEIGHTS,
+  w: CurriculumWeights = DEFAULT_CURRICULUM_WEIGHTS
 ): number {
   if (!tag || !(tag.confidence >= w.minConfidence)) return w.offCurriculum;
   const cells: readonly CurriculumCell[] = tag.cells?.length
@@ -250,6 +296,30 @@ export function curriculumMultiplier(
     if (m > best) best = m;
   }
   return Math.max(best, w.other);
+}
+
+/** Weight by the published competency→term crosswalk, never by old quarter numbers.
+ * Historical tags remain readable; codes without a BOW mapping only receive a
+ * grade-level weight, rather than an invented term. */
+export function termCurriculumMultiplier(
+  tag: CurriculumTag | null | undefined,
+  studentGrade: GradeLevel,
+  term: Term | null,
+  w: CurriculumWeights = DEFAULT_CURRICULUM_WEIGHTS
+): number {
+  if (!tag || !(tag.confidence >= w.minConfidence)) return w.offCurriculum;
+  if (term === null) return curriculumMultiplier(tag, studentGrade, null, w);
+  const rows = scheduleForCodes(tag.codes?.length ? tag.codes : [tag.competency]);
+  if (!rows.length) return tag.grade === studentGrade ? w.sameGradeOtherQuarter : w.other;
+  return Math.max(
+    w.other,
+    ...rows.map((row) => {
+      const cell = tag.cells?.find((c) => c.grade === row.grade && c.quarter === row.sourceQuarter);
+      let m = cellMultiplier({ grade: row.grade, quarter: row.term }, studentGrade, term, w);
+      if ((cell?.strength ?? 2) < 2) m = Math.min(m, w.sameGradeAdjacentQuarter);
+      return m > w.other ? w.other + (m - w.other) * (cell?.norm ?? 1) : m;
+    })
+  );
 }
 
 // ---------------------------------------------------------------- recency factor
@@ -284,7 +354,7 @@ export function seenMultiplier(
   rec: SeenRecord | null | undefined,
   now: number,
   decay: number,
-  recoveryPerWeek: number = SEEN_DECAY.recoveryPerWeek,
+  recoveryPerWeek: number = SEEN_DECAY.recoveryPerWeek
 ): number {
   if (!rec || !(rec.times > 0)) return 1;
   const base = Math.pow(decay, rec.times);
@@ -329,7 +399,7 @@ export function cardWeight(inp: WeightInputs, ctx: WeightContext): number {
 export function weightedPick<T>(
   items: readonly T[],
   weightOf: (item: T) => number,
-  rand: () => number = Math.random,
+  rand: () => number = Math.random
 ): T | undefined {
   if (items.length === 0) return undefined;
   const ws = new Float64Array(items.length);

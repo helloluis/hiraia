@@ -1,6 +1,7 @@
 /** Public content mapping. Card counts show resources, not evidence of mastery. */
 export interface Competency {
   code: string;
+  status: string;
   text: string;
   cardCount: number;
   questionCount: number;
@@ -9,7 +10,8 @@ export interface Competency {
 
 export interface CompetencyTopic {
   key: string;
-  quarter: number;
+  term: number;
+  weeks: number[];
   title: { en: string; tl: string; bis: string };
   cardCount: number;
   questionCount: number;
@@ -20,7 +22,8 @@ export interface CompetencyGrade {
   grade: number;
   topicCount: number;
   competencyCount: number;
-  quarters: { quarter: number; domain: string; topics: CompetencyTopic[] }[];
+  sourceUrl: string;
+  terms: { term: number; domain: string; topics: CompetencyTopic[] }[];
 }
 
 export interface CompetencyCatalogue {

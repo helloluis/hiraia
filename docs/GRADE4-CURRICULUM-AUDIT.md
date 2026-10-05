@@ -1,5 +1,38 @@
 # Grade 4 curriculum audit and implementation
 
+## Pilot review — 2026-10-05: Revised K-12, Term 2, weeks 4–9
+
+Implementation follow-up: the scoped fixes are now part of the [Grades 3–10 Term 2 audit](TERM2-PILOT-AUDIT.md), with an explicit [translation handoff](TERM2-PILOT-CEBUANO-HANDOFF.md). The findings and counts below describe the pre-fix snapshot. The new sequence adds six-action coverage, measurement and graph activities, a labelled offline graph, factual corrections and explicit candidate selection. Native-language review and teacher-observed practical work remain separate.
+
+This follow-up supersedes the earlier structural coverage claim **for pilot readiness in this block**. All six objectives have mapped lessons, but mapped coverage is not sufficient instructional coverage. Review the fixes below before relying on this block for the Grade 4 pilot. This review changes no learner content.
+
+Reference: [official Grade 4 Budgets of Work page](https://sites.google.com/deped.gov.ph/lsguide/budgets-of-work/grade-4), archived as `rag/sources/curriculum-guides/three-term-2026/grade-4-science.pdf`, with extracted text and provenance alongside it. The official objective order is rigid/soft objects, shape changes, measurement, speed, graphs, then changing motion. The stable G4-F codes below are existing app identifiers, not new official codes.
+
+Inventory from `grade4Lessons.generated.json`, the app pool, Grade 4 supplements, and built `cards.db`; counts are distinct facts per lesson and overlap across lessons. “Core” means compiler-selected, not editorially approved. All reviewed non-supplement English bodies match the built database; `g4-core-uniform-graph` is supplied separately through the runtime supplement.
+
+| Objective / lesson | Eligible / core facts | Core facts with quizzes | Assessment |
+|---|---:|---:|---|
+| Rigid/soft, predict movement and shape (`g4:rigid-soft`) | 48 / 31 | 2 | Useful comparisons and activity prompts exist; assessment is thin. |
+| Push/pull/stretch/bend/twist/squeeze (`g4:change-shape`) | 79 / 61 | 33 | Stretching, bending and squeezing have examples; twisting is only a list and recognition question. |
+| Measure distance/time (`g4:distance-time`) | 18 / 17 | 10 | Equipment vocabulary exists; no complete measurement procedure identified in this pool. |
+| Speed (`g4:speed`) | 60 / 41 | 22 | Substantial explanation/question inventory; needs a focused, practical first pass. |
+| Construct/label stationary, uniform, fast/slow graphs (`g4:speed-graphs`) | 10 / 9 | 7 | One numerical plotting exercise; insufficient diagram and construction practice. |
+| Pushes/pulls change speed/direction (`g4:change-motion`) | 66 / 49 | 42 | Many relevant examples, but some core explanations need factual correction. |
+
+### Pilot priorities and reproducible evidence
+
+1. **Correct factual errors in both cards and attached quizzes.** `ffct-24623` says a stretched rubber band “stores force”; its correct answer and explanation repeat this in the language variants. Elastic deformation stores energy, not force ([OpenStax, potential energy](https://openstax.org/books/college-physics/pages/7-4-conservative-forces-and-potential-energy)). `ffct-22440` says an object moves wherever it is pushed/pulled, without accounting for an already moving object slowing under an opposing force. Its quiz explanation repeats that generalization. `ffct-24137` makes the unqualified claim that friction always opposes an object's motion; narrow the explanation to sliding on a stationary surface. Friction can accelerate an object, as the bank's own conveyor-belt example `ffct-28152` illustrates.
+2. **Replace false core matches with reviewed instructional selections.** In `rag/pipeline/grade4-lessons.authoring.json`, graph fast/slow matches `steep|fast|slow`, admitting cheetah (`ffct-09588`) and ostrich (`ffct-01381`) trivia and animal quizzes. Stationary matches `horizontal`, so the axes-only `dcard-04689` counts toward stationary teaching. Measurement regexes admit Bolt's sprint time (`ffct-26505`), Mariana Trench depth (`ffct-34671`), tern migration (`ffct-03784`) and lightning/thunder distance facts. These do not teach children to measure a moving object with simple equipment. The compiler prefers quiz-bearing candidates; adding questions alone cannot repair relevance.
+3. **Complete the highlighted shape-change objective.** The sole twist-slot candidate is `dcard-01407`, a list of ways to change solids; its question only recognizes “Twisting it.” Add a concrete before/action/after example and a guided prediction/observation activity. Existing stretch/bend/squeeze examples include `dcard-05165`, `dcard-07936` and `dcard-07932`. Push and pull are not separately required slots, so their presence in individual texts does not ensure coverage in a selected lesson run. Require all six actions explicitly. Move advanced examples such as Hooke's law, spring constants and I-beam engineering out of the initial Grade 4 teaching sequence.
+4. **Supply actual graph construction practice and suitable diagrams.** `g4-core-uniform-graph` gives points (0,0), (1,2), (2,4), (3,6), labels and units, but has no illustration; its quiz tests recognition of constant speed. Add stationary and slower/faster data sets, a labelled grid with units/scales, and plotting/comparison questions. Visual inspection of `packages/images/assets-png/general/graph-line-distance-time.png` found an unlabelled rising/falling zigzag with no units, scale or stationary section; it is unsuitable for its distance–time teaching caption and misleading if interpreted as cumulative distance travelled. `cards-png/ffct-24152.png` shows axis names but no scales/units. `cards-png/ffct-24145.png` does show a useful qualitative rise and plateau, but not measured plotting practice. This was inspection of these three relevant assets, not all illustrations.
+5. **Bridge facts to observable classroom skills.** Build a short teacher-guided sequence: predict how a soft/rigid object changes, apply an action and record the result; mark a toy car's start/finish, measure distance, time the crossings, repeat and record values; plot the observations and compare stationary/slow/fast cases. Existing `ffct-39306` already suggests an object/shape-before/force/shape-after table. Instrument cards `dcard-12262`, `dcard-01252`, `ffct-25503` and `dcard-11468` can support measurement. Keep the distinction between reading/answering in the app and physically performing/measuring the task.
+
+Validation: `compile-lessons.py --grade 4 --check` passed with `GAPS []`. The four Grade 4/calendar/default/review test files passed using `node --import tsx --test` (the normal `tsx` CLI could not create its IPC socket in the sandbox).
+
+The present audit inspects lesson candidates and attached question content; it does not establish student mastery, a native-speaker language review, every possible randomized feed, the installed pilot APK's identity, or full image-pack availability. Mechanical coverage tests establish runnable lessons and slot candidates, not semantic relevance or factual correctness. Update the public coverage description accordingly if it is used to claim readiness for this pilot block.
+
+## Historical implementation report — 2026-09-09
+
 Completed on unified, 2026-09-09. This is the requested Grade 4 reporting checkpoint. Grades 3 and 5 are already implemented; Grade 6 is the next unaudited grade. No APK was rebuilt, installed or published for this change.
 
 ## Improvements

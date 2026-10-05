@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
 
 const ROOT = fileURLToPath(new URL('../../..', import.meta.url));
-const OUTPUT = resolve(ROOT, 'packages/web/public/competencies/ph-matatag.json');
+const OUTPUT = resolve(ROOT, 'packages/web/public/competencies/ph-revised-k12.json');
 const inputs = new Map();
 const read = (path) => {
   const absolute = resolve(ROOT, path);
@@ -25,6 +25,31 @@ const read = (path) => {
 };
 const json = (path) => JSON.parse(read(path));
 const source = (path) => ts.createSourceFile(path, read(path), ts.ScriptTarget.Latest, true);
+const tags = json('packages/mobile/src/generated/curriculumTags.generated.json');
+const relatedCodes = (id) => tags[id]?.[5] ?? (tags[id] ? [tags[id][0]] : []);
+const schedule = json('packages/shared/src/curriculum/three-term-2026.json');
+// Keep the focused editorial decisions in catalogue provenance as well as their
+// compiled manifests. Counts indicate available material, not demonstrated mastery.
+read('rag/pipeline/term2-pilot-review.json');
+read('rag/pipeline/pilot-content-corrections.json');
+for (const source of schedule.sources) {
+  read(source.referenceFile);
+  assert.equal(
+    inputs.get(source.referenceFile),
+    source.sha256,
+    `Reference PDF changed: ${source.referenceFile}`
+  );
+}
+
+const schedulerSource = read('packages/shared/src/curriculum/scheduleLessons.ts');
+const { scheduleLessons } = await import(
+  'data:text/javascript;base64,' +
+    Buffer.from(
+      ts.transpileModule(schedulerSource, {
+        compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
+      }).outputText
+    ).toString('base64')
+);
 
 // Read literal configuration through TypeScript's parser, not source-text regexes.
 // Fail when its shape changes: guessing a default could overstate public coverage.
@@ -125,7 +150,7 @@ for (const grade of grades) {
   assert(manifest, `No app lesson manifest for grade ${grade}`);
   const topicKeys = new Set();
   const topics = [];
-  for (const lesson of manifest.lessons) {
+  for (const lesson of scheduleLessons(manifest.lessons, schedule.competencies, relatedCodes)) {
     assert(!topicKeys.has(lesson.key), `Duplicate lesson ${lesson.key}`);
     topicKeys.add(lesson.key);
     const cardIds = unique(lesson.cardIds);
@@ -157,10 +182,11 @@ for (const grade of grades) {
       }
       const core = unique(units.flatMap((unit) => unit.cardIds));
       core.forEach((id) => objectiveCards.add(id));
-      mappedCodes.add(code);
+      if (schedule.competencies[code].status === 'listed') mappedCodes.add(code);
       objectiveCount += units.length;
       return {
         code,
+        status: schedule.competencies[code].status,
         text: competency.text,
         cardCount: core.length,
         questionCount: quizCount(unique(units.flatMap((unit) => unit.quizCardIds))),
@@ -174,29 +200,28 @@ for (const grade of grades) {
     cardIds.forEach((id) => lessonCards.add(id));
     topics.push({
       key: lesson.key,
-      quarter: lesson.quarter,
+      term: lesson.term,
+      weeks: lesson.weeks,
+      domain: domainNames[domainMap[grade][lesson.quarter]].english,
       title: lesson.title,
       cardCount: cardIds.length,
       questionCount: quizCount(cardIds),
       competencies,
     });
   }
-  const quarterNumbers = unique(topics.map((topic) => topic.quarter));
-  assert.deepEqual(
-    quarterNumbers,
-    [...quarterNumbers].sort(),
-    `Grade ${grade} lessons are not in quarter order`
-  );
   catalogueGrades.push({
     grade,
+    sourceUrl: schedule.sources.find((s) => s.grade === grade).url,
     topicCount: topics.length,
     competencyCount: unique(
-      topics.flatMap((topic) => topic.competencies.map((entry) => entry.code))
+      topics.flatMap((topic) =>
+        topic.competencies.filter((c) => c.status === 'listed').map((entry) => entry.code)
+      )
     ).length,
-    quarters: quarterNumbers.map((quarter) => ({
-      quarter,
-      domain: domainNames[domainMap[grade][quarter]].english,
-      topics: topics.filter((topic) => topic.quarter === quarter),
+    terms: [1, 2, 3].map((term) => ({
+      term,
+      domain: unique(topics.filter((t) => t.term === term).map((t) => t.domain)).join(' · '),
+      topics: topics.filter((topic) => topic.term === term),
     })),
   });
 }
@@ -205,14 +230,15 @@ const provenance = [...inputs]
   .sort(([a], [b]) => a.localeCompare(b))
   .map(([path, sha256]) => ({ path, sha256 }));
 const catalogue = {
-  schema: 1,
+  schema: 2,
   country: 'PH',
-  curriculum: 'ph-deped-matatag-science-2023',
+  curriculum: 'ph-deped-revised-k12-science-2026-three-term',
   source: {
-    title: 'DepEd MATATAG Science Curriculum Guide, Grades 3–10',
-    edition: 'August 2023',
-    file: guides[0].source,
-    url: 'https://sites.google.com/deped.gov.ph/deped-lrportal/revised-k-10-lms',
+    title: 'DepEd Revised K-12 Curriculum — Three-Term Science Budgets of Work, Grades 3–10',
+    edition: 'April 8, 2026 (Grades 3–8); June 29, 2026 (Grades 9–10)',
+    legacyCompetencySource: guides[0].source,
+    documents: schedule.sources,
+    url: 'https://sites.google.com/deped.gov.ph/lsguide/budgets-of-work',
     identifiers:
       'Codes such as G3-M-1 are Hiraia reference identifiers, not official DepEd competency codes.',
   },
@@ -222,15 +248,21 @@ const catalogue = {
     grades: catalogueGrades.length,
     topics: catalogueGrades.reduce((total, grade) => total + grade.topicCount, 0),
     mappedCompetencies: mappedCodes.size,
-    referenceCompetencies: [...sourceCompetencies.values()].filter((entry) =>
-      grades.includes(entry.grade)
+    referenceCompetencies: [...sourceCompetencies.values()].filter(
+      (entry) =>
+        grades.includes(entry.grade) && schedule.competencies[entry.code]?.status === 'listed'
     ).length,
     objectives: objectiveCount,
     lessonCards: lessonCards.size,
     objectiveCards: objectiveCards.size,
   },
   unmappedCompetencies: [...sourceCompetencies.values()]
-    .filter((entry) => grades.includes(entry.grade) && !mappedCodes.has(entry.code))
+    .filter(
+      (entry) =>
+        grades.includes(entry.grade) &&
+        schedule.competencies[entry.code]?.status === 'listed' &&
+        !mappedCodes.has(entry.code)
+    )
     .map(({ code, text, grade, quarter }) => ({ code, text, grade, quarter })),
   grades: catalogueGrades,
   provenance,

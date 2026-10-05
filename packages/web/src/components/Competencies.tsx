@@ -12,7 +12,7 @@ const number = (value: number) => value.toLocaleString('en');
 
 export function Competencies({ catalogue }: { catalogue: CompetencyCatalogue }) {
   const [grade, setGrade] = useState(String(catalogue.grades[0]?.grade ?? 'all'));
-  const [quarter, setQuarter] = useState('all');
+  const [term, setTerm] = useState('all');
   const [query, setQuery] = useState('');
   const [language, setLanguage] = useState<'en' | 'tl' | 'bis'>('en');
   const [expanded, setExpanded] = useState(false);
@@ -21,8 +21,8 @@ export function Competencies({ catalogue }: { catalogue: CompetencyCatalogue }) 
       catalogue.grades
         .filter((entry) => grade === 'all' || String(entry.grade) === grade)
         .flatMap((entry) =>
-          entry.quarters
-            .filter((group) => quarter === 'all' || String(group.quarter) === quarter)
+          entry.terms
+            .filter((group) => term === 'all' || String(group.term) === term)
             .map((group) => ({
               ...group,
               grade: entry.grade,
@@ -30,15 +30,17 @@ export function Competencies({ catalogue }: { catalogue: CompetencyCatalogue }) 
             }))
         )
         .filter((group) => group.topics.length),
-    [catalogue, grade, quarter, query]
+    [catalogue, grade, term, query]
   );
   const resultTopics = groups.flatMap((group) => group.topics);
   const resultCompetencies = new Set(
-    resultTopics.flatMap((topic) => topic.competencies.map((entry) => entry.code))
+    resultTopics.flatMap((topic) =>
+      topic.competencies.filter((c) => c.status === 'listed').map((entry) => entry.code)
+    )
   ).size;
   const clearFilters = () => {
     setGrade('all');
-    setQuarter('all');
+    setTerm('all');
     setQuery('');
     setExpanded(false);
   };
@@ -71,13 +73,15 @@ export function Competencies({ catalogue }: { catalogue: CompetencyCatalogue }) 
       <main>
         <section className="px-5 pb-10 pt-12 sm:px-12 sm:pt-16 md:px-16 lg:px-24">
           <div className="mx-auto max-w-5xl">
-            <p className="mc-label text-[10px] text-[var(--gold)]">Philippines · MATATAG Science</p>
+            <p className="mc-label text-[10px] text-[var(--gold)]">
+              Philippines · Revised K-12 Curriculum · Science
+            </p>
             <h1 className="mt-3 max-w-3xl text-4xl leading-tight sm:text-5xl">
               Science competencies
             </h1>
             <p className="mt-5 max-w-3xl text-lg leading-relaxed text-[var(--stock)]/90 sm:text-xl">
-              Explore the learning goals behind Hiraia&apos;s lessons. Follow the same grade,
-              quarter and topic order as the app, then open a topic to see its competencies.
+              Explore the learning goals behind Hiraia&apos;s lessons. Follow the same grade, term
+              and topic order as the app, then open a topic to see its competencies.
             </p>
             <dl className={styles.stats} aria-label="Curriculum content">
               <div>
@@ -142,16 +146,16 @@ export function Competencies({ catalogue }: { catalogue: CompetencyCatalogue }) 
                 />
               </label>
               <label>
-                <span className={styles.label}>Quarter</span>
+                <span className={styles.label}>Term</span>
                 <select
-                  aria-label="Quarter"
-                  value={quarter}
-                  onChange={(event) => setQuarter(event.target.value)}
+                  aria-label="Term"
+                  value={term}
+                  onChange={(event) => setTerm(event.target.value)}
                 >
-                  <option value="all">All quarters</option>
-                  {[1, 2, 3, 4].map((value) => (
+                  <option value="all">All terms</option>
+                  {[1, 2, 3].map((value) => (
                     <option key={value} value={value}>
-                      Quarter {value}
+                      Term {value}
                     </option>
                   ))}
                 </select>
@@ -204,7 +208,7 @@ export function Competencies({ catalogue }: { catalogue: CompetencyCatalogue }) 
                 >
                   {expanded ? 'Collapse topics' : 'Expand topics'}
                 </button>
-                {(grade !== 'all' || quarter !== 'all' || query) && (
+                {(grade !== 'all' || term !== 'all' || query) && (
                   <button type="button" className={styles.boardLink} onClick={clearFilters}>
                     Show everything
                   </button>
@@ -215,9 +219,7 @@ export function Competencies({ catalogue }: { catalogue: CompetencyCatalogue }) 
             {!groups.length ? (
               <div className={styles.empty}>
                 <h2 className="text-2xl">No matching topics</h2>
-                <p className="mt-3">
-                  Try another phrase, a different quarter, or search all grades.
-                </p>
+                <p className="mt-3">Try another phrase, a different term, or search all grades.</p>
                 <button
                   type="button"
                   onClick={clearFilters}
@@ -230,18 +232,24 @@ export function Competencies({ catalogue }: { catalogue: CompetencyCatalogue }) 
               <div className="mt-8 flex flex-col gap-12">
                 {groups.map((group) => (
                   <section
-                    key={`${group.grade}-${group.quarter}`}
-                    aria-labelledby={`grade-${group.grade}-quarter-${group.quarter}`}
+                    key={`${group.grade}-${group.term}`}
+                    aria-labelledby={`grade-${group.grade}-term-${group.term}`}
                   >
                     <p className="mc-label text-[10px] text-[var(--gold)]">
-                      Grade {group.grade} · Quarter {group.quarter}
+                      Grade {group.grade} · Term {group.term}
                     </p>
                     <h2
-                      id={`grade-${group.grade}-quarter-${group.quarter}`}
+                      id={`grade-${group.grade}-term-${group.term}`}
                       className="mb-5 mt-2 text-2xl sm:text-3xl"
                     >
                       {group.domain}
                     </h2>
+                    <a
+                      className="mb-4 inline-block underline"
+                      href={catalogue.grades.find((g) => g.grade === group.grade)!.sourceUrl}
+                    >
+                      DepEd Grade {group.grade} budget of work
+                    </a>
                     <div className="flex flex-col gap-3">
                       {group.topics.map((topic) => (
                         <details
@@ -267,11 +275,21 @@ export function Competencies({ catalogue }: { catalogue: CompetencyCatalogue }) 
                             <span className="mc-faq-mark" aria-hidden="true" />
                           </summary>
                           <div className={styles.topicBody}>
+                            <p className={styles.competencyMeta}>
+                              Term {topic.term} ·{' '}
+                              {topic.weeks[0] === topic.weeks[1]
+                                ? `Week ${topic.weeks[0]}`
+                                : `Weeks ${topic.weeks[0]}–${topic.weeks[1]}`}
+                            </p>
                             <p className={styles.competencyIntro}>The learner should be able to:</p>
                             <ul className={styles.competencyList}>
                               {topic.competencies.map((competency) => (
                                 <li key={competency.code}>
-                                  <p className={styles.competencyText}>{competency.text}</p>
+                                  <p className={styles.competencyText}>
+                                    {competency.text}
+                                    {competency.status === 'supporting' &&
+                                      ' (Supporting content; not separately listed in the 2026 BOW.)'}
+                                  </p>
                                   <p className={styles.competencyMeta}>
                                     <span title="Hiraia reference identifier">
                                       {competency.code}
@@ -324,7 +342,7 @@ export function Competencies({ catalogue }: { catalogue: CompetencyCatalogue }) 
                   than one competency, so counts should not be added together.
                 </p>
                 <p className="mt-3">{catalogue.source.identifiers}</p>
-                <a href="/competencies/ph-matatag.json" download className="mt-3 inline-block">
+                <a href="/competencies/ph-revised-k12.json" download className="mt-3 inline-block">
                   Download the competency map (JSON)
                 </a>
               </div>

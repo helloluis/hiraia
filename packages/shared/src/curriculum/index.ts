@@ -3,7 +3,12 @@ import type { GradeLevel } from '../types/index.js';
 /**
  * Science domains in the DepEd K-12 curriculum.
  */
-export type ScienceDomain = 'matter' | 'living_things' | 'force_motion_energy' | 'earth_space' | 'environment';
+export type ScienceDomain =
+  | 'matter'
+  | 'living_things'
+  | 'force_motion_energy'
+  | 'earth_space'
+  | 'environment';
 
 /**
  * Represents a quarter in the school year.
@@ -97,7 +102,10 @@ export const GRADE_DOMAIN_MAP: Record<GradeLevel, Record<Quarter, ScienceDomain>
 /**
  * Domain display names in different languages.
  */
-export const DOMAIN_NAMES: Record<ScienceDomain, Record<'english' | 'tagalog' | 'cebuano', string>> = {
+export const DOMAIN_NAMES: Record<
+  ScienceDomain,
+  Record<'english' | 'tagalog' | 'cebuano', string>
+> = {
   matter: {
     english: 'Matter',
     // "Matter" in all three: DepEd's Filipino and Cebuano science materials keep the English
@@ -137,8 +145,12 @@ export function getCurrentDomain(gradeLevel: GradeLevel, quarter: Quarter): Scie
 /**
  * Get domain name in the specified language.
  */
-export function getDomainName(domain: ScienceDomain, language: 'english' | 'tagalog' | 'cebuano'): string {
+export function getDomainName(
+  domain: ScienceDomain,
+  language: 'english' | 'tagalog' | 'cebuano'
+): string {
   return DOMAIN_NAMES[domain][language];
 }
 
 export * from './feedWeighting.js';
+export * from './terms.js';

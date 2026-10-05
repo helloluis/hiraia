@@ -74,7 +74,7 @@ function HistoryContent({ profileId }: { profileId: string }) {
       <Text style={styles.heading} accessibilityRole="header">Hiraia assessment history</Text>
       <Text style={styles.note}>
         All saved recall checks for this profile. These results describe learning within Hiraia;
-        they are not a school exam, a grade-level decision, or proof of MATATAG mastery.
+        they are not a school exam, a grade-level decision, or proof of Revised K-12 Curriculum mastery.
         A teacher can use them alongside classroom observations.
       </Text>
       {ASSESSMENT_EVALUATION_ENABLED && (

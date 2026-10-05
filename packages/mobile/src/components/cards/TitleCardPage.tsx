@@ -29,8 +29,7 @@ export function TitleCardPage({
       <CardPrint />
       <ScrollView nestedScrollEnabled contentContainerStyle={styles.content}>
         <Text style={styles.eyebrow}>
-          {language === 'english' ? 'QUARTER' : 'MARKAHAN'} {content.quarter} ·{' '}
-          {content.category.toUpperCase()}
+          TERM {content.term} · {content.category.toUpperCase()}
         </Text>
         <Text accessibilityRole="header" style={styles.title}>
           {title}

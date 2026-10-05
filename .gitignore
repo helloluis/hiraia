@@ -276,3 +276,6 @@ packages/images/manual-originals/
 
 # Machine-local offload markers retain recovery pointers; recovery plans live in private R2.
 *.hiraia-archive-offloaded.json
+
+# Reproducible embedding refresh downloads; never commit model/cache bytes.
+.pilot-embedding-cache/

@@ -17,11 +17,12 @@
  * ends; see the rule at the top of the generator.
  */
 import {
-  curriculumMultiplier,
-  inferCurriculumQuarter,
+  termCurriculumMultiplier,
+  TERM_SCHEDULE,
+  inferCurriculumTerm,
   weightedPick,
   type CurriculumTag,
-  type Quarter,
+  type Term,
 } from '@hiraia/shared/curriculum';
 
 import type { GradeLevel } from '@/config/grades';
@@ -87,7 +88,7 @@ type SeedDoc = {
 };
 type GradePack = {
   grade: number;
-  quarter: number;
+  term: number;
   cards: CardFact[];
   tags?: Record<string, TagRow>;
   questions?: CardQuestion[];
@@ -131,15 +132,15 @@ let POOL: CardFact[] = [...RAW_POOL];
 const loadedGrades = new Set<number>();
 const gradeLoaders = new Map<number, Promise<void>>();
 
-/** Ribbon under the ask box — quarter + topic of the card on the pad. */
+/** Ribbon under the ask box — term + topic of the card on the pad. */
 export function hasDemoArt(slug: string | undefined): boolean {
   return !!slug && HAS_ART.has(slug);
 }
 
-export function cardCurriculum(card: CardFact): { quarter: number; label: string } | null {
+export function cardCurriculum(card: CardFact): { term: number; label: string } | null {
   const tag = TAGS.get(card.id);
-  if (!tag) return card.topic ? { quarter: 0, label: card.topic } : null;
-  return { quarter: tag.quarter, label: card.topic };
+  if (!tag) return card.topic ? { term: 0, label: card.topic } : null;
+  return { term: TERM_SCHEDULE[tag.competency]?.term ?? 0, label: card.topic };
 }
 
 let BY_ID = new Map(POOL.map((f) => [f.id, f]));
@@ -180,17 +181,25 @@ let rebuildSearchIndexes = () => {
 };
 
 const GRADE_PACK: Record<number, () => Promise<{ default: GradePack }>> = {
-  3: () => import('./demo-q1-g3.json').then((m) => ({ default: m.default as unknown as GradePack })),
-  4: () => import('./demo-q1-g4.json').then((m) => ({ default: m.default as unknown as GradePack })),
-  5: () => import('./demo-q1-g5.json').then((m) => ({ default: m.default as unknown as GradePack })),
-  6: () => import('./demo-q1-g6.json').then((m) => ({ default: m.default as unknown as GradePack })),
-  7: () => import('./demo-q1-g7.json').then((m) => ({ default: m.default as unknown as GradePack })),
-  8: () => import('./demo-q1-g8.json').then((m) => ({ default: m.default as unknown as GradePack })),
-  9: () => import('./demo-q1-g9.json').then((m) => ({ default: m.default as unknown as GradePack })),
-  10: () => import('./demo-q1-g10.json').then((m) => ({ default: m.default as unknown as GradePack })),
+  3: () =>
+    import('./demo-q1-g3.json').then((m) => ({ default: m.default as unknown as GradePack })),
+  4: () =>
+    import('./demo-q1-g4.json').then((m) => ({ default: m.default as unknown as GradePack })),
+  5: () =>
+    import('./demo-q1-g5.json').then((m) => ({ default: m.default as unknown as GradePack })),
+  6: () =>
+    import('./demo-q1-g6.json').then((m) => ({ default: m.default as unknown as GradePack })),
+  7: () =>
+    import('./demo-q1-g7.json').then((m) => ({ default: m.default as unknown as GradePack })),
+  8: () =>
+    import('./demo-q1-g8.json').then((m) => ({ default: m.default as unknown as GradePack })),
+  9: () =>
+    import('./demo-q1-g9.json').then((m) => ({ default: m.default as unknown as GradePack })),
+  10: () =>
+    import('./demo-q1-g10.json').then((m) => ({ default: m.default as unknown as GradePack })),
 };
 
-/** After language + grade are known, pull the rest of that grade's first-quarter deck. */
+/** After language + grade are known, pull the rest of that grade's first-term deck. */
 export function loadGradeQ1(grade: GradeLevel): Promise<void> {
   if (loadedGrades.has(grade)) return Promise.resolve();
   const pending = gradeLoaders.get(grade);
@@ -213,33 +222,33 @@ export function loadGradeQ1(grade: GradeLevel): Promise<void> {
   return work;
 }
 
-function compSortKey(code: string): [string, number] {
-  const m = /^(G\d+-[A-Z]+)-(\d+)$/.exec(code);
-  if (m) return [m[1]!, Number(m[2])];
-  return [code, 0];
-}
-
-/** First-quarter cards for a grade, in competency order. */
+/** First-term cards for a grade, in competency order. */
 export function q1Sequence(grade: GradeLevel): CardFact[] {
   const rows: CardFact[] = [];
   for (const card of POOL) {
     const tag = TAGS.get(card.id);
-    if (tag && tag.grade === grade && tag.quarter === 1) rows.push(card);
+    if (tag && tag.grade === grade && TERM_SCHEDULE[tag.competency]?.term === 1) rows.push(card);
   }
   rows.sort((a, b) => {
-    const ka = compSortKey(TAGS.get(a.id)?.competency ?? '');
-    const kb = compSortKey(TAGS.get(b.id)?.competency ?? '');
-    if (ka[0] !== kb[0]) return ka[0] < kb[0] ? -1 : 1;
-    if (ka[1] !== kb[1]) return ka[1] - kb[1];
+    const ka = TERM_SCHEDULE[TAGS.get(a.id)?.competency ?? '']?.order ?? Infinity;
+    const kb = TERM_SCHEDULE[TAGS.get(b.id)?.competency ?? '']?.order ?? Infinity;
+    if (ka !== kb) return ka - kb;
     return a.id < b.id ? -1 : 1;
   });
   return rows;
 }
 
-function nextInQ1(currentId: string, grade: GradeLevel, seen: ReadonlySet<string>): CardFact | undefined {
+function nextInQ1(
+  currentId: string,
+  grade: GradeLevel,
+  seen: ReadonlySet<string>
+): CardFact | undefined {
   const seq = q1Sequence(grade);
   if (!seq.length) return undefined;
-  const i = Math.max(0, seq.findIndex((c) => c.id === currentId));
+  const i = Math.max(
+    0,
+    seq.findIndex((c) => c.id === currentId)
+  );
   for (let k = 1; k <= seq.length; k += 1) {
     const card = seq[(i + k) % seq.length];
     if (card && !seen.has(card.id)) return card;
@@ -248,7 +257,7 @@ function nextInQ1(currentId: string, grade: GradeLevel, seen: ReadonlySet<string
 }
 
 /**
- * Draw weights for one student, bound to a grade and the curriculum quarter inferred from
+ * Draw weights for one student, bound to a grade and the curriculum term inferred from
  * today's date — the SAME `curriculumMultiplier` the phone runs, imported from
  * @hiraia/shared/curriculum rather than restated, so the demo cannot drift from the ruleset it
  * is demonstrating.
@@ -258,7 +267,7 @@ function nextInQ1(currentId: string, grade: GradeLevel, seen: ReadonlySet<string
  * that resets on reload has nothing to persist into it. The session's own `seen` set already
  * blocks repeats, which is the part a visitor can perceive in one sitting.
  *
- * Cached on (grade, quarter): the multiplier depends on nothing else, and a fresh Float64Array
+ * Cached on (grade, term): the multiplier depends on nothing else, and a fresh Float64Array
  * over 2,321 cards per page-turn would be pure waste.
  */
 export interface FeedWeigher {
@@ -267,11 +276,12 @@ export interface FeedWeigher {
 const weightCache = { key: '', weights: new Float64Array(0) };
 
 export function feedWeigher(grade: GradeLevel, now: Date = new Date()): FeedWeigher {
-  const quarter: Quarter | null = inferCurriculumQuarter(now).quarter;
-  const key = `${grade}|${quarter ?? 'summer'}`;
+  const term: Term | null = inferCurriculumTerm(now).term;
+  const key = `${grade}|${term ?? 'summer'}`;
   if (weightCache.key !== key) {
     const w = new Float64Array(POOL.length);
-    for (let i = 0; i < POOL.length; i += 1) w[i] = curriculumMultiplier(TAGS.get(POOL[i]!.id), grade, quarter);
+    for (let i = 0; i < POOL.length; i += 1)
+      w[i] = termCurriculumMultiplier(TAGS.get(POOL[i]!.id), grade, term);
     weightCache.key = key;
     weightCache.weights = w;
   }
@@ -345,13 +355,78 @@ let TERM_INDEX = new Map<string, string[]>();
 // frequency so distinctive words ("bulkan", "photosynthesis") dominate over common ones.
 // Zero-model, local, instant — the same doctrine as the rest of the feed.
 const SEARCH_STOP = new Set([
-  'the', 'a', 'an', 'of', 'and', 'or', 'in', 'on', 'to', 'is', 'are', 'be', 'it', 'its',
-  'that', 'this', 'what', 'why', 'how', 'when', 'where', 'who', 'does', 'do', 'can', 'for',
-  'with', 'as', 'at', 'by', 'about', 'tell', 'me', 'my',
-  'ang', 'ng', 'sa', 'mga', 'ay', 'na', 'ba', 'ito', 'iyan', 'yan', 'ako', 'ko', 'mo',
-  'niya', 'ni', 'kung', 'kapag', 'para', 'may', 'ano', 'bakit', 'paano', 'saan', 'sino',
-  'kailan', 'gusto', 'malaman', 'tungkol',
-  'unsa', 'nga', 'og', 'ug', 'kang', 'kini', 'kana', 'ngano', 'giunsa', 'hibaw',
+  'the',
+  'a',
+  'an',
+  'of',
+  'and',
+  'or',
+  'in',
+  'on',
+  'to',
+  'is',
+  'are',
+  'be',
+  'it',
+  'its',
+  'that',
+  'this',
+  'what',
+  'why',
+  'how',
+  'when',
+  'where',
+  'who',
+  'does',
+  'do',
+  'can',
+  'for',
+  'with',
+  'as',
+  'at',
+  'by',
+  'about',
+  'tell',
+  'me',
+  'my',
+  'ang',
+  'ng',
+  'sa',
+  'mga',
+  'ay',
+  'na',
+  'ba',
+  'ito',
+  'iyan',
+  'yan',
+  'ako',
+  'ko',
+  'mo',
+  'niya',
+  'ni',
+  'kung',
+  'kapag',
+  'para',
+  'may',
+  'ano',
+  'bakit',
+  'paano',
+  'saan',
+  'sino',
+  'kailan',
+  'gusto',
+  'malaman',
+  'tungkol',
+  'unsa',
+  'nga',
+  'og',
+  'ug',
+  'kang',
+  'kini',
+  'kana',
+  'ngano',
+  'giunsa',
+  'hibaw',
 ]);
 
 function searchTokens(s: string): string[] {
@@ -380,7 +455,7 @@ rebuildSearchIndexes = () => {
         ...searchTokens(f.fact.en ?? ''),
         ...searchTokens(f.fact.tl ?? ''),
         ...searchTokens(f.fact.bis ?? ''),
-      ]),
+      ])
     );
   }
 };
@@ -540,7 +615,10 @@ export function searchCards(query: string, currentId: string | null): SearchResu
     // A confident answer has to cover enough of the question (SEARCH_FLOOR), out of enough of
     // its distinct words (`needed`), and be ABOUT its key word rather than mention it.
     if (matched < needed || keyRank === Infinity || frac < SEARCH_FLOOR) continue;
-    if (frac > bestFrac + SCORE_EPSILON || (frac > bestFrac - SCORE_EPSILON && keyRank < bestRank)) {
+    if (
+      frac > bestFrac + SCORE_EPSILON ||
+      (frac > bestFrac - SCORE_EPSILON && keyRank < bestRank)
+    ) {
       bestFrac = frac;
       bestRank = keyRank;
       best = f;
@@ -605,7 +683,11 @@ function pick(arr: CardFact[], w?: FeedWeigher): CardFact | undefined {
 }
 
 /** First Q1 card for this grade (session start). */
-export function startCard(seen: ReadonlySet<string>, w?: FeedWeigher, grade: GradeLevel = 5): CardFact {
+export function startCard(
+  seen: ReadonlySet<string>,
+  w?: FeedWeigher,
+  grade: GradeLevel = 5
+): CardFact {
   const seq = q1Sequence(grade);
   const pool = seq.length ? seq : POOL;
   const unseen = pool.filter((f) => !seen.has(f.id));
@@ -621,11 +703,14 @@ export function jumpCard(
   currentId: string | null,
   seen: ReadonlySet<string>,
   w?: FeedWeigher,
-  grade: GradeLevel = 5,
+  grade: GradeLevel = 5
 ): CardFact {
   const seq = q1Sequence(grade);
   if (!seq.length) return (POOL[0] ?? { id: currentId ?? '' }) as CardFact;
-  const i = Math.max(0, seq.findIndex((c) => c.id === currentId));
+  const i = Math.max(
+    0,
+    seq.findIndex((c) => c.id === currentId)
+  );
   // Skip ahead to the next competency in Q1 so reroll still feels sequential, not random.
   const curComp = TAGS.get(seq[i]?.id ?? '')?.competency;
   for (let k = 1; k < seq.length; k += 1) {
@@ -643,8 +728,30 @@ export function jumpCard(
  * significant words.
  */
 const TOPIC_STOP = new Set([
-  'what', 'why', 'how', 'is', 'are', 'the', 'a', 'an', 'of', 'and', 'or', 'in', 'on',
-  'to', 'does', 'do', 'its', 'their', 'has', 'have', 'ang', 'ng', 'sa', 'mga',
+  'what',
+  'why',
+  'how',
+  'is',
+  'are',
+  'the',
+  'a',
+  'an',
+  'of',
+  'and',
+  'or',
+  'in',
+  'on',
+  'to',
+  'does',
+  'do',
+  'its',
+  'their',
+  'has',
+  'have',
+  'ang',
+  'ng',
+  'sa',
+  'mga',
 ]);
 
 /**
@@ -693,13 +800,37 @@ function isTopical(term: string): boolean {
 // choice label ("tumutubo" = grows, "heart puso" = a bilingual gloss pair). Reject as
 // labels; the topic-word fallback gives something more specific.
 const BAD_LABELS = new Set([
-  'tumutubo', 'lumalaki', 'ginagawa', 'gumagawa', 'nagmumula', 'nabubuo', 'ginagamit',
-  'matatagpuan', 'makikita', 'tawag', 'uri', 'iba', 'bawat', 'grows', 'made', 'used',
-  'found', 'heart puso',
+  'tumutubo',
+  'lumalaki',
+  'ginagawa',
+  'gumagawa',
+  'nagmumula',
+  'nabubuo',
+  'ginagamit',
+  'matatagpuan',
+  'makikita',
+  'tawag',
+  'uri',
+  'iba',
+  'bawat',
+  'grows',
+  'made',
+  'used',
+  'found',
+  'heart puso',
   // inflected generic verbs the term index surfaces (caught by the harness) — they read
   // as actions, not topics, so they make poor choice labels.
-  'humahawak', 'humuhigop', 'sumusuporta', 'kumakain', 'naglalabas', 'naglalaman',
-  'nagpapalipat', 'pumoprotekta', 'tumutulong', 'nagpaparami', 'kumikilos',
+  'humahawak',
+  'humuhigop',
+  'sumusuporta',
+  'kumakain',
+  'naglalabas',
+  'naglalaman',
+  'nagpapalipat',
+  'pumoprotekta',
+  'tumutulong',
+  'nagpaparami',
+  'kumikilos',
 ]);
 
 export function choiceLabel(fact: CardFact, language: LanguageKey): string {
@@ -881,7 +1012,7 @@ export interface NextStepOpts {
    * them"), one step more conservative because the web fork has no seen-decay to soften it.
    */
   weights?: FeedWeigher;
-  /** Grade whose first-quarter sequence the NEXT CARD ticket follows. */
+  /** Grade whose first-term sequence the NEXT CARD ticket follows. */
   grade?: GradeLevel;
 }
 
@@ -900,7 +1031,7 @@ function cooldownSlugs(cur: CardFact, recentIds?: readonly string[]): Set<string
 }
 
 /**
- * The "turn the page" choice for the current card: the next first-quarter card
+ * The "turn the page" choice for the current card: the next first-term card
  * in competency order for `opts.grade`. One ticket, always; the demo walk is a
  * curriculum sequence, not the association graph.
  */

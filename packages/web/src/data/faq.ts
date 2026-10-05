@@ -52,7 +52,8 @@ export const FAQ_SHIPPED: readonly { date: string; title: string; faqIds: readon
   },
   {
     date: '2026-09',
-    title: 'A class can copy the model over school or municipal Wi-Fi with Pears, once one phone has a complete copy.',
+    title:
+      'A class can copy the model over school or municipal Wi-Fi with Pears, once one phone has a complete copy.',
     faqIds: ['usage-class', 'devices-data'],
   },
 ];
@@ -92,7 +93,7 @@ export const FAQ_SECTIONS: readonly FaqSection[] = [
   {
     id: 'content',
     label: 'Science content',
-    blurb: 'MATATAG science, languages, grades, and what Hiraia will not do.',
+    blurb: 'Revised K-12 Curriculum science, languages, grades, and what Hiraia will not do.',
   },
   {
     id: 'troubleshooting',
@@ -137,7 +138,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'usage',
     q: 'How does a session work?',
     a: [
-      'Hiraia is a stack of flash cards, not a chat window. Each card carries one science fact and one illustration. After a few cards, a short quiz checks whether the fact stuck; a recap card then gathers what was just read. The homepage demo walks that same loop: pick Tagalog, English, or Bisaya and a grade from 3 through 10, then the first-quarter cards for that grade in curriculum order.',
+      'Hiraia is a stack of flash cards, not a chat window. Each card carries one science fact and one illustration. After a few cards, a short quiz checks whether the fact stuck; a recap card then gathers what was just read. The homepage demo walks that same loop: pick Tagalog, English, or Bisaya and a grade from 3 through 10, then the first-term cards for that grade in curriculum order.',
       'If a student asks for a topic that is not already in the deck, Hiraia can print a new card from its fact bank — in Tagalog, English, or Bisaya — instead of sending the question to the internet.',
     ],
   },
@@ -328,15 +329,15 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     section: 'content',
     q: 'What subject does it teach?',
     a: [
-      'Science. Hiraia is built around the Department of Education’s MATATAG science competencies, aimed at elementary through junior high. It is not a math tutor, not an English workbook, and not a general chatbot.',
+      'Science. Hiraia is built around the Department of Education’s Revised K-12 Curriculum science competencies, aimed at elementary through junior high. It is not a math tutor, not an English workbook, and not a general chatbot.',
     ],
   },
   {
     id: 'content-matatag',
     section: 'content',
-    q: 'What does “MATATAG-compatible” mean?',
+    q: 'What does “Revised K-12 Curriculum alignment” mean?',
     a: [
-      'The flash cards and illustrations are pregenerated from science competencies published for DepEd’s MATATAG curriculum. The fact bank is indexed so a student’s question can be matched to those materials and printed as a new card.',
+      'Lessons follow the three-term Science budgets of work for DepEd’s Revised K-12 Curriculum, from Grade 3 through Grade 10. The cards and illustrations are prepared in advance. The fact bank is indexed so a student’s question can be matched to those materials and printed as a new card.',
       'Hiraia is not affiliated with or endorsed by the Department of Education. Alignment is based on public-domain curriculum information, has not been reviewed by DepEd, and is not guaranteed to be complete or up to date. Use it as a study aid, at your own risk.',
     ],
   },

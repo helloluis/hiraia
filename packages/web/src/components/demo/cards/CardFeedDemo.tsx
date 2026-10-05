@@ -150,7 +150,7 @@ export function CardFeedDemo() {
 
   const litTicks = Math.max(0, Math.min(5, 5 - untilQuestion));
   const titleUnit = historical?.titleCard ?? titleCard;
-  const unit = titleUnit ? { quarter: titleUnit.quarter, label: titleUnit.title[language === 'tagalog' ? 'tl' : language === 'cebuano' ? 'bis' : 'en'] } : !question && !reward && !response ? cardCurriculum(historical?.fact ?? current) : null;
+  const unit = titleUnit ? { term: titleUnit.term, label: titleUnit.title[language === 'tagalog' ? 'tl' : language === 'cebuano' ? 'bis' : 'en'] } : !question && !reward && !response ? cardCurriculum(historical?.fact ?? current) : null;
 
   return (
     <div className="relative flex h-full min-h-0 w-full flex-1 flex-col bg-[var(--board)] text-[var(--stock)]">
@@ -213,7 +213,7 @@ export function CardFeedDemo() {
         <div className="demo-ribbon mx-4 mb-2">
           <span className="demo-ribbon-label">
             {t.curriculum}
-            {unit.quarter > 0 ? ` · Q${unit.quarter}` : ''}
+            {unit.term > 0 ? ` · Term ${unit.term}` : ''}
           </span>
           <span className="demo-ribbon-topic">{unit.label}</span>
         </div>

@@ -6,6 +6,7 @@ in the CardQuestion shape {f, q, o, a, e, d}.
   python3 rag/pipeline/gen-cards-questions.py
 """
 import json
+from content_corrections import correct_questions
 
 POOL = 'rag/pipeline/cardsPool.app.json'
 QUIZ = 'rag/bank/quiz-bank.jsonl'
@@ -37,6 +38,7 @@ for l in open(QUIZ):
         'd': r.get('difficulty', 1),
     })
 
+correct_questions(questions)
 with open(OUT, 'w') as f:
     json.dump({'questions': questions}, f, ensure_ascii=False)
 

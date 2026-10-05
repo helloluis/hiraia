@@ -1,3 +1,4 @@
+import { scheduleLessons, TERM_SCHEDULE } from '@hiraia/shared/curriculum';
 import grade9Manifest from '../generated/grade9Lessons.generated.json';
 import grade10Manifest from '../generated/grade10Lessons.generated.json';
 import grade8Manifest from '../generated/grade8Lessons.generated.json';
@@ -6,16 +7,21 @@ import grade6Manifest from '../generated/grade6Lessons.generated.json';
 import manifest from '../generated/grade5Lessons.generated.json';
 import grade4Manifest from '../generated/grade4Lessons.generated.json';
 import grade3Manifest from '../generated/grade3Lessons.generated.json';
+import curriculumTags from '../generated/curriculumTags.generated.json';
 import { lessonRandom, lessonVariety } from './lessonVariety';
 
-export const grade9Lessons = grade9Manifest.lessons;
-export const grade10Lessons = grade10Manifest.lessons;
-export const grade8Lessons = grade8Manifest.lessons;
-export const grade7Lessons = grade7Manifest.lessons;
-export const grade6Lessons = grade6Manifest.lessons;
-export const grade5Lessons = manifest.lessons;
-export const grade4Lessons = grade4Manifest.lessons;
-export const grade3Lessons = grade3Manifest.lessons;
+const relatedCodes = (id: string): string[] => {
+  const row = (curriculumTags as Record<string, unknown[]>)[id];
+  return row ? ((row[5] as string[] | undefined) ?? [row[0] as string]) : [];
+};
+export const grade9Lessons = scheduleLessons(grade9Manifest.lessons, TERM_SCHEDULE, relatedCodes);
+export const grade10Lessons = scheduleLessons(grade10Manifest.lessons, TERM_SCHEDULE, relatedCodes);
+export const grade8Lessons = scheduleLessons(grade8Manifest.lessons, TERM_SCHEDULE, relatedCodes);
+export const grade7Lessons = scheduleLessons(grade7Manifest.lessons, TERM_SCHEDULE, relatedCodes);
+export const grade6Lessons = scheduleLessons(grade6Manifest.lessons, TERM_SCHEDULE, relatedCodes);
+export const grade5Lessons = scheduleLessons(manifest.lessons, TERM_SCHEDULE, relatedCodes);
+export const grade4Lessons = scheduleLessons(grade4Manifest.lessons, TERM_SCHEDULE, relatedCodes);
+export const grade3Lessons = scheduleLessons(grade3Manifest.lessons, TERM_SCHEDULE, relatedCodes);
 export const lessonsForGrade = (grade: number) =>
   grade === 3
     ? grade3Lessons
@@ -94,12 +100,22 @@ export function planLesson(
     old.cards.every((id) => lesson.cardIds.includes(id)) &&
     Array.isArray(old.completed) &&
     old.completed.every((id) => old.cards.includes(id)) &&
-    lesson.units.every((u) => (u.quizCardIds.length ? u.quizCardIds : u.cardIds).some((id) => old.cards.some(card => lessonFactId(card) === lessonFactId(id))))
+    lesson.units.every((u) =>
+      (u.quizCardIds.length ? u.quizCardIds : u.cardIds).some((id) =>
+        old.cards.some((card) => lessonFactId(card) === lessonFactId(id))
+      )
+    )
   )
     return { ...old, revision: lesson.revision };
   const runSeed = (seed ?? Math.floor(Math.random() * 4294967296)) >>> 0;
   const random = lessonRandom(runSeed);
-  const variety = lessonVariety(lesson.key, lesson.revision, lesson.cardIds, lessonFactId, random);
+  const variety = lessonVariety(
+    lesson.sourceKey,
+    lesson.revision,
+    lesson.cardIds,
+    lessonFactId,
+    random
+  );
   const cards: string[] = [];
   const selectedFacts = new Set<string>();
   const seenFacts = new Set([...seen].map(lessonFactId));
@@ -145,16 +161,19 @@ export function planLesson(
       for (const candidate of groups[position]!) {
         if (!available(candidate) || (unseenOnly && !unseen(candidate))) continue;
         const score = variety.score(candidate);
-        if (score > best) { best = score; id = candidate; }
+        if (score > best) {
+          best = score;
+          id = candidate;
+        }
       }
       if (id) {
         add(id);
         // Stay with this subject for a short sequence instead of changing groups
         // after every card. Unseen-only selection still runs before any repeats.
         for (let slot = 1; slot < 5 && cards.length < lesson.target; slot++) {
-          const next = groups[position]!.filter(candidate =>
-            available(candidate) && (!unseenOnly || unseen(candidate)))
-            .sort((a, b) => variety.score(b) - variety.score(a))[0];
+          const next = groups[position]!.filter(
+            (candidate) => available(candidate) && (!unseenOnly || unseen(candidate))
+          ).sort((a, b) => variety.score(b) - variety.score(a))[0];
           if (!next) break;
           add(next);
         }
@@ -187,7 +206,7 @@ export function planLesson(
     for (const id of ids) if (remaining.delete(id)) ordered.push(id);
   };
   for (const unit of lesson.units) {
-    emit(anchors.filter(id => unit.cardIds.includes(id)));
+    emit(anchors.filter((id) => unit.cardIds.includes(id)));
     emit(unit.cardIds);
   }
   // Rotate independent example groups; retain the sequence within each group.
@@ -197,5 +216,12 @@ export function planLesson(
     emit(group);
   }
   emit(cards);
-  return { version: 1, revision: lesson.revision, key: lesson.key, cards: ordered, completed: [], seed: runSeed };
+  return {
+    version: 1,
+    revision: lesson.revision,
+    key: lesson.key,
+    cards: ordered,
+    completed: [],
+    seed: runSeed,
+  };
 }

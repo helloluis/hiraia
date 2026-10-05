@@ -31,7 +31,7 @@ export function SiteFooter() {
         </div>
         <p className="mt-8 max-w-3xl font-zilla text-[11px] font-medium leading-relaxed text-[var(--sage)]/80 sm:text-xs">
           Hiraia is not affiliated with or endorsed by the Philippine Department of
-          Education. Its alignment with MATATAG curriculum is based on information
+          Education. Its alignment with the Revised K-12 Curriculum is based on information
           and content in the public domain, and is not guaranteed to be accurate,
           and has not been reviewed by the Department of Education or other public
           academic institutions. Although its originator has endeavoured to provide

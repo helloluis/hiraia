@@ -32,6 +32,8 @@
  * every headless harness all run in that state, and all three must behave exactly as they did
  * before presence existed.
  */
+import { CURRICULUM_ART_SLUGS } from './curriculumArt';
+
 let bundled: ReadonlySet<string> | null = null;
 
 /** Slugs backfill has written to disk since install, mapped to the file URI to render. */
@@ -82,6 +84,7 @@ export function bundledArtInstalled(): boolean {
  */
 export function hasArt(slug: string | null | undefined): boolean {
   if (!slug) return false;
+  if (CURRICULUM_ART_SLUGS.has(slug)) return true;
   if (downloaded.size !== 0 && downloaded.has(slug)) return true;
   if (bundled === null) return true;
   if (bundled.has(slug)) return true;

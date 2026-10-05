@@ -1,9 +1,9 @@
 # Public competency map
 
 `/competencies` shows the Philippine app's current curriculum lessons. The reference
-baseline is **DepEd MATATAG Science, Grades 3–10, August 2023**. This is a content
-inventory for that edition; it is not a claim about a school's present rollout,
-complete instruction, practical assessment, or learner mastery.
+baseline is **DepEd Revised K-12 Curriculum, three-term Science budgets of work,
+Grades 3–10 (2026)**. Grades 3–8 use the April 8 edition; Grades 9–10 use June 29.
+This is a mapping of available content, not proof of practical assessment or mastery.
 
 ## Generate and check
 
@@ -20,17 +20,23 @@ The normal web build runs the read-only catalogue check first. Regenerate after
 changing a relevant app lesson, its card/quiz inventory, or a source extraction.
 Review the generated diff before publishing. A stale file blocks the build.
 
-The only generated output is `public/competencies/ph-matatag.json`. It is imported
+The only generated output is `public/competencies/ph-revised-k12.json`. It is imported
 by the server page and offered as a download. Mobile runtime code, full card prose,
 models, embeddings, the 16 MB card index, and the APK database are not web imports.
 Generation requires the tracked repository inputs and the web package's existing
 TypeScript dependency; it requires no API, model, network access or APK database.
 
+The Term 2, weeks 4–9 pilot audit now selects reviewed examples and questions explicitly
+across Grades 3–10. The smaller counts in this window reflect focused lesson pools;
+unselected cards remain in discovery. Provenance includes `term2-pilot-review.json`
+and `pilot-content-corrections.json`. See `docs/TERM2-PILOT-AUDIT.md` for the scope,
+scientific repairs and outstanding language/practical-assessment boundaries.
+
 ## Source and counting rules
 
 - `mobile/src/data/lessonPlan.ts` identifies the audited grades and imported lesson
   manifests. These replace the older generated CG-topic outline in the actual app.
-  The page preserves the lesson order, title translations, quarter, and codes.
+  The page preserves the lesson order, title translations, term, week ranges, and codes.
 - `TOPIC_MIN_CARDS` in `mobile/src/data/cards.ts` is read through TypeScript's syntax
   tree. Only topics meeting the app's admission floor are included.
 - The two `rag/sources/curriculum-guides/matatag-*-competencies.json` files supply
@@ -47,19 +53,45 @@ TypeScript dependency; it requires no API, model, network access or APK database
   practice questions, not its separate longer exams.
 - Resources may appear in several objectives, topics or grades. Do not sum the
   displayed row counts to infer a unique corpus size.
-- Domains and their grade-specific quarter rotation come from the shared curriculum
-  module. Topic titles offer English, Tagalog and Cebuano; source statements stay
+- Historical domain assignments come from the shared curriculum module; a term
+  can cover several domains. Topic titles offer English, Tagalog and Cebuano; source statements stay
   in English because reviewed translations do not exist in this mapping.
 
-The generator validates source codes, grade/quarter assignments, card existence,
+The generator validates source codes, historical grade/quarter assignments and current term placement, card existence,
 objective membership and question references. The output records SHA-256 hashes
 for every consumed source file. It also lists any source competencies without an
 included lesson, rather than filling gaps with inferred matches.
 
-As of 1 October 2026 the snapshot contains **308 topics, 324 competencies, and 1,035
-authored objectives** across Grades 3–10. All 23 source inputs matched committed
-`HEAD` when generated. The public map does not depend on another thread's mobile
-internationalization or new foundation-exam changes.
+As of 5 October 2026 the revised map has **309 topics and 322/322 listed BOW
+competencies** across Grades 3–10. Two additional Grade 6 wave objectives remain
+supporting content and are explicitly excluded from the BOW coverage count.
+
+## Three-term migration (5 October 2026)
+
+`packages/shared/src/curriculum/three-term-2026.json` is the shared, reviewed
+competency-to-term/week crosswalk. Its source records include the official URLs,
+PDF edition dates and SHA-256 digests. The individual original PDFs and text extractions are retained under
+`rag/sources/curriculum-guides/three-term-2026/`. `sources.json` records their provenance; each PDF was verified after copying.
+`shared/src/curriculum/scheduleLessons.ts` supplies the same lesson ordering and
+term splits to mobile and this generator. Its bytes are included in provenance.
+
+Existing card IDs, objective IDs and historical quarter metadata are preserved.
+The original Grade 5 adaptations lesson keeps its key for plant adaptations;
+animal adaptations use `g5:adaptations:term2`. Seen cards and objective history
+remain keyed by their unchanged IDs. Unchanged lessons retain exact saved runs;
+a run spanning the split may be replanned against its retained seen history.
+
+The source has overlapping week ranges; these remain as printed. Grade 3 Term 3
+has headings inconsistent with their competencies, so the app retains its accurate
+reviewed topic titles. Grade 8's printed “Father information” typo is not copied
+into the learner text. Grade 6 G6-F-7/G6-F-9 are supporting prerequisites for the
+wave-model objective, not newly claimed official targets.
+
+The homepage demo is rebuilt with `python3 packages/web/scripts/build-demo-q1-packs.py`
+and `python3 packages/web/scripts/sync-demo-title-topics.py .`. The old `q1` file
+names remain internal compatibility names; selection and ordering now follow Term 1.
+The demo is a sample of available cards, not a complete term course. No facts,
+translations or quizzes are rewritten by this migration.
 
 Before publishing a selective web change from a shared checkout, compare the
 provenance inputs to the intended app revision. Do not ship a generated catalogue

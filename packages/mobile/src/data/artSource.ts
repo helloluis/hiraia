@@ -27,6 +27,7 @@ export type ArtSource = number | { uri: string } | null;
  */
 export function artSourceFor(slug: string | null | undefined): ArtSource {
   if (!slug) return null;
+  if (slug === 'pilot-distance-time') return require('../../assets/curriculum/pilot-distance-time.png');
   const uri = artUri(slug);
   if (uri) return { uri: mediaUri(uri) };
   return hasArt(slug) ? resolveImage(slug) : null;

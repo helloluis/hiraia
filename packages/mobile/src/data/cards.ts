@@ -21,6 +21,11 @@
 import {
   DEFAULT_CURRICULUM_WEIGHTS,
   curriculumMultiplier,
+  termCurriculumMultiplier,
+  inferCurriculumTerm,
+  scheduleForCodes,
+  type Term,
+  type TermInference,
   recencyMultiplier,
   seenCardMultiplier,
   seenCompetencyMultiplier,
@@ -221,6 +226,7 @@ export function competencyKey(id: string): string {
 export interface FeedContext {
   studentGrade: GradeLevel;
   currentQuarter: Quarter | null;
+  currentTerm?: Term | null;
   now: number; // epoch ms
   cardSeen: ReadonlyMap<string, SeenRecord>;
   competencySeen: ReadonlyMap<string, SeenRecord>;
@@ -365,11 +371,14 @@ const SCRATCH = new Float64Array(POOL.length); // predicate-masked weights durin
 export const weightTableStats = { rebuilds: 0 };
 
 function ensureWeightTable(ctx: FeedContext): Float64Array {
-  const key = `${ctx.studentGrade}|${ctx.currentQuarter ?? 'summer'}`;
+  const key = `${ctx.studentGrade}|${ctx.currentTerm === undefined ? 'Q' + ctx.currentQuarter : 'T' + ctx.currentTerm}`;
   if (weightTable.key !== key) {
     for (let i = 0; i < POOL.length; i += 1) {
       weightTable.base[i] =
-        curriculumMultiplier(TAG_AT[i], ctx.studentGrade, ctx.currentQuarter) * recencyMultiplier();
+        (ctx.currentTerm === undefined
+          ? curriculumMultiplier(TAG_AT[i], ctx.studentGrade, ctx.currentQuarter)
+          : termCurriculumMultiplier(TAG_AT[i], ctx.studentGrade, ctx.currentTerm)) *
+        recencyMultiplier();
     }
     weightTable.key = key;
     weightTableStats.rebuilds += 1;
@@ -1279,8 +1288,9 @@ export function poolSize(): number {
 /** Return authored cards in semantic fact rank order; include text-only cards. */
 export function cardsForFacts(factIds: readonly string[]): CardFact[] {
   const rank = new Map(factIds.map((id, index) => [id, index]));
-  return POOL.filter(card => rank.has(card.factId))
-    .sort((a, b) => rank.get(a.factId)! - rank.get(b.factId)!);
+  return POOL.filter((card) => rank.has(card.factId)).sort(
+    (a, b) => rank.get(a.factId)! - rank.get(b.factId)!
+  );
 }
 
 export function getCard(id: string): CardFact | undefined {
@@ -1855,7 +1865,9 @@ function hasServable(
 export interface OutlineTopic {
   /** Stable key within a grade: "Q<quarter>.<contentIndex>" — what the cursor and the sheet name a topic by. */
   key: string;
-  quarter: Quarter;
+  quarter: Quarter; // historical metadata, retained for saved cursors
+  term: Term;
+  weeks: readonly number[];
   contentIndex: number;
   title: { en: string; tl: string; bis: string };
   codes: readonly string[];
@@ -1883,6 +1895,8 @@ for (const [g, topics] of Object.entries(curriculumOutlineJson as unknown as Out
     topics.map((t) => ({
       key: `Q${t.quarter}.${t.contentIndex}`,
       quarter: t.quarter as Quarter,
+      term: scheduleForCodes(t.codes)[0]?.term ?? 1,
+      weeks: scheduleForCodes(t.codes)[0]?.weeks ?? [1, 11],
       contentIndex: t.contentIndex,
       title: t.title,
       codes: t.codes,
@@ -1898,6 +1912,8 @@ for (const grade of auditedGrades) {
     lessonsForGrade(grade).map((l, i) => ({
       key: l.key,
       quarter: l.quarter as Quarter,
+      term: l.term,
+      weeks: l.weeks,
       contentIndex: i + 1,
       title: l.title,
       codes: l.codes,
@@ -1997,12 +2013,14 @@ export function topicShelves(topic: OutlineTopic, language: Language): TopicShel
       g.add(id);
     }
   }
-  return [...groups.entries()]
-    // Title-cased HERE, not in the data: `leafLabel` must stay lower-case for its other
-    // caller, the mid-sentence fork ticket "iba pang mga hayop-dagat". A pill is a heading
-    // sitting directly under an authored, properly-cased DepEd title, so it is cased like one.
-    .map(([cat, ids]) => ({ cat, label: titleCase(leafLabel(cat, language) || cat), ids }))
-    .sort((a, b) => b.ids.size - a.ids.size);
+  return (
+    [...groups.entries()]
+      // Title-cased HERE, not in the data: `leafLabel` must stay lower-case for its other
+      // caller, the mid-sentence fork ticket "iba pang mga hayop-dagat". A pill is a heading
+      // sitting directly under an authored, properly-cased DepEd title, so it is cased like one.
+      .map(([cat, ids]) => ({ cat, label: titleCase(leafLabel(cat, language) || cat), ids }))
+      .sort((a, b) => b.ids.size - a.ids.size)
+  );
 }
 
 /**
@@ -2071,44 +2089,52 @@ export function curriculumCursor(
   const lesson = lessonsForGrade(grade).find((l) => l.key === key);
   if (!lesson) return { grade, key, idSet: cardsForTopic(rows[index]!), index };
   const selectedCat = shelfCat ?? (saved as LessonRun | undefined)?.shelfCat;
-  const shelf = selectedCat ? topicShelves(rows[index]!, 'english').find((s) => s.cat === selectedCat) : undefined;
+  const shelf = selectedCat
+    ? topicShelves(rows[index]!, 'english').find((s) => s.cat === selectedCat)
+    : undefined;
   if (selectedCat && !shelf) return null;
-  const scoped = shelf ? {
-    ...lesson,
-    cardIds: lesson.cardIds.filter((id) => shelf.ids.has(id)),
-    coreCardIds: lesson.coreCardIds.filter((id) => shelf.ids.has(id)),
-    relatedCardIds: lesson.relatedCardIds.filter((id) => shelf.ids.has(id)),
-    units: lesson.units.map((u) => ({ ...u,
-      cardIds: u.cardIds.filter((id) => shelf.ids.has(id)),
-      quizCardIds: u.quizCardIds.filter((id) => shelf.ids.has(id)),
-    })).filter((u) => u.cardIds.length > 0),
-    relatedGroups: lesson.relatedGroups.map((g) => ({ ...g,
-      cardIds: g.cardIds.filter((id) => shelf.ids.has(id)),
-    })).filter((g) => g.cardIds.length > 0),
-  } : lesson;
+  const scoped = shelf
+    ? {
+        ...lesson,
+        cardIds: lesson.cardIds.filter((id) => shelf.ids.has(id)),
+        coreCardIds: lesson.coreCardIds.filter((id) => shelf.ids.has(id)),
+        relatedCardIds: lesson.relatedCardIds.filter((id) => shelf.ids.has(id)),
+        units: lesson.units
+          .map((u) => ({
+            ...u,
+            cardIds: u.cardIds.filter((id) => shelf.ids.has(id)),
+            quizCardIds: u.quizCardIds.filter((id) => shelf.ids.has(id)),
+          }))
+          .filter((u) => u.cardIds.length > 0),
+        relatedGroups: lesson.relatedGroups
+          .map((g) => ({ ...g, cardIds: g.cardIds.filter((id) => shelf.ids.has(id)) }))
+          .filter((g) => g.cardIds.length > 0),
+      }
+    : lesson;
   const manualSelection = (saved as LessonRun | undefined)?.manualSelection === true;
-  const lessonRun = { ...planLesson(scoped, seen, saved), ...(shelf ? { shelfCat: shelf.cat } : {}), manualSelection };
+  const lessonRun = {
+    ...planLesson(scoped, seen, saved),
+    ...(shelf ? { shelfCat: shelf.cat } : {}),
+    manualSelection,
+  };
   const idSet = new Set(lessonRun.cards);
   PLANNED_RUNS.set(idSet, lessonRun);
   return { grade, key, index, idSet, lessonRun, manualSelection };
 }
 
-/** Estimate a new learner's topic from progress through the school year.
- * Topics are evenly spaced within each quarter; teachers can override in the outline.
- */
+/** Start at the published term/week. A numeric fraction is retained for old
+ * headless callers; the app supplies calendar-derived term/week explicitly. */
 export function estimatedCurriculumCursor(
   grade: GradeLevel,
-  fraction: number
+  position: TermInference | number = inferCurriculumTerm(new Date())
 ): CurriculumCursor | null {
   const rows = curriculumOutline(grade);
   if (!rows.length) return null;
-  const progress = Math.max(0, Math.min(0.999999, fraction));
-  const quarter = Math.floor(progress * 4) + 1;
-  const inQuarter = rows.filter((t) => t.quarter === quarter);
-  const topic =
-    inQuarter[Math.floor(((progress * 4) % 1) * inQuarter.length)] ??
-    rows.find((t) => t.quarter > quarter) ??
-    rows[0]!;
+  const progress = typeof position === 'number' ? Math.max(0, Math.min(0.999999, position)) * 3 : 0;
+  const term = typeof position === 'number' ? Math.floor(progress) + 1 : position.term;
+  const week = typeof position === 'number' ? Math.floor((progress % 1) * 11) + 1 : position.week;
+  const inTerm = rows.filter((t) => t.term === term);
+  const topic = inTerm.find((t) => t.weeks[1]! >= week) ?? inTerm.at(-1) ?? rows[0]!;
   return curriculumCursor(grade, topic.key);
 }
 

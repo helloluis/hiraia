@@ -1,8 +1,8 @@
 /**
- * The CALENDAR — the MATATAG outline for the reader's grade, as a sheet over the deck.
+ * The CALENDAR — the Revised K-12 Curriculum outline for the reader's grade, as a sheet over the deck.
  *
  * Opened from the cycling die/calendar button; lists every TOPIC of the grade that has at
- * least one card in the pool, in DepEd's own order, quarter by quarter (the outline is
+ * least one card in the pool, in DepEd's own order, term by term (the outline is
  * `curriculumOutline` in data/cards.ts — the generated CG order filtered by card presence). A
  * topic is a Content-column title of the CG ("Mga Uri ng Lupa", "Ang Siklo ng Tubig"): the
  * 3-6-word heading a child recognises from class. The competency sentences under it are the
@@ -11,13 +11,13 @@
  * competencies' sets — until they run out and walks on to the next row.
  *
  * Printed in the deck's own language: a sheet of cream stock with an ink edge over the
- * darkened board, ink type, olive small caps for the quarter headings, and the gold marker
+ * darkened board, ink type, olive small caps for the term headings, and the gold marker
  * — the deck's "continue" colour — on the row currently held. No emoji, no glyph icons:
  * the close affordance is the same ✕-in-a-ring the ribbons use.
  *
  * Titles follow the tutor language (tl / bis renderings reviewed against DepEd classroom
  * usage; English is the CG's own wording and the fallback). Everything else on the sheet —
- * eyebrow, hint, quarter headings, domain names, a11y labels — is uiStrings.
+ * eyebrow, hint, term headings, domain names, a11y labels — is uiStrings.
  *
  * Subcategory pills use the intersection of taxonomy labels and this topic’s cards.
  */
@@ -25,7 +25,7 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { DOMAIN_NAMES, GRADE_DOMAIN_MAP, type GradeLevel, type Language, type Quarter } from '@hiraia/shared';
+import { type GradeLevel, type Language, type Term } from '@hiraia/shared';
 
 import { GRADE_WORD } from '../../config/grades';
 import { uiStrings } from '../../config/strings';
@@ -56,16 +56,16 @@ interface RowView {
   shelves: TopicShelf[];
 }
 
-interface QuarterGroup {
-  quarter: Quarter;
+interface TermGroup {
+  term: Term;
   rows: RowView[];
 }
 
 /** The flat, virtualizable form of the outline: headings and rows in one list. */
-type SheetItem = { kind: 'quarter'; quarter: Quarter } | { kind: 'row'; row: RowView };
+type SheetItem = { kind: 'term'; term: Term } | { kind: 'row'; row: RowView };
 
 /**
- * The grade's outline, grouped by quarter, with each row's unseen/total count against the
+ * The grade's outline, grouped by term, with each row's unseen/total count against the
  * session's seen set. Cheap (a Set lookup per card of the grade, ~15k) and only computed while
  * the sheet is visible — the memo keys on `visible` so a hidden sheet does no work per turn.
  */
@@ -74,8 +74,8 @@ function groupOutline(
   language: Language,
   seen: ReadonlySet<string>,
   awards: Readonly<Record<string, TopicAward>>
-): QuarterGroup[] {
-  const groups: QuarterGroup[] = [];
+): TermGroup[] {
+  const groups: TermGroup[] = [];
   for (const topic of curriculumOutline(grade)) {
     const ids = cardsForTopic(topic);
     let unseen = 0;
@@ -95,8 +95,8 @@ function groupOutline(
       shelves: topicShelves(topic, language).filter((sh) => sh.ids.size >= TOPIC_MIN_CARDS),
     };
     const last = groups[groups.length - 1];
-    if (last && last.quarter === topic.quarter) last.rows.push(view);
-    else groups.push({ quarter: topic.quarter, rows: [view] });
+    if (last && last.term === topic.term) last.rows.push(view);
+    else groups.push({ term: topic.term, rows: [view] });
   }
   return groups;
 }
@@ -124,9 +124,7 @@ export const CurriculumSheet = memo(function CurriculumSheet({
   // memo below refreshes each time the sheet is opened onto a new page.
   const seen = useCardStore((s) => s.seen);
   const activeCat = useCardStore((s) => s.curriculum?.lessonRun?.shelfCat);
-  const awards = useReviewStore((s) =>
-    s.data?.grade === grade ? s.data.awards : EMPTY_AWARDS
-  );
+  const awards = useReviewStore((s) => (s.data?.grade === grade ? s.data.awards : EMPTY_AWARDS));
   /**
    * The rows, built one frame AFTER the sheet is asked for — `null` while pending.
    *
@@ -142,7 +140,7 @@ export const CurriculumSheet = memo(function CurriculumSheet({
    *
    * `null` is NOT `[]` and the distinction is load-bearing — see the render below.
    */
-  const [groups, setGroups] = useState<QuarterGroup[] | null>(null);
+  const [groups, setGroups] = useState<TermGroup[] | null>(null);
   useEffect(() => {
     if (!visible) {
       setGroups(null);
@@ -155,14 +153,14 @@ export const CurriculumSheet = memo(function CurriculumSheet({
   }, [visible, grade, language, seen, awards]);
 
   /**
-   * Quarter headings and topic rows in one flat list, so the FlatList below virtualizes over
-   * ROWS. Virtualizing over the quarter groups instead would be pure overhead: there are
-   * exactly four of them, so any sane window renders all four and mounts every row anyway.
+   * Term headings and topic rows in one flat list, so the FlatList below virtualizes over
+   * ROWS. Virtualizing over the term groups instead would be pure overhead: there are
+   * exactly three of them, so any sane window renders all three and mounts every row anyway.
    */
   const items = useMemo<SheetItem[]>(
     () =>
       (groups ?? []).flatMap((g) => [
-        { kind: 'quarter' as const, quarter: g.quarter },
+        { kind: 'term' as const, term: g.term },
         ...g.rows.map((row) => ({ kind: 'row' as const, row })),
       ]),
     [groups]
@@ -170,8 +168,8 @@ export const CurriculumSheet = memo(function CurriculumSheet({
 
   const renderItem = useCallback(
     ({ item }: { item: SheetItem }) =>
-      item.kind === 'quarter' ? (
-        <QuarterHeading label={`${t.cards.quarters[item.quarter - 1]} \u00b7 ${DOMAIN_NAMES[GRADE_DOMAIN_MAP[grade][item.quarter]][language]}`} />
+      item.kind === 'term' ? (
+        <TermHeading label={t.cards.terms[item.term - 1]!} />
       ) : (
         <Row
           row={item.row}
@@ -194,11 +192,18 @@ export const CurriculumSheet = memo(function CurriculumSheet({
     >
       <View style={styles.root}>
         {/* the board, darkened: tapping it closes the sheet */}
-        <Pressable style={styles.backdrop} onPress={onClose} accessibilityLabel={t.cards.closeCurriculum} />
+        <Pressable
+          style={styles.backdrop}
+          onPress={onClose}
+          accessibilityLabel={t.cards.closeCurriculum}
+        />
         <View
           style={[
             styles.sheet,
-            { maxHeight: `${Math.round(SHEET_MAX_HEIGHT * 100)}%`, paddingBottom: Math.max(insets.bottom, 12) },
+            {
+              maxHeight: `${Math.round(SHEET_MAX_HEIGHT * 100)}%`,
+              paddingBottom: Math.max(insets.bottom, 12),
+            },
             // Hold the final height while the rows are still being built, so the sheet opens
             // at its real size instead of popping up as a header-sized stub and then jumping.
             // Safe to assume it is the max: every grade's outline is 29-46 rows, which
@@ -252,12 +257,12 @@ export const CurriculumSheet = memo(function CurriculumSheet({
   );
 });
 
-/** One quarter's heading band — an olive small-caps rule with the gold diamond. */
-const QuarterHeading = memo(function QuarterHeading({ label }: { label: string }) {
+/** One term's heading band — an olive small-caps rule with the gold diamond. */
+const TermHeading = memo(function TermHeading({ label }: { label: string }) {
   return (
-    <View style={styles.quarter}>
-      <View style={styles.quarterDiamond} />
-      <Text style={styles.quarterText} numberOfLines={1}>
+    <View style={styles.term}>
+      <View style={styles.termDiamond} />
+      <Text style={styles.termText} numberOfLines={1}>
         {label}
       </Text>
     </View>
@@ -330,7 +335,7 @@ const Row = memo(function Row({
   );
 });
 
-const keyOfItem = (it: SheetItem) => (it.kind === 'quarter' ? `q${it.quarter}` : it.row.topic.key);
+const keyOfItem = (it: SheetItem) => (it.kind === 'term' ? `q${it.term}` : it.row.topic.key);
 
 const EMPTY_AWARDS: Readonly<Record<string, TopicAward>> = {};
 
@@ -373,7 +378,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   closeGlyph: { fontFamily: fonts.gothic, fontSize: 12, lineHeight: 14, color: card.ink },
-  hint: { fontFamily: fonts.cardBody, fontSize: 13, lineHeight: 17, color: card.olive, marginTop: 6 },
+  hint: {
+    fontFamily: fonts.cardBody,
+    fontSize: 13,
+    lineHeight: 17,
+    color: card.olive,
+    marginTop: 6,
+  },
   rule: { height: 1, backgroundColor: card.sage, marginTop: 10 },
   empty: {
     fontFamily: fonts.cardBody,
@@ -386,21 +397,21 @@ const styles = StyleSheet.create({
   // sheet's `maxHeight` box; without it a VirtualizedList here collapses or overruns.
   scroll: { flexGrow: 0, flexShrink: 1 },
   scrollBody: { paddingBottom: 6 },
-  quarter: {
+  term: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
     paddingTop: 14,
     paddingBottom: 6,
   },
-  quarterDiamond: {
+  termDiamond: {
     width: 7,
     height: 7,
     borderRadius: 1,
     backgroundColor: card.gold,
     transform: [{ rotate: '45deg' }],
   },
-  quarterText: {
+  termText: {
     flex: 1,
     fontFamily: fonts.gothic,
     fontSize: 9,
@@ -425,8 +436,16 @@ const styles = StyleSheet.create({
   // title + chip on one line; the pills (when they land) wrap beneath inside rowBody
   rowBody: { flex: 1 },
   pills: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 },
-  pill: { minHeight: 44, justifyContent: 'center', paddingHorizontal: 10, paddingVertical: 6,
-    borderRadius: 14, borderWidth: 1, borderColor: card.sage, backgroundColor: cardAlpha(card.sage, 0.18) },
+  pill: {
+    minHeight: 44,
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: card.sage,
+    backgroundColor: cardAlpha(card.sage, 0.18),
+  },
   pillText: { fontFamily: fonts.cardBody, fontSize: 12, color: card.ink },
   rowLine: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   // a DepEd title is a heading, not a sentence: one size up from the old competency text

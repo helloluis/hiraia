@@ -102,7 +102,7 @@ test('similarity artifact matches all frozen content inputs and has bounded vali
     const file = readFileSync(new URL(`../../../${path}`, import.meta.url));
     assert.equal(createHash('sha256').update(file).digest('hex'), hash, `${path}: rebuild similarity artifact`);
   }
-  for (const lesson of lessons) assert.equal((graph.lessons as Record<string, string>)[lesson.key], lesson.revision);
+  for (const lesson of lessons) assert.equal((graph.lessons as Record<string, string>)[lesson.sourceKey], lesson.revision);
   for (const [from, row] of graph.neighbors.entries()) {
     assert.equal(row.length % 2, 0);
     assert.ok(row.length <= graph.maxNeighbors * 2);

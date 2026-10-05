@@ -20,7 +20,7 @@ test('brain search takes priority over an active curriculum and serves five dist
   const state: any = { current: null, seen: new Set(), curriculum, pageKey: 1, asking: false };
   const engine = { getState: () => ({ grade: 5, language: 'english' }) };
   const feedContext = helper('feedContext', { useCardStore: { getState: () => state }, useEngineStore: engine,
-    inferCurriculumQuarter: () => ({ quarter: 1 }), seenStore: { cards: new Map(), competencies: new Map() } });
+    inferCurriculumTerm: () => ({ term: 1 }), seenStore: { cards: new Map(), competencies: new Map() } });
   const ask = action('ask', 'dismissQuery', { get: () => state, set: (patch: any) => Object.assign(state, patch),
     useEngineStore: engine, abortRewardPrefetch: () => {}, searchCards: C.searchCards, feedContext,
     formMagnet: helper('formMagnet', {}), navigateTo: (fact: any, _s: any, _g: any, opts: any) => {

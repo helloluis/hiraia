@@ -16,6 +16,7 @@ to treat as a repeated illustration.
   -> rag/pipeline/cardsPool.app.json
 """
 import json, os, re, collections
+from content_corrections import correct_cards
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
@@ -134,6 +135,7 @@ def main():
     print(f'  structure check: every card has a domain and a topic'
           + (f'; {len(noterms)} with NO terms (no deep edge): ' + ', '.join(noterms[:10]) if noterms else ''))
 
+    correct_cards(out)
     json.dump({'cards': out, 'taxonomy': pool.get('taxonomy') or []},
               open(OUT, 'w'), ensure_ascii=False)
 

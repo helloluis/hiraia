@@ -386,6 +386,33 @@
         "tl": "Para sa kahong nakapatong sa patag na mesa, gumuhit ng tuldok at magkapantay na palaso: bigat pababa at suporta ng mesa pataas. Balanse ang puwersa. Sa pahalang na hilang 6 N at salungat na friction na 2 N, tatlong ulit ang haba ng palaso ng hila: 4 N ang net force patungo sa hila. Lagyan ng label ang puwersa at direksiyon.",
         "bis": "Para sa kahong naa sa patag nga lamesa, pagdrowing og tuldok ug parehog gitas-on nga pana: gibug-aton paubos ug suporta sa lamesa pataas. Balanse ang puwersa. Sa pinahigda nga bira nga 6 N ug supak nga friction nga 2 N, tulo ka pilo ang pana sa bira: 4 N ang net force paingon sa bira. Butangi og label ang puwersa ug direksiyon."
       }
+    },
+    {
+      "id": "g7-pilot-net-force-motion",
+      "factId": "g7-pilot-net-force-motion",
+      "domain": "FORCE_MOTION_ENERGY",
+      "topic": "Force Changes Velocity",
+      "terms": [
+        "force",
+        "changes",
+        "velocity"
+      ],
+      "slug": "",
+      "cats": [
+        "g7-force_motion_energy-speed-velocity-acceleration"
+      ],
+      "title": {
+        "en": "Force Changes Velocity",
+        "tl": "Binabago ng Puwersa ang Velocity",
+        "bis": "Ang Puwersa Nag-usab sa Velocity"
+      },
+      "fact": {
+        "en": "A cart is moving right. A net force to the right speeds it up; a net force to the left first slows it down. If that leftward force continues long enough, the cart can stop and then move left. A sideways net force changes direction. Forces change velocity; they do not always point along the current motion.",
+        "tl": "Gumagalaw pakanan ang kariton. Pinabibilis ito ng net force na pakanan; pinababagal muna ng net force na pakaliwa. Kung magpapatuloy ang puwersang pakaliwa, maaaring huminto at pagkatapos ay gumalaw pakaliwa ang kariton. Binabago ng net force mula sa gilid ang direksiyon. Binabago ng puwersa ang velocity; hindi ito laging kapareho ng kasalukuyang galaw.",
+        "bis": "Naglakaw paingon sa tuo ang kariton. Ang net force paingon sa tuo mopaspas niini; ang net force paingon sa wala mopahinay una. Kon magpadayon ang puwersa paingon sa wala, mahimong mohunong ug unya molihok paingon sa wala ang kariton. Ang net force gikan sa kilid nag-usab sa direksyon. Ang puwersa nag-usab sa velocity; dili kini kanunay subay sa kasamtangang lihok."
+      },
+      "source": "original",
+      "poster": true
     }
   ],
   "questions": {
@@ -1636,6 +1663,38 @@
         "bis": "Para sa kahong naa sa patag nga lamesa, pagdrowing og tuldok ug parehog gitas-on nga pana: gibug-aton paubos ug suporta sa lamesa pataas. Balanse ang puwersa. Sa pinahigda nga bira nga 6 N ug supak nga friction nga 2 N, tulo ka pilo ang pana sa bira: 4 N ang net force paingon sa bira. Butangi og label ang puwersa ug direksiyon."
       },
       "d": 7
+    },
+    "g7-pilot-net-force-motion": {
+      "f": "g7-pilot-net-force-motion",
+      "q": {
+        "en": "A cart moves right while the net force points left. What happens first?",
+        "tl": "Gumagalaw pakanan ang kariton habang pakaliwa ang net force. Ano muna ang mangyayari?",
+        "bis": "Naglakaw paingon sa tuo ang kariton samtang paingon sa wala ang net force. Unsay unang mahitabo?"
+      },
+      "o": [
+        {
+          "en": "It slows down",
+          "tl": "Bumabagal ito",
+          "bis": "Mohinay kini"
+        },
+        {
+          "en": "It instantly moves left",
+          "tl": "Agad itong gumagalaw pakaliwa",
+          "bis": "Molihok dayon kini paingon sa wala"
+        },
+        {
+          "en": "Its velocity cannot change",
+          "tl": "Hindi maaaring magbago ang velocity",
+          "bis": "Dili mausab ang velocity"
+        }
+      ],
+      "a": 0,
+      "e": {
+        "en": "A cart is moving right. A net force to the right speeds it up; a net force to the left first slows it down. If that leftward force continues long enough, the cart can stop and then move left. A sideways net force changes direction. Forces change velocity; they do not always point along the current motion.",
+        "tl": "Gumagalaw pakanan ang kariton. Pinabibilis ito ng net force na pakanan; pinababagal muna ng net force na pakaliwa. Kung magpapatuloy ang puwersang pakaliwa, maaaring huminto at pagkatapos ay gumalaw pakaliwa ang kariton. Binabago ng net force mula sa gilid ang direksiyon. Binabago ng puwersa ang velocity; hindi ito laging kapareho ng kasalukuyang galaw.",
+        "bis": "Naglakaw paingon sa tuo ang kariton. Ang net force paingon sa tuo mopaspas niini; ang net force paingon sa wala mopahinay una. Kon magpadayon ang puwersa paingon sa wala, mahimong mohunong ug unya molihok paingon sa wala ang kariton. Ang net force gikan sa kilid nag-usab sa direksyon. Ang puwersa nag-usab sa velocity; dili kini kanunay subay sa kasamtangang lihok."
+      },
+      "d": 2
     }
   },
   "competencies": {
@@ -1687,6 +1746,9 @@
     ],
     "g7-core-force-balance": [
       "G7-F-3"
+    ],
+    "g7-pilot-net-force-motion": [
+      "G7-F-4"
     ]
   }
 }
