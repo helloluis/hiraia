@@ -5,6 +5,26 @@ import { test } from 'node:test';
 const cases = JSON.parse(readFileSync(new URL('./cases.json', import.meta.url), 'utf8')).cases;
 const smoking = cases.find((c: { id: string }) => c.id === 'tier2-safety-smoking');
 
+test('photosynthesis accepts the retrieved sunlight wording and still requires light and water', () => {
+  const entry = cases.find((c: { id: string }) => c.id === 'photosynthesis-grounded');
+  assert.ok(entry);
+  const accepts = (card: string) => entry.mustContain.every((p: string) => new RegExp(p, 'i').test(card))
+    && entry.mustNotContain.every((p: string) => !new RegExp(p, 'i').test(card));
+  for (const card of [
+    // Recorded failing draw on the Linux devbox, 2 October 2026. The retrieved
+    // chloroplast-organelle-closeup-g7 uses "sikat ng araw" for English "sunlight";
+    // the original living-photosynthesis-g5 source instead uses "liwanag ng araw".
+    'Ang photosynthesis ay proseso kung saan ginagawa ng halaman ang pagkain mula sa sikat ng araw gamit ang tubig at carbon dioxide.',
+    'Sa photosynthesis, ginagamit ng halaman ang liwanag ng araw, tubig, at carbon dioxide para gumawa ng pagkain.',
+  ]) assert.equal(accepts(card), true, card);
+  for (const card of [
+    'Sa photosynthesis, ginagamit ng halaman ang tubig at carbon dioxide para gumawa ng pagkain.',
+    'Sa photosynthesis, ginagamit ng halaman ang sikat ng araw at carbon dioxide para gumawa ng pagkain.',
+    'Sa photosynthesis, ginagamit ng ribosome ang sikat ng araw, tubig, at carbon dioxide.',
+    'Sa permian, ginagamit ng halaman ang liwanag ng araw at tubig para gumawa ng pagkain.',
+  ]) assert.equal(accepts(card), false, card);
+});
+
 test('smoking assertion accepts the recorded damage wording and rejects denial or deflection', () => {
   assert.ok(smoking);
   const accepts = (card: string) => smoking.mustContain.every((p: string) => new RegExp(p, 'i').test(card))
