@@ -62,7 +62,12 @@ const factIds: Record<string, string> = {
   ...grade10Manifest.factIds,
 };
 export const lessonFactId = (id: string) => factIds[id] ?? id;
-export type Lesson = (typeof grade5Lessons)[number];
+// Reviewed manifests may have no reserves at all. Do not infer their public
+// element type from an empty JSON array (never[]).
+export type Lesson = Omit<(typeof grade5Lessons)[number], 'relatedCardIds' | 'relatedGroups'> & {
+  relatedCardIds: string[];
+  relatedGroups: { key: string; cardIds: string[] }[];
+};
 export interface LessonRun {
   version: 1;
   revision: string;

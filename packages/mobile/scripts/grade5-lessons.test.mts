@@ -79,11 +79,12 @@ test('real feed completes each bounded run in order, resumes exactly, and keeps 
   }
   assert.equal(cursor.key, grade5Lessons[0]!.key);
 });
-test('return visits prefer reserve cards; invalid saves rebuild; profiles do not share progress', () => {
+test('small reviewed lessons repeat only their approved cards; invalid saves rebuild; profiles do not share progress', () => {
   const lesson = grade5Lessons.find((l) => l.key === 'g5:heat-and-state')!;
   const first = planLesson(lesson, new Set(), undefined, 42);
   const second = planLesson(lesson, new Set(first.cards));
-  assert.ok(second.cards.filter((id) => !first.cards.includes(id)).length >= 15);
+  assert.deepEqual(new Set(first.cards), new Set(lesson.cardIds));
+  assert.deepEqual(new Set(second.cards), new Set(lesson.cardIds));
   const independent = planLesson(lesson, new Set(), undefined, 42);
   assert.deepEqual(first, independent);
   assert.deepEqual(planLesson(lesson, new Set(), { ...first, cards: ['missing'] }, 42), first);
@@ -143,25 +144,21 @@ test('broader runs keep coverage, use additional examples and exhaust every elig
   }
 });
 
-test('additional pools preserve relevance, exclusions, and generic-category access', () => {
+test('reviewed pools preserve relevance and scoped exclusions', () => {
   const author = JSON.parse(
     readFileSync(
       new URL('../../../rag/pipeline/grade5-lessons.authoring.json', import.meta.url),
       'utf8'
     )
   );
-  let generic = 0;
   for (const lesson of grade5Lessons)
-    for (const id of lesson.relatedCardIds) {
+    for (const id of lesson.cardIds) {
       assert.ok(
         C.competencyKeys(id).some((code: string) => lesson.codes.includes(code)),
         id
       );
       assert.ok(!author.excludedCardIds.includes(id), id);
-      assert.ok(!lesson.coreCardIds.includes(id));
-      if (C.getCard(id).cats?.some((cat: string) => !cat.startsWith('g'))) generic++;
     }
-  assert.ok(generic > 0);
 });
 
 test('adding related inventory preserves a valid in-progress core-only saved run', () => {

@@ -15,6 +15,12 @@ supp=json.loads((ROOT/f'packages/mobile/src/data/grade{GRADE}LessonSupplement.js
 available={c['id'] for c in idx['cards']}|{c['id'] for c in supp['cards']}
 cards={c['id']:c for c in p['cards']}
 review=json.loads((ROOT/'rag/pipeline/term2-pilot-review.json').read_text())
+year_review=json.loads((ROOT/'rag/pipeline/full-year-review.json').read_text())
+assert not set(review['units']) & set(year_review['units']), 'Duplicate review decisions'
+review['units'].update(year_review['units'])
+review['codes']+=year_review['codes']
+for key, ids in year_review['relatedCardIds'].items():
+ review['relatedCardIds'][key]=list(dict.fromkeys(review['relatedCardIds'].get(key,[])+ids))
 reviewed_units=review['units']
 reviewed_codes=set(review['codes'])
 for lesson in a['lessons']:
@@ -62,8 +68,8 @@ for lesson in a['lessons']:
   # Additional examples still need a reviewed competency match at the normal confidence
   # floor. Category names alone do not establish grade or lesson relevance.
   if not t or t[3]<.2 or not set(codes)&set(out['codes']):continue
-  # The focused pilot block uses reviewed examples. Unreviewed cards remain in
-  # discovery and other lessons; a keyword hit alone cannot refill this block.
+  # Reviewed blocks use explicit examples. Unreviewed cards remain in discovery;
+  # a keyword hit alone cannot refill a reviewed lesson.
   matching=set(codes)&set(out['codes'])
   if matching<=reviewed_codes and c['id'] not in review['relatedCardIds'].get(lesson['key'],[]):continue
   if c.get('cats') and all(cat in enrichment for cat in c['cats']):continue

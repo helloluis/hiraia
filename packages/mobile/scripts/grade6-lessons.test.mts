@@ -45,16 +45,25 @@ test('Grade 6 covers all 37 competencies, all categories and every core quiz slo
     )
   );
 });
-test('Grade 6 real feed walks each planned lesson, restores after every card and wraps', () => {
+test('Grade 6 real feed walks every planned card, defers an adjacent repeat, restores and wraps', () => {
   let cursor = C.curriculumCursor(6, grade6Lessons[0]!.key);
   let current = null;
   const seen = new Set<string>();
   for (const lesson of grade6Lessons) {
     assert.equal(cursor.key, lesson.key);
     const order = [...cursor.lessonRun.cards];
-    for (const id of order) {
+    const visited = new Set<string>();
+    for (const _ of order) {
+      // Neighboring lessons can share a teaching card. The real feed defers a
+      // card identical to the current one, then returns to it after another card.
+      const id = cursor.lessonRun.cards.find(
+        (candidate: string) =>
+          candidate !== current && !cursor.lessonRun.completed.includes(candidate)
+      );
+      assert.ok(id, lesson.key);
       const next = C.jumpCard(current, seen, context(cursor));
       assert.equal(next.id, id);
+      visited.add(id);
       seen.add(id);
       current = id;
       cursor = C.advanceCurriculum(cursor, id, seen);
@@ -68,6 +77,7 @@ test('Grade 6 real feed walks each planned lesson, restores after every card and
       assert.equal(choices.length, 1);
       assert.ok(cursor.idSet.has(choices[0].factId));
     }
+    assert.deepEqual(visited, new Set(order), lesson.key);
   }
   assert.equal(cursor.key, grade6Lessons[0]!.key);
 });

@@ -119,9 +119,10 @@ test('Grade 8 additions are offline, trilingual, scoped correctly and do not act
   assert.deepEqual(unit('g8:hydropower', 'G8-F-10:source').quizCardIds, [
     'g8-core-hydro-reference',
   ]);
-  assert.deepEqual(unit('g8:tidal-energy', 'G8-E-12:sources').quizCardIds, [
-    'g8-core-tidal-reference',
-  ]);
+  assert.deepEqual(
+    new Set(unit('g8:tidal-energy', 'G8-E-12:sources').quizCardIds),
+    new Set(['g8-core-tidal-reference', 'g8-year-rance-example'])
+  );
   for (const [key, id] of [
     ['g8:acceleration-graphs', 'g8-core-motion-graphs'],
     ['g8:draw-atom', 'g8-core-aluminum-model'],

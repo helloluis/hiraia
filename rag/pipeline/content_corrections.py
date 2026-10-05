@@ -1,17 +1,21 @@
 """Reviewed science corrections applied after generation, before shipping.
 
-Edit pilot-content-corrections.json when reviewing its translations. Keeping these
+Edit the source correction JSON files when reviewing their translations. Keeping these
 repairs at the pipeline boundary prevents regeneration from restoring old claims.
 """
 import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-SOURCE = Path(__file__).with_name('pilot-content-corrections.json')
+SOURCES = [Path(__file__).with_name(name) for name in
+           ('pilot-content-corrections.json', 'full-year-content-corrections.json')]
 
 
 def corrections():
-    return json.loads(SOURCE.read_text())['corrections']
+    rows = [row for source in SOURCES for row in json.loads(source.read_text())['corrections']]
+    ids = [row['factId'] for row in rows]
+    assert len(ids) == len(set(ids)), 'Duplicate fact correction'
+    return rows
 
 
 def correct_cards(cards):
@@ -21,7 +25,7 @@ def correct_cards(cards):
         if not patch:
             continue
         assert card['factId'] == patch['factId'], card['id']
-        for field in ('fact', 'slug'):
+        for field in ('fact', 'slug', 'title', 'topic'):
             if field in patch:
                 card[field] = patch[field]
         # Emphasis is exact-substring metadata. Preserve valid spans; do not guess
@@ -57,6 +61,8 @@ def apply_to_sources():
             if patch and 'fact' in patch:
                 if key == 'id':
                     row['fact'] = patch['fact']
+                    if 'topic' in patch:
+                        row['topic'] = patch['topic']
                 elif 'question' in patch:
                     q = patch['question']
                     row.update(q=q['q'], options=q['o'], answer=q['a'], explanation=q['e'], difficulty=q['d'])
