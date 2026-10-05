@@ -1,0 +1,67 @@
+{
+  "passed": true,
+  "platform": "win32",
+  "arch": "x64",
+  "packaged": true,
+  "gitCommit": "52be6cbc246c1a64e15d77bbd0d42406c7b43a70",
+  "checks": [
+    "offline first-run profile and curriculum",
+    "all twelve exam questions are available with 3.5 cards in the wide viewport",
+    "keyboard arrows and trackpad browse the complete exam without submitting",
+    "exam options remain reachable at 200% zoom and in a 900x600 window",
+    "screen-reader mode exposes every question in linear reading order",
+    "out-of-order answers and frozen questions survive process restart",
+    "all twelve answers score once and appear in the saved profile history",
+    "keyboard navigation and inactive-card focus isolation",
+    "horizontal trackpad scroll advances the active card",
+    "all quiz answers reachable at 200% zoom",
+    "all quiz answers reachable in a 900\u00d7600 window",
+    "system accessibility mode renders",
+    "profile and quiz result persist after restart",
+    "Listen button plays synthesized offline narration",
+    "packaged QVAC CPU embedding and generation after relocation",
+    "bundled English and Tagalog voices synthesize offline"
+  ],
+  "exam": {
+    "questions": 12,
+    "completed": true,
+    "resumed": true,
+    "history": true,
+    "keyboard": true,
+    "zoom": true,
+    "carousel": true,
+    "outOfOrder": true,
+    "screenReader": true,
+    "visibleCards": 3.500129187839118
+  },
+  "playback": [
+    {
+      "source": "hiraia://file/file%3A%2F%2F%2FD%3A%2Fa%2Fhiraia%2Fhiraia%2Fbuild%2Fwindows-e2e%2FLearner%2520Jos%25C3%25A9%2520data%2Fcache%2Fspeech%2Fu4-0.wav",
+      "playing": true,
+      "duration": 3.348
+    }
+  ],
+  "native": {
+    "embeddingDimensions": 768,
+    "answer": "The star at the center of our solar system is called the Sun.",
+    "stats": {
+      "timeToFirstToken": 726.222,
+      "tokensPerSecond": 14.80817072551575,
+      "cacheTokens": 0,
+      "promptTokens": 23,
+      "generatedTokens": 14,
+      "emittedTokens": 14,
+      "avgConcurrentSeq": 1,
+      "backendDevice": "cpu"
+    }
+  },
+  "voices": {
+    "en": {
+      "samples": 36608
+    },
+    "tl": {
+      "samples": 49920
+    }
+  },
+  "errors": []
+}

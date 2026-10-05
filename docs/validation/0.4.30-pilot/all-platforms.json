@@ -1,0 +1,124 @@
+{
+  "schema": 2,
+  "complete": true,
+  "gitCommit": "52be6cbc246c1a64e15d77bbd0d42406c7b43a70",
+  "artifacts": {
+    "android": {
+      "platform": "android",
+      "abis": [
+        "arm64-v8a"
+      ],
+      "runtime": "21637cd6fff0f9063bfea0ac982e7a7b501bfb13",
+      "bundleSha256": "064d4b599b45412126d89ec39878ec715dfff8d1efad85f3f7f724e865f9b6af",
+      "bytes": 285209614,
+      "sha256": "aad7023da9f15c5a0ef7b3875426f71ac4961fef1d8376d75473c0cc70a97953",
+      "md5": "9a8169f76b78fb9c38cb67715acbeaec",
+      "versionName": "0.4.30",
+      "versionCode": 30,
+      "filename": "hiraia-v0p4p30.apk",
+      "signingCertSha256": "40d750d5576cb59c311c7ba713403e065b934967d7a7d1bc80652e1167a20c35",
+      "path": "android/hiraia-v0p4p30.apk"
+    },
+    "chromeos": {
+      "platform": "chromeos",
+      "abis": [
+        "arm64-v8a",
+        "x86_64"
+      ],
+      "runtime": "0921cdcade4a2af0553c00da3f573df31c5a5aa3",
+      "bundleSha256": "064d4b599b45412126d89ec39878ec715dfff8d1efad85f3f7f724e865f9b6af",
+      "bytes": 370016969,
+      "sha256": "68729c8697ab12a1e4476fde929bf2287ca037710514661ffc05b05a2bf1535d",
+      "md5": "8e8b5f15866b451b487c82776aab351e",
+      "versionName": "0.4.30",
+      "versionCode": 30,
+      "filename": "hiraia-v0p4p30-chromeos.apk",
+      "signingCertSha256": "40d750d5576cb59c311c7ba713403e065b934967d7a7d1bc80652e1167a20c35",
+      "path": "chromeos/hiraia-v0p4p30-chromeos.apk"
+    },
+    "windows": {
+      "platform": "windows",
+      "arch": "x64",
+      "minimumOS": "Windows 10",
+      "versionName": "0.4.30",
+      "versionCode": 30,
+      "desktopVersion": "0.4.30-preview.1",
+      "filename": "Hiraia-win32-x64-0.4.30-preview.1.zip",
+      "bytes": 572015628,
+      "sha256": "f3dc8b7e4d0e3202be4182944a5c7a65d9e56c4eaf74d94c7e86828fb993d20b",
+      "signed": false,
+      "validation": {
+        "passed": true,
+        "platform": "win32",
+        "arch": "x64",
+        "packaged": true,
+        "gitCommit": "52be6cbc246c1a64e15d77bbd0d42406c7b43a70",
+        "checks": [
+          "offline first-run profile and curriculum",
+          "all twelve exam questions are available with 3.5 cards in the wide viewport",
+          "keyboard arrows and trackpad browse the complete exam without submitting",
+          "exam options remain reachable at 200% zoom and in a 900x600 window",
+          "screen-reader mode exposes every question in linear reading order",
+          "out-of-order answers and frozen questions survive process restart",
+          "all twelve answers score once and appear in the saved profile history",
+          "keyboard navigation and inactive-card focus isolation",
+          "horizontal trackpad scroll advances the active card",
+          "all quiz answers reachable at 200% zoom",
+          "all quiz answers reachable in a 900\u00d7600 window",
+          "system accessibility mode renders",
+          "profile and quiz result persist after restart",
+          "Listen button plays synthesized offline narration",
+          "packaged QVAC CPU embedding and generation after relocation",
+          "bundled English and Tagalog voices synthesize offline"
+        ],
+        "exam": {
+          "questions": 12,
+          "completed": true,
+          "resumed": true,
+          "history": true,
+          "keyboard": true,
+          "zoom": true,
+          "carousel": true,
+          "outOfOrder": true,
+          "screenReader": true,
+          "visibleCards": 3.500129187839118
+        },
+        "playback": [
+          {
+            "source": "hiraia://file/file%3A%2F%2F%2FD%3A%2Fa%2Fhiraia%2Fhiraia%2Fbuild%2Fwindows-e2e%2FLearner%2520Jos%25C3%25A9%2520data%2Fcache%2Fspeech%2Fu4-0.wav",
+            "playing": true,
+            "duration": 3.348
+          }
+        ],
+        "native": {
+          "embeddingDimensions": 768,
+          "answer": "The star at the center of our solar system is called the Sun.",
+          "stats": {
+            "timeToFirstToken": 726.222,
+            "tokensPerSecond": 14.80817072551575,
+            "cacheTokens": 0,
+            "promptTokens": 23,
+            "generatedTokens": 14,
+            "emittedTokens": 14,
+            "avgConcurrentSeq": 1,
+            "backendDevice": "cpu"
+          }
+        },
+        "voices": {
+          "en": {
+            "samples": 36608
+          },
+          "tl": {
+            "samples": 49920
+          }
+        },
+        "errors": []
+      }
+    }
+  },
+  "ciArtifacts": {
+    "android": "hiraia-android-chromeos-52be6cbc246c1a64e15d77bbd0d42406c7b43a70",
+    "chromeos": "hiraia-android-chromeos-52be6cbc246c1a64e15d77bbd0d42406c7b43a70",
+    "windows": "hiraia-windows-52be6cbc246c1a64e15d77bbd0d42406c7b43a70"
+  }
+}
