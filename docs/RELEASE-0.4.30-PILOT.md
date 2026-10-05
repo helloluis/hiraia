@@ -8,6 +8,9 @@ passed for all three editions. Source changes are pushed to `hiraia-unified` and
 
 ## Pilot downloads
 
+For manual entry on a test device, [hiraia.org/a](https://hiraia.org/a) redirects
+directly to the Android APK below.
+
 | Edition | Bytes | SHA-256 |
 | --- | ---: | --- |
 | [Android APK](https://assets.hiraia.org/models/hiraia-v0p4p30.apk) | 285,209,614 | `aad7023da9f15c5a0ef7b3875426f71ac4961fef1d8376d75473c0cc70a97953` |
