@@ -15,7 +15,7 @@ def corrections():
 
 
 def correct_cards(cards):
-    by_id = {r['id']: r for r in corrections()}
+    by_id = {r['id']: r for r in corrections() if 'id' in r}
     for card in cards:
         patch = by_id.get(card['id'])
         if not patch:
@@ -57,7 +57,7 @@ def apply_to_sources():
             if patch and 'fact' in patch:
                 if key == 'id':
                     row['fact'] = patch['fact']
-                else:
+                elif 'question' in patch:
                     q = patch['question']
                     row.update(q=q['q'], options=q['o'], answer=q['a'], explanation=q['e'], difficulty=q['d'])
                 line = json.dumps(row, ensure_ascii=False) + '\n'

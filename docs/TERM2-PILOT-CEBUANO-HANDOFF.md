@@ -89,6 +89,10 @@ The pre-build translation gate flagged `quiz-04646` because its correct option i
 
 Rebuilding the assessment registry also removed the old exact-text teaching link from `ha-g5-0043` to `ffct-24137`: its historical authoring snapshot predates the friction correction. The question remains a source-checked draft; this build does not silently transfer the earlier review to rewritten text. Re-review the snapshot in `rag/assessment-authoring/batches/012-grade5-forces-and-circuits.json` before restoring that exposure link. No assessment prose or review status was changed by the rebuild.
 
-Before publishing after any further grounding edits, upload the refreshed vectors under a new bank-hash filename and update the filename, byte count and MD5 in `packages/mobile/src/config/edition.ts`. The pilot uses `vectors-labse-31c53977775e.i8.bin`.
+Before publishing after any further grounding edits, upload the refreshed vectors under a new bank-hash filename and update the filename, byte count and MD5 in `packages/mobile/src/config/edition.ts`. The pilot uses `vectors-labse-fbd8f7e58c9e.i8.bin`.
 
 No content IDs were reused and no old catalogue entries were pruned. Build/publication evidence is recorded separately from this translation handoff.
+
+## Pre-build grounding follow-up
+
+The model gate exposed an additional grounding-only fact: `chloroplast-organelle-closeup-g7` described food as made from sunlight and caused a photosynthesis answer to omit water. Its three bodies now distinguish sunlight as energy from water and carbon dioxide as materials, and state that oxygen is released. Review `fact.bis` in the final entry of `pilot-content-corrections.json`. This fact has no teaching-card or quiz-bank counterpart; no new card ID was invented. The language draft follows the existing `living-photosynthesis-g5` wording. The three changed embeddings and unchanged controls are recorded in `docs/term2-pilot-photosynthesis-vector-refresh.json`.

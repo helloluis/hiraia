@@ -53,3 +53,7 @@ Keep practical observations distinct from app responses. The app presents proced
 - New graph PNG visually inspected: labelled axes, units, numeric scales and data match the card. `git diff --check` passes (LFS clean filter disabled for the read-only check).
 
 No APK, release or deployment is part of this change. The formal model regression gate/device checks are release prerequisites, not claimed results of this content audit.
+
+## Pre-build follow-up
+
+The mandatory model gate exposed a separate photosynthesis grounding defect: `chloroplast-organelle-closeup-g7` described food as made from sunlight. The grounding-only correction now separates light energy from water/carbon-dioxide inputs in all three languages. This adds one corrected fact (three refreshed vectors) beyond the 11 card/quiz corrections above. See `term2-pilot-photosynthesis-vector-refresh.json` and the Cebuano handoff. The gate also required refreshing the assessment registry and explicitly recording the legitimate science term “Elastic potential energy” in the translation checker. Native build evidence is recorded separately.
