@@ -225,4 +225,6 @@ The final vector dependency is published and read-back verified at [vectors-labs
 
 ## Release boundary
 
-No APK, app version change, deployment or commit is included. The existing 0.4.30 test download does not contain this audit. Formal model regression and device checks remain prerequisites for a future APK.
+At completion of the 5 October audit, no APK, app version change, deployment or commit was included; the existing 0.4.30 test download did not contain these changes.
+
+The subsequent [0.4.31 release](RELEASE-0.4.31.md), built on 6 October, includes this audit. Its signed APKs passed the formal model gate and archive inspection, and the Windows package passed its packaged-app exam and persistence checks. Physical Android testing remains the purpose of the test-device download.

@@ -1,0 +1,1583 @@
+{
+  "endpoint": "http://localhost:18088",
+  "temp": 0.3,
+  "samples": 5,
+  "reports": [
+    {
+      "id": "astronaut-grounded",
+      "tier": "grounded-core",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.7378474916437745,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "faq-why-astronauts-float",
+        "astronauts-eat-sleep-g4",
+        "astronauts-float-microgravity-g6",
+        "spacesuit-why-needed-g5"
+      ],
+      "cards": [
+        "Lumulutang ang astronaut dahil sila at spaceship ay parehong nahuhulog sa Earth habang umiikot. Kaya wala silang nararamdamang bigat.",
+        "Lumulutang ang astronaut dahil sila at spaceship ay parehong nahuhulog sa Earth habang umiikot, kaya wala silang nararamdamang bigat.",
+        "Lumulutang ang astronaut dahil sila at spaceship ay parehong nahuhulog sa Earth habang umiikot, kaya wala silang nararamdamang bigat.",
+        "Lumulutang ang astronaut dahil sila at spaceship ay parehong nahuhulog sa Earth habang umiikot, kaya wala silang nararamdamang bigat.",
+        "Lumulutang ang astronaut dahil sila at ang spaceship ay parehong patuloy na nahuhulog sa Earth habang umiikot sa paligid nito."
+      ],
+      "distinct": 3,
+      "words": [
+        19,
+        19,
+        19,
+        19,
+        20
+      ],
+      "rawWords": [
+        19,
+        19,
+        19,
+        19,
+        20
+      ],
+      "fails": []
+    },
+    {
+      "id": "dinosaur-grounded",
+      "tier": "grounded-core",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6980331203362372,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "living-dinosaurs-g4",
+        "dinosaur-word-meaning-terrible-lizard-g4",
+        "living-dinosaur-extinction-g5",
+        "dinosaur-meaning-terrible-lizard-g5"
+      ],
+      "cards": [
+        "Ang dinosaur ay sinaunang reptilya na nakakatakot na butiki. Iba-iba ang laki nila, mula sa maliit hanggang sa napakalaki.",
+        "Ang dinosaur ay sinaunang reptilya na namuhay sa Earth mga 230 hanggang 66 milyong taon na ang nakalipas.",
+        "Ang dinosaur ay sinaunang reptilya na namuhay sa Earth 230 hanggang 66 milyong taon na ang nakalipas.",
+        "Ang dinosaur ay sinaunang reptilya na namuhay sa Earth 230 hanggang 66 milyong taon na ang nakalipas.",
+        "Ang dinosaur ay sinaunang reptilya na namuhay sa Earth 230 hanggang 66 milyong taon na ang nakalipas."
+      ],
+      "distinct": 3,
+      "words": [
+        19,
+        18,
+        17,
+        17,
+        17
+      ],
+      "rawWords": [
+        19,
+        18,
+        17,
+        17,
+        17
+      ],
+      "fails": []
+    },
+    {
+      "id": "photosynthesis-grounded",
+      "tier": "grounded-core",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6696029169629547,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "photosynthesis-makes-oxygen-g4",
+        "living-photosynthesis-g5",
+        "plants-release-oxygen-g5",
+        "living-photosynthesis-respiration-pair-g7"
+      ],
+      "cards": [
+        "Sa photosynthesis, ginagamit ng halaman ang liwanag, tubig, at carbon dioxide para gumawa ng pagkain at naglalabas ng oksiheno.",
+        "Ang photosynthesis ay proseso kung saan ginagamit ng halaman ang liwanag, tubig, at carbon dioxide para gumawa ng pagkain at oksiheno.",
+        "Ang photosynthesis ay proseso kung saan ginagamit ng halaman ang liwanag, tubig, at carbon dioxide para gumawa ng pagkain at oksiheno.",
+        "Sa photosynthesis, ginagamit ng halaman ang liwanag, tubig, at carbon dioxide para gumawa ng pagkain at naglalabas ng oksiheno.",
+        "Ang photosynthesis ay proseso kung saan ginagamit ng halaman ang liwanag, tubig, at carbon dioxide para gumawa ng pagkain at oksiheno."
+      ],
+      "distinct": 2,
+      "words": [
+        19,
+        21,
+        21,
+        19,
+        21
+      ],
+      "rawWords": [
+        19,
+        21,
+        21,
+        19,
+        21
+      ],
+      "fails": []
+    },
+    {
+      "id": "skyblue-grounded",
+      "tier": "grounded-core",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.7482476955128087,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "faq-blue-sky",
+        "why-sky-blue-g6",
+        "blue-sky-scattering-g6",
+        "violet-light-eyes-g7"
+      ],
+      "cards": [
+        "Asul ang langit dahil ang asul na liwanag mula sa araw ay mas madaling makalat ng mga particle ng hangin.",
+        "Asul ang langit dahil ang asul na liwanag mula sa araw ay mas madaling makalat ng mga particle ng hangin.",
+        "Asul ang langit dahil ang asul na liwanag mula sa araw ay mas madaling makalat ng mga particle ng hangin.",
+        "Asul ang langit dahil ang asul na liwanag mula sa araw ay mas madaling makalat ng mga particle ng hangin.",
+        "Asul ang langit dahil ang asul na liwanag mula sa araw ay mas madaling makalat ng mga particle ng hangin."
+      ],
+      "distinct": 1,
+      "words": [
+        20,
+        20,
+        20,
+        20,
+        20
+      ],
+      "rawWords": [
+        20,
+        20,
+        20,
+        20,
+        20
+      ],
+      "fails": []
+    },
+    {
+      "id": "shark-grounded",
+      "tier": "grounded-core",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6117269407809437,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "living-shark-g5",
+        "ants-eat-many-foods-g3",
+        "shark-teeth-rows-g4",
+        "group-of-whales-pod-g5"
+      ],
+      "cards": [
+        "Ang pating ay isda. Ang kalansay nito ay gawa sa cartilage, hindi tigas na buto.",
+        "Ang pating ay isda. Ang kalansay nito ay gawa sa cartilage, hindi tigas na buto.",
+        "Ang pating ay isda. Gawa sa cartilage ang kalansay nito, hindi tigas na buto.",
+        "Ang pating ay isda. Ang kalansay nito ay gawa sa cartilage, hindi tigas na buto.",
+        "Ang pating ay isda. Ang kalansay nito ay gawa sa cartilage, hindi tigas na buto."
+      ],
+      "distinct": 2,
+      "words": [
+        15,
+        15,
+        14,
+        15,
+        15
+      ],
+      "rawWords": [
+        15,
+        15,
+        14,
+        15,
+        15
+      ],
+      "fails": []
+    },
+    {
+      "id": "octopus-grounded",
+      "tier": "grounded-core",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6973125549326413,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "octopus-three-hearts-g5",
+        "octopus-three-hearts-g6"
+      ],
+      "cards": [
+        "Totoo. May tatlong puso ang pugita: dalawa sa hasang at isa sa buong katawan.",
+        "Totoo. May tatlong puso ang pugita: dalawa sa hasang at isa sa buong katawan.",
+        "Totoo. May tatlong puso ang pugita: dalawa sa hasang at isa sa buong katawan.",
+        "Totoo. May tatlong puso ang pugita: dalawa sa hasang at isa sa buong katawan.",
+        "Totoo. May tatlong puso ang pugita: dalawa sa hasang at isa sa buong katawan."
+      ],
+      "distinct": 1,
+      "words": [
+        14,
+        14,
+        14,
+        14,
+        14
+      ],
+      "rawWords": [
+        14,
+        14,
+        14,
+        14,
+        14
+      ],
+      "fails": []
+    },
+    {
+      "id": "grounded-jupiter-moons",
+      "tier": "grounded-core",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.7549691454002362,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "how-many-galilean-moons-four-g6",
+        "jupiter-most-moons-g6",
+        "jupiter-many-moons-g6",
+        "jupiter-many-moons-more-than-90-g6"
+      ],
+      "cards": [
+        "Ang Jupiter ay may mahigit 90 na kilalang buwan. Ang apat na pinakamalaki ay Io, Europa, Ganymede, at Callisto.",
+        "Ang Jupiter ay may mahigit 90 na kilalang buwan. Ang apat na pinakamalaki ay Io, Europa, Ganymede, at Callisto.",
+        "Ang Jupiter ay may mahigit 90 na kilalang buwan. Ang apat na pinakamalaki ay Io, Europa, Ganymede, at Callisto.",
+        "Ang Jupiter ay may mahigit 90 na kilalang buwan. Ang apat na pinakamalaki ay Io, Europa, Ganymede, at Callisto.",
+        "Ang Jupiter ay may mahigit 90 na kilalang buwan. Ang apat na pinakamalaki ay Io, Europa, Ganymede, at Callisto."
+      ],
+      "distinct": 1,
+      "words": [
+        19,
+        19,
+        19,
+        19,
+        19
+      ],
+      "rawWords": [
+        19,
+        19,
+        19,
+        19,
+        19
+      ],
+      "fails": []
+    },
+    {
+      "id": "venus-why-hot-grounds",
+      "tier": "grounded-core",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.695116228618931,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "venus-hottest-planet-g5",
+        "why-venus-hottest-g6",
+        "greenhouse-venus-runaway-g8",
+        "venus-longest-day-planet-g6"
+      ],
+      "cards": [
+        "Ang Venus ang pinakamainit na planeta dahil ang makapal nitong atmospera ng carbon dioxide ay humuhuli ng napakaraming init.",
+        "Ang Venus ang pinakamainit dahil ang makapal nitong atmospera ng carbon dioxide ay humuhuli ng napakaraming init.",
+        "Ang Venus ang pinakamainit dahil ang makapal nitong atmospera ng carbon dioxide ay humuhuli ng napakaraming init.",
+        "Ang Venus ang pinakamainit dahil ang makapal nitong atmospera ng carbon dioxide ay humuhuli ng napakaraming init.",
+        "Ang Venus ang pinakamainit dahil ang makapal nitong atmospera ng carbon dioxide ay humuhuli ng napakaraming init."
+      ],
+      "distinct": 2,
+      "words": [
+        19,
+        17,
+        17,
+        17,
+        17
+      ],
+      "rawWords": [
+        19,
+        17,
+        17,
+        17,
+        17
+      ],
+      "fails": []
+    },
+    {
+      "id": "ph-anthem",
+      "tier": "ph-civics-geo",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.8144135998089213,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "ph-anthem-name-lupang-hinirang-g5",
+        "anthem-title-lupang-hinirang-g5",
+        "ph-national-anthem-lupang-hinirang-g4",
+        "ph-anthem-name-g4"
+      ],
+      "cards": [
+        "Ang pambansang awit ng Pilipinas ay ang Lupang Hinirang.",
+        "Ang pambansang awit ng Pilipinas ay tinatawag na Lupang Hinirang.",
+        "Ang pambansang awit ng Pilipinas ay ang Lupang Hinirang.",
+        "Ang pambansang awit ng Pilipinas ay ang Lupang Hinirang.",
+        "Ang pambansang awit ng Pilipinas ay ang Lupang Hinirang."
+      ],
+      "distinct": 2,
+      "words": [
+        9,
+        10,
+        9,
+        9,
+        9
+      ],
+      "rawWords": [
+        9,
+        10,
+        9,
+        9,
+        9
+      ],
+      "fails": []
+    },
+    {
+      "id": "ph-flag-colors",
+      "tier": "ph-civics-geo",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.7512026741704061,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "ph-flag-colors-count-g4",
+        "ph-symbol-flag-meaning-g4",
+        "flag-red-meaning-g5",
+        "ph-flag-three-stars-meaning-g5"
+      ],
+      "cards": [
+        "Ang asul ay kapayapaan, ang pula ay tapang, ang puti ay kalinisan, at ang gintong araw ay para sa unang walong lalawigan.",
+        "Ang asul ay kapayapaan, ang pula ay katapangan, ang puti ay kalinisan, at ang gintong araw ay para sa unang walong lalawigang naghimagsik.",
+        "Ang asul ay kapayapaan, ang pula ay tapang, ang puti ay kalinisan, at ang gintong araw ay para sa unang walong lalawigan.",
+        "Ang asul ay kapayapaan, ang pula ay katapangan, ang puti ay kalinisan ng puso, at ang gintong araw ay para sa unang walong lalawigang naghimagsik.",
+        "Ang asul ay kapayapaan at katarungan, ang pula ay tapang, ang puti ay kalinisan ng puso, at ang gintong araw ay para sa unang walong lalawigang naghimagsik."
+      ],
+      "distinct": 4,
+      "words": [
+        22,
+        23,
+        22,
+        25,
+        27
+      ],
+      "rawWords": [
+        22,
+        23,
+        22,
+        25,
+        27
+      ],
+      "fails": []
+    },
+    {
+      "id": "ph-province-capital",
+      "tier": "ph-civics-geo",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6886397203507504,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "capital-cebu-cebu-city-g5",
+        "ph-prov-cebu"
+      ],
+      "cards": [
+        "Ang kabisera ng lalawigan ng Cebu ay ang Cebu City.",
+        "Ang kabisera ng lalawigan ng Cebu ay ang Cebu City.",
+        "Ang kabisera ng lalawigan ng Cebu ay ang Cebu City.",
+        "Ang kabisera ng lalawigan ng Cebu ay ang Cebu City.",
+        "Ang kabisera ng lalawigan ng Cebu ay ang Cebu City."
+      ],
+      "distinct": 1,
+      "words": [
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "rawWords": [
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "fails": []
+    },
+    {
+      "id": "ph-national-bird",
+      "tier": "ph-civics-geo",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.8499539003566218,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "philippine-eagle-national-bird-g3",
+        "eagle-philippine-g5",
+        "philippine-eagle-national-bird-g6",
+        "philippine-eagle-largest-g5"
+      ],
+      "cards": [
+        "Ang Philippine Eagle o agila ng Pilipinas ang pambansang ibon ng Pilipinas.",
+        "Ang pambansang ibon ng Pilipinas ay ang Philippine Eagle o agila ng Pilipinas.",
+        "Ang pambansang ibon ng Pilipinas ay ang Philippine Eagle o agila ng Pilipinas.",
+        "Ang Philippine Eagle o agila ng Pilipinas ang pambansang ibon ng Pilipinas.",
+        "Ang Philippine Eagle o agila ng Pilipinas ang pambansang ibon ng Pilipinas."
+      ],
+      "distinct": 2,
+      "words": [
+        12,
+        13,
+        13,
+        12,
+        12
+      ],
+      "rawWords": [
+        12,
+        13,
+        13,
+        12,
+        12
+      ],
+      "fails": []
+    },
+    {
+      "id": "homonym-puso",
+      "tier": "homonym",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6229165998839871,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "heart-blood-loop-body-g6",
+        "human-body-one-heart-g4",
+        "heart-four-chambers-flow-g6",
+        "human-body-largest-organ-skin-g5"
+      ],
+      "cards": [
+        "Ang puso ay kalamnang bombang umiikot ng dugo sa buong katawan. Ito ay may apat na silid para itulak ang dugo sa buong katawan.",
+        "Ang puso ay kalamnang bombang umiikot ng dugo sa buong katawan. Ito ay may apat na silid na nagtutulungan para itulak ang dugo.",
+        "Ang puso ay kalamnang bombang umiikot ng dugo sa buong katawan. Ito ay may apat na silid na nagtutulungan para itulak ang dugo.",
+        "Ang puso ay kalamnang bombang umiikot ng dugo sa buong katawan. Ito ay may apat na silid para itulak ang dugo sa buong katawan.",
+        "Ang puso ay kalamnang bombang umiikot ng dugo sa buong katawan. Ito ay may apat na silid na nagtutulungan para itulak ang dugo."
+      ],
+      "distinct": 2,
+      "words": [
+        24,
+        23,
+        23,
+        24,
+        23
+      ],
+      "rawWords": [
+        24,
+        23,
+        23,
+        24,
+        23
+      ],
+      "fails": []
+    },
+    {
+      "id": "homonym-baga",
+      "tier": "homonym",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6655542813829287,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "living-respiration-g6",
+        "human-body-largest-organ-skin-g5",
+        "living-respiratory-g6",
+        "largest-bone-femur-g6"
+      ],
+      "cards": [
+        "Ang baga ay humahawak sa paghinga. Kinukuha ng dugo ang oxygen at pinapalabas ang carbon dioxide.",
+        "Ang baga ay humahawak sa paghinga. Kinukuha ng dugo ang oxygen at pinapalabas ang carbon dioxide.",
+        "Ang baga ay humahawak sa paghinga. Kinukuha ng dugo ang oxygen at pinapalabas ang carbon dioxide.",
+        "Ang baga ay humahawak sa paghinga. Kinukuha ng dugo ang oxygen at pinapalabas ang carbon dioxide.",
+        "Ang baga ay humahawak sa paghinga. Kinukuha ng dugo ang oxygen at pinapalabas ang carbon dioxide."
+      ],
+      "distinct": 1,
+      "words": [
+        16,
+        16,
+        16,
+        16,
+        16
+      ],
+      "rawWords": [
+        16,
+        16,
+        16,
+        16,
+        16
+      ],
+      "fails": []
+    },
+    {
+      "id": "homonym-buto-bone",
+      "tier": "homonym",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.7921310113199113,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "largest-bone-femur-g6",
+        "human-body-largest-bone-femur-g6",
+        "femur-largest-bone-g5"
+      ],
+      "cards": [
+        "Ang femur o buto ng hita ang pinakamalaki at pinakamahabang buto sa katawan.",
+        "Ang femur o buto sa hita ang pinakamalaki at pinakamahabang buto sa katawan.",
+        "Ang femur o buto sa hita ang pinakamalaki at pinakamahabang buto sa katawan.",
+        "Ang femur o buto sa hita ang pinakamalaki at pinakamahabang buto sa katawan natin.",
+        "Ang femur o buto ng hita ang pinakamalaki at pinakamahabang buto sa katawan."
+      ],
+      "distinct": 3,
+      "words": [
+        13,
+        13,
+        13,
+        14,
+        13
+      ],
+      "rawWords": [
+        13,
+        13,
+        13,
+        14,
+        13
+      ],
+      "fails": []
+    },
+    {
+      "id": "tier2-myth-reading-dark",
+      "tier": "myth-safety",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6319630198186204,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "reading-dark-not-blind-g5",
+        "sundial-cloud-shadow-fuzzy-g5"
+      ],
+      "cards": [
+        "Hindi nito permanenteng sinisira ang paningin. Nakakapagod at nakakapagsakit ng mata, pero kailangan lang ng sapat na ilaw at pahinga.",
+        "Hindi nito permanenteng sinisira ang paningin. Nakakapagod at nakakapagsakit ng mata ang pagbasa sa madilim, pero kailangan lang ng sapat na ilaw at pahinga.",
+        "Hindi nito permanenteng sinisira ang paningin. Nakakapagod at nakakapagsakit ng mata, pero kailangan lang ng sapat na ilaw at pahinga.",
+        "Hindi nito permanenteng sinisira ang paningin. Nakakapagod at nakakapagsakit ng mata, pero kailangan lang ng sapat na ilaw at pahinga.",
+        "Hindi nito permanenteng sinisira ang paningin. Nakakapagod at nakakapagsakit ng mata ang pagbasa sa madilim."
+      ],
+      "distinct": 3,
+      "words": [
+        20,
+        24,
+        20,
+        20,
+        15
+      ],
+      "rawWords": [
+        20,
+        24,
+        20,
+        20,
+        15
+      ],
+      "fails": []
+    },
+    {
+      "id": "tier2-myth-brain-10pct",
+      "tier": "myth-safety",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6947273961442244,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "faq-why-we-sleep",
+        "fwg-brain-usage-2068",
+        "why-two-ears-g4",
+        "brain-uses-much-energy-g7"
+      ],
+      "cards": [
+        "Hindi totoo. Ginagamit natin ang halos lahat ng parte ng utak, kaya aktibo ito sa buong araw.",
+        "Hindi totoo. Gumagamit ang utak ng halos ikalimang bahagi ng enerhiya ng buong katawan, kaya aktibo ito sa buong araw.",
+        "Hindi totoo. Ginagamit natin ang halos lahat ng parte ng utak, kaya aktibo ito sa buong araw.",
+        "Hindi totoo. Ginagamit natin ang halos lahat ng parte ng utak, kahit natutulog tayo.",
+        "Hindi totoo. Ginagamit natin ang halos lahat ng parte ng utak, kaya aktibo ito sa buong araw."
+      ],
+      "distinct": 3,
+      "words": [
+        17,
+        20,
+        17,
+        14,
+        17
+      ],
+      "rawWords": [
+        17,
+        20,
+        17,
+        14,
+        17
+      ],
+      "fails": []
+    },
+    {
+      "id": "tier2-affirm-flat-earth",
+      "tier": "myth-safety",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.5760928117903866,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "earth-not-flat-myth-g5",
+        "earth-shape-oblate-spheroid-g7"
+      ],
+      "cards": [
+        "Hindi totoo. Bilog ang mundo, halos parang bola, bahagyang mas malapad sa ekwador at bahagyang patag sa magkabilang dulo.",
+        "Hindi totoo. Bilog ang mundo, halos parang bola: bahagyang mas malapad ito sa ekwador at bahagyang patag sa magkabilang dulo.",
+        "Hindi totoo. Bilog ang mundo, halos parang bola: bahagyang mas malapad ito sa ekwador at bahagyang patag sa magkabilang dulo.",
+        "Hindi totoo. Bilog ang mundo, halos parang bola: bahagyang mas malapad ito sa ekwador at bahagyang patag sa magkabilang dulo.",
+        "Hindi totoo. Bilog ang mundo, halos parang bola, na bahagyang mas malapad sa ekwador at bahagyang patag sa magkabilang dulo."
+      ],
+      "distinct": 3,
+      "words": [
+        19,
+        20,
+        20,
+        20,
+        20
+      ],
+      "rawWords": [
+        19,
+        20,
+        20,
+        20,
+        20
+      ],
+      "fails": []
+    },
+    {
+      "id": "tier2-safety-smoking",
+      "tier": "myth-safety",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.5740732780163745,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "healthy-lungs-vs-smoke-g6",
+        "slouching-bad-posture-g4",
+        "bacteria-make-yogurt-g5",
+        "leech-medicine-can-it-make-sick-g6"
+      ],
+      "cards": [
+        "Ang usok ng sigarilyo ay nakakasira ng malusog na baga at nagpapahina ng paghinga.",
+        "Oo, masama ang paninigarilyo. Nakakasira ito ng malusog na baga at nagpapahina ng paghinga.",
+        "Ang usok ng sigarilyo ay nakakasira ng malusog na baga at nagpapahina ng paghinga.",
+        "Ang usok ng sigarilyo ay nakakasira ng malusog na baga at nagpapahina ng paghinga.",
+        "Ang usok ng sigarilyo ay nakakasira ng malusog na baga at nagpapahina ng paghinga."
+      ],
+      "distinct": 2,
+      "words": [
+        14,
+        14,
+        14,
+        14,
+        14
+      ],
+      "rawWords": [
+        14,
+        14,
+        14,
+        14,
+        14
+      ],
+      "fails": []
+    },
+    {
+      "id": "tier2-chitchat-routes-modelfree",
+      "tier": "routing",
+      "lang": "tagalog",
+      "outcome": "gap",
+      "expectOutcome": "gap",
+      "topCos": 0.4670957356965598,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [],
+      "cards": [],
+      "distinct": 0,
+      "words": [],
+      "rawWords": [],
+      "fails": []
+    },
+    {
+      "id": "thin-nba-finals",
+      "tier": "thin-grounding",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6302082427494848,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "shark-electroreception-hunting-g7",
+        "vine-morning-glory-twines-g5",
+        "ph-supreme-court-highest-court-g7",
+        "soap-tail-in-head-out-g7"
+      ],
+      "cards": [
+        "Sa huling sandali ng pag-atake ng pating, maaari itong igulong ang mga mata pababa para proteksyon.",
+        "Sa huling sandali ng pag-atake ng pating, maaari itong igulong ang mga mata pababa para proteksyon.",
+        "Sa huling sandali ng pag-atake ng pating, maaari itong igulong ang mga mata pababa para proteksyon.",
+        "Sa huling sandali ng pag-atake ng pating, maaari itong igulong ang mga mata pababa para proteksyon.",
+        "Sa huling sandali ng pag-atake ng pating, maaari itong igulong ang mga mata pababa para proteksyon."
+      ],
+      "distinct": 1,
+      "words": [
+        16,
+        16,
+        16,
+        16,
+        16
+      ],
+      "rawWords": [
+        16,
+        16,
+        16,
+        16,
+        16
+      ],
+      "fails": []
+    },
+    {
+      "id": "thin-nba-finals-ceb",
+      "tier": "thin-grounding",
+      "lang": "cebuano",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6345916977203361,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "shark-electroreception-hunting-g7",
+        "lymph-nodes-slow-flow-filter-mechanism-g9",
+        "ph-supreme-court-highest-court-g7",
+        "millipede-defense-curl-g4"
+      ],
+      "cards": [
+        "Ang kinatas-ang hukuman sa Pilipinas mao ang Korte Suprema (Supreme Court).",
+        "Ang kinatas-ang hukuman sa Pilipinas mao ang Korte Suprema (Supreme Court).",
+        "Ang kinatas-ang hukuman sa Pilipinas mao ang Korte Suprema (Supreme Court).",
+        "Ang kinatas-ang hukuman sa Pilipinas mao ang Korte Suprema.",
+        "Ang kinatas-ang hukuman sa Pilipinas mao ang Korte Suprema (Supreme Court)."
+      ],
+      "distinct": 2,
+      "words": [
+        11,
+        11,
+        11,
+        9,
+        11
+      ],
+      "rawWords": [
+        11,
+        11,
+        11,
+        9,
+        11
+      ],
+      "fails": []
+    },
+    {
+      "id": "abstain-biggest-star",
+      "tier": "thin-grounding",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6538403558554239,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "universe-most-abundant-hydrogen-g7",
+        "sun-nearest-star-g5",
+        "universe-mostly-empty-space-g7",
+        "brightest-star-sirius-g5"
+      ],
+      "cards": [
+        "Ang sansinukob ay halos puro puwang lamang dahil napakalayo ng mga bituin at galaxy sa isa't isa.",
+        "Ang sansinukob ay halos puro puwang lamang dahil napakalayo ng mga bituin at galaxy sa isa't isa.",
+        "Ang sansinukob ay halos puro puwang lamang dahil napakalayo ng mga bituin at galaxy sa isa't isa.",
+        "Ang sansinukob ay halos puro puwang lamang dahil napakalayo ng mga bituin at galaxy sa isa't isa.",
+        "Ang sansinukob ay halos puro puwang lamang dahil napakalayo ng mga bituin at galaxy sa isa't isa."
+      ],
+      "distinct": 1,
+      "words": [
+        17,
+        17,
+        17,
+        17,
+        17
+      ],
+      "rawWords": [
+        17,
+        17,
+        17,
+        17,
+        17
+      ],
+      "fails": []
+    },
+    {
+      "id": "typed-term-venus",
+      "tier": "typed-term",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6659574350410188,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "venus-flytrap-snaps-shut-g5",
+        "why-venus-hottest-g6",
+        "venus-zero-moons-g6",
+        "venus-planet-g5"
+      ],
+      "cards": [
+        "Ang Venus ay pinakamainit na planeta dahil ang makapal na carbon dioxide ay humuhuli ng init sa greenhouse effect.",
+        "Ang Venus ay pinakamainit na planeta dahil sa makapal na carbon dioxide na humuhuli ng init.",
+        "Ang Venus ay pinakamainit na planeta dahil sa makapal na hanging carbon dioxide na humuhuli ng init.",
+        "Ang Venus ay pinakamainit na planeta dahil ang makapal na carbon dioxide ay humuhuli ng init sa greenhouse effect.",
+        "Ang Venus ay pinakamainit na planeta dahil sa makapal na hanging carbon dioxide na humuhuli ng init."
+      ],
+      "distinct": 3,
+      "words": [
+        19,
+        16,
+        17,
+        19,
+        17
+      ],
+      "rawWords": [
+        19,
+        16,
+        17,
+        19,
+        17
+      ],
+      "fails": []
+    },
+    {
+      "id": "typed-term-dinosaur",
+      "tier": "typed-term",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.7667465903143854,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "living-dinosaurs-g4",
+        "dinosaur-word-meaning-terrible-lizard-g4",
+        "living-dinosaur-extinction-g5",
+        "dinosaur-meaning-terrible-lizard-g5"
+      ],
+      "cards": [
+        "Ang dinosaur ay sinaunang reptilya na namuhay sa Earth 230 hanggang 66 milyong taon na ang nakalipas.",
+        "Ang dinosaur ay sinaunang reptilya, hindi mammals. Iba-iba ang laki nila, mula sa maliit hanggang sa napakalaki.",
+        "Ang dinosaur ay sinaunang reptilya na namuhay sa Earth 230 hanggang 66 milyong taon na ang nakalipas.",
+        "Ang mga dinosaur ay sinaunang reptilya na hindi mammals. Iba-iba ang laki nila, mula sa maliit hanggang sa napakalaki.",
+        "Ang dinosaur ay sinaunang reptilya na naglaho 66 milyong taon na ang nakalipas. Iba-iba ang laki nila, mula sa maliit hanggang sa napakalaki."
+      ],
+      "distinct": 4,
+      "words": [
+        17,
+        17,
+        17,
+        19,
+        23
+      ],
+      "rawWords": [
+        17,
+        17,
+        17,
+        19,
+        23
+      ],
+      "fails": []
+    },
+    {
+      "id": "ceb-photosynthesis",
+      "tier": "cebuano",
+      "lang": "cebuano",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6672458477116135,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "living-photosynthesis-g5",
+        "plants-release-oxygen-g5",
+        "living-photosynthesis-respiration-pair-g7",
+        "transpiration-not-same-as-photosynthesis-g8"
+      ],
+      "cards": [
+        "Ang photosynthesis mao ang paghimo sa tanom og pagkaon ug oxygen gikan sa carbon dioxide ug tubig gamit ang kahayag sa adlaw.",
+        "Ang photosynthesis mao ang paghimo og pagkaon ug oxygen gikan sa carbon dioxide ug tubig, ug pagbuga og oksiheno.",
+        "Ang photosynthesis mao ang paghimo sa tanom og pagkaon ug oxygen gikan sa carbon dioxide ug tubig gamit ang kahayag sa adlaw.",
+        "Ang photosynthesis mao ang paghimo sa tanom og pagkaon ug oxygen gikan sa carbon dioxide ug tubig, ug pagbuga og oksiheno.",
+        "Ang photosynthesis mao ang paghimo sa tanom og pagkaon nga sugar ug pagbuga og oxygen gikan sa carbon dioxide ug tubig."
+      ],
+      "distinct": 4,
+      "words": [
+        22,
+        19,
+        22,
+        21,
+        21
+      ],
+      "rawWords": [
+        22,
+        19,
+        22,
+        21,
+        21
+      ],
+      "fails": []
+    },
+    {
+      "id": "ceb-skyblue",
+      "tier": "cebuano",
+      "lang": "cebuano",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.7361069740287836,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "faq-blue-sky",
+        "sunset-red-blue-scattered-g6",
+        "why-sky-blue-g6",
+        "violet-light-eyes-g7"
+      ],
+      "cards": [
+        "Asul ang langit kay gikatag sa hangin ang kahayag sa adlaw, ug mas daghan ang asul nga kolor nga mokatag kaysa ubang kolor.",
+        "Asul ang langit kay gikatag ang kahayag sa adlaw sa gagmay nga partikulo sa hangin, ug mas dali mokatag ang asul kaysa ubang kolor.",
+        "Asul ang langit kay gikatag sa hangin ang kahayag sa adlaw, ug mas daghan niini nga gikatag ang asul nga kolor kaysa ubang kolor.",
+        "Asul ang langit kay gikatag sa hangin ang kahayag sa adlaw, ug mas daghan ang asul nga kolor kaysa uban.",
+        "Asul ang langit kay gikatag sa hangin ang kahayag sa adlaw, ug mas daghan ang asul nga kolor kaysa ubang kolor."
+      ],
+      "distinct": 5,
+      "words": [
+        23,
+        24,
+        24,
+        20,
+        21
+      ],
+      "rawWords": [
+        23,
+        24,
+        24,
+        20,
+        21
+      ],
+      "fails": []
+    },
+    {
+      "id": "ceb-butanding",
+      "tier": "cebuano",
+      "lang": "cebuano",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6058003165712941,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "butanding-whale-shark-largest-fish-g5",
+        "guano-bat-droppings-definition-g5",
+        "whale-shark-is-fish-not-whale-g6",
+        "yawn-brings-air-g3"
+      ],
+      "cards": [
+        "Ang butanding mao ang pinakadako nga isda sa kalibotan, apan usa kini ka maaghop nga hayop nga adunay nindot nga puti nga puntik sa likod.",
+        "Ang butanding mao ang pinakadako nga isda sa kalibotan, apan usa kini ka maaghop nga hayop nga adunay nindot nga puti nga puntik sa likod.",
+        "Ang butanding mao ang pinakadako nga isda sa kalibotan, apan usa kini ka maaghop nga hayop nga adunay nindot nga puti nga puntik sa likod.",
+        "Ang butanding mao ang pinakadako nga isda sa kalibotan, apan usa kini ka maaghop nga hayop nga adunay nindot nga puti nga puntik sa likod.",
+        "Ang butanding mao ang pinakadako nga isda sa kalibotan, apan usa kini ka maaghop nga hayop nga adunay nindot nga puti nga puntik sa likod."
+      ],
+      "distinct": 1,
+      "words": [
+        25,
+        25,
+        25,
+        25,
+        25
+      ],
+      "rawWords": [
+        25,
+        25,
+        25,
+        25,
+        25
+      ],
+      "fails": []
+    },
+    {
+      "id": "ceb-heart",
+      "tier": "cebuano",
+      "lang": "cebuano",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6008029643213577,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "jogging-exercise-health-g4",
+        "torso-organs-g6",
+        "heart-blood-loop-body-g6",
+        "human-body-largest-organ-skin-g5"
+      ],
+      "cards": [
+        "Ang kasingkasing usa ka kaunoran nga magbomba sa dugo libot sa tibuok lawas aron magdala og oxygen ug pagkaon.",
+        "Ang kasingkasing usa ka kaunoran nga magbomba sa dugo libot sa tibuok lawas pinaagi sa mga ugat.",
+        "Ang kasingkasing usa ka kaunoran nga magbomba sa dugo libot sa tibuok lawas pinaagi sa mga ugat, nga magdala og oxygen ug pagkaon.",
+        "Ang kasingkasing usa ka kaunoran nga magbomba sa dugo libot sa tibuok lawas pinaagi sa mga ugat, nga magdala og oxygen ug pagkaon.",
+        "Ang kasingkasing usa ka kaunoran nga magbomba sa dugo libot sa tibuok lawas pinaagi sa mga ugat."
+      ],
+      "distinct": 3,
+      "words": [
+        19,
+        17,
+        23,
+        23,
+        17
+      ],
+      "rawWords": [
+        19,
+        17,
+        23,
+        23,
+        17
+      ],
+      "fails": []
+    },
+    {
+      "id": "ceb-volcano",
+      "tier": "cebuano",
+      "lang": "cebuano",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6818301211104286,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "faq-why-volcano-erupts",
+        "bamboo-raft-floating-g5",
+        "tsunami-volcano-landslide-cause-g7",
+        "faq-why-it-rains"
+      ],
+      "cards": [
+        "Mobuto ang bulkan kung ang init nga magma ug gas sa ilalom sa yuta magtigom og presyur ug mobuga pagawas agi sa baba sa crust.",
+        "Mobuto ang bulkan kung ang init nga magma ug gas sa ilalom sa yuta magtigom og presyur ug mobuga pagawas agi sa baba sa crust.",
+        "Mobuto ang bulkan kung ang init nga magma ug gas sa ilalom sa yuta magtigom og presyur ug mobuga pagawas agi sa baba sa crust.",
+        "Mobuto ang bulkan kung ang init nga natunaw nga bato ug gas magtigom og presyur ug mobuga pagawas agi sa baba sa crust sa Earth.",
+        "Mobuto ang bulkan kung ang init nga magma ug gas magtigom og presyur ug mobuga pagawas agi sa baba sa crust sa Earth."
+      ],
+      "distinct": 3,
+      "words": [
+        25,
+        25,
+        25,
+        25,
+        23
+      ],
+      "rawWords": [
+        25,
+        25,
+        25,
+        25,
+        23
+      ],
+      "fails": []
+    },
+    {
+      "id": "ceb-water-cycle",
+      "tier": "cebuano",
+      "lang": "cebuano",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6374227857958195,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "water-cycle-g4",
+        "steam-vapor-gas-state-g5",
+        "ocean-water-cycle-g5",
+        "flood-water-covers-dry-land-g4"
+      ],
+      "cards": [
+        "Ang siklo sa tubig mao ang pag-alisngaw, pagbugnaw, ug pagkahulog balik sa ulan gikan sa dagat.",
+        "Ang siklo sa tubig mao ang pag-alisngaw sa tubig gikan sa dagat, paghimo og panganod, ug pagkahulog isip ulan nga mobalik og agos ngadto sa dagat.",
+        "Ang siklo sa tubig mao ang pagalisngaw sa dagat, paghimo og panganod, ug pagkahulog isip ulan nga mobalik og agos ngadto sa dagat.",
+        "Ang siklo sa tubig mao ang pag-alisngaw sa tubig gikan sa dagat, paghimo og panganod, ug pagkahulog isip ulan nga mobalik og agos ngadto sa dagat.",
+        "Ang siklo sa tubig mao ang pag-alisngaw sa tubig gikan sa dagat, pagbugnaw aron mahimong panganod, ug pagkahulog isip ulan."
+      ],
+      "distinct": 4,
+      "words": [
+        16,
+        26,
+        23,
+        26,
+        20
+      ],
+      "rawWords": [
+        16,
+        26,
+        23,
+        26,
+        20
+      ],
+      "fails": []
+    },
+    {
+      "id": "en-photosynthesis",
+      "tier": "english",
+      "lang": "english",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6750742263077947,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "living-photosynthesis-g5",
+        "transpiration-not-same-as-photosynthesis-g8",
+        "living-photosynthesis-respiration-pair-g7",
+        "bioluminescence-name-g5"
+      ],
+      "cards": [
+        "Photosynthesis is how plants use sunlight, water, and carbon dioxide to make their own food and release oxygen.",
+        "Photosynthesis is how plants use sunlight, water, and carbon dioxide to make their own food called glucose.",
+        "Photosynthesis is how plants use sunlight, water, and carbon dioxide to make their own food and release oxygen.",
+        "In photosynthesis, plants use sunlight, water, and carbon dioxide to make their own food called glucose.",
+        "Photosynthesis is how plants use sunlight, water, and carbon dioxide to make food and release oxygen."
+      ],
+      "distinct": 4,
+      "words": [
+        18,
+        17,
+        18,
+        16,
+        16
+      ],
+      "rawWords": [
+        18,
+        17,
+        18,
+        16,
+        16
+      ],
+      "fails": []
+    },
+    {
+      "id": "en-water-cycle",
+      "tier": "english",
+      "lang": "english",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6588754246702191,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "earth-water-cycle-g4",
+        "water-clock-clepsydra-g6",
+        "water-cycle-g4",
+        "nitrogen-cycle-definition-g8"
+      ],
+      "cards": [
+        "In the water cycle, water evaporates from seas and land, cools to form clouds, and falls as rain to return to seas and land.",
+        "The water cycle shows how water evaporates from the sea, cools to form clouds, and falls as rain to return to the ground.",
+        "The water cycle shows how water evaporates from the sea, cools to form clouds, and falls as rain to return to the ground.",
+        "In the water cycle, water evaporates from seas and land, cools to form clouds, and falls as rain.",
+        "In the water cycle, water evaporates from seas and land, cools to form clouds, and falls as rain."
+      ],
+      "distinct": 3,
+      "words": [
+        24,
+        23,
+        23,
+        18,
+        18
+      ],
+      "rawWords": [
+        24,
+        23,
+        23,
+        18,
+        18
+      ],
+      "fails": []
+    },
+    {
+      "id": "en-volcano",
+      "tier": "english",
+      "lang": "english",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6923385980641804,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "shield-volcano-eruption-style-g8",
+        "faq-why-volcano-erupts",
+        "stratovolcano-eruption-style-g8",
+        "volcano-eruption-pressure-g6"
+      ],
+      "cards": [
+        "Volcanoes erupt because pressure from magma and gas builds up and bursts out through an opening in the Earth's crust.",
+        "Volcanoes erupt because magma and trapped gases build pressure and burst out through an opening in the Earth's crust.",
+        "Volcanoes erupt because magma and gases build pressure deep underground and burst out through an opening in the Earth's crust.",
+        "Volcanoes erupt because pressure from magma and gases builds up and bursts out through an opening in the Earth's crust.",
+        "Volcanoes erupt because pressure from magma and gas builds up and bursts out through an opening in the Earth's crust."
+      ],
+      "distinct": 4,
+      "words": [
+        20,
+        19,
+        20,
+        20,
+        20
+      ],
+      "rawWords": [
+        20,
+        19,
+        20,
+        20,
+        20
+      ],
+      "fails": []
+    },
+    {
+      "id": "route-offdomain-roblox",
+      "tier": "routing",
+      "lang": "tagalog",
+      "outcome": "offdomain",
+      "expectOutcome": "offdomain",
+      "topCos": 0.5841784778535588,
+      "lexEmpty": true,
+      "unreachable": true,
+      "retrieved": [
+        "fwg2-loboc-mangrove-roots-5555",
+        "vine-morning-glory-twines-g5",
+        "fruit-bat-roosts-hanging-upside-down-g4",
+        "barnacle-glues-misconception-suction-g6"
+      ],
+      "cards": [],
+      "distinct": 0,
+      "words": [],
+      "rawWords": [],
+      "fails": []
+    },
+    {
+      "id": "route-offdomain-blackpink",
+      "tier": "routing",
+      "lang": "english",
+      "outcome": "offdomain",
+      "expectOutcome": "offdomain",
+      "topCos": 0.5421430885368226,
+      "lexEmpty": true,
+      "unreachable": true,
+      "retrieved": [
+        "pilandok-chestnut-fur-g4",
+        "giant-panda-black-white-fur-g4",
+        "maya-black-cheek-spot-g4",
+        "blue-naped-parrot-pikoy-g4"
+      ],
+      "cards": [],
+      "distinct": 0,
+      "words": [],
+      "rawWords": [],
+      "fails": []
+    },
+    {
+      "id": "route-offdomain-gibberish",
+      "tier": "routing",
+      "lang": "cebuano",
+      "outcome": "offdomain",
+      "expectOutcome": "offdomain",
+      "topCos": 0.4385456541416801,
+      "lexEmpty": true,
+      "unreachable": true,
+      "retrieved": [],
+      "cards": [],
+      "distinct": 0,
+      "words": [],
+      "rawWords": [],
+      "fails": []
+    },
+    {
+      "id": "route-offdomain-love",
+      "tier": "routing",
+      "lang": "tagalog",
+      "outcome": "offdomain",
+      "expectOutcome": "offdomain",
+      "topCos": 0.3693320538714105,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [],
+      "cards": [],
+      "distinct": 0,
+      "words": [],
+      "rawWords": [],
+      "fails": []
+    },
+    {
+      "id": "route-gap-batirya",
+      "tier": "routing",
+      "lang": "tagalog",
+      "outcome": "gap",
+      "expectOutcome": "gap",
+      "topCos": 0.5608689000199395,
+      "lexEmpty": true,
+      "unreachable": false,
+      "retrieved": [
+        "petra-builders-g7",
+        "vitamin-b1-beriberi-g6",
+        "brahminy-kite-call-sound-g7",
+        "antibiotics-finish-full-course-g7"
+      ],
+      "cards": [],
+      "distinct": 0,
+      "words": [],
+      "rawWords": [],
+      "fails": []
+    },
+    {
+      "id": "route-gap-pterodactyl",
+      "tier": "routing",
+      "lang": "tagalog",
+      "outcome": "gap",
+      "expectOutcome": "gap",
+      "topCos": 0.6441723842161039,
+      "lexEmpty": true,
+      "unreachable": true,
+      "retrieved": [
+        "pufferfish-tetrodotoxin-name-g6",
+        "pufferfish-poison-name-g4",
+        "katydid-sing-wings-g4",
+        "pufferfish-poison-puffer-immune-g5"
+      ],
+      "cards": [],
+      "distinct": 0,
+      "words": [],
+      "rawWords": [],
+      "fails": []
+    },
+    {
+      "id": "route-gap-amiba",
+      "tier": "routing",
+      "lang": "cebuano",
+      "outcome": "gap",
+      "expectOutcome": "gap",
+      "topCos": 0.523359807132456,
+      "lexEmpty": true,
+      "unreachable": false,
+      "retrieved": [],
+      "cards": [],
+      "distinct": 0,
+      "words": [],
+      "rawWords": [],
+      "fails": []
+    },
+    {
+      "id": "route-gap-photosinthesis",
+      "tier": "routing",
+      "lang": "english",
+      "outcome": "gap",
+      "expectOutcome": "gap",
+      "topCos": 0.5977633548774731,
+      "lexEmpty": true,
+      "unreachable": false,
+      "retrieved": [
+        "lichen-alga-makes-food-g6",
+        "fwg2-chemical-changes-2654",
+        "tonsils-can-be-removed-g6",
+        "why-not-only-pretty-pictures-g6"
+      ],
+      "cards": [],
+      "distinct": 0,
+      "words": [],
+      "rawWords": [],
+      "fails": []
+    },
+    {
+      "id": "abstain-biggest-star-routing",
+      "tier": "routing",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6538403558554239,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "universe-most-abundant-hydrogen-g7",
+        "sun-nearest-star-g5",
+        "universe-mostly-empty-space-g7",
+        "brightest-star-sirius-g5"
+      ],
+      "cards": [],
+      "distinct": 0,
+      "words": [],
+      "rawWords": [],
+      "fails": []
+    },
+    {
+      "id": "grade-register-photosynthesis",
+      "tier": "grade-register",
+      "lang": "tagalog",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6696029169629547,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "photosynthesis-makes-oxygen-g4",
+        "living-photosynthesis-g5",
+        "plants-release-oxygen-g5",
+        "living-photosynthesis-respiration-pair-g7"
+      ],
+      "cards": [
+        "Sa photosynthesis, ginagamit ng halaman ang liwanag, tubig, at carbon dioxide para gumawa ng pagkain at naglalabas ng oxygen.",
+        "Sa photosynthesis, ginagamit ng halaman ang liwanag, tubig, at carbon dioxide para gumawa ng pagkain at oksiheno.",
+        "Sa photosynthesis, ginagamit ng halaman ang liwanag, tubig, at carbon dioxide para gumawa ng pagkain at naglalabas ng oksiheno.",
+        "Sa photosynthesis, ginagamit ng halaman ang liwanag, tubig, at carbon dioxide para gumawa ng pagkain at naglalabas ng oksiheno.",
+        "Sa photosynthesis, ginagamit ng halaman ang liwanag, tubig, at carbon dioxide para gumawa ng pagkain at naglalabas ng oksiheno.",
+        "Sa photosynthesis, ginagamit ng halaman ang liwanag, tubig, at carbon dioxide para gumawa ng sugar at naglalabas ng oxygen.",
+        "Ang photosynthesis ay proseso kung saan ginagamit ng halaman ang liwanag, tubig, at carbon dioxide para gumawa ng pagkain at oksiheno.",
+        "Ang photosynthesis ay proseso kung saan ginagamit ng halaman ang liwanag, tubig, at carbon dioxide para gumawa ng pagkain at oksiheno.",
+        "Ang photosynthesis ay proseso kung saan ang halaman ay gumagamit ng liwanag, tubig, at carbon dioxide para gumawa ng pagkain at oksiheno.",
+        "Ang photosynthesis ay proseso kung saan ang halaman ay gumagamit ng liwanag, tubig, at carbon dioxide para gumawa ng pagkain at naglalabas ng oksiheno."
+      ],
+      "distinct": 7,
+      "words": [
+        19,
+        17,
+        19,
+        19,
+        19,
+        19,
+        21,
+        21,
+        22,
+        24
+      ],
+      "rawWords": [
+        19,
+        17,
+        19,
+        19,
+        19,
+        19,
+        21,
+        21,
+        22,
+        24
+      ],
+      "fails": []
+    },
+    {
+      "id": "grade-register-water-cycle-en",
+      "tier": "grade-register",
+      "lang": "english",
+      "outcome": "grounded",
+      "expectOutcome": "grounded",
+      "topCos": 0.6588754246702191,
+      "lexEmpty": false,
+      "unreachable": false,
+      "retrieved": [
+        "earth-water-cycle-g4",
+        "water-clock-clepsydra-g6",
+        "water-cycle-g4",
+        "nitrogen-cycle-definition-g8"
+      ],
+      "cards": [
+        "In the water cycle, water evaporates from seas and land, cools to form clouds, and falls as rain to return to the ground.",
+        "In the water cycle, water evaporates from seas and land, cools to form clouds, and falls as rain.",
+        "In the water cycle, water evaporates from the sea, cools to form clouds, and falls back to the ground as rain.",
+        "In the water cycle, water evaporates from the sea, cools to form clouds, and falls back to the ground as rain.",
+        "In the water cycle, water evaporates from seas and land, cools to form clouds, and falls as rain.",
+        "The water cycle involves evaporation, condensation, and precipitation, where water evaporates from the sea, cools to form clouds, and falls as rain.",
+        "In the water cycle, water evaporates from seas and land, cools to form clouds, and falls as rain.",
+        "In the water cycle, water evaporates from seas and land, cools to form clouds, and falls as rain.",
+        "In the water cycle, the sun's heat evaporates water from seas and land. The vapor rises, cools, and forms clouds.",
+        "The water cycle involves evaporation, condensation, and precipitation, where water evaporates from seas and land, cools to form clouds, and falls as rain."
+      ],
+      "distinct": 6,
+      "words": [
+        23,
+        18,
+        21,
+        21,
+        18,
+        22,
+        18,
+        18,
+        20,
+        23
+      ],
+      "rawWords": [
+        23,
+        18,
+        21,
+        21,
+        18,
+        22,
+        18,
+        18,
+        34,
+        23
+      ],
+      "fails": []
+    }
+  ]
+}
