@@ -49,6 +49,11 @@ Windows remains an unsigned x64 preview with a [checksum sidecar](https://assets
   parser passed. The catalogue is revision 8, bounded to code 31, with all 61 image
   packs and image baseline `ca57f3d76e889f08`.
 
+The local website build completed without a lint error. The VPS build still
+reported the pre-existing typed-ESLint parser configuration error
+(`@typescript-eslint/await-thenable` needs parser type information); its successful
+production build is not a clean server lint result.
+
 The final vector dependency is `vectors-labse-45f9310c4179.i8.bin`, 122,162,688 bytes,
 MD5 `deee5b7a02d9d7503e961057fcfc6b10`, SHA-256
 `c866a5b22d2e99ddfb36c52fd6bf2357ae60ba8db4824292074a76b249d7528d`.

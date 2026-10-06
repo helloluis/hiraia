@@ -1,0 +1,1337 @@
+{
+  "checkedAt": "2026-10-06T00:24:06.146416+00:00",
+  "downloads": {
+    "android": {
+      "url": "https://assets.hiraia.org/models/hiraia-v0p4p31.apk",
+      "bytes": 284324878,
+      "headStatus": 200,
+      "rangeStatus": 206,
+      "magic": "504b0304"
+    },
+    "chromeos": {
+      "url": "https://assets.hiraia.org/models/hiraia-v0p4p31-chromeos.apk",
+      "bytes": 369128137,
+      "headStatus": 200,
+      "rangeStatus": 206,
+      "magic": "504b0304"
+    },
+    "windows": {
+      "url": "https://assets.hiraia.org/models/hiraia-windows-v0.4.31-preview.1-x64.zip",
+      "bytes": 571385947,
+      "headStatus": 200,
+      "rangeStatus": 206,
+      "magic": "504b0304"
+    }
+  },
+  "androidManifest": {
+    "schema": 1,
+    "platform": "android",
+    "app": {
+      "platform": "android",
+      "versionCode": 31,
+      "versionName": "0.4.31",
+      "bytes": 284324878,
+      "md5": "1efa8ee38c641e2248b6357502c446c0",
+      "sha256": "0439528bdb64d16525b8fef078c82c0c4aaf7353a9e3795e18ea49ca4b441e7f",
+      "runtime": "66dbd892c0d2e6a8781b6c6a277a86188b222dd6",
+      "signingCertSha256": "40d750d5576cb59c311c7ba713403e065b934967d7a7d1bc80652e1167a20c35",
+      "abis": [
+        "arm64-v8a"
+      ],
+      "url": "https://assets.hiraia.org/models/hiraia-v0p4p31.apk",
+      "minSupportedVersionCode": 1,
+      "publishedAt": "2026-10-06"
+    },
+    "content": null,
+    "models": null,
+    "assets": {
+      "format": 1,
+      "revision": 8,
+      "minAppVersionCode": 31,
+      "maxAppVersionCode": 31,
+      "imageBaseline": "ca57f3d76e889f08",
+      "models": [],
+      "imagePacks": [
+        {
+          "id": "common-01",
+          "cell": "common",
+          "filename": "common-01-a408945a76377963d079cc0c3e1a928f.hpak",
+          "bytes": 10902226,
+          "unpackedBytes": 10851916,
+          "md5": "a408945a76377963d079cc0c3e1a928f",
+          "sha256": "cc42ac24201438b94f5a027f5cf6a55164ed3dc27734899cb735c19a057fc691",
+          "images": 600
+        },
+        {
+          "id": "common-02",
+          "cell": "common",
+          "filename": "common-02-2529db11906976dfd39d0f16716dab50.hpak",
+          "bytes": 11028733,
+          "unpackedBytes": 10981932,
+          "md5": "2529db11906976dfd39d0f16716dab50",
+          "sha256": "de3bdea63e902e94516cba75973d437889108b049605581ad90040bf191de601",
+          "images": 600
+        },
+        {
+          "id": "common-03",
+          "cell": "common",
+          "filename": "common-03-f07b425e0ad9e010aa95d2f19b0d7fa0.hpak",
+          "bytes": 10994056,
+          "unpackedBytes": 10947272,
+          "md5": "f07b425e0ad9e010aa95d2f19b0d7fa0",
+          "sha256": "5345b3e6927f9965b684af43c843579e633ef0bb0f2a73649669e40c635afb5a",
+          "images": 600
+        },
+        {
+          "id": "common-04",
+          "cell": "common",
+          "filename": "common-04-2e511b90b468bb51934e1477da2a3063.hpak",
+          "bytes": 11035877,
+          "unpackedBytes": 10989082,
+          "md5": "2e511b90b468bb51934e1477da2a3063",
+          "sha256": "a9523ccd3bc314d71d9c26d1b5b018b09d40d741a5dd6d044806da4f6873a091",
+          "images": 600
+        },
+        {
+          "id": "common-05",
+          "cell": "common",
+          "filename": "common-05-a9201fb140c1ca48f2358de65c747f44.hpak",
+          "bytes": 10932866,
+          "unpackedBytes": 10886075,
+          "md5": "a9201fb140c1ca48f2358de65c747f44",
+          "sha256": "7457496a75052a736b87781aa62210333005945312ac3e50cde5cff874461e94",
+          "images": 600
+        },
+        {
+          "id": "common-06",
+          "cell": "common",
+          "filename": "common-06-57d6fd725e16ebcb23a2411cc6db52ff.hpak",
+          "bytes": 10853122,
+          "unpackedBytes": 10806332,
+          "md5": "57d6fd725e16ebcb23a2411cc6db52ff",
+          "sha256": "dd0624524ce83ee10d1b8b4701e9bb4a183dbee7fddfca09d711c9180ca69932",
+          "images": 600
+        },
+        {
+          "id": "common-07",
+          "cell": "common",
+          "filename": "common-07-0e0a8611265505dc295482778ddffed1.hpak",
+          "bytes": 11632069,
+          "unpackedBytes": 11585269,
+          "md5": "0e0a8611265505dc295482778ddffed1",
+          "sha256": "be7f74c9a1eb2f389cc4f76e82bbc7a1862b65f71b84fc5657241391122b58fb",
+          "images": 600
+        },
+        {
+          "id": "common-08",
+          "cell": "common",
+          "filename": "common-08-f85edb5c6df04a2ac6da95db8e66558f.hpak",
+          "bytes": 10792779,
+          "unpackedBytes": 10745999,
+          "md5": "f85edb5c6df04a2ac6da95db8e66558f",
+          "sha256": "c888e7a0f9a1217e9f9e13bc7d4b54e4ddcec5100fa70cd6f2f89e576b641ac0",
+          "images": 600
+        },
+        {
+          "id": "common-09",
+          "cell": "common",
+          "filename": "common-09-8eaf14cefde4797dc211de3553392252.hpak",
+          "bytes": 10824035,
+          "unpackedBytes": 10776495,
+          "md5": "8eaf14cefde4797dc211de3553392252",
+          "sha256": "224ea2491eeeb758343ddd95af01f04b5095d2ae5a0006451df469620855bdc2",
+          "images": 600
+        },
+        {
+          "id": "common-10",
+          "cell": "common",
+          "filename": "common-10-7e092cb5ae4143280d4380b6060b6b36.hpak",
+          "bytes": 10413617,
+          "unpackedBytes": 10367434,
+          "md5": "7e092cb5ae4143280d4380b6060b6b36",
+          "sha256": "7a8a96592e771d8be777e1f94911d2a68c64e600f64601aa44dc6f7ce27428bd",
+          "images": 600
+        },
+        {
+          "id": "common-11",
+          "cell": "common",
+          "filename": "common-11-263de4c47a45c1cffbc19f6e557da437.hpak",
+          "bytes": 10244774,
+          "unpackedBytes": 10198597,
+          "md5": "263de4c47a45c1cffbc19f6e557da437",
+          "sha256": "0a51f50b5bc0a8bfe88547a4abf1254b3cdf44d0dbb47bf372615a48db2a3580",
+          "images": 600
+        },
+        {
+          "id": "common-12",
+          "cell": "common",
+          "filename": "common-12-5cee8d601b09ea38f483c1b62e1a82b1.hpak",
+          "bytes": 10550373,
+          "unpackedBytes": 10504190,
+          "md5": "5cee8d601b09ea38f483c1b62e1a82b1",
+          "sha256": "1fa03e726e179471e6663cda487d4c710b6ba0b2357952a0f06dd22c3f5dc885",
+          "images": 600
+        },
+        {
+          "id": "common-13",
+          "cell": "common",
+          "filename": "common-13-c763c16fca4ea54fe6cd7ca9badf880b.hpak",
+          "bytes": 10112229,
+          "unpackedBytes": 10066040,
+          "md5": "c763c16fca4ea54fe6cd7ca9badf880b",
+          "sha256": "73aa87beecb3946180f01dee22b473c543519c6aa15046097b47041575a0c5f0",
+          "images": 600
+        },
+        {
+          "id": "common-14",
+          "cell": "common",
+          "filename": "common-14-024a76056fec68e1456ba921256e770e.hpak",
+          "bytes": 9938183,
+          "unpackedBytes": 9892010,
+          "md5": "024a76056fec68e1456ba921256e770e",
+          "sha256": "88623b1c34a09a7ef19a3da6332adae00471beeb8fd329ca7c842b6488a5f7f7",
+          "images": 600
+        },
+        {
+          "id": "common-15",
+          "cell": "common",
+          "filename": "common-15-e835f5b7b92d204d3ae71382431b80e1.hpak",
+          "bytes": 9335321,
+          "unpackedBytes": 9289151,
+          "md5": "e835f5b7b92d204d3ae71382431b80e1",
+          "sha256": "d4b10fedf95476c40a16b2e331e7914bc97b6d1fe1bbacb9d3d14c86aec3f97a",
+          "images": 600
+        },
+        {
+          "id": "common-16",
+          "cell": "common",
+          "filename": "common-16-e49a9dca0c7a9fa00dea89e2916406f4.hpak",
+          "bytes": 9890356,
+          "unpackedBytes": 9844191,
+          "md5": "e49a9dca0c7a9fa00dea89e2916406f4",
+          "sha256": "f561d005b2c259a8359c6f1fb5b6060a1ec6918c80a3357166be6a4b6f7fb19a",
+          "images": 600
+        },
+        {
+          "id": "common-17",
+          "cell": "common",
+          "filename": "common-17-c5762b2031f39c02e6fbecf69d40e3f2.hpak",
+          "bytes": 10986962,
+          "unpackedBytes": 10940757,
+          "md5": "c5762b2031f39c02e6fbecf69d40e3f2",
+          "sha256": "5a00bf0a0870a33d3e3f3e59a14fa783c4d451de89af39543ff8e05eb0aafe1c",
+          "images": 600
+        },
+        {
+          "id": "common-18",
+          "cell": "common",
+          "filename": "common-18-9f268f747e916ece54ad66041304a0ed.hpak",
+          "bytes": 11228233,
+          "unpackedBytes": 11182033,
+          "md5": "9f268f747e916ece54ad66041304a0ed",
+          "sha256": "b88632b16714c030472d8edd4993e6afba6eb9f162af4f7ad9a2292b1319f54e",
+          "images": 600
+        },
+        {
+          "id": "common-19",
+          "cell": "common",
+          "filename": "common-19-d3a4e2266e756365e004b82bf5321250.hpak",
+          "bytes": 11217374,
+          "unpackedBytes": 11169061,
+          "md5": "d3a4e2266e756365e004b82bf5321250",
+          "sha256": "b853a81f26081cbe3571cd2ebaf4d1f616935a5814c5afa3b55c8b64d3b6297d",
+          "images": 600
+        },
+        {
+          "id": "common-20",
+          "cell": "common",
+          "filename": "common-20-a48d0e8756e4aa3dc42bba95b817d90c.hpak",
+          "bytes": 11024557,
+          "unpackedBytes": 10973382,
+          "md5": "a48d0e8756e4aa3dc42bba95b817d90c",
+          "sha256": "b89b33e8d101364122c2eb3b3bd22cdbcc5f2b99d724d9020e530595ffa0e877",
+          "images": 600
+        },
+        {
+          "id": "common-21",
+          "cell": "common",
+          "filename": "common-21-ddba9db45c4b04e1c91c9a816836b71f.hpak",
+          "bytes": 11534494,
+          "unpackedBytes": 11485705,
+          "md5": "ddba9db45c4b04e1c91c9a816836b71f",
+          "sha256": "5f84df20b4cc96487139d86484a635b172e11815a49374a46f8137c4e8a1ee26",
+          "images": 600
+        },
+        {
+          "id": "common-22",
+          "cell": "common",
+          "filename": "common-22-ebb8b2b5a7ec70cb3b7c4a7f7bec2475.hpak",
+          "bytes": 10714418,
+          "unpackedBytes": 10664216,
+          "md5": "ebb8b2b5a7ec70cb3b7c4a7f7bec2475",
+          "sha256": "1fb0d2f12532eac799a96aad661f3fab58902538e43c300062cd0a96f5bd508b",
+          "images": 600
+        },
+        {
+          "id": "common-23",
+          "cell": "common",
+          "filename": "common-23-eb29128c7ef07d2bfcff93a688bcd306.hpak",
+          "bytes": 3032181,
+          "unpackedBytes": 3018099,
+          "md5": "eb29128c7ef07d2bfcff93a688bcd306",
+          "sha256": "7f333e38dc75f8bab37eec9c040df9c8d1f1f0c28d12beeb87e8928d7ed92687",
+          "images": 163
+        },
+        {
+          "id": "g10-all-01",
+          "cell": "g10-all",
+          "filename": "g10-all-01-8f0b0378aa91fe651bd48469177a1eb8.hpak",
+          "bytes": 7479625,
+          "unpackedBytes": 7446187,
+          "md5": "8f0b0378aa91fe651bd48469177a1eb8",
+          "sha256": "33cd9b939620f88a292591a9471416785c66653d13fb34e3dd40d1c03bb0bd93",
+          "images": 429
+        },
+        {
+          "id": "g3-all-01",
+          "cell": "g3-all",
+          "filename": "g3-all-01-ba6dd6efb103627efb27f602db293062.hpak",
+          "bytes": 9570417,
+          "unpackedBytes": 9529186,
+          "md5": "ba6dd6efb103627efb27f602db293062",
+          "sha256": "b1172d973dac7c956b13fe22bacf6bf95d4b37e078ac96fc87b9729d792f89e3",
+          "images": 531
+        },
+        {
+          "id": "g4-all-01",
+          "cell": "g4-all",
+          "filename": "g4-all-01-f9ff408c4ee50a11cc63a0743d73d638.hpak",
+          "bytes": 10444374,
+          "unpackedBytes": 10398090,
+          "md5": "f9ff408c4ee50a11cc63a0743d73d638",
+          "sha256": "602d21f75a54250d3d5fc632ef37007b6c2a3da2a4b04846bc45fe88659ea77b",
+          "images": 600
+        },
+        {
+          "id": "g4-all-02",
+          "cell": "g4-all",
+          "filename": "g4-all-02-4c940105b5b84c4feba707ab7f4cff17.hpak",
+          "bytes": 6402586,
+          "unpackedBytes": 6376158,
+          "md5": "4c940105b5b84c4feba707ab7f4cff17",
+          "sha256": "9b6607d071dcb4ef94ad623c815ac3198ce70fd83c224c0ae1c728bfb40802c3",
+          "images": 337
+        },
+        {
+          "id": "g5-all-01",
+          "cell": "g5-all",
+          "filename": "g5-all-01-195008286b2dd16119c88d4f5d27a9b3.hpak",
+          "bytes": 10622681,
+          "unpackedBytes": 10576362,
+          "md5": "195008286b2dd16119c88d4f5d27a9b3",
+          "sha256": "7c8076f821a534755e6aa8708b72e663624b048af0c8c18360b00988faaf0bb4",
+          "images": 600
+        },
+        {
+          "id": "g5-all-02",
+          "cell": "g5-all",
+          "filename": "g5-all-02-0f0022aa71c89d84531d349eaca6c003.hpak",
+          "bytes": 10374954,
+          "unpackedBytes": 10328736,
+          "md5": "0f0022aa71c89d84531d349eaca6c003",
+          "sha256": "4f4e96a430f0a9014d756a6097dcdace5f287bb2f642e1dcd774618820009d73",
+          "images": 600
+        },
+        {
+          "id": "g5-all-03",
+          "cell": "g5-all",
+          "filename": "g5-all-03-7fb16dc33e8c3bd6ac263c400103494b.hpak",
+          "bytes": 8547532,
+          "unpackedBytes": 8511202,
+          "md5": "7fb16dc33e8c3bd6ac263c400103494b",
+          "sha256": "10ee7b79d3e9d1e237c1bfc9efe86ebe48a93f861541e46e732d8d3cfb3498a1",
+          "images": 462
+        },
+        {
+          "id": "g6-all-01",
+          "cell": "g6-all",
+          "filename": "g6-all-01-16c249c4b1266a81333cd126706eb489.hpak",
+          "bytes": 10428057,
+          "unpackedBytes": 10381791,
+          "md5": "16c249c4b1266a81333cd126706eb489",
+          "sha256": "6e661c0c8b5a7d77164804c78dee07f9b9cab6b4a6b44cc5acf74090d180cde7",
+          "images": 600
+        },
+        {
+          "id": "g6-all-02",
+          "cell": "g6-all",
+          "filename": "g6-all-02-f1c81c0f478ba13ed8710c3e747f831a.hpak",
+          "bytes": 10277062,
+          "unpackedBytes": 10230843,
+          "md5": "f1c81c0f478ba13ed8710c3e747f831a",
+          "sha256": "575ef15a7df92c1719bdb6efa890f241f704b4412d2b083128759ff5073733b9",
+          "images": 600
+        },
+        {
+          "id": "g6-all-03",
+          "cell": "g6-all",
+          "filename": "g6-all-03-207cf4e7c9d4bd46dfecfff1a613651a.hpak",
+          "bytes": 10560632,
+          "unpackedBytes": 10514423,
+          "md5": "207cf4e7c9d4bd46dfecfff1a613651a",
+          "sha256": "aef06149840d3aed16aafef717cf719eddc2f92f61e95255c1a6f94e979204f3",
+          "images": 600
+        },
+        {
+          "id": "g6-all-04",
+          "cell": "g6-all",
+          "filename": "g6-all-04-a3166cfb3cda513773522c29ba316127.hpak",
+          "bytes": 8475590,
+          "unpackedBytes": 8439660,
+          "md5": "a3166cfb3cda513773522c29ba316127",
+          "sha256": "25ba4e89881c7786d267b2f0bc1a253c0f75fa0f0f2695cabff368956a42c4aa",
+          "images": 453
+        },
+        {
+          "id": "g7-all-01",
+          "cell": "g7-all",
+          "filename": "g7-all-01-747e7c93da24281e00ad21787bddcfd7.hpak",
+          "bytes": 10010063,
+          "unpackedBytes": 9963695,
+          "md5": "747e7c93da24281e00ad21787bddcfd7",
+          "sha256": "41f9026b60b8bb29c870607eb7c6d820ab1cb48dbcc5a3b9feceecaf8f9d044f",
+          "images": 600
+        },
+        {
+          "id": "g7-all-02",
+          "cell": "g7-all",
+          "filename": "g7-all-02-54bc4373288041fb27696a8f923a25cf.hpak",
+          "bytes": 10635950,
+          "unpackedBytes": 10589732,
+          "md5": "54bc4373288041fb27696a8f923a25cf",
+          "sha256": "4015af8f49da73866f9861038f74202210dd69dd8c3ba74a1fad04b94b2ad4d3",
+          "images": 600
+        },
+        {
+          "id": "g7-all-03",
+          "cell": "g7-all",
+          "filename": "g7-all-03-1f86848997479c73b0150f60982df88f.hpak",
+          "bytes": 9451816,
+          "unpackedBytes": 9410919,
+          "md5": "1f86848997479c73b0150f60982df88f",
+          "sha256": "b4994989b11633a454289218fb0002fec6dac4453df8328d2dde3580223fe88f",
+          "images": 518
+        },
+        {
+          "id": "g8-all-01",
+          "cell": "g8-all",
+          "filename": "g8-all-01-6aecfef20db096a27cdb7c59cbb8b3c1.hpak",
+          "bytes": 10083967,
+          "unpackedBytes": 10037692,
+          "md5": "6aecfef20db096a27cdb7c59cbb8b3c1",
+          "sha256": "c8d321b39ab1fb53e37798c8f74bdf2ff502eff0562112f0242d19bfb53c0a66",
+          "images": 600
+        },
+        {
+          "id": "g8-all-02",
+          "cell": "g8-all",
+          "filename": "g8-all-02-f977aaaa40b02a563faf48a9cdae4aed.hpak",
+          "bytes": 11779625,
+          "unpackedBytes": 11732932,
+          "md5": "f977aaaa40b02a563faf48a9cdae4aed",
+          "sha256": "13251152f02ac9cf798beb5391f7b80e000d3b8aa272c616b61c32a27cbe02c1",
+          "images": 600
+        },
+        {
+          "id": "g8-all-03",
+          "cell": "g8-all",
+          "filename": "g8-all-03-b2c6ef76044332324094ef99048786b0.hpak",
+          "bytes": 1522183,
+          "unpackedBytes": 1515679,
+          "md5": "b2c6ef76044332324094ef99048786b0",
+          "sha256": "52d49f6fbb5c90a85840c8eefaa178c2dece7277f5e3506c08288d020eda8b1c",
+          "images": 81
+        },
+        {
+          "id": "g9-all-01",
+          "cell": "g9-all",
+          "filename": "g9-all-01-16f00b57bf63fd97a24ba43f62dfcaf8.hpak",
+          "bytes": 10504315,
+          "unpackedBytes": 10458003,
+          "md5": "16f00b57bf63fd97a24ba43f62dfcaf8",
+          "sha256": "6ce337342d1cb80386daaba28595668e6083f331cf54fd333e43dae79546a766",
+          "images": 600
+        },
+        {
+          "id": "g9-all-02",
+          "cell": "g9-all",
+          "filename": "g9-all-02-f7767c35809a5fc28f23825168737608.hpak",
+          "bytes": 2995280,
+          "unpackedBytes": 2982531,
+          "md5": "f7767c35809a5fc28f23825168737608",
+          "sha256": "8747b03002061c25a650e10edc25806c14c98d18e62b35b3c2ba25f839f1814d",
+          "images": 158
+        },
+        {
+          "id": "common-24",
+          "cell": "common",
+          "filename": "common-24-77aa0d9cf19c2943b6d5165df24b5da5.hpak",
+          "bytes": 6585701,
+          "unpackedBytes": 6538712,
+          "md5": "77aa0d9cf19c2943b6d5165df24b5da5",
+          "sha256": "1b9ea78dfbd0f686a4812126c87cdc9a9bce3d27db25ed746fa71ebf00bad294",
+          "images": 600
+        },
+        {
+          "id": "common-25",
+          "cell": "common",
+          "filename": "common-25-0777bb506a88a1d1b5576748a0236056.hpak",
+          "bytes": 7025158,
+          "unpackedBytes": 6979115,
+          "md5": "0777bb506a88a1d1b5576748a0236056",
+          "sha256": "242bee14514c7ceb568f5aae7c38a24d95032324fdcc064a8b5671f1c98ee28c",
+          "images": 600
+        },
+        {
+          "id": "common-26",
+          "cell": "common",
+          "filename": "common-26-4d2016e284bb96e93b3c4f1cb072ab58.hpak",
+          "bytes": 6872778,
+          "unpackedBytes": 6826789,
+          "md5": "4d2016e284bb96e93b3c4f1cb072ab58",
+          "sha256": "6ca5bf562864674a2b3a34f7122baf60dfffc4c1d8e58492338be25f88e07d1f",
+          "images": 600
+        },
+        {
+          "id": "common-27",
+          "cell": "common",
+          "filename": "common-27-d1cc052139d3be84ec6641cb3930f8ff.hpak",
+          "bytes": 6983816,
+          "unpackedBytes": 6937821,
+          "md5": "d1cc052139d3be84ec6641cb3930f8ff",
+          "sha256": "df9fca2a42b241b3aa7e70a6a0190deefc586bbe0f91687c8aae6ec68c49212a",
+          "images": 600
+        },
+        {
+          "id": "common-28",
+          "cell": "common",
+          "filename": "common-28-5c9ad29a0f6aefa84d8e379b26229692.hpak",
+          "bytes": 8208733,
+          "unpackedBytes": 8162627,
+          "md5": "5c9ad29a0f6aefa84d8e379b26229692",
+          "sha256": "5b7992f40f2b58749f96963018fd95dbabccd9b07fcf6c9c265b143212a164f6",
+          "images": 600
+        },
+        {
+          "id": "common-29",
+          "cell": "common",
+          "filename": "common-29-92a371d92eb37fabd58db2b02fced957.hpak",
+          "bytes": 6114392,
+          "unpackedBytes": 6071905,
+          "md5": "92a371d92eb37fabd58db2b02fced957",
+          "sha256": "8e5d82beb1e8632f57700e4227476f288835353004a9119ffe83cedd6b989b6b",
+          "images": 518
+        },
+        {
+          "id": "g10-all-02",
+          "cell": "g10-all",
+          "filename": "g10-all-02-ecfedd321a04f002ebb3066a06feb9a7.hpak",
+          "bytes": 4960383,
+          "unpackedBytes": 4923117,
+          "md5": "ecfedd321a04f002ebb3066a06feb9a7",
+          "sha256": "608a5a5ab8c1a9d710da4a2e07f54364736e808ebfc00520afbdff6f41d1b13a",
+          "images": 483
+        },
+        {
+          "id": "g3-all-02",
+          "cell": "g3-all",
+          "filename": "g3-all-02-a4f8e749050dd230e000227cdafff859.hpak",
+          "bytes": 3999864,
+          "unpackedBytes": 3973688,
+          "md5": "a4f8e749050dd230e000227cdafff859",
+          "sha256": "c407711bf2deaf305a05706043001f215989b28e46800d77d38c2e283a09b2c7",
+          "images": 337
+        },
+        {
+          "id": "g4-all-03",
+          "cell": "g4-all",
+          "filename": "g4-all-03-b5ee043a2a41b24af3a53c6c3e1529e4.hpak",
+          "bytes": 5213439,
+          "unpackedBytes": 5177015,
+          "md5": "b5ee043a2a41b24af3a53c6c3e1529e4",
+          "sha256": "b3a18300fc2f315d3aa55ce44dc7947e1c144d0e14a3647280c97819f55b983c",
+          "images": 469
+        },
+        {
+          "id": "g5-all-04",
+          "cell": "g5-all",
+          "filename": "g5-all-04-7f5dca186e18eb4f67039fe027ec1538.hpak",
+          "bytes": 6304073,
+          "unpackedBytes": 6257895,
+          "md5": "7f5dca186e18eb4f67039fe027ec1538",
+          "sha256": "10364219c002d7c9df65d4ca9c4777706cd45be9d1e6c64574cec768ec47aa86",
+          "images": 600
+        },
+        {
+          "id": "g5-all-05",
+          "cell": "g5-all",
+          "filename": "g5-all-05-d164b2b934e3719fd41565c490671d87.hpak",
+          "bytes": 2436592,
+          "unpackedBytes": 2419853,
+          "md5": "d164b2b934e3719fd41565c490671d87",
+          "sha256": "62edb90c70aae059c2211f941b5989c1b359573d8089a33fdbf10c5e9230c93e",
+          "images": 212
+        },
+        {
+          "id": "g6-all-05",
+          "cell": "g6-all",
+          "filename": "g6-all-05-a6a85468888d492093480f470c84b04a.hpak",
+          "bytes": 5719810,
+          "unpackedBytes": 5673768,
+          "md5": "a6a85468888d492093480f470c84b04a",
+          "sha256": "e2242b53f2be74a98535a4a38e1ea3d963d7484404d162188fa8565ea693d7c8",
+          "images": 600
+        },
+        {
+          "id": "g6-all-06",
+          "cell": "g6-all",
+          "filename": "g6-all-06-d9d9ffa116b8864e00abd485d7ec08c9.hpak",
+          "bytes": 4124241,
+          "unpackedBytes": 4095907,
+          "md5": "d9d9ffa116b8864e00abd485d7ec08c9",
+          "sha256": "0228a00e9dca8289c61ca6f5cbacafb60601c50bb59e71eefb14a58e4ac5e956",
+          "images": 363
+        },
+        {
+          "id": "g7-all-04",
+          "cell": "g7-all",
+          "filename": "g7-all-04-043052af91480d86035bc0ac583e66ee.hpak",
+          "bytes": 5597863,
+          "unpackedBytes": 5551794,
+          "md5": "043052af91480d86035bc0ac583e66ee",
+          "sha256": "b7183d2551ea02001e205f113a01bd209be48d10e50575890939947bcccda8b9",
+          "images": 600
+        },
+        {
+          "id": "g7-all-05",
+          "cell": "g7-all",
+          "filename": "g7-all-05-e09f0433b0f2dc0b842688538434dcf8.hpak",
+          "bytes": 4240652,
+          "unpackedBytes": 4210709,
+          "md5": "e09f0433b0f2dc0b842688538434dcf8",
+          "sha256": "1cf033e978cf0e76cf4c51b0b1eca0273583ba782b94b37133303ad86b701ead",
+          "images": 386
+        },
+        {
+          "id": "g8-all-04",
+          "cell": "g8-all",
+          "filename": "g8-all-04-9330e8c39340e87e61288129743899fd.hpak",
+          "bytes": 6466072,
+          "unpackedBytes": 6420023,
+          "md5": "9330e8c39340e87e61288129743899fd",
+          "sha256": "05230f7ef869e88be5b166aed4591fe98252c6689eefeaedd3c5fb4d3c625451",
+          "images": 600
+        },
+        {
+          "id": "g8-all-05",
+          "cell": "g8-all",
+          "filename": "g8-all-05-16afc0a8f27bb27c13d6e427fe50d214.hpak",
+          "bytes": 2788520,
+          "unpackedBytes": 2771357,
+          "md5": "16afc0a8f27bb27c13d6e427fe50d214",
+          "sha256": "9e3dad100abf09a7815ba5c993f16e7211f6bfad1d8622ce8fc36871584fac3f",
+          "images": 219
+        },
+        {
+          "id": "g9-all-03",
+          "cell": "g9-all",
+          "filename": "g9-all-03-787713fe9e0a89e7cda87c0b34727764.hpak",
+          "bytes": 6161548,
+          "unpackedBytes": 6115517,
+          "md5": "787713fe9e0a89e7cda87c0b34727764",
+          "sha256": "cba168fcb785326a1975cecf365b61f7bfbc1ef739c72f73f0124750a43afb91",
+          "images": 600
+        },
+        {
+          "id": "g9-all-04",
+          "cell": "g9-all",
+          "filename": "g9-all-04-409498a0f468ee02f17d8fa8c6bb3cbc.hpak",
+          "bytes": 832965,
+          "unpackedBytes": 825547,
+          "md5": "409498a0f468ee02f17d8fa8c6bb3cbc",
+          "sha256": "a0526e059a3e2421b79c46d8640eb6fa67d684bca279e311e9fedb9666db4ff5",
+          "images": 92
+        }
+      ]
+    }
+  },
+  "chromeosManifest": {
+    "schema": 1,
+    "platform": "chromeos",
+    "app": {
+      "platform": "chromeos",
+      "versionCode": 31,
+      "versionName": "0.4.31",
+      "bytes": 369128137,
+      "md5": "d09900c14e3371f8ce4b85a848bb5ef5",
+      "sha256": "2718cb1951bea87bf12089cccfb2e128a0a31ff1f3e1c09b820e14fc5d3e4f22",
+      "runtime": "4ceb3e1ba6b6b9d49c2bf4369f747445792b15c9",
+      "signingCertSha256": "40d750d5576cb59c311c7ba713403e065b934967d7a7d1bc80652e1167a20c35",
+      "abis": [
+        "arm64-v8a",
+        "x86_64"
+      ],
+      "url": "https://assets.hiraia.org/models/hiraia-v0p4p31-chromeos.apk",
+      "minSupportedVersionCode": 1,
+      "publishedAt": "2026-10-06"
+    },
+    "content": null,
+    "models": null,
+    "assets": {
+      "format": 1,
+      "revision": 8,
+      "minAppVersionCode": 31,
+      "maxAppVersionCode": 31,
+      "imageBaseline": "ca57f3d76e889f08",
+      "models": [],
+      "imagePacks": [
+        {
+          "id": "common-01",
+          "cell": "common",
+          "filename": "common-01-a408945a76377963d079cc0c3e1a928f.hpak",
+          "bytes": 10902226,
+          "unpackedBytes": 10851916,
+          "md5": "a408945a76377963d079cc0c3e1a928f",
+          "sha256": "cc42ac24201438b94f5a027f5cf6a55164ed3dc27734899cb735c19a057fc691",
+          "images": 600
+        },
+        {
+          "id": "common-02",
+          "cell": "common",
+          "filename": "common-02-2529db11906976dfd39d0f16716dab50.hpak",
+          "bytes": 11028733,
+          "unpackedBytes": 10981932,
+          "md5": "2529db11906976dfd39d0f16716dab50",
+          "sha256": "de3bdea63e902e94516cba75973d437889108b049605581ad90040bf191de601",
+          "images": 600
+        },
+        {
+          "id": "common-03",
+          "cell": "common",
+          "filename": "common-03-f07b425e0ad9e010aa95d2f19b0d7fa0.hpak",
+          "bytes": 10994056,
+          "unpackedBytes": 10947272,
+          "md5": "f07b425e0ad9e010aa95d2f19b0d7fa0",
+          "sha256": "5345b3e6927f9965b684af43c843579e633ef0bb0f2a73649669e40c635afb5a",
+          "images": 600
+        },
+        {
+          "id": "common-04",
+          "cell": "common",
+          "filename": "common-04-2e511b90b468bb51934e1477da2a3063.hpak",
+          "bytes": 11035877,
+          "unpackedBytes": 10989082,
+          "md5": "2e511b90b468bb51934e1477da2a3063",
+          "sha256": "a9523ccd3bc314d71d9c26d1b5b018b09d40d741a5dd6d044806da4f6873a091",
+          "images": 600
+        },
+        {
+          "id": "common-05",
+          "cell": "common",
+          "filename": "common-05-a9201fb140c1ca48f2358de65c747f44.hpak",
+          "bytes": 10932866,
+          "unpackedBytes": 10886075,
+          "md5": "a9201fb140c1ca48f2358de65c747f44",
+          "sha256": "7457496a75052a736b87781aa62210333005945312ac3e50cde5cff874461e94",
+          "images": 600
+        },
+        {
+          "id": "common-06",
+          "cell": "common",
+          "filename": "common-06-57d6fd725e16ebcb23a2411cc6db52ff.hpak",
+          "bytes": 10853122,
+          "unpackedBytes": 10806332,
+          "md5": "57d6fd725e16ebcb23a2411cc6db52ff",
+          "sha256": "dd0624524ce83ee10d1b8b4701e9bb4a183dbee7fddfca09d711c9180ca69932",
+          "images": 600
+        },
+        {
+          "id": "common-07",
+          "cell": "common",
+          "filename": "common-07-0e0a8611265505dc295482778ddffed1.hpak",
+          "bytes": 11632069,
+          "unpackedBytes": 11585269,
+          "md5": "0e0a8611265505dc295482778ddffed1",
+          "sha256": "be7f74c9a1eb2f389cc4f76e82bbc7a1862b65f71b84fc5657241391122b58fb",
+          "images": 600
+        },
+        {
+          "id": "common-08",
+          "cell": "common",
+          "filename": "common-08-f85edb5c6df04a2ac6da95db8e66558f.hpak",
+          "bytes": 10792779,
+          "unpackedBytes": 10745999,
+          "md5": "f85edb5c6df04a2ac6da95db8e66558f",
+          "sha256": "c888e7a0f9a1217e9f9e13bc7d4b54e4ddcec5100fa70cd6f2f89e576b641ac0",
+          "images": 600
+        },
+        {
+          "id": "common-09",
+          "cell": "common",
+          "filename": "common-09-8eaf14cefde4797dc211de3553392252.hpak",
+          "bytes": 10824035,
+          "unpackedBytes": 10776495,
+          "md5": "8eaf14cefde4797dc211de3553392252",
+          "sha256": "224ea2491eeeb758343ddd95af01f04b5095d2ae5a0006451df469620855bdc2",
+          "images": 600
+        },
+        {
+          "id": "common-10",
+          "cell": "common",
+          "filename": "common-10-7e092cb5ae4143280d4380b6060b6b36.hpak",
+          "bytes": 10413617,
+          "unpackedBytes": 10367434,
+          "md5": "7e092cb5ae4143280d4380b6060b6b36",
+          "sha256": "7a8a96592e771d8be777e1f94911d2a68c64e600f64601aa44dc6f7ce27428bd",
+          "images": 600
+        },
+        {
+          "id": "common-11",
+          "cell": "common",
+          "filename": "common-11-263de4c47a45c1cffbc19f6e557da437.hpak",
+          "bytes": 10244774,
+          "unpackedBytes": 10198597,
+          "md5": "263de4c47a45c1cffbc19f6e557da437",
+          "sha256": "0a51f50b5bc0a8bfe88547a4abf1254b3cdf44d0dbb47bf372615a48db2a3580",
+          "images": 600
+        },
+        {
+          "id": "common-12",
+          "cell": "common",
+          "filename": "common-12-5cee8d601b09ea38f483c1b62e1a82b1.hpak",
+          "bytes": 10550373,
+          "unpackedBytes": 10504190,
+          "md5": "5cee8d601b09ea38f483c1b62e1a82b1",
+          "sha256": "1fa03e726e179471e6663cda487d4c710b6ba0b2357952a0f06dd22c3f5dc885",
+          "images": 600
+        },
+        {
+          "id": "common-13",
+          "cell": "common",
+          "filename": "common-13-c763c16fca4ea54fe6cd7ca9badf880b.hpak",
+          "bytes": 10112229,
+          "unpackedBytes": 10066040,
+          "md5": "c763c16fca4ea54fe6cd7ca9badf880b",
+          "sha256": "73aa87beecb3946180f01dee22b473c543519c6aa15046097b47041575a0c5f0",
+          "images": 600
+        },
+        {
+          "id": "common-14",
+          "cell": "common",
+          "filename": "common-14-024a76056fec68e1456ba921256e770e.hpak",
+          "bytes": 9938183,
+          "unpackedBytes": 9892010,
+          "md5": "024a76056fec68e1456ba921256e770e",
+          "sha256": "88623b1c34a09a7ef19a3da6332adae00471beeb8fd329ca7c842b6488a5f7f7",
+          "images": 600
+        },
+        {
+          "id": "common-15",
+          "cell": "common",
+          "filename": "common-15-e835f5b7b92d204d3ae71382431b80e1.hpak",
+          "bytes": 9335321,
+          "unpackedBytes": 9289151,
+          "md5": "e835f5b7b92d204d3ae71382431b80e1",
+          "sha256": "d4b10fedf95476c40a16b2e331e7914bc97b6d1fe1bbacb9d3d14c86aec3f97a",
+          "images": 600
+        },
+        {
+          "id": "common-16",
+          "cell": "common",
+          "filename": "common-16-e49a9dca0c7a9fa00dea89e2916406f4.hpak",
+          "bytes": 9890356,
+          "unpackedBytes": 9844191,
+          "md5": "e49a9dca0c7a9fa00dea89e2916406f4",
+          "sha256": "f561d005b2c259a8359c6f1fb5b6060a1ec6918c80a3357166be6a4b6f7fb19a",
+          "images": 600
+        },
+        {
+          "id": "common-17",
+          "cell": "common",
+          "filename": "common-17-c5762b2031f39c02e6fbecf69d40e3f2.hpak",
+          "bytes": 10986962,
+          "unpackedBytes": 10940757,
+          "md5": "c5762b2031f39c02e6fbecf69d40e3f2",
+          "sha256": "5a00bf0a0870a33d3e3f3e59a14fa783c4d451de89af39543ff8e05eb0aafe1c",
+          "images": 600
+        },
+        {
+          "id": "common-18",
+          "cell": "common",
+          "filename": "common-18-9f268f747e916ece54ad66041304a0ed.hpak",
+          "bytes": 11228233,
+          "unpackedBytes": 11182033,
+          "md5": "9f268f747e916ece54ad66041304a0ed",
+          "sha256": "b88632b16714c030472d8edd4993e6afba6eb9f162af4f7ad9a2292b1319f54e",
+          "images": 600
+        },
+        {
+          "id": "common-19",
+          "cell": "common",
+          "filename": "common-19-d3a4e2266e756365e004b82bf5321250.hpak",
+          "bytes": 11217374,
+          "unpackedBytes": 11169061,
+          "md5": "d3a4e2266e756365e004b82bf5321250",
+          "sha256": "b853a81f26081cbe3571cd2ebaf4d1f616935a5814c5afa3b55c8b64d3b6297d",
+          "images": 600
+        },
+        {
+          "id": "common-20",
+          "cell": "common",
+          "filename": "common-20-a48d0e8756e4aa3dc42bba95b817d90c.hpak",
+          "bytes": 11024557,
+          "unpackedBytes": 10973382,
+          "md5": "a48d0e8756e4aa3dc42bba95b817d90c",
+          "sha256": "b89b33e8d101364122c2eb3b3bd22cdbcc5f2b99d724d9020e530595ffa0e877",
+          "images": 600
+        },
+        {
+          "id": "common-21",
+          "cell": "common",
+          "filename": "common-21-ddba9db45c4b04e1c91c9a816836b71f.hpak",
+          "bytes": 11534494,
+          "unpackedBytes": 11485705,
+          "md5": "ddba9db45c4b04e1c91c9a816836b71f",
+          "sha256": "5f84df20b4cc96487139d86484a635b172e11815a49374a46f8137c4e8a1ee26",
+          "images": 600
+        },
+        {
+          "id": "common-22",
+          "cell": "common",
+          "filename": "common-22-ebb8b2b5a7ec70cb3b7c4a7f7bec2475.hpak",
+          "bytes": 10714418,
+          "unpackedBytes": 10664216,
+          "md5": "ebb8b2b5a7ec70cb3b7c4a7f7bec2475",
+          "sha256": "1fb0d2f12532eac799a96aad661f3fab58902538e43c300062cd0a96f5bd508b",
+          "images": 600
+        },
+        {
+          "id": "common-23",
+          "cell": "common",
+          "filename": "common-23-eb29128c7ef07d2bfcff93a688bcd306.hpak",
+          "bytes": 3032181,
+          "unpackedBytes": 3018099,
+          "md5": "eb29128c7ef07d2bfcff93a688bcd306",
+          "sha256": "7f333e38dc75f8bab37eec9c040df9c8d1f1f0c28d12beeb87e8928d7ed92687",
+          "images": 163
+        },
+        {
+          "id": "g10-all-01",
+          "cell": "g10-all",
+          "filename": "g10-all-01-8f0b0378aa91fe651bd48469177a1eb8.hpak",
+          "bytes": 7479625,
+          "unpackedBytes": 7446187,
+          "md5": "8f0b0378aa91fe651bd48469177a1eb8",
+          "sha256": "33cd9b939620f88a292591a9471416785c66653d13fb34e3dd40d1c03bb0bd93",
+          "images": 429
+        },
+        {
+          "id": "g3-all-01",
+          "cell": "g3-all",
+          "filename": "g3-all-01-ba6dd6efb103627efb27f602db293062.hpak",
+          "bytes": 9570417,
+          "unpackedBytes": 9529186,
+          "md5": "ba6dd6efb103627efb27f602db293062",
+          "sha256": "b1172d973dac7c956b13fe22bacf6bf95d4b37e078ac96fc87b9729d792f89e3",
+          "images": 531
+        },
+        {
+          "id": "g4-all-01",
+          "cell": "g4-all",
+          "filename": "g4-all-01-f9ff408c4ee50a11cc63a0743d73d638.hpak",
+          "bytes": 10444374,
+          "unpackedBytes": 10398090,
+          "md5": "f9ff408c4ee50a11cc63a0743d73d638",
+          "sha256": "602d21f75a54250d3d5fc632ef37007b6c2a3da2a4b04846bc45fe88659ea77b",
+          "images": 600
+        },
+        {
+          "id": "g4-all-02",
+          "cell": "g4-all",
+          "filename": "g4-all-02-4c940105b5b84c4feba707ab7f4cff17.hpak",
+          "bytes": 6402586,
+          "unpackedBytes": 6376158,
+          "md5": "4c940105b5b84c4feba707ab7f4cff17",
+          "sha256": "9b6607d071dcb4ef94ad623c815ac3198ce70fd83c224c0ae1c728bfb40802c3",
+          "images": 337
+        },
+        {
+          "id": "g5-all-01",
+          "cell": "g5-all",
+          "filename": "g5-all-01-195008286b2dd16119c88d4f5d27a9b3.hpak",
+          "bytes": 10622681,
+          "unpackedBytes": 10576362,
+          "md5": "195008286b2dd16119c88d4f5d27a9b3",
+          "sha256": "7c8076f821a534755e6aa8708b72e663624b048af0c8c18360b00988faaf0bb4",
+          "images": 600
+        },
+        {
+          "id": "g5-all-02",
+          "cell": "g5-all",
+          "filename": "g5-all-02-0f0022aa71c89d84531d349eaca6c003.hpak",
+          "bytes": 10374954,
+          "unpackedBytes": 10328736,
+          "md5": "0f0022aa71c89d84531d349eaca6c003",
+          "sha256": "4f4e96a430f0a9014d756a6097dcdace5f287bb2f642e1dcd774618820009d73",
+          "images": 600
+        },
+        {
+          "id": "g5-all-03",
+          "cell": "g5-all",
+          "filename": "g5-all-03-7fb16dc33e8c3bd6ac263c400103494b.hpak",
+          "bytes": 8547532,
+          "unpackedBytes": 8511202,
+          "md5": "7fb16dc33e8c3bd6ac263c400103494b",
+          "sha256": "10ee7b79d3e9d1e237c1bfc9efe86ebe48a93f861541e46e732d8d3cfb3498a1",
+          "images": 462
+        },
+        {
+          "id": "g6-all-01",
+          "cell": "g6-all",
+          "filename": "g6-all-01-16c249c4b1266a81333cd126706eb489.hpak",
+          "bytes": 10428057,
+          "unpackedBytes": 10381791,
+          "md5": "16c249c4b1266a81333cd126706eb489",
+          "sha256": "6e661c0c8b5a7d77164804c78dee07f9b9cab6b4a6b44cc5acf74090d180cde7",
+          "images": 600
+        },
+        {
+          "id": "g6-all-02",
+          "cell": "g6-all",
+          "filename": "g6-all-02-f1c81c0f478ba13ed8710c3e747f831a.hpak",
+          "bytes": 10277062,
+          "unpackedBytes": 10230843,
+          "md5": "f1c81c0f478ba13ed8710c3e747f831a",
+          "sha256": "575ef15a7df92c1719bdb6efa890f241f704b4412d2b083128759ff5073733b9",
+          "images": 600
+        },
+        {
+          "id": "g6-all-03",
+          "cell": "g6-all",
+          "filename": "g6-all-03-207cf4e7c9d4bd46dfecfff1a613651a.hpak",
+          "bytes": 10560632,
+          "unpackedBytes": 10514423,
+          "md5": "207cf4e7c9d4bd46dfecfff1a613651a",
+          "sha256": "aef06149840d3aed16aafef717cf719eddc2f92f61e95255c1a6f94e979204f3",
+          "images": 600
+        },
+        {
+          "id": "g6-all-04",
+          "cell": "g6-all",
+          "filename": "g6-all-04-a3166cfb3cda513773522c29ba316127.hpak",
+          "bytes": 8475590,
+          "unpackedBytes": 8439660,
+          "md5": "a3166cfb3cda513773522c29ba316127",
+          "sha256": "25ba4e89881c7786d267b2f0bc1a253c0f75fa0f0f2695cabff368956a42c4aa",
+          "images": 453
+        },
+        {
+          "id": "g7-all-01",
+          "cell": "g7-all",
+          "filename": "g7-all-01-747e7c93da24281e00ad21787bddcfd7.hpak",
+          "bytes": 10010063,
+          "unpackedBytes": 9963695,
+          "md5": "747e7c93da24281e00ad21787bddcfd7",
+          "sha256": "41f9026b60b8bb29c870607eb7c6d820ab1cb48dbcc5a3b9feceecaf8f9d044f",
+          "images": 600
+        },
+        {
+          "id": "g7-all-02",
+          "cell": "g7-all",
+          "filename": "g7-all-02-54bc4373288041fb27696a8f923a25cf.hpak",
+          "bytes": 10635950,
+          "unpackedBytes": 10589732,
+          "md5": "54bc4373288041fb27696a8f923a25cf",
+          "sha256": "4015af8f49da73866f9861038f74202210dd69dd8c3ba74a1fad04b94b2ad4d3",
+          "images": 600
+        },
+        {
+          "id": "g7-all-03",
+          "cell": "g7-all",
+          "filename": "g7-all-03-1f86848997479c73b0150f60982df88f.hpak",
+          "bytes": 9451816,
+          "unpackedBytes": 9410919,
+          "md5": "1f86848997479c73b0150f60982df88f",
+          "sha256": "b4994989b11633a454289218fb0002fec6dac4453df8328d2dde3580223fe88f",
+          "images": 518
+        },
+        {
+          "id": "g8-all-01",
+          "cell": "g8-all",
+          "filename": "g8-all-01-6aecfef20db096a27cdb7c59cbb8b3c1.hpak",
+          "bytes": 10083967,
+          "unpackedBytes": 10037692,
+          "md5": "6aecfef20db096a27cdb7c59cbb8b3c1",
+          "sha256": "c8d321b39ab1fb53e37798c8f74bdf2ff502eff0562112f0242d19bfb53c0a66",
+          "images": 600
+        },
+        {
+          "id": "g8-all-02",
+          "cell": "g8-all",
+          "filename": "g8-all-02-f977aaaa40b02a563faf48a9cdae4aed.hpak",
+          "bytes": 11779625,
+          "unpackedBytes": 11732932,
+          "md5": "f977aaaa40b02a563faf48a9cdae4aed",
+          "sha256": "13251152f02ac9cf798beb5391f7b80e000d3b8aa272c616b61c32a27cbe02c1",
+          "images": 600
+        },
+        {
+          "id": "g8-all-03",
+          "cell": "g8-all",
+          "filename": "g8-all-03-b2c6ef76044332324094ef99048786b0.hpak",
+          "bytes": 1522183,
+          "unpackedBytes": 1515679,
+          "md5": "b2c6ef76044332324094ef99048786b0",
+          "sha256": "52d49f6fbb5c90a85840c8eefaa178c2dece7277f5e3506c08288d020eda8b1c",
+          "images": 81
+        },
+        {
+          "id": "g9-all-01",
+          "cell": "g9-all",
+          "filename": "g9-all-01-16f00b57bf63fd97a24ba43f62dfcaf8.hpak",
+          "bytes": 10504315,
+          "unpackedBytes": 10458003,
+          "md5": "16f00b57bf63fd97a24ba43f62dfcaf8",
+          "sha256": "6ce337342d1cb80386daaba28595668e6083f331cf54fd333e43dae79546a766",
+          "images": 600
+        },
+        {
+          "id": "g9-all-02",
+          "cell": "g9-all",
+          "filename": "g9-all-02-f7767c35809a5fc28f23825168737608.hpak",
+          "bytes": 2995280,
+          "unpackedBytes": 2982531,
+          "md5": "f7767c35809a5fc28f23825168737608",
+          "sha256": "8747b03002061c25a650e10edc25806c14c98d18e62b35b3c2ba25f839f1814d",
+          "images": 158
+        },
+        {
+          "id": "common-24",
+          "cell": "common",
+          "filename": "common-24-77aa0d9cf19c2943b6d5165df24b5da5.hpak",
+          "bytes": 6585701,
+          "unpackedBytes": 6538712,
+          "md5": "77aa0d9cf19c2943b6d5165df24b5da5",
+          "sha256": "1b9ea78dfbd0f686a4812126c87cdc9a9bce3d27db25ed746fa71ebf00bad294",
+          "images": 600
+        },
+        {
+          "id": "common-25",
+          "cell": "common",
+          "filename": "common-25-0777bb506a88a1d1b5576748a0236056.hpak",
+          "bytes": 7025158,
+          "unpackedBytes": 6979115,
+          "md5": "0777bb506a88a1d1b5576748a0236056",
+          "sha256": "242bee14514c7ceb568f5aae7c38a24d95032324fdcc064a8b5671f1c98ee28c",
+          "images": 600
+        },
+        {
+          "id": "common-26",
+          "cell": "common",
+          "filename": "common-26-4d2016e284bb96e93b3c4f1cb072ab58.hpak",
+          "bytes": 6872778,
+          "unpackedBytes": 6826789,
+          "md5": "4d2016e284bb96e93b3c4f1cb072ab58",
+          "sha256": "6ca5bf562864674a2b3a34f7122baf60dfffc4c1d8e58492338be25f88e07d1f",
+          "images": 600
+        },
+        {
+          "id": "common-27",
+          "cell": "common",
+          "filename": "common-27-d1cc052139d3be84ec6641cb3930f8ff.hpak",
+          "bytes": 6983816,
+          "unpackedBytes": 6937821,
+          "md5": "d1cc052139d3be84ec6641cb3930f8ff",
+          "sha256": "df9fca2a42b241b3aa7e70a6a0190deefc586bbe0f91687c8aae6ec68c49212a",
+          "images": 600
+        },
+        {
+          "id": "common-28",
+          "cell": "common",
+          "filename": "common-28-5c9ad29a0f6aefa84d8e379b26229692.hpak",
+          "bytes": 8208733,
+          "unpackedBytes": 8162627,
+          "md5": "5c9ad29a0f6aefa84d8e379b26229692",
+          "sha256": "5b7992f40f2b58749f96963018fd95dbabccd9b07fcf6c9c265b143212a164f6",
+          "images": 600
+        },
+        {
+          "id": "common-29",
+          "cell": "common",
+          "filename": "common-29-92a371d92eb37fabd58db2b02fced957.hpak",
+          "bytes": 6114392,
+          "unpackedBytes": 6071905,
+          "md5": "92a371d92eb37fabd58db2b02fced957",
+          "sha256": "8e5d82beb1e8632f57700e4227476f288835353004a9119ffe83cedd6b989b6b",
+          "images": 518
+        },
+        {
+          "id": "g10-all-02",
+          "cell": "g10-all",
+          "filename": "g10-all-02-ecfedd321a04f002ebb3066a06feb9a7.hpak",
+          "bytes": 4960383,
+          "unpackedBytes": 4923117,
+          "md5": "ecfedd321a04f002ebb3066a06feb9a7",
+          "sha256": "608a5a5ab8c1a9d710da4a2e07f54364736e808ebfc00520afbdff6f41d1b13a",
+          "images": 483
+        },
+        {
+          "id": "g3-all-02",
+          "cell": "g3-all",
+          "filename": "g3-all-02-a4f8e749050dd230e000227cdafff859.hpak",
+          "bytes": 3999864,
+          "unpackedBytes": 3973688,
+          "md5": "a4f8e749050dd230e000227cdafff859",
+          "sha256": "c407711bf2deaf305a05706043001f215989b28e46800d77d38c2e283a09b2c7",
+          "images": 337
+        },
+        {
+          "id": "g4-all-03",
+          "cell": "g4-all",
+          "filename": "g4-all-03-b5ee043a2a41b24af3a53c6c3e1529e4.hpak",
+          "bytes": 5213439,
+          "unpackedBytes": 5177015,
+          "md5": "b5ee043a2a41b24af3a53c6c3e1529e4",
+          "sha256": "b3a18300fc2f315d3aa55ce44dc7947e1c144d0e14a3647280c97819f55b983c",
+          "images": 469
+        },
+        {
+          "id": "g5-all-04",
+          "cell": "g5-all",
+          "filename": "g5-all-04-7f5dca186e18eb4f67039fe027ec1538.hpak",
+          "bytes": 6304073,
+          "unpackedBytes": 6257895,
+          "md5": "7f5dca186e18eb4f67039fe027ec1538",
+          "sha256": "10364219c002d7c9df65d4ca9c4777706cd45be9d1e6c64574cec768ec47aa86",
+          "images": 600
+        },
+        {
+          "id": "g5-all-05",
+          "cell": "g5-all",
+          "filename": "g5-all-05-d164b2b934e3719fd41565c490671d87.hpak",
+          "bytes": 2436592,
+          "unpackedBytes": 2419853,
+          "md5": "d164b2b934e3719fd41565c490671d87",
+          "sha256": "62edb90c70aae059c2211f941b5989c1b359573d8089a33fdbf10c5e9230c93e",
+          "images": 212
+        },
+        {
+          "id": "g6-all-05",
+          "cell": "g6-all",
+          "filename": "g6-all-05-a6a85468888d492093480f470c84b04a.hpak",
+          "bytes": 5719810,
+          "unpackedBytes": 5673768,
+          "md5": "a6a85468888d492093480f470c84b04a",
+          "sha256": "e2242b53f2be74a98535a4a38e1ea3d963d7484404d162188fa8565ea693d7c8",
+          "images": 600
+        },
+        {
+          "id": "g6-all-06",
+          "cell": "g6-all",
+          "filename": "g6-all-06-d9d9ffa116b8864e00abd485d7ec08c9.hpak",
+          "bytes": 4124241,
+          "unpackedBytes": 4095907,
+          "md5": "d9d9ffa116b8864e00abd485d7ec08c9",
+          "sha256": "0228a00e9dca8289c61ca6f5cbacafb60601c50bb59e71eefb14a58e4ac5e956",
+          "images": 363
+        },
+        {
+          "id": "g7-all-04",
+          "cell": "g7-all",
+          "filename": "g7-all-04-043052af91480d86035bc0ac583e66ee.hpak",
+          "bytes": 5597863,
+          "unpackedBytes": 5551794,
+          "md5": "043052af91480d86035bc0ac583e66ee",
+          "sha256": "b7183d2551ea02001e205f113a01bd209be48d10e50575890939947bcccda8b9",
+          "images": 600
+        },
+        {
+          "id": "g7-all-05",
+          "cell": "g7-all",
+          "filename": "g7-all-05-e09f0433b0f2dc0b842688538434dcf8.hpak",
+          "bytes": 4240652,
+          "unpackedBytes": 4210709,
+          "md5": "e09f0433b0f2dc0b842688538434dcf8",
+          "sha256": "1cf033e978cf0e76cf4c51b0b1eca0273583ba782b94b37133303ad86b701ead",
+          "images": 386
+        },
+        {
+          "id": "g8-all-04",
+          "cell": "g8-all",
+          "filename": "g8-all-04-9330e8c39340e87e61288129743899fd.hpak",
+          "bytes": 6466072,
+          "unpackedBytes": 6420023,
+          "md5": "9330e8c39340e87e61288129743899fd",
+          "sha256": "05230f7ef869e88be5b166aed4591fe98252c6689eefeaedd3c5fb4d3c625451",
+          "images": 600
+        },
+        {
+          "id": "g8-all-05",
+          "cell": "g8-all",
+          "filename": "g8-all-05-16afc0a8f27bb27c13d6e427fe50d214.hpak",
+          "bytes": 2788520,
+          "unpackedBytes": 2771357,
+          "md5": "16afc0a8f27bb27c13d6e427fe50d214",
+          "sha256": "9e3dad100abf09a7815ba5c993f16e7211f6bfad1d8622ce8fc36871584fac3f",
+          "images": 219
+        },
+        {
+          "id": "g9-all-03",
+          "cell": "g9-all",
+          "filename": "g9-all-03-787713fe9e0a89e7cda87c0b34727764.hpak",
+          "bytes": 6161548,
+          "unpackedBytes": 6115517,
+          "md5": "787713fe9e0a89e7cda87c0b34727764",
+          "sha256": "cba168fcb785326a1975cecf365b61f7bfbc1ef739c72f73f0124750a43afb91",
+          "images": 600
+        },
+        {
+          "id": "g9-all-04",
+          "cell": "g9-all",
+          "filename": "g9-all-04-409498a0f468ee02f17d8fa8c6bb3cbc.hpak",
+          "bytes": 832965,
+          "unpackedBytes": 825547,
+          "md5": "409498a0f468ee02f17d8fa8c6bb3cbc",
+          "sha256": "a0526e059a3e2421b79c46d8640eb6fa67d684bca279e311e9fedb9666db4ff5",
+          "images": 92
+        }
+      ]
+    }
+  },
+  "curriculum": {
+    "sha256": "81e6eef484be6f5e663bc1da1698e2f2943c1ea446d1c5dd8b95fd7d20dce168",
+    "counts": {
+      "grades": 8,
+      "topics": 309,
+      "mappedCompetencies": 322,
+      "referenceCompetencies": 322,
+      "objectives": 1037,
+      "lessonCards": 1369,
+      "objectiveCards": 1357
+    }
+  },
+  "/": {
+    "status": 200,
+    "visibleCurriculumLabel": true
+  },
+  "/competencies": {
+    "status": 200,
+    "visibleCurriculumLabel": true
+  },
+  "shortLink": {
+    "url": "https://hiraia.org/a",
+    "status": 302,
+    "location": "https://assets.hiraia.org/models/hiraia-v0p4p31.apk",
+    "cacheControl": "no-store"
+  }
+}

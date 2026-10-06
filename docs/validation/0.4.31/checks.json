@@ -19,5 +19,18 @@
   "unrelatedLocalChangesExcluded": [
     "packages/mobile/BUILD.md"
   ],
-  "nativeSourceUnchangedSinceBuild": true
+  "nativeSourceUnchangedSinceBuild": true,
+  "websiteDeployment": {
+    "commit": "30ff85262d60a32df5b1a017d5dfe9c20a5dc15e",
+    "build": "passed",
+    "httpStatus": 200,
+    "collectorRestartRequired": false,
+    "existingLintIssue": "@typescript-eslint/await-thenable: parser type information is not configured on the VPS",
+    "adapterRestartRequired": false
+  },
+  "redundantNativeBuild": {
+    "runId": 37393352189,
+    "action": "cancelled",
+    "reason": "Publication-only commit; app inputs exactly match successful native run 37390533981"
+  }
 }
