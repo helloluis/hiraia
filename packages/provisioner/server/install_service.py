@@ -25,6 +25,7 @@ SETUP_CERT = '321aad0ae3ee615ba30aa7ba514be6f1f7bcdb2c4aaec1dc9aa8d02dba304fed'
 SOURCES = (
     'packages/provisioner/server/server.py',
     'packages/provisioner/server/server.py.lock',
+    'packages/provisioner/server/mdns_macos.py',
     'packages/mobile/src/config/modelAssets.json',
     'packages/mobile/assets/voices/catalog.json',
     'packages/mobile/src/generated/imagePacks.generated.json',

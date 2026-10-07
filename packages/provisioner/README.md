@@ -42,6 +42,12 @@ starting a replacement identity would strand them. Do not reset phones or use
 `--new-identity` for an ordinary Hiraia upgrade. A changed laptop IP is handled by
 mDNS discovery, provided phones and laptop share a network that permits multicast.
 
+On macOS the server publishes through the system DNS-SD API, with both its IPv4
+address record and service restricted to the provisioning interface. It waits for
+the daemon to acknowledge both records. A lost daemon connection exits the server
+so its LaunchAgent restarts it; an address change withdraws the old records before
+publishing the new address. Other hosts retain the Python Zeroconf backend.
+
 Hiraia Setup 0.4.3 installs a newer, correctly signed `com.hiraia.app` APK over its
 pinned local API. This works independently of an installed Hiraia 0.4.24's updater.
 It preserves app data and phone registration. Existing periodic jobs survive reboot;

@@ -2,11 +2,13 @@
 
 Recorded 7 October 2026, GMT+8. Branch: `codex/cebuano-curriculum-alignment-20261007`.
 
-**Local preparation is verified. On 7 October at 15:41 GMT+8, the user authorized
-committing/pushing this branch, running Windows CI, and activating the local server
-after validation. Production activation is pending that CI build. The production
-provisioning LaunchAgent is staged, not running. Public release publication is
-outside this activation.**
+**Completed: the three-platform CI passed and the local provisioning LaunchAgent
+is running. Final measured artifacts, discovery correction and live checks are in
+[RELEASE-0.4.40.md](RELEASE-0.4.40.md).** On 7 October the user authorized committing,
+pushing, validation and activation, then explicitly approved the exact-commit
+signing-runner exception. That exception has been removed. Public release
+publication remains outside this activation. The candidate measurements below
+are retained as preparation history, not the artifacts currently served.
 
 ## Content and native builds
 
@@ -34,8 +36,9 @@ Both Hiraia artifacts retain certificate SHA-256
 `40d750d5576cb59c311c7ba713403e065b934967d7a7d1bc80652e1167a20c35`.
 Setup retains certificate SHA-256
 `321aad0ae3ee615ba30aa7ba514be6f1f7bcdb2c4aaec1dc9aa8d02dba304fed`.
-Windows has not been packaged or tested for this candidate. The local APKs are
-pre-commit candidates; do not pair them with unrelated CI Windows evidence.
+Windows was not packaged or tested at this preparation stage. These local APKs are
+pre-commit candidates; the activated release instead uses the matching, successful
+three-platform CI artifacts recorded in the final release document.
 
 The first CI dispatch (`37589755470`, commit `20ff8588c658cf3e61244b3ab30c8aa3168571bf`)
 stopped in the installed runner hook before checkout: its trusted-branch gate only
@@ -117,11 +120,12 @@ ID log. Production ports are HTTP 8080 and pinned TLS 8443. The local-only dashb
 is <http://127.0.0.1:8080/>. The current Mac LAN address is 192.168.68.66; the existing
 TLS key and mDNS service allow registered phones to discover an address change.
 
-Before activation, commit/push the reviewed branch with user authorization and run
-`.github/workflows/native-apps.yml`. Require its complete three-platform manifest,
-including packaged Windows exam/history/keyboard/accessibility, native CPU and voice
-checks. Activate using that exact CI APK pair and matching combined manifest.
-Do not claim a running fleet update from the staged candidate alone.
+The authorized branch was committed and pushed, and `.github/workflows/native-apps.yml`
+passed for app commit `7f1cf99d353eb6a741096733fa8ba630a183b20b`. Its complete
+three-platform manifest includes packaged Windows exam/history/keyboard/accessibility,
+native CPU and voice checks. The active service uses that exact CI APK pair and
+matching combined manifest; all 98 registrations remain intact. Native macOS
+discovery and the live mirror were verified after the server-only discovery fix.
 
 Keep the Mac powered, logged in, awake with its lid open, and on the same Wi-Fi as
 the phones. Existing Setup 0.4.3 phones need their first old-style check-in, normally

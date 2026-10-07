@@ -60,6 +60,7 @@ from pathlib import Path
 import re
 import secrets
 import shutil
+import signal
 import socket
 import sqlite3
 import ssl
@@ -1512,9 +1513,14 @@ def advertise(host: str, port: int, pin: str):
     """Announce the API over mDNS, so a phone whose stored address went stale can find it again.
     Anything can announce this name; a phone still only trusts the key it was given. The name
     comes from the key, not the address, so a server that moved answers under the same name."""
+    name = f'hiraia-provisioning-{hashlib.sha256(pin.encode()).hexdigest()[:8]}'
+    if sys.platform == 'darwin':
+        from mdns_macos import Advertisement
+        # The LaunchAgent restarts the service if its connection to mDNSResponder dies.
+        return Advertisement(host, port, name,
+                             on_failure=lambda error: os.kill(os.getpid(), signal.SIGTERM))
     from zeroconf import ServiceInfo, Zeroconf
     zeroconf = Zeroconf(interfaces=[host])
-    name = f'hiraia-provisioning-{hashlib.sha256(pin.encode()).hexdigest()[:8]}'
     zeroconf.register_service(ServiceInfo(MDNS_TYPE, f'{name}.{MDNS_TYPE}', port=port,
                                           addresses=[socket.inet_aton(host)], server=f'{name}.local.',
                                           properties={'v': '1'}))
