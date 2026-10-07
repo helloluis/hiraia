@@ -1,0 +1,17 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- testOnly lets `adb shell dpm remove-active-admin` take device ownership back from a
+         debug build, so the DPC can be developed on a phone without factory-resetting it.
+         Setup's QR flow refuses a testOnly APK; phones are provisioned with the release build. -->
+    <application android:testOnly="true">
+        <!-- Only the shell can send it: it stands in for the QR code's admin extras. -->
+        <receiver
+            android:name=".DebugConfigReceiver"
+            android:exported="true"
+            android:permission="android.permission.DUMP" />
+        <!-- Runs the device setup (apps, home screen, wallpaper, radios) without a server. -->
+        <receiver
+            android:name=".DebugSetupReceiver"
+            android:exported="true"
+            android:permission="android.permission.DUMP" />
+    </application>
+</manifest>

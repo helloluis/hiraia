@@ -1,0 +1,1006 @@
+#!/bin/bash
+#
+# provisioning-keys: the provisioning keys as one password-protected disk image. Makes the backup,
+# checks one, and restores one onto this Mac or another.
+#
+# Two things, neither of which can be made again:
+#   - Hiraia Setup's signing key (~/.hiraia/provisioner-keys). Android installs an update to a device
+#     owner only when it is signed with the same key, so without this the provisioned phones can
+#     never take a newer Hiraia Setup.
+#   - The provisioning server's identity and phone registry (~/.hiraia/provisioning, plus the copy of
+#     its issued-ID log beside it). Phones trust only the server certificate they were set up with,
+#     and prove who they are with secrets only the registry can check. A server with a new identity
+#     is one none of them will talk to.
+#
+#   provisioning-keys list                     what a backup would hold, and whether it all checks out
+#   provisioning-keys backup [FILE]            make the image, then open it and check it
+#                                              (default ~/Desktop/hiraia-provisioning-keys-YYYY-MM-DD.dmg)
+#   provisioning-keys verify BACKUP            open a backup and check everything in it
+#   provisioning-keys restore BACKUP           put it back in ~/.hiraia, losing nothing (see below)
+#
+# BACKUP is the .dmg, or the folder Finder mounted it at after you double-clicked it.
+#
+# backup makes up a long random password for each backup and shows it once, for your password
+# manager, then asks for it back from there. (When stdin is not a terminal, as in tests, the
+# password is read from it instead, as one line of at least 20 characters.)
+#
+# restore puts back whatever is missing and merges the issued-ID logs, never shortening them, so no
+# ID can be handed out twice. An empty or unreadable registry is replaced by the backup's; one that
+# is behind the backup's, or one that differs in a key file, is left alone and reported, and the
+# run ends in failure until you choose: --replace-registry uses the backup's registry, --force the
+# backup's key files. Whatever is replaced is kept beside it as *.replaced-<time>.
+#
+# The password never appears in a command line, a log or the image, and nothing secret is printed
+# apart from the generated password, once. Keys are named by their public certificate fingerprints.
+# HIRAIA_JAVA names the java used to check the signing key ("none" to skip); by default a JDK 11 or
+# later is looked for.
+set -euo pipefail
+umask 077
+# The only holders of the backup password. A name the calling shell exports would hand the
+# password to every program this runs, so these start out unset, and so unexported.
+unset HK_SECRET HK_FIRST
+
+HIRAIA="$HOME/.hiraia"
+VOLUME="Hiraia Provisioning Keys"
+REGISTRY=provisioning/provisioning.db
+PROPERTIES=provisioner-keys/keystore.properties
+EXPECTED_STORE="$HIRAIA/provisioner-keys/provisioner.jks"
+# What must be in every backup, relative to ~/.hiraia. Anything else in the two folders goes too.
+REQUIRED="provisioner-keys/provisioner.jks $PROPERTIES
+provisioning/tls-key.pem provisioning/tls-cert.pem provisioning/token provisioning/receipt-key
+$REGISTRY provisioning/issued.log"
+MIN_CHOSEN=20
+MIN_DISTINCT=8
+TAB=$(printf '\t')
+NL=$'\n'
+TMP_ROOT=${TMPDIR:-/tmp}
+TMP_ROOT=${TMP_ROOT%/}
+SELF_PATH="$(cd "$(dirname "$0")" && pwd -P)/$(basename "$0")"
+
+STAGE=""        # plain copies of the keys while a backup is made
+WORK=""         # scratch space for the key check
+MOUNT=""        # where this run opened a backup
+OWN_MOUNT=0     # 1 when this run attached it, so this run detaches it
+OPENED=""       # the folder holding the backup's MANIFEST.tsv
+PARTIAL=""      # a backup image not yet checked
+TMPFILES=""     # half-written files beside their targets, one per line
+RESTORING=""    # the file a restore is on, for the message if it stops
+RESTORED=0
+STAMP=""
+TTY_STATE=""
+ATTACH_ERROR=""
+CHILD=""        # an hdiutil this run waits on, stopped before cleanup removes what it writes
+HK_SECRET=""
+HK_FIRST=""
+
+die() { printf 'provisioning-keys: %s\n' "$*" >&2; exit 1; }
+say() { printf '%s\n' "$*"; }
+
+cleanup() {
+  local status=$? file waited=0
+  if [ -n "$TTY_STATE" ]; then stty "$TTY_STATE" </dev/tty 2>/dev/null || true; fi
+  # An hdiutil left running would go on writing the image, or mounting it, after the cleanup below.
+  if [ -n "$CHILD" ]; then
+    kill "$CHILD" 2>/dev/null || true
+    while kill -0 "$CHILD" 2>/dev/null && [ $waited -lt 150 ]; do sleep 0.1; waited=$((waited + 1)); done
+  fi
+  if [ -n "$MOUNT" ] && [ "$OWN_MOUNT" = 1 ]; then detach "$MOUNT"; fi
+  if [ -n "$STAGE" ]; then rm -rf "$STAGE"; fi
+  if [ -n "$WORK" ]; then rm -rf "$WORK"; fi
+  if [ -n "$PARTIAL" ]; then rm -f "$PARTIAL"; fi
+  while IFS= read -r file; do
+    if [ -n "$file" ]; then rm -f "$file"; fi
+  done <<EOF
+$TMPFILES
+EOF
+  if [ -n "$RESTORING" ] && [ "$status" -ne 0 ]; then
+    printf 'provisioning-keys: the restore stopped at %s, after putting %s file(s) in place. Nothing was lost: whatever it replaced is beside it as *.replaced-%s. Fix the problem and run restore again.\n' \
+      "$RESTORING" "$RESTORED" "${STAMP:-?}" >&2
+  fi
+  HK_SECRET=""; HK_FIRST=""
+  return 0
+}
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 131' QUIT
+trap 'exit 143' TERM
+trap 'exit 129' HUP
+
+usage() {
+  sed -n '/^#   provisioning-keys list/,/^#   provisioning-keys restore/p' "$SELF_PATH" | sed 's/^#//' >&2
+  exit 2
+}
+
+sha256() { shasum -a 256 "$1" | cut -d' ' -f1; }
+file_id() { stat -L -f '%d:%i' "$1" 2>/dev/null || true; }  # the file a path leads to, through symlinks
+ensure_work() { [ -n "$WORK" ] || WORK=$(mktemp -d "$TMP_ROOT/provisioning-keys-work.XXXXXX"); }
+
+# Runs hdiutil with the password on its stdin, as a child this run can stop: interrupted, the shell
+# stops waiting at once, and cleanup then stops hdiutil before touching what it writes. Its error
+# output goes to ERRFILE.
+run_hdiutil() { # ERRFILE ARGS...
+  local err=$1 status=0
+  shift
+  printf '%s' "$HK_SECRET" | hdiutil "$@" >/dev/null 2>"$err" &
+  CHILD=$!
+  wait "$CHILD" || status=$?
+  CHILD=""
+  return $status
+}
+
+temp_beside() { # TARGET: a name beside TARGET for a half-written copy, removed if this run stops
+  local name="$1.restoring.$$"
+  TMPFILES="$TMPFILES$name$NL"
+  printf '%s\n' "$name"
+}
+
+canonical() { # absolute path with symlinks resolved
+  local dir
+  dir=$(cd "$(dirname "$1")" 2>/dev/null && pwd -P) || { printf '%s\n' "$1"; return 0; }
+  printf '%s/%s\n' "$dir" "$(basename "$1")"
+}
+
+# One value from a Java .properties file: `key=value` or `key: value`, spaces allowed around either.
+property() {
+  sed -n "s/^[[:space:]]*$2[[:space:]]*[=:][[:space:]]*//p" "$1" | head -1 | tr -d '\r'
+}
+without_store_file() { sed '/^[[:space:]]*storeFile[[:space:]]*[=:]/d' "$1"; }
+
+sql() { # read-only, waiting out a server that is writing at that moment
+  sqlite3 -readonly -cmd '.timeout 10000' "$@"
+}
+
+# The files a backup of ROOT (a ~/.hiraia, live or restored) holds, relative to ROOT.
+files_in() {
+  local root=$1 dir f name
+  for dir in provisioner-keys provisioning; do
+    for f in "$root/$dir"/*; do
+      [ -f "$f" ] || continue
+      name=${f##*/}
+      # SQLite's side files: the snapshot of the registry already holds what they hold.
+      case "$name" in *-wal|*-shm|*-journal) continue ;; esac
+      printf '%s\n' "$dir/$name"
+    done
+  done
+  if [ -f "$root/provisioning.issued.log" ]; then printf '%s\n' provisioning.issued.log; fi
+  return 0
+}
+
+# ---------------------------------------------------------------------------------------------
+# Checks. Each takes ROOT, prints one line per finding, and returns non-zero if the files under
+# ROOT would not work. They read passwords from the files they check but never print them.
+# ---------------------------------------------------------------------------------------------
+
+check_present() {
+  local root=$1 missing="" rel
+  for rel in $REQUIRED; do [ -f "$root/$rel" ] || missing="$missing $rel"; done
+  if [ -n "$missing" ]; then say "  ✗ missing:$missing"; return 1; fi
+  return 0
+}
+
+java_candidates() {
+  local candidate home
+  case "${HIRAIA_JAVA:-}" in
+    none) return 0 ;;
+    "") ;;
+    *) printf '%s\n' "$HIRAIA_JAVA"; return 0 ;;
+  esac
+  # macOS's /usr/bin/java is a stub that only offers to install Java; look where this project's
+  # builds get theirs.
+  for candidate in "${JAVA_HOME:-}/bin/java" /opt/homebrew/opt/openjdk@17/bin/java /opt/homebrew/opt/openjdk/bin/java \
+      "/Applications/Android Studio.app/Contents/jbr/Contents/Home/bin/java"; do
+    if [ -x "$candidate" ]; then printf '%s\n' "$candidate"; fi
+  done
+  home=$(/usr/libexec/java_home 2>/dev/null || true)
+  if [ -n "$home" ] && [ -x "$home/bin/java" ]; then printf '%s\n' "$home/bin/java"; fi
+  return 0
+}
+
+# Loads the key the way the Gradle build does (KeyStore.getKey with keyAlias and keyPassword) and
+# prints its certificate's SHA-256. Exit 2: the keystore does not open with storePassword; 3: no
+# private key under keyAlias; 4: keyPassword does not unlock it. Passwords come from the environment.
+write_key_check() {
+  ensure_work
+  [ -f "$WORK/KeyCheck.java" ] && return 0
+  cat > "$WORK/KeyCheck.java" <<'EOF'
+import java.io.File;
+import java.security.*;
+
+public class KeyCheck {
+    public static void main(String[] args) {
+        KeyStore store;
+        try {
+            store = KeyStore.getInstance(new File(args[0]), System.getenv("HK_STOREPASS").toCharArray());
+        } catch (Exception e) {
+            System.exit(2);
+            return;
+        }
+        try {
+            Key key = store.getKey(args[1], System.getenv("HK_KEYPASS").toCharArray());
+            if (!(key instanceof PrivateKey)) System.exit(3);
+            byte[] digest = MessageDigest.getInstance("SHA-256").digest(store.getCertificate(args[1]).getEncoded());
+            StringBuilder hex = new StringBuilder();
+            for (byte b : digest) hex.append(String.format("%02x", b));
+            System.out.println(hex);
+        } catch (UnrecoverableKeyException e) {
+            System.exit(4);
+        } catch (Exception e) {
+            System.exit(5);
+        }
+    }
+}
+EOF
+}
+
+# Gradle signs with the keystore storeFile names, resolving a relative path against the app module.
+check_store_file() {
+  local root=$1 store_file=$2 file="~/.hiraia/$PROPERTIES"
+  case "$store_file" in
+    "$EXPECTED_STORE") ;;
+    */.hiraia/provisioner-keys/provisioner.jks)
+      # Another Mac's home: expected inside a backup (restore points it here), a problem once here.
+      if [ "$root" = "$HIRAIA" ]; then
+        say "  ! $file names another Mac's path ($store_file), so building Hiraia Setup here will fail. Fix it with:"
+        say "      sed -i '' 's|^[[:space:]]*storeFile[[:space:]]*[=:].*|storeFile=$EXPECTED_STORE|' $file"
+      fi ;;
+    "") say "  ✗ $file has no storeFile, so the build cannot find the key"; return 1 ;;
+    /*)
+      # The same file under another name is the same key.
+      if [ "$root" = "$HIRAIA" ] && [ -n "$(file_id "$store_file")" ] && \
+          [ "$(file_id "$store_file")" = "$(file_id "$root/provisioner-keys/provisioner.jks")" ]; then return 0; fi
+      say "  ✗ $file signs with $store_file, not the provisioner.jks beside it, so a backup would not hold the key the build uses"
+      return 1 ;;
+    *) say "  ! $file's storeFile ($store_file) is relative, which Gradle reads against packages/provisioner/android/app. It should be $EXPECTED_STORE" ;;
+  esac
+  return 0
+}
+
+check_signing_key() {
+  local root=$1 props="$1/$PROPERTIES" store="$1/provisioner-keys/provisioner.jks"
+  local alias java fingerprint status=99 tried=0 bad=0
+  alias=$(property "$props" keyAlias)
+  [ -n "$(property "$props" storePassword)" ] || { say "  ✗ keystore.properties has no storePassword"; return 1; }
+  [ -n "$alias" ] || { say "  ✗ keystore.properties has no keyAlias, so the build cannot find the key"; return 1; }
+  [ -n "$(property "$props" keyPassword)" ] || { say "  ✗ keystore.properties has no keyPassword, so the build cannot unlock the key"; return 1; }
+  check_store_file "$root" "$(property "$props" storeFile)" || bad=1
+  while IFS= read -r java; do
+    [ -n "$java" ] || continue
+    tried=1
+    write_key_check
+    status=0
+    fingerprint=$(HK_STOREPASS="$(property "$props" storePassword)" HK_KEYPASS="$(property "$props" keyPassword)" \
+      "$java" "$WORK/KeyCheck.java" "$store" "$alias" </dev/null 2>/dev/null) || status=$?
+    # Anything else is a java that could not run the check (older than 11, or not a JDK): try the next.
+    case $status in 0|2|3|4) break ;; *) status=99 ;; esac
+  done <<EOF
+$(java_candidates)
+EOF
+  case $status in
+    0) say "  ✓ Hiraia Setup signing key unlocks with its saved passwords · certificate ${fingerprint:0:8}…${fingerprint: -4}" ;;
+    2) say "  ✗ Hiraia Setup signing key: provisioner.jks does not open with the storePassword in keystore.properties"; return 1 ;;
+    3) say "  ✗ Hiraia Setup signing key: provisioner.jks has no private key named $alias (keyAlias)"; return 1 ;;
+    4) say "  ✗ Hiraia Setup signing key: the keyPassword in keystore.properties does not unlock the key"; return 1 ;;
+    *) if [ $tried = 0 ]; then
+         say "  ? Hiraia Setup signing key: not opened (no Java on this Mac); its files are included as they are"
+       else
+         say "  ? Hiraia Setup signing key: not opened (no Java 11 or later could run the check); its files are included as they are"
+       fi ;;
+  esac
+  return $bad
+}
+
+spki_sha256() { # PEM public key on stdin
+  openssl pkey -pubin -outform DER 2>/dev/null | shasum -a 256 | cut -d' ' -f1
+}
+
+check_server_identity() {
+  local root=$1 dir="$1/provisioning" from_key from_cert f
+  local empty=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  # SHA-256 of nothing
+  from_key=$(openssl pkey -in "$dir/tls-key.pem" -pubout 2>/dev/null | spki_sha256 || true)
+  from_cert=$(openssl x509 -in "$dir/tls-cert.pem" -noout -pubkey 2>/dev/null | spki_sha256 || true)
+  if [ -z "$from_key" ] || [ "$from_key" = "$empty" ] || [ "$from_key" != "$from_cert" ]; then
+    say "  ✗ server identity: tls-key.pem does not match tls-cert.pem"
+    return 1
+  fi
+  for f in token receipt-key; do
+    [ -s "$dir/$f" ] || { say "  ✗ server identity: $f is empty"; return 1; }
+  done
+  say "  ✓ server identity: TLS key matches its certificate · phones pin ${from_key:0:8}…${from_key: -4}"
+  return 0
+}
+
+# The highest number either issued-ID log records. Each line starts with the number, then a tab.
+highest_issued() {
+  cat "$1/provisioning/issued.log" "$1/provisioning.issued.log" 2>/dev/null | cut -f1 | grep -E '^[0-9]+$' | sort -n | tail -1 || true
+}
+
+check_registry() {
+  local root=$1 db="$1/$REGISTRY" result count first last issued highest logged
+  if ! result=$(sql "$db" 'PRAGMA integrity_check;' 2>&1) || [ "$(printf '%s\n' "$result" | head -1)" != ok ]; then
+    if [ -e "$db-journal" ] || [ -e "$db-wal" ]; then
+      say "  ✗ phone registry: provisioning.db has an unfinished write beside it (-journal or -wal). Start the provisioning server once and stop it, then try again"
+    else
+      say "  ✗ phone registry: provisioning.db can't be read ($(printf '%s\n' "$result" | head -1))"
+    fi
+    return 1
+  fi
+  count=$(sql "$db" 'SELECT count(*) FROM devices;' 2>/dev/null || true)
+  [ -n "$count" ] || { say "  ✗ phone registry: provisioning.db has no devices table"; return 1; }
+  issued=$(grep -c . "$root/provisioning/issued.log" 2>/dev/null || true)
+  if [ "$count" -eq 0 ]; then
+    if [ "${issued:-0}" -gt 0 ]; then
+      say "  ✗ phone registry: it has no phones, yet the issued-ID log records $issued IDs, so it is not the registry that issued them"
+      return 1
+    fi
+    say "  ✓ phone registry: no phones yet"
+    return 0
+  fi
+  first=$(sql "$db" 'SELECT hiraia_id FROM devices ORDER BY seq LIMIT 1;' 2>/dev/null || true)
+  last=$(sql "$db" 'SELECT hiraia_id FROM devices ORDER BY seq DESC LIMIT 1;' 2>/dev/null || true)
+  highest=$(sql "$db" 'SELECT max(seq) FROM devices;' 2>/dev/null || true)
+  [ -n "$first" ] && [ -n "$last" ] && [ -n "$highest" ] || { say "  ✗ phone registry: provisioning.db's devices can't be read"; return 1; }
+  say "  ✓ phone registry: $count phones ($first to $last) · ${issued:-0} lines in the issued-ID log"
+  logged=$(highest_issued "$root")
+  if [ -n "$logged" ] && [ "$logged" -gt "$highest" ]; then
+    say "  ! phone registry: the issued-ID logs go up to number $logged, the registry only to $highest"
+  fi
+  return 0
+}
+
+check_all() {
+  local root=$1 ok=0
+  check_present "$root" || return 1
+  check_signing_key "$root" || ok=1
+  check_server_identity "$root" || ok=1
+  check_registry "$root" || ok=1
+  return $ok
+}
+
+registry_facts() { # "PHONES HIGHEST-NUMBER", or nothing when unreadable
+  sql "$1" "SELECT count(*) || ' ' || coalesce(max(seq), 0) FROM devices;" 2>/dev/null || true
+}
+
+# ---------------------------------------------------------------------------------------------
+# Disk images. hdiutil can briefly answer "Resource temporarily unavailable", notably just after
+# creating an image, so the calls that open one retry.
+# ---------------------------------------------------------------------------------------------
+
+# "DEVICE<TAB>MOUNT POINT" for each part of the image FILE-ID (from file_id) this Mac has attached.
+# Matched by file identity, so a path spelled differently (case, symlink, Unicode form) still matches.
+image_parts() {
+  local plist i=-1 j path dev point
+  plist=$(hdiutil info -plist 2>/dev/null) || return 0
+  while :; do
+    i=$((i + 1))
+    path=$(printf '%s' "$plist" | plutil -extract "images.$i.image-path" raw -o - - 2>/dev/null) || break
+    [ "$(file_id "$path")" = "$1" ] || continue
+    j=0
+    while dev=$(printf '%s' "$plist" | plutil -extract "images.$i.system-entities.$j.dev-entry" raw -o - - 2>/dev/null); do
+      point=$(printf '%s' "$plist" | plutil -extract "images.$i.system-entities.$j.mount-point" raw -o - - 2>/dev/null || true)
+      printf '%s\t%s\n' "$dev" "$point"
+      j=$((j + 1))
+    done
+  done
+  return 0
+}
+
+mounted_at() { # FILE-ID → where that image is mounted, if anywhere
+  local dev point
+  while IFS="$TAB" read -r dev point; do
+    if [ -n "$point" ]; then printf '%s\n' "$point"; return 0; fi
+  done <<EOF
+$(image_parts "$1")
+EOF
+  return 1
+}
+
+# An image attached but mounted nowhere is what an interrupted open leaves; it blocks the next one.
+release_unmounted() { # FILE-ID
+  local dev point first=""
+  while IFS="$TAB" read -r dev point; do
+    [ -n "$dev" ] || continue
+    [ -n "$point" ] && return 0
+    [ -n "$first" ] || first=$dev
+  done <<EOF
+$(image_parts "$1")
+EOF
+  if [ -n "$first" ]; then hdiutil detach "$first" -force -quiet 2>/dev/null || true; fi
+  return 0
+}
+
+detach() { # MOUNT POINT
+  hdiutil detach "$1" -quiet 2>/dev/null || { sleep 1; hdiutil detach "$1" -force -quiet 2>/dev/null; } || true
+  rmdir "$1" 2>/dev/null || true
+}
+
+attach() { # IMAGE MOUNT-POINT, with HK_SECRET; on failure ATTACH_ERROR holds hdiutil's reason
+  local tries=0 id
+  id=$(file_id "$1")
+  ensure_work
+  while :; do
+    if run_hdiutil "$WORK/attach.err" attach "$1" -stdinpass -readonly -nobrowse -noautoopen -mountpoint "$2"; then
+      return 0
+    fi
+    ATTACH_ERROR=$(cat "$WORK/attach.err")
+    tries=$((tries + 1))
+    release_unmounted "$id"
+    case "$ATTACH_ERROR" in
+      *"temporarily unavailable"*|*"Resource busy"*) if [ $tries -lt 8 ]; then sleep 1; continue; fi ;;
+    esac
+    ATTACH_ERROR=$(printf '%s\n' "$ATTACH_ERROR" | sed 's/^hdiutil: //' | head -1)
+    return 1
+  done
+}
+
+is_encrypted() { # IMAGE → 0 yes, 1 no, 2 can't tell
+  local tries=0 answer
+  while [ $tries -lt 8 ]; do
+    answer=$(hdiutil isencrypted "$1" 2>&1 || true)
+    case "$answer" in
+      *"encrypted: YES"*) return 0 ;;
+      *"encrypted: NO"*) return 1 ;;
+      *"temporarily unavailable"*|*"Resource busy"*) tries=$((tries + 1)); sleep 1 ;;
+      *) return 2 ;;
+    esac
+  done
+  return 2
+}
+
+# Opens BACKUP (a .dmg, or a folder holding an opened one) and sets OPENED.
+open_backup() {
+  local backup=$1 id point encrypted=0
+  if [ -d "$backup" ]; then
+    [ -f "$backup/MANIFEST.tsv" ] || die "$backup is not an opened provisioning-keys backup (no MANIFEST.tsv)"
+    OPENED=$backup
+    return 0
+  fi
+  [ -f "$backup" ] || die "no such backup: $backup"
+  id=$(file_id "$backup")
+  if point=$(mounted_at "$id"); then
+    # Another run of this tool closes its copy when it is done, so it is not ours to read.
+    case "${point##*/}" in
+      provisioning-keys-mount.*)
+        die "another provisioning-keys run has $(basename "$backup") open right now. Wait for it to finish; if none is running, close it with: hdiutil detach \"$point\"" ;;
+    esac
+    # Opened by hand, say double-clicked in Finder: use it where it is, and leave it open.
+    [ -f "$point/MANIFEST.tsv" ] || die "$backup is open at $point, but that is not a provisioning-keys backup"
+    say "(using the copy of $(basename "$backup") already open at $point)"
+    OPENED=$point
+    return 0
+  fi
+  release_unmounted "$id"
+  is_encrypted "$backup" || encrypted=$?
+  if [ $encrypted -eq 1 ]; then die "$backup is not encrypted, so it is not a backup this tool made"; fi
+  read_hidden "Password for $(basename "$backup"): "
+  MOUNT=$(mktemp -d "$TMP_ROOT/provisioning-keys-mount.XXXXXX")
+  OWN_MOUNT=1
+  if ! attach "$backup" "$MOUNT"; then
+    HK_SECRET=""
+    rmdir "$MOUNT" 2>/dev/null || true
+    MOUNT=""; OWN_MOUNT=0
+    case "$ATTACH_ERROR" in
+      *"Authentication error"*) die "wrong password for $(basename "$backup")" ;;
+      *) die "could not open $backup: $ATTACH_ERROR" ;;
+    esac
+  fi
+  HK_SECRET=""
+  [ -f "$MOUNT/MANIFEST.tsv" ] || die "$backup opened, but holds no MANIFEST.tsv: not a provisioning-keys backup"
+  OPENED=$MOUNT
+}
+
+# Every file the manifest names is there with its recorded SHA-256, and nothing else is.
+check_manifest() {
+  local root=$1 hash rel bad=0 extra
+  while IFS="$TAB" read -r hash rel; do
+    [ -n "$hash" ] || continue
+    if [ ! -f "$root/hiraia/$rel" ]; then say "  ✗ $rel is missing from the backup"; bad=1
+    elif [ "$(sha256 "$root/hiraia/$rel")" != "$hash" ]; then say "  ✗ $rel does not match its recorded checksum"; bad=1
+    fi
+  done < "$root/MANIFEST.tsv"
+  # Finder's own files are not part of the backup, wherever a copy of it has been.
+  extra=$(comm -13 <(cut -f2 "$root/MANIFEST.tsv" | sort) \
+    <(cd "$root/hiraia" && find . -type f ! -name .DS_Store ! -name '._*' | sed 's|^\./||' | sort))
+  if [ -n "$extra" ]; then say "  ✗ the backup holds files its manifest does not list: $(printf '%s' "$extra" | tr '\n' ' ')"; bad=1; fi
+  if [ $bad -eq 0 ]; then say "  ✓ $(grep -c . "$root/MANIFEST.tsv") files, every checksum matches"; fi
+  return $bad
+}
+
+# ---------------------------------------------------------------------------------------------
+# Passwords
+# ---------------------------------------------------------------------------------------------
+
+read_hidden() { # PROMPT → HK_SECRET
+  HK_SECRET=""
+  if [ -t 0 ]; then
+    TTY_STATE=$(stty -g </dev/tty 2>/dev/null || true)
+    IFS= read -r -s -p "$1" HK_SECRET </dev/tty || true
+    printf '\n' >/dev/tty
+    if [ -n "$TTY_STATE" ]; then stty "$TTY_STATE" </dev/tty 2>/dev/null || true; fi
+    TTY_STATE=""
+  else
+    IFS= read -r HK_SECRET || true
+  fi
+}
+
+check_supplied() {
+  local distinct
+  [ "${#HK_SECRET}" -ge "$MIN_CHOSEN" ] || die "the password must be at least $MIN_CHOSEN characters"
+  distinct=$(printf '%s' "$HK_SECRET" | fold -w1 | sort -u | wc -l | tr -d ' ')
+  [ "$distinct" -ge "$MIN_DISTINCT" ] || die "that password repeats too few characters to be strong"
+}
+
+# Six words from the system dictionary, about 93 bits; long random text where there is none.
+generate_password() {
+  local words count index out="" i
+  words=$(grep -E '^[a-z]{4,7}$' /usr/share/dict/words 2>/dev/null || true)
+  count=$(printf '%s\n' "$words" | grep -c . || true)
+  if [ "$count" -ge 20000 ]; then
+    for i in 1 2 3 4 5 6; do
+      index=$(( $(od -An -N4 -tu4 /dev/urandom | tr -d ' ') % count + 1 ))
+      out="$out${out:+-}$(printf '%s\n' "$words" | sed -n "${index}p")"
+    done
+  else
+    out=$(openssl rand -base64 30 | tr -d '\n/+=')
+  fi
+  HK_FIRST=$out
+}
+
+forget_clipboard() { # empties the clipboard if it holds the password
+  if command -v pbpaste >/dev/null 2>&1 && [ "$(pbpaste 2>/dev/null || true)" = "$HK_FIRST" ]; then
+    pbcopy </dev/null 2>/dev/null || true
+  fi
+  return 0
+}
+
+new_password() { # FILE the password is for; sets HK_SECRET
+  local tries=0 item
+  if [ ! -t 0 ]; then read_hidden ""; check_supplied; return 0; fi
+  item="Hiraia provisioning keys - $(basename "$1")"
+  generate_password
+  printf '\nThe password for %s. It is shown this once, and nothing else can open the backup:\n\n    %s\n\n' \
+    "$(basename "$1")" "$HK_FIRST" >/dev/tty
+  printf 'Save it in your password manager now, as a new item named "%s".\n' "$item" >/dev/tty
+  printf 'Each backup file has its own password; older copies keep theirs.\n' >/dev/tty
+  IFS= read -r -p "Press Enter once it is saved: " _ </dev/tty || true
+  # Off the screen, out of the scrollback and off the clipboard, so it has to come back from where
+  # it was saved.
+  printf '\033[H\033[2J\033[3J' >/dev/tty
+  forget_clipboard
+  say "The password is off the screen now."
+  while :; do
+    read_hidden "Paste it back from your password manager to confirm: "
+    [ "$HK_SECRET" = "$HK_FIRST" ] && break
+    tries=$((tries + 1))
+    if [ $tries -ge 3 ]; then
+      HK_FIRST=""
+      die "the password was not confirmed, so nothing was backed up. Delete the \"$item\" item, then run backup again for a new password"
+    fi
+    say "That doesn't match what was shown."
+  done
+  forget_clipboard
+  HK_FIRST=""
+  say "Password confirmed."
+}
+
+# ---------------------------------------------------------------------------------------------
+# Commands
+# ---------------------------------------------------------------------------------------------
+
+cmd_list() {
+  say "Provisioning keys on this Mac (in $HIRAIA; nothing secret is shown):"
+  local ok=0
+  check_all "$HIRAIA" || ok=1
+  say "  files: $(files_in "$HIRAIA" | tr '\n' ' ')"
+  return $ok
+}
+
+default_output() {
+  local base candidate n=2
+  base="$HOME/Desktop/hiraia-provisioning-keys-$(date +%Y-%m-%d)"
+  candidate="$base.dmg"
+  while [ -e "$candidate" ]; do candidate="$base-$n.dmg"; n=$((n + 1)); done
+  printf '%s\n' "$candidate"
+}
+
+# The server script a process runs, resolved against the process's working directory.
+server_script_of() { # PID
+  local word cwd
+  set -f
+  for word in $(ps -ww -o args= -p "$1" 2>/dev/null); do
+    case "$word" in
+      */server.py|server.py) ;;
+      *) continue ;;
+    esac
+    set +f
+    case "$word" in
+      /*) printf '%s\n' "$word" ;;
+      *) cwd=$(lsof -a -p "$1" -d cwd -Fn 2>/dev/null | sed -n 's/^n//p' | head -1)
+         printf '%s\n' "${cwd:-?}/$word" ;;
+    esac
+    return 0
+  done
+  set +f
+  return 1
+}
+
+# "PID COMMAND" of each provisioning server serving this HOME's registry. One whose environment
+# macOS will not show (another user's) counts too: when it can't be told, stop.
+servers_here() {
+  local pid comm script environment
+  for pid in $(pgrep -f 'server\.py' 2>/dev/null || true); do
+    comm=$(ps -o comm= -p "$pid" 2>/dev/null || true)
+    case "${comm##*/}" in python*|Python*|uv) ;; *) continue ;; esac
+    script=$(server_script_of "$pid") || continue
+    script=$(printf '%s\n' "$script" | sed 's|/\./|/|g')
+    case "$script" in \?/*|*/provisioner/server/server.py) ;; *) continue ;; esac
+    environment=$(ps -E -ww -o command= -p "$pid" 2>/dev/null || true)
+    case "$environment" in
+      *" HOME=$HOME "*|*" HOME=$HOME") ;;
+      *" HOME="*) continue ;;
+    esac
+    ps -ww -o pid=,args= -p "$pid" 2>/dev/null | cut -c1-120 || true
+  done
+  return 0
+}
+
+# Staging folders an interrupted backup left behind hold plain copies of the keys.
+sweep_leftovers() {
+  local dir
+  for dir in "$TMP_ROOT"/provisioning-keys.* "$TMP_ROOT"/provisioning-keys-work.*; do
+    [ -d "$dir" ] || continue
+    [ -n "$(find "$dir" -maxdepth 0 -mmin +10 2>/dev/null)" ] || continue
+    rm -rf "$dir"
+    say "  removed $dir, left by an interrupted run"
+  done
+  for dir in "$TMP_ROOT"/provisioning-keys-mount.*; do
+    [ -d "$dir" ] || continue
+    [ -n "$(find "$dir" -maxdepth 0 -mmin +10 2>/dev/null)" ] || continue
+    if mount | grep -qF " on $(cd "$dir" && pwd -P) "; then
+      say "  ! a backup is still open at $dir from an interrupted run; close it with: hdiutil detach \"$dir\""
+    fi
+  done
+  return 0
+}
+
+write_readme() { # STAGE
+  cat > "$1/README.txt" <<EOF
+Hiraia provisioning keys, backed up $(date '+%Y-%m-%d %H:%M %Z') from $(scutil --get ComputerName 2>/dev/null || hostname).
+
+What is here (hiraia/ mirrors ~/.hiraia/):
+  provisioner-keys/          Hiraia Setup's signing key and its password file. Without it,
+                             provisioned phones can never take a newer Hiraia Setup.
+  provisioning/              The provisioning server's identity (tls-key.pem, tls-cert.pem, token,
+                             receipt-key) and phone registry (provisioning.db, issued.log).
+                             Phones trust only this identity.
+  provisioning.issued.log    The copy of the issued-ID log the server keeps beside its folder.
+
+At backup time:
+$(check_all "$1/hiraia" 2>&1)
+
+To restore on a Mac with the Hiraia repo, from the repo's folder:
+  bash packages/provisioner/scripts/provisioning-keys restore /path/to/this.dmg
+Without the repo: double-click the .dmg and enter the password, then in Terminal:
+  bash "/Volumes/$VOLUME/provisioning-keys" restore "/Volumes/$VOLUME"
+Eject the volume in Finder when it is done.
+
+restore puts back what is missing and merges the issued-ID logs. It replaces an empty registry
+with this one; anything else that differs is reported and left alone until you add
+--replace-registry (the registry) or --force (key files). What it replaces is kept as
+*.replaced-<time>. It points keystore.properties' storeFile at the new Mac's key for you.
+
+By hand: with the provisioning server stopped, copy everything in hiraia/ into ~/.hiraia/
+(folders mode 700, files mode 600). Then set storeFile in keystore.properties to the full path of
+provisioner.jks on the new Mac.
+
+MANIFEST.tsv lists every file under hiraia/ with its SHA-256.
+EOF
+}
+
+cmd_backup() {
+  local out="" arg dir rel servers size
+  for arg in "$@"; do
+    case "$arg" in -*) usage ;; *) [ -z "$out" ] || usage; out=$arg ;; esac
+  done
+  [ -n "$out" ] || out=$(default_output)
+  case "$out" in *.dmg) ;; *) out="$out.dmg" ;; esac
+  dir=$(dirname "$out")
+  [ -e "$out" ] && die "$out already exists; name another file: provisioning-keys backup /path/to/file.dmg"
+  [ -d "$dir" ] || die "no such folder: $dir; name another place: provisioning-keys backup /path/to/file.dmg"
+  [ -w "$dir" ] || die "can't write to $dir; name another place: provisioning-keys backup /path/to/file.dmg"
+  out="$(canonical "$dir")/$(basename "$out")"
+
+  sweep_leftovers
+  say "Checking what to back up:"
+  check_all "$HIRAIA" || die "fix the problems above first; nothing was backed up"
+  servers=$(servers_here)
+  if [ -n "$servers" ]; then
+    say "  ! the provisioning server is running, so phones that register after this are not in the backup:"
+    say "      $servers"
+  fi
+
+  new_password "$out"
+  [ -e "$out" ] && { HK_SECRET=""; die "$out appeared while this ran; nothing was backed up. Name another file"; }
+  STAGE=$(mktemp -d "$TMP_ROOT/provisioning-keys.XXXXXX")
+  : > "$STAGE/MANIFEST.tsv"
+  while IFS= read -r rel; do
+    [ -n "$rel" ] || continue
+    mkdir -p "$STAGE/hiraia/$(dirname "$rel")"
+    if [ "$rel" = "$REGISTRY" ]; then
+      # A consistent snapshot even while the server writes, as one self-contained file.
+      sql "$HIRAIA/$rel" "VACUUM INTO '$STAGE/hiraia/$rel'" 2>/dev/null || die "could not snapshot $rel"
+    else
+      cp -p "$HIRAIA/$rel" "$STAGE/hiraia/$rel"
+    fi
+    chmod 600 "$STAGE/hiraia/$rel"
+    printf '%s\t%s\n' "$(sha256 "$STAGE/hiraia/$rel")" "$rel" >> "$STAGE/MANIFEST.tsv"
+  done <<EOF
+$(files_in "$HIRAIA")
+EOF
+  write_readme "$STAGE"
+  cp "$SELF_PATH" "$STAGE/provisioning-keys"
+  chmod 700 "$STAGE/provisioning-keys"
+
+  # Made under a name of this run's own and renamed into place only once it has passed its check,
+  # so an interrupted or failed run never leaves an unchecked backup where a good one is expected.
+  PARTIAL="$(dirname "$out")/.$(basename "$out" .dmg).partial-$$.dmg"
+  ensure_work
+  if ! run_hdiutil "$WORK/create.err" create -srcfolder "$STAGE" -volname "$VOLUME" -encryption AES-256 \
+      -stdinpass -format UDZO -fs APFS "$PARTIAL"; then
+    HK_SECRET=""
+    die "could not create the backup in $(dirname "$out"): $(sed 's/^hdiutil: //' "$WORK/create.err" | head -1)"
+  fi
+  chmod 600 "$PARTIAL"
+  rm -rf "$STAGE"; STAGE=""
+
+  # Open it again with the password just set, without asking for it again.
+  say "Made the backup. Opening it again to check it:"
+  MOUNT=$(mktemp -d "$TMP_ROOT/provisioning-keys-mount.XXXXXX")
+  OWN_MOUNT=1
+  if ! attach "$PARTIAL" "$MOUNT"; then
+    HK_SECRET=""
+    rmdir "$MOUNT" 2>/dev/null || true
+    MOUNT=""; OWN_MOUNT=0
+    die "the new backup would not open again to be checked ($ATTACH_ERROR); nothing was kept. Run backup again"
+  fi
+  HK_SECRET=""
+  OPENED=$MOUNT
+  check_manifest "$OPENED" || die "the new backup failed its check; nothing was kept. Run backup again"
+  check_all "$OPENED/hiraia" || die "the new backup failed its check; nothing was kept. Run backup again"
+  detach "$MOUNT"; MOUNT=""; OWN_MOUNT=0
+  mv -n "$PARTIAL" "$out"
+  [ ! -e "$PARTIAL" ] || die "$out appeared while this ran; this run's backup was discarded. Run backup again"
+  PARTIAL=""
+  size=$(du -h "$out" | cut -f1 | tr -d ' ')
+
+  say ""
+  say "Backed up and checked: $out ($size)"
+  say ""
+  say "Now:"
+  if [ -t 0 ]; then
+    say "  1. Its password is in your password manager, as \"Hiraia provisioning keys - $(basename "$out")\"."
+    say "     Without it nobody can open this file, you included."
+  else
+    say "  1. Keep the password you gave in your password manager. Without it nobody can open this file."
+  fi
+  say "  2. Keep the file in two places that won't be lost together, e.g. Google Drive and a USB stick"
+  say "     kept away from this laptop. It is locked with a long password, so cloud storage is fine."
+  say "  3. Run this again after each provisioning batch. The keys never change, but the registry"
+  say "     gains every new phone."
+  if [ -n "$servers" ]; then
+    say "  !  The provisioning server was running, so phones that register from now on are not in this backup."
+  fi
+  say ""
+  say "To check a copy later:  bash \"$SELF_PATH\" verify \"$out\""
+}
+
+cmd_verify() {
+  [ $# -eq 1 ] || usage
+  open_backup "$1"
+  say "Checking $1:"
+  local bad=0 hash rel here there missing
+  check_manifest "$OPENED" || bad=1
+  check_all "$OPENED/hiraia" || bad=1
+  say "Compared with this Mac ($HIRAIA):"
+  while IFS="$TAB" read -r hash rel; do
+    [ -n "$hash" ] || continue
+    if [ ! -f "$HIRAIA/$rel" ]; then say "  - $rel: not on this Mac"; continue; fi
+    [ "$(sha256 "$HIRAIA/$rel")" = "$hash" ] && continue
+    case "$rel" in
+      "$REGISTRY")
+        here=$(registry_facts "$HIRAIA/$rel"); there=$(registry_facts "$OPENED/hiraia/$rel")
+        say "  · registry: ${there%% *} phones in the backup, ${here%% *} on this Mac" ;;
+      provisioning/issued.log|provisioning.issued.log)
+        missing=$(comm -23 <(grep . "$OPENED/hiraia/$rel" | sort -u) <(grep . "$HIRAIA/$rel" | sort -u) | grep -c . || true)
+        if [ "$missing" -eq 0 ]; then say "  · $rel has grown since the backup (it gains a line per phone)"
+        else say "  ! $rel on this Mac lacks $missing of the backup's lines (restore would merge them back)"
+        fi ;;
+      "$PROPERTIES")
+        if [ "$(without_store_file "$HIRAIA/$rel")" != "$(without_store_file "$OPENED/hiraia/$rel")" ]; then
+          say "  ! $rel differs from this Mac's"
+        fi ;;
+      provisioning/host) ;;
+      *) say "  ! $rel differs from this Mac's" ;;
+    esac
+  done < "$OPENED/MANIFEST.tsv"
+  [ $bad -eq 0 ] || die "the backup failed its check"
+  say "The backup is good."
+}
+
+set_aside() { # PATH: renames it, and for a database its SQLite side files, to *.replaced-STAMP
+  local path=$1 suffix
+  if [ -e "$path" ]; then
+    mv "$path" "$path.replaced-$STAMP"
+    say "  ~ ${path#$HIRAIA/}: the old one is now ${path##*/}.replaced-$STAMP"
+  fi
+  # SQLite pairs side files with a database by name. Left beside a restored registry, another
+  # database's journal would be replayed into it.
+  for suffix in -wal -shm -journal; do
+    if [ -e "$path$suffix" ]; then mv "$path$suffix" "$path.replaced-$STAMP$suffix"; fi
+  done
+  return 0
+}
+
+# Puts the backup's REL in place as a unit: the copy is written and checked beside the target
+# first, and only then is the current file set aside and the copy renamed in. The target is never
+# left missing, and a failure leaves the current file where it was.
+install_file() { # REL HASH
+  local rel=$1 hash=$2 dest="$HIRAIA/$1" tmp
+  RESTORING=$rel
+  mkdir -p "$(dirname "$dest")"; chmod 700 "$(dirname "$dest")"
+  tmp=$(temp_beside "$dest")
+  cp "$OPENED/hiraia/$rel" "$tmp" || die "could not copy $rel"
+  chmod 600 "$tmp"
+  [ "$(sha256 "$tmp")" = "$hash" ] || die "$rel did not copy correctly"
+  set_aside "$dest"
+  if ! mv "$tmp" "$dest"; then
+    if [ -e "$dest.replaced-$STAMP" ]; then mv "$dest.replaced-$STAMP" "$dest" || true; fi
+    die "could not put $rel in place"
+  fi
+  RESTORED=$((RESTORED + 1))
+  RESTORING=""
+}
+
+# A keystore.properties from another Mac names that Mac's provisioner.jks; point it at this one's.
+localise_store_file() {
+  local props="$HIRAIA/$PROPERTIES" store_file tmp
+  store_file=$(property "$props" storeFile)
+  case "$store_file" in
+    "$EXPECTED_STORE") return 0 ;;
+    */.hiraia/provisioner-keys/provisioner.jks) ;;
+    *) return 0 ;;
+  esac
+  tmp=$(temp_beside "$props")
+  sed "s|^[[:space:]]*storeFile[[:space:]]*[=:].*|storeFile=$EXPECTED_STORE|" "$props" > "$tmp"
+  chmod 600 "$tmp"
+  mv "$tmp" "$props"
+  say "  ~ $PROPERTIES: storeFile now names this Mac's provisioner.jks"
+}
+
+# Appends the backup's lines this Mac's log lacks. The merged log is written beside the live one
+# and renamed over it only once it begins with the live log unchanged, so it is never shortened or
+# left half-written.
+merge_log() { # REL
+  local rel=$1 live="$HIRAIA/$1" tmp line added=0 size
+  RESTORING=$rel
+  # The backup's lines this Mac's log lacks, in the backup's order (grep -f with no lines at all
+  # would match nothing, and so keep everything, which is also right).
+  if [ -z "$(grep -Fxv -f "$live" "$OPENED/hiraia/$rel" | grep . || true)" ]; then
+    say "  = $rel: this Mac's already has every line of the backup's"
+    RESTORING=""
+    return 0
+  fi
+  tmp=$(temp_beside "$live")
+  cp -p "$live" "$tmp"
+  if [ -n "$(tail -c1 "$tmp")" ]; then printf '\n' >> "$tmp"; fi
+  while IFS= read -r line || [ -n "$line" ]; do
+    [ -n "$line" ] || continue
+    grep -Fxq -- "$line" "$tmp" && continue
+    printf '%s\n' "$line" >> "$tmp"
+    added=$((added + 1))
+  done < "$OPENED/hiraia/$rel"
+  size=$(stat -f %z "$live")
+  head -c "$size" "$tmp" | cmp -s - "$live" || die "the merged $rel would not begin with this Mac's; left it as it was"
+  chmod 600 "$tmp"
+  mv "$tmp" "$live"
+  say "  + $rel: merged in $added line(s) from the backup"
+  RESTORING=""
+}
+
+cmd_restore() {
+  local backup="" force=0 replace_registry=0 arg hash rel dest servers conflicts="" registry_note=""
+  local here there here_phones here_top there_phones there_top
+  for arg in "$@"; do
+    case "$arg" in
+      --force) force=1 ;;
+      --replace-registry) replace_registry=1 ;;
+      -*) usage ;;
+      *) [ -z "$backup" ] || usage; backup=$arg ;;
+    esac
+  done
+  [ -n "$backup" ] || usage
+  servers=$(servers_here)
+  [ -z "$servers" ] || die "stop the provisioning server first, since it keeps its identity in memory:
+  $servers"
+  open_backup "$backup"
+  say "Checking the backup:"
+  check_manifest "$OPENED" || die "the backup failed its check; nothing was restored"
+  STAMP="$(date +%Y%m%d-%H%M%S)-$$"
+  mkdir -p "$HIRAIA"; chmod 700 "$HIRAIA"
+
+  say "Restoring into $HIRAIA:"
+  while IFS="$TAB" read -r hash rel; do
+    [ -n "$hash" ] || continue
+    dest="$HIRAIA/$rel"
+    if [ ! -e "$dest" ]; then
+      install_file "$rel" "$hash"  # also sets aside a missing registry's orphaned side files
+      say "  + $rel"
+      if [ "$rel" = "$PROPERTIES" ]; then localise_store_file; fi
+    elif [ -f "$dest" ] && [ "$(sha256 "$dest")" = "$hash" ]; then
+      say "  = $rel already in place"
+    else
+      case "$rel" in
+        provisioning/issued.log|provisioning.issued.log) merge_log "$rel" ;;
+        provisioning/host) say "  = $rel: kept this Mac's (the server updates it)" ;;
+        "$REGISTRY")
+          here=$(registry_facts "$dest"); there=$(registry_facts "$OPENED/hiraia/$rel")
+          here_phones=${here%% *}; here_top=${here##* }; there_phones=${there%% *}; there_top=${there##* }
+          if [ -z "$here" ] || [ "$here_phones" = 0 ] || [ "$replace_registry" = 1 ]; then
+            install_file "$rel" "$hash"
+            [ "$(registry_facts "$dest")" = "$there" ] || die "the restored registry does not read back as the backup's"
+            say "  + $rel: the backup's registry ($there_phones phones) replaced this Mac's (${here_phones:-unreadable}${here:+ phones})"
+          elif [ "$here_top" -ge "$there_top" ]; then
+            say "  = $rel: kept this Mac's registry ($here_phones phones, up to number $here_top; the backup's has $there_phones, up to $there_top)."
+            say "      To use the backup's instead: add --replace-registry (this Mac's is kept as *.replaced-<time>)"
+          else
+            registry_note="this Mac's registry has $here_phones phones up to number $here_top, but the backup's has $there_phones up to $there_top"
+          fi ;;
+        "$PROPERTIES")
+          if [ "$(property "$dest" storeFile)" = "$EXPECTED_STORE" ] && \
+              [ "$(without_store_file "$dest")" = "$(without_store_file "$OPENED/hiraia/$rel")" ]; then
+            say "  = $rel already in place (its storeFile names this Mac's key)"
+          elif [ "$force" = 1 ]; then
+            install_file "$rel" "$hash"
+            say "  + $rel"
+            localise_store_file
+          else
+            conflicts="$conflicts $rel"
+          fi ;;
+        *)
+          if [ "$force" = 1 ]; then
+            install_file "$rel" "$hash"
+            say "  + $rel"
+          else
+            conflicts="$conflicts $rel"
+          fi ;;
+      esac
+    fi
+  done < "$OPENED/MANIFEST.tsv"
+
+  say "Checking what is now in $HIRAIA:"
+  local ok=0
+  check_all "$HIRAIA" || ok=1
+  if [ -n "$conflicts" ] || [ -n "$registry_note" ]; then
+    say ""
+    if [ -n "$conflicts" ]; then
+      say "Left as they are, because they differ from the backup's:$conflicts"
+      say "  To use the backup's: run again with --force (the current ones are kept as *.replaced-<time>)."
+    fi
+    if [ -n "$registry_note" ]; then
+      say "The registry was left as it is: $registry_note."
+      say "  To use the backup's: run again with --replace-registry (this Mac's is kept as *.replaced-<time>)."
+    fi
+    die "the restore is not finished"
+  fi
+  [ $ok -eq 0 ] || die "the restored files failed their check"
+  say "Restored."
+}
+
+command=${1:-}
+[ $# -gt 0 ] && shift
+case "$command" in
+  list) [ $# -eq 0 ] || usage; cmd_list ;;
+  backup) cmd_backup "$@" ;;
+  verify) cmd_verify "$@" ;;
+  restore) cmd_restore "$@" ;;
+  *) usage ;;
+esac

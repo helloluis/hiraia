@@ -1,0 +1,176 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Finding a server that moved, over mDNS, while Wi-Fi power saving would drop multicast. -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <!-- A device owner holding this may read the serial number and IMEIs for the inventory.
+         It grants the permission to itself; no one is asked. -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- Provisioning jobs are persisted so they survive a reboot. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Installing its own updates now, and Hiraia in a later milestone. -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <!-- Setting the Hiraia wallpaper, removing preloaded apps, and switching Bluetooth on (a device
+         owner may: Android 13's BluetoothManagerService exempts it from the SDK 33 ban on enable()).
+         A device owner's uninstalls are silent without REQUEST_DELETE_PACKAGES (Android 13's
+         PackageInstallerService only asks it of apps that must prompt the user); it is declared
+         because PackageInstaller.uninstall's contract names it, and it grants nothing more. -->
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+    <!-- Android 11+ hides other apps unless declared. This DPC installs and configures Hiraia and
+         applies PackagePolicy, so it names every package on those lists (a test keeps them in step). -->
+    <queries>
+        <!-- The home screen lists every launchable app. -->
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+        <package android:name="app.backpack.mobile" />
+        <package android:name="coin98.crypto.finance.media" />
+        <package android:name="com.android.camera2" />
+        <package android:name="com.android.chrome" />
+        <package android:name="com.android.fmradio" />
+        <package android:name="com.android.launcher3" />
+        <package android:name="com.android.managedprovisioning" />
+        <package android:name="com.android.phone" />
+        <package android:name="com.android.settings" />
+        <package android:name="com.android.soundrecorder" />
+        <package android:name="com.android.systemui" />
+        <package android:name="com.android.vending" />
+        <package android:name="com.aptoslabs.petra.wallet" />
+        <package android:name="com.einnovation.temu" />
+        <package android:name="com.google.android.apps.adm" />
+        <package android:name="com.google.android.apps.docs" />
+        <package android:name="com.google.android.apps.googleassistant" />
+        <package android:name="com.google.android.apps.maps" />
+        <package android:name="com.google.android.apps.messaging" />
+        <package android:name="com.google.android.apps.nbu.files" />
+        <package android:name="com.google.android.apps.photos" />
+        <package android:name="com.google.android.apps.safetyhub" />
+        <package android:name="com.google.android.apps.tachyon" />
+        <package android:name="com.google.android.apps.youtube.music" />
+        <package android:name="com.google.android.calculator" />
+        <package android:name="com.google.android.calendar" />
+        <package android:name="com.google.android.contacts" />
+        <package android:name="com.google.android.deskclock" />
+        <package android:name="com.google.android.dialer" />
+        <package android:name="com.google.android.gm" />
+        <package android:name="com.google.android.gms" />
+        <package android:name="com.google.android.googlequicksearchbox" />
+        <package android:name="com.google.android.gsf" />
+        <package android:name="com.google.android.inputmethod.latin" />
+        <package android:name="com.google.android.keep" />
+        <package android:name="com.google.android.packageinstaller" />
+        <package android:name="com.google.android.permissioncontroller" />
+        <package android:name="com.google.android.setupwizard" />
+        <package android:name="com.google.android.videos" />
+        <package android:name="com.google.android.webview" />
+        <package android:name="com.google.android.youtube" />
+        <package android:name="com.hiraia.app" />
+        <package android:name="com.hiraia.provisioner" />
+        <package android:name="com.jambo" />
+        <package android:name="com.matr1x.fire" />
+        <package android:name="com.metamerge.xyz" />
+        <package android:name="com.mobilecoin.moby" />
+        <package android:name="com.mysticgames.cov" />
+        <package android:name="com.twitter.android" />
+        <package android:name="com.zhiliaoapp.musically" />
+        <package android:name="com.zzkko" />
+        <package android:name="io.yellowcard.app" />
+        <package android:name="sleep.monitor.sleep.tracker.app" />
+    </queries>
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar"
+        android:usesCleartextTraffic="false">
+
+        <receiver
+            android:name=".AdminReceiver"
+            android:exported="true"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin" />
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                <action android:name="android.app.action.PROFILE_PROVISIONING_COMPLETE" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Setup asks which kind of provisioning this DPC wants, then hands it the device. -->
+        <activity
+            android:name=".ProvisioningModeActivity"
+            android:exported="true"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <intent-filter>
+                <action android:name="android.app.action.GET_PROVISIONING_MODE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".PolicyComplianceActivity"
+            android:exported="true"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <intent-filter>
+                <action android:name="android.app.action.ADMIN_POLICY_COMPLIANCE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- The students' home screen. DeviceSetup makes it the persistent home as device owner. -->
+        <activity
+            android:name=".HomeActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:stateNotNeeded="true"
+            android:clearTaskOnLaunch="true"
+            android:excludeFromRecents="true"
+            android:resumeWhilePausing="true"
+            android:theme="@style/HomeTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".StatusActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".ProvisioningJob"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <receiver
+            android:name=".PackageReplacedReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".BootReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".InstallResultReceiver"
+            android:exported="false" />
+    </application>
+</manifest>

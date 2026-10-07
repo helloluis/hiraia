@@ -1,0 +1,69 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+// The release key lives outside the tree, like the OTA key: ~/.hiraia/provisioner-keys.
+// Every provisioned phone trusts this key alone. The QR code pins its certificate, and a
+// device owner can only be replaced by an APK signed with the same key, so losing it means
+// factory-resetting the fleet to move it to a new one.
+def keystoreFile = new File(System.getProperty('user.home'), '.hiraia/provisioner-keys/keystore.properties')
+def keystore = new Properties()
+if (keystoreFile.exists()) keystoreFile.withInputStream { keystore.load(it) }
+
+android {
+    namespace 'com.hiraia.provisioner'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId 'com.hiraia.provisioner'
+        // Android 12 is where setup hands a QR-provisioned device to the DPC through
+        // GET_PROVISIONING_MODE and ADMIN_POLICY_COMPLIANCE, the only flow implemented here.
+        minSdk 31
+        targetSdk 35
+        versionCode 9
+        versionName '0.4.4'
+    }
+
+    signingConfigs {
+        release {
+            if (keystoreFile.exists()) {
+                storeFile file(keystore['storeFile'])
+                storePassword keystore['storePassword']
+                keyAlias keystore['keyAlias']
+                keyPassword keystore['keyPassword']
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            // Setup downloads this APK while the operator waits, so it is kept small.
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+}
+
+tasks.matching { it.name == 'preReleaseBuild' }.configureEach {
+    doFirst {
+        if (!keystoreFile.exists()) {
+            throw new GradleException("No provisioner signing key at $keystoreFile. It is the only key " +
+                'provisioned phones accept; restore it from backup rather than making a new one.')
+        }
+    }
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+}
